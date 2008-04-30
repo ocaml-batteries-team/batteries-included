@@ -1,0 +1,102 @@
+* Must be implemented :
+** ExtLib or nearly ExtLib
+*** new features
+[done] LazyList
+[done] Option    <= enum
+[done] ExtStream <= SDFlow
+[done] ExtGenlex
+[done] ExtStream <= convert or flatten
+[done] ExtString <= trim
+[done] ExtChar   <= is_whitespace
+[done] ExtChar   <= of_digit
+[done] ExtChar   <= enum, range
+ExtQueue  <= enum / of_enum
+ExtStack  <= enum / of_enum
+ExtBigArray <= enum / of_enum
+ExtRandom <= enum
+          <= to_lazylist
+
+*** labels
+[done] EnumLabels
+[done] LazyList.LazyListLabels
+[done] ExtStream.StreamLabels 
+DllistLabels
+ExtArray.ArrayLabels
+ExtHashtbl.HashtblLabels
+ExtList.ListLabels
+ExtQueue.QueueLabels
+ExtStack.StackLabels
+ExtBigArray.BigArrayLabels
+DynArrayLabels
+
+
+** Rationalizing numbers (based on bluestorm's stuff)
+Interface Number
+ExtInt64
+ExtInt32
+Float
+Int
+ExtChar (*implements Number*)
+ExtNativeint
+ExtBool
+ExtNum
+ExtBig_int
+
+** Other stuff
+ Annexlib, missinglib, xstr
+
+
+* Organization :
+
+module Containers 
+[done]     <= dllist*
+[done]     <= ExtHashtbl.Hashtbl*
+[done]     <= ExtList.List*
+[done]     <= ExtStream.Stream*
+           <= ExtQueue.Queue*
+           <= ExtStack.Stack*
+           <= LazyList*
+[done]     <= Enum*
+           <= PMap
+           <= RefList
+[done]     <= Option
+
+
+module Data 
+     <= ExtInt64.Int64
+     <= ExtInt32.Int32
+     <= Float
+     <= Int
+[done]     <= ExtChar.Char
+     <= ExtBool.Bool
+     <= ExtNativeint.Nativeint
+     <= ExtNum.Num
+     <= ExtBig_int.Big_int
+[done]     <= BitSet
+[done]     <= Global
+[done]     <= ExtString.String
+[done]     <= Rope
+[done]     <= UChar
+[done]     <= UTF8
+
+module System
+[done]     <= IO
+[done]     <= Unzip
+[done]     <= Sys
+[done]     <= Arg
+[done]     <= OptParse
+
+module Standard
+[done]     <= contents of Pervasives (mark stream and i/o as obsolete)
+[done]     <= contents of Std
+[done]     <= contents of Result
+
+module Languages 
+[done]     <= ExtGenLex
+[done]     <= Lexing
+[done]     <= Parsing
+     <= (later, GenParser)
+
+
+module Util 
+     <= ExtRandom

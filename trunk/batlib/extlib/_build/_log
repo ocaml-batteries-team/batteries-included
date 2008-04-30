@@ -1,0 +1,13 @@
+### Starting build.
+# Target: extInt.ml.depends, tags: { extension:ml, file:extInt.ml, ocaml, ocamldep, quiet }
+/home/yoric/usr/local/godi/bin/ocamldep.opt -modules extInt.ml > extInt.ml.depends
+# Target: number.mli.depends, tags: { extension:mli, file:number.mli, ocaml, ocamldep, quiet }
+/home/yoric/usr/local/godi/bin/ocamldep.opt -modules number.mli > number.mli.depends # cached
+# Target: number.cmi, tags: { byte, compile, extension:mli, file:number.mli, interf, ocaml, quiet }
+/home/yoric/usr/local/godi/bin/ocamlc.opt -c -o number.cmi number.mli # cached
+# Target: extInt.cmo, tags: { byte, compile, extension:ml, file:extInt.ml, implem, ocaml, quiet }
+/home/yoric/usr/local/godi/bin/ocamlc.opt -c -o extInt.cmo extInt.ml
++ /home/yoric/usr/local/godi/bin/ocamlc.opt -c -o extInt.cmo extInt.ml
+File "extInt.ml", line 52, characters 32-53:
+Unbound constructor Enum.No_more_elements
+Command exited with code 2.
