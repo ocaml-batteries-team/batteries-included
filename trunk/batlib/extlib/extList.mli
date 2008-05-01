@@ -64,7 +64,7 @@ module List :
 	(** [rfind p l] returns the last element [x] of [l] such as [p x] returns
 	 [true] or raises [Not_found] if such element as not been found. *)
 
-	val find_exc : ('a -> bool) -> exn -> 'a list -> 'a
+	val find : ('a -> bool) -> exn -> 'a list -> 'a
 	(** [find_exc p e l] returns the first element of [l] such as [p x]
 	 returns [true] or raises [e] if such element as not been found. *)
 

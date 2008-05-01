@@ -1,3 +1,9 @@
+05/01/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* install.ml: added new modules
+	* IO.ml: enum_* fixed by replacing enum_ with read_*
+	* IO.ml?: open_file_* created
+	* IO.ml?: write_bits_enum now accepts a label nbits
+	
 04/30/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* ref.mli: created
 	* ref.ml: created

@@ -25,25 +25,42 @@ type path =
 	| PathDos
 
 let modules = [
-	"enum";
-	"bitSet";
-	"dynArray";
-	"extArray";
-	"extHashtbl";
-	"extList";
-	"extString";
-	"global";
-	"IO";
-	"option";
-	"pMap";
-	"std";
-	"uChar";
-	"uTF8";
-	"base64";
-	"unzip";
-	"refList";
-	"optParse";
-    "dllist";
+  "enum";
+  "bitSet";
+  "dynArray";
+  "extArray";
+  "extHashtbl";
+  "extList";
+  "extString";
+  "global";
+  "IO";
+  "option";
+  "pMap";
+  "std";
+  "uChar";
+  "uTF8";
+  "base64";
+  "unzip";
+  "refList";
+  "optParse";
+  "dllist";
+  "number";
+(*  "extBig_int";*)
+  "ref";
+  "enumLabels";
+  "extInt32";
+  "extInt64";
+  "extNativeint";
+  "extChar";
+  "extComplex";
+  "extFloat";
+  "extGenlex";
+  "extRandom";
+  "extStream";
+  "lazyList";
+  "lazyListLabels";
+  "rope";
+  "vect"
 ]
 
 let m_list suffix =

@@ -600,17 +600,17 @@ let write_double ch f =
 	write_i64 ch (Int64.bits_of_float f)
 
 
-let enum_ui16 input = Enum.from (fun () -> enum_ui16 input)
+let enum_ui16 input = Enum.from (fun () -> read_ui16 input)
 
-let enum_i16 input = Enum.from (fun () -> enum_i16 input)
+let enum_i16 input = Enum.from (fun () -> read_i16 input)
 
-let enum_i32 input = Enum.from (fun () -> enum_i32 input)
+let enum_i32 input = Enum.from (fun () -> read_i32 input)
 
-let enum_real_i32 input = Enum.from (fun () -> enum_real_i32 input)
+let enum_real_i32 input = Enum.from (fun () -> read_real_i32 input)
 
-let enum_i64 input = Enum.from (fun () -> enum_i64 input)
+let enum_i64 input = Enum.from (fun () -> read_i64 input)
 
-let enum_double input = Enum.from (fun () -> enum_double input)
+let enum_double input = Enum.from (fun () -> read_double input)
 
 let write_byte_enum output enum =
   Enum.iter (write_byte output) enum
@@ -812,25 +812,25 @@ let from_out_chars ch =
 (* ------*)
 (* Enumeration API *)
 
-let enum_byte input = Enum.from (fun () -> enum_byte input)
+let enum_byte input = Enum.from (fun () -> read_byte input)
 
-let enum_signed_byte input = Enum.from (fun () -> enum_signed_byte input)
+let enum_signed_byte input = Enum.from (fun () -> read_signed_byte input)
 
-let enum_ui16 input = Enum.from (fun () -> enum_ui16 input)
+let enum_ui16 input = Enum.from (fun () -> read_ui16 input)
 
-let enum_i16 input = Enum.from (fun () -> enum_i16 input)
+let enum_i16 input = Enum.from (fun () -> read_i16 input)
 
-let enum_i32 input = Enum.from (fun () -> enum_i32 input)
+let enum_i32 input = Enum.from (fun () -> read_i32 input)
 
-let enum_real_i32 input = Enum.from (fun () -> enum_real_i32 input)
+let enum_real_i32 input = Enum.from (fun () -> read_real_i32 input)
 
-let enum_i64 input = Enum.from (fun () -> enum_i64 input)
+let enum_i64 input = Enum.from (fun () -> read_i64 input)
 
-let enum_double input = Enum.from (fun () -> enum_double input)
+let enum_double input = Enum.from (fun () -> read_double input)
 
-let enum_string input = Enum.from (fun () -> enum_string input)
+let enum_string input = Enum.from (fun () -> read_string input)
 
-let enum_line input = Enum.from (fun () -> enum_line input)
+let enum_line input = Enum.from (fun () -> read_line input)
 
 let enum_bits in_bits = Enum.from (fun () -> read_bits in_bits 1)
 
@@ -861,3 +861,23 @@ let write_string_enum output enum =
 let write_line_enum output enum =
   Enum.iter (write_line output) enum
 
+let write_bits_enum ~nbits output enum =
+  Enum.iter (write_bits ~nbits output) enum
+
+(* ----------
+   Files
+*)
+
+let open_file_in         x = input_channel (open_in x)
+let open_file_in_binary  x = input_channel (open_in_bin x)
+let open_file_out        x = output_channel (open_out x)
+let open_file_out_binary x = output_channel (open_out_bin x)
+
+let with_do opener closer x f =
+  let file = opener x in
+    Std.finally (fun () -> closer file) f file
+ 
+let with_file_in         x = with_do open_file_in close_in x
+let with_file_in_binary  x = with_do open_file_in_binary close_in x
+let with_file_out        x = with_do open_file_out close_out x
+let with_file_out_binary x = with_do open_file_out_binary close_out x

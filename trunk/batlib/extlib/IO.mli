@@ -110,12 +110,6 @@ val output_string : unit -> string output
 (** Create an output that will write into a string in an efficient way.
   When closed, the output returns all the data written into it. *)
 
-val input_channel : in_channel -> input
-(** Create an input that will read from a channel. *)
-
-val output_channel : out_channel -> unit output
-(** Create an output that will write into a channel. *) 
-
 val input_enum : char Enum.t -> input
 (** Create an input that will read from an [enum]. *)
 
@@ -133,6 +127,58 @@ val create_out :
   output:(string -> int -> int -> int) ->   
   flush:(unit -> unit) -> close:(unit -> 'a) -> 'a output
 (** Fully create an output by giving all the needed functions. *)
+
+val open_file_in : string -> input
+(** [open_file_in file_name] opens the file named [file_name] for reading.
+
+    {b Note} You will need to close the file manually. An alternative is
+    to call [with_file_in] instead of [open_file_in].
+
+    Naming conventions for files are platform-dependent.*)
+
+val open_file_out : string -> unit output
+(** [open_file_in file_name] opens the file named [file_name] for writing.
+
+    {b Note} You will need to close the file manually. An alternative is
+    to call [with_file_out] instead of [open_file_out].
+
+    Naming conventions for files are platform-dependent.*)
+
+val with_file_in : string -> (input -> 'a) -> 'a
+(** [with_file_in file_name f] opens the file named [file_name] for reading,
+    invokes [f] to process the contents of that file then, once [f] has returned 
+    or triggered an exception, closes the file before proceeding. *)
+
+val with_file_out: string -> (unit output -> 'a) -> 'a
+(** [with_file_out file_name f] opens the file named [file_name] for writing,
+    invokes [f] to write onto that file then, once [f] has returned or triggered 
+    an exception, closes the file before proceeding. *)
+
+val open_file_in_binary : string -> input
+(** [open_file_in_binary file_name] opens the file named [file_name] for reading.
+
+    {b Note} You will need to close the file manually. An alternative is
+    to call [with_file_in] instead of [open_file_in].
+
+    Naming conventions for files are platform-dependent.*)
+
+val open_file_out_binary : string -> unit output
+(** [open_file_in file_name] opens the file named [file_name] for writing.
+
+    {b Note} You will need to close the file manually. An alternative is
+    to call [with_file_out] instead of [open_file_out].
+
+    Naming conventions for files are platform-dependent.*)
+
+val with_file_in_binary : string -> (input -> 'a) -> 'a
+(** [with_file_in file_name f] opens the file named [file_name] for reading,
+    invokes [f] to process the contents of that file then, once [f] has returned 
+    or triggered an exception, closes the file before proceeding. *)
+
+val with_file_out_binary : string -> (unit output -> 'a) -> 'a
+(** [with_file_out file_name f] opens the file named [file_name] for writing,
+    invokes [f] to write onto that file then, once [f] has returned or triggered 
+    an exception, closes the file before proceeding. *)
 
 (** {6 Utilities} *)
 
@@ -297,6 +343,17 @@ val flush_bits : out_bits -> unit
 val drop_bits : in_bits -> unit
 (** Drop up to 7 buffered bits and restart to next input character. *)
 
+(**
+   {6 For compatibility purposes}
+*)
+val input_channel : in_channel -> input
+(** Create an input that will read from a channel. *)
+
+val output_channel : out_channel -> unit output
+(** Create an output that will write into a channel. *) 
+
+
+
 (** {6 Generic IO Object Wrappers}
 
 	Theses OO Wrappers have been written to provide easy support of ExtLib
@@ -404,5 +461,6 @@ val write_line_enum : 'a output -> string Enum.t -> unit
 (** Write an enumeration of lines, appending a LF (it might be converted
     to CRLF on some systems depending on the underlying IO). *)
 
-val write_bits_enum : in_bits -> int Enum.t
+val write_bits_enum : nbits:int -> out_bits -> int Enum.t -> unit
 (** Write an enumeration of bits*)
+
