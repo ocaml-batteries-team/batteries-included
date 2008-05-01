@@ -122,16 +122,18 @@ let take n l =
 	dummy.tl
 
 (* takewhile and dropwhile by Richard W.M. Jones. *)
-let rec takewhile f = function
+let rec take_while f = function
   | [] -> []
-  | x :: xs when f x -> x :: takewhile f xs
+  | x :: xs when f x -> x :: take_while f xs
   | _ -> []
 
-let rec dropwhile f = function
+let rec drop_while f = function
   | [] -> []
-  | x :: xs when f x -> dropwhile f xs
+  | x :: xs when f x -> drop_while f xs
   | xs -> xs
 
+let takewhile = take_while
+let dropwhile = drop_while
 
 let rec unique ?(cmp = ( = )) l =
 	let rec loop dst = function
@@ -298,6 +300,20 @@ let rec findi p l =
 	in
 	loop 0 l
 
+let rec index_of e l =
+  let rec loop n = function
+    | []              -> None
+    | h::t when h = e -> Some n
+    | _::t            -> loop ( n + 1 ) t
+  in loop 0 l
+
+let rec physical_index_of e l =
+  let rec loop n = function
+    | []               -> None
+    | h::t when h == e -> Some n
+    | _::t             -> loop ( n + 1 ) t
+  in loop 0 l
+
 let filter = find_all
 
 let partition p lst = 
@@ -425,19 +441,15 @@ let split_nth index = function
 			let r = { hd = h; tl = [] } in
 			inj r, loop (index-1) r t
 
-let split_at_exc = split_nth
+let split_at = split_nth
 
-let split_at i l =
-  try Result.Ok (split_at_exc i l)
-  with Invalid_index i -> `Invalid_index i
-
-let find_exc f e l =
+let find_exn f e l =
 	try
 		find f l
 	with
 		Not_found -> raise e
 
-let remove l x =
+let remove x l =
 	let rec loop dst = function
 		| [] -> ()
 		| h :: t ->
@@ -467,7 +479,7 @@ let rec remove_if f lst =
 	loop dummy lst;
 	dummy.tl
 
-let rec remove_all l x =
+let rec remove_all x l =
 	let rec loop dst = function
 		| [] -> ()
 		| h :: t ->
@@ -510,6 +522,32 @@ let of_enum e =
 		acc.tl <- inj r;
 		r) h e in
 	h.tl
+
+module ExceptionLess = struct
+  let rfind p l =
+    try  Some (rfind p l)
+    with Not_found -> None
+
+  let findi p l =
+    try  Some (findi p l)
+    with Not_found -> None
+      
+  let split_at n l =
+    try   Std.Ok (split_at n l)
+    with  Invalid_index i -> Std.Error (`Invalid_index i)
+
+  let at n l =
+    try Std.Ok (at n l)
+    with Invalid_index i -> Std.Error (`Invalid_index i)
+
+  let assoc e l =
+    try Some (assoc e l)
+    with Not_found -> None
+
+  let assq e l =
+    try Some (assq e l)
+    with Not_found -> None
+end
 
 end
 

@@ -12,10 +12,10 @@ val post: 'a ref -> ('a -> 'a) -> 'a
       For instance, if [x] is a reference to [1],
       [pre x ( ( + ) 1)] returns [2] and sets [x] to [2].*)
 
-val pre_incr : 'a ref -> 'a
+val pre_incr : int ref -> int
 
-val pre_decr : 'a ref -> 'a
+val pre_decr : int ref -> int
 
-val post_incr: 'a ref -> 'a
+val post_incr: int ref -> int
 
-val post_decr: 'a ref -> 'a
+val post_decr: int ref -> int

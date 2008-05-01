@@ -34,6 +34,8 @@
      when used properly. Either choice is recommended over OCaml's [Stream].
 *)
 
+exception No_more_elements
+
 exception Empty_list
   (** [Empty_list] is raised when an operation applied on an empty list
       is invalid : [hd] for example. *)
@@ -48,7 +50,7 @@ exception Different_list_size of string
 
   
 (**
-   {1  Lazyness}
+   {6  Lazyness}
 *)
 (**
    The type of an item in the list.
@@ -67,9 +69,54 @@ and
    The empty list.
 *)
 let nil = lazy Nil
-  
+
+let next l = Lazy.force l
+
 (**
-   {1  Iterators}
+   {6 Constructors}
+*)
+let from_while f =
+  let rec aux = lazy (
+    match f () with
+      | None   -> Nil
+      | Some x -> Cons (x, aux) ) in aux
+
+let from f = 
+  let f' () =
+    try  Some (f ())
+    with No_more_elements -> None
+  in from_while f'
+
+let from_loop_while (data:'b) (next: 'b -> ('a * 'b) option) =
+  let rec aux data =
+    match next data with
+      | Some(a,b) -> lazy (Cons(a, aux b))
+      | None      -> nil
+  in aux data
+
+
+let from_loop (data:'b) (next:'b -> ('a * 'b)) : 'a t=
+  let f' data =
+    try  Some (next data)
+    with No_more_elements -> None
+  in from_loop_while data f'
+
+let init n f = 
+  let rec aux i = 
+    if i < n then lazy (Cons (f i, aux ( i + 1 ) ) )  
+    else          nil
+  in if n < 0 then raise (Invalid_argument "LazyList.init")
+     else          aux 0
+
+let make n x =
+  let rec aux i =
+    if i < n then lazy (Cons (x, aux ( i + 1 ) ) )
+    else          nil
+  in if n < 0 then raise (Invalid_argument "LazyList.make")
+     else          aux 0
+
+(**
+   {6  Iterators}
 *)
 (**
    Eeager iteration
@@ -80,7 +127,7 @@ let nil = lazy Nil
 *)
 let iter f l =
   let rec aux l =
-    match Lazy.force l with | Cons (x, t) -> (f x; aux t) | _ -> ()
+    match next l with | Cons (x, t) -> (f x; aux t) | _ -> ()
   in aux l
   
 (**
@@ -92,7 +139,7 @@ let iter f l =
 *)
 let iteri f l =
   let rec aux i l =
-    match Lazy.force l with | Cons (x, t) -> (f i x; aux (i + 1) t) | _ -> ()
+    match next l with | Cons (x, t) -> (f i x; aux (i + 1) t) | _ -> ()
   in aux 0 l
   
 (**
@@ -105,11 +152,82 @@ let iteri f l =
 let map f l =
   let rec (aux : 'a t -> 'b t) =
     fun rest ->
-      match Lazy.force rest with
+      match next rest with
       | Cons (x, (t : 'a t)) -> lazy (Cons (f x, aux t))
       | Nil -> lazy Nil
   in aux l
   
+let mapi f l =
+  let rec aux rest i =
+    match next rest with
+      | Cons (x, (t : 'a t)) -> lazy (Cons (f i x, aux t ( i + 1 ) ))
+      | Nil -> lazy Nil
+  in aux l 0
+
+let may_find p l =
+  let rec aux l =
+    match next l with
+      | Nil         -> None
+      | Cons (x, t) -> if p x then Some x else aux t
+  in aux l 
+
+let may_rfind p l =
+  let rec aux l acc =
+    match next l with
+      | Nil         -> acc
+      | Cons (x, t) -> aux t (if p x then Some x else acc)
+  in aux l None
+
+let may_findi p l =
+  let rec aux l i =
+    match next l with
+      | Nil                    -> None
+      | Cons (x, _) when p i x -> Some (i, x)
+      | Cons (_, t)            -> aux t (i+1)
+  in aux l 0
+
+let may_rfindi p l =
+  let rec aux l acc i =
+    match next l with
+      | Nil         -> acc
+      | Cons (x, t) -> aux t (if p i x then Some (i, x) else acc) (i+1)
+  in aux l None 0
+
+let find_exn p e l =
+  Option.get_exn (may_find p l) e
+
+let rfind_exn p e l =
+  Option.get_exn (may_rfind p l) e
+
+let find  p l = find_exn p Not_found l
+
+let rfind p l = rfind_exn p Not_found l
+
+let findi p l =
+  Option.get_exn (may_findi p l) Not_found
+
+let rfindi p l =
+  Option.get_exn (may_rfindi p l) Not_found
+
+let index_of e l =
+  match may_findi (fun _ x -> e = x) l with
+    | None        -> None
+    | Some (i, _) -> Some i
+
+let rindex_of e l =
+  match may_rfindi (fun _ x -> e = x) l with
+    | None        -> None
+    | Some (i, _) -> Some i
+
+let index_ofq e l =
+  match may_findi (fun _ x -> e == x) l with
+    | None        -> None
+    | Some (i, _) -> Some i
+
+let rindex_ofq e l =
+  match may_rfindi (fun _ x -> e == x) l with
+    | None        -> None
+    | Some (i, _) -> Some i
 (**
    Eager fold_left
 
@@ -118,7 +236,7 @@ let map f l =
 *)
 let fold_left f init l =
   let rec aux acc rest =
-    match Lazy.force rest with 
+    match next rest with 
       | Cons (x, t) -> aux (f acc x) t 
       | _           -> acc
   in aux init l
@@ -132,11 +250,11 @@ let fold_left f init l =
 *)
 let fold_right f init l =
   let rec aux rest =
-    match Lazy.force rest with | Cons (x, t) -> f x (aux t) | _ -> init
+    match next rest with | Cons (x, t) -> f x (aux t) | _ -> init
   in aux l
   
 (**
-   {1  Common functions}
+   {6  Common functions}
 *)
 (**
    Return the length (number of elements) of the given list.
@@ -149,15 +267,25 @@ let length l = fold_left (fun n _ -> n + 1) 0 l
    Return the first element of the given list. Raise [Empty_list] if the list is empty.
 *)
 let hd list =
-  match Lazy.force list with
+  match next list with
   | Cons (x, _) -> x
   | _ -> raise Empty_list
   
+let first = hd
+
+let last l =
+  let rec aux acc l = match next l with
+    | Nil        -> acc
+    | Cons(x, t) -> aux (Some x) t
+  in match aux None l with
+    | None   -> raise Empty_list
+    | Some x -> x
+
 (**
    Return the given list without its first element. Raise [Empty_list] if the list is empty.
 *)
 let tl list =
-  match Lazy.force list with
+  match next list with
   | Cons (_, t) -> t
   | _ -> raise Empty_list
   
@@ -167,27 +295,28 @@ let tl list =
 *)
 let nth list n =
   let rec aux list i =
-    match ((Lazy.force list), i) with
+    match ((next list), i) with
     | (Cons (x, _), 0) -> x
     | (Cons (_, t), _) -> aux t (i - 1)
     | _ -> raise (Invalid_index n)
   in if n < 0 then raise (Invalid_index n) else aux list n
   
-let at_exn = nth
-
 let at list n =
   let rec aux list i =
-    match ((Lazy.force list), i) with
-    | (Cons (x, _), 0) -> Result.Ok x
+    match ((next list), i) with
+    | (Cons (x, _), 0) -> x
     | (Cons (_, t), _) -> aux t (i - 1)
-    | _ -> Result.Error (`Invalid_index n)
-  in if n < 0 then Result.Error (`Invalid_index n) else aux list n
+    | _ -> raise (Invalid_index n)
+  in if n < 0 then raise (Invalid_index n) else aux list n
 
 (**
    Eager list reversal.
 *)
 let rev list = fold_right (fun x acc -> lazy (Cons (x, acc))) nil list
   
+(** Utility function.*)
+let rev_of_list (list:'a list) = List.fold_right (fun x acc -> lazy (Cons (x, acc))) list nil
+
 (**
    Evaluate a list and append another list after this one.
 
@@ -195,7 +324,7 @@ let rev list = fold_right (fun x acc -> lazy (Cons (x, acc))) nil list
 *)
 let eager_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list =
-    match Lazy.force list with
+    match next list with
     | Cons (x, t) -> lazy (Cons (x, aux t))
     | _ -> l2
   in aux l1
@@ -207,11 +336,16 @@ let eager_append (l1 : 'a t) (l2 : 'a t) =
 *)
 let rev_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list acc =
-    match Lazy.force list with
+    match next list with
     | Cons (x, t) -> aux t (lazy (Cons (x, acc)))
     | _ -> acc
   in aux l1 l2
   
+let rev_append_of_list (l1 : 'a list) (l2 : 'a t) : 'a t =
+  let rec aux list acc = match list with
+    | []   -> acc
+    | h::t -> aux t (lazy (Cons (h, acc)))
+  in aux l1 l2
 (**
    Lazy append
 
@@ -222,26 +356,20 @@ let rev_append (l1 : 'a t) (l2 : 'a t) =
 let append (l1 : 'a t) (l2 : 'a t) =
   let rec (aux : 'a t -> 'a t) =
     fun rest_of_l1 ->
-      match Lazy.force rest_of_l1 with
+      match next rest_of_l1 with
       | Cons (x, (t : 'a t)) -> lazy (Cons (x, aux t))
       | _ -> l2
   in aux l1
   
 let ( ^@^ ) = append
   
-(**
-   Lazy concatenation of a list of lazy lists
-*)
-let concat (lol : ('a t) list) =
+let flatten (lol : ('a t) list) =
   ListLabels.fold_left ~init: nil ~f: append lol
   
-(**
-   Lazy concatenation of a lazy list of lazy lists
-*)
-let flatten (lol : ('a t) t) = fold_left append nil lol
+let concat  (lol : ('a t) t) = fold_left append nil lol
   
 (**
-   {1  Conversions}
+   {6  Conversions}
 *)
 (**
    Eager conversion to string.
@@ -253,7 +381,7 @@ let to_list l = fold_right (fun x acc -> x :: acc) [] l
 *)
 let to_stream l =
   let rec aux rest =
-    match Lazy.force rest with
+    match next rest with
     | Cons (x, t) -> Stream.icons x (Stream.slazy (fun _ -> aux t))
     | _ -> Stream.sempty
   in aux l
@@ -265,7 +393,7 @@ let to_array l = Array.of_list (to_list l)
 
 let enum l =
   let reference = ref l in
-    Enum.from (fun () -> match Lazy.force !reference with
+    Enum.from (fun () -> match next !reference with
 		 | Cons(x,t) -> reference := t; x
 		 | _         -> raise Enum.No_more_elements )
   
@@ -318,7 +446,7 @@ let of_enum e =
     aux ()
   
 (**
-   {1  Predicates}
+   {6  Predicates}
 *)
 (**
    Lazy filtering.
@@ -328,7 +456,7 @@ let of_enum e =
 *)
 let filter f l =
   let rec aux rest =
-    match Lazy.force rest with
+    match next rest with
     | Cons (x, t) when f x -> lazy (Cons (x, aux t))
     | Cons (_, t) -> aux t
     | Nil -> nil
@@ -342,7 +470,7 @@ let filter f l =
 *)
 let exists f l =
   let rec aux rest =
-    match Lazy.force rest with
+    match next rest with
     | Cons (x, t) when f x -> true
     | Cons (_, t) -> aux t
     | Nil -> false
@@ -356,18 +484,13 @@ let exists f l =
 *)
 let for_all f l =
   let rec aux rest =
-    match Lazy.force rest with
+    match next rest with
     | Cons (x, t) when f x -> aux t
     | Cons (_, t) -> false
     | Nil -> true
   in aux l
   
-(**
-   Compute lazily a range of integers a .. b as a lazy list.
 
-   The range is never empty. If a <= b, the range contains a, a+1 ... b.
-   Otherwise, it contains a, a-1, ..., b.
-*)
 let range a b =
   let rec increasing lo hi =
     if lo > hi then nil else lazy (Cons (lo, increasing (lo + 1) hi))
@@ -377,41 +500,168 @@ let range a b =
       else 
 	lazy (Cons hi (decreasing lo (hi - 1)))*)
     if b >= a then increasing a b else (*decreasing b a*) nil
-  
-let mem e = exists (( = ) e)
-  
-(**
-   Lazily eliminate some elements and transform others.
 
-   [map_filter f [^ a1; a2; ... ;an ^]] applies [f] to each
-   [a1], ..., [an]. If [f ai] evaluates to [None], the element
-   is not included in the result. Otherwise, if [f ai] evaluates 
-   to [Some x], element [x] is included in the result.
+let split_at n l =
+  let rec aux acc l i =
+    if i = 0 then (rev_of_list acc, l)
+    else match next l with
+      | Nil        -> raise (Invalid_index n)
+      | Cons(h, t) -> aux (h::acc) t (i - 1)
+  in aux [] l n
 
-   This is equivalent to
-   [match f a1 with
-     | Some x1 -> x1 ^:^ (match f a2 with
-            |Some x2 -> x2 ^:^ (match ...
-                       (match f an with
-                            | Some xn -> [^ xn ^]
-                            | None    -> [^ ^]
-                       )
-            | ...)
-     | None   -> ... ].
-*)
-let map_filter f l =
+let split_nth = split_at
+
+let mem   e = exists (( = ) e)
+ 
+let memq  e = exists (( == ) e )
+
+let assoc e l = snd (find (fun (a,_) -> a = e) l)
+
+let assq  e l = snd (find (fun (a,_) -> a == e) l)
+
+let mem_assoc e l = Option.is_some (may_find (fun (a, _) -> a = e) l)
+
+let mem_assq e l = Option.is_some (may_find (fun (a, _) -> a == e) l)
+
+let filter_map f l =
   let rec aux rest =
-    match Lazy.force rest with
+    match next rest with
     | Cons (h, t) ->
         (match f h with | None -> aux t | Some x -> lazy (Cons (x, aux t)))
     | Nil -> nil
   in aux l
-  
-let from f = let rec aux = lazy (Cons (f (), aux)) in aux
-  
-(**
-   An infinite list of nothing
-*)
+
+let unique ?(cmp = compare) l =
+  let set      = ref (PMap.create cmp) in
+  let filter x = if PMap.mem x !set then None
+                 else                  ( set := PMap.add x true !set; Some x )
+  in
+    filter_map filter l
+
+let remove_all x l =
+  filter_map (fun y -> if x = y then Some x else None) l
+
+let remove_if p l =
+  let rec aux acc l = match next l with
+    | Nil                -> rev_of_list acc
+    | Cons(h,t) when p h -> rev_append_of_list acc t
+    | Cons(h,t)          -> aux (h::acc) t
+  in aux [] l
+
+let remove x l =
+  remove_if ( ( = ) x ) l
+
+
+(** An infinite list of nothing *)
 let rec eternity = lazy (Cons ((), eternity))
   
+let take n l = fst (split_at n l)
 
+let drop n l = 
+  let rec aux l i =
+    if i = 0 then l
+    else match next l with
+      | Nil        -> raise (Invalid_index n)
+      | Cons(_, t) -> aux t (i - 1)
+  in aux l n
+
+let drop_while p =
+  let rec aux l = match next l with
+    | Nil                -> nil
+    | Cons(h,t) when p h -> aux t
+    | Cons(_,t)          -> t
+  in aux
+
+let take_while p =
+  let rec aux acc l = match next l with
+    | Cons(h,t) when p h -> aux (h::acc) t
+    | _                  -> rev_of_list acc
+  in aux []
+
+let sort ?cmp l = of_list (ExtList.List.sort ?cmp (to_list l))
+
+let stable_sort cmp l = of_list (ExtList.List.stable_sort cmp (to_list l))
+
+let map2 f l1 l2 =
+  let rec aux l1 l2 =
+      match (next l1, next l2) with
+	| (Cons (h1, t1), Cons(h2, t2)) -> lazy (Cons (f h1 h2, aux t1 t2))
+	| (Nil, Nil)                    -> nil
+	| _                             -> raise (Different_list_size "LazyList.map2")
+  in aux l1 l2
+
+let iter2 f l1 l2 =
+  let rec aux l1 l2 =
+      match (next l1, next l2) with
+	| (Cons (h1, t1), Cons(h2, t2)) -> f h1 h2; aux t1 t2
+	| (Nil, Nil)                    -> ()
+	| _                             -> raise (Different_list_size "LazyList.iter2")
+  in aux l1 l2
+
+let fold_left2 f acc l1 l2 = 
+  let rec aux acc l1 l2 = 
+      match (next l1, next l2) with
+	| (Cons (h1, t1), Cons(h2, t2)) -> aux (f acc h1 h2) t1 t2
+	| (Nil, Nil)                    -> acc
+	| _                             -> raise (Different_list_size "LazyList.fold_left2")
+  in aux acc l1 l2
+
+let fold_right2 f l1 l2 acc =
+  let rec aux l1 l2 =
+      match (next l1, next l2) with
+	| (Cons (h1, t1), Cons(h2, t2)) -> f h1 h2 (aux t1 t2)
+	| (Nil, Nil)                    -> acc
+	| _                             -> raise (Different_list_size "LazyList.fold_right2")
+  in aux l1 l2
+
+let for_all2 p l1 l2 =
+  let rec aux l1 l2 =
+      match (next l1, next l2) with
+	| (Cons (h1, t1), Cons(h2, t2)) -> p h1 h2 && (aux t1 t2)
+	| (Nil, Nil)                    -> true
+	| _                             -> raise (Different_list_size "LazyList.for_all2")
+  in aux l1 l2
+
+let exists2 p l1 l2 =
+  let rec aux l1 l2 =
+      match (next l1, next l2) with
+	| (Cons (h1, t1), Cons(h2, t2)) -> p h1 h2 || (aux t1 t2)
+	| (Nil, Nil)                    -> false
+	| _                             -> raise (Different_list_size "LazyList.exists2")
+  in aux l1 l2
+
+let combine l1 l2 =
+  let rec aux l1 l2 = match (next l1, next l2) with
+    | (Cons(h1, t1), Cons(h2, t2)) -> lazy (Cons ((h1, h2), ( aux t1 t2 )))
+    | (Nil,          Nil         ) -> nil
+    | _                            -> raise (Different_list_size "LazyList.combine")
+  in aux l1 l2
+
+module ExceptionLess = struct
+  (** Exceptionless counterparts for error-raising operations*)
+
+  let find   = may_find
+  let rfind  = may_rfind
+  let findi  = may_findi
+  let rfindi = may_rfindi
+    
+  let at list n =
+    let rec aux list i =
+      match (next list, i) with
+	| (Cons (x, _), 0) -> Std.Ok x
+	| (Cons (_, t), _) -> aux t (i - 1)
+	| _ -> Std.Error (`Invalid_index n)
+    in if n < 0 then Std.Error (`Invalid_index n) else aux list n
+
+  let assoc a (l:'a t) =
+    try  Some (assoc a l)
+    with Not_found -> None
+
+  let assq a l =
+    try  Some (assq a l)
+    with Not_found -> None
+
+  let split_at n l =
+    try  Std.Ok (split_at n l)
+    with Not_found -> Std.Error (`Invalid_index n)
+end

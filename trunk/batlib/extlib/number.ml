@@ -40,6 +40,13 @@ type 'a numeric =
     to_string : 'a -> string;
 }
 
+module type BOUNDED = sig
+  type t
+
+  val min_num : t
+  val max_num : t
+end
+
 (**
    The smallest set of operations supported by every set if numbers
 *)
@@ -91,7 +98,7 @@ end
 *)
 module type NUMERIC = sig
   include NUMERIC_BASE
-    
+
   val ( +. ) : t -> t -> t
   val ( -. ) : t -> t -> t
   val ( *. ) : t -> t -> t
@@ -103,6 +110,8 @@ module type NUMERIC = sig
   val ( >. ) : t -> t -> bool
   val ( <. ) : t -> t -> bool
   val ( =. ) : t -> t -> bool
+
+  val operations : t numeric    
 end
 
 
@@ -114,43 +123,42 @@ end
 *)
 module Numeric (Base : NUMERIC_BASE) = struct
   include Base
-  
-  let (+.), (-.), ( *.), (/.) = add, sub, mul, div 
-  let ( ** ) = pow
+  let (+.), (-.), ( *.), (/.) = Base.add, Base.sub, Base.mul, Base.div 
+  let ( ** ) = Base.pow
 
-  let (=.)  a b = compare a b = 0
-  let (<.)  a b = compare a b < 0
-  let (>.)  a b = compare a b > 0
-  let (<=.) a b = compare a b <= 0
-  let (>=.) a b = compare a b >= 0
-  let (<>.) a b = compare a b <> 0
+  let (=.)  a b = Base.compare a b = 0
+  let (<.)  a b = Base.compare a b < 0
+  let (>.)  a b = Base.compare a b > 0
+  let (<=.) a b = Base.compare a b <= 0
+  let (>=.) a b = Base.compare a b >= 0
+  let (<>.) a b = Base.compare a b <> 0
 
   let operations =
     {
-      zero = zero;
-      one = one;
-      neg = neg;
-      succ = succ;
-      pred = pred;
-      abs = abs;
-      add = add;
-      sub = sub;
-      mul = mul;
-      div = div;
-      modulo = modulo;
-      pow = pow;
-      compare = compare;
-      of_int = of_int;
-      to_int = to_int;
-      of_string = of_string;
-      to_string = to_string;
+      zero      = Base.zero;
+      one       = Base.one;
+      neg       = Base.neg;
+      succ      = Base.succ;
+      pred      = Base.pred;
+      abs       = Base.abs;
+      add       = Base.add;
+      sub       = Base.sub;
+      mul       = Base.mul;
+      div       = Base.div;
+      modulo    = Base.modulo;
+      pow       = Base.pow;
+      compare   = Base.compare;
+      of_int    = Base.of_int;
+      to_int    = Base.to_int;
+      of_string = Base.of_string;
+      to_string = Base.to_string;
     }    
 end
 
 (**
    A generic implementation of fast exponenciation
 *)
-let generic_pow ~zero ~one ~div_two ~mod_two ~mult:( * ) =
+let generic_pow ~zero ~one ~div_two ~mod_two ~mul:( * ) =
   let rec pow a n =
     if      n = zero then one
     else if n = one  then a

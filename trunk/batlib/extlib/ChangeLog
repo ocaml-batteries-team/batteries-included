@@ -3,6 +3,33 @@
 	* IO.ml: enum_* fixed by replacing enum_ with read_*
 	* IO.ml?: open_file_* created
 	* IO.ml?: write_bits_enum now accepts a label nbits
+	* extList.ml?: index_of, physical_index_of added
+	* extList.ml?: created module ExceptionLess
+	* extList.mli: documentation
+	* extList.ml?: split_at_exn renamed split_at
+	* extList.ml?: in remove and remove_all, changed order of arguments
+	* extList.ml?: takewhile renamed take_while
+	* extList.ml?: dropwhile renamed drop_while
+	* lazyList.ml?: init, make, find, rfind,  find_exn, 
+	rfind_exn, findi, rfindi, index_of, index_ofq, last,
+	first, memq, assoc, assq, split_at, split_nth
+	added, remove_if, remove, remove_all, unique,
+	drop_while, take_while, combine, for_all2, exists2,
+	fold_left2, fold_right2, iter2, map2, sort, stable_sort,
+	next, from_loop, from_loop_while, from_while added
+	* lazyList.ml: may_find, may_rfind, may_findi, 
+	may_rfindi, rev_of_list, rev_append_of_list added
+	* lazyList.ml?: ExceptionLess added
+	* result.ml?: catch added
+	* option.ml?: get_exn added
+	* enum.ml?: close, drop_while, take_while, from_loop,
+	from_loop_while, from_while added
+	* enum.ml: before_do added
+	* extInt32.ml?: submodule Numeric added
+	* extInt64.ml?: submodule Numeric added
+	* extFloat.ml?: submodule Numeric added
+	* extNativeint.ml?: submodule Numeric added
+	* extBig_int.ml?: submodule Numeric added
 	
 04/30/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* ref.mli: created

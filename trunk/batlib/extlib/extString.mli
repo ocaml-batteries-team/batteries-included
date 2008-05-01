@@ -2,6 +2,7 @@
  * ExtString - Additional functions for string manipulations.
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller
+ *               2008 Edgar Friendly
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,9 +29,15 @@ module String :
 
     
 
-	(** {6 New Functions} *)
+    (** {6 New Functions} *)
     val trim : string -> string
       (** Remove whitespaces around the string*)
+
+    val splice: string -> int -> int -> string -> string
+      (** [String.splice s off len rep] cuts out the section of [s] indicated by [off] and [len] and replaces it by [rep] *)
+
+
+
 
 	val init : int -> (int -> char) -> string
 	(** [init l f] returns the string of length [l] with the chars

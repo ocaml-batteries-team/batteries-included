@@ -6,7 +6,6 @@ module Int    = ExtInt.Int
 module SafeInt= ExtInt.SafeInt
 module Int32  = ExtInt32.Int32
 module Int64  = ExtInt64.Int64
-module Rope   = Rope
 module Global = Global
 module BitSet = BitSet
 module UTF8   = UTF8

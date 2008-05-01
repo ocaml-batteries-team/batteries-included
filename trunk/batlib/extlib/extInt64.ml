@@ -28,4 +28,7 @@ module BaseInt64 = struct
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul
 end
 
-module Int64 = Numeric(BaseInt64)
+module Int64 = struct
+  include BaseInt64
+  module Numeric = struct include Numeric(BaseInt64) end
+end

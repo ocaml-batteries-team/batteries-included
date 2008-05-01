@@ -55,7 +55,7 @@ val to_lazy_list_filter:  t -> char LazyList.t ->  token LazyList.t
 (** Apply the lexer to a lazy list.*)
 
 (**
-   {6} Old functions
+   {6 Old functions}
 *)
 val make_lexer : string list -> char Stream.t -> token Stream.t
 (** Construct the lexer function. The first argument is the list of

@@ -30,9 +30,10 @@ type 'a t = {
 exception No_more_elements
 exception Infinite_enum
 
-let _dummy    () = assert false
-
-let _infinite () = raise Infinite_enum
+let _no_more_elements () = raise No_more_elements
+let _no_more_count    () = 0
+let _dummy            () = assert false
+let _infinite         () = raise Infinite_enum
 
 let make ~next ~count ~clone =
 	{
@@ -60,7 +61,7 @@ let rec init n f =
 let rec empty () =
 	{
 		count = (fun () -> 0);
-		next  = (fun () -> raise No_more_elements);
+		next  = _no_more_elements;
 		clone = (fun () -> empty());
 		fast  = true;
 	}
@@ -122,10 +123,21 @@ let from f =
 	e
 
 let from_while f =
-  from(fun () -> match f() with
+  from(fun () -> match f () with
 	 | None   -> raise No_more_elements
 	 | Some x -> x )
       
+
+let from_loop data next =
+  let r = ref data in
+    from(fun () -> let (a,b) = next !r in
+	   r := b;
+	   a)
+
+let from_loop_while data next =
+  from_loop data (fun data -> match next data with
+		    | None   -> raise No_more_elements
+		    | Some x -> x )
 
 let from2 next clone =
 	let e = {
@@ -142,26 +154,26 @@ let get t =
 	with No_more_elements -> None
 
 let push t e =
-	let rec make t =
-		let fnext = t.next in
-		let fcount = t.count in
-		let fclone = t.clone in
-		let next_called = ref false in
-		t.next <- (fun () ->
-			next_called := true;
-			t.next <- fnext;
-			t.count <- fcount;
-			t.clone <- fclone;
-			e);
-		t.count <- (fun () ->
-			let n = fcount() in
-			if !next_called then n else n+1);
-		t.clone <- (fun () ->
-			let tc = fclone() in
-			if not !next_called then make tc;
-			tc);
-	in
-	make t
+  let rec make t =
+    let fnext = t.next in
+    let fcount = t.count in
+    let fclone = t.clone in
+    let next_called = ref false in
+      t.next <- (fun () ->
+		   next_called := true;
+		   t.next <- fnext;
+		   t.count <- fcount;
+		   t.clone <- fclone;
+		   e);
+      t.count <- (fun () ->
+		    let n = fcount() in
+		      if !next_called then n else n+1);
+      t.clone <- (fun () ->
+		    let tc = fclone() in
+		      if not !next_called then make tc;
+		      tc);
+  in
+    make t
 
 let peek t =
 	match get t with
@@ -308,17 +320,14 @@ let fold2i f init t u =
 				push t e;
 				!acc
 
-let find_exn f t =
-	let rec loop () =
-		let x = t.next() in
-		if f x then x else loop()
-	in
-	try  loop()
-	with No_more_elements -> raise Not_found
-
 let find f t =
-  try  Some (find_exn f t)
-  with Not_found -> None
+  let rec loop () =
+    let x = t.next() in
+      if f x then x else loop()
+  in
+    try  loop()
+    with No_more_elements -> raise Not_found
+      
 
 let rec map f t =
 	{
@@ -338,11 +347,11 @@ let rec mapi f t =
 	}
 
 let rec filter f t =
-	let rec next() =
-		let x = t.next() in
-		if f x then x else next()
-	in
-	from2 next (fun () -> filter f (t.clone()))
+  let rec next() =
+    let x = t.next() in
+      if f x then x else next()
+  in
+    from2 next (fun () -> filter f (t.clone()))
 
 let rec filter_map f t =
     let rec next () =
@@ -464,4 +473,50 @@ let drop n e =
     junk e
   done
 
+let close e =
+  e.next <- _no_more_elements;
+  e.count<- _no_more_count;
+  e.clone<- empty
+
+let before_do t f =
+  let rec make t =
+    let fnext  = t.next  in
+    let fclone = t.clone in
+    let next_called = ref false in
+      t.next  <- (fun () -> f(); 
+		    next_called := true;
+		    t.clone <- fclone;
+		    t.next  <- fnext ;
+		    fnext () );
+
+      t.clone <- (fun () ->
+		    let tc = fclone() in
+		      if not !next_called then make tc;
+		      tc);
+  in
+    make t
+
+let drop_while p e =
+  let rec aux () = 
+    match peek e with
+      | None            -> e
+      | Some x when p x -> junk e; aux ()
+      | _               -> e
+  in 
+    before_do e aux; e
+
+let take_while f t =
+  let rec next () =
+    let x = t.next () in
+      if f x then x
+      else        raise No_more_elements
+  in from next
+    
+
 let ( -- ) x y = range x ~until:y
+
+module ExceptionLess = struct
+  let find f e =
+    try  Some (find f e)
+    with Not_found -> None
+end

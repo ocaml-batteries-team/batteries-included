@@ -139,13 +139,9 @@ val hd : 'a t -> 'a
 val tl : 'a t -> 'a t
   
 val nth : 'a t -> int -> 'a
-  (**  Obsolete. As [at_exn]*)
+  (**  Obsolete. As [at]*)
 
-val at_exn : 'a t -> int -> 'a
-  (** [at_exn l n] returns the n-th element of the list [l] or raise
-      [Invalid_index] is the index is outside of [l] bounds. *)
-
-val at : 'a t -> int -> ('a, [`Invalid_index of int]) Result.t
+val at : 'a t -> int -> 'a
   (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
       [x] is the n-th element of the list [l]. Otherwise, returns [Error
       (`Invalid_index(n))].*)
@@ -187,12 +183,12 @@ val ( ^@^ ) : 'a t -> 'a t -> 'a t
 (**
    Lazy concatenation of a list of lazy lists
 *)
-val concat : ('a t) list -> 'a t
+val flatten : ('a t) list -> 'a t
   
 (**
    Lazy concatenation of a lazy list of lazy lists
 *)
-val flatten : ('a t) t -> 'a t
+val concat : ('a t) t -> 'a t
   
 (**
    {1  Conversions}
@@ -291,7 +287,7 @@ val range : int -> int -> int t
             | ...) 
      | None   -> ... ].
 *)
-val map_filter : f:('a -> 'b option) -> 'a t -> 'b t
+val filter_map : f:('a -> 'b option) -> 'a t -> 'b t
   
 val mem : 'a -> 'a t -> bool
   

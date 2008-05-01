@@ -52,7 +52,7 @@ module type NUMERIC_BASE =
       (** A type of numbers*)
 
     val zero : t
-    val one : t
+    val one  : t
 
   (** {6 Arithmetic operations} 
       
@@ -94,7 +94,7 @@ module type NUMERIC =
   sig
     type t
 
-    val operations : t numeric
+
     val zero : t
     val one : t
     val neg : t -> t
@@ -123,18 +123,20 @@ module type NUMERIC =
     val ( >. ) : t -> t -> bool
     val ( <. ) : t -> t -> bool
     val ( =. ) : t -> t -> bool
+
+    val operations : t numeric
   end
 
-(**
-   Automated definition of operators for a given numeric type.
+(** Automated definition of operators for a given numeric type.
 
-   {@see open...in...}
-*)
+    You will only need this if you develop your own numeric modules.*)
+
 module Numeric :
   functor (Base : NUMERIC_BASE) ->
     sig
+
       type t = Base.t
-      val operations : t numeric
+
       val zero : t
       val one : t
       val neg : t -> t
@@ -163,12 +165,14 @@ module Numeric :
       val ( >. ) : t -> t -> bool
       val ( <. ) : t -> t -> bool
       val ( =. ) : t -> t -> bool
+
+      val operations : t numeric
     end
 
 
 exception Overflow
 
-module Bounded :
+module type BOUNDED =
   sig
     type t
     val min_num : t

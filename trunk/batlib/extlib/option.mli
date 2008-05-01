@@ -50,6 +50,9 @@ val is_some : 'a option -> bool
 val get : 'a option -> 'a
 (** [get (Some x)] returns [x] and [get None] raises [No_value]. *)
 
+val get_exn : 'a option -> exn -> 'a
+(** [get (Some x) e] returns [x] and [get None e] raises [e]. *)
+
 val enum: 'a option -> 'a Enum.t
 (** Return an enumeration consisting in exactly one element*)
 

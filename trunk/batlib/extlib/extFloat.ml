@@ -1,5 +1,5 @@
 (* 
- * ExtInt - Extended floating-point numbers
+ * ExtFloat - Extended floating-point numbers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
  * 
@@ -20,16 +20,6 @@
  *)
 
 open Number
-
-let enum () =
-  let current_value   = ref min_int in
-  let already_through = ref false   in
-  let f  () =
-    if  !current_value = max_int then
-      if !already_through then raise Enum.No_more_elements
-      else ( already_through := true; max_int )
-    else Ref.pre_incr current_value
-  in Enum.from f
 
 module BaseFloat = struct
   type t = float
@@ -54,4 +44,7 @@ module BaseFloat = struct
   let to_string = string_of_float
 end
 
-module Float = Numeric(BaseFloat)
+module Float = struct
+  include BaseFloat
+  module Numeric = struct include Numeric(BaseFloat) end
+end

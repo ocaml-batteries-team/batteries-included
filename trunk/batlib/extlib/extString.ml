@@ -1,6 +1,8 @@
 (*
  * ExtString - Additional functions for string manipulations.
  * Copyright (C) 2003 Nicolas Cannasse
+ *               2008 David Teller
+ *               2008 Edgar Friendly
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -166,6 +168,7 @@ let of_enum e =
 	Enum.iter (fun c -> unsafe_set s !i c; incr i) e;
 	s
 
+
 let map f s =
 	let len = length s in
 	let sc = create len in
@@ -268,4 +271,15 @@ let trim s =
     | None -> ""
     | Some first_trailing_whitespace ->
 	sub s last_leading_whitespace (first_trailing_whitespace - last_leading_whitespace + 1)
+
+let splice s1 off len s2 = 
+  let len1 = length s1 and len2 = length s2 in
+  let out_len = len1 - len + len2 in
+  let s = create out_len in
+  blit s1 0 s 0 off; (* s1 before splice point *)
+  blit s2 0 s off len2; (* s2 at splice point *)
+  blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
+  s
+
+
 end

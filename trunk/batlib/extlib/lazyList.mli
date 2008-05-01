@@ -1,5 +1,5 @@
 (* 
- * LazyListLabels - enumeration over abstract collection of elements.
+ * LazyList - Lazily-computed lists of possibly infinite size
  * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
@@ -17,13 +17,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
-(**
-   A module for lazy list management.
+(**  Lazy lists of elements.
 
-   If you use syntax extension pa_comprehension, you'll probably want to take
-   advantage of the syntax for lazy lists.
+     Lazy lists are similar to lists, with the exception that their contents are
+     only computed whenever requested. This makes them particularly useful in
+     contexts where streams of data are to be handled. 
+
+     {b Note} Using the companion syntax extension for lazy lists is strongly suggested.
+
+     {b Note} Enumerations (as featured in module [Enum]) and lazy lists (as featured
+     in this module) are quite similar in purpose. Lazy lists are slightly higher level,
+     insofar as no cloning is required to get them to work, which makes them slightly
+     more useful in contexts where backtracking is common. Enumerations, on the other
+     hand, are closer to traditional stream processing, require a bit more low-level
+     marking whenever backtracking is required, but may be faster and more memory-efficient
+     when used properly. Either choice is recommended over OCaml's [Stream].
 *)
-
 
 exception Empty_list
   (** [Empty_list] is raised when an operation applied on an empty list
@@ -39,7 +48,7 @@ exception Different_list_size of string
   
   
 (**
-   {1  Lazyness}
+   {6  Lazyness}
 *)
 
 type 'a node_t = | Nil | Cons of 'a * 'a t 
@@ -59,134 +68,277 @@ and 'a t = ('a node_t) Lazy.t
    The empty list.
 *)
 val nil : ('a node_t) lazy_t
-  
+
+(**
+   {6 List creation}
+*)
+exception No_more_elements
+
+val from: (unit -> 'a) -> 'a t  
+  (**[from next] creates a (possibly infinite) lazy list from the successive
+     results of [next]. 
+     The function {i may} raise {!LazyList.No_more_elements} to denote the end of the 
+     list.*)
+
+val from_while: (unit -> 'a option) -> 'a t
+  (**[from next] creates a (possibly infinite) lazy list from the successive
+     results of [next].
+     The list ends whenever [next] returns [None]. *)
+
+val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
+  (**[from_loop data next] creates a (possibly infinite) lazy list from
+     the successive results of applying [next] to [data], then to the
+     result, etc. The list ends whenever the function raises 
+     {!LazyList.No_more_elements}*)
+
+val from_loop_while: 'b -> ('b -> ('a * 'b) option) -> 'a t
+  (**[from_loop data next] creates a (possibly infinite) lazy list from
+     the successive results of applying [next] to [data], then to the
+     result, etc. The list ends whenever the function returns [None]*)
+
+val init : int -> (int -> 'a) -> 'a t
+  (** Similar to [Array.init], [init n f] returns the lazy list 
+      containing the results of (f 0),(f 1).... (f (n-1)).
+      Raise [Invalid_arg "LazyList.init"] if n < 0.*)
+
+val make : int -> 'a -> 'a t
+  (** Similar to [String.make], [make n x] returns a
+      list containing [n] elements [x].   *)
+
+(**
+   {6 Higher-order functions}
+*)
+
+val iter : ('a -> 'b) -> 'a t -> unit 
 (**
    Eager iteration
 
-   [LazyList.iter f [^ a1; ...; an ^]] applies function [f] in turn to [a1; ...; an]. 
+   [iter f [^ a1; ...; an ^]] applies function [f] in turn to [a1; ...; an]. 
    It is equivalent to [begin f a1; f a2; ...; f an; () end]. In particular, it
-   causes all the elements of the list to be evaluated.
-*)
-val iter : ('a -> 'b) -> 'a t -> unit 
+   causes all the elements of the list to be evaluated.*)
   
-(**
-   Eager iteration, with indices
-
-   [LazyList.iteri f [^ a1; ...; an ^]] applies function [f] in turn to [a1 0; ...; an (n - 1)]. 
-   It is equivalent to [begin f a1 0; f a2 0; ...; f an (n-1); () end]. In particular, it
-   causes all the elements of the list to be evaluated.
-*)
 val iteri : (int -> 'a -> 'b) -> 'a t -> unit
-  
-(**
-   Lazy map
+(**Eager iteration, with indices
 
-   [LazyList.map f [^ a1; ...; an ^]] applies function [f] to [a1, ..., an], and builds the list 
-   [^ f a1; ...; f an ^]  with the results returned by [f]. Not tail-recursive. Evaluations
-   of [f] take place only when the contents of the list are forced.
-*)
+   [iteri f [^ a1; ...; an ^]] applies function [f] in turn to [a1 0; ...; an (n - 1)]. 
+   It is equivalent to [begin f a1 0; f a2 0; ...; f an (n-1); () end]. In particular, it
+   causes all the elements of the list to be evaluated.*)
+
+
 val map : ('a -> 'b) -> 'a t -> 'b t
+(**Lazy map
+
+   [map f [^ a1; ...; an ^]] applies function [f] to [a1, ..., an], and builds the list 
+   [^ f a1; ...; f an ^]  with the results returned by [f]. Not tail-recursive. Evaluations
+   of [f] take place only when the contents of the list are forced.*)
+
   
-(**
-   Eager fold_left
+val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
+(**Lazy map, with indices
+
+   [map f [^ a1; ...; an ^]] applies function [f] to [a1, ..., an], and builds the list 
+   [^ f 0 a1; ...; f ( n - 1) an ^]  with the results returned by [f]. Not tail-recursive. Evaluations
+   of [f] take place only when the contents of the list are forced.*)
+
+
+val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+(**Eager fold_left
 
    [LazyList.fold_left f a [^ b1; ...; bn ^]] is [f (... (f (f a b1) b2) ...) bn]. This causes
-   evaluation of all the elements of the list.
-*)
-val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+   evaluation of all the elements of the list.*)
 
-(**
-   Eager fold_right
 
-   [LazyList.fold_right f a [^ b1; ...; bn ^]] is [f ( f (... (f (f a bn) ...) b2) b1]. This causes
-   evaluation of all the elements of the list. Not tail-recursive.
-*)
 val fold_right : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
-  
-(**
-   {1  Common functions}
-*)
-(**
-   Return the length (number of elements) of the given list.
+(**Eager fold_right
 
-   Causes the evaluation of all the elements of the list.
+   [fold_right f a [^ b1; ...; bn ^]] is [f ( f (... (f (f a bn) ...) b2) b1]. This causes
+   evaluation of all the elements of the list. Not tail-recursive.*)
+
+val find : ('a -> bool) -> 'a t -> 'a
+  (** [find p l] returns the first element of [l] such as [p x]
+      returns [true] or raises [Not_found] if such an element
+      has not been found.*)
+
+val rfind : ('a -> bool) -> 'a t -> 'a
+  (** [rfind p l] returns the last element [x] of [l] such as [p x] returns
+      [true] or raises [Not_found] if such element as not been found. *)
+
+
+val find_exn : ('a -> bool) -> exn -> 'a t -> 'a
+  (** [find_exn p e l] returns the first element of [l] such as [p x]
+      returns [true] or raises [e] if such an element has not been found. *)
+
+val rfind_exn : ('a -> bool) -> exn -> 'a t -> 'a
+  (** [find_exn p e l] returns the last element of [l] such as [p x]
+      returns [true] or raises [e] if such an element has not been found. *)
+
+val findi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
+  (** [findi p e l] returns the first element [ai] of [l] along with its
+      index [i] such that [p i ai] is true, or raises [Not_found] if no
+      such element has been found. *)
+
+val rfindi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
+  (** [findi p e l] returns the last element [ai] of [l] along with its
+      index [i] such that [p i ai] is true, or raises [Not_found] if no
+      such element has been found. *)
+
+val index_of : 'a -> 'a t -> int option
+  (** [index_of e l] returns the index of the first occurrence of [e]
+      in [l], or [None] if there is no occurrence of [e] in [l] *)  
+
+val index_ofq : 'a -> 'a t -> int option
+  (** [index_ofq e l] behaves as [index_of e l] except it uses
+      physical equality*)
+
+val rindex_of : 'a -> 'a t -> int option
+  (** [index_of e l] returns the index of the last occurrence of [e]
+      in [l], or [None] if there is no occurrence of [e] in [l] *)  
+
+val rindex_ofq : 'a -> 'a t -> int option
+  (** [rindex_ofq e l] behaves as [rindex_of e l] except it uses
+      physical equality*)
+(**
+   {6  Common functions}
 *)
+val next : 'a t -> 'a node_t
+  (**Compute and return the next value of the list*)
+
 val length : 'a t -> int
-  
-(**
-   Return the first element of the given list. Raise [Empty_list] if the list is empty.
+  (**Return the length (number of elements) of the given list.
+
+     Causes the evaluation of all the elements of the list.*)
+
+
+val hd : 'a t -> 'a  
+(**Return the first element of the given list. Raise [Empty_list] if the list is empty.
 
    Note: this function does not comply with the usual exceptionless error-management
-   recommendations, as doing so would essentially render it useless.
-*)
-val hd : 'a t -> 'a
-  
-(**
-   Return the given list without its first element. Raise [Empty_list] if the list is empty.
+   recommendations, as doing so would essentially render it useless.*)
 
-   Note: this function does not comply with the usual exceptionless error-management
-   recommendations, as doing so would essentially render it useless.
-*)
 val tl : 'a t -> 'a t
-  
-val nth : 'a t -> int -> 'a
-  (**  Obsolete. As [at_exn]*)
+(**Return the given list without its first element. Raise [Empty_list] if the list is empty.
 
-val at_exn : 'a t -> int -> 'a
-  (** [at_exn l n] returns the n-th element of the list [l] or raise
+   Note: this function does not comply with the usual exceptionless error-management
+   recommendations, as doing so would essentially render it useless.*)
+
+val first : 'a t -> 'a
+  (** As [hd]*)
+
+val last : 'a t -> 'a
+  (** Returns the last element of the list, or raise [Empty_list] if
+      the list is empty. This function takes linear time and causes the
+      evaluation of all elements of the list*)
+
+val at : 'a t -> int -> 'a
+  (** [at l n] returns the n-th element of the list [l] or raise
       [Invalid_index] is the index is outside of [l] bounds. *)
 
-val at : 'a t -> int -> ('a, [`Invalid_index of int]) Result.t
-  (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
-      [x] is the n-th element of the list [l]. Otherwise, returns [Error
-      (`Invalid_index(n))].*)
+val nth : 'a t -> int -> 'a
+  (**  Obsolete. As [at]*)
 
+val mem : 'a -> 'a t -> bool
+  (** Determine if an element is part of a list *)
+
+val memq : 'a -> 'a t -> bool
+  (** Determine if an element is part of a list, with
+      physical equality*)
   
-(**
-   Eager list reversal.
-*)
+val assoc : 'a -> ('a * 'b) t -> 'b
+  (** [assoc a l] returns the value associated with key [a] in the list of
+      pairs [l]. That is,
+      [assoc a [ ...; (a,b); ...] = b]
+      if [(a,b)] is the leftmost binding of [a] in list [l].
+      Raise [Not_found] if there is no value associated with [a] in the
+      list [l]. *)
+
+val assq : 'a -> ('a * 'b) t -> 'b
+  (** As {!assoc} but with physical equality *)
+
+val mem_assoc : 'a -> ('a * 'b) t -> bool
+  (** As {!assoc} but simply returns [true] if a binding exists, [false]
+      otherwise. *)
+
+val mem_assq : 'a -> ('a * 'b) t -> bool
+  (** As {!mem_assoc} but with physical equality.*)
+
+
 val rev : 'a t -> 'a t
-  
-(**
-   Evaluate a list and append another list after this one.
+  (** Eager list reversal.*)
 
-   Cost is linear in the length of the first list, not tail-recursive.
-*)
+(** {6 Transformations} *)
+
 val eager_append : 'a t -> 'a t -> 'a t
-  
-(**
-   Eager reverse-and-append
+(**Evaluate a list and append another list after this one.
 
-   Cost is linear in the length of the first list, tail-recursive.
-*)
-val rev_append : 'a t -> 'a t -> 'a t
+   Cost is linear in the length of the first list, not tail-recursive.*)
   
-(**
-   Lazy append
+val rev_append : 'a t -> 'a t -> 'a t
+(**Eager reverse-and-append
+
+   Cost is linear in the length of the first list, tail-recursive.*)
+
+val append : 'a t -> 'a t -> 'a t
+(**Lazy append
 
    Cost is constant. All evaluation is delayed until the contents
    of the list are actually read. Reading itself is delayed by
-   a constant.
-*)
-val append : 'a t -> 'a t -> 'a t
-  
-(**
-   As lazy append
-*)
+   a constant.*)
+
 val ( ^@^ ) : 'a t -> 'a t -> 'a t
+  (**As lazy append*)
+
   
-(**
-   Lazy concatenation of a list of lazy lists
-*)
-val concat : ('a t) list -> 'a t
+val concat : ('a t) t -> 'a t
+  (**Lazy concatenation of a lazy list of lazy lists*)
+
+val flatten : ('a t) list -> 'a t
+  (** Lazy concatenation of a list of lazy lists*)
+
+val split_at : int -> 'a t -> 'a t * 'a t
+  (** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
+      first [n] elements of [l] and [l2] the others. Raise [Invalid_index] if
+      [n] is outside of [l] size bounds. *)
   
-(**
-   Lazy concatenation of a lazy list of lazy lists
-*)
-val flatten : ('a t) t -> 'a t
+val split_nth : int -> 'a t -> 'a t * 'a t
+  (** Obsolete. As [split_at]. *)
+
+(**{6 Dropping elements}*)
+val unique : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
+  (** [unique cmp l] returns the list [l] without any duplicate element.
+      Default comparator ( = ) is used if no comparison function specified. *)
+
+val remove : 'a -> 'a t -> 'a t
+  (** [remove l x] returns the list [l] without the first element [x] found
+      or returns  [l] if no element is equal to [x]. Elements are compared
+      using ( = ). *)
   
+val remove_if : ('a -> bool) -> 'a t -> 'a t
+  (** [remove_if cmp l] is similar to [remove], but with [cmp] used
+      instead of ( = ). *)
+  
+val remove_all : 'a -> 'a t -> 'a t
+  (** [remove_all l x] is similar to [remove] but removes all elements that
+      are equal to [x] and not only the first one. *)
+  
+val take : int -> 'a t -> 'a t
+  (** [take n l] returns up to the [n] first elements from list [l], if
+      available. *)
+  
+val drop : int -> 'a t -> 'a t
+  (** [drop n l] returns [l] without the first [n] elements, or the empty
+      list if [l] have less than [n] elements. *)
+  
+val take_while : ('a -> bool) -> 'a t -> 'a t
+  (** [take_while f xs] returns the first elements of list [xs]
+      which satisfy the predicate [f]. *)
+
+val drop_while : ('a -> bool) -> 'a t -> 'a t
+  (** [drop_while f xs] returns the list [xs] with the first
+      elements satisfying the predicate [f] dropped. *)
+  
+
 (**
-   {1  Conversions}
+   {6  Conversions}
 *)
 (**
    Eager conversion to string.
@@ -239,7 +391,7 @@ val eager_of_list : 'a list -> 'a t
 val of_array : 'a array -> 'a t
   
 (**
-   {1  Predicates}
+   {6  Predicates}
 *)
 (**
    Lazy filtering.
@@ -276,7 +428,7 @@ val range : int -> int -> int t
 (**
    Lazily eliminate some elements and transform others.
 
-   [map_filter f [^ a1; a2; ... ;an ^]] applies [f] to each
+   [filter_map f [^ a1; a2; ... ;an ^]] applies [f] to each
    [a1], ..., [an]. If [f ai] evaluates to [None], the element
    is not included in the result. Otherwise, if [f ai] evaluates 
    to [Some x], element [x] is included in the result.
@@ -292,18 +444,107 @@ val range : int -> int -> int t
             | ...) 
      | None   -> ... ].
 *)
-val map_filter : ('a -> 'b option) -> 'a t -> 'b t
+val filter_map : ('a -> 'b option) -> 'a t -> 'b t
   
-val mem : 'a -> 'a t -> bool
+
   
 (**
    An infinite list of nothing
 *)
 val eternity : unit t
   
-(**
-   Generate a list from a function.
-*)
-val from : (unit -> 'a) -> 'a t
-  
 
+  
+(**{6 Sorting}*)
+
+val sort : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
+  (** Sort the list using optional comparator (by default [compare]). *)
+
+val stable_sort : ('a -> 'a -> int) -> 'a t -> 'a t
+
+(**{6 Operations on two lists}*)
+val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+  (** [map2 f [^a1; ...; an^] [^b1; ...; bn^]] is
+      [[f a1 b1; ...; f an bn]].
+      Raise [Different_list_size] if the two lists have
+      different lengths. Not tail-recursive, lazy. *)
+
+  
+val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
+  (** [iter2 f [a1; ...; an] [b1; ...; bn]] calls in turn
+      [f a1 b1; ...; f an bn]. Tail-recursive, eager.
+      Raise [Different_list_size] if the two lists have
+      different lengths. *)
+
+
+val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b t -> 'c t -> 'a
+  (** [fold_left2 f a [b1; ...; bn] [c1; ...; cn]] is
+      [f (... (f (f a b1 c1) b2 c2) ...) bn cn]. Eager.
+      Raise [Different_list_size] if the two lists have
+      different lengths. *)
+
+val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a t -> 'b t -> 'c -> 'c
+  (** [fold_right2 f [a1; ...; an] [b1; ...; bn] c] is
+      [f a1 b1 (f a2 b2 (... (f an bn c) ...))]. Eager.
+      Raise [Different_list_size] if the two lists have
+      different lengths.  Tail-recursive. *)
+
+val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+  (** Same as {!for_all}, but for a two-argument predicate.
+      Raise [Different_list_size] if the two lists have
+      different lengths. *)
+
+val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+  (** Same as {!exists}, but for a two-argument predicate.
+      Raise [Different_list_size] if the two lists have
+      different lengths. *)
+
+val combine : 'a t -> 'b t -> ('a * 'b) t
+  (** Transform a pair of lists into a list of pairs:
+      [combine [a1; ...; an] [b1; ...; bn]] is
+      [[(a1,b1); ...; (an,bn)]].
+      Raise [Different_list_size] if the two lists
+      have different lengths.  Tail-recursive. *)
+
+module ExceptionLess : sig
+  (** Exceptionless counterparts for error-raising operations*)
+
+  val find : ('a -> bool) -> 'a t -> 'a option
+    (** [rfind p l] returns [Some x] where [x] is the first element of [l] such 
+	that [p x] returns [true] or [None] if such element as not been found. *)
+
+  val rfind : ('a -> bool) -> 'a t -> 'a option
+    (** [rfind p l] returns [Some x] where [x] is the last element of [l] such 
+	that [p x] returns [true] or [None] if such element as not been found. *)
+    
+  val findi : (int -> 'a -> bool) -> 'a t -> (int * 'a) option
+    (** [findi p e l] returns [Some (i, ai)] where [ai] and [i] are respectively the 
+	first element of [l] and its index, such that [p i ai] is true, 
+	or [None] if no	such element has been found. *)
+
+  val rfindi : (int -> 'a -> bool) -> 'a t -> (int * 'a) option
+    (** [findi p e l] returns [Some (i, ai)] where [ai] and [i] are respectively the 
+	last element of [l] and its index, such that [p i ai] is true, 
+	or [None] if no	such element has been found. *)
+    
+  val split_at : int -> 'a t -> (('a t * 'a t), [`Invalid_index of int]) Std.result
+    (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns 
+	[Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2] 
+	contains the others. Otherwise, returns [`Invalid_index n] *)
+
+  val at : 'a t -> int -> ('a, [`Invalid_index of int]) Std.result
+    (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
+	[x] is the n-th element of the list [l]. Otherwise, returns [Error
+	(`Invalid_index(n))].*)
+
+
+  val assoc : 'a -> ('a * 'b) t -> 'b option
+    (** [assoc a l] returns [Some b] where [b] is the value associated with key [a] 
+	in the list of pairs [l]. That is, [assoc a [ ...; (a,b); ...] = Some b]
+	if [(a,b)] is the leftmost binding of [a] in list [l].
+	Return [None] if there is no value associated with [a] in the
+		list [l]. *)
+
+  val assq : 'a -> ('a * 'b) t -> 'b option
+    (** As {!assoc} but with physical equality *)	    
+end

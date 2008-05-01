@@ -184,3 +184,6 @@ let unique() =
   incr __unique_counter;
   !__unique_counter
 
+type ('a, 'b) result =
+  | Ok    of 'a
+  | Error of 'b

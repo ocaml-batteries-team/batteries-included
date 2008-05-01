@@ -15,7 +15,7 @@
 ExtQueue  <= enum / of_enum
 ExtStack  <= enum / of_enum
 ExtBigArray <= enum / of_enum
-
+Enum <= close
 
 *** labels
 [done] EnumLabels

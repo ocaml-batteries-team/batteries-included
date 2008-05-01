@@ -1,2 +1,3 @@
 <extlib>: include
 <numlib>: include
+<batlib_threads*>: threads

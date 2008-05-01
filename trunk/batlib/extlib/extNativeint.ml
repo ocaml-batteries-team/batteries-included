@@ -1,6 +1,7 @@
 (* 
  * ExtInt - Extended native ints
- * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
+ * Copyright (C) 2005 Damien Doligez
+ *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
@@ -28,4 +29,8 @@ module BaseNativeint = struct
   let min_num, max_num = min_int, max_int
 end
 
-module Nativeint = Numeric(BaseNativeint)
+module Nativeint = struct
+  include BaseNativeint
+
+  module Numeric = struct include Numeric(BaseNativeint) end
+end

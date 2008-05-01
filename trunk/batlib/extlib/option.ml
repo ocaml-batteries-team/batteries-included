@@ -21,32 +21,34 @@
 exception No_value
 
 let may f = function
-	| None -> ()
-	| Some v -> f v
+  | None -> ()
+  | Some v -> f v
 
 let map f = function
-	| None -> None
-	| Some v -> Some (f v)
+  | None -> None
+  | Some v -> Some (f v)
 
 let default v = function
-	| None -> v
-	| Some v -> v
+  | None -> v
+  | Some v -> v
 
 let is_some = function
-	| None -> false
-	| _ -> true
+  | None -> false
+  | _ -> true
 
 let is_none = function
-	| None -> true
-	| _ -> false
+  | None -> true
+  | _ -> false
 
-let get = function
-	| None -> raise No_value
-	| Some v -> v
+let get_exn s e = match s with
+  | None   -> raise e
+  | Some v -> v
+
+let get s = get_exn s Not_found
 
 let map_default f v = function
-	| None -> v
-	| Some v2 -> f v2
+  | None -> v
+  | Some v2 -> f v2
 
 let enum = function
   | None   -> Enum.from (fun () -> raise Enum.No_more_elements)

@@ -54,4 +54,7 @@ module BaseBig_int = struct
 
 end
 
-module Big_int = Numeric(BaseBig_int)
+module Big_int = struct
+  include BaseBig_int
+  module Numeric = struct include Numeric(BaseBig_int) end
+end

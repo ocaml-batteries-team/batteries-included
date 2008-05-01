@@ -29,4 +29,7 @@ module BaseInt32 = struct
   let min_num, max_num = min_int, max_int
 end
 
-module Int32 = Numeric(BaseInt32)
+module Int32 = struct
+  include BaseInt32
+  module Numeric = struct include Numeric(BaseInt32) end
+end

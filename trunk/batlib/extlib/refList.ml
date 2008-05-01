@@ -69,9 +69,9 @@ let last rl =
 	| [] -> raise Empty_list
 	| l -> loop l
 
-let remove rl item = rl := List.remove !rl item
+let remove rl item = rl := List.remove item !rl
 let remove_if pred rl = rl := List.remove_if pred !rl
-let remove_all rl item = rl := List.remove_all !rl item
+let remove_all rl item = rl := List.remove_all item !rl
 let filter pred rl = rl := List.filter pred !rl
 
 let add_sort ?(cmp=compare) rl item =
