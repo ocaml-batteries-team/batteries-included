@@ -1,3 +1,77 @@
 04/30/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* ref.mli: created
+	* ref.ml: created
+	* rope.mli: imported
+	* rope.ml: imported
+	* vect.*: imported
+	* enum.ml?: from_while added
+	* extStream.mli: type 'a t is now Stream.t
+	* extGenLex.ml: created
+	* extGenLex.mli: created	
+	* extString.ml?: filter_map created
+	* extString.ml?: trim created
+	* extRandom.ml?: created
 	* number.ml: created
 	* extInt.ml: created
+	* extFloat.ml: created
+	* extComplex.ml: created
+	* extInt32.ml: created
+	* extInt64.ml:created
+	* extBig_int.ml: created
+	* extNativeint.ml: created
+	* IO.ml?: enum_* created
+	* IO.ml?: write_*_num created
+	
+04/28/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* enum.mli: added slazy, lsing, lcons, lapp, ising, icons, iapp, switch, 
+	            switchn, drop, seq, cycle, repeat
+	* enum.ml: added slazy, lsing, lcons, lapp, ising, icons, iapp, switch, 
+	            switchn, drop, seq, cycle, repeat
+	* enum.mli: added Infinite_enum
+	* enum.ml: added Infinite_enum
+	* enum.mli: removed get_exn, peek_exn
+	* enum.ml: rewritten range from seq
+	* enumLabels.mli: as enum.mli
+	* enumLabels.ml: now include enum.mli
+	
+04/27/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* enumLabels.mli: *_exc renamed *_exn
+	* enumLabels.ml: implemented
+	* enum.mli: *_exc renamed *_exn
+	* enum.ml: *_exc renamed *_exn
+	* lazyList.mli: of_fun renamed from
+	* lazyListLabels.mli: created
+	* lazyListLabels.ml: created
+	* option.mli: enum added
+	* option.ml: enum added
+	* enum.ml?: range added
+	* enum.ml?: -- added
+	* extStream.mli: created
+	* extStream.ml: created
+	
+04/24/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* enum.ml: new version of find implemented
+	* enum.ml: peek_exc implemented
+	* enum.ml: get_exc implemented
+	* extList.mli: added split_at_exc
+	* extList.mli: added at_exc
+	* extList.ml: new version of split_at implemented
+	* extList.ml: new version of at implemented
+	* lazyList.ml: created
+	* lazyList.mli: created
+
+04/23/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* enum.mli: find renamed find_exc
+	* enum.mli: added peek_exc
+	* enum.mli: added get_exc
+	* enum.mli: added singleton
+	* enum.mli: added loop
+	* enum.mli: added eternity
+	* extList.mli: added split_at
+	* extList.mli: added at
+	* extList.ml: added split_at
+	* extList.ml: added at
+	* enumLabels.mli: created
+	* enumLabels.ml:  created
+	* genParser.mli: created
+	* genLex2.mli: created

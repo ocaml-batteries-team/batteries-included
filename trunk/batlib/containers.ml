@@ -15,6 +15,8 @@ module List           = ExtList.List
 module Global         = Global
 module Ref            = Ref
 module PMap           = PMap
+module Map            = Map
+module MapLabels      = MoreLabels.Map
 module Hashtbl        = ExtHashtbl.Hashtbl
 (*TODO: HashtblLabels*)
 module RefList        = RefList
@@ -23,3 +25,9 @@ module String         = ExtString.String
 module Vect           = Vect
 (*TODO: VectLabels*)
 module Buffer         = Buffer
+module Lazy           = Lazy
+module Queue          = Queue
+module Set            = Set
+module Stack          = Stack
+(*TODO: ExtStack*)
+(*TODO: Bigarray*)

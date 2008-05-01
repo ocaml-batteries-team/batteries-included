@@ -10,11 +10,12 @@
 [done] ExtChar   <= is_whitespace
 [done] ExtChar   <= of_digit
 [done] ExtChar   <= enum, range
+[done] ExtRandom <= enum
+          <= to_lazylist
 ExtQueue  <= enum / of_enum
 ExtStack  <= enum / of_enum
 ExtBigArray <= enum / of_enum
-ExtRandom <= enum
-          <= to_lazylist
+
 
 *** labels
 [done] EnumLabels
@@ -31,16 +32,16 @@ DynArrayLabels
 
 
 ** Rationalizing numbers (based on bluestorm's stuff)
-Interface Number
-ExtInt64
-ExtInt32
-Float
-Int
+[done] Interface Number
+[done] ExtInt64
+[done] ExtInt32
+[done] ExtFloat
+[done] ExtInt
+[done] ExtNativeint
+[done] ExtBig_int
 ExtChar (*implements Number*)
-ExtNativeint
 ExtBool
 ExtNum
-ExtBig_int
 
 ** Other stuff
  Annexlib, missinglib, xstr
@@ -55,29 +56,29 @@ module Containers
 [done]     <= ExtStream.Stream*
            <= ExtQueue.Queue*
            <= ExtStack.Stack*
-           <= LazyList*
+[done]     <= LazyList*
 [done]     <= Enum*
-           <= PMap
-           <= RefList
+[done]     <= PMap
+[done]     <= RefList
 [done]     <= Option
 
 
 module Data 
-     <= ExtInt64.Int64
-     <= ExtInt32.Int32
-     <= Float
-     <= Int
+[done]     <= ExtInt64.Int64
+[done]     <= ExtInt32.Int32
+[done]     <= Float
+[done]     <= Int
 [done]     <= ExtChar.Char
-     <= ExtBool.Bool
-     <= ExtNativeint.Nativeint
-     <= ExtNum.Num
-     <= ExtBig_int.Big_int
+[done]     <= ExtNativeint.Nativeint
+[done]     <= ExtBig_int.Big_int
 [done]     <= BitSet
 [done]     <= Global
 [done]     <= ExtString.String
 [done]     <= Rope
 [done]     <= UChar
 [done]     <= UTF8
+     <= ExtBool.Bool
+     <= ExtNum.Num
 
 module System
 [done]     <= IO
@@ -95,8 +96,7 @@ module Languages
 [done]     <= ExtGenLex
 [done]     <= Lexing
 [done]     <= Parsing
-     <= (later, GenParser)
 
 
 module Util 
-     <= ExtRandom
+[done]     <= ExtRandom

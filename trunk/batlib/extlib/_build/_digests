@@ -1,6 +1,0 @@
-"Rule: ocaml dependencies ml (%=extInt )": "@\127w~\169Yp\243M\199_/\t\167\249-"
-"Resource: /home/yoric/Documents/shared/dev/ocaml/batteries/trunk/batlib/numlib/number.mli": "\129o\024Q\179\148\144\185\219\129e\150\1884cW"
-"Rule: ocaml dependencies mli (%=number )": "Ev~\011x\006\210M\179\216\162U\2059\252\n"
-"Rule: ocaml: mli -> cmi (%=number )": "\000\135\129H\252Hi\n\235\136:\200u\1312k"
-"Rule: ocaml: ml -> cmo & cmi (%=extInt )": "e$&|\153\143\"z\017\142\185\181:\244\181\238"
-"Resource: /home/yoric/Documents/shared/dev/ocaml/batteries/trunk/batlib/numlib/extInt.ml": "\160w`\209l-`:\245\247\198hQ\162p\231"
