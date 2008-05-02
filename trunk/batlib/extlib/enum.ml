@@ -134,7 +134,7 @@ let from_loop data next =
 	   r := b;
 	   a)
 
-let from_loop_while data next =
+let seq_hide data next =
   from_loop data (fun data -> match next data with
 		    | None   -> raise No_more_elements
 		    | Some x -> x )

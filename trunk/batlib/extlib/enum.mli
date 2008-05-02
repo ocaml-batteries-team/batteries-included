@@ -212,10 +212,22 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
      result, etc. The list ends whenever the function raises 
      {!LazyList.No_more_elements}*)
 
-val from_loop_while: 'b -> ('b -> ('a * 'b) option) -> 'a t
-  (**[from_loop data next] creates a (possibly infinite) enumeration from
+val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
+  (** [seq init step cond] creates a sequence of data, which starts
+      from [init],  extends by [step],  until the condition [cond]
+      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [[1, 2, ... 99]]. If [cond
+      init] is false, the result is empty. *)
+
+
+val seq_hide: 'b -> ('b -> ('a * 'b) option) -> 'a t
+  (**More powerful version of [seq], with the ability of hiding data.
+
+     [seq_hide data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
      result, etc. The list ends whenever the function returns [None]*)
+
+
+
 
 val init : int -> (int -> 'a) -> 'a t
 (** [init n f] creates a new enumeration over elements
@@ -262,12 +274,6 @@ val ( -- ) : int -> int -> int t
 (** As [range], without the label. 
 
     [5 -- 10] is the enumeration 5,6,7,8,9,10*)
-
-val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
-  (** [seq init step cond] creates a sequence of data, which starts
-      from [init],  extends by [step],  until the condition [cond]
-      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [[1, 2, ... 99]]. If [cond
-      init] is false, the result is empty. *)
 
 
 val switchn: int -> ('a -> int) -> 'a t -> 'a t array

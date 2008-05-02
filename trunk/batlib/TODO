@@ -11,11 +11,12 @@
 [done] ExtChar   <= of_digit
 [done] ExtChar   <= enum, range
 [done] ExtRandom <= enum
+[done] Enum      <= close
           <= to_lazylist
 ExtQueue  <= enum / of_enum
 ExtStack  <= enum / of_enum
 ExtBigArray <= enum / of_enum
-Enum <= close
+
 
 *** labels
 [done] EnumLabels

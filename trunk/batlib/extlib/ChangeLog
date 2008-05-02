@@ -1,5 +1,8 @@
 05/02/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* uTF8.ml: replaced String.splice with ExtString.String.splice
+	* enum.ml?: renamed from_while_loop into seq_hide
+	* extList.ml?: renamed physical_index_of into index_ofq
+	* extList.ml?: rindex_of, rindex_ofq added
 	
 05/01/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* install.ml: added new modules

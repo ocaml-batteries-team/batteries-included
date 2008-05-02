@@ -51,10 +51,11 @@ val get : 'a option -> 'a
 (** [get (Some x)] returns [x] and [get None] raises [No_value]. *)
 
 val get_exn : 'a option -> exn -> 'a
-(** [get (Some x) e] returns [x] and [get None e] raises [e]. *)
+(** [get_exn (Some x) e] returns [x] and [get_exn None e] raises [e]. *)
 
 val enum: 'a option -> 'a Enum.t
-(** Return an enumeration consisting in exactly one element*)
+(** [enum (Some x)] returns the singleton [x], while [enum None] returns
+    the empty enumeration*)
 
 exception No_value
 (** Raised when calling [get None]. *)

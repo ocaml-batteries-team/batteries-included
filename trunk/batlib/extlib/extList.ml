@@ -307,12 +307,27 @@ let rec index_of e l =
     | _::t            -> loop ( n + 1 ) t
   in loop 0 l
 
-let rec physical_index_of e l =
+let rec index_ofq e l =
   let rec loop n = function
     | []               -> None
     | h::t when h == e -> Some n
     | _::t             -> loop ( n + 1 ) t
   in loop 0 l
+
+let rec rindex_of e l =
+  let rec loop n acc = function
+    | []              -> acc
+    | h::t when h = e -> loop ( n + 1) ( Some n ) t
+    | _::t            -> loop ( n + 1 ) acc       t
+  in loop 0 None l
+
+let rec rindex_ofq e l =
+  let rec loop n acc = function
+    | []               -> acc
+    | h::t when h == e -> loop ( n + 1) ( Some n ) t
+    | _::t             -> loop ( n + 1 ) acc       t
+  in loop 0 None l
+
 
 let filter = find_all
 

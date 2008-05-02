@@ -97,8 +97,16 @@ module List :
         (** [index_of e l] returns the index of the first occurrence of [e]
 	    in [l], or [None] if there is no occurrence of [e] in [l] *)
 
-	val physical_index_of : 'a -> 'a list -> int option
-        (** [physical_index_of e l] behaves as [index_of e l] except it uses
+	val index_ofq : 'a -> 'a list -> int option
+        (** [index_ofq e l] behaves as [index_of e l] except it uses
+	    physical equality*)
+
+	val rindex_of : 'a -> 'a list -> int option
+        (** [rindex_of e l] returns the index of the last occurrence of [e]
+	    in [l], or [None] if there is no occurrence of [e] in [l] *)
+
+	val rindex_ofq : 'a -> 'a list -> int option
+        (** [rindex_ofq e l] behaves as [rindex_of e l] except it uses
 	    physical equality*)
 
 	val unique : ?cmp:('a -> 'a -> bool) -> 'a list -> 'a list
