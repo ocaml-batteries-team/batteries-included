@@ -1,33 +1,41 @@
-module Enum           = Enum
-module EnumLabels     = EnumLabels
-module LazyList       = LazyList
-module LazyListLabels = LazyListLabels
-module Option         = Option
-module Dllist         = Dllist
-module Stream         = ExtStream.Stream
-module StreamLabels   = ExtStream.StreamLabels
-module DynArray       = DynArray
-(*TODO: DynArrayLabels*)
+(** The containers library *)
+
+(** {6 Generic containers} *)
 module Array          = ExtArray.Array
 (*TODO: ArrayLabels*)
-module List           = ExtList.List
-(*TODO: ListLabels*)
-module Global         = Global
-module Ref            = Ref
-module PMap           = PMap
-module Map            = Map
-module MapLabels      = MoreLabels.Map
+(*TODO: Bigarray*)
+module Dllist         = Dllist
+module DynArray       = DynArray
+(*TODO: DynArrayLabels*)
+module Enum           = Enum
+module EnumLabels     = EnumLabels
 module Hashtbl        = ExtHashtbl.Hashtbl
 (*TODO: HashtblLabels*)
-module RefList        = RefList
-module String         = ExtString.String
-(*TODO: StringLabels*)
-module Vect           = Vect
-(*TODO: VectLabels*)
-module Buffer         = Buffer
-module Lazy           = Lazy
+module Map            = Map
+module MapLabels      = MoreLabels.Map
+module PMap           = PMap
+module LazyList       = LazyList
+module LazyListLabels = LazyListLabels
+module List           = ExtList.List
+(*TODO: ListLabels*)
 module Queue          = Queue
+module RefList        = RefList
 module Set            = Set
 module Stack          = Stack
 (*TODO: ExtStack*)
-(*TODO: Bigarray*)
+module Stream         = ExtStream.Stream
+module StreamLabels   = ExtStream.StreamLabels
+module Vect           = Vect
+(*TODO: VectLabels*)
+
+
+(** {6 Specialized containers} *)
+module Buffer         = Buffer
+module Option         = Option
+module Result         = Result
+
+module Global         = Global
+module Ref            = Ref
+module Lazy           = Lazy
+
+

@@ -119,7 +119,7 @@ end
 (**
    Automated definition of operators for a given numeric type.
 
-   {@see open...in...}
+   see open...in...
 *)
 module Numeric (Base : NUMERIC_BASE) = struct
   include Base

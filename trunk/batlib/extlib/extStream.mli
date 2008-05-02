@@ -23,6 +23,8 @@
 
 
 (**
+   Streams and stream parsers
+
    {b Note} This module is provided essentially for backwards-compatibility.
    If you feel like using [Stream.t], please take a look at [Enum]
    or [LazyList] and [GenParser].

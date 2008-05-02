@@ -1,3 +1,6 @@
+05/02/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* uTF8.ml: replaced String.splice with ExtString.String.splice
+	
 05/01/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* install.ml: added new modules
 	* IO.ml: enum_* fixed by replacing enum_ with read_*
