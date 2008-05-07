@@ -26,6 +26,23 @@ module Char = struct
     ' ' | '\010' | '\013' | '\009' | '\026' | '\012' -> true
   | _ -> false
 
+  let is_newline = function
+      '\010' | '\013' -> true
+    | _               -> false
+
+  let is_digit = function
+    | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' -> true
+    | _ -> false
+
+  let is_uppercase c = 'A' <= c && c <= 'Z'
+  let is_lowercase c = 'a' <= c && c <= 'z'
+let is_uppercase_latin1 c = is_uppercase c || ( '\192' (*À*)<= c && c <= '\214' (*Ö*) )||( '\216' (*Ø*) <= c && c <= '\221'(*Ý*) )
+  let is_lowercase_latin1 c = is_lowercase c || ( '\222' (*Þ*) <= c && c <= '\246'(*ö*) )||( '\248'(*ø*) <= c && c <= '\255' (*'ÿ'*) )
+  let is_symbol             = function
+    | '!' | '%' | '&' | '$' | '#' | '+' | '-' | '/' | ':' | '<' | '=' |
+          '>' | '?' | '@' | '\\' | '~' | '^' | '|' | '*' -> true
+    | _ -> false
+
   let of_digit = function
   | 0 -> '0'
   | 1 -> '1'

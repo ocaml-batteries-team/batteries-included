@@ -1,6 +1,6 @@
 module String = ExtString.String
 (*TODO: StringLabels*)
-
+module Bool   = ExtBool.Bool
 module Char   = ExtChar.Char
 module UChar  = UChar
 

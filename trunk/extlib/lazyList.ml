@@ -17,69 +17,39 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
-(**  Lazy lists of elements.
 
-     Lazy lists are similar to lists, with the exception that their contents are
-     only computed whenever requested. This makes them particularly useful in
-     contexts where streams of data are to be handled. 
-
-     {b Note} Using the companion syntax extension for lazy lists is strongly suggested.
-
-     {b Note} Enumerations (as featured in module [Enum]) and lazy lists (as featured
-     in this module) are quite similar in purpose. Lazy lists are slightly higher level,
-     insofar as no cloning is required to get them to work, which makes them slightly
-     more useful in contexts where backtracking is common. Enumerations, on the other
-     hand, are closer to traditional stream processing, require a bit more low-level
-     marking whenever backtracking is required, but may be faster and more memory-efficient
-     when used properly. Either choice is recommended over OCaml's [Stream].
-*)
+(** {6 Exceptions} *)
 
 exception No_more_elements
-
 exception Empty_list
-  (** [Empty_list] is raised when an operation applied on an empty list
-      is invalid : [hd] for example. *)
-  
 exception Invalid_index of int
-  (** [Invalid_index] is raised when an indexed access on a list is
-      out of list bounds. *)
-  
 exception Different_list_size of string
-  (** [Different_list_size] is raised when applying functions such as
-      [iter2] on two lists having different size. *)
 
   
-(**
-   {6  Lazyness}
-*)
-(**
-   The type of an item in the list.
-*)
+(** {6  Types} *)
 type 'a node_t =
   | Nil 
   | Cons of 'a * 'a t
-and 
-(**
-   The type of a lazy list.
-*)
-  'a t =
+and 'a t =
   ('a node_t) Lazy.t
 
-(**
-   The empty list.
-*)
-let nil = lazy Nil
+
+(** {6 Access} *)
+
+let nil    = lazy Nil
 
 let next l = Lazy.force l
+
+let cons h t = lazy (Cons(h, t))
 
 (**
    {6 Constructors}
 *)
 let from_while f =
-  let rec aux = lazy (
+  let rec aux () = lazy (
     match f () with
       | None   -> Nil
-      | Some x -> Cons (x, aux) ) in aux
+      | Some x -> Cons (x, aux ()) ) in aux ()
 
 let from f = 
   let f' () =
@@ -87,7 +57,14 @@ let from f =
     with No_more_elements -> None
   in from_while f'
 
-let from_loop_while (data:'b) (next: 'b -> ('a * 'b) option) =
+let seq data next cond =
+  let rec aux data = 
+    if cond data then lazy (Cons (data, aux (next data)))
+    else              nil
+  in aux data
+
+
+let seq_hide (data:'b) (next: 'b -> ('a * 'b) option) =
   let rec aux data =
     match next data with
       | Some(a,b) -> lazy (Cons(a, aux b))
@@ -99,7 +76,7 @@ let from_loop (data:'b) (next:'b -> ('a * 'b)) : 'a t=
   let f' data =
     try  Some (next data)
     with No_more_elements -> None
-  in from_loop_while data f'
+  in seq_hide data f'
 
 let init n f = 
   let rec aux i = 
@@ -118,37 +95,16 @@ let make n x =
 (**
    {6  Iterators}
 *)
-(**
-   Eeager iteration
-
-   [LazyList.iter f [^ a1; ...; an ^]] applies function [f] in turn to [a1; ...; an]. 
-   It is equivalent to [begin f a1; f a2; ...; f an; () end]. In particular, it
-   causes all the elements of the list to be evaluated.
-*)
 let iter f l =
   let rec aux l =
     match next l with | Cons (x, t) -> (f x; aux t) | _ -> ()
   in aux l
   
-(**
-   Eeager iteration, with indices
-
-   [LazyList.iteri f [^ a1; ...; an ^]] applies function [f] in turn to [a1 0; ...; an (n - 1)]. 
-   It is equivalent to [begin f a1 0; f a2 0; ...; f an (n-1); () end]. In particular, it
-   causes all the elements of the list to be evaluated.
-*)
 let iteri f l =
   let rec aux i l =
     match next l with | Cons (x, t) -> (f i x; aux (i + 1) t) | _ -> ()
   in aux 0 l
   
-(**
-   Lazy map
-
-   [LazyList.map f [^ a1; ...; an ^]] applies function [f] to [a1, ..., an], and builds the list 
-   [^ f a1; ...; f an ^]  with the results returned by [f]. Not tail-recursive. Evaluations
-   of [f] take place only when the contents of the list are forced.
-*)
 let map f l =
   let rec (aux : 'a t -> 'b t) =
     fun rest ->
@@ -163,6 +119,20 @@ let mapi f l =
       | Cons (x, (t : 'a t)) -> lazy (Cons (f i x, aux t ( i + 1 ) ))
       | Nil -> lazy Nil
   in aux l 0
+
+let fold_left f init l =
+  let rec aux acc rest =
+    match next rest with 
+      | Cons (x, t) -> aux (f acc x) t 
+      | _           -> acc
+  in aux init l
+  
+let fold_right f init l =
+  let rec aux rest =
+    match next rest with | Cons (x, t) -> f x (aux t) | _ -> init
+  in aux l
+
+(** {6 Finding}*)
 
 let may_find p l =
   let rec aux l =
@@ -228,50 +198,29 @@ let rindex_ofq e l =
   match may_rfindi (fun _ x -> e == x) l with
     | None        -> None
     | Some (i, _) -> Some i
-(**
-   Eager fold_left
 
-   [LazyList.fold_left f a [^ b1; ...; bn ^]] is [f (... (f (f a b1) b2) ...) bn]. This causes
-   evaluation of all the elements of the list.
-*)
-let fold_left f init l =
-  let rec aux acc rest =
-    match next rest with 
-      | Cons (x, t) -> aux (f acc x) t 
-      | _           -> acc
-  in aux init l
   
-
-(**
-   Eager fold_right
-
-   [LazyList.fold_left f a [^ b1; ...; bn ^]] is [f ( f (... (f (f a bn) ...) b2) b1]. This causes
-   evaluation of all the elements of the list. Not tail-recursive.
-*)
-let fold_right f init l =
-  let rec aux rest =
-    match next rest with | Cons (x, t) -> f x (aux t) | _ -> init
-  in aux l
-  
-(**
-   {6  Common functions}
-*)
-(**
-   Return the length (number of elements) of the given list.
-
-   Causes the evaluation of all the elements of the list.
-*)
+(** {6  Common functions}*)
 let length l = fold_left (fun n _ -> n + 1) 0 l
   
-(**
-   Return the first element of the given list. Raise [Empty_list] if the list is empty.
-*)
+let is_empty l = match next l with
+  | Nil -> true
+  | _   -> false
+
+let would_at_fail n =
+  let rec aux l i = match next l with
+    | Nil                    -> true
+    | Cons (_, _) when i = 0 -> false
+    | Cons (_, t)            -> aux t (i - 1)
+  in aux n
+
 let hd list =
   match next list with
   | Cons (x, _) -> x
   | _ -> raise Empty_list
   
 let first = hd
+
 
 let last l =
   let rec aux acc l = match next l with
@@ -281,25 +230,11 @@ let last l =
     | None   -> raise Empty_list
     | Some x -> x
 
-(**
-   Return the given list without its first element. Raise [Empty_list] if the list is empty.
-*)
 let tl list =
   match next list with
   | Cons (_, t) -> t
   | _ -> raise Empty_list
   
-(**
-   Return the nth element of the list. The first element is numbered 0.
-   [nth l i] raises [LazyListFailure "nth"] if [i < 0] or [i >= length l].
-*)
-let nth list n =
-  let rec aux list i =
-    match ((next list), i) with
-    | (Cons (x, _), 0) -> x
-    | (Cons (_, t), _) -> aux t (i - 1)
-    | _ -> raise (Invalid_index n)
-  in if n < 0 then raise (Invalid_index n) else aux list n
   
 let at list n =
   let rec aux list i =
@@ -309,19 +244,14 @@ let at list n =
     | _ -> raise (Invalid_index n)
   in if n < 0 then raise (Invalid_index n) else aux list n
 
-(**
-   Eager list reversal.
-*)
-let rev list = fold_right (fun x acc -> lazy (Cons (x, acc))) nil list
+let nth = at
+
+let rev list = fold_left (fun acc x -> lazy (Cons (x, acc))) nil list
   
-(** Utility function.*)
-let rev_of_list (list:'a list) = List.fold_right (fun x acc -> lazy (Cons (x, acc))) list nil
+(**Revert a list, convert it to a lazy list.
+   Used as an optimisation.*)
+let rev_of_list (list:'a list) = List.fold_left (fun acc x -> lazy (Cons (x, acc))) nil list
 
-(**
-   Evaluate a list and append another list after this one.
-
-   Cost is linear in the length of the first list, not tail-recursive.
-*)
 let eager_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list =
     match next list with
@@ -329,30 +259,21 @@ let eager_append (l1 : 'a t) (l2 : 'a t) =
     | _ -> l2
   in aux l1
   
-(**
-   Eager reverse-and-append
-
-   Cost is linear in the length of the first list, tail-recursive.
-*)
 let rev_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list acc =
     match next list with
     | Cons (x, t) -> aux t (lazy (Cons (x, acc)))
     | _ -> acc
   in aux l1 l2
-  
+
+(**Revert a list, convert it to a lazy list and append it.
+   Used as an optimisation.*)
 let rev_append_of_list (l1 : 'a list) (l2 : 'a t) : 'a t =
   let rec aux list acc = match list with
     | []   -> acc
     | h::t -> aux t (lazy (Cons (h, acc)))
   in aux l1 l2
-(**
-   Lazy append
 
-   Cost is constant. All evaluation is delayed until the contents
-   of the list are actually read. Reading itself is delayed by
-   a constant factor.
-*)
 let append (l1 : 'a t) (l2 : 'a t) =
   let rec (aux : 'a t -> 'a t) =
     fun rest_of_l1 ->
@@ -448,49 +369,30 @@ let of_enum e =
 (**
    {6  Predicates}
 *)
-(**
-   Lazy filtering.
-
-   [filter p l] returns all the elements of the list [l]  that satisfy the predicate [p]. 
-   The order of the elements in the input list is preserved.
-*)
 let filter f l =
   let rec aux rest =
     match next rest with
     | Cons (x, t) when f x -> lazy (Cons (x, aux t))
-    | Cons (_, t) -> aux t
-    | Nil -> nil
+    | Cons (_, t)          -> aux t
+    | Nil                  -> nil
   in aux l
   
-(**
-   Eager existential.
-
-   [exists p [^ a1; ...; an ^]] checks if at least one element of the list satisfies the predicate [p]. 
-   That is, it returns [ (p a1) || (p a2) || ... || (p an) ].
-*)
 let exists f l =
   let rec aux rest =
     match next rest with
     | Cons (x, t) when f x -> true
-    | Cons (_, t) -> aux t
-    | Nil -> false
+    | Cons (_, t)          -> aux t
+    | Nil                  -> false
   in aux l
   
-(**
-   Eager universal.
-
-   [for_all p [^ a1; ...; an ^]] checks if all elements of the list satisfy the predicate [p]. 
-   That is, it returns [(p a1) && (p a2) && ... && (p an)].
-*)
 let for_all f l =
   let rec aux rest =
     match next rest with
     | Cons (x, t) when f x -> aux t
-    | Cons (_, t) -> false
-    | Nil -> true
+    | Cons (_, t)          -> false
+    | Nil                  -> true
   in aux l
   
-
 let range a b =
   let rec increasing lo hi =
     if lo > hi then nil else lazy (Cons (lo, increasing (lo + 1) hi))
@@ -538,9 +440,6 @@ let unique ?(cmp = compare) l =
   in
     filter_map filter l
 
-let remove_all x l =
-  filter_map (fun y -> if x = y then Some x else None) l
-
 let remove_if p l =
   let rec aux acc l = match next l with
     | Nil                -> rev_of_list acc
@@ -548,8 +447,15 @@ let remove_if p l =
     | Cons(h,t)          -> aux (h::acc) t
   in aux [] l
 
+let remove_all_such p l =
+  filter_map (fun y -> if p y then None else Some y) l
+
 let remove x l =
   remove_if ( ( = ) x ) l
+
+let remove_all x l =
+  remove_all_such ( ( = ) x ) l
+
 
 
 (** An infinite list of nothing *)
@@ -569,7 +475,7 @@ let drop_while p =
   let rec aux l = match next l with
     | Nil                -> nil
     | Cons(h,t) when p h -> aux t
-    | Cons(_,t)          -> t
+    | Cons(_,_)          -> l
   in aux
 
 let take_while p =

@@ -1,6 +1,6 @@
-(**
-   Everything opened by default
-*)
+(** Everything opened by default *)
+
+let ( @ ) = ExtList.( @ )
 
 include Pervasives
 include Std

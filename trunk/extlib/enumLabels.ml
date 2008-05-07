@@ -62,11 +62,13 @@ let drop_while ~f  = Enum.drop_while f
 
 let from ~f        = Enum.from f
 
-let from_while ~f  = Enum.from_while f
-
 let from_loop ~init ~f = Enum.from_loop init f
 
-let from_loop_while ~init ~f = Enum.from_loop_while init f
+let from_while ~f  = Enum.from_while f
+
+let seq ~init ~f ~cnd  = Enum.seq init f cnd
+
+let seq_hide ~init ~f = Enum.seq_hide init f
 
 
 
@@ -83,7 +85,6 @@ let lapp = Enum.lapp
 let ising = Enum.ising
 let icons = Enum.icons
 let iapp = Enum.iapp
-let seq = Enum.seq
 let ( -- ) = Enum.( -- )
 let range = Enum.range
 let fast_count = Enum.fast_count

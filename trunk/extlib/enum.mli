@@ -215,7 +215,7 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
 val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
   (** [seq init step cond] creates a sequence of data, which starts
       from [init],  extends by [step],  until the condition [cond]
-      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [[1, 2, ... 99]]. If [cond
+      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [1, 2, ... 99]. If [cond
       init] is false, the result is empty. *)
 
 
@@ -285,6 +285,7 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
   (** [switch test enum] split [enum] into two enums, where the first enum have
       all the elements satisfying [test], the second enum is opposite. The
       order of elements in the source enum is preserved. *)
+
 
 module ExceptionLess : sig
   val find : ('a -> bool) -> 'a t -> 'a option

@@ -63,6 +63,12 @@ module List :
 	 [(f 0 a0);(f 1 a1) ... (f n an)] where [a0..an] are the elements of
 	 the list [l]. *)
 
+	val is_empty : 'a list -> bool
+	  (** [is_empty e] returns true if [e] does not contains any element. *)
+
+	val cons : 'a -> 'a list -> 'a list
+	  (** [cons h t] returns the list starting with [h] and continuing as [t] *)
+
 	val first : 'a list -> 'a
 	(** Returns the first element of the list, or raise [Empty_list] if
 	 the list is empty (similar to [hd]). *)

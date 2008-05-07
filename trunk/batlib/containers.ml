@@ -1,6 +1,7 @@
 (** The containers library *)
 
-(** {6 Generic containers} *)
+(** {1 Generic containers} *)
+
 module Array          = ExtArray.Array
 (*TODO: ArrayLabels*)
 (*TODO: Bigarray*)
@@ -19,17 +20,23 @@ module LazyListLabels = LazyListLabels
 module List           = ExtList.List
 (*TODO: ListLabels*)
 module Queue          = Queue
+(*TODO: ExtQueue.Queue*)
+(*TODO: ExtQueue.QueueLabels*)
 module RefList        = RefList
 module Set            = Set
+(*TODO: ExtSet.Set*)
+(*TODO: ExtSet.SetLabels*)
 module Stack          = Stack
-(*TODO: ExtStack*)
+(*TODO: ExtStack.Stack*)
+(*TODO: ExtStack.StackLabels*)
 module Stream         = ExtStream.Stream
 module StreamLabels   = ExtStream.StreamLabels
 module Vect           = Vect
 (*TODO: VectLabels*)
 
 
-(** {6 Specialized containers} *)
+(** {1 Specialized containers} *)
+
 module Buffer         = Buffer
 module Option         = Option
 module Result         = Result

@@ -20,7 +20,7 @@
  *)
 
 (**
-   The smallest set of operations supported by every set if numbers
+   The smallest set of operations supported by every set of numbers
 *)
 type 'a numeric =
 {

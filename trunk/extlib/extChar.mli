@@ -33,6 +33,11 @@ val is_whitespace : char -> bool
     [' '], ['\010'], ['\013'], ['\009'], ['\026']
     and ['\012']. *)
 
+val is_newline : char -> bool
+(** Determine if a character is a newline.
+    Newline characters are defined as ['\010']
+    and ['\013']*)
+
 val of_digit : int -> char
 (** Return the character representing a given digit.
     Raise [Invalid_argument "Char.of_digit"] if the

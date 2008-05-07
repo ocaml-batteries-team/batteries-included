@@ -1,8 +1,54 @@
+05/07/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extList.ml?: is_empty, cons added
+	* lazyList.ml?: is_empty, cons added
+	* lazyList.ml?: would_at_fail added
+	* lazyListLabels?: is_empty, cons, would_at_fail added
+	* lazyList.ml: from_while now defines aux() rather than aux
+	* lazyList.ml: in remove_all, inverted then and else branches
+	* lazyList.ml: rev and rev_of_list now use fold_left rather than
+	               fold_right
+	* lazyList.ml?: remove_all_such added
+	* lazyList.ml: remove_all now uses remove_all_such
+	* lazyList.ml: drop_while now returns the rest rather than its tail
+	* lazyList.ml?: from_loop_while renamed seq_hide
+	* lazyList.ml?: seq added
+	* lazyListLabels.ml: mapi added
+	* lazyListLabels.ml?: updated wrt lazyList.ml?
+	
+05/05/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* parserCo.ml: in whitespaces, removed labels
+	* parserCo.ml: ocaml_comment added
+	* parserCo.ml: t.parser renamed t.parse
+	* parserCo.ml: escape added
+	* parserCo.ml: ocaml_char added
+	* parserCo.ml: ocaml_string added
+	* parserCo.ml: anyway added
+	* parserCo.ml: newline added
+	* parserCo.ml: int added
+	* parserCo.ml: float added
+	* parserCo.mli: in label, order of arguments changed
+	* parserCo.ml: t is not a struct anymore
+	* parserCo.ml?: eof added
+	* parserCo.ml: <|> added
+	* parserCo.ml: either added 
+	* parserCo.ml: get_offset added
+	* parserCo.ml: satisfy added
+	* parserCo.ml: label added
+	* extChar.ml?: is_newline added
+	* extChar.ml: is_uppercase_latin1, is_lowercase_latin1 now use charcodes rather than literals
+	* IO.ml: apply_enum added
+	* IO.ml: enum_* now uses apply_enum
+	* enumLabels.ml?: seq added
+	* enumLabels.mli: seq_while added
+	
 05/02/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* uTF8.ml: replaced String.splice with ExtString.String.splice
 	* enum.ml?: renamed from_while_loop into seq_hide
 	* extList.ml?: renamed physical_index_of into index_ofq
 	* extList.ml?: rindex_of, rindex_ofq added
+	* extChar.ml: is_digit added
+	* extChar.ml: is_uppercase, is_lowercase, is_uppercase_latin1, is_lowercase_latin1, is_symbol
+	* parserCo.ml?: created
 	
 05/01/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* install.ml: added new modules

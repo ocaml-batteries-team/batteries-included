@@ -17,6 +17,8 @@ ExtQueue  <= enum / of_enum
 ExtStack  <= enum / of_enum
 ExtBigArray <= enum / of_enum
 
+make "unique_identifier" thread-safe in the threaded version
+
 
 *** labels
 [done] EnumLabels
@@ -47,6 +49,10 @@ ExtNum
 ** Other stuff
  Annexlib, missinglib, xstr
 
+
+* New libraries
+** findlib
+** ty_with
 
 * Organization :
 

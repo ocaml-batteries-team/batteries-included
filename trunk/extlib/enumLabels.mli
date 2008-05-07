@@ -198,6 +198,12 @@ val from : f:(unit -> 'a) -> 'a t
  result in a call to [force] that will enumerate all elements in order to
  return a correct value. *)
 
+val from_loop: init:'b -> f:('b -> ('a * 'b)) -> 'a t
+  (**[from_loop data next] creates a (possibly infinite) enumeration from
+     the successive results of applying [next] to [data], then to the
+     result, etc. The list ends whenever the function raises 
+     {!LazyList.No_more_elements}*)
+
 val from_while : f:(unit -> 'a option) -> 'a t
 (** [from_while next] creates an enumeration from the [next] function.
     [next] {i shall} return [Some x] where [x] is the next element of the 
@@ -206,13 +212,13 @@ val from_while : f:(unit -> 'a option) -> 'a t
     result in a call to [force] that will enumerate all elements in order to
     return a correct value. *)
 
-val from_loop: init:'b -> f:('b -> ('a * 'b)) -> 'a t
-  (**[from_loop data next] creates a (possibly infinite) enumeration from
-     the successive results of applying [next] to [data], then to the
-     result, etc. The list ends whenever the function raises 
-     {!LazyList.No_more_elements}*)
+val seq : init:'a -> f:('a -> 'a) -> cnd:('a -> bool) -> 'a t
+  (** [seq ~init ~f:step cond] creates a sequence of data, which starts
+      from [init],  extends by [step],  until the condition [cond]
+      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [[1, 2, ... 99]]. If [cond
+      init] is false, the result is empty. *)
 
-val from_loop_while: init:'b -> f:('b -> ('a * 'b) option) -> 'a t
+val seq_hide: init:'b -> f:('b -> ('a * 'b) option) -> 'a t
   (**[from_loop data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
      result, etc. The list ends whenever the function returns [None]*)
@@ -262,13 +268,6 @@ val ( -- ) : int -> int -> int t
 (** As [range], without the label. 
 
     [5 -- 10] is the enumeration 5,6,7,8,9,10*)
-
-val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
-  (** [seq init step cond] creates a sequence of data, which starts
-      from [init],  extends by [step],  until the condition [cond]
-      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [[1, 2, ... 99]]. If [cond
-      init] is false, the result is empty. *)
-
 
 val switchn: int -> f:('a -> int) -> 'a t -> 'a t array
   (** [switchn] is the array version of [switch]. [switch n f fl] split [fl] to an array of [n] enums, [f] is
