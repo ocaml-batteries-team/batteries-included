@@ -1,3 +1,13 @@
+05/09/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* enum.ml: empty now uses no_more_count
+	* enum.ml: cycle now clones the enumeration before concatenating it
+	* option.ml?: of_opton, to_option, bind, >>=
+	
+05/07/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* enum.ml: MicroLazyList added
+	* enum.ml: from rewritten using MicroLazyList
+	* lazyList.ml: enum now uses Enum.make instead of Enum.from
+
 05/07/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* extList.ml?: is_empty, cons added
 	* lazyList.ml?: is_empty, cons added

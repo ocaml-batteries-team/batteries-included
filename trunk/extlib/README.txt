@@ -49,6 +49,7 @@ Contributors :
 Nicolas Cannasse (ncannasse@motion-twin.com)
 Brian Hurt (brian.hurt@qlogic.com)
 Yamagata Yoriyuki (yori@users.sourceforge.net)
+David Teller (David.Teller@univ-orleans.fr)
 
 License :
 ---------

@@ -28,6 +28,8 @@
    {b Note} This module is provided essentially for backwards-compatibility.
    If you feel like using [Stream.t], please take a look at [Enum]
    or [LazyList] and [GenParser].
+
+   This module is based on {{:http://www.pps.jussieu.fr/~li/software/sdflow/}Zheng Li's SDFlow}
 *)
 module Stream : sig
 (** Streams and parsers. *)

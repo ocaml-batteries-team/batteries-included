@@ -313,10 +313,14 @@ let to_stream l =
 let to_array l = Array.of_list (to_list l)
 
 let enum l =
-  let reference = ref l in
-    Enum.from (fun () -> match next !reference with
-		 | Cons(x,t) -> reference := t; x
-		 | _         -> raise Enum.No_more_elements )
+  let rec aux l = 
+    let reference = ref l in
+      Enum.make ~next:(fun () -> match next !reference with
+			 | Cons(x,t) -> reference := t; x
+			 | _         -> raise Enum.No_more_elements )
+        ~count:(fun () -> length !reference)
+        ~clone:(fun () -> aux !reference)
+  in aux l
   
 (**
    Lazy conversion from lists

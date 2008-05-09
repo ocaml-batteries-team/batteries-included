@@ -1,7 +1,7 @@
 (* 
  * Enum - Enumeration over abstract collection of elements.
  * Copyright (C) 2003 Nicolas Cannasse
- *               2008 David Teller
+ *               2008 David Teller (contributor)
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,11 +28,12 @@ type 'a t = {
 
 (* raised by 'next' functions, should NOT go outside the API *)
 exception No_more_elements
+(* raised by 'count' functions, may go outside the API *)
 exception Infinite_enum
 
+let _dummy            () = assert false
 let _no_more_elements () = raise No_more_elements
 let _no_more_count    () = 0
-let _dummy            () = assert false
 let _infinite         () = raise Infinite_enum
 
 let make ~next ~count ~clone =
@@ -58,9 +59,10 @@ let rec init n f =
 		fast = true;
 	}			
 
+
 let rec empty () =
 	{
-		count = (fun () -> 0);
+		count = _no_more_count;
 		next  = _no_more_elements;
 		clone = (fun () -> empty());
 		fast  = true;
@@ -69,6 +71,7 @@ let rec empty () =
 let singleton x =
   init 1 (fun _ -> x)
 
+
 type 'a _mut_list = {
 	hd : 'a;
 	mutable tl : 'a _mut_list;
@@ -76,8 +79,8 @@ type 'a _mut_list = {
 
 let force t =
 	let rec clone enum count =
-		let enum = ref !enum
-		and	count = ref !count in
+		let enum  = ref !enum
+		and count = ref !count in
 		{
 			count = (fun () -> !count);
 			next = (fun () ->
@@ -111,33 +114,63 @@ let force t =
 	t.count <- tc.count;
 	t.fast <- true
 
-let from f =
-	let e = {
-		next = f;
-		count = _dummy;
-		clone = _dummy;
-		fast = false;
-	} in
-	e.count <- (fun () -> force e; e.count());
-	e.clone <- (fun () -> force e; e.clone());
+(* Inlined from {!LazyList}.
+
+   This lazy list permits cloning enumerations constructed with {!from}
+   without having to actually force them.*)
+module MicroLazyList = struct
+  type 'a ll_t      = ('a node_t) Lazy.t
+  and  'a node_t = 
+    | Nil
+    | Cons of 'a * 'a ll_t
+
+  let nil = lazy Nil
+
+  let enum l =
+    let rec aux (l:'a ll_t) : 'a t= 
+      let reference = ref l in
+      let e = make 
+	~next:(fun () -> match Lazy.force !reference with
+		 | Cons(x,t) -> reference := t; x
+		 | _         -> raise No_more_elements )
+        ~count:_dummy
+        ~clone:(fun () -> aux !reference)
+      in e.count <- (fun () -> force e; e.count());
 	e
+    in aux l
 
-let from_while f =
-  from(fun () -> match f () with
-	 | None   -> raise No_more_elements
-	 | Some x -> x )
-      
+  let from f =
+    let rec aux () =
+      lazy (
+	let item = try  Some (f ())
+                   with No_more_elements -> None
+	in match item with
+	  | Some x -> Cons (x, aux () ) 
+	  | _      -> Nil
+      )
+    in
+      aux ()
 
-let from_loop data next =
-  let r = ref data in
-    from(fun () -> let (a,b) = next !r in
-	   r := b;
-	   a)
 
-let seq_hide data next =
-  from_loop data (fun data -> match next data with
-		    | None   -> raise No_more_elements
-		    | Some x -> x )
+end
+
+let from f =
+  let e = {
+    next = f;
+    count = _dummy;
+    clone = _dummy;
+    fast = false;
+  } in
+    e.count <- (fun () -> force e; e.count());
+    e.clone <- (fun () -> 
+		  let e' =  MicroLazyList.enum(MicroLazyList.from f) in
+		    e.next <- e'.next;
+		    e.clone<- e'.clone;
+		    e.count<- e'.count;
+		    e.fast <- false;
+	            e.clone () );
+    e
+
 
 let from2 next clone =
 	let e = {
@@ -154,26 +187,28 @@ let get t =
 	with No_more_elements -> None
 
 let push t e =
-  let rec make t =
-    let fnext = t.next in
-    let fcount = t.count in
-    let fclone = t.clone in
-    let next_called = ref false in
-      t.next <- (fun () ->
-		   next_called := true;
-		   t.next <- fnext;
-		   t.count <- fcount;
-		   t.clone <- fclone;
-		   e);
-      t.count <- (fun () ->
-		    let n = fcount() in
-		      if !next_called then n else n+1);
-      t.clone <- (fun () ->
-		    let tc = fclone() in
-		      if not !next_called then make tc;
-		      tc);
-  in
-    make t
+         let rec make t =
+               let fnext = t.next in
+               let fcount = t.count in
+               let fclone = t.clone in
+               let next_called = ref false in
+               t.next <- (fun () ->
+                       next_called := true;
+                       t.next <- fnext;
+                       t.count <- fcount;
+                       t.clone <- fclone;
+                       e);
+               t.count <- (fun () ->
+                       let n = fcount() in
+                       if !next_called then n else n+1);
+               t.clone <- (fun () ->
+                       let tc = fclone() in
+                       if not !next_called then make tc;
+                       tc);
+       in
+       make t
+
+
 
 let peek t =
 	match get t with
@@ -281,7 +316,7 @@ let foldi f init t =
 		No_more_elements -> !acc
 
 let fold2 f init t u =
-	let acc = ref init in
+	let acc    = ref init in
 	let push_t = ref None in
 	let rec loop() =
 		push_t := None;
@@ -399,23 +434,6 @@ let rec concat t =
 
 
 
-let slazy f = 
-  let constructor = lazy (f ()) in
-    make ~next: (fun () -> (Lazy.force constructor).next ())
-      ~count:   (fun () -> (Lazy.force constructor).count())
-      ~clone:   (fun () -> (Lazy.force constructor).clone())
-
-let lsing f =
-  let f' _ = f () in
-    init 0 f'
-
-let lcons f e = append (lsing f) e
-let lapp  f e = append (slazy f) e
-
-let ising     = singleton
-let icons f e = append (ising f) e
-let iapp      = append
-
 let switchn n f e =
   let queues = ArrayLabels.init n ~f:(fun _ -> Queue.create ())   in
   let gen i () = (*Generate the next value for the i^th enum*)
@@ -458,8 +476,11 @@ let repeat ?times x = match times with
       init n (fun _ -> x)
 
 let cycle ?times x = 
-  concat (repeat ?times x)
-
+  let enum   = 
+  match times with 
+    | None   -> from (fun () -> clone x)
+    | Some n -> init n (fun _ -> clone x)
+  in concat enum
 
 let range ?until x =
   let cond =  match until with
@@ -514,6 +535,57 @@ let take_while f t =
     
 
 let ( -- ) x y = range x ~until:y
+
+
+
+let from_while f =
+  from(fun () -> match f () with
+	 | None   -> raise No_more_elements
+	 | Some x -> x )
+      
+
+let from_loop data next =
+  let r = ref data in
+    from(fun () -> let (a,b) = next !r in
+	   r := b;
+	   a)
+
+let seq_hide data next =
+  from_loop data (fun data -> match next data with
+		    | None   -> raise No_more_elements
+		    | Some x -> x )
+
+let slazy f = 
+  let constructor = lazy (f ()) in
+    make ~next: (fun () -> (Lazy.force constructor).next ())
+      ~count:   (fun () -> (Lazy.force constructor).count())
+      ~clone:   (fun () -> (Lazy.force constructor).clone())
+
+let lsing f =
+  init 1 (fun _ -> f ())
+
+
+
+let lcons f e = append (lsing f) e
+let lapp  f e = append (slazy f) e
+
+let ising     = singleton
+let icons f e = append (ising f) e
+let iapp      = append
+
+let init' n f = (*Experimental fix for init*)
+  if n < 0 then invalid_arg "Enum.init";
+  let count = ref n in
+  let f' () =
+    match !count with
+      | 0 -> raise No_more_elements
+      | _ -> decr count;
+	  f ( n - 1 - !count)
+  in let e = from f' in
+    e.fast  <- true;
+    e.count <- (fun () -> !count);
+    e
+
 
 module ExceptionLess = struct
   let find f e =

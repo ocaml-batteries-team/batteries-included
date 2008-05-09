@@ -1,6 +1,7 @@
 (* 
  * Enum - enumeration over abstract collection of elements.
  * Copyright (C) 2003 Nicolas Cannasse
+ *               2008 David Teller (contributor)
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -113,11 +114,11 @@ val clone : 'a t -> 'a t
 
 val force : 'a t -> unit
 (** [force e] forces the application of all lazy functions and the
- enumeration of all elements, exhausting the enumeration. 
+    enumeration of all elements, without actually consuming any
+    element of [e].
  
-  An efficient intermediate data structure
-  of enumerated elements is constructed and [e] will now enumerate over
-  that data structure. *)
+    An efficient intermediate data structure of enumerated elements 
+    is constructed and [e] will now enumerate over that data structure. *)
 
 (** {6 Lazy constructors}
 
@@ -231,7 +232,10 @@ val seq_hide: 'b -> ('b -> ('a * 'b) option) -> 'a t
 
 val init : int -> (int -> 'a) -> 'a t
 (** [init n f] creates a new enumeration over elements
-  [f 0, f 1, ..., f (n-1)] *)
+  [f 0, f 1, ..., f (n-1)].
+
+    Cloning this enumeration may induce additional calls
+    to [f].*)
 
 val singleton : 'a -> 'a t
 (** Create an enumeration consisting in exactly one element.*)
