@@ -1,9 +1,3 @@
-module type ExceptionLess = sig
-
-end
-
-module type ExceptionBased = sig
-
   exception Rejected
     (** Exception to be raised when an element has been rejected
 	by the parser.*)
@@ -37,7 +31,4 @@ module type ExceptionBased = sig
 
   val times        : ('a, 'b) t -> int -> ('a, 'b list) t
     (** Accept a parser repeated n times *)
-end
-
-
 

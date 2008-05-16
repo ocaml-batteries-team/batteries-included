@@ -42,6 +42,13 @@ let next l = Lazy.force l
 
 let cons h t = lazy (Cons(h, t))
 
+let get l = match next l with
+  | Nil            -> None
+  | Cons (x, rest) -> Some (x, rest)
+
+let peek l = match next l with
+  | Nil         -> None
+  | Cons (x, _) -> Some x
 (**
    {6 Constructors}
 *)
@@ -364,9 +371,9 @@ let of_array l =
 *)
 let of_enum e =
   let rec aux () =
-    match Enum.get e with
-      |	Some x -> lazy (Cons (x, aux () ) )
-      | _      -> nil
+    lazy (match Enum.get e with
+      |	Some x -> Cons (x, aux () ) 
+      | _      -> Nil )
   in
     aux ()
   

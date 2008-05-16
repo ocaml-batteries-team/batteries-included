@@ -96,6 +96,9 @@ module String :
 	val of_char : char -> string
 	(** Returns a string containing one given character. *)
 
+	val of_list : char list -> string
+        (** As [implode].*)
+
 	val to_int : string -> int
 	(** Returns the integer represented by the given string or
 	    raises [Invalid_string] if the string does not represent an integer.*)
@@ -103,6 +106,9 @@ module String :
 	val to_float : string -> float
 	(** Returns the float represented by the given string or
 	    raises Invalid_string if the string does not represent a float. *)
+
+	val to_list : string -> char list
+        (** As [explode]. *)
 
 	val ends_with : string -> string -> bool
 	(** [ends_with s x] returns true if the string [s] is ending with [x]. *)

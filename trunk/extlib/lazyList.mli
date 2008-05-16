@@ -68,6 +68,11 @@ val nil : 'a t
 val cons : 'a -> 'a t -> 'a t
 (**Build a list from a head and a tail.*)
 
+val peek : 'a t -> 'a option
+(**[peek l] returns the first element of [l], if it exists.*)
+
+val get : 'a t -> ('a * 'a t) option
+(**[get l] returns the head and tail of [l], if [l] is not empty.*)
 
 (**
    {6 List creation}

@@ -69,6 +69,37 @@ val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
 (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
 	an exception. *)
 
+(** {6 Operators}*)
+val ( |> ) : 'a -> ('a -> 'b) -> 'b
+(** Function application. [x |> f] is equivalent to [f x]. Useful for composing
+    sequences of function calls without too many parenthesis. *)
+
+val ( @. ) : ('a -> 'b) -> 'a -> 'b
+(** Function application. [f @. x] is equivalent to [f x]. *)
+
+val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
+(** Function composition. [f |- g] is [fun x -> g (f x)]. *)
+
+val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
+(** Function composition. [f -| g] is [fun x -> f (g x)]. Mathematically, this is
+    operator o.*)
+
+val ( // ) : ('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd
+(** Function pairing.
+
+    [f // g] is [fun (x,y) -> (f x, g y)].*)
+
+val pi_fst : ('a -> 'b * 'c) -> 'a -> 'b
+(** Projection of a pair to its first element. *)
+
+val pi_snd : ('a -> 'b * 'c) -> 'a -> 'c
+(** Projection of a pair to its second element. *)
+
+val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
+
+val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
+
+
 (**
    {6 Results}
 *)

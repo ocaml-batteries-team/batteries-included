@@ -215,6 +215,8 @@ let rec set i v = function
       if i < cl then concat (set i v l) r
       else concat l (set (i - cl) v r)
 
+let at = get
+
 let of_string = function
     s when STRING.length s = 0 -> Empty
   | s ->
@@ -364,7 +366,7 @@ let rec destructive_set i v = function
       if i < cl then destructive_set i v l
       else destructive_set (i - cl) v r
 
-
+let of_list l = of_array (Array.of_list l)
 
 (* Functorial interface *)
 

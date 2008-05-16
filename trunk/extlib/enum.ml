@@ -19,22 +19,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+(** {6 Representation} *)
 type 'a t = {
 	mutable count : unit -> int;
-	mutable next  : unit -> 'a;
+	mutable next : unit -> 'a;
 	mutable clone : unit -> 'a t;
-	mutable fast  : bool
+	mutable fast : bool;
 }
 
 (* raised by 'next' functions, should NOT go outside the API *)
 exception No_more_elements
-(* raised by 'count' functions, may go outside the API *)
-exception Infinite_enum
-
-let _dummy            () = assert false
-let _no_more_elements () = raise No_more_elements
-let _no_more_count    () = 0
-let _infinite         () = raise Infinite_enum
 
 let make ~next ~count ~clone =
 	{
@@ -44,34 +38,17 @@ let make ~next ~count ~clone =
 		fast = true;
 	}
 
-let rec init n f =
-	if n < 0 then invalid_arg "Enum.init";
-	let count = ref n in
-	{
-		count = (fun () -> !count);
-		next = (fun () ->
-			match !count with
-			| 0 -> raise No_more_elements
-			| _ ->
-				decr count;
-				f (n - 1 - !count));
-		clone = (fun () -> init !count f);
-		fast = true;
-	}			
+(** {6 Internal utilities}*)
+let _dummy () = assert false
 
+(* raised by 'count' functions, may go outside the API *)
+exception Infinite_enum
 
-let rec empty () =
-	{
-		count = _no_more_count;
-		next  = _no_more_elements;
-		clone = (fun () -> empty());
-		fast  = true;
-	}
+let return_no_more_elements () = raise No_more_elements
+let return_no_more_count    () = 0
+let return_infinite_count   () = raise Infinite_enum
 
-let singleton x =
-  init 1 (fun _ -> x)
-
-
+(* Inlined from ExtList to avoid circular dependencies. *)
 type 'a _mut_list = {
 	hd : 'a;
 	mutable tl : 'a _mut_list;
@@ -79,8 +56,8 @@ type 'a _mut_list = {
 
 let force t =
 	let rec clone enum count =
-		let enum  = ref !enum
-		and count = ref !count in
+		let enum = ref !enum
+		and	count = ref !count in
 		{
 			count = (fun () -> !count);
 			next = (fun () ->
@@ -154,22 +131,30 @@ module MicroLazyList = struct
 
 end
 
+let rec empty () =
+	{
+		count = return_no_more_count;
+		next  = return_no_more_elements;
+		clone = (fun () -> empty());
+		fast = true;
+	}
+
 let from f =
-  let e = {
-    next = f;
-    count = _dummy;
-    clone = _dummy;
-    fast = false;
-  } in
-    e.count <- (fun () -> force e; e.count());
-    e.clone <- (fun () -> 
+	let e = {
+		next = f;
+		count = _dummy;
+		clone = _dummy;
+		fast = false;
+	} in
+	e.count <- (fun () -> force e; e.count());
+	e.clone <- (fun () -> 
 		  let e' =  MicroLazyList.enum(MicroLazyList.from f) in
 		    e.next <- e'.next;
 		    e.clone<- e'.clone;
 		    e.count<- e'.count;
-		    e.fast <- false;
+		    e.fast <- false;		    e.fast <- false;
 	            e.clone () );
-    e
+	e
 
 
 let from2 next clone =
@@ -182,33 +167,47 @@ let from2 next clone =
 	e.count <- (fun () -> force e; e.count());
 	e
 
+let init n f = (*Experimental fix for init*)
+  if n < 0 then invalid_arg "Enum.init";
+  let count = ref n in
+  let f' () =
+    match !count with
+      | 0 -> raise No_more_elements
+      | _ -> decr count;
+	  f ( n - 1 - !count)
+  in let e = from f' in
+    e.fast  <- true;
+    e.count <- (fun () -> !count);
+    e
+
+
 let get t =
-	try  Some (t.next())
-	with No_more_elements -> None
+	try
+		Some (t.next())
+	with
+		No_more_elements -> None
 
 let push t e =
-         let rec make t =
-               let fnext = t.next in
-               let fcount = t.count in
-               let fclone = t.clone in
-               let next_called = ref false in
-               t.next <- (fun () ->
-                       next_called := true;
-                       t.next <- fnext;
-                       t.count <- fcount;
-                       t.clone <- fclone;
-                       e);
-               t.count <- (fun () ->
-                       let n = fcount() in
-                       if !next_called then n else n+1);
-               t.clone <- (fun () ->
-                       let tc = fclone() in
-                       if not !next_called then make tc;
-                       tc);
-       in
-       make t
-
-
+	let rec make t =
+		let fnext = t.next in
+		let fcount = t.count in
+		let fclone = t.clone in
+		let next_called = ref false in
+		t.next <- (fun () ->
+			next_called := true;
+			t.next <- fnext;
+			t.count <- fcount;
+			t.clone <- fclone;
+			e);
+		t.count <- (fun () ->
+			let n = fcount() in
+			if !next_called then n else n+1);
+		t.clone <- (fun () ->
+			let tc = fclone() in
+			if not !next_called then make tc;
+			tc);
+	in
+	make t
 
 let peek t =
 	match get t with
@@ -316,7 +315,7 @@ let foldi f init t =
 		No_more_elements -> !acc
 
 let fold2 f init t u =
-	let acc    = ref init in
+	let acc = ref init in
 	let push_t = ref None in
 	let rec loop() =
 		push_t := None;
@@ -356,13 +355,14 @@ let fold2i f init t u =
 				!acc
 
 let find f t =
-  let rec loop () =
-    let x = t.next() in
-      if f x then x else loop()
-  in
-    try  loop()
-    with No_more_elements -> raise Not_found
-      
+	let rec loop () =
+		let x = t.next() in
+		if f x then x else loop()
+	in
+	try
+		loop()
+	with
+		No_more_elements -> raise Not_found
 
 let rec map f t =
 	{
@@ -382,11 +382,11 @@ let rec mapi f t =
 	}
 
 let rec filter f t =
-  let rec next() =
-    let x = t.next() in
-      if f x then x else next()
-  in
-    from2 next (fun () -> filter f (t.clone()))
+	let rec next() =
+		let x = t.next() in
+		if f x then x else next()
+	in
+	from2 next (fun () -> filter f (t.clone()))
 
 let rec filter_map f t =
     let rec next () =
@@ -433,6 +433,10 @@ let rec concat t =
 	from2 (fun () -> !concat_ref ()) (fun () -> concat (t.clone()))
 
 
+let singleton x =
+  init 1 (fun _ -> x)
+
+
 
 let switchn n f e =
   let queues = ArrayLabels.init n ~f:(fun _ -> Queue.create ())   in
@@ -467,7 +471,7 @@ let repeat ?times x = match times with
   | None -> 
       let rec aux =
 	{
-	  count = _infinite;
+	  count = return_infinite_count;
 	  next  = (fun () -> x);
 	  clone = (fun () -> aux);
 	  fast  = true;
@@ -495,8 +499,8 @@ let drop n e =
   done
 
 let close e =
-  e.next <- _no_more_elements;
-  e.count<- _no_more_count;
+  e.next <- return_no_more_elements;
+  e.count<- return_no_more_count;
   e.clone<- empty
 
 let before_do t f =
@@ -536,6 +540,10 @@ let take_while f t =
 
 let ( -- ) x y = range x ~until:y
 
+let ( --- ) x y = if x > y then y -- x 
+                  else          x -- y
+
+let ( ~~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
 
 
 let from_while f =
@@ -573,18 +581,6 @@ let ising     = singleton
 let icons f e = append (ising f) e
 let iapp      = append
 
-let init' n f = (*Experimental fix for init*)
-  if n < 0 then invalid_arg "Enum.init";
-  let count = ref n in
-  let f' () =
-    match !count with
-      | 0 -> raise No_more_elements
-      | _ -> decr count;
-	  f ( n - 1 - !count)
-  in let e = from f' in
-    e.fast  <- true;
-    e.count <- (fun () -> !count);
-    e
 
 
 module ExceptionLess = struct

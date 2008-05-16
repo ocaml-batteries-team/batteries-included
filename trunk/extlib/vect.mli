@@ -100,6 +100,8 @@ val to_array : 'a t -> 'a array
 val to_list : 'a t -> 'a list
   (** Returns a list with the elements contained in the vect. *)
 
+val of_list : 'a list -> 'a t
+
 val make : int -> 'a -> 'a t
   (** [make i c] returns a vect of length [i] whose elements are all equal to
       [c]; it is similar to Array.make *)
@@ -141,6 +143,9 @@ val get : int -> 'a t -> 'a
       [get 0 r] returns the first element.
       Operates in worst-case [O(log size)] time.
       Raises Out_of_bounds if a character out of bounds is requested. *)
+
+val at : int -> 'a t -> 'a
+  (** as [get] *)
 
 val set : int -> 'a -> 'a t -> 'a t
   (** [set n c r] returns a copy of the [r] vect where the (n+1)th element

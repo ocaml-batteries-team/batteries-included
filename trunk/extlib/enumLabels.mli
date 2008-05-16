@@ -1,6 +1,7 @@
 (* 
  * Enum - enumeration over abstract collection of elements.
  * Copyright (C) 2003 Nicolas Cannasse
+ *               2008 David Teller (contributor)
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,15 +18,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
-
 (** Enumeration over abstract collection of elements.
 
-    Enumerations are entirely functional and most of the operations do not
-    actually require the allocation of data structures. Using enumerations
-    to manipulate data is therefore efficient and simple. All data structures in
-    ExtLib such as lists, arrays, etc. have support to convert from and to
-    enumerations.
+ Enumerations are entirely functional and most of the operations do not
+ actually require the allocation of data structures. Using enumerations
+ to manipulate data is therefore efficient and simple. All data structures in
+ ExtLib such as lists, arrays, etc. have support to convert from and to
+ enumerations.
 *)
+
+
 type 'a t = 'a Enum.t
 
 (** {6 Final functions}
@@ -67,12 +69,12 @@ val fold2i : f:(int -> 'a -> 'b -> 'c -> 'c) -> init:'c -> 'a t -> 'b t -> 'c
 (** {6 Useful functions} *)
 
 val find : f:('a -> bool) -> 'a t -> 'a
-(** [find_exn f e] returns the first element [x] of [e] such that [f x] returns
+(** [find f e] returns the first element [x] of [e] such that [f x] returns
  [true], consuming the enumeration up to and including the
  found element, or, raises [Not_found] if no such element exists
  in the enumeration, consuming the whole enumeration in the search.
 
- Since [find_exn] consumes a prefix of the enumeration, it can be used several 
+ Since [find] consumes a prefix of the enumeration, it can be used several 
  times on the same enumeration to find the next element. *)
 
 val is_empty : 'a t -> bool
@@ -92,21 +94,6 @@ val push : 'a t -> 'a -> unit
 val junk : 'a t -> unit
 (** [junk e] removes the first element from the enumeration, if any. *)
 
-val drop : int -> 'a t -> unit
-(** [drop n e] removes the first [n] element from the enumeration, if any. *)
-
-val take_while : f:('a -> bool) -> 'a t -> 'a t
-  (** [take_while f e] produces a new enumeration in which only remain
-      the first few elements [x] of [e] such that [f x] *)
-
-val drop_while : f:('a -> bool) -> 'a t -> 'a t
-  (** [drop_while p e] produces a new enumeration in which only 
-      all the first elements such that [f e] have been junked.*)
-
-
-val close : 'a t -> unit
-  (** [close e] ends enumeration [e]*)
-
 val clone : 'a t -> 'a t
 (** [clone e] creates a new enumeration that is copy of [e]. If [e]
  is consumed by later operations, the clone will not get affected. *)
@@ -118,6 +105,17 @@ val force : 'a t -> unit
   An efficient intermediate data structure
   of enumerated elements is constructed and [e] will now enumerate over
   that data structure. *)
+
+val drop : int -> 'a t -> unit
+(** [drop n e] removes the first [n] element from the enumeration, if any. *)
+
+val take_while : f:('a -> bool) -> 'a t -> 'a t
+  (** [take_while f e] produces a new enumeration in which only remain
+      the first few elements [x] of [e] such that [f x] *)
+
+val drop_while : f:('a -> bool) -> 'a t -> 'a t
+  (** [drop_while p e] produces a new enumeration in which only 
+      all the first elements such that [f e] have been junked.*)
 
 (** {6 Lazy constructors}
 
@@ -176,33 +174,27 @@ val empty : unit -> 'a t
 
 val make : next:(unit -> 'a) -> count:(unit -> int) -> clone:(unit -> 'a t) -> 'a t
 (** This function creates a fully defined enumeration.
-    {ul {li the [next] function {i shall} return the next element of the
-    enumeration or raise [No_more_elements] if the underlying data structure
-    does not have any more elements to enumerate.}
-    {li the [count] function {i shall} return the actual number of remaining
-    elements in the enumeration.}
-    {li the [clone] function {i shall} create a clone of the enumeration
-    such as operations on the original enumeration will not affect the
-    clone. }}
-    
-    For some samples on how to correctly use [make], you can have a look
-    at implementation of [ExtList.enum]. 
+	{ul {li the [next] function {i shall} return the next element of the
+	enumeration or raise [No_more_elements] if the underlying data structure
+	does not have any more elements to enumerate.}
+	{li the [count] function {i shall} return the actual number of remaining
+	elements in the enumeration or {i may} raise [Infinite_enum] if it is known
+        that the enumeration is infinite.}
+	{li the [clone] function {i shall} create a clone of the enumeration
+	such as operations on the original enumeration will not affect the
+	clone. }}
+ 
+	For some samples on how to correctly use [make], you can have a look
+		at implementation of [ExtList.enum]. 
 *)
-
 
 val from : f:(unit -> 'a) -> 'a t
 (** [from next] creates an enumeration from the [next] function.
  [next] {i shall} return the next element of the enumeration or raise
  [No_more_elements] when no more elements can be enumerated. Since the
- enumeration definition is incomplete, a call to [clone] or [count] will
- result in a call to [force] that will enumerate all elements in order to
+ enumeration definition is incomplete, a call to [count] will result in 
+ a call to [force] that will enumerate all elements in order to
  return a correct value. *)
-
-val from_loop: init:'b -> f:('b -> ('a * 'b)) -> 'a t
-  (**[from_loop data next] creates a (possibly infinite) enumeration from
-     the successive results of applying [next] to [data], then to the
-     result, etc. The list ends whenever the function raises 
-     {!LazyList.No_more_elements}*)
 
 val from_while : f:(unit -> 'a option) -> 'a t
 (** [from_while next] creates an enumeration from the [next] function.
@@ -212,14 +204,23 @@ val from_while : f:(unit -> 'a option) -> 'a t
     result in a call to [force] that will enumerate all elements in order to
     return a correct value. *)
 
+val from_loop: init:'b -> f:('b -> ('a * 'b)) -> 'a t
+  (**[from_loop data next] creates a (possibly infinite) enumeration from
+     the successive results of applying [next] to [data], then to the
+     result, etc. The list ends whenever the function raises 
+     {!LazyList.No_more_elements}*)
+
 val seq : init:'a -> f:('a -> 'a) -> cnd:('a -> bool) -> 'a t
-  (** [seq ~init ~f:step cond] creates a sequence of data, which starts
+  (** [seq init step cond] creates a sequence of data, which starts
       from [init],  extends by [step],  until the condition [cond]
-      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [[1, 2, ... 99]]. If [cond
+      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [1, 2, ... 99]. If [cond
       init] is false, the result is empty. *)
 
+
 val seq_hide: init:'b -> f:('b -> ('a * 'b) option) -> 'a t
-  (**[from_loop data next] creates a (possibly infinite) enumeration from
+  (**More powerful version of [seq], with the ability of hiding data.
+
+     [seq_hide data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
      result, etc. The list ends whenever the function returns [None]*)
 
@@ -256,6 +257,7 @@ val fast_count : 'a t -> bool
     the enumeration has been created with [make] or [init] or if [force] has
     been called on it, then [fast_count] will return true. *)
 
+
 (**
    {6 Utilities }
 *)
@@ -267,7 +269,18 @@ val range : ?until:int -> int -> int t
 val ( -- ) : int -> int -> int t
 (** As [range], without the label. 
 
-    [5 -- 10] is the enumeration 5,6,7,8,9,10*)
+    [5 -- 10] is the enumeration 5,6,7,8,9,10.
+    [10 -- 5] is the empty enumeration*)
+
+val ( --- ) : int -> int -> int t
+(** As [--], but accepts enumerations in reverse order.
+
+    [5 --- 10] is the enumeration 5,6,7,8,9,10.
+    [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
+
+val ( ~~ ) : char -> char -> char t
+(** As ( -- ), but for characters.*)
+
 
 val switchn: int -> f:('a -> int) -> 'a t -> 'a t array
   (** [switchn] is the array version of [switch]. [switch n f fl] split [fl] to an array of [n] enums, [f] is
@@ -278,6 +291,7 @@ val switch : f:('a -> bool) -> 'a t -> 'a t * 'a t
   (** [switch test enum] split [enum] into two enums, where the first enum have
       all the elements satisfying [test], the second enum is opposite. The
       order of elements in the source enum is preserved. *)
+
 
 module ExceptionLess : sig
   val find : f:('a -> bool) -> 'a t -> 'a option

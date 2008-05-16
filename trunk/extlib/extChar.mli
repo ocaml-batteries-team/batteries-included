@@ -33,6 +33,12 @@ val is_whitespace : char -> bool
     [' '], ['\010'], ['\013'], ['\009'], ['\026']
     and ['\012']. *)
 
+val is_uppercase : char -> bool
+val is_lowercase : char -> bool
+val is_uppercase_latin1: char -> bool
+val is_lowercase_latin1: char -> bool
+val is_digit     : char -> bool
+val is_symbol    : char -> bool
 val is_newline : char -> bool
 (** Determine if a character is a newline.
     Newline characters are defined as ['\010']

@@ -1,7 +1,70 @@
+05/16/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* parserCo.ml?: fail added
+	* charParser.ml: ExtString opened
+	* charParser.ml: float, integer rewritten
+	* charParser.mli: first_identifier_char/later_identifier_char added
+	* charParser.mli: in *_case, removed superfluous "_"
+	* charParser.mli: string now takes a string
+	* charParser.ml: string now returns its string
+	* charParser.ml: whitespaces now returns unit
+	* charParser.mli: digit now returns a char
+	* charParser.ml: ocaml_symbol now returns a string
+	* charParser.mli: _comment now returns unit
+	* charParser.ml: ocaml_comment and ocaml_string now define content as a function
+	* vect.ml: of_list, at added
+	* std.mli: |>, @., |-, -|, //, pi_fst, pi_snd, curry, uncurry added
+	* extString.ml: to_list, of_list added
+	* charParser.ml?: parse_string added
+	* charParser.ml: string now stops at len-1
+	* charParser.ml: ocaml_escape rewritten with one any
+	
+05/15/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* lazyList.mli: peek added
+	* lazyList.mli: get added
+	* parserCo.ml?: scan added
+	* charParser.ml?: created
+	* parserCo.mli: run now accepts an additional argument nl
+	* parserCo.ml: put_loc now returns l
+	* parserCo.ml: run implemented
+	* parserCo.mli: accept_* removed
+	* parserCo.mli: >>= added
+	* parserCo.mli: seq, >:: added
+	* charParser.ml: ocaml_comment now returns unit
+	* charParser.ml: ocaml_string now builds a list
+	* charParser.ml: c_comment now returns unit
+	* extString.mli: of_list/to_list added
+	
+05/14/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* parserCo.mli: operators ~+, ~*, ~?, ^^ added
+	* parserCo.mli: renamed filter -> map
+	* parserCo.mli: changed order of arguments of map
+	* parserCo.ml: actual_loc added
+	* parserCo.ml: failure added
+	* parserCo.ml: Failure added
+	* parserCo.ml: fail_at, fail_at_loc added
+	* parserCo.ml: get_loc, put_loc added
+	* parserCo.ml: source, t, satisfy, label, either, maybe, bind, eof,
+	    any, return, filter, exactly, zero_plus, map, times, one_of,
+	    range, discarding rewritten with exceptions
+	* parserCo.ml: string rewritten without discarding
+	* vect.mli: of_list added
+	* vect.mli: at added
+	* extChar.mli: is_* added
+	
+05/13/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* enum.ml: ~~ implemented
+	* enum.ml?: --- added
+	* enum.ml?: repaginated
+	* enumLabels.*: brought up-to-date wrt enum.ml*
+	
+05/11/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* lazyList.ml: in of_enum, lazy moved outwards
+
 05/09/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* enum.ml: empty now uses no_more_count
 	* enum.ml: cycle now clones the enumeration before concatenating it
-	* option.ml?: of_opton, to_option, bind, >>=
+	* enum.ml: lsing now uses init 1 instead of init 0
+	* option.ml?: of_option, to_option, bind, >>=
 	
 05/07/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* enum.ml: MicroLazyList added

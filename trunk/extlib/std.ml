@@ -188,3 +188,22 @@ type ('a, 'b) result =
   | Ok    of 'a
   | Error of 'b
 
+(** {6 Operators}*)
+
+let ( |> ) x f = f x
+
+let ( @. ) f x = f x
+
+let ( |- ) f g x = g (f x)
+
+let ( -| ) f g x = f (g x)
+
+let ( // ) f g = fun (x,y) -> (f x, g y)
+
+let pi_fst f x = fst (f x)
+
+let pi_snd f x = snd (f x)
+
+let curry f x y = f (x,y)
+
+let uncurry f (x,y) = f x y
