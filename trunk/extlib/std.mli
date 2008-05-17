@@ -99,6 +99,7 @@ val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
 
 val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
 
+val discard : 'a -> (_ -> 'a)
 
 (**
    {6 Results}

@@ -39,6 +39,7 @@ val is_uppercase_latin1: char -> bool
 val is_lowercase_latin1: char -> bool
 val is_digit     : char -> bool
 val is_symbol    : char -> bool
+val is_letter    : char -> bool
 val is_newline : char -> bool
 (** Determine if a character is a newline.
     Newline characters are defined as ['\010']

@@ -46,6 +46,8 @@ val bind : ('a, 'b) t -> ('b -> ('a, 'c) t ) -> ('a, 'c) t
 val ( >>= ) : ('a, 'b) t -> ('b -> ('a, 'c) t ) -> ('a, 'c) t
   (** As [bind]*)
 
+val ( >>> ) : ('a, _) t -> ('a, 'b) t -> ('a, 'b) t
+
 val cons : ('a, 'b) t -> ('a, 'b list) t -> ('a, 'b list) t
   (** [cons p q] applies parser [p] then parser [q] and
       conses the results into a list.*)
@@ -80,13 +82,13 @@ val fail: ('a, _) t
 val exactly : 'a -> ('a, 'a) t
   (**Accept exactly one singleton*)
 
-val zero_plus : ('a, 'b) t -> ('a, 'b list) t
+val zero_plus : ?sep:('a, _) t -> ('a, 'b) t -> ('a, 'b list) t
   (**Accept a (possibly empty) list of expressions*)
 
 val ( ~* ) : ('a, 'b) t -> ('a, 'b list) t
   (**As [zero_plus]*)
 
-val one_plus : ('a, 'b) t -> ('a, 'b list) t
+val one_plus :  ?sep:('a, _) t -> ('a, 'b) t -> ('a, 'b list) t
   (**Accept a (non-empty) list of expressions*)
 
 val ( ~+ ) : ('a, 'b) t -> ('a, 'b list) t
@@ -103,7 +105,11 @@ val map : ('b -> 'c) -> ('a, 'b) t ->  ('a, 'c) t
 
 val one_of : 'a list -> ('a, 'a) t
   (**Accept one of several values.
-     Faster and more convenient than combining [exactly] and [either].*)
+     Faster and more convenient than combining [satisfy] and [either].*)
+
+val none_of : 'a list -> ('a, 'a) t
+  (**Accept any value not in a list
+     Faster and more convenient than combining [satisfy] and [either].*)
 
 val range: 'a -> 'a -> ('a, 'a) t
   (**Accept any element from a given range.*)
@@ -112,3 +118,6 @@ val scan: ('a, _) t -> ('a, 'a list) t
   (**Use a parser to extract list of tokens, but return
      that list of tokens instead of whatever the original
      parser returned.*)
+
+
+

@@ -1,7 +1,7 @@
 (*
  * Genlex - Generic lexer
  * Copyright (C) 2002 Jacques Garrigue
- *               2008 David Teller
+ *               2008 David Teller (Contributor)
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,12 +30,12 @@ module Genlex : sig
 *)
 
 type token = 
-| 	Kwd of string
-| 	Ident of string
-| 	Int of int
-| 	Float of float
-| 	String of string
-| 	Char of char
+  | 	Kwd of string
+  | 	Ident of string
+  | 	Int of int
+  | 	Float of float
+  | 	String of string
+  | 	Char of char
 
 (*Genlex.token*)
 

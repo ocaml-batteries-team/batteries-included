@@ -58,6 +58,20 @@ let either (l:('a, 'b) t list) : ('a, 'b) t = fun e ->
       with Failure {labels = labels} -> aux (err @ labels) t
   in aux [] l
 
+let ( <|> ) (p1:('a, 'b) t) (p2:('a, 'b) t) : ('a, 'b) t = fun e -> either [p1;p2] e
+
+let aggressive l e =
+  let rec aux err = function
+    | []   -> raise (Failure { loc = get_loc e; labels = err })
+    | h::t ->
+	try h e
+	with Failure {labels = labels; loc = loc} when get_loc e = loc ->
+	  aux (err @ labels) t
+  in aux [] l
+	  
+let ( <!> ) (p1:('a, 'b) t) (p2:('a, 'b) t) : ('a, 'b) t = fun e -> aggressive [p1;p2] e
+
+
 let maybe p e =
   try  let (result, rest) = p e in (Some result, rest)
   with Failure _ -> (None, e)
@@ -65,7 +79,7 @@ let maybe p e =
 let (~?) = maybe
 
 
-let ( <|> ) (p1:('a, 'b) t) (p2:('a, 'b) t) : ('a, 'b) t = fun e -> either [p1;p2] e
+
 
 let bind m f e = 
   let (result, rest) = m e in
@@ -97,15 +111,27 @@ let cons p q =
 
 let ( >:: ) = cons
 
-let zero_plus p e =
-  let rec aux acc l = match maybe p l with
-    | (None, rest)   -> (List.rev acc, rest)
+let ( >>> ) p q =
+  p >>= fun _ -> q
+
+let zero_plus ?sep p e =
+  let p' = match sep with
+    | None   -> p
+    | Some s -> s >>> p
+  in
+  let rec aux acc l = match maybe p' l with
+    | (None,   rest) -> (List.rev acc, rest)
     | (Some x, rest) -> aux (x::acc) rest
-  in aux [] e
+  in match maybe p l with
+    | (None,   rest) -> ([], rest)
+    | (Some x, rest) -> aux [x] rest
 
 let ( ~* ) = zero_plus
 
-let one_plus (p:('a, 'b) t) : ('a, 'b list) t = p >:: zero_plus p
+let one_plus ?(sep=empty) p t = p >:: 
+  match sep with
+    | None   -> zero_plus p
+    | Some s -> s >>> (zero_plus s >>> p)
 
 let ( ~+ ) = one_plus
 
@@ -124,6 +150,12 @@ let one_of l e =
   match get e with
     | Some ((x, _, _), rest) when List.mem x l -> (x, rest)
     | _ as y                                   -> fail_at y
+
+let none_of l e = 
+  match get e with
+    | Some ((x, _, _), rest) as y when List.mem x l -> fail_at y 
+    | None                                          -> fail_at None
+    | Some ((y, _, _), rest)                        -> (y, rest)
 
 let range a b = satisfy (fun x -> a <= x && x <= b)
 

@@ -1,3 +1,13 @@
+05/17/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* charParser.mli: case_char, case_string added
+	* charParser.mli: everything c/c++/ocaml-related removed
+	* charParser.mli: not_oneof renamed none_of
+	* parserCo.mli:   none_of
+	* extGenlex.ml:   Language, LanguageDefinition, OCamlLanguage,
+	                  CPPLanguage, Make created
+
+
+	
 05/16/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* parserCo.ml?: fail added
 	* charParser.ml: ExtString opened
@@ -17,7 +27,8 @@
 	* charParser.ml?: parse_string added
 	* charParser.ml: string now stops at len-1
 	* charParser.ml: ocaml_escape rewritten with one any
-	
+	* charParser.ml?: one_plus, zero_plus rewritten with ?sep
+	* parserCo.ml?: none_of added
 05/15/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* lazyList.mli: peek added
 	* lazyList.mli: get added

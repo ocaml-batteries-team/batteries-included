@@ -2,8 +2,14 @@ module Genlex = struct
 
 include Genlex
 
+open ParserCo
 open ExtHashtbl
 open ExtString
+open ExtChar
+open ExtInt
+open ExtFloat
+open CharParser
+open Std
 
 type lexer_error =
   | IllegalCharacter of char
@@ -220,4 +226,225 @@ let to_stream_filter (kwd_table:t) (x:char Stream.t) : token Stream.t =
 
 let to_lazy_list_filter kwd_table x =
   (LazyList.of_enum (to_enum_filter kwd_table (LazyList.enum x)))
+
+
+
+let ocaml_comment = 
+  string "(*" >>= fun _ ->
+    let rec content () = 
+      any         >>= function
+	| '(' -> ( any >>= function
+		     | '*' -> content () >>= discard (content ())
+		     | _   -> content () )
+	| '*' -> ( any >>= function
+		     | ')' -> return ()
+		     | _   -> content() )
+	|  _  -> content ()
+    in content ()
+
+let ocaml_escape = label "OCaml-style escaped character" 
+  (
+    any >>= function
+      | 'n' -> return '\n'
+      | 'r' -> return '\r'
+      | 't' -> return '\t'
+      | '\\'-> return '\\'
+      | 'b' -> return '\b'
+      | '"' -> Printf.eprintf "[ESCAPE] \""; return '"'
+      | 'x' -> 
+	  times 2 hex >>= fun t ->
+	  return (Char.chr (Int.of_string (String.implode ('0'::'x'::t))))
+      | '0' .. '9' as x -> 
+	  times 2 digit >>= fun t ->
+	  return (Char.chr (Int.of_string (String.implode (x::t))))
+      | _ -> fail
+  )
+
+module type Language =
+sig
+  val comment_delimiters : (string * string) option
+  val line_comment_start : string option
+  val nested_comments  : bool
+  val ident_start      : (char, _) ParserCo.t
+  val ident_letter     : (char, _) ParserCo.t
+  val op_start         : (char, _) ParserCo.t
+  val op_letter        : (char, _) ParserCo.t
+  val reserved_names   : string list
+  val reserved_op_names: string list
+  val case_sensitive   : bool
+end
+
+module LanguageDefinitions =
+struct
+  (**A good approximation of language definition for OCaml's lexer*)
+  module OCamlLanguage =
+  struct
+    let comment_delimiters = Some ("(*", "*)")
+    let line_comment_start = None
+    let nested_comments = true
+    let ident_start     = either [uppercase; lowercase; one_of ['_'; '`']]
+    let ident_letter    = either [uppercase; lowercase; digit; one_of ['\''; '_']]
+    let op_start        = satisfy (Char.is_symbol)
+    let op_letter       = op_start
+    let reserved_names  = ["fun"; "let"; "module"; "begin"; "end"; "sig"; "function";
+			   "{"; "}"; ";"; "|"; ","; ":"; "."; ](*@TODO: Complete*)
+    let reserved_op_names = []
+    let case_sensitive  = true
+  end
+
+
+
+  (**A good approximation of language definition for C++'s lexer*)
+  module CPPLanguage =
+  struct
+    let comment_delimiters = Some ("/*", "*/")
+    let line_comment_start = Some "//"
+    let nested_comments = true
+    let ident_start     = either [uppercase; lowercase; char '_']
+    let ident_letter    = either [ident_start; digit]
+    let op_start        = one_of [';';':';'!';'$';'%';'&';'*';'+';'.';'/';'<';'=';'>';'?';'^';'|';'-';'~']
+    let op_letter       = fail
+    let reserved_names  = ["continue"; "volatile"; "register"; "unsigned"; "typedef"; "default"; 
+			   "sizeof"; "switch"; "return"; "extern"; "struct"; "static"; "signed"; "while";
+			   "break"; "union"; "const"; "else"; "case"; "enum";
+			   "auto"; "goto"; "for"; "if"; "do" ]
+    let reserved_op_names = []
+    let case_sensitive  = true
+  end
+
+
+end
+
+
+(** Create a lexer based on conventions*)
+module Make (M:Language) =
+struct
+  open M
+  (** {6 Case management} *)
+  let char =
+    if case_sensitive then char
+    else                   case_char
+
+  let string =
+    if case_sensitive then string
+    else                   case_string
+
+  (** {6 Whitespace management} *)
+  let line_comment =
+    match line_comment_start with
+      | None   -> fail
+      | Some s ->
+	  string "//"               >>>
+          zero_plus (not_char '\n') >>>
+	  newline                   >>>
+	  return ()
+
+  let multiline_comment =
+    match comment_delimiters with
+      | None        -> fail
+      | Some (l, r) ->
+	  let in_comment () =
+	    if nested_comments then
+	      let not_lr = none_of [String.get l 0; String.get r 0] in
+	      let rec aux () =
+		    (string r >>> return ())
+		<|> (string l >>> aux () >>> aux ())
+  	        <|> (one_plus not_lr     >>> aux())
+	      in aux ()
+	    else zero_plus (none_of [String.get r 0]) >>> 
+	      string r >>> return ()
+	  in in_comment ()
+
+  let comment = line_comment <|> multiline_comment
+
+  let whitespaces = 
+    zero_plus 
+      ( satisfy Char.is_whitespace >>> return ()
+      <|> comment ) >>> return ()
+
+  let lexeme p =
+    p           >>= fun r -> 
+    whitespaces >>= fun _ -> return r
+
+  let symbol s = lexeme (string s)
+
+  let identifier = 
+    ident_start >:: zero_plus ident_letter >>= fun x -> symbol (String.of_list x)
+
+
+(*  let reserved w =
+    lexeme (case_string w          >>= fun x ->
+    label ("end of "^w) (not_oneof ident_letter) >>> return x)
+
+  let reserved_op w =
+    lexeme (case_string w          >>= fun x ->
+    label ("end of "^w) (not_oneof op_letter) >>= fun _ ->
+      return x)*)
+     
+  let char_literal = label "Character literal" 
+    (char '\'' >>= fun _ ->
+       any       >>= function
+	 | '\\' -> ocaml_escape
+	 | c    -> return c
+    ) >>= fun c -> 
+      char '\'' >>= fun _ -> return c
+    
+  let string_literal =  label "String literal" 
+    (char '"' >>>
+      let rec content chars =
+	any >>= function
+	  | '"'  -> 
+	      return chars
+	  | '\\' -> 
+	    ocaml_escape >>= fun e -> 
+	      content (e::chars)
+          | e    -> 
+	      content (e::chars)
+      in content [] >>= fun c -> 
+	return (String.of_list (List.rev c)))
+
+	  
+  let integer = 
+    label "OCaml-style integer" (
+    maybe (char '-') >>= fun sign   ->
+      one_plus digit   >>= fun digits -> 
+	let number = Int.of_string (String.of_list digits) in
+	  match sign with
+	    | Some _ -> return (~- number)
+	    | None   -> return number )
+
+  let float =
+    label "OCaml-style floating-point number" (
+    maybe (char '-')                         >>= fun sign     ->
+    map String.of_list (zero_plus digit)     >>= fun int_part ->
+    maybe (
+      char '.'  >>= fun _ -> 
+	map String.of_list (zero_plus digit) ) >>= fun decimal_part ->
+    maybe (
+      char 'E'  >>= fun _ -> 
+	maybe (char '+' <|> char '-') >>= fun sign ->
+        let sign = Option.default '+' sign  in
+	  one_plus digit >>= fun expo -> 
+	  return ("E" ^ (String.of_char sign) ^ (String.of_list expo)))
+                                           >>= fun expo ->
+
+  let number = match (decimal_part, expo) with
+    | Some d, Some e -> Some (int_part ^ "." ^ d ^ e)
+    | Some d, None   -> Some (int_part ^ "." ^ d)
+    | None,   Some e -> Some (int_part ^ e )
+    | None,   None   -> None
+  in match number with
+    | None   -> fail
+    | Some n -> let absolute = Float.of_string n in
+	return (
+	match sign with
+	  | None   -> absolute
+	  | Some _ -> ~-. absolute)
+    )
+
+  let number =
+       (float   >>= fun f -> return (`Float f))
+    <|>(integer >>= fun i -> return (`Integer i))
+end
+
 end
