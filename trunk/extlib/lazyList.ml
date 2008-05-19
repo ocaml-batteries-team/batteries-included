@@ -71,7 +71,7 @@ let seq data next cond =
   in aux data
 
 
-let seq_hide (data:'b) (next: 'b -> ('a * 'b) option) =
+let unfold (data:'b) (next: 'b -> ('a * 'b) option) =
   let rec aux data =
     match next data with
       | Some(a,b) -> lazy (Cons(a, aux b))
@@ -83,7 +83,7 @@ let from_loop (data:'b) (next:'b -> ('a * 'b)) : 'a t=
   let f' data =
     try  Some (next data)
     with No_more_elements -> None
-  in seq_hide data f'
+  in unfold data f'
 
 let init n f = 
   let rec aux i = 
@@ -554,7 +554,7 @@ let combine l1 l2 =
     | _                            -> raise (Different_list_size "LazyList.combine")
   in aux l1 l2
 
-module ExceptionLess = struct
+module Exceptionless = struct
   (** Exceptionless counterparts for error-raising operations*)
 
   let find   = may_find
@@ -565,10 +565,10 @@ module ExceptionLess = struct
   let at list n =
     let rec aux list i =
       match (next list, i) with
-	| (Cons (x, _), 0) -> Std.Ok x
+	| (Cons (x, _), 0) -> `Ok x
 	| (Cons (_, t), _) -> aux t (i - 1)
-	| _ -> Std.Error (`Invalid_index n)
-    in if n < 0 then Std.Error (`Invalid_index n) else aux list n
+	| _ -> `Invalid_index n
+    in if n < 0 then `Invalid_index n else aux list n
 
   let assoc a (l:'a t) =
     try  Some (assoc a l)
@@ -579,6 +579,6 @@ module ExceptionLess = struct
     with Not_found -> None
 
   let split_at n l =
-    try  Std.Ok (split_at n l)
-    with Not_found -> Std.Error (`Invalid_index n)
+    try  `Ok (split_at n l)
+    with Not_found -> `Invalid_index n
 end

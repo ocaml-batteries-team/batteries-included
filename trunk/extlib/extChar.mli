@@ -34,16 +34,44 @@ val is_whitespace : char -> bool
     and ['\012']. *)
 
 val is_uppercase : char -> bool
+(** Determine if a character is uppercase ASCII.
+    A character is uppercase ASCII if it is between
+    ['A'] and ['Z'] *)
+
 val is_lowercase : char -> bool
+(** Determine if a character is lowercase ASCII.
+    A character is lowercase ASCII if it is between
+    ['a'] and ['z'] *)
+
 val is_uppercase_latin1: char -> bool
+(** Determine if a character is uppercase Latin 1.
+    A character is uppercase ASCII if it is between
+    ['A'] and ['Z'], between ['À'] and ['Ö'] or
+    between ['Ø'] and ['İ'] *)
+
 val is_lowercase_latin1: char -> bool
+(** Determine if a character is lowercase Latin 1.
+    A character is lowercase ASCII if it is between
+    ['a'] and ['z'], between ['Ş'] and ['ö'] or
+    between ['ø'] and ['ÿ']*)
+
 val is_digit     : char -> bool
+  (** Determine if a character represents a digit.  Digits are ['0'],
+      ['1'], ... ]'9']. *)
+
 val is_symbol    : char -> bool
+  (** Determine if a character represents a (OCaml-style)
+      symbol. Symbols are ['!'], ['%'], ['&'], ['$'], ['#'], ['+'],
+      ['-'], ['/'], [':'], ['<'], ['='] ['>'], ['?'], ['@'], ['\\'],
+      ['~'], ['^'], ['|'], ['*'] *)
+
 val is_letter    : char -> bool
+  (** Determine if a character represents a ASCII letter.*)
+
 val is_newline : char -> bool
-(** Determine if a character is a newline.
-    Newline characters are defined as ['\010']
-    and ['\013']*)
+  (** Determine if a character is a newline.
+      Newline characters are defined as ['\010']
+      and ['\013']*)
 
 val of_digit : int -> char
 (** Return the character representing a given digit.

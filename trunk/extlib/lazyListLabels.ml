@@ -101,23 +101,25 @@ let mem = LazyList.mem
 let range = LazyList.range
 let make = LazyList.make
 let init = LazyList.init
-let seq_hide = LazyList.seq_hide
+let unfold = LazyList.unfold
 let seq = LazyList.seq
 let from_loop = LazyList.from_loop
 let from_while = LazyList.from_while
 let from = LazyList.from
 let cons = LazyList.cons
 let nil = LazyList.nil
+let get = LazyList.get
+let peek = LazyList.peek
 
-module ExceptionLess = struct
-  let find   ~f = LazyList.ExceptionLess.find f
-  let rfind  ~f = LazyList.ExceptionLess.rfind f
-  let findi  ~f = LazyList.ExceptionLess.findi f
-  let rfindi ~f = LazyList.ExceptionLess.rfindi f
+module Exceptionless = struct
+  let find   ~f = LazyList.Exceptionless.find f
+  let rfind  ~f = LazyList.Exceptionless.rfind f
+  let findi  ~f = LazyList.Exceptionless.findi f
+  let rfindi ~f = LazyList.Exceptionless.rfindi f
 
-  let assq      = LazyList.ExceptionLess.assq
-  let assoc     = LazyList.ExceptionLess.assoc
-  let at        = LazyList.ExceptionLess.at
-  let split_at  = LazyList.ExceptionLess.split_at
+  let assq      = LazyList.Exceptionless.assq
+  let assoc     = LazyList.Exceptionless.assoc
+  let at        = LazyList.Exceptionless.at
+  let split_at  = LazyList.Exceptionless.split_at
 
 end

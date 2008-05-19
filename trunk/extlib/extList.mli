@@ -362,12 +362,12 @@ module List :
 		first element of [l] and its index, such that [p i ai] is true, 
 		or [None] if no	such element has been found. *)
 
-	  val split_at : int -> 'a list -> (('a list * 'a list), [`Invalid_index of int]) Std.result
+	  val split_at : int -> 'a list -> [`Ok of ('a list * 'a list) | `Invalid_index of int]
 	    (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns 
 		[Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2] 
 		contains the others. Otherwise, returns [`Invalid_index n] *)
 
-	  val at : 'a list -> int -> ('a, [`Invalid_index of int]) Std.result
+	  val at : 'a list -> int -> [`Ok of 'a | `Invalid_index of int]
 	    (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
 		[x] is the n-th element of the list [l]. Otherwise, returns [Error
 		(`Invalid_index(n))].*)

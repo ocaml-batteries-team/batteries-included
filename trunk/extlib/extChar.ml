@@ -36,8 +36,9 @@ module Char = struct
 
   let is_uppercase c = 'A' <= c && c <= 'Z'
   let is_lowercase c = 'a' <= c && c <= 'z'
-let is_uppercase_latin1 c = is_uppercase c || ( '\192' (*Ã€*)<= c && c <= '\214' (*Ã–*) )||( '\216' (*Ã˜*) <= c && c <= '\221'(*Ã*) )
-  let is_lowercase_latin1 c = is_lowercase c || ( '\222' (*Ãž*) <= c && c <= '\246'(*Ã¶*) )||( '\248'(*Ã¸*) <= c && c <= '\255' (*'Ã¿'*) )
+let is_uppercase_latin1 c = is_uppercase c || ( '\192' (*À*)<= c && c <= '\214' (*Ö*) )||( '\216' (*Ø*) <= c && c <= '\221'(*Ý*) )
+  let is_lowercase_latin1 c = is_lowercase c || ( '\222' (*Þ*) <= c && c <= '\246'(*ö*) )||( '\248'(*ø*) <= c && c <= '\255' (*'ÿ'*) )
+
   let is_symbol             = function
     | '!' | '%' | '&' | '$' | '#' | '+' | '-' | '/' | ':' | '<' | '=' |
           '>' | '?' | '@' | '\\' | '~' | '^' | '|' | '*' -> true
@@ -55,6 +56,9 @@ let is_uppercase_latin1 c = is_uppercase c || ( '\192' (*Ã€*)<= c && c <= '\214'
   | 8 -> '8'
   | 9 -> '9'
   | _ -> raise (Invalid_argument "Char.of_digit")
+
+  let is_letter c =
+    is_uppercase c || is_lowercase c
 
   external unsafe_int : char-> int  = "%identity"
 

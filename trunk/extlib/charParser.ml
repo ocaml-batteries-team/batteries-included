@@ -6,7 +6,7 @@ open ExtFloat
 
 (** {6 Entry point} *)
 let parse_string p s =
-  run p '\n' (String.enum s)
+  run p ~newline:'\n' (String.enum s)
 
 (** {6 Utilities}*)
 let char   c = label ("\"" ^ String.of_char c ^ "\"") (exactly c)
@@ -32,8 +32,7 @@ let case_string s = label ("case insensitive \"" ^ s ^ "\"") (
   in aux 0
 )   
 
-let whitespaces = 
-  zero_plus ( satisfy Char.is_whitespace ) >>> return ()
+let whitespace = sat Char.is_whitespace
 
 let uppercase : (char, char) t         = label "upper case char" (satisfy Char.is_uppercase)
 let lowercase : (char, char) t         = label "lower case char" (satisfy Char.is_lowercase)
@@ -62,5 +61,5 @@ let none_of l = label (
        l))))
   (none_of l)
 
-let newline = satisfy Char.is_newline
+let newline = sat Char.is_newline
 

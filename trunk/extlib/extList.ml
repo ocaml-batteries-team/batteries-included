@@ -554,12 +554,12 @@ module ExceptionLess = struct
     with Not_found -> None
       
   let split_at n l =
-    try   Std.Ok (split_at n l)
-    with  Invalid_index i -> Std.Error (`Invalid_index i)
+    try   `Ok (split_at n l)
+    with  Invalid_index i -> `Invalid_index i
 
   let at n l =
-    try Std.Ok (at n l)
-    with Invalid_index i -> Std.Error (`Invalid_index i)
+    try `Ok (at n l)
+    with Invalid_index i -> `Invalid_index i
 
   let assoc e l =
     try Some (assoc e l)

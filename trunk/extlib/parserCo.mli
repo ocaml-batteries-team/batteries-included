@@ -71,12 +71,28 @@ val filter: ('b -> bool) -> ('a, 'b) t ->  ('a, 'b) t
   (**[filter f p] is only accepts values [x] such that [p]
      accepts [x] and [f (p x)] is [true]*)
 
-val run: ('a, 'b) t -> 'a -> 'a Enum.t -> ('b, failure) Std.result
-  (**[run p nl e] runs parser [p] on a source [e], using [nl] as
-     a line delimitter.*)
+val run: ('a, 'b) t -> ?newline:'a -> 'a Enum.t -> 'b
+  (**[run p ~newline:nl e] runs parser [p] on a source [e], using [nl] as
+     a line delimitter, and returns the first success.
+     In case of error, raises [Failure].*)
+
+val run_filter: ('a, 'b) t -> ?newline:'a -> 'a Enum.t -> 'b Enum.t
+  (** [run_filter p ~newline:nl e] runs parser [p] on a source [e], using
+      [nl] as a line delimitter, and returns consecutive successes as
+      an enumeration. *)
+
+val run_filter_list: ('a, 'b) t -> ?newline:'a -> 'a LazyList.t -> 'b LazyList.t
+  (** [run_filter p ~newline:nl e] runs parser [p] on a source [e], using
+      [nl] as a line delimitter, and returns consecutive successes as
+      an enumeration. *)
 
 val fail: ('a, _) t
   (**Always fail, without consuming anything.*)
+
+val lookahead: ('a, 'b) t -> ('a, 'b option) t
+  (**[lookahead p] behaves as [maybe p] but without consuming anything*)
+
+
 
 (** {6 Utilities} *)
 val exactly : 'a -> ('a, 'a) t
@@ -119,5 +135,6 @@ val scan: ('a, _) t -> ('a, 'a list) t
      that list of tokens instead of whatever the original
      parser returned.*)
 
-
+val sat: ('a -> bool) -> ('a, unit) t
+  (** As [satisfy], but without result. *)
 

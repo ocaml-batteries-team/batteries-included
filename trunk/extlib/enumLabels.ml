@@ -68,7 +68,7 @@ let from_while ~f  = Enum.from_while f
 
 let seq ~init ~f ~cnd  = Enum.seq init f cnd
 
-let seq_hide ~init ~f = Enum.seq_hide init f
+let unfold ~init ~f = Enum.unfold init f
 
 
 

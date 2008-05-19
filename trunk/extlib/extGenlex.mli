@@ -66,4 +66,96 @@ val make_lexer : string list -> char Stream.t -> token Stream.t
    skipped. Comments delimited by (* and *) are skipped as well, and
    can be nested. *)
 
+(**{6 Extending to other languages}*)
+
+module Languages :
+sig
+module type Definition = 
+sig
+  val comment_delimiters : (string * string) option
+  val line_comment_start : string option
+  val nested_comments    : bool
+  val ident_start        : (char, char) ParserCo.t
+  val ident_letter       : (char, char) ParserCo.t
+  val op_start           : (char, char) ParserCo.t
+  val op_letter          : (char, char) ParserCo.t
+  val reserved_names     : string list
+  val reserved_op_names  : string list
+  val case_sensitive     : bool
+end
+
+module Library :
+sig
+  module OCaml : Definition
+  module C     : Definition
+end
+
+module Make(M:Definition) :
+sig
+  (**Create a lexer from a language definition*)
+
+  (** {6 High-level API} *)
+
+  (** Drop comments, present reserved operators and reserved
+      names as [Kwd], operators and identifiers as [Ident],
+      integer numbers as [Int], floating-point numbers as
+      [Float] and characters as [Char].*)
+
+  val as_parser        : (char, token) ParserCo.t
+
+  (** {6 Medium-level API} *)
+  val any_identifier   : (char, string) ParserCo.t
+    (**Accepts any identifier*)
+
+  val any_operator     : (char, string) ParserCo.t
+    (**Accepts any operator*)
+
+  val identifier       : (char, string) ParserCo.t -> (char, string) ParserCo.t
+    (**Accepts a given identifier*)
+
+  val operator         : (char, string) ParserCo.t -> (char, string) ParserCo.t
+    (**Accepts a given operator *)
+
+  val reserved         : (char, string) ParserCo.t -> (char, string) ParserCo.t
+
+  val reserved_op      : (char, string) ParserCo.t -> (char, string) ParserCo.t
+
+  val char_literal : (char, char) ParserCo.t
+    (**Accepts a character literal, i.e. one character
+       (or an escape) between two quotes.*)
+
+  val string_literal:(char, string) ParserCo.t
+    (**Accepts a string, i.e. one sequence of
+       characters or escapes between two double
+       quotes, on one line.*)
+
+  val integer:       (char, int) ParserCo.t
+    (**Parse an integer.*)
+
+  val float:         (char, float) ParserCo.t
+    (**Parse a floating-point number.*)
+
+  val number:        (char, [`Float of float | `Integer of int]) ParserCo.t
+    (**Parse either an integer or a floating-point number.*)
+
+  (** {6 Low-level API} *)
+  val char         : char -> (char, char) ParserCo.t
+    (** As {!ParserCo.char}, but case-insensitive if specified
+	by {!case_sensitive}. *)
+
+  val string       : string -> (char, string) ParserCo.t
+    (** As {!ParserCo.string}, but case-insensitive if specified
+	by {!case_sensitive}. *)
+
+  val line_comment : (char, unit) ParserCo.t
+  val multiline_comment : (char, unit) ParserCo.t
+  val comment      : (char, unit) ParserCo.t
+  val whitespaces  : (char, unit) ParserCo.t
+  val lexeme       : (char, 'a) ParserCo.t -> (char, 'a) ParserCo.t
+    (**Apply this filter to your own parsers if you want them
+       to ignore following comments.*)
+
+end
+  
+end
 end

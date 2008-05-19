@@ -102,8 +102,8 @@ val seq: 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
       fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [^[1, 2, ... 99]^]. If [cond
       init] is false, the result is empty. *)
 
-val seq_hide: 'b -> ('b -> ('a * 'b) option) -> 'a t
-  (**[from_loop data next] creates a (possibly infinite) lazy list from
+val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
+  (**[unfold data next] creates a (possibly infinite) lazy list from
      the successive results of applying [next] to [data], then to the
      result, etc. The list ends whenever the function returns [None]*)
 
@@ -505,7 +505,7 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
       Raise [Different_list_size] if the two lists
       have different lengths.  Tail-recursive. *)
 
-module ExceptionLess : sig
+module Exceptionless : sig
   (** Exceptionless counterparts for error-raising operations*)
 
   val find : ('a -> bool) -> 'a t -> 'a option
@@ -525,17 +525,16 @@ module ExceptionLess : sig
     (** [findi p e l] returns [Some (i, ai)] where [ai] and [i] are respectively the 
 	last element of [l] and its index, such that [p i ai] is true, 
 	or [None] if no	such element has been found. *)
-    
-  val split_at : int -> 'a t -> (('a t * 'a t), [`Invalid_index of int]) Std.result
+
+  val split_at : int -> 'a t -> [`Ok of ('a t * 'a t) | `Invalid_index of int]
     (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns 
-	[Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2] 
+	[`Ok (l1,l2)], where [l1] contains the first [n] elements of [l] and [l2] 
 	contains the others. Otherwise, returns [`Invalid_index n] *)
 
-  val at : 'a t -> int -> ('a, [`Invalid_index of int]) Std.result
-    (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
-	[x] is the n-th element of the list [l]. Otherwise, returns [Error
-	(`Invalid_index(n))].*)
-
+  val at : 'a t -> int -> [`Ok of 'a | `Invalid_index of int]
+    (** If [n] is inside the bounds of [l], [at l n] returns [`Ok x], where
+	[x] is the n-th element of the list [l]. Otherwise, returns 
+	[`Invalid_index n].*) 
 
   val assoc : 'a -> ('a * 'b) t -> 'b option
     (** [assoc a l] returns [Some b] where [b] is the value associated with key [a] 

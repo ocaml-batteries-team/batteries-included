@@ -1,6 +1,7 @@
 (*
  * Option - functions for the option type
  * Copyright (C) 2003 Nicolas Cannasse
+ *               2008 David Teller (Contributor)
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,35 +22,35 @@
 exception No_value
 
 let may f = function
-  | None -> ()
-  | Some v -> f v
+	| None -> ()
+	| Some v -> f v
 
 let map f = function
-  | None -> None
-  | Some v -> Some (f v)
+	| None -> None
+	| Some v -> Some (f v)
 
 let default v = function
-  | None -> v
-  | Some v -> v
+	| None -> v
+	| Some v -> v
 
 let is_some = function
-  | None -> false
-  | _ -> true
+	| None -> false
+	| _ -> true
 
 let is_none = function
-  | None -> true
-  | _ -> false
+	| None -> true
+	| _ -> false
 
 let get_exn s e = match s with
-  | None   -> raise e
-  | Some v -> v
+        | None   -> raise e
+	| Some v -> v
 
 let get s = get_exn s Not_found
 
 let map_default f v = function
-  | None -> v
-  | Some v2 -> f v2
+	| None -> v
+	| Some v2 -> f v2
 
 let enum = function
-  | None   -> Enum.from (fun () -> raise Enum.No_more_elements)
-  | Some e -> Enum.singleton e
+        | None   -> Enum.from (fun () -> raise Enum.No_more_elements)
+        | Some e -> Enum.singleton e

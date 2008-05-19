@@ -540,8 +540,8 @@ let take_while f t =
 
 let ( -- ) x y = range x ~until:y
 
-let ( --- ) x y = if x > y then y -- x 
-                  else          x -- y
+let ( --- ) x y = if x < y then x -- y
+else          seq y ((+) (-1)) ( (>=) x )
 
 let ( ~~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
 
@@ -558,7 +558,7 @@ let from_loop data next =
 	   r := b;
 	   a)
 
-let seq_hide data next =
+let unfold data next =
   from_loop data (fun data -> match next data with
 		    | None   -> raise No_more_elements
 		    | Some x -> x )

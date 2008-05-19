@@ -122,18 +122,18 @@ let zero_plus ?sep p e =
   let rec aux acc l = match maybe p' l with
     | (None,   rest) -> (List.rev acc, rest)
     | (Some x, rest) -> aux (x::acc) rest
-  in match maybe p l with
+  in match maybe p e with
     | (None,   rest) -> ([], rest)
     | (Some x, rest) -> aux [x] rest
 
-let ( ~* ) = zero_plus
+let ( ~* ) p = zero_plus p
 
-let one_plus ?(sep=empty) p t = p >:: 
+let one_plus ?sep p = p >:: 
   match sep with
     | None   -> zero_plus p
-    | Some s -> s >>> (zero_plus s >>> p)
+    | Some s -> s >>> (zero_plus (s >>> p))
 
-let ( ~+ ) = one_plus
+let ( ~+ ) p = one_plus p
 
 let map (f:'b -> 'c) (p:('a, 'b) t) (e:'a source) = 
   let (result, rest) = p e in
@@ -171,19 +171,45 @@ let scan (p:('a, _) t) : ('a, 'a list) t = fun e ->
   in (to_list (clean_up extract), rest)
 
 
-let put_loc l nl = (*Label a lazy list with offsets and line numbers*)
+let put_loc ?newline l = (*Label a lazy list with offsets and line numbers*)
   let offset = ref 0
   and line   = ref 1 in
-  LazyList.map 
-    (fun x -> let result = (x, !offset, !line) in
-       if x = nl then 
-	 (
-	   offset := 0;
-	   incr line
-	 ) else incr offset;
-       result) l
+    LazyList.map (
+      match newline with
+	| Some nl ->
+	    (fun x -> let result = (x, !offset, !line) in
+	       if x = nl then 
+		 (
+		   offset := 0;
+		   incr line
+		 ) else incr offset;
+	       result) 
+	| None ->
+	    (fun x -> let result = (x, !offset, -1) in incr offset; result) 
+    )  l
 
-let run (p:('a, 'b) t) nl (e:'a Enum.t) =
-  let (e': 'a source) = put_loc (of_enum e) nl in
-  try let (result, rest) = p e' in Std.Ok result
-  with Failure f -> Std.Error f
+
+let run (p:('a, 'b) t) ?newline e =
+  let e' = put_loc ?newline (of_enum e)  in fst (p e')
+
+let run_filter (p:('a, 'b) t) ?newline (e:'a Enum.t) =
+  let e' = put_loc ?newline (of_enum e) in
+  Enum.unfold e' 
+    (fun x -> if LazyList.is_empty x then None
+              else Some (p x) )
+
+let run_filter_list p ?newline e =
+  let e' = put_loc ?newline e in
+  LazyList.unfold e' 
+    (fun x -> if LazyList.is_empty x then None
+              else Some (p x) )
+
+
+let sat f e =
+  match get e with
+    | Some ((x,_,_),t) when f x -> ((), t)
+    | _ as y                    -> fail_at y
+
+let lookahead p e =
+  (fst ((maybe p) e), e)
+

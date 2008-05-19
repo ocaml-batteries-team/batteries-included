@@ -217,10 +217,10 @@ val seq : init:'a -> f:('a -> 'a) -> cnd:('a -> bool) -> 'a t
       init] is false, the result is empty. *)
 
 
-val seq_hide: init:'b -> f:('b -> ('a * 'b) option) -> 'a t
+val unfold: init:'b -> f:('b -> ('a * 'b) option) -> 'a t
   (**More powerful version of [seq], with the ability of hiding data.
 
-     [seq_hide data next] creates a (possibly infinite) enumeration from
+     [unfold data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
      result, etc. The list ends whenever the function returns [None]*)
 
