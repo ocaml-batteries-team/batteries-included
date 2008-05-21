@@ -47,8 +47,21 @@ let satisfy f e =
     | _ as y                    -> fail_at y
 
 let label s p e =
-  try p e 
-  with Failure {labels = labels; loc = loc} -> raise (Failure {labels = [s]; loc = loc})
+  Printf.eprintf ">>> %s\n" s;
+  flush_all ();
+  try let x = p e in
+    Printf.eprintf "<<< %s\n" s;
+    flush_all ();
+    x
+  with Failure {labels = labels; loc = loc} -> 
+    (
+      Printf.eprintf "!!! %s\n" s;
+      flush_all ();
+      raise (Failure {labels = [s]; loc = loc})
+    )
+
+(*  try p e 
+  with Failure {labels = labels; loc = loc} -> raise (Failure {labels = [s]; loc = loc})*)
 
 let either (l:('a, 'b) t list) : ('a, 'b) t = fun e ->
   let rec aux err = function
@@ -131,7 +144,7 @@ let ( ~* ) p = zero_plus p
 let one_plus ?sep p = p >:: 
   match sep with
     | None   -> zero_plus p
-    | Some s -> s >>> (zero_plus (s >>> p))
+    | Some s -> zero_plus (s >>> p)
 
 let ( ~+ ) p = one_plus p
 

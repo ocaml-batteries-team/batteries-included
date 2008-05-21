@@ -2,6 +2,7 @@
  * ExtList - additional and modified functions for lists.
  * Copyright (C) 2003 Brian Hurt
  * Copyright (C) 2003 Nicolas Cannasse
+ *               2008 David Teller (Contributor)
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -544,7 +545,7 @@ let of_enum e =
 		r) h e in
 	h.tl
 
-module ExceptionLess = struct
+module Exceptionless = struct
   let rfind p l =
     try  Some (rfind p l)
     with Not_found -> None
@@ -570,6 +571,97 @@ module ExceptionLess = struct
     with Not_found -> None
 end
 
+end
+
+module ListLabels = struct
+  exception Empty_list          = List.Empty_list
+  exception Invalid_index       = List.Invalid_index
+  exception Different_list_size = List.Different_list_size
+
+  let init i ~f = List.init i f
+  let make n  x = List.make n x
+  let iteri ~f l= List.iteri f l
+  let map ~f l  = List.map f l
+  let mapi ~f l = List.mapi f l
+  let rfind ~f l= List.rfind f l
+  let find ~f l = List.find f l
+  let findi ~f  = List.findi f
+  let find_exn ~f   = List.find_exn f 
+  let filter_map ~f = List.filter_map f
+  let remove_if ~f  = List.remove_if f
+  let take_while ~f = List.take_while f
+  let drop_while ~f = List.drop_while f
+  let map2 ~f       = List.map2 f
+  let iter2 ~f      = List.iter2 f
+  let exists2 ~f    = List.exists2 f
+  let fold_left ~f ~init         = List.fold_left f init
+  let fold_right ~f l ~init      = List.fold_right f l init
+  let fold_left2  ~f ~init       = List.fold_left2 f init
+  let fold_right2 ~f l1 l2 ~init = List.fold_right2 f l1 l2 init
+  let filter ~f     = List.filter f
+  let find_all ~f   = List.find_all f
+  let partition ~f  = List.partition f
+  let rev_map ~f    = List.rev_map f
+  let iter ~f       = List.iter f
+  let for_all ~f    = List.for_all f
+  let for_all2 ~f   = List.for_all2 f
+  let exists ~f     = List.exists f
+  let stable_sort ~f= List.stable_sort f
+  let fast_sort ~f  = List.fast_sort f
+  let merge ~f      = List.merge f
+
+  let mem           = List.mem
+  let memq          = List.memq
+  let assoc         = List.assoc
+  let assq          = List.assq
+  let mem_assoc     = List.mem_assoc
+  let mem_assq      = List.mem_assq
+
+
+  let takewhile     = take_while
+  let dropwhile     = drop_while
+  let combine       = List.combine
+  let append        = List.append
+  let concat        = List.concat
+  let flatten       = List.flatten
+  let remove_assoc  = List.remove_assoc
+  let remove_assq   = List.remove_assq
+  let split         = List.split
+  let length        = List.length
+  let rev_append    = List.rev_append
+  let rev           = List.rev
+
+  let enum      = List.enum
+  let of_enum   = List.of_enum
+  let hd        = List.hd
+  let tl        = List.tl
+  let nth       = List.nth
+  let sort      = List.sort
+  let index_of  = List.index_of
+  let index_ofq = List.index_ofq
+  let rindex_of = List.rindex_of
+  let rindex_ofq= List.rindex_ofq
+  let unique    = List.unique
+  let split_at  = List.split_at
+  let split_nth = List.split_nth
+  let remove    = List.remove
+  let remove_all= List.remove_all
+  let take      = List.take
+  let drop      = List.drop
+  let is_empty  = List.is_empty
+  let cons      = List.cons
+  let first     = List.first
+  let last      = List.last
+  let at        = List.at
+
+  module Exceptionless = struct
+    let rfind ~f = List.Exceptionless.rfind f
+    let findi ~f = List.Exceptionless.findi f
+    let split_at = List.Exceptionless.split_at
+    let at       = List.Exceptionless.at
+    let assoc    = List.Exceptionless.assoc
+    let assq     = List.Exceptionless.assq
+  end
 end
 
 let ( @ ) = List.append

@@ -1,3 +1,7 @@
+05/21/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extString.ml?: [is_empty] added
+	* extList.ml?: [ListLabels] created
+	
 05/19/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* extGenlex.ml?: [Make.lazy_list_filter] added
 	* extGenlex.ml?: [Make.stream_filter] added
@@ -6,10 +10,13 @@
 	* parserCo.ml?: [run_filter] added
 	* parserCo.ml?: [run_filter_list] added
 	* parserCo.ml?:  [run] now accepts label [?newline]
+	* parserCo.ml: in [one_plus], removed one separator prefix
 	* charParser.ml: [parse_string] now applies label to [run]
 	* charParser.mli: [parse_string] now returns variant
 	* enum.ml?: [seq_hide] renamed [unfold]
 	* enumLabels.ml?: [seq_hide] renamed [unfold]
+	* IO.ml?: [enum_char] added
+	* IO.ml: [ExtString] opened
 
 05/18/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* extGenlex.ml?: added [Languages], [Languages.Definition],

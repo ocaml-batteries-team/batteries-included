@@ -350,11 +350,14 @@ struct
 	  | Some (l, r) ->
 	      let in_comment () =
 		if nested_comments then
-		  let not_lr = none_of [String.get l 0; String.get r 0] in
+		  let not_lr = label ("Neither \""^l^"\" nor ^ \"" ^r^"\"")
+		    (none_of [String.get l 0; String.get r 0]) in
 		  let rec aux () =
-		    either [  string r >>> return ();
-			      string l >>> aux () >>> aux () ;
- 			      one_plus not_lr     >>> aux() ]
+		    label "aux" (
+		    either [  string r >>= (fun _ -> return ());
+ 			      string l >>= (fun _ -> aux () >>= fun _ -> aux ()) ;
+			      one_plus not_lr     >>> aux() ]
+		    )
 		  in aux ()
 		else zero_plus (none_of [String.get r 0]) >>> 
 		  string r >>> return ()

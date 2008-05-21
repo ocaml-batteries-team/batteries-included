@@ -19,6 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open ExtString
+
 type input = {
 	mutable in_read : unit -> char;
 	mutable in_input : string -> int -> int -> int;
@@ -386,7 +388,7 @@ let read_signed_byte i =
 		c - 256
 	else
 		c
-
+  
 let read_string i =
 	let b = Buffer.create 8 in
 	let rec loop() =
@@ -840,6 +842,8 @@ let enum_double input = Enum.from (fun () -> apply_enum read_double input)
 let enum_string input = Enum.from (fun () -> apply_enum read_string input)
 
 let enum_line input = Enum.from (fun () -> apply_enum read_line input)
+
+let enum_char input = Enum.concat (Enum.from (fun () -> apply_enum (fun x -> String.enum (read_line x)) input))
 
 let enum_bits in_bits = Enum.from (fun () -> apply_enum read_bits in_bits 1)
 

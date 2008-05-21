@@ -284,5 +284,5 @@ let splice s1 off len s2 =
   blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
   s
 
-
+let is_empty s = length s = 0 
 end

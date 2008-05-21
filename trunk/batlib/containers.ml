@@ -9,7 +9,7 @@ module PMap           = PMap
 module LazyList       = LazyList
 module LazyListLabels = LazyListLabels
 module List           = ExtList.List
-(*TODO: ListLabels*)
+module ListLabels     = ExtList.ListLabels
 
 module Set            = Set
 (*TODO: ExtSet.Set*)

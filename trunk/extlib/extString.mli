@@ -161,6 +161,10 @@ module String :
 		within [str] has been replaced by the string [by]. The boolean
 		is true if a subtitution has taken place. *)
 
+
+	val is_empty : string -> bool
+	  (** [is_empty ""] returns [true]. For any other value of [s],
+	      [is_empty s] returns [false]. *)
 	(** {6 Older Functions} *)
 
 	(** Please refer to the Ocaml Manual for documentation of these
