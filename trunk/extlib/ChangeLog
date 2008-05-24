@@ -1,3 +1,12 @@
+05/24/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extList.ml?: [backwrads], [of_backwards] created
+	* IO.ml?: [stdin], [stdout], [stderr] created
+	* IO.ml: [Printf] created
+	* IO.mli: type of [printf] changed to accomodate "%a"
+	* IO.ml: [printf] now uses [Printf.mkprintf]
+	* IO.ml?: [comb] created
+	
+	
 05/21/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* extString.ml?: [is_empty] added
 	* extList.ml?: [ListLabels] created

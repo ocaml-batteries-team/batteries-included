@@ -54,3 +54,5 @@ let map_default f v = function
 let enum = function
         | None   -> Enum.from (fun () -> raise Enum.No_more_elements)
         | Some e -> Enum.singleton e
+
+let of_enum = Enum.get

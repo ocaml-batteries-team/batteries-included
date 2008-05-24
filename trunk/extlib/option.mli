@@ -57,5 +57,9 @@ val enum: 'a option -> 'a Enum.t
 (** [enum (Some x)] returns the singleton [x], while [enum None] returns
     the empty enumeration*)
 
+val of_enum: 'a Enum.t -> 'a option
+(** [of_enum e] consumes the first element of [e], if it exists, and 
+    returns [Some e]. If [e] is empty, return [None] *)
+
 exception No_value
 (** Raised when calling [get None]. *)

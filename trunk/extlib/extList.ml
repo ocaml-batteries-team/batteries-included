@@ -545,6 +545,14 @@ let of_enum e =
 		r) h e in
 	h.tl
 
+let backwards l = enum (rev l)
+
+let of_backwards e =
+  let rec aux acc = match Enum.get e with
+    | Some h -> aux (h::acc)
+    | None   -> acc
+  in aux []
+
 module Exceptionless = struct
   let rfind p l =
     try  Some (rfind p l)
@@ -631,36 +639,38 @@ module ListLabels = struct
   let rev_append    = List.rev_append
   let rev           = List.rev
 
-  let enum      = List.enum
-  let of_enum   = List.of_enum
-  let hd        = List.hd
-  let tl        = List.tl
-  let nth       = List.nth
-  let sort      = List.sort
-  let index_of  = List.index_of
-  let index_ofq = List.index_ofq
-  let rindex_of = List.rindex_of
-  let rindex_ofq= List.rindex_ofq
-  let unique    = List.unique
-  let split_at  = List.split_at
-  let split_nth = List.split_nth
-  let remove    = List.remove
-  let remove_all= List.remove_all
-  let take      = List.take
-  let drop      = List.drop
-  let is_empty  = List.is_empty
-  let cons      = List.cons
-  let first     = List.first
-  let last      = List.last
-  let at        = List.at
+  let enum          = List.enum
+  let of_enum       = List.of_enum
+  let backwards     = List.backwards
+  let of_backwards  = List.of_backwards
+  let hd            = List.hd
+  let tl            = List.tl
+  let nth           = List.nth
+  let sort          = List.sort
+  let index_of      = List.index_of
+  let index_ofq     = List.index_ofq
+  let rindex_of     = List.rindex_of
+  let rindex_ofq    = List.rindex_ofq
+  let unique        = List.unique
+  let split_at      = List.split_at
+  let split_nth     = List.split_nth
+  let remove        = List.remove
+  let remove_all    = List.remove_all
+  let take          = List.take
+  let drop          = List.drop
+  let is_empty      = List.is_empty
+  let cons          = List.cons
+  let first         = List.first
+  let last          = List.last
+  let at            = List.at
 
   module Exceptionless = struct
-    let rfind ~f = List.Exceptionless.rfind f
-    let findi ~f = List.Exceptionless.findi f
-    let split_at = List.Exceptionless.split_at
-    let at       = List.Exceptionless.at
-    let assoc    = List.Exceptionless.assoc
-    let assq     = List.Exceptionless.assq
+    let rfind ~f    = List.Exceptionless.rfind f
+    let findi ~f    = List.Exceptionless.findi f
+    let split_at    = List.Exceptionless.split_at
+    let at          = List.Exceptionless.at
+    let assoc       = List.Exceptionless.assoc
+    let assq        = List.Exceptionless.assq
   end
 end
 

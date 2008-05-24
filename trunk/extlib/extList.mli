@@ -168,17 +168,29 @@ module List :
 
 	val dropwhile : ('a -> bool) -> 'a list -> 'a list
 	  (** obsolete, as {!drop_while} *)
-	(** {6 Enum functions} *)
 
-	(** Enumerations are important in ExtLib, they are a good way to work with
-	 abstract enumeration of elements, regardless if they are located in a list,
-	 an array, or a file. *)
+	(** {6 Enum functions} 
+	    
+	    Abstraction layer.*)
 
 	val enum : 'a list -> 'a Enum.t
-	(** Returns an enumeration of the elements of a list. *)
+	(** Returns an enumeration of the elements of a list. This enumeration may
+	    be used to visit elements of the list in forward order (i.e. from the
+	    first element to the last one)*)
 
 	val of_enum : 'a Enum.t -> 'a list
-	(** Build a list from an enumeration. *)
+	(** Build a list from an enumeration. In the result, elements appear in the
+	    same order as they did in the source enumeration. *)
+
+	val backwards : 'a list -> 'a Enum.t
+	(** Returns an enumeration of the elements of a list. This enumeration may
+	    be used to visit elements of the list in backwards order (i.e. from the
+	    last element to the first one)*)
+
+	val of_backwards : 'a Enum.t -> 'a list
+	(** Build a list from an enumeration. The first element of the enumeration
+	    becomes the last element of the list, the second element of the enumeration
+	    becomes the second-to-last element of the list... *)
 
 	(** {6 Modified functions} *)
 
@@ -517,17 +529,29 @@ module ListLabels :
 	val dropwhile : f:('a -> bool) -> 'a list -> 'a list
 	  (** obsolete, as {!drop_while} *)
 
-	(** {6 Enum functions} *)
-
-	(** Enumerations are important in ExtLib, they are a good way to work with
-	 abstract enumeration of elements, regardless if they are located in a list,
-	 an array, or a file. *)
+	(** {6 Enum functions} 
+	    
+	    Abstraction layer.*)
 
 	val enum : 'a list -> 'a Enum.t
-	(** Returns an enumeration of the elements of a list. *)
+	(** Returns an enumeration of the elements of a list. This enumeration may
+	    be used to visit elements of the list in forward order (i.e. from the
+	    first element to the last one)*)
 
 	val of_enum : 'a Enum.t -> 'a list
-	(** Build a list from an enumeration. *)
+	(** Build a list from an enumeration. In the result, elements appear in the
+	    same order as they did in the source enumeration. *)
+
+	val backwards : 'a list -> 'a Enum.t
+	(** Returns an enumeration of the elements of a list. This enumeration may
+	    be used to visit elements of the list in backwards order (i.e. from the
+	    last element to the first one)*)
+
+	val of_backwards : 'a Enum.t -> 'a list
+	(** Build a list from an enumeration. The first element of the enumeration
+	    becomes the last element of the list, the second element of the enumeration
+	    becomes the second-to-last element of the list... *)
+
 
 	(** {6 Modified functions} *)
 

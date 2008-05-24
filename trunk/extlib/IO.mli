@@ -44,6 +44,16 @@ exception Input_closed
 exception Output_closed
 (** This exception is raised when reading on a closed output. *)
 
+(** {6 Standard inputs/outputs} *)
+val stdin : input
+(** Standard input, as per Unix/Windows conventions (by default, keyboard).*)
+
+val stdout: unit output
+(** Standard output, as per Unix/Windows conventions (by default, console).*)
+
+val stderr: unit output
+(** Standard error output, as per Unix/Windows conventions.*)
+
 (** {6 Standard API} *)
 
 val read : input -> char
@@ -117,6 +127,10 @@ val output_enum : unit -> char Enum.t output
 (** Create an output that will write into an [enum]. The 
   final enum is returned when the output is closed. *)
 
+val comb : ('a output * 'a output) -> 'a output
+(** [tee_out (a,b)] creates a new [output] [c] such that
+    writing to [c] will actually write to both [a] and [b] *)
+
 val create_in :
   read:(unit -> char) ->
   input:(string -> int -> int -> int) -> close:(unit -> unit) -> input
@@ -182,7 +196,7 @@ val with_file_out_binary : string -> (unit output -> 'a) -> 'a
 
 (** {6 Utilities} *)
 
-val printf : 'a output -> ('b, unit, string, unit) format4 -> 'b
+val printf : 'a output -> ('b, 'a output, unit) format -> 'b
 (** The printf function works for any output. *)
 
 val read_all : input -> string
