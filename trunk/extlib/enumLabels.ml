@@ -54,8 +54,6 @@ let init x ~f    = Enum.init x f
 
 let switch ~f    = Enum.switch f
 
-let switchn x ~f   = Enum.switchn x f
-
 let take_while ~f  = Enum.take_while f
 
 let drop_while ~f  = Enum.drop_while f

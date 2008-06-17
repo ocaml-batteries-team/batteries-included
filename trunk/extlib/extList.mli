@@ -58,6 +58,7 @@ module List :
 	  (** [map f [a1; ...; an]] applies function [f] to [a1, ..., an],
 	      and builds the list [[f a1; ...; f an]]
 	      with the results returned by [f].  Tail-recursive. *)
+	
 
 	val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
 	(** [mapi f l] will build the list containing
@@ -334,6 +335,14 @@ module List :
 	      Raise [Not_found] if there is no value associated with [a] in the
 	      list [l]. *)
 
+	val assoc_inv : 'b -> ('a * 'b) list -> 'a
+	  (** [assoc_inv b l] returns the key associated with value [b] in the list of
+	      pairs [l]. That is,
+	      [assoc b [ ...; (a,b); ...] = a]
+	      if [(a,b)] is the leftmost binding of [a] in list [l].
+	      Raise [Not_found] if there is no key associated with [b] in the
+	      list [l]. *)
+
 	val assq : 'a -> ('a * 'b) list -> 'b
 	  (** As {!assoc} but with physical equality *)
 
@@ -392,6 +401,14 @@ module List :
 		if [(a,b)] is the leftmost binding of [a] in list [l].
 		Return [None] if there is no value associated with [a] in the
 		list [l]. *)
+
+	  val assoc_inv : 'b -> ('a * 'b) list -> 'a option
+	    (** [assoc_inv b l] returns [Some a] where [a] is the key associated with value [a] 
+		in the list of pairs [l]. That is, [assoc b [ ...; (a,b); ...] = Some a]
+		if [(a,b)] is the leftmost binding of [a] in list [l].
+		Return [None] if there is no key associated with [b] in the
+		list [l]. *)
+
 
 	  val assq : 'a -> ('a * 'b) list -> 'b option
 	    (** As {!assoc} but with physical equality *)	    
@@ -695,6 +712,14 @@ module ListLabels :
 	      Raise [Not_found] if there is no value associated with [a] in the
 	      list [l]. *)
 
+	val assoc_inv : 'b -> ('a * 'b) list -> 'a
+	  (** [assoc_inv b l] returns the key associated with value [b] in the list of
+	      pairs [l]. That is,
+	      [assoc b [ ...; (a,b); ...] = a]
+	      if [(a,b)] is the leftmost binding of [a] in list [l].
+	      Raise [Not_found] if there is no key associated with [b] in the
+	      list [l]. *)
+
 	val assq : 'a -> ('a * 'b) list -> 'b
 	  (** As {!assoc} but with physical equality *)
 
@@ -752,6 +777,13 @@ module ListLabels :
 		in the list of pairs [l]. That is, [assoc a [ ...; (a,b); ...] = Some b]
 		if [(a,b)] is the leftmost binding of [a] in list [l].
 		Return [None] if there is no value associated with [a] in the
+		list [l]. *)
+
+	  val assoc_inv : 'b -> ('a * 'b) list -> 'a option
+	    (** [assoc_inv b l] returns [Some a] where [a] is the key associated with value [a] 
+		in the list of pairs [l]. That is, [assoc b [ ...; (a,b); ...] = Some a]
+		if [(a,b)] is the leftmost binding of [a] in list [l].
+		Return [None] if there is no key associated with [b] in the
 		list [l]. *)
 
 	  val assq : 'a -> ('a * 'b) list -> 'b option

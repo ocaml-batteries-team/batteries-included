@@ -553,6 +553,13 @@ let of_backwards e =
     | None   -> acc
   in aux []
 
+let assoc_inv e l =
+  let rec aux = function
+  | []                  -> raise Not_found
+  | (a,b)::t when b = e -> a
+  | _::t                -> aux t
+  in aux l
+
 module Exceptionless = struct
   let rfind p l =
     try  Some (rfind p l)
@@ -576,6 +583,10 @@ module Exceptionless = struct
 
   let assq e l =
     try Some (assq e l)
+    with Not_found -> None
+
+  let assoc_inv e l =
+    try Some (assoc_inv e l)
     with Not_found -> None
 end
 
@@ -621,6 +632,7 @@ module ListLabels = struct
   let mem           = List.mem
   let memq          = List.memq
   let assoc         = List.assoc
+  let assoc_inv     = List.assoc_inv
   let assq          = List.assq
   let mem_assoc     = List.mem_assoc
   let mem_assq      = List.mem_assq
@@ -670,6 +682,7 @@ module ListLabels = struct
     let split_at    = List.Exceptionless.split_at
     let at          = List.Exceptionless.at
     let assoc       = List.Exceptionless.assoc
+    let assoc_inv   = List.Exceptionless.assoc_inv
     let assq        = List.Exceptionless.assq
   end
 end

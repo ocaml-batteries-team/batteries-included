@@ -282,10 +282,6 @@ val ( ~~ ) : char -> char -> char t
 (** As ( -- ), but for characters.*)
 
 
-val switchn: int -> f:('a -> int) -> 'a t -> 'a t array
-  (** [switchn] is the array version of [switch]. [switch n f fl] split [fl] to an array of [n] enums, [f] is
-      applied to each element of [fl] to decide the id of its destination
-      enum. *)
 
 val switch : f:('a -> bool) -> 'a t -> 'a t * 'a t
   (** [switch test enum] split [enum] into two enums, where the first enum have

@@ -216,6 +216,21 @@ let peek t =
 		push t x;
 		Some x
 
+let take n e =
+  let remaining = ref n in
+  let f () =
+    if !remaining >= 0 then
+      let result = e.next () in
+	decr remaining;
+	result
+    else raise No_more_elements
+  in let e = make
+       ~next: f
+       ~count:(fun () -> !remaining)
+       ~clone:_dummy
+  in e.clone <- (fun () -> force e; e.clone ());
+    e
+
 let junk t =
 	try
 		ignore(t.next())
@@ -303,6 +318,20 @@ let fold f init t =
 	with
 		No_more_elements -> !acc
 
+let scanl f init t =
+	let acc = ref init in
+	let gen ()=
+	  acc := f (t.next()) !acc;
+	  !acc
+	in let e = from gen in
+	  push e init;
+	  e
+
+let scan f t =
+        match get t with
+	  | Some x -> scanl f x t
+	  | None   -> empty ()
+
 let foldi f init t =
 	let acc = ref init in
 	let rec loop idx =
@@ -353,6 +382,8 @@ let fold2i f init t u =
 			| Some e ->
 				push t e;
 				!acc
+
+
 
 let find f t =
 	let rec loop () =
@@ -417,6 +448,38 @@ let rec append ta tb =
 	);
 	t
 
+let prefix_action f t =
+  let full_action e =
+    e.count <- (fun () -> t.count());
+    e.next  <- (fun () -> t.next ());
+    e.clone <- (fun () -> t.clone());
+    f ()
+  in
+  let rec t' =
+    {
+      count = (fun () -> full_action t'; t.count() );
+      next  = (fun () -> full_action t'; t.next()  );
+      clone = (fun () -> full_action t'; t.clone() );
+      fast  = t.fast
+    } in t'
+      
+
+let suffix_action_without_raise (f:unit -> 'a) (t:'a t) =
+  {
+    count = t.count;
+    next  = (fun () -> 
+	       try  t.next () 
+               with No_more_elements -> 
+		 f());
+    clone = t.clone;
+    fast  = t.fast
+  }
+
+let suffix_action f t =
+  let f' () = f (); raise No_more_elements
+  in suffix_action_without_raise f' t
+
+
 let rec concat t =
 	let concat_ref = ref _dummy in
 	let rec concat_next() =
@@ -435,8 +498,6 @@ let rec concat t =
 
 let singleton x =
   init 1 (fun _ -> x)
-
-
 
 let switchn n f e =
   let queues = ArrayLabels.init n ~f:(fun _ -> Queue.create ())   in
@@ -503,40 +564,71 @@ let close e =
   e.count<- return_no_more_count;
   e.clone<- empty
 
-let before_do t f =
-  let rec make t =
-    let fnext  = t.next  in
-    let fclone = t.clone in
-    let next_called = ref false in
-      t.next  <- (fun () -> f(); 
-		    next_called := true;
-		    t.clone <- fclone;
-		    t.next  <- fnext ;
-		    fnext () );
-
-      t.clone <- (fun () ->
-		    let tc = fclone() in
-		      if not !next_called then make tc;
-		      tc);
-  in
-    make t
-
 let drop_while p e =
+  let rec aux () =
+    match get e with
+      | Some x when p x -> aux () 
+      | Some x          -> push e x
+      | None            -> () 
+  in prefix_action aux e
+
+(*let drop_while p e =
   let rec aux () = 
-    match peek e with
-      | None            -> e
-      | Some x when p x -> junk e; aux ()
-      | _               -> e
-  in 
-    before_do e aux; e
+    let x = e.next () in
+      print_string "filtering\n";
+      if p x then (aux ())
+      else (push e x;
+	    raise No_more_elements)
+  in
+    append (from aux) e*)
+
 
 let take_while f t =
-  let rec next () =
+  let next () =
     let x = t.next () in
       if f x then x
-      else        raise No_more_elements
+      else        
+	(push t x;
+	 raise No_more_elements)
   in from next
     
+
+let span f t =
+  (*Two possibilities: either the tail has been read
+    already -- in which case all head data has been 
+    copied onto the queue -- or the tail hasn't been
+    read -- in which case, stuff should be read from
+    [t] *)
+  let queue           = Queue.create () 
+  and read_from_queue = ref false in
+  let head () =
+    if !read_from_queue then (*Everything from the head has been copied *)
+      try  Queue.take queue  (*to the queue already                     *)
+      with Queue.Empty -> raise No_more_elements
+    else let x = t.next () in
+      if f x then x
+      else (push t x;
+           raise No_more_elements)
+  and tail () =
+    if not !read_from_queue then (*Copy everything to the queue         *)
+      begin
+	read_from_queue := true;
+	let rec aux () = 
+	  match get t with
+	    | None            -> raise No_more_elements
+	    | Some x when f x -> Queue.push x queue; aux ()
+	    | Some x          -> x
+	in aux ()
+      end
+    else t.next()
+  in 
+    (from head, from tail)
+
+let while_do cont f e =
+  let (head, tail) = span cont e in
+    append (f head) tail
+
+let break test e = span (fun x -> not (test x)) e
 
 let ( -- ) x y = range x ~until:y
 
@@ -545,11 +637,70 @@ else          seq y ((+) (-1)) ( (>=) x )
 
 let ( ~~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
 
+let dup t      = (t, t.clone())
+
+let comb (x,y) = 
+  if x.fast && y.fast then (*Optimized case*)
+    let rec aux (x,y) =
+      { 
+	count = (fun () -> min (x.count ()) (y.count ())) ;
+	next  = (fun () -> (x.next(), y.next()))          ;
+	clone = (fun () -> aux (x.clone(), y.clone()))    ;
+	fast  = true
+      }
+    in aux (x,y)
+  else from (fun () -> (x.next(), y.next()))
+
+let split e =
+  let advance    = ref `first
+  and queue_snd  = Queue.create () 
+  and queue_fst  = Queue.create () in
+  let first () = match !advance with
+    | `first -> 
+	let (x,y) = e.next() in
+	  Queue.push y queue_snd;
+	  x   
+    | `second-> (*Second element has been read further*)
+	try  Queue.pop queue_fst
+	with Queue.Empty ->
+	  let (x,y) = e.next()  in
+	    Queue.push y queue_snd;
+	    advance := `first;
+	    x
+  and second() = match !advance with
+    | `second -> 
+	let (x,y) = e.next() in
+	  Queue.push x queue_fst;
+	  y
+    | `first  -> (*Second element has been read further*)
+	try Queue.pop queue_snd
+	with Queue.Empty ->
+	  let (x,y) = e.next()  in
+	    Queue.push x queue_fst;
+	    advance := `first;
+	    y
+  in (from first, from second)
+
+let group test e =
+  match peek e with
+    | None   -> raise No_more_elements
+    | Some x ->
+	let latest_test = ref (test x) in
+	let f () =
+	  take_while (fun x -> 
+			let previous_test = !latest_test in
+			let current_test  = test x       in
+			  latest_test := current_test;
+			  current_test = previous_test) e
+	    
+	in from f
+
+    
 
 let from_while f =
-  from(fun () -> match f () with
-	 | None   -> raise No_more_elements
-	 | Some x -> x )
+  from (fun () -> match f () with
+	  | None   -> raise No_more_elements
+	  | Some x -> x )
       
 
 let from_loop data next =
@@ -562,6 +713,53 @@ let unfold data next =
   from_loop data (fun data -> match next data with
 		    | None   -> raise No_more_elements
 		    | Some x -> x )
+
+(* -----------
+   Concurrency 
+*)
+
+let append_from a b =
+  let t    = from (fun () -> a.next())       in
+  let f () = let result = b.next ()          in
+    t.next <- (fun () -> b.next ());
+    result
+  in
+    suffix_action_without_raise f t
+
+      
+
+let merge test a b =
+  if   is_empty a    then b
+  else if is_empty b then a
+  else let next_a = ref (a.next())
+       and next_b = ref (b.next()) in
+  let aux () =
+    let (n, na, nb) =
+    if test !next_a !next_b then 
+      try (!next_a, a.next(), !next_b)
+      with No_more_elements -> (*a is exhausted, b probably not*)
+	push b !next_b;
+	raise No_more_elements
+    else
+      try (!next_b, !next_a, b.next())
+      with No_more_elements -> (*b is exhausted, a probably not*)
+	push a !next_a;
+	raise No_more_elements
+    in next_a := na;
+       next_b := nb;
+       n
+  in append_from (append_from (from aux) a) b
+
+
+(*let mergen test a =
+  ArrayLabels.fold_left ~init:[]
+    ~f:(fun x -> 
+  let Array.of_list a 
+  let next = Array.map 
+  let rec aux =
+    if Array.length !next = 1 then (*we're done*)
+    if *)
+  
 
 let slazy f = 
   let constructor = lazy (f ()) in

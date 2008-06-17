@@ -1,3 +1,30 @@
+06/04/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extList.ml?: assoc_inv created
+	
+06/03/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* optionLabels.ml?: created
+	
+05/26/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* file.ml?: created
+	* IO.ml?: [file_*] removed
+	* extStream.ml: pre-processed with camlp4o
+	* extStream.mli: [of_fun] removed
+	* extStream.mli: documented
+	* extStream.ml?: [to_channel] renamed [on_channel]
+	* extStream.ml?: [to_output] renamed [on_output]
+	* enum.ml?: [scanl] added
+	* enum.ml?: [scan] added
+	* enum.ml: in [take_while], [next] is not recursive anymore
+	* enum.ml: [take_while] now pushes back first erroneous element.
+	* enum.ml: [before_do] removed
+	* enum.ml?: [prefix_action] added
+	* enum.ml?: [suffix_action] added
+	* enum.ml: [drop_while] now uses [prefix_action]
+	* enum.ml?: [span] added
+	* enum.ml?: [comb] added
+	* enum.ml?: [split] added
+	* enum.ml?: [take] added
+	
 05/24/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* extList.ml?: [backwrads], [of_backwards] created
 	* IO.ml?: [stdin], [stdout], [stderr] created

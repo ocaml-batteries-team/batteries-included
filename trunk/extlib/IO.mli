@@ -142,58 +142,6 @@ val create_out :
   flush:(unit -> unit) -> close:(unit -> 'a) -> 'a output
 (** Fully create an output by giving all the needed functions. *)
 
-val open_file_in : string -> input
-(** [open_file_in file_name] opens the file named [file_name] for reading.
-
-    {b Note} You will need to close the file manually. An alternative is
-    to call [with_file_in] instead of [open_file_in].
-
-    Naming conventions for files are platform-dependent.*)
-
-val open_file_out : string -> unit output
-(** [open_file_in file_name] opens the file named [file_name] for writing.
-
-    {b Note} You will need to close the file manually. An alternative is
-    to call [with_file_out] instead of [open_file_out].
-
-    Naming conventions for files are platform-dependent.*)
-
-val with_file_in : string -> (input -> 'a) -> 'a
-(** [with_file_in file_name f] opens the file named [file_name] for reading,
-    invokes [f] to process the contents of that file then, once [f] has returned 
-    or triggered an exception, closes the file before proceeding. *)
-
-val with_file_out: string -> (unit output -> 'a) -> 'a
-(** [with_file_out file_name f] opens the file named [file_name] for writing,
-    invokes [f] to write onto that file then, once [f] has returned or triggered 
-    an exception, closes the file before proceeding. *)
-
-val open_file_in_binary : string -> input
-(** [open_file_in_binary file_name] opens the file named [file_name] for reading.
-
-    {b Note} You will need to close the file manually. An alternative is
-    to call [with_file_in] instead of [open_file_in].
-
-    Naming conventions for files are platform-dependent.*)
-
-val open_file_out_binary : string -> unit output
-(** [open_file_in file_name] opens the file named [file_name] for writing.
-
-    {b Note} You will need to close the file manually. An alternative is
-    to call [with_file_out] instead of [open_file_out].
-
-    Naming conventions for files are platform-dependent.*)
-
-val with_file_in_binary : string -> (input -> 'a) -> 'a
-(** [with_file_in file_name f] opens the file named [file_name] for reading,
-    invokes [f] to process the contents of that file then, once [f] has returned 
-    or triggered an exception, closes the file before proceeding. *)
-
-val with_file_out_binary : string -> (unit output -> 'a) -> 'a
-(** [with_file_out file_name f] opens the file named [file_name] for writing,
-    invokes [f] to write onto that file then, once [f] has returned or triggered 
-    an exception, closes the file before proceeding. *)
-
 (** {6 Utilities} *)
 
 val printf : 'a output -> ('b, 'a output, unit) format -> 'b

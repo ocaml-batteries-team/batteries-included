@@ -47,12 +47,28 @@ val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
 val fold : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
 (** [fold f v e] returns v if e is empty,
   otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
-  the elements of [e]. 
-*)
+  the elements of [e]. *)
 
 val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
 (** [fold2] is similar to [fold] but will fold over two enumerations at the
  same time until one of the two enumerations ends. *)
+
+val scanl : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b t
+(** A variant of [fold] producing an enumeration of its intermediate values.
+    If [e] contains [x1], [x2], ..., [scanl f init e] is the enumeration 
+    containing [init], [f init x1], [f (f init x1) x2]... *)
+
+val scan : ('a -> 'a -> 'a) -> 'a t -> 'a t
+(** [scan] is similar to [scanl] but without the [init] value: if [e]
+    contains [x1], [x2], [x3] ..., [scan f e] is the enumeration containing
+    [x1], [f x1 x2], [f (f x1 x2) x3]... 
+
+
+    For instance, [scan ( * ) (1 -- 10)] will produce an enumeration 
+    containing the successive values of the factorial function.*)
+
+
+
 
 (** Indexed functions : these functions are similar to previous ones
  except that they call the function with one additional argument which
@@ -106,6 +122,10 @@ val force : 'a t -> unit
   of enumerated elements is constructed and [e] will now enumerate over
   that data structure. *)
 
+val take : int -> 'a t -> 'a t
+  (** [take n e] returns the prefix of [e] of length [n], or [e]
+      itself if [n] is greater than the length of [e] *)
+
 val drop : int -> 'a t -> unit
 (** [drop n e] removes the first [n] element from the enumeration, if any. *)
 
@@ -116,6 +136,20 @@ val take_while : ('a -> bool) -> 'a t -> 'a t
 val drop_while : ('a -> bool) -> 'a t -> 'a t
   (** [drop_while p e] produces a new enumeration in which only 
       all the first elements such that [f e] have been junked.*)
+
+val span : ('a -> bool) -> 'a t -> 'a t * 'a t
+  (** [span test e] produces two enumerations [(hd, tl)], such that
+      [hd] is the same as [take_while test e] and [tl] is the same
+      as [drop_while test e]. *)
+
+val break : ('a -> bool) -> 'a t -> 'a t * 'a t
+  (** Negated span.
+      [break test e] is equivalent to [span (fun x -> not (test x)) e] *)
+
+val group : ('a -> bool) -> 'a t -> 'a t t
+  (** [group test e] devides [e] into an enumeration of enumerations, where
+      each sub-enumeration is the longest continuous enumeration of elements whose [test]
+      results are the same. *)
 
 (** {6 Lazy constructors}
 
@@ -144,7 +178,36 @@ val filter_map : ('a -> 'b option) -> 'a t -> 'b t
 
 val append : 'a t -> 'a t -> 'a t
 (** [append e1 e2] returns an enumeration that will enumerate over all
- elements of [e1] followed by all elements of [e2]. *)
+ elements of [e1] followed by all elements of [e2].
+
+    {b Note} The behavior of appending [e] to itself or to something
+    derived from [e] is not specified. In particular, cloning [append e e]
+    may destroy any sharing between the first and the second argument.*)
+
+val prefix_action : (unit -> unit) -> 'a t -> 'a t
+(** [prefix_action f e] will behave as [e] but guarantees that [f ()]
+    will be invoked exactly once before the current first element of [e] 
+    is read.
+
+    If [prefix_action f e] is cloned, [f] is invoked only once, during
+    the cloning. If [prefix_action f e] is counted, [f] is invoked
+    only once, during the counting.
+
+    May be used for signalling that reading starts or for performing
+    delayed evaluations.*)
+
+val suffix_action : (unit -> unit) -> 'a t -> 'a t
+(** [suffix_action f e] will behave as [e] but guarantees that [f ()]
+    will be invoked after the contents of [e] are exhausted.
+
+    If [suffix_action f e] is cloned, [f] is invoked only once, when
+    the original enumeration is exhausted. If [suffix_action f e]
+    is counted, [f] not invoked only once, unless the act of counting
+    required a call to [force].
+
+    May be used for signalling that reading stopped or for performing
+    delayed evaluations.*)
+
 
 val concat : 'a t t -> 'a t
 (** [concat e] returns an enumeration over all elements of all enumerations
@@ -208,7 +271,7 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
   (**[from_loop data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
      result, etc. The list ends whenever the function raises 
-     {!LazyList.No_more_elements}*)
+     {!Enum.No_more_elements}*)
 
 val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
   (** [seq init step cond] creates a sequence of data, which starts
@@ -222,7 +285,7 @@ val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
 
      [unfold data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
-     result, etc. The list ends whenever the function returns [None]*)
+     result, etc. The enumeration ends whenever the function returns [None]*)
 
 val init : int -> (int -> 'a) -> 'a t
 (** [init n f] creates a new enumeration over elements
@@ -282,15 +345,52 @@ val ( ~~ ) : char -> char -> char t
 (** As ( -- ), but for characters.*)
 
 
-val switchn: int -> ('a -> int) -> 'a t -> 'a t array
-  (** [switchn] is the array version of [switch]. [switch n f fl] split [fl] to an array of [n] enums, [f] is
-      applied to each element of [fl] to decide the id of its destination
-      enum. *)
+val dup : 'a t -> 'a t * 'a t
+  (** [dup stream] returns a pair of streams which are identical to [stream]. Note
+      that stream is a destructive data structure, the point of [dup] is to
+      return two streams can be used independently. *)
+
+val comb : 'a t * 'b t -> ('a * 'b) t
+  (** [comb] transform a pair of stream into a stream of pairs of corresponding
+      elements. If one stream is short, excess elements of the longer stream are
+      ignored. *)
+
+val split : ('a * 'b) t -> 'a t * 'b t
+  (** [split] is the opposite of [comb] *)
+
+val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
+  (** [merge test (a, b)] merge the elements from [a] and [b] into a single
+      enumeration. At each step, [test] is applied to the first element of
+      [a] and the first element of [b] to determine which should get first
+      into resulting enumeration. If [a] or [b] runs out of elements, 
+      the process will append all elements of the other enumeration to
+      the result.
+
+      [merge (>) 
+*)
+
+
+
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
   (** [switch test enum] split [enum] into two enums, where the first enum have
       all the elements satisfying [test], the second enum is opposite. The
       order of elements in the source enum is preserved. *)
+
+(*val switchn: int -> ('a -> int) -> 'a t -> 'a t array
+  (** [switchn] is the array version of [switch]. [switch n f fl] split [fl] to an array of [n] enums, [f] is
+      applied to each element of [fl] to decide the id of its destination
+      enum. *)*)
+
+(** {6 Concurrency} *)
+val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
+(** [while_do cont f e] is a loop on [e] using [f] as body and [cont] as
+    condition for continuing. 
+
+    If [e] contains elements [x1], [x2], [x3]..., then if [cont x1] is [false], 
+    [x1] is returned as such and treatment stops. On the other hand, if [cont x1] 
+    is [true], [f x1] is returned and the loop proceeds with [x2]...*)
+
 
 
 module ExceptionLess : sig

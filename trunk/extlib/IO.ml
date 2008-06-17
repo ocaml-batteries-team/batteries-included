@@ -887,24 +887,6 @@ let write_line_enum output enum =
 let write_bits_enum ~nbits output enum =
   Enum.iter (write_bits ~nbits output) enum
 
-(* ----------
-   Files
-*)
-
-let open_file_in         x = input_channel (open_in x)
-let open_file_in_binary  x = input_channel (open_in_bin x)
-let open_file_out        x = output_channel (open_out x)
-let open_file_out_binary x = output_channel (open_out_bin x)
-(*let append_file_out      x = output_channel (open_out_gen*)
-
-let with_do opener closer x f =
-  let file = opener x in
-    Std.finally (fun () -> closer file) f file
- 
-let with_file_in         x = with_do open_file_in close_in x
-let with_file_in_binary  x = with_do open_file_in_binary close_in x
-let with_file_out        x = with_do open_file_out close_out x
-let with_file_out_binary x = with_do open_file_out_binary close_out x
 
 (* -----------
    Standard IO
@@ -1375,4 +1357,6 @@ end
 
 let printf = Printf.printf
 
-
+(*let sprintf fmt = 
+  let out = output_string in
+    printf out fmt*)
