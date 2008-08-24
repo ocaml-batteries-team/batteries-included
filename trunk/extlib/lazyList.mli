@@ -505,6 +505,9 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
       Raise [Different_list_size] if the two lists
       have different lengths.  Tail-recursive. *)
 
+val uncombine : ('a * 'b) t -> 'a t * 'b t
+  (** Divide a list of pairs into a pair of lists. *)
+
 module Exceptionless : sig
   (** Exceptionless counterparts for error-raising operations*)
 

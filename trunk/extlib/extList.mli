@@ -170,6 +170,9 @@ module List :
 	val dropwhile : ('a -> bool) -> 'a list -> 'a list
 	  (** obsolete, as {!drop_while} *)
 
+	val make_compare : ('a -> 'a -> int) -> 'a list -> 'a list -> int
+	  (** [make_compare c] generates the lexicographical order on lists
+	      induced by [c]*)
 	(** {6 Enum functions} 
 	    
 	    Abstraction layer.*)
@@ -545,6 +548,10 @@ module ListLabels :
 
 	val dropwhile : f:('a -> bool) -> 'a list -> 'a list
 	  (** obsolete, as {!drop_while} *)
+
+	val make_compare: cmp:('a -> 'a -> int) -> 'a list -> 'a list -> int
+	  (** [make_compare ~cmp:c] generates the lexicographical order on lists
+	      induced by [c]*)
 
 	(** {6 Enum functions} 
 	    

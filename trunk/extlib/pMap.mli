@@ -20,8 +20,8 @@
 
 (** Polymorphic Map.
 
-	This is a polymorphic map, similar to standard library [Map] module
-	but in a defunctorized style.
+    This is a polymorphic map, similar to standard library [Map] module
+    but in a defunctorized style.
 *)
 
 type ('a, 'b) t
@@ -76,7 +76,7 @@ val mapi : ('a -> 'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
 val fold : ('b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
     where [k1 ... kN] are the keys of all bindings in [m],
-    and [d1 ... dN] are the associated data.
+    and [d1 ... dN] are the associated data. ???????
     The order in which the bindings are presented to [f] is
     unspecified. *)
 

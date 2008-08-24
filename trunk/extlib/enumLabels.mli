@@ -38,14 +38,21 @@ type 'a t = 'a Enum.t
 *)
 
 val iter : f:('a -> unit) -> 'a t -> unit
-(** [iter f e] calls the function [f] with each elements of [e] in turn. *)
+(** [iter ~f e] calls the function [f] with each elements of [e] in turn. *)
 
 val iter2 : f:('a -> 'b -> unit) -> 'a t -> 'b t -> unit
-(** [iter2 f e1 e2] calls the function [f] with the next elements of [e] and
+(** [iter2 ~f e1 e2] calls the function [f] with the next elements of [e] and
  [e2] repeatedly until one of the two enumerations ends. *)
 
+val exists: f:('a -> bool) -> 'a t -> bool
+(** [exists ~f e] returns [true] if there is some [x] in [e] such
+    that [f x]*)
+
+val for_all: f:('a -> bool) -> 'a t -> bool
+(** [exists ~f e] returns [true] if for every [x] in [e], [f x] is true*)
+
 val fold : f:('a -> 'b -> 'b) -> init:'b -> 'a t -> 'b
-(** [fold f v e] returns v if e is empty,
+(** [fold ~f v e] returns v if e is empty,
   otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
   the elements of [e]. 
 *)

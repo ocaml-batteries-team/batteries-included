@@ -1,20 +1,38 @@
 (** Parser combinators*)
 
-type actual_loc     =
+type loc =
     {
       offset : int;
       line   : int
     }
 
-type loc =
-  | Eof 
-  | Loc of actual_loc
+type position = 
+  | Eof
+  | Loc of loc
 
 type failure =
     {
-      labels : string list;
-      loc    : loc
+      labels  : string list;
+      position: position;
     }
+
+exception Failed of failure
+
+(**
+   A source for parsing.
+*)
+module Source :
+sig
+  type 'a t
+
+  val of_lazy_list : 'a LazyList.t -> 'a t
+  val of_enum      : 'a Enum.t     -> 'a t
+  val pos_offset   : 'a t          -> ('a * loc) t
+  val pos_newlines : ('a -> bool)  -> 'a t -> ('a * loc) t
+
+  val set_pos      : 'a t -> ('a -> loc ) -> 'a t
+  val set_compare  : 'a t -> ('a -> 'a -> int) -> 'a t
+end
 
 (** {6 Primitives} *)
 
@@ -27,6 +45,9 @@ val eof : ('a, unit) t
 
 val either : ('a, 'b) t list -> ('a, 'b) t
   (**Accept one of several parsers.*)
+
+(*val risk : ('a, 'b) t list -> ('a, 'b) t
+  (**Accept one of several parsers -- but without backtracking.*)*)
 
 val ( <|> ) : ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
   (**Accept one of two parsers*)
@@ -41,7 +62,15 @@ val bind : ('a, 'b) t -> ('b -> ('a, 'c) t ) -> ('a, 'c) t
   (**Monadic-style combination:
 
      [bind p f] results in a new parser which behaves as [p]
-     then, in case of success and applies [f] to the result.*)
+     then, in case of success, applies [f] to the result.*)
+
+(*val compose: ('a, 'b) t -> ('b, 'c) t -> ('a, 'c) t*)
+  (**Composition of two successive parsers.
+
+     [compose p q] results in a new parser which feeds the
+     consecutive results of [p] into [q]. In case of error,
+     positions are taken from [p].*)
+
 
 val ( >>= ) : ('a, 'b) t -> ('b -> ('a, 'c) t ) -> ('a, 'c) t
   (** As [bind]*)
@@ -58,6 +87,12 @@ val ( >::) : ('a, 'b) t -> ('a, 'b list) t -> ('a, 'b list) t
 val label: string -> ('a, 'b) t -> ('a, 'b) t
   (**Give a name to a parser, for debugging purposes.*)
 
+val pos: ('a, position) t 
+  (**Succeed and return the position of the parser*)
+
+val loc: ('a, loc) t 
+  (**Succeed and return the loc of the parser*)
+
 val any: ('a, 'a) t
   (**Accept any singleton value.*)
 
@@ -71,20 +106,17 @@ val filter: ('b -> bool) -> ('a, 'b) t ->  ('a, 'b) t
   (**[filter f p] is only accepts values [x] such that [p]
      accepts [x] and [f (p x)] is [true]*)
 
-val run: ('a, 'b) t -> ?newline:'a -> 'a Enum.t -> 'b
-  (**[run p ~newline:nl e] runs parser [p] on a source [e], using [nl] as
-     a line delimitter, and returns the first success.
-     In case of error, raises [Failure].*)
+val run: ('a, 'b) t -> 'a Source.t -> ('b, failure) Std.result
+  (**[run p s] executes parser [p] on source [s]. In case of
+     success, returns [Ok v], where [v] is the return value of [v].
+     In case of failure, returns [Error f], with [f] containing
+     details on the parsing error.*)
 
-val run_filter: ('a, 'b) t -> ?newline:'a -> 'a Enum.t -> 'b Enum.t
-  (** [run_filter p ~newline:nl e] runs parser [p] on a source [e], using
-      [nl] as a line delimitter, and returns consecutive successes as
-      an enumeration. *)
+val enum_runs: ('a, 'b) t -> 'a Source.t -> 'b Enum.t
+val list_runs: ('a, 'b) t -> 'a Source.t -> 'b LazyList.t
+(*val source_map:('a, 'b) t -> 'a Source.t -> 'b Source.t*)
 
-val run_filter_list: ('a, 'b) t -> ?newline:'a -> 'a LazyList.t -> 'b LazyList.t
-  (** [run_filter p ~newline:nl e] runs parser [p] on a source [e], using
-      [nl] as a line delimitter, and returns consecutive successes as
-      an enumeration. *)
+
 
 val fail: ('a, _) t
   (**Always fail, without consuming anything.*)

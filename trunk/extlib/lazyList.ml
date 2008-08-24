@@ -554,6 +554,21 @@ let combine l1 l2 =
     | _                            -> raise (Different_list_size "LazyList.combine")
   in aux l1 l2
 
+let uncombine l =
+  let (l1, l2) = Enum.uncombine (enum l) in
+    (of_enum l1, of_enum l2)
+(*let uncombine l =
+  let rec aux l = match next l with
+    | Cons ((h1, h2), t) -> lazy (let (t1, t2) = aux t in
+				    Cons (h1, t1), Cons(h2, t2))
+    | Nil                -> lazy (Nil, Nil)
+  in aux l*)
+
+(*let uncombine l =
+  unfold l (fun l -> match peek l with
+	      | None -> None
+	      | Cons (h1, h2), t*)
+
 module Exceptionless = struct
   (** Exceptionless counterparts for error-raising operations*)
 

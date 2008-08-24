@@ -142,6 +142,16 @@ let rec drop_while f = function
 let takewhile = take_while
 let dropwhile = drop_while
 
+let make_compare c l1 l2 =
+  let rec aux l1 l2 = match (l1, l2) with
+    | (h1::t1, h2::t2) -> let result = c h1 h2 in
+	if result = 0 then aux t1 t2
+	else               result
+    | ([],     []    ) -> 0
+    | (_,      []    ) -> 1
+    | ([],     _     ) -> -1
+  in aux l1 l2
+
 let rec unique ?(cmp = ( = )) l =
 	let rec loop dst = function
 		| [] -> ()
@@ -597,14 +607,14 @@ module ListLabels = struct
   exception Invalid_index       = List.Invalid_index
   exception Different_list_size = List.Different_list_size
 
-  let init i ~f = List.init i f
-  let make n  x = List.make n x
-  let iteri ~f l= List.iteri f l
-  let map ~f l  = List.map f l
-  let mapi ~f l = List.mapi f l
-  let rfind ~f l= List.rfind f l
-  let find ~f l = List.find f l
-  let findi ~f  = List.findi f
+  let init i ~f     = List.init i f
+  let make n  x     = List.make n x
+  let iteri ~f l    = List.iteri f l
+  let map ~f l      = List.map f l
+  let mapi ~f l     = List.mapi f l
+  let rfind ~f l    = List.rfind f l
+  let find ~f l     = List.find f l
+  let findi ~f      = List.findi f
   let find_exn ~f   = List.find_exn f 
   let filter_map ~f = List.filter_map f
   let remove_if ~f  = List.remove_if f
@@ -628,6 +638,7 @@ module ListLabels = struct
   let stable_sort ~f= List.stable_sort f
   let fast_sort ~f  = List.fast_sort f
   let merge ~f      = List.merge f
+  let make_compare ~cmp          = List.make_compare cmp
 
   let mem           = List.mem
   let memq          = List.memq

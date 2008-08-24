@@ -1,5 +1,28 @@
+08/24/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* enum.ml?: [comb] renamed [combine]
+	* enum.ml?: [split] renamed [uncombine]
+	* lazyList.ml?: [uncombine] added
+	* parserCo.ml?: fully rewritten
+	* parserCo.ml?: module [Source] added
+	* extGenlex.ml?: [as_parser] now returns [loc]
+	
+08/22/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* parserCo.ml?: [run_list] renamed [to_list_filter]
+	* parserCo.ml?: [run_enum] renamed [to_enum_filter]
+	* parserCo.ml?: [compose] created
+	
+07/01/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extList.ml?: [make_compare] created
+	* labels.ml?: created
+	* pSet.ml?: created
+	* multiPMap.ml?: created
+	* enum.ml?: [for_all] created
+	* enum.ml?: [exists] created
+	* enumLabels.ml?: [for_all] created
+	* enumLabels.ml?: [exists] created
+	
 06/04/2008 David Teller <David.Teller@univ-orleans.fr>:
-	* extList.ml?: assoc_inv created
+	* extList.ml?: [assoc_inv] created
 	
 06/03/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* optionLabels.ml?: created

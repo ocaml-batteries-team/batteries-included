@@ -44,6 +44,13 @@ val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
 (** [iter2 f e1 e2] calls the function [f] with the next elements of [e] and
  [e2] repeatedly until one of the two enumerations ends. *)
 
+val exists: ('a -> bool) -> 'a t -> bool
+(** [exists f e] returns [true] if there is some [x] in [e] such
+    that [f x]*)
+
+val for_all: ('a -> bool) -> 'a t -> bool
+(** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
+
 val fold : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
 (** [fold f v e] returns v if e is empty,
   otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
@@ -350,13 +357,13 @@ val dup : 'a t -> 'a t * 'a t
       that stream is a destructive data structure, the point of [dup] is to
       return two streams can be used independently. *)
 
-val comb : 'a t * 'b t -> ('a * 'b) t
-  (** [comb] transform a pair of stream into a stream of pairs of corresponding
+val combine : 'a t * 'b t -> ('a * 'b) t
+  (** [combine] transform a pair of stream into a stream of pairs of corresponding
       elements. If one stream is short, excess elements of the longer stream are
       ignored. *)
 
-val split : ('a * 'b) t -> 'a t * 'b t
-  (** [split] is the opposite of [comb] *)
+val uncombine : ('a * 'b) t -> 'a t * 'b t
+  (** [uncombine] is the opposite of [combine] *)
 
 val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
   (** [merge test (a, b)] merge the elements from [a] and [b] into a single

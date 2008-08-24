@@ -297,7 +297,7 @@ struct
       let case_sensitive  = true
     end
 
-
+    
 
     (**A good approximation of language definition for C++'s lexer*)
     module C =
@@ -495,16 +495,23 @@ struct
       let as_parser = 
 	whitespaces >>> either [
 	  either [any_identifier ;
-		  any_operator    ] >>= (fun x -> return ( Ident x  ));
+		  any_operator    ] >>= (fun x -> loc >>= fun p ->
+					   return ( Ident x , p ) );
 	  either [any_reserved   ;
-		  any_reserved_op]  >>= (fun x -> return ( Kwd x    ));
-  	  float                     >>= (fun x -> return ( Float x  ));
-	  integer                   >>= (fun x -> return ( Int   x  ));
-	  string_literal            >>= (fun x -> return ( String x ));
-	  char_literal              >>= (fun x -> return ( Char x   )) ]
+		  any_reserved_op]  >>= (fun x -> loc >>= fun p ->
+					   return ( Kwd x , p )   );
+  	  float                     >>= (fun x -> loc >>= fun p ->
+					   return ( Float x, p)   );
+	  integer                   >>= (fun x -> loc >>= fun p ->
+					   return ( Int   x, p)   );
+	  string_literal            >>= (fun x -> loc >>= fun p ->
+					   return ( String x, p)  );
+	  char_literal              >>= (fun x -> loc >>= fun p ->
+					   return ( Char x, p ) ) ]
 
     end
-      
+     
+    module Test = Make(Library.C)
   end
 
 end

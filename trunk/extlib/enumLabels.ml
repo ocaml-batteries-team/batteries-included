@@ -31,6 +31,9 @@ let iteri ~f x    = Enum.iteri f x
 
 let iter2i ~f x y = Enum.iter2i f x y
 
+let for_all ~f t  = Enum.for_all f t
+
+let exists ~f t   = Enum.exists f t
 
 let fold ~f ~init x    = Enum.fold f init x
 

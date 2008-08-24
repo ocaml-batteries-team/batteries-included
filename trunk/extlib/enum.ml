@@ -318,6 +318,17 @@ let fold f init t =
 	with
 		No_more_elements -> !acc
 
+let exists f t =
+  try let rec aux () = f (t.next()) || aux ()
+      in aux ()
+  with No_more_elements -> false
+
+let for_all f t =
+  try let rec aux () = f (t.next()) && aux ()
+      in aux ()
+  with No_more_elements -> true
+
+
 let scanl f init t =
 	let acc = ref init in
 	let gen ()=
@@ -639,7 +650,7 @@ let ( ~~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
 
 let dup t      = (t, t.clone())
 
-let comb (x,y) = 
+let combine (x,y) = 
   if x.fast && y.fast then (*Optimized case*)
     let rec aux (x,y) =
       { 
@@ -651,7 +662,7 @@ let comb (x,y) =
     in aux (x,y)
   else from (fun () -> (x.next(), y.next()))
 
-let split e =
+let uncombine e =
   let advance    = ref `first
   and queue_snd  = Queue.create () 
   and queue_fst  = Queue.create () in

@@ -30,12 +30,12 @@ module Genlex : sig
 *)
 
 type token = 
-  | 	Kwd of string
-  | 	Ident of string
-  | 	Int of int
-  | 	Float of float
+  | 	Kwd    of string
+  | 	Ident  of string
+  | 	Int    of int
+  | 	Float  of float
   | 	String of string
-  | 	Char of char
+  | 	Char   of char
 
 (*Genlex.token*)
 
@@ -90,6 +90,10 @@ sig
   module C     : Definition
 end
 
+module Test :
+sig
+end
+
 module Make(M:Definition) :
 sig
   (**Create a lexer from a language definition*)
@@ -101,7 +105,7 @@ sig
       integer numbers as [Int], floating-point numbers as
       [Float] and characters as [Char].*)
 
-  val as_parser        : (char, token) ParserCo.t
+  val as_parser        : (char, token * ParserCo.loc)  ParserCo.t
 
   (** {6 Medium-level API} *)
   val any_identifier   : (char, string) ParserCo.t
