@@ -308,7 +308,7 @@ struct
       let ident_start     = either [uppercase; lowercase; char '_']
       let ident_letter    = either [ident_start; digit]
       let op_start        = one_of [';';':';'!';'$';'%';'&';'*';'+';'.';'/';'<';'=';'>';'?';'^';'|';'-';'~']
-      let op_letter       = fail
+      let op_letter       = op_start
       let reserved_names  = ["continue"; "volatile"; "register"; "unsigned"; "typedef"; "default"; 
 			     "sizeof"; "switch"; "return"; "extern"; "struct"; "static"; "signed"; "while";
 			     "break"; "union"; "const"; "else"; "case"; "enum";
@@ -339,69 +339,77 @@ struct
 	match line_comment_start with
 	  | None   -> fail
 	  | Some s ->
-	      string "//"               >>>
-		zero_plus (not_char '\n') >>>
-		newline                   >>>
-		return ()
+	      label "Line comment"(
+	        string s                  >>= fun _ ->
+	        zero_plus (not_char '\n') >>= fun _ ->
+	        newline                   >>= fun _ ->
+	        return ())
 		
       let multiline_comment =
 	match comment_delimiters with
 	  | None        -> fail
 	  | Some (l, r) ->
+	      label "Multi-line comment" (
+	      let l0 = String.get l 0
+	      and r0 = String.get r 0 in
 	      let in_comment () =
 		if nested_comments then
 		  let not_lr = label ("Neither \""^l^"\" nor ^ \"" ^r^"\"")
-		    (none_of [String.get l 0; String.get r 0]) in
+		    (none_of [r0; l0]) in
 		  let rec aux () =
 		    label "aux" (
 		    either [  string r >>= (fun _ -> return ());
  			      string l >>= (fun _ -> aux () >>= fun _ -> aux ()) ;
-			      one_plus not_lr     >>> aux() ]
+			      (one_plus not_lr) >>= (fun _ -> aux ()) ]
 		    )
 		  in aux ()
-		else zero_plus (none_of [String.get r 0]) >>> 
+		else 
+		  string l >>>
+		  zero_plus (none_of [r0]) >>> 
 		  string r >>> return ()
-	      in in_comment ()
+	      in in_comment ())
 
       let comment = ( line_comment <|> multiline_comment ) >>> return () 
 
       let whitespaces = 
 	zero_plus (either 
-	  [ satisfy Char.is_whitespace >>> return () ;
-	    comment ]) >>> return () 
+	  [ satisfy Char.is_whitespace >>= (fun c -> Printf.eprintf "&&Skipping '%c'\n" c; return ()) ;
+	    comment ]) >>= fun _ -> return () 
 	  
-      let lexeme p =
+      let to_symbol p =
 	p           >>= fun r -> 
-	  whitespaces >>> return r
+	whitespaces >>= fun _ -> 
+	return (String.of_list r)
 	    
-      let symbol s = lexeme (string s)
-	
+      let lexeme p =
+	p           >>= fun r ->
+	whitespaces >>= fun _ ->
+	return r
+
       (** {6 Actual content} *)
       let any_identifier = label "identifier"
-	( ident_start >:: zero_plus ident_letter >>= fun x -> 
-	  symbol (String.of_list x)              >>= fun s ->
-	    if List.mem s reserved_names then fail
-	    else                              return s )
+	( to_symbol (ident_start >:: (zero_plus ident_letter)) >>= fun s -> 
+	    Printf.printf "Seen identifier %S\n" s;return s
+	    (*if List.mem s reserved_names then fail
+	    else                              return s*) )
 
       let any_operator = label "operator"
-	( op_start >:: zero_plus op_letter   >>= fun x -> 
-	  symbol (String.of_list x)          >>= fun s ->
-	    if List.mem s reserved_op_names then fail 
-	    else                                 return s)
+	( to_symbol (op_start >:: zero_plus op_letter)       >>= fun s -> 
+	    Printf.printf "Seen operator %S\n" s; return s
+(*	    if List.mem s reserved_op_names then fail 
+	    else                                 return s*))
 
-      let identifier  p = p >>= fun s -> if List.mem s reserved_names then fail else return s
+      let identifier  p = p >>= fun s -> if List.mem s reserved_names    then fail else return s
 
       let operator    p = p >>= fun s -> if List.mem s reserved_op_names then fail else return s
 
       let any_reserved = label "reserved name"
-	( ident_start >:: zero_plus ident_letter   >>= fun x -> 
-	  symbol (String.of_list x)                >>= fun s ->
+	( to_symbol (ident_start >:: zero_plus ident_letter)   >>= fun s -> 
 	    if List.mem s reserved_names then return s
 	    else                               fail)
 
       let any_reserved_op = label "reserved operator"
-	( op_start >:: zero_plus op_letter   >>= fun x -> 
-	  symbol (String.of_list x)          >>= fun s ->
+	( to_symbol (op_start >:: zero_plus op_letter)    >>= fun s -> 
 	    if List.mem s reserved_op_names then return s
 	    else                                 fail)
 
@@ -493,13 +501,16 @@ struct
     (** Getting it all together. *)
 
       let as_parser = 
-	whitespaces >>> either [
+	whitespaces >>= fun _ -> either [
 	  either [any_identifier ;
 		  any_operator    ] >>= (fun x -> loc >>= fun p ->
-					   return ( Ident x , p ) );
-	  either [any_reserved   ;
+					   let result = if List.mem x reserved_names or List.mem x reserved_op_names then
+					     Kwd x
+					   else Ident x
+					   in return (result, p));
+(*	  either [any_reserved   ;
 		  any_reserved_op]  >>= (fun x -> loc >>= fun p ->
-					   return ( Kwd x , p )   );
+					   return ( Kwd x , p )   );*)
   	  float                     >>= (fun x -> loc >>= fun p ->
 					   return ( Float x, p)   );
 	  integer                   >>= (fun x -> loc >>= fun p ->

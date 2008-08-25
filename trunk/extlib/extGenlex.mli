@@ -107,55 +107,56 @@ sig
 
   val as_parser        : (char, token * ParserCo.loc)  ParserCo.t
 
+
   (** {6 Medium-level API} *)
-  val any_identifier   : (char, string) ParserCo.t
+  val any_identifier   : (char, string * ParserCo.loc) ParserCo.t
     (**Accepts any identifier*)
 
-  val any_operator     : (char, string) ParserCo.t
+  val any_operator     : (char, string * ParserCo.loc) ParserCo.t
     (**Accepts any operator*)
 
-  val identifier       : (char, string) ParserCo.t -> (char, string) ParserCo.t
+  val identifier       : (char, string * ParserCo.loc) ParserCo.t -> (char, string * ParserCo.loc) ParserCo.t
     (**Accepts a given identifier*)
 
-  val operator         : (char, string) ParserCo.t -> (char, string) ParserCo.t
+  val operator         : (char, string * ParserCo.loc) ParserCo.t -> (char, string * ParserCo.loc) ParserCo.t
     (**Accepts a given operator *)
 
-  val reserved         : (char, string) ParserCo.t -> (char, string) ParserCo.t
+  val reserved         : (char, string * ParserCo.loc) ParserCo.t -> (char, string * ParserCo.loc) ParserCo.t
 
-  val reserved_op      : (char, string) ParserCo.t -> (char, string) ParserCo.t
+  val reserved_op      : (char, string * ParserCo.loc) ParserCo.t -> (char, string * ParserCo.loc) ParserCo.t
 
-  val char_literal : (char, char) ParserCo.t
+  val char_literal : (char, char * ParserCo.loc) ParserCo.t
     (**Accepts a character literal, i.e. one character
        (or an escape) between two quotes.*)
 
-  val string_literal:(char, string) ParserCo.t
+  val string_literal:(char, string * ParserCo.loc) ParserCo.t
     (**Accepts a string, i.e. one sequence of
        characters or escapes between two double
        quotes, on one line.*)
 
-  val integer:       (char, int) ParserCo.t
+  val integer:       (char, int * ParserCo.loc) ParserCo.t
     (**Parse an integer.*)
 
-  val float:         (char, float) ParserCo.t
+  val float:         (char, float * ParserCo.loc) ParserCo.t
     (**Parse a floating-point number.*)
 
-  val number:        (char, [`Float of float | `Integer of int]) ParserCo.t
+  val number:        (char, [`Float of float | `Integer of int] * ParserCo.loc) ParserCo.t
     (**Parse either an integer or a floating-point number.*)
 
   (** {6 Low-level API} *)
-  val char         : char -> (char, char) ParserCo.t
+  val char         : char -> (char, char * ParserCo.loc) ParserCo.t
     (** As {!ParserCo.char}, but case-insensitive if specified
 	by {!case_sensitive}. *)
 
-  val string       : string -> (char, string) ParserCo.t
+  val string       : string -> (char, string * ParserCo.loc) ParserCo.t
     (** As {!ParserCo.string}, but case-insensitive if specified
 	by {!case_sensitive}. *)
 
-  val line_comment : (char, unit) ParserCo.t
-  val multiline_comment : (char, unit) ParserCo.t
-  val comment      : (char, unit) ParserCo.t
-  val whitespaces  : (char, unit) ParserCo.t
-  val lexeme       : (char, 'a) ParserCo.t -> (char, 'a) ParserCo.t
+  val line_comment : (char, unit * ParserCo.loc) ParserCo.t
+  val multiline_comment : (char, unit * ParserCo.loc) ParserCo.t
+  val comment      : (char, unit * ParserCo.loc) ParserCo.t
+  val whitespaces  : (char, unit * ParserCo.loc) ParserCo.t
+(*  val lexeme       : (char, 'a * ParserCo.loc) ParserCo.t -> (char, 'a * ParserCo.loc) ParserCo.t*)
     (**Apply this filter to your own parsers if you want them
        to ignore following comments.*)
 

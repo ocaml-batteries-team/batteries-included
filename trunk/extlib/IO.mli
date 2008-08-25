@@ -255,12 +255,12 @@ sig
 	val write_double : 'a output -> float -> unit
 
 
-	val enum_ui16 : input -> int Enum.t
-	val enum_i16 : input -> int Enum.t
-	val enum_i32 : input -> int Enum.t
-	val enum_real_i32 : input -> int32 Enum.t
-	val enum_i64 : input -> int64 Enum.t
-	val enum_double : input -> float Enum.t
+	val ui16s_of : input -> int Enum.t
+	val i16s_of : input -> int Enum.t
+	val i32s_of : input -> int Enum.t
+	val real_i32s_of : input -> int32 Enum.t
+	val i64s_of : input -> int64 Enum.t
+	val doubles_of : input -> float Enum.t
 
 	val write_byte_enum : 'a output -> int Enum.t -> unit
 	val write_ui16_enum : 'a output -> int Enum.t -> unit
@@ -361,43 +361,43 @@ val from_out_chars : #out_chars -> unit output
 
 (** {6 Enumeration API}*)
 
-val enum_byte : input -> int Enum.t
+val bytes_of : input -> int Enum.t
 (** Read an enumeration of unsigned 8-bit integers. *)
 
-val enum_signed_byte : input -> int Enum.t
+val signed_bytes_of : input -> int Enum.t
 (** Read an enumeration of signed 8-bit integers. *)
 
-val enum_ui16 : input -> int Enum.t
+val ui16s_of : input -> int Enum.t
 (** Read an enumeration of unsigned 16-bit words. *)
 
-val enum_i16 : input -> int Enum.t
+val i16s_of : input -> int Enum.t
 (** Read an enumartion of signed 16-bit words. *)
 
-val enum_i32 : input -> int Enum.t
+val i32s_of : input -> int Enum.t
 (** Read an enumeration of signed 32-bit integers. Raise [Overflow] if the
   read integer cannot be represented as a Caml 31-bit integer. *)
 
-val enum_real_i32 : input -> int32 Enum.t
+val real_i32s_of : input -> int32 Enum.t
 (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
 
-val enum_i64 : input -> int64 Enum.t
+val i64s_of : input -> int64 Enum.t
 (** Read an enumeration of signed 64-bit integers as OCaml [int64]s. *)
 
-val enum_double : input -> float Enum.t
+val doubles_of : input -> float Enum.t
 (** Read an enumeration of IEEE double precision floating point values. *)
 
-val enum_string : input -> string Enum.t
+val strings_of : input -> string Enum.t
 (** Read an enumeration of null-terminated strings. *)
 
-val enum_line : input -> string Enum.t
+val lines_of : input -> string Enum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
 
-val enum_char : input -> char Enum.t
+val chars_of : input -> char Enum.t
 (** Read an enumeration of Latin-1 characters. 
 
     {b Note} Usually faster than calling [read] several times.*)
 
-val enum_bits : in_bits -> int Enum.t
+val bits_of : in_bits -> int Enum.t
 (** Read an enumeration of bits *)
 
 val write_byte_enum : 'a output -> int Enum.t -> unit

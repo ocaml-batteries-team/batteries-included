@@ -1,9 +1,7 @@
 open ParserCo
 (** Parsing character strings *)
 
-val parse_string : (char, 'a) t -> string -> 'a
-
-
+val parse_string : (char * ParserCo.loc, 'a) t -> string -> ('a, ParserCo.failure) Std.result
 
 (**{6 Utilities}*)
 

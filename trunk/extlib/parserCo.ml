@@ -1,105 +1,86 @@
 open LazyList
 
-
+type 'a state =
+  | Eof
+  | State of 'a
 
 (** {3 Positions} *)
-
-type loc =
-    {
-      offset : int;
-      line   : int
-    }
-
-type position = 
-  | Eof
-  | Loc of loc
-
-
 module Source =
 struct
 
-  type 'a t = 
-      {
-	pos:      'a -> loc;
-	compare:  'a -> 'a -> int;
-	contents: 'a LazyList.t
-      }
+  type ('a, 'b) t = ('a * 'b) LazyList.t
 
-  let of_lazy_list l =
-    { pos = (fun _ -> {offset = -1; line = -1});
-      compare = Pervasives.compare;
-      contents= l }
+  let of_lazy_list l init f =
+    let rec aux l acc = match get l with
+      | None        -> nil
+      | Some (h, t) -> 
+	  let acc' = f h acc in
+	  lazy( Cons ((h, acc'), (aux t acc')))
+    in aux l init
 
   let of_enum l =
     of_lazy_list (of_enum l)
 
-  let map f t =
-    {(t) with contents = LazyList.map f t.contents}
+  open Lexing
 
-  let pos_offset   e =
-    let offset = ref 0 in
-      { contents = 
-	  LazyList.map (
-	    (fun x -> let result = (x, {offset = !offset; line = -1}) in
-	       incr offset; result)) e.contents;
-	compare = (fun (x,_) (y,_) -> e.compare x y);
-	pos     = snd}
+      (**TODO: Handle EOF !*)
+  let of_lexer l = assert false
+(**    LazyList.of_enum (Enum.from (fun () -> 
+				   
+		 l.refill_buff l;
+  	        (l.lex_buffer, (l.lex_start_p, l.lex_curr_p))))*)
 
-  let pos_newlines nl (e:'a t) : ('a * loc) t =
-    let offset = ref 0
-    and line   = ref 1 in
-      { contents = 
-	  LazyList.map (
-	    (fun x -> let result = (x, {offset = !offset; line = !line}) in
-	     let _ = if nl x then (offset := 0; incr line ) 
-	     else          incr offset
-	     in result) )
-	    e.contents;
-	compare = (fun (x,_) (y,_) -> e.compare x y);
-	pos     = snd}
+  let get_state l = match peek l with
+    | Some (_, s) -> State s
+    | None        -> Eof
 
-  let set_pos e pos =
-    { (e) with pos = pos}
-
-  let set_compare e cmp =
-    { (e) with compare = cmp}
+  let set_full_state l init f = 
+    let rec aux l acc = match get l with
+      | None        -> nil
+      | Some ((h, _), t) -> 
+	  let acc' = f h acc in
+	  lazy( Cons ((h, acc'), (aux t acc')))
+    in aux l init
 end
 
 open Source
 
-type 'a source = 'a Source.t
+type ('a, 'b, 'c) t = ('a, 'c) Source.t -> 'b * ('a, 'c) Source.t
 
-type ('a, 'b) t = 'a source -> 'b * 'a source
+(*let where e = match peek e.contents with
+  | None          -> Eof
+  | Some (_, pos) -> Loc pos
 
-let where e = match peek e.contents with
-  | None   -> Eof
-  | Some x -> Loc (e.pos x)
+let pos e = (where e, e)*)
 
-let pos e = (where e, e)
+(*let loc e = let loc = match where e with 
+  | Loc x -> x 
+  | Eof   -> loc_eof
+in (loc, e)*)
 
-let loc e = (e.loc, e)
-
-let advance e l = {(e) with contents = l}
+(*let advance e l = {(e) with contents = l}*)
 
 (** {3 Error-handling} *)
 
-type failure =
+(*type 'a failure =
     {
       labels  : string list;
-      position: position;
+      position: 'a;
     }
-exception Failed of failure
+exception Failed of Obj.t failure*)
+exception Failed of string list
 
-let fail e = raise (Failed { labels = []; position = where e})
+(*let fail : ('a, 'b, 'c) t = fun (e : ('a, 'c) Source.t) -> raise (Failed { labels = []; position = Obj.repr e})*)
+let fail _ = raise (Failed [])
 
 (* Primitives *)
 
 
 
 let satisfy f e =
-  match get e.contents with
-    | Some (x,t) when f x -> (x, advance e t)
-    | _                   -> fail e
+  match get e with
+    | Some ((x,_),t) when f x -> (x, t)
+    | _                       -> fail e
 
 let label s p e =
   Printf.eprintf ">>> %s\n" s;
@@ -108,37 +89,22 @@ let label s p e =
     Printf.eprintf "<<< %s\n" s;
     flush_all ();
     x
-  with Failed {labels = labels; position = loc} -> 
+  with Failed l ->
     (
       Printf.eprintf "!!! %s\n" s;
       flush_all ();
-      raise (Failed {labels = [s]; position = loc})
+      raise (Failed (s::l))
     )
 
-(*  try p e 
-  with Failed {labels = labels; position = loc} -> raise (Failed {labels = [s]; position = loc})*)
-
-let either (l:('a, 'b) t list) : ('a, 'b) t = fun e ->
+let either l e =
   let rec aux err = function
-  | []   -> raise (Failed { position = where e; labels = err })
-  | h::t -> 
-      try h e
-      with Failed {labels = labels} -> aux (err @ labels) t
-  in aux [] l
-
-let ( <|> ) (p1:('a, 'b) t) (p2:('a, 'b) t) : ('a, 'b) t = fun e -> either [p1;p2] e
-
-let aggressive l e =
-  let rec aux err = function
-    | []   -> raise (Failed { position = where e; labels = err })
-    | h::t ->
+    | []   -> raise (Failed err)
+    | h::t -> 
 	try h e
-	with Failed {labels = labels; position = loc} when where e = loc ->
-	  aux (err @ labels) t
+	with (Failed labels) -> aux (err @ labels) t
   in aux [] l
-	  
-let ( <!> ) (p1:('a, 'b) t) (p2:('a, 'b) t) : ('a, 'b) t = fun e -> aggressive [p1;p2] e
 
+let ( <|> ) p1 p2 = either [p1;p2] 
 
 let maybe p e =
   try  let (result, rest) = p e in (Some result, rest)
@@ -152,23 +118,19 @@ let bind m f e =
 
 let ( >>= ) = bind
 
+let state e = (get_state e, e)
 
-   
-
-(*  let (result, rest) = p e in*)
-    
-
-let eof e = match get e.contents with
+let eof e = match get e with
   | None -> ((), e)
-  | _    -> raise (Failed {labels = ["end of file"]; position = where e})
+  | _    -> raise (Failed ["end of file"])
 
-let any e = match get e.contents with
-  | None       -> raise (Failed {labels = ["anything"]; position = Eof})
-  | Some (x,t) -> (x, advance e t)
+let any e = match get e with
+  | None       -> raise (Failed ["anything"])
+  | Some ((x,_),t) -> (x, t)
 
 let return r e = (r, e)
 
-let filter (f:'b -> bool) (p:('a, 'b) t) (e:'a source) =
+let filter f p e =
   let (next, rest) as result = p e in
     if f next then result
     else           fail e
@@ -206,11 +168,11 @@ let one_plus ?sep p = p >::
 
 let ( ~+ ) p = one_plus p
 
-let map (f:'b -> 'c) (p:('a, 'b) t) (e:'a source) = 
+let post_map f p e =
   let (result, rest) = p e in
     (f result, rest)
 
-let times (n:int) (p:('a, 'b) t) : ('a, 'b list) t=
+let times n p = 
   let rec aux acc i = if i > 0 then p >>= fun x -> (aux (x::acc) ( i - 1 ))
 	   else return acc
   in (aux [] n) >>= fun x -> return (List.rev x)
@@ -218,34 +180,46 @@ let times (n:int) (p:('a, 'b) t) : ('a, 'b list) t=
 let ( ^^ ) p n = times n p
 
 let one_of l e =
-  match get e.contents with
-    | Some (x, rest) when List.exists (fun y -> (e.compare x y) = 0) l -> (x, advance e rest)
-    | _                                                                -> fail e
+  let exists x = List.exists (( = ) x) l in
+    satisfy exists e
 
 let none_of l e = 
-  match get e.contents with
+  let for_all x = List.for_all (( <> ) x) l in
+    satisfy for_all e
+
+(*let one_of l e =
+  match get e with
+    | Some (x, rest) when List.exists (fun y -> (e.compare x y) = 0) l -> (x, advance e rest)
+    | _                                                                -> fail e*)
+
+(*let none_of l e = 
+  match get e with
     | Some (x, rest) when List.exists (fun y -> e.compare x y = 0) l -> fail e
-    | Some (x, rest)                                               -> (x, advance e rest)
-    | _                                                            -> fail e
+    | Some (x, rest)                                                 -> (x, advance e rest)
+    | _                                                              -> fail e*)
 
 let range a b = satisfy (fun x -> a <= x && x <= b)
 
-let scan (p:('a, _) t) : ('a, 'a list) t = fun e ->
-  let (_, rest) = p e in (*First proceed with parsing*)
-  let (extract:'a LazyList.t) =
-    match get rest.contents with
-      | None        -> e.contents (*Take the rest of the list*)
-      | Some (x, (t:'a LazyList.t)) -> let pos = e.pos x in
-	  take_while (fun (x':'a) -> (e.pos x') <> pos) t
-  in (to_list extract, rest)
+let prefix suffix l =
+  let rec aux acc rest =
+    match get rest with
+      | None                         -> []
+      | Some (h, t) when t == suffix -> List.rev (h::acc)
+      | Some (h, t)                  -> aux (h::acc) t
+  in aux [] l
 
-let enum_runs (p:('a, 'b) t) e = Enum.unfold e
-  (fun x -> if LazyList.is_empty x.contents then None
+let scan p e =
+  let (_, rest) = p e in (*First proceed with parsing*)
+    (List.map fst (prefix rest e), rest)
+
+let enum_runs p e = Enum.unfold e
+  (fun x -> if LazyList.is_empty x then None
    else Some (p x) )
 
 let list_runs p e = LazyList.unfold e
-  (fun x -> if LazyList.is_empty x.contents then None
-   else Some (p x) )
+  (fun x -> if LazyList.is_empty x then None
+   else try Some (p x) with
+     | Failed _ -> None)
 
 let to_lazy_list_map p e =
   LazyList.unfold e
@@ -265,13 +239,13 @@ let to_list_map p ?newline e =
               else Some (p x) )*)
 
 let sat f e =
-  match get e.contents with
-    | Some (x,t) when f x -> ((), advance e t)
+  match get e with
+    | Some ((x,_),t) when f x -> ((), t)
     | _                   -> fail e
 
 let lookahead p e =
   (fst ((maybe p) e), e)
 
-let run (p: ('a, 'b) t) e =
+let run p e = 
   try    Std.Ok (fst (p e))
-  with   Failed f -> Std.Error f
+  with   Failed f -> Std.Error (get_state e, f)

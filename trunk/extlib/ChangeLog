@@ -1,3 +1,11 @@
+08/25/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* IO.ml: [enum_char_size] created
+	* IO.ml: [enum_char] now uses [enum_char_size] and [input]
+	* IO.ml?: [enum_*] renamed [*_of]
+	* parserCo.ml?: [Source.t] redefined
+	* parserCo.ml?: [Source.of_lexer] added
+	* parserCo.ml?: [Source.set_*] added
+
 08/24/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* enum.ml?: [comb] renamed [combine]
 	* enum.ml?: [split] renamed [uncombine]
@@ -5,6 +13,16 @@
 	* parserCo.ml?: fully rewritten
 	* parserCo.ml?: module [Source] added
 	* extGenlex.ml?: [as_parser] now returns [loc]
+	* extGenlex.ml: in [multiline_comment], introduced [l0] and [r0]
+	* extGenlex.ml: in [multiline_comment], [either] block now doesn't use [>>>]
+	* extGenlex.ml: in [line_comment], removed [>>>]
+	* extGenlex.ml: in [line_comment], using [s] instead of "//"
+	* extGenlex.ml: in [multiline_comment], added [string l >>>] at start of comment
+	* extGenlex.ml: [symbol] removed
+	* extGenlex.ml: [as_parser] now merged [any_identifier]/[any_operator] and
+	                [any_reserved]/[any_reserved_op]
+	* extGenlex.ml: [C.op_letter] now equals to [C.op_start]
+	* charParser.ml?: changed type of [parse_string]
 	
 08/22/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* parserCo.ml?: [run_list] renamed [to_list_filter]

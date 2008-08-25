@@ -5,8 +5,8 @@ open ExtInt
 open ExtFloat
 
 (** {6 Entry point} *)
-let parse_string p s =
-  run p ~newline:'\n' (String.enum s)
+let parse_string (p:(char * loc, 'b) t) s =
+  run p (Source.pos_newlines Char.is_newline (Source.of_enum (String.enum s)))
 
 (** {6 Utilities}*)
 let char   c = label ("\"" ^ String.of_char c ^ "\"") (exactly c)

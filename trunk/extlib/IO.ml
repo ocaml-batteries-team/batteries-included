@@ -621,17 +621,17 @@ let write_i64 ch n =
 let write_double ch f =
 	write_i64 ch (Int64.bits_of_float f)
 
-let enum_ui16 input = Enum.from (fun () -> apply_enum read_ui16 input)
+let ui16s_of input = Enum.from (fun () -> apply_enum read_ui16 input)
 
-let enum_i16 input = Enum.from (fun () -> apply_enum read_i16 input)
+let i16s_of input = Enum.from (fun () -> apply_enum read_i16 input)
 
-let enum_i32 input = Enum.from (fun () -> apply_enum read_i32 input)
+let i32s_of input = Enum.from (fun () -> apply_enum read_i32 input)
 
-let enum_real_i32 input = Enum.from (fun () -> apply_enum read_real_i32 input)
+let real_i32s_of input = Enum.from (fun () -> apply_enum read_real_i32 input)
 
-let enum_i64 input = Enum.from (fun () -> apply_enum read_i64 input)
+let i64s_of input = Enum.from (fun () -> apply_enum read_i64 input)
 
-let enum_double input = Enum.from (fun () -> apply_enum read_double input)
+let doubles_of input = Enum.from (fun () -> apply_enum read_double input)
 
 let write_byte_enum output enum =
   Enum.iter (write_byte output) enum
@@ -833,29 +833,32 @@ let from_out_chars ch =
 (* ------*)
 (* Enumeration API *)
 
-let enum_byte input = Enum.from (fun () -> apply_enum read_byte input)
+let bytes_of input = Enum.from (fun () -> apply_enum read_byte input)
 
-let enum_signed_byte input = Enum.from (fun () -> apply_enum read_signed_byte input)
+let signed_bytes_of input = Enum.from (fun () -> apply_enum read_signed_byte input)
 
-let enum_ui16 input = Enum.from (fun () -> apply_enum read_ui16 input)
+let ui16s_of input = Enum.from (fun () -> apply_enum read_ui16 input)
 
-let enum_i16 input = Enum.from (fun () -> apply_enum read_i16 input)
+let i16s_of input = Enum.from (fun () -> apply_enum read_i16 input)
 
-let enum_i32 input = Enum.from (fun () -> apply_enum read_i32 input)
+let i32s_of input = Enum.from (fun () -> apply_enum read_i32 input)
 
-let enum_real_i32 input = Enum.from (fun () -> apply_enum read_real_i32 input)
+let real_i32s_of input = Enum.from (fun () -> apply_enum read_real_i32 input)
 
-let enum_i64 input = Enum.from (fun () -> apply_enum read_i64 input)
+let i64s_of input = Enum.from (fun () -> apply_enum read_i64 input)
 
-let enum_double input = Enum.from (fun () -> apply_enum read_double input)
+let doubles_of input = Enum.from (fun () -> apply_enum read_double input)
 
-let enum_string input = Enum.from (fun () -> apply_enum read_string input)
+let strings_of input = Enum.from (fun () -> apply_enum read_string input)
 
-let enum_line input = Enum.from (fun () -> apply_enum read_line input)
+let lines_of input = Enum.from (fun () -> apply_enum read_line input)
 
-let enum_char input = Enum.concat (Enum.from (fun () -> apply_enum (fun x -> String.enum (read_line x)) input))
+(*let chars_of input = Enum.concat (Enum.from (fun () -> apply_enum (fun x -> String.enum (read_line x)) input))*)
+let char_sizes_of = 32000
 
-let enum_bits in_bits = Enum.from (fun () -> apply_enum read_bits in_bits 1)
+let chars_of the_input = Enum.concat (Enum.from (fun () -> apply_enum (fun i -> let buffer = String.create char_sizes_of in ignore (input i buffer 0 char_sizes_of); String.enum buffer) the_input))
+
+let bits_of in_bits = Enum.from (fun () -> apply_enum read_bits in_bits 1)
 
 let write_byte_enum output enum =
   Enum.iter (write_byte output) enum
