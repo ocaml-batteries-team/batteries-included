@@ -67,7 +67,7 @@ val make_lexer : string list -> char Stream.t -> token Stream.t
    can be nested. *)
 
 (**{6 Extending to other languages}*)
-
+open CharParser
 module Languages :
 sig
 module type Definition = 
@@ -75,10 +75,10 @@ sig
   val comment_delimiters : (string * string) option
   val line_comment_start : string option
   val nested_comments    : bool
-  val ident_start        : (char, char) ParserCo.t
-  val ident_letter       : (char, char) ParserCo.t
-  val op_start           : (char, char) ParserCo.t
-  val op_letter          : (char, char) ParserCo.t
+  val ident_start        : (char, char, position) ParserCo.t
+  val ident_letter       : (char, char, position) ParserCo.t
+  val op_start           : (char, char, position) ParserCo.t
+  val op_letter          : (char, char, position) ParserCo.t
   val reserved_names     : string list
   val reserved_op_names  : string list
   val case_sensitive     : bool
@@ -88,10 +88,6 @@ module Library :
 sig
   module OCaml : Definition
   module C     : Definition
-end
-
-module Test :
-sig
 end
 
 module Make(M:Definition) :
@@ -105,58 +101,58 @@ sig
       integer numbers as [Int], floating-point numbers as
       [Float] and characters as [Char].*)
 
-  val as_parser        : (char, token * ParserCo.loc)  ParserCo.t
+  val as_parser        : (char, token , position)  ParserCo.t
 
 
   (** {6 Medium-level API} *)
-  val any_identifier   : (char, string * ParserCo.loc) ParserCo.t
+  val any_identifier   : (char, string , position) ParserCo.t
     (**Accepts any identifier*)
 
-  val any_operator     : (char, string * ParserCo.loc) ParserCo.t
+  val any_operator     : (char, string , position) ParserCo.t
     (**Accepts any operator*)
 
-  val identifier       : (char, string * ParserCo.loc) ParserCo.t -> (char, string * ParserCo.loc) ParserCo.t
+  val identifier       : (char, string , position) ParserCo.t -> (char, string , position) ParserCo.t
     (**Accepts a given identifier*)
 
-  val operator         : (char, string * ParserCo.loc) ParserCo.t -> (char, string * ParserCo.loc) ParserCo.t
+  val operator         : (char, string , position) ParserCo.t -> (char, string , position) ParserCo.t
     (**Accepts a given operator *)
 
-  val reserved         : (char, string * ParserCo.loc) ParserCo.t -> (char, string * ParserCo.loc) ParserCo.t
+  val reserved         : (char, string , position) ParserCo.t -> (char, string , position) ParserCo.t
 
-  val reserved_op      : (char, string * ParserCo.loc) ParserCo.t -> (char, string * ParserCo.loc) ParserCo.t
+  val reserved_op      : (char, string , position) ParserCo.t -> (char, string , position) ParserCo.t
 
-  val char_literal : (char, char * ParserCo.loc) ParserCo.t
+  val char_literal : (char, char , position) ParserCo.t
     (**Accepts a character literal, i.e. one character
        (or an escape) between two quotes.*)
 
-  val string_literal:(char, string * ParserCo.loc) ParserCo.t
+  val string_literal:(char, string , position) ParserCo.t
     (**Accepts a string, i.e. one sequence of
        characters or escapes between two double
        quotes, on one line.*)
 
-  val integer:       (char, int * ParserCo.loc) ParserCo.t
+  val integer:       (char, int , position) ParserCo.t
     (**Parse an integer.*)
 
-  val float:         (char, float * ParserCo.loc) ParserCo.t
+  val float:         (char, float , position) ParserCo.t
     (**Parse a floating-point number.*)
 
-  val number:        (char, [`Float of float | `Integer of int] * ParserCo.loc) ParserCo.t
+  val number:        (char, [`Float of float | `Integer of int] , position) ParserCo.t
     (**Parse either an integer or a floating-point number.*)
 
   (** {6 Low-level API} *)
-  val char         : char -> (char, char * ParserCo.loc) ParserCo.t
+  val char         : char -> (char, char , position) ParserCo.t
     (** As {!ParserCo.char}, but case-insensitive if specified
 	by {!case_sensitive}. *)
 
-  val string       : string -> (char, string * ParserCo.loc) ParserCo.t
+  val string       : string -> (char, string , position) ParserCo.t
     (** As {!ParserCo.string}, but case-insensitive if specified
 	by {!case_sensitive}. *)
 
-  val line_comment : (char, unit * ParserCo.loc) ParserCo.t
-  val multiline_comment : (char, unit * ParserCo.loc) ParserCo.t
-  val comment      : (char, unit * ParserCo.loc) ParserCo.t
-  val whitespaces  : (char, unit * ParserCo.loc) ParserCo.t
-(*  val lexeme       : (char, 'a * ParserCo.loc) ParserCo.t -> (char, 'a * ParserCo.loc) ParserCo.t*)
+  val line_comment : (char, unit , position) ParserCo.t
+  val multiline_comment : (char, unit , position) ParserCo.t
+  val comment      : (char, unit , position) ParserCo.t
+  val whitespaces  : (char, unit , position) ParserCo.t
+(*  val lexeme       : (char, 'a , position) ParserCo.t -> (char, 'a , position) ParserCo.t*)
     (**Apply this filter to your own parsers if you want them
        to ignore following comments.*)
 

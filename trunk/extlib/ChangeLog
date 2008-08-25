@@ -1,4 +1,11 @@
 08/25/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* charParser.ml?: [advance]  created
+	* charParser.ml?: [position] created
+	* charParser.ml?: [source_of_enum], [source_of_string] created
+	* extGenlex.ml?: adapted to new [ParserCo]
+	* extGenlex.ml: [is_reserved] added
+
+08/25/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* IO.ml: [enum_char_size] created
 	* IO.ml: [enum_char] now uses [enum_char_size] and [input]
 	* IO.ml?: [enum_*] renamed [*_of]

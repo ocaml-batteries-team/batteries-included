@@ -55,7 +55,7 @@ val bind : ('a, 'b, 'c) t -> ('b -> ('a, 'd, 'c) t ) -> ('a, 'd, 'c) t
      [bind p f] results in a new parser which behaves as [p]
      then, in case of success, applies [f] to the result.*)
 
-(*val compose: ('a, 'b) t -> ('b, 'c) t -> ('a, 'c) t*)
+(*val compose: ('a, 'b, 'c) t -> ('b, 'd, 'c) t -> ('a, 'd, 'c) t*)
   (**Composition of two successive parsers.
 
      [compose p q] results in a new parser which feeds the
@@ -101,10 +101,10 @@ val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c state * string list) Std
      In case of failure, returns [Error f], with [f] containing
      details on the parsing error.*)
 
-(*
-val enum_runs: ('a, 'b) t -> ('a, 'c) Source.t -> 'b Enum.t
-val list_runs: ('a, 'b) t -> ('a, 'c) Source.t -> 'b LazyList.t
-*)
+
+val enum_runs: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> 'b Enum.t
+val list_runs: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> 'b LazyList.t
+
 
 
 

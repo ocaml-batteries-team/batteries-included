@@ -269,10 +269,10 @@ struct
     val comment_delimiters : (string * string) option
     val line_comment_start : string option
     val nested_comments  : bool
-    val ident_start      : (char, char) ParserCo.t
-    val ident_letter     : (char, char) ParserCo.t
-    val op_start         : (char, char) ParserCo.t
-    val op_letter        : (char, char) ParserCo.t
+    val ident_start      : (char, char, position) ParserCo.t
+    val ident_letter     : (char, char, position) ParserCo.t
+    val op_start         : (char, char, position) ParserCo.t
+    val op_letter        : (char, char, position) ParserCo.t
     val reserved_names   : string list
     val reserved_op_names: string list
     val case_sensitive   : bool
@@ -373,7 +373,7 @@ struct
 
       let whitespaces = 
 	zero_plus (either 
-	  [ satisfy Char.is_whitespace >>= (fun c -> Printf.eprintf "&&Skipping '%c'\n" c; return ()) ;
+	  [ satisfy Char.is_whitespace >>= (fun _ -> return ());
 	    comment ]) >>= fun _ -> return () 
 	  
       let to_symbol p =
@@ -389,13 +389,13 @@ struct
       (** {6 Actual content} *)
       let any_identifier = label "identifier"
 	( to_symbol (ident_start >:: (zero_plus ident_letter)) >>= fun s -> 
-	    Printf.printf "Seen identifier %S\n" s;return s
+(*	    Printf.printf "Seen identifier %S\n" s;*)return s
 	    (*if List.mem s reserved_names then fail
 	    else                              return s*) )
 
       let any_operator = label "operator"
 	( to_symbol (op_start >:: zero_plus op_letter)       >>= fun s -> 
-	    Printf.printf "Seen operator %S\n" s; return s
+(*	    Printf.printf "Seen operator %S\n" s;*) return s
 (*	    if List.mem s reserved_op_names then fail 
 	    else                                 return s*))
 
@@ -413,7 +413,7 @@ struct
 	    if List.mem s reserved_op_names then return s
 	    else                                 fail)
 
-      let reserved    (p:(char, string) ParserCo.t) = 
+      let reserved    p =
 	scan p >>= fun s ->
 	lookahead ident_letter >>= function
 	  | Some _ -> fail
@@ -468,10 +468,10 @@ struct
       let float =
 	label "OCaml-style floating-point number" (
 	  maybe (char '-')                         >>= fun sign     ->
-	  map String.of_list (zero_plus digit)     >>= fun int_part ->
+	  post_map String.of_list (zero_plus digit)     >>= fun int_part ->
 	  maybe (
 	    char '.'  >>= fun _ -> 
-	      map String.of_list (zero_plus digit) ) >>= fun decimal_part ->
+	      post_map String.of_list (zero_plus digit) ) >>= fun decimal_part ->
 	    maybe (
 	      char 'E'  >>= fun _ -> 
 		maybe (char '+' <|> char '-') >>= fun sign ->
@@ -500,29 +500,29 @@ struct
 
     (** Getting it all together. *)
 
+      let is_reserved = if case_sensitive then
+	fun x -> List.mem x reserved_names or List.mem x reserved_op_names
+      else
+	let reserved_names    = List.map String.lowercase reserved_names
+	and reserved_op_names = List.map String.lowercase reserved_op_names in
+	  fun x -> let y = String.lowercase x in
+	    List.mem y reserved_names or List.mem y reserved_op_names
+
       let as_parser = 
 	whitespaces >>= fun _ -> either [
 	  either [any_identifier ;
-		  any_operator    ] >>= (fun x -> loc >>= fun p ->
-					   let result = if List.mem x reserved_names or List.mem x reserved_op_names then
-					     Kwd x
-					   else Ident x
-					   in return (result, p));
-(*	  either [any_reserved   ;
-		  any_reserved_op]  >>= (fun x -> loc >>= fun p ->
-					   return ( Kwd x , p )   );*)
-  	  float                     >>= (fun x -> loc >>= fun p ->
-					   return ( Float x, p)   );
-	  integer                   >>= (fun x -> loc >>= fun p ->
-					   return ( Int   x, p)   );
-	  string_literal            >>= (fun x -> loc >>= fun p ->
-					   return ( String x, p)  );
-	  char_literal              >>= (fun x -> loc >>= fun p ->
-					   return ( Char x, p ) ) ]
+		  any_operator    ] >>= (fun x -> return 
+					   (if is_reserved x then (Kwd x)
+					   else (Ident x) ));
+  	  float                     >>= (fun x -> return (Float x) );
+	  integer                   >>= (fun x -> return (Int x) );
+	  string_literal            >>= (fun x -> return (String x) );
+	  char_literal              >>= (fun x -> return (Char x) )
+	]
 
     end
      
-    module Test = Make(Library.C)
+(*    module Test = Make(Library.C)*)
   end
 
 end

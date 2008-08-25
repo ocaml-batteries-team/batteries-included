@@ -249,3 +249,22 @@ let lookahead p e =
 let run p e = 
   try    Std.Ok (fst (p e))
   with   Failed f -> Std.Error (get_state e, f)
+
+let enum_runs (p:('a, 'b, 'c) t) e =
+  Enum.unfold e (fun e -> if LazyList.is_empty e then None
+		 else try Some (p e)
+		 with Failed _ -> None)
+
+let list_runs p e =
+  LazyList.of_enum (enum_runs p e)
+
+(*let compose (p:('a, 'b, 'c) t) (q:('b, 'd, 'c) t) : ('a, 'd, 'c) t = fun (e:('a, 'c) Source.t) ->
+  let e' = unfold e (fun (e:('a, 'c) Source.t) -> match peek e with
+		       | None        -> None
+		       | Some (a, c) -> Some (assert false))
+  in e'*)
+(*  q (unfold e (fun e -> match peek e with
+		 | None       -> assert false
+		 | Some (a,c) -> assert false))*)
+(*(Some (c, p e))))*)
+

@@ -5,8 +5,25 @@ open ExtInt
 open ExtFloat
 
 (** {6 Entry point} *)
-let parse_string (p:(char * loc, 'b) t) s =
-  run p (Source.pos_newlines Char.is_newline (Source.of_enum (String.enum s)))
+type position =
+{
+  offset: int;
+  line:   int
+}
+let start_position =
+{ offset = 0;
+  line   = 0 }
+
+let advance c p =
+  if Char.is_newline c then { offset = 0; line = p.line + 1}
+  else                      { (p) with offset = p.offset + 1}
+
+let source_of_enum   s = Source.of_enum s start_position advance
+
+let source_of_string s = source_of_enum (String.enum s)
+
+let parse_string p s =
+  run p (source_of_string s)
 
 (** {6 Utilities}*)
 let char   c = label ("\"" ^ String.of_char c ^ "\"") (exactly c)
@@ -34,8 +51,8 @@ let case_string s = label ("case insensitive \"" ^ s ^ "\"") (
 
 let whitespace = sat Char.is_whitespace
 
-let uppercase : (char, char) t         = label "upper case char" (satisfy Char.is_uppercase)
-let lowercase : (char, char) t         = label "lower case char" (satisfy Char.is_lowercase)
+let uppercase = label "upper case char" (satisfy Char.is_uppercase)
+let lowercase = label "lower case char" (satisfy Char.is_lowercase)
 
 let uppercase_latin1   = label "upper case char (possibly accentuated)"
   ( satisfy Char.is_uppercase_latin1 )
@@ -43,7 +60,7 @@ let uppercase_latin1   = label "upper case char (possibly accentuated)"
 let lowercase_latin1   = label "lower case char (possibly accentuated)"  
   ( satisfy Char.is_lowercase_latin1 )
 
-let digit : (char,char) t = label "digit"
+let digit = label "digit"
   ( satisfy Char.is_digit)
 
 let hex = label "hex"
