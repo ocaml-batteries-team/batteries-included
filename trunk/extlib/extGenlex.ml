@@ -500,20 +500,29 @@ struct
 
     (** Getting it all together. *)
 
-      let is_reserved = if case_sensitive then
-	fun x -> List.mem x reserved_names or List.mem x reserved_op_names
-      else
-	let reserved_names    = List.map String.lowercase reserved_names
-	and reserved_op_names = List.map String.lowercase reserved_op_names in
-	  fun x -> let y = String.lowercase x in
-	    List.mem y reserved_names or List.mem y reserved_op_names
+
+      let reserved_names = 
+	if case_sensitive then reserved_names
+	else                   List.map String.lowercase reserved_names
+
+      let reserved_op_names =
+	if case_sensitive then reserved_op_names
+	else                   List.map String.lowercase reserved_op_names
+
+      let check_reserved =
+	if case_sensitive then
+	  fun x -> 
+	    if List.mem x reserved_names or List.mem x reserved_op_names then (Kwd x)
+	    else                                                              (Ident x)
+	else
+	  fun x -> let x = String.lowercase x in
+	    if List.mem x reserved_names or List.mem x reserved_op_names then (Kwd x)
+	    else                                                              (Ident x)
 
       let as_parser = 
 	whitespaces >>= fun _ -> either [
 	  either [any_identifier ;
-		  any_operator    ] >>= (fun x -> return 
-					   (if is_reserved x then (Kwd x)
-					   else (Ident x) ));
+		  any_operator    ] >>= (fun x -> return (check_reserved x));
   	  float                     >>= (fun x -> return (Float x) );
 	  integer                   >>= (fun x -> return (Int x) );
 	  string_literal            >>= (fun x -> return (String x) );
