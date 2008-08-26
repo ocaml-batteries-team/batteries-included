@@ -159,12 +159,29 @@ let zero_plus ?sep p e =
     | (None,   rest) -> ([], rest)
     | (Some x, rest) -> aux [x] rest
 
+let ignore_zero_plus ?sep p e =
+  let p' = match sep with
+    | None   -> p
+    | Some s -> s >>> p
+  in
+  let rec aux l = match maybe p' l with
+    | (None,   rest) -> ((), rest)
+    | (Some _, rest) -> aux rest
+  in match maybe p e with
+    | (None,   rest) -> ((), rest)
+    | (Some x, rest) -> aux rest
+
 let ( ~* ) p = zero_plus p
 
 let one_plus ?sep p = p >:: 
   match sep with
     | None   -> zero_plus p
     | Some s -> zero_plus (s >>> p)
+
+let ignore_one_plus ?sep p = p >>>
+  match sep with
+    | None   -> ignore_zero_plus p
+    | Some s -> ignore_zero_plus (s >>> p)
 
 let ( ~+ ) p = one_plus p
 
@@ -268,3 +285,15 @@ let list_runs p e =
 		 | Some (a,c) -> assert false))*)
 (*(Some (c, p e))))*)
 
+let source_map p e =
+  let rec aux e =
+    match peek e with
+      | None       -> nil
+      | Some (_,c) ->
+	  let next = try Some (p e)
+	             with Failed _ -> None
+	  in match next with
+	    | Some (v, rest) -> lazy (Cons ((v, c), (aux rest)))
+	    | None           -> nil
+  in aux e
+	    

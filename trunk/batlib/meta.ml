@@ -2,7 +2,7 @@
 
 module Callback= Callback
 module CamlinternalOO = CamlinternalOO
-module Dynlink = Dynlink
+(*module Dynlink = Dynlink*)(*Restore this when AsmDynlink becomes standard*)
 module Gc      = Gc
 module Marshal = Marshal
 module Obj     = Obj

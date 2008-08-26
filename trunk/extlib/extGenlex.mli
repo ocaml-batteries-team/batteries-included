@@ -99,33 +99,40 @@ sig
   (** Drop comments, present reserved operators and reserved
       names as [Kwd], operators and identifiers as [Ident],
       integer numbers as [Int], floating-point numbers as
-      [Float] and characters as [Char].*)
+      [Float] and characters as [Char].
 
-  val as_parser        : (char, token , position)  ParserCo.t
+      If the language is not [case_sensitive], identifiers and
+      keywords are returned in lower-case.
+  *)
+  val feed               : (char, position) ParserCo.Source.t -> (token, position) ParserCo.Source.t
 
 
   (** {6 Medium-level API} *)
-  val any_identifier   : (char, string , position) ParserCo.t
-    (**Accepts any identifier*)
+  val ident  : (char, string, position) ParserCo.t
+    (**Accepts any non-reserved identifier/operator.
+       If the language is not [case_sensitive], the identifier
+       is returned in lower-case.*)
 
-  val any_operator     : (char, string , position) ParserCo.t
-    (**Accepts any operator*)
+  val kwd     : (char, string, position) ParserCo.t
+    (**Accepts any identifier.
+       If the language is not [case_sensitive], the identifier
+       is returned in lower-case.*)
 
-  val identifier       : (char, string , position) ParserCo.t -> (char, string , position) ParserCo.t
-    (**Accepts a given identifier*)
+  val identifier       : string -> (char, string, position) ParserCo.t
+    (**Accept an non-reserved identifier or operator.
+       The identifier is recognized according to case-sensitivity
+       and is returned without any alteration.*)
 
-  val operator         : (char, string , position) ParserCo.t -> (char, string , position) ParserCo.t
-    (**Accepts a given operator *)
+  val reserved         : string -> (char, string, position) ParserCo.t
+    (**Accept an reserved identifier or operator.
+       The reserved identifier is recognized according to case-sensitivity
+       and is returned without any alteration.*)
 
-  val reserved         : (char, string , position) ParserCo.t -> (char, string , position) ParserCo.t
-
-  val reserved_op      : (char, string , position) ParserCo.t -> (char, string , position) ParserCo.t
-
-  val char_literal : (char, char , position) ParserCo.t
+  val char_literal     : (char, char , position) ParserCo.t
     (**Accepts a character literal, i.e. one character
        (or an escape) between two quotes.*)
 
-  val string_literal:(char, string , position) ParserCo.t
+  val string_literal   :(char, string, position) ParserCo.t
     (**Accepts a string, i.e. one sequence of
        characters or escapes between two double
        quotes, on one line.*)
@@ -140,12 +147,15 @@ sig
     (**Parse either an integer or a floating-point number.*)
 
   (** {6 Low-level API} *)
+  val as_identifier    : (char, string, position) ParserCo.t -> (char, string, position) ParserCo.t
+    (**Accepts a given identifier/operator*)
+
   val char         : char -> (char, char , position) ParserCo.t
-    (** As {!ParserCo.char}, but case-insensitive if specified
+    (** As {!CharParser.char}, but case-insensitive if specified
 	by {!case_sensitive}. *)
 
-  val string       : string -> (char, string , position) ParserCo.t
-    (** As {!ParserCo.string}, but case-insensitive if specified
+  val string       : string -> (char, string, position) ParserCo.t
+    (** As {!CharParser.string}, but case-insensitive if specified
 	by {!case_sensitive}. *)
 
   val line_comment : (char, unit , position) ParserCo.t

@@ -285,4 +285,6 @@ let splice s1 off len s2 =
   s
 
 let is_empty s = length s = 0 
+
+let compare_without_case s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
 end

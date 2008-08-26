@@ -117,29 +117,9 @@ val lookahead: ('a, 'b, 'c) t -> ('a, 'b option, 'c) t
 
 
 (** {6 Utilities} *)
+(** {7 Singletons} *)
 val exactly : 'a -> ('a, 'a, 'c) t
   (**Accept exactly one singleton.*)
-
-val zero_plus : ?sep:('a, _, 'c) t -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
-  (**Accept a (possibly empty) list of expressions.*)
-
-val ( ~* ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
-  (**As [zero_plus] without arguments.*)
-
-val one_plus :  ?sep:('a, _, 'c) t -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
-  (**Accept a (non-empty) list of expressions*)
-
-val ( ~+ ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
-  (**As [one_plus]*)
-
-val times : int -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
-  (**[time n p] accepts a list of [n] expressions accepted by [p]*)
-
-val ( ^^ ) : ('a, 'b, 'c) t -> int -> ('a, 'b list, 'c) t
-  (**[p ^^ n] is the same thing as [times n p] *)
-
-val post_map : ('b -> 'c) -> ('a, 'b, 'd) t ->  ('a, 'c, 'd) t
-  (**Pass the (successful) result of some parser through a map.*)
 
 val one_of : 'a list -> ('a, 'a, 'c) t
   (**Accept one of several values.
@@ -152,11 +132,44 @@ val none_of : 'a list -> ('a, 'a, 'c) t
 val range: 'a -> 'a -> ('a, 'a, 'c) t
   (**Accept any element from a given range.*)
 
+val sat: ('a -> bool) -> ('a, unit, 'c) t
+  (** As [satisfy], but without result. *)
+(** {7 Repetitions} *)
+val zero_plus : ?sep:('a, _, 'c) t -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  (**Accept a (possibly empty) list of expressions.*)
+
+val ignore_zero_plus : ?sep:('a, _, 'c) t -> ('a, _, 'c) t -> ('a, unit, 'c) t
+  (**Ignore a (possibly empty) list of expressions.
+     Optimized version of [zero_plus], for use when the
+     list of expressions is unimportant.*)
+
+val ( ~* ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  (**As [zero_plus] without arguments.*)
+
+val one_plus :  ?sep:('a, _, 'c) t -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  (**Accept a (non-empty) list of expressions*)
+
+val ignore_one_plus : ?sep:('a, _, 'c) t -> ('a, _, 'c) t -> ('a, unit, 'c) t
+  (**Ignore a (non-empty) list of expressions.
+     Optimized version of [one_plus], for use when the
+     list of expressions is unimportant.*)
+
+val ( ~+ ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  (**As [one_plus]*)
+
+val times : int -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  (**[time n p] accepts a list of [n] expressions accepted by [p]*)
+
+val ( ^^ ) : ('a, 'b, 'c) t -> int -> ('a, 'b list, 'c) t
+  (**[p ^^ n] is the same thing as [times n p] *)
+
+(** {7 Maps}*)
+val post_map : ('b -> 'c) -> ('a, 'b, 'd) t ->  ('a, 'c, 'd) t
+  (**Pass the (successful) result of some parser through a map.*)
+
+val source_map: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c) Source.t
+
 val scan: ('a, _, 'c) t -> ('a, 'a list, 'c) t
   (**Use a parser to extract list of tokens, but return
      that list of tokens instead of whatever the original
      parser returned.*)
-
-val sat: ('a -> bool) -> ('a, unit, 'c) t
-  (** As [satisfy], but without result. *)
-

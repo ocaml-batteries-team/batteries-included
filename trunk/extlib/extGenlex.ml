@@ -333,18 +333,29 @@ struct
       let string =
 	if case_sensitive then string
 	else                   case_string
+
+      let adapt_case =
+	if case_sensitive then Std.identity
+	else String.lowercase
 	  
+      let string_compare =
+	if case_sensitive then String.compare
+	else String.compare_without_case
+
       (** {6 Whitespace management} *)
       let line_comment =
 	match line_comment_start with
 	  | None   -> fail
 	  | Some s ->
 	      label "Line comment"(
-	        string s                  >>= fun _ ->
-	        zero_plus (not_char '\n') >>= fun _ ->
-	        newline                   >>= fun _ ->
+	        string s                         >>= fun _ -> 
+	        ignore_zero_plus (not_char '\n') >>= fun _ ->
+	        newline                          >>= fun _ ->
 	        return ())
-		
+		(*Note: we use [string] rather than [CharParser.string], as the line comment
+		  may be introduced by a word rather than a symbol (e.g. Basic's [REM]), hence
+		  may depend on case sensitivity.*)
+
       let multiline_comment =
 	match comment_delimiters with
 	  | None        -> fail
@@ -360,21 +371,21 @@ struct
 		    label "aux" (
 		    either [  string r >>= (fun _ -> return ());
  			      string l >>= (fun _ -> aux () >>= fun _ -> aux ()) ;
-			      (one_plus not_lr) >>= (fun _ -> aux ()) ]
+			      (ignore_one_plus not_lr) >>= (fun _ -> aux ()) ]
 		    )
 		  in aux ()
 		else 
 		  string l >>>
-		  zero_plus (none_of [r0]) >>> 
+		  ignore_zero_plus (none_of [r0]) >>> 
 		  string r >>> return ()
 	      in in_comment ())
 
       let comment = ( line_comment <|> multiline_comment ) >>> return () 
 
       let whitespaces = 
-	zero_plus (either 
+	ignore_zero_plus (either 
 	  [ satisfy Char.is_whitespace >>= (fun _ -> return ());
-	    comment ]) >>= fun _ -> return () 
+	    comment ])
 	  
       let to_symbol p =
 	p           >>= fun r -> 
@@ -387,21 +398,38 @@ struct
 	return r
 
       (** {6 Actual content} *)
-      let any_identifier = label "identifier"
-	( to_symbol (ident_start >:: (zero_plus ident_letter)) >>= fun s -> 
-(*	    Printf.printf "Seen identifier %S\n" s;*)return s
-	    (*if List.mem s reserved_names then fail
-	    else                              return s*) )
+      let identifier_content = either [ident_start >:: zero_plus ident_letter ; op_start >:: zero_plus op_letter]
 
-      let any_operator = label "operator"
-	( to_symbol (op_start >:: zero_plus op_letter)       >>= fun s -> 
-(*	    Printf.printf "Seen operator %S\n" s;*) return s
-(*	    if List.mem s reserved_op_names then fail 
-	    else                                 return s*))
+      let is_reserved s = List.mem s reserved_names || List.mem s reserved_op_names
 
-      let identifier  p = p >>= fun s -> if List.mem s reserved_names    then fail else return s
+      let ident_or_kwd = label "identifier or reserved"
+	( to_symbol identifier_content >>= fun s ->
+	    return (adapt_case s))
 
-      let operator    p = p >>= fun s -> if List.mem s reserved_op_names then fail else return s
+      let ident = label "identifier or operator"
+	ident_or_kwd >>= fun s -> 
+	  if is_reserved s then fail
+	  else                  return s
+
+      let kwd   = label "reserved"
+	ident_or_kwd >>= fun s -> 
+	  if is_reserved s then return s
+	  else                  fail
+
+
+      let identifier s = label ("identifier or operator "^s)
+	(to_symbol (ident_start >:: (zero_plus ident_letter))) >>= fun s' ->
+	if string_compare s s' = 0 && not (is_reserved s) then return s'
+	else                            fail
+
+      let reserved  s  = label ("reserved "^s)
+	(to_symbol (ident_start >:: (zero_plus ident_letter))) >>= fun s' ->
+	if string_compare s s' = 0 && is_reserved s then return s'
+	else                                         fail
+
+      let as_identifier  p = p >>= fun s -> if List.mem s reserved_names    then fail else return s
+
+      let as_operator    p = p >>= fun s -> if List.mem s reserved_op_names then fail else return s
 
       let any_reserved = label "reserved name"
 	( to_symbol (ident_start >:: zero_plus ident_letter)   >>= fun s -> 
@@ -413,7 +441,7 @@ struct
 	    if List.mem s reserved_op_names then return s
 	    else                                 fail)
 
-      let reserved    p =
+(*      let reserved    p =
 	scan p >>= fun s ->
 	lookahead ident_letter >>= function
 	  | Some _ -> fail
@@ -422,7 +450,7 @@ struct
       let reserved_op p = p >>= fun s ->
 	lookahead op_letter >>= function
 	  | Some _ -> fail
-	  | None   -> return s
+	  | None   -> return s*)
 
 (*  let reserved w =
     lexeme (case_string w          >>= fun x ->
@@ -434,15 +462,15 @@ struct
       return x)*)
      
       let char_literal = label "Character literal" 
-	(char '\'' >>= fun _ ->
+	(CharParser.char '\'' >>= fun _ ->
 	   any       >>= function
 	     | '\\' -> ocaml_escape
 	     | c    -> return c
 	) >>= fun c -> 
-	  char '\'' >>= fun _ -> return c
+	  CharParser.char '\'' >>= fun _ -> return c
 	    
       let string_literal =  label "String literal" 
-	(char '"' >>>
+	(CharParser.char '"' >>>
 	   let rec content chars =
 	     any >>= function
 	       | '"'  -> 
@@ -458,7 +486,7 @@ struct
 	  
       let integer = 
 	label "OCaml-style integer" (
-	  maybe (char '-') >>= fun sign   ->
+	  maybe (CharParser.char '-') >>= fun sign   ->
 	    one_plus digit   >>= fun digits -> 
 	      let number = Int.of_string (String.of_list digits) in
 		match sign with
@@ -467,14 +495,14 @@ struct
 
       let float =
 	label "OCaml-style floating-point number" (
-	  maybe (char '-')                         >>= fun sign     ->
+	  maybe (CharParser.char '-')                   >>= fun sign     ->
 	  post_map String.of_list (zero_plus digit)     >>= fun int_part ->
 	  maybe (
-	    char '.'  >>= fun _ -> 
+	    CharParser.char '.'  >>= fun _ -> 
 	      post_map String.of_list (zero_plus digit) ) >>= fun decimal_part ->
 	    maybe (
-	      char 'E'  >>= fun _ -> 
-		maybe (char '+' <|> char '-') >>= fun sign ->
+	      CharParser.char 'E'  >>= fun _ -> 
+		maybe (CharParser.char '+' <|> CharParser.char '-') >>= fun sign ->
 		  let sign = Option.default '+' sign  in
 		    one_plus digit >>= fun expo -> 
 		      return ("E" ^ (String.of_char sign) ^ (String.of_list expo)))
@@ -499,36 +527,27 @@ struct
 	<|>( integer >>= fun i -> return (`Integer i) )
 
     (** Getting it all together. *)
-
-
-      let reserved_names = 
-	if case_sensitive then reserved_names
-	else                   List.map String.lowercase reserved_names
-
-      let reserved_op_names =
-	if case_sensitive then reserved_op_names
-	else                   List.map String.lowercase reserved_op_names
-
       let check_reserved =
 	if case_sensitive then
 	  fun x -> 
-	    if List.mem x reserved_names or List.mem x reserved_op_names then (Kwd x)
-	    else                                                              (Ident x)
+	    if is_reserved x then (Kwd x)
+	    else                  (Ident x)
 	else
 	  fun x -> let x = String.lowercase x in
-	    if List.mem x reserved_names or List.mem x reserved_op_names then (Kwd x)
-	    else                                                              (Ident x)
+	    if is_reserved x then (Kwd x)
+	    else                  (Ident x)
+
 
       let as_parser = 
 	whitespaces >>= fun _ -> either [
-	  either [any_identifier ;
-		  any_operator    ] >>= (fun x -> return (check_reserved x));
+	  ident_or_kwd              >>= (fun x -> return (check_reserved x));
   	  float                     >>= (fun x -> return (Float x) );
 	  integer                   >>= (fun x -> return (Int x) );
 	  string_literal            >>= (fun x -> return (String x) );
 	  char_literal              >>= (fun x -> return (Char x) )
 	]
 
+      let feed = source_map as_parser
     end
      
 (*    module Test = Make(Library.C)*)

@@ -1,3 +1,10 @@
+08/26/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extGenlex.ml?: [feed] added
+	* parserCo.ml?: [ignore_zero_plus], [ignore_one_plus] added
+	* extGenlex.ml: [ignore_zero_plus], [ignore_one_plus] replace [zero_plus] and [one_plus]
+	                when these are unnecessary
+	* extString.ml?: [compare_without_case] added
+
 08/25/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* charParser.ml?: [advance]  created
 	* charParser.ml?: [position] created

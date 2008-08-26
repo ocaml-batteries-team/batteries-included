@@ -165,6 +165,10 @@ module String :
 	val is_empty : string -> bool
 	  (** [is_empty ""] returns [true]. For any other value of [s],
 	      [is_empty s] returns [false]. *)
+
+	val compare_without_case : string -> string -> int
+	  (**As [compare] but case-insensitive.*)
+
 	(** {6 Older Functions} *)
 
 	(** Please refer to the Ocaml Manual for documentation of these
