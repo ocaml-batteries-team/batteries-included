@@ -80,7 +80,6 @@ sig
   val op_start           : (char, char, position) ParserCo.t
   val op_letter          : (char, char, position) ParserCo.t
   val reserved_names     : string list
-  val reserved_op_names  : string list
   val case_sensitive     : bool
 end
 
@@ -108,6 +107,9 @@ sig
 
 
   (** {6 Medium-level API} *)
+  val start  : (char, unit, position) ParserCo.t
+    (**Remove any leading whitespaces*)
+
   val ident  : (char, string, position) ParserCo.t
     (**Accepts any non-reserved identifier/operator.
        If the language is not [case_sensitive], the identifier
@@ -118,17 +120,10 @@ sig
        If the language is not [case_sensitive], the identifier
        is returned in lower-case.*)
 
-  val identifier       : string -> (char, string, position) ParserCo.t
-    (**Accept an non-reserved identifier or operator.
-       The identifier is recognized according to case-sensitivity
-       and is returned without any alteration.*)
+  val identifier : string -> (char, unit, position) ParserCo.t
+  val keyword    : string -> (char, unit, position) ParserCo.t
 
-  val reserved         : string -> (char, string, position) ParserCo.t
-    (**Accept an reserved identifier or operator.
-       The reserved identifier is recognized according to case-sensitivity
-       and is returned without any alteration.*)
-
-  val char_literal     : (char, char , position) ParserCo.t
+  val char_literal     : (char, char, position) ParserCo.t
     (**Accepts a character literal, i.e. one character
        (or an escape) between two quotes.*)
 
@@ -147,9 +142,6 @@ sig
     (**Parse either an integer or a floating-point number.*)
 
   (** {6 Low-level API} *)
-  val as_identifier    : (char, string, position) ParserCo.t -> (char, string, position) ParserCo.t
-    (**Accepts a given identifier/operator*)
-
   val char         : char -> (char, char , position) ParserCo.t
     (** As {!CharParser.char}, but case-insensitive if specified
 	by {!case_sensitive}. *)

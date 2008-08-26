@@ -53,12 +53,14 @@ let whitespace = sat Char.is_whitespace
 
 let uppercase = label "upper case char" (satisfy Char.is_uppercase)
 let lowercase = label "lower case char" (satisfy Char.is_lowercase)
+let letter    = label "letter" (satisfy Char.is_letter)
 
 let uppercase_latin1   = label "upper case char (possibly accentuated)"
   ( satisfy Char.is_uppercase_latin1 )
 
 let lowercase_latin1   = label "lower case char (possibly accentuated)"  
   ( satisfy Char.is_lowercase_latin1 )
+let latin1    = label "letter (possibly accentuated)" (satisfy Char.is_latin1)
 
 let digit = label "digit"
   ( satisfy Char.is_digit)

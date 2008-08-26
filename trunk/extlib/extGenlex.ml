@@ -274,7 +274,6 @@ struct
     val op_start         : (char, char, position) ParserCo.t
     val op_letter        : (char, char, position) ParserCo.t
     val reserved_names   : string list
-    val reserved_op_names: string list
     val case_sensitive   : bool
   end
 
@@ -293,7 +292,6 @@ struct
       let op_letter       = op_start
       let reserved_names  = ["fun"; "let"; "module"; "begin"; "end"; "sig"; "function";
 			     "{"; "}"; ";"; "|"; ","; ":"; "."; ](*@TODO: Complete*)
-      let reserved_op_names = []
       let case_sensitive  = true
     end
 
@@ -313,7 +311,6 @@ struct
 			     "sizeof"; "switch"; "return"; "extern"; "struct"; "static"; "signed"; "while";
 			     "break"; "union"; "const"; "else"; "case"; "enum";
 			     "auto"; "goto"; "for"; "if"; "do" ]
-      let reserved_op_names = []
       let case_sensitive  = true
     end
   end
@@ -400,38 +397,38 @@ struct
       (** {6 Actual content} *)
       let identifier_content = either [ident_start >:: zero_plus ident_letter ; op_start >:: zero_plus op_letter]
 
-      let is_reserved s = List.mem s reserved_names || List.mem s reserved_op_names
+      let is_reserved s = List.mem s reserved_names
 
       let ident_or_kwd = label "identifier or reserved"
 	( to_symbol identifier_content >>= fun s ->
+	    Printf.eprintf "Got something %S\n" s;
 	    return (adapt_case s))
 
       let ident = label "identifier or operator"
 	ident_or_kwd >>= fun s -> 
 	  if is_reserved s then fail
-	  else                  return s
+	  else                  (Printf.eprintf "Got ident %S\n" s;return s)
 
-      let kwd   = label "reserved"
+      let kwd   = label "keyword"
 	ident_or_kwd >>= fun s -> 
-	  if is_reserved s then return s
+	  if is_reserved s then (Printf.eprintf "Got reserved %S\n" s; return s)
 	  else                  fail
 
+      let identifier s = label ("specific identifier \""^s^"\"")
+	ident >>= fun s' -> 
+	  if string_compare s s' = 0 then return ()
+	  else                        fail
 
-      let identifier s = label ("identifier or operator "^s)
-	(to_symbol (ident_start >:: (zero_plus ident_letter))) >>= fun s' ->
-	if string_compare s s' = 0 && not (is_reserved s) then return s'
-	else                            fail
+      let keyword s = label ("specific keyword \""^s^"\"")
+	kwd >>= fun s' -> 
+	  if string_compare s s' = 0 then return ()
+	  else                        fail
 
-      let reserved  s  = label ("reserved "^s)
-	(to_symbol (ident_start >:: (zero_plus ident_letter))) >>= fun s' ->
-	if string_compare s s' = 0 && is_reserved s then return s'
-	else                                         fail
+(*      let as_identifier  p = p >>= fun s -> if List.mem s reserved_names    then fail else return s
 
-      let as_identifier  p = p >>= fun s -> if List.mem s reserved_names    then fail else return s
+      let as_operator    p = p >>= fun s -> if List.mem s reserved_op_names then fail else return s*)
 
-      let as_operator    p = p >>= fun s -> if List.mem s reserved_op_names then fail else return s
-
-      let any_reserved = label "reserved name"
+(*      let any_reserved = label "reserved name"
 	( to_symbol (ident_start >:: zero_plus ident_letter)   >>= fun s -> 
 	    if List.mem s reserved_names then return s
 	    else                               fail)
@@ -439,28 +436,8 @@ struct
       let any_reserved_op = label "reserved operator"
 	( to_symbol (op_start >:: zero_plus op_letter)    >>= fun s -> 
 	    if List.mem s reserved_op_names then return s
-	    else                                 fail)
+	    else                                 fail)*)
 
-(*      let reserved    p =
-	scan p >>= fun s ->
-	lookahead ident_letter >>= function
-	  | Some _ -> fail
-	  | None   -> return (String.of_list s)
-
-      let reserved_op p = p >>= fun s ->
-	lookahead op_letter >>= function
-	  | Some _ -> fail
-	  | None   -> return s*)
-
-(*  let reserved w =
-    lexeme (case_string w          >>= fun x ->
-    label ("end of "^w) (not_oneof ident_letter) >>> return x)
-
-  let reserved_op w =
-    lexeme (case_string w          >>= fun x ->
-    label ("end of "^w) (not_oneof op_letter) >>= fun _ ->
-      return x)*)
-     
       let char_literal = label "Character literal" 
 	(CharParser.char '\'' >>= fun _ ->
 	   any       >>= function
@@ -548,9 +525,10 @@ struct
 	]
 
       let feed = source_map as_parser
+
+      let start = whitespaces
     end
      
-(*    module Test = Make(Library.C)*)
   end
 
 end

@@ -51,12 +51,20 @@ val lowercase : (char, char, position) t
   (**Recognizes one lower-case ASCII character, including
      accentuated characters.*)
 
+val letter: (char, char, position) t
+  (**Recognizes one lower- or upper-case ASCII character, including
+     accentuated characters.*)
+
 val uppercase_latin1 : (char, char, position) t  (*@TODO: test*)
   (**Recognizes one upper-case Latin-1 character, including
      accentuated characters.*)
 
 val lowercase_latin1 : (char, char, position) t  (*@TODO: test*)
   (**Recognizes one lower-case Latin-1 character, including
+     accentuated characters.*)
+
+val latin1: (char, char, position) t
+  (**Recognizes one lower- or upper-case Latin1 character, including
      accentuated characters.*)
 
 val digit : (char, char, position) t

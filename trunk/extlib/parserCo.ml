@@ -82,16 +82,20 @@ let satisfy f e =
     | Some ((x,_),t) when f x -> (x, t)
     | _                       -> fail e
 
+let depth = ref 0
 let label s p e =
-  Printf.eprintf ">>> %s\n" s;
+  Printf.eprintf "%*s>>> %s\n" !depth " " s;
+  incr depth;
   flush_all ();
   try let x = p e in
-    Printf.eprintf "<<< %s\n" s;
+    decr depth;
+    Printf.eprintf "%*s<<< %s\n" !depth " " s;
     flush_all ();
     x
   with Failed l ->
     (
-      Printf.eprintf "!!! %s\n" s;
+      decr depth;
+      Printf.eprintf "%*s!!! %s\n" !depth " " s;
       flush_all ();
       raise (Failed (s::l))
     )

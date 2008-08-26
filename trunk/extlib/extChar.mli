@@ -43,6 +43,7 @@ val is_lowercase : char -> bool
     A character is lowercase ASCII if it is between
     ['a'] and ['z'] *)
 
+
 val is_uppercase_latin1: char -> bool
 (** Determine if a character is uppercase Latin 1.
     A character is uppercase ASCII if it is between
@@ -54,6 +55,11 @@ val is_lowercase_latin1: char -> bool
     A character is lowercase ASCII if it is between
     ['a'] and ['z'], between ['Ş'] and ['ö'] or
     between ['ø'] and ['ÿ']*)
+
+val is_latin1: char -> bool
+(** Determine if a character is a Latin 1 letter.
+    A character is a Latin 1 letter if it is either
+    an uppercase or a lowercase Latin 1 character.*)
 
 val is_digit     : char -> bool
   (** Determine if a character represents a digit.  Digits are ['0'],

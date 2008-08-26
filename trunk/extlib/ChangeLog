@@ -4,6 +4,9 @@
 	* extGenlex.ml: [ignore_zero_plus], [ignore_one_plus] replace [zero_plus] and [one_plus]
 	                when these are unnecessary
 	* extString.ml?: [compare_without_case] added
+	* extChar.ml?: [is_latin1] added
+	* charParser.ml?: [latin1] added
+	* charParser.ml?: [letter] added
 
 08/25/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* charParser.ml?: [advance]  created
