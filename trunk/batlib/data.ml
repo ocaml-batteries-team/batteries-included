@@ -14,7 +14,7 @@ module Int64  = ExtInt64.Int64
 module Nativeint = ExtNativeint.Nativeint
 
 module Global = Global
-module BitSet = BitSet
+
 
 module UTF8   = UTF8
 module Rope   = Rope

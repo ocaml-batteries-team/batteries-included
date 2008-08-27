@@ -50,5 +50,4 @@ module Result         = Result
 module Global         = Global
 module Ref            = Ref
 module Lazy           = Lazy
-
-
+module BitSet         = BitSet

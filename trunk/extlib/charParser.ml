@@ -25,7 +25,7 @@ let source_of_string s = source_of_enum (String.enum s)
 let parse_string p s =
   run p (source_of_string s)
 
-let parse_enum p e =
+(*let parse_enum p e =
   let latest = ref "" in
   let lines  = lines_of (input_enum e) in
   let chars  = Enum.concat (Enum.from (fun () -> match get lines with
@@ -35,7 +35,7 @@ let parse_enum p e =
   let source = source_of_enum chars in
     match run p source with
       | Std.Ok _ as result -> result
-      | Std.Error report   -> Std.Error (report, ?(*Furthest position*), ?(*List of labels at that point*), !latest)
+      | Std.Error report   -> Std.Error (report, ?(*Furthest position*), ?(*List of labels at that point*), !latest)*)
 
 (** {6 Utilities}*)
 let char   c = label ("\"" ^ String.of_char c ^ "\"") (exactly c)

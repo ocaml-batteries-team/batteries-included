@@ -11,23 +11,7 @@ type 'a state =
 type 'a report =  Report of ('a state * string * 'a report) list
 
 let ( &&& ) (Report l) (Report l') = Report (l @ l')
-(*let obj_state : Obj.t state -> 'a state = function
-  | Eof    -> Eof
-  | State x-> State (Obj.obj x)
 
-let obj_report (Report l) : 'a report =
-  let rec aux l = 
-    List.map (fun (x, y, Report z) -> (obj_state x, y, Report (aux z))) l
-  in Report (aux l)
-
-let repr_state : 'a state -> Obj.t state = function
-  | Eof    -> Eof
-  | State x-> State (Obj.repr x)
-
-let repr_report (Report l) : Obj.t report =
-  let rec aux l = 
-    List.map (fun (x, y, Report z) -> (repr_state x, y, Report (aux z))) l
-  in Report (aux l)*)
 
 (** {3 Positions} *)
 module Source =

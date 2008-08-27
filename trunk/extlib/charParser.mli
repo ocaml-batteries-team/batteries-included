@@ -15,7 +15,7 @@ val source_of_enum   : char Enum.t -> (char, position) Source.t
 
 val parse_string : (char, 'a, position) t -> string -> ('a, position report) Std.result
 
-val parse_enum : (char, 'a, position) t -> char Enum.t -> ('a, position report * position * string list * string) Std.result
+(*val parse_enum : (char, 'a, position) t -> char Enum.t -> ('a, position report * position * string list * string) Std.result*)
 (**{6 Utilities}*)
 
 val char : char -> (char, char, position) t

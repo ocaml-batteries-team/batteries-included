@@ -19,7 +19,7 @@ sig
 (*  val set_state : ('a, 'b) t -> 'b -> unit*)
   val set_full_state : ('a, 'b) t -> 'c -> ('a  -> 'c -> 'c) -> ('a, 'c) t
 
-  val of_lazy_list : 'a LazyList.t -> 'b -> ('a  -> 'b -> 'b) -> ('a, 'b) t
+(*  val of_lazy_list : 'a LazyList.t -> 'b -> ('a  -> 'b -> 'b) -> ('a, 'b) t*)
   val of_enum      : 'a Enum.t     -> 'b -> ('a  -> 'b -> 'b) -> ('a, 'b) t
   val of_lexer     : Lexing.lexbuf -> (string, (Lexing.position * Lexing.position)) t
     (**Create a source from a lexer, as implemented by OCamlLex.
