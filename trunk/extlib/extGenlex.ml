@@ -250,7 +250,7 @@ let ocaml_escape = label "OCaml-style escaped character"
       | 't' -> return '\t'
       | '\\'-> return '\\'
       | 'b' -> return '\b'
-      | '"' -> Printf.eprintf "[ESCAPE] \""; return '"'
+      | '"' -> return '"'
       | 'x' -> 
 	  times 2 hex >>= fun t ->
 	  return (Char.chr (Int.of_string (String.implode ('0'::'x'::t))))
@@ -344,7 +344,7 @@ struct
 	match line_comment_start with
 	  | None   -> fail
 	  | Some s ->
-	      label "Line comment"(
+	      (*label "Line comment"*)label "" (
 	        string s                         >>= fun _ -> 
 	        ignore_zero_plus (not_char '\n') >>= fun _ ->
 	        newline                          >>= fun _ ->
@@ -357,7 +357,7 @@ struct
 	match comment_delimiters with
 	  | None        -> fail
 	  | Some (l, r) ->
-	      label "Multi-line comment" (
+	      (*label "Multi-line comment"*) label "" (
 	      let l0 = String.get l 0
 	      and r0 = String.get r 0 in
 	      let in_comment () =
@@ -373,7 +373,8 @@ struct
 		  in aux ()
 		else 
 		  string l >>>
-		  ignore_zero_plus (none_of [r0]) >>> 
+		    label "Contents of comments" 
+		    (ignore_zero_plus (not_char r0)) >>> 
 		  string r >>> return ()
 	      in in_comment ())
 
@@ -395,34 +396,38 @@ struct
 	return r
 
       (** {6 Actual content} *)
-      let identifier_content = either [ident_start >:: zero_plus ident_letter ; op_start >:: zero_plus op_letter]
+      let identifier_content = either [ident_start >:: zero_plus ident_letter ; 
+				       op_start    >:: zero_plus op_letter]
 
       let is_reserved s = List.mem s reserved_names
 
       let ident_or_kwd = label "identifier or reserved"
+	(label ""
 	( to_symbol identifier_content >>= fun s ->
-	    Printf.eprintf "Got something %S\n" s;
-	    return (adapt_case s))
+(*	    Printf.eprintf "Got something %S\n" s;*)
+	    return (adapt_case s)))
 
       let ident = label "identifier or operator"
-	ident_or_kwd >>= fun s -> 
+	(label ""
+	(ident_or_kwd >>= fun s -> 
 	  if is_reserved s then fail
-	  else                  (Printf.eprintf "Got ident %S\n" s;return s)
+	  else                  ((*Printf.eprintf "Got ident %S\n" s;*)return s)))
 
-      let kwd   = label "keyword"
-	ident_or_kwd >>= fun s -> 
+(*      let kwd   = label "keyword"
+	(ident_or_kwd >>= fun s -> 
 	  if is_reserved s then (Printf.eprintf "Got reserved %S\n" s; return s)
-	  else                  fail
+	  else                  fail)*)
+      let kwd = label "keyword" (ident_or_kwd)
 
-      let identifier s = label ("specific identifier \""^s^"\"")
-	ident >>= fun s' -> 
+      let identifier s = label ("specific identifier \""^s^"\"") (label ""
+	(ident >>= fun s' -> 
 	  if string_compare s s' = 0 then return ()
-	  else                        fail
+	  else                            fail))
 
-      let keyword s = label ("specific keyword \""^s^"\"")
-	kwd >>= fun s' -> 
+      let keyword s = label ("specific keyword \""^s^"\"") (label ""
+	(kwd >>= fun s' -> 
 	  if string_compare s s' = 0 then return ()
-	  else                        fail
+	  else                            fail))
 
 (*      let as_identifier  p = p >>= fun s -> if List.mem s reserved_names    then fail else return s
 
@@ -446,7 +451,8 @@ struct
 	) >>= fun c -> 
 	  CharParser.char '\'' >>= fun _ -> return c
 	    
-      let string_literal =  label "String literal" 
+      let string_literal =  label "String Literal" 
+	(lexeme
 	(CharParser.char '"' >>>
 	   let rec content chars =
 	     any >>= function
@@ -455,24 +461,25 @@ struct
 	       | '\\' -> 
 		   ocaml_escape >>= fun e -> 
 		     content (e::chars)
-		   | e    -> 
-		       content (e::chars)
+	       | e    -> (*Printf.eprintf "Just received char %c\n" e;*)
+		   content (e::chars)
 	   in content [] >>= fun c -> 
-	     return (String.of_list (List.rev c)))
+	     (*Printf.eprintf "Sending full string %S\n" (String.of_list (List.rev c));*)
+	     return (String.of_list (List.rev c))))
 	
 	  
       let integer = 
 	label "OCaml-style integer" (
-	  maybe (CharParser.char '-') >>= fun sign   ->
+	  lexeme(maybe (CharParser.char '-') >>= fun sign   ->
 	    one_plus digit   >>= fun digits -> 
 	      let number = Int.of_string (String.of_list digits) in
 		match sign with
 		  | Some _ -> return (~- number)
-		  | None   -> return number )
+		  | None   -> return number ))
 
       let float =
 	label "OCaml-style floating-point number" (
-	  maybe (CharParser.char '-')                   >>= fun sign     ->
+	  lexeme (maybe (CharParser.char '-')                   >>= fun sign     ->
 	  post_map String.of_list (zero_plus digit)     >>= fun int_part ->
 	  maybe (
 	    CharParser.char '.'  >>= fun _ -> 
@@ -497,7 +504,7 @@ struct
 		      match sign with
 			| None   -> absolute
 			| Some _ -> ~-. absolute)
-	)
+	))
 	  
       let number =
 	   ( float   >>= fun f -> return (`Float f))
@@ -527,6 +534,8 @@ struct
       let feed = source_map as_parser
 
       let start = whitespaces
+
+
     end
      
   end

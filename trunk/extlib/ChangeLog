@@ -1,3 +1,11 @@
+08/27/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* parserCo.ml: entirely rewritten
+	* extGenlex.ml: [ident_or_kwd], [ident], [kwd], [identifier], [keyword] adjusted priority of [label]
+	* extGenlex.ml: [line_comment] and [multiline_comment] lose their label
+	* parserCo.ml: [none_of] now negates [for_all]
+	* IO.ml: [chars_of] now uses [nread]
+	* IO.ml?: [tab_out] created
+	
 08/26/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* extGenlex.ml?: [feed] added
 	* parserCo.ml?: [ignore_zero_plus], [ignore_one_plus] added

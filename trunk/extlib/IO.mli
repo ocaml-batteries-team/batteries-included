@@ -127,8 +127,8 @@ val output_enum : unit -> char Enum.t output
 (** Create an output that will write into an [enum]. The 
   final enum is returned when the output is closed. *)
 
-val comb : ('a output * 'a output) -> 'a output
-(** [tee_out (a,b)] creates a new [output] [c] such that
+val combine : ('a output * 'a output) -> 'a output
+(** [combine (a,b)] creates a new [output] [c] such that
     writing to [c] will actually write to both [a] and [b] *)
 
 val create_in :
@@ -142,10 +142,16 @@ val create_out :
   flush:(unit -> unit) -> close:(unit -> 'a) -> 'a output
 (** Fully create an output by giving all the needed functions. *)
 
-(** {6 Utilities} *)
+val tab_out : int -> 'a output -> 'a output
+(** Create an output shifted to the right by a number of white spaces.
 
-val printf : 'a output -> ('b, 'a output, unit) format -> 'b
-(** The printf function works for any output. *)
+    [tab_out n out] produces a new output for writing into [out], in
+    which every new line starts with [n] white spaces.
+    Raises [Invalid_argument] if [n] < 0.*)
+
+
+
+(** {6 Utilities} *)
 
 val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
@@ -165,6 +171,24 @@ val pos_out : 'a output -> 'a output * (unit -> int)
 external cast_output : 'a output -> unit output = "%identity"
 (** You can safely transform any output to an unit output in a safe way 
   by using this function. *)
+
+(** {6 Printing utilities} *)
+
+val printf : 'a output -> ('b, 'a output, unit) format -> 'b
+(** The printf function works for any output. *)
+
+val make_list_printer: ('a output -> 'b -> unit) -> string -> string -> string -> ('a output -> 'b list -> unit)
+(** Make a list printer
+
+    [make_list_printer printer start_symbol end_symbol separator] creates a printer for
+    lists, which prints [start_symbol] at the beginning of the list, [end_symbol] at
+    the end, uses [printer] for each element of the contents and separates these
+    elements with [separator]
+*)
+
+val lmargin : int -> ('b output -> 'a -> unit) -> 'b output -> 'a -> unit
+(** [lmargin n p] behaves as [p], with the exception that every new line from this
+    point will be shifted to the right by [n] white spaces*)
 
 (** {6 Binary files API}
 
@@ -431,3 +455,6 @@ val write_line_enum : 'a output -> string Enum.t -> unit
 val write_bits_enum : nbits:int -> out_bits -> int Enum.t -> unit
 (** Write an enumeration of bits*)
 
+(**/**)
+val comb : ('a output * 'a output) -> 'a output
+(** Old name of [combine]*)

@@ -1,8 +1,33 @@
+open ExtList
+open ExtString
+open List
 open LazyList
+open IO
 
 type 'a state =
   | Eof
   | State of 'a
+
+type 'a report =  Report of ('a state * string * 'a report) list
+
+let ( &&& ) (Report l) (Report l') = Report (l @ l')
+(*let obj_state : Obj.t state -> 'a state = function
+  | Eof    -> Eof
+  | State x-> State (Obj.obj x)
+
+let obj_report (Report l) : 'a report =
+  let rec aux l = 
+    List.map (fun (x, y, Report z) -> (obj_state x, y, Report (aux z))) l
+  in Report (aux l)
+
+let repr_state : 'a state -> Obj.t state = function
+  | Eof    -> Eof
+  | State x-> State (Obj.repr x)
+
+let repr_report (Report l) : Obj.t report =
+  let rec aux l = 
+    List.map (fun (x, y, Report z) -> (repr_state x, y, Report (aux z))) l
+  in Report (aux l)*)
 
 (** {3 Positions} *)
 module Source =
@@ -45,101 +70,125 @@ end
 
 open Source
 
-type ('a, 'b, 'c) t = ('a, 'c) Source.t -> 'b * ('a, 'c) Source.t
+type ('a, 'b, 'c) result =
+  | Success    of 'b * ('a, 'c) Source.t             (**Succeed and consume.*)
+  | Backtrack  of 'b * 'c report * ('a, 'c) Source.t (**Succeed because of backtracking, typically without consuming.*)
+  | Setback    of 'c report                          (**Error, backtracking in progress.*)
+  | Failure    of 'c report                          (**Fatal error.*)
 
-(*let where e = match peek e.contents with
-  | None          -> Eof
-  | Some (_, pos) -> Loc pos
 
-let pos e = (where e, e)*)
+type ('a, 'b, 'c) t =   ('a, 'c) Source.t -> ('a, 'b, 'c) result
 
-(*let loc e = let loc = match where e with 
-  | Loc x -> x 
-  | Eof   -> loc_eof
-in (loc, e)*)
-
-(*let advance e l = {(e) with contents = l}*)
+let apply p e = p e(**To improve reusability*)
 
 (** {3 Error-handling} *)
 
-(*type 'a failure =
-    {
-      labels  : string list;
-      position: 'a;
-    }
-exception Failed of Obj.t failure*)
-exception Failed of string list
 
-(*let fail : ('a, 'b, 'c) t = fun (e : ('a, 'c) Source.t) -> raise (Failed { labels = []; position = Obj.repr e})*)
-let fail _ = raise (Failed [])
+(*exception Backtrack of Obj.t report*)
+  (**Recoverable error.
 
+     These errors are caused by [fail].*)
+
+(*exception Fail      of Obj.t report*)
+  (**Fatal error.
+
+     These errors are caused by [must].*)
+
+let fail        e     = Setback (Report [])
+let succeed     v e   = Success (v, e)
+let backtracked v r e = Backtrack (v, r, e)
+let return            = succeed
+let fatal       e     = Failure (Report [])
 (* Primitives *)
 
 
 
-let satisfy f e =
-  match get e with
-    | Some ((x,_),t) when f x -> (x, t)
-    | _                       -> fail e
+let satisfy f e = match get e with
+  | Some ((x,_),t) when f x -> succeed x t
+  | _                       -> fail e
 
 let depth = ref 0
 let label s p e =
-  Printf.eprintf "%*s>>> %s\n" !depth " " s;
-  incr depth;
-  flush_all ();
-  try let x = p e in
-    decr depth;
-    Printf.eprintf "%*s<<< %s\n" !depth " " s;
-    flush_all ();
-    x
-  with Failed l ->
-    (
-      decr depth;
-      Printf.eprintf "%*s!!! %s\n" !depth " " s;
-      flush_all ();
-      raise (Failed (s::l))
-    )
+  if String.is_empty s then
+    match apply p e with
+      | Success _ as x      -> x
+      | Setback c           -> Setback (Report [])
+      | Failure c           -> Failure (Report [])
+      | Backtrack (b, c, t) -> Backtrack (b, Report [], t)
+  else
+    let make_report c = Report [get_state e, s, c] in
+(*      printf stderr "%*s>>> %s\n" !depth " " s;
+      incr depth;
+      flush_all ();*)
+      match apply p e with
+	| Success _ as x ->
+(*	    decr depth;
+	    printf stderr "%*s<<< %s\n" !depth " " s;
+	    flush_all ();*)
+	    x
+	| Setback c ->
+(*	    decr depth;
+	    printf stderr "%*s^^^ %s\n" !depth " " s;
+	    flush_all ();*)
+	    Setback (make_report c)
+	| Failure c ->
+(*	    decr depth;
+	    printf stderr "%*s!!! %s\n" !depth " " s;
+	    flush_all ();*)
+	    Failure (make_report c)
+	| Backtrack (b, c, t) ->
+(*	    decr depth;
+	    printf stderr "%*s/// %s\n" !depth " " s;
+	    flush_all ();*)
+	    Backtrack (b, make_report c, t)
+
+let must p e = match apply p e with
+    | Setback x -> Failure x
+    | y         -> y
+
+let should p e = match apply p e with
+    | Failure x -> Setback x
+    | y         -> y
 
 let either l e =
   let rec aux err = function
-    | []   -> raise (Failed err)
-    | h::t -> 
-	try h e
-	with (Failed labels) -> aux (err @ labels) t
+    | []   -> Setback (Report err)
+    | h::t -> match apply h e with
+	| Success   _ 
+	| Failure   _ 
+	| Backtrack (_, _, _) as result -> result
+	| Setback (Report labels)       -> aux (err @ labels) t
   in aux [] l
 
 let ( <|> ) p1 p2 = either [p1;p2] 
 
-let maybe p e =
-  try  let (result, rest) = p e in (Some result, rest)
-  with Failed _ -> (None, e)
+let maybe p e = match apply p e with
+  | Setback c                        -> Backtrack (None, c, e)
+  | Success (result, rest)           -> Success   (Some result, rest)
+  | Backtrack (result, report, rest) -> Backtrack (Some result, report, rest)
+  | Failure _ as result              -> result
 
 let (~?) = maybe
 
-let bind m f e = 
-  let (result, rest) = m e in
-    f result rest
+(*
+  [bind m f e]
+  If [m] succeeded by backtracking and [f] fails or
+  succeeds by backtracking, merge the reports of [m] and [f].
+*)
+let bind m f e = match apply m e with
+  | Setback _ | Failure _ as result -> result
+  | Success   (result, rest)        -> apply f result rest
+  | Backtrack (result, report, rest)     ->
+      match apply f result rest with
+	| Backtrack (result', report', rest') -> Backtrack (result', report &&& report', rest')
+	| Setback   report'                   -> Setback (report &&& report')
+	| Failure   report'                   -> Failure (report &&& report')
+	| Success _ as result                 -> result
 
 let ( >>= ) = bind
 
-let state e = (get_state e, e)
-
-let eof e = match get e with
-  | None -> ((), e)
-  | _    -> raise (Failed ["end of file"])
-
-let any e = match get e with
-  | None       -> raise (Failed ["anything"])
-  | Some ((x,_),t) -> (x, t)
-
-let return r e = (r, e)
-
-let filter f p e =
-  let (next, rest) as result = p e in
-    if f next then result
-    else           fail e
-
-let exactly x = satisfy (( = ) x)
+let ( >>> ) p q =
+  p >>= fun _ -> q
 
 let cons p q =
   p >>= fun p_result ->
@@ -148,50 +197,113 @@ let cons p q =
 
 let ( >:: ) = cons
 
-let ( >>> ) p q =
-  p >>= fun _ -> q
+let state e = succeed (get_state e) e
+
+let eof e = label "End of file" (fun e -> match get e with
+  | None -> succeed () e
+  | _    -> fail e) e
+
+let any e = label "Anything" (fun e -> match get e with
+  | None           -> fail e
+  | Some ((x,_),t) -> succeed x t) e
+
+
 
 let zero_plus ?sep p e =
   let p' = match sep with
     | None   -> p
     | Some s -> s >>> p
   in
-  let rec aux acc l = match maybe p' l with
-    | (None,   rest) -> (List.rev acc, rest)
-    | (Some x, rest) -> aux (x::acc) rest
-  in match maybe p e with
-    | (None,   rest) -> ([], rest)
-    | (Some x, rest) -> aux [x] rest
+  let rec aux acc l = match apply p' l with
+    | Success   (x, rest)              -> aux (x::acc) rest
+    | Backtrack (result, report, rest) -> backtracked (List.rev (result::acc)) report rest
+    | Setback   report                 -> backtracked (List.rev acc) report l
+    | Failure _ as result              -> result
+  in match apply p e with
+    | Success   (x, rest)              -> aux [x] rest
+    | Backtrack (result, report, rest) -> backtracked [result] report rest
+    | Setback   report                 -> backtracked []       report e
+    | Failure _ as result              -> result
+
+let ( ~* ) p = zero_plus p
 
 let ignore_zero_plus ?sep p e =
   let p' = match sep with
     | None   -> p
     | Some s -> s >>> p
   in
-  let rec aux l = match maybe p' l with
-    | (None,   rest) -> ((), rest)
-    | (Some _, rest) -> aux rest
-  in match maybe p e with
-    | (None,   rest) -> ((), rest)
-    | (Some x, rest) -> aux rest
-
-let ( ~* ) p = zero_plus p
+  let rec aux l = match apply p' l with
+    | Success   (x, rest)              -> aux rest
+    | Backtrack (result, report, rest) -> backtracked () report rest
+    | Setback   report                 -> backtracked () report l
+    | Failure _ as result              -> result
+  in match apply p e with
+    | Success   (_, rest)              -> aux rest
+    | Backtrack (result, report, rest) -> backtracked () report rest
+    | Setback   report                 -> backtracked () report e
+    | Failure _ as result              -> result
 
 let one_plus ?sep p = p >:: 
   match sep with
     | None   -> zero_plus p
     | Some s -> zero_plus (s >>> p)
 
+let ( ~+ ) p = one_plus p
+
 let ignore_one_plus ?sep p = p >>>
   match sep with
     | None   -> ignore_zero_plus p
     | Some s -> ignore_zero_plus (s >>> p)
 
-let ( ~+ ) p = one_plus p
+(** [prefix t l] returns [h] such that [[h::t] = l]*)
+let prefix suffix l =
+  let rec aux acc rest = match get rest with
+      | None                         -> []
+      | Some (h, t) when t == suffix -> List.rev (h::acc)
+      | Some (h, t)                  -> aux (h::acc) t
+  in aux [] l
 
-let post_map f p e =
-  let (result, rest) = p e in
-    (f result, rest)
+let scan p e = 
+  let just_prefix rest = List.map fst (prefix rest e) in
+    match apply p e with (*First proceed with parsing*)
+      | Success (result, rest)           -> succeed (just_prefix rest) rest
+      | Backtrack (result, report, rest) -> backtracked (just_prefix rest) report rest
+      | Setback _ | Failure _ as result  -> result
+
+let lookahead p e = match apply p e with
+  | Setback c                        -> Backtrack (None, c, e)
+  | Success (result, _)              -> Success   (Some result, e)
+  | Backtrack (result, report, _)    -> Backtrack (Some result, report, e)
+  | Failure _ as result              -> result
+
+let run p e = match apply p e with
+  | Setback f | Failure f                -> Std.Error f
+  | Success (r, _) | Backtrack (r, _, _) -> Std.Ok r
+	
+
+let source_map p e =
+  let rec aux e = match peek e with
+    | None        -> nil
+    | Some (_, c) -> match apply p e with
+	| Success   (result, rest)    -> lazy (Cons ((result, c), (aux rest)))
+	| Backtrack (result, _, rest) -> lazy (Cons ((result, c), (aux rest)))
+	| Setback _ | Failure _       -> nil (*@TODO: improve error reporting !*)
+  in aux e
+	    
+
+(**
+   {3 Utilities}
+*)
+let filter f p = 
+  p >>= fun x -> 
+    if f x then return x
+    else        fail
+
+let exactly x = satisfy (( = ) x)
+
+
+let post_map f p = 
+  p >>= fun x -> return (f x)
 
 let times n p = 
   let rec aux acc i = if i > 0 then p >>= fun x -> (aux (x::acc) ( i - 1 ))
@@ -205,99 +317,9 @@ let one_of l e =
     satisfy exists e
 
 let none_of l e = 
-  let for_all x = List.for_all (( <> ) x) l in
+  let for_all x = not (List.for_all (( <> ) x) l) in
     satisfy for_all e
-
-(*let one_of l e =
-  match get e with
-    | Some (x, rest) when List.exists (fun y -> (e.compare x y) = 0) l -> (x, advance e rest)
-    | _                                                                -> fail e*)
-
-(*let none_of l e = 
-  match get e with
-    | Some (x, rest) when List.exists (fun y -> e.compare x y = 0) l -> fail e
-    | Some (x, rest)                                                 -> (x, advance e rest)
-    | _                                                              -> fail e*)
 
 let range a b = satisfy (fun x -> a <= x && x <= b)
 
-let prefix suffix l =
-  let rec aux acc rest =
-    match get rest with
-      | None                         -> []
-      | Some (h, t) when t == suffix -> List.rev (h::acc)
-      | Some (h, t)                  -> aux (h::acc) t
-  in aux [] l
-
-let scan p e =
-  let (_, rest) = p e in (*First proceed with parsing*)
-    (List.map fst (prefix rest e), rest)
-
-let enum_runs p e = Enum.unfold e
-  (fun x -> if LazyList.is_empty x then None
-   else Some (p x) )
-
-let list_runs p e = LazyList.unfold e
-  (fun x -> if LazyList.is_empty x then None
-   else try Some (p x) with
-     | Failed _ -> None)
-
-let to_lazy_list_map p e =
-  LazyList.unfold e
-    (fun x -> if LazyList.is_empty x then None
-              else Some (p x))
-
-let to_enum_map p e =
-  LazyList.unfold e
-    (fun x -> if LazyList.is_empty x then None
-              else Some (p x))
-
-(*
-let to_list_map p ?newline e =
-  let e' = put_loc ?newline e in
-  LazyList.unfold e' 
-    (fun x -> if LazyList.is_empty x then None
-              else Some (p x) )*)
-
-let sat f e =
-  match get e with
-    | Some ((x,_),t) when f x -> ((), t)
-    | _                   -> fail e
-
-let lookahead p e =
-  (fst ((maybe p) e), e)
-
-let run p e = 
-  try    Std.Ok (fst (p e))
-  with   Failed f -> Std.Error (get_state e, f)
-
-let enum_runs (p:('a, 'b, 'c) t) e =
-  Enum.unfold e (fun e -> if LazyList.is_empty e then None
-		 else try Some (p e)
-		 with Failed _ -> None)
-
-let list_runs p e =
-  LazyList.of_enum (enum_runs p e)
-
-(*let compose (p:('a, 'b, 'c) t) (q:('b, 'd, 'c) t) : ('a, 'd, 'c) t = fun (e:('a, 'c) Source.t) ->
-  let e' = unfold e (fun (e:('a, 'c) Source.t) -> match peek e with
-		       | None        -> None
-		       | Some (a, c) -> Some (assert false))
-  in e'*)
-(*  q (unfold e (fun e -> match peek e with
-		 | None       -> assert false
-		 | Some (a,c) -> assert false))*)
-(*(Some (c, p e))))*)
-
-let source_map p e =
-  let rec aux e =
-    match peek e with
-      | None       -> nil
-      | Some (_,c) ->
-	  let next = try Some (p e)
-	             with Failed _ -> None
-	  in match next with
-	    | Some (v, rest) -> lazy (Cons ((v, c), (aux rest)))
-	    | None           -> nil
-  in aux e
-	    
+let sat f = (satisfy f) >>> return ()

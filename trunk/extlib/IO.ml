@@ -20,6 +20,7 @@
  *)
 
 open ExtString
+open ExtChar
 
 type input = {
 	mutable in_read : unit -> char;
@@ -854,9 +855,10 @@ let strings_of input = Enum.from (fun () -> apply_enum read_string input)
 let lines_of input = Enum.from (fun () -> apply_enum read_line input)
 
 (*let chars_of input = Enum.concat (Enum.from (fun () -> apply_enum (fun x -> String.enum (read_line x)) input))*)
-let char_sizes_of = 32000
+let buffer_size = 1024
 
-let chars_of the_input = Enum.concat (Enum.from (fun () -> apply_enum (fun i -> let buffer = String.create char_sizes_of in ignore (input i buffer 0 char_sizes_of); String.enum buffer) the_input))
+let chars_of the_input = Enum.concat (Enum.from (fun () -> 
+   apply_enum (fun source -> String.enum (nread source buffer_size)) the_input))
 
 let bits_of in_bits = Enum.from (fun () -> apply_enum read_bits in_bits 1)
 
@@ -1363,3 +1365,52 @@ let printf = Printf.printf
 (*let sprintf fmt = 
   let out = output_string in
     printf out fmt*)
+let make_list_printer (p:('a output -> 'b -> unit)) 
+                      (a:string)
+		      (b:string)
+		      (s:string)
+		      (out:'a output)
+		      (l:'b list) = 
+  let rec aux out = function (*Weird error. Type-checker bug?*)
+  | []    -> ()
+  | [h]   -> p out h
+  | h::t  -> printf out "%a%s%a" p h s aux t
+  in printf out "%s%a%s" a aux l b
+  
+let tab_out n out =
+  let spaces   = String.make n ' ' in
+  let nlspaces = "\n"^spaces       
+  and crspaces = "\r"^spaces       in
+  let add_spaces = function
+    | '\n' -> nlspaces
+    | '\r' -> crspaces
+    | x    -> String.of_char x
+  in
+  create_out 
+    ~write: (fun c     -> 
+	       printf stderr "Attempting to write %C\n" c;
+	       out.out_write c;
+	       if Char.is_newline c then (
+		 printf stderr "Adding %S\n" spaces;
+		 nwrite out spaces)
+	    )
+    ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*)
+	       printf stderr "Attempting to output %S\n" s;
+	       let length = String.length s                 in
+	       let buffer = Buffer.create (String.length s) in
+		 for i = p to min (length - 1) l do
+		   let c = String.unsafe_get s i in
+		     Buffer.add_char buffer c;
+		     if Char.is_newline c then
+		       Buffer.add_string buffer spaces
+		 done;
+		 let s' = Buffer.contents buffer                  in
+		 let _  = printf stderr "Replacing with %S\n" s' in
+		 output out s' 0 (String.length s'))
+    ~flush:out.out_flush
+    ~close:out.out_close
+
+let combine = comb
+
+let lmargin n p out x =
+  p (tab_out n out) x

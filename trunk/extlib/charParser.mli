@@ -13,8 +13,9 @@ val advance : char -> position -> position
 val source_of_string : string      -> (char, position) Source.t
 val source_of_enum   : char Enum.t -> (char, position) Source.t
 
-val parse_string : (char, 'a, position) t -> string -> ('a, position state * string list) Std.result
+val parse_string : (char, 'a, position) t -> string -> ('a, position report) Std.result
 
+val parse_enum : (char, 'a, position) t -> char Enum.t -> ('a, position report * position * string list * string) Std.result
 (**{6 Utilities}*)
 
 val char : char -> (char, char, position) t
@@ -37,10 +38,10 @@ val case_char : char -> (char, char, position) t
 val case_string : string -> (char, string, position) t
   (** As [case_string], but case-insensitive *)
 
-val newline : (char, unit, position) t
+val newline : (char, char, position) t
   (**Recognizes a newline*)
 
-val whitespace : (char, unit, position) t
+val whitespace : (char, char, position) t
   (**Recognizes white-space*)
 
 val uppercase : (char, char, position) t

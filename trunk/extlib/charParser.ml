@@ -11,11 +11,11 @@ type position =
   line:   int
 }
 let start_position =
-{ offset = 0;
-  line   = 0 }
+{ offset = 1;
+  line   = 1 }
 
 let advance c p =
-  if Char.is_newline c then { offset = 0; line = p.line + 1}
+  if Char.is_newline c then ((*Printf.eprintf "[Have reached line %i]\n%!" (p.line + 1);*) { offset = 1; line = p.line + 1})
   else                      { (p) with offset = p.offset + 1}
 
 let source_of_enum   s = Source.of_enum s start_position advance
@@ -24,6 +24,18 @@ let source_of_string s = source_of_enum (String.enum s)
 
 let parse_string p s =
   run p (source_of_string s)
+
+let parse_enum p e =
+  let latest = ref "" in
+  let lines  = lines_of (input_enum e) in
+  let chars  = Enum.concat (Enum.from (fun () -> match get lines with
+    | None   -> raise Enum.No_more_elements
+    | Some l -> latest := l;
+	String.enum l)) in
+  let source = source_of_enum chars in
+    match run p source with
+      | Std.Ok _ as result -> result
+      | Std.Error report   -> Std.Error (report, ?(*Furthest position*), ?(*List of labels at that point*), !latest)
 
 (** {6 Utilities}*)
 let char   c = label ("\"" ^ String.of_char c ^ "\"") (exactly c)
@@ -49,7 +61,7 @@ let case_string s = label ("case insensitive \"" ^ s ^ "\"") (
   in aux 0
 )   
 
-let whitespace = sat Char.is_whitespace
+let whitespace = satisfy Char.is_whitespace
 
 let uppercase = label "upper case char" (satisfy Char.is_uppercase)
 let lowercase = label "lower case char" (satisfy Char.is_lowercase)
@@ -71,7 +83,9 @@ let hex = label "hex"
 let first s = String.get s 0
 
 let not_char c = label ("anything but '" ^ String.of_char c ^ "'")
-  (satisfy (fun x -> x <> c))
+  (satisfy (fun x -> x <> c) (*>>=
+     fun x -> Printf.eprintf "(%c)\n" x; return x*)
+)
 
 let none_of l = label (
   String.of_list (Vect.to_list (Vect.append ']'
@@ -80,5 +94,5 @@ let none_of l = label (
        l))))
   (none_of l)
 
-let newline = sat Char.is_newline
+let newline = satisfy Char.is_newline
 

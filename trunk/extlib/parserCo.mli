@@ -4,6 +4,8 @@ type 'a state =
   | Eof
   | State of 'a
 
+type 'a report = Report of ('a state * string * 'a report) list
+
 (**
    A source for parsing.
 *)
@@ -95,21 +97,23 @@ val filter: ('b -> bool) -> ('a, 'b, 'c) t ->  ('a, 'b, 'c) t
   (**[filter f p] is only accepts values [x] such that [p]
      accepts [x] and [f (p x)] is [true]*)
 
-val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c state * string list) Std.result
+val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) Std.result
   (**[run p s] executes parser [p] on source [s]. In case of
      success, returns [Ok v], where [v] is the return value of [v].
      In case of failure, returns [Error f], with [f] containing
      details on the parsing error.*)
 
 
-val enum_runs: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> 'b Enum.t
-val list_runs: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> 'b LazyList.t
+(*val enum_runs: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> 'b Enum.t
+val list_runs: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> 'b LazyList.t*)
 
 
 
 
 val fail: (_, _, _) t
   (**Always fail, without consuming anything.*)
+
+val fatal: (_, _, _) t
 
 val lookahead: ('a, 'b, 'c) t -> ('a, 'b option, 'c) t
   (**[lookahead p] behaves as [maybe p] but without consuming anything*)
@@ -132,8 +136,6 @@ val none_of : 'a list -> ('a, 'a, 'c) t
 val range: 'a -> 'a -> ('a, 'a, 'c) t
   (**Accept any element from a given range.*)
 
-val sat: ('a -> bool) -> ('a, unit, 'c) t
-  (** As [satisfy], but without result. *)
 (** {7 Repetitions} *)
 val zero_plus : ?sep:('a, _, 'c) t -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
   (**Accept a (possibly empty) list of expressions.*)
@@ -163,6 +165,13 @@ val times : int -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
 val ( ^^ ) : ('a, 'b, 'c) t -> int -> ('a, 'b list, 'c) t
   (**[p ^^ n] is the same thing as [times n p] *)
 
+val must: ('a, 'b, 'c) t -> ('a, 'b, 'c) t
+  (**Prevent backtracking.*)
+
+val should: ('a, 'b, 'c) t -> ('a, 'b, 'c) t
+  (**Prevent backtracking.*)
+
+
 (** {7 Maps}*)
 val post_map : ('b -> 'c) -> ('a, 'b, 'd) t ->  ('a, 'c, 'd) t
   (**Pass the (successful) result of some parser through a map.*)
@@ -173,3 +182,7 @@ val scan: ('a, _, 'c) t -> ('a, 'a list, 'c) t
   (**Use a parser to extract list of tokens, but return
      that list of tokens instead of whatever the original
      parser returned.*)
+
+(** {7 Others}*)
+val sat: ('a -> bool) -> ('a, unit, _) t
+  (**[satisfy p] accepts one value [p x] such that [p x = true]*)
