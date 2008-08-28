@@ -36,6 +36,7 @@ module Char = struct
 
   let is_uppercase c = 'A' <= c && c <= 'Z'
   let is_lowercase c = 'a' <= c && c <= 'z'
+
 let is_uppercase_latin1 c = is_uppercase c || ( '\192' (*À*)<= c && c <= '\214' (*Ö*) )||( '\216' (*Ø*) <= c && c <= '\221'(*İ*) )
 let is_lowercase_latin1 c = is_lowercase c || ( '\222' (*Ş*) <= c && c <= '\246'(*ö*) )||( '\248'(*ø*) <= c && c <= '\255' (*'ÿ'*) )
 let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
@@ -64,10 +65,10 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
   external unsafe_int : char-> int  = "%identity"
 
   let enum () = 
-    EnumLabels.map (Enum.( -- ) 0 255) ~f:unsafe_chr
+    Enum.map unsafe_chr (Enum.( -- ) 0 255)
 
   let ( -- ) from last =
-    EnumLabels.map (Enum.( -- ) (unsafe_int from) (unsafe_int last)) ~f:unsafe_chr
+    Enum.map unsafe_chr (Enum.( -- ) (unsafe_int from) (unsafe_int last))
 
   let range ?until from =
     let last = match until with

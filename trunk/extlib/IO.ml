@@ -39,6 +39,9 @@ exception No_more_input
 exception Input_closed
 exception Output_closed
 
+(**
+   {6 Exception management}
+*)
 (** [apply_enum f x] applies [f] to [x] and converts exceptions
     [No_more_input] and [Input_closed] to [Enum.No_more_elements]*)
 let apply_enum f x =
@@ -47,10 +50,10 @@ let apply_enum f x =
     |  Input_closed  -> raise Enum.No_more_elements
 
 
+(**
+   {6 API}
+*)
 
-
-(* -------------------------------------------------------------- *)
-(* API *)
 
 let default_close = (fun () -> ())
 
@@ -222,8 +225,10 @@ let pos_out o =
 		out_flush = o.out_flush;
 	} , (fun () -> !p)
 
-(* -------------------------------------------------------------- *)
-(* Standard IO *)
+(**
+   {6 Standard IO}
+*)
+
 
 let input_string s =
 	let pos = ref 0 in
@@ -259,6 +264,13 @@ let output_string() =
 		out_flush = (fun () -> ());
 	}
 
+let output_buffer buf =
+  {
+    out_write = Buffer.add_char buf;
+    out_output= (fun s p l -> Buffer.add_substring buf s p l; l);
+    out_close = (fun () -> Buffer.contents buf);
+    out_flush = (fun () -> ());
+  }
 let input_channel ch =
 	{
 		in_read = (fun () ->
@@ -386,8 +398,10 @@ let pipe() =
 
 external cast_output : 'a output -> unit output = "%identity"
 
-(* -------------------------------------------------------------- *)
-(* BINARY APIs *)
+(**
+   {6 Binary APIs}
+*)
+
 
 exception Overflow of string
 
@@ -491,6 +505,9 @@ let read_i64 ch =
 let read_double ch =
 	Int64.float_of_bits (read_i64 ch)
 
+let read_float ch =
+	Int32.float_of_bits (read_real_i32 ch)
+
 let write_byte o n =
 	(* doesn't test bounds of n in order to keep semantics of Pervasives.output_byte *)
 	write o (Char.unsafe_chr (n land 0xFF))
@@ -536,8 +553,12 @@ let write_i64 ch n =
 let write_double ch f =
 	write_i64 ch (Int64.bits_of_float f)
 
-(* -------------------------------------------------------------- *)
-(* Big Endians *)
+let write_float ch f =
+        write_real_i32 ch (Int32.bits_of_float f)
+
+(**
+   {6 Big Endians}
+*)
 
 module BigEndian = struct
 
@@ -589,6 +610,9 @@ let read_i64 ch =
 let read_double ch =
 	Int64.float_of_bits (read_i64 ch)
 
+let read_float ch =
+	Int32.float_of_bits (read_real_i32 ch)
+
 let write_ui16 ch n =
 	if n < 0 || n > 0xFFFF then raise (Overflow "write_ui16");
 	write_byte ch (n lsr 8);
@@ -622,17 +646,22 @@ let write_i64 ch n =
 let write_double ch f =
 	write_i64 ch (Int64.bits_of_float f)
 
-let ui16s_of input = Enum.from (fun () -> apply_enum read_ui16 input)
+let write_float ch f =
+	write_real_i32 ch (Int32.bits_of_float f)
 
-let i16s_of input = Enum.from (fun () -> apply_enum read_i16 input)
+let ui16s_of input     = Enum.from (fun () -> apply_enum read_ui16 input)
 
-let i32s_of input = Enum.from (fun () -> apply_enum read_i32 input)
+let i16s_of input      = Enum.from (fun () -> apply_enum read_i16 input)
+
+let i32s_of input      = Enum.from (fun () -> apply_enum read_i32 input)
 
 let real_i32s_of input = Enum.from (fun () -> apply_enum read_real_i32 input)
 
-let i64s_of input = Enum.from (fun () -> apply_enum read_i64 input)
+let i64s_of input      = Enum.from (fun () -> apply_enum read_i64 input)
 
-let doubles_of input = Enum.from (fun () -> apply_enum read_double input)
+let doubles_of input   = Enum.from (fun () -> apply_enum read_double input)
+
+let floats_of input    = Enum.from (fun () -> apply_enum read_float input)
 
 let write_byte_enum output enum =
   Enum.iter (write_byte output) enum
@@ -655,6 +684,9 @@ let write_i64_enum output enum =
 let write_double_enum output enum =
   Enum.iter (write_double output) enum
 
+let write_float_enum output enum =
+  Enum.iter (write_float output) enum
+
 let write_string_enum output enum =
   Enum.iter (write_string output) enum
 
@@ -664,8 +696,9 @@ let write_line_enum output enum =
 
 end
 
-(* -------------------------------------------------------------- *)
-(* Bits API *)
+(**
+   {6 Bits API}
+*)
 
 type 'a bc = {
 	ch : 'a;
@@ -740,8 +773,10 @@ let rec write_bits b ~nbits x =
 let flush_bits b =
 	if b.nbits > 0 then write_bits b (8 - b.nbits) 0
 
-(* -------------------------------------------------------------- *)
-(* Generic IO *)
+(**
+   {6 Generic IO}
+*)
+
 
 class in_channel ch =
   object
@@ -831,30 +866,33 @@ let from_out_chars ch =
 		~output
 		~flush:ch#flush
 		~close:ch#close_out
-(* ------*)
-(* Enumeration API *)
+(**
+   {6 Enumerations}
+*)
 
-let bytes_of input = Enum.from (fun () -> apply_enum read_byte input)
+let bytes_of input        = Enum.from (fun () -> apply_enum read_byte input)
 
 let signed_bytes_of input = Enum.from (fun () -> apply_enum read_signed_byte input)
 
-let ui16s_of input = Enum.from (fun () -> apply_enum read_ui16 input)
+let ui16s_of input        = Enum.from (fun () -> apply_enum read_ui16 input)
 
-let i16s_of input = Enum.from (fun () -> apply_enum read_i16 input)
+let i16s_of input         = Enum.from (fun () -> apply_enum read_i16 input)
 
-let i32s_of input = Enum.from (fun () -> apply_enum read_i32 input)
+let i32s_of input         = Enum.from (fun () -> apply_enum read_i32 input)
 
-let real_i32s_of input = Enum.from (fun () -> apply_enum read_real_i32 input)
+let real_i32s_of input    = Enum.from (fun () -> apply_enum read_real_i32 input)
 
-let i64s_of input = Enum.from (fun () -> apply_enum read_i64 input)
+let i64s_of input         = Enum.from (fun () -> apply_enum read_i64 input)
 
-let doubles_of input = Enum.from (fun () -> apply_enum read_double input)
+let doubles_of input      = Enum.from (fun () -> apply_enum read_double input)
 
-let strings_of input = Enum.from (fun () -> apply_enum read_string input)
+let floats_of input       = Enum.from (fun () -> apply_enum read_float input)
 
-let lines_of input = Enum.from (fun () -> apply_enum read_line input)
+let strings_of input      = Enum.from (fun () -> apply_enum read_string input)
 
-(*let chars_of input = Enum.concat (Enum.from (fun () -> apply_enum (fun x -> String.enum (read_line x)) input))*)
+let lines_of input        = Enum.from (fun () -> apply_enum read_line input)
+
+
 let buffer_size = 1024
 
 let chars_of the_input = Enum.concat (Enum.from (fun () -> 
@@ -883,6 +921,9 @@ let write_i64_enum output enum =
 let write_double_enum output enum =
   Enum.iter (write_double output) enum
 
+let write_float_enum output enum =
+  Enum.iter (write_float output) enum
+
 let write_string_enum output enum =
   Enum.iter (write_string output) enum
 
@@ -892,19 +933,93 @@ let write_line_enum output enum =
 let write_bits_enum ~nbits output enum =
   Enum.iter (write_bits ~nbits output) enum
 
-
-(* -----------
-   Standard IO
+(**
+   {6 Standard IO}
 *)
+
 
 let stdin = input_channel Pervasives.stdin
 let stdout= output_channel Pervasives.stdout
 let stderr= output_channel Pervasives.stderr
+let stdnull= create_out
+  ~write:ignore 
+  ~output:(fun _ _ l -> l)
+  ~flush:ignore
+  ~close:ignore
 
-(* -----------
-   Printf
+(**
+   {6 Printf}
+
+   A reimplementation of Printf (with a few additional functions) based
+   on [output].    We provide an internal signature to limit the dangers
+   of {!Obj.magic}.
+
+   {b Note} this module is inlined because of circular dependencies (themselves
+   caused by the legacy definition of a function {!printf} in module {!IO}).
 *)
-module Printf =
+
+module Printf :
+sig
+  val printf: ('b, 'a output, unit) format -> 'b
+    (**The usual [printf] function, prints to
+       [stdout].*)
+
+  val eprintf: ('b, 'a output, unit) format -> 'b
+    (**The usual [eprintf] function, prints to
+       [stderr].*)
+
+  val sprintf:  ('a, unit, string) format -> 'a
+    (** As [fprintf] but outputs are replaced with
+	strings. In particular, any function called with 
+	[%a] should have type [unit -> string].*)
+
+  val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
+    (**As [printf] but produces a string instead
+       of printing to the output. By opposition to
+       [sprintf], only the result is changed with
+       respect to [printf], not the inner workings.*)
+
+
+  val fprintf: 'a output -> ('b, 'a output, unit) format -> 'b
+    (**General printf, prints to any output.*)
+
+  val ifprintf: _        -> ('b, 'a output, unit) format -> 'b
+    (**As [fprintf] but doesn't actually print anything.
+       Sometimes useful for debugging.*)
+
+  val bprintf: Buffer.t  -> ('a, Buffer.t, unit) format -> 'a
+    (**As [fprintf], but with buffers instead of outputs.*)
+
+  val bprintf2: Buffer.t  -> ('b, 'a output, unit) format -> 'b
+    (**As [printf] but writes to a buffer instead
+       of printing to the output. By opposition to
+       [bprintf], only the result is changed with
+       respect to [printf], not the inner workings.*)
+
+  val kfprintf : ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) format4 -> 'c
+    (**Same as [fprintf], but instead of returning immediately, passes the [output] to its first
+       argument at the end of printing.*)
+
+  val ksprintf: (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
+    (** Same as [sprintf] above, but instead of returning the string,
+	passes it to the first argument. *)
+  val ksprintf2: (string -> 'b) -> ('c, 'a output, unit, 'b) format4 -> 'c
+    (** Same as [sprintf2] above, but instead of returning the string,
+	passes it to the first argument. *)
+
+  val kbprintf : (Buffer.t -> 'a) ->
+       Buffer.t -> ('b, Buffer.t, unit, 'a) format4 -> 'b
+    (** Same as [bprintf], but instead of returning immediately,
+	passes the buffer to its first argument at the end of printing. *)
+  val kbprintf2 : (Buffer.t -> 'b) ->  Buffer.t -> ('c, 'a output, unit, 'b) format4 -> 'c
+    (** Same as [bprintf2], but instead of returning immediately,
+	passes the buffer to its first argument at the end of printing.*)
+
+  val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
+
+  val mkprintf: ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) format4 -> 'c
+end
+=
 struct
 external format_float: string -> float -> string
   = "caml_format_float"
@@ -966,10 +1081,8 @@ let parse_string_conversion sfmt =
       (int_of_string
          (String.sub sfmt i (String.length sfmt - i - 1)),
        neg)
-    | '-' ->
-      parse true (succ i)
-    | _ ->
-      parse neg (succ i) in
+    | '-' -> parse true (succ i)
+    | _   -> parse neg  (succ i) in
   try parse false 1 with Failure _ -> bad_conversion sfmt 0 's'
 
 (* Pad a (sub) string into a blank string of length [p],
@@ -1322,20 +1435,19 @@ let scan_format fmt args n pos cont_s cont_a cont_t cont_f cont_m =
 
   scan_flags n [] (succ pos);;
 
-(*Trimmed-down version of the legacy lib's [mkprintf] -- in this version,
-  the generality is not in function [mkprintf] but rather in the definition
-  of [out]*)
-let printf out fmt =
+(*Trimmed-down version of the legacy lib's [mkprintf]. Most of the generality
+  is lifted to [output] rather than [mkprintf] itself.*)
+let mkprintf k out fmt =
 
   let rec pr k n fmt v =
 
     let len = Sformat.length fmt in
 
     let rec doprn n i =
-       if i >= len then Obj.magic (k out) else
-       match Sformat.unsafe_get fmt i with
-       | '%' -> scan_format fmt v n i cont_s cont_a cont_t cont_f cont_m
-       |  c  -> write out c; doprn n (succ i)
+       if i >= len then Obj.magic (k out)
+       else             match Sformat.unsafe_get fmt i with
+	 | '%' -> scan_format fmt v n i cont_s cont_a cont_t cont_f cont_m
+	 |  c  -> write out c; doprn n (succ i)
     and cont_s n s i =
       nwrite out s; 
       doprn n i
@@ -1350,42 +1462,75 @@ let printf out fmt =
       doprn n i
     and cont_m n xf i =
       let m = Sformat.add_int_index (count_arguments_of_format xf) n in
-      pr (Obj.magic (fun _ -> doprn m i)) n xf v in
+	pr (Obj.magic (fun _ -> doprn m i)) n xf v
 
-    doprn n 0 in
+    in doprn n 0 
+  in let kpr = pr k (Sformat.index_of_int 0) in
+    kapr kpr fmt;;
 
-  let kpr = pr ignore (Sformat.index_of_int 0) in
+let fprintf out fmt = mkprintf ignore out fmt
+let printf      fmt = fprintf stdout fmt
+let eprintf     fmt = fprintf stderr fmt
+let ifprintf _  fmt = fprintf stdnull fmt
+let ksprintf2 k fmt =
+  let out = output_string () in
+    mkprintf (fun out -> k (close_out out)) out fmt
+let kbprintf2 k buf fmt =
+  let out = output_buffer buf in
+    mkprintf (fun out -> k buf) out fmt
+let sprintf2 fmt = ksprintf2 (Std.identity) fmt
+let bprintf2 buf fmt = kbprintf2 ignore buf fmt
+(**
+   Other possible implementation of [sprintf2],
+   left as example:
 
-  kapr kpr fmt;;
+[
+let sprintf2    fmt = 
+  let out = output_string () in
+    mkprintf (fun out -> close_out out) out fmt
+]
+*)
+(**
+   Other possible implementation of [bprintf2],
+   left as example:
+[
+let bprintf2 buf fmt = 
+  let out = output_buffer buf in
+    mkprintf ignore out fmt
+]*)
 
+let kfprintf        = mkprintf
+let bprintf         = Printf.bprintf
+let sprintf         = Printf.sprintf
+let ksprintf        = Printf.ksprintf
+let kbprintf        = Printf.kbprintf
+let kprintf         = Printf.kprintf
 end
 
-let printf = Printf.printf
+let printf = Printf.fprintf
 
-(*let sprintf fmt = 
-  let out = output_string in
-    printf out fmt*)
+(**
+   {6 Utilities}
+*)
+
 let make_list_printer (p:('a output -> 'b -> unit)) 
                       (a:string)
 		      (b:string)
 		      (s:string)
 		      (out:'a output)
 		      (l:'b list) = 
-  let rec aux out = function (*Weird error. Type-checker bug?*)
+  let rec aux out l = match l with
   | []    -> ()
   | [h]   -> p out h
   | h::t  -> printf out "%a%s%a" p h s aux t
   in printf out "%s%a%s" a aux l b
-  
+
+
+
+
+  (**Commented out until changes to [Enum] and [ExtChar] are accepted.*)
 let tab_out n out =
   let spaces   = String.make n ' ' in
-  let nlspaces = "\n"^spaces       
-  and crspaces = "\r"^spaces       in
-  let add_spaces = function
-    | '\n' -> nlspaces
-    | '\r' -> crspaces
-    | x    -> String.of_char x
-  in
   create_out 
     ~write: (fun c     -> 
 	       printf stderr "Attempting to write %C\n" c;
@@ -1410,7 +1555,7 @@ let tab_out n out =
     ~flush:out.out_flush
     ~close:out.out_close
 
-let combine = comb
-
 let lmargin n p out x =
   p (tab_out n out) x
+
+let combine = comb

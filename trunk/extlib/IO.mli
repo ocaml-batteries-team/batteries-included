@@ -2,6 +2,7 @@
  * IO - Abstract input/output
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller (contributor)
+ *               2008 Philippe Strauss (contributor)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -53,6 +54,9 @@ val stdout: unit output
 
 val stderr: unit output
 (** Standard error output, as per Unix/Windows conventions.*)
+
+val stdnull: unit output
+(** An output which discards everything written to it.*)
 
 (** {6 Standard API} *)
 
@@ -111,7 +115,10 @@ val close_out : 'a output -> 'a
 (** Close the output and return its accumulator data.
   It can no longer be written. *)
 
-(** {6 Creation of IO Inputs/Outputs} *)
+(** {6 Creation of IO Inputs/Outputs} 
+
+    To open a file for reading/writing, see {!File.open_file_in}
+    and {!File.open_file_out}*)
 
 val input_string : string -> input
 (** Create an input that will read from a string. *)
@@ -119,6 +126,12 @@ val input_string : string -> input
 val output_string : unit -> string output
 (** Create an output that will write into a string in an efficient way.
   When closed, the output returns all the data written into it. *)
+
+val output_buffer : Buffer.t -> string output
+(** Create an output that will append its results at the end of a buffer
+    in an efficient way. Closing  returns the whole contents of the buffer
+    -- the buffer remains usable.*)
+    
 
 val input_enum : char Enum.t -> input
 (** Create an input that will read from an [enum]. *)
@@ -172,23 +185,7 @@ external cast_output : 'a output -> unit output = "%identity"
 (** You can safely transform any output to an unit output in a safe way 
   by using this function. *)
 
-(** {6 Printing utilities} *)
 
-val printf : 'a output -> ('b, 'a output, unit) format -> 'b
-(** The printf function works for any output. *)
-
-val make_list_printer: ('a output -> 'b -> unit) -> string -> string -> string -> ('a output -> 'b list -> unit)
-(** Make a list printer
-
-    [make_list_printer printer start_symbol end_symbol separator] creates a printer for
-    lists, which prints [start_symbol] at the beginning of the list, [end_symbol] at
-    the end, uses [printer] for each element of the contents and separates these
-    elements with [separator]
-*)
-
-val lmargin : int -> ('b output -> 'a -> unit) -> 'b output -> 'a -> unit
-(** [lmargin n p] behaves as [p], with the exception that every new line from this
-    point will be shifted to the right by [n] white spaces*)
 
 (** {6 Binary files API}
 
@@ -223,6 +220,9 @@ val read_real_i32 : input -> int32
 val read_i64 : input -> int64
 (** Read a signed 64-bit integer as an OCaml int64. *)
 
+val read_float : input -> float
+(** Read an IEEE single precision floating point value. *)
+
 val read_double : input -> float
 (** Read an IEEE double precision floating point value. *)
 
@@ -253,6 +253,9 @@ val write_i64 : 'a output -> int64 -> unit
 val write_double : 'a output -> float -> unit
 (** Write an IEEE double precision floating point value. *)
 
+val write_float : 'a output -> float -> unit
+(** Write an IEEE single precision floating point value. *)
+
 val write_string : 'a output -> string -> unit
 (** Write a string and append an null character. *)
 
@@ -270,14 +273,14 @@ sig
 	val read_real_i32 : input -> int32
 	val read_i64 : input -> int64
 	val read_double : input -> float
-	
+	val read_float: input -> float
 	val write_ui16 : 'a output -> int -> unit
 	val write_i16 : 'a output -> int -> unit
 	val write_i32 : 'a output -> int -> unit
 	val write_real_i32 : 'a output -> int32 -> unit
 	val write_i64 : 'a output -> int64 -> unit
 	val write_double : 'a output -> float -> unit
-
+	val write_float  : 'a output -> float -> unit
 
 	val ui16s_of : input -> int Enum.t
 	val i16s_of : input -> int Enum.t
@@ -454,6 +457,153 @@ val write_line_enum : 'a output -> string Enum.t -> unit
 
 val write_bits_enum : nbits:int -> out_bits -> int Enum.t -> unit
 (** Write an enumeration of bits*)
+
+(** {6 Printing} *)
+
+(** / *)
+val printf : 'a output -> ('b, 'a output, unit) format -> 'b
+(** A [fprintf]-style unparser. For more information
+    about printing, see the documentation of {!Printf}.
+
+    Obsoleted because of name clash: that's a [fprintf],
+    not a [printf].*)
+(** / *)
+(**
+   Usual [printf]-style functions, adapted for working with
+   [output]
+*)
+module Printf : sig
+  (** {6 Common functions}*)
+
+  val printf: ('b, 'a output, unit) format -> 'b
+    (**The usual [printf] function, prints to
+       [stdout].*)
+
+  val eprintf: ('b, 'a output, unit) format -> 'b
+    (**The usual [eprintf] function, prints to
+       [stderr].*)
+
+  val sprintf:  ('a, unit, string) format -> 'a
+    (** As [fprintf] but outputs are replaced with
+	strings. In particular, any function called with 
+	[%a] should have type [unit -> string].*)
+
+  val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
+    (**As [printf] but produces a string instead
+       of printing to the output. By opposition to
+       [sprintf], only the result is changed with
+       respect to [printf], not the inner workings.*)
+
+  (** {6 General functions}*)
+  val fprintf: 'a output -> ('b, 'a output, unit) format -> 'b
+    (**General printf, prints to any output.*)
+
+  val ifprintf: _        -> ('b, 'a output, unit) format -> 'b
+    (**As [fprintf] but doesn't actually print anything.
+       Sometimes useful for debugging.*)
+
+  val bprintf: Buffer.t  -> ('a, Buffer.t, unit) format -> 'a
+    (**As [fprintf], but with buffers instead of outputs.
+       In particular, any unparser called with [%a] should
+       write to a buffer rather than to an output*)
+
+  val bprintf2: Buffer.t  -> ('b, 'a output, unit) format -> 'b
+    (**As [printf] but writes to a buffer instead
+       of printing to the output. By opposition to
+       [bprintf], only the result is changed with
+       respect to [printf], not the inner workings.*)
+
+  (**{6 Functions with continuations}*)
+    
+  val kfprintf : ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) format4 -> 'c
+    (**Same as [fprintf], but instead of returning immediately, passes the [output] to its first
+       argument at the end of printing.*)
+
+  val ksprintf: (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
+    (** Same as [sprintf] above, but instead of returning the string,
+	passes it to the first argument. *)
+  val ksprintf2: (string -> 'b) -> ('c, 'a output, unit, 'b) format4 -> 'c
+    (** Same as [sprintf2] above, but instead of returning the string,
+	passes it to the first argument. *)
+
+  val kbprintf : (Buffer.t -> 'a) ->
+       Buffer.t -> ('b, Buffer.t, unit, 'a) format4 -> 'b
+    (** Same as [bprintf], but instead of returning immediately,
+	passes the buffer to its first argument at the end of printing. *)
+  val kbprintf2 : (Buffer.t -> 'b) ->  Buffer.t -> ('c, 'a output, unit, 'b) format4 -> 'c
+    (** Same as [bprintf2], but instead of returning immediately,
+	passes the buffer to its first argument at the end of printing.*)
+
+    (**/**)
+  val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
+    (** A deprecated synonym for [ksprintf]. *)
+    (**/**)
+
+    (**
+       {6 About formats}
+
+       Only read this if you intend to toy  with [mkprintf].
+
+      
+       {7 Format4}
+       [('a, 'b, 'c, 'd) format4] = is the type of arguments for
+       [printf]-style functions such that
+       - ['a] is the type of arguments, with a return type of ['d]
+         {ul
+         {- if your format looks like ["%s"], ['a] is [string -> 'd]}
+         {- if your format looks like ["%s%s"], ['a] is [string -> string -> 'd]}
+         {- ...}
+         }
+       - ['b] is the type of the first argument given to unparsers
+         (i.e. functions introduced with [%a] or [%t])
+         {ul
+         {- if your unparsers take a [unit] argument, ['b] should be 
+            [unit]}
+         {- if your unparsers take a [string output], ['b] should be 
+            [string output]}
+         {- ...}
+         }
+       - ['c] is the {b final} return type of unparsers
+         {ul
+         {- if you have an unparser introduced with [%t] and its result
+            has type [unit], ['c] should be [unit]
+         {- if you have an unparser introduced with [%a] and its type is
+            [string output -> string -> unit], ['c] should be [unit]}
+         {- ...}
+         }
+       - ['d] is the final return value of the function once all
+         arguments have been applied.
+
+       {7 Format}
+       [('a, 'b, c) format] is just a shortcut for [('a, 'b, 'c, 'd) format4].
+
+       {7 Important}
+       Note that [Obj.magic] is involved behind this, so be careful.
+    *)
+
+  val mkprintf: ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) format4 -> 'c
+    (**Generic builder for [printf]-style functions.
+
+      [mkprintf k] builds a [fprintf]-style function which calls [k] upon the
+       channel once the evaluation of all arguments is complete.
+
+      Obj.magic is involved, {b Here Be Dragons}.
+*)
+end
+
+val make_list_printer: ('a output -> 'b -> unit) -> string -> string -> string -> ('a output -> 'b list -> unit)
+(** Make a list printer
+
+    [make_list_printer printer start_symbol end_symbol separator] creates a printer for
+    lists, which prints [start_symbol] at the beginning of the list, [end_symbol] at
+    the end, uses [printer] for each element of the contents and separates these
+    elements with [separator]
+*)
+
+val lmargin : int -> ('b output -> 'a -> unit) -> 'b output -> 'a -> unit
+(** [lmargin n p] behaves as [p], with the exception that every new line from this
+    point will be shifted to the right by [n] white spaces*)
+
 
 (**/**)
 val comb : ('a output * 'a output) -> 'a output

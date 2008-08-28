@@ -1,3 +1,11 @@
+08/28/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* IO.ml?: [stdnull] created
+	* IO.ml: [Printf.mkprintf] replaces [Printf.printf]
+	* IO.ml: [printf] defined from [Printf.mkprintf]
+	* IO.ml?: [output_buffer] added
+	* IO.ml?: [fprintf], [sprintf], [eprintf], [ifprintf],
+	[bprintf], [k*printf] added
+
 08/27/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* parserCo.ml: entirely rewritten
 	* extGenlex.ml: [ident_or_kwd], [ident], [kwd], [identifier], [keyword] adjusted priority of [label]
