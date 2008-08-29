@@ -1,0 +1,10 @@
+batlib/ 
+  The visible hierarchy of modules
+glue/ 
+  Any code necessary to get packages to work nicely together,
+  to present a homogeneous API or a nice documentation
+glue/baselib/
+      The glue for the base library, i.e. the library provided
+      by INRIA with OCaml.
+config/
+  Tools for compiling Batteries Included

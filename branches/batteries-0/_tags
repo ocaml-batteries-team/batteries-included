@@ -1,0 +1,8 @@
+<build>:include
+<glue>:include
+<batlib>:include
+
+
+
+<batlib.cma>:pkg_threads,use_ocamldoc_info,pkg_extlib
+<batlib.cmxa>:pkg_threads,use_ocamldoc_info,pkg_extlib
