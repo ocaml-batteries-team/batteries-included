@@ -28,11 +28,17 @@ module Concurrency = Batlib_concurrency
 (** Data containers (lists, sets, arrays...) *)
 module Containers  = Batlib_containers
 
-(** Base data (numbers, characters...)*)
-module Data        = Batlib_data
+(** Control manipulation (monads, arrows...) *)
+module Control     = Batlib_control
+
+(** Numbers, operations and other mathematics *)
+module Math        = Batlib_math
 
 (** Metal-level operations (marshalling, garbage-collection, foreign function calls...)*)
 module Meta        = Batlib_meta
+
+(** Network access *)
+module Network     = Batlib_network
 
 (** Standard operations, should be opened automatically (not the case yet)*)
 module Standard    = Batlib_standard
@@ -43,7 +49,7 @@ module System      = Batlib_system
 (** Tools for compiling OCaml, generating documentation, installing libraries...*)
 module Text        = Batlib_text
 
-(** Parsing and printing*)
+(** Everything text related, from characters to parsing and printing.*)
 module Toolchain   = Batlib_toolchain
 
 (** Miscellaneous utilities*)

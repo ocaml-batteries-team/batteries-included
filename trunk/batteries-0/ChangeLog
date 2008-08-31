@@ -1,2 +1,8 @@
+08/31/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* batlib_text.ml: receives [Char], [String] and [StringLabels]
+	* batlib_data.ml: removed
+	* batlib_math.ml: created
+	* batlib.ml: replaced [Batlib_data] with [Batlib_math]
+
 08/29/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* *: created
