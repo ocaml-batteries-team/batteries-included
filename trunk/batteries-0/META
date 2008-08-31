@@ -1,0 +1,7 @@
+name="batlib"
+version="0"
+description="Batteries Included, standard distribution of OCaml libraries"
+requires="num,threads,extlib"
+
+archive(byte)="batlib.cma"
+archive(native)="batlib.cmxa"
