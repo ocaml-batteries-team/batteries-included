@@ -1,7 +1,7 @@
 (*
  * Odoc_generator_batlib - custom documentation generator for Batteries
  * Copyright (C) 2008 Maxence Guesdon
- *                    David Teller (contributor)
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,53 +20,45 @@
  *)
 open Odoc_info;;
 open Module;;
-
-let root = ref ""
+open List;;
 
 class batlib_generator =
   object(self)
-    inherit Odoc_html.html as html
+    inherit Odoc_html.html as self
+
+    method html_of_module_comment b text =
+      assert false
+
+    method html_of_included_module b im =
+      assert false;
+      verbose ("Handling [include "^im.im_name^"]");
+      match im.im_module with
+	| None   ->    (*Keep default behavior.*)
+	    warning ("Module inclusion of "^im.im_name^" unknown, keeping default behavior");
+	    self#html_of_included_module b im
+	| Some i ->    (*Let's inline the contents!*)
+	    self#html_of_info b im.im_info;
+	    match i with
+	      | Mod m -> 
+		  warning ("Module inclusion of "^im.im_name^" is a a struct, inlining");
+		  self#html_of_module_kind b (Name.father m.m_name) ~modu:m m.m_kind
+	      | _     -> 
+		  warning ("Module inclusion of "^im.im_name^" is a signature, keeping default behavior");
+		  self#html_of_included_module b im
+
 
     method generate modules =
+      warning "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL";
       flush_all ();
+      assert false;
       let all_modules = Odoc_info.Search.modules modules in
-      let f m =
-        match m.m_kind with
-          Module_alias a ->
-            begin
-              match a.ma_module with
-                None         -> warning ("module "^a.ma_name^" not resolved in cross-reference stage")
-              | Some aliased ->
-		  warning "replacing module information";
-                  (* replace the info on module by info on the aliased *)
-                  let info = match aliased with
-                      Mod     m  -> m.m_info
-                    | Modtype mt -> mt.mt_info
-                  in
-                  m.m_info <- info
-            end
-        | _  -> ()
-      in
-	(*List.iter f all_modules*)
-	let chosen_modules =
-	  match !root with
-	    | ""    -> modules
-	    | nm -> ListLabels.filter ~f:(fun m -> m.m_name = nm) modules in
-	  html#generate chosen_modules
+	self#generate all_modules
 
-    method html_of_module b ?(info=true) ?(complete=true) ?(with_link=true) m =
-(*      Buffer.add_string b "blablabla";*)
-      html#html_of_module b ~info ~complete:true ~with_link m
+(*    method html_of_module b ?(info=true) ?(complete=true) ?(with_link=true) m =
+      self#html_of_module b ~info ~complete:true ~with_link m*)
   end;;
 
 let doc_generator = ((new batlib_generator) :> Args.doc_generator);;
 
-
-
-let _ = Args.set_doc_generator (Some doc_generator) in
-  root := "Batlib"
-
+let _ = Args.set_doc_generator (Some doc_generator) in ()
 (*let _ = Odoc_args.add_option ("-root", (Arg.Set_string root), "set an optional root module for the documentation") in ()*)
-
-;;
-

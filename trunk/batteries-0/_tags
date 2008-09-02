@@ -1,5 +1,5 @@
 <build>:include
-<glue>:include
+<juice>:include
 <batlib>:include
 
 <batlib.docdir>:pkg_threads,use_ocamldoc_info,pkg_extlib

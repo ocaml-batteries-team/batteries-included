@@ -1,6 +1,6 @@
 (*
  * Batlib_containers - Data structures acting as containers
- * Copyright (C) 2008 David Teller
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,11 +19,13 @@
  *)
 
 (**
-   Data containers (lists, sets, arrays...)
+   Generic data containers (lists, sets, arrays...)
 *)
 
 (**{1 Container traversal}*)
-module Enum                                  = Batlib_Extlib_Enum
+module Mutable                               = Batlib_mutable
+module Persistent                            = Batlib_persistent
+
 
 (**{1 Generic persistent containers}*)
 module Dllist                                = Batlib_Extlib_Dllist
@@ -48,6 +50,5 @@ module Stream                                = Batlib_Baselib_Stream       (*TOD
 
 (**{1 Specialized containers}*)
 module Bitset                                = Batlib_Extlib_BitSet
-module Buffer                                = Batlib_Baselib_Buffer
 module Option                                = Batlib_Extlib_Option
 module Lazy                                  = Batlib_Baselib_Lazy

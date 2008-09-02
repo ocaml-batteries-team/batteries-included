@@ -1,6 +1,6 @@
 (*
- * Batlib.Text - Text stuff, including parsing and printing
- * Copyright (C) 2008 David Teller
+ * Batlib.Data.Text - Text data structures
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,26 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(**
-   Everything text related, from characters to parsing and printing.
+(** Text data structures. *)
 
-   {b Note} Unicode-related operations will fall into this module.
-*)
+(** {6 Latin-1}*)
 
-(** {1 Characters}*)
+module Buffer          = Batlib_Baselib_Buffer
 module Char            = Batlib_Baselib_Char
-module String          = Batlib_Extlib_String (*formerly Batlib_Baselib_String*)
-module StringLabels    = Batlib_Baselib_StringLabels
-
-(** {1 Parsing} *)
-module Genlex          = Batlib_Baselib_Genlex
-module Lexing          = Batlib_Baselib_Lexing
-module Parsing         = Batlib_Baselib_Parsing
-module Scanf           = Batlib_Baselib_Scanf
-module Str             = Batlib_Baselib_Str
-
-(** {1 Printing}*)
-module Format          = Batlib_Baselib_Format
-module Printexc        = Batlib_Baselib_Printexc
-module Printf          = Batlib_Baselib_Printf
-
+module String          = Batlib_Extlib_String         (*formerly Batlib_Baselib_String*)
+module StringLabels    = Batlib_Baselib_StringLabels  (*todo: wrap [Batlib_Extlib_String] with labels*)

@@ -14,14 +14,14 @@ to install the full version of batteries included.
 
 
 *** Adding a new library ***
-* create a directory "glue/my_library"
-* edit "glue/_tags" and add "<my_library>: include"
+* create a directory "juice/my_library"
+* edit "juice/_tags" and add "<my_library>: include"
 * edit "my_library/_tags" to add whichever options are necessary (typically "<*>: pkg_my_library")
 * edit "_tags" to add whichever options are necessary (typically "<batlib.cma>: pkg_my_library"
   and "<batlib.cmxa>": pkg_my_library)
 * import all the public .mli files from the library, renaming them
      Batlib_<my_library>_<module_name>.mli
-* for each .mli file, add the corresponding .ml file, as per glue/template
+* for each .mli file, add the corresponding .ml file, as per juice/template
   e.g. 
        for i in Base64 Bitset Dllist Dynarray Enum Global IO Option OptParse PMap RefList Std Unzip; 
        	   do sed -e "s/\$1/ExtLib/" -e "s/\$2/$i/" -e "s/\$3/$i/" ../template_ml > batlib_Extlib_$i.ml; 

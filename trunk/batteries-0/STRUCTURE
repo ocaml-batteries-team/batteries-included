@@ -1,18 +1,18 @@
 batlib/ 
   The visible hierarchy of modules
-glue/ 
+juice/ 
   Any code necessary to get packages to work nicely together,
   to present a homogeneous API or a nice documentation
-glue/baselib/
+juice/baselib/
 	The glue for the base library, i.e. the library provided
 	by INRIA with OCaml.
-glue/extlib/
+juice/extlib/
 	The glue for ExtLib
-glue/godi/
+juice/godi/
 	The glue for Godi modules
-glue/findlib/
+juice/findlib/
 	The glue for Findlib modules
-glue/ocamldoc/
+juice/ocamldoc/
 	The glue for OCamlDoc modules
 build/
   Tools for compiling Batteries Included

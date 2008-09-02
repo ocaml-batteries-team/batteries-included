@@ -11,7 +11,7 @@ doc: list
 	cp batlib.docdir/Batlib.html batlib.docdir/index.html
 
 list: 
-	@echo $(basename $(notdir $(shell find batlib glue -name  "*.ml"))) > batlib.mllib &&\
+	@echo $(basename $(notdir $(shell find batlib juice -name  "*.ml"))) > batlib.mllib &&\
 	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batlib.mllib
 
 
@@ -23,4 +23,4 @@ uninstall:
 
 clean:
 	ocamlbuild -clean &&\
-	\rm -f `find . -name "*~"`
+	\rm -f `find . -name "*~" -o -name "*#"`

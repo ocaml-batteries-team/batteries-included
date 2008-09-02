@@ -36,3 +36,5 @@ module Unix          = Batlib_Baselib_Unix
 module UnixLabel     = Batlib_Baselib_UnixLabels
 module Sys           = Batlib_Baselib_Sys
 
+(** {1 Networking}*)
+module Network       = Batlib_network

@@ -1,6 +1,6 @@
 (*
  * Batlib - Root of Batteries Included hierarchy
- * Copyright (C) 2008 David Teller
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,23 +22,18 @@
    Base of OCaml Batteries Included.
 *)
 
-(** Everything related to parallelism and concurrency*)
-module Concurrency = Batlib_concurrency
-
-(** Data containers (lists, sets, arrays...) *)
-module Containers  = Batlib_containers
-
-(** Control manipulation (monads, arrows...) *)
+(** Tools for changing the control flow of a program, from 
+    error-management to concurrency to monads.*)
 module Control     = Batlib_control
 
 (** Numbers, operations and other mathematics *)
-module Math        = Batlib_math
+module Data        = Batlib_data
+
+(** Parsing, printing, regexps...*)
+module Languages   = Batlib_text
 
 (** Metal-level operations (marshalling, garbage-collection, foreign function calls...)*)
 module Meta        = Batlib_meta
-
-(** Network access *)
-module Network     = Batlib_network
 
 (** Standard operations, should be opened automatically (not the case yet)*)
 module Standard    = Batlib_standard
@@ -47,9 +42,6 @@ module Standard    = Batlib_standard
 module System      = Batlib_system
 
 (** Tools for compiling OCaml, generating documentation, installing libraries...*)
-module Text        = Batlib_text
-
-(** Everything text related, from characters to parsing and printing.*)
 module Toolchain   = Batlib_toolchain
 
 (** Miscellaneous utilities*)

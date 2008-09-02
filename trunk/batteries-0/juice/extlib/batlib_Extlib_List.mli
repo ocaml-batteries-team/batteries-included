@@ -19,9 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-
-	(** {6 New functions} *)
+(** {6 New functions} *)
 
 	val init : int -> (int -> 'a) -> 'a list
 	(** Similar to [Array.init], [init n f] returns the list containing

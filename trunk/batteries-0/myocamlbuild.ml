@@ -74,10 +74,13 @@ end
 *)
 module Documentation =
 struct
-  let after_rules () = ()
-(*    dep  ["ocaml"; "doc"]   & ["build/odoc_generator_batlib.cmo"];
-    flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; A "-g"; A "odoc_generator_batlib.cmo"; 
-			        A "-t"; A "OCaml Batteries Included"]*)
+  let after_rules () = 
+    dep  ["ocaml"; "doc"]   & ["build/odoc_generator_batlib.cmo"];
+    flag ["ocaml"; "doc"]   & S[A "-v";
+				A "-i"; A "_build/build"; 
+				A "-i"; A "build";
+				A "-g"; A "odoc_generator_batlib.cmo"; 
+			        A "-t"; A "OCaml Batteries Included"]
 end
 
 (**
