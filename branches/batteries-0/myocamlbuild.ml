@@ -37,7 +37,7 @@ struct
 
   let after_rules () =
        (* When one link an OCaml library/binary/package, one should use -linkpkg *)
-       flag ["ocaml"; "link"] & A"-linkpkg";
+       flag ["ocaml"; "byte"; "link"] & A"-linkpkg";
 
        (* For each ocamlfind package one inject the -package option when
        	* compiling, computing dependencies, generating documentation and
@@ -87,8 +87,11 @@ end
 module Misc =
 struct
   let after_rules () =
-    flag ["ocaml"; "link"; "byte"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"; A "odoc_info.cma"]);
-    flag ["ocaml"; "link"; "native"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"; A "odoc_info.cmxa"])
+    flag ["ocaml"; "link"; "byte";   "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"; A "odoc_info.cma"]);
+    flag ["ocaml"; "link"; "native"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"(*; A "odoc_info.cmxa"*)]);
+    flag ["ocaml"; "docfile";        "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
+    flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
+    flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"])
 end
 
 let _ = dispatch begin function

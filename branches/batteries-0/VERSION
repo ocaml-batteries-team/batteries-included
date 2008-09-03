@@ -1,9 +1,13 @@
-This is version 0. Don't expect any brand new features.
+This is version 0 "Where things should have begun"
+Don't expect anything flashy, this library is released
+only to give an idea of how things will be organized.
 
 This version of Batteries Included provides the skeleton for future
-expansions. This version packages
-* the Base library (i.e. the library distributed with Inria's OCaml distribution)
+expansions. We have
+* the Base library (i.e. the library available with Inria's OCaml distribution)
 * access to OCamlDoc
 * access to Findlib
 * access to Godi-script
 * access to Extlib
+
+For more information on packages, see the (embryonnic) html documentation.

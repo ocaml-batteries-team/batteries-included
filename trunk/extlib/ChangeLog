@@ -1,3 +1,11 @@
+08/31/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* ref.ml?: [swap] added
+	
+08/30/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extList.mli: documented
+	* extList.ml?: [remove] changed from ['a -> 'a list -> 'a list] to ['a list -> 'a -> 'a list]
+	* extList.ml?: [remove_all] changed from ['a -> 'a list -> 'a list] to ['a list -> 'a -> 'a list]
+	
 08/28/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* IO.ml?: [stdnull] created
 	* IO.ml: [Printf.mkprintf] replaces [Printf.printf]

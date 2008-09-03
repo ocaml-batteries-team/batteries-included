@@ -2,7 +2,8 @@
  * ExtList - additional and modified functions for lists.
  * Copyright (C) 2003 Brian Hurt
  * Copyright (C) 2003 Nicolas Cannasse
- *               2008 David Teller (Contributor)
+ * Copyright (C) 2008 Red Hat Inc.
+ * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -182,6 +183,15 @@ let filter_map f l =
 	loop dummy l;
 	dummy.tl
 	
+let rec find_map f = function
+  | [] -> raise Not_found
+  | x :: xs ->
+      match f x with
+      | Some y -> y
+      | None -> find_map f xs
+
+let fold_right_max = 1000
+
 let fold_right_max = 1000
 
 let fold_right f l init =
@@ -481,7 +491,7 @@ let find_exn f e l =
 	with
 		Not_found -> raise e
 
-let remove x l =
+let remove l x =
 	let rec loop dst = function
 		| [] -> ()
 		| h :: t ->
@@ -511,7 +521,7 @@ let rec remove_if f lst =
 	loop dummy lst;
 	dummy.tl
 
-let rec remove_all x l =
+let rec remove_all l x =
 	let rec loop dst = function
 		| [] -> ()
 		| h :: t ->
@@ -631,14 +641,15 @@ module ListLabels = struct
   let find_all ~f   = List.find_all f
   let partition ~f  = List.partition f
   let rev_map ~f    = List.rev_map f
+  let rev_map2 ~f   = List.rev_map2 f
   let iter ~f       = List.iter f
   let for_all ~f    = List.for_all f
   let for_all2 ~f   = List.for_all2 f
   let exists ~f     = List.exists f
-  let stable_sort ~f= List.stable_sort f
-  let fast_sort ~f  = List.fast_sort f
-  let merge ~f      = List.merge f
-  let make_compare ~cmp          = List.make_compare cmp
+  let stable_sort ?(cmp=compare)  = List.stable_sort cmp
+  let fast_sort ?(cmp=compare)    = List.fast_sort cmp
+  let merge ~cmp         = List.merge cmp
+  let make_compare  = List.make_compare
 
   let mem           = List.mem
   let memq          = List.memq

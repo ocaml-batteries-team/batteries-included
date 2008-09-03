@@ -3,7 +3,7 @@ all: byte doc
 byte: list
 	ocamlbuild batlib.cma
 
-opt: list doc
+opt: list
 	ocamlbuild batlib.cmxa
 
 doc: list
