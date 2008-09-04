@@ -1,9 +1,0 @@
-<build>:include
-<glue>:include
-<batlib>:include
-
-<batlib.docdir>:pkg_threads,use_ocamldoc_info,pkg_extlib
-<batlib.docdir/*>:pkg_threads,use_ocamldoc_info,pkg_extlib
-<batlib.docdir/index.html>:pkg_threads,use_ocamldoc_info,pkg_extlib
-<batlib.cma>:pkg_threads,use_ocamldoc_info,pkg_extlib
-<batlib.cmxa>:pkg_threads,use_ocamldoc_info,pkg_extlib
