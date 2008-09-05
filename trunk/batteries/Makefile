@@ -36,8 +36,8 @@ opt: list
 	ocamlbuild batlib.cmxa
 
 doc: list
-	ocamlbuild batlib.docdir/index.html;
-	cp batlib.docdir/Batlib.html batlib.docdir/index.html
+	ocamlbuild batteries.docdir/index.html;
+	cp batteries.docdir/Batlib.html batteries.docdir/index.html
 
 list: 
 	@echo $(basename $(notdir $(shell find batlib juice -name  "*.ml"))) > batlib.mllib &&\

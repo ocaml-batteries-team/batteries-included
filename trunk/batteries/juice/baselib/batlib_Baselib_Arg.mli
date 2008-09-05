@@ -38,6 +38,8 @@
 -   [cmd a b c           ](three anonymous arguments: ["a"], ["b"], and ["c"])
 -   [cmd a b -- c d      ](two anonymous arguments and a rest option with
                            two arguments)
+
+    @replace Arg
 *)
 
 type spec =

@@ -7,7 +7,7 @@ Sources: http://www.univ-orleans.fr/lifo/Members/David.Teller/software/batteries
 Homepage: http://forge.ocamlcore.org/projects/batteries/
 Maintainer: David Teller <David.Teller@univ-orleans.fr>
 Options: opt, htdoc
-Docfiles: README, VERSION, _build/batlib.docdir, LICENSE
+Docfiles: README, VERSION, LICENSE, GUIDELINES, _build/batteries.docdir
 Description: Batteries Included: standard OCaml development platform.
 Batteries Included serves the following purposes:
 * define a standard set of libraries which may be

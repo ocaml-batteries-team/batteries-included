@@ -4,6 +4,8 @@
 	* META: moved to build/
 	* babtlib.spec: moved to build/batteries.spec
 	* GUIDELINES: added
+	* batlib_Baselib_Str.ml: created
+	* odoc_generator_batlib.ml: in [create_fully_qualified_idents_links], [find_renamings] added
 
 09/02/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* odoc_generator_batlib.ml: [create_fully_qualified_idents_links] created

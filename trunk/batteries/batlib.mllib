@@ -67,6 +67,7 @@ Batlib_Baselib_MapLabels
 Batlib_Baselib_Lexing
 Batlib_Baselib_Marshal
 Batlib_Baselib_Weak
+Batlib_Baselib_Str
 Batlib_Baselib_Lazy
 Batlib_Ocamldoc_Odoc_info
 Batlib_Extlib_PMap
