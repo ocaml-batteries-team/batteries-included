@@ -9,7 +9,10 @@
 	* juice/godi: removed
 	* juice/_tags: removed references to GODI
 	* batlib_toolchain.ml: removed references to GODI
-	
+	* odoc_generator_batlib.ml: added [known_*]
+	* odoc_generator_batlib.ml: added [is_*]
+	* odoc_generator_batlib.ml: added [what_is]
+
 09/04/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* Makefile: [META] added
 	* Makefile: [doc] restored to [ocamlbuild]

@@ -29,20 +29,26 @@ all: byte doc
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
 
-byte: list
+byte: prepare_library_contents
 	ocamlbuild batlib.cma
 
-opt: list
+opt: prepare_library_contents
 	ocamlbuild batlib.cmxa
 
-doc: list
-	ocamlbuild batteries.docdir/index.html;
-	cp batteries.docdir/Batlib.html batteries.docdir/index.html
+doc: prepare_library_contents
+	ocamlbuild batteries.docdir/index.html
+#	cp batteries.docdir/Batlib.html batteries.docdir/index.html
 
-list: 
+#
+#Generate the list of modules we intend to put into batlib.cma
+#
+prepare_library_contents: 
 	@echo $(basename $(notdir $(shell find batlib juice -name  "*.ml"))) > batlib.mllib &&\
 	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batlib.mllib
 
+prepare_syntax_contents:
+	@echo $(basename $(notdir $(shell find syntax -name  "*.ml"))) > batsyntax.mllib &&\
+	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batsyntax.mllib
 
 META: build/META
 	cp build/META .

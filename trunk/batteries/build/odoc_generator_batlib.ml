@@ -29,10 +29,23 @@ open Odoc_info.Type
 open Odoc_info.Class
 open Odoc_info.Exception
 
+(** Concatenate two names into a module path.
+    [concat a b] is [a^"."^b] if neither [a]
+    nor [b] is empty, [a] if [b] is empty and
+    [b] if [a] is empty.*)
 let concat a b =
-  if String.length b = 0 then a
+  if String.length b = 0      then a
+  else if String.length a = 0 then b 
   else Name.concat a b
 
+(** Return the basename in a path.
+    
+    [end_of_name "A.B.C.D.E.t"] produces ["t"] *)
+let end_of_name name =
+  Name.get_relative (Name.father (Name.father name)) name
+
+(** A list of primitive type names for which we should rather link
+    to the corresponding module *)
 let primitive_types_names =
   [   "char",      "Batlib.Data.Text.Char.t";
       "string",    "Batlib.Data.Text.String.t";
@@ -41,24 +54,17 @@ let primitive_types_names =
       "list",      "Batlib.Data.Containers.Persistent.List.t";
       "int32",     "Batlib.Data.Numeric.Int32.t";
       "int64",     "Batlib.Data.Numeric.Int64.t";
-      "nativeint", "Batlib.Data.Numeric.Nativeint.t"]
+      "nativeint", "Batlib.Data.Numeric.Nativeint.t"(*;*)
+      (*"int",       "Batlib.Data.Numeric.Int.t";*)(*Module not implemented yet*)
+      (*"bool",       "Batlib.Data.Logical.Bool.t";*)(*Module not implemented yet*)
+      (*"unit",       "?"; *) (*Module not implemented yet*)
+      (*"float",       "Batlib.Data.Logical.Float.t";*)(*Module not implemented yet*)
+      (*"exn",       "Batlib.Control.Exceptions.Exn.t";*)(*Module not implemented yet*)
+      (*"format4",  "Batlib.Languages.Printf.format4";*)(*Module not implemented yet*)
+]
 
-(*let primitive_types_names =
-  ["string",    "String.t";
-   "array",     "Array.t" ;
-   "lazy_t",    "Lazy.t";
-   "list",      "List.t";
-   "int32",     "Int32.t";
-   "int64",     "Int64.t";
-   "nativeint", "Nativeint.t"]*)
-
-(*In the future, add int, bool, unit, float, exn,
-  option, format4*)
-
-let end_of_name name =
-  Name.get_relative (Name.father (Name.father name)) name
-
-let get_replacing = function
+(**Find out if a set if information specifies a manual module replacement*)
+let get_manual_replacement = function
   | None   ->  None
   | Some i -> 
       try match List.assoc "replace" i.i_custom with
@@ -71,7 +77,7 @@ let get_replacing = function
 	None
 
 let string_of_info_opt = function
-  | None -> "No information"
+  | None   -> "No information"
   | Some i -> info_string_of_info i
 (**
    [rebuild_structure m] walks through list [m] and rebuilds it as a forest
@@ -160,10 +166,9 @@ let rebuild_structure modules =
     let result = 
       {(t) with 
 	 m_kind = handle_kind path' t t.m_kind; 
-	 m_name = path';
-	 m_type = handle_module_type math m t} in
+	 m_name = path'} in
       add_renamed_module t.m_name path';
-      (match get_replacing t.m_info with
+      (match get_manual_replacement t.m_info with
 	 | None   -> warning ("No replacement for module "^t.m_name)
 	 | Some r -> 
 	     warning ("Manual replacement of module "^r^" with "^path');
@@ -293,6 +298,54 @@ class batlib_generator =
 
     val mutable renamings : (string, string) Hashtbl.t = Hashtbl.create 0      
 
+      (** Determine the category of a name*)
+      
+    val mutable known_values_names     = Odoc_html.StringSet.empty
+    val mutable known_exceptions_names = Odoc_html.StringSet.empty
+    val mutable known_methods_names    = Odoc_html.StringSet.empty
+    val mutable known_attributes_names = Odoc_html.StringSet.empty
+    val mutable known_class_types_names= Odoc_html.StringSet.empty
+    val mutable known_module_types_names= Odoc_html.StringSet.empty
+
+    method is_value n =
+      Odoc_html.StringSet.mem n known_values_names
+
+    method is_exception n =
+      Odoc_html.StringSet.mem n known_exceptions_names
+
+    method is_method n =
+      Odoc_html.StringSet.mem n known_methods_names
+
+    method is_attribute n =
+      Odoc_html.StringSet.mem n known_attributes_names
+
+    method is_class n =
+      Odoc_html.StringSet.mem n known_classes_names
+
+    method is_class_type n =
+      Odoc_html.StringSet.mem n known_class_types_names
+
+    method is_module n =
+      Odoc_html.StringSet.mem n known_modules_names
+
+    method is_module_type n =
+      Odoc_html.StringSet.mem n known_modules_names
+
+    method is_type n =
+      Odoc_html.StringSet.mem n known_types_names
+
+    method what_is n =
+      if self#is_module n           then Some RK_module
+      else if self#is_class n       then Some RK_class
+      else if self#is_class_type  n then Some RK_class_type
+      else if self#is_value       n then Some RK_value
+      else if self#is_type        n then Some RK_type
+      else if self#is_exception   n then Some RK_exception
+      else if self#is_attribute   n then Some RK_attribute
+      else if self#is_method      n then Some RK_method
+      else if self#is_module_type n then Some RK_module_type
+      else None
+
     method html_of_module b ?(info=true) ?(complete=true) ?(with_link=true) m =
       let name = m.m_name in
       let (html_file, _) = Naming.html_files name in
@@ -325,8 +378,28 @@ class batlib_generator =
 
 
     method html_of_Ref b name ref_opt =
-      warning ("printing reference to "^name);
-      super#html_of_Ref b (find_renaming renamings name) ref_opt
+      warning ("printing reference to "^name^" with type "^
+		 match ref_opt with
+		   | None                 -> "(none)"
+		   | Some RK_module       -> "(module)"
+		   | Some RK_class        -> "(class)"
+		   | Some RK_class_type   -> "(class type)"
+		   | Some RK_value        -> "(value)"
+		   | Some RK_type         -> "(type)"
+		   | Some RK_exception    -> "(exception)"
+		   | Some RK_attribute    -> "(attribute)"
+		   | Some RK_method       -> "(method)"
+		   | Some (RK_section _)  -> "(section)"
+		   | Some RK_module_type  -> "(module type)");
+      let renamed = find_renaming renamings name in
+      let type_of_ref = 
+	match ref_opt with
+	  | Some _ -> ref_opt (*We already have all the details*)
+	  | _      -> match self#what_is name with
+	      | Some result -> Some result
+	      | None        -> self#what_is renamed
+      in
+      super#html_of_Ref b renamed type_of_ref
 
 
       (**Replace references to [string] with [String.t],
@@ -343,13 +416,11 @@ class batlib_generator =
 	    renamed_type_name
 	    rel
 	  in
-	    if (Odoc_html.StringSet.mem original_type_name known_types_names ||
-		  Odoc_html.StringSet.mem renamed_type_name known_types_names )
+	    if self#is_type original_type_name || self#is_type renamed_type_name 
 	    then "<a href=\""^(Naming.complete_target Naming.mark_type renamed_type_name)^"\">"^s_final^"</a>"
 	    else(
-              if (Odoc_html.StringSet.mem original_type_name known_classes_names ||
-		    Odoc_html.StringSet.mem renamed_type_name known_classes_names)
-	      then let (html_file, _) = Naming.html_files renamed_type_name in
+	      if self#is_class original_type_name || self#is_class renamed_type_name then
+		let (html_file, _) = Naming.html_files renamed_type_name in
 		"<a href=\""^html_file^"\">"^s_final^"</a>"
               else s_final)
 		(**Replace primitive type names with links to their representation module*)
@@ -388,6 +459,43 @@ class batlib_generator =
 	    (*Pre-process every module*)
 	    let everything        = Search.modules modules in
 	    let (rewritten_modules, renamed_modules) = rebuild_structure everything in
+	      (*Cache set of values*)
+	      known_values_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.val_name acc)
+		known_types_names
+		list_values ;
+	      (*Cache set of exceptions*)
+	      known_exceptions_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.ex_name acc)
+		known_exceptions_names
+		list_exceptions ;
+	      (*Cache set of methods*)
+	      known_methods_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.met_value.val_name acc)
+		known_methods_names
+		list_methods ;
+	      (*Cache set of attributes*)
+	      known_attributes_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.att_value.val_name acc)
+		known_attributes_names
+		list_attributes ;
+	      (*Cache set of class types*)
+	      known_class_types_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.clt_name acc)
+		known_class_types_names
+		list_class_types ;
+	      (*Cache set of module_types *)
+	      known_module_types_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.mt_name acc)
+		known_module_types_names
+		list_module_types ;
+
 	      renamings <- renamed_modules;
 	      super#generate rewritten_modules
 
