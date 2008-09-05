@@ -30,6 +30,8 @@
      if (* the predicate P over D is now satified *) then Condition.signal c;
      Mutex.unlock m
    ]}
+
+    @replace Condition
 *)
 
 type t

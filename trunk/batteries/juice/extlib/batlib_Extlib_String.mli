@@ -19,7 +19,9 @@
  *)
 
 
-
+(**
+   @replace String
+*)
 	(** {6 New Functions} *)
 
 	val init : int -> (int -> char) -> string

@@ -15,7 +15,11 @@
   Modified by David Teller to extract relevant parts
 *)
 
+(**
+   For more information, see the documentation of module {!Map}
 
+   @replace MapLabels
+*)
 
   module type OrderedType = Map.OrderedType
   module type S =

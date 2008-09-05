@@ -28,5 +28,3 @@ module Odoc_info   = Batlib_Ocamldoc_Odoc_info
 (**Package management with Findlib*)
 module Findlib     = Batlib_Findlib_Findlib
 
-(**Package management with Godi*)
-module Godi_script = Batlib_Godi_Godi_script

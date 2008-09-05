@@ -20,8 +20,10 @@
 
 (** Polymorphic Map.
 
-	This is a polymorphic map, similar to standard library [Map] module
-	but in a defunctorized style.
+    This is a polymorphic map, similar to standard library [Map] module
+    but in a defunctorized style.
+
+    @replace PMap
 *)
 
 type ('a, 'b) t

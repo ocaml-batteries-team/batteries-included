@@ -21,9 +21,11 @@
 
 (** Decompression algorithm.
 
-	Unzip decompression algorithm is compliant with RFC 1950 and 1951 which
-	are describing the "inflate" algorithm used in most popular file formats.
-	This format is also the one used by the popular ZLib library.	
+    Unzip decompression algorithm is compliant with RFC 1950 and 1951 which
+    are describing the "inflate" algorithm used in most popular file formats.
+    This format is also the one used by the popular ZLib library.
+
+    @replace Unzip
 *)
 
 type error_msg =

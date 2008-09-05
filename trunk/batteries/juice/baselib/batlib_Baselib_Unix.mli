@@ -13,7 +13,9 @@
 
 (* $Id: unix.mli,v 1.85 2007/01/22 07:41:00 garrigue Exp $ *)
 
-(** Interface to the Unix system *)
+(** Interface to the Unix system 
+
+    @replace Unix*)
 
 
 (** {6 Error report} *)

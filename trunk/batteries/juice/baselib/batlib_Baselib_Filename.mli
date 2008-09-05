@@ -13,7 +13,10 @@
 
 (* $Id: filename.mli,v 1.35 2007/01/09 13:42:17 doligez Exp $ *)
 
-(** Operations on file names. *)
+(** Operations on file names. 
+
+    @replace Filename
+*)
 
 val current_dir_name : string
 (** The conventional name for the current directory (e.g. [.] in Unix). *)

@@ -28,6 +28,8 @@
    [nativeint] are generally slower than those on [int].  Use [nativeint]
    only when the application requires the extra bit of precision
    over the [int] type.
+
+    @replace Nativeint
 *)
 
 val zero : nativeint

@@ -34,13 +34,14 @@ let concat a b =
   else Name.concat a b
 
 let primitive_types_names =
-  ["string", "Batlib.Data.Text.String.t";
-   "array",  "Batlib.Data.Containers.Mutable.Array.t" ;
-   "lazy_t", "Batlib.Data.Containers.Persistent.Lazy.t";
-   "list",   "Batlib.Data.Containers.Persistent.List.t";
-   "int32",  "Batlib.Data.Numeric.Int32.t";
-   "int64",  "Batlib.Data.Numeric.Int64.t";
-   "nativeint", "Batlib.Data.Numeric.Nativeint.t"]
+  [   "char",      "Batlib.Data.Text.Char.t";
+      "string",    "Batlib.Data.Text.String.t";
+      "array",     "Batlib.Data.Containers.Mutable.Array.t" ;
+      "lazy_t",    "Batlib.Data.Containers.Persistent.Lazy.t";
+      "list",      "Batlib.Data.Containers.Persistent.List.t";
+      "int32",     "Batlib.Data.Numeric.Int32.t";
+      "int64",     "Batlib.Data.Numeric.Int64.t";
+      "nativeint", "Batlib.Data.Numeric.Nativeint.t"]
 
 (*let primitive_types_names =
   ["string",    "String.t";
@@ -51,36 +52,14 @@ let primitive_types_names =
    "int64",     "Int64.t";
    "nativeint", "Nativeint.t"]*)
 
-(*In the future, add int, char, bool, unit, float, exn,
+(*In the future, add int, bool, unit, float, exn,
   option, format4*)
 
 let end_of_name name =
   Name.get_relative (Name.father (Name.father name)) name
 
-(*let default_info =
-{
-    i_desc = None;
-    i_authors = [];
-    i_version = None;
-    i_sees = [];
-    i_since = None;
-    i_deprecated = None;
-    i_params = [];
-    i_raised_exceptions = [];
-    i_return_value = None;
-    i_custom = []
-}
-
-let add_to_info c = function
-  | None   -> Some {(default_info) with i_custom = [c]};
-  | Some i -> Some {(i) with i_custom = c::i.i_custom}
-
-let add_rename result =
-  add_to_info ("rename", [Ref (result, Some RK_module)])*)
-
 let get_replacing = function
-  | None   -> 
-      None
+  | None   ->  None
   | Some i -> 
       try match List.assoc "replace" i.i_custom with
 	| []      -> 
@@ -91,6 +70,9 @@ let get_replacing = function
       with Not_found -> 
 	None
 
+let string_of_info_opt = function
+  | None -> "No information"
+  | Some i -> info_string_of_info i
 (**
    [rebuild_structure m] walks through list [m] and rebuilds it as a forest
    of modules and sub-modules.
@@ -155,7 +137,7 @@ let rebuild_structure modules =
 		    | Module_struct l -> 
 			(*Copy the contents of [a] into [m]*)
 			(*Copy the information on [a] into [m]*)
-(*			warning ("Structure of the module is simple");*)
+			warning ("Merging information from "^m.m_name^" and included "^a'.m_name);
 			m.m_info <- Odoc_merge.merge_info_opt Odoc_types.all_merge_options m.m_info a'.m_info;
 			add_renamed_module a.m_name m.m_name;
 			add_renamed_module (Name.get_relative m.m_name a.m_name) m.m_name;
@@ -173,24 +155,22 @@ let rebuild_structure modules =
 (*	      warning ("Module couldn't be found");*)
 	      add_renamed_module x.im_name m.m_name;
 	      [y]
-  and handle_module path m t      = (*{(t) with m_kind = handle_kind t.m_kind}*)
-    let path' = (*if path = m.m_name then path else*) concat path (Name.simple t.m_name) in
-(*      warning ("Entering module "^t.m_name^" in module "^m.m_name^" at path "^path^" => "^path');*)
-      let result = 
-	{(t) with m_kind = handle_kind path' t t.m_kind;
-	   (*m_info = add_rename path t.m_info
-	    ;*)m_name = path'} in
-(*	warning ("Leaving module "^t.m_name^" as "^path');*)
-	add_renamed_module t.m_name path';
-	(match get_replacing t.m_info with
-	  | None   -> ()
-	  | Some r -> 
-(*	      warning ("Additionally, "^r^" is replaced with "^path');*)
-	      add_renamed_module r path');
-	result
+  and handle_module path m t      = 
+    let path' = concat path (Name.simple t.m_name) in
+    let result = 
+      {(t) with 
+	 m_kind = handle_kind path' t t.m_kind; 
+	 m_name = path';
+	 m_type = handle_module_type math m t} in
+      add_renamed_module t.m_name path';
+      (match get_replacing t.m_info with
+	 | None   -> warning ("No replacement for module "^t.m_name)
+	 | Some r -> 
+	     warning ("Manual replacement of module "^r^" with "^path');
+	     add_renamed_module r path');
+      result
   and handle_module_type path m (t:Odoc_module.t_module_type) =
-    let path' = (*if path = m.m_name then path else*) concat path (Name.simple t.mt_name) in
-(*      warning ("Entering module type "^t.mt_name^" in module "^m.m_name^" at path "^path^" => "^path');*)
+    let path' = concat path (Name.simple t.mt_name) in
       let result = 
 	{(t) with mt_kind = (match t.mt_kind with
 	   | None -> None
@@ -203,10 +183,12 @@ let rebuild_structure modules =
 	result
   and handle_alias path m (t:module_alias) : module_alias     = (*Module [m] is an alias to [t.ma_module]*)
     match t.ma_module with
-      | None         -> (*warning ("module "^t.ma_name^" not resolved in cross-reference stage");*) t
+      | None         -> t
       | Some (Mod a) -> 
-	  (*warning ("module "^a.m_name^" marked for renaming as "^path);*)
 	  add_renamed_module a.m_name path;
+	  warning ("Merging information from "^m.m_name^" and aliased "^a.m_name);
+	  warning ("1: "^string_of_info_opt m.m_info);
+	  warning ("2: "^string_of_info_opt a.m_info);
 	  let info = Odoc_merge.merge_info_opt Odoc_types.all_merge_options m.m_info a.m_info
 	  in m.m_info <- info;
 	  let a' = {(a) with m_kind = handle_kind path m a.m_kind; m_info = info} in
@@ -278,7 +260,7 @@ let find_renaming renamings original =
   let rec aux s suffix = 
     if String.length s = 0 then 
       (
-	warning ("Name '"^original^"' remains unchanged");
+(*	warning ("Name '"^original^"' remains unchanged");*)
 	suffix
       )
     else 
@@ -292,8 +274,8 @@ let find_renaming renamings original =
 	      aux father (concat son suffix)
 	| Some r -> (*We have found a substitution, it should be over*)
 	    let result = concat r suffix in
-	      warning ("We have a renaming of "^s^" to "^r);
-	      warning ("Name "^original^" should actually lead to "^result);
+(*	      warning ("We have a renaming of "^s^" to "^r);*)
+	      warning ("Name "^original^" replaced with "^result);
 	      result
   in aux original ""    
 

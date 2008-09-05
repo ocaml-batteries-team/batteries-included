@@ -22,6 +22,8 @@
 
   RefList is a extended set of functions that manipulate list
   references.
+
+    @replace RefList
 *)
 
 exception Empty_list

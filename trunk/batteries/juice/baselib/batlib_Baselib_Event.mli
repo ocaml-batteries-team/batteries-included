@@ -19,6 +19,8 @@
    channels. As in John Reppy's Concurrent ML system, the communication 
    events are first-class values: they can be built and combined
    independently before being offered for communication. 
+
+    @replace Event
 *)
 
 type 'a channel

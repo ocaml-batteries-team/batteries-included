@@ -13,16 +13,7 @@
 
 (* $Id: pervasives.mli,v 1.108 2007/02/21 14:15:19 xleroy Exp $ *)
 
-(** The initially opened module.
-
-   This module provides the basic operations over the built-in types
-   (numbers, booleans, strings, exceptions, references, lists, arrays,
-   input-output channels, ...)
-
-   This module is automatically opened at the beginning of each compilation.
-   All components of this module can therefore be referred by their short
-   name, without prefixing them by [Pervasives].
-*)
+(** @replace Pervasives *)
 
 (** {6 Exceptions} *)
 
@@ -460,6 +451,7 @@ val ( @ ) : 'a list -> 'a list -> 'a list
 (** List concatenation. *)
 
 
+(** / **)
 (** {6 Input/output} *)
 
 type in_channel
@@ -476,7 +468,7 @@ val stdout : out_channel
 
 val stderr : out_channel
 (** The standard error ouput for the process. *)
-
+(** / **)
 
 (** {7 Output functions on standard output} *)
 
@@ -543,6 +535,7 @@ val read_float : unit -> float
    The result is unspecified if the line read is not a valid
    representation of a floating-point number. *)
 
+(** / **)
 (** {7 General output functions} *)
 
 
@@ -787,6 +780,8 @@ module LargeFile :
   positions and sizes by 64-bit integers (type [int64]) instead of
   regular integers (type [int]), these alternate functions allow
   operating on files whose sizes are greater than [max_int]. *)
+
+(** / **)
 
 (** {6 References} *)
 

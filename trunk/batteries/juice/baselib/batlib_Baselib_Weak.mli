@@ -13,7 +13,9 @@
 
 (* $Id: weak.mli,v 1.15 2004/02/02 14:43:12 doligez Exp $ *)
 
-(** Arrays of weak pointers and hash tables of weak pointers. *)
+(** Arrays of weak pointers and hash tables of weak pointers. 
+
+    @replace Weak*)
 
 
 (** {6 Low-level functions} *)

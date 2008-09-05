@@ -24,6 +24,8 @@
      (* Critical section that operates over D *);
      Mutex.unlock m
    ]}
+
+   @replace Mutex
 *)
 
 type t

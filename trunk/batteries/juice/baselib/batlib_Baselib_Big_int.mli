@@ -15,7 +15,9 @@
 
 (** Operations on arbitrary-precision integers.
 
-   Big integers (type [big_int]) are signed integers of arbitrary size. 
+    Big integers (type [big_int]) are signed integers of arbitrary size. 
+
+    @replace Big_int
 *)
   
 open Nat

@@ -34,6 +34,8 @@ type 'a t = 'a lazy_t;;
    loops in the garbage collector and other parts of the run-time system.
    Without the [-rectypes] option, such ill-founded recursive definitions
    are rejected by the type-checker.
+
+    @replace Lazy
 *)
 
 

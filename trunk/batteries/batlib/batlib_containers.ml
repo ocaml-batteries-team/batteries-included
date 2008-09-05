@@ -23,11 +23,13 @@
 *)
 
 (**{1 Container traversal}*)
+
 module Mutable                               = Batlib_mutable
 module Persistent                            = Batlib_persistent
 
 
 (**{1 Generic persistent containers}*)
+
 module Dllist                                = Batlib_Extlib_Dllist
 module List                                  = Batlib_Extlib_List       (*formerly Batlib_Baselib_List*)
 module ListLabels                            = Batlib_Baselib_ListLabels(*TODO:Bring to feature parity with {!List}*)
@@ -37,6 +39,7 @@ module Set                                   = Batlib_Baselib_Set       (*TODO:m
 module SetLabels                             = Batlib_Baselib_SetLabels (*TODO:make enumerable*)
 
 (**{1 Generic mutable containers}*)
+
 module Array                                 = Batlib_Extlib_Array         (*formerly Batlib_Baselib_Array*)
 module Bigarray                              = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
 module Dynarray                              = Batlib_Extlib_Dynarray
@@ -49,6 +52,7 @@ module Stack                                 = Batlib_Baselib_Stack        (*TOD
 module Stream                                = Batlib_Baselib_Stream       (*TODO:replace with latest version*)
 
 (**{1 Specialized containers}*)
+
 module Bitset                                = Batlib_Extlib_BitSet
 module Option                                = Batlib_Extlib_Option
 module Lazy                                  = Batlib_Baselib_Lazy

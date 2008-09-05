@@ -13,7 +13,9 @@
 
 (* $Id: scanf.mli,v 1.69.4.1 2007/04/26 16:57:37 doligez Exp $ *)
 
-(** Formatted input functions. *)
+(** Formatted input functions. 
+
+    @replace Scanf*)
 
 (** {6 Functional input with format strings.} *)
 

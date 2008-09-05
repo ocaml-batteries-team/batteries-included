@@ -20,10 +20,12 @@
 
 (** High-order abstract I/O.
 
-	IO module simply deals with abstract inputs/outputs. It provides a
-	set of methods for working with these IO as well as several
-	constructors that enable to write to an underlying channel, buffer,
-	or enum.
+    IO module simply deals with abstract inputs/outputs. It provides a
+    set of methods for working with these IO as well as several
+    constructors that enable to write to an underlying channel, buffer,
+    or enum.
+
+    @replace IO
 *)
 
 type input

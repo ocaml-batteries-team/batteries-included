@@ -4,13 +4,15 @@
  *)
 
 (** The primary findlib interface
- *
- * The Findlib module is the primary interface of the findlib library. It
- * contains functions to look up packages, to interpret META
- * files, and to determine the ancestors of packages.
- *
- * This module must be initialized before it can be used: Call either
- * [init] or [init_manually] for this.
+ 
+    The Findlib module is the primary interface of the findlib library. It
+    contains functions to look up packages, to interpret META
+    files, and to determine the ancestors of packages.
+    
+    This module must be initialized before it can be used: Call either
+    [init] or [init_manually] for this.
+    
+    @replace Findlib
  *)
 
 exception No_such_package of string * string

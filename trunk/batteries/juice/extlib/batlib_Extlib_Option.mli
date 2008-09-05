@@ -25,6 +25,8 @@
 	to represent undefined values (a little like NULL in C, but in a type
 	and memory safe way). This module adds some functions for working with
 	options.
+
+    @replace Option
 *)
 
 val may : ('a -> unit) -> 'a option -> unit

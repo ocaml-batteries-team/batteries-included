@@ -13,7 +13,10 @@
 
 (* $Id: char.mli,v 1.17 2005/10/25 18:34:07 doligez Exp $ *)
 
-(** Character operations. *)
+(** Character operations. 
+
+    @replace Char
+*)
 
 external code : char -> int = "%identity"
 (** Return the ASCII code of the argument. *)

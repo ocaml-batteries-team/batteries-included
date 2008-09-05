@@ -20,10 +20,12 @@
 
 (** Mutable global variable.
  
-	Often in OCaml you want to have a global variable, which is mutable 
+    Often in OCaml you want to have a global variable, which is mutable 
     and uninitialized when declared. You can use a ['a option ref] but
-	this is not very convenient. The Global module provides functions
-	to easily create and manipulate such variables.
+    this is not very convenient. The Global module provides functions
+    to easily create and manipulate such variables.
+    
+    @replace Global
 *)
 
 type 'a t

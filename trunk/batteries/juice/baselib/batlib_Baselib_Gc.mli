@@ -13,7 +13,10 @@
 
 (* $Id: gc.mli,v 1.42 2005/10/25 18:34:07 doligez Exp $ *)
 
-(** Memory management control and statistics; finalised values. *)
+(** Memory management control and statistics; finalised values. 
+
+    @replace Gc
+*)
 
 type stat =
   { minor_words : float;

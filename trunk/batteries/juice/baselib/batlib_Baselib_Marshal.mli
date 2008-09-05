@@ -42,6 +42,8 @@
    [open_out_bin] or [open_in_bin]; channels opened in text mode will
    cause unmarshaling errors on platforms where text channels behave
    differently than binary channels, e.g. Windows.
+
+    @replace Marshal
 *)
 
 type extern_flags =

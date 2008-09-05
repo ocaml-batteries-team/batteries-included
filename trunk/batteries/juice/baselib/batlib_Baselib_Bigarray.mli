@@ -30,6 +30,8 @@
    - and structured input-output ({!Pervasives.output_value}
      and {!Pervasives.input_value}, as well as the functions from the
      {!Marshal} module).
+
+    @replace Bigarray
 *)
 
 (** {6 Element kinds} *)

@@ -70,6 +70,8 @@
    of the basic I/O system with calls to the functions of this module:
    this could result in some strange output seemingly unrelated with
    the evaluation order of printing commands.
+
+    @replace Format
 *)
 
 

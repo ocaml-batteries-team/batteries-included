@@ -29,7 +29,6 @@ Batlib_Baselib_Digest
 Batlib_Baselib_Buffer
 Batlib_Baselib_ListLabels
 Batlib_Baselib_Condition
-Batlib_Baselib_String
 Batlib_Baselib_Printexc
 Batlib_Baselib_Mutex
 Batlib_Baselib_Stack
@@ -58,9 +57,6 @@ Batlib_Baselib_Parsing
 Batlib_Baselib_Filename
 Batlib_Baselib_Oo
 Batlib_Baselib_Pervasives
-Batlib_Baselib_List
-Batlib_Baselib_Hashtbl
-Batlib_Baselib_Array
 Batlib_Baselib_Complex
 Batlib_Baselib_CamlinternalOO
 Batlib_Baselib_MapLabels
@@ -87,4 +83,3 @@ Batlib_Extlib_Base64
 Batlib_Extlib_Array
 Batlib_Extlib_Std
 Batlib_Findlib_Findlib
-Batlib_Godi_Godi_script

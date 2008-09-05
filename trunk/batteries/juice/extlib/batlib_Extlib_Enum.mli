@@ -25,6 +25,8 @@
  to manipulate data is therefore efficient and simple. All data structures in
  ExtLib such as lists, arrays, etc. have support to convert from and to
  enumerations.
+
+    @replace Enum
 *)
 
 

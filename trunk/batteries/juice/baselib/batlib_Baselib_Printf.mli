@@ -13,7 +13,9 @@
 
 (* $Id: printf.mli,v 1.54 2006/11/17 08:34:05 weis Exp $ *)
 
-(** Formatted output functions. *)
+(** Formatted output functions. 
+
+    @replace Printf*)
 
 val fprintf : out_channel -> ('a, out_channel, unit) format -> 'a
 (** [fprintf outchan format arg1 ... argN] formats the arguments

@@ -13,7 +13,10 @@
 
 (* $Id: printexc.mli,v 1.12 2005/10/25 18:34:07 doligez Exp $ *)
 
-(** Facilities for printing exceptions. *)
+(** Facilities for printing exceptions. 
+
+    @replace Printexc
+*)
 
 val to_string : exn -> string
 (** [Printexc.to_string e] returns a string representation of
@@ -27,6 +30,7 @@ val print : ('a -> 'b) -> 'a -> 'b
    The typical use is to catch and report exceptions that
    escape a function application. *)
 
+(** / **)
 val catch : ('a -> 'b) -> 'a -> 'b
 (** [Printexc.catch fn x] is similar to {!Printexc.print}, but
    aborts the program with exit code 2 after printing the
@@ -35,4 +39,6 @@ val catch : ('a -> 'b) -> 'a -> 'b
    as [Printexc.catch] does.  Moreover, calling [Printexc.catch]
    makes it harder to track the location of the exception
    using the debugger or the stack backtrace facility.
-   So, do not use [Printexc.catch] in new code.  *)
+   So, do not use [Printexc.catch] in new code. 
+
+    @deprecated Use [print] rather than [catch].*)

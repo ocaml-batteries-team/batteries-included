@@ -24,7 +24,10 @@
    Performance notice: values of type [int32] occupy more memory
    space than values of type [int], and arithmetic operations on
    [int32] are generally slower than those on [int].  Use [int32]
-   only when the application requires exact 32-bit arithmetic. *)
+   only when the application requires exact 32-bit arithmetic. 
+
+    @replace Int32
+*)
 
 val zero : int32
 (** The 32-bit integer 0. *)

@@ -17,6 +17,8 @@
 
    Numbers (type [num]) are arbitrary-precision rational numbers,
    plus the special elements [1/0] (infinity) and [0/0] (undefined). 
+
+    @replace Num
 *)
 
 open Nat

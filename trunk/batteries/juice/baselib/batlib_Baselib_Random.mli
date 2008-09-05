@@ -13,7 +13,9 @@
 
 (* $Id: random.mli,v 1.17 2007/02/09 13:31:15 doligez Exp $ *)
 
-(** Pseudo-random number generators (PRNG). *)
+(** Pseudo-random number generators (PRNG). 
+
+    @replace Random*)
 
 (** {6 Basic functions} *)
 

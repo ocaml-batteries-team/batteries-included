@@ -13,7 +13,10 @@
 (* Modified by David Teller to hide externals *)
 
 
-(** Lightweight threads for Posix [1003.1c] and Win32. *)
+(** Lightweight threads for Posix [1003.1c] and Win32. 
+
+    @replace Thread
+*)
 
 
 

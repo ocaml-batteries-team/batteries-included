@@ -13,7 +13,9 @@
 
 (* $Id: sys.mli,v 1.49 2007/02/26 14:21:57 xleroy Exp $ *)
 
-(** System interface. *)
+(** System interface. 
+
+    @replace Sys*)
 
 val argv : string array
 (** The command line arguments given to the process.

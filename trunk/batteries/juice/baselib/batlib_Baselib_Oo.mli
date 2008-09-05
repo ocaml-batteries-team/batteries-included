@@ -13,7 +13,10 @@
 
 (* $Id: oo.mli,v 1.28 2004/05/26 11:10:52 garrigue Exp $ *)
 
-(** Operations on objects *)
+(** Operations on objects 
+
+    @replace Oo
+*)
 
 val copy : (< .. > as 'a) -> 'a
 (** [Oo.copy o] returns a copy of object [o], that is a fresh

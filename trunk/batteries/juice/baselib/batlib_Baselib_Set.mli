@@ -21,6 +21,8 @@
    The implementation uses balanced binary trees, and is therefore
    reasonably efficient: insertion and membership take time
    logarithmic in the size of the set, for instance.
+
+    @replace Set
 *)
 
 module type OrderedType =

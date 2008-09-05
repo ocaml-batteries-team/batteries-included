@@ -1,3 +1,15 @@
+09/05/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* batlib_Baselib_Pervasives.mli: headers removed, channel operations hidden
+	* batlib_Baselib_Array.ml*: removed
+	* batlib_Baselib_String.ml*: removed
+	* batlib_Baselib_List.ml*: removed
+	* batlib_Extlib_Array.mli: documented
+	* batlib_Baselib_*.mli: added [@replace]
+	* batlib_Extlib_*.mli: added [@replace]
+	* juice/godi: removed
+	* juice/_tags: removed references to GODI
+	* batlib_toolchain.ml: removed references to GODI
+	
 09/04/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* Makefile: [META] added
 	* Makefile: [doc] restored to [ocamlbuild]

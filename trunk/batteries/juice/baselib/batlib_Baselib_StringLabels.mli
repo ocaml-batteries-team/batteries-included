@@ -13,7 +13,9 @@
 
 (* $Id: stringLabels.mli,v 1.11 2007/01/22 08:06:09 garrigue Exp $ *)
 
-(** String operations. *)
+(** String operations. 
+
+    @replace StringLabels*)
 
 external length : string -> int = "%string_length"
 (** Return the length (number of characters) of the given string. *)

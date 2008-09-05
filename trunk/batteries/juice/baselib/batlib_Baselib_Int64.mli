@@ -25,6 +25,8 @@
    space than values of type [int], and arithmetic operations on
    [int64] are generally slower than those on [int].  Use [int64]
    only when the application requires exact 64-bit arithmetic.
+
+    @replace Int64
 *)
 
 val zero : int64

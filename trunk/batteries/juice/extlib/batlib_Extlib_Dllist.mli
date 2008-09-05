@@ -22,6 +22,8 @@
 
     This module implements a doubly linked list in a mutable or imperitive
     style (changes to the list are visible to all copies of the list).
+
+    @replace Dllist
 *)
 
 

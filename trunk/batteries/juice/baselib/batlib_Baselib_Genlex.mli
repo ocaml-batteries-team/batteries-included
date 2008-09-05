@@ -37,6 +37,8 @@
                   [< 'Kwd "+"; n2 = parse_expr >] -> n1+n2
                 | ...
    ]}
+
+    @replace Genlex
 *)
 
 (** The type of tokens. The lexical classes are: [Int] and [Float]

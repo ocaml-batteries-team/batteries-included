@@ -19,6 +19,8 @@
    arbitrary-length strings or files. The digests are of cryptographic
    quality: it is very hard, given a digest, to forge a string having
    that digest. The algorithm used is MD5.
+
+    @replace Digest
 *)
 
 type t = string

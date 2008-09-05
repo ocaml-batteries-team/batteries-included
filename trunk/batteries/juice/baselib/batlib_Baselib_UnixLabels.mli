@@ -16,6 +16,8 @@
 (** Interface to the Unix system.
    To use as replacement to default {!Unix} module,
    add [module Unix = UnixLabels] in your implementation.
+
+    @replace UnixLabels
 *)
 
 (** {6 Error report} *)

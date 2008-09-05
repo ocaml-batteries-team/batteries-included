@@ -18,7 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Additional functions. *)
+(** Additional functions. 
+
+    @replace Std
+*)
 
 val input_lines : in_channel -> string Enum.t
 (** Returns an enumeration over lines of an input channel, as read by the

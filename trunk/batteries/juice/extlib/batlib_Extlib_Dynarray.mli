@@ -24,6 +24,8 @@
    A dynamic array is equivalent to a OCaml array that will resize itself
    when elements are added or removed, except that floats are boxed and
    that no initialization element is required.
+
+    @replace Dynarray
 *)
 
 type 'a t

@@ -22,7 +22,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Modules for GNU [getopt(3)]-style command line parsing. *)
+(** Modules for GNU [getopt(3)]-style command line parsing. 
+
+    @replace OptParse *)
 
 
 (** This module contains the basic functions and types for defining

@@ -15,6 +15,11 @@
   Modified by David Teller to extract relevant parts
 *)
 
+(**
+   For information, see module {!Hashtbl}.
+
+   @replace HashtblLabels
+*)
 
   type ('a, 'b) t = ('a, 'b) Hashtbl.t
   val create : int -> ('a, 'b) t
