@@ -1,0 +1,33 @@
+openin:  locally open modules
+
+Author: Alain Frisch  <alain@frisch.fr>
+Contributions by Till Varoquaux
+Homepage: http://alain.frisch.fr/soft.html#openin
+
+This package implements a Camlp4 syntax extension for Objective Caml.
+It adds the syntactic construction
+
+    open M in e
+
+that can appear in any context where an expression is expected (except
+as a toplevel phrase). M is an arbitrary module expression (not only
+qualified names as for usual open statements).
+
+There is also a more general construction
+
+   struct ... end in e
+
+where ... is a sequence of structure item (type, exception, class,
+open,... declarations).
+
+
+To compile the syntax extension:
+  ocamlfind ocamlc -pp camlp4oof -package camlp4 -c pa_openin.ml
+
+To use the syntax extension:
+  ocamlc -c -pp 'camlp4o pa_openin.cmo' myfile.ml
+
+In the toplevel:
+  ocaml camlp4o.cma pa_openin.cmo
+
+The code is in the public domain. This version works with OCaml 3.10.

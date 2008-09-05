@@ -1,0 +1,18 @@
+name = "batsyntax"
+version = "0.1"
+description = "distribution of camlp4>=3.10 syntax extensions"
+
+package "syntax" (
+        description = "all syntax extensions included"
+        requires = "camlp4,batsyntax.openin.syntax"
+)
+
+package "openin" (
+        version = "20070524"
+        description = "local opening of module in expressions"
+        package "syntax" (
+                requires = "camlp4"
+                archive(syntax,preprocessor) = "pa_openin.cmo"
+                archive(syntax,toploop) = "pa_openin.cmo"
+        )
+)
