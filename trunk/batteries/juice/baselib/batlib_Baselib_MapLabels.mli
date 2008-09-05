@@ -18,7 +18,7 @@
 (**
    For more information, see the documentation of module {!Map}
 
-   @replace MapLabels
+   @documents MapLabels
 *)
 
   module type OrderedType = Map.OrderedType

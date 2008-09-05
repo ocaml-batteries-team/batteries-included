@@ -20,7 +20,7 @@
 
 
 (**
-   @replace String
+   @documents String
 *)
 	(** {6 New Functions} *)
 

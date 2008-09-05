@@ -26,7 +26,7 @@
 	and memory safe way). This module adds some functions for working with
 	options.
 
-    @replace Option
+    @documents Option
 *)
 
 val may : ('a -> unit) -> 'a option -> unit

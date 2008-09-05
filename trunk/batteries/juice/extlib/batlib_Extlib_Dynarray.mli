@@ -25,7 +25,7 @@
    when elements are added or removed, except that floats are boxed and
    that no initialization element is required.
 
-    @replace Dynarray
+    @documents Dynarray
 *)
 
 type 'a t

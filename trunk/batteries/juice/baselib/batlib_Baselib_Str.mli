@@ -15,7 +15,7 @@
 
 (** Regular expressions and high-level string processing 
 
-    @replace Str
+    @documents Str
 *)
 
 

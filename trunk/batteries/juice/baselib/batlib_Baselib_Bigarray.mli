@@ -31,7 +31,7 @@
      and {!Pervasives.input_value}, as well as the functions from the
      {!Marshal} module).
 
-    @replace Bigarray
+    @documents Bigarray
 *)
 
 (** {6 Element kinds} *)

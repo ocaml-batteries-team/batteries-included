@@ -15,7 +15,7 @@
 
 (** Facilities for printing exceptions. 
 
-    @replace Printexc
+    @documents Printexc
 *)
 
 val to_string : exn -> string

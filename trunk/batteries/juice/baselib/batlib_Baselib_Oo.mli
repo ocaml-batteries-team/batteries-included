@@ -15,7 +15,7 @@
 
 (** Operations on objects 
 
-    @replace Oo
+    @documents Oo
 *)
 
 val copy : (< .. > as 'a) -> 'a

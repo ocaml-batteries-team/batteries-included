@@ -26,7 +26,7 @@
    [int64] are generally slower than those on [int].  Use [int64]
    only when the application requires exact 64-bit arithmetic.
 
-    @replace Int64
+    @documents Int64
 *)
 
 val zero : int64

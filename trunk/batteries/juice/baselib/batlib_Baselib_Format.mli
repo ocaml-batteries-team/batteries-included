@@ -71,7 +71,7 @@
    this could result in some strange output seemingly unrelated with
    the evaluation order of printing commands.
 
-    @replace Format
+    @documents Format
 *)
 
 

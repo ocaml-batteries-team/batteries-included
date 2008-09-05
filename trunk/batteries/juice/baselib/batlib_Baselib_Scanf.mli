@@ -15,7 +15,7 @@
 
 (** Formatted input functions. 
 
-    @replace Scanf*)
+    @documents Scanf*)
 
 (** {6 Functional input with format strings.} *)
 

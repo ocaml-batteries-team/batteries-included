@@ -15,7 +15,7 @@
 
 (** String operations. 
 
-    @replace StringLabels*)
+    @documents StringLabels*)
 
 external length : string -> int = "%string_length"
 (** Return the length (number of characters) of the given string. *)

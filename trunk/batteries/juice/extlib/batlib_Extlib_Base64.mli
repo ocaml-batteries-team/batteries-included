@@ -24,7 +24,7 @@
     Default tables maps 0..63 values on characters A-Z, a-z, 0-9, '+' and '/'
     (in that order). 
 
-    @replace Base64
+    @documents Base64
 *)
 
 (** This exception is raised when reading an invalid character

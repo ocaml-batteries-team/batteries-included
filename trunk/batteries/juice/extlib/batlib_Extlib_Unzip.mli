@@ -25,7 +25,7 @@
     are describing the "inflate" algorithm used in most popular file formats.
     This format is also the one used by the popular ZLib library.
 
-    @replace Unzip
+    @documents Unzip
 *)
 
 type error_msg =

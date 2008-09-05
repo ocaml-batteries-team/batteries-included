@@ -15,7 +15,7 @@
 
 (** Arrays of weak pointers and hash tables of weak pointers. 
 
-    @replace Weak*)
+    @documents Weak*)
 
 
 (** {6 Low-level functions} *)

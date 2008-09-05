@@ -15,7 +15,7 @@
 
 (** Operations on file names. 
 
-    @replace Filename
+    @documents Filename
 *)
 
 val current_dir_name : string

@@ -23,7 +23,7 @@
   RefList is a extended set of functions that manipulate list
   references.
 
-    @replace RefList
+    @documents RefList
 *)
 
 exception Empty_list

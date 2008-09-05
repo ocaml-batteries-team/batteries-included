@@ -12,7 +12,7 @@
     This module must be initialized before it can be used: Call either
     [init] or [init_manually] for this.
     
-    @replace Findlib
+    @documents Findlib
  *)
 
 exception No_such_package of string * string

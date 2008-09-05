@@ -20,7 +20,7 @@
    events are first-class values: they can be built and combined
    independently before being offered for communication. 
 
-    @replace Event
+    @documents Event
 *)
 
 type 'a channel

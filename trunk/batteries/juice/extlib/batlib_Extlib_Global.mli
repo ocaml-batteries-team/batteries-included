@@ -25,7 +25,7 @@
     this is not very convenient. The Global module provides functions
     to easily create and manipulate such variables.
     
-    @replace Global
+    @documents Global
 *)
 
 type 'a t

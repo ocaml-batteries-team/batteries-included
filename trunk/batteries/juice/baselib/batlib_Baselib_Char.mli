@@ -15,7 +15,7 @@
 
 (** Character operations. 
 
-    @replace Char
+    @documents Char
 *)
 
 external code : char -> int = "%identity"

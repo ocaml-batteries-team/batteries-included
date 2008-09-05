@@ -39,7 +39,7 @@
 -   [cmd a b -- c d      ](two anonymous arguments and a rest option with
                            two arguments)
 
-    @replace Arg
+    @documents Arg
 *)
 
 type spec =

@@ -22,7 +22,7 @@
 
 (**
    Array operations
-   @replace Array
+   @documents Array
 *)
 
 (**{6 Base operations}*)

@@ -29,7 +29,7 @@
    only when the application requires the extra bit of precision
    over the [int] type.
 
-    @replace Nativeint
+    @documents Nativeint
 *)
 
 val zero : nativeint

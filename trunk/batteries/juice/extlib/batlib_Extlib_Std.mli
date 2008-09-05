@@ -20,7 +20,7 @@
 
 (** Additional functions. 
 
-    @replace Std
+    @documents Std
 *)
 
 val input_lines : in_channel -> string Enum.t

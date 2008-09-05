@@ -17,7 +17,7 @@
 
     Big integers (type [big_int]) are signed integers of arbitrary size. 
 
-    @replace Big_int
+    @documents Big_int
 *)
   
 open Nat

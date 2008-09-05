@@ -29,6 +29,10 @@ open Odoc_info.Type
 open Odoc_info.Class
 open Odoc_info.Exception
 
+
+
+(** {1 Tools}*)
+
 (** Concatenate two names into a module path.
     [concat a b] is [a^"."^b] if neither [a]
     nor [b] is empty, [a] if [b] is empty and
@@ -43,6 +47,21 @@ let concat a b =
     [end_of_name "A.B.C.D.E.t"] produces ["t"] *)
 let end_of_name name =
   Name.get_relative (Name.father (Name.father name)) name
+
+(** Print an [info option]*)
+let string_of_info_opt = function
+  | None   -> "No information"
+  | Some i -> info_string_of_info i
+
+let string_of_bool b = if b then "true" else "false"
+
+let bs = Buffer.add_string
+let bp = Printf.bprintf
+let opt = Odoc_info.apply_opt
+let new_buf () = Buffer.create 1024
+
+
+(** {1 Configuration}*)
 
 (** A list of primitive type names for which we should rather link
     to the corresponding module *)
@@ -63,11 +82,29 @@ let primitive_types_names =
       (*"format4",  "Batlib.Languages.Printf.format4";*)(*Module not implemented yet*)
 ]
 
+(** The root of the module hierarchy*)
+(*let is_related a ~parent:b =
+  String.starts_with a b && (a = b || a.[String.length b] = ".")*)
+
+let has_parent a ~parent:b =
+  a = b || 
+  let len_a  = String.length a
+  and len_b  = String.length b    in
+    len_a > len_b &&
+      let prefix = String.sub a 0 len_b in
+	prefix = b &&
+	  a.[len_b] = '.'
+    
+
+let root = "Batlib"
+
+(** {1 Actual rewriting}*)
+
 (**Find out if a set if information specifies a manual module replacement*)
 let get_manual_replacement = function
   | None   ->  None
   | Some i -> 
-      try match List.assoc "replace" i.i_custom with
+      try match List.assoc "documents" i.i_custom with
 	| []      -> 
 	    None
 	| [Raw s] -> 
@@ -76,9 +113,6 @@ let get_manual_replacement = function
       with Not_found -> 
 	None
 
-let string_of_info_opt = function
-  | None   -> "No information"
-  | Some i -> info_string_of_info i
 (**
    [rebuild_structure m] walks through list [m] and rebuilds it as a forest
    of modules and sub-modules.
@@ -282,19 +316,17 @@ let find_renaming renamings original =
 (*	      warning ("We have a renaming of "^s^" to "^r);*)
 	      warning ("Name "^original^" replaced with "^result);
 	      result
-  in aux original ""    
+  in aux original ""
+ 
 
-
-let bs = Buffer.add_string
-let bp = Printf.bprintf
-let opt = Odoc_info.apply_opt
-let string_of_bool b = if b then "true" else "false"
+(** {1 Batteries generation}*)
 
 let name_substitutions : (string, string) Hashtbl.t = Hashtbl.create 100
 
 class batlib_generator =
   object(self)
     inherit Odoc_html.html as super
+    (*inherit framed_html as super*)
 
     val mutable renamings : (string, string) Hashtbl.t = Hashtbl.create 0      
 
@@ -346,6 +378,99 @@ class batlib_generator =
       else if self#is_module_type n then Some RK_module_type
       else None
 
+(**Making links*)
+    method make_link ?(target="detailsFrame") ~text ~url () =
+      Printf.sprintf "<a href=%S target=%S>%s</a>" url target text
+
+    
+(**Customizing index generation
+
+   Only document modules which may be reached from the root.
+*)
+
+    (** A method to create index files. *)
+    method generate_elements_index :
+        'a.
+        'a list ->
+          ('a -> Odoc_info.Name.t) ->
+            ('a -> Odoc_info.info option) ->
+              ('a -> string) -> string -> string -> unit =
+    fun elements name info target title simple_file ->
+      try
+        let chanout = open_out (Filename.concat !Args.target_dir simple_file) in
+        let b = new_buf () in
+        bs b "<html>\n";
+        self#print_header b (self#inner_title title);
+        bs b "<body>\n<center><h1>";
+        bs b title;
+        bs b "</h1></center>\n" ;
+	self#html_of_Index_list b;
+        let sorted_elements = List.stable_sort
+            (fun e1 e2 -> compare (Name.simple (name e1)) (Name.simple (name e2)))
+            elements
+        in
+        let groups = Odoc_info.create_index_lists sorted_elements (fun e -> Name.simple (name e)) in
+        let f_ele e =
+          (*let simple_name = Name.simple (name e) in
+          let father_name = Name.father (name e) in
+          bp b "<tr><td>%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ());
+          if simple_name <> father_name && father_name <> "" then
+            bs b (self#make_link 
+		    ~url:(fst (Naming.html_files father_name))
+		    ~text:father_name ());
+          bs b "</td>\n<td>";
+          self#html_of_info_first_sentence b (info e);
+          bs b "</td></tr>\n";*)
+	  bp b "<li>%s</li>\n" (self#make_link ~url:(target e) ~text:(name e) ())
+	    
+        in
+        let f_group l =
+          match l with
+            [] -> ()
+          | e :: _ ->
+              let s =
+                match (Char.uppercase (Name.simple (name e)).[0]) with
+                  'A'..'Z' as c -> String.make 1 c
+                | _ -> ""
+              in
+              bs b "<tr><td align=\"left\"><br>";
+              bs b s ;
+              bs b "</td></tr>\n<tr class='index_entry'><td>\n" ;
+	      bs b "<ul>\n";
+              List.iter f_ele l;
+	      bs b "</ul>\n</td></tr>"
+        in
+        bs b "<table>\n";
+        List.iter f_group groups ;
+        bs b "</table><br>\n" ;
+        bs b "</body>\n</html>";
+        Buffer.output_buffer chanout b;
+        close_out chanout
+      with
+        Sys_error s ->
+          raise (Failure s)
+
+    method generate_modules_index _ =
+      let is_reachable_from_root m = has_parent m ~parent:root
+      in 
+      let list_modules = List.filter (fun m -> is_reachable_from_root m.m_name) self#list_modules in
+      self#generate_elements_index
+        list_modules
+        (fun m -> m.m_name)
+        (fun m -> m.m_info)
+        (fun m -> fst (Naming.html_files m.m_name))
+        Odoc_messages.index_of_modules
+        self#index_modules
+
+    method html_of_Module_list b _ =
+      let is_reachable_from_root m = has_parent m ~parent:root 
+      in 
+      let list_modules = List.map (fun m -> m.m_name)
+	((List.filter (fun m -> is_reachable_from_root m.m_name) self#list_modules)) in
+	super#html_of_Module_list b list_modules
+
+(**Customizing appearance of modules*)
+
     method html_of_module b ?(info=true) ?(complete=true) ?(with_link=true) m =
       let name = m.m_name in
       let (html_file, _) = Naming.html_files name in
@@ -354,7 +479,7 @@ class batlib_generator =
       bs b ((self#keyword "module")^" ");
       (
        if with_link then
-         bp b "<a href=\"%s\">%s</a>" html_file (*(Name.simple name)*)name
+         bs b (self#make_link ~text:(*(Name.simple name)*)name ~url:html_file ())
        else
          bs b (*(Name.simple name)*)name
       );
@@ -417,11 +542,12 @@ class batlib_generator =
 	    rel
 	  in
 	    if self#is_type original_type_name || self#is_type renamed_type_name 
-	    then "<a href=\""^(Naming.complete_target Naming.mark_type renamed_type_name)^"\">"^s_final^"</a>"
+	    then self#make_link ~url:(Naming.complete_target Naming.mark_type renamed_type_name)
+	      ~text:s_final ()
 	    else(
 	      if self#is_class original_type_name || self#is_class renamed_type_name then
 		let (html_file, _) = Naming.html_files renamed_type_name in
-		"<a href=\""^html_file^"\">"^s_final^"</a>"
+		  self#make_link ~url:html_file ~text:s_final ()
               else s_final)
 		(**Replace primitive type names with links to their representation module*)
       in let handle_word str_t = 
@@ -430,8 +556,9 @@ class batlib_generator =
 	    try
 	      let link = List.assoc match_s primitive_types_names in
 		(*let text = before^(end_of_name link) in*)
-		before^"<a href=\""^(Naming.complete_target Naming.mark_type link)^"\">"^
-			 match_s^"</a>"
+		before^(self#make_link 
+			  ~url:(Naming.complete_target Naming.mark_type link)
+			  ~text:match_s ())
 		  (*(handle_qualified_name link)*)
 	    with Not_found -> Str.matched_string str_t
 	in result
@@ -500,11 +627,106 @@ class batlib_generator =
 	      super#generate rewritten_modules
 
 
+    method index_prefix = "root"
+    (** Generate [index.html], as well as [indices.html] for the given module list*)
+    method generate_index module_list =
+      try
+	(*[index.html]*)
+        let chanout = open_out (Filename.concat !Args.target_dir "index.html") in
+        let b = new_buf () in
+        (*let title = match !Args.title with None -> "" | Some t -> self#escape t in*)
+        bs b doctype ;
+        bs b "<html>\n";
+        self#print_header b self#title;
+	bs b "<frameset cols=\"20%,80%\">\n";
+	bs b "<frame src=\"indices.html\" name =\"indicesFrame\"/>\n";
+	bs b "<frame src=\"root.html\"    name =\"detailsFrame\"/>\n";
+	bs b "</frameset>";
+	bs b "Frame Alert</h2>\n";
+	bs b "<p>\n";
+	bs b "This document is designed to be viewed using the frames feature. If you see this message, you are using a non-frame-capable web client.\n";
+	bs b "<br>\n";
+	bs b "Link to <a href=\"root.html\" target=\"detailsFrame\">Non-frame version.</a></noframes>\n";
+	bs b "</html>\n";
+        Buffer.output_buffer chanout b;
+        close_out chanout;
 
-    method html_of_replace _ = warning "REPLACE"; ""
+	(*[indices.html]*)
+        let chanout = open_out (Filename.concat !Args.target_dir "indices.html") in
+        let b = new_buf () in
+        let title = match !Args.title with None -> "" | Some t -> self#escape t in
+        bs b doctype ;
+        bs b "<html>\n";
+        self#print_header b self#title;
+        bs b "<body>\n";
+        bs b "<center><h1>";
+        bs b title;
+        bs b "</h1></center>\n" ;
+        self#html_of_Index_list b;
+        bs b "<br/>";
+        self#html_of_Module_list b
+          (List.map (fun m -> m.m_name) module_list);
+        bs b "</body>\n</html>";
+        Buffer.output_buffer chanout b;
+        close_out chanout;
+
+	(*[root.html]*)
+        let chanout = open_out (Filename.concat !Args.target_dir "root.html") in
+        let b = new_buf () in
+        bs b doctype ;
+        bs b "<html>\n";
+        self#print_header b self#title;
+        bs b "<body>\n";
+        bs b "<center><h1>";
+        bs b title;
+        bs b "</h1></center>\n" ;
+        let info = Odoc_info.apply_opt
+            (Odoc_info.info_of_comment_file module_list)
+            !Odoc_info.Args.intro_file
+        in
+        (
+         match info with
+           None ->
+             self#html_of_Index_list b;
+             bs b "<br/>";
+             self#html_of_Module_list b
+               (List.map (fun m -> m.m_name) module_list);
+             bs b "</body>\n</html>"
+         | Some i -> self#html_of_info ~indent: false b info
+        );
+        Buffer.output_buffer chanout b;
+        close_out chanout
+      with Sys_error s -> raise (Failure s)
+
+    method html_of_Index_list b =
+      let item s = bp b "<li class=\"index_of\">%s</li>\n" s in
+      let index_if_not_empty l url m =
+        match l with
+          [] -> ()
+        | _ -> item (self#make_link ~text:m ~url ~target:"indicesFrame"())
+      in
+	bs b "<div class=\"indices\"><ul class=\"indices\">\n";
+	item (self#make_link ~url:"indices.html"~text:"Home" ());
+	index_if_not_empty self#list_types        self#index_types        "Types"(*Odoc_messages.index_of_types*);
+	index_if_not_empty self#list_values       self#index_values       "Values" (*Odoc_messages.index_of_values*);
+	index_if_not_empty self#list_exceptions   self#index_exceptions   "Exceptions" (*Odoc_messages.index_of_exceptions*);
+	index_if_not_empty self#list_classes      self#index_classes      "Classes" (*Odoc_messages.index_of_classes*);
+	index_if_not_empty self#list_attributes   self#index_attributes   "Attributes" (*Odoc_messages.index_of_attributes*);
+	index_if_not_empty self#list_methods      self#index_methods      "Methods" (*Odoc_messages.index_of_methods*);
+	index_if_not_empty self#list_class_types  self#index_class_types  "Class types" (*Odoc_messages.index_of_class_types*);
+	index_if_not_empty self#list_modules      self#index_modules      "Modules" (*Odoc_messages.index_of_modules*);
+	index_if_not_empty self#list_module_types self#index_module_types "Module types"; (*Odoc_messages.index_of_module_types*)
+	bs b "</ul></div><hr />"
+
+
+    method html_of_custom_tag_documents text = warning ("documenting " ^ (string_of_text text));""
 
     initializer
-      tag_functions <- ("replace", self#html_of_replace) :: tag_functions
+      tag_functions         <- ("documents", self#html_of_custom_tag_documents) :: tag_functions;
+      default_style_options <- ["li.index_of {display:inline}";
+				"ul.indices  {display:inline;font-variant:small-caps;list-style-position: inside;list-style-type:none;padding:0px}";
+                                "div.indices {text-align:center}";
+				".index_entry{font-size:x-small}"]@default_style_options;
 
   end;;
 

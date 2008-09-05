@@ -15,7 +15,7 @@
 
 (** System interface. 
 
-    @replace Sys*)
+    @documents Sys*)
 
 val argv : string array
 (** The command line arguments given to the process.

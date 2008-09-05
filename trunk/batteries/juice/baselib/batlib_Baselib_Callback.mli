@@ -19,7 +19,7 @@
    under a symbolic name, so that C code can later call back registered
    Caml functions, or raise registered Caml exceptions.
 
-    @replace Callback
+    @documents Callback
 *)
 
 val register : string -> 'a -> unit

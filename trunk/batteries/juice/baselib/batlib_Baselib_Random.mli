@@ -15,7 +15,7 @@
 
 (** Pseudo-random number generators (PRNG). 
 
-    @replace Random*)
+    @documents Random*)
 
 (** {6 Basic functions} *)
 

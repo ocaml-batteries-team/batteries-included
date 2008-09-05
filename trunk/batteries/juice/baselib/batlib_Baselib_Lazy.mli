@@ -35,7 +35,7 @@ type 'a t = 'a lazy_t;;
    Without the [-rectypes] option, such ill-founded recursive definitions
    are rejected by the type-checker.
 
-    @replace Lazy
+    @documents Lazy
 *)
 
 

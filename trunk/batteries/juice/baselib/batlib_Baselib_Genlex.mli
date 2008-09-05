@@ -38,7 +38,7 @@
                 | ...
    ]}
 
-    @replace Genlex
+    @documents Genlex
 *)
 
 (** The type of tokens. The lexical classes are: [Int] and [Float]

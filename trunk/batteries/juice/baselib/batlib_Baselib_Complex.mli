@@ -20,7 +20,7 @@
     (cartesian representation).  Each part is represented by a
     double-precision floating-point number (type [float]).   
 
-    @replace Complex
+    @documents Complex
 *)
 
 type t = { re: float; im: float }

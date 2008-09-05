@@ -25,7 +25,7 @@
    The above considerations can usually be ignored if your lists are not
    longer than about 10000 elements.
 
-    @replace ListLabels
+    @documents ListLabels
 *)
 
 val length : 'a list -> int

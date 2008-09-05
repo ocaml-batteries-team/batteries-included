@@ -15,7 +15,7 @@
 
 (** Interface to the Unix system 
 
-    @replace Unix*)
+    @documents Unix*)
 
 
 (** {6 Error report} *)

@@ -22,7 +22,7 @@
    The implementation uses balanced binary trees, and therefore searching
    and insertion take time logarithmic in the size of the map.
 
-    @replace Map
+    @documents Map
 *)
 
 module type OrderedType =

@@ -15,7 +15,7 @@
 
 (** Lightweight threads for Posix [1003.1c] and Win32. 
 
-    @replace Thread
+    @documents Thread
 *)
 
 

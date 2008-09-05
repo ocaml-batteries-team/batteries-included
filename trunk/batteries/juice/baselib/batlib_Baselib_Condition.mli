@@ -31,7 +31,7 @@
      Mutex.unlock m
    ]}
 
-    @replace Condition
+    @documents Condition
 *)
 
 type t

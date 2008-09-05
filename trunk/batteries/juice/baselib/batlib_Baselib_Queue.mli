@@ -17,7 +17,7 @@
 
    This module implements queues (FIFOs), with in-place modification.
 
-    @replace Queue
+    @documents Queue
 *)
 
 type 'a t

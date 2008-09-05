@@ -25,7 +25,7 @@
      Mutex.unlock m
    ]}
 
-   @replace Mutex
+   @documents Mutex
 *)
 
 type t

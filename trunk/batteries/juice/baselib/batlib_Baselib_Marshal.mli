@@ -43,7 +43,7 @@
    cause unmarshaling errors on platforms where text channels behave
    differently than binary channels, e.g. Windows.
 
-    @replace Marshal
+    @documents Marshal
 *)
 
 type extern_flags =

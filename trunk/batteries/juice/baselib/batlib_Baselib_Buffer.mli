@@ -20,7 +20,7 @@
    in quasi-linear time (instead of quadratic time when strings are
    concatenated pairwise).
 
-    @replace Buffer
+    @documents Buffer
 *)
 
 type t

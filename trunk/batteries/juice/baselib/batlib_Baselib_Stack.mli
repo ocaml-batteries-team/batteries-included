@@ -17,7 +17,7 @@
 
    This module implements stacks (LIFOs), with in-place modification.
 
-    @replace Stack
+    @documents Stack
 *)
 
 type 'a t

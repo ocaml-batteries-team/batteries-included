@@ -17,7 +17,7 @@
 
 
 (**
-   @replace Set
+   @documents Set
 *)
   module type OrderedType = Set.OrderedType
   module type S =

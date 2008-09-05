@@ -22,7 +22,7 @@
    reasonably efficient: insertion and membership take time
    logarithmic in the size of the set, for instance.
 
-    @replace Set
+    @documents Set
 *)
 
 module type OrderedType =

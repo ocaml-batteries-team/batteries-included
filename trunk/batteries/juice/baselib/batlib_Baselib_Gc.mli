@@ -15,7 +15,7 @@
 
 (** Memory management control and statistics; finalised values. 
 
-    @replace Gc
+    @documents Gc
 *)
 
 type stat =

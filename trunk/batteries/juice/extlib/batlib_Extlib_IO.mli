@@ -25,7 +25,7 @@
     constructors that enable to write to an underlying channel, buffer,
     or enum.
 
-    @replace IO
+    @documents IO
 *)
 
 type input

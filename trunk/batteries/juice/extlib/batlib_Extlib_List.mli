@@ -20,7 +20,7 @@
  *)
 
 (**
-   @replace List
+   @documents List
 *)
 
 (** {6 New functions} *)

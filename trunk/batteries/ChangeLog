@@ -12,6 +12,19 @@
 	* odoc_generator_batlib.ml: added [known_*]
 	* odoc_generator_batlib.ml: added [is_*]
 	* odoc_generator_batlib.ml: added [what_is]
+	* odoc_generator_batlib.ml: [get_manual_replacement] now uses strings "document"
+	* odoc_generator_batlib.ml: [make_link], [has_parent] added
+	* odoc_generator_batlib.ml: all links now generated with [make_link]
+	* odoc_generator_batlib.ml: [generate_elements_index] now creates html lists
+	* odoc_generator_batlib.ml: [generate_modules_index] now sorts module list using [has_parent]
+	* odoc_generator_batlib.ml: [html_of_Module_list] now sorts module list using [has_parent]
+	* odoc_generator_batlib.ml: [html_of_Index_list] adds button "Home"
+	* odoc_generator_batlib.ml: [html_of_Ref] now guesses types using [what_is]
+	* odoc_generator_batlib.ml: [generate] now initialises [know_*]
+	* odoc_generator_batlib.ml: [index_prefix] now is "root"
+	* odoc_generator_batlib.ml: [generate_index] now generates frames
+	* odoc_generator_batlib.ml: [inigializer] now places stuff in [default_style_options]
+	* odoc_fhtml.ml: imported
 
 09/04/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* Makefile: [META] added

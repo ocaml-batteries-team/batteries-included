@@ -18,7 +18,7 @@
 (**
    For information, see module {!Hashtbl}.
 
-   @replace HashtblLabels
+   @documents HashtblLabels
 *)
 
   type ('a, 'b) t = ('a, 'b) Hashtbl.t

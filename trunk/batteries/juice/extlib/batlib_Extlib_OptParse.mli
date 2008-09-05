@@ -24,7 +24,7 @@
 
 (** Modules for GNU [getopt(3)]-style command line parsing. 
 
-    @replace OptParse *)
+    @documents OptParse *)
 
 
 (** This module contains the basic functions and types for defining

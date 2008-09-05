@@ -15,7 +15,7 @@
 
 (** Streams and parsers. 
 
-    @replace Stream*)
+    @documents Stream*)
 
 type 'a t
 (** The type of streams holding values of type ['a]. *)

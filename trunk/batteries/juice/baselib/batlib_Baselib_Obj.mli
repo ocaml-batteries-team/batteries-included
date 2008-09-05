@@ -17,7 +17,7 @@
 
    Not for the casual user.
 
-    @replace Obj
+    @documents Obj
 *)
 
 type t

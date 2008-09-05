@@ -13,7 +13,7 @@
 
 (* $Id: pervasives.mli,v 1.108 2007/02/21 14:15:19 xleroy Exp $ *)
 
-(** @replace Pervasives *)
+(** @documents Pervasives *)
 
 (** {6 Exceptions} *)
 
