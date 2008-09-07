@@ -22,6 +22,7 @@
 
 module Array                                 = Batlib_Extlib_Array         (*formerly Batlib_Baselib_Array*)
 module Bigarray                              = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
+module BitSet                                = Batlib_Extlib_BitSet
 module Dynarray                              = Batlib_Extlib_Dynarray
 module Enum                                  = Batlib_Extlib_Enum
 module Global                                = Batlib_Extlib_Global

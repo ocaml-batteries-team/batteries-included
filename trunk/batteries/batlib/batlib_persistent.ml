@@ -24,9 +24,11 @@
 
 
 module Dllist                                = Batlib_Extlib_Dllist
+module Lazy                                  = Batlib_Baselib_Lazy
 module List                                  = Batlib_Extlib_List       (*formerly Batlib_Baselib_List*)
 module ListLabels                            = Batlib_Baselib_ListLabels(*TODO:Bring to feature parity with {!List}*)
 module Map                                   = Batlib_Baselib_Map       (*TODO:make enumerable*)
 module MapLabels                             = Batlib_Baselib_MapLabels (*TODO:make enumerable*)
+module Option                                = Batlib_Extlib_Option
 module Set                                   = Batlib_Baselib_Set       (*TODO:make enumerable*)
 module SetLabels                             = Batlib_Baselib_SetLabels (*TODO:make enumerable*)

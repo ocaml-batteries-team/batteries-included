@@ -23,18 +23,22 @@
 *)
 
 (** {1 Language}*)
+
 module Marshal        = Batlib_Baselib_Marshal
 module Oo             = Batlib_Baselib_Oo
 
 (** {1 Interaction with other languages} *)
+
 module Callback       = Batlib_Baselib_Callback
 
 (** {1 Memory}*)
+
 module Gc             = Batlib_Baselib_Gc
 module Weak           = Batlib_Baselib_Weak
 
 (** {1 Internals}
     Here Be Dragons*)
+
 module Obj            = Batlib_Baselib_Obj
 module CamlinternalMod= Batlib_Baselib_CamlinternalMod
 module CamlinternalOO = Batlib_Baselib_CamlinternalOO
