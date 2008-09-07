@@ -598,14 +598,21 @@ class batlib_generator =
 	    (*Pre-process every module*)
 	    let everything        = Search.modules modules in
 	    let (rewritten_modules, renamed_modules) = rebuild_structure everything in
+	      list_values       <- Odoc_info.Search.values            rewritten_modules ;
+	      list_exceptions   <- Odoc_info.Search.exceptions        rewritten_modules ;
+	      list_types        <- Odoc_info.Search.types             rewritten_modules ;
+	      list_attributes   <- Odoc_info.Search.attributes        rewritten_modules ;
+	      list_methods      <- Odoc_info.Search.methods           rewritten_modules ;
+	      list_classes      <- Odoc_info.Search.classes           rewritten_modules ;
+	      list_class_types  <- Odoc_info.Search.class_types       rewritten_modules ;
+	      list_modules      <- Odoc_info.Search.modules           rewritten_modules ;
+	      list_module_types <- Odoc_info.Search.module_types      rewritten_modules ;
 	      (*Cache set of values*)
 	      known_values_names <-
 		List.fold_left
 		(fun acc t -> Odoc_html.StringSet.add t.val_name acc)
 		known_values_names
 		list_values ;
-	      warning ("Known values:");
-	      Odoc_html.StringSet.iter (fun x -> warning(" "^x)) known_values_names;
 	      (*Cache set of exceptions*)
 	      known_exceptions_names <-
 		List.fold_left
@@ -721,7 +728,7 @@ class batlib_generator =
         | _ -> item (self#make_link ~text:m ~url ~target:"indicesFrame"())
       in
 	bs b "<div class=\"indices\"><ul class=\"indices\">\n";
-	item (self#make_link ~url:"indices.html"~text:"Home" ());
+	item (self#make_link ~url:"index.html"~text:"Home" ~target:"_parent" ());
 	index_if_not_empty self#list_types        self#index_types        "Types"(*Odoc_messages.index_of_types*);
 	index_if_not_empty self#list_values       self#index_values       "Values" (*Odoc_messages.index_of_values*);
 	index_if_not_empty self#list_exceptions   self#index_exceptions   "Exceptions" (*Odoc_messages.index_of_exceptions*);
@@ -734,7 +741,7 @@ class batlib_generator =
 	bs b "</ul></div><hr />"
 
 
-    method html_of_custom_tag_documents text = warning ("documenting " ^ (string_of_text text));""
+    method html_of_custom_tag_documents text = ""
 
     initializer
       tag_functions         <- ("documents", self#html_of_custom_tag_documents) :: tag_functions;

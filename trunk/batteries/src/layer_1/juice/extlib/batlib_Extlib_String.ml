@@ -19,3 +19,8 @@
  *)
 
 include ExtString.String
+
+external length : string -> int = "%string_length"
+external get : string -> int -> char = "%string_safe_get"
+external set : string -> int -> char -> unit = "%string_safe_set"
+external create : int -> string = "caml_create_string"

@@ -1,12 +1,11 @@
 09/07/2008 David Teller <David.Teller@univ-orleans.fr>:
-	* batteries.mllib: renamed batteries-1.mllib
-	* batlib/: renamed batteries-1
-	* batteries/: created
-	* batteries/batteries.ml: created
-	* batteries.mllib: created
-	* Makefile: 
-	* _tags: batteries-1 included
-	* _tags: batteries included
+	* [everything moved around!]
+	* build/odoc_generator_batlib.ml: [#generate] now initialises [list_values], [list_exceptions],
+	[list_types], [list_attributes], [list_methods], [list_classes], [list_class_types], [list_modules]
+	and [list_module_types]
+	* build/odoc_fhtml.ml: removed
+	* build/odoc_generator_batlib_old.ml: removed
+	* batlib_Extlib_String.mli: documented
 	
 09/06/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* test/: created

@@ -65,7 +65,7 @@ META: build/META
 	cp build/META .
 
 install: META
-	ocamlfind install batlib META $(wildcard _build/batlib/batlib.cma) $(wildcard _build/batlib/batlib.cmxa) $(wildcard _build/batlib/batlib.cmi) 
+	ocamlfind install batlib META $(shell find _build/ -name "batteries.cma" -o -name "batteries.cmxa" -o -name "batteries.cmi" -o -name "batteries_layer_1.cma" -o -name "batteries_layer_1.cmxa" -o -name "batteries_layer_1.cmi") 
 
 uninstall:
 	ocamlfind remove batlib
