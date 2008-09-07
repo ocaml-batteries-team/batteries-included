@@ -1,3 +1,13 @@
+09/06/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* test/: created
+	* syntax/test: moved to test/syntax
+	* odoc_generator_batlib.ml: [#generate_index] now sets left frame to "root_modules.html"
+	* odoc_generator_batlib.ml: [merge_info_opt] created
+	* odoc_generator_batlib.ml: [rebuild_structure] now uses [merge_info_opt] pervasively
+	* odoc_generator_batlib.ml: [add_renamed_module] now caches informations
+	* odoc_generator_batlib.ml: [#generate] now correctly puts values names into [known_values_names]
+
+	
 09/05/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* batlib_Baselib_Pervasives.mli: headers removed, channel operations hidden
 	* batlib_Baselib_Array.ml*: removed

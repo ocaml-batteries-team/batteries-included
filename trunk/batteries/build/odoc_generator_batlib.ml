@@ -18,10 +18,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
+
+(*From OCamlDoc*)
 open Odoc_info;;
-open Module;;
-open List;;
-open Odoc_info
 module Naming = Odoc_html.Naming
 open Odoc_info.Value
 open Odoc_info.Module
@@ -29,7 +28,8 @@ open Odoc_info.Type
 open Odoc_info.Class
 open Odoc_info.Exception
 
-
+(*From the base library*)
+open List
 
 (** {1 Tools}*)
 
@@ -98,6 +98,14 @@ let has_parent a ~parent:b =
 
 let root = "Batlib"
 
+let merge_info_opt a b =
+  verbose ("Merging informations");
+  verbose ("1: "^(string_of_info_opt a));
+  verbose ("2: "^(string_of_info_opt b));
+  let result = Odoc_merge.merge_info_opt Odoc_types.all_merge_options a b in
+    verbose (">: "^(string_of_info_opt result));
+    result
+
 (** {1 Actual rewriting}*)
 
 (**Find out if a set if information specifies a manual module replacement*)
@@ -129,18 +137,23 @@ let get_manual_replacement = function
 let rebuild_structure modules =
   let all_renamed_modules      = Hashtbl.create 100
   and all_renamed_module_types = Hashtbl.create 100  in
-  let add_renamed_module old current =
-    warning ("Setting module renaming from "^old^" to "^current);
+  let add_renamed_module ~old:(old_name,old_info) ~current:(new_name,new_info) =
+    verbose ("Setting module renaming from "^old_name^" to "^new_name);
     try 
-      let further_references = Hashtbl.find all_renamed_modules current in
-	warning ("... actually setting renaming from "^old^" to "^further_references);
-	Hashtbl.add all_renamed_modules old further_references
-    with Not_found -> Hashtbl.add all_renamed_modules old current
+      let (better, better_info) = Hashtbl.find all_renamed_modules new_name in
+	verbose ("... actually setting renaming from "^old_name^" to "^better);
+	let complete_info = merge_info_opt (merge_info_opt old_info new_info) better_info in
+	  Hashtbl.replace all_renamed_modules old_name (better, complete_info);
+	  complete_info
+    with Not_found -> 
+      let complete_info = merge_info_opt old_info new_info in
+	Hashtbl.add all_renamed_modules old_name (new_name, complete_info);
+	complete_info
   and add_renamed_module_type old current =
-    warning ("Setting module type renaming from "^old^" to "^current);
+    verbose ("Setting module type renaming from "^old^" to "^current);
     try 
       let further_references = Hashtbl.find all_renamed_module_types current in
-	warning ("... actually setting renaming from "^old^" to "^further_references);
+	verbose ("... actually setting renaming from "^old^" to "^further_references);
 	Hashtbl.add all_renamed_module_types old further_references
     with Not_found -> Hashtbl.add all_renamed_module_types old current
   in
@@ -167,33 +180,34 @@ let rebuild_structure modules =
     | Element_type x                 ->
 	[Element_type {(x) with ty_name = concat path (Name.simple x.ty_name)}]
     | Element_included_module x as y ->
-(*	warning ("Meeting inclusion "^x.im_name);*)
+(*	verbose ("Meeting inclusion "^x.im_name);*)
 	match x.im_module with
 	  | Some (Mod a) -> 
-	      warning ("This is an included module, we'll treat it as "^path);
+	      verbose ("This is an included module, we'll treat it as "^path);
 	      let a' = handle_module path m {(a) with m_name = ""} in
 		(
 		  match a'.m_kind with
 		    | Module_struct l -> 
 			(*Copy the contents of [a] into [m]*)
 			(*Copy the information on [a] into [m]*)
-			warning ("Merging information from "^m.m_name^" and included "^a'.m_name);
-			m.m_info <- Odoc_merge.merge_info_opt Odoc_types.all_merge_options m.m_info a'.m_info;
-			add_renamed_module a.m_name m.m_name;
-			add_renamed_module (Name.get_relative m.m_name a.m_name) m.m_name;
+			verbose ("Merging "^m.m_name^" and included "^a'.m_name);
+			m.m_info <- merge_info_opt 
+			  (add_renamed_module ~old:(a.m_name,a.m_info) ~current:(m.m_name, m.m_info))
+			  (add_renamed_module ~old:(Name.get_relative m.m_name a.m_name, None) 
+			     ~current:(m.m_name, m.m_info));
 			l 
 		    | _               -> 
-(*			warning ("Structure of the module is complex");*)
+			verbose ("Structure of the module is complex");
 			[Element_included_module {(x) with im_module = Some (Mod a')}]
 			  (*Otherwise, it's too complicated*)
 		)
 	  | Some (Modtype a) ->
-(*	      warning ("This is an included module type");*)
+(*	      verbose ("This is an included module type");*)
 	      let a' = handle_module_type path m a in
 		[Element_included_module {(x) with im_module = Some (Modtype a')}]
 	  | None -> 
-(*	      warning ("Module couldn't be found");*)
-	      add_renamed_module x.im_name m.m_name;
+(*	      verbose ("Module couldn't be found");*)
+	      m.m_info <- add_renamed_module ~old:(x.im_name,None) ~current:(m.m_name,m.m_info);
 	      [y]
   and handle_module path m t      = 
     let path' = concat path (Name.simple t.m_name) in
@@ -201,39 +215,36 @@ let rebuild_structure modules =
       {(t) with 
 	 m_kind = handle_kind path' t t.m_kind; 
 	 m_name = path'} in
-      add_renamed_module t.m_name path';
+      result.m_info <- add_renamed_module ~old:(t.m_name,t.m_info) ~current:(path',None);
       (match get_manual_replacement t.m_info with
-	 | None   -> warning ("No replacement for module "^t.m_name)
+	 | None   -> verbose ("No replacement for module "^t.m_name)
 	 | Some r -> 
-	     warning ("Manual replacement of module "^r^" with "^path');
-	     add_renamed_module r path');
+	     verbose ("Manual replacement of module "^r^" with "^path');
+	     result.m_info <- add_renamed_module ~old:(r,None) ~current:(path',result.m_info));
       result
   and handle_module_type path m (t:Odoc_module.t_module_type) =
     let path' = concat path (Name.simple t.mt_name) in
       let result = 
 	{(t) with mt_kind = (match t.mt_kind with
 	   | None -> None
-	   | Some kind -> Some (handle_type_kind path' m kind));
-	   (*mt_info = if path' <> t.mt_name then add_rename path  t.mt_info else t.mt_info
-	    ;*)mt_name = path'} in
-(*	warning ("Leaving module type "^t.mt_name^" as "^path');*)
-	(*Hashtbl.add all_renamed_module_types path' result;*)
+	   | Some kind -> Some (handle_type_kind path' m kind)); mt_name = path'} in
 	add_renamed_module_type t.mt_name path';
 	result
   and handle_alias path m (t:module_alias) : module_alias     = (*Module [m] is an alias to [t.ma_module]*)
     match t.ma_module with
       | None         -> t
       | Some (Mod a) -> 
-	  add_renamed_module a.m_name path;
-	  warning ("Merging information from "^m.m_name^" and aliased "^a.m_name);
-	  warning ("1: "^string_of_info_opt m.m_info);
-	  warning ("2: "^string_of_info_opt a.m_info);
-	  let info = Odoc_merge.merge_info_opt Odoc_types.all_merge_options m.m_info a.m_info
-	  in m.m_info <- info;
-	  let a' = {(a) with m_kind = handle_kind path m a.m_kind; m_info = info} in
-	    {(t) with ma_module = Some (Mod a')}
+(*	  add_renamed_module a.m_name path;*)
+	  verbose ("Merging information from "^m.m_name^" and aliased "^a.m_name);
+	  let info = add_renamed_module ~old:(a.m_name,a.m_info) ~current:(path,m.m_info) in
+	    m.m_info <- info;
+	    a.m_info <- info;
+	    let a' = {(a) with m_kind = handle_kind path m a.m_kind} in
+	      {(t) with ma_module = Some (Mod a')}
       | Some (Modtype a) ->
-(*	  warning ("module type "^a.mt_name^" marked for renaming as "^path);*)
+	  verbose ("Merging information from "^m.m_name^" and aliased type "^a.mt_name);
+	  m.m_info <- merge_info_opt m.m_info a.mt_info;
+	  a.mt_info <- m.m_info;
 	  add_renamed_module_type a.mt_name path;
 	  let info = Odoc_merge.merge_info_opt Odoc_types.all_merge_options m.m_info a.mt_info in
 	  let a' = match a.mt_kind with
@@ -246,9 +257,9 @@ let rebuild_structure modules =
     | Module_type_alias x       -> Module_type_alias (handle_type_alias path m x)
     | Module_type_with (k, s)   -> Module_type_with (handle_type_kind path m k, s)
   and handle_type_alias path m t =  match t.mta_module with
-      | None        -> (*warning ("module type "^t.mta_name^" not resolved in cross-reference stage");*) t
+      | None        -> (*verbose ("module type "^t.mta_name^" not resolved in cross-reference stage");*) t
       | Some a      ->
-	  (*warning ("module type "^a.mt_name^" renamed "^(concat m.m_name a.mt_name));*)
+	  (*verbose ("module type "^a.mt_name^" renamed "^(concat m.m_name a.mt_name));*)
 	  (*if a.mt_info <> None then m.m_info <- a.mt_info;*)
 	  add_renamed_module_type a.mt_name path;
 	  let info = Odoc_merge.merge_info_opt Odoc_types.all_merge_options m.m_info a.mt_info in
@@ -257,12 +268,12 @@ let rebuild_structure modules =
   (*let first_pass = List.map (fun m -> 
 			       if Name.father m.m_name <> "" then 
 				 (
-				   warning ("Will deal with module "^m.m_name^" later");
+				   verbose ("Will deal with module "^m.m_name^" later");
 				   m (*Toplevel module*)
 				 )
 			       else 
 				 (
-				   warning ("Diving at module "^m.m_name);
+				   verbose ("Diving at module "^m.m_name);
 				   {(m) with m_kind = handle_kind m m.m_kind}
 				 )
 			    )modules in
@@ -275,23 +286,23 @@ let rebuild_structure modules =
     List.iter (fun x -> if Name.father x.m_name = "" then Hashtbl.add roots x.m_name x) modules;
     List.iter (fun x -> 
 		    begin
-(*		      warning("Dependencies of module "^x.m_name^":"); *)
-		      List.iter (fun y -> (*warning(" removing "^y);*)
+(*		      verbose("Dependencies of module "^x.m_name^":"); *)
+		      List.iter (fun y -> (*verbose(" removing "^y);*)
 				   Hashtbl.remove roots y
 				) x.m_top_deps
 		    end)  modules;
-    Hashtbl.iter (fun name _ -> warning ("Root: "^name)) roots;
+    Hashtbl.iter (fun name _ -> verbose ("Root: "^name)) roots;
       (*2. Dive into these*)
     let rewritten = Hashtbl.fold (fun name contents acc ->
-		    (*warning ("Diving at module "^name);*)
+		    (*verbose ("Diving at module "^name);*)
 		    {(contents) with m_kind = handle_kind name contents contents.m_kind}::acc
 		 ) roots [] in
-      (*warning ("New list of modules:");*)
+      (*verbose ("New list of modules:");*)
       let result =  Search.modules rewritten in
-(*      List.iter (fun x -> warning ("  "^x.m_name)) result;*)
+(*      List.iter (fun x -> verbose ("  "^x.m_name)) result;*)
 (*Second pass: walk through references*)
-	(*warning ("List of renamings:");
-	Hashtbl.iter (fun k x -> warning (" "^k^" => "^x)) all_renamed_modules;*)
+	(*verbose ("List of renamings:");
+	Hashtbl.iter (fun k x -> verbose (" "^k^" => "^x)) all_renamed_modules;*)
 	(result, all_renamed_modules)
 
 
@@ -299,12 +310,12 @@ let find_renaming renamings original =
   let rec aux s suffix = 
     if String.length s = 0 then 
       (
-(*	warning ("Name '"^original^"' remains unchanged");*)
+(*	verbose ("Name '"^original^"' remains unchanged");*)
 	suffix
       )
     else 
       let renaming = 
-	try  Some (Hashtbl.find renamings s)
+	try  Some (fst(Hashtbl.find renamings s))
 	with Not_found -> None
       in match renaming with
 	| None -> 
@@ -313,8 +324,8 @@ let find_renaming renamings original =
 	      aux father (concat son suffix)
 	| Some r -> (*We have found a substitution, it should be over*)
 	    let result = concat r suffix in
-(*	      warning ("We have a renaming of "^s^" to "^r);*)
-	      warning ("Name "^original^" replaced with "^result);
+(*	      verbose ("We have a renaming of "^s^" to "^r);*)
+	      verbose ("Name "^original^" replaced with "^result);
 	      result
   in aux original ""
  
@@ -328,7 +339,7 @@ class batlib_generator =
     inherit Odoc_html.html as super
     (*inherit framed_html as super*)
 
-    val mutable renamings : (string, string) Hashtbl.t = Hashtbl.create 0      
+    val mutable renamings : (string, (string*info option)) Hashtbl.t = Hashtbl.create 0      
 
       (** Determine the category of a name*)
       
@@ -421,8 +432,14 @@ class batlib_generator =
           bs b "</td>\n<td>";
           self#html_of_info_first_sentence b (info e);
           bs b "</td></tr>\n";*)
-	  bp b "<li>%s</li>\n" (self#make_link ~url:(target e) ~text:(name e) ())
-	    
+	  let simple_name = Name.simple (name e)
+	  and father_name = Name.father (name e) in
+	    bp b "<li>%s%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ())
+	    (if simple_name <> father_name && father_name <> "" then
+	      Printf.sprintf " [%s]" (self#make_link ~url:(fst (Naming.html_files father_name)) ~text:father_name ())
+	     else "");
+	    (self#html_of_info_first_sentence b (info e));
+	    bs b  "</li>\n"
         in
         let f_group l =
           match l with
@@ -503,26 +520,21 @@ class batlib_generator =
 
 
     method html_of_Ref b name ref_opt =
-      warning ("printing reference to "^name^" with type "^
-		 match ref_opt with
-		   | None                 -> "(none)"
-		   | Some RK_module       -> "(module)"
-		   | Some RK_class        -> "(class)"
-		   | Some RK_class_type   -> "(class type)"
-		   | Some RK_value        -> "(value)"
-		   | Some RK_type         -> "(type)"
-		   | Some RK_exception    -> "(exception)"
-		   | Some RK_attribute    -> "(attribute)"
-		   | Some RK_method       -> "(method)"
-		   | Some (RK_section _)  -> "(section)"
-		   | Some RK_module_type  -> "(module type)");
       let renamed = find_renaming renamings name in
       let type_of_ref = 
 	match ref_opt with
 	  | Some _ -> ref_opt (*We already have all the details*)
 	  | _      -> match self#what_is name with
-	      | Some result -> Some result
-	      | None        -> self#what_is renamed
+	      | Some result -> 
+		  warning ("Found the type of "^name);
+		  Some result
+	      | None        -> match self#what_is renamed with
+		  | Some result -> 
+		      warning ("Could not find the type of "^name^", but found that of "^renamed);
+		      Some result
+		  | None        ->
+		      warning ("Could not find the type of "^name^", even as "^renamed);
+		      None
       in
       super#html_of_Ref b renamed type_of_ref
 
@@ -590,8 +602,10 @@ class batlib_generator =
 	      known_values_names <-
 		List.fold_left
 		(fun acc t -> Odoc_html.StringSet.add t.val_name acc)
-		known_types_names
+		known_values_names
 		list_values ;
+	      warning ("Known values:");
+	      Odoc_html.StringSet.iter (fun x -> warning(" "^x)) known_values_names;
 	      (*Cache set of exceptions*)
 	      known_exceptions_names <-
 		List.fold_left
@@ -631,6 +645,8 @@ class batlib_generator =
     (** Generate [index.html], as well as [indices.html] for the given module list*)
     method generate_index module_list =
       try
+        let title = match !Args.title with None -> "" | Some t -> self#escape t in
+
 	(*[index.html]*)
         let chanout = open_out (Filename.concat !Args.target_dir "index.html") in
         let b = new_buf () in
@@ -639,7 +655,7 @@ class batlib_generator =
         bs b "<html>\n";
         self#print_header b self#title;
 	bs b "<frameset cols=\"20%,80%\">\n";
-	bs b "<frame src=\"indices.html\" name =\"indicesFrame\"/>\n";
+	bs b "<frame src=\"root_modules.html\" name =\"indicesFrame\"/>\n";
 	bs b "<frame src=\"root.html\"    name =\"detailsFrame\"/>\n";
 	bs b "</frameset>";
 	bs b "Frame Alert</h2>\n";
@@ -651,10 +667,9 @@ class batlib_generator =
         Buffer.output_buffer chanout b;
         close_out chanout;
 
-	(*[indices.html]*)
+(*	(*[indices.html]*)
         let chanout = open_out (Filename.concat !Args.target_dir "indices.html") in
         let b = new_buf () in
-        let title = match !Args.title with None -> "" | Some t -> self#escape t in
         bs b doctype ;
         bs b "<html>\n";
         self#print_header b self#title;
@@ -668,7 +683,7 @@ class batlib_generator =
           (List.map (fun m -> m.m_name) module_list);
         bs b "</body>\n</html>";
         Buffer.output_buffer chanout b;
-        close_out chanout;
+        close_out chanout;*)
 
 	(*[root.html]*)
         let chanout = open_out (Filename.concat !Args.target_dir "root.html") in
@@ -687,8 +702,8 @@ class batlib_generator =
         (
          match info with
            None ->
-             self#html_of_Index_list b;
-             bs b "<br/>";
+             (*self#html_of_Index_list b;
+             bs b "<br/>";*)
              self#html_of_Module_list b
                (List.map (fun m -> m.m_name) module_list);
              bs b "</body>\n</html>"
@@ -741,118 +756,3 @@ let _ =
 		     (fun _ -> Odoc_info.verbose "Deactivating built-in html generator";
 			set_batlib_doc_generator())
 		     , "<workaround for ocamldoc adding -html even when we don't want to>") 
-
-(*    method html_of_module_comment b text =
-      assert false
-
-    method html_of_included_module b im =
-      assert false;
-      verbose ("Handling [include "^im.im_name^"]");
-      match im.im_module with
-	| None   ->    (*Keep default behavior.*)
-	    warning ("Module inclusion of "^im.im_name^" unknown, keeping default behavior");
-	    super#html_of_included_module b im
-	| Some i ->    (*Let's inline the contents!*)
-	    super#html_of_info b im.im_info;
-	    match i with
-	      | Mod m -> 
-		  warning ("Module inclusion of "^im.im_name^" is a a struct, inlining");
-		  super#html_of_module_kind b (Name.father m.m_name) ~modu:m m.m_kind
-	      | _     -> 
-		  warning ("Module inclusion of "^im.im_name^" is a signature, keeping default behavior");
-		  super#html_of_included_module b im*)
-
-(*    method html_of_Ref b name ref_opt =
-      warning ("printing reference to "^name)
-
-    method html_of_value b v = 
-      warning ("Printing value "^string_of_value v);
-      super#html_of_value b v*)
-
-(*    method generate_for_module pre post modu =
-      let name = 
-	try Hashtbl.find name_substitutions modu.m_name
-	with Not_found -> modu.m_name
-      in warning ("In module generation, name "^modu.m_name^" becomes "^name);
-      try
-        Odoc_info.verbose ("Generate for module "^name);
-        let (html_file, _) = Naming.html_files name in
-        let type_file = Naming.file_type_module_complete_target name in
-        let code_file = Naming.file_code_module_complete_target name in
-        let chanout = open_out (Filename.concat !Args.target_dir html_file) in
-        let b = Buffer.create 1000 in
-        let pre_name = opt (fun m -> m.m_name) pre in
-        let post_name = opt (fun m -> m.m_name) post in
-        bs b doctype ;
-        bs b "<html>\n";
-        self#print_header b
-          ~nav: (Some (pre_name, post_name, name))
-          ~comments: (Module.module_comments modu)
-          (self#inner_title name);
-        bs b "<body>\n" ;
-        self#print_navbar b pre_name post_name name ;
-        bs b "<center><h1>";
-        if modu.m_text_only then
-          bs b name
-        else
-          (
-           bs b
-             (
-              if Module.module_is_functor modu then
-                Odoc_messages.functo
-              else
-                Odoc_messages.modul
-             );
-           bp b " <a href=\"%s\">%s</a>" type_file name;
-           (
-            match modu.m_code with
-              None -> ()
-            | Some _ -> bp b " (<a href=\"%s\">.ml</a>)" code_file
-           )
-          );
-        bs b "</h1></center>\n<br>\n";
-
-        if not modu.m_text_only then self#html_of_module b ~with_link: false modu;
-
-        (* parameters for functors *)
-        self#html_of_module_parameter_list b
-          (Name.father name)
-          (Module.module_parameters modu);
-
-        (* a horizontal line *)
-        if not modu.m_text_only then bs b "<hr width=\"100%\">\n";
-
-        (* module elements *)
-        List.iter
-          (self#html_of_module_element b (Name.father name))
-          (Module.module_elements modu);
-
-        bs b "</body></html>";
-        Buffer.output_buffer chanout b;
-        close_out chanout;
-
-        (* generate html files for submodules *)
-        self#generate_elements  self#generate_for_module (Module.module_modules modu);
-        (* generate html files for module types *)
-        self#generate_elements  self#generate_for_module_type (Module.module_module_types modu);
-        (* generate html files for classes *)
-        self#generate_elements  self#generate_for_class (Module.module_classes modu);
-        (* generate html files for class types *)
-        self#generate_elements  self#generate_for_class_type (Module.module_class_types modu);
-
-        (* generate the file with the complete module type *)
-        self#output_module_type
-          name
-          (Filename.concat !Args.target_dir type_file)
-          modu.m_type;
-
-        match modu.m_code with
-          None -> ()
-        | Some code ->
-            self#output_code
-              name
-              (Filename.concat !Args.target_dir code_file)
-              code
-      with
-        Sys_error s ->
-          raise (Failure s)*)

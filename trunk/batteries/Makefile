@@ -19,8 +19,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-
-
 all: byte doc
 
 #doc: _build/build/odoc_generator_batlib.cmo byte list
@@ -29,15 +27,25 @@ all: byte doc
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
 
-byte: prepare_library_contents
-	ocamlbuild batlib.cma
+byte: batteries-1.cma batteries.cma
+	
+opt: batteries-1.cmxa batteries.cmxa
+	
 
-opt: prepare_library_contents
-	ocamlbuild batlib.cmxa
+batteries-1.cma: prepare_library_contents
+	ocamlbuild batteries-1.cma
+
+batteries.cma: prepare_library_contents
+	ocamlbuild batteries.cma
+
+batteries-1.cmxa: prepare_library_contents
+	ocamlbuild batteries-1.cmxa
+
+batteries.cmxa: prepare_library_contents
+	ocamlbuild batteries.cmxa
 
 doc: prepare_library_contents
 	ocamlbuild batteries.docdir/index.html
-#	cp batteries.docdir/Batlib.html batteries.docdir/index.html
 
 #
 #Generate the list of modules we intend to put into batlib.cma

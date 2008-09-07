@@ -1,12 +1,33 @@
-* implement a tool for nearly-automated importation
-
-* complete OCamlDoc plug-in to use a module substitution list
-In: a file containing a list of module substitutions
- A1 = B1
- A2 = B2.C2.D2.E2
- A3 = B3.C3
+* use patched ExtLib
 
 * add improved IO and get rid of Printf and channel_in, channel_out
+
+* import Camomile
+
+* import OCamlNet
+ * Shell gets merged into Sys or Unix
+  * producer <- channel_out
+  * consumer <- channel_in
+ * Netshm gets    into Data.Containers.Mutable.Shared.Memory
+ * Netshm_data    gets into Data.Containers.Mutable.Shared.Data
+ * Netshm_hashtbl gets into Data.Containers.Mutable.Shared.Hashtbl
+ * Netshm_array   gets into Data.Containers.Mutable.Shared.Array
+ * Equeue         gets into Control.Concurrency.Queues
+ * Unixqueue      gets into System.
+
+* import OCaml-Fileutils
+
+* import Godi-cryptokits
+
+* import Cairo
+
+* import OUnit
+
+* import PCRE?
+
+* import Zip?
+
+* implement a tool for nearly-automated importation
 
 * import Type-conv
  * Pa_type_conv    goes into Meta.Toolchain.Preprocessing as Type_conv

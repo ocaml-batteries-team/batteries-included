@@ -1,6 +1,6 @@
 (*
- * Batlib_number - Number data structures
- * Copyright (C) 2008 David Teller
+ * Batlib_Baselib_Str - Importing Base module Str
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,11 +18,4 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Numbers, operations and other mathematics.*)
-
-module Big_int     = Batlib_Baselib_Big_int
-module Complex     = Batlib_Baselib_Complex
-module Int32       = Batlib_Baselib_Int32
-module Int64       = Batlib_Baselib_Int64
-module Nativeint   = Batlib_Baselib_Nativeint
-module Num         = Batlib_Baselib_Num
+include Str

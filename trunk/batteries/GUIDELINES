@@ -18,8 +18,8 @@ A package may only be included if
   reports, upstream patches... If not, there's always the option of
   volunteering to become the maintainer.
 
-* It appears in GODI (and preferably also in Debian and Fedora),
-  the package works and has a maintainer. If not, there's always the
+* It appears in GODI (and preferably also in Debian and Fedora), the 
+  GODI package itself works and has a maintainer. If not, there's always the
   option of volunteering to become the maintainer.
 
 * It works with Findlib. For most packages, adding findlib support is
