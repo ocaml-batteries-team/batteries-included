@@ -27,35 +27,35 @@ all: byte doc
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
 
-byte: batteries-1.cma batteries.cma
+byte: batteries_layer_1.cma batteries.cma
 	
-opt: batteries-1.cmxa batteries.cmxa
+opt: batteries_layer_1.cmxa batteries.cmxa
 	
 
-batteries-1.cma: batteries-1.mllib
-	ocamlbuild batteries-1.cma
+batteries_layer_1.cma: batteries_layer_1.mllib
+	ocamlbuild batteries_layer_1.cma
 
-batteries.cma: batteries-1.cma
+batteries.cma: batteries_layer_1.cma
 	ocamlbuild batteries.cma
 
-batteries-1.cmxa: batteries-1.mllib
-	ocamlbuild batteries-1.cmxa
+batteries_layer_1.cmxa: batteries_layer_1.mllib
+	ocamlbuild batteries_layer_1.cmxa
 
-batteries.cmxa: batteries-1.cmxa
+batteries.cmxa: batteries_layer_1.cmxa
 	ocamlbuild batteries.cmxa
 
 doc: batteries.odocl
 	ocamlbuild batteries.docdir/index.html
 
-batteries.odocl: batteries-1.mllib
-	echo `cat batteries-1.mllib` Batteries > batteries.odocl
+batteries.odocl: batteries_layer_1.mllib
+	echo `cat batteries_layer_1.mllib` Batteries > batteries.odocl
 
 #
 #Generate the list of modules we intend to put into batlib.cma
 #
-batteries-1.mllib: 
-	@echo $(basename $(notdir $(shell find src/layer_1 -name  "*.ml"))) > batteries-1.mllib &&\
-	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batteries-1.mllib                          
+batteries_layer_1.mllib: 
+	@echo $(basename $(notdir $(shell find src/layer_1 -name  "*.ml"))) > batteries_layer_1.mllib &&\
+	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batteries_layer_1.mllib                          
 
 prepare_syntax_contents:
 	@echo $(basename $(notdir $(shell find syntax -name  "*.ml"))) > batsyntax.mllib &&\

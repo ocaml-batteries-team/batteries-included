@@ -1,7 +1,6 @@
 Batlib_languages
 Batlib_toolchain
 Batlib_text
-Batlib
 Batlib_findlib
 Batlib_concurrency
 Batlib_data
@@ -14,10 +13,6 @@ Batlib_util
 Batlib_network
 Batlib_logical
 Batlib_standard
-Batlib_system
-Batlib_threads
-Batlib_control
-Batlib_persistent
 Batlib_Baselib_Big_int
 Batlib_Baselib_Genlex
 Batlib_Baselib_HashtblLabels
@@ -84,3 +79,7 @@ Batlib_Extlib_Base64
 Batlib_Extlib_Array
 Batlib_Extlib_Std
 Batlib_Findlib_Findlib
+Batlib_system
+Batlib_threads
+Batlib_control
+Batlib_persistent
