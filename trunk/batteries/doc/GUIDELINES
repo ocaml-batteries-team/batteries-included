@@ -39,8 +39,10 @@ Make sure you know everything your package depends on. These dependencies
 may take the form of libraries and preprocessors.
 
 Both go into:
-* build/META            (for findlib)
+* build/META                 (for findlib)
 * build/GODI/batteries.spec  (for GODI)
+* build/rpm/?                (for Fedora -- to do)
+* build/deb/?                (for Debian -- to do)
 
 For more informations on the format of META, see [todo].
 For more informations on the format of batteries.spec, see [todo].
