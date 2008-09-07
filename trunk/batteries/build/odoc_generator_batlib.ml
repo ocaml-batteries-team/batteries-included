@@ -66,20 +66,20 @@ let new_buf () = Buffer.create 1024
 (** A list of primitive type names for which we should rather link
     to the corresponding module *)
 let primitive_types_names =
-  [   "char",      "Batlib.Data.Text.Char.t";
-      "string",    "Batlib.Data.Text.String.t";
-      "array",     "Batlib.Data.Containers.Mutable.Array.t" ;
-      "lazy_t",    "Batlib.Data.Containers.Persistent.Lazy.t";
-      "list",      "Batlib.Data.Containers.Persistent.List.t";
-      "int32",     "Batlib.Data.Numeric.Int32.t";
-      "int64",     "Batlib.Data.Numeric.Int64.t";
-      "nativeint", "Batlib.Data.Numeric.Nativeint.t"(*;*)
-      (*"int",       "Batlib.Data.Numeric.Int.t";*)(*Module not implemented yet*)
-      (*"bool",       "Batlib.Data.Logical.Bool.t";*)(*Module not implemented yet*)
+  [   "char",      "Batteries.Data.Text.Char.t";
+      "string",    "Batteries.Data.Text.String.t";
+      "array",     "Batteries.Data.Containers.Mutable.Array.t" ;
+      "lazy_t",    "Batteries.Data.Containers.Persistent.Lazy.t";
+      "list",      "Batteries.Data.Containers.Persistent.List.t";
+      "int32",     "Batteries.Data.Numeric.Int32.t";
+      "int64",     "Batteries.Data.Numeric.Int64.t";
+      "nativeint", "Batteries.Data.Numeric.Nativeint.t"(*;*)
+      (*"int",       "Batteries.Data.Numeric.Int.t";*)(*Module not implemented yet*)
+      (*"bool",       "Batteries.Data.Logical.Bool.t";*)(*Module not implemented yet*)
       (*"unit",       "?"; *) (*Module not implemented yet*)
-      (*"float",       "Batlib.Data.Logical.Float.t";*)(*Module not implemented yet*)
-      (*"exn",       "Batlib.Control.Exceptions.Exn.t";*)(*Module not implemented yet*)
-      (*"format4",  "Batlib.Languages.Printf.format4";*)(*Module not implemented yet*)
+      (*"float",       "Batteries.Data.Logical.Float.t";*)(*Module not implemented yet*)
+      (*"exn",       "Batteries.Control.Exceptions.Exn.t";*)(*Module not implemented yet*)
+      (*"format4",  "Batteries.Languages.Printf.format4";*)(*Module not implemented yet*)
 ]
 
 (** The root of the module hierarchy*)
@@ -96,7 +96,7 @@ let has_parent a ~parent:b =
 	  a.[len_b] = '.'
     
 
-let root = "Batlib"
+let root = "Batteries"
 
 let merge_info_opt a b =
   verbose ("Merging informations");

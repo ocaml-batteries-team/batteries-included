@@ -20,6 +20,8 @@
 
 (**
    Base of OCaml Batteries Included.
+
+   @documents Batlib
 *)
 
 (** Tools for changing the control flow of a program, from 
