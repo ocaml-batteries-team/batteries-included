@@ -47,7 +47,7 @@ batteries.cmxa: batteries_layer_1.cmxa
 doc: doc/api.odocl
 	ocamlbuild doc/api.docdir/index.html &&\
 	rm api.docdir &&\
-	ln -sf ../_build/doc/api.docdir/ -T doc/api.docdir
+	ln -sf ../_build/doc/api.docdir/ -T doc/batteries/html/api
 
 doc/api.odocl: batteries_layer_1.mllib
 	echo `cat batteries_layer_1.mllib` Batteries > doc/api.odocl
