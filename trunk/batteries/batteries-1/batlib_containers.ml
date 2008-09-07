@@ -24,7 +24,7 @@
 
 (**{1 Container traversal}*)
 
-module Mutable                               = Batlib_mutable_1
-module Persistent                            = Batlib_persistent_1
+module Mutable                               = Batlib_mutable
+module Persistent                            = Batlib_persistent
 
 
