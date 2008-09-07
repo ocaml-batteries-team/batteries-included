@@ -54,7 +54,7 @@ batteries.odocl: batteries-1.mllib
 #Generate the list of modules we intend to put into batlib.cma
 #
 batteries-1.mllib: 
-	@echo $(basename $(notdir $(shell find layer_1 juice -name  "*.ml"))) > batteries-1.mllib &&\
+	@echo $(basename $(notdir $(shell find src/layer_1 -name  "*.ml"))) > batteries-1.mllib &&\
 	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batteries-1.mllib                          
 
 prepare_syntax_contents:
