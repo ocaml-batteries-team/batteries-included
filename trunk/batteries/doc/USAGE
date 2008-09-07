@@ -1,0 +1,16 @@
+To use Batteries Included, the easiest solution is to take 
+advantage of both findlib and ocamlbuild. In turn, to do
+that, the easiest method is the following:
+
+* in your project directory, copy file doc/myocamlbuild.ml (it's
+  part of Batteries Included, you can find it in this directory) --
+  be sure to keep the name "myocamlbuild.ml"
+
+* still in your project directory, modify your file called "_tags"
+  (if it doesn't exist yet, create it) to add the following line:
+      <*>: pkg_batteries
+
+That should be it. For more informations on the contents of
+Batteries Included, please take a look at the API documentation,
+available at
+	  doc/api.docdir/index.html

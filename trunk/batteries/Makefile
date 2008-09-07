@@ -44,11 +44,13 @@ batteries_layer_1.cmxa: batteries_layer_1.mllib
 batteries.cmxa: batteries_layer_1.cmxa
 	ocamlbuild batteries.cmxa
 
-doc: batteries.odocl
-	ocamlbuild batteries.docdir/index.html
+doc: doc/api.odocl
+	ocamlbuild doc/api.docdir/index.html &&\
+	rm api.docdir &&\
+	ln -sf ../_build/doc/api.docdir/ -T doc/api.docdir
 
-batteries.odocl: batteries_layer_1.mllib
-	echo `cat batteries_layer_1.mllib` Batteries > batteries.odocl
+doc/api.odocl: batteries_layer_1.mllib
+	echo `cat batteries_layer_1.mllib` Batteries > doc/api.odocl
 
 #
 #Generate the list of modules we intend to put into batlib.cma

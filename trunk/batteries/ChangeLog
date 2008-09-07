@@ -10,6 +10,7 @@
 	* batlib_Extlib_Hashtbl.ml: created
 	* batlib_Baselib_SetLabels.ml: created
 	* META: dependency on [str] added
+	* doc: created
 	
 09/06/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* test/: created

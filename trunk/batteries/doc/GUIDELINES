@@ -1,0 +1,65 @@
+GUIDELINES FOR INCLUSION OF NEW PACKAGES
+
+
+** Prerequisites
+
+A package may only be included if
+
+* Its license is compatible
+  good: LGPL + linking exception,  MIT, BSD, public domain
+  bad:  GPL or bare LGPL, proprietary.
+
+* It is documented or you are willing to write the API
+  documentation yourself
+  good: most of ExtLib, most of the base library, ocamldoc, Sexplib
+  bad:  ocamlbuild, most of Jane Street's Core.
+
+* It is active and has an official maintainer willing to accept bug
+  reports, upstream patches... If not, there's always the option of
+  volunteering to become the maintainer.
+
+* It appears in GODI, Debian and Fedora and the package itself works
+  and has a maintainer. If not, there's always the option of
+  volunteering to become the maintainer. Or you can contact the Debian
+  and Fedora teams, they're nice people.
+
+* It works with Findlib. For most packages, it's already done. Adding
+  findlib support is usually a trivial task but it needs to be done
+  upstream. In the worst case, feel free to contribute a Findlib META-file.
+
+
+** The process
+
+For this manual, let us consider that you are in the process of adding
+a reference to package foobar.
+
+**** Dependencies
+
+Make sure you know everything your package depends on. These dependencies
+may take the form of libraries and preprocessors.
+
+Both go into:
+* build/META            (for findlib)
+* build/GODI/batteries.spec  (for GODI)
+
+For more informations on the format of META, see [todo].
+For more informations on the format of batteries.spec, see [todo].
+
+**** Source code
+
+* create a directory "juice/my_library"
+* edit "juice/_tags" and add "<my_library>: include"
+* edit "my_library/_tags" to add whichever options are necessary (typically "<*>: pkg_my_library")
+* edit "_tags" to add whichever options are necessary (typically "<batlib.cma>: pkg_my_library"
+  and "<batlib.cmxa>": pkg_my_library)
+* import all the public .mli files from the library, renaming them
+     Batlib_<my_library>_<module_name>.mli
+* for each .mli file, add the corresponding .ml file, as per juice/template
+  e.g. 
+       for i in Base64 Bitset Dllist Dynarray Enum Global IO Option OptParse PMap RefList Std Unzip; 
+       	   do sed -e "s/\$1/ExtLib/" -e "s/\$2/$i/" -e "s/\$3/$i/" ../template_ml > batlib_Extlib_$i.ml; 
+       done
+* regenerate the list of modules for documentation and generation of .cma. For this purpose, run
+  "make list"
+
+**** Build-time
