@@ -1,1 +1,2 @@
-<*>:pkg_batteries
+<test.*>:pkg_batteries
+<test2.*>:pkg_extlib

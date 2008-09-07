@@ -44,14 +44,16 @@ batteries_layer_1.cmxa: batteries_layer_1.mllib
 batteries.cmxa: batteries_layer_1.cmxa
 	ocamlbuild batteries.cmxa
 
-doc: doc/api.odocl
+doc: doc/api.odocl .PHONY
 	ocamlbuild doc/api.docdir/index.html &&\
 	rm api.docdir &&\
-	ln -sf ../_build/doc/api.docdir/ -T doc/batteries/html/api
+	ln -sf ../../../_build/doc/api.docdir/ -T doc/batteries/html/api
 
 doc/api.odocl: batteries_layer_1.mllib
 	echo `cat batteries_layer_1.mllib` Batteries > doc/api.odocl
 
+.PHONY:
+	
 #
 #Generate the list of modules we intend to put into batlib.cma
 #
@@ -68,11 +70,12 @@ META: build/META
 	cp build/META .
 
 install: META
-	ocamlfind install batteries META $(shell find _build/ -name "batteries.cma" -o -name "batteries.cmxa" -o -name "batteries.cmi" -o -name "batteries_layer_1.cma" -o -name "batteries_layer_1.cmxa" -o -name "batteries_layer_1.cmi") 
+	ocamlfind install batteries META $(shell find _build/ -name "batteries.cma" -o -name "batteries.cmxa" -o -name "batteries.cmi" -o -name "batteries_layer_1.cma" -o -name "batteries_layer_1.cmxa" -o -name "batteries_layer_1.cmi" -o -name "batteries.a" -o -name "batteries_layer_1.a") 
 
 uninstall:
 	ocamlfind remove batteries
 
 clean:
 	ocamlbuild -clean &&\
-	\rm -f `find . -name "*~" -o -name "*#"`
+	\rm -f `find . -name "*~" -o -name "*#"` &&\
+	\rm -f META

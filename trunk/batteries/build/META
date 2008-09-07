@@ -3,5 +3,5 @@ version="0.1"
 description="Batteries Included, standard distribution of OCaml libraries"
 requires="num,bigarray,threads,extlib,str,findlib"
 
-archive(byte)  ="batteries.cma,  batteries_layer_1.cma"
-archive(native)="batteries.cmxa, batteries_layer_1.cmxa"
+archive(byte)  ="batteries_layer_1.cma  batteries.cma"
+archive(native)="batteries_layer_1.cmxa batteries.cmxa"

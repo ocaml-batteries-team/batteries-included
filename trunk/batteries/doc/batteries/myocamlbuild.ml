@@ -52,7 +52,8 @@ struct
 
 
        (* When one link an OCaml library/binary/package, one should use -linkpkg *)
-       flag ["ocaml"; "byte"; "link"] & A"-linkpkg";
+       flag ["ocaml"; "byte";   "link"; "program"] & A"-linkpkg";
+       flag ["ocaml"; "native"; "link"; "program"] & A"-linkpkg";
 
        (* For each ocamlfind package one inject the -package option when
        	* compiling, computing dependencies, generating documentation and
@@ -82,7 +83,6 @@ struct
         *)
        flag ["ocaml"; "pkg_threads"; "compile"]  (S[A "-thread"]);
        flag ["ocaml"; "pkg_threads"; "link"]     (S[A "-thread"]);
-
 
        flag ["ocaml"; "pkg_batteries"; "compile"]       (S[A "-thread"]);
        flag ["ocaml"; "pkg_batteries"; "byte"; "link"]  (S[A "-thread"]);
