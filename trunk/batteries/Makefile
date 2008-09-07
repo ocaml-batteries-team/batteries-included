@@ -32,27 +32,30 @@ byte: batteries-1.cma batteries.cma
 opt: batteries-1.cmxa batteries.cmxa
 	
 
-batteries-1.cma: prepare_library_contents
+batteries-1.cma: batteries-1.mllib
 	ocamlbuild batteries-1.cma
 
-batteries.cma: prepare_library_contents
+batteries.cma: batteries-1.cma
 	ocamlbuild batteries.cma
 
-batteries-1.cmxa: prepare_library_contents
+batteries-1.cmxa: batteries-1.mllib
 	ocamlbuild batteries-1.cmxa
 
-batteries.cmxa: prepare_library_contents
+batteries.cmxa: batteries-1.cmxa
 	ocamlbuild batteries.cmxa
 
-doc: prepare_library_contents
+doc: batteries.odocl
 	ocamlbuild batteries.docdir/index.html
+
+batteries.odocl: batteries-1.mllib
+	echo `cat batteries-1.mllib` Batteries > batteries.odocl
 
 #
 #Generate the list of modules we intend to put into batlib.cma
 #
-prepare_library_contents: 
-	@echo $(basename $(notdir $(shell find batlib juice -name  "*.ml"))) > batlib.mllib &&\
-	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batlib.mllib
+batteries-1.mllib: 
+	@echo $(basename $(notdir $(shell find layer_1 juice -name  "*.ml"))) > batteries-1.mllib &&\
+	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batteries-1.mllib                          
 
 prepare_syntax_contents:
 	@echo $(basename $(notdir $(shell find syntax -name  "*.ml"))) > batsyntax.mllib &&\

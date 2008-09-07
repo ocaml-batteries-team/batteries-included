@@ -1,7 +1,7 @@
 <build>:include
 <juice>:include
-<batlib>:include
-<syntax>:include
+<layer_1>:include
+<batteries>: include
 
 <batlib.docdir>:pkg_threads,use_ocamldoc_info,pkg_extlib
 <batlib.docdir/*>:pkg_threads,use_ocamldoc_info,pkg_extlib

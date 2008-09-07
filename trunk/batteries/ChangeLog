@@ -1,3 +1,13 @@
+09/07/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* batteries.mllib: renamed batteries-1.mllib
+	* batlib/: renamed batteries-1
+	* batteries/: created
+	* batteries/batteries.ml: created
+	* batteries.mllib: created
+	* Makefile: 
+	* _tags: batteries-1 included
+	* _tags: batteries included
+	
 09/06/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* test/: created
 	* syntax/test: moved to test/syntax
