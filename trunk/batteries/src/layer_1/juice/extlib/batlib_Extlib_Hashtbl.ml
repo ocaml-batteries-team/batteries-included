@@ -1,6 +1,6 @@
 (*
- * Batlib_Ocamldoc_Odoc_info - Importing OCamlDoc module Odoc_info
- * Copyright (C) 2008 David Teller
+ * Batlib_ExtLib_ExtHashtbl.Hashtbl - Importing ExtLib module ExtHashtbl.Hashtbl
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,8 +18,4 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Removed as findlib has no package for ocamldoc (for now)*)
-
-(*
-include Odoc_info
-*)
+include ExtHashtbl.Hashtbl

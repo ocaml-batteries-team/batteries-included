@@ -18,6 +18,7 @@ Batlib_Baselib_Genlex
 Batlib_Baselib_HashtblLabels
 Batlib_Baselib_Set
 Batlib_Baselib_Unix
+Batlib_Baselib_SetLabels
 Batlib_Baselib_UnixLabels
 Batlib_Baselib_Scanf
 Batlib_Baselib_Event
@@ -65,16 +66,17 @@ Batlib_Ocamldoc_Odoc_info
 Batlib_Extlib_PMap
 Batlib_Extlib_OptParse
 Batlib_Extlib_String
-Batlib_Extlib_DynArray
 Batlib_Extlib_BitSet
 Batlib_Extlib_Enum
 Batlib_Extlib_RefList
 Batlib_Extlib_Dllist
+Batlib_Extlib_Dynarray
 Batlib_Extlib_Option
 Batlib_Extlib_Global
 Batlib_Extlib_IO
 Batlib_Extlib_List
 Batlib_Extlib_Unzip
+Batlib_Extlib_Hashtbl
 Batlib_Extlib_Base64
 Batlib_Extlib_Array
 Batlib_Extlib_Std

@@ -1,7 +1,7 @@
-name="batlib"
-version="0"
+name="batteries"
+version="0.1"
 description="Batteries Included, standard distribution of OCaml libraries"
-requires="num,threads,extlib"
+requires="num,bigarray,threads,extlib,str,findlib"
 
-archive(byte)="batlib.cma"
-archive(native)="batlib.cmxa"
+archive(byte)  ="batteries.cma,  batteries_layer_1.cma"
+archive(native)="batteries.cmxa, batteries_layer_1.cmxa"

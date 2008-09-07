@@ -6,6 +6,10 @@
 	* build/odoc_fhtml.ml: removed
 	* build/odoc_generator_batlib_old.ml: removed
 	* batlib_Extlib_String.mli: documented
+	* batlib_Extlib_DynArray.ml: renamed batlib_Extlib_Dynarray.ml
+	* batlib_Extlib_Hashtbl.ml: created
+	* batlib_Baselib_SetLabels.ml: created
+	* META: dependency on [str] added
 	
 09/06/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* test/: created

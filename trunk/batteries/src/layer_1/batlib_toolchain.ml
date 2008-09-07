@@ -23,7 +23,7 @@
 *)
 
 (**Accessing information on source files from OCamlDoc*)
-module Odoc_info   = Batlib_Ocamldoc_Odoc_info
+(*module Odoc_info   = Batlib_Ocamldoc_Odoc_info -- removed for now*)
 
 (**Package management with Findlib*)
 module Findlib     = Batlib_Findlib_Findlib

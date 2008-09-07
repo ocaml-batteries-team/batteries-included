@@ -53,6 +53,7 @@ batteries.odocl: batteries_layer_1.mllib
 #
 #Generate the list of modules we intend to put into batlib.cma
 #
+list: batteries_layer_1.mllib
 batteries_layer_1.mllib: 
 	@echo $(basename $(notdir $(shell find src/layer_1 -name  "*.ml"))) > batteries_layer_1.mllib &&\
 	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batteries_layer_1.mllib                          
@@ -65,10 +66,10 @@ META: build/META
 	cp build/META .
 
 install: META
-	ocamlfind install batlib META $(shell find _build/ -name "batteries.cma" -o -name "batteries.cmxa" -o -name "batteries.cmi" -o -name "batteries_layer_1.cma" -o -name "batteries_layer_1.cmxa" -o -name "batteries_layer_1.cmi") 
+	ocamlfind install batteries META $(shell find _build/ -name "batteries.cma" -o -name "batteries.cmxa" -o -name "batteries.cmi" -o -name "batteries_layer_1.cma" -o -name "batteries_layer_1.cmxa" -o -name "batteries_layer_1.cmi") 
 
 uninstall:
-	ocamlfind remove batlib
+	ocamlfind remove batteries
 
 clean:
 	ocamlbuild -clean &&\
