@@ -5,13 +5,12 @@ open Command (* no longer needed for OCaml >= 3.10.2 *)
    {1 OCamlFind}
 *)
 
+let run_and_read      = Ocamlbuild_pack.My_unix.run_and_read
+    
+let blank_sep_strings = Ocamlbuild_pack.Lexers.blank_sep_strings
+
 module OCamlFind =
 struct
-  (* these functions are not really officially exported *)
-  let run_and_read      = Ocamlbuild_pack.My_unix.run_and_read
-    
-  let blank_sep_strings = Ocamlbuild_pack.Lexers.blank_sep_strings
-  
   (* this lists all supported packages *)
   let find_packages () =
     blank_sep_strings &
@@ -91,6 +90,10 @@ end
 
 module Misc =
 struct
+(*  let batteries_directory = match blank_sep_strings & Lexing.from_string & run_and_read "ocamlfind query batteries" with
+    | h::t -> h
+    | _    -> assert false*)
+
   let after_rules () =
     flag ["ocaml"; "link"; "byte";   "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"; A "odoc_info.cma"]);
     flag ["ocaml"; "link"; "native"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"(*; A "odoc_info.cmxa"*)]);
@@ -98,12 +101,30 @@ struct
     flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
 
+    flag ["ocaml"; "pkg_batteries"; "compile"]            (S[A "-thread"]);
 
-    flag ["ocaml"; "pkg_batteries"; "compile"]       (S[A "-thread"]);
+
+
+(*Experimental*)
+
+
+    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose"; A"-package"; 
+						    A "batteries"; A"-syntax"; 
+						    A "batteries"; A"-preprocessor"];
+    flag ["ocaml"; "ocamldep"; "use_batteries"] & S[A "-verbose"; A"-package"; 
+						    A "batteries"; A"-syntax"; A "batteries"];
+    flag ["ocaml"; "doc";      "use_batteries"] & S[A "-verbose"; A"-package"; A "batteries"; A"-syntax"; A "batteries"];
+    flag ["ocaml"; "link";     "use_batteries"] & S[A "-verbose"; A"-package"; A "batteries"; A"-syntax"; A "batteries"];
+(*    flag ["ocaml"; "use_batteries"]
+    flag ["ocaml"; "pkg_batteries"; "compile"]       (S[A "-thread"; A "-verbose"; A "-pp"; 
+							A ("cat "^batteries_directory^"/prefix.ml")]);*)
+(* ([A"cat"; A (batteries_directory^"/prefix.ml")]) ]);*)
+(*A "-toolchain"; A "batteries"]);*)
+(*; A "-syntax"; A "camlp4r"]);*)
     flag ["ocaml"; "pkg_batteries"; "byte"; "link"]  (S[A "-thread"]);
     flag ["ocaml"; "pkg_batteries"; "native"; "link"](S[A "-thread"]);
 
-    flag ["ocaml"; "pkg_batteries"; "link"; "program"](S[A "-nostdlib"])
+(*    flag ["ocaml"; "pkg_batteries"; "link"; "program"](S[A "-nostdlib"])*)
 end
 
 let _ = dispatch begin function

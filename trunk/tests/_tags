@@ -1,2 +1,3 @@
 <test.*>:pkg_batteries
 <test2.*>:pkg_extlib
+<test3.*>:use_batteries

@@ -70,6 +70,9 @@ META: build/META
 
 install: META
 	ocamlfind install batteries META $(shell find _build/ -name "batteries.cma" -o -name "batteries.cmxa" -o -name "batteries.cmi" -o -name "batteries_layer_1.cma" -o -name "batteries_layer_1.cmxa" -o -name "batteries_layer_1.cmi" -o -name "batteries.a" -o -name "batteries_layer_1.a") 
+#	ln -sf _build/src/layer_1/batlib_standard.cmi pervasives.cmi &&\
+#	ln -sf _build/src/layer_1/batlib_standard.cmo pervasives.cmo &&\
+
 
 uninstall:
 	ocamlfind remove batteries

@@ -714,14 +714,15 @@ class batlib_generator =
         in
         (
          match info with
-           None ->
+           None -> ()
              (*self#html_of_Index_list b;
              bs b "<br/>";*)
-             self#html_of_Module_list b
-               (List.map (fun m -> m.m_name) module_list);
-             bs b "</body>\n</html>"
          | Some i -> self#html_of_info ~indent: false b info
         );
+          self#html_of_Module_list b
+            (List.map (fun m -> m.m_name) module_list);
+          bs b "</body>\n</html>";
+
         Buffer.output_buffer chanout b;
         close_out chanout
       with Sys_error s -> raise (Failure s)

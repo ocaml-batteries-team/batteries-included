@@ -22,7 +22,6 @@
    Generic data containers (lists, sets, arrays...)
 *)
 
-(**{1 Container traversal}*)
 
 module Mutable                               = Batlib_mutable
 module Persistent                            = Batlib_persistent

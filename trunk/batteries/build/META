@@ -5,3 +5,5 @@ requires="num,bigarray,threads,extlib,str,findlib"
 
 archive(byte)  ="batteries_layer_1.cma  batteries.cma"
 archive(native)="batteries_layer_1.cmxa batteries.cmxa"
+preprocessor   ="pa_batteries_starter.cma"
+preprocessor(batteries)="pa_batteries_starter.cma"

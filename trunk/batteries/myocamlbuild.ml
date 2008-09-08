@@ -89,7 +89,7 @@ struct
 				A "-i"; A "build";
 				A "-g"; A "odoc_generator_batlib.cmo"; 
 			        A "-t"; A "OCaml Batteries Included" ;
-				(*A "-force-generator"*)]
+				A "-intro"; A "../build/intro.text"]
 end
 
 (**

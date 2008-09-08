@@ -22,13 +22,13 @@
 
 (** {6 Classes} *)
 
-type tag
-type label
-type table
-type meth
-type t
-type obj
-type closure
+type tag = CamlinternalOO.tag
+type label = CamlinternalOO.label
+type table = CamlinternalOO.table
+type meth = CamlinternalOO.meth
+type t = CamlinternalOO.t
+type obj = CamlinternalOO.obj
+type closure = CamlinternalOO.closure
 val public_method_label : string -> tag
 val new_method : table -> label
 val new_variable : table -> string -> int
@@ -53,7 +53,7 @@ val inherits :
 val make_class :
     string array -> (table -> Obj.t -> t) ->
     (t * (table -> Obj.t -> t) * (Obj.t -> t) * Obj.t)
-type init_table
+type init_table = CamlinternalOO.init_table
 val make_class_store :
     string array -> (table -> t) -> init_table -> unit
 val dummy_class :
@@ -76,7 +76,7 @@ external get_public_method : obj -> tag -> closure
 
 (** {6 Table cache} *)
 
-type tables
+type tables = CamlinternalOO.tables
 val lookup_tables : tables -> closure array -> tables
 
 (** {6 Builtins to reduce code size} *)
@@ -108,7 +108,7 @@ val send_env : tag -> int -> int -> int -> closure
 val send_meth : tag -> label -> int -> closure
 *)
 
-type impl =
+type impl  = CamlinternalOO.impl =
     GetConst
   | GetVar
   | GetEnv
@@ -138,7 +138,7 @@ type impl =
 (** {6 Parameters} *)
 
 (* currently disabled *)
-type params =
+type params  = CamlinternalOO.params =
   { mutable compact_table : bool;
     mutable copy_parent : bool;
     mutable clean_when_copying : bool;
@@ -149,7 +149,7 @@ val params : params
 
 (** {6 Statistics} *)
 
-type stats =
+type stats  = CamlinternalOO.stats =
   { classes : int;
     methods : int;
     inst_vars : int }

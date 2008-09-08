@@ -23,6 +23,7 @@
 *)
 
 open Batteries_1
+
 open Batlib_1
 
 (** Tools for changing the control flow of a program, from 
@@ -57,4 +58,8 @@ module Util        = Batlib_util
    The role of this indirection is to simplify future extension of Batteries Included
    with libraries which may depend on Batteries Included.
 *)
+(**/**)
+
+(**/**)
+include Standard
 (**/**)
