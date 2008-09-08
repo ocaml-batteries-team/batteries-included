@@ -27,7 +27,7 @@
 *)
 
 
-type 'a node_t (* abstract *)
+type 'a node_t = 'a Dllist.node_t (* abstract *)
 
 exception Empty
 

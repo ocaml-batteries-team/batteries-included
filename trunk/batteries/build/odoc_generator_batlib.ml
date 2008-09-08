@@ -96,7 +96,8 @@ let has_parent a ~parent:b =
 	  a.[len_b] = '.'
     
 
-let root = "Batteries"
+(** The list of modules which should appear as roots in the hierarchy. *)
+let roots = ["Batteries"]
 
 let merge_info_opt a b =
   verbose ("Merging informations");
@@ -282,27 +283,35 @@ let rebuild_structure modules =
   (*let dependencies = List.fold_left (fun acc m -> acc @ m.m_top_deps) [] modules in
     List.iter (fun x -> *)
   (*1. Find root modules, i.e. modules which are neither included nor aliased*)
-  let roots = Hashtbl.create 100 in
-    List.iter (fun x -> if Name.father x.m_name = "" then Hashtbl.add roots x.m_name x) modules;
+  let all_roots = Hashtbl.create 100 in
+    List.iter (fun x -> if Name.father x.m_name = "" then Hashtbl.add all_roots x.m_name x) modules;
     List.iter (fun x -> 
 		    begin
-(*		      verbose("Dependencies of module "^x.m_name^":"); *)
 		      List.iter (fun y -> (*verbose(" removing "^y);*)
-				   Hashtbl.remove roots y
+				   Hashtbl.remove all_roots y
 				) x.m_top_deps
 		    end)  modules;
-    Hashtbl.iter (fun name _ -> verbose ("Root: "^name)) roots;
+    Hashtbl.iter (fun name _ -> verbose ("Root: "^name)) all_roots;
+    let for_rewriting = Hashtbl.fold (fun k m acc -> if List.mem k roots then 
+					begin
+					  verbose ("Rewriting: " ^k);
+					  (k,m)::acc 
+					end
+				      else 
+					begin
+					  verbose ("Not rewriting: "^k);
+					  acc
+					end) all_roots [] in
+    (*Actually, we're only interested in modules which appear in [roots]*)
       (*2. Dive into these*)
-    let rewritten = Hashtbl.fold (fun name contents acc ->
-		    (*verbose ("Diving at module "^name);*)
+    (*let rewritten = Hashtbl.fold (fun name contents acc ->
 		    {(contents) with m_kind = handle_kind name contents contents.m_kind}::acc
-		 ) roots [] in
-      (*verbose ("New list of modules:");*)
+		 ) all_roots [] in*)
+      let rewritten = List.fold_left (fun acc (name, contents) -> 
+					{(contents) with m_kind = handle_kind "" contents contents.m_kind}::acc)
+	[] for_rewriting in
       let result =  Search.modules rewritten in
-(*      List.iter (fun x -> verbose ("  "^x.m_name)) result;*)
-(*Second pass: walk through references*)
-	(*verbose ("List of renamings:");
-	Hashtbl.iter (fun k x -> verbose (" "^k^" => "^x)) all_renamed_modules;*)
+(*TODO: Second pass: walk through references*)
 	(result, all_renamed_modules)
 
 
@@ -434,7 +443,7 @@ class batlib_generator =
           bs b "</td></tr>\n";*)
 	  let simple_name = Name.simple (name e)
 	  and father_name = Name.father (name e) in
-	    bp b "<li>%s%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ())
+	    bp b "<li class='index_entry_entry'>%s%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ())
 	    (if simple_name <> father_name && father_name <> "" then
 	      Printf.sprintf " [%s]" (self#make_link ~url:(fst (Naming.html_files father_name)) ~text:father_name ())
 	     else "");
@@ -453,11 +462,11 @@ class batlib_generator =
               bs b "<tr><td align=\"left\"><br>";
               bs b s ;
               bs b "</td></tr>\n<tr class='index_entry'><td>\n" ;
-	      bs b "<ul>\n";
+	      bs b "<ul class='index_entry'>\n";
               List.iter f_ele l;
 	      bs b "</ul>\n</td></tr>"
         in
-        bs b "<table>\n";
+        bs b "<table class='index_of_elements'>\n";
         List.iter f_group groups ;
         bs b "</table><br>\n" ;
         bs b "</body>\n</html>";
@@ -467,10 +476,9 @@ class batlib_generator =
         Sys_error s ->
           raise (Failure s)
 
+    method is_reachable_from_root m = true (*List.exists (fun p -> has_parent m ~parent:p) roots*)
     method generate_modules_index _ =
-      let is_reachable_from_root m = has_parent m ~parent:root
-      in 
-      let list_modules = List.filter (fun m -> is_reachable_from_root m.m_name) self#list_modules in
+      let list_modules = List.filter (fun m -> self#is_reachable_from_root m.m_name) self#list_modules in
       self#generate_elements_index
         list_modules
         (fun m -> m.m_name)
@@ -480,10 +488,8 @@ class batlib_generator =
         self#index_modules
 
     method html_of_Module_list b _ =
-      let is_reachable_from_root m = has_parent m ~parent:root 
-      in 
       let list_modules = List.map (fun m -> m.m_name)
-	((List.filter (fun m -> is_reachable_from_root m.m_name) self#list_modules)) in
+	((List.filter (fun m -> self#is_reachable_from_root m.m_name) self#list_modules)) in
 	super#html_of_Module_list b list_modules
 
 (**Customizing appearance of modules*)
@@ -525,13 +531,13 @@ class batlib_generator =
 	match ref_opt with
 	  | Some _ -> ref_opt (*We already have all the details*)
 	  | _      -> match self#what_is name with
-	      | Some result -> 
+	      | Some _ as r -> 
 		  warning ("Found the type of "^name);
-		  Some result
+		  r
 	      | None        -> match self#what_is renamed with
-		  | Some result -> 
-		      warning ("Could not find the type of "^name^", but found that of "^renamed);
-		      Some result
+		  | Some _ as r -> 
+		      verbose ("Could not find the type of "^name^", but found that of "^renamed);
+		      r
 		  | None        ->
 		      warning ("Could not find the type of "^name^", even as "^renamed);
 		      None
@@ -745,10 +751,14 @@ class batlib_generator =
 
     initializer
       tag_functions         <- ("documents", self#html_of_custom_tag_documents) :: tag_functions;
-      default_style_options <- ["li.index_of {display:inline}";
-				"ul.indices  {display:inline;font-variant:small-caps;list-style-position: inside;list-style-type:none;padding:0px}";
-                                "div.indices {text-align:center}";
-				".index_entry{font-size:x-small}"]@default_style_options;
+      default_style_options <- default_style_options@
+	["li.index_of {display:inline}";
+	 "ul.indices  {display:inline;font-variant:small-caps;list-style-position: inside;list-style-type:none;padding:0px}";
+         "div.indices {text-align:center}";
+	 ".index_entry{font-size:x-small}";
+	 "ul.index_entry {list-style-type:none;padding:0px; margin-left:none; text-ident:-1em}";
+	 ".info {margin-left:1em}"
+	];
 
   end;;
 
@@ -762,4 +772,4 @@ let _ =
   Args.add_option ("-html", Arg.Unit 
 		     (fun _ -> Odoc_info.verbose "Deactivating built-in html generator";
 			set_batlib_doc_generator())
-		     , "<workaround for ocamldoc adding -html even when we don't want to>") 
+		     , "<workaround for ocamlbuild adding -html even when we don't want to>") 

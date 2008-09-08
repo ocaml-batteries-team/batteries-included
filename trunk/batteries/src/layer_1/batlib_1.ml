@@ -24,27 +24,11 @@
    @documents Batlib
 *)
 
-(** Tools for changing the control flow of a program, from 
-    error-management to concurrency to monads.*)
 module Control     = Batlib_control
-
-(** Data structures, from numbers to containers.*)
 module Data        = Batlib_data
-
-(** Language manipulation, from parsing to printing to regexps...*)
 module Languages   = Batlib_languages
-
-(** Metal-level operations (marshalling, garbage-collection, foreign function calls...)*)
 module Meta        = Batlib_meta
-
-(** Standard operations, should be opened automatically (not the case yet)*)
 module Standard    = Batlib_standard
-
-(** Interactions with the Operating System*)
 module System      = Batlib_system
-
-(** Tools for compiling OCaml, generating documentation, installing libraries...*)
 module Toolchain   = Batlib_toolchain
-
-(** Miscellaneous utilities*)
 module Util        = Batlib_util

@@ -30,7 +30,7 @@
 *)
 
 
-type 'a t
+type 'a t = 'a Enum.t
 
 (** {6 Final functions}
 

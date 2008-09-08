@@ -83,10 +83,6 @@ struct
         *)
        flag ["ocaml"; "pkg_threads"; "compile"]  (S[A "-thread"]);
        flag ["ocaml"; "pkg_threads"; "link"]     (S[A "-thread"]);
-
-       flag ["ocaml"; "pkg_batteries"; "compile"]       (S[A "-thread"]);
-       flag ["ocaml"; "pkg_batteries"; "byte"; "link"]  (S[A "-thread"]);
-       flag ["ocaml"; "pkg_batteries"; "native"; "link"](S[A "-thread"])
 end
 
 (**
@@ -101,6 +97,13 @@ struct
     flag ["ocaml"; "docfile";        "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
+
+
+    flag ["ocaml"; "pkg_batteries"; "compile"]       (S[A "-thread"]);
+    flag ["ocaml"; "pkg_batteries"; "byte"; "link"]  (S[A "-thread"]);
+    flag ["ocaml"; "pkg_batteries"; "native"; "link"](S[A "-thread"]);
+
+    flag ["ocaml"; "pkg_batteries"; "link"; "program"](S[A "-nostdlib"])
 end
 
 let _ = dispatch begin function
@@ -108,7 +111,16 @@ let _ = dispatch begin function
        OCamlFind.before_options ();
    | After_rules ->
        OCamlFind.after_rules ();
+       Misc.after_rules ()
 
        
    | _ -> ()
 end
+
+
+
+(**
+   which ocamlrun  ->   header
+
+   print_backtrace -> ajouter "-b" après le header
+**)

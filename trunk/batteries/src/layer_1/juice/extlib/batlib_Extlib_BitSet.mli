@@ -27,7 +27,7 @@
     @documents BitSet
 *)
 
-type t
+type t = BitSet.t
 
 exception Negative_index of string
 (** When a negative bit value is used for one of the BitSet functions,

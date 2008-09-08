@@ -45,15 +45,14 @@ batteries.cmxa: batteries_layer_1.cmxa
 	ocamlbuild batteries.cmxa
 
 doc: doc/api.odocl .PHONY
+	\rm -Rf doc/batteries/html/api &&\
 	ocamlbuild doc/api.docdir/index.html &&\
 	rm api.docdir &&\
-	ln -sf ../../../_build/doc/api.docdir/ -T doc/batteries/html/api
+	mv _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: batteries_layer_1.mllib
 	echo `cat batteries_layer_1.mllib` Batteries > doc/api.odocl
 
-.PHONY:
-	
 #
 #Generate the list of modules we intend to put into batlib.cma
 #
@@ -79,3 +78,6 @@ clean:
 	ocamlbuild -clean &&\
 	\rm -f `find . -name "*~" -o -name "*#"` &&\
 	\rm -f META
+
+.PHONY:
+	

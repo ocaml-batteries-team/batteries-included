@@ -28,7 +28,7 @@
     @documents Global
 *)
 
-type 'a t
+type 'a t = 'a Global.t
 (** Abstract type of a global *)
 
 exception Global_not_initialized of string

@@ -1,3 +1,17 @@
+09/08/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* batlib_findlib.ml:    removed
+	* batlib_persistent.ml: [Batlib_Extlib_PMap] added
+	* batlib_mutable.ml:    [Batlib_Baselib_ArrayLabels] added
+	* odoc_generator_batlib.ml: [root] become [roots] (and becomes a list)
+	* odoc_generator_batlib.ml: [is_reachable_from_root] now a full method
+	* odoc_generator_batlib.ml: [generate_modules_index] uses [is_reachable_from_root]
+	* odoc_generator_batlib.ml: [html_of_Module_list] uses [is_reachable_from_root]
+	* batlib_Extlib_Enum.mli: added alias ['a t = 'a Enum.t]
+	* batlib_Extlib_BitSet.mli: added alias ['a t = 'a BitSet.t]
+	* batlib_Extlib_Dllist.mli: added alias ['a t = 'a Dllist.t]
+	* batlib_Extlib_Dynarray.mli: added alias ['a t = 'a Dynarray.t]
+	* batlib_Extlib_Global.mli: added alias ['a t = 'a Global.t]
+
 09/07/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* [everything moved around!]
 	* build/odoc_generator_batlib.ml: [#generate] now initialises [list_values], [list_exceptions],

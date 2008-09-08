@@ -1,7 +1,6 @@
 Batlib_languages
 Batlib_toolchain
 Batlib_text
-Batlib_findlib
 Batlib_concurrency
 Batlib_data
 Batlib_numeric
