@@ -29,7 +29,7 @@
 exception Empty_list
 exception Invalid_index of int
 
-type 'a t
+type 'a t = 'a RefList.t
 
 val empty : unit -> 'a t
 (** Returns a new empty ref list *)

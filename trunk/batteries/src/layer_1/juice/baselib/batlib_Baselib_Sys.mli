@@ -96,7 +96,7 @@ val max_array_length : int
 (** {6 Signal handling} *)
 
 
-type signal_behavior =
+type signal_behavior = Sys.signal_behavior =
     Signal_default
   | Signal_ignore
   | Signal_handle of (int -> unit)

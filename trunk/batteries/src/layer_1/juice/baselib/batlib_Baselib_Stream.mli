@@ -17,7 +17,7 @@
 
     @documents Stream*)
 
-type 'a t
+type 'a t = 'a Stream.t
 (** The type of streams holding values of type ['a]. *)
 
 exception Failure

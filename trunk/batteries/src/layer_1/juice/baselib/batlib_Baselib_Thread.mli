@@ -20,7 +20,7 @@
 
 
 
-type t
+type t = Thread.t
 (** The type of thread handles. *)
 
 (** {6 Thread creation and termination} *)

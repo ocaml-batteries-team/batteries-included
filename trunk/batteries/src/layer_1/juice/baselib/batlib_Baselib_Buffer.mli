@@ -23,7 +23,7 @@
     @documents Buffer
 *)
 
-type t
+type t = Buffer.t
 (** The abstract type of buffers. *)
 
 val create : int -> t

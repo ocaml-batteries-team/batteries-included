@@ -69,9 +69,9 @@ exception Parse_error
 (** The following definitions are used by the generated parsers only.
    They are not intended to be used by user programs. *)
 
-type parser_env
+type parser_env = Parsing.parser_env
 
-type parse_tables =
+type parse_tables = Parsing.parse_tables =
   { actions : (parser_env -> Obj.t) array;
     transl_const : int array;
     transl_block : int array;

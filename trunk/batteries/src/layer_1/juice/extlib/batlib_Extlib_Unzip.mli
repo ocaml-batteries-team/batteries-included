@@ -28,7 +28,7 @@
     @documents Unzip
 *)
 
-type error_msg =
+type error_msg = Unzip.error_msg =
 	| Invalid_huffman
 	| Invalid_data
 	| Invalid_crc
@@ -41,7 +41,7 @@ val inflate : ?header:bool -> IO.input -> IO.input
 (** wrap an input using "inflate" decompression algorithm. raises [Error] if
   an error occurs (this can only be caused by malformed input data). *)
 
-type t
+type t = Unzip.t
 
 val inflate_init : ?header:bool -> IO.input -> t
 val inflate_data : t -> string -> int -> int -> int

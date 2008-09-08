@@ -23,7 +23,7 @@
     @documents Complex
 *)
 
-type t = { re: float; im: float }
+type t = Complex.t = { re: float; im: float }
 (** The type of complex numbers.  [re] is the real part and [im] the
     imaginary part. *)
 

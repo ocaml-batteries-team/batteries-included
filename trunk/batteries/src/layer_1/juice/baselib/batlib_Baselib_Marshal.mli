@@ -46,7 +46,7 @@
     @documents Marshal
 *)
 
-type extern_flags =
+type extern_flags = Marshal.extern_flags =
     No_sharing                          (** Don't preserve sharing *)
   | Closures                            (** Send function closures *)
 (** The flags to the [Marshal.to_*] functions below. *)

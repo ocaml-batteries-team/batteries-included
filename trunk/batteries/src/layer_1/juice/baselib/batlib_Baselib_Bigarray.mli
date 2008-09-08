@@ -60,20 +60,20 @@
    of the abstract types defined below.
 *)
 
-type float32_elt
-type float64_elt
-type complex32_elt
-type complex64_elt
-type int8_signed_elt
-type int8_unsigned_elt
-type int16_signed_elt
-type int16_unsigned_elt
-type int_elt
-type int32_elt
-type int64_elt
-type nativeint_elt
+type float32_elt = Bigarray.float32_elt
+type float64_elt = Bigarray.float64_elt
+type complex32_elt = Bigarray.complex32_elt
+type complex64_elt = Bigarray.complex64_elt
+type int8_signed_elt = Bigarray.int8_signed_elt
+type int8_unsigned_elt = Bigarray.int8_unsigned_elt
+type int16_signed_elt = Bigarray.int16_signed_elt
+type int16_unsigned_elt = Bigarray.int16_unsigned_elt
+type int_elt = Bigarray.int_elt
+type int32_elt = Bigarray.int32_elt
+type int64_elt = Bigarray.int64_elt
+type nativeint_elt = Bigarray.nativeint_elt
 
-type ('a, 'b) kind
+type ('a, 'b) kind = ('a,'b) Bigarray.kind
 (** To each element kind is associated a Caml type, which is
    the type of Caml values that can be stored in the big array
    or read back from it.  This type is not necessarily the same
@@ -144,10 +144,10 @@ val char : (char, int8_unsigned_elt) kind
 
 (** {6 Array layouts} *)
 
-type c_layout
+type c_layout = Bigarray.c_layout
 (** See {!Bigarray.fortran_layout}.*)
 
-type fortran_layout
+type fortran_layout = Bigarray.fortran_layout
 (** To facilitate interoperability with existing C and Fortran code,
    this library supports two different memory layouts for big arrays,
    one compatible with the C conventions,
@@ -170,7 +170,7 @@ type fortran_layout
    Each layout style is identified at the type level by the
    abstract types {!Bigarray.c_layout} and [fortran_layout] respectively. *)
 
-type 'a layout
+type 'a layout = 'a Bigarray.layout
 (** The type ['a layout] represents one of the two supported
    memory layouts: C-style if ['a] is {!Bigarray.c_layout}, Fortran-style
    if ['a] is {!Bigarray.fortran_layout}. *)
@@ -190,7 +190,7 @@ val fortran_layout : fortran_layout layout
 
 module Genarray :
   sig
-  type ('a, 'b, 'c) t
+  type ('a, 'b, 'c) t = ('a, 'b, 'c) Bigarray.Genarray.t
   (** The type [Genarray.t] is the type of big arrays with variable
      numbers of dimensions.  Any number of dimensions between 1 and 16
      is supported.
@@ -434,7 +434,7 @@ module Genarray :
    Statically knowing the number of dimensions of the array allows
    faster operations, and more precise static type-checking. *)
 module Array1 : sig
-  type ('a, 'b, 'c) t
+  type ('a, 'b, 'c) t = ('a, 'b, 'c) Bigarray.Array1. t
   (** The type of one-dimensional big arrays whose elements have
      Caml type ['a], representation kind ['b], and memory layout ['c]. *)
 
@@ -501,7 +501,7 @@ end
    case of two-dimensional arrays. *)
 module Array2 :
   sig
-  type ('a, 'b, 'c) t
+  type ('a, 'b, 'c) t = ('a, 'b, 'c) Bigarray.Array2. t
   (** The type of two-dimensional big arrays whose elements have
      Caml type ['a], representation kind ['b], and memory layout ['c]. *)
 
@@ -594,7 +594,7 @@ module Array2 :
    of three-dimensional arrays. *)
 module Array3 :
   sig
-  type ('a, 'b, 'c) t
+  type ('a, 'b, 'c) t = ('a, 'b, 'c) Bigarray.Array3. t
   (** The type of three-dimensional big arrays whose elements have
      Caml type ['a], representation kind ['b], and memory layout ['c]. *)
 

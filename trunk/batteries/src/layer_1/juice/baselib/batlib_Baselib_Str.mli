@@ -22,7 +22,7 @@
 (** {6 Regular expressions} *)
 
 
-type regexp
+type regexp = Str.regexp
 (** The type of compiled regular expressions. *)
 
 
@@ -211,7 +211,7 @@ val bounded_split_delim : regexp -> string -> int -> string list
    delimiter at the beginning and at the end of the string are
    recognized and returned as empty strings in the result. *)
 
-type split_result = 
+type split_result = Str.split_result = 
     Text of string
   | Delim of string
 

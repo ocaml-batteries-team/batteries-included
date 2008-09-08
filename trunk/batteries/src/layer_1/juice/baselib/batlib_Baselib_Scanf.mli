@@ -55,7 +55,7 @@
 (** {6 Scanning buffers} *)
 module Scanning : sig
 
-type scanbuf;;
+type scanbuf = Scanf.Scanning.scanbuf;;
 (** The type of scanning buffers. A scanning buffer is the source from which a
     formatted input function gets characters. The scanning buffer holds the
     current state of the scan, plus a function to get the next char from the

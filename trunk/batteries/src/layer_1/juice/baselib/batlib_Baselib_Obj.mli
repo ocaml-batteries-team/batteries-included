@@ -20,7 +20,7 @@
     @documents Obj
 *)
 
-type t
+type t = Obj.t
 
 external repr : 'a -> t = "%identity"
 external obj : t -> 'a = "%identity"

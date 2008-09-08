@@ -370,7 +370,7 @@ val get_formatter_output_functions :
 
 (** {6 Changing the meaning of printing tags} *)
 
-type formatter_tag_functions = {
+type formatter_tag_functions = Format.formatter_tag_functions = {
   mark_open_tag : tag -> string;
   mark_close_tag : tag -> string;
   print_open_tag : tag -> unit;
@@ -441,7 +441,7 @@ val get_all_formatter_output_functions :
 
 (** {6 Multiple formatted output} *)
 
-type formatter;;
+type formatter = Format.formatter ;;
 (** Abstract data type corresponding to a pretty-printer (also called a
    formatter) and all its machinery.
    Defining new pretty-printers permits the output of

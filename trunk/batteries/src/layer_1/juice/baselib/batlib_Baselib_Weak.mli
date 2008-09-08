@@ -20,7 +20,7 @@
 
 (** {6 Low-level functions} *)
 
-type 'a t
+type 'a t = 'a Weak.t
 (** The type of arrays of weak pointers (weak arrays).  A weak
    pointer is a value that the garbage collector may erase at
    any time.

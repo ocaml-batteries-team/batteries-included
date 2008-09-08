@@ -19,7 +19,7 @@
 
 (** {6 Positions} *)
 
-type position = {
+type position = Lexing.position = {
   pos_fname : string;
   pos_lnum : int;
   pos_bol : int;
@@ -45,7 +45,7 @@ val dummy_pos : position;;
 (** {6 Lexer buffers} *)
 
 
-type lexbuf =
+type lexbuf = Lexing.lexbuf =
   { refill_buff : lexbuf -> unit;
     mutable lex_buffer : string;
     mutable lex_buffer_len : int;
@@ -150,7 +150,7 @@ val sub_lexeme_opt : lexbuf -> int -> int -> string option
 val sub_lexeme_char : lexbuf -> int -> char
 val sub_lexeme_char_opt : lexbuf -> int -> char option
 
-type lex_tables =
+type lex_tables = Lexing.lex_tables =
   { lex_base : string;
     lex_backtrk : string;
     lex_default : string;

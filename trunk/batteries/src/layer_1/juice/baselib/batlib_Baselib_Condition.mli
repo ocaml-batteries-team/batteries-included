@@ -34,7 +34,7 @@
     @documents Condition
 *)
 
-type t
+type t = Condition.t
 (** The type of condition variables. *)
 
 val create : unit -> t

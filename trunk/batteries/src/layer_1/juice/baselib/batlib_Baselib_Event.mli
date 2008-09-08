@@ -23,13 +23,13 @@
     @documents Event
 *)
 
-type 'a channel
+type 'a channel = 'a Event.channel
 (** The type of communication channels carrying values of type ['a]. *)
 
 val new_channel : unit -> 'a channel
 (** Return a new channel. *)
 
-type +'a event
+type +'a event = 'a Event.event 
 (** The type of communication events returning a result of type ['a]. *)
 
 (** [send ch v] returns the event consisting in sending the value [v]

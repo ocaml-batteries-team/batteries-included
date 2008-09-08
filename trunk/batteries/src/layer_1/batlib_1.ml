@@ -21,7 +21,7 @@
 (**
    Base of OCaml Batteries Included.
 
-   @documents Batlib
+   @documents Batteries
 *)
 
 module Control     = Batlib_control

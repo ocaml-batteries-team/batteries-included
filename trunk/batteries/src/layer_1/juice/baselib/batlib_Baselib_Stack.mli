@@ -20,7 +20,7 @@
     @documents Stack
 *)
 
-type 'a t
+type 'a t = 'a Stack.t
 (** The type of stacks containing elements of type ['a]. *)
 
 exception Empty

@@ -6,12 +6,48 @@
 	* odoc_generator_batlib.ml: [is_reachable_from_root] now a full method
 	* odoc_generator_batlib.ml: [generate_modules_index] uses [is_reachable_from_root]
 	* odoc_generator_batlib.ml: [html_of_Module_list] uses [is_reachable_from_root]
+	* batlib_Extlib_Hashtbl.mli: added [S], [HashedType], [Make] 
+	* batlib_Extlib_List.ml: added [make_compare], [of_backwards], [backwards], [drop_while], [take_while], 
+	[split_at], [assoc_inv], [rindex_ofq], [rindex_of], [index_ofq], [index_of], [find_map], [find_exn], 
+	[rev_map2], [@], [at], [cons], [is_empty]
+	* batlib_Extlib_Hashtbl.mli: documented
+	* batlib_Extlib_List.mli: documented
 	* batlib_Extlib_Enum.mli: added alias ['a t = 'a Enum.t]
 	* batlib_Extlib_BitSet.mli: added alias ['a t = 'a BitSet.t]
 	* batlib_Extlib_Dllist.mli: added alias ['a t = 'a Dllist.t]
-	* batlib_Extlib_Dynarray.mli: added alias ['a t = 'a Dynarray.t]
+	* batlib_Extlib_Dynarray.mli: added alias ['a t = 'a DynArray.t]
 	* batlib_Extlib_Global.mli: added alias ['a t = 'a Global.t]
-
+	* batlib_Extlib_OptParse.mli: added alias ['a Opt.t = 'a Opt.OptParse.t], [Formatter.t = OptParse.Formatter.t],
+	[OptParser.t = OptParse.OptParser.t], [OptParser.group = OptParse.OptParser.group]
+	* batlib_Extlib_PMap.mli: added alias [t = PMap.t]
+	* batlib_Extlib_RefList.mli: added alias [t = RefList.t]
+	* batlib_Extlib_Unzip.mli: added alias [t = Unzip.t], [error_msg = Unzip.error_msg]
+	* batlib_Baselib_Arg.mli: added alias [spec = Arg.spec]
+	* batlib_Baselib_Big_int.mli: added alias [big_int = Big_int.big_int]
+	* batlib_Baselib_Bigarray.mli: added plenty of aliases
+	* batlib_Baselib_Buffer.mli: added alias
+	* batlib_Baselib_CamlInternalMod.mli: added alias
+	* batlib_Baselib_CamlInternalOO.mli: added aliases
+	* batlib_Baselib_Condition.mli:
+	* batlib_Baselib_Complex.mli:
+	* batlib_Baselib_Event.mli:
+	* batlib_Baselib_Format.mli:
+	* batlib_Baselib_Gc.mli:
+	* batlib_Baselib_Lexing.mli:
+	* batlib_Baselib_Marshal.mli:
+	* batlib_Baselib_Mutex.mli:
+	* batlib_Baselib_Num.mli:
+	* batlib_Baselib_Obj.mli:
+	* batlib_Baselib_Pervasives.mli:
+	* batlib_Baselib_Queue.mli:
+	* batlib_Baselib_Scanf.mli:
+	* batlib_Baselib_Stream.mli:
+	* batlib_Baselib_Str.mli:
+	* batlib_Baselib_Sys.mli:
+	* batlib_Baselib_Thread.mli:
+	* batlib_Baselib_Unix.mli:
+	* batlib_Baselib_Weak.mli: added aliases for all types
+	
 09/07/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* [everything moved around!]
 	* build/odoc_generator_batlib.ml: [#generate] now initialises [list_values], [list_exceptions],

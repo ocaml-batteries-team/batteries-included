@@ -49,7 +49,7 @@
    and quotes, or sequences of ``operator characters'' such as
    [+], [*], etc); and [Kwd] for keywords (either identifiers or
    single ``special characters'' such as [(], [}], etc). *)
-type token =
+type token = Genlex.token =
     Kwd of string
   | Ident of string
   | Int of int

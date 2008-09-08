@@ -354,7 +354,7 @@ val min_float : float
 val epsilon_float : float
 (** The smallest positive float [x] such that [1.0 +. x <> 1.0]. *)
 
-type fpclass =
+type fpclass = Pervasives.fpclass =
     FP_normal           (** Normal number, none of the below *)
   | FP_subnormal        (** Number very close to 0.0, has reduced precision *)
   | FP_zero             (** Number is 0.0 or -0.0 *)
@@ -454,10 +454,10 @@ val ( @ ) : 'a list -> 'a list -> 'a list
 (** / **)
 (** {6 Input/output} *)
 
-type in_channel
+type in_channel = Pervasives.in_channel
 (** The type of input channel. *)
 
-type out_channel
+type out_channel = Pervasives.out_channel
 (** The type of output channel. *)
 
 val stdin : in_channel
@@ -539,7 +539,7 @@ val read_float : unit -> float
 (** {7 General output functions} *)
 
 
-type open_flag =
+type open_flag = Pervasives.open_flag =
     Open_rdonly      (** open for reading. *)
   | Open_wronly      (** open for writing. *)
   | Open_append      (** open for appending: always write at end of file. *)
@@ -785,7 +785,7 @@ module LargeFile :
 
 (** {6 References} *)
 
-type 'a ref = { mutable contents : 'a }
+type 'a ref = 'a Pervasives.ref = { mutable contents : 'a }
 (** The type of references (mutable indirection cells) containing
    a value of type ['a]. *)
 

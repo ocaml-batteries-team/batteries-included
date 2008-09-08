@@ -26,7 +26,7 @@
     @documents PMap
 *)
 
-type ('a, 'b) t
+type ('a, 'b) t = ('a, 'b) PMap.t
 
 val empty : ('a, 'b) t
 (** The empty map, using [compare] as key comparison function. *)

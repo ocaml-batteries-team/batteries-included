@@ -28,10 +28,10 @@
     @documents IO
 *)
 
-type input
+type input = IO.input
 (** The abstract input type. *)
 
-type 'a output
+type 'a output = 'a IO.output
 (** The abstract output type, ['a] is the accumulator data, it is returned
 	when the [close_out] function is called. *)
 
@@ -229,7 +229,7 @@ val write_line : 'a output -> string -> unit
 (** Write a line and append a LF (it might be converted
 	to CRLF on some systems depending on the underlying IO). *)
 
-(** Same as operations above, but use big-endian encoding *)
+(** {!IO} operations but with big-endian encoding *)
 module BigEndian :
 sig
 
@@ -255,8 +255,8 @@ end
 	at the same time.
 *)
 
-type in_bits
-type out_bits
+type in_bits   = IO.in_bits
+type out_bits  = IO.out_bits
 
 exception Bits_error
 

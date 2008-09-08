@@ -22,7 +22,7 @@
    @documents CamlinternalMod
 *)
 
-type shape =
+type shape  = CamlinternalMod.shape =
   | Function
   | Lazy
   | Class

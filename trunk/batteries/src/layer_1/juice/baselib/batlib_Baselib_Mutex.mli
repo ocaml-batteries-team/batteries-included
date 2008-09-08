@@ -28,7 +28,7 @@
    @documents Mutex
 *)
 
-type t
+type t = Mutex.t
 (** The type of mutexes. *)
 
 val create : unit -> t

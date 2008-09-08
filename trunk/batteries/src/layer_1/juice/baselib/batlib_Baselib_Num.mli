@@ -26,7 +26,7 @@ open Big_int
 open Ratio
 
 (** The type of numbers. *)
-type num = 
+type num = Num.num = 
     Int of int
   | Big_int of big_int
   | Ratio of ratio

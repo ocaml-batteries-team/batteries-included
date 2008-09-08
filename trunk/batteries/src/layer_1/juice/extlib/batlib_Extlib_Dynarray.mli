@@ -28,7 +28,7 @@
     @documents Dynarray
 *)
 
-type 'a t = 'a Dynarray.t
+type 'a t = 'a DynArray.t
 
 exception Invalid_arg of int * string * string
 (** When an operation on an array fails, [Invalid_arg] is raised. The

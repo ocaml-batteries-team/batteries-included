@@ -20,7 +20,7 @@
     @documents Queue
 *)
 
-type 'a t
+type 'a t = 'a Queue.t
 (** The type of queues containing elements of type ['a]. *)
 
 
