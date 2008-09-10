@@ -1,3 +1,9 @@
+10/08/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* layer_1/juice: moved out of [layer_1]
+	* layer_1/*: moved to [main]
+	* Makefile: [api.odocl] now doesn't insert [Batteries]
+	* Makefile: removed references to [batteries_layer_1]
+	
 09/08/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* batlib_findlib.ml:    removed
 	* batlib_persistent.ml: [Batlib_Extlib_PMap] added

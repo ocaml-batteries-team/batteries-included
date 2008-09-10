@@ -3,7 +3,5 @@
 <batteries.docdir>:pkg_threads,use_ocamldoc_info,pkg_extlib
 <batteries.docdir/*>:pkg_threads,use_ocamldoc_info,pkg_extlib
 <batteries.docdir/index.html>:pkg_threads,use_ocamldoc_info,pkg_extlib
-<batteries_layer_1.cma>:pkg_threads,use_ocamldoc_info,pkg_extlib
-<batteries_layer_1.cmxa>:pkg_threads,use_ocamldoc_info,pkg_extlib
-<batteries.cma>: use_batteries_layer_1
-<batteries.cmxa>:use_batteries_layer_1
+<batteries.cma>: pkg_threads,use_ocamldoc_info,pkg_extlib
+<batteries.cmxa>:pkg_threads,use_ocamldoc_info,pkg_extlib

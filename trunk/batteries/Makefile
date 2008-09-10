@@ -27,21 +27,21 @@ all: byte doc
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
 
-byte: batteries_layer_1.cma batteries.cma
+byte: batteries.cma
 	
-opt: batteries_layer_1.cmxa batteries.cmxa
+opt: batteries.cmxa
 	
 
-batteries_layer_1.cma: batteries_layer_1.mllib
-	ocamlbuild batteries_layer_1.cma
+#batteries_layer_1.cma: batteries_layer_1.mllib
+#	ocamlbuild batteries_layer_1.cma
 
-batteries.cma: batteries_layer_1.cma
+batteries.cma: #batteries_layer_1.cma
 	ocamlbuild batteries.cma
 
-batteries_layer_1.cmxa: batteries_layer_1.mllib
-	ocamlbuild batteries_layer_1.cmxa
+#batteries_layer_1.cmxa: batteries_layer_1.mllib
+#	ocamlbuild batteries_layer_1.cmxa
 
-batteries.cmxa: batteries_layer_1.cmxa
+batteries.cmxa: #batteries_layer_1.cmxa
 	ocamlbuild batteries.cmxa
 
 doc: doc/api.odocl .PHONY
@@ -50,16 +50,16 @@ doc: doc/api.odocl .PHONY
 	rm api.docdir &&\
 	mv _build/doc/api.docdir/ doc/batteries/html/api
 
-doc/api.odocl: batteries_layer_1.mllib
-	echo `cat batteries_layer_1.mllib` Batteries > doc/api.odocl
+doc/api.odocl: batteries.mllib
+	cp batteries.mllib doc/api.odocl
 
 #
 #Generate the list of modules we intend to put into batlib.cma
 #
-list: batteries_layer_1.mllib
-batteries_layer_1.mllib: 
-	@echo $(basename $(notdir $(shell find src/layer_1 -name  "*.ml"))) > batteries_layer_1.mllib &&\
-	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batteries_layer_1.mllib                          
+list: batteries.mllib 
+batteries.mllib: 
+	@echo $(basename $(notdir $(shell find src/ -name  "*.ml"))) > batteries.mllib &&\
+	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batteries.mllib                          
 
 prepare_syntax_contents:
 	@echo $(basename $(notdir $(shell find syntax -name  "*.ml"))) > batsyntax.mllib &&\
@@ -69,7 +69,7 @@ META: build/META
 	cp build/META .
 
 install: META
-	ocamlfind install batteries META $(shell find _build/ -name "batteries.cma" -o -name "batteries.cmxa" -o -name "batteries.cmi" -o -name "batteries_layer_1.cma" -o -name "batteries_layer_1.cmxa" -o -name "batteries_layer_1.cmi" -o -name "batteries.a" -o -name "batteries_layer_1.a") 
+	ocamlfind install batteries META $(shell find _build/ -name "batteries.cma" -o -name "batteries.cmxa" -o -name "batteries.cmi" -o -name "batteries.a") 
 #	ln -sf _build/src/layer_1/batlib_standard.cmi pervasives.cmi &&\
 #	ln -sf _build/src/layer_1/batlib_standard.cmo pervasives.cmo &&\
 
