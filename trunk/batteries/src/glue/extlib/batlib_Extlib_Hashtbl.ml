@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include ExtHashtbl.Hashtbl
+include Extlib.ExtHashtbl.Hashtbl
 
 module type HashedType =
   sig
@@ -63,7 +63,7 @@ module type S =
 
 module Make(H: HashedType) =
 struct
-  include Hashtbl.Make(H)
+  include Extlib.Hashtbl.Make(H)
 end
 
 let hash = Hashtbl.hash

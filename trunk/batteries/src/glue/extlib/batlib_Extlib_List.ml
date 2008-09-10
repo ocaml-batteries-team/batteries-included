@@ -25,7 +25,7 @@ exception Empty_list
 exception Invalid_index of int
 exception Different_list_size of string
 
-include List
+include Extlib.List
 
 (* Thanks to Jacques Garrigue for suggesting the following structure *)
 type 'a mut_list =  {

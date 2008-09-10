@@ -56,7 +56,7 @@ module Opt :
 
     (** {6 Types} *)
 
-    type 'a t = 'a OptParse.Opt.t = {
+    type 'a t = 'a Extlib.OptParse.Opt.t = {
       option_set : string -> string list -> unit;
       option_set_value : 'a -> unit;
       option_get : unit -> 'a option;
@@ -260,7 +260,7 @@ module StdOpt :
   custom usage message formatters. *)
 module Formatter :
   sig
-    type t = OptParse.Formatter.t = {
+    type t = Extlib.OptParse.Formatter.t = {
       indent : unit -> unit; (** Increase the indentation level. *)
       dedent : unit -> unit; (** Decrease the indentation level. *)
       format_usage : string -> string; (** Format usage string into style of this formatter. *)

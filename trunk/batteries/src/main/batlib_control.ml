@@ -23,3 +23,5 @@
     error-management to concurrency.*)
 
 module Concurrency = Batlib_concurrency
+module Labels      = Batlib_Misc_Labels
+

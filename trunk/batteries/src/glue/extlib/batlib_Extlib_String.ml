@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include ExtString.String
+include Extlib.ExtString.String
 
 external length : string -> int = "%string_length"
 external get : string -> int -> char = "%string_safe_get"

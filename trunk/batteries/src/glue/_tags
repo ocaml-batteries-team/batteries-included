@@ -2,3 +2,4 @@
 <ocamldoc>: include
 <findlib>:  include
 <extlib>:   include
+<misc>:     include

@@ -28,7 +28,7 @@
     @documents Unzip
 *)
 
-type error_msg = Unzip.error_msg =
+type error_msg = Extlib.Unzip.error_msg =
 	| Invalid_huffman
 	| Invalid_data
 	| Invalid_crc

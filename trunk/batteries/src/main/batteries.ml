@@ -1,6 +1,6 @@
 (*
- * Batlib_ExtLib_Global - Importing $1 module $2
- * Copyright (C) 2008 David Teller
+ * Batlib - Root of Batteries Included hierarchy
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,4 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include Extlib.Global
+module Control     = Batlib_control
+module Data        = Batlib_data
+module Languages   = Batlib_languages
+module Meta        = Batlib_meta
+module Standard    = Batlib_standard
+module System      = Batlib_system
+module Toolchain   = Batlib_toolchain
+module Util        = Batlib_util
