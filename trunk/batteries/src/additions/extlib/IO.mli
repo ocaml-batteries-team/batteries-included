@@ -578,7 +578,7 @@ module Printf : sig
        [('a, 'b, c) format] is just a shortcut for [('a, 'b, 'c, 'd) format4].
 
        {7 Important}
-       Note that [Obj.magic] is involved behind this, so be careful.
+       Note that {!Obj.magic} is involved behind this, so be careful.
     *)
 
   val mkprintf: ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) format4 -> 'c
@@ -587,7 +587,7 @@ module Printf : sig
       [mkprintf k] builds a [fprintf]-style function which calls [k] upon the
        channel once the evaluation of all arguments is complete.
 
-      Obj.magic is involved, {b Here Be Dragons}.
+      {!Obj.magic} is involved, {b Here Be Dragons}.
 *)
 end
 
