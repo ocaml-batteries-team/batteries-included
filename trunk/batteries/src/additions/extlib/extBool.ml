@@ -1,0 +1,63 @@
+(* 
+ * ExtBool - Extended booleans
+ * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
+ *               2008 David Teller
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
+open Number
+
+module BaseBool = struct
+  type t = bool
+  let zero, one = false, true
+  let neg = not
+
+  let succ x = true
+  let pred x = false
+  let abs  x = x
+
+  let add    = ( || )
+  let mul    = ( && )
+  let sub _  = not (*Weird extrapolation*)
+  let div _ _=     (*Weird extrapolation*)
+    raise (Invalid_argument "Bool.div")
+
+  let modulo _ _ = 
+    raise (Invalid_argument "Bool.modulo")
+
+  let pow _ _ = 
+    raise (Invalid_argument "Bool.pow")
+
+  let min_num, max_num = false, true
+  let compare = compare
+    
+  let of_int = function
+    | 0 -> false
+    | _ -> true
+
+  let to_int = function
+    | false -> 0
+    | true  -> 1
+
+  let of_string = bool_of_string
+  let to_string = string_of_bool
+end
+
+module Bool = struct
+  include BaseBool
+  module Numeric = struct include Numeric(BaseBool) end
+end
