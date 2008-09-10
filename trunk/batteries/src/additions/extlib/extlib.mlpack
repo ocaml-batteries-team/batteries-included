@@ -1,5 +1,6 @@
 Base64
 BitSet
+CharParser
 Dllist
 DynArray
 EnumLabels
@@ -10,15 +11,17 @@ ExtBool
 ExtChar
 ExtComplex
 ExtFloat
+ExtGenlex
 ExtHashtbl
+ExtInt
 ExtInt32
 ExtInt64
-ExtInt
 ExtList
 ExtNativeint
 ExtRandom
 ExtStream
 ExtString
+File
 Global
 IO
 LazyListLabels
@@ -26,6 +29,7 @@ LazyList
 Number
 Option
 OptParse
+ParserCo
 PMap
 RefList
 Ref
@@ -36,5 +40,3 @@ UChar
 Unzip
 UTF8
 Vect
-ParserCo
-CharParser
