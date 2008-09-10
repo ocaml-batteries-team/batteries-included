@@ -43,9 +43,11 @@
         None
       )
     ]}
+
+    @document Labels
 *)
 
-type 'a t = 'a Misc.Labels.t
+type 'a t = 'a Batmisc.Labels.t
 (** A label which may be used to return values of type ['a]*)
     
 val label : ('a t -> 'a) -> 'a

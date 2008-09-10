@@ -1,5 +1,5 @@
 (* 
- * ExtInt - Extended native ints
+ * ExtNativeInt - Extended native ints
  * Copyright (C) 2005 Damien Doligez
  *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller

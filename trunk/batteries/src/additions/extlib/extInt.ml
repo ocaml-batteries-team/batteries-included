@@ -37,10 +37,14 @@ module BaseInt = struct
   
   let zero, one = 0, 1
 
-  let neg = (~-)
-  let succ, pred, abs = succ, pred, abs
-
-  let add, sub, mul, div = (+), (-), ( * ), (/)
+  external neg : int -> int = "%negint"
+  external add : int -> int -> int = "%addint"
+  external sub : int -> int -> int = "%subint"
+  external mul : int -> int -> int = "%mulint"
+  external div : int -> int -> int = "%divint"
+  external pred: int -> int = "%predint"
+  external succ: int -> int = "%succint"
+  let abs = abs
 
   let modulo a b = a mod b
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> n / 2) ~mod_two:(fun n -> n mod 2) ~mul
@@ -55,6 +59,16 @@ module BaseInt = struct
   let to_string = string_of_int
 
   let enum = enum
+
+  let minus_one = ( - 1)
+
+  external to_float : int -> float = "%floatofint"
+  external of_float : float -> int = "%intoffloat"
+      
+  external of_string : string -> int = "caml_int_of_string"
+
+  external rem : int -> int -> int = "%modint"
+      
 end
 
 
@@ -128,8 +142,16 @@ module BaseSafeInt = struct
 
   let enum = enum
 
+
 end
 
-module Int     = Numeric(BaseInt)
-module SafeInt = Numeric(BaseSafeInt)
 
+module Int     = struct
+  include BaseInt
+  module Numeric = struct include Numeric(BaseInt) end
+end
+
+module SafeInt = struct
+  include BaseSafeInt
+  module Numeric = struct include Numeric(BaseSafeInt) end
+end

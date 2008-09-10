@@ -1,6 +1,7 @@
 (* 
  * ExtInt32 - Extended 32-bit integers
- * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
+ * Copyright (C) 1996 Xavier Leroy 
+ *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
