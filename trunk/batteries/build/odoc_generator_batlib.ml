@@ -71,15 +71,16 @@ let primitive_types_names =
       "array",     "Batteries.Data.Containers.Mutable.Array.t" ;
       "lazy_t",    "Batteries.Data.Containers.Persistent.Lazy.t";
       "list",      "Batteries.Data.Containers.Persistent.List.t";
+      "option",    "Batteries.Data.Containers.Persistent.Option.t";
       "int32",     "Batteries.Data.Numeric.Int32.t";
       "int64",     "Batteries.Data.Numeric.Int64.t";
       "nativeint", "Batteries.Data.Numeric.Nativeint.t"(*;*)
-      (*"int",       "Batteries.Data.Numeric.Int.t";*)(*Module not implemented yet*)
-      (*"bool",       "Batteries.Data.Logical.Bool.t";*)(*Module not implemented yet*)
-      (*"unit",       "?"; *) (*Module not implemented yet*)
-      (*"float",       "Batteries.Data.Logical.Float.t";*)(*Module not implemented yet*)
-      (*"exn",       "Batteries.Control.Exceptions.Exn.t";*)(*Module not implemented yet*)
-      (*"format4",  "Batteries.Languages.Printf.format4";*)(*Module not implemented yet*)
+      (*"int",     "Batteries.Data.Numeric.Int.t";*)(*Module not implemented yet*)
+      (*"bool",    "Batteries.Data.Logical.Bool.t";*)(*Module not implemented yet*)
+      (*"unit",    "?"; *) (*Module not implemented yet*)
+      (*"float",   "Batteries.Data.Logical.Float.t";*)(*Module not implemented yet*)
+      (*"exn",     "Batteries.Control.Exceptions.Exn.t";*)(*Module not implemented yet*)
+      (*"format4", "Batteries.Languages.Printf.format4";*)(*Module not implemented yet*)
 ]
 
 (** The root of the module hierarchy*)
@@ -489,7 +490,7 @@ class batlib_generator =
 
     method html_of_Module_list b _ =
       let list_modules = List.map (fun m -> m.m_name)
-	((List.filter (fun m -> self#is_reachable_from_root m.m_name) self#list_modules)) in
+	((List.filter (fun m -> not (List.mem  m.m_name roots) && self#is_reachable_from_root m.m_name) self#list_modules)) in
 	super#html_of_Module_list b list_modules
 
 (**Customizing appearance of modules*)
