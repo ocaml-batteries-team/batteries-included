@@ -44,7 +44,6 @@ module BaseComplex = struct
 
   let compare = Pervasives.compare
 
-  open ExtGenlex
   open ExtGenlex.Genlex
   open ExtString
 

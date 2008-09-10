@@ -29,7 +29,7 @@
 exception Empty_list
 exception Invalid_index of int
 
-type 'a t = 'a RefList.t
+type 'a t =  'a  Extlib.RefList.t
 
 val empty : unit -> 'a t
 (** Returns a new empty ref list *)
@@ -49,7 +49,7 @@ val copy : dst:'a t -> src:'a t -> unit
 val copy_list : dst:'a t -> src:'a list -> unit
 (** Makes a copy of a list - O(1) *)
 
-val copy_enum : dst:'a t -> src:'a Enum.t -> unit
+val copy_enum : dst:'a t -> src:'a Extlib.Enum.t -> unit
 (** Makes a copy of a enum *)
 
 val of_list : 'a list -> 'a t
@@ -58,10 +58,10 @@ val of_list : 'a list -> 'a t
 val to_list : 'a t -> 'a list
 (** Returns the current elements as a list - O(1) *)
 
-val of_enum : 'a Enum.t -> 'a t
+val of_enum : 'a Extlib.Enum.t -> 'a t
 (** Creates a ref list from an enumeration *)
 
-val enum : 'a t -> 'a Enum.t
+val enum : 'a t -> 'a Extlib.Enum.t
 (** Returns an enumeration of current elements in the ref list *)
 
 val add : 'a t -> 'a -> unit

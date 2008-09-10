@@ -28,7 +28,7 @@
     @documents Dynarray
 *)
 
-type 'a t = 'a DynArray.t
+type 'a t =  'a  Extlib.DynArray.t
 
 exception Invalid_arg of int * string * string
 (** When an operation on an array fails, [Invalid_arg] is raised. The
@@ -114,7 +114,7 @@ val to_list : 'a t -> 'a list
 val to_array : 'a t -> 'a array
 (** [to_array darr] returns the elements of [darr] in order as an array. *)
 
-val enum : 'a t -> 'a Enum.t
+val enum : 'a t -> 'a Extlib.Enum.t
 (** [enum darr] returns the enumeration of [darr] elements. *)
 
 val of_list : 'a list -> 'a t
@@ -125,7 +125,7 @@ val of_array : 'a array -> 'a t
 (** [of_array arr] returns an array with the elements of [arr] in it
 	in order. *)
 
-val of_enum : 'a Enum.t -> 'a t
+val of_enum : 'a Extlib.Enum.t -> 'a t
 (** [of_enum e] returns an array that holds, in order, the elements of [e]. *)
 
 val copy : 'a t -> 'a t

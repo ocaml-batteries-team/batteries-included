@@ -28,7 +28,7 @@
 *)
 
 
-type ('a,'b) t = ('a,'b) Hashtbl.t
+type ('a,'b) t =  ('a,'b)  Hashtbl.t
     (** The type of a hashtable. *)
 
 (**{6 Base operations}*)
@@ -128,18 +128,18 @@ val map : ('b -> 'c) -> ('a,'b) t -> ('a,'c) t
 
 (**{6 Conversions}*)
 
-val keys : ('a,'b) t -> 'a Enum.t
+val keys : ('a,'b) t -> 'a Extlib.Enum.t
   (** Return an enumeration of all the keys of a hashtable.
       If the key is in the Hashtable multiple times, all occurrences
       will be returned.  *)
 
-val values : ('a,'b) t -> 'b Enum.t
+val values : ('a,'b) t -> 'b Extlib.Enum.t
   (** Return an enumeration of all the values of a hashtable. *)
 
-val enum : ('a, 'b) t -> ('a * 'b) Enum.t
+val enum : ('a, 'b) t -> ('a * 'b) Extlib.Enum.t
   (** Return an enumeration of (key,value) pairs of a hashtable. *)
 
-val of_enum : ('a * 'b) Enum.t -> ('a, 'b) t
+val of_enum : ('a * 'b) Extlib.Enum.t -> ('a, 'b) t
   (** Create a hashtable from a (key,value) enumeration. *)
 
 

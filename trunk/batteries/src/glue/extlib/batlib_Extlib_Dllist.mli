@@ -27,7 +27,7 @@
 *)
 
 
-type 'a node_t = 'a Dllist.node_t (* abstract *)
+type 'a node_t =  'a  Extlib.Dllist.node_t (* abstract *)
 
 exception Empty
 
@@ -169,16 +169,16 @@ val of_list : 'a list -> 'a node_t
     Note that modifying the list while the enum exists will have undefined
     effects.  This is an O(1) operation.
 *)
-val enum : 'a node_t -> 'a Enum.t
+val enum : 'a node_t -> 'a Extlib.Enum.t
 
 (** Create a reverse enum of the list.
     Note that modifying the list while the enum exists will have undefined
     effects.  This is an O(1) operation.
 *)
-val rev_enum : 'a node_t -> 'a Enum.t
+val rev_enum : 'a node_t -> 'a Extlib.Enum.t
 
 (** Create a dllist from an enum.
     This consumes the enum, and allocates a whole new dllist. Raises
     [Empty] if given enum is empty.  This is an O(N) operation.
 *)
-val of_enum : 'a Enum.t -> 'a node_t
+val of_enum : 'a Extlib.Enum.t -> 'a node_t

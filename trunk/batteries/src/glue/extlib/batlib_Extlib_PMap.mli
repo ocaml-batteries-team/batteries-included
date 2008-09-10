@@ -26,7 +26,7 @@
     @documents PMap
 *)
 
-type ('a, 'b) t = ('a, 'b) PMap.t
+type ('a, 'b) t =  ('a, 'b)  Extlib.PMap.t
 
 val empty : ('a, 'b) t
 (** The empty map, using [compare] as key comparison function. *)
@@ -86,9 +86,9 @@ val foldi : ('a -> 'b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** Same as [fold], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
 
-val enum : ('a, 'b) t -> ('a * 'b) Enum.t
+val enum : ('a, 'b) t -> ('a * 'b) Extlib.Enum.t
 (** creates an enumeration for this map. *)
 
-val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) Enum.t -> ('a, 'b) t
+val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) Extlib.Enum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
   for key comparison or [compare] by default. *)

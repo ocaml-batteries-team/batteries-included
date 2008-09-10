@@ -342,21 +342,21 @@ val drop_while : ('a -> bool) -> 'a list -> 'a list
     
     Abstraction layer.*)
 
-val enum : 'a list -> 'a Enum.t
+val enum : 'a list -> 'a Extlib.Enum.t
   (** Returns an enumeration of the elements of a list. This enumeration may
       be used to visit elements of the list in forward order (i.e. from the
       first element to the last one)*)
   
-val of_enum : 'a Enum.t -> 'a list
+val of_enum : 'a Extlib.Enum.t -> 'a list
   (** Build a list from an enumeration. In the result, elements appear in the
       same order as they did in the source enumeration. *)
   
-val backwards : 'a list -> 'a Enum.t
+val backwards : 'a list -> 'a Extlib.Enum.t
   (** Returns an enumeration of the elements of a list. This enumeration may
       be used to visit elements of the list in backwards order (i.e. from the
       last element to the first one)*)
   
-val of_backwards : 'a Enum.t -> 'a list
+val of_backwards : 'a Extlib.Enum.t -> 'a list
   (** Build a list from an enumeration. The first element of the enumeration
       becomes the last element of the list, the second element of the enumeration
       becomes the second-to-last element of the list... *)

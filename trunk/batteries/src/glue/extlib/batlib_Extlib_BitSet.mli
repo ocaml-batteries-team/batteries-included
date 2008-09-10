@@ -27,7 +27,7 @@
     @documents BitSet
 *)
 
-type t = BitSet.t
+type t = Extlib.BitSet.t
 
 exception Negative_index of string
 (** When a negative bit value is used for one of the BitSet functions,
@@ -74,7 +74,7 @@ val equals : t -> t -> bool
 val count : t -> int
 (** [count s] returns the number of bits set in the bitset [s]. *)
 
-val enum : t -> int Enum.t
+val enum : t -> int Extlib.Enum.t
 (** [enum s] returns an enumeration of bits which are set
   in the bitset [s]. *)
 

@@ -63,7 +63,7 @@ module type S =
 
 module Make(H: HashedType) =
 struct
-  include Extlib.Hashtbl.Make(H)
+  include Hashtbl.Make(H)
 end
 
 let hash = Hashtbl.hash

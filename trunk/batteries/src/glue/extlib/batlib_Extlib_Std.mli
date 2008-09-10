@@ -23,11 +23,11 @@
     @documents Std
 *)
 
-val input_lines : in_channel -> string Enum.t
+val input_lines : in_channel -> string Extlib.Enum.t
 (** Returns an enumeration over lines of an input channel, as read by the
  [input_line] function. *)
 
-val input_chars : in_channel -> char Enum.t
+val input_chars : in_channel -> char Extlib.Enum.t
 (** Returns an enumeration over characters of an input channel. *)
 
 val input_list : in_channel -> string list

@@ -65,10 +65,10 @@ val init : int -> (int -> char) -> string
       f 0 , f 1 , f 2 ... f (l-1). *)
 
 (** {6 Conversions}*)
-val enum : string -> char Enum.t
+val enum : string -> char Extlib.Enum.t
   (** Returns an enumeration of the characters of a string.*)
 
-val of_enum : char Enum.t -> string
+val of_enum : char Extlib.Enum.t -> string
   (** Creates a string from a character enumeration. *)
 
 val of_int : int -> string

@@ -30,7 +30,7 @@
 *)
 
 
-type 'a t = 'a Enum.t
+type 'a t =  'a  Extlib.Enum.t
 
 (** {6 Final functions}
 

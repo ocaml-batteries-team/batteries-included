@@ -28,10 +28,10 @@
     @documents IO
 *)
 
-type input = IO.input
+type input = Extlib.IO.input
 (** The abstract input type. *)
 
-type 'a output = 'a IO.output
+type 'a output =  'a Extlib.IO.output
 (** The abstract output type, ['a] is the accumulator data, it is returned
 	when the [close_out] function is called. *)
 
@@ -117,10 +117,10 @@ val input_channel : in_channel -> input
 val output_channel : out_channel -> unit output
 (** Create an output that will write into a channel. *) 
 
-val input_enum : char Enum.t -> input
+val input_enum : char Extlib.Enum.t -> input
 (** Create an input that will read from an [enum]. *)
 
-val output_enum : unit -> char Enum.t output
+val output_enum : unit -> char Extlib.Enum.t output
 (** Create an output that will write into an [enum]. The 
   final enum is returned when the output is closed. *)
 
@@ -136,9 +136,6 @@ val create_out :
 (** Fully create an output by giving all the needed functions. *)
 
 (** {6 Utilities} *)
-
-val printf : 'a output -> ('b, unit, string, unit) format4 -> 'b
-(** The printf function works for any output. *)
 
 val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
@@ -255,8 +252,8 @@ end
 	at the same time.
 *)
 
-type in_bits   = IO.in_bits
-type out_bits  = IO.out_bits
+type in_bits   = Extlib.IO.in_bits
+type out_bits  = Extlib.IO.out_bits
 
 exception Bits_error
 

@@ -36,11 +36,11 @@ exception Invalid_char
 exception Invalid_table
 
 (** An encoding table maps integers 0..63 to the corresponding char. *)
-type encoding_table = char array
+type encoding_table =  char array
 
 (** A decoding table mais chars 0..255 to the corresponding 0..63 value
  or -1 if the char is not accepted. *)
-type decoding_table = int array
+type decoding_table =  int array
 
 (** Encode a string into Base64. *)
 val str_encode : ?tbl:encoding_table -> string -> string
@@ -50,10 +50,10 @@ val str_encode : ?tbl:encoding_table -> string -> string
 val str_decode : ?tbl:decoding_table -> string -> string
 
 (** Generic base64 encoding over an output. *)
-val encode : ?tbl:encoding_table -> 'a IO.output -> 'a IO.output
+val encode : ?tbl:encoding_table -> 'a Extlib.IO.output -> 'a Extlib.IO.output
 
 (** Generic base64 decoding over an input. *)
-val decode : ?tbl:decoding_table -> IO.input -> IO.input
+val decode : ?tbl:decoding_table -> Extlib.IO.input -> Extlib.IO.input
 
 (** Create a valid decoding table from an encoding one. *)
 val make_decoding_table : encoding_table -> decoding_table

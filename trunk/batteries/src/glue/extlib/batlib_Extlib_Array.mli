@@ -220,10 +220,10 @@
     
   (** {6 Conversions} *)
 
-  val enum : 'a array -> 'a Enum.t
+  val enum : 'a array -> 'a Extlib.Enum.t
     (** Returns an enumeration of the elements of an array. *)
 
-  val of_enum : 'a Enum.t -> 'a array
+  val of_enum : 'a Extlib.Enum.t -> 'a array
     (** Build an array from an enumeration. *)
 
   val to_list : 'a array -> 'a list

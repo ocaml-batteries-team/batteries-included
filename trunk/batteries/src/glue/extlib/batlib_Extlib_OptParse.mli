@@ -44,7 +44,7 @@ module Opt :
       and the second string contains an error message.
 
       This exception is only used when implementing custom option types
-      and can never "escape" the scope of a {!OptParse.OptParser.parse}.
+      and can never "escape" the scope of a {!ExtOptParse.OptParser.parse}.
       The user should therefore not attempt to catch it.  *)
 
     exception Option_help
@@ -56,7 +56,7 @@ module Opt :
 
     (** {6 Types} *)
 
-    type 'a t = 'a Extlib.OptParse.Opt.t = {
+    type 'a t =  'a  Extlib.OptParse.Opt.t = {
       option_set : string -> string list -> unit;
       option_set_value : 'a -> unit;
       option_get : unit -> 'a option;
@@ -358,10 +358,10 @@ module OptParser :
     (** {6 Types} *)
 
 
-    type t = OptParse.OptParser.t
+    type t = Extlib.OptParse.OptParser.t
     (** The type of an option parser. *)
 
-    type group = OptParse.OptParser.group
+    type group = Extlib.OptParse.OptParser.group
     (** The type of an option group. *)
 
 
