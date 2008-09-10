@@ -32,3 +32,7 @@ module Standard    = Batlib_standard
 module System      = Batlib_system
 module Toolchain   = Batlib_toolchain
 module Util        = Batlib_util
+
+(** / **)
+include Standard
+(** / **)
