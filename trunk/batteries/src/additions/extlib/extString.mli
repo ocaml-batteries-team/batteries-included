@@ -39,23 +39,23 @@ module String :
 
 
 
-	val init : int -> (int -> char) -> string
-	(** [init l f] returns the string of length [l] with the chars
-		f 0 , f 1 , f 2 ... f (l-1). *)
-
-	val find : string -> string -> int
-	(** [find s x] returns the starting index of the string [x]
-	    within the string [s] or raises [Invalid_string] if [x]
-	    is not a substring of [s]. *)
-
-	val split : string -> string -> string * string
-	(** [split s sep] splits the string [s] between the first
-		occurrence of [sep].
-	    raises [Invalid_string] if the separator is not found. *)
-
-	val nsplit : string -> string -> string list
-	(** [nsplit s sep] splits the string [s] into a list of strings
-		which are separated by [sep].
+    val init : int -> (int -> char) -> string
+      (** [init l f] returns the string of length [l] with the chars
+	  f 0 , f 1 , f 2 ... f (l-1). *)
+      
+    val find : string -> string -> int
+      (** [find s x] returns the starting index of the string [x]
+	  within the string [s] or raises [Invalid_string] if [x]
+	  is not a substring of [s]. *)
+      
+    val split : string -> string -> string * string
+      (** [split s sep] splits the string [s] between the first
+	  occurrence of [sep].
+	  raises [Invalid_string] if the separator is not found. *)
+      
+    val nsplit : string -> string -> string list
+      (** [nsplit s sep] splits the string [s] into a list of strings
+	  which are separated by [sep].
                 [nsplit "" _] returns the empty list. *)
 
 	val join : string -> string list -> string
