@@ -19,6 +19,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open ExtString
+open ExtBig_int
+open ExtInt
+
 module BaseNum = struct
   include Num
   type t = num
@@ -29,7 +33,7 @@ module BaseNum = struct
   let abs        = abs_num
   let add        = add_num
   let sub        = sub_num
-  let mul        = mul_num
+  let mul        = mult_num
   let div        = div_num
   let modulo     = mod_num
   let pow        = power_num
@@ -37,6 +41,18 @@ module BaseNum = struct
   let of_int     = num_of_int
   let to_int     = int_of_num
   let to_float   = float_of_num
+  let to_string  = string_of_num
+  let of_string  = num_of_string
+  let pred       = function
+    | Int     i -> Int ( i - 1 )
+    | Big_int i -> Big_int (Big_int.pred i)
+    | _         -> raise (Invalid_argument "Num.pred")
+  let succ       = function
+    | Int     i -> Int ( i + 1 )
+    | Big_int i -> Big_int (Big_int.succ i)
+    | _         -> raise (Invalid_argument "Num.succ")
+
+
   let of_float f =
     let s = Printf.sprintf "%f" f in
       try 
@@ -47,4 +63,9 @@ module BaseNum = struct
 	  div divider dividee
       with Not_found -> of_int (Int.of_float f)
     
+end
+
+module Num = struct
+  include Number.MakeNumeric(BaseNum)
+  include BaseNum
 end

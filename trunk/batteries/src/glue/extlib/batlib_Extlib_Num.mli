@@ -21,12 +21,12 @@
  *)
 
 
-module Num :
-  sig
 (** Operation on arbitrary-precision numbers.
 
    Numbers (type [num]) are arbitrary-precision rational numbers,
    plus the special elements [1/0] (infinity) and [0/0] (undefined). 
+
+    @document Num
 *)
 
     open Nat
@@ -34,7 +34,7 @@ module Num :
     open Ratio
 
     (** The type of numbers. *)
-    type num = Num.num =
+    type num = Extlib.ExtNum.Num.num =
 	Int of int
       | Big_int of big_int
       | Ratio of ratio
@@ -70,7 +70,7 @@ module Num :
     val ( < ) : num -> num -> bool
     val ( = ) : num -> num -> bool
     
-    val operations : num Number.numeric
+    val operations : num Extlib.Number.numeric
 
       
     (** {6 Special operations} *)
@@ -212,4 +212,4 @@ module Num :
     val num_of_ratio : ratio -> num
     val float_of_num : num -> float
       
-  end
+

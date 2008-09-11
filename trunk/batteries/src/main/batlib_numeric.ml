@@ -22,11 +22,11 @@
 
 (*module Interfaces  = Batlib_Interfaces_Numeric*)
 
-module Big_int     = Batlib_Baselib_Big_int
+module Big_int     = Batlib_Extlib_Big_int
 module Complex     = Batlib_Extlib_Complex
 module Int         = Batlib_Extlib_Int
 module Int32       = Batlib_Extlib_Int32
 module Int64       = Batlib_Extlib_Int64
-module Nativeint   = Batlib_Baselib_Nativeint
-module Num         = Batlib_Baselib_Num
+module Native_int  = Batlib_Extlib_Nativeint
+module Num         = Batlib_Extlib_Num
 module Safe_int    = Batlib_Extlib_Safeint

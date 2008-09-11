@@ -20,16 +20,17 @@
  *)
 
 
-module Big_int :
-  sig
+
 (** Operations on arbitrary-precision integers.
 
    Big integers (type [big_int]) are signed integers of arbitrary size. 
+
+    @document Big_int
 *)
   
 open Nat
  
-type big_int = Big_int.big_int
+type big_int
         (** The type of big integers. *)
 type t = big_int
 
@@ -184,5 +185,5 @@ val approx_big_int: int -> big_int -> string
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
-    val operations : t Number.numeric
-  end
+    val operations : t Extlib.Number.numeric
+

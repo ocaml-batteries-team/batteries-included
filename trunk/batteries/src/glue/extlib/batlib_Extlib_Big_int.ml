@@ -1,6 +1,6 @@
 (*
- * Batlib.Data.Text - Text data structures
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * Batlib_ExtLib_Big_int - Importing ExtLib module ExtNativeint.Big_int
+ * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,11 +18,4 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Text data structures. *)
-
-(** {6 Latin-1}*)
-
-module Buffer          = Batlib_Baselib_Buffer
-module Char            = Batlib_Extlib_Char
-module String          = Batlib_Extlib_String         (*formerly Batlib_Baselib_String*)
-module StringLabels    = Batlib_Baselib_StringLabels  (*todo: wrap [Batlib_Extlib_String] with labels*)
+include Extlib.ExtBig_int.Big_int

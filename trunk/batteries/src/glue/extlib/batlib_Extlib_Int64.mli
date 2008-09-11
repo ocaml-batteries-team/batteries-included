@@ -21,9 +21,7 @@
  *)
 
 
-module Int64 :
-  sig
-    val zero : int64
+val zero : int64
 (** The 64-bit integer 0. *)
 
 val one : int64
@@ -173,52 +171,20 @@ val compare: t -> t -> int
     allows the module [Int64] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
-(**/**)
+val modulo : int64 -> int64 -> int64
+val pow : int64 -> int64 -> int64
+  
+val ( + ) : t -> t -> t
+val ( - ) : t -> t -> t
+val ( * ) : t -> t -> t
+val ( / ) : t -> t -> t
+val ( ** ) : t -> t -> t
+val ( <> ) : t -> t -> bool
+val ( >= ) : t -> t -> bool
+val ( <= ) : t -> t -> bool
+val ( > ) : t -> t -> bool
+val ( < ) : t -> t -> bool
+val ( = ) : t -> t -> bool
+val operations : t Extlib.Number.numeric
 
-(** {6 Deprecated functions} *)
 
-external format : string -> int64 -> string = "caml_int64_format"
-(** [Int64.format fmt n] return the string representation of the
-   64-bit integer [n] in the format specified by [fmt].
-   [fmt] is a {!Printf}-style format consisting of exactly one
-   [%d], [%i], [%u], [%x], [%X] or [%o] conversion specification.
-   This function is deprecated; use {!Printf.sprintf} with a [%Lx] format
-   instead. *)
-
-(** / **)
-    val modulo : int64 -> int64 -> int64
-    val pow : int64 -> int64 -> int64
-    module Numeric :
-      sig
-        type t = int64
-        val zero : t
-        val one : t
-        val neg : t -> t
-        val succ : t -> t
-        val pred : t -> t
-        val abs : t -> t
-        val add : t -> t -> t
-        val sub : t -> t -> t
-        val mul : t -> t -> t
-        val div : t -> t -> t
-        val modulo : t -> t -> t
-        val pow : t -> t -> t
-        val compare : t -> t -> int
-        val of_int : int -> t
-        val to_int : t -> int
-        val of_string : string -> t
-        val to_string : t -> string
-        val ( +. ) : t -> t -> t
-        val ( -. ) : t -> t -> t
-        val ( *. ) : t -> t -> t
-        val ( /. ) : t -> t -> t
-        val ( ** ) : t -> t -> t
-        val ( <>. ) : t -> t -> bool
-        val ( >=. ) : t -> t -> bool
-        val ( <=. ) : t -> t -> bool
-        val ( >. ) : t -> t -> bool
-        val ( <. ) : t -> t -> bool
-        val ( =. ) : t -> t -> bool
-        val operations : t Number.numeric
-      end
-  end

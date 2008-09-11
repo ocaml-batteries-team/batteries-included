@@ -18,6 +18,7 @@ ExtInt32
 ExtInt64
 ExtList
 ExtNativeint
+ExtNum
 ExtRandom
 ExtStream
 ExtString
