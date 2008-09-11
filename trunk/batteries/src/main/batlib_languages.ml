@@ -35,7 +35,7 @@ module Str             = Batlib_Baselib_Str
 
 module Format          = Batlib_Baselib_Format
 module Printexc        = Batlib_Baselib_Printexc
-module Printf          = Batlib_Baselib_Printf
+module Printf          = Batlib_Extlib_Printf
 
 (**/**)
 

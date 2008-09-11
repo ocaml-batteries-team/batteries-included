@@ -189,6 +189,37 @@ external cast_output : 'a output -> unit output = "%identity"
 
 
 
+
+(** {6 Bits API}
+
+	This enable you to read and write from an IO bit-by-bit or several bits
+	at the same time.
+*)
+
+type in_bits = Extlib.IO.in_bits
+type out_bits= Extlib.IO.out_bits
+
+exception Bits_error
+
+val input_bits : input -> in_bits
+(** Read bits from an input *)
+
+val output_bits : 'a output -> out_bits
+(** Write bits to an output *)
+
+val read_bits : in_bits -> int -> int
+(** Read up to 31 bits, raise Bits_error if n < 0 or n > 31 *)
+
+val write_bits : out_bits -> nbits:int -> int -> unit
+(** Write up to 31 bits represented as a value, raise Bits_error if nbits < 0
+ or nbits > 31 or the value representation excess nbits. *)
+
+val flush_bits : out_bits -> unit
+(** Flush remaining unwritten bits, adding up to 7 bits which values 0. *)
+
+val drop_bits : in_bits -> unit
+(** Drop up to 7 buffered bits and restart to next input character. *)
+
 (** {6 Binary files API}
 
 	Here is some API useful for working with binary files, in particular
@@ -373,36 +404,6 @@ sig
 
 end
 
-
-(** {6 Bits API}
-
-	This enable you to read and write from an IO bit-by-bit or several bits
-	at the same time.
-*)
-
-type in_bits
-type out_bits
-
-exception Bits_error
-
-val input_bits : input -> in_bits
-(** Read bits from an input *)
-
-val output_bits : 'a output -> out_bits
-(** Write bits to an output *)
-
-val read_bits : in_bits -> int -> int
-(** Read up to 31 bits, raise Bits_error if n < 0 or n > 31 *)
-
-val write_bits : out_bits -> nbits:int -> int -> unit
-(** Write up to 31 bits represented as a value, raise Bits_error if nbits < 0
- or nbits > 31 or the value representation excess nbits. *)
-
-val flush_bits : out_bits -> unit
-(** Flush remaining unwritten bits, adding up to 7 bits which values 0. *)
-
-val drop_bits : in_bits -> unit
-(** Drop up to 7 buffered bits and restart to next input character. *)
 
 (**
    {6 For compatibility purposes}

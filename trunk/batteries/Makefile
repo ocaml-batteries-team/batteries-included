@@ -79,6 +79,6 @@ uninstall:
 clean:
 	ocamlbuild -clean &&\
 	\rm -f `find . -name "*~" -o -name "*#"` &&\
-	\rm -f META
+	\rm -f META batteries.mllib doc/api.odocl
 
 .PHONY: batteries.mllib doc/api.odocl

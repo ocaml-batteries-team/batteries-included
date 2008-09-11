@@ -52,9 +52,11 @@ module BaseBig_int = struct
 
   let compare   = compare_big_int
 
+  let of_float f= of_string (Printf.sprintf "%.0f" f)
+  let to_float  = float_of_big_int
 end
 
 module Big_int = struct
   include BaseBig_int
-  module Numeric = struct include Numeric(BaseBig_int) end
+  include Number.MakeNumeric(BaseBig_int) 
 end

@@ -29,6 +29,6 @@ module BaseInt64 = struct
 end
 
 module Int64 = struct
+  include Number.MakeNumeric(BaseInt64)
   include BaseInt64
-  module Numeric = struct include Numeric(BaseInt64) end
 end

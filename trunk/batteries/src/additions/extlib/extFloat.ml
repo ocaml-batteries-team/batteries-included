@@ -42,9 +42,12 @@ module BaseFloat = struct
 
   let of_string = float_of_string
   let to_string = string_of_float
+
+  external of_float : float -> float = "%identity"
+  external to_float : float -> float = "%identity"
 end
 
 module Float = struct
+  include Number.MakeNumeric(BaseFloat)
   include BaseFloat
-  module Numeric = struct include Numeric(BaseFloat) end
 end

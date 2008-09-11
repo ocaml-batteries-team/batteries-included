@@ -21,39 +21,53 @@
  *)
 
 
-module Int :
-  sig
-(** 
-    This module provides operations on the type [int]
-    of signed 32-bit integers. Values of this type may
-    be either 31 bits on 32-bit processors or 63 bits
-    on 64-bit processors.
+    (** 
+	Safe operations on integers.
 
-    All arithmetic operations over [int32] are taken
-    modulo 2{^number of bits}. *)
+	This module provides operations on the type [int] of
+	integers. Values of this type may be either 31 bits on 32-bit
+	processors or 63 bits on 64-bit processors. Operations which
+	overflow raise exception {!Number.Overflow}
+
+	This module implements {!Number.Numeric},
+	{!Number.Bounded}, {!Number.Discrete}.
+    *)
+    
+    type t = int
+	(** An alias for the type of integers. *)
 
     val zero : int
-      (** The integer 0. *)
+      (** The integer [0]. *)
       
     val one : int
-      (** The integer 1. *)
+      (** The integer [1]. *)
 
     val minus_one : int
-      (** The integer -1. *)
+      (** The integer [-1]. *)
 
-    external neg : int -> int = "%negint"
+    val neg : int -> int
       (** Unary negation. *)
 
-    external add : int -> int -> int = "%addint"
+    val add : int -> int -> int
+      (** Addition. *)
+    val ( + ) : int -> int -> int
       (** Addition. *)
 
-    external sub : int -> int -> int = "%subint"
+    val sub : int -> int -> int
+      (** Subtraction. *)
+    val ( - ) : int -> int -> int
       (** Subtraction. *)
 
-    external mul : int -> int -> int = "%mulint"
+    val mul : int -> int -> int
+      (** Multiplication. *)
+    val ( * ) : int -> int -> int
       (** Multiplication. *)
 
     external div : int -> int -> int = "%divint"
+      (** Integer division.  Raise [Division_by_zero] if the second
+	  argument is zero.  This division rounds the real quotient of
+	  its arguments towards zero, as specified for {!Pervasives.(/)}. *)
+    external ( / ) : int -> int -> int = "%divint"
       (** Integer division.  Raise [Division_by_zero] if the second
 	  argument is zero.  This division rounds the real quotient of
 	  its arguments towards zero, as specified for {!Pervasives.(/)}. *)
@@ -64,8 +78,7 @@ module Int :
 	  [x = Int.add (Int.mul (Int.div x y) y) (Int.rem x y)].
 	  If [y = 0], [Int.rem x y] raises [Division_by_zero]. *)
       
-
-    val modulo : int -> int -> int
+    external modulo : int -> int -> int = "%modint"
       (** [modulo a b] computes the remainder of the integer
 	  division of [a] by [b]. This is defined only if [b <> 0].
 
@@ -77,6 +90,15 @@ module Int :
 
     val pow  : int -> int -> int
       (** [pow a b] computes a{^b}*)
+    val ( ** ) : int -> int -> int
+      (** [a ** b] computes a{^b}*)
+
+    val ( <> ) : int -> int -> bool
+    val ( > )  : int -> int -> bool
+    val ( < )  : int -> int -> bool
+    val ( >= ) : int -> int -> bool
+    val ( <= ) : int -> int -> bool
+    val ( = )  : int -> int -> bool
 
     val min_num : int
       (** The greatest representable integer, which is either 2{^30}-1 or 2{^62}-1. *)
@@ -84,10 +106,10 @@ module Int :
     val max_num : int
       (** The smallest representable integer, -2{^30} or 2{^62}. *)
 
-    external succ: int -> int  = "%succint"
+    val succ: int -> int
       (** Successor.  [Int.succ x] is [Int.add x Int.one]. *)
       
-    external pred: int -> int  = "%predint"
+    val pred: int -> int
       (** Predecessor.  [Int.pred x] is [Int.sub x Int.one]. *)
       
     val abs : int -> int
@@ -114,9 +136,6 @@ module Int :
     val to_string : int -> string
       (** Return the string representation of its argument, in signed decimal. *)
       
-
-    type t = int
-	(** An alias for the type of integers. *)
 	
     val compare: t -> t -> int
       (** The comparison function for integers, with the same specification as
@@ -124,42 +143,9 @@ module Int :
 	  allows the module [Int] to be passed as argument to the functors
 	  {!Set.Make} and {!Map.Make}. *)
       
-    (**/**)
-      
+    val operations : int Extlib.Number.numeric
+
+    external of_int : int -> int = "%identity"
+    external to_int : int -> int = "%identity"
 
 
-    (** / **)
-    module Numeric :
-      sig
-        type t = int
-        val zero : t
-        val one : t
-        val neg : t -> t
-        val succ : t -> t
-        val pred : t -> t
-        val abs : t -> t
-        val add : t -> t -> t
-        val sub : t -> t -> t
-        val mul : t -> t -> t
-        val div : t -> t -> t
-        val modulo : t -> t -> t
-        val pow : t -> t -> t
-        val compare : t -> t -> int
-        val of_int : int -> t
-        val to_int : t -> int
-        val of_string : string -> t
-        val to_string : t -> string
-        val ( +. ) : t -> t -> t
-        val ( -. ) : t -> t -> t
-        val ( *. ) : t -> t -> t
-        val ( /. ) : t -> t -> t
-        val ( ** ) : t -> t -> t
-        val ( <>. ) : t -> t -> bool
-        val ( >=. ) : t -> t -> bool
-        val ( <=. ) : t -> t -> bool
-        val ( >. ) : t -> t -> bool
-        val ( <. ) : t -> t -> bool
-        val ( =. ) : t -> t -> bool
-        val operations : t Number.numeric
-      end
-  end

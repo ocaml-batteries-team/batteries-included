@@ -20,9 +20,13 @@
 
 (** Numbers, operations and other mathematics.*)
 
+(*module Interfaces  = Batlib_Interfaces_Numeric*)
+
 module Big_int     = Batlib_Baselib_Big_int
-module Complex     = Batlib_Baselib_Complex
-module Int32       = Batlib_Baselib_Int32
-module Int64       = Batlib_Baselib_Int64
+module Complex     = Batlib_Extlib_Complex
+module Int         = Batlib_Extlib_Int
+module Int32       = Batlib_Extlib_Int32
+module Int64       = Batlib_Extlib_Int64
 module Nativeint   = Batlib_Baselib_Nativeint
 module Num         = Batlib_Baselib_Num
+module Safe_int    = Batlib_Extlib_Safeint

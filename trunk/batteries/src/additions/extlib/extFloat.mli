@@ -41,39 +41,20 @@ module Float :
     val compare : 'a -> 'a -> int
     val of_int : int -> float
     val to_int : float -> int
+    external of_float : float -> float = "%identity"
+    external to_float : float -> float = "%identity"
     val of_string : string -> float
     val to_string : float -> string
-    module Numeric :
-      sig
-        type t = float
-        val zero : t
-        val one : t
-        val neg : t -> t
-        val succ : t -> t
-        val pred : t -> t
-        val abs : t -> t
-        val add : t -> t -> t
-        val sub : t -> t -> t
-        val mul : t -> t -> t
-        val div : t -> t -> t
-        val modulo : t -> t -> t
-        val pow : t -> t -> t
-        val compare : t -> t -> int
-        val of_int : int -> t
-        val to_int : t -> int
-        val of_string : string -> t
-        val to_string : t -> string
-        val ( +. ) : t -> t -> t
-        val ( -. ) : t -> t -> t
-        val ( *. ) : t -> t -> t
-        val ( /. ) : t -> t -> t
-        val ( ** ) : t -> t -> t
-        val ( <>. ) : t -> t -> bool
-        val ( >=. ) : t -> t -> bool
-        val ( <=. ) : t -> t -> bool
-        val ( >. ) : t -> t -> bool
-        val ( <. ) : t -> t -> bool
-        val ( =. ) : t -> t -> bool
-        val operations : t Number.numeric
-      end
-  end
+    val ( + ) : t -> t -> t
+    val ( - ) : t -> t -> t
+    val ( * ) : t -> t -> t
+    val ( / ) : t -> t -> t
+    val ( ** ) : t -> t -> t
+    val ( <> ) : t -> t -> bool
+    val ( >= ) : t -> t -> bool
+    val ( <= ) : t -> t -> bool
+    val ( > ) : t -> t -> bool
+    val ( < ) : t -> t -> bool
+    val ( = ) : t -> t -> bool
+    val operations : t Number.numeric
+end

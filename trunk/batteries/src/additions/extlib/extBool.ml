@@ -23,6 +23,18 @@ open Number
 
 module BaseBool = struct
   type t = bool
+  external not : bool -> bool = "%boolnot"
+      (** The boolean negation. *)
+
+  external ( && ) : bool -> bool -> bool = "%sequand"
+      (** The boolean ``and''. Evaluation is sequential, left-to-right:
+	  in [e1 && e2], [e1] is evaluated first, and if it returns [false],
+	  [e2] is not evaluated at all. *)
+
+  external ( || ) : bool -> bool -> bool = "%sequor"
+      (** The boolean ``or''. Evaluation is sequential, left-to-right:
+	  in [e1 || e2], [e1] is evaluated first, and if it returns [true],
+	  [e2] is not evaluated at all. *)
   let zero, one = false, true
   let neg = not
 
@@ -33,7 +45,7 @@ module BaseBool = struct
   let add    = ( || )
   let mul    = ( && )
   let sub _  = not (*Weird extrapolation*)
-  let div _ _=     (*Weird extrapolation*)
+  let div _ _=
     raise (Invalid_argument "Bool.div")
 
   let modulo _ _ = 
@@ -53,11 +65,18 @@ module BaseBool = struct
     | false -> 0
     | true  -> 1
 
-  let of_string = bool_of_string
+  open Std
+  let of_float = of_int -| int_of_float
+  let to_float = float_of_int -| to_int
+  let of_string = function
+    | "true" | "tt" | "1" -> true
+    | "false"| "ff" | "0" -> false
+    | _                   -> raise (Invalid_argument "Bool.of_string")
+
   let to_string = string_of_bool
 end
 
 module Bool = struct
   include BaseBool
-  module Numeric = struct include Numeric(BaseBool) end
+  include Number.MakeNumeric(BaseBool)
 end

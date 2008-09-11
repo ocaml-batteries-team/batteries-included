@@ -1,5 +1,5 @@
 (*
- * Batlib_ExtLib_ExtArray.Array - Importing $1 module $2
+ * Batlib_ExtLib_Array - Importing ExtLib module ExtArray.Array
  * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or

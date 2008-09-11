@@ -1,3 +1,7 @@
+11/08/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* number.mli: merged module and submodule [Numeric]
+	* number.mli: [( *. )] becomes [( * )], etc.
+	
 10/08/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* layer_1/juice: moved out of [layer_1]
 	* layer_1/*: moved to [main]

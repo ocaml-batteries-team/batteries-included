@@ -30,7 +30,6 @@ module BaseNativeint = struct
 end
 
 module Nativeint = struct
+  include Number.MakeNumeric(BaseNativeint)
   include BaseNativeint
-
-  module Numeric = struct include Numeric(BaseNativeint) end
 end

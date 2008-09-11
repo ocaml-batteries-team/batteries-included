@@ -37,23 +37,30 @@ module BaseInt = struct
   
   let zero, one = 0, 1
 
-  external neg : int -> int = "%negint"
+  external neg : int -> int        = "%negint"
   external add : int -> int -> int = "%addint"
   external sub : int -> int -> int = "%subint"
   external mul : int -> int -> int = "%mulint"
   external div : int -> int -> int = "%divint"
-  external pred: int -> int = "%predint"
-  external succ: int -> int = "%succint"
+
+  external ( + ) : int -> int -> int = "%addint"
+  external ( - ) : int -> int -> int = "%subint"
+  external ( * ) : int -> int -> int = "%mulint"
+  external ( / ) : int -> int -> int = "%divint"
+
+  external pred: int -> int        = "%predint"
+  external succ: int -> int        = "%succint"
   let abs = abs
 
-  let modulo a b = a mod b
+  external modulo : int -> int -> int = "%modint"
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> n / 2) ~mod_two:(fun n -> n mod 2) ~mul
 
   let min_num, max_num = min_int, max_int
-  let compare = (-)
+  let compare = ( - )
 
-  let of_int n = n
-  let to_int n = n
+  external of_int : int -> int = "%identity"
+  external to_int : int -> int = "%identity"
+
 
   let of_string = int_of_string
   let to_string = string_of_int
@@ -68,40 +75,50 @@ module BaseInt = struct
   external of_string : string -> int = "caml_int_of_string"
 
   external rem : int -> int -> int = "%modint"
-      
+
+  let ( <> ) a b = a <> b
+  let ( <= ) a b = a <= b
+  let ( >= ) a b = a >= b
+  let ( < )  a b = a < b
+  let ( > )  a b = a > b
+  let ( = )  a b = a = b
+
+  let ( ** ) a b = pow a b
 end
 
+module Int = struct
+  include BaseInt
+  let operations = let module N = Number.MakeNumeric(BaseInt) in N.operations
+end
 
 module BaseSafeInt = struct
-  (**Integers with checked overflows*)
-  type t = int
+  include BaseInt
 
-  module Operators = struct
-    (**
-       Open this module and [SafeInt] to replace traditional integer operators with
-       their safe counterparts
-    *)
+  (**
+     Open this module and [SafeInt] to replace traditional integer operators with
+     their safe counterparts
+  *)
+      
+  (*Here, we assume that, in case of overflow the result will be different when computing
+    in 31 bits (resp 63 bits) and in 32 bits (resp 64 bits). Need to check that trick.*)
+  let mul a b =
+    let c  = Pervasives.( * ) a b                                    in
+    let c' = Nativeint.mul (Nativeint.of_int a) (Nativeint.of_int b) in
+      if Nativeint.of_int c = c' then c
+      else raise Overflow
+  let ( * ) = mul
 
-    (*Here, we assume that, in case of overflow the result will be different when computing
-      in 31 bits (resp 63 bits) and in 32 bits (resp 64 bits). Need to check that trick.*)
-    let ( * ) a b =
-      let c  = Pervasives.( * ) a b                                    in
-      let c' = Nativeint.mul (Nativeint.of_int a) (Nativeint.of_int b) in
-	if Nativeint.of_int c = c' then c
-	else raise Overflow
-
-    let ( + ) a b =
+  let add a b =
     let c = Pervasives.( + ) a b in
       if a < 0 && b < 0 && c >= 0 || a > 0 && b > 0 && c <= 0	then raise Overflow
       else c
+  let ( + ) = add
 
-    let ( - ) a b =
+  let sub a b =
     let c = Pervasives.( - ) a b in
       if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0	then raise Overflow
       else c
-  end
-  
-  let zero, one = 0, 1
+  let ( - ) a b = sub a b
 
   let neg x = 
     if x <> min_int then ~- x
@@ -119,33 +136,16 @@ module BaseSafeInt = struct
     if x <> min_int then abs x
     else raise Overflow
 
-  let add = Operators.( + )
-
-  let sub = Operators.( - )
-
-  let mul = Operators.( * )
-
-  let div = ( / )
-
-  let modulo a b = a mod b
-
-  let pow = BaseInt.pow
-
-  let min_num, max_num = min_int, max_int
-  let compare = (-)
-
-  let of_int n = n
-  let to_int n = n
-
-  let of_string = int_of_string
-  let to_string = string_of_int
-
-  let enum = enum
-
-
+  let pow = Number.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 20) ~mul
+    
 end
 
+module SafeInt = struct
+  include BaseSafeInt
+  let operations = let module N = Number.MakeNumeric(BaseSafeInt) in N.operations
+end
 
+(*
 module Int     = struct
   include BaseInt
   module Numeric = struct include Numeric(BaseInt) end
@@ -155,3 +155,4 @@ module SafeInt = struct
   include BaseSafeInt
   module Numeric = struct include Numeric(BaseSafeInt) end
 end
+*)

@@ -136,12 +136,12 @@ type ('a, 'b, 'c) format = ('a, 'b, 'c) Pervasives.format
      ['b -> 'd].
 
    {7 Formatting formats}
-   - [\{ fmt %\}]: convert a {!format} to a string. The format argument
+   - [%\{ fmt %\}]: convert a {!format} to a string. The format argument
      must have the same type as the internal format string [fmt].
      In other words, [printf "%\{ %s %\}"] accepts an argument
      whose type must be the same as that of format ["%s"], and
      prints that format argument as if it were a character string.
-   - [( fmt %)]: format string substitution. Takes a format string
+   - [%( fmt %)]: format string substitution. Takes a format string
      argument and substitutes it to the internal format string [fmt]
      to print following arguments. The argument must have the same
      type as [fmt]. [printf "%\{ %s %\}"] accepts an argument
@@ -153,8 +153,8 @@ type ('a, 'b, 'c) format = ('a, 'b, 'c) Pervasives.format
 
    [% \[flags\] \[width\] \[.precision\] type]
 
-   [type] is one of [d], [i], [n], [l], [L], [N], [u], [x] ... and
-   behaves as explained above.
+   [type] is one of [d], [i], [n], [l], [L], [N], [u], [x] ...,
+   [( fmt %)] and behaves as explained above.
 
    The optional [flags] are:
    - [-]: left-justify the output (default is right justification).
@@ -183,12 +183,12 @@ type ('a, 'b, 'c) format = ('a, 'b, 'c) Pervasives.format
 
 (** {6 Common functions}*)
 
-val printf: ('b, 'a IO.output, unit) format -> 'b
-  (**The usual [printf] function, prints to the standard output {!IO.stdout}, i.e. normally
+val printf: ('b, 'a Extlib.IO.output, unit) format -> 'b
+  (**The usual [printf] function, prints to the standard output {!Extlib.IO.stdout}, i.e. normally
      to the screen. If you are lost, this is probably the function you're looking for.*)
   
-val eprintf: ('b, 'a IO.output, unit) format -> 'b
-  (**The usual [eprintf] function, prints to the standard error output {!IO.stderr}, used
+val eprintf: ('b, 'a Extlib.IO.output, unit) format -> 'b
+  (**The usual [eprintf] function, prints to the standard error output {!Extlib.IO.stderr}, used
      to display warnings and errors. Otherwise identical to {!printf}.*)
   
 val sprintf:  ('a, unit, string) format -> 'a
@@ -203,7 +203,7 @@ val sprintf:  ('a, unit, string) format -> 'a
       Note that any function called with [%a] should return strings, i.e.
       should have type [unit -> string].*)
   
-val sprintf2: ('a, 'b IO.output, unit, string) format4 -> 'a
+val sprintf2: ('a, 'b Extlib.IO.output, unit, string) format4 -> 'a
   (** A function which doesn't print its result but returns it as a string. Useful
       for building messages, for translation purposes or for display in a window,
       for instance.
@@ -218,7 +218,7 @@ val sprintf2: ('a, 'b IO.output, unit, string) format4 -> 'a
   
 (** {6 General functions}*)
 
-val fprintf: 'a IO.output -> ('b, 'a IO.output, unit) format -> 'b
+val fprintf: 'a Extlib.IO.output -> ('b, 'a Extlib.IO.output, unit) format -> 'b
   (**General function. This function prints to any output. Typically,
      if you are attempting to build a large output such as a file,
      this is probably the function you are looking for. If you are
@@ -231,7 +231,7 @@ val fprintf: 'a IO.output -> ('b, 'a IO.output, unit) format -> 'b
      function you are looking for.*)
 
 
-val ifprintf: _        -> ('b, 'a IO.output, unit) format -> 'b
+val ifprintf: _        -> ('b, 'a Extlib.IO.output, unit) format -> 'b
   (**As {!fprintf} but doesn't actually print anything.
      Sometimes useful for debugging.*)
   
@@ -240,7 +240,7 @@ val bprintf: Buffer.t  -> ('a, Buffer.t, unit) format -> 'a
      In particular, any unparser called with [%a] should
      write to a buffer rather than to an output*)
   
-val bprintf2: Buffer.t  -> ('b, 'a IO.output, unit) format -> 'b
+val bprintf2: Buffer.t  -> ('b, 'a Extlib.IO.output, unit) format -> 'b
   (**As {!printf} but writes to a buffer instead
      of printing to the output. By opposition to
      {!bprintf}, only the result is changed with
@@ -248,14 +248,14 @@ val bprintf2: Buffer.t  -> ('b, 'a IO.output, unit) format -> 'b
   
 (**{6 Functions with continuations}*)
   
-val kfprintf : ('a IO.output -> 'b) -> 'a IO.output -> ('c, 'a IO.output, unit, 'b) format4 -> 'c
+val kfprintf : ('a Extlib.IO.output -> 'b) -> 'a Extlib.IO.output -> ('c, 'a Extlib.IO.output, unit, 'b) format4 -> 'c
   (**Same as [fprintf], but instead of returning immediately, passes the [output] to its first
      argument at the end of printing.*)
   
 val ksprintf: (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
   (** Same as [sprintf] above, but instead of returning the string,
       passes it to the first argument. *)
-val ksprintf2: (string -> 'b) -> ('c, 'a IO.output, unit, 'b) format4 -> 'c
+val ksprintf2: (string -> 'b) -> ('c, 'a Extlib.IO.output, unit, 'b) format4 -> 'c
   (** Same as [sprintf2] above, but instead of returning the string,
       passes it to the first argument. *)
   
@@ -263,7 +263,7 @@ val kbprintf : (Buffer.t -> 'a) ->
   Buffer.t -> ('b, Buffer.t, unit, 'a) format4 -> 'b
   (** Same as [bprintf], but instead of returning immediately,
       passes the buffer to its first argument at the end of printing. *)
-val kbprintf2 : (Buffer.t -> 'b) ->  Buffer.t -> ('c, 'a IO.output, unit, 'b) format4 -> 'c
+val kbprintf2 : (Buffer.t -> 'b) ->  Buffer.t -> ('c, 'a Extlib.IO.output, unit, 'b) format4 -> 'c
   (** Same as [bprintf2], but instead of returning immediately,
       passes the buffer to its first argument at the end of printing.*)
   
@@ -274,7 +274,7 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 
 (** {6 Utilities} *)
 
-val make_list_printer: ('a output -> 'b -> unit) -> string -> string -> string -> ('a output -> 'b list -> unit)
+val make_list_printer: ('a Extlib.IO.output -> 'b -> unit) -> string -> string -> string -> ('a Extlib.IO.output -> 'b list -> unit)
   (** Make a list printer
       
       [make_list_printer printer start_symbol end_symbol separator] creates a printer for
@@ -283,7 +283,7 @@ val make_list_printer: ('a output -> 'b -> unit) -> string -> string -> string -
       elements with [separator].
   *)
   
-val lmargin : int -> ('b output -> 'a -> unit) -> 'b output -> 'a -> unit
+val lmargin : int -> ('b Extlib.IO.output -> 'a -> unit) -> 'b Extlib.IO.output -> 'a -> unit
   (** [lmargin n p] behaves as [p], with the exception that every new line from this
       point will be shifted to the right by [n] white spaces*)
 
@@ -331,7 +331,7 @@ val lmargin : int -> ('b output -> 'a -> unit) -> 'b output -> 'a -> unit
    Note that {!Obj.magic} is involved behind this, so be careful.
 *)
   
-val mkprintf: ('a IO.output -> 'b) -> 'a IO.output -> ('c, 'a IO.output, unit, 'b) format4 -> 'c
+val mkprintf: ('a Extlib.IO.output -> 'b) -> 'a Extlib.IO.output -> ('c, 'a Extlib.IO.output, unit, 'b) format4 -> 'c
   (**Generic builder for [printf]-style functions.
      
      [mkprintf k] builds a [fprintf]-style function which calls [k] upon the

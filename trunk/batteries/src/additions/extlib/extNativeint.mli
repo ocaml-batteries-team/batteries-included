@@ -198,37 +198,18 @@ external format : string -> nativeint -> string = "caml_nativeint_format"
     val pow : nativeint -> nativeint -> nativeint
     val min_num : nativeint
     val max_num : nativeint
-    module Numeric :
-      sig
-        type t = nativeint
-        val zero : t
-        val one : t
-        val neg : t -> t
-        val succ : t -> t
-        val pred : t -> t
-        val abs : t -> t
-        val add : t -> t -> t
-        val sub : t -> t -> t
-        val mul : t -> t -> t
-        val div : t -> t -> t
-        val modulo : t -> t -> t
-        val pow : t -> t -> t
-        val compare : t -> t -> int
-        val of_int : int -> t
-        val to_int : t -> int
-        val of_string : string -> t
-        val to_string : t -> string
-        val ( +. ) : t -> t -> t
-        val ( -. ) : t -> t -> t
-        val ( *. ) : t -> t -> t
-        val ( /. ) : t -> t -> t
-        val ( ** ) : t -> t -> t
-        val ( <>. ) : t -> t -> bool
-        val ( >=. ) : t -> t -> bool
-        val ( <=. ) : t -> t -> bool
-        val ( >. ) : t -> t -> bool
-        val ( <. ) : t -> t -> bool
-        val ( =. ) : t -> t -> bool
-        val operations : t Number.numeric
-      end
+
+    val ( + ) : t -> t -> t
+    val ( - ) : t -> t -> t
+    val ( * ) : t -> t -> t
+    val ( / ) : t -> t -> t
+    val ( ** ) : t -> t -> t
+    val ( <> ) : t -> t -> bool
+    val ( >= ) : t -> t -> bool
+    val ( <= ) : t -> t -> bool
+    val ( > ) : t -> t -> bool
+    val ( < ) : t -> t -> bool
+    val ( = ) : t -> t -> bool
+    val operations : t Number.numeric
+      
   end

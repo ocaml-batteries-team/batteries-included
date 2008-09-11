@@ -1,5 +1,5 @@
 (* 
- * ExtInt64 - Extended 64-bit integers
+ * ExtComplex - Extended Complex Numbers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
  * 
@@ -36,9 +36,11 @@ module BaseComplex = struct
 
   let succ x = {x with re = x.re +. 1.}
 
-  let to_int x = int_of_float x.re
+  let to_int x   = int_of_float x.re
+  let of_int x   = {re = float_of_int x; im = 0.}
+  let to_float x = x.re
+  let of_float x = {re = x; im = 0.}
 
-  let of_int x = {re = float_of_int x; im = 0.}
 
   let abs x    = { re = norm x; im = 0. }
 
@@ -71,4 +73,7 @@ module BaseComplex = struct
 
 end
 
-module Complex = Numeric(BaseComplex)
+module Complex = struct
+  include Number.MakeNumeric(BaseComplex)
+  include BaseComplex
+end

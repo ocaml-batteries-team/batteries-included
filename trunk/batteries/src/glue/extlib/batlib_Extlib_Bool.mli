@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module Bool :
-sig
   type t = bool
 
   external not : bool -> bool = "%boolnot"
@@ -74,5 +72,5 @@ sig
   val ( > ) : t -> t -> bool
   val ( < ) : t -> t -> bool
   val ( = ) : t -> t -> bool
-  val operations : t Number.numeric
-end
+  val operations : t Extlib.Number.numeric
+

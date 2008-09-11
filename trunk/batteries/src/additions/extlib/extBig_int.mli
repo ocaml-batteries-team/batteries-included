@@ -31,6 +31,7 @@ open Nat
  
 type big_int
         (** The type of big integers. *)
+type t = big_int
 
 val zero_big_int : big_int
         (** The big integer [0]. *)
@@ -150,9 +151,9 @@ val base_power_big_int: int -> int -> big_int -> big_int
 val sys_big_int_of_string: string -> int -> int -> big_int
 val round_futur_last_digit : string -> int -> int -> bool
 val approx_big_int: int -> big_int -> string
+(**/**)
 
 
-    type t = big_int
     val zero : big_int
     val one : big_int
     val neg : big_int -> big_int
@@ -171,37 +172,17 @@ val approx_big_int: int -> big_int -> string
     val of_int : int -> big_int
     val compare : big_int -> big_int -> int
 
-    module Numeric :
-      sig
-        type t = big_int
-        val zero : t
-        val one : t
-        val neg : t -> t
-        val succ : t -> t
-        val pred : t -> t
-        val abs : t -> t
-        val add : t -> t -> t
-        val sub : t -> t -> t
-        val mul : t -> t -> t
-        val div : t -> t -> t
-        val modulo : t -> t -> t
-        val pow : t -> t -> t
-        val compare : t -> t -> int
-        val of_int : int -> t
-        val to_int : t -> int
-        val of_string : string -> t
-        val to_string : t -> string
-        val ( +. ) : t -> t -> t
-        val ( -. ) : t -> t -> t
-        val ( *. ) : t -> t -> t
-        val ( /. ) : t -> t -> t
-        val ( ** ) : t -> t -> t
-        val ( <>. ) : t -> t -> bool
-        val ( >=. ) : t -> t -> bool
-        val ( <=. ) : t -> t -> bool
-        val ( >. ) : t -> t -> bool
-        val ( <. ) : t -> t -> bool
-        val ( =. ) : t -> t -> bool
-        val operations : t Number.numeric
-      end
+
+    val ( + ) : t -> t -> t
+    val ( - ) : t -> t -> t
+    val ( * ) : t -> t -> t
+    val ( / ) : t -> t -> t
+    val ( ** ) : t -> t -> t
+    val ( <> ) : t -> t -> bool
+    val ( >= ) : t -> t -> bool
+    val ( <= ) : t -> t -> bool
+    val ( > ) : t -> t -> bool
+    val ( < ) : t -> t -> bool
+    val ( = ) : t -> t -> bool
+    val operations : t Number.numeric
   end

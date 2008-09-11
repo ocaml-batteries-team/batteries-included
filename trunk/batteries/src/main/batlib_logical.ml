@@ -21,4 +21,4 @@
 (** Boolean and bit-oriented data structures *)
 
 module Bitset                                = Batlib_Extlib_BitSet
-
+module Bool                                  = Batlib_Extlib_Bool

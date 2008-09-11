@@ -1,5 +1,5 @@
 (*
- * Batlib_ExtLib_Printf - Importing ExtLib module Printf
+ * Batlib_ExtLib_Printf - Importing ExtLib module IO.Printf
  * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
@@ -19,3 +19,7 @@
  *)
 
 include Extlib.IO.Printf
+
+let make_list_printer = Extlib.IO.make_list_printer
+let lmargin           = Extlib.IO.lmargin
+type ('a, 'b, 'c)format= ('a, 'b, 'c) Pervasives.format

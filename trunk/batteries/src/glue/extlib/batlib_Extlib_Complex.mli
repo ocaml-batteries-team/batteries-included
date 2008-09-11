@@ -18,8 +18,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
-module Complex :
-sig
+
   (** Complex numbers.
       
       This module provides arithmetic operations on complex numbers.
@@ -116,4 +115,4 @@ sig
   val ( > ) : t -> t -> bool
   val ( < ) : t -> t -> bool
   val ( = ) : t -> t -> bool
-end
+

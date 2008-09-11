@@ -30,6 +30,6 @@ module BaseInt32 = struct
 end
 
 module Int32 = struct
+  include Number.MakeNumeric(BaseInt32)
   include BaseInt32
-  module Numeric = struct include Numeric(BaseInt32) end
 end
