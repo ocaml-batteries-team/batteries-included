@@ -1,5 +1,5 @@
 (*
- * Batlib_ExtLib_Std - Importing ExtLib module Std
+ * Batlib_ExtLib_Char - Importing ExtLib module ExtChar.Char
  * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
@@ -18,4 +18,4 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include Extlib.Std
+include Extlib.ExtChar.Char

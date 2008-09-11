@@ -21,7 +21,11 @@
  *)
 
 (**
-   Array operations
+   Array operations.
+
+   Array are a mutable data structure. If you have an array and you wish
+   to ensure that its contents won't be modify, use {!Immutable_array}.
+
    @documents Array
 *)
 

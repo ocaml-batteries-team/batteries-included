@@ -24,6 +24,7 @@
 
 
 module Dllist                                = Batlib_Extlib_Dllist
+module Immutable_array                       = Batlib_Extlib_Immutable_array
 module Lazy                                  = Batlib_Baselib_Lazy
 module List                                  = Batlib_Extlib_List       (*formerly Batlib_Baselib_List*)
 module ListLabels                            = Batlib_Baselib_ListLabels(*TODO:Bring to feature parity with {!List}*)

@@ -1,0 +1,266 @@
+(*
+ * ExtArray - additional and modified functions for arrays.
+ * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
+ *               1996 Xavier Leroy [imported by David Teller]
+ *               2008 David Teller (David.Teller@univ-orleans.fr)
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
+(** Immutable arrays. 
+
+    A version of arrays without the possibility of modifying the
+    content of the array. It is suggested to use these read-only
+    arrays rather than regular arrays when the actual modification
+    of data is unnecessary.
+    
+    The usual manner of creating an immutable array is through
+    function {!of_array}.
+
+    Operations on read-only arrays are as fast as operations on
+    regular arrays.
+
+    Note that immutability is not absorbant: many functions take as
+    argument an immutable array and return a mutable array, which is
+    distinct from the original immutable arrays
+
+    @documents Immutable_array
+*)
+
+type 'a t
+  (**The type of read-only arrays containing elements of type ['a].*)
+  
+  
+(**{6 Base operations}*)
+
+external length : 'a t -> int = "%array_length"
+    (** Return the length (number of elements) of the given array. *)
+    
+external get : 'a t -> int -> 'a = "%array_safe_get"
+    (** [Array.get a n] returns the element number [n] of array [a].
+	The first element has number 0.
+	The last element has number [Array.length a - 1].
+	You can also write [a.(n)] instead of [Array.get a n].
+	
+	Raise [Invalid_argument "index out of bounds"]
+	if [n] is outside the range 0 to [(Array.length a - 1)]. *)
+    
+    
+(**{6 Constructors}*)
+    
+external of_array : 'a array -> 'a t = "%identity"
+    (** Return a read-only array version of a given array.  Note that
+	these arrays are shared. In other words, the original array
+	may still be modified. *)
+    
+val init : int -> (int -> 'a) -> 'a t
+  (** [Array.init n f] returns a fresh array of length [n],
+      with element number [i] initialized to the result of [f i].
+      In other terms, [Array.init n f] tabulates the results of [f]
+      applied to the integers [0] to [n-1].
+      
+      Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].
+      If the return type of [f] is [float], then the maximum
+      size is only [Sys.max_array_length / 2].*)
+  
+(** {6 Iterators}*)
+val iter : ('a -> unit) -> 'a t -> unit
+  (** [Array.iter f a] applies function [f] in turn to all
+      the elements of [a].  It is equivalent to
+      [f a.(0); f a.(1); ...; f a.(Array.length a - 1); ()]. *)
+  
+val map : ('a -> 'b) -> 'a t -> 'b t
+  (** [Array.map f a] applies function [f] to all the elements of [a],
+      and builds an array with the results returned by [f]:
+      [[| f a.(0); f a.(1); ...; f a.(Array.length a - 1) |]]. *)
+  
+val iteri : (int -> 'a -> unit) -> 'a t -> unit
+  (** Same as {!Array.iter}, but the
+      function is applied to the index of the element as first argument,
+      and the element itself as second argument. *)
+  
+val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
+  (** Same as {!Array.map}, but the
+      function is applied to the index of the element as first argument,
+      and the element itself as second argument. *)
+  
+val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+  (** [Array.fold_left f x a] computes
+      [f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],
+      where [n] is the length of the array [a]. *)
+  
+val fold_right : ('b -> 'a -> 'a) -> 'b t -> 'a -> 'a
+  (** [Array.fold_right f a x] computes
+      [f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
+      where [n] is the length of the array [a]. *)
+  
+(**{6 Operations on two arrays}*)
+val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
+  (** [Array.iter2 f [|a1; ...; an|] [|b1; ...; bn|]] performs
+      calls [f a1 b1; ...; f an bn] in that order.
+      
+      @raise Invalid_argument if the length of [a1] does not equal the
+      length of [a2]. *)
+  
+(**{6 Predicates}*)
+
+val for_all : ('a -> bool) -> 'a t -> bool
+  (** [for_all p [a1; ...; an]] checks if all elements of the array
+      satisfy the predicate [p].  That is, it returns
+      [ (p a1) && (p a2) && ... && (p an)]. *)
+  
+val exists : ('a -> bool) -> 'a t -> bool
+  (** [exists p [a1; ...; an]] checks if at least one element of
+      the array satisfies the predicate [p].  That is, it returns
+      [ (p a1) || (p a2) || ... || (p an)]. *)
+  
+val find : ('a -> bool) -> 'a t -> 'a
+  (** [find p a] returns the first element of array [a]
+      that satisfies the predicate [p].
+      Raise [Not_found] if there is no value that satisfies [p] in the
+      array [a]. *)
+  
+val mem : 'a -> 'a t -> bool
+  (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
+  
+val memq : 'a -> 'a t -> bool
+  (** Same as {!Array.mem} but uses physical equality instead of
+      structural equality to compare array elements.  *)
+  
+val findi : ('a -> bool) -> 'a t -> int
+  (** [findi p a] returns the index of the first element of array [a]
+      that satisfies the predicate [p].
+      Raise [Not_found] if there is no value that satisfies [p] in the
+      array [a].  *)
+  
+val filter : ('a -> bool) -> 'a t -> 'a t
+  (** [filter p a] returns all the elements of the array [a]
+      that satisfy the predicate [p].  The order of the elements
+      in the input array is preserved.  *)
+  
+val find_all : ('a -> bool) -> 'a t -> 'a t
+  (** [find_all] is another name for {!Array.filter}. *)
+  
+val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+  (** [partition p a] returns a pair of arrays [(a1, a2)], where
+      [a1] is the array of all the elements of [a] that
+      satisfy the predicate [p], and [a2] is the array of all the
+      elements of [a] that do not satisfy [p].
+      The order of the elements in the input array is preserved. *)
+  
+(** {6 Array transformations} *)
+
+val rev : 'a t -> 'a array
+  (** Array reversal.*)
+
+val append : 'a t -> 'a t -> 'a array
+  (** [Array.append v1 v2] returns a fresh array containing the
+      concatenation of the arrays [v1] and [v2]. *)
+  
+val concat : 'a t list -> 'a array
+  (** Same as [Array.append], but concatenates a list of arrays. *)
+  
+val sub : 'a t -> int -> int -> 'a array
+  (** [Array.sub a start len] returns a fresh array of length [len],
+      containing the elements number [start] to [start + len - 1]
+      of array [a].
+      
+      Raise [Invalid_argument "Array.sub"] if [start] and [len] do not
+      designate a valid subarray of [a]; that is, if
+      [start < 0], or [len < 0], or [start + len > Array.length a]. *)
+  
+val copy : 'a t -> 'a array
+  (** [Array.copy a] returns a copy of [a], that is, a fresh array
+      containing the same elements as [a]. *)
+  
+val blit : 'a t -> int -> 'a array -> int -> int -> unit
+  (** [Array.blit v1 o1 v2 o2 len] copies [len] elements
+      from array [v1], starting at element number [o1], to array [v2],
+      starting at element number [o2]. It works correctly even if
+      [v1] and [v2] are the same array, and the source and
+      destination chunks overlap.
+	
+      Raise [Invalid_argument "Array.blit"] if [o1] and [len] do not
+      designate a valid subarray of [v1], or if [o2] and [len] do not
+      designate a valid subarray of [v2]. *)
+  
+(** {6 Conversions} *)
+  
+val enum : 'a t -> 'a Extlib.Enum.t
+  (** Returns an enumeration of the elements of an array. *)
+  
+val of_enum : 'a Extlib.Enum.t -> 'a t
+  (** Build an array from an enumeration. *)
+  
+val to_list : 'a t -> 'a list
+  (** [Array.to_list a] returns the list of all the elements of [a]. *)
+  
+val of_list : 'a list -> 'a t
+  (** [Array.of_list l] returns a fresh array containing the elements
+      of [l]. *)
+  
+(** {6 Sorting} *)
+
+
+val sort : ('a -> 'a -> int) -> 'a t -> 'a array
+  (** Sort an array in increasing order according to a comparison
+      function.  The comparison function must return 0 if its arguments
+      compare as equal, a positive integer if the first is greater,
+      and a negative integer if the first is smaller (see below for a
+      complete specification).  For example, {!Pervasives.compare} is
+      a suitable comparison function, provided there are no floating-point
+      NaN values in the data.  After calling [Array.sort], the
+      array is sorted in place in increasing order.
+      [Array.sort] is guaranteed to run in constant heap space
+      and (at most) logarithmic stack space.
+      
+      The current implementation uses Heap Sort.  It runs in constant
+      stack space.
+      
+      Specification of the comparison function:
+      Let [a] be the array and [cmp] the comparison function.  The following
+      must be true for all x, y, z in a :
+      -   [cmp x y] > 0 if and only if [cmp y x] < 0
+      -   if [cmp x y] >= 0 and [cmp y z] >= 0 then [cmp x z] >= 0
+      
+      When [Array.sort] returns, [a] contains the same elements as before,
+      reordered in such a way that for all i and j valid indices of [a] :
+      -   [cmp a.(i) a.(j)] >= 0 if and only if i >= j
+  *)
+  
+val stable_sort : ('a -> 'a -> int) -> 'a t -> 'a array
+  (** Same as {!Array.sort}, but the sorting algorithm is stable (i.e.
+      elements that compare equal are kept in their original order) and
+      not guaranteed to run in constant heap space.
+      
+      The current implementation uses Merge Sort. It uses [n/2]
+      words of heap space, where [n] is the length of the array.
+      It is usually faster than the current implementation of {!Array.sort}.
+  *)
+  
+val fast_sort : ('a -> 'a -> int) -> 'a t -> 'a array
+  (** Same as {!Array.sort} or {!Array.stable_sort}, whichever is faster
+      on typical input.
+  *)
+  
+  
+(**/**)
+(** {6 Undocumented functions} *)
+  
+external unsafe_get : 'a t -> int -> 'a = "%array_unsafe_get"
+
+
+

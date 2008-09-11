@@ -44,6 +44,11 @@
       )
     ]}
 
+    Note that labels may just as well be used as a richer
+    version of exceptions, with polymorphism. In that case,
+    polymorphic variants may prove useful (and faster than
+    a succession of nested labels).
+
     @document Labels
 *)
 

@@ -20,7 +20,7 @@
  *)
 
 
-module Char : sig
+
 
 (** Character operations. *)
 
@@ -109,16 +109,16 @@ val compare: t -> t -> int
     allows the module [Char] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
-val enum: unit -> char Enum.t
+val enum: unit -> char Extlib.Enum.t
 (** Produce the enumeration of all characters *)
 
-val range: ?until:char -> char -> char Enum.t
+val range: ?until:char -> char -> char Extlib.Enum.t
 
-val ( -- ): char -> char -> char Enum.t
+val ( -- ): char -> char -> char Extlib.Enum.t
 
 (**/**)
 
 external unsafe_chr : int -> char = "%identity"
 external unsafe_int : char-> int  = "%identity"
 
-end
+

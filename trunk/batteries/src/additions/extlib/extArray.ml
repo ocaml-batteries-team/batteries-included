@@ -20,6 +20,8 @@
 
 module Array = struct
 
+type 'a t = 'a array
+
 include Array
 
 let rev_in_place xs =
@@ -169,4 +171,26 @@ let iter2 f a1 a2 =
        f a1.(i) a2.(i);
      done;;
 
+end
+
+module ROArray =
+struct
+  include Array
+
+  external of_array : 'a array -> 'a t = "%identity"
+    
+  let sort cmp a = 
+    let copy = Array.copy a in
+      Array.sort cmp copy;
+      copy
+
+  let fast_sort cmp a = 
+    let copy = Array.copy a in
+      Array.fast_sort cmp copy;
+      copy
+
+  let stable_sort cmp a = 
+    let copy = Array.copy a in
+      Array.stable_sort cmp copy;
+      copy
 end

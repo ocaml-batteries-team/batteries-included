@@ -1,6 +1,10 @@
 11/08/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* number.mli: merged module and submodule [Numeric]
 	* number.mli: [( *. )] becomes [( * )], etc.
+	* extNum.ml*: added
+	* extBig_int.ml*: added
+	* extInt.ml*, extInt32.ml*, extInt64.ml*, extNativeint.ml*: rewritten with new [Number]
+	* extArray.ml*: [ROArray] added
 	
 10/08/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* layer_1/juice: moved out of [layer_1]
