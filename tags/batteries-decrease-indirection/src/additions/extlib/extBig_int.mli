@@ -22,9 +22,12 @@
 
 module Big_int :
   sig
+
 (** Operations on arbitrary-precision integers.
 
-   Big integers (type [big_int]) are signed integers of arbitrary size. 
+    Big integers (type [big_int]) are signed integers of arbitrary size. 
+
+    @documents Big_int
 *)
   
 open Nat

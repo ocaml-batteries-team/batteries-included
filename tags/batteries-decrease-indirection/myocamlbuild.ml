@@ -67,6 +67,7 @@ struct
         *)
        flag ["ocaml"; "pkg_threads"; "compile"] (S[A "-thread"]);
        flag ["ocaml"; "pkg_threads"; "link"] (S[A "-thread"]);
+       flag ["ocaml"; "pkg_threads"; "doc"] (S[A "-I"; A "+threads"])
 
 (*       let find_threads = run_and_read "ocamlfind query threads"
        in      

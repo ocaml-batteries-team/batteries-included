@@ -18,24 +18,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+(** The root of OCaml, Batteries Included.*)
+
+(** Tools for changing the control flow of a program, from error-management to concurrency.*)
 module Control     = struct
-  (** Tools for changing the control flow of a program, from error-management to concurrency.*)
-(*
-  module Concurrency = struct (** Everything related to parallelism and concurrency. *)
-    module Threads = struct (** Concurrency operations as defined by OCaml's base library *)
+
+  (** Everything related to parallelism and concurrency. *)
+  module Concurrency = struct
+
+    (** Concurrency operations as defined by OCaml's base library *)
+    module Threads = struct
       module Condition = Condition
       module Event     = Event
       module Mutex     = Mutex
       module Thread    = Thread
     end
   end
-*)
+
   module Labels      = Batlib_Misc_Labels
 end
 
-module Data        = struct (** {6 Data structures}*)
+(** Data structures*)
+module Data        = struct
+  (** Containers *)
   module Containers  = struct
-    module Mutable         = struct (** Mutable containers (arrays, stacks...)*)
+    (** Mutable containers (arrays, stacks...)*)
+    module Mutable         = struct
       module Array         = Extlib.ExtArray.Array         (*formerly Batlib_Baselib_Array*)
       module ArrayLabels   = Batlib_Baselib_ArrayLabels
       module Bigarray      = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
@@ -51,7 +59,9 @@ module Data        = struct (** {6 Data structures}*)
       module Stack         = Batlib_Baselib_Stack        (*TODO:build from enum*)
       module Stream        = Batlib_Baselib_Stream       (*TODO:replace with latest version*)
     end
-    module Persistent      = struct (** Persistent containers *)
+
+    (** Persistent containers (lists, sets...) *)
+    module Persistent      = struct
       module Dllist          = Extlib.Dllist
       module Immutable_array = Extlib.ExtArray.ROArray
       module Lazy            = Batlib_Baselib_Lazy
@@ -66,12 +76,14 @@ module Data        = struct (** {6 Data structures}*)
     end
   end
     
-  module Logical     = struct (** Boolean and bit-oriented data structures *)
+  (** Boolean and bit-oriented data structures *)
+  module Logical     = struct
     module Bitset = Extlib.BitSet
     module Bool   = Extlib.ExtBool.Bool
   end
-    
-  module Numeric     = struct (** Numbers, operations and other mathematics.*)
+
+  (** Numbers and operations on them.*)    
+  module Numeric     = struct
     (*module Interfaces  = Batlib_Interfaces_Numeric*)
     module Big_int     = Extlib.ExtBig_int.Big_int
     module Complex     = Extlib.ExtComplex.Complex
@@ -83,9 +95,11 @@ module Data        = struct (** {6 Data structures}*)
     module Safe_int    = Extlib.ExtInt.SafeInt
   end
     
-  module Text        = struct (** Text data structures. *)
+  (** Text data structures. *)
+  module Text        = struct
     
     (** {6 Latin-1}*)
+
     module Buffer          = Batlib_Baselib_Buffer
     module Char            = Extlib.ExtChar.Char
     module String          = struct
@@ -99,11 +113,11 @@ module Data        = struct (** {6 Data structures}*)
   end
 end
 
+(**
+   Parsing, printing, regular expressions and other transformations from text
+   to data, from data to text and from text to text.
+*)
 module Languages   = struct
-  (**
-     Parsing, printing, regular expressions and other transformations from text
-     to data, from data to text and from text to text.
-  *)
 
   (** {1 Parsing} *)
   
@@ -143,7 +157,9 @@ module Languages   = struct
        - bindings to other programming languages (no real place to put them yet, for the moment, {!Batlib.Meta})
     *)
 end
-module Meta        = struct (** Meta-level operations (marshalling, garbage-collection...) *)
+
+(** Meta-level operations (marshalling, garbage-collection...) *)
+module Meta        = struct
   
   (** {1 Language}*)
   
@@ -167,14 +183,18 @@ module Meta        = struct (** Meta-level operations (marshalling, garbage-coll
   module CamlinternalOO = Batlib_Baselib_CamlinternalOO
     
 end
-module Standard    = struct (** Automatically opened module. *) 
+
+(** Automatically opened module. *) 
+module Standard    = struct
   include Batlib_Baselib_Pervasives
   include Extlib.Std
   let (@) = Extlib.ExtList.(@)
-(* XXX Why not just include these in the toplevel batteries module? *)
+(* Thelema: Why not just include these in the toplevel batteries module? *)
+(* Yoric: We also do that. Probably not a good idea to have both, though.*)
 end
+
+(** Interactions with the operating system (file manipulation, arguments...) *)
 module System      = struct 
-  (** Interactions with the operating system (file manipulation, arguments...) *)
   
   (** {1 Environment I/O}*)
   
@@ -199,8 +219,9 @@ module System      = struct
     (** Placeholder *)
   end
 end
+
+(** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
-  (** Tools for compiling OCaml, generating documentation, installing libraries. *)
   
   (**Accessing information on source files from OCamlDoc*)
   (*module Odoc_info   = Batlib_Ocamldoc_Odoc_info -- removed for now*)
@@ -208,7 +229,9 @@ module Toolchain   = struct
   (**Package management with Findlib*)
   module Findlib     = Batlib_Findlib_Findlib
 end
-module Util        = struct (** Miscellaneous utilities *)
+
+(** Miscellaneous utilities *)
+module Util        = struct
   module Base64 = Extlib.Base64
   module Digest = Batlib_Baselib_Digest
   module Random = Batlib_Baselib_Random

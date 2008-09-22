@@ -1,4 +1,9 @@
-11/08/2008 David Teller <David.Teller@univ-orleans.fr>:
+09/22/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* main/*.ml: merged into main/batteries.ml
+	* main/_tags: added [pkg_threads]
+	* myocamlbuild.ml: added [-I +threads] to [ocamldoc] in presence of [pkg_threads]
+
+09/11/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* number.mli: merged module and submodule [Numeric]
 	* number.mli: [( *. )] becomes [( * )], etc.
 	* extNum.ml*: added
@@ -6,7 +11,7 @@
 	* extInt.ml*, extInt32.ml*, extInt64.ml*, extNativeint.ml*: rewritten with new [Number]
 	* extArray.ml*: [ROArray] added
 	
-10/08/2008 David Teller <David.Teller@univ-orleans.fr>:
+09/10/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* layer_1/juice: moved out of [layer_1]
 	* layer_1/*: moved to [main]
 	* Makefile: [api.odocl] now doesn't insert [Batteries]

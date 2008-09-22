@@ -74,27 +74,26 @@ let primitive_types_names =
       "option",    "Batteries.Data.Containers.Persistent.Option.t";
       "int32",     "Batteries.Data.Numeric.Int32.t";
       "int64",     "Batteries.Data.Numeric.Int64.t";
-      "nativeint", "Batteries.Data.Numeric.Nativeint.t"(*;*)
-      (*"int",     "Batteries.Data.Numeric.Int.t";*)(*Module not implemented yet*)
-      (*"bool",    "Batteries.Data.Logical.Bool.t";*)(*Module not implemented yet*)
+      "nativeint", "Batteries.Data.Numeric.Nativeint.t";
+      "int",       "Batteries.Data.Numeric.Int.t";(*Module not implemented yet*)
+      "bool",      "Batteries.Data.Logical.Bool.t";(*Module not implemented yet*)
       (*"unit",    "?"; *) (*Module not implemented yet*)
-      (*"float",   "Batteries.Data.Logical.Float.t";*)(*Module not implemented yet*)
+      "float",   "Batteries.Data.Logical.Float.t";(*Module not implemented yet*)
       (*"exn",     "Batteries.Control.Exceptions.Exn.t";*)(*Module not implemented yet*)
-      (*"format4", "Batteries.Languages.Printf.format4";*)(*Module not implemented yet*)
+      "format4", "Batteries.Languages.Printf.format4"(*;*)(*Module not implemented yet*)
 ]
-
-(** The root of the module hierarchy*)
-(*let is_related a ~parent:b =
-  String.starts_with a b && (a = b || a.[String.length b] = ".")*)
 
 let has_parent a ~parent:b =
   a = b || 
   let len_a  = String.length a
   and len_b  = String.length b    in
+  let result =
     len_a > len_b &&
       let prefix = String.sub a 0 len_b in
 	prefix = b &&
 	  a.[len_b] = '.'
+  in verbose (Printf.sprintf "Checking whether %s has parent %s: %b" a b result);
+    result
     
 
 (** The list of modules which should appear as roots in the hierarchy. *)
@@ -122,6 +121,21 @@ let get_manual_replacement = function
 	| h::_ as x-> warning ("Weird replacement "^(string_of_text x)); Some (string_of_text x)
       with Not_found -> 
 	None
+
+let module_dependencies m =
+  let rec handle_kind acc = function
+    | Module_struct  e      -> List.fold_left (fun acc x -> handle_element acc x) acc e
+    | Module_alias   a      -> a.ma_name :: acc
+    | Module_functor (_, a) -> handle_kind acc a
+    | Module_apply (a, b)   -> handle_kind (handle_kind acc a) b
+    | Module_with (_, _)    -> acc
+    | Module_constraint (a, _) -> handle_kind acc a
+  and handle_element acc = function
+    | Element_module m          -> handle_kind acc m.m_kind
+    | Element_included_module a -> a.im_name :: acc
+    | _                         -> acc
+  in handle_kind m.m_top_deps m.m_kind
+
 
 (**
    [rebuild_structure m] walks through list [m] and rebuilds it as a forest
@@ -208,7 +222,7 @@ let rebuild_structure modules =
 	      let a' = handle_module_type path m a in
 		[Element_included_module {(x) with im_module = Some (Modtype a')}]
 	  | None -> 
-(*	      verbose ("Module couldn't be found");*)
+	      verbose ("Module couldn't be found");
 	      m.m_info <- add_renamed_module ~old:(x.im_name,None) ~current:(m.m_name,m.m_info);
 	      [y]
   and handle_module path m t      = 
@@ -217,6 +231,7 @@ let rebuild_structure modules =
       {(t) with 
 	 m_kind = handle_kind path' t t.m_kind; 
 	 m_name = path'} in
+      verbose ("Visiting module "^m.m_name);
       result.m_info <- add_renamed_module ~old:(t.m_name,t.m_info) ~current:(path',None);
       (match get_manual_replacement t.m_info with
 	 | None   -> verbose ("No replacement for module "^t.m_name)
@@ -285,12 +300,21 @@ let rebuild_structure modules =
     List.iter (fun x -> *)
   (*1. Find root modules, i.e. modules which are neither included nor aliased*)
   let all_roots = Hashtbl.create 100 in
-    List.iter (fun x -> if Name.father x.m_name = "" then Hashtbl.add all_roots x.m_name x) modules;
+    List.iter (fun x -> if Name.father x.m_name = "" then 
+		 (
+		   verbose ("Adding "^x.m_name^" to the list of roots");
+		   Hashtbl.add all_roots x.m_name x
+		 ) else
+		   verbose ("Not adding "^x.m_name^" to the list of roots")
+	      ) modules;
+
+    (**TODO: instead of iterating x.m_top_deps, need to go deep into the
+       module to find out all deep dependencies*)
     List.iter (fun x -> 
 		    begin
-		      List.iter (fun y -> (*verbose(" removing "^y);*)
+		      List.iter (fun y -> verbose(" removing "^y);
 				   Hashtbl.remove all_roots y
-				) x.m_top_deps
+				) (*x.m_top_deps*) (module_dependencies x)
 		    end)  modules;
     Hashtbl.iter (fun name _ -> verbose ("Root: "^name)) all_roots;
     let for_rewriting = Hashtbl.fold (fun k m acc -> if List.mem k roots then 

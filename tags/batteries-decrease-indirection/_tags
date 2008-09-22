@@ -1,7 +1,10 @@
 <src>: include
 
-<batteries.docdir>:pkg_threads,use_ocamldoc_info
-<batteries.docdir/*>:pkg_threads,use_ocamldoc_info
-<batteries.docdir/index.html>:pkg_threads,use_ocamldoc_info
+<api.docdir>:pkg_threads,use_ocamldoc_info
+<api.docdir/*>:pkg_threads,use_ocamldoc_info
+<api.docdir/index.html>:pkg_threads,use_ocamldoc_info
+<doc/api.docdir>:pkg_threads,use_ocamldoc_info
+<doc/api.docdir/*>:pkg_threads,use_ocamldoc_info
+<doc/api.docdir/index.html>:pkg_threads,use_ocamldoc_info
 <batteries.cma>: pkg_threads,use_ocamldoc_info
 <batteries.cmxa>:pkg_threads,use_ocamldoc_info
