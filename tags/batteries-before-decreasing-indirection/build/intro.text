@@ -1,0 +1,43 @@
+Welcome to OCaml Batteries Included preview of 4 release 0.1.
+
+Batteries Included is an effort to develop a comprehensive,
+decentralized yet unified open-source standard library for OCaml.
+For the moment, Batteries Included concentrates on:
+
+{ul
+{- {{:Data.Containers.html}data structures}}
+{- {{:System.Unix.html}file manipulation and system calls}}
+{- {{:System.IO.html}inputs and outputs}}
+{- {{:Languages.html}lexing, parsing and pretty-printing}}
+{- {{:Control.Concurrency.html}concurrency}}
+{- {{:Data.Numeric.html}numbers}}
+{- {{:Data.Text.html}text}}
+{- {{:Meta.html}OCaml internals} and {{:Util.html}utilities}}
+}
+
+
+Future versions will progressively add (not necessarily in that order):
+{ul
+{- {{:http://camomile.sourceforge.net/}Unicode}}
+{- {{:http://ocaml-reins.sourceforge.net}More data structures}}
+{- {{:http://www.camlcity.org/archive/programming/pxp.html}XML} and {{:http://caml.inria.fr/cgi-bin/hump.en.cgi?contrib=552}JSON}}
+{- {{:http://caml.inria.fr/pub/old_caml_site/humps/caml_Graphics_and_GUI_tool_kits.html}User interfaces}}
+{- {{:http://ocsigen.org/lwt} More concurrency} and {{:http://cothreads.sourceforge.net/}even more concurrency}}
+{- {{:http://projects.camlcity.org/projects/ocamlnet.html}Internet protocols}}
+{- {{:http://www.cairographics.org/cairo-ocaml/}2d Graphics}}
+{- {{:http://www.xs4all.nl/~mmzeeman/ocaml/}Testing}}
+{- 3d Graphics}
+{- Distributed programming}
+{- Cryptography}
+{- ...}
+}
+
+To use Batteries Included, please start your source files with [open
+Batteries].  This will have the secondary effect of importing the
+contents of module {!Batteries.Standard}. 
+
+For more informations on the installation of Batteries Included,
+please read {{:../setup.html}the following guide}. To contact
+us or to be kept informed, don't hesitate to visit {{:http://forge.ocamlcore.org/projects/batteries/}our website}.
+
+{6 List of modules}

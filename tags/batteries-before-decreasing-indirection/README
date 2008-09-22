@@ -1,0 +1,20 @@
+*** Building Batteries Included ***
+You will need
+* OCaml >= 3.10.1
+* Findlib
+* GNU Make
+
+Run     make byte opt doc install
+to install the full version of batteries included.
+Be patient, documentation generation takes several
+minutes.
+
+
+*** Using Batteries Included ***
+
+See doc/USAGE
+
+
+*** Extending Batteries Included ***
+
+See doc/GUIDELINES
