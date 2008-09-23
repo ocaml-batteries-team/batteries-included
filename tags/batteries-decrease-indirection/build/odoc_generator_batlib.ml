@@ -327,7 +327,9 @@ let rebuild_structure modules =
 					  verbose ("Not rewriting: "^k);
 					  acc
 					end) all_roots [] in
-    (*Actually, we're only interested in modules which appear in [roots]*)
+      (*Actually, we're only interested in modules which appear in [roots]*)
+      (*Note: we could probably do something much more simple, without resorting
+	to this dependency analysis stuff*)
       (*2. Dive into these*)
     (*let rewritten = Hashtbl.fold (fun name contents acc ->
 		    {(contents) with m_kind = handle_kind name contents contents.m_kind}::acc
@@ -627,6 +629,7 @@ class batlib_generator =
 	| None   -> 
 	    Odoc_info.verbose "[Final stage, generating html pages]";
 	    (*Pre-process every module*)
+	    List.iter (fun m -> verbose ("My bag contains "^m.m_name)) modules;
 	    let everything        = Search.modules modules in
 	    let (rewritten_modules, renamed_modules) = rebuild_structure everything in
 	      list_values       <- Odoc_info.Search.values            rewritten_modules ;
@@ -676,6 +679,8 @@ class batlib_generator =
 		list_module_types ;
 
 	      renamings <- renamed_modules;
+	      verbose "Beautification of modules complete, proceeding to generation";
+	      flush_all ();
 	      super#generate rewritten_modules
 
 
