@@ -1,3 +1,8 @@
+09/23/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extArray.ml*: [ROArray] removed
+	* extArray.ml*: [Cap] created
+	* extArray.ml*: [make_compare] added
+	
 09/22/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* main/*.ml: merged into main/batteries.ml
 	* main/_tags: added [pkg_threads]

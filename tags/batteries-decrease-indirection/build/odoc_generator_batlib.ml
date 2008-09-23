@@ -299,7 +299,7 @@ let rebuild_structure modules =
   (*let dependencies = List.fold_left (fun acc m -> acc @ m.m_top_deps) [] modules in
     List.iter (fun x -> *)
   (*1. Find root modules, i.e. modules which are neither included nor aliased*)
-  let all_roots = Hashtbl.create 100 in
+(*  let all_roots = Hashtbl.create 100 in
     List.iter (fun x -> if Name.father x.m_name = "" then 
 		 (
 		   verbose ("Adding "^x.m_name^" to the list of roots");
@@ -326,10 +326,12 @@ let rebuild_structure modules =
 					begin
 					  verbose ("Not rewriting: "^k);
 					  acc
-					end) all_roots [] in
+					end) all_roots [] in*)
       (*Actually, we're only interested in modules which appear in [roots]*)
       (*Note: we could probably do something much more simple, without resorting
 	to this dependency analysis stuff*)
+  let for_rewriting = List.fold_left (fun acc x -> if List.mem x.m_name roots then (x.m_name, x)::acc else acc) [] modules
+    in
       (*2. Dive into these*)
     (*let rewritten = Hashtbl.fold (fun name contents acc ->
 		    {(contents) with m_kind = handle_kind name contents contents.m_kind}::acc

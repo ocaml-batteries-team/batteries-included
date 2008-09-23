@@ -22,7 +22,36 @@ module Array = struct
 
 type 'a t = 'a array
 
-include Array
+open Array
+  let init         = init
+  external unsafe_get : 'a t -> int -> 'a = "%array_unsafe_get"
+  external unsafe_set : 'a t -> int -> 'a -> unit = "%array_unsafe_set"
+  external length : 'a t -> int = "%array_length"
+  external get : 'a t -> int -> 'a = "%array_safe_get"
+  external set : 'a t -> int -> 'a -> unit = "%array_safe_set"
+  external make : int -> 'a -> 'a t = "caml_make_vect"
+  external create : int -> 'a -> 'a t = "caml_make_vect"
+  let make_matrix  = make_matrix
+  let create_matrix= create_matrix
+  let iter         = iter
+  let map          = map
+  let iteri        = iteri
+  let mapi         = mapi
+  let fold_left    = fold_left
+  let fold_right   = fold_right
+  let append       = append
+  let concat       = concat
+  let sub          = sub
+  let copy         = copy
+  let fill         = fill
+  let blit         = blit
+  let to_list      = to_list
+  let of_list      = of_list
+  let sort         = sort
+  let stable_sort  = stable_sort
+  let fast_sort    = fast_sort
+
+
 
 let rev_in_place xs =
   let n = length xs in
@@ -171,26 +200,75 @@ let iter2 f a1 a2 =
        f a1.(i) a2.(i);
      done;;
 
-end
+let make_compare cmp a b =
+  let length_a = Array.length a
+  and length_b = Array.length b in
+  let length   = min length_a length_b
+  in
+  let rec aux i = 
+    if i < length then
+      let result = compare (unsafe_get a i) (unsafe_get b i) in
+	if result = 0 then aux (i + 1)
+	else               result
+    else
+      if length_a < length_b then -1
+      else                         1
+  in aux 0
 
-module ROArray =
+module Cap =
 struct
-  include Array
+  type ('a, 'b) t = 'a array
 
-  external of_array : 'a array -> 'a t = "%identity"
+  external of_array  : 'a array -> ('a, _ ) t = "%identity"
+  external to_array  : ('a, [`Read | `Write]) t -> 'a array = "%identity"
     
-  let sort cmp a = 
-    let copy = Array.copy a in
-      Array.sort cmp copy;
-      copy
+  external read_only :  ('a, [>`Read])  t -> ('a, [`Read])  t = "%identity"
+  external write_only : ('a, [>`Write]) t -> ('a, [`Write]) t = "%identity"
 
-  let fast_sort cmp a = 
-    let copy = Array.copy a in
-      Array.fast_sort cmp copy;
-      copy
+  external length : ('a, [> ]) t -> int = "%array_length"
+  external get : ('a, [> `Read]) t -> int -> 'a = "%array_safe_get"
+  external set : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
+  external make : int -> 'a -> ('a, _) t = "caml_make_vect"
+  external create : int -> 'a -> ('a, _) t = "caml_make_vect"
 
-  let stable_sort cmp a = 
-    let copy = Array.copy a in
-      Array.stable_sort cmp copy;
-      copy
+  let init = init
+  let make_matrix = make_matrix
+  let create_matrix = create_matrix
+  let iter = iter
+  let map  = map
+  let filter= filter
+  let iteri= iteri
+  let mapi = mapi
+  let fold_left = fold_left
+  let fold_right= fold_right
+  let iter2= iter2
+  let for_all   = for_all
+  let exists    = exists
+  let find      = find
+  let mem       = mem
+  let memq      = memq
+  let findi     = findi
+  let find_all  = find_all
+  let partition = partition
+  let rev       = rev
+  let rev_in_place = rev_in_place
+  let append       = append
+  let concat       = concat
+  let sub          = sub
+  let copy         = copy
+  let fill         = fill
+  let blit         = blit
+  let enum         = enum
+  let of_enum      = of_enum
+  let to_list      = to_list
+  let of_list      = of_list
+  let sort         = sort
+  let stable_sort  = stable_sort
+  let fast_sort    = fast_sort
+  let make_compare = make_compare
+  external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
+  external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 end
+end
+
+

@@ -60,10 +60,9 @@ module Data        = struct
       module Stream        = Batlib_Baselib_Stream       (*TODO:replace with latest version*)
     end
 
-    (** Persistent containers (lists, sets...) *)
+    (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
       module Dllist          = Extlib.Dllist
-      module Immutable_array = Extlib.ExtArray.ROArray
       module Lazy            = Batlib_Baselib_Lazy
       module List            = Extlib.ExtList.List      (*formerly Batlib_Baselib_List*)
       module ListLabels      = Batlib_Baselib_ListLabels(*TODO:Bring to feature parity with {!List}*)
@@ -73,6 +72,13 @@ module Data        = struct
       module Option          = Extlib.Option
       module Set             = Batlib_Baselib_Set       (*TODO:make enumerable*)
       module SetLabels       = Batlib_Baselib_SetLabels (*TODO:make enumerable*)
+
+(**
+   {6 Note} Some mutable containers offer persistent substructures.
+   For instance, {!Data.Containers.Mutable.Array.Cap} defines a
+   structure [('a, [< `Read | `Write]) t], identical to ['a array]
+   but such that elements of [('a, [`Read]) t] may not be modified.
+*)
     end
   end
     
