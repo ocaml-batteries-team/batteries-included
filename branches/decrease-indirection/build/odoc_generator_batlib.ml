@@ -67,19 +67,19 @@ let new_buf () = Buffer.create 1024
 (** A list of primitive type names for which we should rather link
     to the corresponding module *)
 let primitive_types_names =
-  [   "char",      "Batteries.Data.Text.Char.t";
-      "string",    "Batteries.Data.Text.String.t";
-      "array",     "Batteries.Data.Mutable.Array.t" ;
-      "lazy_t",    "Batteries.Data.Persistent.Lazy.t";
-      "list",      "Batteries.Data.Persistent.List.t";
-      "option",    "Batteries.Data.Persistent.Option.t";
-      "int32",     "Batteries.Data.Numeric.Int32.t";
-      "int64",     "Batteries.Data.Numeric.Int64.t";
-      "nativeint", "Batteries.Data.Numeric.Nativeint.t";
-      "int",       "Batteries.Data.Numeric.Int.t";(*Module not implemented yet*)
-      "bool",      "Batteries.Data.Logical.Bool.t";(*Module not implemented yet*)
-      (*"unit",    "?"; *) (*Module not implemented yet*)
-      "float",   "Batteries.Data.Logical.Float.t";(*Module not implemented yet*)
+  [   "char",      "Data.Text.Char.t";
+      "string",    "Data.Text.String.t";
+      "array",     "Data.Mutable.Array.t" ;
+      "lazy_t",    "Data.Persistent.Lazy.t";
+      "list",      "Data.Persistent.List.t";
+      "option",    "Data.Persistent.Option.t";
+      "int32",     "Data.Numeric.Int32.t";
+      "int64",     "Data.Numeric.Int64.t";
+      "nativeint", "Data.Numeric.Nativeint.t";
+      "int",       "Data.Numeric.Int.t";
+      "bool",      "Data.Logical.Bool.t";
+      "unit",      "Data.Numeric.Unit.t?";
+      "float",     "Data.Numeric.Float.t";(*Module not implemented yet*)
       (*"exn",     "Batteries.Control.Exceptions.Exn.t";*)(*Module not implemented yet*)
       "format4", "Batteries.Languages.Printf.format4"(*;*)(*Module not implemented yet*)
 ]
@@ -99,9 +99,6 @@ let has_parent a ~parent:b =
 
 (** The list of modules which should appear as roots in the hierarchy. *)
 let roots = ["Batteries"]
-
-(** The list of packs*)
-let packs = ["Extlib"   ]
 
 let merge_info_opt a b =
   verbose ("Merging informations");
@@ -275,14 +272,15 @@ let rebuild_structure modules =
     match t.ma_module with
       | None         -> 
 	  verbose ("I'd like to merge information from "^m.m_name^" and "^t.ma_name^" but I can't find it");
-	  let rec aux = function
-	    | []   -> verbose ("Can't do better")
-	    | h::t -> if Name.prefix h t.ma_name then 
-		let suffix = Name.get_relative h t.ma_name in
+	  t
+	  (*let rec aux = function
+	    | []   -> verbose ("Can't do better"); t
+	    | x::xs -> if Name.prefix x t.ma_name then 
+		let suffix = Name.get_relative x t.ma_name in
 		let info = add_renamed_module ~old:(suffix, m.m_info) ~current:(path, None) in
 		  {(t) with ma_name = suffix}
-	      else aux t
-	  in aux packs
+	      else aux xs
+	  in aux packs*)
       | Some (Mod a) -> 
 (*	  add_renamed_module a.m_name path;*)
 	  verbose ("Merging information from "^m.m_name^" and aliased "^a.m_name);
@@ -316,7 +314,7 @@ let rebuild_structure modules =
 	  {(t) with mta_module = Some ({(a) with mt_name = concat m.m_name a.mt_name; mt_info = info})}
   in
   (*1. Find root modules, i.e. modules which are neither included nor aliased*)
-  let all_roots = Hashtbl.create 100 in
+(*  let all_roots = Hashtbl.create 100 in
     List.iter (fun x -> if Name.father x.m_name = "" then 
 		 (
 (*		   verbose ("Adding "^x.m_name^" to the list of roots");*)
@@ -345,10 +343,10 @@ let rebuild_structure modules =
 					end) all_roots [] in*)
       (*Actually, we're only interested in modules which appear in [roots]*)
       (*Note: we could probably do something much more simple, without resorting
-	to this dependency analysis stuff*)
-  (*let for_rewriting = List.fold_left (fun acc x -> if List.mem x.m_name roots then (x.m_name, x)::acc else acc) [] modules
-    in*)
-    let for_rewriting = Hashtbl.fold (fun k m acc -> (k,m)::acc) all_roots [] in
+	to this dependency analysis stuff*)*)
+  let for_rewriting = List.fold_left (fun acc x -> if List.mem x.m_name roots then (x.m_name, x)::acc else acc) [] modules
+    in
+(*    let for_rewriting = Hashtbl.fold (fun k m acc -> (k,m)::acc) all_roots [] in*)
       (*2. Dive into these*)
     (*let rewritten = Hashtbl.fold (fun name contents acc ->
 		    {(contents) with m_kind = handle_kind name contents contents.m_kind}::acc
@@ -719,12 +717,12 @@ class batlib_generator =
       with e -> Printf.eprintf "%s\n%!" (Printexc.to_string e);
 	  assert false
 
-    method html_of_module b ?info ?complete ?with_link m =
+(*    method html_of_module b ?info ?complete ?with_link m =
       try 
 	verbose ("Generating html for module "^m.m_name);
 	flush_all ();
 	super#html_of_module b ?info ?complete ?with_link m
-      with _ -> assert false 
+      with _ -> assert false *)
 
     method index_prefix = "root"
     (** Generate [index.html], as well as [indices.html] for the given module list*)

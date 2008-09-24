@@ -24,6 +24,8 @@ exception Invalid_string
 
 module String = struct
 
+exception Invalid_string = Invalid_string
+
 include String
 
 let init len f =
@@ -287,4 +289,84 @@ let splice s1 off len s2 =
 let is_empty s = length s = 0 
 
 let compare_without_case s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
+
+module Cap =
+struct
+type 'a t = string
+  constraint 'a = [< `Read | `Write]
+
+let make          = make
+let is_empty      = is_empty
+let init          = init
+let enum          = enum
+let of_enum       = of_enum
+let of_int        = of_int
+let of_float      = of_float
+let of_char       = of_char
+let to_int        = to_int
+let to_float      = to_float
+let map           = map
+let fold_left     = fold_left
+let fold_right    = fold_right
+let iter          = iter
+let index         = index
+let rindex        = rindex
+let index_from    = index_from
+let rindex_from   = rindex_from
+let contains      = contains
+let contains_from = contains_from
+let rcontains_from= rcontains_from
+let find          = find
+let ends_with     = ends_with
+let starts_with   = starts_with
+let exists        = exists
+let lchop         = lchop
+let rchop         = rchop
+let strip         = strip
+let uppercase     = uppercase
+let lowercase     = lowercase
+let capitalize    = capitalize
+let uncapitalize  = uncapitalize
+let copy          = copy
+let sub           = sub
+let fill          = fill
+let blit          = blit
+let concat        = concat
+let escaped       = escaped
+let replace_chars = replace_chars
+let replace       = replace
+let split         = split
+let nsplit        = nsplit
+let join          = join
+let slice         = slice
+let explode       = explode
+let implode       = implode
+let compare       = compare
+let compare_without_case = compare_without_case
+let splice        = splice
+let trim          = trim
+let filter_map    = filter_map
+let of_list       = of_list
+let to_list       = to_list
+
+external of_string : string -> _ t                = "%identity"
+external to_string : [`Read | `Write] t -> string = "%identity"
+external read_only : [> `Read] t -> [`Read] t     = "%identity"
+external write_only: [> `Write] t -> [`Write] t   = "%identity"
+
+external length : _ t  -> int = "%string_length"
+external get : [> `Read] t -> int -> char = "%string_safe_get"
+external set : [> `Write] t -> int -> char -> unit = "%string_safe_set"
+external create : int -> _ t = "caml_create_string"
+external unsafe_get : [> `Read] t -> int -> char = "%string_unsafe_get"
+external unsafe_set : [> `Write] -> int -> char -> unit = "%string_unsafe_set"
+external unsafe_blit :
+  [> `Read] t -> int -> [> `Write] -> int -> int -> unit = "caml_blit_string" "noalloc"
+external unsafe_fill :
+  [> `Write] -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+
 end
+end
+
+
+

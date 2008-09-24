@@ -29,12 +29,13 @@
 
 (** Array operations.
 
-    @documented Data.Mutable.Array
+    @documents Array
 *)
 module Array :
 sig
 
   (**{6 Base operations}*)
+
   external length : 'a array -> int = "%array_length"
     (** Return the length (number of elements) of the given array. *)
 
@@ -56,6 +57,7 @@ sig
 	if [n] is outside the range 0 to [Array.length a - 1]. *)
 
   (**{6 Constructors}*)
+
   external make : int -> 'a -> 'a array = "caml_make_vect"
     (** [Array.make n x] returns a fresh array of length [n],
 	initialized with [x].
@@ -99,6 +101,7 @@ sig
     (** @deprecated [Array.create_matrix] is an alias for {!Array.make_matrix}. *)
 
   (** {6 Iterators}*)
+
   val iter : ('a -> unit) -> 'a array -> unit
   (** [Array.iter f a] applies function [f] in turn to all
     the elements of [a].  It is equivalent to
@@ -130,6 +133,7 @@ sig
     where [n] is the length of the array [a]. *)
 
   (**{6 Operations on two arrays}*)
+
   val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
     (** [Array.iter2 f [|a1; ...; an|] [|b1; ...; bn|]] performs
 	calls [f a1 b1; ...; f an bn] in that order.
@@ -138,6 +142,7 @@ sig
 	length of [a2]. *)
 
   (**{6 Predicates}*)
+
   val for_all : ('a -> bool) -> 'a array -> bool
     (** [for_all p [a1; ...; an]] checks if all elements of the array
 	satisfy the predicate [p].  That is, it returns
@@ -183,6 +188,7 @@ sig
 	The order of the elements in the input array is preserved. *)
 
   (** {6 Array transformations} *)
+
   val rev : 'a array -> 'a array
     (** Array reversal.*)
 
@@ -302,13 +308,18 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
 
       This modules provides the same set of features as {!Array}, but
       with the added twist that arrays can be made read-only or write-only.
+      Read-only arrays may then be safely shared and distributed.
 
       There is no loss of performance involved.
 
   *)
   module Cap :
   sig
-    type ('a, 'b) t constraint 'b = [< `Read | `Write] (**The type of arrays with capabilities*)
+    type ('a, 'b) t constraint 'b = [< `Read | `Write]
+	(**The type of arrays with capabilities.
+	   An [('a, [`Read | `Write])] array behaves as a regular ['a array],
+	   while a [('a, [`Read]) array] only has read-only capabilities
+	   and a [('a, [`Write]) array] only has write-only capabilities.*)
 
     (**{6 Base operations}*)
 
@@ -350,11 +361,30 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
 	(** @deprecated [Array.create] is an alias for {!Array.make}. *)    
 
     external of_array  : 'a array -> ('a, _ ) t = "%identity"
+	(** Adopt a regular array as a capability array, allowing
+	    to decrease capabilities if necessary.
+
+	    This operation involves no copying. In other words, in
+	    [let cap = of_array a in ...], any modification in [a]
+	    will also have effect on [cap] and reciprocally.*)
+
     external to_array  : ('a, [`Read | `Write]) t -> 'a array = "%identity"
+	(** Return a capability array as an array.
+
+	    This operation requires both read and write permissions
+	    on the capability array and involves no copying. In other
+	    words, in [let a = of_array cap in ...], any modification
+	    in [a] will also have effect on [cap] and reciprocally.*)
 
     external read_only :  ('a, [>`Read])  t -> ('a, [`Read])  t = "%identity"
+	(** Drop to read-only permissions.
+
+	    This operation involves no copying.*)
+
     external write_only : ('a, [>`Write]) t -> ('a, [`Write]) t = "%identity"
-	
+	(** Drop to write-only permissions.
+
+	    This operation involves no copying.*)
 
     val init : int -> (int -> 'a) -> ('a, _) t
       (** [Array.init n f] returns a fresh array of length [n],
@@ -366,28 +396,28 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
 	  If the return type of [f] is [float], then the maximum
 	  size is only [Sys.max_array_length / 2].*)
 
-  val make_matrix : int -> int -> 'a -> (('a, _)t, _) t
-    (** [Array.make_matrix dimx dimy e] returns a two-dimensional array
-	(an array of arrays) with first dimension [dimx] and
-	second dimension [dimy]. All the elements of this new matrix
-	are initially physically equal to [e].
-	The element ([x,y]) of a matrix [m] is accessed
-	with the notation [m.(x).(y)].
-	
-	Raise [Invalid_argument] if [dimx] or [dimy] is negative or
-	greater than [Sys.max_array_length].
-	If the value of [e] is a floating-point number, then the maximum
-	size is only [Sys.max_array_length / 2]. *)
-    
-  val create_matrix : int -> int -> 'a ->  (('a, _)t, _) t
-    (** @deprecated [Array.create_matrix] is an alias for {!Array.make_matrix}. *)
-
+    val make_matrix : int -> int -> 'a -> (('a, _)t, _) t
+      (** [Array.make_matrix dimx dimy e] returns a two-dimensional array
+	  (an array of arrays) with first dimension [dimx] and
+	  second dimension [dimy]. All the elements of this new matrix
+	  are initially physically equal to [e].
+	  The element ([x,y]) of a matrix [m] is accessed
+	  with the notation [m.(x).(y)].
+	  
+	  Raise [Invalid_argument] if [dimx] or [dimy] is negative or
+	  greater than [Sys.max_array_length].
+	  If the value of [e] is a floating-point number, then the maximum
+	  size is only [Sys.max_array_length / 2]. *)
+      
+    val create_matrix : int -> int -> 'a ->  (('a, _)t, _) t
+      (** @deprecated [Array.create_matrix] is an alias for {!Array.make_matrix}. *)
+      
     (** {6 Iterators}*)
     val iter : ('a -> unit) -> ('a, [> `Read]) t -> unit
       (** [Array.iter f a] applies function [f] in turn to all
 	  the elements of [a].  It is equivalent to
 	  [f a.(0); f a.(1); ...; f a.(Array.length a - 1); ()]. *)
-
+      
     val map : ('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
       (** [Array.map f a] applies function [f] to all the elements of [a],
 	  and builds an array with the results returned by [f]:
@@ -445,61 +475,61 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
       (** Same as {!Array.mem} but uses physical equality instead of
 	  structural equality to compare array elements.  *)
       
-  val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
-    (** [findi p a] returns the index of the first element of array [a]
-	that satisfies the predicate [p].
-	Raise [Not_found] if there is no value that satisfies [p] in the
-	array [a].  *)
-
-  val filter : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
-    (** [filter p a] returns all the elements of the array [a]
-	that satisfy the predicate [p].  The order of the elements
-	in the input array is preserved.  *)
-
-  val find_all : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
-    (** [find_all] is another name for {!Array.filter}. *)
-
-  val partition : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t * ('a, _)t
-    (** [partition p a] returns a pair of arrays [(a1, a2)], where
-	[a1] is the array of all the elements of [a] that
-	satisfy the predicate [p], and [a2] is the array of all the
-	elements of [a] that do not satisfy [p].
-	The order of the elements in the input array is preserved. *)
-
-  (** {6 Array transformations} *)
-  val rev : ('a, [> `Read]) t -> ('a, _) t
-    (** Array reversal.*)
-
-  val rev_in_place : ('a, [`Read | `Write]) t -> unit
-    (** In-place array reversal.  The array argument is updated. *)
-
-  val append : ('a, [> `Read]) t ->  ('a, [> `Read]) t -> ('a, _) t
-    (** [Array.append v1 v2] returns a fresh array containing the
-	concatenation of the arrays [v1] and [v2]. *)
-    
-  val concat : ('a, [> `Read]) t list -> ('a, _) t
-    (** Same as [Array.append], but concatenates a list of arrays. *)
-    
-  val sub : ('a, [> `Read]) t -> int -> int -> ('a, _) t
-    (** [Array.sub a start len] returns a fresh array of length [len],
-	containing the elements number [start] to [start + len - 1]
-	of array [a].
-	
-	Raise [Invalid_argument "Array.sub"] if [start] and [len] do not
-	designate a valid subarray of [a]; that is, if
-	[start < 0], or [len < 0], or [start + len > Array.length a]. *)
-    
-  val copy : ('a, [> `Read]) t -> 'a array
-    (** [Array.copy a] returns a copy of [a], that is, a fresh array
-	containing the same elements as [a]. *)
-    
-  val fill : ('a, [> `Write]) t -> int -> int -> 'a -> unit
-    (** [Array.fill a ofs len x] modifies the array [a] in place,
-	storing [x] in elements number [ofs] to [ofs + len - 1].
-	
-	Raise [Invalid_argument "Array.fill"] if [ofs] and [len] do not
-	designate a valid subarray of [a]. *)
-
+    val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
+      (** [findi p a] returns the index of the first element of array [a]
+	  that satisfies the predicate [p].
+	  Raise [Not_found] if there is no value that satisfies [p] in the
+	  array [a].  *)
+      
+    val filter : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
+      (** [filter p a] returns all the elements of the array [a]
+	  that satisfy the predicate [p].  The order of the elements
+	  in the input array is preserved.  *)
+      
+    val find_all : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
+      (** [find_all] is another name for {!Array.filter}. *)
+      
+    val partition : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t * ('a, _)t
+      (** [partition p a] returns a pair of arrays [(a1, a2)], where
+	  [a1] is the array of all the elements of [a] that
+	  satisfy the predicate [p], and [a2] is the array of all the
+	  elements of [a] that do not satisfy [p].
+	  The order of the elements in the input array is preserved. *)
+      
+    (** {6 Array transformations} *)
+    val rev : ('a, [> `Read]) t -> ('a, _) t
+      (** Array reversal.*)
+      
+    val rev_in_place : ('a, [`Read | `Write]) t -> unit
+      (** In-place array reversal.  The array argument is updated. *)
+      
+    val append : ('a, [> `Read]) t ->  ('a, [> `Read]) t -> ('a, _) t
+      (** [Array.append v1 v2] returns a fresh array containing the
+	  concatenation of the arrays [v1] and [v2]. *)
+      
+    val concat : ('a, [> `Read]) t list -> ('a, _) t
+      (** Same as [Array.append], but concatenates a list of arrays. *)
+      
+    val sub : ('a, [> `Read]) t -> int -> int -> ('a, _) t
+      (** [Array.sub a start len] returns a fresh array of length [len],
+	  containing the elements number [start] to [start + len - 1]
+	  of array [a].
+	  
+	  Raise [Invalid_argument "Array.sub"] if [start] and [len] do not
+	  designate a valid subarray of [a]; that is, if
+	  [start < 0], or [len < 0], or [start + len > Array.length a]. *)
+      
+    val copy : ('a, [> `Read]) t -> 'a array
+      (** [Array.copy a] returns a copy of [a], that is, a fresh array
+	  containing the same elements as [a]. *)
+      
+    val fill : ('a, [> `Write]) t -> int -> int -> 'a -> unit
+      (** [Array.fill a ofs len x] modifies the array [a] in place,
+	  storing [x] in elements number [ofs] to [ofs + len - 1].
+	  
+	  Raise [Invalid_argument "Array.fill"] if [ofs] and [len] do not
+	  designate a valid subarray of [a]. *)
+      
   val blit : ('a, [> `Read]) t -> int -> ('a, [>`Write]) t -> int -> int -> unit
     (** [Array.blit v1 o1 v2 o2 len] copies [len] elements
 	from array [v1], starting at element number [o1], to array [v2],

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** The root of OCaml, Batteries Included.*)
+(** The root of the revised standard library.*)
 
 (** Tools for changing the control flow of a program, from error-management to concurrency.*)
 module Control     = struct
@@ -47,7 +47,6 @@ module Data        = struct
       module Array         = Extlib.ExtArray.Array
       module ArrayLabels   = Batlib_Baselib_ArrayLabels
       module Bigarray      = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
-      module BitSet        = Extlib.BitSet
       module Dynarray      = Extlib.DynArray
       module Enum          = Extlib.Enum
       module Global        = Extlib.Global
@@ -191,14 +190,14 @@ module Meta        = struct
     
 end
 
-(** Automatically opened module. *) 
+(*(** Automatically opened module. *) 
 module Standard    = struct
   include Batlib_Baselib_Pervasives
   include Extlib.Std
   let (@) = Extlib.ExtList.(@)
 (* Thelema: Why not just include these in the toplevel batteries module? *)
 (* Yoric: We also do that. Probably not a good idea to have both, though.*)
-end
+end*)
 
 (** Interactions with the operating system (file manipulation, arguments...) *)
 module System      = struct 
@@ -218,7 +217,7 @@ module System      = struct
   module File          = Extlib.File
   module Filename      = Batlib_Baselib_Filename
   module Unix          = Batlib_Baselib_Unix
-  module UnixLabel     = Batlib_Baselib_UnixLabels
+  module UnixLabels    = Batlib_Baselib_UnixLabels
   module Sys           = Batlib_Baselib_Sys
     
   (** {1 Networking}*)
@@ -244,3 +243,60 @@ module Util        = struct
   module Random = Batlib_Baselib_Random
 end
 
+(**/**)
+module Condition = struct include Control.Concurrency.Threads.Condition end
+module Event     = struct include Control.Concurrency.Threads.Event end
+module Mutex     = struct include Control.Concurrency.Threads.Mutex end
+module Thread    = struct include Control.Concurrency.Threads.Thread end
+module Array     = struct include Data.Mutable.Array end
+module ArrayLabels=struct include Data.Mutable.ArrayLabels end
+module Bigarray  = struct include Data.Mutable.Bigarray end
+module Hashtbl   = struct include Data.Mutable.Hashtbl end
+module Queue     = struct include Data.Mutable.Queue end
+module Stack     = struct include Data.Mutable.Stack end
+module Stream    = struct include Data.Mutable.Stream end
+module Lazy      = struct include Data.Persistent.Lazy end
+module List      = struct include Data.Persistent.List end
+module ListLabels= struct include Data.Persistent.ListLabels end
+module Map       = struct include Data.Persistent.Map end
+module MapLabels = struct include Data.Persistent.MapLabels end
+module Set       = struct include Data.Persistent.Set end
+module SetLabels = struct include Data.Persistent.SetLabels end
+module Big_int   = struct include Data.Numeric.Big_int end
+module Complex   = struct include Data.Numeric.Complex end
+module Int32     = struct include Data.Numeric.Int32 end
+module Int64     = struct include Data.Numeric.Int64 end
+module Num       = struct include Data.Numeric.Num end
+module Buffer    = struct include Data.Text.Buffer end
+module Char      = struct include Data.Text.Char end
+module String    = struct include Data.Text.String end
+module StringLabels = struct include Data.Text.StringLabels end
+module Genlex    = struct include Languages.Genlex end
+module Lexing    = struct include Languages.Lexing end
+module Parsing   = struct include Languages.Parsing end
+module Scanf     = struct include Languages.Scanf end
+module Str       = struct include Languages.Str end
+module Format    = struct include Languages.Format end
+module Printexc  = struct include Languages.Printexc end
+module Printf    = struct include Languages.Printf end
+module Marshal   = struct include Meta.Marshal end
+module Oo        = struct include Meta.Oo end
+module Callback  = struct include Meta.Callback end
+module Gc        = struct include Meta.Gc end
+module Weak      = struct include Meta.Weak end
+module Obj       = struct include Meta.Obj end
+module CamlinternalMod = struct include Meta.CamlinternalMod end
+module CamlinternalOO  = struct include Meta.CamlinternalOO end
+module Arg       = struct include System.Arg end
+module Filename  = struct include System.Filename end
+module Unix      = struct include System.Unix end
+module UnixLabels= struct include System.UnixLabels end
+module Sys       = struct include System.Sys end
+module Random    = struct include Util.Random end
+(**/**)
+
+
+include Batlib_Baselib_Pervasives
+include Extlib.Enum
+include Extlib.Std
+let (@) = Extlib.ExtList.(@)

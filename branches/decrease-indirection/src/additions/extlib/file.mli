@@ -59,11 +59,11 @@ type open_in_flag =
 		 opened in binary mode.                                     *)
   | `nonblock (**Open in non-blocking mode                                  *)]
 
-val open_file_in : ?mode:(open_in_flag list) -> ?perm:permission -> string -> input
-(** [open_file_in file_name] opens the file named [file_name] for reading.
+val open_in : ?mode:(open_in_flag list) -> ?perm:permission -> string -> input
+(** [open_in file_name] opens the file named [file_name] for reading.
 
     {b Note} You will need to close the file manually. An alternative is
-    to call [with_file_in] instead of [open_file_in].
+    to call [with_file_in] instead of [open_in].
 
     Naming conventions for files are platform-dependent.*)
 
@@ -85,11 +85,11 @@ type open_out_flag =
   | `nonblock (**Open in non-blocking mode                                  *) ]
 
 
-val open_file_out : ?mode:(open_out_flag list) -> ?perm:permission -> string -> unit output
-(** [open_file_in file_name] opens the file named [file_name] for writing.
+val open_out : ?mode:(open_out_flag list) -> ?perm:permission -> string -> unit output
+(** [open_out file_name] opens the file named [file_name] for writing.
 
     {b Note} You will need to close the file manually. An alternative is
-    to call [with_file_out] instead of [open_file_out].
+    to call [with_file_out] instead of [open_out].
 
     Naming conventions for files are platform-dependent.*)
 

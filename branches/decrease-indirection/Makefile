@@ -18,6 +18,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+MLI=src/additions/extlib.mli
 
 all: byte doc
 
@@ -35,25 +36,24 @@ opt: batteries.cmxa
 #batteries_layer_1.cma: batteries_layer_1.mllib
 #	ocamlbuild batteries_layer_1.cma
 
-batteries.cma:
+batteries.cma: extlib.cmi
 	ocamlbuild batteries.cma
 
 #batteries_layer_1.cmxa: batteries_layer_1.mllib
 #	ocamlbuild batteries_layer_1.cmxa
 
-batteries.cmxa:
+batteries.cmxa: extlib.cmi
 	ocamlbuild batteries.cmxa
 
-MLI=src/additions/extlib.mli
+extlib.cmi: $(MLI)
+	ocamlbuild extlib.cmi
 
-doc: doc/api.odocl
-#	\rm -f $(MLI) &&\
-#	for i in src/additions/extlib/*.mli; do \
-#		j=`basename $$i .mli` &&\
-#		echo "module `ocaml build/tools.ml --capit $$j` : sig" >> $(MLI) ;\
-#		cat $$i >> $(MLI) ;\
-#		echo "end" >> $(MLI) ;\
-#	done 
+$(MLI): build/packdoc.ml
+	ocamlbuild build/packdoc.byte &&\
+	./packdoc.byte -i _build/src/additions/extlib/ -o $(MLI) -pack Extlib &&\
+	cp $(MLI) _build/$(MLI)
+
+doc: batteries.cma doc/api.odocl
 	\rm -Rf doc/batteries/html/api &&\
 	ocamlbuild doc/api.docdir/index.html &&\
 	rm api.docdir &&\
@@ -61,7 +61,8 @@ doc: doc/api.odocl
 
 doc/api.odocl: list
 #	echo Batteries > doc/api.odocl
-	cat batteries.mllib > doc/api.odocl
+	echo Extlib >  doc/api.odocl
+	cat batteries.mllib >> doc/api.odocl
 
 #
 #Generate the list of modules we intend to put into batlib.cma
@@ -88,6 +89,6 @@ uninstall:
 clean:
 	ocamlbuild -clean &&\
 	\rm -f `find . -name "*~" -o -name "*#"` &&\
-	\rm -f META batteries.mllib doc/api.odocl
+	\rm -f META batteries.mllib doc/api.odocl $(MLI)
 
 .PHONY: batteries.mllib doc/api.odocl

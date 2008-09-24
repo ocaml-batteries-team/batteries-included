@@ -131,4 +131,5 @@ module Hashtbl =
 	let length h =
 		(h_conv h).size
 
+	let is_empty h = length h = 0
   end

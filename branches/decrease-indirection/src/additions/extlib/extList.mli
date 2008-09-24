@@ -42,7 +42,9 @@
 module List :
     sig
 
-      (** List operations.  *)
+      (** List operations.  
+
+	  @documents List *)
 
 
       (**{6 Base operations}*)

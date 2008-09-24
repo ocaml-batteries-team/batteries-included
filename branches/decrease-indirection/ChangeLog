@@ -1,3 +1,15 @@
+09/24/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* build/packdoc.ml: created
+	* Makefile: now uses build/packdoc
+	* batteries.ml: [Standard] removed
+	* batteries.ml: root now includes the former contents of [Standard]
+	* odoc_generator_batlib.ml: 
+	* extString.ml?: [Cap] created
+	* extString.mli: [to_list], [of_list], [splice], [trim],
+	[compare_without_case] added
+	* batteries.ml: root now defines replacements for modules from
+	the base library
+	
 09/23/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* extArray.ml*: [ROArray] removed
 	* extArray.ml*: [Cap] created

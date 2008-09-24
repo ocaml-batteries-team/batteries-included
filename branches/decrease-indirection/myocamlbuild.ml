@@ -105,9 +105,9 @@ struct
     flag ["ocaml"; "docfile";        "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
+(*    dep  ["ocaml"; "doc";            "genera"
 
-
-    ocaml_lib "./batteries_layer_1"
+    ocaml_lib "./batteries_layer_1"*)
 end
 
 let _ = dispatch begin function

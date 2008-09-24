@@ -8,3 +8,5 @@
 <doc/api.docdir/index.html>:pkg_threads,use_ocamldoc_info
 <batteries.cma>: pkg_threads,use_ocamldoc_info
 <batteries.cmxa>:pkg_threads,use_ocamldoc_info
+
+<build/packdoc.byte>:pkg_num,pkg_bigarray,pkg_str,pkg_findlib,pkg_threads

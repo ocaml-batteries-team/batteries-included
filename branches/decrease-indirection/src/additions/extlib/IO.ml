@@ -402,6 +402,9 @@ let pipe() =
 
 external cast_output : 'a output -> unit output = "%identity"
 
+
+  
+
 (**
    {6 Binary APIs}
 *)
@@ -1518,16 +1521,16 @@ let printf = Printf.fprintf
 *)
 
 let make_list_printer (p:('a output -> 'b -> unit)) 
-                      (a:string)
-		      (b:string)
-		      (s:string)
+                      (start:   string)
+		      (finish:  string)
+		      (separate:string)
 		      (out:'a output)
-		      (l:'b list) = 
+		      (l:  'b list  ) = 
   let rec aux out l = match l with
   | []    -> ()
   | [h]   -> p out h
-  | h::t  -> printf out "%a%s%a" p h s aux t
-  in printf out "%s%a%s" a aux l b
+  | h::t  -> printf out "%a%s%a" p h separate aux t
+  in printf out "%s%a%s" start aux l finish
 
 
 
@@ -1563,3 +1566,5 @@ let lmargin n p out x =
   p (tab_out n out) x
 
 let combine = comb
+
+let feed input output = write_line_enum output (lines_of input) 

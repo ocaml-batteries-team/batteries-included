@@ -173,6 +173,9 @@ val pipe : unit -> input * unit output
 (** Create a pipe between an input and an ouput. Data written from
   the output can be read from the input. *)
 
+val feed : input -> _ output -> unit
+(** Read everything from an input and feed it to an output.*)
+
 val pos_in : input -> input * (unit -> int)
 (** Create an input that provide a count function of the number of bytes
   read from it. *)

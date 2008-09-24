@@ -21,8 +21,7 @@
 
 
 module Char : sig
-
-(** Character operations. *)
+(** Operations on characters. *)
 
 external code : char -> int = "%identity"
 (** Return the ASCII code of the argument. *)

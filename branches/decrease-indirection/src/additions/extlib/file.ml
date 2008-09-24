@@ -45,7 +45,7 @@ type open_out_flag =
   | `nonblock (**Open in non-blocking mode                                  *) ]
 
 
-let open_file_out ?mode ?(perm=default_permission) f =
+let open_out ?mode ?(perm=user_read lor user_write) f =
   let mode_to_open_flag l =
     let rec aux acc is_binary = function
     | []           -> if is_binary then Open_binary::acc 
@@ -59,12 +59,12 @@ let open_file_out ?mode ?(perm=default_permission) f =
     in aux [] true l
   in
   let chan_mode = match mode with
-    | None   -> [Open_wronly; Open_binary]
+    | None   -> [Open_wronly; Open_binary; Open_creat]
     | Some l -> mode_to_open_flag l
   in
   output_channel (open_out_gen chan_mode perm f)
 
-let open_file_in ?mode ?(perm=default_permission) f =
+let open_in ?mode ?(perm=default_permission) f =
   let mode_to_open_flag l =
     let rec aux acc is_binary = function
     | []           -> if is_binary then Open_binary::acc 
@@ -85,6 +85,6 @@ let with_do opener closer x f =
   let file = opener x in
     Std.finally (fun () -> closer file) f file
  
-let with_file_in  ?mode ?perm  x = with_do (open_file_in  ?mode ?perm) close_in x
-let with_file_out ?mode ?perm  x = with_do (open_file_out ?mode ?perm) close_out x
+let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
+let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
 
