@@ -55,6 +55,7 @@ external create : int -> string = "caml_create_string"
 *)
 
 (** {6 Constructors}*)
+
 val make : int -> char -> string
 (** [String.make n c] returns a fresh string of length [n],
    filled with the character [c].
@@ -89,6 +90,7 @@ val to_float : string -> float
       raises Invalid_string if the string does not represent a float. *)
 
 (** {6 String traversals}*)
+
 val map : (char -> char) -> string -> string
   (** [map f s] returns a string where all characters [c] in [s] have been
       replaced by [f c]. **)
@@ -107,6 +109,7 @@ val iter : (char -> unit) -> string -> unit
 
 
 (** {6 Finding}*)
+
 val index : string -> char -> int
 (** [String.index s c] returns the position of the leftmost
    occurrence of character [c] in string [s].

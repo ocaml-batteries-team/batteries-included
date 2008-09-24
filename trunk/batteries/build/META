@@ -1,7 +1,7 @@
 name="batteries"
 version="0.1"
 description="Batteries Included, standard distribution of OCaml libraries"
-requires="num,bigarray,threads,extlib,str,findlib"
+requires="num,bigarray,threads,str,findlib"
 
 archive(byte)  ="batteries.cma"
 archive(native)="batteries.cmxa"

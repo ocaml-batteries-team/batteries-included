@@ -250,8 +250,12 @@ let input_string s =
 		in_close = (fun () -> ());
 	}
 
+let default_buffer_size = 16 (*Arbitrary number. If you replace it, just
+			       don't put something too small, i.e. anything
+			       smaller than 10 is probably a bad idea.*)
+
 let output_string() =
-	let b = Buffer.create 0 in
+	let b = Buffer.create default_buffer_size in
 	{
 		out_write = (fun c ->
 			Buffer.add_char b c
@@ -324,7 +328,7 @@ let input_enum e =
 	}
 
 let output_enum() =
-	let b = Buffer.create 0 in
+	let b = Buffer.create default_buffer_size in
 	{
 		out_write = (fun x ->
 			Buffer.add_char b x
@@ -356,7 +360,7 @@ let comb (a,b) =
 let pipe() =
 	let input = ref "" in
 	let inpos = ref 0 in
-	let output = Buffer.create 0 in
+	let output = Buffer.create default_buffer_size in
 	let flush() =
 		input := Buffer.contents output;
 		inpos := 0;
@@ -893,7 +897,7 @@ let strings_of input      = Enum.from (fun () -> apply_enum read_string input)
 let lines_of input        = Enum.from (fun () -> apply_enum read_line input)
 
 
-let buffer_size = 1024
+let buffer_size = 1024 (*Arbitrary number.*)
 
 let chars_of the_input = Enum.concat (Enum.from (fun () -> 
    apply_enum (fun source -> String.enum (nread source buffer_size)) the_input))

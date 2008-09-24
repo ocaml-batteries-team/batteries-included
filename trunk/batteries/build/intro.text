@@ -1,4 +1,4 @@
-Welcome to OCaml Batteries Included release 0.1.
+Welcome to OCaml Batteries Included preview of 4 release 0.1.
 
 Batteries Included is an effort to develop a comprehensive,
 decentralized yet unified open-source standard library for OCaml.
@@ -18,8 +18,8 @@ For the moment, Batteries Included concentrates on:
 
 Future versions will progressively add (not necessarily in that order):
 {ul
-{- {{:http://ocaml-reins.sourceforge.net}More data structures}}
 {- {{:http://camomile.sourceforge.net/}Unicode}}
+{- {{:http://ocaml-reins.sourceforge.net}More data structures}}
 {- {{:http://www.camlcity.org/archive/programming/pxp.html}XML} and {{:http://caml.inria.fr/cgi-bin/hump.en.cgi?contrib=552}JSON}}
 {- {{:http://caml.inria.fr/pub/old_caml_site/humps/caml_Graphics_and_GUI_tool_kits.html}User interfaces}}
 {- {{:http://ocsigen.org/lwt} More concurrency} and {{:http://cothreads.sourceforge.net/}even more concurrency}}
