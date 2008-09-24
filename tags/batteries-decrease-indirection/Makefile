@@ -44,7 +44,16 @@ batteries.cma:
 batteries.cmxa:
 	ocamlbuild batteries.cmxa
 
+MLI=src/additions/extlib.mli
+
 doc: doc/api.odocl
+#	\rm -f $(MLI) &&\
+#	for i in src/additions/extlib/*.mli; do \
+#		j=`basename $$i .mli` &&\
+#		echo "module `ocaml build/tools.ml --capit $$j` : sig" >> $(MLI) ;\
+#		cat $$i >> $(MLI) ;\
+#		echo "end" >> $(MLI) ;\
+#	done 
 	\rm -Rf doc/batteries/html/api &&\
 	ocamlbuild doc/api.docdir/index.html &&\
 	rm api.docdir &&\

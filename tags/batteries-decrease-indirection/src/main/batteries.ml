@@ -40,11 +40,11 @@ end
 
 (** Data structures*)
 module Data        = struct
-  (** Containers *)
-  module Containers  = struct
+
+
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
-      module Array         = Extlib.ExtArray.Array         (*formerly Batlib_Baselib_Array*)
+      module Array         = Extlib.ExtArray.Array
       module ArrayLabels   = Batlib_Baselib_ArrayLabels
       module Bigarray      = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
       module BitSet        = Extlib.BitSet
@@ -79,7 +79,7 @@ module Data        = struct
    structure [('a, [< `Read | `Write]) t], identical to ['a array]
    but such that elements of [('a, [`Read]) t] may not be modified.
 *)
-    end
+
   end
     
   (** Boolean and bit-oriented data structures *)
@@ -99,6 +99,7 @@ module Data        = struct
     module Native_int  = Extlib.ExtNativeint.Nativeint
     module Num         = Extlib.ExtNum.Num
     module Safe_int    = Extlib.ExtInt.SafeInt
+    module Unit        = Extlib.ExtUnit.Unit
   end
     
   (** Text data structures. *)

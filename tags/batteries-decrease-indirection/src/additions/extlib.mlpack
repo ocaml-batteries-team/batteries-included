@@ -22,6 +22,7 @@ ExtNum
 ExtRandom
 ExtStream
 ExtString
+ExtUnit
 File
 Global
 IO

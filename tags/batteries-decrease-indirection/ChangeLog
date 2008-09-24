@@ -2,6 +2,14 @@
 	* extArray.ml*: [ROArray] removed
 	* extArray.ml*: [Cap] created
 	* extArray.ml*: [make_compare] added
+	* extArray.ml: [Array] not inlined anymore
+	* odoc_generator_batlib.ml: [get_manual_replacement] now returns a list of replacements
+	* odoc_generator_batlib.ml: in [generate_elements_index], [f_group] now checks if [Name.simple (name e)]
+	contains at least one character.
+	* extUnit.ml*: added
+	* extlib.mlpack: added [ExtUnit]
+	* batteries.ml: removed layer [Containers]
+	* batteries.ml: added [ExtUnit]
 	
 09/22/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* main/*.ml: merged into main/batteries.ml

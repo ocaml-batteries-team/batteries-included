@@ -22,17 +22,17 @@
 
 (** Additional and modified functions for arrays.
 
-	The OCaml standard library provides a module of array functions.
-	This ExtArray module can be used to override the Array module or
-	as a standalone module. It provides some additional functions.
+    The OCaml standard library provides a module of array functions.
+    This ExtArray module can be used to override the Array module or
+    as a standalone module. It provides some additional functions.
 *)
 
+(** Array operations.
+
+    @documented Data.Mutable.Array
+*)
 module Array :
 sig
-
-  (** Array operations.
-
-      @documents Batteries.Data.Containers.Mutable.Array*)
 
   (**{6 Base operations}*)
   external length : 'a array -> int = "%array_length"
@@ -293,17 +293,25 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
   (**/**)
   (** {6 Undocumented functions} *)
     
-  external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
+  external unsafe_get : 'a array -> int -> 'a         = "%array_unsafe_get"
   external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
 
   (**/**)
 
-  (** Capabilities for arrays*)
+  (** Capabilities for arrays.
+
+      This modules provides the same set of features as {!Array}, but
+      with the added twist that arrays can be made read-only or write-only.
+
+      There is no loss of performance involved.
+
+  *)
   module Cap :
   sig
-    type ('a, 'b) t 
+    type ('a, 'b) t constraint 'b = [< `Read | `Write] (**The type of arrays with capabilities*)
 
     (**{6 Base operations}*)
+
     external length : ('a, [> ]) t -> int = "%array_length"
 	(** Return the length (number of elements) of the given array. *)
       

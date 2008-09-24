@@ -22,6 +22,7 @@
 (*From OCamlDoc*)
 open Odoc_info;;
 module Naming = Odoc_html.Naming
+module Name   = Odoc_name
 open Odoc_info.Value
 open Odoc_info.Module
 open Odoc_info.Type
@@ -68,10 +69,10 @@ let new_buf () = Buffer.create 1024
 let primitive_types_names =
   [   "char",      "Batteries.Data.Text.Char.t";
       "string",    "Batteries.Data.Text.String.t";
-      "array",     "Batteries.Data.Containers.Mutable.Array.t" ;
-      "lazy_t",    "Batteries.Data.Containers.Persistent.Lazy.t";
-      "list",      "Batteries.Data.Containers.Persistent.List.t";
-      "option",    "Batteries.Data.Containers.Persistent.Option.t";
+      "array",     "Batteries.Data.Mutable.Array.t" ;
+      "lazy_t",    "Batteries.Data.Persistent.Lazy.t";
+      "list",      "Batteries.Data.Persistent.List.t";
+      "option",    "Batteries.Data.Persistent.Option.t";
       "int32",     "Batteries.Data.Numeric.Int32.t";
       "int64",     "Batteries.Data.Numeric.Int64.t";
       "nativeint", "Batteries.Data.Numeric.Nativeint.t";
@@ -99,6 +100,9 @@ let has_parent a ~parent:b =
 (** The list of modules which should appear as roots in the hierarchy. *)
 let roots = ["Batteries"]
 
+(** The list of packs*)
+let packs = ["Extlib"   ]
+
 let merge_info_opt a b =
   verbose ("Merging informations");
   verbose ("1: "^(string_of_info_opt a));
@@ -109,18 +113,31 @@ let merge_info_opt a b =
 
 (** {1 Actual rewriting}*)
 
-(**Find out if a set if information specifies a manual module replacement*)
-let get_manual_replacement = function
-  | None   ->  None
+(**Find out if information specifies a manual module replacement*)
+let get_documents = function
+  | None   -> []
   | Some i -> 
-      try match List.assoc "documents" i.i_custom with
-	| []      -> 
-	    None
-	| [Raw s] -> 
-	    Some s
-	| h::_ as x-> warning ("Weird replacement "^(string_of_text x)); Some (string_of_text x)
-      with Not_found -> 
-	None
+      List.fold_left (fun acc x -> match x with 
+			| ("documents", [Raw s]) -> 
+			    verbose ("This module documents "^s);
+			    s::acc
+			| ("documents", x      ) -> 
+			    warning ("Weird documents "^(string_of_text x)); 
+			    (string_of_text x)::acc 
+			| _ -> acc) [] i.i_custom
+
+let get_documented = function
+  | None   -> []
+  | Some i -> 
+      List.fold_left (fun acc x -> match x with 
+			| ("documented", [Raw s]) -> 
+			    verbose ("This module should take its place as "^s);
+			    s::acc
+			| ("documented", x      ) -> 
+			    warning ("Weird documented "^(string_of_text x)); 
+			    (string_of_text x)::acc 
+			| _ -> acc) [] i.i_custom
+
 
 let module_dependencies m =
   let rec handle_kind acc = function
@@ -227,17 +244,24 @@ let rebuild_structure modules =
 	      [y]
   and handle_module path m t      = 
     let path' = concat path (Name.simple t.m_name) in
+      verbose ("Visiting module "^t.m_name^" from "^m.m_name^", at path "^path');
     let result = 
       {(t) with 
 	 m_kind = handle_kind path' t t.m_kind; 
 	 m_name = path'} in
-      verbose ("Visiting module "^m.m_name);
       result.m_info <- add_renamed_module ~old:(t.m_name,t.m_info) ~current:(path',None);
-      (match get_manual_replacement t.m_info with
-	 | None   -> verbose ("No replacement for module "^t.m_name)
-	 | Some r -> 
-	     verbose ("Manual replacement of module "^r^" with "^path');
-	     result.m_info <- add_renamed_module ~old:(r,None) ~current:(path',result.m_info));
+      (match get_documents t.m_info with
+	 | [] -> verbose ("No documents for module "^t.m_name)
+	 | l  -> 
+	     List.iter (fun r ->
+			  verbose ("Manual documents of module "^r^" with "^path');
+			  result.m_info <- add_renamed_module ~old:(r,None) ~current:(path',result.m_info)) l);
+      (match get_documented t.m_info with
+	 | [] -> verbose ("No documents for module "^t.m_name)
+	 | l  -> 
+	     List.iter (fun r ->
+			  verbose ("Manual documents of module "^r^" with "^path');
+			  result.m_info <- add_renamed_module ~current:(r,None) ~old:(path',result.m_info)) l);
       result
   and handle_module_type path m (t:Odoc_module.t_module_type) =
     let path' = concat path (Name.simple t.mt_name) in
@@ -249,7 +273,16 @@ let rebuild_structure modules =
 	result
   and handle_alias path m (t:module_alias) : module_alias     = (*Module [m] is an alias to [t.ma_module]*)
     match t.ma_module with
-      | None         -> t
+      | None         -> 
+	  verbose ("I'd like to merge information from "^m.m_name^" and "^t.ma_name^" but I can't find it");
+	  let rec aux = function
+	    | []   -> verbose ("Can't do better")
+	    | h::t -> if Name.prefix h t.ma_name then 
+		let suffix = Name.get_relative h t.ma_name in
+		let info = add_renamed_module ~old:(suffix, m.m_info) ~current:(path, None) in
+		  {(t) with ma_name = suffix}
+	      else aux t
+	  in aux packs
       | Some (Mod a) -> 
 (*	  add_renamed_module a.m_name path;*)
 	  verbose ("Merging information from "^m.m_name^" and aliased "^a.m_name);
@@ -282,42 +315,25 @@ let rebuild_structure modules =
 	  let info = Odoc_merge.merge_info_opt Odoc_types.all_merge_options m.m_info a.mt_info in
 	  {(t) with mta_module = Some ({(a) with mt_name = concat m.m_name a.mt_name; mt_info = info})}
   in
-  (*let first_pass = List.map (fun m -> 
-			       if Name.father m.m_name <> "" then 
-				 (
-				   verbose ("Will deal with module "^m.m_name^" later");
-				   m (*Toplevel module*)
-				 )
-			       else 
-				 (
-				   verbose ("Diving at module "^m.m_name);
-				   {(m) with m_kind = handle_kind m m.m_kind}
-				 )
-			    )modules in
-    List.map (fun m -> m) first_pass*)
-
-  (*let dependencies = List.fold_left (fun acc m -> acc @ m.m_top_deps) [] modules in
-    List.iter (fun x -> *)
   (*1. Find root modules, i.e. modules which are neither included nor aliased*)
-(*  let all_roots = Hashtbl.create 100 in
+  let all_roots = Hashtbl.create 100 in
     List.iter (fun x -> if Name.father x.m_name = "" then 
 		 (
-		   verbose ("Adding "^x.m_name^" to the list of roots");
+(*		   verbose ("Adding "^x.m_name^" to the list of roots");*)
 		   Hashtbl.add all_roots x.m_name x
-		 ) else
-		   verbose ("Not adding "^x.m_name^" to the list of roots")
+		 ) (*else
+		   verbose ("Not adding "^x.m_name^" to the list of roots")*)
 	      ) modules;
 
-    (**TODO: instead of iterating x.m_top_deps, need to go deep into the
-       module to find out all deep dependencies*)
+
     List.iter (fun x -> 
 		    begin
-		      List.iter (fun y -> verbose(" removing "^y);
+		      List.iter (fun y -> (*verbose(" removing "^y^" which is brought out by "^x.m_name);*)
 				   Hashtbl.remove all_roots y
 				) (*x.m_top_deps*) (module_dependencies x)
 		    end)  modules;
     Hashtbl.iter (fun name _ -> verbose ("Root: "^name)) all_roots;
-    let for_rewriting = Hashtbl.fold (fun k m acc -> if List.mem k roots then 
+    (*let for_rewriting = Hashtbl.fold (fun k m acc -> if List.mem k roots then 
 					begin
 					  verbose ("Rewriting: " ^k);
 					  (k,m)::acc 
@@ -330,8 +346,9 @@ let rebuild_structure modules =
       (*Actually, we're only interested in modules which appear in [roots]*)
       (*Note: we could probably do something much more simple, without resorting
 	to this dependency analysis stuff*)
-  let for_rewriting = List.fold_left (fun acc x -> if List.mem x.m_name roots then (x.m_name, x)::acc else acc) [] modules
-    in
+  (*let for_rewriting = List.fold_left (fun acc x -> if List.mem x.m_name roots then (x.m_name, x)::acc else acc) [] modules
+    in*)
+    let for_rewriting = Hashtbl.fold (fun k m acc -> (k,m)::acc) all_roots [] in
       (*2. Dive into these*)
     (*let rewritten = Hashtbl.fold (fun name contents acc ->
 		    {(contents) with m_kind = handle_kind name contents contents.m_kind}::acc
@@ -483,10 +500,17 @@ class batlib_generator =
           match l with
             [] -> ()
           | e :: _ ->
+	      let e' = Name.simple (name e) in
               let s =
-                match (Char.uppercase (Name.simple (name e)).[0]) with
-                  'A'..'Z' as c -> String.make 1 c
-                | _ -> ""
+		if String.length e' = 0 then 
+		  begin
+		    warning ("I'm not going to find an uppercase letter for "^(name e));
+		    ""
+		  end
+		else
+                match (Char.uppercase e'.[0]) with
+                    'A'..'Z' as c -> String.make 1 c
+                  | _ -> ""
               in
               bs b "<tr><td align=\"left\"><br>";
               bs b s ;
@@ -504,9 +528,11 @@ class batlib_generator =
       with
         Sys_error s ->
           raise (Failure s)
+	| _ -> assert false
 
     method is_reachable_from_root m = true (*List.exists (fun p -> has_parent m ~parent:p) roots*)
     method generate_modules_index _ =
+      try
       let list_modules = List.filter (fun m -> self#is_reachable_from_root m.m_name) self#list_modules in
       self#generate_elements_index
         list_modules
@@ -515,15 +541,19 @@ class batlib_generator =
         (fun m -> fst (Naming.html_files m.m_name))
         Odoc_messages.index_of_modules
         self#index_modules
+      with _ -> assert false
 
     method html_of_Module_list b _ =
+      try
       let list_modules = List.map (fun m -> m.m_name)
 	((List.filter (fun m -> not (List.mem  m.m_name roots) && self#is_reachable_from_root m.m_name) self#list_modules)) in
 	super#html_of_Module_list b list_modules
+      with _ -> assert false
 
 (**Customizing appearance of modules*)
 
     method html_of_module b ?(info=true) ?(complete=true) ?(with_link=true) m =
+      try
       let name = m.m_name in
       let (html_file, _) = Naming.html_files name in
       let father = Name.father name in
@@ -552,8 +582,8 @@ class batlib_generator =
         ) b m.m_info
       else
         ()
-
-
+      with _ -> assert false
+	  
     method html_of_Ref b name ref_opt =
       let renamed = find_renaming renamings name in
       let type_of_ref = 
@@ -579,6 +609,7 @@ class batlib_generator =
 
 	 Override of [super#create_fully_qualified_idents_links]*)
     method create_fully_qualified_idents_links m_name s =
+      try
 	(** Replace a complete path with a URL to that path*)
       let handle_qualified_name original_type_name = 
 	let renamed_type_name  = find_renaming renamings original_type_name in
@@ -620,10 +651,11 @@ class batlib_generator =
 	handle_word
 	s2
       in s3
-
+      with _ -> assert false
 
 
     method generate modules =
+      try
       match !Odoc_args.dump with
 	| Some l -> 
 	    Odoc_info.verbose "[Internal representation stage, no readable output generated yet]";
@@ -684,7 +716,15 @@ class batlib_generator =
 	      verbose "Beautification of modules complete, proceeding to generation";
 	      flush_all ();
 	      super#generate rewritten_modules
+      with e -> Printf.eprintf "%s\n%!" (Printexc.to_string e);
+	  assert false
 
+    method html_of_module b ?info ?complete ?with_link m =
+      try 
+	verbose ("Generating html for module "^m.m_name);
+	flush_all ();
+	super#html_of_module b ?info ?complete ?with_link m
+      with _ -> assert false 
 
     method index_prefix = "root"
     (** Generate [index.html], as well as [indices.html] for the given module list*)
@@ -757,7 +797,8 @@ class batlib_generator =
 
         Buffer.output_buffer chanout b;
         close_out chanout
-      with Sys_error s -> raise (Failure s)
+      with (*Sys_error s -> raise (Failure s)*)
+	| _            -> assert false
 
     method html_of_Index_list b =
       let item s = bp b "<li class=\"index_of\">%s</li>\n" s in

@@ -1,5 +1,5 @@
 (* 
- * ExtInt - Extended integers
+ * ExtInt - Extended operations on integers
  * Copyright (C) 1996 Xavier Leroy 
  *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
@@ -126,12 +126,12 @@ module Int :
     external to_float : int -> float = "%floatofint"
       (** Convert the given integer to a floating-point number. *)
       
-    external of_string : string -> int = "caml_int_of_string"
+    val of_string : string -> int
       (** Convert the given string to an integer
 	  The string is read in decimal (by default) or in hexadecimal,
 	  octal or binary if the string begins with [0x], [0o] or [0b]
 	  respectively.
-	  Raise [Failure "int_of_string"] if the given string is not
+	  Raise [Invalid_argument "int_of_string"] if the given string is not
 	  a valid representation of an integer, or if the integer represented
 	  exceeds the range of integers representable in type [int]. *)
       
@@ -258,12 +258,12 @@ module SafeInt :
     external to_float : int -> float = "%floatofint"
       (** Convert the given integer to a floating-point number. *)
       
-    external of_string : string -> int = "caml_int_of_string"
+    val of_string : string -> int
       (** Convert the given string to an integer
 	  The string is read in decimal (by default) or in hexadecimal,
 	  octal or binary if the string begins with [0x], [0o] or [0b]
 	  respectively.
-	  Raise [Failure "int_of_string"] if the given string is not
+	  Raise [Invalid_argument "int_of_string"] if the given string is not
 	  a valid representation of an integer, or if the integer represented
 	  exceeds the range of integers representable in type [int]. *)
       

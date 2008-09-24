@@ -217,40 +217,41 @@ let make_compare cmp a b =
 
 module Cap =
 struct
-  type ('a, 'b) t = 'a array
+  (** Implementation note: in [('a, 'b) t], ['b] serves only as
+      a phantom type, to mark which operations are only legitimate on
+      readable arrays or writeable arrays.*)
+  type ('a, 'b) t = 'a array constraint 'b = [< `Read | `Write]
 
-  external of_array  : 'a array -> ('a, _ ) t = "%identity"
-  external to_array  : ('a, [`Read | `Write]) t -> 'a array = "%identity"
-    
-  external read_only :  ('a, [>`Read])  t -> ('a, [`Read])  t = "%identity"
-  external write_only : ('a, [>`Write]) t -> ('a, [`Write]) t = "%identity"
+  external of_array   : 'a array -> ('a, _ ) t                  = "%identity"
+  external to_array   : ('a, [`Read | `Write]) t -> 'a array    = "%identity"
+  external read_only  : ('a, [>`Read])  t -> ('a, [`Read])  t   = "%identity"
+  external write_only : ('a, [>`Write]) t -> ('a, [`Write]) t   = "%identity"
+  external length     : ('a, [> ]) t -> int                     = "%array_length"
+  external get        : ('a, [> `Read]) t -> int -> 'a          = "%array_safe_get"
+  external set        : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
+  external make       : int -> 'a -> ('a, _) t                  = "caml_make_vect"
+  external create     : int -> 'a -> ('a, _) t                  = "caml_make_vect"
 
-  external length : ('a, [> ]) t -> int = "%array_length"
-  external get : ('a, [> `Read]) t -> int -> 'a = "%array_safe_get"
-  external set : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
-  external make : int -> 'a -> ('a, _) t = "caml_make_vect"
-  external create : int -> 'a -> ('a, _) t = "caml_make_vect"
-
-  let init = init
-  let make_matrix = make_matrix
-  let create_matrix = create_matrix
-  let iter = iter
-  let map  = map
-  let filter= filter
-  let iteri= iteri
-  let mapi = mapi
-  let fold_left = fold_left
-  let fold_right= fold_right
-  let iter2= iter2
-  let for_all   = for_all
-  let exists    = exists
-  let find      = find
-  let mem       = mem
-  let memq      = memq
-  let findi     = findi
-  let find_all  = find_all
-  let partition = partition
-  let rev       = rev
+  let init         = init
+  let make_matrix  = make_matrix
+  let create_matrix= create_matrix
+  let iter         = iter
+  let map          = map
+  let filter       = filter
+  let iteri        = iteri
+  let mapi         = mapi
+  let fold_left    = fold_left
+  let fold_right   = fold_right
+  let iter2        = iter2
+  let for_all      = for_all
+  let exists       = exists
+  let find         = find
+  let mem          = mem
+  let memq         = memq
+  let findi        = findi
+  let find_all     = find_all
+  let partition    = partition
+  let rev          = rev
   let rev_in_place = rev_in_place
   let append       = append
   let concat       = concat
