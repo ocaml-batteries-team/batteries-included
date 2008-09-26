@@ -1,9 +1,57 @@
-open Batteries
+(*open Batteries
 open System
 open Data.Mutable
 open Data.Persistent
 open Data.Text
-open Languages
+open Languages*)
+
+module String =
+struct
+  include String
+
+  exception Invalid_string
+
+  let is_empty s = length s = 0 
+      
+  let find str sub =
+    let sublen = length sub in
+      if sublen = 0 then
+	0
+      else
+	let found = ref 0 in
+	let len = length str in
+	  try
+	    for i = 0 to len - sublen do
+	      let j = ref 0 in
+		while unsafe_get str (i + !j) = unsafe_get sub !j do
+		  incr j;
+		  if !j = sublen then begin found := i; raise Exit; end;
+		done;
+	    done;
+	    raise Invalid_string
+	  with
+	      Exit -> !found
+		
+  let split str sep =
+    let p = find str sep in
+    let len = length sep in
+    let slen = length str in
+      sub str 0 p, sub str (p + len) (slen - p - len)
+
+  let nsplit str sep =
+    if str = "" then []
+    else (
+      let rec nsplit str sep =
+	try
+	  let s1 , s2 = split str sep in
+	    s1 :: nsplit s2 sep
+	with
+	    Invalid_string -> [str]
+      in
+	nsplit str sep
+    )
+
+end
 
 let read_dependency dep_name =
   let module_name = String.capitalize (Filename.basename (Filename.chop_suffix dep_name ".mli.depends")) in
@@ -40,9 +88,9 @@ struct
 
   let print out tbl = 
     Printf.fprintf out "{";
-    Hashtbl.iter (fun k set -> Printf.fprintf out "%s: %a\n"
+    Hashtbl.iter (fun k set -> Printf.fprintf out "%s: {%a}\n"
 		    k
-		    (Printf.make_list_printer IO.nwrite "{" "}" "; ")
+		    (fun out s -> List.iter (fun x -> Printf.fprintf out "%s; " x) s)
 		    (StringSet.elements set)) tbl;
     Printf.fprintf out "}\n"
 end
@@ -72,8 +120,10 @@ let sort directory =
     ) files ;
     (*Now, start sorting*)
     let rec aux (sorted:string list) (rest: string list) =
-(*      Printf.eprintf "Preparing a generation\n";
-      Printf.eprintf "I still need to sort %a\n" (Printf.make_list_printer IO.nwrite "[" "]" "; ") rest;*)
+      Printf.eprintf "Preparing a generation\n";
+      List.iter (fun x -> Printf.eprintf "Need to sort   %s\n" x) rest;
+      List.iter (fun x -> Printf.eprintf "Already sorted %s\n" x) sorted;
+      (*Printf.eprintf "I still need to sort %a\n" (Printf.make_list_printer IO.nwrite "[" "]" "; ") rest;*)
       match rest with 
 	| [] -> 
 	    sorted
@@ -82,8 +132,7 @@ let sort directory =
 	match List.fold_left (fun (keep, remove) k -> 
 				match Dependency.find dep k with
 				  | None   -> 
-(*				      Printf.eprintf "Module %s has no dependencies left\n"
-					k;*)
+				      Printf.eprintf "Module %s has no dependencies left\n" k;
 				      (keep, k::remove)
 				  | Some dependencies ->
 (*				      Printf.eprintf "Module %s can't be removed, as it depends on %a (%d)\n"
@@ -105,23 +154,36 @@ let sort directory =
 	      aux (sorted @ roots) rest
     in 
     let sorted = aux [] (StringSet.elements !modules) in
-      List.filter_map (fun module_name -> 
-			 try Some (module_name, Hashtbl.find src module_name)
-			 with Not_found -> 
-(*			   Printf.eprintf "I'm not going to add module %s, it's external\n%!" module_name;*)
-			   None) sorted
-let generate_mli out pack l =
-  let feed file out () =
-    File.with_file_in file (
-      fun input -> IO.write_line_enum out (IO.lines_of input) 
-    ) in
-  let print_modules out () =
+      List.fold_left (fun acc module_name ->
+			Printf.eprintf "Should I add module %s?\n" module_name;
+			try  (module_name, Hashtbl.find src module_name)::acc
+			with Not_found -> acc) [] sorted
+
+let generate_mli cout pack l =
+  let feed file cout () =
+    let cin = open_in file         in
+    let buf = String.make 1024 ' ' in
+    let rec aux () =
+      let read = input cin buf 0 1024 in
+	if read = 0 then 
+	  Printf.eprintf "Done writing\n"
+	else 
+	  begin
+	  Printf.eprintf "Writing %d bytes\n" read;
+	  output cout buf 0 read;
+	  aux ()
+	end
+    in aux ()
+  in let print_modules cout () =
     List.iter (
       fun (name, src) -> 
-	Printf.fprintf out "module %s:\nsig\n%a\nend\n" name (feed src) ()
+	Printf.fprintf cout "module %s:\nsig\n%a\nend\n" name (feed src) ()
     ) l in
 (*  Printf.fprintf out "module %s:\nsig\n%a\nend\n" pack print_modules ()*)
-    print_modules out ()
+    Printf.eprintf "Starting mli generation\n%!";
+    List.iter (fun (name,_) -> Printf.eprintf "Module %s " name) l;
+    print_modules cout ();
+    Printf.eprintf "\nModule generation complete\n%!"
 
 
 let dir = ref "."
@@ -138,7 +200,7 @@ let _ =
     ignore "" 
   in
   let dir = !dir
-  and out = match !out with "" -> IO.stdout | name -> File.open_out name 
+  and out = match !out with "" -> stdout | name -> open_out name 
   and pack= match !pack with"" -> failwith "Missing argument -pack" | name -> name in
+    Printf.eprintf "Sorting directory %s/%s\n" (Unix.getcwd()) dir;
     generate_mli out pack (sort dir)
-

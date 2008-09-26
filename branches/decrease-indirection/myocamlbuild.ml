@@ -108,6 +108,9 @@ struct
 (*    dep  ["ocaml"; "doc";            "genera"
 
     ocaml_lib "./batteries_layer_1"*)
+    flag ["ocaml"; "use_legacy"; "link"; "byte"]   (P "build/baseLibrary.cma");
+    flag ["ocaml"; "use_legacy"; "link"; "native"] (P "build/baseLibrary.cmxa");
+    ocaml_lib "legacy"
 end
 
 let _ = dispatch begin function

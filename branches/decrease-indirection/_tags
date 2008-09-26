@@ -1,5 +1,4 @@
 <src>: include
-
 <api.docdir>:pkg_threads,use_ocamldoc_info
 <api.docdir/*>:pkg_threads,use_ocamldoc_info
 <api.docdir/index.html>:pkg_threads,use_ocamldoc_info

@@ -1,5 +1,5 @@
 (*
- * Batlib_Ocamldoc_Odoc_info - Importing OCamlDoc module Odoc_info
+ * Findlib - Importing Findlib module Findlib
  * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
@@ -18,8 +18,4 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Removed as findlib has no package for ocamldoc (for now)*)
-
-(*
-include Odoc_info
-*)
+include Findlib

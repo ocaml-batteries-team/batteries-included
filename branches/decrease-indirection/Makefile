@@ -18,8 +18,6 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-MLI=src/additions/extlib.mli
-
 all: byte doc
 
 #doc: _build/build/odoc_generator_batlib.cmo byte list
@@ -36,22 +34,30 @@ opt: batteries.cmxa
 #batteries_layer_1.cma: batteries_layer_1.mllib
 #	ocamlbuild batteries_layer_1.cma
 
-batteries.cma: extlib.cmi
+batteries.cma: packs
 	ocamlbuild batteries.cma
 
 #batteries_layer_1.cmxa: batteries_layer_1.mllib
 #	ocamlbuild batteries_layer_1.cmxa
 
-batteries.cmxa: extlib.cmi
+batteries.cmxa: packs
 	ocamlbuild batteries.cmxa
 
-extlib.cmi: $(MLI)
-	ocamlbuild extlib.cmi
-
-$(MLI): build/packdoc.ml
+packs:
 	ocamlbuild build/packdoc.byte &&\
-	./packdoc.byte -i _build/src/additions/extlib/ -o $(MLI) -pack Extlib &&\
-	cp $(MLI) _build/$(MLI)
+	ocamlbuild extlib.cmo         &&\
+	ocamlbuild baselibGlue.cmo    &&\
+	ocamlbuild findlibGlue.cmo    &&\
+	ocamlbuild batteriesGlue.cmo  &&\
+	./packdoc.byte -i _build/src/additions/extlib/ -o src/additions/extlib.mli      -pack Extlib       &&\
+	./packdoc.byte -i _build/src/glue/baselib/     -o src/glue/baselibGlue.mli      -pack BaselibGlue  &&\
+	./packdoc.byte -i _build/src/glue/findlib/     -o src/glue/findlibGlue.mli      -pack FindlibGlue  &&\
+	./packdoc.byte -i _build/src/glue/             -o src/batteriesGlue.mli         -pack BatteriesGlue&&\
+	install -D src/additions/extlib.mli   _build/src/additions/extlib.mli                                        &&\
+	install -D src/glue/baselibGlue.mli   _build/src/glue/baselibGlue.mli                                        &&\
+	install -D src/glue/findlibGlue.mli   _build/src/glue/findlibGlue.mli                                        &&\
+	install -D src/batteriesGlue.mli      _build/src/batteriesGlue.mli
+
 
 doc: batteries.cma doc/api.odocl
 	\rm -Rf doc/batteries/html/api &&\
@@ -89,6 +95,6 @@ uninstall:
 clean:
 	ocamlbuild -clean &&\
 	\rm -f `find . -name "*~" -o -name "*#"` &&\
-	\rm -f META batteries.mllib doc/api.odocl $(MLI)
+	\rm -f META batteries.mllib doc/api.odocl src/additions/extlib.mli src/glue/baselibGlue.mli src/glue/findlibGlue.mli src/batteriesGlue.mli
 
 .PHONY: batteries.mllib doc/api.odocl
