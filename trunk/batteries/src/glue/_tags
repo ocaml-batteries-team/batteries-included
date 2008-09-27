@@ -1,5 +1,0 @@
-<baselib>:  include
-<ocamldoc>: include
-<findlib>:  include
-<extlib>:   include
-<misc>:     include
