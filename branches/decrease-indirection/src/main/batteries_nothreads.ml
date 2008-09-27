@@ -1,5 +1,5 @@
 (*
- * Batlib - Root of Batteries Included hierarchy
+ * Batlib - Root of Batteries Included hierarchy (threaded version)
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
@@ -26,18 +26,6 @@ module Control     = struct
   (** Everything related to parallelism and concurrency. *)
   module Concurrency = struct
 
-    (** Concurrency operations as defined by OCaml's base library *)
-    module Threads = struct
-
-      (** {6 Important} 
-
-	  This module is only defined in multi-threaded versions of Batteries Included.*)
-
-      module Condition = Batlib_Baselib_Condition
-      module Event     = Batlib_Baselib_Event
-      module Mutex     = Batlib_Baselib_Mutex
-      module Thread    = Batlib_Baselib_Thread
-    end
   end
 
   module Labels      = Batmisc.Labels
@@ -248,10 +236,6 @@ module Util        = struct
 end
 
 (**/**)
-module Condition = Control.Concurrency.Threads.Condition
-module Event     = Control.Concurrency.Threads.Event
-module Mutex     = Control.Concurrency.Threads.Mutex
-module Thread    = Control.Concurrency.Threads.Thread
 module Array     = Data.Mutable.Array
 module ArrayLabels=Data.Mutable.ArrayLabels
 module Bigarray  = Data.Mutable.Bigarray
