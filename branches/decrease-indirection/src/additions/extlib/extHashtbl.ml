@@ -306,4 +306,36 @@ module Hashtbl =
       let is_empty h           = length h = 0
     end
 
+    module Cap =
+    struct
+      type ('a, 'b, 'c) t = ('a, 'b) Hashtbl.t constraint 'c = [< `Read | `Write ]
+	
+      let create = create
+      external of_table  : ('a, 'b) Hashtbl.t -> ('a, 'b, _ ) t = "%identity"
+      external to_table  : ('a, 'b, [`Read | `Write]) t -> ('a, 'b) Hashtbl.t = "%identity"
+      external read_only :  ('a, 'b, [>`Read])  t -> ('a, 'b, [`Read])  t = "%identity"
+      external write_only : ('a, 'b, [>`Write]) t -> ('a, 'b, [`Write]) t = "%identity"
+
+      let length      = length
+      let is_empty    = is_empty
+      let add         = add
+      let remove      = remove
+      let remove_all  = remove_all
+      let replace     = replace
+      let copy        = copy
+      let clear       = clear
+      let find        = find
+      let find_all    = find_all
+      let find_default= find_default
+      let find_option = find_option
+      let mem         = mem
+      let iter        = iter
+      let fold        = fold
+      let map         = map
+      let keys        = keys
+      let values      = values
+      let enum        = enum
+      let of_enum     = of_enum
+    end
+
   end

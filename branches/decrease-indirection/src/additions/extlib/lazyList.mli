@@ -33,7 +33,7 @@
      more useful in contexts where backtracking is common. Enumerations, on the other
      hand, are closer to traditional stream processing, require more low-level
      marking whenever backtracking is required, but may be faster and more memory-efficient
-     when used properly. Either choice is recommended over OCaml's [Stream].
+     when used properly. Either choice is recommended over OCaml's built-in {!Stream}.
 *)
 
 (** {6 Exceptions} *)

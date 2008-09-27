@@ -142,10 +142,6 @@ let sort directory =
     ) files ;
     (*Now, start sorting*)
     let rec aux (sorted:string list) (rest: string list) =
-      Printf.eprintf "Preparing a generation\n";
-      List.iter (fun x -> Printf.eprintf "Need to sort   %s\n" x) rest;
-      List.iter (fun x -> Printf.eprintf "Already sorted %s\n" x) sorted;
-      (*Printf.eprintf "I still need to sort %a\n" (Printf.make_list_printer IO.nwrite "[" "]" "; ") rest;*)
       match rest with 
 	| [] -> 
 	    sorted
