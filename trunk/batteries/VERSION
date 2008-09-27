@@ -1,0 +1,7 @@
+This is a preversion of release 0.1
+We have
+* the Base library
+* access to Findlib
+* access to ExtLib
+* numeric modules
+* I/O utilities
