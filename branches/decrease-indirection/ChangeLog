@@ -1,3 +1,9 @@
+09/27/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extHashtbl.mli: removed inconsistent [exists]
+	* extHashtbl.ml*: [HashedType], [S], [Make] added
+	* extHashtbl.ml: [include Hashtbl] replaced with manual inclusion
+	* build/packdoc.ml: removed dependencies towards Batteries
+	
 09/24/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* build/packdoc.ml: created
 	* Makefile: now uses build/packdoc

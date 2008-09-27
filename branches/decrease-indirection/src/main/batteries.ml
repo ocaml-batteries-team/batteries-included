@@ -35,7 +35,7 @@ module Control     = struct
     end
   end
 
-(*  module Labels      = Batlib_Misc_Labels*)
+  module Labels      = Batmisc.Labels
 end
 
 (** Data structures*)
@@ -45,32 +45,32 @@ module Data        = struct
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
       module Array         = Extlib.ExtArray.Array
-      module ArrayLabels   = BatteriesGlue.BaselibGlue.ArrayLabels
-      module Bigarray      = BatteriesGlue.BaselibGlue.Bigarray     (*TODO:make enumerable*)
+      module ArrayLabels   = Batlib_Baselib_ArrayLabels
+      module Bigarray      = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
       module Dynarray      = Extlib.DynArray
       module Enum          = Extlib.Enum
       module Global        = Extlib.Global
-      module Hashtbl       = Extlib.ExtHashtbl.Hashtbl       (*formerly BatteriesGlue.BaselibGlue.Hashtbl*) 
+      module Hashtbl       = Extlib.ExtHashtbl.Hashtbl       (*formerly Batlib_Baselib_Hashtbl*) 
 	(* ?? HashedType in Batlib_Extlib_Hashtbl *)
-      module HashtblLabels = BatteriesGlue.BaselibGlue.HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
-      module Queue         = BatteriesGlue.BaselibGlue.Queue        (*TODO:build from enum?*)
+      module HashtblLabels = Batlib_Baselib_HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
+      module Queue         = Batlib_Baselib_Queue        (*TODO:build from enum?*)
       module RefList       = Extlib.RefList
-      module Stack         = BatteriesGlue.BaselibGlue.Stack        (*TODO:build from enum*)
-      module Stream        = BatteriesGlue.BaselibGlue.Stream       (*TODO:replace with latest version*)
+      module Stack         = Batlib_Baselib_Stack        (*TODO:build from enum*)
+      module Stream        = Batlib_Baselib_Stream       (*TODO:replace with latest version*)
     end
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
       module Dllist          = Extlib.Dllist
-      module Lazy            = BatteriesGlue.BaselibGlue.Lazy
-      module List            = Extlib.ExtList.List      (*formerly BatteriesGlue.BaselibGlue.List*)
-      module ListLabels      = BatteriesGlue.BaselibGlue.ListLabels(*TODO:Bring to feature parity with {!List}*)
-      module Map             = BatteriesGlue.BaselibGlue.Map       (*TODO:make enumerable*)
-      module MapLabels       = BatteriesGlue.BaselibGlue.MapLabels (*TODO:make enumerable*)
-      module PMap            = BatteriesGlue.BaselibGlue.Map
+      module Lazy            = Batlib_Baselib_Lazy
+      module List            = Extlib.ExtList.List      (*formerly Batlib_Baselib_List*)
+      module ListLabels      = Batlib_Baselib_ListLabels(*TODO:Bring to feature parity with {!List}*)
+      module Map             = Batlib_Baselib_Map       (*TODO:make enumerable*)
+      module MapLabels       = Batlib_Baselib_MapLabels (*TODO:make enumerable*)
+      module PMap            = Batlib_Baselib_Map
       module Option          = Extlib.Option
-      module Set             = BatteriesGlue.BaselibGlue.Set       (*TODO:make enumerable*)
-      module SetLabels       = BatteriesGlue.BaselibGlue.SetLabels (*TODO:make enumerable*)
+      module Set             = Batlib_Baselib_Set       (*TODO:make enumerable*)
+      module SetLabels       = Batlib_Baselib_SetLabels (*TODO:make enumerable*)
 
 (**
    {6 Note} Some mutable containers offer persistent substructures.
@@ -106,7 +106,7 @@ module Data        = struct
     
     (** {6 Latin-1}*)
 
-    module Buffer          = BatteriesGlue.BaselibGlue.Buffer
+    module Buffer          = Batlib_Baselib_Buffer
     module Char            = Extlib.ExtChar.Char
     module String          = struct
       include Extlib.ExtString.String
@@ -115,7 +115,7 @@ module Data        = struct
       external set : string -> int -> char -> unit = "%string_safe_set"
       external create : int -> string = "caml_create_string"
     end
-    module StringLabels    = BatteriesGlue.BaselibGlue.StringLabels  (*todo: wrap [Batlib_Extlib_String] with labels*)
+    module StringLabels    = Batlib_Baselib_StringLabels  (*todo: wrap [Batlib_Extlib_String] with labels*)
   end
 end
 
@@ -127,16 +127,16 @@ module Languages   = struct
 
   (** {1 Parsing} *)
   
-  module Genlex          = BatteriesGlue.BaselibGlue.Genlex
-  module Lexing          = BatteriesGlue.BaselibGlue.Lexing
-  module Parsing         = BatteriesGlue.BaselibGlue.Parsing
-  module Scanf           = BatteriesGlue.BaselibGlue.Scanf
-  module Str             = BatteriesGlue.BaselibGlue.Str
+  module Genlex          = Batlib_Baselib_Genlex
+  module Lexing          = Batlib_Baselib_Lexing
+  module Parsing         = Batlib_Baselib_Parsing
+  module Scanf           = Batlib_Baselib_Scanf
+  module Str             = Batlib_Baselib_Str
     
   (** {1 Printing}*)
     
-  module Format          = BatteriesGlue.BaselibGlue.Format
-  module Printexc        = BatteriesGlue.BaselibGlue.Printexc
+  module Format          = Batlib_Baselib_Format
+  module Printexc        = Batlib_Baselib_Printexc
   module Printf          = struct
     include Extlib.IO.Printf
     let make_list_printer    = Extlib.IO.make_list_printer
@@ -169,30 +169,30 @@ module Meta        = struct
   
   (** {1 Language}*)
   
-  module Marshal        = BatteriesGlue.BaselibGlue.Marshal
-  module Oo             = BatteriesGlue.BaselibGlue.Oo
+  module Marshal        = Batlib_Baselib_Marshal
+  module Oo             = Batlib_Baselib_Oo
     
   (** {1 Interaction with other languages} *)
     
-  module Callback       = BatteriesGlue.BaselibGlue.Callback
+  module Callback       = Batlib_Baselib_Callback
     
   (** {1 Memory}*)
     
-  module Gc             = BatteriesGlue.BaselibGlue.Gc
-  module Weak           = BatteriesGlue.BaselibGlue.Weak
+  module Gc             = Batlib_Baselib_Gc
+  module Weak           = Batlib_Baselib_Weak
     
   (** {1 Internals}
       Here Be Dragons*)
     
-  module Obj            = BatteriesGlue.BaselibGlue.Obj
-  module CamlinternalMod= BatteriesGlue.BaselibGlue.CamlinternalMod
-  module CamlinternalOO = BatteriesGlue.BaselibGlue.CamlinternalOO
+  module Obj            = Batlib_Baselib_Obj
+  module CamlinternalMod= Batlib_Baselib_CamlinternalMod
+  module CamlinternalOO = Batlib_Baselib_CamlinternalOO
     
 end
 
 (*(** Automatically opened module. *) 
 module Standard    = struct
-  include BatteriesGlue.BaselibGlue.Pervasives
+  include Batlib_Baselib_Pervasives
   include Extlib.Std
   let (@) = Extlib.ExtList.(@)
 (* Thelema: Why not just include these in the toplevel batteries module? *)
@@ -204,7 +204,7 @@ module System      = struct
   
   (** {1 Environment I/O}*)
   
-  module Arg           = BatteriesGlue.BaselibGlue.Arg
+  module Arg           = Batlib_Baselib_Arg
   module OptParse      = Extlib.OptParse
     
   (** {1 Operations on streams}*)
@@ -215,10 +215,10 @@ module System      = struct
   (** {1 Actual operating system calls}*)
     
   module File          = Extlib.File
-  module Filename      = BatteriesGlue.BaselibGlue.Filename
-  module Unix          = BatteriesGlue.BaselibGlue.Unix
-  module UnixLabels    = BatteriesGlue.BaselibGlue.UnixLabels
-  module Sys           = BatteriesGlue.BaselibGlue.Sys
+  module Filename      = Batlib_Baselib_Filename
+  module Unix          = Batlib_Baselib_Unix
+  module UnixLabels    = Batlib_Baselib_UnixLabels
+  module Sys           = Batlib_Baselib_Sys
     
   (** {1 Networking}*)
   module Network       = struct
@@ -239,64 +239,64 @@ end
 (** Miscellaneous utilities *)
 module Util        = struct
   module Base64 = Extlib.Base64
-  module Digest = BatteriesGlue.BaselibGlue.Digest
-  module Random = BatteriesGlue.BaselibGlue.Random
+  module Digest = Batlib_Baselib_Digest
+  module Random = Batlib_Baselib_Random
 end
 
 (**/**)
-module Condition = Control.Concurrency.Threads.Condition
-module Event     = Control.Concurrency.Threads.Event
-module Mutex     = Control.Concurrency.Threads.Mutex
-module Thread    = Control.Concurrency.Threads.Thread
-module Array     = Data.Mutable.Array
-module ArrayLabels=Data.Mutable.ArrayLabels
-module Bigarray  = Data.Mutable.Bigarray
-module Hashtbl   = Data.Mutable.Hashtbl
-module Queue     = Data.Mutable.Queue
-module Stack     = Data.Mutable.Stack
-module Stream    = Data.Mutable.Stream
-module Lazy      = Data.Persistent.Lazy
-module List      = Data.Persistent.List
-module ListLabels= Data.Persistent.ListLabels
-module Map       = Data.Persistent.Map
-module MapLabels = Data.Persistent.MapLabels
-module Set       = Data.Persistent.Set
-module SetLabels = Data.Persistent.SetLabels
-module Big_int   = Data.Numeric.Big_int
-module Complex   = Data.Numeric.Complex
-module Int32     = Data.Numeric.Int32
-module Int64     = Data.Numeric.Int64
-module Num       = Data.Numeric.Num
-module Buffer    = Data.Text.Buffer
-module Char      = Data.Text.Char
-module String    = Data.Text.String
-module StringLabels = Data.Text.StringLabels
-module Genlex    = Languages.Genlex
-module Lexing    = Languages.Lexing
-module Parsing   = Languages.Parsing
-module Scanf     = Languages.Scanf
-module Str       = Languages.Str
-module Format    = Languages.Format
-module Printexc  = Languages.Printexc
-module Printf    = Languages.Printf
-module Marshal   = Meta.Marshal
-module Oo        = Meta.Oo
-module Callback  = Meta.Callback
-module Gc        = Meta.Gc
-module Weak      = Meta.Weak
-module Obj       = Meta.Obj
-module CamlinternalMod = Meta.CamlinternalMod
-module CamlinternalOO  = Meta.CamlinternalOO
-module Arg       = System.Arg
-module Filename  = System.Filename
-module Unix      = System.Unix
-module UnixLabels= System.UnixLabels
-module Sys       = System.Sys
-module Random    = Util.Random
+module Condition = struct include Control.Concurrency.Threads.Condition end
+module Event     = struct include Control.Concurrency.Threads.Event end
+module Mutex     = struct include Control.Concurrency.Threads.Mutex end
+module Thread    = struct include Control.Concurrency.Threads.Thread end
+module Array     = struct include Data.Mutable.Array end
+module ArrayLabels=struct include Data.Mutable.ArrayLabels end
+module Bigarray  = struct include Data.Mutable.Bigarray end
+module Hashtbl   = struct include Data.Mutable.Hashtbl end
+module Queue     = struct include Data.Mutable.Queue end
+module Stack     = struct include Data.Mutable.Stack end
+module Stream    = struct include Data.Mutable.Stream end
+module Lazy      = struct include Data.Persistent.Lazy end
+module List      = struct include Data.Persistent.List end
+module ListLabels= struct include Data.Persistent.ListLabels end
+module Map       = struct include Data.Persistent.Map end
+module MapLabels = struct include Data.Persistent.MapLabels end
+module Set       = struct include Data.Persistent.Set end
+module SetLabels = struct include Data.Persistent.SetLabels end
+module Big_int   = struct include Data.Numeric.Big_int end
+module Complex   = struct include Data.Numeric.Complex end
+module Int32     = struct include Data.Numeric.Int32 end
+module Int64     = struct include Data.Numeric.Int64 end
+module Num       = struct include Data.Numeric.Num end
+module Buffer    = struct include Data.Text.Buffer end
+module Char      = struct include Data.Text.Char end
+module String    = struct include Data.Text.String end
+module StringLabels = struct include Data.Text.StringLabels end
+module Genlex    = struct include Languages.Genlex end
+module Lexing    = struct include Languages.Lexing end
+module Parsing   = struct include Languages.Parsing end
+module Scanf     = struct include Languages.Scanf end
+module Str       = struct include Languages.Str end
+module Format    = struct include Languages.Format end
+module Printexc  = struct include Languages.Printexc end
+module Printf    = struct include Languages.Printf end
+module Marshal   = struct include Meta.Marshal end
+module Oo        = struct include Meta.Oo end
+module Callback  = struct include Meta.Callback end
+module Gc        = struct include Meta.Gc end
+module Weak      = struct include Meta.Weak end
+module Obj       = struct include Meta.Obj end
+module CamlinternalMod = struct include Meta.CamlinternalMod end
+module CamlinternalOO  = struct include Meta.CamlinternalOO end
+module Arg       = struct include System.Arg end
+module Filename  = struct include System.Filename end
+module Unix      = struct include System.Unix end
+module UnixLabels= struct include System.UnixLabels end
+module Sys       = struct include System.Sys end
+module Random    = struct include Util.Random end
 (**/**)
 
 
-include BatteriesGlue.BaselibGlue.Pervasives
+include Batlib_Baselib_Pervasives
 include Extlib.Enum
 include Extlib.Std
 let (@) = Extlib.ExtList.(@)

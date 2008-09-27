@@ -407,8 +407,6 @@ module ExceptionLess : sig
 	
 	Since [find] consumes a prefix of the enumeration, it can be used several 
 	times on the same enumeration to find the next element. *)
-
-
 end
 
 (**/**)

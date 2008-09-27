@@ -43,20 +43,24 @@ batteries.cma: packs
 batteries.cmxa: packs
 	ocamlbuild batteries.cmxa
 
+MLI=src/additions/extlib.mli
+
 packs:
+	\rm -f $(MLI) _build/$(MLI) _build/src/additions/extlib.cmi &&\
+	ocamlbuild extlib.cmo &&\
 	ocamlbuild build/packdoc.byte &&\
-	ocamlbuild extlib.cmo         &&\
-	ocamlbuild baselibGlue.cmo    &&\
-	ocamlbuild findlibGlue.cmo    &&\
-	ocamlbuild batteriesGlue.cmo  &&\
 	./packdoc.byte -i _build/src/additions/extlib/ -o src/additions/extlib.mli      -pack Extlib       &&\
-	./packdoc.byte -i _build/src/glue/baselib/     -o src/glue/baselibGlue.mli      -pack BaselibGlue  &&\
-	./packdoc.byte -i _build/src/glue/findlib/     -o src/glue/findlibGlue.mli      -pack FindlibGlue  &&\
-	./packdoc.byte -i _build/src/glue/             -o src/batteriesGlue.mli         -pack BatteriesGlue&&\
-	install -D src/additions/extlib.mli   _build/src/additions/extlib.mli                                        &&\
-	install -D src/glue/baselibGlue.mli   _build/src/glue/baselibGlue.mli                                        &&\
-	install -D src/glue/findlibGlue.mli   _build/src/glue/findlibGlue.mli                                        &&\
-	install -D src/batteriesGlue.mli      _build/src/batteriesGlue.mli
+	install -D src/additions/extlib.mli   _build/src/additions/extlib.mli                                        
+#	ocamlbuild extlib.cmo         &&\
+#	ocamlbuild baselibGlue.cmo    &&\
+#	ocamlbuild findlibGlue.cmo    &&\
+#	ocamlbuild batteriesGlue.cmo  &&\
+#	./packdoc.byte -i _build/src/glue/baselib/     -o src/glue/baselibGlue.mli      -pack BaselibGlue  &&\
+#	./packdoc.byte -i _build/src/glue/findlib/     -o src/glue/findlibGlue.mli      -pack FindlibGlue  &&\
+#	./packdoc.byte -i _build/src/glue/             -o src/batteriesGlue.mli         -pack BatteriesGlue&&\
+#	install -D src/glue/baselibGlue.mli   _build/src/glue/baselibGlue.mli                                        &&\
+#	install -D src/glue/findlibGlue.mli   _build/src/glue/findlibGlue.mli                                        &&\
+#	install -D src/batteriesGlue.mli      _build/src/batteriesGlue.mli
 
 
 doc: batteries.cma doc/api.odocl

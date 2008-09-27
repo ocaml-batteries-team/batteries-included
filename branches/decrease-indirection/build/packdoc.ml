@@ -1,18 +1,41 @@
-(*open Batteries
-open System
-open Data.Mutable
-open Data.Persistent
-open Data.Text
-open Languages*)
+(** Imported from {!List} to avoid weird dependencies during compilation*)
+module List =
+struct
+  include List
+  let filter_map f l =
+    let rec loop acc = function
+      | []   -> acc
+      | h::t -> match f h with
+	  | None   -> loop acc t
+	  | Some x -> loop (x::acc) t
+    in rev (loop [] l)
+end
 
+
+(** Imported from {!IO.Printf} to avoid weird dependencies during compilation*)
+module Printf =
+struct
+  include Printf
+
+  let make_list_printer (p:(out_channel -> 'b -> unit)) 
+      (start:   string)
+      (finish:  string)
+      (separate:string)
+      (out:out_channel)
+      (l:  'b list  ) = 
+    let rec aux out l = match l with
+      | []    -> ()
+  | [h]   -> p out h
+  | h::t  -> fprintf out "%a%s%a" p h separate aux t
+    in fprintf out "%s%a%s" start aux l finish
+end
+
+(** Imported from {!ExtString.String} to avoid weird dependencies during compilation*)
 module String =
 struct
   include String
-
   exception Invalid_string
 
-  let is_empty s = length s = 0 
-      
   let find str sub =
     let sublen = length sub in
       if sublen = 0 then
@@ -31,13 +54,13 @@ struct
 	    raise Invalid_string
 	  with
 	      Exit -> !found
-		
+
   let split str sep =
     let p = find str sep in
     let len = length sep in
     let slen = length str in
       sub str 0 p, sub str (p + len) (slen - p - len)
-
+	
   let nsplit str sep =
     if str = "" then []
     else (
@@ -50,17 +73,16 @@ struct
       in
 	nsplit str sep
     )
-
 end
 
 let read_dependency dep_name =
   let module_name = String.capitalize (Filename.basename (Filename.chop_suffix dep_name ".mli.depends")) in
-(*  Printf.eprintf "Reading %S => %s\n" dep_name module_name;*)
-  File.with_file_in dep_name (
-    fun f ->
-      let (file_name, dependencies) = String.split (IO.read_line f) ":" in
-	(file_name, module_name, List.filter (fun x -> not (String.is_empty x)) (String.nsplit dependencies " "))
-  )
+  let f = open_in dep_name in
+  let (file_name, dependencies) = String.split (input_line f) ":" in
+  let result = (file_name, module_name, List.filter (fun x -> not (String.length x = 0)) (String.nsplit dependencies " ")) in
+    close_in f;
+    result
+
 
 module StringSet = Set.Make(String)
 module Dependency =
@@ -90,7 +112,7 @@ struct
     Printf.fprintf out "{";
     Hashtbl.iter (fun k set -> Printf.fprintf out "%s: {%a}\n"
 		    k
-		    (fun out s -> List.iter (fun x -> Printf.fprintf out "%s; " x) s)
+		    (Printf.make_list_printer (fun out -> Printf.fprintf out "%s") "{" "}" "; ")
 		    (StringSet.elements set)) tbl;
     Printf.fprintf out "}\n"
 end
@@ -154,36 +176,27 @@ let sort directory =
 	      aux (sorted @ roots) rest
     in 
     let sorted = aux [] (StringSet.elements !modules) in
-      List.fold_left (fun acc module_name ->
-			Printf.eprintf "Should I add module %s?\n" module_name;
-			try  (module_name, Hashtbl.find src module_name)::acc
-			with Not_found -> acc) [] sorted
-
+      List.filter_map (fun module_name -> 
+			 try Some (module_name, Hashtbl.find src module_name)
+			 with Not_found -> 
+(*			   Printf.eprintf "I'm not going to add module %s, it's external\n%!" module_name;*)
+			   None) sorted
 let generate_mli cout pack l =
   let feed file cout () =
-    let cin = open_in file         in
-    let buf = String.make 1024 ' ' in
-    let rec aux () =
-      let read = input cin buf 0 1024 in
-	if read = 0 then 
-	  Printf.eprintf "Done writing\n"
-	else 
-	  begin
-	  Printf.eprintf "Writing %d bytes\n" read;
-	  output cout buf 0 read;
-	  aux ()
-	end
-    in aux ()
-  in let print_modules cout () =
+    let cin = open_in file in
+      try while true do
+	output_string cout (input_line cin);
+	output_char   cout '\n'
+      done
+      with End_of_file -> ()
+  in
+  let print_modules cout () =
     List.iter (
       fun (name, src) -> 
 	Printf.fprintf cout "module %s:\nsig\n%a\nend\n" name (feed src) ()
     ) l in
 (*  Printf.fprintf out "module %s:\nsig\n%a\nend\n" pack print_modules ()*)
-    Printf.eprintf "Starting mli generation\n%!";
-    List.iter (fun (name,_) -> Printf.eprintf "Module %s " name) l;
-    print_modules cout ();
-    Printf.eprintf "\nModule generation complete\n%!"
+    print_modules cout ()
 
 
 let dir = ref "."

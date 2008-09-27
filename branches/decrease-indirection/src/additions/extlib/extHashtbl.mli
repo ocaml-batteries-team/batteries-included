@@ -20,7 +20,10 @@
  
 (** Extra functions over hashtables. *)
 
-(** Operations over hashtables. *)
+(** Operations over hashtables. 
+
+    @documents Hashtbl
+*)
 module Hashtbl :
   (** The wrapper module *)
   sig
@@ -98,12 +101,9 @@ val find_option : ('a,'b) Hashtbl.t -> 'a -> 'b option
 val mem : ('a, 'b) t -> 'a -> bool
 (** [Hashtbl.mem tbl x] checks if [x] is bound in [tbl]. *)
 
-
-
-val exists : ('a,'b) t -> 'a -> bool
+(*val exists : ('a,'b) t -> 'a -> bool*)
   (** [exists h k] returns true is at least one item with key [k] is
       found in the hashtable. *)
-
 
 (**{6 Traversing}*)
 val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
@@ -147,6 +147,88 @@ val enum : ('a, 'b) t -> ('a * 'b) Enum.t
 val of_enum : ('a * 'b) Enum.t -> ('a, 'b) t
   (** Create a hashtable from a (key,value) enumeration. *)
 
+(** {6 The polymorphic hash primitive}*)
 
+val hash : 'a -> int
+(** [Hashtbl.hash x] associates a positive integer to any value of
+   any type. It is guaranteed that
+   if [x = y] or [Pervasives.compare x y = 0], then [hash x = hash y].
+   Moreover, [hash] always terminates, even on cyclic
+   structures. *)
 
+external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
+(** [Hashtbl.hash_param n m x] computes a hash value for [x], with the
+   same properties as for [hash]. The two extra parameters [n] and
+   [m] give more precise control over hashing. Hashing performs a
+   depth-first, right-to-left traversal of the structure [x], stopping
+   after [n] meaningful nodes were encountered, or [m] nodes,
+   meaningful or not, were encountered. Meaningful nodes are: integers;
+   floating-point numbers; strings; characters; booleans; and constant
+   constructors. Larger values of [m] and [n] means that more
+   nodes are taken into account to compute the final hash
+   value, and therefore collisions are less likely to happen.
+   However, hashing takes longer. The parameters [m] and [n]
+   govern the tradeoff between accuracy and speed. *)
+
+(** {6 Functorial interface} *)
+
+module type HashedType =
+  sig
+    type t
+      (** The type of the hashtable keys. *)
+    val equal : t -> t -> bool
+      (** The equality predicate used to compare keys. *)
+    val hash : t -> int
+      (** A hashing function on keys. It must be such that if two keys are
+          equal according to [equal], then they have identical hash values
+          as computed by [hash].
+          Examples: suitable ([equal], [hash]) pairs for arbitrary key
+          types include
+          ([(=)], {!Hashtbl.hash}) for comparing objects by structure,
+          ([(fun x y -> compare x y = 0)], {!Hashtbl.hash})
+          for comparing objects by structure and handling {!Pervasives.nan}
+          correctly, and
+          ([(==)], {!Hashtbl.hash}) for comparing objects by addresses
+          (e.g. for cyclic keys). *)
+   end
+(** The input signature of the functor {!Hashtbl.Make}. *)
+
+module type S =
+  sig
+    type key
+    type 'a t
+    val create : int -> 'a t
+    val length : 'a t -> int
+    val is_empty : 'a t -> bool
+    val clear : 'a t -> unit
+    val copy : 'a t -> 'a t
+    val add : 'a t -> key -> 'a -> unit
+    val remove : 'a t -> key -> unit
+    val remove_all : 'a t -> key -> unit
+    val find : 'a t -> key -> 'a
+    val find_all : 'a t -> key -> 'a list
+    val find_default : 'a t -> key ->  'a -> 'a
+    val find_option : 'a t -> key -> 'a option
+    val replace : 'a t -> key -> 'a -> unit
+    val mem : 'a t -> key -> bool
+    val iter : (key -> 'a -> unit) -> 'a t -> unit
+    val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+    val map : ('b -> 'c) -> 'b t -> 'c t
+    val keys : 'a t -> key Enum.t
+    val values : 'a t -> 'a Enum.t
+    val enum : 'a t -> (key * 'a) Enum.t
+    val of_enum : (key * 'a) Enum.t -> 'a t
   end
+(** The output signature of the functor {!Hashtbl.Make}. *)
+    
+module Make (H : HashedType) : S with type key = H.t
+  (** Functor building an implementation of the hashtable structure.
+      The functor [Hashtbl.Make] returns a structure containing
+      a type [key] of keys and a type ['a t] of hash tables
+      associating data of type ['a] to keys of type [key].
+      The operations perform similarly to those of the generic
+      interface, but use the hashing and equality functions
+      specified in the functor argument [H] instead of generic
+      equality and hashing. *)
+
+end
