@@ -1,5 +1,5 @@
 (*
- * Batlib_Findlib_Findlib - Importing Findlib module Findlib
+ * Batlib_Baselib_Map - Importing Base module Map
  * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
@@ -18,4 +18,4 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include Findlib
+include Map
