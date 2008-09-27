@@ -1,8 +1,0 @@
-<condition.mli>:pkg_threads, pkg_threads.posix, use_legacy
-<condition.ml>: pkg_threads, pkg_threads.posix, use_legacy
-<event.mli>:    pkg_threads, pkg_threads.posix, use_legacy
-<event.ml>:     pkg_threads, pkg_threads.posix, use_legacy
-<mutex.mli>:    pkg_threads, pkg_threads.posix, use_legacy
-<mutex.ml>:     pkg_threads, pkg_threads.posix, use_legacy
-<thread.mli>:   pkg_threads, pkg_threads.posix, use_legacy
-<thread.ml>:    pkg_threads, pkg_threads.posix, use_legacy
