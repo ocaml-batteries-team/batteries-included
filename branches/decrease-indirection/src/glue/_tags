@@ -1,2 +1,5 @@
 <baselib>:  include
 <findlib>:  include
+<extlib>:   include
+<misc>:     include
+<baselib_threads>: include
