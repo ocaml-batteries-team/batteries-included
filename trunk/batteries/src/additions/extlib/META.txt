@@ -1,3 +1,0 @@
-version="1.5.batteries"
-archive(byte)="extLib.cma"
-archive(native)="extLib.cmxa"
