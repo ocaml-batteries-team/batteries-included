@@ -1,2 +1,2 @@
 <*>: pkg_findlib
-<*.cmx>: for-pack(Toolchain)
+<*.cmx>: for-pack(Batteries_core_pack.Toolchain)

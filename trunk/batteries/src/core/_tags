@@ -5,3 +5,4 @@
 <batteries_core_threads.*>:  pkg_threads
 <extlib.cmx>:            for-pack(Batteries_core_pack)
 <batteries_core.cmx>:    for-pack(Batteries_core_pack)
+<toolchain.cmx>:         for-pack(Batteries_core_pack)

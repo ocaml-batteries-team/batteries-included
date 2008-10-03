@@ -30,22 +30,35 @@ all: byte doc
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
 
-byte: src/main/threaded/batteries.cma src/main/nothreads/batteries.cma
-opt:  src/main/threaded/batteries.cmxa src/main/nothreads/batteries.cmxa
+#byte: src/main/threaded/batteries.cma src/main/nothreads/batteries.cma
+#opt:  src/main/threaded/batteries.cmxa src/main/nothreads/batteries.cmxa
 
-src/main/threaded/batteries.cma: list
-	ocamlbuild src/main/threaded/batteries.cma
+#src/main/threaded/batteries.cma: list
+#	ocamlbuild src/main/threaded/batteries.cma
 
-src/main/threaded/batteries.cmxa: list
-	ocamlbuild src/main/threaded/batteries.cmxa
+#src/main/threaded/batteries.cmxa: list
+#	ocamlbuild src/main/threaded/batteries.cmxa
 
-src/main/nothreads/batteries.cma: list
-	ocamlbuild src/main/nothreads/batteries.cma
+#src/main/nothreads/batteries.cma: list
+#	ocamlbuild src/main/nothreads/batteries.cma
 
-src/main/nothreads/batteries.cmxa: list
-	ocamlbuild src/main/nothreads/batteries.cmxa
+#src/main/nothreads/batteries.cmxa: list
+#	ocamlbuild src/main/nothreads/batteries.cmxa
 
 
+byte:
+	ocamlbuild -I src/main/threads   src/main/batteries_threads.cma &&\
+	ocamlbuild -I src/main/nothreads src/main/batteries_nothreads.cma
+
+opt:
+	ocamlbuild -I src/main/threads   src/main/batteries_threads.cmxa &&\
+	ocamlbuild -I src/main/nothreads src/main/batteries_nothreads.cmxa
+
+install:
+	ocamlfind install batteries build/META _build/src/main/batteries_threads.cmi _build/src/main/batteries_nothreads.cmi -optional _build/src/main/batteries_threads.cma _build/src/main/batteries_threads.cmxa _build/src/main/batteries_nothreads.cma _build/src/main/batteries_nothreads.cmxa
+
+uninstall:
+	ocamlfind remove batteries
 
 #packs: $(GENERATED_MLI)
 #packs:
@@ -90,18 +103,19 @@ prepare_syntax_contents:
 	@echo $(basename $(notdir $(shell find syntax -name  "*.ml"))) > batsyntax.mllib &&\
 	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batsyntax.mllib
 
-install:
-	ocamlfind install batteries build/threaded/META _build/src/main/threaded/batteries.cmi -optional _build/src/main/threaded/batteries.cma  _build/src/main/threaded/batteries.cmxa  _build/src/main/threaded/batteries.a  &&\
-	ocamlfind install batteries_nothreads build/nothreads/META _build/src/main/nothreads/batteries.cmi -optional _build/src/main/nothreads/batteries.cma  _build/src/main/nothreads/batteries.cmxa  _build/src/main/nothreads/batteries.a
+#install:
+#	ocamlfind install batteries build/threaded/META _build/src/main/threaded/batteries.cmi -optional _build/src/main/threaded/batteries.cma  _build/src/main/threaded/batteries.cmxa  _build/src/main/threaded/batteries.a  &&\
+#	ocamlfind install batteries_nothreads build/nothreads/META _build/src/main/nothreads/batteries.cmi -optional _build/src/main/nothreads/batteries.cma  _build/src/main/nothreads/batteries.cmxa  _build/src/main/nothreads/batteries.a
 
 
-uninstall:
-	ocamlfind remove batteries &&\
-	ocamlfind remove batteries_nothreads
+
+#uninstall:
+#	ocamlfind remove batteries &&\
+#	ocamlfind remove batteries_nothreads
 
 clean:
 	ocamlbuild -clean &&\
 	\rm -f `find . -name "*~" -o -name "*#"` &&\
-	\rm -f META batteries_agnostic.mllib doc/api.odocl doc/batteries/html/api/* $(EXTLIB_MLI)
+	\rm -f META doc/api.odocl doc/batteries/html/api/* 
 
-.PHONY: batteries.mllib doc/api.odocl test
+.PHONY: doc/api.odocl

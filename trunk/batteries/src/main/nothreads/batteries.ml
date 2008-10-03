@@ -1,5 +1,5 @@
 (*
- * Batteries - Root of Batteries Included hierarchy (no-thread version)
+ * Batteries - Root of Batteries Included hierarchy (threaded version)
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+module Inner = Batteries_core_threads
 
-module Inner = Batteries_core
-
-(** The root of the revised standard library, no-thread version.*)
+(** The root of the revised standard library.*)
 
 (** Tools for changing the control flow of a program, from error-management to concurrency.*)
 module Control     = struct
@@ -29,15 +28,22 @@ module Control     = struct
   (** Everything related to parallelism and concurrency. *)
   module Concurrency = struct
 
-    (**This version does not contain OCaml's base threads. *)
+    (** Concurrency operations as defined by OCaml's base library. *)
+    module Threads = struct
 
+
+      (** {6 Important note} 
+
+	  This module is only defined in multi-threaded versions of Batteries Included.*)
+
+    end
   end
 
-  module Labels      = Batteries_core.Control.Labels
+  module Labels      = Inner.Control.Labels
 
   (** Monadic operations. *)
   module Monad = struct
-    module Interfaces  = Batteries_core.Control.Monad.Interfaces
+    module Interfaces  = Inner.Control.Monad.Interfaces
   end
 end
 
@@ -47,7 +53,7 @@ module Data        = struct
 
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
-      open Batteries_core.Data.Mutable
+      open Inner.Data.Mutable
       module Array         = Array
       module ArrayLabels   = ArrayLabels
       module Bigarray      = Bigarray
@@ -64,7 +70,7 @@ module Data        = struct
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
-      open Batteries_core.Data.Persistent
+      open Inner.Data.Persistent
       module Dllist          = Dllist
       module Lazy            = Lazy
       module List            = List      (*formerly Batlib_Baselib_List*)
@@ -87,14 +93,14 @@ module Data        = struct
     
   (** Boolean and bit-oriented data structures *)
   module Logical     = struct
-    open Batteries_core.Data.Logical
+    open Inner.Data.Logical
     module Bitset = BitSet
     module Bool   = Bool
   end
 
   (** Numbers and operations on them.*)    
   module Numeric     = struct
-    open Batteries_core.Data.Numeric
+    open Inner.Data.Numeric
     (*module Interfaces  = Batlib_Interfaces_Numeric*)
     module Big_int     = Big_int
     module Complex     = Complex
@@ -110,7 +116,7 @@ module Data        = struct
   (** Text data structures. *)
   module Text        = struct
 
-    open Batteries_core.Data.Text
+    open Inner.Data.Text
 
     (** {6 Latin-1}*)
 
@@ -126,7 +132,7 @@ end
    to data, from data to text and from text to text.
 *)
 module Languages   = struct
-  open Batteries_core.Languages
+  open Inner.Languages
 
     (**
        This module contains everything related to transformation from text to data, 
@@ -159,7 +165,7 @@ end
 
 (** Meta-level operations (marshalling, garbage-collection...) *)
 module Meta        = struct
-  open Batteries_core.Meta
+  open Inner.Meta
 
   (** {1 Language}*)
   
@@ -186,7 +192,7 @@ end
 
 (** Interactions with the operating system (file manipulation, arguments...) *)
 module System      = struct 
-  open Batteries_core.System
+  open Inner.System
 
   (** {1 Environment I/O}*)
   
@@ -223,7 +229,7 @@ end
 
 (** Miscellaneous utilities *)
 module Util        = struct
-  open Batteries_core.Util
+  open Inner.Util
 
   module Base64 = Base64
   module Digest = Digest

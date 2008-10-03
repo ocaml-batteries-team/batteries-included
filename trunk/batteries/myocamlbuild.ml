@@ -488,7 +488,6 @@ end
 (**
    {1 Others}
 *)
-
 module Misc =
 struct
   let after_rules () =
@@ -503,6 +502,19 @@ struct
 
 
 end
+
+(*
+(** Link a .cma to another name. *)
+module Linkas =
+struct
+  let after_rules () =
+    rule "%.cma and %.linkas to [linkas].cma, where [linkas] is the content of %.rename"
+      ~deps:["%.cma";"%.linkaas"]
+      begin fun env build ->
+	
+      end
+end
+*)
 
 let _ = dispatch begin function
    | Before_options ->
