@@ -1,3 +1,32 @@
+09/30/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* enum.ml*: [hard_count] added
+	* IO.ml*: [feed] renamed [copy]
+	* myocamlbuild.ml: module [Pack] added
+	* batteries_core.ml: created
+	* batteries_core_pack.ml: created
+	* IO.ml*: [Printf.format] renamed [Printf.t]
+
+	
+09/29/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* core/: created
+	* core/batteriesCore.ml: created
+	* src/additions/extlib: moved to core/extlib
+	* src/additions/misc/*: moved to core/extlib/
+	* threaded/batteries.ml: now depends on BatteriesCore
+	* nothreads/batteries.ml: now depends on BatteriesCore_nothreads
+	
+09/28/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* misc/monad.*: created
+	* batteries.ml (both): [Monad] added
+	* batteries.ml (both): [format] removed
+	* IO.mli: comments restored from lost glue [Printf]
+	* IO.mli: [Printf] now not documented as a sub-module of [IO]
+	* extList.ml*: [Exceptionless] renamed [ExceptionLess] 
+	* extList.ml*: [interleave] added
+	* extNum.ml*: [round], [floor], [ceil], [square], [is_integer], [approx], [quo], [sign] added
+	* extNum.mli: added a section "Obsolete" to the documentation.
+	* tools.ml*: created
+	
 09/27/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* extHashtbl.mli: removed inconsistent [exists]
 	* extHashtbl.ml*: [HashedType], [S], [Make] added

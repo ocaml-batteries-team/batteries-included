@@ -18,10 +18,14 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-all: byte doc
+PACKS=$(shell find src -name "*mlpack")
+GENERATED_MLI=$(patsubst %.mlpack, %.mli, $(PACKS))
 
-#doc: _build/build/odoc_generator_batlib.cmo byte list
-#	 ocamldoc -I _build/batlib `find _build/juice -type d -exec echo -I \{\} \;` -g _build/build/odoc_generator_batlib.cmo -d doc `find . -name "*.ml" -o -name "*.mli"`
+
+test:
+	$(shell echo $(GENERATED_MLI))
+
+all: byte doc
 
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
@@ -29,36 +33,30 @@ _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 byte: src/main/threaded/batteries.cma src/main/nothreads/batteries.cma
 opt:  src/main/threaded/batteries.cmxa src/main/nothreads/batteries.cmxa
 
-src/main/threaded/batteries.cma: list packs
+src/main/threaded/batteries.cma: list
 	ocamlbuild src/main/threaded/batteries.cma
 
-src/main/threaded/batteries.cmxa: list packs
+src/main/threaded/batteries.cmxa: list
 	ocamlbuild src/main/threaded/batteries.cmxa
 
-src/main/nothreads/batteries.cma: list packs
+src/main/nothreads/batteries.cma: list
 	ocamlbuild src/main/nothreads/batteries.cma
 
-src/main/nothreads/batteries.cmxa: list packs
+src/main/nothreads/batteries.cmxa: list
 	ocamlbuild src/main/nothreads/batteries.cmxa
 
-MLI=src/additions/extlib.mli
 
-packs:
-	\rm -f $(MLI) _build/$(MLI) _build/src/additions/extlib.cmi &&\
+
+#packs: $(GENERATED_MLI)
+#packs:
+#	ocamlbuild -classic-display $(GENERATED_MLI)
+
+%.mli:%/*
+	\rm -f $(EXTLIB_MLI) _build/$(EXTLIB_MLI) _build/src/core/extlib.cmi &&\
 	ocamlbuild extlib.cmo &&\
 	ocamlbuild build/packdoc.byte &&\
-	./packdoc.byte -i _build/src/additions/extlib/ -o src/additions/extlib.mli      -pack Extlib       &&\
-	install -D src/additions/extlib.mli   _build/src/additions/extlib.mli                                        
-#	ocamlbuild extlib.cmo         &&\
-#	ocamlbuild baselibGlue.cmo    &&\
-#	ocamlbuild findlibGlue.cmo    &&\
-#	ocamlbuild batteriesGlue.cmo  &&\
-#	./packdoc.byte -i _build/src/glue/baselib/     -o src/glue/baselibGlue.mli      -pack BaselibGlue  &&\
-#	./packdoc.byte -i _build/src/glue/findlib/     -o src/glue/findlibGlue.mli      -pack FindlibGlue  &&\
-#	./packdoc.byte -i _build/src/glue/             -o src/batteriesGlue.mli         -pack BatteriesGlue&&\
-#	install -D src/glue/baselibGlue.mli   _build/src/glue/baselibGlue.mli                                        &&\
-#	install -D src/glue/findlibGlue.mli   _build/src/glue/findlibGlue.mli                                        &&\
-#	install -D src/batteriesGlue.mli      _build/src/batteriesGlue.mli
+	./packdoc.byte -i _build/src/core/extlib/ -o src/core/extlib.mli      -pack Extlib       &&\
+	install -D src/core/extlib.mli   _build/src/core/extlib.mli
 
 
 doc: src/main/threaded/batteries.cma doc/api.odocl
@@ -68,20 +66,23 @@ doc: src/main/threaded/batteries.cma doc/api.odocl
 	mv _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: list
-#	echo Batteries > doc/api.odocl
-	echo Extlib >  doc/api.odocl
+	@echo $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))) > batteries.mllib &&\
+	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g" -e "s/batteries\\nbatteries/batteries/" -e "s/batteriesLayer1_nothread//\\n" batteries.mllib > src/main/threaded/batteries.mllib &&\
+	echo Extlib >  doc/api.odocl &&\
 	cat batteries.mllib >> doc/api.odocl
 
 #
 #Generate the list of modules we intend to put into batlib.cma
 #
-list: batteries.mllib
+list: src/main/threaded/batteries.mllib src/main/nothreads/batteries.mllib
 
-batteries.mllib:
-	@echo $(basename $(notdir $(shell find src/ -name  "*.ml"))) > batteries.mllib &&\
-	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g" -e "s/batteries\\nbatteries/batteries/" -i batteries.mllib                   &&\
-	cp batteries.mllib src/main/threaded                                           &&\
-	cp batteries.mllib src/main/nothreads
+src/main/threaded/batteries.mllib:
+	@echo $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))) > batteries.mllib &&\
+	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g" -e "s/batteries\\nbatteries/batteries/" -e "s/batteriesLayer1_nothreads\\n//" batteries.mllib > src/main/threaded/batteries.mllib
+
+src/main/nothreads/batteries.mllib:
+	@echo $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))) > batteries.mllib &&\
+	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g" -e "s/batteries\\nbatteries/batteries/" -e "s/batteriesLayer1\\n//" batteries.mllib > src/main/nothreads/batteries.mllib
 
 
 
@@ -101,6 +102,6 @@ uninstall:
 clean:
 	ocamlbuild -clean &&\
 	\rm -f `find . -name "*~" -o -name "*#"` &&\
-	\rm -f META batteries_agnostic.mllib doc/api.odocl doc/batteries/html/api/* src/additions/extlib.mli 
+	\rm -f META batteries_agnostic.mllib doc/api.odocl doc/batteries/html/api/* $(EXTLIB_MLI)
 
-.PHONY: batteries.mllib doc/api.odocl
+.PHONY: batteries.mllib doc/api.odocl test

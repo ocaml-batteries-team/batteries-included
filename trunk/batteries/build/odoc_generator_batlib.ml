@@ -76,12 +76,13 @@ let primitive_types_names =
       "int32",     "Data.Numeric.Int32.t";
       "int64",     "Data.Numeric.Int64.t";
       "nativeint", "Data.Numeric.Nativeint.t";
+      "big_int",   "Data.Numeric.Big_int.t";
       "int",       "Data.Numeric.Int.t";
       "bool",      "Data.Logical.Bool.t";
       "unit",      "Data.Numeric.Unit.t?";
       "float",     "Data.Numeric.Float.t";(*Module not implemented yet*)
       (*"exn",     "Batteries.Control.Exceptions.Exn.t";*)(*Module not implemented yet*)
-      "format4", "Batteries.Languages.Printf.format4"(*;*)(*Module not implemented yet*)
+      "format4",   "Languages.Printf.format4"
 ]
 
 let has_parent a ~parent:b =

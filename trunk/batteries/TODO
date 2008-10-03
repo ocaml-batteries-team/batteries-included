@@ -1,6 +1,4 @@
-* use patched ExtLib
-
-* add improved IO and get rid of Printf and channel_in, channel_out
+* add type_conv into module Toolchain.Boilerplate
 
 * import Camomile
 
