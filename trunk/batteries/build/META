@@ -1,0 +1,5 @@
+name="batteries"
+version="0.1"
+description="Batteries Included, standard distribution of OCaml libraries"
+requires(mt) ="batteries_threads,threads"
+requires(-mt)="batteries_nothreads"

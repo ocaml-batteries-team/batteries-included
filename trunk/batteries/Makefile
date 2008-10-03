@@ -47,18 +47,22 @@ _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 
 
 byte:
-	ocamlbuild -I src/main/threads   src/main/batteries_threads.cma &&\
-	ocamlbuild -I src/main/nothreads src/main/batteries_nothreads.cma
+	ocamlbuild src/main/threads/batteries.cma &&\
+	ocamlbuild src/main/nothreads/batteries.cma
 
 opt:
-	ocamlbuild -I src/main/threads   src/main/batteries_threads.cmxa &&\
-	ocamlbuild -I src/main/nothreads src/main/batteries_nothreads.cmxa
+	ocamlbuild src/main/threads/batteries.cmxa &&\
+	ocamlbuild src/main/nothreads/batteries.cmxa
 
 install:
-	ocamlfind install batteries build/META _build/src/main/batteries_threads.cmi _build/src/main/batteries_nothreads.cmi -optional _build/src/main/batteries_threads.cma _build/src/main/batteries_threads.cmxa _build/src/main/batteries_nothreads.cma _build/src/main/batteries_nothreads.cmxa
+	ocamlfind install batteries build/META &&\
+	ocamlfind install batteries_threads build/threaded/META _build/src/main/threads/batteries.cmi -optional _build/src/main/threads/batteries.cma _build/src/main/threads/batteries.cmxa   &&\
+	ocamlfind install batteries_nothreads build/nothreads/META _build/src/main/nothreads/batteries.cmi -optional _build/src/main/nothreads/batteries.cma _build/src/main/nothreads/batteries.cmxa
 
 uninstall:
-	ocamlfind remove batteries
+	ocamlfind remove batteries &&\
+	ocamlfind remove batteries_threads &&\
+	ocamlfind remove batteries_nothreads
 
 #packs: $(GENERATED_MLI)
 #packs:

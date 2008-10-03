@@ -503,6 +503,13 @@ struct
 
 end
 
+module Generatemli =
+struct
+  let after_rules () =
+    rule "%.mllib to %.mli"
+      ~dep:"%.mllib"
+end
+
 (*
 (** Link a .cma to another name. *)
 module Linkas =

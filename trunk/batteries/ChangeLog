@@ -1,3 +1,9 @@
+10/03/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* build/META: removed archives, added mt/-mt
+	* build/threads/META:
+	* build/nothreads/META:
+	* Makefile: fully rewritten
+	
 09/30/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* enum.ml*: [hard_count] added
 	* IO.ml*: [feed] renamed [copy]
