@@ -43,16 +43,10 @@ struct
 	else ocamldoc_directory
     
   let after_rules () =
-       (*As findlib doesn't know OCamlDoc-specific flags, we need to patch this*)
-(*    let ocamldoc_directory = get_ocamldoc_directory () in
-      flag ["ocaml"; "pkg_batteries"; "compile"]       (S[A "-thread"; A "-I"; A(ocamldoc_directory^"/..")]);
-      flag ["ocaml"; "pkg_batteries"; "byte"; "link"]  (S[A "-thread"; A "-I"; A(ocamldoc_directory^"/../"); A"odoc_info.cma"]);
-      flag ["ocaml"; "pkg_batteries"; "native"; "link"](S[A "-thread"; A "-I"; A(ocamldoc_directory^"/../"); A"odoc_info.cmxa"]);*)
-
-
        (* When one link an OCaml library/binary/package, one should use -linkpkg *)
        flag ["ocaml"; "byte";   "link"; "program"] & A"-linkpkg";
        flag ["ocaml"; "native"; "link"; "program"] & A"-linkpkg";
+
 
        (* For each ocamlfind package one inject the -package option when
        	* compiling, computing dependencies, generating documentation and
@@ -101,7 +95,7 @@ struct
     flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
 
-    flag ["ocaml"; "pkg_batteries"; "compile"]            (S[A "-thread"]);
+
 
 
 
@@ -115,16 +109,7 @@ struct
 						    A "batteries"; A"-syntax"; A "batteries"];
     flag ["ocaml"; "doc";      "use_batteries"] & S[A "-verbose"; A"-package"; A "batteries"; A"-syntax"; A "batteries"];
     flag ["ocaml"; "link";     "use_batteries"] & S[A "-verbose"; A"-package"; A "batteries"; A"-syntax"; A "batteries"];
-(*    flag ["ocaml"; "use_batteries"]
-    flag ["ocaml"; "pkg_batteries"; "compile"]       (S[A "-thread"; A "-verbose"; A "-pp"; 
-							A ("cat "^batteries_directory^"/prefix.ml")]);*)
-(* ([A"cat"; A (batteries_directory^"/prefix.ml")]) ]);*)
-(*A "-toolchain"; A "batteries"]);*)
-(*; A "-syntax"; A "camlp4r"]);*)
-    flag ["ocaml"; "pkg_batteries"; "byte"; "link"]  (S[A "-thread"]);
-    flag ["ocaml"; "pkg_batteries"; "native"; "link"](S[A "-thread"]);
 
-(*    flag ["ocaml"; "pkg_batteries"; "link"; "program"](S[A "-nostdlib"])*)
 end
 
 let _ = dispatch begin function

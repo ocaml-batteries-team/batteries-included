@@ -1,3 +1,2 @@
-<test.*>:pkg_batteries
-<test2.*>:pkg_extlib
-<test3.*>:use_batteries
+<test_nothreads.*>:  pkg_batteries
+<test_threads.*>:    pkg_batteries,pkg_threads
