@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module Inner = Batteries_core_threads
+module Inner = Batteries_core
 
 (** The root of the revised standard library.*)
 

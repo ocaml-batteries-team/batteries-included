@@ -22,12 +22,6 @@
 
 module Control     = struct
   module Concurrency = struct
-    module Threads = struct
-      module Condition = Batlib_Baselib_Condition
-      module Event     = Batlib_Baselib_Event
-      module Mutex     = Batlib_Baselib_Mutex
-      module Thread    = Batlib_Baselib_Thread
-    end
   end
 
   module Labels      = Extlib.Labels

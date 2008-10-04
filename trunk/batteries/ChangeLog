@@ -1,3 +1,7 @@
+11/03/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* doc/myocamlbuild.ml: removed automatic "-thread"
+	* batteries_core.ml: loses [Threads]
+	
 10/03/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* build/META: removed archives, added mt/-mt
 	* build/threads/META:

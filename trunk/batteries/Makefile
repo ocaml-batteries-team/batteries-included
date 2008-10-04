@@ -46,13 +46,33 @@ _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 #	ocamlbuild src/main/nothreads/batteries.cmxa
 
 
-byte:
+byte: batteries.mllib
 	ocamlbuild src/main/threads/batteries.cma &&\
 	ocamlbuild src/main/nothreads/batteries.cma
 
-opt:
+opt: batteries.mllib
 	ocamlbuild src/main/threads/batteries.cmxa &&\
 	ocamlbuild src/main/nothreads/batteries.cmxa
+
+batteries.mllib:
+	echo $(foreach i, $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
+	sed -i -e "s/ /\n/g" -e "s/batteries\\nbatteries/batteries/" \
+		batteries.mllib &&\
+	cp batteries.mllib src/main/threads       &&\
+	echo $(foreach i, $(basename $(notdir $(shell find src \( -name "*ml" -or -name "*mlpack" \) -not -wholename "*baselib_threads*"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
+	sed -i -e "s/ /\n/g" -e "s/batteries\\nbatteries/batteries/" \
+		batteries.mllib &&\
+	cp batteries.mllib src/main/nothreads
+
+#batteries.mllib:
+#	echo $(foreach i, $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
+#	sed -i -e "s/ /\n/g" -e "s/batteries\\nbatteries/batteries/" \
+#		batteries.mllib &&\
+#	cp batteries.mllib src/main/threads       &&\
+#	echo $(foreach i, $(basename $(notdir $(shell find src \( -name "*ml" -or -name "*mlpack" \) -not -wholename "*baselib_threads*"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
+#	sed -i -e "s/ /\n/g" -e "s/batteries\\nbatteries/batteries/" \
+#		batteries.mllib &&\
+#	cp batteries.mllib src/main/nothreads
 
 install:
 	ocamlfind install batteries build/META &&\
@@ -122,4 +142,4 @@ clean:
 	\rm -f `find . -name "*~" -o -name "*#"` &&\
 	\rm -f META doc/api.odocl doc/batteries/html/api/* 
 
-.PHONY: doc/api.odocl
+.PHONY: doc/api.odocl batteries.mllib

@@ -495,21 +495,93 @@ struct
     flag ["ocaml"; "link"; "native"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"(*; A "odoc_info.cmxa"*)]);
     flag ["ocaml"; "docfile";        "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
-    flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
-    
-    flag ["ocaml"; "use_core"; "compile"] (P "src/core/core.cma");
-    ocaml_lib ~dir:"src/core" "core.cma"
-
-
+    flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"])    
 end
 
-module Generatemli =
+(** Provide a library which is as complete as possible.
+
+    Not working yet.*)
+(*module Complete_mllib =
+struct
+  let after_rules () =
+    rule "%.ml to %.cma in presence of tag autolib"
+      ~deps:["%.ml"; "%.ml.depends"]
+      ~tags:["autolib"]
+      ~prod:"%.cmz"
+      begin fun env build ->
+	let src          = env "%.ml" 
+	and dep          = env "%.ml.depends"
+	and dest         = env "%.mli" 
+	and cmo          = env "%.cmo" in
+	  (*(*Resource.print Format.std_formatter (Resource.Cache.dependencies src);*)
+	  (*Printf.eprintf "%S" (Solver.solve_target cmo (Pathname.include_dirs_of (Pathname.dirname cmo)));*)
+	  Printf.eprintf "%S" 
+	  Nop*)
+	  (*First, compile the .ml into a .cmo, to check it's possible.*)
+	(*let cmo          =
+	  match [build expand_module (Pathname.include_dirs_of src) src ["cmo"]] with
+	    | [Good g] -> g
+	    | [Bad  e] -> raise e
+	    | _        -> assert false
+	in
+	  (** [loop deps acc] 
+
+	      1. Read each .depends from [deps]
+	      2. Build the corresponding .cmo and add it to [acc]
+	  *)
+	let rec loop deps acc = 
+	  let modules = List.concat (List.map (
+	    fun dep ->
+	      with_input_file dep (
+		fun input ->
+		  (Lexer.blank_sep_strings (Lexing.from_channel input), (Pathname.dirname dep))
+	      )) deps) in
+	  let potential_cmos = build (List.map fun (m,dir) -> expand_module (Pathname.include_dirs_of dir) m 
+				      ["cmo"]) modules in
+	  let actual_cmos    = List.filter_map 
+	    (function Good path -> Some path
+	       |      Bad  _    -> None) potential_cmos in
+	    (*From this, deduce a new list of .depends*)
+	    List.map (fun path -> Pathname.add_extension Pathname.remove_extension path ) actual_cmos
+	in
+
+	in
+	  loop [(dep, Pathname.dirname src)] [cmo]
+	(*Read the list of module dependencies from [pack]*)
+	let modules      = 
+	  with_input_file pack (
+	    fun input ->
+	      let modules = ref [] in
+		try
+		  while true do
+		    let m = input_line input in
+		      (*Printf.eprintf "Reading %S\n" m;*)
+		      modules := m::!modules
+		  done; assert false
+		with End_of_file -> !modules			      
+	  ) in
+
+	(*For each module name, first generate the .mli file if it doesn't exist yet.*)
+	  List.iter ignore_good (build (List.map(fun m -> expand_module include_dirs m ["mli";
+										       "inferred.mli"]) modules));
+
+	(*Deduce file names from these module names and wait for these dependencies to be solved.
+	  
+	  [build] has a mysterious behaviour which looks like cooperative threading without
+	  threads and without call/cc.*)
+	let results = build (List.map(fun m -> expand_module include_dirs m ["mli.depends"; 
+									     "inferred.mli.depends"]) 
+			       modules) in*)
+      end
+end*)
+
+(*module Generatemli =
 struct
   let after_rules () =
     rule "%.mllib to %.mli"
       ~dep:"%.mllib"
 end
-
+*)
 (*
 (** Link a .cma to another name. *)
 module Linkas =
@@ -532,6 +604,7 @@ let _ = dispatch begin function
        OCamlFind.after_rules     ();
        Documentation.after_rules ();
        Packs.after_rules         ();
+(*       Complete_mllib.after_rules ();*)
        Misc.after_rules          ()
        
    | _ -> ()
