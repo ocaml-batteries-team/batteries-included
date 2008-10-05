@@ -18,8 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module Inner = Batteries_core_threads
-
 (** The root of the revised standard library.*)
 
 (** Tools for changing the control flow of a program, from error-management to concurrency.*)
@@ -42,7 +40,7 @@ module Control     = struct
 	  while for native programs this concurrency is implemented as slower-but-standard
 	  native threads.*)
 
-      open Inner.Control.Concurrency.Thread
+      open Batteries_core_threads.Control.Concurrency.Thread
       module Condition = Condition
       module Event     = Event
       module Mutex     = Mutex
@@ -50,11 +48,11 @@ module Control     = struct
     end
   end
 
-  module Labels      = Inner.Control.Labels
+  module Labels      = Batteries_core_threads.Control.Labels
 
   (** Monadic operations. *)
   module Monad = struct
-    module Interfaces  = Inner.Control.Monad.Interfaces
+    module Interfaces  = Batteries_core_threads.Control.Monad.Interfaces
   end
 end
 
@@ -64,7 +62,7 @@ module Data        = struct
 
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
-      open Inner.Data.Mutable
+      open Batteries_core_threads.Data.Mutable
       module Array         = Array
       module ArrayLabels   = ArrayLabels
       module Bigarray      = Bigarray
@@ -81,7 +79,7 @@ module Data        = struct
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
-      open Inner.Data.Persistent
+      open Batteries_core_threads.Data.Persistent
       module Dllist          = Dllist
       module Lazy            = Lazy
       module List            = List      (*formerly Batlib_Baselib_List*)
@@ -104,14 +102,14 @@ module Data        = struct
     
   (** Boolean and bit-oriented data structures *)
   module Logical     = struct
-    open Inner.Data.Logical
+    open Batteries_core_threads.Data.Logical
     module BitSet = BitSet
     module Bool   = Bool
   end
 
   (** Numbers and operations on them.*)    
   module Numeric     = struct
-    open Inner.Data.Numeric
+    open Batteries_core_threads.Data.Numeric
     (*module Interfaces  = Batlib_Interfaces_Numeric*)
     module Big_int     = Big_int
     module Complex     = Complex
@@ -127,7 +125,7 @@ module Data        = struct
   (** Text data structures. *)
   module Text        = struct
 
-    open Inner.Data.Text
+    open Batteries_core_threads.Data.Text
 
     (** {6 Latin-1}*)
 
@@ -143,7 +141,7 @@ end
    to data, from data to text and from text to text.
 *)
 module Languages   = struct
-  open Inner.Languages
+  open Batteries_core_threads.Languages
 
     (**
        This module contains everything related to transformation from text to data, 
@@ -176,7 +174,7 @@ end
 
 (** Meta-level operations (marshalling, garbage-collection...) *)
 module Meta        = struct
-  open Inner.Meta
+  open Batteries_core_threads.Meta
 
   (** {1 Language}*)
   
@@ -203,7 +201,7 @@ end
 
 (** Interactions with the operating system (file manipulation, arguments...) *)
 module System      = struct 
-  open Inner.System
+  open Batteries_core_threads.System
 
   (** {1 Environment I/O}*)
   
@@ -240,7 +238,7 @@ end
 
 (** Miscellaneous utilities *)
 module Util        = struct
-  open Inner.Util
+  open Batteries_core_threads.Util
 
   module Base64 = Base64
   module Digest = Digest
@@ -358,4 +356,4 @@ module Random    = Util.Random
 (**/**)
 
 
-include Inner.Standard
+include Batteries_core_threads.Standard

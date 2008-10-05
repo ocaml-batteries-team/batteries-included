@@ -346,6 +346,7 @@ let rebuild_structure modules =
       (*Note: we could probably do something much more simple, without resorting
 	to this dependency analysis stuff*)*)
   let for_rewriting = List.fold_left (fun acc x -> if List.mem x.m_name roots then (x.m_name, x)::acc else acc) [] modules
+    verbatim ("[Starting to rearrange module structure]");
     in
 (*    let for_rewriting = Hashtbl.fold (fun k m acc -> (k,m)::acc) all_roots [] in*)
       (*2. Dive into these*)

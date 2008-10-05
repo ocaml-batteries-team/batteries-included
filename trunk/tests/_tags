@@ -1,2 +1,2 @@
-<test_nothreads.*>:  pkg_batteries
-<test_threads.*>:    pkg_batteries,pkg_threads
+<*>:                 pkg_batteries
+<test_threads.*>:    pkg_threads

@@ -29,8 +29,7 @@
 
 * implement a tool for nearly-automated importation
 
-* import Type-conv
- * Pa_type_conv    goes into Meta.Toolchain.Preprocessing as Type_conv
+* evaluate/import OcNAE
 
 * import Sexplib
  * Sexp gets converted for use of IO
@@ -96,4 +95,3 @@
  * Core.Sexpable   gets vampirized into Meta.Sexplib
  * Core.Stringable gets vampirized into Meta.Sexplib
  * substitute [protectx] with [Standard.finally]
-* import OCamlNet
