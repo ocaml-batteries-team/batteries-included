@@ -418,16 +418,16 @@ struct
 	assert false
       end;
 
-    rule ".mlpacklit to .mli conversion rule"
+    rule ".mlpack to .mli conversion rule"
       ~prod:"%.mli"
-      ~dep:"%.mlpacklit"
+      ~dep:"%.mlpack"
       begin fun env build ->
         (*c The action is a function that receive two arguments:
           [env] is a conversion function that substitutes `\%' occurrences
           according to the targets to which the rule applies.
           [_build] can be called to build new things (dynamic dependencies). *)
 	
-	let pack         = env "%.mlpacklit" 
+	let pack         = env "%.mlpack" 
 	and dest         = env "%.mli" in
 	let include_dirs = Pathname.include_dirs_of (Pathname.dirname pack) in
 	  

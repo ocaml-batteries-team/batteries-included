@@ -29,11 +29,11 @@
     fact that only files opened for writing may be actually used
     for writing.
 
-    For more information on monads, see {@see <http://enfranchisedmind.com/blog/2007/08/06/a-monad-tutorial-for-ocaml/>
+    For more information on monads, see {{:http://enfranchisedmind.com/blog/2007/08/06/a-monad-tutorial-for-ocaml/}
     A Monad Tutorial for Ocaml}.
 
     This definition is compatible with the standard syntax extension for monads.
-    For more information, see {@see <http://www.cas.mcmaster.ca/~carette/pa_monad/> the documentation of pa_monad}.
+    For more information, see {{:http://www.cas.mcmaster.ca/~carette/pa_monad/} the documentation of pa_monad}.
 *)
 
 (** Signature for monads *)

@@ -94,7 +94,7 @@ module Data        = struct
   (** Boolean and bit-oriented data structures *)
   module Logical     = struct
     open Inner.Data.Logical
-    module Bitset = BitSet
+    module BitSet = BitSet
     module Bool   = Bool
   end
 

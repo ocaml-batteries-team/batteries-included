@@ -4,7 +4,12 @@
 	* nothreads/_tags: removed [for-pack]
 	* Makefile: [batteries.mllib] now an empty target
 	* Makefile: [install] now installs [batteries.a]
-	
+	* Makefile: [doc] now depends on [byte] instead of [batteries.cma]
+	* builtin_tools.mli: replaced [@see] comments by link syntax
+	* monad.mli: replaced [@see] comments by link syntax
+	* ../test/Makefile: created
+	* ../test/test_list.ml: created
+	* batlib_Camlp4_PreCast.*: added
 	
 11/04/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* doc/myocamlbuild.ml: removed automatic "-thread"

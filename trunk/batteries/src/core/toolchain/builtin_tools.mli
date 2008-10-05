@@ -144,9 +144,8 @@ val ocamlc: ?package:package_option list ->
    manners of adding a file are equivalent, with files mentioned in [options]
    being compiled before files mentioned in [f].
 
-   For more informations about the ocamlc compiler, {@see
-   http://caml.inria.fr/pub/docs/manual-ocaml/manual022.html see the
-   manual of OCaml}.
+   For more informations about the ocamlc compiler, see
+   {{:http://caml.inria.fr/pub/docs/manual-ocaml/manual022.html} the manual of OCaml}.
 *)
 
 
@@ -167,9 +166,8 @@ val ocamlopt: ?package:package_option list ->
    manners of adding a file are equivalent, with files mentioned in [options]
    being compiled before files mentioned in [f].
    
-   For more informations about the ocamlopt compiler, {@see
-   http://caml.inria.fr/pub/docs/manual-ocaml/manual025.html see the
-   manual of OCaml}.
+   For more informations about the ocamlopt compiler, 
+   {{:http://caml.inria.fr/pub/docs/manual-ocaml/manual025.html} the manual of OCaml}.
 *)
 
 

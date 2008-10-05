@@ -76,7 +76,7 @@ module Data        = struct
     
   (** Boolean and bit-oriented data structures *)
   module Logical     = struct
-    module Bitset = Extlib.BitSet
+    module BitSet = Extlib.BitSet
     module Bool   = Extlib.ExtBool.Bool
   end
 

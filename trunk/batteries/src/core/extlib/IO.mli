@@ -731,8 +731,9 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
    You only need to read this if you intend to create your new printf-like functions,
    which happens generally by toying with {!mkprintf}.
    
-   
+
    {7 Format4}
+
    [('a, 'b, 'c, 'd) format4] = is the type of arguments for
    [printf]-style functions such that
    - ['a] is the type of arguments, with a return type of ['d]
@@ -759,7 +760,7 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
    {- ...}
    }
    - ['d] is the final return value of the function once all
-   }
+   arguments have been printed
    - ['b] is the type of the first argument given to unparsers
    (i.e. functions introduced with [%a] or [%t])
    {ul
@@ -779,9 +780,9 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
    }
    - ['d] is the final return value of the function once all
    arguments have been applied.
-   
+
    {7 Format}
-   [('a, 'b, 'c) format] or [('a, 'b, 'c) {!t}] is just a shortcut for [('a, 'b, 'c, 'c) format4].
+   [('a, 'b, 'c) format] or [('a, 'b, 'c) t] is just a shortcut for [('a, 'b, 'c, 'c) format4].
    
    {7 Important}
    Note that {!Obj.magic} is involved behind this, so be careful.
