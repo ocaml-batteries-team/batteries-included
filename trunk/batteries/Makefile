@@ -30,21 +30,6 @@ all: byte doc
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
 
-#byte: src/main/threaded/batteries.cma src/main/nothreads/batteries.cma
-#opt:  src/main/threaded/batteries.cmxa src/main/nothreads/batteries.cmxa
-
-#src/main/threaded/batteries.cma: list
-#	ocamlbuild src/main/threaded/batteries.cma
-
-#src/main/threaded/batteries.cmxa: list
-#	ocamlbuild src/main/threaded/batteries.cmxa
-
-#src/main/nothreads/batteries.cma: list
-#	ocamlbuild src/main/nothreads/batteries.cma
-
-#src/main/nothreads/batteries.cmxa: list
-#	ocamlbuild src/main/nothreads/batteries.cmxa
-
 
 byte: batteries.mllib
 	ocamlbuild src/main/threads/batteries.cma     &&\
@@ -96,7 +81,7 @@ uninstall:
 	install -D src/core/extlib.mli   _build/src/core/extlib.mli
 
 
-doc: src/main/threaded/batteries.cma doc/api.odocl
+doc: src/main/threads/batteries.cma doc/api.odocl
 	\rm -Rf doc/batteries/html/api &&\
 	ocamlbuild -I src/main/threaded doc/api.docdir/index.html &&\
 	rm api.docdir &&\

@@ -103,5 +103,4 @@ Batlib_Baselib_Condition
 Batlib_Baselib_Mutex
 Batlib_Baselib_Thread
 Batteries_core_threads
-Batteries_core_pack
 Batteries
