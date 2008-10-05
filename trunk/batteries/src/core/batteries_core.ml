@@ -243,10 +243,6 @@ end
 
 module Legacy = struct
   (**/**)
-  module Condition = Batlib_Baselib_Condition
-  module Event     = Batlib_Baselib_Event
-  module Mutex     = Batlib_Baselib_Mutex
-  module Thread    = Batlib_Baselib_Thread
   module Array     = Array
   module ArrayLabels= ArrayLabels
   module Bigarray  = Bigarray

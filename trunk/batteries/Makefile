@@ -47,20 +47,20 @@ _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 
 
 byte: batteries.mllib
-	ocamlbuild src/main/threads/batteries.cma &&\
+	ocamlbuild src/main/threads/batteries.cma     &&\
 	ocamlbuild src/main/nothreads/batteries.cma
 
 opt: batteries.mllib
-	ocamlbuild src/main/threads/batteries.cmxa &&\
+	ocamlbuild src/main/threads/batteries.cmxa    &&\
 	ocamlbuild src/main/nothreads/batteries.cmxa
 
 batteries.mllib:
-	echo $(foreach i, $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
-	sed -i -e "s/ /\n/g" -e "s/batteries\\nbatteries/batteries/" \
+#	echo $(foreach i, $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
+	sed -i -e "s/ /\n/g" -e "s/Batteries\\nBatteries/Batteries/" \
 		batteries.mllib &&\
 	cp batteries.mllib src/main/threads       &&\
-	echo $(foreach i, $(basename $(notdir $(shell find src \( -name "*ml" -or -name "*mlpack" \) -not -wholename "*baselib_threads*"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
-	sed -i -e "s/ /\n/g" -e "s/batteries\\nbatteries/batteries/" \
+#	echo $(foreach i, $(basename $(notdir $(shell find src \( -name "*ml" -or -name "*mlpack" \) -not -wholename "*baselib_threads*"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
+	sed -i -e "s/ /\n/g" -e "s/Batteries\\nBatteries/Batteries/" \
 		batteries.mllib &&\
 	cp batteries.mllib src/main/nothreads
 
@@ -76,8 +76,8 @@ batteries.mllib:
 
 install:
 	ocamlfind install batteries build/META &&\
-	ocamlfind install batteries_threads build/threaded/META _build/src/main/threads/batteries.cmi -optional _build/src/main/threads/batteries.cma _build/src/main/threads/batteries.cmxa   &&\
-	ocamlfind install batteries_nothreads build/nothreads/META _build/src/main/nothreads/batteries.cmi -optional _build/src/main/nothreads/batteries.cma _build/src/main/nothreads/batteries.cmxa
+	ocamlfind install batteries_threads build/threaded/META _build/src/main/threads/batteries.cmi -optional _build/src/main/threads/batteries.cma _build/src/main/threads/batteries.cmxa _build/src/main/threads/batteries.a  &&\
+	ocamlfind install batteries_nothreads build/nothreads/META _build/src/main/nothreads/batteries.cmi -optional _build/src/main/nothreads/batteries.cma _build/src/main/nothreads/batteries.cmxa  _build/src/main/nothreads/batteries.a 
 
 uninstall:
 	ocamlfind remove batteries &&\

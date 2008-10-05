@@ -1,4 +1,12 @@
-11/03/2008 David Teller <David.Teller@univ-orleans.fr>:
+11/05/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* threads/batteries.mllib: hardcoded
+	* nothreads/batteries.mllib: hardcoded
+	* nothreads/_tags: removed [for-pack]
+	* Makefile: [batteries.mllib] now an empty target
+	* Makefile: [install] now installs [batteries.a]
+	
+	
+11/04/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* doc/myocamlbuild.ml: removed automatic "-thread"
 	* batteries_core.ml: loses [Threads]
 	

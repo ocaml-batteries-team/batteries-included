@@ -44,5 +44,11 @@ module System    = System
 module Toolchain = Toolchain
 module Util      = Util
 module Standard  = Standard
-module Legacy    = Legacy
+module Legacy    = struct
+  include Legacy
+  module Condition = Batlib_Baselib_Condition
+  module Event     = Batlib_Baselib_Event
+  module Mutex     = Batlib_Baselib_Mutex
+  module Thread    = Batlib_Baselib_Thread
+end
 
