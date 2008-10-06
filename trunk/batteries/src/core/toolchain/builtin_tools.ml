@@ -46,6 +46,7 @@ type package_option =
     | `dllpath_all                (**[`dllpath_all]: add dll path for all packages.                 *)
     | `ignore_error               (**[`ignore_error]: ignore the error directive defined by the package.*)
     | `passopt     of string list (**[`passopt s]: pass options [s] directly to the compiler.       *)
+    | `verbose
     ]
 
 let build_package_option : package_option -> string list = function
@@ -59,6 +60,7 @@ let build_package_option : package_option -> string list = function
   | `dllpath_all  -> ["-dllpath-all"]
   | `ignore_error -> ["-ignore-error"]
   | `passopt l    -> make_list "-passopt" l
+  | `verbose      -> ["-verbose"]
 
 type warning =
     [`comments             of bool (**[true] to warn on suspicions comments, [false] otherwise.*)
@@ -248,24 +250,24 @@ let build_compiler_option compiler = function
     | `use_prims file-> ["-use-prims"; file]
     | `file file     -> ["- "; file]
 
-type command = string * string array
+type command = string * string list
 type task    = int
 
 let prepare_compiler_args compiler package options files =
-  Array.of_enum (Enum.concat (Enum.concat (List.enum 
+  List.of_enum (Enum.concat (Enum.concat (List.enum 
 				 [Enum.map (fun x -> List.enum (build_package_option x)) (List.enum package);
 				  Enum.map (fun x -> List.enum (build_compiler_option compiler x)) (List.enum options);
 				  Enum.map (fun file ->  List.enum ["- "; file]) (List.enum files)])))
 
 let ocamlc ?(package=[]) ?(options=[]) files =
-  (Findlib.command `ocamlc, prepare_compiler_args `ocamlc package options files)
+  (Findlib.command `ocamlc, (prepare_compiler_args `ocamlc package options files))
 
 let ocamlopt ?(package=[]) ?(options=[]) files =
-  (Findlib.command `ocamlopt, prepare_compiler_args `ocamlopt package options files)
+  (Findlib.command `ocamlopt, (prepare_compiler_args `ocamlopt package options files))
 
-let command_for_exec x = x
+let command_for_exec (cmd, args) = (cmd, Array.of_list args)
 let string_of_command  (cmd, args) = 
-  Printf.sprintf2 "%S %a" cmd (make_list_printer IO.nwrite "" "" " ") (Array.to_list args)
+  Printf.sprintf2 "%S %a" cmd (make_list_printer IO.nwrite "" "" " ") args
 
 (*let background (executable, args) =
   let (out_read, out_write) = Unix.pipe ()                 in

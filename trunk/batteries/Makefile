@@ -31,13 +31,16 @@ _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
 
 
-byte: batteries.mllib
+byte:
 	ocamlbuild src/main/threads/batteries.cma     &&\
 	ocamlbuild src/main/nothreads/batteries.cma
 
-opt: batteries.mllib
+opt:
 	ocamlbuild src/main/threads/batteries.cmxa    &&\
 	ocamlbuild src/main/nothreads/batteries.cmxa
+
+syntax:
+	ocamlbuild src/syntax/pa_openin/pa_openin.cmo
 
 batteries.mllib:
 #	echo $(foreach i, $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
@@ -59,8 +62,8 @@ batteries.mllib:
 #		batteries.mllib &&\
 #	cp batteries.mllib src/main/nothreads
 
-install:
-	ocamlfind install batteries build/META &&\
+install: syntax
+	ocamlfind install batteries build/META _build/src/syntax/pa_openin/pa_openin.cmo &&\
 	ocamlfind install batteries_threads build/threaded/META _build/src/main/threads/batteries.cmi -optional _build/src/main/threads/batteries.cma _build/src/main/threads/batteries.cmxa _build/src/main/threads/batteries.a  &&\
 	ocamlfind install batteries_nothreads build/nothreads/META _build/src/main/nothreads/batteries.cmi -optional _build/src/main/nothreads/batteries.cma _build/src/main/nothreads/batteries.cmxa  _build/src/main/nothreads/batteries.a 
 

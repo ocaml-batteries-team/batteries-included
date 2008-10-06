@@ -1,4 +1,19 @@
-11/05/2008 David Teller <David.Teller@univ-orleans.fr>:
+11/06/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* threads/batteries.ml: [Thread] now points to [Thread]
+	* builtin_tools.ml: [command] now uses a [list] rather than an [array]
+	* builtin_tools.ml: [ocamlc], [ocamlopt] now preprend the compiler name
+	* batteries*.ml: now use [Monad.S] rather than [Monad]
+	* batteries_threads.ml: now every leaf module is imported directly from [Batteries_core]
+	* src/syntax: created
+	* Makefile: [syntax] added
+	* Makefile: [install] now depends on [syntax]
+	* Makefile: 
+	* META: [requires] camlp4
+	* pa_openin.ml: functorized
+	* pa_openin.ml: moved to original syntax
+	* doc/batteries/myocamlbuild.ml: added rules for [use_batteries] and [use_batteries_r].
+	
+10/05/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* threads/batteries.mllib: hardcoded
 	* nothreads/batteries.mllib: hardcoded
 	* nothreads/_tags: removed [for-pack]
@@ -11,14 +26,14 @@
 	* ../test/test_list.ml: created
 	* batlib_Camlp4_PreCast.*: added
 	
-11/04/2008 David Teller <David.Teller@univ-orleans.fr>:
-	* doc/myocamlbuild.ml: removed automatic "-thread"
+10/04/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* doc/batteries/myocamlbuild.ml: removed automatic "-thread"
 	* batteries_core.ml: loses [Threads]
 	
 10/03/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* build/META: removed archives, added mt/-mt
-	* build/threads/META:
-	* build/nothreads/META:
+	* build/threads/META: fully rewritten
+	* build/nothreads/META: fully rewritten
 	* Makefile: fully rewritten
 	
 09/30/2008 David Teller <David.Teller@univ-orleans.fr>:

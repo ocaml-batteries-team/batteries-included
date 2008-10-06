@@ -43,7 +43,7 @@ module Control     = struct
 
   (** Monadic operations. *)
   module Monad = struct
-    module Interfaces  = Inner.Control.Monad.Interfaces
+    module type S  = Inner.Control.Monad.S
   end
 end
 
@@ -223,8 +223,19 @@ end
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
   
+  open Batteries_core.Toolchain
+
   (**Package management with Findlib*)
-  module Findlib     = Batlib_Findlib_Findlib
+  module Findlib     = Findlib
+  module Execute     = Execute
+
+  module Boilerplate = struct
+    (** Placeholder.
+
+	Expect
+	- {{:http://www.ocaml.info/home/ocaml_sources.html}Type-conv}
+    *)
+  end
 end
 
 (** Miscellaneous utilities *)

@@ -28,7 +28,28 @@
    Findlib by calling either {!Findlib.init} or {!Findlib.init_manually}.
 *)
 
-(** Package options, understood by ocamlfind.*)
+type command
+  (** Abstraction of a command, i.e. the instructions necessary
+      to run one of the tools of the toolchain. *)
+
+val string_of_command: command -> string
+  (** Format a command as a [string], fit for use with {!System.Sys.command} *)
+
+val command_for_exec:  command -> string * string array
+  (** Format a command as a [string] and an array of arguments, fit for use
+      with {!Unix.exec}.*)
+
+(**
+   {6 Options}
+
+   If this is the first time you attempt to invoke theh tools, you should probably disregard
+   these options for now.
+*)
+
+(** Package options, understood by ocamlfind.
+
+    These options serve essentially for automatically resolving dependencies between packages.
+*)
 type package_option =
     [ `package  of string         (**[`package name]: this compilation requires package [name].     *)
     | `linkpkg                    (**[`linkpkg]: link packages in.                                  *)
@@ -40,6 +61,7 @@ type package_option =
     | `dllpath_all                (**[`dllpath_all]: add dll path for all packages.                 *)
     | `ignore_error               (**[`ignore_error]: ignore the error directive defined by the package.*)
     | `passopt     of string list (**[`passopt s]: pass options [s] directly to the compiler.       *)
+    | `verbose                    (**[`verbose]: display the complete command line.                 *)
     ]
 
 type warning =
@@ -117,16 +139,11 @@ type compiler_option =
 				     important, as it will determine linking. *) ]
 val all_warnings : warning list 
 
-type command
-  (** Abstraction of a command, i.e. the instructions necessary
-      to run one of the tools of the toolchain. *)
 
-val string_of_command: command -> string
-  (** Format a command as a [string], fit for use with {!System.Sys.command} *)
 
-val command_for_exec:  command -> string * string array
-  (** Format a command as a [string] and an array of arguments, fit for use
-      with {!Unix.exec}.*)
+(**
+   {6 Compilers}
+*)
 
 val ocamlc: ?package:package_option list -> 
   ?options:compiler_option list ->
@@ -147,7 +164,6 @@ val ocamlc: ?package:package_option list ->
    For more informations about the ocamlc compiler, see
    {{:http://caml.inria.fr/pub/docs/manual-ocaml/manual022.html} the manual of OCaml}.
 *)
-
 
 
 val ocamlopt: ?package:package_option list -> 
@@ -174,6 +190,6 @@ val ocamlopt: ?package:package_option list ->
 (*
   val ocamlcp:
   val ocamlmktop:
-  val ocamldep:
+  val ocamldep: ?package:package_option list -> ?options:dep_option list -> string list -> command
   val ocamldoc:
 *)

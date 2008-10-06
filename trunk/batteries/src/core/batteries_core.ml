@@ -28,7 +28,7 @@ module Control     = struct
 
   (** Monadic operations. *)
   module Monad = struct
-    module Interfaces  = Extlib.Monad
+    module type S  = Extlib.Monad.S
   end
 end
 
@@ -82,7 +82,7 @@ module Data        = struct
 
   (** Numbers and operations on them.*)    
   module Numeric     = struct
-    (*module Interfaces  = Batlib_Interfaces_Numeric*)
+    module Common      = Extlib.Number
     module Big_int     = Extlib.ExtBig_int.Big_int
     module Complex     = Extlib.ExtComplex.Complex
     module Int         = Extlib.ExtInt.Int
@@ -182,15 +182,6 @@ module Meta        = struct
     
 end
 
-(*(** Automatically opened module. *) 
-module Standard    = struct
-  include Batlib_Baselib_Pervasives
-  include Extlib.Std
-  let (@) = Extlib.ExtList.(@)
-(* Thelema: Why not just include these in the toplevel batteries module? *)
-(* Yoric: We also do that. Probably not a good idea to have both, though.*)
-end*)
-
 (** Interactions with the operating system (file manipulation, arguments...) *)
 module System      = struct 
   
@@ -220,10 +211,10 @@ end
 
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
+  module Execute     = Toolchain.Builtin_tools
+
   (**Package management with Findlib*)
   module Findlib     = Batlib_Findlib_Findlib
-
-    
 end
 
 (** Miscellaneous utilities *)

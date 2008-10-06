@@ -1,6 +1,25 @@
 name="batteries"
-version="0.1"
+version="20081006"
 description="Batteries Included, standard distribution of OCaml libraries"
 requires(mt) ="batteries_threads,threads"
 requires(-mt)="batteries_nothreads"
+
+
+package "openin" (
+	description = "Local opening/inclusion of modules (container)"
+	version     = "20081006"
+	package "syntax" (
+		description = "Local opening/inclusion of modules (syntax extension)"
+		version                       = "20081006"
+		requires                      = "camlp4"
+		archive(syntax, preprocessor) = "pa_openin.cmo"
+		archive(syntax, toploop)      = "pa_openin.cmo"
+	)
+)
+
+package "syntax" (
+	version     = "20081006"
+	description = "Full syntactic extension to the OCaml language (requires Camlp4 >= 3.10)"
+	requires    = "batteries.openin.syntax"
+)
 

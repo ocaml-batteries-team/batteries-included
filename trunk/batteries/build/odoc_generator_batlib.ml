@@ -111,7 +111,27 @@ let merge_info_opt a b =
 
 (** {1 Actual rewriting}*)
 
-(**Find out if information specifies a manual module replacement*)
+(**[get_documents i] determines if information [i] specifies that this module
+   "documents" another module, not included in the source tree. Specifying that
+   module [Foo] documents module [Bar] means that every hyperlink to some element
+   [e] in module [Bar] should actually point to an with the same name in module
+   [Foo].
+
+   To add such a specification, add [@documents Bar] to the module comments of
+   module [Foo].
+
+   Typical use of this feature:
+   - the documentation of module [Sna] makes use of elements (types, values, etc.) 
+     of module [Bar]
+   - module [Bar] is not included in the project, as it belongs to another project
+   - for some reason, documenting module [Bar] is important, possibly because this
+     module has not been documented by its original author or because it is expected
+     that developers will need to read through the documentation of module [Bar] so
+     often that this documentation should be added to the project
+   - create a module [Foo] in the project by importing or re-creating [bar.mli]
+   - document [foo.mli]
+   - add [@documents Bar] in the module comments of module [Foo]
+*)
 let get_documents = function
   | None   -> []
   | Some i -> 
@@ -124,6 +144,7 @@ let get_documents = function
 			    (string_of_text x)::acc 
 			| _ -> acc) [] i.i_custom
 
+(* undocumented for now, possibly useless *)
 let get_documented = function
   | None   -> []
   | Some i -> 
@@ -137,6 +158,8 @@ let get_documented = function
 			| _ -> acc) [] i.i_custom
 
 
+(** [module_dependencies m] lists the dependencies of a module [m] in
+    terms of other modules*)
 let module_dependencies m =
   let rec handle_kind acc = function
     | Module_struct  e      -> List.fold_left (fun acc x -> handle_element acc x) acc e
@@ -166,8 +189,10 @@ let module_dependencies m =
    old module names to new module names.
 *)
 let rebuild_structure modules =
-  let all_renamed_modules      = Hashtbl.create 100
-  and all_renamed_module_types = Hashtbl.create 100  in
+  let all_renamed_modules      = Hashtbl.create 256  (**Mapping [old name] -> [new name, latest info]*)
+  and all_renamed_module_types = Hashtbl.create 256  (**Mapping [old name] -> [new name, latest info]*)
+  and all_modules              = Hashtbl.create 256  (**Mapping [name]     -> [t_module] -- unused*)
+  in
   let add_renamed_module ~old:(old_name,old_info) ~current:(new_name,new_info) =
     verbose ("Setting module renaming from "^old_name^" to "^new_name);
     try 
@@ -249,16 +274,16 @@ let rebuild_structure modules =
 	 m_name = path'} in
       result.m_info <- add_renamed_module ~old:(t.m_name,t.m_info) ~current:(path',None);
       (match get_documents t.m_info with
-	 | [] -> verbose ("No documents for module "^t.m_name)
+	 | [] -> verbose ("No @documents for module "^t.m_name)
 	 | l  -> 
 	     List.iter (fun r ->
-			  verbose ("Manual documents of module "^r^" with "^path');
+			  verbose ("Manual @documents of module "^r^" with "^path');
 			  result.m_info <- add_renamed_module ~old:(r,None) ~current:(path',result.m_info)) l);
       (match get_documented t.m_info with
-	 | [] -> verbose ("No documents for module "^t.m_name)
+	 | [] -> verbose ("No @documented for module "^t.m_name)
 	 | l  -> 
 	     List.iter (fun r ->
-			  verbose ("Manual documents of module "^r^" with "^path');
+			  verbose ("Manual @documented of module "^r^" with "^path');
 			  result.m_info <- add_renamed_module ~current:(r,None) ~old:(path',result.m_info)) l);
       result
   and handle_module_type path m (t:Odoc_module.t_module_type) =
@@ -272,7 +297,7 @@ let rebuild_structure modules =
   and handle_alias path m (t:module_alias) : module_alias     = (*Module [m] is an alias to [t.ma_module]*)
     match t.ma_module with
       | None         -> 
-	  verbose ("I'd like to merge information from "^m.m_name^" and "^t.ma_name^" but I can't find it");
+	  verbose ("I'd like to merge information from "^m.m_name^" and "^t.ma_name^" but I can't find that module");
 	  t
 	  (*let rec aux = function
 	    | []   -> verbose ("Can't do better"); t
@@ -345,9 +370,17 @@ let rebuild_structure modules =
       (*Actually, we're only interested in modules which appear in [roots]*)
       (*Note: we could probably do something much more simple, without resorting
 	to this dependency analysis stuff*)*)
-  let for_rewriting = List.fold_left (fun acc x -> if List.mem x.m_name roots then (x.m_name, x)::acc else acc) [] modules
-    verbatim ("[Starting to rearrange module structure]");
-    in
+  let for_rewriting = List.fold_left 
+    (fun acc x -> 
+       Hashtbl.add all_modules x.m_name x;
+       if List.mem x.m_name roots then begin
+	 verbose ("We need to visit module "^x.m_name);
+	 (x.m_name, x)::acc 
+       end else begin
+	 verbose ("Discarding module "^x.m_name^" for now");
+	 acc
+       end) [] modules in
+    verbose ("[Starting to rearrange module structure]");
 (*    let for_rewriting = Hashtbl.fold (fun k m acc -> (k,m)::acc) all_roots [] in*)
       (*2. Dive into these*)
     (*let rewritten = Hashtbl.fold (fun name contents acc ->
@@ -357,7 +390,7 @@ let rebuild_structure modules =
 					{(contents) with m_kind = handle_kind "" contents contents.m_kind}::acc)
 	[] for_rewriting in
       let result =  Search.modules rewritten in
-(*TODO: Second pass: walk through references*)
+	(*TODO: Second pass: walk through references -- handled during html generation for the moment*)
 	(result, all_renamed_modules)
 
 

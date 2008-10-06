@@ -44,7 +44,7 @@ module Control     = struct
       module Condition = Condition
       module Event     = Event
       module Mutex     = Mutex
-      module Thread    = Mutex
+      module Thread    = Thread
     end
   end
 
@@ -52,7 +52,7 @@ module Control     = struct
 
   (** Monadic operations. *)
   module Monad = struct
-    module Interfaces  = Batteries_core_threads.Control.Monad.Interfaces
+    module type S  = Batteries_core_threads.Control.Monad.S
   end
 end
 
@@ -225,15 +225,27 @@ module System      = struct
   module Network       = struct
     (** Placeholder.
 
-	Expect OCamlNet here.*)
+	Expect 
+	- {{:http://www.camlcity.org/archive/programming/ocamlnet.html}OCamlNet}
+	- {{:http://sourceforge.net/projects/ocnae/}OCamlNAE} *)
   end
 end
 
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
-  
+  open Batteries_core_threads.Toolchain
+
   (**Package management with Findlib*)
-  module Findlib     = Batlib_Findlib_Findlib
+  module Findlib     = Findlib
+  module Execute     = Execute
+
+  module Boilerplate = struct
+    (** Placeholder.
+
+	Expect
+	- {{:http://www.ocaml.info/home/ocaml_sources.html}Type-conv}
+    *)
+  end
 end
 
 (** Miscellaneous utilities *)
@@ -245,11 +257,25 @@ module Util        = struct
   module Random = Random
 end
 
-(** Access to the modules provided by INRIA. 
-
-    For more information, see the documentation of OCaml.
-*)
+(** Access to the modules provided by INRIA. *)
 module Legacy = struct
+  (** Provide access to the original version of modules [Condition],
+      [Event], [Mutex], [Array], [Bigarray], [Hashtbl], [Queue],
+      [Stack], [Stream], [Lazy], [List], [ListLabels], [Map],
+      [MoreLabels], [Set], [Big_int], [Complex], [Int32], [Int64],
+      [Num], [Buffer], [Char], [String], [StringLabels], [Genlex],
+      [Lexing], [Parsing], [Scanf], [Str], [Format], [Printexc],
+      [Printf], [Marshal], [Oo], [Callback], [Gc], [Weak], [Obj],
+      [CamlinternalMod] [CamlinternalOO] [Arg] [Filename] [Unix]
+      [UnixLabels], [Sys], [Random], [Pervasives].
+
+      If you don't know what this means, you don't need it -- in
+      Batteries, all these modules are considered obsolete. Module
+      [Legacy] is provided for reference, comparaison and for
+      short-term work-arounds in case of bugs.
+
+      For more information on these modules, see the documentation of OCaml.*)
+
   (**/**)
   module Condition = Condition
   module Event     = Event
@@ -356,4 +382,7 @@ module Random    = Util.Random
 (**/**)
 
 
-include Batteries_core_threads.Standard
+(*include Batteries_core_threads.Standard*)
+include Data.Mutable.Enum
+include Extlib.Std
+let (@) = Extlib.ExtList.(@)
