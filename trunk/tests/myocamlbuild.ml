@@ -84,10 +84,6 @@ end
 
 module Misc =
 struct
-(*  let batteries_directory = match blank_sep_strings & Lexing.from_string & run_and_read "ocamlfind query batteries" with
-    | h::t -> h
-    | _    -> assert false*)
-
   let after_rules () =
     flag ["ocaml"; "link"; "byte";   "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"; A "odoc_info.cma"]);
     flag ["ocaml"; "link"; "native"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"(*; A "odoc_info.cmxa"*)]);
@@ -96,19 +92,52 @@ struct
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
 
 
+    (** Tag [use_batteries] provides both package [batteries]
+	and all syntax extensions, in original syntax. *)
+
+    flag ["ocaml"; "compile";  "use_batteries"] & S[A"-package"; A "batteries.openin.syntax"; 
+						    A"-syntax";  A "camlp4o";
+						    A "-package"; A "batteries"];
+    flag ["ocaml"; "ocamldep"; "use_batteries"] & S[A"-package"; A "batteries.openin.syntax"; 
+						    A"-syntax"; A "camlp4o";
+						    A "-package"; A "batteries"];
+    flag ["ocaml"; "doc";      "use_batteries"] & S[A"-package"; A "batteries.openin.syntax";
+						    A"-syntax"; A "camlp4o";
+						    A "-package"; A "batteries"];
+    flag ["ocaml"; "link";     "use_batteries"] & S[A"-package"; A "batteries.openin.syntax";
+						    A"-syntax"; A "camlp4o";
+						    A "-package"; A "batteries"];
+
+    (** Tag [use_batteries_r] provides both package [batteries]
+	and all syntax extensions, in revised syntax. *)
+
+    flag ["ocaml"; "compile";  "use_batteries_r"] & S[A"-package"; A "batteries.openin.syntax"; 
+						      A"-syntax";  A "camlp4r";
+						    A "-package"; A "batteries"];
+    flag ["ocaml"; "ocamldep"; "use_batteries_r"] & S[A"-package"; A "batteries.openin.syntax"; 
+						      A"-syntax"; A "camlp4r";
+						    A "-package"; A "batteries"];
+    flag ["ocaml"; "doc";      "use_batteries_r"] & S[A"-package"; A "batteries.openin.syntax";
+						      A"-syntax"; A "camlp4r";
+						    A "-package"; A "batteries"];
+    flag ["ocaml"; "link";     "use_batteries_r"] & S[A"-package"; A "batteries.openin.syntax";
+						      A"-syntax"; A "camlp4r";
+						      A "-package"; A "batteries"];
 
 
+(*    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose"; 
+						    A"-package"; A "batteries.syntax.full"; 
+						    A"-syntax";  A "batteries.syntax.full"];
+    flag ["ocaml"; "ocamldep"; "use_batteries"] & S[A "-verbose";
+						    A"-package"; A "batteries.syntax.full"; 
+						    A"-syntax"; A "batteries.syntax.full"];
+    flag ["ocaml"; "doc";      "use_batteries"] & S[A "-verbose";
+						    A"-package"; A "batteries.syntax.full";
+						    A"-syntax"; A "batteries.syntax.full"];
+    flag ["ocaml"; "link";     "use_batteries"] & S[A "-verbose";
+						    A"-package"; A "batteries.syntax.full";
+						    A"-syntax"; A "batteries.syntax.full"];*)
 
-(*Experimental*)
-
-
-    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose"; A"-package"; 
-						    A "batteries"; A"-syntax"; 
-						    A "batteries"; A"-preprocessor"];
-    flag ["ocaml"; "ocamldep"; "use_batteries"] & S[A "-verbose"; A"-package"; 
-						    A "batteries"; A"-syntax"; A "batteries"];
-    flag ["ocaml"; "doc";      "use_batteries"] & S[A "-verbose"; A"-package"; A "batteries"; A"-syntax"; A "batteries"];
-    flag ["ocaml"; "link";     "use_batteries"] & S[A "-verbose"; A"-package"; A "batteries"; A"-syntax"; A "batteries"];
 
 end
 
