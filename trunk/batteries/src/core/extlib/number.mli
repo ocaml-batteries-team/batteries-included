@@ -56,7 +56,7 @@ type 'a numeric =
     to_string : 'a -> string;
     of_float: float -> 'a;
     to_float: 'a -> float;
-}
+} with sexp
 
 (**
    The full set of operations of a type of numbers

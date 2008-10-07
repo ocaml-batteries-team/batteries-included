@@ -185,8 +185,8 @@ let unique() =
   !__unique_counter
 
 type ('a, 'b) result =
-  | Ok    of 'a
-  | Error of 'b
+  | Ok  of 'a
+  | Bad of 'b
 
 (** {6 Operators}*)
 

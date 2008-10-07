@@ -58,7 +58,7 @@ exception No_more_elements
    However, it is generally easier to manipulate {!nil} and {!cons}.*)
 
 type 'a t = ('a node_t) Lazy.t (**The type of a lazy list.*)
-and 'a node_t = | Nil | Cons of 'a * 'a t 
+and 'a node_t = | Nil | Cons of 'a * 'a t with sexp
 (**The type of an item in the list.*)
 
 (** {6 Access } *)

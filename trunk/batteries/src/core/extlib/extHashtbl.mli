@@ -28,7 +28,7 @@ module Hashtbl :
   (** The wrapper module *)
   sig
 
-type ('a,'b) t =  ('a,'b)  Hashtbl.t
+type ('a,'b) t =  ('a,'b)  Hashtbl.t with sexp
     (** The type of a hashtable. *)
 
 (**{6 Base operations}*)

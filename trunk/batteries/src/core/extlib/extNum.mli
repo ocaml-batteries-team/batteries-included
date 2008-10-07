@@ -37,9 +37,9 @@ module Num :
     type num = Num.num =
 	Int of int
       | Big_int of big_int
-      | Ratio of ratio
+      | Ratio of ratio 
 
-    type t = num
+    type t = num with sexp
 
     (** {6 Usual operations}*)
     val zero   : num

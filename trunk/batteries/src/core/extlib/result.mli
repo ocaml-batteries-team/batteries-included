@@ -2,7 +2,7 @@ open Std
 (**
 *)
 
-type ('a, 'b) t = ('a, 'b) result
+type ('a, 'b) t = ('a, 'b) result with sexp
     (** The type of a result*)
 
 val catch: ('a -> 'b) -> 'a -> ('b, exn) result

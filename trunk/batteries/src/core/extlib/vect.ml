@@ -38,6 +38,8 @@
    Suite 330, Boston, MA 02111-1307, USA.
  *)
 
+TYPE_CONV_PATH "Batteries.Data.Mutable.Vect" (*For Sexplib, Bin-prot...*)
+
 type 'a t =
     Empty
   | Concat of 'a t * int * 'a t * int * int
@@ -50,6 +52,8 @@ let empty_str = [||]
 let string_of_string_list = Array.concat
 
 let singleton x = Leaf [|x|]
+
+
 
 module STRING = Array
 
@@ -339,6 +343,12 @@ let of_array = of_string
 let to_array = to_string
 let append = append_char
 let prepend = prepend_char
+
+let sexp_of_t sexp_of_a t =
+  Sexplib.Conv.sexp_of_array sexp_of_a (to_array t)
+let t_of_sexp a_of_sexp s =
+  of_array (Sexplib.Conv.array_of_sexp a_of_sexp s)
+
 
 let rec map f = function
     Empty -> Empty
@@ -703,5 +713,6 @@ struct
 
   let filter f =
     fold (fun s x -> if f x then append x s else s) Empty
-end
 
+
+end

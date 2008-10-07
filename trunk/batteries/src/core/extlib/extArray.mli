@@ -34,6 +34,8 @@
 module Array :
 sig
 
+  type 'a t = 'a array with sexp
+
   (**{6 Base operations}*)
 
   external length : 'a array -> int = "%array_length"

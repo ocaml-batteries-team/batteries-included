@@ -24,7 +24,7 @@ module Unit :
        Operations on [unit].
     *)
 
-    type t = unit
+    type t = unit with sexp
 
     val string_of : t -> string
     (**Convert the given unit to a string.

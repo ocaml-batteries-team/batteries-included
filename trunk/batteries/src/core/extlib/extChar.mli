@@ -115,6 +115,9 @@ val range: ?until:char -> char -> char Enum.t
 
 val ( -- ): char -> char -> char Enum.t
 
+val sexp_of_t: char -> Sexplib.Sexp.t
+val t_of_sexp: Sexplib.Sexp.t -> char
+
 (**/**)
 
 external unsafe_chr : int -> char = "%identity"

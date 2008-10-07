@@ -20,6 +20,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Sexplib
+open Conv
+TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
+
 exception Invalid_string
 
 module String = struct
@@ -27,6 +31,9 @@ module String = struct
 exception Invalid_string = Invalid_string
 
 include String
+
+let sexp_of_t = sexp_of_string
+let t_of_sexp = string_of_sexp
 
 let init len f =
 	let s = create len in
@@ -293,7 +300,7 @@ let compare_without_case s1 s2 = compare (String.lowercase s1) (String.lowercase
 module Cap =
 struct
 type 'a t = string
-  constraint 'a = [< `Read | `Write]
+  constraint 'a = [< `Read | `Write] with sexp
 
 let make          = make
 let is_empty      = is_empty

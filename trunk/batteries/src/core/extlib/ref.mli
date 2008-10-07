@@ -20,6 +20,8 @@
 
 (** Operations on references. *)
 
+type 'a t = 'a ref with sexp
+
 val pre : 'a ref -> ( 'a -> 'a ) -> 'a
   (** Perform an operation on a reference and return the
       previous value of that reference. 

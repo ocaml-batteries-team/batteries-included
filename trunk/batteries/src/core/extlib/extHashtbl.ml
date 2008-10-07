@@ -21,6 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
  
+open Sexplib
+TYPE_CONV_PATH "Batteries.Data.Mutable" (*For Sexplib, Bin-prot...*)
 
 module Hashtbl =
   struct
@@ -29,7 +31,7 @@ module Hashtbl =
 
 	Note: We can't directly [include Hashtbl] as this
 	would cause a collision on [Make]*)
-    type ('a, 'b) t = ('a, 'b) Hashtbl.t
+    type ('a, 'b) t = ('a, 'b) Hashtbl.t with sexp
     let create   = Hashtbl.create
     let clear    = Hashtbl.clear
     let add      = Hashtbl.add

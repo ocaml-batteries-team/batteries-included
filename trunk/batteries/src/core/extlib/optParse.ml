@@ -25,6 +25,7 @@ open Printf
 open ExtString
 open ExtList
 
+TYPE_CONV_PATH "Batteries.System.OptParse" (*For Sexplib, Bin-prot...*)
 
 let terminal_width =
   try 

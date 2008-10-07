@@ -25,7 +25,7 @@ module Float :
   sig
     (**Operations on floating-point numbers*)
 
-    type t = float
+    type t = float with sexp
     val zero : float
     val one : float
     val neg : float -> float

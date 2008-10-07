@@ -21,6 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Sexplib
+TYPE_CONV_PATH "Batteries.Data.Persistent" (*For Sexplib, Bin-prot...*)
+
 module List = struct
 
 exception Empty_list
@@ -34,6 +37,7 @@ type 'a mut_list =  {
 	hd: 'a; 
 	mutable tl: 'a list
 }
+type 'a t = 'a list
 external inj : 'a mut_list -> 'a list = "%identity"
 
 
@@ -599,6 +603,9 @@ let assoc_inv e l =
   | _::t                -> aux t
   in aux l
 
+let sexp_of_t = Conv.sexp_of_list
+let t_of_sexp = Conv.list_of_sexp
+
 module ExceptionLess = struct
   let rfind p l =
     try  Some (rfind p l)
@@ -627,6 +634,8 @@ module ExceptionLess = struct
   let assoc_inv e l =
     try Some (assoc_inv e l)
     with Not_found -> None
+
+
 end
 
 end
@@ -718,6 +727,8 @@ module ListLabels = struct
   let last          = List.last
   let at            = List.at
 
+  let sexp_of_t = Conv.sexp_of_list
+  let t_of_sexp = Conv.list_of_sexp
   module ExceptionLess = struct
     let rfind ~f    = List.ExceptionLess.rfind f
     let findi ~f    = List.ExceptionLess.findi f

@@ -113,16 +113,10 @@ external ( && ) : bool -> bool -> bool = "%sequand"
    in [e1 && e2], [e1] is evaluated first, and if it returns [false],
    [e2] is not evaluated at all. *)
 
-external ( & ) : bool -> bool -> bool = "%sequand"
-(** @deprecated {!Pervasives.(&&)} should be used instead. *)
-
 external ( || ) : bool -> bool -> bool = "%sequor"
 (** The boolean ``or''. Evaluation is sequential, left-to-right:
    in [e1 || e2], [e1] is evaluated first, and if it returns [true],
    [e2] is not evaluated at all. *)
-
-external ( or ) : bool -> bool -> bool = "%sequor"
-(** @deprecated {!Pervasives.(||)} should be used instead.*)
 
 
 (** {6 Integer arithmetic} *)

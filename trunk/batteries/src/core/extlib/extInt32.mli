@@ -162,7 +162,7 @@ module Int32 :
 	  according to the IEEE 754 floating-point ``single format'' bit layout,
 	  is the given [int32]. *)
 
-    type t = int32
+    type t = int32 with sexp
 	(** An alias for the type of 32-bit integers. *)
 	
     val compare: t -> t -> int

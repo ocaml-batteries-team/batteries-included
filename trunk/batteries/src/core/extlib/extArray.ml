@@ -1,6 +1,7 @@
 (*
- * ExtList - additional and modified functions for lists.
+ * ExtArray - additional and modified functions for arrays.
  * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
+ *               2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,9 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+
+TYPE_CONV_PATH "Batteries.Data.Mutable" (*For Sexplib, Bin-prot...*)
+
 module Array = struct
 
-type 'a t = 'a array
+
+
+type 'a t = 'a array with sexp
 
 open Array
   let init         = init

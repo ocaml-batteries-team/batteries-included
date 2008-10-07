@@ -1,3 +1,6 @@
+
+TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)
+
 module Genlex = struct
 
 include Genlex

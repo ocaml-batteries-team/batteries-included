@@ -73,7 +73,7 @@ calling [balance] after each modification would defeat the purpose of amortizati
   @author Mauricio Fernandez
   *)
 
-type 'a t
+type 'a t with sexp
   (** The type of a polymorphic vect. *)
 
 exception Out_of_bounds
@@ -84,7 +84,7 @@ val max_length : int
 
 (** {6 Creation and conversions} *)
 
-val empty : 'a t
+val empty : 'a t 
   (** The empty vect. *)
 
 val singleton : 'a -> 'a t

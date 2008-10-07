@@ -24,7 +24,7 @@
     but in a defunctorized style.
 *)
 
-type ('a, 'b) t
+type ('a, 'b) t with sexp
 
 val empty : ('a, 'b) t
 (** The empty map, using [compare] as key comparison function. *)

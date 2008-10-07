@@ -17,6 +17,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
+
+TYPE_CONV_PATH "Batteries.Data.Persistent.LazyListLabels" (*For Sexplib, Bin-prot...*)
+
 exception No_more_elements    = LazyList.No_more_elements
 exception Empty_list          = LazyList.Empty_list
 exception Invalid_index       = LazyList.Invalid_index

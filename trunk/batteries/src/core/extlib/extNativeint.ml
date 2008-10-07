@@ -19,6 +19,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
+
+open Sexplib
+TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
+
 open Number
 
 module BaseNativeint = struct
@@ -29,7 +33,9 @@ module BaseNativeint = struct
   let min_num, max_num = min_int, max_int
 end
 
-module Nativeint = struct
+module Native_int = struct
   include Number.MakeNumeric(BaseNativeint)
   include BaseNativeint
+  let sexp_of_t = Conv.sexp_of_nativeint
+  let t_of_sexp = Conv.nativeint_of_sexp
 end

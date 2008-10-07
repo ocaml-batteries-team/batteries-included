@@ -19,6 +19,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Sexplib
+TYPE_CONV_PATH "Batteries.Data.Numeric.Int64" (*For Sexplib, Bin-prot...*)
+
 open Number
 
 module BaseInt64 = struct
@@ -31,4 +34,6 @@ end
 module Int64 = struct
   include Number.MakeNumeric(BaseInt64)
   include BaseInt64
+  let sexp_of_t = Conv.sexp_of_int64
+  let t_of_sexp = Conv.int64_of_sexp
 end

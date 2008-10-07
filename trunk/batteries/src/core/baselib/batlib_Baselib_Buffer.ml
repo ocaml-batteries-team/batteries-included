@@ -19,3 +19,13 @@
  *)
 
 include Buffer
+
+TYPE_CONV_PATH "Batteries.Data.Mutable.Buffer" (*For Sexplib, Bin-prot...*)
+
+let t_of_sexp s = 
+  let str = Sexplib.Conv.string_of_sexp s in
+  let buf = create (String.length str)    in
+    add_string buf str;
+    buf
+
+let sexp_of_t t = Sexplib.Conv.sexp_of_string (contents t)

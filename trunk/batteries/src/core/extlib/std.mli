@@ -106,5 +106,5 @@ val discard : 'a -> (_ -> 'a)
 *)
 
 type ('a, 'b) result =
-  | Ok    of 'a
-  | Error of 'b
+  | Ok  of 'a
+  | Bad of 'b

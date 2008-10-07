@@ -18,9 +18,13 @@
  * Foundation, Inc.
  *)
 
+open Sexplib
+open Conv
+TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
+
 module Unit =
 struct
-  type t = unit
+  type t = unit with sexp
   let as_string   = "()"
   let string_of _ = as_string
   let of_string   = function

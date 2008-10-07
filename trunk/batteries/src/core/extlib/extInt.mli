@@ -35,7 +35,7 @@ module Int :
 	{!Number.Bounded}, {!Number.Discrete}.
     *)
     
-    type t = int
+    type t = int with sexp
 	(** An alias for the type of integers. *)
 
     val zero : int
@@ -165,9 +165,11 @@ module SafeInt :
 
 	This module implements {!Number.Numeric},
 	{!Number.Bounded}, {!Number.Discrete}.
+
+	{b Important note} Untested.
     *)
     
-    type t = int
+    type t = int with sexp
 	(** An alias for the type of integers. *)
 
     val zero : int

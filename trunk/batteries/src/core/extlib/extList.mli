@@ -46,6 +46,8 @@ module List :
 
 	  @documents List *)
 
+      type 'a t = 'a list with sexp
+	  (**The type of lists*)
 
       (**{6 Base operations}*)
 	val length : 'a list -> int

@@ -37,9 +37,9 @@ RefList
 Result
 Rope
 Std
-UChar
+ExtUChar
 Unzip
-UTF8
+ExtUTF8
 Vect
 Labels
 Monad

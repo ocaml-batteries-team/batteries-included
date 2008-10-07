@@ -19,6 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+TYPE_CONV_PATH "Batteries.System.IO" (*For Sexplib, Bin-prot...*)
+
 open ExtString
 open ExtChar
 
@@ -1574,3 +1576,84 @@ let lmargin n p out x =
 let combine = comb
 
 let copy input output = write_line_enum output (lines_of input) 
+
+(** {6 Unicode}*)
+open ExtUTF8
+ 
+(** {7 Reading unicode}
+ 
+All these functions assume that the input is UTF-8 encoded.
+*)
+ 
+(*val read_uchar: input -> UChar.t*)
+(** read one UChar from a UTF-8 encoded input*)
+let read_uchar_as_string i =
+  let n0  = read i in
+  let len = ExtUTF8.UTF8.length0 (Char.code n0) in
+  let s   = String.create len in
+    String.set s 0 n0;
+    ignore(really_input i s 1 ( len - 1));
+    s
+ 
+let read_uchar i =
+  ExtUTF8.UTF8.get (ExtUTF8.UTF8.string_as (read_uchar_as_string i)) 0
+ 
+(*val read_rope: input -> int -> Rope.t*)
+(** read up to n uchars from a UTF-8 encoded input*)
+let read_rope i n =
+  let rec loop r j =
+    if j = 0 then r
+    else loop (Rope.append_char (read_uchar i) r) (j-1) (* TODO: make efficient by appending a string of Rope.leaf_size (256) chars at a time *)
+  in
+  if n <= 0 then Rope.empty
+  else loop Rope.empty n
+    
+(*val read_uline: input -> Rope.t*)
+(** read a line of UTF-8*)
+ 
+let read_uline i =
+  Rope.of_ustring (read_line i)
+ 
+(*val read_uall : input -> Rope.t*)
+(** read the whole contents of a UTF-8 encoded input*)
+ 
+let read_uall i = Rope.of_ustring (read_all i) (* TODO: make efficient - possibly similar to above - buffering leaf_size chars at a time *)
+ 
+let apply_enum f x = (* FIXME: export from IO so no copy/paste needed *)
+  try f x
+  with No_more_input
+    | Input_closed -> raise Enum.No_more_elements
+ 
+(*val uchars_of : input -> UChar.t Enum.t*)
+(** offer the characters of an UTF-8 encoded input as an enumeration*)
+ 
+let uchars_of i = Enum.from (fun () -> apply_enum read_uchar i)
+ 
+ 
+(*val ulines_of : input -> Rope.t Enum.t*)
+(** offer the lines of a UTF-8 encoded input as an enumeration*)
+let ulines_of i = Enum.from (fun () -> apply_enum read_uline i)
+ 
+(** {7 Writing unicode}
+ 
+All these functions assume that the output is UTF-8 encoded.*)
+
+let write_ustring o c = write_string o (ExtUTF8.UTF8.as_string c) 
+
+(*val write_uchar: _ output -> UChar.t -> unit*)
+let write_uchar o c = write_ustring o (ExtUTF8.UTF8.of_char c)
+ 
+(*val write_rope : _ output -> Rope.t -> unit*)
+let write_rope o r = Rope.bulk_iter (nwrite o) r
+ 
+(*val write_uline: _ output -> Rope.t -> unit*)
+let write_uline o r = Rope.bulk_iter (nwrite o) r; write o '\n'
+ 
+(*val write_uchar_enum : _ output -> UChar.t Enum.t -> unit*)
+let write_uchar_enum o uce = Enum.iter (write_uchar o) uce
+ 
+(*val write_uline_enum : _ output -> Rope.t Enum.t -> unit*)
+let write_uline_enum o re = Enum.iter (write_uline o) re
+ 
+(*val write_rope_enum : _ output -> Rope.t Enum.t -> unit*)
+let write_rope_enum o re = Enum.iter (write_rope o) re

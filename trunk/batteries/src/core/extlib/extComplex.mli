@@ -27,7 +27,7 @@ sig
       (cartesian representation).  Each part is represented by a
       double-precision floating-point number (type [float]).   *)
   
-  type t = Complex.t = { re: float; im: float }
+  type t = Complex.t = { re: float; im: float } with sexp
       (** The type of complex numbers.  [re] is the real part and [im] the
 	  imaginary part. *)
       

@@ -1,6 +1,7 @@
 (*
  * Bitset - Efficient bit sets
  * Copyright (C) 2003 Nicolas Cannasse
+ * Copyright (C) 2008 David Teller
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +19,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	02111-1307	USA
  *)
 
+open Sexplib
+
+TYPE_CONV_PATH "Batteries.Data.Logical.BitSet" (*For Sexplib, Bin-prot...*)
+
 type intern
 
 let bcreate : int -> intern = Obj.magic String.create
@@ -27,6 +32,10 @@ external fast_bool : int -> bool = "%identity"
 let fast_blit : intern -> int -> intern -> int -> int -> unit = Obj.magic String.blit
 let fast_fill : intern -> int -> int -> int -> unit = Obj.magic String.fill
 let fast_length : intern -> int= Obj.magic String.length
+
+let intern_of_sexp t : intern = Obj.magic (Conv.string_of_sexp t)
+let sexp_of_intern i = Conv.sexp_of_string (Obj.magic i)
+
 
 let bget s ndx =
   assert (ndx >= 0 && ndx < fast_length s);
@@ -49,7 +58,7 @@ exception Negative_index of string
 type t = {
 	mutable data : intern;
 	mutable len : int;
-}
+} with sexp
 
 let error fname = raise (Negative_index fname)
 
@@ -322,3 +331,5 @@ let differentiate_sym t t' =
   let d = sym_diff t t' in
   t.data <- d.data;
   t.len <- d.len
+
+

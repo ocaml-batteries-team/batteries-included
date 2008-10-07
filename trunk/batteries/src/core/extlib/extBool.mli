@@ -23,7 +23,7 @@ module Bool :
 sig
   (**Operations on booleans*)
 
-  type t = bool
+  type t = bool with sexp
       (**The type of booleans. Formally, this is defined as [type t = true | false] *)
 
   external not : bool -> bool = "%boolnot"

@@ -22,6 +22,7 @@
  *)
 
 
+
 exception Invalid_string
 
 module String:
@@ -36,7 +37,7 @@ exception Invalid_string
 (** An exception thrown when some operation required a string
     and received an unacceptable string.*)
 
-type t = string
+type t = string with sexp
 (** The type of strings. *)
 
 external length : string -> int = "%string_length"

@@ -4,6 +4,8 @@ open List
 open LazyList
 open IO
 
+TYPE_CONV_PATH "Batteries.Languages.ParserCo" (*For Sexplib, Bin-prot...*)
+
 type 'a state =
   | Eof
   | State of 'a
@@ -261,7 +263,7 @@ let lookahead p e = match apply p e with
   | Failure _ as result              -> result
 
 let run p e = match apply p e with
-  | Setback f | Failure f                -> Std.Error f
+  | Setback f | Failure f                -> Std.Bad f
   | Success (r, _) | Backtrack (r, _, _) -> Std.Ok r
 	
 

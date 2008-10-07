@@ -1,5 +1,11 @@
 (* $Id: uChar.mli,v 1.4 2004/09/04 16:07:38 yori Exp $ *)
 (* Copyright 2002, 2003 Yamagata Yoriyuki. distributed with LGPL *)
+(* TODO: Check -- this is actually part of a package distributed with LGPL + linking exception *)
+
+module UChar :
+sig
+(* $Id: uChar.mli,v 1.4 2004/09/04 16:07:38 yori Exp $ *)
+(* Copyright 2002, 2003 Yamagata Yoriyuki. distributed with LGPL *)
 
 (** Unicode (ISO-UCS) characters.
 
@@ -8,20 +14,21 @@
 *)
 
 (** Unicode characters. All 31bit code points are allowed.*) 
-type t
+type t = CamomileLibrary.UChar.t with sexp
 
 exception Out_of_range
 
-(** [char_of u] returns the Latin-1 representation of [u].
-   If [u] can not be represented by Latin-1, raises Out_of_range *)
-val char_of : t -> char
 
-(** [of_char c] returns the Unicode character of the Latin-1 character [c] *)
 val of_char : char -> t
+(** [of_char c] returns the Unicode character of the Latin-1 character [c] *)
+
+val to_char : t -> char
+  (** [to_char u] returns the Latin-1 representation of [u].  If [u] can
+      not be represented by Latin-1, raises Out_of_range *)
 
 (** [code u] returns the Unicode code number of [u].
-   If the value can not be represented by a positive integer,
-   raise Out_of_range *)
+    If the value can not be represented by a positive integer,
+    raise Out_of_range *)
 val code : t -> int
 
 (** [code n] returns the Unicode character with the code number [n]. 
@@ -33,26 +40,37 @@ val chr : int -> t
    the sign bit is used for storing the 31-th bit of the code number. *)
 external uint_code : t -> int = "%identity"
 
+val chr_of_uint : int -> t
 (** [chr_of_uint n] returns the Unicode character of the code number [n].
    [n] is interpreted as unsigned, that is, on 32-bits platforms,
    the sign bit is treated as the 31-th bit of the code number.
    If n exceed 31-bits values, then raise [invalid_arg]. *)
-val chr_of_uint : int -> t
 
-(** Equality by code point comparison *)
+
 val eq : t -> t -> bool
+(** Equality by code point comparison *)
 
+
+val compare : t -> t -> int
 (** [compare u1 u2] returns, 
    a value > 0 if [u1] has a larger Unicode code number than [u2], 
    0 if [u1] and [u2] are the same Unicode character,
    a value < 0 if [u1] has a smaller Unicode code number than [u2]. *)
-val compare : t -> t -> int
-
-(** Aliases of [type t] *)
-type uchar = t
 
 (** Alias of [uint_code] *)
-val int_of : uchar -> int
+val to_int : t   -> int
 
 (** Alias of [chr_of_uint] *)
-val of_int : int -> uchar
+val of_int : int -> t
+
+(**/**)
+val char_of : t -> char
+(**As {!to_char}*)
+
+val int_of : t -> int
+(**As {!to_int}*)
+
+type uchar = t
+(**Alias of type [t]*)
+
+end

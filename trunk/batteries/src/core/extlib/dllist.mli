@@ -1,6 +1,7 @@
 (*
  * Dllist- a mutable, circular, doubly linked list library
  * Copyright (C) 2004 Brian Hurt, Jesse Guardiani
+ * Copyright (C) 2008 David Teller
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +26,7 @@
 *)
 
 
-type 'a node_t (* abstract *)
+type 'a node_t (* abstract *) with sexp
 
 exception Empty
 

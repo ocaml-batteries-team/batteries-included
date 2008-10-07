@@ -1,6 +1,7 @@
 (*
  * Bitset - Efficient bit sets
  * Copyright (C) 2003 Nicolas Cannasse
+ * Copyright (C) 2008 David Teller
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +21,11 @@
 
 (** Efficient bit sets.
 
- A bitset is an array of boolean values that can be accessed with indexes
- like an array but provides a better memory usage (divided by 8) for a
- very small speed trade-off. *)
+    A bitset is an array of boolean values that can be accessed with indexes
+    like an array but provides a better memory usage (divided by 8) for a
+    very small speed trade-off. *)
 
-type t
+type t with sexp
 
 exception Negative_index of string
 (** When a negative bit value is used for one of the BitSet functions,

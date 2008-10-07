@@ -19,6 +19,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Sexplib
+TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
+
 open Number
 
 module BaseBig_int = struct
@@ -58,5 +61,9 @@ end
 
 module Big_int = struct
   include BaseBig_int
-  include Number.MakeNumeric(BaseBig_int) 
+  include Number.MakeNumeric(BaseBig_int)
+
+  let sexp_of_t = Conv.sexp_of_big_int
+  let t_of_sexp = Conv.big_int_of_sexp
+    
 end

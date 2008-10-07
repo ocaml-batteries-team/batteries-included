@@ -19,6 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+TYPE_CONV_PATH "Batteries.Data.Mutable.EnumLabels" (*For Sexplib, Bin-prot...*)
+
 (** {6 Representation} *)
 type 'a t = {
 	mutable count : unit -> int;

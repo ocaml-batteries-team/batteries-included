@@ -2,6 +2,7 @@
  * DynArray - Resizeable Ocaml arrays
  * Copyright (C) 2003 Brian Hurt
  * Copyright (C) 2003 Nicolas Cannasse
+ * Copyright (C) 2008 David Teller
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +19,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
+
+TYPE_CONV_PATH "Batteries.Data.Mutable.DynArray" (*For Sexplib, Bin-prot...*)
 
 type resizer_t = currslots:int -> oldlength:int -> newlength:int -> int
 
@@ -446,3 +449,11 @@ let unsafe_get a n =
 
 let unsafe_set a n x =
 	iset a.arr n x
+
+type 'a serialization = 'a array with sexp (**An intermediate format for serialization*)
+
+let sexp_of_t sexp_of_a t =
+ sexp_of_serialization sexp_of_a (to_array t)
+
+let t_of_sexp a_of_sexp s =
+  of_array (serialization_of_sexp a_of_sexp s)

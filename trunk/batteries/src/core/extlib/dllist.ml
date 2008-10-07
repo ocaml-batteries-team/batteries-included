@@ -1,6 +1,7 @@
 (*
  * Dllist- a mutable, circular, doubly linked list library
  * Copyright (C) 2004 Brian Hurt, Jesse Guardiani
+ * Copyright (C) 2008 David Teller
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,16 +19,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+TYPE_CONV_PATH "Batteries.Data.Mutable.Dllist" (*For Sexplib, Bin-prot...*)
+
 type 'a node_t = {
 	mutable data : 'a;
 	mutable next : 'a node_t;
 	mutable prev : 'a node_t
-}
+} with sexp
 
 type 'a enum_t = {
 	mutable curr : 'a node_t;
 	mutable valid : bool
-}
+} with sexp
 
 exception Empty
 

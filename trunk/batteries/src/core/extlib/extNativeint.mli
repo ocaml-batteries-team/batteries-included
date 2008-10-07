@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module Nativeint :
+module Native_int :
   sig
 (** Processor-native integers.
 
@@ -172,7 +172,7 @@ external of_string : string -> nativeint = "caml_nativeint_of_string"
 val to_string : nativeint -> string
 (** Return the string representation of its argument, in decimal. *)
 
-type t = nativeint
+type t = nativeint with sexp
 (** An alias for the type of native integers. *)
 
 val compare: t -> t -> int

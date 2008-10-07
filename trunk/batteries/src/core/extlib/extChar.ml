@@ -19,6 +19,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Sexplib
+TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
+
 module Char = struct
   include Char
 
@@ -77,5 +80,6 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
       from -- last
 
 
-	
+  let t_of_sexp = Conv.char_of_sexp
+  let sexp_of_t = Conv.sexp_of_char
 end

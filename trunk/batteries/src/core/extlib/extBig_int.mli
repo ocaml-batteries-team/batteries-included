@@ -32,9 +32,9 @@ module Big_int :
   
 open Nat
  
-type big_int = Big_int.big_int
+type big_int = Big_int.big_int 
         (** The type of big integers. *)
-type t = big_int
+type t = big_int with sexp
 
 val zero_big_int : big_int
         (** The big integer [0]. *)

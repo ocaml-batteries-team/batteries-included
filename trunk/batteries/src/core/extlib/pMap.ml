@@ -18,15 +18,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Sexplib
+open Conv
+TYPE_CONV_PATH "Batteries.Data.Persistent.PMap" (*For Sexplib, Bin-prot...*)
+
 type ('k, 'v) map =
   | Empty
-  | Node of ('k, 'v) map * 'k * 'v * ('k, 'v) map * int
+  | Node of ('k, 'v) map * 'k * 'v * ('k, 'v) map * int with sexp
 
 type ('k, 'v) t =
   {
     cmp : 'k -> 'k -> int;
     map : ('k, 'v) map;
-  }
+  } with sexp
 
 let height = function
   | Node (_, _, _, _, h) -> h

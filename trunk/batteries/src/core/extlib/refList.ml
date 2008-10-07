@@ -17,12 +17,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
+
+TYPE_CONV_PATH "Batteries.Data.Mutable.RefList" (*For Sexplib, Bin-prot...*)
+
 open ExtList
 
 exception Empty_list
 exception Invalid_index of int
 
-type 'a t = 'a list ref
+type 'a t = 'a list ref with sexp
 
 let empty () = ref []
 

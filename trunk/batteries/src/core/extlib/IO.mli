@@ -3,6 +3,7 @@
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller (contributor)
  *               2008 Philippe Strauss (contributor)
+ *               2008 Edgar Friendly (contributor)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +28,8 @@
     constructors that enable to write to an underlying channel, buffer,
     or enum.
 *)
+
+open ExtUChar
 
 type input
 (** The abstract input type. *)
@@ -115,6 +118,37 @@ val flush : 'a output -> unit
 val close_out : 'a output -> 'a
 (** Close the output and return its accumulator data.
   It can no longer be written. *)
+
+(** {6 Unicode extensions} 
+
+    All of the following functions deal only with UTF-8 encoded inputs/outputs
+*)
+
+ 
+val read_uchar: input -> UChar.t
+(** read one UChar from a UTF-8 encoded input*)
+ 
+val read_rope: input -> int -> Rope.t
+(** read up to n uchars from a UTF-8 encoded input*)
+ 
+val read_uline: input -> Rope.t
+(** read a line of UTF-8*)
+ 
+val read_uall : input -> Rope.t
+(** read the whole contents of a UTF-8 encoded input*)
+ 
+val uchars_of : input -> UChar.t Enum.t
+(** offer the characters of an UTF-8 encoded input as an enumeration*)
+ 
+val ulines_of : input -> Rope.t Enum.t
+(** offer the lines of a UTF-8 encoded input as an enumeration*)
+
+val write_uchar: _ output -> UChar.t -> unit
+val write_rope : _ output -> Rope.t -> unit
+val write_uline: _ output -> Rope.t -> unit
+val write_uchar_enum : _ output -> UChar.t Enum.t -> unit
+val write_uline_enum : _ output -> Rope.t Enum.t -> unit
+val write_rope_enum : _ output -> Rope.t Enum.t -> unit
 
 (** {6 Creation of IO Inputs/Outputs} 
 

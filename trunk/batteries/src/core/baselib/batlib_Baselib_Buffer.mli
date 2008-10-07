@@ -23,7 +23,7 @@
     @documents Buffer
 *)
 
-type t = Buffer.t
+type t = Buffer.t with sexp
 (** The abstract type of buffers. *)
 
 val create : int -> t

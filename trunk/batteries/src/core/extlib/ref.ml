@@ -18,6 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Sexplib
+open Conv
+TYPE_CONV_PATH "Batteries.Data.Mutable.Ref" (*For Sexplib, Bin-prot...*)
+
+type 'a t = 'a ref with sexp
+
 let pre r f =
   let old = !r in
     r := f old;

@@ -1,20 +1,27 @@
+open Sexplib
+open Conv
+TYPE_CONV_PATH "Batteries.Standard" (*For Sexplib, Bin-prot...*)
+
 open Std
-type ('a, 'b) t = ('a, 'b) Std.result
+type ('a, 'b) t = ('a, 'b) Std.result = 
+ | Ok  of 'a
+ | Bad of 'b with sexp
 
 let catch f x =
   try  Ok (f x)
-  with e -> Error e
+  with e -> Bad e
 
 let of_option = function
   | Some x -> Ok x
-  | None   -> Error ()
+  | None   -> Bad ()
 
 let to_option = function
   | Ok x   -> Some x
-  | Error _-> None
+  | Bad _-> None
 
 let bind m k = match m with
   | Ok  x      -> k x
-  | Error _ as e -> e
+  | Bad _ as e -> e
 
 let (>>=) = bind
+

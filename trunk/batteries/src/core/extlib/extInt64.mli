@@ -164,7 +164,7 @@ external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
    according to the IEEE 754 floating-point ``double format'' bit layout,
    is the given [int64]. *)
 
-type t = int64
+type t = int64 with sexp
 (** An alias for the type of 64-bit integers. *)
 
 val compare: t -> t -> int

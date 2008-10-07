@@ -27,7 +27,7 @@
 exception Empty_list
 exception Invalid_index of int
 
-type 'a t
+type 'a t with sexp
 
 val empty : unit -> 'a t
 (** Returns a new empty ref list *)
