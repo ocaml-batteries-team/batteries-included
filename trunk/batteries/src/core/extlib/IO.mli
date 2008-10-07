@@ -101,6 +101,9 @@ val write : 'a output -> char -> unit
 val nwrite : 'a output -> string -> unit
 (** Write a string to an output. *)
 
+val write_buf: 'a output -> Buffer.t -> unit
+(** Write the contents of a buffer to an output.*)
+
 val output : 'a output -> string -> int -> int -> int
 (** [output o s p l] writes up to [l] characters from string [s], starting at
   offset [p]. It returns the number of characters written. It will raise

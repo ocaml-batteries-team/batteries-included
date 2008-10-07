@@ -171,6 +171,10 @@ module Languages   = struct
   module Printexc        = Printexc
   module Printf          = Printf
 
+  (** {1 Serialization to human-readable formats}
+      XML, JSON, S-Expressions ...*)
+
+  module SExpr           = SExpr
 end
 
 (** Meta-level operations (marshalling, garbage-collection...) *)

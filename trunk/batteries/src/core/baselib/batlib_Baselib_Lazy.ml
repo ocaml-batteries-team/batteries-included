@@ -19,3 +19,8 @@
  *)
 
 include Lazy
+
+TYPE_CONV_PATH "Batteries.Data.Persistent.Lazy" (*For Sexplib, Bin-prot...*)
+
+let t_of_sexp = Sexplib.Conv.lazy_of_sexp
+let sexp_of_t = Sexplib.Conv.sexp_of_lazy

@@ -39,6 +39,9 @@ package "pa_where" (
 	)
 )
 
+#
+# Doesn't work, for some reason -- calling "sexplib.syntax" directly works, though.
+#
 package "sexplib" (
 	description = "Saving data to/loading data from a human-readable format (container)"
 	version     = "20081007"
@@ -59,8 +62,11 @@ package "bin_prot" (
 	)
 )
 
+#
+# Doesn't work, for some reason.
+#
 package "syntax" (
 	version     = "20081007"
 	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
-	requires    = "batteries.pa_openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax,batteries.sexplib.syntax,batteries.bin_prot.syntax"
+	requires    = "batteries.pa_openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax,sexplib.syntax,batteries.bin_prot.syntax"
 )

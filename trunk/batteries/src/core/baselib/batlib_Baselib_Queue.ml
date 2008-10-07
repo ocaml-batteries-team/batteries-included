@@ -19,3 +19,11 @@
  *)
 
 include Queue
+
+TYPE_CONV_PATH "Batteries.Data.Mutable.Queue" (*For Sexplib, Bin-prot...*)
+
+let to_list t = List.rev (fold (fun acc e -> e::acc) [] t)
+let of_list l = let q = create () in List.iter (fun x -> push x q) l;q
+
+let t_of_sexp a_of_sexp s = of_list (Sexplib.Conv.list_of_sexp a_of_sexp s)
+let sexp_of_t sexp_of_a t = Sexplib.Conv.sexp_of_list sexp_of_a (to_list t)

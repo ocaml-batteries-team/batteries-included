@@ -24,7 +24,7 @@
   This is due to a limitation of ocamldoc.
 
   In a future version, we should be able to get away with something
-  simpler -- and faster to ocamldoc.*)
+  simpler -- and faster to ocamldoc-ify.*)
 
 (*[Control] is [Batteries_core.Control] + [Control.Concurrency.Threads] *)
 module Control = struct
@@ -126,6 +126,11 @@ module Languages = struct
   module Printexc        = Batteries_core.Languages.Printexc
   module Printf          = Batteries_core.Languages.Printf
     
+  (** {1 Serialization to human-readable formats}
+      XML, JSON, S-Expressions ...*)
+
+  module SExpr           = Batteries_core.Languages.SExpr
+
     (**/**)
     
     (**
@@ -199,9 +204,7 @@ end
 
 (*[Toolchain] is [Batteries_core.Toolchain]*)
 module Toolchain = struct
-  module Boilerplate = struct
-    module Type_conv   = Batteries_core.Toolchain.Boilerplate.Type_conv
-  end
+
   module Execute       = Batteries_core.Toolchain.Execute
   module Findlib       = Batteries_core.Toolchain.Findlib
 end

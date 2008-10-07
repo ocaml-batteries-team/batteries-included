@@ -9,4 +9,4 @@
 <toolchain.*>:           use_camlp4,use_camlp4_full
 <toolchain.mli>:         pkg_camlp4
 <toolchain.odoc>:        pkg_camlp4
-<extlib.mli>:            pkg_sexplib,pkg_sexplib.syntax,pkg_camomile,syntax_camlp4o
+<*.mli>:            pkg_sexplib,pkg_sexplib.syntax,pkg_camomile,syntax_camlp4o

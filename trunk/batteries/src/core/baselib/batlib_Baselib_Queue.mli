@@ -20,7 +20,7 @@
     @documents Queue
 *)
 
-type 'a t = 'a Queue.t
+type 'a t = 'a Queue.t with sexp
 (** The type of queues containing elements of type ['a]. *)
 
 

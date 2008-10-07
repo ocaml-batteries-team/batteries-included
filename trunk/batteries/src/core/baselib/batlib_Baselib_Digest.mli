@@ -23,7 +23,7 @@
     @documents Digest
 *)
 
-type t = string
+type t = string with sexp
 (** The type of digests: 16-character strings. *)
 
 val string : string -> t

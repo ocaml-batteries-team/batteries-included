@@ -159,6 +159,8 @@ let nwrite o s =
 		l := !l - w;
 	done
 
+let write_buf o b = nwrite o (Buffer.contents b)
+
 let output o s p l =
 	let sl = String.length s in
 	if p + l > sl || p < 0 || l < 0 then invalid_arg "IO.output";

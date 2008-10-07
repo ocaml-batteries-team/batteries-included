@@ -5,3 +5,4 @@
 <test_openin_revised.*>: use_batteries_r
 <test_where.*>:          use_batteries
 <test_where_revised.*>:  use_batteries_r
+<test_sexp.*>:           use_batteries

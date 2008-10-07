@@ -20,7 +20,7 @@
     @documents Stack
 *)
 
-type 'a t = 'a Stack.t
+type 'a t = 'a Stack.t with sexp
 (** The type of stacks containing elements of type ['a]. *)
 
 exception Empty

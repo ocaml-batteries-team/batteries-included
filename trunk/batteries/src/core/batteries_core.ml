@@ -135,8 +135,9 @@ module Languages   = struct
     include Extlib.IO.Printf
     let make_list_printer    = Extlib.IO.make_list_printer
     let lmargin              = Extlib.IO.lmargin
-
   end
+
+  module SExpr           = Toolchain.Batlib_Sexp_Conv
     
     (**/**)
     
@@ -213,10 +214,6 @@ end
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
 
-  (** Tools for generating code during compilation.*)
-  module Boilerplate = struct
-    module Type_conv = Toolchain.Batteries_type_conv
-  end
   module Execute     = Toolchain.Builtin_tools
 
   (**Package management with Findlib*)

@@ -46,6 +46,9 @@
 	* extlib.mlpack: [ExtUTF8] replaces [UTF8]
 	* extlib.mlpack: [ExtUChar] replaces [UChar]
 	* batlib_Baselib_Pervasives.mli: ( & ) and ( or ) removed
+	* batlib_Sexp_Conv.*: created
+	* batteries*.ml: [Batlib_Sexp_Conv] added
+	* IO.ml*: [write_buf] added
 	
 10/06/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* threads/batteries.ml: [Thread] now points to [Thread]

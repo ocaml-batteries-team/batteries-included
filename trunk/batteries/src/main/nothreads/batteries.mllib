@@ -12,7 +12,8 @@ Global
 DynArray
 ExtInt
 Labels
-UTF8
+ExtUChar
+ExtUTF8
 Std
 Result
 EnumLabels
@@ -41,7 +42,6 @@ ExtFloat
 Number
 Option
 Base64
-UChar
 IO
 ExtUnit
 ExtBig_int
@@ -93,5 +93,6 @@ Batlib_Baselib_Weak
 Batlib_Baselib_Str
 Batlib_Baselib_Lazy
 Extlib
+Batlib_Sexp_Conv
 Batteries_core
 Batteries
