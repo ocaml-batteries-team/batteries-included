@@ -93,7 +93,8 @@ struct
 
 
     (*The command-line for [use_batteries] and [use_batteries_r]*)
-    let cl_use_batteries = [A"-package"; A "batteries.openin.syntax"; A "-package"; A "batteries"] in
+    (*let cl_use_batteries = [A"-package"; A "batteries.openin.syntax"; A "-package"; A "batteries"] in*)
+    let cl_use_batteries = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax,batteries.sexplib.syntax,batteries.bin_prot.syntax"; A "-package"; A "batteries"] in
       
     (** Tag [use_batteries] provides both package [batteries]
 	and all syntax extensions, in original syntax. *)

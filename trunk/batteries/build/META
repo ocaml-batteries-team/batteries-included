@@ -5,7 +5,7 @@ requires(mt) ="batteries_threads,threads"
 requires(-mt)="batteries_nothreads"
 
 
-package "openin" (
+package "pa_openin" (
 	description = "Local opening/inclusion of modules (container)"
 	version     = "20081006"
 	package "syntax" (
@@ -24,10 +24,7 @@ package "pa_type_conv" (
 	package "syntax" (
 		description = "Generating boilerplate code from type definitions (syntax extension)"
 		version                       = "20081006"
-		requires                      = "camlp4,type-conv"
-		requires(byte)                = "batteries"
-		archive(syntax, preprocessor) = "pa_type_conv.cmo"
-		archive(syntax, toploop)      = "pa_type_conv.cmo"
+		requires                      = "type-conv.syntax"
 	)
 )
 
@@ -42,8 +39,28 @@ package "pa_where" (
 	)
 )
 
+package "sexplib" (
+	description = "Saving data to/loading data from a human-readable format (container)"
+	version     = "20081007"
+	package "syntax" (
+		version     = "20081007"
+		description = "Saving data to/loading data from a human-readable format (syntax extension)"
+		requires    = "sexplib.syntax"
+	)
+)
+
+package "bin_prot" (
+	description = "Saving data to/loading data from a compact binary protocol (container)"
+	version     = "20081007"
+	package "syntax" (
+		version     = "20081007"
+		description = "Saving data to/loading data from a compact binary protocol (syntax extension)"
+		requires    = "bin_prot.syntax"
+	)
+)
+
 package "syntax" (
-	version     = "20081006"
+	version     = "20081007"
 	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
-	requires    = "batteries.openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax"
+	requires    = "batteries.pa_openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax,batteries.sexplib.syntax,batteries.bin_prot.syntax"
 )

@@ -92,37 +92,27 @@ struct
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
 
 
+    (*The command-line for [use_batteries] and [use_batteries_r]*)
+    (*let cl_use_batteries = [A"-package"; A "batteries.openin.syntax"; A "-package"; A "batteries"] in*)
+    let cl_use_batteries = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax,batteries.sexplib.syntax,batteries.bin_prot.syntax"; A "-package"; A "batteries"] in
+      
     (** Tag [use_batteries] provides both package [batteries]
 	and all syntax extensions, in original syntax. *)
 
-    flag ["ocaml"; "compile";  "use_batteries"] & S[A"-package"; A "batteries.openin.syntax"; 
-						    A"-syntax";  A "camlp4o";
-						    A "-package"; A "batteries"];
-    flag ["ocaml"; "ocamldep"; "use_batteries"] & S[A"-package"; A "batteries.openin.syntax"; 
-						    A"-syntax"; A "camlp4o";
-						    A "-package"; A "batteries"];
-    flag ["ocaml"; "doc";      "use_batteries"] & S[A"-package"; A "batteries.openin.syntax";
-						    A"-syntax"; A "camlp4o";
-						    A "-package"; A "batteries"];
-    flag ["ocaml"; "link";     "use_batteries"] & S[A"-package"; A "batteries.openin.syntax";
-						    A"-syntax"; A "camlp4o";
-						    A "-package"; A "batteries"];
+    let cl_original = cl_use_batteries @ [A"-syntax";  A "camlp4o"] in
+    flag ["ocaml"; "compile";  "use_batteries"] & S cl_original ;
+    flag ["ocaml"; "ocamldep"; "use_batteries"] & S cl_original ;
+    flag ["ocaml"; "doc";      "use_batteries"] & S cl_original ;
+    flag ["ocaml"; "link";     "use_batteries"] & S cl_original ;
 
     (** Tag [use_batteries_r] provides both package [batteries]
 	and all syntax extensions, in revised syntax. *)
 
-    flag ["ocaml"; "compile";  "use_batteries_r"] & S[A"-package"; A "batteries.openin.syntax"; 
-						      A"-syntax";  A "camlp4r";
-						    A "-package"; A "batteries"];
-    flag ["ocaml"; "ocamldep"; "use_batteries_r"] & S[A"-package"; A "batteries.openin.syntax"; 
-						      A"-syntax"; A "camlp4r";
-						    A "-package"; A "batteries"];
-    flag ["ocaml"; "doc";      "use_batteries_r"] & S[A"-package"; A "batteries.openin.syntax";
-						      A"-syntax"; A "camlp4r";
-						    A "-package"; A "batteries"];
-    flag ["ocaml"; "link";     "use_batteries_r"] & S[A"-package"; A "batteries.openin.syntax";
-						      A"-syntax"; A "camlp4r";
-						      A "-package"; A "batteries"];
+    let cl_revised   = cl_use_batteries @ [A"-syntax";  A "camlp4r"] in
+    flag ["ocaml"; "compile";  "use_batteries_r"] & S cl_revised;
+    flag ["ocaml"; "ocamldep"; "use_batteries_r"] & S cl_revised;
+    flag ["ocaml"; "doc";      "use_batteries_r"] & S cl_revised;
+    flag ["ocaml"; "link";     "use_batteries_r"] & S cl_revised
 
 
 (*    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose"; 

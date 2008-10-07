@@ -2,9 +2,13 @@
 	* batteries_type_conv.mli: [get_conv_path_el], [set_conv_path],
 	[push_conv_path], [pop_conv_path], [gen_derived_defs], [sig_generate],
 	[gen_derived_sigs]
-	* pa_type_conv.ml: removed opening of [Batteries.Toolchain.Boilerplate.Type_conv.Internal]
+	* batteries_type_conv.mli: obsoleted
+	* pa_type_conv.ml: removed 
 	* pa_where: created
 	* build/META: [pa_where] added
+	* build/threads/META:
+	* build/nothreads/META: [requires] added [camlp4]
+	* batteries.ml (both): [Pa_type], [Toolchain.Boilerplate.Type_conv] removed
 	
 10/06/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* threads/batteries.ml: [Thread] now points to [Thread]

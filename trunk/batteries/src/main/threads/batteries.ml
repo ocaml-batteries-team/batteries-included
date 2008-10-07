@@ -240,10 +240,10 @@ module Toolchain   = struct
   module Findlib     = Findlib
   module Execute     = Execute
 
-  module Boilerplate = struct
+  (*module Boilerplate = struct
     open Batteries_core_threads.Toolchain.Boilerplate
     module Type_conv = Type_conv
-  end
+  end*)
 end
 
 (** Miscellaneous utilities *)
@@ -377,7 +377,7 @@ module Unix      = System.Unix
 module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
-module Pa_type_conv = Toolchain.Boilerplate.Type_conv
+(*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
 (**/**)
 
 

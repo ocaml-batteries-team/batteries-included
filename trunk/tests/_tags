@@ -1,5 +1,7 @@
-<test_nothreads.*>:  pkg_batteries
-<test_threads.*>:    pkg_batteries,pkg_threads
-<test_openin.*>:     use_batteries
-<test_list.*>:       pkg_batteries
+<test_nothreads.*>:      pkg_batteries
+<test_threads.*>:        pkg_batteries,pkg_threads
+<test_openin.*>:         use_batteries
+<test_list.*>:           pkg_batteries
 <test_openin_revised.*>: use_batteries_r
+<test_where.*>:          use_batteries
+<test_where_revised.*>:  use_batteries_r
