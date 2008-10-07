@@ -347,7 +347,6 @@ external unsafe_fill :
     Read-only strings may then be safely shared and distributed.
 
     There is no loss of performance involved. *)
-
 module Cap:
 sig
 type 'a t constraint 'a = [< `Read | `Write]

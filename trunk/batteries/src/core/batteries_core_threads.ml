@@ -87,6 +87,7 @@ struct
     module Common      = Batteries_core.Data.Numeric.Common
     module Big_int     = Batteries_core.Data.Numeric.Big_int
     module Complex     = Batteries_core.Data.Numeric.Complex
+    module Float       = Batteries_core.Data.Numeric.Float
     module Int         = Batteries_core.Data.Numeric.Int
     module Int32       = Batteries_core.Data.Numeric.Int32
     module Int64       = Batteries_core.Data.Numeric.Int64
@@ -198,6 +199,9 @@ end
 
 (*[Toolchain] is [Batteries_core.Toolchain]*)
 module Toolchain = struct
+  module Boilerplate = struct
+    module Type_conv   = Batteries_core.Toolchain.Boilerplate.Type_conv
+  end
   module Execute       = Batteries_core.Toolchain.Execute
   module Findlib       = Batteries_core.Toolchain.Findlib
 end

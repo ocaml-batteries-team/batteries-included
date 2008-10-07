@@ -1,8 +1,17 @@
-11/06/2008 David Teller <David.Teller@univ-orleans.fr>:
+11/07/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* batteries_type_conv.mli: [get_conv_path_el], [set_conv_path],
+	[push_conv_path], [pop_conv_path], [gen_derived_defs], [sig_generate],
+	[gen_derived_sigs]
+	* pa_type_conv.ml: removed opening of [Batteries.Toolchain.Boilerplate.Type_conv.Internal]
+	* pa_where: created
+	* build/META: [pa_where] added
+	
+10/06/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* threads/batteries.ml: [Thread] now points to [Thread]
 	* builtin_tools.ml: [command] now uses a [list] rather than an [array]
 	* builtin_tools.ml: [ocamlc], [ocamlopt] now preprend the compiler name
 	* batteries*.ml: now use [Monad.S] rather than [Monad]
+	* batteries*.ml: [Numeric.Float] added
 	* batteries_threads.ml: now every leaf module is imported directly from [Batteries_core]
 	* src/syntax: created
 	* Makefile: [syntax] added
@@ -11,7 +20,13 @@
 	* META: [requires] camlp4
 	* pa_openin.ml: functorized
 	* pa_openin.ml: moved to original syntax
-	* doc/batteries/myocamlbuild.ml: added rules for [use_batteries] and [use_batteries_r].
+	* doc/batteries/myocamlbuild.ml: added rules for [use_batteries] and [use_batteries_r]
+	* extlib/install.ml: removed
+	* core/_tags: use_camlp4, use_camlp4_full
+	* batteries_type_conv.mli: [get_tparam_id] documentation changed
+	* batteries_type_conv.ml: split in two
+	* pa_type_conv.ml: created
+	* batteries.mllib (both): [install] removed
 	
 10/05/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* threads/batteries.mllib: hardcoded

@@ -23,6 +23,8 @@
 
 module Float :
   sig
+    (**Operations on floating-point numbers*)
+
     type t = float
     val zero : float
     val one : float

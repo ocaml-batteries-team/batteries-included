@@ -12,14 +12,38 @@ package "openin" (
 		description = "Local opening/inclusion of modules (syntax extension)"
 		version                       = "20081006"
 		requires                      = "camlp4"
+		requires(byte)                = "batteries"
 		archive(syntax, preprocessor) = "pa_openin.cmo"
 		archive(syntax, toploop)      = "pa_openin.cmo"
 	)
 )
 
-package "syntax" (
+package "pa_type_conv" (
+	description = "Support library for generating boilerplate code from type definitions (container)"
 	version     = "20081006"
-	description = "Full syntactic extension to the OCaml language (requires Camlp4 >= 3.10)"
-	requires    = "batteries.openin.syntax"
+	package "syntax" (
+		description = "Generating boilerplate code from type definitions (syntax extension)"
+		version                       = "20081006"
+		requires                      = "camlp4,type-conv"
+		requires(byte)                = "batteries"
+		archive(syntax, preprocessor) = "pa_type_conv.cmo"
+		archive(syntax, toploop)      = "pa_type_conv.cmo"
+	)
 )
 
+package "pa_where" (
+	description = "'where' backward declarations (container)"
+	version     = "20081007"
+	package "syntax" (
+		description = "'where' backward declarations (syntax extension)"
+		version                       = "0.4"
+		archive(syntax, preprocessor) = "pa_where.cmo"
+		archive(syntax, toploop)      = "pa_where.cmo"
+	)
+)
+
+package "syntax" (
+	version     = "20081006"
+	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
+	requires    = "batteries.openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax"
+)

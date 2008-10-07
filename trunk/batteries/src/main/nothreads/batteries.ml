@@ -104,6 +104,7 @@ module Data        = struct
     (*module Interfaces  = Batlib_Interfaces_Numeric*)
     module Big_int     = Big_int
     module Complex     = Complex
+    module Float       = Float
     module Int         = Int
     module Int32       = Int32
     module Int64       = Int64
@@ -230,12 +231,10 @@ module Toolchain   = struct
   module Execute     = Execute
 
   module Boilerplate = struct
-    (** Placeholder.
-
-	Expect
-	- {{:http://www.ocaml.info/home/ocaml_sources.html}Type-conv}
-    *)
+    open Batteries_core_threads.Toolchain.Boilerplate
+    module Type_conv = Type_conv
   end
+
 end
 
 (** Miscellaneous utilities *)
@@ -347,6 +346,7 @@ module Unix      = System.Unix
 module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
+module Pa_type_conv = Toolchain.Boilerplate.Type_conv
 (**/**)
 
 

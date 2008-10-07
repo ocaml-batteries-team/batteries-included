@@ -472,7 +472,7 @@ val printf : 'a output -> ('b, 'a output, unit) format -> 'b
 
     @obsolete Prefer {!Languages.Printf.fprintf}*)
 
-(**/*)
+(**/**)
 module Printf : sig
   (** Formatted output functions (also known as unparsing).*)
 
@@ -720,10 +720,9 @@ val kbprintf2 : (Buffer.t -> 'b) ->  Buffer.t -> ('c, 'a output, unit, 'b) forma
   (** Same as [bprintf2], but instead of returning immediately,
       passes the buffer to its first argument at the end of printing.*)
   
-(**/**)
 val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
-  (** A deprecated synonym for [ksprintf]. *)
-  (**/**)
+  (** @deprecated This is a deprecated synonym for [ksprintf]. *)
+  
 
 (**
    {6 About formats}

@@ -6,3 +6,6 @@
 <extlib.cmx>:            for-pack(Batteries_core_pack)
 <batteries_core.cmx>:    for-pack(Batteries_core_pack)
 <toolchain.cmx>:         for-pack(Batteries_core_pack)
+<toolchain.*>:           use_camlp4,use_camlp4_full
+<toolchain.mli>:         pkg_camlp4
+<toolchain.odoc>:        pkg_camlp4

@@ -1,6 +1,3 @@
-(* This code is in public domain. Written by Alain Frisch.  2006-05-16.
-   Updated by Till Varoquaux. 2007-05-2.
-*)
 (*
  * Pa_openin -- Syntax extension for local module opening
  * Copyright (C)   2006 Alain Frisch

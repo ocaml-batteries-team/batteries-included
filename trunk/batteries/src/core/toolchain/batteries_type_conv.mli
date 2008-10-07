@@ -1,44 +1,69 @@
-(* File: pa_type_conv.ml
+(*
+ * Batteries_type_conv - Generating code from type specifications.
+ * Copyright (C) 2004, 2005 Martin Sandin  <msandin@hotmail.com> (as "tywith")
+ *               2005-?     Makus Mottl, Jane Street Holding, LLC
+ *               2008       David Teller, LIFO, Universite d'Orleans
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
 
-    Copyright (C) 2005-
+(** File is obsolete! *)
 
-      Jane Street Holding, LLC
-      Author: Markus Mottl
-      email: mmottl\@janestcapital.com
-      WWW: http://www.janestcapital.com/ocaml
+(**
+   A tool for deriving functions from type definitions.
 
-   This file is derived from file "pa_tywith.ml" of version 0.45 of the
-   library "Tywith".
+   This module contains the library side of an automatization tool
+   used to generate automatically functions from type definitions
+   (so-called "boilerplate code"). 
 
-   Tywith is Copyright (C) 2004, 2005 by
+   Out-of-the-box, for any new type [<type>], it can generate a
+   function [string_of_<type>], a function [map_<type>], a function
+   [print_<type>] and a function [enum_<type>]. To create all these
+   functions on a type you have defined, you need to annotate your
+   type definition as follows: instead of writing [type foo = A of int
+   | B of string | ... | Z], write [type foo = A of int | B of string
+   | ... | Z with string_of, map, print].
 
-      Martin Sandin  <msandin@hotmail.com>
+   You may create new generators for similar use. These generators may
+   serve to create new types, values, modules... Generators are simple
+   functions from syntax to syntax, which you need to register using
+   {!add_generator} (implementation part) and {!add_sig_generator}
+   (interface part). For more information about generators, see the
+   documentation of {{:#registration}the corresponding section}.
 
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with this library; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   {b Note} To run this tool on your code, you will need to activate
+   syntax extension [pa_type_conv]. If you are using the default
+   configuration for Batteries Included, this is done automatically
+   for you. Otherwise, you will need to activate findlib package
+   [batteries.pa_type_conv.syntax] by specifying options [ocamlfind
+   ocamlc -syntax camlp4o -package batteries.pa_type_conv.syntax]
 *)
 
-(** Pa_type_conv: Preprocessing Module for Registering Type Conversions *)
 
 open Camlp4.PreCast.Ast
 
-(** {6 Generator registration} *)
+(** {6:registration Adding/removing generators} 
+
+
+*)
 
 val add_generator : string -> (ctyp -> str_item) -> unit
-(** [add_generator name gen] adds the code generator [gen], which
-    maps type declarations to structure items.  Note that the original
-    type declaration get added automatically in any case. *)
+  (** [add_generator name gen] adds the code generator [gen], which
+      maps type declarations to structure items.  Note that the original
+      type declaration get added automatically in any case. *)
 
 val rem_generator : string -> unit
 (** [rem_generator name] removes the code generator named [name]. *)
@@ -65,7 +90,6 @@ val get_loc_err : Loc.t -> string -> string
 val hash_variant : string -> int
 (** [hash_variant str] @return the integer encoding a variant tag with
     name [str]. *)
-
 
 (** {6 General purpose code generation module} *)
 
@@ -130,11 +154,17 @@ module Gen : sig
       @return a pattern representing a list of patterns. *)
 
   val get_tparam_id : ctyp -> string
-  (** [get_tparam_id tp] @return the string identifier associated with
-      [tp] if it is a type parameter.  @raise an exception otherwise. *)
+  (** [get_tparam_id tp]
+
+      @return the string identifier associated with
+      [tp] if it is a type parameter.
+
+      @raise Failure otherwise. *)
 
   val type_is_recursive : Loc.t -> string -> ctyp -> bool
-  (** [type_is_recursive _loc id tp] @return whether the type [tp]
+  (** [type_is_recursive _loc id tp]
+
+      @return whether the type [tp]
       with name [id] refers to itself, assuming that it is not mutually
       recursive with another type. *)
 
@@ -142,3 +172,17 @@ module Gen : sig
   (** [drop_variance_annotations _loc tp] @return the type resulting
       from dropping all variance annotations in [tp]. *)
 end
+
+(**/**)
+(** {6 For internal use}
+
+    These functions are meant to be used only from the
+    Camlp4 extension. You should not need to use them.
+ *)
+val get_conv_path_el : unit   -> string * string list
+val set_conv_path    : string -> unit
+val push_conv_path   : string -> unit
+val pop_conv_path    : unit   -> unit
+val gen_derived_defs : loc  -> ctyp -> string list -> str_item
+val sig_generate     : ctyp -> string -> sig_item
+val gen_derived_sigs : loc  -> ctyp -> string list -> sig_item

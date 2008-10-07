@@ -1,7 +1,7 @@
 Package: godi-batteries
 Version: 0.1
 Revision: 8
-Depends: godi-ocaml (>= 3.10.2), godi-findlib (>= 1.2)
+Depends: godi-ocaml (>= 3.10.2), godi-findlib (>= 1.2), type-conv
 Build-Depends: godi-findlib (>= 1.2)
 Sources: http://www.univ-orleans.fr/lifo/Members/David.Teller/software/batteries/batteries-0.1.tgz
 Homepage: http://forge.ocamlcore.org/projects/batteries/

@@ -85,6 +85,7 @@ module Data        = struct
     module Common      = Extlib.Number
     module Big_int     = Extlib.ExtBig_int.Big_int
     module Complex     = Extlib.ExtComplex.Complex
+    module Float       = Extlib.ExtFloat.Float
     module Int         = Extlib.ExtInt.Int
     module Int32       = Extlib.ExtInt32.Int32
     module Int64       = Extlib.ExtInt64.Int64
@@ -211,6 +212,11 @@ end
 
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
+
+  (** Tools for generating code during compilation.*)
+  module Boilerplate = struct
+    module Type_conv = Toolchain.Batteries_type_conv
+  end
   module Execute     = Toolchain.Builtin_tools
 
   (**Package management with Findlib*)
@@ -226,7 +232,7 @@ end
 
 module Standard = struct
   (*include Pervasives*)
-  (*include Batlib_Baselib_Pervasives*)
+  include Batlib_Baselib_Pervasives
   include Data.Mutable.Enum
   include Extlib.Std
   let (@) = Extlib.ExtList.(@)

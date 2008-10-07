@@ -234,49 +234,4 @@ let gen_derived_sigs _loc tp drvs =
   List.fold_right coll drvs (SgNil _loc)
 
 
-(* Syntax extension *)
 
-open Syntax
-
-let found_module_name =
-  Gram.Entry.of_parser "found_module_name" (fun strm ->
-    match Stream.npeek 1 strm with
-    | [(UIDENT name, _)] ->
-        push_conv_path name;
-        Stream.junk strm;
-        name
-    | _ -> raise Stream.Failure)
-
-DELETE_RULE Gram str_item: "module"; a_UIDENT; module_binding0 END;
-
-EXTEND Gram
-  GLOBAL: str_item sig_item;
-  str_item:
-   [[
-     "type"; tds = type_declaration; "with";
-     drvs = LIST1 [ id = LIDENT -> id ] SEP "," ->
-       <:str_item< type $tds$; $gen_derived_defs _loc tds drvs$ >>
-  ]];
-
-  str_item:
-  [[
-    "TYPE_CONV_PATH"; conv_path = STRING ->
-      set_conv_path conv_path;
-      <:str_item< ? >>
-  ]];
-
-  sig_item:
-   [[
-     "type"; tds = type_declaration; "with";
-     drvs = LIST1 [ id = LIDENT -> id ] SEP "," ->
-       <:sig_item< type $tds$; $gen_derived_sigs _loc tds drvs$ >>
-  ]];
-
-  str_item:
-  [[
-    "module"; i = found_module_name; mb = module_binding0 ->
-      pop_conv_path ();
-      <:str_item< module $i$ = $mb$ >>
-  ]];
-
-END
