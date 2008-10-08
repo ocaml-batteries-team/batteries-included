@@ -9,9 +9,14 @@
 </head>
 <body>
 <center><h1>Using Batteries Included</h1></center>
+<center><h2>Simple method</h2></center>
 To use Batteries Included, the easiest solution is to take 
-advantage of both findlib and ocamlbuild. In turn, to do
-that, the easiest method is the following:
+advantage of both findlib and ocamlbuild. OCamlBuild is part
+of your installation of OCaml and findlib is often installed
+by default, too.
+<br />
+If you have both OCaml and findlib, the simple method is to
+take the following steps:
 <ol>
 <li>in your project directory, copy file 
   <a href="../myocamlbuild.ml"><code>doc/batteries/myocamlbuild.ml</code></a>
@@ -19,7 +24,7 @@ that, the easiest method is the following:
 <li>still in your project directory, modify your file called 
   <tt>_tags</tt> (if it doesn't exist yet, create it) to add the following line
   <code>
-      &lt;*&gt;: pkg_batteries
+      &lt;*&gt;: use_batteries
   </code></li>
 <li>in any source file which needs to take advantage of Batteries Included,
   add <code>open Batteries</code></li>
@@ -27,6 +32,21 @@ that, the easiest method is the following:
 
 That should be it. For more informations on the contents of
 Batteries Included, please take a look at <a href="api/index.html" target="_top">the API documentation</a>.
+
+<center><h2>More details</h2></center>
+File <a href="../myocamlbuild"><code>doc/batteries/myocamlbuild.ml</code></a>
+is an extension of OCamlBuild. It defines <emph>tags</emph>, which you
+may use in your projects to specify that your project should take
+advantage of the various features of Batteries Included. Copying this
+file to your project directory is required to take advantage of these
+tags.
+<br />
+The tags defined by Batteries Included are:
+<dl>
+<dt>use_batteries</dt> <dd>Use Batteries Included both as a library and to extend the OCaml language.</dd>
+<dt>use_batteries_r</dt> <dd>Use Batteries Included both as a library and to extend the OCaml language -- in revised syntax.</dd>
+<dt>pkg_batteries</dt> <dd>Use Batteries Included both as a library and to extend the OCaml language.</dd>
+</dl>
 </body>
 </html>
 

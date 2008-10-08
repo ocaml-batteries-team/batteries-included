@@ -25,7 +25,7 @@ GENERATED_MLI=$(patsubst %.mlpack, %.mli, $(PACKS))
 test:
 	$(shell echo $(GENERATED_MLI))
 
-all: byte doc
+all: byte syntax doc
 
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
@@ -40,8 +40,10 @@ opt:
 	ocamlbuild src/main/nothreads/batteries.cmxa
 
 syntax:
-	ocamlbuild src/syntax/pa_openin/pa_openin.cmo &&\
-	ocamlbuild src/syntax/pa_where/pa_where.cmo
+	ocamlbuild src/syntax/pa_openin/pa_openin.cmo   &&\
+	ocamlbuild src/syntax/pa_openin/pa_openin_r.cmo &&\
+	ocamlbuild src/syntax/pa_where/pa_where.cmo     &&\
+	ocamlbuild src/syntax/pa_batteries/pa_batteries.cmo  
 
 batteries.mllib:
 #	echo $(foreach i, $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
@@ -64,7 +66,7 @@ batteries.mllib:
 #	cp batteries.mllib src/main/nothreads
 
 install: syntax
-	ocamlfind install batteries build/META _build/src/syntax/pa_openin/pa_openin.cmo _build/src/syntax/pa_where/pa_where.cmo &&\
+	ocamlfind install batteries build/META _build/src/syntax/pa_openin/pa_openin.cmo _build/src/syntax/pa_openin/pa_openin_r.cmo _build/src/syntax/pa_where/pa_where.cmo _build/src/syntax/pa_batteries/pa_batteries.cmo &&\
 	ocamlfind install batteries_threads build/threaded/META _build/src/main/threads/batteries.cmi -optional _build/src/main/threads/batteries.cma _build/src/main/threads/batteries.cmxa _build/src/main/threads/batteries.a  &&\
 	ocamlfind install batteries_nothreads build/nothreads/META _build/src/main/nothreads/batteries.cmi -optional _build/src/main/nothreads/batteries.cma _build/src/main/nothreads/batteries.cmxa  _build/src/main/nothreads/batteries.a 
 

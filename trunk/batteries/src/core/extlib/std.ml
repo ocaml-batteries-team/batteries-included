@@ -1,6 +1,8 @@
 (*
  * Std - Additional functions
  * Copyright (C) 2003 Nicolas Cannasse and Markus Mottl
+ * Copyright (C) 2007 Zheng Li (extracts of SDFlow)
+ * Copyright (C) 2008 David Teller
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -192,13 +194,13 @@ type ('a, 'b) result =
 
 let ( |> ) x f = f x
 
-let ( @. ) f x = f x
+let ( <| ) f x = f x
 
 let ( |- ) f g x = g (f x)
 
 let ( -| ) f g x = f (g x)
 
-let ( // ) f g = fun (x,y) -> (f x, g y)
+let ( /// ) f g = fun (x,y) -> (f x, g y)
 
 let pi_fst f x = fst (f x)
 
@@ -210,3 +212,12 @@ let uncurry f (x,y) = f x y
 
 let discard x _ = x
 
+let args () =
+  let e = ExtArray.Array.enum Sys.argv in
+    Enum.junk e;
+    e
+
+let exe =
+  Array.get Sys.argv 0
+
+let argv = Sys.argv

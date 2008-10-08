@@ -184,12 +184,12 @@ val filter_map : ('a -> 'b option) -> 'a t -> 'b t
  [f y] returns [Some x] , where [y] is an element of [e]. *)
 
 val append : 'a t -> 'a t -> 'a t
-(** [append e1 e2] returns an enumeration that will enumerate over all
- elements of [e1] followed by all elements of [e2].
+  (** [append e1 e2] returns an enumeration that will enumerate over all
+      elements of [e1] followed by all elements of [e2].
 
-    {b Note} The behavior of appending [e] to itself or to something
-    derived from [e] is not specified. In particular, cloning [append e e]
-    may destroy any sharing between the first and the second argument.*)
+      {b Note} The behavior of appending [e] to itself or to something
+      derived from [e] is not specified. In particular, cloning [append e e]
+      may destroy any sharing between the first and the second argument.*)
 
 val prefix_action : (unit -> unit) -> 'a t -> 'a t
 (** [prefix_action f e] will behave as [e] but guarantees that [f ()]
@@ -209,8 +209,8 @@ val suffix_action : (unit -> unit) -> 'a t -> 'a t
 
     If [suffix_action f e] is cloned, [f] is invoked only once, when
     the original enumeration is exhausted. If [suffix_action f e]
-    is counted, [f] not invoked only once, unless the act of counting
-    required a call to [force].
+    is counted, [f] is only invoked if the act of counting
+    requires a call to [force].
 
     May be used for signalling that reading stopped or for performing
     delayed evaluations.*)
@@ -359,6 +359,11 @@ val ( --- ) : int -> int -> int t
 val ( ~~ ) : char -> char -> char t
 (** As ( -- ), but for characters.*)
 
+val ( // ) : 'a t -> ('a -> bool) -> 'a t
+(** Filtering (pronounce this operator name "such that").
+
+    For instance, [(1 -- 37) // odd] is the enumeration of all odd
+    numbers between 1 and 37.*)
 
 val dup : 'a t -> 'a t * 'a t
   (** [dup stream] returns a pair of streams which are identical to [stream]. Note

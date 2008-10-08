@@ -1,5 +1,5 @@
 (*
- * Pa_openin -- Syntax extension for local module opening
+ * Pa_openin_r -- Syntax extension for local module opening, revised syntax version
  * Copyright (C)   2006 Alain Frisch
  *                 2007 Till Varoquaux
  *                 2008 Gabriel Scherer
@@ -68,7 +68,7 @@ GLOBAL: expr str_item;
     [a = LIST1 module_with_init SEP "," -> a]
   ];
 (** Implement local opening of modules*)
-  expr: LEVEL ";" [
+  expr: LEVEL "simple" [
     ["open"; modules = one_or_more_modules; "in"; e = expr LEVEL "top" ->
        List.fold_left (
 	 fun e mi ->

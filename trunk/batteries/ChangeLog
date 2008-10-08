@@ -1,4 +1,17 @@
-11/07/2008 David Teller <David.Teller@univ-orleans.fr>:
+10/08/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* batteries_core.ml: [Random] is now [Extlib.ExtRandom.Random]
+	* doc/batteries/myocamlbuild.ml: tags [use_batteries] and [use_boilerplate] separated
+	* enum.ml*: [( // )] added
+	* std.ml*: [( // )] renamed [( /// )]
+	* std.ml*: [args], [exe] added
+	* pa_openin.ml: [module_with_init], [module_init], [one_or_more_modules], [add_initialization] added
+	* pa_openin_r.ml: created
+	* pa_batteries/: created
+	* file.ml*: [lines_of] added
+	* IO.ml: [close_at_end], [make_enum] created
+	* IO.ml: [*_of] now uses [make_enum]
+	
+10/07/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* batteries_type_conv.mli: [get_conv_path_el], [set_conv_path],
 	[push_conv_path], [pop_conv_path], [gen_derived_defs], [sig_generate],
 	[gen_derived_sigs]

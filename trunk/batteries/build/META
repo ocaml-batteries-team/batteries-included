@@ -13,8 +13,10 @@ package "pa_openin" (
 		version                       = "20081006"
 		requires                      = "camlp4"
 		requires(byte)                = "batteries"
-		archive(syntax, preprocessor) = "pa_openin.cmo"
-		archive(syntax, toploop)      = "pa_openin.cmo"
+		archive(syntax, preprocessor, camlp4o) = "pa_openin.cmo"
+		archive(syntax, toploop, camlp4o)      = "pa_openin.cmo"
+		archive(syntax, preprocessor, camlp4r) = "pa_openin_r.cmo"
+		archive(syntax, toploop, camlp4r)      = "pa_openin_r.cmo"
 	)
 )
 
@@ -39,6 +41,17 @@ package "pa_where" (
 	)
 )
 
+package "pa_batteries" (
+	description = "auto-opener for Batteries (container)"
+	version     = "20081008"
+	package "syntax" (
+	    	description = "auto-opener for Batteries (syntax extension)"
+		version     = "20081008"
+		archive(syntax, preprocessor) = "pa_batteries.cmo"
+		archive(syntax, toploop)      = "pa_batteries.cmo"
+	)
+)
+
 #
 # Doesn't work, for some reason -- calling "sexplib.syntax" directly works, though.
 #
@@ -51,6 +64,8 @@ package "sexplib" (
 		requires    = "sexplib.syntax"
 	)
 )
+
+
 
 package "bin_prot" (
 	description = "Saving data to/loading data from a compact binary protocol (container)"

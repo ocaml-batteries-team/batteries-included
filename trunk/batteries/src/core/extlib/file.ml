@@ -88,3 +88,7 @@ let with_do opener closer x f =
 let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
 let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
 
+let lines_of file = IO.lines_of (open_in file)
+
+
+    

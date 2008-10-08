@@ -224,7 +224,7 @@ end
 module Util        = struct
   module Base64 = Extlib.Base64
   module Digest = Batlib_Baselib_Digest
-  module Random = Batlib_Baselib_Random
+  module Random = Extlib.ExtRandom.Random
 end
 
 module Standard = struct

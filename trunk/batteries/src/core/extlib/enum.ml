@@ -647,10 +647,13 @@ let break test e = span (fun x -> not (test x)) e
 
 let ( -- ) x y = range x ~until:y
 
-let ( --- ) x y = if x < y then x -- y
-else          seq y ((+) (-1)) ( (>=) x )
+let ( --- ) x y = 
+  if x < y then x -- y
+  else          seq y ((+) (-1)) ( (>=) x )
 
 let ( ~~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
+
+let ( // ) e f = filter f e
 
 let dup t      = (t, t.clone())
 

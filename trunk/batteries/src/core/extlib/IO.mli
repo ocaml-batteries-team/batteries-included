@@ -126,8 +126,6 @@ val close_out : 'a output -> 'a
 
     All of the following functions deal only with UTF-8 encoded inputs/outputs
 *)
-
- 
 val read_uchar: input -> UChar.t
 (** read one UChar from a UTF-8 encoded input*)
  
@@ -140,11 +138,7 @@ val read_uline: input -> Rope.t
 val read_uall : input -> Rope.t
 (** read the whole contents of a UTF-8 encoded input*)
  
-val uchars_of : input -> UChar.t Enum.t
-(** offer the characters of an UTF-8 encoded input as an enumeration*)
- 
-val ulines_of : input -> Rope.t Enum.t
-(** offer the lines of a UTF-8 encoded input as an enumeration*)
+
 
 val write_uchar: _ output -> UChar.t -> unit
 val write_rope : _ output -> Rope.t -> unit
@@ -428,7 +422,10 @@ val from_out_channel : #out_channel -> unit output
 val from_in_chars : #in_chars -> input
 val from_out_chars : #out_chars -> unit output
 
-(** {6 Enumeration API}*)
+(** {6 Enumeration API}
+
+    All these enumerations close their input once they are completely consumed.
+*)
 
 val bytes_of : input -> int Enum.t
 (** Read an enumeration of unsigned 8-bit integers. *)
@@ -460,11 +457,17 @@ val strings_of : input -> string Enum.t
 
 val lines_of : input -> string Enum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
+ 
+val ulines_of : input -> Rope.t Enum.t
+(** offer the lines of a UTF-8 encoded input as an enumeration*)
 
 val chars_of : input -> char Enum.t
 (** Read an enumeration of Latin-1 characters. 
 
     {b Note} Usually faster than calling [read] several times.*)
+
+val uchars_of : input -> UChar.t Enum.t
+(** offer the characters of an UTF-8 encoded input as an enumeration*)
 
 val bits_of : in_bits -> int Enum.t
 (** Read an enumeration of bits *)
