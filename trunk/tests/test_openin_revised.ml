@@ -1,8 +1,7 @@
-(** Testing syntax extension open...in *)
+(** Testing syntax extension [open...in].
+    We're compiling with [use_batteries], so there's no need to [open Batteries]*)
 
-let _ = open Batteries in
-  print_endline "Open...in works";
+print_endline "starting";
 
-
-
-
+open Languages.Printf in
+  printf "%s\n" "Open...in works";

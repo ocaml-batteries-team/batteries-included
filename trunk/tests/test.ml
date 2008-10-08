@@ -1,7 +1,3 @@
-
-
-open Batteries
-
 module A = 
 struct
   open Data.Persistent.List

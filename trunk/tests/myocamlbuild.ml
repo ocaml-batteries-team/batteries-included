@@ -2,6 +2,14 @@ open Ocamlbuild_plugin
 open Command (* no longer needed for OCaml >= 3.10.2 *)
 
 (**
+   Overview of tags:
+   - [pkg_batteries] to use Batteries as a library, without syntax extensions
+   - [use_batteries] and [use_batteries_r] to use both Batteries and all the non-destructive syntax extensions
+   - [pkg_sexplib.syntax] with [syntax_camlp4o] or [syntax_camlp4r] for sexplib
+*)
+
+
+(**
    {1 OCamlFind}
 *)
 
@@ -91,28 +99,49 @@ struct
     flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
 
-
     (*The command-line for [use_batteries] and [use_batteries_r]*)
-    (*let cl_use_batteries = [A"-package"; A "batteries.openin.syntax"; A "-package"; A "batteries"] in*)
-    let cl_use_batteries = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax,batteries.sexplib.syntax,batteries.bin_prot.syntax,sexplib.syntax"; A "-package"; A "batteries"] in
-      
+
+    let cl_use_boilerplate = [A"-package"; A"batteries,sexplib.syntax"]
+    and cl_use_batteries   = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax,batteries.bin_prot.syntax,batteries.pa_batteries.syntax"; A "-package"; A "batteries"]
+    and cl_camlp4o         = [A"-syntax";  A "camlp4o"]
+    and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in
+
+    let cl_boilerplate_original = cl_use_boilerplate @ cl_camlp4o
+    and cl_boilerplate_revised  = cl_use_boilerplate @ cl_camlp4r
+    and cl_batteries_original   = cl_use_batteries   @ cl_camlp4o
+    and cl_batteries_revised    = cl_use_batteries   @ cl_camlp4r in
+
+      (** Tag [use_boilerplate] provides boilerplate syntax extensions,
+	  in original syntax*)
+
+    flag ["ocaml"; "compile";  "use_boilerplate"] & S cl_boilerplate_original ;
+    flag ["ocaml"; "ocamldep"; "use_boilerplate"] & S cl_boilerplate_original ;
+    flag ["ocaml"; "doc";      "use_boilerplate"] & S cl_boilerplate_original ;
+    flag ["ocaml"; "link";     "use_boilerplate"] & S cl_boilerplate_original ;
+
+      (** Tag [use_boilerplate_r] provides boilerplate syntax extensions,
+	  in original syntax*)
+
+    flag ["ocaml"; "compile";  "use_boilerplate_r"] & S cl_boilerplate_revised ;
+    flag ["ocaml"; "ocamldep"; "use_boilerplate_r"] & S cl_boilerplate_revised ;
+    flag ["ocaml"; "doc";      "use_boilerplate_r"] & S cl_boilerplate_revised ;
+    flag ["ocaml"; "link";     "use_boilerplate_r"] & S cl_boilerplate_revised ;
+
     (** Tag [use_batteries] provides both package [batteries]
 	and all syntax extensions, in original syntax. *)
 
-    let cl_original = cl_use_batteries @ [A"-syntax";  A "camlp4o"] in
-    flag ["ocaml"; "compile";  "use_batteries"] & S cl_original ;
-    flag ["ocaml"; "ocamldep"; "use_batteries"] & S cl_original ;
-    flag ["ocaml"; "doc";      "use_batteries"] & S cl_original ;
-    flag ["ocaml"; "link";     "use_batteries"] & S cl_original ;
+    flag ["ocaml"; "compile";  "use_batteries"] & S cl_batteries_original ;
+    flag ["ocaml"; "ocamldep"; "use_batteries"] & S cl_batteries_original ;
+    flag ["ocaml"; "doc";      "use_batteries"] & S cl_batteries_original ;
+    flag ["ocaml"; "link";     "use_batteries"] & S cl_batteries_original ;
 
     (** Tag [use_batteries_r] provides both package [batteries]
 	and all syntax extensions, in revised syntax. *)
 
-    let cl_revised   = cl_use_batteries @ [A"-syntax";  A "camlp4r"] in
-    flag ["ocaml"; "compile";  "use_batteries_r"] & S cl_revised;
-    flag ["ocaml"; "ocamldep"; "use_batteries_r"] & S cl_revised;
-    flag ["ocaml"; "doc";      "use_batteries_r"] & S cl_revised;
-    flag ["ocaml"; "link";     "use_batteries_r"] & S cl_revised
+    flag ["ocaml"; "compile";  "use_batteries_r"] & S cl_batteries_revised;
+    flag ["ocaml"; "ocamldep"; "use_batteries_r"] & S cl_batteries_revised;
+    flag ["ocaml"; "doc";      "use_batteries_r"] & S cl_batteries_revised;
+    flag ["ocaml"; "link";     "use_batteries_r"] & S cl_batteries_revised
 
 
 (*    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose"; 

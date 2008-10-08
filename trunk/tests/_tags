@@ -5,4 +5,7 @@
 <test_openin_revised.*>: use_batteries_r
 <test_where.*>:          use_batteries
 <test_where_revised.*>:  use_batteries_r
-<test_sexp.*>:           use_batteries
+<test_sexp.*>:           use_batteries,use_boilerplate
+<test_sexp2.*>:          use_batteries
+<test_random.*>:         use_batteries
+<test_random2.*>:        use_batteries
