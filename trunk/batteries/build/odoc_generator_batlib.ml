@@ -864,7 +864,8 @@ class batlib_generator =
          "div.indices {text-align:center}";
 	 ".index_entry{font-size:x-small}";
 	 "ul.index_entry {list-style-type:none;padding:0px; margin-left:none; text-ident:-1em}";
-	 ".info {margin-left:1em}"
+	 ".info {margin-left:1em}";
+	 "pre {margin:1cm; background-color:rgb(240,240,240)}"
 	];
 
   end;;

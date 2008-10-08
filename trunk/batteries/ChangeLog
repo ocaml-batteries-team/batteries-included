@@ -10,6 +10,11 @@
 	* file.ml*: [lines_of] added
 	* IO.ml: [close_at_end], [make_enum] created
 	* IO.ml: [*_of] now uses [make_enum]
+	* META: [pa_batteries] added
+	* Makefile: in [syntax], [pa_batteries] and [pa_openin_r] added
+	* Makefile: in [install], [pa_batteries] and [pa_openin_r] added
+	* extensions.html: created
+	* setup.html: added sections "More Control" and "Even More Control".
 	
 10/07/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* batteries_type_conv.mli: [get_conv_path_el], [set_conv_path],

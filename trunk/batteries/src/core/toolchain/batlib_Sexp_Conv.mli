@@ -474,8 +474,14 @@ val output_mach : _ Extlib.IO.output -> t -> unit
       [oc] in machine readable (i.e. most compact) form. *)
   
 val output : _ Extlib.IO.output -> t -> unit
-  (** [output oc sexp] same as [output_mach]. *)
-  
+  (** as [output_mach]. *)
+
+val print :  _ Extlib.IO.output -> t -> unit
+  (** as [output_hum] 
+
+      May be used to display the contents of a S-expression using
+      {!Printf}.*)
+
 val to_string_hum : ?indent : int -> t -> string
   (** [to_string_hum ?indent sexp] converts S-expression [sexp] to a
       string in human readable form with indentation level [indent].

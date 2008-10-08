@@ -106,6 +106,11 @@ struct
     module Char            = Batteries_core.Data.Text.Char
     module String          = Batteries_core.Data.Text.String
     module StringLabels    = Batteries_core.Data.Text.StringLabels
+
+    (** {6 Unicode}*)
+    module Rope            = Batteries_core.Data.Text.Rope
+    module UChar           = Batteries_core.Data.Text.UChar
+    module UTF8            = Batteries_core.Data.Text.UTF8
   end
 end
 

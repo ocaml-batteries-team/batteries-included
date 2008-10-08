@@ -134,6 +134,12 @@ module Data        = struct
     module Char            = Char
     module String          = String
     module StringLabels    = StringLabels  (*todo: wrap [Batlib_Extlib_String] with labels*)
+
+    (** {6 Unicode}*)
+
+    module Rope            = Rope
+    module UChar           = UChar
+    module UTF8            = UTF8
   end
 end
 

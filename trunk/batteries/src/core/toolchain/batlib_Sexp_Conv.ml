@@ -97,3 +97,5 @@ let output_mach oc sexp =
 
 let output = output_mach
 
+let print  = output_hum
+

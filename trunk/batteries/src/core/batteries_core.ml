@@ -110,6 +110,13 @@ module Data        = struct
       external create : int -> string = "caml_create_string"
     end
     module StringLabels    = Batlib_Baselib_StringLabels  (*todo: wrap [Batlib_Extlib_String] with labels*)
+
+    (** {6 Unicode}*)
+
+    module Rope            = Extlib.Rope
+    module UChar           = Extlib.ExtUChar.UChar
+    module UTF8            = Extlib.ExtUTF8.UTF8
+
   end
 end
 
