@@ -25,11 +25,11 @@ sig
 (** UTF-8 encoded Unicode strings. 
 
     This module defines UTF-8 encoded Unicode strings, implemented in
-    a manner comparable to native OCaml strings. This module is provided
-    for compatibility but should be regarded as mostly obsoleted by
-    {!Rope}.
+    a manner comparable to native OCaml strings. This module is
+    provided essentially for internal use and should be regarded as
+    mostly obsoleted by {!Rope}.
 
-    @author Yamagata Yoriyuki
+    @author Yamagata Yoriyuki (Camomile)
     @author Edgar Friendly
     @author David Teller
 *)

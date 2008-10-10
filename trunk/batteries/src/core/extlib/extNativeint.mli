@@ -1,6 +1,6 @@
 (* 
- * ExtInt - Extended native ints
- * Copyright (C) 2005 Damien Doligez
+ * ExtNativeint - Extended native ints
+ * Copyright (C) 2005 Xavier Leroy
  *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
  * 
@@ -24,19 +24,23 @@ module Native_int :
   sig
 (** Processor-native integers.
 
-   This module provides operations on the type [nativeint] of
-   signed 32-bit integers (on 32-bit platforms) or
-   signed 64-bit integers (on 64-bit platforms).
-   This integer type has exactly the same width as that of a [long]
-   integer type in the C compiler.  All arithmetic operations over
-   [nativeint] are taken modulo 2{^32} or 2{^64} depending
-   on the word size of the architecture.
+    This module provides operations on the type [nativeint] of
+    signed 32-bit integers (on 32-bit platforms) or
+    signed 64-bit integers (on 64-bit platforms).
+    This integer type has exactly the same width as that of a [long]
+    integer type in the C compiler.  All arithmetic operations over
+    [nativeint] are taken modulo 2{^32} or 2{^64} depending
+    on the word size of the architecture.
+    
+    Performance notice: values of type [nativeint] occupy more memory
+    space than values of type [int], and arithmetic operations on
+    [nativeint] are generally slower than those on [int].  Use [nativeint]
+    only when the application requires the extra bit of precision
+    over the [int] type.
 
-   Performance notice: values of type [nativeint] occupy more memory
-   space than values of type [int], and arithmetic operations on
-   [nativeint] are generally slower than those on [int].  Use [nativeint]
-   only when the application requires the extra bit of precision
-   over the [int] type.
+    @author Xavier Leroy (base module)
+    @author Gabriel Scherer
+    @author David Teller
 *)
 
 val zero : nativeint

@@ -23,7 +23,11 @@
 
     A bitset is an array of boolean values that can be accessed with indexes
     like an array but provides a better memory usage (divided by 8) for a
-    very small speed trade-off. *)
+    very small speed trade-off. 
+
+    @author Nicolas Cannasse
+    @author David Teller (Boilerplate code)
+*)
 
 type t
 

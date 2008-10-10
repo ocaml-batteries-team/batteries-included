@@ -1,8 +1,7 @@
 (*
- * Odoc_generator_batlib - custom documentation generator for Batteries
- * Copyright (C) 2008 Maxence Guesdon
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ * Pa_mainfun -- Remove need for "let _ = ..." to evaluate toplevel expressions
+ * Copyright (C)   2008 David Teller
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,26 +17,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
-open Odoc_info;;
-open Module;;
-open List;;
-open Odoc_info
-module Naming = Odoc_html.Naming
-open Odoc_info.Value
-open Odoc_info.Module
+open Camlp4
 
+module Id = struct
+  let name = "pa_mainfun"
+  let version = "0.1"
+end
 
-class bug_generator =
-  object(self)
-    inherit Odoc_html.html as super
+module Make (Syntax : Sig.Camlp4Syntax) = struct
+  include Syntax
+  open Sig
+  open Ast
 
-    method generate modules =
-      warning "GENERATION STARTED";
-      super#generate modules
-  end;;
-
-let doc_generator = ((new bug_generator) :> Args.doc_generator);;
-let _ = Args.set_doc_generator (Some doc_generator) in
-  Odoc_args.add_option ("-force-generator", Arg.Unit (fun _ -> 
-							Args.set_doc_generator (Some doc_generator)),
-			"Force the use of a generator (bug in OCamlDoc?)")
+  EXTEND Gram
+  GLOBAL: str_item;
+  str_item: [[
+    e = expr -> <:str_item<let _ = $e$>>
+  ]];
+  END
+end

@@ -21,27 +21,10 @@
 open Camlp4
 open PreCast
 
-(*Gasp, this doesn't seem reliable.*)
-
-(*let at_start = ref true
-
-let _ = 
-AstFilters.register_str_item_filter
-    (Ast.map_str_item (function x -> 
-			 if !at_start then
-			   let loc = Ast.loc_of_str_item x in
-			     at_start := false;
-			     <:str_item@loc<open Batteries;; $x$>>			     
-		           else x))#str_item*)
-
-open Camlp4
-
 module Id = struct
   let name = "pa_batteries"
   let version = "0.1"
 end
-
-let fresh () = Printf.sprintf "OPENIN_%i" (Oo.id (object end))
 
 
 module Make (Syntax : Sig.Camlp4Syntax) = struct
@@ -49,14 +32,24 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   open Sig
   open Ast
 
+(*    try
+      DELETE_RULE Gram implem: "#"; a_LIDENT; opt_expr; semi END
+    with Not_found -> Printf.eprintf "1\n"; assert false
+
+    try
+      DELETE_RULE Gram implem: str_item; semi; SELF END
+    with Not_found -> Printf.eprintf "2\n"; assert false
+    try
+      DELETE_RULE Gram implem: `EOI END
+    with Not_found -> Printf.eprintf "3\n"; assert false*)
+
     DELETE_RULE Gram implem: "#"; a_LIDENT; opt_expr; semi END
     DELETE_RULE Gram implem: str_item; semi; SELF END
     DELETE_RULE Gram implem: `EOI END
 
+
   let stopped_at _loc =
     Some (Loc.move_line 1 _loc)
-
-(*  let implem_next = Gram.Entry.mk "implem_next"*)
 
   EXTEND Gram
     GLOBAL:implem;

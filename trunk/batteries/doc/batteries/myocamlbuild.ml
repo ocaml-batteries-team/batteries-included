@@ -101,14 +101,16 @@ struct
 
     (*The command-line for [use_batteries] and [use_batteries_r]*)
 
-    let cl_use_boilerplate = [A"-package"; A"batteries,sexplib.syntax"]
-    and cl_use_batteries   = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_type_conv.syntax,batteries.pa_where.syntax,batteries.bin_prot.syntax,batteries.pa_batteries.syntax"; A "-package"; A "batteries"]
+    let cl_use_boilerplate = [A"-package"; A "batteries.pa_type_conv.syntax,batteries,sexplib.syntax"]
+    and cl_use_batteries   = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"; A "-package"; A "batteries"]
+    and cl_use_batteries_o = [A"-package"; A"batteries.pa_mainfun.syntax" ]
+              (*[cl_use_batteries_o]: extensions which only make sense in original syntax*)
     and cl_camlp4o         = [A"-syntax";  A "camlp4o"]
     and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in
 
     let cl_boilerplate_original = cl_use_boilerplate @ cl_camlp4o
     and cl_boilerplate_revised  = cl_use_boilerplate @ cl_camlp4r
-    and cl_batteries_original   = cl_use_batteries   @ cl_camlp4o
+    and cl_batteries_original   = cl_use_batteries   @ cl_use_batteries_o @ cl_camlp4o
     and cl_batteries_revised    = cl_use_batteries   @ cl_camlp4r in
 
       (** Tag [use_boilerplate] provides boilerplate syntax extensions,

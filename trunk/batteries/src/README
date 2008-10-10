@@ -1,0 +1,5 @@
+Overview of the source code.
+
+* core/ contains the core of Batteries Included
+* main/threaded
+* main/nothreads

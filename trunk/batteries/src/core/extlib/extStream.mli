@@ -31,8 +31,19 @@
 
    This module is based on {{:http://www.pps.jussieu.fr/~li/software/sdflow/}Zheng Li's SDFlow}
 *)
+
 module Stream : sig
-(** Streams and parsers. *)
+(** Streams and parsers. 
+
+    Streams are a read-and-forget data structure, comparable to enumerations.
+    In Batteries Included, streams are deprecated in favor of enumerations,
+    defined in module {!Enum}.
+
+    @author Zheng Li
+    @author David Teller
+
+    @documents Stream
+*)
 
 type 'a t = 'a Stream.t
 (** The type of streams holding values of type ['a]. *)

@@ -20,7 +20,13 @@
  *)
 
 module Random : sig
-  (** Pseudo-random number generators (PRNG). *)
+  (** Pseudo-random number generators (PRNG). 
+
+      @author Damien Doligez (base library)
+      @author David Teller
+
+      @documents Random
+*)
 
 (** {6 Basic functions} *)
 

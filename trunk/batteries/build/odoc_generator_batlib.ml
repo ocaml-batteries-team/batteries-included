@@ -607,14 +607,17 @@ class batlib_generator =
       self#html_of_module_kind b father ~modu: m m.m_kind;
       bs b "</pre>";
       if info then
-        (
-         if complete then
-           self#html_of_info ~indent: false
-         else
-           self#html_of_info_first_sentence
-        ) b m.m_info
+        begin
+	verbose ("Printing information of module "^m.m_name^":\n"^(string_of_info_opt m.m_info));
+          if complete then
+            self#html_of_info ~indent: false
+          else
+            self#html_of_info_first_sentence
+        end b m.m_info
       else
-        ()
+        begin
+	  warning ("Module "^m.m_name^" has no associated information")
+	end
       with _ -> assert false
 	  
 
@@ -855,10 +858,12 @@ class batlib_generator =
 	bs b "</ul></div><hr />"
 
 
-    method html_of_custom_tag_documents text = ""
+(*    method html_of_custom_tag_author text = 
+      verbose ("Generating author name "^text);
+      "<div><span style ='author'>author</span>"^text^"</span></div>"*)
 
     initializer
-      tag_functions         <- ("documents", self#html_of_custom_tag_documents) :: tag_functions;
+(*      tag_functions         <- ("author", self#html_of_custom_tag_author) :: tag_functions;*)
       default_style_options <- default_style_options@
 	["li.index_of {display:inline}";
 	 "ul.indices  {display:inline;font-variant:small-caps;list-style-position: inside;list-style-type:none;padding:0px}";

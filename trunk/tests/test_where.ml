@@ -1,6 +1,5 @@
-let _ =
-  print_string test
-    where test = "test_where succeeded"
+print_string test
+  where test = "test_where succeeded"
 
 let enum = ( 1 -- 999 ) // odd 
  where odd x = 

@@ -1,3 +1,5 @@
+(* Obsolete. Now integrated into myocamlbuild.ml*)
+
 (** Imported from {!List} to avoid weird dependencies during compilation*)
 module List =
 struct

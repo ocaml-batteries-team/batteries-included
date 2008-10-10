@@ -1,6 +1,7 @@
 (* 
  * ExtHashtbl - extra functions over hashtables.
  * Copyright (C) 2003 Nicolas Cannasse
+ *               2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,13 +21,19 @@
  
 (** Extra functions over hashtables. *)
 
-(** Operations over hashtables. 
 
-    @documents Hashtbl
-*)
 module Hashtbl :
-  (** The wrapper module *)
   sig
+
+    (** Operations over hashtables. 
+	
+	@author Xavier Leroy (base module)
+	@author Damien Doligez (base module)
+	@author Nicolas Cannasse
+	@author David Teller
+
+	@documents Hashtbl
+    *)
 
 type ('a,'b) t =  ('a,'b)  Hashtbl.t
     (** The type of a hashtable. *)

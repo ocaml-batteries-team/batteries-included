@@ -23,17 +23,23 @@
      only computed whenever requested. This makes them particularly useful in
      contexts where streams of data are to be handled. 
 
-     {b Note} For this documentation, we will assume the existence of a lazy list
-     syntax extension such that [[^ ^]] is the empty lazy list and [[^ a;b;c ^]] is
-     the lazy list containing elements [a], [b], [c].
+     {b Note} For this documentation, we will assume the existence of
+     a lazy list syntax extension such that [[^ ^]] is the empty lazy
+     list and [[^ a;b;c ^]] is the lazy list containing elements [a],
+     [b], [c].
 
-     {b Note} Enumerations (as featured in module {!Enum}) and lazy lists (as featured
-     in this module) are quite similar in purpose. Lazy lists are slightly higher level,
-     insofar as no cloning is required to get them to work, which makes them slightly
-     more useful in contexts where backtracking is common. Enumerations, on the other
-     hand, are closer to traditional stream processing, require more low-level
-     marking whenever backtracking is required, but may be faster and more memory-efficient
-     when used properly. Either choice is recommended over OCaml's built-in {!Stream}.
+     {b Note} Enumerations (as featured in module {!Enum}) and lazy
+     lists (as featured in this module) are quite similar in
+     purpose. Lazy lists are slightly higher level, insofar as no
+     cloning is required to get them to work, which makes them
+     slightly more useful in contexts where backtracking is
+     common. Enumerations, on the other hand, are closer to
+     traditional stream processing, and require more low-level marking
+     whenever backtracking is required, but may be faster and more
+     memory-efficient when used properly. Either choice is recommended
+     over OCaml's built-in {!Stream}.
+
+     @author David Teller
 *)
 
 (** {6 Exceptions} *)

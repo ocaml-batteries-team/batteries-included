@@ -43,6 +43,8 @@
         None
       )
     ]}
+
+    @author David Teller
 *)
 
 type 'a t

@@ -20,6 +20,12 @@
 
 open IO
 
+(**
+   File manipulation
+
+   @author David Teller
+*)
+
 (** {6 Utilities} *)
 val lines_of : string -> string Enum.t
 

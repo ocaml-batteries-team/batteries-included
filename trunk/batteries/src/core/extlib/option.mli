@@ -22,10 +22,13 @@
 (** Functions for the option type.
 
     Options are an Ocaml standard type that can be either [None] (undefined)
-	or [Some x] where x can be any value. Options are widely used in Ocaml
-	to represent undefined values (a little like NULL in C, but in a type
-	and memory safe way). This module adds some functions for working with
-	options.
+    or [Some x] where x can be any value. Options are widely used in Ocaml
+    to represent undefined values (a little like NULL in C, but in a type
+    and memory safe way). This module adds some functions for working with
+    options.
+
+    @author Nicolas Cannasse
+    @author David Teller
 *)
 
 type 'a t = 'a option

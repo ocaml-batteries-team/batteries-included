@@ -21,6 +21,9 @@
 
 (**
    A common interface for numbers.
+
+   @author Gabriel Scherer
+   @author David Teller
 *)
 
 

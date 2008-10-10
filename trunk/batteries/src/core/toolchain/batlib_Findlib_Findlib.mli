@@ -13,6 +13,8 @@
     [init] or [init_manually] for this.
     
     @documents Findlib
+
+    @author Gerd Stolpmann
  *)
 
 exception No_such_package of string * string

@@ -52,6 +52,17 @@ package "pa_batteries" (
 	)
 )
 
+package "pa_mainfun" (
+	description = "simplify syntax of main program (container)"
+	version     = "20081008"
+	package "syntax" (
+	    	description = "simplify syntax of main program (syntax extension)"
+		version     = "20081010"
+		archive(syntax, preprocessor) = "pa_mainfun.cmo"
+		archive(syntax, toploop)      = "pa_mainfun.cmo"
+	)
+)
+
 #
 # Doesn't work, for some reason -- calling "sexplib.syntax" directly works, though.
 #
@@ -79,10 +90,11 @@ package "bin_prot" (
 
 #
 # Doesn't work, for some reason.
+# The feature is actually implemented in myocamlbuild.ml
 #
 package "syntax" (
 	version     = "20081007"
 	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
-	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"
+	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_mainfun.syntax"
 	requires(boilerplate) = "type-conv.syntax,bin_prot.syntax"
 )

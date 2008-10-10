@@ -22,6 +22,8 @@ module Unit :
   sig
     (**
        Operations on [unit].
+
+       @author David Teller
     *)
 
     type t = unit

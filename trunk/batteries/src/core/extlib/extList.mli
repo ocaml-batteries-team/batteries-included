@@ -42,9 +42,16 @@
 module List :
     sig
 
-      (** List operations.  
+      (** List operations.
 
-	  @documents List *)
+	  @documents List 
+
+	  @author Xavier Leroy (base module)
+	  @author Brian Hurt
+	  @author Nicolas Cannasse
+	  @author Richard W.M. Jones
+	  @author David Teller
+      *)
 
       type 'a t = 'a list
 	  (**The type of lists*)
@@ -402,6 +409,7 @@ module List :
 	      have different lengths.  Tail-recursive. *)
 
 	(** {6 Utilities}*)
+
 	val make_compare : ('a -> 'a -> int) -> 'a list -> 'a list -> int
 	  (** [make_compare c] generates the lexicographical order on lists
 	      induced by [c]*)
@@ -445,6 +453,12 @@ module List :
 	exception Different_list_size of string
 	(** [Different_list_size] is raised when applying functions such as
 		[iter2] on two lists having different size. *)
+
+	(** {6 Boilerplate code}*)
+	(** {7 S-Expressions}*)
+
+	val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+	val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 	(** {6 Obsolete functions} *)
 	val nth : 'a list -> int -> 'a
@@ -503,6 +517,7 @@ module ListLabels :
 
 
       (**{6 Base operations}*)
+
 	val length : 'a list -> int
 	  (** Return the length (number of elements) of the given list. *)
 
@@ -566,6 +581,7 @@ module ListLabels :
 
 
 	(**{6 Iterators}*)
+
 	val iter : f:('a -> unit) -> 'a list -> unit
 	  (** [List.iter ~f:f [a1; ...; an]] applies function [f] in turn to
 	      [a1; ...; an]. It is equivalent to
@@ -602,6 +618,7 @@ module ListLabels :
 
 
 	(** {6 Iterators on two lists} *)
+
 	val iter2 : f:('a -> 'b -> unit) -> 'a list -> 'b list -> unit
 	  (** [List.iter2 ~f:f [a1; ...; an] [b1; ...; bn]] calls in turn
 	      [f a1 b1; ...; f an bn].
@@ -632,6 +649,7 @@ module ListLabels :
 	      different lengths.  Tail-recursive. *)
 
 	  (**{6 List scanning}*)
+
 	val for_all : f:('a -> bool) -> 'a list -> bool
 	  (** [for_all ~f:p [a1; ...; an]] checks if all elements of the list
 	      satisfy the predicate [p]. That is, it returns
@@ -723,6 +741,7 @@ module ListLabels :
 	 Default comparator ( = ) is used if no comparison function specified. *)
 
 	  (**{6 Association lists}*)
+
 	val assoc : 'a -> ('a * 'b) list -> 'b
 	  (** [assoc a l] returns the value associated with key [a] in the list of
 	      pairs [l]. That is,
@@ -760,6 +779,7 @@ module ListLabels :
 
 
 	(** {6 List transformations}*)
+
 	val split_at : int -> 'a list -> 'a list * 'a list
 	(** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
 	 first [n] elements of [l] and [l2] the others. Raise [Invalid_index] if
@@ -842,6 +862,7 @@ module ListLabels :
 	      have different lengths.  Tail-recursive. *)
 
 	(** {6 Utilities}*)
+
 	val make_compare : ('a -> 'a -> int) -> 'a list -> 'a list -> int
 	  (** [make_compare c] generates the lexicographical order on lists
 	      induced by [c]*)

@@ -1,7 +1,6 @@
 (* 
  * ExtInt - Extended operations on integers
- * Copyright (C) 1996 Xavier Leroy 
- *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
+ * Copyright (C) 2008 Gabriel Scherer
  *               2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
@@ -33,6 +32,9 @@ module Int :
 
 	This module implements {!Number.Numeric},
 	{!Number.Bounded}, {!Number.Discrete}.
+
+	@author Gabriel Scherer
+	@author David Teller
     *)
     
     type t = int

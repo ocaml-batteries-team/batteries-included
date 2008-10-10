@@ -49,7 +49,7 @@ module Data        = struct
       module Queue         = Batlib_Baselib_Queue        (*TODO:build from enum?*)
       module RefList       = Extlib.RefList
       module Stack         = Batlib_Baselib_Stack        (*TODO:build from enum*)
-      module Stream        = Batlib_Baselib_Stream       (*TODO:replace with latest version*)
+      module Stream        = Extlib.ExtStream.Stream
     end
 
     (** Persistent containers (lists, sets...)  *)

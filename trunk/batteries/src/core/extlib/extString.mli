@@ -1,7 +1,7 @@
 (*
  * ExtString - Additional functions for string manipulations.
  * Copyright (C) 2003 Nicolas Cannasse
- * Copyright (C) 1996,Xavier Leroy, INRIA Rocquencourt
+ * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * Copyright (C) 2008 Edgar Friendly
  * 
@@ -29,6 +29,11 @@ module String:
 sig
 
 (** String operations. 
+
+    @author Xavlier Leroy (base library)
+    @author Nicolas Cannasse
+    @author David Teller
+    @author Edgar Friendly
 
     @documents String*)
 

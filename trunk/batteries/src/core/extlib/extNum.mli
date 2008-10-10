@@ -23,11 +23,16 @@
 
 module Num :
   sig
-(** Operation on arbitrary-precision numbers.
 
-   Numbers (type [num]) are arbitrary-precision rational numbers,
-   plus the special elements [1/0] (infinity) and [0/0] (undefined). 
-*)
+    (** Operation on arbitrary-precision numbers.
+	
+	Numbers (type {!num}) are arbitrary-precision rational numbers,
+	plus the special elements [1/0] (infinity) and [0/0] (undefined). 
+
+	@author Valerie Menissier-Morain (base module)
+	@author Gabriel Scherer
+	@author David Teller
+    *)
 
     open Nat
     open Big_int

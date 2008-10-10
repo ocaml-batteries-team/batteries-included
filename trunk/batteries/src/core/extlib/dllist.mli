@@ -23,6 +23,10 @@
 
     This module implements a doubly linked list in a mutable or imperitive
     style (changes to the list are visible to all copies of the list).
+
+    @author Brian Hurt
+    @author Jesse Guardiani
+    @author David Teller
 *)
 
 

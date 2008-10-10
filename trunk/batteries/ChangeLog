@@ -1,4 +1,15 @@
-10/08/2008 David Teller <David.Teller@univ-orleans.fr>:
+10/10/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* about.html: created
+	* extFloat.ml*: [exp], [log], [log10], [cos], [sin], [tan], [acos], [asin], [atan], [atan2], [cosh], [sinh], [tanh], [ceil], [floor], [infinity], [neg_infinity], [nan], [epsilon], [pi], [frexp], [ldexp], [modf], [fpclass], [classify] added
+	* batteries_core.ml: now use [ExtStream.Stream] instead of [Batlib_baselib_Stream]
+	* extArray.ml?: [print] added
+	* IO.ml: [identity] created
+	* pa_mainfun.ml: created
+	* META: [pa_mainfun] added
+	* Makefile: [install], [syntax] now handle [pa_mainfun]
+	* extList.mli: [t_of_sexp], [sexp_of_t] added to [ExtList.List]
+
+10/09/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* batlib_Baselib_Buffer.mli:
 	* batlib_Baselib_Digest.mli:
 	* batlib_Baselib_Lazy.mli:

@@ -1,6 +1,6 @@
 (*
- * IO - Abstract input/output
- * Copyright (C) 2003 Nicolas Cannasse
+ * ExtBig_int - Extended operations on big integers
+ * Copyright (C) 2008 Gabriel Scherer
  *               2008 David Teller
  *
  * This library is free software; you can redistribute it and/or
@@ -23,12 +23,15 @@
 module Big_int :
   sig
 
-(** Operations on arbitrary-precision integers.
-
-    Big integers (type [big_int]) are signed integers of arbitrary size. 
-
-    @documents Big_int
-*)
+    (** Operations on arbitrary-precision integers.
+	
+	Big integers (type [big_int]) are signed integers of arbitrary size. 
+	
+	@documents Big_int
+	@author Valerie Menissier-Morain (base module)
+	@author Gabriel Scherer
+	@author David Teller
+    *)
   
 open Nat
  

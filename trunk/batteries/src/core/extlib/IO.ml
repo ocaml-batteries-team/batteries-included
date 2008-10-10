@@ -1499,6 +1499,7 @@ let mkprintf k out fmt =
   in let kpr = pr k (Sformat.index_of_int 0) in
     kapr kpr fmt;;
 
+external identity : 'a -> 'a = "%identity"(*Inlined from [Std] to avoid cyclic dependencies*)
 let fprintf out fmt = mkprintf ignore out fmt
 let printf      fmt = fprintf stdout fmt
 let eprintf     fmt = fprintf stderr fmt
@@ -1509,7 +1510,7 @@ let ksprintf2 k fmt =
 let kbprintf2 k buf fmt =
   let out = output_buffer buf in
     mkprintf (fun out -> k buf) out fmt
-let sprintf2 fmt = ksprintf2 (Std.identity) fmt
+let sprintf2 fmt = ksprintf2 (identity) fmt
 let bprintf2 buf fmt = kbprintf2 ignore buf fmt
 (**
    Other possible implementation of [sprintf2],

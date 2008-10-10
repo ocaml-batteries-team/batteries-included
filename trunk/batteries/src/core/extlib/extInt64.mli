@@ -23,6 +23,29 @@
 
 module Int64 :
   sig
+
+(** 64-bit integers.
+
+   This module provides operations on the type [int64]
+   of signed 64-bit integers.  Unlike the built-in [int] type,
+   the type [int64] is guaranteed to be exactly 64-bit wide on all
+   platforms.  All arithmetic operations over [int64] are taken
+   modulo 2{^64}.
+
+   Performance notice: values of type [int64] occupy more memory
+   space than values of type [int], and arithmetic operations on
+   [int64] are generally slower than those on [int].  Use [int64]
+   only when the application requires exact 64-bit arithmetic. 
+
+    @documents Int64
+    
+    @author Xavier Leroy (base module)
+    @author Gabriel Scherer
+    @author David Teller
+*)
+
+
+
     val zero : int64
 (** The 64-bit integer 0. *)
 

@@ -27,6 +27,9 @@ module Genlex : sig
    as a function from character streams to token streams. It implements
    roughly the lexical conventions of Caml, but is parameterized by the
    set of keywords of your language.
+
+    @author Jacques Garrigue
+    @author David Teller
 *)
 
 type token = 

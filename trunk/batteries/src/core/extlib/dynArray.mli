@@ -22,9 +22,13 @@
 
 (** Dynamic arrays.
 
-   A dynamic array is equivalent to a OCaml array that will resize itself
-   when elements are added or removed, except that floats are boxed and
-   that no initialization element is required.
+    A dynamic array is equivalent to a OCaml array that will resize itself
+    when elements are added or removed, except that floats are boxed and
+    that no initialization element is required.
+
+    @author Brian Hurt
+    @author Nicolas Cannasse
+    @author David Teller (boilerplate code)
 *)
 
 type 'a t

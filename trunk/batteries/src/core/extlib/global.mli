@@ -1,6 +1,7 @@
 (*
  * Global - Mutable global variable
  * Copyright (C) 2003 Nicolas Cannasse
+ * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,10 +21,13 @@
 
 (** Mutable global variable.
  
-	Often in OCaml you want to have a global variable, which is mutable 
+    Often in OCaml you want to have a global variable, which is mutable 
     and uninitialized when declared. You can use a ['a option ref] but
-	this is not very convenient. The Global module provides functions
-	to easily create and manipulate such variables.
+    this is not very convenient. The Global module provides functions
+    to easily create and manipulate such variables.
+
+    @author Nicolas Cannasse
+    @author David Teller (boilerplate code)
 *)
 
 type 'a t

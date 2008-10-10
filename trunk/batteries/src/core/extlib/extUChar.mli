@@ -11,6 +11,9 @@ sig
 
    This module implements Unicode (actually ISO-UCS) characters.  All
    31-bit code points are allowed.
+
+    @author Yamagata Yoriyuki (Camomile module)
+    @author Edgar Friendly
 *)
 
 (** Unicode characters. All 31bit code points are allowed.*) 

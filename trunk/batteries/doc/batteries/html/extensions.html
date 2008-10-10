@@ -106,7 +106,24 @@ As a convenience, you may wrote <code>where let</code> instead of <code>where</c
 <dt>Precedence</dt><dd> <code>let a = b where c and d</code> is equivalent to <code>let a = (b where c and d)</code></dd>
 </dl>
 
-<center><h2>Boiler-plate construction</h2></center>
+<center><h2>Toplevel evaluations</h2></center>
+<center>(activated by default, implemented as findlib package <code>batteries.pa_mainfun.syntax</code>)</center>
+<center>(designed for Batteries)</center>
+<p>
+As a convenience, you may evaluate top-level expressions without having to bind them. Consider a module
+consisting only in the following line:
+<pre>
+print_endline "done"
+</pre>
+
+This extract is equivalent to
+<pre>
+let _ = print_endline "done"
+</pre>
+
+This lightweight syntax for toplevel is meant to render toplevel evaluations more concise and readable.
+</p>
+<center><h2>Boilerplate construction</h2></center>
 <center>(<i>de</i>activated by default, implemented as findlib package <code>sexplib.syntax</code>)</center>
 
 <center><h3>Serialization to S-Expressions</h3></center> 

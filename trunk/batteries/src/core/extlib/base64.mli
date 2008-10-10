@@ -25,6 +25,8 @@
     (in that order). 
 
     @documents Base64
+
+    @author Nicolas Cannasse
 *)
 
 (** This exception is raised when reading an invalid character

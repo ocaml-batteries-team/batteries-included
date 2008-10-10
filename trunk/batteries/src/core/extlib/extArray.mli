@@ -27,12 +27,17 @@
     as a standalone module. It provides some additional functions.
 *)
 
-(** Array operations.
 
-    @documents Array
-*)
 module Array :
 sig
+
+  (** Array operations.
+      
+      @documents Array
+      @author Xavier Leroy
+      @author Richard W.M. Jones
+      @author David Teller
+  *)
 
   type 'a t = 'a array
 
@@ -618,5 +623,9 @@ end
 
 val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
 val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+
+val print : 'a IO.output -> ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'b t -> unit
 
 end

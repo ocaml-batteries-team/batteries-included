@@ -1,6 +1,6 @@
 Package: godi-batteries
-Version: 0.1
-Revision: 9
+Version: 0.20081010
+Revision: 1
 Depends: godi-ocaml (>= 3.10.2), godi-findlib (>= 1.2), type-conv, camomile (>= 0.7), sexplib (>= 3.7.0)
 Build-Depends: godi-findlib (>= 1.2), type-conv, sexplib (>= 3.7.0)
 Sources: http://www.univ-orleans.fr/lifo/Members/David.Teller/software/batteries/batteries-0.1.tgz

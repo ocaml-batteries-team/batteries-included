@@ -18,13 +18,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
-(** Enumeration over abstract collection of elements.
 
- Enumerations are entirely functional and most of the operations do not
- actually require the allocation of data structures. Using enumerations
- to manipulate data is therefore efficient and simple. All data structures in
- ExtLib such as lists, arrays, etc. have support to convert from and to
- enumerations.
+(** Enumeration over abstract collection of elements.
+    
+    Enumerations are entirely functional and most of the operations do not
+    actually require the allocation of data structures. Using enumerations
+    to manipulate data is therefore efficient and simple. All data structures in
+    ExtLib such as lists, arrays, etc. have support to convert from and to
+    enumerations.
+
+    @author Nicolas Cannasse
+    @author David Teller
 *)
 
 

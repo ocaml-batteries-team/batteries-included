@@ -34,6 +34,8 @@
 
     This definition is compatible with the standard syntax extension for monads.
     For more information, see {{:http://www.cas.mcmaster.ca/~carette/pa_monad/} the documentation of pa_monad}.
+
+    @author David Teller
 *)
 
 (** Signature for monads *)

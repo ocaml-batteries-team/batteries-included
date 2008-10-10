@@ -25,7 +25,12 @@ sig
       This module provides arithmetic operations on complex numbers.
       Complex numbers are represented by their real and imaginary parts
       (cartesian representation).  Each part is represented by a
-      double-precision floating-point number (type [float]).   *)
+      double-precision floating-point number (type [float]).  
+
+      @author Xavier Leroy (base module)
+      @author Gabriel Scherer
+      @author David Teller
+ *)
   
   type t = Complex.t = { re: float; im: float }
       (** The type of complex numbers.  [re] is the real part and [im] the

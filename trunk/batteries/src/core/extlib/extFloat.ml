@@ -48,6 +48,43 @@ module BaseFloat = struct
 
   external of_float : float -> float = "%identity"
   external to_float : float -> float = "%identity"
+
+  let is_nan f = match classify_float f with
+    | FP_nan -> true
+    | _      -> false
+
+  external exp : float -> float = "caml_exp_float" "exp" "float"
+  external log : float -> float = "caml_log_float" "log" "float"
+  external log10 : float -> float = "caml_log10_float" "log10" "float"
+  external cos : float -> float = "caml_cos_float" "cos" "float"
+  external sin : float -> float = "caml_sin_float" "sin" "float"
+  external tan : float -> float = "caml_tan_float" "tan" "float"
+  external acos : float -> float = "caml_acos_float" "acos" "float"
+  external asin : float -> float = "caml_asin_float" "asin" "float"
+  external atan : float -> float = "caml_atan_float" "atan" "float"
+  external atan2 : float -> float -> float = "caml_atan2_float" "atan2" "float"
+  external cosh : float -> float = "caml_cosh_float" "cosh" "float"
+  external sinh : float -> float = "caml_sinh_float" "sinh" "float"
+  external tanh : float -> float = "caml_tanh_float" "tanh" "float"
+  external ceil : float -> float = "caml_ceil_float" "ceil" "float"
+  external floor : float -> float = "caml_floor_float" "floor" "float"
+  external frexp : float -> float * int = "caml_frexp_float"
+  external ldexp : float -> int -> float = "caml_ldexp_float"            
+  external modf : float -> float * float = "caml_modf_float"
+  external classify : float -> fpclass = "caml_classify_float"
+    
+  type fpclass = Pervasives.fpclass = 
+      FP_normal           
+      | FP_subnormal        
+      | FP_zero             
+      | FP_infinite         
+      | FP_nan              
+
+  let infinity     = Pervasives.infinity
+  let neg_infinity = Pervasives.neg_infinity
+  let nan          = Pervasives.nan
+  let epsilon      = Pervasives.epsilon_float
+  let pi           = 4. *. atan 1.
 end
 
 module Float = struct

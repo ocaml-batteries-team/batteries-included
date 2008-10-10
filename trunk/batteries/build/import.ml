@@ -1,7 +1,6 @@
 (*
-  Import a set of files from library lib
+  Placeholder for a future tool.
 
-  import file lib
-
-  * write 
+  This tool will import a set of interfaces from a library for quick
+  initialization of layer code.
 *)

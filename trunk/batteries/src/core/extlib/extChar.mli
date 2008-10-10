@@ -21,7 +21,11 @@
 
 
 module Char : sig
-(** Operations on characters. *)
+(** Operations on characters. 
+
+    @author Xavier Leroy (base module)
+    @author David Teller
+*)
 
 external code : char -> int = "%identity"
 (** Return the ASCII code of the argument. *)

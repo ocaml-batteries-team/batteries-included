@@ -56,11 +56,14 @@
     already aware of most types of Batteries-Included.
 
     @documents Sexp
+    @author Markus Mottl (Sexplib)
+    @author David Teller (Batteries glue)
 *)
 
 open Bigarray
 
 open Sexplib
+
 (** The type of S-Expressions*)
 type t = Sexp.t
 
