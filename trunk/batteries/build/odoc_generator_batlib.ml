@@ -509,7 +509,7 @@ class batlib_generator =
             elements
         in
         let groups = Odoc_info.create_index_lists sorted_elements (fun e -> Name.simple (name e)) in
-        let f_ele e =
+        let f_ele e = (*Print one entry*)
           (*let simple_name = Name.simple (name e) in
           let father_name = Name.father (name e) in
           bp b "<tr><td>%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ());
@@ -523,13 +523,13 @@ class batlib_generator =
 	  let simple_name = Name.simple (name e)
 	  and father_name = Name.father (name e) in
 	    bp b "<li class='index_entry_entry'>%s%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ())
-	    (if simple_name <> father_name && father_name <> "" then
+	    (if simple_name <> father_name && father_name <> "" then (*Print container module*)
 	      Printf.sprintf " [%s]" (self#make_link ~url:(fst (Naming.html_files father_name)) ~text:father_name ())
 	     else "");
 	    (self#html_of_info_first_sentence b (info e));
 	    bs b  "</li>\n"
         in
-        let f_group l =
+        let f_group l = (*Print all entries for a letter*)
           match l with
             [] -> ()
           | e :: _ ->
@@ -617,6 +617,7 @@ class batlib_generator =
         ()
       with _ -> assert false
 	  
+
     method html_of_Ref b name ref_opt =
       let renamed = find_renaming renamings name in
       let type_of_ref = 
@@ -864,8 +865,9 @@ class batlib_generator =
          "div.indices {text-align:center}";
 	 ".index_entry{font-size:x-small}";
 	 "ul.index_entry {list-style-type:none;padding:0px; margin-left:none; text-ident:-1em}";
-	 ".info {margin-left:1em}";
-	 "pre {margin:1cm; background-color:rgb(240,240,240)}"
+	 "li.index_entry_entry div.info {margin-left:1em}";
+	 "pre {background-color:rgb(250,250,250);margin-top:2em}";
+	 "pre.example {margin-top:2px; margin-bottom:2em}"
 	];
 
   end;;

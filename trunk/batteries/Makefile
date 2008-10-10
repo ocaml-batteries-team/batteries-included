@@ -27,6 +27,9 @@ test:
 
 all: byte syntax doc
 
+#Useful for testing
+reinstall: byte syntax opt uninstall install
+
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 	ocamlbuild odoc_generator_batlib.cmo
 
@@ -75,18 +78,6 @@ uninstall:
 	ocamlfind remove batteries_threads &&\
 	ocamlfind remove batteries_nothreads
 
-#packs: $(GENERATED_MLI)
-#packs:
-#	ocamlbuild -classic-display $(GENERATED_MLI)
-
-%.mli:%/*
-	\rm -f $(EXTLIB_MLI) _build/$(EXTLIB_MLI) _build/src/core/extlib.cmi &&\
-	ocamlbuild extlib.cmo &&\
-	ocamlbuild build/packdoc.byte &&\
-	./packdoc.byte -i _build/src/core/extlib/ -o src/core/extlib.mli      -pack Extlib       &&\
-	install -D src/core/extlib.mli   _build/src/core/extlib.mli
-
-
 doc: byte doc/api.odocl
 	\rm -Rf doc/batteries/html/api &&\
 	ocamlbuild -I src/main/threads doc/api.docdir/index.html &&\
@@ -96,13 +87,15 @@ doc: byte doc/api.odocl
 doc/api.odocl: 
 	cp src/main/threads/batteries.mllib doc/api.odocl
 
-prepare_syntax_contents:
-	@echo $(basename $(notdir $(shell find syntax -name  "*.ml"))) > batsyntax.mllib &&\
-	sed -e "s/ /\n/g" -e "s/batlib/Batlib/g"   -i batsyntax.mllib
+examples:
+	@echo Note: to build the examples, you must first have installed Batteries     &&\
+	echo If you haven't installed Batteries yet, please use    make byte install   &&\
+	cd examples &&\
+	ocamlbuild examples.otarget
 
 clean:
 	ocamlbuild -clean &&\
 	\rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"` &&\
 	\rm -f META doc/api.odocl doc/batteries/html/api/* 
 
-.PHONY: doc/api.odocl batteries.mllib
+.PHONY: doc/api.odocl batteries.mllib examples

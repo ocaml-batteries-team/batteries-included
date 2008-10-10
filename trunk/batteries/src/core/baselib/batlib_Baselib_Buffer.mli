@@ -23,8 +23,10 @@
     @documents Buffer
 *)
 
-type t = Buffer.t with sexp
+type t = Buffer.t
 (** The abstract type of buffers. *)
+
+
 
 val create : int -> t
 (** [create n] returns a fresh buffer, initially empty.
@@ -106,3 +108,9 @@ val add_channel : t -> in_channel -> int -> unit
 val output_buffer : out_channel -> t -> unit
 (** [output_buffer oc b] writes the current contents of buffer [b]
    on the output channel [oc]. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : Sexplib.Sexp.t -> t
+val sexp_of_t : t -> Sexplib.Sexp.t

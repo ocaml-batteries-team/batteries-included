@@ -25,7 +25,7 @@ module Float :
   sig
     (**Operations on floating-point numbers*)
 
-    type t = float with sexp
+    type t = float
     val zero : float
     val one : float
     val neg : float -> float
@@ -59,4 +59,10 @@ module Float :
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
     val operations : t Number.numeric
+
+    (** {6 Boilerplate code}*)
+    (** {7 S-Expressions}*)
+
+    val t_of_sexp : Sexplib.Sexp.t -> t
+    val sexp_of_t : t -> Sexplib.Sexp.t
 end

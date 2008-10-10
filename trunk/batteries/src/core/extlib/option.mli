@@ -28,7 +28,7 @@
 	options.
 *)
 
-type 'a t = 'a option with sexp
+type 'a t = 'a option
 
 val may : ('a -> unit) -> 'a option -> unit
 (** [may f (Some x)] calls [f x] and [may f None] does nothing. *)
@@ -65,3 +65,10 @@ val of_enum: 'a Enum.t -> 'a option
 
 exception No_value
 (** Raised when calling [get None]. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+

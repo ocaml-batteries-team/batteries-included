@@ -62,7 +62,7 @@ open Bigarray
 
 open Sexplib
 (** The type of S-Expressions*)
-type t = Sexp.t with sexp
+type t = Sexp.t
 
 (** Dummy definition for "optional" options *)
 type 'a sexp_option = 'a option
@@ -248,7 +248,7 @@ val record_check_extra_fields : bool ref
     in record S-expressions. *)
 
 val of_sexp_error : string -> Sexp.t -> 'a
-(** [of_sexp_error reason sexp] @raise the exception [Of_sexp_error
+(** [of_sexp_error reason sexp] raises exception [Of_sexp_error
     (reason, sexp)]. *)
 
 val unit_of_sexp : Sexp.t -> unit
@@ -388,7 +388,7 @@ val mat_of_sexp : Sexp.t -> (float, float64_elt, fortran_layout) Array2.t
 (** [mat_of_sexp sexp] same as {!Conv.float64_mat_of_sexp}. *)
 
 val fun_of_sexp : Sexp.t -> ('a -> 'b)
-(** [fun_of_sexp sexp] @raise a conversion error when attempting to
+(** [fun_of_sexp sexp] raises a conversion error when attempting to
     convert an S-expression to a function. *)
 
 val of_string__of__of_sexp : (Sexp.t -> 'a) -> string -> 'a
@@ -495,3 +495,8 @@ val to_string_mach : t -> string
   
 val to_string : t -> string
   (** [to_string sexp] same as [to_string_mach]. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+val t_of_sexp : Sexp.t -> t
+val sexp_of_t : t -> Sexp.t

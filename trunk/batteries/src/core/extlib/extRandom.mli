@@ -106,7 +106,7 @@ val shuffle: 'a Enum.t -> 'a array
 *)
 
 module State : sig
-  type t with sexp
+  type t
   (** The type of PRNG states. *)
 
   val make : int array -> t
@@ -129,6 +129,18 @@ module State : sig
   (** These functions are the same as the basic functions, except that they
       use (and update) the given PRNG state instead of the default one.
   *)
+
+  (** {6 Boilerplate code}*)
+  (** {7 S-Expressions}
+
+      Note: Exceptionnally, the S-Expressions obtained from the following
+      functions are not portable between versions of OCaml. They remain
+      portable between architectures, however.*)
+
+
+  val t_of_sexp : Sexplib.Sexp.t -> t
+  val sexp_of_t : t -> Sexplib.Sexp.t
+
 end;;
 
 

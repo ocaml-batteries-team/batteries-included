@@ -34,7 +34,7 @@ open Nat
  
 type big_int = Big_int.big_int 
         (** The type of big integers. *)
-type t = big_int with sexp
+type t = big_int
 
 val zero_big_int : big_int
         (** The big integer [0]. *)
@@ -188,4 +188,12 @@ val approx_big_int: int -> big_int -> string
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
     val operations : t Number.numeric
-  end
+ 
+
+    (** {6 Boilerplate code}*)
+    (** {7 S-Expressions}*)
+
+    val t_of_sexp : Sexplib.Sexp.t -> t
+    val sexp_of_t : t -> Sexplib.Sexp.t
+
+end

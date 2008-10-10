@@ -20,7 +20,7 @@
     @documents Queue
 *)
 
-type 'a t = 'a Queue.t with sexp
+type 'a t = 'a Queue.t
 (** The type of queues containing elements of type ['a]. *)
 
 
@@ -78,3 +78,9 @@ val transfer : 'a t -> 'a t -> unit
    the queue [q2], then clears [q1]. It is equivalent to the
    sequence [iter (fun x -> add x q2) q1; clear q1], but runs
    in constant time. *)
+
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t

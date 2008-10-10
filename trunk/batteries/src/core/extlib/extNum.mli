@@ -39,7 +39,7 @@ module Num :
       | Big_int of big_int
       | Ratio of ratio 
 
-    type t = num with sexp
+    type t = num
 
     (** {6 Usual operations}*)
     val zero   : num
@@ -148,6 +148,13 @@ module Num :
     val num_of_ratio : ratio -> num
     val float_of_num : num -> float
 
+    (** {6 Boilerplate code}*)
+    (** {7 S-Expressions}*)
+
+    val t_of_sexp : Sexplib.Sexp.t -> t
+    val sexp_of_t : t -> Sexplib.Sexp.t
+
+
     (**/**)
     (** {6 Deprecated} *)
 	 	  
@@ -185,5 +192,7 @@ module Num :
     val int_of_num : num -> int
     val num_of_int : int -> num
     val compare_num : num -> num -> int
+
+
 
   end

@@ -23,7 +23,7 @@ module Bool :
 sig
   (**Operations on booleans*)
 
-  type t = bool with sexp
+  type t = bool
       (**The type of booleans. Formally, this is defined as [type t = true | false] *)
 
   external not : bool -> bool = "%boolnot"
@@ -78,4 +78,10 @@ sig
   val ( < ) : t -> t -> bool
   val ( = ) : t -> t -> bool
   val operations : t Number.numeric
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : Sexplib.Sexp.t -> t
+val sexp_of_t : t -> Sexplib.Sexp.t
 end

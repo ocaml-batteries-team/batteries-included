@@ -162,7 +162,7 @@ module Int32 :
 	  according to the IEEE 754 floating-point ``single format'' bit layout,
 	  is the given [int32]. *)
 
-    type t = int32 with sexp
+    type t = int32
 	(** An alias for the type of 32-bit integers. *)
 	
     val compare: t -> t -> int
@@ -195,4 +195,11 @@ module Int32 :
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
     val operations : t Number.numeric
+
+
+    (** {6 Boilerplate code}*)
+    (** {7 S-Expressions}*)
+    val t_of_sexp : Sexplib.Sexp.t -> t
+    val sexp_of_t : t -> Sexplib.Sexp.t
+
   end

@@ -27,6 +27,11 @@
     set of methods for working with these IO as well as several
     constructors that enable to write to an underlying channel, buffer,
     or enum.
+
+    @author Nicolas Cannasse
+    @author David Teller
+    @author Philippe Strauss
+    @author Edgar Friendly
 *)
 
 open ExtUChar
@@ -54,13 +59,20 @@ val stdin : input
 (** Standard input, as per Unix/Windows conventions (by default, keyboard).*)
 
 val stdout: unit output
-(** Standard output, as per Unix/Windows conventions (by default, console).*)
+(** Standard output, as per Unix/Windows conventions (by default, console).
+
+    Use this output to display regular messages.*)
 
 val stderr: unit output
-(** Standard error output, as per Unix/Windows conventions.*)
+(** Standard error output, as per Unix/Windows conventions.
+   
+    Use this output to display warnings and error messages.
+*)
 
 val stdnull: unit output
-(** An output which discards everything written to it.*)
+(** An output which discards everything written to it.
+
+    Use this output to ignore messages.*)
 
 (** {6 Standard API} *)
 
@@ -143,9 +155,9 @@ val read_uall : input -> Rope.t
 val write_uchar: _ output -> UChar.t -> unit
 val write_rope : _ output -> Rope.t -> unit
 val write_uline: _ output -> Rope.t -> unit
-val write_uchar_enum : _ output -> UChar.t Enum.t -> unit
-val write_uline_enum : _ output -> Rope.t Enum.t -> unit
-val write_rope_enum : _ output -> Rope.t Enum.t -> unit
+val write_uchars : _ output -> UChar.t Enum.t -> unit
+val write_ulines : _ output -> Rope.t Enum.t -> unit
+val write_ropes : _ output -> Rope.t Enum.t -> unit
 
 (** {6 Creation of IO Inputs/Outputs} 
 
@@ -298,49 +310,122 @@ val write_line : 'a output -> string -> unit
 (** Write a line and append a LF (it might be converted
 	to CRLF on some systems depending on the underlying IO). *)
 
-(** Same as operations above, but use big-endian encoding *)
+(** Same operations as module {!IO}, but with big-endian encoding *)
 module BigEndian :
 sig
 
+  (** This module redefines the operations of module {!IO} which behave
+      differently on big-endian [input]s/[output]s.
+
+      Generally, to use this module you will wish to either open both
+      {!IO} and {!BigEndian}, so as to import a big-endian version of
+      {!IO}, as per
+      [open System.IO, BigEndian in ...], 
+      or to redefine locally {!IO} to use big-endian encodings
+      [let module IO = struct 
+          include System.IO 
+          include BigEndian
+       in ...]
+  *)
+
 	val read_ui16 : input -> int
+	  (** Read an unsigned 16-bit word. *)
+
 	val read_i16 : input -> int
+	  (** Read a signed 16-bit word. *)
+
 	val read_i32 : input -> int
+	  (** Read a signed 32-bit integer. Raise [Overflow] if the
+	      read integer cannot be represented as a Caml 31-bit integer. *)
+
 	val read_real_i32 : input -> int32
+	  (** Read a signed 32-bit integer as an OCaml int32. *)
+
 	val read_i64 : input -> int64
+	  (** Read a signed 64-bit integer as an OCaml int64. *)
+
+
 	val read_double : input -> float
+	  (** Read an IEEE double precision floating point value. *)
+
 	val read_float: input -> float
+	  (** Read an IEEE single precision floating point value. *)
+
 	val write_ui16 : 'a output -> int -> unit
+	  (** Write an unsigned 16-bit word. *)
+
 	val write_i16 : 'a output -> int -> unit
+	  (** Write a signed 16-bit word. *)
+
 	val write_i32 : 'a output -> int -> unit
+	  (** Write a signed 32-bit integer. *) 
+
 	val write_real_i32 : 'a output -> int32 -> unit
+	  (** Write an OCaml int32. *)
+
 	val write_i64 : 'a output -> int64 -> unit
+	  (** Write an OCaml int64. *)
+
 	val write_double : 'a output -> float -> unit
+	  (** Write an IEEE double precision floating point value. *)
+
 	val write_float  : 'a output -> float -> unit
+	  (** Write an IEEE single precision floating point value. *)
 
 	val ui16s_of : input -> int Enum.t
-	val i16s_of : input -> int Enum.t
-	val i32s_of : input -> int Enum.t
-	val real_i32s_of : input -> int32 Enum.t
-	val i64s_of : input -> int64 Enum.t
-	val doubles_of : input -> float Enum.t
+	  (** Read an enumeration of unsigned 16-bit words. *)
 
-	val write_byte_enum : 'a output -> int Enum.t -> unit
-	val write_ui16_enum : 'a output -> int Enum.t -> unit
-	val write_i16_enum : 'a output -> int Enum.t -> unit
-	val write_i32_enum : 'a output -> int Enum.t -> unit
-	val write_real_i32_enum : 'a output -> int32 Enum.t -> unit
-	val write_i64_enum : 'a output -> int64 Enum.t -> unit
-	val write_double_enum : 'a output -> float Enum.t -> unit
-	val write_string_enum : 'a output -> string Enum.t -> unit
-	val write_line_enum : 'a output -> string Enum.t -> unit
+	val i16s_of : input -> int Enum.t
+	  (** Read an enumartion of signed 16-bit words. *)
+
+	val i32s_of : input -> int Enum.t
+	  (** Read an enumeration of signed 32-bit integers. Raise [Overflow] if the
+	      read integer cannot be represented as a Caml 31-bit integer. *)
+
+	val real_i32s_of : input -> int32 Enum.t
+	  (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
+
+	val i64s_of : input -> int64 Enum.t
+	  (** Read an enumeration of signed 64-bit integers as OCaml [int64]s. *)
+
+	val doubles_of : input -> float Enum.t
+	  (** Read an enumeration of IEEE double precision floating point values. *)
+
+	val write_bytes : 'a output -> int Enum.t -> unit
+	  (** Write an enumeration of unsigned 8-bit bytes. *)
+
+	val write_ui16s : 'a output -> int Enum.t -> unit
+	  (** Write an enumeration of unsigned 16-bit words. *)
+
+	val write_i16s : 'a output -> int Enum.t -> unit
+	  (** Write an enumeration of signed 16-bit words. *)
+
+	val write_i32s : 'a output -> int Enum.t -> unit
+	  (** Write an enumeration of signed 32-bit integers. *) 
+
+	val write_real_i32s : 'a output -> int32 Enum.t -> unit
+	  (** Write an enumeration of OCaml int32s. *)
+
+	val write_i64s : 'a output -> int64 Enum.t -> unit
+	  (** Write an enumeration of OCaml int64s. *)
+
+	val write_doubles : 'a output -> float Enum.t -> unit
+	  (** Write an enumeration of IEEE double precision floating point value. *)
+
+	val write_strings : 'a output -> string Enum.t -> unit
+	  (** Write an enumeration of strings, appending null characters. *)
+
+	val write_lines : 'a output -> string Enum.t -> unit
+	  (** Write an enumeration of lines, appending a LF (it might be converted
+	      to CRLF on some systems depending on the underlying IO). *)
 
 end
 
 
 (** {6 Bits API}
 
-	This enable you to read and write from an IO bit-by-bit or several bits
-	at the same time.
+    This enable you to read and write from an IO bit-by-bit or several bits
+    at the same time.
 *)
 
 type in_bits
@@ -472,35 +557,35 @@ val uchars_of : input -> UChar.t Enum.t
 val bits_of : in_bits -> int Enum.t
 (** Read an enumeration of bits *)
 
-val write_byte_enum : 'a output -> int Enum.t -> unit
+val write_bytes : 'a output -> int Enum.t -> unit
 (** Write an enumeration of unsigned 8-bit bytes. *)
 
-val write_ui16_enum : 'a output -> int Enum.t -> unit
+val write_ui16s : 'a output -> int Enum.t -> unit
 (** Write an enumeration of unsigned 16-bit words. *)
 
-val write_i16_enum : 'a output -> int Enum.t -> unit
+val write_i16s : 'a output -> int Enum.t -> unit
 (** Write an enumeration of signed 16-bit words. *)
 
-val write_i32_enum : 'a output -> int Enum.t -> unit
+val write_i32s : 'a output -> int Enum.t -> unit
 (** Write an enumeration of signed 32-bit integers. *) 
 
-val write_real_i32_enum : 'a output -> int32 Enum.t -> unit
+val write_real_i32s : 'a output -> int32 Enum.t -> unit
 (** Write an enumeration of OCaml int32s. *)
 
-val write_i64_enum : 'a output -> int64 Enum.t -> unit
+val write_i64s : 'a output -> int64 Enum.t -> unit
 (** Write an enumeration of OCaml int64s. *)
 
-val write_double_enum : 'a output -> float Enum.t -> unit
+val write_doubles : 'a output -> float Enum.t -> unit
 (** Write an enumeration of IEEE double precision floating point value. *)
 
-val write_string_enum : 'a output -> string Enum.t -> unit
+val write_strings : 'a output -> string Enum.t -> unit
 (** Write an enumeration of strings, appending null characters. *)
 
-val write_line_enum : 'a output -> string Enum.t -> unit
+val write_lines : 'a output -> string Enum.t -> unit
 (** Write an enumeration of lines, appending a LF (it might be converted
     to CRLF on some systems depending on the underlying IO). *)
 
-val write_bits_enum : nbits:int -> out_bits -> int Enum.t -> unit
+val write_bitss : nbits:int -> out_bits -> int Enum.t -> unit
 (** Write an enumeration of bits*)
 
 (** {6 Printing} *)

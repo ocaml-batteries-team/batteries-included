@@ -56,3 +56,12 @@ val isdef : 'a t -> bool
 val opt : 'a t -> 'a option 
   (** Return [None] if the global is undefined, else [Some v] where v is the
   current global value contents. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+
+
+

@@ -27,7 +27,7 @@
 exception Empty_list
 exception Invalid_index of int
 
-type 'a t with sexp
+type 'a t
 
 val empty : unit -> 'a t
 (** Returns a new empty ref list *)
@@ -163,6 +163,12 @@ val remove_all : 'a t -> 'a -> unit
 (** Remove all elements equal to the specified
     element from the ref list *)
 
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+
 
 
 (** Functions that operate on the [i]th element of a list.
@@ -171,8 +177,8 @@ val remove_all : 'a t -> 'a -> unit
     operations on lists (hence their inclusion here), the
     functions were moved to an inner module to prevent
     their overuse: all functions work in O(n) time. You
-	might prefer to use [Array] or [DynArray] for constant
-	time indexed element access.
+    might prefer to use [Array] or [DynArray] for constant
+    time indexed element access.
 *)
 module Index : sig
 

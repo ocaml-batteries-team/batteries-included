@@ -72,7 +72,7 @@ calling [balance] after each modification would defeat the purpose of amortizati
 open ExtUTF8
 open CamomileLibrary
  
-type t with sexp
+type t
   (** The type of the ropes. *)
  
 exception Out_of_bounds
@@ -185,3 +185,10 @@ val bulk_iter : (UTF8.t -> unit) -> t -> unit
 val fold : ('a -> UChar.t -> 'a ) -> 'a -> t -> 'a
   (** [Rope.fold f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
       where [rn = Rope.get n r ] and [N = length r]. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : Sexplib.Sexp.t -> t
+val sexp_of_t : t -> Sexplib.Sexp.t
+

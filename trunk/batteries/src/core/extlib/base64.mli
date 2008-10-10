@@ -38,7 +38,7 @@ exception Invalid_table
 (** An encoding table maps integers 0..63 to the corresponding char. *)
 type encoding_table = char array
 
-(** A decoding table mais chars 0..255 to the corresponding 0..63 value
+(** A decoding table maps chars 0..255 to the corresponding 0..63 value
  or -1 if the char is not accepted. *)
 type decoding_table = int array
 

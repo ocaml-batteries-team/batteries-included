@@ -26,7 +26,8 @@
 *)
 
 
-type 'a node_t (* abstract *) with sexp
+type 'a node_t (* abstract *) 
+type 'a t = 'a node_t (*For uniformity*)
 
 exception Empty
 
@@ -181,3 +182,9 @@ val rev_enum : 'a node_t -> 'a Enum.t
     [Empty] if given enum is empty.  This is an O(N) operation.
 *)
 val of_enum : 'a Enum.t -> 'a node_t
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t

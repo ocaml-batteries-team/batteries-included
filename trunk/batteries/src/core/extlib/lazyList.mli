@@ -58,7 +58,7 @@ exception No_more_elements
    However, it is generally easier to manipulate {!nil} and {!cons}.*)
 
 type 'a t = ('a node_t) Lazy.t (**The type of a lazy list.*)
-and 'a node_t = | Nil | Cons of 'a * 'a t with sexp
+and 'a node_t = | Nil | Cons of 'a * 'a t
 (**The type of an item in the list.*)
 
 (** {6 Access } *)
@@ -507,6 +507,16 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 
 val uncombine : ('a * 'b) t -> 'a t * 'b t
   (** Divide a list of pairs into a pair of lists. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+
+
+val node_t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a node_t
+val sexp_of_node_t : ('a -> Sexplib.Sexp.t) -> 'a node_t -> Sexplib.Sexp.t
 
 module Exceptionless : sig
   (** Exceptionless counterparts for error-raising operations*)

@@ -645,6 +645,7 @@ module ListLabels = struct
   exception Invalid_index       = List.Invalid_index
   exception Different_list_size = List.Different_list_size
 
+  type 'a t         = 'a list
   let init i ~f     = List.init i f
   let make n  x     = List.make n x
   let iteri ~f l    = List.iteri f l

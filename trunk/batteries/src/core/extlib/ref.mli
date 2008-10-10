@@ -20,7 +20,7 @@
 
 (** Operations on references. *)
 
-type 'a t = 'a ref with sexp
+type 'a t = 'a ref
 
 val pre : 'a ref -> ( 'a -> 'a ) -> 'a
   (** Perform an operation on a reference and return the
@@ -60,4 +60,10 @@ val post_decr: int ref -> int
   (**Increment an integer, return the new value.
 
      Comparable to C or Java's [--i]. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 

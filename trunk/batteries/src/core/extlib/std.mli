@@ -19,7 +19,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Additional functions. *)
+(** {6 Additional functions.}
+
+    @author Nicolas Cannasse
+    @author David Teller
+    @author Zheng Li
+*)
 
 val input_lines : in_channel -> string Enum.t
 (** Returns an enumeration over lines of an input channel, as read by the
@@ -82,14 +87,27 @@ val exe  : string
 
 (** {6 Operators}*)
 val ( |> ) : 'a -> ('a -> 'b) -> 'b
-(** Function application. [x |> f] is equivalent to [f x]. Useful for composing
-    sequences of function calls without too many parenthesis. *)
+(** Function application. [x |> f] is equivalent to [f x]. 
+
+    This operator is commonly used to write a function composition
+    by order of evaluation means rather than by inverse order.
+    For instance, [g (f x)] means "apply [f] to [x], then apply
+    [g] to the result." In some circumstances, it may be more
+    understandable to write this as [x |> f |> g], or
+    "starting from [x], apply [f], then apply [g]."
+    
+    This operator may also be useful for composing sequences of
+    function calls without too many parenthesis. *)
 
 val ( <|  ) : ('a -> 'b) -> 'a -> 'b
-(** Function application. [f <| x] is equivalent to [f x]. *)
+  (** Function application. [f <| x] is equivalent to [f x]. 
+      
+      This operators may be useful for composing sequences of
+      function calls without too many parenthesis.  *)
 
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
-(** Function composition. [f |- g] is [fun x -> g (f x)]. *)
+(** Function composition. [f |- g] is [fun x -> g (f x)]. 
+    This is also equivalent to applying [|>] twice.*)
 
 val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
 (** Function composition. [f -| g] is [fun x -> f (g x)]. Mathematically, this is
@@ -119,3 +137,4 @@ val discard : 'a -> (_ -> 'a)
 type ('a, 'b) result =
   | Ok  of 'a
   | Bad of 'b
+

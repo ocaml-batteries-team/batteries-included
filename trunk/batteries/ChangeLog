@@ -1,4 +1,22 @@
 10/08/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* batlib_Baselib_Buffer.mli:
+	* batlib_Baselib_Digest.mli:
+	* batlib_Baselib_Lazy.mli:
+	* batlib_Baselib_Queue.mli:
+	* batlib_Baselib_Stack.mli:
+	* batlib_Baselib_Conv.mli: [with sexp] replaced with explicit type declarations
+	* batlib_Baselib_Conv.mli: comments containing [@raise] fixed
+	* odoc_generator_batlib.ml: [default_style_options] tweaked
+	* option.ml*:
+	* global.ml*: [t_of_sexp], [sexp_of_t] added
+	* extlib/*.mli: replaced [with sexp] with [t_of_sexp] and [sexp_of_t]
+	* extList.ml*: [ListLabels] now defines type ['a t]
+	* rope.ml: in [of_ustring], [STRING.length s] replaces [String.length (of_string s)]
+	* examples: added
+	* IO.mli: [BigEndian] documented
+	* Makefile: [reinstall] added
+	
+10/08/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* batteries_core.ml: [Random] is now [Extlib.ExtRandom.Random]
 	* doc/batteries/myocamlbuild.ml: tags [use_batteries] and [use_boilerplate] separated
 	* enum.ml*: [( // )] added

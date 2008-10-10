@@ -71,7 +71,7 @@ module Random = struct
 
   module State =
   struct
-    include State (*Note: here, we use [Marshal] to avoid breaking abstraction.*)
+    include State (*Note: here, we use [Marshal] to avoid breaking abstraction. So it's not portable.*)
     let sexp_of_t t =
       sexp_of_string (Marshal.to_string t [])
     let t_of_sexp s =

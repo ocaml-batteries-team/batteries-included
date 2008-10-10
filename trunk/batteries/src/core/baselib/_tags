@@ -6,4 +6,5 @@
 <batlib_Baselib_Mutex.ml>:pkg_threads,      pkg_threads.posix
 <batlib_Baselib_Thread.mli>:pkg_threads,    pkg_threads.posix
 <batlib_Baselib_Thread.ml>:pkg_threads,     pkg_threads.posix
-<*>: pkg_sexplib,pkg_bin_prot,pkg_sexplib.syntax,syntax_camlp4o,pkg_camomile
+<*.ml>: pkg_sexplib,pkg_bin_prot,pkg_sexplib.syntax,syntax_camlp4o
+<*.mli>: pkg_sexplib

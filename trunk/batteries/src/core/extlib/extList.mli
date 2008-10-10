@@ -46,7 +46,7 @@ module List :
 
 	  @documents List *)
 
-      type 'a t = 'a list with sexp
+      type 'a t = 'a list
 	  (**The type of lists*)
 
       (**{6 Base operations}*)
@@ -497,6 +497,8 @@ module List :
 module ListLabels :
     sig
 
+      type 'a t = 'a list
+
       (** List operations.  *)
 
 
@@ -884,6 +886,13 @@ module ListLabels :
 	(** [Different_list_size] is raised when applying functions such as
 		[iter2] on two lists having different size. *)
 
+
+	(** {6 Boilerplate code}*)
+	(** {7 S-Expressions}*)
+
+	val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+	val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+
 	(** {6 Obsolete functions} *)
 
 	val nth : 'a list -> int -> 'a
@@ -931,6 +940,7 @@ module ListLabels :
 	  val assq : 'a -> ('a * 'b) list -> 'b option
 	    (** As {!assoc} but with physical equality *)	    
 	end
+
     end
 
 val ( @ ) : 'a list -> 'a list -> 'a list

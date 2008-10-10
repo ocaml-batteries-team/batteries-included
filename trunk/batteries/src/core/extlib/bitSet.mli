@@ -25,7 +25,7 @@
     like an array but provides a better memory usage (divided by 8) for a
     very small speed trade-off. *)
 
-type t with sexp
+type t
 
 exception Negative_index of string
 (** When a negative bit value is used for one of the BitSet functions,
@@ -100,3 +100,9 @@ val diff : t -> t -> t
 
 val sym_diff : t -> t -> t
 (** [sym_diff s t] returns the symmetrical difference of [s] and [t]. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : Sexplib.Sexp.t -> t
+val sexp_of_t : t -> Sexplib.Sexp.t

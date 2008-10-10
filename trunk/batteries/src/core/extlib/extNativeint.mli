@@ -172,7 +172,7 @@ external of_string : string -> nativeint = "caml_nativeint_of_string"
 val to_string : nativeint -> string
 (** Return the string representation of its argument, in decimal. *)
 
-type t = nativeint with sexp
+type t = nativeint
 (** An alias for the type of native integers. *)
 
 val compare: t -> t -> int
@@ -211,5 +211,11 @@ external format : string -> nativeint -> string = "caml_nativeint_format"
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
     val operations : t Number.numeric
-      
+  
+    (** {6 Boilerplate code}*)
+    (** {7 S-Expressions}*)
+
+    val t_of_sexp : Sexplib.Sexp.t -> t
+    val sexp_of_t : t -> Sexplib.Sexp.t
+   
   end

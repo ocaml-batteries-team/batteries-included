@@ -231,7 +231,7 @@ let rec set i (v:ExtUChar.UChar.t) = function
       else concat l (set (i - cl) v r)
  
 let of_ustring s =
-  let lens = String.length (UTF8.as_string s) in
+  let lens = STRING.length s in
   if lens = 0 then Empty
   else
     let min (x:int) (y:int) = if x <= y then x else y in

@@ -20,7 +20,7 @@
     @documents Stack
 *)
 
-type 'a t = 'a Stack.t with sexp
+type 'a t = 'a Stack.t
 (** The type of stacks containing elements of type ['a]. *)
 
 exception Empty
@@ -57,3 +57,8 @@ val iter : ('a -> unit) -> 'a t -> unit
 (** [iter f s] applies [f] in turn to all elements of [s],
    from the element at the top of the stack to the element at the
    bottom of the stack. The stack itself is unchanged. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t

@@ -35,7 +35,7 @@ module Int :
 	{!Number.Bounded}, {!Number.Discrete}.
     *)
     
-    type t = int with sexp
+    type t = int
 	(** An alias for the type of integers. *)
 
     val zero : int
@@ -149,6 +149,13 @@ module Int :
 
     external of_int : int -> int = "%identity"
     external to_int : int -> int = "%identity"
+
+    (** {6 Boilerplate code}*)
+    (** {7 S-Expressions}*)
+
+    val t_of_sexp : Sexplib.Sexp.t -> t
+    val sexp_of_t : t -> Sexplib.Sexp.t
+
   end
 
 
@@ -169,7 +176,7 @@ module SafeInt :
 	{b Important note} Untested.
     *)
     
-    type t = int with sexp
+    type t = int
 	(** An alias for the type of integers. *)
 
     val zero : int
@@ -283,5 +290,11 @@ module SafeInt :
 
     external of_int : int -> int = "%identity"
     external to_int : int -> int = "%identity"
+
+    (** {6 Boilerplate code}*)
+    (** {7 S-Expressions}*)
+
+    val t_of_sexp : Sexplib.Sexp.t -> t
+    val sexp_of_t : t -> Sexplib.Sexp.t
   end
 

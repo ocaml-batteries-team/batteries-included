@@ -28,7 +28,7 @@ module Hashtbl :
   (** The wrapper module *)
   sig
 
-type ('a,'b) t =  ('a,'b)  Hashtbl.t with sexp
+type ('a,'b) t =  ('a,'b)  Hashtbl.t
     (** The type of a hashtable. *)
 
 (**{6 Base operations}*)
@@ -383,5 +383,11 @@ val of_enum : ('a * 'b) Enum.t -> ('a, 'b, _) t
 
 
 end
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b) t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b) t -> Sexplib.Sexp.t
 
 end

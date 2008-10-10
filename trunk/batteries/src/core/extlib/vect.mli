@@ -73,7 +73,7 @@ calling [balance] after each modification would defeat the purpose of amortizati
   @author Mauricio Fernandez
   *)
 
-type 'a t with sexp
+type 'a t
   (** The type of a polymorphic vect. *)
 
 exception Out_of_bounds
@@ -219,6 +219,14 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 val filter : ('a -> bool) -> 'a t -> 'a t
   (** [filter f v] returns a vect with the elements [x] from [v] such that
       [f x] returns [true]. Operates in [O(n)] time. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+
+
 
 (** {6 Functorial interface} *)
 

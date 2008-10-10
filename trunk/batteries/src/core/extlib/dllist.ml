@@ -32,6 +32,8 @@ type 'a enum_t = {
 	mutable valid : bool
 } with sexp
 
+type 'a t = 'a node_t with sexp
+
 exception Empty
 
 let create x = let rec nn = { data = x; next = nn; prev = nn} in nn

@@ -37,7 +37,7 @@ exception Invalid_string
 (** An exception thrown when some operation required a string
     and received an unacceptable string.*)
 
-type t = string with sexp
+type t = string
 (** The type of strings. *)
 
 external length : string -> int = "%string_length"
@@ -326,6 +326,13 @@ val compare: t -> t -> int
 
 val compare_without_case: t -> t -> int
   (** Compare two strings, case-insensitive. *)
+
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : Sexplib.Sexp.t -> t
+val sexp_of_t : t -> Sexplib.Sexp.t
 
 
 (**/**)

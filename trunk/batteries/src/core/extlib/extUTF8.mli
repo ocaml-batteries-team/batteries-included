@@ -28,10 +28,14 @@ sig
     a manner comparable to native OCaml strings. This module is provided
     for compatibility but should be regarded as mostly obsoleted by
     {!Rope}.
+
+    @author Yamagata Yoriyuki
+    @author Edgar Friendly
+    @author David Teller
 *)
 
 (** UTF-8 encoded Unicode strings. The type is normal string. *)
-type t = CamomileLibrary.UTF8.t with sexp
+type t = CamomileLibrary.UTF8.t
 
 exception Malformed_code
 
@@ -198,6 +202,13 @@ module Buf : sig
      The contents of [b2] is not changed. *)
   val add_buffer : buf -> buf -> unit
 end with type buf = Buffer.t
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : Sexplib.Sexp.t -> t
+val sexp_of_t : t -> Sexplib.Sexp.t
+
 
 (**/**)
 external string_as : string -> t = "%identity"

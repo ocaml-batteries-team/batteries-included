@@ -34,7 +34,7 @@
 module Array :
 sig
 
-  type 'a t = 'a array with sexp
+  type 'a t = 'a array
 
   (**{6 Base operations}*)
 
@@ -612,5 +612,11 @@ val fast_sort : ('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 
 end
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 end

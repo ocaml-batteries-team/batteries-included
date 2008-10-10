@@ -27,7 +27,7 @@ sig
       (cartesian representation).  Each part is represented by a
       double-precision floating-point number (type [float]).   *)
   
-  type t = Complex.t = { re: float; im: float } with sexp
+  type t = Complex.t = { re: float; im: float }
       (** The type of complex numbers.  [re] is the real part and [im] the
 	  imaginary part. *)
       
@@ -116,4 +116,10 @@ sig
   val ( > ) : t -> t -> bool
   val ( < ) : t -> t -> bool
   val ( = ) : t -> t -> bool
+
+  (** {6 Boilerplate code}*)
+  (** {7 S-Expressions}*)
+
+  val t_of_sexp : Sexplib.Sexp.t -> t
+  val sexp_of_t : t -> Sexplib.Sexp.t
 end

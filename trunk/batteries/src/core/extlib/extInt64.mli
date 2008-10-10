@@ -164,7 +164,7 @@ external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
    according to the IEEE 754 floating-point ``double format'' bit layout,
    is the given [int64]. *)
 
-type t = int64 with sexp
+type t = int64
 (** An alias for the type of 64-bit integers. *)
 
 val compare: t -> t -> int
@@ -201,5 +201,12 @@ external format : string -> int64 -> string = "caml_int64_format"
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
     val operations : t Number.numeric
+
+    (** {6 Boilerplate code}*)
+    (** {7 S-Expressions}*)
+    val t_of_sexp : Sexplib.Sexp.t -> t
+    val sexp_of_t : t -> Sexplib.Sexp.t
+
+
   end
 

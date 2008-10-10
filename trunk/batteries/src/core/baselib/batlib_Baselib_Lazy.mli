@@ -15,7 +15,7 @@
 
 (** Deferred computations. *)
 
-type 'a t = 'a lazy_t with sexp;;
+type 'a t = 'a lazy_t
 (** A value of type ['a Lazy.t] is a deferred computation, called
    a suspension, that has a result of type ['a].  The special
    expression syntax [lazy (expr)] makes a suspension of the
@@ -72,3 +72,9 @@ val lazy_from_val : 'a -> 'a t;;
 val lazy_is_val : 'a t -> bool;;
 (** [lazy_is_val x] returns [true] if [x] has already been forced and
     did not raise an exception. *)
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
