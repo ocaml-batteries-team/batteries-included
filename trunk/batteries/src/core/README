@@ -1,7 +1,15 @@
 This directory contains the core of Batteries Included, i.e.
 * INRIA's base library
-* Extlib.
+* Extlib
+* Findlib (1)
+* Sexplib (1)
 
-To use it from batteries, open either module BatteriesCore
-or module BatteriesCore_nothreads, for respectively the
+To use it from within Batteries, open either module Batteries_core or
+module Batteries_core_nothreads, for respectively the
 thread-compatible or non-threaded version.
+
+From the outside of Batteries, you don't need to know about these
+modules.
+
+
+(1) will probably move to their own directory at some point
