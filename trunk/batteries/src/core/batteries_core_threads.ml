@@ -58,6 +58,7 @@ struct
     module Hashtbl       = Batteries_core.Data.Mutable.Hashtbl
     module HashtblLabels = Batteries_core.Data.Mutable.HashtblLabels
     module Queue         = Batteries_core.Data.Mutable.Queue
+    module Ref           = Batteries_core.Data.Mutable.Ref
     module RefList       = Batteries_core.Data.Mutable.RefList
     module Stack         = Batteries_core.Data.Mutable.Stack
     module Stream        = Batteries_core.Data.Mutable.Stream

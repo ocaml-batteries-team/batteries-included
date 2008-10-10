@@ -8,6 +8,9 @@
 	* META: [pa_mainfun] added
 	* Makefile: [install], [syntax] now handle [pa_mainfun]
 	* extList.mli: [t_of_sexp], [sexp_of_t] added to [ExtList.List]
+	* extlib/*.mli: documented [@author]
+	* batteries*ml: [Ref] added
+	* extlib.mlpack: [Ref] added
 
 10/09/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* batlib_Baselib_Buffer.mli:

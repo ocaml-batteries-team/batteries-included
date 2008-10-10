@@ -7,4 +7,4 @@
 open Util.Random with self_init ()
 open Data.Mutable, System, IO
 
-let _ = Array.print ~sep:" " ~last:"\n" nwrite stdout (shuffle (args ()))
+let _ = Array.print stdout ~sep:" " ~last:"\n" nwrite (shuffle (args ()))

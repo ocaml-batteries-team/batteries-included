@@ -72,6 +72,7 @@ module Data        = struct
       module Hashtbl       = Hashtbl
       module HashtblLabels = HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
       module Queue         = Queue        (*TODO:build from enum?*)
+      module Ref           = Ref
       module RefList       = RefList
       module Stack         = Stack        (*TODO:build from enum*)
       module Stream        = Stream       (*TODO:replace with latest version*)
@@ -111,6 +112,7 @@ module Data        = struct
   module Numeric     = struct
     open Batteries_core_threads.Data.Numeric
     (*module Interfaces  = Batlib_Interfaces_Numeric*)
+    module Common      = Common
     module Big_int     = Big_int
     module Complex     = Complex
     module Float       = Float

@@ -47,6 +47,7 @@ module Data        = struct
       module Hashtbl       = Extlib.ExtHashtbl.Hashtbl
       module HashtblLabels = Batlib_Baselib_HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
       module Queue         = Batlib_Baselib_Queue        (*TODO:build from enum?*)
+      module Ref           = Extlib.Ref
       module RefList       = Extlib.RefList
       module Stack         = Batlib_Baselib_Stack        (*TODO:build from enum*)
       module Stream        = Extlib.ExtStream.Stream

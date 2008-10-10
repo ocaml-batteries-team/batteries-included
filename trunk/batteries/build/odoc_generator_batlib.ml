@@ -858,12 +858,12 @@ class batlib_generator =
 	bs b "</ul></div><hr />"
 
 
-(*    method html_of_custom_tag_author text = 
+    method html_of_custom_tag_author text = 
       verbose ("Generating author name "^text);
-      "<div><span style ='author'>author</span>"^text^"</span></div>"*)
+      "<div><span style ='author'>author</span>"^text^"</span></div>"
 
     initializer
-(*      tag_functions         <- ("author", self#html_of_custom_tag_author) :: tag_functions;*)
+      tag_functions         <- ("author", self#html_of_custom_tag_author) :: tag_functions;
       default_style_options <- default_style_options@
 	["li.index_of {display:inline}";
 	 "ul.indices  {display:inline;font-variant:small-caps;list-style-position: inside;list-style-type:none;padding:0px}";
