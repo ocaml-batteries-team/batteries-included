@@ -3,13 +3,13 @@
 (* TODO: Check -- this is actually part of a package distributed with LGPL + linking exception *)
 
 (** Unicode (ISO-UCS) characters.
-
-   This module implements Unicode (actually ISO-UCS) characters.  All
-   31-bit code points are allowed.
-
+    
+    This module implements Unicode (actually ISO-UCS) characters.  All
+    31-bit code points are allowed.
+    
     @author Yamagata Yoriyuki (Camomile module)
     @author Edgar Friendly
-
+    
     @documents UChar
 *)
 module UChar :

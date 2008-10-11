@@ -25,7 +25,7 @@ GENERATED_MLI=$(patsubst %.mlpack, %.mli, $(PACKS))
 test:
 	$(shell echo $(GENERATED_MLI))
 
-all: byte syntax doc
+all: byte syntax
 
 #Useful for testing
 reinstall: byte syntax opt uninstall install
