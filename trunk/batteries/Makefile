@@ -21,6 +21,15 @@
 PACKS=$(shell find src -name "*mlpack")
 GENERATED_MLI=$(patsubst %.mlpack, %.mli, $(PACKS))
 
+# findlib destdir, if you need to install in non-standard places invoke make
+# as: "make install DESTDIR=/some/where/"
+DESTDIR =
+
+ifeq ($(DESTDIR),)
+DESTDIR_FLAGS =
+else
+DESTDIR_FLAGS = -destdir $(DESTDIR)
+endif
 
 test:
 	$(shell echo $(GENERATED_MLI))
@@ -69,14 +78,29 @@ batteries.mllib:
 #	cp batteries.mllib src/main/nothreads
 
 install: syntax
-	ocamlfind install batteries build/META _build/src/syntax/pa_openin/pa_openin.cmo _build/src/syntax/pa_openin/pa_openin_r.cmo _build/src/syntax/pa_where/pa_where.cmo _build/src/syntax/pa_batteries/pa_batteries.cmo &&\
-	ocamlfind install batteries_threads build/threaded/META _build/src/main/threads/batteries.cmi -optional _build/src/main/threads/batteries.cma _build/src/main/threads/batteries.cmxa _build/src/main/threads/batteries.a  &&\
-	ocamlfind install batteries_nothreads build/nothreads/META _build/src/main/nothreads/batteries.cmi -optional _build/src/main/nothreads/batteries.cma _build/src/main/nothreads/batteries.cmxa  _build/src/main/nothreads/batteries.a 
+	ocamlfind install $(DESTDIR_FLAGS) batteries \
+		build/META \
+		_build/src/syntax/pa_openin/pa_openin.cmo \
+		_build/src/syntax/pa_openin/pa_openin_r.cmo \
+		_build/src/syntax/pa_where/pa_where.cmo \
+		_build/src/syntax/pa_batteries/pa_batteries.cmo
+	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
+		build/threaded/META \
+		_build/src/main/threads/batteries.cmi \
+		-optional _build/src/main/threads/batteries.cma \
+			_build/src/main/threads/batteries.cmxa \
+			_build/src/main/threads/batteries.a
+	ocamlfind install $(DESTDIR_FLAGS) batteries_nothreads \
+		build/nothreads/META \
+		_build/src/main/nothreads/batteries.cmi \
+		-optional _build/src/main/nothreads/batteries.cma \
+			_build/src/main/nothreads/batteries.cmxa \
+			_build/src/main/nothreads/batteries.a
 
 uninstall:
-	ocamlfind remove batteries &&\
-	ocamlfind remove batteries_threads &&\
-	ocamlfind remove batteries_nothreads
+	ocamlfind remove $(DESTDIR_FLAGS) batteries
+	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads
+	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads
 
 doc: byte doc/api.odocl
 	\rm -Rf doc/batteries/html/api &&\
