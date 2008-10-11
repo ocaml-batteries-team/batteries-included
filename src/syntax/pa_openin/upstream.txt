@@ -1,0 +1,38 @@
+Source: http://alain.frisch.fr/info/openin-20070524.tar.gz
+Homepage: http://www.eleves.ens.fr/home/frisch/soft.html#openin
+Loc: loc
+Checksum: 987dddc722a315ad0185ee5b5767cabe
+Description:
+openin:  local open of module in expressions
+Alain Frisch  <Alain.Frisch@ens.fr>
+
+
+This package implements a Camlp4 syntax extension for Objective Caml.
+It adds the syntactic construction
+
+    open M in e
+
+that can appear in any context where an expression is expected. 
+M is a (qualified) module name and e is an expression.
+
+
+There is also a more general construction
+
+   struct ... end in e
+
+where ... is a sequence of structure item (type, exception, class declarations;
+open; ...).
+
+
+To compile the syntax extension:
+
+ocamlc -c -pp 'camlp4o pa_extend.cmo q_MLast.cmo' -I +camlp4 pa_openin.ml
+
+Then you can install pa_openin.cmo in your .../lib/ocaml/camlp4 directory,
+and use it:
+
+ocamlc -c -pp 'camlp4o pa_openin.cmo' myfile.ml
+
+
+The code is in public domain.
+.

@@ -1,0 +1,16 @@
+This is the first alpha release of Batteries Included.
+
+= Changes since pre-release 4
+* Plenty of additional functions
+* Plenty of bugfixes
+* Several syntax extensions for auto-opening Batteries, etc.
+* Serialization/deserialization using S-Expressions (SExplib)
+* Unicode strings
+* Unicode ropes
+* A few examples
+* New test-cases
+* Much more documentation
+* Extended streams
+* Two different libraries, one with threads, one without
+
+For more informations, see the ChangeLog

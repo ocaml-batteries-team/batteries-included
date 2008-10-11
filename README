@@ -1,0 +1,38 @@
+*** Welcome to Batteries Included ***
+
+Batteries Included: standard OCaml development platform.
+
+Batteries Included serves the following purposes:
+* define a standard set of libraries which may be
+  expected on every compliant installation of OCaml
+* organize these libraries into a hierarchy of modules,
+  with one source of documentation
+* define a standard set of language extensions which
+  may be expected on every compliant installation of OCaml
+* provide a consistent API for otherwise independent
+  libraries.
+
+*** Building Batteries Included ***
+You will need
+* OCaml >= 3.10.2
+* Findlib
+* Type-conv
+* Camomile >= 0.7
+* Sexplib
+* GNU Make
+
+To install the full version of OCaml Batteries Included, execute
+
+   make byte opt doc install
+
+Be patient, documentation generation takes several minutes.
+
+
+*** Using Batteries Included ***
+
+See doc/batteries/html/index.html
+
+
+*** Extending Batteries Included ***
+
+See doc/batteries/GUIDELINES

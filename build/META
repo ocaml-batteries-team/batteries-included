@@ -1,0 +1,100 @@
+name="batteries"
+version="20081006"
+description="Batteries Included, standard distribution of OCaml libraries"
+requires(mt) ="batteries_threads,threads"
+requires(-mt)="batteries_nothreads"
+
+
+package "pa_openin" (
+	description = "Local opening/inclusion of modules (container)"
+	version     = "20081006"
+	package "syntax" (
+		description = "Local opening/inclusion of modules (syntax extension)"
+		version                       = "20081006"
+		requires                      = "camlp4"
+		requires(byte)                = "batteries"
+		archive(syntax, preprocessor, camlp4o) = "pa_openin.cmo"
+		archive(syntax, toploop, camlp4o)      = "pa_openin.cmo"
+		archive(syntax, preprocessor, camlp4r) = "pa_openin_r.cmo"
+		archive(syntax, toploop, camlp4r)      = "pa_openin_r.cmo"
+	)
+)
+
+package "pa_type_conv" (
+	description = "Support library for generating boilerplate code from type definitions (container)"
+	version     = "20081006"
+	package "syntax" (
+		description = "Generating boilerplate code from type definitions (syntax extension)"
+		version                       = "20081006"
+		requires                      = "type-conv.syntax"
+	)
+)
+
+package "pa_where" (
+	description = "'where' backward declarations (container)"
+	version     = "20081007"
+	package "syntax" (
+		description = "'where' backward declarations (syntax extension)"
+		version                       = "0.4"
+		archive(syntax, preprocessor) = "pa_where.cmo"
+		archive(syntax, toploop)      = "pa_where.cmo"
+	)
+)
+
+package "pa_batteries" (
+	description = "auto-opener for Batteries (container)"
+	version     = "20081008"
+	package "syntax" (
+	    	description = "auto-opener for Batteries (syntax extension)"
+		version     = "20081008"
+		archive(syntax, preprocessor) = "pa_batteries.cmo"
+		archive(syntax, toploop)      = "pa_batteries.cmo"
+	)
+)
+
+package "pa_mainfun" (
+	description = "simplify syntax of main program (container)"
+	version     = "20081008"
+	package "syntax" (
+	    	description = "simplify syntax of main program (syntax extension)"
+		version     = "20081010"
+		archive(syntax, preprocessor) = "pa_mainfun.cmo"
+		archive(syntax, toploop)      = "pa_mainfun.cmo"
+	)
+)
+
+#
+# Doesn't work, for some reason -- calling "sexplib.syntax" directly works, though.
+#
+package "sexplib" (
+	description = "Saving data to/loading data from a human-readable format (container)"
+	version     = "20081007"
+	package "syntax" (
+		version     = "20081007"
+		description = "Saving data to/loading data from a human-readable format (syntax extension)"
+		requires    = "sexplib.syntax"
+	)
+)
+
+
+
+package "bin_prot" (
+	description = "Saving data to/loading data from a compact binary protocol (container)"
+	version     = "20081007"
+	package "syntax" (
+		version     = "20081007"
+		description = "Saving data to/loading data from a compact binary protocol (syntax extension)"
+		requires    = "bin_prot.syntax"
+	)
+)
+
+#
+# Doesn't work, for some reason.
+# The feature is actually implemented in myocamlbuild.ml
+#
+package "syntax" (
+	version     = "20081007"
+	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
+	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_mainfun.syntax"
+	requires(boilerplate) = "type-conv.syntax,bin_prot.syntax"
+)

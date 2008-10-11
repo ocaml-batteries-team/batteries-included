@@ -1,0 +1,79 @@
+8
+
+dir
+140
+svn+ssh://yoric@svn.forge.ocamlcore.org/svnroot/batteries/trunk/batteries/doc/batteries
+svn+ssh://yoric@svn.forge.ocamlcore.org/svnroot/batteries
+
+
+
+2008-10-10T20:25:34.790570Z
+138
+yoric
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b9ea8324-641f-426b-95ce-2518f2e44cc5
+
+STRUCTURE
+file
+
+
+
+
+2008-09-27T21:54:21.000000Z
+6d90d784f8c6709fde50c94bb50dee23
+2008-09-27T21:54:47.101996Z
+108
+yoric
+
+html
+dir
+
+USAGE
+file
+
+
+
+
+2008-09-27T21:54:21.000000Z
+fadcb725668605d7a63f8df11b8f1aa4
+2008-09-27T21:54:47.101996Z
+108
+yoric
+
+GUIDELINES
+file
+
+
+
+
+2008-10-06T14:40:56.000000Z
+d78caeea4e12c9e1179f1ef1ee357884
+2008-10-06T18:29:04.525301Z
+126
+yoric
+
+myocamlbuild.ml
+file
+
+
+
+
+2008-10-10T20:14:26.000000Z
+d10c6945fa214519ce77059b67222f2e
+2008-10-10T20:25:34.790570Z
+138
+yoric
+

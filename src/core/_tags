@@ -1,0 +1,13 @@
+<extlib>:          include
+<baselib>:         include
+<baselib_threads>: include
+<toolchain>:       include
+<batteries_core_threads.*>:  pkg_threads
+<extlib.cmx>:            for-pack(Batteries_core_pack)
+<batteries_core.cmx>:    for-pack(Batteries_core_pack)
+<toolchain.cmx>:         for-pack(Batteries_core_pack)
+<toolchain.*>:           use_camlp4,use_camlp4_full
+<toolchain.mli>:         pkg_sexplib
+<toolchain.odoc>:        pkg_sexplib
+<extlib.mli>:            pkg_sexplib,pkg_camomile
+

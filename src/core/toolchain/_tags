@@ -1,0 +1,4 @@
+<*>: pkg_findlib
+<*.cmx>: for-pack(Batteries_core_pack.Toolchain)
+<batteries_type_conv*>: use_camlp4,use_camlp4_full,camlp4orf
+<batlib_Sexp_Conv.*>: syntax_camlp4o,pkg_sexplib.syntax

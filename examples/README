@@ -1,0 +1,5 @@
+A few examples of short programs written using OCaml Batteries Included.
+
+To build all these programs, run
+   make examples
+from the top-level directory.
