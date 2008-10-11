@@ -43,8 +43,6 @@ module BaseBig_int = struct
   let modulo = mod_big_int
   let pow  = power_big_int_positive_big_int
 
-  let pow = power_big_int_positive_big_int
-
   let to_string = string_of_big_int
 
   let of_string = big_int_of_string

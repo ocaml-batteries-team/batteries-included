@@ -241,6 +241,10 @@ module Standard = struct
   include Data.Mutable.Enum
   include Extlib.Std
   let (@) = Extlib.ExtList.(@)
+  let stdin = System.IO.stdin
+  let stderr= System.IO.stderr
+  let stdout= System.IO.stdout
+  let stdnull=System.IO.stdnull
 end
 
 module Legacy = struct
