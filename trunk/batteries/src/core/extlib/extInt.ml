@@ -94,6 +94,11 @@ end
 module Int = struct
   include BaseInt
   let operations = let module N = Number.MakeNumeric(BaseInt) in N.operations
+
+  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
+  let ( --- ) x y = 
+    if x <= y then x -- y 
+    else Enum.seq y (sub one) ((>=) x) 
 end
 
 module BaseSafeInt = struct
@@ -148,6 +153,12 @@ end
 module SafeInt = struct
   include BaseSafeInt
   let operations = let module N = Number.MakeNumeric(BaseSafeInt) in N.operations
+
+  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
+  let ( --- ) x y = 
+    if x <= y then x -- y 
+    else Enum.seq y (sub one) ((>=) x) 
+
 end
 
 (*

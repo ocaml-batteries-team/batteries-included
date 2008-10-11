@@ -20,8 +20,6 @@
 
 open ExtUChar
 
-module UTF8 :
-sig
 (** UTF-8 encoded Unicode strings. 
 
     This module defines UTF-8 encoded Unicode strings, implemented in
@@ -32,9 +30,14 @@ sig
     @author Yamagata Yoriyuki (Camomile)
     @author Edgar Friendly
     @author David Teller
-*)
 
-(** UTF-8 encoded Unicode strings. The type is normal string. *)
+    @documents UTF8
+*)
+module UTF8 :
+sig
+
+
+(** UTF-8 encoded Unicode strings.*)
 type t = CamomileLibrary.UTF8.t
 
 exception Malformed_code

@@ -18,15 +18,16 @@
  * Foundation, Inc.
  *)
 
+(**
+   Operations on [unit].
+   
+   @author David Teller
+*)
 module Unit :
   sig
-    (**
-       Operations on [unit].
-
-       @author David Teller
-    *)
 
     type t = unit
+	(**The unit type, i.e. a type with only one element, [()].*)
 
     val string_of : t -> string
     (**Convert the given unit to a string.

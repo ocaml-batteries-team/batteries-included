@@ -1,6 +1,6 @@
 (* 
  * Ref - Operations on references
- * Copyright (C) 2008 David Teller (contributor)
+ * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,3 +42,14 @@ let pre_incr  r = pre  r ( ( + ) 1 )
 let pre_decr  r = pre  r ( ( - ) 1 )
 let post_incr r = post r ( ( + ) 1 )
 let post_decr r = post r ( ( - ) 1 )
+
+external ref : 'a -> 'a ref = "%makemutable"
+(** Return a fresh reference containing the given value. *)
+
+external ( ! ) : 'a ref -> 'a = "%field0"
+(** [!r] returns the current contents of reference [r].
+   Equivalent to [fun r -> r.contents]. *)
+
+external ( := ) : 'a ref -> 'a -> unit = "%setfield0"
+(** [r := a] stores the value of [a] in reference [r].
+   Equivalent to [fun r v -> r.contents <- v]. *)

@@ -19,13 +19,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+(**Operations on booleans
+   
+   @author Gabriel Scherer
+   @author David Teller
+*)
 module Bool :
 sig
-  (**Operations on booleans
-
-     @author Gabriel Scherer
-     @author David Teller
-  *)
 
   type t = bool
       (**The type of booleans. Formally, this is defined as [type t = true | false] *)

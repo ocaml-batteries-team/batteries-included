@@ -25,17 +25,17 @@
 
 exception Invalid_string
 
-module String:
-sig
-
 (** String operations. 
 
-    @author Xavlier Leroy (base library)
+    @author Xavier Leroy (base library)
     @author Nicolas Cannasse
     @author David Teller
     @author Edgar Friendly
 
     @documents String*)
+module String:
+sig
+
 
 exception Invalid_string
 
@@ -340,9 +340,10 @@ val t_of_sexp : Sexplib.Sexp.t -> t
 val sexp_of_t : t -> Sexplib.Sexp.t
 
 
+
 (**/**)
 
-(** {6 Undocumented operations} *)
+(** Undocumented operations *)
 
 external unsafe_get : string -> int -> char = "%string_unsafe_get"
 external unsafe_set : string -> int -> char -> unit = "%string_unsafe_set"

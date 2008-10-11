@@ -20,8 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module Native_int :
-  sig
 (** Processor-native integers.
 
     This module provides operations on the type [nativeint] of
@@ -38,10 +36,20 @@ module Native_int :
     only when the application requires the extra bit of precision
     over the [int] type.
 
+    Any integer literal followed by [n] is taken to be a [nativeint].
+    For instance, [1n] is {!Native_int.one}.
+
     @author Xavier Leroy (base module)
     @author Gabriel Scherer
     @author David Teller
+
+    @documents Nativeint
 *)
+module Native_int :
+  sig
+
+type t = nativeint
+(** An alias for the type of native integers. *)
 
 val zero : nativeint
 (** The native integer 0.*)
@@ -133,6 +141,17 @@ external shift_right_logical :
    regardless of the sign of [x].
    The result is unspecified if [y < 0] or [y >= bitsize]. *)
 
+val ( -- ) : t -> t -> t Enum.t
+  (** Enumerate an interval.
+      
+      [5n -- 10n] is the enumeration 5n,6n,7n,8n,9n,10n.
+      [10n -- 5n] is the empty enumeration*)
+  
+val ( --- ) : t -> t -> t Enum.t
+  (** Enumerate an interval.
+      
+      [5n -- 10n] is the enumeration 5n,6n,7n,8n,9n,10n.
+      [10n -- 5n] is the enumeration 10n,9n,8n,7n,6n,5n.*)
 
 external of_int : int -> nativeint = "%nativeint_of_int"
 (** Convert the given integer (type [int]) to a native integer
@@ -176,14 +195,42 @@ external of_string : string -> nativeint = "caml_nativeint_of_string"
 val to_string : nativeint -> string
 (** Return the string representation of its argument, in decimal. *)
 
-type t = nativeint
-(** An alias for the type of native integers. *)
+
 
 val compare: t -> t -> int
 (** The comparison function for native integers, with the same specification as
     {!Pervasives.compare}.  Along with the type [t], this function [compare]
     allows the module [Nativeint] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
+
+
+val modulo : nativeint -> nativeint -> nativeint
+val pow : nativeint -> nativeint -> nativeint
+val min_num : nativeint
+val max_num : nativeint
+  
+val ( + ) : t -> t -> t
+val ( - ) : t -> t -> t
+val ( * ) : t -> t -> t
+val ( / ) : t -> t -> t
+val ( ** ) : t -> t -> t
+val ( <> ) : t -> t -> bool
+val ( >= ) : t -> t -> bool
+val ( <= ) : t -> t -> bool
+val ( > ) : t -> t -> bool
+val ( < ) : t -> t -> bool
+val ( = ) : t -> t -> bool
+val operations : t Number.numeric
+  
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+  
+val t_of_sexp : Sexplib.Sexp.t -> t
+val sexp_of_t : t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+
+val print : 'a IO.output -> t -> unit
 
 (**/**)
 
@@ -194,32 +241,9 @@ external format : string -> nativeint -> string = "caml_nativeint_format"
    native integer [n] in the format specified by [fmt].
    [fmt] is a [Printf]-style format consisting of exactly
    one [%d], [%i], [%u], [%x], [%X] or [%o] conversion specification.
-   This function is deprecated; use {!Printf.sprintf} with a [%nx] format
+   @deprecated use {!Printf.sprintf} with a [%nx] format
    instead. *)
 (** / **)
 
-    val modulo : nativeint -> nativeint -> nativeint
-    val pow : nativeint -> nativeint -> nativeint
-    val min_num : nativeint
-    val max_num : nativeint
 
-    val ( + ) : t -> t -> t
-    val ( - ) : t -> t -> t
-    val ( * ) : t -> t -> t
-    val ( / ) : t -> t -> t
-    val ( ** ) : t -> t -> t
-    val ( <> ) : t -> t -> bool
-    val ( >= ) : t -> t -> bool
-    val ( <= ) : t -> t -> bool
-    val ( > ) : t -> t -> bool
-    val ( < ) : t -> t -> bool
-    val ( = ) : t -> t -> bool
-    val operations : t Number.numeric
-  
-    (** {6 Boilerplate code}*)
-    (** {7 S-Expressions}*)
-
-    val t_of_sexp : Sexplib.Sexp.t -> t
-    val sexp_of_t : t -> Sexplib.Sexp.t
-   
   end

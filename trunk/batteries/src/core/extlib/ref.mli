@@ -1,6 +1,6 @@
 (* 
  * Ref - Operations on references
- * Copyright (C) 2008 David Teller (contributor)
+ * Copyright (C) 2008 David Teller
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,9 +18,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Operations on references. *)
+(** Operations on references. 
+
+    References are imperative-style mutable values, i.e. "variables"
+    which may change value during their life-time.
+
+    @author Xavier Leroy (base module)
+    @author David Teller
+*)
 
 type 'a t = 'a ref
+    (** The type of references.*)
+
+external ref : 'a -> 'a ref = "%makemutable"
+    (** Return a fresh reference containing the given value. *)
+
+external ( ! ) : 'a ref -> 'a = "%field0"
+    (** [!r] returns the current contents of reference [r].
+    Equivalent to [fun r -> r.contents]. *)
+
+external ( := ) : 'a ref -> 'a -> unit = "%setfield0"
+    (** [r := a] stores the value of [a] in reference [r].
+	Equivalent to [fun r v -> r.contents <- v]. *)
+
 
 val pre : 'a ref -> ( 'a -> 'a ) -> 'a
   (** Perform an operation on a reference and return the

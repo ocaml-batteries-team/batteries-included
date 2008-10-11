@@ -22,6 +22,10 @@
 
     This is a polymorphic map, similar to standard library [Map] module
     but in a defunctorized style.
+
+    @author Xavier Leroy
+    @author Nicolas Cannasse
+    @author Markus Mottl
 *)
 
 type ('a, 'b) t

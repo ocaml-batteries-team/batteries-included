@@ -79,8 +79,9 @@ let primitive_types_names =
       "big_int",   "Data.Numeric.Big_int.t";
       "int",       "Data.Numeric.Int.t";
       "bool",      "Data.Logical.Bool.t";
-      "unit",      "Data.Numeric.Unit.t?";
-      "float",     "Data.Numeric.Float.t";(*Module not implemented yet*)
+      "unit",      "Data.Numeric.Unit.t";
+      "float",     "Data.Numeric.Float.t";
+      "ref",       "Data.Mutable.Ref";
       (*"exn",     "Batteries.Control.Exceptions.Exn.t";*)(*Module not implemented yet*)
       "format4",   "Languages.Printf.format4"
 ]
@@ -858,12 +859,12 @@ class batlib_generator =
 	bs b "</ul></div><hr />"
 
 
-    method html_of_custom_tag_author text = 
-      verbose ("Generating author name "^text);
-      "<div><span style ='author'>author</span>"^text^"</span></div>"
+(*    method html_of_custom_tag_developer text = 
+      verbose ("Generating developer name "^(string_of_text text));
+      "<div><span style ='developer'>developer:</span> "^(string_of_text text)^"</span></div>"*)
 
     initializer
-      tag_functions         <- ("author", self#html_of_custom_tag_author) :: tag_functions;
+(*      tag_functions         <- ("developer", self#html_of_custom_tag_developer) :: tag_functions;*)
       default_style_options <- default_style_options@
 	["li.index_of {display:inline}";
 	 "ul.indices  {display:inline;font-variant:small-caps;list-style-position: inside;list-style-type:none;padding:0px}";

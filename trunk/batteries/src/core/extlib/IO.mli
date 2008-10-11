@@ -597,9 +597,18 @@ val printf : 'a output -> ('b, 'a output, unit) format -> 'b
 
     @obsolete Prefer {!Languages.Printf.fprintf}*)
 
-(**/**)
+
+(** Formatted output functions (also known as unparsing).
+
+    @author Xavier Leroy
+    @author Pierre Weiss
+    @author David Teller
+
+    @documents Printf
+    @documented Batteries.Languages.Printf
+*)
 module Printf : sig
-  (** Formatted output functions (also known as unparsing).*)
+
 
   (**
    The functions of this module produce output according to a
@@ -913,7 +922,7 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 *)
 
 end
-(**/**)
+
 
 val make_list_printer: ('a output -> 'b -> unit) -> string -> string -> string -> ('a output -> 'b list -> unit)
 (** Make a list printer

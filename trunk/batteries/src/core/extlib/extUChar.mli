@@ -2,11 +2,6 @@
 (* Copyright 2002, 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* TODO: Check -- this is actually part of a package distributed with LGPL + linking exception *)
 
-module UChar :
-sig
-(* $Id: uChar.mli,v 1.4 2004/09/04 16:07:38 yori Exp $ *)
-(* Copyright 2002, 2003 Yamagata Yoriyuki. distributed with LGPL *)
-
 (** Unicode (ISO-UCS) characters.
 
    This module implements Unicode (actually ISO-UCS) characters.  All
@@ -14,7 +9,11 @@ sig
 
     @author Yamagata Yoriyuki (Camomile module)
     @author Edgar Friendly
+
+    @documents UChar
 *)
+module UChar :
+sig
 
 (** Unicode characters. All 31bit code points are allowed.*) 
 type t = CamomileLibrary.UChar.t

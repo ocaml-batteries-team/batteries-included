@@ -63,7 +63,12 @@ module Big_int = struct
   include BaseBig_int
   include Number.MakeNumeric(BaseBig_int)
 
+  let ( -- )  x y = Enum.seq x (add one) ( ge_big_int y )
+  let ( --- ) x y = 
+    if ge_big_int y x then x -- y 
+    else Enum.seq y (sub one) (ge_big_int x)
+
   let sexp_of_t = Conv.sexp_of_big_int
   let t_of_sexp = Conv.big_int_of_sexp
-    
+  let print out t = IO.nwrite out (to_string t)
 end

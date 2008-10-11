@@ -21,16 +21,23 @@
 
 
 
+(**Operations on floating-point numbers
+   
+   @author Gabriel Scherer
+   @author David Teller
+   @author Edgar Friendly
+   
+   @documents Float
+*)
 module Float :
   sig
-    (**Operations on floating-point numbers
 
-       @author Gabriel Scherer
-       @author David Teller
-       @author Edgar Friendly
-    *)
 
     type t = float
+	(**The type of floating-point numbers.
+
+	   Floating-point numbers are the default representation of
+	   real numbers by OCaml. *)
 
     (**
        {6 Usual operations}

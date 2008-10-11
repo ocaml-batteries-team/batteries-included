@@ -36,6 +36,13 @@ end
 module Native_int = struct
   include Number.MakeNumeric(BaseNativeint)
   include BaseNativeint
+
   let sexp_of_t = Conv.sexp_of_nativeint
   let t_of_sexp = Conv.nativeint_of_sexp
+
+  let print out t = IO.Printf.fprintf out "%nx" t
+  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
+  let ( --- ) x y = 
+    if x <= y then x -- y 
+    else Enum.seq y (sub one) ((>=) x) 
 end

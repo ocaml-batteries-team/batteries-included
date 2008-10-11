@@ -20,18 +20,17 @@
  *)
 
 
+(** Operations on arbitrary-precision integers.
+    
+    Big integers (type [big_int]) are signed integers of arbitrary size. 
+    
+    @documents Big_int
+    @author Valerie Menissier-Morain (base module)
+    @author Gabriel Scherer
+    @author David Teller
+*)
 module Big_int :
   sig
-
-    (** Operations on arbitrary-precision integers.
-	
-	Big integers (type [big_int]) are signed integers of arbitrary size. 
-	
-	@documents Big_int
-	@author Valerie Menissier-Morain (base module)
-	@author Gabriel Scherer
-	@author David Teller
-    *)
   
 open Nat
  
@@ -39,31 +38,46 @@ type big_int = Big_int.big_int
         (** The type of big integers. *)
 type t = big_int
 
-val zero_big_int : big_int
-        (** The big integer [0]. *)
-val unit_big_int : big_int
-        (** The big integer [1]. *)
+    val zero : big_int
+    val one : big_int
+    val neg : big_int -> big_int
+    val succ : big_int -> big_int
+    val pred : big_int -> big_int
+    val abs : big_int -> big_int
+    val add : big_int -> big_int -> big_int
+    val sub : big_int -> big_int -> big_int
+    val mul : big_int -> big_int -> big_int
+    val div : big_int -> big_int -> big_int
+    val modulo : big_int -> big_int -> big_int
+    val pow : big_int -> big_int -> big_int
+    val to_string : big_int -> string
+    val of_string : string -> big_int
+    val to_int : big_int -> int
+    val of_int : int -> big_int
+    val compare : big_int -> big_int -> int
+    val ( -- ) : big_int -> big_int -> big_int Enum.t
+    val ( --- ): big_int -> big_int -> big_int Enum.t
+
+
+    val ( + ) : t -> t -> t
+    val ( - ) : t -> t -> t
+    val ( * ) : t -> t -> t
+    val ( / ) : t -> t -> t
+    val ( ** ) : t -> t -> t
+    val ( <> ) : t -> t -> bool
+    val ( >= ) : t -> t -> bool
+    val ( <= ) : t -> t -> bool
+    val ( > ) : t -> t -> bool
+    val ( < ) : t -> t -> bool
+    val ( = ) : t -> t -> bool
+    val operations : t Number.numeric
 
 (** {6 Arithmetic operations} *)
 
-val minus_big_int : big_int -> big_int
-        (** Unary negation. *)
-val abs_big_int : big_int -> big_int
-        (** Absolute value. *)
-val add_big_int : big_int -> big_int -> big_int
-        (** Addition. *)
-val succ_big_int : big_int -> big_int
-        (** Successor (add 1). *)
+
+
 val add_int_big_int : int -> big_int -> big_int
         (** Addition of a small integer to a big integer. *)
-val sub_big_int : big_int -> big_int -> big_int
-        (** Subtraction. *)
-val pred_big_int : big_int -> big_int
-        (** Predecessor (subtract 1). *)
-val mult_big_int : big_int -> big_int -> big_int
-        (** Multiplication of two big integers. *)
-val mult_int_big_int : int -> big_int -> big_int
-        (** Multiplication of a big integer by a small integer *)
 val square_big_int: big_int -> big_int
         (** Return the square of the given big integer *)
 val sqrt_big_int: big_int -> big_int
@@ -77,14 +91,7 @@ val quomod_big_int : big_int -> big_int -> big_int * big_int
            Writing [(q,r) = quomod_big_int a b], we have
            [a = q * b + r] and [0 <= r < |b|].
            Raise [Division_by_zero] if the divisor is zero. *)
-val div_big_int : big_int -> big_int -> big_int
-        (** Euclidean quotient of two big integers.
-           This is the first result [q] of [quomod_big_int] (see above). *)
-val mod_big_int : big_int -> big_int -> big_int
-        (** Euclidean modulus of two big integers.
-           This is the second result [r] of [quomod_big_int] (see above). *)
-val gcd_big_int : big_int -> big_int -> big_int
-        (** Greatest common divisor of two big integers. *)
+
 val power_int_positive_int: int -> int -> big_int
 val power_big_int_positive_int: big_int -> int -> big_int
 val power_int_positive_big_int: int -> big_int -> big_int
@@ -148,6 +155,8 @@ val float_of_big_int : big_int -> float
         (** Returns a floating-point number approximating the
            given big integer. *)
 
+
+
 (**/**)
 
 (** {6 For internal use} *)
@@ -157,40 +166,39 @@ val base_power_big_int: int -> int -> big_int -> big_int
 val sys_big_int_of_string: string -> int -> int -> big_int
 val round_futur_last_digit : string -> int -> int -> bool
 val approx_big_int: int -> big_int -> string
+
+(** {6 Obsolete}*)
+val zero_big_int : big_int
+        (** The big integer [0]. *)
+val unit_big_int : big_int
+        (** The big integer [1]. *)
+val minus_big_int : big_int -> big_int
+        (** Unary negation. *)
+val abs_big_int : big_int -> big_int
+        (** Absolute value. *)
+val add_big_int : big_int -> big_int -> big_int
+val succ_big_int : big_int -> big_int
+        (** Successor (add 1). *)
+val sub_big_int : big_int -> big_int -> big_int
+        (** Subtraction. *)
+val pred_big_int : big_int -> big_int
+        (** Predecessor (subtract 1). *)
+val mult_big_int : big_int -> big_int -> big_int
+        (** Multiplication of two big integers. *)
+val mult_int_big_int : int -> big_int -> big_int
+        (** Multiplication of a big integer by a small integer *)
+val div_big_int : big_int -> big_int -> big_int
+        (** Euclidean quotient of two big integers.
+           This is the first result [q] of [quomod_big_int] (see above). *)
+val mod_big_int : big_int -> big_int -> big_int
+        (** Euclidean modulus of two big integers.
+           This is the second result [r] of [quomod_big_int] (see above). *)
+val gcd_big_int : big_int -> big_int -> big_int
+        (** Greatest common divisor of two big integers. *)
 (**/**)
 
 
-    val zero : big_int
-    val one : big_int
-    val neg : big_int -> big_int
-    val succ : big_int -> big_int
-    val pred : big_int -> big_int
-    val abs : big_int -> big_int
-    val add : big_int -> big_int -> big_int
-    val sub : big_int -> big_int -> big_int
-    val mul : big_int -> big_int -> big_int
-    val div : big_int -> big_int -> big_int
-    val modulo : big_int -> big_int -> big_int
-    val pow : big_int -> big_int -> big_int
-    val to_string : big_int -> string
-    val of_string : string -> big_int
-    val to_int : big_int -> int
-    val of_int : int -> big_int
-    val compare : big_int -> big_int -> int
 
-
-    val ( + ) : t -> t -> t
-    val ( - ) : t -> t -> t
-    val ( * ) : t -> t -> t
-    val ( / ) : t -> t -> t
-    val ( ** ) : t -> t -> t
-    val ( <> ) : t -> t -> bool
-    val ( >= ) : t -> t -> bool
-    val ( <= ) : t -> t -> bool
-    val ( > ) : t -> t -> bool
-    val ( < ) : t -> t -> bool
-    val ( = ) : t -> t -> bool
-    val operations : t Number.numeric
  
 
     (** {6 Boilerplate code}*)
@@ -199,4 +207,8 @@ val approx_big_int: int -> big_int -> string
     val t_of_sexp : Sexplib.Sexp.t -> t
     val sexp_of_t : t -> Sexplib.Sexp.t
 
+
+    (** {7 Printing}*)
+
+    val print : 'a IO.output -> t -> unit
 end

@@ -21,9 +21,6 @@
  *)
 
 
-module Int64 :
-  sig
-
 (** 64-bit integers.
 
    This module provides operations on the type [int64]
@@ -37,14 +34,19 @@ module Int64 :
    [int64] are generally slower than those on [int].  Use [int64]
    only when the application requires exact 64-bit arithmetic. 
 
+    Any integer literal followed by [L] is taken to be an [int64].
+    For instance, [1L] is {!Int64.one}.
+
     @documents Int64
     
     @author Xavier Leroy (base module)
     @author Gabriel Scherer
     @author David Teller
 *)
+module Int64 :
+  sig
 
-
+    type t = int64
 
     val zero : int64
 (** The 64-bit integer 0. *)
@@ -121,6 +123,18 @@ external shift_right_logical : int64 -> int -> int64 = "%int64_lsr"
    regardless of the sign of [x].
    The result is unspecified if [y < 0] or [y >= 64]. *)
 
+val ( -- ) : t -> t -> t Enum.t
+  (** Enumerate an interval.
+      
+      [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.
+      [10L -- 5L] is the empty enumeration*)
+  
+val ( --- ) : t -> t -> t Enum.t
+  (** Enumerate an interval.
+      
+      [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.
+      [10L -- 5L] is the enumeration 10L,9L,8L,7L,6L,5L.*)
+
 external of_int : int -> int64 = "%int64_of_int"
 (** Convert the given integer (type [int]) to a 64-bit integer
     (type [int64]). *)
@@ -187,8 +201,7 @@ external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
    according to the IEEE 754 floating-point ``double format'' bit layout,
    is the given [int64]. *)
 
-type t = int64
-(** An alias for the type of 64-bit integers. *)
+
 
 val compare: t -> t -> int
 (** The comparison function for 64-bit integers, with the same specification as

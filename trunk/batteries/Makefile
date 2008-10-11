@@ -35,7 +35,7 @@ _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
 
 
 byte:
-	ocamlbuild -classic-display src/main/threads/batteries.cma     &&\
+	ocamlbuild src/main/threads/batteries.cma     &&\
 	ocamlbuild src/main/nothreads/batteries.cma
 
 opt:

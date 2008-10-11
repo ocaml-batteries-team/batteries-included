@@ -20,16 +20,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-module Int32 :
-  sig
 (** 32-bit integers.
 
-   This module provides operations on the type [int32]
-   of signed 32-bit integers.  Unlike the built-in [int] type,
-   the type [int32] is guaranteed to be exactly 32-bit wide on all
-   platforms.  All arithmetic operations over [int32] are taken
-   modulo 2{^32}.
+    This module provides operations on the type [int32]
+    of signed 32-bit integers.  Unlike the built-in [int] type,
+    the type [int32] is guaranteed to be exactly 32-bit wide on all
+    platforms.  All arithmetic operations over [int32] are taken
+    modulo 2{^32}.
+
+    Any integer literal followed by [l] is taken to be an [int32].
+    For instance, [1l] is {!Int32.one}.
+
+
 
    Performance notice: values of type [int32] occupy more memory
    space than values of type [int], and arithmetic operations on
@@ -42,6 +44,11 @@ module Int32 :
     @author Gabriel Scherer
     @author David Teller
 *)
+
+module Int32 :
+  sig
+
+    type t = int32
 
     val zero : int32
       (** The 32-bit integer 0. *)
@@ -124,6 +131,18 @@ module Int32 :
 	  This is a logical shift: zeroes are inserted in the vacated bits
 	  regardless of the sign of [x].
 	  The result is unspecified if [y < 0] or [y >= 32]. *)
+
+    val ( -- ) : t -> t -> t Enum.t
+      (** Enumerate an interval.
+	  
+	  [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.
+	  [10l -- 5l] is the empty enumeration*)
+
+    val ( --- ) : t -> t -> t Enum.t
+      (** Enumerate an interval.
+	  
+	  [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.
+	  [10l -- 5l] is the enumeration 10l,9l,8l,7l,6l,5l.*)
       
     external of_int : int -> int32 = "%int32_of_int"
       (** Convert the given integer (type [int]) to a 32-bit integer
@@ -169,8 +188,6 @@ module Int32 :
 	  according to the IEEE 754 floating-point ``single format'' bit layout,
 	  is the given [int32]. *)
 
-    type t = int32
-	(** An alias for the type of 32-bit integers. *)
 	
     val compare: t -> t -> int
       (** The comparison function for 32-bit integers, with the same specification as

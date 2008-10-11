@@ -19,13 +19,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-module Char : sig
 (** Operations on characters. 
+
+    Characters range upon Latin-1 encoding, i.e. languages used in
+    Western Europe and North America. For international characters,
+    another, richer, module is provided: {!UChar}.
 
     @author Xavier Leroy (base module)
     @author David Teller
+
+    @documents Char
 *)
+module Char : sig
+
 
 external code : char -> int = "%identity"
 (** Return the ASCII code of the argument. *)

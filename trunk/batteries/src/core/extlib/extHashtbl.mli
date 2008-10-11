@@ -22,18 +22,19 @@
 (** Extra functions over hashtables. *)
 
 
+(** Operations over hashtables. 
+    
+    @author Xavier Leroy (base module)
+    @author Damien Doligez (base module)
+    @author Nicolas Cannasse
+    @author David Teller
+    
+    @documents Hashtbl
+*)
 module Hashtbl :
   sig
 
-    (** Operations over hashtables. 
-	
-	@author Xavier Leroy (base module)
-	@author Damien Doligez (base module)
-	@author Nicolas Cannasse
-	@author David Teller
 
-	@documents Hashtbl
-    *)
 
 type ('a,'b) t =  ('a,'b)  Hashtbl.t
     (** The type of a hashtable. *)

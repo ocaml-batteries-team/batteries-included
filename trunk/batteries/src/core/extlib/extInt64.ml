@@ -36,4 +36,10 @@ module Int64 = struct
   include BaseInt64
   let sexp_of_t = Conv.sexp_of_int64
   let t_of_sexp = Conv.int64_of_sexp
+
+  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
+  let ( --- ) x y = 
+    if x <= y then x -- y 
+    else Enum.seq y (sub one) ((>=) x) 
+
 end

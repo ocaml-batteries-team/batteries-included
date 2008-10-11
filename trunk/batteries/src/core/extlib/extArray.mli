@@ -28,18 +28,30 @@
 *)
 
 
+(** Array operations.
+    
+    Arrays are mutable data structures with a fixed size, which
+    support fast access and modification, and are used pervasively in
+    imperative computing. While arrays are completely supported in
+    OCaml, it is often a good idea to investigate persistent
+    alternatives, such as lists or hash maps.
+
+    A variant of arrays, arrays with capabilities, is provided in
+    module {!Cap}. This notion of capabilities permit the transformation
+    of a mutable array into a read-only or a write-only arrays, without
+    loss of speed and with the possibility of distributing different
+    capabilities to different expressions.
+
+    @documents Array
+    @author Xavier Leroy
+    @author Richard W.M. Jones
+    @author David Teller
+*)
 module Array :
 sig
 
-  (** Array operations.
-      
-      @documents Array
-      @author Xavier Leroy
-      @author Richard W.M. Jones
-      @author David Teller
-  *)
-
   type 'a t = 'a array
+      (**The type of arrays.  *)
 
   (**{6 Base operations}*)
 

@@ -19,7 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module Genlex : sig
 (** A generic lexical analyzer.
 
 
@@ -30,7 +29,11 @@ module Genlex : sig
 
     @author Jacques Garrigue
     @author David Teller
+
+    @documents Genlex
 *)
+module Genlex : sig
+
 
 type token = 
   | 	Kwd    of string

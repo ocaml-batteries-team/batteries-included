@@ -39,19 +39,18 @@
     but compiling in native code will not affect performances. 
 *)
 
+(** List operations.
+    
+    @documents List 
+    
+    @author Xavier Leroy (base module)
+    @author Brian Hurt
+    @author Nicolas Cannasse
+    @author Richard W.M. Jones
+    @author David Teller
+*)
 module List :
     sig
-
-      (** List operations.
-
-	  @documents List 
-
-	  @author Xavier Leroy (base module)
-	  @author Brian Hurt
-	  @author Nicolas Cannasse
-	  @author Richard W.M. Jones
-	  @author David Teller
-      *)
 
       type 'a t = 'a list
 	  (**The type of lists*)
@@ -459,6 +458,10 @@ module List :
 
 	val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
 	val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+
+	(** {7 Printing}*)
+	  
+	val print : 'a IO.output -> ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'b t -> unit
 
 	(** {6 Obsolete functions} *)
 	val nth : 'a list -> int -> 'a
@@ -914,6 +917,9 @@ module ListLabels :
 	val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
 	val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
+	(** {7 Printing}*)
+	  
+	val print : 'a IO.output -> ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'b t -> unit
 	(** {6 Obsolete functions} *)
 
 	val nth : 'a list -> int -> 'a

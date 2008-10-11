@@ -20,22 +20,25 @@
  *)
 
 
+(** 
+    Operations on integers.
+    
+    This module provides operations on the type [int] of
+    integers. Values of this type may be either 31 bits on 32-bit
+    processors or 63 bits on 64-bit processors. All arithmetic
+    operations over [int] are taken modulo 2{^number of bits}.
+    
+    This module implements {!Number.Numeric},
+    {!Number.Bounded}, {!Number.Discrete}.
+    
+    @author Gabriel Scherer
+    @author David Teller
+
+    @documents Int
+*)
 module Int :
   sig
-    (** 
-	Operations on integers.
 
-	This module provides operations on the type [int] of
-	integers. Values of this type may be either 31 bits on 32-bit
-	processors or 63 bits on 64-bit processors. All arithmetic
-	operations over [int] are taken modulo 2{^number of bits}.
-
-	This module implements {!Number.Numeric},
-	{!Number.Bounded}, {!Number.Discrete}.
-
-	@author Gabriel Scherer
-	@author David Teller
-    *)
     
     type t = int
 	(** An alias for the type of integers. *)
@@ -148,6 +151,19 @@ module Int :
 	  {!Set.Make} and {!Map.Make}. *)
       
     val operations : int Number.numeric
+
+    val ( -- ) : t -> t -> t Enum.t
+      (** Enumerate an interval.
+	  
+	  [5 -- 10] is the enumeration 5,6,7,8,9,10.
+	  [10 -- 5] is the empty enumeration*)
+
+    val ( --- ) : t -> t -> t Enum.t
+      (** Enumerate an interval.
+	  
+	  [5 -- 10] is the enumeration 5,6,7,8,9,10.
+	  [10 -- 5] is the enumeration 10,9,8,7,6,5.*)
+
 
     external of_int : int -> int = "%identity"
     external to_int : int -> int = "%identity"

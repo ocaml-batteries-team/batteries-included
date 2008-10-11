@@ -606,6 +606,18 @@ let assoc_inv e l =
 let sexp_of_t = Conv.sexp_of_list
 let t_of_sexp = Conv.list_of_sexp
 
+let print out print_a ?(first="") ?(last="") ?(sep="") = function
+  | []   ->
+      IO.nwrite out first;
+      IO.nwrite out last
+  | [h]  ->
+      IO.Printf.fprintf out "%s%a%s" first print_a h last
+  | h::t -> 
+      IO.nwrite out first;
+      print_a out h;
+      iter (IO.Printf.fprintf out "%s%a" sep print_a) t;
+      IO.nwrite out last
+
 module ExceptionLess = struct
   let rfind p l =
     try  Some (rfind p l)
@@ -730,6 +742,19 @@ module ListLabels = struct
 
   let sexp_of_t = Conv.sexp_of_list
   let t_of_sexp = Conv.list_of_sexp
+
+  let print out print_a ?(first="") ?(last="") ?(sep="") = function
+    | []   ->
+	IO.nwrite out first;
+	IO.nwrite out last
+    | [h]  ->
+	IO.Printf.fprintf out "%s%a%s" first print_a h last
+    | h::t -> 
+	IO.nwrite out first;
+	print_a out h;
+	iter (IO.Printf.fprintf out "%s%a" sep print_a) t;
+	IO.nwrite out last
+
   module ExceptionLess = struct
     let rfind ~f    = List.ExceptionLess.rfind f
     let findi ~f    = List.ExceptionLess.findi f

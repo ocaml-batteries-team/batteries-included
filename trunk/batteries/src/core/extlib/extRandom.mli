@@ -19,14 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module Random : sig
-  (** Pseudo-random number generators (PRNG). 
-
-      @author Damien Doligez (base library)
-      @author David Teller
-
-      @documents Random
+(** Pseudo-random number generators (PRNG). 
+    
+    @author Damien Doligez (base library)
+    @author David Teller
+    
+    @documents Random
 *)
+module Random : sig
 
 (** {6 Basic functions} *)
 
@@ -104,16 +104,15 @@ val shuffle: 'a Enum.t -> 'a array
 
 (** {6 Advanced functions} *)
 
-(** The functions from module [State] manipulate the current state
-    of the random generator explicitely.
-    This allows using one or several deterministic PRNGs,
-    even in a multi-threaded program, without interference from
-    other parts of the program.
-*)
+(** Manipulate the current state of the random generator.
 
+    This allows using one or several deterministic PRNGs, even in a
+    multi-threaded program, without interference from other parts of
+    the program.
+*)
 module State : sig
   type t
-  (** The type of PRNG states. *)
+    (** The type of PRNG states. *)
 
   val make : int array -> t
   (** Create a new state and initialize it with the given seed. *)

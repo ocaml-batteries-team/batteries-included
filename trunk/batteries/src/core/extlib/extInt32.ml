@@ -37,4 +37,9 @@ module Int32 = struct
   include BaseInt32
   let sexp_of_t = Conv.sexp_of_int32
   let t_of_sexp = Conv.int32_of_sexp
+
+  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
+  let ( --- ) x y = 
+    if x <= y then x -- y 
+    else Enum.seq y (sub one) ((>=) x) 
 end

@@ -1,3 +1,7 @@
+10/11/2008 David Teller <David.Teller@univ-orleans.fr>:
+	* extInt.ml*, extInt32.ml*, extInt64.ml*, extBig_int.ml*: [( -- )], [( --- )] added
+	* extInt32.ml, extInt64.ml, extNativeint.mli: [type t] moved upwards
+	
 10/10/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* about.html: created
 	* extFloat.ml*: [exp], [log], [log10], [cos], [sin], [tan], [acos], [asin], [atan], [atan2], [cosh], [sinh], [tanh], [ceil], [floor], [infinity], [neg_infinity], [nan], [epsilon], [pi], [frexp], [ldexp], [modf], [fpclass], [classify] added

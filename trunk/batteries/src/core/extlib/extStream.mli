@@ -32,7 +32,6 @@
    This module is based on {{:http://www.pps.jussieu.fr/~li/software/sdflow/}Zheng Li's SDFlow}
 *)
 
-module Stream : sig
 (** Streams and parsers. 
 
     Streams are a read-and-forget data structure, comparable to enumerations.
@@ -44,6 +43,8 @@ module Stream : sig
 
     @documents Stream
 *)
+module Stream : sig
+
 
 type 'a t = 'a Stream.t
 (** The type of streams holding values of type ['a]. *)
