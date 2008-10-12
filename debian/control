@@ -12,6 +12,7 @@ Build-Depends:
  libsexplib-camlp4-dev,
  dh-ocaml,
  camlp4,
+ camlp4-extra,
  quilt,
  cdbs
 Standards-Version: 3.8.0
@@ -24,6 +25,7 @@ Section: devel
 Architecture: any
 Depends:
  ocaml-nox-${F:OCamlABI},
+ camlp4,
  ocaml-findlib,
  libcamomile-ocaml-dev,
  libtype-conv-camlp4-dev,
