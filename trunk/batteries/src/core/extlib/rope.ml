@@ -319,7 +319,7 @@ let rec bulk_iter f = function
   | Leaf (_,s) -> f s
   | Concat(l,_,r,_,_) -> bulk_iter f l; bulk_iter f r
  
-let rec rangeiter f start len = function
+let rec range_iter f start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
   | Leaf (lens, s) ->
       let n = start + len in

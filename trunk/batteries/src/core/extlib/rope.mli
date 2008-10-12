@@ -174,7 +174,7 @@ val iteri : (int -> UChar.t -> unit) -> t -> unit
   (** Operates like iter, but also passes the index of the character
       to the given function. *)
   
-val rangeiter : (UChar.t -> unit) -> int -> int -> t -> unit
+val range_iter : (UChar.t -> unit) -> int -> int -> t -> unit
   (** [rangeiter f m n r] applies [f] to all the characters whose
       indices [k] satisfy [m] <= [k] < [m + n].
       It is thus equivalent to [iter f (sub m n r)], but does not
