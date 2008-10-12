@@ -1,0 +1,50 @@
+Source: ocaml-batteries
+Section: devel
+Priority: optional
+Maintainer: Debian OCaml Maintainers <debian-ocaml-maint@lists.debian.org>
+Uploaders: Stefano Zacchiroli <zack@debian.org>
+Build-Depends:
+ debhelper (>> 7.0.0),
+ ocaml,
+ camlp4,
+ quilt,
+ cdbs
+Standards-Version: 3.8.0
+Vcs-Git: git://git.debian.org/git/pkg-ocaml-maint/packages/ocaml-batteries.git
+Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/ocaml-batteries.git
+Homepage: http://batteries.forge.ocamlcore.org
+
+Package: libbatteries-ocaml-dev
+Section: devel
+Architecture: any
+Depends:
+ ocaml-nox-${F:OCamlABI},
+ ${shlibs:Depends},
+ ${misc:Depends}
+Suggests: libbatteries-ocaml-doc
+Provides: libbatteries-camlp4-dev
+Description: OCaml batteries included - standard OCaml development platform
+ OCaml batteries included - standard OCaml development platform
+
+Package: libbatteries-ocaml-doc
+Section: devel
+Architecture: all
+Depends:
+ ocaml-nox-${F:OCamlABI},
+ ${shlibs:Depends},
+ ${misc:Depends}
+Provides:
+ libbatteries-camlp4-dev,
+ ocaml-batteries-included
+Description: OCaml batteries included - standard OCaml development platform
+ OCaml batteries included - standard OCaml development platform
+
+Package: ocaml-batteries-included
+Section: devel
+Architecture: all
+Depends:
+ libbatteries-ocaml-dev,
+ libbatteries-camlp4-dev,
+ libbatteries-ocaml-doc
+Description: OCaml batteries included - standard OCaml development platform
+ OCaml batteries included - standard OCaml development platform
