@@ -6,6 +6,10 @@ Uploaders: Stefano Zacchiroli <zack@debian.org>
 Build-Depends:
  debhelper (>> 7.0.0),
  ocaml,
+ ocaml-findlib,
+ libtype-conv-camlp4-dev,
+ libcamomile-ocaml-dev,
+ libsexplib-camlp4-dev,
  dh-ocaml,
  camlp4,
  quilt,
