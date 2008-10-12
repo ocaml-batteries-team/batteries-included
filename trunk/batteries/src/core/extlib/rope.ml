@@ -333,13 +333,13 @@ let rec range_iter f start len = function
       if start < cl then begin
         let upto = start + len in
           if upto <= cl then
-            rangeiter f start len l
+            range_iter f start len l
           else begin
-            rangeiter f start (cl - start) l;
-            rangeiter f 0 (upto - cl) r
+            range_iter f start (cl - start) l;
+            range_iter f 0 (upto - cl) r
           end
       end else begin
-        rangeiter f (start - cl) len r
+        range_iter f (start - cl) len r
       end
  
 let rec fold f a = function
