@@ -1,0 +1,7 @@
+<odoc*>: debug,use_ocamldoc
+<batteries.cma>: precious
+<batteries.cmxa>: precious
+<batteries_nothreads.cma>: precious
+<batteries_nothreads.cmxa>:precious
+<batteries.a>: precious
+<batteries_nothreads.a>: precious

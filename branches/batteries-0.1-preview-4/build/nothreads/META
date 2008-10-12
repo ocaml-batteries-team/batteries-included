@@ -1,0 +1,7 @@
+name="batteries_nothreads"
+version="0.1"
+description="Batteries Included, standard distribution of OCaml libraries (no-threads version)"
+requires="num,bigarray,threads,extlib,str,findlib"
+
+archive(byte)  ="batteries.cma"
+archive(native)="batteries.cmxa"
