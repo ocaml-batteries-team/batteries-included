@@ -606,7 +606,7 @@ let assoc_inv e l =
 let sexp_of_t = Conv.sexp_of_list
 let t_of_sexp = Conv.list_of_sexp
 
-let print out print_a ?(first="[") ?(last="]") ?(sep="; ") = function
+let print print_a ?(first="[") ?(last="]") ?(sep="; ") out = function
   | []   ->
       IO.nwrite out first;
       IO.nwrite out last

@@ -1,6 +1,8 @@
 *** Welcome to Batteries Included ***
 
-Batteries Included: standard OCaml development platform.
+OCaml Batteries Included: a community-maintained foundation library
+for your OCaml projecs.
+
 
 Batteries Included serves the following purposes:
 * define a standard set of libraries which may be

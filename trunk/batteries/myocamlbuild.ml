@@ -277,7 +277,18 @@ struct
 			   try Some (module_name, Hashtbl.find src module_name)
 			   with Not_found ->  None) sorted;;
 
-  let generate_mli buf l =
+  let generate_mli buf l = 
+    (*TODO: Scan the start of the file until the first [(**]
+            Initialize counter at 1
+            Then scan what comes next until either
+                  1. [(*]   -> increment counter
+                  2. [*)]   -> decrement counter
+            If counter reaches 0, stop and return [(hd, tl)]
+            where [hd] is everything up to this point
+            and   [tl] is the rest of the file, either as a [channel_in]
+            or as a [string] or [string_list]
+    *)*)
+    (*let scan file*)
     let feed file buf () =
       with_input_file file (
 	fun cin ->
@@ -290,7 +301,6 @@ struct
     let print_modules buf () =
       List.iter (
 	fun (name, src) -> 
-	  (*Printf.eprintf "Writing the contents of %s\n" name;*)
 	  let name = try 
 	    let index = String.find name ".inferred" in
 	      String.sub name 0 index
@@ -468,23 +478,76 @@ struct
 	    function Good s  -> s
 	      |      Bad exn -> raise exn (*Stop here in case of problem and propagate the exception*)
 	  ) results in
-	(*let dest'  = (*Pathname.concat (Sys.getcwd ()) dest*) Resource.in_build_dir dest in*)
-(*	let dest' = "/tmp/"^dest in*)
-(*	  Shell.mkdir_p (Pathname.parent_directory dest');*)
-(*	let dest = Pathname.concat (Sys.getcwd ()) dest in*)
-(*	let dest = Resource.in_build_dir dest in*)
-(*	let dest = Pathname.pwd / !Options.build_dir / dest in
-	  Shell.mkdir_p (Filename.dirname dest);*)
-(*	  Printf.eprintf "Writing file %S\n" dest;*)
 	let buf = Buffer.create 2048 in
 	  generate_mli buf (sort mli_depends);
-(*	  flush output;*)
-(*	  Printf.eprintf "Written %d bytes\n" (pos_out output);*)
-(*	  if not (My_std.sys_file_exists dest) then assert false;*)
-	  (*if not (My_std.sys_file_exists dest) then assert false;*)
-	  (*Resource.Cache.import_in_build_dir dest';*)
 	  Echo([Buffer.contents buf], dest)
-        end;
+      end
+
+(* Simple utility to sort a list of modules by dependencies. *)
+
+    let generate_mlpacksorted buf l = 
+      let print_modules buf () =
+	List.iter (
+	  fun (name, src) -> 
+	    let name = try 
+	      let index = String.find name ".inferred" in
+		String.sub name 0 index
+	    with String.Invalid_string -> name in
+	      Printf.bprintf buf "%s\n" name
+	) l in
+	print_modules buf ();;
+
+      rule ".mlpack to .mlpacksorted conversion rule"
+	    ~prod:"%.mlpacksorted"
+	    ~dep:"%.mlpack"
+      begin fun env build ->
+        (*c The action is a function that receive two arguments:
+          [env] is a conversion function that substitutes `\%' occurrences
+          according to the targets to which the rule applies.
+          [_build] can be called to build new things (dynamic dependencies). *)
+	
+	let pack         = env "%.mlpack" 
+	and dest         = env "%.mlpacksorted" in
+	let include_dirs = Pathname.include_dirs_of (Pathname.dirname pack) in
+	  
+	(*Read the list of module dependencies from [pack]*)
+	let modules      = 
+	  with_input_file pack (
+	    fun input ->
+	      let modules = ref [] in
+		try
+		  while true do
+		    let m = input_line input in
+		      (*Printf.eprintf "Reading %S\n" m;*)
+		      modules := m::!modules
+		  done; assert false
+		with End_of_file -> !modules			      
+	  ) in
+
+	(*For each module name, first generate the .mli file if it doesn't exist yet.*)
+	  List.iter ignore_good (build (List.map(fun m -> expand_module include_dirs m ["mli";
+										       "inferred.mli"]) modules));
+
+	(*Deduce file names from these module names and wait for these dependencies to be solved.
+	  
+	  [build] has a mysterious behaviour which looks like cooperative threading without
+	  threads and without call/cc.*)
+	let results = build (List.map(fun m -> expand_module include_dirs m ["mli.depends"; 
+									     "inferred.mli.depends"]) 
+			       modules) in
+	  
+	(*Now that we have generated the mli files and, more importantly, the corresponding
+	  mli.depends, we can read the contents of these dependencies,
+	  sort them and generate the mli (see the other functions of this module).*)
+	let mli_depends =  
+	  List.map ( 
+	    function Good s  -> s
+	      |      Bad exn -> raise exn (*Stop here in case of problem and propagate the exception*)
+	  ) results in
+	let buf = Buffer.create 2048 in
+	  generate_mlpacksorted buf (sort mli_depends);
+	  Echo([Buffer.contents buf], dest)
+      end
 
 end
 

@@ -597,6 +597,9 @@ val printf : 'a output -> ('b, 'a output, unit) format -> 'b
 
     @obsolete Prefer {!Languages.Printf.fprintf}*)
 
+val lmargin : int -> ('b output -> 'a -> unit) -> 'b output -> 'a -> unit
+(** [lmargin n p] behaves as [p], with the exception that every new line from this
+    point will be shifted to the right by [n] white spaces*)
 
 (** Formatted output functions (also known as unparsing).
 
@@ -611,6 +614,8 @@ module Printf : sig
 
 
   (**
+     {6 General overview}
+     
    The functions of this module produce output according to a
    {!Pervasives.format}, as described below. Some functions write to
    the standard output (i.e. the screen), some to error channels,
@@ -894,25 +899,6 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
    }
    - ['d] is the final return value of the function once all
    arguments have been printed
-   - ['b] is the type of the first argument given to unparsers
-   (i.e. functions introduced with [%a] or [%t])
-   {ul
-   {- if your unparsers take a [unit] argument, ['b] should be 
-   [unit]}
-   {- if your unparsers take a [string output], ['b] should be 
-   [string output]}
-   {- ...}
-   }
-   - ['c] is the {b final} return type of unparsers
-   {ul
-   {- if you have an unparser introduced with [%t] and its result
-   has type [unit], ['c] should be [unit]}
-   {- if you have an unparser introduced with [%a] and its type is
-   [string output -> string -> unit], ['c] should be [unit]}
-   {- ...}
-   }
-   - ['d] is the final return value of the function once all
-   arguments have been applied.
 
    {7 Format}
    [('a, 'b, 'c) format] or [('a, 'b, 'c) t] is just a shortcut for [('a, 'b, 'c, 'c) format4].
@@ -924,18 +910,16 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 end
 
 
-val make_list_printer: ('a output -> 'b -> unit) -> string -> string -> string -> ('a output -> 'b list -> unit)
+(*val make_list_printer: ('a output -> 'b -> unit) -> string -> string -> string -> ('a output -> 'b list -> unit)
 (** Make a list printer
 
     [make_list_printer printer start_symbol end_symbol separator] creates a printer for
     lists, which prints [start_symbol] at the beginning of the list, [end_symbol] at
     the end, uses [printer] for each element of the contents and separates these
     elements with [separator]
-*)
+*)*)
 
-val lmargin : int -> ('b output -> 'a -> unit) -> 'b output -> 'a -> unit
-(** [lmargin n p] behaves as [p], with the exception that every new line from this
-    point will be shifted to the right by [n] white spaces*)
+
 
 
 (**/**)

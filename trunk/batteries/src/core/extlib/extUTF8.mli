@@ -99,12 +99,12 @@ val length : t -> int
 (** [length s] returns the number of Unicode characters contained in s *)
     
 val length0: int -> int
-(** UTF8 encoding often calls for the encoding of a Unicode character with
-    several non-Unicode characters. If [c] is the beginning of a UTF8
-    encoded character, [length0 c] returns the total number of characters
-    which must be read for the Unicode character to be complete.
+  (** UTF8 encoding often calls for the encoding of a Unicode character
+      with several bytes. If [c] is the beginning of a UTF8 encoded
+      character, [length0 c] returns the total number of bytes which
+      must be read for the Unicode character to be complete.
 
-    @return 1 if the character is complete, n >= 2 otherwise*)
+      @return 1 if the character is complete, n >= 2 otherwise*)
 
 (** Positions in the string represented by the number of bytes from the head.
    The location of the first character is [0] *)

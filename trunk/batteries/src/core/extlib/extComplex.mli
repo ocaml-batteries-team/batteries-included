@@ -103,9 +103,18 @@ sig
   val operations : t Number.numeric
 
   val inv : t -> t
+    (** [inv x] returns the value of [1/x]*)
+
   val succ : t -> t
+    (** Add {!one} to this number.*)
+
   val pred : t -> t
+    (** Remove {!one} from this number.*)
+
   val abs : t -> t
+    (** [abs c] returns the module of this complex number,
+	i.e. [abs c = Float.sqrt((re c) *. (re c) +. (im c) *. (im c) )]*)
+
   val modulo : t -> t -> t
   val pow : t -> t -> t
   val compare : t -> t -> int

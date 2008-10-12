@@ -221,7 +221,7 @@ let make_compare cmp a b =
       else                         1
   in aux 0
 
-let print out print_a ?(first="[|") ?(last="|]") ?(sep="; ") t =
+let print print_a ?(first="[|") ?(last="|]") ?(sep="; ") out t =
   match length t with
     | 0 ->
 	IO.nwrite out first;
@@ -288,6 +288,7 @@ struct
   let stable_sort  = stable_sort
   let fast_sort    = fast_sort
   let make_compare = make_compare
+  let print        = print
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 end

@@ -20,8 +20,12 @@
 
 (** Operations on references. 
 
-    References are imperative-style mutable values, i.e. "variables"
-    which may change value during their life-time.
+    References are mutable values, i.e. "variables" which may actually
+    change value during their life-time, as variables in imperative
+    languages. References can be understood as 1-cell arrays and
+    are typically used to implement imperative algorithms in OCaml.
+
+    References are useful but don't abuse them.
 
     @author Xavier Leroy (base module)
     @author David Teller
@@ -54,7 +58,7 @@ val post: 'a ref -> ('a -> 'a) -> 'a
       new value of that reference. 
 
       For instance, if [x] is a reference to [1],
-      [pre x ( ( + ) 1)] returns [2] and sets [x] to [2].*)
+      [post x ( ( + ) 1)] returns [2] and sets [x] to [2].*)
 
 
 val swap: 'a ref -> 'a ref -> unit
@@ -87,3 +91,7 @@ val post_decr: int ref -> int
 val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
 val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
+
+(** {7 Printing}*)
+
+val print: (IO.input -> 'a -> unit) -> IO.input -> 'a t -> unit

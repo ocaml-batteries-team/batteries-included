@@ -54,7 +54,6 @@ let string_of_info_opt = function
   | None   -> "No information"
   | Some i -> info_string_of_info i
 
-let string_of_bool b = if b then "true" else "false"
 
 let bs = Buffer.add_string
 let bp = Printf.bprintf
@@ -104,11 +103,16 @@ let roots = ["Batteries"]
 
 let merge_info_opt a b =
   verbose ("Merging informations");
-  verbose ("1: "^(string_of_info_opt a));
-  verbose ("2: "^(string_of_info_opt b));
-  let result = Odoc_merge.merge_info_opt Odoc_types.all_merge_options a b in
-    verbose (">: "^(string_of_info_opt result));
-    result
+  if a <> b then 
+    begin
+      verbose ("1: "^(string_of_info_opt a));
+      verbose ("2: "^(string_of_info_opt b));
+      let result = Odoc_merge.merge_info_opt Odoc_types.all_merge_options a b in
+	verbose (">: "^(string_of_info_opt result));
+	result
+    end
+  else
+    a
 
 (** {1 Actual rewriting}*)
 
@@ -700,6 +704,7 @@ class batlib_generator =
 	    ()
 	| None   -> 
 	    Odoc_info.verbose "[Final stage, generating html pages]";
+	    flush_all ();
 	    (*Pre-process every module*)
 	    List.iter (fun m -> verbose ("My bag contains "^m.m_name)) modules;
 	    let everything        = Search.modules modules in
@@ -873,7 +878,8 @@ class batlib_generator =
 	 "ul.index_entry {list-style-type:none;padding:0px; margin-left:none; text-ident:-1em}";
 	 "li.index_entry_entry div.info {margin-left:1em}";
 	 "pre {background-color:rgb(250,250,250);margin-top:2em}";
-	 "pre.example {margin-top:2px; margin-bottom:2em}"
+	 "pre.example {margin-top:2px; margin-bottom:2em}";
+	 "p {text-align:justify}"
 	];
 
   end;;

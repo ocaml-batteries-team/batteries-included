@@ -103,7 +103,7 @@ struct
 
     let cl_use_boilerplate = [A"-package"; A "batteries.pa_type_conv.syntax,batteries,sexplib.syntax"]
     and cl_use_batteries   = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"; A "-package"; A "batteries"]
-    and cl_use_batteries_o = [A"-package"; A"batteries.pa_mainfun.syntax" ]
+    and cl_use_batteries_o = []
               (*[cl_use_batteries_o]: extensions which only make sense in original syntax*)
     and cl_camlp4o         = [A"-syntax";  A "camlp4o"]
     and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in

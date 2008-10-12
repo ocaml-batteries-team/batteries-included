@@ -267,7 +267,7 @@ let ocamlopt ?(package=[]) ?(options=[]) files =
 
 let command_for_exec (cmd, args) = (cmd, Array.of_list args)
 let string_of_command  (cmd, args) = 
-  Printf.sprintf2 "%S %a" cmd (make_list_printer IO.nwrite "" "" " ") args
+  Printf.sprintf2 "%S %a" cmd (List.print IO.nwrite ~first:"" ~last:"" ~sep:" ") args
 
 (*let background (executable, args) =
   let (out_read, out_write) = Unix.pipe ()                 in

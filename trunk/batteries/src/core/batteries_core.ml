@@ -141,7 +141,6 @@ module Languages   = struct
   module Printexc        = Batlib_Baselib_Printexc
   module Printf          = struct
     include Extlib.IO.Printf
-    let make_list_printer    = Extlib.IO.make_list_printer
     let lmargin              = Extlib.IO.lmargin
   end
 
@@ -225,7 +224,7 @@ module Toolchain   = struct
   module Execute     = Toolchain.Builtin_tools
 
   (**Package management with Findlib*)
-  module Findlib     = Batlib_Findlib_Findlib
+  module Findlib     = Toolchain.Batlib_Findlib_Findlib
 end
 
 (** Miscellaneous utilities *)

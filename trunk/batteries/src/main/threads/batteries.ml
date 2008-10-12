@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+module Inner = Batteries_core_threads
+
 (** The root of the revised standard library.*)
 
 (** Tools for changing the control flow of a program, from error-management to concurrency.*)
@@ -34,25 +36,18 @@ module Control     = struct
 
 	  This module is only defined in multi-threaded versions of Batteries Included.*)
 
-      (** {6 Built-in concurrency}
-
-	  For bytecode programs, this concurrency is implemented as fast user-level threads,
-	  while for native programs this concurrency is implemented as slower-but-standard
-	  native threads.*)
-
-      open Batteries_core_threads.Control.Concurrency.Thread
-      module Condition = Condition
-      module Event     = Event
-      module Mutex     = Mutex
-      module Thread    = Thread
+      module Condition = Batteries_core_threads.Control.Concurrency.Thread.Condition
+      module Event     = Batteries_core_threads.Control.Concurrency.Thread.Event
+      module Mutex     = Batteries_core_threads.Control.Concurrency.Thread.Mutex
+      module Thread    = Batteries_core_threads.Control.Concurrency.Thread.Thread
     end
   end
 
-  module Labels      = Batteries_core_threads.Control.Labels
+  module Labels      = Inner.Control.Labels
 
   (** Monadic operations. *)
   module Monad = struct
-    module type S  = Batteries_core_threads.Control.Monad.S
+    module type S  = Inner.Control.Monad.S
   end
 end
 
@@ -62,35 +57,33 @@ module Data        = struct
 
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
-      open Batteries_core_threads.Data.Mutable
-      module Array         = Array
-      module ArrayLabels   = ArrayLabels
-      module Bigarray      = Bigarray
-      module Dynarray      = Dynarray
-      module Enum          = Enum
-      module Global        = Global
-      module Hashtbl       = Hashtbl
-      module HashtblLabels = HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
-      module Queue         = Queue        (*TODO:build from enum?*)
-      module Ref           = Ref
-      module RefList       = RefList
-      module Stack         = Stack        (*TODO:build from enum*)
-      module Stream        = Stream       (*TODO:replace with latest version*)
+      module Array         = Inner.Data.Mutable.Array
+      module ArrayLabels   = Inner.Data.Mutable.ArrayLabels
+      module Bigarray      = Inner.Data.Mutable.Bigarray
+      module Dynarray      = Inner.Data.Mutable.Dynarray
+      module Enum          = Inner.Data.Mutable.Enum
+      module Global        = Inner.Data.Mutable.Global
+      module Hashtbl       = Inner.Data.Mutable.Hashtbl
+      module HashtblLabels = Inner.Data.Mutable.HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
+      module Queue         = Inner.Data.Mutable.Queue        (*TODO:build from enum?*)
+      module Ref           = Inner.Data.Mutable.Ref
+      module RefList       = Inner.Data.Mutable.RefList
+      module Stack         = Inner.Data.Mutable.Stack        (*TODO:build from enum*)
+      module Stream        = Inner.Data.Mutable.Stream       (*TODO:replace with latest version*)
     end
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
-      open Batteries_core_threads.Data.Persistent
-      module Dllist          = Dllist
-      module Lazy            = Lazy
-      module List            = List      (*formerly Batlib_Baselib_List*)
-      module ListLabels      = ListLabels(*TODO:Bring to feature parity with {!List}*)
-      module Map             = Map       (*TODO:make enumerable*)
-      module MapLabels       = MapLabels (*TODO:make enumerable*)
-      module PMap            = Map
-      module Option          = Option
-      module Set             = Set       (*TODO:make enumerable*)
-      module SetLabels       = SetLabels (*TODO:make enumerable*)
+      module Dllist          = Inner.Data.Persistent.Dllist
+      module Lazy            = Inner.Data.Persistent.Lazy
+      module List            = Inner.Data.Persistent.List      (*formerly Batlib_Baselib_List*)
+      module ListLabels      = Inner.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)
+      module Map             = Inner.Data.Persistent.Map       (*TODO:make enumerable*)
+      module MapLabels       = Inner.Data.Persistent.MapLabels (*TODO:make enumerable*)
+      module PMap            = Inner.Data.Persistent.Map
+      module Option          = Inner.Data.Persistent.Option
+      module Set             = Inner.Data.Persistent.Set       (*TODO:make enumerable*)
+      module SetLabels       = Inner.Data.Persistent.SetLabels (*TODO:make enumerable*)
 
 (**
    {6 Note} Some mutable containers offer persistent substructures.
@@ -103,45 +96,41 @@ module Data        = struct
     
   (** Boolean and bit-oriented data structures *)
   module Logical     = struct
-    open Batteries_core_threads.Data.Logical
-    module BitSet = BitSet
-    module Bool   = Bool
+    module BitSet = Inner.Data.Logical.BitSet
+    module Bool   = Inner.Data.Logical.Bool
   end
 
   (** Numbers and operations on them.*)    
   module Numeric     = struct
-    open Batteries_core_threads.Data.Numeric
-    (*module Interfaces  = Batlib_Interfaces_Numeric*)
-    module Common      = Common
-    module Big_int     = Big_int
-    module Complex     = Complex
-    module Float       = Float
-    module Int         = Int
-    module Int32       = Int32
-    module Int64       = Int64
-    module Native_int  = Nativeint
-    module Num         = Num
-    module Safe_int    = Safe_int
-    module Unit        = Unit
+    open Inner.Data.Numeric
+    module Common      = Inner.Data.Numeric.Common
+    module Big_int     = Inner.Data.Numeric.Big_int
+    module Complex     = Inner.Data.Numeric.Complex
+    module Float       = Inner.Data.Numeric.Float
+    module Int         = Inner.Data.Numeric.Int
+    module Int32       = Inner.Data.Numeric.Int32
+    module Int64       = Inner.Data.Numeric.Int64
+    module Native_int  = Inner.Data.Numeric.Native_int
+    module Num         = Inner.Data.Numeric.Num
+    module Safe_int    = Inner.Data.Numeric.Safe_int
+    module Unit        = Inner.Data.Numeric.Unit
   end
     
   (** Text data structures. *)
   module Text        = struct
 
-    open Batteries_core_threads.Data.Text
-
     (** {6 Latin-1}*)
 
-    module Buffer          = Buffer
-    module Char            = Char
-    module String          = String
-    module StringLabels    = StringLabels  (*todo: wrap [Batlib_Extlib_String] with labels*)
+    module Buffer          = Inner.Data.Text.Buffer
+    module Char            = Inner.Data.Text.Char
+    module String          = Inner.Data.Text.String
+    module StringLabels    = Inner.Data.Text.StringLabels  (*todo: wrap [Batlib_Extlib_String] with labels*)
 
     (** {6 Unicode}*)
 
-    module Rope            = Rope
-    module UChar           = UChar
-    module UTF8            = UTF8
+    module Rope            = Inner.Data.Text.Rope
+    module UChar           = Inner.Data.Text.UChar
+    module UTF8            = Inner.Data.Text.UTF8
   end
 end
 
@@ -150,7 +139,7 @@ end
    to data, from data to text and from text to text.
 *)
 module Languages   = struct
-  open Batteries_core_threads.Languages
+
 
     (**
        This module contains everything related to transformation from text to data, 
@@ -167,125 +156,101 @@ module Languages   = struct
 
   (** {1 Parsing} *)
   
-  module Genlex          = Genlex
-  module Lexing          = Lexing
-  module Parsing         = Parsing
-  module Scanf           = Scanf
-  module Str             = Str
+  module Genlex          = Inner.Languages.Genlex
+  module Lexing          = Inner.Languages.Lexing
+  module Parsing         = Inner.Languages.Parsing
+  module Scanf           = Inner.Languages.Scanf
+  module Str             = Inner.Languages.Str
     
   (** {1 Printing}*)
     
-  module Format          = Format
-  module Printexc        = Printexc
-  module Printf          = Printf
+  module Format          = Inner.Languages.Format
+  module Printexc        = Inner.Languages.Printexc
+  module Printf          = Inner.Languages.Printf
 
   (** {1 Serialization to human-readable formats}
       XML, JSON, S-Expressions ...*)
 
-  module SExpr           = SExpr
+  module SExpr           = Inner.Languages.SExpr
 end
 
 (** Meta-level operations (marshalling, garbage-collection...) *)
 module Meta        = struct
-  open Batteries_core_threads.Meta
 
   (** {1 Language}*)
   
-  module Marshal        = Marshal
-  module Oo             = Oo
+  module Marshal        = Inner.Meta.Marshal
+  module Oo             = Inner.Meta.Oo
     
   (** {1 Interaction with other languages} *)
     
-  module Callback       = Callback
+  module Callback       = Inner.Meta.Callback
     
   (** {1 Memory}*)
     
-  module Gc             = Gc
-  module Weak           = Weak
+  module Gc             = Inner.Meta.Gc
+  module Weak           = Inner.Meta.Weak
     
   (** {1 Internals}
       Here Be Dragons*)
     
-  module Obj            = Obj
-  module CamlinternalMod= CamlinternalMod
-  module CamlinternalOO = CamlinternalOO
+  module Obj            = Inner.Meta.Obj
+  module CamlinternalMod= Inner.Meta.CamlinternalMod
+  module CamlinternalOO = Inner.Meta.CamlinternalOO
     
 end
 
 (** Interactions with the operating system (file manipulation, arguments...) *)
 module System      = struct 
-  open Batteries_core_threads.System
 
   (** {1 Environment I/O}*)
   
-  module Arg           = Arg
-  module OptParse      = OptParse
+  module Arg           = Inner.System.Arg
+  module OptParse      = Inner.System.OptParse
     
   (** {1 Operations on streams}*)
     
-  module IO            = IO
-  module Unzip         = Unzip
+  module IO            = Inner.System.IO
+  module Unzip         = Inner.System.Unzip
     
   (** {1 Actual operating system calls}*)
     
-  module File          = File
-  module Filename      = Filename
-  module Unix          = Unix
-  module UnixLabels    = UnixLabels
-  module Sys           = Sys
+  module File          = Inner.System.File
+  module Filename      = Inner.System.Filename
+  module Unix          = Inner.System.Unix
+  module UnixLabels    = Inner.System.UnixLabels
+  module Sys           = Inner.System.Sys
     
   (** {1 Networking}*)
   module Network       = struct
     (** Placeholder.
 
-	Expect 
-	- {{:http://www.camlcity.org/archive/programming/ocamlnet.html}OCamlNet}
-	- {{:http://sourceforge.net/projects/ocnae/}OCamlNAE} *)
+	Expect OCamlNet here.*)
   end
 end
 
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
-  open Batteries_core_threads.Toolchain
+  
 
   (**Package management with Findlib*)
-  module Findlib     = Findlib
-  module Execute     = Execute
+  module Findlib     = Inner.Toolchain.Findlib
+  module Execute     = Inner.Toolchain.Execute
 
-  (*module Boilerplate = struct
-    open Batteries_core_threads.Toolchain.Boilerplate
-    module Type_conv = Type_conv
-  end*)
 end
 
 (** Miscellaneous utilities *)
 module Util        = struct
-  open Batteries_core_threads.Util
-
-  module Base64 = Base64
-  module Digest = Digest
-  module Random = Random
+  module Base64 = Inner.Util.Base64
+  module Digest = Inner.Util.Digest
+  module Random = Inner.Util.Random
 end
 
-(** Access to the modules provided by INRIA. *)
+(** Access to the modules provided by INRIA. 
+
+    For more information, see the documentation of OCaml.
+*)
 module Legacy = struct
-  (** Provide access to the original version of modules [Condition],
-      [Event], [Mutex], [Array], [Bigarray], [Hashtbl], [Queue],
-      [Stack], [Stream], [Lazy], [List], [ListLabels], [Map],
-      [MoreLabels], [Set], [Big_int], [Complex], [Int32], [Int64],
-      [Num], [Buffer], [Char], [String], [StringLabels], [Genlex],
-      [Lexing], [Parsing], [Scanf], [Str], [Format], [Printexc],
-      [Printf], [Marshal], [Oo], [Callback], [Gc], [Weak], [Obj],
-      [CamlinternalMod] [CamlinternalOO] [Arg] [Filename] [Unix]
-      [UnixLabels], [Sys], [Random], [Pervasives].
-
-      If you don't know what this means, you don't need it -- in
-      Batteries, all these modules are considered obsolete. Module
-      [Legacy] is provided for reference, comparaison and for
-      short-term work-arounds in case of bugs.
-
-      For more information on these modules, see the documentation of OCaml.*)
-
   (**/**)
   module Condition = Condition
   module Event     = Event
@@ -393,6 +358,4 @@ module Random    = Util.Random
 (**/**)
 
 
-(*include Batteries_core_threads.Standard*)
-include Batteries_core_threads.Standard
-
+include Inner.Standard

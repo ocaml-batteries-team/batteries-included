@@ -638,6 +638,6 @@ val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 (** {7 Printing}*)
 
-val print : 'a IO.output -> ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'b t -> unit
+val print : ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'a IO.output -> 'b t -> unit
 
 end
