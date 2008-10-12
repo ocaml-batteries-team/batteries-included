@@ -38,11 +38,12 @@ sig
 
 
 (** UTF-8 encoded Unicode strings.*)
-type t = CamomileLibrary.UTF8.t
-
+type t 
+(* maybe use new private types in 3.11 once that's released *)
+ 
 exception Malformed_code
 
-val validate : t -> unit
+val validate : string -> unit
   (** [validate s] succeeds if s is valid UTF-8, otherwise raises
       [Malformed_code].  Other functions assume strings are valid
       UTF-8, so it is prudent to test their validity for strings from
@@ -67,10 +68,11 @@ val make : int -> UChar.t -> t
 val of_string : string -> t
   (**Adopt a string. Involves copying.*)
 
+val of_string_unsafe : string -> t
+  (** As [UTF8.of_string], but the original string is incorporated.  Changing the original string will change the UTF8 version, and can make an invalid UTF8.t *)
+
 val to_string : t -> string
   (**Return an UTF-8 encoded string representing this Unicode string.*)
-
-
 
 val enum : t -> UChar.t Enum.t
   (**As {!String.enum}*)

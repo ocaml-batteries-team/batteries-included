@@ -1,3 +1,8 @@
+2008-10-12  Edgar Friendly  <thelema314@gmail.com>
+	* extUTF8.mli: [UTF8.t] no longer [= string], but abstract, validate now takes a [string] instead of [UTF8.t]
+	* extUTF8.ml*: add [of_string_unsafe]
+	* rope.mli, IO.ml: fixes related to above changes
+
 10/12/2008 David Teller <David.Teller@univ-orleans.fr>:
 	* IO.ml: removed dependency on [ExtString]
 	* IO.ml: [string_enum] added

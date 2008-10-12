@@ -1653,12 +1653,18 @@ let read_rope i n =
 (** read a line of UTF-8*)
  
 let read_uline i =
-  Rope.of_ustring (read_line i)
+  let line = read_line i in
+  UTF8.validate line;
+  Rope.of_ustring (UTF8.of_string_unsafe line)
  
 (*val read_uall : input -> Rope.t*)
 (** read the whole contents of a UTF-8 encoded input*)
  
-let read_uall i = Rope.of_ustring (read_all i) (* TODO: make efficient - possibly similar to above - buffering leaf_size chars at a time *)
+let read_uall i = 
+  let all = read_all i in
+  UTF8.validate all;
+  Rope.of_ustring (UTF8.of_string_unsafe all) 
+(* TODO: make efficient - possibly similar to above - buffering leaf_size chars at a time *)
  
 let apply_enum f x = (* FIXME: export from IO so no copy/paste needed *)
   try f x
@@ -1685,10 +1691,10 @@ let write_ustring o c = write_string o (ExtUTF8.UTF8.as_string c)
 let write_uchar o c = write_ustring o (ExtUTF8.UTF8.of_char c)
  
 (*val write_rope : _ output -> Rope.t -> unit*)
-let write_rope o r = Rope.bulk_iter (nwrite o) r
+let write_rope o r = Rope.bulk_iter (fun us -> nwrite o (UTF8.to_string us)) r
  
 (*val write_uline: _ output -> Rope.t -> unit*)
-let write_uline o r = Rope.bulk_iter (nwrite o) r; write o '\n'
+let write_uline o r = write_rope o r; write o '\n'
  
 (*val write_uchars : _ output -> UChar.t Enum.t -> unit*)
 let write_uchars o uce = Enum.iter (write_uchar o) uce

@@ -99,6 +99,8 @@ module UTF8 = struct
       s
   
   let of_string s = validate s; String.copy s
+
+  let of_string_unsafe s = s
     
   let to_string s = String.copy s
     
