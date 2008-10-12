@@ -1,7 +1,7 @@
 Building ocaml-batteries Debian package
 =======================================
 
-The nurpawiki source package uses quilt to apply and remove its
+The ocaml-batteries source package uses quilt to apply and remove its
 patches.  Please refer to /usr/share/doc/quilt/README.source for
 information about how to use quilt for source packages.
 
