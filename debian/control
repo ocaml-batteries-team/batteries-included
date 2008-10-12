@@ -32,8 +32,22 @@ Depends:
  ${misc:Depends}
 Recommends: libbatteries-ocaml-doc
 Provides: libbatteries-camlp4-dev
-Description: OCaml batteries included - standard OCaml development platform
- OCaml batteries included - standard OCaml development platform
+Description: Batteries included: OCaml development platform - development files
+ Batteries included is a community-driven effort to standardize on an
+ uniform, documented, and comprehensive OCaml development platform.
+ .
+ Batteries included serves the following purposes:
+  * define a standard set of libraries which may be expected on every
+    compliant installation of OCaml
+  * organize these libraries into a hierarchy of modules, with one
+    source of documentation
+  * define a standard set of language extensions which may be expected
+    on every compliant installation of OCaml
+  * provide a consistent API for otherwise independent libraries.
+ .
+ This package contains the core part of batteries included: libraries
+ and language extensions for the OCaml language. Using this package
+ you can develop OCaml programs built on top of batteries included.
 
 Package: libbatteries-ocaml-doc
 Section: devel
@@ -45,8 +59,22 @@ Depends:
 Provides:
  libbatteries-camlp4-dev,
  ocaml-batteries-included
-Description: OCaml batteries included - standard OCaml development platform
- OCaml batteries included - standard OCaml development platform
+Description: Batteries included - OCaml development platform - documentation
+ Batteries included is a community-driven effort to standardize on an
+ uniform, documented, and comprehensive OCaml development platform.
+ .
+ Batteries included serves the following purposes:
+  * define a standard set of libraries which may be expected on every
+    compliant installation of OCaml
+  * organize these libraries into a hierarchy of modules, with one
+    source of documentation
+  * define a standard set of language extensions which may be expected
+    on every compliant installation of OCaml
+  * provide a consistent API for otherwise independent libraries.
+ .
+ This package contains the documentation for batteries included: HTML
+ API documentation, examples, and information about how to use
+ batteries included in your programs.
 
 Package: ocaml-batteries-included
 Section: devel
@@ -55,6 +83,18 @@ Depends:
  libbatteries-ocaml-dev,
  libbatteries-camlp4-dev,
  libbatteries-ocaml-doc
-Description: OCaml batteries included - standard OCaml development platform
- OCaml batteries included - standard OCaml development platform
-
+Description: Batteries included: OCaml development platform - meta-package
+ Batteries included is a community-driven effort to standardize on an
+ uniform, documented, and comprehensive OCaml development platform.
+ .
+ Batteries included serves the following purposes:
+  * define a standard set of libraries which may be expected on every
+    compliant installation of OCaml
+  * organize these libraries into a hierarchy of modules, with one
+    source of documentation
+  * define a standard set of language extensions which may be expected
+    on every compliant installation of OCaml
+  * provide a consistent API for otherwise independent libraries.
+ .
+ This meta-package is provided for convenience, to install all of
+ batteries included at once.
