@@ -26,7 +26,7 @@ Depends:
  ocaml-nox-${F:OCamlABI},
  ${shlibs:Depends},
  ${misc:Depends}
-Suggests: libbatteries-ocaml-doc
+Recommends: libbatteries-ocaml-doc
 Provides: libbatteries-camlp4-dev
 Description: OCaml batteries included - standard OCaml development platform
  OCaml batteries included - standard OCaml development platform
