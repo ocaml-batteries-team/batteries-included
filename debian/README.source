@@ -50,7 +50,14 @@ Building from the Git repository
         --git-debian-branch=build \
 	[options]
 
-During development/tests, steps 3 and 5 (together with --git-tag and
---git-debian-branch=build) are not needed, and you may use
-git-buildpackage with the master branch instead of build, provided you
-git-ignore debian/patches.
+During development/tests, you can work directly on branch master,
+provided you tell git to ignore debian/patches. You can then skip
+steps 3 and 5, and forget --git-tag and --git-debian-branch options in
+step 6:
+
+  git-buildpackage --git-pristine-tar [options]
+
+Notes:
+ - don't commit serialized patches into master
+ - don't commit patched sources into master ("git status" will be
+   meaningful only after "debclean")
