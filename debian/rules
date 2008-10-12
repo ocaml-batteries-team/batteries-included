@@ -18,6 +18,7 @@ DEB_MAKE_BUILD_TARGET += OBFLAGS=-classic-display
 DEB_MAKE_INSTALL_TARGET = install DESTDIR=$(DEST_DIR)
 
 build/$(DOC_PKG_NAME)::
+	OCAMLRUNPARAMS=l=16M \
 	make doc OBFLAGS=-classic-display
 
 TG_BRANCHES = features/flexi-build
