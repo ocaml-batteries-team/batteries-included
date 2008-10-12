@@ -221,7 +221,7 @@ let make_compare cmp a b =
       else                         1
   in aux 0
 
-let print out print_a ?(first="") ?(last="") ?(sep="") t =
+let print out print_a ?(first="[|") ?(last="|]") ?(sep="; ") t =
   match length t with
     | 0 ->
 	IO.nwrite out first;

@@ -18,8 +18,12 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-PACKS=$(shell find src -name "*mlpack")
-GENERATED_MLI=$(patsubst %.mlpack, %.mli, $(PACKS))
+
+#Flags to pass to OCamlBuild.
+#Typical flag: -byte-plugin (if you don't have ocamlopt installed on the machine)
+#Typical flag: -classic-display (for more details on the build process)
+OBFLAGS =
+
 
 # findlib destdir, if you need to install in non-standard places invoke make
 # as: "make install DESTDIR=/some/where/"
@@ -31,8 +35,9 @@ else
 DESTDIR_FLAGS = -destdir $(DESTDIR)
 endif
 
-test:
-	$(shell echo $(GENERATED_MLI))
+OCAMLBUILD=ocamlbuild $(OBFLAGS)
+#OCAMLBUILD=ocamlbuild -byte-plugin -classic-display 
+#Replace the first one with the second one if you have build-time issue, to help with trouble-shooting
 
 all: byte syntax
 
@@ -40,22 +45,22 @@ all: byte syntax
 reinstall: byte syntax opt uninstall install
 
 _build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
-	ocamlbuild odoc_generator_batlib.cmo
+	$(OCAMLBUILD) odoc_generator_batlib.cmo
 
 
 byte:
-	ocamlbuild src/main/threads/batteries.cma     &&\
-	ocamlbuild src/main/nothreads/batteries.cma
+	$(OCAMLBUILD) src/main/threads/batteries.cma     &&\
+	$(OCAMLBUILD) src/main/nothreads/batteries.cma
 
 opt:
-	ocamlbuild src/main/threads/batteries.cmxa    &&\
-	ocamlbuild src/main/nothreads/batteries.cmxa
+	$(OCAMLBUILD) src/main/threads/batteries.cmxa    &&\
+	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
 
 syntax:
-	ocamlbuild src/syntax/pa_openin/pa_openin.cmo       &&\
-	ocamlbuild src/syntax/pa_openin/pa_openin_r.cmo     &&\
-	ocamlbuild src/syntax/pa_where/pa_where.cmo         &&\
-	ocamlbuild src/syntax/pa_batteries/pa_batteries.cmo
+	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo       &&\
+	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin_r.cmo     &&\
+	$(OCAMLBUILD) src/syntax/pa_where/pa_where.cmo         &&\
+	$(OCAMLBUILD) src/syntax/pa_batteries/pa_batteries.cmo
 
 batteries.mllib:
 #	echo $(foreach i, $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
@@ -66,16 +71,6 @@ batteries.mllib:
 	sed -i -e "s/ /\n/g" -e "s/Batteries\\nBatteries/Batteries/" \
 		batteries.mllib &&\
 	cp batteries.mllib src/main/nothreads
-
-#batteries.mllib:
-#	echo $(foreach i, $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
-#	sed -i -e "s/ /\n/g" -e "s/batteries\\nbatteries/batteries/" \
-#		batteries.mllib &&\
-#	cp batteries.mllib src/main/threads       &&\
-#	echo $(foreach i, $(basename $(notdir $(shell find src \( -name "*ml" -or -name "*mlpack" \) -not -wholename "*baselib_threads*"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
-#	sed -i -e "s/ /\n/g" -e "s/batteries\\nbatteries/batteries/" \
-#		batteries.mllib &&\
-#	cp batteries.mllib src/main/nothreads
 
 install: syntax
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
@@ -104,7 +99,7 @@ uninstall:
 
 doc: byte doc/api.odocl
 	\rm -Rf doc/batteries/html/api &&\
-	ocamlbuild -I src/main/threads doc/api.docdir/index.html &&\
+	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html &&\
 	rm api.docdir &&\
 	mv _build/doc/api.docdir/ doc/batteries/html/api
 
@@ -115,10 +110,10 @@ examples:
 	@echo Note: to build the examples, you must first have installed Batteries     &&\
 	echo If you haven\'t installed Batteries yet, please use    make byte opt install   &&\
 	cd examples &&\
-	ocamlbuild examples.otarget
+	$(OCAMLBUILD) examples.otarget
 
 clean:
-	ocamlbuild -clean &&\
+	$(OCAMLBUILD) -clean &&\
 	\rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"` &&\
 	\rm -f META doc/api.odocl doc/batteries/html/api/* 
 

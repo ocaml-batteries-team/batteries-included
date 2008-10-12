@@ -462,6 +462,7 @@ module List :
 	(** {7 Printing}*)
 	  
 	val print : 'a IO.output -> ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'b t -> unit
+	  (**Print the contents of a list*)
 
 	(** {6 Obsolete functions} *)
 	val nth : 'a list -> int -> 'a

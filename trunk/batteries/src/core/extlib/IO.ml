@@ -21,7 +21,8 @@
 
 TYPE_CONV_PATH "Batteries.System.IO" (*For Sexplib, Bin-prot...*)
 
-open ExtString
+
+
 open ExtChar
 
 type input = {
@@ -343,22 +344,43 @@ let input_enum e =
 		in_close = (fun () -> ());
 	}
 
+(*Function inlined here to avoid circular dependencies between [IO]
+  and [ExtString].*)
+
+let string_enum s =
+  let l = String.length s in
+  let rec make i =
+    Enum.make 
+      ~next:(fun () ->
+	       if !i = l then
+		 raise Enum.No_more_elements
+	       else
+		 let p = !i in
+		   incr i;
+		   String.unsafe_get s p
+	    )
+      ~count:(fun () -> l - !i)
+      ~clone:(fun () -> make (ref !i))
+  in
+    make (ref 0)
+
+
 let output_enum() =
-	let b = Buffer.create default_buffer_size in
-	{
-		out_write = (fun x ->
-			Buffer.add_char b x
-		);
-		out_output = (fun s p l ->
-			Buffer.add_substring b s p l;
-			l
-		);
-		out_close = (fun () ->
-			let s = Buffer.contents b in
-			ExtString.String.enum s
-		);
-		out_flush = (fun () -> ());
-	}
+  let b = Buffer.create default_buffer_size in
+    {
+      out_write = (fun x ->
+		     Buffer.add_char b x
+		  );
+      out_output = (fun s p l ->
+		      Buffer.add_substring b s p l;
+		      l
+		   );
+      out_close = (fun () ->
+		     let s = Buffer.contents b in
+		       string_enum s
+		  );
+      out_flush = (fun () -> ());
+    }
 let comb (a,b) =
   create_out ~write:(fun c -> 
 		       write a c;
@@ -371,55 +393,55 @@ let comb (a,b) =
 	      flush b)
     ~close:(fun () ->
 	      let _ = close_out a in
-	      close_out b)
+		close_out b)
 
 let pipe() =
-	let input = ref "" in
-	let inpos = ref 0 in
-	let output = Buffer.create default_buffer_size in
-	let flush() =
-		input := Buffer.contents output;
-		inpos := 0;
-		Buffer.reset output;
-		if String.length !input = 0 then raise No_more_input
-	in
-	let read() =
-		if !inpos = String.length !input then flush();
-		let c = String.unsafe_get !input !inpos in
-		incr inpos;
-		c
-	in
-	let input s p l =
-		if !inpos = String.length !input then flush();
-		let r = (if !inpos + l > String.length !input then String.length !input - !inpos else l) in
-		String.unsafe_blit !input !inpos s p r;
-		inpos := !inpos + r;
-		r
-	in
-	let write c =
-		Buffer.add_char output c
-	in
-	let output s p l =
-		Buffer.add_substring output s p l;
-		l
-	in
-	let input = {
-		in_read = read;
-		in_input = input;
-		in_close = (fun () -> ());
-	} in
-	let output = {
-		out_write = write;
-		out_output = output;
-		out_close = (fun () -> ());
-		out_flush = (fun () -> ());
-	} in
-	input , output
+  let input = ref "" in
+  let inpos = ref 0 in
+  let output = Buffer.create default_buffer_size in
+  let flush() =
+    input := Buffer.contents output;
+    inpos := 0;
+    Buffer.reset output;
+    if String.length !input = 0 then raise No_more_input
+  in
+  let read() =
+    if !inpos = String.length !input then flush();
+    let c = String.unsafe_get !input !inpos in
+      incr inpos;
+      c
+  in
+  let input s p l =
+    if !inpos = String.length !input then flush();
+    let r = (if !inpos + l > String.length !input then String.length !input - !inpos else l) in
+      String.unsafe_blit !input !inpos s p r;
+      inpos := !inpos + r;
+      r
+  in
+  let write c =
+    Buffer.add_char output c
+  in
+  let output s p l =
+    Buffer.add_substring output s p l;
+    l
+  in
+  let input = {
+    in_read = read;
+    in_input = input;
+    in_close = (fun () -> ());
+  } in
+  let output = {
+    out_write = write;
+    out_output = output;
+    out_close = (fun () -> ());
+    out_flush = (fun () -> ());
+  } in
+    input , output
 
 external cast_output : 'a output -> unit output = "%identity"
 
 
-  
+      
 
 (**
    {6 Binary APIs}
@@ -923,7 +945,7 @@ let lines_of input        = make_enum read_line input
 let buffer_size = 1024 (*Arbitrary size.*)
 
 let chars_of input = close_at_end input (Enum.concat (Enum.from (fun () -> 
-   apply_enum (fun source -> String.enum (nread source buffer_size)) input)))
+   apply_enum (fun source -> string_enum (nread source buffer_size)) input)))
 
 let bits_of input = close_at_end input.ch (Enum.from (fun () -> apply_enum read_bits input 1))
 

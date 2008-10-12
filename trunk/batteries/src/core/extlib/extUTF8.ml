@@ -22,8 +22,19 @@ open Sexplib
 open Conv
 TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
 
+(*Inlined to avoid circular dependencies between IO, ExtUTF8 and ExtString*)
+let string_splice s1 off len s2 = 
+  let len1 = String.length s1 and len2 = String.length s2 in
+  let out_len = len1 - len + len2 in
+  let s = String.create out_len in
+  String.blit s1 0 s 0 off; (* s1 before splice point *)
+  String.blit s2 0 s off len2; (* s2 at splice point *)
+  String.blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
+  s
+
+
 module UTF8 = struct
-  open ExtString
+(*  open ExtString*)
   open CamomileLibrary
   include CamomileLibrary.UTF8
  
@@ -117,7 +128,7 @@ module UTF8 = struct
  
   let copy_set s n c =
     let i = nth s n in let j = next s i in
-    String.splice s i (j-i) (of_char c)
+    string_splice s i (j-i) (of_char c)
      
   let sub s n len =
     let i = nth s n in

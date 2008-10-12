@@ -1,3 +1,7 @@
+(*
+  This file is Public Domain
+*)
+
 open Ocamlbuild_plugin
 open Command (* no longer needed for OCaml >= 3.10.2 *)
 open Ocamlbuild_pack
