@@ -5,10 +5,10 @@ Maintainer: Debian OCaml Maintainers <debian-ocaml-maint@lists.debian.org>
 Uploaders: Stefano Zacchiroli <zack@debian.org>
 Build-Depends:
  debhelper (>> 7.0.0),
- ocaml,
+ ocaml-nox,
  ocaml-findlib,
- libtype-conv-camlp4-dev,
  libcamomile-ocaml-dev,
+ libtype-conv-camlp4-dev,
  libsexplib-camlp4-dev,
  dh-ocaml,
  camlp4,
@@ -24,6 +24,10 @@ Section: devel
 Architecture: any
 Depends:
  ocaml-nox-${F:OCamlABI},
+ ocaml-findlib,
+ libcamomile-ocaml-dev,
+ libtype-conv-camlp4-dev,
+ libsexplib-camlp4-dev,
  ${shlibs:Depends},
  ${misc:Depends}
 Recommends: libbatteries-ocaml-doc
@@ -53,3 +57,4 @@ Depends:
  libbatteries-ocaml-doc
 Description: OCaml batteries included - standard OCaml development platform
  OCaml batteries included - standard OCaml development platform
+
