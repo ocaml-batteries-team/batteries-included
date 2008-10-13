@@ -10,4 +10,4 @@
 <toolchain.mli>:         pkg_sexplib
 <toolchain.odoc>:        pkg_sexplib
 <extlib.mli>:            pkg_sexplib,pkg_camomile
-
+<extlib.cma>:            link_all

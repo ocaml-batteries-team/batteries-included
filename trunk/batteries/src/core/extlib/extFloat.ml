@@ -90,4 +90,5 @@ end
 module Float = struct
   include Number.MakeNumeric(BaseFloat)
   include BaseFloat
+  let print out t = InnerIO.nwrite out (to_string t)
 end

@@ -31,7 +31,7 @@ let enum () =
     if  !current_value = max_int then
       if !already_through then raise Enum.No_more_elements
       else ( already_through := true; max_int )
-    else Ref.pre_incr current_value
+    else Ref.post_incr current_value
   in Enum.from f
 
 module BaseInt = struct
@@ -89,16 +89,22 @@ module BaseInt = struct
   let ( = )  a b = a = b
 
   let ( ** ) a b = pow a b
+
+  let print out t = InnerIO.nwrite out (string_of_int t)
+
+  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
+  let ( --- ) x y = 
+    if x <= y then x -- y 
+    else Enum.seq y (sub one) ((>=) x) 
+
 end
 
 module Int = struct
   include BaseInt
   let operations = let module N = Number.MakeNumeric(BaseInt) in N.operations
 
-  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
-  let ( --- ) x y = 
-    if x <= y then x -- y 
-    else Enum.seq y (sub one) ((>=) x) 
+
+
 end
 
 module BaseSafeInt = struct
@@ -153,12 +159,6 @@ end
 module SafeInt = struct
   include BaseSafeInt
   let operations = let module N = Number.MakeNumeric(BaseSafeInt) in N.operations
-
-  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
-  let ( --- ) x y = 
-    if x <= y then x -- y 
-    else Enum.seq y (sub one) ((>=) x) 
-
 end
 
 (*

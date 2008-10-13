@@ -214,6 +214,9 @@ end with type buf = Buffer.t
 val t_of_sexp : Sexplib.Sexp.t -> t
 val sexp_of_t : t -> Sexplib.Sexp.t
 
+(** {7 Printing}*)
+val print: 'a InnerIO.output -> t -> unit
+
 
 (**/**)
 external string_as : string -> t = "%identity"

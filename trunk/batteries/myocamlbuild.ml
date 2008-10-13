@@ -176,8 +176,8 @@ struct
       )
   end
     
-  let read_dependency dep_name =
-    let module_name = String.capitalize (Filename.basename (Filename.chop_suffix dep_name ".mli.depends")) in
+  let read_dependency dep_name extension =
+    let module_name = String.capitalize (Filename.basename (Filename.chop_suffix dep_name extension)) in
     let f = open_in dep_name in
     let (file_name, dependencies) = String.split (input_line f) ":" in
     let result = (file_name, module_name, List.filter (fun x -> not (String.length x = 0)) (String.nsplit dependencies " ")) in
@@ -228,7 +228,7 @@ struct
       [N] appears before [M]. 
 
       As usual, cyclic dependencies are bad.*)
-  let sort files = 
+  let sort files extension = 
     let dep     = Dependency.create () (*Direct  dependencies*)
     and rev     = Dependency.create () (*Reverse dependencies*)
     and modules = ref StringSet.empty      (*All modules involved, including external ones*)
@@ -236,8 +236,8 @@ struct
       (*Read all the dependencies and store them in the tables*)
       List.iter (
 	fun f -> 
-	  if Filename.check_suffix f ".mli.depends" then
-	    let (file_name, module_name, dependencies) = read_dependency f in
+	  if Filename.check_suffix f ".depends" then
+	    let (file_name, module_name, dependencies) = read_dependency f extension in
 	      List.iter (fun x ->
 			   modules := StringSet.add x !modules;
 			   Dependency.add dep module_name x; 
@@ -479,26 +479,21 @@ struct
 	      |      Bad exn -> raise exn (*Stop here in case of problem and propagate the exception*)
 	  ) results in
 	let buf = Buffer.create 2048 in
-	  generate_mli buf (sort mli_depends);
+	  generate_mli buf (sort mli_depends ".mli.depends");
 	  Echo([Buffer.contents buf], dest)
       end
 
 (* Simple utility to sort a list of modules by dependencies. *)
 
-    let generate_mlpacksorted buf l = 
-      let print_modules buf () =
-	List.iter (
-	  fun (name, src) -> 
-	    let name = try 
-	      let index = String.find name ".inferred" in
-		String.sub name 0 index
-	    with String.Invalid_string -> name in
-	      Printf.bprintf buf "%s\n" name
-	) l in
-	print_modules buf ();;
+    let generate_sorted buf l = 
+      Printf.eprintf "generating\n";
+      List.iter (
+	fun (name, src) -> 
+(*	  Printf.eprintf "Adding module %S\n" name;*)
+	  Printf.bprintf buf "%s\n" name ) l;;
 
-      rule ".mlpack to .mlpacksorted conversion rule"
-	    ~prod:"%.mlpacksorted"
+      rule ".mlpack to .sorted conversion rule"
+	    ~prod:"%.sorted"
 	    ~dep:"%.mlpack"
       begin fun env build ->
         (*c The action is a function that receive two arguments:
@@ -507,7 +502,7 @@ struct
           [_build] can be called to build new things (dynamic dependencies). *)
 	
 	let pack         = env "%.mlpack" 
-	and dest         = env "%.mlpacksorted" in
+	and dest         = env "%.sorted" in
 	let include_dirs = Pathname.include_dirs_of (Pathname.dirname pack) in
 	  
 	(*Read the list of module dependencies from [pack]*)
@@ -524,28 +519,29 @@ struct
 		with End_of_file -> !modules			      
 	  ) in
 
-	(*For each module name, first generate the .mli file if it doesn't exist yet.*)
-	  List.iter ignore_good (build (List.map(fun m -> expand_module include_dirs m ["mli";
-										       "inferred.mli"]) modules));
+	(*For each module name, first generate the .ml file if it doesn't exist yet.*)
+	  List.iter ignore_good (build (List.map(fun m -> 
+						   Printf.eprintf "Expanding ml module\n";
+expand_module include_dirs m ["ml"]) modules));
 
 	(*Deduce file names from these module names and wait for these dependencies to be solved.
 	  
 	  [build] has a mysterious behaviour which looks like cooperative threading without
 	  threads and without call/cc.*)
-	let results = build (List.map(fun m -> expand_module include_dirs m ["mli.depends"; 
-									     "inferred.mli.depends"]) 
+	let results = build (List.map(fun m -> 
+					Printf.eprintf "Expanding depends module\n";
+					expand_module include_dirs m ["ml.depends"]) 
 			       modules) in
 	  
-	(*Now that we have generated the mli files and, more importantly, the corresponding
-	  mli.depends, we can read the contents of these dependencies,
-	  sort them and generate the mli (see the other functions of this module).*)
-	let mli_depends =  
+	(*Now that we have generated the ml files and, more importantly, the corresponding
+	  ml.depends, sort the dependencies. *)
+	let ml_depends =  
 	  List.map ( 
 	    function Good s  -> s
 	      |      Bad exn -> raise exn (*Stop here in case of problem and propagate the exception*)
 	  ) results in
 	let buf = Buffer.create 2048 in
-	  generate_mlpacksorted buf (sort mli_depends);
+	  generate_sorted buf (sort ml_depends ".ml.depends");
 	  Echo([Buffer.contents buf], dest)
       end
 

@@ -42,4 +42,5 @@ module Int64 = struct
     if x <= y then x -- y 
     else Enum.seq y (sub one) ((>=) x) 
 
+  let print out t = InnerIO.Printf.fprintf out "%Lx" t
 end

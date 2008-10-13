@@ -84,4 +84,5 @@ module Bool = struct
   include Number.MakeNumeric(BaseBool)
   let sexp_of_t = Sexplib.Conv.sexp_of_bool
   let t_of_sexp = Sexplib.Conv.bool_of_sexp
+  let print out t = InnerIO.nwrite out (to_string t)
 end

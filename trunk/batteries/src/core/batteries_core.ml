@@ -139,10 +139,7 @@ module Languages   = struct
     
   module Format          = Batlib_Baselib_Format
   module Printexc        = Batlib_Baselib_Printexc
-  module Printf          = struct
-    include Extlib.IO.Printf
-    let lmargin              = Extlib.IO.lmargin
-  end
+  module Printf          = Extlib.InnerIO.Printf
 
   module SExpr           = Toolchain.Batlib_Sexp_Conv
     

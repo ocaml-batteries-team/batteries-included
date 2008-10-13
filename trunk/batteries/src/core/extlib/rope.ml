@@ -383,4 +383,7 @@ let sexp_of_t t =
 let t_of_sexp s =
   of_ustring (UTF8.t_of_sexp s)
 
+let print out t =
+  bulk_iter (fun us -> InnerIO.nwrite out (UTF8.to_string us)) t
+
 (* =end *)

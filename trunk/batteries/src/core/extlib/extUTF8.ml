@@ -188,4 +188,6 @@ module UTF8 = struct
   external string_as : string -> t = "%identity"
   external as_string : t -> string = "%identity"
 
+  let print out t = InnerIO.nwrite out (to_string t)
+
 end

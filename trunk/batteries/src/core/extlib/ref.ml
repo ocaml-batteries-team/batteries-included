@@ -24,12 +24,12 @@ TYPE_CONV_PATH "Batteries.Data.Mutable.Ref" (*For Sexplib, Bin-prot...*)
 
 type 'a t = 'a ref with sexp
 
-let pre r f =
+let post r f =
   let old = !r in
     r := f old;
     old
 
-let post r f =
+let pre r f =
   r := f !r;
   !r
 

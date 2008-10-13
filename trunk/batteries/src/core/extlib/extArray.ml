@@ -224,17 +224,17 @@ let make_compare cmp a b =
 let print print_a ?(first="[|") ?(last="|]") ?(sep="; ") out t =
   match length t with
     | 0 ->
-	IO.nwrite out first;
-	IO.nwrite out last
+	InnerIO.nwrite out first;
+	InnerIO.nwrite out last
     | 1 ->
-	IO.Printf.fprintf out "%s%a%s" first print_a (unsafe_get t 0) last
+	InnerIO.Printf.fprintf out "%s%a%s" first print_a (unsafe_get t 0) last
     | n -> 
-	IO.nwrite out first;
+	InnerIO.nwrite out first;
 	print_a out (unsafe_get t 0);
 	for i = 1 to n - 1 do
-	  IO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i) 
+	  InnerIO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i) 
 	done;
-	IO.nwrite out last
+	InnerIO.nwrite out last
 
 module Cap =
 struct

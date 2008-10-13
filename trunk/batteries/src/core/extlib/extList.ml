@@ -608,15 +608,15 @@ let t_of_sexp = Conv.list_of_sexp
 
 let print print_a ?(first="[") ?(last="]") ?(sep="; ") out = function
   | []   ->
-      IO.nwrite out first;
-      IO.nwrite out last
+      InnerIO.nwrite out first;
+      InnerIO.nwrite out last
   | [h]  ->
-      IO.Printf.fprintf out "%s%a%s" first print_a h last
+      InnerIO.Printf.fprintf out "%s%a%s" first print_a h last
   | h::t -> 
-      IO.nwrite out first;
+      InnerIO.nwrite out first;
       print_a out h;
-      iter (IO.Printf.fprintf out "%s%a" sep print_a) t;
-      IO.nwrite out last
+      iter (InnerIO.Printf.fprintf out "%s%a" sep print_a) t;
+      InnerIO.nwrite out last
 
 module ExceptionLess = struct
   let rfind p l =
@@ -743,17 +743,7 @@ module ListLabels = struct
   let sexp_of_t = Conv.sexp_of_list
   let t_of_sexp = Conv.list_of_sexp
 
-  let print out print_a ?(first="") ?(last="") ?(sep="") = function
-    | []   ->
-	IO.nwrite out first;
-	IO.nwrite out last
-    | [h]  ->
-	IO.Printf.fprintf out "%s%a%s" first print_a h last
-    | h::t -> 
-	IO.nwrite out first;
-	print_a out h;
-	iter (IO.Printf.fprintf out "%s%a" sep print_a) t;
-	IO.nwrite out last
+  let print = List.print
 
   module ExceptionLess = struct
     let rfind ~f    = List.ExceptionLess.rfind f

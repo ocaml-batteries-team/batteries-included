@@ -1,4 +1,9 @@
-This is the first alpha release of Batteries Included.
+This is the second alpha release of Batteries Included.
+
+= Changes since alpha 1
+* Plenty of bugfixes
+* Plenty of docfixes
+* In [Ref], now using the same naming conventions as C, Java...
 
 = Changes since pre-release 4
 * Plenty of additional functions

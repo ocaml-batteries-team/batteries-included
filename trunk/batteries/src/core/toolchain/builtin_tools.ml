@@ -23,7 +23,7 @@ open Extlib.ExtArray
 open Extlib.ExtString
 open Extlib.ExtList
 open Extlib.Enum
-open Extlib.IO
+open Extlib.InnerIO
 module Findlib = Batlib_Findlib_Findlib
 
 let all_warnings = [`comments true; `deprecated true; `fragile_match true; `partial_applications true;
