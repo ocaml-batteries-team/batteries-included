@@ -1,5 +1,23 @@
 2008-10-13  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/main/nothreads/batteries.mllib: removed numerous modules
+
+	* src/main/threads/batteries.mllib: removed numerous modules
+
+	* src/core/batteries_core.ml: now using [ExtPrintf.Printf] instead of [IO.Printf]
+
+	* src/core/extlib/extPrintf.ml*: created
+
+	* src/core/extlib.mlpack: [ExtPrintf] added
+
+	* examples/shuffle.ml: adapted to new order of arguments in [Array.print]
+
+	* myocamlbuild.ml: [rule ".packed.ml to .odoc"] and [rule ".mlpack to .packed.ml"] added
+
+	* build/intro.text: prefixed links to internal pages with "Inner."
+
+	* src/core/extlib/bitSet.ml*: [print] added
+
 	* src/core/extlib/extNativeint.ml: [print] now uses [InnerIO]
 
 	* src/core/extlib/extList.ml: [print] now uses [InnerIO]

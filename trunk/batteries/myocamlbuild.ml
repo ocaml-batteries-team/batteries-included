@@ -401,7 +401,17 @@ struct
 	  return (as_comment ())*)
 
 
-
+  let read_pack pack =
+    with_input_file pack (
+      fun input ->
+	let modules = ref [] in
+	  try
+	    while true do
+	      let m = input_line input in
+		modules := m::!modules
+	    done; assert false
+	  with End_of_file -> !modules
+    )
 
   (**{6 OCamlbuild options}*)
 	
@@ -423,16 +433,51 @@ struct
 	in Echo(modules, dest)
 
       end;*)
-    rule "ocaml: mllib & cmx* & o* -> cmxa & a -- with pack"
+    rule ".mlpack to .packed.ml"
+      ~prod:"%.packed.ml"
+      ~dep:"%.mlpack"
+      begin fun env build ->
+	let pack = env "%.mlpack"
+	and dest = env "%.packed.ml" in
+	let modules = read_pack pack in
+	  Echo(List.map (fun m -> Printf.sprintf "module %s = %s\n" m m) modules, 
+	       dest)
+      end;
+    
+    rule ".packed.ml to .odoc"
+      ~deps:["%.packed.ml";"%.packed.ml.depends"] 
+      ~prod:"%.odoc"
+(*      begin fun env build ->*)
+	(Ocaml_tools.document_ocaml_implem "%.packed.ml" "%.odoc");
+(*      end*)
+(*    rule ".mlpack to .odoc"
+      ~prod:"%.odoc"
+      ~dep:"%.mlpack"
+      begin fun env build ->
+	let modules      = 
+	  with_input_file pack (
+	    fun input ->
+	      let modules = ref [] in
+		try
+		  while true do
+		    let m = input_line input in
+		      modules := m::!modules
+		  done; assert false
+		with End_of_file -> !modules			      
+	  ) in
+	  List.iter ignore_good (build (List.map(fun m -> expand_module include_dirs m ["odoc"]) modules));
+	  
+      end*)
+(*    rule "ocaml: mllib & cmx* & o* -> cmxa & a -- with pack"
       ~tags:["ocaml"; "native"; "library"]
       ~prods:["%.cmxa"; Pathname.add_extension "%"  !Options.ext_lib]
       ~dep:"%.mllib"
       begin fun env build ->
 	assert false
-      end;
+      end; *)
 
     rule ".mlpack to .mli conversion rule"
-      ~prod:"%.mli"
+      ~prod:"%.mlizzzz"
       ~dep:"%.mlpack"
       begin fun env build ->
         (*c The action is a function that receive two arguments:

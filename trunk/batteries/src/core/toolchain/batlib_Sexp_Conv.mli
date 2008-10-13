@@ -426,7 +426,7 @@ val load_rev_sexps : ?buf : string -> string -> t list
       reversed list of S-expressions, which is slightly more efficient. *)
 
 val input_sexp :
-  ?text_line : int -> ?text_char : int -> ?buf_pos : int -> Extlib.InnerIO.input -> t
+  ?text_line : int -> ?text_char : int -> ?buf_pos : int -> Extlib.IO.input -> t
   (** [input_sexp ?text_line ?text_char ?buf_pos ic] parses an S-expression
       from input channel [ic] using initial position information
       [text_line], [text_char], and [buf_pos].  NOTE: this function is not
@@ -456,30 +456,30 @@ val input_sexps :
   
 val input_rev_sexps :
   ?text_line : int -> ?text_char : int -> ?buf_pos : int ->
-  ?buf : string -> Extlib.InnerIO.input -> t list
+  ?buf : string -> Extlib.IO.input -> t list
   (** [input_rev_sexps ?buf ic] same as {!Sexp.input_sexps}, but returns a
       reversed list of S-expressions, which is slightly more efficient. *)
   
 (** {6 Output of S-expressions to I/O-channels or strings} *)
   
-val output_hum : _ Extlib.InnerIO.output -> t -> unit
+val output_hum : _ Extlib.IO.output -> t -> unit
   (** [output_hum oc sexp] outputs S-expression [sexp] to output channel
       [oc] in human readable form. *)
   
-val output_hum_indent : int -> _ Extlib.InnerIO.output -> t -> unit
+val output_hum_indent : int -> _ Extlib.IO.output -> t -> unit
   (** [output_hum_indent indent oc sexp] outputs S-expression [sexp]
       to output channel [oc] in human readable form using indentation level
       [indent].
   *)
   
-val output_mach : _ Extlib.InnerIO.output -> t -> unit
+val output_mach : _ Extlib.IO.output -> t -> unit
   (** [output_mach oc sexp] outputs S-expression [sexp] to output channel
       [oc] in machine readable (i.e. most compact) form. *)
   
-val output : _ Extlib.InnerIO.output -> t -> unit
+val output : _ Extlib.IO.output -> t -> unit
   (** as [output_mach]. *)
 
-val print :  _ Extlib.InnerIO.output -> t -> unit
+val print :  _ Extlib.IO.output -> t -> unit
   (** as [output_hum] 
 
       May be used to display the contents of a S-expression using

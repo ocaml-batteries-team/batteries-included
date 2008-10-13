@@ -5,15 +5,15 @@ decentralized yet unified open-source standard library for OCaml.
 For the moment, Batteries Included concentrates on:
 
 {ul
-{- {{:Data.html}data structures}}
-{- {{:System.Unix.html}file manipulation and system calls}}
-{- {{:System.IO.html}inputs and outputs}}
-{- {{:Languages.html}lexing, parsing and pretty-printing}}
-{- {{:Control.Concurrency.html}concurrency}}
-{- {{:Data.Numeric.html}numbers}}
-{- {{:Data.Text.html}text, including Unicode}}
+{- {{:Inner.Data.html}data structures}}
+{- {{:Inner.System.Unix.html}file manipulation and system calls}}
+{- {{:Inner.System.IO.html}inputs and outputs}}
+{- {{:Inner.Languages.html}lexing, parsing and pretty-printing}}
+{- {{:Inner.Control.Concurrency.html}concurrency}}
+{- {{:Inner.Data.Numeric.html}numbers}}
+{- {{:Inner.Data.Text.html}text, including Unicode}}
 {- {{:../extensions.html}language extensions}}
-{- {{:Meta.html}OCaml internals} and {{:Util.html}utilities}}
+{- {{:Inner.Meta.html}OCaml internals} and {{:Util.html}utilities}}
 }
 
 

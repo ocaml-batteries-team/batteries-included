@@ -20,11 +20,11 @@
  *)
 
 (** Efficient bit sets.
-
+    
     A bitset is an array of boolean values that can be accessed with indexes
     like an array but provides a better memory usage (divided by 8) for a
     very small speed trade-off. 
-
+    
     @author Nicolas Cannasse
     @author David Teller (Boilerplate code)
 *)
@@ -63,7 +63,7 @@ val toggle : t -> int -> unit
 
 val is_set : t -> int -> bool
 (** [is_set s n] returns true if nth-bit in the bitset [s] is set,
- or false otherwise. *)
+    or false otherwise. *)
 
 val compare : t -> t -> int
 (** [compare s1 s2] compares two bitsets. Highest bit indexes are
@@ -110,3 +110,8 @@ val sym_diff : t -> t -> t
 
 val t_of_sexp : Sexplib.Sexp.t -> t
 val sexp_of_t : t -> Sexplib.Sexp.t
+
+
+(** {7 Printing}*)
+
+val print: ?first:string -> ?last:string -> ?sep:string -> 'a InnerIO.output -> t -> unit

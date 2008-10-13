@@ -23,7 +23,7 @@ open Extlib.ExtArray
 open Extlib.ExtString
 open Extlib.ExtList
 open Extlib.Enum
-open Extlib.InnerIO
+open Extlib.IO
 module Findlib = Batlib_Findlib_Findlib
 
 let all_warnings = [`comments true; `deprecated true; `fragile_match true; `partial_applications true;
@@ -265,9 +265,13 @@ let ocamlc ?(package=[]) ?(options=[]) files =
 let ocamlopt ?(package=[]) ?(options=[]) files =
   (Findlib.command `ocamlopt, (prepare_compiler_args `ocamlopt package options files))
 
-let command_for_exec (cmd, args) = (cmd, Array.of_list args)
-let string_of_command  (cmd, args) = 
-  Printf.sprintf2 "%S %a" cmd (List.print IO.nwrite ~first:"" ~last:"" ~sep:" ") args
+let command_for_exec  (cmd, args) = (cmd, Array.of_list args)
+let string_of_command (cmd, args) = 
+  let buf = Buffer.create 16 in
+    Printf.bprintf buf "%S %a" cmd (fun buf -> List.print IO.nwrite ~first:"" ~last:"" ~sep:" " (IO.output_buffer buf)) args;
+      (*This could be made much more efficient.*)
+    Buffer.contents buf
+
 
 (*let background (executable, args) =
   let (out_read, out_write) = Unix.pipe ()                 in
