@@ -114,12 +114,6 @@ Files: */extlib/*
 Copyright: © 2003 Nicolas Cannasse
 License: LGPL-2.1+ | other
 
-Files: */extlib/charParser.ml*, */extlib/enumLabels.ml,
- */extlib/extUnit.ml*, extlib/file.ml*, */extlib/labels.ml*,
- */extlib/lazyList*.ml*, */extlib/monad.ml*, */extlib/ref.ml*
-Copyright: © 2008 David Teller, LIFO, Universite d'Orleans
-License: LGPL-2.1+ | other
-
 Files: */extlib/bitSet.ml*, */extlib/enumLabels.mli,
  */extlib/enum.ml*, */extlib/global.mli, */extlib/IO.ml,
  */extlib/option.ml*, */extlib/std.mli
@@ -278,14 +272,69 @@ License: LGPL-2.1+ | other
 
 
 
-Files: */toolchain/*
-       TODO: this whole hierarchy is still to be done :-(
+Files: */toolchain/batlib_Camlp4_PreCast.mli,
+ */toolchain/batlib_Camlp4_Sig.ml*
+Copyright: © 1996 Daniel de Rauglaudre
+           © 2006 Nicolas Pouillard
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
 
-Files: */src/main/*
-       DONE: this part is OK, this line can be removed :-)
+Files: */toolchain/batlib_Findlib_Findlib.mli
+Copyright: © 1999 Gerd Stolpmann
+License: other
+ The package "findlib" is copyright by Gerd Stolpmann. 
 
-Files: */src/syntax/*
-       TODO: this whole hierarchy is still to be done :-(
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this document and the "findlib" software (the "Software"),
+ to deal in the Software without restriction, including without
+ limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ 
+ The Software is provided ``as is'', without warranty of any kind,
+ express or implied, including but not limited to the warranties of
+ merchantability, fitness for a particular purpose and
+ noninfringement.  In no event shall Gerd Stolpmann be liable for any
+ claim, damages or other liability, whether in an action of contract,
+ tort or otherwise, arising from, out of or in connection with the
+ Software or the use or other dealings in the software.
+
+Files: */toolchain/batlib_Sexp_Conv.ml*
+Copyright: © 2005 Markus Mottl
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */toolchain/batteries_type_conv.ml
+Copyright: © 2005-2008 Jane Street Holding, LLC
+           © 2005-2008 Markus Mottl
+           © 2004-2005 Martin Sandin
+License: LGPL-2.1+ | other
+
+Files: */toolchain/batteries_type_conv.mli
+Copyright: © 2005-2008 Jane Street Holding, LLC
+           © 2005-2008 Markus Mottl
+           © 2004-2005 Martin Sandin
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+
+
+Files: */syntax/pa_openin/*
+Copyright: © 2006 Alain Frisch
+           © 2007 Till Varoquaux
+           © 2008 Gabriel Scherer
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */syntax/pa_where/*
+Copyright: © 2007 Mauricio Fernandez
+           © 2007 Bluestorm
+License: LGPL-2.1+ | other
+
 
 
 Files: debian/*
