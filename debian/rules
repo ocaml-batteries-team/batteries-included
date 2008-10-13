@@ -28,7 +28,7 @@ tg-export:
 	rm -Rf debian/patches.new
 	tg export --quilt debian/patches.new
 	git rm -f .top*
-	git checkout master
+	git checkout build
 	tg delete stage-debian
 	rm debian/patches.new/stage-*
 	sed -i '/^stage-/d' debian/patches.new/series
