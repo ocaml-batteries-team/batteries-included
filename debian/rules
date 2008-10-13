@@ -22,13 +22,14 @@ build/$(DOC_PKG_NAME)::
 	make doc OBFLAGS=-classic-display
 
 TG_BRANCHES = features/flexi-build
+SAVED_BRANCH := $(shell git branch 2> /dev/null | grep '^*' | cut -f 2 -d' ')
 tg-export:
 	tg create stage-debian $(TG_BRANCHES)
 	git commit -m "staging"
 	rm -Rf debian/patches.new
 	tg export --quilt debian/patches.new
 	git rm -f .top*
-	git checkout build
+	git checkout $(SAVED_BRANCH)
 	tg delete stage-debian
 	rm debian/patches.new/stage-*
 	sed -i '/^stage-/d' debian/patches.new/series

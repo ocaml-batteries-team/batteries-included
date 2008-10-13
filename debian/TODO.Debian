@@ -1,4 +1,1 @@
-- fix the tg-export workflow so that it remembers the branch that was current
-  before invoking tg-export and return to that afterwards (that enables
-  invoking tg-export both from build and from master)
 - register HTML API doc with docbase
