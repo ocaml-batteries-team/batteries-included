@@ -44,8 +44,6 @@ all: byte syntax
 #Useful for testing
 reinstall: byte syntax opt uninstall install
 
-_build/build/odoc_generator_batlib.cmo: build/odoc_generator_batlib.ml
-	$(OCAMLBUILD) odoc_generator_batlib.cmo
 
 
 byte:
@@ -75,6 +73,7 @@ batteries.mllib:
 install: syntax
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
 		build/META \
+		_build/src/core/extlib.cmi \
 		_build/src/syntax/pa_openin/pa_openin.cmo \
 		_build/src/syntax/pa_openin/pa_openin_r.cmo \
 		_build/src/syntax/pa_where/pa_where.cmo \
@@ -114,6 +113,9 @@ examples:
 
 clean:
 	$(OCAMLBUILD) -clean &&\
+	cd examples && \
+	$(OCAMLBUILD) -clean &&\
+	cd .. &&\
 	\rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"` &&\
 	\rm -f META doc/api.odocl doc/batteries/html/api/* 
 
