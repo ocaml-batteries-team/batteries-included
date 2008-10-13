@@ -21,7 +21,7 @@ Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/ocaml-batteries.g
 Homepage: http://batteries.forge.ocamlcore.org
 
 Package: libbatteries-ocaml-dev
-Section: devel
+Section: libdevel
 Architecture: any
 Depends:
  ocaml-nox-${F:OCamlABI},
@@ -52,7 +52,7 @@ Description: Batteries included: OCaml development platform - development files
  you can develop OCaml programs built on top of batteries included.
 
 Package: libbatteries-ocaml-doc
-Section: devel
+Section: doc
 Architecture: all
 Depends:
  ocaml-nox-${F:OCamlABI},
