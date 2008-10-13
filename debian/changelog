@@ -2,4 +2,4 @@ ocaml-batteries (0.20081011-1) experimental; urgency=low
 
   * Initial release (Closes: #501914)
 
- -- Stefano Zacchiroli <zack@debian.org>  Sun, 12 Oct 2008 23:02:10 +0200
+ -- Stefano Zacchiroli <zack@debian.org>  Mon, 13 Oct 2008 18:55:31 +0200
