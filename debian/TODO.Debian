@@ -1,5 +1,3 @@
-- add symlink for the docs from /usr/share/doc/ocaml-batteries-included/ to the
-  appropriate places (document should be accessible from there as well)
 - fix the tg-export workflow so that it remembers the branch that was current
   before invoking tg-export and return to that afterwards (that enables
   invoking tg-export both from build and from master)
