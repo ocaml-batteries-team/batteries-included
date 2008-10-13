@@ -85,7 +85,7 @@ Depends:
  libbatteries-ocaml-dev,
  libbatteries-camlp4-dev,
  libbatteries-ocaml-doc
-Description: Batteries included: OCaml development platform - meta-package
+Description: Batteries included: OCaml development platform - metapackage
  Batteries included is a community-driven effort to standardize on an
  uniform, documented, and comprehensive OCaml development platform.
  .
@@ -98,5 +98,5 @@ Description: Batteries included: OCaml development platform - meta-package
     on every compliant installation of OCaml
   * provide a consistent API for otherwise independent libraries.
  .
- This meta-package is provided for convenience, to install all of
+ This metapackage is provided for convenience, to install all of
  batteries included at once.

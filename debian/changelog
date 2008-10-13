@@ -1,3 +1,9 @@
+ocaml-batteries (0.20081011-2) UNRELEASED; urgency=low
+
+  * debian/control: correct spelling of "metapackage"
+
+ -- Stefano Zacchiroli <zack@debian.org>  Mon, 13 Oct 2008 22:11:31 +0200
+
 ocaml-batteries (0.20081011-1) experimental; urgency=low
 
   * Initial release (Closes: #501914)
