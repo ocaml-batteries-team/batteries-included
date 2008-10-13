@@ -18,8 +18,11 @@ DEB_MAKE_BUILD_TARGET += OBFLAGS=-classic-display
 DEB_MAKE_INSTALL_TARGET = install DESTDIR=$(DEST_DIR)
 
 build/$(DOC_PKG_NAME)::
-	OCAMLRUNPARAM=l=16M \
-	make doc OBFLAGS=-classic-display
+	OCAMLRUNPARAM=l=16M make doc OBFLAGS=-classic-display
+	/usr/share/cdbs/1/class/ocamldoc-api-ref-config \
+		--doc-base-generate $(DEV_PKG_NAME)
+	mv debian/$(DEV_PKG_NAME).doc-base.ocamldoc-apiref \
+		debian/$(DOC_PKG_NAME).doc-base.ocamldoc-apiref
 
 TG_BRANCHES = features/flexi-build
 SAVED_BRANCH := $(shell git branch 2> /dev/null | grep '^*' | cut -f 2 -d' ')
