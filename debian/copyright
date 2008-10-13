@@ -4,7 +4,7 @@ Mon, 13 Oct 2008 14:14:06 +0200.
 It was downloaded from <http://batteries.forge.ocamlcore.org>
 
 Files: *
-Copyright: © 2008 David Teller
+Copyright: © 2008 David Teller, LIFO, Universite d'Orleans
 License: LGPL-2.1+ | other
  As a special exception to the GNU Lesser General Public License, you
  may link, statically or dynamically, a "work that uses the Library"
@@ -33,8 +33,10 @@ they are listed below. Unless otherwise stated, licenses for those
 sub-parts are the same as above: LGPL with linking exception (i.e.,
 LGPL-2.1+ | other).
 
+
+
 Files: build/odoc_generator_batlib.ml
-Copyright: © 2008 David Teller
+Copyright: © 2008 David Teller, LIFO, Universite d'Orleans
            © 2008 Maxence Guesdon
 License: LGPL-2.1+ | other
 
@@ -77,37 +79,204 @@ Copyright: © 1996-2008 Xavier Leroy, projet Cristal, INRIA Rocquencourt
 License: LGPL-2.1+ | other
 
 Files: */batlib_Baselib_BigArray.mli
-Copyright: © 1996-2008 Manuel Serrano, projet Cristal, INRIA Rocquencourt
-           © 1996-2008 Xavier Leroy, projet Cristal, INRIA Rocquencourt
+Copyright: © 1996 Manuel Serrano, projet Cristal, INRIA Rocquencourt
+           © 1996 Xavier Leroy, projet Cristal, INRIA Rocquencourt
 License: LGPL-2.1+ | other
 
 Files: */batlib_Baselib_Big_int.mli, */batlib_Baselib_Num.mli
-Copyright: © 1996-2008 Valerie Menissier-Morain, projet Cristal, INRIA Rocquencourt
+Copyright: © 1996 Valerie Menissier-Morain, projet Cristal, INRIA Rocquencourt
 License: LGPL-2.1+ | other
 
 Files: */batlib_Baselib_Buffer.mli, */batlib_Baselib_Printf.mli
-Copyright: © 1996-2008 Pierre Weis, projet Cristal, INRIA Rocquencourt
-           © 1996-2008 Xavier Leroy, projet Cristal, INRIA Rocquencourt
+Copyright: © 1996 Pierre Weis, projet Cristal, INRIA Rocquencourt
+           © 1996 Xavier Leroy, projet Cristal, INRIA Rocquencourt
 License: LGPL-2.1+ | other
 
 Files: */batlib_Baselib_CamlinternalOO.mli, */batlib_Baselib_Oo.mli
-Copyright: © 1996-2008 Jerome Vouillon, projet Cristal, INRIA Rocquencourt
+Copyright: © 1996 Jerome Vouillon, projet Cristal, INRIA Rocquencourt
 License: LGPL-2.1+ | other
 
 Files: */batlib_Baselib_Format.mli, */batlib_Baselib_Scanf.mli
-Copyright: © 1999-2008 Pierre Weis, projet Cristal, INRIA Rocquencourt
+Copyright: © 1999 Pierre Weis, projet Cristal, INRIA Rocquencourt
 License: LGPL-2.1+ | other
 
 Files: */batlib_Baselib_HashtblLabels.mli, */batlib_Baselib_MapLabels.mli, */batlib_Baselib_SetLabels.mli
-Copyright: © 2001-2008, Jacques Garrigue, Kyoto University RIMS
+Copyright: © 2001 Jacques Garrigue, Kyoto University RIMS
 License: LGPL-2.1+ | other
 
 Files: */batlib_Baselib_Stream.mli
-Copyright: © 1997-2008, Daniel de Rauglaudre, projet Cristal, INRIA Rocquencourt
+Copyright: © 1997 Daniel de Rauglaudre, projet Cristal, INRIA Rocquencourt
 License: LGPL-2.1+ | other
 
+
+
 Files: */extlib/*
-       TODO: this whole hierarchy is still to be done :-(
+Copyright: © 2003 Nicolas Cannasse
+License: LGPL-2.1+ | other
+
+Files: */extlib/charParser.ml*, */extlib/enumLabels.ml,
+ */extlib/extUnit.ml*, extlib/file.ml*, */extlib/labels.ml*,
+ */extlib/lazyList*.ml*, */extlib/monad.ml*, */extlib/ref.ml*
+Copyright: © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/bitSet.ml*, */extlib/enumLabels.mli,
+ */extlib/enum.ml*, */extlib/global.mli, */extlib/IO.ml,
+ */extlib/option.ml*, */extlib/std.mli
+Copyright: © 2003 Nicolas Cannasse
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extArray.ml
+Copyright: © 2005 Richard W.M. Jones
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extArray.mli
+Copyright: © 1996 Xavier Leroy
+           © 2005 Richard W.M. Jones
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/dllist.ml*
+Copyright: © 2004 Brian Hurt
+           © 2004 Jesse Guardiani
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/dynArray.ml*
+Copyright: © 2003 Brian Hurt
+           © 2003 Nicolas Cannasse
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extBig_int.ml, */extlib/extBool.ml*,
+ */extlib/extComplex.ml*, */extlib/extFloat.ml*, */extlib/extInt32.ml,
+ */extlib/extInt64.ml, */extlib/extInt.ml, */extlib/number.ml*
+Copyright: © 2007 Bluestorm
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extInt64.mli, */extlib/extNativeint.ml
+Copyright: © 2005 Damien Doligez
+           © 2007 Bluestorm
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extBig_int.mli, */extlib/extInt.mli, */extlib/extNum.ml
+Copyright: © 2007 Gabriel Scherer
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extChar.ml*
+Copyright: © 1996 Xavier Leroy
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extInt32.mli, */extlib/extNativeint.mli
+Copyright: © 1996 Xavier Leroy
+           © 2007 Bluestorm
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extGenlex.ml*
+Copyright: © 2002 Jacques Garrigue
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extHashtbl.ml*
+Copyright: © 1996 Xavier Leroy
+           © 2003 Nicolas Cannasse
+           © 2005 Damien Doligez
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extList.ml*
+Copyright: © 2003 Brian Hurt
+           © 2003 Nicolas Cannasse
+           © 2008 Red Hat Inc.
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extNum.mli
+Copyright: © 1996 Valerie Menissier-Morain
+           © 2008 Gabriel Scherer
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extRandom.ml*
+Copyright: © 1996 Damien Doligez
+           © 2008 Damien Teller
+License: LGPL-2.1+ | other
+
+Files: */extlib/extStream.ml*
+Copyright: © 1997 Daniel de Rauglaudre
+           © 2007 Zheng Li
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/std.ml
+Copyright: © 2003 Nicolas Cannasse
+           © 2007 Markus Mottl
+           © 2007 Zheng Li
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extString.ml
+Copyright: © 2003 Nicolas Cannasse
+           © 2008 David Teller, LIFO, Universite d'Orleans
+           © 2008 Edgar Friendly
+License: LGPL-2.1+ | other
+
+Files: */extlib/extString.mli
+Copyright: © 1996 Xavier Leroy, INRIA, Rocquencourt
+           © 2003 Nicolas Cannasse
+           © 2008 David Teller, LIFO, Universite d'Orleans
+           © 2008 Edgar Friendly
+License: LGPL-2.1+ | other
+
+Files: */extlib/extUTF8.ml
+Copyright: © 2008 Edgar Friendly
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extUTF8.mli
+Copyright: © 2002-2003 Yamagata Yoriyuki
+           © 2008 Edgar Friendly
+           © 2008 David Teller, LIFO, Universite d'Orleans
+License: LGPL-2.1+ | other
+
+Files: */extlib/extUChar.ml*
+Copyright: © 2002-2003 Yamagata Yoriyuki
+License: LGPL-2.1+ | other
+
+Files: */extlib/IO.mli
+Copyright: © 2003 Nicolas Cannasse
+           © 2008 David Teller, LIFO, Universite d'Orleans
+           © 2008 Philippe Strauss
+           © 2008 Edgar Friendly
+License: LGPL-2.1+ | other
+
+Files: */extlib/optParse.ml*
+Copyright: © 2004 Bardur Arantsson
+License: LGPL-2.1+ | other
+
+Files: */extlib/pMap.ml*
+Copyright: © 1996-2003 Xavier Leroy
+           © 1996-2003 Nicolas Cannasse
+           © 1996-2003 Markus Mottl
+License: LGPL-2.1+ | other
+
+Files: */extlib/rope.ml*
+Copyright: © 2007 Mauricio Fernandez
+           © 2008 Edgar Friendly
+License: LGPL-2.1+ | other
+
+Files: */extlib/vect.ml*
+Copyright: © 2007 Mauricio Fernandez
+License: LGPL-2.1+ | other
+
+
 
 Files: */toolchain/*
        TODO: this whole hierarchy is still to be done :-(
