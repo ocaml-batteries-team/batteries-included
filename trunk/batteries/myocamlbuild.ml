@@ -401,8 +401,8 @@ struct
 	  return (as_comment ())*)
 
 
-  let read_pack pack =
-    with_input_file pack (
+  let read_pack pack = string_list_of_file pack
+(*    with_input_file pack (
       fun input ->
 	let modules = ref [] in
 	  try
@@ -411,7 +411,7 @@ struct
 		modules := m::!modules
 	    done; assert false
 	  with End_of_file -> !modules
-    )
+    )*)
 
   (**{6 OCamlbuild options}*)
 	
@@ -434,22 +434,50 @@ struct
 
       end;*)
     rule ".mlpack to .packed.ml"
-      ~prod:"%.packed.ml"
+      ~prod:"%.packedml"
       ~dep:"%.mlpack"
       begin fun env build ->
 	let pack = env "%.mlpack"
-	and dest = env "%.packed.ml" in
+	and dest = env "%.packedml" in
 	let modules = read_pack pack in
 	  Echo(List.map (fun m -> Printf.sprintf "module %s = %s\n" m m) modules, 
 	       dest)
       end;
     
     rule ".packed.ml to .odoc"
-      ~deps:["%.packed.ml";"%.packed.ml.depends"] 
+      ~dep:"%.packedml"
       ~prod:"%.odoc"
-(*      begin fun env build ->*)
-	(Ocaml_tools.document_ocaml_implem "%.packed.ml" "%.odoc");
-(*      end*)
+      begin fun env build ->
+	let pack         = env "%.mlpack"
+	and mlpacked     = env "%.packedml" 
+	and odoc         = env "%.odoc"      in
+	  Printf.eprintf "While building documentation, generating %S from %S itself generated from %S\n" odoc mlpacked pack;
+	let modules      = read_pack pack    in
+	let include_dirs = Pathname.include_dirs_of (Pathname.dirname pack) in
+	  (*Ocaml_compiler.prepare_compile build mlpacked;*)
+	  let deps       = List.map Outcome.good (build (List.map(fun m -> 
+								    Printf.eprintf "Depending on %S\n" m;
+								    expand_module include_dirs m ["odoc"]) modules)) 
+	  and tags       = (tags_of_pathname mlpacked++"implem") 
+	  and arg        = mlpacked in
+	    Cmd (S [!Options.ocamldoc;
+		    S(List.map (fun a -> S[A"-load"; P a]) deps);
+		    ocaml_ppflags (tags++"pp:doc"); 
+		    Tools.flags_of_pathname arg;
+		    ocaml_include_flags arg; 
+		    A"-dump"; 
+		    Px odoc; 
+		    T(tags++"doc");
+		    A "-impl";
+		    P mlpacked])
+		    
+
+
+(*	  Ocaml_tools.ocamldoc_l_file (tags_of_pathname pack++"implem"++"ocaml") 
+	    () )
+	    dest *)
+
+      end;
 (*    rule ".mlpack to .odoc"
       ~prod:"%.odoc"
       ~dep:"%.mlpack"
