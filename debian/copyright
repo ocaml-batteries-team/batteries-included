@@ -1,0 +1,129 @@
+This package was debianized by Stefano Zacchiroli <zack@debian.org> on
+Mon, 13 Oct 2008 14:14:06 +0200.
+
+It was downloaded from <http://batteries.forge.ocamlcore.org>
+
+Files: *
+Copyright: © 2008 David Teller
+License: LGPL-2.1+ | other
+ As a special exception to the GNU Lesser General Public License, you
+ may link, statically or dynamically, a "work that uses the Library"
+ with a publicly distributed version of the Library to produce an
+ executable file containing portions of the Library, and distribute
+ that executable file under terms of your choice, without any of the
+ additional requirements listed in clause 6 of the GNU Lesser General
+ Public License.  By "a publicly distributed version of the Library",
+ we mean either the unmodified Library as distributed by the authors,
+ or a modified version of the Library that is distributed under the
+ conditions defined in clause 3 of the GNU Lesser General Public
+ License.  This exception does not however invalidate any other
+ reasons why the executable file might be covered by the GNU Lesser
+ General Public License.
+
+The Library is distributed under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation; either
+version 2.1, or (at your option any later version), with the special
+exception on linking reported above.
+
+The full text of the GNU Lessere General Public License version 2.1
+can be found in `/usr/share/common-licenses/LGPL-2.1'.
+
+Different copyright owners apply to specific sub-part of the library;
+they are listed below. Unless otherwise stated, licenses for those
+sub-parts are the same as above: LGPL with linking exception (i.e.,
+LGPL-2.1+ | other).
+
+Files: build/odoc_generator_batlib.ml
+Copyright: © 2008 David Teller
+           © 2008 Maxence Guesdon
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_Arg.mli, */batlib_Baselib_Gc.mli,
+ */batlib_Baselib_Lazy.mli, */batlib_Baselib_Random.mli,
+ */batlib_Baselib_Weak.mli
+Copyright: © 1996-2008 Damien Doligez, projet Para, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_Condition.mli, */batlib_Baselib_Mutex.mli
+Copyright: © 1996-2008 Damien Doligez, projet Para, INRIA Rocquencourt
+           © 1996-2008 Xavier Leroy, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_Thread.mli
+Copyright: © 1996-2008 Xavier Leroy, projet Cristal, INRIA Rocquencourt
+           © 1996-2008 Pascal Cuoq, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_Event.mli
+Copyright: © 1996-2008 David Nowak, projet Cristal, INRIA Rocquencourt
+           © 1996-2008 Xavier Leroy, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_ArrayLabels.mli,
+ */batlib_Baselib_Callback.mli, */batlib_Baselib_CamlinternalMod.mli,
+ */batlib_Baselib_Char.mli, */batlib_Baselib_Complex.mli,
+ */batlib_Baselib_Digest.mli, */batlib_Baselib_Filename.mli,
+ */batlib_Baselib_Genlex.mli, */batlib_Baselib_Int*.mli,
+ */batlib_Baselib_Lexing.mli, */batlib_Baselib_ListLabels.mli,
+ */batlib_Baselib_Map.mli, */batlib_Baselib_Marshal.mli,
+ */batlib_Baselib_Nativeint.mli, */batlib_Baselib_Big_Obj.mli,
+ */batlib_Baselib_Parsing.mli, */batlib_Baselib_Pervasives.mli,
+ */batlib_Baselib_Printexc.mli, */batlib_Baselib_Queue.mli,
+ */batlib_Baselib_Set.mli, */batlib_Baselib_Stack.mli,
+ */batlib_Baselib_StringLabels.mli, */batlib_Baselib_Str.mli,
+ */batlib_Baselib_Sys.mli, */batlib_Baselib_UnixLabels.mli,
+ */batlib_Baselib_Unix.mli
+Copyright: © 1996-2008 Xavier Leroy, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_BigArray.mli
+Copyright: © 1996-2008 Manuel Serrano, projet Cristal, INRIA Rocquencourt
+           © 1996-2008 Xavier Leroy, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_Big_int.mli, */batlib_Baselib_Num.mli
+Copyright: © 1996-2008 Valerie Menissier-Morain, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_Buffer.mli, */batlib_Baselib_Printf.mli
+Copyright: © 1996-2008 Pierre Weis, projet Cristal, INRIA Rocquencourt
+           © 1996-2008 Xavier Leroy, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_CamlinternalOO.mli, */batlib_Baselib_Oo.mli
+Copyright: © 1996-2008 Jerome Vouillon, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_Format.mli, */batlib_Baselib_Scanf.mli
+Copyright: © 1999-2008 Pierre Weis, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_HashtblLabels.mli, */batlib_Baselib_MapLabels.mli, */batlib_Baselib_SetLabels.mli
+Copyright: © 2001-2008, Jacques Garrigue, Kyoto University RIMS
+License: LGPL-2.1+ | other
+
+Files: */batlib_Baselib_Stream.mli
+Copyright: © 1997-2008, Daniel de Rauglaudre, projet Cristal, INRIA Rocquencourt
+License: LGPL-2.1+ | other
+
+Files: */extlib/*
+       TODO: this whole hierarchy is still to be done :-(
+
+Files: */toolchain/*
+       TODO: this whole hierarchy is still to be done :-(
+
+Files: */src/main/*
+       DONE: this part is OK, this line can be removed :-)
+
+Files: */src/syntax/*
+       TODO: this whole hierarchy is still to be done :-(
+
+
+Files: debian/*
+Copyright: © 2008 Stefano Zacchiroli <zack@debian.org>
+License: GPL-3+
+
+  The Debian packaging is copyright Stefano Zacchiroli, and licensed
+  under the GNU General Public License, see
+  `/usr/share/common-licenses/GPL' for the full text.
+
