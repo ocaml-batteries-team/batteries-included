@@ -304,6 +304,13 @@ module Legacy = struct
     (**/**)
 end
 
+(**
+   Automatically opened module
+*)
+module Standard = Batteries_core_threads.Standard(*Included for documentation purposes*)
+
+include Standard
+
 (**/**)
 module Condition = Control.Concurrency.Threads.Condition
 module Event     = Control.Concurrency.Threads.Event
@@ -358,4 +365,3 @@ module Random    = Util.Random
 (**/**)
 
 
-include Batteries_core_threads.Standard

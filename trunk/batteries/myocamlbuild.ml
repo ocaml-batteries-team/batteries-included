@@ -283,6 +283,61 @@ struct
 			   with Not_found ->  None) sorted;;
 
   let generate_mli buf l = 
+    let parse_header channel = 
+      let storage = Buffer.create 1024 in
+      let store c = Buffer.add_char storage c in
+      let return stream =
+	let rest = Buffer.create 1024 in
+	  (Buffer.contents storage, 
+	   begin
+	     Stream.iter (fun x -> Buffer.add_char rest x) stream;
+	     Buffer.contents rest
+	   end)
+      in
+      let rec next_token (strm__ : _ Stream.t) = match Stream.peek strm__ with
+	  | Some ('(' as c) -> Stream.junk strm__; store c; maybe_comment strm__
+	  | Some (' ' | '\010' | '\013' | '\009' | '\026' | '\012' as c) ->
+              Stream.junk strm__; store c; next_token strm__
+	  | _ -> return strm__
+      and maybe_comment (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	  | Some ('*' as c) -> Stream.junk strm__; store c; 
+	      let s = strm__ in maybe_ocamldoc s
+	  | _             -> next_token strm__
+      and maybe_ocamldoc (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	  | Some ('*' as c) -> Stream.junk strm__; store c; 
+	      let s = strm__ in probably_ocamldoc s
+	  | _             -> comment strm__; next_token strm__
+      and comment (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	    Some ('(' as c) -> Stream.junk strm__; store c; maybe_nested_comment strm__
+	  | Some ('*' as c) -> Stream.junk strm__; store c; maybe_end_comment strm__
+	  | Some c -> Stream.junk strm__; store c; comment strm__
+	  | _ -> raise Stream.Failure
+      and maybe_nested_comment (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	    Some ('*' as c) -> Stream.junk strm__; store c; let s = strm__ in ignore (comment s); comment s
+	  | Some c -> Stream.junk strm__; store c; comment strm__
+	  | _ -> raise Stream.Failure
+      and maybe_end_comment (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	    Some (')' as c) -> Stream.junk strm__; store c; ()
+	  | Some ('*' as c) -> Stream.junk strm__; store c; maybe_end_comment strm__
+	  | Some c   -> Stream.junk strm__; store c; comment strm__
+	  | _ -> raise Stream.Failure
+      and probably_ocamldoc (strm__ : _ Stream.t) = 
+	match Stream.peek strm__ with
+	  | Some '*' -> comment strm__; next_token strm__ (*Actually three ***, so it's a regular comment*)
+	  | _        -> ocamldoc strm__
+      and ocamldoc (strm__ : _ Stream.t) = 
+	comment strm__;
+	return strm__
+      in
+	next_token (Stream.of_channel channel)
+
+    (*let scan chan = *)
+
     (*TODO: Scan the start of the file until the first [(**]
             Initialize counter at 1
             Then scan what comes next until either
@@ -294,6 +349,7 @@ struct
             or as a [string] or [string_list]
     *)*)
     (*let scan file*)
+(*    in
     let feed file buf () =
       with_input_file file (
 	fun cin ->
@@ -315,8 +371,19 @@ struct
 	  with String.Invalid_string -> Printf.bprintf buf "module %s:(*from %S*)\nsig\n%a\nend\n" name src (feed src) ()*)
       ) l in
       (*  Printf.fprintf out "module %s:\nsig\n%a\nend\n" pack print_modules ()*)
-      print_modules buf ()
-	
+      print_modules buf ()*)
+    in
+  let print_modules buf () =
+    List.iter (
+      fun (name, src) ->
+	let name = try
+	  let index = String.find name ".inferred" in
+	    String.sub name 0 index
+	with String.Invalid_string -> name in
+	let (prefix, contents) = with_input_file src parse_header in
+	  Printf.bprintf buf "%s\nmodule %s:(*from %S*)\nsig\n%s\nend\n" prefix name src contents
+    ) l
+  in print_modules buf ()
 
   (** Tiny parser *)
 (*  type token =   Code    of string
@@ -441,15 +508,36 @@ struct
 
     if _PRODUCE_PACKED_ML then
       begin
+
+	(*Convert a .mlpack to .packedml
+	  If foo.mlpack consists in list [A], [B], [C], [D]... then
+	  foo.packedml consists in
+	  [module Foo = struct
+	     module A = A
+	     module B = B
+	     module C = C
+             module D = D
+             ...
+	  end]
+
+	  Note that we need to define [module Foo] inside [foo.packedml] as
+	  OCamlDoc doesn't automatically assume that [foo.packedml] contains
+	  a module [Foo].
+	*)
     rule ".mlpack to .packedml"
       ~prod:"%.packedml"
-      ~dep:"%.mlpack"
+      ~deps:["%.mlpack"; "%.cmo"]
       begin fun env build ->
 	let pack = env "%.mlpack"
-	and dest = env "%.packedml" in
+	and dest = env "%.packedml"
+	and name = String.capitalize (Filename.basename (env "%")) in
 	let modules = read_pack pack in
-	  Echo(List.map (fun m -> Printf.sprintf "module %s = %s\n" m m) modules, 
-	       dest)
+(*	  Echo((Printf.sprintf "module %s = struct\n(**/**)\n" name)                        ::
+		 List.map (fun m -> Printf.sprintf "module %s = struct include %s end\n" m m) modules @
+		 ["(**/**)\nend"],
+	       dest)*)
+	  Echo( List.map (fun m -> Printf.sprintf "module %s = struct include %s end\n" m m) modules,
+		  dest)
       end;
     
     rule ".packed.ml to .odoc"
@@ -459,12 +547,10 @@ struct
 	let pack         = env "%.mlpack"
 	and mlpacked     = env "%.packedml" 
 	and odoc         = env "%.odoc"      in
-	  Printf.eprintf "While building documentation, generating %S from %S itself generated from %S\n" odoc mlpacked pack;
 	let modules      = read_pack pack    in
 	let include_dirs = Pathname.include_dirs_of (Pathname.dirname pack) in
 	  (*Ocaml_compiler.prepare_compile build mlpacked;*)
 	  let deps       = List.map Outcome.good (build (List.map(fun m -> 
-								    Printf.eprintf "Depending on %S\n" m;
 								    expand_module include_dirs m ["odoc"]) modules)) 
 	  and tags       = (tags_of_pathname mlpacked++"implem") 
 	  and arg        = mlpacked in

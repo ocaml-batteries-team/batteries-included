@@ -1,3 +1,15 @@
+2008-10-15  David Teller  <David.Teller@univ-orleans.fr>
+
+	* myocamlbuild.ml: [generate_mli] reimplemented
+
+2008-10-14  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/interfaces.ml: created
+
+	* src/core/extlib/number.ml*: in [Discrete], added [( -- )] and [( --- )]
+
+	* myocamlbuild.ml: [_PRODUCE_MLI_FROM_PACK], [_PRODUCE_PACKED_ML] added
+
 2008-10-13  David Teller  <David.Teller@univ-orleans.fr>
 
 	* Makefile: target [odoc_generator_batlib.cmo] removed

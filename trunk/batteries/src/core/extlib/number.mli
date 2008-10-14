@@ -112,6 +112,8 @@ sig
   val to_int: t -> int
   val succ  : t -> t
   val pred  : t -> t
+  val ( -- ): t -> t -> t Enum.t
+  val ( --- ): t -> t -> t Enum.t
 end
 
 (**/**)
@@ -119,7 +121,7 @@ end
 (** {6 Utilities}*)
 
 (**
-   The smallest set of operations supported by every set if numbers
+   The smallest set of operations supported by every set of numbers
 *)
 module type NUMERIC_BASE =
   sig
