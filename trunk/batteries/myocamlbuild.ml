@@ -81,6 +81,8 @@ end
 *)
 module Documentation =
 struct
+
+
   let before_options () =
     (*Options.ocamldoc  := A"ocamldoc"*) ()
 
@@ -98,6 +100,9 @@ end
 (** Create a .mli for each .mlpack which doesn't already have one. *)
 module Packs =
 struct
+
+  let _PRODUCE_MLI_FROM_PACK = true  (*current workaround for .mlpack + ocamldoc issues*)
+  let _PRODUCE_PACKED_ML     = false (*not ready for prime-time*)
 
   (** Imported from {!List} to avoid unsolvable dependencies*)
   module List =
@@ -433,7 +438,10 @@ struct
 	in Echo(modules, dest)
 
       end;*)
-    rule ".mlpack to .packed.ml"
+
+    if _PRODUCE_PACKED_ML then
+      begin
+    rule ".mlpack to .packedml"
       ~prod:"%.packedml"
       ~dep:"%.mlpack"
       begin fun env build ->
@@ -476,7 +484,7 @@ struct
 (*	  Ocaml_tools.ocamldoc_l_file (tags_of_pathname pack++"implem"++"ocaml") 
 	    () )
 	    dest *)
-
+      end
       end;
 (*    rule ".mlpack to .odoc"
       ~prod:"%.odoc"
@@ -503,9 +511,9 @@ struct
       begin fun env build ->
 	assert false
       end; *)
-
+    if _PRODUCE_MLI_FROM_PACK then
     rule ".mlpack to .mli conversion rule"
-      ~prod:"%.mlizzzz"
+      ~prod:"%.mli"
       ~dep:"%.mlpack"
       begin fun env build ->
         (*c The action is a function that receive two arguments:

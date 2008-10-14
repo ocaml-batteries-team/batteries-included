@@ -1,4 +1,5 @@
 2008-10-13  David Teller  <David.Teller@univ-orleans.fr>
+
 	* Makefile: target [odoc_generator_batlib.cmo] removed
 
 	* Makefile: [install] now installing [extlib.cmi]
