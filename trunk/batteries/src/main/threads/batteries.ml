@@ -45,10 +45,7 @@ module Control     = struct
 
   module Labels      = Batteries_core_threads.Control.Labels
 
-  (** Monadic operations. *)
-  module Monad = struct
-    module type S  = Batteries_core_threads.Control.Monad.S
-  end
+  module Monad = Batteries_core_threads.Control.Monad
 end
 
 (** Data structures*)

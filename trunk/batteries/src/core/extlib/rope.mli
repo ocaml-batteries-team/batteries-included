@@ -68,6 +68,7 @@ calling [balance] after each modification would defeat the purpose of amortizati
  
 @author Mauricio Fernandez
 *)
+
  
 open ExtUChar
 open ExtUTF8

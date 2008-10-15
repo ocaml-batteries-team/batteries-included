@@ -18,13 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open InnerIO
-
 (**
    File manipulation
-
+   
    @author David Teller
 *)
+
+
+open InnerIO
 
 (** {6 Utilities} *)
 val lines_of : string -> string Enum.t

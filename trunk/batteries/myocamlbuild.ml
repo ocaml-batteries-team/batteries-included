@@ -282,21 +282,39 @@ struct
 			   try Some (module_name, Hashtbl.find src module_name)
 			   with Not_found ->  None) sorted;;
 
+  (**
+     Generate a .mli from a list of modules.
+     To do so, read the contents of each module signature
+     and produce a .mli along the lines of
+     [
+     (**First comments of module Foo*)
+     module Foo :
+     sig
+        (*contents of foo.mli minus the first comments*)
+     end
+     ]*)
   let generate_mli buf l = 
+    (*Extract the first comments, up-to the first ocamldoc not followed by a newline.*)
     let parse_header channel = 
-      let storage = Buffer.create 1024 in
-      let store c = Buffer.add_char storage c in
-      let return stream =
-	let rest = Buffer.create 1024 in
-	  (Buffer.contents storage, 
-	   begin
-	     Stream.iter (fun x -> Buffer.add_char rest x) stream;
-	     Buffer.contents rest
-	   end)
+      let past    = Buffer.create 1024        in
+      let store c = Buffer.add_char past c    in
+      let newline = ref false                 in
+      let return stream =	
+	let rest = Buffer.create 1024         in
+	  Stream.iter (fun x -> Buffer.add_char rest x) stream;
+	  if !newline then (*There are two newlines after the comment, it's the module comment*)
+	    (Buffer.contents past, Buffer.contents rest)
+	  else             (*This comment is actually for the first element of the module*)
+	    begin
+	      Buffer.add_buffer past rest;
+	      ("", Buffer.contents past)
+	    end
       in
       let rec next_token (strm__ : _ Stream.t) = match Stream.peek strm__ with
 	  | Some ('(' as c) -> Stream.junk strm__; store c; maybe_comment strm__
-	  | Some (' ' | '\010' | '\013' | '\009' | '\026' | '\012' as c) ->
+	  | Some (' ' | '\009' | '\026' | '\012' as c) ->
+              Stream.junk strm__; store c; next_token strm__
+	  | Some ('\n'| '\r' as c) ->
               Stream.junk strm__; store c; next_token strm__
 	  | _ -> return strm__
       and maybe_comment (strm__ : _ Stream.t) =
@@ -332,7 +350,19 @@ struct
 	  | _        -> ocamldoc strm__
       and ocamldoc (strm__ : _ Stream.t) = 
 	comment strm__;
-	return strm__
+	after_ocamldoc 0 strm__
+      and after_ocamldoc n (strm__ : _ Stream.t) = 
+	match Stream.peek strm__ with
+	  | Some ('\r' | '\n') when n >= 1 ->
+	      newline := true;
+	      return strm__
+	  | Some ('\r' | '\n' as c) ->  
+	      Stream.junk strm__;
+	      after_ocamldoc (n + 1) strm__
+	  | Some ('\009' | '\026' | '\012') ->
+              Stream.junk strm__;
+	      after_ocamldoc n strm__
+	  | _ -> return strm__
       in
 	next_token (Stream.of_channel channel)
 
@@ -385,105 +415,10 @@ struct
     ) l
   in print_modules buf ()
 
-  (** Tiny parser *)
-(*  type token =   Code    of string
-	       | Comment of string*)
-
-  (*let token_buf = Buffer.create 16
-
-  let as_code ()  = Code (Buffer.contents token_buf)
-  let as_comment()= Comment (Buffer.contents token_buf)
-
-  let return v    = (*Stream.ising v*)[v]
-  let cons   v f  = (*Stream.icons v (Stream.slazy f)*) v::(f ())
-  let add_char c  =
-    Stream.junk;
-    Buffer.add_char token_buf c
-
-  let rec next_token stream =
-    try match Stream.next stream with
-      |	Some '(' -> maybe_comment stream
-      | Some c   -> Buffer.add_char token_buf c; 
-	  next_token stream
-      | None     -> return (as_code ())
-  and maybe_comment stream =
-    match Stream.next stream with
-      | Some '*' -> cons   (as_code ()) (fun () -> comment stream)
-      | Some c   ->
-	  Buffer.add_char token_buf '('; 
-	  Buffer.add_char token_buf c; 
-	  next_token stream
-      | None     -> return (as_code ())
-  and comment stream =
-    match Stream.next stream with
-      | Some '(' -> 
-	  Buffer.add_char token_buf '(';
-	  maybe_nested_comment 1 stream
-      | Some '*' -> maybe_end_of_comment stream
-      | Some c   ->
-	  Buffer.add_char token_buf c;
-	  comment stream
-      | None     -> return (as_comment ())
-  and maybe_nested_comment n stream =
-    match Stream.next stream with
-      | Some '*' -> 
-	  Buffer.add_char token_buf '*';
-	  nested_comment n stream
-      | Some c   ->
-	  Buffer.add_char token_buf c  ;
-	  comment stream
-      | None     -> return (as_comment ())
-  and maybe_end_of_comment stream =
-    match Stream.next stream with
-      | Some ')' -> 
-	  cons (as_comment ()) (fun () -> next_token stream)
-      | Some c   ->
-	  Buffer.add_char token_buf '*';
-	  Buffer.add_char token_buf c;
-	  comment stream
-      | None     ->
-	  Buffer.add_char token_buf '*';
-	  return (as_comment ())
-  and nested_comment n stream =
-    match Stream.next stream with
-      | Some '(' -> 
-	  Buffer.add_char token_buf '(';
-	  maybe_nested_comment (n + 1) stream
-      | Some '*' -> 
-	  maybe_end_of_nested_comment n stream
-      | Some c   ->
-	  Buffer.add_char token_buf c;
-	  nested_comment n stream
-      | None     -> return (as_comment ())
-  and maybe_end_of_nested_comment n stream =
-    match Stream.next stream with
-      | Some ')' -> if n >= 2 then begin
-	  Buffer.add_char token_buf ')';
-	  nested_comment (n - 1) stream
-	end else begin
-	  Buffer.add_char token_buf ')';
-	  comment stream
-	end
-      | Some c   ->
-	  Buffer.add_char token_buf '*';
-	  Buffer.add_char token_buf c;
-	  nested_comment n stream
-      | None     ->
-	  Buffer.add_char token_buf '*';
-	  return (as_comment ())*)
 
 
   let read_pack pack = string_list_of_file pack
-(*    with_input_file pack (
-      fun input ->
-	let modules = ref [] in
-	  try
-	    while true do
-	      let m = input_line input in
-		modules := m::!modules
-	    done; assert false
-	  with End_of_file -> !modules
-    )*)
+
 
   (**{6 OCamlbuild options}*)
 	
@@ -564,39 +499,9 @@ struct
 		    T(tags++"doc");
 		    A "-impl";
 		    P mlpacked])
-		    
-
-
-(*	  Ocaml_tools.ocamldoc_l_file (tags_of_pathname pack++"implem"++"ocaml") 
-	    () )
-	    dest *)
       end
       end;
-(*    rule ".mlpack to .odoc"
-      ~prod:"%.odoc"
-      ~dep:"%.mlpack"
-      begin fun env build ->
-	let modules      = 
-	  with_input_file pack (
-	    fun input ->
-	      let modules = ref [] in
-		try
-		  while true do
-		    let m = input_line input in
-		      modules := m::!modules
-		  done; assert false
-		with End_of_file -> !modules			      
-	  ) in
-	  List.iter ignore_good (build (List.map(fun m -> expand_module include_dirs m ["odoc"]) modules));
-	  
-      end*)
-(*    rule "ocaml: mllib & cmx* & o* -> cmxa & a -- with pack"
-      ~tags:["ocaml"; "native"; "library"]
-      ~prods:["%.cmxa"; Pathname.add_extension "%"  !Options.ext_lib]
-      ~dep:"%.mllib"
-      begin fun env build ->
-	assert false
-      end; *)
+
     if _PRODUCE_MLI_FROM_PACK then
     rule ".mlpack to .mli conversion rule"
       ~prod:"%.mli"

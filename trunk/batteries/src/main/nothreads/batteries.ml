@@ -42,9 +42,7 @@ module Control     = struct
   module Labels      = Inner.Control.Labels
 
   (** Monadic operations. *)
-  module Monad = struct
-    module type S  = Inner.Control.Monad.S
-  end
+  module Monad = Inner.Control.Monad
 end
 
 (** Data structures*)

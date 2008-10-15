@@ -252,9 +252,7 @@ let output_channel ch =
 		out_close = (fun () -> Pervasives.close_out ch);
 		out_flush = (fun () -> Pervasives.flush ch);
 	}
-
-
-
+  
 
 
 let pipe() =
@@ -302,6 +300,11 @@ let pipe() =
 
 external cast_output : 'a output -> unit output = "%identity"
 
+(*let to_input_channel inp =
+  let (fin, fout) = Unix.pipe () in
+    let outp = out_channel fout  in
+    (*connect [inp] to [outp]*)
+    in_channel_of_descr fin*)
 (**
    {6 Binary APIs}
 *)

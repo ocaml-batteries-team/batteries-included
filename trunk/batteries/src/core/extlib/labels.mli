@@ -1,4 +1,4 @@
-(******************************************************************************
+(*
  * Labels -- fast return in OCaml
  * Copyright (C) 2008 David Teller
  *
@@ -16,34 +16,35 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *****************************************************************************)
+ *)
 
-(** Local exceptions/labels/goto.
-
-    This module defines a mechanism akin to SML's exception 
-    generators or to C's [return], i.e. the ability to define
-    local {i labels}, which may be used for immediately
-    terminating an expression and returning a value.
-    
-    This mechanism is extremely fast (typically as fast as
-    exceptions), by opposition to {!Error}'s error management
-    mechanism. The drawback is that this mechanism is just
-    as unsafe as exceptions, insofar as successfully compiling
-    a program does not guarantee that every use of a label is
-    properly caught.
-    
-    Example:
-    {[
-    let find_in_array a e =
-      label (fun return ->
-        for i = 0 to Array.length a - 1 do
-         if Array.get a i = e then recall return (Some i)
-        done;
-        None
-      )
-    ]}
-
-    @author David Teller
+(**
+   Local exceptions/labels/goto.
+   
+   This module defines a mechanism akin to SML's exception generators
+   or to a generalization of C's [return], i.e. the
+   ability to define local {i labels}, which may be used for
+   immediately terminating an expression and returning a value.
+   
+   This mechanism is extremely fast (typically as fast as
+   exceptions), by opposition to {!Error}'s error management
+   mechanism. The drawback is that this mechanism is just
+   as unsafe as exceptions, insofar as successfully compiling
+   a program does not guarantee that every use of a label is
+   properly caught.
+   
+   Example:
+   {[
+   let find_in_array a e =
+   label (fun return ->
+   for i = 0 to Array.length a - 1 do
+   if Array.get a i = e then recall return (Some i)
+   done;
+   None
+   )
+   ]}
+   
+   @author David Teller
 *)
 
 type 'a t

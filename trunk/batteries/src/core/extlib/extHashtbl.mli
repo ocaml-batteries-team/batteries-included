@@ -198,9 +198,9 @@ module type HashedType =
           correctly, and
           ([(==)], {!Hashtbl.hash}) for comparing objects by addresses
           (e.g. for cyclic keys). *)
-   end
-(** The input signature of the functor {!Hashtbl.Make}. *)
+  end
 
+(** The input signature of the functor {!Hashtbl.Make}. *)
 module type S =
   sig
     type key

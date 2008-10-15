@@ -27,9 +27,7 @@ module Control     = struct
   module Labels      = Extlib.Labels
 
   (** Monadic operations. *)
-  module Monad = struct
-    module type S  = Extlib.Monad.S
-  end
+  module Monad = Extlib.Monad
 end
 
 (** Data structures*)

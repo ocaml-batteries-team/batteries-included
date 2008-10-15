@@ -38,9 +38,7 @@ module Control = struct
   end
 
   module Labels = Batteries_core.Control.Labels
-  module Monad  = struct
-    module type S = Batteries_core.Control.Monad.S
-  end
+  module Monad  = Batteries_core.Control.Monad
 
 end
 

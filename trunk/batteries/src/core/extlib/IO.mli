@@ -43,6 +43,7 @@
 
     @documents InnerIO
 *)
+
 open ExtUChar
 open InnerIO
 
@@ -471,9 +472,23 @@ val input_channel : in_channel -> input
 
 val output_channel : out_channel -> unit output
 (** Create an output that will write into a channel. *) 
+(*
+val to_input_channel : input -> in_channel
+(** Create a channel that will read from an input.
 
+    {b Note} This function is very costly and is provided
+    essentially for debugging purposes or for reusing legacy
+    libraries which can't be adapted. As a general rule, if
+    you can avoid using this function, don't use it.*)
 
+val to_output_channel: _ output -> out_channel
+(** Create a channel that will write to an output
 
+    {b Note} This function is very costly and is provided
+    essentially for debugging purposes or for reusing legacy
+    libraries which can't be adapted. As a general rule, if
+    you can avoid using this function, don't use it.*)
+  *)
 (** {6 Generic IO Object Wrappers}
 
 	Theses OO Wrappers have been written to provide easy support of ExtLib

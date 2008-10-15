@@ -1,5 +1,27 @@
 2008-10-15  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/IO.mli: Added newline after module comment.
+
+	* src/core/baselib/batlib_Baselib_Bigarray.mli: Moved comments of [GenArray]
+
+	* myocamlbuild.ml: [next_token] now separates '\r' \n' from other cases and sets [newline] accordingly
+
+	* myocamlbuild.ml: in [generate_mli], in [return], [newline] created	
+
+	* doc/batteries/html/guidelines.html: created
+
+	* doc/batteries/html/extensions.html: added summary of additional keywords
+
+	* doc/batteries/html/setup.html: added installation instructions
+
+	* src/core/batteries_core_threads.ml: [Monad] is now defined by [Batteries_core_threads.Monad]
+
+	* src/core/batteries_core.ml:  [Monad] is now defined by [Batteries_core_threads.Monad]
+
+	* src/main/nothreads/batteries.ml: [Monad] is now defined by [Batteries_core_threads.Monad]
+
+	* src/main/threads/batteries.ml: [Monad] is now defined by [Batteries_core_threads.Monad]
+
 	* myocamlbuild.ml: [generate_mli] reimplemented
 
 2008-10-14  David Teller  <David.Teller@univ-orleans.fr>
