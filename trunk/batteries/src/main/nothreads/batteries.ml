@@ -54,6 +54,7 @@ module Data        = struct
       module Array         = Inner.Data.Mutable.Array
       module ArrayLabels   = Inner.Data.Mutable.ArrayLabels
       module Bigarray      = Inner.Data.Mutable.Bigarray
+      module Dllist        = Inner.Data.Persistent.Dllist
       module Dynarray      = Inner.Data.Mutable.Dynarray
       module Enum          = Inner.Data.Mutable.Enum
       module Global        = Inner.Data.Mutable.Global
@@ -68,7 +69,6 @@ module Data        = struct
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
-      module Dllist          = Inner.Data.Persistent.Dllist
       module Lazy            = Inner.Data.Persistent.Lazy
       module List            = Inner.Data.Persistent.List      (*formerly Batlib_Baselib_List*)
       module ListLabels      = Inner.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)

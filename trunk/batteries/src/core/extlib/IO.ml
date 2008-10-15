@@ -578,14 +578,11 @@ let tab_out n out =
   let spaces   = String.make n ' ' in
   create_out 
     ~write: (fun c     -> 
-	       printf stderr "Attempting to write %C\n" c;
 	       write out  c;
 	       if Char.is_newline c then (
-		 printf stderr "Adding %S\n" spaces;
 		 nwrite out spaces)
 	    )
     ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*)
-	       printf stderr "Attempting to output %S\n" s;
 	       let length = String.length s                 in
 	       let buffer = Buffer.create (String.length s) in
 		 for i = p to min (length - 1) l do
@@ -595,7 +592,6 @@ let tab_out n out =
 		       Buffer.add_string buffer spaces
 		 done;
 		 let s' = Buffer.contents buffer                  in
-		 let _  = printf stderr "Replacing with %S\n" s' in
 		 output out s' 0 (String.length s'))
     ~flush:(fun () -> flush out)
     ~close:(fun () -> close_out out)

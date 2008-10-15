@@ -1,5 +1,15 @@
 2008-10-15  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extGenlex.ml: [multiline_comment] rewritten
+
+	* src/core/extlib/parserCo.ml*: [debug_mode] added
+
+	* src/core/extlib/extInt.mli: Moved documentation of [Safe_int] to the outside of the module
+
+	* src/core/extlib/refList.ml*: [fold_left], [fold_right] added
+
+	* src/core/extlib/IO.ml: Removed debugging code from [tab_out]
+
 	* batteries.ml (both): [ParserCo], [CharParser] added
 
 	* src/core/batteries_core_threads.ml: [ParserCo], [CharParser] added

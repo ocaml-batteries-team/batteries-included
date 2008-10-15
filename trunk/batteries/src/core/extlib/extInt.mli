@@ -180,22 +180,21 @@ module Int :
   end
 
 
-
+(** 
+    Safe operations on integers.
+    
+    This module provides operations on the type [int] of
+    integers. Values of this type may be either 31 bits on 32-bit
+    processors or 63 bits on 64-bit processors. Operations which
+    overflow raise exception {!Number.Overflow}
+    
+    This module implements {!Number.Numeric},
+    {!Number.Bounded}, {!Number.Discrete}.
+    
+    {b Important note} Untested.
+*)
 module SafeInt :
   sig
-    (** 
-	Safe operations on integers.
-
-	This module provides operations on the type [int] of
-	integers. Values of this type may be either 31 bits on 32-bit
-	processors or 63 bits on 64-bit processors. Operations which
-	overflow raise exception {!Number.Overflow}
-
-	This module implements {!Number.Numeric},
-	{!Number.Bounded}, {!Number.Discrete}.
-
-	{b Important note} Untested.
-    *)
     
     type t = int
 	(** An alias for the type of integers. *)

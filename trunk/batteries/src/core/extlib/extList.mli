@@ -146,7 +146,7 @@ module List :
 
 	val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
 	  (** [List.fold_left f a [b1; ...; bn]] is
-	      [f (... (f (f a b1) b2) ...) bn]. *)
+	      [f (... (f (f a b1) b2) ...) bn]. Tail-recursive. *)
 
 	val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 	  (** [List.fold_right f [a1; ...; an] b] is

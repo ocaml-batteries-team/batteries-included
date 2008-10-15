@@ -39,6 +39,7 @@ module Data        = struct
       module Array         = Extlib.ExtArray.Array
       module ArrayLabels   = Batlib_Baselib_ArrayLabels
       module Bigarray      = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
+      module Dllist        = Extlib.Dllist
       module Dynarray      = Extlib.DynArray
       module Enum          = Extlib.Enum
       module Global        = Extlib.Global
@@ -53,7 +54,6 @@ module Data        = struct
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
-      module Dllist          = Extlib.Dllist
       module Lazy            = Batlib_Baselib_Lazy
       module List            = Extlib.ExtList.List      (*formerly Batlib_Baselib_List*)
       module ListLabels      = Extlib.ExtList.ListLabels(*TODO:Bring to feature parity with {!List}*)

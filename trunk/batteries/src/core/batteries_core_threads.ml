@@ -50,6 +50,7 @@ struct
     module Array         = Batteries_core.Data.Mutable.Array
     module ArrayLabels   = Batteries_core.Data.Mutable.ArrayLabels
     module Bigarray      = Batteries_core.Data.Mutable.Bigarray
+    module Dllist        = Batteries_core.Data.Persistent.Dllist
     module Dynarray      = Batteries_core.Data.Mutable.Dynarray
     module Enum          = Batteries_core.Data.Mutable.Enum
     module Global        = Batteries_core.Data.Mutable.Global
@@ -63,7 +64,6 @@ struct
   end
 
   module Persistent      = struct
-    module Dllist          = Batteries_core.Data.Persistent.Dllist
     module Lazy            = Batteries_core.Data.Persistent.Lazy
     module List            = Batteries_core.Data.Persistent.List
     module ListLabels      = Batteries_core.Data.Persistent.ListLabels

@@ -57,6 +57,7 @@ module Data        = struct
       module Array         = Batteries_core_threads.Data.Mutable.Array
       module ArrayLabels   = Batteries_core_threads.Data.Mutable.ArrayLabels
       module Bigarray      = Batteries_core_threads.Data.Mutable.Bigarray
+      module Dllist        = Batteries_core_threads.Data.Persistent.Dllist
       module Dynarray      = Batteries_core_threads.Data.Mutable.Dynarray
       module Enum          = Batteries_core_threads.Data.Mutable.Enum
       module Global        = Batteries_core_threads.Data.Mutable.Global
@@ -71,7 +72,6 @@ module Data        = struct
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
-      module Dllist          = Batteries_core_threads.Data.Persistent.Dllist
       module Lazy            = Batteries_core_threads.Data.Persistent.Lazy
       module List            = Batteries_core_threads.Data.Persistent.List      (*formerly Batlib_Baselib_List*)
       module ListLabels      = Batteries_core_threads.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)

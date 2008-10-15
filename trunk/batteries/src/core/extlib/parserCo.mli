@@ -208,3 +208,6 @@ val scan: ('a, _, 'c) t -> ('a, 'a list, 'c) t
 (** {7 Others}*)
 val sat: ('a -> bool) -> ('a, unit, _) t
   (**[satisfy p] accepts one value [p x] such that [p x = true]*)
+
+val debug_mode : bool ref
+  (**If set to [true], debugging information will be printed to the standard error.*)
