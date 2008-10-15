@@ -8,7 +8,10 @@ Number
 Ref
 Vect
 PMap
+PSet
+MultiPMap
 Option
+OptionLabels
 ExtUTF8
 ExtInt64
 ExtInt32

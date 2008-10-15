@@ -32,36 +32,41 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   open Sig
   open Ast
 
-(*    try
-      DELETE_RULE Gram implem: "#"; a_LIDENT; opt_expr; semi END
-    with Not_found -> Printf.eprintf "1\n"; assert false
-
-    try
-      DELETE_RULE Gram implem: str_item; semi; SELF END
-    with Not_found -> Printf.eprintf "2\n"; assert false
-    try
-      DELETE_RULE Gram implem: `EOI END
-    with Not_found -> Printf.eprintf "3\n"; assert false*)
-
     DELETE_RULE Gram implem: "#"; a_LIDENT; opt_expr; semi END
     DELETE_RULE Gram implem: str_item; semi; SELF END
     DELETE_RULE Gram implem: `EOI END
+
+    DELETE_RULE Gram interf: "#"; a_LIDENT; opt_expr; semi END
+    DELETE_RULE Gram interf: sig_item; semi; SELF END
+    DELETE_RULE Gram interf: `EOI END
 
 
   let stopped_at _loc =
     Some (Loc.move_line 1 _loc)
 
   EXTEND Gram
-    GLOBAL:implem;
+    GLOBAL:implem interf;
     implem_next:
       [ [ "#"; n = a_LIDENT; dp = opt_expr; semi ->
             ( [ <:str_item< # $n$ $dp$ >> ] , stopped_at _loc)
         | si = str_item; semi; (sil, stopped) = SELF -> (si :: sil, stopped)
         | `EOI -> ([], None)
       ] ];
+    interf_next:
+      [ [ "#"; n = a_LIDENT; dp = opt_expr; semi ->
+            ([ <:sig_item< # $n$ $dp$ >> ], stopped_at _loc)
+        | si = sig_item; semi; (sil, stopped) = SELF -> (si :: sil, stopped)
+        | `EOI -> ([], None) ] ]
+    ;
+
     implem:
     [ [
 	(l,o) = implem_next -> (<:str_item<open Batteries>>::l,o)
+      ] ];
+
+    interf:
+    [ [
+	(l,o) = interf_next -> (<:sig_item<open Batteries>>::l,o)
       ] ];
   END
 end

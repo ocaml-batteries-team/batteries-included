@@ -56,11 +56,14 @@ module Data        = struct
       module Dllist          = Extlib.Dllist
       module Lazy            = Batlib_Baselib_Lazy
       module List            = Extlib.ExtList.List      (*formerly Batlib_Baselib_List*)
-      module ListLabels      = Batlib_Baselib_ListLabels(*TODO:Bring to feature parity with {!List}*)
+      module ListLabels      = Extlib.ExtList.ListLabels(*TODO:Bring to feature parity with {!List}*)
       module Map             = Batlib_Baselib_Map       (*TODO:make enumerable*)
       module MapLabels       = Batlib_Baselib_MapLabels (*TODO:make enumerable*)
-      module PMap            = Batlib_Baselib_Map
+      module MultiPMap       = Extlib.MultiPMap
+      module PMap            = Extlib.PMap
+      module PSet            = Extlib.PSet
       module Option          = Extlib.Option
+      module OptionLabels    = Extlib.OptionLabels
       module Set             = Batlib_Baselib_Set       (*TODO:make enumerable*)
       module SetLabels       = Batlib_Baselib_SetLabels (*TODO:make enumerable*)
 
@@ -126,18 +129,25 @@ end
 module Languages   = struct
 
   (** {1 Parsing} *)
-  
-  module Genlex          = Batlib_Baselib_Genlex
+
+  module Genlex          = Extlib.ExtGenlex.Genlex
   module Lexing          = Batlib_Baselib_Lexing
   module Parsing         = Batlib_Baselib_Parsing
   module Scanf           = Batlib_Baselib_Scanf
   module Str             = Batlib_Baselib_Str
+
+  (** {2 Parser combinator library}*)
+
+  module CharParser      = Extlib.CharParser
+  module ParserCo        = Extlib.ParserCo
     
   (** {1 Printing}*)
     
   module Format          = Batlib_Baselib_Format
   module Printexc        = Batlib_Baselib_Printexc
   module Printf          = Extlib.ExtPrintf.Printf
+
+  (** {1 Serialization}*)
 
   module SExpr           = Toolchain.Batlib_Sexp_Conv
     
@@ -230,10 +240,9 @@ module Util        = struct
 end
 
 module Standard = struct
-  (*include Pervasives*)
-  include Batlib_Baselib_Pervasives
   include Data.Mutable.Enum
   include Extlib.Std
+  include Batlib_Baselib_Pervasives
   let (@) = Extlib.ExtList.(@)
   let stdin = System.IO.stdin
   let stderr= System.IO.stderr

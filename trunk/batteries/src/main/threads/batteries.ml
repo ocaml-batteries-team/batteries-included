@@ -77,8 +77,11 @@ module Data        = struct
       module ListLabels      = Batteries_core_threads.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)
       module Map             = Batteries_core_threads.Data.Persistent.Map       (*TODO:make enumerable*)
       module MapLabels       = Batteries_core_threads.Data.Persistent.MapLabels (*TODO:make enumerable*)
-      module PMap            = Batteries_core_threads.Data.Persistent.Map
+      module MultiPMap       = Batteries_core_threads.Data.Persistent.MultiPMap
       module Option          = Batteries_core_threads.Data.Persistent.Option
+      module OptionLabels    = Batteries_core_threads.Data.Persistent.OptionLabels
+      module PMap            = Batteries_core_threads.Data.Persistent.PMap
+      module PSet            = Batteries_core_threads.Data.Persistent.PSet
       module Set             = Batteries_core_threads.Data.Persistent.Set       (*TODO:make enumerable*)
       module SetLabels       = Batteries_core_threads.Data.Persistent.SetLabels (*TODO:make enumerable*)
 
@@ -158,6 +161,11 @@ module Languages   = struct
   module Parsing         = Batteries_core_threads.Languages.Parsing
   module Scanf           = Batteries_core_threads.Languages.Scanf
   module Str             = Batteries_core_threads.Languages.Str
+
+  (** {2 Parser combinator library}*)
+
+  module CharParser      = Batteries_core_threads.Languages.CharParser
+  module ParserCo        = Batteries_core_threads.Languages.ParserCo
     
   (** {1 Printing}*)
     
@@ -309,6 +317,7 @@ module Standard = Batteries_core_threads.Standard(*Included for documentation pu
 include Standard
 
 (**/**)
+(**Shortcuts for commonly used modules*)
 module Condition = Control.Concurrency.Threads.Condition
 module Event     = Control.Concurrency.Threads.Event
 module Mutex     = Control.Concurrency.Threads.Mutex
@@ -316,6 +325,7 @@ module Thread    = Control.Concurrency.Threads.Thread
 module Array     = Data.Mutable.Array
 module ArrayLabels=Data.Mutable.ArrayLabels
 module Bigarray  = Data.Mutable.Bigarray
+module Enum      = Data.Mutable.Enum
 module Hashtbl   = Data.Mutable.Hashtbl
 module Queue     = Data.Mutable.Queue
 module Stack     = Data.Mutable.Stack
@@ -325,10 +335,12 @@ module List      = Data.Persistent.List
 module ListLabels= Data.Persistent.ListLabels
 module Map       = Data.Persistent.Map
 module MapLabels = Data.Persistent.MapLabels
+module Option    = Data.Persistent.Option
 module Set       = Data.Persistent.Set
 module SetLabels = Data.Persistent.SetLabels
 module Big_int   = Data.Numeric.Big_int
 module Complex   = Data.Numeric.Complex
+module Int       = Data.Numeric.Int
 module Int32     = Data.Numeric.Int32
 module Int64     = Data.Numeric.Int64
 module Num       = Data.Numeric.Num

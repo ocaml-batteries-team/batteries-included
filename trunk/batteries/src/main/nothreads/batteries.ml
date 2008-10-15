@@ -74,8 +74,11 @@ module Data        = struct
       module ListLabels      = Inner.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)
       module Map             = Inner.Data.Persistent.Map       (*TODO:make enumerable*)
       module MapLabels       = Inner.Data.Persistent.MapLabels (*TODO:make enumerable*)
-      module PMap            = Inner.Data.Persistent.Map
+      module MultiPMap       = Inner.Data.Persistent.MultiPMap
+      module PMap            = Inner.Data.Persistent.PMap
+      module PSet            = Inner.Data.Persistent.PSet
       module Option          = Inner.Data.Persistent.Option
+      module OptionLabels    = Inner.Data.Persistent.OptionLabels
       module Set             = Inner.Data.Persistent.Set       (*TODO:make enumerable*)
       module SetLabels       = Inner.Data.Persistent.SetLabels (*TODO:make enumerable*)
 
@@ -155,6 +158,11 @@ module Languages   = struct
   module Parsing         = Inner.Languages.Parsing
   module Scanf           = Inner.Languages.Scanf
   module Str             = Inner.Languages.Str
+
+  (** {2 Parser combinator library}*)
+
+  module CharParser      = Inner.Languages.CharParser
+  module ParserCo        = Inner.Languages.ParserCo
     
   (** {1 Printing}*)
     
@@ -298,6 +306,7 @@ end
 module Array     = Data.Mutable.Array
 module ArrayLabels=Data.Mutable.ArrayLabels
 module Bigarray  = Data.Mutable.Bigarray
+module Enum      = Data.Mutable.Enum
 module Hashtbl   = Data.Mutable.Hashtbl
 module Queue     = Data.Mutable.Queue
 module Stack     = Data.Mutable.Stack
@@ -307,10 +316,12 @@ module List      = Data.Persistent.List
 module ListLabels= Data.Persistent.ListLabels
 module Map       = Data.Persistent.Map
 module MapLabels = Data.Persistent.MapLabels
+module Option    = Data.Persistent.Option
 module Set       = Data.Persistent.Set
 module SetLabels = Data.Persistent.SetLabels
 module Big_int   = Data.Numeric.Big_int
 module Complex   = Data.Numeric.Complex
+module Int       = Data.Numeric.Int
 module Int32     = Data.Numeric.Int32
 module Int64     = Data.Numeric.Int64
 module Num       = Data.Numeric.Num

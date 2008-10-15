@@ -69,8 +69,11 @@ struct
     module ListLabels      = Batteries_core.Data.Persistent.ListLabels
     module Map             = Batteries_core.Data.Persistent.Map
     module MapLabels       = Batteries_core.Data.Persistent.MapLabels
+    module MultiPMap       = Batteries_core.Data.Persistent.MultiPMap
     module PMap            = Batteries_core.Data.Persistent.PMap
+    module PSet            = Batteries_core.Data.Persistent.PSet
     module Option          = Batteries_core.Data.Persistent.Option
+    module OptionLabels    = Batteries_core.Data.Persistent.OptionLabels
     module Set             = Batteries_core.Data.Persistent.Set
     module SetLabels       = Batteries_core.Data.Persistent.SetLabels
   end
@@ -124,6 +127,11 @@ module Languages = struct
   module Scanf           = Batteries_core.Languages.Scanf
   module Str             = Batteries_core.Languages.Str
     
+  (** {2 Parser combinator library}*)
+
+  module CharParser      = Extlib.CharParser
+  module ParserCo        = Extlib.ParserCo
+
   (** {1 Printing}*)
     
   module Format          = Batteries_core.Languages.Format

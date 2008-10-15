@@ -1,5 +1,51 @@
 2008-10-15  David Teller  <David.Teller@univ-orleans.fr>
 
+	* batteries.ml (both): [ParserCo], [CharParser] added
+
+	* src/core/batteries_core_threads.ml: [ParserCo], [CharParser] added
+
+	* src/core/batteries_core.ml: [ParserCo], [CharParser] added
+
+	* src/core/batteries_core_threads.ml: [ExtGenlex.Genlex] replaces [Batlib_Baselib_Genlex]
+
+	* src/core/batteries_core.ml: [ExtGenlex.Genlex] replaces [Batlib_Baselib_Genlex]
+
+	* src/core/extlib/ref.ml*: [get], [set] added
+
+	* src/core/batteries_core.ml: [ExtList.ListLabels] replaces [Batlib_Baselib_ListLabels]
+	
+	* src/core/extlib/optionLabels.ml*: created
+
+	* src/core/extlib/pSet.mli: created
+
+	* src/core/extlib/pSet.ml: created
+
+	* src/core/extlib.mlpack: [MultiPMap], [OptionLabels], [PSet] added
+
+	* src/core/batteries_core.ml: [MultiPMap], [OptionLabels], [PSet] added
+
+	* src/core/batteries_core_threads.ml: [MultiPMap], [OptionLabels], [PSet] added
+
+	* src/core/extlib/multiPMap.ml: Created
+
+	* src/core/extlib/multiPMap.mli: Created
+
+	* src/main/threads/batteries.ml: [PMap] is now [PMap], not [Map]
+
+	* src/main/threads/batteries.ml: [MultiPMap] added
+	
+	* src/main/nothreads/batteries.ml: [PMap] is now [PMap], not [Map]
+
+	* src/main/nothreads/batteries.ml: [MultiPMap] added
+
+	* src/main/threads/batteries.ml: added [Enum], [Int], [Option] to list of shortcuts
+
+	* src/syntax/pa_batteries/pa_batteries.ml: [interf], [interf_next] added
+
+	* doc/batteries/myocamlbuild.ml: [cl_camlp4r] now defined from [-pp]
+
+	* src/core/extlib/std.mli: Added [(**/**)] around values dealing [in_channel].
+
 	* src/core/extlib/IO.mli: Added newline after module comment.
 
 	* src/core/baselib/batlib_Baselib_Bigarray.mli: Moved comments of [GenArray]

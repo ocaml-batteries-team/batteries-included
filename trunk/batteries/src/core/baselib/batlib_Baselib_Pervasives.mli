@@ -396,7 +396,12 @@ external ignore : 'a -> unit = "%ignore"
    avoids the warning. *)
 
 
-(** {6 String conversion functions} *)
+(** {6 String conversion functions} 
+
+    These represent only the most common conversions.
+    Additional conversion fucntions are provided in
+    their respective modules, e.g. {!Int32.of_string}.
+*)
 
 val string_of_bool : bool -> string
 (** Return the string representation of a boolean. *)
@@ -445,8 +450,11 @@ val ( @ ) : 'a list -> 'a list -> 'a list
 (** List concatenation. *)
 
 
-(** / **)
-(** {6 Input/output} *)
+(**/**)
+(** {6 Input/output} 
+
+Provided for compatibility.
+*)
 
 type in_channel = Pervasives.in_channel
 (** The type of input channel. *)
@@ -464,7 +472,10 @@ val stderr : out_channel
 (** The standard error ouput for the process. *)
 (** / **)
 
-(** {7 Output functions on standard output} *)
+(** {7 Output functions on standard output} 
+
+    For more operations, see module {!Printf}.
+*)
 
 val print_char : char -> unit
 (** Print a character on standard output. *)
@@ -488,7 +499,10 @@ val print_newline : unit -> unit
    buffering of standard output. *)
 
 
-(** {7 Output functions on standard error} *)
+(** {7 Output functions on standard error} 
+
+    For more operations, see module {!Printf}.
+*)
 
 val prerr_char : char -> unit
 (** Print a character on standard error. *)
@@ -529,8 +543,11 @@ val read_float : unit -> float
    The result is unspecified if the line read is not a valid
    representation of a floating-point number. *)
 
-(** / **)
-(** {7 General output functions} *)
+(**/**)
+(** {7 General output functions} 
+
+    Deprecated, provided for compatibility.
+*)
 
 
 type open_flag = Pervasives.open_flag =
@@ -775,9 +792,12 @@ module LargeFile :
   regular integers (type [int]), these alternate functions allow
   operating on files whose sizes are greater than [max_int]. *)
 
-(** / **)
+(**/**)
 
-(** {6 References} *)
+(** {6 References}
+
+    More operations on references are provided in module {!Ref}.
+*)
 
 type 'a ref = 'a Pervasives.ref = { mutable contents : 'a }
 (** The type of references (mutable indirection cells) containing

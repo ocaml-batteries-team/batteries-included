@@ -26,6 +26,7 @@
     @author Zheng Li
 *)
 
+(**/**)
 val input_lines : in_channel -> string Enum.t
 (** Returns an enumeration over lines of an input channel, as read by the
  [input_line] function. *)
@@ -39,6 +40,7 @@ val input_list : in_channel -> string list
 val input_all : in_channel -> string
 (** Return the whole contents of an input channel as a single
  string. *)
+(**/**)
 
 val print_bool : bool -> unit
 (** Print a boolean to stdout. *)
