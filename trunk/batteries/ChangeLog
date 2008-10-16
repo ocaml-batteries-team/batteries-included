@@ -1,3 +1,7 @@
+2008-10-16  Edgar Friendly  <thelema314@gmail.com>
+
+	* examples/benchmark/*: Add list benchmark code
+
 2008-10-15  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extGenlex.ml: [multiline_comment] rewritten
