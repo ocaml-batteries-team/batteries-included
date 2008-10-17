@@ -18,15 +18,38 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Parser combinators.
+(** A simple parser combinator library.
 
-    {b Note} This module is experimental. *)
+    This module permits the simple definition of highly modular, dynamic
+    parsers with unlimited backtracking. It may be used to parse any
+    form of enumeration, including regular text, latin-1 text, bits, etc.
 
+    This library is vastly more powerful than {!Lexing}, {!Str}, {!Parsing}
+    or {!Scanf}. It is also vastly slower.
+
+    Module {!CharParser} contains pre-defined parsers to deal
+    specifically with latin-1 text. Module {!Genlex} contains a number
+    of pre-defined parsers to deal specifically with programming
+    languages.
+*)
+
+(**
+   {6 Base definitions}
+*)
+
+(**The current state of the parser.
+
+   The actual set of states is defined by the user. States are
+   typically used to convey informations, such as position in the file
+   (i.e. line number and character).
+
+*)
 type 'a state =
-  | Eof
-  | State of 'a
+  | Eof         (**The end of the source has been reached.*)
+  | State of 'a 
 
 type 'a report = Report of ('a state * string * 'a report) list
+(**The final result of parsing*)
 
 (**
    A source for parsing.
@@ -38,14 +61,10 @@ sig
 	of type ['b] *)
 
   val get_state : ('a, 'b) t -> 'b state
-(*  val set_state : ('a, 'b) t -> 'b -> unit*)
   val set_full_state : ('a, 'b) t -> 'c -> ('a  -> 'c -> 'c) -> ('a, 'c) t
 
-(*  val of_lazy_list : 'a LazyList.t -> 'b -> ('a  -> 'b -> 'b) -> ('a, 'b) t*)
   val of_enum      : 'a Enum.t     -> 'b -> ('a  -> 'b -> 'b) -> ('a, 'b) t
-  val of_lexer     : Lexing.lexbuf -> (string, (Lexing.position * Lexing.position)) t
-    (**Create a source from a lexer, as implemented by OCamlLex.
-       User states contain the start position and the end position of the lexeme.*)
+
 end
 
 (** {6 Primitives} *)

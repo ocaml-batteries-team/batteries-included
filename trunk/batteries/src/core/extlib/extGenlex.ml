@@ -237,7 +237,7 @@ let ocaml_comment =
     let rec content () = 
       any         >>= function
 	| '(' -> ( any >>= function
-		     | '*' -> content () >>= discard (content ())
+		     | '*' -> content () >>= const (content ())
 		     | _   -> content () )
 	| '*' -> ( any >>= function
 		     | ')' -> return ()

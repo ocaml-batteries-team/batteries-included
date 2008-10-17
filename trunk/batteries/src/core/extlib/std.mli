@@ -115,22 +115,39 @@ val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
 (** Function composition. [f -| g] is [fun x -> f (g x)]. Mathematically, this is
     operator o.*)
 
-val ( /// ) : ('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd
+val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
+  (** Argument flipping. 
+      
+      [flip f x y] is [f y x]. Don't abuse this function, it may shorten considerably
+      your code but it also has the nasty habit of making it harder to read.*)
+      
+
+val ( *** ) : ('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd
 (** Function pairing.
 
-    [f /// g] is [fun (x,y) -> (f x, g y)].*)
+    [f *** g] is [fun (x,y) -> (f x, g y)].*)
 
-val pi_fst : ('a -> 'b * 'c) -> 'a -> 'b
+val ( &&& ) : ('a -> 'b) -> ('a -> 'c) -> 'a -> ('b * 'c)
+  (** Applying two functions to the same argument.
+
+      [ f &&& g] is [fun x -> (f x, g x)]. *)
+
+val first : ('a -> 'b * 'c) -> 'a -> 'b
 (** Projection of a pair to its first element. *)
 
-val pi_snd : ('a -> 'b * 'c) -> 'a -> 'c
+val second : ('a -> 'b * 'c) -> 'a -> 'c
 (** Projection of a pair to its second element. *)
+
+
 
 val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
 
 val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
 
-val discard : 'a -> (_ -> 'a)
+val const : 'a -> (_ -> 'a)
+(** Ignore its second argument.
+
+    Therefore, [const x] is the function which always returns [x].*)
 
 (**
    {6 Results}

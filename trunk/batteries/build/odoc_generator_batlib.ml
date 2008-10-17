@@ -689,7 +689,7 @@ class batlib_generator =
 	s 
       in
       let s3 = Str.global_substitute (*Substitute fully qualified names*)
-	(Str.regexp "\\([^.a-zA-Z]\\|^\\)\\([a-z0-9]+\\)")
+	(Str.regexp "\\([^.a-zA-Z_0-9]\\|^\\)\\([a-zA-Z_0-9]+\\)")
 	handle_word
 	s2
       in s3

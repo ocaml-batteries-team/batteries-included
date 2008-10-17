@@ -1,6 +1,24 @@
-2008-10-16  Edgar Friendly  <thelema314@gmail.com>
+2008-10-17  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/std.mli: [flip] added
+
+	* src/core/extlib/extGenlex.ml: [ocaml_comment] now uses [const] instead of [discard]
+
+	* src/core/extlib/std.ml*: [( *** )] created
+	
+	* src/core/extlib/std.ml*: [( /// )] renamed [( *** )]
+
+	* src/core/extlib/std.ml*: [discard] renamed [const]
+
+	* src/core/extlib/std.ml*: [pi_fst], [pi_snd] renamed [first], [second]
+
+2008-10-16  Edgar Friendly  <thelema314@gmail.com>
+	
 	* examples/benchmark/*: Add list benchmark code
+
+2008-10-16  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/parserCo.mli: removed [of_lexer]
 
 2008-10-15  David Teller  <David.Teller@univ-orleans.fr>
 
