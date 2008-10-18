@@ -461,7 +461,7 @@ module List :
 
 	(** {7 Printing}*)
 	  
-	val print : ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'a IO.output -> 'b t -> unit
+	val print : ('a InnerIO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'a InnerIO.output -> 'b t -> unit
 	  (**Print the contents of a list*)
 
 	(** {6 Obsolete functions} *)
@@ -920,7 +920,7 @@ module ListLabels :
 
 	(** {7 Printing}*)
 	  
-	val print : ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'a IO.output -> 'b t -> unit
+	val print : ('a InnerIO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'a InnerIO.output -> 'b t -> unit
 	(** {6 Obsolete functions} *)
 
 	val nth : 'a list -> int -> 'a

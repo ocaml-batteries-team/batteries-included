@@ -1,3 +1,50 @@
+2008-10-18  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/rope.ml*: [enum] rewritten with [Enum.delay]
+	
+
+	* src/core/extlib/rope.ml*: [backwards], [of_backwards], [bulk_enum], [of_bulk_enum], [bulk_backwards], [of_bulk_backwards], [of_char] added
+
+	* src/core/extlib/enum.ml*: [delay] added
+
+	* src/core/extlib/rope.ml*: [bulk_fold] added
+
+	* src/core/extlib/charParser.ml: [parse_string] becomes [parse]
+
+	* src/core/extlib/charParser.ml: [case_string] now uses [case_char]
+
+	* src/core/extlib/extUTF8.ml: [adopt] added
+
+	* src/core/extlib/extUTF8.mli: [string_as], [as_string] removed
+
+	* src/core/extlib/rope.ml: [of_string_unsafe] replaces [string_as]
+
+	* src/core/extlib/extUTF8.ml: [of_enum] now uses [validate]
+
+	* src/core/extlib/extUTF8.ml: [backwards], [of_backwards] added
+
+	* src/core/extlib/extString.ml*: [backwards], [of_backwards], [println] added
+
+	* src/core/extlib/enum.ml*: [print] added
+
+	* src/core/extlib/extArray.ml: [enum] now uses [Ref.post_incr], [Ref.copy]
+
+	* src/core/extlib/extArray.ml*: [backwards], [of_backwards] added
+
+	* src/core/extlib/ref.ml*: [copy] added
+
+	* src/core/extlib/rope.ml: [STRING] replaced with [UTF]
+
+	* src/core/extlib/extUChar.ml: [uppercase], [lowercase] added
+
+	* src/core/extlib/extUTF8.ml: [uppercase], [lowercase] added
+
+	* src/core/extlib/extUChar.ml*: [script], [category] added
+
+	* src/core/extlib/extUChar.ml*: [is_uppercase], [is_lowercase], [is_whitespace], [is_newline], [print] added
+
+	* src/core/extlib/extUChar.ml: [Info] added
+
 2008-10-17  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/std.mli: [flip] added

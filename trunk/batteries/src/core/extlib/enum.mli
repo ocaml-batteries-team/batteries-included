@@ -96,42 +96,44 @@ val fold2i : (int -> 'a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
 (** {6 Useful functions} *)
 
 val find : ('a -> bool) -> 'a t -> 'a
-(** [find f e] returns the first element [x] of [e] such that [f x] returns
- [true], consuming the enumeration up to and including the
- found element, or, raises [Not_found] if no such element exists
- in the enumeration, consuming the whole enumeration in the search.
-
- Since [find] consumes a prefix of the enumeration, it can be used several 
- times on the same enumeration to find the next element. *)
+  (** [find f e] returns the first element [x] of [e] such that [f x] returns
+      [true], consuming the enumeration up to and including the
+      found element, or, raises [Not_found] if no such element exists
+      in the enumeration, consuming the whole enumeration in the search.
+      
+      Since [find] consumes a prefix of the enumeration, it can be used several 
+      times on the same enumeration to find the next element. *)
 
 val is_empty : 'a t -> bool
-(** [is_empty e] returns true if [e] does not contains any element. *)
+  (** [is_empty e] returns true if [e] does not contains any element. *)
 
 val peek : 'a t -> 'a option
-(** [peek e] returns [None] if [e] is empty or [Some x] where [x] is
- the next element of [e]. The element is not removed from the enumeration. *)
+  (** [peek e] returns [None] if [e] is empty or [Some x] where [x] is
+      the next element of [e]. The element is not removed from the
+      enumeration. *)
 
 val get : 'a t -> 'a option
-(** [get e] returns [None] if [e] is empty or [Some x] where [x] is
-  the next element of [e], in which case the element is removed from the enumeration. *)
+  (** [get e] returns [None] if [e] is empty or [Some x] where [x] is
+      the next element of [e], in which case the element is removed
+      from the enumeration. *)
 
 val push : 'a t -> 'a -> unit
-(** [push e x] will add [x] at the beginning of [e]. *)
-
+  (** [push e x] will add [x] at the beginning of [e]. *)
+  
 val junk : 'a t -> unit
-(** [junk e] removes the first element from the enumeration, if any. *)
-
+  (** [junk e] removes the first element from the enumeration, if any. *)
+  
 val clone : 'a t -> 'a t
-(** [clone e] creates a new enumeration that is copy of [e]. If [e]
- is consumed by later operations, the clone will not get affected. *)
+  (** [clone e] creates a new enumeration that is copy of [e]. If [e]
+      is consumed by later operations, the clone will not get affected. *)
 
 val force : 'a t -> unit
-(** [force e] forces the application of all lazy functions and the
- enumeration of all elements, exhausting the enumeration. 
+  (** [force e] forces the application of all lazy functions and the
+      enumeration of all elements, exhausting the enumeration. 
  
-  An efficient intermediate data structure
-  of enumerated elements is constructed and [e] will now enumerate over
-  that data structure. *)
+      An efficient intermediate data structure
+      of enumerated elements is constructed and [e] will now enumerate over
+      that data structure. *)
 
 val take : int -> 'a t -> 'a t
   (** [take n e] returns the prefix of [e] of length [n], or [e]
@@ -172,25 +174,25 @@ val group : ('a -> bool) -> 'a t -> 'a t t
  underlying enumerations they were created from are also consumed. *)
 
 val map : ('a -> 'b) -> 'a t -> 'b t
-(** [map f e] returns an enumeration over [(f a1, f a2, ... , f aN)] where
- a1...N are the elements of [e]. *)
-
+  (** [map f e] returns an enumeration over [(f a1, f a2, ... , f aN)] where
+      a1...N are the elements of [e]. *)
+  
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
-(** [mapi] is similar to [map] except that [f] is passed one extra argument
- which is the index of the element in the enumeration, starting from 0. *)
+  (** [mapi] is similar to [map] except that [f] is passed one extra argument
+      which is the index of the element in the enumeration, starting from 0. *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
-(** [filter f e] returns an enumeration over all elements [x] of [e] such
- as [f x] returns [true]. *)
+  (** [filter f e] returns an enumeration over all elements [x] of [e] such
+      as [f x] returns [true]. *)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
-(** [filter_map f e] returns an enumeration over all elements [x] such as
- [f y] returns [Some x] , where [y] is an element of [e]. *)
-
+  (** [filter_map f e] returns an enumeration over all elements [x] such as
+      [f y] returns [Some x] , where [y] is an element of [e]. *)
+  
 val append : 'a t -> 'a t -> 'a t
   (** [append e1 e2] returns an enumeration that will enumerate over all
       elements of [e1] followed by all elements of [e2].
-
+      
       {b Note} The behavior of appending [e] to itself or to something
       derived from [e] is not specified. In particular, cloning [append e e]
       may destroy any sharing between the first and the second argument.*)
@@ -221,8 +223,8 @@ val suffix_action : (unit -> unit) -> 'a t -> 'a t
 
 
 val concat : 'a t t -> 'a t
-(** [concat e] returns an enumeration over all elements of all enumerations
- of [e]. *)
+  (** [concat e] returns an enumeration over all elements of all enumerations
+      of [e]. *)
 
 (** {6 Constructors} 
 
@@ -263,12 +265,12 @@ val make : next:(unit -> 'a) -> count:(unit -> int) -> clone:(unit -> 'a t) -> '
 *)
 
 val from : (unit -> 'a) -> 'a t
-(** [from next] creates an enumeration from the [next] function.
- [next] {i shall} return the next element of the enumeration or raise
- [No_more_elements] when no more elements can be enumerated. Since the
- enumeration definition is incomplete, a call to [count] will result in 
- a call to [force] that will enumerate all elements in order to
- return a correct value. *)
+  (** [from next] creates an enumeration from the [next] function.
+      [next] {i shall} return the next element of the enumeration or raise
+      [No_more_elements] when no more elements can be enumerated. Since the
+      enumeration definition is incomplete, a call to [count] will result in 
+      a call to [force] that will enumerate all elements in order to
+      return a correct value. *)
 
 val from_while : (unit -> 'a option) -> 'a t
 (** [from_while next] creates an enumeration from the [next] function.
@@ -314,6 +316,26 @@ val cycle : ?times:int -> 'a t -> 'a t
   (** [cycle] is similar to [repeat], except that the content to fill is a
       subenum rather than a single element. Note that [times] represents the
       times of repeating not the length of enum. *) 
+
+val delay : (unit -> 'a t) -> 'a t
+  (** [delay (fun () -> e)] produces an enumeration which behaves as [e].
+      The enumeration itself will only be computed when consumed.
+
+      A typical use of this function is to explore lazily non-trivial
+      data structures, as follows:
+
+      [type 'a tree = Leaf
+                    | Node of 'a * 'a tree * 'a tree
+
+      let enum_tree =
+      let rec aux = function
+      | Leaf           -> Enum.empty ()
+      | Node (n, l, r) -> Enum.append (Enum.singleton n)
+      (Enum.append (delay (fun () -> aux l))
+      (delay (fun () -> aux r)))
+      ]
+
+  *)
 
 (** {6 Counting} *)
 
@@ -404,7 +426,7 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
       applied to each element of [fl] to decide the id of its destination
       enum. *)*)
 
-(** {6 Concurrency} *)
+(** {6 Trampolining} *)
 val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 (** [while_do cont f e] is a loop on [e] using [f] as body and [cont] as
     condition for continuing. 
@@ -414,6 +436,11 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
     is [true], [f x1] is returned and the loop proceeds with [x2]...*)
 
 
+
+(** {6 Boilerplate code}*)
+
+val print : ('a InnerIO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'a InnerIO.output -> 'b t -> unit
+(** Print and consume the contents of an enumeration.*)
 
 module ExceptionLess : sig
   val find : ('a -> bool) -> 'a t -> 'a option
@@ -439,7 +466,7 @@ val iapp : 'a t -> 'a t -> 'a t
 val icons : 'a -> 'a t -> 'a t
 val ising : 'a -> 'a t
 
-val lapp : (unit -> 'a t) -> 'a t -> 'a t
+val lapp :  (unit -> 'a t) -> 'a t -> 'a t
 val lcons : (unit -> 'a) -> 'a t -> 'a t
 val lsing : (unit -> 'a) -> 'a t
 

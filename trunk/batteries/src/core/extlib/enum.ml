@@ -785,6 +785,8 @@ let slazy f =
       ~count:   (fun () -> (Lazy.force constructor).count())
       ~clone:   (fun () -> (Lazy.force constructor).clone())
 
+let delay = slazy
+
 let lsing f =
   init 1 (fun _ -> f ())
 
@@ -806,6 +808,21 @@ let hard_count t =
     let length = ref 0 in
       try while true do ignore (t.next()); incr length done; assert false
       with No_more_elements -> !length
+
+let print print_a ?(first="") ?(last="") ?(sep=" ") out e =
+  InnerIO.nwrite out first;
+  match get e with
+    | None    -> InnerIO.nwrite out last
+    | Some x  -> 
+	print_a out x;
+	let rec aux () =
+	  match get e with
+	    | None   -> InnerIO.nwrite out last
+	    | Some x -> 
+		InnerIO.nwrite out sep;
+		aux ()
+	in aux()
+
 
 module ExceptionLess = struct
   let find f e =

@@ -622,7 +622,7 @@ let read_uchar_as_string i =
     s
  
 let read_uchar i =
-  ExtUTF8.UTF8.get (ExtUTF8.UTF8.string_as (read_uchar_as_string i)) 0
+  ExtUTF8.UTF8.get (ExtUTF8.UTF8.of_string_unsafe (read_uchar_as_string i)) 0
  
 (*val read_rope: input -> int -> Rope.t*)
 (** read up to n uchars from a UTF-8 encoded input*)
@@ -670,7 +670,7 @@ let ulines_of i = make_enum read_uline i
  
 All these functions assume that the output is UTF-8 encoded.*)
 
-let write_ustring o c = write_string o (ExtUTF8.UTF8.as_string c) 
+let write_ustring o c = write_string o (ExtUTF8.UTF8.to_string_unsafe c) 
 
 (*val write_uchar: _ output -> UChar.t -> unit*)
 let write_uchar o c = write_ustring o (ExtUTF8.UTF8.of_char c)

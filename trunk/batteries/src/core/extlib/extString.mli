@@ -95,6 +95,12 @@ val enum : string -> char Enum.t
 val of_enum : char Enum.t -> string
   (** Creates a string from a character enumeration. *)
 
+val backwards : string -> char Enum.t
+  (** Returns an enumeration of the characters of a string, from last to first. *)
+  
+val of_backwards : char Enum.t -> string
+  (** Build a string from an enumeration, starting with last character, ending with first. *)
+
 val of_list : char list -> string
    (** Converts a list of characters to a string.*) 
 
@@ -342,6 +348,10 @@ val sexp_of_t : t -> Sexplib.Sexp.t
 (** {7 Printing}*)
 
 val print: 'a InnerIO.output -> string -> unit
+(**Print a string.*)
+
+val println: 'a InnerIO.output -> string -> unit
+(**Print a string, end the line.*)
 
 (**/**)
 
@@ -425,6 +435,12 @@ val enum : [> `Read] t -> char Enum.t
 
 val of_enum : char Enum.t -> _ t
   (** Creates a string from a character enumeration. *)
+
+val backwards : [> `Read] t -> char Enum.t
+  (** Returns an enumeration of the characters of a string, from last to first. *)
+  
+val of_backwards : char Enum.t -> _ t
+  (** Build a string from an enumeration, starting with last character, ending with first. *)
 
 val of_list : char list -> _ t
   (** Converts a list of characters to a string.*) 

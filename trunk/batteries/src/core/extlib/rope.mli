@@ -66,6 +66,12 @@ amortized bounds by explicitly rebalancing ropes to be reused using [balance].
 Special care must be taken to avoid calling [balance] too frequently; in the limit,
 calling [balance] after each modification would defeat the purpose of amortization.
  
+
+{8 Limitations}
+
+The length of ropes is limited to approximately 700 Mb on 32-bit 
+architectures, 220 Gb on 64 bit architectures.
+
 @author Mauricio Fernandez
 *)
 
@@ -97,10 +103,27 @@ Operates in [O(n)] time. *)
 val to_ustring : t -> UTF8.t
   (** [to_string r] returns the string corresponding to the rope [r]. *)
  
+val of_char: UChar.t -> t
+  (** [of_char c] returns a rope containing exactly character [c].*)
+
 val make : int -> UChar.t -> t
   (** [make i c] returns a rope of length [i] consisting of [c] chars;
-it is similar to String.make *)
- 
+      it is similar to String.make *)
+
+val lowercase: t -> t
+  (** [lowercase s] returns a lowercase copy of rope [s].
+
+      Note that, for some languages, the number of characters in
+      [lowercase s] is not the same as the number of characters in
+      [s].*)
+
+val uppercase: t -> t
+  (** [uppercase s] returns a uppercase copy of rope [s].
+      
+      Note that, for some languages, the number of characters in
+      [uppercase s] is not the same as the number of characters in
+      [s].*)
+
 (** {6 Properties } *)
  
 val is_empty : t -> bool
@@ -189,6 +212,18 @@ val bulk_iter : (UTF8.t -> unit) -> t -> unit
 val fold : ('a -> UChar.t -> 'a ) -> 'a -> t -> 'a
   (** [Rope.fold f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
       where [rn = Rope.get n r ] and [N = length r]. *)
+
+val bulk_fold : ('a -> UTF8.t -> 'a) -> 'a -> t -> 'a
+  (** As {!fold} but over larger chunks of data.*)
+
+val enum: t -> UChar.t Enum.t
+val bulk_enum: t -> UTF8.t Enum.t
+val of_enum: UChar.t Enum.t -> t
+val of_bulk_enum: UTF8.t Enum.t -> t
+val backwards: t -> UChar.t Enum.t
+val of_backwards: UChar.t Enum.t -> t
+val bulk_backwards: t -> UTF8.t Enum.t
+val of_bulk_backwards: UTF8.t Enum.t -> t
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)

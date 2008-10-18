@@ -51,6 +51,9 @@ external set : 'a ref -> 'a -> unit = "%setfield0"
 external get : 'a ref -> 'a = "%field0"
     (** As [ ! ]*)
     
+val copy: 'a ref -> 'a ref
+  (** [copy r] returns a new reference with the same initial
+      content as [r].*)
 
 val pre : 'a ref -> ( 'a -> 'a ) -> 'a
   (** Perform an operation on a reference and return the
@@ -100,4 +103,4 @@ val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 (** {7 Printing}*)
 
-val print: (IO.input -> 'a -> unit) -> IO.input -> 'a t -> unit
+val print: (InnerIO.input -> 'a -> unit) -> InnerIO.input -> 'a t -> unit

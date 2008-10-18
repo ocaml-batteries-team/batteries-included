@@ -43,6 +43,8 @@ let pre_decr  r = pre  r ( ( - ) 1 )
 let post_incr r = post r ( ( + ) 1 )
 let post_decr r = post r ( ( - ) 1 )
 
+let copy r = ref (!r)
+
 external ref : 'a -> 'a ref = "%makemutable"
 (** Return a fresh reference containing the given value. *)
 

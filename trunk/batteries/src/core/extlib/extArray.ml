@@ -171,16 +171,16 @@ let partition p xs =
        r) in
   xs1, xs2
 
+
+
 let enum xs =
   let rec make start xs =
-    let n = length xs in
+    let n = length xs in(*Inside the loop, as [make] may later be called with another array*)
     Enum.make
       ~next:(fun () ->
-	       if !start < n then (
-		 let r = xs.(!start) in
-		 incr start;
-		 r
-	       ) else
+	       if !start < n then
+		 xs.(Ref.post_incr start)
+	       else
 		 raise Enum.No_more_elements)
       ~count:(fun () ->
 		n - !start)
@@ -190,6 +190,22 @@ let enum xs =
   in
   make (ref 0) xs
 
+let backwards xs =
+  let rec make start xs =
+    Enum.make
+      ~next:(fun () ->
+	       if !start >= 0 then 
+		 xs.(Ref.post_decr start)
+	       else
+		 raise Enum.No_more_elements)
+      ~count:(fun () ->
+		!start)
+      ~clone:(fun () ->
+		let xs' = Array.sub xs 0 !start in
+		make (Ref.copy start) xs')
+  in
+  make (ref (length xs - 1)) xs
+
 let of_enum e =
   let n = Enum.count e in
   (* This assumes, reasonably, that init traverses the array in order. *)
@@ -198,6 +214,10 @@ let of_enum e =
        match Enum.get e with
        | Some x -> x
        | None -> assert false)
+
+let of_backwards e =
+  of_list (ExtList.List.of_backwards e)
+
 
 let iter2 f a1 a2 =
      if Array.length a1 <> Array.length a2
@@ -282,6 +302,8 @@ struct
   let blit         = blit
   let enum         = enum
   let of_enum      = of_enum
+  let backwards    = backwards
+  let of_backwards = of_backwards
   let to_list      = to_list
   let of_list      = of_list
   let sort         = sort

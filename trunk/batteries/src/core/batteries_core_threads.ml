@@ -126,11 +126,11 @@ module Languages = struct
   module Parsing         = Batteries_core.Languages.Parsing
   module Scanf           = Batteries_core.Languages.Scanf
   module Str             = Batteries_core.Languages.Str
-    
+
   (** {2 Parser combinator library}*)
 
-  module CharParser      = Extlib.CharParser
-  module ParserCo        = Extlib.ParserCo
+  module CharParser      = Batteries_core.Languages.CharParser
+  module ParserCo        = Batteries_core.Languages.ParserCo
 
   (** {1 Printing}*)
     

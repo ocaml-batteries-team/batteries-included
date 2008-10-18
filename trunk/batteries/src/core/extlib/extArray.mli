@@ -255,10 +255,17 @@ sig
   (** {6 Conversions} *)
 
   val enum : 'a array -> 'a Enum.t
-    (** Returns an enumeration of the elements of an array. *)
+    (** Returns an enumeration of the elements of an array. 
+	Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
   val of_enum : 'a Enum.t -> 'a array
     (** Build an array from an enumeration. *)
+
+  val backwards : 'a array -> 'a Enum.t
+    (** Returns an enumeration of the elements of an array, from last to first. *)
+
+  val of_backwards : 'a Enum.t -> 'a array
+    (** Build an array from an enumeration, going into reverse order. *)
 
   val to_list : 'a array -> 'a list
     (** [Array.to_list a] returns the list of all the elements of [a]. *)
@@ -563,10 +570,17 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
   (** {6 Conversions} *)
 
   val enum : ('a, [> `Read]) t -> 'a Enum.t
-    (** Returns an enumeration of the elements of an array. *)
+    (** Returns an enumeration of the elements of an array. 
+	Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
   val of_enum : 'a Enum.t -> ('a, _) t
     (** Build an array from an enumeration. *)
+
+  val backwards : ('a, [> `Read]) t -> 'a Enum.t
+    (** Returns an enumeration of the elements of an array, from end to start. *)
+
+  val of_backwards : 'a Enum.t -> ('a, _) t
+    (** Build an array from an enumeration, from end to start. *)
 
   val to_list : ('a, [> `Read]) t -> 'a list
     (** [Array.to_list a] returns the list of all the elements of [a]. *)

@@ -1,6 +1,6 @@
 (* 
  * CharParser - Parsing character strings
- * Copyright (C) 2008 David Teller (contributor)
+ * Copyright (C) 2008 David Teller
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,12 @@
 
 (** Parsing character strings. 
 
+    This module defines common functions for parsing character strings,
+    encoded in Latin-1. These functions are meant to be used in conjunction
+    with the {!ParserCo} module.
+
+    {b Note} As ParserCo, this module is still very rough and needs testing.
+
     @author David Teller
 *)
 
@@ -34,13 +40,21 @@ type position =
 }
 
 val advance : char -> position -> position
+(**Advance by one char. 
+
+   [advance c p] returns a new position advanced by one char. If [c] is '\r' or '\n',
+   the result is [{offset = 0; line = p.line + 1}]. Other wise, the result is
+   [{offset = p.offset + 1; line = p.line}].*)
 
 val source_of_string : string      -> (char, position) Source.t
+(** Create a source from a latin-1 character string.*)
+
 val source_of_enum   : char Enum.t -> (char, position) Source.t
+(** Create a source from a latin-1 character.*)
 
-val parse_string : (char, 'a, position) t -> string -> ('a, position report) Std.result
+val parse : (char, 'a, position) t -> string -> ('a, position report) Std.result
+(**Apply a parser to a string.*)
 
-(*val parse_enum : (char, 'a, position) t -> char Enum.t -> ('a, position report * position * string list * string) Std.result*)
 (**{6 Utilities}*)
 
 val char : char -> (char, char, position) t
@@ -81,11 +95,11 @@ val letter: (char, char, position) t
   (**Recognizes one lower- or upper-case ASCII character, including
      accentuated characters.*)
 
-val uppercase_latin1 : (char, char, position) t  (*@TODO: test*)
+val uppercase_latin1 : (char, char, position) t
   (**Recognizes one upper-case Latin-1 character, including
      accentuated characters.*)
 
-val lowercase_latin1 : (char, char, position) t  (*@TODO: test*)
+val lowercase_latin1 : (char, char, position) t
   (**Recognizes one lower-case Latin-1 character, including
      accentuated characters.*)
 

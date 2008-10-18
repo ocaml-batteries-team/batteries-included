@@ -25,12 +25,14 @@
     form of enumeration, including regular text, latin-1 text, bits, etc.
 
     This library is vastly more powerful than {!Lexing}, {!Str}, {!Parsing}
-    or {!Scanf}. It is also vastly slower.
+    or {!Scanf}. It is also considerably slower.
 
     Module {!CharParser} contains pre-defined parsers to deal
     specifically with latin-1 text. Module {!Genlex} contains a number
     of pre-defined parsers to deal specifically with programming
     languages.
+
+    {b Note} This library is still very rough and needs much testing.
 *)
 
 (**
@@ -53,6 +55,10 @@ type 'a report = Report of ('a state * string * 'a report) list
 
 (**
    A source for parsing.
+
+   Unless you are parsing from exotic sources, you will probably not
+   need to use this module directly. Rather, use {!CharParser.source_of_string}
+   or {!CharParser.source_of_enum}.
 *)
 module Source :
 sig

@@ -34,9 +34,14 @@ let string_splice s1 off len s2 =
 
 
 module UTF8 = struct
-(*  open ExtString*)
+  open ExtString
+  open ExtList
   open CamomileLibrary
   include CamomileLibrary.UTF8
+  module Case = CaseMap.Make(CamomileDefaultConfig)(UTF8)
+
+  external of_string_unsafe : string -> t = "%identity"
+  external to_string_unsafe : t -> string = "%identity"
  
   let append s1 s2 = s1 ^ s2
     
@@ -100,21 +105,21 @@ module UTF8 = struct
   
   let of_string s = validate s; String.copy s
 
-  let of_string_unsafe s = s
-    
   let to_string s = String.copy s
+
+  let adopt     s = validate s; s
     
   let enum us =
     let l = length us in
     let rec make i =
       Enum.make
-  ~next:(fun () ->
-     if !i = l then
+	~next:(fun () ->
+		 if !i = l then
                    raise Enum.No_more_elements
-     else
+		 else
                    let p = !i in
-                   i := next us !i;
-                   look us p
+                     i := next us !i;
+                     look us p
               )
   ~count:(fun () -> l - !i)
   ~clone:(fun () -> make (ref !i))
@@ -122,10 +127,31 @@ module UTF8 = struct
     make (ref 0)
       
   let of_enum e =
-    let buf = Buffer.create 10 in
-    Enum.iter (fun c -> Buffer.add_string buf (of_char c)) e;
-    Buffer.contents buf
- 
+    let buf = Buffer.create 16 in
+      Enum.iter (fun c -> Buffer.add_string buf (of_char c)) e;
+      adopt (Buffer.contents buf)
+
+
+  let backwards us =
+    let rec make i =
+      Enum.make
+	~next:(fun () ->
+		 if !i < 0 then
+                   raise Enum.No_more_elements
+		 else
+                   let p = !i in
+                     i := prev us !i;
+                     look us p
+              )
+  ~count:(fun () -> !i)
+  ~clone:(fun () -> make (Ref.copy i))
+    in
+    make (ref (length us - 1))
+      
+  let of_backwards e =
+    of_enum (List.enum (List.of_backwards e))
+
+
   let unsafe_get = get
  
   let copy_set s n c =
@@ -185,9 +211,10 @@ module UTF8 = struct
   let sexp_of_t = sexp_of_string
   let t_of_sexp = string_of_sexp
 
-  external string_as : string -> t = "%identity"
-  external as_string : t -> string = "%identity"
+
 
   let print out t = InnerIO.nwrite out (to_string t)
 
+  let uppercase c = Case.uppercase c
+  let lowercase c = Case.lowercase c
 end

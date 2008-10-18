@@ -154,29 +154,47 @@ let to_float s =
 		_ -> raise Invalid_string
 
 let enum s =
-	let l = length s in
-	let rec make i =
-		Enum.make 
-		~next:(fun () ->
-			if !i = l then
-				raise Enum.No_more_elements
-			else
-				let p = !i in
-				incr i;
-				unsafe_get s p
-			)
-		~count:(fun () -> l - !i)
-		~clone:(fun () -> make (ref !i))
-	in
-	make (ref 0)
+  let l = length s in
+  let rec make i =
+    Enum.make 
+      ~next:(fun () ->
+	       if !i = l then
+		 raise Enum.No_more_elements
+	       else
+		 unsafe_get s (Ref.post_incr i)
+	    )
+      ~count:(fun () -> l - !i)
+      ~clone:(fun () -> make (Ref.copy i))
+  in
+    make (ref 0)
+
+let backwards s =
+  let rec make i =
+    Enum.make 
+      ~next:(fun () ->
+	       if !i < 0 then
+		 raise Enum.No_more_elements
+	       else
+		 unsafe_get s (Ref.post_decr i)
+	    )
+      ~count:(fun () -> !i)
+      ~clone:(fun () -> make (Ref.copy i))
+  in
+    make (ref (length s - 1))
 
 let of_enum e =
-	let l = Enum.count e in
-	let s = create l in
-	let i = ref 0 in
-	Enum.iter (fun c -> unsafe_set s !i c; incr i) e;
-	s
+  let l = Enum.count e in
+  let s = create l in
+  let i = ref 0 in
+    Enum.iter (fun c -> unsafe_set s (Ref.post_incr i) c) e;
+    s
 
+let of_backwards e =
+  let l = Enum.count e in
+  let s = create l in
+  let i = ref (l - 1) in
+    Enum.iter (fun c -> unsafe_set s (Ref.post_decr i) c) e;
+    s
 
 let map f s =
 	let len = length s in
@@ -297,8 +315,8 @@ let is_empty s = length s = 0
 
 let compare_without_case s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
 
-let print = IO.nwrite
-
+let print         = InnerIO.nwrite
+let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
 
 module Cap =
 struct
@@ -310,6 +328,9 @@ let is_empty      = is_empty
 let init          = init
 let enum          = enum
 let of_enum       = of_enum
+let backwards     = backwards
+let of_backwards  = of_backwards
+  
 let of_int        = of_int
 let of_float      = of_float
 let of_char       = of_char
