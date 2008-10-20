@@ -1,3 +1,13 @@
+2008-10-20  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extString.ml: in [backwards], [i] shifted by 1
+
+	* src/core/extlib/ref.ml: [pre_decr], [post_decr] now add [-1]
+
+	* src/core/extlib/enum.ml: [print] now uses [print_a] to print the contents of the enumeration
+
+	* src/core/extlib/extUChar.ml: [is_lowercase] now uses [`Ll]
+
 2008-10-18  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/rope.ml*: [enum] rewritten with [Enum.delay]

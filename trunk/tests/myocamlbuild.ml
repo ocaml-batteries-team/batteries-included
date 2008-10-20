@@ -87,11 +87,13 @@ struct
 end
 
 (**
-   {1 Others}
+   {1 OCaml Batteries Included}
 *)
 
-module Misc =
+module Batteries =
 struct
+  let before_options () = ()
+
   let after_rules () =
     flag ["ocaml"; "link"; "byte";   "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"; A "odoc_info.cma"]);
     flag ["ocaml"; "link"; "native"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"(*; A "odoc_info.cmxa"*)]);
@@ -106,7 +108,7 @@ struct
     and cl_use_batteries_o = []
               (*[cl_use_batteries_o]: extensions which only make sense in original syntax*)
     and cl_camlp4o         = [A"-syntax";  A "camlp4o"]
-    and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in
+    and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in (*Temporary fix -- ocamlfind really behaves strangely*)
 
     let cl_boilerplate_original = cl_use_boilerplate @ cl_camlp4o
     and cl_boilerplate_revised  = cl_use_boilerplate @ cl_camlp4r
@@ -165,9 +167,10 @@ end
 let _ = dispatch begin function
    | Before_options ->
        OCamlFind.before_options ();
+       Batteries.before_options ()
    | After_rules ->
        OCamlFind.after_rules ();
-       Misc.after_rules ()
+       Batteries.after_rules ()
 
        
    | _ -> ()

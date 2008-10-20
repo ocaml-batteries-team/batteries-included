@@ -35,7 +35,7 @@ struct
   let t_of_sexp s = of_int (Sexplib.Conv.int_of_sexp s)
 
   let is_lowercase  c = match Info.general_category c with `Lu -> true | _ -> false
-  let is_uppercase  c = match Info.general_category c with `Lu -> true | _ -> false
+  let is_uppercase  c = match Info.general_category c with `Ll -> true | _ -> false
   let is_whitespace c = match uint_code c with
     | 010 | 013 | 009 | 026 | 032 | 012 -> true
     | _                                 -> match Info.general_category c with `Zs | `Zl | `Zp -> true

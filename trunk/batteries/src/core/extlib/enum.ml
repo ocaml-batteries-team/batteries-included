@@ -820,7 +820,7 @@ let print print_a ?(first="") ?(last="") ?(sep=" ") out e =
 	    | None   -> InnerIO.nwrite out last
 	    | Some x -> 
 		InnerIO.nwrite out sep;
-		InnerIO.nwrite out x;
+		print_a out x;
 		aux ()
 	in aux()
 

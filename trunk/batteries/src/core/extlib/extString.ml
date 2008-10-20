@@ -169,18 +169,18 @@ let enum s =
     make (ref 0)
 
 let backwards s =
-  let rec make i =
-    Enum.make 
-      ~next:(fun () ->
-	       if !i < 0 then
-		 raise Enum.No_more_elements
-	       else
-		 unsafe_get s (Ref.post_decr i)
-	    )
-      ~count:(fun () -> !i)
-      ~clone:(fun () -> make (Ref.copy i))
-  in
-    make (ref (length s - 1))
+      let rec make i =
+	Enum.make 
+	  ~next:(fun () ->
+		   if !i <= 0 then
+		     raise Enum.No_more_elements
+		   else
+		     unsafe_get s (Ref.pre_decr i)
+		)
+	  ~count:(fun () -> !i)
+	  ~clone:(fun () -> make (Ref.copy i))
+      in
+	make (ref (length s))
 
 let of_enum e =
   let l = Enum.count e in

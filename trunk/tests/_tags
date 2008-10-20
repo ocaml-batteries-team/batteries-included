@@ -10,3 +10,5 @@
 <test_random.*>:         use_batteries
 <test_random2.*>:        use_batteries
 <test_ref.*>:            use_batteries
+<test_enum.*>:           use_batteries
+<*>:                     debug
