@@ -1,8 +1,10 @@
 2008-10-20  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extBuffer.ml*: [enum], [of_enum] added
+
 	* src/core/batteries_core.ml: [Buffer] is now [ExtBuffer.Buffer]
 
-	* src/core/extlib/extBuffer.ml: created
+	* src/core/extlib/extBuffer.ml*: created
 
 	* src/core/extlib/rope.ml*: [bulk_backwards], [of_bulk_backwards] removed
 

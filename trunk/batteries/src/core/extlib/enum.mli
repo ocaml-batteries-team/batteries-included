@@ -250,18 +250,19 @@ val empty : unit -> 'a t
 
 val make : next:(unit -> 'a) -> count:(unit -> int) -> clone:(unit -> 'a t) -> 'a t
 (** This function creates a fully defined enumeration.
-	{ul {li the [next] function {i shall} return the next element of the
-	enumeration or raise [No_more_elements] if the underlying data structure
-	does not have any more elements to enumerate.}
-	{li the [count] function {i shall} return the actual number of remaining
-	elements in the enumeration or {i may} raise [Infinite_enum] if it is known
-        that the enumeration is infinite.}
-	{li the [clone] function {i shall} create a clone of the enumeration
-	such as operations on the original enumeration will not affect the
-	clone. }}
- 
-	For some samples on how to correctly use [make], you can have a look
-		at implementation of [ExtList.enum]. 
+
+    {ul {li the [next] function {i shall} return the next element of the
+    enumeration or raise [No_more_elements] if the underlying data structure
+    does not have any more elements to enumerate.}
+    {li the [count] function {i shall} return the actual number of remaining
+    elements in the enumeration or {i may} raise [Infinite_enum] if it is known
+    that the enumeration is infinite.}
+    {li the [clone] function {i shall} create a clone of the enumeration
+    such as operations on the original enumeration will not affect the
+    clone. }}
+
+    For some samples on how to correctly use [make], you can have a look
+    at implementation of [ExtList.enum]. 
 *)
 
 val from : (unit -> 'a) -> 'a t

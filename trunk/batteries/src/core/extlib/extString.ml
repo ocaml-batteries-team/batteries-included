@@ -196,6 +196,7 @@ let of_backwards e =
     Enum.iter (fun c -> unsafe_set s (Ref.post_decr i) c) e;
     s
 
+
 let map f s =
 	let len = length s in
 	let sc = create len in

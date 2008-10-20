@@ -90,7 +90,7 @@ val init : int -> (int -> char) -> string
 
 (** {6 Conversions}*)
 val enum : string -> char Enum.t
-  (** Returns an enumeration of the characters of a string.*)
+  (** Returns an enumeration of the characters of a string. *)
 
 val of_enum : char Enum.t -> string
   (** Creates a string from a character enumeration. *)
