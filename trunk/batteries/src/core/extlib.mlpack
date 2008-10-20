@@ -36,6 +36,7 @@ ExtStream
 ExtString
 Unzip
 Std
+ExtPervasives
 RefList
 LazyList
 ExtRandom

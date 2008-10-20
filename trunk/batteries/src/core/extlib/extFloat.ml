@@ -71,14 +71,15 @@ module BaseFloat = struct
   external frexp : float -> float * int = "caml_frexp_float"
   external ldexp : float -> int -> float = "caml_ldexp_float"            
   external modf : float -> float * float = "caml_modf_float"
-  external classify : float -> fpclass = "caml_classify_float"
+
     
-  type fpclass = Pervasives.fpclass = 
+  type fpkind = Pervasives.fpclass = 
       FP_normal           
       | FP_subnormal        
       | FP_zero             
       | FP_infinite         
       | FP_nan              
+  external classify : float -> fpkind = "caml_classify_float"
 
   let infinity     = Pervasives.infinity
   let neg_infinity = Pervasives.neg_infinity

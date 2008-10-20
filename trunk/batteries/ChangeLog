@@ -1,5 +1,11 @@
 2008-10-20  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/batteries_core.ml: [Standard] now contains [ExtPervasives.Pervasives]
+
+	* src/core/extlib/extPervasives.ml*: created
+
+	* src/core/extlib/extFloat.mli: [fpclass] renamed [fpkind]
+
 	* src/core/extlib/extBuffer.ml*: [enum], [of_enum] added
 
 	* src/core/batteries_core.ml: [Buffer] is now [ExtBuffer.Buffer]

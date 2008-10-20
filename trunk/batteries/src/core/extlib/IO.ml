@@ -689,3 +689,28 @@ let write_ulines o re = Enum.iter (write_uline o) re
  
 (*val write_ropes : _ output -> Rope.t Enum.t -> unit*)
 let write_ropes o re = Enum.iter (write_rope o) re
+(*
+(** {6 Test} *)
+let in_channel_of_input i =
+  let (cin, cout) = Unix.pipe () in
+
+  let latest_pos_in  = ref 0     in
+  let rec aux ()  =
+    let new_pos_in = pos_in  cin in
+      if new_pos_in > !latest_pos_in then (*Something has been read, we can write a little bit more*)
+	let size = new_pos_in - !latest_pos_in in
+	let buf  = String.create size          in
+	  input i buf
+
+(*    UnixLabels.select
+      ~read:?
+      ~write:*)
+      
+(*  let (fin, fout) = Unix.socketpair Unix.PF_UNIX Unix.SOCK_STREAM in
+  let cin         = open_in  fin
+  and cout        = open_out fout in
+  let rec aux () =
+    let c = read i in
+      Pervasives.output_char cout c;
+      aux ()*)
+*)
