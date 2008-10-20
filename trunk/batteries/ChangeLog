@@ -1,5 +1,11 @@
 2008-10-20  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/batteries_core.ml: [Buffer] is now [ExtBuffer.Buffer]
+
+	* src/core/extlib/extBuffer.ml: created
+
+	* src/core/extlib/rope.ml*: [bulk_backwards], [of_bulk_backwards] removed
+
 	* src/core/extlib/extString.ml: in [backwards], [i] shifted by 1
 
 	* src/core/extlib/ref.ml: [pre_decr], [post_decr] now add [-1]

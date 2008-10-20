@@ -102,7 +102,7 @@ module Data        = struct
     
     (** {6 Latin-1}*)
 
-    module Buffer          = Batlib_Baselib_Buffer
+    module Buffer          = Extlib.ExtBuffer.Buffer
     module Char            = Extlib.ExtChar.Char
     module String          = struct
       include Extlib.ExtString.String

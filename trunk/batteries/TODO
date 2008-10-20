@@ -27,15 +27,7 @@
 
 * import Zip?
 
-* implement a tool for nearly-automated importation
-
 * evaluate/import OcNAE
-
-* import Sexplib
- * Sexp gets converted for use of IO
- * Sexp            goes into Meta.SMarshal [requires additional .mli!]
- * Conv            goes into Meta.SMarshal
- * Path            ignored
 
 * import Camlp4?
 

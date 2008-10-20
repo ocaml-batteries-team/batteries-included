@@ -222,8 +222,11 @@ val of_enum: UChar.t Enum.t -> t
 val of_bulk_enum: UTF8.t Enum.t -> t
 val backwards: t -> UChar.t Enum.t
 val of_backwards: UChar.t Enum.t -> t
+
+(*These functions are probably completely useless
 val bulk_backwards: t -> UTF8.t Enum.t
 val of_bulk_backwards: UTF8.t Enum.t -> t
+*)
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)

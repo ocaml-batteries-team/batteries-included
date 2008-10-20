@@ -363,6 +363,7 @@ let bulk_enum s =
                                            (Enum.delay (fun () -> aux r))
   in aux s
 
+(*Probably useless
 let bulk_backwards s = 
   let rec aux = function
     | Empty      -> Enum.empty ()
@@ -370,6 +371,7 @@ let bulk_backwards s =
     | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux r)) 
                                            (Enum.delay (fun () -> aux l))
   in aux s
+*)
 
 let of_enum e =
   let get_leaf () =
@@ -395,10 +397,10 @@ let of_backwards e =(*(Yoric) I'll keep the implementation simple at least until
   
 let of_bulk_enum e =
   Enum.fold (fun s acc -> concat acc (of_ustring s)) Empty e
- 
+(*Probably useless 
 let of_bulk_backwards e =
   Enum.fold (fun s acc -> concat (of_ustring s) acc) Empty e
-
+*)
 module CE = CamomileLibrary.CharEncoding.Configure(CamomileLibrary.CamomileDefaultConfig)
  
 let of_latin1 s =

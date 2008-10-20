@@ -12,6 +12,7 @@ PSet
 MultiPMap
 Option
 OptionLabels
+ExtBuffer
 ExtUTF8
 ExtInt64
 ExtInt32
