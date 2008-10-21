@@ -111,7 +111,7 @@ struct
 
   let basename name =
     try let index = String.rindex name '.' in
-      String.sub name index (String.length name - index) 
+      String.sub name ( index + 1 ) (String.length name - index) 
     with Not_found -> name
 
   let append table k (v:(string * string)) =
@@ -136,8 +136,10 @@ struct
       Enum.iter 
 	(fun line -> 
 	   let (item, url) = String.split line ":" in
-	   let (item, url) = (String.trim item, String.trim url) in
-	     Hashtbl.add table.url item (name, directory^url); (*Add fully qualified name -> url*)
+	   let (item, url) = (String.trim item, directory ^ (String.trim url)) in
+	     Printf.eprintf "Adding manual %S => %S (%S)\n" item url name;
+	     Printf.eprintf "Adding completion %S => %S (%S)\n" (basename item) item name;
+	     Hashtbl.add table.url item (name, url); (*Add fully qualified name -> url*)
 	     append table.complete (basename item) (name, item)
 	)
 	(File.lines_of index)

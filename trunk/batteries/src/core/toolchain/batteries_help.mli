@@ -26,11 +26,11 @@
 val tutorial : unit -> unit
 (** [tutorial ()] opens the tutorial.*)
 
-
-(*
 val help           : string -> unit
-val help_language  : string -> unit
 val help_value     : string -> unit
+(*
+val help_language  : string -> unit
+
 val help_type      : string -> unit
 val help_module    : string -> unit
 val help_exception : string -> unit
