@@ -52,7 +52,7 @@ module Pervasives = struct
     ignore (IO.output oc buf pos len)
   let output_byte       = IO.write_byte
   let output_binary_int = IO.write_i32
-  let output_value out v= IO.nwrite out (Marshal.to_string v [])
+  let output_value out v= ExtMarshal.Marshal.output out v
   let close_out         = IO.close_out
   let close_out_noerr out = 
     try IO.close_out out
@@ -74,8 +74,6 @@ module Pervasives = struct
   let close_in_noerr inp=
     try IO.close_in inp
     with _ -> ()
-(*
-  let input_value i     =
-    Marshal.from_channel (in_channel_of_input i)
-*)
+  let input_value       = ExtMarshal.Marshal.input
+
 end

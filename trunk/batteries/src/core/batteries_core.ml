@@ -176,7 +176,7 @@ module Meta        = struct
   
   (** {1 Language}*)
   
-  module Marshal        = Batlib_Baselib_Marshal
+  module Marshal        = Extlib.ExtMarshal.Marshal
   module Oo             = Batlib_Baselib_Oo
     
   (** {1 Interaction with other languages} *)

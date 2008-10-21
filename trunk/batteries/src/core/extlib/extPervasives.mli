@@ -700,7 +700,7 @@ val output_value : unit IO.output -> 'a -> unit
       are detected and preserved. The object can be read back,
       by the function {!input_value}. See the description of module
       {!Marshal} for more information. {!output_value} is equivalent
-      to {!Marshal.to_channel} with an empty list of flags. *)
+      to {!Marshal.output} with an empty list of flags. *)
 
 
 val close_out : unit IO.output -> unit
@@ -800,12 +800,12 @@ val input_binary_int : IO.input -> int
     Raise [End_of_file] if an end of file was reached while reading the
     integer. *)
 
-(*val input_value : IO.input -> 'a
+val input_value : IO.input -> 'a
 (** Read the representation of a structured value, as produced
     by {!output_value}, and return the corresponding value.
-    This function is identical to {!Marshal.from_channel};
+    This function is identical to {!Marshal.input};
     see the description of module {!Marshal} for more information,
-    in particular concerning the lack of type safety. *)*)
+    in particular concerning the lack of type safety. *)
   
 val close_in : IO.input -> unit
   (** Close the given channel.  Input functions raise a [Sys_error]

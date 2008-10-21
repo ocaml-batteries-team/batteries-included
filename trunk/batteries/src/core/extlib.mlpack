@@ -49,4 +49,5 @@ Result
 CharParser
 ExtGenlex
 ExtComplex
+ExtMarshal
 ExtPervasives

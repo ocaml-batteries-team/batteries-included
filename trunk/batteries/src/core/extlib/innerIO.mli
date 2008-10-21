@@ -69,8 +69,8 @@ val nread : input -> int -> string
 
 val really_nread : input -> int -> string
 (** [really_nread i n] reads a string of exactly [n] characters
-  from the input. Raises [No_more_input] if at least [n] characters are
-  not available. Raises [Invalid_argument] if [n] < 0. *)
+    from the input. Raises [No_more_input] if at least [n] characters are
+    not available. Raises [Invalid_argument] if [n] < 0. *)
 
 val input : input -> string -> int -> int -> int
 (** [input i s p l] reads up to [l] characters from the given input, storing

@@ -1,5 +1,13 @@
 2008-10-21  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extArray.ml*: in [print], put optional arguments first
+
+	* src/core/extlib/extPervasives.ml*: [input_value] added, [output_value] now [ExtMarshal.Marshal.output]
+
+	* src/core/extlib/extMarshal.ml*: created
+
+	* src/main/nothreads/batteries.mllib: [Pervasives], [Buffer], [Complex], [Big_int], [Num], [Printf], [Stream], [Int64], [Int32] removed
+
 	* src/core/batteries_core.ml: [ExtPervasives.Pervasives] replaced with [Extlib.Extpervasives.Pervasives]
 
 	* Makefile: in [install], added [IO.cmi], [innerIO.cmi], [toolchain.cmi]
