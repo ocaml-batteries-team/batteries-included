@@ -524,6 +524,11 @@ val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 val node_t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a node_t
 val sexp_of_node_t : ('a -> Sexplib.Sexp.t) -> 'a node_t -> Sexplib.Sexp.t
 
+(** {7 Printing}*)
+  
+val print : ?first:string -> ?last:string -> ?sep:string ->('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+
+
 module Exceptionless : sig
   (** Exceptionless counterparts for error-raising operations*)
 

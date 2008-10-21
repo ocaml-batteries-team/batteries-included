@@ -88,3 +88,5 @@ let of_enum ?(keys=compare) ?(data=compare) e =
   let base = create keys data in
     Enum.fold (fun (k,d) acc -> add k d acc) base e
 
+let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
+  Enum.print ~first ~last ~sep (fun out (k, v) -> ExtPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)

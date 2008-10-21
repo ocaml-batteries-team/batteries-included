@@ -1,5 +1,11 @@
 2008-10-21  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/option.ml*: [print] added
+
+	* src/core/extlib/multiPMap.ml*: [print] added
+
+	* src/core/extlib/lazyList.ml*: [print] added
+
 	* src/core/extlib/extHashtbl.ml*: [print] added
 
 	* src/core/extlib/extBuffer.ml*: in [print], removed optional arguments

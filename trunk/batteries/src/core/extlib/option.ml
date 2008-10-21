@@ -61,3 +61,7 @@ let enum = function
         | Some e -> Enum.singleton e
 
 let of_enum = Enum.get
+
+let print print_a out = function
+  | None   -> InnerIO.nwrite out "None"
+  | Some x -> ExtPrintf.Printf.fprintf out "Some %a" print_a x

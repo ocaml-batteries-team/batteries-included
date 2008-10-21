@@ -102,3 +102,9 @@ val of_enum : ?keys:('a -> 'a -> int) -> ?data:('b -> 'b -> int) -> ('a * 'b) En
 
 val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b) t
 val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b) t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+  
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 
+                                                            ('a InnerIO.output -> 'c -> unit) -> 
+ 'a InnerIO.output -> ('b, 'c) t -> unit
