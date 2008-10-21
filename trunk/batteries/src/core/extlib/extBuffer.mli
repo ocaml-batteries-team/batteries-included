@@ -113,15 +113,17 @@ val add_buffer : t -> t -> unit
 (** [add_buffer b1 b2] appends the current contents of buffer [b2]
    at the end of buffer [b1].  [b2] is not modified. *)
 
-val add_channel : t -> in_channel -> int -> unit
-(** [add_channel b ic n] reads exactly [n] character from the
-   input channel [ic] and stores them at the end of buffer [b].
-   Raise [End_of_file] if the channel contains fewer than [n]
-   characters. *)
+val add_input : t -> InnerIO.input -> int -> unit
+  (** [add_input b ic n] reads exactly [n] character from the input [ic]
+      and stores them at the end of buffer [b].  Raise [End_of_file] if
+      the channel contains fewer than [n] characters. *)
 
-val output_buffer : out_channel -> t -> unit
-(** [output_buffer oc b] writes the current contents of buffer [b]
-   on the output channel [oc]. *)
+val add_channel : t -> InnerIO.input -> int -> unit
+  (** @obsolete replaced by {!add_input}*)
+
+val output_buffer : _ InnerIO.output -> t -> unit
+  (** [output_buffer oc b] writes the current contents of buffer [b]
+      on the output channel [oc]. *)
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)

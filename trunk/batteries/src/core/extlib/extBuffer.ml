@@ -60,5 +60,11 @@ struct
     let buf    = create length in
       add_string buf (ExtString.String.of_enum e);
       buf
+
+  let add_input t inp n =
+    add_string t (InnerIO.really_nread inp n)
+
+  let output_buffer = InnerIO.write_buf
     
+  let add_channel = add_input
 end

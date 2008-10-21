@@ -75,11 +75,6 @@ val of_string  : string -> char t
     Modifying the string after conversion may have unintended side-effects
     on the stream.*)
 
-val of_channel : in_channel -> char t
-(** Obsolete. Rather than this, use {!of_input}
-    or the the more generic {!IO}[.enum_*] and 
-    [of_enum] *)
-
 val of_list : 'a list -> 'a t
 (** Return the stream holding the elements of the list in the same
    order. *)
@@ -89,11 +84,6 @@ val of_input :   IO.input    -> char t
 
 
 (** {6 Stream consumers} *)
-
-val on_channel : out_channel -> char t -> unit
-(** Obsolete. Rather than this, use {!to_input}
-    or the the more generic {!IO}[.write_*_enum] and 
-    [to_enum] *)
 
 val on_output:   'a IO.output-> char t -> unit
 (** Convert an [output] to a stream.*)
