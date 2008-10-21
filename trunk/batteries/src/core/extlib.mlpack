@@ -50,4 +50,5 @@ CharParser
 ExtGenlex
 ExtComplex
 ExtMarshal
+ExtGc
 ExtPervasives

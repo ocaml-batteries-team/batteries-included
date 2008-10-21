@@ -185,7 +185,7 @@ module Meta        = struct
     
   (** {1 Memory}*)
     
-  module Gc             = Batlib_Baselib_Gc
+  module Gc             = Extlib.ExtGc.Gc
   module Weak           = Batlib_Baselib_Weak
     
   (** {1 Internals}

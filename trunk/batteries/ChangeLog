@@ -1,5 +1,7 @@
 2008-10-21  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extGc.ml*: created
+
 	* src/core/extlib/extBuffer.ml*: [add_channel], [output_buffer], [add_input] rewored to get rid of channels
 
 	* src/core/extlib/extStream.mli: [of_channel], [on_channel] removed
