@@ -636,6 +636,18 @@ val fast_sort : ('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
   *)
 
 
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+  
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> ('a, _) t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('a, [>`Read]) t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> ('b, [>`Read]) t -> unit
+
+
+
   (**/**)
   (** {6 Undocumented functions} *)
     

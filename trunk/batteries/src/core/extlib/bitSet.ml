@@ -333,7 +333,7 @@ let differentiate_sym t t' =
   t.len <- d.len
 
 (*print a BitSet between [| and |]*)
-let print ?(first="[|") ?(last="|]") ?(sep="") out t = 
+(*let print ?(first="[|") ?(last="|]") ?(sep="") out t = 
   let print_bit i =
     if is_set t i then InnerIO.write out '1'
     else               InnerIO.write out '0'
@@ -346,4 +346,11 @@ let print ?(first="[|") ?(last="|]") ?(sep="") out t =
 	InnerIO.nwrite out sep;
 	print_bit i
       done
-    end
+    end*)
+let print out t =
+  let print_bit i =
+    InnerIO.write out (if is_set t i then '1' else '0')
+  in
+  for i = 0 to t.len - 1 do
+    print_bit i
+  done

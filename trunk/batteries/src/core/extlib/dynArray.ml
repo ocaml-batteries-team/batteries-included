@@ -457,3 +457,6 @@ let sexp_of_t sexp_of_a t =
 
 let t_of_sexp a_of_sexp s =
   of_array (serialization_of_sexp a_of_sexp s)
+
+let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
+  Enum.print ~first ~last ~sep print_a out (enum t)

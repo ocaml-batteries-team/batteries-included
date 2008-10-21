@@ -461,16 +461,17 @@ module List :
 
 	(** {7 Printing}*)
 	  
-	val print : ('a InnerIO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'a InnerIO.output -> 'b t -> unit
+	val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
 	  (**Print the contents of a list*)
 
 	(** {6 Obsolete functions} *)
+
 	val nth : 'a list -> int -> 'a
 	(** Obsolete. As [at]. *)
 
 
+	(** Exceptionless counterparts for error-raising operations*)
 	module ExceptionLess : sig
-	  (** Exceptionless counterparts for error-raising operations*)
 
 	  val rfind : ('a -> bool) -> 'a list -> 'a option
 	    (** [rfind p l] returns [Some x] where [x] is the last element of [l] such 
@@ -920,7 +921,8 @@ module ListLabels :
 
 	(** {7 Printing}*)
 	  
-	val print : ('a InnerIO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'a InnerIO.output -> 'b t -> unit
+	val print : ?first:string -> ?last:string -> ?sep:string ->('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+
 	(** {6 Obsolete functions} *)
 
 	val nth : 'a list -> int -> 'a

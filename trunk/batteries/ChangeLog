@@ -1,5 +1,21 @@
 2008-10-21  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extHashtbl.ml*: [print] added
+
+	* src/core/extlib/extBuffer.ml*: in [print], removed optional arguments
+
+	* src/core/extlib/dynArray.ml*: [print] added
+
+	* src/core/extlib/enum.ml*: in [print], put optional arguments first
+
+	* src/core/extlib/dllist.ml*: [print] added
+
+	* src/core/extlib/bitSet.ml*: in [print], removed optional arguments
+
+	* src/core/extlib/extList.ml*: in [print], put optional arguments first
+
+	* src/core/extlib/extArray.ml*: in [Cap], added [print], [of_sexp], [to_sexp]
+
 	* src/core/extlib/extArray.ml*: in [print], put optional arguments first
 
 	* src/core/extlib/extPervasives.ml*: [input_value] added, [output_value] now [ExtMarshal.Marshal.output]

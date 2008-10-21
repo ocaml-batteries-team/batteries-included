@@ -47,18 +47,9 @@ struct
 
   let sexp_of_t t = Conv.sexp_of_string (Buffer.contents t)
 
-  let print ?first ?last out t =
-    begin
-      match first with
-	| None   -> ()
-	| Some x -> InnerIO.nwrite out x
-    end;
-    ExtString.String.print out (contents t);
-    begin
-      match last with
-	| None   -> ()
-	| Some x -> InnerIO.nwrite out x
-    end
+  let print out t =
+    ExtString.String.print out (contents t)
+
     
   let enum t =
     let buf = buffer_of_t t in

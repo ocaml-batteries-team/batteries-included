@@ -809,7 +809,7 @@ let hard_count t =
       try while true do ignore (t.next()); incr length done; assert false
       with No_more_elements -> !length
 
-let print print_a ?(first="") ?(last="") ?(sep=" ") out e =
+let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
   InnerIO.nwrite out first;
   match get e with
     | None    -> InnerIO.nwrite out last

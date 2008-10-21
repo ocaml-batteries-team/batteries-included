@@ -440,7 +440,7 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 
 (** {6 Boilerplate code}*)
 
-val print : ('a InnerIO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'a InnerIO.output -> 'b t -> unit
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
 module ExceptionLess : sig
