@@ -1,3 +1,13 @@
+2008-10-21  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/batteries_core.ml: [ExtPervasives.Pervasives] replaced with [Extlib.Extpervasives.Pervasives]
+
+	* Makefile: in [install], added [IO.cmi], [innerIO.cmi], [toolchain.cmi]
+	
+	* src/core/extlib.mlpack: [ExtPervasives] added
+
+	* src/core/extlib/extUChar.mli: in [of_digit], fixed [@raise]
+
 2008-10-20  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/batteries_core.ml: [Standard] now contains [ExtPervasives.Pervasives]

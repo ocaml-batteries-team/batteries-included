@@ -74,7 +74,7 @@ val chr_of_uint : int -> t
 val of_digit: int -> t
 (** Return the character representing a given digit.
     
-    @raise (Invalid_argument "UChar.of_digit") if the
+    @raise Invalid_argument "UChar.of_digit" if the
     argument is outside the range 0--9*)
 
 (** Alias of [uint_code] *)

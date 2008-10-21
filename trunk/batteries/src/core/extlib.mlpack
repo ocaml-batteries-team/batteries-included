@@ -36,7 +36,6 @@ ExtStream
 ExtString
 Unzip
 Std
-ExtPervasives
 RefList
 LazyList
 ExtRandom
@@ -50,3 +49,4 @@ Result
 CharParser
 ExtGenlex
 ExtComplex
+ExtPervasives

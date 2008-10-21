@@ -242,7 +242,7 @@ end
 
 module Standard = struct
   include Data.Mutable.Enum
-  include ExtPervasives.Pervasives
+  include Extlib.ExtPervasives.Pervasives
 end
 
 module Legacy = struct

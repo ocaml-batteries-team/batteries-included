@@ -43,8 +43,8 @@ Batlib_Baselib_Sys
 Batlib_Baselib_Unix
 Batlib_Baselib_UnixLabels
 Batlib_Baselib_Weak
-InnerIO
 Extlib
 Toolchain
+InnerIO
 Batteries_core
 Batteries

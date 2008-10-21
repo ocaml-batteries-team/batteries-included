@@ -819,11 +819,10 @@ val close_in_noerr : IO.input -> unit
   
 
  
-(** {6 References} *)
+(** {6 References} 
 
-type 'a ref = { mutable contents : 'a }
-(** The type of references (mutable indirection cells) containing
-   a value of type ['a]. *)
+    More operations on references are defined in module {!Ref}.
+*)
 
 external ref : 'a -> 'a ref = "%makemutable"
 (** Return a fresh reference containing the given value. *)
