@@ -241,9 +241,8 @@ module Standard = Batteries_core_threads.Standard(*This module is actually opene
 
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
-  
 
-  (**Package management with Findlib*)
+  module Help        = Batteries_core_threads.Toolchain.Help
   module Findlib     = Batteries_core_threads.Toolchain.Findlib
   module Execute     = Batteries_core_threads.Toolchain.Execute
 

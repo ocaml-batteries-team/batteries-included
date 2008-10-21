@@ -275,6 +275,38 @@ val stdnull: unit output
 
     Use this output to ignore messages.*)
 
+(** {6 Comparison}
+
+    The following modules may be useful to create hashtables of inputs or outputs.
+*)
+
+module Input :
+sig
+  type t = input
+  val compare : input -> input -> int
+    (**A total order on inputs*)
+
+  val hash    : input -> int
+    (**A hash function for inputs*)
+
+  val equal : input -> input -> bool
+end
+
+module Output :
+sig
+  type t = unit output
+  val compare : _ output -> _ output -> int
+    (**A total order on outputs*)
+
+  val hash    : _ output -> int
+    (**A hash function for outputs*)
+
+  val equal : _ output -> _ output -> bool
+end
+
+
+
+
 (** Formatted output functions (also known as unparsing).
 
     Note: Don't use this module directly, use {!ExtPrintf.Printf}

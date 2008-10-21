@@ -77,8 +77,6 @@ install: syntax
 		_build/src/core/extlib/innerIO.cmi \
 		_build/src/core/extlib.cmi \
 		_build/src/core/toolchain.cmi \
-		_build/src/core/batteries_core_pack.cmi \
-		_build/src/core/batteries_core_threads_pack.cmi \
 		_build/src/syntax/pa_openin/pa_openin.cmo \
 		_build/src/syntax/pa_openin/pa_openin_r.cmo \
 		_build/src/syntax/pa_where/pa_where.cmo \

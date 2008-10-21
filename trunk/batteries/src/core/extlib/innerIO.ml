@@ -21,36 +21,58 @@
  *)
 
 type input = {
-	mutable in_read : unit -> char;
-	mutable in_input : string -> int -> int -> int;
-	mutable in_close : unit -> unit;
+  mutable in_read  : unit -> char;
+  mutable in_input : string -> int -> int -> int;
+  mutable in_close : unit -> unit;
+  in_id: int;(**A unique identifier.*)
 }
 
 type 'a output = {
-	mutable out_write : char -> unit;
-	mutable out_output : string -> int -> int -> int;
-	mutable out_close : unit -> 'a;
-	mutable out_flush : unit -> unit;
+  mutable out_write : char -> unit;
+  mutable out_output : string -> int -> int -> int;
+  mutable out_close : unit -> 'a;
+  mutable out_flush : unit -> unit;
+  out_id: int;(**A unique identifier.*)
 }
+
+external noop : unit -> unit = "%ignore"
 
 exception No_more_input
 exception Input_closed
 exception Output_closed
 
+
+let post_incr r =
+  let result = !r in
+    incr r;
+    result
+let post r op =
+  let result = !r in
+    r := op !r;
+    result
+
+
+let uid = ref 0
+let uid () = post_incr uid
+
 let create_in ~read ~input ~close =
-	{
-		in_read = read;
-		in_input = input;
-		in_close = close;
-	}
+  {
+    in_read  = read;
+    in_input = input;
+    in_close = close;
+    in_id    = uid ()
+  }
 
 let create_out ~write ~output ~flush ~close =
-	{
-		out_write = write;
-		out_output = output;
-		out_close = close;
-		out_flush = flush;
-	}
+  {
+    out_write  = write;
+    out_output = output;
+    out_close  = close;
+    out_flush  = flush;
+    out_id     = uid ()
+  }
+
+
 
 let read i = i.in_read()
 
@@ -179,22 +201,18 @@ let read_all i =
 let input_string s =
   let pos = ref 0 in
   let len = String.length s in
-    {
-      in_read = (fun () ->
-		   if !pos >= len then raise No_more_input;
-		   let c = String.unsafe_get s !pos in
-		     incr pos;
-		     c
-		);
-      in_input = (fun sout p l ->
-		    if !pos >= len then raise No_more_input;
-		    let n = (if !pos + l > len then len - !pos else l) in
-		      String.unsafe_blit s !pos sout p n;
-		      pos := !pos + n;
-		      n
-		 );
-      in_close = (fun () -> ());
-    }
+    create_in
+      ~read:(fun () ->
+	       if !pos >= len then raise No_more_input
+	       else String.unsafe_get s (post_incr pos))
+      ~input:(fun sout p l ->
+		if !pos >= len then raise No_more_input;
+		let n = (if !pos + l > len then len - !pos else l) in
+		  String.unsafe_blit s (post pos ( (+) n ) ) sout p n;
+		  n
+	     )
+      ~close:noop
+
 
 
 (**
@@ -209,51 +227,37 @@ let default_buffer_size = 16 (*Arbitrary number. If you replace it, just
 			       smaller than 10 is probably a bad idea.*)
 
 let output_string() =
-	let b = Buffer.create default_buffer_size in
-	{
-		out_write = (fun c ->
-			Buffer.add_char b c
-		);
-		out_output = (fun s p l ->
-			Buffer.add_substring b s p l;
-			l
-		);
-		out_close = (fun () -> Buffer.contents b);
-		out_flush = (fun () -> ());
-	}
+  let b = Buffer.create default_buffer_size in
+    create_out
+      ~write:  (fun c -> Buffer.add_char b c )
+      ~output: (fun s p l -> Buffer.add_substring b s p l;  l  )
+      ~close:  (fun () -> Buffer.contents b)
+      ~flush:  noop
+
 
 let output_buffer buf =
-  {
-    out_write = Buffer.add_char buf;
-    out_output= (fun s p l -> Buffer.add_substring buf s p l; l);
-    out_close = (fun () -> Buffer.contents buf);
-    out_flush = (fun () -> ());
-  }
+  create_out
+    ~write: (Buffer.add_char buf)
+    ~output:(fun s p l -> Buffer.add_substring buf s p l; l)
+    ~close: (fun () -> Buffer.contents buf)
+    ~flush: noop
+
 let input_channel ch =
-	{
-		in_read = (fun () ->
-			try
-				input_char ch
-			with
-				End_of_file -> raise No_more_input
-		);
-		in_input = (fun s p l ->
-			let n = Pervasives.input ch s p l in
-			if n = 0 then raise No_more_input;
-			n
-		);
-		in_close = (fun () -> Pervasives.close_in ch);
-	}
+  create_in
+    ~read:(fun () -> try input_char ch
+	   with End_of_file -> raise No_more_input)
+    ~input:(fun s p l ->
+	      let n = Pervasives.input ch s p l in
+		if n = 0 then raise No_more_input;
+		n)
+    ~close:(fun () -> Pervasives.close_in ch)
 
 let output_channel ch =
-	{
-		out_write = (fun c -> output_char ch c);
-		out_output = (fun s p l -> Pervasives.output ch s p l; l);
-		out_close = (fun () -> Pervasives.close_out ch);
-		out_flush = (fun () -> Pervasives.flush ch);
-	}
-  
-
+  create_out
+    ~write: (fun c -> output_char ch c)
+    ~output:(fun s p l -> Pervasives.output ch s p l; l)
+    ~close: (fun () -> Pervasives.close_out ch)
+    ~flush: (fun () -> Pervasives.flush ch)
 
 let pipe() =
   let input = ref "" in
@@ -267,9 +271,7 @@ let pipe() =
   in
   let read() =
     if !inpos = String.length !input then flush();
-    let c = String.unsafe_get !input !inpos in
-      incr inpos;
-      c
+    String.unsafe_get !input (post_incr inpos) in
   in
   let input s p l =
     if !inpos = String.length !input then flush();
@@ -285,17 +287,9 @@ let pipe() =
     Buffer.add_substring output s p l;
     l
   in
-  let input = {
-    in_read = read;
-    in_input = input;
-    in_close = (fun () -> ());
-  } in
-  let output = {
-    out_write = write;
-    out_output = output;
-    out_close = (fun () -> ());
-    out_flush = (fun () -> ());
-  } in
+  let input  = create_in ~read ~input  ~close:noop
+  and output = create_out ~write ~output ~close:noop ~flush:noop
+  in
     input , output
 
 external cast_output : 'a output -> unit output = "%identity"
@@ -1040,3 +1034,20 @@ let ksprintf        = Printf.ksprintf
 let kbprintf        = Printf.kbprintf
 let kprintf         = Printf.kprintf
 end
+
+module Input =
+struct
+  type t = input
+  let compare x y = x.in_id - y.in_id
+  let hash    x   = x.in_id
+  let equal   x y = x.in_id = y.in_id
+end
+
+module Output =
+struct
+  type t = unit output
+  let compare x y = x.out_id - y.out_id
+  let hash    x   = x.out_id
+  let equal   x y = x.out_id = y.out_id
+end
+

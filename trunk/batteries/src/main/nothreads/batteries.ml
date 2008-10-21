@@ -235,9 +235,8 @@ module Standard = Inner.Standard
 
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
-  
 
-  (**Package management with Findlib*)
+  module Help        = Inner.Toolchain.Help
   module Findlib     = Inner.Toolchain.Findlib
   module Execute     = Inner.Toolchain.Execute
 

@@ -229,6 +229,8 @@ module Toolchain   = struct
 
   module Execute     = Toolchain.Builtin_tools
 
+  module Help        = Toolchain.Batteries_help
+
   (**Package management with Findlib*)
   module Findlib     = Toolchain.Batlib_Findlib_Findlib
 end

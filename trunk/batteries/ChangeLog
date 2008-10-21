@@ -1,4 +1,36 @@
+2008-10-22  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/syntax/pa_batteries/pa_batteries.ml: [Toolchain.Help] added to [implem]
+
+	* Makefile: in [install], removed [*_pack.cmi]
+	
+	* src/core/toolchain/batteries_help.ml*: created
+
+	* src/core/toolchain.mlpack: [Batteries_help] added
+
+	* src/core/batteries_core.ml: [Toolchain.Help] added
+
 2008-10-21  David Teller  <David.Teller@univ-orleans.fr>
+
+	* build/odoc_generator_batlib.ml: [generate] now calls [generate_external_index]
+	
+	* build/odoc_generator_batlib.ml: [generate_external_index] added
+
+	* src/core/extlib/innerIO.ml*: [compare_input], [compare_output] created
+	
+	* src/core/extlib/innerIO.ml: [pipe] now uses [create_out], [create_in]
+
+	* src/core/extlib/innerIO.ml: [input_channel] now uses [create_in]
+	
+	* src/core/extlib/innerIO.ml: [input_string] now uses [create_in], [Ref.post_incr]
+
+	* src/core/extlib/innerIO.ml: [output_channel] now uses [create_out]
+	
+	* src/core/extlib/innerIO.ml: [output_buffer] now uses [create_out]
+	
+	* src/core/extlib/innerIO.ml: [output_string] now uses [create_out]
+
+	* src/core/extlib/innerIO.ml: in [input], [in_id] added, in [output], [out_id] added
 
 	* src/core/extlib/extGc.ml*: created
 
