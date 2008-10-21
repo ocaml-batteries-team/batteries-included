@@ -119,8 +119,8 @@ struct
       RefList.push found v
     with Not_found -> Hashtbl.add table k (RefList.empty ())
 
-  let register ~name ~kind ~index ~directory =
-    let directory = directory^"/" in
+  let register ~name ~kind ~index ~prefix =
+    let prefix = prefix^"/" in
     let table = match kind with
       | Language       -> language
       | Values         -> values
@@ -136,7 +136,7 @@ struct
       Enum.iter 
 	(fun line -> 
 	   let (item, url) = String.split line ":" in
-	   let (item, url) = (String.trim item, directory ^ (String.trim url)) in
+	   let (item, url) = (String.trim item, prefix ^ (String.trim url)) in
 	     Printf.eprintf "Adding manual %S => %S (%S)\n" item url name;
 	     Printf.eprintf "Adding completion %S => %S (%S)\n" (basename item) item name;
 	     Hashtbl.add table.url item (name, url); (*Add fully qualified name -> url*)
