@@ -1,5 +1,13 @@
 2008-10-21  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/main/threads/batteries.ml: [Standard] not included anymore
+
+	* src/main/nothreads/batteries.ml: [Standard] not included anymore
+
+	* src/core/batteries_core.ml: [Standard] is now [Extlib.ExtPervasives.Pervasives]
+
+	* src/core/extlib/extPervasives.mli: added parts of [Enum]
+
 	* src/core/extlib/option.ml*: [print] added
 
 	* src/core/extlib/multiPMap.ml*: [print] added

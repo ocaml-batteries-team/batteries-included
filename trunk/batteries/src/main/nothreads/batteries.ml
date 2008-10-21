@@ -231,6 +231,8 @@ module System      = struct
   end
 end
 
+module Standard = Inner.Standard
+
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
   
@@ -355,4 +357,4 @@ module Random    = Util.Random
 (**/**)
 
 
-include Inner.Standard
+

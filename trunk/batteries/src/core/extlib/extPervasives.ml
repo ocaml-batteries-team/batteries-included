@@ -27,6 +27,7 @@ TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 module Pervasives = struct
   include Pervasives
   include Std
+  include Enum
 
   let print_guess   = Std.print
   let prerr_guess v = prerr_endline (dump v)

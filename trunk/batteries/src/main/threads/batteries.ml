@@ -234,6 +234,11 @@ module System      = struct
   end
 end
 
+(**
+   Automatically opened module
+*)
+module Standard = Batteries_core_threads.Standard(*This module is actually opened by a Camlp4 trick.*)
+
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
   
@@ -309,12 +314,7 @@ module Legacy = struct
     (**/**)
 end
 
-(**
-   Automatically opened module
-*)
-module Standard = Batteries_core_threads.Standard(*Included for documentation purposes*)
 
-include Standard
 
 (**/**)
 (**Shortcuts for commonly used modules*)

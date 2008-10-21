@@ -240,10 +240,7 @@ module Util        = struct
   module Random = Extlib.ExtRandom.Random
 end
 
-module Standard = struct
-  include Data.Mutable.Enum
-  include Extlib.ExtPervasives.Pervasives
-end
+module Standard = Extlib.ExtPervasives.Pervasives
 
 module Legacy = struct
   (**/**)

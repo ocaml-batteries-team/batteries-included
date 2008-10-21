@@ -61,12 +61,12 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
 
     implem:
     [ [
-	(l,o) = implem_next -> (<:str_item<open Batteries>>::l,o)
+	(l,o) = implem_next -> (<:str_item<open Batteries;;open Standard>>::l,o)
       ] ];
 
     interf:
     [ [
-	(l,o) = interf_next -> (<:sig_item<open Batteries>>::l,o)
+	(l,o) = interf_next -> (<:sig_item<open Batteries;;open Standard>>::l,o)
       ] ];
   END
 end

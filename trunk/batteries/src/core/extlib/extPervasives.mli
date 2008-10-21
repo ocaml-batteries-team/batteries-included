@@ -968,13 +968,96 @@ val exe  : string
       [exe] is given by the first argument of [Sys.argv]*)
 
 
+(**
+   {6 Enumerations}
 
+   Enumerations are a form of stream, i.e. a data structure which may
+   only be read in a specific order and only once. More operations on
+   enumerations are defined in module {!Enum}.
+*)
+
+val iter : ('a -> unit) -> 'a Enum.t -> unit
+  (** [iter f e] calls the function [f] with each elements of [e] in turn. *)
+
+
+val exists: ('a -> bool) -> 'a Enum.t -> bool
+(** [exists f e] returns [true] if there is some [x] in [e] such
+    that [f x]*)
+
+val for_all: ('a -> bool) -> 'a Enum.t -> bool
+(** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
+
+val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
+  (** [fold f v e] returns v if e is empty,
+      otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
+      the elements of [e]. *)
+
+val find : ('a -> bool) -> 'a Enum.t -> 'a
+  (** [find f e] returns the first element [x] of [e] such that [f x] returns
+      [true], consuming the enumeration up to and including the
+      found element, or, raises [Not_found] if no such element exists
+      in the enumeration, consuming the whole enumeration in the search.
+      
+      Since [find] consumes a prefix of the enumeration, it can be used several 
+      times on the same enumeration to find the next element. *)
+
+val peek : 'a Enum.t -> 'a option
+  (** [peek e] returns [None] if [e] is empty or [Some x] where [x] is
+      the next element of [e]. The element is not removed from the
+      enumeration. *)
+
+val get : 'a Enum.t -> 'a option
+  (** [get e] returns [None] if [e] is empty or [Some x] where [x] is
+      the next element of [e], in which case the element is removed
+      from the enumeration. *)
+
+val push : 'a Enum.t -> 'a -> unit
+  (** [push e x] will add [x] at the beginning of [e]. *)
+  
+val junk : 'a Enum.t -> unit
+  (** [junk e] removes the first element from the enumeration, if any. *)
+
+val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
+  (** [map f e] returns an enumeration over [(f a1, f a2, ... , f aN)] where
+      a1...N are the elements of [e]. *)
+
+val filter : ('a -> bool) -> 'a Enum.t -> 'a Enum.t
+  (** [filter f e] returns an enumeration over all elements [x] of [e] such
+      as [f x] returns [true]. *)
+
+val concat : 'a Enum.t Enum.t -> 'a Enum.t
+  (** [concat e] returns an enumeration over all elements of all enumerations
+      of [e]. *)
+
+val ( -- ) : int -> int -> int Enum.t
+(** Enumerate numbers.
+
+    [5 -- 10] is the enumeration 5,6,7,8,9,10.
+    [10 -- 5] is the empty enumeration*)
+
+val ( --- ) : int -> int -> int Enum.t
+(** As [--], but accepts enumerations in reverse order.
+
+    [5 --- 10] is the enumeration 5,6,7,8,9,10.
+    [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
+
+val ( ~~ ) : char -> char -> char Enum.t
+(** As ( -- ), but for characters.*)
+
+val ( // ) : 'a Enum.t -> ('a -> bool) -> 'a Enum.t
+(** Filtering (pronounce this operator name "such that").
+
+    For instance, [(1 -- 37) // odd] is the enumeration of all odd
+    numbers between 1 and 37.*)
+
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b Enum.t -> unit
+(** Print and consume the contents of an enumeration.*)
 
 (**
    {6 Results}
 *)
 
-type ('a, 'b) result =
+type ('a, 'b) result = ('a, 'b) Std.result =
   | Ok  of 'a
   | Bad of 'b
 
