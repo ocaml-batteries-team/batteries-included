@@ -1,5 +1,21 @@
 2008-10-22  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/toolchain/batteries_help.ml: Added directives
+
+	* src/syntax/pa_batteries/pa_batteries.ml: removed [Toolchain.Help]
+
+	* src/core/toolchain/batteries_help.ml*: [help_*] added
+
+	* src/core/toolchain/batteries_help.ml*: [help] added
+
+	* src/core/toolchain/batteries_help.ml: [register] now uses [Scanf.scanf]
+
+	* src/core/toolchain/batteries_help.ml: [help_aux] now uses [find_help]
+
+	* src/core/toolchain/batteries_help.ml: [find_help] created
+
+	* build/odoc_generator_batlib.ml: in [generate_external_index], changed [fprintf] output string
+
 	* src/syntax/pa_batteries/pa_batteries.ml: [Toolchain.Help] added to [implem]
 
 	* Makefile: in [install], removed [*_pack.cmi]

@@ -61,7 +61,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
 
     implem:
     [ [
-	(l,o) = implem_next -> (<:str_item<open Batteries;;open Standard;;open Toolchain.Help>>::l,o)
+	(l,o) = implem_next -> (<:str_item<open Batteries;;open Standard>>::l,o)
       ] ];
 
     interf:

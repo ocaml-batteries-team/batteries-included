@@ -802,7 +802,7 @@ class batlib_generator =
 
     method generate_external_index name mark set =
       let cout = open_out (Filename.concat !Args.target_dir (name ^ ".idex")) in
-	Odoc_html.StringSet.iter (fun elt -> Printf.fprintf cout "%s: %s\n" elt (Naming.complete_target mark elt)) set;
+	Odoc_html.StringSet.iter (fun elt -> Printf.fprintf cout "%S: %S\n" elt (Naming.complete_target mark elt)) set;
 	close_out cout
 
     method generate modules =
@@ -897,7 +897,8 @@ class batlib_generator =
 	 "li.index_entry_entry div.info {margin-left:1em}";
 	 "pre {background-color:rgb(250,250,250);margin-top:2em}";
 	 "pre.example {margin-top:2px; margin-bottom:2em}";
-	 "p {text-align:justify}"
+	 "p {text-align:justify}";
+	 ".superscript { font-size : 8pt }"
 	];
 
   end;;

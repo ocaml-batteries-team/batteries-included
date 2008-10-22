@@ -39,13 +39,25 @@ val help_value     : string -> unit
     constructors ...
 *)
 
-(*
-val help_language  : string -> unit
+val help_type: string -> unit
+val help_language: string -> unit
+val help_module: string -> unit
+val help_exception: string -> unit
+val help_exn: string -> unit
+(**As {!help_exception}*)
 
-val help_type      : string -> unit
-val help_module    : string -> unit
-val help_exception : string -> unit
-*)
+val help_signature: string -> unit
+val help_modtype: string -> unit
+(**As {!help_signature}*)
+
+val help_class: string -> unit
+val help_method: string -> unit
+val help_attribute: string -> unit
+val help_field: string -> unit
+(**As {!help_attribute}*)
+
+val help_objtype: string -> unit
+
 
 (** A mechanism for extending the help system.*)
 module Extend :
