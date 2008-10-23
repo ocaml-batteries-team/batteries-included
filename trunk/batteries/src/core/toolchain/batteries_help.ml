@@ -243,8 +243,7 @@ struct
 	))
 	(File.lines_of index)
       with e -> 
-	Printf.eprintf "While initializing the on-line help, error reading file %S\n%!" index;
-	Printexc.print e (*At this point, just ignore errors*)
+	Printf.eprintf "While initializing the on-line help, error reading file %S\n%s%!" index (Printexc.to_string e)
 
   let auto_register () =
     let root_dir   = Batteries_config.documentation_root           in
@@ -285,8 +284,7 @@ struct
       )
       (File.lines_of root_file)
       with e ->
-	Printf.eprintf "While initializing the on-line help, error reading file %S\n%!" root_file;
-	Printexc.print e
+	Printf.eprintf "While initializing the on-line help, error reading file %S\n%s%!" root_file (Printexc.to_string e)
 end;;
 
 let init () =

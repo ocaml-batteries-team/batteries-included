@@ -1,5 +1,7 @@
 2008-10-23  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/toolchain/batteries_help.ml: [register] now catches and prints exceptions
+
 	* src/core/baselib/batlib_Baselib_Printexc.mli: Fixed documentation typo.
 
 	* src/syntax/pa_batteries/_tags: [debug] added
