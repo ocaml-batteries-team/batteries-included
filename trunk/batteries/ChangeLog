@@ -1,4 +1,12 @@
+2008-10-24  David Teller  <David.Teller@univ-orleans.fr>
+
+	* build/odoc_generator_batlib.ml: in [generate_external_index] fixed typo: "mark" replaced with "type"
+
+	* src/toplevel/batteries_help.ml: in [append], when creating new [RefList]s, adding element inside the list
+
 2008-10-23  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/syntax/pa_batteries/pa_batteries.ml: split [top_phrase] in two
 
 	* Makefile: [DEST_TOP] added
 	

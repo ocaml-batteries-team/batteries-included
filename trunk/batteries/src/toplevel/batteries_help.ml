@@ -61,16 +61,25 @@ let go kind item source url = browse (Printf.sprintf "help on %s %S (%s)" kind i
 let tutorial () =
   browse "on-line OCaml Tutorial" "http://www.ocaml-tutorial.org/"
 
-let find_help command table item =
+(*let debug fmt =
+  Printf.eprintf fmt*)
+let debug fmt =
+  Printf.fprintf IO.stdnull fmt
+
+let find_help command table kind item =
   try `Direct (Hashtbl.find table.url item)
-  with Not_found -> 
+  with 
+    Not_found -> debug "[find_help] Nothing about %s %S, assuming it's a fully qualified name.\n%!" kind item;
     try
     let completions = Hashtbl.find table.complete item in
       match RefList.length completions with
-	| 0 -> `None
-	| 1 -> (try `Direct (Hashtbl.find table.url (snd (RefList.hd completions)))
+	| 0 -> debug "[find_help] No completion about %s %S\n%!" kind item;
+	    `None
+	| 1 -> debug "[find_help] There's one completion about %s %S\n%!" kind item;
+	       (try `Direct (Hashtbl.find table.url (snd (RefList.hd completions)))
                 with Not_found -> `Inconsistency)
-	| _ -> `Suggestions (List.map (fun (_, item) -> Printf.sprintf "%s %S;;" command item) (RefList.to_list completions))
+	| n -> debug "[find_help] Total of %d completions for %s %S\n%!" n kind item;
+	    `Suggestions (List.map (fun (_, item) -> Printf.sprintf "%s %S;;" command item) (RefList.to_list completions))
     with Not_found -> `None
 
 (**
@@ -83,7 +92,7 @@ let find_help command table item =
    @param item    The item requested by the user.
 *)
 let help_aux command table kind kinds item =
-  match find_help command table item with
+  match find_help command table kind item with
     | `Direct (source, url)   -> go kind item source url
     | `None | `Inconsistency  -> Printf.printf "Sorry, I don't know any %s named %S.\n%!" kind item
     | `Suggestions l          ->
@@ -125,11 +134,8 @@ let helpers = [("#help_value",     values   , "value",     "values",   "a value"
 	       ("#help_objtype",   objtypes , "object type", "object types", "an object type")]
 let help item =
   let results = List.map (fun (command, table, kind, kinds, a_kind) -> 
-			    (command, find_help command table item, kind, kinds, a_kind))
+			    (command, find_help command table kind item, kind, kinds, a_kind))
     helpers in
-(*    if List.for_all (fun `None -> true | _ -> false) results then (*No solution*)
-      Printf.printf "Sorry, I can't help you with %S.\n%!" item
-    else*)
       match List.fold_left 
 	(fun acc (command, result, kind, kinds, a_kind) -> match result with
 	   | `None | `Inconsistency -> acc
@@ -195,10 +201,15 @@ struct
       String.sub name ( index + 1 ) (String.length name - index - 1) 
     with Not_found -> name
 
-  let append table k (v:(string * string)) =
-    try let found = Hashtbl.find table k in
+  let append_to_table table k (v:(string * string)) =
+    let found = 
+      try Hashtbl.find table k
+      with Not_found -> 
+	let l = RefList.empty ()
+	in Hashtbl.add table k l;
+	  l
+    in
       RefList.push found v
-    with Not_found -> Hashtbl.add table k (RefList.empty ())
 
   let register ~name ~kind ~index ~prefix =
     let prefix = if String.length prefix = 0 then "/"
@@ -218,13 +229,14 @@ struct
       | Class_types    -> objtypes
     in
       try
+	debug "Now registering file %s (%s)\n" index name;
       Enum.iter 
 	(fun line -> 
 	   Scanf.sscanf line " %S : %S " (fun item url ->
-(*	     Printf.eprintf "Adding manual %S => %S (%S)\n" item url name;
-	     Printf.eprintf "Adding completion %S => %S (%S)\n" (basename item) item name;*)
+	     debug "Adding manual %S => %S (%S)\n" item url name;
+	     debug "Adding completion %S => %S (%S)\n" (basename item) item name;
 	     Hashtbl.add table.url item (name, prefix^url); (*Add fully qualified name -> url*)
-	     append table.complete (basename item) (name, item)
+	     append_to_table table.complete (basename item) (name, item)
 	))
 	(File.lines_of index)
       with e -> 
@@ -233,6 +245,7 @@ struct
   let auto_register () =
     let root_dir   = Batteries_config.documentation_root           in
     let root_file  = Filename.concat root_dir "documentation.idex" in
+      begin
     (*let prefix = "file://"^root_dir                                in*)
       try
     Enum.iter
@@ -270,6 +283,26 @@ struct
       (File.lines_of root_file)
       with e ->
 	Printf.eprintf "While initializing the on-line help, error reading file %S\n%s%!" root_file (Printexc.to_string e)
+      end;
+      List.iter 
+	( fun(_, table, singular, _, _) ->
+	    let file = "/tmp/"^singular in
+	      Printf.eprintf "Dumping table %s to file %S\n %!" singular file;
+	      File.with_file_out file (
+		fun cout ->
+		  Printf.fprintf cout "URL\n";
+		  Hashtbl.iter (fun key (name, url) ->
+				  Printf.fprintf cout "%s -> %s (%s)\n" key url name
+			       ) table.url;
+		  Printf.fprintf cout "\nCompletions\n";
+		  Hashtbl.iter (fun key list ->
+				  Printf.fprintf cout "%s -> %a\n" key 
+				    (List.print 
+				       (fun out (source, name) -> Printf.fprintf out "%s (%s)" name source
+				       )) (RefList.to_list list)
+			       ) table.complete
+	      )
+	) helpers
 end;;
 
 let init () =
