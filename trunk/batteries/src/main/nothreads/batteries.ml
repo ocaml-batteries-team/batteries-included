@@ -235,7 +235,6 @@ module Standard = Inner.Standard
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
 
-  module Help        = Inner.Toolchain.Help
   module Findlib     = Inner.Toolchain.Findlib
   module Execute     = Inner.Toolchain.Execute
 
@@ -350,7 +349,7 @@ module Unix      = System.Unix
 module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
-module Printexc  = Control.Exceptions
+module Printexc  = Printexc
 (*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
 (**/**)
 

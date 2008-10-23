@@ -42,7 +42,7 @@
 #require "camlp4";;
 #require "batteries";;
 #require "batteries.syntax";;
-Batteries.Toolchain.Help.init ();;
+Batteries_help.init ();;
 print_endline "Welcome to OCaml Batteries Included.";;
 print_endline "To obtain help on any subject, you may use";;
 print_endline "    #help \"some_subject\"";;

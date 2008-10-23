@@ -45,7 +45,7 @@ OBFLAGS =
 
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
-DESTDIR =
+DESTDIR = 
 
 ifeq ($(DESTDIR),)
 DESTDIR_FLAGS =
@@ -53,11 +53,20 @@ else
 DESTDIR_FLAGS = -destdir $(DESTDIR)
 endif
 
+DEST_TOP = 
+ifeq ($(DESTDIR),)
+DEST_TOP = $(shell ocamlfind printconf destdir)/batteries/top.ml
+else
+DEST_TOP = $(DESTDIR)/batteries/top.ml
+endif
+
+
+
 OCAMLBUILD=ocamlbuild $(OBFLAGS)
 #OCAMLBUILD=ocamlbuild -byte-plugin -classic-display 
 #Replace the first one with the second one if you have build-time issue, to help with trouble-shooting
 
-all: byte syntax
+all: byte syntax top
 
 #Useful for testing
 reinstall: byte syntax opt uninstall install
@@ -86,7 +95,11 @@ config.post: config.pre
 	echo "let (browser:(_, _, _) format) = \"$(BROWSER)\";;"        >> config.post
 
 
-install: syntax
+top:
+	echo "ocaml $(DEST_TOP) \$$@" > src/toplevel/bocaml &&\
+	ocamlbuild src/toplevel/batteries_help.cmo
+
+install: syntax top
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
 		build/META \
 		_build/src/core/extlib/IO.cmi \
@@ -97,8 +110,10 @@ install: syntax
 		_build/src/syntax/pa_openin/pa_openin_r.cmo \
 		_build/src/syntax/pa_where/pa_where.cmo \
 		_build/src/syntax/pa_batteries/pa_batteries.cmo \
+		_build/src/toplevel/batteries_help.cmo \
+		_build/src/toplevel/batteries_help.cmi \
 		src/toplevel/top.ml \
-		src/toplevel/bocaml
+		src/toplevel/bocaml 
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
 		build/threaded/META \
 		_build/src/main/threads/batteries.cmi \
@@ -116,9 +131,6 @@ uninstall:
 	ocamlfind remove $(DESTDIR_FLAGS) batteries
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads
-
-#top:
-#	ocamlfind ocamlmktop -package camlp4 -package batteries.pa_batteries.syntax -package batteries -syntax camlp4o camlp4lib.cma Camlp4Top.cmo -o batteries.top
 
 doc: byte doc/api.odocl
 	\rm -Rf doc/batteries/html/api &&\

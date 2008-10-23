@@ -149,26 +149,36 @@ val close_out : 'a output -> 'a
 
     All of the following functions deal only with UTF-8 encoded inputs/outputs
 *)
+
 val read_uchar: input -> UChar.t
-(** read one UChar from a UTF-8 encoded input*)
+(** Read one UChar from a UTF-8 encoded input*)
  
 val read_rope: input -> int -> Rope.t
-(** read up to n uchars from a UTF-8 encoded input*)
+(** Read up to n uchars from a UTF-8 encoded input*)
  
 val read_uline: input -> Rope.t
-(** read a line of UTF-8*)
+(** Read a line of UTF-8*)
  
 val read_uall : input -> Rope.t
-(** read the whole contents of a UTF-8 encoded input*)
+(** Read the whole contents of a UTF-8 encoded input*)
  
-
-
 val write_uchar: _ output -> UChar.t -> unit
+(** Write one uchar to a UTF-8 encoded output.*)
+
 val write_rope : _ output -> Rope.t -> unit
+(** Write a character rope onto a UTF-8 encoded output.*)
+
 val write_uline: _ output -> Rope.t -> unit
+(** Write one line onto a UTF-8 encoded output.*)
+
 val write_uchars : _ output -> UChar.t Enum.t -> unit
+(** Write an enumeration of characters onto a UTF-8 encoded output.*)
+
 val write_ulines : _ output -> Rope.t Enum.t -> unit
+(** Write an enumeration of lines onto a UTF-8 encoded output.*)
+
 val write_ropes : _ output -> Rope.t Enum.t -> unit
+(** Write an enumeration of ropes onto a UTF-8 encoded output.*)
 
 (** {6 Creation of IO Inputs/Outputs} 
 

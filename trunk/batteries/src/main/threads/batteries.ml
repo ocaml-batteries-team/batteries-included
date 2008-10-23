@@ -242,7 +242,6 @@ module Standard = Batteries_core_threads.Standard(*This module is actually opene
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
 
-  module Help        = Batteries_core_threads.Toolchain.Help
   module Findlib     = Batteries_core_threads.Toolchain.Findlib
   module Execute     = Batteries_core_threads.Toolchain.Execute
 
@@ -368,7 +367,7 @@ module Unix      = System.Unix
 module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
-module Printexc  = Control.Exceptions
+module Printexc  = Printexc
 (*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
 (**/**)
 

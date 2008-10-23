@@ -23,21 +23,6 @@ open ExtPrintf
 open ExtString
 open ExtList
 
-(*
-(** Catch errors *)
-let protect f arg =
-  try
-    let _ = f arg in ()
-  with
-      Failure s ->
-	print_endline s
-    | Fl_package_base.No_such_package(pkg, reason) ->
-	print_endline ("No such package: " ^ pkg ^ 
-		       (if reason <> "" then " - " ^ reason else ""))
-    | Fl_package_base.Package_loop pkg ->
-	print_endline ("Package requires itself: " ^ pkg)
-;;
-*)
 
 
 type url = string
@@ -102,7 +87,7 @@ let help_aux command table kind kinds item =
     | `Direct (source, url)   -> go kind item source url
     | `None | `Inconsistency  -> Printf.printf "Sorry, I don't know any %s named %S.\n%!" kind item
     | `Suggestions l          ->
-	Printf.printf "Several %s exist with name %S. To obtain the help on one of them, please use one of\n%a%!"
+	Printf.printf "Several %s exist with name %S. To obtain the help on one of them, please use one of\n %a%!"
 	  kinds item 
 	(List.print
 	  ~first:""

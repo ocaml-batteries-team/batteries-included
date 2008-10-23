@@ -1,5 +1,25 @@
 2008-10-23  David Teller  <David.Teller@univ-orleans.fr>
 
+	* Makefile: [DEST_TOP] added
+	
+	* src/core/batteries_core_threads.ml: [Help] removed
+
+	* src/main/threads/batteries.ml: [Help] removed
+
+	* src/main/nothreads/batteries.ml: [Help] removed
+
+	* src/core/batteries_core.ml: [Help] removed
+
+	* src/core/extlib/IO.mli: [write_u*] documented
+
+	* myocamlbuild.ml: removed unused variables
+
+	* src/core/toolchain.mlpack: [Batteries_help] removed
+
+	* src/main/threads/batteries.mllib: removed useless modules
+
+	* src/main/nothreads/batteries.mllib: removed useless modules
+
 	* src/main/nothreads/batteries.ml: moved [Printexc] to [Control]
 
 	* src/core/extlib.mlpack: [ExtPrintexc] added
