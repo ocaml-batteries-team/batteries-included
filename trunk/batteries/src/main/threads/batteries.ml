@@ -43,6 +43,7 @@ module Control     = struct
     end
   end
 
+  module Exceptions  = Batteries_core_threads.Control.Exceptions
   module Labels      = Batteries_core_threads.Control.Labels
 
   module Monad = Batteries_core_threads.Control.Monad
@@ -170,7 +171,6 @@ module Languages   = struct
   (** {1 Printing}*)
     
   module Format          = Batteries_core_threads.Languages.Format
-  module Printexc        = Batteries_core_threads.Languages.Printexc
   module Printf          = Batteries_core_threads.Languages.Printf
 
   (** {1 Serialization to human-readable formats}
@@ -353,7 +353,6 @@ module Parsing   = Languages.Parsing
 module Scanf     = Languages.Scanf
 module Str       = Languages.Str
 module Format    = Languages.Format
-module Printexc  = Languages.Printexc
 module Printf    = Languages.Printf
 module Marshal   = Meta.Marshal
 module Oo        = Meta.Oo
@@ -369,6 +368,7 @@ module Unix      = System.Unix
 module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
+module Printexc  = Control.Exceptions
 (*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
 (**/**)
 

@@ -1,5 +1,13 @@
 2008-10-23  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/main/nothreads/batteries.ml: moved [Printexc] to [Control]
+
+	* src/core/extlib.mlpack: [ExtPrintexc] added
+
+	* src/core/batteries_core.ml: [ExtPrintexc.Printexc] replaces baselib [Printexc]
+
+	* src/core/extlib/extPrintexc.ml*: added
+
 	* src/core/toolchain/batteries_help.ml: [register] now catches and prints exceptions
 
 	* src/core/baselib/batlib_Baselib_Printexc.mli: Fixed documentation typo.
