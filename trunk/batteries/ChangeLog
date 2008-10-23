@@ -1,5 +1,7 @@
 2008-10-23  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/baselib/batlib_Baselib_Printexc.mli: Fixed documentation typo.
+
 	* src/syntax/pa_batteries/_tags: [debug] added
 
 	* src/syntax/pa_batteries/pa_batteries.ml: [top_phrase], [top_phrase_next] added

@@ -232,6 +232,7 @@ struct
       | Attributes     -> attributes
       | Class_types    -> objtypes
     in
+      try
       Enum.iter 
 	(fun line -> 
 	   Scanf.sscanf line " %S : %S " (fun item url ->
@@ -241,11 +242,15 @@ struct
 	     append table.complete (basename item) (name, item)
 	))
 	(File.lines_of index)
+      with e -> 
+	Printf.eprintf "While initializing the on-line help, error reading file %S\n%!" index;
+	Printexc.print e (*At this point, just ignore errors*)
 
   let auto_register () =
     let root_dir   = Batteries_config.documentation_root           in
     let root_file  = Filename.concat root_dir "documentation.idex" in
     (*let prefix = "file://"^root_dir                                in*)
+      try
     Enum.iter
       (fun line -> 
 	 Scanf.sscanf line "%s %s " 
@@ -279,6 +284,9 @@ struct
 	   )
       )
       (File.lines_of root_file)
+      with e ->
+	Printf.eprintf "While initializing the on-line help, error reading file %S\n%!" root_file;
+	Printexc.print e
 end;;
 
 let init () =

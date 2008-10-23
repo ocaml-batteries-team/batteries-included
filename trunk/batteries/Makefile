@@ -97,8 +97,8 @@ install: syntax
 		_build/src/syntax/pa_openin/pa_openin_r.cmo \
 		_build/src/syntax/pa_where/pa_where.cmo \
 		_build/src/syntax/pa_batteries/pa_batteries.cmo \
-		top.ml \
-		bocaml
+		src/toplevel/top.ml \
+		src/toplevel/bocaml
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
 		build/threaded/META \
 		_build/src/main/threads/batteries.cmi \

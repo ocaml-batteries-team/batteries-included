@@ -30,7 +30,7 @@ val print : ('a -> 'b) -> 'a -> 'b
    The typical use is to catch and report exceptions that
    escape a function application. *)
 
-(** / **)
+(**/**)
 val catch : ('a -> 'b) -> 'a -> 'b
 (** [Printexc.catch fn x] is similar to {!Printexc.print}, but
    aborts the program with exit code 2 after printing the
