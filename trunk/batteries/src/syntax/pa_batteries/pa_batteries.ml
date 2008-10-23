@@ -32,6 +32,8 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   open Sig
   open Ast
 
+    (*We replace the definitions of [implem], [interf] and [top_phrase].*)
+
     DELETE_RULE Gram implem: "#"; a_LIDENT; opt_expr; semi END
     DELETE_RULE Gram implem: str_item; semi; SELF END
     DELETE_RULE Gram implem: `EOI END
@@ -40,12 +42,25 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
     DELETE_RULE Gram interf: sig_item; semi; SELF END
     DELETE_RULE Gram interf: `EOI END
 
+    try
+      DELETE_RULE Gram top_phrase: phrase END
+    with Not_found -> () (*This rule exists only in revised syntax*)
+    try
+      begin
+	DELETE_RULE Gram top_phrase: "#"; a_LIDENT; opt_expr; ";;" END;
+	DELETE_RULE Gram top_phrase: LIST1 str_item; ";;"END
+      end
+    with
+	Not_found ->  () (*These rules exist only in original syntax*)
+    DELETE_RULE Gram top_phrase: `EOI END
 
   let stopped_at _loc =
     Some (Loc.move_line 1 _loc)
 
+  let initialized = ref false (**[true] once we have opened [Batteries] and [Standard]*)
+      
   EXTEND Gram
-    GLOBAL:implem interf;
+    GLOBAL:implem interf top_phrase;
     implem_next:
       [ [ "#"; n = a_LIDENT; dp = opt_expr; semi ->
             ( [ <:str_item< # $n$ $dp$ >> ] , stopped_at _loc)
@@ -58,7 +73,10 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
         | si = sig_item; semi; (sil, stopped) = SELF -> (si :: sil, stopped)
         | `EOI -> ([], None) ] ]
     ;
-
+    top_phrase_next:
+      [ [ ph = phrase -> Some ph;
+	| `EOI        -> None ] ]
+    ;
     implem:
     [ [
 	(l,o) = implem_next -> (<:str_item<open Batteries;;open Standard>>::l,o)
@@ -68,9 +86,19 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
     [ [
 	(l,o) = interf_next -> (<:sig_item<open Batteries;;open Standard>>::l,o)
       ] ];
+    top_phrase:
+      [ [
+	  next = top_phrase_next -> if not !initialized then 
+	    match next with
+	      | None    -> None
+	      | Some ph -> initialized := true;
+		  Some <:str_item<open Batteries;;open Standard;;$ph$>>
+	  else next
+	] ];
+
   END
 end
 
 module M = Register.OCamlSyntaxExtension(Id)(Make)
 
-Printf.eprintf "Yeah, a syntax extension\n%!"
+

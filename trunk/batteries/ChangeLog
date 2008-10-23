@@ -1,5 +1,17 @@
 2008-10-23  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/syntax/pa_batteries/_tags: [debug] added
+
+	* src/syntax/pa_batteries/pa_batteries.ml: [top_phrase], [top_phrase_next] added
+
+	* src/core/extlib/ref.mli: [protect] added
+
+	* src/syntax/pa_where/pa_where.ml: in [expr], [test_where_let] is now unused
+
+	* top.ml: created
+
+	* bocaml: created
+
 	* build/odoc_generator_batlib.ml: in [generate_external_index] added special case for types
 
 	* src/core/toolchain/batteries_help.ml: [auto_register] created

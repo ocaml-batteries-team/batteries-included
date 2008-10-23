@@ -45,6 +45,19 @@ let post_decr r = post r ( ( + ) (-1) )
 
 let copy r = ref (!r)
 
+
+let protect r v body =
+  let old = !r in
+  try
+    r := v;
+    let res = body() in
+    r := old;
+    res
+  with x ->
+    r := old;
+    raise x
+
+
 external ref : 'a -> 'a ref = "%makemutable"
 (** Return a fresh reference containing the given value. *)
 

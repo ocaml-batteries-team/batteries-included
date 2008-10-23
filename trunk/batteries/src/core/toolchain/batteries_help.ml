@@ -281,8 +281,7 @@ struct
       (File.lines_of root_file)
 end;;
 
-if !Sys.interactive then
-begin
+let init () =
   Extend.auto_register ();
   List.iter
     (fun (command, table, singular, plural, _) ->
@@ -296,4 +295,4 @@ begin
     Toploop.directive_table
     "help"
     (Toploop.Directive_string help)
-end
+

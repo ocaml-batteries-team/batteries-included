@@ -31,11 +31,11 @@ DOCDIR  =  $(shell pwd)/doc/batteries/
 # command used to trigger the browser
 # if your platform browser is different, you will need to invoke make as
 #      make BROWSER="some command"
-# Typical value: "x-www-browser %S &" (for Debian/Ubuntu systems)
-# Typical value: "htmlview %S &"      (for Fedora/Red Hat)
-# Typical value: "start %S /B"        (for Windows)
-# Typical value: "gnome-open %S &"    (for Gnome)
-BROWSER = gnome-open %S &
+# Typical value: "x-www-browser %S &> /dev/null &" (for Debian/Ubuntu systems)
+# Typical value: "htmlview %S &> /dev/null &"      (for Fedora/Red Hat)
+# Typical value: "start %S /B"                     (for Windows)
+# Typical value: "gnome-open %S &> /dev/null &"    (for Gnome)
+BROWSER = gnome-open %S &> /dev/null &
 
 #Flags to pass to OCamlBuild.
 #Typical flag: -byte-plugin (if you don't have ocamlopt installed on the machine)
@@ -61,7 +61,7 @@ all: byte syntax
 
 #Useful for testing
 reinstall: byte syntax opt uninstall install
-
+rebyte: byte syntax uninstall install
 instdoc: doc
 	install -D doc/batteries $(DOCDIR)
 
@@ -81,15 +81,10 @@ syntax: config
 
 config: config.post
 config.post: config.pre
-	cp config.pre config.post &&\
-	echo "let documentation_root = \"$(DOCDIR)\";;"                             >> config.post
-	echo "let (browser:(_, _, _) format) = \"$(BROWSER)\";;"                                       >> config.post
+	cp config.pre config.post                                                      &&\
+	echo "let documentation_root = \"$(DOCDIR)\";;"                 >> config.post &&\
+	echo "let (browser:(_, _, _) format) = \"$(BROWSER)\";;"        >> config.post
 
-
-#src/config.ml:
-#	echo "let version            = \"$(VERSION)\";;"                            >  src/config.ml &&\
-#	echo "let documentation_root = \"$(DOCDIR)\";;"                             >> src/config.ml &&\
-	echo "let browse l           = let cmd = ExtPrintf.Printf.sprintf2 \"firefox %a &\" (ExtList.List.print ~first:"" ~last:"" ~sep:"" ExtString.String.print) l in ignore (Sys.command cmd)"             >> src/config.ml
 
 install: syntax
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
@@ -101,7 +96,9 @@ install: syntax
 		_build/src/syntax/pa_openin/pa_openin.cmo \
 		_build/src/syntax/pa_openin/pa_openin_r.cmo \
 		_build/src/syntax/pa_where/pa_where.cmo \
-		_build/src/syntax/pa_batteries/pa_batteries.cmo
+		_build/src/syntax/pa_batteries/pa_batteries.cmo \
+		top.ml \
+		bocaml
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
 		build/threaded/META \
 		_build/src/main/threads/batteries.cmi \
@@ -120,8 +117,8 @@ uninstall:
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads
 
-top:
-	ocamlfind ocamlmktop -package camlp4 -package batteries.pa_batteries.syntax -package batteries -syntax camlp4o camlp4lib.cma Camlp4Top.cmo -o batteries.top
+#top:
+#	ocamlfind ocamlmktop -package camlp4 -package batteries.pa_batteries.syntax -package batteries -syntax camlp4o camlp4lib.cma Camlp4Top.cmo -o batteries.top
 
 doc: byte doc/api.odocl
 	\rm -Rf doc/batteries/html/api &&\

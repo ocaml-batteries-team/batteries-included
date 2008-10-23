@@ -20,8 +20,22 @@
 
 (** Tools for reading the documentation from the toplevel
 
+    All these tools are invoked automatically by the Batteries
+    Toplevel.  They are provided here if you wish to integrate them
+    into your own toplevel.
+
     @author David Teller
 *)
+
+val init : unit -> unit
+(** Proceed to initialization.
+
+    This function loads the primary help files and registers the
+    toplevel directives.
+
+    If you integrate the on-line help system into your toplevel, you
+    must call this function before any of the other functions of this
+    module. *)
 
 val tutorial : unit -> unit
 (** [tutorial ()] opens the tutorial.*)

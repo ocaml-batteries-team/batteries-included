@@ -94,6 +94,17 @@ val pre_decr: int ref -> int
 
      Comparable to C or Java's [--i]. *)
 
+val protect : 'a ref -> 'a -> (unit -> 'b) -> 'b
+  (**Assign a reference temporarily.
+
+     [protect r v body] sets the value of [r] to [v] and executes
+     [body]. Once body has been executed, whether termination happens
+     as a consequence of regular evaluation or exception, the previous
+     value of [r] is restored. *)
+
+
+
+
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
 

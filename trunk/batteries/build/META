@@ -48,20 +48,10 @@ package "pa_batteries" (
 	    	description = "auto-opener for Batteries (syntax extension)"
 		version     = "20081008"
 		archive(syntax, preprocessor) = "pa_batteries.cmo"
-		archive(syntax,  toploop)     = "pa_batteries.cmo"
+		archive(syntax, toploop)      = "pa_batteries.cmo"
 	)
 )
 
-package "pa_mainfun" (
-	description = "simplify syntax of main program (container)"
-	version     = "20081008"
-	package "syntax" (
-	    	description = "simplify syntax of main program (syntax extension)"
-		version     = "20081010"
-		archive(syntax, preprocessor) = "pa_mainfun.cmo"
-		archive(syntax, toploop)      = "pa_mainfun.cmo"
-	)
-)
 
 #
 # Doesn't work, for some reason -- calling "sexplib.syntax" directly works, though.
@@ -95,6 +85,6 @@ package "bin_prot" (
 package "syntax" (
 	version     = "20081007"
 	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
-	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_mainfun.syntax"
+	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"
 	requires(boilerplate) = "type-conv.syntax,bin_prot.syntax"
 )
