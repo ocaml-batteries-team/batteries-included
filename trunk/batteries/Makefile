@@ -19,14 +19,32 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
+VERSION = 0.20081023
+# place where your on-line help files are stored
+# if you want on-line help, you will need to invoke make as
+#      make DOCDIR="/some/where/"
+# Typical value: "/usr/share/doc/batteries" (for Debian systems)
+# Typical value: "/usr/local/godi/doc/godi-batteries/doc/batteries" (for GODI systems)
+DOCDIR  =  $(shell pwd)/doc/batteries/
+
+#
+# command used to trigger the browser
+# if your platform browser is different, you will need to invoke make as
+#      make BROWSER="some command"
+# Typical value: "x-www-browser %S &" (for Debian/Ubuntu systems)
+# Typical value: "htmlview %S &"      (for Fedora/Red Hat)
+# Typical value: "start %S /B"        (for Windows)
+# Typical value: "gnome-open %S &"    (for Gnome)
+BROWSER = gnome-open %S &
+
 #Flags to pass to OCamlBuild.
 #Typical flag: -byte-plugin (if you don't have ocamlopt installed on the machine)
 #Typical flag: -classic-display (for more details on the build process)
 OBFLAGS =
 
 
-# findlib destdir, if you need to install in non-standard places invoke make
-# as: "make install DESTDIR=/some/where/"
+# findlib destdir, if you need to install in non-standard places invoke make as
+#      make install DESTDIR=/some/where/
 DESTDIR =
 
 ifeq ($(DESTDIR),)
@@ -44,31 +62,34 @@ all: byte syntax
 #Useful for testing
 reinstall: byte syntax opt uninstall install
 
+instdoc: doc
+	install -D doc/batteries $(DOCDIR)
 
-
-byte:
+byte: config
 	$(OCAMLBUILD) src/main/threads/batteries.cma     &&\
 	$(OCAMLBUILD) src/main/nothreads/batteries.cma
 
-opt:
+opt: config
 	$(OCAMLBUILD) src/main/threads/batteries.cmxa    &&\
 	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
 
-syntax:
+syntax: config
 	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo       &&\
 	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin_r.cmo     &&\
 	$(OCAMLBUILD) src/syntax/pa_where/pa_where.cmo         &&\
 	$(OCAMLBUILD) src/syntax/pa_batteries/pa_batteries.cmo
 
-batteries.mllib:
-#	echo $(foreach i, $(basename $(notdir $(shell find src/ -name "*.ml" -o -name "*.mlpack"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
-	sed -i -e "s/ /\n/g" -e "s/Batteries\\nBatteries/Batteries/" \
-		batteries.mllib &&\
-	cp batteries.mllib src/main/threads       &&\
-#	echo $(foreach i, $(basename $(notdir $(shell find src \( -name "*ml" -or -name "*mlpack" \) -not -wholename "*baselib_threads*"))), $(shell ocaml build/tools.ml --capit $i)) > batteries.mllib &&\
-	sed -i -e "s/ /\n/g" -e "s/Batteries\\nBatteries/Batteries/" \
-		batteries.mllib &&\
-	cp batteries.mllib src/main/nothreads
+config: config.post
+config.post: config.pre
+	cp config.pre config.post &&\
+	echo "let documentation_root = \"$(DOCDIR)\";;"                             >> config.post
+	echo "let (browser:(_, _, _) format) = \"$(BROWSER)\";;"                                       >> config.post
+
+
+#src/config.ml:
+#	echo "let version            = \"$(VERSION)\";;"                            >  src/config.ml &&\
+#	echo "let documentation_root = \"$(DOCDIR)\";;"                             >> src/config.ml &&\
+	echo "let browse l           = let cmd = ExtPrintf.Printf.sprintf2 \"firefox %a &\" (ExtList.List.print ~first:"" ~last:"" ~sep:"" ExtString.String.print) l in ignore (Sys.command cmd)"             >> src/config.ml
 
 install: syntax
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
@@ -98,6 +119,9 @@ uninstall:
 	ocamlfind remove $(DESTDIR_FLAGS) batteries
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads
+
+top:
+	ocamlfind ocamlmktop -package camlp4 -package batteries.pa_batteries.syntax -package batteries -syntax camlp4o camlp4lib.cma Camlp4Top.cmo -o batteries.top
 
 doc: byte doc/api.odocl
 	\rm -Rf doc/batteries/html/api &&\

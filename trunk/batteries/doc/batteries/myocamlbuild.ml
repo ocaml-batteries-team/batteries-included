@@ -108,7 +108,7 @@ struct
     and cl_use_batteries_o = []
               (*[cl_use_batteries_o]: extensions which only make sense in original syntax*)
     and cl_camlp4o         = [A"-syntax";  A "camlp4o"]
-    and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in (*Temporary fix -- ocamlfind really behaves strangely*)
+    and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in
 
     let cl_boilerplate_original = cl_use_boilerplate @ cl_camlp4o
     and cl_boilerplate_revised  = cl_use_boilerplate @ cl_camlp4r

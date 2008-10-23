@@ -1,3 +1,17 @@
+2008-10-23  David Teller  <David.Teller@univ-orleans.fr>
+
+	* build/odoc_generator_batlib.ml: in [generate_external_index] added special case for types
+
+	* src/core/toolchain/batteries_help.ml: [auto_register] created
+
+	* src/core/batteries_config.ml*: created
+
+	* src/core/extlib/extPrintf.mli: Fixed documentation typo.
+
+	* config.pre: created
+
+	* Makefile: [BROWSER], [instdoc] added
+
 2008-10-22  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/toolchain/batteries_help.ml: Added directives

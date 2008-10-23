@@ -72,3 +72,5 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
 end
 
 module M = Register.OCamlSyntaxExtension(Id)(Make)
+
+Printf.eprintf "Yeah, a syntax extension\n%!"

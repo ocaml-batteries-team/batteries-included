@@ -67,13 +67,9 @@ let attributes=table ()
 let objtypes = table ()
 
 
-let browser = match Sys.os_type with
-  | "Win32" -> "firefox.exe"
-  | _       -> "firefox"
-
 let browse name url =
   Printf.printf "Opening %s\n%!" name;
-  ignore (Sys.command (Printf.sprintf "%s %s" browser url))
+  ignore (Batteries_config.browse url)
 
 let go kind item source url = browse (Printf.sprintf "help on %s %S (%s)" kind item source) url
 
@@ -185,20 +181,7 @@ let help item =
   fun () ->
     !Toploop.toplevel_startup_hook ();*)
 
-begin
-  List.iter
-    (fun (command, table, singular, plural, _) ->
-       let name = (String.sub command 1 (String.length command - 1)) (*remove leading "#"*) in
-	 Hashtbl.add
-	   Toploop.directive_table
-	   name
-	   (Toploop.Directive_string (help_aux command table singular plural)))
-    helpers;
-  Hashtbl.add
-    Toploop.directive_table
-    "help"
-    (Toploop.Directive_string help)
-end
+
 
 (*
     if !Sys.interactive then
@@ -259,4 +242,58 @@ struct
 	))
 	(File.lines_of index)
 
+  let auto_register () =
+    let root_dir   = Batteries_config.documentation_root           in
+    let root_file  = Filename.concat root_dir "documentation.idex" in
+    (*let prefix = "file://"^root_dir                                in*)
+    Enum.iter
+      (fun line -> 
+	 Scanf.sscanf line "%s %s " 
+	   (fun category index ->
+  	      let maybe_kind = 
+		match category with
+		| "language" -> Some Language
+		| "values"   -> Some Values
+		| "types"    -> Some Types
+		| "modules"  -> Some Modules
+		| "exceptions"| "exns"         -> Some Exceptions
+		| "modtypes"  | "module_types" -> Some Module_types
+		| "classes"                    -> Some Classes
+		| "methods"                    -> Some Methods
+		| "attributes"                 -> Some Attributes
+		| "class_types"                -> Some Class_types
+		| ""                           -> None
+		| _                            -> Printf.eprintf 
+		    "Warning: During the initialization of the help system from index %S, I don't know what to do with category %S\n%!" 
+		      root_file category;
+		    None
+	      in
+		match maybe_kind with 
+		    Some kind ->
+		      let index          = Filename.concat  root_dir index in
+		      let html_directory = Filename.dirname index       in
+		      register ~name:"OCaml Batteries Included" ~kind
+			~index
+			~prefix:("file://"^html_directory)
+		  | _ -> ()
+	   )
+      )
+      (File.lines_of root_file)
+end;;
+
+if !Sys.interactive then
+begin
+  Extend.auto_register ();
+  List.iter
+    (fun (command, table, singular, plural, _) ->
+       let name = (String.sub command 1 (String.length command - 1)) (*remove leading "#"*) in
+	 Hashtbl.add
+	   Toploop.directive_table
+	   name
+	   (Toploop.Directive_string (help_aux command table singular plural)))
+    helpers;
+  Hashtbl.add
+    Toploop.directive_table
+    "help"
+    (Toploop.Directive_string help)
 end

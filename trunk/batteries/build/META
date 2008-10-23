@@ -48,7 +48,7 @@ package "pa_batteries" (
 	    	description = "auto-opener for Batteries (syntax extension)"
 		version     = "20081008"
 		archive(syntax, preprocessor) = "pa_batteries.cmo"
-		archive(syntax, toploop)      = "pa_batteries.cmo"
+		archive(syntax,  toploop)     = "pa_batteries.cmo"
 	)
 )
 
