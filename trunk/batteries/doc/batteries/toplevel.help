@@ -2,8 +2,8 @@ Welcome to OCaml, Batteries Included.
 
 You are currently using the Toplevel of OCaml. You can think of it as
 a powerful graphics calculator, or as a command-line comparable to
-that of your operating system, or as a nice way of learning your way
-around OCaml, or of testing algorithms and programs.
+that of your operating system. It is also a nice way of learning OCaml
+and of testing your algorithms and programs.
 
 Notice character '#', at the start of some lines? That's called the
 "prompt", it means that the Toplevel is waiting for your
@@ -14,8 +14,9 @@ evaluations or directives. Value definitions let you teach OCaml new
 tricks. Type definitions let you teach OCaml how to understand new
 kinds of values informations and how to check that you're not making
 mistakes when using your definitions. Evaluations let you actually do
-something, such as computing the result of an algorithm, but also
-doing more complex things such as opening programs, etc. Any program
+something with your definitions, such as computing the result of your
+algorithm, but also doing more complex things such as opening
+applications, modifying files, or even creating websites. Any program
 is composed of value definitions, type definitions and evaluations.
 
 Finally, directives are not part of any program. They just let you
@@ -40,6 +41,6 @@ that you still intend to write more.
 If you are new to programming, now is time to write
  #man "the tutorial";;
 
-If you already know some other programming language, now is time to write
+If you already know some other programming language, you should probably write
  #man "for programmers";;
 

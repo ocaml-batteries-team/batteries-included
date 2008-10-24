@@ -1,5 +1,7 @@
 2008-10-24  David Teller  <David.Teller@univ-orleans.fr>
 
+	* build/odoc_generator_batlib.ml: [generate_types_index] overloaded
+
 	* src/core/extlib/innerIO.ml: [close_in] and [close_out] now use [noop] when closing again/flushing again
 	  after the input/output is closed
 

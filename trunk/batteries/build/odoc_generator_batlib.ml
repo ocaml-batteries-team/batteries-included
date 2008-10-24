@@ -491,14 +491,28 @@ class batlib_generator =
 
    Only document modules which may be reached from the root.
 *)
+	
+    method generate_types_index module_list =
+      self#generate_elements_index
+	((map (fun t -> `Primitive t) primitive_types_names) @
+	 (map (fun t -> `Derived   t) self#list_types))
+        (function `Derived t        -> t.ty_name
+	   |   `Primitive (name, _) -> name)
+        (function `Derived t        -> t.ty_info
+	   |   `Primitive (_, _)    -> None)
+        (function `Derived t        -> Naming.complete_type_target t
+	   |   `Primitive (_, alias)-> Naming.complete_target Naming.mark_type alias)
+        Odoc_messages.index_of_types
+        self#index_types
+	
 
     (** A method to create index files. *)
     method generate_elements_index :
         'a.
         'a list ->
-          ('a -> Odoc_info.Name.t) ->
-            ('a -> Odoc_info.info option) ->
-              ('a -> string) -> string -> string -> unit =
+        ('a -> Odoc_info.Name.t) ->
+        ('a -> Odoc_info.info option) ->
+        ('a -> string) -> string -> string -> unit =
     fun elements name info target title simple_file ->
       try
         let chanout = open_out (Filename.concat !Args.target_dir simple_file) in
