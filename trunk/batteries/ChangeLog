@@ -1,5 +1,26 @@
 2008-10-24  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/innerIO.ml: [close_in] and [close_out] now use [noop] when closing again/flushing again
+	  after the input/output is closed
+
+	* src/core/extlib/IO.ml: [apply_enum] now uses [InnerIO.Input_closed]
+	
+	* src/core/extlib/IO.ml: [apply_enum] removed one
+
+	* src/toplevel/batteries_help.ml: [browse] now displays an error message in case of problem
+
+	* doc/batteries/documentation.idex: language.idex added
+
+	* doc/batteries/language.idex: created
+
+	* src/toplevel/batteries_help.ml: [help] added
+
+	* src/toplevel/batteries_help.ml: [register] now looks for complete urls
+
+	* src/toplevel/batteries_help.ml: [help*] renamed [man*]
+
+	* Makefile: in [top], now using [ocaml -init]
+
 	* build/odoc_generator_batlib.ml: in [generate_external_index] fixed typo: "mark" replaced with "type"
 
 	* src/toplevel/batteries_help.ml: in [append], when creating new [RefList]s, adding element inside the list

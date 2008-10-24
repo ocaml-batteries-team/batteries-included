@@ -96,7 +96,8 @@ config.post: config.pre
 
 
 top:
-	echo "ocaml $(DEST_TOP) \$$@" > src/toplevel/bocaml &&\
+	echo "ocaml -init $(DEST_TOP) \$$@" > src/toplevel/bocaml &&\
+	chmod ugo+rx src/toplevel/bocaml &&\
 	ocamlbuild src/toplevel/batteries_help.cmo
 
 install: syntax top
@@ -153,6 +154,6 @@ clean:
 	$(OCAMLBUILD) -clean &&\
 	cd .. &&\
 	\rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"` &&\
-	\rm -f META doc/api.odocl doc/batteries/html/api/* 
+	\rm -f META doc/api.odocl doc/batteries/html/api/* config.post
 
 .PHONY: doc/api.odocl batteries.mllib examples

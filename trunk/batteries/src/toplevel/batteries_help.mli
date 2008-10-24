@@ -37,40 +37,40 @@ val init : unit -> unit
     must call this function before any of the other functions of this
     module. *)
 
-val tutorial : unit -> unit
-(** [tutorial ()] opens the tutorial.*)
+val help : unit -> unit
+(** [help ()] opens the tutorial.*)
 
-val help           : string -> unit
-(** [help "something"] opens the help about subject ["something"].
+val man           : string -> unit
+(** [man "something"] opens the help about subject ["something"].
 
-    [help] is the most generic kind of help.
+    [man] is the most generic kind of man.
 *)
 
-val help_value     : string -> unit
-(** [help_value "something"] opens the help about a value named ["something"].
+val man_value     : string -> unit
+(** [man_value "something"] opens the help about a value named ["something"].
 
     Use this function to find informations on variables, constants, functions,
     constructors ...
 *)
 
-val help_type: string -> unit
-val help_language: string -> unit
-val help_module: string -> unit
-val help_exception: string -> unit
-val help_exn: string -> unit
-(**As {!help_exception}*)
+val man_type: string -> unit
+val man_language: string -> unit
+val man_module: string -> unit
+val man_exception: string -> unit
+val man_exn: string -> unit
+(**As {!man_exception}*)
 
-val help_signature: string -> unit
-val help_modtype: string -> unit
-(**As {!help_signature}*)
+val man_signature: string -> unit
+val man_modtype: string -> unit
+(**As {!man_signature}*)
 
-val help_class: string -> unit
-val help_method: string -> unit
-val help_attribute: string -> unit
-val help_field: string -> unit
-(**As {!help_attribute}*)
+val man_class: string -> unit
+val man_method: string -> unit
+val man_attribute: string -> unit
+val man_field: string -> unit
+(**As {!man_attribute}*)
 
-val help_objtype: string -> unit
+val man_objtype: string -> unit
 
 
 (** A mechanism for extending the help system.*)

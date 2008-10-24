@@ -22,7 +22,7 @@ open Extlib
 open ExtPrintf
 open ExtString
 open ExtList
-
+open IO
 
 
 type url = string
@@ -54,12 +54,13 @@ let objtypes = table ()
 
 let browse name url =
   Printf.printf "Opening %s\n%!" name;
-  ignore (Batteries_config.browse url)
+  if Batteries_config.browse url <> 0 then
+    Printf.eprintf "Sorry, I had a problem communicating with your browser and I couldn't open the manual.\n%!"
 
 let go kind item source url = browse (Printf.sprintf "help on %s %S (%s)" kind item source) url
 
-let tutorial () =
-  browse "on-line OCaml Tutorial" "http://www.ocaml-tutorial.org/"
+(*let tutorial () =
+  browse "on-line OCaml Tutorial" "http://www.ocaml-tutorial.org/"*)
 
 (*let debug fmt =
   Printf.eprintf fmt*)
@@ -91,7 +92,7 @@ let find_help command table kind item =
    @param kinds   The human-readable kind of help being looked for (plural form)
    @param item    The item requested by the user.
 *)
-let help_aux command table kind kinds item =
+let man_aux command table kind kinds item =
   match find_help command table kind item with
     | `Direct (source, url)   -> go kind item source url
     | `None | `Inconsistency  -> Printf.printf "Sorry, I don't know any %s named %S.\n%!" kind item
@@ -104,35 +105,33 @@ let help_aux command table kind kinds item =
 	  ~last:"\n"
 	  String.print)
 	  l
-
 	  
-
-let help_value    = help_aux "#help_value"      values     "value"                 "values"
-let help_type     = help_aux "#help_type"       types      "type"                  "types"
-let help_language = help_aux "#help_language"   language   "language construction" "language constructions"
-let help_module   = help_aux "#help_module"     modules    "module"                "modules"
-let help_exception= help_aux "#help_exception"  exns       "exception"             "exceptions"
-let help_exn      = help_exception
-let help_signature= help_aux "#help_signature"  modtypes   "signature"             "signatures"
-let help_modtype  = help_signature
-let help_class    = help_aux "#help_class"      classes    "class"                 "classes"
-let help_method   = help_aux "#help_method"     methods    "method"                "methods"
-let help_attribute= help_aux "#help_attributes" attributes "attribute"             "attributes"
-let help_field    = help_attribute
-let help_objtype  = help_aux "#help_objtype"    objtypes   "object type"           "object types"
+let man_value    = man_aux "#man_value"      values     "value"                 "values"
+let man_type     = man_aux "#man_type"       types      "type"                  "types"
+let man_language = man_aux "#man_language"   language   "language topc"         "language topics"
+let man_module   = man_aux "#man_module"     modules    "module"                "modules"
+let man_exception= man_aux "#man_exception"  exns       "exception"             "exceptions"
+let man_exn      = man_exception
+let man_signature= man_aux "#man_signature"  modtypes   "signature"             "signatures"
+let man_modtype  = man_signature
+let man_class    = man_aux "#man_class"      classes    "class"                 "classes"
+let man_method   = man_aux "#man_method"     methods    "method"                "methods"
+let man_attribute= man_aux "#man_attributes" attributes "attribute"             "attributes"
+let man_field    = man_attribute
+let man_objtype  = man_aux "#man_objtype"    objtypes   "object type"           "object types"
 
 (*command name,    table,     singular name, plural name, indefinite name*)
-let helpers = [("#help_value",     values   , "value",     "values",   "a value");
-	       ("#help_type",      types    , "type",      "types",    "a type" );
-	       ("#help_language",  language , "language construction",  "language constructions","a language construction");
-	       ("#help_module",    modules  , "module",    "modules",  " a module"     );
-	       ("#help_exception", exns     , "exception", "exceptions", "an exception");
-	       ("#help_signature", modtypes , "signature", "signatures", "a signature" );
-	       ("#help_class",     classes  , "class",     "classes",    "a class"     );
-	       ("#help_method",    methods,   "method",    "methods",    "a method"    );
-	       ("#help_attribute", attributes,"attribute", "attributes", "an attribute"    );
-	       ("#help_objtype",   objtypes , "object type", "object types", "an object type")]
-let help item =
+let helpers = [("#man_value",     values   , "value",     "values",   "a value");
+	       ("#man_type",      types    , "type",      "types",    "a type" );
+	       ("#man_language",  language , "language construction",  "language constructions","a language construction");
+	       ("#man_module",    modules  , "module",    "modules",  " a module"     );
+	       ("#man_exception", exns     , "exception", "exceptions", "an exception");
+	       ("#man_signature", modtypes , "signature", "signatures", "a signature" );
+	       ("#man_class",     classes  , "class",     "classes",    "a class"     );
+	       ("#man_method",    methods,   "method",    "methods",    "a method"    );
+	       ("#man_attribute", attributes,"attribute", "attributes", "an attribute"    );
+	       ("#man_objtype",   objtypes , "object type", "object types", "an object type")]
+let man item =
   let results = List.map (fun (command, table, kind, kinds, a_kind) -> 
 			    (command, find_help command table kind item, kind, kinds, a_kind))
     helpers in
@@ -167,19 +166,6 @@ let help item =
 		Printf.printf "%a\n%!" (List.print ~first ~sep ~last:"\n" String.print) lines;;
 
 (** {6 Add directives}*)
-
-(*Toploop.toplevel_startup_hook :=
-  fun () ->
-    !Toploop.toplevel_startup_hook ();*)
-
-
-
-(*
-    if !Sys.interactive then
-      Printf.printf "OCaml Batteries Included succesfully loaded.\n If you need help on some topic, invoke:\n  #help \"the_topic\"\n%!" 
-  ;;
-*)
-
 
 module Extend =
 struct
@@ -233,10 +219,14 @@ struct
       Enum.iter 
 	(fun line -> 
 	   Scanf.sscanf line " %S : %S " (fun item url ->
-	     debug "Adding manual %S => %S (%S)\n" item url name;
-	     debug "Adding completion %S => %S (%S)\n" (basename item) item name;
-	     Hashtbl.add table.url item (name, prefix^url); (*Add fully qualified name -> url*)
-	     append_to_table table.complete (basename item) (name, item)
+	     let full_url = try ignore (String.find url "://");
+	                        url
+	                    with Invalid_string -> prefix^url
+	     in
+	     Hashtbl.add table.url item (name, full_url); (*Add fully qualified name -> url*)
+	     append_to_table table.complete (basename item) (name, item);
+	     debug "Adding manual %S => %S (%S)\n" item full_url name;
+	     debug "Adding completion %S => %S (%S)\n" (basename item) item name
 	))
 	(File.lines_of index)
       with e -> 
@@ -246,7 +236,6 @@ struct
     let root_dir   = Batteries_config.documentation_root           in
     let root_file  = Filename.concat root_dir "documentation.idex" in
       begin
-    (*let prefix = "file://"^root_dir                                in*)
       try
     Enum.iter
       (fun line -> 
@@ -283,7 +272,8 @@ struct
       (File.lines_of root_file)
       with e ->
 	Printf.eprintf "While initializing the on-line help, error reading file %S\n%s%!" root_file (Printexc.to_string e)
-      end;
+      end
+(*;
       List.iter 
 	( fun(_, table, singular, _, _) ->
 	    let file = "/tmp/"^singular in
@@ -302,8 +292,13 @@ struct
 				       )) (RefList.to_list list)
 			       ) table.complete
 	      )
-	) helpers
+	) helpers*)
 end;;
+
+let help () =
+  File.with_file_in (Batteries_config.documentation_root ^ "/toplevel.help")
+    (fun file -> copy file stdout);
+  flush stdout;;
 
 let init () =
   Extend.auto_register ();
@@ -313,10 +308,14 @@ let init () =
 	 Hashtbl.add
 	   Toploop.directive_table
 	   name
-	   (Toploop.Directive_string (help_aux command table singular plural)))
+	   (Toploop.Directive_string (man_aux command table singular plural)))
     helpers;
   Hashtbl.add
     Toploop.directive_table
+    "man"
+    (Toploop.Directive_string man);
+  Hashtbl.add
+    Toploop.directive_table
     "help"
-    (Toploop.Directive_string help)
+    (Toploop.Directive_none help)
 

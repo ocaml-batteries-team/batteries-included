@@ -24,7 +24,6 @@ TYPE_CONV_PATH "Batteries.System.IO" (*For Sexplib, Bin-prot...*)
 open ExtChar
 include InnerIO
 
-
 (**
    {6 API}
 *)
@@ -138,7 +137,7 @@ let output_enum() =
 let apply_enum f x =
   try f x
   with No_more_input 
-    |  Input_closed  -> raise Enum.No_more_elements
+    |  InnerIO.Input_closed  -> raise Enum.No_more_elements
 
 (** [close_at_end input e] returns an enumeration which behaves as [e]
     and has the secondary effect of closing [input] once everything has
@@ -651,10 +650,6 @@ let read_uall i =
   Rope.of_ustring (UTF8.of_string_unsafe all) 
 (* TODO: make efficient - possibly similar to above - buffering leaf_size chars at a time *)
  
-let apply_enum f x = (* FIXME: export from IO so no copy/paste needed *)
-  try f x
-  with No_more_input
-    | Input_closed -> raise Enum.No_more_elements
  
 (*val uchars_of : input -> UChar.t Enum.t*)
 (** offer the characters of an UTF-8 encoded input as an enumeration*)

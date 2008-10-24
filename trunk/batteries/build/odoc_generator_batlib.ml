@@ -803,7 +803,7 @@ class batlib_generator =
     method generate_external_index name mark set =
       let cout = open_out (Filename.concat !Args.target_dir (name ^ ".idex")) in
 	Odoc_html.StringSet.iter (fun elt -> Printf.fprintf cout "%S: %S\n" elt (Naming.complete_target mark elt)) set;
-	if name = "type" then (*Special case for primitive types*)
+	if name = "types" then (*Special case for primitive types*)
 	  List.iter (fun (type_name, type_alias) -> Printf.fprintf cout "%S: %S\n" 
 		     type_name (Naming.complete_target type_alias type_alias)) primitive_types_names;
 	close_out cout

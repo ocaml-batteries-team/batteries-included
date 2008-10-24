@@ -7,3 +7,4 @@ exceptions  html/api/exceptions.idex
 classes     html/api/classes.idex
 methods     html/api/methods.idex
 class_types html/api/class_types.idex
+language    language.idex

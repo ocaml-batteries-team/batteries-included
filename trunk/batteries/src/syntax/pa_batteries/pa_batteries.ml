@@ -46,6 +46,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
     DELETE_RULE Gram interf: sig_item; semi; SELF END
     DELETE_RULE Gram interf: `EOI END
 
+(*
     try  (*First attempt: assuming revised syntax*)
       begin
       DELETE_RULE Gram top_phrase: phrase END;
@@ -97,7 +98,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
       end
     with
 	Not_found ->  ()
-
+*)
 
   let stopped_at _loc =
     Some (Loc.move_line 1 _loc)

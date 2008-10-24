@@ -29,12 +29,12 @@
    - loading syntax extensions
    - loading the contents of the on-line help system
    - printing a welcome message
-   - actually starting the toplevel
 
    To take advantage of this file, run
-   [ocaml top.ml]
+   [ocaml -init top.ml]
 *)
 
+Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
 #use "topfind";;
 #require "num";;  (*For some reason, if [num] is not loaded before Camlp4, an exception is launched*)
 #predicates "preprocessor";;
@@ -43,12 +43,18 @@
 #require "batteries";;
 #require "batteries.syntax";;
 Batteries_help.init ();;
-print_endline "Welcome to OCaml Batteries Included.";;
-print_endline "To obtain help on any subject, you may use";;
-print_endline "    #help \"some_subject\"";;
-print_endline "If you don't know where to start, try";;
-print_endline "    #help \"starting\"";;
+print_newline ();;
+print_newline ();;
+print_endline "----------------------------------------------";;
+print_endline "|                                            |";;
+print_endline "|     This is OCaml, Batteries Included.     |";;
+print_endline "|                                            |";;
+print_endline "|                                            |";;
+print_endline "|      If you need help, type '#help;;'      |";;
+print_endline "|                                            |";;
+print_endline "----------------------------------------------";;
 print_newline ();;
 print_newline ();;
 flush_all ();;
-Toploop.loop Format.std_formatter ;; (*At this point, we start the toplevel manually.*)
+Sys.interactive := true;; (*Return to regular interactive mode*)
+(*Toploop.loop Format.std_formatter ;; (*At this point, we start the toplevel manually.*)*)
