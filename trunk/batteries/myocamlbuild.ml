@@ -356,7 +356,7 @@ struct
 	  | Some ('\r' | '\n') when n >= 1 ->
 	      newline := true;
 	      return strm__
-	  | Some ('\r' | '\n' as c) ->  
+	  | Some ('\r' | '\n') ->  
 	      Stream.junk strm__;
 	      after_ocamldoc (n + 1) strm__
 	  | Some ('\009' | '\026' | '\012') ->
@@ -465,7 +465,7 @@ struct
       begin fun env build ->
 	let pack = env "%.mlpack"
 	and dest = env "%.packedml"
-	and name = String.capitalize (Filename.basename (env "%")) in
+(*	and name = String.capitalize (Filename.basename (env "%"))*) in
 	let modules = read_pack pack in
 (*	  Echo((Printf.sprintf "module %s = struct\n(**/**)\n" name)                        ::
 		 List.map (fun m -> Printf.sprintf "module %s = struct include %s end\n" m m) modules @

@@ -13,3 +13,4 @@
 <test_enum.*>:           use_batteries
 <test_marshal.*>:        use_batteries
 <*>:                     debug
+<test.*>:                use_batteries

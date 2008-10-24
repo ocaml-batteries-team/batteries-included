@@ -20,32 +20,58 @@
 
 (** Tools for reading the documentation from the toplevel
 
+    All these tools are invoked automatically by the Batteries
+    Toplevel.  They are provided here if you wish to integrate them
+    into your own toplevel.
+
     @author David Teller
 *)
 
-val tutorial : unit -> unit
-(** [tutorial ()] opens the tutorial.*)
+val init : unit -> unit
+(** Proceed to initialization.
 
-val help           : string -> unit
-(** [help "something"] opens the help about subject ["something"].
+    This function loads the primary help files and registers the
+    toplevel directives.
 
-    [help] is the most generic kind of help.
+    If you integrate the on-line help system into your toplevel, you
+    must call this function before any of the other functions of this
+    module. *)
+
+val help : unit -> unit
+(** [help ()] opens the tutorial.*)
+
+val man           : string -> unit
+(** [man "something"] opens the help about subject ["something"].
+
+    [man] is the most generic kind of man.
 *)
 
-val help_value     : string -> unit
-(** [help_value "something"] opens the help about a value named ["something"].
+val man_value     : string -> unit
+(** [man_value "something"] opens the help about a value named ["something"].
 
     Use this function to find informations on variables, constants, functions,
     constructors ...
 *)
 
-(*
-val help_language  : string -> unit
+val man_type: string -> unit
+val man_language: string -> unit
+val man_module: string -> unit
+val man_exception: string -> unit
+val man_exn: string -> unit
+(**As {!man_exception}*)
 
-val help_type      : string -> unit
-val help_module    : string -> unit
-val help_exception : string -> unit
-*)
+val man_signature: string -> unit
+val man_modtype: string -> unit
+(**As {!man_signature}*)
+
+val man_class: string -> unit
+val man_method: string -> unit
+val man_attribute: string -> unit
+val man_field: string -> unit
+(**As {!man_attribute}*)
+
+val man_objtype: string -> unit
+
 
 (** A mechanism for extending the help system.*)
 module Extend :

@@ -491,14 +491,28 @@ class batlib_generator =
 
    Only document modules which may be reached from the root.
 *)
+	
+    method generate_types_index module_list =
+      self#generate_elements_index
+	((map (fun t -> `Primitive t) primitive_types_names) @
+	 (map (fun t -> `Derived   t) self#list_types))
+        (function `Derived t        -> t.ty_name
+	   |   `Primitive (name, _) -> name)
+        (function `Derived t        -> t.ty_info
+	   |   `Primitive (_, _)    -> None)
+        (function `Derived t        -> Naming.complete_type_target t
+	   |   `Primitive (_, alias)-> Naming.complete_target Naming.mark_type alias)
+        Odoc_messages.index_of_types
+        self#index_types
+	
 
     (** A method to create index files. *)
     method generate_elements_index :
         'a.
         'a list ->
-          ('a -> Odoc_info.Name.t) ->
-            ('a -> Odoc_info.info option) ->
-              ('a -> string) -> string -> string -> unit =
+        ('a -> Odoc_info.Name.t) ->
+        ('a -> Odoc_info.info option) ->
+        ('a -> string) -> string -> string -> unit =
     fun elements name info target title simple_file ->
       try
         let chanout = open_out (Filename.concat !Args.target_dir simple_file) in
@@ -802,7 +816,10 @@ class batlib_generator =
 
     method generate_external_index name mark set =
       let cout = open_out (Filename.concat !Args.target_dir (name ^ ".idex")) in
-	Odoc_html.StringSet.iter (fun elt -> Printf.fprintf cout "%s: %s\n" elt (Naming.complete_target mark elt)) set;
+	Odoc_html.StringSet.iter (fun elt -> Printf.fprintf cout "%S: %S\n" elt (Naming.complete_target mark elt)) set;
+	if name = "types" then (*Special case for primitive types*)
+	  List.iter (fun (type_name, type_alias) -> Printf.fprintf cout "%S: %S\n" 
+		     type_name (Naming.complete_target type_alias type_alias)) primitive_types_names;
 	close_out cout
 
     method generate modules =
@@ -897,7 +914,8 @@ class batlib_generator =
 	 "li.index_entry_entry div.info {margin-left:1em}";
 	 "pre {background-color:rgb(250,250,250);margin-top:2em}";
 	 "pre.example {margin-top:2px; margin-bottom:2em}";
-	 "p {text-align:justify}"
+	 "p {text-align:justify}";
+	 ".superscript { font-size : 8pt }"
 	];
 
   end;;

@@ -13,3 +13,4 @@ struct
     add *)
 end
 
+open Toploop;;

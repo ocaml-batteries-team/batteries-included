@@ -38,7 +38,7 @@ module Control     = struct
 
     end
   end
-
+  module Exceptions  = Inner.Control.Exceptions
   module Labels      = Inner.Control.Labels
 
   (** Monadic operations. *)
@@ -167,7 +167,6 @@ module Languages   = struct
   (** {1 Printing}*)
     
   module Format          = Inner.Languages.Format
-  module Printexc        = Inner.Languages.Printexc
   module Printf          = Inner.Languages.Printf
 
   (** {1 Serialization to human-readable formats}
@@ -236,7 +235,6 @@ module Standard = Inner.Standard
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
 
-  module Help        = Inner.Toolchain.Help
   module Findlib     = Inner.Toolchain.Findlib
   module Execute     = Inner.Toolchain.Execute
 
@@ -336,7 +334,6 @@ module Parsing   = Languages.Parsing
 module Scanf     = Languages.Scanf
 module Str       = Languages.Str
 module Format    = Languages.Format
-module Printexc  = Languages.Printexc
 module Printf    = Languages.Printf
 module Marshal   = Meta.Marshal
 module Oo        = Meta.Oo
@@ -352,6 +349,7 @@ module Unix      = System.Unix
 module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
+module Printexc  = Printexc
 (*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
 (**/**)
 

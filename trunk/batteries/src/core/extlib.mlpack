@@ -51,4 +51,5 @@ ExtGenlex
 ExtComplex
 ExtMarshal
 ExtGc
+ExtPrintexc
 ExtPervasives

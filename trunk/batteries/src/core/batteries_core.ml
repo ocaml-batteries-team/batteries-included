@@ -23,9 +23,9 @@
 module Control     = struct
   module Concurrency = struct
   end
-
+  module Exceptions  = Extlib.ExtPrintexc.Printexc
   module Labels      = Extlib.Labels
-
+    
   (** Monadic operations. *)
   module Monad = Extlib.Monad
 end
@@ -145,7 +145,6 @@ module Languages   = struct
   (** {1 Printing}*)
     
   module Format          = Batlib_Baselib_Format
-  module Printexc        = Batlib_Baselib_Printexc
   module Printf          = Extlib.ExtPrintf.Printf
 
   (** {1 Serialization}*)
@@ -228,8 +227,6 @@ end
 module Toolchain   = struct
 
   module Execute     = Toolchain.Builtin_tools
-
-  module Help        = Toolchain.Batteries_help
 
   (**Package management with Findlib*)
   module Findlib     = Toolchain.Batlib_Findlib_Findlib

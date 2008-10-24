@@ -37,6 +37,7 @@ module Control = struct
     end
   end
 
+  module Exceptions    = Batteries_core.Control.Exceptions
   module Labels = Batteries_core.Control.Labels
   module Monad  = Batteries_core.Control.Monad
 
@@ -135,7 +136,6 @@ module Languages = struct
   (** {1 Printing}*)
     
   module Format          = Batteries_core.Languages.Format
-  module Printexc        = Batteries_core.Languages.Printexc
   module Printf          = Batteries_core.Languages.Printf
     
   (** {1 Serialization to human-readable formats}
@@ -217,7 +217,6 @@ end
 (*[Toolchain] is [Batteries_core.Toolchain]*)
 module Toolchain = struct
 
-  module  Help          = Batteries_core.Toolchain.Help
   module Execute       = Batteries_core.Toolchain.Execute
   module Findlib       = Batteries_core.Toolchain.Findlib
 end

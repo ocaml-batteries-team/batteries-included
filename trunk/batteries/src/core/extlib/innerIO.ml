@@ -145,7 +145,7 @@ let close_in i =
 	i.in_close();
 	i.in_read <- f;
 	i.in_input <- f;
-	i.in_close <- f
+	i.in_close <- noop (*Double closing is not a problem*)
 
 let write o x = o.out_write x
 
@@ -171,10 +171,10 @@ let flush o = o.out_flush()
 let close_out o =
 	let f _ = raise Output_closed in
 	let r = o.out_close() in
-	o.out_write <- f;
+	o.out_write  <- f;
 	o.out_output <- f;
-	o.out_close <- f;
-	o.out_flush <- f;
+	o.out_close  <- (fun _ -> r) (*Closing again is not a problem*);
+	o.out_flush  <- noop (*Flushing again is not a problem*);
 	r
 
 let read_all i =

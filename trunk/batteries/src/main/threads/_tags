@@ -1,3 +1,4 @@
 <batteries_threads.ml>  :pkg_threads
 <batteries.ml>          :pkg_threads
 <batteries.cma>         :autolib
+<*>: debug

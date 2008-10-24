@@ -74,9 +74,11 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
     (fun strm ->
        match Stream.npeek 2 strm with
          [ (KEYWORD "where", _); (KEYWORD ("let" | "rec"), _) ] -> ()
-       | [ (KEYWORD "where", _); (KEYWORD _, _) ] -> raise Stream.Failure
+       | [ (KEYWORD "where", _); (KEYWORD _, _) ] -> 
+	   raise Stream.Failure
        | [ (KEYWORD "where", _); _ ] -> ()
-       | _ -> raise Stream.Failure)
+       | _ -> 
+	     raise Stream.Failure)
        
   EXTEND Gram
     GLOBAL: expr str_item;
@@ -87,9 +89,16 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
               <:str_item< value $rec:rf$ $lb$ ; $e$ >>
           ] ];
 
-    expr: BEFORE "top"
+(*    expr: BEFORE "top"
       [ NONA
           [ e = expr; test_where_let; "where"; OPT "let";
+            rf = opt_rec; lb = where_binding ->
+              <:expr< let $rec:rf$ $lb$ in $e$ >>
+          ] ];*)
+
+    expr: BEFORE "top"
+      [ NONA
+          [ e = expr; "where"; OPT "let";
             rf = opt_rec; lb = where_binding ->
               <:expr< let $rec:rf$ $lb$ in $e$ >>
           ] ];
@@ -97,7 +106,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
     where_binding:
       [ LEFTA
           [ b1 = SELF; "and"; b2 = SELF -> <:binding< $b1$ and $b2$ >>
-            | p = ipatt; e = fun_binding' -> <:binding< $p$ = $e$ >> ] ];
+          | p = ipatt; e = fun_binding' -> <:binding< $p$ = $e$ >> ] ];
     fun_binding':
       [ RIGHTA
           [ p = labeled_ipatt; e = SELF ->

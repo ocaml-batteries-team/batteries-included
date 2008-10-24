@@ -291,7 +291,7 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 
    {7 Format4}
 
-   [('a, 'b, 'c, 'd) format4] = is the type of arguments for
+   [('a, 'b, 'c, 'd) format4] is the type of arguments for
    [printf]-style functions such that
    - ['a] is the type of arguments, with a return type of ['d]
    {ul
