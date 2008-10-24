@@ -1,0 +1,47 @@
+******* Release 1 of OCaml Batteries Included
+
+**** Alpha 2 (soonish)
+
+* As many bugfixes as required
+
+* More Unicode (thelema)
+
+* More boilerplate code, for e.g. printing
+
+* A how-to regarding the usage of Batteries in a toplevel (peng)
+
+* Extended versions of [Buffer], [Map], [Queue], [Set], [Stack] with
+[enum], [of_enum] and sexplib support.
+
+
+**** Alpha 3 (some point in Decemer)
+
+* As many bugfixes as required
+
+* Support for (de)compression [input]/[output] (zack)
+
+* Basic unicode transcoding channels (thelema)
+
+* Either [let try], [try ... finally] or a combination of both 
+(bluestorm)
+
+* Bringing [*Labels] modules to feature-parity with their non-labelled
+cousins (this may require rethinking either the build system or the name
+of [*Labels] modules)
+
+* Completely getting rid of [channel_in]/[channel_out] (in particular,
+removing these types from [Standard] and keeping them only in
+[Pervasives]/[Legacy.Pervasives])
+
+* More examples.
+
+* Complete bindings for Camlp4, which make Camlp4 usable as a
+general-purpose recursive descent parser.
+
+
+
+**** Further Alphas, Betas, official release
+
+* As many bugfixes as necessary.
+
+* Documentation.
