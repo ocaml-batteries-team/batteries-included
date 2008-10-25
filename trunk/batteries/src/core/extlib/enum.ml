@@ -713,7 +713,20 @@ let group test e =
 	    
 	in from f
 
-    
+let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
+  let next () = 
+    match peek e with
+      | None   -> raise No_more_elements
+      | Some x -> 
+	  add x;
+	  (try 
+	     for i = 2 to clump_size do
+	       add (e.next ())
+	     done
+	   with No_more_elements -> ());
+	  get ()
+  in
+  from next
 
 let from_while f =
   from (fun () -> match f () with

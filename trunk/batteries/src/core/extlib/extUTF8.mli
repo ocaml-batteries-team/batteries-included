@@ -193,6 +193,14 @@ val lowercase : t -> t
 (** Return a copy of the argument, with all uppercase letters
    translated to lowercase.*)
 
+val init : int -> (int -> UChar.t) -> t
+(** As [String.init] *)
+
+val map : (UChar.t -> UChar.t) -> t -> t
+(** As [String.map] *)
+
+val filter_map : (UChar.t -> UChar.t option) -> t -> t
+
 (** Buffer module for UTF-8 strings *)
 module Buf : sig
   (** Buffers for UTF-8 strings. *) 

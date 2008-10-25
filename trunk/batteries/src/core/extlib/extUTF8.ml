@@ -34,9 +34,9 @@ let string_splice s1 off len s2 =
 
 
 module UTF8 = struct
+  open CamomileLibrary
   open ExtString
   open ExtList
-  open CamomileLibrary
   include CamomileLibrary.UTF8
   module Case = CaseMap.Make(CamomileDefaultConfig)(UTF8)
 
@@ -204,13 +204,29 @@ module UTF8 = struct
   
   let iter proc s = iter_aux proc s 0
     
+  let init i f = (* Buf from CamomileLibrary.UTF8 *)
+    let b = Buf.create i in
+    for j = 0 to i-1 do
+      Buf.add_char b (f j)
+    done;
+    Buf.contents b
+
+  let map f us = 
+    let b = Buf.create (length us) in
+    iter (fun c -> Buf.add_char b (f c)) us;
+    Buf.contents b
+
+  let filter_map f us = 
+    let b = Buf.create (length us) in
+    iter (fun c -> match f c with None -> () | Some c -> Buf.add_char b c) us;
+    Buf.contents b
+
   let compare s1 s2 = Pervasives.compare s1 s2
     
   let copy = String.copy
 
   let sexp_of_t = sexp_of_string
   let t_of_sexp = string_of_sexp
-
 
 
   let print out t = InnerIO.nwrite out (to_string t)
