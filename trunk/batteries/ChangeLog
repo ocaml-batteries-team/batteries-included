@@ -1,3 +1,17 @@
+2008-10-24  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/enum.ml*: [clump] added - helper for char enum -> string enum conversion
+
+	* src/core/extlib/rope.ml*: [of_char] renamed to [of_uchar], [of_char] added to tke a non-utf char.
+
+	* src/core/extlib/rope.ml*: [of_bulk_enum] added
+
+	* src/core/extlib/rope.ml*: [make] added (redundant, but previous version probably had sharing problems)
+
+	* src/core/extlib/rope.ml*: [create], [init], [of_int], [of_float], [to_nt], [to_float], [bulk_map], [map], [bulk_filter_map], [filter_map] added	
+
+	* src/core/extlib/extUTF8.ml*: [init], [map], [filter_map] added
+
 2008-10-24  David Teller  <David.Teller@univ-orleans.fr>
 
 	* build/odoc_generator_batlib.ml: [generate_types_index] overloaded

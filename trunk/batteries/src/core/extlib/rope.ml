@@ -31,6 +31,7 @@ open Sexplib
 open Conv
 TYPE_CONV_PATH "Batteries.Data.Text.Rope" (*For Sexplib, Bin-prot...*)
 open ExtUTF8
+open ExtUChar
  
 (* =begin ignore *)
 type t =
@@ -217,15 +218,19 @@ let of_ustring s =
     let rec loop r i =
       if i < lens then (* lens - i > 0, thus Leaf "" can't happen *)
   let slice_size = min (lens-i) leaf_size in
+(* TODO: UTF8.sub is inefficient for large i - rewrite using enum *)
   let new_r = concat r (Leaf (slice_size, (UTF8.sub s i slice_size))) in
     loop new_r (i + leaf_size)
       else
         r
     in loop Empty 0
+
+let append r us = concat r (of_ustring us)
  
 let rec make len c =
   let rec concatloop len i r =
     if i <= len then
+(*TODO: test for sharing among substrings *)
       concatloop len (i * 2) (concat r r)
     else r
   in
@@ -235,7 +240,8 @@ let rec make len c =
       let rope = concatloop len 2 (of_ustring (UTF8.make 1 c)) in
         concat rope (make (len - length rope) c)
  
-let of_char c = make 1 c
+let of_uchar c = make 1 c
+let of_char c = of_uchar (UChar.of_char c)
 
 let rec sub start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
@@ -378,22 +384,40 @@ let of_enum e =
     Labels.label
       (fun return ->
 	 let b = Buffer.create 256 in
-	   for i = 1 to 256 do
-	     match Enum.get e with
-		 None   -> Labels.recall return (false, UTF8.of_string_unsafe (Buffer.contents b))
-	       | Some c -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c))
-	   done;
-	   (true, UTF8.of_string_unsafe (Buffer.contents b) ))
+	 for i = 1 to 256 do
+	   match Enum.get e with
+	       None   -> Labels.recall return (false, UTF8.of_string_unsafe (Buffer.contents b))
+	     | Some c -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c))
+	 done;
+	 (true, UTF8.of_string_unsafe (Buffer.contents b) ))
   in
   let rec loop r = (* concat 256 characters at a time *)
     match get_leaf () with
 	(true,  us) -> loop     (concat r (of_ustring us))
       | (false, us) -> concat r (of_ustring us)
   in
-    loop Empty
+  loop Empty
+    
+let of_bulk_enum e = 
+  let rec loop r = 
+    match Enum.get e with
+	None -> r
+      | Some us -> loop (concat r (of_ustring us))
+  in
+  loop Empty
+
+(* REDUNDANT DEFINITION - test speed / correctness
+let of_enum e = 
+  let add, get = 
+    let b = Buffer.create leaf_size in
+    (fun c -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c))),
+    (fun () -> let ret = UTF8.of_string_unsafe (Buffer.contents b) in Buffer.clear b; ret)
+  in
+  of_bulk_enum (Enum.clump leaf_size add get e)
+*)
 
 let of_backwards e =(*(Yoric) I'll keep the implementation simple at least until I understand [of_enum]*)
-  Enum.fold (fun c acc -> concat acc (of_char c)) Empty e
+  Enum.fold (fun c acc -> concat acc (of_uchar c)) Empty e
   
 let of_bulk_enum e =
   Enum.fold (fun s acc -> concat acc (of_ustring s)) Empty e
@@ -419,4 +443,41 @@ let lowercase s =
 
 let uppercase s =
   bulk_fold (fun acc c -> concat acc (of_ustring (UTF8.uppercase c)))  Empty s
+
+
+let make n c = 
+  let k = ref n in
+  let build_chunk len = UTF8.make (Ref.post k (fun l -> l - len)) c in
+  let make_chunk () = 
+    if !k = 0 then None
+    else if !k < n then Some (build_chunk !k)
+    else Some (build_chunk n)
+  in
+  of_bulk_enum (Enum.from_while make_chunk)
+
+let create n = make n (UChar.chr 0x00) 
+(* fill with null, as randomness is likely not valid UTF8 *)
+
+let init len f = of_enum (Enum.init len f)
+
+(* val of_list : char list -> string
+   
+   Converts a list of characters to a string.
+   
+   val to_list : string -> char list
+   
+   Converts a string to the list of its characters.*)
+  
+let of_string_unsafe s = of_ustring (UTF8.of_string_unsafe s)
+let of_int i = of_string_unsafe (string_of_int i)
+let of_float f = of_string_unsafe (string_of_float f)
+
+let to_int r = int_of_string (UTF8.to_string_unsafe (to_ustring r))
+let to_float r = float_of_string (UTF8.to_string_unsafe (to_ustring r))
+
+let bulk_map f r = bulk_fold (fun acc s -> append acc (f s)) Empty r
+let map f r = bulk_map (fun s -> UTF8.map f s) r
+
+let bulk_filter_map f r = bulk_fold (fun acc s -> match f s with None -> acc | Some r -> append acc r) Empty r
+let filter_map f r = bulk_map (UTF8.filter_map f) r
 (* =end *)

@@ -164,6 +164,9 @@ val group : ('a -> bool) -> 'a t -> 'a t t
       each sub-enumeration is the longest continuous enumeration of elements whose [test]
       results are the same. *)
 
+val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
+  (** [clump size add get e] runs [add] on [size] (or less at the end) elements of [e] and then runs [get] to produce value for the result enumeration.  Useful to convert a char enum into string enum. *)
+
 (** {6 Lazy constructors}
 
  These functions are lazy which means that they will create a new modified

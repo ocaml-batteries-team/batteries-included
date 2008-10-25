@@ -103,7 +103,10 @@ Operates in [O(n)] time. *)
 val to_ustring : t -> UTF8.t
   (** [to_string r] returns the string corresponding to the rope [r]. *)
  
-val of_char: UChar.t -> t
+val of_uchar: UChar.t -> t
+  (** [of_uchar c] returns a rope containing exactly character [c].*)
+
+val of_char: char -> t
   (** [of_char c] returns a rope containing exactly character [c].*)
 
 val make : int -> UChar.t -> t
@@ -227,6 +230,22 @@ val of_backwards: UChar.t Enum.t -> t
 val bulk_backwards: t -> UTF8.t Enum.t
 val of_bulk_backwards: UTF8.t Enum.t -> t
 *)
+
+val create : int -> t
+(** As [String.create] *)
+val init : int -> (int -> UChar.t) -> t
+(** As [String.init] *)
+val of_int : int -> t
+val of_float : float -> t
+val to_int : t -> int
+val to_float : t -> float
+(** As [String.*] *)
+val bulk_map : (UTF8.t -> UTF8.t) -> t -> t
+val map : (UChar.t -> UChar.t) -> t -> t
+(** As [String.map] *)
+val bulk_filter_map : (UTF8.t -> UTF8.t option) -> t -> t
+val filter_map : (UChar.t -> UChar.t option) -> t -> t
+(** As [String.filter_map] *)
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
