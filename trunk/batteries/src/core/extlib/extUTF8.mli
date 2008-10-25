@@ -200,6 +200,10 @@ val map : (UChar.t -> UChar.t) -> t -> t
 (** As [String.map] *)
 
 val filter_map : (UChar.t -> UChar.t option) -> t -> t
+(** As [String.filter_map] *)
+
+val index : t -> UChar.t -> int
+(** As [String.index] *)
 
 (** Buffer module for UTF-8 strings *)
 module Buf : sig

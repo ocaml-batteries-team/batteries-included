@@ -291,21 +291,25 @@ let rec iter f = function
   | Leaf (_,s) -> UTF8.iter f s
   | Concat(l,_,r,_,_) -> iter f l; iter f r
  
-let iteri f r =
-  let rec aux f i = function
+let rec iteri ?(base=0) f = function
     Empty -> ()
   | Leaf (_,s) ->
       let e = UTF8.enum s in
-      Enum.iteri (fun j c -> f (i+j) c) e
-  | Concat(l,cl,r,_,_) -> aux f i l; aux f (i + cl) r
-  in
-    aux f 0 r
+      Enum.iteri (fun j c -> f (base+j) c) e
+  | Concat(l,cl,r,_,_) -> iteri ~base f l; iteri ~base:(base + cl) f r
  
 let rec bulk_iter f = function
     Empty -> ()
   | Leaf (_,s) -> f s
   | Concat(l,_,r,_,_) -> bulk_iter f l; bulk_iter f r
- 
+
+let rec bulk_iteri ?(base=0) f = function
+    Empty -> ()
+  | Leaf (_,s) -> f base s
+  | Concat(l,cl,r,_,_) -> 
+      bulk_iteri ~base f l; 
+      bulk_iteri ~base:(base+cl) f r
+
 let rec range_iter f start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
   | Leaf (lens, s) ->
@@ -480,4 +484,20 @@ let map f r = bulk_map (fun s -> UTF8.map f s) r
 
 let bulk_filter_map f r = bulk_fold (fun acc s -> match f s with None -> acc | Some r -> append acc r) Empty r
 let filter_map f r = bulk_map (UTF8.filter_map f) r
+
+open Labels
+
+let index r item = 
+  label (fun return ->
+	   let index_aux i us =
+	     try 
+	       let p = UTF8.index us item in
+	       recall return (p+i)
+	     with Not_found -> ()
+	   in
+	   bulk_iteri index_aux r;
+	   raise Not_found)
+
+
+
 (* =end *)

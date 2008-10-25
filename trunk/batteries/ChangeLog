@@ -1,3 +1,9 @@
+2008-10-25  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/extUTF8.ml*: [index] added
+
+	* src/core/extlib/rope.ml*: [iteri] extra argument, [bulk_iteri] added, [index] added (uses [bulk_iteri])
+
 2008-10-24  Edgar Friendly  <thelema314@gmail.com>
 
 	* src/core/extlib/enum.ml*: [clump] added - helper for char enum -> string enum conversion

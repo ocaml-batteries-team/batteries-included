@@ -221,6 +221,18 @@ module UTF8 = struct
     iter (fun c -> match f c with None -> () | Some c -> Buf.add_char b c) us;
     Buf.contents b
 
+  let rec index_aux us c char_idx byte_idx =
+    if look us byte_idx = c then char_idx
+    else index_aux us c (char_idx+1) (next us byte_idx)
+
+  let index us c = (* relies on exception at end of string *)
+    try 
+      index_aux us c 0 0
+    with 
+	Invalid_argument "UTF8.next" -> raise Not_found
+
+
+
   let compare s1 s2 = Pervasives.compare s1 s2
     
   let copy = String.copy
