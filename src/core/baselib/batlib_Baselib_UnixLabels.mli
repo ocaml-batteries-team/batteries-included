@@ -1003,7 +1003,10 @@ val sendto :
 (** {6 Socket options} *)
 
 
-type socket_bool_option =
+type socket_bool_option = UnixLabels.socket_bool_option
+(**
+   Type information removed due to incompatibility between OCaml 3.10 and 3.11.
+
     SO_DEBUG       (** Record debugging information *)
   | SO_BROADCAST   (** Permit sending of broadcast messages *)
   | SO_REUSEADDR   (** Allow reuse of local addresses for bind *)
@@ -1013,7 +1016,7 @@ type socket_bool_option =
   | SO_ACCEPTCONN  (** Report whether socket listening is enabled *)
 (** The socket options that can be consulted with {!UnixLabels.getsockopt}
    and modified with {!UnixLabels.setsockopt}.  These options have a boolean
-   ([true]/[false]) value. *)
+   ([true]/[false]) value. *) *)
 
 type socket_int_option =
     SO_SNDBUF      (** Size of send buffer *)
@@ -1049,31 +1052,30 @@ val getsockopt : file_descr -> socket_bool_option -> bool
 val setsockopt : file_descr -> socket_bool_option -> bool -> unit
 (** Set or clear a boolean-valued option in the given socket. *)
 
-external getsockopt_int :
-  file_descr -> socket_int_option -> int = "unix_getsockopt_int"
-(** Same as {!UnixLabels.getsockopt} for an integer-valued socket option. *)
-
-external setsockopt_int :
-  file_descr -> socket_int_option -> int -> unit = "unix_setsockopt_int"
-(** Same as {!UnixLabels.setsockopt} for an integer-valued socket option. *)
-
-external getsockopt_optint :
-  file_descr -> socket_optint_option -> int option = "unix_getsockopt_optint"
-(** Same as {!UnixLabels.getsockopt} for a socket option whose value is an [int option]. *)
-
-external setsockopt_optint :
-  file_descr -> socket_optint_option -> int option ->
-    unit = "unix_setsockopt_optint"
-(** Same as {!UnixLabels.setsockopt} for a socket option whose value is an [int option]. *)
-
-external getsockopt_float :
-  file_descr -> socket_float_option -> float = "unix_getsockopt_float"
-(** Same as {!UnixLabels.getsockopt} for a socket option whose value is a floating-point number. *)
-
-external setsockopt_float :
-  file_descr -> socket_float_option -> float -> unit = "unix_setsockopt_float"
+val getsockopt_int :
+  file_descr -> socket_int_option -> int
+ (** Same as {!UnixLabels.getsockopt} for an integer-valued socket option. *)
+ 
+val setsockopt_int :
+  file_descr -> socket_int_option -> int -> unit
+ (** Same as {!UnixLabels.setsockopt} for an integer-valued socket option. *)
+ 
+val getsockopt_optint :
+  file_descr -> socket_optint_option -> int option
+ (** Same as {!UnixLabels.getsockopt} for a socket option whose value is an [int option]. *)
+ 
+val setsockopt_optint :
+   file_descr -> socket_optint_option -> int option ->
+    unit
+ (** Same as {!UnixLabels.setsockopt} for a socket option whose value is an [int option]. *)
+ 
+val getsockopt_float :
+  file_descr -> socket_float_option -> float
+ (** Same as {!UnixLabels.getsockopt} for a socket option whose value is a floating-point number. *)
+ 
+val setsockopt_float :
+  file_descr -> socket_float_option -> float -> unit
 (** Same as {!UnixLabels.setsockopt} for a socket option whose value is a floating-point number. *)
-
 
 (** {6 High-level network connection functions} *)
 
