@@ -1,7 +1,0 @@
-# works
-  <test_openin.ml>:syntax_camlp4o,pkg_batsyntax.openin.syntax
-
-# doesn't work
-# <test_openin.ml>:syntax_camlp4o,pkg_batsyntax.syntax
-
-# this must be related to the META, but I don't know how

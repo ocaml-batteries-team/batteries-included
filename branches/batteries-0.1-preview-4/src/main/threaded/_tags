@@ -1,2 +1,0 @@
-<*.cmx>: for-pack(Batteries)
-<batteries.ml>: pkg_threads

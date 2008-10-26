@@ -1,1 +1,0 @@
-module String = ExtString.String
