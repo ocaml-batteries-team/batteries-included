@@ -1,3 +1,7 @@
+2008-10-26  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/substring.ml*: added new library for substring manipulation (only byte strings now, no UTF8)
+
 2008-10-24  Edgar Friendly  <thelema314@gmail.com>
 
 	* src/core/extlib/enum.ml*: [clump] added - helper for char enum -> string enum conversion
