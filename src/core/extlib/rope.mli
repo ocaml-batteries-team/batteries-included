@@ -196,7 +196,7 @@ val iter : (UChar.t -> unit) -> t -> unit
   (** [iter f r] applies [f] to all the characters in the [r] rope,
       in order. *)
   
-val iteri : (int -> UChar.t -> unit) -> t -> unit
+val iteri : ?base:int -> (int -> UChar.t -> unit) -> t -> unit
   (** Operates like iter, but also passes the index of the character
       to the given function. *)
   
@@ -211,6 +211,9 @@ val range_iter : (UChar.t -> unit) -> int -> int -> t -> unit
   
 val bulk_iter : (UTF8.t -> unit) -> t -> unit
   (** as iter but over larger chunks of data *)
+
+val bulk_iteri : ?base:int -> (int -> UTF8.t -> unit) -> t -> unit
+  (** as iteri but over larger chunks of data. *)
   
 val fold : ('a -> UChar.t -> 'a ) -> 'a -> t -> 'a
   (** [Rope.fold f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
@@ -246,6 +249,11 @@ val map : (UChar.t -> UChar.t) -> t -> t
 val bulk_filter_map : (UTF8.t -> UTF8.t option) -> t -> t
 val filter_map : (UChar.t -> UChar.t option) -> t -> t
 (** As [String.filter_map] *)
+
+val index : t -> UChar.t -> int
+(** As [String.index] *)
+
+
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
