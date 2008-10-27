@@ -333,6 +333,30 @@ let rec range_iter f start len = function
         range_iter f (start - cl) len r
       end
  
+let rec range_iteri f ?(base = 0) start len = function
+    Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
+  | Leaf (lens, s) ->
+      let n = start + len in
+      if start >= 0 && len >= 0 && n <= lens then
+	for i = start to n - 1 do
+          f (base+i) (UTF8.unsafe_get s i) 
+	    (*TODO: use enum to iterate efficiently*)
+        done
+      else raise Out_of_bounds
+  | Concat(l,cl,r,cr,_) ->
+      if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
+      if start < cl then begin
+        let upto = start + len in
+          if upto <= cl then
+            range_iteri f ~base start len l
+          else begin
+            range_iteri f ~base start (cl - start) l;
+            range_iteri f ~base:(base + cl - start) 0 (upto - cl) r
+          end
+      end else begin
+        range_iteri f ~base (start - cl) len r
+      end
+ 
 let rec fold f a = function
     Empty -> a
   | Leaf (_,s) ->
@@ -498,6 +522,13 @@ let index r item =
 	   bulk_iteri index_aux r;
 	   raise Not_found)
 
+let index_from r base item = 
+  label (fun return ->
+	   let index_aux i c = 
+	     if c = item then recall return i
+	   in
+	   range_iteri index_aux ~base base (length r) r;
+	   raise Not_found)
 
 
 (* =end *)

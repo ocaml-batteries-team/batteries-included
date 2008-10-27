@@ -1,5 +1,7 @@
 2008-10-26  Edgar Friendly  <thelema314@gmail.com>
 
+	* src/core/extlib/rope.ml*: [index_from] added
+
 	* src/core/extlib/substring.ml*: added new library for substring manipulation (only byte strings now, no UTF8)
 
 2008-10-25  Edgar Friendly  <thelema314@gmail.com>
