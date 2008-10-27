@@ -57,7 +57,7 @@ val to_char : t -> char
 val code : t -> int
 
 (** [code n] returns the Unicode character with the code number [n]. 
-   If n >= 2^32 or n < 0, raises [invalid_arg] *)
+   If n >= 2^31 or n < 0, raises [invalid_arg] *)
 val chr : int -> t
 
 (** [uint_code u] returns the Unicode code number of [u].
