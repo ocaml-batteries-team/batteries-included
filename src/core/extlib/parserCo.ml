@@ -14,6 +14,7 @@ type 'a report =  Report of ('a state * string * 'a report) list
 
 let ( &&& ) (Report l) (Report l') = Report (l @ l')
 
+let debug_mode = ref false
 
 (** {3 Positions} *)
 module Source =
@@ -103,29 +104,40 @@ let label s p e =
       | Backtrack (b, c, t) -> Backtrack (b, Report [], t)
   else
     let make_report c = Report [get_state e, s, c] in
-(*      printf stderr "%*s>>> %s\n" !depth " " s;
-      incr depth;
-      flush_all ();*)
+      if !debug_mode then 
+	begin
+	  printf stderr "%*s>>> %s\n" !depth " " s;
+	  incr depth;
+	  flush_all ()
+	end;
       match apply p e with
 	| Success _ as x ->
-(*	    decr depth;
-	    printf stderr "%*s<<< %s\n" !depth " " s;
-	    flush_all ();*)
+	    if !debug_mode then begin
+	      decr depth;
+	      printf stderr "%*s<<< %s\n" !depth " " s;
+	      flush_all ()
+	    end;
 	    x
 	| Setback c ->
-(*	    decr depth;
-	    printf stderr "%*s^^^ %s\n" !depth " " s;
-	    flush_all ();*)
+	    if !debug_mode then begin
+	      decr depth;
+	      printf stderr "%*s^^^ %s\n" !depth " " s;
+	      flush_all ()
+	    end;
 	    Setback (make_report c)
 	| Failure c ->
-(*	    decr depth;
-	    printf stderr "%*s!!! %s\n" !depth " " s;
-	    flush_all ();*)
+	    if !debug_mode then begin
+	      decr depth;
+	      printf stderr "%*s!!! %s\n" !depth " " s;
+	      flush_all ()
+	    end;
 	    Failure (make_report c)
 	| Backtrack (b, c, t) ->
-(*	    decr depth;
-	    printf stderr "%*s/// %s\n" !depth " " s;
-	    flush_all ();*)
+	    if !debug_mode then begin
+	      decr depth;
+	      printf stderr "%*s/// %s\n" !depth " " s;
+	      flush_all ()
+	    end;
 	    Backtrack (b, make_report c, t)
 
 let must p e = match apply p e with

@@ -37,10 +37,9 @@ module Control = struct
     end
   end
 
+  module Exceptions    = Batteries_core.Control.Exceptions
   module Labels = Batteries_core.Control.Labels
-  module Monad  = struct
-    module type S = Batteries_core.Control.Monad.S
-  end
+  module Monad  = Batteries_core.Control.Monad
 
 end
 
@@ -52,6 +51,7 @@ struct
     module Array         = Batteries_core.Data.Mutable.Array
     module ArrayLabels   = Batteries_core.Data.Mutable.ArrayLabels
     module Bigarray      = Batteries_core.Data.Mutable.Bigarray
+    module Dllist        = Batteries_core.Data.Mutable.Dllist
     module Dynarray      = Batteries_core.Data.Mutable.Dynarray
     module Enum          = Batteries_core.Data.Mutable.Enum
     module Global        = Batteries_core.Data.Mutable.Global
@@ -65,14 +65,16 @@ struct
   end
 
   module Persistent      = struct
-    module Dllist          = Batteries_core.Data.Persistent.Dllist
     module Lazy            = Batteries_core.Data.Persistent.Lazy
     module List            = Batteries_core.Data.Persistent.List
     module ListLabels      = Batteries_core.Data.Persistent.ListLabels
     module Map             = Batteries_core.Data.Persistent.Map
     module MapLabels       = Batteries_core.Data.Persistent.MapLabels
+    module MultiPMap       = Batteries_core.Data.Persistent.MultiPMap
     module PMap            = Batteries_core.Data.Persistent.PMap
+    module PSet            = Batteries_core.Data.Persistent.PSet
     module Option          = Batteries_core.Data.Persistent.Option
+    module OptionLabels    = Batteries_core.Data.Persistent.OptionLabels
     module Set             = Batteries_core.Data.Persistent.Set
     module SetLabels       = Batteries_core.Data.Persistent.SetLabels
   end
@@ -125,11 +127,15 @@ module Languages = struct
   module Parsing         = Batteries_core.Languages.Parsing
   module Scanf           = Batteries_core.Languages.Scanf
   module Str             = Batteries_core.Languages.Str
-    
+
+  (** {2 Parser combinator library}*)
+
+  module CharParser      = Batteries_core.Languages.CharParser
+  module ParserCo        = Batteries_core.Languages.ParserCo
+
   (** {1 Printing}*)
     
   module Format          = Batteries_core.Languages.Format
-  module Printexc        = Batteries_core.Languages.Printexc
   module Printf          = Batteries_core.Languages.Printf
     
   (** {1 Serialization to human-readable formats}

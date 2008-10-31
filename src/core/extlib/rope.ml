@@ -1,48 +1,37 @@
-(* Rope: an implementation of the data structure described in
- 
-Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
-strings. Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
- 
-Motivated by Luca de Alfaro's extensible array implementation Vec.
- 
-Copyright (C) 2007 Mauricio Fernandez <mfp@acm.org>
-http://eigenclass.org
-Copyright 2008 Edgar Friendly <thelema314@gmail.com>
- 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Library General Public
-License as published by the Free Software Foundation; either
-version 2 of the License, or (at your option) any later version,
-with the following special exception:
- 
-You may link, statically or dynamically, a "work that uses the
-Library" with a publicly distributed version of the Library to
-produce an executable file containing portions of the Library, and
-distribute that executable file under terms of your choice, without
-any of the additional requirements listed in clause 6 of the GNU
-Library General Public License. By "a publicly distributed version
-of the Library", we mean either the unmodified Library as
-distributed by the author, or a modified version of the Library that is
-distributed under the conditions defined in clause 2 of the GNU
-Library General Public License. This exception does not however
-invalidate any other reasons why the executable file might be
-covered by the GNU Library General Public License.
- 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-Library General Public License for more details.
- 
-The GNU Library General Public License is available at
-http://www.gnu.org/copyleft/lgpl.html; to obtain it, you can also
-write to the Free Software Foundation, Inc., 59 Temple Place -
-Suite 330, Boston, MA 02111-1307, USA.
-*)
+(* 
+ * Rope: Rope: an implementation of the data structure described in
+ *   
+ * Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
+ * strings. Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
+ * 
+ * Motivated by Luca de Alfaro's extensible array implementation Vec.
+ * 
+ * Copyright (C) 2007 Mauricio Fernandez <mfp@acm.org>
+ * Copyright (C) 2008 Edgar Friendly <thelema314@gmail.com>
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
 
 open Sexplib
 open Conv
 TYPE_CONV_PATH "Batteries.Data.Text.Rope" (*For Sexplib, Bin-prot...*)
 open ExtUTF8
+open ExtUChar
  
 (* =begin ignore *)
 type t =
@@ -58,16 +47,6 @@ let str_append = UTF8.append
 let empty_str = UTF8.empty
 let string_of_string_list l = UTF8.join UTF8.empty l
  
-module STRING = struct
-  type t = UTF8.t
-  let length = UTF8.length
-  let unsafe_get = UTF8.unsafe_get
-  let make = UTF8.make
-  let copy_set = UTF8.copy_set
-  let sub = UTF8.sub
-  let iter = UTF8.iter
-  let enum = UTF8.enum
-end
  
 (* 48 limits max rope size to 220GB on 64 bit,
 * ~ 700MB on 32bit (length fields overflow after that) *)
@@ -86,6 +65,8 @@ exception Out_of_bounds
  
 let empty = Empty
  
+
+
 (* by construction, there cannot be Empty or Leaf "" leaves *)
 let is_empty = function Empty -> true | _ -> false
  
@@ -163,8 +144,7 @@ let rec balance_insert rope len forest = match rope with
  
 let balance r =
   match r with
-      Empty -> Empty
-    | Leaf _ -> r
+      Empty | Leaf _ -> r
     | _ ->
         let forest = Array.init max_height (fun _ -> {c = Empty; len = 0}) in
           balance_insert r (length r) forest;
@@ -191,7 +171,7 @@ let concat_str l = function
               bal_if_needed l r
         | _ -> bal_if_needed l r
  
-let append_char c r = concat_str r (Leaf (1, (STRING.make 1 c)))
+let append_char c r = concat_str r (Leaf (1, (UTF8.make 1 c)))
  
 let concat l = function
     Empty -> l
@@ -208,12 +188,12 @@ let concat l = function
                 bal_if_needed l r)
   | r -> (match l with Empty -> r | _ -> bal_if_needed l r)
  
-let prepend_char c r = concat (Leaf (1,(STRING.make 1 c))) r
+let prepend_char c r = concat (Leaf (1,(UTF8.make 1 c))) r
  
 let rec get i = function
     Empty -> raise Out_of_bounds
   | Leaf (lens, s) ->
-      if i >= 0 && i < lens then STRING.unsafe_get s i
+      if i >= 0 && i < lens then UTF8.unsafe_get s i
       else raise Out_of_bounds
   | Concat (l, cl, r, cr, _) ->
       if i < cl then get i l
@@ -223,7 +203,7 @@ let rec set i (v:ExtUChar.UChar.t) = function
     Empty -> raise Out_of_bounds
   | Leaf (lens, s) ->
       if i >= 0 && i < lens then
-	let s = STRING.copy_set s i v in
+	let s = UTF8.copy_set s i v in
           Leaf (lens, s)
       else raise Out_of_bounds
   | Concat(l, cl, r, cr, _) ->
@@ -231,38 +211,45 @@ let rec set i (v:ExtUChar.UChar.t) = function
       else concat l (set (i - cl) v r)
  
 let of_ustring s =
-  let lens = STRING.length s in
+  let lens = UTF8.length s in
   if lens = 0 then Empty
   else
     let min (x:int) (y:int) = if x <= y then x else y in
     let rec loop r i =
       if i < lens then (* lens - i > 0, thus Leaf "" can't happen *)
   let slice_size = min (lens-i) leaf_size in
-  let new_r = concat r (Leaf (slice_size, (STRING.sub s i slice_size))) in
+(* TODO: UTF8.sub is inefficient for large i - rewrite using enum *)
+  let new_r = concat r (Leaf (slice_size, (UTF8.sub s i slice_size))) in
     loop new_r (i + leaf_size)
       else
         r
     in loop Empty 0
+
+let append r us = concat r (of_ustring us)
  
 let rec make len c =
   let rec concatloop len i r =
     if i <= len then
+(*TODO: test for sharing among substrings *)
       concatloop len (i * 2) (concat r r)
     else r
   in
     if len = 0 then Empty
-    else if len <= leaf_size then Leaf (len, (STRING.make len c))
+    else if len <= leaf_size then Leaf (len, (UTF8.make len c))
     else
-      let rope = concatloop len 2 (of_ustring (STRING.make 1 c)) in
+      let rope = concatloop len 2 (of_ustring (UTF8.make 1 c)) in
         concat rope (make (len - length rope) c)
  
+let of_uchar c = make 1 c
+let of_char c = of_uchar (UChar.of_char c)
+
 let rec sub start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
   | Leaf (lens, s) ->
       if len < 0 || start < 0 || start + len > lens then
         raise Out_of_bounds
       else if len > 0 then (* Leaf "" cannot happen *)
-        (try Leaf (len, (STRING.sub s start len)) with _ -> raise Out_of_bounds)
+        (try Leaf (len, (UTF8.sub s start len)) with _ -> raise Out_of_bounds)
       else Empty
   | Concat(l,cl,r,cr,_) ->
       if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
@@ -301,31 +288,35 @@ let to_ustring r =
  
 let rec iter f = function
     Empty -> ()
-  | Leaf (_,s) -> STRING.iter f s
+  | Leaf (_,s) -> UTF8.iter f s
   | Concat(l,_,r,_,_) -> iter f l; iter f r
  
-let iteri f r =
-  let rec aux f i = function
+let rec iteri ?(base=0) f = function
     Empty -> ()
   | Leaf (_,s) ->
-      let e = STRING.enum s in
-      Enum.iteri (fun j c -> f (i+j) c) e
-  | Concat(l,cl,r,_,_) -> aux f i l; aux f (i + cl) r
-  in
-    aux f 0 r
+      let e = UTF8.enum s in
+      Enum.iteri (fun j c -> f (base+j) c) e
+  | Concat(l,cl,r,_,_) -> iteri ~base f l; iteri ~base:(base + cl) f r
  
 let rec bulk_iter f = function
     Empty -> ()
   | Leaf (_,s) -> f s
   | Concat(l,_,r,_,_) -> bulk_iter f l; bulk_iter f r
- 
-let rec rangeiter f start len = function
+
+let rec bulk_iteri ?(base=0) f = function
+    Empty -> ()
+  | Leaf (_,s) -> f base s
+  | Concat(l,cl,r,_,_) -> 
+      bulk_iteri ~base f l; 
+      bulk_iteri ~base:(base+cl) f r
+
+let rec range_iter f start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
   | Leaf (lens, s) ->
       let n = start + len in
       if start >= 0 && len >= 0 && n <= lens then
   for i = start to n - 1 do
-          f (STRING.unsafe_get s i) (*TODO: use enum to iterate efficiently*)
+          f (UTF8.unsafe_get s i) (*TODO: use enum to iterate efficiently*)
         done
       else raise Out_of_bounds
   | Concat(l,cl,r,cr,_) ->
@@ -333,37 +324,100 @@ let rec rangeiter f start len = function
       if start < cl then begin
         let upto = start + len in
           if upto <= cl then
-            rangeiter f start len l
+            range_iter f start len l
           else begin
-            rangeiter f start (cl - start) l;
-            rangeiter f 0 (upto - cl) r
+            range_iter f start (cl - start) l;
+            range_iter f 0 (upto - cl) r
           end
       end else begin
-        rangeiter f (start - cl) len r
+        range_iter f (start - cl) len r
+      end
+ 
+let rec range_iteri f ?(base = 0) start len = function
+    Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
+  | Leaf (lens, s) ->
+      let n = start + len in
+      if start >= 0 && len >= 0 && n <= lens then
+	for i = start to n - 1 do
+          f (base+i) (UTF8.unsafe_get s i) 
+	    (*TODO: use enum to iterate efficiently*)
+        done
+      else raise Out_of_bounds
+  | Concat(l,cl,r,cr,_) ->
+      if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
+      if start < cl then begin
+        let upto = start + len in
+          if upto <= cl then
+            range_iteri f ~base start len l
+          else begin
+            range_iteri f ~base start (cl - start) l;
+            range_iteri f ~base:(base + cl - start) 0 (upto - cl) r
+          end
+      end else begin
+        range_iteri f ~base (start - cl) len r
       end
  
 let rec fold f a = function
     Empty -> a
   | Leaf (_,s) ->
-      Enum.fold (fun a c -> f c a) a (STRING.enum s)
+      Enum.fold (fun a c -> f c a) a (UTF8.enum s)
   | Concat(l,_,r,_,_) -> fold f (fold f a l) r
  
-let rec enum = function (* return an enumeration of UChars *)
-    Empty -> Enum.empty ()
-  | Leaf (_,s) -> UTF8.enum s
-  | Concat (l, _, r, _, _) -> Enum.append (enum l) (enum r)
- 
+let rec bulk_fold f a = function
+  | Empty                  -> a
+  | Leaf   (_, s)          -> f a s
+  | Concat (l, _, r, _, _) -> bulk_fold f (bulk_fold f a l) r
+
+(*let rec enum = function (* return an enumeration of UChars --*)
+    Empty                  -> Enum.empty ()
+  | Leaf (_,s)             -> UTF8.enum s
+  | Concat (l, _, r, _, _) -> Enum.append (enum l) (enum r)*)
+
+let enum s =
+  let rec aux = function
+    Empty                  -> Enum.empty ()
+  | Leaf (_,s)             -> UTF8.enum s
+  | Concat (l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux l)) 
+                                          (Enum.delay (fun () -> aux r))
+  in aux s
+
+let backwards s = 
+  let rec aux = function
+    Empty                  -> Enum.empty ()
+  | Leaf (_,s)             -> UTF8.backwards s
+  | Concat (l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux r)) 
+                                          (Enum.delay (fun () -> aux l))
+  in aux s
+
+let bulk_enum s = 
+  let rec aux = function
+    | Empty      -> Enum.empty ()
+    | Leaf(_, s) -> Enum.singleton s
+    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux l)) 
+                                           (Enum.delay (fun () -> aux r))
+  in aux s
+
+(*Probably useless
+let bulk_backwards s = 
+  let rec aux = function
+    | Empty      -> Enum.empty ()
+    | Leaf(_, s) -> Enum.singleton s
+    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux r)) 
+                                           (Enum.delay (fun () -> aux l))
+  in aux s
+*)
+
 let of_enum e =
   let get_leaf () =
     Labels.label
       (fun return ->
 	 let b = Buffer.create 256 in
-	   for i = 1 to 256 do
-	     match Enum.get e with
-		 None   -> Labels.recall return (false, UTF8.string_as (Buffer.contents b))
-	       | Some c -> Buffer.add_string b (UTF8.as_string (UTF8.of_char c))
-	   done;
-	   (true, UTF8.string_as (Buffer.contents b) ))
+	 for i = 1 to 256 do
+	   match Enum.get e with
+	       None   -> Labels.recall return (false, UTF8.of_string_unsafe (Buffer.contents b))
+	     | Some c -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c))
+	 done;
+	 (true, UTF8.of_string_unsafe (Buffer.contents b) ))
   in
   let rec loop r = (* concat 256 characters at a time *)
     match get_leaf () with
@@ -371,8 +425,34 @@ let of_enum e =
       | (false, us) -> concat r (of_ustring us)
   in
   loop Empty
+    
+let of_bulk_enum e = 
+  let rec loop r = 
+    match Enum.get e with
+	None -> r
+      | Some us -> loop (concat r (of_ustring us))
+  in
+  loop Empty
+
+(* REDUNDANT DEFINITION - test speed / correctness
+let of_enum e = 
+  let add, get = 
+    let b = Buffer.create leaf_size in
+    (fun c -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c))),
+    (fun () -> let ret = UTF8.of_string_unsafe (Buffer.contents b) in Buffer.clear b; ret)
+  in
+  of_bulk_enum (Enum.clump leaf_size add get e)
+*)
+
+let of_backwards e =(*(Yoric) I'll keep the implementation simple at least until I understand [of_enum]*)
+  Enum.fold (fun c acc -> concat acc (of_uchar c)) Empty e
   
- 
+let of_bulk_enum e =
+  Enum.fold (fun s acc -> concat acc (of_ustring s)) Empty e
+(*Probably useless 
+let of_bulk_backwards e =
+  Enum.fold (fun s acc -> concat (of_ustring s) acc) Empty e
+*)
 module CE = CamomileLibrary.CharEncoding.Configure(CamomileLibrary.CamomileDefaultConfig)
  
 let of_latin1 s =
@@ -382,5 +462,73 @@ let sexp_of_t t =
   UTF8.sexp_of_t (to_ustring t)
 let t_of_sexp s =
   of_ustring (UTF8.t_of_sexp s)
+
+let print out t =
+  bulk_iter (fun us -> InnerIO.nwrite out (UTF8.to_string us)) t
+
+let lowercase s =
+  bulk_fold (fun acc c -> concat acc (of_ustring (UTF8.lowercase c)))  Empty s
+
+let uppercase s =
+  bulk_fold (fun acc c -> concat acc (of_ustring (UTF8.uppercase c)))  Empty s
+
+
+let make n c = 
+  let k = ref n in
+  let build_chunk len = UTF8.make (Ref.post k (fun l -> l - len)) c in
+  let make_chunk () = 
+    if !k = 0 then None
+    else if !k < n then Some (build_chunk !k)
+    else Some (build_chunk n)
+  in
+  of_bulk_enum (Enum.from_while make_chunk)
+
+let create n = make n (UChar.chr 0x00) 
+(* fill with null, as randomness is likely not valid UTF8 *)
+
+let init len f = of_enum (Enum.init len f)
+
+(* val of_list : char list -> string
+   
+   Converts a list of characters to a string.
+   
+   val to_list : string -> char list
+   
+   Converts a string to the list of its characters.*)
+  
+let of_string_unsafe s = of_ustring (UTF8.of_string_unsafe s)
+let of_int i = of_string_unsafe (string_of_int i)
+let of_float f = of_string_unsafe (string_of_float f)
+
+let to_int r = int_of_string (UTF8.to_string_unsafe (to_ustring r))
+let to_float r = float_of_string (UTF8.to_string_unsafe (to_ustring r))
+
+let bulk_map f r = bulk_fold (fun acc s -> append acc (f s)) Empty r
+let map f r = bulk_map (fun s -> UTF8.map f s) r
+
+let bulk_filter_map f r = bulk_fold (fun acc s -> match f s with None -> acc | Some r -> append acc r) Empty r
+let filter_map f r = bulk_map (UTF8.filter_map f) r
+
+open Labels
+
+let index r item = 
+  label (fun return ->
+	   let index_aux i us =
+	     try 
+	       let p = UTF8.index us item in
+	       recall return (p+i)
+	     with Not_found -> ()
+	   in
+	   bulk_iteri index_aux r;
+	   raise Not_found)
+
+let index_from r base item = 
+  label (fun return ->
+	   let index_aux i c = 
+	     if c = item then recall return i
+	   in
+	   range_iteri index_aux ~base base (length r) r;
+	   raise Not_found)
+
 
 (* =end *)

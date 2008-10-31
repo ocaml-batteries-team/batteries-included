@@ -237,7 +237,7 @@ let ocaml_comment =
     let rec content () = 
       any         >>= function
 	| '(' -> ( any >>= function
-		     | '*' -> content () >>= discard (content ())
+		     | '*' -> content () >>= const (content ())
 		     | _   -> content () )
 	| '*' -> ( any >>= function
 		     | ')' -> return ()
@@ -362,7 +362,8 @@ struct
 	  | Some (l, r) ->
 	      (*label "Multi-line comment"*) label "" (
 	      let l0 = String.get l 0
-	      and r0 = String.get r 0 in
+	      and r0 = String.get r 0 
+	      and string_r = string r in
 	      let in_comment () =
 		if nested_comments then
 		  let not_lr = label ("Neither \""^l^"\" nor ^ \"" ^r^"\"")
@@ -371,14 +372,18 @@ struct
 		    label "aux" (
 		    either [  string r >>= (fun _ -> return ());
  			      string l >>= (fun _ -> aux () >>= fun _ -> aux ()) ;
-			      (ignore_one_plus not_lr) >>= (fun _ -> aux ()) ]
+			      (ignore_one_plus not_lr)      >>= fun _ -> aux () ]
 		    )
 		  in aux ()
 		else 
 		  string l >>>
-		    label "Contents of comments" 
-		    (ignore_zero_plus (not_char r0)) >>> 
-		  string r >>> return ()
+		    label "Contents of comments" (
+		      let rec aux () =
+			  maybe string_r >>= function
+			    | Some _ -> return ()
+			    | None   -> any >>> aux () 
+		      in aux ()
+		    )
 	      in in_comment ())
 
       let comment = ( line_comment <|> multiline_comment ) >>> return () 

@@ -1,3 +1,24 @@
+(* 
+ * CharParser - Parsing character strings
+ * Copyright (C) 2008 David Teller
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
+
 open ParserCo
 open ExtString
 open ExtChar
@@ -22,7 +43,7 @@ let source_of_enum   s = Source.of_enum s start_position advance
 
 let source_of_string s = source_of_enum (String.enum s)
 
-let parse_string p s =
+let parse p s =
   run p (source_of_string s)
 
 (*let parse_enum p e =
@@ -53,10 +74,10 @@ let case_char c =
   else char c
 
 let case_string s = label ("case insensitive \"" ^ s ^ "\"") (
-  let s' = String.lowercase s in
-  let len = String.length s'  in
+  let s'  = String.lowercase s in
+  let len = String.length s'   in
   let rec aux i = 
-    if i < len then exactly s'.[i] >>= fun _ -> aux (i+1)
+    if i < len then case_char s'.[i] >>= fun _ -> aux (i+1)
     else return s
   in aux 0
 )   

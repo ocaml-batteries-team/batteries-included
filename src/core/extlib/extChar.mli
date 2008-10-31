@@ -32,9 +32,9 @@
 *)
 module Char : sig
 
+type t = char
+(** An alias for the type of characters. *)
 
-external code : char -> int = "%identity"
-(** Return the ASCII code of the argument. *)
 
 val is_whitespace : char -> bool
 (** Determine if a character is a whitespace.
@@ -100,17 +100,14 @@ val chr : int -> char
 
 val escaped : char -> string
 (** Return a string representing the given character,
-   with special characters escaped following the lexical conventions
-   of Objective Caml. *)
+    with special characters escaped following the lexical conventions
+    of Objective Caml. *)
 
 val lowercase : char -> char
 (** Convert the given character to its equivalent lowercase character. *)
 
 val uppercase : char -> char
 (** Convert the given character to its equivalent uppercase character. *)
-
-type t = char
-(** An alias for the type of characters. *)
 
 val compare: t -> t -> int
 (** The comparison function for characters, with the same specification as
@@ -124,12 +121,23 @@ val enum: unit -> char Enum.t
 val range: ?until:char -> char -> char Enum.t
 
 val ( -- ): char -> char -> char Enum.t
+(** Produce the enumeration of a segment of characters.
+
+    ['a' -- 'z'] is the enumeration of all characters
+    between ['a'] and ['z'] included.*)
+
+external code : char -> int = "%identity"
+(** Return the ASCII code of the argument. *)
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
 
 val t_of_sexp : Sexplib.Sexp.t -> t
 val sexp_of_t : t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+
+val print: 'a InnerIO.output -> t -> unit
 
 (**/**)
 

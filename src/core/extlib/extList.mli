@@ -3,7 +3,7 @@
  * Copyright (C) 2003 Brian Hurt
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2008 Red Hat Inc.
- * Copyright (C) 2008 David Teller
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -146,12 +146,23 @@ module List :
 
 	val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
 	  (** [List.fold_left f a [b1; ...; bn]] is
-	      [f (... (f (f a b1) b2) ...) bn]. *)
+	      [f (... (f (f a b1) b2) ...) bn]. Tail-recursive. *)
 
 	val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 	  (** [List.fold_right f [a1; ...; an] b] is
 	      [f a1 (f a2 (... (f an b) ...))].  Tail-recursive. *)
 
+	val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
+	  (** [List.reduce f h::t] is [fold_left f h t].  Raises
+	      Invalid_argument on empty lists. *)
+
+	val max : 'a list -> 'a
+	  (** [max l] returns the largest value in [l] as judged by
+	      [Pervasives.compare] *)
+
+	val min : 'a list -> 'a
+	  (** [min l] returns the smallest value in [l] as judged by
+	      [Pervasives.compare] *)
 
 
 	(** {6 Iterators on two lists} *)
@@ -461,15 +472,17 @@ module List :
 
 	(** {7 Printing}*)
 	  
-	val print : 'a IO.output -> ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'b t -> unit
+	val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+	  (**Print the contents of a list*)
 
 	(** {6 Obsolete functions} *)
+
 	val nth : 'a list -> int -> 'a
 	(** Obsolete. As [at]. *)
 
 
+	(** Exceptionless counterparts for error-raising operations*)
 	module ExceptionLess : sig
-	  (** Exceptionless counterparts for error-raising operations*)
 
 	  val rfind : ('a -> bool) -> 'a list -> 'a option
 	    (** [rfind p l] returns [Some x] where [x] is the last element of [l] such 
@@ -617,8 +630,6 @@ module ListLabels :
 	val fold_right : f:('a -> 'b -> 'b) -> 'a list -> init:'b -> 'b
 	  (** [List.fold_right ~f:f [a1; ...; an] ~init:b] is
 	      [f a1 (f a2 (... (f an b) ...))].  Tail-recursive. *)
-
-
 
 	(** {6 Iterators on two lists} *)
 
@@ -919,7 +930,8 @@ module ListLabels :
 
 	(** {7 Printing}*)
 	  
-	val print : 'a IO.output -> ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'b t -> unit
+	val print : ?first:string -> ?last:string -> ?sep:string ->('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+
 	(** {6 Obsolete functions} *)
 
 	val nth : 'a list -> int -> 'a

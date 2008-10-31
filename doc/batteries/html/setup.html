@@ -8,11 +8,71 @@
 <link title="Batteries" rel="Chapter" href="Batteries.html"><title>OCaml Batteries Included</title>
 </head>
 <body>
+<center><h1>Installing Batteries Included</h1></center>
+<center><h2>The GODI package manager</h2></center>
+<p>
+At the moment, on most computers, the easiest manner of installing
+OCaml Batteries Included on your computer is to take advantage
+of <a href="http://godi.camlcity.org/godi/index.html">GODI
+</a>, a package manager specifically dedicated to OCaml. You will
+first need to install GODI, if GODI isn't install on your machine yet,
+then to select package <code>batteries</code> in the list of packages
+and accept the decisions of GODI. This should take care of installing
+OCaml Batteries Included for you.
+</p>
+<p>
+Note that producing the documentation is long (typically 10-15 minutes).
+</p>
+
+<center><h2>Fedora / Debian / Red Hat / Ubuntu</h2></center>
+<center>At the time of this writing, this method is experimental.</center>
+<p>
+On Fedora / Debian / Red Hat / Ubuntu stations,
+packages <emph>may</emph> be able for Batteries. If this is the case,
+to install OCaml Batteries Included, just run your usual package
+manager (generally either Synaptic, Yum, KPackage, Aptitude or
+DSelect), and select package <code>libbatteries-ocaml-dev</code>.
+This should take care of installing OCaml Batteries Included for you.
+</p>
+
+<center><h2>Manually</h2></center>
+<p>
+To perform installation of OCaml Batteries Included manually, please make sure
+that you have already installed all the following tools and libraries:
+</p>
+<ul>
+<li>OCaml itself</li>
+<li>Findlib</li>
+<li>Type-conv</li>
+<li>Camomile, version 0.7 or greater</li>
+<li>Sexplib</li>
+<li>Bin-prot</li>
+<li>GNU Make</li>
+</ul>
+
+<p>
+Once all these libraries are installed, you may download and uncompress the latest version
+of OCaml Batteries Included, enter the directory produced by decompression and invoke
+<pre>
+make byte opt doc install
+</pre>
+to build and install both the byte-code version, the native version
+and the documentation of OCaml Batteries Included. If you are not
+interested in respectively the byte-code version, the native version
+or the documentation of OCaml Batteries Included, just omit
+respectively <code>byte</code>, <code>opt</code> or <code>doc</code>
+from that command.
+</p>
+
+<p>
+Note that producing the documentation is long (typically 10-15 minutes).
+</p>
+
 <center><h1>Using Batteries Included</h1></center>
 <center><h2>Simple method</h2></center>
 To use Batteries Included, the easiest solution is to take 
 advantage of both findlib and ocamlbuild. OCamlBuild is part
-of your installation of OCaml and findlib is often installed
+of your installation of OCaml and findlib is generally installed
 by default, too.
 <br />
 If you have both OCaml and findlib, the simple method is to

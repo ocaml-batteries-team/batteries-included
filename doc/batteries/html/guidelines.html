@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="root.html">
+<link title="Index of modules" rel=Appendix href="root_modules.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html"><title>OCaml Batteries Included</title>
+</head>
+<body>
+<center><h1>Writing code with OCaml Batteries Included</h1></center>
+<p>
+In this chapter, we attempt to document best practices for writing code
+with OCaml Batteries Included. These best practices are bound to change
+with time, so don't hesitate to visit this page regularly and/or to submit
+rules.
+</p>
+<center><h2>Setting up your project</h2></center>
+<p>
+There are many ways of setting up a new project to use OCaml Batteries Included.
+A few possibilities are documented <a href="setup.html">here</a>. The easiest
+manner is generally to use OCamlBuild.
+</p>
+<center><h2>General guidelines</h2></center>
+<center><h3>Be simple</h3></center>
+<p>
+
+</p>
+<p>
+OCaml is a multi-paradigm language. Out of the box, it features
+functional programming, imperative programming, object-oriented
+programming, concurrent programming and the often-overlooked stream
+programming. Extensions of OCaml add several distributed programming
+paradigms (JoCaml, Acute, BSML), safe dynamic programming (GCaml,
+coca-ml) or document processing (OCamlDuce). This makes the OCaml
+family an extremely powerful and versatile set of languages. This also
+gives many ways of writing confusing (and possibly unsafe) code by
+mixing a little bit too many styles. It is therefore generally a good
+idea to keep distinct paradigms local. In other words, don't hesitate
+to write object-oriented code but unless your whole project is
+object-oriented, try to keep object-orientation local to a module and,
+if you're writing a library, don't force your users to understand
+OCaml's take on object-oriented programming to use your library.
+</p>
+</p>
+<center><h2>Data structures</h2></center>
+<p>
+No matter what type of algorithm you intend to implement, you will
+need data structures. While you will regularly need to implement your
+own data, OCaml Batteries Included provides numerous data structures,
+with which you should try to be familiar. Essentially, these data
+structures can be classified as either
+</p>
+<dl>
+ <dt>Persistent</dt> <dd>Lists, hash maps...</dd>
+ <dt>Mutable</dt>    <dd>Arrays, references, hash tables, doubly-linked lists...</dd>
+ <dt>Infinite</dt>   <dd>Streams, enumerations, inputs, outputs...</dd>
+</dl>
+
+<center><h3>Numeric data structures</h3></center>
+<center><h3></h3></center>
+<center><h2>Input and output</h2></center>
+<center><h2>Printing</h2></center>
+<center><h2>Naming conventions</h2></center>
+<p>
+The usual naming conventions for OCaml apply. 
+</p>
+<center><h3>Values</h3></center>
+<dl>
+  <dt>Values</dt> <dd>The name of a value should be written entirely in lower-case.
+    If the name consists in several words, these words should be separated by an underscore.
+    <pre>
+      (**This function computes a matrix*)
+      val compute_matrix : unit -> 'a array array
+    </pre>
+    Public functions which serve for conversion to/from another data structure should be
+    called respectively <code>to_name_of_the_other_data_structure</code> and
+    <code>from_name_of_the_other_data_structure</code>. An exception is conversion to
+    enumerations, in which case the name of the function is simply <code>enum</code>.
+  </dd>
+  <dt>Types</dt>
+  <dt>Constructors</dt>
+  <dt>Module names</dt>
+  <dt>Module types</dt>
+  <dt>Outer comments</dt>
+  <dt>Inner comments</dt>
+</dl>
+<center><h1>Writing code for OCaml Batteries Included</h1></center>
+</body>
+</html>
+

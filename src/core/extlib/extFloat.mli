@@ -170,7 +170,7 @@ module Float :
 	  part of [f]. *)
 
       (** Classes of floating point numbers*)
-    type fpclass = Pervasives.fpclass = 
+    type fpkind = Pervasives.fpclass = 
 	FP_normal           (** Normal number, none of the below *)
       | FP_subnormal        (** Number very close to 0.0, has reduced precision *)
       | FP_zero             (** Number is 0.0 or -0.0 *)
@@ -179,7 +179,7 @@ module Float :
 	  (** The five classes of floating-point numbers, as determined by
 	      the {!classify} function. *)
 	  
-    external classify : float -> fpclass = "caml_classify_float"
+    external classify : float -> fpkind = "caml_classify_float"
 	(** Return the class of the given floating-point number:
 	    normal, subnormal, zero, infinite, or not a number. *)
 
@@ -189,4 +189,7 @@ module Float :
 
     val t_of_sexp : Sexplib.Sexp.t -> t
     val sexp_of_t : t -> Sexplib.Sexp.t
+
+    (** {7 Printing}*)
+    val print: 'a InnerIO.output -> t -> unit
 end

@@ -186,8 +186,9 @@ val c_layout : c_layout layout
 val fortran_layout : fortran_layout layout
 
 
-(** {6 Generic arrays (of arbitrarily many dimensions)} *)
 
+
+(**Generic arrays (of arbitrarily many dimensions) *)
 module Genarray :
   sig
   type ('a, 'b, 'c) t = ('a, 'b, 'c) Bigarray.Genarray.t

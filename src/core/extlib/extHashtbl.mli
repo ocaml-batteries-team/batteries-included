@@ -178,6 +178,20 @@ external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
    However, hashing takes longer. The parameters [m] and [n]
    govern the tradeoff between accuracy and speed. *)
 
+
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b) t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b) t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 
+                                                             ('a InnerIO.output -> 'c -> unit) -> 
+  'a InnerIO.output -> ('b, 'c) t -> unit
+
+
+
 (** {6 Functorial interface} *)
 
 module type HashedType =
@@ -198,9 +212,9 @@ module type HashedType =
           correctly, and
           ([(==)], {!Hashtbl.hash}) for comparing objects by addresses
           (e.g. for cyclic keys). *)
-   end
-(** The input signature of the functor {!Hashtbl.Make}. *)
+  end
 
+(** The input signature of the functor {!Hashtbl.Make}. *)
 module type S =
   sig
     type key
@@ -226,6 +240,13 @@ module type S =
     val values : 'a t -> 'a Enum.t
     val enum : 'a t -> (key * 'a) Enum.t
     val of_enum : (key * 'a) Enum.t -> 'a t
+      val sexp_of_t : (key -> Sexplib.Sexp.t) -> ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+      val t_of_sexp : (Sexplib.Sexp.t -> key) -> (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+      val print :  ?first:string -> ?last:string -> ?sep:string -> 
+	('a InnerIO.output -> key -> unit) -> 
+	('a InnerIO.output -> 'b -> unit) -> 
+	'a InnerIO.output -> 'b t -> unit
+
   end
 (** The output signature of the functor {!Hashtbl.Make}. *)
     
@@ -389,13 +410,18 @@ val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) Enum.t
 val of_enum : ('a * 'b) Enum.t -> ('a, 'b, _) t
   (** Create a hashtable from a (key,value) enumeration. *)
 
-
-end
-
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
 
-val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b) t
-val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b) t -> Sexplib.Sexp.t
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b, _) t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b, [>`Read]) t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 
+                                                             ('a InnerIO.output -> 'c -> unit) -> 
+  'a InnerIO.output -> ('b, 'c, [>`Read]) t -> unit
+
+end
 
 end

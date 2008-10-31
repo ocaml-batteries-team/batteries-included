@@ -22,10 +22,26 @@ open Sexplib
 open Conv
 TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
 
+(*Inlined to avoid circular dependencies between IO, ExtUTF8 and ExtString*)
+let string_splice s1 off len s2 = 
+  let len1 = String.length s1 and len2 = String.length s2 in
+  let out_len = len1 - len + len2 in
+  let s = String.create out_len in
+  String.blit s1 0 s 0 off; (* s1 before splice point *)
+  String.blit s2 0 s off len2; (* s2 at splice point *)
+  String.blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
+  s
+
+
 module UTF8 = struct
-  open ExtString
   open CamomileLibrary
+  open ExtString
+  open ExtList
   include CamomileLibrary.UTF8
+  module Case = CaseMap.Make(CamomileDefaultConfig)(UTF8)
+
+  external of_string_unsafe : string -> t = "%identity"
+  external to_string_unsafe : t -> string = "%identity"
  
   let append s1 s2 = s1 ^ s2
     
@@ -88,20 +104,22 @@ module UTF8 = struct
       s
   
   let of_string s = validate s; String.copy s
-    
+
   let to_string s = String.copy s
+
+  let adopt     s = validate s; s
     
   let enum us =
     let l = length us in
     let rec make i =
       Enum.make
-  ~next:(fun () ->
-     if !i = l then
+	~next:(fun () ->
+		 if !i = l then
                    raise Enum.No_more_elements
-     else
+		 else
                    let p = !i in
-                   i := next us !i;
-                   look us p
+                     i := next us !i;
+                     look us p
               )
   ~count:(fun () -> l - !i)
   ~clone:(fun () -> make (ref !i))
@@ -109,15 +127,36 @@ module UTF8 = struct
     make (ref 0)
       
   let of_enum e =
-    let buf = Buffer.create 10 in
-    Enum.iter (fun c -> Buffer.add_string buf (of_char c)) e;
-    Buffer.contents buf
- 
+    let buf = Buffer.create 16 in
+      Enum.iter (fun c -> Buffer.add_string buf (of_char c)) e;
+      adopt (Buffer.contents buf)
+
+
+  let backwards us =
+    let rec make i =
+      Enum.make
+	~next:(fun () ->
+		 if !i < 0 then
+                   raise Enum.No_more_elements
+		 else
+                   let p = !i in
+                     i := prev us !i;
+                     look us p
+              )
+  ~count:(fun () -> !i)
+  ~clone:(fun () -> make (Ref.copy i))
+    in
+    make (ref (length us - 1))
+      
+  let of_backwards e =
+    of_enum (List.enum (List.of_backwards e))
+
+
   let unsafe_get = get
  
   let copy_set s n c =
     let i = nth s n in let j = next s i in
-    String.splice s i (j-i) (of_char c)
+    string_splice s i (j-i) (of_char c)
      
   let sub s n len =
     let i = nth s n in
@@ -165,6 +204,35 @@ module UTF8 = struct
   
   let iter proc s = iter_aux proc s 0
     
+  let init i f = (* Buf from CamomileLibrary.UTF8 *)
+    let b = Buf.create i in
+    for j = 0 to i-1 do
+      Buf.add_char b (f j)
+    done;
+    Buf.contents b
+
+  let map f us = 
+    let b = Buf.create (length us) in
+    iter (fun c -> Buf.add_char b (f c)) us;
+    Buf.contents b
+
+  let filter_map f us = 
+    let b = Buf.create (length us) in
+    iter (fun c -> match f c with None -> () | Some c -> Buf.add_char b c) us;
+    Buf.contents b
+
+  let rec index_aux us c char_idx byte_idx =
+    if look us byte_idx = c then char_idx
+    else index_aux us c (char_idx+1) (next us byte_idx)
+
+  let index us c = (* relies on exception at end of string *)
+    try 
+      index_aux us c 0 0
+    with 
+	Invalid_argument "UTF8.next" -> raise Not_found
+
+
+
   let compare s1 s2 = Pervasives.compare s1 s2
     
   let copy = String.copy
@@ -172,7 +240,9 @@ module UTF8 = struct
   let sexp_of_t = sexp_of_string
   let t_of_sexp = string_of_sexp
 
-  external string_as : string -> t = "%identity"
-  external as_string : t -> string = "%identity"
 
+  let print out t = InnerIO.nwrite out (to_string t)
+
+  let uppercase c = Case.uppercase c
+  let lowercase c = Case.lowercase c
 end

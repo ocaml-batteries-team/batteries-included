@@ -1,5 +1,5 @@
 (* 
- * EXTUTF-8 - Additional functions for UTF8 string manipulation
+ * ExtUTF-8 - Additional functions for UTF8 string manipulation
  * Copyright 2002, 2003 (C) Yamagata Yoriyuki. 
  * Copyright (C) 2008 Edgar Friendly, David Teller
  *
@@ -27,6 +27,9 @@ open ExtUChar
     provided essentially for internal use and should be regarded as
     mostly obsoleted by {!Rope}.
 
+    {b Note} For type-safety reasons, the definition of type {!t} is
+    kept abstract. This may cause incompatibilities with Camomile library.
+
     @author Yamagata Yoriyuki (Camomile)
     @author Edgar Friendly
     @author David Teller
@@ -38,11 +41,12 @@ sig
 
 
 (** UTF-8 encoded Unicode strings.*)
-type t = CamomileLibrary.UTF8.t
-
+type t 
+(* maybe use new private types in 3.11 once that's released *)
+ 
 exception Malformed_code
 
-val validate : t -> unit
+val validate : string -> unit
   (** [validate s] succeeds if s is valid UTF-8, otherwise raises
       [Malformed_code].  Other functions assume strings are valid
       UTF-8, so it is prudent to test their validity for strings from
@@ -50,7 +54,9 @@ val validate : t -> unit
 
 
 (* All functions below assume string are valid UTF-8.  If not,
- * the result is unspecified. *)
+ * the result is unspecified. 
+ * Note: invalid strings could happen only as a consequence of
+ * tampering with undocumented functions.*)
 
 val append : t -> t -> t
   (**Concatenate two UTF8 strings*)
@@ -70,17 +76,20 @@ val of_string : string -> t
 val to_string : t -> string
   (**Return an UTF-8 encoded string representing this Unicode string.*)
 
-
-
 val enum : t -> UChar.t Enum.t
   (**As {!String.enum}*)
 
 val of_enum: UChar.t Enum.t -> t
   (**As {!String.of_enum}*)
 
+val backwards : t -> UChar.t Enum.t
+  (**As {!String.backwards}*)
+
+val of_backwards: UChar.t Enum.t -> t
+  (**As {!String.of_backwards}*)
+
 val sub : t -> int -> int ->  t
   (** As {!String.sub}*)
-
 
 val get : t -> int -> UChar.t
   (** [get s n] returns the [n]-th Unicode character of [s].  The call
@@ -97,41 +106,43 @@ val length : t -> int
 (** [length s] returns the number of Unicode characters contained in s *)
     
 val length0: int -> int
-(** UTF8 encoding often calls for the encoding of a Unicode character with
-    several non-Unicode characters. If [c] is the beginning of a UTF8
-    encoded character, [length0 c] returns the total number of characters
-    which must be read for the Unicode character to be complete.
+  (** UTF8 encoding often calls for the encoding of a Unicode character
+      with several bytes. If [c] is the beginning of a UTF8 encoded
+      character, [length0 c] returns the total number of bytes which
+      must be read for the Unicode character to be complete.
 
-    @return 1 if the character is complete, n >= 2 otherwise*)
+      @return 1 if the character is complete, n >= 2 otherwise*)
 
+
+type index = int
 (** Positions in the string represented by the number of bytes from the head.
    The location of the first character is [0] *)
-type index = int
 
+val nth : t -> int -> index
 (** [nth s n] returns the position of the [n]-th Unicode character. 
    The call requires O(n)-time *)
-val nth : t -> int -> index
 
-(** The position of the head of the first Unicode character. *)
 val first : t -> index
+(** The position of the head of the first Unicode character. *)
 
-(** The position of the head of the last Unicode character. *)
 val last : t -> index
+(** The position of the head of the last Unicode character. *)
 
+val look : t -> index -> UChar.t
 (** [look s i]
    returns the Unicode character of the location [i] in the string [s]. *)
-val look : t -> index -> UChar.t
 
-(** [out_of_range s i]
-   tests whether [i] is a position inside of [s]. *)
 val out_of_range : t -> index -> bool
+  (** [out_of_range s i]
+      tests whether [i] is a position inside of [s]. *)
 
+val compare_index : t -> index -> index -> int
 (** [compare_index s i1 i2] returns
    a value < 0 if [i1] is the position located before [i2], 
    0 if [i1] and [i2] points the same location,
    a value > 0 if [i1] is the position located after [i2]. *)
-val compare_index : t -> index -> index -> int
 
+val next : t -> index -> index
 (** [next s i]
    returns the position of the head of the Unicode character
    located immediately after [i]. 
@@ -139,8 +150,8 @@ val compare_index : t -> index -> index -> int
    If [i] is inside of [s] and there is no Unicode character after [i],
    the position outside [s] is returned.  
    If [i] is not inside of [s], the behaviour is unspecified. *)
-val next : t -> index -> index
 
+val prev : t -> index -> index
 (** [prev s i]
    returns the position of the head of the Unicode character
    located immediately before [i]. 
@@ -148,25 +159,23 @@ val next : t -> index -> index
    If [i] is inside of [s] and there is no Unicode character before [i],
    the position outside [s] is returned.  
    If [i] is not inside of [s], the behaviour is unspecified. *)
-val prev : t -> index -> index
 
+val move : t -> index -> int -> index
 (** [move s i n]
    returns [n]-th Unicode character after [i] if n >= 0,
    [n]-th Unicode character before [i] if n < 0.
    If there is no such character, the result is unspecified. *)
-val move : t -> index -> int -> index
     
+val iter : (UChar.t -> unit) -> t -> unit
 (** [iter f s]
    applies [f] to all Unicode characters in [s].  
    The order of application is same to the order 
    of the Unicode characters in [s]. *)
-val iter : (UChar.t -> unit) -> t -> unit
 
 val compare : t -> t -> int
   (** Code point comparison by lexicographic order.  [compare s1 s2]
       returns a positive integer if [s1] > [s2], 0 if [s1] = [s2], a
       negative integer if [s1] < [s2]. *)
-
 
 val concat : t -> t list -> t
   (** [concat sep [a;b;c...] ] returns the concatenation of
@@ -175,6 +184,26 @@ val concat : t -> t list -> t
 val join : t -> t list -> t
   (**as [concat]*)
 
+
+val uppercase : t -> t
+(** Return a copy of the argument, with all lowercase letters
+   translated to uppercase.*)
+
+val lowercase : t -> t
+(** Return a copy of the argument, with all uppercase letters
+   translated to lowercase.*)
+
+val init : int -> (int -> UChar.t) -> t
+(** As [String.init] *)
+
+val map : (UChar.t -> UChar.t) -> t -> t
+(** As [String.map] *)
+
+val filter_map : (UChar.t -> UChar.t option) -> t -> t
+(** As [String.filter_map] *)
+
+val index : t -> UChar.t -> int
+(** As [String.index] *)
 
 (** Buffer module for UTF-8 strings *)
 module Buf : sig
@@ -212,10 +241,13 @@ end with type buf = Buffer.t
 val t_of_sexp : Sexplib.Sexp.t -> t
 val sexp_of_t : t -> Sexplib.Sexp.t
 
+(** {7 Printing}*)
+val print: 'a InnerIO.output -> t -> unit
+
 
 (**/**)
-external string_as : string -> t = "%identity"
-external as_string : t -> string = "%identity"
+external of_string_unsafe : string -> t = "%identity"
+external to_string_unsafe : t -> string = "%identity"
   (**Adopt a string without copying*)
 
 val unsafe_get : t -> int -> UChar.t

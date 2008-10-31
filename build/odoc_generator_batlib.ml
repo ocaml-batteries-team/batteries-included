@@ -54,7 +54,6 @@ let string_of_info_opt = function
   | None   -> "No information"
   | Some i -> info_string_of_info i
 
-let string_of_bool b = if b then "true" else "false"
 
 let bs = Buffer.add_string
 let bp = Printf.bprintf
@@ -104,11 +103,16 @@ let roots = ["Batteries"]
 
 let merge_info_opt a b =
   verbose ("Merging informations");
-  verbose ("1: "^(string_of_info_opt a));
-  verbose ("2: "^(string_of_info_opt b));
-  let result = Odoc_merge.merge_info_opt Odoc_types.all_merge_options a b in
-    verbose (">: "^(string_of_info_opt result));
-    result
+  if a <> b then 
+    begin
+      verbose ("1: "^(string_of_info_opt a));
+      verbose ("2: "^(string_of_info_opt b));
+      let result = Odoc_merge.merge_info_opt Odoc_types.all_merge_options a b in
+	verbose (">: "^(string_of_info_opt result));
+	result
+    end
+  else
+    a
 
 (** {1 Actual rewriting}*)
 
@@ -432,11 +436,11 @@ class batlib_generator =
 
       (** Determine the category of a name*)
       
-    val mutable known_values_names     = Odoc_html.StringSet.empty
-    val mutable known_exceptions_names = Odoc_html.StringSet.empty
-    val mutable known_methods_names    = Odoc_html.StringSet.empty
-    val mutable known_attributes_names = Odoc_html.StringSet.empty
-    val mutable known_class_types_names= Odoc_html.StringSet.empty
+    val mutable known_values_names      = Odoc_html.StringSet.empty
+    val mutable known_exceptions_names  = Odoc_html.StringSet.empty
+    val mutable known_methods_names     = Odoc_html.StringSet.empty
+    val mutable known_attributes_names  = Odoc_html.StringSet.empty
+    val mutable known_class_types_names = Odoc_html.StringSet.empty
     val mutable known_module_types_names= Odoc_html.StringSet.empty
 
     method is_value n =
@@ -487,14 +491,28 @@ class batlib_generator =
 
    Only document modules which may be reached from the root.
 *)
+	
+    method generate_types_index module_list =
+      self#generate_elements_index
+	((map (fun t -> `Primitive t) primitive_types_names) @
+	 (map (fun t -> `Derived   t) self#list_types))
+        (function `Derived t        -> t.ty_name
+	   |   `Primitive (name, _) -> name)
+        (function `Derived t        -> t.ty_info
+	   |   `Primitive (_, _)    -> None)
+        (function `Derived t        -> Naming.complete_type_target t
+	   |   `Primitive (_, alias)-> Naming.complete_target Naming.mark_type alias)
+        Odoc_messages.index_of_types
+        self#index_types
+	
 
     (** A method to create index files. *)
     method generate_elements_index :
         'a.
         'a list ->
-          ('a -> Odoc_info.Name.t) ->
-            ('a -> Odoc_info.info option) ->
-              ('a -> string) -> string -> string -> unit =
+        ('a -> Odoc_info.Name.t) ->
+        ('a -> Odoc_info.info option) ->
+        ('a -> string) -> string -> string -> unit =
     fun elements name info target title simple_file ->
       try
         let chanout = open_out (Filename.concat !Args.target_dir simple_file) in
@@ -685,77 +703,14 @@ class batlib_generator =
 	s 
       in
       let s3 = Str.global_substitute (*Substitute fully qualified names*)
-	(Str.regexp "\\([^.a-zA-Z]\\|^\\)\\([a-z0-9]+\\)")
+	(Str.regexp "\\([^.a-zA-Z_0-9]\\|^\\)\\([a-zA-Z_0-9]+\\)")
 	handle_word
 	s2
       in s3
       with _ -> assert false
 
 
-    method generate modules =
-      try
-      match !Odoc_args.dump with
-	| Some l -> 
-	    Odoc_info.verbose "[Internal representation stage, no readable output generated yet]";
-	    ()
-	| None   -> 
-	    Odoc_info.verbose "[Final stage, generating html pages]";
-	    (*Pre-process every module*)
-	    List.iter (fun m -> verbose ("My bag contains "^m.m_name)) modules;
-	    let everything        = Search.modules modules in
-	    let (rewritten_modules, renamed_modules) = rebuild_structure everything in
-	      list_values       <- Odoc_info.Search.values            rewritten_modules ;
-	      list_exceptions   <- Odoc_info.Search.exceptions        rewritten_modules ;
-	      list_types        <- Odoc_info.Search.types             rewritten_modules ;
-	      list_attributes   <- Odoc_info.Search.attributes        rewritten_modules ;
-	      list_methods      <- Odoc_info.Search.methods           rewritten_modules ;
-	      list_classes      <- Odoc_info.Search.classes           rewritten_modules ;
-	      list_class_types  <- Odoc_info.Search.class_types       rewritten_modules ;
-	      list_modules      <- Odoc_info.Search.modules           rewritten_modules ;
-	      list_module_types <- Odoc_info.Search.module_types      rewritten_modules ;
-	      (*Cache set of values*)
-	      known_values_names <-
-		List.fold_left
-		(fun acc t -> Odoc_html.StringSet.add t.val_name acc)
-		known_values_names
-		list_values ;
-	      (*Cache set of exceptions*)
-	      known_exceptions_names <-
-		List.fold_left
-		(fun acc t -> Odoc_html.StringSet.add t.ex_name acc)
-		known_exceptions_names
-		list_exceptions ;
-	      (*Cache set of methods*)
-	      known_methods_names <-
-		List.fold_left
-		(fun acc t -> Odoc_html.StringSet.add t.met_value.val_name acc)
-		known_methods_names
-		list_methods ;
-	      (*Cache set of attributes*)
-	      known_attributes_names <-
-		List.fold_left
-		(fun acc t -> Odoc_html.StringSet.add t.att_value.val_name acc)
-		known_attributes_names
-		list_attributes ;
-	      (*Cache set of class types*)
-	      known_class_types_names <-
-		List.fold_left
-		(fun acc t -> Odoc_html.StringSet.add t.clt_name acc)
-		known_class_types_names
-		list_class_types ;
-	      (*Cache set of module_types *)
-	      known_module_types_names <-
-		List.fold_left
-		(fun acc t -> Odoc_html.StringSet.add t.mt_name acc)
-		known_module_types_names
-		list_module_types ;
 
-	      renamings <- renamed_modules;
-	      verbose "Beautification of modules complete, proceeding to generation";
-	      flush_all ();
-	      super#generate rewritten_modules
-      with e -> Printf.eprintf "%s\n%!" (Printexc.to_string e);
-	  assert false
 
 (*    method html_of_module b ?info ?complete ?with_link m =
       try 
@@ -859,6 +814,91 @@ class batlib_generator =
 	bs b "</ul></div><hr />"
 
 
+    method generate_external_index name mark set =
+      let cout = open_out (Filename.concat !Args.target_dir (name ^ ".idex")) in
+	Odoc_html.StringSet.iter (fun elt -> Printf.fprintf cout "%S: %S\n" elt (Naming.complete_target mark elt)) set;
+	if name = "types" then (*Special case for primitive types*)
+	  List.iter (fun (type_name, type_alias) -> Printf.fprintf cout "%S: %S\n" 
+		     type_name (Naming.complete_target type_alias type_alias)) primitive_types_names;
+	close_out cout
+
+    method generate modules =
+      try
+      match !Odoc_args.dump with
+	| Some l -> 
+	    Odoc_info.verbose "[Internal representation stage, no readable output generated yet]";
+	    ()
+	| None   -> 
+	    Odoc_info.verbose "[Final stage, generating html pages]";
+	    flush_all ();
+	    (*Pre-process every module*)
+	    List.iter (fun m -> verbose ("My bag contains "^m.m_name)) modules;
+	    let everything        = Search.modules modules in
+	    let (rewritten_modules, renamed_modules) = rebuild_structure everything in
+	      list_values       <- Odoc_info.Search.values            rewritten_modules ;
+	      list_exceptions   <- Odoc_info.Search.exceptions        rewritten_modules ;
+	      list_types        <- Odoc_info.Search.types             rewritten_modules ;
+	      list_attributes   <- Odoc_info.Search.attributes        rewritten_modules ;
+	      list_methods      <- Odoc_info.Search.methods           rewritten_modules ;
+	      list_classes      <- Odoc_info.Search.classes           rewritten_modules ;
+	      list_class_types  <- Odoc_info.Search.class_types       rewritten_modules ;
+	      list_modules      <- Odoc_info.Search.modules           rewritten_modules ;
+	      list_module_types <- Odoc_info.Search.module_types      rewritten_modules ;
+	      (*Cache set of values*)
+	      known_values_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.val_name acc)
+		known_values_names
+		list_values ;
+	      (*Cache set of exceptions*)
+	      known_exceptions_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.ex_name acc)
+		known_exceptions_names
+		list_exceptions ;
+	      (*Cache set of methods*)
+	      known_methods_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.met_value.val_name acc)
+		known_methods_names
+		list_methods ;
+	      (*Cache set of attributes*)
+	      known_attributes_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.att_value.val_name acc)
+		known_attributes_names
+		list_attributes ;
+	      (*Cache set of class types*)
+	      known_class_types_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.clt_name acc)
+		known_class_types_names
+		list_class_types ;
+	      (*Cache set of module_types *)
+	      known_module_types_names <-
+		List.fold_left
+		(fun acc t -> Odoc_html.StringSet.add t.mt_name acc)
+		known_module_types_names
+		list_module_types ;
+	      (*Proceed to generation*)
+	      renamings <- renamed_modules;
+	      verbose "Beautification of modules complete, proceeding to generation";
+	      flush_all ();
+	      super#generate rewritten_modules;
+	      (*Generate indices*)
+	      self#generate_external_index "types"       Naming.mark_type  known_types_names;
+	      self#generate_external_index "values"      Naming.mark_value known_values_names;
+	      self#generate_external_index "modules"     "" known_modules_names;
+	      self#generate_external_index "classes"     "" known_classes_names;
+	      self#generate_external_index "exceptions"  Naming.mark_exception   known_exceptions_names;
+	      self#generate_external_index "methods"     Naming.mark_method      known_methods_names;
+	      self#generate_external_index "attributes"  Naming.mark_attribute   known_attributes_names;
+	      self#generate_external_index "class_types" "" known_class_types_names;
+	      self#generate_external_index "module_types""" known_module_types_names
+
+      with e -> Printf.eprintf "%s\n%!" (Printexc.to_string e);
+	  assert false
+
 (*    method html_of_custom_tag_developer text = 
       verbose ("Generating developer name "^(string_of_text text));
       "<div><span style ='developer'>developer:</span> "^(string_of_text text)^"</span></div>"*)
@@ -873,7 +913,9 @@ class batlib_generator =
 	 "ul.index_entry {list-style-type:none;padding:0px; margin-left:none; text-ident:-1em}";
 	 "li.index_entry_entry div.info {margin-left:1em}";
 	 "pre {background-color:rgb(250,250,250);margin-top:2em}";
-	 "pre.example {margin-top:2px; margin-bottom:2em}"
+	 "pre.example {margin-top:2px; margin-bottom:2em}";
+	 "p {text-align:justify}";
+	 ".superscript { font-size : 8pt }"
 	];
 
   end;;

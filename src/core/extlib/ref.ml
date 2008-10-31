@@ -24,12 +24,12 @@ TYPE_CONV_PATH "Batteries.Data.Mutable.Ref" (*For Sexplib, Bin-prot...*)
 
 type 'a t = 'a ref with sexp
 
-let pre r f =
+let post r f =
   let old = !r in
     r := f old;
     old
 
-let post r f =
+let pre r f =
   r := f !r;
   !r
 
@@ -39,9 +39,24 @@ let swap a b =
     b := buf
 
 let pre_incr  r = pre  r ( ( + ) 1 )
-let pre_decr  r = pre  r ( ( - ) 1 )
+let pre_decr  r = pre  r ( ( + ) (-1) )
 let post_incr r = post r ( ( + ) 1 )
-let post_decr r = post r ( ( - ) 1 )
+let post_decr r = post r ( ( + ) (-1) )
+
+let copy r = ref (!r)
+
+
+let protect r v body =
+  let old = !r in
+  try
+    r := v;
+    let res = body() in
+    r := old;
+    res
+  with x ->
+    r := old;
+    raise x
+
 
 external ref : 'a -> 'a ref = "%makemutable"
 (** Return a fresh reference containing the given value. *)
@@ -53,3 +68,11 @@ external ( ! ) : 'a ref -> 'a = "%field0"
 external ( := ) : 'a ref -> 'a -> unit = "%setfield0"
 (** [r := a] stores the value of [a] in reference [r].
    Equivalent to [fun r v -> r.contents <- v]. *)
+
+external set : 'a ref -> 'a -> unit = "%setfield0"
+    (** As [ := ] *)
+
+external get : 'a ref -> 'a = "%field0"
+    (** As [ ! ]*)
+
+let print print_a out x = print_a out !x

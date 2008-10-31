@@ -71,22 +71,36 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   include Syntax
 
   let test_where_let = Gram.Entry.of_parser "test_where_let"
+    (* we don't ask for the 2-deep npeek directly because, in the
+       toplevel, it would hang and wait for two more tokens (wich is
+       problematic if the first token was ";;" and the user is waiting
+       for feedback). We only ask for the second token if the first is
+       a "where" *)
     (fun strm ->
-       match Stream.npeek 2 strm with
-         [ (KEYWORD "where", _); (KEYWORD ("let" | "rec"), _) ] -> ()
-       | [ (KEYWORD "where", _); (KEYWORD _, _) ] -> raise Stream.Failure
-       | [ (KEYWORD "where", _); _ ] -> ()
+       match Stream.peek strm with
+       | Some (KEYWORD "where", _) ->
+           (match Stream.npeek 2 strm with
+            | [ (KEYWORD "where", _); (KEYWORD ("let" | "rec"), _) ] -> ()
+            | [ (KEYWORD "where", _); (KEYWORD _, _) ] -> raise Stream.Failure
+            | [ (KEYWORD "where", _); _ ] -> ()
+            | _ -> raise Stream.Failure)
        | _ -> raise Stream.Failure)
        
+
   EXTEND Gram
     GLOBAL: expr str_item;
 
     str_item: BEFORE "top"
       [ NONA
-          [ e = str_item; "where"; "val"; rf = opt_rec; lb = where_binding ->
+          [ e = str_item; "where"; "val";
+            rf = opt_rec; lb = top_where_binding ->
               <:str_item< value $rec:rf$ $lb$ ; $e$ >>
           ] ];
 
+    (* the test_where_let is necessary because of the dangling
+       str_item/expr case :
+
+       let a = b where val b = 2 *)
     expr: BEFORE "top"
       [ NONA
           [ e = expr; test_where_let; "where"; OPT "let";
@@ -94,10 +108,27 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
               <:expr< let $rec:rf$ $lb$ in $e$ >>
           ] ];
 
+    top_where_binding:
+      [ LEFTA
+          [ b1 = SELF; "and"; b2 = SELF -> <:binding< $b1$ and $b2$ >>
+            | p = ipatt; e = fun_binding -> <:binding< $p$ = $e$ >> ] ];
+
     where_binding:
       [ LEFTA
           [ b1 = SELF; "and"; b2 = SELF -> <:binding< $b1$ and $b2$ >>
             | p = ipatt; e = fun_binding' -> <:binding< $p$ = $e$ >> ] ];
+
+    (* fun_binding' is needed for associativity issues :
+       (a where b where c) parses as ((a where b) where c)
+       with fun_binding' and (a where (b where c)) with fun_binding.
+       
+       The first form was choosen as standard.
+       Rationale : it more natural to have an aligned indentation,
+       wich suggest the first choice :
+
+       a where b
+       where c
+    *)     
     fun_binding':
       [ RIGHTA
           [ p = labeled_ipatt; e = SELF ->
@@ -105,6 +136,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
               | "="; e = expr LEVEL "top" -> <:expr< $e$ >>
               | ":"; t = ctyp; "="; e = expr LEVEL "top" -> <:expr< ($e$ : $t$) >>
               | ":>"; t = ctyp; "="; e = expr LEVEL "top" -> <:expr< ($e$ :> $t$) >> ] ];
+
     END
 end
 

@@ -290,3 +290,6 @@ let of_enum enm =
 			let f d n = append n d in
 			ignore(Enum.fold f first enm);
 			first
+
+let print ?(first="[") ?(last="]") ?(sep="; ") print_a out t =
+  Enum.print ~first ~last ~sep print_a out (enum t)
