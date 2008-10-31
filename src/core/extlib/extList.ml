@@ -618,6 +618,12 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
       iter (InnerIO.Printf.fprintf out "%s%a" sep print_a) t;
       InnerIO.nwrite out last
 
+let reduce f = function [] -> invalid_arg "List.reduce: empty list" 
+  | h::t -> fold_left f h t
+
+let min l = reduce Pervasives.min l
+let max l = reduce Pervasives.max l
+
 module ExceptionLess = struct
   let rfind p l =
     try  Some (rfind p l)
