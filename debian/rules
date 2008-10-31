@@ -15,7 +15,6 @@ DEB_MAKE_BUILD_TARGET += opt
 endif
 DEB_MAKE_BUILD_TARGET += OBFLAGS=-classic-display
 DEB_MAKE_INSTALL_TARGET = install DESTDIR=$(DEST_DIR)
-export DH_ALWAYS_EXCLUDE = .svn
 
 build/$(DOC_PKG_NAME)::
 	OCAMLRUNPARAM=l=16M make doc OBFLAGS=-classic-display
@@ -24,7 +23,8 @@ build/$(DOC_PKG_NAME)::
 	mv debian/$(DEV_PKG_NAME).doc-base.ocamldoc-apiref \
 		debian/$(DOC_PKG_NAME).doc-base.ocamldoc-apiref
 
-TG_BRANCHES = features/flexi-build
+# TG_BRANCHES = features/flexi-build
+TG_BRANCHES = 
 SAVED_BRANCH := $(shell git branch 2> /dev/null | grep '^*' | cut -f 2 -d' ')
 tg-export:
 	tg create stage-debian $(TG_BRANCHES)

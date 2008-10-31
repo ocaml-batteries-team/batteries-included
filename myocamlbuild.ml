@@ -1,3 +1,7 @@
+(*
+  This file is Public Domain
+*)
+
 open Ocamlbuild_plugin
 open Command (* no longer needed for OCaml >= 3.10.2 *)
 open Ocamlbuild_pack
@@ -77,6 +81,8 @@ end
 *)
 module Documentation =
 struct
+
+
   let before_options () =
     (*Options.ocamldoc  := A"ocamldoc"*) ()
 
@@ -94,6 +100,9 @@ end
 (** Create a .mli for each .mlpack which doesn't already have one. *)
 module Packs =
 struct
+
+  let _PRODUCE_MLI_FROM_PACK = true  (*current workaround for .mlpack + ocamldoc issues*)
+  let _PRODUCE_PACKED_ML     = false (*not ready for prime-time*)
 
   (** Imported from {!List} to avoid unsolvable dependencies*)
   module List =
@@ -172,8 +181,8 @@ struct
       )
   end
     
-  let read_dependency dep_name =
-    let module_name = String.capitalize (Filename.basename (Filename.chop_suffix dep_name ".mli.depends")) in
+  let read_dependency dep_name extension =
+    let module_name = String.capitalize (Filename.basename (Filename.chop_suffix dep_name extension)) in
     let f = open_in dep_name in
     let (file_name, dependencies) = String.split (input_line f) ":" in
     let result = (file_name, module_name, List.filter (fun x -> not (String.length x = 0)) (String.nsplit dependencies " ")) in
@@ -224,7 +233,7 @@ struct
       [N] appears before [M]. 
 
       As usual, cyclic dependencies are bad.*)
-  let sort files = 
+  let sort files extension = 
     let dep     = Dependency.create () (*Direct  dependencies*)
     and rev     = Dependency.create () (*Reverse dependencies*)
     and modules = ref StringSet.empty      (*All modules involved, including external ones*)
@@ -232,8 +241,8 @@ struct
       (*Read all the dependencies and store them in the tables*)
       List.iter (
 	fun f -> 
-	  if Filename.check_suffix f ".mli.depends" then
-	    let (file_name, module_name, dependencies) = read_dependency f in
+	  if Filename.check_suffix f ".depends" then
+	    let (file_name, module_name, dependencies) = read_dependency f extension in
 	      List.iter (fun x ->
 			   modules := StringSet.add x !modules;
 			   Dependency.add dep module_name x; 
@@ -273,7 +282,104 @@ struct
 			   try Some (module_name, Hashtbl.find src module_name)
 			   with Not_found ->  None) sorted;;
 
-  let generate_mli buf l =
+  (**
+     Generate a .mli from a list of modules.
+     To do so, read the contents of each module signature
+     and produce a .mli along the lines of
+     [
+     (**First comments of module Foo*)
+     module Foo :
+     sig
+        (*contents of foo.mli minus the first comments*)
+     end
+     ]*)
+  let generate_mli buf l = 
+    (*Extract the first comments, up-to the first ocamldoc not followed by a newline.*)
+    let parse_header channel = 
+      let past    = Buffer.create 1024        in
+      let store c = Buffer.add_char past c    in
+      let newline = ref false                 in
+      let return stream =	
+	let rest = Buffer.create 1024         in
+	  Stream.iter (fun x -> Buffer.add_char rest x) stream;
+	  if !newline then (*There are two newlines after the comment, it's the module comment*)
+	    (Buffer.contents past, Buffer.contents rest)
+	  else             (*This comment is actually for the first element of the module*)
+	    begin
+	      Buffer.add_buffer past rest;
+	      ("", Buffer.contents past)
+	    end
+      in
+      let rec next_token (strm__ : _ Stream.t) = match Stream.peek strm__ with
+	  | Some ('(' as c) -> Stream.junk strm__; store c; maybe_comment strm__
+	  | Some (' ' | '\009' | '\026' | '\012' as c) ->
+              Stream.junk strm__; store c; next_token strm__
+	  | Some ('\n'| '\r' as c) ->
+              Stream.junk strm__; store c; next_token strm__
+	  | _ -> return strm__
+      and maybe_comment (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	  | Some ('*' as c) -> Stream.junk strm__; store c; 
+	      let s = strm__ in maybe_ocamldoc s
+	  | _             -> next_token strm__
+      and maybe_ocamldoc (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	  | Some ('*' as c) -> Stream.junk strm__; store c; 
+	      let s = strm__ in probably_ocamldoc s
+	  | _             -> comment strm__; next_token strm__
+      and comment (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	    Some ('(' as c) -> Stream.junk strm__; store c; maybe_nested_comment strm__
+	  | Some ('*' as c) -> Stream.junk strm__; store c; maybe_end_comment strm__
+	  | Some c -> Stream.junk strm__; store c; comment strm__
+	  | _ -> raise Stream.Failure
+      and maybe_nested_comment (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	    Some ('*' as c) -> Stream.junk strm__; store c; let s = strm__ in ignore (comment s); comment s
+	  | Some c -> Stream.junk strm__; store c; comment strm__
+	  | _ -> raise Stream.Failure
+      and maybe_end_comment (strm__ : _ Stream.t) =
+	match Stream.peek strm__ with
+	    Some (')' as c) -> Stream.junk strm__; store c; ()
+	  | Some ('*' as c) -> Stream.junk strm__; store c; maybe_end_comment strm__
+	  | Some c   -> Stream.junk strm__; store c; comment strm__
+	  | _ -> raise Stream.Failure
+      and probably_ocamldoc (strm__ : _ Stream.t) = 
+	match Stream.peek strm__ with
+	  | Some '*' -> comment strm__; next_token strm__ (*Actually three ***, so it's a regular comment*)
+	  | _        -> ocamldoc strm__
+      and ocamldoc (strm__ : _ Stream.t) = 
+	comment strm__;
+	after_ocamldoc 0 strm__
+      and after_ocamldoc n (strm__ : _ Stream.t) = 
+	match Stream.peek strm__ with
+	  | Some ('\r' | '\n') when n >= 1 ->
+	      newline := true;
+	      return strm__
+	  | Some ('\r' | '\n') ->  
+	      Stream.junk strm__;
+	      after_ocamldoc (n + 1) strm__
+	  | Some ('\009' | '\026' | '\012') ->
+              Stream.junk strm__;
+	      after_ocamldoc n strm__
+	  | _ -> return strm__
+      in
+	next_token (Stream.of_channel channel)
+
+    (*let scan chan = *)
+
+    (*TODO: Scan the start of the file until the first [(**]
+            Initialize counter at 1
+            Then scan what comes next until either
+                  1. [(*]   -> increment counter
+                  2. [*)]   -> decrement counter
+            If counter reaches 0, stop and return [(hd, tl)]
+            where [hd] is everything up to this point
+            and   [tl] is the rest of the file, either as a [channel_in]
+            or as a [string] or [string_list]
+    *)*)
+    (*let scan file*)
+(*    in
     let feed file buf () =
       with_input_file file (
 	fun cin ->
@@ -286,7 +392,6 @@ struct
     let print_modules buf () =
       List.iter (
 	fun (name, src) -> 
-	  (*Printf.eprintf "Writing the contents of %s\n" name;*)
 	  let name = try 
 	    let index = String.find name ".inferred" in
 	      String.sub name 0 index
@@ -296,97 +401,23 @@ struct
 	  with String.Invalid_string -> Printf.bprintf buf "module %s:(*from %S*)\nsig\n%a\nend\n" name src (feed src) ()*)
       ) l in
       (*  Printf.fprintf out "module %s:\nsig\n%a\nend\n" pack print_modules ()*)
-      print_modules buf ()
-	
-
-  (** Tiny parser *)
-(*  type token =   Code    of string
-	       | Comment of string*)
-
-  (*let token_buf = Buffer.create 16
-
-  let as_code ()  = Code (Buffer.contents token_buf)
-  let as_comment()= Comment (Buffer.contents token_buf)
-
-  let return v    = (*Stream.ising v*)[v]
-  let cons   v f  = (*Stream.icons v (Stream.slazy f)*) v::(f ())
-  let add_char c  =
-    Stream.junk;
-    Buffer.add_char token_buf c
-
-  let rec next_token stream =
-    try match Stream.next stream with
-      |	Some '(' -> maybe_comment stream
-      | Some c   -> Buffer.add_char token_buf c; 
-	  next_token stream
-      | None     -> return (as_code ())
-  and maybe_comment stream =
-    match Stream.next stream with
-      | Some '*' -> cons   (as_code ()) (fun () -> comment stream)
-      | Some c   ->
-	  Buffer.add_char token_buf '('; 
-	  Buffer.add_char token_buf c; 
-	  next_token stream
-      | None     -> return (as_code ())
-  and comment stream =
-    match Stream.next stream with
-      | Some '(' -> 
-	  Buffer.add_char token_buf '(';
-	  maybe_nested_comment 1 stream
-      | Some '*' -> maybe_end_of_comment stream
-      | Some c   ->
-	  Buffer.add_char token_buf c;
-	  comment stream
-      | None     -> return (as_comment ())
-  and maybe_nested_comment n stream =
-    match Stream.next stream with
-      | Some '*' -> 
-	  Buffer.add_char token_buf '*';
-	  nested_comment n stream
-      | Some c   ->
-	  Buffer.add_char token_buf c  ;
-	  comment stream
-      | None     -> return (as_comment ())
-  and maybe_end_of_comment stream =
-    match Stream.next stream with
-      | Some ')' -> 
-	  cons (as_comment ()) (fun () -> next_token stream)
-      | Some c   ->
-	  Buffer.add_char token_buf '*';
-	  Buffer.add_char token_buf c;
-	  comment stream
-      | None     ->
-	  Buffer.add_char token_buf '*';
-	  return (as_comment ())
-  and nested_comment n stream =
-    match Stream.next stream with
-      | Some '(' -> 
-	  Buffer.add_char token_buf '(';
-	  maybe_nested_comment (n + 1) stream
-      | Some '*' -> 
-	  maybe_end_of_nested_comment n stream
-      | Some c   ->
-	  Buffer.add_char token_buf c;
-	  nested_comment n stream
-      | None     -> return (as_comment ())
-  and maybe_end_of_nested_comment n stream =
-    match Stream.next stream with
-      | Some ')' -> if n >= 2 then begin
-	  Buffer.add_char token_buf ')';
-	  nested_comment (n - 1) stream
-	end else begin
-	  Buffer.add_char token_buf ')';
-	  comment stream
-	end
-      | Some c   ->
-	  Buffer.add_char token_buf '*';
-	  Buffer.add_char token_buf c;
-	  nested_comment n stream
-      | None     ->
-	  Buffer.add_char token_buf '*';
-	  return (as_comment ())*)
+      print_modules buf ()*)
+    in
+  let print_modules buf () =
+    List.iter (
+      fun (name, src) ->
+	let name = try
+	  let index = String.find name ".inferred" in
+	    String.sub name 0 index
+	with String.Invalid_string -> name in
+	let (prefix, contents) = with_input_file src parse_header in
+	  Printf.bprintf buf "%s\nmodule %s:(*from %S*)\nsig\n%s\nend\n" prefix name src contents
+    ) l
+  in print_modules buf ()
 
 
+
+  let read_pack pack = string_list_of_file pack
 
 
   (**{6 OCamlbuild options}*)
@@ -409,14 +440,69 @@ struct
 	in Echo(modules, dest)
 
       end;*)
-    rule "ocaml: mllib & cmx* & o* -> cmxa & a -- with pack"
-      ~tags:["ocaml"; "native"; "library"]
-      ~prods:["%.cmxa"; Pathname.add_extension "%"  !Options.ext_lib]
-      ~dep:"%.mllib"
+
+    if _PRODUCE_PACKED_ML then
+      begin
+
+	(*Convert a .mlpack to .packedml
+	  If foo.mlpack consists in list [A], [B], [C], [D]... then
+	  foo.packedml consists in
+	  [module Foo = struct
+	     module A = A
+	     module B = B
+	     module C = C
+             module D = D
+             ...
+	  end]
+
+	  Note that we need to define [module Foo] inside [foo.packedml] as
+	  OCamlDoc doesn't automatically assume that [foo.packedml] contains
+	  a module [Foo].
+	*)
+    rule ".mlpack to .packedml"
+      ~prod:"%.packedml"
+      ~deps:["%.mlpack"; "%.cmo"]
       begin fun env build ->
-	assert false
+	let pack = env "%.mlpack"
+	and dest = env "%.packedml"
+(*	and name = String.capitalize (Filename.basename (env "%"))*) in
+	let modules = read_pack pack in
+(*	  Echo((Printf.sprintf "module %s = struct\n(**/**)\n" name)                        ::
+		 List.map (fun m -> Printf.sprintf "module %s = struct include %s end\n" m m) modules @
+		 ["(**/**)\nend"],
+	       dest)*)
+	  Echo( List.map (fun m -> Printf.sprintf "module %s = struct include %s end\n" m m) modules,
+		  dest)
+      end;
+    
+    rule ".packed.ml to .odoc"
+      ~dep:"%.packedml"
+      ~prod:"%.odoc"
+      begin fun env build ->
+	let pack         = env "%.mlpack"
+	and mlpacked     = env "%.packedml" 
+	and odoc         = env "%.odoc"      in
+	let modules      = read_pack pack    in
+	let include_dirs = Pathname.include_dirs_of (Pathname.dirname pack) in
+	  (*Ocaml_compiler.prepare_compile build mlpacked;*)
+	  let deps       = List.map Outcome.good (build (List.map(fun m -> 
+								    expand_module include_dirs m ["odoc"]) modules)) 
+	  and tags       = (tags_of_pathname mlpacked++"implem") 
+	  and arg        = mlpacked in
+	    Cmd (S [!Options.ocamldoc;
+		    S(List.map (fun a -> S[A"-load"; P a]) deps);
+		    ocaml_ppflags (tags++"pp:doc"); 
+		    Tools.flags_of_pathname arg;
+		    ocaml_include_flags arg; 
+		    A"-dump"; 
+		    Px odoc; 
+		    T(tags++"doc");
+		    A "-impl";
+		    P mlpacked])
+      end
       end;
 
+    if _PRODUCE_MLI_FROM_PACK then
     rule ".mlpack to .mli conversion rule"
       ~prod:"%.mli"
       ~dep:"%.mlpack"
@@ -464,23 +550,72 @@ struct
 	    function Good s  -> s
 	      |      Bad exn -> raise exn (*Stop here in case of problem and propagate the exception*)
 	  ) results in
-	(*let dest'  = (*Pathname.concat (Sys.getcwd ()) dest*) Resource.in_build_dir dest in*)
-(*	let dest' = "/tmp/"^dest in*)
-(*	  Shell.mkdir_p (Pathname.parent_directory dest');*)
-(*	let dest = Pathname.concat (Sys.getcwd ()) dest in*)
-(*	let dest = Resource.in_build_dir dest in*)
-(*	let dest = Pathname.pwd / !Options.build_dir / dest in
-	  Shell.mkdir_p (Filename.dirname dest);*)
-(*	  Printf.eprintf "Writing file %S\n" dest;*)
 	let buf = Buffer.create 2048 in
-	  generate_mli buf (sort mli_depends);
-(*	  flush output;*)
-(*	  Printf.eprintf "Written %d bytes\n" (pos_out output);*)
-(*	  if not (My_std.sys_file_exists dest) then assert false;*)
-	  (*if not (My_std.sys_file_exists dest) then assert false;*)
-	  (*Resource.Cache.import_in_build_dir dest';*)
+	  generate_mli buf (sort mli_depends ".mli.depends");
 	  Echo([Buffer.contents buf], dest)
-        end;
+      end
+
+(* Simple utility to sort a list of modules by dependencies. *)
+
+    let generate_sorted buf l = 
+      Printf.eprintf "generating\n";
+      List.iter (
+	fun (name, src) -> 
+(*	  Printf.eprintf "Adding module %S\n" name;*)
+	  Printf.bprintf buf "%s\n" name ) l;;
+
+      rule ".mlpack to .sorted conversion rule"
+	    ~prod:"%.sorted"
+	    ~dep:"%.mlpack"
+      begin fun env build ->
+        (*c The action is a function that receive two arguments:
+          [env] is a conversion function that substitutes `\%' occurrences
+          according to the targets to which the rule applies.
+          [_build] can be called to build new things (dynamic dependencies). *)
+	
+	let pack         = env "%.mlpack" 
+	and dest         = env "%.sorted" in
+	let include_dirs = Pathname.include_dirs_of (Pathname.dirname pack) in
+	  
+	(*Read the list of module dependencies from [pack]*)
+	let modules      = 
+	  with_input_file pack (
+	    fun input ->
+	      let modules = ref [] in
+		try
+		  while true do
+		    let m = input_line input in
+		      (*Printf.eprintf "Reading %S\n" m;*)
+		      modules := m::!modules
+		  done; assert false
+		with End_of_file -> !modules			      
+	  ) in
+
+	(*For each module name, first generate the .ml file if it doesn't exist yet.*)
+	  List.iter ignore_good (build (List.map(fun m -> 
+						   Printf.eprintf "Expanding ml module\n";
+expand_module include_dirs m ["ml"]) modules));
+
+	(*Deduce file names from these module names and wait for these dependencies to be solved.
+	  
+	  [build] has a mysterious behaviour which looks like cooperative threading without
+	  threads and without call/cc.*)
+	let results = build (List.map(fun m -> 
+					Printf.eprintf "Expanding depends module\n";
+					expand_module include_dirs m ["ml.depends"]) 
+			       modules) in
+	  
+	(*Now that we have generated the ml files and, more importantly, the corresponding
+	  ml.depends, sort the dependencies. *)
+	let ml_depends =  
+	  List.map ( 
+	    function Good s  -> s
+	      |      Bad exn -> raise exn (*Stop here in case of problem and propagate the exception*)
+	  ) results in
+	let buf = Buffer.create 2048 in
+	  generate_sorted buf (sort ml_depends ".ml.depends");
+	  Echo([Buffer.contents buf], dest)
+      end
 
 end
 

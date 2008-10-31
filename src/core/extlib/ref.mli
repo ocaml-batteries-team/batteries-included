@@ -20,8 +20,12 @@
 
 (** Operations on references. 
 
-    References are imperative-style mutable values, i.e. "variables"
-    which may change value during their life-time.
+    References are mutable values, i.e. "variables" which may actually
+    change value during their life-time, as variables in imperative
+    languages. References can be understood as 1-cell arrays and
+    are typically used to implement imperative algorithms in OCaml.
+
+    References are useful but don't abuse them.
 
     @author Xavier Leroy (base module)
     @author David Teller
@@ -41,45 +45,65 @@ external ( := ) : 'a ref -> 'a -> unit = "%setfield0"
     (** [r := a] stores the value of [a] in reference [r].
 	Equivalent to [fun r v -> r.contents <- v]. *)
 
+external set : 'a ref -> 'a -> unit = "%setfield0"
+    (** As [ := ] *)
+
+external get : 'a ref -> 'a = "%field0"
+    (** As [ ! ]*)
+    
+val copy: 'a ref -> 'a ref
+  (** [copy r] returns a new reference with the same initial
+      content as [r].*)
 
 val pre : 'a ref -> ( 'a -> 'a ) -> 'a
-  (** Perform an operation on a reference and return the
-      previous value of that reference. 
-
-      For instance, if [x] is a reference to [1],
-      [pre x ( ( + ) 1) ] returns [1] and sets [x] to [2].*)
-
-val post: 'a ref -> ('a -> 'a) -> 'a
   (** Perform an operation on a reference and return the
       new value of that reference. 
 
       For instance, if [x] is a reference to [1],
-      [pre x ( ( + ) 1)] returns [2] and sets [x] to [2].*)
+      [pre x ( ( + ) 1) ] returns [2] and sets [x] to [2].*)
+
+val post: 'a ref -> ('a -> 'a) -> 'a
+  (** Perform an operation on a reference and return the
+      previous value of that reference. 
+
+      For instance, if [x] is a reference to [1],
+      [post x ( ( + ) 1)] returns [1] and sets [x] to [2].*)
 
 
 val swap: 'a ref -> 'a ref -> unit
   (**[swap a b] puts [!b] in [a] and [!a] in [b]*)
 
-val pre_incr : int ref -> int
+val post_incr : int ref -> int
   (**Increment an integer, return the old value.
 
      Comparable to C or Java's [i++].*)
 
-val pre_decr : int ref -> int
+val post_decr : int ref -> int
   (**Decrement an integer, return the old value.
 
 
      Comparable to C or Java 's [i--].*)
 
-val post_incr: int ref -> int
+val pre_incr: int ref -> int
   (**Increment an integer, return the new value.
 
      Comparable to C or Java's [++i]. *)
 
-val post_decr: int ref -> int
+val pre_decr: int ref -> int
   (**Increment an integer, return the new value.
 
      Comparable to C or Java's [--i]. *)
+
+val protect : 'a ref -> 'a -> (unit -> 'b) -> 'b
+  (**Assign a reference temporarily.
+
+     [protect r v body] sets the value of [r] to [v] and executes
+     [body]. Once body has been executed, whether termination happens
+     as a consequence of regular evaluation or exception, the previous
+     value of [r] is restored. *)
+
+
+
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
@@ -87,3 +111,7 @@ val post_decr: int ref -> int
 val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
 val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
+
+(** {7 Printing}*)
+
+val print: (InnerIO.input -> 'a -> unit) -> InnerIO.input -> 'a t -> unit

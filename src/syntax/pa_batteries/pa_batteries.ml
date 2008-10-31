@@ -32,38 +32,105 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   open Sig
   open Ast
 
-(*    try
-      DELETE_RULE Gram implem: "#"; a_LIDENT; opt_expr; semi END
-    with Not_found -> Printf.eprintf "1\n"; assert false
+    let initialized = ref false (**Used to determine whether toplevel has already been initialized.
+				   [true] once we have opened [Batteries] and [Standard]*)
 
-    try
-      DELETE_RULE Gram implem: str_item; semi; SELF END
-    with Not_found -> Printf.eprintf "2\n"; assert false
-    try
-      DELETE_RULE Gram implem: `EOI END
-    with Not_found -> Printf.eprintf "3\n"; assert false*)
+
+    (*We replace the definitions of [implem], [interf] and [top_phrase].*)
 
     DELETE_RULE Gram implem: "#"; a_LIDENT; opt_expr; semi END
     DELETE_RULE Gram implem: str_item; semi; SELF END
     DELETE_RULE Gram implem: `EOI END
 
+    DELETE_RULE Gram interf: "#"; a_LIDENT; opt_expr; semi END
+    DELETE_RULE Gram interf: sig_item; semi; SELF END
+    DELETE_RULE Gram interf: `EOI END
+
+(*
+    try  (*First attempt: assuming revised syntax*)
+      begin
+      DELETE_RULE Gram top_phrase: phrase END;
+      DELETE_RULE Gram top_phrase: `EOI END;
+      EXTEND Gram
+      GLOBAL:top_phrase;
+      top_phrase_next:
+	[ [ ph = phrase -> Some ph;
+	  | `EOI        -> None ] ]
+      ;
+      top_phrase:
+	[ [
+	    next = top_phrase_next -> if not !initialized then 
+	      match next with
+		| None    -> None
+		| Some ph -> initialized := true;
+		    Some <:str_item<open Batteries;;open Standard;;$ph$>>
+	    else next
+	  ] ];
+      END
+      end
+    with Not_found -> ()
+
+
+
+    try  (*First attempt: assuming original syntax*)
+      begin
+      DELETE_RULE Gram top_phrase: "#"; a_LIDENT; opt_expr; ";;" END;
+      DELETE_RULE Gram top_phrase: LIST1 str_item; ";;"END;
+      DELETE_RULE Gram top_phrase: `EOI END;
+      EXTEND Gram
+      GLOBAL:top_phrase;
+      top_phrase_next:
+      [ [ "#"; n = a_LIDENT; dp = opt_expr; ";;" ->
+            Some <:str_item< # $n$ $dp$ >>
+        | l = LIST1 str_item; ";;" -> Some (Ast.stSem_of_list l)
+        | `EOI -> None
+      ] ];
+      top_phrase:
+	[ [
+	    next = top_phrase_next -> if not !initialized then 
+	      match next with
+		| None    -> None
+		| Some ph -> initialized := true;
+		    Some <:str_item<open Batteries;;open Standard;;$ph$>>
+	    else next
+	  ] ];
+      END
+      end
+    with
+	Not_found ->  ()
+*)
 
   let stopped_at _loc =
     Some (Loc.move_line 1 _loc)
-
+      
   EXTEND Gram
-    GLOBAL:implem;
+    GLOBAL:implem interf;
     implem_next:
       [ [ "#"; n = a_LIDENT; dp = opt_expr; semi ->
             ( [ <:str_item< # $n$ $dp$ >> ] , stopped_at _loc)
         | si = str_item; semi; (sil, stopped) = SELF -> (si :: sil, stopped)
         | `EOI -> ([], None)
       ] ];
+    interf_next:
+      [ [ "#"; n = a_LIDENT; dp = opt_expr; semi ->
+            ([ <:sig_item< # $n$ $dp$ >> ], stopped_at _loc)
+        | si = sig_item; semi; (sil, stopped) = SELF -> (si :: sil, stopped)
+        | `EOI -> ([], None) ] ]
+    ;
     implem:
     [ [
-	(l,o) = implem_next -> (<:str_item<open Batteries>>::l,o)
+	(l,o) = implem_next -> (<:str_item<open Batteries;;open Standard>>::l,o)
       ] ];
+
+    interf:
+    [ [
+	(l,o) = interf_next -> (<:sig_item<open Batteries;;open Standard>>::l,o)
+      ] ];
+
+
   END
 end
 
 module M = Register.OCamlSyntaxExtension(Id)(Make)
+
+

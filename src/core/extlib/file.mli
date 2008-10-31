@@ -18,13 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open IO
-
 (**
-   File manipulation
-
+   File manipulation.
+   
    @author David Teller
 *)
+
+
+open InnerIO
 
 (** {6 Utilities} *)
 val lines_of : string -> string Enum.t
@@ -106,7 +107,7 @@ val with_file_in : ?mode:(open_in_flag list) -> ?perm:permission -> string -> (i
 type open_out_flag =
   [ `append   (**Start writing at the end of the file rather than the start *)
   | `create   (**Create the file if it does not exist                       *)
-  | `trunc    (**Empty the file if it already already exists                *)
+  | `trunc    (**Empty the file if it already exists                        *)
   | `excl     (**Fail if the file exists and [`create] is set               *)
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
 		 operating system does not perform conversions, the file is

@@ -80,6 +80,8 @@ end
 module Num = struct
   include Number.MakeNumeric(BaseNum)
   include BaseNum
-  let sexp_of_t = sexp_of_num
-  let t_of_sexp = num_of_sexp
+  let sexp_of_t   = sexp_of_num
+  let t_of_sexp   = num_of_sexp
+  let print out t = InnerIO.nwrite out (to_string t)
+
 end

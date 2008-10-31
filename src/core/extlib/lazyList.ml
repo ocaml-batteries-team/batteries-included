@@ -572,6 +572,11 @@ let uncombine l =
 	      | None -> None
 	      | Cons (h1, h2), t*)
 
+
+let print ?(first="[^") ?(last="^]") ?(sep="; ") print_a out t = 
+  Enum.print ~first ~last ~sep print_a out (enum t)
+
+
 module Exceptionless = struct
   (** Exceptionless counterparts for error-raising operations*)
 

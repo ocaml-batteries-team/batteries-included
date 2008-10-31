@@ -200,17 +200,21 @@ let ( |- ) f g x = g (f x)
 
 let ( -| ) f g x = f (g x)
 
-let ( /// ) f g = fun (x,y) -> (f x, g y)
+let flip f x y = f y x
 
-let pi_fst f x = fst (f x)
+let ( *** ) f g = fun (x,y) -> (f x, g y)
 
-let pi_snd f x = snd (f x)
+let ( &&& ) f g = fun x -> (f x, g x)
+
+let first f x = fst (f x)
+
+let second f x = snd (f x)
 
 let curry f x y = f (x,y)
 
 let uncurry f (x,y) = f x y
 
-let discard x _ = x
+let const x _ = x
 
 let args () =
   let e = ExtArray.Array.enum Sys.argv in

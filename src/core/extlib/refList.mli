@@ -1,6 +1,7 @@
 (*
  * RefList - List reference
  * Copyright (C) 2003 Nicolas Cannasse
+ *               2008 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,14 +21,18 @@
 
 (** Reference on lists.
 
-  RefList is a extended set of functions that manipulate list
-  references.
+    RefList is a extended set of functions that manipulate list
+    references. 
+    
+
+    @author Nicolas Cannasse
+    @author David Teller (Boilerplate code)
 *)
 
 exception Empty_list
 exception Invalid_index of int
 
-type 'a t
+type 'a t (**The type of an empty ref list*)
 
 val empty : unit -> 'a t
 (** Returns a new empty ref list *)
@@ -101,6 +106,14 @@ val rev : 'a t -> unit
 (** Reverses the ref list - O(n) *)
 
 (** {6 Functional Operations} *)
+
+val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+  (** [List.fold_left f a [b1; ...; bn]] is
+      [f (... (f (f a b1) b2) ...) bn]. *)
+  
+val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  (** [List.fold_right f [a1; ...; an] b] is
+      [f a1 (f a2 (... (f an b) ...))].  Tail-recursive. *)
 
 val iter : ('a -> unit) -> 'a t -> unit
 (** Apply the given function to all elements of the

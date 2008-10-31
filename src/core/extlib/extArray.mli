@@ -255,10 +255,17 @@ sig
   (** {6 Conversions} *)
 
   val enum : 'a array -> 'a Enum.t
-    (** Returns an enumeration of the elements of an array. *)
+    (** Returns an enumeration of the elements of an array. 
+	Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
   val of_enum : 'a Enum.t -> 'a array
     (** Build an array from an enumeration. *)
+
+  val backwards : 'a array -> 'a Enum.t
+    (** Returns an enumeration of the elements of an array, from last to first. *)
+
+  val of_backwards : 'a Enum.t -> 'a array
+    (** Build an array from an enumeration, going into reverse order. *)
 
   val to_list : 'a array -> 'a list
     (** [Array.to_list a] returns the list of all the elements of [a]. *)
@@ -563,10 +570,17 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
   (** {6 Conversions} *)
 
   val enum : ('a, [> `Read]) t -> 'a Enum.t
-    (** Returns an enumeration of the elements of an array. *)
+    (** Returns an enumeration of the elements of an array. 
+	Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
   val of_enum : 'a Enum.t -> ('a, _) t
     (** Build an array from an enumeration. *)
+
+  val backwards : ('a, [> `Read]) t -> 'a Enum.t
+    (** Returns an enumeration of the elements of an array, from end to start. *)
+
+  val of_backwards : 'a Enum.t -> ('a, _) t
+    (** Build an array from an enumeration, from end to start. *)
 
   val to_list : ('a, [> `Read]) t -> 'a list
     (** [Array.to_list a] returns the list of all the elements of [a]. *)
@@ -622,6 +636,18 @@ val fast_sort : ('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
   *)
 
 
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+  
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> ('a, _) t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('a, [>`Read]) t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> ('b, [>`Read]) t -> unit
+
+
+
   (**/**)
   (** {6 Undocumented functions} *)
     
@@ -638,6 +664,6 @@ val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 (** {7 Printing}*)
 
-val print : 'a IO.output -> ('a IO.output -> 'b -> unit) -> ?first:string -> ?last:string -> ?sep:string -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> 'b t -> unit
 
 end

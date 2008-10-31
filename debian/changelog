@@ -1,8 +1,10 @@
-ocaml-batteries (0.20081011-2) UNRELEASED; urgency=low
+ocaml-batteries (0.20081131-1) UNRELEASED; urgency=low
 
+  * new snapshot, now following upstream Git (commit 3978b60)
+  * debian/patches:
+    - remote patch features/flexi-build (integrated upstream)
   * debian/control: correct spelling of "metapackage"
   * debian/control: fix sections: -dev in libdevel, -doc in doc
-  * debian/rules: avoid shipping .svn/ dirs within the doc
 
  -- Stefano Zacchiroli <zack@debian.org>  Mon, 13 Oct 2008 22:11:31 +0200
 

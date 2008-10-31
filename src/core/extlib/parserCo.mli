@@ -1,13 +1,64 @@
-(** Parser combinators*)
+(* 
+ * ParserCo - A simple monadic parser combinator library
+ * Copyright (C) 2008 David Teller
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
 
+(** A simple parser combinator library.
+
+    This module permits the simple definition of highly modular, dynamic
+    parsers with unlimited backtracking. It may be used to parse any
+    form of enumeration, including regular text, latin-1 text, bits, etc.
+
+    This library is vastly more powerful than {!Lexing}, {!Str}, {!Parsing}
+    or {!Scanf}. It is also considerably slower.
+
+    Module {!CharParser} contains pre-defined parsers to deal
+    specifically with latin-1 text. Module {!Genlex} contains a number
+    of pre-defined parsers to deal specifically with programming
+    languages.
+
+    {b Note} This library is still very rough and needs much testing.
+*)
+
+(**
+   {6 Base definitions}
+*)
+
+(**The current state of the parser.
+
+   The actual set of states is defined by the user. States are
+   typically used to convey informations, such as position in the file
+   (i.e. line number and character).
+
+*)
 type 'a state =
-  | Eof
-  | State of 'a
+  | Eof         (**The end of the source has been reached.*)
+  | State of 'a 
 
 type 'a report = Report of ('a state * string * 'a report) list
+(**The final result of parsing*)
 
 (**
    A source for parsing.
+
+   Unless you are parsing from exotic sources, you will probably not
+   need to use this module directly. Rather, use {!CharParser.source_of_string}
+   or {!CharParser.source_of_enum}.
 *)
 module Source :
 sig
@@ -16,14 +67,10 @@ sig
 	of type ['b] *)
 
   val get_state : ('a, 'b) t -> 'b state
-(*  val set_state : ('a, 'b) t -> 'b -> unit*)
   val set_full_state : ('a, 'b) t -> 'c -> ('a  -> 'c -> 'c) -> ('a, 'c) t
 
-(*  val of_lazy_list : 'a LazyList.t -> 'b -> ('a  -> 'b -> 'b) -> ('a, 'b) t*)
   val of_enum      : 'a Enum.t     -> 'b -> ('a  -> 'b -> 'b) -> ('a, 'b) t
-  val of_lexer     : Lexing.lexbuf -> (string, (Lexing.position * Lexing.position)) t
-    (**Create a source from a lexer, as implemented by OCamlLex.
-       User states contain the start position and the end position of the lexeme.*)
+
 end
 
 (** {6 Primitives} *)
@@ -186,3 +233,6 @@ val scan: ('a, _, 'c) t -> ('a, 'a list, 'c) t
 (** {7 Others}*)
 val sat: ('a -> bool) -> ('a, unit, _) t
   (**[satisfy p] accepts one value [p x] such that [p x = true]*)
+
+val debug_mode : bool ref
+  (**If set to [true], debugging information will be printed to the standard error.*)

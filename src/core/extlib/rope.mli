@@ -66,64 +66,91 @@ amortized bounds by explicitly rebalancing ropes to be reused using [balance].
 Special care must be taken to avoid calling [balance] too frequently; in the limit,
 calling [balance] after each modification would defeat the purpose of amortization.
  
+
+{8 Limitations}
+
+The length of ropes is limited to approximately 700 Mb on 32-bit 
+architectures, 220 Gb on 64 bit architectures.
+
 @author Mauricio Fernandez
 *)
+
  
+open ExtUChar
 open ExtUTF8
-open CamomileLibrary
  
 type t
   (** The type of the ropes. *)
  
 exception Out_of_bounds
   (** Raised when an operation violates the bounds of the rope. *)
- 
+  
 val max_length : int
   (** Maximum length of the rope. *)
- 
+  
 (** {6 Creation and conversions} *)
- 
+  
 val empty : t
   (** The empty rope. *)
- 
+  
 val of_latin1: string -> t
   (** Constructs a unicode rope from a latin-1 string. *)
 
 val of_ustring : UTF8.t -> t
   (** [of_string s] returns a rope corresponding to the string [s].
-Operates in [O(n)] time. *)
- 
+      Operates in [O(n)] time. *)
+  
 val to_ustring : t -> UTF8.t
   (** [to_string r] returns the string corresponding to the rope [r]. *)
- 
+  
+val of_uchar: UChar.t -> t
+  (** [of_uchar c] returns a rope containing exactly character [c].*)
+
+val of_char: char -> t
+  (** [of_char c] returns a rope containing exactly character [c].*)
+
 val make : int -> UChar.t -> t
   (** [make i c] returns a rope of length [i] consisting of [c] chars;
-it is similar to String.make *)
- 
+      it is similar to String.make *)
+
+val lowercase: t -> t
+  (** [lowercase s] returns a lowercase copy of rope [s].
+
+      Note that, for some languages, the number of characters in
+      [lowercase s] is not the same as the number of characters in
+      [s].*)
+
+val uppercase: t -> t
+  (** [uppercase s] returns a uppercase copy of rope [s].
+      
+      Note that, for some languages, the number of characters in
+      [uppercase s] is not the same as the number of characters in
+      [s].*)
+
 (** {6 Properties } *)
- 
+  
 val is_empty : t -> bool
   (** Returns whether the rope is empty or not. *)
- 
+  
 val length : t -> int
   (** Returns the length of the rope ([O(1)]). *)
- 
+  
 val height : t -> int
   (** Returns the height (depth) of the rope. *)
- 
+  
 val balance : t -> t
   (** [balance r] returns a balanced copy of the [r] rope. Note that ropes are
       automatically rebalanced when their height exceeds a given threshold, but
       [balance] allows to invoke that operation explicity. *)
- 
+  
 (** {6 Operations } *)
- 
+  
 val concat : t -> t -> t
   (** [concat r u] concatenates the [r] and [u] ropes. In general, it operates
       in [O(log(min n1 n2))] amortized time.
       Small ropes are treated specially and can be appended/prepended in
       amortized [O(1)] time. *)
- 
+  
 val append_char : UChar.t -> t -> t
   (** [append_char c r] returns a new rope with the [c] character at the end
       in amortized [O(1)] time. *)
@@ -169,11 +196,11 @@ val iter : (UChar.t -> unit) -> t -> unit
   (** [iter f r] applies [f] to all the characters in the [r] rope,
       in order. *)
   
-val iteri : (int -> UChar.t -> unit) -> t -> unit
+val iteri : ?base:int -> (int -> UChar.t -> unit) -> t -> unit
   (** Operates like iter, but also passes the index of the character
       to the given function. *)
   
-val rangeiter : (UChar.t -> unit) -> int -> int -> t -> unit
+val range_iter : (UChar.t -> unit) -> int -> int -> t -> unit
   (** [rangeiter f m n r] applies [f] to all the characters whose
       indices [k] satisfy [m] <= [k] < [m + n].
       It is thus equivalent to [iter f (sub m n r)], but does not
@@ -182,16 +209,64 @@ val rangeiter : (UChar.t -> unit) -> int -> int -> t -> unit
       from an explicit loop using [get].
       Raises Out_of_bounds in the same cases as [sub]. *)
   
+val range_iteri : 
+  (int -> UChar.t -> unit) -> ?base:int -> int -> int -> t -> unit
+  (** As [range_iter], but passes base + index of the character in the
+      substring defined by next to arguments. *)
+
 val bulk_iter : (UTF8.t -> unit) -> t -> unit
   (** as iter but over larger chunks of data *)
+
+val bulk_iteri : ?base:int -> (int -> UTF8.t -> unit) -> t -> unit
+  (** as iteri but over larger chunks of data. *)
   
 val fold : ('a -> UChar.t -> 'a ) -> 'a -> t -> 'a
   (** [Rope.fold f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
       where [rn = Rope.get n r ] and [N = length r]. *)
+
+val bulk_fold : ('a -> UTF8.t -> 'a) -> 'a -> t -> 'a
+  (** As {!fold} but over larger chunks of data.*)
+
+val enum: t -> UChar.t Enum.t
+val bulk_enum: t -> UTF8.t Enum.t
+val of_enum: UChar.t Enum.t -> t
+val of_bulk_enum: UTF8.t Enum.t -> t
+val backwards: t -> UChar.t Enum.t
+val of_backwards: UChar.t Enum.t -> t
+
+(*These functions are probably completely useless
+  val bulk_backwards: t -> UTF8.t Enum.t
+  val of_bulk_backwards: UTF8.t Enum.t -> t
+*)
+
+val create : int -> t
+  (** As [String.create] *)
+val init : int -> (int -> UChar.t) -> t
+  (** As [String.init] *)
+val of_int : int -> t
+val of_float : float -> t
+val to_int : t -> int
+val to_float : t -> float
+  (** As [String.*] *)
+val bulk_map : (UTF8.t -> UTF8.t) -> t -> t
+val map : (UChar.t -> UChar.t) -> t -> t
+  (** As [String.map] *)
+val bulk_filter_map : (UTF8.t -> UTF8.t option) -> t -> t
+val filter_map : (UChar.t -> UChar.t option) -> t -> t
+  (** As [String.filter_map] *)
+
+val index : t -> UChar.t -> int
+  (** As [String.index] *)
+val index_from : t -> int -> UChar.t -> int
+
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
 
 val t_of_sexp : Sexplib.Sexp.t -> t
 val sexp_of_t : t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+
+val print: 'a InnerIO.output -> t -> unit
 

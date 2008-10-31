@@ -22,13 +22,16 @@ open Sexplib
 open Conv
 TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
 
+let unit_string = "()"
+
 module Unit =
 struct
   type t = unit with sexp
-  let as_string   = "()"
+  let as_string   = unit_string
   let string_of _ = as_string
   let of_string   = function
     | "()" -> ()
     | _    -> raise (Invalid_argument "unit_of_string")
   let compare _ _ = 0
+  let print out t = InnerIO.nwrite out unit_string
 end

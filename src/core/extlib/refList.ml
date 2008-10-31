@@ -107,6 +107,9 @@ let copy_enum ~dst ~src = dst := List.of_enum src
 let enum rl = List.enum !rl
 let of_enum e = ref (List.of_enum e)
 
+let fold_left f a l = ExtList.List.fold_left f a !l
+let fold_right f l a = ExtList.List.fold_right f !l a
+
 module Index = struct
 
 	let remove_at rl pos =

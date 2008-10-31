@@ -22,7 +22,11 @@
 
 (** Operations on arbitrary-precision integers.
     
-    Big integers (type [big_int]) are signed integers of arbitrary size. 
+    Big integers (type {!big_int} or equivalently {!Big_int.t}) are
+    signed integers of arbitrary size. This module lets you compute
+    with huge numbers, whose size is limited only by the amount of
+    memory given to OCaml. The downside is speed, as big integers
+    are much slower than any other type of integer known to OCaml.
     
     @documents Big_int
     @author Valerie Menissier-Morain (base module)

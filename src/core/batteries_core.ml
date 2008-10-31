@@ -23,13 +23,11 @@
 module Control     = struct
   module Concurrency = struct
   end
-
+  module Exceptions  = Extlib.ExtPrintexc.Printexc
   module Labels      = Extlib.Labels
-
+    
   (** Monadic operations. *)
-  module Monad = struct
-    module type S  = Extlib.Monad.S
-  end
+  module Monad = Extlib.Monad
 end
 
 (** Data structures*)
@@ -41,6 +39,7 @@ module Data        = struct
       module Array         = Extlib.ExtArray.Array
       module ArrayLabels   = Batlib_Baselib_ArrayLabels
       module Bigarray      = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
+      module Dllist        = Extlib.Dllist
       module Dynarray      = Extlib.DynArray
       module Enum          = Extlib.Enum
       module Global        = Extlib.Global
@@ -55,14 +54,16 @@ module Data        = struct
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
-      module Dllist          = Extlib.Dllist
       module Lazy            = Batlib_Baselib_Lazy
       module List            = Extlib.ExtList.List      (*formerly Batlib_Baselib_List*)
-      module ListLabels      = Batlib_Baselib_ListLabels(*TODO:Bring to feature parity with {!List}*)
+      module ListLabels      = Extlib.ExtList.ListLabels(*TODO:Bring to feature parity with {!List}*)
       module Map             = Batlib_Baselib_Map       (*TODO:make enumerable*)
       module MapLabels       = Batlib_Baselib_MapLabels (*TODO:make enumerable*)
-      module PMap            = Batlib_Baselib_Map
+      module MultiPMap       = Extlib.MultiPMap
+      module PMap            = Extlib.PMap
+      module PSet            = Extlib.PSet
       module Option          = Extlib.Option
+      module OptionLabels    = Extlib.OptionLabels
       module Set             = Batlib_Baselib_Set       (*TODO:make enumerable*)
       module SetLabels       = Batlib_Baselib_SetLabels (*TODO:make enumerable*)
 
@@ -101,7 +102,7 @@ module Data        = struct
     
     (** {6 Latin-1}*)
 
-    module Buffer          = Batlib_Baselib_Buffer
+    module Buffer          = Extlib.ExtBuffer.Buffer
     module Char            = Extlib.ExtChar.Char
     module String          = struct
       include Extlib.ExtString.String
@@ -128,22 +129,25 @@ end
 module Languages   = struct
 
   (** {1 Parsing} *)
-  
-  module Genlex          = Batlib_Baselib_Genlex
+
+  module Genlex          = Extlib.ExtGenlex.Genlex
   module Lexing          = Batlib_Baselib_Lexing
   module Parsing         = Batlib_Baselib_Parsing
   module Scanf           = Batlib_Baselib_Scanf
   module Str             = Batlib_Baselib_Str
-    
+
+  (** {2 Parser combinator library}*)
+
+  module CharParser      = Extlib.CharParser
+  module ParserCo        = Extlib.ParserCo
+
+
   (** {1 Printing}*)
     
   module Format          = Batlib_Baselib_Format
-  module Printexc        = Batlib_Baselib_Printexc
-  module Printf          = struct
-    include Extlib.IO.Printf
-    let make_list_printer    = Extlib.IO.make_list_printer
-    let lmargin              = Extlib.IO.lmargin
-  end
+  module Printf          = Extlib.ExtPrintf.Printf
+
+  (** {1 Serialization}*)
 
   module SExpr           = Toolchain.Batlib_Sexp_Conv
     
@@ -171,7 +175,7 @@ module Meta        = struct
   
   (** {1 Language}*)
   
-  module Marshal        = Batlib_Baselib_Marshal
+  module Marshal        = Extlib.ExtMarshal.Marshal
   module Oo             = Batlib_Baselib_Oo
     
   (** {1 Interaction with other languages} *)
@@ -180,7 +184,7 @@ module Meta        = struct
     
   (** {1 Memory}*)
     
-  module Gc             = Batlib_Baselib_Gc
+  module Gc             = Extlib.ExtGc.Gc
   module Weak           = Batlib_Baselib_Weak
     
   (** {1 Internals}
@@ -225,7 +229,7 @@ module Toolchain   = struct
   module Execute     = Toolchain.Builtin_tools
 
   (**Package management with Findlib*)
-  module Findlib     = Batlib_Findlib_Findlib
+  module Findlib     = Toolchain.Batlib_Findlib_Findlib
 end
 
 (** Miscellaneous utilities *)
@@ -235,17 +239,7 @@ module Util        = struct
   module Random = Extlib.ExtRandom.Random
 end
 
-module Standard = struct
-  (*include Pervasives*)
-  include Batlib_Baselib_Pervasives
-  include Data.Mutable.Enum
-  include Extlib.Std
-  let (@) = Extlib.ExtList.(@)
-  let stdin = System.IO.stdin
-  let stderr= System.IO.stderr
-  let stdout= System.IO.stdout
-  let stdnull=System.IO.stdnull
-end
+module Standard = Extlib.ExtPervasives.Pervasives
 
 module Legacy = struct
   (**/**)

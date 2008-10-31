@@ -171,16 +171,16 @@ let partition p xs =
        r) in
   xs1, xs2
 
+
+
 let enum xs =
   let rec make start xs =
-    let n = length xs in
+    let n = length xs in(*Inside the loop, as [make] may later be called with another array*)
     Enum.make
       ~next:(fun () ->
-	       if !start < n then (
-		 let r = xs.(!start) in
-		 incr start;
-		 r
-	       ) else
+	       if !start < n then
+		 xs.(Ref.post_incr start)
+	       else
 		 raise Enum.No_more_elements)
       ~count:(fun () ->
 		n - !start)
@@ -190,6 +190,22 @@ let enum xs =
   in
   make (ref 0) xs
 
+let backwards xs =
+  let rec make start xs =
+    Enum.make
+      ~next:(fun () ->
+	       if !start >= 0 then 
+		 xs.(Ref.post_decr start)
+	       else
+		 raise Enum.No_more_elements)
+      ~count:(fun () ->
+		!start)
+      ~clone:(fun () ->
+		let xs' = Array.sub xs 0 !start in
+		make (Ref.copy start) xs')
+  in
+  make (ref (length xs - 1)) xs
+
 let of_enum e =
   let n = Enum.count e in
   (* This assumes, reasonably, that init traverses the array in order. *)
@@ -198,6 +214,10 @@ let of_enum e =
        match Enum.get e with
        | Some x -> x
        | None -> assert false)
+
+let of_backwards e =
+  of_list (ExtList.List.of_backwards e)
+
 
 let iter2 f a1 a2 =
      if Array.length a1 <> Array.length a2
@@ -221,20 +241,20 @@ let make_compare cmp a b =
       else                         1
   in aux 0
 
-let print out print_a ?(first="") ?(last="") ?(sep="") t =
+let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
   match length t with
     | 0 ->
-	IO.nwrite out first;
-	IO.nwrite out last
+	InnerIO.nwrite out first;
+	InnerIO.nwrite out last
     | 1 ->
-	IO.Printf.fprintf out "%s%a%s" first print_a (unsafe_get t 0) last
+	InnerIO.Printf.fprintf out "%s%a%s" first print_a (unsafe_get t 0) last
     | n -> 
-	IO.nwrite out first;
+	InnerIO.nwrite out first;
 	print_a out (unsafe_get t 0);
 	for i = 1 to n - 1 do
-	  IO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i) 
+	  InnerIO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i) 
 	done;
-	IO.nwrite out last
+	InnerIO.nwrite out last
 
 module Cap =
 struct
@@ -282,12 +302,17 @@ struct
   let blit         = blit
   let enum         = enum
   let of_enum      = of_enum
+  let backwards    = backwards
+  let of_backwards = of_backwards
   let to_list      = to_list
   let of_list      = of_list
   let sort         = sort
   let stable_sort  = stable_sort
   let fast_sort    = fast_sort
   let make_compare = make_compare
+  let print        = print
+  let sexp_of_t    = sexp_of_t
+  let t_of_sexp    = t_of_sexp
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 end

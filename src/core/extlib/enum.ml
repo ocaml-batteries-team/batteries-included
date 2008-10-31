@@ -539,7 +539,7 @@ let switch f e =
 
 let seq init f cond = 
   let acc = ref init in
-  let aux () = if cond !acc then Ref.pre acc f
+  let aux () = if cond !acc then begin acc := f !acc; !acc end
                else raise No_more_elements
   in from aux
 
@@ -713,7 +713,20 @@ let group test e =
 	    
 	in from f
 
-    
+let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
+  let next () = 
+    match peek e with
+      | None   -> raise No_more_elements
+      | Some x -> 
+	  add x;
+	  (try 
+	     for i = 2 to clump_size do
+	       add (e.next ())
+	     done
+	   with No_more_elements -> ());
+	  get ()
+  in
+  from next
 
 let from_while f =
   from (fun () -> match f () with
@@ -785,6 +798,8 @@ let slazy f =
       ~count:   (fun () -> (Lazy.force constructor).count())
       ~clone:   (fun () -> (Lazy.force constructor).clone())
 
+let delay = slazy
+
 let lsing f =
   init 1 (fun _ -> f ())
 
@@ -806,6 +821,22 @@ let hard_count t =
     let length = ref 0 in
       try while true do ignore (t.next()); incr length done; assert false
       with No_more_elements -> !length
+
+let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
+  InnerIO.nwrite out first;
+  match get e with
+    | None    -> InnerIO.nwrite out last
+    | Some x  -> 
+	print_a out x;
+	let rec aux () =
+	  match get e with
+	    | None   -> InnerIO.nwrite out last
+	    | Some x -> 
+		InnerIO.nwrite out sep;
+		print_a out x;
+		aux ()
+	in aux()
+
 
 module ExceptionLess = struct
   let find f e =
