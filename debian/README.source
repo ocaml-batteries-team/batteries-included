@@ -28,7 +28,7 @@ Cloning a TopGit repository requires an additional step to normal Git
 cloning:
 
  1. debcheckout ocaml-batteries
- 2. cd ocalm-batteries
+ 2. cd ocaml-batteries
  3. tg remote --populate origin
 
 Building from the Git repository
