@@ -21,6 +21,10 @@ The following branches are in use in the package:
 - pristine-tar	       binary deltas for pristine-tar
 - upstream    	       tracks the upstream Git repository
 
+Upstream Git repository is available at:
+
+  http://git.ocamlcore.org/batteries/batteries.git/
+
 Cloning the repository
 ----------------------
 
