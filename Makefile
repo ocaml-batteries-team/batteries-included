@@ -51,6 +51,9 @@ ifeq ($(DESTDIR),)
 DESTDIR_FLAGS =
 else
 DESTDIR_FLAGS = -destdir $(DESTDIR)
+install: install-mkdir
+install-mkdir:
+	test -d $(DESTDIR) || mkdir -p $(DESTDIR)
 endif
 
 DEST_TOP = 
