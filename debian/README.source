@@ -31,6 +31,8 @@ cloning:
  2. cd ocaml-batteries
  3. tg remote --populate origin
 
+(Steps 2--3 are optional with devscripts >= 2.10.40)
+
 Building from the Git repository
 --------------------------------
 
