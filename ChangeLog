@@ -1,3 +1,7 @@
+2008-10-30  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/extList.ml*: [reduce], [min], [max] added
+
 2008-10-26  Edgar Friendly  <thelema314@gmail.com>
 
 	* src/core/extlib/rope.ml*: [index_from] added
