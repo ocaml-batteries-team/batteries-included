@@ -1,0 +1,13 @@
+This directory contains wrapping layers on top of libraries which are
+*external* to Batteries Included, but integrated into it nevertheless.
+
+Each wrapper comes into its own directory, with the exception of the
+following directories:
+
+- common: contains modules and interface code shared by more than one
+  	  external library, e.g., module types to be implemented by
+  	  several external libraries
+
+To each external library integrated into Batteries Included must
+correspond a build- and run-time dependency of Batteries Included and
+a dependency into Batteries' META file.
