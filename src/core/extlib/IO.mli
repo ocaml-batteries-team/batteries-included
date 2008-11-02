@@ -220,8 +220,9 @@ val create_out :
   flush:(unit -> unit) -> close:(unit -> 'a) -> 'a output
 (** Fully create an output by giving all the needed functions. *)
 
-val tab_out : int -> 'a output -> 'a output
-(** Create an output shifted to the right by a number of white spaces.
+val tab_out : ?tab:char -> int -> 'a output -> 'a output
+(** Create an output shifted to the right by a number of white spaces
+    (or [tab], if given).
 
     [tab_out n out] produces a new output for writing into [out], in
     which every new line starts with [n] white spaces.

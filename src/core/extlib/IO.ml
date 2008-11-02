@@ -573,8 +573,8 @@ let make_list_printer (p:('a output -> 'b -> unit))
 
 
 
-let tab_out n out =
-  let spaces   = String.make n ' ' in
+let tab_out ?(tab=' ') n out =
+  let spaces   = String.make n tab in
   create_out 
     ~write: (fun c     -> 
 	       write out  c;
