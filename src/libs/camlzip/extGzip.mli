@@ -20,6 +20,6 @@ type 'a out_channel
 val open_output: ?level:int -> 'a System.IO.output -> 'a out_channel
 val output_char: 'a out_channel -> char -> unit
 val output_byte: 'a out_channel -> int -> unit
-val output: 'a out_channel -> string -> int -> int -> unit
+val output: 'a out_channel -> string -> int -> int -> int
 val close_out: 'a out_channel -> 'a
 val flush: 'a out_channel -> unit

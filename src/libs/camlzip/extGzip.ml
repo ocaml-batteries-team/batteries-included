@@ -1,3 +1,4 @@
+
 (* XXX UGLY HACK.
 
    The API of Camlzip does not allow to create (or otherwise work on)
@@ -223,6 +224,10 @@ let rec output oz buf pos len =
   oz.out_size <- Int32.add oz.out_size (Int32.of_int used_in);
   oz.out_crc <- Zlib.update_crc oz.out_crc buf pos used_in;
   if used_in < len then output oz buf (pos + used_in) (len - used_in)
+
+let output oz buf pos len =
+  output os buf pos len;
+  len
 
 let output_char oz c =
   char_buffer.[0] <- c;
