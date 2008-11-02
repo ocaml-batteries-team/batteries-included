@@ -216,7 +216,7 @@ module System      = struct
   (** {2 Compression/Decompression} *)
   (* module Unzip         = Inner.System.Unzip *)
   module Compress      = Libs.Common.Compress
-  (* module Gzip          = Libs.GZip *)
+  module Gzip          = Libs.GZip
     
   (** {1 Actual operating system calls}*)
     
