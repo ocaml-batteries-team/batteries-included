@@ -216,7 +216,8 @@ module System      = struct
   (** {1 Operations on streams}*)
     
   module IO            = Batteries_core_threads.System.IO
-  (* module Unzip         = Batteries_core_threads.System.Unzip *)
+
+  (** {2 Compression/Decompression} *)
   module Compress      = Libs.Common.Compress
   module Gzip          = Libs.GZip
     

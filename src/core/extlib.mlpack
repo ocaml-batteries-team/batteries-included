@@ -35,7 +35,6 @@ ExtNativeint
 ExtStream
 ExtString
 Substring
-Unzip
 Std
 RefList
 LazyList

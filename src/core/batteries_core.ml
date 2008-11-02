@@ -207,7 +207,7 @@ module System      = struct
   (** {1 Operations on streams}*)
     
   module IO            = Extlib.IO
-  module Unzip         = Extlib.Unzip
+  (* module Unzip         = Extlib.Unzip *)
     
   (** {1 Actual operating system calls}*)
     
