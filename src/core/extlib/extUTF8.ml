@@ -43,6 +43,53 @@ module UTF8 = struct
   external of_string_unsafe : string -> t = "%identity"
   external to_string_unsafe : t -> string = "%identity"
  
+  type char_idx = int
+
+  let length0 n =
+    if n < 0x80 then 1 else
+    if n < 0xc0 then invalid_arg "UTF8.length0 - Mid" else
+    if n < 0xe0 then 2 else
+    if n < 0xf0 then 3 else
+    if n < 0xf8 then 4 else
+    if n < 0xfc then 5 else
+    if n < 0xfe then 6 else
+    invalid_arg "UTF8.length0 - Reserved"
+
+  (* non-start bytes have the form 0b10xx_xxxx *)
+  let is_start_byte n = (n land 0b1100_0000) == 0b10_000000
+
+  module Byte : sig
+    type b_idx(* = private int*)
+    val of_int_unsafe : int -> b_idx
+    val to_int : b_idx -> int
+    val next : t -> b_idx -> b_idx
+    val prev : t -> b_idx -> b_idx
+    val of_char_idx : t -> char_idx -> b_idx
+    val at_end : t -> b_idx -> bool
+    val first : b_idx
+    val last : t -> b_idx
+  end = struct
+    type b_idx = int
+    external of_int_unsafe : int -> b_idx = "%identity"
+    external to_int : b_idx -> int = "%identity"
+    let next us bi = bi + (length0 (Char.code us.[bi]))      
+    let prev us bi = 
+      let rec loop bi =
+	if is_start_byte (Char.code us.[bi]) then bi
+	else loop (bi-1)
+      in
+      loop (bi-1)
+    let of_char_idx us ci = 
+      let bi = ref 0 in
+      for j = 1 to ci do
+	bi := next us !bi
+      done;
+      !bi
+    let at_end us bi = bi = String.length us
+    let first = 0
+    let last us = prev us (String.length us)
+  end
+
   let append s1 s2 = s1 ^ s2
     
   let empty = ""
@@ -151,7 +198,6 @@ module UTF8 = struct
   let of_backwards e =
     of_enum (List.enum (List.of_backwards e))
 
-
   let unsafe_get = get
  
   let copy_set s n c =
@@ -168,33 +214,12 @@ module UTF8 = struct
       let n = Char.code (String.unsafe_get s i) in
       if n < 0x80 || n >= 0xc2 then i else
   search_head s (i + 1)
- 
-  let length0 n =
-    if n < 0x80 then 1 else
-    if n < 0xc0 then invalid_arg "UTF8.length0 - Mid" else
-    if n < 0xe0 then 2 else
-    if n < 0xf0 then 3 else
-    if n < 0xf8 then 4 else
-    if n < 0xfc then 5 else
-    if n < 0xfe then 6 else
-    invalid_arg "UTF8.length0"
- 
-  let next s i =
-    let n = Char.code s.[i] in
-    try i + (length0 n)
-    with Invalid_argument "UTF8.length0 - Mid" -> search_head s (i+1)
-      | Invalid_argument _ -> invalid_arg "UTF8.next"
+   
+  let rec length_aux s ci bi =
+    if Byte.at_end s bi then ci 
+    else length_aux s (ci + 1) (Byte.next s bi)
   
-  let length_at s i =
-    let n = Char.code (String.unsafe_get s i) in
-    length0 n
-      
-  let rec length_aux s c i =
-    if i >= String.length s then c else
-      let k = length_at s i in
-      length_aux s (c + 1) (i + k)
-  
-  let length s = length_aux s 0 0
+  let length s = length_aux s 0 Byte.first
     
   let rec iter_aux proc s i =
     if i >= String.length s then () else
@@ -231,7 +256,9 @@ module UTF8 = struct
     with 
 	Invalid_argument "UTF8.next" -> raise Not_found
 
+  let contains us c = failwith "Not Implemented"
 
+  let escaped us = String.escaped us (* FIXME: think through whether this works *)
 
   let compare s1 s2 = Pervasives.compare s1 s2
     

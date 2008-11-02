@@ -32,6 +32,7 @@ open Conv
 TYPE_CONV_PATH "Batteries.Data.Text.Rope" (*For Sexplib, Bin-prot...*)
 open ExtUTF8
 open ExtUChar
+open ExtList
  
 (* =begin ignore *)
 type t =
@@ -530,21 +531,32 @@ let index_from r base item =
 	   let index_aux i c = 
 	     if c = item then recall return i
 	   in
-	   range_iteri index_aux ~base base (length r) r;
+	   range_iteri index_aux ~base base (length r - base) r;
 	   raise Not_found)
 
 let rindex r char = assert false
 
 let rindex_from r start char = assert false
 
-let contains r char = assert false
+let contains r char = 
+  label (fun return ->
+	   let contains_aux us =
+	     if UTF8.contains us char then recall return true
+	   in
+	   bulk_iter contains_aux r;
+	   false)
 
-let contains_from r start char = assert false
+let contains_from r start char = 
+  label (fun return ->
+	   let contains_aux c = if c = char then recall return true in
+	   range_iter contains_aux start (length r - start) r;
+	   false)
 
-let rcontains_from r stop char = assert false
+let rcontains_from r stop char = ()
+
 
 let find r1 r2 = assert false
-(** find [r2] within [r1] *)
+(** find [r2] within [r1] -- raises Not_found *)
 
 let ends_with r end_r = assert false
 
@@ -563,30 +575,43 @@ let uncapitalize r = assert false
 (* let copy r = UNNEEDED -- immutable structure *)
 
 (* TODO: ADD THESE TO [String] *)
-let left r len = sub r 0 len
-let right r len = let rlen = length r in sub r (rlen - len) len
-let tail r pos = sub r pos (length r - pos)
+let left r len = sub 0 len r
+let right r len = let rlen = length r in sub (rlen - len) len r
+let head r pos = sub 0 pos r (* same as left *)
+let tail r pos = sub pos (length r - pos) r
 
-let lchop str = sub str 1 (length str - 1)
-let rchop str = sub str 0 (length str - 1)
 
-let splice r start len new_sub = concat (left r start) (concat new_sub (tail r (start+len)
+let lchop str = sub 1 (length str - 1) str
+let rchop str = sub 0 (length str - 1) str
 
-let fill r start len char = splice r start len (init len char)
+let splice r start len new_sub = 
+  concat (left r start) 
+    (concat new_sub (tail r (start+len)))
 
-let blit rsrc offsrc rdst offdst len = splice rdst offdst len (sub rsrc offsrc len)
+let fill r start len char = 
+  splice r start len (init len char)
 
-let concat_sep sep r_list = assert false
+let blit rsrc offsrc rdst offdst len = 
+  splice rdst offdst len (sub offsrc len rsrc)
 
-let escaped r = assert false
+let concat_sep sep r_list = List.reduce (fun r1 r2 -> concat r1 (concat sep r2)) r_list
 
-let replace_chars f r = fold_left (fun acc s -> append acc (f s)) Empty r
+let escaped r = bulk_map UTF8.escaped r
+
+let replace_chars f r = fold (fun acc s -> append acc (f s)) Empty r
 
 let replace str sub by = splice (find str sub) (length sub) by
 
-let split r sep = assert false
+let split r sep = 
+  let i = find r sep in
+  head r i, tail r (i+length sep)
 
-let nsplit r sep n = assert false
+let rec nsplit r sep n = (* NOT TAIL RECURSIVE *)
+  if n <= 1 then [r]
+  else try 
+    let i = find r sep in
+    head r i :: (nsplit (tail r (i+length sep)) sep (n-1))
+  with Not_found -> [r]
 
 let join = concat_sep
 
