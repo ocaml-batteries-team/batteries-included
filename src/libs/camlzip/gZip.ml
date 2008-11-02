@@ -8,16 +8,16 @@ let uncompress input =
       ~input:(ExtGzip.input camlzip_in)
       ~close:(fun () -> ExtGzip.close_in camlzip_in)
 
-let compress output =
-  let camlzip_out = ExtGzip.open_output output in
+let gzip_compress ?level output =
+  let camlzip_out = ExtGzip.open_output ?level output in
     IO.create_out
       ~write:(ExtGzip.output_char camlzip_out)
       ~output:(ExtGzip.output camlzip_out)
       ~flush:(fun () -> ExtGzip.flush camlzip_out)
       ~close:(fun () -> ExtGzip.close_out camlzip_out)
 
+let compress output = gzip_compress ?level:None output
+
 let open_in ?mode ?perm fname = uncompress (File.open_in ?mode ?perm fname)
 let open_out ?mode ?perm fname = compress (File.open_out ?mode ?perm fname)
 
-let gzip_compress ?(level = 6) =
-  failwith "Not implemented: gzip_compress"
