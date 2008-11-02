@@ -1,6 +1,4 @@
 
-open Batteries_core
-
 exception Error of string * exn option
   (** Error while compressing/decompressing.
 
@@ -11,14 +9,14 @@ exception Error of string * exn option
 module type Decompressor =
 sig
 
-  val uncompress: System.IO.input -> System.IO.input
+  val uncompress: InnerIO.input -> InnerIO.input
     (** Wrap an input channel, decompressing transparently data when
 	reading from it.
 
 	Operations performed on the returned channel can raise, in
 	addition to their usual exceptions, [Error]. *)
 
-(* val open_in: string -> System.IO.input *)
+(* val open_in: string -> InnerIO.input *)
 (*   (\** directly open a compressed file to read from it *\) *)
 
 end
@@ -26,14 +24,14 @@ end
 module type Compressor =
 sig
 
-  val compress: 'a System.IO.output -> 'a System.IO.output
+  val compress: 'a InnerIO.output -> 'a InnerIO.output
     (** wrap an output channel, compressing transparently data when
 	writing to it.
 	
 	Operations performed on the returned channel can raise, in
 	addition to their usual exceptions, [Error]. *)
 
-(* val open_out: string -> unit System.IO.output *)
+(* val open_out: string -> unit InnerIO.output *)
 (*   (\** directly open a compressed file to write to it *\) *)
 
 end

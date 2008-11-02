@@ -1,6 +1,4 @@
 
-open Batteries_core
-
 (** {1 Common (de)compression interface} *)
 
 (** {2 Decompression} *)
@@ -17,7 +15,7 @@ include Common.Compress.Compressor
 
 (** {2 Compression} *)
 
-val gzip_compress: ?level:int -> 'a System.IO.output -> 'a System.IO.output
+val gzip_compress: ?level:int -> 'a InnerIO.output -> 'a InnerIO.output
   (** gzip-specific compression function, same as [GZip.compress], but
       enable to specifiy gzip-specific compression parameters
 

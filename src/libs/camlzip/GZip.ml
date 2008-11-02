@@ -1,6 +1,5 @@
 
 open Batteries_core.System
-open Common
 
 let uncompress input =
   let camlzip_in = ExtGzip.open_input input in
