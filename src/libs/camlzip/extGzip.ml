@@ -1,5 +1,6 @@
 
 open Common
+open Extlib
 
 (* XXX UGLY HACK.
 
@@ -10,12 +11,12 @@ open Common
    a few function are used on channels, and all of them have
    Batteries' counterparts:
 
-   - [Pervasives.input_byte]  -> [System.IO.read_byte]
-   - [Pervasives.input]       -> [System.IO.input]
-   - [Pervasives.close_in]    -> [System.IO.close_in]
-   - [Pervasives.output_byte] -> [System.IO.write_byte]
-   - [Pervasives.output]      -> [System.IO.really_output]
-   - [Pervasives.close_out]   -> [System.IO.close_out]
+   - [Pervasives.input_byte]  -> [Extlib.IO.read_byte]
+   - [Pervasives.input]       -> [Extlib.IO.input]
+   - [Pervasives.close_in]    -> [Extlib.IO.close_in]
+   - [Pervasives.output_byte] -> [Extlib.IO.write_byte]
+   - [Pervasives.output]      -> [Extlib.IO.really_output]
+   - [Pervasives.close_out]   -> [Extlib.IO.close_out]
 
    ... but of course the current API of Camlzip [Gzip] does not allow
    us to use our functions.  Note that the affected module is "only"
@@ -27,12 +28,6 @@ open Common
    asking Xavier to extend Camlzip API so that the basic functions
    copied below are more flexible.
 *)
-
-open Batteries_core
-open System
-  (* XXX do NOT open System.IO here, as this module define some
-     functions which share names with System.IO; opening it is then
-     asking for clashes *)
 
 let buffer_size = 1024
 

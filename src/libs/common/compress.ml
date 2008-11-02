@@ -1,4 +1,6 @@
 
+open Extlib
+
 exception Error of string * exn option
   (** Error while compressing/decompressing.
 
@@ -16,8 +18,11 @@ sig
 	Operations performed on the returned channel can raise, in
 	addition to their usual exceptions, [Error]. *)
 
-(* val open_in: string -> InnerIO.input *)
-(*   (\** directly open a compressed file to read from it *\) *)
+  val open_in: ?mode:File.open_in_flag list -> ?perm:File.permission ->
+    string ->
+    InnerIO.input
+      (** Shorthand: directly open a compressed file to read from it
+	  See [File.open_in] *)
 
 end
 
@@ -31,7 +36,10 @@ sig
 	Operations performed on the returned channel can raise, in
 	addition to their usual exceptions, [Error]. *)
 
-(* val open_out: string -> unit InnerIO.output *)
-(*   (\** directly open a compressed file to write to it *\) *)
+  val open_out: ?mode:File.open_out_flag list -> ?perm:File.permission ->
+    string ->
+    unit InnerIO.output
+      (** Shorthand: directly open a compressed file to write to it.
+	  See [File.open_out] *)
 
 end

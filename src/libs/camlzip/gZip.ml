@@ -1,5 +1,5 @@
 
-open Batteries_core.System
+open Extlib
 
 let uncompress input =
   let camlzip_in = ExtGzip.open_input input in
@@ -15,6 +15,9 @@ let compress output =
       ~output:(ExtGzip.output camlzip_out)
       ~flush:(fun () -> ExtGzip.flush camlzip_out)
       ~close:(fun () -> ExtGzip.close_out camlzip_out)
+
+let open_in ?mode ?perm fname = uncompress (File.open_in ?mode ?perm fname)
+let open_out ?mode ?perm fname = compress (File.open_out ?mode ?perm fname)
 
 let gzip_compress ?(level = 6) =
   failwith "Not implemented: gzip_compress"
