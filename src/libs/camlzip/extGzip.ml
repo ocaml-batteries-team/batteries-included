@@ -1,4 +1,6 @@
 
+open Common
+
 (* XXX UGLY HACK.
 
    The API of Camlzip does not allow to create (or otherwise work on)
@@ -32,8 +34,6 @@ open System
      functions which share names with System.IO; opening it is then
      asking for clashes *)
 
-exception Error of string
-
 let buffer_size = 1024
 
 type in_channel =
@@ -52,13 +52,13 @@ let open_input ic =
     let id1 = IO.read_byte ic in
     let id2 = IO.read_byte ic in
     if id1 <> 0x1F || id2 <> 0x8B then 
-      raise(Error("bad magic number, not a gzip file"));
+      raise(Compress.Error("bad magic number, not a gzip file", None));
     let cm = IO.read_byte ic in
     if cm <> 8 then
-      raise(Error("unknown compression method"));
+      raise(Compress.Error("unknown compression method", None));
     let flags = IO.read_byte ic in
     if flags land 0xE0 <> 0 then
-      raise(Error("bad flags, not a gzip file"));
+      raise(Compress.Error("bad flags, not a gzip file", None));
     for i = 1 to 6 do ignore(IO.read_byte ic) done;
     if flags land 0x04 <> 0 then begin
       (* Skip extra data *)
@@ -78,8 +78,8 @@ let open_input ic =
       (* Skip header CRC *)
       ignore(IO.read_byte ic); ignore(IO.read_byte ic)
     end
-  with IO.No_more_input ->
-    raise(Error("premature end of file, not a gzip file"))
+  with IO.No_more_input | End_of_file ->
+    raise(Compress.Error("premature end of file, not a gzip file", None))
   end;
   { in_chan = ic;
     in_buffer = String.create buffer_size;
@@ -94,7 +94,7 @@ let read_byte iz =
   if iz.in_avail = 0 then begin
     let n = IO.input iz.in_chan iz.in_buffer 0
                              (String.length iz.in_buffer) in
-    if n = 0 then raise End_of_file;
+    if n = 0 then raise IO.No_more_input;
     iz.in_pos <- 0;
     iz.in_avail <- n
   end;
@@ -120,7 +120,7 @@ let rec input iz buf pos len =
     if iz.in_avail = 0 then begin
       let n = IO.input iz.in_chan iz.in_buffer 0
                                (String.length iz.in_buffer) in
-      if n = 0 then raise(Error("truncated file"));
+      if n = 0 then raise(Compress.Error("truncated file", None));
       iz.in_pos <- 0;
       iz.in_avail <- n
     end;
@@ -128,8 +128,8 @@ let rec input iz buf pos len =
       try
         Zlib.inflate iz.in_stream iz.in_buffer iz.in_pos iz.in_avail
                                    buf pos len Zlib.Z_SYNC_FLUSH
-      with Zlib.Error(_, _) ->
-        raise(Error("error during decompression")) in
+      with Zlib.Error(_, _) as exn ->
+        raise(Compress.Error("error during decompression", Some exn)) in
     iz.in_pos <- iz.in_pos + used_in;
     iz.in_avail <- iz.in_avail - used_in;
     iz.in_crc <- Zlib.update_crc iz.in_crc buf pos used_out;
@@ -139,13 +139,13 @@ let rec input iz buf pos len =
         let crc = read_int32 iz in
         let size = read_int32 iz in
         if iz.in_crc <> crc then 
-          raise(Error("CRC mismatch, data corrupted"));
+          raise(Compress.Error("CRC mismatch, data corrupted", None));
         if iz.in_size <> size then
-          raise(Error("size mismatch, data corrupted"));
+          raise(Compress.Error("size mismatch, data corrupted", None));
         iz.in_eof <- true;
         used_out
-      with End_of_file ->
-        raise(Error("truncated file"))
+      with IO.No_more_input | End_of_file ->
+        raise(Compress.Error("truncated file", None))
     end
     else if used_out = 0 then
       input iz buf pos len
@@ -156,14 +156,16 @@ let rec input iz buf pos len =
 let rec really_input iz buf pos len =
   if len <= 0 then () else begin
     let n = input iz buf pos len in
-    if n = 0 then raise End_of_file;
+    if n = 0 then raise IO.No_more_input;
     really_input iz buf (pos + n) (len - n)
   end
 
 let char_buffer = String.create 1
 
 let input_char iz =
-  if input iz char_buffer 0 1 = 0 then raise End_of_file else char_buffer.[0]
+  if input iz char_buffer 0 1 = 0
+  then raise IO.No_more_input
+  else char_buffer.[0]
 
 let input_byte iz =
   Char.code (input_char iz)
@@ -217,8 +219,8 @@ let rec output oz buf pos len =
       Zlib.deflate oz.out_stream buf pos len
                                  oz.out_buffer oz.out_pos oz.out_avail
                                  Zlib.Z_NO_FLUSH
-    with Zlib.Error(_, _) ->
-      raise (Error("error during compression")) in
+    with Zlib.Error(_, _) as exn ->
+      raise (Compress.Error("error during compression", Some exn)) in
   oz.out_pos <- oz.out_pos + used_out;
   oz.out_avail <- oz.out_avail - used_out;
   oz.out_size <- Int32.add oz.out_size (Int32.of_int used_in);

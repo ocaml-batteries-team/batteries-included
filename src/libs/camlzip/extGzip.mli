@@ -5,8 +5,6 @@
 
 open Batteries_core
 
-exception Error of string
-
 type in_channel
 val open_input: System.IO.input-> in_channel
 val input_char: in_channel -> char
