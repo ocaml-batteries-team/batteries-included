@@ -1,10 +1,23 @@
 
 open Batteries_core
 
-include System.Compress.Decompressor
-include System.Compress.Compressor
+(** {1 Common (de)compression interface} *)
 
-let gzip_compress: ?level:int -> 'a System.IO.output -> 'a System.IO.output
+(** {2 Decompression} *)
+
+include Common.Compress.Decompressor
+
+(** {2 Compression} *)
+
+include Common.Compress.Compressor
+
+(** {1 Low-level (de)compression interface}
+
+    Give acces to library-specific features *)
+
+(** {2 Compression} *)
+
+val gzip_compress: ?level:int -> 'a System.IO.output -> 'a System.IO.output
   (** gzip-specific compression function, same as [GZip.compress], but
       enable to specifiy gzip-specific compression parameters
 

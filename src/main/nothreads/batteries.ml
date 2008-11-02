@@ -212,7 +212,11 @@ module System      = struct
   (** {1 Operations on streams}*)
     
   module IO            = Inner.System.IO
-  module Unzip         = Inner.System.Unzip
+
+  (** {2 Compression/Decompression} *)
+  (* module Unzip         = Inner.System.Unzip *)
+  module Compress      = Libs.Common.Compress
+  (* module Gzip          = Libs.GZip *)
     
   (** {1 Actual operating system calls}*)
     
