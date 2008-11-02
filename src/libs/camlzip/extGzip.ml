@@ -226,12 +226,12 @@ let rec output oz buf pos len =
   if used_in < len then output oz buf (pos + used_in) (len - used_in)
 
 let output oz buf pos len =
-  output os buf pos len;
+  output oz buf pos len;
   len
 
 let output_char oz c =
   char_buffer.[0] <- c;
-  output oz char_buffer 0 1
+  ignore(output oz char_buffer 0 1)
 
 let output_byte oz b =
   output_char oz (Char.unsafe_chr b)
