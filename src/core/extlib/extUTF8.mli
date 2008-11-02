@@ -127,25 +127,22 @@ module Byte : sig
   val next : t -> b_idx -> b_idx
   val prev : t -> b_idx -> b_idx
   val of_char_idx : t -> char_idx -> b_idx
+    (** [of_char_idx s n] returns the position of the [n]-th Unicode
+	character.  The call requires O(n)-time *)
   val at_end : t -> b_idx -> bool
+  val out_of_range : t -> b_idx -> bool
   val first : b_idx
   val last : t -> b_idx
+  val move : t -> b_idx -> int -> b_idx
 end
 
 type index = int
 
-val nth : t -> int -> index
-(** [nth s n] returns the position of the [n]-th Unicode character. 
-   The call requires O(n)-time *)
-
-val last : t -> index
-(** The position of the head of the last Unicode character. *)
-
-val look : t -> index -> UChar.t
+val look : t -> Byte.b_idx -> UChar.t
 (** [look s i]
    returns the Unicode character of the location [i] in the string [s]. *)
 
-val out_of_range : t -> index -> bool
+val out_of_range : t -> Byte.b_idx -> bool
   (** [out_of_range s i]
       tests whether [i] is a position inside of [s]. *)
 
