@@ -27,6 +27,10 @@ open Extlib
    here Camlzip types and basic functions, the proper solution is
    asking Xavier to extend Camlzip API so that the basic functions
    copied below are more flexible.
+
+   NOTE: this is harder that initially expected, e.g., exceptions
+   raised by Pervasives are different than those raised by IO, the
+   cost of generalization is probably too high ...
 *)
 
 let buffer_size = 1024
