@@ -22,35 +22,18 @@
 open Common
 open Extlib
 
-(* XXX UGLY HACK.
-
-   The API of Camlzip does not allow to create (or otherwise work on)
+(* The API of Camlzip does not allow to create (or otherwise work on)
    compressed chanells out of something else than legacy channels or
-   file names. This is a problem for Batteries, which needs to use
-   them on Batteries' channel. Conceptually it is no problem, as only
-   a few function are used on channels, and all of them have
-   Batteries' counterparts:
+   file names. It is not easily generalizable either, because several
+   channel functions are used, and also specific exceptions (e.g.,
+   End_of_file) catched.
 
-   - [Pervasives.input_byte]  -> [Extlib.IO.read_byte]
-   - [Pervasives.input]       -> [Extlib.IO.input]
-   - [Pervasives.close_in]    -> [Extlib.IO.close_in]
-   - [Pervasives.output_byte] -> [Extlib.IO.write_byte]
-   - [Pervasives.output]      -> [Extlib.IO.really_output]
-   - [Pervasives.close_out]   -> [Extlib.IO.close_out]
+   Hence, this module mimic (read: it's shamelessly inspired from)
+   Camlzip's [Gzip] module, but using Batteries' channels, functions,
+   and exceptions.
 
-   ... but of course the current API of Camlzip [Gzip] does not allow
-   us to use our functions.  Note that the affected module is "only"
-   Calmzip's [Gzip]; Camlzip's [Zlib] (which wrap the underlying C
-   librarys) can be---and is---used as it is.
-
-   ATM we "solve" (with this module) the problem by copying/redefining
-   here Camlzip types and basic functions, the proper solution is
-   asking Xavier to extend Camlzip API so that the basic functions
-   copied below are more flexible.
-
-   NOTE: this is harder that initially expected, e.g., exceptions
-   raised by Pervasives are different than those raised by IO, the
-   cost of generalization is probably too high ...
+   Future changes to Camlzip's [Gzip] might be needed to be ported
+   here.
 *)
 
 open Compress
