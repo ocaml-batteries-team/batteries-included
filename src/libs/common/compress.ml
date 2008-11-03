@@ -30,7 +30,7 @@ exception Error of string * exn option
 module type Decompressor =
 sig
 
-  val uncompress: InnerIO.input -> InnerIO.input
+  val uncompress: IO.input -> IO.input
     (** Wrap an input channel, decompressing transparently data when
 	reading from it.
 
@@ -39,7 +39,7 @@ sig
 
   val open_in: ?mode:File.open_in_flag list -> ?perm:File.permission ->
     string ->
-    InnerIO.input
+    IO.input
       (** Shorthand: directly open a compressed file to read from it
 	  See [File.open_in] *)
 
@@ -48,7 +48,7 @@ end
 module type Compressor =
 sig
 
-  val compress: 'a InnerIO.output -> 'a InnerIO.output
+  val compress: 'a IO.output -> 'a IO.output
     (** wrap an output channel, compressing transparently data when
 	writing to it.
 	
@@ -57,7 +57,7 @@ sig
 
   val open_out: ?mode:File.open_out_flag list -> ?perm:File.permission ->
     string ->
-    unit InnerIO.output
+    unit IO.output
       (** Shorthand: directly open a compressed file to write to it.
 	  See [File.open_out] *)
 

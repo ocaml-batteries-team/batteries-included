@@ -34,7 +34,7 @@ include Common.Compress.Compressor
 
 (** {2 Compression} *)
 
-val gzip_compress: ?level:int -> 'a InnerIO.output -> 'a InnerIO.output
+val gzip_compress: ?level:int -> 'a IO.output -> 'a IO.output
   (** gzip-specific compression function, same as [GZip.compress], but
       enable to specifiy gzip-specific compression parameters
 
