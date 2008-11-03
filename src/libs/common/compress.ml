@@ -20,7 +20,7 @@
 
 open Extlib
 
-exception Error of string * exn option
+exception Compress_error of string * exn option
   (** Error while compressing/decompressing.
 
       First argument is a human-readable error explanation.  Second
