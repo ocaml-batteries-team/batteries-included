@@ -39,6 +39,9 @@ open Extlib
 open Compress
 
 let buffer_size = 1024
+  (** Internal I/O buffer. Specify how many bytes are read
+      (resp. write) at a time from (to) the underlying channel and
+      buffered before reading (writing) again. *)
 
 type in_channel =
     { in_chan: IO.input;
