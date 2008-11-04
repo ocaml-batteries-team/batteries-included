@@ -20,7 +20,7 @@
 
 open Extlib
 
-exception Compress_error of string * exn option
+exception Compression_error of string * exn option
 module type Decompressor =
 sig
   val uncompress: IO.input -> IO.input
