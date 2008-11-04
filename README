@@ -22,6 +22,7 @@ You will need
 * Camomile >= 0.7
 * Sexplib
 * Bin-prot
+* Camlzip
 * GNU Make
 
 To install the full version of OCaml Batteries Included, execute
