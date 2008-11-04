@@ -29,13 +29,46 @@
     @author Stefano Zacchiroli
 *)
 
+open Extlib
+
 (** {6 Common decompression interface} *)
 
-include Common.Compress.Decompressor
+(* XXX this should be a module include, but currently it does not work
+   well with ocamldoc. Hence for the moment we copy&paste from
+   Compress' .mli :-(
+   Try with CamlP4's INCLUDE macro. *)
+(* include Common.Compress.Decompressor *)
+
+val uncompress: IO.input -> IO.input
+  (** Wrap an input channel, decompressing transparently data when
+      reading from it.
+      
+      Operations performed on the returned channel can raise, in
+      addition to their usual exceptions, [Error]. *)
+
+val open_in: ?mode:File.open_in_flag list -> ?perm:File.permission ->
+  string ->
+  IO.input
+    (** Shorthand: directly open a compressed file to read from it See
+	[File.open_in] *)
 
 (** {6 Common compression interface} *)
 
-include Common.Compress.Compressor
+(* XXX this should be a module include, see above *)
+(* include Common.Compress.Compressor *)
+
+val compress: 'a IO.output -> 'a IO.output
+  (** Wrap an output channel, compressing transparently data when
+      writing to it.
+      
+      Operations performed on the returned channel can raise, in
+      addition to their usual exceptions, [Error]. *)
+
+val open_out: ?mode:File.open_out_flag list -> ?perm:File.permission ->
+  string ->
+  unit IO.output
+    (** Shorthand: directly open a compressed file to write to it.
+	See [File.open_out] *)
 
 (** {6 GZip-specific features}
 
