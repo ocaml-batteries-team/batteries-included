@@ -18,65 +18,21 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  * USA *)
 
-(** Common compression/decompression interfaces.
-
-    This module provides abstract interfaces for manipulating
-    compressed data. The interfaces are abstract in the sense that
-    they are not specific of any underlying (de)compression
-    libraries. Each of such library integrated with Batteries is
-    required to implement the abstract interfaces. This way, switching
-    from one compression library to another should be as easy as
-    switching module name.
-
-    Library-specific features can be provided by offering additional
-    functions with respect to the common abstract interfaces.
-
-    @author Stefano Zacchiroli
-*)
-
 open Extlib
 
 exception Compress_error of string * exn option
-  (** Error while compressing/decompressing.
-
-      First argument is a human-readable error explanation.  Second
-      argument is the low-level exception raised by the underlying
-      (de)compression library, if any. *)
-
-(** Common interface for decompressing (i.e., inflating) data. *)
 module type Decompressor =
 sig
-
   val uncompress: IO.input -> IO.input
-    (** Wrap an input channel, decompressing transparently data when
-	reading from it.
-
-	Operations performed on the returned channel can raise, in
-	addition to their usual exceptions, [Error]. *)
-
   val open_in: ?mode:File.open_in_flag list -> ?perm:File.permission ->
     string ->
     IO.input
-      (** Shorthand: directly open a compressed file to read from it
-	  See [File.open_in] *)
-
 end
 
-(** Common interface for compressing (i.e., deflating) data. *)
 module type Compressor =
 sig
-
   val compress: 'a IO.output -> 'a IO.output
-    (** Wrap an output channel, compressing transparently data when
-	writing to it.
-	
-	Operations performed on the returned channel can raise, in
-	addition to their usual exceptions, [Error]. *)
-
   val open_out: ?mode:File.open_out_flag list -> ?perm:File.permission ->
     string ->
     unit IO.output
-      (** Shorthand: directly open a compressed file to write to it.
-	  See [File.open_out] *)
-
 end
