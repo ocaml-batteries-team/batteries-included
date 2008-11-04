@@ -19,9 +19,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  * USA *)
 
-(** Mimic the part of Camlzip's [Gzip] API about channels, but working
-    on Batteries' input/output channels instead of [Pervasives]'s
-    channels *)
+(** This module mimics the part of Camlzip's [Gzip] API about
+    channels, but working on Batteries' input/output channels instead
+    of [Pervasives]'s channels.
+
+    @author Stefano Zacchiroli *)
 
 open Extlib
 

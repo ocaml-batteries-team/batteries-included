@@ -18,21 +18,29 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  * USA *)
 
-(** {1 Common (de)compression interface} *)
+(** GZip - compression/decompression interface.
 
-(** {2 Decompression} *)
+    This module provide access to GZip compression and decompression
+    functionalities. Both the common (de)compression interface
+    (implemented by all compression libraries available via Batteries)
+    and GZip-specific functionalities are accessible using this
+    module.
+
+    @author Stefano Zacchiroli
+*)
+
+(** {6 Common decompression interface} *)
 
 include Common.Compress.Decompressor
 
-(** {2 Compression} *)
+(** {6 Common compression interface} *)
 
 include Common.Compress.Compressor
 
-(** {1 Low-level (de)compression interface}
+(** {6 GZip-specific features}
 
-    Give acces to library-specific features *)
-
-(** {2 Compression} *)
+    Provide acces to GZip-specific features.
+*)
 
 val gzip_compress: ?level:int -> 'a IO.output -> 'a IO.output
   (** gzip-specific compression function, same as [GZip.compress], but
