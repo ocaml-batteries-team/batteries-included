@@ -44,7 +44,8 @@ val uncompress: IO.input -> IO.input
       reading from it.
       
       Operations performed on the returned channel can raise, in
-      addition to their usual exceptions, [Error]. *)
+      addition to their usual exceptions,
+      [Common.Compress.Compression_error]. *)
 
 val open_in: ?mode:File.open_in_flag list -> ?perm:File.permission ->
   string ->
@@ -62,7 +63,8 @@ val compress: 'a IO.output -> 'a IO.output
       writing to it.
       
       Operations performed on the returned channel can raise, in
-      addition to their usual exceptions, [Error]. *)
+      addition to their usual exceptions,
+      [Common.Compress.Compression_error]. *)
 
 val open_out: ?mode:File.open_out_flag list -> ?perm:File.permission ->
   string ->
@@ -81,4 +83,7 @@ val gzip_compress: ?level:int -> 'a IO.output -> 'a IO.output
 
       @param level compression level (an integer between 1 and 9),
       with 1 being the weakest (but fastest) compression and 9 being
-      the strongest (but slowest) compression. Default: 6 *)
+      the strongest (but slowest) compression. Default: 6.
+
+      @raise Invalid_argument if level is not included in the expected
+      range *)

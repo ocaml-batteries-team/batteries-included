@@ -52,7 +52,8 @@ sig
 	reading from it.
 
 	Operations performed on the returned channel can raise, in
-	addition to their usual exceptions, [Error]. *)
+	addition to their usual exceptions,
+	[Common.Compress.Compression_error]. *)
 
   val open_in: ?mode:File.open_in_flag list -> ?perm:File.permission ->
     string ->
@@ -71,7 +72,8 @@ sig
 	writing to it.
 	
 	Operations performed on the returned channel can raise, in
-	addition to their usual exceptions, [Error]. *)
+	addition to their usual exceptions,
+	[Common.Compress.Compression_error]. *)
 
   val open_out: ?mode:File.open_out_flag list -> ?perm:File.permission ->
     string ->
