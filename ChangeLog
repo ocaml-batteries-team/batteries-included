@@ -1,3 +1,39 @@
+2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib_threads/: created
+
+	* src/core/extlib_threads.mlpack: created
+
+	* src/main/threads/batteries.mllib: [InnerWeaktbl] added
+
+	* src/main/nothreads/batteries.mllib: [InnerWeaktbl] added
+
+	* src/core/batteries_core.ml: [Unix] is now [Extlib.ExtUnix.Unix]
+
+	* src/core/extlib/innerWeaktbl.ml*: added
+
+	* src/core/extlib/extUnix.ml*: added
+
+	* src/core/extlib.mlpack: [ExtUnix] added
+
+2008-11-04  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/innerIO.ml*: [close_all] added
+
+	* src/core/extlib/extPervasives.ml: [flush_all] now uses [IO.flush_all]
+
+	* src/core/extlib/extPervasives.ml: [flush_all] now called automatically when exiting
+
+	* src/core/extlib/IO.mli: [flush_all] added
+
+	* src/core/extlib/innerIO.ml: [outputs], [Outputs] added
+	
+	* src/core/extlib/innerIO.ml: [create_out] now adds a call to [flush] before the call to [close]
+
+	* src/core/extlib/innerIO.ml: [create_out] now adds [out] to [outputs]
+
+	* src/core/extlib/innerIO.ml*: [flush_all] added
+
 2008-10-30  Edgar Friendly  <thelema314@gmail.com>
 
 	* src/core/extlib/extList.ml*: [reduce], [min], [max] added

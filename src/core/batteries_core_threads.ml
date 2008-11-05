@@ -207,7 +207,7 @@ struct
     
   module File          = Batteries_core.System.File
   module Filename      = Batteries_core.System.Filename
-  module Unix          = Batteries_core.System.Unix
+  module Unix          = Extlib_threads.ExtUnixThreads.Unix
   module UnixLabels    = Batteries_core.System.UnixLabels
   module Sys           = Batteries_core.System.Sys
     

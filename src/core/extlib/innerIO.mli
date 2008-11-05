@@ -60,8 +60,6 @@ val pipe : unit -> input * unit output
 (** Create a pipe between an input and an ouput. Data written from
   the output can be read from the input. *)
 
-
-
 val nread : input -> int -> string
 (** [nread i n] reads a string of size up to [n] from an input.
   The function will raise [No_more_input] if no input is available.
@@ -112,9 +110,12 @@ val really_output : 'a output -> string -> int -> int -> int
 val flush : 'a output -> unit
 (** Flush an output. *)
 
+val flush_all : unit -> unit
+(** Flush all outputs. *)
+
 val close_out : 'a output -> 'a
 (** Close the output and return its accumulator data.
-  It can no longer be written. *)
+    It can no longer be written. *)
 
 val input_string : string -> input
 (** Create an input that will read from a string. *)

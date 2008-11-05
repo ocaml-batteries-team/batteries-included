@@ -54,3 +54,4 @@ ExtMarshal
 ExtGc
 ExtPrintexc
 ExtPervasives
+ExtUnix

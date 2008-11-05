@@ -4,3 +4,4 @@
 <IO.*>: principal
 <innerIO.*>: principal
 <*>: debug
+<extUnixThreads.*>: pkg_threads

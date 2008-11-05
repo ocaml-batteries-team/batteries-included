@@ -33,5 +33,6 @@ Batlib_Baselib_Weak
 Extlib
 Toolchain
 InnerIO
+InnerWeaktbl
 Batteries_core
 Batteries

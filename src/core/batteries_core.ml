@@ -213,7 +213,7 @@ module System      = struct
     
   module File          = Extlib.File
   module Filename      = Batlib_Baselib_Filename
-  module Unix          = Batlib_Baselib_Unix
+  module Unix          = Extlib.ExtUnix.Unix
   module UnixLabels    = Batlib_Baselib_UnixLabels
   module Sys           = Batlib_Baselib_Sys
     

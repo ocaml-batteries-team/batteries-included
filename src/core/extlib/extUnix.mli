@@ -27,6 +27,8 @@
     probably don't. For higher-level functions, see modules {!Sys},
     {!IO}, {!File}.
 
+    {b Note} This module is thread-safe.
+
     @author Xavier Leroy (Base module)
     @author David Teller
 
