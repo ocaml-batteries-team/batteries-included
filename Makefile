@@ -99,9 +99,9 @@ config.post: config.pre
 
 
 top:
-	echo "ocaml -init $(DEST_TOP) \$$@" > src/toplevel/bocaml &&\
-	chmod ugo+rx src/toplevel/bocaml &&\
-	ocamlbuild src/toplevel/batteries_help.cmo
+	echo "ocaml -init $(DEST_TOP) \$$@" > src/batteries_toolchain/bocaml &&\
+	chmod ugo+rx src/batteries_toolchain/ocaml* &&\
+	ocamlbuild src/batteries_toolchain/batteries_help.cmo
 
 install: syntax top
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
@@ -114,10 +114,10 @@ install: syntax top
 		_build/src/syntax/pa_openin/pa_openin_r.cmo \
 		_build/src/syntax/pa_where/pa_where.cmo \
 		_build/src/syntax/pa_batteries/pa_batteries.cmo \
-		_build/src/toplevel/batteries_help.cmo \
-		_build/src/toplevel/batteries_help.cmi \
-		src/toplevel/top.ml \
-		src/toplevel/bocaml 
+		_build/src/batteries_toolchain/batteries_help.cmo \
+		_build/src/batteries_toolchain/batteries_help.cmi \
+		src/batteries_toolchain/top.ml \
+		src/batteries_toolchain/ocaml*
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
 		build/threaded/META \
 		_build/src/main/threads/batteries.cmi \

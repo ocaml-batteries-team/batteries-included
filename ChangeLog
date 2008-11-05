@@ -1,5 +1,15 @@
 2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/batteries_toolchain/ocamlc: created
+
+	* src/batteries_toolchain/ocaml: renamed from bocaml
+
+	* src/batteries_toolchain/ocaml: now using [ocamlfind]
+
+	* src/core/batteries_toolchain: renamed from src/core/toplevel
+
+2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
+
 	* src/core/extlib_threads/: created
 
 	* src/core/extlib_threads.mlpack: created

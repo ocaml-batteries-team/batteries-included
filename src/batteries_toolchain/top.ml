@@ -31,7 +31,7 @@
    - printing a welcome message
 
    To take advantage of this file, run
-   [ocaml -init top.ml]
+   [ocaml -init top.ml] (or, equivalently, use our customized version of [ocaml])
 *)
 
 Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
