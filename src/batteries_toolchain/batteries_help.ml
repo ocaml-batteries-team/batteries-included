@@ -121,10 +121,10 @@ let man_field    = man_attribute
 let man_objtype  = man_aux "#man_objtype"    objtypes   "object type"           "object types"
 
 (*command name,    table,     singular name, plural name, indefinite name*)
-let helpers = [("#man_value",     values   , "value",     "values",   "a value");
-	       ("#man_type",      types    , "type",      "types",    "a type" );
-	       ("#man_language",  language , "language construction",  "language constructions","a language construction");
-	       ("#man_module",    modules  , "module",    "modules",  " a module"     );
+let helpers = [("#man_value",     values   , "value",     "values",     "a value");
+	       ("#man_type",      types    , "type",      "types",      "a type" );
+	       ("#man_language",  language , "language construction",   "language constructions","a language construction");
+	       ("#man_module",    modules  , "module",    "modules",    "a module"     );
 	       ("#man_exception", exns     , "exception", "exceptions", "an exception");
 	       ("#man_signature", modtypes , "signature", "signatures", "a signature" );
 	       ("#man_class",     classes  , "class",     "classes",    "a class"     );

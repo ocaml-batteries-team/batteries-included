@@ -5,3 +5,4 @@ requires="sexplib,unix,num,bigarray,str,findlib,camlp4.lib,camomile"
 
 archive(byte)  ="batteries.cma"
 archive(native)="batteries.cmxa"
+archive(toploop)="batteries_help.cmo"

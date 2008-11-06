@@ -3,7 +3,7 @@ version="20081006"
 description="Batteries Included, standard distribution of OCaml libraries"
 requires(mt) ="batteries_threads,threads"
 requires(-mt)="batteries_nothreads"
-archive(toploop)="batteries_help.cmo"
+#archive(toploop)="batteries_help.cmo"
 
 package "pa_openin" (
 	description = "Local opening/inclusion of modules (container)"

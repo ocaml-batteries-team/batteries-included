@@ -1,5 +1,25 @@
+2008-11-06  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib_threads/extUnixThreads.ml: replaced [Std] with [Extlib.Std]
+
+	* tests/Makefile: targets [all], [byte], [opt] removed, targets [bytelib] and [optlib] added
+	
+	* src/batteries_toolchain/batteries_help.ml: occurrences of [Batteries_config] replaced with [Toolchain.Sysconfig]
+
+	* src/core/batteries_core_threads.ml: module [Toolchain.Sysconfig] added
+
+	* src/core/batteries_core.ml: module [Toolchain.Sysconfig] added
+
 2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
 
+	* doc/batteries/html/about.html (simple): Added a few lines on CDK
+
+	* src/batteries_toolchain/batteries_help.ml: Fixed typo in a string
+
+2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/ocamlcp: created
+	
 	* src/batteries_toolchain/ocamlc: created
 
 	* src/batteries_toolchain/ocaml: renamed from bocaml

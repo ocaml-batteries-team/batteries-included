@@ -14,7 +14,7 @@
 [enum], [of_enum] and sexplib support.
 
 
-**** Alpha 3 (some point in Decemer)
+**** Alpha 3 (some point in December)
 
 * As many bugfixes as required
 
@@ -31,7 +31,7 @@ of [*Labels] modules)
 
 * Completely getting rid of [channel_in]/[channel_out] (in particular,
 removing these types from [Standard] and keeping them only in
-[Pervasives]/[Legacy.Pervasives])
+[Pervasives]/[Legacy.Pervasives]) [done]
 
 * More examples.
 

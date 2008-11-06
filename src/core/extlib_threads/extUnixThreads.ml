@@ -24,7 +24,7 @@ module Unix =
 struct
   include Unix
   open InnerIO
-  open Std
+  open Extlib.Std
   (**
      {6 Tracking additional information on inputs/outputs}
 

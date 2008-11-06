@@ -217,6 +217,7 @@ end
 (*[Toolchain] is [Batteries_core.Toolchain]*)
 module Toolchain = struct
 
+  module Sysconfig     = Batteries_core.Toolchain.Sysconfig
   module Execute       = Batteries_core.Toolchain.Execute
   module Findlib       = Batteries_core.Toolchain.Findlib
 end

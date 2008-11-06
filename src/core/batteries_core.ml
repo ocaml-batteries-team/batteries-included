@@ -226,6 +226,10 @@ end
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
 
+  (**Configuration of the system*)
+  module Sysconfig   = Batteries_config
+
+
   module Execute     = Toolchain.Builtin_tools
 
   (**Package management with Findlib*)
