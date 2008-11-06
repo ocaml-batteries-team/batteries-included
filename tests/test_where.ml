@@ -13,7 +13,7 @@ let fibo n = fst (fibo_aux n)
     | 1 -> (1, 2)
     | n -> (a, a + b) where let (a, b) = fibo_aux ( n - 1 )
 
-
+(*
 (** Battery of regression tests (no pun intended)
 
     Those tests are intended to be parsed, not compiled
@@ -26,6 +26,9 @@ let fibo n = fst (fibo_aux n)
 *)
 
 (** In-expression where *)
+
+let (b, c, d, f, h) = (0, 0, 0, 0, 0)
+type b = unit
 
 (* let _ = b where c = d *)
 let _ = b where c = d
@@ -118,3 +121,4 @@ where val e = f
 () where val a =
     b
     where c = d
+*)
