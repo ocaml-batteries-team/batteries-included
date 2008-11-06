@@ -10,7 +10,7 @@
 
 * A how-to regarding the usage of Batteries in a toplevel (peng)
 
-* Extended versions of [Buffer], [Map], [Queue], [Set], [Stack] with
+* Extended versions of [Queue], [Set], [Stack] with
 [enum], [of_enum] and sexplib support.
 
 
@@ -28,10 +28,6 @@
 * Bringing [*Labels] modules to feature-parity with their non-labelled
 cousins (this may require rethinking either the build system or the name
 of [*Labels] modules)
-
-* Completely getting rid of [channel_in]/[channel_out] (in particular,
-removing these types from [Standard] and keeping them only in
-[Pervasives]/[Legacy.Pervasives]) [done]
 
 * More examples.
 

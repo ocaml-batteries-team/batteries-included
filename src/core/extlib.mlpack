@@ -55,3 +55,4 @@ ExtGc
 ExtPrintexc
 ExtPervasives
 ExtUnix
+ExtMap

@@ -1,0 +1,144 @@
+(* 
+ * ExtMap - Additional map operations
+ * Copyright (C) 1996 Xavier Leroy
+ *               2008 David Teller
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
+open Sexplib
+TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
+
+
+module Map =
+struct
+  module type OrderedType = Map.OrderedType
+
+  module type S =
+  sig
+    type key
+      (** The type of the map keys. *)
+      
+    type (+'a) t
+      (** The type of maps from type [key] to type ['a]. *)
+      
+    val empty: 'a t
+      (** The empty map. *)
+      
+    val is_empty: 'a t -> bool
+      (** Test whether a map is empty or not. *)
+      
+    val add: key -> 'a -> 'a t -> 'a t
+      (** [add x y m] returns a map containing the same bindings as
+	  [m], plus a binding of [x] to [y]. If [x] was already bound
+	  in [m], its previous binding disappears. *)
+      
+    val find: key -> 'a t -> 'a
+      (** [find x m] returns the current binding of [x] in [m],
+	  or raises [Not_found] if no such binding exists. *)
+      
+    val remove: key -> 'a t -> 'a t
+      (** [remove x m] returns a map containing the same bindings as
+	  [m], except for [x] which is unbound in the returned map. *)
+      
+    val mem: key -> 'a t -> bool
+      (** [mem x m] returns [true] if [m] contains a binding for [x],
+	  and [false] otherwise. *)
+      
+    val iter: (key -> 'a -> unit) -> 'a t -> unit
+      (** [iter f m] applies [f] to all bindings in map [m].
+	  [f] receives the key as first argument, and the associated value
+	  as second argument.  The bindings are passed to [f] in increasing
+	  order with respect to the ordering over the type of the keys.
+	  Only current bindings are presented to [f]:
+	  bindings hidden by more recent bindings are not passed to [f]. *)
+      
+    val map: ('a -> 'b) -> 'a t -> 'b t
+      (** [map f m] returns a map with same domain as [m], where the
+	  associated value [a] of all bindings of [m] has been
+	  replaced by the result of the application of [f] to [a].
+	  The bindings are passed to [f] in increasing order
+	  with respect to the ordering over the type of the keys. *)
+      
+    val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
+      (** Same as {!Map.S.map}, but the function receives as arguments both the
+	  key and the associated value for each binding of the map. *)
+      
+    val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+      (** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
+	  where [k1 ... kN] are the keys of all bindings in [m]
+	  (in increasing order), and [d1 ... dN] are the associated data. *)
+      
+    val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
+      (** Total ordering between maps.  The first argument is a total ordering
+          used to compare data associated with equal keys in the two maps. *)
+      
+    val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+      (** [equal cmp m1 m2] tests whether the maps [m1] and [m2] are
+	  equal, that is, contain equal keys and associate them with
+	  equal data.  [cmp] is the equality predicate used to compare
+	  the data associated with the keys. *)
+      
+    val keys : _ t -> key Enum.t
+      (** Return an enumeration of all the keys of a map.*)
+      
+    val values: 'a t -> 'a Enum.t
+      (** Return an enumeration of al the values of a map.*)
+
+    val enum  : 'a t -> (key * 'a) Enum.t
+      (** Return an enumeration of (key, value) pairs of a map.*)
+
+    val of_enum: (key * 'a) Enum.t -> 'a t
+      (** Create a map from a (key, value) enumeration. *)
+  end
+
+  module Make(Ord : OrderedType) =
+    struct
+      include Map.Make(Ord)
+
+	(*We break the abstraction so as to be able to create enumerations
+	  lazily*)
+      type 'a implementation = 
+	  Empty
+	| Node of 'a implementation * key * 'a * 'a implementation * int
+
+      external t_of_impl: 'a implementation -> 'a t = "%identity"
+      external impl_of_t: 'a t -> 'a implementation = "%identity"
+
+      let enum t =
+	let queue = Queue.create () in
+	let rec next () = 
+	  match 
+	    try  Some (Queue.pop queue) 
+	    with Queue.Empty -> None
+	  with None       -> raise Enum.No_more_elements
+	    |  Some Empty -> next ()
+	    | Some Node (l, key, data, r, _) -> 
+		Queue.push l queue;
+		Queue.push r queue;
+		(key, data)
+	in Queue.add (impl_of_t t) queue;
+	  Enum.from next
+
+      let keys    t = Enum.map fst (enum t)
+      let values  t = Enum.map snd (enum t)
+      let of_enum e =
+	Enum.fold (fun (key, data) acc -> add key data acc) empty e
+
+
+    end
+
+end

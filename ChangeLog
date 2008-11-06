@@ -1,8 +1,12 @@
 2008-11-06  David Teller  <David.Teller@univ-orleans.fr>
 
-	* src/main/threads/batteries.mllib: removed [Batlib_baselib_Gc], [Batlib_baselib_Unix]
+	* src/core/extlib.mlpack: [ExtMap] added
 
-	* src/main/nothreads/batteries.mllib: removed [Batlib_baselib_Gc], [Batlib_baselib_Unix]
+	* src/core/batteries_core.ml: module [Map] is now [Extlib.ExtMap.Map]
+
+	* src/main/threads/batteries.mllib: removed [Batlib_baselib_Gc], [Batlib_baselib_Unix], [Map]
+
+	* src/main/nothreads/batteries.mllib: removed [Batlib_baselib_Gc], [Batlib_baselib_Unix], [Map]
 
 	* src/core/extlib_threads/extUnixThreads.ml: replaced [Std] with [Extlib.Std]
 
