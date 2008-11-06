@@ -108,7 +108,7 @@ let man_aux command table kind kinds item =
 	  
 let man_value    = man_aux "#man_value"      values     "value"                 "values"
 let man_type     = man_aux "#man_type"       types      "type"                  "types"
-let man_language = man_aux "#man_language"   language   "language topc"         "language topics"
+let man_language = man_aux "#man_language"   language   "language topic"        "language topics"
 let man_module   = man_aux "#man_module"     modules    "module"                "modules"
 let man_exception= man_aux "#man_exception"  exns       "exception"             "exceptions"
 let man_exn      = man_exception
@@ -123,7 +123,7 @@ let man_objtype  = man_aux "#man_objtype"    objtypes   "object type"           
 (*command name,    table,     singular name, plural name, indefinite name*)
 let helpers = [("#man_value",     values   , "value",     "values",     "a value");
 	       ("#man_type",      types    , "type",      "types",      "a type" );
-	       ("#man_language",  language , "language construction",   "language constructions","a language construction");
+	       ("#man_language",  language , "language construction",   "language topics","a language topic");
 	       ("#man_module",    modules  , "module",    "modules",    "a module"     );
 	       ("#man_exception", exns     , "exception", "exceptions", "an exception");
 	       ("#man_signature", modtypes , "signature", "signatures", "a signature" );

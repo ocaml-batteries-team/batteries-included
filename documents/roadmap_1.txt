@@ -6,10 +6,6 @@
 
 * More Unicode (thelema)
 
-* More boilerplate code, for e.g. printing
-
-* A how-to regarding the usage of Batteries in a toplevel (peng)
-
 
 **** Alpha 3 (some point in December)
 
