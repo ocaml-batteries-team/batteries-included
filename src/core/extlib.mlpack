@@ -56,3 +56,6 @@ ExtPrintexc
 ExtPervasives
 ExtUnix
 ExtMap
+ExtQueue
+ExtStack
+ExtSet

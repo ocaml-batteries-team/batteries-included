@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1 September 2005), see www.w3.org" />
+<link rel="stylesheet" href="api/style.css" type="text/css" />
+<style type="text/css">
+/*<![CDATA[*/
+  body {
+  padding: 3cm;
+  text-align:justify;
+  }
+/*]]>*/
+</style>
+<meta content="text/html; charset=us-ascii" http-equiv=
+"Content-Type" />
+<link rel="Start" href="root.html" />
+<link title="Index of modules" rel="Appendix" href=
+"root_modules.html" />
+<link title="Batteries" rel="Chapter" href="Batteries.html" />
+<title>OCaml Batteries Included</title>
+</head>
+<body>
+<center>
+<h1>The toplevel</h1>
+</center>
+
+If you are new to OCaml, the best place to start is probably the <emph>toplevel</emph>,
+a minimal interactive environment in which you may write OCaml code and evaluate it
+immediately, without having to go through a compilation process.
+
+<h2>Launching the toplevel<a name="launching"/></h2>
+To launch the toplevel from a terminal, open a terminal
+and write
+<pre class="example">
+ocamlfind batteries/ocaml
+</pre>
+
+If you have one of the tools rlwrap or ledit installed (either of
+which is strongly suggested), open a terminal and, instead of the
+previous command, write either
+<pre class="example">
+rlwrap ocamlfind batteries/ocaml
+</pre>
+or
+<pre class="example">
+ledit ocamlfind batteries/ocaml
+</pre>
+
+Finally, if you have Emacs and Tuareg, which is even more suggested,
+instead of the previous commands, open Emacs, open a file whose
+name ends with <code>.ml</code>, press <code>&langle;Ctrl&rangle;-S</code>
+and, when Emacs asks you for the name of your OCaml toplevel, answer
+<pre class="example">
+ocamlfind batteries/ocaml
+</pre>
+
+<h2>What is the toplevel?<a name="what"/></h2> 
+
+You can think of the top-level as a very powerful calculator or as a
+command-line interface comparable to that of your operating system.
+The role of this top-level waits for your commands, evaluates them and
+prints results. This makes it a nice way a to learn OCaml and to test
+algorithms and data structures.
+
+<br />
+
+When you launch the toplevel, it displays something along the lines of:
+
+
+</body>
+</html>
+

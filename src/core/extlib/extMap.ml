@@ -20,7 +20,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries.Data.Persistent" (*For Sexplib, Bin-prot...*)
 
 
 module Map =
@@ -103,6 +103,19 @@ struct
 
     val of_enum: (key * 'a) Enum.t -> 'a t
       (** Create a map from a (key, value) enumeration. *)
+
+    (** {6 Boilerplate code}*)
+    (** {7 S-Expressions}*)
+      
+    val t_of_sexp : (Sexplib.Sexp.t -> key) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> 'b t
+    val sexp_of_t : (key -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> 'b t -> Sexplib.Sexp.t
+
+    (** {7 Printing}*)
+
+    val print :  ?first:string -> ?last:string -> ?sep:string -> 
+      ('a InnerIO.output -> key -> unit) -> 
+      ('a InnerIO.output -> 'c -> unit) -> 
+      'a InnerIO.output -> 'c t -> unit
   end
 
   module Make(Ord : OrderedType) =
@@ -114,6 +127,7 @@ struct
       type 'a implementation = 
 	  Empty
 	| Node of 'a implementation * key * 'a * 'a implementation * int
+
 
       external t_of_impl: 'a implementation -> 'a t = "%identity"
       external impl_of_t: 'a t -> 'a implementation = "%identity"
@@ -137,6 +151,39 @@ struct
       let values  t = Enum.map snd (enum t)
       let of_enum e =
 	Enum.fold (fun (key, data) acc -> add key data acc) empty e
+
+
+      let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
+	Enum.print ~first ~last ~sep (fun out (k,v) -> ExtPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+
+(*The following is a hack to make sure that we're letting sexplib
+  do the conversion automatically, hence that we're following sexplib protocol.*)
+
+      let t_of_sexp key_of_sexp = 
+	let module Local =
+	  struct
+	    let sexp_of_key _ = assert false
+
+	    type 'a t = 'a implementation = 
+			| Empty
+			| Node of 'a t * key * 'a * 'a t * int
+	    with sexp
+		
+	     t_of_sexp
+	  end in fun key_of_a sexp -> t_of_impl (Local.t_of_sexp key_of_a sexp)
+
+      let sexp_of_t sexp_of_key = 
+	let module Local =
+	  struct
+	    let key_of_sexp _ = assert false
+
+	    type 'a t = 'a implementation = 
+			| Empty
+			| Node of 'a t * key * 'a * 'a t * int
+	    with sexp
+		
+	     t_of_sexp
+	  end in fun a_of_key (t:'a t) -> Local.sexp_of_t a_of_key (impl_of_t t)
 
 
     end

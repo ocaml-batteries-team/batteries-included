@@ -45,10 +45,10 @@ module Data        = struct
       module Global        = Extlib.Global
       module Hashtbl       = Extlib.ExtHashtbl.Hashtbl
       module HashtblLabels = Batlib_Baselib_HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
-      module Queue         = Batlib_Baselib_Queue        (*TODO:build from enum?*)
+      module Queue         = Extlib.ExtQueue.Queue
       module Ref           = Extlib.Ref
       module RefList       = Extlib.RefList
-      module Stack         = Batlib_Baselib_Stack        (*TODO:build from enum*)
+      module Stack         = Extlib.ExtStack.Stack
       module Stream        = Extlib.ExtStream.Stream
     end
 
@@ -64,7 +64,7 @@ module Data        = struct
       module PSet            = Extlib.PSet
       module Option          = Extlib.Option
       module OptionLabels    = Extlib.OptionLabels
-      module Set             = Batlib_Baselib_Set       (*TODO:make enumerable*)
+      module Set             = Extlib.ExtSet.Set
       module SetLabels       = Batlib_Baselib_SetLabels (*TODO:make enumerable*)
 
 (**

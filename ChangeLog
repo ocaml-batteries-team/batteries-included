@@ -1,6 +1,20 @@
 2008-11-06  David Teller  <David.Teller@univ-orleans.fr>
 
-	* src/core/extlib.mlpack: [ExtMap] added
+	* src/core/extlib/pSet.ml*: [print] added
+
+	* src/core/extlib/pMap.ml*: [print] added
+
+	* src/core/extlib/extSet.ml*: created
+
+	* src/core/extlib/extHashtbl.mli: fixed documentation typo
+
+	* src/core/extlib/extStack.ml*: created
+
+	* src/core/extlib/extQueue.ml*: created
+
+	* src/core/batteries_core.ml: [Queue] is now [Extlib.ExtQueue.Queue]
+
+	* src/core/extlib.mlpack: [ExtMap], [ExtQueue], [ExtStack] added
 
 	* src/core/batteries_core.ml: module [Map] is now [Extlib.ExtMap.Map]
 

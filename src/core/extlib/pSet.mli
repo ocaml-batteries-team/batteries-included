@@ -70,10 +70,9 @@ val cardinal: 'a t -> int
   (** Return the number of elements of a set. *)
   
 val enum: 'a t -> 'a Enum.t
-  (** Return the list of all elements of the given set.
-      The returned list is sorted in increasing order with respect
-      to the ordering [Ord.compare], where [Ord] is the argument
-      given to {!Set.Make}. *)
+  (** Return an enumeration of all elements of the given set.
+      The returned enumeration is sorted in increasing order with respect
+      to the ordering of this set.*)
   
 val of_enum: 'a Enum.t -> 'a t
 
@@ -84,3 +83,8 @@ val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
 val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 
+(** {7 Printing}*)
+  
+val print :  ?first:string -> ?last:string -> ?sep:string -> 
+  ('a InnerIO.output -> 'c -> unit) -> 
+  'a InnerIO.output -> 'c t -> unit

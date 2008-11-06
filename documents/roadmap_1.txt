@@ -10,9 +10,6 @@
 
 * A how-to regarding the usage of Batteries in a toplevel (peng)
 
-* Extended versions of [Queue], [Set], [Stack] with
-[enum], [of_enum] and sexplib support.
-
 
 **** Alpha 3 (some point in December)
 
