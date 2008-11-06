@@ -33,7 +33,7 @@
    To take advantage of this file, run
    [ocaml -init top.ml] (or, equivalently, use our customized version of [ocaml])
 *)
-
+let interactive = Sys.interactive;;
 Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
 #use "topfind";;
 #require "num";;  (*For some reason, if [num] is not loaded before Camlp4, an exception is launched*)
@@ -42,19 +42,22 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
 #require "camlp4";;
 #require "batteries";;
 #require "batteries.syntax";;
-Batteries_help.init ();;
-print_newline ();;
-print_newline ();;
-print_endline "----------------------------------------------";;
-print_endline "|                                            |";;
-print_endline "|     This is OCaml, Batteries Included.     |";;
-print_endline "|                                            |";;
-print_endline "|                                            |";;
-print_endline "|      If you need help, type '#help;;'      |";;
-print_endline "|                                            |";;
-print_endline "----------------------------------------------";;
-print_newline ();;
-print_newline ();;
-flush_all ();;
-Sys.interactive := true;; (*Return to regular interactive mode*)
-(*Toploop.loop Format.std_formatter ;; (*At this point, we start the toplevel manually.*)*)
+
+if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
+begin
+  Batteries_help.init ();
+  print_newline ();
+  print_endline "----------------------------------------------";
+  print_endline "|                                            |";
+  print_endline "|     This is OCaml, Batteries Included.     |";
+  print_endline "|                                            |";
+  print_endline "|                                            |";
+  print_endline "|      If you need help, type '#help;;'      |";
+  print_endline "|                                            |";
+  print_endline "----------------------------------------------";
+  print_newline ();
+  print_newline ();
+  flush_all ();
+end
+Sys.interactive := interactive;; (*Return to regular interactive mode*)
+

@@ -1,5 +1,11 @@
 2008-11-06  David Teller  <David.Teller@univ-orleans.fr>
 
+	* doc/batteries/html/toplevel.html: added more documentation
+
+	* doc/batteries/html/style.css: added class [code.example]
+
+	* src/batteries_toolchain/top.ml: now checks for interactivity
+
 	* src/core/extlib/pSet.ml*: [print] added
 
 	* src/core/extlib/pMap.ml*: [print] added
