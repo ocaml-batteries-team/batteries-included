@@ -16,7 +16,6 @@ Batlib_Baselib_CamlinternalMod
 Batlib_Baselib_CamlinternalOO
 Batlib_Baselib_Digest
 Batlib_Baselib_Format
-Batlib_Baselib_Gc
 Batlib_Baselib_Genlex
 Batlib_Baselib_HashtblLabels
 Batlib_Baselib_Lazy
@@ -31,7 +30,6 @@ Batlib_Baselib_SetLabels
 Batlib_Baselib_Stack
 Batlib_Baselib_Str
 Batlib_Baselib_Sys
-Batlib_Baselib_Unix
 Batlib_Baselib_UnixLabels
 Batlib_Baselib_Weak
 Extlib

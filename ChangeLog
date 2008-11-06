@@ -1,5 +1,9 @@
 2008-11-06  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/main/threads/batteries.mllib: removed [Batlib_baselib_Gc], [Batlib_baselib_Unix]
+
+	* src/main/nothreads/batteries.mllib: removed [Batlib_baselib_Gc], [Batlib_baselib_Unix]
+
 	* src/core/extlib_threads/extUnixThreads.ml: replaced [Std] with [Extlib.Std]
 
 	* tests/Makefile: targets [all], [byte], [opt] removed, targets [bytelib] and [optlib] added

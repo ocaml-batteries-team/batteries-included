@@ -115,21 +115,19 @@ install: syntax top
 		_build/src/syntax/pa_openin/pa_openin_r.cmo \
 		_build/src/syntax/pa_where/pa_where.cmo \
 		_build/src/syntax/pa_batteries/pa_batteries.cmo \
+		_build/src/batteries_toolchain/batteries_help.cmo \
+		_build/src/batteries_toolchain/batteries_help.cmi \
 		src/batteries_toolchain/top.ml \
 		src/batteries_toolchain/ocaml*
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
 		build/threaded/META \
 		_build/src/main/threads/batteries.cmi \
-		_build/src/batteries_toolchain/batteries_help.cmo \
-		_build/src/batteries_toolchain/batteries_help.cmi \
 		-optional _build/src/main/threads/batteries.cma \
 			_build/src/main/threads/batteries.cmxa  \
 			_build/src/main/threads/batteries.a
 	ocamlfind install $(DESTDIR_FLAGS) batteries_nothreads \
 		build/nothreads/META \
 		_build/src/main/nothreads/batteries.cmi \
-		_build/src/batteries_toolchain/batteries_help.cmo \
-		_build/src/batteries_toolchain/batteries_help.cmi \
 		-optional _build/src/main/nothreads/batteries.cma \
 			_build/src/main/nothreads/batteries.cmxa \
 			_build/src/main/nothreads/batteries.a
