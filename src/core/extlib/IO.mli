@@ -245,7 +245,9 @@ val pipe : unit -> input * unit output
     the output can be read from the input. *)
 
 val copy : input -> _ output -> unit
-(** Read everything from an input and copy it to an output.*)
+(** Read everything from an input and copy it to an output.
+
+    This function flushes the [output].*)
 
 val pos_in : input -> input * (unit -> int)
 (** Create an input that provide a count function of the number of bytes

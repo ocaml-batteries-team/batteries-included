@@ -27,6 +27,7 @@ sig
   val open_in: ?mode:File.open_in_flag list -> ?perm:File.permission ->
     string ->
     IO.input
+  val with_in: IO.input -> (IO.input -> 'a) -> 'a
 end
 
 module type Compressor =
@@ -35,4 +36,5 @@ sig
   val open_out: ?mode:File.open_out_flag list -> ?perm:File.permission ->
     string ->
     unit IO.output
+  val with_out: unit IO.output -> (unit IO.output -> 'a) -> 'a
 end

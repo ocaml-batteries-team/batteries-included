@@ -53,14 +53,21 @@ sig
 
 	Operations performed on the returned channel can raise, in
 	addition to their usual exceptions,
-	[Common.Compress.Compression_error]. *)
+	{!Common.Compress.Compression_error}. *)
 
   val open_in: ?mode:File.open_in_flag list -> ?perm:File.permission ->
     string ->
     IO.input
       (** Shorthand: directly open a compressed file to read from it
-	  See [File.open_in] *)
+	  See {!File.open_in} *)
 
+      val with_in: IO.input -> (IO.input -> 'a) -> 'a
+  (** [with_in input f] creates a new input [input'] which will
+      transparently decompress data from [input], then invokes [f
+      input'] to process that new input. Once [f] has returned or
+      triggered an exception, the [input'] is closed before
+      proceeding. *)
+	
 end
 
 (** Common interface for compressing (i.e., deflating) data. *)
@@ -73,12 +80,19 @@ sig
 	
 	Operations performed on the returned channel can raise, in
 	addition to their usual exceptions,
-	[Common.Compress.Compression_error]. *)
+	{!Common.Compress.Compression_error}. *)
 
   val open_out: ?mode:File.open_out_flag list -> ?perm:File.permission ->
     string ->
     unit IO.output
       (** Shorthand: directly open a compressed file to write to it.
-	  See [File.open_out] *)
+	  See {!File.open_out} *)
+
+  val with_out: unit IO.output -> (unit IO.output -> 'a) -> 'a
+    (** [with_out output f] first creates a new output [output'] which will
+	transparently compress data to [output] and then invokes [f output'].
+	
+	Once [f output'] has returned or triggered an exception,
+	[output'] is closed before proceeding. *)
 
 end

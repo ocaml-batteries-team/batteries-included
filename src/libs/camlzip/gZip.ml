@@ -19,7 +19,7 @@
  * USA *)
 
 open Extlib
-
+open IO
 let uncompress input =
   let camlzip_in = InnerGZip.open_input input in
     IO.create_in
@@ -37,6 +37,16 @@ let gzip_compress ?level output =
 
 let compress output = gzip_compress ?level:None output
 
-let open_in ?mode ?perm fname = uncompress (File.open_in ?mode ?perm fname)
+let open_in  ?mode ?perm fname = uncompress (File.open_in ?mode ?perm fname)
 let open_out ?mode ?perm fname = compress (File.open_out ?mode ?perm fname)
 
+let with_in inp f =
+  let input = uncompress inp in
+  Std.finally (fun () -> close_in input)
+    f input
+
+let with_out out f =
+  let output = compress out in
+  (*Std.finally (fun () -> close_out output)*)
+    Std.finally (fun () -> flush output)
+    f output

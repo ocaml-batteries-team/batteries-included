@@ -90,22 +90,29 @@ let create_in ~read ~input ~close =
     in_id    = uid ()
   }
 
+let close_out o =
+	let f _ = raise Output_closed in
+	  o.out_flush ();
+	  let r = o.out_close() in
+	    o.out_write  <- f;
+	    o.out_output <- f;
+	    o.out_close  <- (fun _ -> r) (*Closing again is not a problem*);
+	    o.out_flush  <- noop         (*Flushing again is not a problem*);
+	    r
+
 let create_out ~write ~output ~flush ~close =
   let rec out = 
     {
       out_write  = write;
       out_output = output;
       out_close  = (fun () ->
-		      flush ();
 		      Outputs.remove outputs (cast_output out);
 		      close ());
       out_flush  = flush;
       out_id     = uid ()
     }
   in Outputs.add outputs (cast_output out); 
-    Gc.finalise (fun _ -> 
-		   flush ();
-		   ignore (close ())) 
+    Gc.finalise (fun _ -> ignore (close ())) 
       out;
     out
 
@@ -207,14 +214,6 @@ let flush o = o.out_flush()
 let flush_all () =
   Outputs.iter (fun o -> try flush o with _ -> ()) outputs
 
-let close_out o =
-	let f _ = raise Output_closed in
-	let r = o.out_close() in
-	o.out_write  <- f;
-	o.out_output <- f;
-	o.out_close  <- (fun _ -> r) (*Closing again is not a problem*);
-	o.out_flush  <- noop (*Flushing again is not a problem*);
-	r
 
 let read_all i =
 	let maxlen = 1024 in

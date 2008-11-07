@@ -87,6 +87,10 @@ val really_input : input -> string -> int -> int -> int
 val close_in : input -> unit
 (** Close the input. It can no longer be read from. *)
 
+(*val auto_close_in : input -> input
+(** Create a new channel which will close automatically once there is nothing
+    left to read.*)*)
+
 val write : 'a output -> char -> unit
 (** Write a single char to an output. *)
 
@@ -129,9 +133,6 @@ val output_buffer : Buffer.t -> string output
     in an efficient way. Closing  returns the whole contents of the buffer
     -- the buffer remains usable.*)
     
-
-
-
 val create_in :
   read:(unit -> char) ->
   input:(string -> int -> int -> int) -> close:(unit -> unit) -> input
