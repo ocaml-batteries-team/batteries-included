@@ -60,5 +60,6 @@ begin
   flush_all ();
 end
 open Batteries;;
+open Standard;;
 Sys.interactive := interactive;; (*Return to regular interactive mode*)
 

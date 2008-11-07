@@ -28,9 +28,8 @@ include InnerIO
    {6 API}
 *)
 
-
-let default_close = (fun () -> ())
-
+external noop :          unit -> unit = "%ignore"
+external default_close : unit -> unit = "%ignore"
 
 let pos_in i =
   let p = ref 0 in
@@ -50,7 +49,7 @@ let pos_in i =
 
 let pos_out o =
   let p = ref 0 in
-    (create_out
+    (wrap_out
        ~write:(fun c ->
 		 write o c;
 		 incr p
@@ -60,8 +59,9 @@ let pos_out o =
 		    p := !p + n;
 		    n
 	       )
-       ~close:(fun () -> close_out o)
+       ~close:noop
        ~flush:(fun () -> flush o)
+       ~underlying:[o]
      , fun () -> !p)
 
 (**
@@ -149,8 +149,8 @@ let make_enum f input =
   close_at_end input (Enum.from (fun () -> apply_enum f input))
 
 
-let comb (a,b) =
-  create_out ~write:(fun c -> 
+let combine (a,b) =
+  wrap_out ~write:(fun c -> 
 		       write a c;
 		       write b c)
     ~output:(fun s i j ->
@@ -160,8 +160,9 @@ let comb (a,b) =
 	      flush a;
 	      flush b)
     ~close:(fun () ->
-	      let _ = close_out a in
-		close_out b)
+	      (close_out a, close_out b))
+    ~underlying:[cast_output a; cast_output b]
+
 
 let write_enum out f enum =
   Enum.iter f enum
@@ -443,10 +444,10 @@ let from_out_channel ch =
 		ch#output s p l
 	in
 	create_out
-		~write
-		~output
-		~flush:ch#flush
-		~close:ch#close_out
+	  ~write
+	  ~output
+	  ~flush:ch#flush
+	  ~close:ch#close_out
 
 let from_in_chars ch =
 	let input s p l =
@@ -474,10 +475,11 @@ let from_out_chars ch =
 		l
 	in
 	create_out
-		~write:ch#put
-		~output
-		~flush:ch#flush
-		~close:ch#close_out
+	  ~write:ch#put
+	  ~output
+	  ~flush:ch#flush
+	  ~close:ch#close_out
+
 (**
    {6 Enumerations}
 *)
@@ -579,7 +581,7 @@ let make_list_printer (p:('a output -> 'b -> unit))
 
 let tab_out ?(tab=' ') n out =
   let spaces   = String.make n tab in
-  create_out 
+  wrap_out 
     ~write: (fun c     -> 
 	       write out  c;
 	       if Char.is_newline c then (
@@ -596,13 +598,27 @@ let tab_out ?(tab=' ') n out =
 		 done;
 		 let s' = Buffer.contents buffer                  in
 		 output out s' 0 (String.length s'))
-    ~flush:(fun () -> flush out)
-    ~close:(fun () -> close_out out)
+    ~flush:noop
+    ~close:noop
+    ~underlying:[out]
 
-let lmargin n p out x =
-  p (tab_out n out) x
+(*
+let lmargin n (p:_ output -> 'a -> unit) out x =
+  p (tab_out n (cast_output out)) x
+*)
 
-let combine = comb
+let comb (a,b) =
+  create_out ~write:(fun c -> 
+		       write a c;
+		       write b c)
+    ~output:(fun s i j ->
+	       let _ = output a s i j in
+		 output b s i j)
+    ~flush:(fun () ->
+	      flush a;
+	      flush b)
+    ~close:(fun () ->
+	      ignore (close_out a); close_out b)
 
 let copy input output = write_lines output (lines_of input) 
 

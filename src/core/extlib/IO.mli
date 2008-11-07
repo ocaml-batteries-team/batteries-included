@@ -148,7 +148,10 @@ val flush_all : unit -> unit
 
 val close_out : 'a output -> 'a
 (** Close the output and return its accumulator data.
-    It can no longer be written. *)
+
+    The output is flushed before being closed and can no longer be
+    written. Attempting to flush or write after the output has been
+    closed will have no effect.*)
 
 (** {6 Unicode extensions} 
 
@@ -208,30 +211,24 @@ val input_enum : char Enum.t -> input
 
 val output_enum : unit -> char Enum.t output
 (** Create an output that will write into an [enum]. The 
-  final enum is returned when the output is closed. *)
+    final enum is returned when the output is closed. *)
 
-val combine : ('a output * 'a output) -> 'a output
+val combine : ('a output * 'b output) -> ('a * 'b) output
 (** [combine (a,b)] creates a new [output] [c] such that
     writing to [c] will actually write to both [a] and [b] *)
 
-val create_in :
-  read:(unit -> char) ->
-  input:(string -> int -> int -> int) -> close:(unit -> unit) -> input
-(** Fully create an input by giving all the needed functions. *)
 
-val create_out :
-  write:(char -> unit) ->
-  output:(string -> int -> int -> int) ->   
-  flush:(unit -> unit) -> close:(unit -> 'a) -> 'a output
-(** Fully create an output by giving all the needed functions. *)
 
-val tab_out : ?tab:char -> int -> 'a output -> 'a output
-(** Create an output shifted to the right by a number of white spaces
-    (or [tab], if given).
+val tab_out : ?tab:char -> int -> 'a output -> unit output
+  (** Create an output shifted to the right by a number of white spaces
+      (or [tab], if given).
 
-    [tab_out n out] produces a new output for writing into [out], in
-    which every new line starts with [n] white spaces.
-    Raises [Invalid_argument] if [n] < 0.*)
+      [tab_out n out] produces a new output for writing into [out], in
+      which every new line starts with [n] white spaces.
+      Raises [Invalid_argument] if [n] < 0.
+
+      Closing [tab_out n out] does not close [out].
+  *)
 
 
 
@@ -253,7 +250,7 @@ val pos_in : input -> input * (unit -> int)
 (** Create an input that provide a count function of the number of bytes
     read from it. *)
 
-val pos_out : 'a output -> 'a output * (unit -> int)
+val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
     written through it. *)
 
@@ -482,6 +479,85 @@ val drop_bits : in_bits -> unit
 (** Drop up to 7 buffered bits and restart to next input character. *)
 
 (**
+   {6 Creating new types of inputs/outputs}
+*)
+
+val create_in :
+  read:(unit -> char) ->
+  input:(string -> int -> int -> int) -> close:(unit -> unit) -> input
+(** Fully create an input by giving all the needed functions. *)
+
+val create_out :
+  write:(char -> unit) ->
+  output:(string -> int -> int -> int) ->   
+  flush:(unit -> unit) -> 
+  close:(unit -> 'a) -> 
+  'a output
+(** 
+    Fully create an output by giving all the needed functions.
+
+    @param write  Write one character to the output (see {!write}).
+    @param output Write a (sub)string to the output (see {!output}).
+    @param flush  Flush any buffers of this output  (see {!flush}).
+    @param close  Close this output. The output will be automatically
+    flushed.
+
+    {b Note} Do {e not} use this function for creating an output which
+    writes to one or more underlying outputs. Rather, use {!wrap_out}.
+*)
+
+val wrap_out :
+  write:(char -> unit)         ->
+  output:(string -> int -> int -> int) ->   
+  flush:(unit -> unit)         -> 
+  close:(unit -> 'a)           -> 
+  underlying:('b output list)  -> 
+  'a output
+(**
+   Fully create an output that writes to one or more underlying outputs.
+
+   This function is a more general version of {!create_out},
+   which also handles dependency management between outputs.
+
+   To illustrate the need for dependency management, let us consider
+   the following values:
+   - an output [out]
+   - a function [f : _ output -> _ output], using {!create_out} to
+   create a new output for writing some data to an underyling
+   output (for instance, a function comparale to {!tab_out} or a
+   function performing transparent compression or transparent
+   traduction between encodings)
+
+   With these values, let us consider the following scenario
+   - a new output [f out] is created
+   - some data is written to [f out] but not flushed
+   - output [out] is closed, perhaps manually or as a consequence
+   of garbage-collection, or because the program has ended
+   - data written to [f out] is flushed.
+
+   In this case, data reaches [out] only after [out] has been closed.
+   Despite appearances, it is quite easy to reach such situation,
+   especially in short programs.
+
+   If, instead, [f] uses [wrap_out], then when output [out] is closed,
+   [f out] is first automatically flushed and closed, which avoids the
+   issue.
+
+   @param write  Write one character to the output (see {!write}).
+   @param output Write a (sub)string to the output (see {!output}).
+   @param flush  Flush any buffers of this output  (see {!flush}).
+   @param close  Close this output. The output will be automatically
+   flushed.
+   @param underlying The list of outputs to which the new output will
+   write.
+
+   {b Note} Function [close] should {e not} close [underlying]
+   yourself. This is a common mistake which may cause sockets or
+   standard output to be closed while they are still being used by
+   another part of the program.
+*)
+
+(**
    {6 For compatibility purposes}
 *)
 
@@ -624,9 +700,9 @@ val printf : 'a output -> ('b, 'a output, unit) format -> 'b
 
     @obsolete Prefer {!Languages.Printf.fprintf}*)
 
-val lmargin : int -> ('b output -> 'a -> unit) -> 'b output -> 'a -> unit
+(*val lmargin : int -> (_ output -> 'a -> unit) -> _ output -> 'a -> unit
 (** [lmargin n p] behaves as [p], with the exception that every new line from this
-    point will be shifted to the right by [n] white spaces*)
+    point will be shifted to the right by [n] white spaces*)*)
 
 
 
