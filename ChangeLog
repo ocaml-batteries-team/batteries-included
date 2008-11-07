@@ -1,3 +1,8 @@
+2008-11-07  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/top.ml: added [open Batteries], [!] before [Sys.interactive]
+	
+
 2008-11-06  David Teller  <David.Teller@univ-orleans.fr>
 
 	* doc/batteries/html/toplevel.html: added more documentation

@@ -33,7 +33,7 @@
    To take advantage of this file, run
    [ocaml -init top.ml] (or, equivalently, use our customized version of [ocaml])
 *)
-let interactive = Sys.interactive;;
+let interactive = !Sys.interactive;;
 Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
 #use "topfind";;
 #require "num";;  (*For some reason, if [num] is not loaded before Camlp4, an exception is launched*)
@@ -59,5 +59,6 @@ begin
   print_newline ();
   flush_all ();
 end
+open Batteries;;
 Sys.interactive := interactive;; (*Return to regular interactive mode*)
 
