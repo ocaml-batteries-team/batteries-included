@@ -1,5 +1,9 @@
 2008-11-07  David Teller  <David.Teller@univ-orleans.fr>
 
+	* batteries.godiva (Depends): added [godi-zip]
+
+	* src/libs/camlzip/_tags: added [pkg_camlzip]
+
 	* src/batteries_toolchain/top.ml: added [open Batteries], [!] before [Sys.interactive]
 	
 
