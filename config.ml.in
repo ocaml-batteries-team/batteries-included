@@ -1,0 +1,2 @@
+let version = "@VERSION@";;
+let ocamlfind_deps = "@OCAMLFIND_DEPS@";;

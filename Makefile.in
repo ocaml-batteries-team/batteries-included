@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-VERSION = 0.20081023
+VERSION = @VERSION@
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
 #      make DOCDIR="/some/where/"
