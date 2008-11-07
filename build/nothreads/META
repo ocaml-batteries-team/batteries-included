@@ -1,7 +1,7 @@
 name="batteries_nothreads"
 version="0.1"
 description="Batteries Included, standard distribution of OCaml libraries (non-thread version)"
-requires="sexplib,unix,num,bigarray,str,findlib,camlp4.lib,camomile"
+requires="sexplib,unix,num,bigarray,str,findlib,camlp4.lib,camomile,zip"
 
 archive(byte)  ="batteries.cma"
 archive(native)="batteries.cmxa"
