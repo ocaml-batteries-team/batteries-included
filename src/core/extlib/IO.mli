@@ -148,7 +148,10 @@ val flush_all : unit -> unit
 
 val close_out : 'a output -> 'a
 (** Close the output and return its accumulator data.
-    It can no longer be written. *)
+
+    The output is flushed before being closed and can no longer be
+    written. Attempting to flush or write after the output has been
+    closed will have no effect.*)
 
 (** {6 Unicode extensions} 
 
@@ -208,7 +211,7 @@ val input_enum : char Enum.t -> input
 
 val output_enum : unit -> char Enum.t output
 (** Create an output that will write into an [enum]. The 
-  final enum is returned when the output is closed. *)
+    final enum is returned when the output is closed. *)
 
 val combine : ('a output * 'a output) -> 'a output
 (** [combine (a,b)] creates a new [output] [c] such that
@@ -225,13 +228,16 @@ val create_out :
   flush:(unit -> unit) -> close:(unit -> 'a) -> 'a output
 (** Fully create an output by giving all the needed functions. *)
 
-val tab_out : ?tab:char -> int -> 'a output -> 'a output
+val tab_out : ?tab:char -> int -> 'a output -> unit output
 (** Create an output shifted to the right by a number of white spaces
     (or [tab], if given).
 
     [tab_out n out] produces a new output for writing into [out], in
     which every new line starts with [n] white spaces.
-    Raises [Invalid_argument] if [n] < 0.*)
+    Raises [Invalid_argument] if [n] < 0.
+
+    Closing [tab_out n out] does not close [out].
+*)
 
 
 

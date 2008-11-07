@@ -1,5 +1,10 @@
 2008-11-07  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/IO.ml*: [tab_out] now returns a [unit output], won't [flush] or [close]
+	 underlying output
+
+	* src/batteries_toolchain/top.ml: added [open Standard]
+
 	* src/libs/camlzip/gZip.ml: tweaked error message
 
 	* src/libs/camlzip/gZip.ml*: [with_in], [with_out] added

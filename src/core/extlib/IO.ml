@@ -28,9 +28,8 @@ include InnerIO
    {6 API}
 *)
 
-
-let default_close = (fun () -> ())
-
+external noop :          unit -> unit = "%ignore"
+external default_close : unit -> unit = "%ignore"
 
 let pos_in i =
   let p = ref 0 in
@@ -596,8 +595,8 @@ let tab_out ?(tab=' ') n out =
 		 done;
 		 let s' = Buffer.contents buffer                  in
 		 output out s' 0 (String.length s'))
-    ~flush:(fun () -> flush out)
-    ~close:(fun () -> close_out out)
+    ~flush:noop
+    ~close:noop
 
 let lmargin n p out x =
   p (tab_out n out) x
