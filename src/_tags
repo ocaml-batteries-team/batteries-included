@@ -1,3 +1,4 @@
 <core>:     include
+<libs>:     include
 <layer_1>:  include
 <main>:     include

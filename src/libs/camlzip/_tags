@@ -1,0 +1,3 @@
+<*.cmx> :for-pack(Libs)
+<*.ml>	:pkg_zip
+<*.mli>	:pkg_zip

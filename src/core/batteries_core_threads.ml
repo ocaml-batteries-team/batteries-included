@@ -201,7 +201,7 @@ struct
   (** {1 Operations on streams}*)
     
   module IO            = Batteries_core.System.IO
-  module Unzip         = Batteries_core.System.Unzip
+  (* module Unzip         = Batteries_core.System.Unzip *)
     
   (** {1 Actual operating system calls}*)
     
