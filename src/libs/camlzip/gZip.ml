@@ -78,6 +78,5 @@ let with_in inp f =
 
 let with_out out f =
   let output = compress out in
-  (*Std.finally (fun () -> close_out output)*)
-    Std.finally (fun () -> flush output)
+  Std.finally (fun () -> close_out output)
     f output
