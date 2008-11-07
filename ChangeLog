@@ -1,5 +1,21 @@
 2008-11-07  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/libs/camlzip/gZip.ml: tweaked error message
+
+	* src/libs/camlzip/gZip.ml*: [with_in], [with_out] added
+
+	* src/libs/common/compress.ml*: [with_in], [with_out] added
+
+	* src/core/extlib/IO.ml: [write_enum] added
+
+	* src/core/extlib/IO.ml: occurrences of [Enum.iter] replaced with [write_enum]
+
+	* src/core/extlib/innerIO.ml: [close_out] now calls [flush]
+
+	* src/core/extlib/innerIO.ml: [create_out] now won't automatically call [flush]
+
+	* src/libs/camlzip/gZip.mli: added hyperlinks into comments
+
 	* batteries.godiva (Depends): added [godi-zip]
 
 	* src/libs/camlzip/_tags: added [pkg_camlzip]

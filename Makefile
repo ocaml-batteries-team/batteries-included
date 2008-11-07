@@ -99,7 +99,7 @@ config.post: config.pre
 
 
 top:
-	echo "ocaml -init $(DEST_TOP) \$$@" > src/batteries_toolchain/bocaml &&\
+	echo "ocaml -init $(DEST_TOP) \$$@" > src/batteries_toolchain/ocaml &&\
 	chmod ugo+rx src/batteries_toolchain/ocaml* &&\
 	ocamlbuild src/batteries_toolchain/batteries_help.cmo
 

@@ -18,22 +18,53 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  * USA *)
 
+open Common
 open Extlib
 open IO
+
+(* XXX: it has to be checked how costly is wrapping each of the
+arguments of IO.create_{in,out} with exception handlers is. Currently,
+this is done for the sake of being sure that Compression_error is
+always raised, and this is the only way to do that staying at the
+OCaml level, because Zlib.Error is also raised from C bindings.
+
+The only alternative is adding hooks into IO.create_{in,out} which let
+specifying extensible exception handlers. *)
+
 let uncompress input =
+  let error exn =
+    raise (Compress.Compression_error ("zlib uncompression error", Some exn)) in
   let camlzip_in = InnerGZip.open_input input in
-    IO.create_in
-      ~read:(fun () -> InnerGZip.input_char camlzip_in)
-      ~input:(InnerGZip.input camlzip_in)
-      ~close:(fun () -> InnerGZip.close_in camlzip_in)
+  let read () =
+    try InnerGZip.input_char camlzip_in
+    with Zlib.Error _ as exn -> error exn in
+  let input buf pos len =
+    try InnerGZip.input camlzip_in buf pos len
+    with Zlib.Error _ as exn -> error exn in
+  let close () =
+    try InnerGZip.close_in camlzip_in
+    with Zlib.Error _ as exn -> error exn
+  in
+    IO.create_in ~read ~input ~close
 
 let gzip_compress ?level output =
+  let error exn =
+    raise (Compress.Compression_error ("zlib compression error", Some exn)) in
   let camlzip_out = InnerGZip.open_output ?level output in
-    IO.create_out
-      ~write:(InnerGZip.output_char camlzip_out)
-      ~output:(InnerGZip.output camlzip_out)
-      ~flush:(fun () -> InnerGZip.flush camlzip_out)
-      ~close:(fun () -> InnerGZip.close_out camlzip_out)
+  let write c =
+    try InnerGZip.output_char camlzip_out c
+    with Zlib.Error _ as exn -> error exn in
+  let output buf pos len =
+    try InnerGZip.output camlzip_out buf pos len
+    with Zlib.Error _ as exn -> error exn in
+  let flush () =
+    try InnerGZip.flush camlzip_out
+    with Zlib.Error _ as exn -> error exn in
+  let close () =
+    try InnerGZip.close_out camlzip_out
+    with Zlib.Error _ as exn -> error exn
+  in
+    IO.create_out ~write ~output ~flush ~close
 
 let compress output = gzip_compress ?level:None output
 
