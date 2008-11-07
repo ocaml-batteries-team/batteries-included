@@ -23,12 +23,11 @@ VERSION = @VERSION@
 
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
-#      make DOCDIR="/some/where/"
-# Typical value: "/usr/share/doc/batteries" (for Debian systems)
-# Typical value: "/usr/local/godi/doc/godi-batteries/doc/batteries" (for GODI systems)
+#   make DOCDIR="/some/where/"
+# Typical value: "/usr/share/doc/ocaml-batteries-included" (Debian)
+# Typical value: "/usr/local/godi/doc/godi-batteries/doc/batteries" (GODI)
 DOCDIR = @DOCDIR@
 
-#
 # command used to trigger the browser
 # if your platform browser is different, you will need to invoke make as
 #      make BROWSER="some command"
@@ -39,10 +38,9 @@ DOCDIR = @DOCDIR@
 BROWSER = @BROWSER_COMMAND@
 
 #Flags to pass to OCamlBuild.
-#Typical flag: -byte-plugin (if you don't have ocamlopt installed on the machine)
+#Typical flag: -byte-plugin (if you don't have ocamlopt)
 #Typical flag: -classic-display (for more details on the build process)
 OBFLAGS =
-
 
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
@@ -65,31 +63,31 @@ DEST_TOP = $(DESTDIR)/batteries/top.ml
 endif
 
 
-
 OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 #OCAMLBUILD=ocamlbuild -byte-plugin -classic-display 
-#Replace the first one with the second one if you have build-time issue, to help with trouble-shooting
+# Replace the first one with the second one if you have build-time
+# issue, to help with trouble-shooting
 
 all: byte syntax top
 
 #Useful for testing
-reinstall: byte syntax opt uninstall install
-rebyte: byte syntax uninstall install
+reinstall: all opt uninstall install
+rebyte: byte uninstall install
 instdoc: doc
 	install -D doc/batteries $(DOCDIR)
 
 byte: config.ml
-	$(OCAMLBUILD) src/main/threads/batteries.cma     &&\
+	$(OCAMLBUILD) src/main/threads/batteries.cma
 	$(OCAMLBUILD) src/main/nothreads/batteries.cma
 
 opt: config.ml
-	$(OCAMLBUILD) src/main/threads/batteries.cmxa    &&\
+	$(OCAMLBUILD) src/main/threads/batteries.cmxa
 	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
 
 syntax: config.ml
-	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo       &&\
-	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin_r.cmo     &&\
-	$(OCAMLBUILD) src/syntax/pa_where/pa_where.cmo         &&\
+	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo
+	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin_r.cmo
+	$(OCAMLBUILD) src/syntax/pa_where/pa_where.cmo
 	$(OCAMLBUILD) src/syntax/pa_batteries/pa_batteries.cmo
 
 top: src/batteries_toolchain/ocaml
@@ -98,7 +96,7 @@ src/batteries_toolchain/ocaml:
 	chmod ugo+rx src/batteries_toolchain/ocaml*
 	ocamlbuild src/batteries_toolchain/batteries_help.cmo
 
-install: syntax top
+install:
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
 		build/META \
 		_build/src/core/extlib/IO.cmi \
@@ -133,26 +131,23 @@ uninstall:
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads
 
 doc: byte doc/api.odocl
-	\rm -Rf doc/batteries/html/api &&\
-	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html &&\
-	rm api.docdir &&\
+	rm -Rf doc/batteries/html/api
+	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
+	rm -f api.docdir
 	mv _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: 
 	cp src/main/threads/batteries.mllib doc/api.odocl
 
 examples:
-	@echo Note: to build the examples, you must first have installed Batteries     &&\
-	echo If you haven\'t installed Batteries yet, please use    make byte opt install   &&\
-	cd examples &&\
-	$(OCAMLBUILD) examples.otarget
+	@echo Note: to build the examples, you must first have installed Batteries
+	@echo If you haven\'t installed Batteries yet, please use    make all opt install
+	cd examples && $(OCAMLBUILD) examples.otarget
 
 clean:
-	$(OCAMLBUILD) -clean &&\
-	cd examples && \
-	$(OCAMLBUILD) -clean &&\
-	cd .. &&\
-	\rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"` &&\
-	\rm -f META doc/api.odocl doc/batteries/html/api/*
+	$(OCAMLBUILD) -clean
+	cd examples && $(OCAMLBUILD) -clean
+	rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"`
+	rm -f META doc/api.odocl doc/batteries/html/api/*
 
 .PHONY: doc/api.odocl batteries.mllib examples
