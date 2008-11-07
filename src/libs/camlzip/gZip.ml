@@ -21,6 +21,7 @@
 open Common
 open Extlib
 open IO
+  
 
 (* XXX: it has to be checked how costly is wrapping each of the
 arguments of IO.create_{in,out} with exception handlers is. Currently,
@@ -42,7 +43,7 @@ let uncompress input =
     try InnerGZip.input camlzip_in buf pos len
     with Zlib.Error _ as exn -> error exn in
   let close () =
-    try InnerGZip.close_in camlzip_in
+    try InnerGZip.close_input camlzip_in
     with Zlib.Error _ as exn -> error exn
   in
     IO.create_in ~read ~input ~close
@@ -50,7 +51,7 @@ let uncompress input =
 let gzip_compress ?level output =
   let error exn =
     raise (Compress.Compression_error ("zlib compression error", Some exn)) in
-  let camlzip_out = InnerGZip.open_output ?level output in
+  let camlzip_out = InnerGZip.open_output ?level (cast_output output) in
   let write c =
     try InnerGZip.output_char camlzip_out c
     with Zlib.Error _ as exn -> error exn in
@@ -61,7 +62,7 @@ let gzip_compress ?level output =
     (* Rationale: gzip format is CRC-terminated, flushing is
     meaningless, flushed files w/o CRC are not readable anyhow. *)
   let close () =
-    try InnerGZip.close_out camlzip_out
+    try InnerGZip.close_output camlzip_out
     with Zlib.Error _ as exn -> error exn
   in
     IO.create_out ~write ~output ~flush ~close

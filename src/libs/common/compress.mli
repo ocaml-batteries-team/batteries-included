@@ -74,7 +74,7 @@ end
 module type Compressor =
 sig
 
-  val compress: 'a IO.output -> 'a IO.output
+  val compress: 'a IO.output -> unit IO.output
     (** Wrap an output channel, compressing transparently data when
 	writing to it.
 	

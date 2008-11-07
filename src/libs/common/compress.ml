@@ -32,7 +32,7 @@ end
 
 module type Compressor =
 sig
-  val compress: 'a IO.output -> 'a IO.output
+  val compress: 'a IO.output -> unit IO.output
   val open_out: ?mode:File.open_out_flag list -> ?perm:File.permission ->
     string ->
     unit IO.output

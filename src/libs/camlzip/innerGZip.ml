@@ -177,16 +177,13 @@ let input_char iz =
 let input_byte iz =
   Char.code (input_char iz)
 
-let dispose iz =
+let close_input iz =
   iz.in_eof <- true;
   Zlib.inflate_end iz.in_stream
+  (* IO.close_in iz.in_chan *)
 
-let close_in iz =
-  dispose iz;
-  IO.close_in iz.in_chan
-
-type 'a out_channel =
-  { out_chan: 'a IO.output;
+type out_channel =
+  { out_chan: unit IO.output;
     out_buffer: string;
     mutable out_pos: int;
     mutable out_avail: int;
@@ -252,7 +249,7 @@ let write_int32 oc n =
     r := Int32.shift_right_logical !r 8
   done
 
-let flush oz =
+let close_output oz =
   let rec do_flush () =
     (* If output buffer is full, flush it *)
     if oz.out_avail = 0 then begin
@@ -277,6 +274,3 @@ let flush oz =
   (* Dispose of stream *)
   Zlib.deflate_end oz.out_stream
 
-let close_out oz =
-  flush oz;
-  IO.close_out oz.out_chan

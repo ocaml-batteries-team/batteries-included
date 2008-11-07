@@ -33,13 +33,11 @@ val input_char: in_channel -> char
 val input_byte: in_channel -> int
 val input: in_channel -> string -> int -> int -> int
 val really_input: in_channel -> string -> int -> int -> unit
-val close_in: in_channel -> unit
-val dispose: in_channel -> unit
+val close_input: in_channel -> unit
 
-type 'a out_channel
-val open_output: ?level:int -> 'a IO.output -> 'a out_channel
-val output_char: 'a out_channel -> char -> unit
-val output_byte: 'a out_channel -> int -> unit
-val output: 'a out_channel -> string -> int -> int -> int
-val close_out: 'a out_channel -> 'a
-val flush: 'a out_channel -> unit
+type out_channel
+val open_output: ?level:int -> unit IO.output -> out_channel
+val output_char: out_channel -> char -> unit
+val output_byte: out_channel -> int -> unit
+val output: out_channel -> string -> int -> int -> int
+val close_output: out_channel -> unit

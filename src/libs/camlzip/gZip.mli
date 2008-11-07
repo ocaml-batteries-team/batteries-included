@@ -65,7 +65,7 @@ val with_in: IO.input -> (IO.input -> 'a) -> 'a
 (* XXX this should be a module include, see above *)
 (* include Common.Compress.Compressor *)
 
-val compress: 'a IO.output -> 'a IO.output
+val compress: 'a IO.output -> unit IO.output
   (** Wrap an output channel, compressing transparently data when
       writing to it.
       
@@ -95,7 +95,7 @@ val with_out: unit IO.output -> (unit IO.output -> 'a) -> 'a
     Provide acces to GZip-specific features.
 *)
 
-val gzip_compress: ?level:int -> 'a IO.output -> 'a IO.output
+val gzip_compress: ?level:int -> 'a IO.output -> unit IO.output
   (** gzip-specific compression function, same as {!GZip.compress}, but
       enable to specifiy gzip-specific compression parameters
 
