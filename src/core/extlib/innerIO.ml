@@ -32,10 +32,12 @@ type input = {
 
 type 'a output = {
   mutable out_write : char -> unit;
-  mutable out_output : string -> int -> int -> int;
+  mutable out_output: string -> int -> int -> int;
   mutable out_close : unit -> 'a;
   mutable out_flush : unit -> unit;
-  out_id: int;(**A unique identifier.*)
+  out_id:    int;(**A unique identifier.*)
+  out_upstream:(unit output, unit) InnerWeaktbl.t
+    (**The set of outputs which have been created to write to this output.*)
 }
 
 
@@ -64,7 +66,7 @@ let outputs = Outputs.create 32
 
 (** {6 Primitive operations}*)
 
-external noop : unit -> unit = "%ignore"
+external noop        : unit      -> unit        = "%ignore"
 external cast_output : 'a output -> unit output = "%identity"
 exception No_more_input
 exception Input_closed
@@ -90,17 +92,30 @@ let create_in ~read ~input ~close =
     in_id    = uid ()
   }
 
-let close_out o =
-	let f _ = raise Output_closed in
-	  o.out_flush ();
-	  let r = o.out_close() in
-	    o.out_write  <- f;
-	    o.out_output <- f;
-	    o.out_close  <- (fun _ -> r) (*Closing again is not a problem*);
-	    o.out_flush  <- noop         (*Flushing again is not a problem*);
-	    r
+(*For closing outputs, we need either polymorphic recursion or a
+  hack. Well, a hack it is.*)
 
-let create_out ~write ~output ~flush ~close =
+(*Close a [unit output] -- note that this works for any kind of output,
+  thanks to [cast_output], but this can't return a proper result.*)
+let rec close_unit (o:unit output) : unit =
+  let forbidden _ = raise Output_closed in
+    o.out_flush ();
+    InnerWeaktbl.iter (fun x _ -> close_unit x) o.out_upstream;
+    let r = o.out_close() in
+      o.out_write  <- forbidden;
+      o.out_output <- forbidden;
+      o.out_close  <- (fun _ -> r) (*Closing again is not a problem*);
+      o.out_flush  <- noop         (*Flushing again is not a problem*);
+      ()
+
+(*Close a ['a output] -- first close it as a [unit output] then
+  recover the result.*)
+let close_out o =
+  close_unit (cast_output o);
+  o.out_close ()
+
+
+let wrap_out ~write ~output ~flush ~close ~underlying  =
   let rec out = 
     {
       out_write  = write;
@@ -109,13 +124,19 @@ let create_out ~write ~output ~flush ~close =
 		      Outputs.remove outputs (cast_output out);
 		      close ());
       out_flush  = flush;
-      out_id     = uid ()
+      out_id     = uid ();
+      out_upstream = InnerWeaktbl.create 2
     }
-  in Outputs.add outputs (cast_output out); 
+  in 
+  let o = cast_output out in
+    List.iter (fun x -> InnerWeaktbl.add x.out_upstream o ()) underlying; 
+    Outputs.add outputs (cast_output out); 
     Gc.finalise (fun _ -> ignore (close ())) 
       out;
     out
 
+let create_out ~write ~output ~flush ~close =
+  wrap_out ~write ~output ~flush ~close ~underlying:[]
 
 let read i = i.in_read()
 
@@ -271,6 +292,7 @@ let output_string() =
       ~output: (fun s p l -> Buffer.add_substring b s p l;  l  )
       ~close:  (fun () -> Buffer.contents b)
       ~flush:  noop
+
 
 
 let output_buffer buf =
@@ -503,7 +525,6 @@ let stdnull= create_out
   ~output:(fun _ _ l -> l)
   ~flush:ignore
   ~close:ignore
-
 
 (*TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)*)
 

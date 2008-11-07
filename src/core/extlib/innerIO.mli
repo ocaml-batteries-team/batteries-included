@@ -141,10 +141,73 @@ val create_in :
 val create_out :
   write:(char -> unit) ->
   output:(string -> int -> int -> int) ->   
-  flush:(unit -> unit) -> close:(unit -> 'a) -> 'a output
-(** Fully create an output by giving all the needed functions. *)
+  flush:(unit -> unit) -> 
+  close:(unit -> 'a) -> 
+  'a output
+(** 
+    Fully create an output by giving all the needed functions.
 
+    @param write  Write one character to the output (see {!write}).
+    @param output Write a (sub)string to the output (see {!output}).
+    @param flush  Flush any buffers of this output  (see {!flush}).
+    @param close  Close this output. The output will be automatically
+    flushed.
 
+    {b Note} Do {e not} use this function for creating an output which
+    writes to one or more underlying outputs. Rather, use {!wrap_out}.
+*)
+
+val wrap_out :
+  write:(char -> unit)         ->
+  output:(string -> int -> int -> int) ->   
+  flush:(unit -> unit)         -> 
+  close:(unit -> 'a)           -> 
+  underlying:('b output list)  -> 
+  'a output
+(**
+   Fully create an output that writes to one or more underlying outputs.
+
+   This function is a more general version of {!create_out},
+   which also handles dependency management between outputs.
+
+   To illustrate the need for dependency management, let us consider
+   the following values:
+   - an output [out]
+   - a function [f : _ output -> _ output], using {!create_out} to
+   create a new output for writing some data to an underyling
+   output (for instance, a function comparale to {!tab_out} or a
+   function performing transparent compression or transparent
+   traduction between encodings)
+
+   With these values, let us consider the following scenario
+   - a new output [f out] is created
+   - some data is written to [f out] but not flushed
+   - output [out] is closed, perhaps manually or as a consequence
+   of garbage-collection, or because the program has ended
+   - data written to [f out] is flushed.
+
+   In this case, data reaches [out] only after [out] has been closed,
+   which violates the protocol.  Despite appearances, it is quite easy
+   to reach such situation, especially in short programs.
+
+   The solution is to use [wrap_out] rather than [create_out] in [f].
+   Specifying that [f out] writes on [out] will then let the run-time
+   flush and close [f out] when [out] is closed for any reason, which
+   in turn avoids the issue.
+
+   @param write  Write one character to the output (see {!write}).
+   @param output Write a (sub)string to the output (see {!output}).
+   @param flush  Flush any buffers of this output  (see {!flush}).
+   @param close  Close this output. The output will be automatically
+   flushed.
+   @param underlying The list of outputs to which the new output will
+   write.
+
+   {b Note} Function [close] should {e not} close [underlying]
+   yourself. This is a common mistake which may cause sockets or
+   standard output to be closed while they are still being used by
+   another part of the program.
+*)
 
 val default_buffer_size : int
   (**The default size of buffers.*)
