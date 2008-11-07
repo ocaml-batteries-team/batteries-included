@@ -57,9 +57,9 @@ let gzip_compress ?level output =
   let output buf pos len =
     try InnerGZip.output camlzip_out buf pos len
     with Zlib.Error _ as exn -> error exn in
-  let flush () =
-    try InnerGZip.flush camlzip_out
-    with Zlib.Error _ as exn -> error exn in
+  let flush = ignore in
+    (* Rationale: gzip format is CRC-terminated, flushing is
+    meaningless, flushed files w/o CRC are not readable anyhow. *)
   let close () =
     try InnerGZip.close_out camlzip_out
     with Zlib.Error _ as exn -> error exn
