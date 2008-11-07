@@ -218,6 +218,10 @@ val index : t -> UChar.t -> int
 val contains : t -> UChar.t -> bool
 (** As [String.contains] *)
 
+val contains_from : t -> UChar.t -> Byte.b_idx -> bool
+
+val rcontains_from : t -> UChar.t -> Byte.b_idx -> bool
+
 val escaped : t -> t
 
 (** Buffer module for UTF-8 strings *)

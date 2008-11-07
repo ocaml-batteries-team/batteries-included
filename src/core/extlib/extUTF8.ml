@@ -266,13 +266,24 @@ module UTF8 = struct
     in
     aux 0 (Byte.first)
 
-  let contains us ch = 
-    let rec aux bi =
-      if Byte.out_of_range us bi then false
-      else if look us bi = ch then true
-      else aux (Byte.next us bi)
+  let rindex us ch =
+    let rec aux ci bi =
+      if Byte.out_of_range us bi then raise Not_found;
+      if look us bi = ch then ci
+      else aux (ci-1) (Byte.prev us bi)
     in
-    aux (Byte.first)
+    aux 0 (Byte.last us)
+
+  let rec contains_aux step bi us ch =
+    if Byte.out_of_range us bi then false
+    else if look us bi = ch then true
+    else contains_aux step (step us bi) us ch
+
+  let contains us ch = contains_aux Byte.next Byte.first us ch
+
+  let contains_from us ch bi = contains_aux Byte.next bi us ch
+
+  let rcontains_from us ch bi = contains_aux Byte.prev bi us ch
 
   let escaped us = String.escaped us (* FIXME: think through whether this works *)
 
