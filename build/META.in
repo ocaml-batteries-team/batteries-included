@@ -1,5 +1,5 @@
 name="batteries"
-version="20081006"
+version="@VERSION@"
 description="Batteries Included, standard distribution of OCaml libraries"
 requires(mt) ="batteries_threads,threads"
 requires(-mt)="batteries_nothreads"
@@ -7,10 +7,10 @@ archive(toploop)="batteries_help.cmo"
 
 package "pa_openin" (
 	description = "Local opening/inclusion of modules (container)"
-	version     = "20081006"
+	version     = "@VERSION@"
 	package "syntax" (
 		description = "Local opening/inclusion of modules (syntax extension)"
-		version                       = "20081006"
+		version                       = "@VERSION@"
 		requires                      = "camlp4"
 		requires(byte)                = "batteries"
 		archive(syntax, preprocessor, camlp4o) = "pa_openin.cmo"
@@ -22,17 +22,17 @@ package "pa_openin" (
 
 package "pa_type_conv" (
 	description = "Support library for generating boilerplate code from type definitions (container)"
-	version     = "20081006"
+	version     = "@VERSION@"
 	package "syntax" (
 		description = "Generating boilerplate code from type definitions (syntax extension)"
-		version                       = "20081006"
+		version                       = "@VERSION@"
 		requires                      = "type-conv.syntax"
 	)
 )
 
 package "pa_where" (
 	description = "'where' backward declarations (container)"
-	version     = "20081007"
+	version     = "@VERSION@"
 	package "syntax" (
 		description = "'where' backward declarations (syntax extension)"
 		version                       = "0.4"
@@ -43,10 +43,10 @@ package "pa_where" (
 
 package "pa_batteries" (
 	description = "auto-opener for Batteries (container)"
-	version     = "20081008"
+	version     = "@VERSION@"
 	package "syntax" (
 	    	description = "auto-opener for Batteries (syntax extension)"
-		version     = "20081008"
+		version     = "@VERSION@"
 		archive(syntax, preprocessor) = "pa_batteries.cmo"
 		archive(syntax, toploop)      = "pa_batteries.cmo"
 	)
@@ -58,9 +58,9 @@ package "pa_batteries" (
 #
 package "sexplib" (
 	description = "Saving data to/loading data from a human-readable format (container)"
-	version     = "20081007"
+	version     = "@VERSION@"
 	package "syntax" (
-		version     = "20081007"
+		version     = "@VERSION@"
 		description = "Saving data to/loading data from a human-readable format (syntax extension)"
 		requires    = "sexplib.syntax"
 	)
@@ -70,9 +70,9 @@ package "sexplib" (
 
 package "bin_prot" (
 	description = "Saving data to/loading data from a compact binary protocol (container)"
-	version     = "20081007"
+	version     = "@VERSION@"
 	package "syntax" (
-		version     = "20081007"
+		version     = "@VERSION@"
 		description = "Saving data to/loading data from a compact binary protocol (syntax extension)"
 		requires    = "bin_prot.syntax"
 	)
@@ -83,7 +83,7 @@ package "bin_prot" (
 # The feature is actually implemented in myocamlbuild.ml
 #
 package "syntax" (
-	version     = "20081007"
+	version     = "@VERSION@"
 	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
 	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"
 	requires(boilerplate) = "type-conv.syntax,bin_prot.syntax"
