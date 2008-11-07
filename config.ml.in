@@ -1,2 +1,5 @@
+
 let version = "@VERSION@";;
-let ocamlfind_deps = "@OCAMLFIND_DEPS@";;
+let documentation_root = "@DOCROOT@";;
+let (browser: (_, _, _) format) = "@BROWSER_COMMAND@";;
+

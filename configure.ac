@@ -14,12 +14,17 @@ AC_CHECK_PROGS(OCAMLOPT,[ocamlopt.opt ocamlopt],)
 if test -z "$OCAMLOPT" ; then
    AC_MSG_WARN([Cannot find ocamlopt; native code compilation only.])
 fi
+AC_CHECK_PROGS(OCAMLBUILD,[ocamlbuild ocamlbuild.native ocamlbuild.byte],)
+if test -z "$OCAMLBUILD" ; then
+   AC_MSG_WARN([Cannot find ocamlbuild.])
+fi
 AC_CHECK_PROGS(OCAMLDOC,[ocamldoc.opt ocamldoc],)
 if test -z "$OCAMLDOC" ; then
    AC_MSG_WARN([Cannot find ocamldoc; API doc cannot be generated.])
 fi
 AC_SUBST(OCAMLC)
 AC_SUBST(OCAMLOPT)
+AC_SUBST(OCAMLBUILD)
 AC_SUBST(OCAMLDOC)
 
 OCAMLVERSION=$($OCAMLC -version)
@@ -42,7 +47,7 @@ AC_DEFUN(AC_CHECK_OCAML_PKG,
 [dnl
 AC_MSG_CHECKING(findlib package $1)
 if tmp=`$OCAMLFIND query -format "%p" $1` 2>/dev/null ; then
-   AC_MSG_RESULT(found (version $tmp))
+   AC_MSG_RESULT(found)
    [$2]=$tmp
    OCAMLFIND_DEPS="$OCAMLFIND_DEPS $tmp"
 else
@@ -82,6 +87,35 @@ if test -z "$OCAMLPKG_bin_prot" ; then
    exit 1
 fi
 AC_SUBST(OCAMLFIND_DEPS)
+
+# set build-time options
+
+# default browser command
+DEFAULT_BROWSER="gnome-open %s &> /dev/null"
+AC_ARG_WITH(
+	browser,
+	[  --with-browser=BROWSER  set command to open HTML API reference
+	                  default: "gnome-open %s"],
+	BROWSER_COMMAND=$withval,
+	BROWSER_COMMAND=$DEFAULT_BROWSER)
+if test "$BROWSER_COMMAND" = "yes" ; then
+   AC_MSG_ERROR([--with-browser requires an argument])
+   exit 1
+fi
+AC_SUBST(BROWSER_COMMAND)
+
+DEFAULT_DOCDIR="`pwd`/doc/batteries"
+AC_ARG_WITH(
+	docroot,
+	[  --with-docroot=PATH  set documentation root
+	                  default: "$PWD/doc/batteries"],
+	DOCDIR=$withval,
+	DOCDIR=$DEFAULT_DOCDIR)
+if test "$DOCDIR" = "yes" ; then
+   AC_MSG_ERROR([--with-docroot requires an argument])
+   exit 1
+fi
+AC_SUBST(DOCDIR)
 
 # fill output templates
 AC_CONFIG_FILES([

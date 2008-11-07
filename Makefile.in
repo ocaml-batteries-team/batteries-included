@@ -20,12 +20,13 @@
 
 
 VERSION = @VERSION@
+
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
 #      make DOCDIR="/some/where/"
 # Typical value: "/usr/share/doc/batteries" (for Debian systems)
 # Typical value: "/usr/local/godi/doc/godi-batteries/doc/batteries" (for GODI systems)
-DOCDIR  =  $(shell pwd)/doc/batteries/
+DOCDIR = @DOCDIR@
 
 #
 # command used to trigger the browser
@@ -35,7 +36,7 @@ DOCDIR  =  $(shell pwd)/doc/batteries/
 # Typical value: "htmlview %S &> /dev/null &"      (for Fedora/Red Hat)
 # Typical value: "start %S /B"                     (for Windows)
 # Typical value: "gnome-open %S &> /dev/null &"    (for Gnome)
-BROWSER = gnome-open %S &> /dev/null &
+BROWSER = @BROWSER_COMMAND@
 
 #Flags to pass to OCamlBuild.
 #Typical flag: -byte-plugin (if you don't have ocamlopt installed on the machine)
@@ -58,14 +59,14 @@ endif
 
 DEST_TOP = 
 ifeq ($(DESTDIR),)
-DEST_TOP = $(shell ocamlfind printconf destdir)/batteries/top.ml
+DEST_TOP = $(shell @OCAMLFIND@ printconf destdir)/batteries/top.ml
 else
 DEST_TOP = $(DESTDIR)/batteries/top.ml
 endif
 
 
 
-OCAMLBUILD=ocamlbuild $(OBFLAGS)
+OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 #OCAMLBUILD=ocamlbuild -byte-plugin -classic-display 
 #Replace the first one with the second one if you have build-time issue, to help with trouble-shooting
 
@@ -77,30 +78,24 @@ rebyte: byte syntax uninstall install
 instdoc: doc
 	install -D doc/batteries $(DOCDIR)
 
-byte: config
+byte: config.ml
 	$(OCAMLBUILD) src/main/threads/batteries.cma     &&\
 	$(OCAMLBUILD) src/main/nothreads/batteries.cma
 
-opt: config
+opt: config.ml
 	$(OCAMLBUILD) src/main/threads/batteries.cmxa    &&\
 	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
 
-syntax: config
+syntax: config.ml
 	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo       &&\
 	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin_r.cmo     &&\
 	$(OCAMLBUILD) src/syntax/pa_where/pa_where.cmo         &&\
 	$(OCAMLBUILD) src/syntax/pa_batteries/pa_batteries.cmo
 
-config: config.post
-config.post: config.pre
-	cp config.pre config.post                                                      &&\
-	echo "let documentation_root = \"$(DOCDIR)\";;"                 >> config.post &&\
-	echo "let (browser:(_, _, _) format) = \"$(BROWSER)\";;"        >> config.post
-
-
-top:
-	echo "ocaml -init $(DEST_TOP) \$$@" > src/batteries_toolchain/ocaml &&\
-	chmod ugo+rx src/batteries_toolchain/ocaml* &&\
+top: src/batteries_toolchain/ocaml
+src/batteries_toolchain/ocaml:
+	echo "ocaml -init $(DEST_TOP) \$$@" > $@
+	chmod ugo+rx src/batteries_toolchain/ocaml*
 	ocamlbuild src/batteries_toolchain/batteries_help.cmo
 
 install: syntax top
@@ -158,6 +153,6 @@ clean:
 	$(OCAMLBUILD) -clean &&\
 	cd .. &&\
 	\rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"` &&\
-	\rm -f META doc/api.odocl doc/batteries/html/api/* config.post
+	\rm -f META doc/api.odocl doc/batteries/html/api/*
 
 .PHONY: doc/api.odocl batteries.mllib examples
