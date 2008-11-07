@@ -646,6 +646,9 @@ val strings_of : input -> string Enum.t
 val lines_of : input -> string Enum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
  
+val chunks_of : int -> input -> string Enum.t
+(** Read an input as an enumeration of strings of given maximal length.*)
+
 val ulines_of : input -> Rope.t Enum.t
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
 
@@ -662,6 +665,9 @@ val bits_of : in_bits -> int Enum.t
 
 val write_bytes : 'a output -> int Enum.t -> unit
 (** Write an enumeration of unsigned 8-bit bytes. *)
+
+val write_chars : 'a output -> char Enum.t -> unit
+(** Write an enumeration of chars. *)
 
 val write_ui16s : 'a output -> int Enum.t -> unit
 (** Write an enumeration of unsigned 16-bit words. *)
@@ -682,7 +688,10 @@ val write_doubles : 'a output -> float Enum.t -> unit
 (** Write an enumeration of IEEE double precision floating point value. *)
 
 val write_strings : 'a output -> string Enum.t -> unit
-(** Write an enumeration of strings, appending null characters. *)
+(** Write an enumeration of strings, appending null characters.*)
+
+val write_chunks: 'a output -> string Enum.t -> unit
+(** Write an enumeration of strings, without appending null characters.*)
 
 val write_lines : 'a output -> string Enum.t -> unit
 (** Write an enumeration of lines, appending a LF (it might be converted

@@ -506,6 +506,7 @@ let strings_of input      = make_enum read_string input
 
 let lines_of input        = make_enum read_line input
 
+let chunks_of n input     = make_enum (fun input -> nread input n) input
 
 (**The number of chars to read at once*)
 let buffer_size = 1024 (*Arbitrary size.*)
@@ -517,6 +518,9 @@ let bits_of input = close_at_end input.ch (Enum.from (fun () -> apply_enum read_
 
 let write_bytes output enum =
   write_enum output (write_byte output) enum
+
+let write_chars output enum =
+  write_enum output (write output) enum
 
 let write_ui16s output enum =
   write_enum output (write_ui16 output) enum
@@ -544,6 +548,9 @@ let write_strings output enum =
 
 let write_lines output enum =
   write_enum output (write_line output) enum
+
+let write_chunks output enum =
+  write_enum output (nwrite output) enum
 
 let write_bitss ~nbits output enum =
   Enum.iter (write_bits ~nbits output) enum
@@ -620,7 +627,8 @@ let comb (a,b) =
     ~close:(fun () ->
 	      ignore (close_out a); close_out b)
 
-let copy input output = write_lines output (lines_of input) 
+
+
 
 (** {6 Unicode}*)
 open ExtUTF8
@@ -704,6 +712,9 @@ let write_ropes o re = write_enum o (write_rope o) re
 
 (*val write_uchars : _ output -> UChar.t Enum.t -> unit*)
 let write_uchars o uce = write_enum o (write_uchar o) uce
+
+let copy input output = write_chunks output (chunks_of default_buffer_size input)
+(*let copy input output = write_chars output (chars_of input)*)
 
 (*
 (** {6 Test} *)
