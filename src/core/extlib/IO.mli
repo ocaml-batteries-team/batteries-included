@@ -146,12 +146,22 @@ val flush : 'a output -> unit
 val flush_all : unit -> unit
 (** Flush all outputs, ignore errors. *)
 
+
 val close_out : 'a output -> 'a
 (** Close the output and return its accumulator data.
 
     The output is flushed before being closed and can no longer be
     written. Attempting to flush or write after the output has been
     closed will have no effect.*)
+
+(**/**)
+val close_all : unit -> unit
+(** Close all outputs.
+
+    Ignore errors. Automatically called at the end of your program.
+    You probably should never use it manually, as it also closes
+    [stdout], [stderr], [stdnull].*)
+(**/**)
 
 (** {6 Unicode extensions} 
 

@@ -1,3 +1,21 @@
+2008-11-08  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPervasives.ml*: [print_all], [prerr_all], [foreach] added
+
+	* src/core/extlib/IO.ml*: [close_all] added
+
+	* src/core/extlib/innerIO.ml*: [close_all] added
+
+	* src/core/extlib/innerIO.ml: [input.in_upstream] added
+
+	* src/core/extlib/innerIO.ml: [weak_*] created
+
+	* src/core/extlib/extPervasives.ml: [close_all] registered with [at_exit]
+
+	* src/core/extlib/innerIO.ml*: [close_all] added
+
+	* src/core/extlib/IO.ml: [copy] rewritten
+
 2008-11-07  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/IO.ml: [copy] now uses [write_chunks] / [chunks_of] rather than [write_lines] / [lines_of]

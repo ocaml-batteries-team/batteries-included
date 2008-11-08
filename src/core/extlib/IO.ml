@@ -713,8 +713,25 @@ let write_ropes o re = write_enum o (write_rope o) re
 (*val write_uchars : _ output -> UChar.t Enum.t -> unit*)
 let write_uchars o uce = write_enum o (write_uchar o) uce
 
-let copy input output = write_chunks output (chunks_of default_buffer_size input)
+(*let copy input output = write_chunks output (chunks_of default_buffer_size input)*)
 (*let copy input output = write_chars output (chars_of input)*)
+
+let copy inp out =
+  let n = default_buffer_size in
+  let buffer = String.create n in
+    try
+      while true do
+	let len = input inp buffer 0 n in
+	  if len = 0 then raise No_more_input
+	  else            ignore (really_output out buffer 0 len)
+      done
+    with No_more_input -> ()
+
+(*let fast_chunks_of n inp  =
+  let buffer = String.create n in
+    make_enum (fun inp -> input inp buffer 0 n) input*)
+
+
 
 (*
 (** {6 Test} *)

@@ -121,6 +121,10 @@ val close_out : 'a output -> 'a
 (** Close the output and return its accumulator data.
     It can no longer be written. *)
 
+val close_all : unit -> unit
+(** Close all outputs.
+    Ignore errors.*)
+
 val input_string : string -> input
 (** Create an input that will read from a string. *)
 
@@ -132,11 +136,29 @@ val output_buffer : Buffer.t -> string output
 (** Create an output that will append its results at the end of a buffer
     in an efficient way. Closing  returns the whole contents of the buffer
     -- the buffer remains usable.*)
-    
+
 val create_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) -> close:(unit -> unit) -> input
-(** Fully create an input by giving all the needed functions. *)
+  input:(string -> int -> int -> int) -> 
+  close:(unit -> unit) -> input
+(** Fully create an input by giving all the needed functions. 
+
+    {b Note} Do {e not} use this function for creating an input
+    which reads from one or more underlying inputs. Rather, use
+    {!wrap_in}.
+*)
+
+val wrap_in :
+  read:(unit -> char) ->
+  input:(string -> int -> int -> int) -> 
+  close:(unit -> unit) -> 
+  underlying:(input list) ->
+  input
+(** Fully create an input reading from other inputs by giving all the needed functions. 
+
+    This function is a more general version of {!create_in}
+    which also handles dependency management between inputs.
+*)
 
 val create_out :
   write:(char -> unit) ->
@@ -156,6 +178,7 @@ val create_out :
     {b Note} Do {e not} use this function for creating an output which
     writes to one or more underlying outputs. Rather, use {!wrap_out}.
 *)
+
 
 val wrap_out :
   write:(char -> unit)         ->

@@ -23,11 +23,17 @@
 TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)
 (*David: putting this into "Batteries.Languages" is a work-around for a limitation of type-conv*)
 
+type 'a weak_set = ('a, unit) InnerWeaktbl.t
+let weak_create size     = InnerWeaktbl.create size
+let weak_add set element = InnerWeaktbl.add set element ()
+let weak_iter f s        = InnerWeaktbl.iter (fun x _ -> f x) s
+
 type input = {
   mutable in_read  : unit -> char;
   mutable in_input : string -> int -> int -> int;
   mutable in_close : unit -> unit;
   in_id: int;(**A unique identifier.*)
+  in_upstream: input weak_set
 }
 
 type 'a output = {
@@ -36,7 +42,7 @@ type 'a output = {
   mutable out_close : unit -> 'a;
   mutable out_flush : unit -> unit;
   out_id:    int;(**A unique identifier.*)
-  out_upstream:(unit output, unit) InnerWeaktbl.t
+  out_upstream:unit output weak_set
     (**The set of outputs which have been created to write to this output.*)
 }
 
@@ -59,7 +65,7 @@ end
 
 
 
-(**All the currently opened outputs -- used to permit [flush_all]*)
+(**All the currently opened outputs -- used to permit [flush_all] and [close_all].*)
 (*module Inputs = Weaktbl.Make(Input)*)
 module Outputs= Weak.Make(Output)
 let outputs = Outputs.create 32
@@ -84,23 +90,39 @@ let post r op =
 let uid = ref 0
 let uid () = post_incr uid
 
-let create_in ~read ~input ~close =
-  {
-    in_read  = read;
-    in_input = input;
-    in_close = close;
-    in_id    = uid ()
-  }
+let close_in i =
+	let f _ = raise Input_closed in
+	i.in_close();
+	i.in_read <- f;
+	i.in_input <- f;
+	i.in_close <- noop (*Double closing is not a problem*)
 
-(*For closing outputs, we need either polymorphic recursion or a
-  hack. Well, a hack it is.*)
+
+let wrap_in ~read ~input ~close ~underlying =
+  let result = 
+  {
+    in_read     = read;
+    in_input    = input;
+    in_close    = close;
+    in_id       = uid ();
+    in_upstream = weak_create 2
+  }
+in List.iter (fun x -> weak_add x.in_upstream result) underlying;
+    Gc.finalise close_in result;
+    result
+
+let create_in ~read ~input ~close =
+  wrap_in ~read ~input ~close ~underlying:[]
+
+(*For recursively closing outputs, we need either polymorphic
+  recursion or a hack. Well, a hack it is.*)
 
 (*Close a [unit output] -- note that this works for any kind of output,
   thanks to [cast_output], but this can't return a proper result.*)
 let rec close_unit (o:unit output) : unit =
   let forbidden _ = raise Output_closed in
     o.out_flush ();
-    InnerWeaktbl.iter (fun x _ -> close_unit x) o.out_upstream;
+    weak_iter close_unit o.out_upstream;
     let r = o.out_close() in
       o.out_write  <- forbidden;
       o.out_output <- forbidden;
@@ -125,13 +147,13 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
 		      close ());
       out_flush  = flush;
       out_id     = uid ();
-      out_upstream = InnerWeaktbl.create 2
+      out_upstream = weak_create 2
     }
   in 
   let o = cast_output out in
-    List.iter (fun x -> InnerWeaktbl.add x.out_upstream o ()) underlying; 
+    List.iter (fun x -> weak_add x.out_upstream o) underlying; 
     Outputs.add outputs (cast_output out); 
-    Gc.finalise (fun _ -> ignore (close ())) 
+    Gc.finalise (fun _ -> ignore (close_out out)) 
       out;
     out
 
@@ -204,12 +226,6 @@ let really_nread i n =
 	ignore(really_input i s 0 n);
 	s
 
-let close_in i =
-	let f _ = raise Input_closed in
-	i.in_close();
-	i.in_read <- f;
-	i.in_input <- f;
-	i.in_close <- noop (*Double closing is not a problem*)
 
 let write o x = o.out_write x
 
@@ -235,6 +251,8 @@ let flush o = o.out_flush()
 let flush_all () =
   Outputs.iter (fun o -> try flush o with _ -> ()) outputs
 
+let close_all () =
+  Outputs.iter (fun o -> try close_out o with _ -> ()) outputs
 
 let read_all i =
 	let maxlen = 1024 in
