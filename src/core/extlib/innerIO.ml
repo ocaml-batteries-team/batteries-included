@@ -349,14 +349,14 @@ let pipe() =
   in
   let read() =
     if !inpos = String.length !input then flush();
-    String.unsafe_get !input (post_incr inpos) in
+    String.unsafe_get !input (post_incr inpos)
   in
   let input s p l =
     if !inpos = String.length !input then flush();
     let r = (if !inpos + l > String.length !input then String.length !input - !inpos else l) in
-      String.unsafe_blit !input !inpos s p r;
-      inpos := !inpos + r;
-      r
+    String.unsafe_blit !input !inpos s p r;
+    inpos := !inpos + r;
+    r
   in
   let write c =
     Buffer.add_char output c
