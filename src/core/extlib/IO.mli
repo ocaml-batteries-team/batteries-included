@@ -492,10 +492,30 @@ val drop_bits : in_bits -> unit
    {6 Creating new types of inputs/outputs}
 *)
 
+
 val create_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) -> close:(unit -> unit) -> input
-(** Fully create an input by giving all the needed functions. *)
+  input:(string -> int -> int -> int) -> 
+  close:(unit -> unit) -> input
+(** Fully create an input by giving all the needed functions. 
+
+    {b Note} Do {e not} use this function for creating an input
+    which reads from one or more underlying inputs. Rather, use
+    {!wrap_in}.
+*)
+
+val wrap_in :
+  read:(unit -> char) ->
+  input:(string -> int -> int -> int) -> 
+  close:(unit -> unit) -> 
+  underlying:(input list) ->
+  input
+(** Fully create an input reading from other inputs by giving all the needed functions. 
+
+    This function is a more general version of {!create_in}
+    which also handles dependency management between inputs.
+*)
+
 
 val create_out :
   write:(char -> unit) ->

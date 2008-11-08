@@ -33,7 +33,7 @@ external default_close : unit -> unit = "%ignore"
 
 let pos_in i =
   let p = ref 0 in
-    (create_in 
+    (wrap_in 
       ~read:(fun () ->
 	       let c = read i in
 		 incr p;
@@ -44,7 +44,8 @@ let pos_in i =
 		  p := !p + n;
 		  n
 	     )
-      ~close:(fun () -> close_in i)
+      ~close:noop
+      ~underlying:[i]
       , (fun () -> !p))
 
 let pos_out o =

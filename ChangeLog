@@ -1,5 +1,11 @@
 2008-11-08  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/libs/camlzip/gZip.ml: [uncompress] now uses [wrap_in]
+
+	* src/core/extlib/IO.ml: [pos_in] now uses [wrap_in]
+
+	* src/core/extlib/IO.mli: [wrap_in] added
+
 	* src/core/extlib/extPervasives.ml*: [print_all], [prerr_all], [foreach] added
 
 	* src/core/extlib/IO.ml*: [close_all] added
