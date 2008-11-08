@@ -717,14 +717,14 @@ let write_uchars o uce = write_enum o (write_uchar o) uce
 (*let copy input output = write_chunks output (chunks_of default_buffer_size input)*)
 (*let copy input output = write_chars output (chars_of input)*)
 
-let copy inp out =
-  let n = default_buffer_size in
-  let buffer = String.create n in
+let copy ?(buffer=default_buffer_size) inp out =
+  let n   = buffer          in
+  let buf = String.create n in
     try
       while true do
-	let len = input inp buffer 0 n in
+	let len = input inp buf 0 n in
 	  if len = 0 then raise No_more_input
-	  else            ignore (really_output out buffer 0 len)
+	  else            ignore (really_output out buf 0 len)
       done
     with No_more_input -> ()
 

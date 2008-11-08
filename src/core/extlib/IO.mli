@@ -102,18 +102,22 @@ val really_nread : input -> int -> string
   not available. Raises [Invalid_argument] if [n] < 0. *)
 
 val input : input -> string -> int -> int -> int
-(** [input i s p l] reads up to [l] characters from the given input, storing
-  them in string [s], starting at character number [p]. It returns the actual
-  number of characters read or raise [No_more_input] if no character can be
-  read. It will raise [Invalid_argument] if [p] and [l] do not designate a
-  valid substring of [s]. *)
+  (** [input i s p l] reads up to [l] characters from the given input,
+      storing them in string [s], starting at character number [p]. It
+      returns the actual number of characters read (which may be 0) or
+      raise [No_more_input] if no character can be read. It will raise
+      [Invalid_argument] if [p] and [l] do not designate a valid
+      substring of [s].
+
+
+  *)
 
 val really_input : input -> string -> int -> int -> int
-(** [really_input i s p l] reads exactly [l] characters from the given input,
-  storing them in the string [s], starting at position [p]. For consistency with
-  {!IO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
-  not available. Raises [Invalid_argument] if [p] and [l] do not designate a
-  valid substring of [s]. *)
+  (** [really_input i s p l] reads exactly [l] characters from the given input,
+      storing them in the string [s], starting at position [p]. For consistency with
+      {!IO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
+      not available. Raises [Invalid_argument] if [p] and [l] do not designate a
+      valid substring of [s]. *)
 
 val close_in : input -> unit
 (** Close the input. It can no longer be read from. *)
@@ -251,14 +255,16 @@ val pipe : unit -> input * unit output
 (** Create a pipe between an input and an ouput. Data written from
     the output can be read from the input. *)
 
-val copy : input -> _ output -> unit
+val copy : ?buffer:int -> input -> _ output -> unit
 (** Read everything from an input and copy it to an output.
 
-    This function flushes the [output].*)
+    @param buffer The size of the buffer to use for copying, in
+    bytes. By default, this is 1kb.
+*)
 
 val pos_in : input -> input * (unit -> int)
-(** Create an input that provide a count function of the number of bytes
-    read from it. *)
+  (** Create an input that provide a count function of the number of bytes
+      read from it. *)
 
 val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
