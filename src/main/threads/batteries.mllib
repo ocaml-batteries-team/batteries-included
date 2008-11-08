@@ -30,6 +30,7 @@ Batlib_Baselib_Sys
 Batlib_Baselib_UnixLabels
 Batlib_Baselib_Weak
 Extlib
+Extlib_threads
 Toolchain
 InnerIO
 InnerWeaktbl
