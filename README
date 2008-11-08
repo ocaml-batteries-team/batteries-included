@@ -25,12 +25,18 @@ You will need
 * Camlzip
 * GNU Make
 
+If you're working from the git tree, you'll need:
+* autoconf
+and you'll have to do
+    $ autoconf
+to create the configure script.
+
 To install the full version of OCaml Batteries Included, execute
 
-   make byte opt doc install
+    $ ./configure
+    $ make all install
 
 Be patient, documentation generation takes several minutes.
-
 
 *** Using Batteries Included ***
 
