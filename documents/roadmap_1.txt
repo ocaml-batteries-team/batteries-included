@@ -11,8 +11,6 @@
 
 * As many bugfixes as required
 
-* Support for (de)compression [input]/[output] (zack)
-
 * Basic unicode transcoding channels (thelema)
 
 * Either [let try], [try ... finally] or a combination of both 
