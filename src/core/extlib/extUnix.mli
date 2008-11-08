@@ -1359,4 +1359,7 @@ val tcflow : file_descr -> flow_action -> unit
 val setsid : unit -> int
 (** Put the calling process in a new session and detach it from
    its controlling terminal. *)
+
+val is_directory : string -> bool
+(** [is_directory filename] returns true if [filename] refers to a directory (or symlink of a directory *)
 end

@@ -127,5 +127,8 @@ struct
   let establish_server f addr =
     let f' cin cout = f (wrap_in cin) (wrap_out cout) in
       establish_server f' addr
+
+  let is_directory fn = (lstat fn).st_kind = S_DIR
+
       
 end
