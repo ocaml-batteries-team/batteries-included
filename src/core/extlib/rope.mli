@@ -259,6 +259,44 @@ val index : t -> UChar.t -> int
   (** As [String.index] *)
 val index_from : t -> int -> UChar.t -> int
 
+(* TODO: write specs for:
+
+rindex
+rindex_from
+contains
+contains_from
+rcontains_from
+find
+ends_with
+starts_with
+exists
+trim
+strip
+capitalize
+uncapitalize
+left
+right
+tail
+lchop
+rchop
+splice
+fill
+blit
+concat_sep
+escaped
+replace_chars
+replace
+split
+nsplit
+join
+slice
+explode
+implode
+compare
+compare_without_case
+
+*)
+
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
