@@ -1,8 +1,8 @@
 (* 
  * InnerIO - Abstract input/output (inner module)
  * Copyright (C) 2003 Nicolas Cannasse
- *               2008 David Teller
  *               2008 Philippe Strauss
+ *               2008 David Teller
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)
+(*David: putting this into "Batteries.Languages" is a work-around for a limitation of type-conv*)
+
 type input = {
   mutable in_read  : unit -> char;
   mutable in_input : string -> int -> int -> int;
@@ -29,18 +32,45 @@ type input = {
 
 type 'a output = {
   mutable out_write : char -> unit;
-  mutable out_output : string -> int -> int -> int;
+  mutable out_output: string -> int -> int -> int;
   mutable out_close : unit -> 'a;
   mutable out_flush : unit -> unit;
-  out_id: int;(**A unique identifier.*)
+  out_id:    int;(**A unique identifier.*)
+  out_upstream:(unit output, unit) InnerWeaktbl.t
+    (**The set of outputs which have been created to write to this output.*)
 }
 
-external noop : unit -> unit = "%ignore"
 
+module Input =
+struct
+  type t = input
+  let compare x y = x.in_id - y.in_id
+  let hash    x   = x.in_id
+  let equal   x y = x.in_id = y.in_id
+end
+
+module Output =
+struct
+  type t = unit output
+  let compare x y = x.out_id - y.out_id
+  let hash    x   = x.out_id
+  let equal   x y = x.out_id = y.out_id
+end
+
+
+
+(**All the currently opened outputs -- used to permit [flush_all]*)
+(*module Inputs = Weaktbl.Make(Input)*)
+module Outputs= Weak.Make(Output)
+let outputs = Outputs.create 32
+
+(** {6 Primitive operations}*)
+
+external noop        : unit      -> unit        = "%ignore"
+external cast_output : 'a output -> unit output = "%identity"
 exception No_more_input
 exception Input_closed
 exception Output_closed
-
 
 let post_incr r =
   let result = !r in
@@ -50,7 +80,6 @@ let post r op =
   let result = !r in
     r := op !r;
     result
-
 
 let uid = ref 0
 let uid () = post_incr uid
@@ -63,16 +92,51 @@ let create_in ~read ~input ~close =
     in_id    = uid ()
   }
 
+(*For closing outputs, we need either polymorphic recursion or a
+  hack. Well, a hack it is.*)
+
+(*Close a [unit output] -- note that this works for any kind of output,
+  thanks to [cast_output], but this can't return a proper result.*)
+let rec close_unit (o:unit output) : unit =
+  let forbidden _ = raise Output_closed in
+    o.out_flush ();
+    InnerWeaktbl.iter (fun x _ -> close_unit x) o.out_upstream;
+    let r = o.out_close() in
+      o.out_write  <- forbidden;
+      o.out_output <- forbidden;
+      o.out_close  <- (fun _ -> r) (*Closing again is not a problem*);
+      o.out_flush  <- noop         (*Flushing again is not a problem*);
+      ()
+
+(*Close a ['a output] -- first close it as a [unit output] then
+  recover the result.*)
+let close_out o =
+  close_unit (cast_output o);
+  o.out_close ()
+
+
+let wrap_out ~write ~output ~flush ~close ~underlying  =
+  let rec out = 
+    {
+      out_write  = write;
+      out_output = output;
+      out_close  = (fun () ->
+		      Outputs.remove outputs (cast_output out);
+		      close ());
+      out_flush  = flush;
+      out_id     = uid ();
+      out_upstream = InnerWeaktbl.create 2
+    }
+  in 
+  let o = cast_output out in
+    List.iter (fun x -> InnerWeaktbl.add x.out_upstream o ()) underlying; 
+    Outputs.add outputs (cast_output out); 
+    Gc.finalise (fun _ -> ignore (close ())) 
+      out;
+    out
+
 let create_out ~write ~output ~flush ~close =
-  {
-    out_write  = write;
-    out_output = output;
-    out_close  = close;
-    out_flush  = flush;
-    out_id     = uid ()
-  }
-
-
+  wrap_out ~write ~output ~flush ~close ~underlying:[]
 
 let read i = i.in_read()
 
@@ -168,14 +232,9 @@ let output o s p l =
 
 let flush o = o.out_flush()
 
-let close_out o =
-	let f _ = raise Output_closed in
-	let r = o.out_close() in
-	o.out_write  <- f;
-	o.out_output <- f;
-	o.out_close  <- (fun _ -> r) (*Closing again is not a problem*);
-	o.out_flush  <- noop (*Flushing again is not a problem*);
-	r
+let flush_all () =
+  Outputs.iter (fun o -> try flush o with _ -> ()) outputs
+
 
 let read_all i =
 	let maxlen = 1024 in
@@ -235,6 +294,7 @@ let output_string() =
       ~flush:  noop
 
 
+
 let output_buffer buf =
   create_out
     ~write: (Buffer.add_char buf)
@@ -292,7 +352,7 @@ let pipe() =
   in
     input , output
 
-external cast_output : 'a output -> unit output = "%identity"
+
 
 (*let to_input_channel inp =
   let (fin, fout) = Unix.pipe () in
@@ -466,8 +526,7 @@ let stdnull= create_out
   ~flush:ignore
   ~close:ignore
 
-
-TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)
+(*TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)*)
 
 (**
    {6 Printf}
@@ -1033,21 +1092,5 @@ let sprintf         = Printf.sprintf
 let ksprintf        = Printf.ksprintf
 let kbprintf        = Printf.kbprintf
 let kprintf         = Printf.kprintf
-end
-
-module Input =
-struct
-  type t = input
-  let compare x y = x.in_id - y.in_id
-  let hash    x   = x.in_id
-  let equal   x y = x.in_id = y.in_id
-end
-
-module Output =
-struct
-  type t = unit output
-  let compare x y = x.out_id - y.out_id
-  let hash    x   = x.out_id
-  let equal   x y = x.out_id = y.out_id
 end
 

@@ -53,3 +53,6 @@ let enum t =
 
 let of_enum t =
   Enum.fold add empty t
+
+let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
+  Enum.print ~first ~last ~sep print_elt out (enum t)

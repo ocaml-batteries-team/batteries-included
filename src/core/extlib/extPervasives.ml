@@ -44,7 +44,7 @@ module Pervasives = struct
     IO.output_channel (open_out_gen mode perm name)
 
   let flush             = IO.flush
-  let flush_all         = Pervasives.flush_all
+  let flush_all         = IO.flush_all
 
   let output_char       = ExtChar.Char.print
   let output_string     = ExtString.String.print
@@ -77,4 +77,5 @@ module Pervasives = struct
     with _ -> ()
   let input_value       = ExtMarshal.Marshal.input
 
+  let _ = at_exit flush_all
 end

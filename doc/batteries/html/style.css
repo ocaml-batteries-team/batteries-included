@@ -39,4 +39,5 @@ ul.index_entry {list-style-type:none;padding:0px; margin-left:none; text-ident:-
 li.index_entry_entry div.info {margin-left:1em}
 pre {background-color:rgb(250,250,250);margin-top:2em}
 pre.example {margin-top:2px; margin-bottom:2em}
+code.example {background-color:rgb(250,250,250)}
 span.developer {font-weight:bold}

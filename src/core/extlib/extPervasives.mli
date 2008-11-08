@@ -73,21 +73,21 @@ val failwith : string -> 'a
 
 
 val exit : int -> 'a
-(** Terminate the process, returning the given status code
-   to the operating system: usually 0 to indicate no errors,
-   and a small positive integer to indicate failure. 
-   All open output channels are flushed with flush_all.
-   An implicit [exit 0] is performed each time a program
-   terminates normally.  An implicit [exit 2] is performed if the program
-   terminates early because of an uncaught exception. *)
+  (** Terminate the process, returning the given status code
+      to the operating system: usually 0 to indicate no errors,
+      and a small positive integer to indicate failure. 
+      All open output channels are flushed with [flush_all].
+      An implicit [exit 0] is performed each time a program
+      terminates normally.  An implicit [exit 2] is performed if the program
+      terminates early because of an uncaught exception. *)
 
 val at_exit : (unit -> unit) -> unit
-(** Register the given function to be called at program
-   termination time. The functions registered with [at_exit]
-   will be called when the program executes {!Pervasives.exit},
-   or terminates, either normally or because of an uncaught exception.
-   The functions are called in ``last in, first out'' order:
-   the function most recently added with [at_exit] is called first. *)
+  (** Register the given function to be called at program
+      termination time. The functions registered with [at_exit]
+      will be called when the program executes {!Pervasives.exit},
+      or terminates, either normally or because of an uncaught exception.
+      The functions are called in ``last in, first out'' order:
+      the function most recently added with [at_exit] is called first. *)
 
 
 (** {6 Comparisons} *)
@@ -536,7 +536,14 @@ val stdnull: unit output
     Use this output to ignore messages.*)
 
 val flush_all : unit -> unit
-(** Write all pending data to {!stdout} and {!stderr}. *)
+(** Write all pending data to output channels, ignore all errors.
+
+    It is normally not necessary to call this function, as all pending
+    data is written when an output channel is closed or when the
+    program itself terminates, either normally or because of an
+    uncaught exception. However, this function is useful for
+    debugging, as it forces pending data to be written immediately.
+*)
 
 (** {7 Output functions on standard output} *)
 

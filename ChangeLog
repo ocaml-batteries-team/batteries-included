@@ -1,3 +1,143 @@
+2008-11-07  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/innerIO.ml: [close_out] now recursively calls [close_out] of [out_upstream]
+
+	* src/core/extlib/base64.ml: in [encode], added anonymous argument to [create_out]
+
+	* src/core/extlib/IO.ml*: [wrap_out] created, [create_out] rewritten from [wrap_out]
+
+	* src/core/extlib/IO.mli: [lmargin] removed
+
+	* src/core/extlib/IO.ml: [pos_out] now doesn't [close] [out]
+
+	* src/core/extlib/innerIO.ml: [output.out_upstream] added, [create_out] now accepts argument [underlying]
+
+	* src/core/extlib/IO.ml*: when closing, [comb] now returns both accumulators
+	
+	* src/core/extlib/IO.ml*: added argument [underlying] to [create_out]
+
+	* src/core/extlib/IO.ml*: [tab_out] now returns a [unit output], won't [flush] or [close]
+	 underlying output
+
+	* src/batteries_toolchain/top.ml: added [open Standard]
+
+	* src/libs/camlzip/gZip.ml: tweaked error message
+
+	* src/libs/camlzip/gZip.ml*: [with_in], [with_out] added
+
+	* src/libs/common/compress.ml*: [with_in], [with_out] added
+
+	* src/core/extlib/IO.ml: [write_enum] added
+
+	* src/core/extlib/IO.ml: occurrences of [Enum.iter] replaced with [write_enum]
+
+	* src/core/extlib/innerIO.ml: [close_out] now calls [flush]
+
+	* src/core/extlib/innerIO.ml: [create_out] now won't automatically call [flush]
+
+	* src/libs/camlzip/gZip.mli: added hyperlinks into comments
+
+	* batteries.godiva (Depends): added [godi-zip]
+
+	* src/libs/camlzip/_tags: added [pkg_camlzip]
+
+	* src/batteries_toolchain/top.ml: added [open Batteries], [!] before [Sys.interactive]
+	
+
+2008-11-06  David Teller  <David.Teller@univ-orleans.fr>
+
+	* doc/batteries/html/toplevel.html: added more documentation
+
+	* doc/batteries/html/style.css: added class [code.example]
+
+	* src/batteries_toolchain/top.ml: now checks for interactivity
+
+	* src/core/extlib/pSet.ml*: [print] added
+
+	* src/core/extlib/pMap.ml*: [print] added
+
+	* src/core/extlib/extSet.ml*: created
+
+	* src/core/extlib/extHashtbl.mli: fixed documentation typo
+
+	* src/core/extlib/extStack.ml*: created
+
+	* src/core/extlib/extQueue.ml*: created
+
+	* src/core/batteries_core.ml: [Queue] is now [Extlib.ExtQueue.Queue]
+
+	* src/core/extlib.mlpack: [ExtMap], [ExtQueue], [ExtStack] added
+
+	* src/core/batteries_core.ml: module [Map] is now [Extlib.ExtMap.Map]
+
+	* src/main/threads/batteries.mllib: removed [Batlib_baselib_Gc], [Batlib_baselib_Unix], [Map]
+
+	* src/main/nothreads/batteries.mllib: removed [Batlib_baselib_Gc], [Batlib_baselib_Unix], [Map]
+
+	* src/core/extlib_threads/extUnixThreads.ml: replaced [Std] with [Extlib.Std]
+
+	* tests/Makefile: targets [all], [byte], [opt] removed, targets [bytelib] and [optlib] added
+	
+	* src/batteries_toolchain/batteries_help.ml: occurrences of [Batteries_config] replaced with [Toolchain.Sysconfig]
+
+	* src/core/batteries_core_threads.ml: module [Toolchain.Sysconfig] added
+
+	* src/core/batteries_core.ml: module [Toolchain.Sysconfig] added
+
+2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
+
+	* doc/batteries/html/about.html (simple): Added a few lines on CDK
+
+	* src/batteries_toolchain/batteries_help.ml: Fixed typo in a string
+
+2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/ocamlcp: created
+	
+	* src/batteries_toolchain/ocamlc: created
+
+	* src/batteries_toolchain/ocaml: renamed from bocaml
+
+	* src/batteries_toolchain/ocaml: now using [ocamlfind]
+
+	* src/core/batteries_toolchain: renamed from src/core/toplevel
+
+2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib_threads/: created
+
+	* src/core/extlib_threads.mlpack: created
+
+	* src/main/threads/batteries.mllib: [InnerWeaktbl] added
+
+	* src/main/nothreads/batteries.mllib: [InnerWeaktbl] added
+
+	* src/core/batteries_core.ml: [Unix] is now [Extlib.ExtUnix.Unix]
+
+	* src/core/extlib/innerWeaktbl.ml*: added
+
+	* src/core/extlib/extUnix.ml*: added
+
+	* src/core/extlib.mlpack: [ExtUnix] added
+
+2008-11-04  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/innerIO.ml*: [close_all] added
+
+	* src/core/extlib/extPervasives.ml: [flush_all] now uses [IO.flush_all]
+
+	* src/core/extlib/extPervasives.ml: [flush_all] now called automatically when exiting
+
+	* src/core/extlib/IO.mli: [flush_all] added
+
+	* src/core/extlib/innerIO.ml: [outputs], [Outputs] added
+	
+	* src/core/extlib/innerIO.ml: [create_out] now adds a call to [flush] before the call to [close]
+
+	* src/core/extlib/innerIO.ml: [create_out] now adds [out] to [outputs]
+
+	* src/core/extlib/innerIO.ml*: [flush_all] added
+
 2008-10-30  Edgar Friendly  <thelema314@gmail.com>
 
 	* src/core/extlib/extList.ml*: [reduce], [min], [max] added
