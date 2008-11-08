@@ -1,3 +1,11 @@
+2008-11-08  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/extUTF8.ml*: added submodule [Byte] for byte-indexed access to UTF8 strings.  byte indexes are abstract so the type system will keep them separate from character indexes.  [nth], [first], [last]  now part of Byte
+
+	* src/core/extlib/extUTF8.ml*: Lots of internal changes, fixes.  [contains], [contains_from], [rcontains_from], [rindex] added
+
+	* src/core/extlib/rope.ml*: skeleton code for some string functions, but some implemented: [contains], [contains_from], [left], [right], [head], [tail], [lchop], [rchop], [splice], [fill], [blit], [concat_sep], [escaped], [replace_chars], [replace], [split], [nsplit]
+
 2008-11-07  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/innerIO.ml: [close_out] now recursively calls [close_out] of [out_upstream]

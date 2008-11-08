@@ -43,6 +43,60 @@ module UTF8 = struct
   external of_string_unsafe : string -> t = "%identity"
   external to_string_unsafe : t -> string = "%identity"
  
+  type char_idx = int
+
+  let length0 n =
+    if n < 0x80 then 1 else
+    if n < 0xc0 then invalid_arg "UTF8.length0 - Mid" else
+    if n < 0xe0 then 2 else
+    if n < 0xf0 then 3 else
+    if n < 0xf8 then 4 else
+    if n < 0xfc then 5 else
+    if n < 0xfe then 6 else
+    invalid_arg "UTF8.length0 - Reserved"
+
+  (* non-start bytes have the form 0b10xx_xxxx *)
+  let is_start_byte n = (n land 0b1100_0000) == 0b10_000000
+
+  module Byte : sig
+    type b_idx(* = private int*)
+    val of_int_unsafe : int -> b_idx
+    val to_int : b_idx -> int
+    val next : t -> b_idx -> b_idx
+    val prev : t -> b_idx -> b_idx
+    val of_char_idx : t -> char_idx -> b_idx
+    val at_end : t -> b_idx -> bool
+    val out_of_range : t -> b_idx -> bool
+    val first : b_idx
+    val last : t -> b_idx
+    val move : t -> b_idx -> int -> b_idx
+  end = struct
+    type b_idx = int
+    external of_int_unsafe : int -> b_idx = "%identity"
+    external to_int : b_idx -> int = "%identity"
+    let next us bi = bi + (length0 (Char.code us.[bi]))
+    let prev us bi = 
+      let rec loop bi =
+	if is_start_byte (Char.code us.[bi]) then bi
+	else loop (bi-1)
+      in
+      loop (bi-1)
+    let first = 0
+    let last us = prev us (String.length us)
+    let of_char_idx us ci = move us first ci
+    let at_end us bi = bi = String.length us
+    let out_of_range us bi = bi < 0 || bi >= String.length us
+    let move us bi n = (* faster moving positive than negative n *)
+      let bi = ref bi in
+      let step = if n > 0 then next else prev in
+      for j = 1 to abs n do bi := step us !bi done;
+      !bi
+  end
+
+  let nth = Byte.of_char_idx
+  let out_of_range = Byte.out_of_range
+  let look s b_idx = look s (Byte.to_int b_idx)
+
   let append s1 s2 = s1 ^ s2
     
   let empty = ""
@@ -99,7 +153,7 @@ module UTF8 = struct
       let l0 = String.length s0 in
       let s = String.create (i * l0) in
       for j = 0 to i-1 do
-  String.blit s0 0 s (j * l0) l0
+	String.blit s0 0 s (j * l0) l0
       done;
       s
   
@@ -109,58 +163,68 @@ module UTF8 = struct
 
   let adopt     s = validate s; s
     
+  let rec length_aux s ci bi =
+    if Byte.at_end s bi then ci 
+    else length_aux s (ci + 1) (Byte.next s bi)
+  
+  let length s = length_aux s 0 Byte.first
+    
   let enum us =
-    let l = length us in
     let rec make i =
       Enum.make
 	~next:(fun () ->
-		 if !i = l then
+		 if Byte.at_end us !i then
                    raise Enum.No_more_elements
 		 else
-                   let p = !i in
-                     i := next us !i;
-                     look us p
+		   look us (Ref.post i (Byte.next us))
               )
-  ~count:(fun () -> l - !i)
-  ~clone:(fun () -> make (ref !i))
+  ~count:(fun () -> length_aux us 0 !i)
+  ~clone:(fun () -> make (Ref.copy i))
     in
-    make (ref 0)
+    make (ref Byte.first)
       
   let of_enum e =
     let buf = Buffer.create 16 in
       Enum.iter (fun c -> Buffer.add_string buf (of_char c)) e;
       adopt (Buffer.contents buf)
 
+  let rec rev_length_aux s ci bi =
+    if Byte.out_of_range s bi then ci 
+    else length_aux s (ci + 1) (Byte.prev s bi)
+  
+
 
   let backwards us =
     let rec make i =
       Enum.make
 	~next:(fun () ->
-		 if !i < 0 then
+		 if Byte.out_of_range us !i then
                    raise Enum.No_more_elements
 		 else
-                   let p = !i in
-                     i := prev us !i;
-                     look us p
+                   look us (Ref.post i (Byte.prev us))
               )
-  ~count:(fun () -> !i)
+  ~count:(fun () -> rev_length_aux us 0 !i)
   ~clone:(fun () -> make (Ref.copy i))
     in
-    make (ref (length us - 1))
+    make (ref (Byte.last us))
       
   let of_backwards e =
     of_enum (List.enum (List.of_backwards e))
 
-
   let unsafe_get = get
  
-  let copy_set s n c =
-    let i = nth s n in let j = next s i in
-    string_splice s i (j-i) (of_char c)
+  let copy_set us cpos c =
+    let ipos = Byte.of_char_idx us cpos in 
+    let jpos = Byte.next us ipos in
+    let i = Byte.to_int ipos
+    and j = Byte.to_int jpos in
+    string_splice us i (j-i) (of_char c)
      
   let sub s n len =
-    let i = nth s n in
-    let j = move s i len in
+    let ipos = Byte.of_char_idx s n in
+    let jpos = Byte.move s ipos len in
+    let i = Byte.to_int ipos
+    and j = Byte.to_int jpos in
     String.sub s i (j-i)
       
   let rec search_head s i =
@@ -168,41 +232,14 @@ module UTF8 = struct
       let n = Char.code (String.unsafe_get s i) in
       if n < 0x80 || n >= 0xc2 then i else
   search_head s (i + 1)
- 
-  let length0 n =
-    if n < 0x80 then 1 else
-    if n < 0xc0 then invalid_arg "UTF8.length0 - Mid" else
-    if n < 0xe0 then 2 else
-    if n < 0xf0 then 3 else
-    if n < 0xf8 then 4 else
-    if n < 0xfc then 5 else
-    if n < 0xfe then 6 else
-    invalid_arg "UTF8.length0"
- 
-  let next s i =
-    let n = Char.code s.[i] in
-    try i + (length0 n)
-    with Invalid_argument "UTF8.length0 - Mid" -> search_head s (i+1)
-      | Invalid_argument _ -> invalid_arg "UTF8.next"
-  
-  let length_at s i =
-    let n = Char.code (String.unsafe_get s i) in
-    length0 n
-      
-  let rec length_aux s c i =
-    if i >= String.length s then c else
-      let k = length_at s i in
-      length_aux s (c + 1) (i + k)
-  
-  let length s = length_aux s 0 0
-    
+   
   let rec iter_aux proc s i =
-    if i >= String.length s then () else
+    if Byte.out_of_range s i then () else
       let u = look s i in
       proc u;
-      iter_aux proc s (next s i)
+      iter_aux proc s (Byte.next s i)
   
-  let iter proc s = iter_aux proc s 0
+  let iter proc s = iter_aux proc s Byte.first
     
   let init i f = (* Buf from CamomileLibrary.UTF8 *)
     let b = Buf.create i in
@@ -221,17 +258,34 @@ module UTF8 = struct
     iter (fun c -> match f c with None -> () | Some c -> Buf.add_char b c) us;
     Buf.contents b
 
-  let rec index_aux us c char_idx byte_idx =
-    if look us byte_idx = c then char_idx
-    else index_aux us c (char_idx+1) (next us byte_idx)
+  let index us ch =
+    let rec aux ci bi =
+      if Byte.out_of_range us bi then raise Not_found;
+      if look us bi = ch then ci
+      else aux (ci+1) (Byte.next us bi)
+    in
+    aux 0 (Byte.first)
 
-  let index us c = (* relies on exception at end of string *)
-    try 
-      index_aux us c 0 0
-    with 
-	Invalid_argument "UTF8.next" -> raise Not_found
+  let rindex us ch =
+    let rec aux ci bi =
+      if Byte.out_of_range us bi then raise Not_found;
+      if look us bi = ch then ci
+      else aux (ci-1) (Byte.prev us bi)
+    in
+    aux 0 (Byte.last us)
 
+  let rec contains_aux step bi us ch =
+    if Byte.out_of_range us bi then false
+    else if look us bi = ch then true
+    else contains_aux step (step us bi) us ch
 
+  let contains us ch = contains_aux Byte.next Byte.first us ch
+
+  let contains_from us ch bi = contains_aux Byte.next bi us ch
+
+  let rcontains_from us ch bi = contains_aux Byte.prev bi us ch
+
+  let escaped us = String.escaped us (* FIXME: think through whether this works *)
 
   let compare s1 s2 = Pervasives.compare s1 s2
     
