@@ -1,5 +1,7 @@
 2008-11-08  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/_tags: [extlib_threads] added
+
 	* src/libs/camlzip/gZip.ml: [uncompress] now uses [wrap_in]
 
 	* src/core/extlib/IO.ml: [pos_in] now uses [wrap_in]
@@ -23,6 +25,7 @@
 	* src/core/extlib/IO.ml: [copy] rewritten
 	
 2008-11-08  Edgar Friendly  <thelema314@gmail.com>
+	
 	* README: best make command now: [make all install]
 
 	* src/core/extlib/extList.ml*: [print_string] added (maybe add for other data types?)
