@@ -1,5 +1,40 @@
-2008-11-08  Edgar Friendly  <thelema314@gmail.com>
+2008-11-09  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extList.ml: [print_string] reimplemented with [sprintf2]
+
+	* src/core/extlib/extList.ml*: [print_string] renamed [sprint]
+
+
+2008-11-08  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/IO.ml*: [copy] now accepts an additional argument
+
+	* src/core/_tags: [extlib_threads] added
+
+	* src/libs/camlzip/gZip.ml: [uncompress] now uses [wrap_in]
+
+	* src/core/extlib/IO.ml: [pos_in] now uses [wrap_in]
+
+	* src/core/extlib/IO.mli: [wrap_in] added
+
+	* src/core/extlib/extPervasives.ml*: [print_all], [prerr_all], [foreach] added
+
+	* src/core/extlib/IO.ml*: [close_all] added
+
+	* src/core/extlib/innerIO.ml*: [close_all] added
+
+	* src/core/extlib/innerIO.ml: [input.in_upstream] added
+
+	* src/core/extlib/innerIO.ml: [weak_*] created
+
+	* src/core/extlib/extPervasives.ml: [close_all] registered with [at_exit]
+
+	* src/core/extlib/innerIO.ml*: [close_all] added
+
+	* src/core/extlib/IO.ml: [copy] rewritten
+	
+2008-11-08  Edgar Friendly  <thelema314@gmail.com>
+	
 	* README: best make command now: [make all install]
 
 	* src/core/extlib/extList.ml*: [print_string] added (maybe add for other data types?)
@@ -12,7 +47,10 @@
 
 	* src/core/extlib/rope.ml*: skeleton code for some string functions, but some implemented: [contains], [contains_from], [left], [right], [head], [tail], [lchop], [rchop], [splice], [fill], [blit], [concat_sep], [escaped], [replace_chars], [replace], [split], [nsplit]
 
+
 2008-11-07  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/IO.ml: [copy] now uses [write_chunks] / [chunks_of] rather than [write_lines] / [lines_of]
 
 	* src/core/extlib/innerIO.ml: [close_out] now recursively calls [close_out] of [out_upstream]
 
@@ -323,7 +361,7 @@
 
 	* src/core/extlib/extGc.ml*: created
 
-	* src/core/extlib/extBuffer.ml*: [add_channel], [output_buffer], [add_input] rewored to get rid of channels
+	* src/core/extlib/extBuffer.ml*: [add_channel], [output_buffer], [add_input] reworked to get rid of channels
 
 	* src/core/extlib/extStream.mli: [of_channel], [on_channel] removed
 

@@ -32,10 +32,10 @@ OCaml level, because Zlib.Error is also raised from C bindings.
 The only alternative is adding hooks into IO.create_{in,out} which let
 specifying extensible exception handlers. *)
 
-let uncompress input =
+let uncompress inp =
   let error exn =
     raise (Compress.Compression_error ("zlib uncompression error", Some exn)) in
-  let camlzip_in = InnerGZip.open_input input in
+  let camlzip_in = InnerGZip.open_input inp in
   let read () =
     try InnerGZip.input_char camlzip_in
     with Zlib.Error _ as exn -> error exn in
@@ -46,7 +46,7 @@ let uncompress input =
     try InnerGZip.close_input camlzip_in
     with Zlib.Error _ as exn -> error exn
   in
-    IO.create_in ~read ~input ~close
+    IO.wrap_in ~read ~input ~close ~underlying:[inp]
 
 let gzip_compress ?level out =
   let error exn =

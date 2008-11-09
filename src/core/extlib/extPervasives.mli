@@ -577,6 +577,9 @@ val print_guess : 'a -> unit
       useful mostly for debugging. As a general rule, it should not be
       used in production code.*)
 
+val print_all : input -> unit
+  (** Print the contents of an input to the standard output.*)
+
 (** {7 Output functions on standard error} *)
 
 val prerr_bool : bool -> unit
@@ -606,6 +609,9 @@ val prerr_guess : 'a -> unit
   (** Attempt to print the representation of a runtime value on the
       error output.  See remarks for {!dump}. This function is
       useful mostly for debugging.*)
+
+val prerr_all : input -> unit
+  (** Print the contents of an input to the error output.*)
 
 (** {7 Input functions on standard input} *)
 
@@ -984,8 +990,16 @@ val exe  : string
 *)
 
 val iter : ('a -> unit) -> 'a Enum.t -> unit
-  (** [iter f e] calls the function [f] with each elements of [e] in turn. *)
+  (** [iter f e] calls the function [f] with each elements of [e] in turn. 
 
+      For instance, [iter f (1 -- 10)] invokes function [f] on [1],
+      [2], ..., [10].
+*)
+
+val foreach: 'a Enum.t -> ('a -> unit) ->  unit
+  (**Imperative loop on an enumeration.
+
+     [foreach e f] is [iter f e].*)
 
 val exists: ('a -> bool) -> 'a Enum.t -> bool
 (** [exists f e] returns [true] if there is some [x] in [e] such

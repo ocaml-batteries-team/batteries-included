@@ -33,7 +33,7 @@ external default_close : unit -> unit = "%ignore"
 
 let pos_in i =
   let p = ref 0 in
-    (create_in 
+    (wrap_in 
       ~read:(fun () ->
 	       let c = read i in
 		 incr p;
@@ -44,7 +44,8 @@ let pos_in i =
 		  p := !p + n;
 		  n
 	     )
-      ~close:(fun () -> close_in i)
+      ~close:noop
+      ~underlying:[i]
       , (fun () -> !p))
 
 let pos_out o =
@@ -506,6 +507,7 @@ let strings_of input      = make_enum read_string input
 
 let lines_of input        = make_enum read_line input
 
+let chunks_of n input     = make_enum (fun input -> nread input n) input
 
 (**The number of chars to read at once*)
 let buffer_size = 1024 (*Arbitrary size.*)
@@ -517,6 +519,9 @@ let bits_of input = close_at_end input.ch (Enum.from (fun () -> apply_enum read_
 
 let write_bytes output enum =
   write_enum output (write_byte output) enum
+
+let write_chars output enum =
+  write_enum output (write output) enum
 
 let write_ui16s output enum =
   write_enum output (write_ui16 output) enum
@@ -544,6 +549,9 @@ let write_strings output enum =
 
 let write_lines output enum =
   write_enum output (write_line output) enum
+
+let write_chunks output enum =
+  write_enum output (nwrite output) enum
 
 let write_bitss ~nbits output enum =
   Enum.iter (write_bits ~nbits output) enum
@@ -620,7 +628,8 @@ let comb (a,b) =
     ~close:(fun () ->
 	      ignore (close_out a); close_out b)
 
-let copy input output = write_lines output (lines_of input) 
+
+
 
 (** {6 Unicode}*)
 open ExtUTF8
@@ -704,6 +713,26 @@ let write_ropes o re = write_enum o (write_rope o) re
 
 (*val write_uchars : _ output -> UChar.t Enum.t -> unit*)
 let write_uchars o uce = write_enum o (write_uchar o) uce
+
+(*let copy input output = write_chunks output (chunks_of default_buffer_size input)*)
+(*let copy input output = write_chars output (chars_of input)*)
+
+let copy ?(buffer=default_buffer_size) inp out =
+  let n   = buffer          in
+  let buf = String.create n in
+    try
+      while true do
+	let len = input inp buf 0 n in
+	  if len = 0 then raise No_more_input
+	  else            ignore (really_output out buf 0 len)
+      done
+    with No_more_input -> ()
+
+(*let fast_chunks_of n inp  =
+  let buffer = String.create n in
+    make_enum (fun inp -> input inp buffer 0 n) input*)
+
+
 
 (*
 (** {6 Test} *)

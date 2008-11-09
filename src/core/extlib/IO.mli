@@ -102,18 +102,22 @@ val really_nread : input -> int -> string
   not available. Raises [Invalid_argument] if [n] < 0. *)
 
 val input : input -> string -> int -> int -> int
-(** [input i s p l] reads up to [l] characters from the given input, storing
-  them in string [s], starting at character number [p]. It returns the actual
-  number of characters read or raise [No_more_input] if no character can be
-  read. It will raise [Invalid_argument] if [p] and [l] do not designate a
-  valid substring of [s]. *)
+  (** [input i s p l] reads up to [l] characters from the given input,
+      storing them in string [s], starting at character number [p]. It
+      returns the actual number of characters read (which may be 0) or
+      raise [No_more_input] if no character can be read. It will raise
+      [Invalid_argument] if [p] and [l] do not designate a valid
+      substring of [s].
+
+
+  *)
 
 val really_input : input -> string -> int -> int -> int
-(** [really_input i s p l] reads exactly [l] characters from the given input,
-  storing them in the string [s], starting at position [p]. For consistency with
-  {!IO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
-  not available. Raises [Invalid_argument] if [p] and [l] do not designate a
-  valid substring of [s]. *)
+  (** [really_input i s p l] reads exactly [l] characters from the given input,
+      storing them in the string [s], starting at position [p]. For consistency with
+      {!IO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
+      not available. Raises [Invalid_argument] if [p] and [l] do not designate a
+      valid substring of [s]. *)
 
 val close_in : input -> unit
 (** Close the input. It can no longer be read from. *)
@@ -146,12 +150,22 @@ val flush : 'a output -> unit
 val flush_all : unit -> unit
 (** Flush all outputs, ignore errors. *)
 
+
 val close_out : 'a output -> 'a
 (** Close the output and return its accumulator data.
 
     The output is flushed before being closed and can no longer be
     written. Attempting to flush or write after the output has been
     closed will have no effect.*)
+
+(**/**)
+val close_all : unit -> unit
+(** Close all outputs.
+
+    Ignore errors. Automatically called at the end of your program.
+    You probably should never use it manually, as it also closes
+    [stdout], [stderr], [stdnull].*)
+(**/**)
 
 (** {6 Unicode extensions} 
 
@@ -241,14 +255,16 @@ val pipe : unit -> input * unit output
 (** Create a pipe between an input and an ouput. Data written from
     the output can be read from the input. *)
 
-val copy : input -> _ output -> unit
+val copy : ?buffer:int -> input -> _ output -> unit
 (** Read everything from an input and copy it to an output.
 
-    This function flushes the [output].*)
+    @param buffer The size of the buffer to use for copying, in
+    bytes. By default, this is 1kb.
+*)
 
 val pos_in : input -> input * (unit -> int)
-(** Create an input that provide a count function of the number of bytes
-    read from it. *)
+  (** Create an input that provide a count function of the number of bytes
+      read from it. *)
 
 val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
@@ -482,10 +498,30 @@ val drop_bits : in_bits -> unit
    {6 Creating new types of inputs/outputs}
 *)
 
+
 val create_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) -> close:(unit -> unit) -> input
-(** Fully create an input by giving all the needed functions. *)
+  input:(string -> int -> int -> int) -> 
+  close:(unit -> unit) -> input
+(** Fully create an input by giving all the needed functions. 
+
+    {b Note} Do {e not} use this function for creating an input
+    which reads from one or more underlying inputs. Rather, use
+    {!wrap_in}.
+*)
+
+val wrap_in :
+  read:(unit -> char) ->
+  input:(string -> int -> int -> int) -> 
+  close:(unit -> unit) -> 
+  underlying:(input list) ->
+  input
+(** Fully create an input reading from other inputs by giving all the needed functions. 
+
+    This function is a more general version of {!create_in}
+    which also handles dependency management between inputs.
+*)
+
 
 val create_out :
   write:(char -> unit) ->
@@ -646,6 +682,9 @@ val strings_of : input -> string Enum.t
 val lines_of : input -> string Enum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
  
+val chunks_of : int -> input -> string Enum.t
+(** Read an input as an enumeration of strings of given maximal length.*)
+
 val ulines_of : input -> Rope.t Enum.t
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
 
@@ -662,6 +701,9 @@ val bits_of : in_bits -> int Enum.t
 
 val write_bytes : 'a output -> int Enum.t -> unit
 (** Write an enumeration of unsigned 8-bit bytes. *)
+
+val write_chars : 'a output -> char Enum.t -> unit
+(** Write an enumeration of chars. *)
 
 val write_ui16s : 'a output -> int Enum.t -> unit
 (** Write an enumeration of unsigned 16-bit words. *)
@@ -682,7 +724,10 @@ val write_doubles : 'a output -> float Enum.t -> unit
 (** Write an enumeration of IEEE double precision floating point value. *)
 
 val write_strings : 'a output -> string Enum.t -> unit
-(** Write an enumeration of strings, appending null characters. *)
+(** Write an enumeration of strings, appending null characters.*)
+
+val write_chunks: 'a output -> string Enum.t -> unit
+(** Write an enumeration of strings, without appending null characters.*)
 
 val write_lines : 'a output -> string Enum.t -> unit
 (** Write an enumeration of lines, appending a LF (it might be converted
