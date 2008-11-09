@@ -57,7 +57,9 @@ endif
 
 DEST_TOP = 
 ifeq ($(DESTDIR),)
-DEST_TOP = $(shell @OCAMLFIND@ printconf destdir)/batteries/top.ml
+$(shell @OCAMLFIND@ install batteries build/META)
+DEST_TOP = $(shell @OCAMLFIND@ query batteries)/top.ml
+$(shell @OCAMLFIND@ remove batteries)
 else
 DEST_TOP = $(DESTDIR)/batteries/top.ml
 endif
@@ -74,7 +76,7 @@ all: byte syntax top
 reinstall: all opt uninstall install
 rebyte: byte uninstall install
 instdoc: doc
-	install -D doc/batteries $(DOCDIR)
+	cp -R doc/batteries $(DOCDIR)
 
 byte: config.ml
 	$(OCAMLBUILD) src/main/threads/batteries.cma
