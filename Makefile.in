@@ -90,11 +90,12 @@ syntax: config.ml
 	$(OCAMLBUILD) src/syntax/pa_where/pa_where.cmo
 	$(OCAMLBUILD) src/syntax/pa_batteries/pa_batteries.cmo
 
-top: src/batteries_toolchain/ocaml
+top: src/batteries_toolchain/ocaml src/batteries_toolchain/batteries_help.cmo
 src/batteries_toolchain/ocaml:
 	echo "ocaml -init $(DEST_TOP) \$$@" > $@
 	chmod ugo+rx src/batteries_toolchain/ocaml*
-	ocamlbuild src/batteries_toolchain/batteries_help.cmo
+src/batteries_toolchain/batteries_help.cmo: src/batteries_toolchain/batteries_help.ml src/batteries_toolchain/batteries_help.mli
+	ocamlbuild $@
 
 install:
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
