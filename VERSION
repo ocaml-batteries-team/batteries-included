@@ -3,7 +3,25 @@ This is the second alpha release of Batteries Included.
 = Changes since alpha 1
 * Plenty of bugfixes
 * Plenty of docfixes
+* We now have a custom ocaml, ocamlc, ocamlopt which may be used as (near) drop-in replacements for the regular ocaml, ocamlc, ocamlopt
+* We now have a working toplevel
+* We now have a parser combinator library
+* Many additional functions
+* We now have a set of standard operators for function composition, etc.
+* Unicode characters and strings now have all the features of their non-Unicode counterparts
+* Improved type-safety of Unicode
+* Most data structures now support enumerations, s-expressions, printing to an output
+* Inputs and outputs may now be either garbage-collected, closed manually, closed by their dependencies
+or closed when leaving the program
+* We now have transparent on-the-fly gzip compression/decompression of channels.
+* Additional examples
+* Additional documentation
+* Access to some elements of the system configuration
+* We are now mostly rid of [in_channel]/[out_channel]
+* The toplevel now offers a tutorial and on-line help
 * In [Ref], now using the same naming conventions as C, Java...
+* Build system now uses autoconf
+* The documentation generator now builds an external index of values which may be used for auto-completion
 
 = Changes since pre-release 4
 * Plenty of additional functions
