@@ -22,9 +22,8 @@
 VERSION = @VERSION@
 PACKAGE = batteries
 
-# Kind of installation
-# Typical value: "GODI" (GODI)
-INSTALLATION = @INSTALLATION@
+OCAMLFIND = @OCAMLFIND@
+HAS_GODI = @HAS_GODI@
 
 prefix = @prefix@
 datarootdir= @datarootdir@
@@ -36,13 +35,11 @@ DOCDIR = @docdir@
 #   make DOCDIR="/some/where/"
 # Typical value: "/usr/share/doc/ocaml-batteries-included" (Debian)
 # Typical value: "/usr/local/godi/doc/godi-batteries/doc/batteries" (GODI)
-#ifeq ($(INSTALLATION), GODI)
-#DOCDIR = $(shell ocamlfind printconf destdir)/../../../doc/godi-batteries
-#else
-#DOCDIR = @docdir@
-#endif
-
-
+ifeq ($(HAS_GODI),yes)
+DOCDIR = $(shell ocamlfind printconf destdir)/../../../doc/godi-batteries
+else
+DOCDIR = @docdir@
+endif
 
 # command used to trigger the browser
 # if your platform browser is different, you will need to invoke make as
@@ -86,7 +83,7 @@ OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 # Replace the first one with the second one if you have build-time
 # issue, to help with trouble-shooting
 
-ifeq ($(INSTALLATION), GODI)
+ifeq ($(HAS_GODI),yes)
 all: byte syntax top
 else
 all: byte syntax top install-doc
