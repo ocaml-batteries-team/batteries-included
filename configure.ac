@@ -1,5 +1,9 @@
 AC_INIT
 
+#type of installation
+INSTALLATION=
+AC_SUBST(INSTALLATION)
+
 # version info
 VERSION=0.20081023
 AC_SUBST(VERSION)
@@ -117,6 +121,11 @@ AC_SUBST(BROWSER_COMMAND)
 #   AC_MSG_ERROR([--with-docroot requires an argument])
 #   exit 1
 #fi
+if test "$INSTALLATION" = "GODI"; then
+DOCDIR=`$(OCAMLFIND) printconf destdir`/../../../doc/godi-batteries
+else
+DOCDIR=@docdir@
+fi
 AC_SUBST(DOCDIR)
 
 # fill output templates
