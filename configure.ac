@@ -116,16 +116,16 @@ AC_ARG_WITH(
 AC_SUBST(HAS_GODI)
 if test "$HAS_GODI" = "yes" ; then
    AC_MSG_NOTICE([GODI-specific installation enabled])
-   DEFAULT_DOCDIR=`$(OCAMLFIND) printconf destdir`/../../../doc/godi-batteries
+   DEFAULT_DOCDIR=`$OCAMLFIND printconf destdir`/../../../doc/godi-batteries
 else
-    DEFAULT_DOCDIR="$PWD/doc/batteries"
+   DEFAULT_DOCDIR="$PWD/doc/batteries"
 fi
 DOCDIR="$DEFAULT_DOCDIR"
 
 AC_ARG_WITH(
 	docroot,
-	[  --with-docroot=PATH  set documentation root
-	                  default: "$PWD/doc/batteries"],
+	[  --with-docroot=PATH     set documentation root
+	                           default: "$PWD/doc/batteries"],
 	DOCDIR=$withval,
 	DOCDIR=$DOCDIR)
 if test "$DOCDIR" = "yes" ; then
