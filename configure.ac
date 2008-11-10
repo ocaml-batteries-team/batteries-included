@@ -61,6 +61,8 @@ if test -z "$OCAMLPKG_camomile" ; then
    AC_MSG_ERROR([Cannot find Camomile])
    exit 1
 fi
+AC_SUBST(OCAMLPKG_camomile)
+
 AC_CHECK_OCAML_PKG(zip, OCAMLPKG_zip)
 # Camlzip has different Findlib-level names on, e.g., Debian and GODI
 if test -z "$OCAMLPKG_zip" ; then
@@ -104,17 +106,17 @@ if test "$BROWSER_COMMAND" = "yes" ; then
 fi
 AC_SUBST(BROWSER_COMMAND)
 
-DEFAULT_DOCDIR="`pwd`/doc/batteries"
-AC_ARG_WITH(
-	docroot,
-	[  --with-docroot=PATH  set documentation root
-	                  default: "$PWD/doc/batteries"],
-	DOCDIR=$withval,
-	DOCDIR=$DEFAULT_DOCDIR)
-if test "$DOCDIR" = "yes" ; then
-   AC_MSG_ERROR([--with-docroot requires an argument])
-   exit 1
-fi
+#DEFAULT_DOCDIR="`pwd`/doc/batteries"
+#AC_ARG_WITH(
+#	docroot,
+#	[  --with-docroot=PATH  set documentation root
+#	                  default: "$PWD/doc/batteries"],
+#	DOCDIR=$withval,
+#	DOCDIR=$DOCDIR)
+#if test "$DOCDIR" = "yes" ; then
+#   AC_MSG_ERROR([--with-docroot requires an argument])
+#   exit 1
+#fi
 AC_SUBST(DOCDIR)
 
 # fill output templates

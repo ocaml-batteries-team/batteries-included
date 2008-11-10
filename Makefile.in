@@ -25,6 +25,9 @@ VERSION = @VERSION@
 # Typical value: "GODI" (GODI)
 INSTALLATION =
 
+prefix = @prefix@
+PACKAGE= @PACKAGE@
+
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
 #   make DOCDIR="/some/where/"
@@ -33,7 +36,7 @@ INSTALLATION =
 ifeq ($(INSTALLATION), GODI)
 DOCDIR = $(shell ocamlfind printconf destdir)/../../../doc/godi-batteries
 else
-DOCDIR = @DOCDIR@
+DOCDIR = @docdir@
 endif
 
 # command used to trigger the browser
@@ -67,7 +70,7 @@ endif
 
 DEST_TOP = 
 ifeq ($(DESTDIR),)
-DEST_TOP = $(shell @OCAMLFIND@ query @OCAMLPKG_camomile@)/../batteries/top.ml
+DEST_TOP = $(shell @OCAMLFIND@ query @OCAMLPKG_camomile@ )/../batteries/top.ml
 else
 DEST_TOP = $(DESTDIR)/batteries/top.ml
 endif

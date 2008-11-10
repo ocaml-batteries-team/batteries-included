@@ -1,5 +1,9 @@
 2008-11-10  David Teller  <David.Teller@univ-orleans.fr>
 
+	* configure.ac: [OCAMLPKG_camomile] now substituted
+
+	* README: added [opt] and [instdoc]
+
 	* Makefile.in: [INSTALLATION] added
 
 	* Makefile.in: [DEST_TOP] now uses the directory of camomile
