@@ -89,7 +89,7 @@ OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 ifeq ($(INSTALLATION), GODI)
 all: byte syntax top
 else
-all: byte syntax top instdoc
+all: byte syntax top install-doc
 endif
 
 config.ml: Makefile
@@ -102,7 +102,7 @@ config.ml: Makefile
 #Useful for testing
 reinstall: all opt uninstall install
 rebyte: byte uninstall install
-instdoc: doc
+install-doc: doc
 	cp -R doc/batteries/* $(DOCDIR)
 
 byte: config.ml

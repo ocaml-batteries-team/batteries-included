@@ -1,7 +1,5 @@
 AC_INIT
 
-#type of installation
-INSTALLATION=
 AC_SUBST(INSTALLATION)
 
 # version info
@@ -110,22 +108,32 @@ if test "$BROWSER_COMMAND" = "yes" ; then
 fi
 AC_SUBST(BROWSER_COMMAND)
 
-#DEFAULT_DOCDIR="`pwd`/doc/batteries"
-#AC_ARG_WITH(
-#	docroot,
-#	[  --with-docroot=PATH  set documentation root
-#	                  default: "$PWD/doc/batteries"],
-#	DOCDIR=$withval,
-#	DOCDIR=$DOCDIR)
-#if test "$DOCDIR" = "yes" ; then
-#   AC_MSG_ERROR([--with-docroot requires an argument])
-#   exit 1
-#fi
-if test "$INSTALLATION" = "GODI"; then
-DOCDIR=`$OCAMLFIND printconf destdir`/../../../doc/godi-batteries/doc/batteries
+
+AC_ARG_WITH(
+	godi,
+	[  --with-godi             require compilation for GODI],
+	HAS_GODI=yes,
+	HAS_GODI=no)
+AC_SUBST(HAS_GODI)
+if test "$HAS_GODI" = "yes" ; then
+   AC_MSG_NOTICE([GODI-specific installation enabled])
+   DEFAULT_DOCDIR=`$(OCAMLFIND) printconf destdir`/../../../doc/godi-batteries
 else
-DOCDIR=${docdir}
+    DEFAULT_DOCDIR="$DOCROOT"
 fi
+DOCDIR="$DEFAULT_DOCDIR"
+
+AC_ARG_WITH(
+	docroot,
+	[  --with-docroot=PATH  set documentation root
+	                  default: "$PWD/doc/batteries"],
+	DOCDIR=$withval,
+	DOCDIR=$DOCDIR)
+if test "$DOCDIR" = "yes" ; then
+   AC_MSG_ERROR([--with-docroot requires an argument])
+   exit 1
+fi
+AC_MSG_NOTICE([documentation root directory: $DOCDIR])
 AC_SUBST(DOCDIR)
 
 # fill output templates
