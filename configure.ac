@@ -108,6 +108,7 @@ if test "$BROWSER_COMMAND" = "yes" ; then
 fi
 AC_SUBST(BROWSER_COMMAND)
 
+
 AC_ARG_WITH(
 	godi,
 	[  --with-godi             require compilation for GODI],
@@ -118,7 +119,7 @@ if test "$HAS_GODI" = "yes" ; then
    AC_MSG_NOTICE([GODI-specific installation enabled])
    DEFAULT_DOCDIR=`$OCAMLFIND printconf destdir`/../../../doc/godi-batteries
 else
-   DEFAULT_DOCDIR="$PWD/doc/batteries"
+   DEFAULT_DOCDIR="$DOCROOT"
 fi
 DOCDIR="$DEFAULT_DOCDIR"
 
@@ -137,7 +138,6 @@ AC_SUBST(DOCDIR)
 
 # fill output templates
 AC_CONFIG_FILES([
- config.ml
  Makefile
  build/META
  build/threaded/META

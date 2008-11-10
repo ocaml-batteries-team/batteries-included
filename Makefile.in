@@ -20,13 +20,16 @@
 
 
 VERSION = @VERSION@
+PACKAGE = batteries
 
 # Kind of installation
 # Typical value: "GODI" (GODI)
 INSTALLATION = @INSTALLATION@
 
 prefix = @prefix@
-PACKAGE= batteries
+datarootdir= @datarootdir@
+datadir= @datadir@
+DOCDIR = @docdir@
 
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
@@ -39,7 +42,7 @@ PACKAGE= batteries
 #DOCDIR = @docdir@
 #endif
 
-DOCDIR = @docdir@
+
 
 # command used to trigger the browser
 # if your platform browser is different, you will need to invoke make as
@@ -86,14 +89,21 @@ OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 ifeq ($(INSTALLATION), GODI)
 all: byte syntax top
 else
-all: byte syntax top instdoc
+all: byte syntax top install-doc
 endif
+
+config.ml: Makefile
+	@\rm -f config.ml &&\
+	echo 'let version = "$(VERSION)";;' >> config.ml &&\
+	echo 'let documentation_root = "$(DOCDIR)";;' >> config.ml &&\
+	echo 'let (browser: (_, _, _) format) = "$(BROWSER)";;' >> config.ml
+
 
 #Useful for testing
 reinstall: all opt uninstall install
 rebyte: byte uninstall install
-instdoc: doc
-	cp -R doc/batteries $(DOCDIR)
+install-doc: doc
+	cp -R doc/batteries/* $(DOCDIR)
 
 byte: config.ml
 	$(OCAMLBUILD) src/main/threads/batteries.cma
