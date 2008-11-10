@@ -122,15 +122,14 @@ AC_SUBST(BROWSER_COMMAND)
 #   exit 1
 #fi
 if test "$INSTALLATION" = "GODI"; then
-DOCDIR=`$(OCAMLFIND) printconf destdir`/../../../doc/godi-batteries
+DOCDIR=`$OCAMLFIND printconf destdir`/../../../doc/godi-batteries/doc/batteries
 else
-DOCDIR=@docdir@
+DOCDIR=${docdir}
 fi
 AC_SUBST(DOCDIR)
 
 # fill output templates
 AC_CONFIG_FILES([
- config.ml
  Makefile
  build/META
  build/threaded/META
