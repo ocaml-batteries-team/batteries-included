@@ -1,6 +1,6 @@
 2008-11-10  David Teller  <David.Teller@univ-orleans.fr>
 
-	* Makefile.in: [config.ml] added
+	* Makefile.in: [config.ml] added, now creating [$(DOCDIR)]
 
 	* configure.ac: [config.ml] removed from dependencies
 

@@ -100,6 +100,7 @@ config.ml: Makefile
 reinstall: all opt uninstall install
 rebyte: byte uninstall install
 install-doc: doc
+	install -d $(DOCDIR) &&\
 	cp -R doc/batteries/* $(DOCDIR)
 
 byte: config.ml
