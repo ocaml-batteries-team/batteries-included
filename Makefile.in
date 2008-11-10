@@ -21,12 +21,20 @@
 
 VERSION = @VERSION@
 
+# Kind of installation
+# Typical value: "GODI" (GODI)
+INSTALLATION =
+
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
 #   make DOCDIR="/some/where/"
 # Typical value: "/usr/share/doc/ocaml-batteries-included" (Debian)
 # Typical value: "/usr/local/godi/doc/godi-batteries/doc/batteries" (GODI)
+ifeq ($(INSTALLATION), GODI)
+DOCDIR = $(shell ocamlfind printconf destdir)/../../../doc/godi-batteries
+else
 DOCDIR = @DOCDIR@
+endif
 
 # command used to trigger the browser
 # if your platform browser is different, you will need to invoke make as
@@ -41,6 +49,8 @@ BROWSER = @BROWSER_COMMAND@
 #Typical flag: -byte-plugin (if you don't have ocamlopt)
 #Typical flag: -classic-display (for more details on the build process)
 OBFLAGS =
+
+
 
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
@@ -57,9 +67,7 @@ endif
 
 DEST_TOP = 
 ifeq ($(DESTDIR),)
-$(shell @OCAMLFIND@ install batteries build/META)
-DEST_TOP = $(shell @OCAMLFIND@ query batteries)/top.ml
-$(shell @OCAMLFIND@ remove batteries)
+DEST_TOP = $(shell @OCAMLFIND@ query @OCAMLPKG_camomile@)/../batteries/top.ml
 else
 DEST_TOP = $(DESTDIR)/batteries/top.ml
 endif
@@ -70,7 +78,11 @@ OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 # Replace the first one with the second one if you have build-time
 # issue, to help with trouble-shooting
 
+ifeq ($(INSTALLATION), GODI)
 all: byte syntax top
+else
+all: byte syntax top instdoc
+endif
 
 #Useful for testing
 reinstall: all opt uninstall install

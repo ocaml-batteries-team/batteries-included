@@ -1,3 +1,9 @@
+2008-11-10  David Teller  <David.Teller@univ-orleans.fr>
+
+	* Makefile.in: [INSTALLATION] added
+
+	* Makefile.in: [DEST_TOP] now uses the directory of camomile
+
 2008-11-09  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/IO.mli: Documentation added, functions reordered.
