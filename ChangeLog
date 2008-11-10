@@ -1,5 +1,7 @@
 2008-11-10  David Teller  <David.Teller@univ-orleans.fr>
 
+	* build/odoc_generator_batlib.ml: in main, added warning about length
+
 	* config.ml.in: [documentation_root] now built from [@DOCDIR@]
 
 	* configure.ac: [OCAMLPKG_camomile] now substituted

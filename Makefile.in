@@ -39,6 +39,8 @@ PACKAGE= batteries
 #DOCDIR = @docdir@
 #endif
 
+DOCDIR = @docdir@
+
 # command used to trigger the browser
 # if your platform browser is different, you will need to invoke make as
 #      make BROWSER="some command"
