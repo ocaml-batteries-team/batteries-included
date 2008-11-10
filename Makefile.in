@@ -26,7 +26,7 @@ VERSION = @VERSION@
 INSTALLATION =
 
 prefix = @prefix@
-PACKAGE= @PACKAGE@
+PACKAGE= batteries
 
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
