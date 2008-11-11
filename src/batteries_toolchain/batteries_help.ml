@@ -230,7 +230,9 @@ struct
 	))
 	(File.lines_of index)
       with e -> 
-	Printf.eprintf "While initializing the on-line help, error reading file %S\n%s%!" index (Printexc.to_string e)
+	Printf.eprintf
+	  "While initializing the on-line help, error reading index file %S\n%s%!"
+	  index (Printexc.to_string e)
 
   let auto_register () =
     let root_dir   = Filename.concat (Batteries_config.documentation_root) "doc/batteries"  in
@@ -263,15 +265,18 @@ struct
 		    Some kind ->
 		      let index          = Filename.concat  root_dir index in
 		      let html_directory = Filename.dirname index       in
-		      register ~name:"OCaml Batteries Included" ~kind
-			~index
-			~prefix:("file://"^html_directory)
+		      if Sys.file_exists index then
+		        register ~name:"OCaml Batteries Included" ~kind
+			  ~index
+			  ~prefix:("file://"^html_directory)
 		  | _ -> ()
 	   )
       )
       (File.lines_of root_file)
       with e ->
-	Printf.eprintf "While initializing the on-line help, error reading file %S\n%s%!" root_file (Printexc.to_string e)
+	Printf.eprintf
+	  "While initializing the on-line help, error root doc file %S\n%s%!" root_file
+	  (Printexc.to_string e)
       end
 (*;
       List.iter 
