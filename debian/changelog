@@ -1,4 +1,4 @@
-ocaml-batteries (0.20081112-1) experimental; urgency=low
+ocaml-batteries (0.20081112+gitBB342A7-1) experimental; urgency=low
 
   * new snapshot, now following upstream Git
     (commit bb342a7, i.e., alpha 2 + minor bugfixes)
