@@ -11,7 +11,6 @@ DEST_DIR = $(CURDIR)/debian/$(DEV_PKG_NAME)$(OCAML_STDLIB_DIR)
 
 DEB_CONFIGURE_EXTRA_FLAGS = --with-browser="x-www-browser %s"
 DEB_CONFIGURE_EXTRA_FLAGS += --with-docroot="/usr/share/doc/$(DOC_PKG_NAME)"
-
 DEB_MAKE_BUILD_TARGET = all
 ifeq ($(OCAML_HAVE_OCAMLOPT),yes)
 DEB_MAKE_BUILD_TARGET += opt
@@ -19,6 +18,8 @@ endif
 DEB_MAKE_BUILD_TARGET += OBFLAGS=-classic-display
 DEB_MAKE_INSTALL_TARGET = install DESTDIR=$(DEST_DIR)
 DEB_MAKE_CLEAN_TARGET = clean
+
+DEB_COMPRESS_EXCLUDE += myocamlbuild.ml
 
 build/$(DOC_PKG_NAME)::
 	OCAMLRUNPARAM=l=16M make doc OBFLAGS=-classic-display
