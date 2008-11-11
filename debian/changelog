@@ -1,7 +1,7 @@
 ocaml-batteries (0.20081111-1) UNRELEASED; urgency=low
 
   * new snapshot, now following upstream Git
-    (commit fed989b, i.e., alpha 2)
+    (commit e2fee94, i.e., alpha 2 + minor bugfixes)
   * debian/patches:
     - remote patch features/flexi-build (integrated upstream)
   * debian/control: correct spelling of "metapackage"
