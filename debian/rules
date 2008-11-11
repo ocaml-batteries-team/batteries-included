@@ -10,7 +10,7 @@ DOC_PKG_NAME = lib$(LIB_NAME)-ocaml-doc
 DEST_DIR = $(CURDIR)/debian/$(DEV_PKG_NAME)$(OCAML_STDLIB_DIR)
 
 DEB_CONFIGURE_EXTRA_FLAGS = --with-browser="x-www-browser %s"
-DEB_CONFIGURE_EXTRA_FLAGS += --with-docroot="/usr/share/doc/$(DEV_PKG_NAME)"
+DEB_CONFIGURE_EXTRA_FLAGS += --with-docroot="/usr/share/doc/$(DOC_PKG_NAME)"
 
 DEB_MAKE_BUILD_TARGET = all
 ifeq ($(OCAML_HAVE_OCAMLOPT),yes)
