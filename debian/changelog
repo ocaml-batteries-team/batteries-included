@@ -9,6 +9,7 @@ ocaml-batteries (0.20081111-1) UNRELEASED; urgency=low
   * debian/rules: port to new upstream, which is now using autotools
   * debian/rules: specify the clean target
   * symlink more doc files from /usr/share/doc/*-dev/ to *-doc/
+  * ship /usr/bin/batteries-ocaml (fancier top-level wrapper)
 
  -- Stefano Zacchiroli <zack@debian.org>  Mon, 13 Oct 2008 22:11:31 +0200
 
