@@ -30,6 +30,7 @@ build/$(DOC_PKG_NAME)::
 		debian/$(DOC_PKG_NAME).doc-base.ocamldoc-apiref
 
 TG_BRANCHES = fixes/consistent-docroot
+TG_BRANCHES += debian/missing-doc
 SAVED_BRANCH := $(shell git branch 2> /dev/null | grep '^*' | cut -f 2 -d' ')
 tg-export:
 	tg create stage-debian $(TG_BRANCHES)

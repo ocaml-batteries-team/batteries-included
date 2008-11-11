@@ -13,6 +13,8 @@ ocaml-batteries (0.20081111-1) UNRELEASED; urgency=low
   * debian/rules: do not compress myocamlbuild.ml, to ease its usage
   * debian/patches: new patch fixes/consistent-docroot to look for *.idex
     in the appropriate dir
+  * debian/patches: new patch debian/missing-doc, suggest to install -doc
+    package when trying to access it from enhanced top-level
   * add README.Debian, pointing out /usr/bin/ocaml-batteries
   * debian/control: suggest ledit, useful with ocaml-batteries
 
