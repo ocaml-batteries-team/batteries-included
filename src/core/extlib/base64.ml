@@ -73,6 +73,7 @@ let encode ?(tbl=chars) ch =
 		~flush:(fun () -> flush(); IO.flush ch)
 		~close:(fun() -> flush(); IO.close_out ch)
 
+
 let decode ?(tbl=inv_chars) ch =
 	if Array.length tbl <> 256 then raise Invalid_table;
 	let data = ref 0 in

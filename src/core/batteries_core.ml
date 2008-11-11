@@ -45,26 +45,26 @@ module Data        = struct
       module Global        = Extlib.Global
       module Hashtbl       = Extlib.ExtHashtbl.Hashtbl
       module HashtblLabels = Batlib_Baselib_HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
-      module Queue         = Batlib_Baselib_Queue        (*TODO:build from enum?*)
+      module Queue         = Extlib.ExtQueue.Queue
       module Ref           = Extlib.Ref
       module RefList       = Extlib.RefList
-      module Stack         = Batlib_Baselib_Stack        (*TODO:build from enum*)
+      module Stack         = Extlib.ExtStack.Stack
       module Stream        = Extlib.ExtStream.Stream
     end
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
       module Lazy            = Batlib_Baselib_Lazy
-      module List            = Extlib.ExtList.List      (*formerly Batlib_Baselib_List*)
+      module List            = Extlib.ExtList.List
       module ListLabels      = Extlib.ExtList.ListLabels(*TODO:Bring to feature parity with {!List}*)
-      module Map             = Batlib_Baselib_Map       (*TODO:make enumerable*)
+      module Map             = Extlib.ExtMap.Map
       module MapLabels       = Batlib_Baselib_MapLabels (*TODO:make enumerable*)
       module MultiPMap       = Extlib.MultiPMap
       module PMap            = Extlib.PMap
       module PSet            = Extlib.PSet
       module Option          = Extlib.Option
       module OptionLabels    = Extlib.OptionLabels
-      module Set             = Batlib_Baselib_Set       (*TODO:make enumerable*)
+      module Set             = Extlib.ExtSet.Set
       module SetLabels       = Batlib_Baselib_SetLabels (*TODO:make enumerable*)
 
 (**
@@ -207,13 +207,13 @@ module System      = struct
   (** {1 Operations on streams}*)
     
   module IO            = Extlib.IO
-  module Unzip         = Extlib.Unzip
+  (* module Unzip         = Extlib.Unzip *)
     
   (** {1 Actual operating system calls}*)
     
   module File          = Extlib.File
   module Filename      = Batlib_Baselib_Filename
-  module Unix          = Batlib_Baselib_Unix
+  module Unix          = Extlib.ExtUnix.Unix
   module UnixLabels    = Batlib_Baselib_UnixLabels
   module Sys           = Batlib_Baselib_Sys
     
@@ -225,6 +225,10 @@ end
 
 (** Tools for compiling OCaml, generating documentation, installing libraries. *)
 module Toolchain   = struct
+
+  (**Configuration of the system*)
+  module Sysconfig   = Batteries_config
+
 
   module Execute     = Toolchain.Builtin_tools
 

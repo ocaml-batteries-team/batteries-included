@@ -1,4 +1,5 @@
 <extlib>:          include
+<extlib_threads>:  include
 <baselib>:         include
 <baselib_threads>: include
 <toolchain>:       include

@@ -212,7 +212,10 @@ module System      = struct
   (** {1 Operations on streams}*)
     
   module IO            = Inner.System.IO
-  module Unzip         = Inner.System.Unzip
+
+  (** {2 Compression/Decompression} *)
+  module Compress      = Libs.Common.Compress
+  module GZip          = Libs.GZip
     
   (** {1 Actual operating system calls}*)
     
@@ -350,7 +353,6 @@ module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
 module Printexc  = Printexc
-(*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
 (**/**)
 
 

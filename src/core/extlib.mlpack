@@ -35,7 +35,6 @@ ExtNativeint
 ExtStream
 ExtString
 Substring
-Unzip
 Std
 RefList
 LazyList
@@ -54,3 +53,8 @@ ExtMarshal
 ExtGc
 ExtPrintexc
 ExtPervasives
+ExtUnix
+ExtMap
+ExtQueue
+ExtStack
+ExtSet

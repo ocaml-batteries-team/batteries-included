@@ -1,6 +1,7 @@
-ocaml-batteries (0.20081131-1) UNRELEASED; urgency=low
+ocaml-batteries (0.20081111-1) UNRELEASED; urgency=low
 
-  * new snapshot, now following upstream Git (commit 3978b60)
+  * new snapshot, now following upstream Git
+    (commit fed989b, i.e., alpha 2)
   * debian/patches:
     - remote patch features/flexi-build (integrated upstream)
   * debian/control: correct spelling of "metapackage"

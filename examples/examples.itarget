@@ -4,3 +4,9 @@ cat2.byte
 cat2.native
 shuffle.byte
 shuffle.native
+shuffle2.byte
+shuffle2.native
+gzip.byte
+gzip.native
+gunzip.byte
+gunzip.native

@@ -14,3 +14,5 @@
 <test_marshal.*>:        use_batteries
 <*>:                     debug
 <test.*>:                use_batteries
+<test_flush.*>:          use_batteries
+<test_version.*>:        use_batteries
