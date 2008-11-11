@@ -8,6 +8,7 @@ ocaml-batteries (0.20081111-1) UNRELEASED; urgency=low
   * debian/control: fix sections: -dev in libdevel, -doc in doc
   * debian/rules: port to new upstream, which is now using autotools
   * debian/rules: specify the clean target
+  * symlink more doc files from /usr/share/doc/*-dev/ to *-doc/
 
  -- Stefano Zacchiroli <zack@debian.org>  Mon, 13 Oct 2008 22:11:31 +0200
 
