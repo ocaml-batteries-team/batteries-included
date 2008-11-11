@@ -119,7 +119,7 @@ if test "$HAS_GODI" = "yes" ; then
    AC_MSG_NOTICE([GODI-specific installation enabled])
    DEFAULT_DOCDIR=`$OCAMLFIND printconf destdir`/../../../doc/godi-batteries
 else
-   DEFAULT_DOCDIR="$DOCROOT"
+   DEFAULT_DOCDIR="$docdir"
 fi
 DOCDIR="$DEFAULT_DOCDIR"
 
