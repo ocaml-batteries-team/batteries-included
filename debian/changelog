@@ -11,6 +11,8 @@ ocaml-batteries (0.20081111-1) UNRELEASED; urgency=low
   * symlink more doc files from /usr/share/doc/*-dev/ to *-doc/
   * ship /usr/bin/ocaml-batteries (fancier top-level wrapper)
   * debian/rules: do not compress myocamlbuild.ml, to ease its usage
+  * debian/patches: new patch fixes/consistent-docroot to look for *.idex
+    in the appropriate dir
 
  -- Stefano Zacchiroli <zack@debian.org>  Mon, 13 Oct 2008 22:11:31 +0200
 
