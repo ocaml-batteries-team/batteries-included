@@ -27,16 +27,26 @@ You will need
 
 If you're working from the git tree, you'll need:
 * autoconf
-and you'll have to do
+and you'll have to first run
     $ autoconf
 to create the configure script.
 
-To install the full version of OCaml Batteries Included, execute
+To install the full version of OCaml Batteries Included in the default
+directory (/usr/local/), execute
 
     $ ./configure
-    $ make all install
+    $ make all opt install install-doc
 
-Be patient, documentation generation takes several minutes.
+If you wish to install to a directory other than the default directory,
+execute
+
+    $ ./configure --prefix=/path/to/some/other/directory/
+    $ make all opt install install-doc
+
+Be patient, documentation generation may take more than 15 minutes.
+If you do not want the documentation generation, remove "install-doc"
+from the previous commands.
+
 
 *** Using Batteries Included ***
 

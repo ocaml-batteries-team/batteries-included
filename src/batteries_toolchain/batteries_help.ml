@@ -233,7 +233,7 @@ struct
 	Printf.eprintf "While initializing the on-line help, error reading file %S\n%s%!" index (Printexc.to_string e)
 
   let auto_register () =
-    let root_dir   = Batteries_config.documentation_root           in
+    let root_dir   = Filename.concat (Batteries_config.documentation_root) "doc/batteries"  in
     let root_file  = Filename.concat root_dir "documentation.idex" in
       begin
       try

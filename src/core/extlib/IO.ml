@@ -717,7 +717,7 @@ let write_uchars o uce = write_enum o (write_uchar o) uce
 (*let copy input output = write_chunks output (chunks_of default_buffer_size input)*)
 (*let copy input output = write_chars output (chars_of input)*)
 
-let copy ?(buffer=default_buffer_size) inp out =
+let copy ?(buffer=4096) inp out =
   let n   = buffer          in
   let buf = String.create n in
     try

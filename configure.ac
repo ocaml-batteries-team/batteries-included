@@ -1,5 +1,7 @@
 AC_INIT
 
+AC_SUBST(INSTALLATION)
+
 # version info
 VERSION=0.20081023
 AC_SUBST(VERSION)
@@ -61,6 +63,8 @@ if test -z "$OCAMLPKG_camomile" ; then
    AC_MSG_ERROR([Cannot find Camomile])
    exit 1
 fi
+AC_SUBST(OCAMLPKG_camomile)
+
 AC_CHECK_OCAML_PKG(zip, OCAMLPKG_zip)
 # Camlzip has different Findlib-level names on, e.g., Debian and GODI
 if test -z "$OCAMLPKG_zip" ; then
@@ -104,22 +108,36 @@ if test "$BROWSER_COMMAND" = "yes" ; then
 fi
 AC_SUBST(BROWSER_COMMAND)
 
-DEFAULT_DOCDIR="`pwd`/doc/batteries"
+
+AC_ARG_WITH(
+	godi,
+	[  --with-godi             require compilation for GODI],
+	HAS_GODI=yes,
+	HAS_GODI=no)
+AC_SUBST(HAS_GODI)
+if test "$HAS_GODI" = "yes" ; then
+   AC_MSG_NOTICE([GODI-specific installation enabled])
+   DEFAULT_DOCDIR=`$OCAMLFIND printconf destdir`/../../../doc/godi-batteries
+else
+   DEFAULT_DOCDIR="$DOCROOT"
+fi
+DOCDIR="$DEFAULT_DOCDIR"
+
 AC_ARG_WITH(
 	docroot,
-	[  --with-docroot=PATH  set documentation root
-	                  default: "$PWD/doc/batteries"],
+	[  --with-docroot=PATH     set documentation root
+	                           default: "$PWD/doc/batteries"],
 	DOCDIR=$withval,
-	DOCDIR=$DEFAULT_DOCDIR)
+	DOCDIR=$DOCDIR)
 if test "$DOCDIR" = "yes" ; then
    AC_MSG_ERROR([--with-docroot requires an argument])
    exit 1
 fi
+AC_MSG_NOTICE([documentation root directory: $DOCDIR])
 AC_SUBST(DOCDIR)
 
 # fill output templates
 AC_CONFIG_FILES([
- config.ml
  Makefile
  build/META
  build/threaded/META
