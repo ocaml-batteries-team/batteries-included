@@ -201,13 +201,13 @@ struct
   (** {1 Operations on streams}*)
     
   module IO            = Batteries_core.System.IO
-  module Unzip         = Batteries_core.System.Unzip
+  (* module Unzip         = Batteries_core.System.Unzip *)
     
   (** {1 Actual operating system calls}*)
     
   module File          = Batteries_core.System.File
   module Filename      = Batteries_core.System.Filename
-  module Unix          = Batteries_core.System.Unix
+  module Unix          = Extlib_threads.ExtUnixThreads.Unix
   module UnixLabels    = Batteries_core.System.UnixLabels
   module Sys           = Batteries_core.System.Sys
     
@@ -217,6 +217,7 @@ end
 (*[Toolchain] is [Batteries_core.Toolchain]*)
 module Toolchain = struct
 
+  module Sysconfig     = Batteries_core.Toolchain.Sysconfig
   module Execute       = Batteries_core.Toolchain.Execute
   module Findlib       = Batteries_core.Toolchain.Findlib
 end

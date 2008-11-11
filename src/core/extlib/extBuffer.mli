@@ -26,6 +26,10 @@
    as necessary.  It provides accumulative concatenation of strings
    in quasi-linear time (instead of quadratic time when strings are
    concatenated pairwise).
+
+    @author Pierre Weis (Base module)
+    @author Xavier Leroy (Base module)
+    @author David Teller
 *)
 
 module Buffer: sig

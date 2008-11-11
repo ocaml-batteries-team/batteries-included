@@ -23,18 +23,73 @@
 
 (** High-order abstract I/O.
     
-    IO module simply deals with abstract inputs/outputs. It provides a
-    set of methods for working with these IO as well as several
-    constructors that enable to write to an underlying channel, buffer,
-    or enum.
+    This module deals with {!type: input}s and {!type:
+    output}s. Inputs are manners of getting information from the
+    outside world and into your program (for instance, reading from
+    the network, from a file, etc.)  Outputs are manners of getting
+    information out from your program and into the outside world (for
+    instance, sending something onto the network, onto a file, etc.)
+    In other words, if you are looking for a way to modify files, read
+    from the network, etc., you're in the right place.
 
-    If you are looking for a way to read data from a file, a network
-    connexion, the keyboard... or to write data to a file, to the
-    network, to the screen... chances are that the operations are
-    defined in this module. Note that this module does not define
-    how to open files, network connexions, etc.
+    To perform I/O, you first need to {e open} your {!type: input} or
+    your {!type: output}. Chances are that there is an {e opening}
+    operation for this task. Note that most opening operations are
+    defined in their respective module.  Operations for opening files
+    are defined in module {!File}, operations for opening
+    communications with the network or with other processes are
+    defined in module {!Unix}. Opening operations related to
+    compression and decompression are defined in module {!Compress},
+    etc.
 
-    To open files, see {!File}.
+    Once you have opened an {!type: input}, you may read the data it
+    contains by using functions such as {!read} (to read one
+    character), {!nread} or {!val: input} (to read one string) or one
+    of the [read_*] functions. If you need not one information but a
+    complete enumeration, for instance for processing many information
+    before writing them, you may also convert the input into an
+    enumeration, by using one of the [*s_of] functions.
+
+    Once you have opened an {!type: output}, you may write data to
+    this output by using functions scuh as {!write} (to write one
+    char), {!nwrite} or {!val: output} (to write one string) or one of
+    the [write_*] functions. If you have not just one piece of data
+    but a complete enumeration, you may write this whole enumeration
+    to the output by using one of the [write_*s] functions. Note that
+    most operations on output are said to be {e buffered}. This means
+    that small writing operations may be automatically delayed and
+    grouped into large writing operations, as these are generally
+    faster and induce less wear on the hardware. Occasionally, you
+    may wish to force all waiting operations to take place {e now}.
+    For this purpose, you may either function {!flush} or function
+    {!flush_out}.
+    
+    Once you have finished using your {!type: input} or your {!type:
+    output}, chances are that you will want to close it. This is not a
+    strict necessity, as OCaml will eventually close it for you when
+    it detects that you have no more need of that {!type:
+    input}/{!type: output}, but this is generally a good policy, as
+    this will let other programs access the resources which are
+    currently allocated to that {!type:input}/{!type:output} --
+    typically, under Windows, if you are reading the contents of a
+    file from a program, no other program may read the contents of
+    that file simultaneously and you may also not rename or move the
+    file to another directory. To close an {!type: input}, use
+    function {!close_in} and to close an {!type: output}, use function
+    {!close_out}.
+
+    {b Note} Some {!type:input}s are built on top of other
+    {!type:input}s to provide transparent translations (e.g.
+    on-the-fly decompression of a file or network information) and
+    that some {!type:output}s are built on top of other
+    {!type:output}s for the same purpose (e.g. on-the-fly compression
+    of a file or network information). In this case, closing the
+    "outer" {!type:input}/{!type:output} (e.g. the
+    decompressor/compressor) will {e not} close the "inner"
+    {!type:input}/{!type:output} (e.g. access to the file or to the
+    network). You will need to close the "inner"
+    {!type:input}/{!type:output}, which will automatically flush
+    the outer {!type:input}/{!type:output} and close it.
 
     @author Nicolas Cannasse
     @author David Teller
@@ -102,18 +157,22 @@ val really_nread : input -> int -> string
   not available. Raises [Invalid_argument] if [n] < 0. *)
 
 val input : input -> string -> int -> int -> int
-(** [input i s p l] reads up to [l] characters from the given input, storing
-  them in string [s], starting at character number [p]. It returns the actual
-  number of characters read or raise [No_more_input] if no character can be
-  read. It will raise [Invalid_argument] if [p] and [l] do not designate a
-  valid substring of [s]. *)
+  (** [input i s p l] reads up to [l] characters from the given input,
+      storing them in string [s], starting at character number [p]. It
+      returns the actual number of characters read (which may be 0) or
+      raise [No_more_input] if no character can be read. It will raise
+      [Invalid_argument] if [p] and [l] do not designate a valid
+      substring of [s].
+
+
+  *)
 
 val really_input : input -> string -> int -> int -> int
-(** [really_input i s p l] reads exactly [l] characters from the given input,
-  storing them in the string [s], starting at position [p]. For consistency with
-  {!IO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
-  not available. Raises [Invalid_argument] if [p] and [l] do not designate a
-  valid substring of [s]. *)
+  (** [really_input i s p l] reads exactly [l] characters from the given input,
+      storing them in the string [s], starting at position [p]. For consistency with
+      {!IO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
+      not available. Raises [Invalid_argument] if [p] and [l] do not designate a
+      valid substring of [s]. *)
 
 val close_in : input -> unit
 (** Close the input. It can no longer be read from. *)
@@ -139,46 +198,29 @@ val really_output : 'a output -> string -> int -> int -> int
   designate a valid substring of [s]. *)
 
 val flush : 'a output -> unit
-(** Flush an output. *)
+(** Flush an output.
+
+    If previous write operations have caused errors, this may trigger an exception.*)
+
+val flush_all : unit -> unit
+(** Flush all outputs, ignore errors. *)
+
 
 val close_out : 'a output -> 'a
 (** Close the output and return its accumulator data.
-    It can no longer be written. *)
 
-(** {6 Unicode extensions} 
+    The output is flushed before being closed and can no longer be
+    written. Attempting to flush or write after the output has been
+    closed will have no effect.*)
 
-    All of the following functions deal only with UTF-8 encoded inputs/outputs
-*)
+(**/**)
+val close_all : unit -> unit
+(** Close all outputs.
 
-val read_uchar: input -> UChar.t
-(** Read one UChar from a UTF-8 encoded input*)
- 
-val read_rope: input -> int -> Rope.t
-(** Read up to n uchars from a UTF-8 encoded input*)
- 
-val read_uline: input -> Rope.t
-(** Read a line of UTF-8*)
- 
-val read_uall : input -> Rope.t
-(** Read the whole contents of a UTF-8 encoded input*)
- 
-val write_uchar: _ output -> UChar.t -> unit
-(** Write one uchar to a UTF-8 encoded output.*)
-
-val write_rope : _ output -> Rope.t -> unit
-(** Write a character rope onto a UTF-8 encoded output.*)
-
-val write_uline: _ output -> Rope.t -> unit
-(** Write one line onto a UTF-8 encoded output.*)
-
-val write_uchars : _ output -> UChar.t Enum.t -> unit
-(** Write an enumeration of characters onto a UTF-8 encoded output.*)
-
-val write_ulines : _ output -> Rope.t Enum.t -> unit
-(** Write an enumeration of lines onto a UTF-8 encoded output.*)
-
-val write_ropes : _ output -> Rope.t Enum.t -> unit
-(** Write an enumeration of ropes onto a UTF-8 encoded output.*)
+    Ignore errors. Automatically called at the end of your program.
+    You probably should never use it manually, as it also closes
+    [stdout], [stderr], [stdnull].*)
+(**/**)
 
 (** {6 Creation of IO Inputs/Outputs} 
 
@@ -203,29 +245,23 @@ val input_enum : char Enum.t -> input
 
 val output_enum : unit -> char Enum.t output
 (** Create an output that will write into an [enum]. The 
-  final enum is returned when the output is closed. *)
+    final enum is returned when the output is closed. *)
 
-val combine : ('a output * 'a output) -> 'a output
+val combine : ('a output * 'b output) -> ('a * 'b) output
 (** [combine (a,b)] creates a new [output] [c] such that
     writing to [c] will actually write to both [a] and [b] *)
 
-val create_in :
-  read:(unit -> char) ->
-  input:(string -> int -> int -> int) -> close:(unit -> unit) -> input
-(** Fully create an input by giving all the needed functions. *)
+val tab_out : ?tab:char -> int -> 'a output -> unit output
+  (** Create an output shifted to the right by a number of white spaces
+      (or [tab], if given).
 
-val create_out :
-  write:(char -> unit) ->
-  output:(string -> int -> int -> int) ->   
-  flush:(unit -> unit) -> close:(unit -> 'a) -> 'a output
-(** Fully create an output by giving all the needed functions. *)
+      [tab_out n out] produces a new output for writing into [out], in
+      which every new line starts with [n] white spaces.
+      Raises [Invalid_argument] if [n] < 0.
 
-val tab_out : int -> 'a output -> 'a output
-(** Create an output shifted to the right by a number of white spaces.
-
-    [tab_out n out] produces a new output for writing into [out], in
-    which every new line starts with [n] white spaces.
-    Raises [Invalid_argument] if [n] < 0.*)
+      Closing [tab_out n out] does not close [out]. Rather,
+      closing [out] closes [tab_out n out].
+  *)
 
 
 
@@ -234,18 +270,25 @@ val tab_out : int -> 'a output -> 'a output
 val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
 
+val read_uall : input -> Rope.t
+(** Read the whole contents of a UTF-8 encoded input*)
+
 val pipe : unit -> input * unit output
 (** Create a pipe between an input and an ouput. Data written from
     the output can be read from the input. *)
 
-val copy : input -> _ output -> unit
-(** Read everything from an input and copy it to an output.*)
+val copy : ?buffer:int -> input -> _ output -> unit
+(** Read everything from an input and copy it to an output.
+
+    @param buffer The size of the buffer to use for copying, in
+    bytes. By default, this is 4,096b.
+*)
 
 val pos_in : input -> input * (unit -> int)
-(** Create an input that provide a count function of the number of bytes
-    read from it. *)
+  (** Create an input that provide a count function of the number of bytes
+      read from it. *)
 
-val pos_out : 'a output -> 'a output * (unit -> int)
+val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
     written through it. *)
 
@@ -294,11 +337,20 @@ val read_float : input -> float
 val read_double : input -> float
 (** Read an IEEE double precision floating point value. *)
 
+val read_uchar: input -> UChar.t
+(** Read one UChar from a UTF-8 encoded input*)
+
 val read_string : input -> string
 (** Read a null-terminated string. *)
 
+val read_rope: input -> int -> Rope.t
+(** Read up to n uchars from a UTF-8 encoded input*)
+
 val read_line : input -> string
 (** Read a LF or CRLF terminated string. *)
+
+val read_uline: input -> Rope.t
+(** Read a line of UTF-8*)
 
 val write_byte : 'a output -> int -> unit
 (** Write an unsigned 8-bit byte. *)
@@ -321,15 +373,29 @@ val write_i64 : 'a output -> int64 -> unit
 val write_double : 'a output -> float -> unit
 (** Write an IEEE double precision floating point value. *)
 
+val write_uchar: _ output -> UChar.t -> unit
+(** Write one uchar to a UTF-8 encoded output.*)
+
 val write_float : 'a output -> float -> unit
 (** Write an IEEE single precision floating point value. *)
 
 val write_string : 'a output -> string -> unit
 (** Write a string and append an null character. *)
 
+val write_rope : _ output -> Rope.t -> unit
+(** Write a character rope onto a UTF-8 encoded output.*)
+
 val write_line : 'a output -> string -> unit
-(** Write a line and append a LF (it might be converted
-	to CRLF on some systems depending on the underlying IO). *)
+(** Write a line and append a line end.
+    
+    This adds the correct line end for your operating system.  That
+    is, if you are writing to a file and your system imposes that
+    files should end lines with character LF (or ['\n']), as Unix,
+    then a LF is inserted at the end of the line. If your system
+    favors CRLF (or ['\r\n']), then this is what will be inserted.*)
+
+val write_uline: _ output -> Rope.t -> unit
+(** Write one line onto a UTF-8 encoded output.*)
 
 (** Same operations as module {!IO}, but with big-endian encoding *)
 module BigEndian :
@@ -433,13 +499,6 @@ sig
 	val write_doubles : 'a output -> float Enum.t -> unit
 	  (** Write an enumeration of IEEE double precision floating point value. *)
 
-	val write_strings : 'a output -> string Enum.t -> unit
-	  (** Write an enumeration of strings, appending null characters. *)
-
-	val write_lines : 'a output -> string Enum.t -> unit
-	  (** Write an enumeration of lines, appending a LF (it might be converted
-	      to CRLF on some systems depending on the underlying IO). *)
-
 end
 
 
@@ -474,6 +533,105 @@ val drop_bits : in_bits -> unit
 (** Drop up to 7 buffered bits and restart to next input character. *)
 
 (**
+   {6 Creating new types of inputs/outputs}
+*)
+
+
+val create_in :
+  read:(unit -> char) ->
+  input:(string -> int -> int -> int) -> 
+  close:(unit -> unit) -> input
+(** Fully create an input by giving all the needed functions. 
+
+    {b Note} Do {e not} use this function for creating an input
+    which reads from one or more underlying inputs. Rather, use
+    {!wrap_in}.
+*)
+
+val wrap_in :
+  read:(unit -> char) ->
+  input:(string -> int -> int -> int) -> 
+  close:(unit -> unit) -> 
+  underlying:(input list) ->
+  input
+(** Fully create an input reading from other inputs by giving all the needed functions. 
+
+    This function is a more general version of {!create_in}
+    which also handles dependency management between inputs.
+*)
+
+
+val create_out :
+  write:(char -> unit) ->
+  output:(string -> int -> int -> int) ->   
+  flush:(unit -> unit) -> 
+  close:(unit -> 'a) -> 
+  'a output
+(** 
+    Fully create an output by giving all the needed functions.
+
+    @param write  Write one character to the output (see {!write}).
+    @param output Write a (sub)string to the output (see {!output}).
+    @param flush  Flush any buffers of this output  (see {!flush}).
+    @param close  Close this output. The output will be automatically
+    flushed.
+
+    {b Note} Do {e not} use this function for creating an output which
+    writes to one or more underlying outputs. Rather, use {!wrap_out}.
+*)
+
+val wrap_out :
+  write:(char -> unit)         ->
+  output:(string -> int -> int -> int) ->   
+  flush:(unit -> unit)         -> 
+  close:(unit -> 'a)           -> 
+  underlying:('b output list)  -> 
+  'a output
+(**
+   Fully create an output that writes to one or more underlying outputs.
+
+   This function is a more general version of {!create_out},
+   which also handles dependency management between outputs.
+
+   To illustrate the need for dependency management, let us consider
+   the following values:
+   - an output [out]
+   - a function [f : _ output -> _ output], using {!create_out} to
+   create a new output for writing some data to an underyling
+   output (for instance, a function comparale to {!tab_out} or a
+   function performing transparent compression or transparent
+   traduction between encodings)
+
+   With these values, let us consider the following scenario
+   - a new output [f out] is created
+   - some data is written to [f out] but not flushed
+   - output [out] is closed, perhaps manually or as a consequence
+   of garbage-collection, or because the program has ended
+   - data written to [f out] is flushed.
+
+   In this case, data reaches [out] only after [out] has been closed.
+   Despite appearances, it is quite easy to reach such situation,
+   especially in short programs.
+
+   If, instead, [f] uses [wrap_out], then when output [out] is closed,
+   [f out] is first automatically flushed and closed, which avoids the
+   issue.
+
+   @param write  Write one character to the output (see {!write}).
+   @param output Write a (sub)string to the output (see {!output}).
+   @param flush  Flush any buffers of this output  (see {!flush}).
+   @param close  Close this output. The output will be automatically
+   flushed.
+   @param underlying The list of outputs to which the new output will
+   write.
+
+   {b Note} Function [close] should {e not} close [underlying]
+   yourself. This is a common mistake which may cause sockets or
+   standard output to be closed while they are still being used by
+   another part of the program.
+*)
+
+(**
    {6 For compatibility purposes}
 *)
 
@@ -482,23 +640,7 @@ val input_channel : in_channel -> input
 
 val output_channel : out_channel -> unit output
 (** Create an output that will write into a channel. *) 
-(*
-val to_input_channel : input -> in_channel
-(** Create a channel that will read from an input.
 
-    {b Note} This function is very costly and is provided
-    essentially for debugging purposes or for reusing legacy
-    libraries which can't be adapted. As a general rule, if
-    you can avoid using this function, don't use it.*)
-
-val to_output_channel: _ output -> out_channel
-(** Create a channel that will write to an output
-
-    {b Note} This function is very costly and is provided
-    essentially for debugging purposes or for reusing legacy
-    libraries which can't be adapted. As a general rule, if
-    you can avoid using this function, don't use it.*)
-  *)
 (** {6 Generic IO Object Wrappers}
 
 	Theses OO Wrappers have been written to provide easy support of ExtLib
@@ -578,6 +720,9 @@ val strings_of : input -> string Enum.t
 val lines_of : input -> string Enum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
  
+val chunks_of : int -> input -> string Enum.t
+(** Read an input as an enumeration of strings of given maximal length.*)
+
 val ulines_of : input -> Rope.t Enum.t
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
 
@@ -594,6 +739,12 @@ val bits_of : in_bits -> int Enum.t
 
 val write_bytes : 'a output -> int Enum.t -> unit
 (** Write an enumeration of unsigned 8-bit bytes. *)
+
+val write_chars : 'a output -> char Enum.t -> unit
+(** Write an enumeration of chars. *)
+
+val write_uchars : _ output -> UChar.t Enum.t -> unit
+(** Write an enumeration of characters onto a UTF-8 encoded output.*)
 
 val write_ui16s : 'a output -> int Enum.t -> unit
 (** Write an enumeration of unsigned 16-bit words. *)
@@ -614,11 +765,21 @@ val write_doubles : 'a output -> float Enum.t -> unit
 (** Write an enumeration of IEEE double precision floating point value. *)
 
 val write_strings : 'a output -> string Enum.t -> unit
-(** Write an enumeration of strings, appending null characters. *)
+(** Write an enumeration of strings, appending null characters.*)
+
+val write_chunks: 'a output -> string Enum.t -> unit
+(** Write an enumeration of strings, without appending null characters.*)
 
 val write_lines : 'a output -> string Enum.t -> unit
 (** Write an enumeration of lines, appending a LF (it might be converted
     to CRLF on some systems depending on the underlying IO). *)
+
+val write_ropes : 'a output -> Rope.t Enum.t -> unit
+(** Write an enumeration of ropes onto a UTF-8 encoded output,
+    without appending a line-end.*)
+
+val write_ulines : _ output -> Rope.t Enum.t -> unit
+(** Write an enumeration of lines onto a UTF-8 encoded output.*)
 
 val write_bitss : nbits:int -> out_bits -> int Enum.t -> unit
 (** Write an enumeration of bits*)
@@ -632,23 +793,9 @@ val printf : 'a output -> ('b, 'a output, unit) format -> 'b
 
     @obsolete Prefer {!Languages.Printf.fprintf}*)
 
-val lmargin : int -> ('b output -> 'a -> unit) -> 'b output -> 'a -> unit
-(** [lmargin n p] behaves as [p], with the exception that every new line from this
-    point will be shifted to the right by [n] white spaces*)
-
-
-
-(*val make_list_printer: ('a output -> 'b -> unit) -> string -> string -> string -> ('a output -> 'b list -> unit)
-(** Make a list printer
-
-    [make_list_printer printer start_symbol end_symbol separator] creates a printer for
-    lists, which prints [start_symbol] at the beginning of the list, [end_symbol] at
-    the end, uses [printer] for each element of the contents and separates these
-    elements with [separator]
-*)*)
-
 
 val default_buffer_size : int
+(**The default size for internal buffers.*)
 
 (**/**)
 val comb : ('a output * 'a output) -> 'a output

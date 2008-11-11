@@ -1,0 +1,4 @@
+<*.cmx> :for-pack(Libs)
+<*.ml>	:pkg_zip,pkg_camlzip
+<*.mli>	:pkg_zip,pkg_camlzip
+<*>:     debug

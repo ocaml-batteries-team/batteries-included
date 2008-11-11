@@ -618,6 +618,12 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
       iter (InnerIO.Printf.fprintf out "%s%a" sep print_a) t;
       InnerIO.nwrite out last
 
+let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a list =
+  ExtPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
+(*  let os = InnerIO.output_string  () in
+  print ~first ~last ~sep print_a os list;
+  InnerIO.close_out os (* returns contents *)*)
+
 let reduce f = function [] -> invalid_arg "List.reduce: empty list" 
   | h::t -> fold_left f h t
 

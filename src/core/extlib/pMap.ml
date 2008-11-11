@@ -199,3 +199,7 @@ let rec enum m =
 
 let uncurry_add (k, v) m = add k v m
 let of_enum ?(cmp = compare) e = Enum.fold uncurry_add (create cmp) e
+
+
+let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
+  Enum.print ~first ~last ~sep (fun out (k,v) -> ExtPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)

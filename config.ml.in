@@ -1,0 +1,5 @@
+
+let version = "@VERSION@";;
+let documentation_root = "@DOCROOT@";;
+let (browser: (_, _, _) format) = "@BROWSER_COMMAND@";;
+

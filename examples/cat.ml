@@ -8,6 +8,5 @@
 
 open System, IO
 
-let _ =
-  iter (fun x -> copy (File.open_in x) stdout) (args ())
+iter (fun x -> copy (File.open_in x) stdout) (args ())
 

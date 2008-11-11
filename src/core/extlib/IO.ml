@@ -28,13 +28,12 @@ include InnerIO
    {6 API}
 *)
 
-
-let default_close = (fun () -> ())
-
+external noop :          unit -> unit = "%ignore"
+external default_close : unit -> unit = "%ignore"
 
 let pos_in i =
   let p = ref 0 in
-    (create_in 
+    (wrap_in 
       ~read:(fun () ->
 	       let c = read i in
 		 incr p;
@@ -45,12 +44,13 @@ let pos_in i =
 		  p := !p + n;
 		  n
 	     )
-      ~close:(fun () -> close_in i)
+      ~close:noop
+      ~underlying:[i]
       , (fun () -> !p))
 
 let pos_out o =
   let p = ref 0 in
-    (create_out
+    (wrap_out
        ~write:(fun c ->
 		 write o c;
 		 incr p
@@ -60,8 +60,9 @@ let pos_out o =
 		    p := !p + n;
 		    n
 	       )
-       ~close:(fun () -> close_out o)
+       ~close:noop
        ~flush:(fun () -> flush o)
+       ~underlying:[o]
      , fun () -> !p)
 
 (**
@@ -149,8 +150,8 @@ let make_enum f input =
   close_at_end input (Enum.from (fun () -> apply_enum f input))
 
 
-let comb (a,b) =
-  create_out ~write:(fun c -> 
+let combine (a,b) =
+  wrap_out ~write:(fun c -> 
 		       write a c;
 		       write b c)
     ~output:(fun s i j ->
@@ -160,8 +161,14 @@ let comb (a,b) =
 	      flush a;
 	      flush b)
     ~close:(fun () ->
-	      let _ = close_out a in
-		close_out b)
+	      (close_out a, close_out b))
+    ~underlying:[cast_output a; cast_output b]
+
+
+let write_enum out f enum =
+  Enum.iter f enum
+(*;
+  flush out*)
       
 (**
    {6 Big Endians}
@@ -256,9 +263,6 @@ let write_double ch f =
 let write_float ch f =
 	write_real_i32 ch (Int32.bits_of_float f)
 
-
-
-
 let ui16s_of input     = make_enum read_ui16 input
 
 let i16s_of input      = make_enum read_i16 input
@@ -274,34 +278,34 @@ let doubles_of input   = make_enum read_double input
 let floats_of input    = make_enum read_float input
 
 let write_bytes output enum =
-  Enum.iter (write_byte output) enum
+  write_enum output (write_byte output) enum
 
 let write_ui16s output enum =
-  Enum.iter (write_ui16 output) enum
+  write_enum output (write_ui16 output) enum
 
 let write_i16s output enum =
-  Enum.iter (write_i16 output) enum
+  write_enum output (write_i16 output) enum
 
 let write_i32s output enum =
-  Enum.iter (write_i32 output) enum
+  write_enum output (write_i32 output) enum
 
 let write_real_i32s output enum =
-  Enum.iter (write_real_i32 output) enum
+  write_enum output (write_real_i32 output) enum
 
 let write_i64s output enum =
-  Enum.iter (write_i64 output) enum
+  write_enum output (write_i64 output) enum
 
 let write_doubles output enum =
-  Enum.iter (write_double output) enum
+  write_enum output (write_double output) enum
 
 let write_floats output enum =
-  Enum.iter (write_float output) enum
+  write_enum output (write_float output) enum
 
 let write_strings output enum =
-  Enum.iter (write_string output) enum
+  write_enum output (write_string output) enum
 
 let write_lines output enum =
-  Enum.iter (write_line output) enum
+  write_enum output (write_line output) enum
 
 
 end
@@ -441,10 +445,10 @@ let from_out_channel ch =
 		ch#output s p l
 	in
 	create_out
-		~write
-		~output
-		~flush:ch#flush
-		~close:ch#close_out
+	  ~write
+	  ~output
+	  ~flush:ch#flush
+	  ~close:ch#close_out
 
 let from_in_chars ch =
 	let input s p l =
@@ -472,10 +476,11 @@ let from_out_chars ch =
 		l
 	in
 	create_out
-		~write:ch#put
-		~output
-		~flush:ch#flush
-		~close:ch#close_out
+	  ~write:ch#put
+	  ~output
+	  ~flush:ch#flush
+	  ~close:ch#close_out
+
 (**
    {6 Enumerations}
 *)
@@ -502,6 +507,7 @@ let strings_of input      = make_enum read_string input
 
 let lines_of input        = make_enum read_line input
 
+let chunks_of n input     = make_enum (fun input -> nread input n) input
 
 (**The number of chars to read at once*)
 let buffer_size = 1024 (*Arbitrary size.*)
@@ -512,37 +518,45 @@ let chars_of input = close_at_end input (Enum.concat (Enum.from (fun () ->
 let bits_of input = close_at_end input.ch (Enum.from (fun () -> apply_enum read_bits input 1))
 
 let write_bytes output enum =
-  Enum.iter (write_byte output) enum
+  write_enum output (write_byte output) enum
+
+let write_chars output enum =
+  write_enum output (write output) enum
 
 let write_ui16s output enum =
-  Enum.iter (write_ui16 output) enum
+  write_enum output (write_ui16 output) enum
 
 let write_i16s output enum =
-  Enum.iter (write_i16 output) enum
+  write_enum output (write_i16 output) enum
 
 let write_i32s output enum =
-  Enum.iter (write_i32 output) enum
+  write_enum output (write_i32 output) enum
 
 let write_real_i32s output enum =
-  Enum.iter (write_real_i32 output) enum
+  write_enum output (write_real_i32 output) enum
 
 let write_i64s output enum =
-  Enum.iter (write_i64 output) enum
+  write_enum output (write_i64 output) enum
 
 let write_doubles output enum =
-  Enum.iter (write_double output) enum
+  write_enum output (write_double output) enum
 
 let write_floats output enum =
-  Enum.iter (write_float output) enum
+  write_enum output (write_float output) enum
 
 let write_strings output enum =
-  Enum.iter (write_string output) enum
+  write_enum output (write_string output) enum
 
 let write_lines output enum =
-  Enum.iter (write_line output) enum
+  write_enum output (write_line output) enum
+
+let write_chunks output enum =
+  write_enum output (nwrite output) enum
 
 let write_bitss ~nbits output enum =
   Enum.iter (write_bits ~nbits output) enum
+(*;
+  flush output.ch*)
 
 (**
    {6 Standard IO}
@@ -573,9 +587,9 @@ let make_list_printer (p:('a output -> 'b -> unit))
 
 
 
-let tab_out n out =
-  let spaces   = String.make n ' ' in
-  create_out 
+let tab_out ?(tab=' ') n out =
+  let spaces   = String.make n tab in
+  wrap_out 
     ~write: (fun c     -> 
 	       write out  c;
 	       if Char.is_newline c then (
@@ -592,15 +606,30 @@ let tab_out n out =
 		 done;
 		 let s' = Buffer.contents buffer                  in
 		 output out s' 0 (String.length s'))
-    ~flush:(fun () -> flush out)
-    ~close:(fun () -> close_out out)
+    ~flush:noop
+    ~close:noop
+    ~underlying:[out]
 
-let lmargin n p out x =
-  p (tab_out n out) x
+(*
+let lmargin n (p:_ output -> 'a -> unit) out x =
+  p (tab_out n (cast_output out)) x
+*)
 
-let combine = comb
+let comb (a,b) =
+  create_out ~write:(fun c -> 
+		       write a c;
+		       write b c)
+    ~output:(fun s i j ->
+	       let _ = output a s i j in
+		 output b s i j)
+    ~flush:(fun () ->
+	      flush a;
+	      flush b)
+    ~close:(fun () ->
+	      ignore (close_out a); close_out b)
 
-let copy input output = write_lines output (lines_of input) 
+
+
 
 (** {6 Unicode}*)
 open ExtUTF8
@@ -675,15 +704,36 @@ let write_rope = Rope.print
  
 (*val write_uline: _ output -> Rope.t -> unit*)
 let write_uline o r = write_rope o r; write o '\n'
- 
-(*val write_uchars : _ output -> UChar.t Enum.t -> unit*)
-let write_uchars o uce = Enum.iter (write_uchar o) uce
- 
+  
 (*val write_ulines : _ output -> Rope.t Enum.t -> unit*)
-let write_ulines o re = Enum.iter (write_uline o) re
+let write_ulines o re = write_enum o (write_uline o) re
  
 (*val write_ropes : _ output -> Rope.t Enum.t -> unit*)
-let write_ropes o re = Enum.iter (write_rope o) re
+let write_ropes o re = write_enum o (write_rope o) re
+
+(*val write_uchars : _ output -> UChar.t Enum.t -> unit*)
+let write_uchars o uce = write_enum o (write_uchar o) uce
+
+(*let copy input output = write_chunks output (chunks_of default_buffer_size input)*)
+(*let copy input output = write_chars output (chars_of input)*)
+
+let copy ?(buffer=4096) inp out =
+  let n   = buffer          in
+  let buf = String.create n in
+    try
+      while true do
+	let len = input inp buf 0 n in
+	  if len = 0 then raise No_more_input
+	  else            ignore (really_output out buf 0 len)
+      done
+    with No_more_input -> ()
+
+(*let fast_chunks_of n inp  =
+  let buffer = String.create n in
+    make_enum (fun inp -> input inp buffer 0 n) input*)
+
+
+
 (*
 (** {6 Test} *)
 let in_channel_of_input i =
