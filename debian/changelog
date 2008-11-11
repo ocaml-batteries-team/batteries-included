@@ -14,6 +14,7 @@ ocaml-batteries (0.20081111-1) UNRELEASED; urgency=low
   * debian/patches: new patch fixes/consistent-docroot to look for *.idex
     in the appropriate dir
   * add README.Debian, pointing out /usr/bin/ocaml-batteries
+  * debian/control: suggest ledit, useful with ocaml-batteries
 
  -- Stefano Zacchiroli <zack@debian.org>  Mon, 13 Oct 2008 22:11:31 +0200
 

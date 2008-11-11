@@ -33,6 +33,7 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends}
 Recommends: libbatteries-ocaml-doc
+Suggests: ledit
 Provides: libbatteries-camlp4-dev
 Description: Batteries included: OCaml development platform - development files
  Batteries included is a community-driven effort to standardize on an
