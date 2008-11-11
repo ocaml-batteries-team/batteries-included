@@ -1,0 +1,31 @@
+OCaml Batteries Included for Debian
+===================================
+
+This is OCaml Batteries Included (or simply `Batteries'), distributed
+within Debian. This file lists peculiarities of the Debian packaging,
+for more general Batteries documentation see the content of the
+`libbatteries-ocaml-doc' package.
+
+
+Enhanced top-level `ocaml-batteries'
+------------------------------------
+
+Batteries comes with an enhanced top-level (read-eval-print loop) with
+on-line help facilities. It is shipped in the Batteries library
+directory, but is also symlinked to `/usr/bin/ocaml-batteries' for
+your convenience. Just execute "ocaml-batteries" to get started, even
+though you might prefer to execute:
+
+        ledit ocaml-batteries
+
+to enjoy line-editing capabilities. `ledit' comes with the `ledit'
+package; feel free to replace it with your favorite line-editor.
+
+Once inside the Batteries top-level, type
+
+        #help;;
+
+to start exploring Batteries and OCaml.
+
+
+ -- Stefano Zacchiroli <zack@debian.org>, Tue, 11 Nov 2008 18:46:03 +0100
