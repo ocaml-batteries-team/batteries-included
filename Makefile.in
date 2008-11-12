@@ -28,7 +28,6 @@ HAS_GODI = @HAS_GODI@
 prefix = @prefix@
 datarootdir= @datarootdir@
 datadir= @datadir@
-DOCDIR = @docdir@
 
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
@@ -38,7 +37,7 @@ DOCDIR = @docdir@
 ifeq ($(HAS_GODI),yes)
 DOCDIR = $(shell ocamlfind printconf destdir)/../../../doc/godi-batteries
 else
-DOCDIR = @docdir@
+DOCDIR = @DOCDIR@
 endif
 
 # command used to trigger the browser
