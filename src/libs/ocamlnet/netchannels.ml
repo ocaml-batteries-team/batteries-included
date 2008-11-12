@@ -91,23 +91,35 @@ let input_of_netchannel netic =
   let close () = netic # close_in () in
     IO.create_in ~read ~input ~close
 
+let net_write netoc ch =
+  (* try *)
+    let bytes = netoc # output (String.make 1 ch) 0 1 in
+      if bytes = 0 then raise Output_not_available
+  (* with Netchannels.Closed_channel -> raise Output_closed *)
+
+let net_output netoc buf pos len  =
+  (* try *)
+    netoc # output buf pos len
+  (* with Netchannels.Closed_channel -> raise Output_closed *)
+
+let net_flush netoc = netoc # flush
+
+let net_close netoc () =
+  (* try *)
+    netoc # close_out ()
+  (* with Netchannels.Closed_channel -> () *)
+
 let output_of_netchannel netoc =
-  let write ch =
-    (* try *)
-      let bytes = netoc # output (String.make 1 ch) 0 1 in
-        if bytes = 0 then raise Output_not_available
-    (* with Netchannels.Closed_channel -> raise Output_closed *)
-  in
-  let output buf pos len  =
-    (* try *)
-      netoc # output buf pos len
-    (* with Netchannels.Closed_channel -> raise Output_closed *)
-  in
-  let flush = netoc # flush in
+  IO.create_out ~write:(net_write netoc) ~output:(net_output netoc)
+    ~flush:(net_flush netoc) ~close:(net_flush netoc)
+
+let output_of_acc_channel accoc =
   let close () =
     (* try *)
-      netoc # close_out ()
+      accoc # close_out ();
+      Option.get (accoc # acc)
     (* with Netchannels.Closed_channel -> () *)
   in
-    IO.create_out ~write ~output ~flush ~close
+  IO.create_out ~write:(net_write accoc) ~output:(net_output accoc)
+    ~flush:(net_flush accoc) ~close
 

@@ -150,6 +150,10 @@ val input_of_netchannel : rec_in_channel -> IO.input
 (** TODO document this *)
 val output_of_netchannel : rec_out_channel -> unit IO.output
 
-(** TODO document this *)
-(* val output_of_acc_channel : 'a acc_out_channel -> 'a IO.output *)
+(** TODO document this
+
+    @raise Data.Persistent.Option.No_value upon [close] if the
+    underlying channel did not set the value accumulated during
+    output. See {!acc_out_channel}. *)
+val output_of_acc_channel : 'a acc_out_channel -> 'a IO.output
 
