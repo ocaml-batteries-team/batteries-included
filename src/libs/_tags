@@ -1,2 +1,3 @@
 <common>:	include
 <camlzip>:	include
+<ocamlnet>:	include

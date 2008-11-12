@@ -227,6 +227,7 @@ module System      = struct
     
   (** {1 Networking}*)
   module Network       = struct
+    module Netchannels = Libs.Netchannels
     (** Placeholder.
 
 	Expect OCamlNet here.*)
