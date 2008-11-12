@@ -9,13 +9,16 @@ DEV_PKG_NAME = lib$(LIB_NAME)-ocaml-dev
 DOC_PKG_NAME = lib$(LIB_NAME)-ocaml-doc
 DEST_DIR = $(CURDIR)/debian/$(DEV_PKG_NAME)$(OCAML_STDLIB_DIR)
 
+OCAMLBUILD_FLAGS = -classic-display
 DEB_CONFIGURE_EXTRA_FLAGS = --with-browser="x-www-browser %s"
 DEB_CONFIGURE_EXTRA_FLAGS += --with-docroot="/usr/share/doc/$(DOC_PKG_NAME)"
 DEB_MAKE_BUILD_TARGET = all
 ifeq ($(OCAML_HAVE_OCAMLOPT),yes)
 DEB_MAKE_BUILD_TARGET += opt
+else
+OCAMLBUILD_FLAGS += -byte-plugin
 endif
-DEB_MAKE_BUILD_TARGET += OBFLAGS=-classic-display
+DEB_MAKE_BUILD_TARGET += OBFLAGS="$(OCAMLBUILD_FLAGS)"
 DEB_MAKE_INSTALL_TARGET = install DESTDIR=$(DEST_DIR)
 DEB_MAKE_CLEAN_TARGET = clean
 

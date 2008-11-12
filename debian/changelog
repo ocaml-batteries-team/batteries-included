@@ -1,3 +1,10 @@
+ocaml-batteries (0.20081112+gitBB342A7-2) UNRELEASED; urgency=low
+
+  * debian/rules: pass -byte-plugin to ocamlbuild when ocamlopt is not
+    available (fixes FTBFS on non-native archs)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Wed, 12 Nov 2008 13:49:58 +0100
+
 ocaml-batteries (0.20081112+gitBB342A7-1) experimental; urgency=low
 
   * new snapshot, now following upstream Git
