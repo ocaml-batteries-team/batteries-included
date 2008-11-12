@@ -20,7 +20,7 @@
  * USA
  *)
 
-open ExtString
+open Extlib
 
 exception Input_not_available
 exception Output_not_available
@@ -40,8 +40,6 @@ class type ['a] acc_out_channel = object
   inherit rec_out_channel
   method acc : 'a option
 end
-
-open Extlib
 
 class netchannel_of_input inp =
 object
