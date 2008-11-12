@@ -1,5 +1,9 @@
 2008-11-12  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extUnix.ml*: [open_process_in], [open_process], [open_process_full], [establish_server], [open_connection] now accept an additional argument [autoclose]
+
+	* src/core/extlib/extUnix.ml*: [input_of_descr], [output_of_descr], [descr_of_input], [descr_of_output] added
+
 	* src/core/extlib/innerIO.ml: [empty_in] added, used in [input_channel]
 
 	* src/core/extlib/enum.mli: fixed documentation of [for_all]
