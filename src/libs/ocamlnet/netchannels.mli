@@ -20,6 +20,16 @@
  * USA
  *)
 
+exception Input_not_available
+  (** raised by input channels created from non-blocking Netchannels
+      to indicate that no input is {e currently} available (it might
+      become available later though) *)
+
+exception Output_not_available
+  (** raised by output channels created from non-blocking Netchannels
+      to indicate that no output can {e currently} be output (it might
+      be possible to output it later though) *)
+
 open Extlib
 open IO
 
@@ -88,14 +98,13 @@ class type rec_out_channel = object
 	resource.
 	
 	When the channel is non-blocking, and there are currently no
-	bytes to write, the number 0 will be returned. {b This has
-	been changed in ocamlnet-0.97! In previous releases this
-	behaviour was undefined.}
+	bytes to write, the number 0 will be returned.
 	
 	When the channel is closed, the exception [Closed_channel]
 	will be raised if an ocamlnet implementation is used. For
 	implementations of other libraries there is no standard for
 	this case.  *)
+
 
   method flush : unit -> unit
     (** If there is a write buffer, it will be flushed. Otherwise,
@@ -129,13 +138,18 @@ end
 
 (** {6 Integration among IO channels and Netchannels} *)
 
-(** TODO document this class *)
+(** TODO document this *)
 class netchannel_of_input : IO.input -> rec_in_channel
 
-(** TODO document this class *)
+(** TODO document this *)
 class ['a] netchannel_of_output : 'a IO.output -> ['a] acc_out_channel
   
-(* val io_of_input : rec_in_channel -> IO.input *)
+(** TODO document this *)
+val input_of_netchannel : rec_in_channel -> IO.input
 
-(* val io_of_output : rec_out_channel -> IO.input *)
+(** TODO document this *)
+val output_of_netchannel : rec_out_channel -> unit IO.output
+
+(** TODO document this *)
+(* val output_of_acc_channel : 'a acc_out_channel -> 'a IO.output *)
 

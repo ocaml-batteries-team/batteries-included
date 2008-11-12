@@ -20,6 +20,11 @@
  * USA
  *)
 
+open ExtString
+
+exception Input_not_available
+exception Output_not_available
+
 class type rec_in_channel = object
   method input : string -> int -> int -> int
   method close_in : unit -> unit
@@ -59,8 +64,50 @@ object
   method acc = _acc
 end
 
-(* let io_of_input rec_ic = *)
-(*   IO.create_in ~read ~input ~close *)
+let buffer_size = 1024
+  (** internal buffer used while reading from netchannels and
+      delivering to Batteries channel *)
 
-(* val io_of_output : rec_out_channel -> IO.input *)
+let input_of_netchannel netic =
+  let minibuf = String.create 1 in
+  let read () =
+    try
+      let bytes = netic # input minibuf 0 1 in
+	if bytes = 0 then
+	  raise Input_not_available
+	else begin
+	  assert (bytes = 1);
+	  minibuf.[0]
+	end
+    with End_of_file (* | Netchannels.Closed_channel *) ->
+      raise IO.No_more_input in
+  let input buf pos len =
+    try
+      let bytes = netic # input buf pos len in
+	if bytes = 0 then raise Input_not_available;
+	bytes
+    with End_of_file (* | Netchannels.Closed_channel *) ->
+      raise IO.No_more_input in
+  let close () = netic # close_in () in
+    IO.create_in ~read ~input ~close
+
+let output_of_netchannel netoc =
+  let write ch =
+    (* try *)
+      let bytes = netoc # output (String.make 1 ch) 0 1 in
+        if bytes = 0 then raise Output_not_available
+    (* with Netchannels.Closed_channel -> raise Output_closed *)
+  in
+  let output buf pos len  =
+    (* try *)
+      netoc # output buf pos len
+    (* with Netchannels.Closed_channel -> raise Output_closed *)
+  in
+  let flush = netoc # flush in
+  let close () =
+    (* try *)
+      netoc # close_out ()
+    (* with Netchannels.Closed_channel -> () *)
+  in
+    IO.create_out ~write ~output ~flush ~close
 
