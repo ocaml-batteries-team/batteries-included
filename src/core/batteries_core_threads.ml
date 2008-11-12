@@ -130,8 +130,9 @@ module Languages = struct
 
   (** {2 Parser combinator library}*)
 
-  module CharParser      = Batteries_core.Languages.CharParser
   module ParserCo        = Batteries_core.Languages.ParserCo
+  module CharParser      = Batteries_core.Languages.CharParser
+  module UCharParser     = Batteries_core.Languages.UCharParser
 
   (** {1 Printing}*)
     

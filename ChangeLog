@@ -1,4 +1,22 @@
+2008-11-12  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/innerIO.ml: [empty_in] added, used in [input_channel]
+
+	* src/core/extlib/enum.mli: fixed documentation of [for_all]
+
+2008-11-11  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/enum.ml: [seq] now applies post-operation rather than pre-operation
+
 2008-11-10  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/uCharParser.ml: [ExtUTF8] opened
+
+	* src/core/extlib.mlpack: [UCharParser] added
+
+	* src/core/extlib/IO.mli: added [autoclose] to [IO]
+
+	* src/core/extlib/innerIO.ml*: added [autoclose] to [IO]
 
 	* Makefile.in: [config.ml] added, now creating [$(DOCDIR)]
 

@@ -53,7 +53,7 @@ val exists: ('a -> bool) -> 'a t -> bool
     that [f x]*)
 
 val for_all: ('a -> bool) -> 'a t -> bool
-(** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
+(** [for_all f e] returns [true] if for every [x] in [e], [f x] is true*)
 
 val fold : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
 (** [fold f v e] returns v if e is empty,

@@ -161,9 +161,10 @@ module Languages   = struct
 
   (** {2 Parser combinator library}*)
 
-  module CharParser      = Inner.Languages.CharParser
   module ParserCo        = Inner.Languages.ParserCo
-    
+  module CharParser      = Inner.Languages.CharParser
+  module UCharParser     = Inner.Languages.UCharParser
+
   (** {1 Printing}*)
     
   module Format          = Inner.Languages.Format
