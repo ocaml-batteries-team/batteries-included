@@ -78,6 +78,9 @@ exception No_more_input
 exception Input_closed
 exception Output_closed
 
+
+
+
 let post_incr r =
   let result = !r in
     incr r;
@@ -320,22 +323,41 @@ let output_buffer buf =
     ~close: (fun () -> Buffer.contents buf)
     ~flush: noop
 
-let input_channel ch =
+
+let empty_in =
+  { in_read  = (fun () -> ' ');
+    in_input = (fun _ _ _ -> raise No_more_input);
+    in_close = noop;
+    in_id    = (-1);
+    in_upstream= weak_create 0 }
+let input_channel ?(autoclose=true)  ch =
+  let me = ref empty_in (*placeholder*)
+  in let result = 
   create_in
     ~read:(fun () -> try input_char ch
-	   with End_of_file -> raise No_more_input)
+	   with End_of_file -> 
+	     if autoclose then close_in !me;
+	     raise No_more_input)
     ~input:(fun s p l ->
 	      let n = Pervasives.input ch s p l in
-		if n = 0 then raise No_more_input;
-		n)
+		if n = 0 then 
+		  begin
+		    close_in !me;
+		    raise No_more_input
+		  end
+		else n)
     ~close:(fun () -> Pervasives.close_in ch)
+  in
+    me := result;
+    result
 
 let output_channel ch =
-  create_out
-    ~write: (fun c -> output_char ch c)
-    ~output:(fun s p l -> Pervasives.output ch s p l; l)
-    ~close: (fun () -> Pervasives.close_out ch)
-    ~flush: (fun () -> Pervasives.flush ch)
+    create_out
+      ~write: (fun c     -> output_char ch c)
+      ~output:(fun s p l -> Pervasives.output ch s p l; l)
+      ~close: (fun ()    -> Pervasives.close_out ch)
+      ~flush: (fun ()    -> Pervasives.flush ch)
+
 
 let pipe() =
   let input = ref "" in

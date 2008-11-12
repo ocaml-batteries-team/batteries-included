@@ -554,10 +554,16 @@ val wrap_in :
   close:(unit -> unit) -> 
   underlying:(input list) ->
   input
-(** Fully create an input reading from other inputs by giving all the needed functions. 
+(** Fully create an input reading from other inputs by giving all 
+    the needed functions. 
 
     This function is a more general version of {!create_in}
     which also handles dependency management between inputs.
+
+    {b Note} When you create an input which reads from another
+    input, function [close] should {e not} close the inputs of 
+    [underlying]. Doing so is a common error, which could result
+    in inadvertently closing {!stdin} or a network socket, etc.
 *)
 
 
@@ -635,8 +641,14 @@ val wrap_out :
    {6 For compatibility purposes}
 *)
 
-val input_channel : in_channel -> input
-(** Create an input that will read from a channel. *)
+val input_channel : ?autoclose:bool -> in_channel -> input
+(** Create an input that will read from a channel. 
+
+    @param autoclose If true or unspecified, the {!type: input}
+    will be automatically closed when the underlying [in_channel]
+    has reached its end.
+*)
+
 
 val output_channel : out_channel -> unit output
 (** Create an output that will write into a channel. *) 
@@ -684,10 +696,7 @@ val from_out_channel : #out_channel -> unit output
 val from_in_chars : #in_chars -> input
 val from_out_chars : #out_chars -> unit output
 
-(** {6 Enumeration API}
-
-    All these enumerations close their input once they are completely consumed.
-*)
+(** {6 Enumeration API}*)
 
 val bytes_of : input -> int Enum.t
 (** Read an enumeration of unsigned 8-bit integers. *)
