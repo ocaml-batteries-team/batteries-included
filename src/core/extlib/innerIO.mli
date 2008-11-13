@@ -320,8 +320,13 @@ external cast_output : 'a output -> unit output = "%identity"
    {6 For compatibility purposes}
 *)
 
-val input_channel : in_channel -> input
-(** Create an input that will read from a channel. *)
+val input_channel : ?autoclose:bool -> in_channel -> input
+(** Create an input that will read from a channel. 
+
+    @param autoclose If true or unspecified, the {!type: input}
+    will be automatically closed when the underlying [in_channel]
+    has reached its end.
+*)
 
 val output_channel : out_channel -> unit output
 (** Create an output that will write into a channel. *) 
@@ -704,3 +709,25 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 *)
 
 end
+
+(**/**)
+(**{6 Internals}*)
+
+(**
+   A reference to a function which may be used to acquire
+   a lock on the internal data structures.
+
+   By default, this is a noop. However, in the threaded
+   version, this is replaced by a Mutex.
+*)
+val lock : (unit -> unit) ref
+
+(**
+   A reference to a function which may be used to release
+   a lock on the internal data structures.
+
+   By default, this is a noop. However, in the threaded
+   version, this is replaced by a Mutex.
+*)
+
+val unlock: (unit -> unit) ref

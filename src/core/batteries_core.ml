@@ -138,8 +138,9 @@ module Languages   = struct
 
   (** {2 Parser combinator library}*)
 
-  module CharParser      = Extlib.CharParser
   module ParserCo        = Extlib.ParserCo
+  module CharParser      = Extlib.CharParser
+  module UCharParser     = Extlib.UCharParser
 
 
   (** {1 Printing}*)

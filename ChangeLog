@@ -1,4 +1,52 @@
+2008-11-13  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/batteries_core_threads.ml: [IO] is now [Extlib_threads.IOThreads]
+
+	* src/core/extlib_threads/IOThreads.mli: created
+
+	* src/core/batteries_core_threads.ml: [Mutex] is now [Extlib_threads.ExtMutex.Mutex]
+
+	* src/core/extlib_threads.mlpack: [ExtMutex] added
+
+	* src/core/extlib_threads/extMutex.ml*: created
+
+	* src/core/extlib/innerIO.ml: [outputs_add], [outputs_remove], [create_in], [create_out] now protected by [lock], [unlock]
+
+	* src/core/extlib_threads/extPervasivesThreads.ml: [io_mutex], [io_lock], [io_unlock] added
+
+	* src/core/extlib/innerIO.ml*: [lock], [unlock] added
+
+	* src/core/extlib/innerIO.ml: [outputs_add] added
+
+2008-11-12  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib_threads/extPervasivesThreads.ml*: created
+
+	* src/core/extlib_threads.mlpack: [ExtPervasivesThreads] added
+
+	* src/core/batteries_core_threads.ml: [Standard] is now [ExtPervasivesThreads.Pervasives]
+
+	* src/core/extlib/extUnix.ml*: [open_process_in], [open_process], [open_process_full], [establish_server], [open_connection] now accept an additional argument [autoclose]
+
+	* src/core/extlib/extUnix.ml*: [input_of_descr], [output_of_descr], [descr_of_input], [descr_of_output] added
+
+	* src/core/extlib/innerIO.ml: [empty_in] added, used in [input_channel]
+
+	* src/core/extlib/enum.mli: fixed documentation of [for_all]
+
+2008-11-11  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/enum.ml: [seq] now applies post-operation rather than pre-operation
+
 2008-11-10  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/uCharParser.ml: [ExtUTF8] opened
+
+	* src/core/extlib.mlpack: [UCharParser] added
+
+	* src/core/extlib/IO.mli: added [autoclose] to [IO]
+
+	* src/core/extlib/innerIO.ml*: added [autoclose] to [IO]
 
 	* Makefile.in: [config.ml] added, now creating [$(DOCDIR)]
 

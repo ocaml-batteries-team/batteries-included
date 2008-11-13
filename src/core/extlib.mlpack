@@ -47,6 +47,7 @@ OptParse
 ParserCo
 Result
 CharParser
+UCharParser
 ExtGenlex
 ExtComplex
 ExtMarshal

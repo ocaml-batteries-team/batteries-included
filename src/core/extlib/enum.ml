@@ -539,8 +539,12 @@ let switch f e =
 
 let seq init f cond = 
   let acc = ref init in
-  let aux () = if cond !acc then begin acc := f !acc; !acc end
-               else raise No_more_elements
+  let aux () = if cond !acc then begin 
+    let result = !acc in 
+      acc := f !acc; 
+      result
+  end
+  else raise No_more_elements
   in from aux
 
 let repeat ?times x = match times with

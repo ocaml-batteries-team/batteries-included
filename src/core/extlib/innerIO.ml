@@ -68,15 +68,32 @@ end
 (**All the currently opened outputs -- used to permit [flush_all] and [close_all].*)
 (*module Inputs = Weaktbl.Make(Input)*)
 module Outputs= Weak.Make(Output)
-let outputs = Outputs.create 32
+
+
 
 (** {6 Primitive operations}*)
 
 external noop        : unit      -> unit        = "%ignore"
 external cast_output : 'a output -> unit output = "%identity"
+let lock = ref noop
+let unlock=ref noop
+
+let outputs = Outputs.create 32
+let outputs_add out =
+  !lock ();
+  Outputs.add outputs out;
+  !unlock()
+let outputs_remove out =
+  !lock ();
+  Outputs.remove outputs out;
+  !unlock ()
+
 exception No_more_input
 exception Input_closed
 exception Output_closed
+
+
+
 
 let post_incr r =
   let result = !r in
@@ -107,7 +124,10 @@ let wrap_in ~read ~input ~close ~underlying =
     in_id       = uid ();
     in_upstream = weak_create 2
   }
-in List.iter (fun x -> weak_add x.in_upstream result) underlying;
+in 
+    !lock();
+    List.iter (fun x -> weak_add x.in_upstream result) underlying;
+    !unlock();
     Gc.finalise close_in result;
     result
 
@@ -143,7 +163,7 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
       out_write  = write;
       out_output = output;
       out_close  = (fun () ->
-		      Outputs.remove outputs (cast_output out);
+		      outputs_remove (cast_output out);
 		      close ());
       out_flush  = flush;
       out_id     = uid ();
@@ -151,8 +171,10 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
     }
   in 
   let o = cast_output out in
-    List.iter (fun x -> weak_add x.out_upstream o) underlying; 
-    Outputs.add outputs (cast_output out); 
+    !lock();
+    List.iter (fun x -> weak_add x.out_upstream o) underlying;
+    !unlock();
+    outputs_add (cast_output out); 
     Gc.finalise (fun _ -> ignore (close_out out)) 
       out;
     out
@@ -249,10 +271,14 @@ let output o s p l =
 let flush o = o.out_flush()
 
 let flush_all () =
-  Outputs.iter (fun o -> try flush o with _ -> ()) outputs
+  !lock ();
+  Outputs.iter (fun o -> try flush o with _ -> ()) outputs;
+  !unlock ()
 
 let close_all () =
-  Outputs.iter (fun o -> try close_out o with _ -> ()) outputs
+  !lock ();
+  Outputs.iter (fun o -> try close_out o with _ -> ()) outputs;
+  !unlock ()
 
 let read_all i =
 	let maxlen = 1024 in
@@ -320,22 +346,41 @@ let output_buffer buf =
     ~close: (fun () -> Buffer.contents buf)
     ~flush: noop
 
-let input_channel ch =
+
+let placeholder_in = 
+  { in_read  = (fun () -> ' ');
+    in_input = (fun _ _ _ -> 0);
+    in_close = noop;
+    in_id    = (-1);
+    in_upstream= weak_create 0 }
+let input_channel ?(autoclose=true)  ch =
+  let me = ref placeholder_in (*placeholder*)
+  in let result = 
   create_in
     ~read:(fun () -> try input_char ch
-	   with End_of_file -> raise No_more_input)
+	   with End_of_file -> 
+	     if autoclose then close_in !me;
+	     raise No_more_input)
     ~input:(fun s p l ->
 	      let n = Pervasives.input ch s p l in
-		if n = 0 then raise No_more_input;
-		n)
+		if n = 0 then 
+		  begin
+		    close_in !me;
+		    raise No_more_input
+		  end
+		else n)
     ~close:(fun () -> Pervasives.close_in ch)
+  in
+    me := result;
+    result
 
 let output_channel ch =
-  create_out
-    ~write: (fun c -> output_char ch c)
-    ~output:(fun s p l -> Pervasives.output ch s p l; l)
-    ~close: (fun () -> Pervasives.close_out ch)
-    ~flush: (fun () -> Pervasives.flush ch)
+    create_out
+      ~write: (fun c     -> output_char ch c)
+      ~output:(fun s p l -> Pervasives.output ch s p l; l)
+      ~close: (fun ()    -> Pervasives.close_out ch)
+      ~flush: (fun ()    -> Pervasives.flush ch)
+
 
 let pipe() =
   let input = ref "" in
@@ -543,6 +588,9 @@ let stdnull= create_out
   ~output:(fun _ _ l -> l)
   ~flush:ignore
   ~close:ignore
+
+
+
 
 (*TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)*)
 

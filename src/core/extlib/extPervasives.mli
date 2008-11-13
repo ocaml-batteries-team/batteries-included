@@ -962,7 +962,11 @@ val const : 'a -> (_ -> 'a)
     [const x] is the function which always returns [x].*)
 
 val unique : unit -> int
-(** returns an unique identifier every time it is called. *)
+(** returns an unique identifier every time it is called. 
+
+    {b Note} Not thread-safe (will be made thread-safe in the next
+    version).
+*)
 
 
 
@@ -989,6 +993,16 @@ val exe  : string
    enumerations are defined in module {!Enum}.
 *)
 
+val foreach: 'a Enum.t -> ('a -> unit) ->  unit
+  (** Imperative loop on an enumeration.
+
+      [foreach e f] applies function [f] to each successive element of [e].
+      For instance, [foreach (1 -- 10) print_int] invokes function [print_int]
+      on [1], [2], ..., [10], printing [12345678910].
+
+      
+  *)
+
 val iter : ('a -> unit) -> 'a Enum.t -> unit
   (** [iter f e] calls the function [f] with each elements of [e] in turn. 
 
@@ -996,10 +1010,6 @@ val iter : ('a -> unit) -> 'a Enum.t -> unit
       [2], ..., [10].
 *)
 
-val foreach: 'a Enum.t -> ('a -> unit) ->  unit
-  (**Imperative loop on an enumeration.
-
-     [foreach e f] is [iter f e].*)
 
 val exists: ('a -> bool) -> 'a Enum.t -> bool
 (** [exists f e] returns [true] if there is some [x] in [e] such

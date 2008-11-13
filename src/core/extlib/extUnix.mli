@@ -37,6 +37,8 @@
 module Unix :
 sig
 
+  open InnerIO
+
 (** {6 Error report} *)
 
 
@@ -291,31 +293,38 @@ val single_write : file_descr -> string -> int -> int -> int
 
 (** {6 Interfacing with the standard input/output library} *)
 
-val in_channel_of_descr: file_descr -> InnerIO.input
-(** Create an input channel reading from the given descriptor.
-    The channel is initially in binary mode; use
-    [set_binary_mode_in ic false] if text mode is desired. *)
+val input_of_descr: ?autoclose:bool -> file_descr -> InnerIO.input
+(** Create an {!type:input} reading from the given descriptor.
+    The {!type: input} is initially in binary mode; use
+    [set_binary_mode_in ic false] if text mode is desired. 
 
-val out_channel_of_descr: file_descr -> unit InnerIO.output
-(** Create an output channel writing on the given descriptor.
-    The channel is initially in binary mode; use
-    [set_binary_mode_out oc false] if text mode is desired. *)
+    @param autoclose If true (default value), close the input
+    automatically once there is no more content to read. Otherwise,
+    the input will be closed according to the usual rules of module
+    {!IO}. Barring very specific needs (e.g. using file descriptors as
+    locks), you probably want [autoclose] to be [true].
+*)
 
-val descr_of_in_channel : InnerIO.input -> file_descr
-(** Return the descriptor corresponding to an input channel.
+val output_of_descr: file_descr -> unit InnerIO.output
+  (** Create an {!type:output} writing on the given descriptor.
+      The {!type:output} is initially in binary mode; use
+      [set_binary_mode_out oc false] if text mode is desired. *)
 
-    Not all input channels have file descriptors. This function works
-    only for channels which have been created using module {!Unix}.
+val descr_of_input : InnerIO.input -> file_descr
+(** Return the descriptor corresponding to an input.
+
+    Not all inputs have file descriptors. This function works
+    only for inputs which have been created using module {!Unix}.
 
     @raise Invalid_argument "Unix.descr_of_in_channel" if this input
     channel doesn't have a file descriptor
 *)
 
-val descr_of_out_channel : unit InnerIO.output -> file_descr
-  (** Return the descriptor corresponding to an output channel. 
+val descr_of_output : unit InnerIO.output -> file_descr
+  (** Return the descriptor corresponding to an output. 
       
-      Not all input channels have file descriptors. This function works
-      only for channels which have been created from module Unix.
+      Not all inputs have file descriptors. This function works
+      only for inputs which have been created from module Unix.
 
       @raise Invalid_arg "Unix.descr_of_out_channel" if this input
       channel doesn't have a file descriptor
@@ -576,71 +585,98 @@ val create_process_env :
    [env] specifies the environment passed to the program. *)
 
 
-val open_process_in : string -> InnerIO.input
+val open_process_in : ?autoclose: bool -> string -> InnerIO.input
 (** High-level pipe and process management. This function
-   runs the given command in parallel with the program.
-   The standard output of the command is redirected to a pipe,
-   which can be read via the returned input channel.
-   The command is interpreted by the shell [/bin/sh] (cf. [system]). *)
+    runs the given command in parallel with the program.
+    The standard output of the command is redirected to a pipe,
+    which can be read via the returned input.
+    The command is interpreted by the shell [/bin/sh] (cf. [system]). 
+
+    @param autoclose If true (default value), close the input
+    automatically once there is no more content to read. Otherwise,
+    the input will be closed according to the usual rules of module
+    {!IO}. Barring very specific needs (e.g. using file descriptors as
+    locks), you probably want [autoclose] to be [true].
+*)
 
 val open_process_out : string -> unit InnerIO.output
-(** Same as {!Unix.open_process_in}, but redirect the standard input of
-   the command to a pipe.  Data written to the returned output channel
-   is sent to the standard input of the command.
-   Warning: writes on output channels are buffered, hence be careful
-   to call {!Pervasives.flush} at the right times to ensure
-   correct synchronization. *)
+  (** 
+      Same as {!Unix.open_process_in}, but redirect the standard input of
+      the command to a pipe.  Data written to the returned output
+      is sent to the standard input of the command.
+      
+      Warning: writes on outputs are buffered, hence be careful
+      to call {!Pervasives.flush} at the right times to ensure
+      correct synchronization. *)
 
-val open_process : string -> InnerIO.input * unit InnerIO.output
-(** Same as {!Unix.open_process_out}, but redirects both the standard input
-   and standard output of the command to pipes connected to the two
-   returned channels.  The input channel is connected to the output
-   of the command, and the output channel to the input of the command. *)
+val open_process : ?autoclose:bool -> string -> InnerIO.input * unit InnerIO.output
+  (** 
+      Same as {!Unix.open_process_out}, but redirects both the
+      standard input and standard output of the command to pipes
+      connected to the two returned {!type: input}/{!type: output}.
+      The returned {!type: input} is connected to the output of the
+      command, and the returned {!type: output} to the input of the
+      command. 
+      
+      @param autoclose If true (default value), close the input
+      automatically once there is no more content to read. Otherwise,
+      the input will be closed according to the usual rules of module
+      {!IO}. Barring very specific needs (e.g. using file descriptors as
+      locks), you probably want [autoclose] to be [true].
+*)
 
 val open_process_full :
-  string -> string array -> InnerIO.input * unit InnerIO.output * InnerIO.input
-(** Similar to {!Unix.open_process}, but the second argument specifies
-   the environment passed to the command.  The result is a triple
-   of channels connected respectively to the standard output, standard input,
-   and standard error of the command. *)
+  ?autoclose:bool -> string -> string array -> InnerIO.input * unit InnerIO.output * InnerIO.input
+  (** Similar to {!Unix.open_process}, but the second argument
+      specifies the environment passed to the command.  The result is
+      a triple of {!type:input}/{!type:output} connected respectively
+      to the standard output, standard input, and standard error of
+      the command. 
+
+      @param autoclose If true (default value), close the input
+      automatically once there is no more content to read. Otherwise,
+      the input will be closed according to the usual rules of module
+      {!IO}. Barring very specific needs (e.g. using file descriptors as
+      locks), you probably want [autoclose] to be [true].
+*)
 
 val close_process_in : InnerIO.input -> process_status
-  (** Close channels opened by {!Unix.open_process_in},
+  (** Close {!type:input} opened by {!Unix.open_process_in},
       wait for the associated command to terminate,
       and return its termination status.
 
       @raise Unix_error(EBADF, "close_process_in", "") if the argument
-      is not a channel opened by {!Unix.open_process_in}.
+      is not an {!type:input} opened by {!Unix.open_process_in}.
   *)
 
 val close_process_out : unit InnerIO.output -> process_status
-(** Close channels opened by {!Unix.open_process_out},
-   wait for the associated command to terminate,
-   and return its termination status. 
+  (** Close {!type:output} opened by {!Unix.open_process_out},
+      wait for the associated command to terminate,
+      and return its termination status. 
 
-    @raise Unix_error(EBADF, "close_process_out", "") if the argument
-    is not a channel opened by {!Unix.open_process_out}.
+      @raise Unix_error(EBADF, "close_process_out", "") if the argument
+      is not an {!type:output} opened by {!Unix.open_process_out}.
 *)
 
 val close_process : InnerIO.input * unit InnerIO.output -> process_status
-  (** Close channels opened by {!Unix.open_process},
+  (** Close {!type:input}/{!type:output} opened by {!Unix.open_process},
       wait for the associated command to terminate,
       and return its termination status.
-
+      
       @raise Unix_error(EBADF, "close_process", "") if the argument
-      is not a channel opened by {!Unix.open_process}.
+      is not pair of {!type:input}/{!type:output} opened by {!Unix.open_process}.
   *)
 
 val close_process_full :
   InnerIO.input * unit InnerIO.output * InnerIO.input -> process_status
-  (** Close channels opened by {!Unix.open_process_full},
+  (** Close i/o opened by {!Unix.open_process_full},
       wait for the associated command to terminate,
       and return its termination status. 
 
       @raise Unix_error(EBADF, "close_process_full", "") if the argument
-      is not a channel opened by {!Unix.open_process_full}.
+      is not a triple of {!type:input}/{!type:output} opened by {!Unix.open_process_full}.
 *)
-
+  
 
 (** {6 Symbolic links} *)
 
@@ -1039,14 +1075,15 @@ val sendto :
 (** {6 Socket options} *)
 
 
-type socket_bool_option = Unix.socket_bool_option =
+type socket_bool_option = Unix.socket_bool_option 
+(*=
     SO_DEBUG       (** Record debugging information *)
   | SO_BROADCAST   (** Permit sending of broadcast messages *)
   | SO_REUSEADDR   (** Allow reuse of local addresses for bind *)
   | SO_KEEPALIVE   (** Keep connection active *)
   | SO_DONTROUTE   (** Bypass the standard routing algorithms *)
   | SO_OOBINLINE   (** Leave out-of-band data in line *)
-  | SO_ACCEPTCONN  (** Report whether socket listening is enabled *)
+  | SO_ACCEPTCONN  (** Report whether socket listening is enabled *) *)
 (** The socket options that can be consulted with {!Unix.getsockopt}
    and modified with {!Unix.setsockopt}.  These options have a boolean
    ([true]/[false]) value. *)
@@ -1085,51 +1122,66 @@ val getsockopt : file_descr -> socket_bool_option -> bool
 val setsockopt : file_descr -> socket_bool_option -> bool -> unit
 (** Set or clear a boolean-valued option in the given socket. *)
 
-external getsockopt_int :
-  file_descr -> socket_int_option -> int = "unix_getsockopt_int"
+val getsockopt_int :
+  file_descr -> socket_int_option -> int
 (** Same as {!Unix.getsockopt} for an integer-valued socket option. *)
 
-external setsockopt_int :
-  file_descr -> socket_int_option -> int -> unit = "unix_setsockopt_int"
+val setsockopt_int :
+  file_descr -> socket_int_option -> int -> unit
 (** Same as {!Unix.setsockopt} for an integer-valued socket option. *)
 
-external getsockopt_optint :
-  file_descr -> socket_optint_option -> int option = "unix_getsockopt_optint"
+val getsockopt_optint :
+  file_descr -> socket_optint_option -> int option
 (** Same as {!Unix.getsockopt} for a socket option whose value is an [int option]. *)
 
-external setsockopt_optint :
-  file_descr -> socket_optint_option -> int option ->
-    unit = "unix_setsockopt_optint"
+val setsockopt_optint :
+  file_descr -> socket_optint_option -> int option -> unit
 (** Same as {!Unix.setsockopt} for a socket option whose value is an [int option]. *)
 
-external getsockopt_float :
-  file_descr -> socket_float_option -> float = "unix_getsockopt_float"
+val getsockopt_float :
+  file_descr -> socket_float_option -> float
 (** Same as {!Unix.getsockopt} for a socket option whose value is a floating-point number. *)
 
-external setsockopt_float :
-  file_descr -> socket_float_option -> float -> unit = "unix_setsockopt_float"
+val setsockopt_float :
+  file_descr -> socket_float_option -> float -> unit
 (** Same as {!Unix.setsockopt} for a socket option whose value is a floating-point number. *)
 
 (** {6 High-level network connection functions} *)
 
 
-val open_connection : sockaddr -> InnerIO.input * unit InnerIO.output
-(** Connect to a server at the given address.
-   Return a pair of buffered channels connected to the server.
-   Remember to call {!Pervasives.flush} on the output channel at the right
-   times to ensure correct synchronization. *)
+val open_connection : ?autoclose:bool -> sockaddr -> InnerIO.input * unit InnerIO.output
+  (** Connect to a server at the given address.
+      Return a pair of buffered channels connected to the server.
+      Remember to call {!Pervasives.flush} on the output channel at the right
+      times to ensure correct synchronization. 
+
+      @param autoclose If true (default value), close the input
+      automatically once there is no more content to read. Otherwise,
+      the input will be closed according to the usual rules of module
+      {!IO}. Barring very specific needs (e.g. using file descriptors as
+      locks), you probably want [autoclose] to be [true].
+*)
 
 val shutdown_connection : InnerIO.input -> unit
   (** ``Shut down'' a connection established with {!Unix.open_connection};
       that is, transmit an end-of-file condition to the server reading
       on the other side of the connection. *)
 
-val establish_server : (InnerIO.input -> unit InnerIO.output -> unit) -> sockaddr -> unit
+val establish_server : ?autoclose:bool -> (InnerIO.input -> unit InnerIO.output -> unit) -> sockaddr -> unit
   (** Establish a server on the given address.
-      The function given as first argument is called for each connection
-      with two buffered channels connected to the client. A new process
-      is created for each connection. The function {!Unix.establish_server}
-      never returns normally. *)
+
+      [establish_server f addr] establishes a server on address
+      [addr].  For each connection on this address, function [f] is
+      called with two buffered channels connected to the client. A new
+      process is created for each connection. The function
+      {!Unix.establish_server} never returns normally.
+
+      @param autoclose If true (default value), inputs passed to [f]
+      close the input automatically once there is no more content to
+      read. Otherwise, the input will be closed according to the usual
+      rules of module {!IO}. Barring very specific needs (e.g. using
+      file descriptors as locks), you probably want [autoclose] to be
+      [true].  *)
 
 
 (** {6 Host and protocol databases} *)
@@ -1362,4 +1414,18 @@ val setsid : unit -> int
 
 val is_directory : string -> bool
 (** [is_directory filename] returns true if [filename] refers to a directory (or symlink of a directory *)
+
+(**{6 Obsolete stuff}*)
+
+val in_channel_of_descr: file_descr -> InnerIO.input
+(** @deprecated use {!input_of_descr}*)
+
+val out_channel_of_descr: file_descr -> unit InnerIO.output
+(** @deprecated use {!output_of_descr}. *)
+
+val descr_of_in_channel : InnerIO.input -> file_descr
+(** @deprecated use {!descr_of_input}. *)
+
+val descr_of_out_channel : unit InnerIO.output -> file_descr
+(** @deprecated use {!descr_of_output}. *)
 end
