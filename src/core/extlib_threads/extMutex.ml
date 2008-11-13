@@ -23,10 +23,6 @@
 module Mutex =
 struct
   include Mutex
-    
-(*  let with_lock ?(lock = create ()) f =
-    try f lock
-    with e -> *)
 
   let synchronize ?(lock = create ()) f = fun x ->
     Mutex.lock lock;

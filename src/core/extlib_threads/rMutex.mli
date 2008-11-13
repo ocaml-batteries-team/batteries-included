@@ -1,5 +1,5 @@
 (*
- * ExtMutex - Additional functions for Mutexes
+ * RMutex - Reentrant mutexes
  * Copyright (C) 1996 Xavier Leroy
  *               1996 Damien Doligez
  *               2008 David Teller
@@ -25,24 +25,28 @@ sig
 
 (** Locks for mutual exclusion.
 
-   Mutexes (mutual-exclusion locks) are used to implement critical sections
-   and protect shared mutable data structures against concurrent accesses.
-   The typical use is (if [m] is the mutex associated with the data structure
-   [D]):
+    Mutexes (mutual-exclusion locks) are used to implement critical sections
+    and protect shared mutable data structures against concurrent accesses.
+    The typical use is (if [m] is the mutex associated with the data structure
+    [D]):
     {[
-     Mutex.synchronize ~lock:m (fun () ->
+     RMutex.synchronize ~lock:m (fun () ->
         (* Critical section that operates over D *);
      ) ()
     ]}
 
-    @documents Mutex
+    This module implements reentrant mutexes, i.e. a version of mutexes which
+    may be locked again by their owner thread without blocking this thread.
+    Reentrant mutexes are typically slower than regular mutexes but also safer.
+
+    @documents RMutex
 
     @author Xavier Leroy (Base module)
     @author Damien Doligez (Base module)
     @author David Teller
 *)
 
-type t = Mutex.t
+type t
 (** The type of mutexes. *)
 
 val create : unit -> t
@@ -54,12 +58,11 @@ val lock : t -> unit
       will suspend until the other mutex is unlocked.
 
       {b Note} attempting to lock a mutex you already have locked from
-      the same thread will also suspend your thread, possibly forever.
-      If this is not what you want, take a look at module {!RMutex}.
+      the same thread will not suspend your thread.
 *)
 
 val try_lock : t -> bool
-(** Same as {!Mutex.lock}, but does not suspend the calling thread if
+(** Same as {!RMutex.lock}, but does not suspend the calling thread if
     the mutex is already locked: just return [false] immediately
     in that case. If the mutex is unlocked, lock it and
     return [true]. *)
@@ -77,9 +80,7 @@ val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
 
     [synchronize ~lock:l f] behaves as [synchronize f] but uses a
     user-specified lock [l], which may be useful to share a lock
-    between several function. This is necessary in particular when
-    the lock is specific to a data structure rather than to a
-    function.
+    between several function.
 
     In either case, the lock is acquired when entering the function
     and released when the function call ends, whether this is due
