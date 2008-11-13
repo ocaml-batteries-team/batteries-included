@@ -230,7 +230,7 @@ module Util      = struct
   module Random = Batteries_core.Util.Random
 end
 
-module Standard  = Batteries_core.Standard
+module Standard  = Extlib_threads.ExtPervasivesThreads.Pervasives
 
 module Legacy    = struct
   module Condition = Batlib_Baselib_Condition

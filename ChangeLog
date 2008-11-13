@@ -1,4 +1,20 @@
+2008-11-13  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/innerIO.ml: [outputs_add], [outputs_remove], [create_in], [create_out] now protected by [lock], [unlock]
+
+	* src/core/extlib_threads/extPervasivesThreads.ml: [io_mutex], [io_lock], [io_unlock] added
+
+	* src/core/extlib/innerIO.ml*: [lock], [unlock] added
+
+	* src/core/extlib/innerIO.ml: [outputs_add] added
+
 2008-11-12  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib_threads/extPervasivesThreads.ml*: created
+
+	* src/core/extlib_threads.mlpack: [ExtPervasivesThreads] added
+
+	* src/core/batteries_core_threads.ml: [Standard] is now [ExtPervasivesThreads.Pervasives]
 
 	* src/core/extlib/extUnix.ml*: [open_process_in], [open_process], [open_process_full], [establish_server], [open_connection] now accept an additional argument [autoclose]
 
