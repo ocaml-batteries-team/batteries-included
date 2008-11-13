@@ -22,9 +22,6 @@
 
 open Extlib
 
-exception Input_not_available
-exception Output_not_available
-
 class type rec_in_channel = object
   method input : string -> int -> int -> int
   method close_in : unit -> unit
@@ -72,7 +69,7 @@ let input_of_netchannel netic =
     try
       let bytes = netic # input minibuf 0 1 in
 	if bytes = 0 then
-	  raise Input_not_available
+	  raise Sys_blocked_io
 	else begin
 	  assert (bytes = 1);
 	  minibuf.[0]
@@ -82,7 +79,7 @@ let input_of_netchannel netic =
   let input buf pos len =
     try
       let bytes = netic # input buf pos len in
-	if bytes = 0 then raise Input_not_available;
+	if bytes = 0 then raise Sys_blocked_io;
 	bytes
     with End_of_file (* | Netchannels.Closed_channel *) ->
       raise IO.No_more_input in
@@ -92,7 +89,7 @@ let input_of_netchannel netic =
 let net_write netoc ch =
   (* try *)
     let bytes = netoc # output (String.make 1 ch) 0 1 in
-      if bytes = 0 then raise Output_not_available
+      if bytes = 0 then raise Sys_blocked_io
   (* with Netchannels.Closed_channel -> raise Output_closed *)
 
 let net_output netoc buf pos len  =

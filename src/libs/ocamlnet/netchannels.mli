@@ -20,21 +20,14 @@
  * USA
  *)
 
-exception Input_not_available
-  (** raised by input channels created from non-blocking Netchannels
-      to indicate that no input is {e currently} available (it might
-      become available later though) *)
-
-exception Output_not_available
-  (** raised by output channels created from non-blocking Netchannels
-      to indicate that no output can {e currently} be output (it might
-      be possible to output it later though) *)
-
 open Extlib
 open IO
 
 (** {6 Basic I/O class types for library interoperability} *)
 
+
+(* TODO: review the ocamldoc comments wrt which exceptions are
+   raised, currently they are not in sync with the code. *)
 
 (** This class type is defined in
     "{{:http://www.ocaml-programming.de/rec/IO-Classes.html}Basic I/O
