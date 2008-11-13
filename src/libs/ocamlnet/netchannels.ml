@@ -103,7 +103,7 @@ let output_of_netchannel, output_of_acc_channel =
     (* with Netchannels.Closed_channel -> () *) in
   let output_of_netchannel netoc =
     IO.create_out ~write:(net_write netoc) ~output:(net_output netoc)
-      ~flush:(net_flush netoc) ~close:(net_flush netoc)
+      ~flush:(net_flush netoc) ~close:(net_close netoc)
   and output_of_acc_channel accoc =
     let close () =
       (* try *)
