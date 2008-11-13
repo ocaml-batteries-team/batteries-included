@@ -97,20 +97,22 @@ GLOBAL: expr str_item;
 		   <:str_item<$acc$;; $st$>>
        ) <:str_item<>> modules]
    ];
-(*  expr: LEVEL ";" [
-    ["open"; me = module_expr; "in"; e = expr LEVEL "top" ->
-       begin match me with
-	 | <:module_expr< $id:i$ >> -> 
-	   local_struct _loc <:str_item< open $i$ >> e
-	 | _ -> 
-	     let x = fresh () in
-	       local_struct _loc <:str_item< module $x$ = $me$ open $uid:x$ >> e
-       end
-    | "struct"; st = LIST0 [ s = str_item; OPT ";;" -> s ]; "end"; "in";
-     e = expr LEVEL "top" ->
-       local_struct _loc (stSem_of_list st) e
-    ]
-  ];*)
+   (*Implement implicit importation of modules.*)
+   multi_module_expr: [
+     "multi" [l = LIST1 module_expr SEP "," -> 
+		match l with
+		  | [one] -> one
+		  | _     -> 
+		      let sem = Ast.stSem_of_list (List.map (fun e -> <:str_item<include $e$>>) l)
+		      in 
+			<:module_expr<struct $sem$ end>>
+	     ]
+   ];
+   module_binding0: 
+     ["top" RIGHTA[
+	"="; e = multi_module_expr -> e
+     ]];
+
   
 END
 end
