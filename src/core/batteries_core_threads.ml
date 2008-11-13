@@ -32,7 +32,7 @@ module Control = struct
     module Thread = struct
       module Condition = Batlib_Baselib_Condition
       module Event     = Batlib_Baselib_Event
-      module Mutex     = Batlib_Baselib_Mutex
+      module Mutex     = Extlib_threads.ExtMutex.Mutex
       module Thread    = Batlib_Baselib_Thread
     end
   end
@@ -201,7 +201,7 @@ struct
     
   (** {1 Operations on streams}*)
     
-  module IO            = Batteries_core.System.IO
+  module IO            = Extlib_threads.IOThreads
   (* module Unzip         = Batteries_core.System.Unzip *)
     
   (** {1 Actual operating system calls}*)
@@ -233,10 +233,10 @@ end
 module Standard  = Extlib_threads.ExtPervasivesThreads.Pervasives
 
 module Legacy    = struct
-  module Condition = Batlib_Baselib_Condition
-  module Event     = Batlib_Baselib_Event
-  module Mutex     = Batlib_Baselib_Mutex
-  module Thread    = Batlib_Baselib_Thread
+  module Condition = Condition
+  module Event     = Event
+  module Mutex     = Mutex
+  module Thread    = Thread
   include Batteries_core.Legacy
 end
 

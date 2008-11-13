@@ -1,2 +1,4 @@
+ExtMutex
+IOThreads
 ExtUnixThreads
 ExtPervasivesThreads
