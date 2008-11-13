@@ -121,7 +121,7 @@ src/batteries_toolchain/ocaml:
 	echo "ocaml -init $(DEST_TOP) \$$@" > $@
 	chmod ugo+rx src/batteries_toolchain/ocaml*
 src/batteries_toolchain/batteries_help.cmo: src/batteries_toolchain/batteries_help.ml src/batteries_toolchain/batteries_help.mli
-	ocamlbuild $@
+	$(OCAMLBUILD) $@
 
 install:
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
