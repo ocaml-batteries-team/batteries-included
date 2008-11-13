@@ -3,8 +3,7 @@
 
    Require netstring to build *)
 
-open System
-module Channels = Network.Netchannels
+open System, Network
 
 let oc =
   Netchannels.lift_out
