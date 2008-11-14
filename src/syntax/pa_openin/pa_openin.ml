@@ -53,7 +53,7 @@ let global_struct _loc st init =
       | None   -> <:str_item<module $x$ = struct $st$ end >>
 
 EXTEND Gram
-GLOBAL: expr str_item;
+GLOBAL: expr str_item module_binding0;
 
 
 (** Implement syntax extension [open Foo with e]*)
@@ -97,6 +97,21 @@ GLOBAL: expr str_item;
 		   <:str_item<$acc$;; $st$>>
        ) <:str_item<>> modules]
    ];
+   (*Implement implicit importation of modules.*)
+   multi_module_expr: [
+     "multi" [l = LIST1 module_expr SEP "," -> 
+		match l with
+		  | [one] -> one
+		  | _     -> 
+		      let sem = Ast.stSem_of_list (List.map (fun e -> <:str_item<include $e$>>) l)
+		      in 
+			<:module_expr<struct $sem$ end>>
+	     ]
+   ];
+   module_binding0: 
+     ["top" RIGHTA[
+	"="; e = multi_module_expr -> e
+     ]];
 (*  expr: LEVEL ";" [
     ["open"; me = module_expr; "in"; e = expr LEVEL "top" ->
        begin match me with
