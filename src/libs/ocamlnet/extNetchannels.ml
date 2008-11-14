@@ -1,7 +1,6 @@
 (* Batteries Included - Netchannels integration
  *
  * Copyright (C) 2008 Stefano Zacchiroli <zack@upsilon.cc>
- *           (C) 2006 Gerd Stolpmann
  * 
  * This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -22,16 +21,10 @@
 
 open Extlib
 
-class type rec_in_channel = object
-  method input : string -> int -> int -> int
-  method close_in : unit -> unit
-end
+module Netchannels =
+struct
 
-class type rec_out_channel = object
-  method output : string -> int -> int -> int
-  method flush : unit -> unit
-  method close_out : unit -> unit
-end
+include Netchannels
 
 class type ['a] acc_out_channel = object
   inherit rec_out_channel
@@ -116,3 +109,4 @@ let output_of_netchannel, output_of_acc_channel =
   in
     (output_of_netchannel, output_of_acc_channel)
 
+end

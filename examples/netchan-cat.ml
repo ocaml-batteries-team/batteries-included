@@ -1,17 +1,15 @@
-(* yet another (slower) "cat" implementation, it is just meant to be a
-   showcase for integration with ocamlnet's Netchannels.
-
-   Require netstring to build *)
+(* Yet another (slower) "cat" implementation, it is just meant to be a
+   showcase for integration with ocamlnet's Netchannels. *)
 
 open System, Network
 
 let oc =
   Netchannels.lift_out
-    (`Rec (new Channels.netchannel_of_output IO.stdout :>
+    (`Rec (new Netchannels.netchannel_of_output IO.stdout :>
 	     Netchannels.rec_out_channel))
 let _ =
   Netchannels.with_in_obj_channel
-    (Netchannels.lift_in (`Rec (new Channels.netchannel_of_input IO.stdin)))
+    (Netchannels.lift_in (`Rec (new Netchannels.netchannel_of_input IO.stdin)))
     (fun ic ->
        try
 	 while true do
