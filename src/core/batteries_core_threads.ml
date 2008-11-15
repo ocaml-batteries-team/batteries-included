@@ -51,7 +51,6 @@ struct
   
   module Mutable         = struct
     module Array         = Batteries_core.Data.Mutable.Array
-    module ArrayLabels   = Batteries_core.Data.Mutable.ArrayLabels
     module Bigarray      = Batteries_core.Data.Mutable.Bigarray
     module Dllist        = Batteries_core.Data.Mutable.Dllist
     module Dynarray      = Batteries_core.Data.Mutable.Dynarray

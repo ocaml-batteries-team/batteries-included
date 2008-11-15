@@ -846,3 +846,30 @@ module ExceptionLess = struct
     try  Some (find f e)
     with Not_found -> None
 end
+
+module Labels = struct
+  let iter ~f x     = iter f x
+  let iter2 ~f x y  = iter2 f x y
+  let iteri ~f x    = iteri f x
+  let iter2i ~f x y = iter2i f x y
+  let for_all ~f t  = for_all f t
+  let exists ~f t   = exists f t
+  let fold ~f ~init x    = fold f init x
+  let fold2 ~f ~init x y = fold2 f init x y
+  let foldi ~f ~init x   = foldi f init x
+  let fold2i ~f ~init x y= fold2i f init x y
+  let find ~f x    = find f x
+  let map ~f x     = map f x
+  let mapi ~f x    = mapi f x
+  let filter ~f x  = filter f x
+  let filter_map ~f x= filter_map f x
+  let init x ~f    = init x f
+  let switch ~f    = switch f
+  let take_while ~f  = take_while f
+  let drop_while ~f  = drop_while f
+  let from ~f        = from f
+  let from_loop ~init ~f = from_loop init f
+  let from_while ~f  = from_while f
+  let seq ~init ~f ~cnd  = seq init f cnd
+  let unfold ~init ~f = unfold init f
+end

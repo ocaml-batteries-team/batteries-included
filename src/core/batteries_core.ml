@@ -38,7 +38,6 @@ module Data        = struct
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
       module Array         = Extlib.ExtArray.Array
-      module ArrayLabels   = Batlib_Baselib_ArrayLabels
       module Bigarray      = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
       module Dllist        = Extlib.Dllist
       module Dynarray      = Extlib.DynArray
