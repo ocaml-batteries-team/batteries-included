@@ -13,6 +13,7 @@
 <toolchain.odoc>:        pkg_sexplib
 <extlib.mli>:            pkg_sexplib,pkg_camomile
 <extlib.cma>:            link_all
+<extlib_threads.*>:      pkg_sexplib,pkg_threads
 <batteries_core_pack.*>: pkg_sexplib,pkg_camomile
 <batteries_core_threads_pack.*>: pkg_sexplib, pkg_threads, pkg_camomile
 <batteries_config.*>:    camlp4oof

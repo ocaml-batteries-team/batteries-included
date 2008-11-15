@@ -21,11 +21,14 @@
 (** 
     Enumeration over abstract collection of elements.
     
-    Enumerations are entirely functional and most of the operations do not
-    actually require the allocation of data structures. Using enumerations
-    to manipulate data is therefore efficient and simple. All data structures in
-    ExtLib such as lists, arrays, etc. have support to convert from and to
-    enumerations.
+    Enumerations are entirely functional and most of the operations do
+    not actually require the allocation of data structures. Using
+    enumerations to manipulate data is therefore efficient and
+    simple. All data structures in such as lists, arrays, etc. have
+    support to convert from and to enumerations.
+
+    {b Note} Enumerations are not thread-safe. You should not attempt to access one
+    enumeration from different threads.
 
     @author Nicolas Cannasse
     @author David Teller
@@ -53,7 +56,7 @@ val exists: ('a -> bool) -> 'a t -> bool
     that [f x]*)
 
 val for_all: ('a -> bool) -> 'a t -> bool
-(** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
+(** [for_all f e] returns [true] if for every [x] in [e], [f x] is true*)
 
 val fold : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
 (** [fold f v e] returns v if e is empty,

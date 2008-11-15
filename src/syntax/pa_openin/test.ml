@@ -20,3 +20,13 @@ let () =
   struct type foo let bar = () end in
   foobar
 
+(* Test : module <name> = <name_1>, <name_2> ... *)
+module B = struct end
+module C = struct end
+module D = struct end
+module E = struct end
+module F = struct end
+module A = B include C, D, E, F
+
+(* Test : let module <name> = <name_1>, <name_2> in ... *)
+let module A = B include C, D, E, F in ()

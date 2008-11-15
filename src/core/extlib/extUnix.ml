@@ -26,6 +26,12 @@ struct
   include Unix
   open InnerIO
   open Std
+
+  (**
+     {6 Thread-safety internals}
+  *)
+  let lock = ref Concurrent.nolock
+
   (**
      {6 Tracking additional information on inputs/outputs}
 
@@ -40,62 +46,68 @@ struct
   let wrapped_out   = Wrapped_out.create 16
 
   let input_add k v =
-    Wrapped_in.add wrapped_in k v
+    Concurrent.sync !lock (Wrapped_in.add wrapped_in k) v
       
   let input_get k =
-    Wrapped_in.find wrapped_in k
+    Concurrent.sync !lock (Wrapped_in.find wrapped_in) k
 
   let output_add k v =
-    Wrapped_out.add wrapped_out k v
+    Concurrent.sync !lock (Wrapped_out.add wrapped_out k) v
       
   let output_get k =
-    Wrapped_out.find wrapped_out k
+    Concurrent.sync !lock (Wrapped_out.find wrapped_out) k
 
-  let wrap_in cin =
-    let input = InnerIO.input_channel cin in
-      Wrapped_in.add wrapped_in input cin;
+  let wrap_in ?autoclose cin =
+    let input = InnerIO.input_channel ?autoclose cin in
+      Concurrent.sync !lock (Wrapped_in.add wrapped_in input) cin;
       input
 
   let wrap_out cout =
     let output = cast_output (InnerIO.output_channel cout) in
-      Wrapped_out.add wrapped_out output cout;
+      Concurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
       output
 
   (**
      {6 File descriptors}
   *)
 
-  let in_channel_of_descr fd =
-    wrap_in (in_channel_of_descr fd)
+  let input_of_descr ?autoclose fd =
+    wrap_in ?autoclose (in_channel_of_descr fd)
 
-  let descr_of_in_channel cin =
+  let descr_of_input cin =
     try  descr_of_in_channel (input_get cin)
     with Not_found -> raise (Invalid_argument "Unix.descr_of_in_channel")
 
-  let out_channel_of_descr fd =
+  let output_of_descr fd =
     wrap_out (out_channel_of_descr fd)
 
-  let descr_of_out_channel cout =
+  let descr_of_output cout =
     try  descr_of_out_channel (output_get (cast_output cout))
     with Not_found -> raise (Invalid_argument "Unix.descr_of_out_channel")
+
+  let in_channel_of_descr fd    = input_of_descr fd
+  let descr_of_in_channel       = descr_of_input
+  let out_channel_of_descr      = output_of_descr
+  let descr_of_out_channel      = descr_of_output
+
 
   (**
      {6 Processes}
   *)
 
-  let open_process_in s =
-    wrap_in (open_process_in s)
+  let open_process_in ?autoclose s =
+    wrap_in ?autoclose (open_process_in s)
 
   let open_process_out s =
     wrap_out (open_process_out s)
 
-  let open_process s =
+  let open_process ?autoclose s =
     let (cin, cout) = open_process s in
-      (wrap_in cin, wrap_out cout)
+      (wrap_in ?autoclose cin, wrap_out cout)
 
-  let open_process_full s args =
+  let open_process_full ?autoclose s args =
     let (a,b,c) = open_process_full s args in
-      (wrap_in a, wrap_out b, wrap_in c)
+      (wrap_in ?autoclose a, wrap_out b, wrap_in ?autoclose c)
 
   let close_process_in cin =
     try close_process_in (input_get cin)
@@ -117,15 +129,15 @@ struct
    {6 Network}
 *)
       
-  let open_connection addr =
-    wrap_in *** wrap_out  <| open_connection addr
+  let open_connection ?autoclose addr =
+    wrap_in ?autoclose *** wrap_out  <| open_connection addr
 
   let shutdown_connection cin = 
     try shutdown_connection (input_get cin)
     with Not_found -> raise (Invalid_argument "Unix.descr_of_in_channel")
 
-  let establish_server f addr =
-    let f' cin cout = f (wrap_in cin) (wrap_out cout) in
+  let establish_server ?autoclose f addr =
+    let f' cin cout = f (wrap_in ?autoclose cin) (wrap_out cout) in
       establish_server f' addr
 
   let is_directory fn = (lstat fn).st_kind = S_DIR

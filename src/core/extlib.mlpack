@@ -1,3 +1,5 @@
+Concurrent
+InnerIO
 Monad
 Labels
 Enum
@@ -47,6 +49,7 @@ OptParse
 ParserCo
 Result
 CharParser
+UCharParser
 ExtGenlex
 ExtComplex
 ExtMarshal

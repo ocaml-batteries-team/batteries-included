@@ -96,6 +96,7 @@ val empty : t
 val of_latin1: string -> t
   (** Constructs a unicode rope from a latin-1 string. *)
 
+
 val of_ustring : UTF8.t -> t
   (** [of_string s] returns a rope corresponding to the string [s].
       Operates in [O(n)] time. *)

@@ -28,7 +28,7 @@ module Pervasives = struct
   include Pervasives
   include Std
   include Enum
-
+    
   let print_guess   = Std.print
   let prerr_guess v = prerr_endline (dump v)
 
@@ -82,6 +82,11 @@ module Pervasives = struct
   let prerr_all inp     = IO.copy inp IO.stderr
 
   let foreach e f       = iter f e
+
+  let unique_value  = ref 0
+  let lock          = ref Concurrent.nolock
+  let unique ()     =
+    Concurrent.sync !lock Ref.post_incr unique_value
 
   let _ = at_exit close_all; (*Called second*)
           at_exit flush_all  (*Called first*)

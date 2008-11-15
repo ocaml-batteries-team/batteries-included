@@ -1,8 +1,9 @@
 (*
- * ExtUnix - additional and modified functions for Unix and Unix-compatible systems - Thread-safe version
+ * ExtMutex - Additional functions for Mutexes
  * Copyright (C) 1996 Xavier Leroy
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- *
+ *               1996 Damien Doligez
+ *               2008 David Teller
+ * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -19,7 +20,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Extlib
 
-include Extlib.ExtUnix;;
-
-Unix.lock := ExtMutex.Mutex.make ()
+module Mutex =
+struct
+  include Mutex
+  module Lock = Concurrent.MakeLock(Mutex) 
+  let make        = Lock.make
+  let synchronize = Lock.synchronize
+end

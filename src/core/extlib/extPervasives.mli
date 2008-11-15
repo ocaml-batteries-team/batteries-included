@@ -962,7 +962,9 @@ val const : 'a -> (_ -> 'a)
     [const x] is the function which always returns [x].*)
 
 val unique : unit -> int
-(** returns an unique identifier every time it is called. *)
+(** Returns an unique identifier every time it is called.
+
+    {b Note} This is thread-safe.*)
 
 
 
@@ -989,6 +991,16 @@ val exe  : string
    enumerations are defined in module {!Enum}.
 *)
 
+val foreach: 'a Enum.t -> ('a -> unit) ->  unit
+  (** Imperative loop on an enumeration.
+
+      [foreach e f] applies function [f] to each successive element of [e].
+      For instance, [foreach (1 -- 10) print_int] invokes function [print_int]
+      on [1], [2], ..., [10], printing [12345678910].
+
+      
+  *)
+
 val iter : ('a -> unit) -> 'a Enum.t -> unit
   (** [iter f e] calls the function [f] with each elements of [e] in turn. 
 
@@ -996,10 +1008,6 @@ val iter : ('a -> unit) -> 'a Enum.t -> unit
       [2], ..., [10].
 *)
 
-val foreach: 'a Enum.t -> ('a -> unit) ->  unit
-  (**Imperative loop on an enumeration.
-
-     [foreach e f] is [iter f e].*)
 
 val exists: ('a -> bool) -> 'a Enum.t -> bool
 (** [exists f e] returns [true] if there is some [x] in [e] such
@@ -1081,5 +1089,21 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
 type ('a, 'b) result = ('a, 'b) Std.result =
   | Ok  of 'a
   | Bad of 'b
+
+(**
+   {6 Thread-safety internals}
+
+   Unless you are attempting to adapt Batteries Included to a new model of
+   concurrency, you probably won't need this.
+*)
+
+val lock: Concurrent.lock ref
+(**
+   A lock used to synchronize internal operations.
+
+   By default, this is {!Concurrent.nolock}. However, if you're using a version
+   of Batteries compiled in threaded mode, this uses {!Mutex}. If you're attempting
+   to use Batteries with another concurrency model, set the lock appropriately.
+*)
 
 end

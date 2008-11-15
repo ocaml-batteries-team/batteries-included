@@ -29,10 +29,12 @@
 (*[Control] is [Batteries_core.Control] + [Control.Concurrency.Threads] *)
 module Control = struct
   module Concurrency = struct
+    module Common = Batteries_core.Control.Concurrency.Common
     module Thread = struct
       module Condition = Batlib_Baselib_Condition
       module Event     = Batlib_Baselib_Event
-      module Mutex     = Batlib_Baselib_Mutex
+      module Mutex     = Extlib_threads.ExtMutex.Mutex
+      module RMutex    = Extlib_threads.RMutex
       module Thread    = Batlib_Baselib_Thread
     end
   end
@@ -130,8 +132,9 @@ module Languages = struct
 
   (** {2 Parser combinator library}*)
 
-  module CharParser      = Batteries_core.Languages.CharParser
   module ParserCo        = Batteries_core.Languages.ParserCo
+  module CharParser      = Batteries_core.Languages.CharParser
+  module UCharParser     = Batteries_core.Languages.UCharParser
 
   (** {1 Printing}*)
     
@@ -200,7 +203,7 @@ struct
     
   (** {1 Operations on streams}*)
     
-  module IO            = Batteries_core.System.IO
+  module IO            = Extlib_threads.IOThreads
   (* module Unzip         = Batteries_core.System.Unzip *)
     
   (** {1 Actual operating system calls}*)
@@ -229,13 +232,13 @@ module Util      = struct
   module Random = Batteries_core.Util.Random
 end
 
-module Standard  = Batteries_core.Standard
+module Standard  = Extlib_threads.ExtPervasivesThreads.Pervasives
 
 module Legacy    = struct
-  module Condition = Batlib_Baselib_Condition
-  module Event     = Batlib_Baselib_Event
-  module Mutex     = Batlib_Baselib_Mutex
-  module Thread    = Batlib_Baselib_Thread
+  module Condition = Condition
+  module Event     = Event
+  module Mutex     = Mutex
+  module Thread    = Thread
   include Batteries_core.Legacy
 end
 

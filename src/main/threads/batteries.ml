@@ -28,6 +28,8 @@ module Control     = struct
   (** Everything related to parallelism and concurrency. *)
   module Concurrency = struct
 
+    module Common = Batteries_core_threads.Control.Concurrency.Common
+
     (** Concurrency operations as defined by OCaml's base library. *)
     module Threads = struct
 
@@ -39,6 +41,7 @@ module Control     = struct
       module Condition = Batteries_core_threads.Control.Concurrency.Thread.Condition
       module Event     = Batteries_core_threads.Control.Concurrency.Thread.Event
       module Mutex     = Batteries_core_threads.Control.Concurrency.Thread.Mutex
+      module RMutex    = Batteries_core_threads.Control.Concurrency.Thread.RMutex
       module Thread    = Batteries_core_threads.Control.Concurrency.Thread.Thread
     end
   end
@@ -165,8 +168,10 @@ module Languages   = struct
 
   (** {2 Parser combinator library}*)
 
-  module CharParser      = Batteries_core_threads.Languages.CharParser
   module ParserCo        = Batteries_core_threads.Languages.ParserCo
+  module CharParser      = Batteries_core_threads.Languages.CharParser
+  module UCharParser     = Batteries_core_threads.Languages.UCharParser
+
     
   (** {1 Printing}*)
     
