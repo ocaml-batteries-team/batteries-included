@@ -59,7 +59,6 @@ module Data        = struct
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
       module Array         = Batteries_core_threads.Data.Mutable.Array
-      module ArrayLabels   = Batteries_core_threads.Data.Mutable.ArrayLabels
       module Bigarray      = Batteries_core_threads.Data.Mutable.Bigarray
       module Dllist        = Batteries_core_threads.Data.Mutable.Dllist
       module Dynarray      = Batteries_core_threads.Data.Mutable.Dynarray
@@ -329,7 +328,7 @@ module Event     = Control.Concurrency.Threads.Event
 module Mutex     = Control.Concurrency.Threads.Mutex
 module Thread    = Control.Concurrency.Threads.Thread
 module Array     = Data.Mutable.Array
-module ArrayLabels=Data.Mutable.ArrayLabels
+module ArrayLabels=struct include Data.Mutable.Array;; include Labels end
 module Bigarray  = Data.Mutable.Bigarray
 module Enum      = Data.Mutable.Enum
 module Hashtbl   = Data.Mutable.Hashtbl

@@ -22,7 +22,6 @@ ExtInt
 ExtHashtbl
 ExtFloat
 ExtChar
-EnumLabels
 DynArray
 Dllist
 BitSet

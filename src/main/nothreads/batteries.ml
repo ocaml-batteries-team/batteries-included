@@ -54,7 +54,6 @@ module Data        = struct
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
       module Array         = Inner.Data.Mutable.Array
-      module ArrayLabels   = Inner.Data.Mutable.ArrayLabels
       module Bigarray      = Inner.Data.Mutable.Bigarray
       module Dllist        = Inner.Data.Mutable.Dllist
       module Dynarray      = Inner.Data.Mutable.Dynarray
@@ -309,7 +308,7 @@ end
 
 (**/**)
 module Array     = Data.Mutable.Array
-module ArrayLabels=Data.Mutable.ArrayLabels
+module ArrayLabels=struct include Data.Mutable.Array;; include Data.Mutable.Array.Labels end
 module Bigarray  = Data.Mutable.Bigarray
 module Enum      = Data.Mutable.Enum
 module Hashtbl   = Data.Mutable.Hashtbl
