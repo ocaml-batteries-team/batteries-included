@@ -449,6 +449,25 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
+(** {6 Override modules}*)
+
+(**
+   The following modules replace functions defined in {!Enum} with functions
+   behaving slightly differently but having the same name. This is by design:
+   the functions meant to override the corresponding functions of {!Enum}.
+
+   To take advantage of these overrides, you probably want to
+   {{:../extensions.html#multiopen}{open several modules in one
+   operation} or {{:../extensions.html#multialias}{alias several
+   modules to one name}. For instance, to open a version of {!Enum}
+   with exceptionless error management, you may write [open Enum,
+   ExceptionLess]. To locally replace module {!Enum} with a module of
+   the same name but with exceptionless error management, you may
+   write [module Enum = Enum include ExceptionLess].
+
+*)
+
+(** Operations on {!Enum} without exceptions.*)
 module ExceptionLess : sig
   val find : ('a -> bool) -> 'a t -> 'a option
     (** [find f e] returns [Some x] where [x] is the first element [x] of [e] 
@@ -461,6 +480,40 @@ module ExceptionLess : sig
 end
 
 
+(** Operations on {!Enum} with labels.
+
+    This module overrides a number of functions of {!Enum} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!Enum}.
+*)
+module Labels : sig
+  val iter:       f:('a -> unit) -> 'a t -> unit
+  val iter2:      f:('a -> 'b -> unit) -> 'a t -> 'b t -> unit
+  val exists:     f:('a -> bool) -> 'a t -> bool
+  val for_all:    f:('a -> bool) -> 'a t -> bool
+  val fold:       f:('a -> 'b -> 'b) -> init:'b -> 'a t -> 'b
+  val fold2:      f:('a -> 'b -> 'c -> 'c) -> init:'c -> 'a t -> 'b t -> 'c
+  val iteri:      f:(int -> 'a -> unit) -> 'a t -> unit
+  val iter2i:     f:( int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
+  val foldi:      f:(int -> 'a -> 'b -> 'b) -> init:'b -> 'a t -> 'b
+  val fold2i:     f:(int -> 'a -> 'b -> 'c -> 'c) -> init:'c -> 'a t -> 'b t -> 'c
+  val find:       f:('a -> bool) -> 'a t -> 'a
+  val take_while: f:('a -> bool) -> 'a t -> 'a t
+  val drop_while: f:('a -> bool) -> 'a t -> 'a t
+  val map:        f:('a -> 'b) -> 'a t -> 'b t
+  val mapi:       f:(int -> 'a -> 'b) -> 'a t -> 'b t
+  val filter:     f:('a -> bool) -> 'a t -> 'a t
+  val filter_map: f:('a -> 'b option) -> 'a t -> 'b t
+  val from:       f:(unit -> 'a) -> 'a t
+  val from_while: f:(unit -> 'a option) -> 'a t
+  val from_loop:  init:'b -> f:('b -> ('a * 'b)) -> 'a t
+  val seq:        init:'a -> f:('a -> 'a) -> cnd:('a -> bool) -> 'a t
+  val unfold:     init:'b -> f:('b -> ('a * 'b) option) -> 'a t
+  val init:       int -> f:(int -> 'a) -> 'a t
+  val switch:     f:('a -> bool) -> 'a t -> 'a t * 'a t
+end
 
 (**/**)
 

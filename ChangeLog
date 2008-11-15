@@ -1,5 +1,25 @@
 2008-11-15  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extArray.ml: module [Labels] added
+
+	* src/core/extlib/extArray.ml*: [filter_map] added
+
+	* src/core/extlib/extArray.ml*: module [ExceptionLess] added
+
+	* src/core/extlib/extArray.ml*: [iter2i] added
+
+	* src/core/extlib/enum.ml: module [Labels] added
+
+	* src/core/extlib/enumLabels.ml*: removed
+
+	* src/syntax/pa_openin/pa_openin_r.ml: [multi_module_expr] now uses keyword [include], [module_binding0] exported
+
+	* src/syntax/pa_openin/pa_openin.ml: [multi_module_expr] now uses keyword [include]
+
+	* doc/batteries/html/extensions.html: Documentation on multi-aliasing
+
+	* src/core/extlib/enum.mli: Documentation on override modules
+
 	* src/main/nothreads/batteries.ml: [Common] added
 
 	* src/main/threads/batteries.ml: [RMutex], [Common] added
