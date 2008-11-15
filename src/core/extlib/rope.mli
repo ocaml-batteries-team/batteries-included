@@ -259,35 +259,44 @@ val index : t -> UChar.t -> int
   (** As [String.index] *)
 val index_from : t -> int -> UChar.t -> int
 
+val rindex : t -> UChar.t -> int
+val rindex_from : t -> int -> UChar.t -> int
+
+val contains : t -> UChar.t -> bool
+val contains_from : t -> int -> UChar.t -> bool
+val rcontains_from : t -> int -> UChar.t -> bool
+
+val find : t -> t -> int
+val starts_with : t -> t -> bool
+val ends_with : t -> t -> bool
+val exists : t -> t -> bool
+
+val trim : t -> t
+
+val left : t -> int -> t
+val right : t -> int -> t
+val head : t -> int -> t
+val tail : t -> int -> t
+
+val lchop : t -> t
+val rchop : t -> t
+val splice : t -> int -> int -> t -> t
+val fill : t -> int -> int -> UChar.t -> t
+val blit : t -> int -> t -> int -> int -> t
+
+val concat_sep : t -> t list -> t
+val escaped : t -> t
+val replace_chars : (UChar.t -> t) -> t -> t
+val replace : t -> t -> t -> t
+val split : t -> t -> (t * t)
+val nsplit : t -> t -> int -> t list
+
+
 (* TODO: write specs for:
 
-rindex
-rindex_from
-contains
-contains_from
-rcontains_from
-find
-ends_with
-starts_with
-exists
-trim
 strip
 capitalize
 uncapitalize
-left
-right
-tail
-lchop
-rchop
-splice
-fill
-blit
-concat_sep
-escaped
-replace_chars
-replace
-split
-nsplit
 join
 slice
 explode
