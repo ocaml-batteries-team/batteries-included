@@ -34,6 +34,7 @@ module Control = struct
       module Condition = Batlib_Baselib_Condition
       module Event     = Batlib_Baselib_Event
       module Mutex     = Extlib_threads.ExtMutex.Mutex
+      module RMutex    = Extlib_threads.RMutex
       module Thread    = Batlib_Baselib_Thread
     end
   end

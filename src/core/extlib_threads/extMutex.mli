@@ -91,7 +91,7 @@ val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
 
 val make : unit -> Concurrent.lock
 (**
-   Create a new abstract lock.
+   Create a new abstract lock based on Mutexes.
 *)
 
 end

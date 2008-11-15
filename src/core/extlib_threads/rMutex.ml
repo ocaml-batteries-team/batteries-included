@@ -1,8 +1,6 @@
 (*
  * RMutex - Reentrant mutexes
- * Copyright (C) 1996 Xavier Leroy
- *               1996 Damien Doligez
- *               2008 David Teller
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,13 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(***********************Doesn't work yet!**************************)
+open Concurrent
 
-
+module BaseRMutex =
+struct
 
 type owner =
   {
-    thread : int;        (**Identity of the latest owner (possibly the current owner)*)
+    thread : int;       (**Identity of the latest owner (possibly the current owner)*)
     mutable depth : int (**Number of times the current owner owns the lock.*)
   }
     
@@ -91,8 +90,17 @@ let unlock m =
 	     end
        | _ -> assert false);
       Mutex.unlock m.primitive   (******Critical section ends  *)
-      
-let synchronize ?lock:(l=create ()) f = fun x ->
+
+end
+
+module Lock = MakeLock(BaseRMutex)
+
+include BaseRMutex
+
+let make = Lock.make
+let synchronize = Lock.synchronize
+
+(*let synchronize ?lock:(l=create ()) f = fun x ->
   lock l;
   try
     let result = f x
@@ -100,5 +108,4 @@ let synchronize ?lock:(l=create ()) f = fun x ->
       result
   with e ->
     lock l;
-    raise e
-
+    raise e*)

@@ -28,6 +28,8 @@ module Control     = struct
   (** Everything related to parallelism and concurrency. *)
   module Concurrency = struct
 
+    module Common = Inner.Control.Concurrency.Common
+
     (** Concurrency operations as defined by OCaml's base library. *)
     module Threads = struct
 
