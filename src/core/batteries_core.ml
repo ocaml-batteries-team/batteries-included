@@ -22,6 +22,7 @@
 
 module Control     = struct
   module Concurrency = struct
+    module Common    = Extlib.Concurrent
   end
   module Exceptions  = Extlib.ExtPrintexc.Printexc
   module Labels      = Extlib.Labels

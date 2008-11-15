@@ -21,36 +21,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Extlib
 include IO
 
-open ExtMutex
+open ExtMutex;;
 
-let io_mutex          = Mutex.create ()
-let io_lock           = fun () -> Mutex.lock io_mutex
-let io_unlock         = fun () -> Mutex.unlock io_mutex
-let _ = 
-  InnerIO.lock := io_lock;
-  InnerIO.unlock:=io_unlock
-
-(*let synchronize_in ?(lock=Mutex.create ()) inp =
-  wrap_in 
-    ~read: (fun () -> read inp)
-    ~input:(input inp)
-    ~close:(Std.identity)
-    ~underlying:inp
-*)
-
-let synchronize_in ?lock inp =
-  wrap_in
-    ~read:(Mutex.synchronize ?lock (fun () -> read inp))
-    ~input:(Mutex.synchronize ?lock (fun s p l -> input inp s p l))
-    ~close:(Std.identity)
-    ~underlying:[inp]
-
-let synchronize_out ?lock out =
-  wrap_out
-    ~write: (Mutex.synchronize ?lock (fun c -> write out c))
-    ~output:(Mutex.synchronize ?lock (fun s p l -> output out s p l))
-    ~flush: (Mutex.synchronize ?lock (fun () -> flush out))
-    ~close: (Std.identity)
-    ~underlying:[out]
+lock         := Mutex.make ();;
+lock_factory := Mutex.make;;

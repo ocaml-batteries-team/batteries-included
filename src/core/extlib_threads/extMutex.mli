@@ -20,6 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Extlib
 module Mutex:
 sig
 
@@ -34,6 +35,8 @@ sig
         (* Critical section that operates over D *);
      ) ()
     ]}
+
+    This module implements {!Control.Concurrency.Common}
 
     @documents Mutex
 
@@ -84,6 +87,11 @@ val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
     In either case, the lock is acquired when entering the function
     and released when the function call ends, whether this is due
     to normal termination or to some exception being raised.
+*)
+
+val make : unit -> Concurrent.lock
+(**
+   Create a new abstract lock.
 *)
 
 end

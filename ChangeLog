@@ -1,4 +1,54 @@
+2008-11-15  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib_threads/extPervasivesThreads.ml: removed content
+
+	* src/core/extlib/extPervasives.ml*: [lock] added
+
+	* src/core/extlib/concurrent.ml*: [create] added
+
+	* src/core/extlib_threads/extUnixThreads.ml: [lock] is now a [Concurrent.lock]
+
+	* src/main/nothreads/batteries.mllib: [InnerIO] removed
+
+	* src/main/threads/batteries.mllib: [InnerIO] removed
+
+	* src/core/extlib.mlpack: [InnerIO] added
+
+	* src/core/extlib/concurrent.mli: [type lock] becomes abstract
+
+2008-11-14  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/innerIO.ml: [flush], [flush_all] now use [Concurrent.sync]
+
+	* src/core/extlib/concurrent.ml*: [try_lock] added
+
+	* src/core/extlib_threads/IOThreads.ml: now defines [lock] and [lock_factory]
+
+	* src/core/extlib_threads/IOThreads.mli: removed
+
+	* src/core/extlib_threads/extMutex.ml*: [make] added
+
+	* src/core/batteries_core_threads.ml: [Concurrency.Common] added
+
+	* src/core/batteries_core.ml: [Concurrency.Common] added
+
+	* src/core/extlib/IO.ml: [synchronize_in], [synchronize_out], [lock_factory] added
+
+	* src/core/extlib/innerIO.ml: [wrap_in] now uses [Concurrent]
+
+	* src/core/extlib/innerIO.ml: [wrap_out] now uses [Concurrent]
+
+	* src/core/extlib/innerIO.mli: now uses [Concurrent]
+
+	* src/core/extlib.mlpack: [Concurrent] added
+
+	* src/core/extlib/concurrent.ml*: created
+
 2008-11-13  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/syntax/pa_openin/pa_openin_r.ml: [module_binding0], [multi_module_expr] added
+
+	* src/syntax/pa_openin/pa_openin.ml: [module_binding0], [multi_module_expr] added
 
 	* src/core/batteries_core_threads.ml: [IO] is now [Extlib_threads.IOThreads]
 

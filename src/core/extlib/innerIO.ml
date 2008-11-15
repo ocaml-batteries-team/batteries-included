@@ -75,18 +75,16 @@ module Outputs= Weak.Make(Output)
 
 external noop        : unit      -> unit        = "%ignore"
 external cast_output : 'a output -> unit output = "%identity"
-let lock = ref noop
-let unlock=ref noop
+let lock = ref Concurrent.nolock
+
 
 let outputs = Outputs.create 32
 let outputs_add out =
-  !lock ();
-  Outputs.add outputs out;
-  !unlock()
+  Concurrent.sync !lock (Outputs.add outputs) out
+
 let outputs_remove out =
-  !lock ();
-  Outputs.remove outputs out;
-  !unlock ()
+  Concurrent.sync !lock (Outputs.remove outputs) out
+
 
 exception No_more_input
 exception Input_closed
@@ -125,9 +123,7 @@ let wrap_in ~read ~input ~close ~underlying =
     in_upstream = weak_create 2
   }
 in 
-    !lock();
-    List.iter (fun x -> weak_add x.in_upstream result) underlying;
-    !unlock();
+    Concurrent.sync !lock (List.iter (fun x -> weak_add x.in_upstream result)) underlying;
     Gc.finalise close_in result;
     result
 
@@ -171,9 +167,7 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
     }
   in 
   let o = cast_output out in
-    !lock();
-    List.iter (fun x -> weak_add x.out_upstream o) underlying;
-    !unlock();
+    Concurrent.sync !lock (List.iter (fun x -> weak_add x.out_upstream o)) underlying;
     outputs_add (cast_output out); 
     Gc.finalise (fun _ -> ignore (close_out out)) 
       out;
@@ -271,14 +265,11 @@ let output o s p l =
 let flush o = o.out_flush()
 
 let flush_all () =
-  !lock ();
-  Outputs.iter (fun o -> try flush o with _ -> ()) outputs;
-  !unlock ()
+  Concurrent.sync !lock ( Outputs.iter (fun o -> try flush o with _ -> ())) outputs
 
 let close_all () =
-  !lock ();
-  Outputs.iter (fun o -> try close_out o with _ -> ()) outputs;
-  !unlock ()
+  Concurrent.sync !lock  (Outputs.iter (fun o -> try close_out o with _ -> ())) outputs
+
 
 let read_all i =
 	let maxlen = 1024 in

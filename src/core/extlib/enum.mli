@@ -21,11 +21,14 @@
 (** 
     Enumeration over abstract collection of elements.
     
-    Enumerations are entirely functional and most of the operations do not
-    actually require the allocation of data structures. Using enumerations
-    to manipulate data is therefore efficient and simple. All data structures in
-    ExtLib such as lists, arrays, etc. have support to convert from and to
-    enumerations.
+    Enumerations are entirely functional and most of the operations do
+    not actually require the allocation of data structures. Using
+    enumerations to manipulate data is therefore efficient and
+    simple. All data structures in such as lists, arrays, etc. have
+    support to convert from and to enumerations.
+
+    {b Note} Enumerations are not thread-safe. You should not attempt to access one
+    enumeration from different threads.
 
     @author Nicolas Cannasse
     @author David Teller

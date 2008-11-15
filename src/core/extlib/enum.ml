@@ -22,23 +22,24 @@
 TYPE_CONV_PATH "Batteries.Data.Mutable.EnumLabels" (*For Sexplib, Bin-prot...*)
 
 (** {6 Representation} *)
+
 type 'a t = {
-	mutable count : unit -> int;
-	mutable next : unit -> 'a;
-	mutable clone : unit -> 'a t;
-	mutable fast : bool;
+  mutable count : unit -> int; (**Return the number of remaining elements in the enumeration. *)
+  mutable next  : unit -> 'a;  (**Return the next element of the enumeration or raise [No_more_elements].*)
+  mutable clone : unit -> 'a t;(**Return a copy of the enumeration. *)
+  mutable fast  : bool;        (**[true] if [count] can be done without reading all elements, [false] otherwise.*)
 }
 
 (* raised by 'next' functions, should NOT go outside the API *)
 exception No_more_elements
 
 let make ~next ~count ~clone =
-	{
-		count = count;
-		next = next;
-		clone = clone;
-		fast = true;
-	}
+  {
+    count = count;
+    next  = next;
+    clone = clone;
+    fast  = true;
+  }
 
 (** {6 Internal utilities}*)
 let _dummy () = assert false
@@ -56,42 +57,42 @@ type 'a _mut_list = {
 	mutable tl : 'a _mut_list;
 }
 
-let force t =
-	let rec clone enum count =
-		let enum = ref !enum
-		and	count = ref !count in
-		{
-			count = (fun () -> !count);
-			next = (fun () ->
-				match !enum with
-				| [] -> raise No_more_elements
-				| h :: t -> decr count; enum := t; h);
-			clone = (fun () ->
-				let enum = ref !enum
-				and count = ref !count in
-				clone enum count);
-			fast = true;
-		}
-	in
-	let count = ref 0 in
-	let _empty = Obj.magic [] in
-	let rec loop dst =
-		let x = { hd = t.next(); tl = _empty } in
-		incr count;
-		dst.tl <- x;
-		loop x
-	in
-	let enum = ref _empty  in 
-	(try
-		enum := { hd = t.next(); tl = _empty };
-		incr count;
-		loop !enum;
-	with No_more_elements -> ());
-	let tc = clone (Obj.magic enum) count in
-	t.clone <- tc.clone;
-	t.next <- tc.next;
-	t.count <- tc.count;
-	t.fast <- true
+let force t =(**Transform [t] into a list*)
+  let rec clone enum count =
+    let enum = ref !enum
+    and	count = ref !count in
+      {
+	count = (fun () -> !count);
+	next  = (fun () ->
+		   match !enum with
+		     | []     -> raise No_more_elements
+		     | h :: t -> decr count; enum := t; h);
+	clone = (fun () ->
+		   let enum = ref !enum
+		   and count = ref !count in
+		     clone enum count);
+	fast  = true;
+      }
+  in
+  let count = ref 0 in
+  let _empty = Obj.magic [] in
+  let rec loop dst =
+    let x = { hd = t.next(); tl = _empty } in
+      incr count;
+      dst.tl <- x;
+      loop x
+  in
+  let enum = ref _empty  in 
+    (try
+       enum := { hd = t.next(); tl = _empty };
+       incr count;
+       loop !enum;
+     with No_more_elements -> ());
+    let tc = clone (Obj.magic enum) count in
+      t.clone <- tc.clone;
+      t.next <- tc.next;
+      t.count <- tc.count;
+      t.fast <- true
 
 (* Inlined from {!LazyList}.
 
@@ -129,34 +130,32 @@ module MicroLazyList = struct
       )
     in
       aux ()
-
-
 end
 
 let rec empty () =
-	{
-		count = return_no_more_count;
-		next  = return_no_more_elements;
-		clone = (fun () -> empty());
-		fast = true;
-	}
+  {
+    count = return_no_more_count;
+    next  = return_no_more_elements;
+    clone = (fun () -> empty());
+    fast  = true;
+  }
 
 let from f =
-	let e = {
-		next = f;
-		count = _dummy;
-		clone = _dummy;
-		fast = false;
-	} in
-	e.count <- (fun () -> force e; e.count());
-	e.clone <- (fun () -> 
+  let e = {
+    next = f;
+    count = _dummy;
+    clone = _dummy;
+    fast = false;
+  } in
+    e.count <- (fun () -> force e; e.count());
+    e.clone <- (fun () -> 
 		  let e' =  MicroLazyList.enum(MicroLazyList.from f) in
 		    e.next <- e'.next;
 		    e.clone<- e'.clone;
 		    e.count<- e'.count;
 		    e.fast <- false;		    e.fast <- false;
 	            e.clone () );
-	e
+    e
 
 
 let from2 next clone =

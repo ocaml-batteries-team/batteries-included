@@ -26,6 +26,12 @@ struct
   include Unix
   open InnerIO
   open Std
+
+  (**
+     {6 Thread-safety internals}
+  *)
+  let lock = ref Concurrent.nolock
+
   (**
      {6 Tracking additional information on inputs/outputs}
 
@@ -40,25 +46,25 @@ struct
   let wrapped_out   = Wrapped_out.create 16
 
   let input_add k v =
-    Wrapped_in.add wrapped_in k v
+    Concurrent.sync !lock (Wrapped_in.add wrapped_in k) v
       
   let input_get k =
-    Wrapped_in.find wrapped_in k
+    Concurrent.sync !lock (Wrapped_in.find wrapped_in) k
 
   let output_add k v =
-    Wrapped_out.add wrapped_out k v
+    Concurrent.sync !lock (Wrapped_out.add wrapped_out k) v
       
   let output_get k =
-    Wrapped_out.find wrapped_out k
+    Concurrent.sync !lock (Wrapped_out.find wrapped_out) k
 
   let wrap_in ?autoclose cin =
     let input = InnerIO.input_channel ?autoclose cin in
-      Wrapped_in.add wrapped_in input cin;
+      Concurrent.sync !lock (Wrapped_in.add wrapped_in input) cin;
       input
 
   let wrap_out cout =
     let output = cast_output (InnerIO.output_channel cout) in
-      Wrapped_out.add wrapped_out output cout;
+      Concurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
       output
 
   (**

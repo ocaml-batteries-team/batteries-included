@@ -962,11 +962,9 @@ val const : 'a -> (_ -> 'a)
     [const x] is the function which always returns [x].*)
 
 val unique : unit -> int
-(** returns an unique identifier every time it is called. 
+(** Returns an unique identifier every time it is called.
 
-    {b Note} Not thread-safe (will be made thread-safe in the next
-    version).
-*)
+    {b Note} This is thread-safe.*)
 
 
 
@@ -1091,5 +1089,21 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
 type ('a, 'b) result = ('a, 'b) Std.result =
   | Ok  of 'a
   | Bad of 'b
+
+(**
+   {6 Thread-safety internals}
+
+   Unless you are attempting to adapt Batteries Included to a new model of
+   concurrency, you probably won't need this.
+*)
+
+val lock: Concurrent.lock ref
+(**
+   A lock used to synchronize internal operations.
+
+   By default, this is {!Concurrent.nolock}. However, if you're using a version
+   of Batteries compiled in threaded mode, this uses {!Mutex}. If you're attempting
+   to use Batteries with another concurrency model, set the lock appropriately.
+*)
 
 end

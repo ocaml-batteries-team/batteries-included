@@ -806,6 +806,62 @@ val printf : 'a output -> ('b, 'a output, unit) format -> 'b
 val default_buffer_size : int
 (**The default size for internal buffers.*)
 
+(**
+   {6 Thread-safety}
+*)
+
+val synchronize_in : ?lock:Concurrent.lock -> input  -> input
+(**[synchronize_in inp] produces a new {!type: input} which reads from [input]
+   in a thread-safe way. In other words, a lock prevents two distinct threads
+   from reading from that input simultaneously, something which would potentially
+   wreak havoc otherwise
+
+   @param lock An optional lock. If none is provided, the lock will be specific
+   to this [input]. Specifiying a custom lock may be useful to associate one
+   common lock for several inputs and/or outputs, for instance in the case
+   of pipes.
+*)
+
+val synchronize_out: ?lock:Concurrent.lock -> _ output -> unit output
+(**[synchronize_out out] produces a new {!type: output} which writes to [output]
+   in a thread-safe way. In other words, a lock prevents two distinct threads
+   from writing to that output simultaneously, something which would potentially
+   wreak havoc otherwise
+
+   @param lock An optional lock. If none is provided, the lock will be specific
+   to this [output]. Specifiying a custom lock may be useful to associate one
+   common lock for several inputs and/or outputs, for instance in the case
+   of pipes.
+*)
+
+
+(**
+   {6 Thread-safety internals}
+
+   Unless you are attempting to adapt Batteries Included to a new model of
+   concurrency, you probably won't need this.
+*)
+
+val lock: Concurrent.lock ref
+(**
+   A lock used to synchronize internal operations.
+
+   By default, this is {!Concurrent.nolock}. However, if you're using a version
+   of Batteries compiled in threaded mode, this uses {!Mutex}. If you're attempting
+   to use Batteries with another concurrency model, set the lock appropriately.
+*)
+
+val lock_factory: (unit -> Concurrent.lock) ref
+(**
+   A factory used to create locks. This is used transparently by {!synchronize_in}
+   and {!synchronize_out}.
+
+   By default, this always returns {!Concurrent.nolock}. However, if you're using
+   a version of Batteries compiled in threaded mode, this uses {!Mutex}. 
+*)
+
+
+
 (**/**)
 val comb : ('a output * 'a output) -> 'a output
 (** Old name of [combine]*)

@@ -29,6 +29,7 @@
 (*[Control] is [Batteries_core.Control] + [Control.Concurrency.Threads] *)
 module Control = struct
   module Concurrency = struct
+    module Common = Batteries_core.Control.Concurrency.Common
     module Thread = struct
       module Condition = Batlib_Baselib_Condition
       module Event     = Batlib_Baselib_Event
