@@ -677,6 +677,79 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b 
   
 external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
 external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
+
+(**/**)
+
+  (** {6 Override modules}*)
+
+(**
+   The following modules replace functions defined in {!Array.Cap} with functions
+   behaving slightly differently but having the same name. This is by design:
+   the functions meant to override the corresponding functions of {!Array.Cap}.
+
+   To take advantage of these overrides, you probably want to
+   {{:../extensions.html#multiopen}{open several modules in one
+   operation} or {{:../extensions.html#multialias}{alias several
+   modules to one name}. For instance, to open a version of {!Array.Cap}
+   with exceptionless error management, you may write [open Array.Cap,
+   ExceptionLess]. To locally replace module {!Array.Cap} with a module of
+   the same name but with exceptionless error management, you may
+   write [module Array = Array.Cap include ExceptionLess].
+
+*)
+
+(** Operations on {!Array} without exceptions.*)
+module ExceptionLess : sig
+
+    
+  val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a option
+    (** [find p a] returns [Some x], where [x] is the first element of
+	array [a] that satisfies the predicate [p], or [None] if there
+	is no such element.*)
+
+  val findi : ('a -> bool) -> ('a, [> `Read]) t -> int option
+    (** [findi p a] returns [Some n], where [n] is the index of the
+	first element of array [a] that satisfies the predicate [p],
+	or [None] if there is no such element.*)
+
+end
+
+
+(** Operations on {!Array} with labels.
+
+    This module overrides a number of functions of {!Array} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!Array}.
+*)
+module Labels : sig
+  val init : int -> f:(int -> 'a) -> ('a, _) t
+  val make_matrix : dimx:int -> dimy:int -> 'a -> (('a, _)t, _) t
+  val create_matrix : dimx:int -> dimy:int -> 'a -> (('a, _)t, _) t
+  val sub : ('a, [> `Read]) t -> pos:int -> len:int -> ('a, _) t
+  val fill : ('a, [> `Write]) t -> pos:int -> len:int -> 'a -> unit
+  val blit : src:('a, [> `Read]) t -> src_pos:int -> dst:('a, [>`Write]) t -> dst_pos:int -> len:int ->
+    unit
+  val iter : f:('a -> unit) -> ('a, [> `Read]) t -> unit
+  val map : f:('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
+  val iteri : f:(int -> 'a -> unit) -> ('a, [> `Read]) t -> unit
+  val mapi : f:(int -> 'a -> 'b) -> ('a, [> `Read]) t -> ('b, _) t
+  val fold_left : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
+  val fold_right : f:('b -> 'a -> 'a) -> ('b, [> `Read]) t -> init:'a -> 'a
+  val sort : cmp:('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
+  val stable_sort : cmp:('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
+  val fast_sort : cmp:('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
+  val iter2:      f:('a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
+  val iter2i:     f:( int -> 'a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
+  val exists:     f:('a -> bool) -> ('a, [> `Read]) t -> bool
+  val for_all:    f:('a -> bool) -> ('a, [> `Read]) t -> bool
+  val find:       f:('a -> bool) -> ('a, [> `Read]) t -> 'a
+  val map:        f:('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
+  val mapi:       f:(int -> 'a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
+  val filter:     f:('a -> bool) -> ('a, [>`Read]) t -> ('a, _) t
+  val filter_map: f:('a -> 'b option) -> ('a, [>`Read]) t -> ('b, _) t
+end
   
   end
   
@@ -690,7 +763,7 @@ external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_se
     
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> 'b t -> unit
 
-    (** {6 Override modules}*)
+  (** {6 Override modules}*)
 
 (**
    The following modules replace functions defined in {!Array} with functions
