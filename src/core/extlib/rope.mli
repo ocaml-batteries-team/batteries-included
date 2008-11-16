@@ -287,7 +287,7 @@ val blit : t -> int -> t -> int -> int -> t
 
 val concat_sep : t -> t list -> t
 val escaped : t -> t
-val replace_chars : (UChar.t -> t) -> t -> t
+val replace_chars : (UChar.t -> UTF8.t) -> t -> t
 val replace : t -> t -> t -> t
 val split : t -> t -> (t * t)
 val nsplit : t -> t -> int -> t list
