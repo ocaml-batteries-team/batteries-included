@@ -44,7 +44,6 @@ module Data        = struct
       module Enum          = Extlib.Enum
       module Global        = Extlib.Global
       module Hashtbl       = Extlib.ExtHashtbl.Hashtbl
-      module HashtblLabels = Batlib_Baselib_HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
       module Queue         = Extlib.ExtQueue.Queue
       module Ref           = Extlib.Ref
       module RefList       = Extlib.RefList

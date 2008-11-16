@@ -1,5 +1,19 @@
 2008-11-16  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/main/nothreads/batteries.mllib: [HashtblLabels] removed
+
+	* src/main/nothreads/batteries.ml: [MoreLabels] added, [HashtblLabels] removed
+	
+	* src/main/threads/batteries.ml: [MoreLabels] added, [HashtblLabels] removed
+
+	* src/main/threads/batteries.mllib: [HashtblLabels] removed
+
+	* src/core/batteries_core_threads.ml: [HashtblLabels] removed
+
+	* src/core/batteries_core.ml: [HashtblLabels] removed
+
+	* src/core/extlib/extHashtbl.ml*: [map] now passes to [f] both the value and the key
+
 	* src/core/batteries_core_threads.ml: removed [SetLabels]
 
 	* src/main/threads/batteries.ml: removed [SetLabels]

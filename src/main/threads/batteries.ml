@@ -65,7 +65,6 @@ module Data        = struct
       module Enum          = Batteries_core_threads.Data.Mutable.Enum
       module Global        = Batteries_core_threads.Data.Mutable.Global
       module Hashtbl       = Batteries_core_threads.Data.Mutable.Hashtbl
-      module HashtblLabels = Batteries_core_threads.Data.Mutable.HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
       module Queue         = Batteries_core_threads.Data.Mutable.Queue        (*TODO:build from enum?*)
       module Ref           = Batteries_core_threads.Data.Mutable.Ref
       module RefList       = Batteries_core_threads.Data.Mutable.RefList
@@ -341,7 +340,7 @@ module Map       = Data.Persistent.Map
 module MapLabels = Data.Persistent.MapLabels
 module Option    = Data.Persistent.Option
 module Set       = Data.Persistent.Set
-module SetLabels = struct include Data.Persistent.SetLabels;; include Labels end
+module SetLabels = struct include Data.Persistent.Set;; include Labels end
 module Big_int   = Data.Numeric.Big_int
 module Complex   = Data.Numeric.Complex
 module Int       = Data.Numeric.Int
@@ -374,6 +373,10 @@ module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
 module Printexc  = Printexc
+module MoreLabels= struct(*For compatibility with the base lib's [MoreLabels]*)
+  module HashtblLabels = struct include Data.Mutable.Hashtbl;; include Labels end
+  module SetLabels     = struct include Data.Persistent.Set;; include Labels end
+end
 (*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
 (**/**)
 
