@@ -61,11 +61,11 @@ module Data        = struct
       module Global        = Inner.Data.Mutable.Global
       module Hashtbl       = Inner.Data.Mutable.Hashtbl
       module HashtblLabels = Inner.Data.Mutable.HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
-      module Queue         = Inner.Data.Mutable.Queue        (*TODO:build from enum?*)
+      module Queue         = Inner.Data.Mutable.Queue
       module Ref           = Inner.Data.Mutable.Ref
       module RefList       = Inner.Data.Mutable.RefList
-      module Stack         = Inner.Data.Mutable.Stack        (*TODO:build from enum*)
-      module Stream        = Inner.Data.Mutable.Stream       (*TODO:replace with latest version*)
+      module Stack         = Inner.Data.Mutable.Stack
+      module Stream        = Inner.Data.Mutable.Stream
     end
 
     (** Persistent containers (lists, sets...)  *)
@@ -73,15 +73,14 @@ module Data        = struct
       module Lazy            = Inner.Data.Persistent.Lazy
       module List            = Inner.Data.Persistent.List      (*formerly Batlib_Baselib_List*)
       module ListLabels      = Inner.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)
-      module Map             = Inner.Data.Persistent.Map       (*TODO:make enumerable*)
+      module Map             = Inner.Data.Persistent.Map
       module MapLabels       = Inner.Data.Persistent.MapLabels (*TODO:make enumerable*)
       module MultiPMap       = Inner.Data.Persistent.MultiPMap
       module PMap            = Inner.Data.Persistent.PMap
       module PSet            = Inner.Data.Persistent.PSet
       module Option          = Inner.Data.Persistent.Option
       module OptionLabels    = Inner.Data.Persistent.OptionLabels
-      module Set             = Inner.Data.Persistent.Set       (*TODO:make enumerable*)
-      module SetLabels       = Inner.Data.Persistent.SetLabels (*TODO:make enumerable*)
+      module Set             = Inner.Data.Persistent.Set
 
 (**
    {6 Note} Some mutable containers offer persistent substructures.
@@ -259,7 +258,7 @@ end
 module Legacy = struct
   (**/**)
   module Array     = Array
-  module ArrayLabels= ArrayLabels
+  module ArrayLabels= Inner.Legacy.ArrayLabels
   module Bigarray  = Bigarray
   module Hashtbl   = Hashtbl
   module Queue     = Queue
@@ -322,7 +321,7 @@ module Map       = Data.Persistent.Map
 module MapLabels = Data.Persistent.MapLabels
 module Option    = Data.Persistent.Option
 module Set       = Data.Persistent.Set
-module SetLabels = Data.Persistent.SetLabels
+module SetLabels = struct include Data.Persistent.SetLabels;; include Labels end
 module Big_int   = Data.Numeric.Big_int
 module Complex   = Data.Numeric.Complex
 module Int       = Data.Numeric.Int

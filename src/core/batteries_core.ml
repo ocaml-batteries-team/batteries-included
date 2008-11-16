@@ -65,7 +65,6 @@ module Data        = struct
       module Option          = Extlib.Option
       module OptionLabels    = Extlib.OptionLabels
       module Set             = Extlib.ExtSet.Set
-      module SetLabels       = Batlib_Baselib_SetLabels (*TODO:make enumerable*)
 
 (**
    {6 Note} Some mutable containers offer persistent substructures.

@@ -76,17 +76,16 @@ module Data        = struct
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
       module Lazy            = Batteries_core_threads.Data.Persistent.Lazy
-      module List            = Batteries_core_threads.Data.Persistent.List      (*formerly Batlib_Baselib_List*)
+      module List            = Batteries_core_threads.Data.Persistent.List
       module ListLabels      = Batteries_core_threads.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)
-      module Map             = Batteries_core_threads.Data.Persistent.Map       (*TODO:make enumerable*)
+      module Map             = Batteries_core_threads.Data.Persistent.Map
       module MapLabels       = Batteries_core_threads.Data.Persistent.MapLabels (*TODO:make enumerable*)
       module MultiPMap       = Batteries_core_threads.Data.Persistent.MultiPMap
       module Option          = Batteries_core_threads.Data.Persistent.Option
       module OptionLabels    = Batteries_core_threads.Data.Persistent.OptionLabels
       module PMap            = Batteries_core_threads.Data.Persistent.PMap
       module PSet            = Batteries_core_threads.Data.Persistent.PSet
-      module Set             = Batteries_core_threads.Data.Persistent.Set       (*TODO:make enumerable*)
-      module SetLabels       = Batteries_core_threads.Data.Persistent.SetLabels (*TODO:make enumerable*)
+      module Set             = Batteries_core_threads.Data.Persistent.Set
 
 (**
    {6 Note} Some mutable containers offer persistent substructures.
@@ -342,7 +341,7 @@ module Map       = Data.Persistent.Map
 module MapLabels = Data.Persistent.MapLabels
 module Option    = Data.Persistent.Option
 module Set       = Data.Persistent.Set
-module SetLabels = Data.Persistent.SetLabels
+module SetLabels = struct include Data.Persistent.SetLabels;; include Labels end
 module Big_int   = Data.Numeric.Big_int
 module Complex   = Data.Numeric.Complex
 module Int       = Data.Numeric.Int

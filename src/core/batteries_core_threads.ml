@@ -77,7 +77,6 @@ struct
     module Option          = Batteries_core.Data.Persistent.Option
     module OptionLabels    = Batteries_core.Data.Persistent.OptionLabels
     module Set             = Batteries_core.Data.Persistent.Set
-    module SetLabels       = Batteries_core.Data.Persistent.SetLabels
   end
     
   (** Boolean and bit-oriented data structures *)
