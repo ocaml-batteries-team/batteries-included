@@ -24,19 +24,7 @@ TYPE_CONV_PATH "Batteries.Data.Persistent" (*For Sexplib, Bin-prot...*)
 
 module Set =
 struct
-  module type OrderedType =
-  sig
-    type t
-      (** The type of the set elements. *)
-    val compare : t -> t -> int
-      (** A total ordering function over the set elements.
-          This is a two-argument function [f] such that
-          [f e1 e2] is zero if the elements [e1] and [e2] are equal,
-          [f e1 e2] is strictly negative if [e1] is smaller than [e2],
-          and [f e1 e2] is strictly positive if [e1] is greater than [e2].
-          Example: a suitable ordering function is the generic structural
-          comparison function {!Pervasives.compare}. *)
-  end
+  module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Set.Make}. *)
 
 module type S =
@@ -218,12 +206,14 @@ module type S =
 (*    let enum t =
       let queue = Queue.create () in
       let rec next () = 
-	match 
-	  try  Some (Queue.pop queue) 
-	  with Queue.Empty -> None
-	with None       -> raise Enum.No_more_elements
-	  |  Some Empty -> next ()
-	  | Some Node (l, e, r, _) -> 
+	let item =
+	  try Queue.pop queue
+	  with Queue.Empty ->
+	    raise Enum.No_more_elements
+	in
+	match item with
+	  | Empty -> next ()
+	  | Node (l, e, r, _) ->
 	      Queue.push l queue;
 	      Queue.push r queue;
 	      e

@@ -25,7 +25,7 @@ TYPE_CONV_PATH "Batteries.Data.Persistent" (*For Sexplib, Bin-prot...*)
 
 module Map =
 struct
-  module type OrderedType = Map.OrderedType
+  module type OrderedType = Interfaces.OrderedType
 
   module type S =
   sig
