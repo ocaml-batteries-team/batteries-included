@@ -169,6 +169,33 @@ module type S =
       ('a InnerIO.output -> elt -> unit) -> 
       'a InnerIO.output -> t -> unit
 
+      (** {6 Override modules}*)
+      
+    (** Operations on {!Set} without exceptions.*)
+    module ExceptionLess : sig
+      val min_elt: t -> elt option
+      val max_elt: t -> elt option
+      val choose:  t -> elt option
+    end
+      
+      
+    (** Operations on {!Set} with labels.
+	
+	This module overrides a number of functions of {!Set} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Set}.
+    *)
+    module Labels : sig
+      val iter : f:(elt -> unit) -> t -> unit
+      val fold : f:(elt -> 'a -> 'a) -> t -> init:'a -> 'a
+      val for_all : f:(elt -> bool) -> t -> bool
+      val exists : f:(elt -> bool) -> t -> bool
+      val filter : f:(elt -> bool) -> t -> t
+      val partition : f:(elt -> bool) -> t -> t * t
+    end
+      
   end
     (** Output signature of the functor {!Set.Make}. *)
 
@@ -233,7 +260,22 @@ module type S =
 	    let result = sexp_of_t (impl_of_t t)
 	  end in Local.result
 
+    module ExceptionLess =
+    struct
+      let min_elt t = try Some (min_elt t) with Not_found -> None
+      let max_elt t = try Some (max_elt t) with Not_found -> None
+      let choose  t = try Some (choose t)  with Not_found -> None
+    end
 
+    module Labels =
+    struct
+      let iter ~f t = iter f t
+      let fold ~f t ~init = fold f t init
+      let for_all ~f t    = for_all f t
+      let exists ~f t     = exists f t
+      let filter ~f t     = filter f t
+      let partition ~f t  = partition f t
+    end
   end
 
 end

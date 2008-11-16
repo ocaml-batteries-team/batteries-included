@@ -136,8 +136,9 @@ module type S =
 
     val min_elt: t -> elt
     (** Return the smallest element of the given set
-       (with respect to the [Ord.compare] ordering), or raise
-       [Not_found] if the set is empty. *)
+       (with respect to the [Ord.compare] ordering).
+
+	@raise Not_found if the set is empty. *)
 
     val max_elt: t -> elt
     (** Same as {!Set.S.min_elt}, but returns the largest element of the
@@ -179,7 +180,52 @@ module type S =
       ('a InnerIO.output -> elt -> unit) -> 
       'a InnerIO.output -> t -> unit
 
+
+      (** {6 Override modules}*)
+
+    (**
+       The following modules replace functions defined in {!Set} with functions
+       behaving slightly differently but having the same name. This is by design:
+       the functions meant to override the corresponding functions of {!Set}.
+       
+       To take advantage of these overrides, you probably want to
+       {{:../extensions.html#multiopen}{open several modules in one
+       operation} or {{:../extensions.html#multialias}{alias several
+       modules to one name}. For instance, to open a version of {!Set}
+       with exceptionless error management, you may write [open Set,
+       ExceptionLess]. To locally replace module {!Set} with a module of
+       the same name but with exceptionless error management, you may
+       write [module Set = Set include ExceptionLess].
+       
+    *)
+      
+    (** Operations on {!Set} without exceptions.*)
+    module ExceptionLess : sig
+      val min_elt: t -> elt option
+      val max_elt: t -> elt option
+      val choose:  t -> elt option
+    end
+      
+      
+    (** Operations on {!Set} with labels.
+	
+	This module overrides a number of functions of {!Set} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Set}.
+    *)
+    module Labels : sig
+      val iter : f:(elt -> unit) -> t -> unit
+      val fold : f:(elt -> 'a -> 'a) -> t -> init:'a -> 'a
+      val for_all : f:(elt -> bool) -> t -> bool
+      val exists : f:(elt -> bool) -> t -> bool
+      val filter : f:(elt -> bool) -> t -> t
+      val partition : f:(elt -> bool) -> t -> t * t
+    end
+      
   end
+
 (** Output signature of the functor {!Set.Make}. *)
 
 module Make (Ord : OrderedType) : S with type elt = Ord.t
