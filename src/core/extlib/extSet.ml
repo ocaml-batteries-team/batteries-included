@@ -209,7 +209,7 @@ module type S =
     external impl_of_t : t -> implementation = "%identity"
     external t_of_impl : implementation -> t = "%identity"
 
-    let enum t =
+(*    let enum t =
       let queue = Queue.create () in
       let rec next () = 
 	match 
@@ -222,7 +222,21 @@ module type S =
 	      Queue.push r queue;
 	      e
       in Queue.add (impl_of_t t) queue;
-	Enum.from next
+	Enum.from next*)
+
+    let enum t =
+      let rec aux = function
+	| Empty             -> Enum.empty ()
+	| Node (l, e, r, _) ->
+	    Enum.append (aux l) (Enum.delay (fun () -> Enum.append (Enum.singleton e) (aux r)))
+      in aux (impl_of_t t)
+
+    let backwards t =
+      let rec aux = function
+	| Empty             -> Enum.empty ()
+	| Node (l, e, r, _) ->
+	    Enum.append (aux r) (Enum.delay (fun () -> Enum.append (Enum.singleton e) (aux l)))
+      in aux (impl_of_t t)
 
     let of_enum e = 
       Enum.fold add empty e

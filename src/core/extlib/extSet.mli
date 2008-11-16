@@ -164,6 +164,12 @@ module type S =
 	  to the ordering [Ord.compare], where [Ord] is the argument
 	  given to {!Set.Make}. *)
 
+    val backwards: t -> elt Enum.t
+      (** Return an enumeration of all elements of the given set.
+	  The returned enumeration is sorted in decreasing order with respect
+	  to the ordering [Ord.compare], where [Ord] is the argument
+	  given to {!Set.Make}. *)
+
     val of_enum: elt Enum.t -> t
 
 
