@@ -333,6 +333,8 @@ struct
   module Labels =
   struct
       let init i ~f = init i f
+      let create len ~init = create len init
+      let make             = create
       let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
       let create_matrix = make_matrix
       let sub a ~pos ~len = sub a pos len
@@ -384,6 +386,8 @@ end
 module Labels =
 struct
   let init i ~f = init i f
+  let create len ~init = create len init
+  let make             = create
   let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
   let create_matrix = make_matrix
   let sub a ~pos ~len = sub a pos len

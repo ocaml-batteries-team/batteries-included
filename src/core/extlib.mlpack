@@ -3,6 +3,7 @@ InnerIO
 Monad
 Labels
 Enum
+ExtBigarray
 ExtUChar
 ExtUnit
 Global

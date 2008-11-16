@@ -8,9 +8,7 @@ Batlib_Baselib_Set
 Batlib_Baselib_ListLabels
 Batlib_Baselib_Filename
 Batlib_Baselib_Callback
-Batlib_Baselib_ArrayLabels
 Batlib_Baselib_Arg
-Batlib_Baselib_Bigarray
 Batlib_Baselib_CamlinternalMod
 Batlib_Baselib_CamlinternalOO
 Batlib_Baselib_Digest

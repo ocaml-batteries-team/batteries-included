@@ -1,8 +1,8 @@
 (*
  * ExtArray - additional and modified functions for arrays.
  * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
- *               1996 Xavier Leroy [imported by David Teller]
- *               2008 David Teller (David.Teller@univ-orleans.fr)
+ *               1996 Xavier Leroy
+ *               2008 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -725,6 +725,8 @@ end
 *)
 module Labels : sig
   val init : int -> f:(int -> 'a) -> ('a, _) t
+  val make: int -> init:'a -> ('a, _) t
+  val create: int -> init:'a -> ('a, _) t
   val make_matrix : dimx:int -> dimy:int -> 'a -> (('a, _)t, _) t
   val create_matrix : dimx:int -> dimy:int -> 'a -> (('a, _)t, _) t
   val sub : ('a, [> `Read]) t -> pos:int -> len:int -> ('a, _) t
@@ -808,6 +810,7 @@ end
 *)
 module Labels : sig
   val init : int -> f:(int -> 'a) -> 'a array
+  val create: int -> init:'a -> 'a array
   val make_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
   val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
   val sub : 'a array -> pos:int -> len:int -> 'a array

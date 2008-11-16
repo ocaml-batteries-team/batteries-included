@@ -1,5 +1,7 @@
 2008-11-16  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extBigarray.ml*: created
+
 	* src/main/nothreads/batteries.mllib: [HashtblLabels] removed
 
 	* src/main/nothreads/batteries.ml: [MoreLabels] added, [HashtblLabels] removed
