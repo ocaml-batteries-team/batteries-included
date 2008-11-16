@@ -198,10 +198,10 @@ module type S =
        {{:../extensions.html#multiopen}{open several modules in one
        operation} or {{:../extensions.html#multialias}{alias several
        modules to one name}. For instance, to open a version of {!Set}
-       with exceptionless error management, you may write [open Set,
-       ExceptionLess]. To locally replace module {!Set} with a module of
+       with exceptionless error management, you may write {v open Set,
+       ExceptionLess v}. To locally replace module {!Set} with a module of
        the same name but with exceptionless error management, you may
-       write [module Set = Set include ExceptionLess].
+       write {v module Set = Set include ExceptionLess v}.
        
     *)
       

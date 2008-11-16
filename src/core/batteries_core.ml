@@ -56,7 +56,6 @@ module Data        = struct
       module Lazy            = Batlib_Baselib_Lazy
       module List            = Extlib.ExtList.List
       module Map             = Extlib.ExtMap.Map
-      module MapLabels       = Batlib_Baselib_MapLabels (*TODO:make enumerable*)
       module MultiPMap       = Extlib.MultiPMap
       module PMap            = Extlib.PMap
       module PSet            = Extlib.PSet

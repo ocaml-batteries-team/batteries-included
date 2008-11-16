@@ -116,6 +116,23 @@ struct
       ('a InnerIO.output -> key -> unit) -> 
       ('a InnerIO.output -> 'c -> unit) -> 
       'a InnerIO.output -> 'c t -> unit
+
+    module ExceptionLess : sig
+      val find: key -> 'a t -> 'a option
+    end
+
+    module Labels : sig
+      val add : key:key -> data:'a -> 'a t -> 'a t
+      val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+      val map : f:('a -> 'b) -> 'a t -> 'b t
+      val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+      val fold :
+	f:(key:key -> data:'a -> 'b -> 'b) ->
+	'a t -> init:'b -> 'b
+      val compare: cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+      val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+
+    end
   end
 
   module Make(Ord : OrderedType) =
@@ -185,6 +202,22 @@ struct
 	     t_of_sexp
 	  end in fun a_of_key (t:'a t) -> Local.sexp_of_t a_of_key (impl_of_t t)
 
+
+      module ExceptionLess =
+      struct
+	let find k t = try Some (find k t) with Not_found -> None
+      end
+	
+      module Labels =
+      struct
+	let add ~key ~data t = add key data t
+	let iter ~f t = iter (fun key data -> f ~key ~data) t
+	let map ~f t = map f t
+	let mapi ~f t = mapi (fun key data -> f ~key ~data) t
+	let fold ~f t ~init = fold (fun key data acc -> f ~key ~data acc) t init
+	let compare ~cmp a b = compare cmp a b
+	let equal ~cmp a b = equal cmp a b
+      end  
 
     end
 

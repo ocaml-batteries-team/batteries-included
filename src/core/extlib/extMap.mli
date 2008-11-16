@@ -138,8 +138,53 @@ module type S =
       ('a InnerIO.output -> key -> unit) -> 
       ('a InnerIO.output -> 'c -> unit) -> 
       'a InnerIO.output -> 'c t -> unit
+
+    (** Output signature of the functor {!Map.Make}. *)
+      
+    (** {6 Override modules}*)
+      
+    (**
+       The following modules replace functions defined in {!Map} with functions
+       behaving slightly differently but having the same name. This is by design:
+       the functions meant to override the corresponding functions of {!Map}.
+       
+       To take advantage of these overrides, you probably want to
+       {{:../extensions.html#multiopen}{open several modules in one
+       operation} or {{:../extensions.html#multialias}{alias several
+       modules to one name}. For instance, to open a version of {!Map}
+       with exceptionless error management, you may write {v open Map,
+       ExceptionLess v}. To locally replace module {!Map} with a module of
+       the same name but with exceptionless error management, you may
+       write {v module Map = Map include ExceptionLess v}.
+       
+    *)
+      
+    (** Operations on {!Map} without exceptions.*)
+    module ExceptionLess : sig
+      val find: key -> 'a t -> 'a option
+    end
+      
+      
+    (** Operations on {!Map} with labels.
+	
+	This module overrides a number of functions of {!Map} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Map}.
+    *)
+    module Labels : sig
+      val add : key:key -> data:'a -> 'a t -> 'a t
+      val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+      val map : f:('a -> 'b) -> 'a t -> 'b t
+      val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+      val fold :
+	f:(key:key -> data:'a -> 'b -> 'b) ->
+	'a t -> init:'b -> 'b
+      val compare: cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+      val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+    end
   end
-(** Output signature of the functor {!Map.Make}. *)
 
 module Make (Ord : OrderedType) : S with type key = Ord.t
 (** Functor building an implementation of the map structure

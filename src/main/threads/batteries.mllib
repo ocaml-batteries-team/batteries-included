@@ -18,7 +18,6 @@ Batlib_Baselib_Format
 Batlib_Baselib_Genlex
 Batlib_Baselib_Lazy
 Batlib_Baselib_Lexing
-Batlib_Baselib_MapLabels
 Batlib_Baselib_Obj
 Batlib_Baselib_Oo
 Batlib_Baselib_Parsing

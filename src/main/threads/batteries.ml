@@ -77,7 +77,6 @@ module Data        = struct
       module Lazy            = Batteries_core_threads.Data.Persistent.Lazy
       module List            = Batteries_core_threads.Data.Persistent.List
       module Map             = Batteries_core_threads.Data.Persistent.Map
-      module MapLabels       = Batteries_core_threads.Data.Persistent.MapLabels (*TODO:make enumerable*)
       module MultiPMap       = Batteries_core_threads.Data.Persistent.MultiPMap
       module Option          = Batteries_core_threads.Data.Persistent.Option
       module OptionLabels    = Batteries_core_threads.Data.Persistent.OptionLabels
@@ -336,7 +335,6 @@ module Lazy      = Data.Persistent.Lazy
 module List      = Data.Persistent.List
 module ListLabels= struct include Data.Persistent.List;; include Labels end
 module Map       = Data.Persistent.Map
-module MapLabels = Data.Persistent.MapLabels
 module Option    = Data.Persistent.Option
 module Set       = Data.Persistent.Set
 module SetLabels = struct include Data.Persistent.Set;; include Labels end
@@ -374,7 +372,8 @@ module Random    = Util.Random
 module Printexc  = Printexc
 module MoreLabels= struct(*For compatibility with the base lib's [MoreLabels]*)
   module HashtblLabels = struct include Data.Mutable.Hashtbl;; include Labels end
-  module SetLabels     = struct include Data.Persistent.Set;; include Labels end
+  module MapLabels     = struct include Data.Persistent.Map;;  include Labels end
+  module SetLabels     = struct include Data.Persistent.Set;;  include Labels end
 end
 (*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
 (**/**)
