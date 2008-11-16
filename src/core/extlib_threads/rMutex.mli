@@ -86,7 +86,7 @@ val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
 *)
 
 
-val make : unit -> Concurrent.lock
+val make : unit -> Extlib.Concurrent.lock
 (**
    Create a new abstract lock based on Reentrant Mutexes.
 *)

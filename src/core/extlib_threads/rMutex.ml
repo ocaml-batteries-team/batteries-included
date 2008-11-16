@@ -18,8 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Concurrent
-
 module BaseRMutex =
 struct
 
@@ -93,7 +91,7 @@ let unlock m =
 
 end
 
-module Lock = MakeLock(BaseRMutex)
+module Lock = Extlib.Concurrent.MakeLock(BaseRMutex)
 
 include BaseRMutex
 

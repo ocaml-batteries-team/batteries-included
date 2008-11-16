@@ -194,7 +194,23 @@ val allocated_bytes : unit -> float
 (** Return the total number of bytes allocated since the program was
    started.  It is returned as a [float] to avoid overflow problems
    with [int] on 32-bit machines. *)
+(*
+val eventually: ('a -> unit) -> 'a -> unit
+(** [eventually f v] registers [f] as a finalisation function for [v].
+    Eventually, when value [v] has become useless, [f v] will be called.
+    This may happen either as a consequence of [v] being deallocated by
+    the garbage-collector or as a consequence of the program exiting.
 
+    No guarantee is made regarding the order in which finalisation
+    functions are called. If a finalisation function is called during
+    garbage-collection of [v] and has the consequence of making value
+    [v] reachable again, [v] will not be garbage-collected. In this
+    case, [f v] will not be called again.
+
+    {b Note} finalisation only works on heap-allocated values. In
+    other words, it won't work on {!int}, {!bool} or {!char} values.
+*)
+*)
 val finalise : ('a -> unit) -> 'a -> unit
 (** [finalise f v] registers [f] as a finalisation function for [v].
    [v] must be heap-allocated.  [f] will be called with [v] as

@@ -20,8 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Extlib
-
 module Mutex:
 sig
 
@@ -90,7 +88,7 @@ val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
     to normal termination or to some exception being raised.
 *)
 
-val make : unit -> Concurrent.lock
+val make : unit -> Extlib.Concurrent.lock
 (**
    Create a new abstract lock based on Mutexes.
 *)
