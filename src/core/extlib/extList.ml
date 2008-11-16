@@ -662,110 +662,49 @@ module ExceptionLess = struct
 
 end
 
-end
 
-module ListLabels = struct
-  exception Empty_list          = List.Empty_list
-  exception Invalid_index       = List.Invalid_index
-  exception Different_list_size = List.Different_list_size
+
+module Labels = struct
+  exception Empty_list          = Empty_list
+  exception Invalid_index       = Invalid_index
+  exception Different_list_size = Different_list_size
 
   type 'a t         = 'a list
-  let init i ~f     = List.init i f
-  let make n  x     = List.make n x
-  let iteri ~f l    = List.iteri f l
-  let map ~f l      = List.map f l
-  let mapi ~f l     = List.mapi f l
-  let rfind ~f l    = List.rfind f l
-  let find ~f l     = List.find f l
-  let findi ~f      = List.findi f
-  let find_exn ~f   = List.find_exn f 
-  let filter_map ~f = List.filter_map f
-  let remove_if ~f  = List.remove_if f
-  let take_while ~f = List.take_while f
-  let drop_while ~f = List.drop_while f
-  let map2 ~f       = List.map2 f
-  let iter2 ~f      = List.iter2 f
-  let exists2 ~f    = List.exists2 f
-  let fold_left ~f ~init         = List.fold_left f init
-  let fold_right ~f l ~init      = List.fold_right f l init
-  let fold_left2  ~f ~init       = List.fold_left2 f init
-  let fold_right2 ~f l1 l2 ~init = List.fold_right2 f l1 l2 init
-  let filter ~f     = List.filter f
-  let find_all ~f   = List.find_all f
-  let partition ~f  = List.partition f
-  let rev_map ~f    = List.rev_map f
-  let rev_map2 ~f   = List.rev_map2 f
-  let iter ~f       = List.iter f
-  let for_all ~f    = List.for_all f
-  let for_all2 ~f   = List.for_all2 f
-  let exists ~f     = List.exists f
-  let stable_sort ?(cmp=compare)  = List.stable_sort cmp
-  let fast_sort ?(cmp=compare)    = List.fast_sort cmp
-  let merge ~cmp         = List.merge cmp
-  let make_compare  = List.make_compare
+  let init i ~f     = init i f
+  let make n  x     = make n x
+  let iteri ~f l    = iteri f l
+  let map ~f l      = map f l
+  let mapi ~f l     = mapi f l
+  let rfind ~f l    = rfind f l
+  let find ~f l     = find f l
+  let findi ~f      = findi f
+  let find_exn ~f   = find_exn f 
+  let filter_map ~f = filter_map f
+  let remove_if ~f  = remove_if f
+  let take_while ~f = take_while f
+  let drop_while ~f = drop_while f
+  let map2 ~f       = map2 f
+  let iter2 ~f      = iter2 f
+  let exists2 ~f    = exists2 f
+  let fold_left ~f ~init         = fold_left f init
+  let fold_right ~f l ~init      = fold_right f l init
+  let fold_left2  ~f ~init       = fold_left2 f init
+  let fold_right2 ~f l1 l2 ~init = fold_right2 f l1 l2 init
+  let filter ~f     = filter f
+  let find_all ~f   = find_all f
+  let partition ~f  = partition f
+  let rev_map ~f    = rev_map f
+  let rev_map2 ~f   = rev_map2 f
+  let iter ~f       = iter f
+  let for_all ~f    = for_all f
+  let for_all2 ~f   = for_all2 f
+  let exists ~f     = exists f
+  let stable_sort ?(cmp=compare)  = stable_sort cmp
+  let fast_sort ?(cmp=compare)    = fast_sort cmp
+  let merge ~cmp         = merge cmp
+end
 
-  let mem           = List.mem
-  let memq          = List.memq
-  let assoc         = List.assoc
-  let assoc_inv     = List.assoc_inv
-  let assq          = List.assq
-  let mem_assoc     = List.mem_assoc
-  let mem_assq      = List.mem_assq
-
-
-  let takewhile     = take_while
-  let dropwhile     = drop_while
-  let interleave    = List.interleave
-  let combine       = List.combine
-  let append        = List.append
-  let concat        = List.concat
-  let flatten       = List.flatten
-  let remove_assoc  = List.remove_assoc
-  let remove_assq   = List.remove_assq
-  let split         = List.split
-  let length        = List.length
-  let rev_append    = List.rev_append
-  let rev           = List.rev
-
-  let enum          = List.enum
-  let of_enum       = List.of_enum
-  let backwards     = List.backwards
-  let of_backwards  = List.of_backwards
-  let hd            = List.hd
-  let tl            = List.tl
-  let nth           = List.nth
-  let sort          = List.sort
-  let index_of      = List.index_of
-  let index_ofq     = List.index_ofq
-  let rindex_of     = List.rindex_of
-  let rindex_ofq    = List.rindex_ofq
-  let unique        = List.unique
-  let split_at      = List.split_at
-  let split_nth     = List.split_nth
-  let remove        = List.remove
-  let remove_all    = List.remove_all
-  let take          = List.take
-  let drop          = List.drop
-  let is_empty      = List.is_empty
-  let cons          = List.cons
-  let first         = List.first
-  let last          = List.last
-  let at            = List.at
-
-  let sexp_of_t = Conv.sexp_of_list
-  let t_of_sexp = Conv.list_of_sexp
-
-  let print = List.print
-
-  module ExceptionLess = struct
-    let rfind ~f    = List.ExceptionLess.rfind f
-    let findi ~f    = List.ExceptionLess.findi f
-    let split_at    = List.ExceptionLess.split_at
-    let at          = List.ExceptionLess.at
-    let assoc       = List.ExceptionLess.assoc
-    let assoc_inv   = List.ExceptionLess.assoc_inv
-    let assq        = List.ExceptionLess.assq
-  end
 end
 
 let ( @ ) = List.append
+

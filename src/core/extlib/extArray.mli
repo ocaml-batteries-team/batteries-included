@@ -691,10 +691,10 @@ external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_se
    {{:../extensions.html#multiopen}{open several modules in one
    operation} or {{:../extensions.html#multialias}{alias several
    modules to one name}. For instance, to open a version of {!Array.Cap}
-   with exceptionless error management, you may write [open Array.Cap,
-   ExceptionLess]. To locally replace module {!Array.Cap} with a module of
+   with exceptionless error management, you may write {v open Array.Cap,
+   ExceptionLess v}. To locally replace module {!Array.Cap} with a module of
    the same name but with exceptionless error management, you may
-   write [module Array = Array.Cap include ExceptionLess].
+   write {v module Array = Array.Cap include ExceptionLess v}
 
 *)
 

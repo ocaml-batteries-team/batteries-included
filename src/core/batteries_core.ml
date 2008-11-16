@@ -55,7 +55,6 @@ module Data        = struct
     module Persistent      = struct
       module Lazy            = Batlib_Baselib_Lazy
       module List            = Extlib.ExtList.List
-      module ListLabels      = Extlib.ExtList.ListLabels(*TODO:Bring to feature parity with {!List}*)
       module Map             = Extlib.ExtMap.Map
       module MapLabels       = Batlib_Baselib_MapLabels (*TODO:make enumerable*)
       module MultiPMap       = Extlib.MultiPMap

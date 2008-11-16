@@ -67,7 +67,6 @@ struct
   module Persistent      = struct
     module Lazy            = Batteries_core.Data.Persistent.Lazy
     module List            = Batteries_core.Data.Persistent.List
-    module ListLabels      = Batteries_core.Data.Persistent.ListLabels
     module Map             = Batteries_core.Data.Persistent.Map
     module MapLabels       = Batteries_core.Data.Persistent.MapLabels
     module MultiPMap       = Batteries_core.Data.Persistent.MultiPMap
