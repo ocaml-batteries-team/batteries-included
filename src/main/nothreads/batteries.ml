@@ -50,6 +50,8 @@ end
 (** Data structures*)
 module Data        = struct
 
+    (** Module types *)
+    module Interfaces = Inner.Data.Interfaces
 
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct

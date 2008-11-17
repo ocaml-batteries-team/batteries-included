@@ -1,3 +1,7 @@
+2008-11-17  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/interfaces.ml (et al): Add Data.Interfaces as the place to put module types / interfaces (i.e. OrderedType)
+
 2008-11-16  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extBigarray.ml*: created

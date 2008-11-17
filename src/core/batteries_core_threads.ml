@@ -48,6 +48,8 @@ end
 (*[Data] is [Batteries_core.Data]*)
 module Data      = 
 struct
+
+  module Interfaces = Extlib.Interfaces
   
   module Mutable         = struct
     module Array         = Batteries_core.Data.Mutable.Array

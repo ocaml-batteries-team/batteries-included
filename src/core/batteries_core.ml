@@ -33,7 +33,7 @@ end
 
 (** Data structures*)
 module Data        = struct
-
+    module Interfaces = Extlib.Interfaces
 
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct

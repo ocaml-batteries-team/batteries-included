@@ -55,6 +55,8 @@ end
 (** Data structures*)
 module Data        = struct
 
+    (** Module types *)
+    module Interfaces = Batteries_core_threads.Data.Interfaces
 
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
