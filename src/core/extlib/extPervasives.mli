@@ -938,11 +938,18 @@ val ( &&& ) : ('a -> 'b) -> ('a -> 'c) -> 'a -> ('b * 'c)
 
       [ f &&& g] is [fun x -> (f x, g x)]. *)
 
-val first : ('a -> 'b * 'c) -> 'a -> 'b
-(** Projection of a pair to its first element. *)
+val first : ('a -> 'b) -> ('a * 'c) -> ('b * 'c)
+(** Apply a function to the first element of a pair.
 
-val second : ('a -> 'b * 'c) -> 'a -> 'c
-(** Projection of a pair to its second element. *)
+    [first f (x, y)] is [(f x, y)]
+ *)
+
+val second : ('a -> 'b) -> ('c * 'a) -> ('c * 'b)
+(** Apply a function to the second element of a pair.
+
+    [second f (x, y)] is [(x, f y)]
+ *)
+
 
 val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
 (** Convert a function which accepts a pair of arguments into

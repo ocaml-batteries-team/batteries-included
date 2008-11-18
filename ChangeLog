@@ -1,3 +1,13 @@
+2008-11-18  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/IO.ml: [in_channel_of_input] created
+
+	* src/core/extlib/file.ml: [out_chan_mode], [in_chan_mode] created
+
+	* src/core/extlib/file.ml*: [open_temporary_out_flag], [open_temporary_out], [with_temporary_out] created
+
+	* src/core/extlib/extPervasives.ml*: redefined [first], [second]
+
 2008-11-17  Edgar Friendly  <thelema314@gmail.com>
 
 	* src/core/extlib/interfaces.ml (et al): Add Data.Interfaces as the place to put module types / interfaces (i.e. OrderedType)

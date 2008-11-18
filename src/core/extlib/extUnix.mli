@@ -552,10 +552,19 @@ val closedir : dir_handle -> unit
 
 
 val pipe : unit -> file_descr * file_descr
-(** Create a pipe. The first component of the result is opened
-   for reading, that's the exit to the pipe. The second component is
-   opened for writing, that's the entrance to the pipe. *)
+  (** Create a pipe. The first component of the result is opened
+      for reading, that's the exit to the pipe. The second component is
+      opened for writing, that's the entrance to the pipe. 
 
+      {b Note} This version of [pipe] is designed essentially to allow
+      communication between distinct processes. For communication inside
+      a process, use {!IO.pipe}.
+*)
+
+(*val pipeio: unit -> file_descr * file_descr
+  (** As {!pipe} but return an input and an output for the
+*)*)
+  
 val mkfifo : string -> file_perm -> unit
 (** Create a named pipe with the given permissions. *)
 

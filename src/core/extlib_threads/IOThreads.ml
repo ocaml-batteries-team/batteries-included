@@ -28,3 +28,57 @@ open ExtMutex;;
 
 lock         := Mutex.make ();;
 lock_factory := Mutex.make;;
+
+(*
+open Unix
+
+(**
+   Convert a
+*)
+let in_channel_of_input inp =
+  let (pin, pout) = pipe () in
+  let (cin, cout) = (in_channel_of_descr pin, out_channel_of_descr pout) in
+    ignore (Thread.create (
+      fun () -> 
+	let buf = String.create 4096 in
+	try
+	  while true do
+	    let read = IO.input inp buf 0 buffer in
+	      if read = 0 then
+		raise No_more_input;
+	      Pervasives.output cout buf 0 read
+	  done
+	with e -> 
+	  Pervasives.flush cout;
+	  Pervasives.close_out cout
+	    ) ()); cin
+
+(********Not finished yet*************)
+(*** We'll need async I/O before we can advance.*)
+(*
+open Unix
+let out_channel_for_output out =
+  let (pin, pout) = pipe ()                     in
+  let (cin, cout) = (in_channel_of_descr pin, 
+		     out_channel_of_descr pout) in
+  let inp = create_in 
+    ~read:  (let rec aux () =
+	       try Pervasives.input_char cin
+	       with Sys_blocked_io ->
+		 Thread.yield ();
+		 aux ()
+	     in aux)
+    ~close: (fun () -> Pervasives.close_in cin)
+    ~input:(fun buf o l ->
+	      let rec aux () =
+		try Pervasives.input cin buf o l
+		with Sys_blocked_io ->
+		  Thread.yield()
+		    aux ()
+	    in aux ())
+  in
+  Thread.create (IO.copy inp) out;
+  cout
+
+*)
+*)

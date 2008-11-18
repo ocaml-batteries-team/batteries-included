@@ -128,3 +128,41 @@ val with_file_out: ?mode:(open_out_flag list) -> ?perm:permission -> string -> (
     invokes [f] to write onto that file then, once [f] has returned or triggered 
     an exception, closes the file before proceeding. *)
 
+(** {6 Opening a temporary file for writing} *)
+
+type open_temporary_out_flag =
+  [ open_out_flag
+  | `delete_on_exit (**Should the file be deleted when program ends?*) ]
+
+val open_temporary_out: ?mode:(open_temporary_out_flag list) -> ?perm:permission -> ?prefix:string -> ?suffix:string -> unit -> 
+  (unit output * string)
+(** [open_temporary_out ()] opens a new temporary file for writing.
+
+    @param prefix a string which should appear at the start of your temporary file name
+    (by default ["ocaml"])
+    @param suffix a string which should appear at the end of your temporary file name
+    (by default ["tmp"])
+
+    @return The name of the file and the [output] for writing in it.
+
+    {b Note} You will need to close the file manually. An alternative is
+    to call [with_temporary_out] instead of [open_out].
+
+    Naming conventions for files are platform-dependent.*)
+
+val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?perm:permission -> ?prefix:string -> ?suffix:string -> (unit output -> string -> 'a) -> 'a
+(** [with_temporary_out f] opens a new temporary file for writing, invokes [f] with
+    to write onto that file then, once [f] has returned or triggered an exception,
+    closes the file before proceeding.
+
+    @param prefix a string which should appear at the start of your temporary file name
+    (by default ["ocaml"])
+    @param suffix a string which should appear at the end of your temporary file name
+    (by default ["tmp"])
+
+    @return The name of the file and the [output] for writing in it.
+
+    {b Note} You will need to close the file manually. An alternative is
+    to call [with_temporary_out] instead of [open_out].
+
+    Naming conventions for files are platform-dependent.*)

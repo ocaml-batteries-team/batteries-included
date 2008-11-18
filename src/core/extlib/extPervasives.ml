@@ -88,6 +88,9 @@ module Pervasives = struct
   let unique ()     =
     Concurrent.sync !lock Ref.post_incr unique_value
 
+  let first f (x, y) = (f x, y)
+  let second f (x, y)= (x, f y)
+
   let _ = at_exit close_all; (*Called second*)
           at_exit flush_all  (*Called first*)
 end

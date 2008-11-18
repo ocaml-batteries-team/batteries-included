@@ -45,41 +45,51 @@ type open_out_flag =
   | `nonblock (**Open in non-blocking mode                                  *) ]
 
 
-let open_out ?mode ?(perm=user_read lor user_write) f =
-  let mode_to_open_flag l =
+(**
+   Convert a [open_in_flag list] into a low-level [open_flag list]
+*)
+let in_chan_mode ?mode binary =
+  let mode_to_open_flag  l =
     let rec aux acc is_binary = function
-    | []           -> if is_binary then Open_binary::acc 
-      else           Open_text  ::acc
-    | `append::t   -> aux (Open_append::acc)   is_binary t
-    | `trunc::t    -> aux (Open_trunc::acc)    is_binary t
-    | `create::t   -> aux (Open_creat::acc)    is_binary t
-    | `excl::t     -> aux (Open_excl::acc)     is_binary t
-    | `text::t     -> aux acc false t
-    | `nonblock::t -> aux (Open_nonblock::acc) is_binary t
-    in aux [] true l
-  in
-  let chan_mode = match mode with
-    | None   -> [Open_wronly; Open_binary; Open_creat]
-    | Some l -> mode_to_open_flag l
-  in
-  output_channel (open_out_gen chan_mode perm f)
-
-let open_in ?mode ?(perm=default_permission) f =
-  let mode_to_open_flag l =
-    let rec aux acc is_binary = function
-    | []           -> if is_binary then Open_binary::acc 
-      else           Open_text  ::acc
-    | `create::t   -> aux (Open_creat::acc)    is_binary t
-    | `excl::t     -> aux (Open_excl::acc)     is_binary t
-    | `text::t     -> aux acc false t
-    | `nonblock::t -> aux (Open_nonblock::acc) is_binary t
-    in aux [] true l
-  in
-  let chan_mode = match mode with
+      | []           -> if is_binary then Open_binary::acc 
+	else           Open_text  ::acc
+      | `create::t   -> aux (Open_creat::acc)    is_binary t
+      | `excl::t     -> aux (Open_excl::acc)     is_binary t
+      | `text::t     -> aux acc false t
+      | `nonblock::t -> aux (Open_nonblock::acc) is_binary t
+      | _::t         -> aux acc is_binary t (*Allow for future extensions*)
+    in aux [] binary l
+  in match mode with
     | None   -> [Open_rdonly; Open_binary]
     | Some l -> mode_to_open_flag l
-  in
-  input_channel (open_in_gen chan_mode perm f)
+
+
+(**
+   Convert a [open_out_flag list] into a low-level [open_flag list]
+*)
+let out_chan_mode ?mode binary =
+  let mode_to_open_flag l =
+    let rec aux acc is_binary = function
+      | []           -> if is_binary then Open_binary::acc 
+	else           Open_text  ::acc
+      | `append::t   -> aux (Open_append::acc)   is_binary t
+      | `trunc::t    -> aux (Open_trunc::acc)    is_binary t
+      | `create::t   -> aux (Open_creat::acc)    is_binary t
+      | `excl::t     -> aux (Open_excl::acc)     is_binary t
+      | `text::t     -> aux acc false t
+      | `nonblock::t -> aux (Open_nonblock::acc) is_binary t
+      | _::t         -> aux acc is_binary t (*Allow for future extensions*)
+    in aux [] binary l
+  in match mode with
+    | None   -> [Open_wronly; Open_binary; Open_creat]
+    | Some l -> mode_to_open_flag l
+
+
+let open_out ?mode ?(perm=user_read lor user_write) name =
+  output_channel (open_out_gen (out_chan_mode ?mode true) perm name)
+
+let open_in ?mode ?(perm=default_permission) name =
+  input_channel (open_in_gen (in_chan_mode ?mode true) perm name)
 
 let with_do opener closer x f =
   let file = opener x in
@@ -89,6 +99,33 @@ let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
 let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
 
 let lines_of file = IO.lines_of (open_in file)
-
-
     
+(**
+   {6 Temporary files}
+*)
+
+type open_temporary_out_flag =
+  [ open_out_flag
+  | `delete_on_exit (**Should the file be deleted when program ends?*) ]
+
+let open_temporary_out ?mode ?perm ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * string) =
+  let chan_mode = out_chan_mode ?mode true in
+  let (name, cout) = Filename.open_temp_file ~mode:chan_mode prefix suffix in
+  let out          = output_channel cout   in
+    (match mode with
+      | Some l when List.mem `delete_on_exit l -> 
+	  Pervasives.at_exit (fun () -> 
+				try
+				  IO.close_out out;
+				  Sys.remove name
+				with
+				    _ -> ())
+      | _ -> ());
+  (out, name)
+
+let with_temporary_out ?mode ?perm ?prefix ?suffix f =
+  let (file, name) = open_temporary_out ?mode ?perm ?prefix ?suffix () in
+    Std.finally (fun () -> close_out file)
+      (fun (file, name) -> f file name)
+      (file, name)
+

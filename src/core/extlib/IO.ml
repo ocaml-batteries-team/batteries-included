@@ -781,3 +781,27 @@ let synchronize_out ?(lock = !lock_factory ()) out =
     ~flush: (Concurrent.sync lock (fun ()    -> flush out))
     ~close: noop
     ~underlying:[out]
+
+(**
+   {6 Things that require temporary files}
+*)
+
+(**
+   Copy everything to a temporary file then read from this file.
+   A better implementation is probably possible with threads.
+*)
+(*let in_channel_of_input inp =
+  let (out, name) = File.open_temporary_out () in
+    copy inp out;
+    close_out out;
+    Pervasives.open_in name*)
+
+
+(*(**
+   Copy everything to a temporary file
+*)
+let out_channel_of_output out =
+  let (name, cout) = Filename.open_temp_file "ocaml" "tmp" in
+    create_out
+      
+    cout*)
