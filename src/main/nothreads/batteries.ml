@@ -41,7 +41,7 @@ module Control     = struct
     end
   end
   module Exceptions  = Inner.Control.Exceptions
-  module Labels      = Inner.Control.Labels
+  module Return      = Inner.Control.Return
 
   (** Monadic operations. *)
   module Monad = Inner.Control.Monad

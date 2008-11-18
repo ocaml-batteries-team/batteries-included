@@ -47,7 +47,7 @@ module Control     = struct
   end
 
   module Exceptions  = Batteries_core_threads.Control.Exceptions
-  module Labels      = Batteries_core_threads.Control.Labels
+  module Return      = Batteries_core_threads.Control.Return
 
   module Monad = Batteries_core_threads.Control.Monad
 end

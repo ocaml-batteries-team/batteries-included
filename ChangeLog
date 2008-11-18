@@ -1,5 +1,11 @@
 2008-11-18  David Teller  <David.Teller@univ-orleans.fr>
 
+	* batteries.ml (both): [Labels] renamed [Return]
+
+	* src/core/batteries_core_threads.ml: [Labels] renamed [Return]
+
+	* src/core/batteries_core.ml: [Labels] renamed [Return]
+
 	* src/core/extlib/IO.ml: [in_channel_of_input] created
 
 	* src/core/extlib/file.ml: [out_chan_mode], [in_chan_mode] created

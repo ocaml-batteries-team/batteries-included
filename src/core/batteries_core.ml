@@ -25,7 +25,7 @@ module Control     = struct
     module Common    = Extlib.Concurrent
   end
   module Exceptions  = Extlib.ExtPrintexc.Printexc
-  module Labels      = Extlib.Labels
+  module Return      = Extlib.Labels
     
   (** Monadic operations. *)
   module Monad = Extlib.Monad

@@ -40,7 +40,7 @@ module Control = struct
   end
 
   module Exceptions    = Batteries_core.Control.Exceptions
-  module Labels = Batteries_core.Control.Labels
+  module Return = Batteries_core.Control.Return
   module Monad  = Batteries_core.Control.Monad
 
 end
