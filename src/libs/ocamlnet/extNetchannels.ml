@@ -63,42 +63,40 @@ let input_of_channel netic =
 	  assert (bytes = 1);
 	  minibuf.[0]
 	end
-    with End_of_file (* | Netchannels.Closed_channel *) ->
+    with End_of_file | Netchannels.Closed_channel ->
       raise IO.No_more_input in
   let input buf pos len =
     try
       let bytes = netic # input buf pos len in
 	if bytes = 0 then raise Sys_blocked_io;
 	bytes
-    with End_of_file (* | Netchannels.Closed_channel *) ->
+    with End_of_file | Netchannels.Closed_channel ->
       raise IO.No_more_input in
   let close () = netic # close_in () in
     IO.create_in ~read ~input ~close
 
 let output_of_channel, output_of_acc_channel =
   let net_write netoc ch =
-    (* try *)
-    let bytes = netoc # output (String.make 1 ch) 0 1 in
-      if bytes = 0 then raise Sys_blocked_io
-    (* with Netchannels.Closed_channel -> raise Output_closed *) in
+    try
+      let bytes = netoc # output (String.make 1 ch) 0 1 in
+	if bytes = 0 then raise Sys_blocked_io
+    with Netchannels.Closed_channel -> raise IO.Output_closed in
   let net_output netoc buf pos len  =
-    (* try *)
-    netoc # output buf pos len
-    (* with Netchannels.Closed_channel -> raise Output_closed *) in
+    try
+      netoc # output buf pos len
+    with Netchannels.Closed_channel -> raise IO.Output_closed in
   let net_flush netoc = netoc # flush in
   let net_close netoc () =
-    (* try *)
-    netoc # close_out ()
-    (* with Netchannels.Closed_channel -> () *) in
+    try
+      netoc # close_out ()
+    with Netchannels.Closed_channel -> () in
   let output_of_channel netoc =
     IO.create_out ~write:(net_write netoc) ~output:(net_output netoc)
       ~flush:(net_flush netoc) ~close:(net_close netoc)
   and output_of_acc_channel accoc =
     let close () =
-      (* try *)
-      accoc # close_out ();
+      (try accoc # close_out () with Netchannels.Closed_channel -> ());
       Option.get (accoc # accumulator)
-      (* with Netchannels.Closed_channel -> () *)
     in
       IO.create_out ~write:(net_write accoc) ~output:(net_output accoc)
 	~flush:(net_flush accoc) ~close
