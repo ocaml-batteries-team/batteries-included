@@ -12,3 +12,5 @@ gzip.byte
 gzip.native
 gunzip.byte
 gunzip.native
+parallelsort.byte
+parallelsort.native

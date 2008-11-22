@@ -33,6 +33,7 @@ TYPE_CONV_PATH "Batteries.Data.Text.Rope" (*For Sexplib, Bin-prot...*)
 open ExtUTF8
 open ExtUChar
 open ExtList
+open Labels
  
 (* =begin ignore *)
 type t =
@@ -311,6 +312,13 @@ let rec bulk_iteri ?(base=0) f = function
       bulk_iteri ~base f l; 
       bulk_iteri ~base:(base+cl) f r
 
+let rec bulk_iteri_backwards ~top f = function
+    Empty -> ()
+  | Leaf (lens,s) -> f (top-lens) s (* gives f the base position, not the top *)
+  | Concat(l,_,r,cr,_) -> 
+      bulk_iteri_backwards ~top f r;
+      bulk_iteri_backwards ~top:(top-cr) f l
+
 let rec range_iter f start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
   | Leaf (lens, s) ->
@@ -357,7 +365,7 @@ let rec range_iteri f ?(base = 0) start len = function
       end else begin
         range_iteri f ~base (start - cl) len r
       end
- 
+
 let rec fold f a = function
     Empty -> a
   | Leaf (_,s) ->
@@ -513,7 +521,11 @@ let map f r = bulk_map (fun s -> UTF8.map f s) r
 let bulk_filter_map f r = bulk_fold (fun acc s -> match f s with None -> acc | Some r -> append acc r) Empty r
 let filter_map f r = bulk_map (UTF8.filter_map f) r
 
-open Labels
+(* TODO: ADD THESE TO [String] *)
+let left r len = sub 0 len r
+let right r len = let rlen = length r in sub (rlen - len) len r
+let head r pos = sub 0 pos r (* same as left *)
+let tail r pos = sub pos (length r - pos) r
 
 let index r item = 
   label (fun return ->
@@ -534,9 +546,20 @@ let index_from r base item =
 	   range_iteri index_aux ~base base (length r - base) r;
 	   raise Not_found)
 
-let rindex r char = assert false
+let rindex r char = 
+  label (fun return ->
+	   let index_aux i us =
+	     try 
+	       let p = UTF8.rindex us char in
+	       recall return (p+i)
+	     with Not_found -> ()
+	   in
+	   bulk_iteri_backwards ~top:(length r) index_aux r;
+	   raise Not_found)
 
-let rindex_from r start char = assert false
+let rindex_from r start char = 
+  let rsub = left r start in
+  (rindex rsub char)
 
 let contains r char = 
   label (fun return ->
@@ -552,19 +575,39 @@ let contains_from r start char =
 	   range_iter contains_aux start (length r - start) r;
 	   false)
 
-let rcontains_from r stop char = ()
+let rcontains_from = contains_from
 
+let equals r1 r2 = to_ustring r1 = to_ustring r2 (* make efficient *)
 
-let find r1 r2 = assert false
+let starts_with r start_r = equals start_r (left r (length start_r))
+
+let ends_with r end_r = equals end_r (right r (length end_r))
+
+let find r1 r2 =
+  let matchlen = length r2 in
+  let r2_string = to_ustring r2 in
+  let check_at pos = r2_string = (to_ustring (sub pos matchlen r1)) in 
+  (* TODO: inefficient *)
+  label (fun return -> 
+	   for i = 0 to length r1 - matchlen do
+	     if check_at i then recall return i
+	   done;
+	   raise Not_found)
+
 (** find [r2] within [r1] -- raises Not_found *)
 
-let ends_with r end_r = assert false
+let exists r_str r_sub = try ignore(find r_str r_sub); true with Not_found -> false
 
-let starts_with r start_r = assert false
-
-let exists r_str r_sub = assert false
-
-let trim str = assert false
+let trim str = 
+  let start = ref 0 in
+  while UChar.is_whitespace(get !start str) do
+    incr start;
+  done;
+  let stop = ref (length str - 1) in
+  while UChar.is_whitespace(get !stop str) do
+    decr stop;
+  done;
+  sub !start (!stop- !start) str
 
 let strip ?(chars=" \t\r\n") str = assert false
 
@@ -573,12 +616,6 @@ let capitalize r = assert false
 let uncapitalize r = assert false
 
 (* let copy r = UNNEEDED -- immutable structure *)
-
-(* TODO: ADD THESE TO [String] *)
-let left r len = sub 0 len r
-let right r len = let rlen = length r in sub (rlen - len) len r
-let head r pos = sub 0 pos r (* same as left *)
-let tail r pos = sub pos (length r - pos) r
 
 
 let lchop str = sub 1 (length str - 1) str
@@ -589,7 +626,7 @@ let splice r start len new_sub =
     (concat new_sub (tail r (start+len)))
 
 let fill r start len char = 
-  splice r start len (init len char)
+  splice r start len (make len char)
 
 let blit rsrc offsrc rdst offdst len = 
   splice rdst offdst len (sub offsrc len rsrc)
@@ -600,7 +637,7 @@ let escaped r = bulk_map UTF8.escaped r
 
 let replace_chars f r = fold (fun acc s -> append acc (f s)) Empty r
 
-let replace str sub by = splice (find str sub) (length sub) by
+let replace str sub by = splice str (find str sub) (length sub) by
 
 let split r sep = 
   let i = find r sep in

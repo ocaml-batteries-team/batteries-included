@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Concurrent
 
 (** Low-level interface to the operating system (both Unix and Windows).
 
@@ -1414,6 +1415,25 @@ val setsid : unit -> int
 
 val is_directory : string -> bool
 (** [is_directory filename] returns true if [filename] refers to a directory (or symlink of a directory *)
+
+
+
+
+(**
+   {6 Thread-safety internals}
+
+   Unless you are attempting to adapt Batteries Included to a new model of
+   concurrency, you probably won't need this.
+*)
+
+val lock: Concurrent.lock ref
+(**
+   A lock used to synchronize internal operations.
+
+   By default, this is {!Concurrent.nolock}. However, if you're using a version
+   of Batteries compiled in threaded mode, this uses {!Mutex}. If you're attempting
+   to use Batteries with another concurrency model, set the lock appropriately.
+*)
 
 (**{6 Obsolete stuff}*)
 

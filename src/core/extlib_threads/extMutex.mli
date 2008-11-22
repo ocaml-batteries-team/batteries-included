@@ -35,6 +35,8 @@ sig
      ) ()
     ]}
 
+    This module implements {!Control.Concurrency.Common}
+
     @documents Mutex
 
     @author Xavier Leroy (Base module)
@@ -84,6 +86,11 @@ val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
     In either case, the lock is acquired when entering the function
     and released when the function call ends, whether this is due
     to normal termination or to some exception being raised.
+*)
+
+val make : unit -> Extlib.Concurrent.lock
+(**
+   Create a new abstract lock based on Mutexes.
 *)
 
 end

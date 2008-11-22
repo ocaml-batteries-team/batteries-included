@@ -123,7 +123,7 @@ module Hashtbl =
     let map f h =
       let rec loop = function
 	| Empty -> Empty
-	| Cons (k,v,next) -> Cons (k,f v,loop next)
+	| Cons (k,v,next) -> Cons (k,f k v,loop next)
       in
 	h_make {
 	  size = (h_conv h).size;
@@ -175,6 +175,22 @@ module Hashtbl =
     let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
       Enum.print ~first ~last ~sep (fun out (k,v) -> ExtPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
 
+    module ExceptionLess =
+    struct
+      let find = find_option
+    end
+
+    module Labels =
+    struct
+
+      let add e ~key ~data = add e key data
+      let replace e ~key ~data = replace e key data
+      let iter  ~f e = iter (fun key data -> f ~key ~data) e
+      let map   ~f e = map (fun key data -> f ~key ~data) e
+      let fold  ~f e ~init = fold (fun key data -> f ~key ~data) e init
+
+    end
+
     module type HashedType = Hashtbl.HashedType
 
     module type S =
@@ -197,7 +213,7 @@ module Hashtbl =
       val mem : 'a t -> key -> bool
       val iter : (key -> 'a -> unit) -> 'a t -> unit
       val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-      val map : ('b -> 'c) -> 'b t -> 'c t
+      val map : (key -> 'b -> 'c) -> 'b t -> 'c t
       val keys : 'a t -> key Enum.t
       val values : 'a t -> 'a Enum.t
       val enum : 'a t -> (key * 'a) Enum.t
@@ -208,6 +224,32 @@ module Hashtbl =
 	('a InnerIO.output -> key -> unit) -> 
 	('a InnerIO.output -> 'b -> unit) -> 
 	'a InnerIO.output -> 'b t -> unit
+
+      (** Operations on {!Hashtbl} without exceptions.*)
+      module ExceptionLess :
+      sig
+	val find : 'a t -> key -> 'a option
+      end
+      
+      (** Operations on {!Hashtbl} with labels.
+	  
+	  This module overrides a number of functions of {!Hashtbl} by
+	  functions in which some arguments require labels. These labels are
+	  there to improve readability and safety and to let you change the
+	  order of arguments to functions. In every case, the behavior of the
+	  function is identical to that of the corresponding function of {!Hashtbl}.
+      *)
+      module Labels :
+      sig
+	val add : 'a t -> key:key -> data:'a -> unit
+	val replace : 'a t -> key:key -> data:'a -> unit
+	val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+	val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+	val fold :
+	  f:(key:key -> data:'a -> 'b -> 'b) ->
+	  'a t -> init:'b -> 'b
+      end
+
     end
       
 
@@ -310,7 +352,7 @@ module Hashtbl =
       let of_enum e            = of_hash (of_enum e)
       let values  h            = values (to_hash h)
       let keys h               = keys (to_hash h)
-      let map f h              = of_hash (map f (to_hash h))
+      let map (f:key -> 'a -> 'b) h              = of_hash (map f (to_hash h))
       let find_option h key    = find_option (to_hash h) key
       let find_default h key v = find_default (to_hash h) key v
       let remove_all h key     = remove_all (to_hash h) key
@@ -319,7 +361,23 @@ module Hashtbl =
       let sexp_of_t sexp_of_a sexp_of_b t = sexp_of_t sexp_of_a sexp_of_b (to_hash t)
       let print ?first ?last ?sep print_k print_v out t =
 	print ?first ?last ?sep print_k print_v out (to_hash t)
+
+      module Labels =
+      struct
+	let add e ~key ~data = add e key data
+	let replace e ~key ~data = replace e key data
+	let iter  ~f e = iter (fun key data -> f ~key ~data) e
+	let map   ~f e = map (fun key data -> f ~key ~data) e
+	let fold  ~f e ~init = fold (fun key data -> f ~key ~data) e init
+      end
+
+      module ExceptionLess =
+      struct
+	let find = find_option
+      end
     end
+
+      
 
     module Cap =
     struct
@@ -354,6 +412,20 @@ module Hashtbl =
       let sexp_of_t   = sexp_of_t
       let t_of_sexp   = t_of_sexp
       let print       = print
+
+      module Labels =
+      struct
+	let add e ~key ~data = add e key data
+	let replace e ~key ~data = replace e key data
+	let iter  ~f e = iter (fun key data -> f ~key ~data) e
+	let map   ~f e = map (fun key data -> f ~key ~data) e
+	let fold  ~f e ~init = fold (fun key data -> f ~key ~data) e init
+      end
+
+      module ExceptionLess =
+      struct
+	let find = find_option
+      end
     end
 
   end

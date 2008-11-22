@@ -34,19 +34,7 @@
 module Set:
 sig
 
-module type OrderedType =
-  sig
-    type t
-      (** The type of the set elements. *)
-    val compare : t -> t -> int
-      (** A total ordering function over the set elements.
-          This is a two-argument function [f] such that
-          [f e1 e2] is zero if the elements [e1] and [e2] are equal,
-          [f e1 e2] is strictly negative if [e1] is smaller than [e2],
-          and [f e1 e2] is strictly positive if [e1] is greater than [e2].
-          Example: a suitable ordering function is the generic structural
-          comparison function {!Pervasives.compare}. *)
-  end
+module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Set.Make}. *)
 
 module type S =
@@ -136,8 +124,9 @@ module type S =
 
     val min_elt: t -> elt
     (** Return the smallest element of the given set
-       (with respect to the [Ord.compare] ordering), or raise
-       [Not_found] if the set is empty. *)
+       (with respect to the [Ord.compare] ordering).
+
+	@raise Not_found if the set is empty. *)
 
     val max_elt: t -> elt
     (** Same as {!Set.S.min_elt}, but returns the largest element of the
@@ -163,6 +152,12 @@ module type S =
 	  to the ordering [Ord.compare], where [Ord] is the argument
 	  given to {!Set.Make}. *)
 
+    val backwards: t -> elt Enum.t
+      (** Return an enumeration of all elements of the given set.
+	  The returned enumeration is sorted in decreasing order with respect
+	  to the ordering [Ord.compare], where [Ord] is the argument
+	  given to {!Set.Make}. *)
+
     val of_enum: elt Enum.t -> t
 
 
@@ -179,7 +174,52 @@ module type S =
       ('a InnerIO.output -> elt -> unit) -> 
       'a InnerIO.output -> t -> unit
 
+
+      (** {6 Override modules}*)
+
+    (**
+       The following modules replace functions defined in {!Set} with functions
+       behaving slightly differently but having the same name. This is by design:
+       the functions meant to override the corresponding functions of {!Set}.
+       
+       To take advantage of these overrides, you probably want to
+       {{:../extensions.html#multiopen}{open several modules in one
+       operation} or {{:../extensions.html#multialias}{alias several
+       modules to one name}. For instance, to open a version of {!Set}
+       with exceptionless error management, you may write {v open Set,
+       ExceptionLess v}. To locally replace module {!Set} with a module of
+       the same name but with exceptionless error management, you may
+       write {v module Set = Set include ExceptionLess v}.
+       
+    *)
+      
+    (** Operations on {!Set} without exceptions.*)
+    module ExceptionLess : sig
+      val min_elt: t -> elt option
+      val max_elt: t -> elt option
+      val choose:  t -> elt option
+    end
+      
+      
+    (** Operations on {!Set} with labels.
+	
+	This module overrides a number of functions of {!Set} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Set}.
+    *)
+    module Labels : sig
+      val iter : f:(elt -> unit) -> t -> unit
+      val fold : f:(elt -> 'a -> 'a) -> t -> init:'a -> 'a
+      val for_all : f:(elt -> bool) -> t -> bool
+      val exists : f:(elt -> bool) -> t -> bool
+      val filter : f:(elt -> bool) -> t -> t
+      val partition : f:(elt -> bool) -> t -> t * t
+    end
+      
   end
+
 (** Output signature of the functor {!Set.Make}. *)
 
 module Make (Ord : OrderedType) : S with type elt = Ord.t

@@ -45,5 +45,9 @@ struct
       fprintf c "fragments: %d\n"         st.fragments;
       fprintf c "compactions: %d\n"       st.compactions;
   ;;
-
+(*
+  let eventually_table = InnerWeaktbl.create 32
+  let eventually f v =
+*)  
+    
 end

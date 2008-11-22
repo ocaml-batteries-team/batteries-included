@@ -759,3 +759,25 @@ let in_channel_of_input i =
       Pervasives.output_char cout c;
       aux ()*)
 *)
+
+(**
+   {6 Thread-safety}
+*)
+
+let lock_factory = ref (fun () -> Concurrent.nolock)
+
+
+let synchronize_in ?(lock = !lock_factory ()) inp = 
+  wrap_in
+    ~read:(Concurrent.sync lock (fun () -> read inp))
+    ~input:(Concurrent.sync lock (fun s p l -> input inp s p l))
+    ~close:noop
+    ~underlying:[inp]
+
+let synchronize_out ?(lock = !lock_factory ()) out = 
+  wrap_out
+    ~write: (Concurrent.sync lock (fun c     -> write out c))
+    ~output:(fun s p -> Concurrent.sync lock (fun l -> output out s p l))
+    ~flush: (Concurrent.sync lock (fun ()    -> flush out))
+    ~close: noop
+    ~underlying:[out]

@@ -22,6 +22,7 @@
 
 module Control     = struct
   module Concurrency = struct
+    module Common    = Extlib.Concurrent
   end
   module Exceptions  = Extlib.ExtPrintexc.Printexc
   module Labels      = Extlib.Labels
@@ -32,19 +33,17 @@ end
 
 (** Data structures*)
 module Data        = struct
-
+    module Interfaces = Extlib.Interfaces
 
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
       module Array         = Extlib.ExtArray.Array
-      module ArrayLabels   = Batlib_Baselib_ArrayLabels
-      module Bigarray      = Batlib_Baselib_Bigarray     (*TODO:make enumerable*)
+      module Bigarray      = Extlib.ExtBigarray.Bigarray
       module Dllist        = Extlib.Dllist
       module Dynarray      = Extlib.DynArray
       module Enum          = Extlib.Enum
       module Global        = Extlib.Global
       module Hashtbl       = Extlib.ExtHashtbl.Hashtbl
-      module HashtblLabels = Batlib_Baselib_HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
       module Queue         = Extlib.ExtQueue.Queue
       module Ref           = Extlib.Ref
       module RefList       = Extlib.RefList
@@ -56,16 +55,13 @@ module Data        = struct
     module Persistent      = struct
       module Lazy            = Batlib_Baselib_Lazy
       module List            = Extlib.ExtList.List
-      module ListLabels      = Extlib.ExtList.ListLabels(*TODO:Bring to feature parity with {!List}*)
       module Map             = Extlib.ExtMap.Map
-      module MapLabels       = Batlib_Baselib_MapLabels (*TODO:make enumerable*)
       module MultiPMap       = Extlib.MultiPMap
       module PMap            = Extlib.PMap
       module PSet            = Extlib.PSet
       module Option          = Extlib.Option
       module OptionLabels    = Extlib.OptionLabels
       module Set             = Extlib.ExtSet.Set
-      module SetLabels       = Batlib_Baselib_SetLabels (*TODO:make enumerable*)
 
 (**
    {6 Note} Some mutable containers offer persistent substructures.

@@ -52,7 +52,7 @@ This feature is provided as it may sometimes increase readability.
 <center><h3>Opening several modules</h3></center>
 <center>(designed for Batteries)</center>
 As a convenience, you can specify a comma-separated list of modules to be opened in one operation.
-For instance,
+Consider for instance
 <pre class="example">
 open Data.Mutable, Data.Persistent
 </pre>
@@ -63,6 +63,60 @@ open Data.Persistent
 </pre>
 
 This feature is provided as it may sometimes increase readability.
+
+<center><h3>Aliasing several modules to one name<a name="#multialias"/></h3></center>
+<center>(designed for Batteries)</center>
+As a convenience, you can specify that a module name should serve to
+represent the union of several modules. Consider for instance
+<pre class="example">
+module E = Data.Mutable.Enum include ExceptionLess, Labels
+</pre>
+This extract defines a local module name <code>E</code>
+with all the values and types of modules <code>Enum</code>,
+<code>ExceptionLess</code> and <code>Labels</code>. In
+particular, some values defined in <code>Enum</code>
+may be overridden with values defined in <code>ExceptionLess</code>
+and/or <code>Labels</code>. 
+
+
+<pre class="example">
+module Enum =
+struct
+ include Enum
+ include ExceptionLess
+ include Labels
+end
+</pre>
+
+This feature is provided as it may sometimes increase readability.
+
+<br />
+
+One of the main uses of this feature is to permit opening in one
+operation modules which define some functions and modules which
+override these functions.  This is the case of module <code>IO</code>,
+which defines operations for input and output: this module contains a
+submodule <code>BigEndian</code>, which defines operations which
+should be used to communicate with specific architectures. One of these
+functions is <code>read_float</code>: <code>IO.read_float</code> is
+adapted to small-endian architectures, while <code>IO.BigEndian.read_float</code>
+is adapted to big-endian architectures
+
+The
+functions of <code>BigEndian</code> have the same name as functions
+of <code>IO</code>.  The following extract will therefore open
+both <code>IO</code> and <code>BigEndian</code> in one operation:
+<pre class="example">
+open IO, BigEndian
+</pre>
+
+
+This extract is equivalent to
+<pre class="example">
+open Data.Mutable
+open Data.Persistent
+</pre>
+
 
 <center><h2>"where" construction<a name = "where"/></h2></center>
 <center>(activated by default, implemented as findlib package <code>batteries.pa_where.syntax</code>)</center>

@@ -713,21 +713,9 @@ end
 (**/**)
 (**{6 Internals}*)
 
+val lock : Concurrent.lock ref
 (**
-   A reference to a function which may be used to acquire
-   a lock on the internal data structures.
-
-   By default, this is a noop. However, in the threaded
-   version, this is replaced by a Mutex.
-*)
-val lock : (unit -> unit) ref
-
-(**
-   A reference to a function which may be used to release
-   a lock on the internal data structures.
-
-   By default, this is a noop. However, in the threaded
-   version, this is replaced by a Mutex.
+   A reference to a set of locking operations.
 *)
 
-val unlock: (unit -> unit) ref
+

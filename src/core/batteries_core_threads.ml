@@ -29,10 +29,12 @@
 (*[Control] is [Batteries_core.Control] + [Control.Concurrency.Threads] *)
 module Control = struct
   module Concurrency = struct
+    module Common = Batteries_core.Control.Concurrency.Common
     module Thread = struct
       module Condition = Batlib_Baselib_Condition
       module Event     = Batlib_Baselib_Event
       module Mutex     = Extlib_threads.ExtMutex.Mutex
+      module RMutex    = Extlib_threads.RMutex
       module Thread    = Batlib_Baselib_Thread
     end
   end
@@ -46,17 +48,17 @@ end
 (*[Data] is [Batteries_core.Data]*)
 module Data      = 
 struct
+
+  module Interfaces = Extlib.Interfaces
   
   module Mutable         = struct
     module Array         = Batteries_core.Data.Mutable.Array
-    module ArrayLabels   = Batteries_core.Data.Mutable.ArrayLabels
     module Bigarray      = Batteries_core.Data.Mutable.Bigarray
     module Dllist        = Batteries_core.Data.Mutable.Dllist
     module Dynarray      = Batteries_core.Data.Mutable.Dynarray
     module Enum          = Batteries_core.Data.Mutable.Enum
     module Global        = Batteries_core.Data.Mutable.Global
     module Hashtbl       = Batteries_core.Data.Mutable.Hashtbl
-    module HashtblLabels = Batteries_core.Data.Mutable.HashtblLabels
     module Queue         = Batteries_core.Data.Mutable.Queue
     module Ref           = Batteries_core.Data.Mutable.Ref
     module RefList       = Batteries_core.Data.Mutable.RefList
@@ -67,16 +69,13 @@ struct
   module Persistent      = struct
     module Lazy            = Batteries_core.Data.Persistent.Lazy
     module List            = Batteries_core.Data.Persistent.List
-    module ListLabels      = Batteries_core.Data.Persistent.ListLabels
     module Map             = Batteries_core.Data.Persistent.Map
-    module MapLabels       = Batteries_core.Data.Persistent.MapLabels
     module MultiPMap       = Batteries_core.Data.Persistent.MultiPMap
     module PMap            = Batteries_core.Data.Persistent.PMap
     module PSet            = Batteries_core.Data.Persistent.PSet
     module Option          = Batteries_core.Data.Persistent.Option
     module OptionLabels    = Batteries_core.Data.Persistent.OptionLabels
     module Set             = Batteries_core.Data.Persistent.Set
-    module SetLabels       = Batteries_core.Data.Persistent.SetLabels
   end
     
   (** Boolean and bit-oriented data structures *)

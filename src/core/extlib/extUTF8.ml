@@ -285,7 +285,7 @@ module UTF8 = struct
 
   let rcontains_from us ch bi = contains_aux Byte.prev bi us ch
 
-  let escaped us = String.escaped us (* FIXME: think through whether this works *)
+  let escaped us = String.escaped us (* FIXME: think through whether this is correct for UTF8 *)
 
   let compare s1 s2 = Pervasives.compare s1 s2
     

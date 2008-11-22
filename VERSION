@@ -1,4 +1,17 @@
-This is the second alpha release of Batteries Included.
+This is the third alpha release of Batteries Included.
+
+= Changes since alpha 2
+* A new syntax extension for opening and including modules in one go.
+* Thread-safe input/output when required.
+* A new abstract thread-safety module, to ensure future compatibility with coThreads.
+* Old-style ListLabels, ArrayLabels, etc. replaced with List.Labels, Array.Labels, etc.
+
+== Bugfixes
+* bug 100 (Enum.seq) fixed
+* Set.enum/backwards now enumerate in the right order
+
+== Docfixes
+* bug 101 (Enum.for_all) fixed
 
 = Changes since alpha 1
 * Plenty of bugfixes

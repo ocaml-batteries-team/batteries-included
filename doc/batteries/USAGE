@@ -10,7 +10,9 @@ that, the easiest method is the following:
   (if it doesn't exist yet, create it) to add the following line:
       <*>: pkg_batteries
 
-That should be it. For more informations on the contents of
-Batteries Included, please take a look at the API documentation,
-available at
-	  doc/batteries/html/api/index.html
+Alternative techniques are documented in
+          doc/batteries/html/setup.html
+
+For more informations on the contents of Batteries Included, please
+take a look at the documentation, available at
+	  doc/batteries/html/index.html

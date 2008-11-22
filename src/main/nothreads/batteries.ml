@@ -28,6 +28,8 @@ module Control     = struct
   (** Everything related to parallelism and concurrency. *)
   module Concurrency = struct
 
+    module Common = Inner.Control.Concurrency.Common
+
     (** Concurrency operations as defined by OCaml's base library. *)
     module Threads = struct
 
@@ -48,39 +50,36 @@ end
 (** Data structures*)
 module Data        = struct
 
+    (** Module types *)
+    module Interfaces = Inner.Data.Interfaces
 
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
       module Array         = Inner.Data.Mutable.Array
-      module ArrayLabels   = Inner.Data.Mutable.ArrayLabels
       module Bigarray      = Inner.Data.Mutable.Bigarray
       module Dllist        = Inner.Data.Mutable.Dllist
       module Dynarray      = Inner.Data.Mutable.Dynarray
       module Enum          = Inner.Data.Mutable.Enum
       module Global        = Inner.Data.Mutable.Global
       module Hashtbl       = Inner.Data.Mutable.Hashtbl
-      module HashtblLabels = Inner.Data.Mutable.HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
-      module Queue         = Inner.Data.Mutable.Queue        (*TODO:build from enum?*)
+      module Queue         = Inner.Data.Mutable.Queue
       module Ref           = Inner.Data.Mutable.Ref
       module RefList       = Inner.Data.Mutable.RefList
-      module Stack         = Inner.Data.Mutable.Stack        (*TODO:build from enum*)
-      module Stream        = Inner.Data.Mutable.Stream       (*TODO:replace with latest version*)
+      module Stack         = Inner.Data.Mutable.Stack
+      module Stream        = Inner.Data.Mutable.Stream
     end
 
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
       module Lazy            = Inner.Data.Persistent.Lazy
-      module List            = Inner.Data.Persistent.List      (*formerly Batlib_Baselib_List*)
-      module ListLabels      = Inner.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)
-      module Map             = Inner.Data.Persistent.Map       (*TODO:make enumerable*)
-      module MapLabels       = Inner.Data.Persistent.MapLabels (*TODO:make enumerable*)
+      module List            = Inner.Data.Persistent.List
+      module Map             = Inner.Data.Persistent.Map
       module MultiPMap       = Inner.Data.Persistent.MultiPMap
       module PMap            = Inner.Data.Persistent.PMap
       module PSet            = Inner.Data.Persistent.PSet
       module Option          = Inner.Data.Persistent.Option
       module OptionLabels    = Inner.Data.Persistent.OptionLabels
-      module Set             = Inner.Data.Persistent.Set       (*TODO:make enumerable*)
-      module SetLabels       = Inner.Data.Persistent.SetLabels (*TODO:make enumerable*)
+      module Set             = Inner.Data.Persistent.Set
 
 (**
    {6 Note} Some mutable containers offer persistent substructures.
@@ -256,7 +255,7 @@ end
 module Legacy = struct
   (**/**)
   module Array     = Array
-  module ArrayLabels= ArrayLabels
+  module ArrayLabels= Inner.Legacy.ArrayLabels
   module Bigarray  = Bigarray
   module Hashtbl   = Hashtbl
   module Queue     = Queue
@@ -305,7 +304,7 @@ end
 
 (**/**)
 module Array     = Data.Mutable.Array
-module ArrayLabels=Data.Mutable.ArrayLabels
+module ArrayLabels=struct include Data.Mutable.Array;; include Data.Mutable.Array.Labels end
 module Bigarray  = Data.Mutable.Bigarray
 module Enum      = Data.Mutable.Enum
 module Hashtbl   = Data.Mutable.Hashtbl
@@ -314,12 +313,11 @@ module Stack     = Data.Mutable.Stack
 module Stream    = Data.Mutable.Stream
 module Lazy      = Data.Persistent.Lazy
 module List      = Data.Persistent.List
-module ListLabels= Data.Persistent.ListLabels
+module ListLabels= struct include Data.Persistent.List;; include Labels end
 module Map       = Data.Persistent.Map
-module MapLabels = Data.Persistent.MapLabels
 module Option    = Data.Persistent.Option
 module Set       = Data.Persistent.Set
-module SetLabels = Data.Persistent.SetLabels
+module SetLabels = struct include Data.Persistent.Set;; include Labels end
 module Big_int   = Data.Numeric.Big_int
 module Complex   = Data.Numeric.Complex
 module Int       = Data.Numeric.Int
@@ -352,7 +350,11 @@ module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
 module Printexc  = Printexc
+module MoreLabels= struct(*For compatibility with the base lib's [MoreLabels]*)
+  module HashtblLabels = struct include Data.Mutable.Hashtbl;; include Labels end
+  module MapLabels     = struct include Data.Persistent.Map;; include Labels end
+  module SetLabels     = struct include Data.Persistent.Set;; include Labels end
+end
 (**/**)
-
 
 

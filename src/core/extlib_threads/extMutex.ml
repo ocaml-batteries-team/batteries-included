@@ -20,17 +20,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+open Extlib
+
 module Mutex =
 struct
   include Mutex
-
-  let synchronize ?(lock = create ()) f = fun x ->
-    Mutex.lock lock;
-    try
-      let result = f x
-      in Mutex.unlock lock;
-	result
-    with e ->
-      Mutex.unlock lock;
-      raise e
+  module Lock = Concurrent.MakeLock(Mutex) 
+  let make        = Lock.make
+  let synchronize = Lock.synchronize
 end

@@ -28,6 +28,8 @@ module Control     = struct
   (** Everything related to parallelism and concurrency. *)
   module Concurrency = struct
 
+    module Common = Batteries_core_threads.Control.Concurrency.Common
+
     (** Concurrency operations as defined by OCaml's base library. *)
     module Threads = struct
 
@@ -39,6 +41,7 @@ module Control     = struct
       module Condition = Batteries_core_threads.Control.Concurrency.Thread.Condition
       module Event     = Batteries_core_threads.Control.Concurrency.Thread.Event
       module Mutex     = Batteries_core_threads.Control.Concurrency.Thread.Mutex
+      module RMutex    = Batteries_core_threads.Control.Concurrency.Thread.RMutex
       module Thread    = Batteries_core_threads.Control.Concurrency.Thread.Thread
     end
   end
@@ -52,18 +55,18 @@ end
 (** Data structures*)
 module Data        = struct
 
+    (** Module types *)
+    module Interfaces = Batteries_core_threads.Data.Interfaces
 
     (** Mutable containers (arrays, stacks...)*)
     module Mutable         = struct
       module Array         = Batteries_core_threads.Data.Mutable.Array
-      module ArrayLabels   = Batteries_core_threads.Data.Mutable.ArrayLabels
       module Bigarray      = Batteries_core_threads.Data.Mutable.Bigarray
       module Dllist        = Batteries_core_threads.Data.Mutable.Dllist
       module Dynarray      = Batteries_core_threads.Data.Mutable.Dynarray
       module Enum          = Batteries_core_threads.Data.Mutable.Enum
       module Global        = Batteries_core_threads.Data.Mutable.Global
       module Hashtbl       = Batteries_core_threads.Data.Mutable.Hashtbl
-      module HashtblLabels = Batteries_core_threads.Data.Mutable.HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
       module Queue         = Batteries_core_threads.Data.Mutable.Queue        (*TODO:build from enum?*)
       module Ref           = Batteries_core_threads.Data.Mutable.Ref
       module RefList       = Batteries_core_threads.Data.Mutable.RefList
@@ -74,17 +77,14 @@ module Data        = struct
     (** Persistent containers (lists, sets...)  *)
     module Persistent      = struct
       module Lazy            = Batteries_core_threads.Data.Persistent.Lazy
-      module List            = Batteries_core_threads.Data.Persistent.List      (*formerly Batlib_Baselib_List*)
-      module ListLabels      = Batteries_core_threads.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)
-      module Map             = Batteries_core_threads.Data.Persistent.Map       (*TODO:make enumerable*)
-      module MapLabels       = Batteries_core_threads.Data.Persistent.MapLabels (*TODO:make enumerable*)
+      module List            = Batteries_core_threads.Data.Persistent.List
+      module Map             = Batteries_core_threads.Data.Persistent.Map
       module MultiPMap       = Batteries_core_threads.Data.Persistent.MultiPMap
       module Option          = Batteries_core_threads.Data.Persistent.Option
       module OptionLabels    = Batteries_core_threads.Data.Persistent.OptionLabels
       module PMap            = Batteries_core_threads.Data.Persistent.PMap
       module PSet            = Batteries_core_threads.Data.Persistent.PSet
-      module Set             = Batteries_core_threads.Data.Persistent.Set       (*TODO:make enumerable*)
-      module SetLabels       = Batteries_core_threads.Data.Persistent.SetLabels (*TODO:make enumerable*)
+      module Set             = Batteries_core_threads.Data.Persistent.Set
 
 (**
    {6 Note} Some mutable containers offer persistent substructures.
@@ -324,7 +324,7 @@ module Event     = Control.Concurrency.Threads.Event
 module Mutex     = Control.Concurrency.Threads.Mutex
 module Thread    = Control.Concurrency.Threads.Thread
 module Array     = Data.Mutable.Array
-module ArrayLabels=Data.Mutable.ArrayLabels
+module ArrayLabels=struct include Data.Mutable.Array;; include Labels end
 module Bigarray  = Data.Mutable.Bigarray
 module Enum      = Data.Mutable.Enum
 module Hashtbl   = Data.Mutable.Hashtbl
@@ -333,12 +333,11 @@ module Stack     = Data.Mutable.Stack
 module Stream    = Data.Mutable.Stream
 module Lazy      = Data.Persistent.Lazy
 module List      = Data.Persistent.List
-module ListLabels= Data.Persistent.ListLabels
+module ListLabels= struct include Data.Persistent.List;; include Labels end
 module Map       = Data.Persistent.Map
-module MapLabels = Data.Persistent.MapLabels
 module Option    = Data.Persistent.Option
 module Set       = Data.Persistent.Set
-module SetLabels = Data.Persistent.SetLabels
+module SetLabels = struct include Data.Persistent.Set;; include Labels end
 module Big_int   = Data.Numeric.Big_int
 module Complex   = Data.Numeric.Complex
 module Int       = Data.Numeric.Int
@@ -371,6 +370,11 @@ module UnixLabels= System.UnixLabels
 module Sys       = System.Sys
 module Random    = Util.Random
 module Printexc  = Printexc
+module MoreLabels= struct(*For compatibility with the base lib's [MoreLabels]*)
+  module HashtblLabels = struct include Data.Mutable.Hashtbl;; include Labels end
+  module MapLabels     = struct include Data.Persistent.Map;;  include Labels end
+  module SetLabels     = struct include Data.Persistent.Set;;  include Labels end
+end
 (*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
 (**/**)
 

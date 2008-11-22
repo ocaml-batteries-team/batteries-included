@@ -96,7 +96,7 @@ config.ml: Makefile
 
 
 #Useful for testing
-reinstall: all opt uninstall install
+reinstall: byte opt top syntax uninstall install
 rebyte: byte uninstall install
 install-doc: doc
 	install -d $(DOCDIR) &&\

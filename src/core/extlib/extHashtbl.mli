@@ -134,7 +134,7 @@ val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
    they are passed to [f] in reverse order of introduction, that is,
    the most recent binding is passed first. *)
 
-val map : ('b -> 'c) -> ('a,'b) t -> ('a,'c) t
+val map : ('a -> 'b -> 'c) -> ('a,'b) t -> ('a,'c) t
   (** [map f x] creates a new hashtable with the same
       keys as [x], but with the function [f] applied to
       all the values *)
@@ -191,7 +191,48 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
                                                              ('a InnerIO.output -> 'c -> unit) -> 
   'a InnerIO.output -> ('b, 'c) t -> unit
 
+     (** {6 Override modules}*)
 
+    (**
+       The following modules replace functions defined in {!Hashtbl} with functions
+       behaving slightly differently but having the same name. This is by design:
+       the functions meant to override the corresponding functions of {!Hashtbl}.
+       
+       To take advantage of these overrides, you probably want to
+       {{:../extensions.html#multiopen}{open several modules in one
+       operation} or {{:../extensions.html#multialias}{alias several
+       modules to one name}. For instance, to open a version of {!Hashtbl}
+       with exceptionless error management, you may write [open Hashtbl,
+       ExceptionLess]. To locally replace module {!Hashtbl} with a module of
+       the same name but with exceptionless error management, you may
+       write [module Hashtbl = Hashtbl include ExceptionLess].
+       
+    *)
+      
+    (** Operations on {!Hashtbl} without exceptions.*)
+module ExceptionLess :
+sig
+  val find : ('a, 'b) t -> 'a -> 'b option
+end
+
+   (** Operations on {!Hashtbl} with labels.
+	
+	This module overrides a number of functions of {!Hashtbl} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Hashtbl}.
+    *)
+module Labels :
+sig
+  val add : ('a, 'b) t -> key:'a -> data:'b -> unit
+  val replace : ('a, 'b) t -> key:'a -> data:'b -> unit
+  val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b) t -> unit
+  val map:   f:(key:'a -> data:'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
+  val fold :
+    f:(key:'a -> data:'b -> 'c -> 'c) ->
+    ('a, 'b) t -> init:'c -> 'c
+end
 
 (** {6 Functorial interface} *)
 
@@ -215,7 +256,7 @@ module type HashedType =
           (e.g. for cyclic keys). *)
   end
 
-(** The input signature of the functor {!Hashtbl.Make}. *)
+(** The output signature of the functor {!Hashtbl.Make}. *)
 module type S =
   sig
     type key
@@ -236,17 +277,60 @@ module type S =
     val mem : 'a t -> key -> bool
     val iter : (key -> 'a -> unit) -> 'a t -> unit
     val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-    val map : ('b -> 'c) -> 'b t -> 'c t
+    val map : (key -> 'b -> 'c) -> 'b t -> 'c t
     val keys : 'a t -> key Enum.t
     val values : 'a t -> 'a Enum.t
     val enum : 'a t -> (key * 'a) Enum.t
     val of_enum : (key * 'a) Enum.t -> 'a t
-      val sexp_of_t : (key -> Sexplib.Sexp.t) -> ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
-      val t_of_sexp : (Sexplib.Sexp.t -> key) -> (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
-      val print :  ?first:string -> ?last:string -> ?sep:string -> 
-	('a InnerIO.output -> key -> unit) -> 
-	('a InnerIO.output -> 'b -> unit) -> 
-	'a InnerIO.output -> 'b t -> unit
+    val sexp_of_t : (key -> Sexplib.Sexp.t) -> ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+    val t_of_sexp : (Sexplib.Sexp.t -> key) -> (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+    val print :  ?first:string -> ?last:string -> ?sep:string -> 
+      ('a InnerIO.output -> key -> unit) -> 
+      ('a InnerIO.output -> 'b -> unit) -> 
+      'a InnerIO.output -> 'b t -> unit
+      
+    (** {6 Override modules}*)
+      
+    (**
+       The following modules replace functions defined in {!Hashtbl} with functions
+       behaving slightly differently but having the same name. This is by design:
+       the functions meant to override the corresponding functions of {!Hashtbl}.
+       
+       To take advantage of these overrides, you probably want to
+       {{:../extensions.html#multiopen}{open several modules in one
+       operation} or {{:../extensions.html#multialias}{alias several
+       modules to one name}. For instance, to open a version of {!Hashtbl}
+       with exceptionless error management, you may write [open Hashtbl,
+       ExceptionLess]. To locally replace module {!Hashtbl} with a module of
+       the same name but with exceptionless error management, you may
+       write [module Hashtbl = Hashtbl include ExceptionLess].
+       
+    *)
+      
+    (** Operations on {!Hashtbl} without exceptions.*)
+    module ExceptionLess :
+    sig
+      val find : 'a t -> key -> 'a option
+    end
+    
+    (** Operations on {!Hashtbl} with labels.
+	
+	This module overrides a number of functions of {!Hashtbl} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Hashtbl}.
+    *)
+    module Labels :
+    sig
+      val add : 'a t -> key:key -> data:'a -> unit
+      val replace : 'a t -> key:key -> data:'a -> unit
+      val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+      val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+      val fold :
+	f:(key:key -> data:'a -> 'b -> 'b) ->
+	'a t -> init:'b -> 'b
+    end
 
   end
 (** The output signature of the functor {!Hashtbl.Make}. *)
@@ -390,7 +474,7 @@ val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> 'c -> 'c
    they are passed to [f] in reverse order of introduction, that is,
    the most recent binding is passed first. *)
 
-val map : ('b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
+val map : ('a -> 'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
   (** [map f x] creates a new hashtable with the same
       keys as [x], but with the function [f] applied to
       all the values *)
@@ -422,6 +506,50 @@ val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b, [>`
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 
                                                              ('a InnerIO.output -> 'c -> unit) -> 
   'a InnerIO.output -> ('b, 'c, [>`Read]) t -> unit
+
+
+
+(** {6 Override modules}*)
+  
+(**
+   The following modules replace functions defined in {!Hashtbl} with functions
+   behaving slightly differently but having the same name. This is by design:
+   the functions meant to override the corresponding functions of {!Hashtbl}.
+   
+   To take advantage of these overrides, you probably want to
+   {{:../extensions.html#multiopen}{open several modules in one
+   operation} or {{:../extensions.html#multialias}{alias several
+   modules to one name}. For instance, to open a version of {!Hashtbl}
+   with exceptionless error management, you may write [open Hashtbl,
+   ExceptionLess]. To locally replace module {!Hashtbl} with a module of
+   the same name but with exceptionless error management, you may
+   write [module Hashtbl = Hashtbl.Cap include ExceptionLess].
+   
+*)
+  
+(** Operations on {!Hashtbl} without exceptions.*)
+module ExceptionLess :
+sig
+  val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
+end
+  
+(** Operations on {!Hashtbl} with labels.
+    
+    This module overrides a number of functions of {!Hashtbl} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!Hashtbl}.
+*)
+module Labels :
+sig
+  val add : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
+  val replace : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
+  val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
+  val fold :
+    f:(key:'a -> data:'b -> 'c -> 'c) ->
+    ('a, 'b, [>`Read]) t -> init:'c -> 'c
+end
 
 end
 

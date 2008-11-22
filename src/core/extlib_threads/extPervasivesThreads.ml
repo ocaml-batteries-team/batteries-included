@@ -20,15 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
+open Extlib
+include ExtPervasives;;
 
-module Pervasives = struct
-  include Extlib.ExtPervasives.Pervasives
-
-  let unique_mutex      = Mutex.create()
-  let unique_ref        = ref 0
-  let unique ()         =
-    Mutex.lock unique_mutex;
-    let result = Ref.post_incr unique_ref in
-      Mutex.unlock unique_mutex;
-      result
-end
+Pervasives.lock := ExtMutex.Mutex.make ()
