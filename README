@@ -17,13 +17,13 @@ Batteries Included serves the following purposes:
 *** Building Batteries Included ***
 You will need
 * OCaml >= 3.10.2
-* Findlib
-* Type-conv
-* Camomile >= 0.7
-* Sexplib
-* Bin-prot
-* Camlzip
 * GNU Make
+* Findlib   (http://projects.camlcity.org/projects/findlib.html/)
+* Type-conv (http://www.ocaml.info/home/ocaml_sources.html)
+* Sexplib   (http://www.ocaml.info/home/ocaml_sources.html)
+* Bin-prot  (http://www.ocaml.info/home/ocaml_sources.html)
+* Camomile >= 0.7 (http://camomile.sourceforge.net/)
+* Camlzip   (http://cristal.inria.fr/~xleroy/software.html#camlzip)
 
 If you're working from the git tree, you'll need:
 * autoconf
