@@ -28,10 +28,10 @@ include Netchannels
 
 class type ['a] acc_out_channel = object
   inherit rec_out_channel
-  method acc : 'a option
+  method accumulator : 'a option
 end
 
-class netchannel_of_input inp =
+class channel_of_input inp =
 object
 
   method input buf pos len =
@@ -43,20 +43,16 @@ object
     
 end
 
-class ['a] netchannel_of_output (out: 'a IO.output) =
+class ['a] channel_of_output (out: 'a IO.output) =
 object
   val mutable _acc = None
   method output = IO.output out
   method flush () = IO.flush out
   method close_out () = _acc <- Some (IO.close_out out)
-  method acc = _acc
+  method accumulator = _acc
 end
 
-let buffer_size = 1024
-  (** internal buffer used while reading from netchannels and
-      delivering to Batteries channel *)
-
-let input_of_netchannel netic =
+let input_of_channel netic =
   let minibuf = String.create 1 in
   let read () =
     try
@@ -79,7 +75,7 @@ let input_of_netchannel netic =
   let close () = netic # close_in () in
     IO.create_in ~read ~input ~close
 
-let output_of_netchannel, output_of_acc_channel =
+let output_of_channel, output_of_acc_channel =
   let net_write netoc ch =
     (* try *)
     let bytes = netoc # output (String.make 1 ch) 0 1 in
@@ -94,19 +90,19 @@ let output_of_netchannel, output_of_acc_channel =
     (* try *)
     netoc # close_out ()
     (* with Netchannels.Closed_channel -> () *) in
-  let output_of_netchannel netoc =
+  let output_of_channel netoc =
     IO.create_out ~write:(net_write netoc) ~output:(net_output netoc)
       ~flush:(net_flush netoc) ~close:(net_close netoc)
   and output_of_acc_channel accoc =
     let close () =
       (* try *)
       accoc # close_out ();
-      Option.get (accoc # acc)
+      Option.get (accoc # accumulator)
       (* with Netchannels.Closed_channel -> () *)
     in
       IO.create_out ~write:(net_write accoc) ~output:(net_output accoc)
 	~flush:(net_flush accoc) ~close
   in
-    (output_of_netchannel, output_of_acc_channel)
+    (output_of_channel, output_of_acc_channel)
 
 end

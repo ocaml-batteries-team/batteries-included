@@ -5,11 +5,11 @@ open System, Network
 
 let oc =
   Netchannels.lift_out
-    (`Rec (new Netchannels.netchannel_of_output IO.stdout :>
+    (`Rec (new Netchannels.channel_of_output IO.stdout :>
 	     Netchannels.rec_out_channel))
 let _ =
   Netchannels.with_in_obj_channel
-    (Netchannels.lift_in (`Rec (new Netchannels.netchannel_of_input IO.stdin)))
+    (Netchannels.lift_in (`Rec (new Netchannels.channel_of_input IO.stdin)))
     (fun ic ->
        try
 	 while true do
