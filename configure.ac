@@ -3,7 +3,7 @@ AC_INIT
 AC_SUBST(INSTALLATION)
 
 # version info
-VERSION=0.20081023
+VERSION=0.20081222
 AC_SUBST(VERSION)
 
 # check for basic OCaml components
