@@ -234,18 +234,18 @@ val concat : 'a t t -> 'a t
 
 (** {6 Constructors} 
 
- In this section the word {i shall} denotes a semantic
- requirement. The correct operation
- of the functions in this interface are conditional
- on the client meeting these requirements.
+    In this section the word {i shall} denotes a semantic
+    requirement. The correct operation of the functions in this
+    interface are conditional on the client meeting these
+    requirements.
 *)
 
 exception No_more_elements
-(** This exception {i shall} be raised by the [next] function of [make] 
-  or [from] when no more elements can be enumerated, it {i shall not}
-  be raised by any function which is an argument to any
-  other function specified in the interface.
-*)
+  (** This exception {i shall} be raised by the [next] function of [make] 
+      or [from] when no more elements can be enumerated, it {i shall not}
+      be raised by any function which is an argument to any
+      other function specified in the interface.
+  *)
 
 exception Infinite_enum
 (** As a convenience for debugging, this exception {i may} be raised by 
@@ -344,6 +344,9 @@ val delay : (unit -> 'a t) -> 'a t
 
   *)
 
+val to_object: 'a t -> (<next:'a; count:int; clone:'b> as 'b)
+val of_object: (<next:'a; count:int; clone:'b> as 'b) -> 'a t
+
 (** {6 Counting} *)
 
 val count : 'a t -> int
@@ -362,12 +365,13 @@ val fast_count : 'a t -> bool
 
 val hard_count : 'a t -> int
   (** [hard_count] returns the number of remaining in elements in [e],
-      consuming the whole enumeration somewhere along the way. This function
-      is always at least as fast as the fastest of either [count] or a [fold] on
-      the elements of [t].
+      consuming the whole enumeration somewhere along the way. This
+      function is always at least as fast as the fastest of either
+      [count] or a [fold] on the elements of [t].
 
-      This function is useful when you have opened an enumeration for the sole
-      purpose of counting its elements (e.g. the number of lines in a file).*)
+      This function is useful when you have opened an enumeration for
+      the sole purpose of counting its elements (e.g. the number of
+      lines in a file).*)
 
 (**
    {6 Utilities }

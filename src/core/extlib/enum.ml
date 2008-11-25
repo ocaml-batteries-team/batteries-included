@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.Data.Mutable.EnumLabels" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries.Enum" (*For Sexplib, Bin-prot...*)
 
 (** {6 Representation} *)
 
@@ -840,6 +840,17 @@ let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
 		aux ()
 	in aux()
 
+let rec to_object t =
+object
+  method next = t.next ()
+  method count= count t
+  method clone = to_object (clone t)
+end
+
+let rec of_object o =
+  make ~next:(fun () -> o#next)
+    ~count:(fun () -> o#count)
+    ~clone:(fun () -> of_object (o#clone))
 
 module ExceptionLess = struct
   let find f e =
