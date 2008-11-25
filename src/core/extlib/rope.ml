@@ -33,7 +33,7 @@ TYPE_CONV_PATH "Batteries.Data.Text.Rope" (*For Sexplib, Bin-prot...*)
 open ExtUTF8
 open ExtUChar
 open ExtList
-open Labels
+open Return
  
 (* =begin ignore *)
 type t =
@@ -418,12 +418,12 @@ let bulk_backwards s =
 
 let of_enum e =
   let get_leaf () =
-    Labels.label
-      (fun return ->
+    Return.label
+      (fun label ->
 	 let b = Buffer.create 256 in
 	 for i = 1 to 256 do
 	   match Enum.get e with
-	       None   -> Labels.recall return (false, UTF8.of_string_unsafe (Buffer.contents b))
+	       None   -> return label (false, UTF8.of_string_unsafe (Buffer.contents b))
 	     | Some c -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c))
 	 done;
 	 (true, UTF8.of_string_unsafe (Buffer.contents b) ))
@@ -528,30 +528,30 @@ let head r pos = sub 0 pos r (* same as left *)
 let tail r pos = sub pos (length r - pos) r
 
 let index r item = 
-  label (fun return ->
+  with_label (fun label ->
 	   let index_aux i us =
 	     try 
 	       let p = UTF8.index us item in
-	       recall return (p+i)
+	       return label (p+i)
 	     with Not_found -> ()
 	   in
 	   bulk_iteri index_aux r;
 	   raise Not_found)
 
 let index_from r base item = 
-  label (fun return ->
+  with_label (fun label ->
 	   let index_aux i c = 
-	     if c = item then recall return i
+	     if c = item then return label i
 	   in
 	   range_iteri index_aux ~base base (length r - base) r;
 	   raise Not_found)
 
 let rindex r char = 
-  label (fun return ->
+  with_label (fun label ->
 	   let index_aux i us =
 	     try 
 	       let p = UTF8.rindex us char in
-	       recall return (p+i)
+	       return label (p+i)
 	     with Not_found -> ()
 	   in
 	   bulk_iteri_backwards ~top:(length r) index_aux r;
@@ -562,16 +562,16 @@ let rindex_from r start char =
   (rindex rsub char)
 
 let contains r char = 
-  label (fun return ->
+  with_label (fun label ->
 	   let contains_aux us =
-	     if UTF8.contains us char then recall return true
+	     if UTF8.contains us char then return label true
 	   in
 	   bulk_iter contains_aux r;
 	   false)
 
 let contains_from r start char = 
-  label (fun return ->
-	   let contains_aux c = if c = char then recall return true in
+  with_label (fun label ->
+	   let contains_aux c = if c = char then return label true in
 	   range_iter contains_aux start (length r - start) r;
 	   false)
 
@@ -588,9 +588,9 @@ let find r1 r2 =
   let r2_string = to_ustring r2 in
   let check_at pos = r2_string = (to_ustring (sub pos matchlen r1)) in 
   (* TODO: inefficient *)
-  label (fun return -> 
+  with_label (fun label -> 
 	   for i = 0 to length r1 - matchlen do
-	     if check_at i then recall return i
+	     if check_at i then return label i
 	   done;
 	   raise Not_found)
 
