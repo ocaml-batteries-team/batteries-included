@@ -20,7 +20,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 open Number
 
@@ -156,7 +156,7 @@ module BaseSafeInt = struct
     
 end
 
-module SafeInt = struct
+module Safe_int = struct
   include BaseSafeInt
   let operations = let module N = Number.MakeNumeric(BaseSafeInt) in N.operations
 end

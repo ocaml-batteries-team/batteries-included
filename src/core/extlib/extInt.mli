@@ -193,7 +193,7 @@ module Int :
     
     {b Important note} Untested.
 *)
-module SafeInt :
+module Safe_int :
   sig
     
     type t = int
