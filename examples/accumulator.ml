@@ -12,15 +12,15 @@
   http://www.paulgraham.com/accgen.html
  *)
 
-open Data.Mutable
-open Data.Numeric
 
 (** [adder t n] is an adder for elements of [numeric] typeclass [t],
     initialized with [n]*)
-let adder (t:'a Common.numeric) (n:'a) (i:'a)  : 'a =
-  Ref.post r (t.Common.add i)
+let adder t n i =
+open Numeric in
+  Ref.post r (t.add i)
   where r = ref n
 
+(*Examples:*)
 let adder_of_floats : float -> float = 
   adder Float.operations 5.
 

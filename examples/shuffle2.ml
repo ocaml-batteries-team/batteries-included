@@ -4,8 +4,8 @@
   ./shuffle2.byte < some_file.txt
 *)
 
-open Util.Random with self_init ()
-open Data.Mutable, System, IO, Printf
+open Random with self_init ()
+open IO, Printf
 
 let shift x = x + 1;;
 

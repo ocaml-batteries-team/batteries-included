@@ -1,4 +1,4 @@
-open Control.Concurrency.Threads, Event
+open Threads, Event
 
 let tasks = 5
 

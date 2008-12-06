@@ -1,5 +1,29 @@
 2008-12-06  David Teller  <David.Teller@univ-orleans.fr>
 
+	* examples/unicode.ml: [rope1] now defined from [u1] rather than [s1]
+
+	* examples/unicode.ml: flattened
+
+	* examples/shuffle2.ml: flattened
+
+	* src/main/threads/batteries.ml: [Random] is now [Extlib.ExtRandom.Random]
+
+	* src/main/nothreads/batteries.ml: [Random] is now [Extlib.ExtRandom.Random]
+
+	* examples/parallelsort.ml: flattened
+
+	* examples/netchan-cat.ml: flattened
+
+	* src/main/nothreads/batteries.ml: [Netchannels] added
+
+	* examples/gzip.ml: flattened
+
+	* examples/gunzip.ml: flattened
+
+	* examples/cat.ml: flattened
+
+	* examples/accumulator.ml: flattened
+
 	* src/core/extlib/pSet.ml:  [PA_TYPE_CONV] flattened
 
 	* src/core/extlib/pSet.ml:  [exists] now uses [Return] instead of [Label]

@@ -352,5 +352,5 @@ module  Unix  = Unix
 (**{1 Unclassified}*)
 
 module Digest = Digest
-module Random = Random
+module Random = Extlib.ExtRandom.Random
 (*module Date:placeholder*)

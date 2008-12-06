@@ -1,16 +1,13 @@
-open Batteries
-open Data.Text
 
-
-let say x = System.IO.nwrite System.IO.stdout x; System.IO.write System.IO.stdout '\n'
-let usay = System.IO.write_uline System.IO.stdout
+let say x = IO.nwrite IO.stdout x; IO.write IO.stdout '\n'
+let usay = IO.write_uline IO.stdout
 
 let s1 = "Simple ASCII string"
 and s2 = "Complex: á é í ó ú"
 
 let u1 = UTF8.of_string s1 
 
-let rope1 = Rope.of_ustring s1
+let rope1 = Rope.of_ustring u1
 and rope2 = Rope.of_latin1 s2
 
 let rec exp_dup n r = if n <= 0 then r else exp_dup (n-1) (Rope.concat r r)
@@ -27,7 +24,7 @@ let () = say "Characters 15 to 41 of r16: "; usay r3
 let c11 = Rope.get 11 rope2 
 let () = 
   say "Character 11: "; 
-  System.IO.write_uchar System.IO.stdout c11; say "\n"
+  IO.write_uchar IO.stdout c11; say "\n"
 
 let bad_rope = 
   try 

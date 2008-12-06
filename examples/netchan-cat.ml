@@ -1,8 +1,6 @@
 (* Yet another (slower) "cat" implementation, it is just meant to be a
    showcase for integration with ocamlnet's Netchannels. *)
 
-open System, Network
-
 let oc =
   Netchannels.lift_out
     (`Rec (new Netchannels.channel_of_output IO.stdout :>

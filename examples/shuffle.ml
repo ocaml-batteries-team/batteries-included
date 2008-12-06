@@ -4,7 +4,6 @@
    ./shuffle 1 2 3 4 5 6 7 8 9
 *)
 
-open Util.Random with self_init ()
-open Data.Mutable, System, IO
+open Random with self_init ()
 
-let _ = Array.print ~sep:" " ~first:"" ~last:"\n" nwrite stdout (shuffle (args ()))
+let _ = Array.print ~sep:" " ~first:"" ~last:"\n" output_string stdout (shuffle (args ()))

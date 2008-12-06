@@ -4,7 +4,7 @@
    ./gzip.byte some_file
    (produces some_file.gz, removes some_file)
 *)
-open System, File, IO, Filename
+open File, IO, Filename
 
 iter f (args ())
 where let f name =

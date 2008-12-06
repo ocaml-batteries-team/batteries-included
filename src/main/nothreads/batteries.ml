@@ -177,7 +177,10 @@ end
    @topic IO*)
 
 module  IO = Extlib.IO
-(*module Netchannels (*also with topic Network*)*)
+
+(** @topic Network*)
+module Netchannels = Libs.ExtNetchannels.Netchannels
+
 
 
 (**{2 Compression / decompression}
@@ -369,5 +372,5 @@ module  Unix  = Unix
 (**{1 Unclassified}*)
 
 module Digest = Digest
-module Random = Random
+module Random = Extlib.ExtRandom.Random
 (*module Date:placeholder*)
