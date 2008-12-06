@@ -3,7 +3,7 @@ AC_INIT
 AC_SUBST(INSTALLATION)
 
 # version info
-VERSION=0.20081023
+VERSION=0.20081222
 AC_SUBST(VERSION)
 
 # check for basic OCaml components
@@ -88,6 +88,11 @@ fi
 AC_CHECK_OCAML_PKG(bin_prot, OCAMLPKG_bin_prot)
 if test -z "$OCAMLPKG_bin_prot" ; then
    AC_MSG_ERROR([Cannot find bin_prot])
+   exit 1
+fi
+AC_CHECK_OCAML_PKG(netstring, OCAMLPKG_netstring)
+if test -z "$OCAMLPKG_netstring" ; then
+   AC_MSG_ERROR([Cannot find netstring (part of ocamlnet)])
    exit 1
 fi
 AC_SUBST(OCAMLFIND_DEPS)

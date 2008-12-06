@@ -2,6 +2,8 @@ cat.byte
 cat.native
 cat2.byte
 cat2.native
+netchan-cat.byte
+netchan-cat.native
 shuffle.byte
 shuffle.native
 shuffle2.byte

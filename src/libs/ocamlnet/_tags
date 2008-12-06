@@ -1,0 +1,4 @@
+<*.cmx> :for-pack(Libs)
+<*.ml>: pkg_netstring
+<*.mli>: pkg_netstring
+<*>:     debug

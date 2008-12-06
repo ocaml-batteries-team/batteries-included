@@ -5,6 +5,7 @@
    @topic IO
    @topic Printing
    @topic Files
+
 *)
 module Standard = Extlib.ExtPervasives.Pervasives
 
@@ -156,7 +157,10 @@ end
    @topic IO*)
 
 module  IO = Extlib.IO
-(*module Netchannels (*also with topic Network*)*)
+
+(** @topic Network*)
+module Netchannels = Libs.ExtNetchannels.Netchannels
+
 
 
 (**{2 Compression / decompression}
