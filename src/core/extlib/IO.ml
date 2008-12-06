@@ -629,7 +629,12 @@ let comb (a,b) =
 	      ignore (close_out a); close_out b)
 
 
-
+(*let repeat n out =
+  wrap_out 
+    ~underlying:[out]
+    ~write:(fun c -> for i = 1 to n do write out c)
+    ~output:(fun s p l -> for i = 1 to n do output out s p l)
+    ~close:(fun () -> flush out)*)
 
 (** {6 Unicode}*)
 open ExtUTF8

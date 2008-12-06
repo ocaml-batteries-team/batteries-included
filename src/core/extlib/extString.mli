@@ -220,13 +220,13 @@ val strip : ?chars:string -> string -> string
 
 val uppercase : string -> string
 (** Return a copy of the argument, with all lowercase letters
-   translated to uppercase, including accented letters of the ISO
-   Latin-1 (8859-1) character set. *)
+    translated to uppercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
 
 val lowercase : string -> string
 (** Return a copy of the argument, with all uppercase letters
-   translated to lowercase, including accented letters of the ISO
-   Latin-1 (8859-1) character set. *)
+    translated to lowercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
 
 val capitalize : string -> string
 (** Return a copy of the argument, with the first character set to uppercase. *)
@@ -282,6 +282,9 @@ val replace : str:string -> sub:string -> by:string -> bool * string
       and a string where the first occurrence of the string [sub]
       within [str] has been replaced by the string [by]. The boolean
       is true if a subtitution has taken place. *)
+
+val repeat: string -> int -> string
+(** [repeat s n] returns [s ^ s ^ ... ^ s] *)
 
 (** {6 Splitting around}*)
 
@@ -375,11 +378,24 @@ external unsafe_fill :
     There is no loss of performance involved. *)
 module Cap:
 sig
-type 'a t constraint 'a = [< `Read | `Write]
-(** The type of capability strings. *)
+
+type 'a t 
+(** The type of capability strings.
+
+    If ['a] contains [[`Read]], the contents of the string may be read.
+    If ['a] contains [[`Write]], the contents of the string may be written.
+
+    Other (user-defined) capabilities may be added without loss of
+    performance or features. For instance, a string could be labelled
+    [[`Read | `UTF8]] to state that it contains UTF-8 encoded data and
+    may be used only for reading.  Conversely, a string labelled with
+    [[]] (i.e. nothing) can neither be read nor written. It can only
+    be compared for textual equality using OCaml's built-in [compare]
+    or for physical equality using OCaml's built-in [==].
+*)
 
 external length : _ t  -> int = "%string_length"
-(** Return the length (number of characters) of the given string. *)
+    (** Return the length (number of characters) of the given string. *)
 
 val is_empty : _ t -> bool 
 (** Determine if a string is empty. *)

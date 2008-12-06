@@ -22,7 +22,7 @@
 
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 exception Invalid_string
 
@@ -285,6 +285,11 @@ let replace ~str ~sub ~by =
 		Invalid_string -> (false, String.copy str)
 
 
+let repeat s n =
+  let buf = Buffer.create ( n * (String.length s) ) in
+    for i = 1 to n do Buffer.add_string buf s done;
+    Buffer.contents buf
+
 let trim s =
   let len = length s          in
   let rec aux_1 i = (*locate leading whitespaces*)
@@ -321,8 +326,7 @@ let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
 
 module Cap =
 struct
-type 'a t = string
-  constraint 'a = [< `Read | `Write] with sexp
+type 'a t = string with sexp
 
 let make          = make
 let is_empty      = is_empty

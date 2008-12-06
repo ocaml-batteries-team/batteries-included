@@ -263,7 +263,9 @@ val tab_out : ?tab:char -> int -> 'a output -> unit output
       closing [out] closes [tab_out n out].
   *)
 
-
+(*val repeat: int -> 'a output -> unit output
+(** [repeat n out] create an output in which every character or string is repeated 
+    [n] times to [out].*)*)
 
 (** {6 Utilities} *)
 

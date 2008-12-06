@@ -573,6 +573,20 @@ class batlib_generator =
        Only document modules which may be reached from the root.
     *)
 
+(**Generate a list by topic.
+   
+    method generate_elements_index_by_topic:
+      'a.
+      elements:('a list)       ->
+      topic:('a -> string)     ->
+      name:('a -> Name.t)      ->
+      info:('a -> info option) ->
+      target:string            ->
+      title:string             ->
+      simple_file:string       -> unit =
+      fun ~elements ~topic ~name ~info ~target ~title ~simple_file ->
+
+
     (**Generate the list of types.
        In addition to the list of types defined inside modules, we generate
        the list of primitive types.*)

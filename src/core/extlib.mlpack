@@ -2,7 +2,7 @@ Concurrent
 Interfaces
 InnerIO
 Monad
-Labels
+Return
 Enum
 ExtBigarray
 ExtUChar
@@ -62,3 +62,4 @@ ExtMap
 ExtQueue
 ExtStack
 ExtSet
+ExtOo

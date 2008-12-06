@@ -21,7 +21,7 @@
 
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Persistent.PSet" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "PSet" (*For Sexplib, Bin-prot...*)
 
 type 'a t = ('a, bool) PMap.t with sexp
 
@@ -41,8 +41,8 @@ let iter f   = PMap.iter (fun x _ -> f x)
 
 let fold f   = PMap.foldi (fun k _ -> f k)
 
-let exists f t = Labels.label (fun return ->
-			       iter (fun k -> if f k then Labels.recall return true) t;
+let exists f t = Return.label (fun label ->
+			       iter (fun k -> if f k then Return.return label true) t;
 			       false)
 
 let cardinal t =

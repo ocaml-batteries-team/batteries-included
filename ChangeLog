@@ -1,4 +1,49 @@
+2008-12-06  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/pSet.ml:  [PA_TYPE_CONV] flattened
+
+	* src/core/extlib/pSet.ml:  [exists] now uses [Return] instead of [Label]
+
+	* src/core/extlib/extString.ml: [PA_TYPE_CONV] flattened
+
+	* src/core/extlib/extString.ml*: in [Cap.t], removed constraints
+	
+
+2008-11-30  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extString.ml*: [repeat] added
+
+2008-11-25  David Teller  <David.Teller@univ-orleans.fr>
+
+	* build/odoc_tags.ml: created
+
+	* src/main/threads/batteries.ml: rewritten
+	
+	* src/main/nothreads/batteries.ml: rewritten
+
+	* src/core/extlib/extInt.ml*: [SafeInt] renamed [Safe_int]
+
+	* src/core/extlib/extInt.ml: [PA_TYPE_CONV] flattened
+
+	* src/core/extlib.mlpack: [ExtOo] added
+
+	* src/core/extlib/enum.ml: [PA_TYPE_CONV] flattened
+
+	* src/core/extlib/extOo.ml*: created
+
+	* src/core/extlib/enum.ml*: [of_object], [to_object] created
+
+2008-11-20  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/main/nothreads/batteries_flat.ml: created
+
+	* build/tags.ml: created
+
 2008-11-18  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/rope.ml: propataged name change of [Labels]
+
+	* src/core/extlib/labels.ml*: renamed return.*
 
 	* batteries.ml (both): [Labels] renamed [Return]
 
