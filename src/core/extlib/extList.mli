@@ -501,7 +501,7 @@ module List :
 	   with exceptionless error management, you may write {v open List,
 	   ExceptionLess v}. To locally replace module {!List.Cap} with a module of
 	   the same name but with exceptionless error management, you may
-	   write {v module List = List.Cap include ExceptionLess v}
+	   write [module List = List.Cap include ExceptionLess]
 	   
 	*)
 

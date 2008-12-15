@@ -694,7 +694,7 @@ external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_se
    with exceptionless error management, you may write {v open Array.Cap,
    ExceptionLess v}. To locally replace module {!Array.Cap} with a module of
    the same name but with exceptionless error management, you may
-   write {v module Array = Array.Cap include ExceptionLess v}
+   write [module Array = Array.Cap include ExceptionLess]
 
 *)
 
