@@ -104,11 +104,11 @@ module  Concurrency = Extlib.Concurrent
    Included. To use a multi-threaded version, please see {{:???}the documentation}.
 *)
 
-module  Condition = Condition
-module  Event     = Event
+module  Condition = Batlib_Baselib_Condition
+module  Event     = Batlib_Baselib_Event
 module  Mutex     = Extlib_threads.ExtMutex.Mutex
 module  RMutex    = Extlib_threads.RMutex
-module  Thread    = Thread
+module  Thread    = Batlib_Baselib_Thread
 
 (**
    All the definitions of built-in concurrency primitives.
@@ -206,7 +206,7 @@ module  Stream   = Extlib.ExtStream.Stream
    @topic Persistent
 *)      
 
-module  Lazy     = Lazy
+module  Lazy     = Batlib_Baselib_Lazy
 module  List     = Extlib.ExtList.List
 module  Map      = Extlib.ExtMap.Map
 module  Option   = Extlib.Option
@@ -259,6 +259,7 @@ module  UTF8    = Extlib.ExtUTF8.UTF8
 module  Rope    = Extlib.Rope
 module  UChar   = Extlib.ExtUChar.UChar
 module  String  = Extlib.ExtString.String
+module  Str     = Batlib_Baselib_Str
 (*module  StringText (A module containing aliases to String and modified
         Char)*)
 (*module  RopeText (As StringText but with implementations from Rope and
@@ -287,12 +288,13 @@ module  Compilers= Toolchain.Builtin_tools
 
    @topic Internals
 *)
-module  Callback = Callback
+module  Callback = Batlib_Baselib_Callback
 module  Gc       = Extlib.ExtGc.Gc
 module  Marshal  = Extlib.ExtMarshal.Marshal
 module  Modules  = Batlib_Baselib_CamlinternalMod
+module  Obj      = Batlib_Baselib_Obj
 module  Oo       = Extlib.ExtOo.Oo
-module  Weak     = Weak
+module  Weak     = Batlib_Baselib_Weak
 
          
 (*
@@ -324,14 +326,13 @@ module  Netplex_*
 module  Rpc_*  
               ====module module  Languages ====*)
 
-module  Genlex = Genlex
-module  Lexing = Lexing
-module  Parsing= Parsing
-module  Format = Format
+
+module  Lexing = Batlib_Baselib_Lexing
+module  Parsing= Batlib_Baselib_Parsing
+module  Format = Batlib_Baselib_Format
 module  Printf = Extlib.ExtPrintf.Printf
-module  Str    = Str
 (*   100module  PCRE (*placeholder*)*)
-module  Scanf  = Scanf
+module  Scanf  = Batlib_Baselib_Scanf
 module  SExpr  = Toolchain.Batlib_Sexp_Conv
 
 
@@ -340,17 +341,18 @@ module  SExpr  = Toolchain.Batlib_Sexp_Conv
    @topic System
 *)
 
-module  Arg = Arg
+module  Arg = Batlib_Baselib_Arg
 module  File= Extlib.File
 module  OptParse = Extlib.OptParse
+module Path = Batlib_Baselib_Filename
 (*module  Path:placeholder*)
-module  Shell = Sys
-module  Unix  = Unix
+module  Shell = Batlib_Baselib_Sys
+module  Unix  = Extlib.ExtUnix.Unix
 (*module  Equeue:placeholder*)
 
 
 (**{1 Unclassified}*)
 
-module Digest = Digest
+module Digest = Batlib_Baselib_Digest
 module Random = Extlib.ExtRandom.Random
 (*module Date:placeholder*)

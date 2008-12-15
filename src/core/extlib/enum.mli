@@ -462,12 +462,12 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
 
    To take advantage of these overrides, you probably want to
    {{:../extensions.html#multiopen}{open several modules in one
-   operation} or {{:../extensions.html#multialias}{alias several
-   modules to one name}. For instance, to open a version of {!Enum}
+   operation}} or {{:../extensions.html#multialias}{alias several
+   modules to one name}}. For instance, to open a version of {!Enum}
    with exceptionless error management, you may write [open Enum,
    ExceptionLess]. To locally replace module {!Enum} with a module of
    the same name but with exceptionless error management, you may
-   write [module Enum = Enum include ExceptionLess].
+   write {v module Enum = Enum include ExceptionLess v}.
 
 *)
 

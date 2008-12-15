@@ -496,8 +496,8 @@ module List :
 	   
 	   To take advantage of these overrides, you probably want to
 	   {{:../extensions.html#multiopen}{open several modules in one
-	   operation} or {{:../extensions.html#multialias}{alias several
-	   modules to one name}. For instance, to open a version of {!List}
+	   operation}} or {{:../extensions.html#multialias}{alias several
+	   modules to one name}}. For instance, to open a version of {!List}
 	   with exceptionless error management, you may write {v open List,
 	   ExceptionLess v}. To locally replace module {!List.Cap} with a module of
 	   the same name but with exceptionless error management, you may
