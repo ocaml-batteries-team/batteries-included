@@ -138,8 +138,8 @@ module type S =
        
        To take advantage of these overrides, you probably want to
        {{:../extensions.html#multiopen}{open several modules in one
-       operation} or {{:../extensions.html#multialias}{alias several
-       modules to one name}. For instance, to open a version of {!Map}
+       operation}} or {{:../extensions.html#multialias}{alias several
+       modules to one name}}. For instance, to open a version of {!Map}
        with exceptionless error management, you may write {v open Map,
        ExceptionLess v}. To locally replace module {!Map} with a module of
        the same name but with exceptionless error management, you may
