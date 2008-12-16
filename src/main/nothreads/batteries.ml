@@ -210,6 +210,8 @@ module  Transcode  (*Unicode transcoding*)
 
 module  Array    = Extlib.ExtArray.Array
 module  Bigarray = Extlib.ExtBigarray.Bigarray
+module  Dllist   = Extlib.Dllist
+module  DynArray = Extlib.DynArray
 module  Enum     = Extlib.Enum
 module  Global   = Extlib.Global
 module  Hashtbl  = Extlib.ExtHashtbl.Hashtbl
@@ -229,6 +231,7 @@ module  Stream   = Extlib.ExtStream.Stream
 module  Lazy     = Lazy
 module  List     = Extlib.ExtList.List
 module  Map      = Extlib.ExtMap.Map
+module  MultiPMap= Extlib.MultiPMap
 module  Option   = Extlib.Option
 module  PMap     = Extlib.PMap
 module  PSet     = Extlib.PSet
@@ -371,6 +374,7 @@ module  Unix  = Unix
 
 (**{1 Unclassified}*)
 
+module Base64 = Extlib.Base64
 module Digest = Digest
 module Random = Extlib.ExtRandom.Random
 (*module Date:placeholder*)

@@ -21,8 +21,8 @@
 
 (********
 TODO: modules by keyword
-TODO: values by keyword
-TODO: types by keyword
+TODO: values  by keyword
+TODO: types   by keyword
 etc.
 *********)
 
@@ -573,8 +573,7 @@ class batlib_generator =
        Only document modules which may be reached from the root.
     *)
 
-(**Generate a list by topic.
-   
+(**Generate a list by topic.*)
     method generate_elements_index_by_topic:
       'a.
       elements:('a list)       ->

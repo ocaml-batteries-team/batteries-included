@@ -73,8 +73,8 @@ end
 module  Future =
 struct
 (*  module Lexers = Extlib.ExtGenlex.Languages*)
-  module  Genlex     = Extlib.ExtGenlex.Genlex
-  module  CharParser = Extlib.CharParser
+  module Genlex      = Extlib.ExtGenlex.Genlex
+  module CharParser  = Extlib.CharParser
   module UCharParser = Extlib.UCharParser
   module ParserCo    = Extlib.ParserCo
 end
@@ -86,8 +86,8 @@ end
 *)
 
 module  Exceptions= Extlib.ExtPrintexc.Printexc
-module  Return   = Extlib.Return
-module  Monad    = Extlib.Monad
+module  Return    = Extlib.Return
+module  Monad     = Extlib.Monad
 
 (**
    {2 Concurrency}
@@ -182,6 +182,8 @@ module  Transcode  (*Unicode transcoding*)
    @topic Data
    @topic Container*)
 
+module Data = Extlib.Interfaces
+
 (**
    {2 Mutable data containers}
 
@@ -190,6 +192,8 @@ module  Transcode  (*Unicode transcoding*)
 
 module  Array    = Extlib.ExtArray.Array
 module  Bigarray = Extlib.ExtBigarray.Bigarray
+module  Dllist   = Extlib.Dllist
+module  DynArray = Extlib.DynArray
 module  Enum     = Extlib.Enum
 module  Global   = Extlib.Global
 module  Hashtbl  = Extlib.ExtHashtbl.Hashtbl
@@ -209,6 +213,7 @@ module  Stream   = Extlib.ExtStream.Stream
 module  Lazy     = Batlib_Baselib_Lazy
 module  List     = Extlib.ExtList.List
 module  Map      = Extlib.ExtMap.Map
+module  MultiPMap= Extlib.MultiPMap
 module  Option   = Extlib.Option
 module  PMap     = Extlib.PMap
 module  PSet     = Extlib.PSet
@@ -331,7 +336,7 @@ module  Lexing = Batlib_Baselib_Lexing
 module  Parsing= Batlib_Baselib_Parsing
 module  Format = Batlib_Baselib_Format
 module  Printf = Extlib.ExtPrintf.Printf
-(*   100module  PCRE (*placeholder*)*)
+(* module  PCRE (*placeholder*)*)
 module  Scanf  = Batlib_Baselib_Scanf
 module  SExpr  = Toolchain.Batlib_Sexp_Conv
 
@@ -341,13 +346,13 @@ module  SExpr  = Toolchain.Batlib_Sexp_Conv
    @topic System
 *)
 
-module  Arg = Batlib_Baselib_Arg
-module  File= Extlib.File
-module  OptParse = Extlib.OptParse
-module Path = Batlib_Baselib_Filename
+module Arg      = Batlib_Baselib_Arg
+module File     = Extlib.File
+module OptParse = Extlib.OptParse
+module Path     = Batlib_Baselib_Filename
 (*module  Path:placeholder*)
-module  Shell = Batlib_Baselib_Sys
-module  Unix  = Extlib.ExtUnix.Unix
+module Shell    = Batlib_Baselib_Sys
+module Unix     = Extlib.ExtUnix.Unix
 (*module  Equeue:placeholder*)
 
 
@@ -355,4 +360,5 @@ module  Unix  = Extlib.ExtUnix.Unix
 
 module Digest = Batlib_Baselib_Digest
 module Random = Extlib.ExtRandom.Random
+module Base64 = Extlib.Base64
 (*module Date:placeholder*)
