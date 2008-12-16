@@ -1,8 +1,14 @@
 2008-12-16  David Teller  <David.Teller@univ-orleans.fr>
 
-	* src/main/threads/batteries.ml: Dlllist, Dynarray, MultiPMap, Base64 added
+	* build/odoc_tags.ml: [generate_elements_index_by_topic], [modules_by_topic], [topics] added
 
-	* src/main/nothreads/batteries.ml: Dlllist, Dynarray, MultiPMap, Base64 added
+	* build/odoc_tags.ml: [modules_by_topic], [topics] now initialized in [generate]
+
+	* build/odoc_tags.ml: [sort_by_topics] now uses a [StringSet] for the set of topics
+
+	* src/main/threads/batteries.ml: [Dlllist], [Dynarray], [MultiPMap], [Base64] added
+
+	* src/main/nothreads/batteries.ml: [Dlllist], Dynarray], MultiPMap], [Base64] added
 
 2008-12-15  David Teller  <David.Teller@univ-orleans.fr>
 

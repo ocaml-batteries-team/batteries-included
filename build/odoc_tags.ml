@@ -36,6 +36,7 @@ open Odoc_info.Module
 open Odoc_info.Type
 open Odoc_info.Class
 open Odoc_info.Exception
+module StringSet = Odoc_html.StringSet
 
 (*From the base library*)
 open List
@@ -410,7 +411,7 @@ let rebuild_structure modules =
    Determine into which topics each module/type/value/... goes
 *)
 let sort_by_topics modules =
-  let topics : (string, unit) Hashtbl.t =                        Hashtbl.create 16 (**The set of topics*)
+  let topics           : StringSet.t ref                       = ref StringSet.empty (**The set of topics*)
   and modules_by_topic : (string, t_module list ref) Hashtbl.t = Hashtbl.create 16 (**topic -> set of modules*)
   in
   let add_module top m =
@@ -425,7 +426,7 @@ let sort_by_topics modules =
 		 | _ -> ()) top
   in
   let push_top_topic l t = (*Push the latest topic on the stack of topics/levels*)
-    Hashtbl.add topics t ();
+    topics := StringSet.add t !topics;
     (`Topic t)::l 
   and push_top_level l t = (`Level t)::l (*Push the latest level on the stack of topics/levels*)
   and pop_top_to_level l level = 
@@ -479,7 +480,7 @@ let sort_by_topics modules =
 		List.fold push_top_topic (push_top_level (pop_top_to_level top l) l) x
 	    | _ -> top)*)
     | _ -> top (*!TODO: other tables*)
-  in modules_by_topic
+  in (StringSet.elements !topics, modules_by_topic)
 
 let find_renaming renamings original = 
   let rec aux s suffix = 
@@ -513,7 +514,9 @@ class batlib_generator =
   object(self)
     inherit Odoc_html.html as super
 
-    val mutable renamings : (string, (string*info option)) Hashtbl.t = Hashtbl.create 0      
+    val mutable renamings         : (string, (string*info option)) Hashtbl.t = Hashtbl.create 0
+    val mutable modules_by_topic  : string -> t_module list                  = fun _ -> assert false
+    val mutable list_topics       : string list = []
 
       (** {2 Determine the category of a name}*)
       
@@ -567,24 +570,58 @@ class batlib_generator =
     method make_link ?(target="detailsFrame") ~text ~url () =
       Printf.sprintf "<a href=%S target=%S>%s</a>" url target text
 
-    
-    (**{2 Customizing index generation}
-       
-       Only document modules which may be reached from the root.
-    *)
+(**
+   {2 Generation of indices}
+*)
 
 (**Generate a list by topic.*)
     method generate_elements_index_by_topic:
       'a.
-      elements:('a list)       ->
-      topic:('a -> string)     ->
-      name:('a -> Name.t)      ->
-      info:('a -> info option) ->
-      target:string            ->
-      title:string             ->
-      simple_file:string       -> unit =
-      fun ~elements ~topic ~name ~info ~target ~title ~simple_file ->
-
+      topics:(string list)         ->
+      elements:(string -> 'a list) ->
+      name:('a -> Name.t)          ->
+      info:('a -> info option)     ->
+      target:('a -> string)        ->
+      title:string                 ->
+      simple_file:string           -> unit =
+      fun ~topics ~elements ~name ~info ~target ~title ~simple_file ->
+	let topics = List.sort String.compare topics in
+        let chanout = open_out (Filename.concat !Args.target_dir simple_file) in
+        let b = new_buf () in
+	let each_element e   = 
+	  let simple_name = Name.simple (name e)
+	  and father_name = Name.father (name e) in
+	    bp b "<li class='index_entry_entry'>%s%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ())
+	      (if simple_name <> father_name && father_name <> "" then (*Print container module*)
+		 Printf.sprintf " [%s]" (self#make_link ~url:(fst (Naming.html_files father_name)) ~text:father_name ())
+	       else "");
+	    (self#html_of_info_first_sentence b (info e));
+	    bs b  "</li>\n"  in
+	let each_topic topic =
+	  match elements topic with [] -> ()
+	    | elems ->
+		bs b "<tr><td align=\"left\"><br>";
+		bs b topic ;
+		bs b "</td></tr>\n<tr class='index_entry'><td>\n" ;
+		bs b "<ul class='index_entry'>\n";
+		List.iter each_element elems;
+		bs b "</ul>\n</td></tr>" 
+	in
+	  try
+            bs b "<html>\n";
+            self#print_header b (self#inner_title title);
+            bs b "<body>\n<center><h1>";
+            bs b title;
+            bs b "</h1></center>\n" ;
+	    self#html_of_Index_list b;
+	    List.iter each_topic topics;
+	    bs b "</table><br>\n" ;
+            bs b "</body>\n</html>";
+            Buffer.output_buffer chanout b;
+            close_out chanout
+	  with
+	      Sys_error s -> raise (Failure s)
+	    | _ -> assert false
 
     (**Generate the list of types.
        In addition to the list of types defined inside modules, we generate
@@ -643,7 +680,7 @@ class batlib_generator =
 	      Printf.sprintf " [%s]" (self#make_link ~url:(fst (Naming.html_files father_name)) ~text:father_name ())
 	     else "");
 	    (self#html_of_info_first_sentence b (info e));
-	    bs b  "</li>\n"
+	    bs b  "</li>\n" 
         in
         let f_group l = (*Print all entries for a letter*)
           match l with
@@ -680,7 +717,8 @@ class batlib_generator =
 	| _ -> assert false
 
     method is_reachable_from_root m = true (*List.exists (fun p -> has_parent m ~parent:p) roots*)
-    method generate_modules_index _ =
+
+(*    method generate_modules_index _ =
       try
       let list_modules = List.filter (fun m -> self#is_reachable_from_root m.m_name) self#list_modules in
       self#generate_elements_index
@@ -690,7 +728,17 @@ class batlib_generator =
         (fun m -> fst (Naming.html_files m.m_name))
         Odoc_messages.index_of_modules
         self#index_modules
-      with _ -> assert false
+      with _ -> assert false*)
+    method generate_modules_index _ =
+      self#generate_elements_index_by_topic
+	~topics:list_topics 
+	~elements:modules_by_topic
+	~name:(fun m -> m.m_name)
+	~info:(fun m -> m.m_info)
+        ~target:(fun m -> fst (Naming.html_files m.m_name))
+        ~title:Odoc_messages.index_of_modules
+        ~simple_file:self#index_modules
+
 
     method html_of_Module_list b _ =
       try
@@ -926,7 +974,7 @@ class batlib_generator =
 	    Odoc_info.verbose "[Internal representation stage, no readable output generated yet]";
 	    ()
 	| None   -> 
-	    Odoc_info.verbose "[Final stage, generating html pages]";
+	    Odoc_info.verbose "[Final stage, we will generate html pages]";
 	    flush_all ();
 	    (*Pre-process every module*)
 	    List.iter (fun m -> verbose ("My bag contains "^m.m_name)) modules;
@@ -979,6 +1027,9 @@ class batlib_generator =
 		list_module_types ;
 	      (*Proceed to generation*)
 	      renamings <- renamed_modules;
+	      let topics = sort_by_topics modules in
+		modules_by_topic <- (let hash = snd topics in fun x -> !(Hashtbl.find hash x));
+		list_topics      <- fst topics;
 	      verbose "Beautification of modules complete, proceeding to generation";
 	      flush_all ();
 	      super#generate rewritten_modules;
