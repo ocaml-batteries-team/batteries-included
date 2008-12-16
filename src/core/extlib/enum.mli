@@ -467,7 +467,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
    with exceptionless error management, you may write [open Enum,
    ExceptionLess]. To locally replace module {!Enum} with a module of
    the same name but with exceptionless error management, you may
-   write [module Enum = Enum include ExceptionLess].
+   write {v module Enum = Enum include ExceptionLess v}.
 
 *)
 

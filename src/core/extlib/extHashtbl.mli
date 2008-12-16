@@ -205,7 +205,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
        with exceptionless error management, you may write [open Hashtbl,
        ExceptionLess]. To locally replace module {!Hashtbl} with a module of
        the same name but with exceptionless error management, you may
-       write [module Hashtbl = Hashtbl include ExceptionLess].
+       write {v module Hashtbl = Hashtbl include ExceptionLess v}.
        
     *)
       
@@ -303,7 +303,7 @@ module type S =
        with exceptionless error management, you may write [open Hashtbl,
        ExceptionLess]. To locally replace module {!Hashtbl} with a module of
        the same name but with exceptionless error management, you may
-       write [module Hashtbl = Hashtbl include ExceptionLess].
+       write {v module Hashtbl = Hashtbl include ExceptionLess v}.
        
     *)
       
@@ -523,7 +523,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
    with exceptionless error management, you may write [open Hashtbl,
    ExceptionLess]. To locally replace module {!Hashtbl} with a module of
    the same name but with exceptionless error management, you may
-   write [module Hashtbl = Hashtbl.Cap include ExceptionLess].
+   write {v module Hashtbl = Hashtbl.Cap include ExceptionLess v}.
    
 *)
   

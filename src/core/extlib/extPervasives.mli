@@ -892,7 +892,15 @@ val ( ^^ ) :
 *)
 
 external identity : 'a -> 'a = "%identity"
-(** the identity function. *)
+(** The identity function. *)
+
+val undefined : ?message:string -> 'a -> 'b
+(** The undefined function.
+
+    Evaluating [undefined x] always fails and raises an exception 
+    "Undefined". Optional argument [message] permits the 
+    customization of the error message.*)
+
 
 val ( |> ) : 'a -> ('a -> 'b) -> 'b
 (** Function application. [x |> f] is equivalent to [f x]. 

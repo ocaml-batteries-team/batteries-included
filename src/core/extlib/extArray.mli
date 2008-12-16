@@ -182,7 +182,7 @@ sig
   val find : ('a -> bool) -> 'a array -> 'a
     (** [find p a] returns the first element of array [a]
 	that satisfies the predicate [p].
-	raises [Not_found] if there is no value that satisfies [p] in the
+	@raise Not_found  if there is no value that satisfies [p] in the
 	array [a]. *)
 
   val mem : 'a -> 'a array -> bool
@@ -195,7 +195,7 @@ sig
   val findi : ('a -> bool) -> 'a array -> int
     (** [findi p a] returns the index of the first element of array [a]
 	that satisfies the predicate [p].
-	Raise [Not_found] if there is no value that satisfies [p] in the
+	@raise Not_found if there is no value that satisfies [p] in the
 	array [a].  *)
 
   val filter : ('a -> bool) -> 'a array -> 'a array
@@ -510,7 +510,7 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
     val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a
       (** [find p a] returns the first element of array [a]
 	  that satisfies the predicate [p].
-	  Raise [Not_found] if there is no value that satisfies [p] in the
+	  @raise Not_found if there is no value that satisfies [p] in the
 	  array [a]. *)
 
     val mem : 'a -> ('a, [> `Read]) t -> bool
@@ -523,7 +523,7 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
     val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
       (** [findi p a] returns the index of the first element of array [a]
 	  that satisfies the predicate [p].
-	  Raise [Not_found] if there is no value that satisfies [p] in the
+	  @raise Not_found if there is no value that satisfies [p] in the
 	  array [a].  *)
       
     val filter : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
