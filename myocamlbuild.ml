@@ -87,12 +87,21 @@ struct
     (*Options.ocamldoc  := A"ocamldoc"*) ()
 
   let after_rules () = 
+    dep  ["ocaml"; "doc"]   & ["build/odoc_tags.cmo"];
+    flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
+				A "-i"; A "build";
+				A "-g"; A "odoc_tags.cmo"; 
+			        A "-t"; A "OCaml Batteries Included" ;
+				A "-intro"; A "../build/intro.text"]
+
+
+(*  let after_rules () = 
     dep  ["ocaml"; "doc"]   & ["build/odoc_generator_batlib.cmo"];
     flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
 				A "-i"; A "build";
 				A "-g"; A "odoc_generator_batlib.cmo"; 
 			        A "-t"; A "OCaml Batteries Included" ;
-				A "-intro"; A "../build/intro.text"]
+				A "-intro"; A "../build/intro.text"]*)
 end
 
 

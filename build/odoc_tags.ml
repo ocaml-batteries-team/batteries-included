@@ -411,11 +411,14 @@ let rebuild_structure modules =
    Determine into which topics each module/type/value/... goes
 *)
 let sort_by_topics modules =
+  let write s = verbose ( "[SORT] "^s ) in
   let topics           : StringSet.t ref                       = ref StringSet.empty (**The set of topics*)
   and modules_by_topic : (string, t_module list ref) Hashtbl.t = Hashtbl.create 16 (**topic -> set of modules*)
   in
   let add_module top m =
+    write ("Adding module "^m.m_name);
     List.iter (function `Topic t -> 
+		 write ("Adding module "^m.m_name^" to topic "^t);
 		 (
 		   try 
 		     let l = Hashtbl.find modules_by_topic t in
@@ -426,17 +429,23 @@ let sort_by_topics modules =
 		 | _ -> ()) top
   in
   let push_top_topic l t = (*Push the latest topic on the stack of topics/levels*)
+    write ("Adding topic "^t);
     topics := StringSet.add t !topics;
     (`Topic t)::l 
-  and push_top_level l t = (`Level t)::l (*Push the latest level on the stack of topics/levels*)
+  and push_top_level l t = (*Push the latest level on the stack of topics/levels*)
+    write ("Entering level "^(string_of_int t)); 
+    (`Level t)::l 
   and pop_top_to_level l level = 
+    write ("Moving back to level "^(string_of_int level));
     let rec aux = function
       | (`Level l')::t when l' <= level -> aux t
       | (`Topic _)::t                   -> aux t
       | _ as t                          -> t
     in aux l
   in
-  let adjust_to_level top level = push_top_level (pop_top_to_level top level) level
+  let adjust_to_level top level = 
+    write ("Moving to level "^(string_of_int level));
+    push_top_level (pop_top_to_level top level) level
   in
   let adjust_top_from_comment top c = 
     let rec aux top = function
@@ -480,7 +489,10 @@ let sort_by_topics modules =
 		List.fold push_top_topic (push_top_level (pop_top_to_level top l) l) x
 	    | _ -> top)*)
     | _ -> top (*!TODO: other tables*)
-  in (StringSet.elements !topics, modules_by_topic)
+  and handle_module top m = handle_kind (adjust_top_from_info top m.m_info) m.m_kind
+  in
+  let _ = List.fold_left handle_module [] modules in
+    (StringSet.elements !topics, modules_by_topic)
 
 let find_renaming renamings original = 
   let rec aux s suffix = 
@@ -585,7 +597,7 @@ class batlib_generator =
       title:string                 ->
       simple_file:string           -> unit =
       fun ~topics ~elements ~name ~info ~target ~title ~simple_file ->
-	let topics = List.sort String.compare topics in
+(*	let topics = List.sort String.compare topics in*)(*Actually, let's not sort topics*)
         let chanout = open_out (Filename.concat !Args.target_dir simple_file) in
         let b = new_buf () in
 	let each_element e   = 

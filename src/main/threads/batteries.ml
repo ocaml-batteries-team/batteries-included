@@ -65,19 +65,7 @@ module Legacy = struct
     (**/**)
 end
 
-(**
-   Preview of future modules.
 
-   @topic Future
-*)
-module  Future =
-struct
-(*  module Lexers = Extlib.ExtGenlex.Languages*)
-  module Genlex      = Extlib.ExtGenlex.Genlex
-  module CharParser  = Extlib.CharParser
-  module UCharParser = Extlib.UCharParser
-  module ParserCo    = Extlib.ParserCo
-end
         
 (**
    {1 Control}
@@ -362,3 +350,17 @@ module Digest = Batlib_Baselib_Digest
 module Random = Extlib.ExtRandom.Random
 module Base64 = Extlib.Base64
 (*module Date:placeholder*)
+
+(**
+   Preview of future modules.
+
+   @topic Future
+*)
+module  Future =
+struct
+(*  module Lexers = Extlib.ExtGenlex.Languages*)
+  module Genlex      = Extlib.ExtGenlex.Genlex
+  module CharParser  = Extlib.CharParser
+  module UCharParser = Extlib.UCharParser
+  module ParserCo    = Extlib.ParserCo
+end
