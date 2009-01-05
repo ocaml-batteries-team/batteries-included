@@ -1,3 +1,25 @@
+2009-01-05  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extStr.mli: created
+
+	* src/core/extlib/extStr.ml: created
+
+	* src/core/extlib.mlpack: [ExtStr] added
+
+	* src/main/threads/batteries.ml: [Batlib_Baselib_Str] replaced with [Extlib.ExtStr.Str]
+
+	* src/main/threads/batteries.mllib: [Batlib_Baselib_Str] removed
+
+	* src/main/nothreads/batteries.ml: [Batlib_Baselib_Str] replaced with [Extlib.ExtStr.Str]
+
+	* src/main/nothreads/batteries.mllib: [Batlib_Baselib_Str] removed
+
+2009-01-03  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/main/nothreads/batteries.ml: [Digest] renamed [MD5]
+
+	* src/main/threads/batteries.ml: [Digest] renamed [MD5]
+
 2008-12-16  David Teller  <David.Teller@univ-orleans.fr>
 
 	* build/odoc_tags.ml: [generate_elements_index_by_topic], [modules_by_topic], [topics] added

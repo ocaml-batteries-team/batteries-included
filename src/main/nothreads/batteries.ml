@@ -352,7 +352,7 @@ module  Lexing = Lexing
 module  Parsing= Parsing
 module  Format = Format
 module  Printf = Extlib.ExtPrintf.Printf
-module  Str    = Str
+module  Str    = Extlib.ExtStr.Str
 (*   100module  PCRE (*placeholder*)*)
 module  Scanf  = Scanf
 module  SExpr  = Toolchain.Batlib_Sexp_Conv
@@ -375,6 +375,7 @@ module  Unix  = Unix
 (**{1 Unclassified}*)
 
 module Base64 = Extlib.Base64
-module Digest = Digest
+(*module Digest = Digest*)
+module MD5    = Digest
 module Random = Extlib.ExtRandom.Random
 (*module Date:placeholder*)
