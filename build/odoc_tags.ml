@@ -412,6 +412,11 @@ let rebuild_structure modules =
 *)
 let sort_by_topics modules =
   let write s = verbose ( "[SORT] "^s ) in
+  let rec string_of_path = function
+    | []              -> ""
+    | (`Level l)::t   -> Printf.sprintf "[%d] %s" l (string_of_path t)
+    | (`Topic top)::t -> Printf.sprintf "%s > %s" top (string_of_path t)
+  in
   (*let write s = Printf.eprintf "[SORT] %s\n%!" s in*)
   let topics           : StringSet.t ref                       = ref StringSet.empty (**The set of topics*)
   and modules_by_topic : (string, t_module list ref) Hashtbl.t = Hashtbl.create 16 (**topic -> set of modules*)
@@ -437,12 +442,15 @@ let sort_by_topics modules =
     write ("Entering level "^(string_of_int t)); 
     (`Level t)::l 
   and pop_top_to_level l level = 
-    write ("Moving back to level "^(string_of_int level));
+    write ("Removing levels higher than "^(string_of_int level));
     let rec aux = function
-      | (`Level l')::t when l' <= level -> aux t
+      | (`Level l')::t when l' >= level -> aux t
       | (`Topic _)::t                   -> aux t
       | _ as t                          -> t
-    in aux l
+    in 
+    let result = aux l in
+      write("From "^(string_of_path l)^" to "^(string_of_path result));
+      result
   in
   let adjust_to_level top level = 
     write ("Moving to level "^(string_of_int level));
@@ -450,14 +458,14 @@ let sort_by_topics modules =
   in
   let adjust_top_from_comment top c = 
     fold_left (fun acc text -> match text with
-		 | Title  (level, title, text) -> adjust_to_level top level 
+		 | Title  (level, title, text) -> adjust_to_level acc level 
 		 | Custom (("topic" | "{topic"), text)      -> 
 		     write ("Custom topic "^(string_of_text text));
-		     push_top_topic top (string_of_text text)
+		     push_top_topic acc (string_of_text text)
 		 | Custom (other, _) ->
 		     write ("Custom other "^other);
-		     top
-		 | _ -> top ) top c
+		     acc
+		 | _ -> acc ) top c
   in
   let adjust_top_from_info top = function
     | None                -> top
@@ -754,6 +762,10 @@ class batlib_generator =
       with _ -> assert false*)
 
     method generate_modules_index _ =
+      verbose ("[Index] Here's the list of modules");
+      List.iter (fun m -> print_endline m.m_name) list_modules;
+      verbose ("[Index] Here's the list of rewritten modules");
+      List.iter (fun t -> List.iter (fun m -> print_endline m.m_name) (modules_by_topic t)) list_topics;
       self#generate_elements_index_by_topic
 	~topics:list_topics 
 	~elements:modules_by_topic
@@ -1043,7 +1055,7 @@ class batlib_generator =
 		list_module_types;
 	      (*Proceed to generation*)
 	      renamings <- renamed_modules;
-	      let topics = sort_by_topics modules in
+	      let topics = sort_by_topics (*modules*)rewritten_modules in
 		modules_by_topic <- (let hash = snd topics in fun x -> try !(Hashtbl.find hash x) with Not_found -> []);
 		list_topics      <- fst topics;
 		verbose "Beautification of modules complete, proceeding to generation";

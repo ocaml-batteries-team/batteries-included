@@ -1,6 +1,10 @@
 2009-01-06  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/interfaces.ml*: header added
+
 	* build/odoc_tags.ml: [generate_element_index_by_topic] now prints exception in case of error
+
+	* build/odoc_tags.ml: in [adjust_top_from_comment], propagating [acc] instead of [top]
 
 	* build/odoc_tags.ml: [modules_by_topics] now returns an empty list instead of [Not_found]
 

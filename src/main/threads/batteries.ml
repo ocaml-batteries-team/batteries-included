@@ -70,9 +70,7 @@ end
 (**
    {3 Control}
 
-   TEST
-
-   {topic Control} flow
+   {topic Control}
 *)
 
 module  Exceptions= Extlib.ExtPrintexc.Printexc
@@ -346,7 +344,10 @@ module Unix     = Extlib.ExtUnix.Unix
 (*module  Equeue:placeholder*)
 
 
-(**{3 Unclassified}*)
+(**{3 Unclassified}
+
+   {topic Unclassified}
+*)
 
 (*module Digest = Batlib_Baselib_Digest*)
 module MD5    = Batlib_Baselib_Digest
