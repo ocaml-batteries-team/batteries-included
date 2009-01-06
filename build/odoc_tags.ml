@@ -412,6 +412,7 @@ let rebuild_structure modules =
 *)
 let sort_by_topics modules =
   let write s = verbose ( "[SORT] "^s ) in
+  (*let write s = Printf.eprintf "[SORT] %s\n%!" s in*)
   let topics           : StringSet.t ref                       = ref StringSet.empty (**The set of topics*)
   and modules_by_topic : (string, t_module list ref) Hashtbl.t = Hashtbl.create 16 (**topic -> set of modules*)
   in
@@ -448,18 +449,27 @@ let sort_by_topics modules =
     push_top_level (pop_top_to_level top level) level
   in
   let adjust_top_from_comment top c = 
-    let rec aux top = function
-      | Title (level, _, _) :: t  -> aux (adjust_to_level top level) t
-      | Custom ("topic", text)::t -> aux (push_top_topic top (string_of_text text)) t
-      | _::t -> aux top t
-      | [] -> top
-    in aux top c
+    fold_left (fun acc text -> match text with
+		 | Title  (level, title, text) -> adjust_to_level top level 
+		 | Custom (("topic" | "{topic"), text)      -> 
+		     write ("Custom topic "^(string_of_text text));
+		     push_top_topic top (string_of_text text)
+		 | Custom (other, _) ->
+		     write ("Custom other "^other);
+		     top
+		 | _ -> top ) top c
   in
   let adjust_top_from_info top = function
-    | None              -> top
-    | Some {i_custom = l} -> 
-	List.fold_left (fun acc -> function ("topic", t) -> push_top_topic acc (string_of_text t)
-			  |         _ -> acc) top l
+    | None                -> top
+    | Some ({i_custom = l} as i) -> 
+	write ("Meeting custom in info "^(string_of_info i));
+	List.fold_left (fun acc -> function (("topic"|"{topic"), t) -> 
+			  write ("Custom topic in info "^(string_of_text t));
+			  push_top_topic acc (string_of_text t)
+			  |   (other, _)  -> 
+				write ("Custom other in info "^other);
+				acc
+(*			  |   _ -> acc*)) top l
   in
   let rec handle_kind top = function
     | Module_struct       x  -> List.fold_left handle_module_element top x
@@ -633,7 +643,8 @@ class batlib_generator =
             close_out chanout
 	  with
 	      Sys_error s -> raise (Failure s)
-	    | _ -> assert false
+	    | e -> Printf.eprintf "%s\n%!" (Printexc.to_string e);
+		assert false
 
     (**Generate the list of types.
        In addition to the list of types defined inside modules, we generate
@@ -741,6 +752,7 @@ class batlib_generator =
         Odoc_messages.index_of_modules
         self#index_modules
       with _ -> assert false*)
+
     method generate_modules_index _ =
       self#generate_elements_index_by_topic
 	~topics:list_topics 
@@ -760,6 +772,7 @@ class batlib_generator =
       with _ -> assert false
 
 (**Customizing appearance of modules*)
+
 
     method html_of_module b ?(info=true) ?(complete=true) ?(with_link=true) m =
       try
@@ -795,7 +808,7 @@ class batlib_generator =
 	  warning ("Module "^m.m_name^" has no associated information")
 	end
       with _ -> assert false
-	  
+
 
     method html_of_Ref b name ref_opt =
       let renamed = find_renaming renamings name in
@@ -866,15 +879,6 @@ class batlib_generator =
       in s3
       with _ -> assert false
 
-
-
-
-(*    method html_of_module b ?info ?complete ?with_link m =
-      try 
-	verbose ("Generating html for module "^m.m_name);
-	flush_all ();
-	super#html_of_module b ?info ?complete ?with_link m
-      with _ -> assert false *)
 
     method index_prefix = "root"
     (** Generate [index.html], as well as [indices.html] for the given module list*)
@@ -1036,35 +1040,31 @@ class batlib_generator =
 		List.fold_left
 		(fun acc t -> Odoc_html.StringSet.add t.mt_name acc)
 		known_module_types_names
-		list_module_types ;
+		list_module_types;
 	      (*Proceed to generation*)
 	      renamings <- renamed_modules;
 	      let topics = sort_by_topics modules in
-		modules_by_topic <- (let hash = snd topics in fun x -> !(Hashtbl.find hash x));
+		modules_by_topic <- (let hash = snd topics in fun x -> try !(Hashtbl.find hash x) with Not_found -> []);
 		list_topics      <- fst topics;
-	      verbose "Beautification of modules complete, proceeding to generation";
-	      flush_all ();
-	      super#generate rewritten_modules;
-	      (*Generate indices*)
-	      self#generate_external_index "types"       Naming.mark_type  known_types_names;
-	      self#generate_external_index "values"      Naming.mark_value known_values_names;
-	      self#generate_external_index "modules"     "" known_modules_names;
-	      self#generate_external_index "classes"     "" known_classes_names;
-	      self#generate_external_index "exceptions"  Naming.mark_exception   known_exceptions_names;
-	      self#generate_external_index "methods"     Naming.mark_method      known_methods_names;
-	      self#generate_external_index "attributes"  Naming.mark_attribute   known_attributes_names;
-	      self#generate_external_index "class_types" "" known_class_types_names;
-	      self#generate_external_index "module_types""" known_module_types_names
-
+		verbose "Beautification of modules complete, proceeding to generation";
+		flush_all ();
+		super#generate rewritten_modules;
+		(*Generate indices*)
+		self#generate_external_index "types"       Naming.mark_type  known_types_names;
+		self#generate_external_index "values"      Naming.mark_value known_values_names;
+		self#generate_external_index "modules"     "" known_modules_names;
+		self#generate_external_index "classes"     "" known_classes_names;
+		self#generate_external_index "exceptions"  Naming.mark_exception   known_exceptions_names;
+		self#generate_external_index "methods"     Naming.mark_method      known_methods_names;
+		self#generate_external_index "attributes"  Naming.mark_attribute   known_attributes_names;
+		self#generate_external_index "class_types" "" known_class_types_names;
+		self#generate_external_index "module_types""" known_module_types_names
       with e -> Printf.eprintf "%s\n%!" (Printexc.to_string e);
-	  assert false
+	assert false
 
-(*    method html_of_custom_tag_developer text = 
-      verbose ("Generating developer name "^(string_of_text text));
-      "<div><span style ='developer'>developer:</span> "^(string_of_text text)^"</span></div>"*)
 
     initializer
-(*      tag_functions         <- ("developer", self#html_of_custom_tag_developer) :: tag_functions;*)
+(*      tag_functions <- ("topic", fun _ -> "topic") :: tag_functions;*)
       default_style_options <- default_style_options@
 	["li.index_of {display:inline}";
 	 "ul.indices  {display:inline;font-variant:small-caps;list-style-position: inside;list-style-type:none;padding:0px}";
