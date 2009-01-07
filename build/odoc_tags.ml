@@ -414,7 +414,7 @@ let sort_by_topics modules =
   let write s = verbose ( "[SORT] "^s ) in
   let rec string_of_path = function
     | []              -> ""
-    | (`Level l)::t   -> Printf.sprintf "[%d] %s" l (string_of_path t)
+    | (`Level l)::t   -> Printf.sprintf "[%d] > %s" l (string_of_path t)
     | (`Topic top)::t -> Printf.sprintf "%s > %s" top (string_of_path t)
   in
   (*let write s = Printf.eprintf "[SORT] %s\n%!" s in*)
@@ -437,24 +437,30 @@ let sort_by_topics modules =
   let push_top_topic l t = (*Push the latest topic on the stack of topics/levels*)
     write ("Adding topic "^t);
     topics := StringSet.add t !topics;
-    (`Topic t)::l 
+    let result = (`Topic t)::l in
+    write ("Added topics from "^(string_of_path l)^" to "^(string_of_path result));
+      result
   and push_top_level l t = (*Push the latest level on the stack of topics/levels*)
     write ("Entering level "^(string_of_int t)); 
-    (`Level t)::l 
+    let result = (`Level t)::l in
+      write ("Entered level from "^(string_of_path l)^" to "^(string_of_path result));
+      result
   and pop_top_to_level l level = 
     write ("Removing levels higher than "^(string_of_int level));
-    let rec aux = function
-      | (`Level l')::t when l' >= level -> aux t
-      | (`Topic _)::t                   -> aux t
-      | _ as t                          -> t
+    let rec aux prefix = function
+      | (`Level l')::t when l' >= level -> aux [] t
+      | ((`Topic _ ) as p)::t           -> aux (p::prefix) t
+      | _ as t                          -> List.rev_append prefix t
     in 
-    let result = aux l in
+    let result = aux [] l in
       write("From "^(string_of_path l)^" to "^(string_of_path result));
       result
   in
   let adjust_to_level top level = 
     write ("Moving to level "^(string_of_int level));
-    push_top_level (pop_top_to_level top level) level
+    let result = push_top_level (pop_top_to_level top level) level in
+      write("Moved levels from "^(string_of_path top)^" to "^(string_of_path result));
+      result
   in
   let adjust_top_from_comment top c = 
     fold_left (fun acc text -> match text with
@@ -474,8 +480,8 @@ let sort_by_topics modules =
 	List.fold_left (fun acc -> function (("topic"|"{topic"), t) -> 
 			  write ("Custom topic in info "^(string_of_text t));
 			  push_top_topic acc (string_of_text t)
-			  |   (other, _)  -> 
-				write ("Custom other in info "^other);
+			  |   (other, content)  -> 
+				write ("Custom other in info "^other^": "^(string_of_text content));
 				acc
 (*			  |   _ -> acc*)) top l
   in
@@ -615,7 +621,7 @@ class batlib_generator =
       title:string                 ->
       simple_file:string           -> unit =
       fun ~topics ~elements ~name ~info ~target ~title ~simple_file ->
-(*	let topics = List.sort String.compare topics in*)(*Actually, let's not sort topics*)
+	let topics = List.sort String.compare topics in(*Actually, let's not sort topics*)
         let chanout = open_out (Filename.concat !Args.target_dir simple_file) in
         let b = new_buf () in
 	let each_element e   = 

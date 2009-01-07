@@ -2,9 +2,9 @@
 (**
    Automatically opened module.
 
-   {topic IO}
-   {topic Printing}
-   {topic Files}
+   @topic IO
+   @topic Printing
+   @topic Files
 
 *)
 module Standard = Extlib.ExtPervasives.Pervasives
@@ -13,7 +13,7 @@ module Standard = Extlib.ExtPervasives.Pervasives
 
     For more information, see the documentation of OCaml.
 
-    {topic Legacy}
+    @topic Legacy
 *)
 module Legacy = struct
   (**/**)
@@ -146,7 +146,7 @@ end
 
 module  IO = Extlib.IO
 
-(** {topic Network}*)
+(** @topic Network*)
 module Netchannels = Libs.ExtNetchannels.Netchannels
 
 
@@ -281,6 +281,7 @@ module  Compilers= Toolchain.Builtin_tools
 
    {topic Internals}
 *)
+
 module  Callback = Batlib_Baselib_Callback
 module  Gc       = Extlib.ExtGc.Gc
 module  Marshal  = Extlib.ExtMarshal.Marshal
@@ -358,7 +359,7 @@ module Base64 = Extlib.Base64
 (**
    Preview of future modules.
 
-   {topic Future}
+   @topic Future
 *)
 module  Future =
 struct
