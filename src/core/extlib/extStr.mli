@@ -1,23 +1,35 @@
-(***********************************************************************)
-(*                                                                     *)
-(*                           Objective Caml                            *)
-(*                                                                     *)
-(*            Xavier Leroy, projet Cristal, INRIA Rocquencourt         *)
-(*                                                                     *)
-(*  Copyright 1996 Institut National de Recherche en Informatique et   *)
-(*  en Automatique.  All rights reserved.  This file is distributed    *)
-(*  under the terms of the GNU Library General Public License, with    *)
-(*  the special exception on linking described in file ../../LICENSE.  *)
-(*                                                                     *)
-(***********************************************************************)
+(*
+ * ExtStr - Additional functions for regular expressions
+ * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
 
-(* $Id: str.mli,v 1.24 2005/03/24 17:20:53 doligez Exp $ *)
+
 
 (** Regular expressions and high-level string processing 
 
+    @author Xavier Leroy (Base module)
+    @author David Teller
+
     @documents Str
 *)
-
+module Str :
+sig
 
 (** {6 Regular expressions} *)
 
@@ -77,77 +89,94 @@ val regexp_string_case_fold : string -> regexp
 
 val string_match : regexp -> string -> int -> bool
 (** [string_match r s start] tests whether a substring of [s] that
-   starts at position [start] matches the regular expression [r].
-   The first character of a string has position [0], as usual. *)
-
-val search_forward : regexp -> string -> int -> int
-(** [search_forward r s start] searches the string [s] for a substring
-   matching the regular expression [r]. The search starts at position
-   [start] and proceeds towards the end of the string.
-   Return the position of the first character of the matched
-   substring, or raise [Not_found] if no substring matches. *)
-
-val search_backward : regexp -> string -> int -> int
-(** [search_backward r s last] searches the string [s] for a
-  substring matching the regular expression [r]. The search first
-  considers substrings that start at position [last] and proceeds
-  towards the beginning of string. Return the position of the first
-  character of the matched substring; raise [Not_found] if no
-  substring matches. *)
+    starts at position [start] matches the regular expression [r].
+    The first character of a string has position [0], as usual. *)
 
 val string_partial_match : regexp -> string -> int -> bool
 (** Similar to {!Str.string_match}, but also returns true if
    the argument string is a prefix of a string that matches.
    This includes the case of a true complete match. *)
 
+
+val search : ?offset:int -> ?backwards:bool -> regexp -> string -> (int * int * string) Enum.t
+  (**[search r s] searches for all the substrings of [s] matching
+     regular expression [r]. The result is a triple start offset/end offset/
+     matched string.
+
+     @param offset The offset at which to start searching in the string. If
+     unspecified, start search at the beginning of [s].
+     @param backwards If [false] or unspecified, search forward. Otherwise,
+     search backwards.
+  *)
+
+(** {7 Low-level functions}
+
+    These functions are quite fragile and should be considered obsolete.
+*)
+
+val search_forward : regexp -> string -> int -> int
+(** [search_forward r s start] searches the string [s] for a substring
+    matching the regular expression [r]. The search starts at position
+    [start] and proceeds towards the end of the string.
+    Return the position of the first character of the matched
+    substring, or raise [Not_found] if no substring matches. *)
+
+val search_backward : regexp -> string -> int -> int
+(** [search_backward r s last] searches the string [s] for a
+    substring matching the regular expression [r]. The search first
+    considers substrings that start at position [last] and proceeds
+    towards the beginning of string. Return the position of the first
+    character of the matched substring; raise [Not_found] if no
+    substring matches. *)
+
 val matched_string : string -> string
 (** [matched_string s] returns the substring of [s] that was matched
-   by the latest {!Str.string_match}, {!Str.search_forward} or 
-   {!Str.search_backward}.
-   The user must make sure that the parameter [s] is the same string
-   that was passed to the matching or searching function. *)
+    by the latest {!Str.string_match}, {!Str.search_forward} or 
+    {!Str.search_backward}.
+    The user must make sure that the parameter [s] is the same string
+    that was passed to the matching or searching function. *)
         
 val match_beginning : unit -> int
 (** [match_beginning()] returns the position of the first character
-   of the substring that was matched by {!Str.string_match},
-   {!Str.search_forward} or {!Str.search_backward}. *)
+    of the substring that was matched by {!Str.string_match},
+    {!Str.search_forward} or {!Str.search_backward}. *)
 
 val match_end : unit -> int
 (** [match_end()] returns the position of the character following the 
-   last character of the substring that was matched by [string_match],
-   [search_forward] or [search_backward]. *)
+    last character of the substring that was matched by [string_match],
+    [search_forward] or [search_backward]. *)
         
 val matched_group : int -> string -> string
 (** [matched_group n s] returns the substring of [s] that was matched
-   by the [n]th group [\(...\)] of the regular expression during
-   the latest {!Str.string_match}, {!Str.search_forward} or 
-   {!Str.search_backward}.
-   The user must make sure that the parameter [s] is the same string
-   that was passed to the matching or searching function.
-   [matched_group n s] raises [Not_found] if the [n]th group
-   of the regular expression was not matched.  This can happen
-   with groups inside alternatives [\|], options [?]
-   or repetitions [*].  For instance, the empty string will match
-   [\(a\)*], but [matched_group 1 ""] will raise [Not_found]
-   because the first group itself was not matched. *)
-
+    by the [n]th group [\(...\)] of the regular expression during
+    the latest {!Str.string_match}, {!Str.search_forward} or 
+    {!Str.search_backward}.
+    The user must make sure that the parameter [s] is the same string
+    that was passed to the matching or searching function.
+    [matched_group n s] raises [Not_found] if the [n]th group
+    of the regular expression was not matched.  This can happen
+    with groups inside alternatives [\|], options [?]
+    or repetitions [*].  For instance, the empty string will match
+    [\(a\)*], but [matched_group 1 ""] will raise [Not_found]
+    because the first group itself was not matched. *)
+  
 val group_beginning : int -> int
 (** [group_beginning n] returns the position of the first character
-   of the substring that was matched by the [n]th group of
-   the regular expression. 
-   @raise Not_found if the [n]th group of the regular expression
-   was not matched.
-   @raise Invalid_argument if there are fewer than [n] groups in
-   the regular expression. *)
+    of the substring that was matched by the [n]th group of
+    the regular expression. 
+    @raise Not_found if the [n]th group of the regular expression
+    was not matched.
+    @raise Invalid_argument if there are fewer than [n] groups in
+    the regular expression. *)
 
 val group_end : int -> int
-(** [group_end n] returns
-   the position of the character following the last character of
-   substring that was matched by the [n]th group of the regular expression. 
-   @raise Not_found if the [n]th group of the regular expression
-   was not matched.
-   @raise Invalid_argument if there are fewer than [n] groups in
-   the regular expression. *)
+  (** [group_end n] returns
+      the position of the character following the last character of
+      substring that was matched by the [n]th group of the regular expression. 
+      @raise Not_found if the [n]th group of the regular expression
+      was not matched.
+      @raise Invalid_argument if there are fewer than [n] groups in
+      the regular expression. *)
 
 
 (** {6 Replacement} *)
@@ -250,3 +279,4 @@ val first_chars : string -> int -> string
 val last_chars : string -> int -> string
 (** [last_chars s n] returns the last [n] characters of [s]. *)
 
+end

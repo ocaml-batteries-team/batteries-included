@@ -21,8 +21,8 @@
 
 (********
 TODO: modules by keyword
-TODO: values by keyword
-TODO: types by keyword
+TODO: values  by keyword
+TODO: types   by keyword
 etc.
 *********)
 
@@ -36,6 +36,7 @@ open Odoc_info.Module
 open Odoc_info.Type
 open Odoc_info.Class
 open Odoc_info.Exception
+module StringSet = Odoc_html.StringSet
 
 (*From the base library*)
 open List
@@ -410,11 +411,20 @@ let rebuild_structure modules =
    Determine into which topics each module/type/value/... goes
 *)
 let sort_by_topics modules =
-  let topics : (string, unit) Hashtbl.t =                        Hashtbl.create 16 (**The set of topics*)
+  let write s = verbose ( "[SORT] "^s ) in
+  let rec string_of_path = function
+    | []              -> ""
+    | (`Level l)::t   -> Printf.sprintf "[%d] > %s" l (string_of_path t)
+    | (`Topic top)::t -> Printf.sprintf "%s > %s" top (string_of_path t)
+  in
+  (*let write s = Printf.eprintf "[SORT] %s\n%!" s in*)
+  let topics           : StringSet.t ref                       = ref StringSet.empty (**The set of topics*)
   and modules_by_topic : (string, t_module list ref) Hashtbl.t = Hashtbl.create 16 (**topic -> set of modules*)
   in
   let add_module top m =
+    write ("Adding module "^m.m_name);
     List.iter (function `Topic t -> 
+		 write ("Adding module "^m.m_name^" to topic "^t);
 		 (
 		   try 
 		     let l = Hashtbl.find modules_by_topic t in
@@ -425,31 +435,55 @@ let sort_by_topics modules =
 		 | _ -> ()) top
   in
   let push_top_topic l t = (*Push the latest topic on the stack of topics/levels*)
-    Hashtbl.add topics t ();
-    (`Topic t)::l 
-  and push_top_level l t = (`Level t)::l (*Push the latest level on the stack of topics/levels*)
+    write ("Adding topic "^t);
+    topics := StringSet.add t !topics;
+    let result = (`Topic t)::l in
+    write ("Added topics from "^(string_of_path l)^" to "^(string_of_path result));
+      result
+  and push_top_level l t = (*Push the latest level on the stack of topics/levels*)
+    write ("Entering level "^(string_of_int t)); 
+    let result = (`Level t)::l in
+      write ("Entered level from "^(string_of_path l)^" to "^(string_of_path result));
+      result
   and pop_top_to_level l level = 
-    let rec aux = function
-      | (`Level l')::t when l' <= level -> aux t
-      | (`Topic _)::t                   -> aux t
-      | _ as t                          -> t
-    in aux l
+    write ("Removing levels higher than "^(string_of_int level));
+    let rec aux prefix = function
+      | (`Level l')::t when l' >= level -> aux [] t
+      | ((`Topic _ ) as p)::t           -> aux (p::prefix) t
+      | _ as t                          -> List.rev_append prefix t
+    in 
+    let result = aux [] l in
+      write("From "^(string_of_path l)^" to "^(string_of_path result));
+      result
   in
-  let adjust_to_level top level = push_top_level (pop_top_to_level top level) level
+  let adjust_to_level top level = 
+    write ("Moving to level "^(string_of_int level));
+    let result = push_top_level (pop_top_to_level top level) level in
+      write("Moved levels from "^(string_of_path top)^" to "^(string_of_path result));
+      result
   in
   let adjust_top_from_comment top c = 
-    let rec aux top = function
-      | Title (level, _, _) :: t  -> aux (adjust_to_level top level) t
-      | Custom ("topic", text)::t -> aux (push_top_topic top (string_of_text text)) t
-      | _::t -> aux top t
-      | [] -> top
-    in aux top c
+    fold_left (fun acc text -> match text with
+		 | Title  (level, title, text) -> adjust_to_level acc level 
+		 | Custom (("topic" | "{topic"), text)      -> 
+		     write ("Custom topic "^(string_of_text text));
+		     push_top_topic acc (string_of_text text)
+		 | Custom (other, _) ->
+		     write ("Custom other "^other);
+		     acc
+		 | _ -> acc ) top c
   in
   let adjust_top_from_info top = function
-    | None              -> top
-    | Some {i_custom = l} -> 
-	List.fold_left (fun acc -> function ("topic", t) -> push_top_topic acc (string_of_text t)
-			  |         _ -> acc) top l
+    | None                -> top
+    | Some ({i_custom = l} as i) -> 
+	write ("Meeting custom in info "^(string_of_info i));
+	List.fold_left (fun acc -> function (("topic"|"{topic"), t) -> 
+			  write ("Custom topic in info "^(string_of_text t));
+			  push_top_topic acc (string_of_text t)
+			  |   (other, content)  -> 
+				write ("Custom other in info "^other^": "^(string_of_text content));
+				acc
+(*			  |   _ -> acc*)) top l
   in
   let rec handle_kind top = function
     | Module_struct       x  -> List.fold_left handle_module_element top x
@@ -479,7 +513,10 @@ let sort_by_topics modules =
 		List.fold push_top_topic (push_top_level (pop_top_to_level top l) l) x
 	    | _ -> top)*)
     | _ -> top (*!TODO: other tables*)
-  in modules_by_topic
+  and handle_module top m = handle_kind (adjust_top_from_info top m.m_info) m.m_kind
+  in
+  let _ = List.fold_left handle_module [] modules in
+    (StringSet.elements !topics, modules_by_topic)
 
 let find_renaming renamings original = 
   let rec aux s suffix = 
@@ -513,7 +550,9 @@ class batlib_generator =
   object(self)
     inherit Odoc_html.html as super
 
-    val mutable renamings : (string, (string*info option)) Hashtbl.t = Hashtbl.create 0      
+    val mutable renamings         : (string, (string*info option)) Hashtbl.t = Hashtbl.create 0
+    val mutable modules_by_topic  : string -> t_module list                  = fun _ -> assert false
+    val mutable list_topics       : string list = []
 
       (** {2 Determine the category of a name}*)
       
@@ -567,25 +606,59 @@ class batlib_generator =
     method make_link ?(target="detailsFrame") ~text ~url () =
       Printf.sprintf "<a href=%S target=%S>%s</a>" url target text
 
-    
-    (**{2 Customizing index generation}
-       
-       Only document modules which may be reached from the root.
-    *)
+(**
+   {2 Generation of indices}
+*)
 
-(**Generate a list by topic.
-   
+(**Generate a list by topic.*)
     method generate_elements_index_by_topic:
       'a.
-      elements:('a list)       ->
-      topic:('a -> string)     ->
-      name:('a -> Name.t)      ->
-      info:('a -> info option) ->
-      target:string            ->
-      title:string             ->
-      simple_file:string       -> unit =
-      fun ~elements ~topic ~name ~info ~target ~title ~simple_file ->
-
+      topics:(string list)         ->
+      elements:(string -> 'a list) ->
+      name:('a -> Name.t)          ->
+      info:('a -> info option)     ->
+      target:('a -> string)        ->
+      title:string                 ->
+      simple_file:string           -> unit =
+      fun ~topics ~elements ~name ~info ~target ~title ~simple_file ->
+	let topics = List.sort String.compare topics in(*Actually, let's not sort topics*)
+        let chanout = open_out (Filename.concat !Args.target_dir simple_file) in
+        let b = new_buf () in
+	let each_element e   = 
+	  let simple_name = Name.simple (name e)
+	  and father_name = Name.father (name e) in
+	    bp b "<li class='index_entry_entry'>%s%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ())
+	      (if simple_name <> father_name && father_name <> "" then (*Print container module*)
+		 Printf.sprintf " [%s]" (self#make_link ~url:(fst (Naming.html_files father_name)) ~text:father_name ())
+	       else "");
+	    (self#html_of_info_first_sentence b (info e));
+	    bs b  "</li>\n"  in
+	let each_topic topic =
+	  match elements topic with [] -> ()
+	    | elems ->
+		bs b "<tr><td align=\"left\"><br>";
+		bs b topic ;
+		bs b "</td></tr>\n<tr class='index_entry'><td>\n" ;
+		bs b "<ul class='index_entry'>\n";
+		List.iter each_element elems;
+		bs b "</ul>\n</td></tr>" 
+	in
+	  try
+            bs b "<html>\n";
+            self#print_header b (self#inner_title title);
+            bs b "<body>\n<center><h1>";
+            bs b title;
+            bs b "</h1></center>\n" ;
+	    self#html_of_Index_list b;
+	    List.iter each_topic topics;
+	    bs b "</table><br>\n" ;
+            bs b "</body>\n</html>";
+            Buffer.output_buffer chanout b;
+            close_out chanout
+	  with
+	      Sys_error s -> raise (Failure s)
+	    | e -> Printf.eprintf "%s\n%!" (Printexc.to_string e);
+		assert false
 
     (**Generate the list of types.
        In addition to the list of types defined inside modules, we generate
@@ -644,7 +717,7 @@ class batlib_generator =
 	      Printf.sprintf " [%s]" (self#make_link ~url:(fst (Naming.html_files father_name)) ~text:father_name ())
 	     else "");
 	    (self#html_of_info_first_sentence b (info e));
-	    bs b  "</li>\n"
+	    bs b  "</li>\n" 
         in
         let f_group l = (*Print all entries for a letter*)
           match l with
@@ -681,7 +754,8 @@ class batlib_generator =
 	| _ -> assert false
 
     method is_reachable_from_root m = true (*List.exists (fun p -> has_parent m ~parent:p) roots*)
-    method generate_modules_index _ =
+
+(*    method generate_modules_index _ =
       try
       let list_modules = List.filter (fun m -> self#is_reachable_from_root m.m_name) self#list_modules in
       self#generate_elements_index
@@ -691,7 +765,22 @@ class batlib_generator =
         (fun m -> fst (Naming.html_files m.m_name))
         Odoc_messages.index_of_modules
         self#index_modules
-      with _ -> assert false
+      with _ -> assert false*)
+
+    method generate_modules_index _ =
+      verbose ("[Index] Here's the list of modules");
+      List.iter (fun m -> print_endline m.m_name) list_modules;
+      verbose ("[Index] Here's the list of rewritten modules");
+      List.iter (fun t -> List.iter (fun m -> print_endline m.m_name) (modules_by_topic t)) list_topics;
+      self#generate_elements_index_by_topic
+	~topics:list_topics 
+	~elements:modules_by_topic
+	~name:(fun m -> m.m_name)
+	~info:(fun m -> m.m_info)
+        ~target:(fun m -> fst (Naming.html_files m.m_name))
+        ~title:Odoc_messages.index_of_modules
+        ~simple_file:self#index_modules
+
 
     method html_of_Module_list b _ =
       try
@@ -701,6 +790,7 @@ class batlib_generator =
       with _ -> assert false
 
 (**Customizing appearance of modules*)
+
 
     method html_of_module b ?(info=true) ?(complete=true) ?(with_link=true) m =
       try
@@ -736,7 +826,7 @@ class batlib_generator =
 	  warning ("Module "^m.m_name^" has no associated information")
 	end
       with _ -> assert false
-	  
+
 
     method html_of_Ref b name ref_opt =
       let renamed = find_renaming renamings name in
@@ -807,15 +897,6 @@ class batlib_generator =
       in s3
       with _ -> assert false
 
-
-
-
-(*    method html_of_module b ?info ?complete ?with_link m =
-      try 
-	verbose ("Generating html for module "^m.m_name);
-	flush_all ();
-	super#html_of_module b ?info ?complete ?with_link m
-      with _ -> assert false *)
 
     method index_prefix = "root"
     (** Generate [index.html], as well as [indices.html] for the given module list*)
@@ -927,7 +1008,7 @@ class batlib_generator =
 	    Odoc_info.verbose "[Internal representation stage, no readable output generated yet]";
 	    ()
 	| None   -> 
-	    Odoc_info.verbose "[Final stage, generating html pages]";
+	    Odoc_info.verbose "[Final stage, we will generate html pages]";
 	    flush_all ();
 	    (*Pre-process every module*)
 	    List.iter (fun m -> verbose ("My bag contains "^m.m_name)) modules;
@@ -977,32 +1058,31 @@ class batlib_generator =
 		List.fold_left
 		(fun acc t -> Odoc_html.StringSet.add t.mt_name acc)
 		known_module_types_names
-		list_module_types ;
+		list_module_types;
 	      (*Proceed to generation*)
 	      renamings <- renamed_modules;
-	      verbose "Beautification of modules complete, proceeding to generation";
-	      flush_all ();
-	      super#generate rewritten_modules;
-	      (*Generate indices*)
-	      self#generate_external_index "types"       Naming.mark_type  known_types_names;
-	      self#generate_external_index "values"      Naming.mark_value known_values_names;
-	      self#generate_external_index "modules"     "" known_modules_names;
-	      self#generate_external_index "classes"     "" known_classes_names;
-	      self#generate_external_index "exceptions"  Naming.mark_exception   known_exceptions_names;
-	      self#generate_external_index "methods"     Naming.mark_method      known_methods_names;
-	      self#generate_external_index "attributes"  Naming.mark_attribute   known_attributes_names;
-	      self#generate_external_index "class_types" "" known_class_types_names;
-	      self#generate_external_index "module_types""" known_module_types_names
-
+	      let topics = sort_by_topics (*modules*)rewritten_modules in
+		modules_by_topic <- (let hash = snd topics in fun x -> try !(Hashtbl.find hash x) with Not_found -> []);
+		list_topics      <- fst topics;
+		verbose "Beautification of modules complete, proceeding to generation";
+		flush_all ();
+		super#generate rewritten_modules;
+		(*Generate indices*)
+		self#generate_external_index "types"       Naming.mark_type  known_types_names;
+		self#generate_external_index "values"      Naming.mark_value known_values_names;
+		self#generate_external_index "modules"     "" known_modules_names;
+		self#generate_external_index "classes"     "" known_classes_names;
+		self#generate_external_index "exceptions"  Naming.mark_exception   known_exceptions_names;
+		self#generate_external_index "methods"     Naming.mark_method      known_methods_names;
+		self#generate_external_index "attributes"  Naming.mark_attribute   known_attributes_names;
+		self#generate_external_index "class_types" "" known_class_types_names;
+		self#generate_external_index "module_types""" known_module_types_names
       with e -> Printf.eprintf "%s\n%!" (Printexc.to_string e);
-	  assert false
+	assert false
 
-(*    method html_of_custom_tag_developer text = 
-      verbose ("Generating developer name "^(string_of_text text));
-      "<div><span style ='developer'>developer:</span> "^(string_of_text text)^"</span></div>"*)
 
     initializer
-(*      tag_functions         <- ("developer", self#html_of_custom_tag_developer) :: tag_functions;*)
+(*      tag_functions <- ("topic", fun _ -> "topic") :: tag_functions;*)
       default_style_options <- default_style_options@
 	["li.index_of {display:inline}";
 	 "ul.indices  {display:inline;font-variant:small-caps;list-style-position: inside;list-style-type:none;padding:0px}";

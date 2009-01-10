@@ -13,7 +13,6 @@ Batlib_Baselib_Lexing
 Batlib_Baselib_Obj
 Batlib_Baselib_Parsing
 Batlib_Baselib_Scanf
-Batlib_Baselib_Str
 Batlib_Baselib_Sys
 Batlib_Baselib_Weak
 Extlib

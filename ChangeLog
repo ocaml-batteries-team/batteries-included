@@ -1,3 +1,51 @@
+2009-01-06  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/interfaces.ml*: header added
+
+	* build/odoc_tags.ml: [generate_element_index_by_topic] now prints exception in case of error
+
+	* build/odoc_tags.ml: in [adjust_top_from_comment], propagating [acc] instead of [top]
+
+	* build/odoc_tags.ml: [modules_by_topics] now returns an empty list instead of [Not_found]
+
+	* build/odoc_tags.ml: in initializer, removed custom tag "topic"
+
+	* build/odoc_tags.ml: in [sort_by_topics], replaced "topic" with "topic"/"{topic"
+
+2009-01-05  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extStr.mli: created
+
+	* src/core/extlib/extStr.ml: created
+
+	* src/core/extlib.mlpack: [ExtStr] added
+
+	* src/main/threads/batteries.ml: [Batlib_Baselib_Str] replaced with [Extlib.ExtStr.Str]
+
+	* src/main/threads/batteries.mllib: [Batlib_Baselib_Str] removed
+
+	* src/main/nothreads/batteries.ml: [Batlib_Baselib_Str] replaced with [Extlib.ExtStr.Str]
+
+	* src/main/nothreads/batteries.mllib: [Batlib_Baselib_Str] removed
+
+2009-01-03  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/main/nothreads/batteries.ml: [Digest] renamed [MD5]
+
+	* src/main/threads/batteries.ml: [Digest] renamed [MD5]
+
+2008-12-16  David Teller  <David.Teller@univ-orleans.fr>
+
+	* build/odoc_tags.ml: [generate_elements_index_by_topic], [modules_by_topic], [topics] added
+
+	* build/odoc_tags.ml: [modules_by_topic], [topics] now initialized in [generate]
+
+	* build/odoc_tags.ml: [sort_by_topics] now uses a [StringSet] for the set of topics
+
+	* src/main/threads/batteries.ml: [Dlllist], [Dynarray], [MultiPMap], [Base64] added
+
+	* src/main/nothreads/batteries.ml: [Dlllist], Dynarray], MultiPMap], [Base64] added
+
 2008-12-15  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/main/threads/batteries.mllib: Batlib_Baselib_Thread, Batlib_Baselib_Mutex, Batlib_Baselib_Condition, Batlib_Baselib_Event, Batlib_Baselib_StringLabels, Batlib_Baselib_Set 	removed

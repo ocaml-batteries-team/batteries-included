@@ -65,40 +65,28 @@ module Legacy = struct
     (**/**)
 end
 
-(**
-   Preview of future modules.
 
-   @topic Future
-*)
-module  Future =
-struct
-(*  module Lexers = Extlib.ExtGenlex.Languages*)
-  module  Genlex     = Extlib.ExtGenlex.Genlex
-  module  CharParser = Extlib.CharParser
-  module UCharParser = Extlib.UCharParser
-  module ParserCo    = Extlib.ParserCo
-end
         
 (**
-   {1 Control}
+   {3 Control}
 
-   @topic Control flow
+   {topic Control}
 *)
 
 module  Exceptions= Extlib.ExtPrintexc.Printexc
-module  Return   = Extlib.Return
-module  Monad    = Extlib.Monad
+module  Return    = Extlib.Return
+module  Monad     = Extlib.Monad
 
 (**
-   {2 Concurrency}
+   {4 Concurrency}
 
-   @topic Concurrency
+   {topic Concurrency}
 *)
 
 module  Concurrency = Extlib.Concurrent
 
 (**
-   {3 Built-in threads}
+   {5 Built-in threads}
 
    These modules are only defined in multi-threaded versions of OCaml Batteries
    Included. To use a multi-threaded version, please see {{:???}the documentation}.
@@ -128,7 +116,7 @@ struct
 end
 
 (*
-  {3 coThreads}
+  {5 coThreads}
 
   Not implemented yet.
 
@@ -148,13 +136,13 @@ end
 *)
 
 (*
-  {3 Shared memory}
+  {5 Shared memory}
   Not implemented yet
 *)
 
-(**{1 Input/Output}
+(**{3 Input/Output}
 
-   @topic IO*)
+   {topic IO}*)
 
 module  IO = Extlib.IO
 
@@ -163,10 +151,10 @@ module Netchannels = Libs.ExtNetchannels.Netchannels
 
 
 
-(**{2 Compression / decompression}
+(**{4 Compression / decompression}
 
-   @topic Compression
-   @topic Decompression
+   {topic Compression}
+   {topic Decompression}
 *)
 
 module  Codec = Libs.Common.Compress
@@ -177,19 +165,23 @@ module  Zip
 module  Transcode  (*Unicode transcoding*)
 *)
 
-(**{1 Data containers}
+(**{3 Data containers}
 
-   @topic Data
-   @topic Container*)
+   {topic Data}
+   {topic Container}*)
+
+module Data = Extlib.Interfaces
 
 (**
-   {2 Mutable data containers}
+   {4 Mutable data containers}
 
-   @topic Mutable
+   {topic Mutable}
 *)
 
 module  Array    = Extlib.ExtArray.Array
 module  Bigarray = Extlib.ExtBigarray.Bigarray
+module  Dllist   = Extlib.Dllist
+module  DynArray = Extlib.DynArray
 module  Enum     = Extlib.Enum
 module  Global   = Extlib.Global
 module  Hashtbl  = Extlib.ExtHashtbl.Hashtbl
@@ -201,38 +193,39 @@ module  Stream   = Extlib.ExtStream.Stream
          
   
 (**
-   {2 Persistent data containers}
+   {4 Persistent data containers}
 
-   @topic Persistent
+   {topic Persistent}
 *)      
 
 module  Lazy     = Batlib_Baselib_Lazy
 module  List     = Extlib.ExtList.List
 module  Map      = Extlib.ExtMap.Map
+module  MultiPMap= Extlib.MultiPMap
 module  Option   = Extlib.Option
 module  PMap     = Extlib.PMap
 module  PSet     = Extlib.PSet
 module  Set      = Extlib.ExtSet.Set
 
-(**{1 Data}
+(**{3 Data}
 
-   @topic Data
+   {topic Data}
 *)
 
 module  Unit     = Extlib.ExtUnit.Unit
 
-(**{2 Logical data}
+(**{4 Logical data}
 
-   @topic Logical
-   @topic Boolean
+   {topic Logical}
+   {topic Boolean}
 *)
 
 module  Bool     = Extlib.ExtBool.Bool
 module  BitSet   = Extlib.BitSet
 
-(**{2 Numeric data}
+(**{4 Numeric data}
 
-   @topic Numeric
+   {topic Numeric}
 *)
 
 module  Numeric  = Extlib.Number 
@@ -247,9 +240,9 @@ module  Num      = Extlib.ExtNum.Num
 (*module  Safe_float (*placeholder*)*)
 module  Safe_int = Extlib.ExtInt.Safe_int
 
-(**{2 Textual data}
+(**{4 Textual data}
 
-   @topic Textual*)
+   {topic Textual}*)
 
 
 (*module  Text (*Definition of text-related interfaces*)*)
@@ -259,7 +252,7 @@ module  UTF8    = Extlib.ExtUTF8.UTF8
 module  Rope    = Extlib.Rope
 module  UChar   = Extlib.ExtUChar.UChar
 module  String  = Extlib.ExtString.String
-module  Str     = Batlib_Baselib_Str
+module  Str     = Extlib.ExtStr.Str
 (*module  StringText (A module containing aliases to String and modified
         Char)*)
 (*module  RopeText (As StringText but with implementations from Rope and
@@ -269,25 +262,26 @@ module  Str     = Batlib_Baselib_Str
 module  Labels*)
          
 
-(**{1 Tools included in the distribution}
+(**{3 Tools included in the distribution}
 
-   @topic Distribution
+   {topic Distribution}
 *)
 
-(**{2 External tools}
+(**{4 External tools}
 
-   @topic Externals
+   {topic Externals}
 *)
 
 module  Packages = Toolchain.Batlib_Findlib_Findlib
 module  Compilers= Toolchain.Builtin_tools
 
-(**{2 Language internals}
+(**{4 Language internals}
 
    Here be dragons.
 
-   @topic Internals
+   {topic Internals}
 *)
+
 module  Callback = Batlib_Baselib_Callback
 module  Gc       = Extlib.ExtGc.Gc
 module  Marshal  = Extlib.ExtMarshal.Marshal
@@ -331,28 +325,47 @@ module  Lexing = Batlib_Baselib_Lexing
 module  Parsing= Batlib_Baselib_Parsing
 module  Format = Batlib_Baselib_Format
 module  Printf = Extlib.ExtPrintf.Printf
-(*   100module  PCRE (*placeholder*)*)
+(* module  PCRE (*placeholder*)*)
 module  Scanf  = Batlib_Baselib_Scanf
 module  SExpr  = Toolchain.Batlib_Sexp_Conv
 
 
-(**{1 Operations on the system}
+(**{3 Operations on the system}
 
-   @topic System
+   {topic System}
 *)
 
-module  Arg = Batlib_Baselib_Arg
-module  File= Extlib.File
-module  OptParse = Extlib.OptParse
-module Path = Batlib_Baselib_Filename
+module Arg      = Batlib_Baselib_Arg
+module File     = Extlib.File
+module OptParse = Extlib.OptParse
+module Path     = Batlib_Baselib_Filename
 (*module  Path:placeholder*)
-module  Shell = Batlib_Baselib_Sys
-module  Unix  = Extlib.ExtUnix.Unix
+module Shell    = Batlib_Baselib_Sys
+module Unix     = Extlib.ExtUnix.Unix
 (*module  Equeue:placeholder*)
 
 
-(**{1 Unclassified}*)
+(**{3 Unclassified}
 
-module Digest = Batlib_Baselib_Digest
+   {topic Unclassified}
+*)
+
+(*module Digest = Batlib_Baselib_Digest*)
+module MD5    = Batlib_Baselib_Digest
 module Random = Extlib.ExtRandom.Random
+module Base64 = Extlib.Base64
 (*module Date:placeholder*)
+
+(**
+   Preview of future modules.
+
+   @topic Future
+*)
+module  Future =
+struct
+(*  module Lexers = Extlib.ExtGenlex.Languages*)
+  module Genlex      = Extlib.ExtGenlex.Genlex
+  module CharParser  = Extlib.CharParser
+  module UCharParser = Extlib.UCharParser
+  module ParserCo    = Extlib.ParserCo
+end

@@ -39,6 +39,7 @@ struct
     Options.ocamlopt   := ocamlfind & A"ocamlopt";
     Options.ocamldep   := ocamlfind & A"ocamldep";
     Options.ocamldoc   := ocamlfind & A"ocamldoc";
+    (*OCAMLDOC-g Options.ocamldoc   := S[A"/home/yoric/tmp/ocaml-community/bin/ocamlrun"; A "-b"; A"/home/yoric/tmp/ocaml-community/bin/ocamldoc"];*)
     Options.ocamlmktop := ocamlfind & A"ocamlmktop"
 
   let after_rules () =
@@ -87,12 +88,32 @@ struct
     (*Options.ocamldoc  := A"ocamldoc"*) ()
 
   let after_rules () = 
+    dep  ["ocaml"; "doc"]   & ["build/odoc_tags.cmo"];
+    flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
+				A "-i"; A "build";
+				A "-g"; A "odoc_tags.cmo"; 
+			        A "-t"; A "OCaml Batteries Included" ;
+				A "-intro"; A "../build/intro.text"]
+(*OCAMLDOC -g    flag ["ocaml"; "doc"]   & S[A "-i"; A "/tmp/";
+				A "-g"; A "odoc_tags.cmo"; 
+			        A "-t"; A "OCaml Batteries Included" ;
+				A "-intro"; A "../build/intro.text";
+(*			        A "-I"; A "/home/yoric/tmp/ocaml-community/lib/ocaml";
+			        A "-I"; A "/home/yoric/tmp/ocaml-community/lib/ocaml/threads";*)
+				A "-I"; A "/home/yoric/usr/local/lib/ocaml";
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/std-lib/threads"; 
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/sexplib";
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/camomile";
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/camlzip" ;
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/netstring"]
+*)
+(*  let after_rules () = 
     dep  ["ocaml"; "doc"]   & ["build/odoc_generator_batlib.cmo"];
     flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
 				A "-i"; A "build";
 				A "-g"; A "odoc_generator_batlib.cmo"; 
 			        A "-t"; A "OCaml Batteries Included" ;
-				A "-intro"; A "../build/intro.text"]
+				A "-intro"; A "../build/intro.text"]*)
 end
 
 

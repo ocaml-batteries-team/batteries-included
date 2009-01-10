@@ -1,6 +1,6 @@
 (*
- * Batlib_Baselib_Str - Importing Base module Str
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * ExtStr - Additional functions for regular expressions manipulation
+ * Copyright (C) 2008 Edgar Friendly
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,4 +18,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include Str
+open Sexplib
+open Conv
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
+
+module Str =
+struct
+  include Str
+
+  let search ?(offset=0) ?(backwards=false) r s =
+    let next = if backwards then search_backward
+               else              search_forward
+    in
+    let aux offset =
+      try let offset' = next r s offset in
+	Some ((match_beginning (), match_end (), matched_string s), offset')
+      with Not_found -> None
+    in Enum.unfold offset aux
+end
