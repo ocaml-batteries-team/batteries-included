@@ -146,8 +146,8 @@ val balance : t -> t
   
 (** {6 Operations } *)
   
-val concat : t -> t -> t
-  (** [concat r u] concatenates the [r] and [u] ropes. In general, it operates
+val append : t -> t -> t
+  (** [append r u] concatenates the [r] and [u] ropes. In general, it operates
       in [O(log(min n1 n2))] amortized time.
       Small ropes are treated specially and can be appended/prepended in
       amortized [O(1)] time. *)
@@ -171,8 +171,8 @@ val set : int -> UChar.t -> t -> t
       has been set to [c]. See also {!get}.
       Operates in worst-case [O(log size)] time. *)
   
-val sub : int -> int -> t -> t
-  (** [sub m n r] returns a sub-rope of [r] containing all characters
+val sub : t -> int -> int -> t
+  (** [sub r m n] returns a sub-rope of [r] containing all characters
       whose indexes range from [m] to [m + n - 1] (included).
       Raises Out_of_bounds in the same cases as String.sub.
       Operates in worst-case [O(log size)] time. *)
@@ -190,6 +190,11 @@ val remove : int -> int -> t -> t
       from the original rope [r]. The length of the new rope is
       [length r - n].
       Operates in amortized [O(log(size r))] time. *)
+
+val concat : t -> t list -> t
+(** [concat sep sl] concatenates the list of ropes [sl],
+   inserting the separator rope [sep] between each. *)
+
   
 (** {6 Iteration} *)
   
@@ -285,14 +290,15 @@ val splice : t -> int -> int -> t -> t
 val fill : t -> int -> int -> UChar.t -> t
 val blit : t -> int -> t -> int -> int -> t
 
-val concat_sep : t -> t list -> t
+val concat : t -> t list -> t
 val escaped : t -> t
 val replace_chars : (UChar.t -> UTF8.t) -> t -> t
 val replace : t -> t -> t -> t
 val split : t -> t -> (t * t)
 val nsplit : t -> t -> int -> t list
 
-
+val compare : t -> t -> int
+val compare_without_case: t -> t -> int
 (* TODO: write specs for:
 
 strip
