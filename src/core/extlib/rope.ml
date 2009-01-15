@@ -175,7 +175,7 @@ let concat_str l = function
  
 let append_char c r = concat_str r (Leaf (1, (UTF8.make 1 c)))
  
-let concat l = function
+let append l = function
     Empty -> l
   | Leaf _ as r -> concat_str l r
   | Concat(Leaf (lenrl,rls),rlc,rr,rc,h) as r ->
@@ -190,7 +190,7 @@ let concat l = function
                 bal_if_needed l r)
   | r -> (match l with Empty -> r | _ -> bal_if_needed l r)
  
-let prepend_char c r = concat (Leaf (1,(UTF8.make 1 c))) r
+let prepend_char c r = append (Leaf (1,(UTF8.make 1 c))) r
  
 let rec get i = function
     Empty -> raise Out_of_bounds
@@ -209,8 +209,8 @@ let rec set i (v:ExtUChar.UChar.t) = function
           Leaf (lens, s)
       else raise Out_of_bounds
   | Concat(l, cl, r, cr, _) ->
-      if i < cl then concat (set i v l) r
-      else concat l (set (i - cl) v r)
+      if i < cl then append (set i v l) r
+      else append l (set (i - cl) v r)
  
 let of_ustring s =
   let lens = UTF8.length s in
@@ -221,31 +221,32 @@ let of_ustring s =
       if i < lens then (* lens - i > 0, thus Leaf "" can't happen *)
   let slice_size = min (lens-i) leaf_size in
 (* TODO: UTF8.sub is inefficient for large i - rewrite using enum *)
-  let new_r = concat r (Leaf (slice_size, (UTF8.sub s i slice_size))) in
+  let new_r = append r (Leaf (slice_size, (UTF8.sub s i slice_size))) in
     loop new_r (i + leaf_size)
       else
         r
     in loop Empty 0
 
-let append r us = concat r (of_ustring us)
+let append_us r us = append r (of_ustring us)
  
 let rec make len c =
   let rec concatloop len i r =
     if i <= len then
 (*TODO: test for sharing among substrings *)
-      concatloop len (i * 2) (concat r r)
+      concatloop len (i * 2) (append r r)
     else r
   in
     if len = 0 then Empty
     else if len <= leaf_size then Leaf (len, (UTF8.make len c))
     else
       let rope = concatloop len 2 (of_ustring (UTF8.make 1 c)) in
-        concat rope (make (len - length rope) c)
+        append rope (make (len - length rope) c)
  
 let of_uchar c = make 1 c
 let of_char c = of_uchar (UChar.of_char c)
 
-let rec sub start len = function
+let sub r start len = 
+  let rec aux start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
   | Leaf (lens, s) ->
       if len < 0 || start < 0 || start + len > lens then
@@ -259,26 +260,27 @@ let rec sub start len = function
         if start = 0 then
           if len >= cl then
             l
-          else sub 0 len l
+          else aux 0 len l
         else if start > cl then Empty
         else if start + len >= cl then
-          sub start (cl - start) l
-        else sub start len l in
+          aux start (cl - start) l
+        else aux start len l in
       let right =
         if start <= cl then
           let upto = start + len in
             if upto = cl + cr then r
             else if upto < cl then Empty
-            else sub 0 (upto - cl) r
-        else sub (start - cl) len r
+            else aux 0 (upto - cl) r
+        else aux (start - cl) len r
       in
-        concat left right
+        append left right
+  in aux start len r
  
 let insert start rope r =
-  concat (concat (sub 0 start r) rope) (sub start (length r - start) r)
+  append (append (sub r 0 start) rope) (sub r start (length r - start))
  
 let remove start len r =
-  concat (sub 0 start r) (sub (start + len) (length r - start - len) r)
+  append (sub r 0 start) (sub r (start + len) (length r - start - len))
  
 let to_ustring r =
   let rec strings l = function
@@ -430,8 +432,8 @@ let of_enum e =
   in
   let rec loop r = (* concat 256 characters at a time *)
     match get_leaf () with
-	(true,  us) -> loop     (concat r (of_ustring us))
-      | (false, us) -> concat r (of_ustring us)
+	(true,  us) -> loop     (append r (of_ustring us))
+      | (false, us) -> append r (of_ustring us)
   in
   loop Empty
     
@@ -439,7 +441,7 @@ let of_bulk_enum e =
   let rec loop r = 
     match Enum.get e with
 	None -> r
-      | Some us -> loop (concat r (of_ustring us))
+      | Some us -> loop (append r (of_ustring us))
   in
   loop Empty
 
@@ -454,13 +456,13 @@ let of_enum e =
 *)
 
 let of_backwards e =(*(Yoric) I'll keep the implementation simple at least until I understand [of_enum]*)
-  Enum.fold (fun c acc -> concat acc (of_uchar c)) Empty e
+  Enum.fold (fun c acc -> append acc (of_uchar c)) Empty e
   
 let of_bulk_enum e =
-  Enum.fold (fun s acc -> concat acc (of_ustring s)) Empty e
+  Enum.fold (fun s acc -> append acc (of_ustring s)) Empty e
 (*Probably useless 
 let of_bulk_backwards e =
-  Enum.fold (fun s acc -> concat (of_ustring s) acc) Empty e
+  Enum.fold (fun s acc -> append (of_ustring s) acc) Empty e
 *)
 module CE = CamomileLibrary.CharEncoding.Configure(CamomileLibrary.CamomileDefaultConfig)
  
@@ -476,10 +478,10 @@ let print out t =
   bulk_iter (fun us -> InnerIO.nwrite out (UTF8.to_string us)) t
 
 let lowercase s =
-  bulk_fold (fun acc c -> concat acc (of_ustring (UTF8.lowercase c)))  Empty s
+  bulk_fold (fun acc c -> append acc (of_ustring (UTF8.lowercase c)))  Empty s
 
 let uppercase s =
-  bulk_fold (fun acc c -> concat acc (of_ustring (UTF8.uppercase c)))  Empty s
+  bulk_fold (fun acc c -> append acc (of_ustring (UTF8.uppercase c)))  Empty s
 
 
 let make n c = 
@@ -515,17 +517,17 @@ let of_float f = of_string_unsafe (string_of_float f)
 let to_int r = int_of_string (UTF8.to_string_unsafe (to_ustring r))
 let to_float r = float_of_string (UTF8.to_string_unsafe (to_ustring r))
 
-let bulk_map f r = bulk_fold (fun acc s -> append acc (f s)) Empty r
+let bulk_map f r = bulk_fold (fun acc s -> append_us acc (f s)) Empty r
 let map f r = bulk_map (fun s -> UTF8.map f s) r
 
-let bulk_filter_map f r = bulk_fold (fun acc s -> match f s with None -> acc | Some r -> append acc r) Empty r
+let bulk_filter_map f r = bulk_fold (fun acc s -> match f s with None -> acc | Some r -> append_us acc r) Empty r
 let filter_map f r = bulk_map (UTF8.filter_map f) r
 
 (* TODO: ADD THESE TO [String] *)
-let left r len = sub 0 len r
-let right r len = let rlen = length r in sub (rlen - len) len r
-let head r pos = sub 0 pos r (* same as left *)
-let tail r pos = sub pos (length r - pos) r
+let left r len = sub r 0 len
+let right r len = let rlen = length r in sub r (rlen - len) len
+let head = left (*sub r 0 pos (* same as left *)*)
+let tail r pos = sub r pos (length r - pos)
 
 let index r item = 
   with_label (fun label ->
@@ -586,7 +588,7 @@ let ends_with r end_r = equals end_r (right r (length end_r))
 let find r1 r2 =
   let matchlen = length r2 in
   let r2_string = to_ustring r2 in
-  let check_at pos = r2_string = (to_ustring (sub pos matchlen r1)) in 
+  let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in 
   (* TODO: inefficient *)
   with_label (fun label -> 
 	   for i = 0 to length r1 - matchlen do
@@ -607,7 +609,7 @@ let trim str =
   while UChar.is_whitespace(get !stop str) do
     decr stop;
   done;
-  sub !start (!stop- !start) str
+  sub str !start (!stop- !start)
 
 let strip ?(chars=" \t\r\n") str = assert false
 
@@ -618,24 +620,24 @@ let uncapitalize r = assert false
 (* let copy r = UNNEEDED -- immutable structure *)
 
 
-let lchop str = sub 1 (length str - 1) str
-let rchop str = sub 0 (length str - 1) str
+let lchop str = sub str 1 (length str - 1)
+let rchop str = sub str 0 (length str - 1)
 
 let splice r start len new_sub = 
-  concat (left r start) 
-    (concat new_sub (tail r (start+len)))
+  append (left r start) 
+    (append new_sub (tail r (start+len)))
 
 let fill r start len char = 
   splice r start len (make len char)
 
 let blit rsrc offsrc rdst offdst len = 
-  splice rdst offdst len (sub offsrc len rsrc)
+  splice rdst offdst len (sub rsrc offsrc len)
 
-let concat_sep sep r_list = List.reduce (fun r1 r2 -> concat r1 (concat sep r2)) r_list
+let concat sep r_list = List.reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
 
 let escaped r = bulk_map UTF8.escaped r
 
-let replace_chars f r = fold (fun acc s -> append acc (f s)) Empty r
+let replace_chars f r = fold (fun acc s -> append_us acc (f s)) Empty r
 
 let replace str sub by = splice str (find str sub) (length sub) by
 
@@ -650,7 +652,7 @@ let rec nsplit r sep n = (* NOT TAIL RECURSIVE *)
     head r i :: (nsplit (tail r (i+length sep)) sep (n-1))
   with Not_found -> [r]
 
-let join = concat_sep
+let join = concat
 
 let slice ?first ?last r = assert false
 
@@ -660,8 +662,8 @@ let explode r = assert false
 
 let implode r = assert false
 
-let compare r1 r2 = assert false
+let compare r1 r2 = Enum.compare UTF8.compare (bulk_enum r1) (bulk_enum r2)
 
-let compare_without_case r1 r2 = assert false
+let compare_without_case r1 r2 = Enum.compare (fun x1 x2 -> UTF8.compare (UTF8.lowercase x1) (UTF8.lowercase x2)) (bulk_enum r1) (bulk_enum r2)
 
 (* =end *)

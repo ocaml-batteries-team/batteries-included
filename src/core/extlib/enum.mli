@@ -422,10 +422,23 @@ val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
       into resulting enumeration. If [a] or [b] runs out of elements, 
       the process will append all elements of the other enumeration to
       the result.
-*)
+  *)
 
+val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
+  (** [compare cmp a b] compares enumerations [a] and [b]
+      by lexicographical order using comparison [cmp].
 
-
+      @return 0 if [a] and [b] are equal wrt [cmp]
+      @return -1 if [a] is empty and [b] is not
+      @return 1 if [b] is empty and [a] is not
+      @return [cmp x y], where [x] is the first element of [a]
+      and [y] is the first element of [b], if [cmp x y <> 0]
+      @return [compare cmp a' b'], where [a'] and [b'] are
+      respectively equal to [a] and [b] without their first
+      element, if both [a] and [b] are non-empty and [cmp x y = 0],
+      where [x] is the first element of [a] and [y] is the first
+      element of [b]
+  *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
   (** [switch test enum] split [enum] into two enums, where the first enum have
@@ -517,13 +530,30 @@ module Labels : sig
   val unfold:     init:'b -> f:('b -> ('a * 'b) option) -> 'a t
   val init:       int -> f:(int -> 'a) -> 'a t
   val switch:     f:('a -> bool) -> 'a t -> 'a t * 'a t
+  val compare:    ?cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+  (** [compare ~cmp a b] compares enumerations [a] and [b]
+      by lexicographical order using comparison [cmp].
+
+      @param cmp a comparison function. If left unspecified, {!Pervasives.compare}
+      is used.
+      @return 0 if [a] and [b] are equal wrt [cmp]
+      @return -1 if [a] is empty and [b] is not
+      @return 1 if [b] is empty and [a] is not
+      @return [cmp x y], where [x] is the first element of [a]
+      and [y] is the first element of [b], if [cmp x y <> 0]
+      @return [compare cmp a' b'], where [a'] and [b'] are
+      respectively equal to [a] and [b] without their first
+      element, if both [a] and [b] are non-empty and [cmp x y = 0],
+      where [x] is the first element of [a] and [y] is the first
+      element of [b]
+  *)
 end
 
 (**/**)
 
 (** {6 For system use only, not for the casual user} 
 
-    For compatibility with [Stream]
+    For compatibility with {!Stream}
 *)
 
 val iapp : 'a t -> 'a t -> 'a t

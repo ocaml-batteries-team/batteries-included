@@ -368,4 +368,5 @@ struct
   module CharParser  = Extlib.CharParser
   module UCharParser = Extlib.UCharParser
   module ParserCo    = Extlib.ParserCo
+  module Path        = Extlib.Path
 end

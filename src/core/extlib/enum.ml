@@ -840,6 +840,17 @@ let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
 		aux ()
 	in aux()
 
+let compare cmp t u =
+  let rec aux () = 
+    match (get t, get u) with
+      | (None, None)     -> 0
+      | (None, _)        -> -1
+      | (_, None)        -> 1
+      | (Some x, Some y) -> match cmp x y with
+	  | 0 -> aux ()
+	  | n -> n
+  in aux ()
+
 let rec to_object t =
 object
   method next = t.next ()
@@ -883,4 +894,5 @@ module Labels = struct
   let from_while ~f  = from_while f
   let seq ~init ~f ~cnd  = seq init f cnd
   let unfold ~init ~f = unfold init f
+  let compare ?(cmp=Pervasives.compare) t u = compare cmp t u
 end
