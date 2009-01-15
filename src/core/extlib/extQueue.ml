@@ -33,7 +33,7 @@ struct
       Enum.iter (fun x -> push x q) e;
       q
 
-  let enum q = Enum.from (fun () -> pop q)
+  let enum q = Enum.from (fun () -> try pop q with Empty -> raise Enum.No_more_elements)
 
   let t_of_sexp a_of_sexp s = of_enum (List.enum (List.t_of_sexp a_of_sexp s))
 
