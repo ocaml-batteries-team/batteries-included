@@ -103,7 +103,7 @@ let case_rope s = label ("case insensitive \"" ^ (UTF8.to_string (Rope.to_ustrin
 	      with Not_found -> None
 	with Some false         (*The substring doesn't match.                                  *)
 	  |  None       -> fail (*We have reached the end of the enumeration but not that of [s]*)
-	  |  Some true  -> aux enum (Rope.concat (Rope.of_ustring lower_char) acc)
+	  |  Some true  -> aux enum (Rope.append (Rope.of_ustring lower_char) acc)
 (*  in aux (Rope.get 0 lower_rope)*)
   in aux (Rope.enum lower_rope) s
 )

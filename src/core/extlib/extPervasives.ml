@@ -27,7 +27,7 @@ TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 module Pervasives = struct
   include Pervasives
   include Std
-  include Enum
+  open Enum
     
   let print_guess   = Std.print
   let prerr_guess v = prerr_endline (dump v)
@@ -81,7 +81,26 @@ module Pervasives = struct
   let print_all inp     = IO.copy inp IO.stdout
   let prerr_all inp     = IO.copy inp IO.stderr
 
+  (**{6 Importing Enum}*)
+
   let foreach e f       = iter f e
+  let exists            = exists
+  let for_all           = for_all
+  let fold              = fold
+  let find              = find
+  let peek              = peek
+  let push              = push
+  let junk              = junk
+  let map               = map
+  let filter            = filter
+  let concat            = concat
+  let ( -- )            = ( -- )
+  let ( --- )           = ( --- )
+  let ( ~~ )            = ( ~~ )
+  let ( // )            = ( // )
+  let print             = print
+  let get               = get
+  let iter              = iter
 
   let unique_value  = ref 0
   let lock          = ref Concurrent.nolock

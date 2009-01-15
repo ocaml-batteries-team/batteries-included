@@ -1,3 +1,39 @@
+2009-01-11  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/rope.ml: [sub] now defined from a function [aux]
+	
+	* src/core/extlib/rope.ml: [left], [right], [head], [tail] now use new order of arguments for [sub]
+	
+	* src/core/extlib/rope.mli: changed order of arguments in [sub]
+
+	* src/core/extlib/uCharParser.ml: [Rope.concat] replaced with [Rope.append]
+
+	* src/core/extlib/rope.ml*: [concat_sep] renamed [concat]
+
+	* src/core/extlib/rope.ml: [append] renamed [append_us]
+
+	* src/core/extlib/path.ml: [RopeAdapter.length_bytes] is now defined from [Rope.length]
+
+	* src/core/extlib/rope.mli: [compare], [compare_without_case] added
+
+	* src/core/extlib/extPervasives.ml: [Enum] now not included anymore
+
+	* src/core/extlib/rope.ml: [compare] implemented
+
+	* src/core/extlib/rope.ml: [compare_without_case] implemented
+
+	* src/core/extlib/enum.ml*: [compare] added
+
+	* src/core/extlib/enum.mli: added documentation hyperlink to [Stream]
+
+	* src/core/extlib/path.ml: replaced [R.of_string] with [R.of_latin1]
+	
+2009-01-11  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/path.ml: added
+
+	* src/core/extlib/path.mli: added
+
 2009-01-06  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/interfaces.ml*: header added
