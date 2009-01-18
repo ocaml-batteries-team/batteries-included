@@ -24,6 +24,7 @@ You will need
 * Bin-prot  (http://www.ocaml.info/home/ocaml_sources.html)
 * Camomile >= 0.7 (http://camomile.sourceforge.net/)
 * Camlzip   (http://cristal.inria.fr/~xleroy/software.html#camlzip)
+   ( For installing from source, use META and Makefile in camlzip/ )
 * Ocamlnet  (http://projects.camlcity.org/projects/ocamlnet.html)
 
 If you're working from the git tree, you'll need:

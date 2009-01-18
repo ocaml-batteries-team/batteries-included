@@ -1,3 +1,7 @@
+* [open Batteries include Backwards_compatibility]
+
+* import pa-do (http://pa-do.forge.ocamlcore.org/)
+
 * import Camlp4
 
 * import Camomile
