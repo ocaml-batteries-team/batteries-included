@@ -57,42 +57,47 @@ let ends_with s e =
 	else
 		sub s (sl-el) el = e
 
-let find str sub =
-	let sublen = length sub in
-	if sublen = 0 then
-		0
-	else
-		let found = ref 0 in
-		let len = length str in
-		try
-			for i = 0 to len - sublen do
-				let j = ref 0 in
-				while unsafe_get str (i + !j) = unsafe_get sub !j do
-					incr j;
-					if !j = sublen then begin found := i; raise Exit; end;
-				done;
-			done;
-			raise Invalid_string
-		with
-			Exit -> !found
-
 let find_from str ofs sub = 
   let sublen = length sub in
-    if sublen = 0 then 0
-    else let found = ref 0 in
-         let len = length str in
-	   try
-	     for i = ofs to len - sublen do
-	       let j = ref 0 in
-		 while unsafe_get str (i + !j) = unsafe_get sub !j do
-		   incr j;
-		   if !j = sublen then begin found := i; raise Exit; end;
-		 done;
-	     done;
-	     raise Invalid_string
-	   with
-	       Exit -> !found
-		 
+    if sublen = 0 then ofs (*If [sub] is the empty string, by convention, it may be found wherever we started searching.*)
+    else
+      let len = length str in
+	if 0 > ofs || ofs >= len then raise (Invalid_argument "index out of bounds")
+	else
+	Return.label (fun label ->
+  	  for i = ofs to len - sublen do
+	    let j = ref 0 in
+	      while unsafe_get str (i + !j) = unsafe_get sub !j do
+		incr j;
+		if !j = sublen then Return.return label i
+	      done;
+	  done;
+	  raise Invalid_string
+        )
+
+let find str sub = find_from str 0 sub
+
+let rfind_from str suf sub = 
+  let sublen = length sub 
+  and len    = length str in
+    if sublen = 0 then len
+    else
+	if 0 > suf || suf >= len then raise (Invalid_argument "index out of bounds")
+	else
+	Return.label (fun label ->
+  	  for i = suf - sublen + 1 downto 0 do
+	    (*Printf.printf "i:%i/suf:%i/sublen:%i/len:%i\n" i suf sublen len;*)
+	    let j = ref 0 in
+	      while unsafe_get str ( i + !j ) = unsafe_get sub !j do
+		incr j;
+		if !j = sublen then Return.return label i
+	      done;
+	  done;
+	  raise Invalid_string
+        )
+
+let rfind str sub = rfind_from str (String.length str - 1) sub
+
 let exists str sub =
 	try
 		ignore(find str sub);
@@ -119,15 +124,27 @@ let split str sep =
 	let slen = length str in
 	sub str 0 p, sub str (p + len) (slen - p - len)
 
+(**
+   An implementation of [nsplit] in one pass.
+
+   This implementation traverses the string backwards, hence building the list
+   of substrings from the end to the beginning, so as to avoid a call to [List.rev].
+*)
 let nsplit str sep =
   if str = "" then []
-  else let rec aux acc ofs =
-    match 
-      try Some(find_from str ofs sep)
-      with Invalid_string -> None
-    with Some idx -> aux ( (sub str ofs ( idx - ofs ))::acc ) ( idx + 1 )
-      |  None     -> List.rev (sub str ofs (length str - ofs) :: acc)
-  in aux [] 0
+  else let seplen = String.length sep in
+       let rec aux acc ofs = match 
+	 try Some(rfind_from str ofs sep)
+	 with Invalid_string -> None
+       with Some idx -> 
+	 (*[idx] to [idx + seplen] is useless*)
+	 (*[idx + seplen] to [ofs] is what we want*)
+	 let end_of_occurrence = idx + seplen in
+	   if end_of_occurrence >= ofs then aux acc idx 
+	   else aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx 
+	 |  None     -> (sub str 0 ofs)::acc
+       in
+	 aux [] (length str - 1 )
 
 let join = concat
 

@@ -2,6 +2,12 @@
 
 	* src/core/extlib/extString.ml: [nsplit] rewritten
 
+	* src/core/extlib/extString.ml*: [rfind], [rfind_from] added
+
+	* src/core/extlib/extString.ml: [find_from] now checks whether [ofs] falls within bounds
+
+	* src/core/extlib/extString.ml: [find] now uses [find_from]
+
 	* src/core/extlib/extString.ml*: [find_from] added
 
 	
