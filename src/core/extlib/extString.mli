@@ -187,8 +187,13 @@ val rcontains_from : string -> int -> char -> bool
 
 val find : string -> string -> int
   (** [find s x] returns the starting index of the string [x]
-      within the string [s] or raises [Invalid_string] if [x]
-      is not a substring of [s]. *)
+      within the string [s] 
+
+      @raise Invalid_string if [x] is not a substring of [s]. *)
+
+val find_from: string -> int -> string -> int
+  (** [find s ofs x] behaves as [find s x] but starts searching
+      at offset [ofs].*)
 
 val ends_with : string -> string -> bool
   (** [ends_with s x] returns true if the string [s] is ending with [x]. *)

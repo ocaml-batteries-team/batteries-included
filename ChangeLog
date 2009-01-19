@@ -1,3 +1,10 @@
+2009-01-19  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extString.ml: [nsplit] rewritten
+
+	* src/core/extlib/extString.ml*: [find_from] added
+
+	
 2009-01-18  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extBuffer.ml*: applied Dawid Toton's patch
@@ -9,6 +16,7 @@
 	* src/core/extlib/extPervasives.mli: <| renamed **>, |> renamed <**
 
 	* src/core/extlib/std.ml*: <| renamed **>, |> renamed <**
+
 
 2009-01-11  David Teller  <David.Teller@univ-orleans.fr>
 

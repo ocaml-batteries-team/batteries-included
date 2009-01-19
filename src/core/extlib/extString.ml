@@ -76,6 +76,23 @@ let find str sub =
 		with
 			Exit -> !found
 
+let find_from str ofs sub = 
+  let sublen = length sub in
+    if sublen = 0 then 0
+    else let found = ref 0 in
+         let len = length str in
+	   try
+	     for i = ofs to len - sublen do
+	       let j = ref 0 in
+		 while unsafe_get str (i + !j) = unsafe_get sub !j do
+		   incr j;
+		   if !j = sublen then begin found := i; raise Exit; end;
+		 done;
+	     done;
+	     raise Invalid_string
+	   with
+	       Exit -> !found
+		 
 let exists str sub =
 	try
 		ignore(find str sub);
@@ -103,17 +120,14 @@ let split str sep =
 	sub str 0 p, sub str (p + len) (slen - p - len)
 
 let nsplit str sep =
-	if str = "" then []
-	else (
-		let rec nsplit str sep =
-			try
-				let s1 , s2 = split str sep in
-				s1 :: nsplit s2 sep
-			with
-				Invalid_string -> [str]
-		in
-		nsplit str sep
-	)
+  if str = "" then []
+  else let rec aux acc ofs =
+    match 
+      try Some(find_from str ofs sep)
+      with Invalid_string -> None
+    with Some idx -> aux ( (sub str ofs ( idx - ofs ))::acc ) ( idx + 1 )
+      |  None     -> List.rev (sub str ofs (length str - ofs) :: acc)
+  in aux [] 0
 
 let join = concat
 
