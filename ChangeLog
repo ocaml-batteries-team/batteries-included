@@ -1,3 +1,17 @@
+2009-01-20  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/main/nothreads/batteries.ml: [Batteries_config] added
+
+	* src/main/threads/batteries.ml: [Batteries_config] added
+
+	* src/main/nothreads/batteries.mllib: [Batteries_core] removed
+
+	* examples/cat2.ml: adapted operators to [ <** ]
+
+	* examples/parallelsort.ml: adapted operators to [ <** ]
+
+	* examples/browser.ml: added
+
 2009-01-19  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extString.ml: [nsplit] rewritten
