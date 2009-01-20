@@ -566,11 +566,11 @@ val find : [> `Read] t -> [> `Read] t -> int
       within the string [s] or raises [Invalid_string] if [x]
       is not a substring of [s]. *)
 
-val find_from: [> `Read] -> int -> [> `Read] -> int
+val find_from: [> `Read] t -> int -> [> `Read] t -> int
   (** [find_from s ofs x] behaves as [find s x] but starts searching
       at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].*)
 
-val rfind : [> `Read] -> [> `Read] -> int
+val rfind : [> `Read] t -> [> `Read] t -> int
   (** [rfind s x] returns the starting index of the last occurrence
       of string [x] within string [s].
 
@@ -578,7 +578,7 @@ val rfind : [> `Read] -> [> `Read] -> int
 
       @raise Invalid_string if [x] is not a substring of [s]. *)
 
-val rfind_from: [> `Read] -> int -> [> `Read] -> int
+val rfind_from: [> `Read] t -> int -> [> `Read] t -> int
   (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
       at offset [ofs]. [rfind s x] is equivalent to [rfind_from s (String.length s - 1) x].*)
 
