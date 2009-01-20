@@ -1,5 +1,7 @@
 2009-01-20  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extString.ml*: [rfind], [find_from], [rfind_from] added to [Cap]
+
 	* src/main/nothreads/batteries.ml: [Batteries_config] added
 
 	* src/main/threads/batteries.ml: [Batteries_config] added
