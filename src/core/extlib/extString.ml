@@ -137,10 +137,11 @@ let nsplit str sep =
 	 try Some(rfind_from str ofs sep)
 	 with Invalid_string -> None
        with Some idx -> 
-	 (*[idx] to [idx + seplen] is useless*)
-	 (*[idx + seplen] to [ofs] is what we want*)
+	 (*at this point, [idx] to [idx + seplen] contains the separator, which is useless to us
+	   on the other hand, [idx + seplen] to [ofs] contains what's just after the separator,
+	   which is s what we want*)
 	 let end_of_occurrence = idx + seplen in
-	   if end_of_occurrence >= ofs then aux acc idx 
+	   if end_of_occurrence >= ofs then aux acc idx (*We may be at the end of the string*)
 	   else aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx 
 	 |  None     -> (sub str 0 ofs)::acc
        in
