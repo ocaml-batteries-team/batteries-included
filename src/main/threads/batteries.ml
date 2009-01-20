@@ -272,13 +272,9 @@ module  Rope    = Extlib.Rope
 module  UChar   = Extlib.ExtUChar.UChar
 module  String  = Extlib.ExtString.String
 module  Str     = Extlib.ExtStr.Str
-(*module  StringText (A module containing aliases to String and modified
-        Char)*)
-(*module  RopeText (As StringText but with implementations from Rope and
-        UChar
-    70module  UTF8Text (*As StringText but with implementations from UTF8 and*)
-        UChar 
-module  Labels*)
+(*module  StringText (A module containing aliases to String and modified   Char)*)
+(*module  RopeText (As StringText but with implementations from Rope and  UChar)*)
+(*module  UTF8Text (As StringText but with implementations from UTF8 and UChar)*)
          
 
 (**{3 Tools included in the distribution}
