@@ -12,8 +12,8 @@ let main =
     Array.sub input (i*part_size) len
   in
   let partitions   = Array.init tasks gen_part in
-  let task (c,arr) = Array.sort compare arr; send c arr |> sync in
+  let task (c,arr) = Array.sort compare arr; send c arr <** sync in
   let make_thread c arr = ignore (Thread.create task (c,arr)) in
   Array.iter2 make_thread channels partitions;
-  let get_print c = c |> receive |> sync |> Array.iter print_endline in
+  let get_print c = c <** receive <** sync <** Array.iter print_endline in
   Array.iter get_print channels
