@@ -124,6 +124,12 @@ let split str sep =
 	let slen = length str in
 	sub str 0 p, sub str (p + len) (slen - p - len)
 
+let rsplit str sep = 
+  let p = rfind str sep in
+  let len = length sep in
+  let slen = length str in
+    sub str 0 p, sub str (p + len) (slen - p - len)
+
 (**
    An implementation of [nsplit] in one pass.
 
@@ -407,6 +413,7 @@ let escaped       = escaped
 let replace_chars = replace_chars
 let replace       = replace
 let split         = split
+let rsplit        = rsplit
 let nsplit        = nsplit
 let join          = join
 let slice         = slice

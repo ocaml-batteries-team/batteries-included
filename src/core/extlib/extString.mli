@@ -312,6 +312,11 @@ val split : string -> string -> string * string
       occurrence of [sep].
       raises [Invalid_string] if the separator is not found. *)
 
+val rsplit : string -> string -> string * string
+  (** [rsplit s sep] splits the string [s] between the last
+      occurrence of [sep].
+      raises [Invalid_string] if the separator is not found. *)
+
 val nsplit : string -> string -> string list
   (** [nsplit s sep] splits the string [s] into a list of strings
       which are separated by [sep].
@@ -680,6 +685,11 @@ val replace : str:[> `Read] t -> sub:[> `Read] t -> by:[> `Read] t -> bool * _ t
 (** {6 Splitting around}*)
 val split : [> `Read] t -> [> `Read] t -> _ t * _ t
   (** [split s sep] splits the string [s] between the first
+      occurrence of [sep].
+      raises [Invalid_string] if the separator is not found. *)
+
+val rsplit : [> `Read] t -> string -> string * string
+  (** [rsplit s sep] splits the string [s] between the last
       occurrence of [sep].
       raises [Invalid_string] if the separator is not found. *)
 
