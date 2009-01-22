@@ -29,11 +29,13 @@
 
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Text.Rope" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Rope" (*For Sexplib, Bin-prot...*)
 open ExtUTF8
 open ExtUChar
 open ExtList
 open Return
+
+exception Invalid_rope
  
 (* =begin ignore *)
 type t =
@@ -174,7 +176,7 @@ let concat_str l = function
         | _ -> bal_if_needed l r
  
 let append_char c r = concat_str r (Leaf (1, (UTF8.make 1 c)))
- 
+
 let append l = function
     Empty -> l
   | Leaf _ as r -> concat_str l r
@@ -192,26 +194,30 @@ let append l = function
  
 let prepend_char c r = append (Leaf (1,(UTF8.make 1 c))) r
  
-let rec get i = function
+let get r i = 
+  let rec aux i = function
     Empty -> raise Out_of_bounds
   | Leaf (lens, s) ->
       if i >= 0 && i < lens then UTF8.unsafe_get s i
       else raise Out_of_bounds
   | Concat (l, cl, r, cr, _) ->
-      if i < cl then get i l
-      else get (i - cl) r
+      if i < cl then aux i l
+      else aux (i - cl) r
+  in aux i r
  
-let rec set i (v:ExtUChar.UChar.t) = function
-    Empty -> raise Out_of_bounds
-  | Leaf (lens, s) ->
-      if i >= 0 && i < lens then
-	let s = UTF8.copy_set s i v in
-          Leaf (lens, s)
-      else raise Out_of_bounds
-  | Concat(l, cl, r, cr, _) ->
-      if i < cl then append (set i v l) r
-      else append l (set (i - cl) v r)
- 
+let set r i v = 
+  let rec aux i = function
+      Empty -> raise Out_of_bounds
+    | Leaf (lens, s) ->
+	if i >= 0 && i < lens then
+	  let s = UTF8.copy_set s i v in
+            Leaf (lens, s)
+	else raise Out_of_bounds
+    | Concat(l, cl, r, cr, _) ->
+	if i < cl then append (aux i l) r
+	else append l (aux (i - cl) r)
+  in aux i r
+
 let of_ustring s =
   let lens = UTF8.length s in
   if lens = 0 then Empty
@@ -499,16 +505,9 @@ let create n = make n (UChar.chr 0x00)
 
 let init len f = of_enum (Enum.init len f)
 
-let of_list cl = assert false
-let to_list r = assert false
-(*
-   val of_list : char list -> string
-   
-   Converts a list of characters to a string.
-   
-   val to_list : string -> char list
-   
-   Converts a string to the list of its characters.*)
+let of_list cl = of_enum (List.enum cl)
+let to_list r  = List.of_enum (enum r)
+
   
 let of_string_unsafe s = of_ustring (UTF8.of_string_unsafe s)
 let of_int i = of_string_unsafe (string_of_int i)
@@ -523,10 +522,10 @@ let map f r = bulk_map (fun s -> UTF8.map f s) r
 let bulk_filter_map f r = bulk_fold (fun acc s -> match f s with None -> acc | Some r -> append_us acc r) Empty r
 let filter_map f r = bulk_map (UTF8.filter_map f) r
 
-(* TODO: ADD THESE TO [String] *)
+
 let left r len = sub r 0 len
 let right r len = let rlen = length r in sub r (rlen - len) len
-let head = left (*sub r 0 pos (* same as left *)*)
+let head = left
 let tail r pos = sub r pos (length r - pos)
 
 let index r item = 
@@ -579,49 +578,80 @@ let contains_from r start char =
 
 let rcontains_from = contains_from
 
-let equals r1 r2 = to_ustring r1 = to_ustring r2 (* make efficient *)
+let equals r1 r2 = to_ustring r1 = to_ustring r2 (*TODO: make efficient *)
 
 let starts_with r start_r = equals start_r (left r (length start_r))
 
 let ends_with r end_r = equals end_r (right r (length end_r))
 
-let find r1 r2 =
+(** find [r2] within [r1] or raises Not_found *)
+let find_from r1 ofs r2 =
   let matchlen = length r2 in
   let r2_string = to_ustring r2 in
   let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in 
   (* TODO: inefficient *)
   with_label (fun label -> 
-	   for i = 0 to length r1 - matchlen do
+	   for i = ofs to length r1 - matchlen do
 	     if check_at i then return label i
 	   done;
 	   raise Not_found)
 
-(** find [r2] within [r1] -- raises Not_found *)
+let find r1 r2 = find_from r1 0 r2
+
+let rfind_from r1 suf r2 =
+  let matchlen = length r2 in
+  let r2_string = to_ustring r2 in
+  let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in 
+  (* TODO: inefficient *)
+  with_label (fun label -> 
+	   for i = suf - (length r1 + 1 ) downto 0 do
+	     if check_at i then return label i
+	   done;
+	   raise Not_found)
+
+let rfind r1 r2 = rfind_from r1 (length r2 - 1) r2
+
 
 let exists r_str r_sub = try ignore(find r_str r_sub); true with Not_found -> false
 
-let trim str = 
+let trim str =  (*TODO: Make efficient*)
   let start = ref 0 in
-  while UChar.is_whitespace(get !start str) do
+  while UChar.is_whitespace(get str !start) do
     incr start;
   done;
   let stop = ref (length str - 1) in
-  while UChar.is_whitespace(get !stop str) do
+  while UChar.is_whitespace(get str !stop) do
     decr stop;
   done;
   sub str !start (!stop- !start)
 
-let strip ?(chars=" \t\r\n") str = assert false
 
-let capitalize r = assert false
-
-let uncapitalize r = assert false
-
-(* let copy r = UNNEEDED -- immutable structure *)
+let strip_default_chars = List.map UChar.of_char [' ';'\t';'\r';'\n']
+let strip ?(chars=strip_default_chars) s = (*TODO: Make efficient*)
+  let p = ref 0 in
+  let l = length s in
+    while !p < l && List.mem (get s !p) chars do
+      incr p;
+    done;
+    let p = !p in
+    let l = ref (l - 1) in
+      while !l >= p && List.mem (get s !l) chars do
+	decr l;
+      done;
+      sub s p (!l - p + 1)
 
 
 let lchop str = sub str 1 (length str - 1)
 let rchop str = sub str 0 (length str - 1)
+
+let apply1 f r =
+  if is_empty r then r
+  else append ( f ( of_uchar ( get r 0 ) ) ) ( lchop r )
+
+let capitalize r = apply1 uppercase r
+
+let uncapitalize r = apply1 lowercase r
+
 
 let splice r start len new_sub = 
   append (left r start) 
@@ -639,28 +669,67 @@ let escaped r = bulk_map UTF8.escaped r
 
 let replace_chars f r = fold (fun acc s -> append_us acc (f s)) Empty r
 
-let replace str sub by = splice str (find str sub) (length sub) by
+
 
 let split r sep = 
   let i = find r sep in
   head r i, tail r (i+length sep)
 
-let rec nsplit r sep n = (* NOT TAIL RECURSIVE *)
-  if n <= 1 then [r]
-  else try 
-    let i = find r sep in
-    head r i :: (nsplit (tail r (i+length sep)) sep (n-1))
-  with Not_found -> [r]
+let rsplit (r:t) sep = 
+  let i = rfind r sep in
+  head r i, tail r (i+length sep)
+
+(**
+   An implementation of [nsplit] in one pass.
+
+   This implementation traverses the string backwards, hence building the list
+   of substrings from the end to the beginning, so as to avoid a call to [List.rev].
+*)
+let nsplit str sep =
+  if is_empty str then []
+  else let seplen = length sep in
+       let rec aux acc ofs = match 
+	 try Some(rfind_from str ofs sep)
+	 with Invalid_rope -> None
+       with Some idx -> 
+	 (*at this point, [idx] to [idx + seplen] contains the separator, which is useless to us
+	   on the other hand, [idx + seplen] to [ofs] contains what's just after the separator,
+	   which is s what we want*)
+	 let end_of_occurrence = idx + seplen in
+	   if end_of_occurrence >= ofs then aux acc idx (*We may be at the end of the string*)
+	   else aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx 
+	 |  None     -> (sub str 0 ofs)::acc
+       in
+	 aux [] (length str - 1 )
+
 
 let join = concat
 
-let slice ?first ?last r = assert false
+let slice ?(first=0) ?(last=max_int) s =
+  let clip _min _max x = max _min (min _max x) in
+  let i = clip 0 (length s)
+    (if (first<0) then (length s) + first else first)
+  and j = clip 0 (length s)
+    (if (last<0) then (length s) + last else last)
+  in
+    if i>=j || i=length s then
+      create 0
+    else
+      sub s i (j-i)
 
-(* splice implemented above *)
 
-let explode r = assert false
+let replace ~str ~sub ~by = 
+  try
+    let i = find str sub in
+      (true, append (slice ~last:i str)  (append by 
+         (slice ~first:(i+(length sub)) str)))
+  with
+      Invalid_rope -> (false, str)
 
-let implode r = assert false
+
+let explode r = List.of_enum (enum r)
+
+let implode r = of_enum (List.enum r)
 
 let compare r1 r2 = Enum.compare UTF8.compare (bulk_enum r1) (bulk_enum r2)
 
