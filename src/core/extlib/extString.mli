@@ -172,16 +172,16 @@ val contains : string -> char -> bool
    appears in the string [s]. *)
 
 val contains_from : string -> int -> char -> bool
-(** [String.contains_from s start c] tests if character [c]
-   appears in the substring of [s] starting from [start] to the end
-   of [s].
-   Raise [Invalid_argument] if [start] is not a valid index of [s]. *)
+  (** [String.contains_from s start c] tests if character [c] appears in
+      the substring of [s] starting from [start] to the end of [s].
+
+      @raise Invalid_argument if [start] is not a valid index of [s]. *)
 
 val rcontains_from : string -> int -> char -> bool
 (** [String.rcontains_from s stop c] tests if character [c]
    appears in the substring of [s] starting from the beginning
    of [s] to index [stop].
-   Raise [Invalid_argument] if [stop] is not a valid index of [s]. *)
+   @raise Invalid_argument if [stop] is not a valid index of [s]. *)
 
 
 val find : string -> string -> int
@@ -210,10 +210,10 @@ val rfind_from: string -> int -> string -> int
 
 
 val ends_with : string -> string -> bool
-  (** [ends_with s x] returns true if the string [s] is ending with [x]. *)
+  (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise. *)
 
 val starts_with : string -> string -> bool
-  (** [starts_with s x] return true if [s] is starting with [x]. *)
+  (** [starts_with s x] returns [true] if [s] is starting with [x], [false] otherwise. *)
 
 val exists : string -> string -> bool
   (** [exists str sub] returns true if [sub] is a substring of [str] or
@@ -232,6 +232,18 @@ val rchop : string -> string
 val trim : string -> string
   (** Returns the same string but without the leading and trailing
       whitespaces. *)
+
+val left : string -> int -> string
+(**[left r len] returns the string containing the [len] first characters of [r]*)
+
+val right : string -> int -> string
+(**[left r len] returns the string containing the [len] last characters of [r]*)
+
+val head : string -> int -> string
+(**as {!left}*)
+
+val tail : string -> int -> string
+(**[tail r pos] returns the string containing all but the [pos] first characters of [r]*)
 
 val strip : ?chars:string -> string -> string
   (** Returns the string without the chars if they are at the beginning or
@@ -260,7 +272,7 @@ val sub : string -> int -> int -> string
 (** [String.sub s start len] returns a fresh string of length [len],
    containing the characters number [start] to [start + len - 1]
    of string [s].
-   Raise [Invalid_argument] if [start] and [len] do not
+   @raise Invalid_argument if [start] and [len] do not
    designate a valid substring of [s]; that is, if [start < 0],
    or [len < 0], or [start + len > ]{!String.length}[ s]. *)
 
@@ -268,7 +280,7 @@ val fill : string -> int -> int -> char -> unit
 (** [String.fill s start len c] modifies string [s] in place,
    replacing the characters number [start] to [start + len - 1]
    by [c].
-   Raise [Invalid_argument] if [start] and [len] do not
+   @raise Invalid_argument if [start] and [len] do not
    designate a valid substring of [s]. *)
 
 val blit : string -> int -> string -> int -> int -> unit
@@ -277,7 +289,8 @@ val blit : string -> int -> string -> int -> int -> unit
    string [dst], starting at character number [dstoff]. It works
    correctly even if [src] and [dst] are the same string,
    and the source and destination chunks overlap.
-   Raise [Invalid_argument] if [srcoff] and [len] do not
+   
+    @raise Invalid_argument if [srcoff] and [len] do not
    designate a valid substring of [src], or if [dstoff] and [len]
    do not designate a valid substring of [dst]. *)
 
@@ -310,12 +323,12 @@ val repeat: string -> int -> string
 val split : string -> string -> string * string
   (** [split s sep] splits the string [s] between the first
       occurrence of [sep].
-      raises [Invalid_string] if the separator is not found. *)
+      @raise Invalid_string if the separator is not found. *)
 
 val rsplit : string -> string -> string * string
   (** [rsplit s sep] splits the string [s] between the last
       occurrence of [sep].
-      raises [Invalid_string] if the separator is not found. *)
+      @raise Invalid_string if the separator is not found. *)
 
 val nsplit : string -> string -> string list
   (** [nsplit s sep] splits the string [s] into a list of strings
@@ -323,7 +336,7 @@ val nsplit : string -> string -> string list
       [nsplit "" _] returns the empty list. *)
 
 val join : string -> string list -> string
-  (** Same as [concat] *)
+  (** Same as {!concat} *)
 
 val slice : ?first:int -> ?last:int -> string -> string
   (** [slice ?first ?last s] returns a "slice" of the string
@@ -612,6 +625,19 @@ val rchop : [> `Read] t -> _ t
 val trim : [> `Read] t -> _ t
   (** Returns the same string but without the leading and trailing
       whitespaces. *)
+
+val left : [> `Read] t -> int -> _ t
+(**[left r len] returns the string containing the [len] first characters of [r]*)
+
+val right : [> `Read] t -> int -> _ t
+(**[left r len] returns the string containing the [len] last characters of [r]*)
+
+val head : [> `Read] t -> int -> _ t
+(**as {!left}*)
+
+val tail : [> `Read] t -> int -> _ t
+(**[tail r pos] returns the string containing all but the [pos] first characters of [r]*)
+
 
 val strip : ?chars:[> `Read] t -> [> `Read] t -> _ t
   (** Returns the string without the chars if they are at the beginning or

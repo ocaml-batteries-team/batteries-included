@@ -118,6 +118,11 @@ let strip ?(chars=" \t\r\n") s =
 	done;
 	sub s p (!l - p + 1)
 
+let left r len = sub r 0 len
+let right r len = let rlen = length r in sub r (rlen - len) len
+let head = left
+let tail r pos = sub r pos (length r - pos)
+
 let split str sep =
 	let p = find str sep in
 	let len = length sep in
@@ -423,6 +428,10 @@ let compare       = compare
 let compare_without_case = compare_without_case
 let splice        = splice
 let trim          = trim
+let left          = left
+let right         = right
+let head          = head
+let tail          = tail
 let filter_map    = filter_map
 let of_list       = of_list
 let to_list       = to_list
