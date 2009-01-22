@@ -1,3 +1,17 @@
+2009-01-22  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extBigarray.ml*: [enum] added
+
+2009-01-21  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extString.ml*: [rsplit] added
+
+	* src/batteries_toolchain/top.ml: [netstring] now loaded manually
+
+	* src/batteries_toolchain/batteries_help.ml: Added final newline to error messages.
+
+	* src/batteries_toolchain/batteries_help.ml: replaced
+
 2009-01-20  David Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extString.ml*: [rfind], [find_from], [rfind_from] added to [Cap]

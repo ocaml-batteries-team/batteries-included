@@ -133,15 +133,13 @@ struct
 		       else None)
 
   end
-  module Array1 = Bigarray.Array1
-  module Array2 = Bigarray.Array2
-  module Array3 = Bigarray.Array3
 
-  external genarray_of_array1: ('a, 'b, 'c) Array1.t -> ('a, 'b, 'c) Genarray.t
+
+  external genarray_of_array1: ('a, 'b, 'c) Bigarray.Array1.t -> ('a, 'b, 'c) Genarray.t
     = "%identity"
-  external genarray_of_array2: ('a, 'b, 'c) Array2.t -> ('a, 'b, 'c) Genarray.t
+  external genarray_of_array2: ('a, 'b, 'c) Bigarray.Array2.t -> ('a, 'b, 'c) Genarray.t
     = "%identity"
-  external genarray_of_array3: ('a, 'b, 'c) Array3.t -> ('a, 'b, 'c) Genarray.t
+  external genarray_of_array3: ('a, 'b, 'c) Bigarray.Array3.t -> ('a, 'b, 'c) Genarray.t
     = "%identity"
     external reshape:
    ('a, 'b, 'c) Genarray.t -> int array -> ('a, 'b, 'c) Genarray.t
@@ -156,5 +154,16 @@ struct
   let array2_of_genarray = Bigarray.array2_of_genarray
   let array1_of_genarray = Bigarray.array1_of_genarray
 
-
+  module Array1 = struct
+    include Bigarray.Array1
+    let enum t = Genarray.enum (genarray_of_array1 t)
+  end
+  module Array2 = struct
+    include Bigarray.Array2
+    let enum t = Genarray.enum (genarray_of_array2 t)
+  end
+  module Array3 = struct
+    include Bigarray.Array3
+    let enum t = Genarray.enum (genarray_of_array3 t)
+  end
 end
