@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.Data.Mutable.DynArray" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "DynArray" (*For Sexplib, Bin-prot...*)
 
 type resizer_t = currslots:int -> oldlength:int -> newlength:int -> int
 
@@ -348,19 +348,40 @@ let iteri f d =
 	done
 
 let filter f d =
-	let l = d.len in
-	let a = imake 0 l in
-	let a2 = d.arr in
-	let p = ref 0 in
-	for i = 0 to l - 1 do
-		let x = iget a2 i in
-		if f x then begin
-			iset a !p x;
-			incr p;
-		end;
-	done;
-	d.len <- !p;
-	d.arr <- a
+  let l    = d.len  in
+  let dest = make l in
+  let a2   = d.arr  in
+  let p    = ref 0  in
+    for i  = 0 to l - 1 do
+      let x = iget a2 i in
+	if f x then begin
+	  iset dest.arr !p x;
+	  incr p;
+	end;
+    done;
+    changelen dest !p;
+    dest
+
+let keep f d = let result = filter f d in 
+  d.arr <- result.arr;
+  d.len <- result.len
+
+let filter_map f d =
+  let l    = d.len  in
+  let dest = make l in (*Create the destination array with size [l]*)
+  let a2   = d.arr  in
+  let p    = ref 0  in
+    for i  = 0 to l - 1 do
+      match f (iget a2 i) with
+	| None   -> ()
+	| Some x -> begin
+	    iset dest.arr !p x;
+	    incr p;
+	end
+    done;
+    changelen dest !p; (*Trim the destination array to the right size*)
+    dest
+
 
 let index_of f d =
 	let rec loop i =
