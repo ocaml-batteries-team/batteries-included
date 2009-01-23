@@ -294,8 +294,8 @@ let of_enum enm =
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a out t =
   Enum.print ~first ~last ~sep print_a out (enum t)
 
-let filter f node =
+let filter f node = (*TODO : make faster*)
   of_enum (Enum.filter f (enum node))
 
-let filter_map f node =
+let filter_map f node = (*TODO : make faster*)
   of_enum (Enum.filter_map f (enum node))
