@@ -1117,7 +1117,11 @@ val ( /@ ) : 'a Enum.t -> ('a -> 'b) -> 'b Enum.t
 
 val ( @/ ) : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
 (**
-   An oep
+   Mapping operators.
+
+   Thes operators have the same meaning as function {!map} but are
+   sometimes more readable than this function, when chaining
+   several transformations in a row.
 *)
 
 (**
