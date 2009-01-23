@@ -1001,9 +1001,20 @@ val exe  : string
 (**
    {6 Enumerations}
 
-   Enumerations are a form of stream, i.e. a data structure which may
-   only be read in a specific order and only once. More operations on
-   enumerations are defined in module {!Enum}.
+   In OCaml Batteries Included, all data structures are enumerable,
+   which means that they support the following set of operations,
+   transformations, etc. More operations on enumerations are defined
+   in module {!Enum}, including the necessary constructors to make
+   your own structures enumerable.
+
+   For instance, to apply the {!foreach} loop to apply a function [f]
+   to all the consecutive elements of a string [s], you may use
+   [foreach (String.enum s) f]. Or, to visit the elements of that
+   string backwards, use [foreach (String.backwards s) f]. Conversely,
+   to apply a function [f] to all the consecutive elements of a list [l],
+   use [foreach (List.enum l) f], etc.
+
+   The various kinds of loops are detailed further in this documentation.
 *)
 
 val foreach: 'a Enum.t -> ('a -> unit) ->  unit
@@ -1013,16 +1024,105 @@ val foreach: 'a Enum.t -> ('a -> unit) ->  unit
       For instance, [foreach (1 -- 10) print_int] invokes function [print_int]
       on [1], [2], ..., [10], printing [12345678910].
 
-      
-  *)
+      {b Note} This function is one of the many loops available on
+      enumerations.  Other commonly used loops are {!iter} (same usage
+      scenario as [foreach]), {!map} (convert an enumeration to another
+      enumeration) or {!fold} (flatten an enumeration by applying an
+      operation to each element).  *)
 
-val iter : ('a -> unit) -> 'a Enum.t -> unit
-  (** [iter f e] calls the function [f] with each elements of [e] in turn. 
+(**
+   {7 General-purpose loops}
 
-      For instance, [iter f (1 -- 10)] invokes function [f] on [1],
-      [2], ..., [10].
+   {topic loops}
+
+   The following functions are the three main general-purpose loops
+   available in OCaml. By opposition to the loops available in
+   imperative languages, OCaml loops are regular functions, which
+   may be passed, composed, currified, etc. In particular, each
+   of these loops may be considered either as a manner of applying
+   a function to a data structure or as transforming a function
+   into another function which will act on a whole data structure.
+
+   For instance, if [f] is a function operating on one value, you may
+   lift this function to operate on all values of an enumeration (and
+   consequently on all values of any data structure of OCaml Batteries
+   Included) by applying {!iter}, {!map} or {!fold} to this function.
 *)
 
+
+val iter : ('a -> unit) -> 'a Enum.t -> unit
+  (** Imperative loop on an enumeration. This loop is typically used
+      to lift a function with an effect but no meaningful result and
+      get it to work on enumerations.
+
+      If [f] is a function [iter f] is a function which behaves as [f]
+      but acts upon enumerations rather than individual elements. As
+      indicated in the type of [iter], [f] must produce values of type
+      [unit] (i.e. [f] has no meaningful result) the resulting function
+      produces no meaningful result either.
+
+      In other words, [iter f] is a function which, when applied upon
+      an enumeration [e], calls [f] with each element of [e] in turn.
+
+      For instance, [iter f (1 -- 10)] invokes function [f] on [1],
+      [2], ..., [10] and produces value [()].
+  *)
+
+val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
+  (** Functional loop on an enumeration, used to build an enumeration
+      from another enumeration. This loop is typically used to transform
+      an enumeration into another enumeration with the same number of
+      elements, in the same order.
+
+      If [f] is a function, [map f e] is a function which behaves as
+      [f] but acts upon enumerations rather than individual elements --
+      and builds a new enumeration from the results of each application.
+
+      In other words, [map f] is a function which, when applied
+      upon an enumeration containing elements [e1], [e2], ...,
+      produces enumeration [f e1], [f e2], ...
+
+      For instance, if [odd] is the function which returns [true]
+      when applied to an odd number or [false] when applied to
+      an even number, [map odd (1 -- 10)] produces enumeration
+      [true], [false], [true], ..., [false].
+
+      Similarly, if [square] is the function [fun x -> x * x],
+      [map square (1 -- 10)] produces the enumeration of the
+      square numbers of all numbers between [1] and [10].
+*)
+
+val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
+  (** Functional loop on an enumeration, used to build a single value
+      from an enumeration. This is the most powerful general-purpose
+      loop and also the most complex.
+
+      If [f] is a function, [fold f v e] is applies [f v] to the first
+      element of [e], then, calling [acc_1] the result of this
+      operation, applies [f acc_1] to the second element of [e], then,
+      calling [acc_2] the result of this operation, applies [f acc_2]
+      to the third element of [e]...
+
+      In other words, [fold f v e] returns [v] if [e] is empty,
+      otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
+      the elements of [e]. 
+
+      For instance, if [add] is the function [fun x y -> x + y],
+      [fold add 0] is the function which computes the sum of the
+      elements of an enumeration. Therefore, [fold add 0 (1 -- 10)]
+      produces result [55].
+  *)
+  
+val ( /@ ) : 'a Enum.t -> ('a -> 'b) -> 'b Enum.t
+
+val ( @/ ) : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
+(**
+   An oep
+*)
+
+(**
+   {7 Other operations on enumerations}
+*)
 
 val exists: ('a -> bool) -> 'a Enum.t -> bool
 (** [exists f e] returns [true] if there is some [x] in [e] such
@@ -1031,10 +1131,7 @@ val exists: ('a -> bool) -> 'a Enum.t -> bool
 val for_all: ('a -> bool) -> 'a Enum.t -> bool
 (** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
 
-val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
-  (** [fold f v e] returns v if e is empty,
-      otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
-      the elements of [e]. *)
+
 
 val find : ('a -> bool) -> 'a Enum.t -> 'a
   (** [find f e] returns the first element [x] of [e] such that [f x] returns
@@ -1061,13 +1158,15 @@ val push : 'a Enum.t -> 'a -> unit
 val junk : 'a Enum.t -> unit
   (** [junk e] removes the first element from the enumeration, if any. *)
 
-val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
-  (** [map f e] returns an enumeration over [(f a1, f a2, ... , f aN)] where
-      a1...N are the elements of [e]. *)
-
 val filter : ('a -> bool) -> 'a Enum.t -> 'a Enum.t
   (** [filter f e] returns an enumeration over all elements [x] of [e] such
       as [f x] returns [true]. *)
+
+val ( // ) : 'a Enum.t -> ('a -> bool) -> 'a Enum.t
+(** Filtering (pronounce this operator name "such that").
+
+    For instance, [(1 -- 37) // odd] is the enumeration of all odd
+    numbers between 1 and 37.*)
 
 val concat : 'a Enum.t Enum.t -> 'a Enum.t
   (** [concat e] returns an enumeration over all elements of all enumerations
@@ -1088,11 +1187,9 @@ val ( --- ) : int -> int -> int Enum.t
 val ( ~~ ) : char -> char -> char Enum.t
 (** As ( -- ), but for characters.*)
 
-val ( // ) : 'a Enum.t -> ('a -> bool) -> 'a Enum.t
-(** Filtering (pronounce this operator name "such that").
 
-    For instance, [(1 -- 37) // odd] is the enumeration of all odd
-    numbers between 1 and 37.*)
+
+
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b Enum.t -> unit
 (** Print and consume the contents of an enumeration.*)
