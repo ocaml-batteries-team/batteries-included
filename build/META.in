@@ -41,6 +41,19 @@ package "pa_where" (
 	)
 )
 
+package "pa_comprehension" (
+	description = "comprehension expressions (container)"
+	version     = "@VERSION@"
+	package "syntax" (
+		description = "comprehension expressions (syntax extension)"
+		version                       = "@VERSION@"
+		archive(syntax, preprocessor) = "Camlp4ListComprehension.cmo,
+                                                 pa_comprehension.cmo"
+		archive(syntax, toploop)      = "Camlp4ListComprehension.cmo,
+                                                 pa_comprehension.cmo"
+	)
+)
+
 package "pa_batteries" (
 	description = "auto-opener for Batteries (container)"
 	version     = "@VERSION@"

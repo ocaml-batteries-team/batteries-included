@@ -102,9 +102,13 @@ struct
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
 
     (*The command-line for [use_batteries] and [use_batteries_r]*)
-
-    let cl_use_boilerplate = [A"-package"; A "batteries.pa_type_conv.syntax,batteries,sexplib.syntax"]
-    and cl_use_batteries   = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"; A "-package"; A "batteries"]
+    let cl_use_boilerplate =
+      [A"-package"; A "batteries.pa_type_conv.syntax,batteries,sexplib.syntax"]
+    and cl_use_batteries   =
+      let syntaxes = ["pa_openin";"pa_where";"pa_batteries";"pa_comprehension"] in
+      [A "-package";
+       A (String.concat "," (List.map (Printf.sprintf "batteries.%s.syntax") syntaxes));
+       A "-package"; A "batteries"]
     and cl_use_batteries_o = []
               (*[cl_use_batteries_o]: extensions which only make sense in original syntax*)
     and cl_camlp4o         = [A"-syntax";  A "camlp4o"]

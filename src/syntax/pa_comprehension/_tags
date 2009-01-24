@@ -1,0 +1,2 @@
+# you need to add -cflags -I,+camlp4/Camlp4Parsers
+<pa_comprehension.*>: camlp4rf,use_camlp4
