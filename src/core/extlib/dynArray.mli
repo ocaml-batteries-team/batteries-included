@@ -153,29 +153,53 @@ val iteri : (int -> 'a -> unit) -> 'a t -> unit
 
 val map : ('a -> 'b) -> 'a t -> 'b t
 (** [map f darr] applies the function [f] to every element of [darr]
-	and creates a dynamic array from the results - similar to [List.map] or
-	[Array.map]. *)
+    and creates a dynamic array from the results - similar to [List.map] or
+    [Array.map]. *)
 
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
 (** [mapi f darr] applies the function [f] to every element of [darr]
-	and creates a dynamic array from the results - similar to [List.mapi] or
-	[Array.mapi]. *)
+    and creates a dynamic array from the results - similar to [List.mapi] or
+    [Array.mapi]. *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
-(** [fold_left f x darr] computes
-	[f ( ... ( f ( f (get darr 0) x) (get darr 1) ) ... ) (get darr n-1)],
-	similar to [Array.fold_left] or [List.fold_left]. *)
+  (** [fold_left f x darr] computes
+      [f ( ... ( f ( f (get darr 0) x) (get darr 1) ) ... ) (get darr n-1)],
+      similar to [Array.fold_left] or [List.fold_left]. *)
 
 val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-(** [fold_right f darr x] computes
-	[ f (get darr 0) (f (get darr 1) ( ... ( f (get darr n-1) x ) ... ) ) ]
-	similar to [Array.fold_right] or [List.fold_right]. *)
+  (** [fold_right f darr x] computes
+      [ f (get darr 0) (f (get darr 1) ( ... ( f (get darr n-1) x ) ... ) ) ]
+      similar to [Array.fold_right] or [List.fold_right]. *)
 
 val index_of : ('a -> bool) -> 'a t -> int
 (** [index_of f darr] returns the index of the first element [x] in darr such
 	as [f x] returns [true] or raise [Not_found] if not found. *)
 
-val filter : ('a -> bool) -> 'a t -> unit
+val keep : ('a -> bool) -> 'a t -> unit
+(** [keep p darr] removes in place all the element [x] of [darr]
+    such that [p x = false]
+
+    {b Note} In previous versions, this function used to be called
+    {!filter}. As this caused incompatibilities with comprehension
+    of dynamic arrays, the function name has been changed.
+*)
+
+val filter : ('a -> bool) -> 'a t -> 'a t
+  (** [filter p a] returns all the elements of the array [a]
+      that satisfy the predicate [p].  The order of the elements
+      in the input array is preserved.  
+
+      {b Note} This function replaces another function called [filter],
+      available in previous versions of the library. As the old function
+      was incompatible with comprehension of dynamic arrays, its name
+      was changed to {!keep}.
+  *)
+  
+val filter_map : ('a -> 'b option) -> 'a t -> 'b t
+  (** [filter_map f e] returns an array consisting in all elements
+      [x] such that [f y] returns [Some x] , where [y] is an element
+      of [e]. *)
+
 
 (** {6 Array resizers} *)
 

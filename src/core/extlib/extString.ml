@@ -57,24 +57,46 @@ let ends_with s e =
 	else
 		sub s (sl-el) el = e
 
-let find str sub =
-	let sublen = length sub in
-	if sublen = 0 then
-		0
+let find_from str ofs sub = 
+  let sublen = length sub in
+    if sublen = 0 then ofs (*If [sub] is the empty string, by convention, it may be found wherever we started searching.*)
+    else
+      let len = length str in
+	if 0 > ofs || ofs >= len then raise (Invalid_argument "index out of bounds")
 	else
-		let found = ref 0 in
-		let len = length str in
-		try
-			for i = 0 to len - sublen do
-				let j = ref 0 in
-				while unsafe_get str (i + !j) = unsafe_get sub !j do
-					incr j;
-					if !j = sublen then begin found := i; raise Exit; end;
-				done;
-			done;
-			raise Invalid_string
-		with
-			Exit -> !found
+	Return.label (fun label ->
+  	  for i = ofs to len - sublen do
+	    let j = ref 0 in
+	      while unsafe_get str (i + !j) = unsafe_get sub !j do
+		incr j;
+		if !j = sublen then Return.return label i
+	      done;
+	  done;
+	  raise Invalid_string
+        )
+
+let find str sub = find_from str 0 sub
+
+let rfind_from str suf sub = 
+  let sublen = length sub 
+  and len    = length str in
+    if sublen = 0 then len
+    else
+	if 0 > suf || suf >= len then raise (Invalid_argument "index out of bounds")
+	else
+	Return.label (fun label ->
+  	  for i = suf - sublen + 1 downto 0 do
+	    (*Printf.printf "i:%i/suf:%i/sublen:%i/len:%i\n" i suf sublen len;*)
+	    let j = ref 0 in
+	      while unsafe_get str ( i + !j ) = unsafe_get sub !j do
+		incr j;
+		if !j = sublen then Return.return label i
+	      done;
+	  done;
+	  raise Invalid_string
+        )
+
+let rfind str sub = rfind_from str (String.length str - 1) sub
 
 let exists str sub =
 	try
@@ -96,24 +118,45 @@ let strip ?(chars=" \t\r\n") s =
 	done;
 	sub s p (!l - p + 1)
 
+let left r len = sub r 0 len
+let right r len = let rlen = length r in sub r (rlen - len) len
+let head = left
+let tail r pos = sub r pos (length r - pos)
+
 let split str sep =
 	let p = find str sep in
 	let len = length sep in
 	let slen = length str in
 	sub str 0 p, sub str (p + len) (slen - p - len)
 
+let rsplit str sep = 
+  let p = rfind str sep in
+  let len = length sep in
+  let slen = length str in
+    sub str 0 p, sub str (p + len) (slen - p - len)
+
+(**
+   An implementation of [nsplit] in one pass.
+
+   This implementation traverses the string backwards, hence building the list
+   of substrings from the end to the beginning, so as to avoid a call to [List.rev].
+*)
 let nsplit str sep =
-	if str = "" then []
-	else (
-		let rec nsplit str sep =
-			try
-				let s1 , s2 = split str sep in
-				s1 :: nsplit s2 sep
-			with
-				Invalid_string -> [str]
-		in
-		nsplit str sep
-	)
+  if str = "" then []
+  else let seplen = String.length sep in
+       let rec aux acc ofs = match 
+	 try Some(rfind_from str ofs sep)
+	 with Invalid_string -> None
+       with Some idx -> 
+	 (*at this point, [idx] to [idx + seplen] contains the separator, which is useless to us
+	   on the other hand, [idx + seplen] to [ofs] contains what's just after the separator,
+	   which is s what we want*)
+	 let end_of_occurrence = idx + seplen in
+	   if end_of_occurrence >= ofs then aux acc idx (*We may be at the end of the string*)
+	   else aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx 
+	 |  None     -> (sub str 0 ofs)::acc
+       in
+	 aux [] (length str - 1 )
 
 let join = concat
 
@@ -353,6 +396,9 @@ let contains      = contains
 let contains_from = contains_from
 let rcontains_from= rcontains_from
 let find          = find
+let find_from     = find_from
+let rfind         = rfind
+let rfind_from    = rfind_from
 let ends_with     = ends_with
 let starts_with   = starts_with
 let exists        = exists
@@ -372,6 +418,7 @@ let escaped       = escaped
 let replace_chars = replace_chars
 let replace       = replace
 let split         = split
+let rsplit        = rsplit
 let nsplit        = nsplit
 let join          = join
 let slice         = slice
@@ -381,6 +428,10 @@ let compare       = compare
 let compare_without_case = compare_without_case
 let splice        = splice
 let trim          = trim
+let left          = left
+let right         = right
+let head          = head
+let tail          = tail
 let filter_map    = filter_map
 let of_list       = of_list
 let to_list       = to_list

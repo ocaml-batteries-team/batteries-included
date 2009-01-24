@@ -1,3 +1,22 @@
+(*
+ * Batteries - The complete Batteries Included (threaded version)
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
 
 (**
    Automatically opened module.
@@ -253,13 +272,9 @@ module  Rope    = Extlib.Rope
 module  UChar   = Extlib.ExtUChar.UChar
 module  String  = Extlib.ExtString.String
 module  Str     = Extlib.ExtStr.Str
-(*module  StringText (A module containing aliases to String and modified
-        Char)*)
-(*module  RopeText (As StringText but with implementations from Rope and
-        UChar
-    70module  UTF8Text (*As StringText but with implementations from UTF8 and*)
-        UChar 
-module  Labels*)
+(*module  StringText (A module containing aliases to String and modified   Char)*)
+(*module  RopeText (As StringText but with implementations from Rope and  UChar)*)
+(*module  UTF8Text (As StringText but with implementations from UTF8 and UChar)*)
          
 
 (**{3 Tools included in the distribution}
@@ -271,6 +286,7 @@ module  Labels*)
 
    {topic Externals}
 *)
+
 
 module  Packages = Toolchain.Batlib_Findlib_Findlib
 module  Compilers= Toolchain.Builtin_tools
@@ -350,10 +366,10 @@ module Unix     = Extlib.ExtUnix.Unix
    {topic Unclassified}
 *)
 
-(*module Digest = Batlib_Baselib_Digest*)
-module MD5    = Batlib_Baselib_Digest
-module Random = Extlib.ExtRandom.Random
-module Base64 = Extlib.Base64
+module Batteries_config = Batteries_config
+module MD5              = Batlib_Baselib_Digest
+module Random           = Extlib.ExtRandom.Random
+module Base64           = Extlib.Base64
 (*module Date:placeholder*)
 
 (**

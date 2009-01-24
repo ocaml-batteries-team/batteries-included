@@ -168,16 +168,19 @@ val group : ('a -> bool) -> 'a t -> 'a t t
       results are the same. *)
 
 val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
-  (** [clump size add get e] runs [add] on [size] (or less at the end) elements of [e] and then runs [get] to produce value for the result enumeration.  Useful to convert a char enum into string enum. *)
+  (** [clump size add get e] runs [add] on [size] (or less at the end)
+      elements of [e] and then runs [get] to produce value for the
+      result enumeration.  Useful to convert a char enum into string
+      enum. *)
 
 (** {6 Lazy constructors}
 
- These functions are lazy which means that they will create a new modified
- enumeration without actually enumerating any element until they are asked
- to do so by the programmer (using one of the functions above).
- 
- When the resulting enumerations of these functions are consumed, the
- underlying enumerations they were created from are also consumed. *)
+    These functions are lazy which means that they will create a new modified
+    enumeration without actually enumerating any element until they are asked
+    to do so by the programmer (using one of the functions above).
+    
+    When the resulting enumerations of these functions are consumed, the
+    underlying enumerations they were created from are also consumed. *)
 
 val map : ('a -> 'b) -> 'a t -> 'b t
   (** [map f e] returns an enumeration over [(f a1, f a2, ... , f aN)] where
@@ -345,23 +348,27 @@ val delay : (unit -> 'a t) -> 'a t
   *)
 
 val to_object: 'a t -> (<next:'a; count:int; clone:'b> as 'b)
+(**[to_object e] returns a representation of [e] as an object.*)
+
 val of_object: (<next:'a; count:int; clone:'b> as 'b) -> 'a t
+(**[of_object e] returns a representation of an object as an enumeration*)
+
 
 (** {6 Counting} *)
 
 val count : 'a t -> int
-(** [count e] returns the number of remaining elements in [e] without
-  consuming the enumeration.
-
-    Depending of the underlying data structure that is implementing the
-    enumeration functions, the count operation can be costly, and even sometimes
-    can cause a call to [force]. *)
-
+  (** [count e] returns the number of remaining elements in [e] without
+      consuming the enumeration.
+      
+      Depending of the underlying data structure that is implementing the
+      enumeration functions, the count operation can be costly, and even sometimes
+      can cause a call to [force]. *)
+  
 val fast_count : 'a t -> bool
-(** For users worried about the speed of [count] you can call the [fast_count]
-    function that will give an hint about [count] implementation. Basically, if
-    the enumeration has been created with [make] or [init] or if [force] has
-    been called on it, then [fast_count] will return true. *)
+  (** For users worried about the speed of [count] you can call the [fast_count]
+      function that will give an hint about [count] implementation. Basically, if
+      the enumeration has been created with [make] or [init] or if [force] has
+      been called on it, then [fast_count] will return true. *)
 
 val hard_count : 'a t -> int
   (** [hard_count] returns the number of remaining in elements in [e],

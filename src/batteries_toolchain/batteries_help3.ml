@@ -115,9 +115,7 @@ let append_to_table table k v =
 
 let browse pages =
   try
-    List.iter (fun page -> 
-		 debug "Showing %s\n" page.url;
-		 if Batteries_config.browse page.url <> 0 then failwith "Browser") pages
+    List.iter (fun page -> if Batteries_config.browse page.url <> 0 then failwith "Browser") pages
   with Failure "Browser" -> 
     Printf.eprintf "Sorry, I had a problem communicating with your browser and I couldn't open the manual.\n%!"
 
@@ -126,13 +124,6 @@ let browse pages =
 (**
    {6 Loading}
 *)
-
-(**Extract the unqualified name of a possibly qualified name.
-
-   [local_name "a.b.c.d"] produces ["d"]*)
-let local_name s =
-  try snd (String.rsplit s ".")
-  with String.Invalid_string -> s
 
 (**
    Load the contents of an index file into hash tables.
@@ -147,19 +138,14 @@ let load_index ~name ~index ~prefix ~suggestions ~completions =
 	      with Invalid_string -> prefix^url
 	      in
 		Hashtbl.add suggestions item {spackage = name; url = full_url}; (*Add fully qualified name -> url*)
-		let basename = Filename.basename item in
-		let leafname = local_name basename    in
-		let completion={cpackage = name; qualified = item} in
-		append_to_table completions basename completion;
-		append_to_table completions leafname completion;
+		append_to_table completions (Filename.basename item) {cpackage = name; qualified = item};
 		debug "Adding manual %S => %S (%S)\n" item full_url name;
-		debug "Adding completion %S => %S (%S)\n" basename item name;
-		debug "Adding completion %S => %S (%S)\n" leafname item name
+		debug "Adding completion %S => %S (%S)\n" (Filename.basename item) item name
 	   ))
       (File.lines_of index)
   with e -> 
     Printf.eprintf
-      "While initializing the on-line help, error reading index file %S\n%s\n%!"
+      "While initializing the on-line help, error reading index file %S\n%s%!"
       index (Printexc.to_string e)
 
 
@@ -190,26 +176,19 @@ let get_table =
 		              load_index
 				~name:"OCaml Batteries Included" 
 				~index
-				~prefix:("file://"^html_directory^"/")
+				~prefix:("file://"^html_directory)
 				~suggestions
 				~completions
 		      | _ -> ()
 		 )
 	    ) 
 	    (File.lines_of root_file);
-	    let result = {suggestions = suggestions; completions = table_of_tableref completions} in
-	      Hashtbl.add tables kind result;
-	      result
-	      
+	  {suggestions = suggestions; completions = table_of_tableref completions}
 	with e ->
 	  Printf.eprintf
-	    "While initializing the on-line help, error in root doc file %S\n%s\n%!" root_file
+	    "While initializing the on-line help, error in root doc file %S\n%s%!" root_file
 	    (Printexc.to_string e);
-	    let result = {suggestions = Hashtbl.create 0; completions = Hashtbl.create 0} in
-	      Hashtbl.add tables kind result;
-	      result
-
-	      
+	  {suggestions = Hashtbl.create 0; completions = Hashtbl.create 0}
 
 
 (**
@@ -281,12 +260,11 @@ let man ~cmd ~kind ~singular ~plural ~undefined ~tabs subject =
   match man_aux ~cmd ~kind ~singular ~plural ~undefined subject
   with  `No_result       -> Printf.printf "Sorry, I don't know any %s named %S.\n%!" singular subject
     |   `Suggestions (l,table) when tabs -> browse (result_of_completions table singular subject l)
-    |   `Suggestions ([h],table)         -> browse (result_of_completions table singular subject [h])
     |   `Suggestions (l,_) -> 
-	  Printf.printf "Several %s exist with name %S. To obtain help on one of them, please use one of\n %a%!"
+	  Printf.printf "Several %s exist with name %S. To obtain the help on one of them, please use one of\n %a%!"
 	    plural subject
-	    (List.print ~first:"" ~sep:"\n " ~last:"\n" (fun out {qualified = q} -> Printf.fprintf out " %s %S\n" cmd q))
-	    l
+	    (List.print ~first:"" ~sep:"\n " ~last:"\n" String.print)
+	    (List.map get_qualified l)
 
 (**
    Look for a given subject across all manuals and display the results.
@@ -367,15 +345,12 @@ let help () =
     (fun file -> copy file stdout);
   flush stdout;;
 
-let man = List.assoc "man" helpers
 
 (** Initialize the help system (lazily)*)
 let init () =
-  try
-    List.iter (fun (key, search) -> Hashtbl.add Toploop.directive_table key (Toploop.Directive_string search))
-      helpers;
-    Hashtbl.add
-      Toploop.directive_table
-      "help"
-      (Toploop.Directive_none help)
-  with e -> Printf.printf "Error while initializing help system:\n%s\n%!" (Printexc.to_string e)
+  List.iter (fun (key, search) -> Hashtbl.add Toploop.directive_table key (Toploop.Directive_string search))
+    helpers;
+  Hashtbl.add
+    Toploop.directive_table
+    "help"
+    (Toploop.Directive_none help)

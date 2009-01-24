@@ -192,9 +192,9 @@ type ('a, 'b) result =
 
 (** {6 Operators}*)
 
-let ( |> ) x f = f x
+let ( <** ) x f = f x
 
-let ( <| ) f x = f x
+let ( **> ) f x = f x
 
 let ( |- ) f g x = g (f x)
 

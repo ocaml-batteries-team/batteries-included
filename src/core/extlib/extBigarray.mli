@@ -516,6 +516,10 @@ module Array1 : sig
     bool -> int -> ('a, 'b, 'c) t
   (** Memory mapping of a file as a one-dimensional big array.
      See {!Bigarray.Genarray.map_file} for more details. *)
+
+  val enum : ('a, 'b, 'c) t -> 'a Enum.t
+    (** [enum e] returns an enumeration on the elements of [e].
+	The order of enumeration is unspecified.*)
 end
 
 
@@ -610,6 +614,10 @@ module Array2 :
   (** Memory mapping of a file as a two-dimensional big array.
      See {!Bigarray.Genarray.map_file} for more details. *)
 
+
+  val enum : ('a, 'b, 'c) t -> 'a Enum.t
+    (** [enum e] returns an enumeration on the elements of [e].
+	The order of enumeration is unspecified.*)
   end
 
 (** {6 Three-dimensional arrays} *)
@@ -727,6 +735,10 @@ module Array3 :
              bool -> int -> int -> int -> ('a, 'b, 'c) t
   (** Memory mapping of a file as a three-dimensional big array.
      See {!Bigarray.Genarray.map_file} for more details. *)
+
+  val enum : ('a, 'b, 'c) t -> 'a Enum.t
+    (** [enum e] returns an enumeration on the elements of [e].
+	The order of enumeration is unspecified.*)
   end
 
 (** {6 Coercions between generic big arrays and fixed-dimension big arrays} *)

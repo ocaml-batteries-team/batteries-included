@@ -56,6 +56,7 @@ module List :
 	  (**The type of lists*)
 
       (**{6 Base operations}*)
+
 	val length : 'a list -> int
 	  (** Return the length (number of elements) of the given list. *)
 
@@ -119,6 +120,7 @@ module List :
 
 
 	(**{6 Iterators}*)
+
 	val iter : ('a -> unit) -> 'a list -> unit
 	  (** [List.iter f [a1; ...; an]] applies function [f] in turn to
 	      [a1; ...; an]. It is equivalent to
@@ -167,6 +169,7 @@ module List :
 
 
 	(** {6 Iterators on two lists} *)
+
 	val iter2 : ('a -> 'b -> unit) -> 'a list -> 'b list -> unit
 	  (** [List.iter2 f [a1; ...; an] [b1; ...; bn]] calls in turn
 	      [f a1 b1; ...; f an bn].
@@ -198,6 +201,7 @@ module List :
 	      different lengths.  Tail-recursive. *)
 
 	  (**{6 List scanning}*)
+
 	val for_all : ('a -> bool) -> 'a list -> bool
 	  (** [for_all p [a1; ...; an]] checks if all elements of the list
 	      satisfy the predicate [p]. That is, it returns
@@ -262,7 +266,7 @@ module List :
 	      in the input list is preserved.  *)
 
 	val filter_map : ('a -> 'b option) -> 'a list -> 'b list
-	(** [filter_map f l] call [(f a0) (f a1).... (f an)] where [a0..an] are
+	(** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0..an] are
 	 the elements of [l]. It returns the list of elements [bi] such as
 	 [f ai = Some bi] (when [f] returns [None], the corresponding element of
 	 [l] is discarded). *)
@@ -298,6 +302,7 @@ module List :
 	 Default comparator ( = ) is used if no comparison function specified. *)
 
 	  (**{6 Association lists}*)
+
 	val assoc : 'a -> ('a * 'b) list -> 'b
 	  (** [assoc a l] returns the value associated with key [a] in the list of
 	      pairs [l]. That is,
@@ -335,6 +340,7 @@ module List :
 
 
 	(** {6 List transformations}*)
+
 	val split_at : int -> 'a list -> 'a list * 'a list
 	(** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
 	 first [n] elements of [l] and [l2] the others. Raise [Invalid_index] if

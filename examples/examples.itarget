@@ -14,3 +14,5 @@ gunzip.byte
 gunzip.native
 parallelsort.byte
 parallelsort.native
+browser.byte
+browser.native
