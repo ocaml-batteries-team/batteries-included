@@ -1,3 +1,5 @@
 <common>:	include
 <camlzip>:	include
 <ocamlnet>:	include
+<*.ml>:   pkg_netstring,pkg_sexplib,pkg_bin_prot,pkg_sexplib.syntax,syntax_camlp4o
+<*.mli>: pkg_netstring,pkg_camomile,pkg_sexplib
