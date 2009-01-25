@@ -366,11 +366,12 @@ module Unix     = Extlib.ExtUnix.Unix
    {topic Unclassified}
 *)
 
+module Base64           = Extlib.Base64
 module Batteries_config = Batteries_config
 module MD5              = Batlib_Baselib_Digest
 module Random           = Extlib.ExtRandom.Random
-module Base64           = Extlib.Base64
-(*module Date:placeholder*)
+module Date             = Libs.ExtNetdate.Netdate
+
 
 (**
    Preview of future modules.
