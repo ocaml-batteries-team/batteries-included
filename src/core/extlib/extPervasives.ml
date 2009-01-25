@@ -111,7 +111,7 @@ module Pervasives = struct
 
   let first f (x, y) = (f x, y)
   let second f (x, y)= (x, f y)
-
+  let ( **> )        = ( <| )
   let undefined ?(message="Undefined") = failwith message
 
   let _ = at_exit close_all; (*Called second*)
