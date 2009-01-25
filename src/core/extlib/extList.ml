@@ -22,7 +22,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Persistent" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 module List = struct
 

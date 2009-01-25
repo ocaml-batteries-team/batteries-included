@@ -532,6 +532,7 @@ val flush_bits : out_bits -> unit
 val drop_bits : in_bits -> unit
 (** Drop up to 7 buffered bits and restart to next input character. *)
 
+
 (**
    {6 Creating new types of inputs/outputs}
 *)

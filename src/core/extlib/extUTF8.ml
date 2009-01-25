@@ -20,7 +20,7 @@
 
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 (*Inlined to avoid circular dependencies between IO, ExtUTF8 and ExtString*)
 let string_splice s1 off len s2 = 
