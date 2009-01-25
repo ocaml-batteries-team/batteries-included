@@ -2,7 +2,7 @@
    
      The global form is "[? output | comp_item ; comp_item ; ... ]".
      A comp_item is either a guard (a boolean expression), or
-     a generator of the form "<patt> <- <expr>" . Variables bounded in
+     a generator of the form "<patt> <- <expr>" . Variables bound in
      the pattern can be used in the following comp_items, and in the
      output expression.
 
@@ -16,13 +16,14 @@
      the Enum module is choosed by default.
 
   Example Input :
-    [? pow p k | p <- 2--100; prime p; k <- List : (seq 1 (p - 1)) ]
+    [? Array : pow p k | p <- 2--100; prime p; k <- List : (seq 1 (p - 1)) ]
 
   Output :
-    Enum.concat
-      (Enum.map
-        (fun p -> Enum.map (fun k -> pow p k) (List.enum (seq 1 (p - 1))))
-        (2 -- 100))
+    Array.of_enum
+     (Enum.concat
+       (Enum.map
+         (fun p -> Enum.map (fun k -> pow p k) (List.enum (seq 1 (p - 1))))
+         (Enum.filter (fun p -> prime p) (2 -- 100))))
 
   In order to reuse as much code as possible, this extension depends
   on the standard camlp4 list comprehension extension (from the ocaml
@@ -30,11 +31,11 @@
   compilation and use of the present extension.
 
   As a side effect, the old list-specific syntax is also available.
-  Input : [ pow p k | p <- (2 -- 100); prime p; k <- 1--p ]
+  Input : [ pow p k | p <- seq 2 100; prime p; k <- seq 1 p ]
   Output :
     List.concat
-     (List.map (fun p -> List.map (fun k -> pow p k) (1 -- p))
-       (List.filter (fun p -> prime p) (2 -- 100)))
+     (List.map (fun p -> List.map (fun k -> pow p k) (seq 1 p))
+       (List.filter (fun p -> prime p) (seq 2 100)))
 
   Compilation :
      ocamlbuild -cflags -I,+camlp4/Camlp4Parsers pa_comprehension.cmo  

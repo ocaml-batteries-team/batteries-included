@@ -161,6 +161,59 @@ As a convenience, you may wrote <code>where let</code> instead of <code>where</c
 </dl>
 
 
+<center><h2>Comprehension expressions</h2></center>
+<center>(activated by default, implemented as findlib package <code>batteries.pa_comprehension.syntax</code>)</center>
+<center>(designed for Batteries)</center>
+
+A <a href="http://en.wikipedia.org/wiki/List_comprehension">list
+comprehension syntax</a> for batteries, using enumerations by default.
+
+<center><h3>Output, generators and guards</h3></center>
+
+<p>The global form is
+<code>[? <em>output</em> | <em>comp_item</em> ; <em>comp_item</em> ; ... ]</code>.<br/>
+<em>output</em> is an expression and a <em>comp_item</em> is either
+a <em>guard</em> (a boolean expression), or a <em>generator</em> of
+the form <code><em>pattern</em> <- <em>expression</em></code>.
+Variables bound in the pattern can be used in the following
+comp_items, and in the output expression.</p>
+
+Example :
+<pre class="example">let pythagorean_triples n =
+  [? (a,b,c) | a <- 1--n; b <- a--n; c <- b--n; a*a + b*b = c*c ]</pre>
+
+<center><h3>Module parametrization</h3></center>
+
+<p>By default, the output in an enumeration, and generator expressions
+are assumed to be enumerations. It is possible to choose a different
+data structure with the <code><em>module</em> : <em>expression</em></code> syntax.</p>
+
+Examples :
+<pre class="example">let positive_array_of_enum e =
+  [? Array : n | n <- e; n > 0 ]
+
+let combine la lb =
+  [? List : (a, b) | a <- List : la; b <- List : lb ]</pre>
+
+<p>Comprehension expressions rely on the presence in the given module of
+the following operations (where <code>'a t</code> represents the
+data-structure type : <code>'a array</code>, <code>'a
+Enum.t</code>...) :</p>
+<pre>
+val filter : ('a -> bool) -> 'a t -> 'a t
+val concat : 'a t t -> 'a t
+val map : ('a -> 'b) -> 'a t -> 'b t
+val filter_map : ('a -> 'b option) -> 'a t -> 'b t (* used for refutable patterns in generators *)
+
+val enum : 'a t -> 'a Enum.t
+val of_enum : 'a Enum.t -> 'a t
+</pre>
+
+<p>If your module does not provide the first four operations but only
+the enum conversion functions, you could still benefit from the
+comprehension syntax by using eg. <code>foo <- Mod.enum bar</code> instead
+of <code>foo <- Mod : bar</code>.</p>
+
 <center><h2>Boilerplate construction</h2></center>
 <center>(<i>de</i>activated by default, implemented as findlib package <code>sexplib.syntax</code>)</center>
 
