@@ -313,7 +313,11 @@ struct
      sig
         (*contents of foo.mli minus the first comments*)
      end
-     ]*)
+     ]
+
+     As an exception, does not extract anything for modules whose name
+     starts with Inner.
+  *)
   let generate_mli buf l = 
     (*Extract the first comments, up-to the first ocamldoc not followed by a newline.*)
     let parse_header channel = 
@@ -386,53 +390,20 @@ struct
 	  | _ -> return strm__
       in
 	next_token (Stream.of_channel channel)
-
-    (*let scan chan = *)
-
-    (*TODO: Scan the start of the file until the first [(**]
-            Initialize counter at 1
-            Then scan what comes next until either
-                  1. [(*]   -> increment counter
-                  2. [*)]   -> decrement counter
-            If counter reaches 0, stop and return [(hd, tl)]
-            where [hd] is everything up to this point
-            and   [tl] is the rest of the file, either as a [channel_in]
-            or as a [string] or [string_list]
-    *)*)
-    (*let scan file*)
-(*    in
-    let feed file buf () =
-      with_input_file file (
-	fun cin ->
-	  try while true do
-	    Buffer.add_string buf  (input_line cin);
-	    Buffer.add_char   buf  '\n'
-	  done
-	  with End_of_file -> ()
-      )in
-    let print_modules buf () =
-      List.iter (
-	fun (name, src) -> 
-	  let name = try 
-	    let index = String.find name ".inferred" in
-	      String.sub name 0 index
-	  with String.Invalid_string -> name in
-	  Printf.bprintf buf "module %s:(*from %S*)\nsig\n%a\nend\n" name src (feed src) ()
-	  (*try ignore (String.find name ".inferred")
-	  with String.Invalid_string -> Printf.bprintf buf "module %s:(*from %S*)\nsig\n%a\nend\n" name src (feed src) ()*)
-      ) l in
-      (*  Printf.fprintf out "module %s:\nsig\n%a\nend\n" pack print_modules ()*)
-      print_modules buf ()*)
     in
   let print_modules buf () =
     List.iter (
       fun (name, src) ->
-	let name = try
-	  let index = String.find name ".inferred" in
-	    String.sub name 0 index
-	with String.Invalid_string -> name in
-	let (prefix, contents) = with_input_file src parse_header in
-	  Printf.bprintf buf "%s\nmodule %s:(*from %S*)\nsig\n%s\nend\n" prefix name src contents
+(*	Printf.eprintf "Extracting module %S name from %S\n" name src;
+	if try String.find name "Inner" <> 0 (*Don't extract from files whose name starts with Inner*)
+	   with String.Invalid_string -> true
+	then*)
+	  let name = try
+	    let index = String.find name ".inferred" in
+	      String.sub name 0 index
+	  with String.Invalid_string -> name in
+	  let (prefix, contents) = with_input_file src parse_header in
+	    Printf.bprintf buf "%s\nmodule %s:(*from %S*)\nsig\n%s\nend\n" prefix name src contents
     ) l
   in print_modules buf ()
 
