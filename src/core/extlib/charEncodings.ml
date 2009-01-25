@@ -22,7 +22,7 @@ open IO
 open CamomileLibrary
 TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
-module Encoding = CharEncoding.Configure(CamomileDefaultConfig)
+module Encoding = CamomileLibrary.Default.Camomile.CharEncoding
 
 (**
    The list if known encodings.
@@ -1112,6 +1112,8 @@ let camomile_of_encoding = function
 | `utf32le -> Encoding.utf32le
 | `utf8    -> Encoding.utf8
 
+let name_of_encoding (e:[< encoding]) : string = Encoding.name_of (camomile_of_encoding e)
+
 type ('a, 'b) t =
 {
   content  : 'a(**The actual encoded value*);
@@ -1140,11 +1142,20 @@ let unsafe_convert t enc =
 let transcode_in inp enc =
   let in_enc  = camomile_of_encoding inp.encoding
   and out_enc = camomile_of_encoding enc in
+    (*DEBUG*)Printf.eprintf "Transcoding from %S to %S\n%!" (name_of_encoding inp.encoding) (name_of_encoding enc);
     if in_enc = out_enc then unsafe_convert inp enc
       (*No need to get through objects for something that simple.*)
-    else 
-      of_stuff (from_in_channel (new Encoding.convert_input ~in_enc ~out_enc (new IO.in_channel inp.content)))
-	enc
+    else
+      let transcoded = from_in_channel (new Encoding.convert_input ~in_enc ~out_enc (new IO.in_channel inp.content)) in
+      of_stuff transcoded enc
+	(*( (*DEBUG:Removed for testing*)
+	wrap_in
+	  ~read:(fun () -> read transcoded)
+	  ~input:(input transcoded)
+	  ~close:ignore
+	  ~underlying:[transcoded;inp.content]
+      )	enc*)
+      
 
 
 let transcode_out out enc =

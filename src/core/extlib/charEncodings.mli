@@ -586,6 +586,9 @@ type encoding =
 | `named of string (**An encoding given as a name.
 		      The list of named encodings depends on the system configuration.*) ]
 
+val name_of_encoding : encoding -> string
+(** Return the name of the encoding.*)
+
 (**
    {6 Type-safe encodings}
 *)
