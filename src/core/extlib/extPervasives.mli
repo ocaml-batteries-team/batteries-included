@@ -547,6 +547,7 @@ val flush_all : unit -> unit
 
 (** {7 Output functions on standard output} *)
 
+
 val print_bool : bool -> unit
 (** Print a boolean on standard output. *)
 
@@ -902,14 +903,14 @@ val undefined : ?message:string -> 'a -> 'b
     customization of the error message.*)
 
 
-val ( <** ) : 'a -> ('a -> 'b) -> 'b
-(** Function application. [x <** f] is equivalent to [f x]. 
+val ( |> ) : 'a -> ('a -> 'b) -> 'b
+(** Function application. [x |> f] is equivalent to [f x]. 
 
     This operator is commonly used to write a function composition
     by order of evaluation means rather than by inverse order.
     For instance, [g (f x)] means "apply [f] to [x], then apply
     [g] to the result." In some circumstances, it may be more
-    understandable to write this as [x <** f <** g], or
+    understandable to write this as [x |> f |> g], or
     "starting from [x], apply [f], then apply [g]."
     
     This operator may also be useful for composing sequences of
@@ -1190,10 +1191,6 @@ val ( --- ) : int -> int -> int Enum.t
 
 val ( ~~ ) : char -> char -> char Enum.t
 (** As ( -- ), but for characters.*)
-
-
-
-
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b Enum.t -> unit
 (** Print and consume the contents of an enumeration.*)
