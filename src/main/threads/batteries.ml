@@ -275,7 +275,7 @@ module  Str     = Extlib.ExtStr.Str
 (*module  StringText (A module containing aliases to String and modified   Char)*)
 (*module  RopeText (As StringText but with implementations from Rope and  UChar)*)
 (*module  UTF8Text (As StringText but with implementations from UTF8 and UChar)*)
-         
+module CharEncodings = Extlib.CharEncodings
 
 (**{3 Tools included in the distribution}
 

@@ -290,7 +290,7 @@ module  String  = Extlib.ExtString.String
     70module  UTF8Text (*As StringText but with implementations from UTF8 and*)
         UChar 
 module  Labels*)
-         
+module CharEncodings = Extlib.CharEncodings
 
 (**{1 Tools included in the distribution}
 

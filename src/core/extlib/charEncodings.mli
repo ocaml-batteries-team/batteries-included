@@ -594,53 +594,37 @@ type encoding =
    {7 Types}
 *)
 
-type 'a encoded_in  constraint 'a = [< encoding]
-(** The type of an {!IO.input} encoded with a given encoding.
-    Use this type, along with its constructor/destructor
-    {!encoded_of_in}/{!in_of_encoded}, to ensure you don't
-    get confused between encodings.
+type ('a, 'b) t constraint 'b = [< encoding]
+(** The type of items of type ['a], encoded using encoding ['b].
 
-    @param 'a The encoding used for this input.
+    This type, along with its constructor/destructor, is provided
+    as a convenience to represent data encoded within a given
+    encoding.
+
+    For instance, an input encoded as ASCII may be represented
+    as a [(input, [`ascii]) t].
 *)
 
-type ('a,'b) encoded_out constraint 'a = [< encoding]
-(** The type of an {!IO.output} encoded with a given encoding.
-
-    Use this type, along with its constructor/destructor
-    {!encoded_of_out}/{!out_of_encoded}, to ensure you don't
-    get confused between encodings.
-
-    @param 'a The encoding used for this output.
-    @param 'b The argument of {!IO.output} (see the definition
-    of {!IO.output} for more information on the role of this
-    argument).
-*)
-
-val encoded_of_in  : input -> ([< encoding] as 'a) -> 'a encoded_in
+val of_stuff : 'a -> ([< encoding] as 'b) -> ('a, 'b) t
 (**
-   Convert an {!IO.input} to the equivalent {!encoded_in}
+   [of_stuff x enc] returns an element of type [t] used to mark
+   that [x] is encoded with encoding [enc].
 *)
 
-
-val in_of_encoded  : 'a encoded_in -> input
+val stuff_of : ('a, 'b) t -> 'a
 (**
-   Extract the {!IO.input} behind an {!encoded_in}.
+   [stuff_of t] returns the [x] such that [t = of_stuff x enc].
 *)
 
-val encoded_of_out : 'b output -> ([< encoding] as 'a) -> ('a,'b) encoded_out
+val encoding_of_t : ('a, 'b) t -> 'b
 (**
-   Convert an {!IO.output} to the equivalent {!encoded_out}
-*)
-
-val out_of_encoded : ('a,'b) encoded_out -> 'b output
-(**
-   Extract the {!IO.output} behind an {!encoded_out}.
+   Return the encoding of a [t].
 *)
 
 (**
    {7 Transcoders}
 *)
-val transcode_in : 'a encoded_in -> ([< encoding] as 'b) -> 'b encoded_in
+val transcode_in : (input,'a) t -> ([< encoding] as 'b) -> (input,'b) t
   (**Convert the contents of an input between encodings.
      
      [transcode_in inp enc] produces a new input, whose
@@ -648,7 +632,7 @@ val transcode_in : 'a encoded_in -> ([< encoding] as 'b) -> 'b encoded_in
      the encoding of the result is specified by [enc].
   *)
 
-val transcode_out : ('a,'b) encoded_out -> ([< encoding] as 'c) -> ('c,'b) encoded_out
+val transcode_out : (unit output,'a) t -> ([< encoding] as 'c) -> (unit output,'c) t
   (**Convert the contents of an output between encodings.
      
      [transcode_in out enc] produces a new output. Anything

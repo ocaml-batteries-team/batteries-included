@@ -1,4 +1,82 @@
+2009-01-25  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/main/nothreads/batteries.ml: [CharEncodings] added
+
+	* src/main/threads/batteries.ml: [CharEncodings] added
+
+	* src/core/extlib.mlpack: [CharEncodings] added
+
+	* src/core/extlib/charEncodings.ml: ".mar" removed
+
+	* src/core/extlib/charEncodings.ml*: [t], [of_stuff], [stuff_of] created
+
+	* src/core/extlib/std.ml*: [**>] reverted to [<|], [<**] reverted to [|>]
+
+	* src/core/extlib/extPervasives.ml: [**>] reverted to [<|]
+
+2009-01-24  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extUTF8.ml: flattened
+
+	* src/core/extlib/charEncodings.ml*: created
+
+	* src/core/extlib/extPervasives.mli: [**>] reverted to [<|]
+
+2009-01-23  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extUnix.ml: flattened
+
+	* src/main/threads/batteries.ml: [Date] added
+
+	* src/libs/ocamlnet/_tags: [pkg_sexplib] added
+
+	* src/libs/libs.mlpack: [ExtNetDate] added
+
+	* src/libs/ocamlnet/extNetdate.ml*: created
+
+	* src/core/extlib/extList.ml: flattened
+
+	* src/core/extlib/dynArray.ml: [keep] rewritten from [filter]
+
+	* src/core/extlib/dynArray.ml: [TYPE_CONV_PATH] adapted
+
+	* src/core/extlib/dynArray.ml*: [filter], [filter_map] added
+
+	* src/core/extlib/dynArray.ml*: [filter] renamed [keep]
+
+	* src/core/extlib/extPervasives.ml*: [( /@ )], [( @/ )] added
+
+	* src/core/extlib/dllist.ml: [TYPE_CONV_PATH] adapted
+
+	* src/core/extlib/dllist.ml*: [filter], [filter_map] added
+
 2009-01-22  David Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/rope.ml: [TYPE_CONV_PATH] adapted
+
+	* src/core/extlib/extUChar.mli: Documentation repaginated
+
+	* src/core/extlib/rope.ml*: [get], [set] changed order of arguments
+
+	* src/core/extlib/rope.ml: [explode], [implode], [capitalize], [uncapitalize], [splice] implemented
+
+	* src/core/extlib/rope.ml: [apply1] added
+
+	* src/core/extlib/rope.mli: [strip], [capitalize], [uncapitalize], [join], [slice], [explode], [implode], [compare], [compare_without_case]
+
+	* src/core/extlib/rope.ml: [nsplit] rewritten
+
+	* src/core/extlib/rope.mli: [Invalid_rope] added
+	
+	* src/core/extlib/rope.ml*: [replace] now uses labels
+
+	* src/core/extlib/rope.ml*: [rfind], [rfind_from], [find_from], [rsplit] added
+
+	* src/core/extlib/extString.mli: Documentations update
+
+	* src/core/extlib/rope.mli: [create] removed
+
+	* src/core/extlib/rope.ml: [of_list], [to_list] implemented
 
 	* src/core/extlib/extBigarray.ml*: [enum] added
 
@@ -221,7 +299,7 @@
 
 2008-11-18  David Teller  <David.Teller@univ-orleans.fr>
 
-	* src/core/extlib/rope.ml: propataged name change of [Labels]
+	* src/core/extlib/rope.ml: propagaged name change of [Labels]
 
 	* src/core/extlib/labels.ml*: renamed return.*
 
