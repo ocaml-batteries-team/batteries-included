@@ -88,28 +88,28 @@ val exe  : string
 
 
 (** {6 Operators}*)
-val ( <** ) : 'a -> ('a -> 'b) -> 'b
-(** Function application. [x <** f] is equivalent to [f x]. 
+val ( |> ) : 'a -> ('a -> 'b) -> 'b
+(** Function application. [x |> f] is equivalent to [f x]. 
 
     This operator is commonly used to write a function composition
     by order of evaluation means rather than by inverse order.
     For instance, [g (f x)] means "apply [f] to [x], then apply
     [g] to the result." In some circumstances, it may be more
-    understandable to write this as [x <** f <** g], or
+    understandable to write this as [x |> f |> g], or
     "starting from [x], apply [f], then apply [g]."
     
     This operator may also be useful for composing sequences of
     function calls without too many parenthesis. *)
 
-val ( **>  ) : ('a -> 'b) -> 'a -> 'b
-  (** Function application. [f **> x] is equivalent to [f x]. 
+val ( <|  ) : ('a -> 'b) -> 'a -> 'b
+  (** Function application. [f <| x] is equivalent to [f x]. 
       
       This operators may be useful for composing sequences of
       function calls without too many parenthesis.  *)
 
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
 (** Function composition. [f |- g] is [fun x -> g (f x)]. 
-    This is also equivalent to applying [<**] twice.*)
+    This is also equivalent to applying [|>] twice.*)
 
 val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
 (** Function composition. [f -| g] is [fun x -> f (g x)]. Mathematically, this is
