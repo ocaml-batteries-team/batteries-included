@@ -130,7 +130,7 @@ struct
 *)
       
   let open_connection ?autoclose addr =
-    ( wrap_in ?autoclose *** wrap_out ) **> open_connection addr
+    ( wrap_in ?autoclose *** wrap_out ) <| ( open_connection addr )
 
   let shutdown_connection cin = 
     try shutdown_connection (input_get cin)
