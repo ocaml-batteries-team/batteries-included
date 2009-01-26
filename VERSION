@@ -3,6 +3,7 @@ This is the third alpha release of Batteries Included.
 = Changes since alpha 2
 == Language extensions
 * It is now possible to merge several modules into one.
+* General (and extendable) structure comprehension, working on lists, arrays, lazy lists, enumerations, ...
 
 == Library
 * Module hierarchy completely reworked.
@@ -10,15 +11,18 @@ This is the third alpha release of Batteries Included.
 * A new abstract thread-safety module, to ensure future compatibility with coThreads.
 * Old-style ListLabels, ArrayLabels, etc. replaced with List.Labels, Array.Labels, etc.
 * New Unix module now compatible with IO.
-* Plenty of new functions in Enum, Array, Hashtbl, Pervasives, String, Rope, Bingarray, Dllist, DynArray
-* The File module now permits using temporary files
-* Several modules have been renamed (SafeInt, Labels)
-* New compatibility layer with OCamlNet
-* New module Future.Path for manipulating paths
+* Plenty of new functions in Enum, Array, Hashtbl, Pervasives, String, Rope, Bingarray, Dllist, DynArray.
+* The File module now permits using temporary files.
+* Several modules have been renamed (SafeInt, Labels).
+* New compatibility layer with OCamlNet.
+* New module Future.Path for manipulating paths.
+* New module CharEncoding for transcoding inputs/outputs.
+* New module Date for manipulating time.
 
 == Documentation
 * New documentation by topic
 * New documentation generator, with topic management
+* A number of additions, e.g. a tutorial on [fold], [iter], [map] in the documentation of Pervasives.
 
 == Bugfixes
 * bug 100 (Enum.seq) fixed
@@ -26,6 +30,7 @@ This is the third alpha release of Batteries Included.
 
 == Docfixes
 * bug 101 (Enum.for_all) fixed
+* Documentation fixes in List.
 
 = Changes since alpha 1
 * Plenty of bugfixes

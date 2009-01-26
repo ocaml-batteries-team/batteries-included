@@ -47,9 +47,9 @@ package "pa_comprehension" (
 	package "syntax" (
 		description = "comprehension expressions (syntax extension)"
 		version                       = "@VERSION@"
-		archive(syntax, preprocessor) = "Camlp4ListComprehension.cmo,
+		archive(syntax, preprocessor) = "Camlp4Parsers/Camlp4ListComprehension.cmo,
                                                  pa_comprehension.cmo"
-		archive(syntax, toploop)      = "Camlp4ListComprehension.cmo,
+		archive(syntax, toploop)      = "Camlp4Parsers/Camlp4ListComprehension.cmo,
                                                  pa_comprehension.cmo"
 	)
 )
@@ -98,6 +98,6 @@ package "bin_prot" (
 package "syntax" (
 	version     = "@VERSION@"
 	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
-	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"
+	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,camlp4.listcomprehension"
 	requires(boilerplate) = "type-conv.syntax,bin_prot.syntax"
 )
