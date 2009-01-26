@@ -1,3 +1,7 @@
+conv.byte
+conv.native
+now.byte
+now.native
 cat.byte
 cat.native
 cat2.byte

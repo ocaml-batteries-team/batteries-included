@@ -1,4 +1,25 @@
+2009-01-26  David Teller  <David.Teller@univ-orleans.fr>
+
+	* examples/examples.itarget: [conv] added
+
+	* examples/conv.ml: created
+
+	* src/core/extlib/charEncodings.ml*: [Malformed_code] added
+	
+	* src/core/extlib/charEncodings.ml: [transcode_out] now doesn't use [Encoding.convert_out]
+
+	* src/core/extlib/charEncodings.ml: [transcode_in] now doesn't use [Encoding.convert_in]
+
+	* src/core/extlib/IO.ml: flattened
+
+	* src/core/extlib/charEncodings.ml: now comparing encodings names rather than encodings themselves
+
+	* src/core/extlib/charEncodings.ml*: [of_stuff], [stuff_of] renamed [as_encoded]/[encoded_as]
+	
+
 2009-01-25  David Teller  <David.Teller@univ-orleans.fr>
+
+	* examples/pair.ml: Made parametric, documented
 
 	* src/main/nothreads/batteries.ml: [CharEncodings] added
 

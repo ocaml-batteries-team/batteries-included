@@ -1,10 +1,24 @@
 This is the third alpha release of Batteries Included.
 
 = Changes since alpha 2
-* A new syntax extension for opening and including modules in one go.
+== Language extensions
+* It is now possible to merge several modules into one.
+
+== Library
+* Module hierarchy completely reworked.
 * Thread-safe input/output when required.
 * A new abstract thread-safety module, to ensure future compatibility with coThreads.
 * Old-style ListLabels, ArrayLabels, etc. replaced with List.Labels, Array.Labels, etc.
+* New Unix module now compatible with IO.
+* Plenty of new functions in Enum, Array, Hashtbl, Pervasives, String, Rope, Bingarray, Dllist, DynArray
+* The File module now permits using temporary files
+* Several modules have been renamed (SafeInt, Labels)
+* New compatibility layer with OCamlNet
+* New module Future.Path for manipulating paths
+
+== Documentation
+* New documentation by topic
+* New documentation generator, with topic management
 
 == Bugfixes
 * bug 100 (Enum.seq) fixed

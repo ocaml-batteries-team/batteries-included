@@ -1,19 +1,19 @@
 (*
   Convert encodings.
   Everything received from the standard input is converted and written onto the standard output,
-  using the encoding specified on the command-line.
+  using the encodings specified on the command-line.
+
+  Usage:
+  ./conv ASCII UTF-8 < README
 *)
-open CharEncodings, Sys
+open CharEncodings, Sys, IO
 
-
-
-let source = `ascii;;
-let dest   = `ascii;;
-
-Printf.printf "Reading with encoding %S (%S)\n%!" argv.(1) (name_of_encoding source);;
-Printf.printf "Writing with encoding %S (%S)\n%!" argv.(2) (name_of_encoding dest);;
-(*IO.copy (stuff_of (transcode_in (of_stuff stdin source) dest)) stdout;;*)
-(*IO.copy stdin (stuff_of (transcode_out (of_stuff stdout source) dest));;*)
-(*DEBUG:*)IO.copy stdin stdout;;
-Printf.printf "Done!\n%!";;
-flush_all ()
+try
+(*V1: Convert output:
+  copy stdin (encoded_as (transcode_out (as_encoded stdout (`named argv.(1))) (`named argv.(2))))*)
+(*V2: Convert input*)
+  copy  (encoded_as **> transcode_in (as_encoded stdin **> `named argv.(1)) (`named argv.(2))) stdout;
+  flush_all ()
+with Not_found      -> Printf.eprintf "Sorry, unknown encoding.\n%!"
+  |  Malformed_code -> Printf.eprintf "Error: This text is not encoded with encoding %S\n" (argv.(1))
+  |  e              -> Printf.eprintf "Error:\n%s\n%!" (Printexc.to_string e)
