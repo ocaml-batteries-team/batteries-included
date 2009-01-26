@@ -35,6 +35,9 @@
 
 type 'a node_t (* abstract *) 
 type 'a t = 'a node_t (*For uniformity*)
+(**
+   The type of a non-empty doubly-linked list.
+*)
 
 exception Empty
 
