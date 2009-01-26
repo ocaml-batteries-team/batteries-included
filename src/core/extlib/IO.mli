@@ -62,7 +62,7 @@
     faster and induce less wear on the hardware. Occasionally, you
     may wish to force all waiting operations to take place {e now}.
     For this purpose, you may either function {!flush} or function
-    {!flush_out}.
+I    {!flush_out}.
     
     Once you have finished using your {!type: input} or your {!type:
     output}, chances are that you will want to close it. This is not a
@@ -656,14 +656,17 @@ val output_channel : out_channel -> unit output
 
 (** {6 Generic IO Object Wrappers}
 
-	Theses OO Wrappers have been written to provide easy support of ExtLib
-	IO by external librairies. If you want your library to support ExtLib
-	IO without actually requiring ExtLib to compile, you can should implement
-	the classes [in_channel], [out_channel], [poly_in_channel] and/or
-	[poly_out_channel] which are the common IO specifications established
-	for ExtLib, OCamlNet and Camomile.
+    Theses OO Wrappers have been written to provide easy support of ExtLib
+    IO by external librairies. If you want your library to support ExtLib
+    IO without actually requiring ExtLib to compile, you can should implement
+    the classes [in_channel], [out_channel], [poly_in_channel] and/or
+    [poly_out_channel] which are the common IO specifications established
+    for ExtLib, OCamlNet and Camomile.
+    
+    (see http://www.ocaml-programming.de/tmp/IO-Classes.html for more details).
 
-	(see http://www.ocaml-programming.de/tmp/IO-Classes.html for more details).
+    {b Note} In this version of Batteries Included, the object wrappers are {e not}
+    closed automatically by garbage-collection.
 *)
 
 class in_channel : input ->

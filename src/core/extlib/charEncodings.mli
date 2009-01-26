@@ -41,6 +41,12 @@ open IO
    @author David Teller
 *)
 
+exception Malformed_code
+(** An exception raised when a character is meaningless in the encoding
+    in which it appears. This is usually the sign that the encoding used
+    was incorrect.*)
+    
+
 (**
    The list if known encodings.
 *)
@@ -608,15 +614,15 @@ type ('a, 'b) t constraint 'b = [< encoding]
     as a [(input, [`ascii]) t].
 *)
 
-val of_stuff : 'a -> ([< encoding] as 'b) -> ('a, 'b) t
+val as_encoded : 'a -> ([< encoding] as 'b) -> ('a, 'b) t
 (**
-   [of_stuff x enc] returns an element of type [t] used to mark
+   [as_encoded x enc] returns an element of type [t] used to mark
    that [x] is encoded with encoding [enc].
 *)
 
-val stuff_of : ('a, 'b) t -> 'a
+val encoded_as : ('a, 'b) t -> 'a
 (**
-   [stuff_of t] returns the [x] such that [t = of_stuff x enc].
+   [encoded_as t] returns the [x] such that [t = as_encoded x enc].
 *)
 
 val encoding_of_t : ('a, 'b) t -> 'b
@@ -633,6 +639,9 @@ val transcode_in : (input,'a) t -> ([< encoding] as 'b) -> (input,'b) t
      [transcode_in inp enc] produces a new input, whose
      contents are the same as those of [inp]. However,
      the encoding of the result is specified by [enc].
+
+     {b Note} The resulting [input] may raise [Malformed_code] if the
+     encoding specified as ['a] was incorrect.
   *)
 
 val transcode_out : (unit output,'a) t -> ([< encoding] as 'c) -> (unit output,'c) t

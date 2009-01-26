@@ -20,9 +20,12 @@
 
 open IO
 open CamomileLibrary
+open ExtString
 TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 module Encoding = CamomileLibrary.Default.Camomile.CharEncoding
+
+exception Malformed_code = Encoding.Malformed_code
 
 (**
    The list if known encodings.
@@ -1120,13 +1123,13 @@ type ('a, 'b) t =
   encoding : 'b(**The encoding used*)
 } constraint 'b = [< encoding]
 
-let of_stuff x enc =
+let as_encoded x enc =
 {
   content = x;
   encoding= enc
 }
 
-let stuff_of      t = t.content
+let encoded_as    t = t.content
 let encoding_of_t t = t.encoding
 
 (**Change [encoding] without performing any actual conversion.
@@ -1139,38 +1142,53 @@ let unsafe_convert t enc =
   (t) with encoding = enc
 }
 
-let transcode_in inp enc =
+let transcode_in inp enc = (*TODO: Make more efficient*)
   let in_enc  = camomile_of_encoding inp.encoding
   and out_enc = camomile_of_encoding enc in
-    (*DEBUG*)Printf.eprintf "Transcoding from %S to %S\n%!" (name_of_encoding inp.encoding) (name_of_encoding enc);
-    if in_enc = out_enc then unsafe_convert inp enc
-      (*No need to get through objects for something that simple.*)
+    if Encoding.name_of in_enc = Encoding.name_of out_enc then 
+	unsafe_convert inp enc (*No need to get through objects for something that simple.*)
     else
-      let transcoded = from_in_channel (new Encoding.convert_input ~in_enc ~out_enc (new IO.in_channel inp.content)) in
-      of_stuff transcoded enc
-	(*( (*DEBUG:Removed for testing*)
-	wrap_in
-	  ~read:(fun () -> read transcoded)
-	  ~input:(input transcoded)
-	  ~close:ignore
-	  ~underlying:[transcoded;inp.content]
-      )	enc*)
+      let buffer       = RefList.empty () (*A list of bytes already read*) in
+      let push_next () =
+	(*Need to read one char, convert it, decompose the converted string and return the first byte*)
+	let c       = read inp.content in
+	let encoded = Encoding.recode_string (String.of_char c) ~in_enc ~out_enc in
+	  RefList.copy_enum ~dst:buffer ~src:(String.enum encoded)
+      in
+      let transcoded = 
+	wrap_in 
+	  ~read: (fun ()    -> if RefList.is_empty buffer then push_next (); RefList.pop buffer)
+	  ~input:(fun s o l -> 
+		    Return.label (fun label ->
+  		      for i = 0 to l - 1 do
+			if RefList.is_empty buffer then 
+			  try
+			    push_next ();
+			    String.set s ( o + i ) ( RefList.pop buffer )
+			  with No_more_input as e -> (*We're done reading.*)
+			                             (*Now, we must determine if it's cause to raise an exception.*)
+			    if i = 0 then (*The input was empty*) raise e
+			    else          (*The input was just shorter than expected*) Return.return label i
+		      done;l))
+	  ~close:(fun () -> RefList.clear buffer)
+	  ~underlying:[inp.content]
+      in as_encoded transcoded enc
       
 
 
-let transcode_out out enc =
+let transcode_out out enc = (*TODO: Make more efficient*)
   let in_enc  = camomile_of_encoding out.encoding
   and out_enc = camomile_of_encoding enc in
-    if in_enc = out_enc then unsafe_convert out enc
-      (*No need to get through objects for something that simple.*)
+    if Encoding.name_of in_enc = Encoding.name_of out_enc then 
+      unsafe_convert out enc  (*No need to get through objects for something that simple.*)
     else 
-      let transcoded = from_out_channel (new Encoding.convert_output ~in_enc ~out_enc (new IO.out_channel out.content)) 
-	in
-	of_stuff (
-	  wrap_out
-	    ~write: (write  transcoded)
-	    ~output:(output transcoded)
-	    ~flush: (fun () -> flush  transcoded)
-	    ~close: ignore
-	    ~underlying:[transcoded;out.content]
-	) enc
+      let transcoded = (*We don't use [Encoding.convert_out] as this seems to cause a problem with flushing.*)
+      wrap_out
+	~write: (fun c     -> nwrite out.content (Encoding.recode_string ~in_enc ~out_enc (String.of_char c)))
+	~output:(fun s o l -> let converted = Encoding.recode_string ~in_enc ~out_enc (String.sub s o l) in
+		   nwrite out.content converted;
+		   l)
+	~flush: (fun ()    -> flush out.content)
+	~close: ignore
+	~underlying:[out.content]
+      in as_encoded transcoded enc

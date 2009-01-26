@@ -270,7 +270,6 @@ let flush_all () =
 let close_all () =
   Concurrent.sync !lock  (Outputs.iter (fun o -> try close_out o with _ -> ())) outputs
 
-
 let read_all i =
 	let maxlen = 1024 in
 	let str = ref [] in
@@ -337,7 +336,8 @@ let output_buffer buf =
     ~close: (fun () -> Buffer.contents buf)
     ~flush: noop
 
-
+(** A placeholder used to allow recursive use of [self]
+    in an [input_channel]*)
 let placeholder_in = 
   { in_read  = (fun () -> ' ');
     in_input = (fun _ _ _ -> 0);
@@ -571,9 +571,9 @@ let write_double ch f =
 let write_float ch f =
         write_real_i32 ch (Int32.bits_of_float f)
 
-let stdin = input_channel Pervasives.stdin
-let stdout= output_channel Pervasives.stdout
-let stderr= output_channel Pervasives.stderr
+let stdin  = input_channel Pervasives.stdin
+let stdout = output_channel Pervasives.stdout
+let stderr = output_channel Pervasives.stderr
 let stdnull= create_out
   ~write:ignore 
   ~output:(fun _ _ l -> l)
