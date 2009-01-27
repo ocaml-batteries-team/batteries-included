@@ -235,6 +235,9 @@ val concat : 'a t t -> 'a t
   (** [concat e] returns an enumeration over all elements of all enumerations
       of [e]. *)
 
+val flatten : 'a t t -> 'a t
+  (** Synonym of {!concat}*)
+
 (** {6 Constructors} 
 
     In this section the word {i shall} denotes a semantic

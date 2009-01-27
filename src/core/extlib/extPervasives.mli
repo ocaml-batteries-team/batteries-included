@@ -425,6 +425,15 @@ val nan : float
 val ( ^ ) : string -> string -> string
 (** String concatenation. *)
 
+val uppercase : string -> string
+(** Return a copy of the argument, with all lowercase letters
+    translated to uppercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
+
+val lowercase : string -> string
+(** Return a copy of the argument, with all uppercase letters
+    translated to lowercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
 
 (** {6 Character operations}
 
