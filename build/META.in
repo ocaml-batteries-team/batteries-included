@@ -65,6 +65,16 @@ package "pa_batteries" (
 	)
 )
 
+package "pa_strings" (
+	description = "pseudo-native Unicode strings (container)"
+	version     = "@VERSION@"
+	package "syntax" (
+		description = "pseudo-native Unicode strings (syntax extension)"
+		version     = "@VERSION@"
+		archive(syntax, preprocessor) = "pa_estring.cmo, pa_strings.cmo"
+		archive(syntax, toploop)      = "pa_estring_top.cmo, pa_estring.cmo, pa_strings.cmo"
+	)
+)
 
 #
 # Doesn't work, for some reason -- calling "sexplib.syntax" directly works, though.
@@ -91,6 +101,8 @@ package "bin_prot" (
 	)
 )
 
+
+
 #
 # Doesn't work, for some reason.
 # The feature is actually implemented in myocamlbuild.ml
@@ -98,6 +110,6 @@ package "bin_prot" (
 package "syntax" (
 	version     = "@VERSION@"
 	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
-	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,camlp4.listcomprehension"
+	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_strings.syntax"
 	requires(boilerplate) = "type-conv.syntax,bin_prot.syntax"
 )

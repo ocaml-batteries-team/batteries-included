@@ -115,6 +115,9 @@ syntax: config.ml
 	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin_r.cmo
 	$(OCAMLBUILD) src/syntax/pa_where/pa_where.cmo
 	$(OCAMLBUILD) src/syntax/pa_batteries/pa_batteries.cmo
+	$(OCAMLBUILD) src/syntax/pa_strings/pa_strings.cmo
+	$(OCAMLBUILD) src/syntax/pa_strings/pa_estring.cmo
+	$(OCAMLBUILD) src/syntax/pa_strings/pa_estring_top.cmo
 	$(OCAMLBUILD) -cflags -I,+camlp4/Camlp4Parsers\
                       src/syntax/pa_comprehension/pa_comprehension.cmo
 
@@ -138,6 +141,9 @@ install:
 		_build/src/syntax/pa_where/pa_where.cmo \
 		_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 		_build/src/syntax/pa_batteries/pa_batteries.cmo \
+		_build/src/syntax/pa_strings/pa_strings.cmo \
+		_build/src/syntax/pa_strings/pa_estring.cmo \
+		_build/src/syntax/pa_strings/pa_estring_top.cmo \
 		_build/src/batteries_toolchain/batteries_help.cmo \
 		_build/src/batteries_toolchain/batteries_help.cmi \
 		src/batteries_toolchain/top.ml \
