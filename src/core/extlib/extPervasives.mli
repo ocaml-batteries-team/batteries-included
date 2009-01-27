@@ -180,9 +180,10 @@ external ( || ) : bool -> bool -> bool = "%sequor"
    in [e1 || e2], [e1] is evaluated first, and if it returns [true],
    [e2] is not evaluated at all. *)
 
-external ( or ) : bool -> bool -> bool = "%sequor"
+(*external ( or ) : bool -> bool -> bool = "%sequor"
 (** @deprecated {!Pervasives.(||)} should be used instead.*)
-
+  (*Removed because of Camlp4 bug*)
+*)
 
 (** {6 Integer arithmetic} 
     
