@@ -233,17 +233,13 @@ val sexp_of_fun : ('a -> 'b) -> Sexp.t
 *)
 type 'a sexp_opaque = 'a
 
-#if ocaml_version < (3, 11)
 val sexp_of_opaque : ('a -> Sexp.t) -> 'a sexp_opaque -> Sexp.t
 (** [sexp_of_opaque _ _] converts opaque OCaml-values to S-expressions. 
-*)
-#else
-val sexp_of_opaque : 'a -> Sexp.t
-(** [sexp_of_opaque x] converts the value [x] of opaque type to an
-    S-expression.  This means the user need not provide converters,
-    but the result cannot be interpreted. *)
 
-#endif
+    This means the user need not provide converters,
+    but the result cannot be interpreted. 
+*)
+
 
 val string_of__of__sexp_of : ('a -> Sexp.t) -> 'a -> string
 (** [string_of__of__sexp_of conv x] converts the OCaml-value [x] to
