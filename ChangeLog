@@ -1,5 +1,9 @@
 2009-01-27  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/main/threads/batteries.ml: [ExtArg] replaces [Batlib_Baselib_Arg]
+
+	* src/core/extlib/extArg.ml*: created
+
 	* src/core/extlib/extPervasives.ml*: [String.lowercase], [String.uppercase] added
 
 	* src/core/extlib/enum.ml*: [flatten] added
