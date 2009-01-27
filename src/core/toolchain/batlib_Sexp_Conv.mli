@@ -218,7 +218,8 @@ val sexp_of_mat : (float, float64_elt, fortran_layout) Array2.t -> Sexp.t
 
 val sexp_of_abstr : 'a -> Sexp.t
 (** [sexp_of_abstr x] converts the value [x] of abstract type to an
-    S-expression. *)
+    S-expression. This means the user need not provide converters,
+    but the result cannot be interpreted. *)
 
 val sexp_of_fun : ('a -> 'b) -> Sexp.t
 (** [sexp_of_fun f] converts the value [f] of function type to an
@@ -233,7 +234,11 @@ val sexp_of_fun : ('a -> 'b) -> Sexp.t
 type 'a sexp_opaque = 'a
 
 val sexp_of_opaque : ('a -> Sexp.t) -> 'a sexp_opaque -> Sexp.t
-(** [sexp_of_opaque _ _] converts opaque OCaml-values to S-expressions. *)
+(** [sexp_of_opaque _ _] converts opaque OCaml-values to S-expressions. 
+
+    This means the user need not provide converters,
+    but the result cannot be interpreted. 
+*)
 
 
 val string_of__of__sexp_of : ('a -> Sexp.t) -> 'a -> string

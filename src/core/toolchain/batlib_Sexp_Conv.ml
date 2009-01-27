@@ -7,6 +7,9 @@ open Extlib.IO
 (** {6 Types}*)
 #if ocaml_version < (3, 11) (*The type was renamed between versions*)
 type 'a sexp_opaque = 'a
+
+#else
+let sexp_of_abstr = sexp_of_opaque
 #endif
 
 (** {6 Parsing}*)
