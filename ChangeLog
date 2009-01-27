@@ -1,5 +1,9 @@
 2009-01-27  David Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/toolchain/_tags: batlib_Sexp_Conv.ml now uses [use_optcomp]
+
+	* src/core/toolchain/batlib_Sexp_Conv.ml: added #if for [ParseError]/[Parse_error] upstream renaming
+
 	* src/core/_tags: extlib.mli now uses [use_optcomp]
 
 	* src/core/extlib/extGc.mli: [control.allocation_policy] added, for OCaml 3.11
