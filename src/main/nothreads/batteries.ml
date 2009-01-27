@@ -368,8 +368,8 @@ module  Arg = Arg
 module  File= Extlib.File
 module  OptParse = Extlib.OptParse
 (*module  Path:placeholder*)
-module  Shell = Sys
-module  Unix  = Unix
+module  Shell = Extlib.ExtSys.Sys
+module  Unix  = Extlib.ExtUnix.Unix
 (*module  Equeue:placeholder*)
 
 

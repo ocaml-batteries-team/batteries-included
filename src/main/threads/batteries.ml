@@ -355,8 +355,7 @@ module Arg      = Batlib_Baselib_Arg
 module File     = Extlib.File
 module OptParse = Extlib.OptParse
 module Path     = Batlib_Baselib_Filename
-(*module  Path:placeholder*)
-module Shell    = Batlib_Baselib_Sys
+module Shell    = Extlib.ExtSys.Sys
 module Unix     = Extlib.ExtUnix.Unix
 (*module  Equeue:placeholder*)
 
