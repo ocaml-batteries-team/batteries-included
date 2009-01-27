@@ -91,7 +91,8 @@ type stat = Gc.stat =
    the number of bytes.
 *)
 
-type control = Gc.control =
+type control = Gc.control 
+=
   { mutable minor_heap_size : int;
     (** The size (in words) of the minor heap.  Changing
        this parameter will trigger a minor collection.  Default: 32k. *)
