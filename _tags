@@ -14,3 +14,4 @@
 <*/*/*>:debug
 <*/*/*/*>:debug
 <*/*/*/*/*>:debug
+<build/optcomp>: include
