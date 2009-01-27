@@ -22,11 +22,11 @@ You can open local modules, inside an expression if needed.
 <br />
 For instance:
 <pre class="example">
-open System.File in
- (*Here, System.File is opened*)
+open File in
+ (*Here, File is opened*)
  lines_of "some_file"
 
-(*Here, System.File is not opened anymore*)
+(*Here, File is not opened anymore*)
 </pre>
 These modules do not need to be named. For instance, you may write
 <pre class="example">
@@ -40,11 +40,11 @@ open Hashtbl.Make(String) in
 As a convenience, you can specify an expression to be evaluated when opening a module.
 For instance,
 <pre class="example">
-open Util.Random with self_init ()
+open Random with self_init ()
 </pre>
 This extract is equivalent to
 <pre class="example">
-open Util.Random
+open Random
 let _ = self_init ()
 </pre>
 This feature is provided as it may sometimes increase readability.
@@ -54,12 +54,12 @@ This feature is provided as it may sometimes increase readability.
 As a convenience, you can specify a comma-separated list of modules to be opened in one operation.
 Consider for instance
 <pre class="example">
-open Data.Mutable, Data.Persistent
+open List, Array
 </pre>
 This extract is equivalent to
 <pre class="example">
-open Data.Mutable
-open Data.Persistent
+open List
+open Array
 </pre>
 
 This feature is provided as it may sometimes increase readability.
@@ -69,7 +69,7 @@ This feature is provided as it may sometimes increase readability.
 As a convenience, you can specify that a module name should serve to
 represent the union of several modules. Consider for instance
 <pre class="example">
-module E = Data.Mutable.Enum include ExceptionLess, Labels
+module E = Enum include ExceptionLess, Labels
 </pre>
 This extract defines a local module name <code>E</code>
 with all the values and types of modules <code>Enum</code>,
@@ -113,8 +113,8 @@ open IO, BigEndian
 
 This extract is equivalent to
 <pre class="example">
-open Data.Mutable
-open Data.Persistent
+open IO
+open BigEndian
 </pre>
 
 
@@ -247,17 +247,17 @@ type card = color * value   with sexp
 This extract defines types <code>color</code>, <code>value</code> and <code>card</code>,
 as well as functions:
 <pre class="example">
-val sexp_of_color: color -> Batteries.Languages.SExpr.t
-val color_of_sexp: Batteries.Languages.SExpr.t -> color
+val sexp_of_color: color -> SExpr.t
+val color_of_sexp: SExpr.t -> color
 
-val sexp_of_value: value -> Batteries.Languages.SExpr.t
-val value_of_sexp: Batteries.Languages.SExpr.t -> value
+val sexp_of_value: value -> SExpr.t
+val value_of_sexp: SExpr.t -> value
 
-val sexp_of_card : card -> Batteries.Languages.SExpr.t
-val card_of_sexp : Batteries.Languages.SExpr.t -> card
+val sexp_of_card : card -> SExpr.t
+val card_of_sexp : SExpr.t -> card
 </pre>
 <br />
-Module <a href="api/Batteries.Languages.SExpr.html">Languages.SExpr</a>
+Module <a href="api/SExpr.html">Languages.SExpr</a>
 may be used to manipulate S-Expressions, to save them to files, load
 them from files, display them...
 <br />

@@ -52,7 +52,7 @@
 *)
 module Arg : sig
 
-type spec =
+type spec = Arg.spec =
   | Unit of (unit -> unit)     (** Call the function with unit argument *)
   | Bool of (bool -> unit)     (** Call the function with a bool argument *)
   | Set of bool ref            (** Set the reference to true *)
