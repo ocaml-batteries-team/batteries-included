@@ -224,15 +224,17 @@ val sexp_of_fun : ('a -> 'b) -> Sexp.t
 (** [sexp_of_fun f] converts the value [f] of function type to an
     S-expression. *)
 
+
 (** Type used for declaring existing types as opaque to sexp converters,
     i.e. even if there is a defined converter for ['a], it will not
     be called.  This is useful to e.g. suppress printing of extremely
     large sub-structures for purely informational, human-readable output.
 *)
-type 'a opaque = 'a
+type 'a sexp_opaque = 'a
 
-val sexp_of_opaque : ('a -> Sexp.t) -> 'a opaque -> Sexp.t
+val sexp_of_opaque : ('a -> Sexp.t) -> 'a sexp_opaque -> Sexp.t
 (** [sexp_of_opaque _ _] converts opaque OCaml-values to S-expressions. *)
+
 
 val string_of__of__sexp_of : ('a -> Sexp.t) -> 'a -> string
 (** [string_of__of__sexp_of conv x] converts the OCaml-value [x] to
