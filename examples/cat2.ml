@@ -26,5 +26,5 @@ let _ =
 
 (*Variant 2*)
 let _ =
-  () <** args <** (File.lines_of <** map) <** concat <** (stdout <** IO.write_lines)
+  () |> args |> (File.lines_of |> map) |> concat |> (stdout |> IO.write_lines)
 
