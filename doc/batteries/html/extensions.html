@@ -162,7 +162,8 @@ As a convenience, you may wrote <code>where let</code> instead of <code>where</c
 
 
 <center><h2>Comprehension expressions</h2></center>
-<center>(activated by default, implemented as findlib package <code>batteries.pa_comprehension.syntax</code>)</center>
+<center>(activated by default for the compiler, implemented as findlib package <code>batteries.pa_comprehension.syntax</code>)</center>
+<center>(known not to work in the toplevel yet)</center>
 <center>(designed for Batteries)</center>
 
 A <a href="http://en.wikipedia.org/wiki/List_comprehension">list
@@ -213,6 +214,52 @@ val of_enum : 'a Enum.t -> 'a t
 the enum conversion functions, you could still benefit from the
 comprehension syntax by using eg. <code>foo <- Mod.enum bar</code> instead
 of <code>foo <- Mod : bar</code>.</p>
+
+<center><h2>String syntax</h2></center>
+<center>(activated by default, implemented as findlib package <code>batteries.pa_string.syntax</code>)</center>
+<center>(part of <a href="http://forge.ocamlcore.org/projects/estring/">estring</a>, adapted for Batteries by the author)</center>
+
+As Batteries offers several new types of strings, this extension
+provides the necessary syntactic sugar to manipulate unicode strings
+naturally.
+
+<center><h3>Text values</h3></center>
+<p>
+Declaring a Rope is as simple as
+</p>
+<pre class="example">
+let foo = r"Some Unicode text"
+</pre>
+<p>
+This defines a new value <code>foo</code>, with type <code>Rope.t</code>, the type of (immutable) Unicode ropes.
+Of course, this manipulation doesn't have to happen at the highest-level:
+</p>
+<pre class="example">
+let append_string_to_rope x = Rope.append x (r"Some more Unicode text")
+</pre>
+<p>
+Note that ropes, being immutable, are automatically optimized, i.e. this is equivalent to
+</p>
+
+<pre class="example">
+let some_unique_name = Rope.of_latin1 "Some more Unicode text"
+let append_string_to_rope x = Rope.append x some_unique_name
+</pre>
+
+
+It is possible to use the same syntax to define
+<dl>
+<dt>Mutable UTF-8 strings</dt> <dd>e.g. <code>u"Some UTF-8 string"</code>, with type <code>UTF8.t</code></dd>
+<dt>Immutable Latin 1 strings (with capabilities)</dt> <dd>e.g. <code>ro"Some read-only string"</code>, with type <code>[`Read] String.Cap.t</code></dd>
+<dt>Mutable Latin 1 strings (with capabilities)</dt> <dd>e.g. <code>rw"Some read-write string"</code>, with type <code>[`Read | `Write] String.Cap.t</code> </dd>
+<dt>Write-only Latin 1 strings (with capabilities)</dt> <dd>e.g. <code>wo"Some write-only string"</code>, with type <code>[`Write] String.Cap.t</code> </dd>
+</dl>
+
+Again, immutable latin-1 strings are automatically optimized.
+
+<center><h3>Text patterns</h3></center>
+
+The same syntax may be used to pattern-match against ropes, UTF-8 strings and string with capabilities.
 
 <center><h2>Boilerplate construction</h2></center>
 <center>(<i>de</i>activated by default, implemented as findlib package <code>sexplib.syntax</code>)</center>

@@ -1,6 +1,9 @@
 This is the third alpha release of Batteries Included.
 
 = Changes since alpha 2
+== General
+* Batteries Included is now available for both OCaml 3.10 and 3.11 .
+
 == Language extensions
 * It is now possible to merge several modules into one.
 * General (and extendable) structure comprehension, working on lists, arrays, lazy lists, enumerations, ...

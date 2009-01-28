@@ -16,10 +16,13 @@ let _ =
 
   (* UTF-8 strings *)
 
-  register_expr_specifier "u"
+  (*register_expr_specifier "u"
     (fun ctx _loc str ->
        let id = register_shared_expr ctx <:expr< Batteries.UTF8.of_string $str:str$ >> in
-       <:expr< $id:id$ >>);
+       <:expr< $id:id$ >>);*)
+  register_expr_specifier "u"
+    (fun ctx _loc str ->
+       <:expr< Batteries.UTF8.of_string $str:str$ >>);
   register_when_specifier "u"
     (fun ctx _loc id str ->
        let shared_id = register_shared_expr ctx <:expr< Batteries.UTF8.of_string $str:str$ >> in
