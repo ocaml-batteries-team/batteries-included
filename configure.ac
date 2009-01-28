@@ -1,5 +1,7 @@
 AC_INIT
 
+INSTALLATION=
+
 AC_SUBST(INSTALLATION)
 
 # version info

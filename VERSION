@@ -1,20 +1,24 @@
 This is the third alpha release of Batteries Included.
 
 = Changes since alpha 2
+== General
+* Batteries Included is now available for both OCaml 3.10 and 3.11 .
+
 == Language extensions
 * It is now possible to merge several modules into one.
 * General (and extendable) structure comprehension, working on lists, arrays, lazy lists, enumerations, ...
+* (OCaml 3.11 only) Native Unicode strings, including pattern-matching and constant expression elimination.
 
 == Library
 * Module hierarchy completely reworked.
 * Thread-safe input/output when required.
 * A new abstract thread-safety module, to ensure future compatibility with coThreads.
 * Old-style ListLabels, ArrayLabels, etc. replaced with List.Labels, Array.Labels, etc.
-* New Unix module now compatible with IO.
-* Plenty of new functions in Enum, Array, Hashtbl, Pervasives, String, Rope, Bingarray, Dllist, DynArray.
+* Plenty of new functions in Enum, Array, Hashtbl, Pervasives, String, Rope, Bingarray, Dllist, DynArray, Arg, Sys.
 * The File module now permits using temporary files.
 * Several modules have been renamed (SafeInt, Labels).
 * New compatibility layer with OCamlNet.
+* New Unix module, compatible with IO.
 * New module Future.Path for manipulating paths.
 * New module CharEncoding for transcoding inputs/outputs.
 * New module Date for manipulating time.

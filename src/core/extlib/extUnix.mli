@@ -538,7 +538,8 @@ val opendir : string -> dir_handle
 
 val readdir : dir_handle -> string
 (** Return the next entry in a directory.
-   @raise End_of_file when the end of the directory has been reached. *)
+
+    @raise End_of_file when the end of the directory has been reached. *)
 
 val rewinddir : dir_handle -> unit
 (** Reposition the descriptor to the beginning of the directory *)

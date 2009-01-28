@@ -1,7 +1,6 @@
 Batteries_config
 Batlib_Baselib_Filename
 Batlib_Baselib_Callback
-Batlib_Baselib_Arg
 Batlib_Baselib_CamlinternalMod
 Batlib_Baselib_Digest
 Batlib_Baselib_Format
@@ -10,7 +9,6 @@ Batlib_Baselib_Lexing
 Batlib_Baselib_Obj
 Batlib_Baselib_Parsing
 Batlib_Baselib_Scanf
-Batlib_Baselib_Sys
 Batlib_Baselib_Weak
 Extlib
 Toolchain

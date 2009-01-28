@@ -66,3 +66,5 @@ ExtOo
 ExtStr
 Path
 CharEncodings
+ExtSys
+ExtArg

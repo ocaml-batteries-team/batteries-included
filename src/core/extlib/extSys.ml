@@ -1,7 +1,8 @@
 (*
- * Batlib_Baselib_Arg - Importing Base module Arg
- * Copyright (C) 2008 David Teller
- * 
+ * ExtSys - additional and modified functions for System
+ * Copyright (C) 1996 Xavier Leroy
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,4 +19,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include Arg
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
+
+
+module Sys =
+struct
+  include Sys
+  let files_of d = ExtArray.Array.enum (readdir d)
+end

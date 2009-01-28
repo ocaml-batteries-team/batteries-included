@@ -180,9 +180,10 @@ external ( || ) : bool -> bool -> bool = "%sequor"
    in [e1 || e2], [e1] is evaluated first, and if it returns [true],
    [e2] is not evaluated at all. *)
 
-external ( or ) : bool -> bool -> bool = "%sequor"
+(*external ( or ) : bool -> bool -> bool = "%sequor"
 (** @deprecated {!Pervasives.(||)} should be used instead.*)
-
+  (*Removed because of Camlp4 bug*)
+*)
 
 (** {6 Integer arithmetic} 
     
@@ -425,6 +426,15 @@ val nan : float
 val ( ^ ) : string -> string -> string
 (** String concatenation. *)
 
+val uppercase : string -> string
+(** Return a copy of the argument, with all lowercase letters
+    translated to uppercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
+
+val lowercase : string -> string
+(** Return a copy of the argument, with all uppercase letters
+    translated to lowercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
 
 (** {6 Character operations}
 

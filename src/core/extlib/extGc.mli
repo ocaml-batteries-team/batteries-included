@@ -91,7 +91,8 @@ type stat = Gc.stat =
    the number of bytes.
 *)
 
-type control = Gc.control =
+type control = Gc.control 
+=
   { mutable minor_heap_size : int;
     (** The size (in words) of the minor heap.  Changing
        this parameter will trigger a minor collection.  Default: 32k. *)
@@ -138,6 +139,17 @@ type control = Gc.control =
     (** The maximum size of the stack (in words).  This is only
        relevant to the byte-code runtime, as the native code runtime
        uses the operating system's stack.  Default: 256k. *) 
+
+#if ocaml_version >= (3, 11)
+    mutable allocation_policy : int;
+    (** The policy used for allocating in the heap.  Possible
+        values are 0 and 1.  0 is the next-fit policy, which is
+        quite fast but can result in fragmentation.  1 is the
+        first-fit policy, which can be slower in some cases but
+        can be better for programs with fragmentation problems.
+        Default: 0. *)
+#endif
+
 }
 (** The GC parameters are given as a [control] record.  Note that
     these parameters can also be initialised by setting the

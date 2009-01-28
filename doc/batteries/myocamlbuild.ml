@@ -105,7 +105,7 @@ struct
     let cl_use_boilerplate =
       [A"-package"; A "batteries.pa_type_conv.syntax,batteries,sexplib.syntax"]
     and cl_use_batteries   =
-      let syntaxes = ["pa_openin";"pa_where";"pa_batteries";"pa_comprehension"] in
+      let syntaxes = ["pa_openin";"pa_where";"pa_batteries";"pa_comprehension";"pa_strings"] in
       [A "-package";
        A (String.concat "," (List.map (Printf.sprintf "batteries.%s.syntax") syntaxes));
        A "-package"; A "batteries"]

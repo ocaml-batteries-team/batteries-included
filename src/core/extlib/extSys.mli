@@ -1,22 +1,37 @@
-(***********************************************************************)
-(*                                                                     *)
-(*                           Objective Caml                            *)
-(*                                                                     *)
-(*            Xavier Leroy, projet Cristal, INRIA Rocquencourt         *)
-(*                                                                     *)
-(*  Copyright 1996 Institut National de Recherche en Informatique et   *)
-(*  en Automatique.  All rights reserved.  This file is distributed    *)
-(*  under the terms of the GNU Library General Public License, with    *)
-(*  the special exception on linking described in file ../LICENSE.     *)
-(*                                                                     *)
-(***********************************************************************)
+(*
+ * ExtSys - additional and modified functions for System
+ * Copyright (C) 1996 Xavier Leroy
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
 
-(* $Id: sys.mli,v 1.49 2007/02/26 14:21:57 xleroy Exp $ *)
+(** System interface.
 
-(** System interface. 
+    This module defines higher-level functions than the {!Unix} module
+    and should, wherever possible, be used rather than the {!Unix} module
+    to ensure portability.
 
-    @documents Sys*)
+    @documents Sys
 
+    @author Xavier Leroy (Base module)
+    @author David Teller
+ *)
+
+module Sys: sig
 val argv : string array
 (** The command line arguments given to the process.
    The first element is the command name used to invoke the program.
@@ -62,12 +77,18 @@ external getcwd : unit -> string = "caml_sys_getcwd"
 
 external readdir : string -> string array = "caml_sys_read_directory"
 (** Return the names of all files present in the given directory.
-   Names denoting the current directory and the parent directory
-   (["."] and [".."] in Unix) are not returned.  Each string in the
-   result is a file name rather than a complete path.  There is no
-   guarantee that the name strings in the resulting array will appear
-   in any specific order; they are not, in particular, guaranteed to
-   appear in alphabetical order. *)
+    Names denoting the current directory and the parent directory
+    (["."] and [".."] in Unix) are not returned.  Each string in the
+    result is a file name rather than a complete path.  There is no
+    guarantee that the name strings in the resulting array will appear
+    in any specific order; they are not, in particular, guaranteed to
+    appear in alphabetical order. 
+
+*)
+
+val files_of: string -> string Enum.t
+(**As {!readdir} but the results are presented as an enumeration
+   of names.*)
 
 val interactive : bool ref
 (** This reference is initially set to [false] in standalone
@@ -96,7 +117,7 @@ val max_array_length : int
 (** {6 Signal handling} *)
 
 
-type signal_behavior = Sys.signal_behavior =
+type signal_behavior =
     Signal_default
   | Signal_ignore
   | Signal_handle of (int -> unit)
@@ -204,3 +225,4 @@ val ocaml_version : string;;
     where [major], [minor], and [patchlevel] are integers, and
     [additional-info] is an arbitrary string. The [[.patchlevel]] and
     [[+additional-info]] parts may be absent. *)
+end

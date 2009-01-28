@@ -41,11 +41,12 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
                        (*Note: a common point between num and netstring is that they both define custom printers
 			 for the toplevel. This may be the reason for this bug.*)
 #predicates "preprocessor";;
+#require "dynlink";;
 #camlp4o;;
 #require "camlp4";;
 #require "batteries";;
 #require "batteries.syntax";;
-
+#load "pa_estring_top.cmo";; (*For some reason, pa_estring_top.cmo won't load by itself.*)
 
 if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
 begin

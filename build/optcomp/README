@@ -1,0 +1,91 @@
+            Optional compilation with cpp-like directives
+
+                 Jeremie Dimino <jeremie@dimino.org>
+                            December 2008
+
+
+* What it does
+
+Optcomp is a syntax extension which handles #if, #else, ... directives
+in ocaml source files.
+
+For example, to switch between two pieces of code according to the
+ocaml compiler version, one can write:
+
+  #if ocaml_version < (3, 10)
+  let x = 1
+  #else
+  let x = 2
+  #end
+
+* What the difference between cpp and optcomp ?
+
+Optcomp is more caml-friendly than cpp:
+
+  - it does not interpret "//", "/*", and "*/" as comment delimiters
+  - it does not complains about missing "'"
+  - it is easier to integrate in the build process when using other
+    camlp4 syntax extensions
+
+By the way optcomp does not do macro expansion while cpp does.
+
+* What the difference between pa_macro and optcomp ?
+
+Optcomp does not require code that will be dropped to be valid caml
+code. So for example this code will be rejected by camlp4+pa_macro:
+
+  let f = function
+    | <:patt< $id:id$ >> -> "ident"
+    | <:patt< $int:x$ >> -> "int"
+    | <:patt< $x$, $y$ >> -> "pair"
+  IFDEF HAVE_LAZY_PATTERNS THEN
+    | <:patt< lazy x >> -> "lazy"
+  ENDIF
+
+But this one will be accepted by camlp4+optcomp:
+
+  let f = function
+    | <:patt< $id:id$ >> -> "ident"
+    | <:patt< $int:x$ >> -> "int"
+    | <:patt< $x$, $y$ >> -> "pair"
+  #if HAVE_LAZY_PATTERNS
+    | <:patt< lazy x >> -> "lazy"
+  #endif
+
+* Building instructions
+
+  To compile optcomp type:
+
+  $ make
+
+* Installation
+
+  To install optcomp type:
+
+  $ make install
+
+  and to uninstall it:
+
+  $ make uninstall
+
+* How to use it
+
+  You can use optcomp with ocamlfind, with the package optcomp or you
+  can directly include it in your project.
+
+* Hacking
+
+  To add support to more expressions, you can modify the eval function
+  of pa_optcomp.ml. It takes a camlp4 expression ast and must return
+  something of type value.
+
+* Development
+
+  The last development version of optcomp can always be found in the
+  darcs repository hosted at darcs.ocamlcore.org:
+
+  $ darcs get http://darcs.ocamlcore.org/repos/optcomp/optcomp
+
+local variables:
+mode: outline
+end:

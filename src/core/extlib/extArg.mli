@@ -1,17 +1,23 @@
-(***********************************************************************)
-(*                                                                     *)
-(*                           Objective Caml                            *)
-(*                                                                     *)
-(*             Damien Doligez, projet Para, INRIA Rocquencourt         *)
-(*                                                                     *)
-(*  Copyright 1996 Institut National de Recherche en Informatique et   *)
-(*  en Automatique.  All rights reserved.  This file is distributed    *)
-(*  under the terms of the GNU Library General Public License, with    *)
-(*  the special exception on linking described in file ../LICENSE.     *)
-(*                                                                     *)
-(***********************************************************************)
-
-(* $Id: arg.mli,v 1.36 2005/10/25 18:34:07 doligez Exp $ *)
+(* 
+ * ExtChar - Additional operations on arguments
+ * Copyright (C) 1996 Damien Doligez
+ *               2009 David Teller, LIFO, Universite d'Orleans
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
 
 (** Parsing of command line arguments.
 
@@ -39,8 +45,12 @@
 -   [cmd a b -- c d      ](two anonymous arguments and a rest option with
                            two arguments)
 
+    @author Damien Doligez (Base module)
+    @author David Teller
+
     @documents Arg
 *)
+module Arg : sig
 
 type spec = Arg.spec =
   | Unit of (unit -> unit)     (** Call the function with unit argument *)
@@ -63,10 +73,56 @@ type spec = Arg.spec =
 (** The concrete type describing the behavior associated
    with a keyword. *)
 
+type command (**The type describing both the name, documentation and behavior
+	  associated with a keyword.*)
+
+exception Help of string
+(** Raised by [Arg.parse_argv] when the user asks for help. *)
+
+exception Bad of string
+(** Functions in [spec] or [anon_fun] can raise [Arg.Bad] with an error
+    message to reject invalid arguments.
+    [Arg.Bad] is also raised by [Arg.parse_argv] in case of an error. *)
+
+
+val command: ?doc:string -> string -> spec -> command
+(** Construct a new command, i.e. the specification of a keyword,
+    an associated behavior and optionally a usage documentation.
+
+    @param doc A string which will be displayed to the user in
+    case of parsing error, and which should explain both the
+    behavior and the syntax of this keyword. If left unspecified,
+    no documentation is printed.
+*)
+
+val handle : ?usage:string -> command list -> string list
+(**
+   [Arg.handle commands] parses the command-line and applies
+   the specifications of [commands] and returns the list
+   of anonymous arguments.
+
+   In case of error, the program exits and displays the
+   usage message, if specified, and the documentation of
+   [command].
+
+   @param usage An optional string which will be displayed to
+   the user in case of parsing error. Typically, this string
+   should contain the name and version of the program. If
+   left unspecified, no usage string is displayed in case of
+   error.
+*)
+
+(**
+   {6 Obsolete interface}
+*)
+
+
 type key = string
 type doc = string
 type usage_msg = string
 type anon_fun = (string -> unit)
+
+
 
 val parse :
   (key * spec * doc) list -> anon_fun -> usage_msg -> unit
@@ -108,13 +164,8 @@ val parse_argv : ?current: int ref -> string array ->
   as argument.
 *)
 
-exception Help of string
-(** Raised by [Arg.parse_argv] when the user asks for help. *)
 
-exception Bad of string
-(** Functions in [spec] or [anon_fun] can raise [Arg.Bad] with an error
-    message to reject invalid arguments.
-    [Arg.Bad] is also raised by [Arg.parse_argv] in case of an error. *)
+
 
 val usage : (key * spec * doc) list -> usage_msg -> unit
 (** [Arg.usage speclist usage_msg] prints an error message including
@@ -135,3 +186,4 @@ val current : int ref
     {!Arg.parse} uses the initial value of {!Arg.current} as the index of
     argument 0 (the program name) and starts parsing arguments
     at the next element. *)
+end

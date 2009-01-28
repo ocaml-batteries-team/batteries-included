@@ -4,10 +4,23 @@ include Conv
 
 open Extlib.IO
 
+(** {6 Types}*)
+
+#if ocaml_version < (3, 11) (*The type was renamed between versions*)
+type 'a sexp_opaque = 'a
+
+#else
+let sexp_of_abstr = sexp_of_opaque
+#endif
+
 (** {6 Parsing}*)
 
 let reraise_parse_error pe global_pos =
+#if ocaml_version >= (3, 11) (*The exception was renamed between versions*)
+  raise (Parse_error pe)(*We can't perform the repositioning, as that's a private type*)
+#else
   raise (ParseError pe) (*We can't perform the repositioning, as that's a private type*)
+#endif
 (*  let ps = pe.parse_state in
   let ppos = ps.parse_pos in
   let new_ppos = { ppos with buf_pos = global_pos + ppos.buf_pos } in
@@ -24,7 +37,11 @@ let input_sexp ?text_line ?text_char ?(buf_pos=0) ic =
       buf.[0] <- c;
       let parse_res =
 	try this_parse ~pos:0 ~len:1 buf
-	with ParseError pe -> reraise_parse_error pe buf_pos
+#if ocaml_version >= (3, 11) (*The exception was renamed between versions*)
+	with Parse_error pe -> reraise_parse_error pe buf_pos
+#else
+       	with ParseError pe -> reraise_parse_error pe buf_pos
+#endif
       in
 	match parse_res with
 	  | Done (sexp, _) -> sexp
@@ -46,7 +63,11 @@ let input_rev_sexps
     if len > 0 then
       let parse_res =
         try this_parse ~pos ~len buf
+#if ocaml_version >= (3, 11) (*The exception was renamed between versions*)
+        with Parse_error pe -> reraise_parse_error pe !buf_pos_ref
+#else
         with ParseError pe -> reraise_parse_error pe !buf_pos_ref
+#endif
       in
       match parse_res with
       | Done (sexp, new_pos) ->

@@ -863,6 +863,8 @@ let rec of_object o =
     ~count:(fun () -> o#count)
     ~clone:(fun () -> of_object (o#clone))
 
+let flatten = concat
+
 module ExceptionLess = struct
   let find f e =
     try  Some (find f e)

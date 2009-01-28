@@ -721,17 +721,29 @@ struct
 end
 *)
 
+module Preprocessing =
+struct
+  let before_options () = ()
+
+  let after_rules () =  
+    flag ["ocaml"; "pp";       "use_optcomp"] (A"build/optcomp/pa_optcomp.cmo");
+    dep  ["ocaml"; "ocamldep"; "use_optcomp"] ["build/optcomp/pa_optcomp.cmo"]
+
+end
+
 let _ = dispatch begin function
    | Before_options ->
        OCamlFind.before_options     ();
        Documentation.before_options ();
-       Packs.before_options         ()
+       Packs.before_options         ();
+       Preprocessing.before_options ()
    | After_rules ->
        OCamlFind.after_rules     ();
        Documentation.after_rules ();
        Packs.after_rules         ();
 (*       Complete_mllib.after_rules ();*)
-       Misc.after_rules          ()
+       Misc.after_rules          ();
+       Preprocessing.after_rules ()
        
    | _ -> ()
 end

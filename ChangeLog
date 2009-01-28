@@ -1,4 +1,54 @@
-2009-01-26  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-28  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* batteries.godiva (Depends): godi-ocamlnet
+
+	* src/syntax/pa_strings/pa_strings.ml: "u" is not shared anymore
+
+	* doc/batteries/myocamlbuild.ml: added pa_string
+
+2009-01-27  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/toolchain/batlib_Sexp_Conv.mli: [opaque] renamed [sexp_opaque]
+
+	* src/core/toolchain/_tags: batlib_Sexp_Conv.ml now uses [use_optcomp]
+
+	* src/core/toolchain/batlib_Sexp_Conv.ml: added #if for [ParseError]/[Parse_error] upstream renaming
+
+	* src/core/_tags: extlib.mli now uses [use_optcomp]
+
+	* src/core/extlib/extGc.mli: [control.allocation_policy] added, for OCaml 3.11
+
+	* doc/batteries/html/extensions.html: flattened
+
+	* src/main/threads/batteries.ml: [ExtArg] replaces [Batlib_Baselib_Arg]
+
+	* src/core/extlib/extArg.ml*: created
+
+	* src/core/extlib/extPervasives.ml*: [String.lowercase], [String.uppercase] added
+
+	* src/core/extlib/enum.ml*: [flatten] added
+
+	* src/main/nothreads/batteries.ml: [ExtSys] replaces [Sys], [ExtUnix] replaces [Unix]
+
+	* src/main/threads/batteries.ml: [ExtSys] replaces [Batlib_Baselib_Sys]
+
+	* src/core/extlib.mlpack: [ExtSys] added
+
+	* src/core/extlib/extSys.ml*: created
+
+	* src/syntax/pa_strings/pa_estring.ml: conditional compilation added
+
+	* myocamlbuild.ml: [Preprocessing] added
+
+2009-01-26  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/syntax/pa_batteries/pa_batteries.ml: fixed comments
+
+	* build/META.in: [pa_strings] added
+
+	* Makefile.in: pa_strings.cmo, pa_estring.cmo, pa_estring_top.cmo added
+	
+	* src/syntax/pa_strings/pa_strings.ml: created
 
 	* examples/examples.itarget: [conv] added
 
@@ -17,7 +67,7 @@
 	* src/core/extlib/charEncodings.ml*: [of_stuff], [stuff_of] renamed [as_encoded]/[encoded_as]
 	
 
-2009-01-25  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-25  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* examples/pair.ml: Made parametric, documented
 
@@ -35,7 +85,7 @@
 
 	* src/core/extlib/extPervasives.ml: [**>] reverted to [<|]
 
-2009-01-24  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extUTF8.ml: flattened
 
@@ -43,7 +93,7 @@
 
 	* src/core/extlib/extPervasives.mli: [**>] reverted to [<|]
 
-2009-01-23  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-23  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extUnix.ml: flattened
 
@@ -71,7 +121,7 @@
 
 	* src/core/extlib/dllist.ml*: [filter], [filter_map] added
 
-2009-01-22  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-22  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/rope.ml: [TYPE_CONV_PATH] adapted
 
@@ -101,7 +151,7 @@
 
 	* src/core/extlib/extBigarray.ml*: [enum] added
 
-2009-01-21  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-21  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extString.ml*: [rsplit] added
 
@@ -111,7 +161,7 @@
 
 	* src/batteries_toolchain/batteries_help.ml: replaced
 
-2009-01-20  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-20  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extString.ml*: [rfind], [find_from], [rfind_from] added to [Cap]
 
@@ -127,7 +177,7 @@
 
 	* examples/browser.ml: added
 
-2009-01-19  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extString.ml: [nsplit] rewritten
 
@@ -140,7 +190,7 @@
 	* src/core/extlib/extString.ml*: [find_from] added
 
 	
-2009-01-18  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-18  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extBuffer.ml*: applied Dawid Toton's patch
 
@@ -153,7 +203,7 @@
 	* src/core/extlib/std.ml*: <| renamed **>, |> renamed <**
 
 
-2009-01-11  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/rope.ml: [sub] now defined from a function [aux]
 	
@@ -183,13 +233,13 @@
 
 	* src/core/extlib/path.ml: replaced [R.of_string] with [R.of_latin1]
 	
-2009-01-11  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/path.ml: added
 
 	* src/core/extlib/path.mli: added
 
-2009-01-06  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-06  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/interfaces.ml*: header added
 
@@ -203,7 +253,7 @@
 
 	* build/odoc_tags.ml: in [sort_by_topics], replaced "topic" with "topic"/"{topic"
 
-2009-01-05  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-05  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extStr.mli: created
 
@@ -219,13 +269,13 @@
 
 	* src/main/nothreads/batteries.mllib: [Batlib_Baselib_Str] removed
 
-2009-01-03  David Teller  <David.Teller@univ-orleans.fr>
+2009-01-03  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/main/nothreads/batteries.ml: [Digest] renamed [MD5]
 
 	* src/main/threads/batteries.ml: [Digest] renamed [MD5]
 
-2008-12-16  David Teller  <David.Teller@univ-orleans.fr>
+2008-12-16  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* build/odoc_tags.ml: [generate_elements_index_by_topic], [modules_by_topic], [topics] added
 
@@ -237,7 +287,7 @@
 
 	* src/main/nothreads/batteries.ml: [Dlllist], Dynarray], MultiPMap], [Base64] added
 
-2008-12-15  David Teller  <David.Teller@univ-orleans.fr>
+2008-12-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/main/threads/batteries.mllib: Batlib_Baselib_Thread, Batlib_Baselib_Mutex, Batlib_Baselib_Condition, Batlib_Baselib_Event, Batlib_Baselib_StringLabels, Batlib_Baselib_Set 	removed
 
@@ -245,15 +295,15 @@
 
 	* src/core/extlib/enum.mli: removed [include] from documentation
 
-2008-12-14  David Teller  <David.Teller@univ-orleans.fr>
+2008-12-14  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/enum.mli: ExceptionLess documentation modified
 
-2008-12-08  David Teller  <David.Teller@univ-orleans.fr>
+2008-12-08  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extPervasives.ml*: [undefined] added
 
-2008-12-06  David Teller  <David.Teller@univ-orleans.fr>
+2008-12-06  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* examples/unicode.ml: [rope1] now defined from [u1] rather than [s1]
 
@@ -288,11 +338,11 @@
 	* src/core/extlib/extString.ml*: in [Cap.t], removed constraints
 	
 
-2008-11-30  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-30  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extString.ml*: [repeat] added
 
-2008-11-25  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-25  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* build/odoc_tags.ml: created
 
@@ -312,13 +362,13 @@
 
 	* src/core/extlib/enum.ml*: [of_object], [to_object] created
 
-2008-11-20  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-20  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/main/nothreads/batteries_flat.ml: created
 
 	* build/tags.ml: created
 
-2008-11-18  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-18  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/rope.ml: propagaged name change of [Labels]
 
@@ -342,7 +392,7 @@
 
 	* src/core/extlib/interfaces.ml (et al): Add Data.Interfaces as the place to put module types / interfaces (i.e. OrderedType)
 
-2008-11-16  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-16  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extBigarray.ml*: created
 
@@ -368,7 +418,7 @@
 
 	* src/core/extlib/extArray.ml*: [Cap.Labels] added
 
-2008-11-15  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* Makefile.in: [reinstall] now builds [top], [syntax]
 	
@@ -416,7 +466,7 @@
 
 	* src/core/extlib/concurrent.mli: [type lock] becomes abstract
 
-2008-11-14  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-14  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/innerIO.ml: [flush], [flush_all] now use [Concurrent.sync]
 
@@ -444,7 +494,7 @@
 
 	* src/core/extlib/concurrent.ml*: created
 
-2008-11-13  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/syntax/pa_openin/pa_openin_r.ml: [module_binding0], [multi_module_expr] added
 
@@ -468,7 +518,7 @@
 
 	* src/core/extlib/innerIO.ml: [outputs_add] added
 
-2008-11-12  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib_threads/extPervasivesThreads.ml*: created
 
@@ -484,11 +534,11 @@
 
 	* src/core/extlib/enum.mli: fixed documentation of [for_all]
 
-2008-11-11  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/enum.ml: [seq] now applies post-operation rather than pre-operation
 
-2008-11-10  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-10  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/uCharParser.ml: [ExtUTF8] opened
 
@@ -516,7 +566,7 @@
 
 	* Makefile.in: [DEST_TOP] now uses the directory of camomile
 
-2008-11-09  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-09  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/IO.mli: Documentation added, functions reordered.
 
@@ -527,7 +577,7 @@
 	* src/core/extlib/extList.ml*: [print_string] renamed [sprint]
 
 
-2008-11-08  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-08  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/IO.ml*: [copy] now accepts an additional argument
 
@@ -570,7 +620,7 @@
 	* src/core/extlib/rope.ml*: skeleton code for some string functions, but some implemented: [contains], [contains_from], [left], [right], [head], [tail], [lchop], [rchop], [splice], [fill], [blit], [concat_sep], [escaped], [replace_chars], [replace], [split], [nsplit]
 
 
-2008-11-07  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-07  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/IO.ml: [copy] now uses [write_chunks] / [chunks_of] rather than [write_lines] / [lines_of]
 
@@ -618,7 +668,7 @@
 	* src/batteries_toolchain/top.ml: added [open Batteries], [!] before [Sys.interactive]
 	
 
-2008-11-06  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-06  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* doc/batteries/html/toplevel.html: added more documentation
 
@@ -658,13 +708,13 @@
 
 	* src/core/batteries_core.ml: module [Toolchain.Sysconfig] added
 
-2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-05  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* doc/batteries/html/about.html (simple): Added a few lines on CDK
 
 	* src/batteries_toolchain/batteries_help.ml: Fixed typo in a string
 
-2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-05  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/batteries_toolchain/ocamlcp: created
 	
@@ -676,7 +726,7 @@
 
 	* src/core/batteries_toolchain: renamed from src/core/toplevel
 
-2008-11-05  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-05  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib_threads/: created
 
@@ -694,7 +744,7 @@
 
 	* src/core/extlib.mlpack: [ExtUnix] added
 
-2008-11-04  David Teller  <David.Teller@univ-orleans.fr>
+2008-11-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/innerIO.ml*: [close_all] added
 
@@ -742,7 +792,7 @@
 
 	* src/core/extlib/extUTF8.ml*: [init], [map], [filter_map] added
 
-2008-10-24  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* build/odoc_generator_batlib.ml: [generate_types_index] overloaded
 
@@ -771,7 +821,7 @@
 
 	* src/toplevel/batteries_help.ml: in [append], when creating new [RefList]s, adding element inside the list
 
-2008-10-23  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-23  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/syntax/pa_batteries/pa_batteries.ml: split [top_phrase] in two
 
@@ -831,7 +881,7 @@
 
 	* Makefile: [BROWSER], [instdoc] added
 
-2008-10-22  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-22  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/toolchain/batteries_help.ml: Added directives
 
@@ -859,7 +909,7 @@
 
 	* src/core/batteries_core.ml: [Toolchain.Help] added
 
-2008-10-21  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-21  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* build/odoc_generator_batlib.ml: [generate] now calls [generate_external_index]
 	
@@ -933,7 +983,7 @@
 
 	* src/core/extlib/extUChar.mli: in [of_digit], fixed [@raise]
 
-2008-10-20  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-20  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/batteries_core.ml: [Standard] now contains [ExtPervasives.Pervasives]
 
@@ -957,7 +1007,7 @@
 
 	* src/core/extlib/extUChar.ml: [is_lowercase] now uses [`Ll]
 
-2008-10-18  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-18  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/rope.ml*: [enum] rewritten with [Enum.delay]
 	
@@ -1004,7 +1054,7 @@
 
 	* src/core/extlib/extUChar.ml: [Info] added
 
-2008-10-17  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-17  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/std.mli: [flip] added
 
@@ -1022,11 +1072,11 @@
 	
 	* examples/benchmark/*: Add list benchmark code
 
-2008-10-16  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-16  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/parserCo.mli: removed [of_lexer]
 
-2008-10-15  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extGenlex.ml: [multiline_comment] rewritten
 
@@ -1108,7 +1158,7 @@
 
 	* myocamlbuild.ml: [generate_mli] reimplemented
 
-2008-10-14  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-14  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/interfaces.ml: created
 
@@ -1116,7 +1166,7 @@
 
 	* myocamlbuild.ml: [_PRODUCE_MLI_FROM_PACK], [_PRODUCE_PACKED_ML] added
 
-2008-10-13  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* Makefile: target [odoc_generator_batlib.cmo] removed
 
@@ -1200,7 +1250,7 @@
 
 	* ChangeLog: skipped lines
 
-2008-10-12  David Teller  <David.Teller@univ-orleans.fr>
+2008-10-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* myocamlbuild.ml: [generate_sorted] added
 
@@ -1272,13 +1322,13 @@
 
 	* Makefile: [install], [syntax] now don't use [pa_mainfun]
 	
-2008-10-11 David Teller <David.Teller@univ-orleans.fr>:
+2008-10-11 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* extInt.ml*, extInt32.ml*, extInt64.ml*, extBig_int.ml*: [( -- )], [( --- )] added
 
 	* extInt32.ml, extInt64.ml, extNativeint.mli: [type t] moved upwards
 	
-2008-10-10 David Teller <David.Teller@univ-orleans.fr>:
+2008-10-10 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* about.html: created
 
@@ -1304,7 +1354,7 @@
 
 	* extlib.mlpack: [Ref] added
 
-2008-10-09 David Teller <David.Teller@univ-orleans.fr>:
+2008-10-09 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* batlib_Baselib_Buffer.mli:
 
@@ -1338,7 +1388,7 @@
 
 	* Makefile: [reinstall] added
 	
-2008-10-08 David Teller <David.Teller@univ-orleans.fr>:
+2008-10-08 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* batteries_core.ml: [Random] is now [Extlib.ExtRandom.Random]
 
@@ -1372,7 +1422,7 @@
 
 	* setup.html: added sections "More Control" and "Even More Control".
 	
-2008-10-07 David Teller <David.Teller@univ-orleans.fr>:
+2008-10-07 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* batteries_type_conv.mli: [get_conv_path_el], [set_conv_path],
 	[push_conv_path], [pop_conv_path], [gen_derived_defs], [sig_generate],
@@ -1472,7 +1522,7 @@
 
 	* IO.ml*: [write_buf] added
 	
-2008-10-06 David Teller <David.Teller@univ-orleans.fr>:
+2008-10-06 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* threads/batteries.ml: [Thread] now points to [Thread]
 
@@ -1514,7 +1564,7 @@
 
 	* batteries.mllib (both): [install] removed
 	
-2008-10-05 David Teller <David.Teller@univ-orleans.fr>:
+2008-10-05 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* threads/batteries.mllib: hardcoded
 
@@ -1538,13 +1588,13 @@
 
 	* batlib_Camlp4_PreCast.*: added
 	
-2008-10-04 David Teller <David.Teller@univ-orleans.fr>:
+2008-10-04 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* doc/batteries/myocamlbuild.ml: removed automatic "-thread"
 
 	* batteries_core.ml: loses [Threads]
 	
-2008-10-03 David Teller <David.Teller@univ-orleans.fr>:
+2008-10-03 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* build/META: removed archives, added mt/-mt
 
@@ -1554,7 +1604,7 @@
 
 	* Makefile: fully rewritten
 	
-2008-09-30 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-30 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* enum.ml*: [hard_count] added
 
@@ -1569,7 +1619,7 @@
 	* IO.ml*: [Printf.format] renamed [Printf.t]
 
 	
-2008-09-29 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-29 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* core/: created
 
@@ -1583,7 +1633,7 @@
 
 	* nothreads/batteries.ml: now depends on BatteriesCore_nothreads
 	
-2008-09-28 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-28 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* misc/monad.*: created
 
@@ -1605,7 +1655,7 @@
 
 	* tools.ml*: created
 	
-2008-09-27 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-27 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* extHashtbl.mli: removed inconsistent [exists]
 
@@ -1627,7 +1677,7 @@
 
 	* build/_tags: made [batteries*] precious
 	
-2008-09-24 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-24 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* build/packdoc.ml: created
 
@@ -1647,7 +1697,7 @@
 	* batteries.ml: root now defines replacements for modules from
 	the base library
 	
-2008-09-23 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-23 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* extArray.ml*: [ROArray] removed
 
@@ -1670,7 +1720,7 @@
 
 	* batteries.ml: added [ExtUnit]
 	
-2008-09-22 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-22 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* main/*.ml: merged into main/batteries.ml
 
@@ -1678,7 +1728,7 @@
 
 	* myocamlbuild.ml: added [-I +threads] to [ocamldoc] in presence of [pkg_threads]
 
-2008-09-11 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-11 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* number.mli: merged module and submodule [Numeric]
 
@@ -1692,7 +1742,7 @@
 
 	* extArray.ml*: [ROArray] added
 	
-2008-09-10 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-10 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* layer_1/juice: moved out of [layer_1]
 
@@ -1710,7 +1760,7 @@
 
 	* additions/misc: created
 	
-2008-09-08 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-08 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* batlib_findlib.ml:    removed
 
@@ -1805,7 +1855,7 @@
 
 	* batlib_Baselib_Weak.mli: added aliases for all types
 	
-2008-09-07 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-07 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* [everything moved around!]
 
@@ -1829,7 +1879,7 @@
 
 	* doc: created
 	
-2008-09-06 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-06 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* test/: created
 
@@ -1846,7 +1896,7 @@
 	* odoc_generator_batlib.ml: [#generate] now correctly puts values names into [known_values_names]
 
 	
-2008-09-05 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-05 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* batlib_Baselib_Pervasives.mli: headers removed, channel operations hidden
 
@@ -1900,7 +1950,7 @@
 
 	* odoc_fhtml.ml: imported
 
-2008-09-04 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-04 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* Makefile: [META] added
 
@@ -1916,11 +1966,11 @@
 
 	* odoc_generator_batlib.ml: in [create_fully_qualified_idents_links], [find_renamings] added
 
-2008-09-02 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-02 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* odoc_generator_batlib.ml: [create_fully_qualified_idents_links] created
 	
-2008-09-01 David Teller <David.Teller@univ-orleans.fr>:
+2008-09-01 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* batlib.ml: receives [Control], [Data], [Languages], loses [Concurrency], 
 	[Containers], [Math], [Text]
@@ -1940,7 +1990,7 @@
 
 	* glue/: renamed juice/
 	
-2008-08-31 David Teller <David.Teller@univ-orleans.fr>:
+2008-08-31 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* batlib_text.ml: receives [Char], [String] and [StringLabels]
 
@@ -1950,6 +2000,6 @@
 
 	* batlib.ml: replaced [Batlib_data] with [Batlib_math]
 
-2008-08-29 David Teller <David.Teller@univ-orleans.fr>:
+2008-08-29 David Rajchenbach-Teller <David.Teller@univ-orleans.fr>:
 
 	* *: created

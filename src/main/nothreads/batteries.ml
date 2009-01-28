@@ -364,12 +364,12 @@ module  SExpr  = Toolchain.Batlib_Sexp_Conv
    @topic System
 *)
 
-module  Arg = Arg
+module  Arg = Extlib.ExtArg.Arg
 module  File= Extlib.File
 module  OptParse = Extlib.OptParse
 (*module  Path:placeholder*)
-module  Shell = Sys
-module  Unix  = Unix
+module  Shell = Extlib.ExtSys.Sys
+module  Unix  = Extlib.ExtUnix.Unix
 (*module  Equeue:placeholder*)
 
 

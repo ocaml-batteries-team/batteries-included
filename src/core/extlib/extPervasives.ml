@@ -28,7 +28,8 @@ module Pervasives = struct
   include Pervasives
   include Std
   open Enum
-    
+
+  (** {6 I/O}*)
   let print_guess   = Std.print
   let prerr_guess v = prerr_endline (dump v)
 
@@ -104,16 +105,26 @@ module Pervasives = struct
   let get               = get
   let iter              = iter
 
+  (** {6 Concurrency}*)
+
   let unique_value  = ref 0
   let lock          = ref Concurrent.nolock
   let unique ()     =
     Concurrent.sync !lock Ref.post_incr unique_value
+
+  (** {6 Operators}*)
 
   let first f (x, y) = (f x, y)
   let second f (x, y)= (x, f y)
   let ( **> )        = ( <| )
   let undefined ?(message="Undefined") = failwith message
 
+  (** {6 String operations}*)
+
+  let lowercase = String.lowercase
+  let uppercase = String.uppercase
+
+  (** {6 Clean-up}*)
   let _ = at_exit close_all; (*Called second*)
           at_exit flush_all  (*Called first*)
 end
