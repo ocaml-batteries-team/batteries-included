@@ -1,5 +1,23 @@
 2009-01-28  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/batteries_toolchain/top.ml: [print_*] registered
+
+	* src/core/extlib.mlpack: moved [ExtString] above [ExtUTF8]
+
+	* build/META.in: in [archive(toploop)], [batteries_toolchain.cma] replaces [batteries_help.cmo]
+
+	* src/batteries_toolchain/ocaml: argument of [ocaml -init] now defined from [`ocamlfind`]
+
+	* src/batteries_toolchain.mllib: created
+
+	* Makefile.in: [top] now depends on [batteries_toolchain.cma]
+	
+	* src/batteries_toolchain/batteries_print.ml*: created
+
+	* src/_tags: batteries_toolchain included
+
+	* src/core/extlib/rope.ml*: [to_string], [of_string] added
+
 	* batteries.godiva (Depends): godi-ocamlnet
 
 	* src/syntax/pa_strings/pa_strings.ml: "u" is not shared anymore

@@ -32,6 +32,10 @@ This is the third alpha release of Batteries Included.
 * bug 100 (Enum.seq) fixed
 * Set.enum/backwards now enumerate in the right order
 
+== Toplevel
+* Pretty-printers for UChar, Rope, String.Cap, UTF8.
+* Loading speed improved.
+
 == Docfixes
 * bug 101 (Enum.for_all) fixed
 * Documentation fixes in List.
