@@ -1006,9 +1006,11 @@ class batlib_generator =
       match !Odoc_args.dump with
 	| Some l -> 
 	    Odoc_info.verbose "[Internal representation stage, no readable output generated yet]";
+	    Odoc_info.verbose "(you still have time for coffee)";
 	    ()
 	| None   -> 
 	    Odoc_info.verbose "[Final stage, we will generate html pages]";
+	    Odoc_info.verbose "(if you don't want coffee, you could also prepare some tea)";
 	    flush_all ();
 	    (*Pre-process every module*)
 	    List.iter (fun m -> verbose ("My bag contains "^m.m_name)) modules;
