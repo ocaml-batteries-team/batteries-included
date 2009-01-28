@@ -20,7 +20,7 @@ You will need
 * GNU Make
 * Findlib   (http://projects.camlcity.org/projects/findlib.html/)
 * Type-conv (http://www.ocaml.info/home/ocaml_sources.html)
-* Sexplib   (http://www.ocaml.info/home/ocaml_sources.html)
+* Sexplib >= 3.7.5  (http://www.ocaml.info/home/ocaml_sources.html)
 * Bin-prot  (http://www.ocaml.info/home/ocaml_sources.html)
 * Camomile >= 0.7 (http://camomile.sourceforge.net/)
 * Camlzip   (http://cristal.inria.fr/~xleroy/software.html#camlzip)
