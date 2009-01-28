@@ -45,13 +45,19 @@ package "pa_where" (
 package "pa_comprehension" (
 	description = "comprehension expressions (container)"
 	version     = "@VERSION@"
+        package "camlp4_runtime" (
+                description = "original list comprehension extension"
+                verions = "@VERSION@"
+                directory="+camlp4/Camlp4Parsers"
+                archive(byte) = "Camlp4ListComprehension.cmo"
+                archive(toploop) = "Camlp4ListComprehension.cmo"
+        )
 	package "syntax" (
 		description = "comprehension expressions (syntax extension)"
+                requires    = "batteries.pa_comprehension.camlp4_runtime"
 		version                       = "@VERSION@"
-		archive(syntax, preprocessor) = "Camlp4Parsers/Camlp4ListComprehension.cmo,
-                                                 pa_comprehension.cmo"
-		archive(syntax, toploop)      = "Camlp4Parsers/Camlp4ListComprehension.cmo,
-                                                 pa_comprehension.cmo"
+		archive(syntax, preprocessor) = "pa_comprehension.cmo"
+		archive(syntax, toploop)      = "pa_comprehension.cmo"
 	)
 )
 
