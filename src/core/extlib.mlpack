@@ -17,6 +17,7 @@ MultiPMap
 Option
 OptionLabels
 ExtBuffer
+ExtString
 ExtUTF8
 ExtInt64
 ExtInt32
@@ -36,7 +37,6 @@ ExtBig_int
 ExtList
 ExtNativeint
 ExtStream
-ExtString
 Substring
 Std
 RefList
