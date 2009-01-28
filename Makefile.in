@@ -97,7 +97,7 @@ config.ml: Makefile
 
 #Useful for testing
 reinstall: byte opt top syntax uninstall install
-rebyte: byte uninstall install
+rebyte: byte top syntax uninstall install
 install-doc: doc
 	install -d $(DOCDIR) &&\
 	cp -R doc/batteries/* $(DOCDIR)
@@ -121,12 +121,8 @@ syntax: config.ml
 	$(OCAMLBUILD) -cflags -I,+camlp4/Camlp4Parsers\
                       src/syntax/pa_comprehension/pa_comprehension.cmo
 
-top: src/batteries_toolchain/ocaml src/batteries_toolchain/batteries_help.cmo
-src/batteries_toolchain/ocaml:
-	echo "ocaml -init $(DEST_TOP) \$$@" > $@
-	chmod ugo+rx src/batteries_toolchain/ocaml*
-src/batteries_toolchain/batteries_help.cmo: src/batteries_toolchain/batteries_help.ml src/batteries_toolchain/batteries_help.mli
-	$(OCAMLBUILD) $@
+top: 
+	ocamlbuild src/batteries_toolchain/batteries_print.cmo src/batteries_toolchain/batteries_print.cmo
 
 install:
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
@@ -144,8 +140,10 @@ install:
 		_build/src/syntax/pa_strings/pa_strings.cmo \
 		_build/src/syntax/pa_strings/pa_estring.cmo \
 		_build/src/syntax/pa_strings/pa_estring_top.cmo \
-		_build/src/batteries_toolchain/batteries_help.cmo \
 		_build/src/batteries_toolchain/batteries_help.cmi \
+		_build/src/batteries_toolchain/batteries_print.cmi \
+		_build/src/batteries_toolchain/batteries_help.cmo \
+		_build/src/batteries_toolchain/batteries_print.cmo \
 		src/batteries_toolchain/top.ml \
 		src/batteries_toolchain/ocaml*
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \

@@ -48,6 +48,7 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
 #require "batteries.syntax";;
 #load "pa_estring_top.cmo";; (*For some reason, pa_estring_top.cmo won't load by itself.*)
 
+
 if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
 begin
   Batteries_help.init ();
@@ -67,4 +68,9 @@ end
 
 open Batteries;;
 open Standard;;
+#install_printer Batteries_print.print_uchar;;
+#install_printer Batteries_print.print_ustring;;
+#install_printer Batteries_print.print_rope;;
+#install_printer Batteries_print.print_string_cap_rw;;
+#install_printer Batteries_print.print_string_cap_ro;;
 Sys.interactive := interactive;; (*Return to regular interactive mode*)
