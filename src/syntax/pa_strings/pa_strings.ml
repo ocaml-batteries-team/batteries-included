@@ -12,6 +12,8 @@ open Pa_estring
   (*For the moment, we don't have a version compatible with OCaml < 3.11*)
 #else
 
+let _ = Printf.eprintf "Launching pa_estring\n%!";
+
 let _ =
 
   (* UTF-8 strings *)

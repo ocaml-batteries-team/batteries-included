@@ -15,6 +15,8 @@ open Camlp4.PreCast
   (*For the moment, we don't have a version compatible with OCaml < 3.11*)
 #else
 
+let _ = Printf.eprintf "Launching pa_estring_top\n%!"
+
 (* Hack used to force camlp4 to define a new token stream filtered
    with the newly defined filter. *)
 let _ =
