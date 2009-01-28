@@ -100,14 +100,19 @@ val empty : t
 val of_latin1: string -> t
   (** Constructs a unicode rope from a latin-1 string. *)
 
+val of_string : string -> t
+  (** [of_string s] returns a reope corresponding to the UTF-8 encoded string [s].*)
+
+val to_string : t -> string
+  (** [to_string t] returns a UTF-8 encoded string representing [t]*)
 
 val of_ustring : UTF8.t -> t
   (** [of_string s] returns a rope corresponding to the string [s].
       Operates in [O(n)] time. *)
   
 val to_ustring : t -> UTF8.t
-  (** [to_string r] returns the string corresponding to the rope [r]. *)
-  
+  (** [to_ustring r] returns the string corresponding to the rope [r]. *)
+
 val of_uchar: UChar.t -> t
   (** [of_uchar c] returns a rope containing exactly character [c].*)
 

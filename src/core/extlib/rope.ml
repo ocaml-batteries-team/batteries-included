@@ -475,6 +475,12 @@ module CE = CamomileLibrary.CharEncoding.Configure(CamomileLibrary.CamomileDefau
 let of_latin1 s =
   of_ustring (UTF8.of_string (CE.recode_string CE.latin1 CE.utf8 s))
  
+let of_string s =
+  of_ustring (UTF8.of_string s)
+
+let to_string t =
+ UTF8.to_string (to_ustring t)
+
 let sexp_of_t t =
   UTF8.sexp_of_t (to_ustring t)
 let t_of_sexp s =
