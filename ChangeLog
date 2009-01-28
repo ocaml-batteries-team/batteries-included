@@ -1,5 +1,9 @@
 2009-01-28  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* .gitignore: removed [ocaml] and [configure]
+
+	* build/odoc_tags.ml: Jokes added
+
 	* src/batteries_toolchain/top.ml: [print_*] registered
 
 	* src/core/extlib.mlpack: moved [ExtString] above [ExtUTF8]
