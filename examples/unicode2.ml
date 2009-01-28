@@ -29,6 +29,6 @@ let () =
 
 let bad_rope = 
   try 
-    usay (Rope.of_ustring (UTF8.of_string s2)) 
+    usay (Rope.of_ustring (u "Some text not encoded in utf8: á é í ó ú"))
   with UTF8.Malformed_code -> say "Non-utf8 input -- caught Malformed_code\n (don't worry, that's part of the example)\n"
 
