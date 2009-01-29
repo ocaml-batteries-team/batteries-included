@@ -1,5 +1,21 @@
 2009-01-29  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/batteries_toolchain/batteries_help.ml: in [load_index], only adding [basename] and [leafname] if they're not equal
+
+	* src/main/nothreads/batteries.ml: [Data] added
+
+	* src/core/extlib/substring.mli: What the heck is this module?
+
+	* src/main/nothreads/batteries.ml: [Vect] added
+
+	* src/main/threads/batteries.ml: [Vect] added
+
+	* src/core/extlib.mlpack: [OptionLabels], [LazyListLabels] removed
+
+	* src/core/_tags: extlib.mli now uses [use_sexplib] instead of [pkg_sexplib]
+
+	* myocamlbuild.ml: [use_sexplib] added
+
 	* src/core/extlib/lazyList.ml*: [ ^:^ ] added
 
 	* examples/: rearranged

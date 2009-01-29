@@ -151,7 +151,7 @@ let load_index ~name ~index ~prefix ~suggestions ~completions =
 		let leafname = local_name basename    in
 		let completion={cpackage = name; qualified = item} in
 		append_to_table completions basename completion;
-		append_to_table completions leafname completion;
+		  if leafname <> basename then append_to_table completions leafname completion;
 		debug "Adding manual %S => %S (%S)\n" item full_url name;
 		debug "Adding completion %S => %S (%S)\n" basename item name;
 		debug "Adding completion %S => %S (%S)\n" leafname item name
