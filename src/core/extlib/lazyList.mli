@@ -74,6 +74,9 @@ val nil : 'a t
 val cons : 'a -> 'a t -> 'a t
 (**Build a list from a head and a tail.*)
 
+val ( ^:^ ) : 'a -> 'a t -> 'a t
+(**As [cons]: [x^:^l] is the lazy list with head [x] and tail [l]*)
+
 val peek : 'a t -> 'a option
 (**[peek l] returns the first element of [l], if it exists.*)
 

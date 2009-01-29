@@ -218,6 +218,7 @@ module  Stream   = Extlib.ExtStream.Stream
 *)      
 
 module  Lazy     = Batlib_Baselib_Lazy
+module  LazyList = Extlib.LazyList
 module  List     = Extlib.ExtList.List
 module  Map      = Extlib.ExtMap.Map
 module  MultiPMap= Extlib.MultiPMap

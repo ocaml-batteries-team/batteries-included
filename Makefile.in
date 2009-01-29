@@ -122,7 +122,8 @@ syntax: config.ml
                       src/syntax/pa_comprehension/pa_comprehension.cmo
 
 top: 
-	ocamlbuild src/batteries_toolchain/batteries_print.cmo src/batteries_toolchain/batteries_help.cmo
+	ocamlbuild src/batteries_toolchain/batteries_print.cmo \
+		src/batteries_toolchain/batteries_help.cmo
 
 install:
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
@@ -176,7 +177,8 @@ doc/api.odocl:
 examples:
 	@echo Note: to build the examples, you must first have installed Batteries
 	@echo If you haven\'t installed Batteries yet, please use    make all opt install
-	cd examples && $(OCAMLBUILD) examples.otarget
+	cd examples/tools    && $(OCAMLBUILD) tools.otarget && \
+	cd examples/snippets && $(OCAMLBUILD) snippets.otarget
 
 clean:
 	$(OCAMLBUILD) -clean

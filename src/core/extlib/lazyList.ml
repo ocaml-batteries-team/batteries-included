@@ -45,6 +45,8 @@ let next l = Lazy.force l
 
 let cons h t = lazy (Cons(h, t))
 
+let ( ^:^ ) = cons
+
 let get l = match next l with
   | Nil            -> None
   | Cons (x, rest) -> Some (x, rest)

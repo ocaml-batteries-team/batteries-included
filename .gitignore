@@ -1,11 +1,10 @@
 _build/
 Makefile
 autom4te.cache/
-configure
 config.ml
 config.log
 config.status
 build/META
 build/threaded/META
 build/nothreads/META
-src/batteries_toolchain/ocaml
+

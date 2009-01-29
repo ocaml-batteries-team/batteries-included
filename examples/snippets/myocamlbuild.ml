@@ -1,1 +1,1 @@
-../doc/batteries/myocamlbuild.ml
+../../doc/batteries/myocamlbuild.ml

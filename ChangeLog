@@ -1,3 +1,17 @@
+2009-01-29  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/lazyList.ml*: [ ^:^ ] added
+
+	* examples/: rearranged
+
+	* src/main/threads/batteries.ml: [LazyList] added
+
+	* src/main/nothreads/batteries.ml: [LazyList] added
+
+	* src/batteries_toolchain/batteries_help.ml: in [kind_of_name], "language" is also associated to [Topics]
+
+	* build/META.in: [pa_comprehension.syntax] restored
+
 2009-01-28  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* .gitignore: removed [ocaml] and [configure]

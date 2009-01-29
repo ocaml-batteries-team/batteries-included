@@ -230,6 +230,7 @@ module  Stream   = Extlib.ExtStream.Stream
 *)      
 
 module  Lazy     = Lazy
+module  LazyList = Extlib.LazyList
 module  List     = Extlib.ExtList.List
 module  Map      = Extlib.ExtMap.Map
 module  MultiPMap= Extlib.MultiPMap
