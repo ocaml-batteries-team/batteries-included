@@ -1,5 +1,7 @@
 2009-01-29  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* myocamlbuild.ml: [use_sexplib] now available also for target [doc]
+
 	* src/batteries_toolchain/batteries_help.ml: in [load_index], only adding [basename] and [leafname] if they're not equal
 
 	* src/main/nothreads/batteries.ml: [Data] added

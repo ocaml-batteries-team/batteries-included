@@ -624,10 +624,10 @@ struct
     flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
 
-    flag ["ocaml"; "link"; "byte"; "use_sexplib"]     & S[A"-package"; A "sexplib"];
-    flag ["ocaml"; "link"; "native"; "use_sexplib"]   & S[A"-package"; A "sexplib"];
-    flag ["ocaml"; "compile"; "byte"; "use_sexplib"]  & S[A"-package"; A "sexplib"];
-    flag ["ocaml"; "compile"; "native"; "use_sexplib"]& S[A"-package"; A "sexplib"]
+    flag ["ocaml"; "link"; "use_sexplib"]   & S[A"-package"; A "sexplib"];
+    flag ["ocaml"; "compile"; "use_sexplib"]  & S[A"-package"; A "sexplib"];
+    flag ["ocaml"; "doc"; "use_sexplib"]  & S[A"-package"; A "sexplib"]
+
 end
 
 (** Provide a library which is as complete as possible.
