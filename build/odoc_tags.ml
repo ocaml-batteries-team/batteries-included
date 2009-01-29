@@ -1110,7 +1110,4 @@ let _ =
   Args.add_option ("-html", Arg.Unit 
 		     (fun _ -> Odoc_info.verbose "Deactivating built-in html generator";
 			set_batlib_doc_generator())
-		     , "<workaround for ocamlbuild adding -html even when we don't want to>") ;
-  match !Odoc_args.dump with
-    | None -> Odoc_info.verbose "This is the final stage of documentation generation. You should go take a coffee, it's bound to last 15+ minutes."
-    | _ -> ()
+		     , "<workaround for ocamlbuild adding -html even when we don't want to>") 

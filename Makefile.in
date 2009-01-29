@@ -172,6 +172,8 @@ doc: byte doc/api.odocl
 	mv _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: 
+	@echo Generating documentation. This usually lasts 15+ minutes.
+	@echo You should go and take some coffee.
 	cp src/main/threads/batteries.mllib doc/api.odocl
 
 examples:
