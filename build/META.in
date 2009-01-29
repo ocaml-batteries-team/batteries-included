@@ -117,6 +117,6 @@ package "bin_prot" (
 package "syntax" (
 	version     = "@VERSION@"
 	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
-	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_strings.syntax"
+	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_strings.syntax,batteries.pa_comprehension.syntax"
 	requires(boilerplate) = "type-conv.syntax,bin_prot.syntax"
 )
