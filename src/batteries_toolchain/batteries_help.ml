@@ -50,7 +50,7 @@ type kinds =
 
 (** Parse a category name into a topic.*)
 let kind_of_name = function
-  | "topic"    -> Some Topics
+  | "topic" | "language"   -> Some Topics
   | "values"   -> Some Values
   | "types"    -> Some Types
   | "modules"  -> Some Modules
@@ -180,6 +180,7 @@ let get_table =
 	  and completions = Hashtbl.create 256 in
 	  Enum.iter
 	    (fun line -> 
+	       try
 	       Scanf.sscanf line "%s %s " 
 		 (fun category index ->
 		    match kind_of_name category with
@@ -195,6 +196,7 @@ let get_table =
 				~completions
 		      | _ -> ()
 		 )
+	       with _ -> () (*At this point, ignore syntax errors, they're probably comments.*)
 	    ) 
 	    (File.lines_of root_file);
 	    let result = {suggestions = suggestions; completions = table_of_tableref completions} in
