@@ -617,11 +617,17 @@ end
 module Misc =
 struct
   let after_rules () =
+    (*Documentation*)
     flag ["ocaml"; "link"; "byte";   "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"; A "odoc_info.cma"]);
     flag ["ocaml"; "link"; "native"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"(*; A "odoc_info.cmxa"*)]);
     flag ["ocaml"; "docfile";        "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
-    flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"])    
+    flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
+
+    flag ["ocaml"; "link"; "byte"; "use_sexplib"]     & S[A"-package"; A "sexplib"];
+    flag ["ocaml"; "link"; "native"; "use_sexplib"]   & S[A"-package"; A "sexplib"];
+    flag ["ocaml"; "compile"; "byte"; "use_sexplib"]  & S[A"-package"; A "sexplib"];
+    flag ["ocaml"; "compile"; "native"; "use_sexplib"]& S[A"-package"; A "sexplib"]
 end
 
 (** Provide a library which is as complete as possible.
