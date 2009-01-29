@@ -1,0 +1,62 @@
+### Starting build.
+# Target: conv.ml.depends, tags: { debug, extension:ml, file:conv.ml, ocaml, ocamldep, quiet, traverse, use_batteries }
+ocamlfind ocamldep -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -modules conv.ml > conv.ml.depends
+# Target: conv.cmo, tags: { byte, compile, debug, extension:ml, file:conv.ml, implem, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlc -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o conv.cmo conv.ml
+# Target: conv.cmx, tags: { compile, debug, extension:ml, file:conv.ml, implem, native, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o conv.cmx conv.ml
+# Target: now.ml.depends, tags: { debug, extension:ml, file:now.ml, ocaml, ocamldep, quiet, traverse, use_batteries }
+ocamlfind ocamldep -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -modules now.ml > now.ml.depends
+# Target: now.cmo, tags: { byte, compile, debug, extension:ml, file:now.ml, implem, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlc -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o now.cmo now.ml
+# Target: now.cmx, tags: { compile, debug, extension:ml, file:now.ml, implem, native, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o now.cmx now.ml
+# Target: cat.ml.depends, tags: { debug, extension:ml, file:cat.ml, ocaml, ocamldep, quiet, traverse, use_batteries }
+ocamlfind ocamldep -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -modules cat.ml > cat.ml.depends
+# Target: cat.cmo, tags: { byte, compile, debug, extension:ml, file:cat.ml, implem, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlc -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o cat.cmo cat.ml
+# Target: cat.cmx, tags: { compile, debug, extension:ml, file:cat.ml, implem, native, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o cat.cmx cat.ml
+# Target: cat2.ml.depends, tags: { debug, extension:ml, file:cat2.ml, ocaml, ocamldep, quiet, traverse, use_batteries }
+ocamlfind ocamldep -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -modules cat2.ml > cat2.ml.depends
+# Target: cat2.cmo, tags: { byte, compile, debug, extension:ml, file:cat2.ml, implem, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlc -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o cat2.cmo cat2.ml
+# Target: cat2.cmx, tags: { compile, debug, extension:ml, file:cat2.ml, implem, native, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o cat2.cmx cat2.ml
+# Target: shuffle.ml.depends, tags: { debug, extension:ml, file:shuffle.ml, ocaml, ocamldep, quiet, traverse, use_batteries }
+ocamlfind ocamldep -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -modules shuffle.ml > shuffle.ml.depends
+# Target: shuffle.cmo, tags: { byte, compile, debug, extension:ml, file:shuffle.ml, implem, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlc -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o shuffle.cmo shuffle.ml
+# Target: shuffle.cmx, tags: { compile, debug, extension:ml, file:shuffle.ml, implem, native, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o shuffle.cmx shuffle.ml
+# Target: shuffle2.ml.depends, tags: { debug, extension:ml, file:shuffle2.ml, ocaml, ocamldep, quiet, traverse, use_batteries }
+ocamlfind ocamldep -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -modules shuffle2.ml > shuffle2.ml.depends
+# Target: shuffle2.cmo, tags: { byte, compile, debug, extension:ml, file:shuffle2.ml, implem, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlc -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o shuffle2.cmo shuffle2.ml
+# Target: shuffle2.cmx, tags: { compile, debug, extension:ml, file:shuffle2.ml, implem, native, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o shuffle2.cmx shuffle2.ml
+# Target: gzip.ml.depends, tags: { debug, extension:ml, file:gzip.ml, ocaml, ocamldep, quiet, traverse, use_batteries }
+ocamlfind ocamldep -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -modules gzip.ml > gzip.ml.depends
+# Target: gzip.cmo, tags: { byte, compile, debug, extension:ml, file:gzip.ml, implem, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlc -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o gzip.cmo gzip.ml
+# Target: gzip.cmx, tags: { compile, debug, extension:ml, file:gzip.ml, implem, native, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o gzip.cmx gzip.ml
+# Target: gunzip.ml.depends, tags: { debug, extension:ml, file:gunzip.ml, ocaml, ocamldep, quiet, traverse, use_batteries }
+ocamlfind ocamldep -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -modules gunzip.ml > gunzip.ml.depends
+# Target: gunzip.cmo, tags: { byte, compile, debug, extension:ml, file:gunzip.ml, implem, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlc -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o gunzip.cmo gunzip.ml
+# Target: gunzip.cmx, tags: { compile, debug, extension:ml, file:gunzip.ml, implem, native, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o gunzip.cmx gunzip.ml
+# Target: browser.ml.depends, tags: { debug, extension:ml, file:browser.ml, ocaml, ocamldep, quiet, traverse, use_batteries }
+ocamlfind ocamldep -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -modules browser.ml > browser.ml.depends
+# Target: browser.cmo, tags: { byte, compile, debug, extension:ml, file:browser.ml, implem, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlc -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o browser.cmo browser.ml
+# Target: browser.cmx, tags: { compile, debug, extension:ml, file:browser.ml, implem, native, ocaml, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -c -g -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o -o browser.cmx browser.ml
+# Target: conv.byte, tags: { byte, debug, dont_link_with, extension:byte, file:conv.byte, link, ocaml, program, quiet, traverse, use_batteries }
+ocamlfind ocamlc -g -linkpkg -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o conv.cmo -o conv.byte
+# Target: conv.native, tags: { debug, dont_link_with, extension:native, file:conv.native, link, native, ocaml, program, quiet, traverse, use_batteries }
+ocamlfind ocamlopt -g -linkpkg -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o conv.cmx -o conv.native
++ ocamlfind ocamlopt -g -linkpkg -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_comprehension.syntax,batteries.pa_strings.syntax -package batteries -syntax camlp4o conv.cmx -o conv.native
+Cannot find file /home/yoric/usr/local/godi/lib/ocaml/site-lib/batteries_nothreads/batteries.cmxa
+Command exited with code 2.
