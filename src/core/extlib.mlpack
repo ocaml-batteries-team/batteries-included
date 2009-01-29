@@ -15,7 +15,6 @@ PMap
 PSet
 MultiPMap
 Option
-OptionLabels
 ExtBuffer
 ExtString
 ExtUTF8
@@ -45,7 +44,6 @@ ExtRandom
 ExtNum
 ExtBool
 File
-LazyListLabels
 OptParse
 ParserCo
 Result

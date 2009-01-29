@@ -1,3 +1,5 @@
+(*TODO: What is this module? Is it meant for public use?*)
+
 type t
 (**
    [Substring.t] is the type of substrings of a basestring, an efficient 

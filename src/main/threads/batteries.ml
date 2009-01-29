@@ -209,7 +209,7 @@ module  Queue    = Extlib.ExtQueue.Queue
 module  Ref      = Extlib.Ref
 module  Stack    = Extlib.ExtStack.Stack
 module  Stream   = Extlib.ExtStream.Stream
-         
+module  Vect     = Extlib.Vect
   
 (**
    {4 Persistent data containers}
@@ -386,4 +386,5 @@ struct
   module UCharParser = Extlib.UCharParser
   module ParserCo    = Extlib.ParserCo
   module Path        = Extlib.Path
+  module Result      = Extlib.Result
 end
