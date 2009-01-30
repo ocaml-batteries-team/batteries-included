@@ -92,6 +92,7 @@ type stat = Gc.stat =
 *)
 
 type control = Gc.control 
+(*TODO: workaround sexplib + ocamldoc bug
 =
   { mutable minor_heap_size : int;
     (** The size (in words) of the minor heap.  Changing
@@ -150,7 +151,7 @@ type control = Gc.control
         Default: 0. *)
 #endif
 
-}
+}*)
 (** The GC parameters are given as a [control] record.  Note that
     these parameters can also be initialised by setting the
     OCAMLRUNPARAM environment variable.  See the documentation of

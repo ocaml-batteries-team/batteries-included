@@ -627,7 +627,8 @@ struct
     flag ["ocaml"; "link";    "use_sexplib"]  & S[A"-package"; A "sexplib"];
     flag ["ocaml"; "compile"; "use_sexplib"]  & S[A"-package"; A "sexplib"];
     flag ["ocaml"; "dep";     "use_sexplib"]  & S[A"-package"; A "sexplib"];
-    flag ["ocaml"; "doc";     "use_sexplib"]  & S[A"-predicates"; A "!preprocessor"; A "-package"; A "sexplib"]
+    flag ["ocaml"; "doc";     "use_sexplib"]  & S[A"-I"; A"/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/sexplib"]
+(*    flag ["ocaml"; "doc";     "use_sexplib"]  & S[A"-predicates"; A "!preprocessor"; A "-package"; A "sexplib"]*)
 
 end
 
