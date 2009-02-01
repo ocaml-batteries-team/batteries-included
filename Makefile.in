@@ -167,7 +167,7 @@ uninstall:
 	\rm -Rf $(DOCDIR) &&\
 	ocamlfind remove $(DESTDIR_FLAGS) batteries &&\
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads &&\
-	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads &&\
+	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads
 
 doc: byte doc/api.odocl
 	rm -Rf doc/batteries/html/api
