@@ -85,7 +85,10 @@ type ustring
 (** Type of strings used. In case of {!Path.OfRope} it is {!Rope.t} and in {!Path.OfString} module it is  [string].
  *)
 
-(** Convenience operator for lifting primitive strings to [ustring] type. *)
+(** Convenience operator for lifting primitive strings to [ustring] type. 
+
+    @documents Future.Path.OperatorLift
+*)
 module OperatorLift : sig
 
  val (!!) : string -> ustring 
@@ -141,10 +144,12 @@ val append : t -> ustring -> t
 val concat : t -> t -> t
 (** Alternative name for {!Operators.(//@)} *)
 
-module Operators : sig
+(**
+   Infix operators for path construction. They are in separate module, so one can [open Path.Operators] to use them.
 
- (** Infix operators for path construction. They are in separate module, so one can [open Path.Operators] to use them.
-  *)
+   @documents Future.Path.Operators
+*)
+module Operators : sig
 
  val (/:) : t -> ustring -> t
  (** [path/:name] is a path of [name] located in a directory [path]. For example: 
@@ -307,10 +312,16 @@ Example: [map_ext (function Some _ | None -> Some "png") (["foo"]/:"bar.jpeg") =
 end
 
 module Make : functor (S : StringType) -> PathType with type ustring = S.t
-(** Constructs path handling module for string-like type and its operations given in [S].*)
+(** Constructs path handling module for string-like type and its operations given in [S].
+
+    @documents Future.Path.Make
+*)
 
 module OfString : PathType with type ustring = string
-(** This implementation can be used with UTF-8, but encoding of used strings is not verified.*)
+(** This implementation can be used with UTF-8, but encoding of used strings is not verified.
+
+    @documents Future.Path.OfString
+*)
 
 (*
 module OfRope : PathType with type ustring = Rope.t

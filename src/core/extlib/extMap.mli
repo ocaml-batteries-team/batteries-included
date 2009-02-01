@@ -30,6 +30,8 @@
 
     @author Xavier Leroy (Base module)
     @author David Teller
+
+    @documents Map
 *)
 module Map:
 sig
@@ -176,5 +178,8 @@ module type S =
 
 module Make (Ord : OrderedType) : S with type key = Ord.t
 (** Functor building an implementation of the map structure
-   given a totally ordered type. *)
+   given a totally ordered type. 
+
+    @documents Map.Make
+*)
 end

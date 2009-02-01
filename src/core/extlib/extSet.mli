@@ -30,6 +30,8 @@
 
     @author Xavier Leroy (Base module)
     @author David Teller
+
+    @documents Set
 *)
 module Set:
 sig
@@ -224,5 +226,8 @@ module type S =
 
 module Make (Ord : OrderedType) : S with type elt = Ord.t
 (** Functor building an implementation of the set structure
-   given a totally ordered type. *)
+   given a totally ordered type. 
+
+    @documents Set.Make
+*)
 end

@@ -209,7 +209,10 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
        
     *)
       
-    (** Operations on {!Hashtbl} without exceptions.*)
+    (** Operations on {!Hashtbl} without exceptions.
+
+	@documents Hashtbl.ExceptionLess
+    *)
 module ExceptionLess :
 sig
   val find : ('a, 'b) t -> 'a -> 'b option
@@ -222,6 +225,8 @@ end
 	there to improve readability and safety and to let you change the
 	order of arguments to functions. In every case, the behavior of the
 	function is identical to that of the corresponding function of {!Hashtbl}.
+
+       @documents Hashtbl.Labels
     *)
 module Labels :
 sig
@@ -345,7 +350,10 @@ module Make (H : HashedType) : S with type key = H.t
       specified in the functor argument [H] instead of generic
       equality and hashing. *)
 
-(** Capabilities for hashtables. *)
+(** Capabilities for hashtables. 
+
+    @documents Hashtbl.Cap
+*)
 module Cap :
 sig
 
