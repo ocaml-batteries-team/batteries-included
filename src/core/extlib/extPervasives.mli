@@ -916,12 +916,16 @@ val undefined : ?message:string -> 'a -> 'b
 val ( |> ) : 'a -> ('a -> 'b) -> 'b
 (** Function application. [x |> f] is equivalent to [f x]. 
 
-    This operator is commonly used to write a function composition
-    by order of evaluation means rather than by inverse order.
-    For instance, [g (f x)] means "apply [f] to [x], then apply
-    [g] to the result." In some circumstances, it may be more
-    understandable to write this as [x |> f |> g], or
-    "starting from [x], apply [f], then apply [g]."
+    This operator is commonly used to write a function composition by
+    order of evaluation (the order used in object-oriented
+    programming) rather than by inverse order (the order typically
+    used in functional programming).  
+
+    For instance, [g (f x)] means "apply [f] to [x], then apply [g] to
+    the result." The corresponding notation in most object-oriented
+    programming languages would be somewhere along the lines of [x.f.g
+    ()], or "starting from [x], apply [f], then apply [g]." In OCaml,
+    operator ( |> ) this latest notation maps to [x |> f |> g], or
     
     This operator may also be useful for composing sequences of
     function calls without too many parenthesis. *)
@@ -930,7 +934,10 @@ val ( **>  ) : ('a -> 'b) -> 'a -> 'b
   (** Function application. [f **> x] is equivalent to [f x]. 
       
       This operators may be useful for composing sequences of
-      function calls without too many parenthesis.  *)
+      function calls without too many parenthesis.
+
+      {b Note} The name of this operator is not written in stone.
+      It is bound to change soon.*)
 
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
 (** Function composition. [f |- g] is [fun x -> g (f x)]. 
