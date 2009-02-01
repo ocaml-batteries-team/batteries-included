@@ -1,3 +1,13 @@
+2009-02-01  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* doc/batteries/html/about.html: changed link to image
+
+	* src/core/extlib/extSet.mli: @documents added
+
+	* src/core/extlib/extMap.mli: @documents added
+
+	* src/core/extlib/extHashtbl.mli: @documents added
+
 2009-01-30  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* Makefile.in: [install] now does [chmod] on [ocaml], [ocamlc], ...
