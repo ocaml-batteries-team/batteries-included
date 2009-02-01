@@ -34,6 +34,7 @@ datadir= @datadir@
 #   make DOCDIR="/some/where/"
 # Typical value: "/usr/share/doc/ocaml-batteries-included" (Debian)
 # Typical value: "/usr/local/godi/doc/godi-batteries/doc/batteries" (GODI)
+
 ifeq ($(HAS_GODI),yes)
 DOCDIR = $(shell ocamlfind printconf destdir)/../../../doc/godi-batteries
 else
@@ -58,7 +59,7 @@ OBFLAGS =
 
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
-DESTDIR = 
+DESTDIR = @DESTDIR@
 
 ifeq ($(DESTDIR),)
 DESTDIR_FLAGS =
@@ -69,12 +70,13 @@ install-mkdir:
 	test -d $(DESTDIR) || mkdir -p $(DESTDIR)
 endif
 
-DEST_TOP = 
-ifeq ($(DESTDIR),)
-DEST_TOP = $(shell @OCAMLFIND@ query @OCAMLPKG_camomile@ )/../batteries/top.ml
-else
-DEST_TOP = $(DESTDIR)/batteries/top.ml
-endif
+#DEST_TOP = 
+#ifeq ($(DESTDIR),)
+#ocamlfind install batteries
+#DEST_TOP = $(shell @OCAMLFIND@ query @OCAMLPKG_camomile@ )/../batteries/top.ml
+#else
+#DEST_TOP = $(DESTDIR)/batteries/top.ml
+#endif
 
 
 OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
@@ -126,6 +128,7 @@ top:
 		src/batteries_toolchain/batteries_help.cmo
 
 install:
+	chmod ugo+rx src/batteries_toolchain/ocaml* && \
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
 		build/META \
 		_build/src/core/extlib/IO.cmi \

@@ -59,6 +59,17 @@ else
 fi
 ])
 
+dnl as above, but without warning
+dnl accordingly
+AC_DEFUN(AC_CHECK_OCAML_PKG_SILENTLY,
+[dnl
+AC_MSG_CHECKING(findlib package $1)
+if tmp=`$OCAMLFIND query $1` 2>/dev/null ; then
+   AC_MSG_RESULT(found)
+   [$2]=$tmp
+   OCAMLFIND_DEPS="$OCAMLFIND_DEPS $tmp"
+fi
+])
 # check for needed Findlib packages
 AC_CHECK_OCAML_PKG(camomile, OCAMLPKG_camomile)
 if test -z "$OCAMLPKG_camomile" ; then
@@ -130,12 +141,29 @@ else
 fi
 DOCDIR="$DEFAULT_DOCDIR"
 
+AC_MSG_NOTICE([Testing install destination])
+AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
+if test -z "$OCAMLPKG_batteries"; then
+   touch META
+   $OCAMLFIND install batteries META
+   AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
+   DESTDIR=`dirname $OCAMLPKG_batteries`
+   $OCAMLFIND remove batteries &> /dev/null
+   rm META
+else
+   AC_MSG_WARN([Batteries is already installed])
+   AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
+   DESTDIR=`dirname $OCAMLPKG_batteries`
+fi
+AC_MSG_NOTICE([Default destination is $DESTDIR])
+AC_SUBST(DESTDIR)
+
 AC_ARG_WITH(
 	docroot,
 	[  --with-docroot=PATH     set documentation root
-	                           default: "$PWD/doc/batteries"],
+	                           default: "$DESTDIR/doc/batteries"],
 	DOCDIR=$withval,
-	DOCDIR=$DOCDIR)
+	DOCDIR=$DESTDIR/doc/batteries)
 if test "$DOCDIR" = "yes" ; then
    AC_MSG_ERROR([--with-docroot requires an argument])
    exit 1
@@ -143,12 +171,15 @@ fi
 AC_MSG_NOTICE([documentation root directory: $DOCDIR])
 AC_SUBST(DOCDIR)
 
+
+
 # fill output templates
 AC_CONFIG_FILES([
  Makefile
  build/META
  build/threaded/META
  build/nothreads/META
+ src/batteries_toolchain/ocaml
 ])
 AC_OUTPUT
 

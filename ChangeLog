@@ -1,3 +1,11 @@
+2009-01-30  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* Makefile.in: [install] now does [chmod] on [ocaml], [ocamlc], ...
+	
+	* configure.ac: added destination directory test
+
+	* src/batteries_toolchain/ocaml.in: created
+
 2009-01-29  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* myocamlbuild.ml: [use_sexplib] now available also for target [doc]

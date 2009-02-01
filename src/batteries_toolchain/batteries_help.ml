@@ -173,7 +173,7 @@ let get_table =
   in fun kind ->
     try Hashtbl.find tables kind
     with Not_found ->
-      let root_dir   = Filename.concat (Batteries_config.documentation_root) "doc/batteries"  in
+      let root_dir   = Batteries_config.documentation_root           in
       let root_file  = Filename.concat root_dir "documentation.idex" in
 	try
 	  let suggestions = Hashtbl.create 256
