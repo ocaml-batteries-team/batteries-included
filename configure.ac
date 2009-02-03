@@ -141,6 +141,15 @@ else
 fi
 DOCDIR="$DEFAULT_DOCDIR"
 
+#Should documentation be built?
+AC_ARG_WITH(
+	doc,
+	[ --with-doc                build documentation (yes by default)],
+        BUILD_DOC=yes,
+        BUILD_DOC=no)
+AC_SUBST(BUILD_DOC)
+
+
 AC_MSG_NOTICE([Testing install destination])
 AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
 if test -z "$OCAMLPKG_batteries"; then

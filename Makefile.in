@@ -29,6 +29,8 @@ prefix = @prefix@
 datarootdir= @datarootdir@
 datadir= @datadir@
 
+BUILD_DOC=@builddoc@
+
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
 #   make DOCDIR="/some/where/"
@@ -100,9 +102,13 @@ config.ml: Makefile
 #Useful for testing
 reinstall: byte opt top syntax uninstall install
 rebyte: byte top syntax uninstall install
+ifeq ($(BUILD_DOC),no)
 install-doc: doc
 	install -d $(DOCDIR) &&\
 	cp -R doc/batteries/* $(DOCDIR)
+else
+install-doc:
+endif
 
 byte: config.ml
 	$(OCAMLBUILD) src/main/threads/batteries.cma
