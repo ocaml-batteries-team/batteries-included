@@ -44,5 +44,5 @@ module Native_int = struct
   let ( -- )  x y = Enum.seq x (add one) ((>=) y)
   let ( --- ) x y = 
     if x <= y then x -- y 
-    else Enum.seq y (sub one) ((>=) x) 
+    else Enum.seq x pred ((<=) y) 
 end

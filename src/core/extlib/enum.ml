@@ -1,7 +1,7 @@
 (* 
  * Enum - Enumeration over abstract collection of elements.
  * Copyright (C) 2003 Nicolas Cannasse
- *               2008 David Teller (contributor)
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -651,8 +651,8 @@ let break test e = span (fun x -> not (test x)) e
 let ( -- ) x y = range x ~until:y
 
 let ( --- ) x y = 
-  if x < y then x -- y
-  else          seq y ((+) (-1)) ( (>=) x )
+  if x <= y then x -- y
+  else          seq x ((+) (-1)) ( (<=) y )
 
 let ( ~~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
 
