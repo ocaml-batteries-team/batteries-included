@@ -277,7 +277,8 @@ val read_uall : input -> Rope.t
 
 val pipe : unit -> input * unit output
 (** Create a pipe between an input and an ouput. Data written from
-    the output can be read from the input. *)
+    the output can be read from the input. 
+*)
 
 val copy : ?buffer:int -> input -> _ output -> unit
 (** Read everything from an input and copy it to an output.
@@ -290,9 +291,17 @@ val pos_in : input -> input * (unit -> int)
   (** Create an input that provide a count function of the number of bytes
       read from it. *)
 
+val progress_in : input -> (unit -> unit) -> input 
+  (** [progress_in inp f] create an input that calls [f ()]
+      whenever some content is succesfully read from it.*)
+
 val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
     written through it. *)
+
+val progress_out : 'a output -> (unit -> unit) -> unit output
+  (** [progress_out out f] create an output that calls [f ()]
+      whenever some content is succesfully written to it.*)
 
 external cast_output : 'a output -> unit output = "%identity"
 (** You can safely transform any output to an unit output in a safe way 

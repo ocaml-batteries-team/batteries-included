@@ -65,6 +65,19 @@ let pos_out o =
        ~underlying:[o]
      , fun () -> !p)
 
+let progress_in inp f =
+  wrap_in ~read: (fun ()    -> let c = read inp in f(); c)
+          ~input:(fun s i l -> let r = input inp s i l in f(); r)
+          ~close:ignore
+          ~underlying:[inp]
+
+let progress_out out f =
+  wrap_out ~write:(fun c -> write out c; f())
+    ~output:(fun s i l -> let r = output out s i l in f(); r)
+    ~close:ignore
+    ~flush:(fun () -> flush out)
+    ~underlying:[out]
+
 (**
    {6 Support for enumerations}
 *)
