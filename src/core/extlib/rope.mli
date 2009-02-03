@@ -327,6 +327,11 @@ val filter_map : (UChar.t -> UChar.t option) -> t -> t
     [f ai = Some bi] (when [f] returns [None], the corresponding element of
     [l] is discarded). *)
 
+val filter : (UChar.t -> bool) -> t -> t
+  (** [filter f s] returns a copy of rope [s] in which only
+      characters [c] such that [f c = true] remain.*)
+
+
 
 (** {6 Finding}*)
 

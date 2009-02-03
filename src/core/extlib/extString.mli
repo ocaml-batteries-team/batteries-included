@@ -136,7 +136,18 @@ val fold_right : (char -> 'a -> 'a) -> string -> 'a -> 'a
   (** [fold_right f s b] is
       [f s.[0] (f s.[1] (... (f s.[n-1] b) ...))] *)
 
+val filter : (char -> bool) -> string -> string
+  (** [filter f s] returns a copy of string [s] in which only
+      characters [c] such that [f c = true] remain.*)
+
 val filter_map : (char -> char option) -> string -> string
+  (** [filter_map f s] calls [(f a0) (f a1).... (f an)] where [a0..an] are
+      the characters of [s]. It returns the string of characters [ci] such as
+      [f ai = Some ci] (when [f] returns [None], the corresponding element of
+      [s] is discarded). *)
+
+
+
 
 val iter : (char -> unit) -> string -> unit
 (** [String.iter f s] applies function [f] in turn to all
@@ -531,7 +542,17 @@ val fold_right : (char -> 'a -> 'a) -> [> `Read] t -> 'a -> 'a
   (** [fold_right f s b] is
       [f s.[0] (f s.[1] (... (f s.[n-1] b) ...))] *)
 
-val filter_map : (char -> char option) -> string -> string
+
+val filter : (char -> bool) -> [> `Read] t -> _ t
+  (** [filter f s] returns a copy of string [s] in which only
+      characters [c] such that [f c = true] remain.*)
+
+val filter_map : (char -> char option) -> [> `Read] t -> _ t
+  (** [filter_map f s] calls [(f a0) (f a1).... (f an)] where [a0..an] are
+      the characters of [s]. It returns the string of characters [ci] such as
+      [f ai = Some ci] (when [f] returns [None], the corresponding element of
+      [s] is discarded). *)
+
 
 val iter : (char -> unit) -> [> `Read] t -> unit
 (** [String.iter f s] applies function [f] in turn to all

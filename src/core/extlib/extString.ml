@@ -258,6 +258,15 @@ let filter_map f s =
     done;
     Buffer.contents sc
 
+let filter f s =
+  let len = length s          in
+  let sc  = Buffer.create len in
+    for i = 0 to len - 1 do
+      let c = unsafe_get s i in
+	if f c then Buffer.add_char sc c
+    done;
+    Buffer.contents sc
+
 (* fold_left and fold_right by Eric C. Cooper *)
 let fold_left f init str =
   let n = String.length str in
@@ -433,6 +442,7 @@ let right         = right
 let head          = head
 let tail          = tail
 let filter_map    = filter_map
+let filter        = filter
 let of_list       = of_list
 let to_list       = to_list
 

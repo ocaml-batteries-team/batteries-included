@@ -528,6 +528,7 @@ let map f r = bulk_map (fun s -> UTF8.map f s) r
 let bulk_filter_map f r = bulk_fold (fun acc s -> match f s with None -> acc | Some r -> append_us acc r) Empty r
 let filter_map f r = bulk_map (UTF8.filter_map f) r
 
+let filter f r = bulk_map (UTF8.filter f) r
 
 let left r len = sub r 0 len
 let right r len = let rlen = length r in sub r (rlen - len) len

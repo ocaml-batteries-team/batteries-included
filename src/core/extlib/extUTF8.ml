@@ -258,6 +258,11 @@ module UTF8 = struct
     iter (fun c -> match f c with None -> () | Some c -> Buf.add_char b c) us;
     Buf.contents b
 
+  let filter f us =
+    let b = Buf.create (length us) in
+    iter (fun c -> if f c then Buf.add_char b c) us;
+    Buf.contents b
+
   let index us ch =
     let rec aux ci bi =
       if Byte.out_of_range us bi then raise Not_found;
