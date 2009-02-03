@@ -129,3 +129,15 @@ let with_temporary_out ?mode ?perm ?prefix ?suffix f =
       (fun (file, name) -> f file name)
       (file, name)
 
+
+(**
+   {6 File manipulation}
+*)
+
+open Unix
+let size_of s = (stat s).st_size
+let size_of_big s = (LargeFile.stat s).LargeFile.st_size
+
+
+let chmod = Unix.chmod
+let set_permissions = chmod

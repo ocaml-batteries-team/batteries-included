@@ -28,10 +28,31 @@
 open InnerIO
 
 (** {6 Utilities} *)
-val lines_of : string -> string Enum.t
 
-(** {6 File permissions} *)
+val lines_of : string -> string Enum.t
+(** [line_of name] reads the contents of file [name] as an enumeration of lines.
+    The file is automatically closed once the last line has been reached or the
+    enumeration is closed or garbage-collected. *)
+
+val size_of: string -> int
+(** [size_of name] returns the size of file [name] in bytes.*)
+
+val size_of_big: string -> Int64.t
+(** [size_of_big name] returns the size of file [name] in bytes, as a 64-bit integer.
+
+    This function is provided as the size of a file larger than 1 Gb cannot
+    be represented with an [int] on a 32-bit machine.*)
+
+(** {6 File permissions} 
+
+    File permissions are used when creating a file to allow controlling which users
+    may read, write or open that file. To use a permission, create a value of type
+    {!permission} and pass it as argument to {!open_in}, {!open_out}, {!with_file_in} or
+    {!with_file_out}.
+*)
+
 type permission
+(** The list of operations which are permitted on a file.*)
 
 val default_permission: permission
 (**Default permissions.*)
@@ -78,6 +99,12 @@ val unix_perm : int -> permission
 (**Create a permission from a Unix-style octal integer.
    See your favorite Unix documentation on [chmod]
    for more details.*)
+
+val set_permissions: string -> permission -> unit
+(** Set the permissions on a file.*)
+
+val chmod: string -> permission -> unit
+(** As {!set_permissions}*)
 
 (** {6 Opening a file for reading} *)
 
