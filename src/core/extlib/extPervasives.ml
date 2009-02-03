@@ -104,6 +104,7 @@ module Pervasives = struct
   let print             = print
   let get               = get
   let iter              = iter
+  let scanl             = scanl
 
   (** {6 Concurrency}*)
 

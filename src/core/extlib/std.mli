@@ -81,6 +81,16 @@ val args : unit -> string Enum.t
 
       [args ()] is given by the elements of [Sys.argv], minus the first element.*)
 
+(**/**)
+val invisible_args : int ref
+(** The number of arguments which must never be returned by [args]
+
+    Typically, [invisible_args] is [1], to drop the name of the executable. However,
+    in some circumstances, it may be useful to pretend that some arguments need not
+    be parsed.
+*)
+(**/**)
+
 val exe  : string
   (** The name of the current executable.
 

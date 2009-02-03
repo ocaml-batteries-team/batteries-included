@@ -1010,6 +1010,17 @@ val args : unit -> string Enum.t
 
       [args ()] is given by the elements of [Sys.argv], minus the first element.*)
 
+(**/**)
+val invisible_args : int ref
+(** The number of arguments which must never be returned by [args]
+
+    Typically, [invisible_args] is [1], to drop the name of the executable. However,
+    in some circumstances, it may be useful to pretend that some arguments need not
+    be parsed.
+*)
+(**/**)
+
+
 val exe  : string
   (** The name of the current executable.
 
@@ -1020,17 +1031,31 @@ val exe  : string
    {6 Enumerations}
 
    In OCaml Batteries Included, all data structures are enumerable,
-   which means that they support the following set of operations,
-   transformations, etc. More operations on enumerations are defined
-   in module {!Enum}, including the necessary constructors to make
-   your own structures enumerable.
+   which means that they support a number of standard operations,
+   transformations, etc. The general manner of {i enumerating} the
+   contents of a data structure is to invoke the [enum] function of
+   your data structure.
 
-   For instance, to apply the {!foreach} loop to apply a function [f]
-   to all the consecutive elements of a string [s], you may use
-   [foreach (String.enum s) f]. Or, to visit the elements of that
-   string backwards, use [foreach (String.backwards s) f]. Conversely,
-   to apply a function [f] to all the consecutive elements of a list [l],
-   use [foreach (List.enum l) f], etc.
+   For instance, you may use the {!foreach} loop to apply a function
+   [f] to all the consecutive elements of a string [s]. For this
+   purpose, you may write either [foreach (String.enum s) f] or [open
+   String in foreach (enum s) f]. Either possibility states that you
+   are enumerating through a character string [s]. Should you prefer
+   your enumeration to proceed from the end of the string to the
+   beginning, you may replace {! String.enum} with {!
+   String.backwards}. Therefore, either [foreach (String.backwards s)
+   f] or [open String in foreach (backwards s) f] will apply [f]
+   to all the consecutive elements of string [s], from the last to
+   the first.
+
+   Similarly, you may use {!List.enum} instead of {!String.enum} to
+   visit the elements of a list in the usual order, or
+   {!List.backwards} instead of {!String.backwards} to visit them
+   in the opposite order, or {!Hashtbl.enum} for hash tables, etc.
+
+   More operations on enumerations are defined in module {!Enum},
+   including the necessary constructors to make your own structures
+   enumerable.
 
    The various kinds of loops are detailed further in this documentation.
 *)
@@ -1044,9 +1069,12 @@ val foreach: 'a Enum.t -> ('a -> unit) ->  unit
 
       {b Note} This function is one of the many loops available on
       enumerations.  Other commonly used loops are {!iter} (same usage
-      scenario as [foreach]), {!map} (convert an enumeration to another
-      enumeration) or {!fold} (flatten an enumeration by applying an
-      operation to each element).  *)
+      scenario as [foreach], but with different notations), {!map}
+      (convert an enumeration to another enumeration) or {!fold}
+      (flatten an enumeration by applying an operation to each
+      element).
+
+  *)
 
 (**
    {7 General-purpose loops}
@@ -1130,17 +1158,36 @@ val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
       elements of an enumeration. Therefore, [fold add 0 (1 -- 10)]
       produces result [55].
   *)
-  
+
+val scanl : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b Enum.t
+  (** Functional loop on an enumeration, used to build an enumeration
+      from both an enumeration and an initial value. This function may
+      be seen as a variant of {!fold} which returns not only the final
+      result of {!fold} but the enumeration of all the intermediate
+      results of {!fold}.
+
+      If [f] is a function, [scanl f v e] is applies [f v] to the first
+      element of [e], then, calling [acc_1] the result of this
+      operation, applies [f acc_1] to the second element of [e], then,
+      calling [acc_2] the result of this operation, applies [f acc_2]
+      to the third element of [e]...
+
+      For instance, if [add] is the function [fun x y -> x + y],
+      [scanl add 0] is the function which computes the sum of the
+      elements of an enumeration. Therefore, [scanl add 0 (1 -- 10)]
+      produces result the enumeration with elements [0, 1, 3, 6, 10,
+      15, 21, 28, 36, 45, 55].  *)
+
 val ( /@ ) : 'a Enum.t -> ('a -> 'b) -> 'b Enum.t
 
 val ( @/ ) : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
-(**
-   Mapping operators.
+  (**
+     Mapping operators.
 
-   Thes operators have the same meaning as function {!map} but are
-   sometimes more readable than this function, when chaining
-   several transformations in a row.
-*)
+     These operators have the same meaning as function {!map} but are
+     sometimes more readable than this function, when chaining
+     several transformations in a row.
+  *)
 
 (**
    {7 Other operations on enumerations}

@@ -216,9 +216,11 @@ let uncurry f (x,y) = f x y
 
 let const x _ = x
 
+let invisible_args = ref 1
+
 let args () =
   let e = ExtArray.Array.enum Sys.argv in
-    Enum.junk e;
+    Enum.drop !invisible_args e;
     e
 
 let exe =
