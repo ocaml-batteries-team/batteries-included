@@ -14,6 +14,9 @@ if test -z "$OCAMLC" ; then
    AC_MSG_ERROR([Cannot find ocamlc.])
    exit 1
 fi
+AC_MSG_CHECKING(ocaml version)
+OCAMLVERSION=`$OCAMLC -version`
+AC_MSG_NOTICE($OCAMLVERSION)
 AC_CHECK_PROGS(OCAMLOPT,[ocamlopt.opt ocamlopt],)
 if test -z "$OCAMLOPT" ; then
    AC_MSG_WARN([Cannot find ocamlopt; native code compilation only.])
@@ -30,6 +33,7 @@ AC_SUBST(OCAMLC)
 AC_SUBST(OCAMLOPT)
 AC_SUBST(OCAMLBUILD)
 AC_SUBST(OCAMLDOC)
+AC_SUBST(OCAMLVERION)
 
 OCAMLVERSION=$($OCAMLC -version)
 OCAMLLIBDIR=$($OCAMLC -where)
@@ -180,6 +184,13 @@ fi
 AC_MSG_NOTICE([documentation root directory: $DOCDIR])
 AC_SUBST(DOCDIR)
 
+AC_ARG_WITH(
+	runner,
+	[  --with-runner     build experimental dynamic linking runner
+	   		     deactivated by default],
+	BUILD_RUNNER=$withval,
+	BUILD_RUNNER=no)
+AC_SUBST(BUILD_RUNNER)
 
 
 # fill output templates

@@ -24,6 +24,7 @@ PACKAGE = batteries
 
 OCAMLFIND = @OCAMLFIND@
 HAS_GODI = @HAS_GODI@
+BUILD_RUNNER = @BUILD_RUNNER@
 
 prefix = @prefix@
 datarootdir= @datarootdir@
@@ -116,8 +117,13 @@ byte: config.ml
 	$(OCAMLBUILD) src/main/nothreads/batteries.cma src/main/nothreads/run.byte
 
 opt: config.ml
+ifeq ($(BUILD_RUNNER),yes)
 	$(OCAMLBUILD) src/main/threads/batteries.cmxa src/main/threads/run.native
 	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa src/main/nothreads/run.native
+else
+	$(OCAMLBUILD) src/main/threads/batteries.cmxa
+	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
+end
 
 syntax: config.ml
 	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo \
