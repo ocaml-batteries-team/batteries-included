@@ -1,1 +1,1 @@
-/home/yoric/batteries/doc/batteries/myocamlbuild.ml
+../../myocamlbuild.ml
