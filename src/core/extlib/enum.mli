@@ -63,6 +63,12 @@ val fold : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
   otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
   the elements of [e]. *)
 
+val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
+(** [fold f e] throws No_more_elements e is empty,
+    returns its only element if e is a singleton, 
+  otherwise [f (... (f (f a1 a2) a3)...) aN] where a1..N are
+  the elements of [e]. *)
+
 val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
 (** [fold2] is similar to [fold] but will fold over two enumerations at the
  same time until one of the two enumerations ends. *)
@@ -441,6 +447,10 @@ val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
       the process will append all elements of the other enumeration to
       the result.
   *)
+
+val uniq : 'a t -> 'a t
+  (** [uniq e] returns a duplicate of [e] with repeated values
+      omitted. (similar to unix's [uniq] command) *)
 
 val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
   (** [compare cmp a b] compares enumerations [a] and [b]
