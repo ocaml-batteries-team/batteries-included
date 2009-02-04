@@ -178,6 +178,9 @@ val append : t -> t -> t
       Small ropes are treated specially and can be appended/prepended in
       amortized [O(1)] time. *)
   
+val ( ^^^ ): t -> t -> t
+  (** As {!append}*)
+
 val append_char : UChar.t -> t -> t
   (** [append_char c r] returns a new rope with the [c] character at the end
       in amortized [O(1)] time. *)

@@ -37,13 +37,15 @@ open Return
 
 exception Invalid_rope
  
-(* =begin ignore *)
 type t =
-    Empty
-  (* left, left size, right, right size, height *)
-  | Concat of t * int * t * int * int
-  (* length in unicode characters, string data *)
-  | Leaf of int * UTF8.t
+    Empty                             (**An empty rope*)
+  | Concat of t * int * t * int * int (**[Concat l ls r rs h] is the concatenation of
+                                         ropes [l] and [r], where [ls] is the total 
+					 length of [l], [rs] is the length of [r]
+					 and [h] is the height of the node in the
+					 tree, used for rebalancing. *)
+  | Leaf of int * UTF8.t              (**[Leaf l t] is string [t] with length [l],
+					 measured in number of Unicode characters.*)
  
 type forest_element = { mutable c : t; mutable len : int }
  
@@ -192,6 +194,8 @@ let append l = function
                 bal_if_needed l r)
   | r -> (match l with Empty -> r | _ -> bal_if_needed l r)
  
+let ( ^^^ ) = append
+
 let prepend_char c r = append (Leaf (1,(UTF8.make 1 c))) r
  
 let get r i = 
