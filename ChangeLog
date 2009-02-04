@@ -1,3 +1,7 @@
+2009-02-03  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/enum.ml*: Enum.{uniq, reduce} added
+
 2009-02-01  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* doc/batteries/html/about.html: changed link to image

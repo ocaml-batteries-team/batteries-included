@@ -321,6 +321,16 @@ let fold f init t =
 	with
 		No_more_elements -> !acc
 
+let reduce f t =
+  let acc = ref (t.next()) in (* uncaught No_more_elements if empty *)
+  let rec loop () =
+    acc := f (t.next ()) !acc;
+    loop()
+  in
+  try 
+    loop ()
+  with No_more_elements -> !acc
+
 let exists f t =
   try let rec aux () = f (t.next()) || aux ()
       in aux ()
@@ -658,6 +668,16 @@ let ( ~~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
 
 let ( // ) e f = filter f e
 
+let uniq e = 
+  match peek e with 
+      None -> empty ()
+    | Some first -> 
+	let prev = ref first in
+	let not_last x = (Ref.post prev (fun _ -> x)) != x in
+	let result = filter not_last e in
+	push result first;
+	result
+
 let dup t      = (t, t.clone())
 
 let combine (x,y) = 
@@ -773,11 +793,13 @@ let merge test a b =
       try (!next_a, a.next(), !next_b)
       with No_more_elements -> (*a is exhausted, b probably not*)
 	push b !next_b;
+	push b !next_a;
 	raise No_more_elements
     else
       try (!next_b, !next_a, b.next())
       with No_more_elements -> (*b is exhausted, a probably not*)
 	push a !next_a;
+	push a !next_b;
 	raise No_more_elements
     in next_a := na;
        next_b := nb;
