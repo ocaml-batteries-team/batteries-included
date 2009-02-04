@@ -38,7 +38,7 @@
     In Batteries Included, streams are deprecated in favor of enumerations,
     defined in module {!Enum}.
 
-    @author Zheng Li
+    @author Zheng Li (SDFlow)
     @author David Teller
 
     @documents Stream
