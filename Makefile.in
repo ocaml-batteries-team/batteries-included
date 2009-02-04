@@ -103,11 +103,12 @@ config.ml: Makefile
 reinstall: byte opt top syntax uninstall install
 rebyte: byte top syntax uninstall install
 ifeq ($(BUILD_DOC),no)
+install-doc:
+else
 install-doc: doc
 	install -d $(DOCDIR) &&\
 	cp -R doc/batteries/* $(DOCDIR)
-else
-install-doc:
+
 endif
 
 byte: config.ml
