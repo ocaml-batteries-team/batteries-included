@@ -87,9 +87,9 @@ OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 # issue, to help with trouble-shooting
 
 ifeq ($(HAS_GODI),yes)
-all: byte syntax top install-doc
+all: byte syntax top run install-doc
 else
-all: byte syntax top
+all: byte syntax top run
 endif
 
 config.ml: Makefile
@@ -100,7 +100,7 @@ config.ml: Makefile
 
 
 #Useful for testing
-reinstall: byte opt top syntax uninstall install
+reinstall: byte opt top syntax run uninstall install
 rebyte: byte top syntax uninstall install
 ifeq ($(BUILD_DOC),no)
 install-doc:
@@ -112,12 +112,12 @@ install-doc: doc
 endif
 
 byte: config.ml
-	$(OCAMLBUILD) src/main/threads/batteries.cma
-	$(OCAMLBUILD) src/main/nothreads/batteries.cma
+	$(OCAMLBUILD) src/main/threads/batteries.cma src/main/threads/run.byte
+	$(OCAMLBUILD) src/main/nothreads/batteries.cma src/main/nothreads/run.byte
 
 opt: config.ml
-	$(OCAMLBUILD) src/main/threads/batteries.cmxa
-	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
+	$(OCAMLBUILD) src/main/threads/batteries.cmxa src/main/threads/run.native
+	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa src/main/nothreads/run.native
 
 syntax: config.ml
 	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo \
@@ -131,8 +131,9 @@ syntax: config.ml
                       src/syntax/pa_comprehension/pa_comprehension.cmo
 
 top: 
-	ocamlbuild src/batteries_toolchain/batteries_print.cmo \
+	$(OCAMLBUILD) src/batteries_toolchain/batteries_print.cmo \
 		src/batteries_toolchain/batteries_help.cmo
+
 
 install:
 	chmod ugo+rx src/batteries_toolchain/ocaml* && \
@@ -160,16 +161,19 @@ install:
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
 		build/threaded/META \
 		_build/src/main/threads/batteries.cmi \
+		_build/src/main/threads/run.byte \
 		-optional _build/src/main/threads/batteries.cma \
 			_build/src/main/threads/batteries.cmxa  \
-			_build/src/main/threads/batteries.a
+			_build/src/main/threads/batteries.a     \
+			_build/src/main/threads/run.native
 	ocamlfind install $(DESTDIR_FLAGS) batteries_nothreads \
 		build/nothreads/META \
 		_build/src/main/nothreads/batteries.cmi \
+		_build/src/main/nothreads/run.byte \
 		-optional _build/src/main/nothreads/batteries.cma \
-			_build/src/main/nothreads/batteries.cmxa \
-			_build/src/main/nothreads/batteries.a
-
+			_build/src/main/nothreads/batteries.cmxa  \
+			_build/src/main/nothreads/batteries.a     \
+			_build/src/main/nothreads/run.native
 uninstall:
 	\rm -Rf $(DOCDIR) &&\
 	ocamlfind remove $(DESTDIR_FLAGS) batteries &&\
