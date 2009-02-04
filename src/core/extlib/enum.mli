@@ -145,6 +145,14 @@ val take : int -> 'a t -> 'a t
 val drop : int -> 'a t -> unit
 (** [drop n e] removes the first [n] element from the enumeration, if any. *)
 
+val skip: int -> 'a t -> 'a t
+(** [skip n e] removes the first [n] element from the enumeration, if any,
+    then returns [e].
+
+    This function has the same behavior as [drop] but is often easier to
+    compose with, e.g., [skip 5 |- take 3] is a new function which skips
+    5 elements and then returns the next 3 elements.*)
+
 val take_while : ('a -> bool) -> 'a t -> 'a t
   (** [take_while f e] produces a new enumeration in which only remain
       the first few elements [x] of [e] such that [f x] *)
@@ -451,7 +459,7 @@ val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
   *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
-  (** [switch test enum] split [enum] into two enums, where the first enum have
+  (** [switch test enum] splits [enum] into two enums, where the first enum have
       all the elements satisfying [test], the second enum is opposite. The
       order of elements in the source enum is preserved. *)
 

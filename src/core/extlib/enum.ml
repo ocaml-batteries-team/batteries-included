@@ -217,7 +217,42 @@ let peek t =
 		push t x;
 		Some x
 
+module MicroList = (*Inlined from ExtList to avoid circular dependencies*)
+struct
+  let enum l =
+    let rec aux lr count =
+      make
+	~next:(fun () ->
+		 match !lr with
+		   | [] -> raise No_more_elements
+		   | h :: t ->
+		       decr count;
+		       lr := t;
+		       h
+	      )
+	~count:(fun () ->
+		  if !count < 0 then count := List.length !lr;
+		  !count
+	       )
+	~clone:(fun () ->
+		  aux (ref !lr) (ref !count)
+	       )
+    in
+      aux (ref l) (ref (-1))
+end
+
 let take n e =
+  let r = ref [] in
+    begin
+      try
+	for i = 1 to n do
+	  r := e.next () :: !r
+	done
+      with No_more_elements -> ()
+    end;
+      MicroList.enum (List.rev !r)
+  
+(*let take n e = (*Er... that looks quite weird.*)
   let remaining = ref n in
   let f () =
     if !remaining >= 0 then
@@ -230,7 +265,7 @@ let take n e =
        ~count:(fun () -> !remaining)
        ~clone:_dummy
   in e.clone <- (fun () -> force e; e.clone ());
-    e
+    e*)
 
 let junk t =
 	try
@@ -576,6 +611,9 @@ let drop n e =
   for i = 1 to n do
     junk e
   done
+
+let skip n e =
+  drop n e; e
 
 let close e =
   e.next <- return_no_more_elements;
