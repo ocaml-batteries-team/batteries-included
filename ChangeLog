@@ -1,3 +1,65 @@
+2009-02-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* Makefile.in: [install] now installs run.byte/run.native
+
+	* src/batteries_toolchain/run.ml: created
+
+	* src/core/extlib_threads/extMutex.mli: Module comments moved up.
+
+	* build/intro.text: alpha 2 -> alpha 3
+
+	* doc/batteries/html/about.html: now using [./batteries_large.png]
+
+	* src/core/extlib/rope.ml*: [( ^^^ )] added
+
+	* src/core/extlib/enum.ml: [MicroList] added
+
+	* src/core/extlib/enum.ml: [take] reimplemented
+
+	* src/core/extlib/enum.ml*: [skip] added
+
+	* src/core/extlib/rope.ml: Documented
+
+	* src/syntax/pa_strings/pa_strings.ml: [r] now uses [Batteries.Rope.compare]
+
+2009-02-03  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPervasives.mli: [invisible_args] added
+
+	* src/core/extlib/std.ml*: [invisible_args] added
+
+	* src/core/extlib/extUTF8.ml*: [filter] added
+
+	* src/core/extlib/rope.ml*: [filter] added
+
+	* src/core/extlib/extString.ml*: [filter] added
+
+	* src/core/extlib/extStream.mli: Author name
+
+	* src/core/extlib/extBig_int.ml: flattened
+
+	* src/core/extlib/extBig_int.ml: [( --- )] now checks if [x <] rather than [x >=], decreases with [pred]
+	
+	* configure.ac: [BUILD_DOC] added
+
+	* Makefile.in: [BUILD_DOC] added
+	
+	* src/core/extlib/enum.ml: [( --- )] now checks if [x <] rather than [x >=]
+
+	* src/core/extlib/Int32.ml: [( --- )] now checks if [x <] rather than [x >=], decreases with [pred]
+
+	* src/core/extlib/Int64.ml: [( --- )] now checks if [x <] rather than [x >=], decreases with [pred]
+
+	* src/core/extlib/Int.ml: [( --- )] now checks if [x <] rather than [x >=], decreases with [pred]
+
+	* src/core/extlib/Nativeint.ml: [( --- )] now checks if [x <] rather than [x >=], decreases with [pred]
+
+	* src/core/extlib/extPervasives.ml*: [scanl] added
+
+	* src/core/extlib/file.mli: more documentation
+
+	* src/core/extlib/file.ml*: [size_of], [size_of_big], [chmod], [set_permissions] added
+
 2009-02-01  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* doc/batteries/html/about.html: changed link to image
