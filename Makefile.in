@@ -101,7 +101,7 @@ config.ml: Makefile
 
 
 #Useful for testing
-reinstall: byte opt top syntax run uninstall install
+reinstall: byte opt top syntax uninstall install
 rebyte: byte top syntax uninstall install
 ifeq ($(BUILD_DOC),no)
 install-doc:
@@ -123,7 +123,7 @@ ifeq ($(BUILD_RUNNER),yes)
 else
 	$(OCAMLBUILD) src/main/threads/batteries.cmxa
 	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
-end
+endif
 
 syntax: config.ml
 	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo \
