@@ -18,13 +18,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+(**
+   Load a number of .cmo/.cma/.cmxs.
+
+   Usage:
+     run.byte a.cmo b.cma c.cmo -- args
+   
+   @author David Teller
+*)
+
 open Batteries;;
 open Standard;;
 
-
-let arg = Sys.argv.(1) in
-  Sys.argv.(0) <- Sys.argv.(1);(*Replace first argument, in case it is used to identify binary.*)
-  incr invisible_args;         (*Hide this first argument from [args ()]*)
-  incr Arg.current;            (*Hide this first argument from [Arg]*)
-  Dynlink.loadfile arg
+Sys.argv.(0) <- Sys.argv.(1);;                       (*Replace first argument, in case it is used to identify binary.*)
+let plugins = Enum.take_while ((<>) "--") (args ());;(*Only keep arguments which appear before "--"*)
+incr invisible_args;;            (*We know we're going to need to ignore at least one argument: "--"*)
+incr Arg.current;;               (*We know we're going to need to ignore at least one argument: "--"*)
+foreach (plugins) **>
+  fun arg ->
+    incr invisible_args;         (*Hide this argument from [args ()]*)
+    incr Arg.current;            (*Hide this argument from [Arg]*)
+    Dynlink.loadfile arg
 
