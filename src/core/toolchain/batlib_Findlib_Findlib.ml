@@ -1,6 +1,6 @@
 (*
  * Batlib_Findlib_Findlib - Importing Findlib module Findlib
- * Copyright (C) 2008 David Teller
+ * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,3 +19,15 @@
  *)
 
 include Findlib
+
+let list_packages ?tab ?descr out =
+  (*Read to a temporary file*)
+  let (file_name, cout) = Filename.open_temp_file "ocaml" "tmp" in
+    list_packages ?tab ?descr cout;
+    close_out cout;
+    (*Extract contents of temporary file *)
+    File.with_file_in file_name (fun inp -> IO.copy inp out);
+    (*Clean-up*)
+    Sys.remove file_name
+
+
