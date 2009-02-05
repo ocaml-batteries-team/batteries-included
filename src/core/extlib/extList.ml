@@ -588,7 +588,13 @@ let of_enum e =
 		r) h e in
 	h.tl
 
-let backwards l = enum (rev l)
+let backwards l = enum (rev l) (*TODO: should we make it more efficient?*)
+(*let backwards l = (*This version only needs one pass but is actually less lazy*)
+  let rec aux acc = function
+    | []   -> acc
+    | h::t -> aux Enum.append (Enum.singleton h) acc
+  in aux l*)
+  
 
 let of_backwards e =
   let rec aux acc = match Enum.get e with
