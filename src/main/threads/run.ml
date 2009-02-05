@@ -30,13 +30,14 @@
 open Batteries;;
 open Standard;;
 
-Sys.argv.(0) <- Sys.argv.(1);;                       (*Replace first argument, in case it is used to identify binary.*)
-let plugins = Enum.take_while ((<>) "--") (args ());;(*Only keep arguments which appear before "--"*)
-incr invisible_args;;            (*We know we're going to need to ignore at least one argument: "--"*)
-incr Arg.current;;               (*We know we're going to need to ignore at least one argument: "--"*)
-foreach (plugins) **>
+Sys.argv.(0) <- Sys.argv.(1);;                                     (*Replace first argument, in case it is used to identify 
+							 	     binary.*)
+let plugins  = List.of_enum (Enum.take_while ((<>) "--") (args ()));;(*Only keep arguments which appear before "--"*)
+let hide_args= List.length plugins + 1;;
+invisible_args := !invisible_args + hide_args;;                    
+Arg.current    := !Arg.current    + hide_args;;
+foreach (List.enum plugins) **>
   fun arg ->
-    incr invisible_args;         (*Hide this argument from [args ()]*)
-    incr Arg.current;            (*Hide this argument from [Arg]*)
+    Printf.eprintf "Launching %S\n"  arg;
     Dynlink.loadfile arg
 
