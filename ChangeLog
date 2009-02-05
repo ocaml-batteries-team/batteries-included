@@ -1,3 +1,17 @@
+2009-02-06  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/main/threads/batteries.ml: [Packages] is now [Libs.Findlib], [Compilers] is now [Libs.Compilers]
+
+2009-02-05  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/main/toolchain/*: exploded into src/libs/*
+	
+	* src/main/threads/run.ml: now handling several plug-ins and arguments
+
+	* src/core/toolchain/builtin_tools.ml*: [`dontlink] removed
+
+	* src/core/toolchain/batlib_Findlib_Findlib.ml*: [list_packages] now accepts an [output]
+
 2009-02-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* Makefile.in: [install] now installs run.byte/run.native

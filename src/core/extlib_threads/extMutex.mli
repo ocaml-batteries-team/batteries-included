@@ -2,7 +2,7 @@
  * ExtMutex - Additional functions for Mutexes
  * Copyright (C) 1996 Xavier Leroy
  *               1996 Damien Doligez
- *               2008 David Teller
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,9 +19,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
-
-module Mutex:
-sig
 
 (** Locks for mutual exclusion.
 
@@ -43,6 +40,8 @@ sig
     @author Damien Doligez (Base module)
     @author David Teller
 *)
+module Mutex:
+sig
 
 type t = Mutex.t
 (** The type of mutexes. *)

@@ -29,11 +29,7 @@
 
 * import PCRE?
 
-* import Zip?
-
 * evaluate/import OcNAE
-
-* import Camlp4?
 
 * import Core? Not right now.
  * Core.Squeue     goes into Concurrency.Threads
