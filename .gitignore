@@ -11,3 +11,4 @@ build/META
 build/threaded/META
 build/nothreads/META
 src/batteries_toolchain/ocaml
+src/batteries_toolchain/ocamlc
