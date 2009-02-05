@@ -34,7 +34,7 @@ module Netdate : sig
 
   (** {7 Note} Several functions of this module are defined with
       respect to a base date called the {i epoch}. While the
-      definition epoch is may be system-dependent, most systems
+      definition of epoch may be system-dependent, most systems
       take as epoch 00:00:00 UTC, January 1, 1970.*)
 
   (**
