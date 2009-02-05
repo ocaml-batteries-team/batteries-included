@@ -1,0 +1,2 @@
+<*>: camlp4o,use_optcomp,pkg_sexplib
+<*.cmx>:for-pack(Libs)

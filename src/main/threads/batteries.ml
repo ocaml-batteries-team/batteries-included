@@ -289,8 +289,8 @@ module CharEncodings = Extlib.CharEncodings
 *)
 
 
-module  Packages = Toolchain.Batlib_Findlib_Findlib
-module  Compilers= Toolchain.Builtin_tools
+module  Packages = Libs.ExtFindlib.Findlib
+module  Compilers= Libs.Compilers
 
 (**{4 Language internals}
 
@@ -344,7 +344,7 @@ module  Format = Batlib_Baselib_Format
 module  Printf = Extlib.ExtPrintf.Printf
 (* module  PCRE (*placeholder*)*)
 module  Scanf  = Batlib_Baselib_Scanf
-module  SExpr  = Toolchain.Batlib_Sexp_Conv
+module  SExpr  = Libs.ExtSexp_Conv.Sexp_conv
 
 
 (**{3 Operations on the system}

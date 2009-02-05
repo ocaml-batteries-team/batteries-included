@@ -3,3 +3,6 @@ GZip
 InnerGZip
 ExtNetchannels
 ExtNetdate
+ExtFindlib
+ExtSexp_Conv
+Compilers
