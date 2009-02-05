@@ -168,13 +168,69 @@ struct
 
 end
 
+
+(**
+   {1 Using Batteries as a dynamically-linked library}
+
+   Due to the model of OCaml, to do this, we actually invert the usual dynamic linking
+   mechanism: Batteries is used as a main program (run.byte/run.native), while the
+   program compiled by the user is actually compiled to a dynamically-loaded .cma/.cmxs.
+*)
+module Dynamic = struct
+  let before_options () = ()
+  let after_rules () =
+    begin
+      rule ".cma to .dynml (no threads)"
+	~prod:"%.dyn.ml"
+	~dep:"%.cma"
+	begin fun env build -> 
+	  let dest = env "%.dyn.ml"
+	  and cma  = env "%.cma" in
+	  let contents = Printf.sprintf "%s%S%s"
+"(*Locate Batteries loader*)
+Findlib.init ();;
+let binary = Findlib.resolve_path \"@batteries_nothreads/run.byte\";; (*Note: we'll need to determine if it's batteries_nothreads 
+		  				               or batteries-threads, at compile-time.*)
+
+
+(*Prepare command-line*)
+let buf = Buffer.create 80;;
+Printf.bprintf buf \"%S %S -- \" binary "
+(Pathname.concat Pathname.current_dir_name cma)
+";;\nfor i = 1 to Array.length Sys.argv - 1 do
+  Printf.bprintf buf \"%S \" Sys.argv.(i)
+done;;
+
+let command = Buffer.contents buf in
+  Printf.eprintf \"Launching\\t%s\\n...\\n\" command;
+  Sys.command command
+"
+	  in Echo ([contents], dest)
+	end;
+
+      rule ".dyn.ml to .dynbyte"
+	~prod:"%.dynbyte"
+	~dep: "%.dyn.byte" 
+	begin
+	  fun env build ->
+	  let dest = env "%.dynbyte"
+	  and src  = env "%.dyn.byte"
+	  in
+	    Cmd (S[A"cp"; A src; A dest])
+	end
+
+    end
+end
+
 let _ = dispatch begin function
    | Before_options ->
        OCamlFind.before_options ();
-       Batteries.before_options ()
+       Batteries.before_options ();
+       Dynamic.before_options ()
    | After_rules ->
        OCamlFind.after_rules ();
-       Batteries.after_rules ()
+       Batteries.after_rules ();
+       Dynamic.after_rules()
 
        
    | _ -> ()
