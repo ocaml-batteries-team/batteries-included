@@ -54,6 +54,7 @@ type package_option =
     [ `package  of string         (**[`package name]: this compilation requires package [name].     *)
     | `linkpkg                    (**[`linkpkg]: link packages in.                                  *)
     | `predicates  of string list (**[`predicates p]: add predicate [p] for the resolution of package properties.*)
+(*    | `dontlink                   (**[`dontlink]:Don't link after compilation.                      *)*)
     | `dontlink    of string      (**[`dontlink name]: don't link package [name] nor its ancestors. *)
     | `syntax      of string      (**[`syntax p]: use a preprocessor identified by predicate [p].   *)
     | `ppopt       of string list (**[`ppopt s]: pass options [s] to the preprocessor.              *)
@@ -83,7 +84,6 @@ type warning =
 (** Compiler options, understood directly by ocamlc or ocamlopt. *)
 type compiler_option =
     [ `library                    (**[`library]: Compile as a library (.a).                         *)
-    | `dontlink                   (**[`dontlink]:Don't link after compilation.                      *)
     | `c                          (**[`c]: As [`dontlink].                                          *)
     | `cc of string               (**[`cc command]: Use [command] as the C compiler and linker.     *)
     | `cclib of string list       (**[`cclib opts]: Pass options [opts] to the C linker.            *)

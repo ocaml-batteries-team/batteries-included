@@ -112,7 +112,7 @@ let string_of_warnings (warnings : warning list) : string =
 (** Compiler options, understood directly by ocamlc or ocamlopt. *)
 type compiler_option =
     [ `library                    (**[`library]: Compile as a library (.a).                         *)
-    | `dontlink                   (**[`dontlink]:Don't link after compilation.                      *)
+(*    | `dontlink                   (**[`dontlink]:Don't link after compilation.                      *)*)
     | `c                          (**[`c]: As [`dontlink].                                          *)
     | `cc of string               (**[`cc command]: Use [command] as the C compiler and linker.     *)
     | `cclib of string list       (**[`cclib opts]: Pass options [opts] to the C linker.            *)
