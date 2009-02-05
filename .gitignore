@@ -1,9 +1,12 @@
-_build/
+*~
+_build
 Makefile
-autom4te.cache/
+autom4te.cache
 config.ml
 config.log
 config.status
+config.post
+configure
 build/META
 build/threaded/META
 build/nothreads/META
