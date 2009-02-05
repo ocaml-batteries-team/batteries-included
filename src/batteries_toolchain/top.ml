@@ -1,6 +1,6 @@
 (* 
  * Top - An interpreted preambule for the toplevel
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -73,4 +73,6 @@ open Standard;;
 #install_printer Batteries_print.print_rope;;
 #install_printer Batteries_print.print_string_cap_rw;;
 #install_printer Batteries_print.print_string_cap_ro;;
+Arg.current    := !Arg.current + 2;; (*Forget the 2 arguments "-init top.ml", passed by our script [ocaml].*)
+invisible_args := !invisible_args + 2;;
 Sys.interactive := interactive;; (*Return to regular interactive mode*)
