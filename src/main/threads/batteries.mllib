@@ -15,7 +15,6 @@ Batlib_Baselib_Scanf
 Batlib_Baselib_Weak
 Extlib
 Extlib_threads
-Toolchain
 InnerWeaktbl
 Batteries
 Libs

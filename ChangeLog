@@ -1,5 +1,9 @@
 2009-02-06  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/main/nothreads/batteries.mllib: [Toolchain] removed
+
+	* src/main/threads/batteries.mllib: [Toolchain] removed
+
 	* src/core/extlib/rope.ml: [splice] now accepts negative offsets 
 
 	* src/core/extlib/extString.ml*: [splice] now accepts negative offsets and too long lengths
