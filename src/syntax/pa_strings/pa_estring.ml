@@ -357,6 +357,13 @@ let map_expr e =
     (fun acc (_loc, id, expr) -> <:expr< let $lid:id$ = $expr$ in $acc$ >>)
     e context.shared_exprs
 
+let map_class_expr e =
+  let context = { next_id = 0; shared_exprs = [] } in
+  let e = (map context)#class_expr e in
+  List.fold_left
+    (fun acc (_loc, id, expr) -> <:class_expr< let $lid:id$ = $expr$ in $acc$ >>)
+    e context.shared_exprs
+
 let rec map_binding = function
   | <:binding@_loc< $id$ = $e$ >> ->
       <:binding< $id$ = $map_expr e$ >>
@@ -370,6 +377,8 @@ let map_def = function
       Ast.StVal(loc, is_rec, map_binding binding)
   | Ast.StExp(loc, expr) ->
       Ast.StExp(loc, map_expr expr)
+  | Ast.StCls(loc, ce) ->
+      Ast.StCls(loc, map_class_expr ce)
   | x ->
       x
 
