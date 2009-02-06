@@ -88,9 +88,9 @@ OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 # issue, to help with trouble-shooting
 
 ifeq ($(HAS_GODI),yes)
-all: byte syntax top run install-doc
+all: byte syntax top install-doc
 else
-all: byte syntax top run
+all: byte syntax top
 endif
 
 config.ml: Makefile
