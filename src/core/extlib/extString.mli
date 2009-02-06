@@ -369,7 +369,13 @@ val slice : ?first:int -> ?last:int -> string -> string
 
 val splice: string -> int -> int -> string -> string
   (** [String.splice s off len rep] cuts out the section of [s]
-      indicated by [off] and [len] and replaces it by [rep] *)
+      indicated by [off] and [len] and replaces it by [rep] 
+
+      Negative indexes are interpreted as counting from the end
+      of the string. If [off+len] is greater than [length s],
+      the end of the string is used, regardless of the value of
+      [len].
+*)
 
 val explode : string -> char list
   (** [explode s] returns the list of characters in the string [s]. *)

@@ -459,7 +459,9 @@ val slice : ?first:int -> ?last:int -> t -> t
 
 val splice : t -> int -> int -> t -> t
 (** [splice s off len rep] returns the rope in which the section of [s]
-      indicated by [off] and [len] has been cut and replaced by [rep] *)
+      indicated by [off] and [len] has been cut and replaced by [rep].
+
+    Negative indices are interpreted as counting from the end of the string.*)
 
 val fill : t -> int -> int -> UChar.t -> t
 (** [fill s start len c] returns the rope in which

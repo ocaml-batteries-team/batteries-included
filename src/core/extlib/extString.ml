@@ -24,6 +24,9 @@ open Sexplib
 open Conv
 TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
+let int_min (x:int) (y:int) = if x < y then x else y
+let int_max (x:int) (y:int) = if x < y then y else x
+
 exception Invalid_string
 
 module String = struct
@@ -360,9 +363,11 @@ let trim s =
     | Some first_trailing_whitespace ->
 	sub s last_leading_whitespace (first_trailing_whitespace - last_leading_whitespace + 1)
 
-let splice s1 off len s2 = 
-  let len1 = length s1 and len2 = length s2 in
-  let out_len = len1 - len + len2 in
+let splice s1 off len s2 =
+  let len1 = length s1 and len2 = length s2           in
+  let off  = if off < 0 then len1 + off - 1 else off  in
+  let len  = int_min (len1 - off) len                 in
+  let out_len = len1 - len + len2                     in
   let s = create out_len in
   blit s1 0 s 0 off; (* s1 before splice point *)
   blit s2 0 s off len2; (* s2 at splice point *)

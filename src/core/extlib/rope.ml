@@ -35,6 +35,10 @@ open ExtUChar
 open ExtList
 open Return
 
+(**Low-level optimization*)
+let int_max (x:int) (y:int) = if x < y then y else x
+let int_min (x:int) (y:int) = if x < y then x else y
+
 exception Invalid_rope
  
 type t =
@@ -52,7 +56,8 @@ type forest_element = { mutable c : t; mutable len : int }
 let str_append = UTF8.append
 let empty_str = UTF8.empty
 let string_of_string_list l = UTF8.join UTF8.empty l
- 
+
+
  
 (* 48 limits max rope size to 220GB on 64 bit,
 * ~ 700MB on 32bit (length fields overflow after that) *)
@@ -226,10 +231,9 @@ let of_ustring s =
   let lens = UTF8.length s in
   if lens = 0 then Empty
   else
-    let min (x:int) (y:int) = if x <= y then x else y in
     let rec loop r i =
       if i < lens then (* lens - i > 0, thus Leaf "" can't happen *)
-  let slice_size = min (lens-i) leaf_size in
+  let slice_size = int_min (lens-i) leaf_size in
 (* TODO: UTF8.sub is inefficient for large i - rewrite using enum *)
   let new_r = append r (Leaf (slice_size, (UTF8.sub s i slice_size))) in
     loop new_r (i + leaf_size)
@@ -534,7 +538,7 @@ let filter_map f r = bulk_map (UTF8.filter_map f) r
 
 let filter f r = bulk_map (UTF8.filter f) r
 
-let left r len = sub r 0 len
+let left r len  = sub r 0 len
 let right r len = let rlen = length r in sub r (rlen - len) len
 let head = left
 let tail r pos = sub r pos (length r - pos)
@@ -665,6 +669,7 @@ let uncapitalize r = apply1 lowercase r
 
 
 let splice r start len new_sub = 
+  let start = if start >= 0 then start else (len r) + start in
   append (left r start) 
     (append new_sub (tail r (start+len)))
 
@@ -716,8 +721,8 @@ let nsplit str sep =
 
 let join = concat
 
-let slice ?(first=0) ?(last=max_int) s =
-  let clip _min _max x = max _min (min _max x) in
+let slice ?(first=0) ?(last=int_max) s =
+  let clip _min _max x = int_max _min (int_min _max x) in
   let i = clip 0 (length s)
     (if (first<0) then (length s) + first else first)
   and j = clip 0 (length s)
