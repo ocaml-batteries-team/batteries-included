@@ -228,7 +228,8 @@ naturally.
 Declaring a Rope is as simple as
 </p>
 <pre class="example">
-let foo = r"Some Unicode text"
+let foo = r"Some Unicode text (Latin-1 encoded)"
+let bar = ur"Some Unicode text (UTF-8 encoded)"
 </pre>
 <p>
 This defines a new value <code>foo</code>, with type <code>Rope.t</code>, the type of (immutable) Unicode ropes.
