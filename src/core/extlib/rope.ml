@@ -721,7 +721,7 @@ let nsplit str sep =
 
 let join = concat
 
-let slice ?(first=0) ?(last=int_max) s =
+let slice ?(first=0) ?(last=max_int) s =
   let clip _min _max x = int_max _min (int_min _max x) in
   let i = clip 0 (length s)
     (if (first<0) then (length s) + first else first)
