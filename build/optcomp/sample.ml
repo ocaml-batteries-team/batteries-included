@@ -13,9 +13,9 @@
    | Variables |
    +-----------+ *)
 
-(* Variables are defined with the directive define:
+(* Variables are defined with the directive let:
 
-   #define <id> <expr>
+   #let <id> = <expr>
 
    where <id> is any lower or upper identifier and <expr> is any
    well-parenthesed expression, followed by a newline.
@@ -23,10 +23,10 @@
    For instanse here are some correct variable definition:
 *)
 
-#define X 1
-#define y 1 + (1
-               + 1)
-#define z X + y
+#let X = 1
+#let y = 1 + (1
+              + 1)
+#let z = X + y
 
 (* Notes:
 
@@ -36,7 +36,7 @@
    - there is no #ifdef, #ifndef directives, but you can give a
    default value to a variable with:
 
-   #default <id> <expr>
+   #let_default <id> = <expr>
 
    This means that if <id> is not yet defined then it will be defined
    to <expr>.
@@ -44,9 +44,9 @@
    For instance, in:
 *)
 
-#default toto 2
-#define truc true
-#default truc false
+#let_default toto = 2
+#let truc = true
+#let_default truc = false
 
 (* [toto] will be bound to [2] but [truc] will be bound to [true]
 
@@ -80,8 +80,8 @@ type t
 (* It is also possible to split the expression over multible lines by
    using parentheses: *)
 
-#define ocaml_major_version fst ocaml_version
-#define ocaml_minor_version snd ocaml_version
+#let ocaml_major_version = fst ocaml_version
+#let ocaml_minor_version = snd ocaml_version
 
 #if (
   (ocaml_major_version = 3
@@ -91,17 +91,6 @@ type t
 let lazy x = lazy 1
 #else
 let x = 1
-#endif
-
-(* +--------+
-   | Errors |
-   +--------+ *)
-
-(* You may also use the #error directive to make the parser to raise
-   an error: *)
-
-#if ocaml_version < (3, 0)
-#error "too old ocaml version, minimum is 3.0"
 #endif
 
 (* +-------------+
@@ -122,10 +111,52 @@ let x = 1
    Example:
 *)
 
-#define x (1, 2, (3, 4))
+#let x = (1, 2, (3, 4))
 
-#define y (let (a, b, (c, d)) = x in
-           a + b = c || (max b c = 2 && d = a - 1))
+#let y = (let (a, b, (c, d)) = x in
+          a + b = c || (max b c = 2 && d = a - 1))
+
+(* +-------------+
+   | Indentation |
+   +-------------+ *)
+
+(* Spaces and comments are ignored between the "#" at the beginning of the line
+   and the directive name, so directives can be indented like that: *)
+
+#if true
+
+let x = 1
+
+#  if false
+
+let y = 2
+
+# (* plop *) elif 1 + 1 = 2
+
+let i = 2
+
+#  else
+
+let o = 42
+
+#  endif
+
+#endif
+
+(* +---------------------+
+   | Errors and warnings |
+   +---------------------+ *)
+
+(* You may also use the #error #warning directives to make the parser
+   to fail or print a warning: *)
+
+#if ocaml_version < (3, 0)
+#  error "too old ocaml version, minimum is 3.0"
+#endif
+
+#if ocaml_version < (2048, 0)
+#  warning "plop!"
+#endif
 
 (* +-------------------------+
    | #include and #directory |
@@ -150,3 +181,19 @@ let x = 1
 
    - #directory directives are interpreted by both optcomp and camlp4
 *)
+
+#include "sample_incl.ml"
+
+(* +-----------------------------------+
+   | Access to definitions in the code |
+   +-----------------------------------+ *)
+
+(* We may want to access to values of the optcomp environment. For
+   that we can use the "optcomp" quotation, which will be expansed
+   into an expression or pattern: *)
+
+#let totolib_version = (1, 1)
+
+let print_info _ =
+  let (major, minor) = <:optcomp< totolib_version >> in
+  Printf.printf "sample is compiled with totolib version %d.%d" major minor
