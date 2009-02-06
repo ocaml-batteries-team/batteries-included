@@ -669,7 +669,7 @@ let uncapitalize r = apply1 lowercase r
 
 
 let splice r start len new_sub = 
-  let start = if start >= 0 then start else (len r) + start in
+  let start = if start >= 0 then start else (length r) + start in
   append (left r start) 
     (append new_sub (tail r (start+len)))
 
