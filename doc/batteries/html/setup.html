@@ -189,6 +189,8 @@ The main package for Batteries Included. In turn, this package defines subpackag
    <dt>batteries.pa_type_conv.syntax</dt> <dd>A language extension adding boiler-plate possibilities.</dd>
    <dt>batteries.pa_where.syntax</dt> <dd>A language extension adding a construction <code>where</code> dual to <code>let</code>.</dd>
    <dt>batteries.pa_batteries.syntax</dt> <dd>A language extension for automatically opening module <code>Batteries</code>.</dd>
+   <dt>batteries.pa_comprehension.syntax</dt> <dd>A language extension for list comprehension.</dd>
+   <dt>batteries.pa_strings.syntax</dt> <dd>A language extension added the ability to declare and pattern-match against new kinds of strings.</dd>
 </dd>
 <dt>batteries_threads</dt> <dd>You will probably never need to manipulate this package yourself.
 It is automatically linked to your files when you use both package <code>batteries</code>
@@ -212,6 +214,9 @@ OCAMLPACKS[] +=
    batteries.pa_openin.syntax
    batteries.pa_where.syntax
    batteries.pa_batteries.syntax
+   batteries.pa_comprehension.syntax
+   batteries.pa_type_conv.syntax
+   batteries.pa_strings.syntax
    batteries
 
 OCAMLDEPFLAGS += -syntax camlp4o
