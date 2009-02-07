@@ -1,3 +1,15 @@
+2009-02-07  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/ocamldep: created
+
+	* src/batteries_toolchain/ocamlopt: [batteries.pa_type_conv.syntax], [batteries.pa_comprehension.syntax], [batteries.pa_strings.syntax], [batteries.sexplib.syntax] added
+
+	* src/batteries_toolchain/ocamlc: [batteries.pa_type_conv.syntax], [batteries.pa_comprehension.syntax], [batteries.pa_strings.syntax], [batteries.sexplib.syntax] added
+
+	* src/batteries_toolchain/ocamlbuild: created
+
+	* doc/batteries/html/setup.html (USE_OCAMLFIND): added [pa_comprehension]
+
 2009-02-06  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/main/nothreads/batteries.mllib: [Toolchain] removed

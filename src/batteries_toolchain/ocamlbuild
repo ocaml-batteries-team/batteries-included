@@ -1,0 +1,1 @@
+ocamlbuild -ocamlc "ocamlfind batteries/ocamlc" -ocamlopt "ocamlfind batteries/ocamlopt" -ocamldep "ocamlfind batteries/ocamldep" $@
