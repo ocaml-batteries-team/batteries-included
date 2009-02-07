@@ -1,3 +1,14 @@
+2009-02-07  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/syntax/pa_strings/pa_strings.ml: fixed expansion of [ur"text"]
+
+	* doc/batteries/html/extensions.html: documentation of the extension [ur"text"]
+
+	* src/syntax/pa_strings/pa_estring.ml: import a bugfix from estring: expansion in
+	class expressions
+
+	* build/optcomp/*: upgrade to optcomp 1.1 (for bugfixes)
+
 2009-02-07  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/batteries_toolchain/ocamldep: created
