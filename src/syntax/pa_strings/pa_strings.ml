@@ -68,11 +68,11 @@ let _ =
 
   register_expr_specifier "ur"
     (fun ctx _loc str ->
-       let id = register_shared_expr ctx <:expr< Batteries.Rope.of_ustring $str:str$ >> in
+       let id = register_shared_expr ctx <:expr< Batteries.Rope.of_string $str:str$ >> in
        <:expr< $id:id$ >>);
   register_when_specifier "ur"
     (fun ctx _loc id str ->
-       let shared_id = register_shared_expr ctx <:expr< Batteries.Rope.of_ustring $str:str$ >> in
+       let shared_id = register_shared_expr ctx <:expr< Batteries.Rope.of_string $str:str$ >> in
        <:expr< Batteries.UTF8.compare $id:shared_id$ $id:id$ = 0 >>)
 
 #endif
