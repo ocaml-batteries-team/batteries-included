@@ -199,8 +199,8 @@ doc/api.odocl:
 examples:
 	@echo Note: to build the examples, you must first have installed Batteries
 	@echo If you haven\'t installed Batteries yet, please use    make all opt install
-	cd examples/tools    && $(OCAMLBUILD) tools.otarget && \
-	cd ../snippets && $(OCAMLBUILD) snippets.otarget
+	cd examples/tools && ocamlfind batteries/ocamlbuild tools.otarget && \
+	cd ../snippets    && ocamlfind batteries/ocamlbuild snippets.otarget
 
 clean:
 	$(OCAMLBUILD) -clean
