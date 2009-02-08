@@ -1,3 +1,9 @@
+2009-02-08  Jeremie Dimino <jeremie@dimino.org>
+
+	* Makefile.in: [examples] now uses our [ocamlbuild]
+
+	* examples/*: [myocamlbuild.ml] removed
+
 2009-02-07  Jeremie Dimino <jeremie@dimino.org>
 
 	* src/syntax/pa_strings/pa_strings.ml: fixed expansion of [ur"text"]
