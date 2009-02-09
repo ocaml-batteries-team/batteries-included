@@ -2,7 +2,7 @@
  * ExtBigarray - additional and modified functions for big arrays.
  * Copyright (C) 2000 Michel Serrano
  *               2000 Xavier Leroy
- *               2008 David Teller, LIFO, Universite d'Orleans
+ *               2009 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.Data.Mutable" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 open ExtArray
 
@@ -126,11 +126,30 @@ struct
 	done
 	  
     let enum e =
-      let dims = dims e
-      and coor = Array.Labels.create (num_dims e) ~init:0 in
-	Enum.unfold coor (fun coor ->
-		       if inplace_next ~dims ~coor then Some (get e coor, coor)
-		       else None)
+      let dims   = dims e
+      and coor   = Array.Labels.create (num_dims e) ~init:0 
+      and status = ref `ongoing in
+	Enum.from (fun () ->
+		     match !status with
+		       | `ongoing ->
+			   begin
+			     try
+			       let result = get e coor               in
+			       let update = inplace_next ~dims ~coor in
+				 if not update then status := `dry;
+				 result
+			     with _ -> 
+			       status := `dry;
+			       raise Enum.No_more_elements
+			   end
+ 		        | `dry -> 
+			    raise Enum.No_more_elements
+		  )
+			    
+			    
+
+			  
+
 
   end
 

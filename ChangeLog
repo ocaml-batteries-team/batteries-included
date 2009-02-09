@@ -1,4 +1,54 @@
-2009-02-08  Jeremie Dimino <jeremie@dimino.org>
+2009-02-09  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extBigarray.ml: flattened
+
+	* src/core/extlib/extBigarray.ml: [enum] rewritten
+
+	* src/core/extlib/extArray.ml: [backwards] now uses [pre_decr], counts from [length] and stops at [0]
+
+	* src/core/extlib/IO.mli: [output_channel] now accepts optional argument [cleanup]
+
+	* src/core/extlib/innerIO.ml: [inherit_in], [inherit_out] added
+
+	* src/core/extlib/extUnix.ml: [open_connection] rewritten
+
+	* src/core/extlib/extUnix.ml*: [input_of_descr], [output_of_descr], [open_process_in], [open_process_out], [open_process], [open_process_full], [open_connection], [establish_server] now accept optional argument [cleanup]
+
+	* src/core/extlib/innerIO.ml*: [output_channel] now accepts optional argument [cleanup]
+
+	* Makefile.in: [tests], [tests-byte] added, added to [reinstall], [rebyte]
+	
+	* src/main/threads/batteries.ml: [Legacy.Digest] added
+
+	* src/main/nothreads/batteries.ml: 
+
+	* src/core/extlib/extHashtbl.mli: Documentation updates
+
+	* src/core/extlib/extUnix.ml: [open Std] removed
+
+	* src/core/extlib.mlpack: [ExtDigest] added
+
+	* tests/test_digest.ml: created
+
+	* tests/testing.ml: created
+
+	* src/main/threads/batteries.mllib: [Digest] removed
+
+	* src/main/nothreads/batteries.ml: [Digest] replaced with [Extlib.ExtDigest.Digest]
+
+	* src/main/threads/batteries.ml: [Digest] replaced with [Extlib.ExtDigest.Digest]
+
+	* src/main/threads/batteries.mllib: [Digest] removed
+
+	* src/core/extlib/extDigest.ml: created
+
+	* src/core/extlib/extDigest.mli: created
+
+2009-02-08  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extRandom.ml*: made enumerations clonable.
+
+	* doc/batteries/html/setup.html: documentation updated.
 
 	* Makefile.in: [examples] now uses our [ocamlbuild]
 

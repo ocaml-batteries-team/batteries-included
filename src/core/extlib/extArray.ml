@@ -197,8 +197,8 @@ let backwards xs =
   let rec make start xs =
     Enum.make
       ~next:(fun () ->
-	       if !start >= 0 then 
-		 xs.(Ref.post_decr start)
+	       if !start > 0 then 
+		 xs.(Ref.pre_decr start)
 	       else
 		 raise Enum.No_more_elements)
       ~count:(fun () ->
@@ -207,7 +207,7 @@ let backwards xs =
 		let xs' = Array.sub xs 0 !start in
 		make (Ref.copy start) xs')
   in
-  make (ref (length xs - 1)) xs
+  make (ref (length xs)) xs
 
 let of_enum e =
   let n = Enum.count e in
