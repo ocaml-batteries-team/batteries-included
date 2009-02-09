@@ -805,14 +805,29 @@ let synchronize_out ?(lock = !lock_factory ()) out =
 *)
 
 (**
-   Copy everything to a temporary file then read from this file.
-   A better implementation is probably possible with threads.
+   [to_input_channel inp] converts [inp] to an [in_channel].
+
+   In the simplest case, [inp] maps to a file descriptor, which makes
+   it possible to just reopen the same file descriptor as an
+   [in_channel]. There is no flushing with which to screw up and
+   this shouldn't interfere with [pos_in] et al. because [inp]
+   maps {e directly} to a file descriptor, not through higher-level
+   abstract streams.
+
+   Otherwise, read everything, write it to a temporary file and
+   read it back as an [in_channel]. 
+   Yes, this is prohibitively expensive.
 *)
-(*let in_channel_of_input inp =
-  let (out, name) = File.open_temporary_out () in
-    copy inp out;
-    close_out out;
-    Pervasives.open_in name*)
+let to_input_channel inp =
+  try Unix.in_channel_of_descr (ExtUnix.Unix.descr_of_input inp) (*Simple case*)
+  with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
+    let (name, cout) = Filename.open_temp_file "ocaml" "pipe" in
+    let out          = output_channel cout                    in
+      copy inp out;
+      close_out out;
+      Pervasives.open_in name    
+
+
 
 
 (*(**

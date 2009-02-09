@@ -663,6 +663,14 @@ val input_channel : ?autoclose:bool -> in_channel -> input
 val output_channel : out_channel -> unit output
 (** Create an output that will write into a channel. *) 
 
+val to_input_channel : input -> in_channel
+(** Create a channel that will read from an input.
+
+    {b Note} This function is extremely costly and is provided
+    essentially for debugging purposes or for reusing legacy
+    libraries which can't be adapted. As a general rule, if
+    you can avoid using this function, don't use it.*)
+
 (** {6 Generic IO Object Wrappers}
 
     Theses OO Wrappers have been written to provide easy support of ExtLib
