@@ -70,71 +70,60 @@ Note that producing the documentation is long (typically 10-15 minutes).
 </p>
 
 <center><h1>Using Batteries Included</h1></center>
-<center><h2>Simple method (using OCamlBuild)</h2></center>
-To use Batteries Included, the easiest solution is to take 
-advantage of both findlib and ocamlbuild. OCamlBuild is part
-of your installation of OCaml and findlib is generally installed
-by default, too.
+<center><h2>Interactive environment</h2></center>
+To launch the toplevel, from a shell, invoke<br />
+<code>
+ocamlfind batteries/ocaml
+</code>,
+or, if you have <code>rlwrap</code> installed,
+<code>
+rlwrap ocamlfind batteries/ocaml
+</code>, for more comfortable editting.
 <br />
-If you have both OCaml and findlib, the simple method is to
-take the following steps:
-<ol>
-<li>in your project directory, copy file 
-  <a href="../myocamlbuild.ml"><code>doc/batteries/myocamlbuild.ml</code></a>
-  (don't rename it, it must be called <code>myocamlbuild.ml</code>)</li>
-<li>still in your project directory, modify your file called 
-  <tt>_tags</tt> (if it doesn't exist yet, create it) to add the following line
-  <code>
-      &lt;*&gt;: use_batteries
-  </code></li>
-</ol>
+This technique also works from your favorite OCaml-compatible editor
+(Emacs, Vim, etc.)
 
-That should be it. For more informations on the contents of Batteries
-Included, please take a look at <a href="api/index.html"
-target="_top">the API documentation</a> and <a href="extensions.html">
-the set of language extensions introduced by Batteries</a>.
+<center><h2>Individual files</h2></center>
+OCaml Batteries Included provides drop-in replacement for
+the compilation tools tools you use to compile or execute
+individual OCaml files. To invoke these:
 
-<center><h2>Simple method (without OCamlBuild)</h2></center>
-For convenience, OCaml Batteries Included also provides custom tools which
-you may use instead of the regular <code>ocaml</code>, <code>ocamlc</code>,
-<code>ocamlopt</code> and <code>ocamlcp</code>. To invoke these, 
 <dl>
-  <dt>Top-level</dt> 
+  <dt>Interpreter</dt> 
   <dd>
-    Write <code>ocamlfind batteries/ocaml</code> instead
-    of your usual <code>ocaml</code>.
+    To execute a file called <code>date.ml</code>, invoke <code>ocamlfind batteries/ocaml date.ml</code>.
+    You may also invoke <code>ocamlfind batteries/ocaml --help</code> for more informations on the interpreter.
   </dd>
   <dt>Bytecode compiler</dt> 
   <dd>
-    Write <code>ocamlfind batteries/ocamlc</code> instead
-    of your usual <code>ocamlc</code>.
+    To compile a file called <code>date.ml</code>, invoke <code>ocamlfind batteries/ocamlc date.ml</code>.
+    You may also invoke <code>ocamlfind batteries/ocamlc --help</code> for more informations on the bytecode compiler.
   </dd>
-  <dt>Native compiler</dt> 
+  <dt>Optimizing compiler</dt> 
   <dd>
-    Write <code>ocamlfind batteries/ocamlopt</code> instead
-    of your usual <code>ocamlopt</code>.
+    To compile a file called <code>date.ml</code>, invoke <code>ocamlfind batteries/ocamlopt date.ml</code>.
+    You may also invoke <code>ocamlfind batteries/ocamlopt --help</code> for more informations on the optimizing compiler.
   </dd>
   <dt>Profiling compiler</dt> 
   <dd>
-    Write <code>ocamlfind batteries/ocamlcp</code> instead
-    of your usual <code>ocamlcp</code>.
+    To compile a file called <code>date.ml</code>, invoke <code>ocamlfind batteries/ocamlcp date.ml</code>.
+    You may also invoke <code>ocamlfind batteries/ocamlcp --help</code> for more informations on the profiling compiler.
   </dd>
 </dl>
 
-For instance, if you want to compile the "cat" implementation
-which you may find in the examples/ subdirectory, you may just
-invoke
-<code class="example">
-ocamlfind batteries/ocamlc cat.ml
-</code>
-or, for building optimized native code,
-<code class="example">
-ocamlfind batteries/ocamlopt cat.ml
-</code>
-That's it.
 
+<center><h2>Complete projects (easiest technique)</h2></center>
+OCaml Batteries Included also provides drop-in replacement for
+OCamlBuild, the standard tool used to compile complete projects.
+<br />
+<dl>
+ <dt>Bytecode compilation</dt><dd>To compile a file called <code>date.ml</code> and all the files it requires
+ to bytecode, invoke <ocde>ocamlfind batteries/ocamlbuild date.byte</code>.</dd>
+ <dt>Optimized compilation</dt><dd>To compile a file called <code>date.ml</code> and all the files it requires
+ to an optimized native binary, invoke <ocde>ocamlfind batteries/ocamlbuild date.native</code>.</dd>
+</dl>
 
-
+For more informations on OCamlBuild, you may read <a href="http://nicolaspouillard.fr/ocamlbuild/ocamlbuild-user-guide.html">the official documentation</a>.
 
 <center><h2>More control</h2></center>
 File <a href="../myocamlbuild"><code>doc/batteries/myocamlbuild.ml</code></a>
