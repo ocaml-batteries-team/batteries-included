@@ -14,7 +14,7 @@ To take advantage of these features, please see <a href="setup.html">the corresp
 Note that most of these extensions were not developed specifically for Batteries Included and may
 be used separately.
 
-<center><h2>Opening of modules</h2></center>
+<center><h2>Opening of modules<a name="openin"></h2></center>
 <center>(activated by default, implemented as findlib package <code>batteries.pa_openin.syntax</code>)</center>
 <center><h3>Local opening of modules</h3></center>
 <center>(forked from <a href="http://alain.frisch.fr/soft.html">openin</a>)</center>
@@ -35,7 +35,7 @@ open Hashtbl.Make(String) in
 </pre>
 
 
-<center><h3>Initialization of modules</h3></center>
+<center><h3>Initialization of modules<a name="openin_initializer"/></h3></center>
 <center>(designed for Batteries)</center>
 As a convenience, you can specify an expression to be evaluated when opening a module.
 For instance,
@@ -49,7 +49,7 @@ let _ = self_init ()
 </pre>
 This feature is provided as it may sometimes increase readability.
 
-<center><h3>Opening several modules</h3></center>
+<center><h3>Opening several modules<a name="openin_multiopen"/></h3></center>
 <center>(designed for Batteries)</center>
 As a convenience, you can specify a comma-separated list of modules to be opened in one operation.
 Consider for instance
@@ -64,7 +64,7 @@ open Array
 
 This feature is provided as it may sometimes increase readability.
 
-<center><h3>Aliasing several modules to one name<a name="#multialias"/></h3></center>
+<center><h3>Aliasing several modules to one name<a name="openin_multialias"/></h3></center>
 <center>(designed for Batteries)</center>
 As a convenience, you can specify that a module name should serve to
 represent the union of several modules. Consider for instance
@@ -118,7 +118,7 @@ open BigEndian
 </pre>
 
 
-<center><h2>"where" construction<a name = "where"/></h2></center>
+<center><h2>"where" construction<a name="where"/></h2></center>
 <center>(activated by default, implemented as findlib package <code>batteries.pa_where.syntax</code>)</center>
 <center>(part of <a href="http://forge.ocamlcore.org/projects/pa-where/">pa_where</a>, distributed with Batteries)</center>
 
@@ -161,15 +161,14 @@ As a convenience, you may wrote <code>where let</code> instead of <code>where</c
 </dl>
 
 
-<center><h2>Comprehension expressions</h2></center>
-<center>(activated by default for the compiler, implemented as findlib package <code>batteries.pa_comprehension.syntax</code>)</center>
-<center>(known not to work in the toplevel yet)</center>
+<center><h2>Comprehension expressions<a name="comprehension"/></h2></center>
+<center>(activated by default, implemented as findlib package <code>batteries.pa_comprehension.syntax</code>)</center>
 <center>(designed for Batteries)</center>
 
 A <a href="http://en.wikipedia.org/wiki/List_comprehension">list
 comprehension syntax</a> for batteries, using enumerations by default.
 
-<center><h3>Output, generators and guards</h3></center>
+<center><h3>Output, generators and guards<a name="comprehension_syntax"/></h3></center>
 
 <p>The global form is
 <code>[? <em>output</em> | <em>comp_item</em> ; <em>comp_item</em> ; ... ]</code>.<br/>
@@ -183,7 +182,7 @@ Example :
 <pre class="example">let pythagorean_triples n =
   [? (a,b,c) | a <- 1--n; b <- a--n; c <- b--n; a*a + b*b = c*c ]</pre>
 
-<center><h3>Module parametrization</h3></center>
+<center><h3>Module parametrization<a name="comprehension_custom_modules"/></h3></center>
 
 <p>By default, the output in an enumeration, and generator expressions
 are assumed to be enumerations. It is possible to choose a different
@@ -215,7 +214,7 @@ the enum conversion functions, you could still benefit from the
 comprehension syntax by using eg. <code>foo <- Mod.enum bar</code> instead
 of <code>foo <- Mod : bar</code>.</p>
 
-<center><h2>String syntax</h2></center>
+<center><h2>String syntax<a name="string"/></h2></center>
 <center>(activated by default, implemented as findlib package <code>batteries.pa_string.syntax</code>)</center>
 <center>(part of <a href="http://forge.ocamlcore.org/projects/estring/">estring</a>, adapted for Batteries by the author)</center>
 
@@ -223,7 +222,7 @@ As Batteries offers several new types of strings, this extension
 provides the necessary syntactic sugar to manipulate unicode strings
 naturally.
 
-<center><h3>Text values</h3></center>
+<center><h3>Text values<a name="string_expressions"/></h3></center>
 <p>
 Declaring a Rope is as simple as
 </p>
@@ -258,14 +257,14 @@ It is possible to use the same syntax to define
 
 Again, immutable latin-1 strings are automatically optimized.
 
-<center><h3>Text patterns</h3></center>
+<center><h3>Text patterns<a name="string_patterns"/></h3></center>
 
 The same syntax may be used to pattern-match against ropes, UTF-8 strings and string with capabilities.
 
-<center><h2>Boilerplate construction</h2></center>
+<center><h2>Boilerplate construction<a name="boilerplate"/></h2></center>
 <center>(<i>de</i>activated by default, implemented as findlib package <code>sexplib.syntax</code>)</center>
 
-<center><h3>Serialization to S-Expressions</h3></center> 
+<center><h3>Serialization to S-Expressions<a name="boilerplate_sexplib"/></h3></center> 
 <center>(feature provided by <a href="http://www.ocaml.info/home/ocaml_sources.html">Sexplib</a>)</center>
 S-Expressions are a human-readable format for the transmission and
 storage of data, comparable to JSON. 
@@ -317,9 +316,10 @@ will integrate nicely with the rest of S-Expressions.
 <br />
 For more information, see the manual of <a href="http://www.ocaml.info/ocaml_sources/sexplib310-4.2.0/README.txt">Sexplib</a>
 
-<center><h1>Summary of new keywords</h1></center>
+<center><h1>Summary of new keywords<a name="new_keywords"/></h1></center>
 <ul>
-<li><code>where</code>, <a href="#where">defined by pa_where</a></li>
+<li><code>where</code>, defined by <a href="#where">pa_where</a></li>
+<li><code>[? .. | .. ]</code> (and <code>[ .. | .. ]</code>), defined by <a href="#comprehension>pa_comprehension</a></li>
 </ul>
 
 </body>
