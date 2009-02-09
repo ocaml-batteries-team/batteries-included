@@ -302,10 +302,12 @@ let rebuild_structure modules =
       result
   and handle_module_type path m (t:Odoc_module.t_module_type) =
     let path' = concat path (Name.simple t.mt_name) in
+      verbose ("Visiting module "^t.mt_name^" from "^m.m_name^", at path "^path');
       let result = 
 	{(t) with mt_kind = (match t.mt_kind with
-	   | None -> None
-	   | Some kind -> Some (handle_type_kind path' m kind)); mt_name = path'} in
+	   | None      -> None
+	   | Some kind -> Some (handle_type_kind path' m kind)); 
+	   mt_name = path'} in
 	add_renamed_module_type t.mt_name path';
 	result
   and handle_alias path m (t:module_alias) : module_alias     = (*Module [m] is an alias to [t.ma_module]*)

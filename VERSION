@@ -1,4 +1,11 @@
-This is the third alpha release of Batteries Included.
+This is the first beta release of Batteries Included.
+
+= Changes since alpha 3
+== General
+* New drop-in replacement for ocamlbuild.
+
+== Library
+* Module Digest now compatible with IO.
 
 = Changes since alpha 2
 == General

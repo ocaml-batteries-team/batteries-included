@@ -9,7 +9,12 @@ let tests =
     Test_enum.test_string;
     Test_enum.test_string2;
     Test_enum.test_bigarray;
-    Test_enum.test_bigarray2
+    Test_enum.test_bigarray2;
+    Test_enum.test_bigarray3;
+    Test_enum.test_rope;
+    Test_enum.test_rope2;
+    Test_enum.test_UTF8;
+    Test_enum.test_UTF82;
 ];;
 
 init ();;

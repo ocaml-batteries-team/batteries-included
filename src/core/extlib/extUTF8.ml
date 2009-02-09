@@ -178,8 +178,8 @@ module UTF8 = struct
 		 else
 		   look us (Ref.post i (Byte.next us))
               )
-  ~count:(fun () -> length_aux us 0 !i)
-  ~clone:(fun () -> make (Ref.copy i))
+	~count:(fun () -> length_aux us 0 !i)
+	~clone:(fun () -> make (Ref.copy i))
     in
     make (ref Byte.first)
       
