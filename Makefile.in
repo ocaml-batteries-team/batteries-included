@@ -208,7 +208,8 @@ tests:
 	ocamlfind batteries/ocamlbuild main.byte main.native 
 
 tests-byte:
-	cd tests && ocamlfind batteries/ocamlbuild main.byte
+	cd tests && ocamlfind batteries/ocamlbuild -clean && \
+	ocamlfind batteries/ocamlbuild main.byte
 
 clean:
 	$(OCAMLBUILD) -clean

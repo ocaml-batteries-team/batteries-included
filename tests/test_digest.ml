@@ -23,7 +23,7 @@ let test () =
   let leg = legacy_result    ()
   and bat = batteries_result ()
   in
-    if legacy_result = batteries_result then Testing.Pass
+    if leg = bat then Testing.Pass
     else Testing.Fail (Printf.sprintf "\tLegacy:%s\n\tBatteries:%s" leg bat)
 
     
