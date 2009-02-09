@@ -1,6 +1,6 @@
 (*
  * Batteries - The complete Batteries Included (threaded version)
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
+
+(**
+   The libraries provided as part of OCaml Batteries Included
+
+   @author David Rajchenbach-Teller
+*)
 
 (**
    Automatically opened module.
@@ -39,6 +45,7 @@ module Legacy = struct
   module Array     = Array
   module ArrayLabels= ArrayLabels
   module Bigarray  = Bigarray
+  module Digest    = Digest
   module Hashtbl   = Hashtbl
   module Queue     = Queue
   module Stack     = Stack
