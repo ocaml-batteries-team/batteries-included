@@ -127,6 +127,13 @@ in
     Gc.finalise close_in result;
     result
 
+let inherit_in ?read ?input ?close inp =
+  let read = match read  with None -> inp.in_read | Some f -> f
+  and input= match input with None -> inp.in_input| Some f -> f
+  and close= match close with None -> inp.in_close| Some f -> f
+  in  wrap_in ~read ~input ~close ~underlying:[inp]
+
+
 let create_in ~read ~input ~close =
   wrap_in ~read ~input ~close ~underlying:[]
 
@@ -172,6 +179,13 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
     Gc.finalise (fun _ -> ignore (close_out out)) 
       out;
     out
+
+let inherit_out ?write ?output ?flush ?close out =
+  let write = match write  with None -> out.out_write | Some f -> f
+  and output= match output with None -> out.out_output| Some f -> f
+  and flush = match flush  with None -> out.out_flush | Some f -> f
+  and close = match close  with None -> out.out_close | Some f -> f
+  in wrap_out ~write ~output ~flush ~close ~underlying:[out]
 
 let create_out ~write ~output ~flush ~close =
   wrap_out ~write ~output ~flush ~close ~underlying:[]
@@ -344,7 +358,7 @@ let placeholder_in =
     in_close = noop;
     in_id    = (-1);
     in_upstream= weak_create 0 }
-let input_channel ?(autoclose=true)  ch =
+let input_channel ?(autoclose=true) ?(cleanup=false) ch =
   let me = ref placeholder_in (*placeholder*)
   in let result = 
   create_in
@@ -360,17 +374,17 @@ let input_channel ?(autoclose=true)  ch =
 		    raise No_more_input
 		  end
 		else n)
-    ~close:(fun () -> Pervasives.close_in ch)
+    ~close:(if cleanup then fun () -> Pervasives.close_in ch else ignore)
   in
     me := result;
     result
 
-let output_channel ch =
+let output_channel ?(cleanup=false) ch =
     create_out
       ~write: (fun c     -> output_char ch c)
       ~output:(fun s p l -> Pervasives.output ch s p l; l)
       ~close: (fun ()    -> Pervasives.close_out ch)
-      ~flush: (fun ()    -> Pervasives.flush ch)
+      ~flush: (if cleanup then fun ()    -> Pervasives.flush ch else ignore)
 
 
 let pipe() =

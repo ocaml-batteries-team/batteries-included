@@ -294,7 +294,7 @@ val single_write : file_descr -> string -> int -> int -> int
 
 (** {6 Interfacing with the standard input/output library} *)
 
-val input_of_descr: ?autoclose:bool -> file_descr -> InnerIO.input
+val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> InnerIO.input
 (** Create an {!type:input} reading from the given descriptor.
     The {!type: input} is initially in binary mode; use
     [set_binary_mode_in ic false] if text mode is desired. 
@@ -304,12 +304,23 @@ val input_of_descr: ?autoclose:bool -> file_descr -> InnerIO.input
     the input will be closed according to the usual rules of module
     {!IO}. Barring very specific needs (e.g. using file descriptors as
     locks), you probably want [autoclose] to be [true].
+
+    @param cleanup If true, close the underlying file descriptor
+    when the {!type:input} is closed. If false or unspecified,
+    do nothing, in which case you will need to close the underlying
+    file descriptor yourself to ensure proper cleanup.
 *)
 
-val output_of_descr: file_descr -> unit InnerIO.output
+val output_of_descr: ?cleanup:bool -> file_descr -> unit InnerIO.output
   (** Create an {!type:output} writing on the given descriptor.
       The {!type:output} is initially in binary mode; use
-      [set_binary_mode_out oc false] if text mode is desired. *)
+      [set_binary_mode_out oc false] if text mode is desired. 
+
+      @param cleanup If true, close the underlying file descriptor
+      when the {!type:output} is closed. If false or unspecified,
+      do nothing, in which case you will need to close the underlying
+      file descriptor yourself to ensure proper cleanup.
+*)
 
 val descr_of_input : InnerIO.input -> file_descr
 (** Return the descriptor corresponding to an input.
@@ -596,7 +607,7 @@ val create_process_env :
    [env] specifies the environment passed to the program. *)
 
 
-val open_process_in : ?autoclose: bool -> string -> InnerIO.input
+val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> InnerIO.input
 (** High-level pipe and process management. This function
     runs the given command in parallel with the program.
     The standard output of the command is redirected to a pipe,
@@ -608,19 +619,28 @@ val open_process_in : ?autoclose: bool -> string -> InnerIO.input
     the input will be closed according to the usual rules of module
     {!IO}. Barring very specific needs (e.g. using file descriptors as
     locks), you probably want [autoclose] to be [true].
+
+    @param cleanup If true, close the process when the {!type:input}
+    is closed. If false or unspecified, do nothing, in which case you
+    will need to close the process yourself to ensure proper cleanup.
 *)
 
-val open_process_out : string -> unit InnerIO.output
+val open_process_out : ?cleanup:bool -> string -> unit InnerIO.output
   (** 
       Same as {!Unix.open_process_in}, but redirect the standard input of
       the command to a pipe.  Data written to the returned output
       is sent to the standard input of the command.
       
-      Warning: writes on outputs are buffered, hence be careful
+      {b Warning} writes on outputs are buffered, hence be careful
       to call {!Pervasives.flush} at the right times to ensure
-      correct synchronization. *)
+      correct synchronization. 
 
-val open_process : ?autoclose:bool -> string -> InnerIO.input * unit InnerIO.output
+      @param cleanup If true, close the process when the {!type:output}
+      is closed. If false or unspecified, do nothing, in which case you
+      will need to close the process yourself to ensure proper cleanup.
+*)
+
+val open_process : ?autoclose:bool -> ?cleanup:bool -> string -> InnerIO.input * unit InnerIO.output
   (** 
       Same as {!Unix.open_process_out}, but redirects both the
       standard input and standard output of the command to pipes
@@ -634,10 +654,17 @@ val open_process : ?autoclose:bool -> string -> InnerIO.input * unit InnerIO.out
       the input will be closed according to the usual rules of module
       {!IO}. Barring very specific needs (e.g. using file descriptors as
       locks), you probably want [autoclose] to be [true].
-*)
+
+      @param cleanup If true, close the process when either the
+      {!type:output} or the {!type:output} is closed. If false or
+      unspecified, do nothing, in which case you will need to close
+      the process yourself to ensure proper cleanup.
+  *)
+
+
 
 val open_process_full :
-  ?autoclose:bool -> string -> string array -> InnerIO.input * unit InnerIO.output * InnerIO.input
+  ?autoclose:bool -> ?cleanup:bool -> string -> string array -> InnerIO.input * unit InnerIO.output * InnerIO.input
   (** Similar to {!Unix.open_process}, but the second argument
       specifies the environment passed to the command.  The result is
       a triple of {!type:input}/{!type:output} connected respectively
@@ -649,7 +676,12 @@ val open_process_full :
       the input will be closed according to the usual rules of module
       {!IO}. Barring very specific needs (e.g. using file descriptors as
       locks), you probably want [autoclose] to be [true].
-*)
+
+     @param cleanup If true, close the process when either the
+      {!type:output} or the {!type:output} is closed. If false or
+      unspecified, do nothing, in which case you will need to close
+      the process yourself to ensure proper cleanup.
+  *)
 
 val close_process_in : InnerIO.input -> process_status
   (** Close {!type:input} opened by {!Unix.open_process_in},
@@ -1162,8 +1194,11 @@ val setsockopt_float :
 
 val open_connection : ?autoclose:bool -> sockaddr -> InnerIO.input * unit InnerIO.output
   (** Connect to a server at the given address.
-      Return a pair of buffered channels connected to the server.
-      Remember to call {!Pervasives.flush} on the output channel at the right
+      Return a pair of input/output connected to the server. The
+      connection is closed whenever either the input or the output
+      is closed.
+
+      Remember to call {!Pervasives.flush} on the output  at the right
       times to ensure correct synchronization. 
 
       @param autoclose If true (default value), close the input
@@ -1171,14 +1206,19 @@ val open_connection : ?autoclose:bool -> sockaddr -> InnerIO.input * unit InnerI
       the input will be closed according to the usual rules of module
       {!IO}. Barring very specific needs (e.g. using file descriptors as
       locks), you probably want [autoclose] to be [true].
-*)
+  *)
 
 val shutdown_connection : InnerIO.input -> unit
-  (** ``Shut down'' a connection established with {!Unix.open_connection};
+  (** 
+      ``Shut down'' a connection established with {!Unix.open_connection};
       that is, transmit an end-of-file condition to the server reading
-      on the other side of the connection. *)
+      on the other side of the connection. 
 
-val establish_server : ?autoclose:bool -> (InnerIO.input -> unit InnerIO.output -> unit) -> sockaddr -> unit
+      @deprecated Connections do not require a special function anymore.
+      Use regular function {!IO.close_in} for closing connections.
+*)
+
+val establish_server : ?autoclose:bool -> ?cleanup:bool -> (InnerIO.input -> unit InnerIO.output -> unit) -> sockaddr -> unit
   (** Establish a server on the given address.
 
       [establish_server f addr] establishes a server on address
@@ -1192,7 +1232,13 @@ val establish_server : ?autoclose:bool -> (InnerIO.input -> unit InnerIO.output 
       read. Otherwise, the input will be closed according to the usual
       rules of module {!IO}. Barring very specific needs (e.g. using
       file descriptors as locks), you probably want [autoclose] to be
-      [true].  *)
+      [true].
+
+      @param cleanup If true or unspecified, close the connection when
+      the {!type:input} or the {!type:output} is closed or
+      garbage-collected. If false, do nothing, in which case you will
+      need to shutdown the connection using {!shutdown_connection} to
+      ensure proper cleanup.  *)
 
 
 (** {6 Host and protocol databases} *)
