@@ -576,6 +576,21 @@ val wrap_in :
     in inadvertently closing {!stdin} or a network socket, etc.
 *)
 
+val inherit_in:
+  ?read:(unit -> char) ->
+  ?input:(string -> int -> int -> int) -> 
+  ?close:(unit -> unit) -> 
+  input -> input
+  (** Simplified and optimized version of {!wrap_in} which may be used
+      whenever only one input appears as dependency.
+
+      [inherit_in inp] will return an input identical to [inp].
+      [inherit_in ~read inp] will return an input identical to
+      [inp] except for method [input], etc.
+
+      You do not need to close [inp] in [close].
+  *)
+
 
 val create_out :
   write:(char -> unit) ->
@@ -583,18 +598,18 @@ val create_out :
   flush:(unit -> unit) -> 
   close:(unit -> 'a) -> 
   'a output
-(** 
-    Fully create an output by giving all the needed functions.
+    (** 
+	Fully create an output by giving all the needed functions.
 
-    @param write  Write one character to the output (see {!write}).
-    @param output Write a (sub)string to the output (see {!output}).
-    @param flush  Flush any buffers of this output  (see {!flush}).
-    @param close  Close this output. The output will be automatically
-    flushed.
+	@param write  Write one character to the output (see {!write}).
+	@param output Write a (sub)string to the output (see {!output}).
+	@param flush  Flush any buffers of this output  (see {!flush}).
+	@param close  Close this output. The output will be automatically
+	flushed.
 
-    {b Note} Do {e not} use this function for creating an output which
-    writes to one or more underlying outputs. Rather, use {!wrap_out}.
-*)
+	{b Note} Do {e not} use this function for creating an output which
+	writes to one or more underlying outputs. Rather, use {!wrap_out}.
+    *)
 
 val wrap_out :
   write:(char -> unit)         ->
@@ -647,21 +662,47 @@ val wrap_out :
    another part of the program.
 *)
 
+val inherit_out:
+  ?write:(char -> unit) ->
+  ?output:(string -> int -> int -> int) -> 
+  ?flush:(unit -> unit) ->
+  ?close:(unit -> 'a) -> 
+  'a output -> 'a output
+(**
+   Simplified and optimized version of {!wrap_out} whenever only
+   one output appears as dependency.
+
+   [inherit_out out] will return an output identical to [out].
+   [inherit_out ~write out] will return an output identical to
+   [out] except for its [write] method, etc.
+
+   You do not need to close [out] in [close].
+*)
+
 (**
    {6 For compatibility purposes}
 *)
 
-val input_channel : ?autoclose:bool -> in_channel -> input
+val input_channel : ?autoclose:bool -> ?cleanup:bool -> in_channel -> input
 (** Create an input that will read from a channel. 
 
     @param autoclose If true or unspecified, the {!type: input}
     will be automatically closed when the underlying [in_channel]
     has reached its end.
+
+    @param cleanup If true, the channel
+    will be automatically closed when the {!type: input} is closed.
+    Otherwise, you will need to close the channel manually.
 *)
 
+val output_channel : ?cleanup:bool -> out_channel -> unit output
+(** Create an output that will write into a channel. 
 
-val output_channel : out_channel -> unit output
-(** Create an output that will write into a channel. *) 
+    @param cleanup If true, the channel
+    will be automatically closed when the {!type: output} is closed.
+    Otherwise, you will need to close the channel manually.
+*) 
+
 
 val to_input_channel : input -> in_channel
 (** Create a channel that will read from an input.
