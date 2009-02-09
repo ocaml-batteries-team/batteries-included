@@ -23,7 +23,8 @@
     
     @author Damien Doligez (base library)
     @author David Teller
-    
+    @author Pierre Chambart
+
     @documents Random
 *)
 module Random : sig
@@ -73,7 +74,7 @@ val bool : unit -> bool
 
 val enum_int : int -> int Enum.t
 
-val enum_bool : bool Enum.t
+val enum_bool : unit -> bool Enum.t
 
 val enum_float : float -> float Enum.t
 

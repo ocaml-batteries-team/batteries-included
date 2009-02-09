@@ -1,7 +1,8 @@
 (* 
  * ExtRandom - Additional randomization operations
  * Copyright (C) 1996 Damien Doligez
- *               2008 David Teller
+ *               2009 David Teller, LIFO, Universite d'Orleans
+ *               2009 Pierre Chambart
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +22,7 @@
 
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Util" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 module Random = struct
   open Random
@@ -36,17 +37,40 @@ module Random = struct
   let float     = float
   let bool      = bool
 
-  let enum_int       bound = Enum.from (fun () -> int bound)
+  (**A constructor for enumerations of random numbers taking advantage
+     of [State] to allow cloning.*)
+  let random_enum_with_state next =
+    let rec aux state =
+      let next  () = next state in
+      let count () = raise Enum.Infinite_enum in
+      let clone () = aux ( State.copy state ) in
+	Enum.make next count clone
+    in
+      aux ( State.make_self_init () )
 
-  let enum_int32     bound = Enum.from (fun () -> int32 bound)
+  let enum_int bound =
+    let next state = State.int state bound in
+      random_enum_with_state next
 
-  let enum_int64     bound = Enum.from (fun () -> int64 bound)
-
-  let enum_nativeint bound = Enum.from (fun () -> nativeint bound)
-
-  let enum_float     bound = Enum.from (fun () -> float bound)
-
-  let enum_bool            = Enum.from bool
+  let enum_int32 bound =
+    let next state = State.int32 state bound in
+      random_enum_with_state next
+	
+  let enum_int64 bound =
+    let next state = State.int64 state bound in
+      random_enum_with_state next
+	
+  let enum_float bound =
+    let next state = State.float state bound in
+      random_enum_with_state next
+	
+  let enum_nativeint bound =
+    let next state = State.nativeint state bound in
+      random_enum_with_state next
+	
+  let enum_bool () =
+    let next state = State.bool state in
+      random_enum_with_state next
 
   open ExtArray
 
