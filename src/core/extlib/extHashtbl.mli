@@ -312,7 +312,9 @@ module type S =
        
     *)
       
-    (** Operations on {!Hashtbl} without exceptions.*)
+    (** Operations on {!Hashtbl} without exceptions.
+
+	@documents Hashtbl.S.ExceptionLess*)
     module ExceptionLess :
     sig
       val find : 'a t -> key -> 'a option
@@ -325,6 +327,8 @@ module type S =
 	there to improve readability and safety and to let you change the
 	order of arguments to functions. In every case, the behavior of the
 	function is identical to that of the corresponding function of {!Hashtbl}.
+
+	@documents Hashtbl.S.Labels
     *)
     module Labels :
     sig
