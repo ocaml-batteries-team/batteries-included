@@ -381,6 +381,6 @@ module  Unix  = Extlib.ExtUnix.Unix
 
 module Base64 = Extlib.Base64
 module Batteries_config = Batteries_config
-module MD5    = Digest
+module MD5    = Extlib.ExtDigest.Digest
 module Random = Extlib.ExtRandom.Random
 module Date             = Libs.ExtNetdate.Netdate

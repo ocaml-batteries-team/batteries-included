@@ -25,7 +25,7 @@ module Unix =
 struct
   include Unix
   open InnerIO
-  open Std
+
 
   (**
      {6 Thread-safety internals}
@@ -129,6 +129,9 @@ struct
    {6 Network}
 *)
       
+  let ( <| ) f x = f x
+  let ( *** ) f g = fun (x,y) -> (f x, g y)
+
   let open_connection ?autoclose addr =
     ( wrap_in ?autoclose *** wrap_out ) <| ( open_connection addr )
 
