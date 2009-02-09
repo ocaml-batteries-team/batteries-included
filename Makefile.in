@@ -1,4 +1,5 @@
 
+
 # Makefile for OCaml Batteries Included
 #
 # Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
@@ -101,8 +102,8 @@ config.ml: Makefile
 
 
 #Useful for testing
-reinstall: byte opt top syntax uninstall install
-rebyte: byte top syntax uninstall install
+reinstall: byte opt top syntax uninstall install tests
+rebyte: byte top syntax uninstall install tests-byte
 ifeq ($(BUILD_DOC),no)
 install-doc:
 else
@@ -202,10 +203,17 @@ examples:
 	cd examples/tools && ocamlfind batteries/ocamlbuild tools.otarget && \
 	cd ../snippets    && ocamlfind batteries/ocamlbuild snippets.otarget
 
+tests:
+	cd tests && ocamlfind batteries/ocamlbuild -clean && \
+	ocamlfind batteries/ocamlbuild main.byte main.native 
+
+tests-byte:
+	cd tests && ocamlfind batteries/ocamlbuild main.byte
+
 clean:
 	$(OCAMLBUILD) -clean
 	cd examples && $(OCAMLBUILD) -clean
 	rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"`
 	rm -f META doc/api.odocl doc/batteries/html/api/*
 
-.PHONY: doc/api.odocl batteries.mllib examples
+.PHONY: doc/api.odocl batteries.mllib examples tests
