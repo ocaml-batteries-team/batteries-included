@@ -33,7 +33,6 @@
     @author David Teller
     @author Dawid Toton
 *)
-
 module Buffer: sig
 
 type t = Buffer.t

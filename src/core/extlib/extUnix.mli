@@ -25,7 +25,7 @@ open Concurrent
 
     This module only provides low-level functions and types. Unless you
     know that you need low-level access to the operating system, you
-    probably don't. For higher-level functions, see modules {!Sys},
+    probably don't. For higher-level functions, see modules {!Shell},
     {!IO}, {!File}.
 
     {b Note} This module is thread-safe.

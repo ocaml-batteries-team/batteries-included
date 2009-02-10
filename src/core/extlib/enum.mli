@@ -21,17 +21,43 @@
 (** 
     Enumeration over abstract collection of elements.
     
-    Enumerations are entirely functional and most of the operations do
-    not actually require the allocation of data structures. Using
-    enumerations to manipulate data is therefore efficient and
-    simple. All data structures in such as lists, arrays, etc. have
-    support to convert from and to enumerations.
+    Enumerations are a representation of finite or infinite sequences
+    of elements. In Batteries Included, enumerations are used
+    pervasively, both as a uniform manner of reading and manipulating
+    the contents of a data structure, or as a simple manner of reading
+    or writing sequences of characters, numbers, strings, etc. from/to
+    files, network connections or other inputs/outputs.
 
-    {b Note} Enumerations are not thread-safe. You should not attempt to access one
-    enumeration from different threads.
+    Enumerations are typically computed as needed, which allows the
+    definition and manipulation of huge (possibly infinite) sequences.
+    Manipulating an enumeration is a uniform and often comfortable way
+    of extracting subsequences (function {!filter} or operator [//] et
+    al), converting sequences into other sequences (function {!map} or
+    operators [/@] and [@/] et al), gathering information (function
+    {!scanl} et al) or performing loops (functions {!iter} and
+    {!map}).
+
+    For instance, function {!ExtRandom.Random.enum_int} creates an
+    infinite enumeration of random numbers. Combined with [//]
+    and {!map}, we may turn this into an infinite enumeration of
+    squares of random even numbers:
+    [map (fun x -> x * x) ( (Random.enum_int 100) // even )]
+
+    Similarly, to obtain an enumeration of 50 random integers,
+    we may use {!take}, as follows:
+    [take 50 (Random.enum_int 100)]
+
+    As most data structures in Batteries can be enumerated and built
+    from enumerations, these operations may be used also on lists,
+    arrays, hashtables, etc. When designing a new data structure, it
+    is usuallly a good idea to allow enumeration and construction
+    from an enumeration.
+
+    {b Note} Enumerations are not thread-safe. You should not attempt
+    to access one enumeration from different threads.
 
     @author Nicolas Cannasse
-    @author David Teller
+    @author David Rajchenbach-Teller
 *)
 
 
