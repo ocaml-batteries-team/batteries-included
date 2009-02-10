@@ -443,7 +443,7 @@ val ( --- ) : int -> int -> int t
     [5 --- 10] is the enumeration 5,6,7,8,9,10.
     [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
 
-val ( ~~ ) : char -> char -> char t
+val ( --~ ) : char -> char -> char t
 (** As ( -- ), but for characters.*)
 
 val ( // ) : 'a t -> ('a -> bool) -> 'a t
@@ -451,6 +451,18 @@ val ( // ) : 'a t -> ('a -> bool) -> 'a t
 
     For instance, [(1 -- 37) // odd] is the enumeration of all odd
     numbers between 1 and 37.*)
+
+val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
+
+val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
+  (**
+     Mapping operators.
+
+     These operators have the same meaning as function {!map} but are
+     sometimes more readable than this function, when chaining
+     several transformations in a row.
+  *)
+
 
 val dup : 'a t -> 'a t * 'a t
   (** [dup stream] returns a pair of streams which are identical to [stream]. Note

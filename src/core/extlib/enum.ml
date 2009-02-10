@@ -702,9 +702,12 @@ let ( --- ) x y =
   if x <= y then x -- y
   else          seq x ((+) (-1)) ( (<=) y )
 
-let ( ~~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
+let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
 
 let ( // ) e f = filter f e
+
+let ( /@ ) e f        = map f e
+let ( @/ )            = map
 
 let uniq e = 
   match peek e with 
