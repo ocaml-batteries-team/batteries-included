@@ -15,7 +15,7 @@ a:active {color : Red; text-decoration : underline; }
 .param_info { margin-top: 4px; margin-left : 3em; margin-right : 3em }
 .code { color : #465F91 ; }
 h1 { font-size : 20pt ; text-align: center; margin-top : 3em; margin-bottom: 2em }
-h2 { font-size : 20pt ; border: 1px solid #000000; margin-top: 5px; margin-bottom: 2px;text-align: center; background-color: #90BDFF ;padding: 2px; }
+h2 { font-size : 20pt ; border: 1px solid #000000; margin-top: 3em; margin-bottom: 2px;text-align: center; background-color: #90BDFF ;padding: 2px; }
 h3 { font-size : 20pt ; border: 1px solid #000000; margin-top: 5px; margin-bottom: 2px;text-align: center; background-color: #90DDFF ;padding: 2px; }
 h4 { font-size : 20pt ; border: 1px solid #000000; margin-top: 5px; margin-bottom: 2px;text-align: center; background-color: #90EDFF ;padding: 2px; }
 h5 { font-size : 20pt ; border: 1px solid #000000; margin-top: 5px; margin-bottom: 2px;text-align: center; background-color: #90FDFF ;padding: 2px; }
@@ -26,7 +26,7 @@ div.h9 { font-size : 20pt ; border: 1px solid #000000; margin-top: 5px; margin-b
 .typetable { border-style : hidden }
 .indextable { border-style : hidden }
 .paramstable { border-style : hidden ; padding: 5pt 5pt}
-body { background-color : White }
+body { background-color : White; margin-left:5%; margin-right:5% }
 tr { background-color : White }
 td.typefieldcomment { background-color : #FFFFFF ; font-size: smaller ;}
 pre { margin-bottom: 4px }
@@ -41,3 +41,5 @@ pre {background-color:rgb(250,250,250);margin-top:2em}
 pre.example {margin-top:2px; margin-bottom:2em}
 code.example {background-color:rgb(250,250,250)}
 span.developer {font-weight:bold}
+code.terminal {display:block;padding:1em;background-color:black;color:white;width:90ex;margin:1em;white-space:pre}
+li {margin-top:1em}
