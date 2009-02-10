@@ -383,8 +383,8 @@ let output_channel ?(cleanup=false) ch =
     create_out
       ~write: (fun c     -> output_char ch c)
       ~output:(fun s p l -> Pervasives.output ch s p l; l)
-      ~close: (fun ()    -> Pervasives.close_out ch)
-      ~flush: (if cleanup then fun ()    -> Pervasives.flush ch else ignore)
+      ~close: (if cleanup then fun ()    -> Pervasives.close_out ch else ignore)
+      ~flush: (fun ()    -> Pervasives.flush ch)
 
 
 let pipe() =
