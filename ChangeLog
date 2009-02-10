@@ -1,4 +1,14 @@
+2009-02-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* build/fix_camlp4_print.ml: created
+
 2009-02-10  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/enum.ml*: [( /@ )], [( @/ )] added
+
+	* src/core/extlib/extPervasives.mli: [( ~~ )] renamed [( --~ )]
+	
+	* src/core/extlib/enum.ml*: [( ~~ )] renamed [( --~ )]
 
 	* src/core/extlib/extInt.mli: Doc typo fixed
 

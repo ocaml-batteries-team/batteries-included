@@ -733,7 +733,24 @@ module Preprocessing =
 struct
   let before_options () = ()
 
-  let after_rules () =  
+  let after_rules () = 
+(*    flag ["ocaml"; "pp";       "camlp4ofix"]  (S[A"camlp4o";
+						 A"-printer"; A"o";
+						 A"-sep"; A "";
+						 A "|";
+						 A "sed"; A "-e"; A"'s/\\*)/*)\\n/"]);*)
+    dep  ["ocaml"; "ocamldep"; "camlp4ofix"]  ["build/fix_camlp4_print.cmo"];
+    flag ["ocaml"; "pp";       "camlp4ofix"]  (S[A"camlp4"; 
+						 A"-parser";  A"Camlp4OCamlRevisedParser";
+						 A"-parser";  A"Camlp4OCamlParser";
+						 A"-printer"; A"Camlp4OCamlPrinter";
+						 A"-printer"; A"build/fix_camlp4_print.cmo"]);
+(*    flag ["ocaml"; "pp";       "camlp4ofix"]  (S[A"camlp4"; 
+						 A"-parser"; A"Camlp4OCamlRevisedParser";
+						 A"-parser"; A"Camlp4OCamlParser";
+						 A"-printer"; A"Camlp4OCamlPrinter";
+						 A"-sep"; A" "
+(*						 A"-sep"; A "\"(*hack*)\""*)]);*)
     flag ["ocaml"; "pp";       "use_optcomp"] (A"build/optcomp/pa_optcomp.cmo");
     dep  ["ocaml"; "ocamldep"; "use_optcomp"] ["build/optcomp/pa_optcomp.cmo"]
 
