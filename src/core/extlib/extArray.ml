@@ -27,6 +27,8 @@ module Array = struct
 
 
 type 'a t = 'a array with sexp
+type 'a enumerable = 'a t
+type 'a mapable = 'a t
 
 open Array
   let init         = init
@@ -173,8 +175,6 @@ let partition p xs =
        incr j;
        r) in
   xs1, xs2
-
-
 
 let enum xs =
   let rec make start xs =
