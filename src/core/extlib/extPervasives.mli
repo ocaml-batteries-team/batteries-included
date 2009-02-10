@@ -1253,7 +1253,7 @@ val ( --- ) : int -> int -> int Enum.t
     [5 --- 10] is the enumeration 5,6,7,8,9,10.
     [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
 
-val ( ~~ ) : char -> char -> char Enum.t
+val ( --~ ) : char -> char -> char Enum.t
 (** As ( -- ), but for characters.*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b Enum.t -> unit

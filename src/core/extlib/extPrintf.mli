@@ -27,7 +27,7 @@ open InnerIO
     @author David Teller
 
     @documents Printf
-    @documented Batteries.Languages.Printf
+    @documented Printf
 *)
 module Printf : sig
 
@@ -59,7 +59,7 @@ module Printf : sig
    [()]. On the other hand, ["%s"] is a format with one directive for
    printing strings. [printf "%s"] does nothing yet but returns a
    function with type [string -> unit]. In turn, [printf "%s"
-   foobar] prints ["foobar"] on the screen and returns [()]. The
+   "foobar"] prints ["foobar"] on the screen and returns [()]. The
    main interest of this module is that directives may be combined
    together and with text, to allow more complex printing. For instance
    [printf "(%s)\n"] is a function with type [string -> unit] which,

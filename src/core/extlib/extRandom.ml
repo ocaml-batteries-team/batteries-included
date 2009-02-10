@@ -26,7 +26,7 @@ TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 module Random = struct
   open Random
-  let init = init
+  let init      = init
   let full_init = full_init
   let self_init = self_init
   let bits      = bits
@@ -37,40 +37,83 @@ module Random = struct
   let float     = float
   let bool      = bool
 
-  (**A constructor for enumerations of random numbers taking advantage
-     of [State] to allow cloning.*)
-  let random_enum_with_state next =
-    let rec aux state =
-      let next  () = next state in
-      let count () = raise Enum.Infinite_enum in
-      let clone () = aux ( State.copy state ) in
-	Enum.make next count clone
-    in
-      aux ( State.make_self_init () )
+  module State =
+  struct
+    include State (*Note: here, we use [Marshal] to avoid breaking abstraction. So it's not portable.*)
+    let sexp_of_t t =
+      sexp_of_string (Marshal.to_string t [])
+    let t_of_sexp s =
+      Marshal.from_string (string_of_sexp s) 0
+
+    (**A constructor for enumerations of random numbers taking advantage
+       of [State] to allow cloning.*)
+    let random_enum state next =
+      let rec aux state =
+	let next  () = next state in
+	let count () = raise Enum.Infinite_enum in
+	let clone () = aux ( State.copy state ) in
+	  Enum.make next count clone
+      in aux state
+
+    let enum_bits state () =
+      let next state = bits state in
+	random_enum state next
+
+    let enum_int state bound =
+      let next state = int state bound in
+	random_enum state next
+
+    let enum_int32 state bound =
+      let next state = int32 state bound in
+	random_enum state next
+
+    let enum_int64 state bound =
+      let next state = int64 state bound in
+	random_enum state next
+
+    let enum_float state bound =
+      let next state = float state bound in
+	random_enum state next
+
+    let enum_nativeint state bound =
+      let next state = nativeint state bound in
+	random_enum state next
+
+    let enum_bool state () =
+      let next state = bool state in
+	random_enum state next
+
+  end
+
+  let random_enum next = State.random_enum ( State.make_self_init () ) next
+
+  let enum_bits () =
+    let next state = State.bits state in
+      random_enum next
 
   let enum_int bound =
     let next state = State.int state bound in
-      random_enum_with_state next
+      random_enum next
 
   let enum_int32 bound =
     let next state = State.int32 state bound in
-      random_enum_with_state next
+      random_enum next
 	
   let enum_int64 bound =
     let next state = State.int64 state bound in
-      random_enum_with_state next
+      random_enum next
 	
   let enum_float bound =
     let next state = State.float state bound in
-      random_enum_with_state next
+      random_enum next
 	
   let enum_nativeint bound =
     let next state = State.nativeint state bound in
-      random_enum_with_state next
+      random_enum next
 	
   let enum_bool () =
     let next state = State.bool state in
-      random_enum_with_state next
+      random_enum next
 
   open ExtArray
 
@@ -93,12 +136,5 @@ module Random = struct
   let get_state = get_state
   let set_state = set_state
 
-  module State =
-  struct
-    include State (*Note: here, we use [Marshal] to avoid breaking abstraction. So it's not portable.*)
-    let sexp_of_t t =
-      sexp_of_string (Marshal.to_string t [])
-    let t_of_sexp s =
-      Marshal.from_string (string_of_sexp s) 0
-  end
+
 end

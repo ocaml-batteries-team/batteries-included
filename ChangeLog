@@ -1,4 +1,16 @@
+2009-02-10  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extInt.mli: Doc typo fixed
+
+	* src/core/extlib/extBuffer.mli: Doc typo fixed
+
+	* src/core/extlib/extPrintf.mli: Doc typo fixed
+
+	* src/core/extlib/extUnix.mli: Doc typo fixed
+
 2009-02-09  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extRandom.ml*: [State.enum_*] added, [State.random_enum] added, [random_enum_with_state] renamed prandom_enum] and redefined from [State.random_enum]
 
 	* src/core/extlib/extBigarray.ml: flattened
 
