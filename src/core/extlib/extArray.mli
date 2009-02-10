@@ -50,8 +50,10 @@
 module Array :
 sig
 
-  type 'a t = 'a array
-      (**The type of arrays.  *)
+  type 'a t = 'a array (** The type of arrays.  *)
+
+  include Interfaces.Enumerable with type 'a enumerable = 'a t
+  include Interfaces.Mapable with type 'a mapable = 'a t
 
   (**{6 Base operations}*)
 

@@ -37,7 +37,11 @@ type 'a mut_list =  {
 	hd: 'a; 
 	mutable tl: 'a list
 }
+
 type 'a t = 'a list
+type 'a enumerable = 'a t
+type 'a mapable = 'a t
+
 external inj : 'a mut_list -> 'a list = "%identity"
 
 
@@ -587,6 +591,8 @@ let of_enum e =
 		acc.tl <- inj r;
 		r) h e in
 	h.tl
+
+
 
 let backwards l = enum (rev l) (*TODO: should we make it more efficient?*)
 (*let backwards l = (*This version only needs one pass but is actually less lazy*)

@@ -24,36 +24,41 @@
    @documents Data
 *)
 
-(** A signature for data structures which may be converted to [enum].
+(** A signature for data structures which may be converted to and from [enum].
 
     If you create a new data structure, you should make it compatible
     with [Enumerable].
 *)
 module type Enumerable = sig
-  type container (**The data structure, e.g. [string]*)
-  type contents  (**The contents of the data structure, e.g. [char]*)
-  val enum : container -> contents Enum.t
+  type 'a enumerable (** The data structure, e.g. ['a List.t] *)
+
+  val enum : 'a enumerable -> 'a Enum.t
+    (** Return an enumeration of the elements of the data structure *)
+
+  val of_enum : 'a Enum.t -> 'a enumerable
+    (** Build a data structure from an enumeration *)
 end
 
-(** A signature for data structures which may be converted to [enum].
+(** A signature for data structures which have a
+    [map : ('a -> 'b) -> ('a t -> 'b t)] operation.
 
-    If you create a new data structure, if possible, you should make
-    it compatible with [Of_enum].
+    If you create a new data structure, you should make it compatible
+    with [Enumerable].
 *)
-module type Of_enum = sig
-  type container (**The data structure, e.g. [string]*)
-  type contents  (**The contents of the data structure, e.g. [char]*)
-  val of_enum : contents Enum.t -> container
+module type Mapable = sig
+  type 'a mapable (** The data structure, e.g. ['a List.t] *)
+    
+  val map : ('a -> 'b) -> ('a mapable -> 'b mapable)
+    (** [map f e] applies [f] to every element of [e] and returns the corresponding data structure *)
 end
 
 module type OrderedType =
 sig
   type t
-    (** The type of the set elements. *)
   val compare : t -> t -> int
-    (** A total ordering function over the set elements.
+    (** A total ordering function
         This is a two-argument function [f] such that
-        [f e1 e2] is zero if the elements [e1] and [e2] are equal,
+        [f e1 e2] is zero if the values [e1] and [e2] are equal,
         [f e1 e2] is strictly negative if [e1] is smaller than [e2],
         and [f e1 e2] is strictly positive if [e1] is greater than [e2].
         Example: a suitable ordering function is the generic structural
