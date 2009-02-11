@@ -56,7 +56,7 @@ module UTF8 = struct
     invalid_arg "UTF8.length0 - Reserved"
 
   (* non-start bytes have the form 0b10xx_xxxx *)
-  let is_start_byte n = (n land 0b1100_0000) == 0b10_000000
+  let is_start_byte c = (Char.code c land 0b1100_0000) <> 0b10_000000
 
   module Byte : sig
     type b_idx(* = private int*)
@@ -76,8 +76,10 @@ module UTF8 = struct
     external to_int : b_idx -> int = "%identity"
     let next us bi = bi + (length0 (Char.code us.[bi]))
     let prev us bi = 
+      if bi > String.length us || bi < 0 then invalid_arg "UTF8.Byte.prev: Byte index not within string";
       let rec loop bi =
-	if is_start_byte (Char.code us.[bi]) then bi
+	if bi < 0 then (-1)
+	else if is_start_byte us.[bi] then bi
 	else loop (bi-1)
       in
       loop (bi-1)
