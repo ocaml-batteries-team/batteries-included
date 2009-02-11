@@ -470,7 +470,7 @@ let of_enum e =
 *)
 
 let of_backwards e =(*(Yoric) I'll keep the implementation simple at least until I understand [of_enum]*)
-  Enum.fold (fun c acc -> append acc (of_uchar c)) Empty e
+  Enum.fold (fun c acc -> append (of_uchar c) acc) Empty e
   
 let of_bulk_enum e =
   Enum.fold (fun s acc -> append acc (of_ustring s)) Empty e
