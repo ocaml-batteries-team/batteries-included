@@ -52,6 +52,9 @@ let global_struct _loc st init =
       | Some e -> <:str_item<module $x$ = struct $st$ let _ = $e$ end >>
       | None   -> <:str_item<module $x$ = struct $st$ end >>
 
+DELETE_RULE Gram str_item: "open"; module_longident END;
+DELETE_RULE Gram module_binding0: "="; module_expr END;
+
 EXTEND Gram
 GLOBAL: expr str_item module_binding0;
 
@@ -82,21 +85,23 @@ GLOBAL: expr str_item module_binding0;
     | "struct"; st = LIST0 [ s = str_item; OPT ";;" -> s ]; "end"; "in";
      e = expr LEVEL "top" -> local_struct _loc (stSem_of_list st) e None
     ]];
+
    str_item: LEVEL "top" [
      ["open"; modules = one_or_more_modules ->
        List.fold_left (
 	 fun acc mi ->
 	   match mi with
-	     | (<:module_expr< $id:i$ >>, Some e') -> 
+	     | (<:module_expr< $id:i$ >>, Some e') ->
 		 <:str_item<$acc$ open $id:i$ $exp:e'$>>
-	     | (<:module_expr< $id:i$ >>, None) -> 
+	     | (<:module_expr< $id:i$ >>, None) ->
 		 <:str_item<$acc$ open $id:i$>>
-	     | (me, init) -> 
+	     | (me, init) ->
 		 let x  = fresh () in
 		 let st = global_struct _loc <:str_item<module $x$ = $me$ open $uid:x$>> init in
 		   <:str_item<$acc$;; $st$>>
        ) <:str_item<>> modules]
    ];
+
    (*Implement implicit importation of modules.*)
    multi_module_expr: [
      "multi" [
@@ -106,10 +111,9 @@ GLOBAL: expr str_item module_binding0;
 	   <:module_expr<struct $sem$ end>>
      | first = module_expr -> first ]
    ];
-   module_binding0: 
-     ["top" RIGHTA[
+   module_binding0: [[
 	"="; e = multi_module_expr -> e
-     ]];
+   ]];
 (*  expr: LEVEL ";" [
     ["open"; me = module_expr; "in"; e = expr LEVEL "top" ->
        begin match me with
