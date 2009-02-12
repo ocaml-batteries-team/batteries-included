@@ -2,8 +2,8 @@
  * Pa_openin -- Syntax extension for local module opening
  * Copyright (C)   2006 Alain Frisch
  *                 2007 Till Varoquaux
- *                 2008 Gabriel Scherer
- *                 2008 David Teller
+ *                 2008 David Teller, LIFO, Universite d'Orleans
+ *                 2009 Gabriel Scherer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -105,7 +105,7 @@ GLOBAL: expr str_item module_binding0;
    (*Implement implicit importation of modules.*)
    multi_module_expr: [
      "multi" [
-       first = module_expr; "include"; l = LIST1 module_expr SEP "," -> 
+       first = module_expr; "open"; l = LIST1 module_expr SEP "," -> 
 	 let sem = Ast.stSem_of_list (List.map (fun e -> <:str_item<include $e$;;>>) (first::l))
 	 in 
 	   <:module_expr<struct $sem$ end>>
