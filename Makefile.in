@@ -204,7 +204,7 @@ examples:
 	cd ../snippets    && ocamlfind batteries/ocamlbuild snippets.otarget
 
 tests:
-	cd tests && ocamlfind batteries/ocamlbuild -clean && \
+	cd tests && ocamlbuild -clean && \
 	ocamlfind batteries/ocamlbuild main.byte main.native 
 
 tests-byte:
