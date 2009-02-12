@@ -23,3 +23,7 @@ INCLUDE "../config.ml"
 let browse s = 
   let command = Printf.sprintf browser s in
     Sys.command command
+
+let max_array_length = Sys.max_array_length
+let word_size        = Sys.word_size
+let max_string_length= Sys.max_string_length
