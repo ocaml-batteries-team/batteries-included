@@ -751,8 +751,18 @@ struct
 						 A"-printer"; A"Camlp4OCamlPrinter";
 						 A"-sep"; A" "
 (*						 A"-sep"; A "\"(*hack*)\""*)]);*)
-    flag ["ocaml"; "pp";       "use_optcomp"] (A"build/optcomp/pa_optcomp.cmo");
-    dep  ["ocaml"; "ocamldep"; "use_optcomp"] ["build/optcomp/pa_optcomp.cmo"]
+
+    (* optcomp as a syntax extension *)
+    flag ["ocaml"; "pp";       "use_pa_optcomp"] (A"build/optcomp/pa_optcomp.cmo");
+    dep  ["ocaml"; "ocamldep"; "use_pa_optcomp"] ["build/optcomp/pa_optcomp.cmo"];
+
+    (* optcomp as a standalone preprocessor, original syntax *)
+    flag ["ocaml"; "pp";       "use_optcomp_o"] (A"build/optcomp/optcomp_o.byte");
+    dep  ["ocaml"; "ocamldep"; "use_optcomp_o"] ["build/optcomp/optcomp_o.byte"];
+
+    (* optcomp as a standalone preprocessor, revised syntax *)
+    flag ["ocaml"; "pp";       "use_optcomp_r"] (A"build/optcomp/optcomp_r.byte");
+    dep  ["ocaml"; "ocamldep"; "use_optcomp_r"] ["build/optcomp/optcomp_r.byte"]
 
 end
 

@@ -1,2 +1,4 @@
-<*>: camlp4o,use_optcomp,pkg_sexplib
+<*>: pkg_sexplib
+<*.ml>: camlp4o,use_pa_optcomp
+<*.mli>: use_optcomp_o
 <*.cmx>:for-pack(Libs)

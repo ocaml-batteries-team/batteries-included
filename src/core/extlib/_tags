@@ -1,8 +1,8 @@
 <*.cmx>: for-pack(Batteries_core_pack.Extlib)
 <*.ml>:  pkg_sexplib,pkg_bin_prot,pkg_sexplib.syntax,syntax_camlp4o,pkg_camomile
-<*.mli>: pkg_camomile,pkg_sexplib,camlp4o,use_optcomp
+<*.mli>: pkg_camomile,pkg_sexplib,use_optcomp
 <IO.*>: principal
 <innerIO.*>: principal
 <*>: debug
 <extUnixThreads.*>: pkg_threads
-<extGc.mli>:camlp4o,use_optcomp
+<extGc.mli>: use_optcomp_o

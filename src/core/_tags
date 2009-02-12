@@ -10,7 +10,7 @@
 <toolchain.cmx>:         for-pack(Batteries_core_pack)
 <toolchain.*>:           use_camlp4,use_camlp4_full
 <toolchain.cma>:         link_all
-<toolchain.mli>:         pkg_sexplib,camlp4o,use_optcomp
+<toolchain.mli>:         pkg_sexplib,camlp4o,use_optcomp_o
 <toolchain.odoc>:        pkg_sexplib
 <extlib.mli>:            pkg_sexplib,pkg_camomile
 <extlib.cma>:            link_all

@@ -1,3 +1,11 @@
+2009-02-12  Jeremie Dimino  <jeremie@dimino.org>
+
+	* build/optcomp/optcomp*.ml: created
+
+	* myocamlbuild.ml: adapt the semantic of optcomp tags
+
+	* **/_tags: adapt optcomp tags to the new behaviour
+
 2009-02-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* build/fix_camlp4_print.ml: created
