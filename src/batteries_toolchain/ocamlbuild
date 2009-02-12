@@ -1,2 +1,2 @@
 ocamlbuild -just-plugin
-ocamlbuild -ocamlc "ocamlfind batteries/ocamlc" -ocamlopt "ocamlfind batteries/ocamlopt" -ocamldep "ocamlfind batteries/ocamldep" $@
+ocamlbuild -no-plugin -ocamlc "ocamlfind batteries/ocamlc" -ocamlopt "ocamlfind batteries/ocamlopt" -ocamldep "ocamlfind batteries/ocamldep" $@
