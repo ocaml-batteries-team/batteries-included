@@ -2,12 +2,35 @@
 
 	* build/optcomp/optcomp*.ml: created
 
-	* myocamlbuild.ml: adapt the semantic of optcomp tags
+	* myocamlbuild.ml: adapt the semantic of optcomp tags	
 
 	* **/_tags: adapt optcomp tags to the new behaviour
+	
+2009-02-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/main/nothreads/batteries.ml: [Safe_float] added
+
+	* src/main/threads/batteries.ml: [Safe_float] added
+
+	* src/core/extlib/extFloat.ml*: [Safe_float] added
+
+	* src/core/extlib/extFloat.ml: flattened
+
+	* src/core/extlib/extFloat.ml: [Base_safe_float] added
+
+	* src/core/extlib/number.ml*: [NaN] added
+
+	* src/syntax/pa_openin/pa_openin.ml: "include" replaced with "with"
+
+	* src/batteries_toolchain/ocamlbuild: now compiling [myocamlbuild.ml] using regular ocamlbuild
+>>>>>>> Safe_float added.:ChangeLog
 
 2009-02-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/batteries_config.ml*: [max_array_length], [word_size], [max_string_length] added
+
+	* Makefile.in: [tests] now uses regular [ocamlbuild] for cleanup
+	
 	* build/fix_camlp4_print.ml: created
 
 2009-02-10  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>

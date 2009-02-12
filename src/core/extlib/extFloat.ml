@@ -20,7 +20,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 open Number
 
@@ -92,4 +92,58 @@ module Float = struct
   include Number.MakeNumeric(BaseFloat)
   include BaseFloat
   let print out t = InnerIO.nwrite out (to_string t)
+end
+
+module Base_safe_float = struct
+  include BaseFloat
+
+  let if_safe x = match classify x with
+    | FP_infinite -> raise Overflow
+    | FP_nan      -> raise NaN
+    | _           -> ()
+  let check x = let _ = if_safe x in x
+
+  let safe1 f x   = check (f x)
+  let safe2 f x y = check (f x y)
+
+  let add     = safe2 add
+  let sub     = safe2 sub
+  let div     = safe2 div
+  let mul     = safe2 mul
+  let modulo  = safe2 modulo
+  let pred    = safe1 pred
+  let succ    = safe1 succ
+  let pow     = safe2 pow
+
+  let exp = safe1 exp
+  let log = safe1 log
+  let log10 = safe1 log10
+  let cos = safe1 cos
+  let sin = safe1 sin
+  let tan = safe1 tan
+  let acos = safe1 acos
+  let asin = safe1 asin
+  let atan = safe1 atan
+  let atan2 = safe2 atan2
+  let cosh = safe1 cosh
+  let sinh = safe1 sinh
+  let tanh = safe1 tanh
+  let ceil = safe1 ceil
+  let floor = safe1 floor
+  let modf x = let (y,z) as result = modf x in if_safe y; if_safe z; result
+  let frexp x = let (f,_) as result = frexp x in if_safe f; result
+  let ldexp = safe2 ldexp
+
+
+  let ( + )   = add
+  let ( - )   = sub
+  let ( / )   = div
+  let ( * )   = mul
+  let ( ** )  = pow
+end
+
+module Safe_float = struct
+  include Number.MakeNumeric(Base_safe_float)
+  include Base_safe_float
+  let print = Float.print
 end

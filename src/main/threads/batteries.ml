@@ -264,7 +264,7 @@ module  Int32    = Extlib.ExtInt32.Int32
 module  Int64    = Extlib.ExtInt64.Int64
 module  Native_int=Extlib.ExtNativeint.Native_int
 module  Num      = Extlib.ExtNum.Num
-(*module  Safe_float (*placeholder*)*)
+module  Safe_float= Extlib.ExtFloat.Safe_float
 module  Safe_int = Extlib.ExtInt.Safe_int
 
 (**{4 Textual data}

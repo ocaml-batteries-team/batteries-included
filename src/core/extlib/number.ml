@@ -200,3 +200,4 @@ let generic_pow ~zero ~one ~div_two ~mod_two ~mul:( * ) =
   in pow
 
 exception Overflow
+exception NaN
