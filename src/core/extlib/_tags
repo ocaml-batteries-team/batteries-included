@@ -5,4 +5,4 @@
 <innerIO.*>: principal
 <*>: debug
 <extUnixThreads.*>: pkg_threads
-<extGc.mli>: use_optcomp_o
+<*.mli>: use_optcomp_o

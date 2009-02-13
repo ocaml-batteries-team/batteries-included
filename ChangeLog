@@ -1,3 +1,15 @@
+2009-02-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extGc.mli: [control] restored
+
+	* src/core/extlib/_tags: <*.mli> now uses [use_optcomp_o]
+
+	* src/core/extlib/extUnix.mli: [inet_addr] made an alias, [sockaddr] made concrete, [socket_bool_option] made concrete
+
+2009-02-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/_tags: [extlib.mli] now uses [use_optcomp_o]
+
 2009-02-12  Jeremie Dimino  <jeremie@dimino.org>
 
 	* build/optcomp/optcomp*.ml: created

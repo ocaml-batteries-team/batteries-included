@@ -988,7 +988,7 @@ val getgrgid : int -> group_entry
 (** {6 Internet addresses} *)
 
 
-type inet_addr
+type inet_addr = Unix.inet_addr
 (** The abstract type of Internet addresses. *)
 
 val inet_addr_of_string : string -> inet_addr
@@ -1036,9 +1036,9 @@ type socket_type = Unix.socket_type =
 (** The type of socket kinds, specifying the semantics of
    communications. *)
 
-type sockaddr = Unix.sockaddr (*= 
+type sockaddr = Unix.sockaddr = 
     ADDR_UNIX of string 
-  | ADDR_INET of inet_addr * int*)
+  | ADDR_INET of inet_addr * int
 (** The type of socket addresses. [ADDR_UNIX name] is a socket
    address in the Unix domain; [name] is a file name in the file
    system. [ADDR_INET(addr,port)] is a socket address in the Internet
@@ -1119,14 +1119,18 @@ val sendto :
 
 
 type socket_bool_option = Unix.socket_bool_option 
-(*=
+=
     SO_DEBUG       (** Record debugging information *)
   | SO_BROADCAST   (** Permit sending of broadcast messages *)
   | SO_REUSEADDR   (** Allow reuse of local addresses for bind *)
   | SO_KEEPALIVE   (** Keep connection active *)
   | SO_DONTROUTE   (** Bypass the standard routing algorithms *)
   | SO_OOBINLINE   (** Leave out-of-band data in line *)
-  | SO_ACCEPTCONN  (** Report whether socket listening is enabled *) *)
+  | SO_ACCEPTCONN  (** Report whether socket listening is enabled *) 
+#if ocaml_version >= (3, 11)
+  | TCP_NODELAY    (** Control the Nagle algorithm for TCP sockets *)
+  | IPV6_ONLY      (** Forbid binding an IPv6 socket to an IPv4 address *)
+#endif
 (** The socket options that can be consulted with {!Unix.getsockopt}
    and modified with {!Unix.setsockopt}.  These options have a boolean
    ([true]/[false]) value. *)
