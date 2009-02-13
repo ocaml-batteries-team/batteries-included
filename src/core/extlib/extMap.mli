@@ -1,7 +1,7 @@
 (* 
  * ExtMap - Additional map operations
  * Copyright (C) 1996 Xavier Leroy
- *               2008 David Teller
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@
    and insertion take time logarithmic in the size of the map.
 
     @author Xavier Leroy (Base module)
-    @author David Teller
+    @author David Rajchenbach-Teller
 
     @documents Map
 *)
@@ -94,9 +94,29 @@ module type S =
        where [k1 ... kN] are the keys of all bindings in [m]
        (in increasing order), and [d1 ... dN] are the associated data. *)
 
+    val filter: ('a -> bool) -> 'a t -> 'a t
+      (**[filter f m] returns a map where only the values [a] of [m]
+	 such that [f a = true] remain. The bindings are passed to [f]
+	 in increasing order with respect to the ordering over the
+	 type of the keys. *)
+
+    val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
+      (**[filter f m] returns a map where only the key, values pairs
+	 [key], [a] of [m] such that [f key a = true] remain. The
+	 bindings are passed to [f] in increasing order with respect
+	 to the ordering over the type of the keys. *)
+
+    val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
+      (** [filter_map f m] combines the features of [filteri] and
+	  [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
+	  where [a0..an] are the elements of [m] and [key0..keyn] the
+	  respective corresponding keys. It returns the map of
+	  pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
+	  [None], the corresponding element of [m] is discarded). *)
+
     val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
-    (** Total ordering between maps.  The first argument is a total ordering
-        used to compare data associated with equal keys in the two maps. *)
+      (** Total ordering between maps.  The first argument is a total ordering
+          used to compare data associated with equal keys in the two maps. *)
 
     val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
     (** [equal cmp m1 m2] tests whether the maps [m1] and [m2] are
@@ -168,6 +188,8 @@ module type S =
       val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
       val map : f:('a -> 'b) -> 'a t -> 'b t
       val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+      val filter: f:('a -> bool) -> 'a t -> 'a t
+      val filteri:f:(key -> 'a -> bool) -> 'a t -> 'a t
       val fold :
 	f:(key:key -> data:'a -> 'b -> 'b) ->
 	'a t -> init:'b -> 'b

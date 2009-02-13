@@ -1,6 +1,7 @@
 (*
  * PMap - Polymorphic maps
  * Copyright (C) 1996-2003 Xavier Leroy, Nicolas Cannasse, Markus Mottl
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,9 +24,10 @@
     This is a polymorphic map, similar to standard library [Map] module
     but in a defunctorized style.
 
-    @author Xavier Leroy
+    @author Xavier Leroy (Base library)
     @author Nicolas Cannasse
     @author Markus Mottl
+    @author David Rajchenbach-Teller
 *)
 
 type ('a, 'b) t
@@ -80,13 +82,33 @@ val mapi : ('a -> 'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
 val fold : ('b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
     where [k1 ... kN] are the keys of all bindings in [m],
-    and [d1 ... dN] are the associated data. ???????
+    and [d1 ... dN] are the associated data.
     The order in which the bindings are presented to [f] is
     unspecified. *)
 
 val foldi : ('a -> 'b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** Same as [fold], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
+
+val filter: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  (**[filter f m] returns a map where only the values [a] of [m]
+     such that [f a = true] remain. The bindings are passed to [f]
+     in increasing order with respect to the ordering over the
+     type of the keys. *)
+  
+val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  (**[filter f m] returns a map where only the key, values pairs
+     [key], [a] of [m] such that [f key a = true] remain. The
+     bindings are passed to [f] in increasing order with respect
+     to the ordering over the type of the keys. *)
+  
+val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
+  (** [filter_map f m] combines the features of [filteri] and
+      [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
+      where [a0..an] are the elements of [m] and [key0..keyn] the
+      respective corresponding keys. It returns the map of
+      pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
+      [None], the corresponding element of [m] is discarded). *)
 
 val enum : ('a, 'b) t -> ('a * 'b) Enum.t
 (** creates an enumeration for this map. *)
