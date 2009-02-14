@@ -44,7 +44,7 @@ struct
 
   let after_rules () =
        (* When one link an OCaml library/binary/package, one should use -linkpkg *)
-       flag ["ocaml"; "byte"; "link"] & A"-linkpkg";
+       flag ["ocaml"; "byte"; "program"] & A"-linkpkg";
 
        (* For each ocamlfind package one inject the -package option when
        	* compiling, computing dependencies, generating documentation and
