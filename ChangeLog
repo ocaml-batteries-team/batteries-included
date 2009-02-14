@@ -8,6 +8,22 @@
 
 2009-02-14  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* myocamlbuild.ml: Applied patch by Stéphane Glondu
+
+	* examples/snippets/snippets.itarget: [netchan-cat] => [netchan_cat]
+
+	* src/main/nothreads/batteries.ml: 
+	* src/main/threads/batteries.ml: [ExtFormat.Format] replaces [Format]
+
+	* src/main/nothreads/batteries.mllib:
+	* src/main/threads/batteries.mllib: [Format] removed
+
+	* src/core/extlib/extFormat.ml*: created
+
+	* src/main/threads/batteries.ml: [Future.Logger] added
+
+	* src/main/nothreads/batteries.ml: [Future.Logger] added
+
 	* src/core/extlib/extHashtbl.ml: [Labels.label] created
 
 	* src/core/extlib/extHashtbl.ml: [Labels.*] reimplemented from [Labels.label]
