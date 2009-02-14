@@ -747,6 +747,12 @@ end
 (**/**)
 (**{6 Internals}*)
 
+(**
+   Optimized access to fields
+*)
+val get_output : _ output -> (string -> int -> int -> int)
+val get_flush  : _ output -> (unit -> unit)
+
 val lock : Concurrent.lock ref
 (**
    A reference to a set of locking operations.

@@ -1163,3 +1163,5 @@ let kbprintf        = Printf.kbprintf
 let kprintf         = Printf.kprintf
 end
 
+let get_output out = out.out_output
+let get_flush  out = out.out_flush
