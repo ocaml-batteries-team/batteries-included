@@ -126,6 +126,7 @@ module Pervasives = struct
   let uppercase = String.uppercase
 
   (** {6 Clean-up}*)
+
   let _ = at_exit close_all; (*Called second*)
           at_exit flush_all  (*Called first*)
 end
