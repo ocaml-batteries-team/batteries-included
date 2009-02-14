@@ -5,7 +5,6 @@ Batlib_Baselib_Event
 Batlib_Baselib_Filename
 Batlib_Baselib_Callback
 Batlib_Baselib_CamlinternalMod
-Batlib_Baselib_Format
 Batlib_Baselib_Lazy
 Batlib_Baselib_Lexing
 Batlib_Baselib_Obj

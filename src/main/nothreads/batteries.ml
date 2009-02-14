@@ -104,6 +104,7 @@ struct
   module ParserCo    = Extlib.ParserCo
   module Path        = Extlib.Path
   module Result      = Extlib.Result
+  module Logger      = Extlib.Logger
 end
         
 (**
@@ -361,7 +362,7 @@ module  Rpc_*
 module  Genlex = Genlex
 module  Lexing = Lexing
 module  Parsing= Parsing
-module  Format = Format
+module  Format = Extlib.ExtFormat.Format
 module  Printf = Extlib.ExtPrintf.Printf
 module  Str    = Extlib.ExtStr.Str
 (*   100module  PCRE (*placeholder*)*)

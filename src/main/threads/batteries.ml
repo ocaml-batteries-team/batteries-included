@@ -347,7 +347,7 @@ module  Rpc_*
 
 module  Lexing = Batlib_Baselib_Lexing
 module  Parsing= Batlib_Baselib_Parsing
-module  Format = Batlib_Baselib_Format
+module  Format = Extlib.ExtFormat.Format
 module  Printf = Extlib.ExtPrintf.Printf
 (* module  PCRE (*placeholder*)*)
 module  Scanf  = Batlib_Baselib_Scanf
@@ -394,4 +394,5 @@ struct
   module ParserCo    = Extlib.ParserCo
   module Path        = Extlib.Path
   module Result      = Extlib.Result
+  module Logger      = Extlib.Logger
 end
