@@ -1,4 +1,22 @@
+2009-02-14  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extHashtbl.ml: [Labels.label] created
+
+	* src/core/extlib/extHashtbl.ml: [Labels.*] reimplemented from [Labels.label]
+
 2009-02-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extHashtbl.mli: Documentation on section Traversing
+
+	* src/core/extlib/extHashtbl.ml: flattened
+
+	* src/core/extlib/pMap.ml*: [filter], [filteri], [filter_map] added
+
+	* src/core/extlib/pMap.ml: flattened
+
+	* src/core/extlib/extMap.ml: flattened
+
+	* src/core/extlib/extMap.ml*: [filter], [filteri], [filter_map] added
 
 	* src/core/extlib/extGc.mli: [control] restored
 
@@ -35,7 +53,6 @@
 	* src/syntax/pa_openin/pa_openin.ml: "include" replaced with "with"
 
 	* src/batteries_toolchain/ocamlbuild: now compiling [myocamlbuild.ml] using regular ocamlbuild
->>>>>>> Safe_float added.:ChangeLog
 
 2009-02-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 

@@ -22,7 +22,7 @@
  *)
  
 open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Mutable" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 module Hashtbl =
   struct
@@ -129,7 +129,7 @@ module Hashtbl =
 	  size = (h_conv h).size;
 	  data = Array.map loop (h_conv h).data; 
 	}
-	  
+
     let remove_all h key =
       let hc = h_conv h in
       let rec loop = function
@@ -175,6 +175,21 @@ module Hashtbl =
     let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
       Enum.print ~first ~last ~sep (fun out (k,v) -> ExtPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
 
+    let filteri (f:'key -> 'a -> bool) (t:('key, 'a) t) =
+      let result = create 16 in
+	iter (fun k a -> if f k a then add result k a) t;
+	result
+
+    let filter  f t = filteri (fun k a -> f a) t
+
+    let filter_map f t =
+      let result = create 16 in
+	iter (fun k a -> match f k a with
+		| None   -> ()
+		| Some v -> add result k v) t;
+	result
+
+
     module ExceptionLess =
     struct
       let find = find_option
@@ -183,11 +198,15 @@ module Hashtbl =
     module Labels =
     struct
 
-      let add e ~key ~data = add e key data
-      let replace e ~key ~data = replace e key data
-      let iter  ~f e = iter (fun key data -> f ~key ~data) e
-      let map   ~f e = map (fun key data -> f ~key ~data) e
-      let fold  ~f e ~init = fold (fun key data -> f ~key ~data) e init
+      let label f               = fun key data -> f ~key ~data
+      let add e ~key ~data      = add e key data
+      let replace e ~key ~data  = replace e key data
+      let iter       ~f e       = iter (label f) e
+      let map        ~f e       = map (label f) e
+      let filter     ~f e       = filter f e
+      let filteri    ~f e       = filteri (label f) e
+      let filter_map ~f e       = filter_map (label f) e
+      let fold       ~f e ~init = fold (label f) e init
 
     end
 
@@ -214,6 +233,9 @@ module Hashtbl =
       val iter : (key -> 'a -> unit) -> 'a t -> unit
       val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
       val map : (key -> 'b -> 'c) -> 'b t -> 'c t
+      val filter: ('a -> bool) -> 'a t -> 'a t
+      val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
+      val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
       val keys : 'a t -> key Enum.t
       val values : 'a t -> 'a Enum.t
       val enum : 'a t -> (key * 'a) Enum.t
@@ -245,6 +267,9 @@ module Hashtbl =
 	val replace : 'a t -> key:key -> data:'a -> unit
 	val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
 	val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+	val filter: f:('a -> bool) -> 'a t -> 'a t
+	val filteri:f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
+	val filter_map:f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
 	val fold :
 	  f:(key:key -> data:'a -> 'b -> 'b) ->
 	  'a t -> init:'b -> 'b
@@ -362,13 +387,31 @@ module Hashtbl =
       let print ?first ?last ?sep print_k print_v out t =
 	print ?first ?last ?sep print_k print_v out (to_hash t)
 
+      let filteri f t =
+	let result = create 16 in
+	  iter (fun k a -> if f k a then add result k a) t;
+	  result
+
+      let filter  f t = filteri (fun k a -> f a) t
+	
+      let filter_map f t =
+	let result = create 16 in
+	  iter (fun k a -> match f k a with
+		  | None   -> ()
+		  | Some v -> add result k v) t;
+	  result
+
       module Labels =
       struct
-	let add e ~key ~data = add e key data
+	let label f              = fun key data -> f ~key ~data
+	let add e ~key ~data     = add e key data
 	let replace e ~key ~data = replace e key data
-	let iter  ~f e = iter (fun key data -> f ~key ~data) e
-	let map   ~f e = map (fun key data -> f ~key ~data) e
-	let fold  ~f e ~init = fold (fun key data -> f ~key ~data) e init
+	let iter  ~f e           = iter (label f) e
+	let map   ~f e           = map (label f) e
+	let filter     ~f e      = filter f e
+	let filteri    ~f e      = filteri (label f) e
+	let filter_map ~f e      = filter_map (label f) e
+	let fold  ~f e ~init     = fold (label f) e init
       end
 
       module ExceptionLess =
@@ -405,6 +448,9 @@ module Hashtbl =
       let iter        = iter
       let fold        = fold
       let map         = map
+      let filter      = filter
+      let filteri     = filteri
+      let filter_map  = filter_map
       let keys        = keys
       let values      = values
       let enum        = enum
@@ -412,14 +458,20 @@ module Hashtbl =
       let sexp_of_t   = sexp_of_t
       let t_of_sexp   = t_of_sexp
       let print       = print
-
+      let filter      = filter
+      let filteri     = filteri
+      let filter_map  = filter_map
       module Labels =
       struct
-	let add e ~key ~data = add e key data
+	let label f              = fun key data -> f ~key ~data
+	let add e ~key ~data     = add e key data
 	let replace e ~key ~data = replace e key data
-	let iter  ~f e = iter (fun key data -> f ~key ~data) e
-	let map   ~f e = map (fun key data -> f ~key ~data) e
-	let fold  ~f e ~init = fold (fun key data -> f ~key ~data) e init
+	let iter  ~f e           = iter (label f) e
+	let map   ~f e           = map (label f) e
+	let filter     ~f e      = filter f e
+	let filteri    ~f e      = filteri (label f) e
+	let filter_map ~f e      = filter_map (label f) e
+	let fold  ~f e ~init     = fold (label f) e init
       end
 
       module ExceptionLess =
