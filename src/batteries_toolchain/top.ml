@@ -46,7 +46,6 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
 #require "camlp4";;
 #require "batteries";;
 #require "batteries.syntax";;
-#load "pa_estring_top.cmo";; (*For some reason, pa_estring_top.cmo won't load by itself.*)
 
 
 if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
