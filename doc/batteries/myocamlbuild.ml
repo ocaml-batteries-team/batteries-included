@@ -195,17 +195,17 @@ let binary = Findlib.resolve_path \"@batteries_nothreads/run.byte\";; (*Note: we
 
 (*Prepare command-line*)
 let buf = Buffer.create 80;;
-Printf.bprintf buf \"%S %S -- \" binary "
-(Pathname.concat Pathname.current_dir_name cma)(*Should do one of the following:
+Printf.bprintf buf \"%S %S -- \" binary (Filename.concat (Filename.dirname (Sys.argv.(0)))" cma
+(*(Pathname.concat Pathname.current_dir_name cma)(*Should do one of the following:
 						 - replace this with the complete path
 						 - build the path at run-time from [Sys.argv.(0)]
-						 - find a way to embed the plug-in inside the .byte *)
-";;\nfor i = 1 to Array.length Sys.argv - 1 do
+						 - find a way to embed the plug-in inside the .byte *)*)
+");;\nfor i = 1 to Array.length Sys.argv - 1 do
   Printf.bprintf buf \"%S \" Sys.argv.(i)
 done;;
 
 let command = Buffer.contents buf in
-  Printf.eprintf \"Launching\\t%s\\n...\\n\" command;
+  Printf.eprintf \"Requesting load of %S\\n...\\n%!\" command;
   Sys.command command
 "
 	  in Echo ([contents], dest)
