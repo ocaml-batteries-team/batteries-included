@@ -462,16 +462,7 @@ let mem_assoc e l = Option.is_some (may_find (fun (a, _) -> a = e) l)
 
 let mem_assq e l = Option.is_some (may_find (fun (a, _) -> a == e) l)
 
-let filter_map f l =
-  let rec aux rest = lazy (match next rest with
-    | Cons (h, t) ->
-	begin
-	  match f h with
-	    | None   -> Lazy.force (aux t)
-	    | Some x -> Cons (x, aux t)
-	end
-    | Nil         -> Nil
-  ) in aux l
+
 
 (*  let rec aux rest = match next rest with
     | Cons (h, t) ->
