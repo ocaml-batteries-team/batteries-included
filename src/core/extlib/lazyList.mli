@@ -411,10 +411,13 @@ val of_enum : 'a Enum.t -> 'a t
 (**Lazy conversion from enum.*)
 
 val eager_of_list : 'a list -> 'a t
-(**Eager conversion from lists*)  
+(**Eager conversion from lists.
+
+   This function is much faster than {!of_list} but will freeze on cyclic lists.
+*)
 
 val of_array : 'a array -> 'a t
-(**Lazy conversion from array*)
+(**Eager conversion from array*)
   
 (**
    {6  Predicates}

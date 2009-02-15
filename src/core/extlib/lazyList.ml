@@ -43,7 +43,7 @@ let nil    = lazy Nil
 
 let next l = Lazy.force l
 
-let cons h t = lazy (Cons(h, t))
+let cons h t = Lazy.lazy_from_val (Cons(h, t))
 
 let ( ^:^ ) = cons
 
@@ -122,14 +122,14 @@ let map f l =
     fun rest ->
       match next rest with
       | Cons (x, (t : 'a t)) -> lazy (Cons (f x, aux t))
-      | Nil -> lazy Nil
+      | Nil -> nil
   in aux l
   
 let mapi f l =
   let rec aux rest i =
     match next rest with
       | Cons (x, (t : 'a t)) -> lazy (Cons (f i x, aux t ( i + 1 ) ))
-      | Nil -> lazy Nil
+      | Nil -> nil
   in aux l 0
 
 let fold_left f init l =
@@ -258,7 +258,7 @@ let at list n =
 
 let nth = at
 
-let rev list = fold_left (fun acc x -> lazy (Cons (x, acc))) nil list
+let rev list = fold_left (fun acc x -> Lazy.lazy_from_val (Cons (x, acc))) nil list
   
 (**Revert a list, convert it to a lazy list.
    Used as an optimisation.*)
@@ -267,8 +267,8 @@ let rev_of_list (list:'a list) = List.fold_left (fun acc x -> lazy (Cons (x, acc
 let eager_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list =
     match next list with
-    | Cons (x, t) -> lazy (Cons (x, aux t))
-    | _ -> l2
+    | Cons (x, t) -> cons x (aux t)
+    | _           -> l2
   in aux l1
   
 let rev_append (l1 : 'a t) (l2 : 'a t) =
@@ -283,15 +283,13 @@ let rev_append (l1 : 'a t) (l2 : 'a t) =
 let rev_append_of_list (l1 : 'a list) (l2 : 'a t) : 'a t =
   let rec aux list acc = match list with
     | []   -> acc
-    | h::t -> aux t (lazy (Cons (h, acc)))
+    | h::t -> aux t (cons h acc)
   in aux l1 l2
 
 let append (l1 : 'a t) (l2 : 'a t) =
-  let rec (aux : 'a t -> 'a t) =
-    fun rest_of_l1 ->
-      match next rest_of_l1 with
+  let rec aux list =  match next list with
       | Cons (x, (t : 'a t)) -> lazy (Cons (x, aux t))
-      | _ -> l2
+      | _                    -> l2
   in aux l1
   
 let ( ^@^ ) = append
@@ -343,8 +341,9 @@ let enum l =
    * this will let you convert regular infinite lists to lazy lists.
 *)
 let of_list l =
-  let rec aux rest =
-    match rest with | [] -> nil | h :: t -> lazy (Cons (h, aux t))
+  let rec aux = function
+    | []     -> nil 
+    | h :: t -> lazy (Cons (h, aux t))
   in aux l
   
 (**
@@ -363,13 +362,13 @@ let of_stream s =
    Eager conversion from lists
 *)
 let eager_of_list l =
-  ListLabels.fold_right ~init: nil ~f: (fun x acc -> lazy (Cons (x, acc))) l
+  ListLabels.fold_right ~init: nil ~f: (fun x acc -> Lazy.lazy_from_val (Cons (x, acc))) l
   
 (**
-   Lazy conversion from array
+   Eager conversion from array
 *)
 let of_array l =
-  ArrayLabels.fold_right ~init: nil ~f: (fun x acc -> lazy (Cons (x, acc))) l
+  ArrayLabels.fold_right ~init: nil ~f: (fun x acc -> Lazy.lazy_from_val (Cons (x, acc))) l
 
 (**
    Lazy conversion from enum
