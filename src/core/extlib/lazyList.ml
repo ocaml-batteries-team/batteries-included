@@ -39,7 +39,7 @@ and 'a t =
 
 (** {6 Access} *)
 
-let nil    = lazy Nil
+let nil    = Lazy.lazy_from_val Nil
 
 let next l = Lazy.force l
 
@@ -384,13 +384,37 @@ let of_enum e =
 (**
    {6  Predicates}
 *)
-let filter f l =
+let filter f l = 
+  let rec next_true l = match next l with (*Compute the next accepted predicate without thunkification*)
+    | Cons (x, l) when not (f x) -> next_true l
+    | l                          -> l
+  in
+  let rec aux l = lazy(match next_true l with
+    | Cons (x, l) -> Cons (x, aux l)
+    | Nil         -> Nil)
+  in aux l
+
+let filter_map f l = 
+  let rec next_true l = match next l with (*Compute the next accepted predicate without thunkification*)
+    | Cons (x, l) -> 
+	begin
+	  match f x with
+	    | Some v  -> Some (v, l)
+	    | None    -> next_true l
+	end
+    | Nil         -> None
+  in
+  let rec aux l = lazy(match next_true l with
+    | Some (x, l) -> Cons (x, aux l)
+    | None        -> Nil)
+  in aux l
+(*let filter f l =
   let rec aux rest =
     match next rest with
     | Cons (x, t) when f x -> Cons (x, lazy (aux t))
     | Cons (_, t)          -> aux t
     | Nil                  -> Nil
-  in lazy (aux l)
+  in lazy (aux l)*)
   
 let exists f l =
   let rec aux rest = match next rest with
