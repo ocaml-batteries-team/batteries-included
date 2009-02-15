@@ -46,19 +46,32 @@ let init len f =
 	s
 
 let starts_with str p =
-	let len = length p in
-	if length str < len then 
-		false
-	else
-		sub str 0 len = p
+  let len = length p in
+    if length str < len then false
+    else 
+      Return.label 
+	(fun label ->
+	   for i = 0 to len - 1 do
+	     if unsafe_get str i <> unsafe_get p i then
+	       Return.return label false
+	   done;
+	   true)
 
-let ends_with s e =
-	let el = length e in
-	let sl = length s in
-	if sl < el then
-		false
-	else
-		sub s (sl-el) el = e
+
+let ends_with str p =
+  let el = length p   
+  and sl = length str in
+  let diff = sl - el  in
+    if diff < 0 then false (*string is too short*)
+    else
+      Return.label
+	(fun label ->
+	   for i = 0 to el - 1 do
+	     if get str (diff + i) <> get p i then
+	       Return.return label false
+	   done;
+	   true)
+
 
 let find_from str ofs sub = 
   let sublen = length sub in
@@ -380,6 +393,7 @@ let compare_without_case s1 s2 = compare (String.lowercase s1) (String.lowercase
 
 let print         = InnerIO.nwrite
 let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
+let print_quoted out s = ExtPrintf.Printf.fprintf out "%S" s
 
 module Cap =
 struct

@@ -410,6 +410,14 @@ val print: 'a InnerIO.output -> string -> unit
 val println: 'a InnerIO.output -> string -> unit
 (**Print a string, end the line.*)
 
+val print_quoted: 'a InnerIO.output -> string -> unit
+(**Print a string, with quotes.
+
+   [print_quoted stdout "foo"] prints ["foo"] (with the quotes)
+
+   [print_quoted stdout "\"bar\""] prints ["\"bar\""] (with the quotes)
+*)
+
 (**/**)
 
 (** Undocumented operations *)

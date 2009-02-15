@@ -1,7 +1,14 @@
 open Testing
 
 let tests =
-  [ (Test_digest.name, Test_digest.test);
+  [ Test_string.test_1;
+    Test_string.test_2;
+    Test_string.test_3;
+    Test_string.test_4;
+    Test_string.test_5;
+    Test_string.test_6;
+    Test_string.test_7;
+    (Test_digest.name, Test_digest.test);
     Test_enum.test_array;
     Test_enum.test_array2;
     Test_enum.test_list;
