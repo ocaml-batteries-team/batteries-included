@@ -609,6 +609,34 @@ expand_module include_dirs m ["ml"]) modules));
 	  Echo([Buffer.contents buf], dest)
       end
 
+    (**{6 Generation of batteries.mli}
+
+       A .mlhierarchy is a file containing the following constructions:
+       - [module Foo = Bar]
+       - [module Foo = struct (*recursively*) end]
+       - comments
+
+       From a .mlhierarchy, we can build a .ml, which is identical.
+       From a .mlhierarchy, we can also build a .mli, by 
+    *)
+(*
+    let not_used_yet () =
+      rule ".mlhierarchy to .ml" 
+	~prod:"%.ml"
+	~dep:"%.mlhierarchy" 
+	begin fun env build ->
+	  (*Just copy .mlhierarchy -> .ml*)
+	  assert false
+	end;
+
+      rule ".mlhierarchy to .mli"
+	~prod:"%.mli"
+	~dep:"%.mlhierarchy"
+	begin fun env build ->
+	  (*Parse .mlhierarchy*)
+	end;
+*)	
+
 end
 
 (**

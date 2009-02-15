@@ -1,3 +1,37 @@
+2009-02-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* tests/dynlink/*: created
+
+	* README: [make syntax] added
+
+	* tests: renamed [testsuite]
+
+	* Makefile.in: now using [testsuite] rather than [tests]
+	
+	* src/core/extlib/lazyList.ml: [seq], [map], [filter], [append] made lazier
+
+	* src/core/extlib/lazyList.ml: [rev], [of_array], [rev_append_of_list], [of_list_eager], [rev_of_list] now eager
+
+	* src/core/extlib/lazyList.ml: [cons], [nil] do not create a thunk anymore
+
+	* src/core/extlib/pSet.ml*: [map], [filter], [filter_map] added
+
+	* src/core/extlib/extSet.mli: documentation
+
+	* src/core/extlib/pSet.mli: documentation
+
+	* README: instructions for [make] now specify top
+
+	* Makefile.in: in [install], toolchain is now marked as optional
+	
+	* tests/test_string.ml: created
+
+	* src/core/extlib/extString.ml: [starts_with], [ends_with] rewritten without allocation
+
+	* src/core/extlib/extSet.ml*: added [map], [filter_map]
+
+	* src/core/extlib/extString.ml: [String.Cap.repeat] added
+
 2009-02-14 Jeremie Dimino <jeremie@dimino.org>
 
 	* build/META.in: reload Camlp4Top.cmo after loading pa_estring in the toplevel
