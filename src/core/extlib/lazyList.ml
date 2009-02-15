@@ -387,22 +387,20 @@ let of_enum e =
 let filter f l =
   let rec aux rest =
     match next rest with
-    | Cons (x, t) when f x -> lazy (Cons (x, aux t))
+    | Cons (x, t) when f x -> Cons (x, lazy (aux t))
     | Cons (_, t)          -> aux t
-    | Nil                  -> nil
-  in aux l
+    | Nil                  -> Nil
+  in lazy (aux l)
   
 let exists f l =
-  let rec aux rest =
-    match next rest with
+  let rec aux rest = match next rest with
     | Cons (x, t) when f x -> true
     | Cons (_, t)          -> aux t
     | Nil                  -> false
   in aux l
   
 let for_all f l =
-  let rec aux rest =
-    match next rest with
+  let rec aux rest = match next rest with
     | Cons (x, t) when f x -> aux t
     | Cons (_, t)          -> false
     | Nil                  -> true
@@ -441,12 +439,23 @@ let mem_assoc e l = Option.is_some (may_find (fun (a, _) -> a = e) l)
 let mem_assq e l = Option.is_some (may_find (fun (a, _) -> a == e) l)
 
 let filter_map f l =
-  let rec aux rest =
-    match next rest with
+  let rec aux rest = lazy (match next rest with
     | Cons (h, t) ->
-        (match f h with | None -> aux t | Some x -> lazy (Cons (x, aux t)))
-    | Nil -> nil
-  in aux l
+	begin
+	  match f h with
+	    | None   -> Lazy.force (aux t)
+	    | Some x -> Cons (x, aux t)
+	end
+    | Nil         -> Nil
+  ) in aux l
+
+(*  let rec aux rest = match next rest with
+    | Cons (h, t) ->
+        (match f h with 
+	   | None   -> lazy (aux t)
+	   | Some x -> cons x (lazy (aux t)))
+    | Nil -> Nil
+  in lazy (aux l)*)
 
 let unique ?(cmp = compare) l =
   let set      = ref (PMap.create cmp) in
