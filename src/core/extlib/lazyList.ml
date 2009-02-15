@@ -71,17 +71,16 @@ let from f =
 
 let seq data next cond =
   let rec aux data = 
-    if cond data then lazy (Cons (data, aux (next data)))
-    else              nil
-  in aux data
+    if cond data then Cons (data, lazy (aux (next data)))
+    else              Nil
+  in lazy (aux data)
 
 
 let unfold (data:'b) (next: 'b -> ('a * 'b) option) =
-  let rec aux data =
-    match next data with
-      | Some(a,b) -> lazy (Cons(a, aux b))
-      | None      -> nil
-  in aux data
+  let rec aux data = match next data with
+    | Some(a,b) -> Cons(a, lazy (aux b))
+    | None      -> Nil
+  in lazy (aux data)
 
 
 let from_loop (data:'b) (next:'b -> ('a * 'b)) : 'a t=
@@ -107,30 +106,31 @@ let make n x =
 (**
    {6  Iterators}
 *)
+
 let iter f l =
-  let rec aux l =
-    match next l with | Cons (x, t) -> (f x; aux t) | _ -> ()
+  let rec aux l = match next l with 
+    | Cons (x, t) -> (f x; aux t) 
+    | _ -> ()
   in aux l
   
 let iteri f l =
-  let rec aux i l =
-    match next l with | Cons (x, t) -> (f i x; aux (i + 1) t) | _ -> ()
+  let rec aux i l = match next l with 
+    | Cons (x, t) -> (f i x; aux (i + 1) t) 
+    | _ -> ()
   in aux 0 l
   
 let map f l =
-  let rec (aux : 'a t -> 'b t) =
-    fun rest ->
-      match next rest with
-      | Cons (x, (t : 'a t)) -> lazy (Cons (f x, aux t))
-      | Nil -> nil
-  in aux l
+  let rec aux rest =  match next rest with
+    | Cons (x, (t : 'a t)) -> Cons (f x, lazy (aux t))
+    | Nil                  -> Nil
+  in lazy (aux l)
   
 let mapi f l =
   let rec aux rest i =
     match next rest with
-      | Cons (x, (t : 'a t)) -> lazy (Cons (f i x, aux t ( i + 1 ) ))
-      | Nil -> nil
-  in aux l 0
+      | Cons (x, (t : 'a t)) -> Cons (f i x, lazy (aux t ( i + 1 ) ))
+      | Nil -> Nil
+  in lazy (aux l 0)
 
 let fold_left f init l =
   let rec aux acc rest =
@@ -262,7 +262,7 @@ let rev list = fold_left (fun acc x -> Lazy.lazy_from_val (Cons (x, acc))) nil l
   
 (**Revert a list, convert it to a lazy list.
    Used as an optimisation.*)
-let rev_of_list (list:'a list) = List.fold_left (fun acc x -> lazy (Cons (x, acc))) nil list
+let rev_of_list (list:'a list) = List.fold_left (fun acc x -> Lazy.lazy_from_val (Cons (x, acc))) nil list
 
 let eager_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list =
@@ -288,9 +288,9 @@ let rev_append_of_list (l1 : 'a list) (l2 : 'a t) : 'a t =
 
 let append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list =  match next list with
-      | Cons (x, (t : 'a t)) -> lazy (Cons (x, aux t))
-      | _                    -> l2
-  in aux l1
+      | Cons (x, (t : 'a t)) -> Cons (x, lazy (aux t))
+      | _                    -> Lazy.force l2
+  in lazy (aux l1)
   
 let ( ^@^ ) = append
   
