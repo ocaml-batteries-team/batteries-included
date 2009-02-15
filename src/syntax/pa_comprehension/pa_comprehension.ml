@@ -31,20 +31,60 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   open Sig;
   include Syntax;
 
-  (* We include Camlp4ListComprehension,
-     in order to reuse test_patt_lessminus *)
-     
-  (* First, an ugly hack : upon loading, Camlp4ListComprehension will
-     delete a specific rule wich is not always present in the initial
-     grammar. We add it now to avoid a Not_found failure during
-     deletion *)
-  EXTEND Gram
-    expr: [[ "["; sem_expr_for_list; "]" -> assert False ]];
-  END;
-  
-  module ListComprehension = Camlp4ListComprehension.Make Syntax;
-  
-  value test_patt_lessminus = ListComprehension.test_patt_lessminus;
+  value rec loop n =
+    fun
+    [ [] -> None
+    | [(x, _)] -> if n = 0 then Some x else None
+    | [_ :: l] -> loop (n - 1) l ];
+
+  value stream_peek_nth n strm = loop n (Stream.npeek (n+1) strm);
+
+  (* copied from Camlp4ListComprehension *)
+  value test_patt_lessminus =
+    Gram.Entry.of_parser "test_patt_lessminus"
+      (fun strm ->
+        let rec skip_patt n =
+          match stream_peek_nth n strm with
+          [ Some (KEYWORD "<-") -> n
+          | Some (KEYWORD ("[" | "[<")) ->
+              skip_patt (ignore_upto "]" (n + 1) + 1)
+          | Some (KEYWORD "(") -> 
+              skip_patt (ignore_upto ")" (n + 1) + 1)
+          | Some (KEYWORD "{") -> 
+              skip_patt (ignore_upto "}" (n + 1) + 1)
+          | Some (KEYWORD ("as" | "::" | "," | "_"))
+          | Some (LIDENT _ | UIDENT _) -> skip_patt (n + 1)
+          | Some _ | None -> raise Stream.Failure ]
+        and ignore_upto end_kwd n =
+          match stream_peek_nth n strm with
+          [ Some (KEYWORD prm) when prm = end_kwd -> n 
+          | Some (KEYWORD ("[" | "[<")) ->
+              ignore_upto end_kwd (ignore_upto "]" (n + 1) + 1)
+          | Some (KEYWORD "(") ->
+              ignore_upto end_kwd (ignore_upto ")" (n + 1) + 1)
+          | Some (KEYWORD "{") -> 
+              ignore_upto end_kwd (ignore_upto "}" (n + 1) + 1)
+          | Some _ -> ignore_upto end_kwd (n + 1)
+          | None -> raise Stream.Failure ]
+        in
+        skip_patt 0);
+
+  value test_custom_module =
+    Gram.Entry.of_parser "test_comprehension_custom_module"
+      (fun strm ->
+         let rec after_longident n =
+           match stream_peek_nth n strm with
+           [ Some (UIDENT _) ->         
+               match stream_peek_nth (n+1) strm with
+               [ Some (KEYWORD "." | SYMBOL ".") -> after_longident (n+2)
+               | _ -> n+1 ]
+           | _ -> n ] in
+      match after_longident 0 with
+      [ 0 -> raise Stream.Failure
+      | n ->
+          match stream_peek_nth n strm with
+          [ Some (KEYWORD ":") -> ()
+          | _ -> raise Stream.Failure ]]); 
 
   (* map, filter, concat are generalized version of
      Camlp4ListComprehension, abstracted over the module name *)
@@ -123,10 +163,10 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
       [ [Gen m' p gen] -> (* final output, last generator : map *)
           let m' = get m' in
           if eq_ident m m'
-          then apply_guards m p guards (map _loc m p expr gen)
+          then map _loc m p expr (apply_guards m p guards gen)
           else
-            let unfiltered = map _loc enum p expr (to_enum m' gen) in
-            of_enum m (apply_guards enum p guards unfiltered)
+            let filtered = apply_guards enum p guards (to_enum m' gen) in
+            of_enum m (map _loc enum p expr filtered)
       | [ (Gen _ _ _ as gen) ; Guard g :: tail ] ->
           build m expr [g :: guards] [gen :: tail]
       | [ (Gen m' p gen) :: tail ] -> (* middle generator (map + concat) *)
@@ -138,24 +178,25 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
             let product = map _loc enum p (build enum expr [] tail) filtered in
             of_enum m (concat _loc enum product)
       | _ -> raise Stream.Failure ] in
-    build modu expr [] comp_items;
+    build (get modu) expr [] comp_items;
 
 
   (* proper syntax extension code *)
   value comp_item = Gram.Entry.mk "comprehension item";
+  value comp_expr = Gram.Entry.mk "comp_expr";
 
   EXTEND Gram
     expr: LEVEL "simple"
-    [[ "["; "?"; m = OPT [ m = module_longident; ":" -> m ];
-       e = expr; "|"; comp = LIST1 comp_item SEP ";"; "]" ->
-         let m = match m with [ None -> <:ident< Enum >> | Some m -> m ] in
-         compr _loc m e comp ]];
+    [[ "["; "?"; (m, output) = comp_expr; "|"; comp = LIST1 comp_item SEP ";"; "]" ->
+         compr _loc m output comp ]];
     
     comp_item:
-      [[ test_patt_lessminus; p = patt; "<-";
-         m = OPT [ m = module_longident; ":" -> m ];
-         gen = expr LEVEL "top" -> Gen (m, p, gen)
+      [[ test_patt_lessminus; p = patt; "<-"; (m, gen) = comp_expr -> Gen (m, p, gen)
        | guard = expr LEVEL "top" -> Guard guard ]];
+
+    comp_expr:
+      [[ test_custom_module; m = module_longident; ":"; e = expr LEVEL "top" -> (Some m, e)
+       | e = expr LEVEL "top" -> (None, e) ]];
     END;
 end;
 
