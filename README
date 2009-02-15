@@ -38,13 +38,13 @@ To install the full version of OCaml Batteries Included in the default
 directory (/usr/local/), execute
 
     $ ./configure
-    $ make all opt install install-doc
+    $ make all opt top install install-doc
 
 If you wish to install to a directory other than the default directory,
 execute
 
     $ ./configure --prefix=/path/to/some/other/directory/
-    $ make all opt install install-doc
+    $ make all opt top install install-doc
 
 Be patient, documentation generation may take more than 15 minutes.
 If you do not want the documentation generation, remove "install-doc"
