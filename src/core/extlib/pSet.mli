@@ -1,7 +1,7 @@
 (*
  * PSet - Polymorphic sets
  * Copyright (C) 1996-2003 Xavier Leroy, Nicolas Cannasse, Markus Mottl
- * Copyright (C)      2008 David Teller
+ * Copyright (C)      2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,12 +20,29 @@
  *)
 
 (**
-   Polymorphic sets.
+   Polymorphic sets of elements.
+
+   This module defines a type of sets, a functional representation of
+   sets of elements. The base operations are adding an element to a
+   set or removing an element from a set. This implementation is
+   functional insofar as the act of adding or substracting an element
+   to/from a set does not modify the existing set, rather producing a
+   new set.  The implementation uses balanced binary trees, and is
+   therefore reasonably efficient: insertion and membership take time
+   logarithmic in the size of the set, for instance.
+
+   {b Note} OCaml, Batteries Included, provides two implementations of
+   sets: polymorphic sets (this module) and functorized sets (module
+   (!Set}). Module {!Set} offers a more complex and slightly poorer
+   set of features but stronger type-safety. Module {!PSet} is easier
+   to use and has a few more powerful features but makes it easier to
+   shoot yourself in the foot. In case of doubt, use {!Set}.
+
 
    @author Xavier Leroy
    @author Nicolas Cannasse
    @author Markus Mottl
-   @author David Teller
+   @author David Rajchenbach-Teller
 *)
 
 type 'a t
@@ -56,6 +73,22 @@ val iter: ('a -> unit) -> 'a t -> unit
   (** [iter f s] applies [f] in turn to all elements of [s].
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
+
+val map: ('a -> 'b) -> 'a t -> 'b t
+  (** [map f x] creates a new set with elements [f a0],
+      [f a1]... [f an], where [a1], ..., [an] are the
+      values contained in [x]*)
+  
+val filter: ('a -> bool) -> 'a t -> 'a t
+  (** [filter p s] returns the set of all elements in [s]
+      that satisfy predicate [p]. *)
+  
+val filter_map: ('a -> 'b option) -> 'a t -> 'b t
+  (** [filter_map f m] combines the features of [filter] and
+      [map].  It calls calls [f a0], [f a1], [f an] where [a0..an]
+      are the elements of [m] and returns the set of pairs [bi]
+      such as [f ai = Some bi] (when [f] returns [None], the
+      corresponding element of [m] is discarded). *)
   
 val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
   (** [fold f s a] computes [(f xN ... (f x2 (f x1 a))...)],
