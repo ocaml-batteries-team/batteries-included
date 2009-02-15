@@ -81,6 +81,22 @@ module type S =
        The elements of [s] are presented to [f] in increasing order
        with respect to the ordering over the type of the elements. *)
 
+    val map: (elt -> elt) -> t -> t
+      (** [map f x] creates a new set with elements [f a0],
+	  [f a1]... [f an], where [a1], ..., [an] are the
+	  values contained in [x]*)
+
+    val filter: (elt -> bool) -> t -> t
+    (** [filter p s] returns the set of all elements in [s]
+       that satisfy predicate [p]. *)
+
+    val filter_map: (elt -> elt option) -> t -> t
+      (** [filter_map f m] combines the features of [filter] and
+	  [map].  It calls calls [f a0], [f a1], [f an] where [a0..an]
+	  are the elements of [m] and returns the set of pairs [bi]
+	  such as [f ai = Some bi] (when [f] returns [None], the
+	  corresponding element of [m] is discarded). *)
+
     val fold: (elt -> 'a -> 'a) -> t -> 'a -> 'a
     (** [fold f s a] computes [(f xN ... (f x2 (f x1 a))...)],
        where [x1 ... xN] are the elements of [s], in increasing order. *)
@@ -92,10 +108,6 @@ module type S =
     val exists: (elt -> bool) -> t -> bool
     (** [exists p s] checks if at least one element of
        the set satisfies the predicate [p]. *)
-
-    val filter: (elt -> bool) -> t -> t
-    (** [filter p s] returns the set of all elements in [s]
-       that satisfy predicate [p]. *)
 
     val partition: (elt -> bool) -> t -> t * t
     (** [partition p s] returns a pair of sets [(s1, s2)], where
@@ -186,7 +198,9 @@ module type S =
       val fold : f:(elt -> 'a -> 'a) -> t -> init:'a -> 'a
       val for_all : f:(elt -> bool) -> t -> bool
       val exists : f:(elt -> bool) -> t -> bool
+      val map: f:(elt -> elt) -> t -> t
       val filter : f:(elt -> bool) -> t -> t
+      val filter_map: f:(elt -> elt option) -> t -> t
       val partition : f:(elt -> bool) -> t -> t * t
     end
       
@@ -236,7 +250,13 @@ module type S =
 
     let of_enum e = 
       Enum.fold add empty e
+
+    let map f e = fold (fun x acc -> add (f x) acc) empty e
 	
+    let filter f e = fold (fun x acc -> if f x then add x acc else acc) empty e
+
+    let filter_map f e = fold (fun x acc -> match f x with Some v -> add v acc | _ -> acc) empty e
+
     let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
       Enum.print ~first ~last ~sep print_elt out (enum t)
 
@@ -283,7 +303,9 @@ module type S =
       let fold ~f t ~init = fold f t init
       let for_all ~f t    = for_all f t
       let exists ~f t     = exists f t
+      let map    ~f t     = map f t
       let filter ~f t     = filter f t
+      let filter_map ~f t = filter_map f t
       let partition ~f t  = partition f t
     end
   end

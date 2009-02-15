@@ -73,8 +73,8 @@ module type S =
     val inter: t -> t -> t
     (** Set intersection. *)
 
-    (** Set difference. *)
     val diff: t -> t -> t
+    (** Set difference. *)
 
     val compare: t -> t -> int
     (** Total ordering between sets. Can be used as the ordering function
@@ -93,9 +93,25 @@ module type S =
        The elements of [s] are presented to [f] in increasing order
        with respect to the ordering over the type of the elements. *)
 
+    val map: (elt -> elt) -> t -> t
+      (** [map f x] creates a new set with elements [f a0],
+	  [f a1]... [f an], where [a1], ..., [an] are the
+	  values contained in [x]*)
+
+    val filter: (elt -> bool) -> t -> t
+    (** [filter p s] returns the set of all elements in [s]
+       that satisfy predicate [p]. *)
+
+    val filter_map: (elt -> elt option) -> t -> t
+      (** [filter_map f m] combines the features of [filter] and
+	  [map].  It calls calls [f a0], [f a1], [f an] where [a0..an]
+	  are the elements of [m] and returns the set of pairs [bi]
+	  such as [f ai = Some bi] (when [f] returns [None], the
+	  corresponding element of [m] is discarded). *)
+
     val fold: (elt -> 'a -> 'a) -> t -> 'a -> 'a
-    (** [fold f s a] computes [(f xN ... (f x2 (f x1 a))...)],
-       where [x1 ... xN] are the elements of [s], in increasing order. *)
+      (** [fold f s a] computes [(f xN ... (f x2 (f x1 a))...)],
+	  where [x1 ... xN] are the elements of [s], in increasing order. *)
 
     val for_all: (elt -> bool) -> t -> bool
     (** [for_all p s] checks if all elements of the set
@@ -104,10 +120,6 @@ module type S =
     val exists: (elt -> bool) -> t -> bool
     (** [exists p s] checks if at least one element of
        the set satisfies the predicate [p]. *)
-
-    val filter: (elt -> bool) -> t -> t
-    (** [filter p s] returns the set of all elements in [s]
-       that satisfy predicate [p]. *)
 
     val partition: (elt -> bool) -> t -> t * t
     (** [partition p s] returns a pair of sets [(s1, s2)], where
@@ -216,7 +228,9 @@ module type S =
       val fold : f:(elt -> 'a -> 'a) -> t -> init:'a -> 'a
       val for_all : f:(elt -> bool) -> t -> bool
       val exists : f:(elt -> bool) -> t -> bool
+      val map: f:(elt -> elt) -> t -> t
       val filter : f:(elt -> bool) -> t -> t
+      val filter_map: f:(elt -> elt option) -> t -> t
       val partition : f:(elt -> bool) -> t -> t * t
     end
       
