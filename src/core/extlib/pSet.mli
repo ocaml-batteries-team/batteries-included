@@ -1,5 +1,5 @@
 (*
- * PMap - Polymorphic sets
+ * PSet - Polymorphic sets
  * Copyright (C) 1996-2003 Xavier Leroy, Nicolas Cannasse, Markus Mottl
  * Copyright (C)      2008 David Teller
  *

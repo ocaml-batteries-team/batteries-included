@@ -97,7 +97,7 @@ val filter: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
      type of the keys. *)
   
 val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
-  (**[filter f m] returns a map where only the key, values pairs
+  (**[filter f m] returns a map where only the (key, value) pairs
      [key], [a] of [m] such that [f key a = true] remain. The
      bindings are passed to [f] in increasing order with respect
      to the ordering over the type of the keys. *)
