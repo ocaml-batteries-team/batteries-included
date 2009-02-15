@@ -432,6 +432,7 @@ let escaped       = escaped
 let replace_chars = replace_chars
 let replace       = replace
 let split         = split
+let repeat        = repeat
 let rsplit        = rsplit
 let nsplit        = nsplit
 let join          = join

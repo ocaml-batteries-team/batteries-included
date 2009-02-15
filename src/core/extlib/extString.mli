@@ -735,6 +735,9 @@ val replace : str:[> `Read] t -> sub:[> `Read] t -> by:[> `Read] t -> bool * _ t
       within [str] has been replaced by the string [by]. The boolean
       is true if a subtitution has taken place. *)
 
+val repeat: [> `Read] t -> int -> _ t
+(** [repeat s n] returns [s ^ s ^ ... ^ s] *)
+
 (** {6 Splitting around}*)
 val split : [> `Read] t -> [> `Read] t -> _ t * _ t
   (** [split s sep] splits the string [s] between the first
