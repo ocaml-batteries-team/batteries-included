@@ -24,6 +24,7 @@ open Sexplib
 open Conv
 TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
+(*Minor optimization.*)
 let int_min (x:int) (y:int) = if x < y then x else y
 let int_max (x:int) (y:int) = if x < y then y else x
 
