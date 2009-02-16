@@ -69,3 +69,4 @@ ExtArg
 ExtDigest
 Logger
 ExtFormat
+ExtScanf
