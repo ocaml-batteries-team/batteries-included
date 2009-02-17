@@ -1,3 +1,15 @@
+2009-02-16  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib.mlpack: [ExtScanf] added
+
+	* src/main/nothreads/batteries.ml: [Scanf] replaced with [ExtScanf.Scanf]
+
+	* src/main/threads/batteries.ml: [Scanf] replaced with [ExtScanf.Scanf]
+
+	* src/main/nothreads/batteries.mllib: base [Scanf] removed
+
+	* src/main/threads/batteries.mllib: base [Scanf] removed
+
 2009-02-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* tests/dynlink/*: created
