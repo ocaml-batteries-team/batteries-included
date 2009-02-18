@@ -105,7 +105,7 @@ GLOBAL: expr str_item module_binding0;
    (*Implement implicit importation of modules.*)
    multi_module_expr: [
      "multi" [
-       first = module_expr; "open"; l = LIST1 module_expr SEP "," -> 
+       first = module_expr; "with"; l = LIST1 module_expr SEP "," -> 
 	 let sem = Ast.stSem_of_list (List.map (fun e -> <:str_item<include $e$;;>>) (first::l))
 	 in 
 	   <:module_expr<struct $sem$ end>>
