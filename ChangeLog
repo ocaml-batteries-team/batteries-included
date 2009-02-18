@@ -1,3 +1,7 @@
+2009-02-16  Jeremie Dimino <jeremie@dimino.org>
+
+	* build/optcomp/optcomp.ml: better handling of errors
+
 2009-02-16  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib.mlpack: [ExtScanf] added
@@ -9,6 +13,7 @@
 	* src/main/nothreads/batteries.mllib: base [Scanf] removed
 
 	* src/main/threads/batteries.mllib: base [Scanf] removed
+
 
 2009-02-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 

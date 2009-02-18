@@ -3,6 +3,8 @@
  * ----------
  * Copyright : (c) 2009, Jeremie Dimino <jeremie@dimino.org>
  * Licence   : BSD3
+ *
+ * This file is a part of optcomp.
  *)
 
 (* Standalone version *)
@@ -92,27 +94,30 @@ let print_token = function
   | EOI ->
       raise Exit
 
-let filter_sharp stream =
+let filter_keywords stream =
   Stream.from (fun _ -> match Stream.next stream with
-                 | (SYMBOL "#", loc) -> Some(KEYWORD "#", loc)
+                 | (SYMBOL ("#"|"="|"("|")"|"{"|"}"|"["|"]" as sym), loc) -> Some(KEYWORD sym, loc)
                  | x -> Some x)
 
 external filter : 'a Gram.not_filtered -> 'a = "%identity"
 
 let main () =
   if Array.length Sys.argv <> 2 then begin
-    Printf.eprintf "usage: %s <file>\n%!" (Sys.argv.(0));
+    Printf.eprintf "usage: %s <file>\n%!" (Filename.basename Sys.argv.(0));
     exit 2
   end;
-  let ic = open_in Sys.argv.(1) in
   try
+    let fname = Sys.argv.(1) in
+    let ic = open_in fname in
     Stream.iter
       (fun (tok, loc) -> print_token tok)
       (Pa_optcomp.stream_filter (fun x -> x)
-         (filter_sharp
+         (filter_keywords
             (filter
-               (Gram.lex Loc.ghost
+               (Gram.lex (Loc.mk fname)
                   (Stream.of_channel ic)))));
     close_in ic
   with
-      Exit -> ()
+    | Exit -> ()
+    | exn ->
+        Format.eprintf "@[<v0>%a@]@." Camlp4.ErrorHandler.print exn
