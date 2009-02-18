@@ -33,7 +33,7 @@
 
    {b Note} OCaml, Batteries Included, provides two implementations of
    sets: polymorphic sets (this module) and functorized sets (module
-   (!Set}). Module {!Set} offers a more complex and slightly poorer
+   {!Set}). Module {!Set} offers a more complex and slightly poorer
    set of features but stronger type-safety. Module {!PSet} is easier
    to use and has a few more powerful features but makes it easier to
    shoot yourself in the foot. In case of doubt, use {!Set}.
