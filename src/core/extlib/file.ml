@@ -97,7 +97,7 @@ let open_in ?mode ?(perm=default_permission) name =
     match mode with
       | Some l when List.mem `mmap l ->
     let desc = Unix.openfile name [O_RDONLY] 0                      in
-    let array= Array1.map_file desc char c_layout false (-1) in
+    let array= Array1.map_file desc char c_layout (*shared*)false (-1) in
     let pos  = ref 0                                                
     and len  = Array1.dim array                                     in
       create_in
