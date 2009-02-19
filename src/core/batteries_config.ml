@@ -20,9 +20,14 @@
 
 INCLUDE "../config.ml"
 
-let browse s = 
+(**The default function to open a www browser.*)
+let default_browse s =
   let command = Printf.sprintf browser s in
     Sys.command command
+let current_browse = ref default_browse
+
+let browse s = !current_browse s
+let set_browser f    = current_browse := f
 
 let max_array_length = Sys.max_array_length
 let word_size        = Sys.word_size

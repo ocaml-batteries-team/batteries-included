@@ -40,9 +40,15 @@ val documentation_root : string
 
 val browse : string -> int
 (**
-   [browse s] opens the platform's default browser to browse url [s].
+   [browse s] opens the platform's default www browser to browse url [s].
 
    Return the error status.
+*)
+
+val set_browser : (string -> int) -> unit
+(**
+   [set_browser f] replaces the default browser with a function [f]. This
+   may be used to add debugging information, use a custom browser, etc.
 *)
 
 val max_array_length : int
