@@ -1,3 +1,9 @@
+2009-02-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* testsuite/test_file.ml: created
+
+	* src/core/extlib/file.ml: [open_in] now supports mmap
+
 2009-02-16  Jeremie Dimino <jeremie@dimino.org>
 
 	* build/optcomp/optcomp.ml: better handling of errors
