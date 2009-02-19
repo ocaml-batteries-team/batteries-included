@@ -1,44 +1,27 @@
-(* Vect: extensible arrays based on ropes as described in
-
-   Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
-   strings.  Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
-
-   Motivated by Luca de Alfaro's extensible array implementation Vec.
-
-   Copyright (C) 2007   Mauricio Fernandez <mfp@acm.org>
-                        http://eigenclass.org
-
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version,
-   with the following special exception:
-
-   You may link, statically or dynamically, a "work that uses the
-   Library" with a publicly distributed version of the Library to
-   produce an executable file containing portions of the Library, and
-   distribute that executable file under terms of your choice, without
-   any of the additional requirements listed in clause 6 of the GNU
-   Library General Public License.  By "a publicly distributed version
-   of the Library", we mean either the unmodified Library as
-   distributed by the author, or a modified version of the Library that is
-   distributed under the conditions defined in clause 2 of the GNU
-   Library General Public License.  This exception does not however
-   invalidate any other reasons why the executable file might be
-   covered by the GNU Library General Public License.
-
-   This library is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-
-   The GNU Library General Public License is available at
-   http://www.gnu.org/copyleft/lgpl.html; to obtain it, you can also
-   write to the Free Software Foundation, Inc., 59 Temple Place -
-   Suite 330, Boston, MA 02111-1307, USA.
+(* 
+ * Vect - Extensible arrays based on ropes
+ * Copyright (C) 2007 Mauricio Fernandez <mfp@acm.org>
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.Data.Mutable.Vect" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
+
+open ExtArray
 
 type 'a t =
     Empty
@@ -198,26 +181,30 @@ let concat l = function
 
 let prepend_char c r = concat (Leaf (STRING.make 1 c)) r
 
-let rec get i = function
+let get v i = 
+  let rec aux i = function
     Empty -> raise Out_of_bounds
   | Leaf s ->
       if i >= 0 && i < STRING.length s then STRING.unsafe_get s i
       else raise Out_of_bounds
   | Concat (l, cl, r, cr, _) ->
-      if i < cl then get i l
-      else get (i - cl) r
+      if i < cl then aux i l
+      else aux (i - cl) r
+  in aux i v
 
-let rec set i v = function
+let set v i x = 
+  let rec aux i = function
     Empty -> raise Out_of_bounds
   | Leaf s ->
       if i >= 0 && i < STRING.length s then
         let s = STRING.copy s in
-          STRING.unsafe_set s i v;
+          STRING.unsafe_set s i x;
           Leaf s
       else raise Out_of_bounds
   | Concat(l, cl, r, cr, _) ->
-      if i < cl then concat (set i v l) r
-      else concat l (set (i - cl) v r)
+      if i < cl then concat (aux i l) r
+      else concat l (aux (i - cl) r)
+  in aux i v
 
 let at = get
 
@@ -338,6 +325,13 @@ let rec fold f a = function
         !acc
   | Concat(l,_,r,_,_) -> fold f (fold f a l) r
 
+let fold_left = fold
+let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
+  let rec aux (acc:'b) = function
+    | Empty  -> acc
+    | Leaf s -> STRING.fold_right f s acc
+    | Concat(l, _, r, _, _) -> aux (aux acc r) l
+  in aux acc v
 
 let of_array = of_string
 let to_array = to_string
@@ -355,6 +349,51 @@ let rec map f = function
   | Leaf a -> Leaf (Array.map f a)
   | Concat(l,cl,r,cr,h) -> Concat(map f l, cl, map f r, cr, h)
 
+let mapi f v =
+  let off = ref 0 in
+    map (fun x -> f (Ref.post_incr off) x) v
+
+let exists f v =
+  Return.label (fun label ->
+  let rec aux = function
+    | Empty                  -> ()
+    | Leaf a                 -> if Array.exists f a then Return.return label true else ()
+    | Concat (l, _, r, _, _) -> aux l; aux r
+  in aux v; false)
+
+let for_all f v = 
+  Return.label (fun label ->
+  let rec aux = function
+    | Empty                  -> ()
+    | Leaf a                 -> if not (Array.for_all f a) then Return.return label false else ()
+    | Concat (l, _, r, _, _) -> aux l; aux r
+  in aux v; true)
+
+let find f v =
+  Return.label (fun label ->
+  let rec aux = function
+    | Empty  -> ()
+    | Leaf a -> (try Return.return label (Array.find f a) with Not_found -> ())
+    | Concat (l, _, r, _, _) -> aux l; aux r
+  in aux v; raise Not_found)
+
+let findi f v = (*We rely on the order of exploration of the tree by [find]*)
+  let off = ref 0 in
+  let _   = find (fun x -> let result = f x in incr off; result) v in
+    !off
+
+let partition p v =
+  fold_left (fun (yes, no) x -> if p x then (append x yes,no) else (yes,append x no)) (empty,empty) v
+
+let find_all p v =
+  fold_left (fun acc x -> if p x then append x acc else acc) empty v
+
+let mem m v = try let _ = find ( ( = ) m ) v in true with Not_found -> false
+
+let memq m v = try let _ = find ( ( == ) m ) v in true with Not_found -> false
+
+
+
 let to_list r =
   let rec aux acc = function
       Empty -> acc
@@ -366,17 +405,39 @@ let to_list r =
 let filter f =
   fold (fun s x -> if f x then append x s else s) Empty
 
-let rec destructive_set i v = function
-    Empty -> raise Out_of_bounds
+let destructive_set v i x = 
+  let rec aux i = function
+    Empty  -> raise Out_of_bounds
   | Leaf s ->
       if i >= 0 && i < STRING.length s then
-        STRING.unsafe_set s i v
+        STRING.unsafe_set s i x
       else raise Out_of_bounds
   | Concat(l, cl, r, cr, _) ->
-      if i < cl then destructive_set i v l
-      else destructive_set (i - cl) v r
+      if i < cl then aux i l
+      else aux (i - cl) r
+  in aux i v
 
 let of_list l = of_array (Array.of_list l)
+
+let init n f =
+  (*Create as many arrays as we need to store all the data*)
+  let rec aux off acc =
+    if off >= n then acc
+    else 
+      let len = min leaf_size n in
+      let arr = Array.init len (fun i -> f ( off + i ) ) in
+      aux (off + len) (arr::acc)
+  in 
+  let base = aux 0 []
+  in(*And then concatenate them*)
+    List.fold_left (fun (acc:'a t) (array:'a array) -> concat acc (of_array array)) (empty:'a t) (base:'a array list)
+
+(*let init n f =
+  let vect = make n in
+    for i = 0 to n - 1 do
+      destructive_set vect i (f i)
+    done;
+    vect*)
 
 (* Functorial interface *)
 
@@ -563,8 +624,9 @@ struct
         if i < cl then get i l
         else get (i - cl) r
   
-  let rec set i v = function
-      Empty -> raise Out_of_bounds
+  let set v i x = 
+    let rec aux i = function
+      Empty  -> raise Out_of_bounds
     | Leaf s ->
         if i >= 0 && i < STRING.length s then
           let s = STRING.copy s in
@@ -572,8 +634,9 @@ struct
             Leaf s
         else raise Out_of_bounds
     | Concat(l, cl, r, cr, _) ->
-        if i < cl then concat (set i v l) r
-        else concat l (set (i - cl) v r)
+        if i < cl then concat (aux i x) r
+        else concat l (aux (i - cl) x)
+    in aux i x
   
   let of_string = function
       s when STRING.length s = 0 -> Empty
