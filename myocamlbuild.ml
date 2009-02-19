@@ -655,8 +655,14 @@ struct
     flag ["ocaml"; "link";    "use_sexplib"]  & S[A"-package"; A "sexplib"];
     flag ["ocaml"; "compile"; "use_sexplib"]  & S[A"-package"; A "sexplib"];
     flag ["ocaml"; "dep";     "use_sexplib"]  & S[A"-package"; A "sexplib"];
-    flag ["ocaml"; "doc";     "use_sexplib"]  & S[A"-I"; A"/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/sexplib"]
+(*
+    flag ["ocaml"; "doc";     "use_sexplib"]  & S[A"-I"; A"/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/sexplib"]*)
 (*    flag ["ocaml"; "doc";     "use_sexplib"]  & S[A"-predicates"; A "!preprocessor"; A "-package"; A "sexplib"]*)
+
+    flag ["ocaml"; "link"; "native"; "use_batteries_threads"] (A "src/main/threads/batteries.cma");
+(*    flag ["ocaml"; "pp";       "use_pa_optcomp"] (A"build/optcomp/pa_optcomp.cmo");*)
+    dep  ["ocaml"; "ocamldep"; "use_pa_optcomp"] ["src/main/threads/batteries.cma"]
+
 
 end
 

@@ -1,5 +1,9 @@
 2009-02-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/libs/sexplib/_tags: *.ml now uses stand-alone optcomp
+
+	* src/core/extlib/extBigarray.ml*: [Array{1,2,3}.unsafe_{get,set}] added
+
 	* src/core/extlib/option.ml*: [Labels] added
 
 	* src/core/extlib/lazyList.ml*: [Labels], [Labels.ExceptionLess] added
