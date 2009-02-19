@@ -1,5 +1,9 @@
 2009-02-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/option.ml*: [Labels] added
+
+	* src/core/extlib/lazyList.ml*: [Labels], [Labels.ExceptionLess] added
+
 	* testsuite/test_file.ml: created
 
 	* src/core/extlib/file.ml: [open_in] now supports mmap
