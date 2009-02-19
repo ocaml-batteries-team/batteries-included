@@ -1,10 +1,4 @@
-let d n =
-  let sum = ref 1 in (* start having counted 1 *)
-  let max_test = n |> float |> sqrt |> Float.to_int in
-  for i = 2 to max_test do
-    if n mod i = 0 then sum := !sum + i + (n / i)
-  done;
-  !sum
+let d n = Mathlib.sum_factors n
 
 module ISet = Set.Make(Int)
 
@@ -13,7 +7,7 @@ let ret_amicable ~upto =
   and not_amic = ref ISet.empty
   and to_test = ref ((2--upto) |> ISet.of_enum)
   in
-  let rec test n =
+  let rec test n =  (* cleanup - ugly code *)
     if n >= upto then ()
     else if   ISet.mem n !is_amic
       || ISet.mem n !not_amic then

@@ -1,3 +1,5 @@
+let rec factorial = function 1 -> 1 | n -> n * factorial (n-1)
+
 let factors i f x =
   let acc = ref i in (* already counted 1 *)
   let max_test = x |> float |> sqrt |> Float.to_int in
