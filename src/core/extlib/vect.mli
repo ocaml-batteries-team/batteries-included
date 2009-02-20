@@ -174,6 +174,22 @@ val remove : int -> int -> 'a t -> 'a t
       [length r - n].
       Operates in amortized [O(log(size r))] time. *)
 
+(** {6 Conversion}*)
+
+val enum : 'a t -> 'a Enum.t
+  (** Returns an enumeration of the elements of the vector. 
+      Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
+
+val of_enum : 'a Enum.t -> 'a t
+  (** Build a vector from an enumeration.*)
+
+val backwards : 'a t -> 'a Enum.t
+  (** Returns an enumeration of the elements of a vector, from last to first. 
+      Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
+
+val of_backwards : 'a Enum.t -> 'a t
+  (** Build a vector from an enumeration, from last to first.*)
+
 (** {6 Iteration and higher-order functions } *)
 
 val iter : ('a -> unit) -> 'a t -> unit
@@ -263,7 +279,12 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
   val filter : ('a -> bool) -> 'a t -> 'a t
     (** [filter f v] returns a vect with the elements [x] from [v] such that
 	[f x] returns [true]. Operates in [O(n)] time. *)
-    
+
+  val filter_map : ('a -> 'b option) -> 'a t -> 'b t
+    (** [filter_map f e] returns a vect consisting in all elements
+	[x] such that [f y] returns [Some x] , where [y] is an element
+	of [e]. *)
+
   val find_all : ('a -> bool) -> 'a t -> 'a t
     (** [find_all] is another name for {!Array.filter}. *)
 
@@ -280,8 +301,11 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
 val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
+(** {7 Printing}*)
+  
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
 
-(*
+
 (** {6 Functorial interface} *)
 
 module type RANDOMACCESS =
@@ -301,6 +325,10 @@ sig
   val iter : ('a -> unit) -> 'a t -> unit
   val map : ('a -> 'b) -> 'a t -> 'b t
   val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val enum : 'a t -> 'a Enum.t
+  val backwards : 'a t -> 'a Enum.t
+  val of_enum : 'a Enum.t -> 'a t
+  val of_backwards : 'a Enum.t -> 'a t
 end
 
 module Make :
@@ -376,8 +404,8 @@ sig
     Operates in worst-case [O(log size)] time.
     Raises Out_of_bounds if a character out of bounds is requested. *)
 
-  val set : int -> 'a -> 'a t -> 'a t
-  (** [set n c r] returns a copy of the [r] vect where the (n+1)th element
+  val set : 'a t -> int -> 'a  -> 'a t
+  (** [set r n c] returns a copy of the [r] vect where the (n+1)th element
     (see also [get]) has been set to [c].
     Operates in worst-case [O(log size)] time. *)
 
@@ -453,5 +481,23 @@ sig
   val filter : ('a -> bool) -> 'a t -> 'a t
   (** [filter f v] returns a vect with the elements [x] from [v] such that
       [f x] returns [true]. Operates in [O(n)] time. *)
+
+  val filter_map : ('a -> 'b option) -> 'a t -> 'b t
+    (** [filter_map f e] returns a vect consisting in all elements
+	[x] such that [f y] returns [Some x] , where [y] is an element
+	of [e]. *)
+
+  val find_all : ('a -> bool) -> 'a t -> 'a t
+    (** [find_all] is another name for {!Array.filter}. *)
+
+  val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+    (** [partition p a] returns a pair of arrays [(a1, a2)], where
+	[a1] is the array of all the elements of [a] that
+	satisfy the predicate [p], and [a2] is the array of all the
+	elements of [a] that do not satisfy [p].
+	The order of the elements in the input array is preserved. *)
+
+  (** {7 Printing}*)
+  val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
 end
-*)
+

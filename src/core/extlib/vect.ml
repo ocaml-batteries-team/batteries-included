@@ -26,7 +26,7 @@ open ExtArray
 type 'a t =
     Empty
   | Concat of 'a t * int * 'a t * int * int
-  | Leaf of 'a array
+  | Leaf   of 'a array
 
 type 'a forest_element = { mutable c : 'a t; mutable len : int }
 
@@ -38,7 +38,7 @@ let singleton x = Leaf [|x|]
 
 
 
-module STRING = Array
+module STRING = ExtArray.Array
 
 (* 48 limits max rope size to 236.10^9 elements on 64 bit,
  * ~ 734.10^6 on 32bit (length fields overflow after that) *)
@@ -192,7 +192,7 @@ let get v i =
       else aux (i - cl) r
   in aux i v
 
-let set v i x = 
+let set (v:'a t) (i: int) (x:'a) = 
   let rec aux i = function
     Empty -> raise Out_of_bounds
   | Leaf s ->
@@ -279,6 +279,28 @@ let rec iter f = function
     Empty -> ()
   | Leaf s -> STRING.iter f s
   | Concat(l,_,r,_,_) -> iter f l; iter f r
+
+let enum e =
+  let rec aux = function
+    | Empty                 -> Enum.empty ()
+    | Leaf s                -> STRING.enum s
+    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux l))
+	                                   (Enum.delay (fun () -> aux r))
+  in aux e
+
+let backwards e =
+  let rec aux = function
+    | Empty                 -> Enum.empty ()
+    | Leaf s                -> STRING.backwards s
+    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux r))
+	                                   (Enum.delay (fun () -> aux l))
+  in aux e
+
+let of_enum e =
+  Enum.fold (fun x acc -> append_char x acc) empty e
+
+let of_backwards e =
+  Enum.fold (fun x acc -> prepend_char x acc) empty e
 
 let iteri f r =
   let rec aux f i = function
@@ -405,6 +427,11 @@ let to_list r =
 let filter f =
   fold (fun s x -> if f x then append x s else s) Empty
 
+let filter_map f =
+  fold (fun acc x -> match f x with
+	  | None   -> acc
+	  | Some v -> append v acc) Empty
+
 let destructive_set v i x = 
   let rec aux i = function
     Empty  -> raise Out_of_bounds
@@ -432,12 +459,8 @@ let init n f =
   in(*And then concatenate them*)
     List.fold_left (fun (acc:'a t) (array:'a array) -> concat acc (of_array array)) (empty:'a t) (base:'a array list)
 
-(*let init n f =
-  let vect = make n in
-    for i = 0 to n - 1 do
-      destructive_set vect i (f i)
-    done;
-    vect*)
+let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
+  Enum.print ~first ~last ~sep print_a out (enum t)
 
 (* Functorial interface *)
 
@@ -458,6 +481,10 @@ sig
   val iter : ('a -> unit) -> 'a t -> unit
   val map : ('a -> 'b) -> 'a t -> 'b t
   val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val enum : 'a t -> 'a Enum.t
+  val backwards : 'a t -> 'a Enum.t
+  val of_enum : 'a Enum.t -> 'a t
+  val of_backwards : 'a Enum.t -> 'a t
 end
 
 module Make(RANDOMACCESS : RANDOMACCESS)
@@ -624,19 +651,19 @@ struct
         if i < cl then get i l
         else get (i - cl) r
   
-  let set v i x = 
-    let rec aux i = function
+  let set (v:'a t) i (x:'a) = 
+    let rec aux i : 'a t -> 'a t= function
       Empty  -> raise Out_of_bounds
     | Leaf s ->
         if i >= 0 && i < STRING.length s then
           let s = STRING.copy s in
-            STRING.unsafe_set s i v;
+            STRING.unsafe_set s i x;
             Leaf s
         else raise Out_of_bounds
     | Concat(l, cl, r, cr, _) ->
-        if i < cl then concat (aux i x) r
-        else concat l (aux (i - cl) x)
-    in aux i x
+        if i < cl then concat (aux i v) r
+        else concat l (aux (i - cl) v)
+    in aux i v
   
   let of_string = function
       s when STRING.length s = 0 -> Empty
@@ -777,5 +804,89 @@ struct
   let filter f =
     fold (fun s x -> if f x then append x s else s) Empty
 
+  let mapi f v =
+    let off = ref 0 in
+      map (fun x -> f (Ref.post_incr off) x) v
+
+	
+  let rec fold f a = function
+      Empty -> a
+    | Leaf s ->
+	let acc = ref a in
+          for i = 0 to RANDOMACCESS.length s - 1 do
+            acc := f !acc (RANDOMACCESS.unsafe_get s i)
+          done;
+          !acc
+    | Concat(l,_,r,_,_) -> fold f (fold f a l) r
+	
+  let fold_left = fold
+  let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
+    let rec aux (acc:'b) = function
+      | Empty  -> acc
+      | Leaf s -> RANDOMACCESS.fold_right f s acc
+      | Concat(l, _, r, _, _) -> aux (aux acc r) l
+    in aux acc v
+
+  let exists f v =
+    Return.label (fun label ->
+  let rec aux = function
+    | Empty                  -> ()
+    | Leaf a                 -> RANDOMACCESS.iter (fun x -> if f x then Return.return label true) a
+    | Concat (l, _, r, _, _) -> aux l; aux r
+  in aux v; false)
+
+let for_all f v = 
+  Return.label (fun label ->
+  let rec aux = function
+    | Empty                  -> ()
+    | Leaf a                 -> RANDOMACCESS.iter (fun x -> if not (f x) then Return.return label false) a
+    | Concat (l, _, r, _, _) -> aux l; aux r
+  in aux v; true)
+
+  let findi f v = (*We rely on the order of exploration of the tree by [find]*)
+    let off = ref 0 in
+    let _   = find (fun x -> let result = f x in incr off; result) v in
+      !off
+
+  let partition p v =
+    fold_left (fun (yes, no) x -> if p x then (append x yes,no) else (yes,append x no)) (empty,empty) v
+
+  let find_all p v =
+    fold_left (fun acc x -> if p x then append x acc else acc) empty v
+      
+  let mem m v = try let _ = find ( ( = ) m ) v in true with Not_found -> false
+    
+  let memq m v = try let _ = find ( ( == ) m ) v in true with Not_found -> false
+
+
+let filter_map f =
+  fold (fun acc x -> match f x with
+	  | None   -> acc
+	  | Some v -> append v acc) Empty
+
+let enum e =
+  let rec aux = function
+    | Empty                 -> Enum.empty ()
+    | Leaf s                -> RANDOMACCESS.enum s
+    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux l))
+	                                   (Enum.delay (fun () -> aux r))
+  in aux e
+
+let backwards e =
+  let rec aux = function
+    | Empty                 -> Enum.empty ()
+    | Leaf s                -> RANDOMACCESS.backwards s
+    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux r))
+	                                   (Enum.delay (fun () -> aux l))
+  in aux e
+
+let of_enum e =
+  Enum.fold (fun x acc -> append_char x acc) empty e
+
+let of_backwards e =
+  Enum.fold (fun x acc -> prepend_char x acc) empty e
+
+  let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
+    Enum.print ~first ~last ~sep print_a out (enum t)
 
 end
