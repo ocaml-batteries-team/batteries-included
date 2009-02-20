@@ -85,19 +85,26 @@ val for_all: ('a -> bool) -> 'a t -> bool
 (** [for_all f e] returns [true] if for every [x] in [e], [f x] is true*)
 
 val fold : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
-(** [fold f v e] returns v if e is empty,
-  otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
-  the elements of [e]. *)
+(** A general loop on an enumeration.
+
+    If [e] is empty, [fold f v e] returns [v]. Otherwise, [fold v e]
+    returns [f (... (f (f v a1) a2) ...) aN] where a1..N are the
+    elements of [e]. This function may be used, for instance, to
+    compute the sum of all elements of an enumeration [e] as follows:
+    [fold ( + ) 0 e].
+*)
 
 val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
-(** [fold f e] throws No_more_elements e is empty,
-    returns its only element if e is a singleton, 
-  otherwise [f (... (f (f a1 a2) a3)...) aN] where a1..N are
-  the elements of [e]. *)
+  (** A simplified version of [fold], which uses the first element
+      of the enumeration as a default value.
+
+      [fold f e] throws [Not_found] if [e] is empty, returns its only
+      element if e is a singleton, otherwise [f (... (f (f a1 a2)
+      a3)...) aN] where a1..N are the elements of [e]. *)
 
 val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
-(** [fold2] is similar to [fold] but will fold over two enumerations at the
- same time until one of the two enumerations ends. *)
+  (** [fold2] is similar to [fold] but will fold over two enumerations at the
+      same time until one of the two enumerations ends. *)
 
 val scanl : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b t
 (** A variant of [fold] producing an enumeration of its intermediate values.

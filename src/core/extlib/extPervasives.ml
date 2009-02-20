@@ -88,6 +88,7 @@ module Pervasives = struct
   let exists            = exists
   let for_all           = for_all
   let fold              = fold
+  let reduce            = reduce
   let find              = find
   let peek              = peek
   let push              = push

@@ -1115,7 +1115,7 @@ val iter : ('a -> unit) -> 'a Enum.t -> unit
   *)
 
 val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
-  (** Functional loop on an enumeration, used to build an enumeration
+  (** Transformation loop on an enumeration, used to build an enumeration
       from another enumeration. This loop is typically used to transform
       an enumeration into another enumeration with the same number of
       elements, in the same order.
@@ -1138,12 +1138,35 @@ val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
       square numbers of all numbers between [1] and [10].
 *)
 
+
+val reduce : ('a -> 'a -> 'a) -> 'a Enum.t -> 'a
+  (** Transformation loop on an enumeration, used to build a single value
+      from an enumeration.
+
+      If [f] is a function and [e] is an enumeration, [reduce f e] applies
+      function [f] to the first two elements of [e], then to the result of this
+      expression and to the third element of [e], then to the result of this
+      new expression and to the fourth element of [e]...
+
+      In other words, [fold f e] returns [a_1] if [e] contains only
+      one element, otherwise [f (... (f (f a1) a2) ...) aN] where
+      a1..N are the elements of [e]. 
+
+      @raises Not_found if [e] is empty.
+
+      For instance, if [add] is the function [fun x y -> x + y],
+      [reduce add] is the function which computes the sum of the
+      elements of an enumeration -- and doesn't work on empty
+      enumerations. Therefore, [reduce add (1 -- 10)]
+      produces result [55].
+  *)
+
 val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
-  (** Functional loop on an enumeration, used to build a single value
+  (** Transformation loop on an enumeration, used to build a single value
       from an enumeration. This is the most powerful general-purpose
       loop and also the most complex.
 
-      If [f] is a function, [fold f v e] is applies [f v] to the first
+      If [f] is a function, [fold f v e] applies [f v] to the first
       element of [e], then, calling [acc_1] the result of this
       operation, applies [f acc_1] to the second element of [e], then,
       calling [acc_2] the result of this operation, applies [f acc_2]
