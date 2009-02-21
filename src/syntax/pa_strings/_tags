@@ -1,1 +1,2 @@
-<*>:camlp4oof,use_camlp4,use_camlp4_full,use_pa_optcomp
+<pa_*.ml>: camlp4oof, use_pa_optcomp
+<pa_*>: pkg_camlp4.lib

@@ -349,6 +349,7 @@ module  Lexing = Batlib_Baselib_Lexing
 module  Parsing= Batlib_Baselib_Parsing
 module  Format = Extlib.ExtFormat.Format
 module  Printf = Extlib.ExtPrintf.Printf
+module  Printf2= Extlib.ExtPrintf2
 (* module  PCRE (*placeholder*)*)
 module  Scanf  = Extlib.ExtScanf.Scanf
 module  SExpr  = Libs.ExtSexp_Conv.Sexp_conv
