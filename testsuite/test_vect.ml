@@ -30,3 +30,26 @@ let test_2 =
        else Testing.Fail (Printf.sprintf2 "Hoping: %a\n\tGot:    %a" print_array array print_vect vect)
   )
 
+let test_3 =
+  ("Vect: fold_left",
+   fun () ->
+     let f i = i * i 
+     and g i j = i * i + j in
+     let vect  = fold_left g 0 (init 1000 f)
+     and array = Array.fold_left g 0 (Array.init 1000 f)
+     in 
+       if vect = array then Testing.Pass
+       else Testing.Fail (Printf.sprintf2 "Hoping: %d\n\tGot:    %d" vect array)
+  )
+
+let test_4 =
+  ("Vect: fold_right",
+   fun () ->
+     let f i = i * i 
+     and g i j = i * i + j in
+     let vect  = fold_right g (init 1000 f) 0
+     and array = Array.fold_right g (Array.init 1000 f) 0
+     in 
+       if vect = array then Testing.Pass
+       else Testing.Fail (Printf.sprintf2 "Hoping: %d\n\tGot:    %d" vect array)
+  )
