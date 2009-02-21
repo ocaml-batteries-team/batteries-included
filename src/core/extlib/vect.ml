@@ -447,17 +447,19 @@ let destructive_set v i x =
 let of_list l = of_array (Array.of_list l)
 
 let init n f =
+  if n < 0 || n > max_length then raise (Invalid_argument "Vect.init")
+  else
   (*Create as many arrays as we need to store all the data*)
   let rec aux off acc =
     if off >= n then acc
     else 
-      let len = min leaf_size n in
+      let len = min leaf_size (n - off) in
       let arr = Array.init len (fun i -> f ( off + i ) ) in
       aux (off + len) (arr::acc)
   in 
   let base = aux 0 []
   in(*And then concatenate them*)
-    List.fold_left (fun (acc:'a t) (array:'a array) -> concat acc (of_array array)) (empty:'a t) (base:'a array list)
+    List.fold_left (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc) (empty:'a t) (base:'a array list)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
   Enum.print ~first ~last ~sep print_a out (enum t)
