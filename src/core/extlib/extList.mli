@@ -56,7 +56,7 @@ module List :
 	  (**The type of lists*)
 
       include Enum.Enumerable with type 'a enumerable = 'a t
-      include Interfaces.Mapable with type 'a mapable = 'a t
+      include Interfaces.Mappable with type 'a mappable = 'a t
 
       (**{6 Base operations}*)
 

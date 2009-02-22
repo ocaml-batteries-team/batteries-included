@@ -37,7 +37,7 @@ and 'a t =
   ('a node_t) Lazy.t with sexp
 
 type 'a enumerable = 'a t
-type 'a mapable = 'a t
+type 'a mappable = 'a t
 
 (** {6 Access} *)
 

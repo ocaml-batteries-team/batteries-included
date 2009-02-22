@@ -18,9 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module type Mapable = sig
-  type 'a mapable
-  val map : ('a -> 'b) -> ('a mapable -> 'b mapable)
+module type Mappable = sig
+  type 'a mappable
+  val map : ('a -> 'b) -> ('a mappable -> 'b mappable)
 end
 
 module type OrderedType =

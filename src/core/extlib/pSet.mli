@@ -49,8 +49,8 @@ type 'a t
   (** The type of sets. *)
 
 include Enum.Enumerable with type 'a enumerable = 'a t
-include Interfaces.Mapable with type 'a mapable = 'a t
-  
+include Interfaces.Mappable with type 'a mappable = 'a t
+
 val empty: 'a t
   (** The empty set, using [compare] as comparison function *)
 

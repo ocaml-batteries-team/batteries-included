@@ -31,7 +31,7 @@ type 'a t = {
 }
 
 type 'a enumerable = 'a t
-type 'a mapable = 'a t
+type 'a mappable = 'a t
 
 external enum : 'a t -> 'a t = "%identity"
 external of_enum : 'a t -> 'a t = "%identity"

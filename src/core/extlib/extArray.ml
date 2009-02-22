@@ -28,7 +28,7 @@ module Array = struct
 
 type 'a t = 'a array with sexp
 type 'a enumerable = 'a t
-type 'a mapable = 'a t
+type 'a mappable = 'a t
 
 open Array
   let init         = init

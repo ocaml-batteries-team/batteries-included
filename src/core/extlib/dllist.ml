@@ -34,7 +34,7 @@ type 'a enum_t = {
 
 type 'a t = 'a node_t with sexp
 
-type 'a mapable = 'a t
+type 'a mappable = 'a t
 type 'a enumerable = 'a t
 
 exception Empty

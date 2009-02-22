@@ -26,7 +26,7 @@ TYPE_CONV_PATH "PSet" (*For Sexplib, Bin-prot...*)
 type 'a t = ('a, unit) PMap.t with sexp
 
 type 'a enumerable = 'a t
-type 'a mapable = 'a t
+type 'a mappable = 'a t
 
 let empty    = PMap.empty
 

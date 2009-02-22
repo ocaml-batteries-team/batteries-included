@@ -38,7 +38,7 @@ type 'a t = {
 	mutable resize: resizer_t;
 }
 
-type 'a mapable = 'a t
+type 'a mappable = 'a t
 type 'a enumerable = 'a t
 
 exception Invalid_arg of int * string * string

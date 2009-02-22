@@ -29,7 +29,7 @@ module Stream =
     include Stream
 
     type 'a enumerable = 'a t
-    type 'a mapable = 'a t
+    type 'a mappable = 'a t
 
     exception End_of_flow = Failure
       

@@ -31,10 +31,10 @@
     If you create a new data structure, you should make it compatible
     with [Enumerable].
 *)
-module type Mapable = sig
-  type 'a mapable (** The data structure, e.g. ['a List.t] *)
+module type Mappable = sig
+  type 'a mappable (** The data structure, e.g. ['a List.t] *)
     
-  val map : ('a -> 'b) -> ('a mapable -> 'b mapable)
+  val map : ('a -> 'b) -> ('a mappable -> 'b mappable)
     (** [map f e] applies [f] to every element of [e] and returns the corresponding data structure *)
 end
 
