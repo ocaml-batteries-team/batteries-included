@@ -12,7 +12,7 @@
      the data structure module (eg. List, Array...) used for the whole
      comprehension value. In the generator position, it specifies the
      data structure module corresponding to the generator expression,
-     eg. "p <- List [1; 2; 3]". In the absence of module specifier,
+     eg. "p <- List : [1; 2; 3]". In the absence of module specifier,
      the Enum module is choosed by default.
 
   Example Input :
@@ -25,21 +25,7 @@
          (fun p -> Enum.map (fun k -> pow p k) (List.enum (seq 1 (p - 1))))
          (Enum.filter (fun p -> prime p) (2 -- 100))))
 
-  In order to reuse as much code as possible, this extension depends
-  on the standard camlp4 list comprehension extension (from the ocaml
-  source tree), Camlp4ListComprehension, wich is needed for both
-  compilation and use of the present extension.
+  Compilation : ocamlbuild pa_comprehension.cmo  
+  or ocamlc -pp camlp4rf -c -I +camlp4 pa_comprehension.ml
 
-  As a side effect, the old list-specific syntax is also available.
-  Input : [ pow p k | p <- seq 2 100; prime p; k <- seq 1 p ]
-  Output :
-    List.concat
-     (List.map (fun p -> List.map (fun k -> pow p k) (seq 1 p))
-       (List.filter (fun p -> prime p) (seq 2 100)))
-
-  Compilation :
-     ocamlbuild -cflags -I,+camlp4/Camlp4Parsers pa_comprehension.cmo  
-  or ocamlc -pp camlp4rf -c -I +camlp4 -I +camlp4/Camlp4Parsers pa_comprehension.ml
-
-  Use :
-    camlp4o -parser Camlp4ListComprehension.cmo pa_comprehension.cmo test.ml
+  Use : camlp4o pa_comprehension.cmo test.ml

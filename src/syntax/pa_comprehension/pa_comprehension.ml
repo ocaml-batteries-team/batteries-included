@@ -76,9 +76,13 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
            match stream_peek_nth n strm with
            [ Some (UIDENT _) ->         
                match stream_peek_nth (n+1) strm with
-               [ Some (KEYWORD "." | SYMBOL ".") -> after_longident (n+2)
+               [ Some (KEYWORD ".") ->
+                   let n' = after_longident (n+2) in
+                   (* if n = n + 2, the last longident token is the '.' : Failure *)
+                   if n' > n+2 then n' else raise Stream.Failure
                | _ -> n+1 ]
-           | _ -> n ] in
+           | _ -> n ]
+         in
       match after_longident 0 with
       [ 0 -> raise Stream.Failure
       | n ->
