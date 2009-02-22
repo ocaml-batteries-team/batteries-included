@@ -33,7 +33,7 @@
 
    {b Note} OCaml, Batteries Included, provides two implementations of
    sets: polymorphic sets (this module) and functorized sets (module
-   (!Set}). Module {!Set} offers a more complex and slightly poorer
+   {!Set}). Module {!Set} offers a more complex and slightly poorer
    set of features but stronger type-safety. Module {!PSet} is easier
    to use and has a few more powerful features but makes it easier to
    shoot yourself in the foot. In case of doubt, use {!Set}.
@@ -47,6 +47,9 @@
 
 type 'a t
   (** The type of sets. *)
+
+include Enum.Enumerable with type 'a enumerable = 'a t
+include Interfaces.Mapable with type 'a mapable = 'a t
   
 val empty: 'a t
   (** The empty set, using [compare] as comparison function *)

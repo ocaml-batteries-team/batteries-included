@@ -30,6 +30,12 @@ type 'a t = {
   mutable fast  : bool;        (**[true] if [count] can be done without reading all elements, [false] otherwise.*)
 }
 
+type 'a enumerable = 'a t
+type 'a mapable = 'a t
+
+external enum : 'a t -> 'a t = "%identity"
+external of_enum : 'a t -> 'a t = "%identity"
+
 (* raised by 'next' functions, should NOT go outside the API *)
 exception No_more_elements
 
@@ -960,4 +966,10 @@ module Labels = struct
   let seq ~init ~f ~cnd  = seq init f cnd
   let unfold ~init ~f = unfold init f
   let compare ?(cmp=Pervasives.compare) t u = compare cmp t u
+end
+
+module type Enumerable = sig
+  type 'a enumerable
+  val enum : 'a enumerable -> 'a t
+  val of_enum : 'a t -> 'a enumerable
 end

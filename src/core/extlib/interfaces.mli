@@ -24,20 +24,6 @@
    @documents Data
 *)
 
-(** A signature for data structures which may be converted to and from [enum].
-
-    If you create a new data structure, you should make it compatible
-    with [Enumerable].
-*)
-module type Enumerable = sig
-  type 'a enumerable (** The data structure, e.g. ['a List.t] *)
-
-  val enum : 'a enumerable -> 'a Enum.t
-    (** Return an enumeration of the elements of the data structure *)
-
-  val of_enum : 'a Enum.t -> 'a enumerable
-    (** Build a data structure from an enumeration *)
-end
 
 (** A signature for data structures which have a
     [map : ('a -> 'b) -> ('a t -> 'b t)] operation.

@@ -34,6 +34,9 @@ type 'a enum_t = {
 
 type 'a t = 'a node_t with sexp
 
+type 'a mapable = 'a t
+type 'a enumerable = 'a t
+
 exception Empty
 
 let create x = let rec nn = { data = x; next = nn; prev = nn} in nn

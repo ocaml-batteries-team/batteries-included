@@ -28,6 +28,8 @@ module Queue =
 struct
   include Queue
     
+  type 'a enumerable = 'a t
+
   let of_enum e =
     let q = create () in
       Enum.iter (fun x -> push x q) e;

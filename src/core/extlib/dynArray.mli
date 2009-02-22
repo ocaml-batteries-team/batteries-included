@@ -33,6 +33,9 @@
 
 type 'a t
 
+include Enum.Enumerable with type 'a enumerable = 'a t
+include Interfaces.Mapable with type 'a mapable = 'a t
+
 exception Invalid_arg of int * string * string
 (** When an operation on an array fails, [Invalid_arg] is raised. The
 	integer is the value that made the operation fail, the first string

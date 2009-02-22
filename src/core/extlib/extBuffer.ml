@@ -51,7 +51,6 @@ struct
   let print out t =
     ExtString.String.print out (contents t)
 
-    
   let enum t =
     let buf = buffer_of_t t in
       Enum.take buf.position (String.enum buf.buffer)

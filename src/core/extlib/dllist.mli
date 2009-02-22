@@ -39,6 +39,9 @@ type 'a t = 'a node_t (*For uniformity*)
    The type of a non-empty doubly-linked list.
 *)
 
+include Interfaces.Mapable with type 'a mapable = 'a t
+include Enum.Enumerable with type 'a enumerable = 'a t
+
 exception Empty
 
 (** {6 node functions } *)

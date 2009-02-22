@@ -27,7 +27,10 @@ module OldStream = Stream
 module Stream =
   struct
     include Stream
-      
+
+    type 'a enumerable = 'a t
+    type 'a mapable = 'a t
+
     exception End_of_flow = Failure
       
     let ( |> ) x f = f x

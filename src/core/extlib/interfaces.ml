@@ -18,13 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-module type Enumerable = sig
-  type 'a enumerable
-  val enum : 'a enumerable -> 'a Enum.t
-  val of_enum : 'a Enum.t -> 'a enumerable
-end
-
 module type Mapable = sig
   type 'a mapable
   val map : ('a -> 'b) -> ('a mapable -> 'b mapable)

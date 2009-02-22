@@ -67,6 +67,9 @@ type 'a t = ('a node_t) Lazy.t (**The type of a lazy list.*)
 and 'a node_t = | Nil | Cons of 'a * 'a t
 (**The type of an item in the list.*)
 
+include Enum.Enumerable with type 'a enumerable = 'a t
+include Interfaces.Mapable with type 'a mapable = 'a t
+
 (** {6 Access } *)
 val nil : 'a t
 (**The empty list.*)

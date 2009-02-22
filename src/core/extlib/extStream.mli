@@ -49,6 +49,9 @@ module Stream : sig
 type 'a t = 'a Stream.t
 (** The type of streams holding values of type ['a]. *)
 
+include Enum.Enumerable with type 'a enumerable = 'a t
+include Interfaces.Mapable with type 'a mapable = 'a t
+
 exception Failure
 (** Raised by parsers when none of the first components of the stream
    patterns is accepted. *)

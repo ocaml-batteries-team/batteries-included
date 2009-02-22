@@ -60,8 +60,26 @@
     @author David Rajchenbach-Teller
 *)
 
-
 type 'a t
+
+(** A signature for data structures which may be converted to and from [enum].
+
+    If you create a new data structure, you should make it compatible
+    with [Enumerable].
+*)
+module type Enumerable = sig
+  type 'a enumerable (** The data structure, e.g. ['a List.t] *)
+
+  val enum : 'a enumerable -> 'a t
+    (** Return an enumeration of the elements of the data structure *)
+
+  val of_enum : 'a t -> 'a enumerable
+    (** Build a data structure from an enumeration *)
+end
+
+include Enumerable with type 'a enumerable = 'a t
+include Interfaces.Mapable with type 'a mapable = 'a t
+
 
 (** {6 Final functions}
 
@@ -396,6 +414,10 @@ val to_object: 'a t -> (<next:'a; count:int; clone:'b> as 'b)
 val of_object: (<next:'a; count:int; clone:'b> as 'b) -> 'a t
 (**[of_object e] returns a representation of an object as an enumeration*)
 
+val enum : 'a t -> 'a t
+(** identity : added for consistency with the other data structures *)
+val of_enum : 'a t -> 'a t
+(** identity : added for consistency with the other data structures *)
 
 (** {6 Counting} *)
 
