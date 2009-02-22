@@ -114,7 +114,8 @@ type open_in_flag =
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
 		 operating system does not perform conversions, the file is
 		 opened in binary mode.                                     *)
-  | `nonblock (**Open in non-blocking mode                                  *)]
+  | `nonblock (**Open in non-blocking mode                                  *)
+  | `mmap     (**Open in memory-mapped mode (experimental)*)                 ]
 
 val open_in : ?mode:(open_in_flag list) -> ?perm:permission -> string -> input
 (** [open_in file_name] opens the file named [file_name] for reading.

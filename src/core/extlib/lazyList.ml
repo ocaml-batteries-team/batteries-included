@@ -632,3 +632,46 @@ module Exceptionless = struct
     try  `Ok (split_at n l)
     with Not_found -> `Invalid_index n
 end
+
+module Labels = struct
+  let iter ~f x         = iter f x
+let iter2 ~f x        = iter2 f x
+let iteri ~f x        = iteri f x
+let map   ~f x        = map   f x
+let map2  ~f x        = map2  f x
+let mapi   ~f x       = mapi  f x
+let filter ~f         = filter f
+let exists ~f         = exists f
+let exists2 ~f        = exists2 f
+let for_all ~f        = for_all f
+let for_all2 ~f       = for_all2 f
+let filter_map ~f     = filter_map f
+let find ~f           = find f
+let findi ~f          = findi f
+let rfind ~f          = rfind f
+let rfindi ~f         = rfindi f
+let find_exn ~f       = find_exn f
+let rfind_exn ~f      = rfind_exn f
+let remove_if ~f      = remove_if f
+let remove_all_such ~f= remove_all_such f
+let take_while      ~f= take_while f
+let drop_while      ~f= drop_while f
+let fold_left ~f ~init  = fold_left f init
+let fold_right ~f ~init = fold_right f init
+let fold_left2 ~f ~init = fold_left2 f init
+let fold_right2 ~f l1 l2 ~init = fold_right2 f l1 l2 init
+
+module Exceptionless = struct
+  let find   ~f = Exceptionless.find f
+  let rfind  ~f = Exceptionless.rfind f
+  let findi  ~f = Exceptionless.findi f
+  let rfindi ~f = Exceptionless.rfindi f
+
+  let assq      = Exceptionless.assq
+  let assoc     = Exceptionless.assoc
+  let at        = Exceptionless.at
+  let split_at  = Exceptionless.split_at
+
+end
+
+end

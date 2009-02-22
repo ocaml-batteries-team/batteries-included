@@ -189,10 +189,8 @@ let init n f = (*Experimental fix for init*)
 
 
 let get t =
-	try
-		Some (t.next())
-	with
-		No_more_elements -> None
+  try   Some (t.next())
+  with	No_more_elements -> None
 
 let push t e =
 	let rec make t =
@@ -363,14 +361,10 @@ let fold f init t =
 		No_more_elements -> !acc
 
 let reduce f t =
-  let acc = ref (t.next()) in (* uncaught No_more_elements if empty *)
-  let rec loop () =
-    acc := f (t.next ()) !acc;
-    loop()
-  in
-  try 
-    loop ()
-  with No_more_elements -> !acc
+  match get t
+  with None -> raise Not_found
+    |  Some init -> fold f init t
+
 
 let exists f t =
   try let rec aux () = f (t.next()) || aux ()

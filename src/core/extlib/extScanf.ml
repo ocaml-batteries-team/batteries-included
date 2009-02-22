@@ -1,6 +1,6 @@
 (* 
- * ExtPrintf - Extended Printf module
- * Copyright (C) 2008 David Teller (contributor)
+ * ExtScanf - Extended Scanf module
+ * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,5 +20,34 @@
 
 TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
-module Printf = InnerIO.Printf
+module Scanf = 
+struct
 
+  module Scanning =
+  struct
+    include Scanf.Scanning
+
+    let from_input inp =
+      from_function (fun () -> InnerIO.read inp)
+
+    let from_channel = from_input
+
+    let stdib = from_input (InnerIO.stdin)
+  end
+
+  type ('a, 'b, 'c, 'd) scanner =
+      ('a, Scanning.scanbuf, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c;;
+
+
+  exception Scan_failure of string;;
+
+  open Scanf
+  let fscanf        = fscanf
+  let sscanf        = sscanf
+  let scanf         = scanf
+  let kscanf        = kscanf
+  let bscanf        = bscanf
+  let bscanf_format = bscanf_format
+  let sscanf_format = sscanf_format
+  let format_from_string = format_from_string
+end

@@ -1,5 +1,6 @@
 open IO
 open ListLabels
+open Unix
 
 (*** Permissions *)
 type permission = int
@@ -32,7 +33,8 @@ type open_in_flag =
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
 		 operating system does not perform conversions, the file is
 		 opened in binary mode.                                     *)
-  | `nonblock (**Open in non-blocking mode                                  *)]
+  | `nonblock (**Open in non-blocking mode                                  *)
+  | `mmap     (**Open in memory-mapped mode (experimental)*)                 ]
 
 type open_out_flag =
   [ `append   (**Start writing at the end of the file rather than the start *)
@@ -88,8 +90,34 @@ let out_chan_mode ?mode binary =
 let open_out ?mode ?(perm=user_read lor user_write) name =
   output_channel (open_out_gen (out_chan_mode ?mode true) perm name)
 
+open ExtBigarray.Bigarray
+
 let open_in ?mode ?(perm=default_permission) name =
-  input_channel (open_in_gen (in_chan_mode ?mode true) perm name)
+  let unix_mode = in_chan_mode ?mode true in
+    match mode with
+      | Some l when List.mem `mmap l ->
+    let desc = Unix.openfile name [O_RDONLY] 0                      in
+    let array= Array1.map_file desc char c_layout (*shared*)false (-1) in
+    let pos  = ref 0                                                
+    and len  = Array1.dim array                                     in
+      create_in
+	~read:(fun () ->
+		 if !pos >= len then raise No_more_input
+		 else Array1.get array (Ref.post_incr pos))
+	~input:(fun sout p l ->
+		  if !pos >= len then raise No_more_input;
+		  let n = (if !pos + l > len then len - !pos else l) in
+		    for i = 0 to n - 1 do
+		      String.(*unsafe_*)set sout (!pos + i) (Array1.get array i)
+		    done;
+(*		    String.unsafe_blit s (post pos ( (+) n ) ) sout p n;*)
+		    pos := !pos + n;
+		    n
+	       )
+	~close:(fun () -> Unix.close desc)
+      | _ ->
+	  input_channel (open_in_gen unix_mode perm name)
+
 
 let with_do opener closer x f =
   let file = opener x in

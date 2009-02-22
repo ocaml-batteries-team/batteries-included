@@ -447,6 +447,7 @@ module Genarray :
   val enum : ('a, 'b, 'c) t -> 'a Enum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
+
   end
 
 (** {6 One-dimensional arrays} *)
@@ -520,6 +521,26 @@ module Array1 : sig
   val enum : ('a, 'b, 'c) t -> 'a Enum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
+
+#if ocaml_version >= (3,11)
+
+  (**{6 Unsafe operations}
+
+     In case of doubt, don't use them.*)
+
+  external unsafe_get: ('a, 'b, 'c) t -> int -> 'a = "%caml_ba_unsafe_ref_1"
+  (** Like {!Bigarray.Array1.get}, but bounds checking is not always performed.
+      Use with caution and only when the program logic guarantees that
+      the access is within bounds. *)
+
+  external unsafe_set: ('a, 'b, 'c) t -> int -> 'a -> unit
+                     = "%caml_ba_unsafe_set_1"
+  (** Like {!Bigarray.Array1.set}, but bounds checking is not always performed.
+      Use with caution and only when the program logic guarantees that
+      the access is within bounds. *)
+
+#endif
+
 end
 
 
@@ -618,6 +639,25 @@ module Array2 :
   val enum : ('a, 'b, 'c) t -> 'a Enum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
+
+#if ocaml_version >= (3,11)
+
+  (**{6 Unsafe operations}
+
+     In case of doubt, don't use them.*)
+
+  external unsafe_get: ('a, 'b, 'c) t -> int -> int -> 'a
+                     = "%caml_ba_unsafe_ref_2"
+  (** Like {!Bigarray.Array2.get}, but bounds checking is not always
+      performed. *)
+
+  external unsafe_set: ('a, 'b, 'c) t -> int -> int -> 'a -> unit
+                     = "%caml_ba_unsafe_set_2"
+  (** Like {!Bigarray.Array2.set}, but bounds checking is not always
+      performed. *)
+
+#endif
+
   end
 
 (** {6 Three-dimensional arrays} *)
@@ -739,6 +779,26 @@ module Array3 :
   val enum : ('a, 'b, 'c) t -> 'a Enum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
+
+#if ocaml_version >= (3,11)
+
+  (**{6 Unsafe operations}
+
+     In case of doubt, don't use them.*)
+
+  external unsafe_get: ('a, 'b, 'c) t -> int -> int -> int -> 'a
+                     = "%caml_ba_unsafe_ref_3"
+  (** Like {!Bigarray.Array3.get}, but bounds checking is not always
+      performed. *)
+
+  external unsafe_set: ('a, 'b, 'c) t -> int -> int -> int -> 'a -> unit
+                     = "%caml_ba_unsafe_set_3"
+  (** Like {!Bigarray.Array3.set}, but bounds checking is not always
+      performed. *)
+
+#endif
+
+
   end
 
 (** {6 Coercions between generic big arrays and fixed-dimension big arrays} *)

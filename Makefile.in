@@ -59,7 +59,9 @@ BROWSER = @BROWSER_COMMAND@
 #Typical flag: -classic-display (for more details on the build process)
 OBFLAGS =
 
-
+ifeq ($(TERM),dumb)
+OBFLAGS += -classic-display
+endif
 
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
@@ -153,8 +155,7 @@ install:
 		_build/src/syntax/pa_where/pa_where.cmo \
 		_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 		_build/src/syntax/pa_batteries/pa_batteries.cmo \
-		_build/src/syntax/pa_strings/pa_strings.cmo \
-		_build/src/syntax/pa_strings/pa_estring.cmo \
+		_build/src/syntax/pa_strings/pa_strings.cma \
 		-optional \
 			_build/src/batteries_toolchain/batteries_help.cmi \
 			_build/src/batteries_toolchain/batteries_print.cmi \

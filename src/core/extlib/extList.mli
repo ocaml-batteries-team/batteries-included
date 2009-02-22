@@ -508,9 +508,9 @@ module List :
 	   operation}} or {{:../extensions.html#multialias}{alias several
 	   modules to one name}}. For instance, to open a version of {!List}
 	   with exceptionless error management, you may write {v open List,
-	   ExceptionLess v}. To locally replace module {!List.Cap} with a module of
+	   ExceptionLess v}. To locally replace module {!List} with a module of
 	   the same name but with exceptionless error management, you may
-	   write [module List = List.Cap include ExceptionLess]
+	   write [module List = List include ExceptionLess]
 	   
 	*)
 

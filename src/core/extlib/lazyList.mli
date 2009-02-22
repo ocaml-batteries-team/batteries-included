@@ -538,9 +538,27 @@ val sexp_of_node_t : ('a -> Sexplib.Sexp.t) -> 'a node_t -> Sexplib.Sexp.t
 val print : ?first:string -> ?last:string -> ?sep:string ->('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
 
 
-module Exceptionless : sig
-  (** Exceptionless counterparts for error-raising operations*)
+(** {6 Override modules}*)
+  
+(**
+   The following modules replace functions defined in {!LazyList} with functions
+   behaving slightly differently but having the same name. This is by design:
+   the functions meant to override the corresponding functions of {!LazyList}.
+   
+   To take advantage of these overrides, you probably want to
+   {{:../extensions.html#multiopen}{open several modules in one
+   operation}} or {{:../extensions.html#multialias}{alias several
+   modules to one name}}. For instance, to open a version of {!List}
+   with exceptionless error management, you may write {v open LazyList,
+   ExceptionLess v}. To locally replace module {!LazyList} with a module of
+   the same name but with exceptionless error management, you may
+   write [module LazyList = LazyList include ExceptionLess]
+   
+*)
 
+(** Exceptionless counterparts for error-raising operations*)
+module Exceptionless : sig
+  
   val find : ('a -> bool) -> 'a t -> 'a option
     (** [rfind p l] returns [Some x] where [x] is the first element of [l] such 
 	that [p x] returns [true] or [None] if such element as not been found. *)
@@ -578,4 +596,52 @@ module Exceptionless : sig
 
   val assq : 'a -> ('a * 'b) t -> 'b option
     (** As {!assoc} but with physical equality *)	    
+end
+
+(** Operations on {!LazyList} with labels.
+    
+    This module overrides a number of functions of {!List} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!LazyList}.
+*)
+module Labels : sig
+  val iter : f:('a -> 'b) -> 'a t -> unit 
+  val iteri : f:(int -> 'a -> 'b) -> 'a t -> unit
+  val map : f:('a -> 'b) -> 'a t -> 'b t
+  val mapi : f:(int -> 'a -> 'b) -> 'a t -> 'b t
+  val fold_left : f:('a -> 'b -> 'a) -> init:'a -> 'b t -> 'a
+  val fold_right : f:('a -> 'b -> 'b) -> init:'b -> 'a t -> 'b
+  val find : f:('a -> bool) -> 'a t -> 'a
+  val rfind : f:('a -> bool) -> 'a t -> 'a
+  val find_exn : f:('a -> bool) -> exn -> 'a t -> 'a
+  val rfind_exn : f:('a -> bool) -> exn -> 'a t -> 'a
+  val findi : f:(int -> 'a -> bool) -> 'a t -> (int * 'a)
+  val rfindi : f:(int -> 'a -> bool) -> 'a t -> (int * 'a)
+  val remove_if : f:('a -> bool) -> 'a t -> 'a t
+  val remove_all_such : f:('a -> bool) -> 'a t -> 'a t
+  val take_while : f:('a -> bool) -> 'a t -> 'a t
+  val drop_while : f:('a -> bool) -> 'a t -> 'a t
+  val filter : f:('a -> bool) -> 'a t -> 'a t
+  val exists : f:('a -> bool) -> 'a t -> bool
+  val for_all : f:('a -> bool) -> 'a t -> bool
+  val filter_map : f:('a -> 'b option) -> 'a t -> 'b t
+  val map2 : f:('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+  val iter2 : f:('a -> 'b -> unit) -> 'a t -> 'b t -> unit
+  val fold_right2 : f:('a -> 'b -> 'c -> 'c) -> 'a t -> 'b t -> init:'c -> 'c
+  val for_all2 : f:('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+  val exists2 : f:('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+
+
+  module Exceptionless : sig
+    val find:  f:('a -> bool) -> 'a t -> 'a option
+    val rfind: f:('a -> bool) -> 'a t -> 'a option
+    val findi: f:(int -> 'a -> bool) -> 'a t -> (int * 'a) option
+    val rfindi:f:(int -> 'a -> bool) -> 'a t -> (int * 'a) option
+    val split_at: int -> 'a t -> [`Ok of ('a t * 'a t) | `Invalid_index of int]
+    val at : 'a t -> int -> [`Ok of 'a | `Invalid_index of int]
+    val assoc : 'a -> ('a * 'b) t -> 'b option
+    val assq : 'a -> ('a * 'b) t -> 'b option
+  end
 end

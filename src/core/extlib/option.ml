@@ -65,3 +65,10 @@ let of_enum = Enum.get
 let print print_a out = function
   | None   -> InnerIO.nwrite out "None"
   | Some x -> ExtPrintf.Printf.fprintf out "Some %a" print_a x
+
+module Labels =
+struct
+  let may ~f o = may f o
+  let map ~f o = map f o
+  let map_default ~f d o = map_default f d o
+end

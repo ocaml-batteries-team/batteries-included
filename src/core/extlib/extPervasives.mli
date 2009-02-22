@@ -1115,7 +1115,7 @@ val iter : ('a -> unit) -> 'a Enum.t -> unit
   *)
 
 val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
-  (** Functional loop on an enumeration, used to build an enumeration
+  (** Transformation loop on an enumeration, used to build an enumeration
       from another enumeration. This loop is typically used to transform
       an enumeration into another enumeration with the same number of
       elements, in the same order.
@@ -1138,12 +1138,35 @@ val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
       square numbers of all numbers between [1] and [10].
 *)
 
+
+val reduce : ('a -> 'a -> 'a) -> 'a Enum.t -> 'a
+  (** Transformation loop on an enumeration, used to build a single value
+      from an enumeration.
+
+      If [f] is a function and [e] is an enumeration, [reduce f e] applies
+      function [f] to the first two elements of [e], then to the result of this
+      expression and to the third element of [e], then to the result of this
+      new expression and to the fourth element of [e]...
+
+      In other words, [fold f e] returns [a_1] if [e] contains only
+      one element, otherwise [f (... (f (f a1) a2) ...) aN] where
+      a1..N are the elements of [e]. 
+
+      @raises Not_found if [e] is empty.
+
+      For instance, if [add] is the function [fun x y -> x + y],
+      [reduce add] is the function which computes the sum of the
+      elements of an enumeration -- and doesn't work on empty
+      enumerations. Therefore, [reduce add (1 -- 10)]
+      produces result [55].
+  *)
+
 val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
-  (** Functional loop on an enumeration, used to build a single value
+  (** Transformation loop on an enumeration, used to build a single value
       from an enumeration. This is the most powerful general-purpose
       loop and also the most complex.
 
-      If [f] is a function, [fold f v e] is applies [f v] to the first
+      If [f] is a function, [fold f v e] applies [f v] to the first
       element of [e], then, calling [acc_1] the result of this
       operation, applies [f acc_1] to the second element of [e], then,
       calling [acc_2] the result of this operation, applies [f acc_2]
@@ -1258,6 +1281,70 @@ val ( --~ ) : char -> char -> char Enum.t
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b Enum.t -> unit
 (** Print and consume the contents of an enumeration.*)
+
+(**
+   {6 Default directives}
+*)
+
+(** {7 Equivalent of classical directives} *)
+
+val pdir_a : (('acc IO.output -> 'a -> unit) -> 'a -> 'b, 'b, 'acc) ExtPrintf2.directive
+val pdir_t : (('acc IO.output -> unit) -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_B : (bool -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_c : (char -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_C : (char -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_s : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_S : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrintf2.directive
+
+(*
+TODO: implement that:
+
+type ('a, 'b) unum_directive = ?left_justify:bool -> ?pad_with_zeros:bool -> ?width:int -> ('a, 'b) ExtPrintf2.directive
+  (** Directive which prints an unsigned number *)
+
+type ('a, 'b) snum_directive = ?prefix_with_plus:bool -> ?prefix_with_space:bool -> ('a, 'b) unum_directive
+  (** Directive which prints a signed number *)
+*)
+
+val pdir_d : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_i : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_u : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_x : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_X : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_o : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_ld : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_li : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_lu : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_lx : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_lX : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_lo : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Ld : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Li : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Lu : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Lx : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_LX : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Lo : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_nd : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_ni : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_nu : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_nx : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_nX : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_no : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+
+(** {7 Batteries-specific directives} *)
+
+val pdir_format : (('a, 'b, 'acc) ExtPrintf2.format -> 'a, 'b, 'acc) ExtPrintf2.directive
+  (** [sp_format] take a format, then the arguments of the format and
+      print according to it. For example
+
+      {[
+        sprintf p"x = %format * %d" p"%d + %d" 1 3 5
+        =
+        "x = 1 + 3 * 5"
+      ]} *)
+
+val pdir_rope : (Rope.t -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_utf8 : (ExtUTF8.UTF8.t -> 'a, 'a, 'acc) ExtPrintf2.directive
 
 (**
    {6 Results}

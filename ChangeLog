@@ -1,3 +1,60 @@
+2009-02-21  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/core/extlib/extPrintf2.ml*: created
+	* src/core/extlib/extPervasives.ml*: added default directives
+
+	* src/syntax/pa_strings/pa_strings.mllib: created
+	* src/syntax/pa_strings/pa_format.ml: created
+	* src/syntax/pa_strings/format_ast.ml*: created
+	* src/syntax/pa_strings/format_lexer.mll: created
+
+	* src/syntax/pa_strings/_tags: tags cleanup, (with previous ones
+	pa_strings.cma depended on Camlp4Top??)
+
+	* build/META.in: {pa_estring.cmo, pa_strings.cmo} -> pa_strings.cma
+
+	* src/main/nothreads/batteries.ml: added ExtPrintf2
+	* src/main/threads/batteries.ml: added ExtPrintf2
+
+	* src/main/core/extlib.mlpack: added ExtPrintf2
+
+	* examples/snippets/test_printf.ml: created
+	* examples/snippets/snippets.itarget: added test_printf
+
+	* Makefile.in: add -classic-display to ocamlbuild when compiling
+	under emacs
+
+2009-02-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/libs/sexplib/_tags: *.ml now uses stand-alone optcomp
+
+	* src/core/extlib/extBigarray.ml*: [Array{1,2,3}.unsafe_{get,set}] added
+
+	* src/core/extlib/option.ml*: [Labels] added
+
+	* src/core/extlib/lazyList.ml*: [Labels], [Labels.ExceptionLess] added
+
+	* testsuite/test_file.ml: created
+
+	* src/core/extlib/file.ml: [open_in] now supports mmap
+
+2009-02-16  Jeremie Dimino <jeremie@dimino.org>
+
+	* build/optcomp/optcomp.ml: better handling of errors
+
+2009-02-16  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib.mlpack: [ExtScanf] added
+
+	* src/main/nothreads/batteries.ml: [Scanf] replaced with [ExtScanf.Scanf]
+
+	* src/main/threads/batteries.ml: [Scanf] replaced with [ExtScanf.Scanf]
+
+	* src/main/nothreads/batteries.mllib: base [Scanf] removed
+
+	* src/main/threads/batteries.mllib: base [Scanf] removed
+
+
 2009-02-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* tests/dynlink/*: created

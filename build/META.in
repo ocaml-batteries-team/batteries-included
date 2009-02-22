@@ -70,8 +70,8 @@ package "pa_strings" (
 	package "syntax" (
 		description = "pseudo-native Unicode strings (syntax extension)"
 		version     = "@VERSION@"
-		archive(syntax, preprocessor) = "pa_estring.cmo, pa_strings.cmo"
-		archive(syntax, toploop)      = "Camlp4Top.cmo, pa_estring.cmo, pa_strings.cmo"
+		archive(syntax, preprocessor) = "pa_strings.cma"
+		archive(syntax, toploop)      = "Camlp4Top.cmo, pa_strings.cma"
 	)
 )
 
