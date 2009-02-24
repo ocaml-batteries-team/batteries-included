@@ -36,6 +36,9 @@
 module Map:
 sig
 
+  open ExtString
+  open ExtInt
+
 module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Map.Make}. *)
 
@@ -197,6 +200,21 @@ module type S =
       val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
     end
   end
+
+module StringMap  : S with type key = String.t
+(** A map on strings. Comparaison of strings takes case into account (i.e. "foo" <> "Foo")*)
+
+module IStringMap : S with type key = String.t
+(** A map on strings. Comparaison of strings ignores case (i.e. "foo" = "Foo")*)
+
+module RopeMap    : S with type key = Rope.t
+(** A map on ropes. Comparaison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
+
+module IRopeMap   : S with type key = Rope.t
+(** A map on ropes. Comparaison of ropes ignores case (i.e. r"foo" = r"Foo")*)
+
+module IntMap     : S with type key = Int.t
+(** A map on integers.*)
 
 module Make (Ord : OrderedType) : S with type key = Ord.t
 (** Functor building an implementation of the map structure

@@ -310,4 +310,25 @@ module type S =
     end
   end
 
+
+  open ExtString
+  open ExtInt
+
+  module IString =
+  struct
+    type t = String.t
+    let compare = String.icompare
+  end
+
+  module IRope =
+  struct
+    type t = Rope.t
+    let compare = Rope.icompare
+  end
+
+  module StringSet  = Make(String)
+  module IStringSet = Make(IString)
+  module RopeSet    = Make(Rope)
+  module IRopeSet   = Make(IRope)
+  module IntSet     = Make(Int)
 end

@@ -44,6 +44,9 @@
 module Set:
 sig
 
+  open ExtString
+  open ExtInt
+
 module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Set.Make}. *)
 
@@ -243,8 +246,23 @@ module type S =
     end
       
   end
-
 (** Output signature of the functor {!Set.Make}. *)
+
+module StringSet  : S with type elt = String.t
+(** A set of strings. Comparaison of strings takes case into account (i.e. "foo" <> "Foo")*)
+
+module IStringSet : S with type elt = String.t
+(** A set of strings. Comparaison of strings ignores case (i.e. "foo" = "Foo")*)
+
+module RopeSet    : S with type elt = Rope.t
+(** A set of ropes. Comparaison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
+
+module IRopeSet   : S with type elt = Rope.t
+(** A set of ropes. Comparaison of ropes ignores case (i.e. r"foo" = r"Foo")*)
+
+module IntSet     : S with type elt = Int.t
+(** A set of integers.*)
+
 
 module Make (Ord : OrderedType) : S with type elt = Ord.t
 (** Functor building an implementation of the set structure
