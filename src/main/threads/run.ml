@@ -38,6 +38,6 @@ invisible_args := !invisible_args + hide_args;;
 Arg.current    := !Arg.current    + hide_args;;
 foreach (List.enum plugins) **>
   fun arg ->
-    Printf.eprintf "Loading %S\n"  arg;
+    Printf.eprintf "Loading %S\n%!"  arg;
     Dynlink.loadfile arg
 
