@@ -1,11 +1,15 @@
-2009-02-21  Jeremie Dimino <jeremie@dimino.org>
 
+2009-02-21  Jeremie Dimino <jeremie@dimino.org>
 	* src/core/extlib/extPrintf2.ml*: created
+
 	* src/core/extlib/extPervasives.ml*: added default directives
 
 	* src/syntax/pa_strings/pa_strings.mllib: created
+
 	* src/syntax/pa_strings/pa_format.ml: created
+
 	* src/syntax/pa_strings/format_ast.ml*: created
+
 	* src/syntax/pa_strings/format_lexer.mll: created
 
 	* src/syntax/pa_strings/_tags: tags cleanup, (with previous ones
@@ -14,17 +18,51 @@
 	* build/META.in: {pa_estring.cmo, pa_strings.cmo} -> pa_strings.cma
 
 	* src/main/nothreads/batteries.ml: added ExtPrintf2
+
 	* src/main/threads/batteries.ml: added ExtPrintf2
 
 	* src/main/core/extlib.mlpack: added ExtPrintf2
-
+	
 	* examples/snippets/test_printf.ml: created
+	
 	* examples/snippets/snippets.itarget: added test_printf
 
 	* Makefile.in: add -classic-display to ocamlbuild when compiling
 	under emacs
+	
+2009-02-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+	* src/core/extlib/extSet.ml*: [StringSet], [RopeSet], [IStringSet], [IRopeSet], [IntSet] created
+
+	* src/core/extlib/extMap.ml*: [StringMap], [RopeMap], [IStringMap], [IRopeMap], [IntMap] created
+
+	* src/core/extlib/rope.ml*: [compare] renamed [icompare]
+
+	* src/core/extlib/extString.ml*: [compare] renamed [icompare]
+
+2009-02-21  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/vect.ml: [init] now should create vectors with the correct size
+
+2009-02-20  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPervasives.ml*: [reduce] added
+
+	* src/core/extlib/enum.ml: [reduce] rewritten from [fold], now throws [Not_found]
+
+	* src/core/extlib/vect.ml*: [enum], [of_enum] added
+
+	* src/core/extlib/vect.ml*: [print] added
+
+	* src/core/extlib/vect.ml*: [exists], [for_all], [find], [partition], [find_all] created
+
+	* src/core/extlib/vect.ml*: [get] order of arguments changed
+	
 
 2009-02-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/vect.ml*: [init], [fold_left], [fold_right] created
+
+	* src/core/extlib/vect.ml*: [set], [destructive_set] order of argument changed
 
 	* src/libs/sexplib/_tags: *.ml now uses stand-alone optcomp
 
