@@ -528,7 +528,7 @@ val compare : t -> t -> int
       allows the module [Rope] to be passed as argument to the functors
       {!Set.Make} and {!Map.Make}. *)
 
-val compare_without_case: t -> t -> int
+val icompare: t -> t -> int
 (** Compare two ropes, case-insensitive. *)
 
 

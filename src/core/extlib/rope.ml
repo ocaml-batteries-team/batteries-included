@@ -749,6 +749,6 @@ let implode r = of_enum (List.enum r)
 
 let compare r1 r2 = Enum.compare UTF8.compare (bulk_enum r1) (bulk_enum r2)
 
-let compare_without_case r1 r2 = Enum.compare (fun x1 x2 -> UTF8.compare (UTF8.lowercase x1) (UTF8.lowercase x2)) (bulk_enum r1) (bulk_enum r2)
+let icompare r1 r2 = Enum.compare (fun x1 x2 -> UTF8.compare (UTF8.lowercase x1) (UTF8.lowercase x2)) (bulk_enum r1) (bulk_enum r2)
 
 (* =end *)
