@@ -392,7 +392,7 @@ val compare: t -> t -> int
       allows the module [String] to be passed as argument to the functors
       {!Set.Make} and {!Map.Make}. *)
 
-val compare_without_case: t -> t -> int
+val icompare: t -> t -> int
   (** Compare two strings, case-insensitive. *)
 
 
@@ -803,7 +803,7 @@ val compare: [> `Read] t -> [> `Read] t -> int
       allows the module [String] to be passed as argument to the functors
       {!Set.Make} and {!Map.Make}. *)
 
-val compare_without_case: [> `Read] t -> [> `Read] t -> int
+val icompare: [> `Read] t -> [> `Read] t -> int
   (** Compare two strings, case-insensitive. *)
 
 (**/**)

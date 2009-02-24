@@ -390,7 +390,7 @@ let splice s1 off len s2 =
 
 let is_empty s = length s = 0 
 
-let compare_without_case s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
+let icompare s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
 
 let print         = InnerIO.nwrite
 let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
@@ -455,7 +455,7 @@ let slice         = slice
 let explode       = explode
 let implode       = implode
 let compare       = compare
-let compare_without_case = compare_without_case
+let icompare      = icompare
 let splice        = splice
 let trim          = trim
 let left          = left
