@@ -68,7 +68,7 @@ and 'a node_t = | Nil | Cons of 'a * 'a t
 (**The type of an item in the list.*)
 
 include Enum.Enumerable with type 'a enumerable = 'a t
-include Interfaces.Mapable with type 'a mapable = 'a t
+include Interfaces.Mappable with type 'a mappable = 'a t
 
 (** {6 Access } *)
 val nil : 'a t
