@@ -311,24 +311,10 @@ module type S =
   end
 
 
-  open ExtString
-  open ExtInt
-
-  module IString =
-  struct
-    type t = String.t
-    let compare = String.icompare
-  end
-
-  module IRope =
-  struct
-    type t = Rope.t
-    let compare = Rope.icompare
-  end
-
-  module StringSet  = Make(String)
-  module IStringSet = Make(IString)
+  module StringSet  = Make(ExtString.String)
+  module IStringSet = Make(ExtString.String.IString)
+  module NumStringSet = Make(ExtString.String.NumString)
   module RopeSet    = Make(Rope)
-  module IRopeSet   = Make(IRope)
-  module IntSet     = Make(Int)
+  module IRopeSet   = Make(Rope.IRope)
+  module IntSet     = Make(ExtInt.Int)
 end

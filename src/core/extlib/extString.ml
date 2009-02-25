@@ -392,6 +392,15 @@ let is_empty s = length s = 0
 
 let icompare s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
 
+type t_alias = t (* needed for IString  breaks type t = t *)
+
+module IString =
+struct
+  type t = t_alias
+  let compare = icompare
+end
+
+
 
 let numeric_compare s1 s2 =
 (* TODO pluggable transformation functions (for lowercase) *)
@@ -417,8 +426,14 @@ let numeric_compare s1 s2 =
 	(* FIXME?: trailing numbers must be less than Int64.max_int *)
       and n2 = Int64.of_string (String.sub s2 d (e2-d)) in
 (*      Printf.eprintf " %Ld & %Ld\n" n1 n2;*)
-      Int64.compare n1 n2
+      Int64.compare n1 n2 (* FIXME: ignores text after equal numbers -- "a1b" = "a01c" *)
     end
+
+module NumString =
+struct
+  type t = t_alias
+  let compare = numeric_compare
+end
 
 
 let print         = InnerIO.nwrite
@@ -512,8 +527,7 @@ external unsafe_blit :
 external unsafe_fill :
   [> `Write] -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 
-end
-end
+end (* String.Cap *)
 
-
+end (* String *)
 

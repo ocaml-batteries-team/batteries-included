@@ -395,9 +395,15 @@ val compare: t -> t -> int
 val icompare: t -> t -> int
   (** Compare two strings, case-insensitive. *)
 
+module IString : Interfaces.OrderedType with type t = t
+(** uses icompare as ordering function *)
+
+
 val numeric_compare: t -> t -> int
   (** Compare two strings, sorting "abc32def" before "abc210abc" *)
 
+module NumString : Interfaces.OrderedType with type t = t
+(** uses numeric_compare as its ordering function *)
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)

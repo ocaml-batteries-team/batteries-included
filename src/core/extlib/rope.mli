@@ -531,6 +531,7 @@ val compare : t -> t -> int
 val icompare: t -> t -> int
 (** Compare two ropes, case-insensitive. *)
 
+module IRope : Interfaces.OrderedType with type t = t
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)

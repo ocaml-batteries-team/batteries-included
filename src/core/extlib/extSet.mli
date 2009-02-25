@@ -249,16 +249,19 @@ module type S =
 (** Output signature of the functor {!Set.Make}. *)
 
 module StringSet  : S with type elt = String.t
-(** A set of strings. Comparaison of strings takes case into account (i.e. "foo" <> "Foo")*)
+(** A set of strings. Comparison of strings takes case into account (i.e. "foo" <> "Foo")*)
 
 module IStringSet : S with type elt = String.t
-(** A set of strings. Comparaison of strings ignores case (i.e. "foo" = "Foo")*)
+(** A set of strings. Comparison of strings ignores case (i.e. "foo" = "Foo")*)
+
+module NumStringSet : S with type elt = String.t
+(** A set of strings. Strings are handled as prefix + number (i.e. "abc23" < "abc123", "abc012" = "abc12")*)
 
 module RopeSet    : S with type elt = Rope.t
-(** A set of ropes. Comparaison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
+(** A set of ropes. Comparison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
 
 module IRopeSet   : S with type elt = Rope.t
-(** A set of ropes. Comparaison of ropes ignores case (i.e. r"foo" = r"Foo")*)
+(** A set of ropes. Comparison of ropes ignores case (i.e. r"foo" = r"Foo")*)
 
 module IntSet     : S with type elt = Int.t
 (** A set of integers.*)

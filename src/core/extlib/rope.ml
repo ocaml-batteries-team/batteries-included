@@ -751,4 +751,13 @@ let compare r1 r2 = Enum.compare UTF8.compare (bulk_enum r1) (bulk_enum r2)
 
 let icompare r1 r2 = Enum.compare (fun x1 x2 -> UTF8.compare (UTF8.lowercase x1) (UTF8.lowercase x2)) (bulk_enum r1) (bulk_enum r2)
 
+type t_alias = t (* fixes [type t = t] bug below *)
+
+module IRope =
+struct
+  type t = t_alias
+  let compare = icompare
+end
+
+
 (* =end *)

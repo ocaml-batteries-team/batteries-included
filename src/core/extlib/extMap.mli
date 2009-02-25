@@ -202,16 +202,19 @@ module type S =
   end
 
 module StringMap  : S with type key = String.t
-(** A map on strings. Comparaison of strings takes case into account (i.e. "foo" <> "Foo")*)
+(** A map on strings. Comparison of strings takes case into account (i.e. "foo" <> "Foo")*)
 
 module IStringMap : S with type key = String.t
-(** A map on strings. Comparaison of strings ignores case (i.e. "foo" = "Foo")*)
+(** A map on strings. Comparison of strings ignores case (i.e. "foo" = "Foo")*)
+
+module NumStringMap : S with type key = String.t
+(** A map on strings. Strings are handled as prefix + number (i.e. "abc23" < "abc123", "abc012" = "abc12")*)
 
 module RopeMap    : S with type key = Rope.t
-(** A map on ropes. Comparaison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
+(** A map on ropes. Comparison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
 
 module IRopeMap   : S with type key = Rope.t
-(** A map on ropes. Comparaison of ropes ignores case (i.e. r"foo" = r"Foo")*)
+(** A map on ropes. Comparison of ropes ignores case (i.e. r"foo" = r"Foo")*)
 
 module IntMap     : S with type key = Int.t
 (** A map on integers.*)

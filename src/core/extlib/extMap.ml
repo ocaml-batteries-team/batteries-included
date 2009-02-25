@@ -256,25 +256,11 @@ struct
 
     end
 
-  open ExtString
-  open ExtInt
-
-  module IString =
-  struct
-    type t = String.t
-    let compare = String.icompare
-  end
-
-  module IRope =
-  struct
-    type t = Rope.t
-    let compare = Rope.icompare
-  end
-
-  module StringMap  = Make(String)
-  module IStringMap = Make(IString)
+  module StringMap  = Make(ExtString.String)
+  module IStringMap = Make(ExtString.String.IString)
+  module NumStringMap = Make(ExtString.String.NumString)
   module RopeMap    = Make(Rope)
-  module IRopeMap   = Make(IRope)
-  module IntMap     = Make(Int)
+  module IRopeMap   = Make(Rope.IRope)
+  module IntMap     = Make(ExtInt.Int)
 
 end
