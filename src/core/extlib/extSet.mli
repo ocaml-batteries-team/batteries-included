@@ -255,7 +255,7 @@ module IStringSet : S with type elt = String.t
 (** A set of strings. Comparison of strings ignores case (i.e. "foo" = "Foo")*)
 
 module NumStringSet : S with type elt = String.t
-(** A set of strings. Strings are handled as prefix + number (i.e. "abc23" < "abc123", "abc012" = "abc12")*)
+(** A set of strings. Comparison of strings takes into account embedded numbers (i.e. "a23" < "a123", "a01" = "a1") *)
 
 module RopeSet    : S with type elt = Rope.t
 (** A set of ropes. Comparison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
