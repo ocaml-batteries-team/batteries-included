@@ -392,6 +392,35 @@ let is_empty s = length s = 0
 
 let icompare s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
 
+
+let numeric_compare s1 s2 =
+(* TODO pluggable transformation functions (for lowercase) *)
+(*  let s1 = String.lowercase s1 and s2 = String.lowercase s2 in*)
+  let l1 = String.length s1 and l2 = String.length s2 in
+  let rec pos_diff i =  (* finds the first position where the strings differ *)
+    if i = l1 then -2 else if i = l2 then -1
+    else if s1.[i] = s2.[i] then pos_diff (i+1) else i
+  and num_end i s = (* scans for the end of a numeric value *)
+    try (* TODO: bounds check here *)
+      if s.[i] >= '0' && s.[i] <= '9' then num_end (i+1) s else i
+    with _ -> i-1 (* let ocaml do our bounds checking for us *)
+  in
+  if l1 = l2 then String.compare s1 s2
+  else let d = pos_diff 0 in
+  if d = -2 then -1 else if d = -1 then 1 else
+    let e1 = num_end d s1 and e2 = num_end d s2 in
+    if e1 = d || e2 = d then Pervasives.compare s1 s2
+      (*    else if e1 <> e2 then e1 - e2 else Pervasives.compare s1 s2 *)
+    else begin
+(*      Printf.eprintf "Compare: %s & %s @ d:%d e1:%d e2:%d->" s1 s2 d e1 e2;*)
+      let n1 = Int64.of_string (String.sub s1 d (e1-d))
+	(* FIXME?: trailing numbers must be less than Int64.max_int *)
+      and n2 = Int64.of_string (String.sub s2 d (e2-d)) in
+(*      Printf.eprintf " %Ld & %Ld\n" n1 n2;*)
+      Int64.compare n1 n2
+    end
+
+
 let print         = InnerIO.nwrite
 let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
 let print_quoted out s = ExtPrintf.Printf.fprintf out "%S" s

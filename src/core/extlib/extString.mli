@@ -395,6 +395,9 @@ val compare: t -> t -> int
 val icompare: t -> t -> int
   (** Compare two strings, case-insensitive. *)
 
+val numeric_compare: t -> t -> int
+  (** Compare two strings, sorting "abc32def" before "abc210abc" *)
+
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
