@@ -5,8 +5,8 @@ let string = "Jon \"Maddog\" Orwant"
 let test_1 =
   ("Strings: Taking and skipping",
    
-   fun () -> let foo s = open Enum in let e = enum s in 
-     [? List : of_enum (f e) | f <- List : [take 5; skip 3 |- take 5; take 5 ; identity]]
+   fun () -> let foo s : string list = let e = enum s in 
+     [? List : of_enum (f e) | f <- List : open Enum in [take 5; skip 3 |- take 5; take 5 ; identity]]
    in
   let result   = foo string
   and expected = ["Jon \""; "dog\" "; "Orwan"; "t"]
