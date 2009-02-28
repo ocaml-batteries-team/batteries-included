@@ -1,4 +1,4 @@
-ocaml-batteries (0.20081112+git6E49F72-1) unstable; urgency=low
+ocaml-batteries (0.20090228+git6E49F72-1) unstable; urgency=low
 
   * new snapshot, upstream Git commit 6E49F72
     - includes all changes of batteries alpha 3 + recent development
