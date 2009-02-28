@@ -31,6 +31,7 @@
 
 open ParserCo
 open ExtUChar
+open ExtUTF8
 
 (** The position inside one file or one stream. *)
 type position = CharParser.position = 
@@ -71,11 +72,23 @@ val not_char : UChar.t -> (UChar.t, UChar.t, position) t
 val string : string -> (UChar.t, string, position) t
   (** Recognize exactly one string*)
 
-val case_char : UChar.t -> (UChar.t, UChar.t, position) t
+val rope : Rope.t -> (UChar.t, Rope.t, position) t
+  (** Recognize exactly one string*)
+
+val ustring : UTF8.t -> (UChar.t, UTF8.t, position) t
+  (** Recognize exactly one string*)
+
+val case_char : UChar.t -> (UChar.t, UTF8.t, position) t
   (** As [char], but case-insensitive *)
 
 val case_string : string -> (UChar.t, string, position) t
-  (** As [case_string], but case-insensitive *)
+  (** As [string], but case-insensitive *)
+
+val case_ustring : UTF8.t -> (UChar.t, UTF8.t, position) t
+  (** As [ustring], but case-insensitive *)
+
+val case_rope : Rope.t -> (UChar.t, Rope.t, position) t
+  (** As [rope], but case-insensitive *)
 
 val newline : (UChar.t, UChar.t, position) t
   (**Recognizes a newline*)

@@ -1,5 +1,8 @@
 A few examples of short programs written using OCaml Batteries Included.
 
+Directory tools/ contains small tools.
+Directory snippets/ contains random code extracts.
+
 To build all these programs, run
    make examples
 from the top-level directory.

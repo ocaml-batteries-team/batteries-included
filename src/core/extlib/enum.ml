@@ -1,7 +1,7 @@
 (* 
  * Enum - Enumeration over abstract collection of elements.
  * Copyright (C) 2003 Nicolas Cannasse
- *               2008 David Teller (contributor)
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,26 +19,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.Data.Mutable.EnumLabels" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries.Enum" (*For Sexplib, Bin-prot...*)
 
 (** {6 Representation} *)
+
 type 'a t = {
-	mutable count : unit -> int;
-	mutable next : unit -> 'a;
-	mutable clone : unit -> 'a t;
-	mutable fast : bool;
+  mutable count : unit -> int; (**Return the number of remaining elements in the enumeration. *)
+  mutable next  : unit -> 'a;  (**Return the next element of the enumeration or raise [No_more_elements].*)
+  mutable clone : unit -> 'a t;(**Return a copy of the enumeration. *)
+  mutable fast  : bool;        (**[true] if [count] can be done without reading all elements, [false] otherwise.*)
 }
+
+type 'a enumerable = 'a t
+type 'a mappable = 'a t
+
+external enum : 'a t -> 'a t = "%identity"
+external of_enum : 'a t -> 'a t = "%identity"
 
 (* raised by 'next' functions, should NOT go outside the API *)
 exception No_more_elements
 
 let make ~next ~count ~clone =
-	{
-		count = count;
-		next = next;
-		clone = clone;
-		fast = true;
-	}
+  {
+    count = count;
+    next  = next;
+    clone = clone;
+    fast  = true;
+  }
 
 (** {6 Internal utilities}*)
 let _dummy () = assert false
@@ -56,42 +63,42 @@ type 'a _mut_list = {
 	mutable tl : 'a _mut_list;
 }
 
-let force t =
-	let rec clone enum count =
-		let enum = ref !enum
-		and	count = ref !count in
-		{
-			count = (fun () -> !count);
-			next = (fun () ->
-				match !enum with
-				| [] -> raise No_more_elements
-				| h :: t -> decr count; enum := t; h);
-			clone = (fun () ->
-				let enum = ref !enum
-				and count = ref !count in
-				clone enum count);
-			fast = true;
-		}
-	in
-	let count = ref 0 in
-	let _empty = Obj.magic [] in
-	let rec loop dst =
-		let x = { hd = t.next(); tl = _empty } in
-		incr count;
-		dst.tl <- x;
-		loop x
-	in
-	let enum = ref _empty  in 
-	(try
-		enum := { hd = t.next(); tl = _empty };
-		incr count;
-		loop !enum;
-	with No_more_elements -> ());
-	let tc = clone (Obj.magic enum) count in
-	t.clone <- tc.clone;
-	t.next <- tc.next;
-	t.count <- tc.count;
-	t.fast <- true
+let force t =(**Transform [t] into a list*)
+  let rec clone enum count =
+    let enum = ref !enum
+    and	count = ref !count in
+      {
+	count = (fun () -> !count);
+	next  = (fun () ->
+		   match !enum with
+		     | []     -> raise No_more_elements
+		     | h :: t -> decr count; enum := t; h);
+	clone = (fun () ->
+		   let enum = ref !enum
+		   and count = ref !count in
+		     clone enum count);
+	fast  = true;
+      }
+  in
+  let count = ref 0 in
+  let _empty = Obj.magic [] in
+  let rec loop dst =
+    let x = { hd = t.next(); tl = _empty } in
+      incr count;
+      dst.tl <- x;
+      loop x
+  in
+  let enum = ref _empty  in 
+    (try
+       enum := { hd = t.next(); tl = _empty };
+       incr count;
+       loop !enum;
+     with No_more_elements -> ());
+    let tc = clone (Obj.magic enum) count in
+      t.clone <- tc.clone;
+      t.next <- tc.next;
+      t.count <- tc.count;
+      t.fast <- true
 
 (* Inlined from {!LazyList}.
 
@@ -129,34 +136,32 @@ module MicroLazyList = struct
       )
     in
       aux ()
-
-
 end
 
 let rec empty () =
-	{
-		count = return_no_more_count;
-		next  = return_no_more_elements;
-		clone = (fun () -> empty());
-		fast = true;
-	}
+  {
+    count = return_no_more_count;
+    next  = return_no_more_elements;
+    clone = (fun () -> empty());
+    fast  = true;
+  }
 
 let from f =
-	let e = {
-		next = f;
-		count = _dummy;
-		clone = _dummy;
-		fast = false;
-	} in
-	e.count <- (fun () -> force e; e.count());
-	e.clone <- (fun () -> 
+  let e = {
+    next = f;
+    count = _dummy;
+    clone = _dummy;
+    fast = false;
+  } in
+    e.count <- (fun () -> force e; e.count());
+    e.clone <- (fun () -> 
 		  let e' =  MicroLazyList.enum(MicroLazyList.from f) in
 		    e.next <- e'.next;
 		    e.clone<- e'.clone;
 		    e.count<- e'.count;
 		    e.fast <- false;		    e.fast <- false;
 	            e.clone () );
-	e
+    e
 
 
 let from2 next clone =
@@ -184,10 +189,8 @@ let init n f = (*Experimental fix for init*)
 
 
 let get t =
-	try
-		Some (t.next())
-	with
-		No_more_elements -> None
+  try   Some (t.next())
+  with	No_more_elements -> None
 
 let push t e =
 	let rec make t =
@@ -218,7 +221,42 @@ let peek t =
 		push t x;
 		Some x
 
+module MicroList = (*Inlined from ExtList to avoid circular dependencies*)
+struct
+  let enum l =
+    let rec aux lr count =
+      make
+	~next:(fun () ->
+		 match !lr with
+		   | [] -> raise No_more_elements
+		   | h :: t ->
+		       decr count;
+		       lr := t;
+		       h
+	      )
+	~count:(fun () ->
+		  if !count < 0 then count := List.length !lr;
+		  !count
+	       )
+	~clone:(fun () ->
+		  aux (ref !lr) (ref !count)
+	       )
+    in
+      aux (ref l) (ref (-1))
+end
+
 let take n e =
+  let r = ref [] in
+    begin
+      try
+	for i = 1 to n do
+	  r := e.next () :: !r
+	done
+      with No_more_elements -> ()
+    end;
+      MicroList.enum (List.rev !r)
+  
+(*let take n e = (*Er... that looks quite weird.*)
   let remaining = ref n in
   let f () =
     if !remaining >= 0 then
@@ -231,7 +269,7 @@ let take n e =
        ~count:(fun () -> !remaining)
        ~clone:_dummy
   in e.clone <- (fun () -> force e; e.clone ());
-    e
+    e*)
 
 let junk t =
 	try
@@ -321,6 +359,12 @@ let fold f init t =
 		loop()
 	with
 		No_more_elements -> !acc
+
+let reduce f t =
+  match get t
+  with None -> raise Not_found
+    |  Some init -> fold f init t
+
 
 let exists f t =
   try let rec aux () = f (t.next()) || aux ()
@@ -539,8 +583,12 @@ let switch f e =
 
 let seq init f cond = 
   let acc = ref init in
-  let aux () = if cond !acc then begin acc := f !acc; !acc end
-               else raise No_more_elements
+  let aux () = if cond !acc then begin 
+    let result = !acc in 
+      acc := f !acc; 
+      result
+  end
+  else raise No_more_elements
   in from aux
 
 let repeat ?times x = match times with
@@ -573,6 +621,9 @@ let drop n e =
   for i = 1 to n do
     junk e
   done
+
+let skip n e =
+  drop n e; e
 
 let close e =
   e.next <- return_no_more_elements;
@@ -648,12 +699,25 @@ let break test e = span (fun x -> not (test x)) e
 let ( -- ) x y = range x ~until:y
 
 let ( --- ) x y = 
-  if x < y then x -- y
-  else          seq y ((+) (-1)) ( (>=) x )
+  if x <= y then x -- y
+  else          seq x ((+) (-1)) ( (<=) y )
 
-let ( ~~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
+let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
 
 let ( // ) e f = filter f e
+
+let ( /@ ) e f        = map f e
+let ( @/ )            = map
+
+let uniq e = 
+  match peek e with 
+      None -> empty ()
+    | Some first -> 
+	let prev = ref first in
+	let not_last x = (Ref.post prev (fun _ -> x)) != x in
+	let result = filter not_last e in
+	push result first;
+	result
 
 let dup t      = (t, t.clone())
 
@@ -770,11 +834,13 @@ let merge test a b =
       try (!next_a, a.next(), !next_b)
       with No_more_elements -> (*a is exhausted, b probably not*)
 	push b !next_b;
+	push b !next_a;
 	raise No_more_elements
     else
       try (!next_b, !next_a, b.next())
       with No_more_elements -> (*b is exhausted, a probably not*)
 	push a !next_a;
+	push a !next_b;
 	raise No_more_elements
     in next_a := na;
        next_b := nb;
@@ -837,9 +903,67 @@ let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
 		aux ()
 	in aux()
 
+let compare cmp t u =
+  let rec aux () = 
+    match (get t, get u) with
+      | (None, None)     -> 0
+      | (None, _)        -> -1
+      | (_, None)        -> 1
+      | (Some x, Some y) -> match cmp x y with
+	  | 0 -> aux ()
+	  | n -> n
+  in aux ()
+
+let rec to_object t =
+object
+  method next = t.next ()
+  method count= count t
+  method clone = to_object (clone t)
+end
+
+let rec of_object o =
+  make ~next:(fun () -> o#next)
+    ~count:(fun () -> o#count)
+    ~clone:(fun () -> of_object (o#clone))
+
+let flatten = concat
 
 module ExceptionLess = struct
   let find f e =
     try  Some (find f e)
     with Not_found -> None
+end
+
+module Labels = struct
+  let iter ~f x     = iter f x
+  let iter2 ~f x y  = iter2 f x y
+  let iteri ~f x    = iteri f x
+  let iter2i ~f x y = iter2i f x y
+  let for_all ~f t  = for_all f t
+  let exists ~f t   = exists f t
+  let fold ~f ~init x    = fold f init x
+  let fold2 ~f ~init x y = fold2 f init x y
+  let foldi ~f ~init x   = foldi f init x
+  let fold2i ~f ~init x y= fold2i f init x y
+  let find ~f x    = find f x
+  let map ~f x     = map f x
+  let mapi ~f x    = mapi f x
+  let filter ~f x  = filter f x
+  let filter_map ~f x= filter_map f x
+  let init x ~f    = init x f
+  let switch ~f    = switch f
+  let take_while ~f  = take_while f
+  let drop_while ~f  = drop_while f
+  let from ~f        = from f
+  let from_loop ~init ~f = from_loop init f
+  let from_while ~f  = from_while f
+  let seq ~init ~f ~cnd  = seq init f cnd
+  let unfold ~init ~f = unfold init f
+  let compare ?(cmp=Pervasives.compare) t u = compare cmp t u
+end
+
+module type Enumerable = sig
+  type 'a enumerable
+  val enum : 'a enumerable -> 'a t
+  val of_enum : 'a t -> 'a enumerable
 end

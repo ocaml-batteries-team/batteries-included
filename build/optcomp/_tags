@@ -1,0 +1,2 @@
+<*>:camlp4of,use_camlp4_full
+<optcomp*.*>: use_dynlink

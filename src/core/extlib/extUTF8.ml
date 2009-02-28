@@ -20,7 +20,7 @@
 
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 (*Inlined to avoid circular dependencies between IO, ExtUTF8 and ExtString*)
 let string_splice s1 off len s2 = 
@@ -56,7 +56,7 @@ module UTF8 = struct
     invalid_arg "UTF8.length0 - Reserved"
 
   (* non-start bytes have the form 0b10xx_xxxx *)
-  let is_start_byte n = (n land 0b1100_0000) == 0b10_000000
+  let is_start_byte c = (Char.code c land 0b1100_0000) <> 0b10_000000
 
   module Byte : sig
     type b_idx(* = private int*)
@@ -76,8 +76,10 @@ module UTF8 = struct
     external to_int : b_idx -> int = "%identity"
     let next us bi = bi + (length0 (Char.code us.[bi]))
     let prev us bi = 
+      if bi > String.length us || bi < 0 then invalid_arg "UTF8.Byte.prev: Byte index not within string";
       let rec loop bi =
-	if is_start_byte (Char.code us.[bi]) then bi
+	if bi < 0 then (-1)
+	else if is_start_byte us.[bi] then bi
 	else loop (bi-1)
       in
       loop (bi-1)
@@ -178,8 +180,8 @@ module UTF8 = struct
 		 else
 		   look us (Ref.post i (Byte.next us))
               )
-  ~count:(fun () -> length_aux us 0 !i)
-  ~clone:(fun () -> make (Ref.copy i))
+	~count:(fun () -> length_aux us 0 !i)
+	~clone:(fun () -> make (Ref.copy i))
     in
     make (ref Byte.first)
       
@@ -258,6 +260,11 @@ module UTF8 = struct
     iter (fun c -> match f c with None -> () | Some c -> Buf.add_char b c) us;
     Buf.contents b
 
+  let filter f us =
+    let b = Buf.create (length us) in
+    iter (fun c -> if f c then Buf.add_char b c) us;
+    Buf.contents b
+
   let index us ch =
     let rec aux ci bi =
       if Byte.out_of_range us bi then raise Not_found;
@@ -285,7 +292,7 @@ module UTF8 = struct
 
   let rcontains_from us ch bi = contains_aux Byte.prev bi us ch
 
-  let escaped us = String.escaped us (* FIXME: think through whether this works *)
+  let escaped us = String.escaped us (* FIXME: think through whether this is correct for UTF8 *)
 
   let compare s1 s2 = Pervasives.compare s1 s2
     

@@ -10,3 +10,8 @@
 
 <build/packdoc.byte>:pkg_num,pkg_bigarray,pkg_str,pkg_findlib,pkg_threads
 <*>: debug
+<*/*>:debug
+<*/*/*>:debug
+<*/*/*/*>:debug
+<*/*/*/*/*>:debug
+<build/optcomp>: include

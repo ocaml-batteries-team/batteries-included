@@ -1,6 +1,6 @@
 (* 
  * Batteries_help - Calling the help system from the toplevel
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,170 +24,81 @@ open ExtString
 open ExtList
 open IO
 
-
-type url = string
-
-type table =
-    {
-      url :     (string, string * url)                Hashtbl.t (**A map from fully qualified name to 
-								 - the name of the help package containing the item
-								 - the full URL for the help on that item.*);
-      complete: (string, (string * string) RefList.t) Hashtbl.t (**A map from unqualified name to a list of
-								 - name of the help packages containing the item
-								 - fully qualified names for this name.*)
-    }
-let table () =
-  { url      = Hashtbl.create 16;
-    complete = Hashtbl.create 16 }
-
-let language = table ()
-let values   = table ()
-let types    = table ()
-let modules  = table ()
-let exns     = table ()
-let modtypes = table ()
-let classes  = table ()
-let methods  = table ()
-let attributes=table ()
-let objtypes = table ()
-
-
-let browse name url =
-  Printf.printf "Opening %s\n%!" name;
-  if Batteries_config.browse url <> 0 then
-    Printf.eprintf "Sorry, I had a problem communicating with your browser and I couldn't open the manual.\n%!"
-
-let go kind item source url = browse (Printf.sprintf "help on %s %S (%s)" kind item source) url
-
-(*let tutorial () =
-  browse "on-line OCaml Tutorial" "http://www.ocaml-tutorial.org/"*)
-
 (*let debug fmt =
   Printf.eprintf fmt*)
 let debug fmt =
   Printf.fprintf IO.stdnull fmt
 
-let find_help command table kind item =
-  try `Direct (Hashtbl.find table.url item)
-  with 
-    Not_found -> debug "[find_help] Nothing about %s %S, assuming it's a fully qualified name.\n%!" kind item;
-    try
-    let completions = Hashtbl.find table.complete item in
-      match RefList.length completions with
-	| 0 -> debug "[find_help] No completion about %s %S\n%!" kind item;
-	    `None
-	| 1 -> debug "[find_help] There's one completion about %s %S\n%!" kind item;
-	       (try `Direct (Hashtbl.find table.url (snd (RefList.hd completions)))
-                with Not_found -> `Inconsistency)
-	| n -> debug "[find_help] Total of %d completions for %s %S\n%!" n kind item;
-	    `Suggestions (List.map (fun (_, item) -> Printf.sprintf "%s %S;;" command item) (RefList.to_list completions))
-    with Not_found -> `None
+
 
 (**
-   Do all the work of attempting to display the help.
-
-   @param command The human-readable name of the command currently launched.
-   @param table   The table in which to look for help.
-   @param kind    The human-readable kind of help being looked for.
-   @param kinds   The human-readable kind of help being looked for (plural form)
-   @param item    The item requested by the user.
+   {6 Kinds}
 *)
-let man_aux command table kind kinds item =
-  match find_help command table kind item with
-    | `Direct (source, url)   -> go kind item source url
-    | `None | `Inconsistency  -> Printf.printf "Sorry, I don't know any %s named %S.\n%!" kind item
-    | `Suggestions l          ->
-	Printf.printf "Several %s exist with name %S. To obtain the help on one of them, please use one of\n %a%!"
-	  kinds item 
-	(List.print
-	  ~first:""
-	  ~sep:"\n "
-	  ~last:"\n"
-	  String.print)
-	  l
-	  
-let man_value    = man_aux "#man_value"      values     "value"                 "values"
-let man_type     = man_aux "#man_type"       types      "type"                  "types"
-let man_language = man_aux "#man_language"   language   "language topic"        "language topics"
-let man_module   = man_aux "#man_module"     modules    "module"                "modules"
-let man_exception= man_aux "#man_exception"  exns       "exception"             "exceptions"
-let man_exn      = man_exception
-let man_signature= man_aux "#man_signature"  modtypes   "signature"             "signatures"
-let man_modtype  = man_signature
-let man_class    = man_aux "#man_class"      classes    "class"                 "classes"
-let man_method   = man_aux "#man_method"     methods    "method"                "methods"
-let man_attribute= man_aux "#man_attributes" attributes "attribute"             "attributes"
-let man_field    = man_attribute
-let man_objtype  = man_aux "#man_objtype"    objtypes   "object type"           "object types"
-
-(*command name,    table,     singular name, plural name, indefinite name*)
-let helpers = [("#man_value",     values   , "value",     "values",     "a value");
-	       ("#man_type",      types    , "type",      "types",      "a type" );
-	       ("#man_language",  language , "language construction",   "language topics","a language topic");
-	       ("#man_module",    modules  , "module",    "modules",    "a module"     );
-	       ("#man_exception", exns     , "exception", "exceptions", "an exception");
-	       ("#man_signature", modtypes , "signature", "signatures", "a signature" );
-	       ("#man_class",     classes  , "class",     "classes",    "a class"     );
-	       ("#man_method",    methods,   "method",    "methods",    "a method"    );
-	       ("#man_attribute", attributes,"attribute", "attributes", "an attribute"    );
-	       ("#man_objtype",   objtypes , "object type", "object types", "an object type")]
-let man item =
-  let results = List.map (fun (command, table, kind, kinds, a_kind) -> 
-			    (command, find_help command table kind item, kind, kinds, a_kind))
-    helpers in
-      match List.fold_left 
-	(fun acc (command, result, kind, kinds, a_kind) -> match result with
-	   | `None | `Inconsistency -> acc
-	   | `Direct destination    -> 
-	       let line = Printf.sprintf "%s. For more information on %S as %s, you may use\n  %s %S;;\n" 
-		 a_kind item a_kind command item in
-		 begin
-		   match acc with
-		     | `None_so_far                      -> `One_possibility (destination, kind, line)
-		     | `One_possibility (_, _, previous) -> `Several_possibilities [previous;line]
-		     | `Several_possibilities l          -> `Several_possibilities (line::l)
-		 end
-	   | `Suggestions l         ->
-	       let line = 
-		 Printf.sprintf2 "%s, with several possibilities. For more information on %S as %s, you may use\n%a" a_kind item a_kind
-		    (List.print ~first:"  " ~sep:"\n  " ~last:"" String.print) l
-	       in
-	       match acc with
-		 | `None_so_far                      -> `Several_possibilities [line]
-		 | `One_possibility (_, _, previous) -> `Several_possibilities [previous; line]
-		 | `Several_possibilities previous   -> `Several_possibilities (line::previous)
-	)
-	`None_so_far results with
-	  | `None_so_far                              -> Printf.printf "Sorry, I can't help you with %S.\n%!" item
-	  | `One_possibility ((source, url), kind, _) -> go kind item source url
-	  | `Several_possibilities lines              ->
-	      let first = Printf.sprintf "Several definitions exist for %S.\nThis item exists as " item
-	      and sep   = Printf.sprintf "\nItem %S also exists as " item in
-		Printf.printf "%a\n%!" (List.print ~first ~sep ~last:"\n" String.print) lines;;
-
-(** {6 Add directives}*)
-
-module Extend =
-struct
-  type kind =
-    | Language
-    | Values  
-    | Types
-    | Modules
-    | Exceptions
-    | Module_types
-    | Classes
-    | Methods
-    | Attributes
-    | Class_types
 
 
-  let basename name =
-    try let index = String.rindex name '.' in
-      String.sub name ( index + 1 ) (String.length name - index - 1) 
-    with Not_found -> name
+type kinds = 
+  | Values
+  | Types
+  | Topics
+  | Modules
+  | Exns
+  | Modtypes
+  | Classes
+  | Methods
+  | Attributes
+  | Objtypes
 
-  let append_to_table table k (v:(string * string)) =
+(** Parse a category name into a topic.*)
+let kind_of_name = function
+  | "topic" | "language"   -> Some Topics
+  | "values"   -> Some Values
+  | "types"    -> Some Types
+  | "modules"  -> Some Modules
+  | "exceptions"| "exns"         -> Some Exns
+  | "modtypes"  | "module_types" -> Some Modtypes
+  | "classes"                    -> Some Classes
+  | "methods"                    -> Some Methods
+  | "attributes"                 -> Some Attributes
+  | "class_types"                -> Some Objtypes
+  | _                            -> None
+
+(**
+   {6 Tables}
+*)
+
+type url       = string(**A kind of string used to represent URLs. Distinguished for documentation purposes.*)
+type qualified = string(**A kind of string used to represent fully-qualified names.*)
+type unqualif  = string(**A kind of string used to represent unqualified names, i.e. names without their module.*)
+type package   = string(**A lomd pf stromg used to represent help providers.*)
+
+type suggestion =
+    {
+      url       : url(**The url to open in the browser to visit help on this suggestion.*);
+      spackage  : package(**The package which provides the url.*);
+    }
+
+type completion =
+    {
+      qualified: qualified (**A possible qualified name matching the request*);
+      cpackage : package (**The package which provides the completion.*)
+    }
+
+type table =
+    {
+      suggestions: (qualified, suggestion)     Hashtbl.t(**A map from fully qualified name to suggestions.*);
+      completions: (unqualif, completion list) Hashtbl.t(**A map from unqualified name to a list of completions.*)
+    }
+
+
+(**
+   Convert a table of reflists to a table of lists.
+*)
+let table_of_tableref t = 
+  let result = Hashtbl.create (Hashtbl.length t) in
+    Hashtbl.iter (fun k d -> Hashtbl.add result k (RefList.to_list d)) t;
+    result
+
+let append_to_table table k v =
     let found = 
       try Hashtbl.find table k
       with Not_found -> 
@@ -197,130 +108,276 @@ struct
     in
       RefList.push found v
 
-  let register ~name ~kind ~index ~prefix =
-    let prefix = if String.length prefix = 0 then "/"
-                 else if String.get prefix (String.length prefix - 1) = '/' then prefix
-                 else prefix^"/"
-    in
-    let table = match kind with
-      | Language       -> language
-      | Values         -> values
-      | Types          -> types
-      | Modules        -> modules
-      | Exceptions     -> exns
-      | Module_types   -> modtypes
-      | Classes        -> classes
-      | Methods        -> methods
-      | Attributes     -> attributes
-      | Class_types    -> objtypes
-    in
-      try
-	debug "Now registering file %s (%s)\n" index name;
-      Enum.iter 
-	(fun line -> 
-	   Scanf.sscanf line " %S : %S " (fun item url ->
-	     let full_url = try ignore (String.find url "://");
-	                        url
-	                    with Invalid_string -> prefix^url
-	     in
-	     Hashtbl.add table.url item (name, full_url); (*Add fully qualified name -> url*)
-	     append_to_table table.complete (basename item) (name, item);
-	     debug "Adding manual %S => %S (%S)\n" item full_url name;
-	     debug "Adding completion %S => %S (%S)\n" (basename item) item name
-	))
-	(File.lines_of index)
-      with e -> 
-	Printf.eprintf
-	  "While initializing the on-line help, error reading index file %S\n%s%!"
-	  index (Printexc.to_string e)
 
-  let auto_register () =
-    let root_dir   = Filename.concat (Batteries_config.documentation_root) "doc/batteries"  in
-    let root_file  = Filename.concat root_dir "documentation.idex" in
-      begin
-      try
+(**
+   {6 Browsing}
+*)
+
+let browse pages =
+  try
+    List.iter (fun page -> 
+		 debug "Showing %s\n" page.url;
+		 if Batteries_config.browse page.url <> 0 then failwith "Browser") pages
+  with Failure "Browser" -> 
+    Printf.eprintf "Sorry, I had a problem communicating with your browser and I couldn't open the manual.\n%!"
+
+
+
+(**
+   {6 Loading}
+*)
+
+(**Extract the unqualified name of a possibly qualified name.
+
+   [local_name "a.b.c.d"] produces ["d"]*)
+let local_name s =
+  try snd (String.rsplit s ".")
+  with String.Invalid_string -> s
+
+(**
+   Load the contents of an index file into hash tables.
+*)
+let load_index ~name ~index ~prefix ~suggestions ~completions =
+  try
     Enum.iter
       (fun line -> 
-	 Scanf.sscanf line "%s %s " 
-	   (fun category index ->
-  	      let maybe_kind = 
-		match category with
-		| "language" -> Some Language
-		| "values"   -> Some Values
-		| "types"    -> Some Types
-		| "modules"  -> Some Modules
-		| "exceptions"| "exns"         -> Some Exceptions
-		| "modtypes"  | "module_types" -> Some Module_types
-		| "classes"                    -> Some Classes
-		| "methods"                    -> Some Methods
-		| "attributes"                 -> Some Attributes
-		| "class_types"                -> Some Class_types
-		| ""                           -> None
-		| _                            -> Printf.eprintf 
-		    "Warning: During the initialization of the help system from index %S, I don't know what to do with category %S\n%!" 
-		      root_file category;
-		    None
+	 Scanf.sscanf line " %S : %S " 
+	   (fun item url ->
+	      let full_url = try ignore (String.find url "://"); url
+	      with Invalid_string -> prefix^url
 	      in
-		match maybe_kind with 
-		    Some kind ->
-		      let index          = Filename.concat  root_dir index in
-		      let html_directory = Filename.dirname index       in
-		      if Sys.file_exists index then
-		        register ~name:"OCaml Batteries Included" ~kind
-			  ~index
-			  ~prefix:("file://"^html_directory)
-		  | _ -> ()
-	   )
-      )
-      (File.lines_of root_file)
-      with e ->
-	Printf.eprintf
-	  "While initializing the on-line help, error root doc file %S\n%s%!" root_file
-	  (Printexc.to_string e)
-      end
-(*;
-      List.iter 
-	( fun(_, table, singular, _, _) ->
-	    let file = "/tmp/"^singular in
-	      Printf.eprintf "Dumping table %s to file %S\n %!" singular file;
-	      File.with_file_out file (
-		fun cout ->
-		  Printf.fprintf cout "URL\n";
-		  Hashtbl.iter (fun key (name, url) ->
-				  Printf.fprintf cout "%s -> %s (%s)\n" key url name
-			       ) table.url;
-		  Printf.fprintf cout "\nCompletions\n";
-		  Hashtbl.iter (fun key list ->
-				  Printf.fprintf cout "%s -> %a\n" key 
-				    (List.print 
-				       (fun out (source, name) -> Printf.fprintf out "%s (%s)" name source
-				       )) (RefList.to_list list)
-			       ) table.complete
-	      )
-	) helpers*)
-end;;
+		Hashtbl.add suggestions item {spackage = name; url = full_url}; (*Add fully qualified name -> url*)
+		let basename = Filename.basename item in
+		let leafname = local_name basename    in
+		let completion={cpackage = name; qualified = item} in
+		append_to_table completions basename completion;
+		  if leafname <> basename then append_to_table completions leafname completion;
+		debug "Adding manual %S => %S (%S)\n" item full_url name;
+		debug "Adding completion %S => %S (%S)\n" basename item name;
+		debug "Adding completion %S => %S (%S)\n" leafname item name
+	   ))
+      (File.lines_of index)
+  with e -> 
+    Printf.eprintf
+      "While initializing the on-line help, error reading index file %S\n%s\n%!"
+      index (Printexc.to_string e)
 
+
+
+(** Acquire a table, loading it if it hasn't been loaded yet.
+
+    {b Note} This function is thread-unsafe. Don't call it from any thread other than the main thread.
+*)
+let get_table =
+  let tables : (kinds, table) Hashtbl.t = Hashtbl.create 16
+  in fun kind ->
+    try Hashtbl.find tables kind
+    with Not_found ->
+      let root_dir   = Batteries_config.documentation_root           in
+      let root_file  = Filename.concat root_dir "documentation.idex" in
+	try
+	  let suggestions = Hashtbl.create 256
+	  and completions = Hashtbl.create 256 in
+	  Enum.iter
+	    (fun line -> 
+	       try
+	       Scanf.sscanf line "%s %s " 
+		 (fun category index ->
+		    match kind_of_name category with
+		      | Some k when k = kind ->
+			  let index          = Filename.concat  root_dir index in
+			  let html_directory = Filename.dirname index          in
+			    if Sys.file_exists index then
+		              load_index
+				~name:"OCaml Batteries Included" 
+				~index
+				~prefix:("file://"^html_directory^"/")
+				~suggestions
+				~completions
+		      | _ -> ()
+		 )
+	       with _ -> () (*At this point, ignore syntax errors, they're probably comments.*)
+	    ) 
+	    (File.lines_of root_file);
+	    let result = {suggestions = suggestions; completions = table_of_tableref completions} in
+	      Hashtbl.add tables kind result;
+	      result
+	      
+	with e ->
+	  Printf.eprintf
+	    "While initializing the on-line help, error in root doc file %S\n%s\n%!" root_file
+	    (Printexc.to_string e);
+	    let result = {suggestions = Hashtbl.create 0; completions = Hashtbl.create 0} in
+	      Hashtbl.add tables kind result;
+	      result
+
+	      
+
+
+(**
+   {6 Searching}
+*)
+
+(**Print a warning regarding inconsistencies.*)
+let inconsistency topic subject = 
+  Printf.eprintf "Configuration issue: the help system promises something about a %s called %S but does not contain anything such. There may be an error with your installation of the documentation.\n" topic subject
+
+(**
+   Find all the URL of each qualified name from a list of completions.
+   
+   Qualified names which can't be found in the table are dropped and a warning is printed.
+*)
+let result_of_completions table singular subject (l:completion list) =
+  List.filter_map (fun {qualified = q} -> try Some (Hashtbl.find table.suggestions q) with Not_found -> 
+		inconsistency singular subject; (*Report internal inconsistency*)
+		None) l
+
+(**A deconstructor for [completion].*)
+let get_qualified {qualified = q} = q
+
+(**
+   Look for a given subject inside one of the manuals
+
+   @param cmd The command used to invoke this manual. This string is used to suggest further searches.
+   @param singular The singular noun corresponding to this manual. This string is used to display
+   information regarding where the information may be found.
+   @param plural The plural noun corresponding to this manual. This string is used to display
+   information regarding where the information may be found.
+   @param undefined The undefined noun corresponding to this manual. This string is used to display
+   information regarding where the information may be found.
+   @param kind The key corresponding to the manual.
+   @param subject The subject to search inside a manual.
+
+*)
+let man_aux ~cmd ~kind ~singular ~plural ~undefined  subject =
+  try
+    let table = get_table kind in
+      try match Hashtbl.find table.completions subject with
+	| []                -> `No_result (*No completion on the subject, report subject not found*)
+	| [{qualified = q}] as l -> (*Check for inconsistency*)
+	    (try ignore (Hashtbl.find table.suggestions q); `Suggestions (l, table)
+	    with Not_found -> inconsistency singular subject; `No_result)
+	| l                -> `Suggestions (l, table)
+      with Not_found -> `No_result
+  with Sys_error e -> 
+    Printf.printf "Sorry, I had a problem loading the help on %s. Deactivating help on that subject.\n Detailed error message is %s\n" plural e;
+    `No_result
+
+(**
+   Look for a given subject inside one of the manuals and display the results.
+
+   @param cmd The command used to invoke this manual. This string is used to suggest further searches.
+   @param singular The singular noun corresponding to this manual. This string is used to display
+   information regarding where the information may be found.
+   @param plural The plural noun corresponding to this manual. This string is used to display
+   information regarding where the information may be found.
+   @param undefined The undefined noun corresponding to this manual. This string is used to display
+   information regarding where the information may be found.
+   @param kind The key corresponding to the manual.
+   @param tabs If [true], all matching subjects will be opened, each one in its tab. Otherwise,
+   a message will allow selecting one subject.
+   @param subject The subject to search inside a manual.
+
+*)
+let man ~cmd ~kind ~singular ~plural ~undefined ~tabs subject =
+  match man_aux ~cmd ~kind ~singular ~plural ~undefined subject
+  with  `No_result       -> Printf.printf "Sorry, I don't know any %s named %S.\n%!" singular subject
+    |   `Suggestions (l,table) when tabs -> browse (result_of_completions table singular subject l)
+    |   `Suggestions ([h],table)         -> browse (result_of_completions table singular subject [h])
+    |   `Suggestions (l,_) -> 
+	  Printf.printf "Several %s exist with name %S. To obtain help on one of them, please use one of\n %a%!"
+	    plural subject
+	    (List.print ~first:"" ~sep:"\n " ~last:"\n" (fun out {qualified = q} -> Printf.fprintf out " %s %S\n" cmd q))
+	    l
+
+(**
+   Look for a given subject across all manuals and display the results.
+*)
+let man_all sources ~tabs subject =
+  let found_something = 
+    if tabs then
+      List.fold_left (fun was_found     (*Browse help directly*)
+			(cmd, kind, singular, plural, undefined) ->
+			  match man_aux ~cmd ~kind ~singular ~plural ~undefined subject with
+			    | `No_result     -> was_found
+			    | `Suggestions (l, table) -> 
+				match result_of_completions table singular subject l with
+				  | [] -> false (*Inconsistency*)
+				  | l' -> let _ = browse l' in true)
+	false sources
+    else
+      match
+    List.fold_left 
+      (fun (((result_as_strings : string list)(**The text to display, as a list of strings, one string per kind.*),
+	    one_suggestion    (**The latest suggestion -- used only in case there's only one suggestion.*)) as acc)
+	 (cmd, kind, singular, plural, undefined) ->
+	   match man_aux ~cmd ~kind ~singular ~plural ~undefined subject with
+	     | `No_result                -> acc
+	     | `Suggestions ([h], table) -> 
+		 let display : string =
+		   Printf.sprintf "There's information on %S in %s. To read this information, please use\n %s %S%!"
+		   subject plural cmd h.qualified in
+		 (display :: result_as_strings, `Browse (h, table, singular))
+	     | `Suggestions (l,_)  ->
+		 let display : string = 
+		   Printf.sprintf2 "There's information on %S in %s. To read this information, please use one of\n%a%!"
+		     subject plural
+		     (List.print ~first:"" ~sep:"" ~last:"" 
+			(fun out {qualified = q} -> Printf.fprintf out " %s %S\n" cmd q))
+		     l
+		 in (display::result_as_strings, `No_browsing))
+      ([], `No_result) sources
+      with 
+	| ([], _)                 -> false (*No result*)
+	| ([h],`Browse (l,table, singular) ) -> (match result_of_completions table singular subject [l] with
+	    | [] -> false (*Inconsistency*)
+	    | l' -> let _ = browse l' in true)
+	| (texts, _) ->
+	    Printf.printf "Several definitions exist for %S.\n%a%!" subject
+	      (List.print ~first:"" ~sep:"\n" ~last:"\n" String.print)
+	      texts;
+	    true
+  in if not found_something then
+      Printf.printf "Sorry, I don't know anything about %S.\n%!" subject
+
+(**
+   {6 Registration}
+*)
+
+(** The various functions which may be used to access the manual.*)
+let helpers = 
+  let sources = 
+    [("#man_value",     Values   , "value",       "values",     "a value");
+     ("#man_type",      Types    , "type",        "types",      "a type" );
+     ("#man_topic",     Topics   , "topic",       "topics",     "a topic");
+     ("#man_module",    Modules  , "module",      "modules",    "a module"     );
+     ("#man_exception", Exns     , "exception",   "exceptions", "an exception");
+     ("#man_signature", Modtypes , "signature",   "signatures", "a signature" );
+     ("#man_class",     Classes  , "class",       "classes",    "a class"     );
+     ("#man_method",    Methods,   "method",      "methods",    "a method"    );
+     ("#man_attribute", Attributes,"attribute",   "attributes", "an attribute"    );
+     ("#man_objtype",   Objtypes , "object type", "object types", "an object type")]
+  in
+    ("man", man_all sources ~tabs:false)::
+    (List.map (fun (cmd, kind, singular, plural, undefined) -> (String.sub cmd 1 (String.length cmd - 1),
+								man ~cmd ~kind ~singular ~plural ~undefined ~tabs:false)) sources)
+     
+
+(**Launch the introductory help text.*)
 let help () =
   File.with_file_in (Batteries_config.documentation_root ^ "/toplevel.help")
     (fun file -> copy file stdout);
   flush stdout;;
 
-let init () =
-  Extend.auto_register ();
-  List.iter
-    (fun (command, table, singular, plural, _) ->
-       let name = (String.sub command 1 (String.length command - 1)) (*remove leading "#"*) in
-	 Hashtbl.add
-	   Toploop.directive_table
-	   name
-	   (Toploop.Directive_string (man_aux command table singular plural)))
-    helpers;
-  Hashtbl.add
-    Toploop.directive_table
-    "man"
-    (Toploop.Directive_string man);
-  Hashtbl.add
-    Toploop.directive_table
-    "help"
-    (Toploop.Directive_none help)
+let man = List.assoc "man" helpers
 
+(** Initialize the help system (lazily)*)
+let init () =
+  try
+    List.iter (fun (key, search) -> Hashtbl.add Toploop.directive_table key (Toploop.Directive_string search))
+      helpers;
+    Hashtbl.add
+      Toploop.directive_table
+      "help"
+      (Toploop.Directive_none help)
+  with e -> Printf.printf "Error while initializing help system:\n%s\n%!" (Printexc.to_string e)

@@ -3,7 +3,8 @@ version="@VERSION@"
 description="Batteries Included, standard distribution of OCaml libraries"
 requires(mt) ="batteries_threads,threads"
 requires(-mt)="batteries_nothreads"
-archive(toploop)="batteries_help.cmo"
+archive(toploop)="batteries_print.cmo, batteries_help.cmo"
+
 
 package "pa_openin" (
 	description = "Local opening/inclusion of modules (container)"
@@ -41,6 +42,17 @@ package "pa_where" (
 	)
 )
 
+package "pa_comprehension" (
+	description = "comprehension expressions (container)"
+	version     = "@VERSION@"
+	package "syntax" (
+		description = "comprehension expressions (syntax extension)"
+		version                       = "@VERSION@"
+		archive(syntax, preprocessor) = "pa_comprehension.cmo"
+		archive(syntax, toploop)      = "pa_comprehension.cmo"
+	)
+)
+
 package "pa_batteries" (
 	description = "auto-opener for Batteries (container)"
 	version     = "@VERSION@"
@@ -52,6 +64,16 @@ package "pa_batteries" (
 	)
 )
 
+package "pa_strings" (
+	description = "pseudo-native Unicode strings (container)"
+	version     = "@VERSION@"
+	package "syntax" (
+		description = "pseudo-native Unicode strings (syntax extension)"
+		version     = "@VERSION@"
+		archive(syntax, preprocessor) = "pa_strings.cma"
+		archive(syntax, toploop)      = "Camlp4Top.cmo, pa_strings.cma"
+	)
+)
 
 #
 # Doesn't work, for some reason -- calling "sexplib.syntax" directly works, though.
@@ -78,6 +100,8 @@ package "bin_prot" (
 	)
 )
 
+
+
 #
 # Doesn't work, for some reason.
 # The feature is actually implemented in myocamlbuild.ml
@@ -85,6 +109,6 @@ package "bin_prot" (
 package "syntax" (
 	version     = "@VERSION@"
 	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
-	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"
+	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_strings.syntax,batteries.pa_comprehension.syntax"
 	requires(boilerplate) = "type-conv.syntax,bin_prot.syntax"
 )

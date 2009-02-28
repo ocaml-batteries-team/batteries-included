@@ -1,0 +1,4 @@
+<*>: pkg_sexplib
+<*.ml>: use_optcomp_o
+<*.mli>: use_optcomp_o
+<*.cmx>:for-pack(Libs)

@@ -1,4 +1,5 @@
 
+
 # Makefile for OCaml Batteries Included
 #
 # Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
@@ -24,16 +25,20 @@ PACKAGE = batteries
 
 OCAMLFIND = @OCAMLFIND@
 HAS_GODI = @HAS_GODI@
+BUILD_RUNNER = @BUILD_RUNNER@
 
 prefix = @prefix@
 datarootdir= @datarootdir@
 datadir= @datadir@
+
+BUILD_DOC=@builddoc@
 
 # place where your on-line help files are stored
 # if you want on-line help, you will need to invoke make as
 #   make DOCDIR="/some/where/"
 # Typical value: "/usr/share/doc/ocaml-batteries-included" (Debian)
 # Typical value: "/usr/local/godi/doc/godi-batteries/doc/batteries" (GODI)
+
 ifeq ($(HAS_GODI),yes)
 DOCDIR = $(shell ocamlfind printconf destdir)/../../../doc/godi-batteries
 else
@@ -54,11 +59,13 @@ BROWSER = @BROWSER_COMMAND@
 #Typical flag: -classic-display (for more details on the build process)
 OBFLAGS =
 
-
+ifeq ($(TERM),dumb)
+OBFLAGS += -classic-display
+endif
 
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
-DESTDIR = 
+DESTDIR = @DESTDIR@
 
 ifeq ($(DESTDIR),)
 DESTDIR_FLAGS =
@@ -69,12 +76,13 @@ install-mkdir:
 	test -d $(DESTDIR) || mkdir -p $(DESTDIR)
 endif
 
-DEST_TOP = 
-ifeq ($(DESTDIR),)
-DEST_TOP = $(shell @OCAMLFIND@ query @OCAMLPKG_camomile@ )/../batteries/top.ml
-else
-DEST_TOP = $(DESTDIR)/batteries/top.ml
-endif
+#DEST_TOP = 
+#ifeq ($(DESTDIR),)
+#ocamlfind install batteries
+#DEST_TOP = $(shell @OCAMLFIND@ query @OCAMLPKG_camomile@ )/../batteries/top.ml
+#else
+#DEST_TOP = $(DESTDIR)/batteries/top.ml
+#endif
 
 
 OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
@@ -96,65 +104,85 @@ config.ml: Makefile
 
 
 #Useful for testing
-reinstall: all opt uninstall install
-rebyte: byte uninstall install
+reinstall: byte opt top syntax uninstall install tests
+rebyte: byte top syntax uninstall install tests-byte
+ifeq ($(BUILD_DOC),no)
+install-doc:
+else
 install-doc: doc
 	install -d $(DOCDIR) &&\
 	cp -R doc/batteries/* $(DOCDIR)
 
+endif
+
 byte: config.ml
-	$(OCAMLBUILD) src/main/threads/batteries.cma
-	$(OCAMLBUILD) src/main/nothreads/batteries.cma
+	$(OCAMLBUILD) src/main/threads/batteries.cma src/main/threads/run.byte
+	$(OCAMLBUILD) src/main/nothreads/batteries.cma src/main/nothreads/run.byte
 
 opt: config.ml
+ifeq ($(BUILD_RUNNER),yes)
+	$(OCAMLBUILD) src/main/threads/batteries.cmxa src/main/threads/run.native
+	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa src/main/nothreads/run.native
+else
 	$(OCAMLBUILD) src/main/threads/batteries.cmxa
 	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
+endif
 
 syntax: config.ml
-	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo
-	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin_r.cmo
-	$(OCAMLBUILD) src/syntax/pa_where/pa_where.cmo
-	$(OCAMLBUILD) src/syntax/pa_batteries/pa_batteries.cmo
+	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo \
+	      src/syntax/pa_openin/pa_openin_r.cmo \
+	      src/syntax/pa_where/pa_where.cmo \
+	      src/syntax/pa_batteries/pa_batteries.cmo \
+	      src/syntax/pa_strings/pa_strings.cmo \
+	      src/syntax/pa_strings/pa_estring.cmo \
+              src/syntax/pa_comprehension/pa_comprehension.cmo
 
-top: src/batteries_toolchain/ocaml src/batteries_toolchain/batteries_help.cmo
-src/batteries_toolchain/ocaml:
-	echo "ocaml -init $(DEST_TOP) \$$@" > $@
-	chmod ugo+rx src/batteries_toolchain/ocaml*
-src/batteries_toolchain/batteries_help.cmo: src/batteries_toolchain/batteries_help.ml src/batteries_toolchain/batteries_help.mli
-	ocamlbuild $@
+top: 
+	$(OCAMLBUILD) src/batteries_toolchain/batteries_print.cmo \
+		src/batteries_toolchain/batteries_help.cmo
+
 
 install:
+	chmod ugo+rx src/batteries_toolchain/ocaml* && \
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
 		build/META \
 		_build/src/core/extlib/IO.cmi \
 		_build/src/core/extlib/innerIO.cmi \
 		_build/src/core/extlib.cmi \
 		_build/src/core/batteries_config.cmi \
-		_build/src/core/toolchain.cmi \
 		_build/src/syntax/pa_openin/pa_openin.cmo \
 		_build/src/syntax/pa_openin/pa_openin_r.cmo \
 		_build/src/syntax/pa_where/pa_where.cmo \
+		_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 		_build/src/syntax/pa_batteries/pa_batteries.cmo \
-		_build/src/batteries_toolchain/batteries_help.cmo \
-		_build/src/batteries_toolchain/batteries_help.cmi \
-		src/batteries_toolchain/top.ml \
-		src/batteries_toolchain/ocaml*
+		_build/src/syntax/pa_strings/pa_strings.cma \
+		-optional \
+			_build/src/batteries_toolchain/batteries_help.cmi \
+			_build/src/batteries_toolchain/batteries_print.cmi \
+			_build/src/batteries_toolchain/batteries_help.cmo \
+			_build/src/batteries_toolchain/batteries_print.cmo \
+			src/batteries_toolchain/top.ml \
+			src/batteries_toolchain/ocaml*
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
 		build/threaded/META \
 		_build/src/main/threads/batteries.cmi \
+		_build/src/main/threads/run.byte \
 		-optional _build/src/main/threads/batteries.cma \
 			_build/src/main/threads/batteries.cmxa  \
-			_build/src/main/threads/batteries.a
+			_build/src/main/threads/batteries.a     \
+			_build/src/main/threads/run.native
 	ocamlfind install $(DESTDIR_FLAGS) batteries_nothreads \
 		build/nothreads/META \
 		_build/src/main/nothreads/batteries.cmi \
+		_build/src/main/nothreads/run.byte \
 		-optional _build/src/main/nothreads/batteries.cma \
-			_build/src/main/nothreads/batteries.cmxa \
-			_build/src/main/nothreads/batteries.a
-
+			_build/src/main/nothreads/batteries.cmxa  \
+			_build/src/main/nothreads/batteries.a     \
+			_build/src/main/nothreads/run.native
 uninstall:
-	ocamlfind remove $(DESTDIR_FLAGS) batteries
-	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads
+	\rm -Rf $(DOCDIR) &&\
+	ocamlfind remove $(DESTDIR_FLAGS) batteries &&\
+	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads &&\
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads
 
 doc: byte doc/api.odocl
@@ -164,12 +192,23 @@ doc: byte doc/api.odocl
 	mv _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: 
+	@echo Generating documentation. This usually lasts 15+ minutes.
+	@echo You should go and take some coffee.
 	cp src/main/threads/batteries.mllib doc/api.odocl
 
 examples:
 	@echo Note: to build the examples, you must first have installed Batteries
 	@echo If you haven\'t installed Batteries yet, please use    make all opt install
-	cd examples && $(OCAMLBUILD) examples.otarget
+	cd examples/tools && ocamlfind batteries/ocamlbuild tools.otarget && \
+	cd ../snippets    && ocamlfind batteries/ocamlbuild snippets.otarget
+
+tests:
+	cd testsuite && ocamlbuild -clean && \
+	ocamlfind batteries/ocamlbuild main.byte main.native 
+
+tests-byte:
+	cd testsuite && ocamlfind batteries/ocamlbuild -clean && \
+	ocamlfind batteries/ocamlbuild main.byte
 
 clean:
 	$(OCAMLBUILD) -clean
@@ -177,4 +216,4 @@ clean:
 	rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"`
 	rm -f META doc/api.odocl doc/batteries/html/api/*
 
-.PHONY: doc/api.odocl batteries.mllib examples
+.PHONY: doc/api.odocl batteries.mllib examples tests

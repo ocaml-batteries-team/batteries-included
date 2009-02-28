@@ -4,27 +4,26 @@
 
 <style type="text/css">
 ol {
-  list-style-type: upper-alpha;
-  list-style-position: outside;
-  background-color: #ccffe5;
+list-style-type: upper-alpha;
+list-style-position: outside;
+background-color: #ccffe5;
 }
 ol ol {
-  list-style-type: upper-roman;
-  background-color: #ccfffa;
+list-style-type: upper-roman;
+background-color: #ccfffa;
 }
 ol ol ol {
-  list-style-type: decimal;
-  background-color: #cce9ff;
+list-style-type: decimal;
+background-color: #cce9ff;
 }
 ol ol ol ol {
-  list-style-type: lower-roman;
-  background-color: #ccd4ff;
+list-style-type: lower-roman;
+background-color: #ccd4ff;
 }
 ol ol ol ol ol {
-  list-style-type: lower-alpha;
-  background-color: #d8ccff;
+list-style-type: lower-alpha;
+background-color: #d8ccff;
 }
-
 </style>
 </head>
 <body>
@@ -34,6 +33,7 @@ ol ol ol ol ol {
 <ol>
 <li>Concurrency<br>
 <ol>
+<li>Common</li>
 <li>Threads<br>
 <ol>
 <li>Condition</li>
@@ -43,24 +43,30 @@ ol ol ol ol ol {
 </ol>
 </li>
 <li>Exceptions</li>
-<li>Labels</li>
+<li>Return</li>
 <li>Monad</li>
 </ol>
-</li>
-<li>Codec<br>
+</li></ol>
+</li><li>Codec<br>
 <ol>
 <li>Gzip</li>
 <li>Bz2</li>
+<li>Zip</li>
 <li>Transcode</li>
 </ol>
 </li>
 <li>Data<br>
 <ol>
-<li>Mutable<br>
+<li>Containers<br>
 <ol>
 <li>Array<br>
 <ol>
 <li>Cap</li>
+<ol>
+<li>ExceptionLess</li>
+<li>Labels</li>
+</ol>
+<li>ExceptionLess</li>
 <li>Labels</li>
 </ol>
 </li>
@@ -77,16 +83,44 @@ ol ol ol ol ol {
 <li>Enum<br>
 <ol>
 <li>ExceptionLess</li>
+<li>Labels</li>
 </ol>
 </li>
 <li>Global</li>
 <li>Hashtbl<br>
 <ol>
 <li>Make</li>
+<ol>
+<li>ExceptionLess</li>
 <li>Labels</li>
-<li>MakeLabels</li>
+</ol>
 </ol>
 </li>
+<li>Lazy</li>
+<li>List<br>
+<ol>
+<li>ExceptionLess</li>
+<li>Labels</li>
+</ol>
+</li>
+<li>Map<br>
+</li>
+<ol>
+<li>Make</li>
+</ol>
+<ol>
+<ol>
+<li>ExceptionLess</li>
+<li>Labels</li>
+</ol>
+</ol>
+<li>Option<br>
+</li>
+<ol>
+<li>Labels</li>
+</ol>
+<li>PMap</li>
+<li>PSet</li>
 <li>RefList<br>
 <ol>
 <li>Index</li>
@@ -95,6 +129,13 @@ ol ol ol ol ol {
 <li>Queue</li>
 <li>Ref</li>
 <li>RefList</li>
+<li>Set<br>
+</li>
+<li>Make</li>
+<ol>
+<li>ExceptionLess</li>
+<li>Labels</li>
+</ol>
 <li>Stack</li>
 <li>Stream</li>
 </ol>
@@ -121,34 +162,8 @@ ol ol ol ol ol {
 <li>Safe_int</li>
 </ol>
 </li>
-<li>Persistent<br>
+<li>
 <ol>
-<li>Lazy</li>
-<li>List<br>
-<ol>
-<li>ExceptionLess</li>
-<li>Labels</li>
-</ol>
-</li>
-<li>Map<br>
-<ol>
-<li>Make</li>
-<li>MakeLabels</li>
-</ol>
-</li>
-<li>Option<br>
-<ol>
-<li>Labels</li>
-</ol>
-</li>
-<li>PMap</li>
-<li>PSet</li>
-<li>Set<br>
-<ol>
-<li>Make</li>
-<li>MakeLabels</li>
-</ol>
-</li>
 </ol>
 </li>
 <li>Text
@@ -244,7 +259,7 @@ ol ol ol ol ol {
 <ol>
 </ol>
 </li>
-<li>Standard</li>
+<li>Standard (automatically opened)</li>
 <li>Sys<br>
 <ol>
 <li>Arg</li>
@@ -268,7 +283,6 @@ ol ol ol ol ol {
 <li>Labels</li>
 </ol>
 </li>
-<li>Unzip</li>
 </ol>
 </li>
 <li>Util<br>
@@ -283,7 +297,7 @@ ol ol ol ol ol {
 </li>
 <li>Legacy</li>
 </ol>
-</li>
-</ol>
+
+
 <br>
 </body></html>

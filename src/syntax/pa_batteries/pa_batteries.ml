@@ -1,6 +1,6 @@
 (*
  * Pa_batteries -- Syntax extension for auto-opening Batteries
- * Copyright (C)   2008 David Teller
+ * Copyright (C)   2009 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
 				   [true] once we have opened [Batteries] and [Standard]*)
 
 
-    (*We replace the definitions of [implem], [interf] and [top_phrase].*)
+    (*We replace the definitions of [implem] and [interf].*)
 
     DELETE_RULE Gram implem: "#"; a_LIDENT; opt_expr; semi END
     DELETE_RULE Gram implem: str_item; semi; SELF END

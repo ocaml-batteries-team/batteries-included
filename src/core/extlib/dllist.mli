@@ -1,7 +1,7 @@
 (*
  * Dllist- a mutable, circular, doubly linked list library
  * Copyright (C) 2004 Brian Hurt, Jesse Guardiani
- * Copyright (C) 2008 David Teller
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,9 @@
     This module implements a doubly linked list in a mutable or imperitive
     style (changes to the list are visible to all copies of the list).
 
+    {b Note} This implementation of doubly-linked lists does not support
+    empty lists.
+
     @author Brian Hurt
     @author Jesse Guardiani
     @author David Teller
@@ -32,6 +35,12 @@
 
 type 'a node_t (* abstract *) 
 type 'a t = 'a node_t (*For uniformity*)
+(**
+   The type of a non-empty doubly-linked list.
+*)
+
+include Interfaces.Mappable with type 'a mappable = 'a t
+include Enum.Enumerable with type 'a enumerable = 'a t
 
 exception Empty
 
@@ -154,6 +163,22 @@ val fold_right : ('a -> 'b -> 'b) -> 'a node_t -> 'b -> 'b
     does not modify the given list.  This is an O(N) operation.
 *)
 val map : ('a -> 'b) -> 'a node_t -> 'b node_t
+
+val filter : ('a -> bool) -> 'a node_t -> 'a node_t
+  (** [filter p l] returns a new list, with entirely new nodes, whose
+      values are all the elements of the list [l] that satisfy the
+      predicate [p].  The order of the elements in the input list is
+      preserved.  
+
+      @raise Empty if the resulting list is empty.*)
+
+val filter_map : ('a -> 'b option) -> 'a node_t -> 'b node_t
+  (** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0..an]
+      are the elements of [l]. It returns a new list of elements [bi]
+      such as [f ai = Some bi] (when [f] returns [None], the
+      corresponding element of [l] is discarded). 
+
+      @raise Empty if the resulting list is empty.*)
 
 
 (** {6 list conversion } *)

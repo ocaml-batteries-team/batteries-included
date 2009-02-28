@@ -42,6 +42,9 @@ val empty : unit ->  t
 val create : int -> t
 (** Create an empty bitset with an initial size (in number of bits). *)
 
+val create_full : int -> t
+(** Create a full bitset with an initial size (in number of bits). *)
+
 val copy : t -> t
 (** Copy a bitset : further modifications of first one will not affect the
  copy. *)

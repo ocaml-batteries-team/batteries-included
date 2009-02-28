@@ -5,3 +5,4 @@
 <batteries_nothreads.cmxa>:precious
 <batteries.a>: precious
 <batteries_nothreads.a>: precious
+<fix_camlp4_print.*>:camlp4orf,use_camlp4_full

@@ -180,9 +180,10 @@ external ( || ) : bool -> bool -> bool = "%sequor"
    in [e1 || e2], [e1] is evaluated first, and if it returns [true],
    [e2] is not evaluated at all. *)
 
-external ( or ) : bool -> bool -> bool = "%sequor"
+(*external ( or ) : bool -> bool -> bool = "%sequor"
 (** @deprecated {!Pervasives.(||)} should be used instead.*)
-
+  (*Removed because of Camlp4 bug*)
+*)
 
 (** {6 Integer arithmetic} 
     
@@ -425,6 +426,15 @@ val nan : float
 val ( ^ ) : string -> string -> string
 (** String concatenation. *)
 
+val uppercase : string -> string
+(** Return a copy of the argument, with all lowercase letters
+    translated to uppercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
+
+val lowercase : string -> string
+(** Return a copy of the argument, with all uppercase letters
+    translated to lowercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
 
 (** {6 Character operations}
 
@@ -546,6 +556,7 @@ val flush_all : unit -> unit
 *)
 
 (** {7 Output functions on standard output} *)
+
 
 val print_bool : bool -> unit
 (** Print a boolean on standard output. *)
@@ -892,30 +903,45 @@ val ( ^^ ) :
 *)
 
 external identity : 'a -> 'a = "%identity"
-(** the identity function. *)
+(** The identity function. *)
+
+val undefined : ?message:string -> 'a -> 'b
+(** The undefined function.
+
+    Evaluating [undefined x] always fails and raises an exception 
+    "Undefined". Optional argument [message] permits the 
+    customization of the error message.*)
+
 
 val ( |> ) : 'a -> ('a -> 'b) -> 'b
 (** Function application. [x |> f] is equivalent to [f x]. 
 
-    This operator is commonly used to write a function composition
-    by order of evaluation means rather than by inverse order.
-    For instance, [g (f x)] means "apply [f] to [x], then apply
-    [g] to the result." In some circumstances, it may be more
-    understandable to write this as [x |> f |> g], or
-    "starting from [x], apply [f], then apply [g]."
+    This operator is commonly used to write a function composition by
+    order of evaluation (the order used in object-oriented
+    programming) rather than by inverse order (the order typically
+    used in functional programming).  
+
+    For instance, [g (f x)] means "apply [f] to [x], then apply [g] to
+    the result." The corresponding notation in most object-oriented
+    programming languages would be somewhere along the lines of [x.f.g
+    ()], or "starting from [x], apply [f], then apply [g]." In OCaml,
+    operator ( |> ) this latest notation maps to [x |> f |> g], or
     
     This operator may also be useful for composing sequences of
     function calls without too many parenthesis. *)
 
-val ( <|  ) : ('a -> 'b) -> 'a -> 'b
-  (** Function application. [f <| x] is equivalent to [f x]. 
+val ( **>  ) : ('a -> 'b) -> 'a -> 'b
+  (** Function application. [f **> x] is equivalent to [f x]. 
       
       This operators may be useful for composing sequences of
-      function calls without too many parenthesis.  *)
+      function calls without too many parenthesis.
+
+      {b Note} The name of this operator is not written in stone.
+      It is bound to change soon.*)
 
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
 (** Function composition. [f |- g] is [fun x -> g (f x)]. 
-    This is also equivalent to applying [|>] twice.*)
+    This is also equivalent to applying [<**] twice.*)
 
 val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
 (** Function composition. [f -| g] is [fun x -> f (g x)]. Mathematically, this is
@@ -938,11 +964,18 @@ val ( &&& ) : ('a -> 'b) -> ('a -> 'c) -> 'a -> ('b * 'c)
 
       [ f &&& g] is [fun x -> (f x, g x)]. *)
 
-val first : ('a -> 'b * 'c) -> 'a -> 'b
-(** Projection of a pair to its first element. *)
+val first : ('a -> 'b) -> ('a * 'c) -> ('b * 'c)
+(** Apply a function to the first element of a pair.
 
-val second : ('a -> 'b * 'c) -> 'a -> 'c
-(** Projection of a pair to its second element. *)
+    [first f (x, y)] is [(f x, y)]
+ *)
+
+val second : ('a -> 'b) -> ('c * 'a) -> ('c * 'b)
+(** Apply a function to the second element of a pair.
+
+    [second f (x, y)] is [(x, f y)]
+ *)
+
 
 val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
 (** Convert a function which accepts a pair of arguments into
@@ -962,7 +995,9 @@ val const : 'a -> (_ -> 'a)
     [const x] is the function which always returns [x].*)
 
 val unique : unit -> int
-(** returns an unique identifier every time it is called. *)
+(** Returns an unique identifier every time it is called.
+
+    {b Note} This is thread-safe.*)
 
 
 
@@ -975,6 +1010,17 @@ val args : unit -> string Enum.t
 
       [args ()] is given by the elements of [Sys.argv], minus the first element.*)
 
+(**/**)
+val invisible_args : int ref
+(** The number of arguments which must never be returned by [args]
+
+    Typically, [invisible_args] is [1], to drop the name of the executable. However,
+    in some circumstances, it may be useful to pretend that some arguments need not
+    be parsed.
+*)
+(**/**)
+
+
 val exe  : string
   (** The name of the current executable.
 
@@ -984,22 +1030,191 @@ val exe  : string
 (**
    {6 Enumerations}
 
-   Enumerations are a form of stream, i.e. a data structure which may
-   only be read in a specific order and only once. More operations on
-   enumerations are defined in module {!Enum}.
-*)
+   In OCaml Batteries Included, all data structures are enumerable,
+   which means that they support a number of standard operations,
+   transformations, etc. The general manner of {i enumerating} the
+   contents of a data structure is to invoke the [enum] function of
+   your data structure.
 
-val iter : ('a -> unit) -> 'a Enum.t -> unit
-  (** [iter f e] calls the function [f] with each elements of [e] in turn. 
+   For instance, you may use the {!foreach} loop to apply a function
+   [f] to all the consecutive elements of a string [s]. For this
+   purpose, you may write either [foreach (String.enum s) f] or [open
+   String in foreach (enum s) f]. Either possibility states that you
+   are enumerating through a character string [s]. Should you prefer
+   your enumeration to proceed from the end of the string to the
+   beginning, you may replace {! String.enum} with {!
+   String.backwards}. Therefore, either [foreach (String.backwards s)
+   f] or [open String in foreach (backwards s) f] will apply [f]
+   to all the consecutive elements of string [s], from the last to
+   the first.
 
-      For instance, [iter f (1 -- 10)] invokes function [f] on [1],
-      [2], ..., [10].
+   Similarly, you may use {!List.enum} instead of {!String.enum} to
+   visit the elements of a list in the usual order, or
+   {!List.backwards} instead of {!String.backwards} to visit them
+   in the opposite order, or {!Hashtbl.enum} for hash tables, etc.
+
+   More operations on enumerations are defined in module {!Enum},
+   including the necessary constructors to make your own structures
+   enumerable.
+
+   The various kinds of loops are detailed further in this documentation.
 *)
 
 val foreach: 'a Enum.t -> ('a -> unit) ->  unit
-  (**Imperative loop on an enumeration.
+  (** Imperative loop on an enumeration.
 
-     [foreach e f] is [iter f e].*)
+      [foreach e f] applies function [f] to each successive element of [e].
+      For instance, [foreach (1 -- 10) print_int] invokes function [print_int]
+      on [1], [2], ..., [10], printing [12345678910].
+
+      {b Note} This function is one of the many loops available on
+      enumerations.  Other commonly used loops are {!iter} (same usage
+      scenario as [foreach], but with different notations), {!map}
+      (convert an enumeration to another enumeration) or {!fold}
+      (flatten an enumeration by applying an operation to each
+      element).
+
+  *)
+
+(**
+   {7 General-purpose loops}
+
+   {topic loops}
+
+   The following functions are the three main general-purpose loops
+   available in OCaml. By opposition to the loops available in
+   imperative languages, OCaml loops are regular functions, which
+   may be passed, composed, currified, etc. In particular, each
+   of these loops may be considered either as a manner of applying
+   a function to a data structure or as transforming a function
+   into another function which will act on a whole data structure.
+
+   For instance, if [f] is a function operating on one value, you may
+   lift this function to operate on all values of an enumeration (and
+   consequently on all values of any data structure of OCaml Batteries
+   Included) by applying {!iter}, {!map} or {!fold} to this function.
+*)
+
+
+val iter : ('a -> unit) -> 'a Enum.t -> unit
+  (** Imperative loop on an enumeration. This loop is typically used
+      to lift a function with an effect but no meaningful result and
+      get it to work on enumerations.
+
+      If [f] is a function [iter f] is a function which behaves as [f]
+      but acts upon enumerations rather than individual elements. As
+      indicated in the type of [iter], [f] must produce values of type
+      [unit] (i.e. [f] has no meaningful result) the resulting function
+      produces no meaningful result either.
+
+      In other words, [iter f] is a function which, when applied upon
+      an enumeration [e], calls [f] with each element of [e] in turn.
+
+      For instance, [iter f (1 -- 10)] invokes function [f] on [1],
+      [2], ..., [10] and produces value [()].
+  *)
+
+val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
+  (** Transformation loop on an enumeration, used to build an enumeration
+      from another enumeration. This loop is typically used to transform
+      an enumeration into another enumeration with the same number of
+      elements, in the same order.
+
+      If [f] is a function, [map f e] is a function which behaves as
+      [f] but acts upon enumerations rather than individual elements --
+      and builds a new enumeration from the results of each application.
+
+      In other words, [map f] is a function which, when applied
+      upon an enumeration containing elements [e1], [e2], ...,
+      produces enumeration [f e1], [f e2], ...
+
+      For instance, if [odd] is the function which returns [true]
+      when applied to an odd number or [false] when applied to
+      an even number, [map odd (1 -- 10)] produces enumeration
+      [true], [false], [true], ..., [false].
+
+      Similarly, if [square] is the function [fun x -> x * x],
+      [map square (1 -- 10)] produces the enumeration of the
+      square numbers of all numbers between [1] and [10].
+*)
+
+
+val reduce : ('a -> 'a -> 'a) -> 'a Enum.t -> 'a
+  (** Transformation loop on an enumeration, used to build a single value
+      from an enumeration.
+
+      If [f] is a function and [e] is an enumeration, [reduce f e] applies
+      function [f] to the first two elements of [e], then to the result of this
+      expression and to the third element of [e], then to the result of this
+      new expression and to the fourth element of [e]...
+
+      In other words, [fold f e] returns [a_1] if [e] contains only
+      one element, otherwise [f (... (f (f a1) a2) ...) aN] where
+      a1..N are the elements of [e]. 
+
+      @raises Not_found if [e] is empty.
+
+      For instance, if [add] is the function [fun x y -> x + y],
+      [reduce add] is the function which computes the sum of the
+      elements of an enumeration -- and doesn't work on empty
+      enumerations. Therefore, [reduce add (1 -- 10)]
+      produces result [55].
+  *)
+
+val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
+  (** Transformation loop on an enumeration, used to build a single value
+      from an enumeration. This is the most powerful general-purpose
+      loop and also the most complex.
+
+      If [f] is a function, [fold f v e] applies [f v] to the first
+      element of [e], then, calling [acc_1] the result of this
+      operation, applies [f acc_1] to the second element of [e], then,
+      calling [acc_2] the result of this operation, applies [f acc_2]
+      to the third element of [e]...
+
+      In other words, [fold f v e] returns [v] if [e] is empty,
+      otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
+      the elements of [e]. 
+
+      For instance, if [add] is the function [fun x y -> x + y],
+      [fold add 0] is the function which computes the sum of the
+      elements of an enumeration. Therefore, [fold add 0 (1 -- 10)]
+      produces result [55].
+  *)
+
+val scanl : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b Enum.t
+  (** Functional loop on an enumeration, used to build an enumeration
+      from both an enumeration and an initial value. This function may
+      be seen as a variant of {!fold} which returns not only the final
+      result of {!fold} but the enumeration of all the intermediate
+      results of {!fold}.
+
+      If [f] is a function, [scanl f v e] is applies [f v] to the first
+      element of [e], then, calling [acc_1] the result of this
+      operation, applies [f acc_1] to the second element of [e], then,
+      calling [acc_2] the result of this operation, applies [f acc_2]
+      to the third element of [e]...
+
+      For instance, if [add] is the function [fun x y -> x + y],
+      [scanl add 0] is the function which computes the sum of the
+      elements of an enumeration. Therefore, [scanl add 0 (1 -- 10)]
+      produces result the enumeration with elements [0, 1, 3, 6, 10,
+      15, 21, 28, 36, 45, 55].  *)
+
+val ( /@ ) : 'a Enum.t -> ('a -> 'b) -> 'b Enum.t
+
+val ( @/ ) : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
+  (**
+     Mapping operators.
+
+     These operators have the same meaning as function {!map} but are
+     sometimes more readable than this function, when chaining
+     several transformations in a row.
+  *)
+
+(**
+   {7 Other operations on enumerations}
+*)
 
 val exists: ('a -> bool) -> 'a Enum.t -> bool
 (** [exists f e] returns [true] if there is some [x] in [e] such
@@ -1008,10 +1223,7 @@ val exists: ('a -> bool) -> 'a Enum.t -> bool
 val for_all: ('a -> bool) -> 'a Enum.t -> bool
 (** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
 
-val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
-  (** [fold f v e] returns v if e is empty,
-      otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
-      the elements of [e]. *)
+
 
 val find : ('a -> bool) -> 'a Enum.t -> 'a
   (** [find f e] returns the first element [x] of [e] such that [f x] returns
@@ -1038,13 +1250,15 @@ val push : 'a Enum.t -> 'a -> unit
 val junk : 'a Enum.t -> unit
   (** [junk e] removes the first element from the enumeration, if any. *)
 
-val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
-  (** [map f e] returns an enumeration over [(f a1, f a2, ... , f aN)] where
-      a1...N are the elements of [e]. *)
-
 val filter : ('a -> bool) -> 'a Enum.t -> 'a Enum.t
   (** [filter f e] returns an enumeration over all elements [x] of [e] such
       as [f x] returns [true]. *)
+
+val ( // ) : 'a Enum.t -> ('a -> bool) -> 'a Enum.t
+(** Filtering (pronounce this operator name "such that").
+
+    For instance, [(1 -- 37) // odd] is the enumeration of all odd
+    numbers between 1 and 37.*)
 
 val concat : 'a Enum.t Enum.t -> 'a Enum.t
   (** [concat e] returns an enumeration over all elements of all enumerations
@@ -1062,17 +1276,75 @@ val ( --- ) : int -> int -> int Enum.t
     [5 --- 10] is the enumeration 5,6,7,8,9,10.
     [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
 
-val ( ~~ ) : char -> char -> char Enum.t
+val ( --~ ) : char -> char -> char Enum.t
 (** As ( -- ), but for characters.*)
-
-val ( // ) : 'a Enum.t -> ('a -> bool) -> 'a Enum.t
-(** Filtering (pronounce this operator name "such that").
-
-    For instance, [(1 -- 37) // odd] is the enumeration of all odd
-    numbers between 1 and 37.*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b Enum.t -> unit
 (** Print and consume the contents of an enumeration.*)
+
+(**
+   {6 Default directives}
+*)
+
+(** {7 Equivalent of classical directives} *)
+
+val pdir_a : (('acc IO.output -> 'a -> unit) -> 'a -> 'b, 'b, 'acc) ExtPrintf2.directive
+val pdir_t : (('acc IO.output -> unit) -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_B : (bool -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_c : (char -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_C : (char -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_s : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_S : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrintf2.directive
+
+(*
+TODO: implement that:
+
+type ('a, 'b) unum_directive = ?left_justify:bool -> ?pad_with_zeros:bool -> ?width:int -> ('a, 'b) ExtPrintf2.directive
+  (** Directive which prints an unsigned number *)
+
+type ('a, 'b) snum_directive = ?prefix_with_plus:bool -> ?prefix_with_space:bool -> ('a, 'b) unum_directive
+  (** Directive which prints a signed number *)
+*)
+
+val pdir_d : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_i : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_u : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_x : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_X : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_o : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_ld : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_li : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_lu : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_lx : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_lX : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_lo : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Ld : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Li : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Lu : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Lx : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_LX : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_Lo : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_nd : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_ni : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_nu : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_nx : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_nX : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_no : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+
+(** {7 Batteries-specific directives} *)
+
+val pdir_format : (('a, 'b, 'acc) ExtPrintf2.format -> 'a, 'b, 'acc) ExtPrintf2.directive
+  (** [sp_format] take a format, then the arguments of the format and
+      print according to it. For example
+
+      {[
+        sprintf p"x = %format * %d" p"%d + %d" 1 3 5
+        =
+        "x = 1 + 3 * 5"
+      ]} *)
+
+val pdir_rope : (Rope.t -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_utf8 : (ExtUTF8.UTF8.t -> 'a, 'a, 'acc) ExtPrintf2.directive
 
 (**
    {6 Results}
@@ -1081,5 +1353,21 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
 type ('a, 'b) result = ('a, 'b) Std.result =
   | Ok  of 'a
   | Bad of 'b
+
+(**
+   {6 Thread-safety internals}
+
+   Unless you are attempting to adapt Batteries Included to a new model of
+   concurrency, you probably won't need this.
+*)
+
+val lock: Concurrent.lock ref
+(**
+   A lock used to synchronize internal operations.
+
+   By default, this is {!Concurrent.nolock}. However, if you're using a version
+   of Batteries compiled in threaded mode, this uses {!Mutex}. If you're attempting
+   to use Batteries with another concurrency model, set the lock appropriately.
+*)
 
 end

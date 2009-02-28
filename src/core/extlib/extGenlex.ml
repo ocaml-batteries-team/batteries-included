@@ -340,7 +340,7 @@ struct
 	  
       let string_compare =
 	if case_sensitive then String.compare
-	else String.compare_without_case
+	else String.icompare
 
       (** {6 Whitespace management} *)
       let line_comment =

@@ -1,1 +1,0 @@
-ocaml -init /home/yoric/usr/local/godi/lib/ocaml/site-lib/batteries/top.ml $@

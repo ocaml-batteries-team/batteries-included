@@ -1,3 +1,5 @@
+(*TODO: What is this module? Is it meant for public use?*)
+
 type t
 (**
    [Substring.t] is the type of substrings of a basestring, an efficient 
@@ -261,3 +263,15 @@ val iter : (char -> unit) -> t -> unit
   (** [iter f sus] applies f to all characters of sus, from left to
       right.  Equivalent to List.app f (explode sus).
   *)
+
+val trim : t -> t
+ (** removes whitespace from left and right ends of input *)
+
+val split_on_char : char -> t -> t list
+  (** [split_on_char c ss] returns substrings of input [ss] as divided
+  by [c] *)
+
+val split_on_pipe : t -> t list
+val split_on_dot : t -> t list
+val split_on_comma : t -> t list
+val split_on_slash : t -> t list

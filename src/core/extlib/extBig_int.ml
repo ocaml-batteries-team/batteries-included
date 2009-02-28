@@ -20,7 +20,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 open Number
 
@@ -64,7 +64,7 @@ module Big_int = struct
   let ( -- )  x y = Enum.seq x (add one) ( ge_big_int y )
   let ( --- ) x y = 
     if ge_big_int y x then x -- y 
-    else Enum.seq y (sub one) (ge_big_int x)
+    else Enum.seq x pred (le_big_int y)
 
   let sexp_of_t = Conv.sexp_of_big_int
   let t_of_sexp = Conv.big_int_of_sexp

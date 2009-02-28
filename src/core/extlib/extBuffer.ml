@@ -1,7 +1,8 @@
 (* 
  * ExtBuffer - Additional buffer operations
  * Copyright (C) 1999 Pierre Weis, Xavier Leroy
- *               2008 David Teller
+ *               2009 David Teller, LIFO, Universite d'Orleans
+ *               2009 Dawid Toton
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +21,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 open ExtString
 
@@ -50,7 +51,6 @@ struct
   let print out t =
     ExtString.String.print out (contents t)
 
-    
   let enum t =
     let buf = buffer_of_t t in
       Enum.take buf.position (String.enum buf.buffer)
@@ -67,4 +67,10 @@ struct
   let output_buffer = InnerIO.write_buf
     
   let add_channel = add_input
+
+  let blit t srcoff dst dstoff len =
+    let buf = buffer_of_t t in
+      if srcoff < 0 || len < 0 || srcoff > buf.position - len
+      then invalid_arg "Buffer.blit"
+      else String.blit buf.buffer srcoff dst dstoff len
 end

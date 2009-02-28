@@ -28,9 +28,30 @@
 
 
 (**
-   Arithmetic overflow
+   Arithmetic overflow.
+
+   This kind of exception is raised by "safe" numeric modules whenever
+   the number which should be returned is too large to be represented.
+
+   Non-"safe" numeric modules will return a result which depends on
+   the internal representation. For instance, with module {!Int},
+   [max_num + 1] returns [min_num]. By opposition, with module
+   {!Safe_int}, [max_num + 1] raises [Overflow].
+   
 *)
 exception Overflow
+
+(**
+   Not a Number
+
+   This kind of exception is raised by "safe" modules whenever the
+   number which should be returned is not a number.
+
+   For instance, with module {!Safe_float}, [0.0 / 0.0] raises [NaN].
+   By opposition, with module {!Float}, [0.0 / 0.0] does not interrupt
+   computation and returns a special value [nan].
+*)
+exception NaN
 
 (**
    The smallest set of operations supported by every set of numbers.

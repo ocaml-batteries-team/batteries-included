@@ -1,41 +1,30 @@
+(* 
+ * Vect - Extensible arrays based on ropes
+ * Copyright (C) 2007 Mauricio Fernandez <mfp@acm.org>
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
 (* Vect: extensible arrays based on ropes as described in
 
    Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
    strings.  Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
 
    Motivated by Luca de Alfaro's extensible array implementation Vec.
-
-   Copyright (C) 2007   Mauricio Fernandez <mfp@acm.org>
-                        http://eigenclass.org
-
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version,
-   with the following special exception:
-
-   You may link, statically or dynamically, a "work that uses the
-   Library" with a publicly distributed version of the Library to
-   produce an executable file containing portions of the Library, and
-   distribute that executable file under terms of your choice, without
-   any of the additional requirements listed in clause 6 of the GNU
-   Library General Public License.  By "a publicly distributed version
-   of the Library", we mean either the unmodified Library as
-   distributed by the author, or a modified version of the Library that is
-   distributed under the conditions defined in clause 2 of the GNU
-   Library General Public License.  This exception does not however
-   invalidate any other reasons why the executable file might be
-   covered by the GNU Library General Public License.
-
-   This library is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-
-   The GNU Library General Public License is available at
-   http://www.gnu.org/copyleft/lgpl.html; to obtain it, you can also
-   write to the Free Software Foundation, Inc., 59 Temple Place -
-   Suite 330, Boston, MA 02111-1307, USA.
  *)
 
 (** Extensible vectors with constant-time append/prepend.
@@ -106,6 +95,14 @@ val make : int -> 'a -> 'a t
   (** [make i c] returns a vect of length [i] whose elements are all equal to
       [c]; it is similar to Array.make *)
 
+val init : int -> (int -> 'a) -> 'a t
+  (** [init n f] returns a fresh vect of length [n],
+      with element number [i] initialized to the result of [f i].
+      In other terms, [init n f] tabulates the results of [f]
+      applied to the integers [0] to [n-1].
+      
+      @raise Invalid_argument if [n < 0] or [n > max_length].*)
+
 (** {6 Properties } *)
 
 val is_empty : 'a t -> bool
@@ -138,21 +135,21 @@ val prepend : 'a -> 'a t -> 'a t
   (** [prepend c r] returns a new vect with the [c] character at the
       beginning in amortized [O(1)] time. *)
 
-val get : int -> 'a t -> 'a
-  (** [get n r] returns the (n+1)th element from the vect [r]; i.e.
-      [get 0 r] returns the first element.
+val get : 'a t -> int -> 'a
+  (** [get v n] returns the (n+1)th element from the vect [v]; i.e.
+      [get v 0] returns the first element.
       Operates in worst-case [O(log size)] time.
       Raises Out_of_bounds if a character out of bounds is requested. *)
 
-val at : int -> 'a t -> 'a
+val at : 'a t -> int -> 'a
   (** as [get] *)
 
-val set : int -> 'a -> 'a t -> 'a t
+val set : 'a t -> int -> 'a -> 'a t
   (** [set n c r] returns a copy of the [r] vect where the (n+1)th element
       (see also [get]) has been set to [c].
       Operates in worst-case [O(log size)] time. *)
 
-val destructive_set : int -> 'a -> 'a t -> unit
+val destructive_set : 'a t -> int -> 'a -> unit
   (** [destructive_set n e v] sets the element of index [n] in the [v] vect
       to [e]. {b This operation is destructive}, and will also affect vects
       sharing the modified leaf with [v]. Use with caution. *)
@@ -177,6 +174,22 @@ val remove : int -> int -> 'a t -> 'a t
       [length r - n].
       Operates in amortized [O(log(size r))] time. *)
 
+(** {6 Conversion}*)
+
+val enum : 'a t -> 'a Enum.t
+  (** Returns an enumeration of the elements of the vector. 
+      Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
+
+val of_enum : 'a Enum.t -> 'a t
+  (** Build a vector from an enumeration.*)
+
+val backwards : 'a t -> 'a Enum.t
+  (** Returns an enumeration of the elements of a vector, from last to first. 
+      Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
+
+val of_backwards : 'a Enum.t -> 'a t
+  (** Build a vector from an enumeration, from last to first.*)
+
 (** {6 Iteration and higher-order functions } *)
 
 val iter : ('a -> unit) -> 'a t -> unit
@@ -200,10 +213,26 @@ val fold : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
   (** [fold f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
       where [rn = Vect.get n r ] and [N = length r]. *)
 
+  val fold_left : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
+  (** [fold_left f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
+    where [rn = Vect.get n r ] and [N = length r]. *)
+
+  val fold: ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
+    (**as {!fold_left}*)
+
+  val fold_right : ('a -> 'b -> 'b ) -> 'a t -> 'b -> 'b
+  (** [fold_right f r a] computes [ f (r0 ... (f rN-2 (f rN-1 a)) ...)) ]
+      where [rn = Vect.get n r ] and [N = length r]. *)
+
 val map : ('a -> 'b) -> 'a t -> 'b t
   (** [map f v] returns a vect isomorphic to [v] where each element of index
     [i] equals [f (get v i)]. Therefore, the height of the returned vect
     is the same as that of the original one. Operates in [O(n)] time. *)
+
+val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
+  (** Same as {!map}, but the
+      function is applied to the index of the element as first argument,
+      and the element itself as second argument. *)
 
 (* NOT PROVIDED?
 val id_map : ('a -> 'a) -> 'a t -> 'a t
@@ -216,9 +245,55 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
       with [<>].  Operates in [O(n)] time. *)
 *)
 
-val filter : ('a -> bool) -> 'a t -> 'a t
-  (** [filter f v] returns a vect with the elements [x] from [v] such that
-      [f x] returns [true]. Operates in [O(n)] time. *)
+  (**{6 Predicates}*)
+    
+  val for_all : ('a -> bool) -> 'a t -> bool
+    (** [for_all p [a1; ...; an]] checks if all elements of the array
+	satisfy the predicate [p].  That is, it returns
+	[ (p a1) && (p a2) && ... && (p an)]. *)
+
+  val exists : ('a -> bool) -> 'a t -> bool
+    (** [exists p [a1; ...; an]] checks if at least one element of
+	the array satisfies the predicate [p].  That is, it returns
+	[ (p a1) || (p a2) || ... || (p an)]. *)
+
+  val find : ('a -> bool) -> 'a t -> 'a
+    (** [find p a] returns the first element of array [a]
+	that satisfies the predicate [p].
+	@raise Not_found  if there is no value that satisfies [p] in the
+	array [a]. *)
+    
+  val mem : 'a -> 'a t -> bool
+    (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
+    
+  val memq : 'a -> 'a t -> bool
+    (** Same as {!Array.mem} but uses physical equality instead of
+	structural equality to compare array elements.  *)
+    
+  val findi : ('a -> bool) -> 'a t -> int
+    (** [findi p a] returns the index of the first element of array [a]
+	that satisfies the predicate [p].
+	@raise Not_found if there is no value that satisfies [p] in the
+	array [a].  *)
+    
+  val filter : ('a -> bool) -> 'a t -> 'a t
+    (** [filter f v] returns a vect with the elements [x] from [v] such that
+	[f x] returns [true]. Operates in [O(n)] time. *)
+
+  val filter_map : ('a -> 'b option) -> 'a t -> 'b t
+    (** [filter_map f e] returns a vect consisting in all elements
+	[x] such that [f y] returns [Some x] , where [y] is an element
+	of [e]. *)
+
+  val find_all : ('a -> bool) -> 'a t -> 'a t
+    (** [find_all] is another name for {!Array.filter}. *)
+
+  val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+    (** [partition p a] returns a pair of arrays [(a1, a2)], where
+	[a1] is the array of all the elements of [a] that
+	satisfy the predicate [p], and [a2] is the array of all the
+	elements of [a] that do not satisfy [p].
+	The order of the elements in the input array is preserved. *)
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
@@ -226,6 +301,9 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
 val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
+(** {7 Printing}*)
+  
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
 
 
 (** {6 Functorial interface} *)
@@ -247,6 +325,10 @@ sig
   val iter : ('a -> unit) -> 'a t -> unit
   val map : ('a -> 'b) -> 'a t -> 'b t
   val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val enum : 'a t -> 'a Enum.t
+  val backwards : 'a t -> 'a Enum.t
+  val of_enum : 'a Enum.t -> 'a t
+  val of_backwards : 'a Enum.t -> 'a t
 end
 
 module Make :
@@ -322,8 +404,8 @@ sig
     Operates in worst-case [O(log size)] time.
     Raises Out_of_bounds if a character out of bounds is requested. *)
 
-  val set : int -> 'a -> 'a t -> 'a t
-  (** [set n c r] returns a copy of the [r] vect where the (n+1)th element
+  val set : 'a t -> int -> 'a  -> 'a t
+  (** [set r n c] returns a copy of the [r] vect where the (n+1)th element
     (see also [get]) has been set to [c].
     Operates in worst-case [O(log size)] time. *)
 
@@ -366,20 +448,26 @@ sig
     from an explicit loop using [get].
     Raises Out_of_bounds in the same cases as [sub]. *)
 
-  val fold : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
+  val fold_left : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
   (** [fold_left f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
     where [rn = Vect.get n r ] and [N = length r]. *)
 
-(* NOT PROVIDED?
+  val fold: ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
+    (**as {!fold_left}*)
+
   val fold_right : ('a -> 'b -> 'b ) -> 'a t -> 'b -> 'b
   (** [fold_right f r a] computes [ f (r0 ... (f rN-2 (f rN-1 a)) ...)) ]
       where [rn = Vect.get n r ] and [N = length r]. *)
-*)
 
   val map : ('a -> 'b) -> 'a t -> 'b t
   (** [map f v] returns a vect isomorphic to [v] where each element of index
       [i] equals [f (get v i)]. Therefore, the height of the returned vect
       is the same as that of the original one. Operates in [O(n)] time. *)
+
+  val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
+    (** Same as {!map}, but the
+	function is applied to the index of the element as first argument,
+	and the element itself as second argument. *)
 (* NOT PROVIDED?
   val id_map : ('a -> 'a) -> 'a t -> 'a t
   (** [id_map f v] returns a vect isomorphic to [v] where each element of index
@@ -393,4 +481,23 @@ sig
   val filter : ('a -> bool) -> 'a t -> 'a t
   (** [filter f v] returns a vect with the elements [x] from [v] such that
       [f x] returns [true]. Operates in [O(n)] time. *)
+
+  val filter_map : ('a -> 'b option) -> 'a t -> 'b t
+    (** [filter_map f e] returns a vect consisting in all elements
+	[x] such that [f y] returns [Some x] , where [y] is an element
+	of [e]. *)
+
+  val find_all : ('a -> bool) -> 'a t -> 'a t
+    (** [find_all] is another name for {!Array.filter}. *)
+
+  val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+    (** [partition p a] returns a pair of arrays [(a1, a2)], where
+	[a1] is the array of all the elements of [a] that
+	satisfy the predicate [p], and [a2] is the array of all the
+	elements of [a] that do not satisfy [p].
+	The order of the elements in the input array is preserved. *)
+
+  (** {7 Printing}*)
+  val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
 end
+

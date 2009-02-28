@@ -1,0 +1,6 @@
+netchan_cat.byte
+netchan_cat.native
+parallelsort.byte
+parallelsort.native
+test_printf.byte
+test_printf.native

@@ -1,7 +1,7 @@
 (* 
  * ExtMap - Additional map operations
  * Copyright (C) 1996 Xavier Leroy
- *               2008 David Teller
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,12 +20,12 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Persistent" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 
 module Map =
 struct
-  module type OrderedType = Map.OrderedType
+  module type OrderedType = Interfaces.OrderedType
 
   module type S =
   sig
@@ -76,12 +76,32 @@ struct
     val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
       (** Same as {!Map.S.map}, but the function receives as arguments both the
 	  key and the associated value for each binding of the map. *)
-      
+
     val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
       (** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
 	  where [k1 ... kN] are the keys of all bindings in [m]
 	  (in increasing order), and [d1 ... dN] are the associated data. *)
-      
+
+   val filter: ('a -> bool) -> 'a t -> 'a t
+      (**[filter f m] returns a map where only the values [a] of [m]
+	 such that [f a = true] remain. The bindings are passed to [f]
+	 in increasing order with respect to the ordering over the
+	 type of the keys. *)
+
+    val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
+      (**[filter f m] returns a map where only the key, values pairs
+	 [key], [a] of [m] such that [f key a = true] remain. The
+	 bindings are passed to [f] in increasing order with respect
+	 to the ordering over the type of the keys. *)
+            
+    val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
+      (** [filter_map f m] combines the features of [filteri] and
+	  [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
+	  where [a0..an] are the elements of [m] and [key0..keyn] the
+	  respective corresponding keys. It returns the map of
+	  pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
+	  [None], the corresponding element of [m] is discarded). *)
+
     val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
       (** Total ordering between maps.  The first argument is a total ordering
           used to compare data associated with equal keys in the two maps. *)
@@ -116,6 +136,25 @@ struct
       ('a InnerIO.output -> key -> unit) -> 
       ('a InnerIO.output -> 'c -> unit) -> 
       'a InnerIO.output -> 'c t -> unit
+
+    module ExceptionLess : sig
+      val find: key -> 'a t -> 'a option
+    end
+
+    module Labels : sig
+      val add : key:key -> data:'a -> 'a t -> 'a t
+      val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+      val map : f:('a -> 'b) -> 'a t -> 'b t
+      val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+      val filter: f:('a -> bool) -> 'a t -> 'a t
+      val filteri:f:(key -> 'a -> bool) -> 'a t -> 'a t
+      val fold :
+	f:(key:key -> data:'a -> 'b -> 'b) ->
+	'a t -> init:'b -> 'b
+      val compare: cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+      val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+
+    end
   end
 
   module Make(Ord : OrderedType) =
@@ -156,8 +195,19 @@ struct
       let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
 	Enum.print ~first ~last ~sep (fun out (k,v) -> ExtPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
 
-(*The following is a hack to make sure that we're letting sexplib
-  do the conversion automatically, hence that we're following sexplib protocol.*)
+      (*We rely on [fold] rather than on ['a implementation] to
+	make future changes of implementation in the base
+	library's version of [Map] easier to track, even if the
+	result is a tad slower.*)
+      let filter  f t = fold (fun k a acc -> if f a then add k a acc else acc) t empty
+      let filteri f t = fold (fun k a acc -> if f k a then add k a acc else acc) t empty
+      let filter_map f t = fold (fun k a acc -> match f k a with
+				   | None   -> acc
+				   | Some v -> add k v acc)  t empty
+
+
+      (*The following is a hack to make sure that we're letting sexplib
+	do the conversion automatically, hence that we're following sexplib protocol.*)
 
       let t_of_sexp key_of_sexp = 
 	let module Local =
@@ -186,6 +236,31 @@ struct
 	  end in fun a_of_key (t:'a t) -> Local.sexp_of_t a_of_key (impl_of_t t)
 
 
+      module ExceptionLess =
+      struct
+	let find k t = try Some (find k t) with Not_found -> None
+      end
+	
+      module Labels =
+      struct
+	let add ~key ~data t = add key data t
+	let iter ~f t = iter (fun key data -> f ~key ~data) t
+	let map ~f t = map f t
+	let mapi ~f t = mapi (fun key data -> f ~key ~data) t
+	let fold ~f t ~init = fold (fun key data acc -> f ~key ~data acc) t init
+	let compare ~cmp a b = compare cmp a b
+	let equal ~cmp a b = equal cmp a b
+	let filter ~f = filter f
+	let filteri ~f = filteri f
+      end  
+
     end
+
+  module StringMap  = Make(ExtString.String)
+  module IStringMap = Make(ExtString.String.IString)
+  module NumStringMap = Make(ExtString.String.NumString)
+  module RopeMap    = Make(Rope)
+  module IRopeMap   = Make(Rope.IRope)
+  module IntMap     = Make(ExtInt.Int)
 
 end

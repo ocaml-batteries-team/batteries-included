@@ -21,9 +21,12 @@
 
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Persistent.PSet" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "PSet" (*For Sexplib, Bin-prot...*)
 
-type 'a t = ('a, bool) PMap.t with sexp
+type 'a t = ('a, unit) PMap.t with sexp
+
+type 'a enumerable = 'a t
+type 'a mappable = 'a t
 
 let empty    = PMap.empty
 
@@ -33,16 +36,24 @@ let is_empty = PMap.is_empty
 
 let mem      = PMap.mem
 
-let add e t  = PMap.add e true t
+let add e t  = PMap.add e () t
 
 let remove   = PMap.remove
 
-let iter f   = PMap.iter (fun x _ -> f x)
+let for_map f = fun x _ -> f x
 
-let fold f   = PMap.foldi (fun k _ -> f k)
+let iter f   = PMap.iter (for_map f)
 
-let exists f t = Labels.label (fun return ->
-			       iter (fun k -> if f k then Labels.recall return true) t;
+let fold f   = PMap.foldi (for_map f)
+
+let map f e  = PMap.foldi (fun k _ acc -> add (f k) acc) e empty
+
+let filter f = PMap.filteri (for_map f)
+
+let filter_map f e = PMap.foldi (fun k _ acc -> match f k with None -> acc | Some v -> add v acc) e empty
+
+let exists f t = Return.label (fun label ->
+			       iter (fun k -> if f k then Return.return label true) t;
 			       false)
 
 let cardinal t =

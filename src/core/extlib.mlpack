@@ -1,6 +1,10 @@
+Concurrent
+Interfaces
+InnerIO
 Monad
-Labels
+Return
 Enum
+ExtBigarray
 ExtUChar
 ExtUnit
 Global
@@ -11,8 +15,8 @@ PMap
 PSet
 MultiPMap
 Option
-OptionLabels
 ExtBuffer
+ExtString
 ExtUTF8
 ExtInt64
 ExtInt32
@@ -20,7 +24,6 @@ ExtInt
 ExtHashtbl
 ExtFloat
 ExtChar
-EnumLabels
 DynArray
 Dllist
 BitSet
@@ -33,7 +36,6 @@ ExtBig_int
 ExtList
 ExtNativeint
 ExtStream
-ExtString
 Substring
 Std
 RefList
@@ -42,11 +44,11 @@ ExtRandom
 ExtNum
 ExtBool
 File
-LazyListLabels
 OptParse
 ParserCo
 Result
 CharParser
+UCharParser
 ExtGenlex
 ExtComplex
 ExtMarshal
@@ -58,3 +60,14 @@ ExtMap
 ExtQueue
 ExtStack
 ExtSet
+ExtOo
+ExtStr
+Path
+CharEncodings
+ExtSys
+ExtArg
+ExtDigest
+Logger
+ExtFormat
+ExtScanf
+ExtPrintf2
