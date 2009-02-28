@@ -2,8 +2,10 @@ ocaml-batteries (0.20090228+git6E49F72-1) unstable; urgency=low
 
   * new snapshot, upstream Git commit 6E49F72
     - includes all changes of batteries alpha 3 + recent development
-  * debian/rules: pass -byte-plugin to ocamlbuild when ocamlopt is not
-    available, fixes FTBFS on non-native archs. (Closes: #505490)
+  * debian/rules:
+    - pass -byte-plugin to ocamlbuild when ocamlopt is not
+      available, fixes FTBFS on non-native archs. (Closes: #505490)
+    - use ocaml.mk as a CDBS "rules" snippet
   * debian/control:
     - add new build-dep on ocamlnet (Closes: #515792)
 

@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
-include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/patchsys-quilt.mk
-include /usr/share/cdbs/1/class/ocaml.mk
+include /usr/share/cdbs/1/rules/ocaml.mk
 
 LIB_NAME = batteries
 DEV_PKG_NAME = lib$(LIB_NAME)-ocaml-dev
