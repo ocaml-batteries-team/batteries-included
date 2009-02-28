@@ -12,6 +12,7 @@ Build-Depends:
  libsexplib-camlp4-dev,
  libbin-prot-camlp4-dev,
  libzip-ocaml-dev,
+ libocamlnet-ocaml-dev,
  dh-ocaml,
  camlp4,
  camlp4-extra,
