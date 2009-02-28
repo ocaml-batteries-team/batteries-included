@@ -1,6 +1,6 @@
 (* 
  * Top - An interpreted preambule for the toplevel
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,12 +36,17 @@
 let interactive = !Sys.interactive;;
 Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
 #use "topfind";;
-#require "num";;  (*For some reason, if [num] is not loaded before Camlp4, an exception is launched*)
+#require "num";;       (*For some reason, if [num] is not loaded before Camlp4, an exception is launched*)
+#require "netstring";; (*For some reason, if [netstring] is not loaded before Camlp4, an exception is launched*)
+                       (*Note: a common point between num and netstring is that they both define custom printers
+			 for the toplevel. This may be the reason for this bug.*)
 #predicates "preprocessor";;
+#require "dynlink";;
 #camlp4o;;
 #require "camlp4";;
 #require "batteries";;
 #require "batteries.syntax";;
+
 
 if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
 begin
@@ -57,9 +62,16 @@ begin
   print_endline "----------------------------------------------";
   print_newline ();
   print_newline ();
-  flush_all ();
+  flush_all ()
 end
+
 open Batteries;;
 open Standard;;
+#install_printer Batteries_print.print_uchar;;
+#install_printer Batteries_print.print_ustring;;
+#install_printer Batteries_print.print_rope;;
+#install_printer Batteries_print.print_string_cap_rw;;
+#install_printer Batteries_print.print_string_cap_ro;;
+Arg.current    := !Arg.current + 2;; (*Forget the 2 arguments "-init top.ml", passed by our script [ocaml].*)
+invisible_args := !invisible_args + 2;;
 Sys.interactive := interactive;; (*Return to regular interactive mode*)
-

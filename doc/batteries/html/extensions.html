@@ -14,7 +14,7 @@ To take advantage of these features, please see <a href="setup.html">the corresp
 Note that most of these extensions were not developed specifically for Batteries Included and may
 be used separately.
 
-<center><h2>Opening of modules</h2></center>
+<center><h2>Opening of modules<a name="openin"></h2></center>
 <center>(activated by default, implemented as findlib package <code>batteries.pa_openin.syntax</code>)</center>
 <center><h3>Local opening of modules</h3></center>
 <center>(forked from <a href="http://alain.frisch.fr/soft.html">openin</a>)</center>
@@ -22,11 +22,11 @@ You can open local modules, inside an expression if needed.
 <br />
 For instance:
 <pre class="example">
-open System.File in
- (*Here, System.File is opened*)
+open File in
+ (*Here, File is opened*)
  lines_of "some_file"
 
-(*Here, System.File is not opened anymore*)
+(*Here, File is not opened anymore*)
 </pre>
 These modules do not need to be named. For instance, you may write
 <pre class="example">
@@ -35,36 +35,90 @@ open Hashtbl.Make(String) in
 </pre>
 
 
-<center><h3>Initialization of modules</h3></center>
+<center><h3>Initialization of modules<a name="openin_initializer"/></h3></center>
 <center>(designed for Batteries)</center>
 As a convenience, you can specify an expression to be evaluated when opening a module.
 For instance,
 <pre class="example">
-open Util.Random with self_init ()
+open Random with self_init ()
 </pre>
 This extract is equivalent to
 <pre class="example">
-open Util.Random
+open Random
 let _ = self_init ()
 </pre>
 This feature is provided as it may sometimes increase readability.
 
-<center><h3>Opening several modules</h3></center>
+<center><h3>Opening several modules<a name="openin_multiopen"/></h3></center>
 <center>(designed for Batteries)</center>
 As a convenience, you can specify a comma-separated list of modules to be opened in one operation.
-For instance,
+Consider for instance
 <pre class="example">
-open Data.Mutable, Data.Persistent
+open List, Array
 </pre>
 This extract is equivalent to
 <pre class="example">
-open Data.Mutable
-open Data.Persistent
+open List
+open Array
 </pre>
 
 This feature is provided as it may sometimes increase readability.
 
-<center><h2>"where" construction<a name = "where"/></h2></center>
+<center><h3>Aliasing several modules to one name<a name="openin_multialias"/></h3></center>
+<center>(designed for Batteries)</center>
+As a convenience, you can specify that a module name should serve to
+represent the union of several modules. Consider for instance
+<pre class="example">
+module E = Enum include ExceptionLess, Labels
+</pre>
+This extract defines a local module name <code>E</code>
+with all the values and types of modules <code>Enum</code>,
+<code>ExceptionLess</code> and <code>Labels</code>. In
+particular, some values defined in <code>Enum</code>
+may be overridden with values defined in <code>ExceptionLess</code>
+and/or <code>Labels</code>. 
+
+
+<pre class="example">
+module Enum =
+struct
+ include Enum
+ include ExceptionLess
+ include Labels
+end
+</pre>
+
+This feature is provided as it may sometimes increase readability.
+
+<br />
+
+One of the main uses of this feature is to permit opening in one
+operation modules which define some functions and modules which
+override these functions.  This is the case of module <code>IO</code>,
+which defines operations for input and output: this module contains a
+submodule <code>BigEndian</code>, which defines operations which
+should be used to communicate with specific architectures. One of these
+functions is <code>read_float</code>: <code>IO.read_float</code> is
+adapted to small-endian architectures, while <code>IO.BigEndian.read_float</code>
+is adapted to big-endian architectures
+
+The
+functions of <code>BigEndian</code> have the same name as functions
+of <code>IO</code>.  The following extract will therefore open
+both <code>IO</code> and <code>BigEndian</code> in one operation:
+<pre class="example">
+open IO, BigEndian
+</pre>
+
+
+This extract is equivalent to
+<pre class="example">
+open IO
+open BigEndian
+</pre>
+
+
+<center><h2>"where" construction<a name="where"/></h2></center>
 <center>(activated by default, implemented as findlib package <code>batteries.pa_where.syntax</code>)</center>
 <center>(part of <a href="http://forge.ocamlcore.org/projects/pa-where/">pa_where</a>, distributed with Batteries)</center>
 
@@ -107,10 +161,110 @@ As a convenience, you may wrote <code>where let</code> instead of <code>where</c
 </dl>
 
 
-<center><h2>Boilerplate construction</h2></center>
+<center><h2>Comprehension expressions<a name="comprehension"/></h2></center>
+<center>(activated by default, implemented as findlib package <code>batteries.pa_comprehension.syntax</code>)</center>
+<center>(designed for Batteries)</center>
+
+A <a href="http://en.wikipedia.org/wiki/List_comprehension">list
+comprehension syntax</a> for batteries, using enumerations by default.
+
+<center><h3>Output, generators and guards<a name="comprehension_syntax"/></h3></center>
+
+<p>The global form is
+<code>[? <em>output</em> | <em>comp_item</em> ; <em>comp_item</em> ; ... ]</code>.<br/>
+<em>output</em> is an expression and a <em>comp_item</em> is either
+a <em>guard</em> (a boolean expression), or a <em>generator</em> of
+the form <code><em>pattern</em> <- <em>expression</em></code>.
+Variables bound in the pattern can be used in the following
+comprehension items, and in the output expression.</p>
+
+Example :
+<pre class="example">let pythagorean_triples n =
+  [? (a,b,c) | a <- 1--n; b <- a--n; c <- b--n; a*a + b*b = c*c ]</pre>
+
+<center><h3>Module parametrization<a name="comprehension_custom_modules"/></h3></center>
+
+<p>By default, the output in an enumeration, and generator expressions
+are assumed to be enumerations. It is possible to choose a different
+data structure with the <code><em>module</em> : <em>expression</em></code> syntax.</p>
+
+Examples :
+<pre class="example">let positive_array_of_enum e =
+  [? Array : n | n <- e; n > 0 ]
+
+let combine la lb =
+  [? List : (a, b) | a <- List : la; b <- List : lb ]</pre>
+
+<p>Comprehension expressions rely on the presence in the given module of
+the following operations (where <code>'a t</code> represents the
+data-structure type : <code>'a array</code>, <code>'a
+Enum.t</code>...) :</p>
+<pre>
+val filter : ('a -> bool) -> 'a t -> 'a t
+val concat : 'a t t -> 'a t
+val map : ('a -> 'b) -> 'a t -> 'b t
+val filter_map : ('a -> 'b option) -> 'a t -> 'b t (* used for refutable patterns in generators *)
+
+val enum : 'a t -> 'a Enum.t
+val of_enum : 'a Enum.t -> 'a t
+</pre>
+
+<p>If your module does not provide the first four operations but only
+the enum conversion functions, you could still benefit from the
+comprehension syntax by using eg. <code>foo <- Mod.enum bar</code> instead
+of <code>foo <- Mod : bar</code>.</p>
+
+<center><h2>String syntax<a name="string"/></h2></center>
+<center>(activated by default, implemented as findlib package <code>batteries.pa_string.syntax</code>)</center>
+<center>(part of <a href="http://forge.ocamlcore.org/projects/estring/">estring</a>, adapted for Batteries by the author)</center>
+
+As Batteries offers several new types of strings, this extension
+provides the necessary syntactic sugar to manipulate unicode strings
+naturally.
+
+<center><h3>Text values<a name="string_expressions"/></h3></center>
+<p>
+Declaring a Rope is as simple as
+</p>
+<pre class="example">
+let foo = r"Some Unicode text (Latin-1 encoded)"
+let bar = ur"Some Unicode text (UTF-8 encoded)"
+</pre>
+<p>
+This defines a new value <code>foo</code>, with type <code>Rope.t</code>, the type of (immutable) Unicode ropes.
+Of course, this manipulation doesn't have to happen at the highest-level:
+</p>
+<pre class="example">
+let append_string_to_rope x = Rope.append x (r"Some more Unicode text")
+</pre>
+<p>
+Note that ropes, being immutable, are automatically optimized, i.e. this is equivalent to
+</p>
+
+<pre class="example">
+let some_unique_name = Rope.of_latin1 "Some more Unicode text"
+let append_string_to_rope x = Rope.append x some_unique_name
+</pre>
+
+
+It is possible to use the same syntax to define
+<dl>
+<dt>Mutable UTF-8 strings</dt> <dd>e.g. <code>u"Some UTF-8 string"</code>, with type <code>UTF8.t</code></dd>
+<dt>Immutable Latin 1 strings (with capabilities)</dt> <dd>e.g. <code>ro"Some read-only string"</code>, with type <code>[`Read] String.Cap.t</code></dd>
+<dt>Mutable Latin 1 strings (with capabilities)</dt> <dd>e.g. <code>rw"Some read-write string"</code>, with type <code>[`Read | `Write] String.Cap.t</code> </dd>
+<dt>Write-only Latin 1 strings (with capabilities)</dt> <dd>e.g. <code>wo"Some write-only string"</code>, with type <code>[`Write] String.Cap.t</code> </dd>
+</dl>
+
+Again, immutable latin-1 strings are automatically optimized.
+
+<center><h3>Text patterns<a name="string_patterns"/></h3></center>
+
+The same syntax may be used to pattern-match against ropes, UTF-8 strings and string with capabilities.
+
+<center><h2>Boilerplate construction<a name="boilerplate"/></h2></center>
 <center>(<i>de</i>activated by default, implemented as findlib package <code>sexplib.syntax</code>)</center>
 
-<center><h3>Serialization to S-Expressions</h3></center> 
+<center><h3>Serialization to S-Expressions<a name="boilerplate_sexplib"/></h3></center> 
 <center>(feature provided by <a href="http://www.ocaml.info/home/ocaml_sources.html">Sexplib</a>)</center>
 S-Expressions are a human-readable format for the transmission and
 storage of data, comparable to JSON. 
@@ -140,17 +294,17 @@ type card = color * value   with sexp
 This extract defines types <code>color</code>, <code>value</code> and <code>card</code>,
 as well as functions:
 <pre class="example">
-val sexp_of_color: color -> Batteries.Languages.SExpr.t
-val color_of_sexp: Batteries.Languages.SExpr.t -> color
+val sexp_of_color: color -> SExpr.t
+val color_of_sexp: SExpr.t -> color
 
-val sexp_of_value: value -> Batteries.Languages.SExpr.t
-val value_of_sexp: Batteries.Languages.SExpr.t -> value
+val sexp_of_value: value -> SExpr.t
+val value_of_sexp: SExpr.t -> value
 
-val sexp_of_card : card -> Batteries.Languages.SExpr.t
-val card_of_sexp : Batteries.Languages.SExpr.t -> card
+val sexp_of_card : card -> SExpr.t
+val card_of_sexp : SExpr.t -> card
 </pre>
 <br />
-Module <a href="api/Batteries.Languages.SExpr.html">Languages.SExpr</a>
+Module <a href="api/SExpr.html">Languages.SExpr</a>
 may be used to manipulate S-Expressions, to save them to files, load
 them from files, display them...
 <br />
@@ -162,9 +316,10 @@ will integrate nicely with the rest of S-Expressions.
 <br />
 For more information, see the manual of <a href="http://www.ocaml.info/ocaml_sources/sexplib310-4.2.0/README.txt">Sexplib</a>
 
-<center><h1>Summary of new keywords</h1></center>
+<center><h1>Summary of new keywords<a name="new_keywords"/></h1></center>
 <ul>
-<li><code>where</code>, <a href="#where">defined by pa_where</a></li>
+<li><code>where</code>, defined by <a href="#where">pa_where</a></li>
+<li><code>[? .. | .. ]</code> (and <code>[ .. | .. ]</code>), defined by <a href="#comprehension>pa_comprehension</a></li>
 </ul>
 
 </body>

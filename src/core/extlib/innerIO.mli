@@ -148,6 +148,17 @@ val create_in :
     {!wrap_in}.
 *)
 
+val inherit_in:
+  ?read:(unit -> char) ->
+  ?input:(string -> int -> int -> int) -> 
+  ?close:(unit -> unit) -> 
+  input -> input
+(**
+   Simplified and optimized version of {!wrap_in} whenever only
+   one input appears as dependency.
+*)
+
+
 val wrap_in :
   read:(unit -> char) ->
   input:(string -> int -> int -> int) -> 
@@ -159,6 +170,9 @@ val wrap_in :
     This function is a more general version of {!create_in}
     which also handles dependency management between inputs.
 *)
+
+
+
 
 val create_out :
   write:(char -> unit) ->
@@ -177,6 +191,17 @@ val create_out :
 
     {b Note} Do {e not} use this function for creating an output which
     writes to one or more underlying outputs. Rather, use {!wrap_out}.
+*)
+
+val inherit_out:
+  ?write:(char -> unit) ->
+  ?output:(string -> int -> int -> int) -> 
+  ?flush:(unit -> unit) ->
+  ?close:(unit -> 'a) -> 
+  'a output -> 'a output
+(**
+   Simplified and optimized version of {!wrap_out} whenever only
+   one output appears as dependency.
 *)
 
 
@@ -320,11 +345,25 @@ external cast_output : 'a output -> unit output = "%identity"
    {6 For compatibility purposes}
 *)
 
-val input_channel : in_channel -> input
-(** Create an input that will read from a channel. *)
+val input_channel : ?autoclose:bool -> ?cleanup:bool -> in_channel -> input
+(** Create an input that will read from a channel. 
 
-val output_channel : out_channel -> unit output
-(** Create an output that will write into a channel. *) 
+    @param autoclose If true or unspecified, the {!type: input}
+    will be automatically closed when the underlying [in_channel]
+    has reached its end.
+
+    @param cleanup If true, the channel
+    will be automatically closed when the {!type: input} is closed.
+    Otherwise, you will need to close the channel manually.
+*)
+
+val output_channel : ?cleanup:bool -> out_channel -> unit output
+(** Create an output that will write into a channel. 
+
+    @param cleanup If true, the channel
+    will be automatically closed when the {!type: output} is closed.
+    Otherwise, you will need to close the channel manually.
+*) 
 (*
 val to_input_channel : input -> in_channel
 (** Create a channel that will read from an input.
@@ -704,3 +743,19 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 *)
 
 end
+
+(**/**)
+(**{6 Internals}*)
+
+(**
+   Optimized access to fields
+*)
+val get_output : _ output -> (string -> int -> int -> int)
+val get_flush  : _ output -> (unit -> unit)
+
+val lock : Concurrent.lock ref
+(**
+   A reference to a set of locking operations.
+*)
+
+

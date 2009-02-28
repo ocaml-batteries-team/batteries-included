@@ -1,7 +1,8 @@
 (* 
  * ExtBuffer - Additional buffer operations
  * Copyright (C) 1999 Pierre Weis, Xavier Leroy
- *               2008 David Teller
+ *               2009 David Teller, LIFO, Universite d'Orleans
+ *               2009 Dawid Toton
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,8 +31,8 @@
     @author Pierre Weis (Base module)
     @author Xavier Leroy (Base module)
     @author David Teller
+    @author Dawid Toton
 *)
-
 module Buffer: sig
 
 type t = Buffer.t
@@ -65,14 +66,29 @@ val of_enum : char Enum.t -> t
   (** Creates a buffer from a character enumeration. *)
 
 val sub : t -> int -> int -> string
-(** [Buffer.sub b off len] returns (a copy of) the substring of the
-current contents of the buffer [b] starting at offset [off] of length
-[len] bytes. May raise [Invalid_argument] if out of bounds request. The
-buffer itself is unaffected. *)
+  (** [Buffer.sub b off len] returns (a copy of) the substring of the
+      current contents of the buffer [b] starting at offset [off] of length
+      [len] bytes. 
+
+      The buffer itself is unaffected.
+
+      @raise Invalid_argument if out of bounds request.*)
+
+
+
+val blit : t -> int -> string -> int -> int -> unit
+(** [Buffer.blit b srcoff dst dstoff len] copies [len] characters from
+   the current contents of the buffer [b] starting at offset [off],
+   starting at character number [srcoff], to string [dst], starting at
+   character number [dstoff].  
+
+    @raise Invalid_argument if [srcoff] and [len] do not designate a
+    valid substring of the buffer, or if [dstoff] and [len] do not
+    designate a valid substring of [dst]. *)
 
 val nth : t -> int -> char
-(** get the n-th character of the buffer. Raise [Invalid_argument] if
-index out of bounds *)
+  (** get the n-th character of the buffer. Raise [Invalid_argument] if
+      index out of bounds *)
 
 val length : t -> int
 (** Return the number of characters currently contained in the buffer. *)

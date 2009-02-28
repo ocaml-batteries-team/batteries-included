@@ -1,7 +1,7 @@
 (* 
  * Enum - enumeration over abstract collection of elements.
  * Copyright (C) 2003 Nicolas Cannasse
- *               2008 David Teller (contributor)
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,18 +21,65 @@
 (** 
     Enumeration over abstract collection of elements.
     
-    Enumerations are entirely functional and most of the operations do not
-    actually require the allocation of data structures. Using enumerations
-    to manipulate data is therefore efficient and simple. All data structures in
-    ExtLib such as lists, arrays, etc. have support to convert from and to
-    enumerations.
+    Enumerations are a representation of finite or infinite sequences
+    of elements. In Batteries Included, enumerations are used
+    pervasively, both as a uniform manner of reading and manipulating
+    the contents of a data structure, or as a simple manner of reading
+    or writing sequences of characters, numbers, strings, etc. from/to
+    files, network connections or other inputs/outputs.
+
+    Enumerations are typically computed as needed, which allows the
+    definition and manipulation of huge (possibly infinite) sequences.
+    Manipulating an enumeration is a uniform and often comfortable way
+    of extracting subsequences (function {!filter} or operator [//] et
+    al), converting sequences into other sequences (function {!map} or
+    operators [/@] and [@/] et al), gathering information (function
+    {!scanl} et al) or performing loops (functions {!iter} and
+    {!map}).
+
+    For instance, function {!ExtRandom.Random.enum_int} creates an
+    infinite enumeration of random numbers. Combined with [//]
+    and {!map}, we may turn this into an infinite enumeration of
+    squares of random even numbers:
+    [map (fun x -> x * x) ( (Random.enum_int 100) // even )]
+
+    Similarly, to obtain an enumeration of 50 random integers,
+    we may use {!take}, as follows:
+    [take 50 (Random.enum_int 100)]
+
+    As most data structures in Batteries can be enumerated and built
+    from enumerations, these operations may be used also on lists,
+    arrays, hashtables, etc. When designing a new data structure, it
+    is usuallly a good idea to allow enumeration and construction
+    from an enumeration.
+
+    {b Note} Enumerations are not thread-safe. You should not attempt
+    to access one enumeration from different threads.
 
     @author Nicolas Cannasse
-    @author David Teller
+    @author David Rajchenbach-Teller
 *)
 
-
 type 'a t
+
+(** A signature for data structures which may be converted to and from [enum].
+
+    If you create a new data structure, you should make it compatible
+    with [Enumerable].
+*)
+module type Enumerable = sig
+  type 'a enumerable (** The data structure, e.g. ['a List.t] *)
+
+  val enum : 'a enumerable -> 'a t
+    (** Return an enumeration of the elements of the data structure *)
+
+  val of_enum : 'a t -> 'a enumerable
+    (** Build a data structure from an enumeration *)
+end
+
+include Enumerable with type 'a enumerable = 'a t
+include Interfaces.Mappable with type 'a mappable = 'a t
+
 
 (** {6 Final functions}
 
@@ -53,16 +100,29 @@ val exists: ('a -> bool) -> 'a t -> bool
     that [f x]*)
 
 val for_all: ('a -> bool) -> 'a t -> bool
-(** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
+(** [for_all f e] returns [true] if for every [x] in [e], [f x] is true*)
 
 val fold : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
-(** [fold f v e] returns v if e is empty,
-  otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
-  the elements of [e]. *)
+(** A general loop on an enumeration.
+
+    If [e] is empty, [fold f v e] returns [v]. Otherwise, [fold v e]
+    returns [f (... (f (f v a1) a2) ...) aN] where a1..N are the
+    elements of [e]. This function may be used, for instance, to
+    compute the sum of all elements of an enumeration [e] as follows:
+    [fold ( + ) 0 e].
+*)
+
+val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
+  (** A simplified version of [fold], which uses the first element
+      of the enumeration as a default value.
+
+      [fold f e] throws [Not_found] if [e] is empty, returns its only
+      element if e is a singleton, otherwise [f (... (f (f a1 a2)
+      a3)...) aN] where a1..N are the elements of [e]. *)
 
 val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
-(** [fold2] is similar to [fold] but will fold over two enumerations at the
- same time until one of the two enumerations ends. *)
+  (** [fold2] is similar to [fold] but will fold over two enumerations at the
+      same time until one of the two enumerations ends. *)
 
 val scanl : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b t
 (** A variant of [fold] producing an enumeration of its intermediate values.
@@ -142,6 +202,14 @@ val take : int -> 'a t -> 'a t
 val drop : int -> 'a t -> unit
 (** [drop n e] removes the first [n] element from the enumeration, if any. *)
 
+val skip: int -> 'a t -> 'a t
+(** [skip n e] removes the first [n] element from the enumeration, if any,
+    then returns [e].
+
+    This function has the same behavior as [drop] but is often easier to
+    compose with, e.g., [skip 5 |- take 3] is a new function which skips
+    5 elements and then returns the next 3 elements.*)
+
 val take_while : ('a -> bool) -> 'a t -> 'a t
   (** [take_while f e] produces a new enumeration in which only remain
       the first few elements [x] of [e] such that [f x] *)
@@ -165,16 +233,19 @@ val group : ('a -> bool) -> 'a t -> 'a t t
       results are the same. *)
 
 val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
-  (** [clump size add get e] runs [add] on [size] (or less at the end) elements of [e] and then runs [get] to produce value for the result enumeration.  Useful to convert a char enum into string enum. *)
+  (** [clump size add get e] runs [add] on [size] (or less at the end)
+      elements of [e] and then runs [get] to produce value for the
+      result enumeration.  Useful to convert a char enum into string
+      enum. *)
 
 (** {6 Lazy constructors}
 
- These functions are lazy which means that they will create a new modified
- enumeration without actually enumerating any element until they are asked
- to do so by the programmer (using one of the functions above).
- 
- When the resulting enumerations of these functions are consumed, the
- underlying enumerations they were created from are also consumed. *)
+    These functions are lazy which means that they will create a new modified
+    enumeration without actually enumerating any element until they are asked
+    to do so by the programmer (using one of the functions above).
+    
+    When the resulting enumerations of these functions are consumed, the
+    underlying enumerations they were created from are also consumed. *)
 
 val map : ('a -> 'b) -> 'a t -> 'b t
   (** [map f e] returns an enumeration over [(f a1, f a2, ... , f aN)] where
@@ -229,20 +300,23 @@ val concat : 'a t t -> 'a t
   (** [concat e] returns an enumeration over all elements of all enumerations
       of [e]. *)
 
+val flatten : 'a t t -> 'a t
+  (** Synonym of {!concat}*)
+
 (** {6 Constructors} 
 
- In this section the word {i shall} denotes a semantic
- requirement. The correct operation
- of the functions in this interface are conditional
- on the client meeting these requirements.
+    In this section the word {i shall} denotes a semantic
+    requirement. The correct operation of the functions in this
+    interface are conditional on the client meeting these
+    requirements.
 *)
 
 exception No_more_elements
-(** This exception {i shall} be raised by the [next] function of [make] 
-  or [from] when no more elements can be enumerated, it {i shall not}
-  be raised by any function which is an argument to any
-  other function specified in the interface.
-*)
+  (** This exception {i shall} be raised by the [next] function of [make] 
+      or [from] when no more elements can be enumerated, it {i shall not}
+      be raised by any function which is an argument to any
+      other function specified in the interface.
+  *)
 
 exception Infinite_enum
 (** As a convenience for debugging, this exception {i may} be raised by 
@@ -341,30 +415,42 @@ val delay : (unit -> 'a t) -> 'a t
 
   *)
 
+val to_object: 'a t -> (<next:'a; count:int; clone:'b> as 'b)
+(**[to_object e] returns a representation of [e] as an object.*)
+
+val of_object: (<next:'a; count:int; clone:'b> as 'b) -> 'a t
+(**[of_object e] returns a representation of an object as an enumeration*)
+
+val enum : 'a t -> 'a t
+(** identity : added for consistency with the other data structures *)
+val of_enum : 'a t -> 'a t
+(** identity : added for consistency with the other data structures *)
+
 (** {6 Counting} *)
 
 val count : 'a t -> int
-(** [count e] returns the number of remaining elements in [e] without
-  consuming the enumeration.
-
-    Depending of the underlying data structure that is implementing the
-    enumeration functions, the count operation can be costly, and even sometimes
-    can cause a call to [force]. *)
-
+  (** [count e] returns the number of remaining elements in [e] without
+      consuming the enumeration.
+      
+      Depending of the underlying data structure that is implementing the
+      enumeration functions, the count operation can be costly, and even sometimes
+      can cause a call to [force]. *)
+  
 val fast_count : 'a t -> bool
-(** For users worried about the speed of [count] you can call the [fast_count]
-    function that will give an hint about [count] implementation. Basically, if
-    the enumeration has been created with [make] or [init] or if [force] has
-    been called on it, then [fast_count] will return true. *)
+  (** For users worried about the speed of [count] you can call the [fast_count]
+      function that will give an hint about [count] implementation. Basically, if
+      the enumeration has been created with [make] or [init] or if [force] has
+      been called on it, then [fast_count] will return true. *)
 
 val hard_count : 'a t -> int
   (** [hard_count] returns the number of remaining in elements in [e],
-      consuming the whole enumeration somewhere along the way. This function
-      is always at least as fast as the fastest of either [count] or a [fold] on
-      the elements of [t].
+      consuming the whole enumeration somewhere along the way. This
+      function is always at least as fast as the fastest of either
+      [count] or a [fold] on the elements of [t].
 
-      This function is useful when you have opened an enumeration for the sole
-      purpose of counting its elements (e.g. the number of lines in a file).*)
+      This function is useful when you have opened an enumeration for
+      the sole purpose of counting its elements (e.g. the number of
+      lines in a file).*)
 
 (**
    {6 Utilities }
@@ -386,7 +472,7 @@ val ( --- ) : int -> int -> int t
     [5 --- 10] is the enumeration 5,6,7,8,9,10.
     [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
 
-val ( ~~ ) : char -> char -> char t
+val ( --~ ) : char -> char -> char t
 (** As ( -- ), but for characters.*)
 
 val ( // ) : 'a t -> ('a -> bool) -> 'a t
@@ -394,6 +480,18 @@ val ( // ) : 'a t -> ('a -> bool) -> 'a t
 
     For instance, [(1 -- 37) // odd] is the enumeration of all odd
     numbers between 1 and 37.*)
+
+val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
+
+val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
+  (**
+     Mapping operators.
+
+     These operators have the same meaning as function {!map} but are
+     sometimes more readable than this function, when chaining
+     several transformations in a row.
+  *)
+
 
 val dup : 'a t -> 'a t * 'a t
   (** [dup stream] returns a pair of streams which are identical to [stream]. Note
@@ -415,13 +513,30 @@ val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
       into resulting enumeration. If [a] or [b] runs out of elements, 
       the process will append all elements of the other enumeration to
       the result.
-*)
+  *)
 
+val uniq : 'a t -> 'a t
+  (** [uniq e] returns a duplicate of [e] with repeated values
+      omitted. (similar to unix's [uniq] command) *)
 
+val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
+  (** [compare cmp a b] compares enumerations [a] and [b]
+      by lexicographical order using comparison [cmp].
 
+      @return 0 if [a] and [b] are equal wrt [cmp]
+      @return -1 if [a] is empty and [b] is not
+      @return 1 if [b] is empty and [a] is not
+      @return [cmp x y], where [x] is the first element of [a]
+      and [y] is the first element of [b], if [cmp x y <> 0]
+      @return [compare cmp a' b'], where [a'] and [b'] are
+      respectively equal to [a] and [b] without their first
+      element, if both [a] and [b] are non-empty and [cmp x y = 0],
+      where [x] is the first element of [a] and [y] is the first
+      element of [b]
+  *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
-  (** [switch test enum] split [enum] into two enums, where the first enum have
+  (** [switch test enum] splits [enum] into two enums, where the first enum have
       all the elements satisfying [test], the second enum is opposite. The
       order of elements in the source enum is preserved. *)
 
@@ -446,6 +561,25 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
+(** {6 Override modules}*)
+
+(**
+   The following modules replace functions defined in {!Enum} with functions
+   behaving slightly differently but having the same name. This is by design:
+   the functions meant to override the corresponding functions of {!Enum}.
+
+   To take advantage of these overrides, you probably want to
+   {{:../extensions.html#multiopen}{open several modules in one
+   operation}} or {{:../extensions.html#multialias}{alias several
+   modules to one name}}. For instance, to open a version of {!Enum}
+   with exceptionless error management, you may write [open Enum,
+   ExceptionLess]. To locally replace module {!Enum} with a module of
+   the same name but with exceptionless error management, you may
+   write {v module Enum = Enum include ExceptionLess v}.
+
+*)
+
+(** Operations on {!Enum} without exceptions.*)
 module ExceptionLess : sig
   val find : ('a -> bool) -> 'a t -> 'a option
     (** [find f e] returns [Some x] where [x] is the first element [x] of [e] 
@@ -458,12 +592,63 @@ module ExceptionLess : sig
 end
 
 
+(** Operations on {!Enum} with labels.
+
+    This module overrides a number of functions of {!Enum} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!Enum}.
+*)
+module Labels : sig
+  val iter:       f:('a -> unit) -> 'a t -> unit
+  val iter2:      f:('a -> 'b -> unit) -> 'a t -> 'b t -> unit
+  val exists:     f:('a -> bool) -> 'a t -> bool
+  val for_all:    f:('a -> bool) -> 'a t -> bool
+  val fold:       f:('a -> 'b -> 'b) -> init:'b -> 'a t -> 'b
+  val fold2:      f:('a -> 'b -> 'c -> 'c) -> init:'c -> 'a t -> 'b t -> 'c
+  val iteri:      f:(int -> 'a -> unit) -> 'a t -> unit
+  val iter2i:     f:( int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
+  val foldi:      f:(int -> 'a -> 'b -> 'b) -> init:'b -> 'a t -> 'b
+  val fold2i:     f:(int -> 'a -> 'b -> 'c -> 'c) -> init:'c -> 'a t -> 'b t -> 'c
+  val find:       f:('a -> bool) -> 'a t -> 'a
+  val take_while: f:('a -> bool) -> 'a t -> 'a t
+  val drop_while: f:('a -> bool) -> 'a t -> 'a t
+  val map:        f:('a -> 'b) -> 'a t -> 'b t
+  val mapi:       f:(int -> 'a -> 'b) -> 'a t -> 'b t
+  val filter:     f:('a -> bool) -> 'a t -> 'a t
+  val filter_map: f:('a -> 'b option) -> 'a t -> 'b t
+  val from:       f:(unit -> 'a) -> 'a t
+  val from_while: f:(unit -> 'a option) -> 'a t
+  val from_loop:  init:'b -> f:('b -> ('a * 'b)) -> 'a t
+  val seq:        init:'a -> f:('a -> 'a) -> cnd:('a -> bool) -> 'a t
+  val unfold:     init:'b -> f:('b -> ('a * 'b) option) -> 'a t
+  val init:       int -> f:(int -> 'a) -> 'a t
+  val switch:     f:('a -> bool) -> 'a t -> 'a t * 'a t
+  val compare:    ?cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+  (** [compare ~cmp a b] compares enumerations [a] and [b]
+      by lexicographical order using comparison [cmp].
+
+      @param cmp a comparison function. If left unspecified, {!Pervasives.compare}
+      is used.
+      @return 0 if [a] and [b] are equal wrt [cmp]
+      @return -1 if [a] is empty and [b] is not
+      @return 1 if [b] is empty and [a] is not
+      @return [cmp x y], where [x] is the first element of [a]
+      and [y] is the first element of [b], if [cmp x y <> 0]
+      @return [compare cmp a' b'], where [a'] and [b'] are
+      respectively equal to [a] and [b] without their first
+      element, if both [a] and [b] are non-empty and [cmp x y = 0],
+      where [x] is the first element of [a] and [y] is the first
+      element of [b]
+  *)
+end
 
 (**/**)
 
 (** {6 For system use only, not for the casual user} 
 
-    For compatibility with [Stream]
+    For compatibility with {!Stream}
 *)
 
 val iapp : 'a t -> 'a t -> 'a t

@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.Data.Mutable.Dllist" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Dllist" (*For Sexplib, Bin-prot...*)
 
 type 'a node_t = {
 	mutable data : 'a;
@@ -33,6 +33,9 @@ type 'a enum_t = {
 } with sexp
 
 type 'a t = 'a node_t with sexp
+
+type 'a mappable = 'a t
+type 'a enumerable = 'a t
 
 exception Empty
 
@@ -293,3 +296,9 @@ let of_enum enm =
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a out t =
   Enum.print ~first ~last ~sep print_a out (enum t)
+
+let filter f node = (*TODO : make faster*)
+  of_enum (Enum.filter f (enum node))
+
+let filter_map f node = (*TODO : make faster*)
+  of_enum (Enum.filter_map f (enum node))

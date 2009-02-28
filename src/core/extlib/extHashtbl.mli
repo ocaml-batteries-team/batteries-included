@@ -1,7 +1,7 @@
 (* 
  * ExtHashtbl - extra functions over hashtables.
  * Copyright (C) 2003 Nicolas Cannasse
- *               2008 David Teller, LIFO, Universite d'Orleans
+ *               2009 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -85,6 +85,22 @@ val copy : ('a, 'b) t -> ('a, 'b) t
 val clear : ('a, 'b) t -> unit
 (** Empty a hash table. *)
 
+(**{6 Enumerations}*)
+
+val keys : ('a,'b) t -> 'a Enum.t
+  (** Return an enumeration of all the keys of a hashtable.
+      If the key is in the Hashtable multiple times, all occurrences
+      will be returned.  *)
+
+val values : ('a,'b) t -> 'b Enum.t
+  (** Return an enumeration of all the values of a hashtable. *)
+
+val enum : ('a, 'b) t -> ('a * 'b) Enum.t
+  (** Return an enumeration of (key,value) pairs of a hashtable. *)
+
+val of_enum : ('a * 'b) Enum.t -> ('a, 'b) t
+  (** Create a hashtable from a (key,value) enumeration. *)
+
 
 (**{6 Searching}*)
 
@@ -113,15 +129,32 @@ val mem : ('a, 'b) t -> 'a -> bool
   (** [exists h k] returns true is at least one item with key [k] is
       found in the hashtable. *)
 
-(**{6 Traversing}*)
+(**{6 Traversing}
+
+   A number of higher-order functions are provided to allow
+   purely functional traversal or transformation of hashtables.
+   These functions are similar to their counterparts in module
+   {!Enum}.
+
+   Whenever you wish to traverse or transfor a hashtable, you have the
+   choice between using the more general functions of {!Enum}, with
+   {!keys}, {!values}, {!enum} and {!of_enum}, or the more optimized
+   functions of this section.
+   
+   If you are new to OCaml or unsure about data structure, using the
+   functions of {!Enum} is a safe bet. Should you wish to improve
+   performance at the cost of generality, you will always be able to
+   rewrite your code to make use of the functions of this section.
+*)
+
 val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
-(** [Hashtbl.iter f tbl] applies [f] to all bindings in table [tbl].
-   [f] receives the key as first argument, and the associated value
-   as second argument. Each binding is presented exactly once to [f].
-   The order in which the bindings are passed to [f] is unspecified.
-   However, if the table contains several bindings for the same key,
-   they are passed to [f] in reverse order of introduction, that is,
-   the most recent binding is passed first. *)
+  (** [Hashtbl.iter f tbl] applies [f] to all bindings in table [tbl].
+      [f] receives the key as first argument, and the associated value
+      as second argument. Each binding is presented exactly once to [f].
+      The order in which the bindings are passed to [f] is unspecified.
+      However, if the table contains several bindings for the same key,
+      they are passed to [f] in reverse order of introduction, that is,
+      the most recent binding is passed first. *)
 
 val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
 (** [Hashtbl.fold f tbl init] computes
@@ -134,26 +167,29 @@ val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
    they are passed to [f] in reverse order of introduction, that is,
    the most recent binding is passed first. *)
 
-val map : ('b -> 'c) -> ('a,'b) t -> ('a,'c) t
+val map : ('a -> 'b -> 'c) -> ('a,'b) t -> ('a,'c) t
   (** [map f x] creates a new hashtable with the same
       keys as [x], but with the function [f] applied to
       all the values *)
 
-(**{6 Conversions}*)
+val filter: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  (**[filter f m] returns a new hashtable where only the values [a] of [m]
+     such that [f a = true] remain.*)
 
-val keys : ('a,'b) t -> 'a Enum.t
-  (** Return an enumeration of all the keys of a hashtable.
-      If the key is in the Hashtable multiple times, all occurrences
-      will be returned.  *)
+val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  (**[filter f m] returns a map where only the key, values pairs
+     [key], [a] of [m] such that [f key a = true] remain. The
+     bindings are passed to [f] in increasing order with respect
+     to the ordering over the type of the keys. *)
 
-val values : ('a,'b) t -> 'b Enum.t
-  (** Return an enumeration of all the values of a hashtable. *)
+val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
+  (** [filter_map f m] combines the features of [filteri] and
+      [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
+      where [a0..an] are the elements of [m] and [key0..keyn] the
+      respective corresponding keys. It returns the map of
+      pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
+      [None], the corresponding element of [m] is discarded). *)
 
-val enum : ('a, 'b) t -> ('a * 'b) Enum.t
-  (** Return an enumeration of (key,value) pairs of a hashtable. *)
-
-val of_enum : ('a * 'b) Enum.t -> ('a, 'b) t
-  (** Create a hashtable from a (key,value) enumeration. *)
 
 (** {6 The polymorphic hash primitive}*)
 
@@ -191,7 +227,56 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
                                                              ('a InnerIO.output -> 'c -> unit) -> 
   'a InnerIO.output -> ('b, 'c) t -> unit
 
+     (** {6 Override modules}*)
 
+    (**
+       The following modules replace functions defined in {!Hashtbl} with functions
+       behaving slightly differently but having the same name. This is by design:
+       the functions meant to override the corresponding functions of {!Hashtbl}.
+       
+       To take advantage of these overrides, you probably want to
+       {{:../extensions.html#multiopen}{open several modules in one
+       operation}} or {{:../extensions.html#multialias}{alias several
+       modules to one name}}. For instance, to open a version of {!Hashtbl}
+       with exceptionless error management, you may write [open Hashtbl,
+       ExceptionLess]. To locally replace module {!Hashtbl} with a module of
+       the same name but with exceptionless error management, you may
+       write {v module Hashtbl = Hashtbl include ExceptionLess v}.
+       
+    *)
+      
+    (** Operations on {!Hashtbl} without exceptions.
+
+	@documents Hashtbl.ExceptionLess
+    *)
+module ExceptionLess :
+sig
+  val find : ('a, 'b) t -> 'a -> 'b option
+end
+
+   (** Operations on {!Hashtbl} with labels.
+	
+	This module overrides a number of functions of {!Hashtbl} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Hashtbl}.
+
+       @documents Hashtbl.Labels
+    *)
+module Labels :
+sig
+  val add : ('a, 'b) t -> key:'a -> data:'b -> unit
+  val replace : ('a, 'b) t -> key:'a -> data:'b -> unit
+  val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b) t -> unit
+  val map:   f:(key:'a -> data:'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
+  val filter: f:('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  val filteri:f:(key:'key -> data:'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  val filter_map:f:(key:'key -> data:'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
+  val fold :
+    f:(key:'a -> data:'b -> 'c -> 'c) ->
+    ('a, 'b) t -> init:'c -> 'c
+end
 
 (** {6 Functorial interface} *)
 
@@ -215,7 +300,7 @@ module type HashedType =
           (e.g. for cyclic keys). *)
   end
 
-(** The input signature of the functor {!Hashtbl.Make}. *)
+(** The output signature of the functor {!Hashtbl.Make}. *)
 module type S =
   sig
     type key
@@ -236,17 +321,71 @@ module type S =
     val mem : 'a t -> key -> bool
     val iter : (key -> 'a -> unit) -> 'a t -> unit
     val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-    val map : ('b -> 'c) -> 'b t -> 'c t
+    val map : (key -> 'b -> 'c) -> 'b t -> 'c t
+    val filter: ('a -> bool) -> 'a t -> 'a t
+    val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
+    val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
+
     val keys : 'a t -> key Enum.t
     val values : 'a t -> 'a Enum.t
     val enum : 'a t -> (key * 'a) Enum.t
     val of_enum : (key * 'a) Enum.t -> 'a t
-      val sexp_of_t : (key -> Sexplib.Sexp.t) -> ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
-      val t_of_sexp : (Sexplib.Sexp.t -> key) -> (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
-      val print :  ?first:string -> ?last:string -> ?sep:string -> 
-	('a InnerIO.output -> key -> unit) -> 
-	('a InnerIO.output -> 'b -> unit) -> 
-	'a InnerIO.output -> 'b t -> unit
+    val sexp_of_t : (key -> Sexplib.Sexp.t) -> ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+    val t_of_sexp : (Sexplib.Sexp.t -> key) -> (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+    val print :  ?first:string -> ?last:string -> ?sep:string -> 
+      ('a InnerIO.output -> key -> unit) -> 
+      ('a InnerIO.output -> 'b -> unit) -> 
+      'a InnerIO.output -> 'b t -> unit
+      
+    (** {6 Override modules}*)
+      
+    (**
+       The following modules replace functions defined in {!Hashtbl} with functions
+       behaving slightly differently but having the same name. This is by design:
+       the functions meant to override the corresponding functions of {!Hashtbl}.
+       
+       To take advantage of these overrides, you probably want to
+       {{:../extensions.html#multiopen}{open several modules in one
+       operation}} or {{:../extensions.html#multialias}{alias several
+       modules to one name}}. For instance, to open a version of {!Hashtbl}
+       with exceptionless error management, you may write [open Hashtbl,
+       ExceptionLess]. To locally replace module {!Hashtbl} with a module of
+       the same name but with exceptionless error management, you may
+       write {v module Hashtbl = Hashtbl include ExceptionLess v}.
+       
+    *)
+      
+    (** Operations on {!Hashtbl} without exceptions.
+
+	@documents Hashtbl.S.ExceptionLess*)
+    module ExceptionLess :
+    sig
+      val find : 'a t -> key -> 'a option
+    end
+    
+    (** Operations on {!Hashtbl} with labels.
+	
+	This module overrides a number of functions of {!Hashtbl} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Hashtbl}.
+
+	@documents Hashtbl.S.Labels
+    *)
+    module Labels :
+    sig
+      val add : 'a t -> key:key -> data:'a -> unit
+      val replace : 'a t -> key:key -> data:'a -> unit
+      val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+      val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+      val filter: f:('a -> bool) -> 'a t -> 'a t
+      val filteri: f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
+      val filter_map: f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
+      val fold :
+	f:(key:key -> data:'a -> 'b -> 'b) ->
+	'a t -> init:'b -> 'b
+    end
 
   end
 (** The output signature of the functor {!Hashtbl.Make}. *)
@@ -261,7 +400,10 @@ module Make (H : HashedType) : S with type key = H.t
       specified in the functor argument [H] instead of generic
       equality and hashing. *)
 
-(** Capabilities for hashtables. *)
+(** Capabilities for hashtables. 
+
+    @documents Hashtbl.Cap
+*)
 module Cap :
 sig
 
@@ -390,10 +532,29 @@ val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> 'c -> 'c
    they are passed to [f] in reverse order of introduction, that is,
    the most recent binding is passed first. *)
 
-val map : ('b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
+val map : ('a -> 'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
   (** [map f x] creates a new hashtable with the same
       keys as [x], but with the function [f] applied to
       all the values *)
+
+val filter: ('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  (**[filter f m] returns a new hashtable where only the values [a] of [m]
+     such that [f a = true] remain.*)
+
+val filteri: ('key -> 'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  (**[filter f m] returns a map where only the key, values pairs
+     [key], [a] of [m] such that [f key a = true] remain. The
+     bindings are passed to [f] in increasing order with respect
+     to the ordering over the type of the keys. *)
+
+val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
+  (** [filter_map f m] combines the features of [filteri] and
+      [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
+      where [a0..an] are the elements of [m] and [key0..keyn] the
+      respective corresponding keys. It returns the map of
+      pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
+      [None], the corresponding element of [m] is discarded). *)
+
 
 (**{6 Conversions}*)
 
@@ -422,6 +583,50 @@ val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b, [>`
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 
                                                              ('a InnerIO.output -> 'c -> unit) -> 
   'a InnerIO.output -> ('b, 'c, [>`Read]) t -> unit
+
+
+
+(** {6 Override modules}*)
+  
+(**
+   The following modules replace functions defined in {!Hashtbl} with functions
+   behaving slightly differently but having the same name. This is by design:
+   the functions meant to override the corresponding functions of {!Hashtbl}.
+   
+   To take advantage of these overrides, you probably want to
+   {{:../extensions.html#multiopen}{open several modules in one
+   operation}} or {{:../extensions.html#multialias}{alias several
+   modules to one name}}. For instance, to open a version of {!Hashtbl}
+   with exceptionless error management, you may write [open Hashtbl,
+   ExceptionLess]. To locally replace module {!Hashtbl} with a module of
+   the same name but with exceptionless error management, you may
+   write {v module Hashtbl = Hashtbl.Cap include ExceptionLess v}.
+   
+*)
+  
+(** Operations on {!Hashtbl} without exceptions.*)
+module ExceptionLess :
+sig
+  val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
+end
+  
+(** Operations on {!Hashtbl} with labels.
+    
+    This module overrides a number of functions of {!Hashtbl} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!Hashtbl}.
+*)
+module Labels :
+sig
+  val add : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
+  val replace : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
+  val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
+  val fold :
+    f:(key:'a -> data:'b -> 'c -> 'c) ->
+    ('a, 'b, [>`Read]) t -> init:'c -> 'c
+end
 
 end
 

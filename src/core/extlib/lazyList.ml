@@ -36,14 +36,18 @@ type 'a node_t =
 and 'a t =
   ('a node_t) Lazy.t with sexp
 
+type 'a enumerable = 'a t
+type 'a mappable = 'a t
 
 (** {6 Access} *)
 
-let nil    = lazy Nil
+let nil    = Lazy.lazy_from_val Nil
 
 let next l = Lazy.force l
 
-let cons h t = lazy (Cons(h, t))
+let cons h t = Lazy.lazy_from_val (Cons(h, t))
+
+let ( ^:^ ) = cons
 
 let get l = match next l with
   | Nil            -> None
@@ -69,17 +73,16 @@ let from f =
 
 let seq data next cond =
   let rec aux data = 
-    if cond data then lazy (Cons (data, aux (next data)))
-    else              nil
-  in aux data
+    if cond data then Cons (data, lazy (aux (next data)))
+    else              Nil
+  in lazy (aux data)
 
 
 let unfold (data:'b) (next: 'b -> ('a * 'b) option) =
-  let rec aux data =
-    match next data with
-      | Some(a,b) -> lazy (Cons(a, aux b))
-      | None      -> nil
-  in aux data
+  let rec aux data = match next data with
+    | Some(a,b) -> Cons(a, lazy (aux b))
+    | None      -> Nil
+  in lazy (aux data)
 
 
 let from_loop (data:'b) (next:'b -> ('a * 'b)) : 'a t=
@@ -105,30 +108,31 @@ let make n x =
 (**
    {6  Iterators}
 *)
+
 let iter f l =
-  let rec aux l =
-    match next l with | Cons (x, t) -> (f x; aux t) | _ -> ()
+  let rec aux l = match next l with 
+    | Cons (x, t) -> (f x; aux t) 
+    | _ -> ()
   in aux l
   
 let iteri f l =
-  let rec aux i l =
-    match next l with | Cons (x, t) -> (f i x; aux (i + 1) t) | _ -> ()
+  let rec aux i l = match next l with 
+    | Cons (x, t) -> (f i x; aux (i + 1) t) 
+    | _ -> ()
   in aux 0 l
   
 let map f l =
-  let rec (aux : 'a t -> 'b t) =
-    fun rest ->
-      match next rest with
-      | Cons (x, (t : 'a t)) -> lazy (Cons (f x, aux t))
-      | Nil -> lazy Nil
-  in aux l
+  let rec aux rest =  match next rest with
+    | Cons (x, (t : 'a t)) -> Cons (f x, lazy (aux t))
+    | Nil                  -> Nil
+  in lazy (aux l)
   
 let mapi f l =
   let rec aux rest i =
     match next rest with
-      | Cons (x, (t : 'a t)) -> lazy (Cons (f i x, aux t ( i + 1 ) ))
-      | Nil -> lazy Nil
-  in aux l 0
+      | Cons (x, (t : 'a t)) -> Cons (f i x, lazy (aux t ( i + 1 ) ))
+      | Nil -> Nil
+  in lazy (aux l 0)
 
 let fold_left f init l =
   let rec aux acc rest =
@@ -256,17 +260,17 @@ let at list n =
 
 let nth = at
 
-let rev list = fold_left (fun acc x -> lazy (Cons (x, acc))) nil list
+let rev list = fold_left (fun acc x -> Lazy.lazy_from_val (Cons (x, acc))) nil list
   
 (**Revert a list, convert it to a lazy list.
    Used as an optimisation.*)
-let rev_of_list (list:'a list) = List.fold_left (fun acc x -> lazy (Cons (x, acc))) nil list
+let rev_of_list (list:'a list) = List.fold_left (fun acc x -> Lazy.lazy_from_val (Cons (x, acc))) nil list
 
 let eager_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list =
     match next list with
-    | Cons (x, t) -> lazy (Cons (x, aux t))
-    | _ -> l2
+    | Cons (x, t) -> cons x (aux t)
+    | _           -> l2
   in aux l1
   
 let rev_append (l1 : 'a t) (l2 : 'a t) =
@@ -281,16 +285,14 @@ let rev_append (l1 : 'a t) (l2 : 'a t) =
 let rev_append_of_list (l1 : 'a list) (l2 : 'a t) : 'a t =
   let rec aux list acc = match list with
     | []   -> acc
-    | h::t -> aux t (lazy (Cons (h, acc)))
+    | h::t -> aux t (cons h acc)
   in aux l1 l2
 
 let append (l1 : 'a t) (l2 : 'a t) =
-  let rec (aux : 'a t -> 'a t) =
-    fun rest_of_l1 ->
-      match next rest_of_l1 with
-      | Cons (x, (t : 'a t)) -> lazy (Cons (x, aux t))
-      | _ -> l2
-  in aux l1
+  let rec aux list =  match next list with
+      | Cons (x, (t : 'a t)) -> Cons (x, lazy (aux t))
+      | _                    -> Lazy.force l2
+  in lazy (aux l1)
   
 let ( ^@^ ) = append
   
@@ -341,8 +343,9 @@ let enum l =
    * this will let you convert regular infinite lists to lazy lists.
 *)
 let of_list l =
-  let rec aux rest =
-    match rest with | [] -> nil | h :: t -> lazy (Cons (h, aux t))
+  let rec aux = function
+    | []     -> nil 
+    | h :: t -> lazy (Cons (h, aux t))
   in aux l
   
 (**
@@ -361,13 +364,13 @@ let of_stream s =
    Eager conversion from lists
 *)
 let eager_of_list l =
-  ListLabels.fold_right ~init: nil ~f: (fun x acc -> lazy (Cons (x, acc))) l
+  ListLabels.fold_right ~init: nil ~f: (fun x acc -> Lazy.lazy_from_val (Cons (x, acc))) l
   
 (**
-   Lazy conversion from array
+   Eager conversion from array
 *)
 let of_array l =
-  ArrayLabels.fold_right ~init: nil ~f: (fun x acc -> lazy (Cons (x, acc))) l
+  ArrayLabels.fold_right ~init: nil ~f: (fun x acc -> Lazy.lazy_from_val (Cons (x, acc))) l
 
 (**
    Lazy conversion from enum
@@ -383,25 +386,47 @@ let of_enum e =
 (**
    {6  Predicates}
 *)
-let filter f l =
+let filter f l = 
+  let rec next_true l = match next l with (*Compute the next accepted predicate without thunkification*)
+    | Cons (x, l) when not (f x) -> next_true l
+    | l                          -> l
+  in
+  let rec aux l = lazy(match next_true l with
+    | Cons (x, l) -> Cons (x, aux l)
+    | Nil         -> Nil)
+  in aux l
+
+let filter_map f l = 
+  let rec next_true l = match next l with (*Compute the next accepted predicate without thunkification*)
+    | Cons (x, l) -> 
+	begin
+	  match f x with
+	    | Some v  -> Some (v, l)
+	    | None    -> next_true l
+	end
+    | Nil         -> None
+  in
+  let rec aux l = lazy(match next_true l with
+    | Some (x, l) -> Cons (x, aux l)
+    | None        -> Nil)
+  in aux l
+(*let filter f l =
   let rec aux rest =
     match next rest with
-    | Cons (x, t) when f x -> lazy (Cons (x, aux t))
+    | Cons (x, t) when f x -> Cons (x, lazy (aux t))
     | Cons (_, t)          -> aux t
-    | Nil                  -> nil
-  in aux l
+    | Nil                  -> Nil
+  in lazy (aux l)*)
   
 let exists f l =
-  let rec aux rest =
-    match next rest with
+  let rec aux rest = match next rest with
     | Cons (x, t) when f x -> true
     | Cons (_, t)          -> aux t
     | Nil                  -> false
   in aux l
   
 let for_all f l =
-  let rec aux rest =
-    match next rest with
+  let rec aux rest = match next rest with
     | Cons (x, t) when f x -> aux t
     | Cons (_, t)          -> false
     | Nil                  -> true
@@ -439,13 +464,15 @@ let mem_assoc e l = Option.is_some (may_find (fun (a, _) -> a = e) l)
 
 let mem_assq e l = Option.is_some (may_find (fun (a, _) -> a == e) l)
 
-let filter_map f l =
-  let rec aux rest =
-    match next rest with
+
+
+(*  let rec aux rest = match next rest with
     | Cons (h, t) ->
-        (match f h with | None -> aux t | Some x -> lazy (Cons (x, aux t)))
-    | Nil -> nil
-  in aux l
+        (match f h with 
+	   | None   -> lazy (aux t)
+	   | Some x -> cons x (lazy (aux t)))
+    | Nil -> Nil
+  in lazy (aux l)*)
 
 let unique ?(cmp = compare) l =
   let set      = ref (PMap.create cmp) in
@@ -604,4 +631,47 @@ module Exceptionless = struct
   let split_at n l =
     try  `Ok (split_at n l)
     with Not_found -> `Invalid_index n
+end
+
+module Labels = struct
+  let iter ~f x         = iter f x
+let iter2 ~f x        = iter2 f x
+let iteri ~f x        = iteri f x
+let map   ~f x        = map   f x
+let map2  ~f x        = map2  f x
+let mapi   ~f x       = mapi  f x
+let filter ~f         = filter f
+let exists ~f         = exists f
+let exists2 ~f        = exists2 f
+let for_all ~f        = for_all f
+let for_all2 ~f       = for_all2 f
+let filter_map ~f     = filter_map f
+let find ~f           = find f
+let findi ~f          = findi f
+let rfind ~f          = rfind f
+let rfindi ~f         = rfindi f
+let find_exn ~f       = find_exn f
+let rfind_exn ~f      = rfind_exn f
+let remove_if ~f      = remove_if f
+let remove_all_such ~f= remove_all_such f
+let take_while      ~f= take_while f
+let drop_while      ~f= drop_while f
+let fold_left ~f ~init  = fold_left f init
+let fold_right ~f ~init = fold_right f init
+let fold_left2 ~f ~init = fold_left2 f init
+let fold_right2 ~f l1 l2 ~init = fold_right2 f l1 l2 init
+
+module Exceptionless = struct
+  let find   ~f = Exceptionless.find f
+  let rfind  ~f = Exceptionless.rfind f
+  let findi  ~f = Exceptionless.findi f
+  let rfindi ~f = Exceptionless.rfindi f
+
+  let assq      = Exceptionless.assq
+  let assoc     = Exceptionless.assoc
+  let at        = Exceptionless.at
+  let split_at  = Exceptionless.split_at
+
+end
+
 end

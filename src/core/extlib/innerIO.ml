@@ -68,15 +68,30 @@ end
 (**All the currently opened outputs -- used to permit [flush_all] and [close_all].*)
 (*module Inputs = Weaktbl.Make(Input)*)
 module Outputs= Weak.Make(Output)
-let outputs = Outputs.create 32
+
+
 
 (** {6 Primitive operations}*)
 
 external noop        : unit      -> unit        = "%ignore"
 external cast_output : 'a output -> unit output = "%identity"
+let lock = ref Concurrent.nolock
+
+
+let outputs = Outputs.create 32
+let outputs_add out =
+  Concurrent.sync !lock (Outputs.add outputs) out
+
+let outputs_remove out =
+  Concurrent.sync !lock (Outputs.remove outputs) out
+
+
 exception No_more_input
 exception Input_closed
 exception Output_closed
+
+
+
 
 let post_incr r =
   let result = !r in
@@ -107,9 +122,17 @@ let wrap_in ~read ~input ~close ~underlying =
     in_id       = uid ();
     in_upstream = weak_create 2
   }
-in List.iter (fun x -> weak_add x.in_upstream result) underlying;
+in 
+    Concurrent.sync !lock (List.iter (fun x -> weak_add x.in_upstream result)) underlying;
     Gc.finalise close_in result;
     result
+
+let inherit_in ?read ?input ?close inp =
+  let read = match read  with None -> inp.in_read | Some f -> f
+  and input= match input with None -> inp.in_input| Some f -> f
+  and close= match close with None -> inp.in_close| Some f -> f
+  in  wrap_in ~read ~input ~close ~underlying:[inp]
+
 
 let create_in ~read ~input ~close =
   wrap_in ~read ~input ~close ~underlying:[]
@@ -143,7 +166,7 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
       out_write  = write;
       out_output = output;
       out_close  = (fun () ->
-		      Outputs.remove outputs (cast_output out);
+		      outputs_remove (cast_output out);
 		      close ());
       out_flush  = flush;
       out_id     = uid ();
@@ -151,11 +174,18 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
     }
   in 
   let o = cast_output out in
-    List.iter (fun x -> weak_add x.out_upstream o) underlying; 
-    Outputs.add outputs (cast_output out); 
+    Concurrent.sync !lock (List.iter (fun x -> weak_add x.out_upstream o)) underlying;
+    outputs_add (cast_output out); 
     Gc.finalise (fun _ -> ignore (close_out out)) 
       out;
     out
+
+let inherit_out ?write ?output ?flush ?close out =
+  let write = match write  with None -> out.out_write | Some f -> f
+  and output= match output with None -> out.out_output| Some f -> f
+  and flush = match flush  with None -> out.out_flush | Some f -> f
+  and close = match close  with None -> out.out_close | Some f -> f
+  in wrap_out ~write ~output ~flush ~close ~underlying:[out]
 
 let create_out ~write ~output ~flush ~close =
   wrap_out ~write ~output ~flush ~close ~underlying:[]
@@ -249,10 +279,10 @@ let output o s p l =
 let flush o = o.out_flush()
 
 let flush_all () =
-  Outputs.iter (fun o -> try flush o with _ -> ()) outputs
+  Concurrent.sync !lock ( Outputs.iter (fun o -> try flush o with _ -> ())) outputs
 
 let close_all () =
-  Outputs.iter (fun o -> try close_out o with _ -> ()) outputs
+  Concurrent.sync !lock  (Outputs.iter (fun o -> try close_out o with _ -> ())) outputs
 
 let read_all i =
 	let maxlen = 1024 in
@@ -320,22 +350,42 @@ let output_buffer buf =
     ~close: (fun () -> Buffer.contents buf)
     ~flush: noop
 
-let input_channel ch =
+(** A placeholder used to allow recursive use of [self]
+    in an [input_channel]*)
+let placeholder_in = 
+  { in_read  = (fun () -> ' ');
+    in_input = (fun _ _ _ -> 0);
+    in_close = noop;
+    in_id    = (-1);
+    in_upstream= weak_create 0 }
+let input_channel ?(autoclose=true) ?(cleanup=false) ch =
+  let me = ref placeholder_in (*placeholder*)
+  in let result = 
   create_in
     ~read:(fun () -> try input_char ch
-	   with End_of_file -> raise No_more_input)
+	   with End_of_file -> 
+	     if autoclose then close_in !me;
+	     raise No_more_input)
     ~input:(fun s p l ->
 	      let n = Pervasives.input ch s p l in
-		if n = 0 then raise No_more_input;
-		n)
-    ~close:(fun () -> Pervasives.close_in ch)
+		if n = 0 then 
+		  begin
+		    close_in !me;
+		    raise No_more_input
+		  end
+		else n)
+    ~close:(if cleanup then fun () -> Pervasives.close_in ch else ignore)
+  in
+    me := result;
+    result
 
-let output_channel ch =
-  create_out
-    ~write: (fun c -> output_char ch c)
-    ~output:(fun s p l -> Pervasives.output ch s p l; l)
-    ~close: (fun () -> Pervasives.close_out ch)
-    ~flush: (fun () -> Pervasives.flush ch)
+let output_channel ?(cleanup=false) ch =
+    create_out
+      ~write: (fun c     -> output_char ch c)
+      ~output:(fun s p l -> Pervasives.output ch s p l; l)
+      ~close: (if cleanup then fun ()    -> Pervasives.close_out ch else fun () -> Pervasives.flush ch)
+      ~flush: (fun ()    -> Pervasives.flush ch)
+
 
 let pipe() =
   let input = ref "" in
@@ -535,14 +585,15 @@ let write_double ch f =
 let write_float ch f =
         write_real_i32 ch (Int32.bits_of_float f)
 
-let stdin = input_channel Pervasives.stdin
-let stdout= output_channel Pervasives.stdout
-let stderr= output_channel Pervasives.stderr
+let stdin  = input_channel Pervasives.stdin
+let stdout = output_channel Pervasives.stdout
+let stderr = output_channel Pervasives.stderr
 let stdnull= create_out
   ~write:ignore 
   ~output:(fun _ _ l -> l)
   ~flush:ignore
   ~close:ignore
+
 
 (*TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)*)
 
@@ -1112,3 +1163,5 @@ let kbprintf        = Printf.kbprintf
 let kprintf         = Printf.kprintf
 end
 
+let get_output out = out.out_output
+let get_flush  out = out.out_flush

@@ -27,6 +27,8 @@ module Array = struct
 
 
 type 'a t = 'a array with sexp
+type 'a enumerable = 'a t
+type 'a mappable = 'a t
 
 open Array
   let init         = init
@@ -141,6 +143,9 @@ let filter p xs =
        r) in
   xs'
 
+
+
+
 let find_all = filter
 
 let partition p xs =
@@ -171,8 +176,6 @@ let partition p xs =
        r) in
   xs1, xs2
 
-
-
 let enum xs =
   let rec make start xs =
     let n = length xs in(*Inside the loop, as [make] may later be called with another array*)
@@ -194,8 +197,8 @@ let backwards xs =
   let rec make start xs =
     Enum.make
       ~next:(fun () ->
-	       if !start >= 0 then 
-		 xs.(Ref.post_decr start)
+	       if !start > 0 then 
+		 xs.(Ref.pre_decr start)
 	       else
 		 raise Enum.No_more_elements)
       ~count:(fun () ->
@@ -204,7 +207,7 @@ let backwards xs =
 		let xs' = Array.sub xs 0 !start in
 		make (Ref.copy start) xs')
   in
-  make (ref (length xs - 1)) xs
+  make (ref (length xs)) xs
 
 let of_enum e =
   let n = Enum.count e in
@@ -218,13 +221,22 @@ let of_enum e =
 let of_backwards e =
   of_list (ExtList.List.of_backwards e)
 
+let filter_map p xs =
+  of_enum (Enum.filter_map p (enum xs))
 
 let iter2 f a1 a2 =
-     if Array.length a1 <> Array.length a2
-     then raise (Invalid_argument "Array.iter2");
-     for i = 0 to Array.length a1 - 1 do
-       f a1.(i) a2.(i);
-     done;;
+  if Array.length a1 <> Array.length a2
+  then raise (Invalid_argument "Array.iter2");
+  for i = 0 to Array.length a1 - 1 do
+    f a1.(i) a2.(i);
+  done;;
+
+let iter2i f a1 a2 =
+  if Array.length a1 <> Array.length a2
+  then raise (Invalid_argument "Array.iter2");
+  for i = 0 to Array.length a1 - 1 do
+    f i a1.(i) a2.(i);
+  done;;
 
 let make_compare cmp a b =
   let length_a = Array.length a
@@ -279,11 +291,13 @@ struct
   let iter         = iter
   let map          = map
   let filter       = filter
+  let filter_map   = filter_map
   let iteri        = iteri
   let mapi         = mapi
   let fold_left    = fold_left
   let fold_right   = fold_right
   let iter2        = iter2
+  let iter2i       = iter2i
   let for_all      = for_all
   let exists       = exists
   let find         = find
@@ -315,6 +329,88 @@ struct
   let t_of_sexp    = t_of_sexp
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
+
+  module Labels =
+  struct
+      let init i ~f = init i f
+      let create len ~init = create len init
+      let make             = create
+      let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
+      let create_matrix = make_matrix
+      let sub a ~pos ~len = sub a pos len
+      let fill a ~pos ~len x = fill a pos len x
+      let blit ~src ~src_pos ~dst ~dst_pos ~len = blit src src_pos dst dst_pos len
+      let iter ~f a = iter f a
+      let map  ~f a = map  f a
+      let iteri ~f a = iteri f a
+      let mapi  ~f a = mapi f a
+      let fold_left ~f ~init a = fold_left f init a
+      let fold_right ~f a ~init= fold_right f a init
+      let sort ~cmp a = sort cmp a
+      let stable_sort ~cmp a = stable_sort cmp a
+      let fast_sort ~cmp a = fast_sort cmp a
+      let iter2 ~f a b = iter2 f a b
+      let exists ~f a  = exists f a
+      let for_all ~f a = for_all f a
+      let iter2i  ~f a b = iter2i f a b
+      let find ~f a = find f a
+      let map ~f a = map f a
+      let mapi ~f a = mapi f a
+      let filter ~f a = filter f a
+      let filter_map ~f a = filter_map f a
+  end
+
+  module ExceptionLess =
+  struct
+    let find f e =
+      try  Some (find f e)
+      with Not_found -> None
+	
+    let findi f e =
+      try  Some (findi f e)
+      with Not_found -> None
+  end
+end
+
+module ExceptionLess =
+struct
+  let find f e =
+    try  Some (find f e)
+    with Not_found -> None
+
+  let findi f e =
+    try  Some (findi f e)
+    with Not_found -> None
+end
+
+module Labels =
+struct
+  let init i ~f = init i f
+  let create len ~init = create len init
+  let make             = create
+  let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
+  let create_matrix = make_matrix
+  let sub a ~pos ~len = sub a pos len
+  let fill a ~pos ~len x = fill a pos len x
+  let blit ~src ~src_pos ~dst ~dst_pos ~len = blit src src_pos dst dst_pos len
+  let iter ~f a = iter f a
+  let map  ~f a = map  f a
+  let iteri ~f a = iteri f a
+  let mapi  ~f a = mapi f a
+  let fold_left ~f ~init a = fold_left f init a
+  let fold_right ~f a ~init= fold_right f a init
+  let sort ~cmp a = sort cmp a
+  let stable_sort ~cmp a = stable_sort cmp a
+  let fast_sort ~cmp a = fast_sort cmp a
+  let iter2 ~f a b = iter2 f a b
+  let exists ~f a  = exists f a
+  let for_all ~f a = for_all f a
+  let iter2i  ~f a b = iter2i f a b
+  let find ~f a = find f a
+  let map ~f a = map f a
+  let mapi ~f a = mapi f a
+  let filter ~f a = filter f a
+  let filter_map ~f a = filter_map f a
 end
 end
 

@@ -1,4 +1,4 @@
-Welcome to OCaml Batteries Included alpha 2.
+Welcome to OCaml Batteries Included alpha 3.
 
 Batteries Included is an effort to develop a comprehensive,
 decentralized yet unified open-source standard library for OCaml.
@@ -6,14 +6,14 @@ For the moment, Batteries Included concentrates on:
 
 {ul
 {- {{:Data.html}data structures}}
-{- {{:System.Unix.html}file manipulation and system calls}}
-{- {{:System.IO.html}inputs and outputs}, including {{:System.Compress.html}(de)compression}}
+{- {{:Unix.html}file manipulation and system calls}}
+{- {{:IO.html}inputs and outputs}, including {{:Compress.html}(de)compression}}
 {- {{:Languages.html}lexing, parsing and pretty-printing}}
-{- {{:Control.Concurrency.html}concurrency}}
-{- {{:Data.Numeric.html}numbers}}
-{- {{:Data.Text.html}text, including Unicode}}
+{- {{:Threads.html}concurrency}}
+{- {{:Numeric.html}numbers}}
+{- {{:Text.html}text, including Unicode}}
 {- {{:../extensions.html}language extensions}}
-{- {{:Meta.html}OCaml internals} and {{:Util.html}utilities}}
+{- {{:Compilers.html}OCaml internals} and {{:Util.html}utilities}}
 }
 
 

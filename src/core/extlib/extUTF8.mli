@@ -212,8 +212,14 @@ val map : (UChar.t -> UChar.t) -> t -> t
 val filter_map : (UChar.t -> UChar.t option) -> t -> t
 (** As [String.filter_map] *)
 
+val filter : (UChar.t -> bool) -> t -> t
+(** As {!String.filter}*)
+
 val index : t -> UChar.t -> int
 (** As [String.index] *)
+
+val rindex : t -> UChar.t -> int
+(** As [String.rindex] *)
 
 val contains : t -> UChar.t -> bool
 (** As [String.contains] *)

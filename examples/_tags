@@ -1,2 +1,4 @@
-<*>: use_batteries,debug
+
+<netchan-*>: pkg_netstring
+<parallelsort*>: thread
 

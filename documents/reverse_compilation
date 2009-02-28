@@ -1,0 +1,27 @@
+** Using ocamlopt
+
+When linking
+     ocamlopt a.cmx b.cmx c.cmx d.cmxa -o foo
+actually do
+     ocamlopt a.cmx b.cmx c.cmx d.cmxa -shared -o foo.cmxs
+and produce executable file
+    foo
+which calls `ocamlfind batteries/batteriesopt foo.cmxs`
+
+** Using ocamlc
+
+When linking
+     ocamlopt a.cmo b.cmo c.cmo d.cmo -o foo
+actually do
+     ocamlopt -a a.cmo b.cmo c.cmo d.cmo -shared -o foo.cma
+and produce executable file
+     foo
+which calls `ocamlfind batteries/batteriesbyte foo.cmo`
+
+
+** Support
+(*batteriesbyte.ml*)
+(*Linked with Batteries and Dynlink*)
+let arg = args.(1) in
+  incr invisible_args;
+  Dynlink.loadfile arg

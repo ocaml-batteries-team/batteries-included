@@ -1,9 +1,11 @@
 AC_INIT
 
+INSTALLATION=
+
 AC_SUBST(INSTALLATION)
 
 # version info
-VERSION=0.20081023
+VERSION=0.20090128
 AC_SUBST(VERSION)
 
 # check for basic OCaml components
@@ -12,6 +14,9 @@ if test -z "$OCAMLC" ; then
    AC_MSG_ERROR([Cannot find ocamlc.])
    exit 1
 fi
+AC_MSG_CHECKING(ocaml version)
+OCAMLVERSION=`$OCAMLC -version`
+AC_MSG_NOTICE($OCAMLVERSION)
 AC_CHECK_PROGS(OCAMLOPT,[ocamlopt.opt ocamlopt],)
 if test -z "$OCAMLOPT" ; then
    AC_MSG_WARN([Cannot find ocamlopt; native code compilation only.])
@@ -28,6 +33,7 @@ AC_SUBST(OCAMLC)
 AC_SUBST(OCAMLOPT)
 AC_SUBST(OCAMLBUILD)
 AC_SUBST(OCAMLDOC)
+AC_SUBST(OCAMLVERION)
 
 OCAMLVERSION=$($OCAMLC -version)
 OCAMLLIBDIR=$($OCAMLC -where)
@@ -57,6 +63,17 @@ else
 fi
 ])
 
+dnl as above, but without warning
+dnl accordingly
+AC_DEFUN(AC_CHECK_OCAML_PKG_SILENTLY,
+[dnl
+AC_MSG_CHECKING(findlib package $1)
+if tmp=`$OCAMLFIND query $1` 2>/dev/null ; then
+   AC_MSG_RESULT(found)
+   [$2]=$tmp
+   OCAMLFIND_DEPS="$OCAMLFIND_DEPS $tmp"
+fi
+])
 # check for needed Findlib packages
 AC_CHECK_OCAML_PKG(camomile, OCAMLPKG_camomile)
 if test -z "$OCAMLPKG_camomile" ; then
@@ -88,6 +105,11 @@ fi
 AC_CHECK_OCAML_PKG(bin_prot, OCAMLPKG_bin_prot)
 if test -z "$OCAMLPKG_bin_prot" ; then
    AC_MSG_ERROR([Cannot find bin_prot])
+   exit 1
+fi
+AC_CHECK_OCAML_PKG(netstring, OCAMLPKG_netstring)
+if test -z "$OCAMLPKG_netstring" ; then
+   AC_MSG_ERROR([Cannot find netstring (part of ocamlnet)])
    exit 1
 fi
 AC_SUBST(OCAMLFIND_DEPS)
@@ -123,12 +145,38 @@ else
 fi
 DOCDIR="$DEFAULT_DOCDIR"
 
+#Should documentation be built?
+AC_ARG_WITH(
+	doc,
+	[ --with-doc                build documentation (yes by default)],
+        BUILD_DOC=yes,
+        BUILD_DOC=no)
+AC_SUBST(BUILD_DOC)
+
+
+AC_MSG_NOTICE([Testing install destination])
+AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
+if test -z "$OCAMLPKG_batteries"; then
+   touch META
+   $OCAMLFIND install batteries META
+   AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
+   DESTDIR=`dirname $OCAMLPKG_batteries`
+   $OCAMLFIND remove batteries &> /dev/null
+   rm META
+else
+   AC_MSG_WARN([Batteries is already installed])
+   AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
+   DESTDIR=`dirname $OCAMLPKG_batteries`
+fi
+AC_MSG_NOTICE([Default destination is $DESTDIR])
+AC_SUBST(DESTDIR)
+
 AC_ARG_WITH(
 	docroot,
 	[  --with-docroot=PATH     set documentation root
-	                           default: "$PWD/doc/batteries"],
+	                           default: "$DESTDIR/doc/batteries"],
 	DOCDIR=$withval,
-	DOCDIR=$DOCDIR)
+	DOCDIR=$DESTDIR/doc/batteries)
 if test "$DOCDIR" = "yes" ; then
    AC_MSG_ERROR([--with-docroot requires an argument])
    exit 1
@@ -136,12 +184,22 @@ fi
 AC_MSG_NOTICE([documentation root directory: $DOCDIR])
 AC_SUBST(DOCDIR)
 
+AC_ARG_WITH(
+	runner,
+	[  --with-runner     build experimental dynamic linking runner
+	   		     deactivated by default],
+	BUILD_RUNNER=$withval,
+	BUILD_RUNNER=no)
+AC_SUBST(BUILD_RUNNER)
+
+
 # fill output templates
 AC_CONFIG_FILES([
  Makefile
  build/META
  build/threaded/META
  build/nothreads/META
+ src/batteries_toolchain/ocaml
 ])
 AC_OUTPUT
 

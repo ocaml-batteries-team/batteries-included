@@ -1,0 +1,1 @@
+../../doc/batteries/myocamlbuild.ml

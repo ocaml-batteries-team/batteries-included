@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.System.IO" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "IO" (*For Sexplib, Bin-prot...*)
 
 open ExtChar
 include InnerIO
@@ -64,6 +64,19 @@ let pos_out o =
        ~flush:(fun () -> flush o)
        ~underlying:[o]
      , fun () -> !p)
+
+let progress_in inp f =
+  wrap_in ~read: (fun ()    -> let c = read inp in f(); c)
+          ~input:(fun s i l -> let r = input inp s i l in f(); r)
+          ~close:ignore
+          ~underlying:[inp]
+
+let progress_out out f =
+  wrap_out ~write:(fun c -> write out c; f())
+    ~output:(fun s i l -> let r = output out s i l in f(); r)
+    ~close:ignore
+    ~flush:(fun () -> flush out)
+    ~underlying:[out]
 
 (**
    {6 Support for enumerations}
@@ -629,7 +642,12 @@ let comb (a,b) =
 	      ignore (close_out a); close_out b)
 
 
-
+(*let repeat n out =
+  wrap_out 
+    ~underlying:[out]
+    ~write:(fun c -> for i = 1 to n do write out c)
+    ~output:(fun s p l -> for i = 1 to n do output out s p l)
+    ~close:(fun () -> flush out)*)
 
 (** {6 Unicode}*)
 open ExtUTF8
@@ -759,3 +777,64 @@ let in_channel_of_input i =
       Pervasives.output_char cout c;
       aux ()*)
 *)
+
+(**
+   {6 Thread-safety}
+*)
+
+let lock_factory = ref (fun () -> Concurrent.nolock)
+
+
+let synchronize_in ?(lock = !lock_factory ()) inp = 
+  wrap_in
+    ~read:(Concurrent.sync lock (fun () -> read inp))
+    ~input:(Concurrent.sync lock (fun s p l -> input inp s p l))
+    ~close:noop
+    ~underlying:[inp]
+
+let synchronize_out ?(lock = !lock_factory ()) out = 
+  wrap_out
+    ~write: (Concurrent.sync lock (fun c     -> write out c))
+    ~output:(fun s p -> Concurrent.sync lock (fun l -> output out s p l))
+    ~flush: (Concurrent.sync lock (fun ()    -> flush out))
+    ~close: noop
+    ~underlying:[out]
+
+(**
+   {6 Things that require temporary files}
+*)
+
+(**
+   [to_input_channel inp] converts [inp] to an [in_channel].
+
+   In the simplest case, [inp] maps to a file descriptor, which makes
+   it possible to just reopen the same file descriptor as an
+   [in_channel]. There is no flushing with which to screw up and
+   this shouldn't interfere with [pos_in] et al. because [inp]
+   maps {e directly} to a file descriptor, not through higher-level
+   abstract streams.
+
+   Otherwise, read everything, write it to a temporary file and
+   read it back as an [in_channel]. 
+   Yes, this is prohibitively expensive.
+*)
+let to_input_channel inp =
+  try Unix.in_channel_of_descr (ExtUnix.Unix.descr_of_input inp) (*Simple case*)
+  with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
+    let (name, cout) = Filename.open_temp_file "ocaml" "pipe" in
+    let out          = output_channel cout                    in
+      copy inp out;
+      close_out out;
+      Pervasives.open_in name    
+
+
+
+
+(*(**
+   Copy everything to a temporary file
+*)
+let out_channel_of_output out =
+  let (name, cout) = Filename.open_temp_file "ocaml" "tmp" in
+    create_out
+      
+    cout*)

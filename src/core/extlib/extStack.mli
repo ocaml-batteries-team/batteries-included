@@ -33,6 +33,8 @@ sig
 type 'a t
 (** The type of stacks containing elements of type ['a]. *)
 
+include Enum.Enumerable with type 'a enumerable = 'a t
+
 exception Empty
 (** Raised when {!Stack.pop} or {!Stack.top} is applied to an empty stack. *)
 

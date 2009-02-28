@@ -30,7 +30,7 @@ external fast_get : intern -> int -> int = "%string_unsafe_get"
 external fast_set : intern -> int -> int -> unit = "%string_unsafe_set"
 external fast_bool : int -> bool = "%identity"
 let fast_blit : intern -> int -> intern -> int -> int -> unit = Obj.magic String.blit
-let fast_fill : intern -> int -> int -> int -> unit = Obj.magic String.fill
+let fast_fill : intern -> int -> int -> int (* char *) -> unit = Obj.magic String.fill
 let fast_length : intern -> int= Obj.magic String.length
 
 let intern_of_sexp t : intern = Obj.magic (Conv.string_of_sexp t)
@@ -72,7 +72,7 @@ let int_size = 7 (* value used to round up index *)
 let log_int_size = 3 (* number of shifts *)
 
 let create n =
-	if n < 0 then error "create";
+	if n < 0 then error "BitSet.create";
 	let size = (n+int_size) lsr log_int_size in
 	let b = bcreate size in
 	bfill b 0 size 0;
@@ -80,6 +80,17 @@ let create n =
 		data = b;
 		len = size;
 	}
+
+let create_full n =
+  if n < 0 then error "BitSet.create_full";
+  let size = (n+int_size) lsr log_int_size in
+  let b = bcreate size in
+  bfill b 0 size 0x255;
+  {
+    data = b;
+    len = size;
+  }
+
 
 let copy t =
 	let b = bcreate t.len in

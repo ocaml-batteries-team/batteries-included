@@ -85,6 +85,10 @@ type t
 exception Out_of_bounds
   (** Raised when an operation violates the bounds of the rope. *)
   
+exception Invalid_rope
+(** An exception thrown when some operation required a rope
+    and received an unacceptable rope.*)
+
 val max_length : int
   (** Maximum length of the rope. *)
   
@@ -96,13 +100,19 @@ val empty : t
 val of_latin1: string -> t
   (** Constructs a unicode rope from a latin-1 string. *)
 
+val of_string : string -> t
+  (** [of_string s] returns a reope corresponding to the UTF-8 encoded string [s].*)
+
+val to_string : t -> string
+  (** [to_string t] returns a UTF-8 encoded string representing [t]*)
+
 val of_ustring : UTF8.t -> t
   (** [of_string s] returns a rope corresponding to the string [s].
       Operates in [O(n)] time. *)
   
 val to_ustring : t -> UTF8.t
-  (** [to_string r] returns the string corresponding to the rope [r]. *)
-  
+  (** [to_ustring r] returns the string corresponding to the rope [r]. *)
+
 val of_uchar: UChar.t -> t
   (** [of_uchar c] returns a rope containing exactly character [c].*)
 
@@ -127,6 +137,23 @@ val uppercase: t -> t
       [uppercase s] is not the same as the number of characters in
       [s].*)
 
+val capitalize : t -> t
+(** Return a copy of the argument, with the first character set to uppercase. *)
+
+val uncapitalize : t -> t
+(** Return a copy of the argument, with the first character set to lowercase. *)
+
+val join : t -> t list -> t
+  (** Same as {!concat} *)
+
+val explode : t -> UChar.t list
+  (** [explode s] returns the list of characters in the rope [s]. *)
+
+val implode : UChar.t list -> t
+  (** [implode cs] returns a rope resulting from concatenating
+      the characters in the list [cs]. *)
+
+
 (** {6 Properties } *)
   
 val is_empty : t -> bool
@@ -145,12 +172,15 @@ val balance : t -> t
   
 (** {6 Operations } *)
   
-val concat : t -> t -> t
-  (** [concat r u] concatenates the [r] and [u] ropes. In general, it operates
+val append : t -> t -> t
+  (** [append r u] concatenates the [r] and [u] ropes. In general, it operates
       in [O(log(min n1 n2))] amortized time.
       Small ropes are treated specially and can be appended/prepended in
       amortized [O(1)] time. *)
   
+val ( ^^^ ): t -> t -> t
+  (** As {!append}*)
+
 val append_char : UChar.t -> t -> t
   (** [append_char c r] returns a new rope with the [c] character at the end
       in amortized [O(1)] time. *)
@@ -159,27 +189,27 @@ val prepend_char : UChar.t -> t -> t
   (** [prepend_char c r] returns a new rope with the [c] character at the
       beginning in amortized [O(1)] time. *)
   
-val get : int -> t -> UChar.t
-  (** [get n r] returns the (n+1)th character from the rope [r]; i.e.
-      [get 0 r] returns the first character.
+val get : t -> int -> UChar.t
+  (** [get r n] returns the (n+1)th character from the rope [r]; i.e.
+      [get r 0] returns the first character.
       Operates in worst-case [O(log size)] time.
       Raises Out_of_bounds if a character out of bounds is requested. *)
   
-val set : int -> UChar.t -> t -> t
-  (** [set n c r] returns a copy of rope [r]  where the (n+1)th character
+val set : t -> int -> UChar.t -> t
+  (** [set r n c] returns a copy of rope [r]  where the (n+1)th character
       has been set to [c]. See also {!get}.
       Operates in worst-case [O(log size)] time. *)
   
-val sub : int -> int -> t -> t
-  (** [sub m n r] returns a sub-rope of [r] containing all characters
+val sub : t -> int -> int -> t
+  (** [sub r m n] returns a sub-rope of [r] containing all characters
       whose indexes range from [m] to [m + n - 1] (included).
-      Raises Out_of_bounds in the same cases as String.sub.
+      Raises Out_of_bounds in the same cases as sub.
       Operates in worst-case [O(log size)] time. *)
   
 val insert : int -> t -> t -> t
   (** [insert n r u] returns a copy of the [u] rope where [r] has been
       inserted between the characters with index [n] and [n + 1] in the
-      original string. The length of the new rope is
+      original rope. The length of the new rope is
       [length u + length r].
       Operates in amortized [O(log(size r) + log(size u))] time. *)
   
@@ -189,6 +219,11 @@ val remove : int -> int -> t -> t
       from the original rope [r]. The length of the new rope is
       [length r - n].
       Operates in amortized [O(log(size r))] time. *)
+
+val concat : t -> t list -> t
+(** [concat sep sl] concatenates the list of ropes [sl],
+   inserting the separator rope [sep] between each. *)
+
   
 (** {6 Iteration} *)
   
@@ -212,7 +247,7 @@ val range_iter : (UChar.t -> unit) -> int -> int -> t -> unit
 val range_iteri : 
   (int -> UChar.t -> unit) -> ?base:int -> int -> int -> t -> unit
   (** As [range_iter], but passes base + index of the character in the
-      substring defined by next to arguments. *)
+      subrope defined by next to arguments. *)
 
 val bulk_iter : (UTF8.t -> unit) -> t -> unit
   (** as iter but over larger chunks of data *)
@@ -228,75 +263,275 @@ val bulk_fold : ('a -> UTF8.t -> 'a) -> 'a -> t -> 'a
   (** As {!fold} but over larger chunks of data.*)
 
 val enum: t -> UChar.t Enum.t
+  (** Returns an enumeration of the characters of a rope. *)
+
 val bulk_enum: t -> UTF8.t Enum.t
+  (** Returns an enumeration of the UTF-8 encoded strings of a rope.
+      Provided for convenience and speed.
+  *)
+
 val of_enum: UChar.t Enum.t -> t
+  (** Creates a rope from a character enumeration. *)
+
 val of_bulk_enum: UTF8.t Enum.t -> t
+  (** Creates a rope from an enumeration of UTF-8 encoded strings. 
+
+      Provided for convenience and speed.*)
+
 val backwards: t -> UChar.t Enum.t
+  (** Returns an enumeration of the characters of a rope, from last to first. *)
+
 val of_backwards: UChar.t Enum.t -> t
+  (** Build a rope from an enumeration, starting with last character, ending with first. *)
 
 (*These functions are probably completely useless
   val bulk_backwards: t -> UTF8.t Enum.t
   val of_bulk_backwards: UTF8.t Enum.t -> t
+  val create : int -> t
 *)
 
-val create : int -> t
-  (** As [String.create] *)
+
 val init : int -> (int -> UChar.t) -> t
-  (** As [String.init] *)
+  (** [init l f] returns the rope of length [l] with the chars f 0 , f
+      1 , f 2 ... f (l-1). *)
+
 val of_int : int -> t
+   (** Returns the rope representation of an int. *)
+
 val of_float : float -> t
+   (** Returns the rope representation of a float. *)
+
 val to_int : t -> int
+  (** Returns the integer represented by the given rope or
+      raises [Invalid_rope] if the rope does not represent an integer.*)
+
 val to_float : t -> float
-  (** As [String.*] *)
+  (** Returns the float represented by the given rope or
+      raises Invalid_rope if the rope does not represent a float. *)
+
 val bulk_map : (UTF8.t -> UTF8.t) -> t -> t
+ (** [map f s] returns a rope where all ropes [c] in [s] have been
+      replaced by [f c]. **)
+
 val map : (UChar.t -> UChar.t) -> t -> t
-  (** As [String.map] *)
+ (** [map f s] returns a rope where all characters [c] in [s] have been
+      replaced by [f c]. **)
+
+
 val bulk_filter_map : (UTF8.t -> UTF8.t option) -> t -> t
+(** [bulk_filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0..an] are
+    the UTF-encoded strings of [l]. It returns the list of elements [bi] such as
+    [f ai = Some bi] (when [f] returns [None], the corresponding element of
+    [l] is discarded). *)
+
 val filter_map : (UChar.t -> UChar.t option) -> t -> t
-  (** As [String.filter_map] *)
+(** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0..an] are
+    the characters of [l]. It returns the list of elements [bi] such as
+    [f ai = Some bi] (when [f] returns [None], the corresponding element of
+    [l] is discarded). *)
+
+val filter : (UChar.t -> bool) -> t -> t
+  (** [filter f s] returns a copy of rope [s] in which only
+      characters [c] such that [f c = true] remain.*)
+
+
+
+(** {6 Finding}*)
 
 val index : t -> UChar.t -> int
-  (** As [String.index] *)
+(** [Rope.index s c] returns the position of the leftmost
+    occurrence of character [c] in rope [s].
+    Raise [Not_found] if [c] does not occur in [s]. *)
+
 val index_from : t -> int -> UChar.t -> int
+  (** Same as {!Rope.index}, but start searching at the character
+      position given as second argument.  [Rope.index s c] is
+      equivalent to [Rope.index_from s 0 c].*)
 
-(* TODO: write specs for:
+val rindex : t -> UChar.t -> int
+(** [Rope.rindex s c] returns the position of the rightmost
+   occurrence of character [c] in rope [s].
+   Raise [Not_found] if [c] does not occur in [s]. *)
 
-rindex
-rindex_from
-contains
-contains_from
-rcontains_from
-find
-ends_with
-starts_with
-exists
-trim
-strip
-capitalize
-uncapitalize
-left
-right
-tail
-lchop
-rchop
-splice
-fill
-blit
-concat_sep
-escaped
-replace_chars
-replace
-split
-nsplit
-join
-slice
-explode
-implode
-compare
-compare_without_case
+val rindex_from : t -> int -> UChar.t -> int
+(** Same as {!rindex}, but start
+   searching at the character position given as second argument.
+   [rindex s c] is equivalent to
+   [rindex_from s (length s - 1) c]. *)
 
-*)
+val contains : t -> UChar.t -> bool
+(** [contains s c] tests if character [c]
+   appears in the rope [s]. *)
 
+val contains_from : t -> int -> UChar.t -> bool
+(** [contains_from s start c] tests if character [c] appears in
+      the subrope of [s] starting from [start] to the end of [s].
+
+      @raise Invalid_argument if [start] is not a valid index of [s]. *)
+
+val rcontains_from : t -> int -> UChar.t -> bool
+(** [rcontains_from s stop c] tests if character [c]
+   appears in the subrope of [s] starting from the beginning
+   of [s] to index [stop].
+   @raise Invalid_argument if [stop] is not a valid index of [s]. *)
+
+val find : t -> t -> int
+ (** [find s x] returns the starting index of the first occurrence of
+      rope [x] within rope [s].
+
+      {b Note} This implementation is optimized for short ropes.
+
+      @raise Invalid_rope if [x] is not a subrope of [s]. *)
+
+val find_from: t -> int -> t -> int
+  (** [find_from s ofs x] behaves as [find s x] but starts searching
+      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].*)
+
+val rfind : t -> t -> int
+  (** [rfind s x] returns the starting index of the last occurrence
+      of rope [x] within rope [s].
+
+      {b Note} This implementation is optimized for short ropes.
+
+      @raise Invalid_rope if [x] is not a subrope of [s]. *)
+
+val rfind_from: t -> int -> t -> int
+  (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
+      at offset [ofs]. [rfind s x] is equivalent to [rfind_from s (length s - 1) x].*)
+
+
+val starts_with : t -> t -> bool
+(** [ends_with s x] returns [true] if the rope [s] is ending with [x], [false] otherwise. *)
+
+val ends_with : t -> t -> bool
+(** [starts_with s x] returns [true] if [s] is starting with [x], [false] otherwise. *)
+
+val exists : t -> t -> bool
+(** [exists str sub] returns true if [sub] is a subrope of [str] or
+      false otherwise. *)
+
+(** {6 Transformations}*)
+val trim : t -> t
+(** Returns the same rope but without the leading and trailing
+      whitespaces. *)
+
+val left : t -> int -> t
+(**[left r len] returns the rope containing the [len] first characters of [r]*)
+
+val right : t -> int -> t
+(**[left r len] returns the rope containing the [len] last characters of [r]*)
+
+val head : t -> int -> t
+(**as {!left}*)
+
+val tail : t -> int -> t
+(**[tail r pos] returns the rope containing all but the [pos] first characters of [r]*)
+
+val strip : ?chars:(UChar.t list) -> t -> t
+  (** Returns the rope without the chars if they are at the beginning or
+      at the end of the rope. By default chars are " \t\r\n". *)
+
+val lchop : t -> t
+(** Returns the same rope but without the first character.
+      does nothing if the rope is empty. *)
+
+val rchop : t -> t
+(** Returns the same rope but without the last character.
+      does nothing if the rope is empty. *)
+
+val slice : ?first:int -> ?last:int -> t -> t
+  (** [slice ?first ?last s] returns a "slice" of the rope
+      which corresponds to the characters [s.[first]],
+      [s.[first+1]], ..., [s[last-1]]. Note that the character at
+      index [last] is {b not} included! If [first] is omitted it
+      defaults to the start of the rope, i.e. index 0, and if
+      [last] is omitted is defaults to point just past the end of
+      [s], i.e. [length s].  Thus, [slice s] is equivalent to
+      [copy s].
+      
+      Negative indexes are interpreted as counting from the end of
+      the rope. For example, [slice ~last:-2 s] will return the
+      rope [s], but without the last two characters.
+      
+      This function {b never} raises any exceptions. If the
+      indexes are out of bounds they are automatically clipped.
+  *)
+
+val splice : t -> int -> int -> t -> t
+(** [splice s off len rep] returns the rope in which the section of [s]
+      indicated by [off] and [len] has been cut and replaced by [rep].
+
+    Negative indices are interpreted as counting from the end of the string.*)
+
+val fill : t -> int -> int -> UChar.t -> t
+(** [fill s start len c] returns the rope in which
+   characters number [start] to [start + len - 1] of [s] has
+    been replaced by [c].
+
+   @raise Invalid_argument if [start] and [len] do not
+    designate a valid subrope of [s]. *)
+
+val blit : t -> int -> t -> int -> int -> t
+(** [blit src srcoff dst dstoff len] returns a copy
+    of [dst] in which [len] characters have been copied
+   from rope [src], starting at character number [srcoff], to
+   rope [dst], starting at character number [dstoff]. It works
+   correctly even if [src] and [dst] are the same rope,
+   and the source and destination chunks overlap.
+   
+    @raise Invalid_argument if [srcoff] and [len] do not
+   designate a valid subrope of [src], or if [dstoff] and [len]
+   do not designate a valid subrope of [dst]. *)
+
+val concat : t -> t list -> t
+(** [concat sep sl] concatenates the list of ropes [sl],
+   inserting the separator rope [sep] between each. *)
+
+val escaped : t -> t
+(** Return a copy of the argument, with special characters
+   represented by escape sequences, following the lexical
+   conventions of Objective Caml.  If there is no special
+   character in the argument, return the original rope itself,
+   not a copy. *)
+
+
+val replace_chars : (UChar.t -> UTF8.t) -> t -> t
+ (** [replace_chars f s] returns a rope where all chars [c] of [s] have been
+      replaced by the rope returned by [f c]. *)
+
+val replace : str:t -> sub:t -> by:t -> bool * t
+(** [replace ~str ~sub ~by] returns a tuple constisting of a boolean
+      and a rope where the first occurrence of the rope [sub]
+      within [str] has been replaced by the rope [by]. The boolean
+      is [true] if a substitution has taken place, [false] otherwise. *)
+
+(** {6 Splitting around}*)
+
+val split : t -> t -> t * t
+(** [split s sep] splits the rope [s] between the first
+      occurrence of [sep].
+      @raise Invalid_rope if the separator is not found. *)
+
+val rsplit : t -> t -> t * t
+  (** [rsplit s sep] splits the rope [s] between the last
+      occurrence of [sep].
+      @raise Invalid_rope if the separator is not found. *)
+
+val nsplit : t -> t -> t list
+  (** [nsplit s sep] splits the rope [s] into a list of ropes
+      which are separated by [sep].
+      [nsplit "" _] returns the empty list. *)
+
+val compare : t -> t -> int
+(** The comparison function for ropes, with the same specification as
+      {!Pervasives.compare}.  Along with the type [t], this function [compare]
+      allows the module [Rope] to be passed as argument to the functors
+      {!Set.Make} and {!Map.Make}. *)
+
+val icompare: t -> t -> int
+(** Compare two ropes, case-insensitive. *)
+
+module IRope : Interfaces.OrderedType with type t = t
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)

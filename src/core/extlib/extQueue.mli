@@ -32,6 +32,7 @@ sig
 type 'a t
 (** The type of queues containing elements of type ['a]. *)
 
+include Enum.Enumerable with type 'a enumerable = 'a t
 
 exception Empty
 (** Raised when {!Queue.take} or {!Queue.peek} is applied to an empty queue. *)

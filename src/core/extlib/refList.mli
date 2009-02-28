@@ -53,7 +53,9 @@ val copy_list : dst:'a t -> src:'a list -> unit
 (** Makes a copy of a list - O(1) *)
 
 val copy_enum : dst:'a t -> src:'a Enum.t -> unit
-(** Makes a copy of a enum *)
+(** Makes a copy of a enum.
+    
+    @param dst A reflist, whose contents will be forgotten. *)
 
 val of_list : 'a list -> 'a t
 (** Creates a ref list from a list - O(1) *)

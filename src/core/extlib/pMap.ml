@@ -1,6 +1,7 @@
 (*
  * PMap - Polymorphic maps
  * Copyright (C) 1996-2003 Xavier Leroy, Nicolas Cannasse, Markus Mottl
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +21,7 @@
 
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Persistent.PMap" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "PMap" (*For Sexplib, Bin-prot...*)
 
 type ('k, 'v) map =
   | Empty
@@ -203,3 +204,9 @@ let of_enum ?(cmp = compare) e = Enum.fold uncurry_add (create cmp) e
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
   Enum.print ~first ~last ~sep (fun out (k,v) -> ExtPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+
+let filter  f t = foldi (fun k a acc -> if f a then add k a acc else acc) t empty
+let filteri f t = foldi (fun k a acc -> if f k a then add k a acc else acc) t empty
+let filter_map f t = foldi (fun k a acc -> match f k a with
+			     | None   -> acc
+			     | Some v -> add k v acc)  t empty

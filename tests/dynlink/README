@@ -1,0 +1,9 @@
+Experiments with dynamic linking
+
+To build a dynamically linked version of Hello World,
+ ocamlbuild hello.dynbyte
+
+Note that this doesn't work (yet) with
+ * ocamlfind batteries/ocamlbuild
+ * threads
+ * native code

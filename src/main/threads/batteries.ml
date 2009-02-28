@@ -1,6 +1,6 @@
 (*
- * Batteries - Root of Batteries Included hierarchy (threaded version)
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * Batteries - The complete Batteries Included (threaded version)
+ * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,258 +18,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-
-(** The root of the revised standard library.*)
-
-(** Tools for changing the control flow of a program, from error-management to concurrency.*)
-module Control     = struct
-
-  (** Everything related to parallelism and concurrency. *)
-  module Concurrency = struct
-
-    (** Concurrency operations as defined by OCaml's base library. *)
-    module Threads = struct
-
-
-      (** {6 Important note} 
-
-	  This module is only defined in multi-threaded versions of Batteries Included.*)
-
-      module Condition = Batteries_core_threads.Control.Concurrency.Thread.Condition
-      module Event     = Batteries_core_threads.Control.Concurrency.Thread.Event
-      module Mutex     = Batteries_core_threads.Control.Concurrency.Thread.Mutex
-      module Thread    = Batteries_core_threads.Control.Concurrency.Thread.Thread
-    end
-  end
-
-  module Exceptions  = Batteries_core_threads.Control.Exceptions
-  module Labels      = Batteries_core_threads.Control.Labels
-
-  module Monad = Batteries_core_threads.Control.Monad
-end
-
-(** Data structures*)
-module Data        = struct
-
-
-    (** Mutable containers (arrays, stacks...)*)
-    module Mutable         = struct
-      module Array         = Batteries_core_threads.Data.Mutable.Array
-      module ArrayLabels   = Batteries_core_threads.Data.Mutable.ArrayLabels
-      module Bigarray      = Batteries_core_threads.Data.Mutable.Bigarray
-      module Dllist        = Batteries_core_threads.Data.Mutable.Dllist
-      module Dynarray      = Batteries_core_threads.Data.Mutable.Dynarray
-      module Enum          = Batteries_core_threads.Data.Mutable.Enum
-      module Global        = Batteries_core_threads.Data.Mutable.Global
-      module Hashtbl       = Batteries_core_threads.Data.Mutable.Hashtbl
-      module HashtblLabels = Batteries_core_threads.Data.Mutable.HashtblLabels(*TODO:Bring to feature parity with {!Hashtbl}*)
-      module Queue         = Batteries_core_threads.Data.Mutable.Queue        (*TODO:build from enum?*)
-      module Ref           = Batteries_core_threads.Data.Mutable.Ref
-      module RefList       = Batteries_core_threads.Data.Mutable.RefList
-      module Stack         = Batteries_core_threads.Data.Mutable.Stack        (*TODO:build from enum*)
-      module Stream        = Batteries_core_threads.Data.Mutable.Stream       (*TODO:replace with latest version*)
-    end
-
-    (** Persistent containers (lists, sets...)  *)
-    module Persistent      = struct
-      module Lazy            = Batteries_core_threads.Data.Persistent.Lazy
-      module List            = Batteries_core_threads.Data.Persistent.List      (*formerly Batlib_Baselib_List*)
-      module ListLabels      = Batteries_core_threads.Data.Persistent.ListLabels(*TODO:Bring to feature parity with {!List}*)
-      module Map             = Batteries_core_threads.Data.Persistent.Map       (*TODO:make enumerable*)
-      module MapLabels       = Batteries_core_threads.Data.Persistent.MapLabels (*TODO:make enumerable*)
-      module MultiPMap       = Batteries_core_threads.Data.Persistent.MultiPMap
-      module Option          = Batteries_core_threads.Data.Persistent.Option
-      module OptionLabels    = Batteries_core_threads.Data.Persistent.OptionLabels
-      module PMap            = Batteries_core_threads.Data.Persistent.PMap
-      module PSet            = Batteries_core_threads.Data.Persistent.PSet
-      module Set             = Batteries_core_threads.Data.Persistent.Set       (*TODO:make enumerable*)
-      module SetLabels       = Batteries_core_threads.Data.Persistent.SetLabels (*TODO:make enumerable*)
-
 (**
-   {6 Note} Some mutable containers offer persistent substructures.
-   For instance, {!Data.Containers.Mutable.Array.Cap} defines a
-   structure [('a, [< `Read | `Write]) t], identical to ['a array]
-   but such that elements of [('a, [`Read]) t] may not be modified.
+   The libraries provided as part of OCaml Batteries Included
+
+   @author David Rajchenbach-Teller
 *)
 
-  end
-    
-  (** Boolean and bit-oriented data structures *)
-  module Logical     = struct
-    module BitSet = Batteries_core_threads.Data.Logical.BitSet
-    module Bool   = Batteries_core_threads.Data.Logical.Bool
-  end
-
-  (** Numbers and operations on them.*)    
-  module Numeric     = struct
-    open Batteries_core_threads.Data.Numeric
-    module Common      = Batteries_core_threads.Data.Numeric.Common
-    module Big_int     = Batteries_core_threads.Data.Numeric.Big_int
-    module Complex     = Batteries_core_threads.Data.Numeric.Complex
-    module Float       = Batteries_core_threads.Data.Numeric.Float
-    module Int         = Batteries_core_threads.Data.Numeric.Int
-    module Int32       = Batteries_core_threads.Data.Numeric.Int32
-    module Int64       = Batteries_core_threads.Data.Numeric.Int64
-    module Native_int  = Batteries_core_threads.Data.Numeric.Native_int
-    module Num         = Batteries_core_threads.Data.Numeric.Num
-    module Safe_int    = Batteries_core_threads.Data.Numeric.Safe_int
-    module Unit        = Batteries_core_threads.Data.Numeric.Unit
-  end
-    
-  (** Text data structures. *)
-  module Text        = struct
-
-    (** {6 Latin-1}*)
-
-    module Buffer          = Batteries_core_threads.Data.Text.Buffer
-    module Char            = Batteries_core_threads.Data.Text.Char
-    module String          = Batteries_core_threads.Data.Text.String
-    module StringLabels    = Batteries_core_threads.Data.Text.StringLabels  (*todo: wrap [Batlib_Extlib_String] with labels*)
-
-    (** {6 Unicode}*)
-
-    module Rope            = Batteries_core_threads.Data.Text.Rope
-    module UChar           = Batteries_core_threads.Data.Text.UChar
-    module UTF8            = Batteries_core_threads.Data.Text.UTF8
-  end
-end
-
 (**
-   Parsing, printing, regular expressions and other transformations from text
-   to data, from data to text and from text to text.
+   Automatically opened module.
+
+   @topic IO
+   @topic Printing
+   @topic Files
+
 *)
-module Languages   = struct
-
-
-    (**
-       This module contains everything related to transformation from text to data, 
-       from data to text and from text to text. As such, it contains parsers, lexers,
-       pretty-printers, unparsers, regular expressions, etc.
-       
-       In the future, it will also contain serialization-to-human-readable-formats
-       (e.g. JSON, XML, S-Expressions...), manipulation of language-related data
-       structures (more S-Expressions, DOM...), etc.
-
-       This module is not the right place for general text utilites
-       not related to parsing, serializing or printing (e.g. Unicode
-       transcodings), nor bindings to other programming languages.  *)
-
-  (** {1 Parsing} *)
-  
-  module Genlex          = Batteries_core_threads.Languages.Genlex
-  module Lexing          = Batteries_core_threads.Languages.Lexing
-  module Parsing         = Batteries_core_threads.Languages.Parsing
-  module Scanf           = Batteries_core_threads.Languages.Scanf
-  module Str             = Batteries_core_threads.Languages.Str
-
-  (** {2 Parser combinator library}*)
-
-  module CharParser      = Batteries_core_threads.Languages.CharParser
-  module ParserCo        = Batteries_core_threads.Languages.ParserCo
-    
-  (** {1 Printing}*)
-    
-  module Format          = Batteries_core_threads.Languages.Format
-  module Printf          = Batteries_core_threads.Languages.Printf
-
-  (** {1 Serialization to human-readable formats}
-      XML, JSON, S-Expressions ...*)
-
-  module SExpr           = Batteries_core_threads.Languages.SExpr
-end
-
-(** Meta-level operations (marshalling, garbage-collection...) *)
-module Meta        = struct
-
-  (** {1 Language}*)
-  
-  module Marshal        = Batteries_core_threads.Meta.Marshal
-  module Oo             = Batteries_core_threads.Meta.Oo
-    
-  (** {1 Interaction with other languages} *)
-    
-  module Callback       = Batteries_core_threads.Meta.Callback
-    
-  (** {1 Memory}*)
-    
-  module Gc             = Batteries_core_threads.Meta.Gc
-  module Weak           = Batteries_core_threads.Meta.Weak
-    
-  (** {1 Internals}
-      Here Be Dragons*)
-    
-  module Obj            = Batteries_core_threads.Meta.Obj
-  module CamlinternalMod= Batteries_core_threads.Meta.CamlinternalMod
-  module CamlinternalOO = Batteries_core_threads.Meta.CamlinternalOO
-    
-end
-
-(** Interactions with the operating system (file manipulation, arguments...) *)
-module System      = struct 
-
-  (** {1 Environment I/O}*)
-  
-  module Arg           = Batteries_core_threads.System.Arg
-  module OptParse      = Batteries_core_threads.System.OptParse
-    
-  (** {1 Operations on streams}*)
-    
-  module IO            = Batteries_core_threads.System.IO
-
-  (** {2 Compression/Decompression} *)
-  module Compress      = Libs.Common.Compress
-  module GZip          = Libs.GZip
-    
-  (** {1 Actual operating system calls}*)
-    
-  module File          = Batteries_core_threads.System.File
-  module Filename      = Batteries_core_threads.System.Filename
-  module Unix          = Batteries_core_threads.System.Unix
-  module UnixLabels    = Batteries_core_threads.System.UnixLabels
-  module Sys           = Batteries_core_threads.System.Sys
-    
-  (** {1 Networking}*)
-  module Network       = struct
-    (** Placeholder.
-
-	Expect OCamlNet here.*)
-  end
-end
-
-(**
-   Automatically opened module
-*)
-module Standard = Batteries_core_threads.Standard(*This module is actually opened by a Camlp4 trick.*)
-
-(** Tools for compiling OCaml, generating documentation, installing libraries. *)
-module Toolchain   = struct
-
-  module Findlib     = Batteries_core_threads.Toolchain.Findlib
-  module Execute     = Batteries_core_threads.Toolchain.Execute
-
-end
-
-(** Miscellaneous utilities *)
-module Util        = struct
-  module Base64 = Batteries_core_threads.Util.Base64
-  module Digest = Batteries_core_threads.Util.Digest
-  module Random = Batteries_core_threads.Util.Random
-end
+module Standard = Extlib.ExtPervasives.Pervasives
 
 (** Access to the modules provided by INRIA. 
 
     For more information, see the documentation of OCaml.
+
+    @topic Legacy
 *)
 module Legacy = struct
   (**/**)
-  module Condition = Condition
-  module Event     = Event
-  module Mutex     = Mutex
-  module Thread    = Thread
   module Array     = Array
   module ArrayLabels= ArrayLabels
   module Bigarray  = Bigarray
+  module Digest    = Digest
   module Hashtbl   = Hashtbl
   module Queue     = Queue
   module Stack     = Stack
@@ -316,62 +92,308 @@ module Legacy = struct
 end
 
 
+        
+(**
+   {3 Control}
 
-(**/**)
-(**Shortcuts for commonly used modules*)
-module Condition = Control.Concurrency.Threads.Condition
-module Event     = Control.Concurrency.Threads.Event
-module Mutex     = Control.Concurrency.Threads.Mutex
-module Thread    = Control.Concurrency.Threads.Thread
-module Array     = Data.Mutable.Array
-module ArrayLabels=Data.Mutable.ArrayLabels
-module Bigarray  = Data.Mutable.Bigarray
-module Enum      = Data.Mutable.Enum
-module Hashtbl   = Data.Mutable.Hashtbl
-module Queue     = Data.Mutable.Queue
-module Stack     = Data.Mutable.Stack
-module Stream    = Data.Mutable.Stream
-module Lazy      = Data.Persistent.Lazy
-module List      = Data.Persistent.List
-module ListLabels= Data.Persistent.ListLabels
-module Map       = Data.Persistent.Map
-module MapLabels = Data.Persistent.MapLabels
-module Option    = Data.Persistent.Option
-module Set       = Data.Persistent.Set
-module SetLabels = Data.Persistent.SetLabels
-module Big_int   = Data.Numeric.Big_int
-module Complex   = Data.Numeric.Complex
-module Int       = Data.Numeric.Int
-module Int32     = Data.Numeric.Int32
-module Int64     = Data.Numeric.Int64
-module Num       = Data.Numeric.Num
-module Buffer    = Data.Text.Buffer
-module Char      = Data.Text.Char
-module String    = Data.Text.String
-module StringLabels = Data.Text.StringLabels
-module Genlex    = Languages.Genlex
-module Lexing    = Languages.Lexing
-module Parsing   = Languages.Parsing
-module Scanf     = Languages.Scanf
-module Str       = Languages.Str
-module Format    = Languages.Format
-module Printf    = Languages.Printf
-module Marshal   = Meta.Marshal
-module Oo        = Meta.Oo
-module Callback  = Meta.Callback
-module Gc        = Meta.Gc
-module Weak      = Meta.Weak
-module Obj       = Meta.Obj
-module CamlinternalMod = Meta.CamlinternalMod
-module CamlinternalOO  = Meta.CamlinternalOO
-module Arg       = System.Arg
-module Filename  = System.Filename
-module Unix      = System.Unix
-module UnixLabels= System.UnixLabels
-module Sys       = System.Sys
-module Random    = Util.Random
-module Printexc  = Printexc
-(*module Pa_type_conv = Toolchain.Boilerplate.Type_conv*)
-(**/**)
+   {topic Control}
+*)
+
+module  Exceptions= Extlib.ExtPrintexc.Printexc
+module  Return    = Extlib.Return
+module  Monad     = Extlib.Monad
+
+(**
+   {4 Concurrency}
+
+   {topic Concurrency}
+*)
+
+module  Concurrency = Extlib.Concurrent
+
+(**
+   {5 Built-in threads}
+
+   These modules are only defined in multi-threaded versions of OCaml Batteries
+   Included. To use a multi-threaded version, please see {{:???}the documentation}.
+*)
+
+module  Condition = Batlib_Baselib_Condition
+module  Event     = Batlib_Baselib_Event
+module  Mutex     = Extlib_threads.ExtMutex.Mutex
+module  RMutex    = Extlib_threads.RMutex
+module  Thread    = Batlib_Baselib_Thread
+
+(**
+   All the definitions of built-in concurrency primitives.
+
+   These definitions are grouped as one module to allow simple replacement of these
+   primitives by other implementations of concurrency, such as coThreads.
+
+   @inline none
+*)
+module  Threads   =
+struct
+  module Condition = Condition
+  module Event     = Event
+  module Mutex     = Mutex
+  module RMutex    = RMutex
+  module Thread    = Thread
+end
+
+(*
+  {5 coThreads}
+
+  Not implemented yet.
+
+module  CoCondition = CoThread.Condition
+module  CoEvent     = CoThread.Event
+module  CoMutex     = CoThread.Mutex
+module  CoRMutex    = CoThread.RMutex
+module  CoThread    = CoThread.Thread
+module  Threads   =
+struct
+  module Condition = CoCondition
+  module Event     = CoEvent
+  module Mutex     = CoMutex
+  module RMutex    = CoRMutex
+  module Thread    = CoThread
+end
+*)
+
+(*
+  {5 Shared memory}
+  Not implemented yet
+*)
+
+(**{3 Input/Output}
+
+   {topic IO}*)
+
+module  IO = Extlib.IO
+
+(** @topic Network*)
+module Netchannels = Libs.ExtNetchannels.Netchannels
 
 
+
+(**{4 Compression / decompression}
+
+   {topic Compression}
+   {topic Decompression}
+*)
+
+module  Codec = Libs.Common.Compress
+module  GZip  = Libs.GZip
+(*
+module  Bz2
+module  Zip
+module  Transcode  (*Unicode transcoding*)
+*)
+
+(**{3 Data containers}
+
+   {topic Data}
+   {topic Container}*)
+
+module Data = Extlib.Interfaces
+
+(**
+   {4 Mutable data containers}
+
+   {topic Mutable}
+*)
+
+module  Array    = Extlib.ExtArray.Array
+module  Bigarray = Extlib.ExtBigarray.Bigarray
+module  Dllist   = Extlib.Dllist
+module  DynArray = Extlib.DynArray
+module  Enum     = Extlib.Enum
+module  Global   = Extlib.Global
+module  Hashtbl  = Extlib.ExtHashtbl.Hashtbl
+module  RefList  = Extlib.RefList 
+module  Queue    = Extlib.ExtQueue.Queue
+module  Ref      = Extlib.Ref
+module  Stack    = Extlib.ExtStack.Stack
+module  Stream   = Extlib.ExtStream.Stream
+module  Vect     = Extlib.Vect
+  
+(**
+   {4 Persistent data containers}
+
+   {topic Persistent}
+*)      
+
+module  Lazy     = Batlib_Baselib_Lazy
+module  LazyList = Extlib.LazyList
+module  List     = Extlib.ExtList.List
+module  Map      = Extlib.ExtMap.Map
+module  MultiPMap= Extlib.MultiPMap
+module  Option   = Extlib.Option
+module  PMap     = Extlib.PMap
+module  PSet     = Extlib.PSet
+module  Set      = Extlib.ExtSet.Set
+
+(**{3 Data}
+
+   {topic Data}
+*)
+
+module  Unit     = Extlib.ExtUnit.Unit
+
+(**{4 Logical data}
+
+   {topic Logical}
+   {topic Boolean}
+*)
+
+module  Bool     = Extlib.ExtBool.Bool
+module  BitSet   = Extlib.BitSet
+
+(**{4 Numeric data}
+
+   {topic Numeric}
+*)
+
+module  Numeric  = Extlib.Number 
+module  Big_int  = Extlib.ExtBig_int.Big_int
+module  Complex  = Extlib.ExtComplex.Complex
+module  Float    = Extlib.ExtFloat.Float
+module  Int      = Extlib.ExtInt.Int
+module  Int32    = Extlib.ExtInt32.Int32
+module  Int64    = Extlib.ExtInt64.Int64
+module  Native_int=Extlib.ExtNativeint.Native_int
+module  Num      = Extlib.ExtNum.Num
+module  Safe_float= Extlib.ExtFloat.Safe_float
+module  Safe_int = Extlib.ExtInt.Safe_int
+
+(**{4 Textual data}
+
+   {topic Textual}*)
+
+
+(*module  Text (*Definition of text-related interfaces*)*)
+module  Buffer  = Extlib.ExtBuffer.Buffer
+module  Char    = Extlib.ExtChar.Char
+module  UTF8    = Extlib.ExtUTF8.UTF8
+module  Rope    = Extlib.Rope
+module  UChar   = Extlib.ExtUChar.UChar
+module  String  = Extlib.ExtString.String
+module  Str     = Extlib.ExtStr.Str
+(*module  StringText (A module containing aliases to String and modified   Char)*)
+(*module  RopeText (As StringText but with implementations from Rope and  UChar)*)
+(*module  UTF8Text (As StringText but with implementations from UTF8 and UChar)*)
+module CharEncodings = Extlib.CharEncodings
+
+(**{3 Tools included in the distribution}
+
+   {topic Distribution}
+*)
+
+(**{4 External tools}
+
+   {topic Externals}
+*)
+
+
+module  Packages = Libs.ExtFindlib.Findlib
+module  Compilers= Libs.Compilers
+
+(**{4 Language internals}
+
+   Here be dragons.
+
+   {topic Internals}
+*)
+
+module  Callback = Batlib_Baselib_Callback
+module  Gc       = Extlib.ExtGc.Gc
+module  Marshal  = Extlib.ExtMarshal.Marshal
+module  Modules  = Batlib_Baselib_CamlinternalMod
+module  Obj      = Batlib_Baselib_Obj
+module  Oo       = Extlib.ExtOo.Oo
+module  Weak     = Batlib_Baselib_Weak
+
+         
+(*
+              =====module  Network (*placeholders*) =====
+module  URL
+module  Netencoding 
+module  Base64
+module  QuotedPrintable
+module  Q
+module  URL
+module  Html
+         
+              ====module module  Http ====
+module  Http
+module  Http_client
+module  Cgi_*
+module  Httpd_*
+module  MIME  
+              ====module module  Ftp ====
+module  Ftp_client  
+              ====module module  Mail ====
+module  Netmail
+module  Pop
+module  Sendmail
+module  Smtp  
+              ====module module  Generic server ====
+module  Netplex_*  
+              ====module module  RPC ====
+module  Rpc_*  
+              ====module module  Languages ====*)
+
+
+module  Lexing = Batlib_Baselib_Lexing
+module  Parsing= Batlib_Baselib_Parsing
+module  Format = Extlib.ExtFormat.Format
+module  Printf = Extlib.ExtPrintf.Printf
+module  Printf2= Extlib.ExtPrintf2
+(* module  PCRE (*placeholder*)*)
+module  Scanf  = Extlib.ExtScanf.Scanf
+module  SExpr  = Libs.ExtSexp_Conv.Sexp_conv
+
+
+(**{3 Operations on the system}
+
+   {topic System}
+*)
+
+module Arg      = Extlib.ExtArg.Arg
+module File     = Extlib.File
+module OptParse = Extlib.OptParse
+module Path     = Batlib_Baselib_Filename
+module Shell    = Extlib.ExtSys.Sys
+module Unix     = Extlib.ExtUnix.Unix
+(*module  Equeue:placeholder*)
+
+
+(**{3 Unclassified}
+
+   {topic Unclassified}
+*)
+
+module Base64           = Extlib.Base64
+module Batteries_config = Batteries_config
+module MD5              = Extlib.ExtDigest.Digest
+module Random           = Extlib.ExtRandom.Random
+module Date             = Libs.ExtNetdate.Netdate
+
+
+(**
+   Preview of future modules.
+
+   @topic Future
+*)
+module  Future =
+struct
+(*  module Lexers = Extlib.ExtGenlex.Languages*)
+  module Genlex      = Extlib.ExtGenlex.Genlex
+  module CharParser  = Extlib.CharParser
+  module UCharParser = Extlib.UCharParser
+  module ParserCo    = Extlib.ParserCo
+  module Path        = Extlib.Path
+  module Result      = Extlib.Result
+  module Logger      = Extlib.Logger
+end

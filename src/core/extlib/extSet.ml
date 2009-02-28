@@ -24,19 +24,7 @@ TYPE_CONV_PATH "Batteries.Data.Persistent" (*For Sexplib, Bin-prot...*)
 
 module Set =
 struct
-  module type OrderedType =
-  sig
-    type t
-      (** The type of the set elements. *)
-    val compare : t -> t -> int
-      (** A total ordering function over the set elements.
-          This is a two-argument function [f] such that
-          [f e1 e2] is zero if the elements [e1] and [e2] are equal,
-          [f e1 e2] is strictly negative if [e1] is smaller than [e2],
-          and [f e1 e2] is strictly positive if [e1] is greater than [e2].
-          Example: a suitable ordering function is the generic structural
-          comparison function {!Pervasives.compare}. *)
-  end
+  module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Set.Make}. *)
 
 module type S =
@@ -93,6 +81,22 @@ module type S =
        The elements of [s] are presented to [f] in increasing order
        with respect to the ordering over the type of the elements. *)
 
+    val map: (elt -> elt) -> t -> t
+      (** [map f x] creates a new set with elements [f a0],
+	  [f a1]... [f an], where [a1], ..., [an] are the
+	  values contained in [x]*)
+
+    val filter: (elt -> bool) -> t -> t
+    (** [filter p s] returns the set of all elements in [s]
+       that satisfy predicate [p]. *)
+
+    val filter_map: (elt -> elt option) -> t -> t
+      (** [filter_map f m] combines the features of [filter] and
+	  [map].  It calls calls [f a0], [f a1], [f an] where [a0..an]
+	  are the elements of [m] and returns the set of pairs [bi]
+	  such as [f ai = Some bi] (when [f] returns [None], the
+	  corresponding element of [m] is discarded). *)
+
     val fold: (elt -> 'a -> 'a) -> t -> 'a -> 'a
     (** [fold f s a] computes [(f xN ... (f x2 (f x1 a))...)],
        where [x1 ... xN] are the elements of [s], in increasing order. *)
@@ -104,10 +108,6 @@ module type S =
     val exists: (elt -> bool) -> t -> bool
     (** [exists p s] checks if at least one element of
        the set satisfies the predicate [p]. *)
-
-    val filter: (elt -> bool) -> t -> t
-    (** [filter p s] returns the set of all elements in [s]
-       that satisfy predicate [p]. *)
 
     val partition: (elt -> bool) -> t -> t * t
     (** [partition p s] returns a pair of sets [(s1, s2)], where
@@ -153,6 +153,12 @@ module type S =
 	  to the ordering [Ord.compare], where [Ord] is the argument
 	  given to {!Set.Make}. *)
 
+    val backwards: t -> elt Enum.t
+      (** Return an enumeration of all elements of the given set.
+	  The returned enumeration is sorted in decreasing order with respect
+	  to the ordering [Ord.compare], where [Ord] is the argument
+	  given to {!Set.Make}. *)
+
     val of_enum: elt Enum.t -> t
 
 
@@ -169,6 +175,35 @@ module type S =
       ('a InnerIO.output -> elt -> unit) -> 
       'a InnerIO.output -> t -> unit
 
+      (** {6 Override modules}*)
+      
+    (** Operations on {!Set} without exceptions.*)
+    module ExceptionLess : sig
+      val min_elt: t -> elt option
+      val max_elt: t -> elt option
+      val choose:  t -> elt option
+    end
+      
+      
+    (** Operations on {!Set} with labels.
+	
+	This module overrides a number of functions of {!Set} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Set}.
+    *)
+    module Labels : sig
+      val iter : f:(elt -> unit) -> t -> unit
+      val fold : f:(elt -> 'a -> 'a) -> t -> init:'a -> 'a
+      val for_all : f:(elt -> bool) -> t -> bool
+      val exists : f:(elt -> bool) -> t -> bool
+      val map: f:(elt -> elt) -> t -> t
+      val filter : f:(elt -> bool) -> t -> t
+      val filter_map: f:(elt -> elt option) -> t -> t
+      val partition : f:(elt -> bool) -> t -> t * t
+    end
+      
   end
     (** Output signature of the functor {!Set.Make}. *)
 
@@ -182,24 +217,46 @@ module type S =
     external impl_of_t : t -> implementation = "%identity"
     external t_of_impl : implementation -> t = "%identity"
 
-    let enum t =
+(*    let enum t =
       let queue = Queue.create () in
       let rec next () = 
-	match 
-	  try  Some (Queue.pop queue) 
-	  with Queue.Empty -> None
-	with None       -> raise Enum.No_more_elements
-	  |  Some Empty -> next ()
-	  | Some Node (l, e, r, _) -> 
+	let item =
+	  try Queue.pop queue
+	  with Queue.Empty ->
+	    raise Enum.No_more_elements
+	in
+	match item with
+	  | Empty -> next ()
+	  | Node (l, e, r, _) ->
 	      Queue.push l queue;
 	      Queue.push r queue;
 	      e
       in Queue.add (impl_of_t t) queue;
-	Enum.from next
+	Enum.from next*)
+
+    let enum t =
+      let rec aux = function
+	| Empty             -> Enum.empty ()
+	| Node (l, e, r, _) ->
+	    Enum.append (aux l) (Enum.delay (fun () -> Enum.append (Enum.singleton e) (aux r)))
+      in aux (impl_of_t t)
+
+    let backwards t =
+      let rec aux = function
+	| Empty             -> Enum.empty ()
+	| Node (l, e, r, _) ->
+	    Enum.append (aux r) (Enum.delay (fun () -> Enum.append (Enum.singleton e) (aux l)))
+      in aux (impl_of_t t)
 
     let of_enum e = 
       Enum.fold add empty e
+
+    let map f e = fold (fun x acc -> add (f x) acc) empty e
 	
+    let filter f e = fold (fun x acc -> if f x then add x acc else acc) empty e
+
+    let filter_map f e = fold (fun x acc -> match f x with Some v -> add v acc | _ -> acc) empty e
+
     let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
       Enum.print ~first ~last ~sep print_elt out (enum t)
 
@@ -233,7 +290,31 @@ module type S =
 	    let result = sexp_of_t (impl_of_t t)
 	  end in Local.result
 
+    module ExceptionLess =
+    struct
+      let min_elt t = try Some (min_elt t) with Not_found -> None
+      let max_elt t = try Some (max_elt t) with Not_found -> None
+      let choose  t = try Some (choose t)  with Not_found -> None
+    end
 
+    module Labels =
+    struct
+      let iter ~f t = iter f t
+      let fold ~f t ~init = fold f t init
+      let for_all ~f t    = for_all f t
+      let exists ~f t     = exists f t
+      let map    ~f t     = map f t
+      let filter ~f t     = filter f t
+      let filter_map ~f t = filter_map f t
+      let partition ~f t  = partition f t
+    end
   end
 
+
+  module StringSet  = Make(ExtString.String)
+  module IStringSet = Make(ExtString.String.IString)
+  module NumStringSet = Make(ExtString.String.NumString)
+  module RopeSet    = Make(Rope)
+  module IRopeSet   = Make(Rope.IRope)
+  module IntSet     = Make(ExtInt.Int)
 end

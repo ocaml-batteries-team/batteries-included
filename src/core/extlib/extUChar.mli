@@ -7,6 +7,8 @@
     This module implements Unicode (actually ISO-UCS) characters.  All
     31-bit code points are allowed.
 
+    {b Note} For conversions to lower/upercase, see modules {!UTF8} and {!Rope}.
+
     @author Yamagata Yoriyuki (Camomile module)
     @author Edgar Friendly
     @author David Teller
@@ -51,19 +53,20 @@ val to_char : t -> char
 
       @raise Out_of_range if [u] can not be represented by Latin-1.*)
 
+val code : t -> int
 (** [code u] returns the Unicode code number of [u].
     If the value can not be represented by a positive integer,
     raise Out_of_range *)
-val code : t -> int
 
+val chr : int -> t
 (** [code n] returns the Unicode character with the code number [n]. 
    If n >= 2^31 or n < 0, raises [invalid_arg] *)
-val chr : int -> t
 
+
+external uint_code : t -> int = "%identity"
 (** [uint_code u] returns the Unicode code number of [u].
    The returned int is unsigned, that is, on 32-bits platforms,
    the sign bit is used for storing the 31-th bit of the code number. *)
-external uint_code : t -> int = "%identity"
 
 val chr_of_uint : int -> t
 (** [chr_of_uint n] returns the Unicode character of the code number [n].

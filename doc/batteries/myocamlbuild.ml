@@ -102,13 +102,17 @@ struct
     flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
 
     (*The command-line for [use_batteries] and [use_batteries_r]*)
-
-    let cl_use_boilerplate = [A"-package"; A "batteries.pa_type_conv.syntax,batteries,sexplib.syntax"]
-    and cl_use_batteries   = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"; A "-package"; A "batteries"]
+    let cl_use_boilerplate =
+      [A"-package"; A "batteries.pa_type_conv.syntax,batteries,sexplib.syntax"]
+    and cl_use_batteries   =
+      let syntaxes = ["pa_openin";"pa_where";"pa_batteries";"pa_comprehension";"pa_strings"] in
+      [A "-package";
+       A (String.concat "," (List.map (Printf.sprintf "batteries.%s.syntax") syntaxes));
+       A "-package"; A "batteries"]
     and cl_use_batteries_o = []
               (*[cl_use_batteries_o]: extensions which only make sense in original syntax*)
     and cl_camlp4o         = [A"-syntax";  A "camlp4o"]
-    and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in
+    and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in (*Temporary fix -- ocamlfind really behaves strangely*)
 
     let cl_boilerplate_original = cl_use_boilerplate @ cl_camlp4o
     and cl_boilerplate_revised  = cl_use_boilerplate @ cl_camlp4r
@@ -164,13 +168,72 @@ struct
 
 end
 
+
+(**
+   {1 Using Batteries as a dynamically-linked library}
+
+   Due to the model of OCaml, to do this, we actually invert the usual dynamic linking
+   mechanism: Batteries is used as a main program (run.byte/run.native), while the
+   program compiled by the user is actually compiled to a dynamically-loaded .cma/.cmxs.
+*)
+module Dynamic = struct
+  let before_options () = ()
+  let after_rules () =
+    begin
+      rule ".cma to .dynml (no threads)"
+	~prod:"%.dyn.ml"
+	~dep:"%.cma"
+	begin fun env build -> 
+	  let dest = env "%.dyn.ml"
+	  and cma  = env "%.cma" in
+	  let contents = Printf.sprintf "%s%S%s"
+"(*Locate Batteries loader*)
+Findlib.init ();;
+let binary = Findlib.resolve_path \"@batteries_nothreads/run.byte\";; (*Note: we'll need to determine if it's batteries_nothreads 
+		  				               or batteries-threads, at compile-time.*)
+
+
+(*Prepare command-line*)
+let buf = Buffer.create 80;;
+Printf.bprintf buf \"%S %S -- \" binary (Filename.concat (Filename.dirname (Sys.argv.(0)))" cma
+(*(Pathname.concat Pathname.current_dir_name cma)(*Should do one of the following:
+						 - replace this with the complete path
+						 - build the path at run-time from [Sys.argv.(0)]
+						 - find a way to embed the plug-in inside the .byte *)*)
+");;\nfor i = 1 to Array.length Sys.argv - 1 do
+  Printf.bprintf buf \"%S \" Sys.argv.(i)
+done;;
+
+let command = Buffer.contents buf in
+  Printf.eprintf \"Requesting load of %S\\n...\\n%!\" command;
+  Sys.command command
+"
+	  in Echo ([contents], dest)
+	end;
+
+      rule ".dyn.ml to .dynbyte"
+	~prod:"%.dynbyte"
+	~dep: "%.dyn.byte" 
+	begin
+	  fun env build ->
+	  let dest = env "%.dynbyte"
+	  and src  = env "%.dyn.byte"
+	  in
+	    Cmd (S[A"cp"; A src; A dest])
+	end
+
+    end
+end
+
 let _ = dispatch begin function
    | Before_options ->
        OCamlFind.before_options ();
-       Batteries.before_options ()
+       Batteries.before_options ();
+       Dynamic.before_options ()
    | After_rules ->
        OCamlFind.after_rules ();
-       Batteries.after_rules ()
+       Batteries.after_rules ();
+       Dynamic.after_rules()
 
        
    | _ -> ()

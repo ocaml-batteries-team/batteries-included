@@ -2,8 +2,8 @@
  * ExtString - Additional functions for string manipulations.
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * Copyright (C) 2008 Edgar Friendly
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,6 @@ sig
 
 
 exception Invalid_string
-
 (** An exception thrown when some operation required a string
     and received an unacceptable string.*)
 
@@ -137,7 +136,18 @@ val fold_right : (char -> 'a -> 'a) -> string -> 'a -> 'a
   (** [fold_right f s b] is
       [f s.[0] (f s.[1] (... (f s.[n-1] b) ...))] *)
 
+val filter : (char -> bool) -> string -> string
+  (** [filter f s] returns a copy of string [s] in which only
+      characters [c] such that [f c = true] remain.*)
+
 val filter_map : (char -> char option) -> string -> string
+  (** [filter_map f s] calls [(f a0) (f a1).... (f an)] where [a0..an] are
+      the characters of [s]. It returns the string of characters [ci] such as
+      [f ai = Some ci] (when [f] returns [None], the corresponding element of
+      [s] is discarded). *)
+
+
+
 
 val iter : (char -> unit) -> string -> unit
 (** [String.iter f s] applies function [f] in turn to all
@@ -173,28 +183,48 @@ val contains : string -> char -> bool
    appears in the string [s]. *)
 
 val contains_from : string -> int -> char -> bool
-(** [String.contains_from s start c] tests if character [c]
-   appears in the substring of [s] starting from [start] to the end
-   of [s].
-   Raise [Invalid_argument] if [start] is not a valid index of [s]. *)
+  (** [String.contains_from s start c] tests if character [c] appears in
+      the substring of [s] starting from [start] to the end of [s].
+
+      @raise Invalid_argument if [start] is not a valid index of [s]. *)
 
 val rcontains_from : string -> int -> char -> bool
 (** [String.rcontains_from s stop c] tests if character [c]
    appears in the substring of [s] starting from the beginning
    of [s] to index [stop].
-   Raise [Invalid_argument] if [stop] is not a valid index of [s]. *)
+   @raise Invalid_argument if [stop] is not a valid index of [s]. *)
 
 
 val find : string -> string -> int
-  (** [find s x] returns the starting index of the string [x]
-      within the string [s] or raises [Invalid_string] if [x]
-      is not a substring of [s]. *)
+  (** [find s x] returns the starting index of the first occurrence of
+      string [x] within string [s].
+
+      {b Note} This implementation is optimized for short strings.
+
+      @raise Invalid_string if [x] is not a substring of [s]. *)
+
+val find_from: string -> int -> string -> int
+  (** [find_from s ofs x] behaves as [find s x] but starts searching
+      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].*)
+
+val rfind : string -> string -> int
+  (** [rfind s x] returns the starting index of the last occurrence
+      of string [x] within string [s].
+
+      {b Note} This implementation is optimized for short strings.
+
+      @raise Invalid_string if [x] is not a substring of [s]. *)
+
+val rfind_from: string -> int -> string -> int
+  (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
+      at offset [ofs]. [rfind s x] is equivalent to [rfind_from s (String.length s - 1) x].*)
+
 
 val ends_with : string -> string -> bool
-  (** [ends_with s x] returns true if the string [s] is ending with [x]. *)
+  (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise. *)
 
 val starts_with : string -> string -> bool
-  (** [starts_with s x] return true if [s] is starting with [x]. *)
+  (** [starts_with s x] returns [true] if [s] is starting with [x], [false] otherwise. *)
 
 val exists : string -> string -> bool
   (** [exists str sub] returns true if [sub] is a substring of [str] or
@@ -214,19 +244,31 @@ val trim : string -> string
   (** Returns the same string but without the leading and trailing
       whitespaces. *)
 
+val left : string -> int -> string
+(**[left r len] returns the string containing the [len] first characters of [r]*)
+
+val right : string -> int -> string
+(**[left r len] returns the string containing the [len] last characters of [r]*)
+
+val head : string -> int -> string
+(**as {!left}*)
+
+val tail : string -> int -> string
+(**[tail r pos] returns the string containing all but the [pos] first characters of [r]*)
+
 val strip : ?chars:string -> string -> string
   (** Returns the string without the chars if they are at the beginning or
       at the end of the string. By default chars are " \t\r\n". *)
 
 val uppercase : string -> string
 (** Return a copy of the argument, with all lowercase letters
-   translated to uppercase, including accented letters of the ISO
-   Latin-1 (8859-1) character set. *)
+    translated to uppercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
 
 val lowercase : string -> string
 (** Return a copy of the argument, with all uppercase letters
-   translated to lowercase, including accented letters of the ISO
-   Latin-1 (8859-1) character set. *)
+    translated to lowercase, including accented letters of the ISO
+    Latin-1 (8859-1) character set. *)
 
 val capitalize : string -> string
 (** Return a copy of the argument, with the first character set to uppercase. *)
@@ -241,7 +283,7 @@ val sub : string -> int -> int -> string
 (** [String.sub s start len] returns a fresh string of length [len],
    containing the characters number [start] to [start + len - 1]
    of string [s].
-   Raise [Invalid_argument] if [start] and [len] do not
+   @raise Invalid_argument if [start] and [len] do not
    designate a valid substring of [s]; that is, if [start < 0],
    or [len < 0], or [start + len > ]{!String.length}[ s]. *)
 
@@ -249,7 +291,7 @@ val fill : string -> int -> int -> char -> unit
 (** [String.fill s start len c] modifies string [s] in place,
    replacing the characters number [start] to [start + len - 1]
    by [c].
-   Raise [Invalid_argument] if [start] and [len] do not
+   @raise Invalid_argument if [start] and [len] do not
    designate a valid substring of [s]. *)
 
 val blit : string -> int -> string -> int -> int -> unit
@@ -258,7 +300,8 @@ val blit : string -> int -> string -> int -> int -> unit
    string [dst], starting at character number [dstoff]. It works
    correctly even if [src] and [dst] are the same string,
    and the source and destination chunks overlap.
-   Raise [Invalid_argument] if [srcoff] and [len] do not
+   
+    @raise Invalid_argument if [srcoff] and [len] do not
    designate a valid substring of [src], or if [dstoff] and [len]
    do not designate a valid substring of [dst]. *)
 
@@ -283,12 +326,20 @@ val replace : str:string -> sub:string -> by:string -> bool * string
       within [str] has been replaced by the string [by]. The boolean
       is true if a subtitution has taken place. *)
 
+val repeat: string -> int -> string
+(** [repeat s n] returns [s ^ s ^ ... ^ s] *)
+
 (** {6 Splitting around}*)
 
 val split : string -> string -> string * string
   (** [split s sep] splits the string [s] between the first
       occurrence of [sep].
-      raises [Invalid_string] if the separator is not found. *)
+      @raise Invalid_string if the separator is not found. *)
+
+val rsplit : string -> string -> string * string
+  (** [rsplit s sep] splits the string [s] between the last
+      occurrence of [sep].
+      @raise Invalid_string if the separator is not found. *)
 
 val nsplit : string -> string -> string list
   (** [nsplit s sep] splits the string [s] into a list of strings
@@ -296,7 +347,7 @@ val nsplit : string -> string -> string list
       [nsplit "" _] returns the empty list. *)
 
 val join : string -> string list -> string
-  (** Same as [concat] *)
+  (** Same as {!concat} *)
 
 val slice : ?first:int -> ?last:int -> string -> string
   (** [slice ?first ?last s] returns a "slice" of the string
@@ -318,7 +369,13 @@ val slice : ?first:int -> ?last:int -> string -> string
 
 val splice: string -> int -> int -> string -> string
   (** [String.splice s off len rep] cuts out the section of [s]
-      indicated by [off] and [len] and replaces it by [rep] *)
+      indicated by [off] and [len] and replaces it by [rep] 
+
+      Negative indexes are interpreted as counting from the end
+      of the string. If [off+len] is greater than [length s],
+      the end of the string is used, regardless of the value of
+      [len].
+*)
 
 val explode : string -> char list
   (** [explode s] returns the list of characters in the string [s]. *)
@@ -335,9 +392,18 @@ val compare: t -> t -> int
       allows the module [String] to be passed as argument to the functors
       {!Set.Make} and {!Map.Make}. *)
 
-val compare_without_case: t -> t -> int
+val icompare: t -> t -> int
   (** Compare two strings, case-insensitive. *)
 
+module IString : Interfaces.OrderedType with type t = t
+(** uses icompare as ordering function *)
+
+
+val numeric_compare: t -> t -> int
+  (** Compare two strings, sorting "abc32def" before "abc210abc" *)
+
+module NumString : Interfaces.OrderedType with type t = t
+(** uses numeric_compare as its ordering function *)
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
@@ -352,6 +418,14 @@ val print: 'a InnerIO.output -> string -> unit
 
 val println: 'a InnerIO.output -> string -> unit
 (**Print a string, end the line.*)
+
+val print_quoted: 'a InnerIO.output -> string -> unit
+(**Print a string, with quotes.
+
+   [print_quoted stdout "foo"] prints ["foo"] (with the quotes)
+
+   [print_quoted stdout "\"bar\""] prints ["\"bar\""] (with the quotes)
+*)
 
 (**/**)
 
@@ -375,11 +449,24 @@ external unsafe_fill :
     There is no loss of performance involved. *)
 module Cap:
 sig
-type 'a t constraint 'a = [< `Read | `Write]
-(** The type of capability strings. *)
+
+type 'a t 
+(** The type of capability strings.
+
+    If ['a] contains [[`Read]], the contents of the string may be read.
+    If ['a] contains [[`Write]], the contents of the string may be written.
+
+    Other (user-defined) capabilities may be added without loss of
+    performance or features. For instance, a string could be labelled
+    [[`Read | `UTF8]] to state that it contains UTF-8 encoded data and
+    may be used only for reading.  Conversely, a string labelled with
+    [[]] (i.e. nothing) can neither be read nor written. It can only
+    be compared for textual equality using OCaml's built-in [compare]
+    or for physical equality using OCaml's built-in [==].
+*)
 
 external length : _ t  -> int = "%string_length"
-(** Return the length (number of characters) of the given string. *)
+    (** Return the length (number of characters) of the given string. *)
 
 val is_empty : _ t -> bool 
 (** Determine if a string is empty. *)
@@ -478,7 +565,17 @@ val fold_right : (char -> 'a -> 'a) -> [> `Read] t -> 'a -> 'a
   (** [fold_right f s b] is
       [f s.[0] (f s.[1] (... (f s.[n-1] b) ...))] *)
 
-val filter_map : (char -> char option) -> string -> string
+
+val filter : (char -> bool) -> [> `Read] t -> _ t
+  (** [filter f s] returns a copy of string [s] in which only
+      characters [c] such that [f c = true] remain.*)
+
+val filter_map : (char -> char option) -> [> `Read] t -> _ t
+  (** [filter_map f s] calls [(f a0) (f a1).... (f an)] where [a0..an] are
+      the characters of [s]. It returns the string of characters [ci] such as
+      [f ai = Some ci] (when [f] returns [None], the corresponding element of
+      [s] is discarded). *)
+
 
 val iter : (char -> unit) -> [> `Read] t -> unit
 (** [String.iter f s] applies function [f] in turn to all
@@ -531,6 +628,24 @@ val find : [> `Read] t -> [> `Read] t -> int
       within the string [s] or raises [Invalid_string] if [x]
       is not a substring of [s]. *)
 
+val find_from: [> `Read] t -> int -> [> `Read] t -> int
+  (** [find_from s ofs x] behaves as [find s x] but starts searching
+      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].*)
+
+val rfind : [> `Read] t -> [> `Read] t -> int
+  (** [rfind s x] returns the starting index of the last occurrence
+      of string [x] within string [s].
+
+      {b Note} This implementation is optimized for short strings.
+
+      @raise Invalid_string if [x] is not a substring of [s]. *)
+
+val rfind_from: [> `Read] t -> int -> [> `Read] t -> int
+  (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
+      at offset [ofs]. [rfind s x] is equivalent to [rfind_from s (String.length s - 1) x].*)
+
+
+
 val ends_with : [> `Read] t -> [> `Read] t -> bool
   (** [ends_with s x] returns true if the string [s] is ending with [x]. *)
 
@@ -554,6 +669,19 @@ val rchop : [> `Read] t -> _ t
 val trim : [> `Read] t -> _ t
   (** Returns the same string but without the leading and trailing
       whitespaces. *)
+
+val left : [> `Read] t -> int -> _ t
+(**[left r len] returns the string containing the [len] first characters of [r]*)
+
+val right : [> `Read] t -> int -> _ t
+(**[left r len] returns the string containing the [len] last characters of [r]*)
+
+val head : [> `Read] t -> int -> _ t
+(**as {!left}*)
+
+val tail : [> `Read] t -> int -> _ t
+(**[tail r pos] returns the string containing all but the [pos] first characters of [r]*)
+
 
 val strip : ?chars:[> `Read] t -> [> `Read] t -> _ t
   (** Returns the string without the chars if they are at the beginning or
@@ -624,9 +752,17 @@ val replace : str:[> `Read] t -> sub:[> `Read] t -> by:[> `Read] t -> bool * _ t
       within [str] has been replaced by the string [by]. The boolean
       is true if a subtitution has taken place. *)
 
+val repeat: [> `Read] t -> int -> _ t
+(** [repeat s n] returns [s ^ s ^ ... ^ s] *)
+
 (** {6 Splitting around}*)
 val split : [> `Read] t -> [> `Read] t -> _ t * _ t
   (** [split s sep] splits the string [s] between the first
+      occurrence of [sep].
+      raises [Invalid_string] if the separator is not found. *)
+
+val rsplit : [> `Read] t -> string -> string * string
+  (** [rsplit s sep] splits the string [s] between the last
       occurrence of [sep].
       raises [Invalid_string] if the separator is not found. *)
 
@@ -676,7 +812,7 @@ val compare: [> `Read] t -> [> `Read] t -> int
       allows the module [String] to be passed as argument to the functors
       {!Set.Make} and {!Map.Make}. *)
 
-val compare_without_case: [> `Read] t -> [> `Read] t -> int
+val icompare: [> `Read] t -> [> `Read] t -> int
   (** Compare two strings, case-insensitive. *)
 
 (**/**)

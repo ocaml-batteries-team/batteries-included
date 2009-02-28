@@ -39,11 +39,12 @@ struct
     Options.ocamlopt   := ocamlfind & A"ocamlopt";
     Options.ocamldep   := ocamlfind & A"ocamldep";
     Options.ocamldoc   := ocamlfind & A"ocamldoc";
+    (*OCAMLDOC-g Options.ocamldoc   := S[A"/home/yoric/tmp/ocaml-community/bin/ocamlrun"; A "-b"; A"/home/yoric/tmp/ocaml-community/bin/ocamldoc"];*)
     Options.ocamlmktop := ocamlfind & A"ocamlmktop"
 
   let after_rules () =
        (* When one link an OCaml library/binary/package, one should use -linkpkg *)
-       flag ["ocaml"; "byte"; "link"] & A"-linkpkg";
+       flag ["ocaml"; "byte"; "program"] & A"-linkpkg";
 
        (* For each ocamlfind package one inject the -package option when
        	* compiling, computing dependencies, generating documentation and
@@ -87,12 +88,32 @@ struct
     (*Options.ocamldoc  := A"ocamldoc"*) ()
 
   let after_rules () = 
+    dep  ["ocaml"; "doc"]   & ["build/odoc_tags.cmo"];
+    flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
+				A "-i"; A "build";
+				A "-g"; A "odoc_tags.cmo"; 
+			        A "-t"; A "OCaml Batteries Included" ;
+				A "-intro"; A "../build/intro.text"]
+(*OCAMLDOC -g    flag ["ocaml"; "doc"]   & S[A "-i"; A "/tmp/";
+				A "-g"; A "odoc_tags.cmo"; 
+			        A "-t"; A "OCaml Batteries Included" ;
+				A "-intro"; A "../build/intro.text";
+(*			        A "-I"; A "/home/yoric/tmp/ocaml-community/lib/ocaml";
+			        A "-I"; A "/home/yoric/tmp/ocaml-community/lib/ocaml/threads";*)
+				A "-I"; A "/home/yoric/usr/local/lib/ocaml";
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/std-lib/threads"; 
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/sexplib";
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/camomile";
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/camlzip" ;
+			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/netstring"]
+*)
+(*  let after_rules () = 
     dep  ["ocaml"; "doc"]   & ["build/odoc_generator_batlib.cmo"];
     flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
 				A "-i"; A "build";
 				A "-g"; A "odoc_generator_batlib.cmo"; 
 			        A "-t"; A "OCaml Batteries Included" ;
-				A "-intro"; A "../build/intro.text"]
+				A "-intro"; A "../build/intro.text"]*)
 end
 
 
@@ -292,7 +313,11 @@ struct
      sig
         (*contents of foo.mli minus the first comments*)
      end
-     ]*)
+     ]
+
+     As an exception, does not extract anything for modules whose name
+     starts with Inner.
+  *)
   let generate_mli buf l = 
     (*Extract the first comments, up-to the first ocamldoc not followed by a newline.*)
     let parse_header channel = 
@@ -365,53 +390,20 @@ struct
 	  | _ -> return strm__
       in
 	next_token (Stream.of_channel channel)
-
-    (*let scan chan = *)
-
-    (*TODO: Scan the start of the file until the first [(**]
-            Initialize counter at 1
-            Then scan what comes next until either
-                  1. [(*]   -> increment counter
-                  2. [*)]   -> decrement counter
-            If counter reaches 0, stop and return [(hd, tl)]
-            where [hd] is everything up to this point
-            and   [tl] is the rest of the file, either as a [channel_in]
-            or as a [string] or [string_list]
-    *)*)
-    (*let scan file*)
-(*    in
-    let feed file buf () =
-      with_input_file file (
-	fun cin ->
-	  try while true do
-	    Buffer.add_string buf  (input_line cin);
-	    Buffer.add_char   buf  '\n'
-	  done
-	  with End_of_file -> ()
-      )in
-    let print_modules buf () =
-      List.iter (
-	fun (name, src) -> 
-	  let name = try 
-	    let index = String.find name ".inferred" in
-	      String.sub name 0 index
-	  with String.Invalid_string -> name in
-	  Printf.bprintf buf "module %s:(*from %S*)\nsig\n%a\nend\n" name src (feed src) ()
-	  (*try ignore (String.find name ".inferred")
-	  with String.Invalid_string -> Printf.bprintf buf "module %s:(*from %S*)\nsig\n%a\nend\n" name src (feed src) ()*)
-      ) l in
-      (*  Printf.fprintf out "module %s:\nsig\n%a\nend\n" pack print_modules ()*)
-      print_modules buf ()*)
     in
   let print_modules buf () =
     List.iter (
       fun (name, src) ->
-	let name = try
-	  let index = String.find name ".inferred" in
-	    String.sub name 0 index
-	with String.Invalid_string -> name in
-	let (prefix, contents) = with_input_file src parse_header in
-	  Printf.bprintf buf "%s\nmodule %s:(*from %S*)\nsig\n%s\nend\n" prefix name src contents
+(*	Printf.eprintf "Extracting module %S name from %S\n" name src;
+	if try String.find name "Inner" <> 0 (*Don't extract from files whose name starts with Inner*)
+	   with String.Invalid_string -> true
+	then*)
+	  let name = try
+	    let index = String.find name ".inferred" in
+	      String.sub name 0 index
+	  with String.Invalid_string -> name in
+	  let (prefix, contents) = with_input_file src parse_header in
+	    Printf.bprintf buf "%s\nmodule %s:(*from %S*)\nsig\n%s\nend\n" prefix name src contents
     ) l
   in print_modules buf ()
 
@@ -617,6 +609,34 @@ expand_module include_dirs m ["ml"]) modules));
 	  Echo([Buffer.contents buf], dest)
       end
 
+    (**{6 Generation of batteries.mli}
+
+       A .mlhierarchy is a file containing the following constructions:
+       - [module Foo = Bar]
+       - [module Foo = struct (*recursively*) end]
+       - comments
+
+       From a .mlhierarchy, we can build a .ml, which is identical.
+       From a .mlhierarchy, we can also build a .mli, by 
+    *)
+(*
+    let not_used_yet () =
+      rule ".mlhierarchy to .ml" 
+	~prod:"%.ml"
+	~dep:"%.mlhierarchy" 
+	begin fun env build ->
+	  (*Just copy .mlhierarchy -> .ml*)
+	  assert false
+	end;
+
+      rule ".mlhierarchy to .mli"
+	~prod:"%.mli"
+	~dep:"%.mlhierarchy"
+	begin fun env build ->
+	  (*Parse .mlhierarchy*)
+	end;
+*)	
+
 end
 
 (**
@@ -625,11 +645,25 @@ end
 module Misc =
 struct
   let after_rules () =
+    (*Documentation*)
     flag ["ocaml"; "link"; "byte";   "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"; A "odoc_info.cma"]);
     flag ["ocaml"; "link"; "native"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"(*; A "odoc_info.cmxa"*)]);
     flag ["ocaml"; "docfile";        "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
     flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
-    flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"])    
+    flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
+
+    flag ["ocaml"; "link";    "use_sexplib"]  & S[A"-package"; A "sexplib"];
+    flag ["ocaml"; "compile"; "use_sexplib"]  & S[A"-package"; A "sexplib"];
+    flag ["ocaml"; "dep";     "use_sexplib"]  & S[A"-package"; A "sexplib"];
+(*
+    flag ["ocaml"; "doc";     "use_sexplib"]  & S[A"-I"; A"/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/sexplib"]*)
+(*    flag ["ocaml"; "doc";     "use_sexplib"]  & S[A"-predicates"; A "!preprocessor"; A "-package"; A "sexplib"]*)
+
+    flag ["ocaml"; "link"; "native"; "use_batteries_threads"] (A "src/main/threads/batteries.cma");
+(*    flag ["ocaml"; "pp";       "use_pa_optcomp"] (A"build/optcomp/pa_optcomp.cmo");*)
+    dep  ["ocaml"; "ocamldep"; "use_pa_optcomp"] ["src/main/threads/batteries.cma"]
+
+
 end
 
 (** Provide a library which is as complete as possible.
@@ -729,17 +763,56 @@ struct
 end
 *)
 
+module Preprocessing =
+struct
+  let before_options () = ()
+
+  let after_rules () = 
+(*    flag ["ocaml"; "pp";       "camlp4ofix"]  (S[A"camlp4o";
+						 A"-printer"; A"o";
+						 A"-sep"; A "";
+						 A "|";
+						 A "sed"; A "-e"; A"'s/\\*)/*)\\n/"]);*)
+(*    dep  ["ocaml"; "ocamldep"; "camlp4ofix"]  ["build/fix_camlp4_print.cmo"];
+    flag ["ocaml"; "pp";       "camlp4ofix"]  (S[A"camlp4"; 
+						 A"-parser";  A"Camlp4OCamlRevisedParser";
+						 A"-parser";  A"Camlp4OCamlParser";
+						 A"-printer"; A"Camlp4OCamlPrinter";
+						 A"-printer"; A"build/fix_camlp4_print.cmo"]);*)
+(*    flag ["ocaml"; "pp";       "camlp4ofix"]  (S[A"camlp4"; 
+						 A"-parser"; A"Camlp4OCamlRevisedParser";
+						 A"-parser"; A"Camlp4OCamlParser";
+						 A"-printer"; A"Camlp4OCamlPrinter";
+						 A"-sep"; A" "
+(*						 A"-sep"; A "\"(*hack*)\""*)]);*)
+
+    (* optcomp as a syntax extension *)
+    flag ["ocaml"; "pp";       "use_pa_optcomp"] (A"build/optcomp/pa_optcomp.cmo");
+    dep  ["ocaml"; "ocamldep"; "use_pa_optcomp"] ["build/optcomp/pa_optcomp.cmo"];
+
+    (* optcomp as a standalone preprocessor, original syntax *)
+    flag ["ocaml"; "pp";       "use_optcomp_o"] (A"build/optcomp/optcomp_o.byte");
+    dep  ["ocaml"; "ocamldep"; "use_optcomp_o"] ["build/optcomp/optcomp_o.byte"];
+
+    (* optcomp as a standalone preprocessor, revised syntax *)
+    flag ["ocaml"; "pp";       "use_optcomp_r"] (A"build/optcomp/optcomp_r.byte");
+    dep  ["ocaml"; "ocamldep"; "use_optcomp_r"] ["build/optcomp/optcomp_r.byte"]
+
+end
+
 let _ = dispatch begin function
    | Before_options ->
        OCamlFind.before_options     ();
        Documentation.before_options ();
-       Packs.before_options         ()
+       Packs.before_options         ();
+       Preprocessing.before_options ()
    | After_rules ->
        OCamlFind.after_rules     ();
        Documentation.after_rules ();
        Packs.after_rules         ();
 (*       Complete_mllib.after_rules ();*)
-       Misc.after_rules          ()
+       Misc.after_rules          ();
+       Preprocessing.after_rules ()
        
    | _ -> ()
 end

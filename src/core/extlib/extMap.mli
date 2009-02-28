@@ -1,7 +1,7 @@
 (* 
  * ExtMap - Additional map operations
  * Copyright (C) 1996 Xavier Leroy
- *               2008 David Teller
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,24 +29,17 @@
    and insertion take time logarithmic in the size of the map.
 
     @author Xavier Leroy (Base module)
-    @author David Teller
+    @author David Rajchenbach-Teller
+
+    @documents Map
 *)
 module Map:
 sig
 
-module type OrderedType =
-  sig
-    type t
-      (** The type of the map keys. *)
-    val compare : t -> t -> int
-      (** A total ordering function over the keys.
-          This is a two-argument function [f] such that
-          [f e1 e2] is zero if the keys [e1] and [e2] are equal,
-          [f e1 e2] is strictly negative if [e1] is smaller than [e2],
-          and [f e1 e2] is strictly positive if [e1] is greater than [e2].
-          Example: a suitable ordering function is the generic structural
-          comparison function {!Pervasives.compare}. *)
-  end
+  open ExtString
+  open ExtInt
+
+module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Map.Make}. *)
 
 module type S =
@@ -104,9 +97,29 @@ module type S =
        where [k1 ... kN] are the keys of all bindings in [m]
        (in increasing order), and [d1 ... dN] are the associated data. *)
 
+    val filter: ('a -> bool) -> 'a t -> 'a t
+      (**[filter f m] returns a map where only the values [a] of [m]
+	 such that [f a = true] remain. The bindings are passed to [f]
+	 in increasing order with respect to the ordering over the
+	 type of the keys. *)
+
+    val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
+      (**[filter f m] returns a map where only the key, values pairs
+	 [key], [a] of [m] such that [f key a = true] remain. The
+	 bindings are passed to [f] in increasing order with respect
+	 to the ordering over the type of the keys. *)
+
+    val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
+      (** [filter_map f m] combines the features of [filteri] and
+	  [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
+	  where [a0..an] are the elements of [m] and [key0..keyn] the
+	  respective corresponding keys. It returns the map of
+	  pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
+	  [None], the corresponding element of [m] is discarded). *)
+
     val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
-    (** Total ordering between maps.  The first argument is a total ordering
-        used to compare data associated with equal keys in the two maps. *)
+      (** Total ordering between maps.  The first argument is a total ordering
+          used to compare data associated with equal keys in the two maps. *)
 
     val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
     (** [equal cmp m1 m2] tests whether the maps [m1] and [m2] are
@@ -138,10 +151,78 @@ module type S =
       ('a InnerIO.output -> key -> unit) -> 
       ('a InnerIO.output -> 'c -> unit) -> 
       'a InnerIO.output -> 'c t -> unit
+
+    (** Output signature of the functor {!Map.Make}. *)
+      
+    (** {6 Override modules}*)
+      
+    (**
+       The following modules replace functions defined in {!Map} with functions
+       behaving slightly differently but having the same name. This is by design:
+       the functions meant to override the corresponding functions of {!Map}.
+       
+       To take advantage of these overrides, you probably want to
+       {{:../extensions.html#multiopen}{open several modules in one
+       operation}} or {{:../extensions.html#multialias}{alias several
+       modules to one name}}. For instance, to open a version of {!Map}
+       with exceptionless error management, you may write {v open Map,
+       ExceptionLess v}. To locally replace module {!Map} with a module of
+       the same name but with exceptionless error management, you may
+       write {v module Map = Map include ExceptionLess v}.
+       
+    *)
+      
+    (** Operations on {!Map} without exceptions.*)
+    module ExceptionLess : sig
+      val find: key -> 'a t -> 'a option
+    end
+      
+      
+    (** Operations on {!Map} with labels.
+	
+	This module overrides a number of functions of {!Map} by
+	functions in which some arguments require labels. These labels are
+	there to improve readability and safety and to let you change the
+	order of arguments to functions. In every case, the behavior of the
+	function is identical to that of the corresponding function of {!Map}.
+    *)
+    module Labels : sig
+      val add : key:key -> data:'a -> 'a t -> 'a t
+      val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+      val map : f:('a -> 'b) -> 'a t -> 'b t
+      val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+      val filter: f:('a -> bool) -> 'a t -> 'a t
+      val filteri:f:(key -> 'a -> bool) -> 'a t -> 'a t
+      val fold :
+	f:(key:key -> data:'a -> 'b -> 'b) ->
+	'a t -> init:'b -> 'b
+      val compare: cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+      val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+    end
   end
-(** Output signature of the functor {!Map.Make}. *)
+
+module StringMap  : S with type key = String.t
+(** A map on strings. Comparison of strings takes case into account (i.e. "foo" <> "Foo")*)
+
+module IStringMap : S with type key = String.t
+(** A map on strings. Comparison of strings ignores case (i.e. "foo" = "Foo")*)
+
+module NumStringMap : S with type key = String.t
+(** A map on strings. Strings are handled as prefix + number (i.e. "abc23" < "abc123", "abc012" = "abc12")*)
+
+module RopeMap    : S with type key = Rope.t
+(** A map on ropes. Comparison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
+
+module IRopeMap   : S with type key = Rope.t
+(** A map on ropes. Comparison of ropes ignores case (i.e. r"foo" = r"Foo")*)
+
+module IntMap     : S with type key = Int.t
+(** A map on integers.*)
 
 module Make (Ord : OrderedType) : S with type key = Ord.t
 (** Functor building an implementation of the map structure
-   given a totally ordered type. *)
+   given a totally ordered type. 
+
+    @documents Map.Make
+*)
 end

@@ -28,6 +28,8 @@ module Stack =
 struct
   include Stack
 
+  type 'a enumerable = 'a t
+
   let of_enum e =
     let s = create () in
       Enum.iter (fun x -> push x s) e;
