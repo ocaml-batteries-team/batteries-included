@@ -127,6 +127,13 @@ let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
 let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
 
 let lines_of file = IO.lines_of (open_in file)
+
+let write_lines lines file =
+  let output_that_closes =
+    let perm = user_read lor user_write in
+    output_channel ~cleanup:true (open_out_gen (out_chan_mode None true) perm name)
+   in
+  IO.write_lines output_that_closes lines
     
 (**
    {6 Temporary files}
