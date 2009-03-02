@@ -70,6 +70,13 @@ val float : float -> float
 val bool : unit -> bool
 (** [Random.bool ()] returns [true] or [false] with probability 0.5 each. *)
 
+val char : unit -> char
+(** Return a random Latin-1 character.*)
+
+(*val uchar : unit -> UChar.t
+(** Return a random Unicode character.*)*)
+
+
 (** {6 Enumerations of random values.} 
 
     These enumerations may be cloned without loss of performance,
@@ -89,6 +96,10 @@ val enum_int32 : Int32.t -> Int32.t Enum.t
 val enum_int64 : Int64.t -> Int64.t Enum.t
 
 val enum_nativeint : Nativeint.t -> Nativeint.t Enum.t
+
+val enum_char : unit -> char Enum.t
+
+(*val enum_uchar : unit -> UChar.t Enum.t*)
 
 (** {6 Working with data structures.} *)
 
@@ -131,13 +142,15 @@ module State : sig
   val copy : t -> t
   (** Return a copy of the given state. *)
 
-  val bits      : t -> int
-  val int       : t -> int -> int
-  val int32     : t -> Int32.t -> Int32.t
-  val nativeint : t -> Nativeint.t -> Nativeint.t
-  val int64     : t -> Int64.t -> Int64.t
-  val float     : t -> float -> float
-  val bool      : t -> bool
+  val bits       : t -> int
+  val int        : t -> int -> int
+  val int32      : t -> Int32.t -> Int32.t
+  val nativeint  : t -> Nativeint.t -> Nativeint.t
+  val int64      : t -> Int64.t -> Int64.t
+  val float      : t -> float -> float
+  val bool       : t -> bool
+  val char       : t -> char
+(*  val uchar      : t -> UChar.t*)
   val enum_bits  : t -> unit    -> int Enum.t
   val enum_int   : t -> int     -> int Enum.t
   val enum_bool  : t -> unit    -> bool Enum.t
@@ -145,6 +158,8 @@ module State : sig
   val enum_int32 : t -> Int32.t -> Int32.t Enum.t
   val enum_int64 : t -> Int64.t -> Int64.t Enum.t
   val enum_nativeint : t -> Nativeint.t -> Nativeint.t Enum.t
+  val enum_char  : t -> unit    -> char Enum.t
+(*  val enum_uchar : t -> unit    -> UChar.t Enum.t*)
 
   (** These functions are the same as the basic functions, except that they
       use (and update) the given PRNG state instead of the default one.

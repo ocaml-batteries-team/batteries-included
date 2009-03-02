@@ -244,6 +244,15 @@ val trim : string -> string
   (** Returns the same string but without the leading and trailing
       whitespaces. *)
 
+val quote : string -> string
+  (** Add quotes around a string and escape any quote appearing in that string.
+      This function is used typically when you need to generate source code
+      from a string.
+
+      [quote "foo"] returns ["\"foo\""]
+      [quote "\"foo\""] returns ["\\\"foo\\\""]
+      etc. *)
+
 val left : string -> int -> string
 (**[left r len] returns the string containing the [len] first characters of [r]*)
 

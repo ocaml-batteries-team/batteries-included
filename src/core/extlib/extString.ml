@@ -440,6 +440,8 @@ let print         = InnerIO.nwrite
 let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
 let print_quoted out s = ExtPrintf.Printf.fprintf out "%S" s
 
+let quote = ExtPrintf.Printf.sprintf2 "%S"
+
 module Cap =
 struct
 type 'a t = string with sexp
@@ -502,6 +504,7 @@ let compare       = compare
 let icompare      = icompare
 let splice        = splice
 let trim          = trim
+let quote         = quote
 let left          = left
 let right         = right
 let head          = head

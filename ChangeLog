@@ -1,3 +1,8 @@
+2009-03-02  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extRandom.ml*: [char], [enum_chars] added
+
+	* src/core/extlib/extString.ml*: [quote] added
 
 2009-02-21  Jeremie Dimino <jeremie@dimino.org>
 	* src/core/extlib/extPrintf2.ml*: created
