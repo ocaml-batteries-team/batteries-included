@@ -28,9 +28,9 @@
     runtime. This approach is problematic considering typing and make
     it almost impossible to define new directives.
 
-    This module try to handle that in a more functionnal way. For
-    convenience it can be used with the syntax extension
-    [batteries.pa_string.syntax].
+    This module attempts to handle address the problem in a more
+    functionnal way. For convenience it can be used with the syntax
+    extension [batteries.pa_string.syntax].
 
     Look at the example ["examples/snippets/test_printf.ml"] for an
     example of the use of this module.
@@ -38,6 +38,49 @@
     @author Jeremie Dimino
 
     @documents Printf2
+*)
+
+(**
+   {6 General overview}
+
+   The functions of this module produce output, according to {!directive}s,
+   as described below. Output may be used to write to the screen, to error
+   channels, to strings, to buffers, to the network, etc.
+
+   This module is very powerful and allows concise and extensible definition
+   of output formats. The downside is that this module may be quite confusing
+   at first. Don't worry, it's worth it.
+
+   The foremost concept is that of {!type:format}. A {!type:format} is
+   a description of how informations should be printed. For instance,
+   a format such as [p"%d\n"] may be used to display an integer (this
+   is what {[%d]} means -- [d] stands for decimal) and will end the
+   line at the end of this integer (this is what {[\n]} means
+   everywhere in OCaml -- it stands for newline). Similarly, a format
+   such as [p"(%d, %d)\n"] may be used to display two integers as a
+   pair, and then end the line: {[%d]} and {[\n]} have the same
+   meaning as previously, while the other characters are interpreted
+   as regular text. Therefore, when applied to numbers 5 and 10, this
+   format will output ["(5, 10)\n"].
+
+   Let us consider this more in detail.
+
+   {7 Formats}
+   
+   The simplest format is the empty format, or [p""] -- notice the [p]
+   (for "print"), all formats start with this letter. This format is
+   unable to display any information. Actually, this format is only
+   able to output the empty string, which is not very useful. Its
+   type is [(unit, unit, _) format].
+
+   Slightly more complex is format [p"foo"]. This format is also
+   unable to display any information but, when applied, it will output
+   text ["foo"]. Its type is also [(unit, unit, _) format].
+
+   {b TODO}
+
+   {7 Extending formats}
+   {b TODO}
 *)
 
 (** {6 Directives and formats} *)
@@ -58,7 +101,7 @@ type ('a, 'b, 'acc) directive = (('acc IO.output -> unit) -> 'b) -> 'a
       following type:
 
       {[
-        val pdir_d : (int -> 'a, 'a) directive
+        val pdir_d : (int -> 'a, 'a, _) directive
       ]}
 
       And here is a possible implementation:

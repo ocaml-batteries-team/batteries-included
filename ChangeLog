@@ -1,3 +1,7 @@
+2009-03-03  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPrintf2.mli: Documentation.
+
 2009-03-03  Jeremie Dimino <jeremie@dimino.org>
 
 	* Makefile.in: target pa_strings.cmo -> pa_strings.cma
