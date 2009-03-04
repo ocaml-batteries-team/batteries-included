@@ -70,4 +70,4 @@ ExtDigest
 Logger
 ExtFormat
 ExtScanf
-ExtPrint
+Print

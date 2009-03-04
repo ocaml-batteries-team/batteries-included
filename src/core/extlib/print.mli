@@ -1,5 +1,5 @@
 (*
- * ExtPrint - Functionnal unparsing
+ * Print - Functionnal unparsing
  * Copyright (C) 2009 Jeremie Dimino
  * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans (documentation)
  *

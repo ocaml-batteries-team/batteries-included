@@ -5,11 +5,12 @@
 	* configure.ac: Now detecting default installation directory only if $prefix is NONE
 
 	* configure.ac: Now adapting doc installation directory to $prefix.
-	
 
 2009-03-04  Jeremie Dimino <jeremie@dimino.org>
 
-	* src/core/extlib/extPrintf2.mli: renamed [ExtPrint]
+	* src/core/extlib/extPrintf.ml*: renamed [Print]
+
+	* src/core/extlib/extPrintf2.ml*: renamed [ExtPrint]
 
 2009-03-03  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
