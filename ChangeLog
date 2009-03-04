@@ -1,3 +1,7 @@
+2009-03-04  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/core/extlib/extPrintf2.mli: renamed [ExtPrint]
+
 2009-03-03  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extPrintf2.mli: Documentation.

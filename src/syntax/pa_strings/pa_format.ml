@@ -69,7 +69,7 @@ let expr_of_directive _loc names dir =
                  __printers.(0) <-- __printer;
                  pdir_s (fun __printer ->
                            __printers.(1) <-- __printer;
-                           __k (fun oc -> Batteries.Printf2.format oc __pattern __printers)))
+                           __k (fun oc -> Batteries.Print.format oc __pattern __printers)))
      >>
 *)
 let make_printer _loc ast =
@@ -81,7 +81,7 @@ let make_printer _loc ast =
                          __printers.($int:string_of_int n$) <- __printer;
                          $aux (n + 1) l$) >>
     | [] ->
-        <:expr< __k (fun oc -> Batteries.Printf2.format oc __pattern __printers) >>
+        <:expr< __k (fun oc -> Batteries.Print.format oc __pattern __printers) >>
   in
   aux 0 ast
 
@@ -103,8 +103,8 @@ let _ =
        let directive_count = List.length (List.filter (function Cst _ -> false | Dir _ -> true) ast) in
 
        (* Creates the format expression *)
-       <:expr< { Batteries.Printf2.pattern = $str:String.escaped(make_pattern ast)$;
-                 Batteries.Printf2.printer = (fun __pattern __k ->
+       <:expr< { Batteries.Print.pattern = $str:String.escaped(make_pattern ast)$;
+                 Batteries.Print.printer = (fun __pattern __k ->
                                                 let __printers =
                                                   Array.create
                                                     $int:string_of_int directive_count$

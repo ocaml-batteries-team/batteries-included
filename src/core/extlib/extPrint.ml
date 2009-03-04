@@ -1,5 +1,5 @@
 (*
- * Bat_printf - Functionnal unparsing
+ * ExtPrint - Functionnal unparsing
  * Copyright (C) 2009 Jeremie Dimino
  *
  * This library is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ type ('a, 'b, 'acc) format = {
 let parse_key pattern i =
   let rec aux acc i =
     if i = String.length pattern then
-      invalid_arg "Batteries.Printf2.format"
+      invalid_arg "Batteries.Print.format"
     else
       match pattern.[i] with
         | ')' ->
@@ -37,16 +37,16 @@ let parse_key pattern i =
         | '0' .. '9' as ch ->
             aux (acc * 10 + (Char.code ch - Char.code '0')) (i + 1)
         | _ ->
-            invalid_arg "Batteries.Printf2.format"
+            invalid_arg "Batteries.Print.format"
   in
   if i + 1 >= String.length pattern then
-    invalid_arg "Batteries.Printf2.format"
+    invalid_arg "Batteries.Print.format"
   else
     match pattern.[i] with
       | '0' .. '9' as ch ->
           aux (Char.code ch - Char.code '0') (i + 1)
       | _ ->
-          invalid_arg "Batteries.Printf2.format"
+          invalid_arg "Batteries.Print.format"
 
 let format oc pattern directives =
   let rec aux i =
@@ -56,13 +56,13 @@ let format oc pattern directives =
       match pattern.[i] with
         | '%' ->
             if i + 1 >= String.length pattern then
-              invalid_arg "Batteries.Printf2.format"
+              invalid_arg "Batteries.Print.format"
             else begin
               match pattern.[i + 1] with
                 | '(' ->
                     let key, i = parse_key pattern (i + 2) in
                     if key < 0 || key > Array.length directives then
-                      invalid_arg "Batteries.Printf2.format"
+                      invalid_arg "Batteries.Print.format"
                     else begin
                       directives.(key) oc;
                       aux i
@@ -77,7 +77,7 @@ let format oc pattern directives =
                     aux (i + 2)
 
                 | _ ->
-                    invalid_arg "Batteries.Printf2.format"
+                    invalid_arg "Batteries.Print.format"
             end
 
         | ch ->

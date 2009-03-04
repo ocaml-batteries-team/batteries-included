@@ -129,7 +129,7 @@ module Pervasives = struct
   (** {6 Directives} *)
 
 (*
-   type ('a, 'b) unum_directive = ?left_justify:bool -> ?pad_with_zeros:bool -> ?width:int -> ('a, 'b) ExtPrintf2.directive
+   type ('a, 'b) unum_directive = ?left_justify:bool -> ?pad_with_zeros:bool -> ?width:int -> ('a, 'b) ExtPrint.directive
    type ('a, 'b) snum_directive = ?prefix_with_plus:bool -> ?prefix_with_space:bool -> ('a, 'b) unum_directive
 *)
 
@@ -195,7 +195,7 @@ module Pervasives = struct
   let pdir_nX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nX" x))
   let pdir_no k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%no" x))
 
-  let pdir_format k fmt = fmt.ExtPrintf2.printer fmt.ExtPrintf2.pattern k
+  let pdir_format k fmt = fmt.ExtPrint.printer fmt.ExtPrint.pattern k
 
   let pdir_rope k x = k (fun oc -> Rope.print oc x)
   let pdir_utf8 k x = k (fun oc -> ExtUTF8.UTF8.print oc x)

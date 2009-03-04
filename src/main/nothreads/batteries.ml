@@ -364,7 +364,7 @@ module  Lexing = Lexing
 module  Parsing= Parsing
 module  Format = Extlib.ExtFormat.Format
 module  Printf = Extlib.ExtPrintf.Printf
-module  Printf2= Extlib.ExtPrintf2
+module  Print  = Extlib.ExtPrint
 module  Str    = Extlib.ExtStr.Str
 (*   100module  PCRE (*placeholder*)*)
 module  Scanf  = Extlib.ExtScanf.Scanf

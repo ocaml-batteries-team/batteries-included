@@ -1288,52 +1288,52 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
 
 (** {7 Equivalent of classical directives} *)
 
-val pdir_a : (('acc IO.output -> 'a -> unit) -> 'a -> 'b, 'b, 'acc) ExtPrintf2.directive
-val pdir_t : (('acc IO.output -> unit) -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_B : (bool -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_c : (char -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_C : (char -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_s : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_S : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_a : (('acc IO.output -> 'a -> unit) -> 'a -> 'b, 'b, 'acc) ExtPrint.directive
+val pdir_t : (('acc IO.output -> unit) -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_B : (bool -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_c : (char -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_C : (char -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_s : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_S : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrint.directive
 
 (*
 TODO: implement that:
 
-type ('a, 'b) unum_directive = ?left_justify:bool -> ?pad_with_zeros:bool -> ?width:int -> ('a, 'b) ExtPrintf2.directive
+type ('a, 'b) unum_directive = ?left_justify:bool -> ?pad_with_zeros:bool -> ?width:int -> ('a, 'b) ExtPrint.directive
   (** Directive which prints an unsigned number *)
 
 type ('a, 'b) snum_directive = ?prefix_with_plus:bool -> ?prefix_with_space:bool -> ('a, 'b) unum_directive
   (** Directive which prints a signed number *)
 *)
 
-val pdir_d : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_i : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_u : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_x : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_X : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_o : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_ld : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_li : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_lu : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_lx : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_lX : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_lo : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Ld : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Li : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Lu : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Lx : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_LX : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Lo : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_nd : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_ni : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_nu : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_nx : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_nX : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_no : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_d : (int -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_i : (int -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_u : (int -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_x : (int -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_X : (int -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_o : (int -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_ld : (int32 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_li : (int32 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_lu : (int32 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_lx : (int32 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_lX : (int32 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_lo : (int32 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_Ld : (int64 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_Li : (int64 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_Lu : (int64 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_Lx : (int64 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_LX : (int64 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_Lo : (int64 -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_nd : (nativeint -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_ni : (nativeint -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_nu : (nativeint -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_nx : (nativeint -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_nX : (nativeint -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_no : (nativeint -> 'a, 'a, 'acc) ExtPrint.directive
 
 (** {7 Batteries-specific directives} *)
 
-val pdir_format : (('a, 'b, 'acc) ExtPrintf2.format -> 'a, 'b, 'acc) ExtPrintf2.directive
+val pdir_format : (('a, 'b, 'acc) ExtPrint.format -> 'a, 'b, 'acc) ExtPrint.directive
   (** [sp_format] take a format, then the arguments of the format and
       print according to it. For example
 
@@ -1343,8 +1343,8 @@ val pdir_format : (('a, 'b, 'acc) ExtPrintf2.format -> 'a, 'b, 'acc) ExtPrintf2.
         "x = 1 + 3 * 5"
       ]} *)
 
-val pdir_rope : (Rope.t -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_utf8 : (ExtUTF8.UTF8.t -> 'a, 'a, 'acc) ExtPrintf2.directive
+val pdir_rope : (Rope.t -> 'a, 'a, 'acc) ExtPrint.directive
+val pdir_utf8 : (ExtUTF8.UTF8.t -> 'a, 'a, 'acc) ExtPrint.directive
 
 (**
    {6 Results}

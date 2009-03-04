@@ -1,5 +1,5 @@
 (*
- * ExtPrintf2 - Functionnal unparsing
+ * ExtPrint - Functionnal unparsing
  * Copyright (C) 2009 Jeremie Dimino
  *
  * This library is free software; you can redistribute it and/or
@@ -28,16 +28,16 @@
     runtime. This approach is problematic considering typing and make
     it almost impossible to define new directives.
 
-    This module attempts to handle address the problem in a more
-    functionnal way. For convenience it can be used with the syntax
-    extension [batteries.pa_string.syntax].
+    This module attempts to handle the problem in a more functionnal
+    way. For convenience it can be used with the syntax extension
+    [batteries.pa_string.syntax].
 
     Look at the example ["examples/snippets/test_printf.ml"] for an
     example of the use of this module.
 
     @author Jeremie Dimino
 
-    @documents Printf2
+    @documents Print
 *)
 
 (**
@@ -182,7 +182,7 @@ val format : 'a IO.output -> pattern -> ('a IO.output -> unit) array -> unit
       nothing and is interpreted as a flush on the output.
 
       If the pattern is incorrect or one of the index is not a valid
-      index, it raises [Invalid_argument "Batteries.Printf2.format"].
+      index, it raises [Invalid_argument "Batteries.Print.format"].
       This may happen for example if you use i18n and a format
       translation is not correct. *)
 

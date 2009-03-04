@@ -1,4 +1,4 @@
-open Printf2
+open Print
 
 let _ =
   (* Simple test *)
