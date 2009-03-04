@@ -8,6 +8,10 @@
 
 2009-03-04  Jeremie Dimino <jeremie@dimino.org>
 
+	* examples/snippets/test_printf.ml: change examples
+
+	* src/core/extlib/exrPervasives.ml*: added [pdir_{f,F,obj}]
+
 	* src/core/extlib/extPrintf.ml*: renamed [Print]
 
 	* src/core/extlib/extPrintf2.ml*: renamed [ExtPrint]

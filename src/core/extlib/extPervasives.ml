@@ -195,10 +195,15 @@ module Pervasives = struct
   let pdir_nX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nX" x))
   let pdir_no k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%no" x))
 
+  let pdir_f k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%f" x))
+  let pdir_F k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%F" x))
+
   let pdir_format k fmt = fmt.Print.printer fmt.Print.pattern k
 
   let pdir_rope k x = k (fun oc -> Rope.print oc x)
   let pdir_utf8 k x = k (fun oc -> ExtUTF8.UTF8.print oc x)
+
+  let pdir_obj k x = k x#print
 
   (** {6 Clean-up}*)
 

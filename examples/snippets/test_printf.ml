@@ -9,24 +9,19 @@ let _ =
     ~name:(try Sys.getenv "USER" with _ -> "toto")
     ~version:Sys.ocaml_version;
 
-  (* A custom printer: *)
-  let pdir_o k obj = k obj#print in
+  (* Printing an object: *)
+  printf p"o = %obj\n"
+    (object(self)
+       method print oc = fprintf oc p"<object:id = %u>" (Oo.id self)
+     end);
 
-  printf p"obj = %o\n" (object
-                          method print oc = IO.nwrite oc "plop"
-                        end);
+  (* A custom directive, printing pair of integers: *)
+  let pdir_foo k (x, y) = k (fun oc -> fprintf oc p"(%d, %d)" x y) in
 
-  (* A printer with multiple argument: *)
-  let pdir_test k x y z =
-    k (fun oc ->
-         IO.write oc '(';
-         IO.nwrite oc (string_of_int x);
-         IO.nwrite oc ", ";
-         IO.nwrite oc (string_of_int y);
-         IO.nwrite oc ", ";
-         IO.nwrite oc (string_of_int z);
-         IO.write oc ')')
-  in
+  printf p"pair = %foo\n" (42, 1024);
+
+  (* A custom directive, taking multiple arguments: *)
+  let pdir_test k x y z = k (fun oc -> fprintf oc p"(%d, %d, %d)" x y z) in
 
   printf p"x = %test\n" 1 2 3;
 

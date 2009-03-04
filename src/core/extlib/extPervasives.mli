@@ -1331,6 +1331,9 @@ val pdir_nx : (nativeint -> 'a, 'a, 'acc) Print.directive
 val pdir_nX : (nativeint -> 'a, 'a, 'acc) Print.directive
 val pdir_no : (nativeint -> 'a, 'a, 'acc) Print.directive
 
+val pdir_f : (float -> 'a, 'a, 'acc) Print.directive
+val pdir_F : (float -> 'a, 'a, 'acc) Print.directive
+
 (** {7 Batteries-specific directives} *)
 
 val pdir_format : (('a, 'b, 'acc) Print.format -> 'a, 'b, 'acc) Print.directive
@@ -1345,6 +1348,7 @@ val pdir_format : (('a, 'b, 'acc) Print.format -> 'a, 'b, 'acc) Print.directive
 
 val pdir_rope : (Rope.t -> 'a, 'a, 'acc) Print.directive
 val pdir_utf8 : (ExtUTF8.UTF8.t -> 'a, 'a, 'acc) Print.directive
+val pdir_obj : (< print : 'acc IO.output -> unit; .. > -> 'a, 'a, 'acc) Print.directive
 
 (**
    {6 Results}
