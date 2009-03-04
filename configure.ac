@@ -5,7 +5,7 @@ INSTALLATION=
 AC_SUBST(INSTALLATION)
 
 # version info
-VERSION=0.20090128
+VERSION=0.20090304
 AC_SUBST(VERSION)
 
 # check for basic OCaml components
@@ -154,7 +154,9 @@ AC_ARG_WITH(
 AC_SUBST(BUILD_DOC)
 
 
-AC_MSG_NOTICE([Testing install destination])
+
+if test "${prefix}" = "NONE"; then
+AC_MSG_NOTICE([Locating default installation directory])
 AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
 if test -z "$OCAMLPKG_batteries"; then
    touch META
@@ -168,6 +170,10 @@ else
    AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
    DESTDIR=`dirname $OCAMLPKG_batteries`
 fi
+else
+DESTDIR="${prefix}/lib/batteries"
+fi
+
 AC_MSG_NOTICE([Default destination is $DESTDIR])
 AC_SUBST(DESTDIR)
 
@@ -176,10 +182,17 @@ AC_ARG_WITH(
 	[  --with-docroot=PATH     set documentation root
 	                           default: "$DESTDIR/doc/batteries"],
 	DOCDIR=$withval,
-	DOCDIR=$DESTDIR/doc/batteries)
+	DOCDIR=NONE)
 if test "$DOCDIR" = "yes" ; then
    AC_MSG_ERROR([--with-docroot requires an argument])
    exit 1
+fi
+if test "$DOCDIR" = "NONE"; then
+   if test "$prefix" = "NONE"; then
+      DOCDIR=$DESTDIR/doc/batteries
+   else
+      DOCDIR=$prefix/doc/batteries
+   fi
 fi
 AC_MSG_NOTICE([documentation root directory: $DOCDIR])
 AC_SUBST(DOCDIR)
