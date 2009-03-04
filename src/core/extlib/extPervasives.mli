@@ -1282,8 +1282,10 @@ val ( --~ ) : char -> char -> char Enum.t
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b Enum.t -> unit
 (** Print and consume the contents of an enumeration.*)
 
+(**/**)
+
 (**
-   {6 Default directives}
+   {6 Printing directives}
 *)
 
 (** {7 Equivalent of classical directives} *)
@@ -1349,6 +1351,8 @@ val pdir_format : (('a, 'b, 'acc) Print.format -> 'a, 'b, 'acc) Print.directive
 val pdir_rope : (Rope.t -> 'a, 'a, 'acc) Print.directive
 val pdir_utf8 : (ExtUTF8.UTF8.t -> 'a, 'a, 'acc) Print.directive
 val pdir_obj : (< print : 'acc IO.output -> unit; .. > -> 'a, 'a, 'acc) Print.directive
+
+(**/**)
 
 (**
    {6 Results}
