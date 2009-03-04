@@ -1,3 +1,12 @@
+2009-03-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPrint.mli: More documentation.
+
+	* configure.ac: Now detecting default installation directory only if $prefix is NONE
+
+	* configure.ac: Now adapting doc installation directory to $prefix.
+	
+
 2009-03-04  Jeremie Dimino <jeremie@dimino.org>
 
 	* src/core/extlib/extPrintf2.mli: renamed [ExtPrint]

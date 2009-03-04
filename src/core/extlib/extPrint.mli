@@ -1,6 +1,7 @@
 (*
  * ExtPrint - Functionnal unparsing
  * Copyright (C) 2009 Jeremie Dimino
+ * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans (documentation)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,6 +37,7 @@
     example of the use of this module.
 
     @author Jeremie Dimino
+    @author David Rajchenbach-Teller (documentation)
 
     @documents Print
 *)
@@ -63,23 +65,54 @@
    as regular text. Therefore, when applied to numbers 5 and 10, this
    format will output ["(5, 10)\n"].
 
-   Let us consider this more in detail.
+   Formats may be applied using functions such as {!printf}. For
+   instance, [Print.printf p"(%d, %d)\n" 5 10] will print on the
+   screen ["(5, 10)\n"]. Similarly, if [foo] is an {!type:IO.output}
+   which may be used to write on a file, [Printf.fprintf foo p"(%d,
+   %d)\n" 5 10] will write ["(5, 10)\n"] to this file.
+
+   Let us consider formats more in detail.
 
    {7 Formats}
    
    The simplest format is the empty format, or [p""] -- notice the [p]
    (for "print"), all formats start with this letter. This format is
    unable to display any information. Actually, this format is only
-   able to output the empty string, which is not very useful. Its
-   type is [(unit, unit, _) format].
+   able to output the empty string, which is not very useful. Its type
+   is [('a, 'a, 'b) format]. This ['b] states that it can be used with
+   any kind of output.
 
    Slightly more complex is format [p"foo"]. This format is also
    unable to display any information but, when applied, it will output
-   text ["foo"]. Its type is also [(unit, unit, _) format].
+   text ["foo"]. Its type is also [('a, 'a, 'b) format]. More generally,
+   any text without special characters may be used as a format, which
+   can be used to display exactly that text, without any additional
+   information.
 
+   Formats also support {e directives}, which serve to insert
+   additional pieces of information inside the text. Directives are
+   always introduced with special character [%]. For instance, format
+   [p"%d"] may be used to display integers. Its type is [(int -> 'a,
+   'a, 'b) format]. Here, type parameter [int -> 'a] states that this
+   directive expects an integer. A more complex format such as [p"some
+   text before the number%d"] or, equivalently, [p"some text before
+   the number%(d)"] would have the same type [(int -> 'a, 'a, 'b)
+   format]. Again,[p"some text before the number%(d)some text after
+   the number"] would have the same type -- in this case, parenthesis
+   are compulsory, for reasons we will detail later. When applied with
+   argument 5, this last format will output text [p"some text before the
+   number5some text after the number"].
+
+   {b TODO} List of directives?
+
+   {7 Flags}
    {b TODO}
 
    {7 Extending formats}
+
+   Format supports a number of default directives. However, it's also
+   quite possible to use directives which haven't been defined yet.
+   
    {b TODO}
 *)
 
