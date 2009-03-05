@@ -197,6 +197,7 @@ Building a project with OMake is fairly simple.
 You just need to take advantage of OMake's built-in findlib support by
 adding the following to your OMakefile:
 <code class="example">
+<pre>
 USE_OCAMLFIND = true
 
 OCAMLPACKS[] +=
@@ -210,12 +211,15 @@ OCAMLPACKS[] +=
 
 OCAMLDEPFLAGS += -syntax camlp4o
 OCAMLFLAGS += -syntax camlp4o
+</pre>
 </code>
+
 
 Here's a complete OMakefile for building the "cat" implementation you will
 find under the examples/ subdirectory:
 
 <code class="example">
+<pre>
 USE_OCAMLFIND = true
 
 OCAMLPACKS[] +=
@@ -227,8 +231,8 @@ OCAMLPACKS[] +=
 OCAMLDEPFLAGS += -syntax camlp4o
 OCAMLFLAGS += -syntax camlp4o
 
-
 OCamlProgram(cat, cat)
+</pre>
 </code>
 
 
@@ -239,8 +243,11 @@ syntax extensions available as of 2008-11-16; this corresponds to the
 If you only want to use Batteries as a library, without syntax extensions, use
 
 <code class="example">
+<pre>
 OCAMLPACKS[] += batteries
+</pre>
 </code>
+
 
 and drop the <code>OCAMLDEPFLAGS</code> and <code>OCAMLFLAGS</code>
 lines in the above examples, as they are no longer needed.
