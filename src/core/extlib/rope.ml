@@ -227,22 +227,47 @@ let set r i v =
 	else append l (aux (i - cl) r)
   in aux i r
 
-let of_ustring s =
-  let lens = UTF8.length s in
-  if lens = 0 then Empty
-  else
-    let rec loop r i =
-      if i < lens then (* lens - i > 0, thus Leaf "" can't happen *)
-  let slice_size = int_min (lens-i) leaf_size in
-(* TODO: UTF8.sub is inefficient for large i - rewrite using enum *)
-  let new_r = append r (Leaf (slice_size, (UTF8.sub s i slice_size))) in
-    loop new_r (i + leaf_size)
+let of_ustring ustr =
+  (* We need fast access to raw bytes: *)
+  let bytes = UTF8.to_string_unsafe ustr in
+  let byte_length = String.length bytes in
+
+  (* - [rope] is the accumulator
+     - [start_byte_idx] is the byte position of the current slice
+     - [current_byte_idx] is the current byte position
+     - [slice_size] is the number of unicode characters contained
+     between [start_byte_idx] and [current_byte_idx] *)
+  let rec loop rope start_byte_idx current_byte_idx slice_size =
+    if current_byte_idx = byte_length then begin
+
+      if slice_size = 0 then
+        rope
       else
-        r
-    in loop Empty 0
+        add_slice rope start_byte_idx current_byte_idx slice_size
+
+    end else begin
+      let next_byte_idx = UTF8.next ustr current_byte_idx in
+
+      if slice_size = leaf_size then
+        (* We have enough unicode characters for this slice, extract
+           it and add a leaf to the rope: *)
+        loop (add_slice rope start_byte_idx current_byte_idx slice_size)
+          next_byte_idx next_byte_idx 0
+      else
+        loop rope start_byte_idx next_byte_idx (slice_size + 1)
+    end
+  and add_slice rope start_byte_idx end_byte_idx slice_size =
+    append rope (Leaf(slice_size,
+                      (* This is correct, we are just extracting a
+                         sequence of well-formed UTF-8 encoded unicode
+                         characters: *)
+                      UTF8.of_string_unsafe
+                        (String.sub bytes start_byte_idx (end_byte_idx - start_byte_idx))))
+  in
+  loop Empty 0 0 0
 
 let append_us r us = append r (of_ustring us)
- 
+
 let rec make len c =
   let rec concatloop len i r =
     if i <= len then
