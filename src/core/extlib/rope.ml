@@ -634,16 +634,20 @@ let rfind r1 r2 = rfind_from r1 (length r2 - 1) r2
 let exists r_str r_sub = try ignore(find r_str r_sub); true with Not_found -> false
 
 let trim str =  (*TODO: Make efficient*)
+  let len = length str in
   let start = ref 0 in
-  while UChar.is_whitespace(get str !start) do
+  while !start < len && UChar.is_whitespace(get str !start) do
     incr start;
   done;
-  let stop = ref (length str - 1) in
-  while UChar.is_whitespace(get str !stop) do
-    decr stop;
-  done;
-  sub str !start (!stop- !start)
-
+  if !start = len then
+    empty
+  else begin
+    let stop = ref (len - 1) in
+    while !stop > !start && UChar.is_whitespace(get str !stop) do
+      decr stop;
+    done;
+    sub str !start (!stop - !start)
+  end
 
 let strip_default_chars = List.map UChar.of_char [' ';'\t';'\r';'\n']
 let strip ?(chars=strip_default_chars) s = (*TODO: Make efficient*)

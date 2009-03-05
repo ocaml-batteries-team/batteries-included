@@ -1,8 +1,10 @@
 2009-03-05  Jeremie Dimino <jeremie@dimino.org>
 
-	* src/code/extlib/rope.mli: inverse doc of starts_with and ends_with
+	* src/code/extlib/rope.mli: inverse doc of [starts_with] and [ends_with]
 
-	* src/code/extlib/rope.ml: prevent starts_with and ends_with from failing
+	* src/code/extlib/rope.ml:
+	    - prevent [starts_with] and [ends_with] from failing
+	    - prevent [trim] from failing when all characters are whitespaces
 
 2009-03-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
