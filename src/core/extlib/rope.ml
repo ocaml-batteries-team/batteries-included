@@ -595,9 +595,13 @@ let rcontains_from = contains_from
 
 let equals r1 r2 = to_ustring r1 = to_ustring r2 (*TODO: make efficient *)
 
-let starts_with r start_r = equals start_r (left r (length start_r))
+let starts_with r start_r =
+  let len = length start_r in
+  length r >= len && equals start_r (left r len)
 
-let ends_with r end_r = equals end_r (right r (length end_r))
+let ends_with r end_r =
+  let len = length end_r in
+  length r >= len && equals end_r (right r len)
 
 (** find [r2] within [r1] or raises Not_found *)
 let find_from r1 ofs r2 =

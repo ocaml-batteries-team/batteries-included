@@ -401,10 +401,10 @@ val rfind_from: t -> int -> t -> int
 
 
 val starts_with : t -> t -> bool
-(** [ends_with s x] returns [true] if the rope [s] is ending with [x], [false] otherwise. *)
+(** [starts_with s x] returns [true] if [s] is starting with [x], [false] otherwise. *)
 
 val ends_with : t -> t -> bool
-(** [starts_with s x] returns [true] if [s] is starting with [x], [false] otherwise. *)
+(** [ends_with s x] returns [true] if the rope [s] is ending with [x], [false] otherwise. *)
 
 val exists : t -> t -> bool
 (** [exists str sub] returns true if [sub] is a subrope of [str] or
