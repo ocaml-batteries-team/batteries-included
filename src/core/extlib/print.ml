@@ -1,5 +1,5 @@
 (*
- * Print - Functionnal unparsing
+ * Print - Functional unparsing
  * Copyright (C) 2009 Jeremie Dimino
  *
  * This library is free software; you can redistribute it and/or

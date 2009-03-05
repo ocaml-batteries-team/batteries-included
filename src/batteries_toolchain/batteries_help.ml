@@ -369,15 +369,27 @@ let help () =
     (fun file -> copy file stdout);
   flush stdout;;
 
+(**Print the signature of a module.*)
+let print_module name =
+  let phrase = !Toploop.parse_toplevel_phrase (Lexing.from_string (Printf.sprintf "module %s = %s;;" name name)) in
+    ignore (Toploop.execute_phrase true Format.std_formatter phrase);;
+
 let man = List.assoc "man" helpers
 
 (** Initialize the help system (lazily)*)
 let init () =
-  try
+  try 
+    (*The manual*)
     List.iter (fun (key, search) -> Hashtbl.add Toploop.directive_table key (Toploop.Directive_string search))
       helpers;
+    (*Directive #help*)
     Hashtbl.add
       Toploop.directive_table
       "help"
-      (Toploop.Directive_none help)
+      (Toploop.Directive_none help);
+    (*Directive #browse*)
+    Hashtbl.add
+      Toploop.directive_table
+      "browse"
+      (Toploop.Directive_string print_module)
   with e -> Printf.printf "Error while initializing help system:\n%s\n%!" (Printexc.to_string e)

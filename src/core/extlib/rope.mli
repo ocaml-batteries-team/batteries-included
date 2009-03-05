@@ -90,7 +90,7 @@ exception Invalid_rope
     and received an unacceptable rope.*)
 
 val max_length : int
-  (** Maximum length of the rope. *)
+  (** Maximum length of the rope (number of UTF-8 characters). *)
   
 (** {6 Creation and conversions} *)
   
@@ -101,7 +101,7 @@ val of_latin1: string -> t
   (** Constructs a unicode rope from a latin-1 string. *)
 
 val of_string : string -> t
-  (** [of_string s] returns a reope corresponding to the UTF-8 encoded string [s].*)
+  (** [of_string s] returns a rope corresponding to the UTF-8 encoded string [s].*)
 
 val to_string : t -> string
   (** [to_string t] returns a UTF-8 encoded string representing [t]*)
@@ -117,7 +117,7 @@ val of_uchar: UChar.t -> t
   (** [of_uchar c] returns a rope containing exactly character [c].*)
 
 val of_char: char -> t
-  (** [of_char c] returns a rope containing exactly character [c].*)
+  (** [of_char c] returns a rope containing exactly Latin-1 character [c].*)
 
 val make : int -> UChar.t -> t
   (** [make i c] returns a rope of length [i] consisting of [c] chars;
@@ -160,7 +160,9 @@ val is_empty : t -> bool
   (** Returns whether the rope is empty or not. *)
   
 val length : t -> int
-  (** Returns the length of the rope ([O(1)]). *)
+  (** Returns the length of the rope ([O(1)]).
+  This is number of UTF-8 characters.
+  *)
   
 val height : t -> int
   (** Returns the height (depth) of the rope. *)

@@ -8,6 +8,12 @@
 
 2009-03-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* doc/batteries/html/toplevel.html: Documentation on #browse added.
+
+	* src/batteries_toolchain/batteries_help.ml: New directive #browse.
+
+	* src/core/extlib/extPervasives.mli: Excluded printf directives from documentation generation.
+
 	* src/core/extlib/extPrint.mli: More documentation.
 
 	* configure.ac: Now detecting default installation directory only if $prefix is NONE

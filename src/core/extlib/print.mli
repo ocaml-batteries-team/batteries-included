@@ -1,5 +1,5 @@
 (*
- * Print - Functionnal unparsing
+ * Print - Functional unparsing
  * Copyright (C) 2009 Jeremie Dimino
  * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans (documentation)
  *
@@ -29,7 +29,7 @@
     runtime. This approach is problematic considering typing and make
     it almost impossible to define new directives.
 
-    This module attempts to handle the problem in a more functionnal
+    This module attempts to handle the problem in a more functional
     way. For convenience it can be used with the syntax extension
     [batteries.pa_string.syntax].
 
@@ -143,9 +143,9 @@ type ('a, 'b, 'acc) directive = (('acc IO.output -> unit) -> 'b) -> 'a
         let pdir_d k x = k (fun oc -> IO.nwrite oc (string_of_int x))
       ]}
 
-      Additionnally, directives can takes ``flags'' (like in ["%2d"]
+      Additionally, directives can takes ``flags'' (like in ["%2d"]
       where [2] is here a width). Flags are passed to the
-      directive as optionnal argument before the continuation, for
+      directive as optional argument before the continuation, for
       example:
 
       {[
