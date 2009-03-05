@@ -51,15 +51,14 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
 if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
 begin
   Batteries_help.init ();
-  print_newline ();
-  print_endline "----------------------------------------------";
-  print_endline "|                                            |";
-  print_endline "|     This is OCaml, Batteries Included.     |";
-  print_endline "|                                            |";
-  print_endline "|                                            |";
-  print_endline "|      If you need help, type '#help;;'      |";
-  print_endline "|                                            |";
-  print_endline "----------------------------------------------";
+  print_endline "      __________________________________";
+  print_endline "     |       | |                       |";
+  print_endline "    [| +     | | Batteries Included  - |";
+  print_endline "     |_______|_|_______________________|";
+  print_endline "      __________________________________";
+  print_endline "     |       | |                       |";
+  print_endline "    [| +     | | Type '#help;;'      - |";
+  print_endline "     |_______|_|_______________________|";
   print_newline ();
   print_newline ();
   flush_all ()
