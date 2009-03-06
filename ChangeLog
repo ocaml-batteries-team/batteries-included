@@ -6,6 +6,8 @@
 	    - prevent [starts_with] and [ends_with] from failing
 	    - prevent [trim] from failing when all characters are whitespaces
 	    - more efficient [of_ustring]
+	    - add efficient iterators, implement some TODO with them
+	    - bugfix: [compare] and [icompare] where wrong
 
 2009-03-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
