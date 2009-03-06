@@ -7,6 +7,7 @@ let tests =
     Test_vect.test_4;
     Test_file.test_1;
     Test_file.test_2;
+    Test_file.test_3;
     Test_string.test_1;
     Test_string.test_2;
     Test_string.test_3;
