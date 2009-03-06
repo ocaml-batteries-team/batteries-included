@@ -822,8 +822,12 @@ let strip ?(chars=strip_default_chars) rope =
   in
   strip_left 0 (Iter.make rope)
 
-let lchop str = sub str 1 (length str - 1)
-let rchop str = sub str 0 (length str - 1)
+let lchop = function
+  | Empty -> Empty
+  | str -> sub str 1 (length str - 1)
+let rchop = function
+  | Empty -> Empty
+  | str -> sub str 0 (length str - 1)
 
 let apply1 f r =
   if is_empty r then r
