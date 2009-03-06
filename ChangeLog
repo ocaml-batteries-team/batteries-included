@@ -9,6 +9,10 @@
 	    - add efficient iterators, implement some TODO with them
 	    - bugfix: [compare] and [icompare] where wrong
 
+	* src/syntax/pa_strings/pa_strings.ml:
+	    - compile-time validation of utf8 strings
+	    - compile-time recoding latin1 -> utf8
+
 2009-03-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* doc/batteries/html/toplevel.html: Documentation on #browse added.
