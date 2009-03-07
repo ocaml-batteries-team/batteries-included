@@ -7,10 +7,8 @@ Format of a .dist file:
 
 {[
 
-(*%MODULE InnerFoo = Foo*)
-
 (*Module comment*)
-module Foo = A.Module.Path     (*%mli "a/file/path/foo.mli"*)
+module Foo = A.Module.Path     (*%mli "a/file/path/foo.mli" %aka "InnerFoo"*)
 
 (*Module comment*)
 module Bar = Another.Module.Path.Foo (*%mli "another/file/path/foo.mli" %submodule "Bar"*)
@@ -62,6 +60,9 @@ type substitution = string * string
 type dist_tree =
   | Leaf of sigsource * comment (**A module alias*)
   | Node of tree list * comment
+
+(*Just an idea:
+  | Code of string (**Other OCaml code, ignored for .dist but may be used for .ml*)*)
 
 (** Read and parse the contents of a .dist file and return it without any additional processing*)
 let read_dist : string -> dist_tree * substitution list = fun _ -> assert false
