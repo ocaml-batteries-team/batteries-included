@@ -67,6 +67,12 @@ ifdef JOBS
 OBFLAGS += -j $(JOBS)
 endif
 
+ifeq ($(HAS_GODI),yes)
+all: byte syntax top install-doc
+else
+all: byte syntax top
+endif
+
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
 DESTDIR = @DESTDIR@
@@ -93,12 +99,6 @@ OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 #OCAMLBUILD=ocamlbuild -byte-plugin -classic-display 
 # Replace the first one with the second one if you have build-time
 # issue, to help with trouble-shooting
-
-ifeq ($(HAS_GODI),yes)
-all: byte syntax top install-doc
-else
-all: byte syntax top
-endif
 
 config.ml: Makefile
 	@\rm -f config.ml &&\
