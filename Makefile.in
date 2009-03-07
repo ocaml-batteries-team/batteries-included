@@ -192,7 +192,7 @@ doc: byte doc/api.odocl
 	rm -Rf doc/batteries/html/api
 	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
 	rm -f api.docdir
-	mv _build/doc/api.docdir/ doc/batteries/html/api
+	cp -a _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: 
 	@echo Generating documentation. This usually lasts 15+ minutes.
