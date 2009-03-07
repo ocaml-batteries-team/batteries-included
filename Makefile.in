@@ -63,6 +63,10 @@ ifeq ($(TERM),dumb)
 OBFLAGS += -classic-display
 endif
 
+ifdef JOBS
+OBFLAGS += -j $(JOBS)
+endif
+
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
 DESTDIR = @DESTDIR@
