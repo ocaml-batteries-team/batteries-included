@@ -1,3 +1,21 @@
+2009-03-08  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/extMap.ml*: add Map.min_key, max_key, choose (flux)
+	
+	* src/core/extlib/innerIO.ml: Fix bug in autoclose (Paul Pelzl)
+
+	* src/core/extlib/file.ml: [open_in] shouldn't autoclose (Paul Pelzl)
+
+	* src/core/extlib/file.mli: [open_temporary_out] does autoclose -
+	doc bug (Paul Pelzl)
+
+	* Makefile.in: refactoring of Makefile for faster
+	compilation (less ocamlbuild restarts) (Paul Pelzl)
+
+	* Makefile.in: Allow [JOBS=n make] for parallel build (Paul Pelzl)
+
+	* Configure.ac: remove configure hack (Paul Pelzl)
+
 2009-03-05  Jeremie Dimino <jeremie@dimino.org>
 
 	* src/code/extlib/rope.mli: inverse doc of [starts_with] and [ends_with]
