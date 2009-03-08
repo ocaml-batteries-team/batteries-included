@@ -302,7 +302,11 @@ module List :
 
 	val unique : ?cmp:('a -> 'a -> bool) -> 'a list -> 'a list
 	(** [unique cmp l] returns the list [l] without any duplicate element.
-	 Default comparator ( = ) is used if no comparison function specified. *)
+	 Default comparator ( = ) is used if no comparison function specified. 
+	 
+	 This function takes O(n²) time.
+	 @see 'sort_unique' to save time in cases when reordering the list is acceptable
+	 *)
 
 	  (**{6 Association lists}*)
 
@@ -458,6 +462,19 @@ module List :
 	      before the elements of [l2].
 	      Not tail-recursive (sum of the lengths of the arguments).
 	  *)
+	  
+	val sort_unique : ('a -> 'a -> int) -> 'a list -> 'a list
+	(** [unique cmp l] returns the list [l] sorted and without any duplicate element. [cmp] is a usual comparison function providing linear order. 
+	
+	  This function takes O(n log n) time.
+	 *)
+	  
+	val group : ('a -> 'a -> int) -> 'a list -> 'a list list
+	  (** [group cmp l] returns list of groups and each group consists of elements judged equal by comparison function [cmp]. Groups in the resulting list appear in order given by [cmp]. All groups are always nonempty. [group] returns [[]] only if [l] is empty.
+	  
+For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if following conditions are met:
+	  [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0],...
+	  *)  
 
 	(** {6 Exceptions} *)
 

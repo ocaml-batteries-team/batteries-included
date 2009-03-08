@@ -615,6 +615,42 @@ let assoc_inv e l =
   | _::t                -> aux t
   in aux l
 
+let sort_unique cmp lst = 
+  let sorted = List.sort cmp lst in
+  let fold first rest = List.fold_left
+    (fun (acc, last) elem ->
+       if (cmp last elem) = 0 then (acc, elem)
+        else (elem::acc, elem)
+    )
+    ([first], first)
+    rest
+   in 
+  match sorted with
+   | [] -> []
+   | hd::tl ->
+   begin
+    let rev_result, _ = fold hd tl in
+    List.rev rev_result
+   end
+
+let group cmp lst = 
+  let sorted = List.sort cmp lst in
+  let fold first rest = List.fold_left
+    (fun (acc, agr, last) elem ->
+       if (cmp last elem) = 0 then (acc, elem::agr, elem)
+        else (agr::acc, [elem], elem)
+    )
+    ([], [first], first)
+    rest
+   in 
+  match sorted with
+   | [] -> []
+   | hd::tl ->
+   begin
+    let groups, lastgr, _ = fold hd tl in
+    List.rev_map List.rev (lastgr::groups)
+   end
+
 let sexp_of_t = Conv.sexp_of_list
 let t_of_sexp = Conv.list_of_sexp
 
