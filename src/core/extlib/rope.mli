@@ -161,8 +161,7 @@ val is_empty : t -> bool
   
 val length : t -> int
   (** Returns the length of the rope ([O(1)]).
-  This is number of UTF-8 characters.
-  *)
+      This is number of UTF-8 characters. *)
   
 val height : t -> int
   (** Returns the height (depth) of the rope. *)
@@ -234,7 +233,7 @@ val iter : (UChar.t -> unit) -> t -> unit
       in order. *)
   
 val iteri : ?base:int -> (int -> UChar.t -> unit) -> t -> unit
-  (** Operates like iter, but also passes the index of the character
+  (** Operates like [iter], but also passes the index of the character
       to the given function. *)
   
 val range_iter : (UChar.t -> unit) -> int -> int -> t -> unit
