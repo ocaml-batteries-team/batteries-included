@@ -8,14 +8,14 @@ Format of a .dist file:
 {[
 
 (*Module comment*)
-module Foo = A.Module.Path     (*%mli "a/file/path/foo.mli" %aka "InnerFoo"*)
+module Foo = A.Module.Path     (*% mli "a/file/path/foo.mli" aka "InnerFoo" %*)
 
 (*Module comment*)
-module Bar = Another.Module.Path.Foo (*%mli "another/file/path/foo.mli" %submodule "Bar"*)
+module Bar = Another.Module.Path.Foo (*% mli "another/file/path/foo.mli" submodule "Bar" %*)
 
 (*Module comment*)
 module Sna = struct
-   module Toto = Yet.Another.Module.Path (*%mli "a/file/path/foo.mli"*)
+   module Toto = Yet.Another.Module.Path (*% mli "a/file/path/foo.mli" %*)
 
        (*...same grammar...*)
 end
@@ -33,7 +33,7 @@ Producing a .mli is more complex:
 - if necessary, generate each source .mli (so this needs to be done from myocamlbuild.ml)
 - from each %mli directive
    -- build a temporary file, obtained by
-     ---- extracting only the necessary submodules (remove [module Stuff : sig] and [end])
+     ---- extracting only the necessary submodules (remove [module Stuff : sig] and [end (*Stuff*)])
      ---- performing all the substitutions in the list
    -- invoke ocamldep
    -- parse the result of ocamldep and deduce a list of dependencies for the destination module (here, [Foo], [Bar], [Toto])
@@ -57,19 +57,54 @@ type comment = string option
 
 type substitution = string * string
 
-type dist_tree =
-  | Leaf of sigsource * comment (**A module alias*)
-  | Node of tree list * comment
+type ('a,'b) sigtree = ('a, 'b) sigtree_aux * 'a
+and  ('a,'b) sigtree_aux =
+  | Leaf of 'b                    * comment (**A module alias*)
+  | Node of ('a, 'b) sigtree list * comment
+  | Other of string                         (**Some uninterpreted content, such as unattached comments*)
 
-(*Just an idea:
-  | Code of string (**Other OCaml code, ignored for .dist but may be used for .ml*)*)
 
 (** Read and parse the contents of a .dist file and return it without any additional processing*)
-let read_dist : string -> dist_tree * substitution list = fun _ -> assert false
+let read_dist: string -> (unit, sigsource) sigtree * substitution list = fun _ -> assert false
 
 (** Return the list of .mli corresponding to %mli directives.*)
-let sources_of : dist_tree -> string list = fun _ -> assert false
+let leaves_of: (_, 'b) sigtree -> 'b list = fun _ -> assert false
 
+(** [patch source subs] creates a temporary file with the contents of [source]
+    in which all the substitutions of [subs] have been applied and returns the
+    absolute filename of the temporary file *)
+let patch: sigsource -> substitution list -> string = fun source -> assert false
+
+(** Go through a tree applying substitutions. 
+
+    For each leaf of the tree
+    - read the [source]
+    - extract the relevant part
+    - apply the substitutions to the relevant part
+    - write the substituted version to a temporary file
+    - replace the leaf content with the temporary file name*)
+let apply_substitutions: ('a, sigsource) sigtree -> substitution list -> ('a, string) sigtree = fun _ _ -> assert false
+
+(** Compute dependencies of each node of the tree.
+
+    For each leaf of the tree
+    - apply ocamldep
+    - parse the result into a list of dependencies
+
+    For each node, merge the dependencies of subtrees.
+*)
+let compute_dependencies: (unit, string) sigtree -> (StringSet.t, string) sigtree = fun _ -> assert false
+
+(**Recursively sort by dependencies each level of the tree.
+*)
+let sort_tree : (StringSet.t, string) sigtree -> (StringSet.t, string) sigtree = fun _ -> assert false
+
+(**Write down tree
+
+   We need to turn it into a list of strings as this seems to be the only way of creating new
+   files from within ocamlbuild.
+*)
+let serialize_tree : (_, string) sigtree -> string list = fun _ -> assert false
 
 let mli_of_dist =
   rule ".dist to .mli"
@@ -80,10 +115,11 @@ let mli_of_dist =
 	let dest = env "%.mli"
 	and src  = env "%.dist" in
 	let (tree, substitutions) = read_dist src in
-	let sources = sources_of tree             in
-	  (*For each module name, first generate the .mli file if it doesn't exist yet.*)
-	  List.iter ignore_good (build sources);
-	  
+	  (*For each source .mli, first generate the .mli file if it doesn't exist yet.*)
+	  List.iter ignore_good (build (List.map (fun x -> x.path) (leaves_of tree)));
+	  (*Now that we have all the source .mli, we can apply substitutions and compute dependencies*)
+	  let deps = compute_dependencies (apply_substitutions tree substitutions)     in
+	    Echo (write_tree (sort_tree deps)) dest
     end
 
 (**To obtain the .ml of a .dist, just copy the .dist to .ml*)
