@@ -1,3 +1,4 @@
+
 2009-03-08  Edgar Friendly  <thelema314@gmail.com>
 
 	* src/core/extlib/extMap.ml*: add Map.min_key, max_key, choose (flux)
@@ -15,6 +16,16 @@
 	* Makefile.in: Allow [JOBS=n make] for parallel build (Paul Pelzl)
 
 	* Configure.ac: remove configure hack (Paul Pelzl)
+
+	
+2009-03-08  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* myocamlbuild.ml: [Depsort] created
+
+	* myocamlbuild.ml: [sort_tree], [sort_modules] implemented
+
+	* build/distrib2source.ml: removed
+	
 
 2009-03-05  Jeremie Dimino <jeremie@dimino.org>
 
