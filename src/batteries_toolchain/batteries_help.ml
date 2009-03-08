@@ -371,7 +371,7 @@ let help () =
 
 (**Print the signature of a module.*)
 let print_module name =
-  let phrase = !Toploop.parse_toplevel_phrase (Lexing.from_string (Printf.sprintf "module %s = %s;;" name name)) in
+  let phrase = !Toploop.parse_toplevel_phrase (Lexing.from_string (Printf.sprintf "module X_ = %s;;" name name)) in
     ignore (Toploop.execute_phrase true Format.std_formatter phrase);;
 
 let man = List.assoc "man" helpers
