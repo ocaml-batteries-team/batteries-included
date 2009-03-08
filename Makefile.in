@@ -20,6 +20,13 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
+########################################################################
+# ENVIRONMENT CONFIGURATION
+#
+# Variables in this section control the overall behavior of the build
+# script.
+########################################################################
+
 VERSION = @VERSION@
 PACKAGE = batteries
 
@@ -63,13 +70,72 @@ ifeq ($(TERM),dumb)
 OBFLAGS += -classic-display
 endif
 
+# The Makefile can be invoked as "JOBS=<n> make <target>", and the
+# process count <n> will be passed along to ocamlbuild for use on
+# multicore boxes.
 ifdef JOBS
 OBFLAGS += -j $(JOBS)
 endif
 
+OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
+#OCAMLBUILD=ocamlbuild -byte-plugin -classic-display 
+# Replace the first one with the second one if you have build-time
+# issue, to help with trouble-shooting
+
+
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
 DESTDIR = @DESTDIR@
+
+
+########################################################################
+# TARGET SET DEFINITIONS
+#
+# The following variables define the primary sets of objects that
+# ocamlbuild will be instructed to create.
+########################################################################
+
+BYTE_TARGETS = src/main/threads/batteries.cma src/main/threads/run.byte \
+		src/main/nothreads/batteries.cma src/main/nothreads/run.byte
+
+ifeq ($(BUILD_RUNNER),yes)
+OPT_TARGETS = src/main/threads/batteries.cmxa src/main/threads/run.native \
+	src/main/nothreads/batteries.cmxa src/main/nothreads/run.native
+else
+OPT_TARGETS = src/main/threads/batteries.cmxa src/main/nothreads/batteries.cmxa
+endif
+
+SYNTAX_TARGETS = src/syntax/pa_openin/pa_openin.cmo \
+	  src/syntax/pa_openin/pa_openin_r.cmo \
+	  src/syntax/pa_where/pa_where.cmo \
+	  src/syntax/pa_batteries/pa_batteries.cmo \
+	  src/syntax/pa_strings/pa_strings.cma \
+     src/syntax/pa_comprehension/pa_comprehension.cmo
+
+TOPLEVEL_TARGETS = src/batteries_toolchain/batteries_print.cmo \
+		src/batteries_toolchain/batteries_help.cmo
+
+
+########################################################################
+# MAKE RULES
+########################################################################
+
+ifeq ($(HAS_GODI),yes)
+all: config.ml install_doc
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(SYNTAX_TARGETS) $(TOPLEVEL_TARGETS)
+#all: byte syntax top install-doc
+else
+all: config.ml
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(SYNTAX_TARGETS) $(TOPLEVEL_TARGETS)
+#all: byte syntax top
+endif
+
+all_code:
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(OPT_TARGETS) $(TOPLEVEL_TARGETS) $(SYNTAX_TARGETS)
+
+all_byte_code:
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS) $(SYNTAX_TARGETS)
+
 
 ifeq ($(DESTDIR),)
 DESTDIR_FLAGS =
@@ -89,17 +155,6 @@ endif
 #endif
 
 
-OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
-#OCAMLBUILD=ocamlbuild -byte-plugin -classic-display 
-# Replace the first one with the second one if you have build-time
-# issue, to help with trouble-shooting
-
-ifeq ($(HAS_GODI),yes)
-all: byte syntax top install-doc
-else
-all: byte syntax top
-endif
-
 config.ml: Makefile
 	@\rm -f config.ml &&\
 	echo 'let version = "$(VERSION)";;' >> config.ml &&\
@@ -108,8 +163,18 @@ config.ml: Makefile
 
 
 #Useful for testing
-reinstall: byte opt top syntax uninstall install tests
-rebyte: byte top syntax uninstall install tests-byte
+reinstall: test_all_code
+test_all_code: install_all_code
+	$(MAKE) tests
+install_all_code: all_code uninstall
+	$(MAKE) install
+
+rebyte: test_byte_code
+test_byte_code: install_byte_code
+	$(MAKE) tests_byte
+install_byte_code: all_byte_code uninstall
+	$(MAKE) install
+
 ifeq ($(BUILD_DOC),no)
 install-doc:
 else
@@ -120,30 +185,16 @@ install-doc: doc
 endif
 
 byte: config.ml
-	$(OCAMLBUILD) src/main/threads/batteries.cma src/main/threads/run.byte
-	$(OCAMLBUILD) src/main/nothreads/batteries.cma src/main/nothreads/run.byte
+	$(OCAMLBUILD) $(BYTE_TARGETS)
 
 opt: config.ml
-ifeq ($(BUILD_RUNNER),yes)
-	$(OCAMLBUILD) src/main/threads/batteries.cmxa src/main/threads/run.native
-	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa src/main/nothreads/run.native
-else
-	$(OCAMLBUILD) src/main/threads/batteries.cmxa
-	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
-endif
+	$(OCAMLBUILD) $(OPT_TARGETS)
 
 syntax: config.ml
-	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo \
-	      src/syntax/pa_openin/pa_openin_r.cmo \
-	      src/syntax/pa_where/pa_where.cmo \
-	      src/syntax/pa_batteries/pa_batteries.cmo \
-	      src/syntax/pa_strings/pa_strings.cma \
-              src/syntax/pa_comprehension/pa_comprehension.cmo
+	$(OCAMLBUILD) $(SYNTAX_TARGETS)
 
-top: 
-	$(OCAMLBUILD) src/batteries_toolchain/batteries_print.cmo \
-		src/batteries_toolchain/batteries_help.cmo
-
+top: config.ml
+	$(OCAMLBUILD) $(TOPLEVEL_TARGETS)
 
 install:
 	chmod ugo+rx src/batteries_toolchain/ocaml* && \
@@ -192,7 +243,7 @@ doc: byte doc/api.odocl
 	rm -Rf doc/batteries/html/api
 	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
 	rm -f api.docdir
-	mv _build/doc/api.docdir/ doc/batteries/html/api
+	cp -a _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: 
 	@echo Generating documentation. This usually lasts 15+ minutes.
@@ -209,7 +260,7 @@ tests:
 	cd testsuite && ocamlbuild -clean && \
 	ocamlfind batteries/ocamlbuild main.byte main.native 
 
-tests-byte:
+tests_byte:
 	cd testsuite && ocamlfind batteries/ocamlbuild -clean && \
 	ocamlfind batteries/ocamlbuild main.byte
 
