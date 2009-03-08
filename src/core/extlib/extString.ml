@@ -303,6 +303,9 @@ let fold_right f str init =
   in
   loop n init
 
+let iteri f str =
+  for i = 0 to (String.length str) - 1 do f i str.[i] done
+  
 (* explode and implode from the OCaml Expert FAQ. *)
 let explode s =
   let rec exp i l =

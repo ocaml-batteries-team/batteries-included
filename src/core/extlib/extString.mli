@@ -154,6 +154,9 @@ val iter : (char -> unit) -> string -> unit
    the characters of [s].  It is equivalent to
    [f s.[0]; f s.[1]; ...; f s.[String.length s - 1]; ()]. *)
 
+val iteri : (int -> char -> unit) -> string -> unit
+(** [String.iteri f s] is equivalent to
+   [f 0 s.[0]; f 1 s.[1]; ...; f len s.[len]] where [len] is length of string [s]. *)
 
 (** {6 Finding}*)
 
