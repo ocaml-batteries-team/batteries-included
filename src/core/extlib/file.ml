@@ -84,7 +84,7 @@ let out_chan_mode ?mode binary =
     in aux [] binary l
   in match mode with
     | None   -> [Open_wronly; Open_binary; Open_creat]
-    | Some l -> mode_to_open_flag l
+    | Some l -> Open_wronly :: (mode_to_open_flag l)
 
 
 let open_out ?mode ?(perm=user_read lor user_write) name =
@@ -129,12 +129,10 @@ let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
 
 let lines_of file = IO.lines_of (open_in file)
 
-let write_lines lines file =
-  let output_that_closes =
-    let perm = user_read lor user_write in
-    output_channel ~cleanup:true (open_out_gen (out_chan_mode ?mode:None true) perm file)
-   in
-  IO.write_lines output_that_closes lines
+let write_lines file lines = 
+  let doit output = IO.write_lines output lines in
+  let mode = [`trunc; `create] in
+  with_file_out ~mode file doit 
     
 (**
    {6 Temporary files}

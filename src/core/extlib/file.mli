@@ -34,10 +34,9 @@ val lines_of : string -> string Enum.t
     The file is automatically closed once the last line has been reached or the
     enumeration is closed or garbage-collected. *)
 
-val write_lines: string Enum.t -> string -> unit
-(** [write_lines lines name] writes strings given by [lines] to file [name] with newline character appended to each line.
- *)
-
+val write_lines: string -> string Enum.t -> unit
+(** [write_lines name lines] writes strings given by [lines] to file [name] with newline character appended to each line. *)
+ 
 val size_of: string -> int
 (** [size_of name] returns the size of file [name] in bytes.*)
 
