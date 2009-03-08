@@ -62,7 +62,7 @@ ExtStack
 ExtSet
 ExtOo
 ExtStr
-Path
+PathGen
 CharEncodings
 ExtSys
 ExtArg

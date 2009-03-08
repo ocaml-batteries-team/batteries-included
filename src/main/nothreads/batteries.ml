@@ -102,7 +102,8 @@ struct
   module  Char_parser = Extlib.CharParser
   module UChar_parser = Extlib.UCharParser
   module Parser_co    = Extlib.ParserCo
-  module Path        = Extlib.Path
+  module Path        = Extlib.PathGen.OfString
+  module PathGen     = Extlib.PathGen
   module Result      = Extlib.Result
   module Logger      = Extlib.Logger
 end
