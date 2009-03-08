@@ -1,3 +1,7 @@
+* IO.read_line - documentation - say explicitly what happens on last line of file that has no final \n
+
+* using Ropes we are forced to use character-indexes: a leaf is seemingly always traversed on [get] and [sub]; should be able to do byte-indexing (with enough privacy this can be done safely). Personally, I think that in real applications byte-indexing provides enough functionality and is faster. I mean: indexes are usually used as if were private, always come from some form of parsing or traversal.
+
 * [open Batteries include Backwards_compatibility]
 
 * import pa-do (http://pa-do.forge.ocamlcore.org/)
