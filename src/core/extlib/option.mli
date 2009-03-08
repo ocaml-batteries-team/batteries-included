@@ -37,7 +37,24 @@ val may : ('a -> unit) -> 'a option -> unit
 (** [may f (Some x)] calls [f x] and [may f None] does nothing. *)
 
 val map : ('a -> 'b) -> 'a option -> 'b option
-(** [map f (Some x)] returns [Some (f x)] and [map None] returns [None]. *)
+(** [map f (Some x)] returns [Some (f x)] and [map f None] returns [None]. *)
+
+val bind : ('a -> 'b option) -> 'a option -> 'b option
+(** [bind f (Some x)] returns [f x] and [bind f None] returns [None]. 
+
+@example "Our functions return option types. Compose them to propagate [None]."
+{[
+let pick_long case = 
+  try 
+    Some (List.find (fun data -> List.length data > 1000) case)
+  with Not_found -> None
+let last_null data = List.rindex_of 0 data
+let interesting_positions dataset = 
+  List.filter_map 
+    (fun case -> Option.bind last_null (pick_long case))
+    dataset
+]}
+*)
 
 val default : 'a -> 'a option -> 'a
 (** [default x (Some v)] returns [v] and [default x None] returns [x]. *)

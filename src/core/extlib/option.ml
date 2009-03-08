@@ -20,7 +20,7 @@
  *)
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Persistent.Option" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries.Option" (*For Sexplib, Bin-prot...*)
  
 exception No_value
 
@@ -33,6 +33,10 @@ let may f = function
 let map f = function
 	| None -> None
 	| Some v -> Some (f v)
+
+let bind f = function
+  | None -> None
+  | Some v -> f v
 
 let default v = function
 	| None -> v
