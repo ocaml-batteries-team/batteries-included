@@ -1,3 +1,11 @@
+2009-03-08  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* myocamlbuild.ml: [Depsort] created
+
+	* myocamlbuild.ml: [sort_tree], [sort_modules] implemented
+
+	* build/distrib2source.ml: created
+
 2009-03-05  Jeremie Dimino <jeremie@dimino.org>
 
 	* src/code/extlib/rope.mli: inverse doc of [starts_with] and [ends_with]
