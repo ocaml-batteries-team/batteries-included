@@ -117,7 +117,7 @@ struct
       
     val values: 'a t -> 'a Enum.t
       (** Return an enumeration of al the values of a map.*)
-
+(*
     val min_key : 'a t -> (key * 'a)
       (** return the ([key,value]) pair with the smallest key *)
 
@@ -126,7 +126,7 @@ struct
 
     val choose : 'a t -> (key * 'a)
       (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
-
+*)
 (*
     val split : key -> 'a t -> ('a t * 'a option * 'a t)
       (** as [Set.split] *)
