@@ -1,3 +1,8 @@
+2009-03-09  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* myocamlbuild.ml: [Depsort.add_node] added
+
+	* myocamlbuild.ml: [Pack.sort] now invokes [Depsort.add_node]
 
 2009-03-08  Edgar Friendly  <thelema314@gmail.com>
 
