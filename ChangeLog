@@ -1,5 +1,7 @@
 2009-03-09  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/syntax/pa_batteries/pa_batteries.ml: [initialized] removed
+
 	* src/core/extlib/extMap.ml*: Commented out [min_key], [max_key], [choose]
 
 	* myocamlbuild.ml: [Depsort.add_node] added
