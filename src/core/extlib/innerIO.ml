@@ -370,7 +370,7 @@ let input_channel ?(autoclose=true) ?(cleanup=false) ch =
 	      let n = Pervasives.input ch s p l in
 		if n = 0 then 
 		  begin
-		    close_in !me;
+                    if autoclose then close_in !me else ();
 		    raise No_more_input
 		  end
 		else n)

@@ -1,3 +1,30 @@
+2009-03-09  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* myocamlbuild.ml: [Depsort.add_node] added
+
+	* myocamlbuild.ml: [Pack.sort] now invokes [Depsort.add_node]
+
+	* build/distrib2source.ml: removed
+	
+2009-03-08  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/extMap.ml*: add Map.min_key, max_key, choose (flux)
+	
+	* src/core/extlib/innerIO.ml: Fix bug in autoclose (Paul Pelzl)
+
+	* src/core/extlib/file.ml: [open_in] shouldn't autoclose (Paul Pelzl)
+
+	* src/core/extlib/file.mli: [open_temporary_out] does autoclose -
+	doc bug (Paul Pelzl)
+
+	* Makefile.in: refactoring of Makefile for faster
+	compilation (less ocamlbuild restarts) (Paul Pelzl)
+
+	* Makefile.in: Allow [JOBS=n make] for parallel build (Paul Pelzl)
+
+	* Configure.ac: remove configure hack (Paul Pelzl)
+
+	
 2009-03-08  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* myocamlbuild.ml: [Depsort] created
@@ -5,6 +32,7 @@
 	* myocamlbuild.ml: [sort_tree], [sort_modules] implemented
 
 	* build/distrib2source.ml: created
+
 
 2009-03-05  Jeremie Dimino <jeremie@dimino.org>
 

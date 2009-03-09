@@ -159,12 +159,7 @@ if test "${prefix}" = "NONE"; then
 AC_MSG_NOTICE([Locating default installation directory])
 AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
 if test -z "$OCAMLPKG_batteries"; then
-   touch META
-   $OCAMLFIND install batteries META
-   AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
-   DESTDIR=`dirname $OCAMLPKG_batteries`
-   $OCAMLFIND remove batteries &> /dev/null
-   rm META
+   DESTDIR=`$OCAMLFIND printconf destdir`
 else
    AC_MSG_WARN([Batteries is already installed])
    AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])

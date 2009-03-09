@@ -194,8 +194,5 @@ val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?perm:permission
 
     @return The name of the file and the [output] for writing in it.
 
-    {b Note} You will need to close the file manually. An alternative is
-    to call [with_temporary_out] instead of [open_out].
-
     Naming conventions for files are platform-dependent.*)
 

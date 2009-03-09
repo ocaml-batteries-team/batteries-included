@@ -116,7 +116,7 @@ let open_in ?mode ?(perm=default_permission) name =
 	       )
 	~close:(fun () -> Unix.close desc)
       | _ ->
-	  input_channel (open_in_gen unix_mode perm name)
+	  input_channel ~autoclose:false (open_in_gen unix_mode perm name)
 
 
 let with_do opener closer x f =

@@ -142,7 +142,12 @@ struct
     Dependency.add t.reverse depended depending;
     t.set := StringSet.add depending (StringSet.add depended !(t.set))
 
+  let add_node t node =
+    t.set := StringSet.add node !(t.set)
+
+
   let sort t =
+(*    Printf.eprintf "Sorting %a\n" Dependency.print t.direct;*)
     let rec aux (sorted:string list) (rest: string list) =
       match rest with 
 	| [] -> 
@@ -162,6 +167,7 @@ struct
 		  assert false
 	      | (rest, roots) ->
 		  List.iter (fun d ->
+(*			       Printf.eprintf "Dependency %S resolved\n" d;*)
 			       List.iter                (*Dependency [d] has been resolved, remove it.*)
 				 (fun x -> Dependency.remove t.direct x d)
 				 (Dependency.find_all t.reverse d)) roots;
@@ -293,6 +299,7 @@ struct
     let module_name = String.capitalize (Filename.basename (Filename.chop_suffix dep_name extension)) in
     let f = open_in dep_name in
     let (file_name, dependencies) = String.split (input_line f) ":" in
+(*      Printf.eprintf "Reading dependency %s => %s\n" file_name dependencies;*)
     let result = (file_name, module_name, List.filter (fun x -> not (String.length x = 0)) (String.nsplit dependencies " ")) in
       close_in f;
       result
@@ -315,9 +322,11 @@ struct
     and src : (string, string) Hashtbl.t = Hashtbl.create 100 in
       (*Read all the dependencies and store them in the tables*)
       List.iter (
-	fun f -> 
+	fun f ->
+(*	  Printf.eprintf "Adding file %S\n" f;*)
 	  if Filename.check_suffix f ".depends" then
 	    let (file_name, module_name, dependencies) = read_dependency f extension in
+	      Depsort.add_node depsort module_name;
 	      List.iter (fun x -> Depsort.add depsort module_name x) dependencies;
 	      Hashtbl.replace src module_name file_name
 	  else ()
