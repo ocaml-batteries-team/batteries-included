@@ -156,6 +156,7 @@ let rec close_unit (o:unit output) : unit =
 (*Close a ['a output] -- first close it as a [unit output] then
   recover the result.*)
 let close_out o =
+(*  Printf.eprintf "close_out\n%!";*)
   close_unit (cast_output o);
   o.out_close ()
 
@@ -383,7 +384,16 @@ let output_channel ?(cleanup=false) ch =
     create_out
       ~write: (fun c     -> output_char ch c)
       ~output:(fun s p l -> Pervasives.output ch s p l; l)
-      ~close: (if cleanup then fun ()    -> Pervasives.close_out ch else fun () -> Pervasives.flush ch)
+      ~close: (if cleanup then fun () -> 
+		 begin
+(*		   Printf.eprintf "Cleaning up\n%!";*)
+		   Pervasives.close_out ch 
+		 end
+	       else fun () -> 
+		 begin
+(*		   Printf.eprintf "Not cleaning up\n%!";*)
+		   Pervasives.flush ch
+		 end)
       ~flush: (fun ()    -> Pervasives.flush ch)
 
 

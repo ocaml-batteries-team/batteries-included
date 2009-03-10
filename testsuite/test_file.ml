@@ -63,3 +63,22 @@ let test_3 = ("File: open_in'd files should not autoclose",
 	    )
 
 
+let test_4 = ("File: opening and closing many files",
+	      fun () ->
+	      try
+		for i = 0 to 10000 do
+		  ignore (write buffer)
+	      done;Testing.Pass
+	      with Sys_error e -> Testing.Fail e)
+
+
+let test_5 = ("File: opening and closing many files (Pervasives)",
+	      fun () ->
+		try
+		for i = 0 to 10000 do
+		  let temp = Filename.temp_file "batteries" "test" in
+		  let oc   = open_out temp                         in
+		    Standard.output_string oc "test";
+		    close_out oc
+	      done;Testing.Pass
+	    with Sys_error e -> Testing.Fail e )

@@ -88,7 +88,8 @@ let out_chan_mode ?mode binary =
 
 
 let open_out ?mode ?(perm=user_read lor user_write) name =
-  output_channel (open_out_gen (out_chan_mode ?mode true) perm name)
+(*  Printf.eprintf "Opening out\n%!";*)
+  output_channel ~cleanup:true (open_out_gen (out_chan_mode ?mode true) perm name)
 
 open ExtBigarray.Bigarray
 
@@ -96,27 +97,27 @@ let open_in ?mode ?(perm=default_permission) name =
   let unix_mode = in_chan_mode ?mode true in
     match mode with
       | Some l when List.mem `mmap l ->
-    let desc = Unix.openfile name [O_RDONLY] 0                      in
-    let array= Array1.map_file desc char c_layout (*shared*)false (-1) in
-    let pos  = ref 0                                                
-    and len  = Array1.dim array                                     in
-      create_in
-	~read:(fun () ->
-		 if !pos >= len then raise No_more_input
-		 else Array1.get array (Ref.post_incr pos))
-	~input:(fun sout p l ->
-		  if !pos >= len then raise No_more_input;
-		  let n = (if !pos + l > len then len - !pos else l) in
-		    for i = 0 to n - 1 do
-		      String.(*unsafe_*)set sout (!pos + i) (Array1.get array i)
-		    done;
-(*		    String.unsafe_blit s (post pos ( (+) n ) ) sout p n;*)
-		    pos := !pos + n;
-		    n
-	       )
-	~close:(fun () -> Unix.close desc)
+	  let desc = Unix.openfile name [O_RDONLY] 0                      in
+	  let array= Array1.map_file desc char c_layout (*shared*)false (-1) in
+	  let pos  = ref 0                                                
+	  and len  = Array1.dim array                                     in
+	    create_in
+	      ~read:(fun () ->
+		       if !pos >= len then raise No_more_input
+		       else Array1.get array (Ref.post_incr pos))
+	      ~input:(fun sout p l ->
+			if !pos >= len then raise No_more_input;
+			let n = (if !pos + l > len then len - !pos else l) in
+			  for i = 0 to n - 1 do
+			    String.(*unsafe_*)set sout (!pos + i) (Array1.get array i)
+			  done;
+			  (*		    String.unsafe_blit s (post pos ( (+) n ) ) sout p n;*)
+			  pos := !pos + n;
+			  n
+		     )
+	      ~close:(fun () -> Unix.close desc)
       | _ ->
-	  input_channel ~autoclose:false (open_in_gen unix_mode perm name)
+	  input_channel ~cleanup:true ~autoclose:false (open_in_gen unix_mode perm name)
 
 
 let with_do opener closer x f =
@@ -146,7 +147,7 @@ type open_temporary_out_flag =
 let open_temporary_out ?mode ?perm ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * string) =
   let chan_mode = out_chan_mode ?mode true in
   let (name, cout) = Filename.open_temp_file ~mode:chan_mode prefix suffix in
-  let out          = output_channel cout   in
+  let out          = output_channel ~cleanup:true cout   in
     (match mode with
       | Some l when List.mem `delete_on_exit l -> 
 	  Pervasives.at_exit (fun () -> 

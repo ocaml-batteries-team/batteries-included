@@ -1,3 +1,13 @@
+2009-03-10  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPervasives.ml: [open_in_bin], [open_in_gen], [open_out_bin], [open_out_gen] now clean-up
+
+	* src/core/extlib/file.ml: [open_in], [open_out], [open_temporary_out] now clean up opened files when closing
+
+	* testsuite/test_file.ml: [test_4], [test_5] added
+
+	* testsuite/main.ml: [Test_file.test_4], [Test_file.test_5] added
+
 2009-03-09  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/syntax/pa_batteries/pa_batteries.ml: [initialized] removed

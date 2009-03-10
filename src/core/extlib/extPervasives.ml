@@ -40,9 +40,9 @@ module Pervasives = struct
 
   let open_out          = File.open_out
   let open_out_bin name = 
-    IO.output_channel (open_out_bin name)
+    IO.output_channel ~cleanup:true (open_out_bin name)
   let open_out_gen mode perm name = 
-    IO.output_channel (open_out_gen mode perm name)
+    IO.output_channel ~cleanup:true (open_out_gen mode perm name)
 
   let flush             = IO.flush
   let flush_all         = IO.flush_all
@@ -62,9 +62,9 @@ module Pervasives = struct
     with _ -> ()
 
   let open_in           = File.open_in
-  let open_in_bin name  = IO.input_channel (open_in_bin name)
+  let open_in_bin name  = IO.input_channel ~cleanup:true (open_in_bin name)
   let open_in_gen mode perm filename = 
-    IO.input_channel (open_in_gen mode perm filename)
+    IO.input_channel ~cleanup:true (open_in_gen mode perm filename)
 
   let input_char        = IO.read
   let input_line        = IO.read_line
