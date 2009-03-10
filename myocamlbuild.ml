@@ -85,7 +85,7 @@ struct
       in
 	nsplit str sep
     )
-
+(*
   type segment = Changed of string | Slice of int * int 
 
   let global_replace convs str = (* convs = (find, replace) list *)
@@ -132,7 +132,7 @@ struct
 	| (start_idx, end_idx) as h :: t -> 
 	    try 
 	      for i = find str start_idx 
-
+*)
 end
 
 module StringSet = Set.Make(String)
