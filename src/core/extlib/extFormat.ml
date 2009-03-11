@@ -24,20 +24,53 @@ open IO
 module Format = struct
   include Format
 
+
+
+
   let output_of out = fun s i o -> ignore (really_output out s i o)
   let flush_of  out = InnerIO.get_flush out
+  let newline_of out= fun () -> InnerIO.write out '\n'
+  let spaces_of  out= 
+    (* Default function to output spaces. 
+       Copied from base format.ml*)
+    let blank_line = String.make 80 ' ' in
+    let rec display_blanks n =
+      if n > 0 then
+	if n <= 80 then ignore (really_output out blank_line 0 n) else
+	  begin
+	    ignore (really_output out blank_line 0 80);
+	    display_blanks (n - 80)
+	  end
+    in display_blanks
 
   (**{6 New functions}*)
 
 
   let formatter_of_output out =
-    make_formatter (output_of out) (flush_of out)
+    let output = output_of out
+    and flush  = flush_of  out
+    in
+    let f = make_formatter output flush in
+      pp_set_all_formatter_output_functions f
+	~out:output
+	~flush
+	~newline:(newline_of out)
+	~spaces:(spaces_of out);
+      f
       
   let set_formatter_output out =
-    set_formatter_output_functions (output_of out) (flush_of out)
+    set_all_formatter_output_functions 
+      ~out:(output_of out) 
+      ~flush:(flush_of out)
+      ~newline:(newline_of out)
+      ~spaces:(spaces_of out)
 
   let pp_set_formatter_output f out =
-    pp_set_formatter_output_functions f (output_of out) (flush_of out)
+    pp_set_all_formatter_output_functions f 
+      ~out:(output_of out) 
+      ~flush:(flush_of out)
+      ~newline:(newline_of out)
+      ~spaces:(spaces_of out)
 
   (**{6 Old values, new semantics}*)
 
@@ -51,8 +84,9 @@ module Format = struct
   let _ = 
     set_formatter_output IO.stdout;
     Format.pp_set_formatter_output_functions Format.std_formatter (output_of stdout) (flush_of stdout);
-    Format.pp_set_formatter_output_functions Format.err_formatter (output_of stderr) (flush_of stderr)
-    
+    Format.pp_set_formatter_output_functions Format.err_formatter (output_of stderr) (flush_of stderr);
+    at_exit (pp_print_flush Format.std_formatter);
+    at_exit (pp_print_flush Format.err_formatter)
 
     
 end
