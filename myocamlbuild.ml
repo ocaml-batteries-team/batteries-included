@@ -175,13 +175,16 @@ struct
       set     = ref StringSet.empty
     }
 
-  let add t depending depended =
-    Dependency.add t.direct  depending depended;
-    Dependency.add t.reverse depended depending;
-    t.set := StringSet.add depending (StringSet.add depended !(t.set))
-
   let add_node t node =
     t.set := StringSet.add node !(t.set)
+
+  let add_dependency t depending depended =
+    Dependency.add t.direct  depending depended;
+    Dependency.add t.reverse depended depending;
+    add_node t depending;
+    add_node t depended
+
+
 
 
   let sort t =
@@ -245,7 +248,6 @@ struct
     Options.ocamlopt   := ocamlfind & A"ocamlopt";
     Options.ocamldep   := ocamlfind & A"ocamldep";
     Options.ocamldoc   := ocamlfind & A"ocamldoc";
-    (*OCAMLDOC-g Options.ocamldoc   := S[A"/home/yoric/tmp/ocaml-community/bin/ocamlrun"; A "-b"; A"/home/yoric/tmp/ocaml-community/bin/ocamldoc"];*)
     Options.ocamlmktop := ocamlfind & A"ocamlmktop"
 
   let after_rules () =
@@ -294,32 +296,14 @@ struct
     (*Options.ocamldoc  := A"ocamldoc"*) ()
 
   let after_rules () = 
-    dep  ["ocaml"; "doc"]   & ["build/odoc_tags.cmo"];
+    dep  ["ocaml"; "doc"]   & ["build/odoc_batteries_factored.cmo"; "build/odoc_tags.cmo"; "build/odoc_extract_mli.cmo"];
     flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
 				A "-i"; A "build";
+				A "-g"; A "odoc_batteries_factored.cmo";
 				A "-g"; A "odoc_tags.cmo"; 
+				(*A "-g"; A "build/odoc_extract_mli.cmo";*)
 			        A "-t"; A "OCaml Batteries Included" ;
 				A "-intro"; A "../build/intro.text"]
-(*OCAMLDOC -g    flag ["ocaml"; "doc"]   & S[A "-i"; A "/tmp/";
-				A "-g"; A "odoc_tags.cmo"; 
-			        A "-t"; A "OCaml Batteries Included" ;
-				A "-intro"; A "../build/intro.text";
-(*			        A "-I"; A "/home/yoric/tmp/ocaml-community/lib/ocaml";
-			        A "-I"; A "/home/yoric/tmp/ocaml-community/lib/ocaml/threads";*)
-				A "-I"; A "/home/yoric/usr/local/lib/ocaml";
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/std-lib/threads"; 
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/sexplib";
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/camomile";
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/camlzip" ;
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/netstring"]
-*)
-(*  let after_rules () = 
-    dep  ["ocaml"; "doc"]   & ["build/odoc_generator_batlib.cmo"];
-    flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
-				A "-i"; A "build";
-				A "-g"; A "odoc_generator_batlib.cmo"; 
-			        A "-t"; A "OCaml Batteries Included" ;
-				A "-intro"; A "../build/intro.text"]*)
 end
 
 
@@ -365,7 +349,7 @@ struct
 	  if Filename.check_suffix f ".depends" then
 	    let (file_name, module_name, dependencies) = read_dependency f extension in
 	      Depsort.add_node depsort module_name;
-	      List.iter (fun x -> Depsort.add depsort module_name x) dependencies;
+	      List.iter (fun x -> Depsort.add_dependency depsort module_name x) dependencies;
 	      Hashtbl.replace src module_name file_name
 	  else ()
       ) files ;
@@ -712,6 +696,9 @@ expand_module include_dirs m ["ml"]) modules));
 end
 
 module Distrib = struct
+
+
+
     (**
 
    Build a .ml and a .mli from a .dist file.
@@ -722,14 +709,14 @@ Format of a .dist file:
 {[
 
 (*Module comment*)
-module Foo = A.Module.Path     (*% mli "a/file/path/foo.mli" aka "InnerFoo" %*)
+module Foo = A.Module.Path     (*%Foo mli "a/file/path/foo.mli" aka "InnerFoo" %*)
 
 (*Module comment*)
-module Bar = Another.Module.Path.Foo (*% mli "another/file/path/foo.mli" submodule "Bar" %*)
+module Bar = Another.Module.Path.Foo (*%Bar mli "another/file/path/foo.mli" submodule "Bar" %*)
 
 (*Module comment*)
 module Sna = struct
-   module Toto = Yet.Another.Module.Path (*% mli "a/file/path/foo.mli" %*)
+   module Toto = Yet.Another.Module.Path (*%Sna.Toto mli "a/file/path/foo.mli" %*)
 
        (*...same grammar...*)
 end
@@ -781,8 +768,16 @@ and  ('a,'b) sigtree_aux =
 (** Read and parse the contents of a .dist file and return it without any additional processing*)
 let read_dist: string -> (unit, sigsource) sigtree * substitution list = fun _ -> assert false
 
-(** Return the list of .mli corresponding to %mli directives.*)
-let leaves_of: (_, 'b) sigtree -> 'b list = fun _ -> assert false
+(** Return the annotations on a tree*)
+let leaves_of: (_, 'b) sigtree -> 'b list = fun tree ->
+  let rec aux acc = function
+    | (_, Other _)        -> acc
+    | (_, Node (_, l, _)) -> List.fold_left aux acc l
+    | (_, Leaf (_, x, _)) -> x :: acc
+  in aux [] tree
+
+(** Apply a number of substitutions on a string*)
+let replace_in_string: string -> substitution list -> string = fun _ _ -> assert false
 
 (** [patch source subs] creates a temporary file with the contents of [source]
     in which all the substitutions of [subs] have been applied and returns the
@@ -800,8 +795,7 @@ let extract_relevant_of_string: string -> string list -> string = fun source pat
 *)
 let extract_relevant_of_file: string -> string list -> string = fun file path -> assert false
 
-(** Apply a number of substitutions on a string*)
-let replace_in_string: string -> substitution list -> string = fun _ _ -> assert false
+
   
 
 (** Go through a tree applying substitutions. 
@@ -851,6 +845,12 @@ let compute_dependencies: (unit, string) sigtree -> (StringSet.t, string) sigtre
 	(stringset_of_ocamldep file_name, Leaf (name, file_name, comment))
   in aux tree
 
+(**
+   Sort a list of modules topologically.
+
+   [sort_modules l rename] sorts the modules of list [l]. Each name is transformed using [rename]
+   before taking dependencies into account ([rename] serves chiefly to add prefixes).
+*)
 let sort_modules: ((StringSet.t, _) sigtree list as 'a) -> (string -> string) -> 'a = fun list prefix -> 
   let dependencies = Depsort.create ()
   and modules      = Hashtbl.create 16
@@ -859,7 +859,8 @@ let sort_modules: ((StringSet.t, _) sigtree list as 'a) -> (string -> string) ->
 		 |      ((depends_on, Node (name, _, _)) as node)->
 			  let name' = prefix name in (*Collect dependencies*)
 			    Hashtbl.add modules name node;
-			    StringSet.iter (fun dep -> Depsort.add dependencies name' dep) depends_on
+			    Depsort.add_node dependencies name;
+			    StringSet.iter (fun dep -> Depsort.add_dependency dependencies name' dep) depends_on
 		 | other -> others := other :: !others) list;
     List.rev_append !others (List.map (fun name -> Hashtbl.find modules name) (Depsort.sort dependencies))
 			    
