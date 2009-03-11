@@ -105,6 +105,11 @@ let post r op =
 let uid = ref 0
 let uid () = post_incr uid
 
+let on_close_out out f =
+  Concurrent.sync !lock (fun () -> 
+			   let previous = out.out_close in
+			     out.out_close <- (fun () -> f out; previous ())) ()
+
 let close_in i =
 	let f _ = raise Input_closed in
 	i.in_close();

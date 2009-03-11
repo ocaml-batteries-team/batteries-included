@@ -137,6 +137,11 @@ val output_buffer : Buffer.t -> string output
     in an efficient way. Closing  returns the whole contents of the buffer
     -- the buffer remains usable.*)
 
+val on_close_out : 'a output -> ('a output -> unit) -> unit
+  (**
+     Register a function to be triggered just before an output is closed.
+  *)
+
 val create_in :
   read:(unit -> char) ->
   input:(string -> int -> int -> int) -> 

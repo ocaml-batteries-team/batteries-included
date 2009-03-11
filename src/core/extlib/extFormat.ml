@@ -24,9 +24,6 @@ open IO
 module Format = struct
   include Format
 
-
-
-
   let output_of out = fun s i o -> ignore (really_output out s i o)
   let flush_of  out = InnerIO.get_flush out
   let newline_of out= fun () -> InnerIO.write out '\n'
@@ -59,6 +56,7 @@ module Format = struct
       f
       
   let set_formatter_output out =
+    InnerIO.on_close_out out (fun _ -> pp_print_flush Format.std_formatter ());
     set_all_formatter_output_functions 
       ~out:(output_of out) 
       ~flush:(flush_of out)
@@ -66,6 +64,7 @@ module Format = struct
       ~spaces:(spaces_of out)
 
   let pp_set_formatter_output f out =
+    InnerIO.on_close_out out (fun _ -> pp_print_flush f ());
     pp_set_all_formatter_output_functions f 
       ~out:(output_of out) 
       ~flush:(flush_of out)
@@ -83,10 +82,8 @@ module Format = struct
 
   let _ = 
     set_formatter_output IO.stdout;
-    Format.pp_set_formatter_output_functions Format.std_formatter (output_of stdout) (flush_of stdout);
-    Format.pp_set_formatter_output_functions Format.err_formatter (output_of stderr) (flush_of stderr);
-    at_exit (pp_print_flush Format.std_formatter);
-    at_exit (pp_print_flush Format.err_formatter)
+    pp_set_formatter_output Format.std_formatter stdout;
+    pp_set_formatter_output Format.err_formatter stderr
 
     
 end
