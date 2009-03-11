@@ -251,11 +251,11 @@ module type S =
     let of_enum e = 
       Enum.fold add empty e
 
-    let map f e = fold (fun x acc -> add (f x) acc) empty e
+    let map f e = fold (fun x acc -> add (f x) acc) e empty
 	
-    let filter f e = fold (fun x acc -> if f x then add x acc else acc) empty e
+    let filter f e = fold (fun x acc -> if f x then add x acc else acc) e empty
 
-    let filter_map f e = fold (fun x acc -> match f x with Some v -> add v acc | _ -> acc) empty e
+    let filter_map f e = fold (fun x acc -> match f x with Some v -> add v acc | _ -> acc) e empty
 
     let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
       Enum.print ~first ~last ~sep print_elt out (enum t)
