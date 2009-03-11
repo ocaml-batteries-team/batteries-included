@@ -48,6 +48,7 @@ module Format = struct
     and flush  = flush_of  out
     in
     let f = make_formatter output flush in
+      InnerIO.on_close_out out (fun _ -> pp_print_flush f ()); (*Note: we can't just use [flush] as [f] contains a cache.*)
       pp_set_all_formatter_output_functions f
 	~out:output
 	~flush
