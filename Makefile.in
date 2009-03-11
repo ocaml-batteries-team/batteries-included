@@ -239,6 +239,15 @@ uninstall:
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads &&\
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads
 
+quickdoc: quickbyte doc/api.odocl
+	rm -Rf doc/batteries/html/api
+	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
+	rm -f api.docdir
+	cp -a _build/doc/api.docdir/ doc/batteries/html/api
+
+quickbyte: config.ml
+	$(OCAMLBUILD) src/main/threads/batteries.cma 
+
 doc: byte doc/api.odocl
 	rm -Rf doc/batteries/html/api
 	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
@@ -263,6 +272,14 @@ tests:
 tests_byte:
 	cd testsuite && ocamlfind batteries/ocamlbuild -clean && \
 	ocamlfind batteries/ocamlbuild main.byte
+
+#Experiments with documentation
+XPDOC_CORE_EXTLIB_MLI=concurrent interfaces innerIO monad return enum extBigarray extUChar extUnit global number ref vect pMap pSet multiPMap option extBuffer extString extUTF8 extInt64 extInt32 extInt extHashtbl extFloat extChar dynArray dllist bitSet rope IO extPrintf base64 extArray extBig_int extList extNativeint extStream substring std refList lazyList extRandom extNum extBool file optParse parserCo result charParser uCharParser extGenlex extComplex extMarshal extGc extPrintexc extPervasives extUnix extMap extQueue extStack extSet extOo extStr path charEncodings extSys extArg extDigest logger extFormat extScanf print
+XPDOC=$(patsubst %, _build/src/core/extlib/%.mli, $(XPDOC_CORE_EXTLIB_MLI)) _build/src/core/extlib.mli
+
+xpdoc:
+	 time ocamlfind ocamldoc -package stdlib,sexplib,netstring,camomile -I _build/build/ -I _build -I _build/src/core/ -I _build/src/core/extlib -I _build/src/core/baselib_threads -I _build/src/libs/ -I _build/src/core/baselib -i _build/build -g odoc_batteries_factored.cmo -g odoc_extract_mli.cmo $(XPDOC) src/main/threads/batteries.ml
+
 
 clean:
 	$(OCAMLBUILD) -clean
