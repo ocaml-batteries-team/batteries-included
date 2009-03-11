@@ -85,54 +85,45 @@ struct
       in
 	nsplit str sep
     )
-(*
+
   type segment = Changed of string | Slice of int * int 
 
-  let global_replace convs str = (* convs = (find, replace) list *)
-    let slen = length str in
-    let rec split_multi acc (find, repl) = function 
-	Slice (start_idx, end_idx) ->
-	  begin try
-	    let i = find str ~pos:start_idx ~end_pos:end_idx find in
-	    split_multi 
-	      (* accumulate slice & replacement *)
-	      (Changed repl :: Slice (start_idx,i-1) :: acc) 
-	      (* same search *)
-	      (find, repl)
-	      (* split the rest of the slice *)
-	      (Slice (i+length find, end_idx))
-	  with
-	      Invalid_string -> Slice (start_idx,end_idx) :: acc
-	  end
-      | s -> s :: acc (* don't replace in a replacement *)
-    in
-    let repl_one acc fr = split_multi [] fr acc in
+  let global_replace convs str = (* convs = (seek, replace) list *)
+    let repl_one slist (seek,repl) = 
+      let rec split_multi acc = function 
+	  Slice (start_idx, end_idx) ->
+	    begin try
+	      let i = find str ~pos:start_idx ~end_pos:end_idx seek in
+	      split_multi 
+		(* accumulate slice & replacement *)
+		(Changed repl :: Slice (start_idx,i-1) :: acc) 
+		(* split the rest of the slice *)
+		(Slice (i+length seek, end_idx))
+	    with
+		Invalid_string -> Slice (start_idx,end_idx) :: acc
+	    end
+	| s -> s :: acc (* don't replace in a replacement *)
+      in
+      List.fold_left split_multi [] slist in
     let to_str pieces = 
       let len_p = function Changed s -> length s | Slice (a,b) -> b-a + 1 in
       let len = List.fold_left (fun a p -> a + len_p p) 0 pieces in
       let out = String.create len in
-      let loop pos = function
+      let rec loop pos = function
 	  Slice (s, e) :: t -> 
 	    String.blit str s out pos (e-s+1);
 	    loop (pos+e-s+1) t
 	| Changed s :: t ->
 	    String.blit s 0 out pos (length s);
 	    loop (pos + length s) t
+	| [] -> ()
       in
       loop 0 pieces;
       out
     in
     
-    to_str (List.fold_left (Slice (0,length str)) convs)
+    to_str (List.fold_left repl_one [Slice (0,length str)] convs)
       
-	    
-    let loop slices acc = 
-      match slices with 
-	  [] -> List.rev acc
-	| (start_idx, end_idx) as h :: t -> 
-	    try 
-	      for i = find str start_idx 
-*)
 end
 
 module StringSet = Set.Make(String)
