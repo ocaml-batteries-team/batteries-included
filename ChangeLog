@@ -1,4 +1,20 @@
+2009-03-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extBigarray.ml*: applied patch by hcarty
+
+	* src/core/extlib/extBigarray.ml*: [Genarray.iter], [Genarray.iteri], [Genarray.map], [Genarray.mapi], 
+
 2009-03-10  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* build/odoc_tags.ml: now uses [Odoc_batteries_factored]
+
+	* build/odoc_batteries_factored.ml: created
+
+	* src/batteries_toolchain/batteries_help.ml: [print_module] now uses flattened name for display
+
+	* myocamlbuild.ml: [sort_modules] now invokes [Depsort.add_node]
+	
+	* myocamlbuild.ml: [Depsort.add] renamed [Depsort.add_dependency]
 
 	* src/core/extlib/extPervasives.ml: [open_in_bin], [open_in_gen], [open_out_bin], [open_out_gen] now clean-up
 
