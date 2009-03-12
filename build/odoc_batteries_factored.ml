@@ -1,13 +1,14 @@
 (*From OCamlDoc*)
 open Odoc_info;;
-module Naming = Odoc_html.Naming
-module Name   = Odoc_name
 open Odoc_info.Value
 open Odoc_info.Module
 open Odoc_info.Type
 open Odoc_info.Class
 open Odoc_info.Exception
-module StringSet = Odoc_html.StringSet
+(*module StringSet = Odoc_html.StringSet*)
+module StringSet = Set.Make(String);;
+
+warning "Loading factored";;
 
 (*From the base library*)
 open List

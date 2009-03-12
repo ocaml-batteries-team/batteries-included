@@ -23,7 +23,6 @@
 
 (*From OCamlDoc*)
 open Odoc_info;;
-module Naming = Odoc_html.Naming
 module Name   = Odoc_name
 open Odoc_info.Value
 open Odoc_info.Module
@@ -31,7 +30,7 @@ open Odoc_info.Type
 open Odoc_info.Class
 open Odoc_info.Exception
 
-open Odoc_batteries_factored
+INCLUDE "../build/odoc_batteries_factored.ml"
 
 (*From the base library*)
 open List
@@ -135,8 +134,8 @@ class mli_generator = object(self)
   method handle_module_alias out x =
     match x.ma_module with
       | None             -> fprintf out "module alias not found ??\n"
-      | Some (Mod m)     -> self#handle_module out m
-      | Some (Modtype m) -> self#handle_module_type out m
+      | Some (Mod m)     -> self#handle_anonymous_module out m
+      | Some (Modtype m) -> self#handle_anonymous_module_type out m
 
   method handle_module out m =
     fprintf out "%amodule %s = %a@\n" 
@@ -145,6 +144,20 @@ class mli_generator = object(self)
       self#handle_module_kind m.m_kind
 
   method handle_module_type out m =
+    fprintf out "%amodule type %s : %a@\n"
+      self#handle_info_option m.mt_info
+      (Name.simple m.mt_name)
+      (fun out m ->
+      match m.mt_kind with
+	| None   -> fprintf out "module type ??@\n"
+	| Some x -> self#handle_module_type_kind out x) m
+
+  method handle_anonymous_module out m = 
+    fprintf out "%a%a@\n" 
+      self#handle_info_option m.m_info 
+      self#handle_module_kind m.m_kind
+
+  method handle_anonymous_module_type out m =
     self#handle_info_option out m.mt_info;
     match m.mt_kind with
       | None   -> fprintf out "module type ??@\n"
@@ -176,11 +189,12 @@ class mli_generator = object(self)
 
   method handle_included_module out x =
     match x.im_module with
-      | None -> fprintf out "include ??\n"
-      | Some (Mod m) -> self#handle_module out m
+      | None             -> fprintf out "include ??\n"
+      | Some (Mod m)     -> self#handle_module out m
       | Some (Modtype m) -> self#handle_module_type out m
 
-  method handle_class out x = assert false
+  method handle_class out x = 
+    fprintf out "class not implemented yet??\n"
 
   method handle_class_type out _ =
     fprintf out "class type not implemented yet??\n"
@@ -266,7 +280,9 @@ class mli_generator = object(self)
     fprintf out "%s" (string_of_type_expr x)
 
 
-end
+end;;
+
+warning "Loading batteries.mli generator";;
 
 let generator = (new mli_generator :> Args.doc_generator)
 
@@ -274,7 +290,6 @@ let set_mli_generator () =
     Args.set_doc_generator (Some generator)
 
 let _ =
-  assert false;
   Odoc_args.verbose := true;
   set_mli_generator ();
   verbose ("Generator loaded");
