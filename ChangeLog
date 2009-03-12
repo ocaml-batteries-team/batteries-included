@@ -1,5 +1,9 @@
 2009-03-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* build/preprocess_mli/generate_mli.ml: created
+
+	* build/optcomp/optcomp.ml: [print_token] now accepts optional argument [oc]
+
 	* build/generate_mli.ml: hijacked into only doing the sub-module extraction part
 
 2009-03-12  Jeremie Dimino <jeremie@dimino.org>
