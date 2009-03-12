@@ -1,7 +1,8 @@
 open Testing
 
 let tests =
-  [ Test_vect.test_1;
+  [ Test_pmap.test_1;
+    Test_vect.test_1;
     Test_vect.test_2;
     Test_vect.test_3;
     Test_vect.test_4;
