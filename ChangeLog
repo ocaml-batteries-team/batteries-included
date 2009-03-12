@@ -1,6 +1,15 @@
+
 2009-03-12  Jeremie Dimino <jeremie@dimino.org>
 
 	* build/generate_mli.ml: added
+	
+2009-03-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/pMap.ml: [enum] changed enumeration order
+
+	* testsuite/test_pmap.ml: created
+
+	* src/core/extlib/refList.ml*: [backwards], [of_backwards] added
 
 2009-03-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
