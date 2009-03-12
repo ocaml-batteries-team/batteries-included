@@ -1,3 +1,7 @@
+2009-03-12  Jeremie Dimino <jeremie@dimino.org>
+
+	* build/generate_mli.ml: added
+
 2009-03-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/innerIO.ml*: [onclose_out] added
