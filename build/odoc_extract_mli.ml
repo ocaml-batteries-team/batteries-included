@@ -79,7 +79,7 @@ class mli_generator = object(self)
     self#handle_info_option out m.m_info;
     match m.m_kind with
 	Module_struct l -> (*Don't print "struct..end"*)
-	  interleave (self#handle_module_element out) (pp_print_newline out)
+	  interleave (self#handle_module_element out) (pp_print_newline out) l
       | _ -> assert false (*Normally, the root module should be a structure.*)
 
   method handle_module_kind out = function
@@ -268,11 +268,13 @@ class mli_generator = object(self)
 
 end
 
+let generator = (new mli_generator :> Args.doc_generator)
+
 let set_mli_generator () =
-  let doc_generator = ((new mli_generator) :> Args.doc_generator) in
-    Args.set_doc_generator (Some doc_generator)
+    Args.set_doc_generator (Some generator)
 
 let _ =
+  assert false;
   Odoc_args.verbose := true;
   set_mli_generator ();
   verbose ("Generator loaded");
@@ -280,7 +282,3 @@ let _ =
 		     (fun _ -> Odoc_info.verbose "Deactivating built-in html generator";
 			set_mli_generator())
 		     , "<workaround for ocamlbuild adding -html even when we don't want to>") 
-
-let _ =
-  Odoc_args.verbose := false;
-  Args.set_doc_generator (Some (new mli_generator :> Args.doc_generator))
