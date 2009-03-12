@@ -169,7 +169,18 @@ let foldi f { cmp = cmp; map = map } acc =
        loop (f k v (loop acc l)) r in
   loop acc map
 
-let rec enum m =
+let enum { map = map } =
+  let rec loop e () = match e with
+    | Empty -> Enum.empty ()
+    | Node (l, k, v, r, _) ->
+	Enum.flatten (ExtList.List.enum [
+			Enum.delay (loop l);
+			Enum.singleton (k, v);
+			Enum.delay (loop r)])
+  in loop map ()
+		       
+
+(*let rec enum m =
   let rec make l =
     let l = ref l in
     let rec next() =
@@ -195,7 +206,7 @@ let rec enum m =
     let clone() = make !l in
 	Enum.make ~next ~count ~clone
   in
-  make [m.map]
+  make [m.map]*)
 
 
 let uncurry_add (k, v) m = add k v m
