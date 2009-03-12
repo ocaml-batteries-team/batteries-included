@@ -12,84 +12,81 @@
 open Camlp4.PreCast
 open Camlp4.Sig
 
-let print_token = function
+let print_token ?(oc=stdout) = function
   | KEYWORD kwd ->
-      print_string kwd
+      Printf.fprintf oc "%s" kwd
   | SYMBOL sym ->
-      print_string sym
+      Printf.fprintf oc "%s" sym
   | LIDENT lid ->
-      print_string lid
+      Printf.fprintf oc "%s" lid
   | UIDENT uid ->
-      print_string uid
+      Printf.fprintf oc "%s" uid
   | ESCAPED_IDENT id ->
-      print_string "( ";
-      print_string id;
-      print_string " )"
+      Printf.fprintf oc "%s" "( ";
+      Printf.fprintf oc "%s" id;
+      Printf.fprintf oc "%s" " )"
   | INT(_, s) ->
-      print_string s
+      Printf.fprintf oc "%s" s
   | INT32(_, s) ->
-      print_string s;
-      print_char 'l'
+      Printf.fprintf oc "%s" s;
+      Printf.fprintf oc "%c" 'l'
   | INT64(_, s) ->
-      print_string s;
-      print_char 'L'
+      Printf.fprintf oc "%s" s;
+      Printf.fprintf oc "%c" 'L'
   | NATIVEINT(_, s) ->
-      print_string s;
-      print_char 'n'
+      Printf.fprintf oc "%s" s;
+      Printf.fprintf oc "%c" 'n'
   | FLOAT(_, s) ->
-      print_string s
+      Printf.fprintf oc "%s" s
   | CHAR(_, s) ->
-      print_string s
+      Printf.fprintf oc "%s" s
   | STRING(_, s) ->
-      print_char '"';
-      print_string s;
-      print_char '"'
+      Printf.fprintf oc "%c" '"';
+      Printf.fprintf oc "%s" s;
+      Printf.fprintf oc "%c" '"'
   | LABEL lbl ->
-      print_char '~';
-      print_string lbl;
-      print_char ':'
+      Printf.fprintf oc "%c" '~';
+      Printf.fprintf oc "%s" lbl;
+      Printf.fprintf oc "%c" ':'
   | OPTLABEL lbl ->
-      print_char '?';
-      print_string lbl;
-      print_char ':'
+      Printf.fprintf oc "%c" '?';
+      Printf.fprintf oc "%s" lbl;
+      Printf.fprintf oc "%c" ':'
   | QUOTATION quot ->
       if quot.q_name = "" then
-        print_string "<<"
+        Printf.fprintf oc "%s" "<<"
       else begin
-        print_string "<:";
-        print_string quot.q_name;
+        Printf.fprintf oc "%s" "<:";
+        Printf.fprintf oc "%s" quot.q_name;
         if quot.q_loc <> "" then begin
-          print_char '@';
-          print_string quot.q_loc
+          Printf.fprintf oc "%c" '@';
+          Printf.fprintf oc "%s" quot.q_loc
         end;
-        print_char '<'
+        Printf.fprintf oc "%c" '<'
       end;
-      print_string quot.q_contents;
-      print_string ">>"
+      Printf.fprintf oc "%s" quot.q_contents;
+      Printf.fprintf oc "%s" ">>"
   | ANTIQUOT(n, s) ->
-      print_char '$';
+      Printf.fprintf oc "%c" '$';
       if n <> "" then begin
-        print_string n;
-        print_char ':'
+        Printf.fprintf oc "%s" n;
+        Printf.fprintf oc "%c" ':'
       end;
-      print_string s;
-      print_char '$'
+      Printf.fprintf oc "%s" s;
+      Printf.fprintf oc "%c" '$'
   | COMMENT comment ->
-      print_string comment
+      Printf.fprintf oc "%s" comment
   | BLANKS s ->
-      print_string s
+      Printf.fprintf oc "%s" s
   | NEWLINE ->
-      print_newline ()
+      Printf.fprintf oc "\n"
   | LINE_DIRECTIVE(n, fname_opt) ->
-      print_string "# ";
-      print_int n;
+      Printf.fprintf oc "# %d" n;
       begin match fname_opt with
         | Some fname ->
-            print_string " \"";
-            print_string fname;
-            print_string "\"\n"
+            Printf.fprintf oc " \"%s\"\n" fname
         | None ->
-            print_newline ()
+            Printf.fprintf oc "\n"
       end
   | EOI ->
       raise Exit
