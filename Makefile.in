@@ -278,7 +278,8 @@ XPDOC_CORE_EXTLIB_MLI=concurrent interfaces innerIO monad return enum extBigarra
 XPDOC=$(patsubst %, _build/src/core/extlib/%.mli, $(XPDOC_CORE_EXTLIB_MLI)) _build/src/core/extlib.mli
 
 xpdoc:
-	 time ocamlfind ocamldoc -package stdlib,sexplib,netstring,camomile -I _build/build/ -I _build -I _build/src/core/ -I _build/src/core/extlib -I _build/src/core/baselib_threads -I _build/src/libs/ -I _build/src/core/baselib -i _build/build -g odoc_batteries_factored.cmo -g odoc_extract_mli.cmo $(XPDOC) src/main/threads/batteries.ml
+#	 time ocamlfind ocamldoc -package stdlib,sexplib,netstring,camomile -i _build/build -g odoc_batteries_factored.cmo -g odoc_extract_mli.cmo -I _build/build/ -I _build -I _build/src/core/ -I _build/src/core/extlib -I _build/src/core/baselib_threads -I _build/src/libs/ -I _build/src/core/baselib -latex $(XPDOC) src/main/threads/batteries.ml
+	 time ocamldoc -i _build/build -g odoc_batteries_factored.cmo -g odoc_extract_mli.cmo -I _build/build/ -I _build -I _build/src/core/ -I _build/src/core/extlib -I _build/src/core/baselib_threads -I _build/src/libs/ -I _build/src/core/baselib -latex $(XPDOC) src/main/threads/batteries.ml
 
 
 clean:

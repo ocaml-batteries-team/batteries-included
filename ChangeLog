@@ -1,5 +1,21 @@
 2009-03-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/innerIO.ml*: [onclose_out] added
+
+	* src/core/extlib/extFormat.ml: [newline_of], [spaces_of] added
+
+	* src/core/extlib/extFormat.ml: [std_formatter], [err_formatter] now flushed at exit
+
+	* src/core/extlib/extFormat.ml: [pp_set_formatter_output] now uses [pp_set_all_formatter_output_functions]
+
+	* src/core/extlib_threads/IOThreads.ml: now using [RMutex] rather than [Mutex]
+
+	* src/core/extlib_threads/extMutex.ml: [DebugMutex] created
+
+	* build/odoc_extract_mli.ml: recreated
+
+	* src/batteries_toolchain/batteries_help.ml: applied patch by kaustuv
+
 	* src/core/extlib/extBigarray.ml*: applied patch by hcarty
 
 	* src/core/extlib/extBigarray.ml*: [Genarray.iter], [Genarray.iteri], [Genarray.map], [Genarray.mapi], 
