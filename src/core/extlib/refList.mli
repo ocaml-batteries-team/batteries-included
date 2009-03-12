@@ -69,6 +69,12 @@ val of_enum : 'a Enum.t -> 'a t
 val enum : 'a t -> 'a Enum.t
 (** Returns an enumeration of current elements in the ref list *)
 
+val of_backwards : 'a Enum.t -> 'a t
+(** Creates a ref list from an enumeration, going from last to first *)
+
+val backwards : 'a t -> 'a Enum.t
+(** Returns an enumeration of current elements in the ref list, going from last to first *)
+
 val add : 'a t -> 'a -> unit
 (** Adds an element at the end - O(n) *)
 
