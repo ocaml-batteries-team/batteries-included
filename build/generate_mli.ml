@@ -25,7 +25,7 @@ open Camlp4.Sig
 (* +----------------------------------------+
    | Batteries specifics harcorded settings |
    +----------------------------------------+ *)
-
+(*
 let search_paths = ref [
   "src/core";
   "src/core/extlib";
@@ -40,7 +40,7 @@ let search_paths = ref [
   "src/libs/ocamlnet";
   "src/libs/sexplib";
 ]
-
+*)
 (* +------------------+
    | Stream utilities |
    +------------------+ *)
@@ -76,7 +76,7 @@ let rec find_map f = function
             find_map f l
         | y ->
             y
-
+(*
 (* Return [Some(filename, module_path_in_filename)] or [None] *)
 let rec resolv_path = function
   | [] ->
@@ -102,7 +102,7 @@ let rec resolv_path = function
               resolv_path rest
             else
               Some(filename, rest)
-
+*)
 (* +--------------------------------+
    | Filtering (parsing + printing) |
    +--------------------------------+ *)
@@ -253,7 +253,7 @@ let rec parse_path stream =
         Loc.raise loc (Failure "invalid module path")
     | _ ->
         raise End_of_file
-
+(*
 (* Filter input *)
 let rec loop stream =
   match Stream.next stream with
@@ -283,22 +283,38 @@ let rec loop stream =
     | (tok, loc) ->
         Optcomp.print_token tok;
         loop stream
+*)
+(* +-------+
+   | Tools |
+   +-------+ *)
+
+let path_of_string string =
+  Str.split (Str.regexp "\\.") string 
 
 (* +------+
    | Main |
    +------+ *)
 
 let _ =
-  if Array.length Sys.argv <> 2 then begin
-    Printf.eprintf "usage: %s <file>\n%!" (Filename.basename Sys.argv.(0));
+  if Array.length Sys.argv < 3 then begin
+    Printf.eprintf "usage: %s <file> [<path>]\n%!" (Filename.basename Sys.argv.(0));
     exit 2
   end;
   try
     let fname = Sys.argv.(1) in
-    search_paths := Filename.dirname fname :: !search_paths;
-    let ic = open_in fname in
-    loop (tokens_of_channel fname ic);
-    close_in ic
+    let path  = 
+      if Array.length Sys.argv < 3 then []
+      else 
+	begin
+	  let result = path_of_string (Sys.argv.(2)) in
+	    Printf.eprintf "Extracting module %a from file %s\n%!" 
+	      (fun out l -> List.iter (fun x -> Printf.fprintf out "%s/" x) l) result fname;
+	    result
+	end
+    in
+
+(*      search_paths := Filename.dirname fname :: !search_paths;*)
+      print_from fname path
   with
     | Exit as e ->
         raise e

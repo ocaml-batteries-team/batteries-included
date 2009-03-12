@@ -1,3 +1,6 @@
+2009-03-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* build/generate_mli.ml: hijacked into only doing the sub-module extraction part
 
 2009-03-12  Jeremie Dimino <jeremie@dimino.org>
 
