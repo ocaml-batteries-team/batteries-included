@@ -202,8 +202,8 @@ val inherit_out:
   ?write:(char -> unit) ->
   ?output:(string -> int -> int -> int) -> 
   ?flush:(unit -> unit) ->
-  ?close:(unit -> 'a) -> 
-  'a output -> 'a output
+  ?close:(unit -> unit) -> 
+  _ output -> unit output
 (**
    Simplified and optimized version of {!wrap_out} whenever only
    one output appears as dependency.

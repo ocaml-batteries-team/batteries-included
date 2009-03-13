@@ -107,15 +107,20 @@ let uid () = post_incr uid
 
 let on_close_out out f =
   Concurrent.sync !lock (fun () -> 
-			   let previous = out.out_close in
-			     out.out_close <- (fun () -> f out; previous ())) ()
+			   let do_close = out.out_close in
+			     out.out_close <- (fun () -> f out; do_close ())) ()
+
+let on_close_in inp f =
+  Concurrent.sync !lock (fun () -> 
+			   let do_close = inp.in_close in
+			     inp.in_close <- (fun () -> f inp; do_close ())) ()
 
 let close_in i =
-	let f _ = raise Input_closed in
-	i.in_close();
-	i.in_read <- f;
-	i.in_input <- f;
-	i.in_close <- noop (*Double closing is not a problem*)
+  let f _ = raise Input_closed in
+    i.in_close();
+    i.in_read <- f;
+    i.in_input <- f;
+    i.in_close <- noop (*Double closing is not a problem*)
 
 
 let wrap_in ~read ~input ~close ~underlying =
@@ -133,9 +138,9 @@ in
     result
 
 let inherit_in ?read ?input ?close inp =
-  let read = match read  with None -> inp.in_read | Some f -> f
-  and input= match input with None -> inp.in_input| Some f -> f
-  and close= match close with None -> inp.in_close| Some f -> f
+  let read  = match read  with None -> inp.in_read | Some f -> f
+  and input = match input with None -> inp.in_input| Some f -> f
+  and close = match close with None -> ignore      | Some f -> f
   in  wrap_in ~read ~input ~close ~underlying:[inp]
 
 
@@ -190,7 +195,7 @@ let inherit_out ?write ?output ?flush ?close out =
   let write = match write  with None -> out.out_write | Some f -> f
   and output= match output with None -> out.out_output| Some f -> f
   and flush = match flush  with None -> out.out_flush | Some f -> f
-  and close = match close  with None -> out.out_close | Some f -> f
+  and close = match close  with None -> ignore        | Some f -> f
   in wrap_out ~write ~output ~flush ~close ~underlying:[out]
 
 let create_out ~write ~output ~flush ~close =
