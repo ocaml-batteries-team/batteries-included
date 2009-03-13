@@ -133,16 +133,16 @@ module Pervasives = struct
    type ('a, 'b) snum_directive = ?prefix_with_plus:bool -> ?prefix_with_space:bool -> ('a, 'b) unum_directive
 *)
 
-  let pdir_a k f x = k (fun oc -> f oc x)
-  let pdir_t k f = k (fun oc -> f oc)
-  let pdir_B k x = k (fun oc -> IO.nwrite oc (string_of_bool x))
-  let pdir_c k x = k (fun oc -> IO.write oc x)
-  let pdir_C k x = k (fun oc ->
+  let printer_a k f x = k (fun oc -> f oc x)
+  let printer_t k f = k (fun oc -> f oc)
+  let printer_B k x = k (fun oc -> IO.nwrite oc (string_of_bool x))
+  let printer_c k x = k (fun oc -> IO.write oc x)
+  let printer_C k x = k (fun oc ->
                         IO.write oc '\'';
                         IO.write oc x;
                         IO.write oc '\'')
 
-  let pdir_s ?(left_justify=false) ?width k x =
+  let printer_s ?(left_justify=false) ?width k x =
     match width with
       | None ->
           k (fun oc -> IO.nwrite oc x)
@@ -163,47 +163,47 @@ module Pervasives = struct
                    IO.write oc ' '
                  done)
 
-  let pdir_S ?left_justify ?width k x = pdir_s ?left_justify ?width k (Printf.sprintf "%S" x)
+  let printer_S ?left_justify ?width k x = printer_s ?left_justify ?width k (Printf.sprintf "%S" x)
 
   (* TODO: make that more efficient: *)
 
-  let pdir_d k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%d" x))
-  let pdir_i k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%i" x))
-  let pdir_u k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%u" x))
-  let pdir_x k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%x" x))
-  let pdir_X k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%X" x))
-  let pdir_o k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%o" x))
+  let printer_d k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%d" x))
+  let printer_i k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%i" x))
+  let printer_u k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%u" x))
+  let printer_x k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%x" x))
+  let printer_X k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%X" x))
+  let printer_o k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%o" x))
 
-  let pdir_ld k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%ld" x))
-  let pdir_li k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%li" x))
-  let pdir_lu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lu" x))
-  let pdir_lx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lx" x))
-  let pdir_lX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lX" x))
-  let pdir_lo k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lo" x))
+  let printer_ld k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%ld" x))
+  let printer_li k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%li" x))
+  let printer_lu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lu" x))
+  let printer_lx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lx" x))
+  let printer_lX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lX" x))
+  let printer_lo k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lo" x))
 
-  let pdir_Ld k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Ld" x))
-  let pdir_Li k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Li" x))
-  let pdir_Lu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lu" x))
-  let pdir_Lx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lx" x))
-  let pdir_LX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%LX" x))
-  let pdir_Lo k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lo" x))
+  let printer_Ld k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Ld" x))
+  let printer_Li k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Li" x))
+  let printer_Lu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lu" x))
+  let printer_Lx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lx" x))
+  let printer_LX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%LX" x))
+  let printer_Lo k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lo" x))
 
-  let pdir_nd k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nd" x))
-  let pdir_ni k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%ni" x))
-  let pdir_nu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nu" x))
-  let pdir_nx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nx" x))
-  let pdir_nX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nX" x))
-  let pdir_no k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%no" x))
+  let printer_nd k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nd" x))
+  let printer_ni k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%ni" x))
+  let printer_nu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nu" x))
+  let printer_nx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nx" x))
+  let printer_nX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nX" x))
+  let printer_no k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%no" x))
 
-  let pdir_f k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%f" x))
-  let pdir_F k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%F" x))
+  let printer_f k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%f" x))
+  let printer_F k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%F" x))
 
-  let pdir_format k fmt = fmt.Print.printer fmt.Print.pattern k
+  let printer_format k fmt = fmt.Print.printer fmt.Print.pattern k
 
-  let pdir_rope k x = k (fun oc -> Rope.print oc x)
-  let pdir_utf8 k x = k (fun oc -> ExtUTF8.UTF8.print oc x)
+  let printer_rope k x = k (fun oc -> Rope.print oc x)
+  let printer_utf8 k x = k (fun oc -> ExtUTF8.UTF8.print oc x)
 
-  let pdir_obj k x = k x#print
+  let printer_obj k x = k x#print
 
   (** {6 Clean-up}*)
 

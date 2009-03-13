@@ -134,13 +134,13 @@ type ('a, 'b, 'acc) directive = (('acc IO.output -> unit) -> 'b) -> 'a
       following type:
 
       {[
-        val pdir_d : (int -> 'a, 'a, _) directive
+        val printer_d : (int -> 'a, 'a, _) directive
       ]}
 
       And here is a possible implementation:
 
       {[
-        let pdir_d k x = k (fun oc -> IO.nwrite oc (string_of_int x))
+        let printer_d k x = k (fun oc -> IO.nwrite oc (string_of_int x))
       ]}
 
       Additionally, directives can takes ``flags'' (like in ["%2d"]
@@ -149,13 +149,13 @@ type ('a, 'b, 'acc) directive = (('acc IO.output -> unit) -> 'b) -> 'a
       example:
 
       {[
-        val pdir_d : ?width : int -> (int -> 'a, 'a) directive
+        val printer_d : ?width : int -> (int -> 'a, 'a) directive
       ]}
 
       with:
 
       {[
-        let pdir_d ?width k x =
+        let printer_d ?width k x =
           let str = string_of_int x in
           let str = match width with
             | None ->
@@ -243,11 +243,11 @@ type ('a, 'b, 'acc) format = {
         { pattern = "x = %(0), y = %(1)";
           printer = (fun patten k ->
                        let printers = Array.create 2 (fun oc -> ()) in
-                       pdir_d (fun p ->
-                                 printers.(0) <- p;
-                                 pdir_s (fun p ->
-                                           printers.(1) <- p;
-                                           k (fun oc -> format pattern printers)))) }
+                       printer_d (fun p ->
+                                    printers.(0) <- p;
+                                    printer_s (fun p ->
+                                                 printers.(1) <- p;
+                                                 k (fun oc -> format pattern printers)))) }
       ]}
   *)
 }

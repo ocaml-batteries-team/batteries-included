@@ -16,12 +16,12 @@ let _ =
      end);
 
   (* A custom directive, printing pair of integers: *)
-  let pdir_foo k (x, y) = k (fun oc -> fprintf oc p"(%d, %d)" x y) in
+  let printer_foo k (x, y) = k (fun oc -> fprintf oc p"(%d, %d)" x y) in
 
   printf p"pair = %foo\n" (42, 1024);
 
   (* A custom directive, taking multiple arguments: *)
-  let pdir_test k x y z = k (fun oc -> fprintf oc p"(%d, %d, %d)" x y z) in
+  let printer_test k x y z = k (fun oc -> fprintf oc p"(%d, %d, %d)" x y z) in
 
   printf p"x = %test\n" 1 2 3;
 

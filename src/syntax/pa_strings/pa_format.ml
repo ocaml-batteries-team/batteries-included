@@ -35,11 +35,11 @@ let make_pattern ast =
 
    For example:
 
-   expr_of_directive _loc [] "d" = <:expr< pdir_d >>
-   expr_of_directive _loc ["a"; "b"] "s" = <:expr< fun k ~a ~b -> pdir_s k a b >>
+   expr_of_directive _loc [] "d" = <:expr< printer_d >>
+   expr_of_directive _loc ["a"; "b"] "s" = <:expr< fun k ~a ~b -> printer_s k a b >>
 *)
 let expr_of_directive _loc names dir =
-  let expr = <:expr< $lid:"pdir_" ^ dir$ >> in
+  let expr = <:expr< $lid:"printer_" ^ dir$ >> in
   match names with
     | [] -> expr
     | _ ->
@@ -65,11 +65,13 @@ let expr_of_directive _loc names dir =
 
    make_printer _loc [Cst "x="; Dir([], "d"); Cst " y="; Dir([], "s")] =
      <:expr<
-       pdir_d (fun __printer ->
-                 __printers.(0) <-- __printer;
-                 pdir_s (fun __printer ->
-                           __printers.(1) <-- __printer;
-                           __k (fun oc -> Batteries.Print.format oc __pattern __printers)))
+       printer_d
+         (fun __printer ->
+            __printers.(0) <-- __printer;
+            printer_s
+              (fun __printer ->
+                 __printers.(1) <-- __printer;
+                 __k (fun oc -> Batteries.Print.format oc __pattern __printers)))
      >>
 *)
 let make_printer _loc ast =

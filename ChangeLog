@@ -1,3 +1,9 @@
+2009-03-13  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/syntax/pa_strings/pa_format.ml,
+	* src/core/extlib/extPervasives.ml*,
+	* src/core/extlib/print.ml*: rename [pdir_X] to [printer_X]
+
 2009-03-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* build/generate_mli.ml: hijacked into only doing the sub-module extraction part
