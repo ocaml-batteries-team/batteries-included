@@ -4,6 +4,8 @@
 	* src/core/extlib/extPervasives.ml*,
 	* src/core/extlib/print.ml*: rename [pdir_X] to [printer_X]
 
+	* src/core/extlib/print.ml*: added [rprintf] and [krprintf]
+
 2009-03-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* build/generate_mli.ml: hijacked into only doing the sub-module extraction part

@@ -100,6 +100,13 @@ let kbprintf k buf fmt = kfprintf (fun _ -> k buf) (IO.output_buffer buf) fmt
 let sprintf fmt =
   let oc = IO.output_buffer (Buffer.create 42) in
   kfprintf IO.close_out oc fmt
+
 let ksprintf k fmt =
   let oc = IO.output_buffer (Buffer.create 42) in
   kfprintf (fun oc -> k (IO.close_out oc)) oc fmt
+
+let rprintf fmt =
+  ksprintf Rope.of_string fmt
+
+let krprintf k fmt =
+  ksprintf (fun s -> k (Rope.of_string s)) fmt

@@ -267,11 +267,18 @@ val kfprintf : ('acc IO.output -> 'b) -> 'acc IO.output -> ('a, 'b, 'acc) format
   (** [kfprintf k oc fmt] prints on [oc] then call [k] with [oc] as
       argument *)
 
+val rprintf : ('a, Rope.t, string) format -> 'a
+  (** [rprintf fmt] returns the result as a rope *)
+
+val krprintf : (Rope.t -> 'b) -> ('a, 'b, string) format -> 'a
+  (** [krprintf k fmt] creates a rope from the format and other
+      arguments and pass it to [k] *)
+
 val sprintf : ('a, string, string) format -> 'a
-  (** [sprintf fmt] return the result as a string *)
+  (** [sprintf fmt] returns the result as a string *)
 
 val ksprintf : (string -> 'b) -> ('a, 'b, string) format -> 'a
-  (** [ksprintf k fmt] create a string from the format and other
+  (** [ksprintf k fmt] creates a string from the format and other
       arguments and pass it to [k] *)
 
 val bprintf : Buffer.t -> ('a, unit, string) format -> 'a
