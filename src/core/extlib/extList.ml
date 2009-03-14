@@ -630,6 +630,8 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
       iter (InnerIO.Printf.fprintf out "%s%a" sep print_a) t;
       InnerIO.nwrite out last
 
+let printer_t p k x = k (fun oc -> print (fun oc x -> p (fun f -> f oc) x) oc x)
+
 let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a list =
   ExtPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
 (*  let os = InnerIO.output_string  () in

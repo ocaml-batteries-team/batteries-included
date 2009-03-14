@@ -85,4 +85,5 @@ module Bool = struct
   let sexp_of_t = Sexplib.Conv.sexp_of_bool
   let t_of_sexp = Sexplib.Conv.bool_of_sexp
   let print out t = InnerIO.nwrite out (to_string t)
+  let printer_t k x = k (fun out -> print out x)
 end

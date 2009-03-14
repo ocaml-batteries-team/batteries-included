@@ -232,6 +232,8 @@ val sexp_of_t : t -> Sexplib.Sexp.t
 
 val print : 'a IO.output -> t -> unit
 
+val printer_t : (t -> 'a, 'a, 'acc) Print.directive
+
 (**/**)
 
 (** {6 Deprecated functions} *)

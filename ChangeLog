@@ -6,7 +6,12 @@
 
 	* src/core/extlib/print.ml*: added [rprintf] and [krprintf]
 
-	* src/core/extlib/extPervasives.ml*: better directives
+	* src/core/extlib/extPervasives.ml*:
+	    - better implementation of directives
+	    - [printer_{int,int32,bool,list,...}] added
+
+	* src/core/extlib/*.ml*:
+	    - [printer_t] added
 
 2009-03-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 

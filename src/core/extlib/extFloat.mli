@@ -221,6 +221,7 @@ module Float :
 
     (** {7 Printing}*)
     val print: 'a InnerIO.output -> t -> unit
+    val printer_t : (t -> 'a, 'a, 'acc) Print.directive
 end
 
 

@@ -1355,6 +1355,15 @@ val printer_format : (('a, 'b, 'acc) Print.format -> 'a, 'b, 'acc) Print.directi
         "x = 1 + 3 * 5"
       ]} *)
 
+val printer_bool : (bool -> 'a, 'a, 'acc) Print.directive
+val printer_int : (int -> 'a, 'a, 'acc) Print.directive
+val printer_int32 : (int32 -> 'a, 'a, 'acc) Print.directive
+val printer_int64 : (int64 -> 'a, 'a, 'acc) Print.directive
+val printer_nativeint : (nativeint -> 'a, 'a, 'acc) Print.directive
+val printer_float : (float -> 'a, 'a, 'acc) Print.directive
+val printer_abstract : (_ -> 'a, 'a, 'acc) Print.directive
+val printer_list : ('a -> unit, unit, 'acc) Print.directive -> ('a list -> 'b, 'b, 'acc) Print.directive
+val printer_option : ('a -> unit, unit, 'acc) Print.directive -> ('a option -> 'b, 'b, 'acc) Print.directive
 val printer_rope : (Rope.t -> 'a, 'a, 'acc) Print.directive
 val printer_utf8 : (UTF8.t -> 'a, 'a, 'acc) Print.directive
 val printer_obj : (< print : 'acc IO.output -> unit; .. > -> 'a, 'a, 'acc) Print.directive

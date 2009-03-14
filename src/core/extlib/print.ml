@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-type ('a, 'b, 'acc) directive = (('acc IO.output -> unit) -> 'b) -> 'a
+type ('a, 'b, 'acc) directive = (('acc InnerIO.output -> unit) -> 'b) -> 'a
 type pattern = string
 type ('a, 'b, 'acc) format = {
   pattern : pattern;
@@ -69,11 +69,11 @@ let format oc pattern directives =
                     end
 
                 | '%' ->
-                    IO.write oc '%';
+                    InnerIO.write oc '%';
                     aux (i + 2)
 
                 | '!' ->
-                    IO.flush oc;
+                    InnerIO.flush oc;
                     aux (i + 2)
 
                 | _ ->
@@ -81,29 +81,29 @@ let format oc pattern directives =
             end
 
         | ch ->
-            IO.write oc ch;
+            InnerIO.write oc ch;
             aux (i + 1)
   in
   aux 0
 
-let literal str k = k (fun oc -> IO.nwrite oc str)
+let literal str k = k (fun oc -> InnerIO.nwrite oc str)
 
 let kfprintf k oc fmt = fmt.printer fmt.pattern (fun f -> f oc; k oc)
 let fprintf oc fmt = fmt.printer fmt.pattern (fun f -> f oc)
 
-let printf fmt = fprintf IO.stdout fmt
-let eprintf fmt = fprintf IO.stderr fmt
+let printf fmt = fprintf InnerIO.stdout fmt
+let eprintf fmt = fprintf InnerIO.stderr fmt
 
-let bprintf buf fmt = fprintf (IO.output_buffer buf) fmt
-let kbprintf k buf fmt = kfprintf (fun _ -> k buf) (IO.output_buffer buf) fmt
+let bprintf buf fmt = fprintf (InnerIO.output_buffer buf) fmt
+let kbprintf k buf fmt = kfprintf (fun _ -> k buf) (InnerIO.output_buffer buf) fmt
 
 let sprintf fmt =
-  let oc = IO.output_buffer (Buffer.create 42) in
-  kfprintf IO.close_out oc fmt
+  let oc = InnerIO.output_buffer (Buffer.create 42) in
+  kfprintf InnerIO.close_out oc fmt
 
 let ksprintf k fmt =
-  let oc = IO.output_buffer (Buffer.create 42) in
-  kfprintf (fun oc -> k (IO.close_out oc)) oc fmt
+  let oc = InnerIO.output_buffer (Buffer.create 42) in
+  kfprintf (fun oc -> k (InnerIO.close_out oc)) oc fmt
 
 let rprintf fmt =
   ksprintf Rope.of_string fmt

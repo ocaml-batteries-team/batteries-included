@@ -66,6 +66,8 @@ let print print_a out = function
   | None   -> InnerIO.nwrite out "None"
   | Some x -> ExtPrintf.Printf.fprintf out "Some %a" print_a x
 
+let printer_t p k x = k (fun oc -> print (fun oc x -> p (fun f -> f oc) x) oc x)
+
 module Labels =
 struct
   let may ~f o = may f o

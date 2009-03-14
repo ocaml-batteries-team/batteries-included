@@ -91,4 +91,5 @@ val sexp_of_t : t -> Sexplib.Sexp.t
 
 (** {7 Printing}*)
 val print: 'a InnerIO.output -> t -> unit
+val printer_t : (t -> 'a, 'a, 'acc) Print.directive
 end

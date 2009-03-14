@@ -30,6 +30,9 @@ open ExtInt32
 open ExtInt64
 open ExtNativeint
 open ExtString
+open ExtBool
+open ExtList
+open ExtFloat
 
 module Pervasives = struct
   include Pervasives
@@ -265,9 +268,18 @@ module Pervasives = struct
 
   let printer_format k fmt = fmt.Print.printer fmt.Print.pattern k
 
+  let printer_bool k x = k (fun oc -> Bool.print oc x)
+  let printer_int k x = k (fun oc -> Int.print oc x)
+  let printer_int32 k x = k (fun oc -> Int32.print oc x)
+  let printer_int64 k x = k (fun oc -> Int64.print oc x)
+  let printer_nativeint k x = k (fun oc -> Native_int.print oc x)
+  let printer_float k x = k (fun oc -> Float.print oc x)
+  let printer_abstract k x = k (fun oc -> IO.nwrite oc "<abstract>")
+  let printer_list p k x = k (fun oc -> List.print (fun oc x -> p (fun f -> f oc) x) oc x)
+  let printer_option p k x = k (fun oc -> Option.print (fun oc x -> p (fun f -> f oc) x) oc x)
+  let printer_rope k x = k (fun oc -> Rope.print oc x)
   let printer_rope k x = k (fun oc -> Rope.print oc x)
   let printer_utf8 k x = k (fun oc -> UTF8.print oc x)
-
   let printer_obj k x = k x#print
 
   (** {6 Clean-up}*)

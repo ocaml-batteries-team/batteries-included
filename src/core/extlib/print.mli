@@ -118,7 +118,7 @@
 
 (** {6 Directives and formats} *)
 
-type ('a, 'b, 'acc) directive = (('acc IO.output -> unit) -> 'b) -> 'a
+type ('a, 'b, 'acc) directive = (('acc InnerIO.output -> unit) -> 'b) -> 'a
   (** Type of a directive. Directives are the basic elements of
       formats. ['acc] is the type of the accumulator as in {!IO.output}.
 
@@ -194,7 +194,7 @@ type pattern = string
         For example the format string (with the syntax extension)
         [p"%s = %d"] will produce the pattern ["%(0) = %(1)"] *)
 
-val format : 'a IO.output -> pattern -> ('a IO.output -> unit) array -> unit
+val format : 'a InnerIO.output -> pattern -> ('a InnerIO.output -> unit) array -> unit
   (** [format oc pattern directives] prints [pattern] on [oc], using
       [directives] to handle directives (as index) in the pattern.
 
@@ -260,10 +260,10 @@ val printf : ('a, unit, unit) format -> 'a
 val eprintf : ('a, unit, unit) format -> 'a
   (** [printf fmt] prints on {!IO.stderr} *)
 
-val fprintf : 'a IO.output -> ('b, unit, 'a) format -> 'b
+val fprintf : 'a InnerIO.output -> ('b, unit, 'a) format -> 'b
   (** [fprintf oc fmt] prints on [oc] *)
 
-val kfprintf : ('acc IO.output -> 'b) -> 'acc IO.output -> ('a, 'b, 'acc) format -> 'a
+val kfprintf : ('acc InnerIO.output -> 'b) -> 'acc InnerIO.output -> ('a, 'b, 'acc) format -> 'a
   (** [kfprintf k oc fmt] prints on [oc] then call [k] with [oc] as
       argument *)
 
