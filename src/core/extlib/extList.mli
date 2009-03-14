@@ -464,7 +464,7 @@ module List :
 	  *)
 	  
 	val sort_unique : ('a -> 'a -> int) -> 'a list -> 'a list
-	(** [unique cmp l] returns the list [l] sorted and without any duplicate element. [cmp] is a usual comparison function providing linear order. 
+	(** [sort_unique cmp l] returns the list [l] sorted and without any duplicate element. [cmp] is a usual comparison function providing linear order. 
 	
 	  This function takes O(n log n) time.
 	 *)
