@@ -1162,7 +1162,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a Enum.t -> 'a
       produces result [55].
   *)
 
-val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
+val fold : ('b -> 'a -> 'b) -> 'b -> 'a Enum.t -> 'b
   (** Transformation loop on an enumeration, used to build a single value
       from an enumeration. This is the most powerful general-purpose
       loop and also the most complex.
@@ -1183,7 +1183,7 @@ val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
       produces result [55].
   *)
 
-val scanl : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b Enum.t
+val scanl : ('b -> 'a -> 'b) -> 'b -> 'a Enum.t -> 'b Enum.t
   (** Functional loop on an enumeration, used to build an enumeration
       from both an enumeration and an initial value. This function may
       be seen as a variant of {!fold} which returns not only the final

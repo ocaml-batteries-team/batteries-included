@@ -290,7 +290,7 @@ let of_enum enm =
 		| None -> raise Empty
 		| Some(d) ->
 			let first = create d in
-			let f d n = append n d in
+			let f n d = append n d in
 			ignore(Enum.fold f first enm);
 			first
 

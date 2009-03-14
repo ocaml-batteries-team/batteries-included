@@ -102,7 +102,7 @@ val exists: ('a -> bool) -> 'a t -> bool
 val for_all: ('a -> bool) -> 'a t -> bool
 (** [for_all f e] returns [true] if for every [x] in [e], [f x] is true*)
 
-val fold : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
+val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** A general loop on an enumeration.
 
     If [e] is empty, [fold f v e] returns [v]. Otherwise, [fold v e]
@@ -124,7 +124,7 @@ val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
   (** [fold2] is similar to [fold] but will fold over two enumerations at the
       same time until one of the two enumerations ends. *)
 
-val scanl : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b t
+val scanl : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b t
 (** A variant of [fold] producing an enumeration of its intermediate values.
     If [e] contains [x1], [x2], ..., [scanl f init e] is the enumeration 
     containing [init], [f init x1], [f (f init x1) x2]... *)
@@ -613,7 +613,7 @@ module Labels : sig
   val iter2:      f:('a -> 'b -> unit) -> 'a t -> 'b t -> unit
   val exists:     f:('a -> bool) -> 'a t -> bool
   val for_all:    f:('a -> bool) -> 'a t -> bool
-  val fold:       f:('a -> 'b -> 'b) -> init:'b -> 'a t -> 'b
+  val fold:       f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
   val fold2:      f:('a -> 'b -> 'c -> 'c) -> init:'c -> 'a t -> 'b t -> 'c
   val iteri:      f:(int -> 'a -> unit) -> 'a t -> unit
   val iter2i:     f:( int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit

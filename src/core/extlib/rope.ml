@@ -542,7 +542,7 @@ let rec range_iteri f ?(base = 0) start len = function
 let rec fold f a = function
     Empty -> a
   | Leaf (_,s) ->
-      Enum.fold (fun a c -> f c a) a (UTF8.enum s)
+      Enum.fold (fun a c -> f a c) a (UTF8.enum s)
   | Concat(l,_,r,_,_) -> fold f (fold f a l) r
  
 let rec bulk_fold f a = function
@@ -617,10 +617,10 @@ let of_enum e =
 *)
 
 let of_backwards e =(*(Yoric) I'll keep the implementation simple at least until I understand [of_enum]*)
-  Enum.fold (fun c acc -> append (of_uchar c) acc) Empty e
+  Enum.fold (fun acc c -> append (of_uchar c) acc) Empty e
   
 let of_bulk_enum e =
-  Enum.fold (fun s acc -> append acc (of_ustring s)) Empty e
+  Enum.fold (fun acc s -> append acc (of_ustring s)) Empty e
 (*Probably useless 
 let of_bulk_backwards e =
   Enum.fold (fun s acc -> append (of_ustring s) acc) Empty e

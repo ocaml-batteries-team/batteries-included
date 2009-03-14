@@ -249,7 +249,7 @@ module type S =
       in aux (impl_of_t t)
 
     let of_enum e = 
-      Enum.fold add empty e
+      Enum.fold (fun acc elem -> add elem acc) empty e
 
     let map f e = fold (fun x acc -> add (f x) acc) e empty
 	

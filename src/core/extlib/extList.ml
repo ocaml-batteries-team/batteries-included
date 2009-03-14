@@ -586,7 +586,7 @@ let enum l =
 
 let of_enum e =
 	let h = dummy_node() in
-	let _ = Enum.fold (fun x acc ->
+	let _ = Enum.fold (fun acc x ->
 		let r = { hd = x; tl = [] }  in
 		acc.tl <- inj r;
 		r) h e in

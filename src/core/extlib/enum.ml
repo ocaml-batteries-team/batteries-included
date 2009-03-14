@@ -352,7 +352,7 @@ let iter2i f t u =
 let fold f init t =
 	let acc = ref init in
 	let rec loop() =
-		acc := f (t.next()) !acc;
+		acc := f !acc (t.next());
 		loop()
 	in
 	try
@@ -378,13 +378,14 @@ let for_all f t =
 
 
 let scanl f init t =
-	let acc = ref init in
-	let gen ()=
-	  acc := f (t.next()) !acc;
-	  !acc
-	in let e = from gen in
-	  push e init;
-	  e
+  let acc = ref init in
+  let gen () =
+    acc := f !acc (t.next());
+    !acc
+   in
+  let e = from gen in
+  push e init;
+  e
 
 let scan f t =
         match get t with

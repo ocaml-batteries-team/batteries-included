@@ -209,7 +209,7 @@ let enum { map = map } =
   make [m.map]*)
 
 
-let uncurry_add (k, v) m = add k v m
+let uncurry_add m (k, v) = add k v m
 let of_enum ?(cmp = compare) e = Enum.fold uncurry_add (create cmp) e
 
 

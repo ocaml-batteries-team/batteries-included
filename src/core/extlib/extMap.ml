@@ -202,7 +202,7 @@ struct
       let keys    t = Enum.map fst (enum t)
       let values  t = Enum.map snd (enum t)
       let of_enum e =
-	Enum.fold (fun (key, data) acc -> add key data acc) empty e
+	Enum.fold (fun acc (key, data) -> add key data acc) empty e
 
 
       let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
