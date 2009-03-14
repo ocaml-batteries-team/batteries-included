@@ -24,6 +24,13 @@
 open Sexplib
 TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
+open ExtUTF8
+open ExtInt
+open ExtInt32
+open ExtInt64
+open ExtNativeint
+open ExtString
+
 module Pervasives = struct
   include Pervasives
   include Std
@@ -128,72 +135,130 @@ module Pervasives = struct
 
   (** {6 Directives} *)
 
-(*
-   type ('a, 'b) unum_directive = ?left_justify:bool -> ?pad_with_zeros:bool -> ?width:int -> ('a, 'b) Print.directive
-   type ('a, 'b) snum_directive = ?prefix_with_plus:bool -> ?prefix_with_space:bool -> ('a, 'b) unum_directive
-*)
+  type printer_flags = {
+    pf_width : int option;
+    pf_padding_char : char;
+    pf_justify : [ `right | `left ];
+    pf_positive_prefix : char option;
+  }
+
+  let default_printer_flags = {
+    pf_justify = `right;
+    pf_width = None;
+    pf_padding_char = ' ';
+    pf_positive_prefix = None;
+  }
 
   let printer_a k f x = k (fun oc -> f oc x)
   let printer_t k f = k (fun oc -> f oc)
   let printer_B k x = k (fun oc -> IO.nwrite oc (string_of_bool x))
   let printer_c k x = k (fun oc -> IO.write oc x)
   let printer_C k x = k (fun oc ->
-                        IO.write oc '\'';
-                        IO.write oc x;
-                        IO.write oc '\'')
+                           IO.write oc '\'';
+                           IO.nwrite oc (Char.escaped x);
+                           IO.write oc '\'')
 
-  let printer_s ?(left_justify=false) ?width k x =
-    match width with
+  let printer_s ?(flags=default_printer_flags) k x =
+    match flags.pf_width with
       | None ->
           k (fun oc -> IO.nwrite oc x)
       | Some n ->
           let len = String.length x in
           if len >= n then
             k (fun oc -> IO.nwrite oc x)
-          else if left_justify then
-            k (fun oc ->
-                 IO.nwrite oc x;
-                 for i = len to n do
-                   IO.write oc ' '
-                 done)
           else
-            k (fun oc ->
-                 IO.nwrite oc x;
-                 for i = len to n do
-                   IO.write oc ' '
-                 done)
+            match flags.pf_justify with
+              | `right ->
+                  k (fun oc ->
+                       for i = len to n do
+                         IO.write oc flags.pf_padding_char
+                       done;
+                       IO.nwrite oc x)
+              | `left ->
+                  k (fun oc ->
+                       IO.nwrite oc x;
+                       for i = len to n do
+                         IO.write oc flags.pf_padding_char
+                       done)
 
-  let printer_S ?left_justify ?width k x = printer_s ?left_justify ?width k (Printf.sprintf "%S" x)
+  let printer_S ?flags k x =
+    printer_s ?flags k ("\"" ^ String.escaped x ^ "\"" )
 
-  (* TODO: make that more efficient: *)
+  open Number
 
-  let printer_d k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%d" x))
-  let printer_i k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%i" x))
-  let printer_u k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%u" x))
-  let printer_x k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%x" x))
-  let printer_X k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%X" x))
-  let printer_o k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%o" x))
+  let digits mk_digit base op n =
+    let rec aux acc n =
+      if op.compare n op.zero = 0 then
+        acc
+      else
+        aux (mk_digit (op.to_int (op.modulo n base)) :: acc) (op.div n base)
+    in
+    if op.compare n op.zero = 0 then
+      ['0']
+    else
+      aux [] n
 
-  let printer_ld k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%ld" x))
-  let printer_li k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%li" x))
-  let printer_lu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lu" x))
-  let printer_lx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lx" x))
-  let printer_lX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lX" x))
-  let printer_lo k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lo" x))
+  let printer_unum mk_digit base op ?flags k x =
+    printer_s ?flags k (String.implode (digits mk_digit base op x))
 
-  let printer_Ld k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Ld" x))
-  let printer_Li k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Li" x))
-  let printer_Lu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lu" x))
-  let printer_Lx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lx" x))
-  let printer_LX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%LX" x))
-  let printer_Lo k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lo" x))
+  let printer_snum mk_digit base op ?(flags=default_printer_flags) k x =
+    let l = digits mk_digit base op x in
+    let l =
+      if op.compare x op.zero < 0 then
+        '-' :: l
+      else
+        match flags.pf_positive_prefix with
+          | None ->
+              l
+          | Some c ->
+              c :: l
+    in
+    printer_s ~flags k (String.implode l)
 
-  let printer_nd k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nd" x))
-  let printer_ni k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%ni" x))
-  let printer_nu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nu" x))
-  let printer_nx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nx" x))
-  let printer_nX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nX" x))
-  let printer_no k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%no" x))
+  let dec_digit x =
+    char_of_int (int_of_char '0' + x)
+
+  let oct_digit = dec_digit
+
+  let lhex_digit x =
+    if x < 10 then
+      dec_digit x
+    else
+      char_of_int (int_of_char 'a' + x - 10)
+
+  let uhex_digit x =
+    if x < 10 then
+      dec_digit x
+    else
+      char_of_int (int_of_char 'A' + x - 10)
+
+  let printer_d ?flags k x = printer_snum dec_digit 10 Int.operations ?flags k x
+  let printer_i ?flags k x = printer_snum dec_digit 10 Int.operations ?flags k x
+  let printer_u ?flags k x = printer_unum dec_digit 10 Int.operations ?flags k x
+  let printer_x ?flags k x = printer_unum lhex_digit 16 Int.operations ?flags k x
+  let printer_X ?flags k x = printer_unum uhex_digit 16 Int.operations ?flags k x
+  let printer_o ?flags k x = printer_unum oct_digit 8 Int.operations ?flags k x
+
+  let printer_ld ?flags k x = printer_snum dec_digit 10l Int32.operations ?flags k x
+  let printer_li ?flags k x = printer_snum dec_digit 10l Int32.operations ?flags k x
+  let printer_lu ?flags k x = printer_unum dec_digit 10l Int32.operations ?flags k x
+  let printer_lx ?flags k x = printer_unum lhex_digit 16l Int32.operations ?flags k x
+  let printer_lX ?flags k x = printer_unum uhex_digit 16l Int32.operations ?flags k x
+  let printer_lo ?flags k x = printer_unum oct_digit 8l Int32.operations ?flags k x
+
+  let printer_Ld ?flags k x = printer_snum dec_digit 10L Int64.operations ?flags k x
+  let printer_Li ?flags k x = printer_snum dec_digit 10L Int64.operations ?flags k x
+  let printer_Lu ?flags k x = printer_unum dec_digit 10L Int64.operations ?flags k x
+  let printer_Lx ?flags k x = printer_unum lhex_digit 16L Int64.operations ?flags k x
+  let printer_LX ?flags k x = printer_unum uhex_digit 16L Int64.operations ?flags k x
+  let printer_Lo ?flags k x = printer_unum oct_digit 8L Int64.operations ?flags k x
+
+  let printer_nd ?flags k x = printer_snum dec_digit 10n Native_int.operations ?flags k x
+  let printer_ni ?flags k x = printer_snum dec_digit 10n Native_int.operations ?flags k x
+  let printer_nu ?flags k x = printer_unum dec_digit 10n Native_int.operations ?flags k x
+  let printer_nx ?flags k x = printer_unum lhex_digit 16n Native_int.operations ?flags k x
+  let printer_nX ?flags k x = printer_unum uhex_digit 16n Native_int.operations ?flags k x
+  let printer_no ?flags k x = printer_unum oct_digit 8n Native_int.operations ?flags k x
 
   let printer_f k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%f" x))
   let printer_F k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%F" x))
@@ -201,7 +266,7 @@ module Pervasives = struct
   let printer_format k fmt = fmt.Print.printer fmt.Print.pattern k
 
   let printer_rope k x = k (fun oc -> Rope.print oc x)
-  let printer_utf8 k x = k (fun oc -> ExtUTF8.UTF8.print oc x)
+  let printer_utf8 k x = k (fun oc -> UTF8.print oc x)
 
   let printer_obj k x = k x#print
 

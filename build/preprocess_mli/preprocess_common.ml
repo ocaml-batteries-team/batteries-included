@@ -1,25 +1,4 @@
-(*
- * generate_mli.ml
- * ---------------
- * Copyright : (c) 2009, Jeremie Dimino <jeremie@dimino.org>
- *                 2009, David Rajchenbach-Teller (contributor)
- * Licence   : BSD3
- *)
-
-(* This file generate a .mli from a simplified .ml file. It should be
-   invoked like that:
-
-   $ generate_mli input.ml > output.mli
-
-   Allowed constructions in the .ml are:
-
-   - module aliases: "module Foo = Bar"
-     ("Bar" must be an external module)
-   - structures: "module Foo = struct ... end"
-   - comments
-*)
-
-open Printf
+open Format
 open Camlp4.PreCast
 open Camlp4.Sig
 
@@ -62,6 +41,16 @@ let rec find_map f = function
 let path_of_string string =
   Str.split (Str.regexp "\\.") string 
 
+let string_of_path path =
+  match path with
+    | []   -> ""
+    | h::t ->
+	let buf = Buffer.create 32 in
+	  Buffer.add_string buf h;
+	  List.iter (Buffer.add_string buf) t;
+	  Buffer.contents buf
+
+
 (* +--------------------------------+
    | Filtering (parsing + printing) |
    +--------------------------------+ *)
@@ -74,9 +63,71 @@ let tokens_of_channel filename ic =
        (Gram.lex (Loc.mk filename)
           (Stream.of_channel ic)))
 
+
+let print_token ?(oc=Format.std_formatter) = function
+  | KEYWORD kwd ->
+      fprintf oc "%s" kwd
+  | SYMBOL sym ->
+      fprintf oc "%s" sym
+  | LIDENT lid ->
+      fprintf oc "%s" lid
+  | UIDENT uid ->
+      fprintf oc "%s" uid
+  | ESCAPED_IDENT id ->
+      fprintf oc "( %s )" id
+  | INT(_, s) ->
+      fprintf oc "%s" s
+  | INT32(_, s) ->
+      fprintf oc "%s%c" s 'l'
+  | INT64(_, s) ->
+      fprintf oc "%s%c" s 'L'
+  | NATIVEINT(_, s) ->
+      fprintf oc "%s%c" s 'n'
+  | FLOAT(_, s) ->
+      fprintf oc "%s" s
+  | CHAR(_, s) ->
+      fprintf oc "%s" s
+  | STRING(_, s) ->
+      fprintf oc "%S" s
+  | LABEL lbl ->
+      fprintf oc "~%s:" lbl
+  | OPTLABEL lbl ->
+      fprintf oc "?%s:" lbl
+  | QUOTATION quot ->
+      if quot.q_name = "" then
+        fprintf oc "<<"
+      else begin
+        fprintf oc "<:%s" quot.q_name;
+        if quot.q_loc <> "" then
+          fprintf oc "%c%s" '@' quot.q_loc;
+        fprintf oc "<"
+      end;
+      fprintf oc "%s>>" quot.q_contents
+  | ANTIQUOT(n, s) ->
+      fprintf oc "$";
+      if n <> "" then
+        fprintf oc "%s:" n;
+      fprintf oc "%s$" s
+  | COMMENT comment ->
+      fprintf oc "%s" comment
+  | BLANKS s ->
+      fprintf oc "%s" s
+  | NEWLINE ->
+      fprintf oc "\n"
+  | LINE_DIRECTIVE(n, fname_opt) ->
+      fprintf oc "# %d" n;
+      begin match fname_opt with
+        | Some fname ->
+            fprintf oc " %S\n" fname
+        | None ->
+            fprintf oc "\n"
+      end
+  | EOI ->
+      raise Exit
+
 let print_tokens oc stream =
   try
-    Stream.iter (fun (tok, loc) -> Optcomp.print_token ~oc tok) stream
+    Stream.iter (fun (tok, loc) -> print_token ~oc tok) stream
   with
       Exit -> ()
 
@@ -117,7 +168,7 @@ let rec search_print_module oc stream = function
         | (EOI, _) ->
             ()
         | (tok, loc) ->
-            Optcomp.print_token ~oc tok;
+            print_token ~oc tok;
             loop level
       in
       loop 0
@@ -165,16 +216,16 @@ let rec print_docs oc stream = match Stream.peek stream with
       print_docs oc stream
   | Some((BLANKS _ | NEWLINE) as tok, _) ->
       njunk 1 stream;
-      Optcomp.print_token ~oc tok;
+      print_token ~oc tok;
       print_docs oc stream
   | _ ->
       ()
 
-(* Extract a module signature from a file. [path] is the path in the
-   filename, the empty list means the whole file. *)
+(* Extract a module signature from a file. [path] is the module path
+   inside the file, the empty list means the whole file. *)
 let extract filename ic oc path =
   let stream = tokens_of_channel filename ic in
-  let rec next i =
+  let rec next i(*ignored*) =
     match Stream.npeek 3 stream with
       | (UIDENT id, _) :: (KEYWORD ".", _) :: _ when String.length id > 3 && String.sub id 0 3 = "Ext" ->
           njunk 2 stream;
@@ -186,16 +237,16 @@ let extract filename ic oc path =
           Some(Stream.next stream)
   in
   let stream = Stream.from next in
-  begin match path with
-    | [] ->
-        print_docs oc stream;
-        print_tokens oc stream;
-    | [_] ->
-        print_docs oc stream;
-        search_print_module oc stream path
-    | _ ->
-        search_print_module oc stream path
-  end
+    begin match path with
+      | [] ->
+          print_docs oc stream;
+          print_tokens oc stream;
+      | [_] ->
+          print_docs oc stream;
+          search_print_module oc stream path
+      | _ ->
+          search_print_module oc stream path
+    end
 
 (* Parse a module path *)
 let rec parse_path stream =
@@ -211,36 +262,4 @@ let rec parse_path stream =
     | _ ->
         raise End_of_file
 
-(* +------+
-   | Main |
-   +------+ *)
-
-let _ =
-  let destination = ref ""
-  and source      = ref ""
-  and path        = ref "" in
-  Arg.parse
-    [("-o", Arg.Set_string destination, "Output to a given file (standard output by default)");
-     ("-i", Arg.Set_string source,      "Input from a given file (standard input by default)");
-     ("-path", Arg.Set_string path,     "Name of the submodule to extract (default is extract everything)")]
-       ignore
-       (Printf.sprintf "%s [options]: extract part of the contents of a .mli file\n%!" (Filename.basename Sys.argv.(0)));
-  try
-    let output = match !destination with
-      | "" -> stdout
-      | s  -> open_out s
-    and input  = match !source      with
-      | "" -> stdin
-      | s  -> open_in s
-    and path   = match !path        with
-      | "" -> []
-      | s  -> path_of_string (Sys.argv.(2))
-    in
-      extract !source input output path;
-      flush_all ()
-  with
-    | Exit as e ->
-        raise e
-    | exn ->
-        Format.eprintf "@[<v0>%a@]@." Camlp4.ErrorHandler.print exn
 

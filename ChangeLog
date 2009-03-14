@@ -6,7 +6,21 @@
 
 	* src/core/extlib/print.ml*: added [rprintf] and [krprintf]
 
+	* src/core/extlib/extPervasives.ml*: better directives
+
+2009-03-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/IO.mli: [inherit_in], [inherit_out] now produce [unit output]
+
+	* src/core/extlib/innerIO.mli: [inherit_in], [inherit_out] now produce [unit output]
+
+	* src/core/extlib/innerIO.ml: [inherit_in], [inherit_out] now don't close their parent by default
+
 2009-03-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* build/preprocess_mli/generate_mli.ml: created
+
+	* build/optcomp/optcomp.ml: [print_token] now accepts optional argument [oc]
 
 	* build/generate_mli.ml: hijacked into only doing the sub-module extraction part
 
