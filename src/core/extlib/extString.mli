@@ -372,7 +372,7 @@ val slice : ?first:int -> ?last:int -> string -> string
       [copy s].
       
       Negative indexes are interpreted as counting from the end of
-      the string. For example, [slice ~last:-2 s] will return the
+      the string. For example, [slice ~last:(-2) s] will return the
       string [s], but without the last two characters.
       
       This function {b never} raises any exceptions. If the
