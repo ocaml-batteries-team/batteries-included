@@ -10,9 +10,9 @@ let array3    = [|[|[|'1';'2';'3';'4';'5'|];
                     [|'Q';'R';'S';'T';'U'|]|]|]
 let list      = ['1';'2';'3';'4';'5']
 let string    = "12345"
-let bigarray1 = Bigarray.Array1.of_array Bigarray.char Bigarray.c_layout array
-let bigarray2 = Bigarray.Array2.of_array Bigarray.char Bigarray.c_layout array2
-let bigarray3 = Bigarray.Array3.of_array Bigarray.char Bigarray.c_layout array3
+let bigarray1 = Big_array.Array1.of_array Big_array.char Big_array.c_layout array
+let bigarray2 = Big_array.Array2.of_array Big_array.char Big_array.c_layout array2
+let bigarray3 = Big_array.Array3.of_array Big_array.char Big_array.c_layout array3
 
 let utf8   = UTF8.of_string string
 let rope   = Rope.of_ustring utf8
@@ -132,7 +132,7 @@ let test_bigarray = ("Enumerations on big arrays 1", fun () ->
 open Array in
 begin
   let v1 = of_enum (enum array)
-  and v2 = of_enum (Bigarray.Array1.enum bigarray1)
+  and v2 = of_enum (Big_array.Array1.enum bigarray1)
   in if v1 = v2 then Pass
     else Fail (Printf.sprintf2 "%a <> %a" (print Char.print) v1 (print Char.print) v2)
   end
@@ -141,7 +141,7 @@ let test_bigarray2 = ("Enumerations on big arrays 2", fun () ->
 open Array in
 begin
   let v1 = of_enum (Enum.flatten (Enum.map enum (enum array2)))
-  and v2 = of_enum (Bigarray.Array2.enum bigarray2)
+  and v2 = of_enum (Big_array.Array2.enum bigarray2)
   in if v1 = v2 then Pass
     else 
       let print_array = print Char.print  in
@@ -152,7 +152,7 @@ let test_bigarray3 = ("Enumerations on big arrays 3", fun () ->
 open Array in
 begin
   let v1 = of_enum (Enum.flatten (Enum.map enum (Enum.flatten (Enum.map enum (enum array3)))))
-  and v2 = of_enum (Bigarray.Array3.enum bigarray3)
+  and v2 = of_enum (Big_array.Array3.enum bigarray3)
   in if v1 = v2 then Pass
     else 
       let print_array = print Char.print  in

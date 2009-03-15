@@ -1,3 +1,13 @@
+2009-03-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* testsuite/test_pmap.ml: [RefList] => [Ref_list]
+
+	* testsuite/test_enum.ml: [Bigarray] => [Big_array]
+
+	* src/main/nothreads/batteries.ml: renamed [Netchannels] => [Net_channels], [Bigarray] => [Big_array], [Dynarray] => [Dyn_array], [RefList] => [Ref_list], [LazyList] => [Lazy_list], [MultiPMap] => [Multi_pmap], [BitSet] => [Bit_set], [CharEncodings] => [Char_encodings], [OptParse] => [Opt_parse], [CharParser] => [Char_parser], [UCharParser] => [UChar_parser], [ParserCo] => [Parser_co]
+	
+	* src/main/threads/batteries.ml: renamed [Netchannels] => [Net_channels], [Bigarray] => [Big_array], [Dynarray] => [Dyn_array], [RefList] => [Ref_list], [LazyList] => [Lazy_list], [MultiPMap] => [Multi_pmap], [BitSet] => [Bit_set], [CharEncodings] => [Char_encodings], [OptParse] => [Opt_parse], [CharParser] => [Char_parser], [UCharParser] => [UChar_parser], [ParserCo] => [Parser_co]
+
 2009-03-13  Jeremie Dimino <jeremie@dimino.org>
 
 	* src/syntax/pa_strings/pa_format.ml,

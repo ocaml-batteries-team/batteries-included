@@ -99,9 +99,9 @@ module  Future =
 struct
 (*  module Lexers = Extlib.ExtGenlex.Languages*)
   module  Genlex     = Extlib.ExtGenlex.Genlex
-  module  CharParser = Extlib.CharParser
-  module UCharParser = Extlib.UCharParser
-  module ParserCo    = Extlib.ParserCo
+  module  Char_parser = Extlib.CharParser
+  module UChar_parser = Extlib.UCharParser
+  module Parser_co    = Extlib.ParserCo
   module Path        = Extlib.Path
   module Result      = Extlib.Result
   module Logger      = Extlib.Logger
@@ -188,7 +188,7 @@ end
 module  IO = Extlib.IO
 
 (** @topic Network*)
-module Netchannels = Libs.ExtNetchannels.Netchannels
+module Net_channels = Libs.ExtNetchannels.Netchannels
 
 
 
@@ -220,13 +220,13 @@ module Data = Extlib.Interfaces
 *)
 
 module  Array    = Extlib.ExtArray.Array
-module  Bigarray = Extlib.ExtBigarray.Bigarray
+module  Big_array= Extlib.ExtBigarray.Bigarray
 module  Dllist   = Extlib.Dllist
-module  DynArray = Extlib.DynArray
+module  Dyn_array = Extlib.DynArray
 module  Enum     = Extlib.Enum
 module  Global   = Extlib.Global
 module  Hashtbl  = Extlib.ExtHashtbl.Hashtbl
-module  RefList  = Extlib.RefList 
+module  Ref_list = Extlib.RefList 
 module  Queue    = Extlib.ExtQueue.Queue
 module  Ref      = Extlib.Ref
 module  Stack    = Extlib.ExtStack.Stack
@@ -240,10 +240,10 @@ module  Vect     = Extlib.Vect
 *)      
 
 module  Lazy     = Lazy
-module  LazyList = Extlib.LazyList
+module  Lazy_list= Extlib.LazyList
 module  List     = Extlib.ExtList.List
 module  Map      = Extlib.ExtMap.Map
-module  MultiPMap= Extlib.MultiPMap
+module  Multi_pmap= Extlib.MultiPMap
 module  Option   = Extlib.Option
 module  PMap     = Extlib.PMap
 module  PSet     = Extlib.PSet
@@ -263,7 +263,7 @@ module  Unit     = Extlib.ExtUnit.Unit
 *)
 
 module  Bool     = Extlib.ExtBool.Bool
-module  BitSet   = Extlib.BitSet
+module  Bit_set  = Extlib.BitSet
 
 (**{2 Numeric data}
 
@@ -301,7 +301,7 @@ module  String  = Extlib.ExtString.String
     70module  UTF8Text (*As StringText but with implementations from UTF8 and*)
         UChar 
 module  Labels*)
-module CharEncodings = Extlib.CharEncodings
+module Char_encodings = Extlib.CharEncodings
 
 (**{1 Tools included in the distribution}
 
@@ -378,7 +378,7 @@ module  SExpr  = Libs.ExtSexp_Conv.Sexp_conv
 
 module  Arg = Extlib.ExtArg.Arg
 module  File= Extlib.File
-module  OptParse = Extlib.OptParse
+module  Opt_parse = Extlib.OptParse
 (*module  Path:placeholder*)
 module  Shell = Extlib.ExtSys.Sys
 module  Unix  = Extlib.ExtUnix.Unix
@@ -392,3 +392,4 @@ module Batteries_config = Batteries_config
 module MD5    = Extlib.ExtDigest.Digest
 module Random = Extlib.ExtRandom.Random
 module Date             = Libs.ExtNetdate.Netdate
+

@@ -11,9 +11,9 @@ let test_1 =
   let map  = PMap.of_enum (Enum.map (fun x -> (x,x)) keys) in
   let enum_1 () = PMap.enum map
   and enum_2 () = 
-    let list = RefList.empty () in
-      PMap.iter (fun k v -> RefList.push list (k, v)) map;
-      RefList.backwards list
+    let list = Ref_list.empty () in
+      PMap.iter (fun k v -> Ref_list.push list (k, v)) map;
+      Ref_list.backwards list
   in
     match Enum.compare compare (enum_1 ()) (enum_2 ()) with
       | 0 -> Testing.Pass
