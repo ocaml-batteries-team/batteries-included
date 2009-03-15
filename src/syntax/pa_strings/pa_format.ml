@@ -14,7 +14,211 @@ open Pa_estring
   (*For the moment, we don't have a version compatible with OCaml < 3.11*)
 #else
 
-open Format_ast
+(* An element of a format: *)
+type element =
+  | Cst of char
+      (* A constant *)
+  | Dir of Ast.expr option * (Loc.t * string) list * Ast.expr
+      (* [Dir(flags, labels, expr)] a directive:
+
+         - expr is the expression of the directive
+         - flags are optionnal flags
+         - labels are labels for directive arguments *)
+
+type ast = element llist
+    (* A format ast is a list of elements *)
+
+let rev_implode l =
+  let len = List.length l in
+  let s = String.create len in
+  ignore (List.fold_left (fun i ch -> s.[i] <- ch; i - 1) (len - 1) l);
+  s
+
+(* +----------------+
+   | Format parsing |
+   +----------------+ *)
+
+module Parse =
+struct
+
+  (* Parse directive flags: *)
+  module Flags =
+  struct
+
+    let number = function
+      | Cons(loc, ('0' .. '9' as ch), l) ->
+          let rec aux acc = function
+            | Cons(loc, ('0' .. '9' as ch), l) ->
+                aux (acc * 10 + (Char.code ch - Char.code '0')) l
+            | l ->
+                (acc, l)
+          in
+          aux (Char.code ch - Char.code '0') l
+      | l ->
+          Loc.raise (loc_of_llist l) (Failure "digit expected")
+
+    let rec loop acc = function
+      | Cons(_loc, '-', l) ->
+          loop (<:rec_binding< Batteries.Standard.pf_justify = `left >> :: acc) l
+
+      | Cons(_loc, '0', l) ->
+          loop (<:rec_binding< Batteries.Standard.pf_padding_char = '0' >> :: acc) l
+
+      | Cons(_loc, ('+' | ' ' as ch), l) ->
+          loop (<:rec_binding< Batteries.Standard.pf_positive_prefix = $chr:Char.escaped ch$ >> :: acc) l
+
+      | Cons(_loc, '1' .. '9', _) as l ->
+          let n, l = number l in
+          loop (<:rec_binding< Batteries.Standard.pf_width = Some $int:string_of_int n$ >> :: acc) l
+
+      | l ->
+          (acc, l)
+
+    let main l =
+      let _loc = loc_of_llist l in
+      match loop [] l with
+        | ([], l) ->
+            (None, l)
+
+        | (flags, l) ->
+            (Some(Ast.ExRec(_loc,
+                            Ast.rbSem_of_list flags,
+                            <:expr< Batteries.Standard.default_printer_flags >>)),
+             l)
+  end
+
+  (* Parse directive body: *)
+  module Directive =
+  struct
+
+    let simple l =
+      let rec aux acc = function
+        | Cons(loc, ('A' .. 'Z' | 'a' .. 'z' as ch), l) ->
+            aux (ch :: acc) l
+        | l ->
+            (acc, l)
+      in
+      let _loc = loc_of_llist l in
+      let chars, l = aux [] l in
+      (<:expr< $lid:"printer_" ^ rev_implode chars$ >>, l)
+
+    let is_ident_start = function
+      | 'A' .. 'Z'
+      | 'a' .. 'z'
+      | '_'
+      | '\192' .. '\214'
+      | '\216' .. '\246'
+      | '\248' .. '\255' ->
+          true
+      | _ ->
+          false
+
+    let is_ident_body = function
+      | '\'' | '0' .. '9' ->
+          true
+      | ch ->
+          is_ident_start ch
+
+    let ident_body l =
+      let rec aux acc = function
+        | Cons(loc, ch, l) when is_ident_body ch ->
+            aux (ch :: acc) l
+        | l ->
+            (acc, l)
+      in
+      match aux [] l with
+        | ([], _) ->
+            Loc.raise (loc_of_llist l) (Failure "identifier expected")
+        | (chars, l) ->
+            (rev_implode chars, l)
+
+    let rec ident l =
+      let _loc = loc_of_llist l in
+      let x, l = ident_body l in
+      match l with
+        | Cons(_, '.', l) ->
+            let id, l = ident l in
+            (<:ident< $uid:x$ . $id$ >>, l)
+        | l ->
+            (<:ident< $lid:"printer_" ^ x$ >>, l)
+
+    let composed l =
+      let app _loc a b = match a with
+        | None -> Some b
+        | Some a -> Some(<:expr< $a$ $b$ >>)
+      in
+      let rec aux1 acc = function
+        | Cons(_, ')', l) ->
+            (acc, l)
+        | Cons(_, ' ', l) ->
+            aux1 acc l
+        | Cons(_loc, '(', l) ->
+            let e, l = aux2 l in
+            aux1 (app _loc acc e) l
+        | l ->
+            let _loc = loc_of_llist l in
+            let id, l = ident l in
+            aux1 (app _loc acc <:expr< $id:id$ >>) l
+      and aux2 l =
+        match aux1 None l with
+          | (None, _) ->
+              Loc.raise (loc_of_llist l) (Failure "printer expected")
+          | (Some e, l) ->
+              (e, l)
+      in
+      aux2 l
+
+    let names initial_l =
+      let rec aux loc chars names l = match l, chars with
+        | Cons(loc, (',' | ':'), l), [] ->
+            Loc.raise loc (Failure "identifier expected")
+        | Cons(_, ',', l), _ ->
+            aux Loc.ghost [] ((loc, rev_implode chars) :: names) l
+        | Cons(_, ':', l), _ ->
+            (List.rev ((loc, rev_implode chars) :: names), l)
+        | Cons(loc, ch, l), [] when is_ident_start ch ->
+            aux loc [ch] names l
+        | Cons(_, ch, l), _ when is_ident_body ch ->
+            aux loc (ch :: chars) names l
+        | l ->
+            ([], initial_l)
+      in
+      aux Loc.ghost [] [] initial_l
+
+    let main l = match l with
+      | Cons(loc, ('A' .. 'Z' | 'a' .. 'z'), _) ->
+          let e, l = simple l in
+          ([], e, l)
+      | Cons(loc, '(', l) ->
+          let names, l = names l in
+          let expr, l = composed l in
+          (names, expr, l)
+      | l ->
+          Loc.raise (loc_of_llist l) (Failure "invalid start of printing directive")
+  end
+
+  (* Parse a format and return a list of elements: *)
+  let rec main = function
+    | Nil loc ->
+        Nil loc
+
+    (* A literal '%' or a flush: *)
+    | Cons(loc, '%', Cons(loc2, ('%' | '!' as ch), l)) ->
+        Cons(loc, Cst '%', Cons(loc2, Cst ch, main l))
+
+    (* The start of a directive: *)
+    | Cons(loc, '%', l) ->
+        let flags, l = Flags.main l in
+        let names, dir, l = Directive.main l in
+        Cons(loc, Dir(flags, names, dir), main l)
+
+    | Cons(loc, ch, l) ->
+        Cons(loc, Cst ch, main l)
+end
+
+(* +--------------------------+
+   | Format ast to expression |
+   +--------------------------+ *)
 
 (* Create the pattern string from the format ast.
 
@@ -24,9 +228,9 @@ open Format_ast
 *)
 let make_pattern ast =
   let rec aux n = function
-    | Cst s :: l -> s :: aux n l
-    | Dir _ :: l -> "%(" :: string_of_int n :: ")" :: aux (n + 1) l
-    | _ -> []
+    | Cons(_, Cst c, l) -> String.make 1 c :: aux n l
+    | Cons(_, Dir _, l) -> "%(" :: string_of_int n :: ")" :: aux (n + 1) l
+    | Nil _ -> []
   in
   String.concat "" (aux 0 ast)
 
@@ -38,25 +242,24 @@ let make_pattern ast =
    expr_of_directive _loc [] "d" = <:expr< printer_d >>
    expr_of_directive _loc ["a"; "b"] "s" = <:expr< fun k ~a ~b -> printer_s k a b >>
 *)
-let expr_of_directive _loc names dir =
-  let expr = <:expr< $lid:"printer_" ^ dir$ >> in
+let expr_of_directive _loc names expr =
   match names with
     | [] -> expr
     | _ ->
         let rec make_lidents n = function
-          | "_" :: l -> (false, "__" ^ string_of_int n) :: make_lidents (n + 1) l
-          | name :: l -> (true, name) :: make_lidents n l
+          | (loc, "_") :: l -> (false, loc, "__" ^ string_of_int n) :: make_lidents (n + 1) l
+          | (loc, name) :: l -> (true, loc, name) :: make_lidents n l
           | [] -> []
         in
-        let lids = (false, "__k") :: make_lidents 0 names in
+        let lids = (false, _loc, "__k") :: make_lidents 0 names in
         List.fold_right
-          (fun (labeled, id) acc ->
+          (fun (labeled, _loc, id) acc ->
              if labeled then
                <:expr< fun ~ $id$ -> $acc$ >>
              else
                <:expr< fun $lid:id$ -> $acc$ >>)
           lids
-          (List.fold_left (fun acc (labeled, id) ->
+          (List.fold_left (fun acc (labeled, _loc, id) ->
                              <:expr< $acc$ $lid:id$ >>) expr lids)
 
 (* Builds the expression of a printer from a format ast.
@@ -76,33 +279,39 @@ let expr_of_directive _loc names dir =
 *)
 let make_printer _loc ast =
   let rec aux n = function
-    | Cst _ :: l -> aux n l
-    | Dir(names, dir) :: l ->
+    | Cons(_, Cst _, l) -> aux n l
+    | Cons(_loc, Dir(flags, names, dir), l) ->
         let dir = expr_of_directive _loc names dir in
+        let dir = match flags with
+          | None -> dir
+          | Some f -> <:expr< $dir$ ~flags:$f$ >>
+        in
         <:expr< $dir$ (fun __printer ->
                          __printers.($int:string_of_int n$) <- __printer;
                          $aux (n + 1) l$) >>
-    | [] ->
+    | Nil _loc ->
         <:expr< __k (fun oc -> Batteries.Print.format oc __pattern __printers) >>
   in
   aux 0 ast
 
-(* Lex of format string into a format ast *)
-let lex_format loc str =
-  try
-    Format_lexer.main (Lexing.from_string str)
-  with
-      exn -> Loc.raise loc exn
+let count_directives l =
+  let rec aux n = function
+    | Cons(_, Dir _, l) ->
+        aux (n + 1) l
+    | Cons(_, Cst _, l) ->
+        aux n l
+    | Nil _ ->
+        n
+  in
+  aux 0 l
 
 let _ =
   register_expr_specifier "p"
     (fun ctx _loc str ->
-       let ast = lex_format _loc
-         (* Unescape the string before parsing it *)
-         (Camlp4.Struct.Token.Eval.string ~strict:() str) in
+       let ast = Parse.main (unescape _loc str) in
 
        (* Count the number of directives *)
-       let directive_count = List.length (List.filter (function Cst _ -> false | Dir _ -> true) ast) in
+       let directive_count = count_directives ast in
 
        (* Creates the format expression *)
        <:expr< { Batteries.Print.pattern = $str:String.escaped(make_pattern ast)$;

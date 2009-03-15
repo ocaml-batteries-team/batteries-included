@@ -4,6 +4,9 @@ let _ =
   (* Simple test *)
   printf p"x = (%d, %s)\n" 1 "a";
 
+  (* With flags: *)
+  printf p"x = %04x\n" 42;
+
   (* Test with labelled directives: *)
   printf p"Hello %(name:s), i am ocaml version %(version:s)\n%!"
     ~name:(try Sys.getenv "USER" with _ -> "toto")
@@ -14,6 +17,9 @@ let _ =
     (object(self)
        method print oc = fprintf oc p"<object:id = %u>" (Oo.id self)
      end);
+
+  (* Printing a list: *)
+  printf p"l = %(list (option int))\n" [Some 1; None; Some 2];
 
   (* A custom directive, printing pair of integers: *)
   let printer_foo k (x, y) = k (fun oc -> fprintf oc p"(%d, %d)" x y) in

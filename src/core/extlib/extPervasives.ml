@@ -173,14 +173,14 @@ module Pervasives = struct
             match flags.pf_justify with
               | `right ->
                   k (fun oc ->
-                       for i = len to n do
+                       for i = len + 1 to n do
                          IO.write oc flags.pf_padding_char
                        done;
                        IO.nwrite oc x)
               | `left ->
                   k (fun oc ->
                        IO.nwrite oc x;
-                       for i = len to n do
+                       for i = len + 1 to n do
                          IO.write oc flags.pf_padding_char
                        done)
 

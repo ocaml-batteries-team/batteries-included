@@ -13,6 +13,9 @@
 	* src/core/extlib/*.ml*:
 	    - [printer_t] added
 
+	* src/syntax/pa_strings/format_*: removed
+	* src/syntax/pa_strings/pa_format.ml: add support for more complex directives
+
 2009-03-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/IO.mli: [inherit_in], [inherit_out] now produce [unit output]
