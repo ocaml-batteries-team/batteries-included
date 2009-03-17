@@ -371,9 +371,11 @@ let help () =
 
 (**Print the signature of a module.*)
 let print_module name = 
-  let flattened = Str.global_replace (Str.regexp "[^_0-9a-zA-Z]") "__" name in
-  let phrase = !Toploop.parse_toplevel_phrase (Lexing.from_string (Printf.sprintf "module %s = %s;;" flattened name)) in
-    ignore (Toploop.execute_phrase true Format.std_formatter phrase);;
+  try
+    let flattened = Str.global_replace (Str.regexp "[^_0-9a-zA-Z]") "__" name in
+    let phrase = !Toploop.parse_toplevel_phrase (Lexing.from_string (Printf.sprintf "module %s = %s;;" flattened name)) in
+      ignore (Toploop.execute_phrase true Format.std_formatter phrase)
+  with _ -> ();;
 
 let man = List.assoc "man" helpers
 
