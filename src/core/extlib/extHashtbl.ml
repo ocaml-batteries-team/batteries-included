@@ -3,7 +3,7 @@
  * Copyright (C) 1996 Xavier Leroy
  *               2003 Nicolas Cannasse
  *               2005 Damien Doligez
- *               2008 David Teller, LIFO, Universite d'Orleans
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
  *)
  
 open Sexplib
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module Hashtbl =
   struct
@@ -190,7 +190,7 @@ module Hashtbl =
 	result
 
 
-    module ExceptionLess =
+    module Exceptionless =
     struct
       let find = find_option
     end
@@ -248,7 +248,7 @@ module Hashtbl =
 	'a InnerIO.output -> 'b t -> unit
 
       (** Operations on {!Hashtbl} without exceptions.*)
-      module ExceptionLess :
+      module Exceptionless :
       sig
 	val find : 'a t -> key -> 'a option
       end
@@ -414,7 +414,7 @@ module Hashtbl =
 	let fold  ~f e ~init     = fold (label f) e init
       end
 
-      module ExceptionLess =
+      module Exceptionless =
       struct
 	let find = find_option
       end
@@ -474,7 +474,7 @@ module Hashtbl =
 	let fold  ~f e ~init     = fold (label f) e init
       end
 
-      module ExceptionLess =
+      module Exceptionless =
       struct
 	let find = find_option
       end

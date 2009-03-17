@@ -581,14 +581,14 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
    operation}} or {{:../extensions.html#multialias}{alias several
    modules to one name}}. For instance, to open a version of {!Enum}
    with exceptionless error management, you may write [open Enum,
-   ExceptionLess]. To locally replace module {!Enum} with a module of
+   Exceptionless]. To locally replace module {!Enum} with a module of
    the same name but with exceptionless error management, you may
-   write {v module Enum = Enum include ExceptionLess v}.
+   write {v module Enum = Enum include Exceptionless v}.
 
 *)
 
 (** Operations on {!Enum} without exceptions.*)
-module ExceptionLess : sig
+module Exceptionless : sig
   val find : ('a -> bool) -> 'a t -> 'a option
     (** [find f e] returns [Some x] where [x] is the first element [x] of [e] 
 	such that [f x] returns [true], consuming the enumeration up to and 

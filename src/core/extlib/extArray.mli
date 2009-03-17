@@ -1,8 +1,8 @@
 (*
  * ExtArray - additional and modified functions for arrays.
- * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
- *               1996 Xavier Leroy
- *               2008 David Teller, LIFO, Universite d'Orleans
+ * Copyright (C) 1996 Xavier Leroy
+ *               2005 Richard W.M. Jones (rich @ annexia.org)
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -694,14 +694,14 @@ external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_se
    operation}} or {{:../extensions.html#multialias}{alias several
    modules to one name}}. For instance, to open a version of {!Array.Cap}
    with exceptionless error management, you may write {v open Array.Cap,
-   ExceptionLess v}. To locally replace module {!Array.Cap} with a module of
+   Exceptionless v}. To locally replace module {!Array.Cap} with a module of
    the same name but with exceptionless error management, you may
-   write [module Array = Array.Cap include ExceptionLess]
+   write [module Array = Array.Cap include Exceptionless]
 
 *)
 
 (** Operations on {!Array} without exceptions.*)
-module ExceptionLess : sig
+module Exceptionless : sig
 
     
   val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a option
@@ -779,14 +779,14 @@ end
    operation}} or {{:../extensions.html#multialias}{alias several
    modules to one name}}. For instance, to open a version of {!Array}
    with exceptionless error management, you may write [open Array,
-   ExceptionLess]. To locally replace module {!Array} with a module of
+   Exceptionless]. To locally replace module {!Array} with a module of
    the same name but with exceptionless error management, you may
-   write [module Array = Array include ExceptionLess].
+   write [module Array = Array include Exceptionless].
 
 *)
 
 (** Operations on {!Array} without exceptions.*)
-module ExceptionLess : sig
+module Exceptionless : sig
 
     
   val find : ('a -> bool) -> 'a t -> 'a option

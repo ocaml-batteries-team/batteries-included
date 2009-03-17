@@ -239,17 +239,17 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
        operation}} or {{:../extensions.html#multialias}{alias several
        modules to one name}}. For instance, to open a version of {!Hashtbl}
        with exceptionless error management, you may write [open Hashtbl,
-       ExceptionLess]. To locally replace module {!Hashtbl} with a module of
+       Exceptionless]. To locally replace module {!Hashtbl} with a module of
        the same name but with exceptionless error management, you may
-       write {v module Hashtbl = Hashtbl include ExceptionLess v}.
+       write {v module Hashtbl = Hashtbl include Exceptionless v}.
        
     *)
       
     (** Operations on {!Hashtbl} without exceptions.
 
-	@documents Hashtbl.ExceptionLess
+	@documents Hashtbl.Exceptionless
     *)
-module ExceptionLess :
+module Exceptionless :
 sig
   val find : ('a, 'b) t -> 'a -> 'b option
 end
@@ -349,16 +349,16 @@ module type S =
        operation}} or {{:../extensions.html#multialias}{alias several
        modules to one name}}. For instance, to open a version of {!Hashtbl}
        with exceptionless error management, you may write [open Hashtbl,
-       ExceptionLess]. To locally replace module {!Hashtbl} with a module of
+       Exceptionless]. To locally replace module {!Hashtbl} with a module of
        the same name but with exceptionless error management, you may
-       write {v module Hashtbl = Hashtbl include ExceptionLess v}.
+       write {v module Hashtbl = Hashtbl include Exceptionless v}.
        
     *)
       
     (** Operations on {!Hashtbl} without exceptions.
 
-	@documents Hashtbl.S.ExceptionLess*)
-    module ExceptionLess :
+	@documents Hashtbl.S.Exceptionless*)
+    module Exceptionless :
     sig
       val find : 'a t -> key -> 'a option
     end
@@ -598,14 +598,14 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
    operation}} or {{:../extensions.html#multialias}{alias several
    modules to one name}}. For instance, to open a version of {!Hashtbl}
    with exceptionless error management, you may write [open Hashtbl,
-   ExceptionLess]. To locally replace module {!Hashtbl} with a module of
+   Exceptionless]. To locally replace module {!Hashtbl} with a module of
    the same name but with exceptionless error management, you may
-   write {v module Hashtbl = Hashtbl.Cap include ExceptionLess v}.
+   write {v module Hashtbl = Hashtbl.Cap include Exceptionless v}.
    
 *)
   
 (** Operations on {!Hashtbl} without exceptions.*)
-module ExceptionLess :
+module Exceptionless :
 sig
   val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
 end

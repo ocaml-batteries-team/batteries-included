@@ -221,12 +221,28 @@ module Data = Extlib.Interfaces
 
 module  Array    = Extlib.ExtArray.Array
 module  Big_array= Extlib.ExtBigarray.Bigarray
+(**/**)
+(**For compatibility purposes with the base library*)
+module  Bigarray = Big_array
+(**/**)
 module  Dllist   = Extlib.Dllist
 module  Dyn_array = Extlib.DynArray
+
+(**/**)
+(**For compatibility purposes with Extlib*)
+module  DynArray  = Dyn_array
+(**/**)
+
+
 module  Enum     = Extlib.Enum
 module  Global   = Extlib.Global
 module  Hashtbl  = Extlib.ExtHashtbl.Hashtbl
 module  Ref_list = Extlib.RefList 
+(**/**)
+(**For compatibility purposes with Extlib*)
+module  RefList  = Ref_list
+(**/**)
+
 module  Queue    = Extlib.ExtQueue.Queue
 module  Ref      = Extlib.Ref
 module  Stack    = Extlib.ExtStack.Stack
@@ -264,6 +280,10 @@ module  Unit     = Extlib.ExtUnit.Unit
 
 module  Bool     = Extlib.ExtBool.Bool
 module  Bit_set  = Extlib.BitSet
+(**/**)
+(**For compatibility purposes with Extlib*)
+module  BitSet  = Bit_set
+(**/**)
 
 (**{2 Numeric data}
 
@@ -278,6 +298,10 @@ module  Int      = Extlib.ExtInt.Int
 module  Int32    = Extlib.ExtInt32.Int32
 module  Int64    = Extlib.ExtInt64.Int64
 module  Native_int=Extlib.ExtNativeint.Native_int
+(**/**)
+(**For compatibility purposes with the base library*)
+module  Nativeint = Native_int
+(**/**)
 module  Num      = Extlib.ExtNum.Num
 module  Safe_float=Extlib.ExtFloat.Safe_float
 module  Safe_int = Extlib.ExtInt.Safe_int
@@ -379,6 +403,10 @@ module  SExpr  = Libs.ExtSexp_Conv.Sexp_conv
 module  Arg = Extlib.ExtArg.Arg
 module  File= Extlib.File
 module  Opt_parse = Extlib.OptParse
+(**/**)
+(**For compatibility purposes with the base library*)
+module  OptParse  = Opt_parse
+(**/**)
 (*module  Path:placeholder*)
 module  Shell = Extlib.ExtSys.Sys
 module  Unix  = Extlib.ExtUnix.Unix

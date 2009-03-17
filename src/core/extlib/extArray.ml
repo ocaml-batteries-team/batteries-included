@@ -1,7 +1,7 @@
 (*
  * ExtArray - additional and modified functions for arrays.
  * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
- *               2008 David Teller
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
  *)
 
 
-TYPE_CONV_PATH "Batteries.Data.Mutable" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module Array = struct
 
@@ -360,7 +360,7 @@ struct
       let filter_map ~f a = filter_map f a
   end
 
-  module ExceptionLess =
+  module Exceptionless =
   struct
     let find f e =
       try  Some (find f e)
@@ -372,7 +372,7 @@ struct
   end
 end
 
-module ExceptionLess =
+module Exceptionless =
 struct
   let find f e =
     try  Some (find f e)

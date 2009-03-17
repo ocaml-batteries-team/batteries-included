@@ -1,7 +1,7 @@
 (* 
  * ExtSet - Extended operations on sets
  * Copyright (C) 1996 Xavier Leroy
- *               2008 David Teller, LIFO, Universite d'Orleans
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Persistent" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module Set =
 struct
@@ -178,7 +178,7 @@ module type S =
       (** {6 Override modules}*)
       
     (** Operations on {!Set} without exceptions.*)
-    module ExceptionLess : sig
+    module Exceptionless : sig
       val min_elt: t -> elt option
       val max_elt: t -> elt option
       val choose:  t -> elt option
@@ -290,7 +290,7 @@ module type S =
 	    let result = sexp_of_t (impl_of_t t)
 	  end in Local.result
 
-    module ExceptionLess =
+    module Exceptionless =
     struct
       let min_elt t = try Some (min_elt t) with Not_found -> None
       let max_elt t = try Some (max_elt t) with Not_found -> None

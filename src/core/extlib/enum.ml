@@ -935,7 +935,7 @@ let rec of_object o =
 
 let flatten = concat
 
-module ExceptionLess = struct
+module Exceptionless = struct
   let find f e =
     try  Some (find f e)
     with Not_found -> None

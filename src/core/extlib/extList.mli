@@ -3,7 +3,7 @@
  * Copyright (C) 2003 Brian Hurt
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2008 Red Hat Inc.
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -377,15 +377,11 @@ module List :
 	  (** [takewhile f xs] returns the first elements of list [xs]
 	      which satisfy the predicate [f]. *)
 	  
-	val takewhile :  ('a -> bool) -> 'a list -> 'a list
-	  (** obsolete, as {!take_while} *)
 	  
 	val drop_while : ('a -> bool) -> 'a list -> 'a list
 	  (** [dropwhile f xs] returns the list [xs] with the first
 	      elements satisfying the predicate [f] dropped. *)
 
-	val dropwhile : ('a -> bool) -> 'a list -> 'a list
-	  (** obsolete, as {!drop_while} *)
 
 	val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 	  (** [interleave ~first ~last sep [a1;a2;a3;...;an]] returns
@@ -496,6 +492,12 @@ module List :
 	val nth : 'a list -> int -> 'a
 	(** Obsolete. As [at]. *)
 
+	val takewhile :  ('a -> bool) -> 'a list -> 'a list
+	  (** obsolete, as {!take_while} *)
+
+	val dropwhile : ('a -> bool) -> 'a list -> 'a list
+	  (** obsolete, as {!drop_while} *)
+
 	(** {6 Override modules}*)
 	  
 	(**
@@ -508,14 +510,14 @@ module List :
 	   operation}} or {{:../extensions.html#multialias}{alias several
 	   modules to one name}}. For instance, to open a version of {!List}
 	   with exceptionless error management, you may write {v open List,
-	   ExceptionLess v}. To locally replace module {!List} with a module of
+	   Exceptionless v}. To locally replace module {!List} with a module of
 	   the same name but with exceptionless error management, you may
-	   write [module List = List include ExceptionLess]
+	   write [module List = List include Exceptionless]
 	   
 	*)
 
 	(** Exceptionless counterparts for error-raising operations*)
-	module ExceptionLess : sig
+	module Exceptionless : sig
 
 	  val rfind : ('a -> bool) -> 'a list -> 'a option
 	    (** [rfind p l] returns [Some x] where [x] is the last element of [l] such 

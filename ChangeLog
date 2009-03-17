@@ -1,3 +1,35 @@
+2009-03-17  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/batteries_help.ml: in #browse, now replacing all non-alphanumerical characters
+
+	* src/core/extlib/extList.mli: [takewhile], [dropwhile] moved down
+
+	* src/core/extlib/extList.ml*: [ExceptionLess] => [Exceptionless]
+
+	* src/core/extlib/extList.ml: flattened, copyright updated
+
+	* src/core/extlib/extHashtbl.ml*: [ExceptionLess] => [Exceptionless]
+
+	* src/core/extlib/extHashtbl.ml: flattened, copyright updated
+
+	* src/core/extlib/extMap.ml: flattened, copyright updated
+
+	* src/core/extlib/extMap.ml*: [ExceptionLess] => [Exceptionless]
+	
+	* src/core/extlib/extArray.ml: flattened, copyright updated
+
+	* src/core/extlib/extArray.ml*: [ExceptionLess] => [Exceptionless]
+
+	* src/core/extlib/extSet.ml: flattened, copyright updated
+
+	* src/core/extlib/extSet.ml*: [ExceptionLess] => [Exceptionless]
+
+	* src/core/extlib/enum.ml*: [ExceptionLess] => [Exceptionless]
+	
+	* src/main/threads/batteries.ml: Added module aliases for compatibility with base/ext libraries.
+
+	* src/main/nothreads/batteries.ml: Added module aliases for compatibility with base/ext libraries.
+
 2009-03-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* testsuite/test_pmap.ml: [RefList] => [Ref_list]

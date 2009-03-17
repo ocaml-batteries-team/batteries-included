@@ -20,7 +20,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 
 module Map =
@@ -150,7 +150,7 @@ struct
       ('a InnerIO.output -> 'c -> unit) -> 
       'a InnerIO.output -> 'c t -> unit
 
-    module ExceptionLess : sig
+    module Exceptionless : sig
       val find: key -> 'a t -> 'a option
     end
 
@@ -289,7 +289,7 @@ struct
 	  end in fun a_of_key (t:'a t) -> Local.sexp_of_t a_of_key (impl_of_t t)
 
 
-      module ExceptionLess =
+      module Exceptionless =
       struct
 	let find k t = try Some (find k t) with Not_found -> None
       end

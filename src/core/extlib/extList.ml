@@ -3,7 +3,7 @@
  * Copyright (C) 2003 Brian Hurt
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2008 Red Hat Inc.
- * Copyright (C) 2008 David Teller
+ * Copyright (C) 2008 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module List = struct
 
@@ -644,7 +644,7 @@ let reduce f = function [] -> invalid_arg "List.reduce: empty list"
 let min l = reduce Pervasives.min l
 let max l = reduce Pervasives.max l
 
-module ExceptionLess = struct
+module Exceptionless = struct
   let rfind p l =
     try  Some (rfind p l)
     with Not_found -> None
