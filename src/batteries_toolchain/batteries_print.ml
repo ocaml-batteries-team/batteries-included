@@ -40,4 +40,91 @@ let print_string_cap_rw fmt t =
 let print_string_cap_ro fmt t =
   Format.fprintf fmt "ro%S" (string_of_cap t)
 
+open Camlp4_import
 
+(**An inlined version of [Type.type_expr], used to invoke [Toploop.install_printer]*)
+module Types =
+struct
+
+  (* Type expressions for the core language *)
+
+  type type_expr =
+      { mutable desc: type_desc; 
+	mutable level: int;
+	mutable id: int }
+	
+  and type_desc =
+      Tvar
+    | Tarrow of label * type_expr * type_expr * commutable
+    | Ttuple of type_expr list
+    | Tconstr of Path.t * type_expr list * abbrev_memo ref
+    | Tobject of type_expr * (Path.t * type_expr list) option ref
+    | Tfield of string * field_kind * type_expr * type_expr
+    | Tnil
+    | Tlink of type_expr
+    | Tsubst of type_expr         (* for copying *)
+    | Tvariant of row_desc
+    | Tunivar
+    | Tpoly of type_expr * type_expr list
+	
+  and row_desc =
+      { row_fields: (label * row_field) list;
+	row_more: type_expr;
+	row_bound: unit; (* kept for compatibility *)
+	row_closed: bool;
+	row_fixed: bool;
+	row_name: (Path.t * type_expr list) option }
+	row_closed: bool;
+    row_fixed: bool;
+    row_name: (Path.t * type_expr list) option }
+
+ and row_field =
+    Rpresent of type_expr option
+      | Reither of bool * type_expr list * bool * row_field option ref
+          (* 1st true denotes a constant constructor *)
+          (* 2nd true denotes a tag in a pattern matching, and
+             is erased later *)
+      | Rabsent
+	  
+ and abbrev_memo =
+    Mnil
+    | Mcons of Path.t * type_expr * type_expr * abbrev_memo
+    | Mlink of abbrev_memo ref
+	
+ and field_kind =
+    Fvar of field_kind option ref
+      | Fpresent
+      | Fabsent
+	  
+ and commutable =
+    Cok
+    | Cunknown
+    | Clink of commutable ref
+	
+end
+
+(**An inlined version of [Path.t], used to invoke [Toploop.install_printer]*)
+module Path =
+struct
+  type t =
+      Pident of Ident.t
+    | Pdot of t * string * int
+    | Papply of t * t
+
+  let of_list l =
+    let rec aux = function
+      | [s] -> Pident s
+      | h::t-> Pdot ((aux t), h, -1)
+      | _   -> failwith "Path definition error"
+    in aux (List.rev l)
+      
+end
+
+
+
+let install_printer (path:Path.t) (typ:Types.type_expr) printer =
+  Toploop.install_printer (Obj.magic path) (Obj.magic typ) printer
+
+open Types
+
+let _ = install_printer (Path.of_list "Batteries.Dllist") {desc = -1; id = -1; Tconstr 
