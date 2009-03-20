@@ -268,6 +268,26 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 	done;
 	InnerIO.nwrite out last
 
+let printer_t p k x = k (fun oc -> print (fun oc x -> p (fun f -> f oc) x) oc x)
+
+let sprint ?(first="[|") ?(last="|]") ?(sep="; ") print_a array =
+  ExtPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) array
+(*  let os = InnerIO.output_string  () in
+  print ~first ~last ~sep print_a os list;
+  InnerIO.close_out os (* returns contents *)*)
+
+let reduce f a =
+  if Array.length a = 0 then
+    invalid_arg "Array.reduce: empty array"
+  else (
+    let acc = ref a.(0) in
+    for i = 1 to Array.length a - 1 do acc := f !acc a.(i) done;
+    !acc
+  )
+
+let min a = reduce Pervasives.min a
+let max a = reduce Pervasives.max a
+
 module Cap =
 struct
   (** Implementation note: in [('a, 'b) t], ['b] serves only as
@@ -325,6 +345,7 @@ struct
   let fast_sort    = fast_sort
   let make_compare = make_compare
   let print        = print
+  let sprint       = sprint
   let sexp_of_t    = sexp_of_t
   let t_of_sexp    = t_of_sexp
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"

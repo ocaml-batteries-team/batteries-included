@@ -32,6 +32,7 @@ open ExtNativeint
 open ExtString
 open ExtBool
 open ExtList
+open ExtArray
 open ExtFloat
 
 module Pervasives = struct
@@ -277,6 +278,7 @@ module Pervasives = struct
   let printer_float k x = k (fun oc -> Float.print oc x)
   let printer_abstract k x = k (fun oc -> IO.nwrite oc "<abstract>")
   let printer_list p k x = k (fun oc -> List.print (fun oc x -> p (fun f -> f oc) x) oc x)
+  let printer_array p k x = k (fun oc -> Array.print (fun oc x -> p (fun f -> f oc) x) oc x)
   let printer_option p k x = k (fun oc -> Option.print (fun oc x -> p (fun f -> f oc) x) oc x)
   let printer_rope k x = k (fun oc -> Rope.print oc x)
   let printer_rope k x = k (fun oc -> Rope.print oc x)

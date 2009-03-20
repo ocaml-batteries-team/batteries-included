@@ -153,6 +153,19 @@ sig
 	[f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
 	where [n] is the length of the array [a]. *)
     
+  val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
+    (** [Array.reduce f a] is [fold_left f a.(0) a.(1 .. n-1)].
+
+        @raise Invalid_argument on empty arrays. *)
+
+  val max : 'a array -> 'a
+    (** [max a] returns the largest value in [a] as judged by
+        [Pervasives.compare] *)
+
+  val min : 'a array -> 'a
+    (** [min a] returns the smallest value in [a] as judged by
+        [Pervasives.compare] *)
+
   (**{6 Operations on two arrays}*)
     
   val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
@@ -335,6 +348,19 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
       on typical input.
   *)
 
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> 'b t -> unit
+  (** Print the contents of an array *)
+
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> 'b t -> string
+  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
 
   (**/**)
   (** {6 Undocumented functions} *)
@@ -671,7 +697,10 @@ val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('a, [>`Read]) t -> Sexplib.Sexp.t
 (** {7 Printing}*)
   
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> ('b, [>`Read]) t -> unit
+  (** Print the contents of an array *)
   
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> ('b, [>`Read]) t -> string
+  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
   
   
 (**/**)
@@ -766,6 +795,9 @@ end
   (** {7 Printing}*)
     
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> 'b t -> unit
+
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> 'b t -> string
+  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
 
   (** {6 Override modules}*)
 

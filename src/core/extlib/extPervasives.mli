@@ -1371,6 +1371,7 @@ val printer_nativeint : (nativeint -> 'a, 'a, 'acc) Print.directive
 val printer_float : (float -> 'a, 'a, 'acc) Print.directive
 val printer_abstract : (_ -> 'a, 'a, 'acc) Print.directive
 val printer_list : ('a -> unit, unit, 'acc) Print.directive -> ('a list -> 'b, 'b, 'acc) Print.directive
+val printer_array : ('a -> unit, unit, 'acc) Print.directive -> ('a array -> 'b, 'b, 'acc) Print.directive
 val printer_option : ('a -> unit, unit, 'acc) Print.directive -> ('a option -> 'b, 'b, 'acc) Print.directive
 val printer_rope : (Rope.t -> 'a, 'a, 'acc) Print.directive
 val printer_utf8 : (UTF8.t -> 'a, 'a, 'acc) Print.directive
