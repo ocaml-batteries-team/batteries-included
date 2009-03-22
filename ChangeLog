@@ -1,3 +1,6 @@
+2009-03-22  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/toplevel/cbtop.ml: general cleanup
 
 2009-03-19  Jeremie Dimino <jeremie@dimino.org>
 

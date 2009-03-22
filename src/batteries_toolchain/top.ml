@@ -44,6 +44,7 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
 #require "dynlink";;
 #camlp4o;;
 #require "camlp4";;
+#load "camlp4o.cma";;
 #require "batteries";;
 #require "batteries.syntax";;
 
