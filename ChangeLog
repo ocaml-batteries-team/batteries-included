@@ -5,7 +5,13 @@
 	
 2009-03-22  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
-	* src/batteries_toolchain/ocaml.mltop: added
+	* src/batteries_toolchain/toplevel/cbtop.ml: added
+
+	* src/batteries_toolchain/ocaml.in: now using [cbtop.ml]
+
+	* src/batteries_toolchain/toplevel.mltop: added
+
+	* Makefile.in:[TOPLEVEL_TARGETS], [install] now make use of [toplevel.top]
 
 
 2009-03-17  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>

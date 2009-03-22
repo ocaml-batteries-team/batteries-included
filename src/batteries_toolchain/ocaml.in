@@ -1,1 +1,1 @@
-ocaml -init "@DESTDIR@/batteries/top.ml" $@
+./toplevel.top "@DESTDIR@/batteries/top.ml" $@

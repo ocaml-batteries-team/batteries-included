@@ -112,7 +112,8 @@ SYNTAX_TARGETS = src/syntax/pa_openin/pa_openin.cmo \
 	  src/syntax/pa_strings/pa_strings.cma \
      src/syntax/pa_comprehension/pa_comprehension.cmo
 
-TOPLEVEL_TARGETS = src/batteries_toolchain/batteries_print.cmo \
+TOPLEVEL_TARGETS = src/batteries_toolchain/toplevel.top \
+                src/batteries_toolchain/batteries_print.cmo \
 		src/batteries_toolchain/batteries_help.cmo
 
 
@@ -215,6 +216,7 @@ install:
 			_build/src/batteries_toolchain/batteries_print.cmi \
 			_build/src/batteries_toolchain/batteries_help.cmo \
 			_build/src/batteries_toolchain/batteries_print.cmo \
+			_build/src/batteries_toolchain/toplevel.top \
 			src/batteries_toolchain/top.ml \
 			src/batteries_toolchain/ocaml*
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
