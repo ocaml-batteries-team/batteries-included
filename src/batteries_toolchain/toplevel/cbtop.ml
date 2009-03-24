@@ -32,14 +32,23 @@ let restore_original_parsers () =
   Toploop.parse_use_file        := original_parse_use_file;
   Toploop.parse_toplevel_phrase := original_parse_toplevel_phrase
 
+let rec parse_use_file lb =
+  match try Some(!Toploop.parse_toplevel_phrase lb) with End_of_file -> None with
+    | Some phrase ->
+        phrase :: parse_use_file lb
+    | None ->
+        []
+
 let replacement_parse_use_file lb =
   restore_original_parsers ();
   ignore (Toploop.use_silently Format.std_formatter batteries_init);
-  !Toploop.parse_use_file lb
+  Toploop.parse_use_file := parse_use_file;
+  parse_use_file lb;;
 
 let replacement_parse_toplevel_phrase lb =
   restore_original_parsers ();
   ignore (Toploop.use_silently Format.std_formatter batteries_init);
+  Toploop.parse_use_file := parse_use_file;
   !Toploop.parse_toplevel_phrase lb;;
 
 Arg.current                    := 1;;

@@ -28,6 +28,8 @@
 
 2009-03-24  Jeremie Dimino <jeremie@dimino.org>
 
+	* src/batteries_toolchain/toplevel/cbtop.ml: hack to make syntax extensions to work for scripts
+	
 	* src/core/extlib/seq.ml*: created
 
 	* src/core/extlib.mlpack: added [Seq]
