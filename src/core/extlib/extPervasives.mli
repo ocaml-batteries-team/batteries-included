@@ -31,6 +31,7 @@
 
 open IO
 open ExtUTF8
+open ExtString
 
 (** The initially opened module.
     
@@ -1363,6 +1364,8 @@ val printer_format : (('a, 'b, 'acc) Print.format -> 'a, 'b, 'acc) Print.directi
         "x = 1 + 3 * 5"
       ]} *)
 
+val printer_sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a, 'acc) Print.directive
+val printer_Sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a, 'acc) Print.directive
 val printer_bool : (bool -> 'a, 'a, 'acc) Print.directive
 val printer_int : (int -> 'a, 'a, 'acc) Print.directive
 val printer_int32 : (int32 -> 'a, 'a, 'acc) Print.directive

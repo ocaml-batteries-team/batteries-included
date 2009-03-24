@@ -682,6 +682,15 @@ val trim : [> `Read] t -> _ t
   (** Returns the same string but without the leading and trailing
       whitespaces. *)
 
+val quote : [> `Read] t -> string
+  (** Add quotes around a string and escape any quote appearing in that string.
+      This function is used typically when you need to generate source code
+      from a string.
+
+      [quote ro"foo"] returns [ro"\"foo\""]
+      [quote ro"\"foo\""] returns [ro"\\\"foo\\\""]
+      etc. *)
+
 val left : [> `Read] t -> int -> _ t
 (**[left r len] returns the string containing the [len] first characters of [r]*)
 
@@ -826,6 +835,23 @@ val compare: [> `Read] t -> [> `Read] t -> int
 
 val icompare: [> `Read] t -> [> `Read] t -> int
   (** Compare two strings, case-insensitive. *)
+
+
+(** {7 Printing}*)
+
+val print: 'a InnerIO.output -> [> `Read] t -> unit
+(**Print a string.*)
+
+val println: 'a InnerIO.output -> [> `Read] t -> unit
+(**Print a string, end the line.*)
+
+val print_quoted: 'a InnerIO.output -> [> `Read] t -> unit
+(**Print a string, with quotes.
+
+   [print_quoted stdout "foo"] prints ["foo"] (with the quotes)
+
+   [print_quoted stdout "\"bar\""] prints ["\"bar\""] (with the quotes)
+*)
 
 (**/**)
 

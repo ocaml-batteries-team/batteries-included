@@ -517,6 +517,11 @@ let filter        = filter
 let of_list       = of_list
 let to_list       = to_list
 
+let quote         = quote
+let print         = print
+let println       = println
+let print_quoted  = print_quoted
+
 external of_string : string -> _ t                = "%identity"
 external to_string : [`Read | `Write] t -> string = "%identity"
 external read_only : [> `Read] t -> [`Read] t     = "%identity"

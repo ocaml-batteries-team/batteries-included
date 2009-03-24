@@ -186,8 +186,37 @@ module Pervasives = struct
                          IO.write oc flags.pf_padding_char
                        done)
 
+  let printer_sc ?(flags=default_printer_flags) k x =
+    match flags.pf_width with
+      | None ->
+          k (fun oc -> String.Cap.print oc x)
+      | Some n ->
+          let len = String.Cap.length x in
+          if len >= n then
+            k (fun oc -> String.Cap.print oc x)
+          else
+            match flags.pf_justify with
+              | `right ->
+                  k (fun oc ->
+                       for i = len + 1 to n do
+                         IO.write oc flags.pf_padding_char
+                       done;
+                       String.Cap.print oc x)
+              | `left ->
+                  k (fun oc ->
+                       String.Cap.print oc x;
+                       for i = len + 1 to n do
+                         IO.write oc flags.pf_padding_char
+                       done)
+
   let printer_S ?flags k x =
-    printer_s ?flags k ("\"" ^ String.escaped x ^ "\"" )
+    printer_s ?flags k (String.quote x)
+
+  let printer_Sc ?flags k x =
+    printer_s ?flags k (String.Cap.quote x)
+
+
+    
 
   open Number
 
