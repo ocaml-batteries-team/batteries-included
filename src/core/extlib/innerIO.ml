@@ -296,25 +296,25 @@ let close_all () =
   Concurrent.sync !lock  (Outputs.iter (fun o -> try close_out o with _ -> ())) outputs
 
 let read_all i =
-	let maxlen = 1024 in
-	let str = ref [] in
-	let pos = ref 0 in
-	let rec loop() =
-		let s = nread i maxlen in
-		str := (s,!pos) :: !str;
-		pos := !pos + String.length s;
-		loop()
-	in
-	try
-		loop()
-	with
-		No_more_input ->
-			let buf = String.create !pos in
-			List.iter (fun (s,p) ->
-				String.unsafe_blit s 0 buf p (String.length s)
-			) !str;
-			buf
-
+  let maxlen = 1024 in
+  let str    = ref [] in
+  let pos    = ref 0 in
+  let rec loop() =
+    let s = nread i maxlen in
+      str := (s,!pos) :: !str;
+      pos := !pos + String.length s;
+      loop()
+  in
+    try
+      loop()
+    with
+	No_more_input
+      | Input_closed ->
+	  let buf = String.create !pos in
+	    List.iter (fun (s,p) ->
+			 String.unsafe_blit s 0 buf p (String.length s)
+		      ) !str;
+	    buf
 
 let input_string s =
   let pos = ref 0 in
