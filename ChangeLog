@@ -1,3 +1,9 @@
+2009-03-24  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/core/extlib/seq.ml*: created
+
+	* src/core/extlib.mlpack: added [Seq]
+
 2009-03-22  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/batteries_toolchain/toplevel/cbtop.ml: general cleanup
