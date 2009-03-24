@@ -1,5 +1,19 @@
 2009-03-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extPervasives.ml: [printer_S] now uses [String.quote]
+
+	* src/core/extlib/extPervasives.ml*: [printer_sc], [printer_Sc] added
+
+	* src/core/extlib/extString.ml*: [String.Cap.print*], [String.Cap.quote] added
+
+	* src/core/extlib/innerIO.ml: [read_all] now stops properly also on [Input_closed]
+
+	* src/core/extlib/extLexing.ml: [from_channel] now raises [End_of_file]
+
+	* src/libs/compilers/compilers.ml*: [interpreter_option] added
+
+	* src/libs/compilers/compilers.ml*: [ocaml] added
+
 	* src/batteries_toolchain/ocaml.in: now using "@DESTDIR@/toplevel.top"
 
 	* src/core/baselib/batlib_Baselib_Lexing.*: removed
