@@ -1,1 +1,1 @@
-./toplevel.top "@DESTDIR@/batteries/top.ml" $@
+"@DESTDIR@/batteries/toplevel.top" "@DESTDIR@/batteries/top.ml" $@
