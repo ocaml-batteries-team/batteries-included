@@ -1,3 +1,15 @@
+2009-03-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/baselib/batlib_Baselib_Lexing.*: removed
+	
+	* src/main/threads/batteries.ml: [ExtLexing.Lexing] replaces [Lexing]
+
+	* src/main/nothreads/batteries.ml: [ExtLexing.Lexing] replaces [Lexing]
+
+	* src/core/extlib.mlpack: [ExtLexing] added
+
+	* src/core/extlib/extLexing.ml*: created
+
 2009-03-22  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/batteries_toolchain/toplevel/cbtop.ml: general cleanup
