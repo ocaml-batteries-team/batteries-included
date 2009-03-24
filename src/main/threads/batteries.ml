@@ -366,7 +366,7 @@ module  Rpc_*
               ====module module  Languages ====*)
 
 
-module  Lexing = Batlib_Baselib_Lexing
+module  Lexing = Extlib.ExtLexing.Lexing
 module  Parsing= Batlib_Baselib_Parsing
 module  Format = Extlib.ExtFormat.Format
 module  Printf = Extlib.ExtPrintf.Printf

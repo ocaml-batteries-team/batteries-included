@@ -1,3 +1,17 @@
+2009-03-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/ocaml.in: now using "@DESTDIR@/toplevel.top"
+
+	* src/core/baselib/batlib_Baselib_Lexing.*: removed
+	
+	* src/main/threads/batteries.ml: [ExtLexing.Lexing] replaces [Lexing]
+
+	* src/main/nothreads/batteries.ml: [ExtLexing.Lexing] replaces [Lexing]
+
+	* src/core/extlib.mlpack: [ExtLexing] added
+
+	* src/core/extlib/extLexing.ml*: created
+
 2009-03-24  Jeremie Dimino <jeremie@dimino.org>
 
 	* src/core/extlib/seq.ml*: created

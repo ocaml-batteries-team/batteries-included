@@ -71,4 +71,5 @@ Logger
 ExtFormat
 ExtScanf
 Print
+ExtLexing
 Seq

@@ -385,7 +385,7 @@ module  Rpc_*
               ====module module  Languages ====*)
 
 module  Genlex = Genlex
-module  Lexing = Lexing
+module  Lexing = Extlib.ExtLexing.Lexing
 module  Parsing= Parsing
 module  Format = Extlib.ExtFormat.Format
 module  Printf = Extlib.ExtPrintf.Printf

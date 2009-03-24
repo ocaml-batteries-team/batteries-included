@@ -275,6 +275,17 @@ tests_byte:
 	cd testsuite && ocamlfind batteries/ocamlbuild -clean && \
 	ocamlfind batteries/ocamlbuild main.byte
 
+run_tests: tests run_tests_native run_tests_byte run_tests_interp
+
+run_tests_byte:
+	cd testsuite && ./main.byte
+
+run_tests_native:
+	cd testsuite && ./main.native
+
+run_tests_interp:
+	cd testsuite && ocamlfind -I . batteries/ocaml main.ml
+
 #Experiments with documentation
 XPDOC_CORE_EXTLIB_MLI=concurrent interfaces innerIO monad return enum extBigarray extUChar extUnit global number ref vect pMap pSet multiPMap option extBuffer extString extUTF8 extInt64 extInt32 extInt extHashtbl extFloat extChar dynArray dllist bitSet rope IO extPrintf base64 extArray extBig_int extList extNativeint extStream substring std refList lazyList extRandom extNum extBool file optParse parserCo result charParser uCharParser extGenlex extComplex extMarshal extGc extPrintexc extPervasives extUnix extMap extQueue extStack extSet extOo extStr path charEncodings extSys extArg extDigest logger extFormat extScanf print
 XPDOC=$(patsubst %, _build/src/core/extlib/%.mli, $(XPDOC_CORE_EXTLIB_MLI)) _build/src/core/extlib.mli
