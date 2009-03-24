@@ -24,8 +24,9 @@ module Lexing =
 struct
   include Lexing
 
+  open IO
   let from_input inp =
-    from_function (fun s n -> IO.input inp s 0 n)
+    from_function (fun s n -> try input inp s 0 n with No_more_input -> raise End_of_file)
 
   let from_channel = from_input
 end
