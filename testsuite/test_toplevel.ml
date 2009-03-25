@@ -17,7 +17,7 @@ open IO
 let test_1 =
   ("OCaml: Testing from source file", fun () ->
      try
-       let source    = "Print.printf p\"%sc\" ro\"read-only string\"" in
+       let source    = "Print.printf p\"%sc\" ro\"read-only string\";;" in
        let generated_file = make_temporary_file source                in
        let temp_name = Filename.temp_file "ocaml" "test"              in
 	 ignore (Sys.command (string_of_command (ocaml [generated_file]) ^ " > " ^ temp_name));
@@ -35,7 +35,7 @@ let test_2 =
 	 p"File.with_file_out %S (fun out -> Print.fprintf out p\"%%sc\" ro\"read-only string\");;\n" 
 	 temp_name in
        let generated_file = make_temporary_file source                in
-       let command   = string_of_command (ocaml []) ^ " < " ^ generated_file  in
+       let command   = string_of_command (ocaml []) ^ " < " ^ generated_file  ^ " > /dev/null " in
 (*	 Printf.eprintf "Running %S\nWriting to file %S\n%!" command temp_name;*)
 	 ignore (Sys.command command);
 	 flush_all ();
