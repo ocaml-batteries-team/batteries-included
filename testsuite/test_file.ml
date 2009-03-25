@@ -67,7 +67,7 @@ let test_4 = ("File: opening and closing many files",
 	      fun () ->
 	      try
 		for i = 0 to 10000 do
-		  ignore (write buffer)
+		  Unix.unlink (write buffer)
 	      done;Testing.Pass
 	      with Sys_error e -> Testing.Fail e)
 
@@ -79,6 +79,7 @@ let test_5 = ("File: opening and closing many files (Pervasives)",
 		  let temp = Filename.temp_file "batteries" "test" in
 		  let oc   = open_out temp                         in
 		    Standard.output_string oc "test";
-		    close_out oc
+		    close_out oc;
+		    Unix.unlink temp
 	      done;Testing.Pass
 	    with Sys_error e -> Testing.Fail e )

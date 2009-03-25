@@ -116,13 +116,7 @@ module BaseSafeInt = struct
      their safe counterparts
   *)
       
-  (*Here, we assume that, in case of overflow the result will be different when computing
-    in 31 bits (resp 63 bits) and in 32 bits (resp 64 bits). Need to check that trick.*)
-  let mul a b =
-    let c  = Pervasives.( * ) a b                                    in
-    let c' = Nativeint.mul (Nativeint.of_int a) (Nativeint.of_int b) in
-      if Nativeint.of_int c = c' then c
-      else raise Overflow
+
   let ( * ) = mul
 
   let add a b =
@@ -152,6 +146,12 @@ module BaseSafeInt = struct
   let abs x =
     if x <> min_int then abs x
     else raise Overflow
+
+  (*Here, we assume that, in case of overflow the result will be different when computing
+    in 31 bits (resp 63 bits) and in 32 bits (resp 64 bits). Need to check that trick.*)
+  let mul a b =
+    if b = 0 then 0
+    else if (abs a) > max_int / (abs b) then raise Overflow else a * b
 
   let pow = Number.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 20) ~mul
     
