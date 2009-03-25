@@ -1,3 +1,7 @@
+2009-03-25  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extInt.ml: [SafeInt.mul] rewritten without need for native integersx
+
 2009-03-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extPervasives.ml: [printer_S] now uses [String.quote]
