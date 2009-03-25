@@ -8,6 +8,8 @@
 
 2009-03-25  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/seq.ml*: [Failure] replaced with [Invalid_argument]
+
 	* src/core/extlib/extInt.ml: [SafeInt.mul] rewritten without need for native integersx
 
 2009-03-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>

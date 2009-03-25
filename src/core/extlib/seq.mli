@@ -45,12 +45,12 @@ val length : 'a t -> int
       never return if the sequence is infinite. *)
 
 val hd : 'a t -> 'a
-  (** Returns the first element of the sequence or raise [Failure] if
+  (** Returns the first element of the sequence or raise [Invalid_argument] if
       the sequence is empty. *)
 
 val tl : 'a t -> 'a t
   (** Returns the sequence without its first elements or raise
-      [Failure] if the sequence is empty. *)
+      [Invalid_argument] if the sequence is empty. *)
 
 val is_empty : 'a t -> bool
   (** [is_empty e] returns true if [e] does not contains any
@@ -60,12 +60,12 @@ val first : 'a t -> 'a
   (** Same as {!hd} *)
 
 val last : 'a t -> 'a
-  (** Returns the last element of the sequence, or raise [Failure] if
+  (** Returns the last element of the sequence, or raise [Invalid_argument] if
       the sequence is empty. *)
 
 val at : 'a t -> int -> 'a
   (** [at l n] returns the n-th element of the sequence [l] or raise
-      [Failure] is the index is outside of [l] bounds. *)
+      [Invalid_argument] is the index is outside of [l] bounds. *)
 
 val append : 'a t -> 'a t -> 'a t
   (** [append s1 s2] returns the sequence which first returns all

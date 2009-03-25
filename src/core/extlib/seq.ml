@@ -34,15 +34,15 @@ let length s =
   aux 0 s
 
 let hd s = match s () with
-  | Nil -> failwith "Seq.hd"
+  | Nil -> raise (Invalid_argument "Seq.hd")
   | Cons(e, s) -> e
 
 let tl s = match s () with
-  | Nil -> failwith "Seq.tl"
+  | Nil -> raise (Invalid_argument "Seq.tl")
   | Cons(e, s) -> s
 
 let first s = match s () with
-  | Nil -> failwith "Seq.first"
+  | Nil -> raise (Invalid_argument "Seq.first")
   | Cons(e, s) -> e
 
 let last s =
@@ -51,7 +51,7 @@ let last s =
     | Cons(e, s) -> aux e s
   in
   match s () with
-    | Nil -> failwith "Seq.last"
+    | Nil -> raise (Invalid_argument "Seq.last")
     | Cons(e, s) -> aux e s
 
 let is_empty s = s () = Nil
@@ -59,7 +59,7 @@ let is_empty s = s () = Nil
 let at s n =
   let rec aux s n =
     match s () with
-      | Nil -> failwith "Seq.at"
+      | Nil -> raise (Invalid_argument "Seq.at")
       | Cons(e, s) ->
           if n = 0 then
             e
@@ -131,15 +131,15 @@ let rec fold_right f s acc = match s () with
   | Cons(e, s) -> f e (fold_right f s acc)
 
 let reduce f s = match s () with
-  | Nil -> failwith "Seq.reduce"
+  | Nil -> raise (Invalid_argument "Seq.reduce")
   | Cons(e, s) -> fold_left f e s
 
 let max s = match s () with
-  | Nil -> failwith "Seq.max"
+  | Nil -> raise (Invalid_argument "Seq.max")
   | Cons(e, s) -> fold_left Pervasives.max e s
 
 let min s = match s () with
-  | Nil -> failwith "Seq.min"
+  | Nil -> raise (Invalid_argument "Seq.min")
   | Cons(e, s) -> fold_left Pervasives.min e s
 
 let rec for_all f s = match s () with
@@ -238,7 +238,7 @@ let rec combine s1 s2 () = match s1 (), s2 () with
   | Cons(e1, s1), Cons(e2, s2) ->
       Cons((e1, e2), combine s1 s2)
   | _ ->
-      failwith "Seq.combine"
+      raise (Invalid_argument "Seq.combine")
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
   | Nil ->
