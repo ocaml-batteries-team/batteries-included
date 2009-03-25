@@ -32,11 +32,11 @@ let test_2 =
      try
        let temp_name = Filename.temp_file "ocaml" "test" in
        let source    = Print.sprintf
-	 p"File.with_file_out %S (fun out -> Print.fprintf out p\"%%sc\" ro\"read-only string\");;" 
+	 p"File.with_file_out %S (fun out -> Print.fprintf out p\"%%sc\" ro\"read-only string\");;\n" 
 	 temp_name in
        let generated_file = make_temporary_file source                in
-       let command   = string_of_command (ocaml []) ^ "  &> /dev/null < " ^ generated_file in
-	 Printf.eprintf "Running %S\nWriting to file %S\n%!" command temp_name;
+       let command   = string_of_command (ocaml []) ^ " < " ^ generated_file  in
+(*	 Printf.eprintf "Running %S\nWriting to file %S\n%!" command temp_name;*)
 	 ignore (Sys.command command);
 	 flush_all ();
 	 let obtained  = File.with_file_in temp_name read_all in
