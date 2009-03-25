@@ -6,4 +6,4 @@
 
 open Random with self_init ()
 
-let _ = Array.print ~sep:" " ~first:"" ~last:"\n" output_string stdout (shuffle (args ()))
+let _ = Array.print ~sep:" " ~first:"" ~last:"\n" output_string stdout (shuffle (args ()));;
