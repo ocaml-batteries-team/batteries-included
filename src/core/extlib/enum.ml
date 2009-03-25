@@ -159,7 +159,7 @@ let from f =
 		    e.next <- e'.next;
 		    e.clone<- e'.clone;
 		    e.count<- e'.count;
-		    e.fast <- false;		    e.fast <- false;
+		    e.fast <- false;
 	            e.clone () );
     e
 
@@ -529,9 +529,10 @@ let suffix_action_without_raise (f:unit -> 'a) (t:'a t) =
     count = t.count;
     next  = (fun () -> 
 	       try  t.next () 
-               with No_more_elements -> 
-		 f());
-    clone = t.clone;
+               with No_more_elements -> f() );
+    clone = (fun () -> t.clone());  (* needs to be delayed because [t] may
+                                       mutate and we want the newest clone
+                                       function *)
     fast  = t.fast
   }
 
