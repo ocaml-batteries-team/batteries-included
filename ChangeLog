@@ -1,3 +1,11 @@
+2009-03-25  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/core/extlib/value_printer.ml*: added
+
+	* src/core/extlib/extPervasives.ml*: added value printers
+
+	* src/syntax/pa_strings/pa_format.ml: handle value printers
+
 2009-03-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extPervasives.ml: [printer_S] now uses [String.quote]

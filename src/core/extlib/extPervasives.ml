@@ -314,6 +314,29 @@ module Pervasives = struct
   let printer_utf8 k x = k (fun oc -> UTF8.print oc x)
   let printer_obj k x = k x#print
 
+  (** {6 Value printers} *)
+
+  let bool_printer paren out x = Bool.print out x
+  let int_printer paren out x = Int.print out x
+  let int32_printer paren out x = Int32.print out x
+  let int64_printer paren out x = Int64.print out x
+  let nativeint_printer paren out x = Native_int.print out x
+  let float_printer paren out x = Float.print out x
+  let rope_printer paren out x = Rope.print out x
+  let utf8_printer paren out x = UTF8.print out x
+  let list_printer printer paren out x = List.print (printer false) out x
+  let array_printer printer paren out x = Array.print (printer false) out x
+  let option_printer printer paren out = function
+    | Some x ->
+        if paren then
+          IO.write out '(';
+        IO.nwrite out "Some ";
+        printer false out x;
+        if paren then
+          IO.write out ')';
+    | None ->
+        IO.nwrite out "None"
+
   (** {6 Clean-up}*)
 
   let _ = at_exit close_all; (*Called second*)

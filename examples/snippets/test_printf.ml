@@ -19,7 +19,7 @@ let _ =
      end);
 
   (* Printing a list: *)
-  printf p"l = %(list (option int))\n" [Some 1; None; Some 2];
+  printf p"l = %{int option list}\n" [Some 1; None; Some 2];
 
   (* A custom directive, printing pair of integers: *)
   let printer_foo k (x, y) = k (fun oc -> fprintf oc p"(%d, %d)" x y) in

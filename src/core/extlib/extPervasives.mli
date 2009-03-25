@@ -1373,12 +1373,23 @@ val printer_int64 : (int64 -> 'a, 'a, 'acc) Print.directive
 val printer_nativeint : (nativeint -> 'a, 'a, 'acc) Print.directive
 val printer_float : (float -> 'a, 'a, 'acc) Print.directive
 val printer_abstract : (_ -> 'a, 'a, 'acc) Print.directive
-val printer_list : ('a -> unit, unit, 'acc) Print.directive -> ('a list -> 'b, 'b, 'acc) Print.directive
-val printer_array : ('a -> unit, unit, 'acc) Print.directive -> ('a array -> 'b, 'b, 'acc) Print.directive
-val printer_option : ('a -> unit, unit, 'acc) Print.directive -> ('a option -> 'b, 'b, 'acc) Print.directive
 val printer_rope : (Rope.t -> 'a, 'a, 'acc) Print.directive
 val printer_utf8 : (UTF8.t -> 'a, 'a, 'acc) Print.directive
 val printer_obj : (< print : 'acc IO.output -> unit; .. > -> 'a, 'a, 'acc) Print.directive
+
+(** {7 Value printers} *)
+
+val bool_printer : (bool, 'acc) Value_printer.t
+val int_printer : (int, 'acc) Value_printer.t
+val int32_printer : (int32, 'acc) Value_printer.t
+val int64_printer : (int64, 'acc) Value_printer.t
+val nativeint_printer : (nativeint, 'acc) Value_printer.t
+val float_printer : (float, 'acc) Value_printer.t
+val rope_printer : (Rope.t, 'acc) Value_printer.t
+val utf8_printer : (UTF8.t, 'acc) Value_printer.t
+val list_printer : ('a, 'acc) Value_printer.t -> ('a list, 'acc) Value_printer.t
+val array_printer : ('a, 'acc) Value_printer.t -> ('a array, 'acc) Value_printer.t
+val option_printer : ('a, 'acc) Value_printer.t -> ('a option, 'acc) Value_printer.t
 
 (**/**)
 

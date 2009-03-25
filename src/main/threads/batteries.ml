@@ -217,6 +217,7 @@ module  Dyn_array= Extlib.DynArray
 module  DynArray  = Dyn_array
 (**/**)
 module  Enum     = Extlib.Enum
+module  Seq      = Extlib.Seq
 module  Global   = Extlib.Global
 module  Hashtbl  = Extlib.ExtHashtbl.Hashtbl
 module  Ref_list = Extlib.RefList 
@@ -371,6 +372,7 @@ module  Parsing= Batlib_Baselib_Parsing
 module  Format = Extlib.ExtFormat.Format
 module  Printf = Extlib.ExtPrintf.Printf
 module  Print  = Extlib.Print
+module  Value_printer = Extlib.Value_printer
 (* module  PCRE (*placeholder*)*)
 module  Scanf  = Extlib.ExtScanf.Scanf
 module  SExpr  = Libs.ExtSexp_Conv.Sexp_conv

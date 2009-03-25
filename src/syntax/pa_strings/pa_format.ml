@@ -24,6 +24,11 @@ type element =
          - expr is the expression of the directive
          - flags are optionnal flags
          - labels are labels for directive arguments *)
+  | Value_printer of (Loc.t * string) option * Ast.expr
+      (* [VDir(label, expr)] a ``value-printer'' directive:
+
+         - label is an optionnal label for the directive
+         - expr is the expression of the value-printer *)
 
 type ast = element llist
     (* A format ast is a list of elements *)
@@ -87,6 +92,23 @@ struct
              l)
   end
 
+  let is_ident_start = function
+    | 'A' .. 'Z'
+    | 'a' .. 'z'
+    | '_'
+    | '\192' .. '\214'
+    | '\216' .. '\246'
+    | '\248' .. '\255' ->
+        true
+    | _ ->
+        false
+
+  let is_ident_body = function
+    | '\'' | '0' .. '9' ->
+        true
+    | ch ->
+        is_ident_start ch
+
   (* Parse directive body: *)
   module Directive =
   struct
@@ -101,23 +123,6 @@ struct
       let _loc = loc_of_llist l in
       let chars, l = aux [] l in
       (<:expr< $lid:"printer_" ^ rev_implode chars$ >>, l)
-
-    let is_ident_start = function
-      | 'A' .. 'Z'
-      | 'a' .. 'z'
-      | '_'
-      | '\192' .. '\214'
-      | '\216' .. '\246'
-      | '\248' .. '\255' ->
-          true
-      | _ ->
-          false
-
-    let is_ident_body = function
-      | '\'' | '0' .. '9' ->
-          true
-      | ch ->
-          is_ident_start ch
 
     let ident_body l =
       let rec aux acc = function
@@ -197,6 +202,65 @@ struct
           Loc.raise (loc_of_llist l) (Failure "invalid start of printing directive")
   end
 
+  (* Parse value printer directive: *)
+  module Value_printer =
+  struct
+    let rec loop acc = function
+      | Cons(loc, '}', l) ->
+          (rev_implode acc, l)
+      | Cons(loc, ch, l) ->
+          loop (ch :: acc) l
+      | Nil loc ->
+          Loc.raise loc (Failure "'}' missing")
+
+    let name initial_l =
+      let rec aux chars l = match l, chars with
+        | Cons(loc, ':', l), [] ->
+            Loc.raise loc (Failure "identifier expected")
+        | Cons(_, ':', l), _ ->
+            (Some(loc_of_llist initial_l, rev_implode chars), l)
+        | Cons(_, ch, l), [] when is_ident_start ch ->
+            aux [ch] l
+        | Cons(_, ch, l), _ when is_ident_body ch ->
+            aux (ch :: chars) l
+        | l ->
+            (None, initial_l)
+      in
+      aux [] initial_l
+
+    let main l =
+      let name, l = name l in
+      let str, l = loop [] l in
+      (name, str, l)
+  end
+
+  let rec map_id = function
+    | <:ident@_loc< $uid:uid$ . $id:id$ >> ->
+        <:ident< $uid:uid$ . $id:map_id id$ >>
+    | <:ident@_loc< $lid:id$ >> ->
+        <:ident< $lid:id ^ "_printer"$ >>
+    | id ->
+        Loc.raise (Ast.loc_of_ident id) (Failure "pa_strings: i do not understand this identifier")
+
+  (* Convert a type to a value printer: *)
+  let rec vprinter_of_ctyp = function
+    | <:ctyp@_loc< _ >> ->
+        <:expr< fun paren out x -> IO.nwrite out "<abstract>" >>
+    | <:ctyp@_loc< $id:id$ >> ->
+        <:expr< $id:map_id id$ >>
+    | <:ctyp@_loc< $a$ $b$ >> ->
+        <:expr< $vprinter_of_ctyp b$ $vprinter_of_ctyp a$ >>
+    | <:ctyp@_loc< $tup:t$ >> ->
+        let l = Ast.list_of_ctyp t [] in
+        List.fold_left
+          (fun acc t ->
+             let _loc = Ast.loc_of_expr acc in
+             <:expr< $acc$ $vprinter_of_ctyp t$ >>)
+          <:expr< Batteries.Value_printer.$lid:"print_tuple" ^ string_of_int (List.length l)$ >>
+          l
+    | t ->
+        Loc.raise (Ast.loc_of_ctyp t) (Failure "pa_strings: i do not understand this type")
+
   (* Parse a format and return a list of elements: *)
   let rec main = function
     | Nil loc ->
@@ -205,6 +269,13 @@ struct
     (* A literal '%' or a flush: *)
     | Cons(loc, '%', Cons(loc2, ('%' | '!' as ch), l)) ->
         Cons(loc, Cst '%', Cons(loc2, Cst ch, main l))
+
+    (* The start of a value-printer directive: *)
+    | Cons(_, '%', Cons(_, '{', l)) ->
+        let loc = loc_of_llist l in
+        let name, str, l = Value_printer.main l in
+        let typ = Gram.parse_string Syntax.ctyp loc str in
+        Cons(loc, Value_printer(name, vprinter_of_ctyp typ), main l)
 
     (* The start of a directive: *)
     | Cons(loc, '%', l) ->
@@ -229,7 +300,7 @@ end
 let make_pattern ast =
   let rec aux n = function
     | Cons(_, Cst c, l) -> String.make 1 c :: aux n l
-    | Cons(_, Dir _, l) -> "%(" :: string_of_int n :: ")" :: aux (n + 1) l
+    | Cons(_, (Dir _ | Value_printer _), l) -> "%(" :: string_of_int n :: ")" :: aux (n + 1) l
     | Nil _ -> []
   in
   String.concat "" (aux 0 ast)
@@ -289,6 +360,17 @@ let make_printer _loc ast =
         <:expr< $dir$ (fun __printer ->
                          __printers.($int:string_of_int n$) <- __printer;
                          $aux (n + 1) l$) >>
+    | Cons(_loc, Value_printer(name, dir), l) ->
+        let pid, id = match name with
+          | Some(_loc, id) ->
+              (Ast.PaLab(_loc, id, Ast.PaNil _loc), <:ident< $lid:id$ >>)
+          | None ->
+              (<:patt< __x >>, <:ident< __x >>)
+        in
+        <:expr< fun $pid$ ->
+                  __printers.($int:string_of_int n$) <-
+                     (fun __out -> $dir$ false __out $id:id$);
+                  $aux (n + 1) l$ >>
     | Nil _loc ->
         <:expr< __k (fun oc -> Batteries.Print.format oc __pattern __printers) >>
   in
@@ -296,7 +378,7 @@ let make_printer _loc ast =
 
 let count_directives l =
   let rec aux n = function
-    | Cons(_, Dir _, l) ->
+    | Cons(_, (Dir _ | Value_printer _), l) ->
         aux (n + 1) l
     | Cons(_, Cst _, l) ->
         aux n l
