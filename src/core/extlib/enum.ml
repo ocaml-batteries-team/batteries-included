@@ -972,6 +972,10 @@ module Labels = struct
   let seq ~init ~f ~cnd  = seq init f cnd
   let unfold ~init ~f = unfold init f
   let compare ?(cmp=Pervasives.compare) t u = compare cmp t u
+  module LExceptionless = struct
+    include Exceptionless
+    let find ~f e = find f e
+  end
 end
 
 module type Enumerable = sig

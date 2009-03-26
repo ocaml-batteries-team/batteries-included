@@ -652,6 +652,10 @@ module Labels : sig
       where [x] is the first element of [a] and [y] is the first
       element of [b]
   *)
+
+  module LExceptionless : sig
+    val find : f:('a -> bool) -> 'a t -> 'a option
+  end
 end
 
 (**/**)

@@ -868,10 +868,15 @@ module Labels : sig
   val for_all:    f:('a -> bool) -> 'a t -> bool
   val iter2i:     f:( int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
   val find:       f:('a -> bool) -> 'a t -> 'a
+  val findi:      f:('a -> bool) -> 'a t -> int
   val map:        f:('a -> 'b) -> 'a t -> 'b t
   val mapi:       f:(int -> 'a -> 'b) -> 'a t -> 'b t
   val filter:     f:('a -> bool) -> 'a t -> 'a t
   val filter_map: f:('a -> 'b option) -> 'a t -> 'b t
+  module LExceptionless : sig
+    val find:       f:('a -> bool) -> 'a t -> 'a option
+    val findi:      f:('a -> bool) -> 'a t -> int option
+  end
 end
 
 

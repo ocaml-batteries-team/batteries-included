@@ -685,10 +685,14 @@ module Exceptionless = struct
     try  Some (rfind p l)
     with Not_found -> None
 
+  let find p l =
+    try Some (find p l)
+    with Not_found -> None
+
   let findi p l =
     try  Some (findi p l)
     with Not_found -> None
-      
+
   let split_at n l =
     try   `Ok (split_at n l)
     with  Invalid_index i -> `Invalid_index i
@@ -752,6 +756,13 @@ module Labels = struct
   let stable_sort ?(cmp=compare)  = stable_sort cmp
   let fast_sort ?(cmp=compare)    = fast_sort cmp
   let merge ~cmp         = merge cmp
+
+  module LExceptionless = struct
+    include Exceptionless
+    let rfind ~f l = rfind f l
+    let find ~f l = find f l
+    let findi ~f l = findi f l
+  end
 end
 
 end
