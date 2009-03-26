@@ -1,3 +1,8 @@
+2009-03-26  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/core/extlib/print.ml*: remove this annoying and useless
+     	third type parameter of [Print.directive]
+
 2009-03-25  Jeremie Dimino <jeremie@dimino.org>
 
 	* src/core/extlib/value_printer.ml*: added

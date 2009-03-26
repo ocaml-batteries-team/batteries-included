@@ -118,9 +118,9 @@
 
 (** {6 Directives and formats} *)
 
-type ('a, 'b, 'acc) directive = (('acc InnerIO.output -> unit) -> 'b) -> 'a
+type ('a, 'b) directive = ((unit InnerIO.output -> unit) -> 'b) -> 'a
   (** Type of a directive. Directives are the basic elements of
-      formats. ['acc] is the type of the accumulator as in {!IO.output}.
+      formats.
 
       A directive takes as argument:
 
@@ -184,7 +184,7 @@ type ('a, 'b, 'acc) directive = (('acc InnerIO.output -> unit) -> 'b) -> 'a
       - the integer flags [width] and [precision]
   *)
 
-val literal : string -> ('a, 'a, 'acc) directive
+val literal : string -> ('a, 'a) directive
   (** [literal str] create a directive which do not take any argument
       from a literal string *)
 
@@ -194,7 +194,7 @@ type pattern = string
         For example the format string (with the syntax extension)
         [p"%s = %d"] will produce the pattern ["%(0) = %(1)"] *)
 
-val format : 'a InnerIO.output -> pattern -> ('a InnerIO.output -> unit) array -> unit
+val format : unit InnerIO.output -> pattern -> (unit InnerIO.output -> unit) array -> unit
   (** [format oc pattern directives] prints [pattern] on [oc], using
       [directives] to handle directives (as index) in the pattern.
 
@@ -221,12 +221,12 @@ val format : 'a InnerIO.output -> pattern -> ('a InnerIO.output -> unit) array -
 
 (** Format. This is the replacement for classical formats (of type
     [Pervasives.format]). *)
-type ('a, 'b, 'acc) format = {
+type ('a, 'b) format = {
   pattern : pattern;
   (** The pattern of the format. To translate a format (for i18n) you
       should replace it by its translation. *)
 
-  printer : pattern -> ('a, 'b, 'acc) directive;
+  printer : pattern -> ('a, 'b) directive;
   (** The printer of the format. It takes as argument the pattern and
       return a directive which will prints according to the pattern
       and the format.
@@ -254,36 +254,36 @@ type ('a, 'b, 'acc) format = {
 
 (** {6 Printf functions} *)
 
-val printf : ('a, unit, unit) format -> 'a
+val printf : ('a, unit) format -> 'a
   (** [printf fmt] prints on {!IO.stdout} *)
 
-val eprintf : ('a, unit, unit) format -> 'a
+val eprintf : ('a, unit) format -> 'a
   (** [printf fmt] prints on {!IO.stderr} *)
 
-val fprintf : 'a InnerIO.output -> ('b, unit, 'a) format -> 'b
+val fprintf : 'a InnerIO.output -> ('b, unit) format -> 'b
   (** [fprintf oc fmt] prints on [oc] *)
 
-val kfprintf : ('acc InnerIO.output -> 'b) -> 'acc InnerIO.output -> ('a, 'b, 'acc) format -> 'a
+val kfprintf : ('a InnerIO.output -> 'b) -> 'a InnerIO.output -> ('c, 'b) format -> 'c
   (** [kfprintf k oc fmt] prints on [oc] then call [k] with [oc] as
       argument *)
 
-val rprintf : ('a, Rope.t, string) format -> 'a
+val rprintf : ('a, Rope.t) format -> 'a
   (** [rprintf fmt] returns the result as a rope *)
 
-val krprintf : (Rope.t -> 'b) -> ('a, 'b, string) format -> 'a
+val krprintf : (Rope.t -> 'b) -> ('a, 'b) format -> 'a
   (** [krprintf k fmt] creates a rope from the format and other
       arguments and pass it to [k] *)
 
-val sprintf : ('a, string, string) format -> 'a
+val sprintf : ('a, string) format -> 'a
   (** [sprintf fmt] returns the result as a string *)
 
-val ksprintf : (string -> 'b) -> ('a, 'b, string) format -> 'a
+val ksprintf : (string -> 'b) -> ('a, 'b) format -> 'a
   (** [ksprintf k fmt] creates a string from the format and other
       arguments and pass it to [k] *)
 
-val bprintf : Buffer.t -> ('a, unit, string) format -> 'a
+val bprintf : Buffer.t -> ('a, unit) format -> 'a
   (** [bprintf buf fmt] prints into the buffer [buf] *)
 
-val kbprintf : (Buffer.t -> 'b) -> Buffer.t -> ('a, 'b, string) format -> 'a
+val kbprintf : (Buffer.t -> 'b) -> Buffer.t -> ('a, 'b) format -> 'a
   (** [bprintf k buf fmt] prints into the buffer [buf], then call [k]
       with [buf] as argument. *)

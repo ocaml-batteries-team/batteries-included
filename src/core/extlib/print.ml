@@ -18,11 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-type ('a, 'b, 'acc) directive = (('acc InnerIO.output -> unit) -> 'b) -> 'a
+type ('a, 'b) directive = ((unit InnerIO.output -> unit) -> 'b) -> 'a
 type pattern = string
-type ('a, 'b, 'acc) format = {
+type ('a, 'b) format = {
   pattern : pattern;
-  printer : pattern -> ('a, 'b, 'acc) directive;
+  printer : pattern -> ('a, 'b) directive;
 }
 
 (* Parse an integer followed by a [')'] in [pattern] *)
@@ -88,8 +88,8 @@ let format oc pattern directives =
 
 let literal str k = k (fun oc -> InnerIO.nwrite oc str)
 
-let kfprintf k oc fmt = fmt.printer fmt.pattern (fun f -> f oc; k oc)
-let fprintf oc fmt = fmt.printer fmt.pattern (fun f -> f oc)
+let kfprintf k oc fmt = fmt.printer fmt.pattern (fun f -> f (IO.cast_output oc); k oc)
+let fprintf oc fmt = fmt.printer fmt.pattern (fun f -> f (IO.cast_output oc))
 
 let printf fmt = fprintf InnerIO.stdout fmt
 let eprintf fmt = fprintf InnerIO.stderr fmt

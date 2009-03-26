@@ -5,7 +5,7 @@
  * Licence   : BSD3
  *)
 
-type ('a, 'b) t = bool -> 'b InnerIO.output -> 'a -> unit
+type 'a t = bool -> unit InnerIO.output -> 'a -> unit
 
 let print_tuple0 _ out () =
   InnerIO.nwrite out "()"

@@ -1316,45 +1316,45 @@ val default_printer_flags : printer_flags
 
 (** {7 Equivalent of classical directives} *)
 
-val printer_a : (('acc IO.output -> 'a -> unit) -> 'a -> 'b, 'b, 'acc) Print.directive
-val printer_t : (('acc IO.output -> unit) -> 'a, 'a, 'acc) Print.directive
-val printer_B : (bool -> 'a, 'a, 'acc) Print.directive
-val printer_c : (char -> 'a, 'a, 'acc) Print.directive
-val printer_C : (char -> 'a, 'a, 'acc) Print.directive
-val printer_s : ?flags : printer_flags -> (string -> 'a, 'a, 'acc) Print.directive
-val printer_S : ?flags : printer_flags -> (string -> 'a, 'a, 'acc) Print.directive
+val printer_a : ((unit IO.output -> 'a -> unit) -> 'a -> 'b, 'b) Print.directive
+val printer_t : ((unit IO.output -> unit) -> 'a, 'a) Print.directive
+val printer_B : (bool -> 'a, 'a) Print.directive
+val printer_c : (char -> 'a, 'a) Print.directive
+val printer_C : (char -> 'a, 'a) Print.directive
+val printer_s : ?flags : printer_flags -> (string -> 'a, 'a) Print.directive
+val printer_S : ?flags : printer_flags -> (string -> 'a, 'a) Print.directive
 
-val printer_d : ?flags : printer_flags -> (int -> 'a, 'a, 'acc) Print.directive
-val printer_i : ?flags : printer_flags -> (int -> 'a, 'a, 'acc) Print.directive
-val printer_u : ?flags : printer_flags -> (int -> 'a, 'a, 'acc) Print.directive
-val printer_x : ?flags : printer_flags -> (int -> 'a, 'a, 'acc) Print.directive
-val printer_X : ?flags : printer_flags -> (int -> 'a, 'a, 'acc) Print.directive
-val printer_o : ?flags : printer_flags -> (int -> 'a, 'a, 'acc) Print.directive
-val printer_ld : ?flags : printer_flags -> (int32 -> 'a, 'a, 'acc) Print.directive
-val printer_li : ?flags : printer_flags -> (int32 -> 'a, 'a, 'acc) Print.directive
-val printer_lu : ?flags : printer_flags -> (int32 -> 'a, 'a, 'acc) Print.directive
-val printer_lx : ?flags : printer_flags -> (int32 -> 'a, 'a, 'acc) Print.directive
-val printer_lX : ?flags : printer_flags -> (int32 -> 'a, 'a, 'acc) Print.directive
-val printer_lo : ?flags : printer_flags -> (int32 -> 'a, 'a, 'acc) Print.directive
-val printer_Ld : ?flags : printer_flags -> (int64 -> 'a, 'a, 'acc) Print.directive
-val printer_Li : ?flags : printer_flags -> (int64 -> 'a, 'a, 'acc) Print.directive
-val printer_Lu : ?flags : printer_flags -> (int64 -> 'a, 'a, 'acc) Print.directive
-val printer_Lx : ?flags : printer_flags -> (int64 -> 'a, 'a, 'acc) Print.directive
-val printer_LX : ?flags : printer_flags -> (int64 -> 'a, 'a, 'acc) Print.directive
-val printer_Lo : ?flags : printer_flags -> (int64 -> 'a, 'a, 'acc) Print.directive
-val printer_nd : ?flags : printer_flags -> (nativeint -> 'a, 'a, 'acc) Print.directive
-val printer_ni : ?flags : printer_flags -> (nativeint -> 'a, 'a, 'acc) Print.directive
-val printer_nu : ?flags : printer_flags -> (nativeint -> 'a, 'a, 'acc) Print.directive
-val printer_nx : ?flags : printer_flags -> (nativeint -> 'a, 'a, 'acc) Print.directive
-val printer_nX : ?flags : printer_flags -> (nativeint -> 'a, 'a, 'acc) Print.directive
-val printer_no : ?flags : printer_flags -> (nativeint -> 'a, 'a, 'acc) Print.directive
+val printer_d : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_i : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_u : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_x : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_X : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_o : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_ld : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_li : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_lu : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_lx : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_lX : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_lo : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_Ld : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_Li : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_Lu : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_Lx : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_LX : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_Lo : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_nd : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_ni : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_nu : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_nx : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_nX : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_no : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
 
-val printer_f : (float -> 'a, 'a, 'acc) Print.directive
-val printer_F : (float -> 'a, 'a, 'acc) Print.directive
+val printer_f : (float -> 'a, 'a) Print.directive
+val printer_F : (float -> 'a, 'a) Print.directive
 
 (** {7 Batteries-specific directives} *)
 
-val printer_format : (('a, 'b, 'acc) Print.format -> 'a, 'b, 'acc) Print.directive
+val printer_format : (('a, 'b) Print.format -> 'a, 'b) Print.directive
   (** [printer_format] take a format, then the arguments of the format and
       print according to it. For example
 
@@ -1364,32 +1364,33 @@ val printer_format : (('a, 'b, 'acc) Print.format -> 'a, 'b, 'acc) Print.directi
         "x = 1 + 3 * 5"
       ]} *)
 
-val printer_sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a, 'acc) Print.directive
-val printer_Sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a, 'acc) Print.directive
-val printer_bool : (bool -> 'a, 'a, 'acc) Print.directive
-val printer_int : (int -> 'a, 'a, 'acc) Print.directive
-val printer_int32 : (int32 -> 'a, 'a, 'acc) Print.directive
-val printer_int64 : (int64 -> 'a, 'a, 'acc) Print.directive
-val printer_nativeint : (nativeint -> 'a, 'a, 'acc) Print.directive
-val printer_float : (float -> 'a, 'a, 'acc) Print.directive
-val printer_abstract : (_ -> 'a, 'a, 'acc) Print.directive
-val printer_rope : (Rope.t -> 'a, 'a, 'acc) Print.directive
-val printer_utf8 : (UTF8.t -> 'a, 'a, 'acc) Print.directive
-val printer_obj : (< print : 'acc IO.output -> unit; .. > -> 'a, 'a, 'acc) Print.directive
+val printer_sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive
+val printer_Sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive
+val printer_bool : (bool -> 'a, 'a) Print.directive
+val printer_int : (int -> 'a, 'a) Print.directive
+val printer_int32 : (int32 -> 'a, 'a) Print.directive
+val printer_int64 : (int64 -> 'a, 'a) Print.directive
+val printer_nativeint : (nativeint -> 'a, 'a) Print.directive
+val printer_float : (float -> 'a, 'a) Print.directive
+val printer_abstract : (_ -> 'a, 'a) Print.directive
+val printer_rope : (Rope.t -> 'a, 'a) Print.directive
+val printer_utf8 : (UTF8.t -> 'a, 'a) Print.directive
+val printer_obj : (< print : unit IO.output -> unit; .. > -> 'a, 'a) Print.directive
 
 (** {7 Value printers} *)
 
-val bool_printer : (bool, 'acc) Value_printer.t
-val int_printer : (int, 'acc) Value_printer.t
-val int32_printer : (int32, 'acc) Value_printer.t
-val int64_printer : (int64, 'acc) Value_printer.t
-val nativeint_printer : (nativeint, 'acc) Value_printer.t
-val float_printer : (float, 'acc) Value_printer.t
-val rope_printer : (Rope.t, 'acc) Value_printer.t
-val utf8_printer : (UTF8.t, 'acc) Value_printer.t
-val list_printer : ('a, 'acc) Value_printer.t -> ('a list, 'acc) Value_printer.t
-val array_printer : ('a, 'acc) Value_printer.t -> ('a array, 'acc) Value_printer.t
-val option_printer : ('a, 'acc) Value_printer.t -> ('a option, 'acc) Value_printer.t
+val bool_printer : bool Value_printer.t
+val int_printer : int Value_printer.t
+val int32_printer : int32 Value_printer.t
+val int64_printer : int64 Value_printer.t
+val nativeint_printer : nativeint Value_printer.t
+val float_printer : float Value_printer.t
+val string_printer : string Value_printer.t
+val rope_printer : Rope.t Value_printer.t
+val utf8_printer : UTF8.t Value_printer.t
+val list_printer : 'a Value_printer.t -> 'a list Value_printer.t
+val array_printer : 'a Value_printer.t -> 'a array Value_printer.t
+val option_printer : 'a Value_printer.t -> 'a option Value_printer.t
 
 (**/**)
 

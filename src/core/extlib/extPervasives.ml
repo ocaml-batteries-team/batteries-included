@@ -322,8 +322,18 @@ module Pervasives = struct
   let int64_printer paren out x = Int64.print out x
   let nativeint_printer paren out x = Native_int.print out x
   let float_printer paren out x = Float.print out x
-  let rope_printer paren out x = Rope.print out x
-  let utf8_printer paren out x = UTF8.print out x
+  let string_printer paren out x =
+    IO.write out '"';
+    String.print out (String.escaped x);
+    IO.write out '"'
+  let rope_printer paren out x =
+    IO.nwrite out "ur\"";
+    Rope.print out (Rope.escaped x);
+    IO.write out '"'
+  let utf8_printer paren out x =
+    IO.nwrite out "u\"";
+    UTF8.print out (UTF8.escaped x);
+    IO.write out '"'
   let list_printer printer paren out x = List.print (printer false) out x
   let array_printer printer paren out x = Array.print (printer false) out x
   let option_printer printer paren out = function
