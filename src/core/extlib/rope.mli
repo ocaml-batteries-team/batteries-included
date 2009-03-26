@@ -544,3 +544,4 @@ val sexp_of_t : t -> Sexplib.Sexp.t
 
 val print: 'a InnerIO.output -> t -> unit
 
+val t_printer : t Value_printer.t

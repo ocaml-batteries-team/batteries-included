@@ -439,6 +439,8 @@ val print_quoted: 'a InnerIO.output -> string -> unit
    [print_quoted stdout "\"bar\""] prints ["\"bar\""] (with the quotes)
 *)
 
+val t_printer : t Value_printer.t
+
 (**/**)
 
 (** Undocumented operations *)
@@ -852,6 +854,8 @@ val print_quoted: 'a InnerIO.output -> [> `Read] t -> unit
 
    [print_quoted stdout "\"bar\""] prints ["\"bar\""] (with the quotes)
 *)
+
+val t_printer : [> `Read] t Value_printer.t
 
 (**/**)
 

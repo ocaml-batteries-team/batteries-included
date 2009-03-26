@@ -1366,13 +1366,6 @@ val printer_format : (('a, 'b) Print.format -> 'a, 'b) Print.directive
 
 val printer_sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive
 val printer_Sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive
-val printer_bool : (bool -> 'a, 'a) Print.directive
-val printer_int : (int -> 'a, 'a) Print.directive
-val printer_int32 : (int32 -> 'a, 'a) Print.directive
-val printer_int64 : (int64 -> 'a, 'a) Print.directive
-val printer_nativeint : (nativeint -> 'a, 'a) Print.directive
-val printer_float : (float -> 'a, 'a) Print.directive
-val printer_abstract : (_ -> 'a, 'a) Print.directive
 val printer_rope : (Rope.t -> 'a, 'a) Print.directive
 val printer_utf8 : (UTF8.t -> 'a, 'a) Print.directive
 val printer_obj : (< print : unit IO.output -> unit; .. > -> 'a, 'a) Print.directive
@@ -1386,11 +1379,10 @@ val int64_printer : int64 Value_printer.t
 val nativeint_printer : nativeint Value_printer.t
 val float_printer : float Value_printer.t
 val string_printer : string Value_printer.t
-val rope_printer : Rope.t Value_printer.t
-val utf8_printer : UTF8.t Value_printer.t
 val list_printer : 'a Value_printer.t -> 'a list Value_printer.t
 val array_printer : 'a Value_printer.t -> 'a array Value_printer.t
 val option_printer : 'a Value_printer.t -> 'a option Value_printer.t
+val exn_printer : exn Value_printer.t
 
 (**/**)
 

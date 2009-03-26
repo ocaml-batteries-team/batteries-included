@@ -641,7 +641,12 @@ let t_of_sexp s =
   of_ustring (UTF8.t_of_sexp s)
 
 let print out t =
-  bulk_iter (fun us -> InnerIO.nwrite out (UTF8.to_string us)) t
+  bulk_iter (UTF8.print out) t
+
+let t_printer paren out x =
+  InnerIO.nwrite out "ur\"";
+  bulk_iter (fun us -> UTF8.print out (UTF8.escaped us)) x;
+  InnerIO.write out '"'
 
 let lowercase s =
   bulk_fold (fun acc c -> append acc (of_ustring (UTF8.lowercase c)))  Empty s

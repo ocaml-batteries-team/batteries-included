@@ -302,7 +302,11 @@ module UTF8 = struct
   let t_of_sexp = string_of_sexp
 
 
-  let print out t = InnerIO.nwrite out (to_string t)
+  let print out t = InnerIO.nwrite out t
+  let t_printer paren out t =
+    InnerIO.nwrite out "u\"";
+    print out (escaped t);
+    InnerIO.write out '"'
 
   let uppercase c = Case.uppercase c
   let lowercase c = Case.lowercase c

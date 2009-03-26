@@ -92,7 +92,7 @@ module Float = struct
   include Number.MakeNumeric(BaseFloat)
   include BaseFloat
   let print out t = InnerIO.nwrite out (to_string t)
-  let printer_t k x = k (fun out -> print out x)
+  let t_printer paren out t = print out t
 end
 
 module Base_safe_float = struct
@@ -147,5 +147,5 @@ module Safe_float = struct
   include Number.MakeNumeric(Base_safe_float)
   include Base_safe_float
   let print = Float.print
-  let printer_t k x = k (fun out -> print out x)
+  let t_printer paren out t = print out t
 end

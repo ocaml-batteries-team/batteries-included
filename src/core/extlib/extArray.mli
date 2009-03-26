@@ -362,6 +362,8 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b 
 val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> 'b t -> string
   (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
 
+val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
+
   (**/**)
   (** {6 Undocumented functions} *)
     

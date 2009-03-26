@@ -197,3 +197,5 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -
 
 val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'b t -> string
   (** Using a string printer, print a sequence to a string (as sprintf vs. printf) *)
+
+val t_printer : 'a Value_printer.t -> 'a t Value_printer.t

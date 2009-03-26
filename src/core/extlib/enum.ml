@@ -912,6 +912,9 @@ let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
 		aux ()
 	in aux()
 
+let t_printer a_printer paren out e =
+  print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
+
 let compare cmp t u =
   let rec aux () = 
     match (get t, get u) with

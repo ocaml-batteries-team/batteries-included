@@ -442,6 +442,10 @@ end
 let print         = InnerIO.nwrite
 let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
 let print_quoted out s = ExtPrintf.Printf.fprintf out "%S" s
+let t_printer paren out x =
+  InnerIO.write out '"';
+  print out (escaped x);
+  InnerIO.write out '"'
 
 let quote = ExtPrintf.Printf.sprintf2 "%S"
 
@@ -521,6 +525,7 @@ let quote         = quote
 let print         = print
 let println       = println
 let print_quoted  = print_quoted
+let t_printer     = t_printer
 
 external of_string : string -> _ t                = "%identity"
 external to_string : [`Read | `Write] t -> string = "%identity"

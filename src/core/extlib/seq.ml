@@ -254,5 +254,8 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
             iter (InnerIO.Printf.fprintf out "%s%a" sep print_a) s;
             InnerIO.nwrite out last
 
+let t_printer a_printer paren out s =
+  print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out s
+
 let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a s =
   ExtPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) s

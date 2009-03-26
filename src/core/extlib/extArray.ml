@@ -268,7 +268,7 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 	done;
 	InnerIO.nwrite out last
 
-let printer_t p k x = k (fun oc -> print (fun oc x -> p (fun f -> f oc) x) oc x)
+let t_printer a_printer paren out x = print (a_printer false) out x
 
 let sprint ?(first="[|") ?(last="|]") ?(sep="; ") print_a array =
   ExtPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) array

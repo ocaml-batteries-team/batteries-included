@@ -70,7 +70,16 @@ let print print_a out = function
   | None   -> InnerIO.nwrite out "None"
   | Some x -> ExtPrintf.Printf.fprintf out "Some %a" print_a x
 
-let printer_t p k x = k (fun oc -> print (fun oc x -> p (fun f -> f oc) x) oc x)
+let t_printer a_printer paren out = function
+  | Some x ->
+      if paren then
+        IO.write out '(';
+      IO.nwrite out "Some ";
+      a_printer false out x;
+      if paren then
+        IO.write out ')';
+  | None ->
+      IO.nwrite out "None"
 
 module Labels =
 struct

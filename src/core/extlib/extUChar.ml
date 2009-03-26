@@ -123,7 +123,16 @@ struct
 	    InnerIO.Printf.fprintf out "\\u%04X" n2
 	  else
 	    InnerIO.Printf.fprintf out "\\U%04X%04X" n1 n2
-	      
+
+  let t_printer paren out c =
+    if paren then InnerIO.write out '(';
+    let n = code c in
+    if n >= 0 && n <= 255 then
+      InnerIO.Printf.fprintf out "UChar.of_char %C" (Char.chr n)
+    else
+      InnerIO.Printf.fprintf out "UChar.of_int 0x%04x" n;
+    if paren then InnerIO.write out ')'
+
   let of_digit = function
     | 0 -> zero
     | 1 -> one

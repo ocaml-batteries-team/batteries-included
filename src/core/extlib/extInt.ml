@@ -91,7 +91,7 @@ module BaseInt = struct
   let ( ** ) a b = pow a b
 
   let print out t = InnerIO.nwrite out (string_of_int t)
-  let printer_t k x = k (fun out -> print out x)
+  let t_printer paren out t = print out t
 
   let ( -- )  x y = Enum.seq x (add one) ((>=) y)
   let ( --- ) x y = 

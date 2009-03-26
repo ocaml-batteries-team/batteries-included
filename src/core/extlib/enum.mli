@@ -569,6 +569,8 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
+val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
+
 (** {6 Override modules}*)
 
 (**

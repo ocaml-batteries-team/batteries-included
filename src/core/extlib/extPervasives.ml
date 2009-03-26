@@ -34,6 +34,7 @@ open ExtBool
 open ExtList
 open ExtArray
 open ExtFloat
+open ExtPrintexc
 
 module Pervasives = struct
   include Pervasives
@@ -299,53 +300,26 @@ module Pervasives = struct
 
   let printer_format k fmt = fmt.Print.printer fmt.Print.pattern k
 
-  let printer_bool k x = k (fun oc -> Bool.print oc x)
-  let printer_int k x = k (fun oc -> Int.print oc x)
-  let printer_int32 k x = k (fun oc -> Int32.print oc x)
-  let printer_int64 k x = k (fun oc -> Int64.print oc x)
-  let printer_nativeint k x = k (fun oc -> Native_int.print oc x)
-  let printer_float k x = k (fun oc -> Float.print oc x)
-  let printer_abstract k x = k (fun oc -> IO.nwrite oc "<abstract>")
-  let printer_list p k x = k (fun oc -> List.print (fun oc x -> p (fun f -> f oc) x) oc x)
-  let printer_array p k x = k (fun oc -> Array.print (fun oc x -> p (fun f -> f oc) x) oc x)
-  let printer_option p k x = k (fun oc -> Option.print (fun oc x -> p (fun f -> f oc) x) oc x)
-  let printer_rope k x = k (fun oc -> Rope.print oc x)
   let printer_rope k x = k (fun oc -> Rope.print oc x)
   let printer_utf8 k x = k (fun oc -> UTF8.print oc x)
   let printer_obj k x = k x#print
 
   (** {6 Value printers} *)
 
-  let bool_printer paren out x = Bool.print out x
-  let int_printer paren out x = Int.print out x
-  let int32_printer paren out x = Int32.print out x
-  let int64_printer paren out x = Int64.print out x
-  let nativeint_printer paren out x = Native_int.print out x
-  let float_printer paren out x = Float.print out x
-  let string_printer paren out x =
-    IO.write out '"';
-    String.print out (String.escaped x);
-    IO.write out '"'
-  let rope_printer paren out x =
-    IO.nwrite out "ur\"";
-    Rope.print out (Rope.escaped x);
-    IO.write out '"'
-  let utf8_printer paren out x =
-    IO.nwrite out "u\"";
-    UTF8.print out (UTF8.escaped x);
-    IO.write out '"'
-  let list_printer printer paren out x = List.print (printer false) out x
-  let array_printer printer paren out x = Array.print (printer false) out x
-  let option_printer printer paren out = function
-    | Some x ->
-        if paren then
-          IO.write out '(';
-        IO.nwrite out "Some ";
-        printer false out x;
-        if paren then
-          IO.write out ')';
-    | None ->
-        IO.nwrite out "None"
+  let bool_printer = Bool.t_printer
+  let int_printer = Int.t_printer
+  let int32_printer = Int32.t_printer
+  let int64_printer = Int64.t_printer
+  let nativeint_printer = Native_int.t_printer
+  let float_printer = Float.t_printer
+  let string_printer = String.t_printer
+  let list_printer = List.t_printer
+  let array_printer = Array.t_printer
+  let option_printer = Option.t_printer
+  let exn_printer paren out x =
+    if paren then IO.write out '(';
+    Printexc.print out x;
+    if paren then IO.write out ')'
 
   (** {6 Clean-up}*)
 
