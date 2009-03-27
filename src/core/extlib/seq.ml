@@ -1,8 +1,20 @@
 (*
- * seq.ml
- * ------
- * Copyright : (c) 2009, Jeremie Dimino <jeremie@dimino.org>
- * Licence   : BSD3
+ * Copyright (C) 2009 Jeremie Dimino
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
 type 'a node =
@@ -13,16 +25,6 @@ and 'a t = unit -> 'a node
 
 type 'a mappable = 'a t
 
-let enum_next r () =
-  match !r () with
-    | Nil ->
-        raise Enum.No_more_elements
-    | Cons(e, s) ->
-        r := s;
-        e
-
-let enum s = Enum.from (enum_next (ref s))
-
 let nil () = Nil
 let cons e s () = Cons(e, s)
 
@@ -32,6 +34,19 @@ let length s =
     | Cons(_, s) -> aux (acc + 1) s
   in
   aux 0 s
+
+let rec enum_of_ref r =
+  Enum.make
+    ~next:(fun _ -> match !r () with
+             | Nil ->
+                 raise Enum.No_more_elements
+             | Cons(e, s) ->
+                 r := s;
+                 e)
+    ~count:(fun _ -> length !r)
+    ~clone:(fun _ -> enum_of_ref (ref !r))
+
+let enum s = enum_of_ref (ref s)
 
 let hd s = match s () with
   | Nil -> raise (Invalid_argument "Seq.hd")
