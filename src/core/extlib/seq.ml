@@ -259,3 +259,57 @@ let t_printer a_printer paren out s =
 
 let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a s =
   ExtPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) s
+
+module Exceptionless = struct
+  (* This function could be used to eliminate a lot of duplicate code below...
+  let exceptionless_arg f s e =
+    try Some (f s)
+    with Invalid_argument e -> None
+  *)
+
+  let hd s =
+    try Some (hd s)
+    with Invalid_argument "Seq.hd" -> None
+
+  let tl s =
+    try Some (tl s)
+    with Invalid_argument "Seq.tl" -> None
+
+  let first s =
+    try Some (first s)
+    with Invalid_argument "Seq.first" -> None
+
+  let last s =
+    try Some (last s)
+    with Invalid_argument "Seq.last" -> None
+
+  let at s n =
+    try Some (at s n)
+    with Invalid_argument "Seq.at" -> None
+
+  (*
+  let make n e =
+    try Some (make n e)
+    with Invalid_argument "Seq.make" -> None
+
+  let init n e =
+    try Some (init n e)
+    with Invalid_argument "Seq.init" -> None
+  *)
+
+  let reduce f s =
+    try Some (reduce f s)
+    with Invalid_argument "Seq.reduce" -> None
+
+  let max s =
+    try Some (max s)
+    with Invalid_argument "Seq.max" -> None
+
+  let min s =
+    try Some (min s)
+    with Invalid_argument "Seq.min" -> None
+
+  let combine s1 s2 =
+    try Some (combine s1 s2)
+    with Invalid_argument "Seq.combine" -> None
+end
