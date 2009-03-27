@@ -211,3 +211,19 @@ val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
   (** Using a string printer, print a sequence to a string (as sprintf vs. printf) *)
 
 val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
+
+module Exceptionless : sig
+  val hd : 'a t -> 'a option
+  val tl : 'a t -> 'a t option
+  val first : 'a t -> 'a option
+  val last : 'a t -> 'a option
+  val at : 'a t -> int -> 'a option
+  (*
+  val make : int -> 'a -> 'a t
+  val init : int -> (int -> 'a) -> 'a t
+  *)
+  val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a option
+  val max : 'a t -> 'a option
+  val min : 'a t -> 'a option
+  val combine : 'a t -> 'b t -> ('a * 'b) t option
+end

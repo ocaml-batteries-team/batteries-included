@@ -428,10 +428,16 @@ struct
   let for_all ~f a = for_all f a
   let iter2i  ~f a b = iter2i f a b
   let find ~f a = find f a
+  let findi ~f e = findi f e
   let map ~f a = map f a
   let mapi ~f a = mapi f a
   let filter ~f a = filter f a
   let filter_map ~f a = filter_map f a
+  module LExceptionless = struct
+    include Exceptionless
+    let find ~f e = find f e
+    let findi ~f e = findi f e
+  end
 end
 end
 

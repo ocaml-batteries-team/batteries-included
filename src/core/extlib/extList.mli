@@ -538,6 +538,11 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	(** Exceptionless counterparts for error-raising operations*)
 	module Exceptionless : sig
 
+          val find : ('a -> bool) -> 'a list -> 'a option
+            (** [find p l] returns [Some x] where [x] is the first element
+                of [l] such as [p x] returns [true] or [None] if such an
+                element has not been found.*)
+
 	  val rfind : ('a -> bool) -> 'a list -> 'a option
 	    (** [rfind p l] returns [Some x] where [x] is the last element of [l] such 
 		that [p x] returns [true] or [None] if such element as not been found. *)
@@ -619,6 +624,16 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	  val stable_sort : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
 	  val fast_sort : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
 	  val merge : cmp:('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
+          module LExceptionless : sig
+            val find : f:('a -> bool) -> 'a list -> 'a option
+            val rfind : f:('a -> bool) -> 'a list -> 'a option
+            val findi : f:(int -> 'a -> bool) -> 'a list -> (int * 'a) option
+            val split_at : int -> 'a list -> [`Ok of ('a list * 'a list) | `Invalid_index of int]
+            val at : 'a list -> int -> [`Ok of 'a | `Invalid_index of int]
+            val assoc : 'a -> ('a * 'b) list -> 'b option
+            val assoc_inv : 'b -> ('a * 'b) list -> 'a option
+            val assq : 'a -> ('a * 'b) list -> 'b option
+          end
 	end
 
     end
