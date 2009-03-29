@@ -31,6 +31,27 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   open Sig;
   include Syntax;
 
+
+  (* "[?" and "?]" are not recognized as delimiters by the Camlp4
+     lexer; This token parser will spot "["; "?" and "?"; "]" token
+     and insert "[?" and "?]" instead.
+     
+     Thanks to Jérémie Dimino for the idea. *)
+  value rec delim_filter older_filter stream = 
+    let rec filter = parser 
+    [ [: `(KEYWORD "[", loc); rest :] ->
+        match rest with parser
+        [ [: `(KEYWORD "?", _) :] -> [: `(KEYWORD "[?", loc); filter rest :]
+        | [: :] -> [: `(KEYWORD "[", loc); filter rest :] ]
+    | [: `(KEYWORD "?", loc); rest :] ->
+        match rest with parser
+        [ [: `(KEYWORD "]", loc) :] -> [: `(KEYWORD "?]", loc); filter rest :]
+        | [: :] -> [: `(KEYWORD "?", loc); filter rest :] ]
+    | [: `other; rest :] -> [: `other; filter rest :] ] in
+    older_filter (filter stream);
+
+  value _ = Token.Filter.define_filter (Gram.get_filter ()) delim_filter;
+
   value rec loop n =
     fun
     [ [] -> None
@@ -191,7 +212,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
 
   EXTEND Gram
     expr: LEVEL "simple"
-    [[ "["; "?"; (m, output) = comp_expr; "|"; comp = LIST1 comp_item SEP ";"; "]" ->
+    [[ "[?"; (m, output) = comp_expr; "|"; comp = LIST1 comp_item SEP ";"; "?]" ->
          compr _loc m output comp ]];
     
     comp_item:

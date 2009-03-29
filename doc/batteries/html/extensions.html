@@ -171,7 +171,7 @@ comprehension syntax</a> for batteries, using enumerations by default.
 <center><h3>Output, generators and guards<a name="comprehension_syntax"/></h3></center>
 
 <p>The global form is
-<code>[? <em>output</em> | <em>comp_item</em> ; <em>comp_item</em> ; ... ]</code>.<br/>
+<code>[? <em>output</em> | <em>comp_item</em> ; <em>comp_item</em> ; ... ?]</code>.<br/>
 <em>output</em> is an expression and a <em>comp_item</em> is either
 a <em>guard</em> (a boolean expression), or a <em>generator</em> of
 the form <code><em>pattern</em> <- <em>expression</em></code>.
@@ -180,7 +180,7 @@ comprehension items, and in the output expression.</p>
 
 Example :
 <pre class="example">let pythagorean_triples n =
-  [? (a,b,c) | a <- 1--n; b <- a--n; c <- b--n; a*a + b*b = c*c ]</pre>
+  [? (a,b,c) | a <- 1--n; b <- a--n; c <- b--n; a*a + b*b = c*c ?]</pre>
 
 <center><h3>Module parametrization<a name="comprehension_custom_modules"/></h3></center>
 
@@ -190,10 +190,10 @@ data structure with the <code><em>module</em> : <em>expression</em></code> synta
 
 Examples :
 <pre class="example">let positive_array_of_enum e =
-  [? Array : n | n <- e; n > 0 ]
+  [? Array : n | n <- e; n > 0 ?]
 
 let combine la lb =
-  [? List : (a, b) | a <- List : la; b <- List : lb ]</pre>
+  [? List : (a, b) | a <- List : la; b <- List : lb ?]</pre>
 
 <p>Comprehension expressions rely on the presence in the given module of
 the following operations (where <code>'a t</code> represents the
@@ -319,7 +319,7 @@ For more information, see the manual of <a href="http://www.ocaml.info/ocaml_sou
 <center><h1>Summary of new keywords<a name="new_keywords"/></h1></center>
 <ul>
 <li><code>where</code>, defined by <a href="#where">pa_where</a></li>
-<li><code>[? .. | .. ]</code> (and <code>[ .. | .. ]</code>), defined by <a href="#comprehension>pa_comprehension</a></li>
+<li><code>[? .. | .. ?]</code>, defined by <a href="#comprehension>pa_comprehension</a></li>
 </ul>
 
 </body>
