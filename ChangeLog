@@ -1,3 +1,11 @@
+2009-03-30  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPervasives.mli: [sexp_of_result], [result_of_sexp] added
+
+	* src/core/extlib/std.ml: [sexp_of_result], [result_of_sexp] added
+	
+	* src/core/extlib/std.ml: [result] now [with sexp]
+
 2009-03-26  Jeremie Dimino <jeremie@dimino.org>
 
 	* src/core/extlib/print.ml*: remove this annoying and useless

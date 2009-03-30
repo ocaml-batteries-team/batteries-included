@@ -20,6 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+TYPE_CONV_PATH "Batteries"
+
 let input_lines ch =
   Enum.from (fun () ->
     try input_line ch with End_of_file -> raise Enum.No_more_elements)
@@ -188,7 +190,7 @@ let unique() =
 
 type ('a, 'b) result =
   | Ok  of 'a
-  | Bad of 'b
+  | Bad of 'b with sexp
 
 (** {6 Operators}*)
 
