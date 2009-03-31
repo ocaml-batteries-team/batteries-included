@@ -138,7 +138,7 @@ AC_ARG_WITH(
 	HAS_GODI=no)
 if test "$INSTALLATION" = "GODI"; then
 HAS_GODI = "yes"
-end
+fi
 AC_SUBST(HAS_GODI)
 if test "$HAS_GODI" = "yes" ; then
    AC_MSG_NOTICE([GODI-specific installation enabled])
@@ -159,22 +159,23 @@ AC_SUBST(BUILD_DOC)
 
 
 if test "${prefix}" = "NONE"; then
-AC_MSG_NOTICE([Locating default installation directory])
-if test "$HAS_GODI = "yes"; then
-DESTDIR = `$OCAMLFIND printconf destdir`
+   AC_MSG_NOTICE([Locating default installation directory])
+   if test "$HAS_GODI" = "yes"; then
+      DESTDIR = `$OCAMLFIND printconf destdir`
+   else
+	AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
+	if test -z "$OCAMLPKG_batteries"; then
+   	   DESTDIR=`$OCAMLFIND printconf destdir`
+	else
+	   AC_MSG_WARN([Batteries is already installed])
+   	   AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
+   	   DESTDIR=`dirname $OCAMLPKG_batteries`
+	fi
+   fi
 else
-AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
-if test -z "$OCAMLPKG_batteries"; then
-   DESTDIR=`$OCAMLFIND printconf destdir`
-else
-   AC_MSG_WARN([Batteries is already installed])
-   AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
-   DESTDIR=`dirname $OCAMLPKG_batteries`
+	DESTDIR="${prefix}/lib/batteries"
 fi
-else
-DESTDIR="${prefix}/lib/batteries"
-fi
-fi
+
 
 AC_MSG_NOTICE([Default destination is $DESTDIR])
 AC_SUBST(DESTDIR)
