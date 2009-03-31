@@ -36,12 +36,13 @@ open Odoc_info.Module
 open Odoc_info.Type
 open Odoc_info.Class
 open Odoc_info.Exception
-module StringSet = Odoc_html.StringSet
+
 
 (*From the base library*)
 open List
 
 open Odoc_batteries_factored
+INCLUDE "build/odoc_batteries_factored.ml"
 
  
 

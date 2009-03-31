@@ -1,5 +1,7 @@
 2009-03-31  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* build/odoc_tags.ml: [INCLUDE "doc_batteries_factored.ml"]
+
 	* src/main/nothreads/batteries.mllib: [Lexing] removed
 
 	* src/main/threads/batteries.mllib: [Lexing] removed

@@ -9,5 +9,5 @@
 "optcomp": include
 <generate_mli.*>: pkg_camlp4.lib,use_str
 <extract_mli.*>: pkg_camlp4.lib,use_str
-<odoc_extract_mli.*>:camlp4oof
+<odoc_*>:camlp4oof
 <extractdist.*>:camlp4oof,use_camlp4_full
