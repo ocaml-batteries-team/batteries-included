@@ -41,7 +41,7 @@ open Odoc_info.Exception
 (*From the base library*)
 open List
 
-open Odoc_batteries_factored
+(*open Odoc_batteries_factored*)
 INCLUDE "build/odoc_batteries_factored.ml"
 
  

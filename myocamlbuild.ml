@@ -299,7 +299,7 @@ struct
     dep  ["ocaml"; "doc"]   & ["build/odoc_batteries_factored.cmo"; "build/odoc_tags.cmo"; "build/odoc_extract_mli.cmo"];
     flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
 				A "-i"; A "build";
-				A "-g"; A "odoc_batteries_factored.cmo";
+				(*A "-g"; A "odoc_batteries_factored.cmo";*)
 				A "-g"; A "odoc_tags.cmo"; 
 				(*A "-g"; A "build/odoc_extract_mli.cmo";*)
 			        A "-t"; A "OCaml Batteries Included" ;
