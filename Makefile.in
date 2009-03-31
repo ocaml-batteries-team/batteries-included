@@ -122,7 +122,7 @@ TOPLEVEL_TARGETS = src/batteries_toolchain/toplevel.top \
 ########################################################################
 
 ifeq ($(HAS_GODI),yes)
-all: config.ml install_doc
+all: config.ml install-doc
 	$(OCAMLBUILD) $(BYTE_TARGETS) $(SYNTAX_TARGETS) $(TOPLEVEL_TARGETS)
 #all: byte syntax top install-doc
 else
