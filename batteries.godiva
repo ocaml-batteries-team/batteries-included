@@ -1,9 +1,9 @@
 Package: godi-batteries
 Version: 0.20090331
-Revision: 4
+Revision: 16
 Depends: godi-ocaml (>= 3.10), godi-findlib (>= 1.2), godi-type-conv, godi-bin-prot, godi-camomile (>= 0.7), godi-sexplib (>= 3.7.0), godi-zip (>= 1.0), godi-ocamlnet (>= 2.2.9)
 Build-Depends: godi-findlib (>= 1.2), godi-type-conv, godi-sexplib (>= 3.7.0)
-Sources: http://forge.ocamlcore.org/frs/download.php/182/batteries-20090331.tgz
+Sources: http://forge.ocamlcore.org/frs/download.php/193/batteries-20090331.tgz
 Homepage: http://batteries.forge.ocamlcore.org
 Maintainer: David Teller <David.Teller@univ-orleans.fr>
 Options: opt, htdoc, configure
