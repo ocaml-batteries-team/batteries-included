@@ -1325,11 +1325,16 @@ val printer_s : ?flags : printer_flags -> (string -> 'a, 'a) Print.directive
 val printer_S : ?flags : printer_flags -> (string -> 'a, 'a) Print.directive
 
 val printer_d : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_i : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_u : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_i    : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_int  : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_u    : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_uint : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
 val printer_x : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
 val printer_X : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_hex : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_HEX : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
 val printer_o : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_oct : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
 val printer_ld : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
 val printer_li : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
 val printer_lu : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive

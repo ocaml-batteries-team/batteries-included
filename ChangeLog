@@ -1,5 +1,9 @@
 2009-03-31  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/print.mli: Further savage documentation spree.
+
+	* src/core/extlib/value_printer.mli: typo
+
 	* build/odoc_tags.ml: [INCLUDE "doc_batteries_factored.ml"]
 
 	* src/main/nothreads/batteries.mllib: [Lexing] removed

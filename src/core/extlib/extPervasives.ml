@@ -304,6 +304,12 @@ module Pervasives = struct
   let printer_utf8 k x = k (fun oc -> UTF8.print oc x)
   let printer_obj k x = k x#print
 
+  let printer_int  = printer_i
+  let printer_uint = printer_u
+  let printer_hex  = printer_x
+  let printer_HEX  = printer_X
+  let printer_oct  = printer_o
+
   (** {6 Value printers} *)
 
   let bool_printer = Bool.t_printer

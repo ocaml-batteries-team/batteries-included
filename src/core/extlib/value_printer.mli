@@ -19,14 +19,14 @@
 
 (** Value printers *)
 
-(** This modules define utilities for printing values.
+(** This module defines utilities for printing values.
 
     @author Jeremie Dimino
 *)
 
 type 'a t = bool -> unit InnerIO.output -> 'a -> unit
-  (** Type of a value-printer, the boolean argument tell whether
-      composed expression must be parenthesed. *)
+  (** Type of a value-printer, the boolean argument indicates whether
+      composed expression must be parenthesized. *)
 
 (** {6 Tuple printers} *)
 

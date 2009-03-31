@@ -103,11 +103,35 @@
    argument 5, this last format will output text [p"some text before the
    number5some text after the number"].
 
-   {7 Simple directives}
+   {7 Directives}
+   
+   {8 General-purpose directives}
 
-   All directives start with the [%] character. In their simplest form,
-   a directive is [%] followed by a few characters. By default, functions
-   of this module recognize the following directives:
+   General-purpose directives start with [{%{}] and end with [{}}]. By default,
+   functions of this module recognize the following general-purpose directives:
+
+   - [{%{int}}] or [{%{Int.t}}] format an integer with the usual notation (i.e. signed decimal).
+   - [{%{char}}] or [{%{Char.t}}] insert a character
+   - [{%{string}}] or [{%{String.t}}] insert a string
+   - [{%{float}}] or [{%{Float.t}}] format a floating-point number as a decimal, in the style [dddd.ddd]
+   - [{%{bool}}] or [{%{Bool.t}}] format a boolean argument to the string ["true"] or ["false"]
+   - [{%{int32}}] or [{%{Int32.t}}] format an integer with the usual notation (i.e. signed decimal).
+   - [{%{int64}}] or [{%{Int64.t}}] format an integer with the usual notation (i.e. signed decimal).
+   - [{%{nativeint}}] or [{%{Native_int.t}}] format an integer with the usual notation (i.e. signed decimal).
+   - [{%{Rope.t}}] insert a {!Rope}
+   - [{%{list foo}}] or [{%{List.t foo}}], where [foo] is the name of another directive, such as [int], [char], [string], etc., format a list of items (for more control on list formatting, see {!List.print}
+   - [{%{array foo}}] or [{%{Array.t foo}}], where [foo] is the name of another directive, such as [int], [char], [string], etc., format a array of items (for more control on array formatting, see {!Array.print}
+   - [{%{maybe foo}}] , where [foo] is the name of another directive, such as [int], [char], [string], etc., format an optional [x] item to nothing if [x] is [None] or to the result of directive [foo] applied to [y], if [x] is [Some y]
+   - [{%{option foo}}] or [{%{Option.t foo}}], where [foo] is the name of another directive, such as [int], [char], [string], etc., format an ['a option] to OCaml syntax, i.e. ["None"] or ["Some bar"]
+
+   Additional directives may be plugged-in.
+
+
+   {8 Short-hand directives}
+
+   A number of short-hand directives are also provided for most common
+   situations.  By default, functions of this module recognize the
+   following short-hand directives:
 
    - [%d], [%i], [%n], [%l], [%L], or [%N]: format an integer with the
    usual notation (i.e. signed decimal). 
@@ -124,16 +148,16 @@
    - [%c]: insert a character argument.
    - [%C]: insert a character argument in Caml syntax (single quotes, escapes).
    - [%f]: format a floating-point number as a decimal,
-     in the style [dddd.ddd].
+   in the style [dddd.ddd].
    - [%F]: format a floating-point number in Caml syntax ([dddd.]
-     or [dddd.ddd] or [d.ddd e+-dd]).
+   or [dddd.ddd] or [d.ddd e+-dd]).
    - [%e] or [%E]: format a floating-point number as a decimal,
-     in the style [d.ddd e+-dd] (mantissa and exponent).
+   in the style [d.ddd e+-dd] (mantissa and exponent).
    - [%g] or [%G]: format a floating-point number as a decimal
-     in style [%f] or [%e], [E] (whichever is more compact).
+   in style [%f] or [%e], [E] (whichever is more compact).
    - [%B]: format a boolean argument to the string ["true"] or ["false"]
    - [%b]: format a boolean argument (for backward compatibility; do not
-     use in new programs).
+   use in new programs).
    - [%ld], [%li], [%lu], [%lx], [%lX], [%lo]: format an [int32] 
    respectively as a signed decimal/a signed decimal/an unsigned decimal/
    an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
@@ -147,8 +171,10 @@
    an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
    an unsigned octal.
    - [%obj]: format an object using its method [print: 'a output -> unit]
-   - [!]: take no argument and flush the output.
-   - [%]: take no argument and output one [%] character.
+   - [%!]: take no argument and flush the output.
+   - [%%]: take no argument and output one [%] character.
+
+   Additional short-hand directives may also be plugged-in.
 
 
    {7 Extending formats}
@@ -156,13 +182,49 @@
    In addition to the above default set of directives, you may define your
    own directives or override existing ones. This is actually quite simple.
 
-   To define a directive [%foo] for formatting elements of type [bar],
+   {8 Adding general-purpose directives (with a module)}
+
+   When defining a new data structure [Foo.t], it is usually a good
+   idea to implement a function [Foo.t_printer], with type [Foo.t
+   Value_printer]. That's it. Once this function is created, you may
+   use directive [{%{Foo.t}}] in any printing function of this module.
+
+   If the data structure has type arguments, as is the case of lists,
+   arrays, etc., you will probably want to be able to print the
+   contents of your data structure. For this purpose, you may define
+   printers which accept as arguments other printers. For instance,
+   the type of [List.t_printer] is actually ['a Value_printer.t -> 'a
+   list Value_printer.t], etc. If you have given such a type to
+   [Foo.t_printer], you may use [{%{Foo.t bar}}] in any printing
+   function of this module, where [bar] is the name of another
+   general-purpose directive.
+
+   {8 Adding general-purpose directives (without a module)}
+
+   An alternative technique for adding general-purpose directives is
+   to define functions outside of their module. For instance, to
+   plug-in a general-purpose directive for elements of type [foo], it
+   is sufficient to define a function [bar_printer], with type [foo
+   Value_printer]. That's it. Once this function is created, you may
+   use directive [{%{bar}}] in any printing function of this module.
+
+   Again, you may also choose to define functions which take other
+   printer as arguments, as before.
+
+   {8 Adding short-hand directives}
+
+   Short-hands are convenient and easier to write but are also less
+   powerful than general-purpose directives, insofar as they may not
+   accept printers as arguments and may not be passed as arguments
+   to printers.
+
+   To define a short-hand directive [%foo] for formatting elements of type [bar],
    it is sufficient to create a function [printer_foo] with type [(bar
    -> 'a, 'a) directive]. Assuming that you already have a function
    [string_of_bar: bar -> string], [printer_foo] may be implemented
    simply as
    {[
-     let printer_foo k x = k (fun oc -> IO.nwrite oc (string_of_bar x))
+   let printer_foo k x = k (fun oc -> IO.nwrite oc (string_of_bar x))
    ]}
    
    That's it. Once this function is created you may use directive [%foo]
