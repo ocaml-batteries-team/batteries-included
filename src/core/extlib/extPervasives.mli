@@ -1355,14 +1355,11 @@ val printer_F : (float -> 'a, 'a) Print.directive
 (** {7 Batteries-specific directives} *)
 
 val printer_format : (('a, 'b) Print.format -> 'a, 'b) Print.directive
-  (** [printer_format] take a format, then the arguments of the format and
-      print according to it. For example
+  (** [printer_format] takes a format, then the arguments of the format and
+      print according to it. For instance,
 
-      {[
-        sprintf p"x = %format * %d" p"%d + %d" 1 3 5
-        =
-        "x = 1 + 3 * 5"
-      ]} *)
+      {[sprintf p"x = %format * %d" p"%d + %d" 1 3 5]} produces ["x = 1 + 3 * 5"]
+  *)
 
 val printer_sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive
 val printer_Sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive

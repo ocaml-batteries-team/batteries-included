@@ -103,26 +103,122 @@
    argument 5, this last format will output text [p"some text before the
    number5some text after the number"].
 
-   {b TODO} List of directives?
+   {7 Simple directives}
 
-   {7 Flags}
-   {b TODO}
+   All directives start with the [%] character. In their simplest form,
+   a directive is [%] followed by a few characters. By default, functions
+   of this module recognize the following directives:
+
+   - [%d], [%i], [%n], [%l], [%L], or [%N]: format an integer with the
+   usual notation (i.e. signed decimal). 
+   - [%u]: format an integer as an unsigned decimal.
+   - [%x]: format an integer as an unsigned hexadecimal, using lowercase letters.
+   - [%X]: format an integer as an unsigned hexadecimal, using upper letters.
+   - [%o]: format an integer as an unsigned octal.
+   - [%s]: insert a string.
+   - [%S]: insert a quoted string in Caml syntax (double quotes, escapes).
+   - [%sc]: insert a read-only/read-write string (see {!String.Cap}).
+   - [%Sc]: insert a quoted read-only/read-write string in Caml syntax (double quotes, escapes).
+   - [%rope]: insert a rope (see {!Rope}).
+   - [%utf8]: insert a UTF-8 encoded string.
+   - [%c]: insert a character argument.
+   - [%C]: insert a character argument in Caml syntax (single quotes, escapes).
+   - [%f]: format a floating-point number as a decimal,
+     in the style [dddd.ddd].
+   - [%F]: format a floating-point number in Caml syntax ([dddd.]
+     or [dddd.ddd] or [d.ddd e+-dd]).
+   - [%e] or [%E]: format a floating-point number as a decimal,
+     in the style [d.ddd e+-dd] (mantissa and exponent).
+   - [%g] or [%G]: format a floating-point number as a decimal
+     in style [%f] or [%e], [E] (whichever is more compact).
+   - [%B]: format a boolean argument to the string ["true"] or ["false"]
+   - [%b]: format a boolean argument (for backward compatibility; do not
+     use in new programs).
+   - [%ld], [%li], [%lu], [%lx], [%lX], [%lo]: format an [int32] 
+   respectively as a signed decimal/a signed decimal/an unsigned decimal/
+   an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
+   an unsigned octal.
+   - [%nd], [%ni], [%nu], [%nx], [%nX], [%no]: format a [nativeint] 
+   respectively as a signed decimal/a signed decimal/an unsigned decimal/
+   an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
+   an unsigned octal.
+   - [%Ld], [%Li], [%Lu], [%Lx], [%LX], [%Lo]: format an [int64] 
+   respectively as a signed decimal/a signed decimal/an unsigned decimal/
+   an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
+   an unsigned octal.
+   - [%obj]: format an object using its method [print: 'a output -> unit]
+   - [!]: take no argument and flush the output.
+   - [%]: take no argument and output one [%] character.
+
 
    {7 Extending formats}
 
-   Format supports a number of default directives. However, it's also
-   quite possible to use directives which haven't been defined yet.
+   In addition to the above default set of directives, you may define your
+   own directives or override existing ones. This is actually quite simple.
+
+   To define a directive [%foo] for formatting elements of type [bar],
+   it is sufficient to create a function [printer_foo] with type [(bar
+   -> 'a, 'a) directive]. Assuming that you already have a function
+   [string_of_bar: bar -> string], [printer_foo] may be implemented
+   simply as
+   {[
+     let printer_foo k x = k (fun oc -> IO.nwrite oc (string_of_bar x))
+   ]}
    
-   {b TODO}
+   That's it. Once this function is created you may use directive [%foo]
+   in any printing function of this module.
+
+   To improve the flexibility of your newly created directive, you may wish
+   to add an optional argument [flags] to function [printer_foo], to handle
+   flags, as detailed in the following section.
+   
+   {7 Flags}
+
+   The general format of directives is
+
+   [% ( \[options\] \[width\] \[.precision\] name )]
+
+   [name] is one of [d], [i], [n], [l], [L], [N], [u], [x] ..., and
+   behaves as explained above.
+
+   The optional [options] are:
+   - [-]: left-justify the output (default is right justification).
+   - [0]: for numerical conversions, pad with zeroes instead of spaces.
+   - [+]: for numerical conversions, prefix number with a [+] sign if positive.
+   - space: for numerical conversions, prefix number with a space if positive.
+   - [#]: request an alternate formatting style for numbers.
+
+   The optional [width] is an integer indicating the minimal
+   width of the result. For instance, [%6d] prints an integer,
+   prefixing it with spaces to fill at least 6 characters.
+
+   The optional [precision] is a dot [.] followed by an integer
+   indicating how many digits follow the decimal point in the [%f],
+   [%e], and [%E] conversions. For instance, [%.4f] prints a [float] with
+   4 fractional digits.
+
+   The integer in a [width] or [precision] can also be specified as
+   [*], in which case an extra integer argument is taken to specify
+   the corresponding [width] or [precision]. This integer argument
+   precedes immediately the argument to print.
+   For instance, [%.*f] prints a [float] with as many fractional
+   digits as the value of the argument given before the float.
+
+   For more informations on supporting flags in your directives, see
+   the documentation of type {!directive}.
 *)
 
-(** {6 Directives and formats} *)
+(** {6 Directives and formats} 
+
+    You can skip this section if you are only interested in using this module
+    and not in extending its behavior or understanding its internal mechanisms.
+*)
 
 type ('a, 'b) directive = ((unit InnerIO.output -> unit) -> 'b) -> 'a
-  (** Type of a directive. Directives are the basic elements of
+  (** The underlying type of a directive. Directives are the basic elements of
       formats.
 
-      A directive takes as argument:
+      A directive takes as arguments:
 
       - a continuation
       - any arguments they need
@@ -130,11 +226,10 @@ type ('a, 'b) directive = ((unit InnerIO.output -> unit) -> 'b) -> 'a
       its goal is to create a printer which prints the arguments of
       the directives and to pass it to the continuation.
 
-      For example, considering ["%d"], the new directive have the
-      following type:
+      For example, directive [%d] has the following type
 
       {[
-        val printer_d : (int -> 'a, 'a, _) directive
+        val printer_d : (int -> 'a, 'a) directive
       ]}
 
       And here is a possible implementation:
@@ -188,15 +283,17 @@ val literal : string -> ('a, 'a) directive
   (** [literal str] create a directive which do not take any argument
       from a literal string *)
 
+(**/**)
+
 type pattern = string
-    (** A pattern is a string where directives are replaced by index:
+    (** A pattern is a string where directives are replaced by indices:
 
         For example the format string (with the syntax extension)
         [p"%s = %d"] will produce the pattern ["%(0) = %(1)"] *)
 
 val format : unit InnerIO.output -> pattern -> (unit InnerIO.output -> unit) array -> unit
   (** [format oc pattern directives] prints [pattern] on [oc], using
-      [directives] to handle directives (as index) in the pattern.
+      [directives] to handle directives (as indices) in the pattern.
 
       For example:
 
@@ -219,8 +316,15 @@ val format : unit InnerIO.output -> pattern -> (unit InnerIO.output -> unit) arr
       This may happen for example if you use i18n and a format
       translation is not correct. *)
 
-(** Format. This is the replacement for classical formats (of type
-    [Pervasives.format]). *)
+(**
+   The format to use for displaying the various arguments passed to the function.
+   
+   You probably won't ever need to manipulate values of this type directly.
+
+   Syntactically, the format is a character string which contains two types
+   of objects: plain characters, which are simply copied, and directives,
+   each of which causes the conversion and printing of arguments.
+*)
 type ('a, 'b) format = {
   pattern : pattern;
   (** The pattern of the format. To translate a format (for i18n) you
@@ -241,7 +345,7 @@ type ('a, 'b) format = {
 
       {[
         { pattern = "x = %(0), y = %(1)";
-          printer = (fun patten k ->
+          printer = (fun pattern k ->
                        let printers = Array.create 2 (fun oc -> ()) in
                        printer_d (fun p ->
                                     printers.(0) <- p;
@@ -252,16 +356,55 @@ type ('a, 'b) format = {
   *)
 }
 
-(** {6 Printf functions} *)
+(**/**)
+
+(** {6 Formatting functions} *)
 
 val printf : ('a, unit) format -> 'a
-  (** [printf fmt] prints on {!IO.stdout} *)
+  (** [printf fmt args] formats the arguments in [args] as specified by [fmt]
+      and prints the result on the standard output {!IO.stdout}, i.e. normally
+      to the screen. If you are lost, this is probably the function you're looking for.*)
 
 val eprintf : ('a, unit) format -> 'a
-  (** [printf fmt] prints on {!IO.stderr} *)
+  (** [eprintf fmt args] behaves as [printf fmt args] but prints the result on
+      the error out put {!IO.stderr} rather on the screen. This function is typically
+      used to display warnings and errors, which may later be separated from "regular"
+      printouts.*)
+
+val sprintf : ('a, string) format -> 'a
+  (** A function which doesn't print its result but returns it as a string. Useful
+      for building messages, for translation purposes or for display in a window,
+      for instance.
+
+      While this function is quite convenient, don't abuse it to create very large
+      strings such as files, that's not its role. For this kind of usage, prefer
+      the more modular and usually faster {!fprintf}.*)
+
+
+(** {6 Generic functions}*)
 
 val fprintf : 'a InnerIO.output -> ('b, unit) format -> 'b
-  (** [fprintf oc fmt] prints on [oc] *)
+  (**General formatting function. 
+
+     This function behaves mostly as {!printf} or {!eprintf} but,
+     instead of printing to a predefined output, it takes as argument
+     the output to which it should print.
+
+     Typically, if you are attempting to build a large output such as a
+     file, this is probably the function you are looking for. If you
+     are writing a pretty-printer, this is probably the function you
+     are looking for. If you are you are looking for a function to
+     combine with directive [%a], this is also probably the function
+     you are looking for.*)
+
+val ifprintf: _        -> ('b, unit) format -> 'b
+  (**As {!fprintf} but doesn't actually print anything.
+     Sometimes useful for debugging.*)
+
+val bprintf : Buffer.t -> ('a, unit) format -> 'a
+  (** This function behaves as {!fprintf} but prints into a buffer rather than into an [output].*)
+
+(** {6 Functions with continuations}*)
 
 val kfprintf : ('a InnerIO.output -> 'b) -> 'a InnerIO.output -> ('c, 'b) format -> 'c
   (** [kfprintf k oc fmt] prints on [oc] then call [k] with [oc] as
@@ -274,16 +417,11 @@ val krprintf : (Rope.t -> 'b) -> ('a, 'b) format -> 'a
   (** [krprintf k fmt] creates a rope from the format and other
       arguments and pass it to [k] *)
 
-val sprintf : ('a, string) format -> 'a
-  (** [sprintf fmt] returns the result as a string *)
-
 val ksprintf : (string -> 'b) -> ('a, 'b) format -> 'a
   (** [ksprintf k fmt] creates a string from the format and other
       arguments and pass it to [k] *)
 
-val bprintf : Buffer.t -> ('a, unit) format -> 'a
-  (** [bprintf buf fmt] prints into the buffer [buf] *)
-
 val kbprintf : (Buffer.t -> 'b) -> Buffer.t -> ('a, 'b) format -> 'a
   (** [bprintf k buf fmt] prints into the buffer [buf], then call [k]
       with [buf] as argument. *)
+

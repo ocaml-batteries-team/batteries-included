@@ -1,3 +1,13 @@
+2009-03-31  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/print.ml*: [iprintf] added
+
+	* src/core/extlib/print.mli: intense documentation
+
+	* examples/tools/conv.ml: now using [Print] rather than [Printf]
+
+	* src/core/extlib/extPrintf.mli: deprecated
+
 2009-03-30  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extPervasives.mli: [sexp_of_result], [result_of_sexp] added

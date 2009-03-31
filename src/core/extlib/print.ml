@@ -91,6 +91,8 @@ let literal str k = k (fun oc -> InnerIO.nwrite oc str)
 let kfprintf k oc fmt = fmt.printer fmt.pattern (fun f -> f (IO.cast_output oc); k oc)
 let fprintf oc fmt = fmt.printer fmt.pattern (fun f -> f (IO.cast_output oc))
 
+let ifprintf _ fmt = fprintf InnerIO.stdnull fmt
+
 let printf fmt = fprintf InnerIO.stdout fmt
 let eprintf fmt = fprintf InnerIO.stderr fmt
 
