@@ -1,5 +1,11 @@
 2009-03-31  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/main/nothreads/batteries.mllib: [Lexing] removed
+
+	* src/main/threads/batteries.mllib: [Lexing] removed
+
+	* README: added subsections
+
 	* src/core/extlib/print.ml*: [iprintf] added
 
 	* src/core/extlib/print.mli: intense documentation
