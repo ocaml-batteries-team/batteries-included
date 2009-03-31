@@ -1,5 +1,7 @@
 2009-03-31  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* configure.ac: [gnome-open] replaced by [x-www-browser]
+
 	* Makefile.in: [all] now depends on [install-doc] rather than [install_doc]
 	
 	* src/core/extlib/extPervasives.ml*: [maybe_printer]

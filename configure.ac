@@ -5,7 +5,7 @@ INSTALLATION=
 AC_SUBST(INSTALLATION)
 
 # version info
-VERSION=0.20090304
+VERSION=0.20090331
 AC_SUBST(VERSION)
 
 # check for basic OCaml components
@@ -117,11 +117,11 @@ AC_SUBST(OCAMLFIND_DEPS)
 # set build-time options
 
 # default browser command
-DEFAULT_BROWSER="gnome-open %s &> /dev/null"
+DEFAULT_BROWSER="x-www-browser %s &> /dev/null"
 AC_ARG_WITH(
 	browser,
 	[  --with-browser=BROWSER  set command to open HTML API reference
-	                  default: "gnome-open %s"],
+	                  default: "x-www-browser %s"],
 	BROWSER_COMMAND=$withval,
 	BROWSER_COMMAND=$DEFAULT_BROWSER)
 if test "$BROWSER_COMMAND" = "yes" ; then
@@ -136,6 +136,9 @@ AC_ARG_WITH(
 	[  --with-godi             require compilation for GODI],
 	HAS_GODI=yes,
 	HAS_GODI=no)
+if test "$INSTALLATION" = "GODI"; then
+HAS_GODI = "yes"
+end
 AC_SUBST(HAS_GODI)
 if test "$HAS_GODI" = "yes" ; then
    AC_MSG_NOTICE([GODI-specific installation enabled])
@@ -157,6 +160,9 @@ AC_SUBST(BUILD_DOC)
 
 if test "${prefix}" = "NONE"; then
 AC_MSG_NOTICE([Locating default installation directory])
+if test "$HAS_GODI = "yes"; then
+DESTDIR = `$OCAMLFIND printconf destdir`
+else
 AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
 if test -z "$OCAMLPKG_batteries"; then
    DESTDIR=`$OCAMLFIND printconf destdir`
@@ -167,6 +173,7 @@ else
 fi
 else
 DESTDIR="${prefix}/lib/batteries"
+fi
 fi
 
 AC_MSG_NOTICE([Default destination is $DESTDIR])
