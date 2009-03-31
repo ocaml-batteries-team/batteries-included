@@ -1,5 +1,9 @@
 2009-03-31  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/extPervasives.ml*: [maybe_printer]
+
+	* src/core/extlib/option.ml*: [maybe_printer]
+
 	* src/core/extlib/print.mli: Further savage documentation spree.
 
 	* src/core/extlib/value_printer.mli: typo

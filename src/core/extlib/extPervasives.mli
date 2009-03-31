@@ -1384,6 +1384,7 @@ val string_printer : string Value_printer.t
 val list_printer : 'a Value_printer.t -> 'a list Value_printer.t
 val array_printer : 'a Value_printer.t -> 'a array Value_printer.t
 val option_printer : 'a Value_printer.t -> 'a option Value_printer.t
+val maybe_printer : 'a Value_printer.t -> 'a option Value_printer.t
 val exn_printer : exn Value_printer.t
 
 (**/**)

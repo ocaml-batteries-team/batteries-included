@@ -322,6 +322,7 @@ module Pervasives = struct
   let list_printer = List.t_printer
   let array_printer = Array.t_printer
   let option_printer = Option.t_printer
+  let maybe_printer = Option.maybe_printer
   let exn_printer paren out x =
     if paren then IO.write out '(';
     Printexc.print out x;

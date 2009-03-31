@@ -98,6 +98,8 @@ val print : ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> un
 
 val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
 
+val maybe_printer : 'a Value_printer.t -> 'a t Value_printer.t
+
 (** Operations on options, with labels.*)
 module Labels : sig
   val may : f:('a -> unit) -> 'a option -> unit

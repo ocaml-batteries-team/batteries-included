@@ -81,6 +81,10 @@ let t_printer a_printer paren out = function
   | None ->
       IO.nwrite out "None"
 
+let maybe_printer a_printer _ out = function
+  | None -> ()
+  | Some x -> a_printer false out x
+
 module Labels =
 struct
   let may ~f o = may f o

@@ -119,10 +119,10 @@
    - [{%{int64}}] or [{%{Int64.t}}] format an integer with the usual notation (i.e. signed decimal).
    - [{%{nativeint}}] or [{%{Native_int.t}}] format an integer with the usual notation (i.e. signed decimal).
    - [{%{Rope.t}}] insert a {!Rope}
-   - [{%{list foo}}] or [{%{List.t foo}}], where [foo] is the name of another directive, such as [int], [char], [string], etc., format a list of items (for more control on list formatting, see {!List.print}
-   - [{%{array foo}}] or [{%{Array.t foo}}], where [foo] is the name of another directive, such as [int], [char], [string], etc., format a array of items (for more control on array formatting, see {!Array.print}
-   - [{%{maybe foo}}] , where [foo] is the name of another directive, such as [int], [char], [string], etc., format an optional [x] item to nothing if [x] is [None] or to the result of directive [foo] applied to [y], if [x] is [Some y]
-   - [{%{option foo}}] or [{%{Option.t foo}}], where [foo] is the name of another directive, such as [int], [char], [string], etc., format an ['a option] to OCaml syntax, i.e. ["None"] or ["Some bar"]
+   - [{%{foo list}}] or [{%{foo List.t}}], where [foo] is the name of another directive, such as [int], [char], [string], [int list]. etc., format a list of items (for more control on list formatting, see {!List.print}
+   - [{%{foo array}}] or [{%{foo Array.t}}], where [foo] is the name of another directive, such as [int], [char], [string], etc., format a array of items (for more control on array formatting, see {!Array.print}
+   - [{%{foo maybe}}] , where [foo] is the name of another directive, such as [int], [char], [string], etc., format an optional [x] item to nothing if [x] is [None] or to the result of directive [foo] applied to [y], if [x] is [Some y]
+   - [{%{foo option}}] or [{%{foo Option.t}}], where [foo] is the name of another directive, such as [int], [char], [string], etc., format an ['a option] to OCaml syntax, i.e. ["None"] or ["Some bar"]
 
    Additional directives may be plugged-in.
 
