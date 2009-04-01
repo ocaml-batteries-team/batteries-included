@@ -3,6 +3,9 @@ ocaml-batteries (0.20090401+gitE192725-1) unstable; urgency=low
   * new snapshot, upstream Git commit E192725
     - includes all changes of batteries approaching beta 1
   * uploading to unstable
+  * debian/patches/
+    - new patch debian/libdir which set Debian-specific installation
+      paths used at runtime by batteries wrappers
   * debian/rules:
     - pass -byte-plugin to ocamlbuild when ocamlopt is not
       available, fixes FTBFS on non-native archs. (Closes: #505490)
