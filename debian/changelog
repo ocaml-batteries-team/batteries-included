@@ -1,7 +1,7 @@
-ocaml-batteries (0.20090228+git6E49F72-1) unstable; urgency=low
+ocaml-batteries (0.20090401+gitE192725-1) unstable; urgency=low
 
-  * new snapshot, upstream Git commit 6E49F72
-    - includes all changes of batteries alpha 3 + recent development
+  * new snapshot, upstream Git commit E192725
+    - includes all changes of batteries approaching beta 1
   * debian/rules:
     - pass -byte-plugin to ocamlbuild when ocamlopt is not
       available, fixes FTBFS on non-native archs. (Closes: #505490)
@@ -9,7 +9,7 @@ ocaml-batteries (0.20090228+git6E49F72-1) unstable; urgency=low
   * debian/control:
     - add new build-dep on ocamlnet (Closes: #515792)
 
- -- Stefano Zacchiroli <zack@debian.org>  Sat, 28 Feb 2009 23:09:44 +0100
+ -- Stefano Zacchiroli <zack@debian.org>  Wed, 01 Apr 2009 15:38:37 +0200
 
 ocaml-batteries (0.20081112+gitBB342A7-1) experimental; urgency=low
 
