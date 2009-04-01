@@ -10,6 +10,7 @@ DEV_PKG_NAME = lib$(LIB_NAME)-ocaml-dev
 DOC_PKG_NAME = lib$(LIB_NAME)-ocaml-doc
 DEST_DIR = $(CURDIR)/debian/$(DEV_PKG_NAME)$(OCAML_STDLIB_DIR)
 QUILT_PATCH_DIR ?= debian/patches	# can be removed once #513952 gets fixed
+DEB_AUTO_UPDATE_AUTOCONF = yes
 
 OCAMLBUILD_FLAGS = -classic-display
 DEB_CONFIGURE_EXTRA_FLAGS = --with-browser="x-www-browser %s"

@@ -17,7 +17,8 @@ Build-Depends:
  camlp4,
  camlp4-extra,
  quilt,
- cdbs
+ cdbs,
+ autoconf
 Standards-Version: 3.8.0
 Vcs-Git: git://git.debian.org/git/pkg-ocaml-maint/packages/ocaml-batteries.git
 Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/ocaml-batteries.git

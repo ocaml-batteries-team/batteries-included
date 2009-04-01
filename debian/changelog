@@ -7,8 +7,10 @@ ocaml-batteries (0.20090401+gitE192725-1) unstable; urgency=low
       available, fixes FTBFS on non-native archs. (Closes: #505490)
     - use ocaml.mk as a CDBS "rules" snippet
     - use tg2quilt.mk snippet (shipped by topgit) to generated patches
+    - run autoconf upon build (interim for Git snapshot releases only)
   * debian/control:
-    - add new build-dep on ocamlnet (Closes: #515792)
+    - add build-dep on ocamlnet (Closes: #515792)
+    - add build-dep on autoconf
   * debian/README.source: point to existing documents
 
  -- Stefano Zacchiroli <zack@debian.org>  Wed, 01 Apr 2009 15:38:37 +0200
