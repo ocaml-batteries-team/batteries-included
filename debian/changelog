@@ -11,6 +11,7 @@ ocaml-batteries (0.20090401+gitE192725-1) unstable; urgency=low
   * debian/control:
     - add build-dep on ocamlnet (Closes: #515792)
     - add build-dep on autoconf
+    - bump Standards-Version to 3.8.1 (no changes needed)
   * debian/README.source: point to existing documents
 
  -- Stefano Zacchiroli <zack@debian.org>  Wed, 01 Apr 2009 15:38:37 +0200
