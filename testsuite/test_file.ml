@@ -43,3 +43,43 @@ let test_2 = ("File: MMap Reading back output to temporary file",
 		 if found = buffer then Testing.Pass
 		 else Testing.Fail (Printf.sprintf2 "Hoping: %a\n\tGot:    %a" print_array buffer print_array found)
 	    )
+
+let test_3 = ("File: open_in'd files should not autoclose",
+	    fun () ->
+	      let name = write buffer in
+	      let f    = open_in name in
+	      try
+		let _ = IO.read_all f in
+		let c = IO.read f in Testing.Fail
+                  (Printf.sprintf "Hoping: IO.No_more_input\n\tGot:    char \'%c\'" c)
+	      with
+	      | IO.No_more_input ->
+		let _ = IO.close_in f in Testing.Pass
+	      | IO.Input_closed ->
+		Testing.Fail "Hoping: IO.No_more_input\n\tGot:    IO.Input_closed"
+	      | _ ->
+		let _ = IO.close_in f in
+		Testing.Fail "Hoping: IO.No_more_input\n\tGot:    (Different exception)"
+	    )
+
+
+let test_4 = ("File: opening and closing many files",
+	      fun () ->
+	      try
+		for i = 0 to 10000 do
+		  Unix.unlink (write buffer)
+	      done;Testing.Pass
+	      with Sys_error e -> Testing.Fail e)
+
+
+let test_5 = ("File: opening and closing many files (Pervasives)",
+	      fun () ->
+		try
+		for i = 0 to 10000 do
+		  let temp = Filename.temp_file "batteries" "test" in
+		  let oc   = open_out temp                         in
+		    Standard.output_string oc "test";
+		    close_out oc;
+		    Unix.unlink temp
+	      done;Testing.Pass
+	    with Sys_error e -> Testing.Fail e )

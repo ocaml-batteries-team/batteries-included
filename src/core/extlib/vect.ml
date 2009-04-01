@@ -297,10 +297,10 @@ let backwards e =
   in aux e
 
 let of_enum e =
-  Enum.fold (fun x acc -> append_char x acc) empty e
+  Enum.fold (fun acc x -> append_char x acc) empty e
 
 let of_backwards e =
-  Enum.fold (fun x acc -> prepend_char x acc) empty e
+  Enum.fold (fun acc x -> prepend_char x acc) empty e
 
 let iteri f r =
   let rec aux f i = function
@@ -883,10 +883,10 @@ let backwards e =
   in aux e
 
 let of_enum e =
-  Enum.fold (fun x acc -> append_char x acc) empty e
+  Enum.fold (fun acc x -> append_char x acc) empty e
 
 let of_backwards e =
-  Enum.fold (fun x acc -> prepend_char x acc) empty e
+  Enum.fold (fun acc x -> prepend_char x acc) empty e
 
   let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
     Enum.print ~first ~last ~sep print_a out (enum t)

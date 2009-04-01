@@ -25,7 +25,6 @@ open InnerIO
     @author Xavier Leroy
     @author Pierre Weiss
     @author David Teller
-    @author 
 
     @documents Printf
     @documented Printf
@@ -34,6 +33,11 @@ module Printf : sig
 
 
   (**
+     {6 Important note}
+
+     This module is mostly deprecated by module {!Print}. In the future,
+     only module {!Print} will be updated and maintained.
+
      {6 General overview}
      
    The functions of this module produce output according to a
@@ -260,6 +264,7 @@ val bprintf2: Buffer.t  -> ('b, 'a output, unit) t -> 'b
      respect to {!printf}, not the inner workings.*)
   
 (**{6 Functions with continuations}*)
+
 val kfprintf : ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) format4 -> 'c
   (**Same as [fprintf], but instead of returning immediately, passes the [output] to its first
      argument at the end of printing.*)

@@ -173,7 +173,7 @@ end
 module  IO = Extlib.IO
 
 (** @topic Network*)
-module Netchannels = Libs.ExtNetchannels.Netchannels
+module Net_channels = Libs.ExtNetchannels.Netchannels
 
 
 
@@ -205,13 +205,27 @@ module Data = Extlib.Interfaces
 *)
 
 module  Array    = Extlib.ExtArray.Array
-module  Bigarray = Extlib.ExtBigarray.Bigarray
+module  Big_array= Extlib.ExtBigarray.Bigarray
+(**/**)
+(**For compatibility purposes with the base library*)
+module  Bigarray = Big_array
+(**/**)
 module  Dllist   = Extlib.Dllist
-module  DynArray = Extlib.DynArray
+module  Dyn_array= Extlib.DynArray
+(**/**)
+(**For compatibility purposes with Extlib*)
+module  DynArray  = Dyn_array
+(**/**)
 module  Enum     = Extlib.Enum
+module  Seq      = Extlib.Seq
 module  Global   = Extlib.Global
 module  Hashtbl  = Extlib.ExtHashtbl.Hashtbl
-module  RefList  = Extlib.RefList 
+module  Ref_list = Extlib.RefList 
+(**/**)
+(**For compatibility purposes with Extlib*)
+module  RefList  = Ref_list
+(**/**)
+
 module  Queue    = Extlib.ExtQueue.Queue
 module  Ref      = Extlib.Ref
 module  Stack    = Extlib.ExtStack.Stack
@@ -225,10 +239,10 @@ module  Vect     = Extlib.Vect
 *)      
 
 module  Lazy     = Batlib_Baselib_Lazy
-module  LazyList = Extlib.LazyList
+module  Lazy_list= Extlib.LazyList
 module  List     = Extlib.ExtList.List
 module  Map      = Extlib.ExtMap.Map
-module  MultiPMap= Extlib.MultiPMap
+module  Multi_pmap= Extlib.MultiPMap
 module  Option   = Extlib.Option
 module  PMap     = Extlib.PMap
 module  PSet     = Extlib.PSet
@@ -248,7 +262,11 @@ module  Unit     = Extlib.ExtUnit.Unit
 *)
 
 module  Bool     = Extlib.ExtBool.Bool
-module  BitSet   = Extlib.BitSet
+module  Bit_set  = Extlib.BitSet
+(**/**)
+(**For compatibility purposes with Extlib*)
+module  BitSet  = Bit_set
+(**/**)
 
 (**{4 Numeric data}
 
@@ -263,6 +281,10 @@ module  Int      = Extlib.ExtInt.Int
 module  Int32    = Extlib.ExtInt32.Int32
 module  Int64    = Extlib.ExtInt64.Int64
 module  Native_int=Extlib.ExtNativeint.Native_int
+(**/**)
+(**For compatibility purposes with the base library*)
+module  Nativeint = Native_int
+(**/**)
 module  Num      = Extlib.ExtNum.Num
 module  Safe_float= Extlib.ExtFloat.Safe_float
 module  Safe_int = Extlib.ExtInt.Safe_int
@@ -283,7 +305,7 @@ module  Str     = Extlib.ExtStr.Str
 (*module  StringText (A module containing aliases to String and modified   Char)*)
 (*module  RopeText (As StringText but with implementations from Rope and  UChar)*)
 (*module  UTF8Text (As StringText but with implementations from UTF8 and UChar)*)
-module CharEncodings = Extlib.CharEncodings
+module Char_encodings = Extlib.CharEncodings
 
 (**{3 Tools included in the distribution}
 
@@ -345,11 +367,12 @@ module  Rpc_*
               ====module module  Languages ====*)
 
 
-module  Lexing = Batlib_Baselib_Lexing
+module  Lexing = Extlib.ExtLexing.Lexing
 module  Parsing= Batlib_Baselib_Parsing
 module  Format = Extlib.ExtFormat.Format
 module  Printf = Extlib.ExtPrintf.Printf
-module  Printf2= Extlib.ExtPrintf2
+module  Print  = Extlib.Print
+module  Value_printer = Extlib.Value_printer
 (* module  PCRE (*placeholder*)*)
 module  Scanf  = Extlib.ExtScanf.Scanf
 module  SExpr  = Libs.ExtSexp_Conv.Sexp_conv
@@ -362,7 +385,11 @@ module  SExpr  = Libs.ExtSexp_Conv.Sexp_conv
 
 module Arg      = Extlib.ExtArg.Arg
 module File     = Extlib.File
-module OptParse = Extlib.OptParse
+module Opt_parse= Extlib.OptParse
+(**/**)
+(**For compatibility purposes with the base library*)
+module  OptParse  = Opt_parse
+(**/**)
 module Path     = Batlib_Baselib_Filename
 module Shell    = Extlib.ExtSys.Sys
 module Unix     = Extlib.ExtUnix.Unix
@@ -390,10 +417,11 @@ module  Future =
 struct
 (*  module Lexers = Extlib.ExtGenlex.Languages*)
   module Genlex      = Extlib.ExtGenlex.Genlex
-  module CharParser  = Extlib.CharParser
-  module UCharParser = Extlib.UCharParser
-  module ParserCo    = Extlib.ParserCo
-  module Path        = Extlib.Path
+  module Char_parser  = Extlib.CharParser
+  module UChar_parser = Extlib.UCharParser
+  module Parser_co    = Extlib.ParserCo
+  module Path        = Extlib.PathGen.OfString
+  module PathGen     = Extlib.PathGen
   module Result      = Extlib.Result
   module Logger      = Extlib.Logger
 end

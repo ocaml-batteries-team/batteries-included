@@ -1,7 +1,7 @@
 (*
  * ExtArray - additional and modified functions for arrays.
  * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
- *               2008 David Teller
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
  *)
 
 
-TYPE_CONV_PATH "Batteries.Data.Mutable" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module Array = struct
 
@@ -268,6 +268,26 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 	done;
 	InnerIO.nwrite out last
 
+let t_printer a_printer paren out x = print (a_printer false) out x
+
+let sprint ?(first="[|") ?(last="|]") ?(sep="; ") print_a array =
+  ExtPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) array
+(*  let os = InnerIO.output_string  () in
+  print ~first ~last ~sep print_a os list;
+  InnerIO.close_out os (* returns contents *)*)
+
+let reduce f a =
+  if Array.length a = 0 then
+    invalid_arg "Array.reduce: empty array"
+  else (
+    let acc = ref a.(0) in
+    for i = 1 to Array.length a - 1 do acc := f !acc a.(i) done;
+    !acc
+  )
+
+let min a = reduce Pervasives.min a
+let max a = reduce Pervasives.max a
+
 module Cap =
 struct
   (** Implementation note: in [('a, 'b) t], ['b] serves only as
@@ -325,6 +345,7 @@ struct
   let fast_sort    = fast_sort
   let make_compare = make_compare
   let print        = print
+  let sprint       = sprint
   let sexp_of_t    = sexp_of_t
   let t_of_sexp    = t_of_sexp
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
@@ -360,7 +381,7 @@ struct
       let filter_map ~f a = filter_map f a
   end
 
-  module ExceptionLess =
+  module Exceptionless =
   struct
     let find f e =
       try  Some (find f e)
@@ -372,7 +393,7 @@ struct
   end
 end
 
-module ExceptionLess =
+module Exceptionless =
 struct
   let find f e =
     try  Some (find f e)
@@ -407,10 +428,16 @@ struct
   let for_all ~f a = for_all f a
   let iter2i  ~f a b = iter2i f a b
   let find ~f a = find f a
+  let findi ~f e = findi f e
   let map ~f a = map f a
   let mapi ~f a = mapi f a
   let filter ~f a = filter f a
   let filter_map ~f a = filter_map f a
+  module LExceptionless = struct
+    include Exceptionless
+    let find ~f e = find f e
+    let findi ~f e = findi f e
+  end
 end
 end
 

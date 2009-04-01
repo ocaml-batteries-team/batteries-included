@@ -154,6 +154,9 @@ val iter : (char -> unit) -> string -> unit
    the characters of [s].  It is equivalent to
    [f s.[0]; f s.[1]; ...; f s.[String.length s - 1]; ()]. *)
 
+val iteri : (int -> char -> unit) -> string -> unit
+(** [String.iteri f s] is equivalent to
+   [f 0 s.[0]; f 1 s.[1]; ...; f len s.[len]] where [len] is length of string [s]. *)
 
 (** {6 Finding}*)
 
@@ -243,6 +246,15 @@ val rchop : string -> string
 val trim : string -> string
   (** Returns the same string but without the leading and trailing
       whitespaces. *)
+
+val quote : string -> string
+  (** Add quotes around a string and escape any quote appearing in that string.
+      This function is used typically when you need to generate source code
+      from a string.
+
+      [quote "foo"] returns ["\"foo\""]
+      [quote "\"foo\""] returns ["\\\"foo\\\""]
+      etc. *)
 
 val left : string -> int -> string
 (**[left r len] returns the string containing the [len] first characters of [r]*)
@@ -360,7 +372,7 @@ val slice : ?first:int -> ?last:int -> string -> string
       [copy s].
       
       Negative indexes are interpreted as counting from the end of
-      the string. For example, [slice ~last:-2 s] will return the
+      the string. For example, [slice ~last:(-2) s] will return the
       string [s], but without the last two characters.
       
       This function {b never} raises any exceptions. If the
@@ -426,6 +438,8 @@ val print_quoted: 'a InnerIO.output -> string -> unit
 
    [print_quoted stdout "\"bar\""] prints ["\"bar\""] (with the quotes)
 *)
+
+val t_printer : t Value_printer.t
 
 (**/**)
 
@@ -670,6 +684,15 @@ val trim : [> `Read] t -> _ t
   (** Returns the same string but without the leading and trailing
       whitespaces. *)
 
+val quote : [> `Read] t -> string
+  (** Add quotes around a string and escape any quote appearing in that string.
+      This function is used typically when you need to generate source code
+      from a string.
+
+      [quote ro"foo"] returns [ro"\"foo\""]
+      [quote ro"\"foo\""] returns [ro"\\\"foo\\\""]
+      etc. *)
+
 val left : [> `Read] t -> int -> _ t
 (**[left r len] returns the string containing the [len] first characters of [r]*)
 
@@ -814,6 +837,25 @@ val compare: [> `Read] t -> [> `Read] t -> int
 
 val icompare: [> `Read] t -> [> `Read] t -> int
   (** Compare two strings, case-insensitive. *)
+
+
+(** {7 Printing}*)
+
+val print: 'a InnerIO.output -> [> `Read] t -> unit
+(**Print a string.*)
+
+val println: 'a InnerIO.output -> [> `Read] t -> unit
+(**Print a string, end the line.*)
+
+val print_quoted: 'a InnerIO.output -> [> `Read] t -> unit
+(**Print a string, with quotes.
+
+   [print_quoted stdout "foo"] prints ["foo"] (with the quotes)
+
+   [print_quoted stdout "\"bar\""] prints ["\"bar\""] (with the quotes)
+*)
+
+val t_printer : [> `Read] t Value_printer.t
 
 (**/**)
 

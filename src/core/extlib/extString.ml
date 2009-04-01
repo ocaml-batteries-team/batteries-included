@@ -303,6 +303,9 @@ let fold_right f str init =
   in
   loop n init
 
+let iteri f str =
+  for i = 0 to (String.length str) - 1 do f i str.[i] done
+  
 (* explode and implode from the OCaml Expert FAQ. *)
 let explode s =
   let rec exp i l =
@@ -439,6 +442,12 @@ end
 let print         = InnerIO.nwrite
 let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
 let print_quoted out s = ExtPrintf.Printf.fprintf out "%S" s
+let t_printer paren out x =
+  InnerIO.write out '"';
+  print out (escaped x);
+  InnerIO.write out '"'
+
+let quote = ExtPrintf.Printf.sprintf2 "%S"
 
 module Cap =
 struct
@@ -502,6 +511,7 @@ let compare       = compare
 let icompare      = icompare
 let splice        = splice
 let trim          = trim
+let quote         = quote
 let left          = left
 let right         = right
 let head          = head
@@ -510,6 +520,12 @@ let filter_map    = filter_map
 let filter        = filter
 let of_list       = of_list
 let to_list       = to_list
+
+let quote         = quote
+let print         = print
+let println       = println
+let print_quoted  = print_quoted
+let t_printer     = t_printer
 
 external of_string : string -> _ t                = "%identity"
 external to_string : [`Read | `Write] t -> string = "%identity"

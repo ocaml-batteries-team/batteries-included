@@ -36,6 +36,8 @@ module Random = struct
   let nativeint = nativeint
   let float     = float
   let bool      = bool
+  let char ()   = Char.chr (int 256)
+
 
   module State =
   struct
@@ -44,6 +46,8 @@ module Random = struct
       sexp_of_string (Marshal.to_string t [])
     let t_of_sexp s =
       Marshal.from_string (string_of_sexp s) 0
+
+    let char t   = Char.chr (int t 256)
 
     (**A constructor for enumerations of random numbers taking advantage
        of [State] to allow cloning.*)
@@ -83,6 +87,10 @@ module Random = struct
       let next state = bool state in
 	random_enum state next
 
+    let enum_char state () =
+      let next state = char state in
+	random_enum state next
+
   end
 
   let random_enum next = State.random_enum ( State.make_self_init () ) next
@@ -113,6 +121,10 @@ module Random = struct
 	
   let enum_bool () =
     let next state = State.bool state in
+      random_enum next
+
+  let enum_char () =
+    let next state = State.char state in
       random_enum next
 
   open ExtArray

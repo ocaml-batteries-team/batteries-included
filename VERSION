@@ -3,9 +3,53 @@ This is the first beta release of Batteries Included.
 = Changes since alpha 3
 == General
 * New drop-in replacement for ocamlbuild.
+* New drop-in replacement for ocamldep.
+* New drop-in replacement for ocaml, both as toplevel and as interpreter
+
+== Toplevel
+* New directive "#browse".
+* Toplevel now supports .ocamlinit .
+
+== Language
+* The syntax of [open ... include] has been changed into [open ... with]
+* A new construction [p"foo"] allows new-style extensible printf formats.
+* UTF-8 strings are now validated at compile-time.
+* Conversion between literal Latin-1 and UTF8 strings now takes place at compile-time.
 
 == Library
-* Module Digest now compatible with IO.
+* New naming convention for modules.
+* A new module [Print] provides a modular replacement for [Printf].
+* New module [Seq] for integer segments.
+* New module [Future.Logger].
+* Module [Digest] now compatible with IO.
+* Module [Scanf] now compatible with IO.
+* Module [Format] now compatible with IO.
+* Module [Lexing] now compatible with IO.
+* New modules [StringSet], [RopeSet], [IStringSet], [IRopeSet], [IntSet], [StringMap], [RopeMap], [IStringMap], [IRopeMap], [IntMap].
+* Files may now be opened with mmapping.
+* Module [Compiler] may now be used to invoke [ocaml].
+* Module [Vect] now follows order of argument conventions, is enumerable, comprehensible, etc.
+* Enumerations of random values are now clonable.
+* [Random] now can offer random characters.
+* Bigarray can now be enumerated, mapped, iterated, etc.
+* Some operators have been renamed: ( ~~ ) becomes ( --~), etc.
+* More informations on the system configuration are now available through [Batteries_config].
+* New experimental module [Safe_float].
+* Numerous new functions on [String], [String.Cap], [Set], [PSet], [RefList], [UChar], [Pervasives] etc.
+* Speed improvements in [String], [LazyList], [Rope], clients of [IO].
+* [Standard.result] is now sexplib-compatible.
+
+== Build
+* Test-suite created.
+* Now using optcomp.
+* Now detecting default installation directory when necessary.
+* Now permitting parallel build.
+* Slightly faster compilation.
+
+== Bugfixes
+* Drop-in replacement for ocamlc, ocamlopt now use syntax extensions.
+* Garbage-collection of open outputs now more robust.
+* [Safe_int.mul] should now work on 64-bit platforms.
 
 = Changes since alpha 2
 == General

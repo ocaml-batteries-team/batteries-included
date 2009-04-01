@@ -20,7 +20,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 
 module Map =
@@ -117,7 +117,20 @@ struct
       
     val values: 'a t -> 'a Enum.t
       (** Return an enumeration of al the values of a map.*)
+(*
+    val min_key : 'a t -> (key * 'a)
+      (** return the ([key,value]) pair with the smallest key *)
 
+    val max_key : 'a t -> (key * 'a)
+      (** return the [(key,value)] pair with the largest key *)
+
+    val choose : 'a t -> (key * 'a)
+      (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
+*)
+(*
+    val split : key -> 'a t -> ('a t * 'a option * 'a t)
+      (** as [Set.split] *)
+*)
     val enum  : 'a t -> (key * 'a) Enum.t
       (** Return an enumeration of (key, value) pairs of a map.*)
 
@@ -137,7 +150,7 @@ struct
       ('a InnerIO.output -> 'c -> unit) -> 
       'a InnerIO.output -> 'c t -> unit
 
-    module ExceptionLess : sig
+    module Exceptionless : sig
       val find: key -> 'a t -> 'a option
     end
 
@@ -189,7 +202,7 @@ struct
       let keys    t = Enum.map fst (enum t)
       let values  t = Enum.map snd (enum t)
       let of_enum e =
-	Enum.fold (fun (key, data) acc -> add key data acc) empty e
+	Enum.fold (fun acc (key, data) -> add key data acc) empty e
 
 
       let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
@@ -205,6 +218,46 @@ struct
 				   | None   -> acc
 				   | Some v -> add k v acc)  t empty
 
+      let rec min_key = function
+	  Empty -> raise Not_found
+	| Node(Empty, x, d, r, _) -> (x, d)
+	| Node(l, x, d, r, _) -> min_key l
+      let min_key s = min_key (impl_of_t s) (* define properly for t *)
+
+      let rec max_key = function
+	  Empty -> raise Not_found
+	| Node(l, x, d, Empty, _) -> (x, d)
+	| Node(l, x, d, r, _) -> max_key r
+      let max_key s = max_key (impl_of_t s) (* define properly for t *)
+
+      let choose = function
+	  Empty -> raise Not_found
+	| Node(_, x, d, _, _) -> (x, d)
+      let choose s = choose (impl_of_t s) (* define properly for t *)
+
+(*	NEEDS BAL FROM MAP IMPLEMENTATION
+      (* needed by split, not exposed atm *)
+      let rec join (l : 'a implementation) (x : key) (d : 'a) (r : 'a implementation) =
+	match (l, r) with
+            (Empty, _) -> add x d (t_of_impl r)
+	  | (_, Empty) -> add x d (t_of_impl l)
+	  | (Node(ll, lx, ld, lr, lh), Node(rl, rx, rd, rr, rh)) ->
+              if lh > rh + 2 then bal ll lx ld (join lr x d r) else
+		if rh > lh + 2 then bal (join l x d rl) rx rd rr else
+		  create l x d r
+
+      let rec split key = function
+          Empty ->
+            (Empty, None, Empty)
+	| Node(l, x, d, r, _) ->
+            let c = Ord.compare key x in
+            if c = 0 then (l, Some d, r)
+            else if c < 0 then
+              let (ll, pres, rl) = split key l in (ll, pres, join rl x d r)
+            else
+              let (lr, pres, rr) = split key r in (join l x d lr, pres, rr)
+      let split k s = split k (impl_of_t s) (* define properly for t *)
+*)
 
       (*The following is a hack to make sure that we're letting sexplib
 	do the conversion automatically, hence that we're following sexplib protocol.*)
@@ -236,7 +289,7 @@ struct
 	  end in fun a_of_key (t:'a t) -> Local.sexp_of_t a_of_key (impl_of_t t)
 
 
-      module ExceptionLess =
+      module Exceptionless =
       struct
 	let find k t = try Some (find k t) with Not_found -> None
       end

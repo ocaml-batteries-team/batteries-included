@@ -5,7 +5,7 @@ INSTALLATION=
 AC_SUBST(INSTALLATION)
 
 # version info
-VERSION=0.20090128
+VERSION=0.20090331
 AC_SUBST(VERSION)
 
 # check for basic OCaml components
@@ -117,11 +117,11 @@ AC_SUBST(OCAMLFIND_DEPS)
 # set build-time options
 
 # default browser command
-DEFAULT_BROWSER="gnome-open %s &> /dev/null"
+DEFAULT_BROWSER="x-www-browser %s &> /dev/null"
 AC_ARG_WITH(
 	browser,
 	[  --with-browser=BROWSER  set command to open HTML API reference
-	                  default: "gnome-open %s"],
+	                  default: "x-www-browser %s"],
 	BROWSER_COMMAND=$withval,
 	BROWSER_COMMAND=$DEFAULT_BROWSER)
 if test "$BROWSER_COMMAND" = "yes" ; then
@@ -136,6 +136,7 @@ AC_ARG_WITH(
 	[  --with-godi             require compilation for GODI],
 	HAS_GODI=yes,
 	HAS_GODI=no)
+
 AC_SUBST(HAS_GODI)
 if test "$HAS_GODI" = "yes" ; then
    AC_MSG_NOTICE([GODI-specific installation enabled])
@@ -153,21 +154,31 @@ AC_ARG_WITH(
         BUILD_DOC=no)
 AC_SUBST(BUILD_DOC)
 
+AC_MSG_NOTICE([Preparing to locate destination directory])
+AC_MSG_NOTICE([Prefix is ${prefix}])
+AC_MSG_NOTICE([Installation is $INSTALLATION])
 
-AC_MSG_NOTICE([Testing install destination])
-AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
-if test -z "$OCAMLPKG_batteries"; then
-   touch META
-   $OCAMLFIND install batteries META
-   AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
-   DESTDIR=`dirname $OCAMLPKG_batteries`
-   $OCAMLFIND remove batteries &> /dev/null
-   rm META
+if test "$INSTALLATION" = "GODI"; then
+  AC_MSG_NOTICE([Installing to GODI default directory])
+  DESTDIR="`$OCAMLFIND printconf destdir`"
 else
-   AC_MSG_WARN([Batteries is already installed])
-   AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
-   DESTDIR=`dirname $OCAMLPKG_batteries`
+   if test "${prefix}" = "NONE"; then
+        AC_MSG_NOTICE([Locating default installation directory])
+	AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
+	if test -z "$OCAMLPKG_batteries"; then
+   	   DESTDIR=`$OCAMLFIND printconf destdir`
+	else
+	   AC_MSG_WARN([Batteries is already installed])
+   	   AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
+   	   DESTDIR=`dirname $OCAMLPKG_batteries`
+	fi
+   else
+	AC_MSG_NOTICE([Using user-provided prefix ${prefix}])
+	DESTDIR="${prefix}/lib/batteries"
+   fi
 fi
+
+
 AC_MSG_NOTICE([Default destination is $DESTDIR])
 AC_SUBST(DESTDIR)
 
@@ -176,10 +187,17 @@ AC_ARG_WITH(
 	[  --with-docroot=PATH     set documentation root
 	                           default: "$DESTDIR/doc/batteries"],
 	DOCDIR=$withval,
-	DOCDIR=$DESTDIR/doc/batteries)
+	DOCDIR=NONE)
 if test "$DOCDIR" = "yes" ; then
    AC_MSG_ERROR([--with-docroot requires an argument])
    exit 1
+fi
+if test "$DOCDIR" = "NONE"; then
+   if test "$prefix" = "NONE"; then
+      DOCDIR=$DESTDIR/doc/batteries
+   else
+      DOCDIR=$prefix/doc/batteries
+   fi
 fi
 AC_MSG_NOTICE([documentation root directory: $DOCDIR])
 AC_SUBST(DOCDIR)

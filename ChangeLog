@@ -1,3 +1,342 @@
+2009-04-01  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/core/extlib/option.ml: fix t_printer
+
+2009-03-31  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* configure.ac: [gnome-open] replaced by [x-www-browser]
+
+	* Makefile.in: [all] now depends on [install-doc] rather than [install_doc]
+	
+	* src/core/extlib/extPervasives.ml*: [maybe_printer]
+
+	* src/core/extlib/option.ml*: [maybe_printer]
+
+	* src/core/extlib/print.mli: Further savage documentation spree.
+
+	* src/core/extlib/value_printer.mli: typo
+
+	* build/odoc_tags.ml: [INCLUDE "doc_batteries_factored.ml"]
+
+	* src/main/nothreads/batteries.mllib: [Lexing] removed
+
+	* src/main/threads/batteries.mllib: [Lexing] removed
+
+	* README: added subsections
+
+	* src/core/extlib/print.ml*: [iprintf] added
+
+	* src/core/extlib/print.mli: intense documentation
+
+	* examples/tools/conv.ml: now using [Print] rather than [Printf]
+
+	* src/core/extlib/extPrintf.mli: deprecated
+
+2009-03-30  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPervasives.mli: [sexp_of_result], [result_of_sexp] added
+
+	* src/core/extlib/std.ml: [sexp_of_result], [result_of_sexp] added
+	
+	* src/core/extlib/std.ml: [result] now [with sexp]
+
+2009-03-26  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/core/extlib/print.ml*: remove this annoying and useless
+     	third type parameter of [Print.directive]
+
+2009-03-25  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/core/extlib/value_printer.ml*: added
+
+	* src/core/extlib/extPervasives.ml*: added value printers
+
+	* src/syntax/pa_strings/pa_format.ml: handle value printers
+
+2009-03-25  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/seq.ml*: [Failure] replaced with [Invalid_argument]
+
+	* src/core/extlib/extInt.ml: [SafeInt.mul] rewritten without need for native integersx
+
+2009-03-24  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPervasives.ml: [printer_S] now uses [String.quote]
+
+	* src/core/extlib/extPervasives.ml*: [printer_sc], [printer_Sc] added
+
+	* src/core/extlib/extString.ml*: [String.Cap.print*], [String.Cap.quote] added
+
+	* src/core/extlib/innerIO.ml: [read_all] now stops properly also on [Input_closed]
+
+	* src/core/extlib/extLexing.ml: [from_channel] now raises [End_of_file]
+
+	* src/libs/compilers/compilers.ml*: [interpreter_option] added
+
+	* src/libs/compilers/compilers.ml*: [ocaml] added
+
+	* src/batteries_toolchain/ocaml.in: now using "@DESTDIR@/toplevel.top"
+
+	* src/core/baselib/batlib_Baselib_Lexing.*: removed
+	
+	* src/main/threads/batteries.ml: [ExtLexing.Lexing] replaces [Lexing]
+
+	* src/main/nothreads/batteries.ml: [ExtLexing.Lexing] replaces [Lexing]
+
+	* src/core/extlib.mlpack: [ExtLexing] added
+
+	* src/core/extlib/extLexing.ml*: created
+
+2009-03-24  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/batteries_toolchain/toplevel/cbtop.ml: hack to make syntax extensions to work for scripts
+	
+	* src/core/extlib/seq.ml*: created
+
+	* src/core/extlib.mlpack: added [Seq]
+
+2009-03-22  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/toplevel/cbtop.ml: general cleanup
+
+2009-03-19  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/core/extlib/extUChar.ml*: added [lowercase], [uppercase], [icompare], [IUChar]
+	
+2009-03-22  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/toplevel/cbtop.ml: added
+
+	* src/batteries_toolchain/ocaml.in: now using [cbtop.ml]
+
+	* src/batteries_toolchain/toplevel.mltop: added
+
+	* Makefile.in:[TOPLEVEL_TARGETS], [install] now make use of [toplevel.top]
+
+
+2009-03-17  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/batteries_help.ml: in #browse, now replacing all non-alphanumerical characters
+
+	* src/core/extlib/extList.mli: [takewhile], [dropwhile] moved down
+
+	* src/core/extlib/extList.ml*: [ExceptionLess] => [Exceptionless]
+
+	* src/core/extlib/extList.ml: flattened, copyright updated
+
+	* src/core/extlib/extHashtbl.ml*: [ExceptionLess] => [Exceptionless]
+
+	* src/core/extlib/extHashtbl.ml: flattened, copyright updated
+
+	* src/core/extlib/extMap.ml: flattened, copyright updated
+
+	* src/core/extlib/extMap.ml*: [ExceptionLess] => [Exceptionless]
+	
+	* src/core/extlib/extArray.ml: flattened, copyright updated
+
+	* src/core/extlib/extArray.ml*: [ExceptionLess] => [Exceptionless]
+
+	* src/core/extlib/extSet.ml: flattened, copyright updated
+
+	* src/core/extlib/extSet.ml*: [ExceptionLess] => [Exceptionless]
+
+	* src/core/extlib/enum.ml*: [ExceptionLess] => [Exceptionless]
+	
+	* src/main/threads/batteries.ml: Added module aliases for compatibility with base/ext libraries.
+
+	* src/main/nothreads/batteries.ml: Added module aliases for compatibility with base/ext libraries.
+
+2009-03-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* testsuite/test_pmap.ml: [RefList] => [Ref_list]
+
+	* testsuite/test_enum.ml: [Bigarray] => [Big_array]
+
+	* src/main/nothreads/batteries.ml: renamed [Netchannels] => [Net_channels], [Bigarray] => [Big_array], [Dynarray] => [Dyn_array], [RefList] => [Ref_list], [LazyList] => [Lazy_list], [MultiPMap] => [Multi_pmap], [BitSet] => [Bit_set], [CharEncodings] => [Char_encodings], [OptParse] => [Opt_parse], [CharParser] => [Char_parser], [UCharParser] => [UChar_parser], [ParserCo] => [Parser_co]
+	
+	* src/main/threads/batteries.ml: renamed [Netchannels] => [Net_channels], [Bigarray] => [Big_array], [Dynarray] => [Dyn_array], [RefList] => [Ref_list], [LazyList] => [Lazy_list], [MultiPMap] => [Multi_pmap], [BitSet] => [Bit_set], [CharEncodings] => [Char_encodings], [OptParse] => [Opt_parse], [CharParser] => [Char_parser], [UCharParser] => [UChar_parser], [ParserCo] => [Parser_co]
+
+2009-03-13  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/syntax/pa_strings/pa_format.ml,
+	* src/core/extlib/extPervasives.ml*,
+	* src/core/extlib/print.ml*: rename [pdir_X] to [printer_X]
+
+	* src/core/extlib/print.ml*: added [rprintf] and [krprintf]
+
+	* src/core/extlib/extPervasives.ml*:
+	    - better implementation of directives
+	    - [printer_{int,int32,bool,list,...}] added
+
+	* src/core/extlib/*.ml*:
+	    - [printer_t] added
+
+	* src/syntax/pa_strings/format_*: removed
+	* src/syntax/pa_strings/pa_format.ml: add support for more complex directives
+
+2009-03-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/IO.mli: [inherit_in], [inherit_out] now produce [unit output]
+
+	* src/core/extlib/innerIO.mli: [inherit_in], [inherit_out] now produce [unit output]
+
+	* src/core/extlib/innerIO.ml: [inherit_in], [inherit_out] now don't close their parent by default
+
+2009-03-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* build/preprocess_mli/generate_mli.ml: created
+
+	* build/optcomp/optcomp.ml: [print_token] now accepts optional argument [oc]
+
+	* build/generate_mli.ml: hijacked into only doing the sub-module extraction part
+
+2009-03-12  Jeremie Dimino <jeremie@dimino.org>
+
+	* build/generate_mli.ml: added
+	
+2009-03-12  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/pMap.ml: [enum] changed enumeration order
+
+	* testsuite/test_pmap.ml: created
+
+	* src/core/extlib/refList.ml*: [backwards], [of_backwards] added
+
+2009-03-11  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/innerIO.ml*: [onclose_out] added
+
+	* src/core/extlib/extFormat.ml: [newline_of], [spaces_of] added
+
+	* src/core/extlib/extFormat.ml: [std_formatter], [err_formatter] now flushed at exit
+
+	* src/core/extlib/extFormat.ml: [pp_set_formatter_output] now uses [pp_set_all_formatter_output_functions]
+
+	* src/core/extlib_threads/IOThreads.ml: now using [RMutex] rather than [Mutex]
+
+	* src/core/extlib_threads/extMutex.ml: [DebugMutex] created
+
+	* build/odoc_extract_mli.ml: recreated
+
+	* src/batteries_toolchain/batteries_help.ml: applied patch by kaustuv
+
+	* src/core/extlib/extBigarray.ml*: applied patch by hcarty
+
+	* src/core/extlib/extBigarray.ml*: [Genarray.iter], [Genarray.iteri], [Genarray.map], [Genarray.mapi], 
+
+2009-03-10  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* build/odoc_tags.ml: now uses [Odoc_batteries_factored]
+
+	* build/odoc_batteries_factored.ml: created
+
+	* src/batteries_toolchain/batteries_help.ml: [print_module] now uses flattened name for display
+
+	* myocamlbuild.ml: [sort_modules] now invokes [Depsort.add_node]
+	
+	* myocamlbuild.ml: [Depsort.add] renamed [Depsort.add_dependency]
+
+	* src/core/extlib/extPervasives.ml: [open_in_bin], [open_in_gen], [open_out_bin], [open_out_gen] now clean-up
+
+	* src/core/extlib/file.ml: [open_in], [open_out], [open_temporary_out] now clean up opened files when closing
+
+	* testsuite/test_file.ml: [test_4], [test_5] added
+
+	* testsuite/main.ml: [Test_file.test_4], [Test_file.test_5] added
+
+2009-03-09  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/syntax/pa_batteries/pa_batteries.ml: [initialized] removed
+
+	* src/core/extlib/extMap.ml*: Commented out [min_key], [max_key], [choose]
+
+	* myocamlbuild.ml: [Depsort.add_node] added
+
+	* myocamlbuild.ml: [Pack.sort] now invokes [Depsort.add_node]
+
+	* build/distrib2source.ml: removed
+	
+2009-03-08  Edgar Friendly  <thelema314@gmail.com>
+
+	* src/core/extlib/extMap.ml*: add Map.min_key, max_key, choose (flux)
+	
+	* src/core/extlib/innerIO.ml: Fix bug in autoclose (Paul Pelzl)
+
+	* src/core/extlib/file.ml: [open_in] shouldn't autoclose (Paul Pelzl)
+
+	* src/core/extlib/file.mli: [open_temporary_out] does autoclose -
+	doc bug (Paul Pelzl)
+
+	* Makefile.in: refactoring of Makefile for faster
+	compilation (less ocamlbuild restarts) (Paul Pelzl)
+
+	* Makefile.in: Allow [JOBS=n make] for parallel build (Paul Pelzl)
+
+	* Configure.ac: remove configure hack (Paul Pelzl)
+
+	
+2009-03-08  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* myocamlbuild.ml: [Depsort] created
+
+	* myocamlbuild.ml: [sort_tree], [sort_modules] implemented
+
+	* build/distrib2source.ml: created
+
+
+2009-03-05  Jeremie Dimino <jeremie@dimino.org>
+
+	* src/code/extlib/rope.mli: inverse doc of [starts_with] and [ends_with]
+
+	* src/code/extlib/rope.ml:
+	    - prevent [starts_with] and [ends_with] from failing
+	    - prevent [trim] from failing when all characters are whitespaces
+	    - more efficient [of_ustring]
+	    - add efficient iterators, implement some TODO with them
+	    - bugfix: [compare] and [icompare] where wrong
+	    - prevent [lchop] and [rchop] from failing
+
+	* src/syntax/pa_strings/pa_strings.ml:
+	    - compile-time validation of utf8 strings
+	    - compile-time recoding latin1 -> utf8
+
+2009-03-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* doc/batteries/html/toplevel.html: Documentation on #browse added.
+
+	* src/batteries_toolchain/batteries_help.ml: New directive #browse.
+
+	* src/core/extlib/extPervasives.mli: Excluded printf directives from documentation generation.
+
+	* src/core/extlib/extPrint.mli: More documentation.
+
+	* configure.ac: Now detecting default installation directory only if $prefix is NONE
+
+	* configure.ac: Now adapting doc installation directory to $prefix.
+
+2009-03-04  Jeremie Dimino <jeremie@dimino.org>
+
+	* examples/snippets/test_printf.ml: change examples
+
+	* src/core/extlib/exrPervasives.ml*: added [pdir_{f,F,obj}]
+
+	* src/core/extlib/extPrintf.ml*: renamed [Print]
+
+	* src/core/extlib/extPrintf2.ml*: renamed [ExtPrint]
+
+2009-03-03  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extPrintf2.mli: Documentation.
+
+2009-03-03  Jeremie Dimino <jeremie@dimino.org>
+
+	* Makefile.in: target pa_strings.cmo -> pa_strings.cma
+
+2009-03-02  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extRandom.ml*: [char], [enum_chars] added
+
+	* src/core/extlib/extString.ml*: [quote] added
 
 2009-02-21  Jeremie Dimino <jeremie@dimino.org>
 	* src/core/extlib/extPrintf2.ml*: created

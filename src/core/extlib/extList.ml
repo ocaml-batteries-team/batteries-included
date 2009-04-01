@@ -3,7 +3,7 @@
  * Copyright (C) 2003 Brian Hurt
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2008 Red Hat Inc.
- * Copyright (C) 2008 David Teller
+ * Copyright (C) 2008 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
  *)
 
 open Sexplib
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module List = struct
 
@@ -586,7 +586,7 @@ let enum l =
 
 let of_enum e =
 	let h = dummy_node() in
-	let _ = Enum.fold (fun x acc ->
+	let _ = Enum.fold (fun acc x ->
 		let r = { hd = x; tl = [] }  in
 		acc.tl <- inj r;
 		r) h e in
@@ -615,6 +615,42 @@ let assoc_inv e l =
   | _::t                -> aux t
   in aux l
 
+let sort_unique cmp lst = 
+  let sorted = List.sort cmp lst in
+  let fold first rest = List.fold_left
+    (fun (acc, last) elem ->
+       if (cmp last elem) = 0 then (acc, elem)
+        else (elem::acc, elem)
+    )
+    ([first], first)
+    rest
+   in 
+  match sorted with
+   | [] -> []
+   | hd::tl ->
+   begin
+    let rev_result, _ = fold hd tl in
+    List.rev rev_result
+   end
+
+let group cmp lst = 
+  let sorted = List.sort cmp lst in
+  let fold first rest = List.fold_left
+    (fun (acc, agr, last) elem ->
+       if (cmp last elem) = 0 then (acc, elem::agr, elem)
+        else (agr::acc, [elem], elem)
+    )
+    ([], [first], first)
+    rest
+   in 
+  match sorted with
+   | [] -> []
+   | hd::tl ->
+   begin
+    let groups, lastgr, _ = fold hd tl in
+    List.rev_map List.rev (lastgr::groups)
+   end
+
 let sexp_of_t = Conv.sexp_of_list
 let t_of_sexp = Conv.list_of_sexp
 
@@ -630,6 +666,8 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
       iter (InnerIO.Printf.fprintf out "%s%a" sep print_a) t;
       InnerIO.nwrite out last
 
+let t_printer a_printer paren out x = print (a_printer false) out x
+
 let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a list =
   ExtPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
 (*  let os = InnerIO.output_string  () in
@@ -642,15 +680,19 @@ let reduce f = function [] -> invalid_arg "List.reduce: empty list"
 let min l = reduce Pervasives.min l
 let max l = reduce Pervasives.max l
 
-module ExceptionLess = struct
+module Exceptionless = struct
   let rfind p l =
     try  Some (rfind p l)
+    with Not_found -> None
+
+  let find p l =
+    try Some (find p l)
     with Not_found -> None
 
   let findi p l =
     try  Some (findi p l)
     with Not_found -> None
-      
+
   let split_at n l =
     try   `Ok (split_at n l)
     with  Invalid_index i -> `Invalid_index i
@@ -714,6 +756,13 @@ module Labels = struct
   let stable_sort ?(cmp=compare)  = stable_sort cmp
   let fast_sort ?(cmp=compare)    = fast_sort cmp
   let merge ~cmp         = merge cmp
+
+  module LExceptionless = struct
+    include Exceptionless
+    let rfind ~f l = rfind f l
+    let find ~f l = find f l
+    let findi ~f l = findi f l
+  end
 end
 
 end

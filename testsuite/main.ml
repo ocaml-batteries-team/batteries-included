@@ -1,12 +1,18 @@
 open Testing
 
 let tests =
-  [ Test_vect.test_1;
+  [ Test_toplevel.test_1;
+    Test_toplevel.test_2;
+    Test_pmap.test_1;
+    Test_vect.test_1;
     Test_vect.test_2;
     Test_vect.test_3;
     Test_vect.test_4;
     Test_file.test_1;
     Test_file.test_2;
+    Test_file.test_3;
+    Test_file.test_4;
+    Test_file.test_5;
     Test_string.test_1;
     Test_string.test_2;
     Test_string.test_3;

@@ -105,12 +105,22 @@ let post r op =
 let uid = ref 0
 let uid () = post_incr uid
 
+let on_close_out out f =
+  Concurrent.sync !lock (fun () -> 
+			   let do_close = out.out_close in
+			     out.out_close <- (fun () -> f out; do_close ())) ()
+
+let on_close_in inp f =
+  Concurrent.sync !lock (fun () -> 
+			   let do_close = inp.in_close in
+			     inp.in_close <- (fun () -> f inp; do_close ())) ()
+
 let close_in i =
-	let f _ = raise Input_closed in
-	i.in_close();
-	i.in_read <- f;
-	i.in_input <- f;
-	i.in_close <- noop (*Double closing is not a problem*)
+  let f _ = raise Input_closed in
+    i.in_close();
+    i.in_read <- f;
+    i.in_input <- f;
+    i.in_close <- noop (*Double closing is not a problem*)
 
 
 let wrap_in ~read ~input ~close ~underlying =
@@ -128,9 +138,9 @@ in
     result
 
 let inherit_in ?read ?input ?close inp =
-  let read = match read  with None -> inp.in_read | Some f -> f
-  and input= match input with None -> inp.in_input| Some f -> f
-  and close= match close with None -> inp.in_close| Some f -> f
+  let read  = match read  with None -> inp.in_read | Some f -> f
+  and input = match input with None -> inp.in_input| Some f -> f
+  and close = match close with None -> ignore      | Some f -> f
   in  wrap_in ~read ~input ~close ~underlying:[inp]
 
 
@@ -156,6 +166,7 @@ let rec close_unit (o:unit output) : unit =
 (*Close a ['a output] -- first close it as a [unit output] then
   recover the result.*)
 let close_out o =
+(*  Printf.eprintf "close_out\n%!";*)
   close_unit (cast_output o);
   o.out_close ()
 
@@ -184,7 +195,7 @@ let inherit_out ?write ?output ?flush ?close out =
   let write = match write  with None -> out.out_write | Some f -> f
   and output= match output with None -> out.out_output| Some f -> f
   and flush = match flush  with None -> out.out_flush | Some f -> f
-  and close = match close  with None -> out.out_close | Some f -> f
+  and close = match close  with None -> ignore        | Some f -> f
   in wrap_out ~write ~output ~flush ~close ~underlying:[out]
 
 let create_out ~write ~output ~flush ~close =
@@ -285,25 +296,25 @@ let close_all () =
   Concurrent.sync !lock  (Outputs.iter (fun o -> try close_out o with _ -> ())) outputs
 
 let read_all i =
-	let maxlen = 1024 in
-	let str = ref [] in
-	let pos = ref 0 in
-	let rec loop() =
-		let s = nread i maxlen in
-		str := (s,!pos) :: !str;
-		pos := !pos + String.length s;
-		loop()
-	in
-	try
-		loop()
-	with
-		No_more_input ->
-			let buf = String.create !pos in
-			List.iter (fun (s,p) ->
-				String.unsafe_blit s 0 buf p (String.length s)
-			) !str;
-			buf
-
+  let maxlen = 1024 in
+  let str    = ref [] in
+  let pos    = ref 0 in
+  let rec loop() =
+    let s = nread i maxlen in
+      str := (s,!pos) :: !str;
+      pos := !pos + String.length s;
+      loop()
+  in
+    try
+      loop()
+    with
+	No_more_input
+      | Input_closed ->
+	  let buf = String.create !pos in
+	    List.iter (fun (s,p) ->
+			 String.unsafe_blit s 0 buf p (String.length s)
+		      ) !str;
+	    buf
 
 let input_string s =
   let pos = ref 0 in
@@ -370,7 +381,7 @@ let input_channel ?(autoclose=true) ?(cleanup=false) ch =
 	      let n = Pervasives.input ch s p l in
 		if n = 0 then 
 		  begin
-		    close_in !me;
+                    if autoclose then close_in !me else ();
 		    raise No_more_input
 		  end
 		else n)
@@ -383,7 +394,16 @@ let output_channel ?(cleanup=false) ch =
     create_out
       ~write: (fun c     -> output_char ch c)
       ~output:(fun s p l -> Pervasives.output ch s p l; l)
-      ~close: (if cleanup then fun ()    -> Pervasives.close_out ch else fun () -> Pervasives.flush ch)
+      ~close: (if cleanup then fun () -> 
+		 begin
+(*		   Printf.eprintf "Cleaning up\n%!";*)
+		   Pervasives.close_out ch 
+		 end
+	       else fun () -> 
+		 begin
+(*		   Printf.eprintf "Not cleaning up\n%!";*)
+		   Pervasives.flush ch
+		 end)
       ~flush: (fun ()    -> Pervasives.flush ch)
 
 

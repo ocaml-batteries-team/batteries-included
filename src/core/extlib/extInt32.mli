@@ -227,4 +227,5 @@ module Int32 :
 
     (** {7 Printing}*)
     val print: 'a InnerIO.output -> t -> unit
+    val t_printer : t Value_printer.t
   end

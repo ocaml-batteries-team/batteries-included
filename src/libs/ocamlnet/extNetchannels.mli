@@ -19,18 +19,23 @@
  * USA
  *)
 
-(** TODO understand what to do with the .mli of this module. It
-    extends ocamlnet's Netchannels, should we inline all the .mli of
-    Netchannels or do we have a better solution for that? *)
+(** Compatibility layer between Batteries and Netchannels.
+
+    @author Stefano Zacchiroli
+*)
+
+(* TODO understand what to do with the .mli of this module. It extends
+   ocamlnet's Netchannels, should we inline all the .mli of
+   Netchannels or do we have a better solution for that? *)
 
 open Extlib
 
 module Netchannels :
 sig
 
-include Netchannels_modtype.Netchannels
+  include Netchannels_modtype.Netchannels
 
-(** {6 Basic I/O class types for library interoperability} *)
+  (** {6 Basic I/O class types for library interoperability} *)
 
 (** Accumulator channel (meaningful for Netchannels built from
     Batteries output channels).

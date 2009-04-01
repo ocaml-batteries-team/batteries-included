@@ -34,19 +34,35 @@ Paths can be used with different string implementations:
    {6 Functorized interface}
 *)
 
+(* the part copied to PathGen.ml starts here *)
+
 (** This signature lists few basic operations provided by all string types. *)
 module type StringType = sig
 
-  (** 'Bytes' here may be replaced by anything as long as it is consitent in all functions taking/returning [int] (except [compare], of course). *)
+  (** The actual implementation may use any (coherent) scheme of indexing of strings. Below the term 'indexing unit' can stay either for byte or character (or whatever employed by the implementation).
+  This determines meaning of all [int] arguments and results (excluding result of [compare]).
+  *)
  
   type t
   (** Type for strings. *)
   
-  val length_bytes : t -> int
-  (** Length in bytes *)
+  val length : t -> int
+  (** Length - number of indexing units *)
+  
+  type tchar
+  (** Character type used by [t].*)
+  
+  val get : t -> int -> tchar
+  (** Usual get function. *)
+  
+  val lift_char : char -> tchar
+  (** Convert Latin-1 character to [tchar]. *)
   
   val lift : string -> t
-  (** Convert from string of primitive [string] type. *)
+  (** Convert from UTF-8 string of primitive [string] type. *)
+  
+  val to_string : t -> string
+  (** Convert to primitive string with UTF-8 content. *)
   
   val concat_with_separators : t -> t list -> t
   (** [concat_with_separators sep lst] catenates all {i n} elements of [lst] inserting {i (n-1)} copies of [sep] in between. *)
@@ -54,27 +70,17 @@ module type StringType = sig
   val compare : t -> t -> int
   (** Usual comparison function. *)
   
-  val sub : t -> int -> int -> t
-  (** As {!String.sub}, byte-indexed *)
+  val iter : (tchar -> unit) -> t -> unit
+  val iteri : (int -> tchar -> unit) -> t -> unit
   
-  module Regexp : sig
-    type rt    
-    (** As {!type:Str.regexp} *)
-
-    val make : string -> rt (* From primitive string! *)
-    (** As {!val:Str.regexp} *)
-
-    val for_string : t -> rt 
-    (** As {!Str.regexp_string} *)
-
-    val full_match  : rt -> t -> bool 
-    (** [full_match rx word] returns true if [word] belongs to the regular language of [rt]. *)
-    
-    val split_delim : rt -> t -> t list
-    (** As {!Str.split_delim} *)
-
-    val search_backward : rt -> t -> int -> int
-    (** As {!Str.search_backward}, byte-indexed *)
+  val sub : t -> int -> int -> t
+  (** As {!String.sub}, but indexed in specific way. *)
+  
+  val rindex : t -> char -> int
+  
+  module Parse : sig
+    val source : t -> (tchar, CharParser.position) ParserCo.Source.t
+    val letter : (tchar, tchar, CharParser.position) ParserCo.t
   end
 end
 
@@ -84,6 +90,9 @@ module type PathType = sig
 type ustring
 (** Type of strings used. In case of {!Path.OfRope} it is {!Rope.t} and in {!Path.OfString} module it is  [string].
  *)
+
+type uchar
+(** Type of characters. It corresponds to [ustring] type. *)
 
 (** Convenience operator for lifting primitive strings to [ustring] type. 
 
@@ -188,6 +197,15 @@ val parent : t -> t
 @raise Invalid_argument if empty path (relative [\[\]] or absolute [\[""\]]) is given
 *)
 
+val belongs : t -> t -> bool
+(** [belongs base sub] is [true] when [sub] descends from [base], i.e. [base] is a prefix of [sub]. If [base]=[sub] the function returns [true]. It is otherwise [false].
+Both arguments must be absolute paths or both relative. 
+
+If both arguments have a root portion with drive letter and these letters are different, [belongs base sub] returns false. 
+
+@raise Invalid_argument if exactly one of given arguments is absolute path
+*) (* Should this function normalize its arguments? *)
+
 val relative_to_any : t -> t -> t
 (** [relative_to_any base sub] returns relative path [rel] such that 
 [normalize (base/:rel) = normalize sub], i.e. common base is stripped and ".." are added if necessary.
@@ -207,7 +225,7 @@ exception Not_parent
 
 val relative_to_parent : t -> t -> t
 (** [relative_to_parent parent sub] returns relative path [rel] such that 
-[(normalize parent)/:rel = normalize sub]. It is checked if [parent] is really a parent of [sub].
+[(normalize parent)/:rel = normalize sub]. It is checked if [sub] is really a descendant of [parent].
 Both arguments must be absolute paths or both relative.
 
 This function normalizes [base] and [sub] before calculation of the relative path.
@@ -243,12 +261,16 @@ val default_validator : validator ref
 
 (** {6 Conversions} *)
    
-val to_string : t -> ustring 
-(** Convert to string. Empty relative path is converted to "." (single dot).
+val to_ustring : t -> ustring 
+(** Convert to the chosen [ustring] type. Empty relative path is converted to "." (single dot).
 
  {e Windows:} backslash is used as a separator and double backslash for root. If the path is only a drive letter (empty absolute path) trailing backslash is added (e.g. [to_string \["C:"\] = "C:\"]).
  
+ @see 'to_string' is likely to bo more useful
  "*)(* Dangling quote character because of ocamldoc lexer being apparently incompatible with OCaml. *)
+
+val to_string : t -> string 
+(** Convert to type primitive string with UTF-8 content. The string is built in the same way as by [to_ustring] function. *)
 
 val of_string : ustring -> t
 (** Parse path in a given string. Any number of consecutive separators collapse ("a//b" becomes "a/b"). [Path.default_validator] is applied to each resulting name.
@@ -259,13 +281,15 @@ val of_string : ustring -> t
 
 (** {7 Convenience aliases} *)
 
-val s : t -> ustring
+val s : t -> string
 (** = {!to_string} *)
 
 val p : ustring -> t
 (** = {!of_string} *)
 
-(** {6 Name related functions} *)
+(** {6 Name related functions} 
+These funtions do not accept empty paths, i.e. [\[\]], [\[""\]] or [\["C:"\]].
+*)
 
 val name : t -> ustring
 (** Returns name of the object the pathname points to, i.e.
@@ -294,36 +318,158 @@ val ext : t -> ustring option
 [ext [".hidden"] = Some "hidden"] {e (!)}
 
 Extension begins where the rightmost dot in the name is found. If the name ends with a dot, the extension is empty and [Some ""] is returned. If there is no extension (no dot) the function returns [None].
+
+@example "Count unfinished music downloads (files ending with '.ogg.part')."
+{[
+let count_music_parts download_dir =
+  let files = Directory.files download_dir in
+  let check file =
+    match Path.ext file with
+     | Some "part" -> ((Path.ext (Path.name_core file)) = "ogg")
+     | _ -> false
+   in
+  let music_parts = List.filter check files in
+  List.length music_parts
+]}
+
 @raise Invalid_argument if empty path (relative [\[\]] or absolute [\[""\]]) is given
 *)
 
 val map_ext : (ustring option -> ustring option) -> t -> t
 (** [map_ext fu path] returns [path] but with the name with extension given by [fu (]{!PathType.ext}[ path)]. If [fu] returns [Some _], the original extension may be replaced (when [Some ext] is passed to [fu]) or new added (when [fu] gets [None]). In case [fu] returns [None], the extension is removed (if exists). 
 
-Example: [map_ext (function Some _ | None -> Some "png") (["foo"]/:"bar.jpeg") = ["foo"]/:"bar.png"]  
+@example "A name for file being encoded in a new format." 
+{[
+let pngname file = map_ext (function Some _ | None -> Some "png") file
+let new_bar = pngname (["foo"]/:"bar.jpeg") (* = ["foo"]/:"bar.png" *)
+]}
 
 {!PathType.default_validator} is applied to the resulting name.  
 
-{e Windows:} If [fu] returns [Some ""] (to make a name with trailing period) [map_ext] returns a path that shouldn't be passed to the operating system (is invalid).
+The replacement string returned by the mapping function [fu] can contain dots. Consequently, this string doesn't need to be an extension as defined by the {!ext} function. Consider for example:
+{[
+let before = foo/:"bar.mli"
+let replacement = "mli.off"
+let ext_before = Path.ext before (* = Some "mli" *)
+let after = Path.map_ext (fun _ -> Some replacement) before (* = foo/:"bar.mli.off" *)
+let ext_after = Path.ext after (* = Some "off" *)
+]}
+Note the difference between [replacement] and [ext_after]!
+[(map_ext fu)] is idempotent only if [fu] always returns [Some _]. Otherwise it can remove the extension, possibly exposing part of the name that becomes the new extension.
+
+{e Windows:} If [fu] returns [Some ""] (to make a name with trailing period) [map_ext] returns a path that shouldn't be passed to the operating system (it is invalid).
 
 @raise Illegal_char (raised by validator if any bad character is found)
+@raise Invalid_argument if empty path (relative [\[\]] or absolute [\[""\]]) is given
+*)
+
+val name_core : t -> ustring
+(**
+Returns part of the name to the left of rightmost dot. Returns empty string if the name starts with a dot.
+
+@example "Label for a piece of GUI in which a file is edited."
+{[
+let tab_label modified file =
+  let text = (if modified then "*" else "") ^ (Path.name_core file) in
+  GMisc.label ~text ()
+]}
+
+@raise Invalid_argument if empty path (relative [\[\]] or absolute [\[""\]]) is given
+*)
+
+type components = t * ustring * ustring option
+(** A [path] can be represented by the following triple:
+  [(Path.parent path, Path.name_core path, Path.ext path)]
+*)
+
+val split : t -> components
+(** Dissect the path to its components (parent path, core part of name and possibly an extension).
+
+Resulting [name_core] string can be empty. For example, 
+[Path.split (Path.root/:"home"/:"user"/:".bashrc")] equals [(Path.root/:"home"/:"user", "", Some "bashrc")].
+
+@raise Invalid_argument if empty path (relative [\[\]] or absolute [\[""\]]) is given
+*)
+
+val join : components -> t
+(** Create a path from given components.
+
+@raise Illegal_char (raised by validator on any bad character)
+
+@example "Creating paths for a series of numbered images."
+{[
+let get_animation_frames working_dir count =
+  let frame_file num = Path.join
+    (working_dir/:"rendering"
+    ,"frame"^(stirng_of_int num)
+    ,Some "png"
+    )
+   in
+  Enum.map frame_file (1 -- count)
+]}
+*)
+
+val map : (components -> components) -> t -> t
+(** Map a path through a function that operates on separate components.
+
+@raise Illegal_char (raised by validator on any bad character)
+@raise Invalid_argument if empty path (relative [\[\]] or absolute [\[""\]]) is given
+
+@example "Insert a string just before file extension."
+{[
+let extract_first_page file =
+  let insert (parent, name_core, ext) = (parent, name_core ^ "_page1", ext) in
+  let result_file = Path.map insert file in
+  let code = Sys.command
+    (String.concat ' '
+      ["psselect -p1 <"; P.s file
+      ;" >"; P.s result_file
+      ]
+    )
+   in
+  if code = 0 then result_file else failwith "psselect"
+]}
+*)
+
+(** {6 Supplementary functions} *)
+
+val drive_letter : t -> uchar option
+(**
+Return drive letter of the given absolute path.
+
+{e Windows:} [drive_letter abs] returns [None] if [abs] is simple absolute path (i.e. begins with a separator), otherwise the root element of [abs] consists of a letter [ch] with a colon - in this case [Some ch] is returned.
+
+{e Other systems:} Returns [None] on all absolute paths.
+
+@example "(Windows only) Are the locations on the same partition?"
+{[let can_move_quickly ~path_from ~path_to =
+    (drive_letter path_from) = (drive_letter path_to)
+]}
+
+@raise Invald_argument if relative path is given
 *)
 
 end
 
-module Make : functor (S : StringType) -> PathType with type ustring = S.t
+(* end of the part that is copied to PathGen.ml *)
+
+
+module Make : functor (S : StringType) -> PathType with type ustring = S.t and type uchar = S.tchar
 (** Constructs path handling module for string-like type and its operations given in [S].
 
     @documents Future.Path.Make
 *)
 
-module OfString : PathType with type ustring = string
+module OfString : PathType with type ustring = string and type uchar = char
 (** This implementation can be used with UTF-8, but encoding of used strings is not verified.
 
     @documents Future.Path.OfString
 *)
-
 (*
 module OfRope : PathType with type ustring = Rope.t
-(** In this implementation used strings are always valid UTF-8. *)
+(** In this implementation used strings are always valid UTF-8.
+
+    @documents Future.Path.OfRope
+*)
+
 *)

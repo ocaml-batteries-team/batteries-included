@@ -221,6 +221,7 @@ module Float :
 
     (** {7 Printing}*)
     val print: 'a InnerIO.output -> t -> unit
+    val t_printer : t Value_printer.t
 end
 
 
@@ -429,4 +430,5 @@ module Safe_float :
 
     (** {7 Printing}*)
     val print: 'a InnerIO.output -> t -> unit
+    val t_printer : t Value_printer.t
 end

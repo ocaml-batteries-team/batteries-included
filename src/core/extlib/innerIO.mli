@@ -137,6 +137,11 @@ val output_buffer : Buffer.t -> string output
     in an efficient way. Closing  returns the whole contents of the buffer
     -- the buffer remains usable.*)
 
+val on_close_out : 'a output -> ('a output -> unit) -> unit
+  (**
+     Register a function to be triggered just before an output is closed.
+  *)
+
 val create_in :
   read:(unit -> char) ->
   input:(string -> int -> int -> int) -> 
@@ -197,8 +202,8 @@ val inherit_out:
   ?write:(char -> unit) ->
   ?output:(string -> int -> int -> int) -> 
   ?flush:(unit -> unit) ->
-  ?close:(unit -> 'a) -> 
-  'a output -> 'a output
+  ?close:(unit -> unit) -> 
+  _ output -> unit output
 (**
    Simplified and optimized version of {!wrap_out} whenever only
    one output appears as dependency.

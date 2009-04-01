@@ -1,8 +1,8 @@
 (*
  * ExtArray - additional and modified functions for arrays.
- * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
- *               1996 Xavier Leroy
- *               2008 David Teller, LIFO, Universite d'Orleans
+ * Copyright (C) 1996 Xavier Leroy
+ *               2005 Richard W.M. Jones (rich @ annexia.org)
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -153,6 +153,19 @@ sig
 	[f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
 	where [n] is the length of the array [a]. *)
     
+  val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
+    (** [Array.reduce f a] is [fold_left f a.(0) a.(1 .. n-1)].
+
+        @raise Invalid_argument on empty arrays. *)
+
+  val max : 'a array -> 'a
+    (** [max a] returns the largest value in [a] as judged by
+        [Pervasives.compare] *)
+
+  val min : 'a array -> 'a
+    (** [min a] returns the smallest value in [a] as judged by
+        [Pervasives.compare] *)
+
   (**{6 Operations on two arrays}*)
     
   val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
@@ -335,6 +348,21 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
       on typical input.
   *)
 
+(** {6 Boilerplate code}*)
+(** {7 S-Expressions}*)
+
+val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
+val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
+
+(** {7 Printing}*)
+
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> 'b t -> unit
+  (** Print the contents of an array *)
+
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> 'b t -> string
+  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
+
+val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
 
   (**/**)
   (** {6 Undocumented functions} *)
@@ -671,7 +699,10 @@ val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('a, [>`Read]) t -> Sexplib.Sexp.t
 (** {7 Printing}*)
   
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> ('b, [>`Read]) t -> unit
+  (** Print the contents of an array *)
   
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> ('b, [>`Read]) t -> string
+  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
   
   
 (**/**)
@@ -694,14 +725,14 @@ external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_se
    operation}} or {{:../extensions.html#multialias}{alias several
    modules to one name}}. For instance, to open a version of {!Array.Cap}
    with exceptionless error management, you may write {v open Array.Cap,
-   ExceptionLess v}. To locally replace module {!Array.Cap} with a module of
+   Exceptionless v}. To locally replace module {!Array.Cap} with a module of
    the same name but with exceptionless error management, you may
-   write [module Array = Array.Cap include ExceptionLess]
+   write [module Array = Array.Cap include Exceptionless]
 
 *)
 
 (** Operations on {!Array} without exceptions.*)
-module ExceptionLess : sig
+module Exceptionless : sig
 
     
   val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a option
@@ -767,6 +798,9 @@ end
     
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> 'b t -> unit
 
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> 'b t -> string
+  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
+
   (** {6 Override modules}*)
 
 (**
@@ -779,14 +813,14 @@ end
    operation}} or {{:../extensions.html#multialias}{alias several
    modules to one name}}. For instance, to open a version of {!Array}
    with exceptionless error management, you may write [open Array,
-   ExceptionLess]. To locally replace module {!Array} with a module of
+   Exceptionless]. To locally replace module {!Array} with a module of
    the same name but with exceptionless error management, you may
-   write [module Array = Array include ExceptionLess].
+   write [module Array = Array include Exceptionless].
 
 *)
 
 (** Operations on {!Array} without exceptions.*)
-module ExceptionLess : sig
+module Exceptionless : sig
 
     
   val find : ('a -> bool) -> 'a t -> 'a option
@@ -834,10 +868,15 @@ module Labels : sig
   val for_all:    f:('a -> bool) -> 'a t -> bool
   val iter2i:     f:( int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
   val find:       f:('a -> bool) -> 'a t -> 'a
+  val findi:      f:('a -> bool) -> 'a t -> int
   val map:        f:('a -> 'b) -> 'a t -> 'b t
   val mapi:       f:(int -> 'a -> 'b) -> 'a t -> 'b t
   val filter:     f:('a -> bool) -> 'a t -> 'a t
   val filter_map: f:('a -> 'b option) -> 'a t -> 'b t
+  module LExceptionless : sig
+    val find:       f:('a -> bool) -> 'a t -> 'a option
+    val findi:      f:('a -> bool) -> 'a t -> int option
+  end
 end
 
 

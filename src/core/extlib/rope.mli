@@ -90,7 +90,7 @@ exception Invalid_rope
     and received an unacceptable rope.*)
 
 val max_length : int
-  (** Maximum length of the rope. *)
+  (** Maximum length of the rope (number of UTF-8 characters). *)
   
 (** {6 Creation and conversions} *)
   
@@ -101,7 +101,7 @@ val of_latin1: string -> t
   (** Constructs a unicode rope from a latin-1 string. *)
 
 val of_string : string -> t
-  (** [of_string s] returns a reope corresponding to the UTF-8 encoded string [s].*)
+  (** [of_string s] returns a rope corresponding to the UTF-8 encoded string [s].*)
 
 val to_string : t -> string
   (** [to_string t] returns a UTF-8 encoded string representing [t]*)
@@ -117,7 +117,7 @@ val of_uchar: UChar.t -> t
   (** [of_uchar c] returns a rope containing exactly character [c].*)
 
 val of_char: char -> t
-  (** [of_char c] returns a rope containing exactly character [c].*)
+  (** [of_char c] returns a rope containing exactly Latin-1 character [c].*)
 
 val make : int -> UChar.t -> t
   (** [make i c] returns a rope of length [i] consisting of [c] chars;
@@ -160,7 +160,8 @@ val is_empty : t -> bool
   (** Returns whether the rope is empty or not. *)
   
 val length : t -> int
-  (** Returns the length of the rope ([O(1)]). *)
+  (** Returns the length of the rope ([O(1)]).
+      This is number of UTF-8 characters. *)
   
 val height : t -> int
   (** Returns the height (depth) of the rope. *)
@@ -232,7 +233,7 @@ val iter : (UChar.t -> unit) -> t -> unit
       in order. *)
   
 val iteri : ?base:int -> (int -> UChar.t -> unit) -> t -> unit
-  (** Operates like iter, but also passes the index of the character
+  (** Operates like [iter], but also passes the index of the character
       to the given function. *)
   
 val range_iter : (UChar.t -> unit) -> int -> int -> t -> unit
@@ -401,10 +402,10 @@ val rfind_from: t -> int -> t -> int
 
 
 val starts_with : t -> t -> bool
-(** [ends_with s x] returns [true] if the rope [s] is ending with [x], [false] otherwise. *)
+(** [starts_with s x] returns [true] if [s] is starting with [x], [false] otherwise. *)
 
 val ends_with : t -> t -> bool
-(** [starts_with s x] returns [true] if [s] is starting with [x], [false] otherwise. *)
+(** [ends_with s x] returns [true] if the rope [s] is ending with [x], [false] otherwise. *)
 
 val exists : t -> t -> bool
 (** [exists str sub] returns true if [sub] is a subrope of [str] or
@@ -543,3 +544,4 @@ val sexp_of_t : t -> Sexplib.Sexp.t
 
 val print: 'a InnerIO.output -> t -> unit
 
+val t_printer : t Value_printer.t
