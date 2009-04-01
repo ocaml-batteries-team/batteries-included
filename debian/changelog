@@ -9,6 +9,7 @@ ocaml-batteries (0.20090401+gitE192725-1) unstable; urgency=low
     - use tg2quilt.mk snippet (shipped by topgit) to generated patches
   * debian/control:
     - add new build-dep on ocamlnet (Closes: #515792)
+  * debian/README.source: point to existing documents
 
  -- Stefano Zacchiroli <zack@debian.org>  Wed, 01 Apr 2009 15:38:37 +0200
 

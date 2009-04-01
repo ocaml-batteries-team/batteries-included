@@ -1,69 +1,14 @@
 Building ocaml-batteries Debian package
 =======================================
 
-The ocaml-batteries source package uses quilt to apply and remove its
-patches.  Please refer to /usr/share/doc/quilt/README.source for
-information about how to use quilt for source packages.
+This source package uses quilt to apply and remove its patches. Please
+refer to `/usr/share/doc/quilt/README.source' for information about
+how to use quilt for source packages.
 
-The quilt series is, however, generated from the Git repository, using
-TopGit. Please refer to /usr/share/doc/topgit/README.source for more
-information.
+The quilt series is generated from the Git repository, using TopGit
+(from the `topgit' Debian package). This process is documented in
+`/usr/share/doc/topgit/HOWTO-tg2quilt.gz'.
 
-Branch layout
--------------
+The branch layout is those described in the aforementioned document.
 
-The following branches are in use in the package:
-
-- debian/*    	       Debian-specific patches
-- features/*  	       patches providing new features, targeted upstream
-- fixes/*     	       patches fixing problems with upstream
-- master      	       the main Debianisation branch
-- pristine-tar	       binary deltas for pristine-tar
-- upstream    	       tracks the upstream Git repository
-
-Upstream Git repository is available at:
-
-  http://git.ocamlcore.org/batteries/batteries.git/
-
-Cloning the repository
-----------------------
-
-Cloning a TopGit repository requires an additional step to normal Git
-cloning:
-
- 1. debcheckout ocaml-batteries
- 2. cd ocaml-batteries
- 3. tg remote --populate origin
-
-(Steps 2--3 are optional with devscripts >= 2.10.40)
-
-Building from the Git repository
---------------------------------
-
- 1. Checkout the master branch
- 2. Update (and commit) TG_BRANCHES in debian/rules (if needed)
- 3. Checkout the build branch, and merge master into it
- 4. Generate debian/patches:
-      debian/rules tg-export
- 5. Update the branch (if needed):
-      git add -f -u
-      git add -f debian/patches
-      git commit "Releasing ${VERSION}"
- 6. Build the package (and tag):
-      git-buildpackage \
-        --git-pristine-tar \
-	--git-tag \
-        --git-debian-branch=build \
-	[options]
-
-During development/tests, you can work directly on branch master,
-provided you tell git to ignore debian/patches. You can then skip
-steps 3 and 5, and forget --git-tag and --git-debian-branch options in
-step 6:
-
-  git-buildpackage --git-pristine-tar [options]
-
-Notes:
- - don't commit serialized patches into master
- - don't commit patched sources into master ("git status" will be
-   meaningful only after "debclean")
+ -- Stefano Zacchiroli <zack@debian.org>, Wed,  1 Apr 2009 15:55:50 +0200
