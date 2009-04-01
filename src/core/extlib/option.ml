@@ -75,15 +75,15 @@ let t_printer a_printer paren out = function
       if paren then
         IO.write out '(';
       IO.nwrite out "Some ";
-      a_printer false out x;
+      a_printer true out x;
       if paren then
         IO.write out ')';
   | None ->
       IO.nwrite out "None"
 
-let maybe_printer a_printer _ out = function
+let maybe_printer a_printer paren out = function
   | None -> ()
-  | Some x -> a_printer false out x
+  | Some x -> a_printer paren out x
 
 module Labels =
 struct
