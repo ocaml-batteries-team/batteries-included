@@ -69,22 +69,22 @@ This feature is provided as it may sometimes increase readability.
 As a convenience, you can specify that a module name should serve to
 represent the union of several modules. Consider for instance
 <pre class="example">
-module E = Enum include ExceptionLess, Labels
+module E = Enum with Labels, LExceptionless
 </pre>
 This extract defines a local module name <code>E</code>
 with all the values and types of modules <code>Enum</code>,
-<code>ExceptionLess</code> and <code>Labels</code>. In
+<code>Labels</code> and <code>LExceptionless</code>. In
 particular, some values defined in <code>Enum</code>
-may be overridden with values defined in <code>ExceptionLess</code>
-and/or <code>Labels</code>. 
+may be overridden with values defined in <code>Labels</code>
+and/or <code>LExceptionless</code>. 
 
 
 <pre class="example">
 module Enum =
 struct
  include Enum
- include ExceptionLess
  include Labels
+ include LExceptionless
 end
 </pre>
 

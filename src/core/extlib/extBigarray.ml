@@ -124,6 +124,14 @@ struct
 	while inplace_next ~dims ~coor do
 	  f (get e coor)
 	done
+
+    let iteri f e =
+      let dims     = dims     e in
+      let coor     = Array.Labels.create (num_dims e) ~init:0 in
+	f (Array.Cap.of_array coor) (get e coor);
+	while inplace_next ~dims ~coor do
+	  f (Array.Cap.of_array coor) (get e coor)
+	done
 	  
     let enum e =
       let dims   = dims e
@@ -145,12 +153,18 @@ struct
  		        | `dry -> 
 			    raise Enum.No_more_elements
 		  )
-			    
-			    
 
-			  
+    let map f b_kind a =
+      let d = dims a in
+      let b = create b_kind (layout a) d in
+	iteri (fun i x -> set b (Array.Cap.to_array i) (f x)) a;
+	b
 
-
+    let mapi f b_kind a =
+      let d = dims a in
+      let b = create b_kind (layout a) d in
+	iteri (fun i x -> set b (Array.Cap.to_array i) (f (Array.Cap.read_only i) x)) a;
+	b
   end
 
 
@@ -176,13 +190,100 @@ struct
   module Array1 = struct
     include Bigarray.Array1
     let enum t = Genarray.enum (genarray_of_array1 t)
+
+    let map f b_kind a =
+      let b_dim = dim a in
+      let b = create b_kind (layout a) b_dim in
+      for i = 0 to b_dim - 1 do
+        b.{i} <- f a.{i}
+      done;
+      b
+
+    let mapi f b_kind a =
+      let b_dim = dim a in
+      let b = create b_kind (layout a) b_dim in
+      for i = 0 to b_dim - 1 do
+        b.{i} <- f i a.{i}
+      done;
+      b
+
+    let to_array a = Array.init (dim a) (fun i -> a.{i})
   end
   module Array2 = struct
     include Bigarray.Array2
     let enum t = Genarray.enum (genarray_of_array2 t)
+
+    let map f b_kind a =
+      let b_dim1 = dim1 a in
+      let b_dim2 = dim2 a in
+      let b = create b_kind (layout a) b_dim1 b_dim2 in
+      for i = 0 to b_dim1 - 1 do
+        for j = 0 to b_dim2 - 1 do
+          b.{i, j} <- f a.{i, j}
+        done
+      done;
+      b
+
+    let mapij f b_kind a =
+      let b_dim1 = dim1 a in
+      let b_dim2 = dim2 a in
+      let b = create b_kind (layout a) b_dim1 b_dim2 in
+      for i = 0 to b_dim1 - 1 do
+        for j = 0 to b_dim2 - 1 do
+          b.{i, j} <- f i j a.{i, j}
+        done
+      done;
+      b
+
+    let to_array a =
+      Array.init (dim1 a) (
+        fun i ->
+          Array.init (dim2 a) (
+            fun j -> a.{i, j}
+          )
+      )
   end
   module Array3 = struct
     include Bigarray.Array3
     let enum t = Genarray.enum (genarray_of_array3 t)
+
+    let map f b_kind a =
+      let b_dim1 = dim1 a in
+      let b_dim2 = dim2 a in
+      let b_dim3 = dim3 a in
+      let b = create b_kind (layout a) b_dim1 b_dim2 b_dim3 in
+      for i = 0 to b_dim1 - 1 do
+        for j = 0 to b_dim2 - 1 do
+          for k = 0 to b_dim3 - 1 do
+            b.{i, j, k} <- f a.{i, j, k}
+          done
+        done
+      done;
+      b
+
+    let mapijk f b_kind a =
+      let b_dim1 = dim1 a in
+      let b_dim2 = dim2 a in
+      let b_dim3 = dim3 a in
+      let b = create b_kind (layout a) b_dim1 b_dim2 b_dim3 in
+      for i = 0 to b_dim1 - 1 do
+        for j = 0 to b_dim2 - 1 do
+          for k = 0 to b_dim3 - 1 do
+            b.{i, j, k} <- f i j a.{i, j, k}
+          done
+        done
+      done;
+      b
+
+    let to_array a =
+      Array.init (dim1 a) (
+        fun i ->
+          Array.init (dim2 a) (
+            fun j ->
+              Array.init (dim3 a) (
+                fun k -> a.{i, j, k}
+              )
+          )
+      )
   end
 end

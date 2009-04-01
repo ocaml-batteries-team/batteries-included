@@ -31,10 +31,10 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   include Syntax
   open Sig
   open Ast
-
+(*
     let initialized = ref false (**Used to determine whether toplevel has already been initialized.
 				   [true] once we have opened [Batteries] and [Standard]*)
-
+*)
 
     (*We replace the definitions of [implem] and [interf].*)
 
@@ -133,4 +133,12 @@ end
 
 module M = Register.OCamlSyntaxExtension(Id)(Make)
 
-
+(*
+(**
+   Open [Batteries] and [Standard] in the toploop
+  
+  Experimental.
+*)
+let phrase = !Toploop.parse_toplevel_phrase (Lexing.from_string "open Batteries;;open Standard;;")
+in ignore (Toploop.execute_phrase false Format.std_formatter phrase);;
+*)

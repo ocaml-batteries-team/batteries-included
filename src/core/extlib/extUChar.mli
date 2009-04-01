@@ -39,6 +39,14 @@ val is_newline : t -> bool
       characters 10 ('\r'), 13 (\'n') and characters which are part of
       Unicode category [`Zl] *)
 
+val lowercase : t -> t
+  (** Convert the given character to its equivalent lowercase
+      character. *)
+
+val uppercase : t -> t
+  (** Convert the given character to its equivalent uppercase
+      character. *)
+
 exception Out_of_range
 
 (**
@@ -100,6 +108,10 @@ val compare : t -> t -> int
    0 if [u1] and [u2] are the same Unicode character,
    a value < 0 if [u1] has a smaller Unicode code number than [u2]. *)
 
+val icompare : t -> t -> int
+  (** Compare two unicode characters, case-insensitive. *)
+
+module IUChar : Interfaces.OrderedType with type t = t
 
 (**/**)
 val char_of : t -> char
@@ -205,6 +217,7 @@ val sexp_of_t : t -> Sexplib.Sexp.t
 
 (** {7 Printing}*)
 val print: 'a InnerIO.output -> t -> unit
+val t_printer : t Value_printer.t
 
 (**/**)
 

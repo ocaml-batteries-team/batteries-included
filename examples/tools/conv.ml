@@ -14,6 +14,6 @@ try
 (*V2: Convert input*)
   copy  (encoded_as **> transcode_in (as_encoded stdin **> `named argv.(1)) (`named argv.(2))) stdout;
   flush_all ()
-with Not_found      -> Printf.eprintf "Sorry, unknown encoding.\n%!"
-  |  Malformed_code -> Printf.eprintf "Error: This text is not encoded with encoding %S\n" (argv.(1))
-  |  e              -> Printf.eprintf "Error:\n%s\n%!" (Printexc.to_string e)
+with Not_found      -> Print.eprintf p"Sorry, unknown encoding.\n%!"
+  |  Malformed_code -> Print.eprintf p"Error: This text is not encoded with encoding %S\n" (argv.(1))
+  |  e              -> Print.eprintf p"Error:\n%s\n%!" (Printexc.to_string e)

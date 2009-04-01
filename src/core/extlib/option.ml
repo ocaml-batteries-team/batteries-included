@@ -20,7 +20,7 @@
  *)
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Persistent.Option" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries.Option" (*For Sexplib, Bin-prot...*)
  
 exception No_value
 
@@ -33,6 +33,10 @@ let may f = function
 let map f = function
 	| None -> None
 	| Some v -> Some (f v)
+
+let bind f = function
+  | None -> None
+  | Some v -> f v
 
 let default v = function
 	| None -> v
@@ -65,6 +69,21 @@ let of_enum = Enum.get
 let print print_a out = function
   | None   -> InnerIO.nwrite out "None"
   | Some x -> ExtPrintf.Printf.fprintf out "Some %a" print_a x
+
+let t_printer a_printer paren out = function
+  | Some x ->
+      if paren then
+        IO.write out '(';
+      IO.nwrite out "Some ";
+      a_printer true out x;
+      if paren then
+        IO.write out ')';
+  | None ->
+      IO.nwrite out "None"
+
+let maybe_printer a_printer paren out = function
+  | None -> ()
+  | Some x -> a_printer paren out x
 
 module Labels =
 struct

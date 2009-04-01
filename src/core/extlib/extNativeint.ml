@@ -41,6 +41,7 @@ module Native_int = struct
   let t_of_sexp = Conv.nativeint_of_sexp
 
   let print out t = InnerIO.Printf.fprintf out "%nx" t
+  let t_printer paren out t = print out t
   let ( -- )  x y = Enum.seq x (add one) ((>=) y)
   let ( --- ) x y = 
     if x <= y then x -- y 

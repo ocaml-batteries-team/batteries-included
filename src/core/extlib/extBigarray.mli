@@ -444,9 +444,28 @@ module Genarray :
     (** [iter f a] applies function [f] in turn to all
 	the elements of [a].  *)
 
+  val iteri : ((int, [`Read]) ExtArray.Array.Cap.t -> 'a -> unit) -> ('a, 'b, 'c) t -> unit
+   (** Same as {!iter}, but the
+       function is applied to the index of the coordinates as the first 
+       argument, and the element itself as the second argument. *)
+
   val enum : ('a, 'b, 'c) t -> 'a Enum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
+
+   val map :
+     ('a -> 'b) ->
+     ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
+   (** [map f a] applies function [f] to all the elements of [a],
+       and builds a {!Bigarray.t} with the results returned by [f]. *)
+ 
+   val mapi :
+     ((int, [`Read]) ExtArray.Array.Cap.t -> 'a -> 'b) ->
+     ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
+   (** Same as {!map}, but the
+       function is applied to the index of the coordinates as the first 
+       argument, and the element itself as the second argument. *)
+
 
   end
 
@@ -521,6 +540,24 @@ module Array1 : sig
   val enum : ('a, 'b, 'c) t -> 'a Enum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
+
+  val map :
+    ('a -> 'b) ->
+    ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
+    (** [Array1.map f a] applies function [f] to all the elements of [a],
+	and builds a {!Bigarray.Array1.t} with the results returned by [f]. *)
+    
+  val mapi :
+    (int -> 'a -> 'b) ->
+    ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
+    (** Same as {!Bigarray.Array1.map}, but the
+	function is applied to the index of the element as the first argument,
+	and the element itself as the second argument. *)
+    
+  val to_array : ('a, 'b, 'c) t -> 'a array
+    (** Build a one-dimensional array initialized from the
+	given big array.  *)
+
 
 #if ocaml_version >= (3,11)
 
@@ -639,6 +676,23 @@ module Array2 :
   val enum : ('a, 'b, 'c) t -> 'a Enum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
+
+   val map :
+     ('a -> 'b) ->
+     ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
+   (** [Array2.map f a] applies function [f] to all the elements of [a],
+       and builds a {!Bigarray.Array2.t} with the results returned by [f]. *)
+ 
+   val mapij :
+     (int -> int -> 'a -> 'b) ->
+     ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
+   (** Same as {!Bigarray.Array2.map}, but the
+       function is applied to the index of the element as the first two
+       arguments, and the element itself as the third argument. *)
+ 
+   val to_array : ('a, 'b, 'c) t -> 'a array array
+   (** Build a two-dimensional array initialized from the
+       given big array.  *)
 
 #if ocaml_version >= (3,11)
 
@@ -779,6 +833,23 @@ module Array3 :
   val enum : ('a, 'b, 'c) t -> 'a Enum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
+
+   val map :
+     ('a -> 'b) ->
+     ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
+   (** [Array3.map f a] applies function [f] to all the elements of [a],
+       and builds a {!Bigarray.Array3.t} with the results returned by [f]. *)
+ 
+   val mapijk :
+     (int -> int -> 'a -> 'b) ->
+     ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
+   (** Same as {!Bigarray.Array3.map}, but the
+       function is applied to the index of the element as the first three
+       arguments, and the element itself as the fourth argument. *)
+ 
+   val to_array : ('a, 'b, 'c) t -> 'a array array array
+   (** Build a three-dimensional array initialized from the
+       given big array.  *)
 
 #if ocaml_version >= (3,11)
 

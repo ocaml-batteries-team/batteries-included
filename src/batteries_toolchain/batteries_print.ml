@@ -40,4 +40,3 @@ let print_string_cap_rw fmt t =
 let print_string_cap_ro fmt t =
   Format.fprintf fmt "ro%S" (string_of_cap t)
 
-

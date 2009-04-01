@@ -34,6 +34,9 @@ val lines_of : string -> string Enum.t
     The file is automatically closed once the last line has been reached or the
     enumeration is closed or garbage-collected. *)
 
+val write_lines: string -> string Enum.t -> unit
+(** [write_lines name lines] writes strings given by [lines] to file [name] with newline character appended to each line. *)
+ 
 val size_of: string -> int
 (** [size_of name] returns the size of file [name] in bytes.*)
 
@@ -189,9 +192,6 @@ val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?perm:permission
     (by default ["tmp"])
 
     @return The name of the file and the [output] for writing in it.
-
-    {b Note} You will need to close the file manually. An alternative is
-    to call [with_temporary_out] instead of [open_out].
 
     Naming conventions for files are platform-dependent.*)
 

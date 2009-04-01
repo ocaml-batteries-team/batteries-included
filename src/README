@@ -1,8 +1,11 @@
 This directory contains all the source code for OCaml Batteries Included.
 
-* core/   contains the core of Batteries Included (the Base Library, ExtLib
-  and extensions to ExtLib), as well as a little more (that last part will
-  probably move to a new subdirectory of src/ at some point)
-* main/   contains wrappers around the contents of core/, forming the libraries
-  visible from the outside
+* core/	  contains the core of Batteries Included (the Base Library,
+          ExtLib and extensions to ExtLib), as well as a little more
+          (that last part will probably move to a new subdirectory of
+          src/ at some point)
+* libs/   contains wrapper around external libraries which are
+          nevertheless integrated with (parts of) Batteries
+* main/   contains wrappers around the contents of core/, forming the
+          libraries visible from the outside
 * syntax/ contains several syntax extensions for OCaml

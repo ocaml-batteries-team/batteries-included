@@ -20,6 +20,13 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
+########################################################################
+# ENVIRONMENT CONFIGURATION
+#
+# Variables in this section control the overall behavior of the build
+# script.
+########################################################################
+
 VERSION = @VERSION@
 PACKAGE = batteries
 
@@ -63,9 +70,73 @@ ifeq ($(TERM),dumb)
 OBFLAGS += -classic-display
 endif
 
+# The Makefile can be invoked as "JOBS=<n> make <target>", and the
+# process count <n> will be passed along to ocamlbuild for use on
+# multicore boxes.
+ifdef JOBS
+OBFLAGS += -j $(JOBS)
+endif
+
+OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
+#OCAMLBUILD=ocamlbuild -byte-plugin -classic-display 
+# Replace the first one with the second one if you have build-time
+# issue, to help with trouble-shooting
+
+
 # findlib destdir, if you need to install in non-standard places invoke make as
 #      make install DESTDIR=/some/where/
 DESTDIR = @DESTDIR@
+
+
+########################################################################
+# TARGET SET DEFINITIONS
+#
+# The following variables define the primary sets of objects that
+# ocamlbuild will be instructed to create.
+########################################################################
+
+BYTE_TARGETS = src/main/threads/batteries.cma src/main/threads/run.byte \
+		src/main/nothreads/batteries.cma src/main/nothreads/run.byte
+
+ifeq ($(BUILD_RUNNER),yes)
+OPT_TARGETS = src/main/threads/batteries.cmxa src/main/threads/run.native \
+	src/main/nothreads/batteries.cmxa src/main/nothreads/run.native
+else
+OPT_TARGETS = src/main/threads/batteries.cmxa src/main/nothreads/batteries.cmxa
+endif
+
+SYNTAX_TARGETS = src/syntax/pa_openin/pa_openin.cmo \
+	  src/syntax/pa_openin/pa_openin_r.cmo \
+	  src/syntax/pa_where/pa_where.cmo \
+	  src/syntax/pa_batteries/pa_batteries.cmo \
+	  src/syntax/pa_strings/pa_strings.cma \
+     src/syntax/pa_comprehension/pa_comprehension.cmo
+
+TOPLEVEL_TARGETS = src/batteries_toolchain/toplevel.top \
+                src/batteries_toolchain/batteries_print.cmo \
+		src/batteries_toolchain/batteries_help.cmo
+
+
+########################################################################
+# MAKE RULES
+########################################################################
+
+ifeq ($(HAS_GODI),yes)
+all: config.ml install-doc
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(SYNTAX_TARGETS) $(TOPLEVEL_TARGETS)
+#all: byte syntax top install-doc
+else
+all: config.ml
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(SYNTAX_TARGETS) $(TOPLEVEL_TARGETS)
+#all: byte syntax top
+endif
+
+all_code:
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(OPT_TARGETS) $(TOPLEVEL_TARGETS) $(SYNTAX_TARGETS)
+
+all_byte_code:
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS) $(SYNTAX_TARGETS)
+
 
 ifeq ($(DESTDIR),)
 DESTDIR_FLAGS =
@@ -85,17 +156,6 @@ endif
 #endif
 
 
-OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
-#OCAMLBUILD=ocamlbuild -byte-plugin -classic-display 
-# Replace the first one with the second one if you have build-time
-# issue, to help with trouble-shooting
-
-ifeq ($(HAS_GODI),yes)
-all: byte syntax top install-doc
-else
-all: byte syntax top
-endif
-
 config.ml: Makefile
 	@\rm -f config.ml &&\
 	echo 'let version = "$(VERSION)";;' >> config.ml &&\
@@ -104,8 +164,18 @@ config.ml: Makefile
 
 
 #Useful for testing
-reinstall: byte opt top syntax uninstall install tests
-rebyte: byte top syntax uninstall install tests-byte
+reinstall: test_all_code
+test_all_code: install_all_code
+	$(MAKE) tests
+install_all_code: all_code uninstall
+	$(MAKE) install
+
+rebyte: test_byte_code
+test_byte_code: install_byte_code
+	$(MAKE) tests_byte
+install_byte_code: all_byte_code uninstall
+	$(MAKE) install
+
 ifeq ($(BUILD_DOC),no)
 install-doc:
 else
@@ -116,31 +186,16 @@ install-doc: doc
 endif
 
 byte: config.ml
-	$(OCAMLBUILD) src/main/threads/batteries.cma src/main/threads/run.byte
-	$(OCAMLBUILD) src/main/nothreads/batteries.cma src/main/nothreads/run.byte
+	$(OCAMLBUILD) $(BYTE_TARGETS)
 
 opt: config.ml
-ifeq ($(BUILD_RUNNER),yes)
-	$(OCAMLBUILD) src/main/threads/batteries.cmxa src/main/threads/run.native
-	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa src/main/nothreads/run.native
-else
-	$(OCAMLBUILD) src/main/threads/batteries.cmxa
-	$(OCAMLBUILD) src/main/nothreads/batteries.cmxa
-endif
+	$(OCAMLBUILD) $(OPT_TARGETS)
 
 syntax: config.ml
-	$(OCAMLBUILD) src/syntax/pa_openin/pa_openin.cmo \
-	      src/syntax/pa_openin/pa_openin_r.cmo \
-	      src/syntax/pa_where/pa_where.cmo \
-	      src/syntax/pa_batteries/pa_batteries.cmo \
-	      src/syntax/pa_strings/pa_strings.cmo \
-	      src/syntax/pa_strings/pa_estring.cmo \
-              src/syntax/pa_comprehension/pa_comprehension.cmo
+	$(OCAMLBUILD) $(SYNTAX_TARGETS)
 
-top: 
-	$(OCAMLBUILD) src/batteries_toolchain/batteries_print.cmo \
-		src/batteries_toolchain/batteries_help.cmo
-
+top: config.ml
+	$(OCAMLBUILD) $(TOPLEVEL_TARGETS)
 
 install:
 	chmod ugo+rx src/batteries_toolchain/ocaml* && \
@@ -161,6 +216,7 @@ install:
 			_build/src/batteries_toolchain/batteries_print.cmi \
 			_build/src/batteries_toolchain/batteries_help.cmo \
 			_build/src/batteries_toolchain/batteries_print.cmo \
+			_build/src/batteries_toolchain/toplevel.top \
 			src/batteries_toolchain/top.ml \
 			src/batteries_toolchain/ocaml*
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
@@ -185,11 +241,20 @@ uninstall:
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads &&\
 	ocamlfind remove $(DESTDIR_FLAGS) batteries_nothreads
 
+quickdoc: quickbyte doc/api.odocl
+	rm -Rf doc/batteries/html/api
+	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
+	rm -f api.docdir
+	cp -a _build/doc/api.docdir/ doc/batteries/html/api
+
+quickbyte: config.ml
+	$(OCAMLBUILD) src/main/threads/batteries.cma 
+
 doc: byte doc/api.odocl
 	rm -Rf doc/batteries/html/api
 	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
 	rm -f api.docdir
-	mv _build/doc/api.docdir/ doc/batteries/html/api
+	cp -a _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: 
 	@echo Generating documentation. This usually lasts 15+ minutes.
@@ -206,9 +271,29 @@ tests:
 	cd testsuite && ocamlbuild -clean && \
 	ocamlfind batteries/ocamlbuild main.byte main.native 
 
-tests-byte:
+tests_byte:
 	cd testsuite && ocamlfind batteries/ocamlbuild -clean && \
 	ocamlfind batteries/ocamlbuild main.byte
+
+run_tests: tests run_tests_native run_tests_byte run_tests_interp
+
+run_tests_byte:
+	cd testsuite && ./main.byte
+
+run_tests_native:
+	cd testsuite && ./main.native
+
+run_tests_interp:
+	cd testsuite && ocamlfind -I . batteries/ocaml main.ml
+
+#Experiments with documentation
+XPDOC_CORE_EXTLIB_MLI=concurrent interfaces innerIO monad return enum extBigarray extUChar extUnit global number ref vect pMap pSet multiPMap option extBuffer extString extUTF8 extInt64 extInt32 extInt extHashtbl extFloat extChar dynArray dllist bitSet rope IO extPrintf base64 extArray extBig_int extList extNativeint extStream substring std refList lazyList extRandom extNum extBool file optParse parserCo result charParser uCharParser extGenlex extComplex extMarshal extGc extPrintexc extPervasives extUnix extMap extQueue extStack extSet extOo extStr path charEncodings extSys extArg extDigest logger extFormat extScanf print
+XPDOC=$(patsubst %, _build/src/core/extlib/%.mli, $(XPDOC_CORE_EXTLIB_MLI)) _build/src/core/extlib.mli
+
+xpdoc:
+#	 time ocamlfind ocamldoc -package stdlib,sexplib,netstring,camomile -i _build/build -g odoc_batteries_factored.cmo -g odoc_extract_mli.cmo -I _build/build/ -I _build -I _build/src/core/ -I _build/src/core/extlib -I _build/src/core/baselib_threads -I _build/src/libs/ -I _build/src/core/baselib  $(XPDOC) src/main/threads/batteries.ml
+	 time ocamldoc -i _build/build  -g odoc_extract_mli.cmo -I /home/yoric/tmp/godi-311/lib/ocaml/pkg-lib/sexplib/ -I /home/yoric/tmp/godi-311/lib/ocaml/pkg-lib/camomile/ -I _build/build/ -I _build -I _build/src/core/ -I _build/src/core/extlib -I _build/src/core/baselib_threads -I _build/src/libs/ -I _build/src/core/baselib  $(XPDOC) -pp _build/build/optcomp/optcomp_o.byte src/main/threads/batteries.ml
+
 
 clean:
 	$(OCAMLBUILD) -clean

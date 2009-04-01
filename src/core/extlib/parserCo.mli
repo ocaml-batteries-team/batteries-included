@@ -146,7 +146,7 @@ val filter: ('b -> bool) -> ('a, 'b, 'c) t ->  ('a, 'b, 'c) t
 
 val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) Std.result
   (**[run p s] executes parser [p] on source [s]. In case of
-     success, returns [Ok v], where [v] is the return value of [v].
+     success, returns [Ok v], where [v] is the return value of [p].
      In case of failure, returns [Error f], with [f] containing
      details on the parsing error.*)
 
@@ -207,7 +207,7 @@ val ( ~+ ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
   (**As [one_plus]*)
 
 val times : int -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
-  (**[time n p] accepts a list of [n] expressions accepted by [p]*)
+  (**[times n p] accepts a list of [n] expressions accepted by [p]*)
 
 val ( ^^ ) : ('a, 'b, 'c) t -> int -> ('a, 'b list, 'c) t
   (**[p ^^ n] is the same thing as [times n p] *)

@@ -132,6 +132,20 @@ module type S =
 
     val values: 'a t -> 'a Enum.t
       (** Return an enumeration of al the values of a map.*)
+(*
+    val min_key : 'a t -> (key * 'a)
+      (** return the ([key,value]) pair with the smallest key *)
+
+    val max_key : 'a t -> (key * 'a)
+      (** return the [(key,value)] pair with the largest key *)
+
+    val choose : 'a t -> (key * 'a)
+      (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
+*)
+(*
+    val split : key -> 'a t -> ('a t * 'a option * 'a t)
+      (** as [Set.split] *)
+*)
 
     val enum  : 'a t -> (key * 'a) Enum.t
       (** Return an enumeration of (key, value) pairs of a map.*)
@@ -166,14 +180,14 @@ module type S =
        operation}} or {{:../extensions.html#multialias}{alias several
        modules to one name}}. For instance, to open a version of {!Map}
        with exceptionless error management, you may write {v open Map,
-       ExceptionLess v}. To locally replace module {!Map} with a module of
+       Exceptionless v}. To locally replace module {!Map} with a module of
        the same name but with exceptionless error management, you may
-       write {v module Map = Map include ExceptionLess v}.
+       write {v module Map = Map include Exceptionless v}.
        
     *)
       
     (** Operations on {!Map} without exceptions.*)
-    module ExceptionLess : sig
+    module Exceptionless : sig
       val find: key -> 'a t -> 'a option
     end
       

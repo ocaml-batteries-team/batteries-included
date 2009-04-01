@@ -1,7 +1,7 @@
 (* 
  * ExtSet - Extended operations on sets
  * Copyright (C) 1996 Xavier Leroy
- *               2008 David Teller, LIFO, Universite d'Orleans
+ *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -212,14 +212,14 @@ module type S =
        operation}} or {{:../extensions.html#multialias}{alias several
        modules to one name}}. For instance, to open a version of {!Set}
        with exceptionless error management, you may write {v open Set,
-       ExceptionLess v}. To locally replace module {!Set} with a module of
+       Exceptionless v}. To locally replace module {!Set} with a module of
        the same name but with exceptionless error management, you may
-       write {v module Set = Set include ExceptionLess v}.
+       write {v module Set = Set include Exceptionless v}.
        
     *)
       
     (** Operations on {!Set} without exceptions.*)
-    module ExceptionLess : sig
+    module Exceptionless : sig
       val min_elt: t -> elt option
       val max_elt: t -> elt option
       val choose:  t -> elt option

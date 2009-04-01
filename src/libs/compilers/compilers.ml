@@ -1,6 +1,6 @@
 (*
  * Compilers -- Calling the elements of the OCaml toolchain.
- * Copyright (C) 2008 David Teller
+ * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -61,6 +61,7 @@ let build_package_option : package_option -> string list = function
   | `ignore_error -> ["-ignore-error"]
   | `passopt l    -> make_list "-passopt" l
   | `verbose      -> ["-verbose"]
+  
 
 type warning =
     [`comments             of bool (**[true] to warn on suspicions comments, [false] otherwise.*)
@@ -132,6 +133,7 @@ type compiler_option =
     | `impl of string             (**[`impl file]: Compile [file] as a .ml file, regardless of its actual extension. *)
     | `intf of string             (**[`intf file]: Compile [file] as a .mli file, regardless of its actual extension. *)
     | `intf_suffix of string      (**[`intf_suffix]: Change default suffix for interface files (default: .mli).    *)
+    | `labels                     (**[`labels]: allow labels to commute (default)*)
     | `linkall                    (**[`linkall]: Link all modules, even unused ones.                    *)
     | `make_runtime               (**[`make_runtime]: Build a runtime system with given C objects and libraries.   *)
     | `noassert                   (**[`noassert]: Don't compile assertion checks.                       *)
@@ -167,6 +169,27 @@ type compiler_option =
 				     .ml, .mli, .cmo or .cma. The order in which files are given is 
 				     important, as it will determine linking. *) ]
 
+type interpreter_option =
+  [ `init of string             (**[`init file]: Load [file] instead of the default .ocamlinit file*)
+  | `I of string list           (**[`I dir]: Add [dir] to the list of include directories.        *)
+  | `labels                     (**[`labels]: allow labels to commute (default)*)
+  | `noassert                   (**[`noassert]: Don't compile assertion checks.                       *)
+  | `nolabels                   (**[`nolabels]: Ignore non-optional labels in types.                  *)
+  | `noprompt                   (**[`noprompt]: Suppress all prompts.                                 *)
+  | `nostdlib                   (**[`nostdlib]: Do not add default directory to the list of include directories.*)
+  | `principal                  (**[`principal]: Check principality of type inference.                *)
+  | `rectypes                   (**[`rectypes]: Allow arbitrary recursive types.                      *)
+  | `unsafe                     (**[`unsafe]: No bounds checking on array and string access.          *)
+  | `version                    (**[`version]: Don't compile, print compiler version and exit.        *)
+  | `warnings of warning list   (**[`warning flags]: Activate/deactivate warnings [flags].            *)
+  | `warn_error of warning list(**[`warn_errors flags]: Treat the warnings of [flags] as errors.     *)
+  | `dparsetree
+  | `drawlambda
+  | `dlambda
+  | `dinstr
+  | `file      of string        (**[`file file]: Compile or link [file] -- [file] must be a name ending in
+				   .ml, .mli, .cmo or .cma. The order in which files are given is 
+				   important, as it will determine linking. *) ]
 
 let build_compiler_option compiler = function
     | `library       -> ["-library"]
@@ -192,6 +215,7 @@ let build_compiler_option compiler = function
     | `impl l        -> ["-impl"; l]
     | `intf l        -> ["-intf"; l]
     | `intf_suffix s -> ["-intf-suffix"; s]
+    | `labels        -> ["-labels"]
     | `linkall       -> ["-linkall"]
     | `make_runtime  -> ["-make_runtime"]
     | `noassert      -> ["-noassert"]
@@ -247,8 +271,16 @@ let build_compiler_option compiler = function
     | `dscheduling                    -> ["-dscheduling"]
     | `dlinear                        -> ["-dlinear"]
     | `dstartup                       -> ["-dstartup"]
-    | `use_prims file-> ["-use-prims"; file]
-    | `file file     -> ["- "; file]
+    | `use_prims file                 -> ["-use-prims"; file]
+    | `file file -> 
+	begin
+	  match compiler with `ocaml -> [file]
+	    |                  _     -> ["- "; file]
+	end
+    | `init s                         -> ["-init"; s]
+    | `noprompt                       -> ["-noprompt"]
+
+
 
 type command = string * string list
 type task    = int
@@ -257,13 +289,12 @@ let prepare_compiler_args compiler package options files =
   List.of_enum (Enum.concat (Enum.concat (List.enum 
 				 [Enum.map (fun x -> List.enum (build_package_option x)) (List.enum package);
 				  Enum.map (fun x -> List.enum (build_compiler_option compiler x)) (List.enum options);
-				  Enum.map (fun file ->  List.enum ["- "; file]) (List.enum files)])))
+				  match compiler with
+				    | `ocaml -> Enum.map List.enum (List.enum [files])
+				    | _ ->  Enum.map (fun file ->  List.enum ["- "; file]) (List.enum files)])))
 
-let ocamlc ?(package=[]) ?(options=[]) files =
-  (Findlib.command `ocamlc, (prepare_compiler_args `ocamlc package options files))
+    
 
-let ocamlopt ?(package=[]) ?(options=[]) files =
-  (Findlib.command `ocamlopt, (prepare_compiler_args `ocamlopt package options files))
 
 let command_for_exec  (cmd, args) = (cmd, Array.of_list args)
 let string_of_command (cmd, args) = 
@@ -271,6 +302,26 @@ let string_of_command (cmd, args) =
     Printf.bprintf buf "%S %a" cmd (fun buf -> List.print IO.nwrite ~first:"" ~last:"" ~sep:" " (IO.output_buffer buf)) args;
       (*This could be made much more efficient.*)
     Buffer.contents buf
+
+
+let ocamlc ?(batteries=true) ?(package=[]) ?(options=[]) files =
+  let package = if batteries then [`package "batteries"; `syntax "camlp4o"]@package 
+                 else              package
+  in
+    (Findlib.command `ocamlc, (prepare_compiler_args `ocamlc package (options :> compiler_option list) files))
+
+let ocamlopt ?(batteries=true) ?(package=[]) ?(options=[]) files =
+  let package = if batteries then [`package "batteries"; `syntax "camlp4o"]@package 
+                 else              package
+  in
+  (Findlib.command `ocamlopt, (prepare_compiler_args `ocamlopt package (options :> compiler_option list) files))
+
+let ocaml ?(batteries=true) ?(options=[]) files =
+  let executable = 
+    if batteries then Findlib.resolve_path "@batteries/ocaml"
+    else              Findlib.resolve_path "ocaml"
+  in
+  (executable, prepare_compiler_args `ocaml [] options files) 
 
 
 (*let background (executable, args) =

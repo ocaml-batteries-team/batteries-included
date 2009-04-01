@@ -104,8 +104,12 @@ let npop rl n =
 	pop_aux !rl n
 
 let copy_enum ~dst ~src = dst := List.of_enum src
-let enum rl = List.enum !rl
+
+let enum   rl = List.enum !rl
 let of_enum e = ref (List.of_enum e)
+
+let backwards     rl = List.backwards !rl
+let of_backwards  e  = ref (List.of_backwards e)
 
 let fold_left f a l = ExtList.List.fold_left f a !l
 let fold_right f l a = ExtList.List.fold_right f !l a

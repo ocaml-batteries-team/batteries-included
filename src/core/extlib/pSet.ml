@@ -63,7 +63,7 @@ let enum t =
   Enum.map (fun (k, _) -> k) (PMap.enum t)
 
 let of_enum t =
-  Enum.fold add empty t
+  Enum.fold (fun acc elem -> add elem acc) empty t
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
   Enum.print ~first ~last ~sep print_elt out (enum t)

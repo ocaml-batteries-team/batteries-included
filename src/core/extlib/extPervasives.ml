@@ -24,6 +24,18 @@
 open Sexplib
 TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
+open ExtUTF8
+open ExtInt
+open ExtInt32
+open ExtInt64
+open ExtNativeint
+open ExtString
+open ExtBool
+open ExtList
+open ExtArray
+open ExtFloat
+open ExtPrintexc
+
 module Pervasives = struct
   include Pervasives
   include Std
@@ -40,9 +52,9 @@ module Pervasives = struct
 
   let open_out          = File.open_out
   let open_out_bin name = 
-    IO.output_channel (open_out_bin name)
+    IO.output_channel ~cleanup:true (open_out_bin name)
   let open_out_gen mode perm name = 
-    IO.output_channel (open_out_gen mode perm name)
+    IO.output_channel ~cleanup:true (open_out_gen mode perm name)
 
   let flush             = IO.flush
   let flush_all         = IO.flush_all
@@ -62,9 +74,9 @@ module Pervasives = struct
     with _ -> ()
 
   let open_in           = File.open_in
-  let open_in_bin name  = IO.input_channel (open_in_bin name)
+  let open_in_bin name  = IO.input_channel ~cleanup:true (open_in_bin name)
   let open_in_gen mode perm filename = 
-    IO.input_channel (open_in_gen mode perm filename)
+    IO.input_channel ~cleanup:true (open_in_gen mode perm filename)
 
   let input_char        = IO.read
   let input_line        = IO.read_line
@@ -97,6 +109,7 @@ module Pervasives = struct
   let filter            = filter
   let concat            = concat
   let ( -- )            = ( -- )
+  let ( --. )           = ( --. )
   let ( --- )           = ( --- )
   let ( --~ )           = ( --~ )
   let ( // )            = ( // )
@@ -128,77 +141,192 @@ module Pervasives = struct
 
   (** {6 Directives} *)
 
-(*
-   type ('a, 'b) unum_directive = ?left_justify:bool -> ?pad_with_zeros:bool -> ?width:int -> ('a, 'b) ExtPrintf2.directive
-   type ('a, 'b) snum_directive = ?prefix_with_plus:bool -> ?prefix_with_space:bool -> ('a, 'b) unum_directive
-*)
+  type printer_flags = {
+    pf_width : int option;
+    pf_padding_char : char;
+    pf_justify : [ `right | `left ];
+    pf_positive_prefix : char option;
+  }
 
-  let pdir_a k f x = k (fun oc -> f oc x)
-  let pdir_t k f = k (fun oc -> f oc)
-  let pdir_B k x = k (fun oc -> IO.nwrite oc (string_of_bool x))
-  let pdir_c k x = k (fun oc -> IO.write oc x)
-  let pdir_C k x = k (fun oc ->
-                        IO.write oc '\'';
-                        IO.write oc x;
-                        IO.write oc '\'')
+  let default_printer_flags = {
+    pf_justify = `right;
+    pf_width = None;
+    pf_padding_char = ' ';
+    pf_positive_prefix = None;
+  }
 
-  let pdir_s ?(left_justify=false) ?width k x =
-    match width with
+  let printer_a k f x = k (fun oc -> f oc x)
+  let printer_t k f = k (fun oc -> f oc)
+  let printer_B k x = k (fun oc -> IO.nwrite oc (string_of_bool x))
+  let printer_c k x = k (fun oc -> IO.write oc x)
+  let printer_C k x = k (fun oc ->
+                           IO.write oc '\'';
+                           IO.nwrite oc (Char.escaped x);
+                           IO.write oc '\'')
+
+  let printer_s ?(flags=default_printer_flags) k x =
+    match flags.pf_width with
       | None ->
           k (fun oc -> IO.nwrite oc x)
       | Some n ->
           let len = String.length x in
           if len >= n then
             k (fun oc -> IO.nwrite oc x)
-          else if left_justify then
-            k (fun oc ->
-                 IO.nwrite oc x;
-                 for i = len to n do
-                   IO.write oc ' '
-                 done)
           else
-            k (fun oc ->
-                 IO.nwrite oc x;
-                 for i = len to n do
-                   IO.write oc ' '
-                 done)
+            match flags.pf_justify with
+              | `right ->
+                  k (fun oc ->
+                       for i = len + 1 to n do
+                         IO.write oc flags.pf_padding_char
+                       done;
+                       IO.nwrite oc x)
+              | `left ->
+                  k (fun oc ->
+                       IO.nwrite oc x;
+                       for i = len + 1 to n do
+                         IO.write oc flags.pf_padding_char
+                       done)
 
-  let pdir_S ?left_justify ?width k x = pdir_s ?left_justify ?width k (Printf.sprintf "%S" x)
+  let printer_sc ?(flags=default_printer_flags) k x =
+    match flags.pf_width with
+      | None ->
+          k (fun oc -> String.Cap.print oc x)
+      | Some n ->
+          let len = String.Cap.length x in
+          if len >= n then
+            k (fun oc -> String.Cap.print oc x)
+          else
+            match flags.pf_justify with
+              | `right ->
+                  k (fun oc ->
+                       for i = len + 1 to n do
+                         IO.write oc flags.pf_padding_char
+                       done;
+                       String.Cap.print oc x)
+              | `left ->
+                  k (fun oc ->
+                       String.Cap.print oc x;
+                       for i = len + 1 to n do
+                         IO.write oc flags.pf_padding_char
+                       done)
 
-  (* TODO: make that more efficient: *)
+  let printer_S ?flags k x =
+    printer_s ?flags k (String.quote x)
 
-  let pdir_d k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%d" x))
-  let pdir_i k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%i" x))
-  let pdir_u k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%u" x))
-  let pdir_x k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%x" x))
-  let pdir_X k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%X" x))
-  let pdir_o k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%o" x))
+  let printer_Sc ?flags k x =
+    printer_s ?flags k (String.Cap.quote x)
 
-  let pdir_ld k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%ld" x))
-  let pdir_li k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%li" x))
-  let pdir_lu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lu" x))
-  let pdir_lx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lx" x))
-  let pdir_lX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lX" x))
-  let pdir_lo k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%lo" x))
 
-  let pdir_Ld k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Ld" x))
-  let pdir_Li k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Li" x))
-  let pdir_Lu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lu" x))
-  let pdir_Lx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lx" x))
-  let pdir_LX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%LX" x))
-  let pdir_Lo k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%Lo" x))
+    
 
-  let pdir_nd k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nd" x))
-  let pdir_ni k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%ni" x))
-  let pdir_nu k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nu" x))
-  let pdir_nx k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nx" x))
-  let pdir_nX k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%nX" x))
-  let pdir_no k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%no" x))
+  open Number
 
-  let pdir_format k fmt = fmt.ExtPrintf2.printer fmt.ExtPrintf2.pattern k
+  let digits mk_digit base op n =
+    let rec aux acc n =
+      if op.compare n op.zero = 0 then
+        acc
+      else
+        aux (mk_digit (op.to_int (op.modulo n base)) :: acc) (op.div n base)
+    in
+    if op.compare n op.zero = 0 then
+      ['0']
+    else
+      aux [] n
 
-  let pdir_rope k x = k (fun oc -> Rope.print oc x)
-  let pdir_utf8 k x = k (fun oc -> ExtUTF8.UTF8.print oc x)
+  let printer_unum mk_digit base op ?flags k x =
+    printer_s ?flags k (String.implode (digits mk_digit base op x))
+
+  let printer_snum mk_digit base op ?(flags=default_printer_flags) k x =
+    let l = digits mk_digit base op x in
+    let l =
+      if op.compare x op.zero < 0 then
+        '-' :: l
+      else
+        match flags.pf_positive_prefix with
+          | None ->
+              l
+          | Some c ->
+              c :: l
+    in
+    printer_s ~flags k (String.implode l)
+
+  let dec_digit x =
+    char_of_int (int_of_char '0' + x)
+
+  let oct_digit = dec_digit
+
+  let lhex_digit x =
+    if x < 10 then
+      dec_digit x
+    else
+      char_of_int (int_of_char 'a' + x - 10)
+
+  let uhex_digit x =
+    if x < 10 then
+      dec_digit x
+    else
+      char_of_int (int_of_char 'A' + x - 10)
+
+  let printer_d ?flags k x = printer_snum dec_digit 10 Int.operations ?flags k x
+  let printer_i ?flags k x = printer_snum dec_digit 10 Int.operations ?flags k x
+  let printer_u ?flags k x = printer_unum dec_digit 10 Int.operations ?flags k x
+  let printer_x ?flags k x = printer_unum lhex_digit 16 Int.operations ?flags k x
+  let printer_X ?flags k x = printer_unum uhex_digit 16 Int.operations ?flags k x
+  let printer_o ?flags k x = printer_unum oct_digit 8 Int.operations ?flags k x
+
+  let printer_ld ?flags k x = printer_snum dec_digit 10l Int32.operations ?flags k x
+  let printer_li ?flags k x = printer_snum dec_digit 10l Int32.operations ?flags k x
+  let printer_lu ?flags k x = printer_unum dec_digit 10l Int32.operations ?flags k x
+  let printer_lx ?flags k x = printer_unum lhex_digit 16l Int32.operations ?flags k x
+  let printer_lX ?flags k x = printer_unum uhex_digit 16l Int32.operations ?flags k x
+  let printer_lo ?flags k x = printer_unum oct_digit 8l Int32.operations ?flags k x
+
+  let printer_Ld ?flags k x = printer_snum dec_digit 10L Int64.operations ?flags k x
+  let printer_Li ?flags k x = printer_snum dec_digit 10L Int64.operations ?flags k x
+  let printer_Lu ?flags k x = printer_unum dec_digit 10L Int64.operations ?flags k x
+  let printer_Lx ?flags k x = printer_unum lhex_digit 16L Int64.operations ?flags k x
+  let printer_LX ?flags k x = printer_unum uhex_digit 16L Int64.operations ?flags k x
+  let printer_Lo ?flags k x = printer_unum oct_digit 8L Int64.operations ?flags k x
+
+  let printer_nd ?flags k x = printer_snum dec_digit 10n Native_int.operations ?flags k x
+  let printer_ni ?flags k x = printer_snum dec_digit 10n Native_int.operations ?flags k x
+  let printer_nu ?flags k x = printer_unum dec_digit 10n Native_int.operations ?flags k x
+  let printer_nx ?flags k x = printer_unum lhex_digit 16n Native_int.operations ?flags k x
+  let printer_nX ?flags k x = printer_unum uhex_digit 16n Native_int.operations ?flags k x
+  let printer_no ?flags k x = printer_unum oct_digit 8n Native_int.operations ?flags k x
+
+  let printer_f k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%f" x))
+  let printer_F k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%F" x))
+
+  let printer_format k fmt = fmt.Print.printer fmt.Print.pattern k
+
+  let printer_rope k x = k (fun oc -> Rope.print oc x)
+  let printer_utf8 k x = k (fun oc -> UTF8.print oc x)
+  let printer_obj k x = k x#print
+
+  let printer_int  = printer_i
+  let printer_uint = printer_u
+  let printer_hex  = printer_x
+  let printer_HEX  = printer_X
+  let printer_oct  = printer_o
+
+  (** {6 Value printers} *)
+
+  let bool_printer = Bool.t_printer
+  let int_printer = Int.t_printer
+  let int32_printer = Int32.t_printer
+  let int64_printer = Int64.t_printer
+  let nativeint_printer = Native_int.t_printer
+  let float_printer = Float.t_printer
+  let string_printer = String.t_printer
+  let list_printer = List.t_printer
+  let array_printer = Array.t_printer
+  let option_printer = Option.t_printer
+  let maybe_printer = Option.maybe_printer
+  let exn_printer paren out x =
+    if paren then IO.write out '(';
+    Printexc.print out x;
+    if paren then IO.write out ')'
 
   (** {6 Clean-up}*)
 

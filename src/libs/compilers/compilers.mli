@@ -33,7 +33,7 @@ type command
       to run one of the tools of the toolchain. *)
 
 val string_of_command: command -> string
-  (** Format a command as a [string], fit for use with {!System.Sys.command} *)
+  (** Format a command as a [string], fit for use with {!Sys.command} *)
 
 val command_for_exec:  command -> string * string array
   (** Format a command as a [string] and an array of arguments, fit for use
@@ -103,6 +103,7 @@ type compiler_option =
     | `impl of string             (**[`impl file]: Compile [file] as a .ml file, regardless of its actual extension. *)
     | `intf of string             (**[`intf file]: Compile [file] as a .mli file, regardless of its actual extension. *)
     | `intf_suffix of string      (**[`intf_suffix]: Change default suffix for interface files (default: .mli).    *)
+    | `labels                     (**[`labels]: allow labels to commute (default)*)
     | `linkall                    (**[`linkall]: Link all modules, even unused ones.                    *)
     | `make_runtime               (**[`make_runtime]: Build a runtime system with given C objects and libraries.   *)
     | `noassert                   (**[`noassert]: Don't compile assertion checks.                       *)
@@ -137,6 +138,30 @@ type compiler_option =
     | `file      of string        (**[`file file]: Compile or link [file] -- [file] must be a name ending in
 				     .ml, .mli, .cmo or .cma. The order in which files are given is 
 				     important, as it will determine linking. *) ]
+
+type interpreter_option =
+  [ `init of string             (**[`init file]: Load [file] instead of the default .ocamlinit file*)
+  | `I of string list           (**[`I dir]: Add [dir] to the list of include directories.        *)
+  | `labels                     (**[`labels]: allow labels to commute (default)*)
+  | `noassert                   (**[`noassert]: Don't compile assertion checks.                       *)
+  | `nolabels                   (**[`nolabels]: Ignore non-optional labels in types.                  *)
+  | `noprompt                   (**[`noprompt]: Suppress all prompts.                                 *)
+  | `nostdlib                   (**[`nostdlib]: Do not add default directory to the list of include directories.*)
+  | `principal                  (**[`principal]: Check principality of type inference.                *)
+  | `rectypes                   (**[`rectypes]: Allow arbitrary recursive types.                      *)
+  | `unsafe                     (**[`unsafe]: No bounds checking on array and string access.          *)
+  | `version                    (**[`version]: Don't compile, print compiler version and exit.        *)
+  | `warnings of warning list   (**[`warning flags]: Activate/deactivate warnings [flags].            *)
+  | `warn_error of warning list(**[`warn_errors flags]: Treat the warnings of [flags] as errors.     *)
+  | `dparsetree
+  | `drawlambda
+  | `dlambda
+  | `dinstr
+  | `file      of string        (**[`file file]: Compile or link [file] -- [file] must be a name ending in
+				   .ml, .mli, .cmo or .cma. The order in which files are given is 
+				   important, as it will determine linking.
+				   Only one [.ml] file may be used.*) ]
+
 val all_warnings : warning list 
 
 
@@ -145,45 +170,73 @@ val all_warnings : warning list
    {6 Compilers}
 *)
 
-val ocamlc: ?package:package_option list -> 
+val ocamlc: 
+  ?batteries: bool ->
+   ?package:package_option list -> 
   ?options:compiler_option list ->
   string list -> command
 (**
    Invoke the ocamlc compiler, to produce bytecode modules and executables.
 
-   [ocamlc ~package ~options f] returns a command which may be used
-   to run the ocamlc compiler with package options [package],
-   compiler options [options] and upon files [f].
+   [ocamlc l] returns a command which may be used
+   to run the ocamlc compiler to compile files [l].
+
+   @param batteries Use the standard library ([true] by default).
+   @param package An optional list of package options.
+   @param options An optional list of compiler options.
 
    Note that it is possible to specify that a file [some_file] must be
-   compiled either by making sure that [some_file] appears in [f] or
+   compiled either by making sure that [some_file] appears in [l] or
    by making sure that [`file some_file] appears in [options]. Either
    manners of adding a file are equivalent, with files mentioned in [options]
-   being compiled before files mentioned in [f].
+   being compiled before files mentioned in [l].
 
    For more informations about the ocamlc compiler, see
    {{:http://caml.inria.fr/pub/docs/manual-ocaml/manual022.html} the manual of OCaml}.
 *)
 
 
-val ocamlopt: ?package:package_option list -> 
+val ocamlopt: 
+  ?batteries:bool               ->
+  ?package:package_option list  -> 
   ?options:compiler_option list ->
   string list -> command
 (**
    Invoke the ocamlopt compiler, to produce native optimized modules and executables.
    
-   [ocamlopt ~package ~options f] returns a command which may be used
-   to run the ocamlopt compiler with package options [package],
-   compiler options [options] and upon files [f].
+   [ocamlopt l] returns a command which may be used
+   to run the ocamlopt compiler to compile files [l].
+
+   @param batteries Use the standard library ([true] by default).
+   @param package An optional list of package options.
+   @param options An optional list of compiler options.
    
    Note that it is possible to specify that a file [some_file] must be
-   compiled either by making sure that [some_file] appears in [f] or
+   compiled either by making sure that [some_file] appears in [l] or
    by making sure that [`file some_file] appears in [options]. Either
    manners of adding a file are equivalent, with files mentioned in [options]
-   being compiled before files mentioned in [f].
+   being compiled before files mentioned in [l].
    
    For more informations about the ocamlopt compiler, 
    {{:http://caml.inria.fr/pub/docs/manual-ocaml/manual025.html} the manual of OCaml}.
+*)
+
+val ocaml: 
+  ?batteries:bool ->
+  ?options:interpreter_option list ->
+  string list -> command
+(**
+   Invoke the ocaml interpreter, to execute files without a compilation phase.
+   
+   [ocaml l] returns a command which may be used
+   to run the ocaml interpreter to execute files [l].
+
+   @param batteries Use the standard library ([true] by default).
+   @param package An optional list of package options.
+   @param options An optional list of compiler options.
+   
+   For more informations about the ocaml interpreter,
+   {{:http://caml.inria.fr/pub/docs/manual-ocaml/manual023.html} the manual of OCaml}.
 *)
 
 

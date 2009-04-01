@@ -25,10 +25,16 @@ open Extlib
 include IO
 
 open ExtMutex;;
-
+lock         := RMutex.make ();;
+lock_factory := RMutex.make;;
+(*
 lock         := Mutex.make ();;
 lock_factory := Mutex.make;;
-
+*)
+(*
+lock         := DebugMutex.make ();;
+lock_factory := DebugMutex.make;;
+*)
 (*
 open Unix
 

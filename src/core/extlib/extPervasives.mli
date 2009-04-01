@@ -30,6 +30,8 @@
 *)
 
 open IO
+open ExtUTF8
+open ExtString
 
 (** The initially opened module.
     
@@ -1161,7 +1163,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a Enum.t -> 'a
       produces result [55].
   *)
 
-val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
+val fold : ('b -> 'a -> 'b) -> 'b -> 'a Enum.t -> 'b
   (** Transformation loop on an enumeration, used to build a single value
       from an enumeration. This is the most powerful general-purpose
       loop and also the most complex.
@@ -1182,7 +1184,7 @@ val fold : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b
       produces result [55].
   *)
 
-val scanl : ('a -> 'b -> 'b) -> 'b -> 'a Enum.t -> 'b Enum.t
+val scanl : ('b -> 'a -> 'b) -> 'b -> 'a Enum.t -> 'b Enum.t
   (** Functional loop on an enumeration, used to build an enumeration
       from both an enumeration and an initial value. This function may
       be seen as a variant of {!fold} which returns not only the final
@@ -1270,6 +1272,14 @@ val ( -- ) : int -> int -> int Enum.t
     [5 -- 10] is the enumeration 5,6,7,8,9,10.
     [10 -- 5] is the empty enumeration*)
 
+val ( --. ) : (float * float) -> float -> float Enum.t
+(** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
+    increment of [step] between elements.
+
+    [(5.0, 1.0) --. 10.0] is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
+    [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
+    [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
+
 val ( --- ) : int -> int -> int Enum.t
 (** As [--], but accepts enumerations in reverse order.
 
@@ -1282,69 +1292,102 @@ val ( --~ ) : char -> char -> char Enum.t
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b Enum.t -> unit
 (** Print and consume the contents of an enumeration.*)
 
+(**/**)
+
 (**
-   {6 Default directives}
+   {6 Printing directives}
 *)
+
+(** Flags used to modify the printing behaviour *)
+type printer_flags = {
+  pf_width : int option;
+  (** If with of printed material is less than this one, padding is
+      added *)
+  pf_padding_char : char;
+  (** Character used for padding *)
+  pf_justify : [ `right | `left ];
+  (** Where to add the padding. Defaults to [`right] *)
+  pf_positive_prefix : char option;
+  (** Prefix positive numbers with this character *)
+}
+
+val default_printer_flags : printer_flags
+  (** Default printer flags *)
 
 (** {7 Equivalent of classical directives} *)
 
-val pdir_a : (('acc IO.output -> 'a -> unit) -> 'a -> 'b, 'b, 'acc) ExtPrintf2.directive
-val pdir_t : (('acc IO.output -> unit) -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_B : (bool -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_c : (char -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_C : (char -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_s : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_S : ?left_justify:bool -> ?width:int -> (string -> 'a, 'a, 'acc) ExtPrintf2.directive
+val printer_a : ((unit IO.output -> 'a -> unit) -> 'a -> 'b, 'b) Print.directive
+val printer_t : ((unit IO.output -> unit) -> 'a, 'a) Print.directive
+val printer_B : (bool -> 'a, 'a) Print.directive
+val printer_c : (char -> 'a, 'a) Print.directive
+val printer_C : (char -> 'a, 'a) Print.directive
+val printer_s : ?flags : printer_flags -> (string -> 'a, 'a) Print.directive
+val printer_S : ?flags : printer_flags -> (string -> 'a, 'a) Print.directive
 
-(*
-TODO: implement that:
+val printer_d : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_i    : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_int  : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_u    : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_uint : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_x : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_X : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_hex : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_HEX : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_o : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_oct : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
+val printer_ld : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_li : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_lu : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_lx : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_lX : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_lo : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
+val printer_Ld : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_Li : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_Lu : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_Lx : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_LX : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_Lo : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
+val printer_nd : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_ni : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_nu : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_nx : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_nX : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_no : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
 
-type ('a, 'b) unum_directive = ?left_justify:bool -> ?pad_with_zeros:bool -> ?width:int -> ('a, 'b) ExtPrintf2.directive
-  (** Directive which prints an unsigned number *)
-
-type ('a, 'b) snum_directive = ?prefix_with_plus:bool -> ?prefix_with_space:bool -> ('a, 'b) unum_directive
-  (** Directive which prints a signed number *)
-*)
-
-val pdir_d : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_i : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_u : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_x : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_X : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_o : (int -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_ld : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_li : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_lu : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_lx : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_lX : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_lo : (int32 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Ld : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Li : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Lu : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Lx : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_LX : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_Lo : (int64 -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_nd : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_ni : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_nu : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_nx : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_nX : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_no : (nativeint -> 'a, 'a, 'acc) ExtPrintf2.directive
+val printer_f : (float -> 'a, 'a) Print.directive
+val printer_F : (float -> 'a, 'a) Print.directive
 
 (** {7 Batteries-specific directives} *)
 
-val pdir_format : (('a, 'b, 'acc) ExtPrintf2.format -> 'a, 'b, 'acc) ExtPrintf2.directive
-  (** [sp_format] take a format, then the arguments of the format and
-      print according to it. For example
+val printer_format : (('a, 'b) Print.format -> 'a, 'b) Print.directive
+  (** [printer_format] takes a format, then the arguments of the format and
+      print according to it. For instance,
 
-      {[
-        sprintf p"x = %format * %d" p"%d + %d" 1 3 5
-        =
-        "x = 1 + 3 * 5"
-      ]} *)
+      {[sprintf p"x = %format * %d" p"%d + %d" 1 3 5]} produces ["x = 1 + 3 * 5"]
+  *)
 
-val pdir_rope : (Rope.t -> 'a, 'a, 'acc) ExtPrintf2.directive
-val pdir_utf8 : (ExtUTF8.UTF8.t -> 'a, 'a, 'acc) ExtPrintf2.directive
+val printer_sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive
+val printer_Sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive
+val printer_rope : (Rope.t -> 'a, 'a) Print.directive
+val printer_utf8 : (UTF8.t -> 'a, 'a) Print.directive
+val printer_obj : (< print : unit IO.output -> unit; .. > -> 'a, 'a) Print.directive
+
+(** {7 Value printers} *)
+
+val bool_printer : bool Value_printer.t
+val int_printer : int Value_printer.t
+val int32_printer : int32 Value_printer.t
+val int64_printer : int64 Value_printer.t
+val nativeint_printer : nativeint Value_printer.t
+val float_printer : float Value_printer.t
+val string_printer : string Value_printer.t
+val list_printer : 'a Value_printer.t -> 'a list Value_printer.t
+val array_printer : 'a Value_printer.t -> 'a array Value_printer.t
+val option_printer : 'a Value_printer.t -> 'a option Value_printer.t
+val maybe_printer : 'a Value_printer.t -> 'a option Value_printer.t
+val exn_printer : exn Value_printer.t
+
+(**/**)
 
 (**
    {6 Results}
@@ -1353,6 +1396,10 @@ val pdir_utf8 : (ExtUTF8.UTF8.t -> 'a, 'a, 'acc) ExtPrintf2.directive
 type ('a, 'b) result = ('a, 'b) Std.result =
   | Ok  of 'a
   | Bad of 'b
+
+val sexp_of_result : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b) result -> Sexplib.Sexp.t
+val result_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b) result
+
 
 (**
    {6 Thread-safety internals}

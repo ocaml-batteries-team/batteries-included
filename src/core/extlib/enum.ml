@@ -159,7 +159,7 @@ let from f =
 		    e.next <- e'.next;
 		    e.clone<- e'.clone;
 		    e.count<- e'.count;
-		    e.fast <- false;		    e.fast <- false;
+		    e.fast <- false;
 	            e.clone () );
     e
 
@@ -352,7 +352,7 @@ let iter2i f t u =
 let fold f init t =
 	let acc = ref init in
 	let rec loop() =
-		acc := f (t.next()) !acc;
+		acc := f !acc (t.next());
 		loop()
 	in
 	try
@@ -378,13 +378,14 @@ let for_all f t =
 
 
 let scanl f init t =
-	let acc = ref init in
-	let gen ()=
-	  acc := f (t.next()) !acc;
-	  !acc
-	in let e = from gen in
-	  push e init;
-	  e
+  let acc = ref init in
+  let gen () =
+    acc := f !acc (t.next());
+    !acc
+   in
+  let e = from gen in
+  push e init;
+  e
 
 let scan f t =
         match get t with
@@ -528,9 +529,10 @@ let suffix_action_without_raise (f:unit -> 'a) (t:'a t) =
     count = t.count;
     next  = (fun () -> 
 	       try  t.next () 
-               with No_more_elements -> 
-		 f());
-    clone = t.clone;
+               with No_more_elements -> f() );
+    clone = (fun () -> t.clone());  (* needs to be delayed because [t] may
+                                       mutate and we want the newest clone
+                                       function *)
     fast  = t.fast
   }
 
@@ -697,6 +699,13 @@ let while_do cont f e =
 let break test e = span (fun x -> not (test x)) e
 
 let ( -- ) x y = range x ~until:y
+
+let ( --. ) (a, step) b =
+  let n = int_of_float ((b -. a) /. step) + 1 in
+  if n < 0 then
+    empty ()
+  else
+    init n (fun i -> float_of_int i *. step +. a)
 
 let ( --- ) x y = 
   if x <= y then x -- y
@@ -903,6 +912,9 @@ let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
 		aux ()
 	in aux()
 
+let t_printer a_printer paren out e =
+  print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
+
 let compare cmp t u =
   let rec aux () = 
     match (get t, get u) with
@@ -928,7 +940,7 @@ let rec of_object o =
 
 let flatten = concat
 
-module ExceptionLess = struct
+module Exceptionless = struct
   let find f e =
     try  Some (find f e)
     with Not_found -> None
@@ -960,6 +972,10 @@ module Labels = struct
   let seq ~init ~f ~cnd  = seq init f cnd
   let unfold ~init ~f = unfold init f
   let compare ?(cmp=Pervasives.compare) t u = compare cmp t u
+  module LExceptionless = struct
+    include Exceptionless
+    let find ~f e = find f e
+  end
 end
 
 module type Enumerable = sig

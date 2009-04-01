@@ -1,6 +1,7 @@
 (*
- * Batlib_Baselib_Lexing - Importing Base module Lexing
- * Copyright (C) 2008 David Teller
+ * ExtString - Additional functions for string manipulations.
+ * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,4 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include Lexing
+
+module Lexing =
+struct
+  include Lexing
+
+  open IO
+  let from_input inp =
+    from_function (fun s n -> try input inp s 0 n with No_more_input -> raise End_of_file)
+
+  let from_channel = from_input
+end

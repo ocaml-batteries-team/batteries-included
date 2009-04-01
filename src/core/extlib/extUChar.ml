@@ -45,6 +45,72 @@ struct
     | _         -> match Info.general_category c with `Zl -> true
 	                                          |    _  -> false
 
+  (* Text containing one single unicode character *)
+  module Text : UnicodeString.Type with type t = t =
+  struct
+    type t = uchar
+
+    let get x = function
+      | 0 -> x
+      | _ -> invalid_arg "UChar.Text.get"
+
+    let init n f = match n with
+      | 1 -> f 0
+      | _ -> invalid_arg "UChar.Text.init"
+
+    let length _ = 1
+
+    type index = int
+
+    let look x = function
+      | 0 -> x
+      | _ -> invalid_arg "UChar.Text.look"
+
+    let nth _ n = n
+    let next _ n = n + 1
+    let prev _ n = n - 1
+
+    let out_of_range _ n = n <> 0
+
+    let iter f x = f x
+
+    let compare : t -> t -> int = compare
+    let first _ = 0
+    let last _ = 0
+    let move _ x y = x + y
+    let compare_index _ x y = x - y
+
+    module Buf =
+    struct
+      type buf = uchar option ref
+
+      let create _ = ref None
+      let contents b = match !b with
+        | None -> invalid_arg "UChar.Text.Buf.contents"
+        | Some x -> x
+      let clear b = b := None
+      let reset = clear
+      let add_char b x = match !b with
+        | Some _ -> invalid_arg "UChar.Text.Buf.add_char"
+        | _ -> b := Some x
+      let add_string = add_char
+      let add_buffer b1 b2 = match !b2 with
+        | None -> ()
+        | Some x -> add_char b1 x
+    end
+  end
+
+  module Case = CaseMap.Make(CamomileDefaultConfig)(Text)
+
+  let lowercase x = Case.lowercase x
+  let uppercase x = Case.uppercase x
+  let icompare = Case.compare_caseless
+
+  module IUChar = struct
+    type t = uchar
+    let compare = icompare
+  end
+
   let print out c = 
     let code = uint_code c in
       if code = backslash then InnerIO.nwrite out "\\\\"
@@ -57,7 +123,16 @@ struct
 	    InnerIO.Printf.fprintf out "\\u%04X" n2
 	  else
 	    InnerIO.Printf.fprintf out "\\U%04X%04X" n1 n2
-	      
+
+  let t_printer paren out c =
+    if paren then InnerIO.write out '(';
+    let n = code c in
+    if n >= 0 && n <= 255 then
+      InnerIO.Printf.fprintf out "UChar.of_char %C" (Char.chr n)
+    else
+      InnerIO.Printf.fprintf out "UChar.of_int 0x%04x" n;
+    if paren then InnerIO.write out ')'
+
   let of_digit = function
     | 0 -> zero
     | 1 -> one

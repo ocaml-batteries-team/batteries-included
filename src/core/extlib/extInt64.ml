@@ -43,4 +43,5 @@ module Int64 = struct
     else Enum.seq x pred ((<=) y) 
 
   let print out t = InnerIO.Printf.fprintf out "%Lx" t
+  let t_printer paren out t = print out t
 end

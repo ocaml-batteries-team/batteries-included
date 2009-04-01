@@ -158,7 +158,12 @@ val matched_group : int -> string -> string
     with groups inside alternatives [\|], options [?]
     or repetitions [*].  For instance, the empty string will match
     [\(a\)*], but [matched_group 1 ""] will raise [Not_found]
-    because the first group itself was not matched. *)
+    because the first group itself was not matched.
+
+    Groups are numbered starting with 1. However, if [n=0] no exception is raised.
+
+    @raise Invalid_argument if there are fewer than [n] groups in
+    the regular expression or [n] is negative. *)
   
 val group_beginning : int -> int
 (** [group_beginning n] returns the position of the first character
@@ -167,7 +172,7 @@ val group_beginning : int -> int
     @raise Not_found if the [n]th group of the regular expression
     was not matched.
     @raise Invalid_argument if there are fewer than [n] groups in
-    the regular expression. *)
+    the regular expression or [n] is negative. *)
 
 val group_end : int -> int
   (** [group_end n] returns
@@ -176,7 +181,7 @@ val group_end : int -> int
       @raise Not_found if the [n]th group of the regular expression
       was not matched.
       @raise Invalid_argument if there are fewer than [n] groups in
-      the regular expression. *)
+      the regular expression or [n] is negative. *)
 
 
 (** {6 Replacement} *)

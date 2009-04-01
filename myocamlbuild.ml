@@ -7,6 +7,215 @@ open Command (* no longer needed for OCaml >= 3.10.2 *)
 open Ocamlbuild_pack
 open Ocaml_utils
 open My_std.Outcome
+
+(** {6 Utilities}*)
+
+  (** Imported from {!List} to avoid unsolvable dependencies*)
+  module List =
+  struct
+    include List
+    let filter_map f l =
+      let rec loop acc = function
+	| []   -> acc
+	| h::t -> match f h with
+	    | None   -> loop acc t
+	    | Some x -> loop (x::acc) t
+      in rev (loop [] l)
+  end
+    
+    
+  (** Imported from {!IO.Printf} to avoid unsolvable dependencies*)
+  module Printf =
+  struct
+    include Printf
+      
+    let make_list_printer (p:(out_channel -> 'b -> unit)) 
+	(start:   string)
+	(finish:  string)
+	(separate:string)
+	(out:out_channel)
+	(l:  'b list  ) = 
+      let rec aux out l = match l with
+	| []    -> ()
+	| [h]   -> p out h
+	| h::t  -> fprintf out "%a%s%a" p h separate aux t
+      in fprintf out "%s%a%s" start aux l finish
+  end
+    
+
+(** Imported from {!ExtString.String} to avoid unsolvable dependencies during compilation*)
+module String =
+struct
+  include String
+  exception Invalid_string
+    
+  let find str ?(pos=0) ?(end_pos=length str) sub =
+    let sublen = length sub in
+      if sublen = 0 then
+	0
+      else
+	let found = ref 0 in
+	try
+	  for i = pos to end_pos - sublen do
+	    let j = ref 0 in
+	    while unsafe_get str (i + !j) = unsafe_get sub !j do
+	      incr j;
+	      if !j = sublen then begin found := i; raise Exit; end;
+	    done;
+	  done;
+	  raise Invalid_string
+	with
+	    Exit -> !found
+		
+  let split str sep =
+    let p = find str sep in
+    let len = length sep in
+    let slen = length str in
+      sub str 0 p, sub str (p + len) (slen - p - len)
+	
+  let nsplit str sep =
+    if str = "" then []
+    else (
+      let rec nsplit str sep =
+	try
+	  let s1 , s2 = split str sep in
+	    s1 :: nsplit s2 sep
+	with
+	    Invalid_string -> [str]
+      in
+	nsplit str sep
+    )
+
+  type segment = Changed of string | Slice of int * int 
+
+  let global_replace convs str = (* convs = (seek, replace) list *)
+    let repl_one slist (seek,repl) = 
+      let rec split_multi acc = function 
+	  Slice (start_idx, end_idx) ->
+	    begin try
+	      let i = find str ~pos:start_idx ~end_pos:end_idx seek in
+	      split_multi 
+		(* accumulate slice & replacement *)
+		(Changed repl :: Slice (start_idx,i-1) :: acc) 
+		(* split the rest of the slice *)
+		(Slice (i+length seek, end_idx))
+	    with
+		Invalid_string -> Slice (start_idx,end_idx) :: acc
+	    end
+	| s -> s :: acc (* don't replace in a replacement *)
+      in
+      List.fold_left split_multi [] slist in
+    let to_str pieces = 
+      let len_p = function Changed s -> length s | Slice (a,b) -> b-a + 1 in
+      let len = List.fold_left (fun a p -> a + len_p p) 0 pieces in
+      let out = String.create len in
+      let rec loop pos = function
+	  Slice (s, e) :: t -> 
+	    String.blit str s out pos (e-s+1);
+	    loop (pos+e-s+1) t
+	| Changed s :: t ->
+	    String.blit s 0 out pos (length s);
+	    loop (pos + length s) t
+	| [] -> ()
+      in
+      loop 0 pieces;
+      out
+    in
+    
+    to_str (List.fold_left repl_one [Slice (0,length str)] convs)
+      
+end
+
+module StringSet = Set.Make(String)
+module Dependency =
+struct
+  type t = (string, StringSet.t) Hashtbl.t
+      
+  let create () = Hashtbl.create 100
+  let add tbl k dep =
+    try Hashtbl.replace tbl k (StringSet.add dep (Hashtbl.find tbl k))
+    with Not_found -> Hashtbl.add tbl k (StringSet.singleton dep)
+      
+  let remove tbl (k:string) dep =
+    try let set = StringSet.remove dep (Hashtbl.find tbl k) in
+      if StringSet.is_empty set then Hashtbl.remove tbl k
+      else Hashtbl.replace tbl k  set
+    with Not_found -> ()
+      
+  let find tbl (k:string) =
+    try  Some (Hashtbl.find tbl k)
+    with Not_found -> None
+      
+  let find_all tbl (k:string) =
+    try StringSet.elements (Hashtbl.find tbl k)
+    with Not_found -> []
+      
+  let print out tbl = 
+    Printf.fprintf out "{";
+    Hashtbl.iter (fun k set -> Printf.fprintf out "%s: {%a}\n"
+		    k
+		    (Printf.make_list_printer (fun out -> Printf.fprintf out "%s") "{" "}" "; ")
+		    (StringSet.elements set)) tbl;
+    Printf.fprintf out "}\n"
+end
+
+module Depsort = 
+struct
+  type t = 
+      {
+	direct : Dependency.t (**Direct dependency*);
+	reverse: Dependency.t (**Reverse dependency*);
+	set    : StringSet.t ref (**All the nodes*)
+      }
+
+  let create () =
+    {
+      direct  = Dependency.create ();
+      reverse = Dependency.create ();
+      set     = ref StringSet.empty
+    }
+
+  let add_node t node =
+    t.set := StringSet.add node !(t.set)
+
+  let add_dependency t depending depended =
+    Dependency.add t.direct  depending depended;
+    Dependency.add t.reverse depended depending;
+    add_node t depending;
+    add_node t depended
+
+
+
+
+  let sort t =
+(*    Printf.eprintf "Sorting %a\n" Dependency.print t.direct;*)
+    let rec aux (sorted:string list) (rest: string list) =
+      match rest with 
+	| [] -> 
+	    sorted
+	| _ ->
+	    (*Find nodes which haven't been removed and depend on nothing*)
+	    match List.fold_left (fun (keep, remove) k -> 
+				    match Dependency.find t.direct k with
+				      | None   -> 
+					  (keep, k::remove)
+				      | Some dependencies ->
+					  (k::keep, remove)
+				 ) ([],[]) rest
+	    with
+	      | (_, [])       -> 
+		  Printf.eprintf "Cyclic dependencies in %a\n" Dependency.print t.direct;
+		  assert false
+	      | (rest, roots) ->
+		  List.iter (fun d ->
+(*			       Printf.eprintf "Dependency %S resolved\n" d;*)
+			       List.iter                (*Dependency [d] has been resolved, remove it.*)
+				 (fun x -> Dependency.remove t.direct x d)
+				 (Dependency.find_all t.reverse d)) roots;
+		  aux (sorted @ roots) rest in
+    aux [] (StringSet.elements !(t.set))
+end
+
 (**
    {1 OCamlFind}
 *)
@@ -39,7 +248,6 @@ struct
     Options.ocamlopt   := ocamlfind & A"ocamlopt";
     Options.ocamldep   := ocamlfind & A"ocamldep";
     Options.ocamldoc   := ocamlfind & A"ocamldoc";
-    (*OCAMLDOC-g Options.ocamldoc   := S[A"/home/yoric/tmp/ocaml-community/bin/ocamlrun"; A "-b"; A"/home/yoric/tmp/ocaml-community/bin/ocamldoc"];*)
     Options.ocamlmktop := ocamlfind & A"ocamlmktop"
 
   let after_rules () =
@@ -88,32 +296,14 @@ struct
     (*Options.ocamldoc  := A"ocamldoc"*) ()
 
   let after_rules () = 
-    dep  ["ocaml"; "doc"]   & ["build/odoc_tags.cmo"];
+    dep  ["ocaml"; "doc"]   & ["build/odoc_batteries_factored.cmo"; "build/odoc_tags.cmo"; "build/odoc_extract_mli.cmo"];
     flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
 				A "-i"; A "build";
+				(*A "-g"; A "odoc_batteries_factored.cmo";*)
 				A "-g"; A "odoc_tags.cmo"; 
+				(*A "-g"; A "build/odoc_extract_mli.cmo";*)
 			        A "-t"; A "OCaml Batteries Included" ;
 				A "-intro"; A "../build/intro.text"]
-(*OCAMLDOC -g    flag ["ocaml"; "doc"]   & S[A "-i"; A "/tmp/";
-				A "-g"; A "odoc_tags.cmo"; 
-			        A "-t"; A "OCaml Batteries Included" ;
-				A "-intro"; A "../build/intro.text";
-(*			        A "-I"; A "/home/yoric/tmp/ocaml-community/lib/ocaml";
-			        A "-I"; A "/home/yoric/tmp/ocaml-community/lib/ocaml/threads";*)
-				A "-I"; A "/home/yoric/usr/local/lib/ocaml";
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/std-lib/threads"; 
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/sexplib";
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/camomile";
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/camlzip" ;
-			        A "-I"; A "/home/yoric/usr/local/godi/lib/ocaml/pkg-lib/netstring"]
-*)
-(*  let after_rules () = 
-    dep  ["ocaml"; "doc"]   & ["build/odoc_generator_batlib.cmo"];
-    flag ["ocaml"; "doc"]   & S[A "-i"; A "_build/build"; 
-				A "-i"; A "build";
-				A "-g"; A "odoc_generator_batlib.cmo"; 
-			        A "-t"; A "OCaml Batteries Included" ;
-				A "-intro"; A "../build/intro.text"]*)
 end
 
 
@@ -125,124 +315,19 @@ struct
   let _PRODUCE_MLI_FROM_PACK = true  (*current workaround for .mlpack + ocamldoc issues*)
   let _PRODUCE_PACKED_ML     = false (*not ready for prime-time*)
 
-  (** Imported from {!List} to avoid unsolvable dependencies*)
-  module List =
-  struct
-    include List
-    let filter_map f l =
-      let rec loop acc = function
-	| []   -> acc
-	| h::t -> match f h with
-	    | None   -> loop acc t
-	    | Some x -> loop (x::acc) t
-      in rev (loop [] l)
-  end
-    
-    
-  (** Imported from {!IO.Printf} to avoid unsolvable dependencies*)
-  module Printf =
-  struct
-    include Printf
-      
-    let make_list_printer (p:(out_channel -> 'b -> unit)) 
-	(start:   string)
-	(finish:  string)
-	(separate:string)
-	(out:out_channel)
-	(l:  'b list  ) = 
-      let rec aux out l = match l with
-	| []    -> ()
-	| [h]   -> p out h
-	| h::t  -> fprintf out "%a%s%a" p h separate aux t
-      in fprintf out "%s%a%s" start aux l finish
-  end
-    
-  (** Imported from {!ExtString.String} to avoid unsolvable dependencies during compilation*)
-  module String =
-  struct
-    include String
-    exception Invalid_string
-      
-    let find str sub =
-      let sublen = length sub in
-	if sublen = 0 then
-	  0
-	else
-	  let found = ref 0 in
-	  let len = length str in
-	    try
-	      for i = 0 to len - sublen do
-		let j = ref 0 in
-		  while unsafe_get str (i + !j) = unsafe_get sub !j do
-		    incr j;
-		    if !j = sublen then begin found := i; raise Exit; end;
-		  done;
-	      done;
-	      raise Invalid_string
-	    with
-		Exit -> !found
-		  
-    let split str sep =
-      let p = find str sep in
-      let len = length sep in
-      let slen = length str in
-	sub str 0 p, sub str (p + len) (slen - p - len)
-	  
-    let nsplit str sep =
-      if str = "" then []
-      else (
-	let rec nsplit str sep =
-	  try
-	    let s1 , s2 = split str sep in
-	      s1 :: nsplit s2 sep
-	  with
-	      Invalid_string -> [str]
-	in
-	  nsplit str sep
-      )
-  end
+
     
   let read_dependency dep_name extension =
     let module_name = String.capitalize (Filename.basename (Filename.chop_suffix dep_name extension)) in
     let f = open_in dep_name in
     let (file_name, dependencies) = String.split (input_line f) ":" in
+(*      Printf.eprintf "Reading dependency %s => %s\n" file_name dependencies;*)
     let result = (file_name, module_name, List.filter (fun x -> not (String.length x = 0)) (String.nsplit dependencies " ")) in
       close_in f;
       result
 	
 	
-  module StringSet = Set.Make(String)
-  module Dependency =
-  struct
-    type t = (string, StringSet.t) Hashtbl.t
-	
-    let create () = Hashtbl.create 100
-    let add tbl k dep =
-      try Hashtbl.replace tbl k (StringSet.add dep (Hashtbl.find tbl k))
-      with Not_found -> Hashtbl.add tbl k (StringSet.singleton dep)
-	
-    let remove tbl (k:string) dep =
-      try let set = StringSet.remove dep (Hashtbl.find tbl k) in
-	if StringSet.is_empty set then Hashtbl.remove tbl k
-	else Hashtbl.replace tbl k  set
-      with Not_found -> ()
-	
-    let find tbl (k:string) =
-      try  Some (Hashtbl.find tbl k)
-      with Not_found -> None
-	
-    let find_all tbl (k:string) =
-      try StringSet.elements (Hashtbl.find tbl k)
-      with Not_found -> []
-	
-    let print out tbl = 
-      Printf.fprintf out "{";
-      Hashtbl.iter (fun k set -> Printf.fprintf out "%s: {%a}\n"
-		      k
-		      (Printf.make_list_printer (fun out -> Printf.fprintf out "%s") "{" "}" "; ")
-		      (StringSet.elements set)) tbl;
-      Printf.fprintf out "}\n"
-  end
+
     
   (** Read the dependencies from a directory and sort them
       
@@ -254,54 +339,25 @@ struct
       [N] appears before [M]. 
 
       As usual, cyclic dependencies are bad.*)
-  let sort files extension = 
-    let dep     = Dependency.create () (*Direct  dependencies*)
-    and rev     = Dependency.create () (*Reverse dependencies*)
-    and modules = ref StringSet.empty      (*All modules involved, including external ones*)
+  let sort files extension =
+    let depsort = Depsort.create ()
     and src : (string, string) Hashtbl.t = Hashtbl.create 100 in
       (*Read all the dependencies and store them in the tables*)
       List.iter (
-	fun f -> 
+	fun f ->
+(*	  Printf.eprintf "Adding file %S\n" f;*)
 	  if Filename.check_suffix f ".depends" then
 	    let (file_name, module_name, dependencies) = read_dependency f extension in
-	      List.iter (fun x ->
-			   modules := StringSet.add x !modules;
-			   Dependency.add dep module_name x; 
-			   Dependency.add rev x module_name
-			)
-		dependencies;
-	      modules := StringSet.add module_name !modules;
+	      Depsort.add_node depsort module_name;
+	      List.iter (fun x -> Depsort.add_dependency depsort module_name x) dependencies;
 	      Hashtbl.replace src module_name file_name
 	  else ()
       ) files ;
-      (*Now, start sorting*)
-      let rec aux (sorted:string list) (rest: string list) =
-	match rest with 
-	  | [] -> 
-	      sorted
-	  | _ ->
-	      (*Find nodes which haven't been removed and depend on nothing*)
-	      match List.fold_left (fun (keep, remove) k -> 
-				      match Dependency.find dep k with
-					| None   -> 
-					    (keep, k::remove)
-					| Some dependencies ->
-					    (k::keep, remove)
-				   ) ([],[]) rest
-	      with
-		| (_, [])       -> 
-		    Printf.eprintf "Cyclic dependencies in %a\n" Dependency.print dep;
-		    assert false
-		| (rest, roots) ->
-		    List.iter (fun d ->
-				 List.iter                (*Dependency [d] has been resolved, remove it.*)
-				   (fun x -> Dependency.remove dep x d)
-				   (Dependency.find_all rev d)) roots;
-		    aux (sorted @ roots) rest in
-      let sorted = aux [] (StringSet.elements !modules) in
+      let sorted = Depsort.sort depsort in
 	List.filter_map (fun module_name -> 
 			   try Some (module_name, Hashtbl.find src module_name)
 			   with Not_found ->  None) sorted;;
+
 
   (**
      Generate a .mli from a list of modules.
@@ -636,6 +692,42 @@ expand_module include_dirs m ["ml"]) modules));
 	  (*Parse .mlhierarchy*)
 	end;
 *)	
+
+end
+
+module Distrib = struct
+
+
+(*
+  let after_rules () =
+  rule ".dist to .mli"
+    ~prod:"%.mli"
+    ~deps:["%.dist";"%.ml";"build/generate_mli.byte"]
+    (*Note: generating the .ml should have made sure that all .mli are correctly built*)
+(*Er... that's actually not true*)
+    begin
+      fun env build ->
+	let dest = env "%.mli"
+	and src  = env "%.dist" in
+	let (tree, substitutions) = read_dist src in
+	  (*For each source .mli, first generate the .mli file if it doesn't exist yet.*)
+	  (*List.iter ignore_good (build [List.map (fun x -> x.path) (leaves_of tree)]);*)
+	  (*Now that we have all the source .mli, we can apply substitutions and compute dependencies*)
+	  let deps = compute_dependencies (apply_substitutions tree substitutions)     in
+	    Echo ((serialize_tree (sort_tree deps)), dest)
+    end;
+    (*To obtain the .ml of a .dist, just copy the .dist to .ml*)
+*)
+  rule ".dist to .ml"
+    ~prod:"%.ml"
+    ~deps:["%.dist";"build/generate_mli.byte"]
+    begin
+      fun env build ->
+	let dest = env "%.ml"
+	and src  = env "%.dist"
+	in
+	  Cmd (S[A"cp"; A src; A dest])
+    end
 
 end
 

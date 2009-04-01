@@ -76,7 +76,7 @@ let string s = label ("\"" ^ s ^ "\"") (
 )
 
 let rope s = label ("\"" ^ ( UTF8.to_string (Rope.to_ustring s) ) ^ "\"") (
-  Enum.fold (fun c (acc:(_, _, _) ParserCo.t) -> (exactly c) >>> acc ) (return s) (Rope.backwards s)
+  Enum.fold (fun (acc:(_, _, _) ParserCo.t) c -> (exactly c) >>> acc ) (return s) (Rope.backwards s)
 )
 
 let case_char c =

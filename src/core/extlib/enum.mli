@@ -102,7 +102,7 @@ val exists: ('a -> bool) -> 'a t -> bool
 val for_all: ('a -> bool) -> 'a t -> bool
 (** [for_all f e] returns [true] if for every [x] in [e], [f x] is true*)
 
-val fold : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
+val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** A general loop on an enumeration.
 
     If [e] is empty, [fold f v e] returns [v]. Otherwise, [fold v e]
@@ -124,7 +124,7 @@ val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
   (** [fold2] is similar to [fold] but will fold over two enumerations at the
       same time until one of the two enumerations ends. *)
 
-val scanl : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b t
+val scanl : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b t
 (** A variant of [fold] producing an enumeration of its intermediate values.
     If [e] contains [x1], [x2], ..., [scanl f init e] is the enumeration 
     containing [init], [f init x1], [f (f init x1) x2]... *)
@@ -466,6 +466,14 @@ val ( -- ) : int -> int -> int t
     [5 -- 10] is the enumeration 5,6,7,8,9,10.
     [10 -- 5] is the empty enumeration*)
 
+val ( --. ) : (float * float) -> float -> float t
+(** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
+    increment of [step] between elements.
+
+    [(5.0, 1.0) --. 10.0] is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
+    [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
+    [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
+
 val ( --- ) : int -> int -> int t
 (** As [--], but accepts enumerations in reverse order.
 
@@ -561,6 +569,8 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
+val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
+
 (** {6 Override modules}*)
 
 (**
@@ -573,14 +583,14 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output 
    operation}} or {{:../extensions.html#multialias}{alias several
    modules to one name}}. For instance, to open a version of {!Enum}
    with exceptionless error management, you may write [open Enum,
-   ExceptionLess]. To locally replace module {!Enum} with a module of
+   Exceptionless]. To locally replace module {!Enum} with a module of
    the same name but with exceptionless error management, you may
-   write {v module Enum = Enum include ExceptionLess v}.
+   write {v module Enum = Enum include Exceptionless v}.
 
 *)
 
 (** Operations on {!Enum} without exceptions.*)
-module ExceptionLess : sig
+module Exceptionless : sig
   val find : ('a -> bool) -> 'a t -> 'a option
     (** [find f e] returns [Some x] where [x] is the first element [x] of [e] 
 	such that [f x] returns [true], consuming the enumeration up to and 
@@ -605,7 +615,7 @@ module Labels : sig
   val iter2:      f:('a -> 'b -> unit) -> 'a t -> 'b t -> unit
   val exists:     f:('a -> bool) -> 'a t -> bool
   val for_all:    f:('a -> bool) -> 'a t -> bool
-  val fold:       f:('a -> 'b -> 'b) -> init:'b -> 'a t -> 'b
+  val fold:       f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
   val fold2:      f:('a -> 'b -> 'c -> 'c) -> init:'c -> 'a t -> 'b t -> 'c
   val iteri:      f:(int -> 'a -> unit) -> 'a t -> unit
   val iter2i:     f:( int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
@@ -642,6 +652,10 @@ module Labels : sig
       where [x] is the first element of [a] and [y] is the first
       element of [b]
   *)
+
+  module LExceptionless : sig
+    val find : f:('a -> bool) -> 'a t -> 'a option
+  end
 end
 
 (**/**)

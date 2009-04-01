@@ -484,3 +484,4 @@ let t_of_sexp a_of_sexp s =
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
   Enum.print ~first ~last ~sep print_a out (enum t)
+let t_printer a_printer paren out t = print (a_printer false) out t
