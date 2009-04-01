@@ -3,6 +3,7 @@ include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 include /usr/share/cdbs/1/rules/ocaml.mk
+-include /usr/share/topgit/tg2quilt.mk
 
 LIB_NAME = batteries
 DEV_PKG_NAME = lib$(LIB_NAME)-ocaml-dev
@@ -31,20 +32,3 @@ build/$(DOC_PKG_NAME)::
 		--doc-base-generate $(DEV_PKG_NAME)
 	mv debian/$(DEV_PKG_NAME).doc-base.ocamldoc-apiref \
 		debian/$(DOC_PKG_NAME).doc-base.ocamldoc-apiref
-
-TG_BRANCHES = fixes/consistent-docroot
-TG_BRANCHES += debian/missing-doc
-SAVED_BRANCH := $(shell git branch 2> /dev/null | grep '^*' | cut -f 2 -d' ')
-tg-export:
-	tg create stage-debian $(TG_BRANCHES)
-	git commit -m "staging"
-	rm -Rf debian/patches.new
-	tg export --quilt debian/patches.new
-	git rm -f .top*
-	git checkout $(SAVED_BRANCH)
-	tg delete stage-debian
-	rm debian/patches.new/stage-*
-	sed -i '/^stage-/d' debian/patches.new/series
-	rm -Rf debian/patches
-	mv debian/patches.new debian/patches
-

@@ -6,6 +6,7 @@ ocaml-batteries (0.20090401+gitE192725-1) unstable; urgency=low
     - pass -byte-plugin to ocamlbuild when ocamlopt is not
       available, fixes FTBFS on non-native archs. (Closes: #505490)
     - use ocaml.mk as a CDBS "rules" snippet
+    - use tg2quilt.mk snippet (shipped by topgit) to generated patches
   * debian/control:
     - add new build-dep on ocamlnet (Closes: #515792)
 
