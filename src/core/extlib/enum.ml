@@ -122,7 +122,8 @@ module MicroLazyList = struct
         ~count:_dummy
         ~clone:(fun () -> aux !reference)
       in e.count <- (fun () -> force e; e.count());
-	e
+         e.fast  <- false;
+         e
     in aux l
 
   let from f =
@@ -159,7 +160,7 @@ let from f =
 		    e.next <- e'.next;
 		    e.clone<- e'.clone;
 		    e.count<- e'.count;
-		    e.fast <- false;
+		    e.fast <- e'.fast;
 	            e.clone () );
     e
 

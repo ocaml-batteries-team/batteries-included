@@ -1,2 +1,3 @@
+#!/bin/sh
 ocamlbuild -just-plugin
 ocamlbuild -no-plugin -ocamlc "ocamlfind batteries/ocamlc" -ocamlopt "ocamlfind batteries/ocamlopt" -ocamldep "ocamlfind batteries/ocamldep" $@

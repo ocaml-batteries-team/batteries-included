@@ -300,5 +300,6 @@ clean:
 	cd examples && $(OCAMLBUILD) -clean
 	rm -f `find . -name "*~" -o -name "*#" -o -name "*odoc"`
 	rm -f META doc/api.odocl doc/batteries/html/api/*
+	rm -f src/batteries_toolchain/ocaml
 
 .PHONY: doc/api.odocl batteries.mllib examples tests
