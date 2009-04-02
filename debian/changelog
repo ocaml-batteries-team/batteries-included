@@ -1,3 +1,9 @@
+ocaml-batteries (0.20090401+gitE192725-2) UNRELEASED; urgency=low
+
+  * debian/rules: set archive sections to "ocaml" for lib*ocaml*
+
+ -- Stefano Zacchiroli <zack@debian.org>  Thu, 02 Apr 2009 15:26:22 +0200
+
 ocaml-batteries (0.20090401+gitE192725-1) unstable; urgency=low
 
   * new snapshot, upstream Git commit E192725
