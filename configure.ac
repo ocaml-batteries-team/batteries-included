@@ -152,15 +152,19 @@ AC_ARG_WITH(
 	[ --with-doc                build documentation (yes by default)],
         BUILD_DOC=yes,
         BUILD_DOC=no)
-AC_SUBST(BUILD_DOC)
 
-AC_MSG_NOTICE([Preparing to locate destination directory])
-AC_MSG_NOTICE([Prefix is ${prefix}])
-AC_MSG_NOTICE([Installation is $INSTALLATION])
 
 if test "$INSTALLATION" = "GODI"; then
   AC_MSG_NOTICE([Installing to GODI default directory])
   DESTDIR="`$OCAMLFIND printconf destdir`"
+  AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
+  if test -z "$OCAMLPKG_batteries"; then
+   	DESTDIR=`$OCAMLFIND printconf destdir`
+  else
+	AC_MSG_ERROR([Batteries is already installed])
+	exit 1
+  fi
+  BUILD_DOC="yes"
 else
    if test "${prefix}" = "NONE"; then
         AC_MSG_NOTICE([Locating default installation directory])
@@ -177,7 +181,12 @@ else
 	DESTDIR="${prefix}/lib/batteries"
    fi
 fi
-
+if test "$BUILD_DOC" = "yes"; then
+   AC_MSG_NOTICE([Building documentation])
+else
+   AC_MSG_NOTICE([Documentation will not be built])
+fi
+AC_SUBST(BUILD_DOC)
 
 AC_MSG_NOTICE([Default destination is $DESTDIR])
 AC_SUBST(DESTDIR)
