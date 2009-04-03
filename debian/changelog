@@ -2,6 +2,7 @@ ocaml-batteries (0.20090401+git4CA4770-1) UNRELEASED; urgency=low
 
   * new upstream snapshot, commit 4CA4770
   * debian/rules: set archive sections to "ocaml" for lib*ocaml*
+  * README.Debian: point to batteries-enabled command wrappers
 
  -- Stefano Zacchiroli <zack@debian.org>  Thu, 02 Apr 2009 15:26:22 +0200
 
