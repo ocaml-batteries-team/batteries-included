@@ -28,9 +28,13 @@ DEB_MAKE_CLEAN_TARGET = clean
 DEB_COMPRESS_EXCLUDE += myocamlbuild.ml
 DEB_COMPRESS_EXCLUDE += .idex
 
-build/$(DOC_PKG_NAME)::
-	OCAMLRUNPARAM=l=16M make doc OBFLAGS=-classic-display
+install/$(DOC_PKG_NAME):: ocamldoc-stamp
+ocamldoc-stamp:
+	OCAMLRUNPARAM=l=16M make doc OBFLAGS="-classic-display -no-hygiene"
 	/usr/share/cdbs/1/class/ocamldoc-api-ref-config \
 		--doc-base-generate $(DEV_PKG_NAME)
 	mv debian/$(DEV_PKG_NAME).doc-base.ocamldoc-apiref \
 		debian/$(DOC_PKG_NAME).doc-base.ocamldoc-apiref
+	touch $@
+clean::
+	rm -f ocamldoc-stamp
