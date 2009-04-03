@@ -91,7 +91,8 @@ Architecture: all
 Depends:
  libbatteries-ocaml-dev,
  libbatteries-camlp4-dev,
- libbatteries-ocaml-doc
+ libbatteries-ocaml-doc,
+ ${misc:Depends}
 Description: Batteries included: OCaml development platform - metapackage
  Batteries included is a community-driven effort to standardize on an
  uniform, documented, and comprehensive OCaml development platform.
