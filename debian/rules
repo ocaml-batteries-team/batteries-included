@@ -28,6 +28,7 @@ DEB_MAKE_CLEAN_TARGET = clean
 DEB_COMPRESS_EXCLUDE += myocamlbuild.ml
 DEB_COMPRESS_EXCLUDE += .idex
 
+export OCAMLFIND_COMMANDS="ocamldoc=ocamldoc"
 install/$(DOC_PKG_NAME):: ocamldoc-stamp
 ocamldoc-stamp:
 	OCAMLRUNPARAM=l=16M make doc OBFLAGS="-classic-display -no-hygiene"
