@@ -36,6 +36,7 @@ Depends:
  libsexplib-camlp4-dev,
  libbin-prot-camlp4-dev,
  libzip-ocaml-dev,
+ libocamlnet-ocaml-dev,
  ${shlibs:Depends},
  ${misc:Depends}
 Recommends: libbatteries-ocaml-doc

@@ -7,7 +7,9 @@ ocaml-batteries (0.20090403+git4CA4770-1) UNRELEASED; urgency=low
     - ensure ocamlfind uses bytecode ocamldoc, because dynamic loading
       of native code printers does not work (yet)
   * README.Debian: point to batteries-enabled command wrappers
-  * debian/control: add ${misc:Depends} to ocaml-batteries-included
+  * debian/control:
+    - add ${misc:Depends} to ocaml-batteries-included
+    - add missing dep: libbatteries-ocaml-dev -> libocamlnet-ocaml-dev
 
  -- Stefano Zacchiroli <zack@debian.org>  Thu, 02 Apr 2009 15:26:22 +0200
 
