@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian OCaml Maintainers <debian-ocaml-maint@lists.debian.org>
 Uploaders: Stefano Zacchiroli <zack@debian.org>
 Build-Depends:
- debhelper (>> 7.0.0),
+ debhelper (>= 7),
  ocaml-nox,
  ocaml-findlib,
  libcamomile-ocaml-dev,
