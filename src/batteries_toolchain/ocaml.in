@@ -1,1 +1,2 @@
+#!/bin/sh
 "@DESTDIR@/batteries/toplevel.top" "@DESTDIR@/batteries/top.ml" $@
