@@ -1,6 +1,6 @@
-ocaml-batteries (0.20090403+git4CA4770-1) UNRELEASED; urgency=low
+ocaml-batteries (0.20090405+beta1-1) unstable; urgency=low
 
-  * new upstream snapshot, commit 4CA4770
+  * new upstream release, 1.0 beta 1
   * debian/rules:
     - set archive sections to "ocaml" for lib*ocaml*
     - avoid building doc on bynary-only builds
@@ -11,7 +11,7 @@ ocaml-batteries (0.20090403+git4CA4770-1) UNRELEASED; urgency=low
     - add ${misc:Depends} to ocaml-batteries-included
     - add missing dep: libbatteries-ocaml-dev -> libocamlnet-ocaml-dev
 
- -- Stefano Zacchiroli <zack@debian.org>  Thu, 02 Apr 2009 15:26:22 +0200
+ -- Stefano Zacchiroli <zack@debian.org>  Sun, 05 Apr 2009 17:14:47 +0200
 
 ocaml-batteries (0.20090401+gitE192725-1) unstable; urgency=low
 
