@@ -219,8 +219,6 @@ let rec find_map f = function
 
 let fold_right_max = 1000
 
-let fold_right_max = 1000
-
 let fold_right f l init =
 	let rec tail_loop acc = function
 		| [] -> acc
