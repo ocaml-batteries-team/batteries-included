@@ -235,8 +235,8 @@ struct
   end
 
   let rec map_id = function
-    | <:ident@_loc< $uid:uid$ . $id:id$ >> ->
-        <:ident< $uid:uid$ . $id:map_id id$ >>
+    | <:ident@_loc< $id:id1$ . $id:id2$ >> ->
+        <:ident< $id:id1$ . $id:map_id id2$ >>
     | <:ident@_loc< $lid:id$ >> ->
         <:ident< $lid:id ^ "_printer"$ >>
     | id ->
