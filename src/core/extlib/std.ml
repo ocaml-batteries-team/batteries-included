@@ -219,6 +219,8 @@ let uncurry f (x,y) = f x y
 let const x _ = x
 
 let invisible_args = ref 1
+(* the number or arguments to ignore at the beginning of Sys.argv,
+usually because program-name is put in argv.(0) *)
 
 let args () =
   let e = ExtArray.Array.enum Sys.argv in
