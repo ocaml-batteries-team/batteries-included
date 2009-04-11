@@ -1,5 +1,6 @@
 open Printf
 open Batteries
+open Standard
 
 exception Done_measuring
 
@@ -25,10 +26,10 @@ let d_count n_min n_max _ =
 (*   ONE SECOND TESTING                  *)
 (*****************************************)
 
-let count_f f trials impl_t rand_list =
+let count_f f time trials rand_list =
   let list = ref [] in
   let list_len = ref 0 in
-  printf "#Len\tIterations\n" ; flush Pervasives.stdout;
+  printf "#Len\tIterations\n%!";
   list := rand_list 10 [];
   let test_n n =
     list := rand_list (n - !list_len) !list;
@@ -36,14 +37,14 @@ let count_f f trials impl_t rand_list =
     let t0 = Sys.time() in
     ignore(f n !list); (* ignore the first run *)
     if Sys.time () -. t0 > 1. then raise Done_measuring;
-    printf "%d\t" n; flush Pervasives.stdout;
-    let t0 = Sys.time() in let t1 = t0 +. 1. in
+    printf "%d\t%!" n;
+    let t0 = Sys.time() in let t1 = t0 +. time in
     let count = ref (-1) in
     while Sys.time () < t1 do
       incr count;
       ignore(f n !list);
     done;
-    printf "%d\n" !count; flush Pervasives.stdout;
+    printf "%d\n%!" !count;
     if !count < 2 then raise Done_measuring
   in
   List.iter test_n trials
@@ -97,19 +98,23 @@ let fold_right3 f li init =
     | li -> fold_chunk li
   in loop 0 li
 
-type impl_type = [`Gallium | `Extlib | `Bluestorm]
+type impl_type = [`Gallium | `Extlib | `Core | `Bluestorm]
 
 let nth_impls = [`Gallium, Legacy.List.nth;
-		 `Extlib, List.nth]
+		 `Extlib, List.nth;
+		 `Core, Core.Std.List.nth_exn ]
 and map_impls = [`Gallium, Legacy.List.map;
-		 `Extlib, List.map]
+		 `Extlib, List.map;
+		 `Core, (fun f l -> Legacy.List.rev (Legacy.List.rev_map f l))]
 and fold_right_impls = [`Gallium, Legacy.List.fold_right;
 			`Extlib, List.fold_right;
-			`Bluestorm, fold_right3]
+			`Bluestorm, fold_right3;
+			`Core, (fun f l a -> Legacy.List.fold_left f a (Legacy.List.rev l))]
 and map2_impls = [`Gallium, Legacy.List.map2;
-		  `Extlib, List.map2]
+		  `Extlib, List.map2;
+		  `Core, (fun f l1 l2 -> Legacy.List.rev (Legacy.List.rev_map2 f l1 l2)) ]
 and fold_right2_impls = [`Gallium, Legacy.List.fold_right2;
-			 `Extlib, List.fold_right2]
+			 `Extlib, List.fold_right2 ]
 
 and append_impls = [`Gallium, Legacy.List.append;
 		    `Extlib, List.append]
@@ -134,10 +139,11 @@ and partition_impls = [`Gallium, Legacy.List.partition;
 
 let desc_to_str = function
     `Gallium -> "Gallium" | `Extlib -> "Extlib"
-  | `Bluestorm -> "Bluestorm"
+  | `Bluestorm -> "Bluestorm" | `Core -> "Core"
 
 let make_tests (t_desc,test) impls = 
   List.map (fun (i_desc,f) -> i_desc, count_f (test f)) impls
+
 
 let tests =
   [
@@ -160,10 +166,11 @@ let tests =
 (*****************************************)
 
 let seed = ref (-1)
-let todo = ref []
+let time = ref 1.
+let todo = Ref_list.empty() (* list of string test names *)
 let distro = ref (d_rand 0 5000)
 let int1 = ref 0 and int2 = ref 0
-let impls : impl_type list ref = ref []
+let impls : impl_type Ref_list.t = Ref_list.empty () (* list of impl_type values *)
 let max_i = ref max_int
 
 open Arg2
@@ -171,14 +178,15 @@ open Arg2
 (*  MAIN                                 *)
 (*****************************************)
 
-let push lref item = lref := item :: !lref
-
 let () =
-  let set_f x = todo := x :: !todo in
+  let set_f x = Ref_list.push todo x in
   let args =
     [ (Both ('s', "seed"), [Int_var seed], [], "Set random number seed");
-      (Both ('g', "gallium"), [Unit (fun () -> push impls `Gallium)], [], "Test Gallium's implementation");
-      (Both ('e', "extlib"), [Unit (fun () -> push impls `Extlib)], [], "Test Extlib's implementation");
+      (Both ('g', "gallium"), [Unit (fun () -> Ref_list.push impls `Gallium)], [], "Test Gallium's implementation");
+      (Both ('e', "extlib"), [Unit (fun () -> Ref_list.push impls `Extlib)], [], "Test Extlib's implementation");
+      (Both ('b', "bluestorm"), [Unit (fun () -> Ref_list.push impls `Bluestorm)], [], "Test Bluestorm's implementation");
+      (Both ('c', "core"), [Unit (fun () -> Ref_list.push impls `Core)], [], "Test Jane Street's implementation");
+      (Both ('t', "time"), [Float_var time], [], "Set test duration (float)");
       (Both ('i', "max-i"), [Int_var max_i], [], "Maximum list length to test");
       (Both_extra ('R',"rand","min max"), [Int_var int1; Int_var int2; Unit (fun () -> distro := (d_rand !int1 !int2))], [], "Set Distribution of list values to a random min-max distribution")
     ]
@@ -187,13 +195,13 @@ let () =
   and notes = "by Eric Norige" in
   Arg2.parse args set_f usage_info descr notes;
   if !seed = -1 then (Random.self_init (); seed := Random.bits ());
-  let trials =
+  let trials = (* generate list of trial counts *)
     let dup_by n l = l @ (List.map (( * ) n) l) in
     [1; 2; 4; 7] |> dup_by 10 |> dup_by 100 |> dup_by 10000 |>
 	List.filter (fun n -> n < !max_i) in
-  let get_f test_name =
+  let get_f test_name = (* get the test function by its name *)
     List.assoc test_name tests |>
-	List.filter (fun (t, _) -> List.mem t !impls)
+	List.filter (fun (t, _) -> List.mem t (Ref_list.to_list impls))
   in
   let do_test (t,test) = try 
     let rand_f = !distro !seed in
@@ -201,5 +209,10 @@ let () =
       if n <= 0 then li 
       else rand_list (n-1) ((rand_f ())::li)
     in
-    test trials t rand_list with Done_measuring -> () in
-  List.iter do_test (List.flatten (List.rev_map get_f !todo))
+    test !time trials rand_list with Done_measuring -> () in
+  todo
+    |> Ref_list.to_list
+    |> List.rev_map get_f
+    |> List.flatten
+    |> List.iter do_test
+
