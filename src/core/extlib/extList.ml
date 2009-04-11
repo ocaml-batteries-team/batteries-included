@@ -672,7 +672,7 @@ let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a list =
   print ~first ~last ~sep print_a os list;
   InnerIO.close_out os (* returns contents *)*)
 
-let reduce f = function [] -> invalid_arg "List.reduce: empty list" 
+let reduce f = function [] -> raise Empty_list
   | h::t -> fold_left f h t
 
 let min l = reduce Pervasives.min l

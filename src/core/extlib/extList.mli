@@ -160,7 +160,7 @@ module List :
 	val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 	  (** [List.reduce f h::t] is [fold_left f h t].  
 
-	      @raise Invalid_argument on empty lists. *)
+	      @raise Empty_list on empty lists. *)
 
 	val max : 'a list -> 'a
 	  (** [max l] returns the largest value in [l] as judged by
