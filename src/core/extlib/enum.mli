@@ -562,7 +562,17 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
     [x1] is returned as such and treatment stops. On the other hand, if [cont x1] 
     is [true], [f x1] is returned and the loop proceeds with [x2]...*)
 
+(** The Enum Monad 
 
+    This module provides everything needed for writing and executing
+    computations in the Enum Monad.
+*)
+module Monad : sig
+  type 'a t = 'a Enum.t
+  val return : 'a -> 'a t
+  val bind : 'a t -> ('a -> 'b t) -> 'b t
+  val failwith : string -> 'a t
+end
 
 (** {6 Boilerplate code}*)
 

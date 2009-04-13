@@ -984,3 +984,12 @@ module type Enumerable = sig
   val enum : 'a enumerable -> 'a t
   val of_enum : 'a t -> 'a enumerable
 end
+
+module Monad =
+struct
+  type 'a t = 'a Enum.t
+  let return x = Enum.singleton x
+  let bind m f = Enum.concat (Enum.map f m)
+  let failwith s = Enum.empty ()
+end
+  

@@ -100,6 +100,18 @@ val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
 
 val maybe_printer : 'a Value_printer.t -> 'a t Value_printer.t
 
+(** The Option Monad
+
+    This module provides everything needed to write and execute computations
+    in the Option monad.
+*)
+module Monad : sig
+  type 'a t = 'a option
+  val return : 'a -> 'a t
+  val bind : 'a t -> ('a -> 'b t) -> 'b t
+  val failwith : string -> 'a t
+end
+
 (** Operations on options, with labels.*)
 module Labels : sig
   val may : f:('a -> unit) -> 'a option -> unit
