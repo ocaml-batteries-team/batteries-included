@@ -574,6 +574,21 @@ module Monad : sig
   val failwith : string -> 'a t
 end
 
+(** Monadic operations on Enumerations containing monadic elements
+
+    This module will let you enter a monad, work in it and exit it
+    with everything needed provided. In particular, you can find 
+    the sequence and fold_monad functions for working in arbitrary monads
+    within Enumerations.
+*)
+module WithMonad (Mon : Monad.S) : sig
+  include Monad.S
+  val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
+  val sequence : 'a t Enum.t -> 'a Enum.t t
+  val fold_monad : ('a -> 'b -> 'a t) -> 'a -> 'b Enum.t -> 'a t
+end
+  
+
 (** {6 Boilerplate code}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> unit

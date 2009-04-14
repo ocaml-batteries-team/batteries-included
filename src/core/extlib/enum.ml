@@ -993,3 +993,24 @@ struct
   let failwith s = Enum.empty ()
 end
   
+module WithMonad (Mon : Monad.S) =
+struct
+  include Mon
+    
+  let (>>=) = Mon.bind
+  
+  let sequence enum =
+    let queue = Queue.create () in
+      loop ()
+	where rec loop () =
+	match Enum.get enum with
+          | None -> return (of_queue queue)
+          | Some elem -> elem >>= (fun x -> Queue.push x queue; loop ())
+  and of_queue q = Enum.from (fun () -> try Queue.pop q with Queue.Empty -> raise Enum.No_more_elements)
+
+  let fold_monad f init enum = fold (return init)
+    where
+      rec fold m = match Enum.get enum with
+                      None -> m
+	            | Some x -> m >>= fun acc -> fold (f acc x)
+end
