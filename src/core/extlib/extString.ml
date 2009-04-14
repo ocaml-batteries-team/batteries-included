@@ -79,6 +79,7 @@ let find_from str ofs sub =
     if sublen = 0 then ofs (*If [sub] is the empty string, by convention, it may be found wherever we started searching.*)
     else
       let len = length str in
+	if len = 0 then raise Invalid_string else
 	if 0 > ofs || ofs >= len then raise (Invalid_argument "index out of bounds")
 	else
 	Return.label (fun label ->
@@ -99,6 +100,7 @@ let rfind_from str suf sub =
   and len    = length str in
     if sublen = 0 then len
     else
+      if len = 0 then raise Invalid_string else
 	if 0 > suf || suf >= len then raise (Invalid_argument "index out of bounds")
 	else
 	Return.label (fun label ->
@@ -537,11 +539,11 @@ external get : [> `Read] t -> int -> char = "%string_safe_get"
 external set : [> `Write] t -> int -> char -> unit = "%string_safe_set"
 external create : int -> _ t = "caml_create_string"
 external unsafe_get : [> `Read] t -> int -> char = "%string_unsafe_get"
-external unsafe_set : [> `Write] -> int -> char -> unit = "%string_unsafe_set"
+external unsafe_set : [> `Write] t -> int -> char -> unit = "%string_unsafe_set"
 external unsafe_blit :
-  [> `Read] t -> int -> [> `Write] -> int -> int -> unit = "caml_blit_string" "noalloc"
+  [> `Read] t -> int -> [> `Write] t -> int -> int -> unit = "caml_blit_string" "noalloc"
 external unsafe_fill :
-  [> `Write] -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+  [> `Write] t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 
 end (* String.Cap *)
 

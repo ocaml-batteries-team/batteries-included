@@ -861,11 +861,11 @@ val t_printer : [> `Read] t Value_printer.t
 
 (** {6 Undocumented operations} *)
 external unsafe_get : [> `Read] t -> int -> char = "%string_unsafe_get"
-external unsafe_set : [> `Write] -> int -> char -> unit = "%string_unsafe_set"
+external unsafe_set : [> `Write] t -> int -> char -> unit = "%string_unsafe_set"
 external unsafe_blit :
-  [> `Read] t -> int -> [> `Write] -> int -> int -> unit = "caml_blit_string" "noalloc"
+  [> `Read] t -> int -> [> `Write] t -> int -> int -> unit = "caml_blit_string" "noalloc"
 external unsafe_fill :
-  [> `Write] -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+  [> `Write] t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 
 (**/**)
 end
