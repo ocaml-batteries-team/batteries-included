@@ -98,6 +98,9 @@ let fold_right3 f li init =
     | li -> fold_chunk li
   in loop 0 li
 
+let core_map f l = Legacy.List.rev (Legacy.List.rev_map f l)
+let core_fold_right f l a = Legacy.List.fold_left f a (Legacy.List.rev l)
+
 type impl_type = [`Gallium | `Extlib | `Core | `Bluestorm]
 
 let nth_impls = [`Gallium, Legacy.List.nth;
@@ -105,11 +108,11 @@ let nth_impls = [`Gallium, Legacy.List.nth;
 		 `Core, Core.Std.List.nth_exn ]
 and map_impls = [`Gallium, Legacy.List.map;
 		 `Extlib, List.map;
-		 `Core, (fun f l -> Legacy.List.rev (Legacy.List.rev_map f l))]
+		 `Core, core_map ]
 and fold_right_impls = [`Gallium, Legacy.List.fold_right;
 			`Extlib, List.fold_right;
 			`Bluestorm, fold_right3;
-			`Core, (fun f l a -> Legacy.List.fold_left f a (Legacy.List.rev l))]
+			`Core, core_fold_right]
 and map2_impls = [`Gallium, Legacy.List.map2;
 		  `Extlib, List.map2;
 		  `Core, (fun f l1 l2 -> Legacy.List.rev (Legacy.List.rev_map2 f l1 l2)) ]
