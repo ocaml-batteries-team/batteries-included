@@ -554,6 +554,7 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
       enum. *)*)
 
 (** {6 Trampolining} *)
+
 val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 (** [while_do cont f e] is a loop on [e] using [f] as body and [cont] as
     condition for continuing. 
@@ -562,32 +563,42 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
     [x1] is returned as such and treatment stops. On the other hand, if [cont x1] 
     is [true], [f x1] is returned and the loop proceeds with [x2]...*)
 
+(** {6 Monad related modules} *)
+
+(** Monadic operations on Enumerations containing monadic elements
+
+    This module will let you use sequence and fold_monad functions over enumerations.
+*)
+module WithMonad : functor (Mon : Monad.S) -> sig
+  type 'a m = 'a Mon.m
+(** Type of the monadic elements. *)
+  
+  val sequence : 'a m t -> 'a t m
+(** [sequence e] evaluates each monadic elements (of type ['a m] contained in the enumeration [e] to get a monadic enumeration of ['a] elements, 
+    of type ['a m Enum.t]. *)
+ 
+  val fold_monad : ('a -> 'b -> 'a m) -> 'a -> 'b t -> 'a m
+(** [fold_monad f init e] does a folding of the enumeration [e] applying step by step the function [f] that gives back results in the [Mon] monad, 
+    with the [init] initial element. The result is a value in the [Mond] monad. *)
+end
+
 (** The Enum Monad 
 
     This module provides everything needed for writing and executing
     computations in the Enum Monad.
 *)
 module Monad : sig
-  type 'a t = 'a Enum.t
-  val return : 'a -> 'a t
-  val bind : 'a t -> ('a -> 'b t) -> 'b t
-  val failwith : string -> 'a t
+  type 'a m = 'a t
+(** The type of the Enum monad's elements, thus [Enum.t]. *)
+
+  val return : 'a -> 'a m
+(** This function puts a single value in the Enum monad, that is to say it creates an enumeration containing a single element. *)
+
+  val bind : 'a m -> ('a -> 'b m) -> 'b m
+(** [bind m f] takes the result of the monadic computation m, puts the f function in the monadic context passing it the result of m and then
+    returning a monadic result. *)
 end
 
-(** Monadic operations on Enumerations containing monadic elements
-
-    This module will let you enter a monad, work in it and exit it
-    with everything needed provided. In particular, you can find 
-    the sequence and fold_monad functions for working in arbitrary monads
-    within Enumerations.
-*)
-module WithMonad (Mon : Monad.S) : sig
-  include Monad.S
-  val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
-  val sequence : 'a t Enum.t -> 'a Enum.t t
-  val fold_monad : ('a -> 'b -> 'a t) -> 'a -> 'b Enum.t -> 'a t
-end
-  
 
 (** {6 Boilerplate code}*)
 

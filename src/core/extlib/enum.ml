@@ -984,33 +984,33 @@ module type Enumerable = sig
   val enum : 'a enumerable -> 'a t
   val of_enum : 'a t -> 'a enumerable
 end
+  
+module WithMonad (Mon : Monad.S) =
+struct    
+  type 'a m = 'a Mon.m
+      
+  let sequence enum =
+    let queue = Queue.create () in
+    let (>>=) = Mon.bind and return = Mon.return in
+    let of_queue q = from (fun () -> try Queue.pop q with Queue.Empty -> raise No_more_elements) in
+    let rec loop () = match get enum with
+      | None -> return (of_queue queue)
+      | Some elem -> elem >>= (fun x -> Queue.push x queue; loop ())
+    in
+      loop ()
+	
+  let fold_monad f init enum = 
+    let (>>=) = Mon.bind and return = Mon.return in 
+    let rec fold m = match get enum with
+      |	None -> m
+      | Some x -> m >>= fun acc -> fold (f acc x)
+    in
+      fold (return init)   
+end
 
 module Monad =
 struct
-  type 'a t = 'a Enum.t
-  let return x = Enum.singleton x
-  let bind m f = Enum.concat (Enum.map f m)
-  let failwith s = Enum.empty ()
-end
-  
-module WithMonad (Mon : Monad.S) =
-struct
-  include Mon
-    
-  let (>>=) = Mon.bind
-  
-  let sequence enum =
-    let queue = Queue.create () in
-      loop ()
-	where rec loop () =
-	match Enum.get enum with
-          | None -> return (of_queue queue)
-          | Some elem -> elem >>= (fun x -> Queue.push x queue; loop ())
-  and of_queue q = Enum.from (fun () -> try Queue.pop q with Queue.Empty -> raise Enum.No_more_elements)
-
-  let fold_monad f init enum = fold (return init)
-    where
-      rec fold m = match Enum.get enum with
-                      None -> m
-	            | Some x -> m >>= fun acc -> fold (f acc x)
+  type 'a m = 'a t
+  let return x = singleton x
+  let bind m f = concat (map f m)
 end

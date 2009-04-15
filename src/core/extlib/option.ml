@@ -87,14 +87,13 @@ let maybe_printer a_printer paren out = function
 
 module Monad =
 struct
-  type 'a t = 'a option
+  type 'a m = 'a option
   let return x = Some x
   let bind m f = match m with
     | None -> None
     | Some x -> f x
-  let failwith s = None
 end
-  
+
 
 module Labels =
 struct
