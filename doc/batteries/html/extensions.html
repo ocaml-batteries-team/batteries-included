@@ -156,7 +156,7 @@ As a convenience, you may wrote <code>where let</code> instead of <code>where</c
 
 
 <dl>
-<dt>Associativity</dt><dd> <code>a where b where c</code> is equivalent to <code>(a where b) where c</code></dd>
+<dt>Associativity</dt><dd> <code>a where b where c</code> is equivalent to <code>a where (b where c)</code></dd>
 <dt>Precedence</dt><dd> <code>let a = b where c and d</code> is equivalent to <code>let a = (b where c and d)</code></dd>
 </dl>
 

@@ -31,25 +31,23 @@
      the "let" is optional and you can use "where" alone :
        expr where a = b  ==> let a = b in expr
 
-   Associativity : a where b where c ==> (a where b) where c
+   Associativity : a where b where c ==> a where (b where c)
    Precedence : let a = b where c and d ==> let a = (b where c and d)
 
    Example Input :
      let a =
        b c
        where b = d
-       where d = e
 
      where val c = f
 
    Output :
      let c = f
-
+  
      let a =
-       let d = e in
        let b = d in
-     b c
-
+       b c
+     
    Compilation :
      ocamlfind ocamlc -syntax camlp4o -package camlp4.extend,camlp4.quotations -c pa_where.ml
    Ocamlfind installation :
@@ -93,7 +91,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
     str_item: BEFORE "top"
       [ NONA
           [ e = str_item; "where"; "val";
-            rf = opt_rec; lb = top_where_binding ->
+            rf = opt_rec; lb = binding ->
               <:str_item< value $rec:rf$ $lb$ ; $e$ >>
           ] ];
 
@@ -101,42 +99,11 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
        str_item/expr case :
 
        let a = b where val b = 2 *)
-    expr: BEFORE "top"
-      [ NONA
-          [ e = expr; test_where_let; "where"; OPT "let";
-            rf = opt_rec; lb = where_binding ->
-              <:expr< let $rec:rf$ $lb$ in $e$ >>
-          ] ];
-
-    top_where_binding:
-      [ LEFTA
-          [ b1 = SELF; "and"; b2 = SELF -> <:binding< $b1$ and $b2$ >>
-            | p = ipatt; e = fun_binding -> <:binding< $p$ = $e$ >> ] ];
-
-    where_binding:
-      [ LEFTA
-          [ b1 = SELF; "and"; b2 = SELF -> <:binding< $b1$ and $b2$ >>
-            | p = ipatt; e = fun_binding' -> <:binding< $p$ = $e$ >> ] ];
-
-    (* fun_binding' is needed for associativity issues :
-       (a where b where c) parses as ((a where b) where c)
-       with fun_binding' and (a where (b where c)) with fun_binding.
-       
-       The first form was choosen as standard.
-       Rationale : it more natural to have an aligned indentation,
-       wich suggest the first choice :
-
-       a where b
-       where c
-    *)     
-    fun_binding':
-      [ RIGHTA
-          [ p = labeled_ipatt; e = SELF ->
-              <:expr< fun $p$ -> $e$ >>
-              | "="; e = expr LEVEL "top" -> <:expr< $e$ >>
-              | ":"; t = ctyp; "="; e = expr LEVEL "top" -> <:expr< ($e$ : $t$) >>
-              | ":>"; t = ctyp; "="; e = expr LEVEL "top" -> <:expr< ($e$ :> $t$) >> ] ];
-
+    expr: AFTER "top"
+      [ "where"
+          [ e = SELF; test_where_let; "where"; OPT "let";
+            rf = opt_rec; lb = binding ->
+              <:expr< let $rec:rf$ $lb$ in $e$ >> ] ];
     END
 end
 
