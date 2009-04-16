@@ -57,4 +57,24 @@ let test_7 =
    if not(ends_with string suffix) then Testing.Pass
    else Testing.Fail (Printf.sprintf "String %S should not end with %S" string suffix))
 
+let test_8 =
+  ("Strings: nsplit (1)",
+   fun () ->
+    let s = "a/b/c" and sep = "/" and expected = ["a"; "b"; "c"] in
+      if String.nsplit s sep = expected then Testing.Pass
+      else Testing.Fail (Printf.sprintf "String %S was not split correctly using %S." s sep))
+
+let test_9 =
+  ("Strings: nsplit (2)",
+   fun () ->
+     let s = "/a/b/c//" and sep = "/" and expected = [""; "a"; "b"; "c"; ""; ""] in
+      if String.nsplit s sep = expected then Testing.Pass
+      else Testing.Fail (Printf.sprintf "String %S was not split correctly using %S." s sep))
+
+let test_10 =
+  ("Strings: nsplit (3)",
+   fun () ->
+     let s = "FOOaFOObFOOcFOOFOO" and sep = "FOO" and expected = [""; "a"; "b"; "c"; ""; ""] in
+      if String.nsplit s sep = expected then Testing.Pass
+      else Testing.Fail (Printf.sprintf "String %S was not split correctly using %S." s sep))
 
