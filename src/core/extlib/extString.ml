@@ -162,20 +162,30 @@ let rsplit str sep =
 *)
 let nsplit str sep =
   if str = "" then []
-  else let seplen = String.length sep in
-       let rec aux acc ofs = match 
-	 try Some(rfind_from str ofs sep)
-	 with Invalid_string -> None
-       with Some idx -> 
-	 (*at this point, [idx] to [idx + seplen] contains the separator, which is useless to us
-	   on the other hand, [idx + seplen] to [ofs] contains what's just after the separator,
-	   which is s what we want*)
-	 let end_of_occurrence = idx + seplen in
-	   if end_of_occurrence >= ofs then aux acc idx (*We may be at the end of the string*)
-	   else aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx 
-	 |  None     -> (sub str 0 ofs)::acc
-       in
-	 aux [] (length str - 1 )
+  else
+    (* str is non empty *)
+    let seplen = String.length sep in
+    let rec aux acc ofs =
+      if ofs >= 0 then (
+        match
+          try Some (rfind_from str ofs sep)
+          with Invalid_string -> None
+        with
+          | Some idx -> (* sep found *)
+            let end_of_sep = idx + seplen - 1 in
+              if end_of_sep = ofs (* sep at end of str *)
+              then aux (""::acc) (idx - 1)
+              else
+                let token = sub str (end_of_sep + 1) (ofs - end_of_sep) in
+                  aux (token::acc) (idx - 1)
+          | None     -> (* sep NOT found *)
+            (sub str 0 (ofs + 1))::acc
+      )
+      else
+        (* Negative ofs: the last sep started at the beginning of str *)
+        ""::acc
+    in
+      aux [] (length str - 1 )
 
 let join = concat
 

@@ -20,6 +20,9 @@ let tests =
     Test_string.test_5;
     Test_string.test_6;
     Test_string.test_7;
+    Test_string.test_8;
+    Test_string.test_9;
+    Test_string.test_10;
     (Test_digest.name, Test_digest.test);
     Test_enum.test_array;
     Test_enum.test_array2;
