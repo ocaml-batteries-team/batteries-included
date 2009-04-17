@@ -1,3 +1,7 @@
+2009-04-17  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extLexing.mli: [new_line] now only defined for 3.11+
+
 2009-04-15  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extString.ml: [find_from], [rfind_from] now raise [Invalid_string] if string is empty
