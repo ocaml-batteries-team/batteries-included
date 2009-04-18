@@ -21,7 +21,7 @@
 
 open Sexplib
 open Conv
-TYPE_CONV_PATH "Batteries.Data.Persistent.MultiPMap" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries.MultiPMap" (*For Sexplib, Bin-prot...*)
 
 type ('a, 'b) t = {
   content : ('a, 'b PSet.t) PMap.t;
@@ -56,8 +56,14 @@ let remove_all k t =
 
 let remove k d t =
   try 
-    let set = PMap.find k t.content in
-      {(t) with content = PMap.add k (PSet.remove d set) t.content}
+    let set = PSet.remove d (PMap.find k t.content) in
+      {(t)
+       with content =
+	  if PSet.is_empty set then
+	    PMap.remove k t.content
+	  else
+	    PMap.add k set t.content
+      }
   with Not_found -> t
 
 let mem k d =

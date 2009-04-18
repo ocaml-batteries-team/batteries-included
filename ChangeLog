@@ -1,3 +1,15 @@
+2009-04-18  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* testsuite/test_string.ml: [test_1] now uses final "?" for list comprehension
+
+	* testsuite/main.ml: [Test_pmap.test_2] added
+
+	* src/core/extlib/multiPMap.ml: patch by turpin applied
+
+	* src/core/extlib/multiPMap.ml: flattened
+
+	* testsuite/test_pmap.ml: [test_2] added
+
 2009-04-17  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extLexing.mli: [new_line] now only defined for 3.11+

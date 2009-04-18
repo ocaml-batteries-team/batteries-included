@@ -20,3 +20,12 @@ let test_1 =
       | _ -> Testing.Fail (Printf.sprintf2 "Hoping: %a\n\tGot: %a" print_enum (enum_1 ()) print_enum (enum_2 ()))
   )
 
+let test_2 =
+  ("MultiPMap: removing empty association lists",
+   fun () ->
+   open Multi_pmap in
+  let map = remove 0 "sna" (remove 0 "bar" (remove 0 "foo" (add 0 "sna" (add 0 "bar" (add 0 "foo" empty)))))
+  in
+    if mem 0 map then Testing.Pass
+    else Testing.Fail (Printf.sprintf2 "map[0] should be empty but contains %d bindings\n" (PSet.cardinal (find 0 map)))
+  )
