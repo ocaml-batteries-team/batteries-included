@@ -1,3 +1,4 @@
+open OUnit
 open File
 open IO
 
@@ -22,64 +23,56 @@ let read_mmap    name =
 
 (**Actual tests*)
 
-let print_array out = 
-  Array.print ~sep:"; " Int.print out
+let print_array out =
+  Printf.sprintf2 "%a" (Array.print ~sep:"; " Int.print) out
 
-let test_1 = ("File: Reading back output to temporary file",
-	     fun () ->
+let test_read_back_tmp () =
+  let name = write buffer in
+  let aeq msg result = assert_equal ~printer:print_array ~msg buffer result in
+    aeq "regular" (read_regular name);
+    aeq "mmap" (read_mmap name)
 
-	       let name = write buffer      in
-	       let found= read_regular name in
-		 if found = buffer then Testing.Pass
-		 else Testing.Fail (Printf.sprintf2 "Hoping: %a\n\tGot:    %a" print_array buffer print_array found)
-	    )
+let test_open_files_not_autoclosed () =
+  let name = write buffer in
+  let f    = open_in name in
+    try
+      let _ = IO.read_all f in
+      let c = IO.read f in
+        assert_failure (Printf.sprintf "Expecting: IO.No_more_input, got char %C" c)
+    with
+      | IO.No_more_input -> () (* pass *)
+      | IO.Input_closed ->
+          assert_failure "Expected: IO.No_more_input, got IO.Input_closed."
+      | e ->
+          let _ = IO.close_in f in
+            assert_failure
+              (Printf.sprintf "Expected: IO.No_more_input, got %s"
+                 (Printexc.to_string e))
 
-
-let test_2 = ("File: MMap Reading back output to temporary file",
-	     fun () ->
-
-	       let name = write buffer      in
-	       let found= read_mmap name    in
-		 if found = buffer then Testing.Pass
-		 else Testing.Fail (Printf.sprintf2 "Hoping: %a\n\tGot:    %a" print_array buffer print_array found)
-	    )
-
-let test_3 = ("File: open_in'd files should not autoclose",
-	    fun () ->
-	      let name = write buffer in
-	      let f    = open_in name in
-	      try
-		let _ = IO.read_all f in
-		let c = IO.read f in Testing.Fail
-                  (Printf.sprintf "Hoping: IO.No_more_input\n\tGot:    char \'%c\'" c)
-	      with
-	      | IO.No_more_input ->
-		let _ = IO.close_in f in Testing.Pass
-	      | IO.Input_closed ->
-		Testing.Fail "Hoping: IO.No_more_input\n\tGot:    IO.Input_closed"
-	      | _ ->
-		let _ = IO.close_in f in
-		Testing.Fail "Hoping: IO.No_more_input\n\tGot:    (Different exception)"
-	    )
+let test_open_close_many () =
+  try
+    for i = 0 to 10000 do
+      Unix.unlink (write buffer)
+    done;
+    (* pass *)
+  with Sys_error e -> assert_failure "Got Sys_error _"
 
 
-let test_4 = ("File: opening and closing many files",
-	      fun () ->
-	      try
-		for i = 0 to 10000 do
-		  Unix.unlink (write buffer)
-	      done;Testing.Pass
-	      with Sys_error e -> Testing.Fail e)
+let test_open_close_many_pervasives () =
+  try
+    for i = 0 to 10000 do
+      let temp = Filename.temp_file "batteries" "test" in
+      let oc   = open_out temp                         in
+        Standard.output_string oc "test";
+        close_out oc;
+        Unix.unlink temp
+    done;
+    (* pass *)
+  with Sys_error e -> assert_failure "Got Sys_error _"
 
-
-let test_5 = ("File: opening and closing many files (Pervasives)",
-	      fun () ->
-		try
-		for i = 0 to 10000 do
-		  let temp = Filename.temp_file "batteries" "test" in
-		  let oc   = open_out temp                         in
-		    Standard.output_string oc "test";
-		    close_out oc;
-		    Unix.unlink temp
-	      done;Testing.Pass
-	    with Sys_error e -> Testing.Fail e )
+let tests = "File" >::: [
+  "Reading back output to temporary file" >:: test_read_back_tmp;
+  "open_in'd files should not autoclose" >:: test_open_files_not_autoclosed;
+  "opening and closing many files" >:: test_open_close_many;
+  "opening and closing many files (Pervasives)" >:: test_open_close_many_pervasives;
+]

@@ -1,5 +1,6 @@
-(*1. Compute the digest of this file using Legacy.Digest*)
+open OUnit
 
+(*1. Compute the digest of this file using Legacy.Digest*)
 
 let legacy_result () =
 open Legacy.Pervasives in
@@ -18,12 +19,10 @@ let batteries_result () =
     result
 
 (*3. Compare*)
-let name    = "Comparing Legacy.Digest and MD5"
-let test () =
-  let leg = legacy_result    ()
-  and bat = batteries_result ()
-  in
-    if leg = bat then Testing.Pass
-    else Testing.Fail (Printf.sprintf "\tLegacy:%s\n\tBatteries:%s" leg bat)
+let test_legacy_against_batteries () =
+  assert_equal ~printer:(Printf.sprintf "%S")
+    (legacy_result ()) (batteries_result ())
 
-    
+let tests = "Digest" >::: [
+  "Comparing Legacy.Digest and MD5" >:: test_legacy_against_batteries;
+]

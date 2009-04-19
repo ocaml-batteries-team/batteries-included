@@ -1,3 +1,5 @@
+open OUnit
+
 let array     = [|'1';'2';'3';'4';'5'|]
 let array2    = [|[|'1';'2';'3';'4';'5'|];
                   [|'6';'7';'8';'9';'A'|];
@@ -17,147 +19,64 @@ let bigarray3 = Big_array.Array3.of_array Big_array.char Big_array.c_layout arra
 let utf8   = UTF8.of_string string
 let rope   = Rope.of_ustring utf8
 
-let nl      = print_newline
-let out  s  = Enum.print Char.print  stdout s; nl ()
-let uout s  = Enum.print UChar.print stdout s; nl ()
-
-open Testing
-
-let test_array = ("Enumerations on arrays 1", fun () -> 
-open Array in
-begin
-  let source = array in
-  let v1 = of_backwards (enum source)
-  and v2 = of_enum (backwards source)
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%a <> %a" (print Char.print) v1 (print Char.print) v2)
+let test_array_enums () =
+  open Array in begin
+    let source = array in
+    let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" (print Char.print)) in
+      aeq (of_backwards (enum source)) (of_enum (backwards source));
+       aeq source (of_backwards (backwards source));
   end
-)
-let test_array2 = ("Enumerations on arrays 2", fun () -> 
-open Array in
-begin
-  let source = array in
-  let v1 = of_backwards (backwards source)
-  and v2 = source
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%a <> %a" (print Char.print) v1 (print Char.print) v2)
+
+let test_list_enums () =
+  open List in begin
+    let source = list in
+    let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" (print Char.print)) in
+      aeq (of_backwards (enum source)) (of_enum (backwards source));
+      aeq source (of_backwards (backwards source));
   end
-)
 
-let test_list = ("Enumerations on lists 1", fun () -> 
-open List in
-begin
-  let source = list in
-  let v1 = of_backwards (enum source)
-  and v2 = of_enum (backwards source)
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%a <> %a" (print Char.print) v1 (print Char.print) v2)
+let test_string_enums () =
+  open String in begin
+    let source = string in
+    let aeq = assert_equal ~printer:(Printf.sprintf "%S") in
+      aeq (of_backwards (enum source)) (of_enum (backwards source));
+      aeq source (of_backwards (backwards source));
   end
-)
-let test_list2 = ("Enumerations on lists 2", fun () -> 
-open List in
-begin
-  let source = list in
-  let v1 = of_backwards (backwards source)
-  and v2 = source
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%a <> %a" (print Char.print) v1 (print Char.print) v2)
+
+let test_rope_enums () =
+  open Rope in begin
+    let source = rope in
+    let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" print) in
+      aeq (of_backwards (enum source)) (of_enum (backwards source));
+      aeq source (of_backwards (backwards source));
   end
-)
 
-let test_string = ("Enumerations on strings 1", fun () -> 
-open String in
-begin
-  let source = string in
-  let v1 = of_backwards (enum source)
-  and v2 = of_enum (backwards source)
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%S <> %S" v1 v2)
-end
-)
-let test_string2 = ("Enumerations on strings 2", fun () -> 
-open String in
-begin
-  let source = string in
-  let v1 = of_backwards (backwards source)
-  and v2 = source
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%S <> %S" v1 v2)
-end
-)
-
-let test_rope = ("Enumerations on ropes 1", fun () -> 
-open Rope in
-begin
-  let source = rope in
-  let v1 = of_backwards (enum source)
-  and v2 = of_enum (backwards source)
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%a <> %a" Rope.print v1 Rope.print v2)
-end
-)
-let test_rope2 = ("Enumerations on ropes 2", fun () -> 
-open Rope in
-begin
-  let source = rope in
-  let v1 = of_backwards (backwards source)
-  and v2 = source
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%a <> %a" Rope.print v1 Rope.print v2)
-end
-)
-
-let test_UTF8 = ("Enumerations on UTF8 1", fun () -> 
-open UTF8 in
-begin
-  let source = utf8 in
-  let v1 = of_backwards (enum source)
-  and v2 = of_enum (backwards source)
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%a <> %a" UTF8.print v1 UTF8.print v2)
-end
-)
-let test_UTF82 = ("Enumerations on UTF8 2", fun () -> 
-open UTF8 in
-begin
-  let source = utf8 in
-  let v1 = of_backwards (backwards source)
-  and v2 = source
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%a <> %a" UTF8.print v1 UTF8.print v2)
-end
-)
-
-let test_bigarray = ("Enumerations on big arrays 1", fun () -> 
-open Array in
-begin
-  let v1 = of_enum (enum array)
-  and v2 = of_enum (Big_array.Array1.enum bigarray1)
-  in if v1 = v2 then Pass
-    else Fail (Printf.sprintf2 "%a <> %a" (print Char.print) v1 (print Char.print) v2)
+let test_UTF8_enums () =
+  open UTF8 in begin
+    let source = utf8 in
+    let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" print) in
+      aeq (of_backwards (enum source)) (of_enum (backwards source));
+      aeq source (of_backwards (backwards source));
   end
-)
-let test_bigarray2 = ("Enumerations on big arrays 2", fun () -> 
-open Array in
-begin
-  let v1 = of_enum (Enum.flatten (Enum.map enum (enum array2)))
-  and v2 = of_enum (Big_array.Array2.enum bigarray2)
-  in if v1 = v2 then Pass
-    else 
-      let print_array = print Char.print  in
-	Fail (Printf.sprintf2 "%a <> %a" print_array v1 print_array v2)
-  end
-)
-let test_bigarray3 = ("Enumerations on big arrays 3", fun () -> 
-open Array in
-begin
-  let v1 = of_enum (Enum.flatten (Enum.map enum (Enum.flatten (Enum.map enum (enum array3)))))
-  and v2 = of_enum (Big_array.Array3.enum bigarray3)
-  in if v1 = v2 then Pass
-    else 
-      let print_array = print Char.print  in
-	Fail (Printf.sprintf2 "%a <> %a" print_array v1 print_array v2)
-  end
-)
 
+let test_bigarray_enums () =
+  open Array in begin
+    let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" (print Char.print)) in
+      aeq (of_enum (enum array)) (of_enum (Big_array.Array1.enum bigarray1));
+      aeq
+        (of_enum (Enum.flatten (Enum.map enum (enum array2))))
+        (of_enum (Big_array.Array2.enum bigarray2));
+      aeq
+        (of_enum
+           (Enum.flatten (Enum.map enum (Enum.flatten (Enum.map enum (enum array3))))))
+        (of_enum (Big_array.Array3.enum bigarray3))
+  end
 
+let tests = "Enum" >::: [
+  "Array" >:: test_array_enums;
+  "List" >:: test_list_enums;
+  "String" >:: test_string_enums;
+  "Rope" >:: test_rope_enums;
+  "UTF8" >:: test_UTF8_enums;
+  "bigarray" >:: test_bigarray_enums;
+]

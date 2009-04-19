@@ -1,3 +1,5 @@
+open OUnit
+
 (*Source code which needs to be executed*)
 
 let make_temporary_file content = 
@@ -13,7 +15,7 @@ let expected = "read-only string";;
 open Compilers
 open IO
 
-
+(*
 let test_1 =
   ("OCaml: Testing from source file", fun () ->
      try
@@ -43,6 +45,7 @@ let test_2 =
 	   if obtained = expected then Testing.Pass
 	   else Testing.Fail (Printf.sprintf "Expected: %S\n\tObtained: %S\n" expected obtained)
      with e -> Testing.Err (Printexc.to_string e))
+ *)
 
 (*
 let test_1 =
@@ -77,3 +80,7 @@ let test_2 =
      with e -> Testing.Err (Printexc.to_string e))
        
 *)
+
+let tests = "Toplevel" >::: [
+
+]
