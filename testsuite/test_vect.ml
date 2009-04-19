@@ -11,13 +11,12 @@ let print_array out =
 let print_vect  out =
   Vect.print ~sep:"; " Int.print out
 
-let sprint_array a = Printf.sprintf2 "%a" print_array a
 let sprint_vect v = Printf.sprintf2 "%a" print_vect v
 
 let test_array_conversion () =
   assert_equal ~printer:sprint_vect
     vect
-    (of_array (to_array (of_array (to_array vect))))
+    (to_array vect |> of_array |> to_array |> of_array)
 
 let test_init () =
   let f i = i * i in

@@ -24,7 +24,7 @@ let test_array_enums () =
     let source = array in
     let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" (print Char.print)) in
       aeq (of_backwards (enum source)) (of_enum (backwards source));
-       aeq source (of_backwards (backwards source));
+      aeq source (of_backwards (backwards source));
   end
 
 let test_list_enums () =
@@ -62,13 +62,13 @@ let test_UTF8_enums () =
 let test_bigarray_enums () =
   open Array in begin
     let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" (print Char.print)) in
+    let enum_flatten x = Enum.flatten (Enum.map enum x) in
       aeq (of_enum (enum array)) (of_enum (Big_array.Array1.enum bigarray1));
       aeq
-        (of_enum (Enum.flatten (Enum.map enum (enum array2))))
+        (enum array2 |> enum_flatten |> of_enum)
         (of_enum (Big_array.Array2.enum bigarray2));
       aeq
-        (of_enum
-           (Enum.flatten (Enum.map enum (Enum.flatten (Enum.map enum (enum array3))))))
+        (enum array3 |> enum_flatten |> enum_flatten |> of_enum)
         (of_enum (Big_array.Array3.enum bigarray3))
   end
 

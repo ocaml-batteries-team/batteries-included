@@ -25,9 +25,8 @@ let test_traversal_order () =
 let test_multimap_empty_assoc_lists () =
   open Multi_pmap in
   let map =
-    remove 0 "sna"
-      (remove 0 "bar"
-         (remove 0 "foo" (add 0 "sna" (add 0 "bar" (add 0 "foo" empty)))))
+    add 0 "foo" empty |> add 0 "bar" |> add 0 "sna" |>
+    remove 0 "foo" |> remove 0 "bar" |> remove 0 "sna"
   in
     if not (mem 0 map) then
       assert_failure
