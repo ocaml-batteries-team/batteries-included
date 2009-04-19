@@ -1,3 +1,7 @@
+2009-04-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/batteries_toolchain/ocamlbuild: Now using byte-plugin
+
 2009-04-18  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* testsuite/test_string.ml: [test_1] now uses final "?" for list comprehension
