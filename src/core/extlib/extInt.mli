@@ -215,16 +215,19 @@ module Safe_int :
 
     val add : t -> t -> t
       (** Addition. *)
+
     val ( + ) : t -> t -> t
       (** Addition. *)
 
     val sub : t -> t -> t
-      (** Subtraction. *)
+      (** Substraction. *)
+
     val ( - ) : t -> t -> t
-      (** Subtraction. *)
+      (** Substraction. *)
 
     val mul : t -> t -> t
       (** Multiplication. *)
+
     val ( * ) : t -> t -> t
       (** Multiplication. *)
 
@@ -255,15 +258,28 @@ module Safe_int :
 
     val pow  : t -> t -> t
       (** [pow a b] computes a{^b}*)
+
     val ( ** ) : t -> t -> t
       (** [a ** b] computes a{^b}*)
 
     val ( <> ) : t -> t -> bool
+      (** Comparaison: [a <> b] is true if and only if [a] and [b] have
+	  different values. *)
+
     val ( > )  : t -> t -> bool
+      (** Comparaison: [a > b] is true if and only if [a] is strictly greater than [b].*)
+
     val ( < )  : t -> t -> bool
+      (** Comparaison: [a < b] is true if and only if [a] is strictly smaller than [b].*)
+
     val ( >= ) : t -> t -> bool
+      (** Comparaison: [a >= b] is true if and only if [a] is greater or equal to [b].*)
+
     val ( <= ) : t -> t -> bool
+      (** Comparaison: [a <= b] is true if and only if [a] is smaller or equalto [b].*)
+
     val ( = )  : t -> t -> bool
+      (** Comparaison: [a = b] if and only if [a] and [b] have the same value.*)
 
     val min_num : t
       (** The greatest representable integer, which is either 2{^30}-1 or 2{^62}-1. *)
@@ -320,6 +336,7 @@ module Safe_int :
     val sexp_of_t : t -> Sexplib.Sexp.t
 
     (** {7 Printing}*)
+
     val print: 'a InnerIO.output -> t -> unit
   end
 
