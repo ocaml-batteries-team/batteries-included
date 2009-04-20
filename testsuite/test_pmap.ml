@@ -20,6 +20,7 @@ let test_1 =
       | _ -> Testing.Fail (Printf.sprintf2 "Hoping: %a\n\tGot: %a" print_enum (enum_1 ()) print_enum (enum_2 ()))
   )
 
+(*This test is incorrenct: [find] always returns a set
 let test_2 =
   ("MultiPMap: removing empty association lists",
    fun () ->
@@ -29,3 +30,4 @@ let test_2 =
     if mem 0 map then Testing.Pass
     else Testing.Fail (Printf.sprintf2 "map[0] should be empty but contains %d bindings\n" (PSet.cardinal (find 0 map)))
   )
+*)
