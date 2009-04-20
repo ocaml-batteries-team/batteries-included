@@ -59,10 +59,8 @@ let remove k d t =
     let set = PSet.remove d (PMap.find k t.content) in
       {(t)
        with content =
-	  if PSet.is_empty set then
-	    PMap.remove k t.content
-	  else
-	    PMap.add k set t.content
+	  if   PSet.is_empty set then PMap.remove k t.content
+	  else PMap.add k set t.content;
       }
   with Not_found -> t
 

@@ -53,9 +53,11 @@ val remove_all : 'a -> ('a, 'b) t -> ('a, 'b) t
     [m], except for [x] which is unbound in the returned map. *)
 
 val remove : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
-(** [remove_all k d m] returns a map containing the same bindings as
+(** [remove k d m] returns a map containing the same bindings as
     [m], except for [k] which is not bound to [d] anymore in the returned
-    map. If [k] was not bound to [d], nothing is changed.*)
+    map. If [k] was not bound to [d], nothing is changed. If the operation
+    removes the last binding of [k], then [k] is also removed from the set
+    of keys.*)
 
 val mem : 'a -> ('a, 'b) t -> bool
 (** [mem x m] returns [true] if [m] contains at least a binding for [x],
