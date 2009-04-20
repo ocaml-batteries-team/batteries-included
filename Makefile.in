@@ -218,7 +218,12 @@ install:
 			_build/src/batteries_toolchain/batteries_print.cmo \
 			_build/src/batteries_toolchain/toplevel.top \
 			src/batteries_toolchain/top.ml \
-			src/batteries_toolchain/ocaml*
+			src/batteries_toolchain/ocaml  \
+			src/batteries_toolchain/ocamlbuild  
+			src/batteries_toolchain/ocamlc    \
+			src/batteries_toolchain/ocamlopt  \
+			src/batteries_toolchain/ocamlcp   \
+			src/batteries_toolchain/ocamldep
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
 		build/threaded/META \
 		_build/src/main/threads/batteries.cmi \

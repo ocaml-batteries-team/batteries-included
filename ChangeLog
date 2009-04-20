@@ -1,6 +1,12 @@
+2009-04-20  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/extInt.mli: Pagination, comments.
+
 2009-04-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/batteries_toolchain/ocamlbuild: Now using byte-plugin
+
+	* Makefile.in: [install] now doesn't copy ocaml*
 
 2009-04-18  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
