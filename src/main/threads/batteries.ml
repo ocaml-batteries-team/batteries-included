@@ -34,7 +34,7 @@
 *)
 module Standard = Extlib.ExtPervasives.Pervasives
 
-(** Access to the modules provided by INRIA. 
+(** Access to the modules provided by INRIA or otherwise extended by Batteries. 
 
     For more information, see the documentation of OCaml.
 
@@ -88,6 +88,8 @@ module Legacy = struct
   module Sys       = Sys
   module Random    = Random
   module Pervasives = Pervasives
+
+  module Gzip = Gzip
     (**/**)
 end
 
