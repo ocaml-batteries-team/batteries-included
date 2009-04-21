@@ -3,7 +3,7 @@
 - : ?mode:Batteries.System.File.open_in_flag list ->
     ?perm:Batteries.System.File.permission -> string -> InnerIO.input
 = <fun>
-# GZip.open_in;;
+# Gzip.open_in;;
 - : ?mode:Extlib.File.open_in_flag list ->
     ?perm:Extlib.File.permission -> string -> InnerIO.input
 = <fun>

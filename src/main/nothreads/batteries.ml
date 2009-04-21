@@ -200,7 +200,7 @@ module Net_channels = Libs.ExtNetchannels.Netchannels
 *)
 
 module  Codec = Libs.Common.Compress
-module  GZip  = Libs.GZip
+module  Gzip  = Libs.GZip
 (*
 module  Bz2
 module  Zip

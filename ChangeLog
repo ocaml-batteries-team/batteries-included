@@ -1,3 +1,14 @@
+2009-04-21  Hezekiah M. Carty  <hcarty@atmos.umd.edu>
+
+	* examples/tools/gunzip.ml,
+	* examples/tools/gzip.ml,
+	* src/main/nothreads/batteries.ml,
+	* src/main/threads/batteries.ml,
+	* doc/development/NOTES: Rename module GZip -> Gzip
+
+	* examples/tools/gnuzip.ml: Renamed from gzip.ml to avoid circular
+	dependency errors from ocamlbuild
+
 2009-04-20  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/extInt.mli: Pagination, comments.

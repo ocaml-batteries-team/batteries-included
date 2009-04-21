@@ -10,6 +10,6 @@ iter f (args ())
 where let f name =
  with_file_out (name ^ ".gz") (fun out ->
  with_file_in name            (fun inp ->
-   copy inp (GZip.compress out);
+   copy inp (Gzip.compress out);
    Sys.remove name
  ))
