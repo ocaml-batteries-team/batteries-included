@@ -454,6 +454,74 @@ external unsafe_fill :
 
 (**/**)
 
+
+(** Exceptionless counterparts for error-raising operations *)
+module Exceptionless :
+sig
+  val to_int : string -> int option
+  (** Returns the integer represented by the given string or
+      [None] if the string does not represent an integer.*)
+
+  val to_float : string -> float option
+  (** Returns the float represented by the given string or
+      [None] if the string does not represent a float. *)
+
+  val index : string -> char -> int option
+  (** [index s c] returns [Some p], the position of the leftmost
+      occurrence of character [c] in string [s] or
+      [None] if [c] does not occur in [s]. *)
+
+  val rindex : string -> char -> int option
+  (** [rindex s c] returns [Some p], the position of the rightmost
+      occurrence of character [c] in string [s] or
+      [None] if [c] does not occur in [s]. *)
+
+  val index_from : string -> int -> char -> int option
+  (** Same as {!String.Exceptionless.index}, but start
+      searching at the character position given as second argument.
+      [index s c] is equivalent to [index_from s 0 c].*)
+
+  val rindex_from : string -> int -> char -> int option
+  (** Same as {!String.Exceptionless.rindex}, but start
+      searching at the character position given as second argument.
+      [rindex s c] is equivalent to
+      [rindex_from s (String.length s - 1) c]. *)
+
+  val find : string -> string -> int option
+  (** [find s x] returns [Some i], the starting index of the first
+      occurrence of string [x] within string [s], or [None] if [x]
+      is not a substring of [s].
+
+      {b Note} This implementation is optimized for short strings. *)
+
+  val find_from : string -> int -> string -> int option
+  (** [find_from s ofs x] behaves as [find s x] but starts searching
+      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].*)
+
+  val rfind : string -> string -> int option
+  (** [rfind s x] returns [Some i], the starting index of the last occurrence
+      of string [x] within string [s], or [None] if [x] is not a substring
+      of [s].
+
+      {b Note} This implementation is optimized for short strings. *)
+
+  val rfind_from: string -> int -> string -> int option
+  (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
+      at offset [ofs]. [rfind s x] is equivalent to
+      [rfind_from s (String.length s - 1) x]. *)
+
+  val split : string -> string -> (string * string) option
+  (** [split s sep] splits the string [s] between the first
+      occurrence of [sep], or returns [None] if the separator
+      is not found. *)
+
+  val rsplit : string -> string -> (string * string) option
+  (** [rsplit s sep] splits the string [s] between the last
+      occurrence of [sep], or returns [None] if the separator
+      is not found. *)
+
+end (* String.Exceptionless *)
+
 (** Capabilities for strings.
     
     This modules provides the same set of features as {!String}, but
@@ -868,8 +936,77 @@ external unsafe_fill :
   [> `Write] t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 
 (**/**)
-end
+
+(** Exceptionless counterparts for error-raising operations *)
+module Exceptionless :
+sig
+  val to_int : [> `Read] t -> int option
+  (** Returns the integer represented by the given string or
+      [None] if the string does not represent an integer.*)
+
+  val to_float : [> `Read] t -> float option
+  (** Returns the float represented by the given string or
+      [None] if the string does not represent a float. *)
+
+  val index : [>`Read] t -> char -> int option
+  (** [index s c] returns [Some p], the position of the leftmost
+      occurrence of character [c] in string [s] or
+      [None] if [c] does not occur in [s]. *)
+
+  val rindex : [> `Read] t -> char -> int option
+  (** [rindex s c] returns [Some p], the position of the rightmost
+      occurrence of character [c] in string [s] or
+      [None] if [c] does not occur in [s]. *)
+
+  val index_from : [> `Read] t -> int -> char -> int option
+  (** Same as {!String.Exceptionless.index}, but start
+      searching at the character position given as second argument.
+      [index s c] is equivalent to [index_from s 0 c].*)
+
+  val rindex_from : [> `Read] t -> int -> char -> int option
+  (** Same as {!String.Exceptionless.rindex}, but start
+      searching at the character position given as second argument.
+      [rindex s c] is equivalent to
+      [rindex_from s (String.length s - 1) c]. *)
+
+  val find : [> `Read] t -> [> `Read] t -> int option
+  (** [find s x] returns [Some i], the starting index of the first
+      occurrence of string [x] within string [s], or [None] if [x]
+      is not a substring of [s].
+
+      {b Note} This implementation is optimized for short strings. *)
+
+  val find_from: [> `Read] t -> int -> [> `Read] t -> int option
+  (** [find_from s ofs x] behaves as [find s x] but starts searching
+      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].*)
+
+  val rfind : [> `Read] t -> [> `Read] t -> int option
+  (** [rfind s x] returns [Some i], the starting index of the last occurrence
+      of string [x] within string [s], or [None] if [x] is not a substring
+      of [s].
+
+      {b Note} This implementation is optimized for short strings. *)
+
+  val rfind_from: [> `Read] t -> int -> [> `Read] t -> int option
+  (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
+      at offset [ofs]. [rfind s x] is equivalent to
+      [rfind_from s (String.length s - 1) x]. *)
+
+  (* val split : string -> string -> (string * string) option TODO *)
+  val split : [> `Read] t -> [> `Read] t -> (_ t * _ t) option
+  (** [split s sep] splits the string [s] between the first
+      occurrence of [sep], or returns [None] if the separator
+      is not found. *)
+
+(*   val rsplit : string -> string -> (string * string) option TODO *)
+  val rsplit : [> `Read] t -> [> `Read] t -> (_ t * _ t) option
+  (** [rsplit s sep] splits the string [s] between the last
+      occurrence of [sep], or returns [None] if the separator
+      is not found. *)
+
+end (* String.Cap.Exceptionless *)
 
 end
 
 
+end

@@ -461,6 +461,35 @@ let t_printer paren out x =
 
 let quote = ExtPrintf.Printf.sprintf2 "%S"
 
+module Exceptionless =
+struct
+  let find_from str ofs sub =
+    try Some (find_from str ofs sub) with Invalid_string -> None
+
+  let find str sub = find_from str 0 sub
+
+  let rfind_from str suf sub =
+    try Some (rfind_from str suf sub) with Invalid_string -> None
+
+  let rfind str sub = rfind_from str (String.length str - 1) sub
+
+  let to_int s = try Some (to_int s) with Invalid_string -> None
+
+  let to_float s = try Some (to_float s) with Invalid_string -> None
+
+  let index s c = try Some (index s c) with Not_found -> None
+
+  let index_from s i c = try Some (index_from s i c) with Not_found -> None
+
+  let rindex_from s i c = try Some (rindex_from s i c) with Not_found -> None
+
+  let rindex s c = try Some (rindex s c) with Not_found -> None
+
+  let split str sep = try Some (split str sep) with Invalid_string -> None
+
+  let rsplit str sep = try Some (rsplit str sep) with Invalid_string -> None
+end (* String.Exceptionless *)
+
 module Cap =
 struct
 type 'a t = string with sexp
@@ -555,7 +584,22 @@ external unsafe_blit :
 external unsafe_fill :
   [> `Write] t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 
+module Exceptionless =
+struct
+  let find_from = Exceptionless.find_from
+  let find = Exceptionless.find
+  let rfind_from = Exceptionless.rfind_from
+  let rfind = Exceptionless.rfind
+  let to_int = Exceptionless.to_int
+  let to_float = Exceptionless.to_float
+  let index = Exceptionless.index
+  let index_from = Exceptionless.index_from
+  let rindex_from = Exceptionless.rindex_from
+  let rindex = Exceptionless.rindex
+  let split = Exceptionless.split
+  let rsplit = Exceptionless.rsplit
+end (* String.Cap.Exceptionless *)
+
 end (* String.Cap *)
 
 end (* String *)
-
