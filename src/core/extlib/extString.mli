@@ -45,22 +45,31 @@ type t = string
 (** The type of strings. *)
 
 external length : string -> int = "%string_length"
-(** Return the length (number of characters) of the given string. *)
+(** Return the length (number of characters) of the given string. 
+    
+    Example: [ String.length "characters" = 10 ]
+*)
 
 val is_empty : string -> bool
 (** [is_empty s] returns [true] if [s] is the empty string, [false]
     otherwise.
 
-    Usually a tad faster than comparing [s] with [""]. *)
+    Usually a tad faster than comparing [s] with [""]. 
+
+    Example: [ if String.is_empty s then "(Empty)" else s ]
+*)
 
 external get : string -> int -> char = "%string_safe_get"
 (** [String.get s n] returns character number [n] in string [s].
-   The first character is character number 0.
-   The last character is character number [String.length s - 1].
-   You can also write [s.[n]] instead of [String.get s n].
-
-   Raise [Invalid_argument "index out of bounds"]
-   if [n] is outside the range 0 to [(String.length s - 1)]. *)
+    The first character is character number 0.
+    The last character is character number [String.length s - 1].
+    You can also write [s.[n]] instead of [String.get s n].
+    
+    Raise [Invalid_argument "index out of bounds"]
+    if [n] is outside the range 0 to [(String.length s - 1)]. 
+    
+    Example: [ let is_twitter_id s = s.[0] = '@' ]
+*)
 
 
 external set : string -> int -> char -> unit = "%string_safe_set"
@@ -68,12 +77,17 @@ external set : string -> int -> char -> unit = "%string_safe_set"
    replacing the character number [n] by [c].
    You can also write [s.[n] <- c] instead of [String.set s n c].
    Raise [Invalid_argument "index out of bounds"]
-   if [n] is outside the range 0 to [(String.length s - 1)]. *)
+   if [n] is outside the range 0 to [(String.length s - 1)]. 
+
+    Example: [ for i = 0 to String.length s - 1 do if is_bad_char s.[i] then s.[i] <- '.' done ]
+*)
 
 external create : int -> string = "caml_create_string"
 (** [String.create n] returns a fresh string of length [n].
    The string initially contains arbitrary characters.
    Raise [Invalid_argument] if [n < 0] or [n > Sys.max_string_length].
+
+    Example: [ let buf = String.create buf_size in (input ic buf 0 buf_size,buf) ]
 *)
 
 (** {6 Constructors}*)
@@ -81,78 +95,140 @@ external create : int -> string = "caml_create_string"
 val make : int -> char -> string
 (** [String.make n c] returns a fresh string of length [n],
    filled with the character [c].
-   Raise [Invalid_argument] if [n < 0] or [n > ]{!Sys.max_string_length}.*)
+   Raise [Invalid_argument] if [n < 0] or [n > ]{!Sys.max_string_length}.
+
+    Example: [String.make 80 ' ']
+*)
 
 val init : int -> (int -> char) -> string
   (** [init l f] returns the string of length [l] with the chars
-      f 0 , f 1 , f 2 ... f (l-1). *)
+      f 0 , f 1 , f 2 ... f (l-1). 
+
+      Example: [String.init 256 char_of_int]
+*)
 
 (** {6 Conversions}*)
 val enum : string -> char Enum.t
-  (** Returns an enumeration of the characters of a string. *)
+  (** Returns an enumeration of the characters of a string. 
+
+      Example: [String.enum se // (fun c -> not (is_bad_char c)) |> String.of_enum ]
+*)
 
 val of_enum : char Enum.t -> string
-  (** Creates a string from a character enumeration. *)
+  (** Creates a string from a character enumeration. 
+
+      Example: [String.enum se // (fun c -> not (is_bad_char c)) |> String.of_enum ]
+*)
 
 val backwards : string -> char Enum.t
-  (** Returns an enumeration of the characters of a string, from last to first. *)
+  (** Returns an enumeration of the characters of a string, from last to first. 
+
+      Example: [ let rev s = String.backwards s |> String.of_enum ]
+*)
   
 val of_backwards : char Enum.t -> string
-  (** Build a string from an enumeration, starting with last character, ending with first. *)
+  (** Build a string from an enumeration, starting with last character, ending with first. 
+
+      Example: [ let rev s = String.enum s |> String.of_backwards ]
+*)
+
 
 val of_list : char list -> string
-   (** Converts a list of characters to a string.*) 
+   (** Converts a list of characters to a string.
+
+       Example: [ ['c'; 'h'; 'a'; 'r'; 's'] |> String.of_list ]
+*) 
 
 val to_list : string -> char list
-  (** Converts a string to the list of its characters.*)
+  (** Converts a string to the list of its characters.
+
+      Example: [ String.to_list "string" |> List.interleave ';' |> String.of_list = "s;t;r;i;n;g" ]
+*)
 
 val of_int : int -> string
-  (** Returns the string representation of an int. *)
+  (** Returns the string representation of an int. 
+
+      Example: [ String.of_int 56 = "56" ]
+*)
 
 val of_float : float -> string
-  (** Returns the string representation of an float. *)
+  (** Returns the string representation of an float. 
+
+      Example: [ String.of_float 1.246 = "1.246"]
+*)
 
 val of_char : char -> string
-  (** Returns a string containing one given character. *)
+  (** Returns a string containing one given character. 
+
+      Example: [ String.of_char 's' = "s" ]
+*)
 
 val to_int : string -> int
-  (** Returns the integer represented by the given string or
-      raises [Invalid_string] if the string does not represent an integer.*)
+  (** Returns the integer represented by the given string or raises
+      [Invalid_string] if the string does not represent an
+      integer. This follows OCaml's int literal rules, so "0x"
+      prefixes hexadecimal integers, "0o" for octal and "0b" for
+      binary.  Underscores within the number are allowed for
+      readability but ignored.
+
+      Example: [ String.to_int "8_480" = String.to_int "0x21_20" ]
+  *)
 
 val to_float : string -> float
-  (** Returns the float represented by the given string or
-      raises Invalid_string if the string does not represent a float. *)
+  (** Returns the float represented by the given string or raises
+      Invalid_string if the string does not represent a float.
+      Decimal points aren't required in the given string, as they are
+      for float literals in OCaml, but otherwise the rules for float
+      literals apply.
+
+      Example: [String.of_float "12.34e-1" = String.of_float "1.234"]
+  *)
 
 (** {6 String traversals}*)
 
 val map : (char -> char) -> string -> string
   (** [map f s] returns a string where all characters [c] in [s] have been
-      replaced by [f c]. **)
+      replaced by [f c]. 
+
+      Example: [String.map Char.uppercase "Five" = "FIVE"]
+**)
   
 val fold_left : ('a -> char -> 'a) -> 'a -> string -> 'a
   (** [fold_left f a s] is
-      [f (... (f (f a s.[0]) s.[1]) ...) s.[n-1]] *)
+      [f (... (f (f a s.[0]) s.[1]) ...) s.[n-1]] 
+
+      Example: [String.fold_left max "apples" = 's']
+*)
+
 val fold_right : (char -> 'a -> 'a) -> string -> 'a -> 'a
   (** [fold_right f s b] is
-      [f s.[0] (f s.[1] (... (f s.[n-1] b) ...))] *)
+      [f s.[0] (f s.[1] (... (f s.[n-1] b) ...))] 
+
+      Example: [String.fold_right (fun a c -> if c = ' ' then a+1 else a) 0 s]
+*)
 
 val filter : (char -> bool) -> string -> string
   (** [filter f s] returns a copy of string [s] in which only
-      characters [c] such that [f c = true] remain.*)
+      characters [c] such that [f c = true] remain.
+
+      Example: [ String.filter is_bad_char s ]
+*)
 
 val filter_map : (char -> char option) -> string -> string
   (** [filter_map f s] calls [(f a0) (f a1).... (f an)] where [a0..an] are
       the characters of [s]. It returns the string of characters [ci] such as
       [f ai = Some ci] (when [f] returns [None], the corresponding element of
-      [s] is discarded). *)
+      [s] is discarded).
 
-
-
+      Example: [ String.filter_map (function 'a'-'z' as c -> Some c | _ -> None) 
+ *)
 
 val iter : (char -> unit) -> string -> unit
 (** [String.iter f s] applies function [f] in turn to all
    the characters of [s].  It is equivalent to
-   [f s.[0]; f s.[1]; ...; f s.[String.length s - 1]; ()]. *)
+   [f s.[0]; f s.[1]; ...; f s.[String.length s - 1]; ()]. 
+    Example: [let counter = ref 0 in String.iter (fun c -> if c = ' ' then incr counter) s]
+*)
 
 val iteri : (int -> char -> unit) -> string -> unit
 (** [String.iteri f s] is equivalent to
