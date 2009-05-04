@@ -39,7 +39,7 @@ let test_nsplit () =
   let printer = Printf.sprintf2 "%a" (List.print String.print) in
   let check exp s sep = assert_equal ~printer exp (String.nsplit s sep) in
     check ["a"; "b"; "c"] "a/b/c" "/";
-    check [""; "a"; "b"; "c"; ""; ""] "a/b/c//" "/";
+    check [""; "a"; "b"; "c"; ""; ""] "/a/b/c//" "/";
     check [""; "a"; "b"; "c"; ""; ""] "FOOaFOObFOOcFOOFOO" "FOO"
 
 let tests = "String" >::: [
