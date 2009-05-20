@@ -250,7 +250,7 @@ quickdoc: quickbyte doc/api.odocl
 	rm -Rf doc/batteries/html/api
 	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
 	rm -f api.docdir
-	cp -a _build/doc/api.docdir/ doc/batteries/html/api
+	cp -RpP _build/doc/api.docdir/ doc/batteries/html/api
 
 quickbyte: config.ml
 	$(OCAMLBUILD) src/main/threads/batteries.cma 
@@ -259,7 +259,7 @@ doc: byte doc/api.odocl
 	rm -Rf doc/batteries/html/api
 	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
 	rm -f api.docdir
-	cp -a _build/doc/api.docdir/ doc/batteries/html/api
+	cp -RpP _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: 
 	@echo Generating documentation. This usually lasts 15+ minutes.
