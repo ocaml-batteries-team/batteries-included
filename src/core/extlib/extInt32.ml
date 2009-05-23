@@ -24,6 +24,9 @@ TYPE_CONV_PATH "Batteries.Data.Numeric.Int32" (*For Sexplib, Bin-prot...*)
 
 open Number
 
+let (|>) x f = f x
+    
+
 module BaseInt32 = struct
   include Int32
     
@@ -33,7 +36,6 @@ module BaseInt32 = struct
 end
 
 module Int32 = struct
-  include Number.MakeNumeric(BaseInt32)
   include BaseInt32
   let sexp_of_t = Conv.sexp_of_int32
   let t_of_sexp = Conv.int32_of_sexp
@@ -45,4 +47,52 @@ module Int32 = struct
 
   let print out t = InnerIO.Printf.fprintf out "%lx" t
   let t_printer paren out t = print out t
+
+  let to_byte n = Int32.logand 0xffl n |> Int32.to_int |> Char.chr
+  let of_byte b = Char.code b |> Int32.of_int
+      
+  (* really need to just blit an int32 word into a string and vice versa *)
+      
+  let pack str pos item = 
+    if String.length str > pos + 4 then failwith "Int32.pack: pos + 4 not within string";
+    if pos < 0 then failwith "Int32.pack: pos negative";
+    str.[pos] <- to_byte item;
+    let item = shift_right item 8 in
+    str.[pos+1] <- to_byte item;
+    let item = shift_right item 8 in
+    str.[pos+2] <- to_byte item;
+    let item = shift_right item 8 in
+    str.[pos+3] <- to_byte item (* optimize out last logand? *)
+      
+  let pack_big str pos item = 
+    if String.length str > pos + 4 then failwith "Int32.pack_big: pos + 4 not within string";
+    if pos < 0 then failwith "Int32.pack_big: pos negative";
+    str.[pos+3] <- to_byte item;
+    let item = Int32.shift_right item 8 in
+    str.[pos+2] <- to_byte item;
+    let item = Int32.shift_right item 8 in
+    str.[pos+1] <- to_byte item;
+    let item = Int32.shift_right item 8 in
+    str.[pos] <- to_byte item (* optimize out last logand? *)
+    
+  let unpack str pos = 
+    if String.length str > pos + 4 then failwith "Int32.unpack: pos + 4 not within string";
+    if pos < 0 then failwith "Int32.unpack: pos negative";
+    let shift n = Int32.shift_left n 8 
+    and add b n = Int32.add (of_byte b) n in
+    of_byte str.[pos+3] |> shift |> add str.[pos+2] |> shift 
+      |> add str.[pos+1] |> shift |> add str.[pos]
+      (* TODO: improve performance of bit twiddling?  will these curried functions get inlined? *)
+
+  let unpack_big str pos = 
+    if String.length str > pos + 4 then failwith "Int32.unpack: pos + 4 not within string";
+    if pos < 0 then failwith "Int32.unpack: pos negative";
+    let shift n = Int32.shift_left n 8 
+    and add b n = Int32.add (of_byte b) n in
+    of_byte str.[pos] |> shift |> add str.[pos+1] |> shift 
+      |> add str.[pos+2] |> shift |> add str.[pos+3]
+
+  include Number.MakeNumeric(BaseInt32)
+
+
 end

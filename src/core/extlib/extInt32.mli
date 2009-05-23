@@ -187,7 +187,25 @@ module Int32 :
 	  according to the IEEE 754 floating-point ``single format'' bit layout,
 	  is the given [int32]. *)
 
-	
+    val of_byte : char -> int32
+    val to_byte : int32 -> char
+
+    val pack : string -> int -> int32 -> unit
+      (** [pack str off i] writes the little endian bit representation
+	  of [i] into string [str] at offset [off] *)
+
+    val pack_big : string -> int -> int32 -> unit
+      (** [pack_big str off i] writes the big endian bit
+	  representation of [i] into string [str] at offset [off] *)
+
+    val unpack : string -> int -> int32
+      (** [unpack str off] reads 4 bytes from string [str] starting at
+	  offset [off] as a little-endian int32 *)
+
+    val unpack_big : string -> int -> int32
+      (** [unpack str off] reads 4 bytes from string [str] starting at
+	  offset [off] as a big-endian int32 *)
+      
     val compare: t -> t -> int
       (** The comparison function for 32-bit integers, with the same specification as
 	  {!Pervasives.compare}.  Along with the type [t], this function [compare]
