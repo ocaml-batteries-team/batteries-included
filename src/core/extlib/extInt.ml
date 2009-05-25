@@ -155,7 +155,7 @@ module BaseSafeInt = struct
 
   let ( * ) = mul
 
-  let pow = Number.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 20) ~mul
+  let pow = Number.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 2) ~mul
     
 end
 
