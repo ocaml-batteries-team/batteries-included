@@ -115,9 +115,6 @@ module BaseSafeInt = struct
      Open this module and [SafeInt] to replace traditional integer operators with
      their safe counterparts
   *)
-      
-
-  let ( * ) = mul
 
   let add a b =
     let c = Pervasives.( + ) a b in
@@ -147,11 +144,16 @@ module BaseSafeInt = struct
     if x <> min_int then abs x
     else raise Overflow
 
-  (*Here, we assume that, in case of overflow the result will be different when computing
-    in 31 bits (resp 63 bits) and in 32 bits (resp 64 bits). Need to check that trick.*)
+  (*This function used to assume that in case of overflow the result would be
+    different when computing in 31 bits (resp 63 bits) and in 32 bits (resp 64
+    bits). This trick turned out to be *wrong* on 64-bit machines, where
+    [Nativeint.mul 2432902008176640000n 21n] and [2432902008176640000 * 21]
+    yield the same result, [-4249290049419214848]. *)
   let mul a b =
     if b = 0 then 0
     else if (abs a) > max_int / (abs b) then raise Overflow else a * b
+
+  let ( * ) = mul
 
   let pow = Number.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 20) ~mul
     
