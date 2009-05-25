@@ -220,58 +220,83 @@ val filter_map : (char -> char option) -> string -> string
       [f ai = Some ci] (when [f] returns [None], the corresponding element of
       [s] is discarded).
 
-      Example: [ String.filter_map (function 'a'-'z' as c -> Some c | _ -> None) 
+      Example: [ String.filter_map (function 'a'-'z' as c -> Some c | _ -> None) ]
  *)
 
 val iter : (char -> unit) -> string -> unit
 (** [String.iter f s] applies function [f] in turn to all
    the characters of [s].  It is equivalent to
    [f s.[0]; f s.[1]; ...; f s.[String.length s - 1]; ()]. 
+
     Example: [let counter = ref 0 in String.iter (fun c -> if c = ' ' then incr counter) s]
 *)
 
 val iteri : (int -> char -> unit) -> string -> unit
 (** [String.iteri f s] is equivalent to
-   [f 0 s.[0]; f 1 s.[1]; ...; f len s.[len]] where [len] is length of string [s]. *)
+   [f 0 s.[0]; f 1 s.[1]; ...; f len s.[len]] where [len] is length of string [s]. 
+
+    Example: [ let pos = Array.make 256 0 in String.iteri (fun i c -> pos.(int_of_char c) <- i ]
+*)
 
 (** {6 Finding}*)
 
 val index : string -> char -> int
 (** [String.index s c] returns the position of the leftmost
    occurrence of character [c] in string [s].
-   Raise [Not_found] if [c] does not occur in [s]. *)
+   Raise [Not_found] if [c] does not occur in [s]. 
+
+    Example: [ String.index "Weeble" 'e' = 1 ]
+*)
 
 val rindex : string -> char -> int
 (** [String.rindex s c] returns the position of the rightmost
    occurrence of character [c] in string [s].
-   Raise [Not_found] if [c] does not occur in [s]. *)
+   Raise [Not_found] if [c] does not occur in [s]. 
+
+    Example: [ String.rindex "Weeble" 'e' = 5 ]
+*)
 
 val index_from : string -> int -> char -> int
 (** Same as {!String.index}, but start
    searching at the character position given as second argument.
-   [String.index s c] is equivalent to [String.index_from s 0 c].*)
+   [String.index s c] is equivalent to [String.index_from s 0 c].
+
+    Example: [String.index_from "Weeble" 3 'e' = 5]
+*)
 
 val rindex_from : string -> int -> char -> int
 (** Same as {!String.rindex}, but start
    searching at the character position given as second argument.
    [String.rindex s c] is equivalent to
-   [String.rindex_from s (String.length s - 1) c]. *)
+   [String.rindex_from s (String.length s - 1) c]. 
+
+    Example: [String.rindex_from "Weeble" 3 'e' = 2]
+*)
 
 val contains : string -> char -> bool
 (** [String.contains s c] tests if character [c]
-   appears in the string [s]. *)
+   appears in the string [s]. 
+
+    Example: [String.contains "Weeble" 'w' = false]
+*)
 
 val contains_from : string -> int -> char -> bool
   (** [String.contains_from s start c] tests if character [c] appears in
       the substring of [s] starting from [start] to the end of [s].
 
-      @raise Invalid_argument if [start] is not a valid index of [s]. *)
+      @raise Invalid_argument if [start] is not a valid index of [s]. 
+
+      Example: [String.contains "Weeble" 1 'W' = false]
+*)
 
 val rcontains_from : string -> int -> char -> bool
 (** [String.rcontains_from s stop c] tests if character [c]
    appears in the substring of [s] starting from the beginning
    of [s] to index [stop].
-   @raise Invalid_argument if [stop] is not a valid index of [s]. *)
+   @raise Invalid_argument if [stop] is not a valid index of [s]. 
+
+    Example: [String.rcontains_from "Weeble" 2 'b' = false]
+*)
 
 
 val find : string -> string -> int
@@ -280,11 +305,17 @@ val find : string -> string -> int
 
       {b Note} This implementation is optimized for short strings.
 
-      @raise Invalid_string if [x] is not a substring of [s]. *)
+      @raise Invalid_string if [x] is not a substring of [s]. 
+
+      Example: [String.find "foobarbaz" "bar" = 3]
+*)
 
 val find_from: string -> int -> string -> int
   (** [find_from s ofs x] behaves as [find s x] but starts searching
-      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].*)
+      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].
+      
+      Example: [String.find_from "foobarbaz" 4 "ba" = 6]
+*)
 
 val rfind : string -> string -> int
   (** [rfind s x] returns the starting index of the last occurrence
@@ -292,80 +323,132 @@ val rfind : string -> string -> int
 
       {b Note} This implementation is optimized for short strings.
 
-      @raise Invalid_string if [x] is not a substring of [s]. *)
+      @raise Invalid_string if [x] is not a substring of [s]. 
+
+      Example: [String.rfind "foobarbaz" "ba" = 6]
+*)
 
 val rfind_from: string -> int -> string -> int
   (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
-      at offset [ofs]. [rfind s x] is equivalent to [rfind_from s (String.length s - 1) x].*)
+      at offset [ofs]. [rfind s x] is equivalent to [rfind_from s (String.length s - 1) x].
+
+      Example: [String.rfind_from "foobarbaz" 6 "ba" = 6]
+*)
 
 
 val ends_with : string -> string -> bool
-  (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise. *)
+  (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise. 
+
+      Example: [String.ends_with "foobarbaz" "rbaz" = true]
+*)
 
 val starts_with : string -> string -> bool
-  (** [starts_with s x] returns [true] if [s] is starting with [x], [false] otherwise. *)
+  (** [starts_with s x] returns [true] if [s] is starting with [x], [false] otherwise. 
+
+      Example: [String.starts_with "foobarbaz" "fooz" = false]
+*)
 
 val exists : string -> string -> bool
   (** [exists str sub] returns true if [sub] is a substring of [str] or
-      false otherwise. *)
+      false otherwise. 
+
+      Example: [String.exists "foobarbaz" "obar" = true]
+*)
 
 (** {6 Transformations}*)
   
 val lchop : string -> string
   (** Returns the same string but without the first character.
-      does nothing if the string is empty. *)
+      does nothing if the string is empty. 
+
+      Example: [String.lchop "Weeble" = "eeble"]
+*)
 
 val rchop : string -> string
   (** Returns the same string but without the last character.
-      does nothing if the string is empty. *)
+      does nothing if the string is empty. 
+
+      Example: [String.rchop "Weeble" = "Weebl"]
+*)
 
 val trim : string -> string
   (** Returns the same string but without the leading and trailing
-      whitespaces. *)
+      whitespaces. 
+
+      Example: [String.trim " \t foo  " = "foo"]
+*)
 
 val quote : string -> string
   (** Add quotes around a string and escape any quote appearing in that string.
       This function is used typically when you need to generate source code
       from a string.
 
-      [quote "foo"] returns ["\"foo\""]
+      Examples: [quote "foo"] returns ["\"foo\""]
       [quote "\"foo\""] returns ["\\\"foo\\\""]
-      etc. *)
+      etc. 
+
+*)
 
 val left : string -> int -> string
-(**[left r len] returns the string containing the [len] first characters of [r]*)
+(**[left r len] returns the string containing the [len] first characters of [r]
+
+   Example: [String.left "Weeble" 4 = "Weeb"]
+*)
 
 val right : string -> int -> string
-(**[left r len] returns the string containing the [len] last characters of [r]*)
+(**[left r len] returns the string containing the [len] last characters of [r]
+
+   Example: [String.right "Weeble" 4 = "eble"]
+*)
 
 val head : string -> int -> string
 (**as {!left}*)
 
 val tail : string -> int -> string
-(**[tail r pos] returns the string containing all but the [pos] first characters of [r]*)
+(**[tail r pos] returns the string containing all but the [pos] first characters of [r]
+
+   Example: [String.tail "Weeble" 4 = "le"]
+*)
 
 val strip : ?chars:string -> string -> string
   (** Returns the string without the chars if they are at the beginning or
-      at the end of the string. By default chars are " \t\r\n". *)
+      at the end of the string. By default chars are " \t\r\n".
+ 
+      Example: [String.strip ~chars:" ,()" " boo() bar()" = "boo() bar"]
+*)
 
 val uppercase : string -> string
 (** Return a copy of the argument, with all lowercase letters
     translated to uppercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. *)
+    Latin-1 (8859-1) character set. 
+
+    Example: [String.uppercase "Weeble" = "WEEBLE"]
+*)
 
 val lowercase : string -> string
 (** Return a copy of the argument, with all uppercase letters
     translated to lowercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. *)
+    Latin-1 (8859-1) character set. 
+
+    Example: [String.lowercase "WeEbLe" = "weeble"]
+*)
 
 val capitalize : string -> string
-(** Return a copy of the argument, with the first character set to uppercase. *)
+(** Return a copy of the argument, with the first character set to uppercase. 
+
+    Example: ["wEeBlE" |> String.lowercase |> String.capitalize  = "Weeble"]
+*)
 
 val uncapitalize : string -> string
-(** Return a copy of the argument, with the first character set to lowercase. *)
+(** Return a copy of the argument, with the first character set to lowercase. 
+    Example: [String.uncapitalize "WeeblE" = "weeblE"]    
+*)
 
 val copy : string -> string
-(** Return a copy of the given string. *)
+(** Return a copy of the given string. 
+
+    Example: [let s = "foo" in let s2 = String.copy s in s.[0] = "b"; s2 = "foo"]
+*)
 
 val sub : string -> int -> int -> string
 (** [String.sub s start len] returns a fresh string of length [len],
@@ -373,14 +456,20 @@ val sub : string -> int -> int -> string
    of string [s].
    @raise Invalid_argument if [start] and [len] do not
    designate a valid substring of [s]; that is, if [start < 0],
-   or [len < 0], or [start + len > ]{!String.length}[ s]. *)
+   or [len < 0], or [start + len > ]{!String.length}[ s]. 
+
+    Example: [String.sub "foobarbaz" 3 4 = "barb"]
+*)
 
 val fill : string -> int -> int -> char -> unit
 (** [String.fill s start len c] modifies string [s] in place,
    replacing the characters number [start] to [start + len - 1]
    by [c].
    @raise Invalid_argument if [start] and [len] do not
-   designate a valid substring of [s]. *)
+   designate a valid substring of [s]. 
+
+    Example: [let s = "foobarbaz" in String.fill s 3 4 'x'; s = "fooxxxxaz"]
+*)
 
 val blit : string -> int -> string -> int -> int -> unit
 (** [String.blit src srcoff dst dstoff len] copies [len] characters
@@ -391,48 +480,75 @@ val blit : string -> int -> string -> int -> int -> unit
    
     @raise Invalid_argument if [srcoff] and [len] do not
    designate a valid substring of [src], or if [dstoff] and [len]
-   do not designate a valid substring of [dst]. *)
+   do not designate a valid substring of [dst]. 
+
+    Example: [let s = "123456789" in String.blit s 4 s 2 4; s = "125678789"]
+*)
 
 val concat : string -> string list -> string
 (** [String.concat sep sl] concatenates the list of strings [sl],
-   inserting the separator string [sep] between each. *)
+   inserting the separator string [sep] between each. 
+
+    Example: [String.concat ", " ["foo"; "bar"; "baz"] = "foo, bar, baz"]
+*)
 
 val escaped : string -> string
 (** Return a copy of the argument, with special characters
    represented by escape sequences, following the lexical
    conventions of Objective Caml.  If there is no special
    character in the argument, return the original string itself,
-   not a copy. *)
+   not a copy. 
+
+    Example: TODO
+*)
 
 val replace_chars : (char -> string) -> string -> string
   (** [replace_chars f s] returns a string where all chars [c] of [s] have been
-      replaced by the string returned by [f c]. *)
+      replaced by the string returned by [f c]. 
+
+      Example: [String.replace_chars (function ' ' -> "(space)" | c -> c) "foo bar" = "foo(space)bar"]
+*)
 
 val replace : str:string -> sub:string -> by:string -> bool * string
   (** [replace ~str ~sub ~by] returns a tuple constisting of a boolean
       and a string where the first occurrence of the string [sub]
       within [str] has been replaced by the string [by]. The boolean
-      is true if a subtitution has taken place. *)
+      is true if a subtitution has taken place. 
+
+      Example: [String.replace "foobarbaz" "bar" "rab" = (true, "foorabbaz")]
+*)
 
 val repeat: string -> int -> string
-(** [repeat s n] returns [s ^ s ^ ... ^ s] *)
+(** [repeat s n] returns [s ^ s ^ ... ^ s] 
+
+    Example: [String.repeat "foo" 4 = "foofoofoofoo"]
+*)
 
 (** {6 Splitting around}*)
 
 val split : string -> string -> string * string
   (** [split s sep] splits the string [s] between the first
       occurrence of [sep].
-      @raise Invalid_string if the separator is not found. *)
+      @raise Invalid_string if the separator is not found. 
+
+      Example: [String.split "abcabcabc" "bc" = ("a","abcabc")]
+*)
 
 val rsplit : string -> string -> string * string
   (** [rsplit s sep] splits the string [s] between the last
       occurrence of [sep].
-      @raise Invalid_string if the separator is not found. *)
+      @raise Invalid_string if the separator is not found. 
+
+      Example: [String.rsplit "abcabcabc" "bc" = ("abcabca","")]
+*)
 
 val nsplit : string -> string -> string list
   (** [nsplit s sep] splits the string [s] into a list of strings
       which are separated by [sep].
-      [nsplit "" _] returns the empty list. *)
+      [nsplit "" _] returns the empty list. 
+
+      Example: [String.nsplit "abcabcabc" "bc" = ["a"; "a"; "a"; ""]]
+*)
 
 val join : string -> string list -> string
   (** Same as {!concat} *)
@@ -453,6 +569,8 @@ val slice : ?first:int -> ?last:int -> string -> string
       
       This function {b never} raises any exceptions. If the
       indexes are out of bounds they are automatically clipped.
+
+      Example: [String.slice 1 (-3) " foo bar baz" = "foo bar "]
   *)
 
 val splice: string -> int -> int -> string -> string
@@ -463,14 +581,22 @@ val splice: string -> int -> int -> string -> string
       of the string. If [off+len] is greater than [length s],
       the end of the string is used, regardless of the value of
       [len].
+
+      Example: [String.splice "foo bar baz" 3 5 "XXX" = "fooXXXbaz"]
 *)
 
 val explode : string -> char list
-  (** [explode s] returns the list of characters in the string [s]. *)
+  (** [explode s] returns the list of characters in the string [s]. 
+
+      Example: [String.explode "foo" = ['f'; 'o'; 'o']]
+*)
 
 val implode : char list -> string
   (** [implode cs] returns a string resulting from concatenating
-      the characters in the list [cs]. *)
+      the characters in the list [cs]. 
+
+      Example: [String.implode ['b'; 'a'; 'r'] = "bar"]
+*)
 
 (** {6 Comparisons}*)
 
@@ -478,20 +604,39 @@ val compare: t -> t -> int
   (** The comparison function for strings, with the same specification as
       {!Pervasives.compare}.  Along with the type [t], this function [compare]
       allows the module [String] to be passed as argument to the functors
-      {!Set.Make} and {!Map.Make}. *)
+      {!Set.Make} and {!Map.Make}. 
+
+      Example: [String.compare "FOO" "bar" = -1] i.e. "FOO" < "bar"
+*)
 
 val icompare: t -> t -> int
-  (** Compare two strings, case-insensitive. *)
+  (** Compare two strings, case-insensitive. 
+
+      Example: [String.icompare "FOO" "bar" = 1] i.e. "foo" > "bar"
+*)
 
 module IString : Interfaces.OrderedType with type t = t
-(** uses icompare as ordering function *)
-
+  (** uses icompare as ordering function 
+      
+      Example: [module Nameset = Set.Make(String.IString)]
+  *)
+  
 
 val numeric_compare: t -> t -> int
-  (** Compare two strings, sorting "abc32def" before "abc210abc" *)
+  (** Compare two strings, sorting "abc32def" before "abc210abc".
+      
+      Algorithm: Ignore identical prefixes, if first character
+      difference is numeric, parse the whole number as an int and
+      compare.
+
+      Example: [String.numeric_compare "xx32" "xx210" = -1]
+  *)
 
 module NumString : Interfaces.OrderedType with type t = t
-(** uses numeric_compare as its ordering function *)
+(** uses numeric_compare as its ordering function
+
+    Example: [module FilenameSet = Set.Make(String.NumString)]
+ *)
 
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
@@ -502,10 +647,16 @@ val sexp_of_t : t -> Sexplib.Sexp.t
 (** {7 Printing}*)
 
 val print: 'a InnerIO.output -> string -> unit
-(**Print a string.*)
+(**Print a string.
+
+   Example: [String.print stdout "foo\n"]
+*)
 
 val println: 'a InnerIO.output -> string -> unit
-(**Print a string, end the line.*)
+(**Print a string, end the line.
+
+   Example: [String.println stdout "foo"]
+*)
 
 val print_quoted: 'a InnerIO.output -> string -> unit
 (**Print a string, with quotes.
