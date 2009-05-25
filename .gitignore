@@ -10,4 +10,7 @@ configure
 build/META
 build/threaded/META
 build/nothreads/META
+doc/batteries/html/api/
+examples/benchmark/*.png
 src/batteries_toolchain/ocaml
+patches/
