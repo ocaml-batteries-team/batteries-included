@@ -130,20 +130,17 @@ Where <code>let...in...</code> lets you define a value and use it immediately,
 <code>... where...</code> lets you use a value and define it immediately, as
 is often done in mathematic notations. Consider
 <pre class="example">
-let fibo n = fst fibo_aux n
+let fibo n = fst (fibo_aux n)
   where rec fibo_aux = function
-    | 0 -> (1, 1)
-    | 1 -> (1, 2)
-    | n -> (a, a + b) where let (a, b) = fibo_aux ( n - 1 )
+    | 0 -> (0, 1)
+    | n -> (b, a + b) where let (a, b) = fibo_aux (n - 1)
 </pre>
 This extract is equivalent to
 <pre class="example">
 let fibo n =
-  let rec fibo_aux =
-    function
-    | 0 -> (1, 1)
-    | 1 -> (1, 2)
-    | n -> let (a, b) = fibo_aux (n - 1) in (a, (a + b))
+  let rec fibo_aux = function
+    | 0 -> (0, 1)
+    | n -> let (a, b) = fibo_aux (n - 1) in (b, a + b)
   in fst (fibo_aux n)
 </pre>
 
