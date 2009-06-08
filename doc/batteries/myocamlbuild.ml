@@ -64,6 +64,7 @@ struct
          flag ["ocaml"; "ocamldep"; "pkg_"^pkg] & S[A"-package"; A pkg];
          flag ["ocaml"; "doc";      "pkg_"^pkg] & S[A"-package"; A pkg];
          flag ["ocaml"; "link";     "pkg_"^pkg] & S[A"-package"; A pkg];
+         flag ["ocaml"; "infer_interface"; "pkg_"^pkg] & S[A"-package"; A pkg];
        end (find_packages ());
 
        (* Like -package but for extensions syntax. Morover -syntax is useless
@@ -72,6 +73,7 @@ struct
          flag ["ocaml"; "compile";  "syntax_"^syntax] & S[A"-syntax"; A syntax];
          flag ["ocaml"; "ocamldep"; "syntax_"^syntax] & S[A"-syntax"; A syntax];
          flag ["ocaml"; "doc";      "syntax_"^syntax] & S[A"-syntax"; A syntax];
+         flag ["ocaml"; "infer_interface"; "syntax_"^syntax] & S[A"-syntax"; A syntax];
        end (find_syntaxes ());
        
        (* The default "thread" tag is not compatible with ocamlfind.
@@ -126,6 +128,7 @@ struct
     flag ["ocaml"; "ocamldep"; "use_boilerplate"] & S cl_boilerplate_original ;
     flag ["ocaml"; "doc";      "use_boilerplate"] & S cl_boilerplate_original ;
     flag ["ocaml"; "link";     "use_boilerplate"] & S cl_boilerplate_original ;
+    flag ["ocaml"; "infer_interface"; "use_boilerplate"] & S cl_boilerplate_original;
 
       (** Tag [use_boilerplate_r] provides boilerplate syntax extensions,
 	  in original syntax*)
@@ -134,6 +137,7 @@ struct
     flag ["ocaml"; "ocamldep"; "use_boilerplate_r"] & S cl_boilerplate_revised ;
     flag ["ocaml"; "doc";      "use_boilerplate_r"] & S cl_boilerplate_revised ;
     flag ["ocaml"; "link";     "use_boilerplate_r"] & S cl_boilerplate_revised ;
+    flag ["ocaml"; "infer_interface"; "use_boilerplate_r"] & S cl_boilerplate_revised;
 
     (** Tag [use_batteries] provides both package [batteries]
 	and all syntax extensions, in original syntax. *)
@@ -142,6 +146,7 @@ struct
     flag ["ocaml"; "ocamldep"; "use_batteries"] & S cl_batteries_original ;
     flag ["ocaml"; "doc";      "use_batteries"] & S cl_batteries_original ;
     flag ["ocaml"; "link";     "use_batteries"] & S cl_batteries_original ;
+    flag ["ocaml"; "infer_interface"; "use_batteries"] & S cl_batteries_original;
 
     (** Tag [use_batteries_r] provides both package [batteries]
 	and all syntax extensions, in revised syntax. *)
@@ -149,7 +154,8 @@ struct
     flag ["ocaml"; "compile";  "use_batteries_r"] & S cl_batteries_revised;
     flag ["ocaml"; "ocamldep"; "use_batteries_r"] & S cl_batteries_revised;
     flag ["ocaml"; "doc";      "use_batteries_r"] & S cl_batteries_revised;
-    flag ["ocaml"; "link";     "use_batteries_r"] & S cl_batteries_revised
+    flag ["ocaml"; "link";     "use_batteries_r"] & S cl_batteries_revised;
+    flag ["ocaml"; "infer_interface"; "use_batteries_r"] & S cl_batteries_revised;
 
 
 (*    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose"; 
