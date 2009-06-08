@@ -29,7 +29,7 @@ You will need
 * Camlzip   (http://cristal.inria.fr/~xleroy/software.html#camlzip)
    ( Note: By default, the distribution of Camlzip is note quite sufficient for actual use.
      We provide the missing files in directory camlzip/ .)
-* Ocamlnet  (http://projects.camlcity.org/projects/ocamlnet.html)
+* Ocamlnet  2.2.9 (http://projects.camlcity.org/projects/ocamlnet.html)
 * OUnit    to build and run the tests
 
 **** Pre-configuration ****
