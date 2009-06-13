@@ -413,6 +413,7 @@ module  Opt_parse = Extlib.OptParse
 module  OptParse  = Opt_parse
 (**/**)
 (*module  Path:placeholder*)
+module Path     = Batlib_Baselib_Filename
 module  Shell = Extlib.ExtSys.Sys
 module  Unix  = Extlib.ExtUnix.Unix
 (*module  Equeue:placeholder*)
