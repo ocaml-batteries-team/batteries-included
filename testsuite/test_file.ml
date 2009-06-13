@@ -1,15 +1,16 @@
 open OUnit
 open File
 open IO
+open Print
 
 (**Initialize data sample*)
-let state  = Random.State.make [|0|]
-let buffer = Array.of_enum (Enum.take 60 (Random.State.enum_int state 255))
+let state  = Random.State.make [|0|];;
+let buffer = Array.of_enum (Enum.take 60 (Random.State.enum_int state 255));;
 
 (**Write sample to temporary file*)
 let write buf =
   let (out, name) = open_temporary_out () in
-    write_bytes out (Array.enum buffer);
+    write_bytes out (Array.enum buf);
     close_out out;
     name
 
@@ -70,9 +71,42 @@ let test_open_close_many_pervasives () =
     (* pass *)
   with Sys_error e -> assert_failure "Got Sys_error _"
 
+let test_no_append () =
+  try
+    let temp   = Path.temp_file "ocaml_batteries" "noappend_test" in
+    let out    = open_out temp                       in
+    let _      = write_bytes out (Array.enum buffer) in
+    let _      = close_out out                       in
+    let size_1 = size_of temp                        in
+    let out    = open_out temp                       in
+    let _      = write_bytes out (Array.enum buffer) in
+    let _      = close_out out                       in
+    let size_2 = size_of temp                        in
+      if size_1 <> size_2 then assert_failure
+	(sprintf p"Expected two files with size %d, got one with size %d and one with size %d" size_1 size_1 size_2)
+  with Sys_error e -> assert_failure (sprintf p"Got Sys_error %S" e)
+
+let test_append () =
+  try
+    let temp   = Path.temp_file "ocaml_batteries" "noappend_test" in
+    let out    = open_out ~mode:[`append] temp       in
+    let _      = write_bytes out (Array.enum buffer) in
+    let _      = close_out out                       in
+    let size_1 = size_of temp                        in
+    let out    = open_out ~mode:[`append] temp       in
+    let _      = write_bytes out (Array.enum buffer) in
+    let _      = close_out out                       in
+    let size_2 = size_of temp                        in
+      if size_2 <> 2*size_1 then assert_failure
+	(sprintf p"Expected a files with size %d, got a first chunk with size %d and a second chunk with size %d" 
+	   (2*size_1) size_1 size_2)
+  with Sys_error e -> assert_failure (sprintf p"Got Sys_error %S" e)
+
 let tests = "File" >::: [
   "Reading back output to temporary file" >:: test_read_back_tmp;
   "open_in'd files should not autoclose" >:: test_open_files_not_autoclosed;
   "opening and closing many files" >:: test_open_close_many;
   "opening and closing many files (Pervasives)" >:: test_open_close_many_pervasives;
+  "default truncation of files" >:: test_no_append;
+  "appending to a file" >:: test_append
 ]

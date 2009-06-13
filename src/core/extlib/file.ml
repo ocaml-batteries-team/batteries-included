@@ -72,8 +72,10 @@ let in_chan_mode ?mode binary =
 let out_chan_mode ?mode binary =
   let mode_to_open_flag l =
     let rec aux acc is_binary = function
-      | []           -> if is_binary then Open_binary::acc 
-	else           Open_text  ::acc
+      | []           -> let acc' = if List.mem Open_append acc then acc
+                                   else                             Open_trunc::acc in
+	                if is_binary then Open_binary::acc' 
+		        else              Open_text  ::acc'
       | `append::t   -> aux (Open_append::acc)   is_binary t
       | `trunc::t    -> aux (Open_trunc::acc)    is_binary t
       | `create::t   -> aux (Open_creat::acc)    is_binary t

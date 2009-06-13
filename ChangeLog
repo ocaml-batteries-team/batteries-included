@@ -1,3 +1,10 @@
+2009-06-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* testsuite/test_file.ml: [write] now actually uses [buf]
+
+	* src/core/extlib/file.ml: [out_chan_mode] now adds [1trunc] if unspecified
+
+	* src/main/nothreads/batteries.ml: added [Path]
 
 2009-04-21  Hezekiah M. Carty  <hcarty@atmos.umd.edu>
 
