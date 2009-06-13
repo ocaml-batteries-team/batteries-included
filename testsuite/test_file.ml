@@ -39,7 +39,7 @@ let test_open_files_not_autoclosed () =
     try
       let _ = IO.read_all f in
       let c = IO.read f in
-        assert_failure (Printf.sprintf "Expecting: IO.No_more_input, got char %C" c)
+        assert_failure (sprintf p"Expecting: IO.No_more_input, got char %C" c)
     with
       | IO.No_more_input -> () (* pass *)
       | IO.Input_closed ->
@@ -47,7 +47,7 @@ let test_open_files_not_autoclosed () =
       | e ->
           let _ = IO.close_in f in
             assert_failure
-              (Printf.sprintf "Expected: IO.No_more_input, got %s"
+              (sprintf p"Expected: IO.No_more_input, got %s"
                  (Printexc.to_string e))
 
 let test_open_close_many () =
@@ -56,7 +56,7 @@ let test_open_close_many () =
       Unix.unlink (write buffer)
     done;
     (* pass *)
-  with Sys_error e -> assert_failure "Got Sys_error _"
+  with Sys_error e -> assert_failure (sprintf p"Got Sys_error %S" e)
 
 
 let test_open_close_many_pervasives () =
@@ -69,7 +69,7 @@ let test_open_close_many_pervasives () =
         Unix.unlink temp
     done;
     (* pass *)
-  with Sys_error e -> assert_failure "Got Sys_error _"
+  with Sys_error e -> assert_failure (sprintf p"Got Sys_error %S" e)
 
 let test_no_append () =
   try

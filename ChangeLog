@@ -1,6 +1,16 @@
 2009-06-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* Makefile.in: [BUILD_DOC] now initialized from [@BUILD_DOC@]
+
+	* Makefile.in: [all] now forces [install-doc] only if [BUILD_DOC] is [yes]
+
+	* Makefile.in: [install-doc] now untouched by [BUILD_DOC]
+	
 	* testsuite/test_file.ml: [write] now actually uses [buf]
+
+	* testsuite/test_file.ml: [test_append], [test_noappend] added 
+
+	* testsuite/test_file.ml: now using newstyle print
 
 	* src/core/extlib/file.ml: [out_chan_mode] now adds [1trunc] if unspecified
 
