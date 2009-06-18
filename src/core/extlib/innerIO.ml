@@ -171,6 +171,8 @@ let close_out o =
   o.out_close ()
 
 
+let ignore_close_out out = ignore (close_out out)
+
 let wrap_out ~write ~output ~flush ~close ~underlying  =
   let rec out = 
     {
@@ -187,8 +189,7 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
   let o = cast_output out in
     Concurrent.sync !lock (List.iter (fun x -> weak_add x.out_upstream o)) underlying;
     outputs_add (cast_output out); 
-    Gc.finalise (fun _ -> ignore (close_out out)) 
-      out;
+    Gc.finalise ignore_close_out out;
     out
 
 let inherit_out ?write ?output ?flush ?close out =
