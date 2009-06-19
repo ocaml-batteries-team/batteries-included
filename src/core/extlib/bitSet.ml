@@ -23,6 +23,8 @@ open Sexplib
 
 TYPE_CONV_PATH "Batteries.Data.Logical.BitSet" (*For Sexplib, Bin-prot...*)
 
+(**{6 Black magic}*)
+
 type intern
 
 let bcreate : int -> intern = Obj.magic String.create
@@ -304,6 +306,14 @@ let diff a b =
   and bbuf = b.data in
   for i = 0 to sl-1 do
     bset buf i ((bget abuf i) land (lnot (bget bbuf i)))
+  done;
+  for i = sl to a.len - 1 do (*If [b] is shorter than [a], assume that remaining bits of [b] are [0],
+			       add the bits of [a] which haven't been copied yet*)
+    bset buf i (bget abuf i)
+  done;
+  for i = sl to b.len - 1 do (*If [a] is shorter than [b], assume that remaining bits of [a] are [0],
+			       add the negation of bits of [b] which haven't been copied yet*)
+    bset buf i ((lnot (bget bbuf i)))
   done;
   { data = buf; len = maxlen }
 

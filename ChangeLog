@@ -2,6 +2,8 @@
 
 	* src/core/extlib/bitSet.ml: [print] now uses [8*len] and not [len]
 
+	* src/core/extlib/bitSet.ml: [diff] now handles all bits of both [a] and [b]
+
 2009-06-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* Makefile.in: [BUILD_DOC] now initialized from [@BUILD_DOC@]
