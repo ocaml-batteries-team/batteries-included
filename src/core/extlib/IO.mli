@@ -144,7 +144,7 @@ val stdnull: unit output
 
 val read : input -> char
 (** Read a single char from an input or raise [No_more_input] if
-  no input available. *)
+    no input is available. *)
 
 val nread : input -> int -> string
 (** [nread i n] reads a string of size up to [n] from an input.
