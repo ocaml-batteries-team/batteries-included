@@ -308,11 +308,11 @@ let diff a b =
     bset buf i ((bget abuf i) land (lnot (bget bbuf i)))
   done;
   for i = sl to a.len - 1 do (*If [b] is shorter than [a], assume that remaining bits of [b] are [0],
-			       add the bits of [a] which haven't been copied yet*)
+			       append the bits of [a] which haven't been copied yet*)
     bset buf i (bget abuf i)
   done;
   for i = sl to b.len - 1 do (*If [a] is shorter than [b], assume that remaining bits of [a] are [0],
-			       add the negation of bits of [b] which haven't been copied yet*)
+			       append the negation of bits of [b] which haven't been copied yet*)
     bset buf i ((lnot (bget bbuf i)))
   done;
   { data = buf; len = maxlen }
