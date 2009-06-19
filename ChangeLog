@@ -1,3 +1,7 @@
+2009-06-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/core/extlib/bitSet.ml: [print] now uses [8*len] and not [len]
+
 2009-06-13  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* Makefile.in: [BUILD_DOC] now initialized from [@BUILD_DOC@]

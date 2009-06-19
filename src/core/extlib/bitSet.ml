@@ -1,7 +1,7 @@
 (*
  * Bitset - Efficient bit sets
  * Copyright (C) 2003 Nicolas Cannasse
- * Copyright (C) 2008 David Teller
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -362,6 +362,6 @@ let print out t =
   let print_bit i =
     InnerIO.write out (if is_set t i then '1' else '0')
   in
-  for i = 0 to t.len - 1 do
+  for i = 0 to 8*t.len - 1 do
     print_bit i
   done
