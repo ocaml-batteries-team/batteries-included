@@ -1,5 +1,9 @@
 2009-06-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* testsuite/test_unix.ml: created
+
+	* src/core/extlib/extPervasives.ml*: [printer_exn] added
+
 	* src/core/extlib/bitSet.ml: [print] now uses [8*len] and not [len]
 
 	* src/core/extlib/bitSet.ml: [diff] now handles all bits of both [a] and [b]
