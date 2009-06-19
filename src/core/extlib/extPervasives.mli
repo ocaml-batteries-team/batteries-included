@@ -1371,6 +1371,7 @@ val printer_Sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Pr
 val printer_rope : (Rope.t -> 'a, 'a) Print.directive
 val printer_utf8 : (UTF8.t -> 'a, 'a) Print.directive
 val printer_obj : (< print : unit IO.output -> unit; .. > -> 'a, 'a) Print.directive
+val printer_exn : (exn -> 'a, 'a) Print.directive
 
 (** {7 Value printers} *)
 

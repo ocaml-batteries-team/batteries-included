@@ -303,6 +303,7 @@ module Pervasives = struct
   let printer_rope k x = k (fun oc -> Rope.print oc x)
   let printer_utf8 k x = k (fun oc -> UTF8.print oc x)
   let printer_obj k x = k x#print
+  let printer_exn k x = k (fun oc -> ExtPrintexc.Printexc.print oc x)
 
   let printer_int  = printer_i
   let printer_uint = printer_u
