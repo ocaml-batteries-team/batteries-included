@@ -109,6 +109,10 @@ struct
     let (a,b,c) = open_process_full s args in
       (wrap_in ?autoclose ?cleanup a, wrap_out ?cleanup b, wrap_in ?autoclose ?cleanup c)
 
+(**@TODO in a future version, [close_process_in] should also work
+   on processes opened with [open_process] or [open_process_full].
+   Same thing for [close_process_out].*)
+
   let close_process_in cin =
     try close_process_in (input_get cin)
     with Not_found -> raise (Unix_error(EBADF, "close_process_in", ""))
@@ -118,7 +122,10 @@ struct
     with Not_found -> raise (Unix_error(EBADF, "close_process_out", ""))
 
   let close_process (cin, cout) =
-    try close_process (input_get cin, output_get cout)
+    try
+      let pin = input_get cin
+      and pout= output_get cout in
+	close_process (pin, pout)
     with Not_found -> raise (Unix_error(EBADF, "close_process", ""))
 
   let close_process_full (cin, cout, cin2) =
