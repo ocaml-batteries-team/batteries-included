@@ -927,3 +927,10 @@ val lock_factory: (unit -> Concurrent.lock) ref
 (**/**)
 val comb : ('a output * 'a output) -> 'a output
 (** Old name of [combine]*)
+
+(**
+   {6 Debugging facilities}
+*)
+
+val get_output_id : _ output -> int
+val get_input_id  : input -> int

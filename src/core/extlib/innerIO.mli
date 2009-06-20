@@ -753,8 +753,9 @@ end
 (**{6 Internals}*)
 
 (**
-   Optimized access to fields
+   {7 Optimized access to fields}
 *)
+
 val get_output : _ output -> (string -> int -> int -> int)
 val get_flush  : _ output -> (unit -> unit)
 
@@ -764,3 +765,9 @@ val lock : Concurrent.lock ref
 *)
 
 
+(**
+   {7 Facilities for debugging}
+*)
+
+val get_output_id : _ output -> int
+val get_input_id  : input -> int

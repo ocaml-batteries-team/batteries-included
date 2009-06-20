@@ -1186,3 +1186,6 @@ end
 
 let get_output out = out.out_output
 let get_flush  out = out.out_flush
+
+let get_output_id out = out.out_id
+let get_input_id  inp = inp.in_id
