@@ -1,5 +1,10 @@
 2009-06-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* src/core/extlib/IO.mli,
+	* src/core/extlib/innerIO.ml*: [get_output_id], [get_input_id] added
+
+	* testsuite/main.ml: now using [Test_unix]
+
 	* testsuite/test_unix.ml: created
 
 	* src/core/extlib/extPervasives.ml*: [printer_exn] added
