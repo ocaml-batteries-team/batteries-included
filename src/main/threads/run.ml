@@ -36,8 +36,10 @@ let plugins  = List.of_enum (Enum.take_while ((<>) "--") (args ()));;(*Only keep
 let hide_args= List.length plugins + 1;;
 invisible_args := !invisible_args + hide_args;;                    
 Arg.current    := !Arg.current    + hide_args;;
+foreach (args ()) **> Printf.eprintf "Arg %S\n%!";;
 foreach (List.enum plugins) **>
   fun arg ->
     Printf.eprintf "Loading %S\n%!"  arg;
-    Dynlink.loadfile arg
+    Dynlink.loadfile arg;;
 
+Printf.eprintf "Loading complete\n%!";;

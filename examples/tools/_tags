@@ -1,2 +1,2 @@
-not(<*.dyn.*>): use_batteries,debug
-<*.dyn.*>: pkg_findlib
+not(<*_dyn*>): use_batteries,debug
+<*_dyn*>: pkg_findlib

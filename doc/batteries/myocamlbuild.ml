@@ -240,12 +240,12 @@ module Dynamic = struct
 	    Cmd (S[A"cp"; A src; A dest])
 	end;
 
-      rule ".cmxa to cmxs"
+      rule ".a to cmxs"
 	~prod:"%.cmxs"
-	~dep:"%.cmxa"
+	~dep:"%.cmx"
 	begin fun env build ->
 	  let dest = env "%.cmxs"
-	  and src  = env "%.cmxa" in
+	  and src  = env "%.cmx" in
 	  Cmd (S[A"ocamlopt"; A src; A "-shared"; A "-o"; A dest])
 	end;
 

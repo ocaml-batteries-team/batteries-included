@@ -1,3 +1,11 @@
+2009-06-21  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* myocamlbuild.ml: "-linkpkg" now also for native programs
+
+	* doc/batteries/myocamlbuild.ml: reorganised module Dynamic
+
+	* configure.ac: trivial typo
+
 2009-06-19  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/core/extlib/IO.mli,

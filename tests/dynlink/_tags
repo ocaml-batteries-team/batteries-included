@@ -1,2 +1,2 @@
-<hello.ml>: use_batteries
-<hello.dyn.*>:pkg_findlib
+not(<*.dyn.*>): use_batteries,debug
+<*.dyn.*>: pkg_findlib
