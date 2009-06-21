@@ -122,39 +122,67 @@ exception Output_closed
 (** {6 Standard inputs/outputs} *)
 
 val stdin : input
-(** Standard input, as per Unix/Windows conventions (by default, keyboard).*)
+(** Standard input, as per Unix/Windows conventions (by default, keyboard).
+
+    Example: [if read_line stdin |> Int.of_string > 10 then failwith "too big a number read"; ]
+*)
 
 val stdout: unit output
 (** Standard output, as per Unix/Windows conventions (by default, console).
 
-    Use this output to display regular messages.*)
+    Use this output to display regular messages.
+    Example: [
+       write_string stdout "Enter your name:";
+       let name = read_line stdin in
+       write_line stdout ("Your name is " ^ name);
+    ]
+*)
 
 val stderr: unit output
 (** Standard error output, as per Unix/Windows conventions.
    
     Use this output to display warnings and error messages.
+
+    Example: [
+       write_line stderr "Error on Internet - please delete google.com";
+    ]
 *)
 
 val stdnull: unit output
 (** An output which discards everything written to it.
 
-    Use this output to ignore messages.*)
+    Use this output to ignore messages.
+
+    Example: [
+      let out_ch = if debug then stderr else stdnull in
+      write_line out_ch "Program running.";
+    ]
+*)
 
 (** {6 Standard API} *)
 
 val read : input -> char
 (** Read a single char from an input or raise [No_more_input] if
-    no input is available. *)
+    no input is available.
+
+    Example: [let rec skip_line ch = if read ch = '\n' then skip_line ch else ();]
+*)
 
 val nread : input -> int -> string
 (** [nread i n] reads a string of size up to [n] from an input.
   The function will raise [No_more_input] if no input is available.
-  It will raise [Invalid_argument] if [n] < 0. *)
+  It will raise [Invalid_argument] if [n] < 0.
+
+    Example: [let read_md5 ch = nread ch 32]
+*)
 
 val really_nread : input -> int -> string
 (** [really_nread i n] reads a string of exactly [n] characters
   from the input. Raises [No_more_input] if at least [n] characters are
-  not available. Raises [Invalid_argument] if [n] < 0. *)
+  not available. Raises [Invalid_argument] if [n] < 0.
+
+    Example: [let read_md5 ch = really_nread ch 32]
+*)
 
 val input : input -> string -> int -> int -> int
   (** [input i s p l] reads up to [l] characters from the given input,
@@ -164,46 +192,85 @@ val input : input -> string -> int -> int -> int
       [Invalid_argument] if [p] and [l] do not designate a valid
       substring of [s].
 
-
+      Example: [let map_ch f ?(block_size=100) =
+      let b = String.create block_size in
+      try while true do
+        let l = input ch b 0 block_size in
+        f b 0 l;
+      done with No_more_input -> ()]
   *)
 
 val really_input : input -> string -> int -> int -> int
-  (** [really_input i s p l] reads exactly [l] characters from the given input,
-      storing them in the string [s], starting at position [p]. For consistency with
-      {!IO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
-      not available. Raises [Invalid_argument] if [p] and [l] do not designate a
-      valid substring of [s]. *)
+  (** [really_input i s p l] reads exactly [l] characters from the
+      given input, storing them in the string [s], starting at
+      position [p]. For consistency with {!IO.input} it returns
+      [l]. Raises [No_more_input] if at [l] characters are not
+      available. Raises [Invalid_argument] if [p] and [l] do not
+      designate a valid substring of [s].
+
+      Example: [let _ = really_input stdin b 0 3]
+
+  *)
 
 val close_in : input -> unit
-(** Close the input. It can no longer be read from. *)
+(** Close the input. It can no longer be read from.
+
+    Example: [close_in network_in;]
+*)
 
 val write : 'a output -> char -> unit
-(** Write a single char to an output. *)
+(** Write a single char to an output.
+
+    Example: [write stdout 'x';]
+*)
 
 val nwrite : 'a output -> string -> unit
-(** Write a string to an output. *)
+(** Write a string to an output.
+
+    Example: [nwrite stdout "Enter your name: ";]
+*)
 
 val write_buf: 'a output -> Buffer.t -> unit
-(** Write the contents of a buffer to an output.*)
+(** Write the contents of a buffer to an output.
+
+    Example: [let b = Buffer.create 10 in for i = 1 to 100 do Buffer.add (string_of_int i); Buffer.add " "; done; nwrite stdout b;]
+*)
 
 val output : 'a output -> string -> int -> int -> int
 (** [output o s p l] writes up to [l] characters from string [s], starting at
   offset [p]. It returns the number of characters written. It will raise
-  [Invalid_argument] if [p] and [l] do not designate a valid substring of [s]. *)
+  [Invalid_argument] if [p] and [l] do not designate a valid substring of [s].
+
+    Example: [let str = "Foo Bar Baz" in let written = output stdout str 2 4;]
+
+    This writes "o Ba" to stdout.
+*)
 
 val really_output : 'a output -> string -> int -> int -> int
 (** [really_output o s p l] writes exactly [l] characters from string [s] onto
   the the output, starting with the character at offset [p]. For consistency with
   {!IO.output} it returns [l]. Raises [Invalid_argument] if [p] and [l] do not
-  designate a valid substring of [s]. *)
+  designate a valid substring of [s].
+
+    This function is useful for networking situations where the output
+    buffer might fill resulting in not the entire substring being
+    readied for transmission.  Uses [output] internally, and will
+    raise [Sys_blocked_io] in the case that any call returns 0.
+*)
 
 val flush : 'a output -> unit
-(** Flush an output.
+  (** Flush an output.
 
-    If previous write operations have caused errors, this may trigger an exception.*)
+      If previous write operations have caused errors, this may trigger an exception.
+
+      Example: [flush stdout;]
+*)
 
 val flush_all : unit -> unit
-(** Flush all outputs, ignore errors. *)
+(** Flush all outputs, ignore errors.
+
+    Example: [flush_all ();]
+*)
 
 
 val close_out : 'a output -> 'a
@@ -211,7 +278,14 @@ val close_out : 'a output -> 'a
 
     The output is flushed before being closed and can no longer be
     written. Attempting to flush or write after the output has been
-    closed will have no effect.*)
+    closed will have no effect.
+
+    Example: [
+    let strout = output_string () in
+    write strout 'x';
+    if 2+3>5 then write strout "y";
+    print_string (close_out strout) ]
+*)
 
 (**/**)
 val close_all : unit -> unit
@@ -219,7 +293,10 @@ val close_all : unit -> unit
 
     Ignore errors. Automatically called at the end of your program.
     You probably should never use it manually, as it also closes
-    [stdout], [stderr], [stdnull].*)
+    [stdout], [stderr], [stdnull].
+
+    Example: [close_all ();]
+*)
 (**/**)
 
 (** {6 Creation of IO Inputs/Outputs} 
@@ -228,7 +305,16 @@ val close_all : unit -> unit
     and {!File.open_file_out}*)
 
 val input_string : string -> input
-(** Create an input that will read from a string. *)
+(** Create an input that will read from a string.
+
+    Example: [
+    let inch = input_string "1234554321" in
+    let str1 = nread inch 3 in (* "123" *)
+    let str2 = nread inch 5 in (* "45543" *)
+    let str3 = nread inch 2 in (* "21" *)
+    try string_of_char(read inch) with IO.No_more_input -> "End of string";
+    ]
+*)
 
 val output_string : unit -> string output
 (** Create an output that will write into a string in an efficient way.

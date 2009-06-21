@@ -593,7 +593,10 @@ type encoding =
 		      The list of named encodings depends on the system configuration.*) ]
 
 val name_of_encoding : encoding -> string
-(** Return the name of the encoding.*)
+(** Return the name of the encoding.
+
+    Example: [Char_encodings.name_of_encoding `ibm860 = "IBM860"]
+*)
 
 (**
    {6 Type-safe encodings}
@@ -618,16 +621,22 @@ val as_encoded : 'a -> ([< encoding] as 'b) -> ('a, 'b) t
 (**
    [as_encoded x enc] returns an element of type [t] used to mark
    that [x] is encoded with encoding [enc].
+
+   Example: [let stdin_lat = Char_encodings.as_encoded stdin `latin1]
 *)
 
 val encoded_as : ('a, 'b) t -> 'a
 (**
    [encoded_as t] returns the [x] such that [t = as_encoded x enc].
+
+   Example: [encoded_as stdin_lat = stdin]
 *)
 
 val encoding_of_t : ('a, 'b) t -> 'b
 (**
    Return the encoding of a [t].
+
+   Example: [encoding_of_t stdin_lat = `latin1]
 *)
 
 (**
@@ -642,6 +651,8 @@ val transcode_in : (input,'a) t -> ([< encoding] as 'b) -> (input,'b) t
 
      {b Note} The resulting [input] may raise [Malformed_code] if the
      encoding specified as ['a] was incorrect.
+
+     Example: [let stdin_ebc = transcode_in stdin_lat `ebcdic_us]
   *)
 
 val transcode_out : (unit output,'a) t -> ([< encoding] as 'c) -> (unit output,'c) t
@@ -651,4 +662,11 @@ val transcode_out : (unit output,'a) t -> ([< encoding] as 'c) -> (unit output,'
      written to this output should be written with encoding
      [enc] and is translated to the encoding of [out] before
      being written to [out].
+
+     Example: [
+     let out_utf8 = Char_encodings.transcode_out (Char_encodings.as_encoded stdout `utf8) `latin1 in
+     IO.nwrite out_utf8 "«αι» in unicode";
+     ]
+
+     This code writes the UTF-8 version of the given latin1 string to stdout.
   *)
