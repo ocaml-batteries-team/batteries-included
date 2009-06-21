@@ -89,6 +89,21 @@ struct
 end
 
 (**
+   {1 Utilities}
+*)
+
+(**
+   Determine if a pathname must be compiled as threaded.
+
+   A pathname is considered as threaded if it has tag ["pkg_threads"].
+*)
+let is_threaded name =
+(*  Tags.print Format.std_formatter (tags_of_pathname name);*)
+  let result = Tags.does_match (tags_of_pathname name) (Tags.of_list ["pkg_threads"]) in
+    Printf.eprintf "file %s is %s\n" name (if result then "threaded" else "non-threaded");
+    result
+
+(**
    {1 OCaml Batteries Included}
 *)
 
@@ -184,6 +199,15 @@ end
 *)
 module Dynamic = struct
 
+  (**
+     Produce the name of the runner, depending on whether the code is threaded
+  *)
+  let decide_runner source runner =
+    let dir = if is_threaded source then "@batteries_threads"
+              else                       "@batteries_nothreads"
+    in
+    Printf.sprintf "%s/%s" dir runner
+
   let generate_stub runner bin =
     let init_loader = 
       Printf.sprintf 
@@ -222,9 +246,7 @@ module Dynamic = struct
 	begin fun env build -> 
 	  let dest   = env "%_dynbyte.ml"
 	  and bin    = env "%.cma" 
-          and runner = "@batteries_nothreads/run.byte" in
-	    (*Note: we'll need to determine if it's batteries_nothreads 
-	      or batteries-threads, at compile-time.*)
+          and runner = decide_runner (env "%.dynbyte") "run.byte" in
 	  let contents = generate_stub runner bin
 	  in Echo ([contents], dest)
 	end;
@@ -252,12 +274,10 @@ module Dynamic = struct
       rule ".cmxs to _dynnative.ml (no threads)"
 	~prod:"%_dynnative.ml"
 	~dep:"%.cmxs"
-	begin fun env build -> 
+	begin fun env build ->
 	  let dest   = env "%_dynnative.ml"
 	  and bin    = env "%.cmxs"
-          and runner = "@batteries_nothreads/run.native" in
-	    (*Note: we'll need to determine if it's batteries_nothreads 
-	      or batteries-threads, at compile-time.*)
+          and runner = decide_runner (env "%.dynnative") "run.native" in
 	  let contents = generate_stub runner bin
 	  in Echo ([contents], dest)
 	end;

@@ -1,5 +1,7 @@
 2009-06-21  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
+	* doc/batteries/myocamlbuild.ml: [is_threaded] created
+
 	* myocamlbuild.ml: "-linkpkg" now also for native programs
 
 	* doc/batteries/myocamlbuild.ml: reorganised module Dynamic
