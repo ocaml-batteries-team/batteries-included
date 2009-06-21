@@ -1,7 +1,7 @@
 (*
  * ExtUnix - additional and modified functions for Unix and Unix-compatible systems.
  * Copyright (C) 1996 Xavier Leroy
- * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -95,19 +95,19 @@ struct
      {6 Processes}
   *)
 
-  let open_process_in ?autoclose ?cleanup s =
-    wrap_in ?autoclose ?cleanup (open_process_in s)
+  let open_process_in ?autoclose ?(cleanup=true) s =
+    wrap_in ?autoclose ~cleanup (open_process_in s)
 
-  let open_process_out ?cleanup s =
-    wrap_out ?cleanup (open_process_out s)
+  let open_process_out ?(cleanup=true) s =
+    wrap_out ~cleanup (open_process_out s)
 
-  let open_process ?autoclose ?cleanup s =
+  let open_process ?autoclose ?(cleanup=true) s =
     let (cin, cout) = open_process s in
-      (wrap_in ?autoclose cin, wrap_out ?cleanup cout)
+      (wrap_in ?autoclose cin, wrap_out ~cleanup cout)
 
-  let open_process_full ?autoclose ?cleanup s args =
+  let open_process_full ?autoclose ?(cleanup=true) s args =
     let (a,b,c) = open_process_full s args in
-      (wrap_in ?autoclose ?cleanup a, wrap_out ?cleanup b, wrap_in ?autoclose ?cleanup c)
+      (wrap_in ?autoclose ~cleanup a, wrap_out ~cleanup b, wrap_in ?autoclose ~cleanup c)
 
 (**@TODO in a future version, [close_process_in] should also work
    on processes opened with [open_process] or [open_process_full].
