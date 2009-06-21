@@ -264,7 +264,9 @@ module Dynamic = struct
 	  and src  = env "%_dynbyte.byte"
 	  in
 	    tag_file dest ["pkg_findlib"];
-	    Cmd (S[A"cp"; A src; A dest])
+	    Seq [Cmd (S[A"cp"; A src;  A dest]);
+		 Cmd (S[A"ln"; A"-sf"; P (!Options.build_dir/dest); A Pathname.pwd]
+		     )]
 	end;
 
       rule ".cmx to cmxs"
@@ -300,7 +302,9 @@ module Dynamic = struct
 	  and src  = env "%_dynnative.native"
 	  in
 	    tag_file dest ["pkg_findlib"];
-	    Cmd (S[A"cp"; A src; A dest])
+	    Seq [Cmd (S[A"cp"; A src;  A dest]);
+		 Cmd (S[A"ln"; A"-sf"; P (!Options.build_dir/dest); A Pathname.pwd]
+		     )]
 	end
 
     end
