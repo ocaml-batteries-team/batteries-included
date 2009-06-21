@@ -183,47 +183,92 @@ end
    program compiled by the user is actually compiled to a dynamically-loaded .cma/.cmxs.
 *)
 module Dynamic = struct
-  let before_options () = ()
-  let after_rules () =
-    begin
-      rule ".cma to .dynml (no threads)"
-	~prod:"%.dyn.ml"
-	~dep:"%.cma"
-	begin fun env build -> 
-	  let dest = env "%.dyn.ml"
-	  and cma  = env "%.cma" in
-	  let contents = Printf.sprintf "%s%S%s"
-"(*Locate Batteries loader*)
-Findlib.init ();;
-let binary = Findlib.resolve_path \"@batteries_nothreads/run.byte\";; (*Note: we'll need to determine if it's batteries_nothreads 
-		  				               or batteries-threads, at compile-time.*)
 
-
-(*Prepare command-line*)
-let buf = Buffer.create 80;;
-Printf.bprintf buf \"%S %S -- \" binary (Filename.concat (Filename.dirname (Sys.argv.(0)))" cma
+  let generate_stub runner bin =
+    let init_loader = 
+      Printf.sprintf 
+	 "(*Locate Batteries loader*)
+          Findlib.init ();;
+          let binary = Findlib.resolve_path %S;;" 
+	 runner
+    and cl_loader =
 (*(Pathname.concat Pathname.current_dir_name cma)(*Should do one of the following:
 						 - replace this with the complete path
 						 - build the path at run-time from [Sys.argv.(0)]
 						 - find a way to embed the plug-in inside the .byte *)*)
-");;\nfor i = 1 to Array.length Sys.argv - 1 do
-  Printf.bprintf buf \"%S \" Sys.argv.(i)
-done;;
+      Printf.sprintf
+	"(*Prepare command-line*)
+         let buf = Buffer.create 80;;
+         Printf.bprintf buf %S binary (Filename.concat (Filename.dirname (Sys.argv.(0))) %S);;"
+	"%S %S -- "
+	bin
+    and start =
+        "for i = 1 to Array.length Sys.argv - 1 do
+           Printf.bprintf buf \"%S \" Sys.argv.(i)
+         done;;
+        let command = Buffer.contents buf in
+        Printf.eprintf \"Requesting load of %S\\n...\\n%!\" command;
+        Sys.command command
+        " 
+    in Printf.sprintf "%s\n%s\n%s\n" init_loader cl_loader start
 
-let command = Buffer.contents buf in
-  Printf.eprintf \"Requesting load of %S\\n...\\n%!\" command;
-  Sys.command command
-"
+
+  let before_options () = ()
+  let after_rules () =
+    begin
+      rule ".cma to _dyn.ml (no threads)"
+	~prod:"%_dynbyte.ml"
+	~dep:"%.cma"
+	begin fun env build -> 
+	  let dest   = env "%_dynbyte.ml"
+	  and bin    = env "%.cma" 
+          and runner = "@batteries_nothreads/run.byte" in
+	    (*Note: we'll need to determine if it's batteries_nothreads 
+	      or batteries-threads, at compile-time.*)
+	  let contents = generate_stub runner bin
 	  in Echo ([contents], dest)
 	end;
 
-      rule ".dyn.ml to .dynbyte"
+      rule "_dynbyte.ml to .dynbyte"
 	~prod:"%.dynbyte"
-	~dep: "%.dyn.byte" 
+	~dep: "%_dynbyte.byte" 
 	begin
 	  fun env build ->
 	  let dest = env "%.dynbyte"
-	  and src  = env "%.dyn.byte"
+	  and src  = env "%_dynbyte.byte"
+	  in
+	    Cmd (S[A"cp"; A src; A dest])
+	end;
+
+      rule ".cmxa to cmxs"
+	~prod:"%.cmxs"
+	~dep:"%.cmxa"
+	begin fun env build ->
+	  let dest = env "%.cmxs"
+	  and src  = env "%.cmxa" in
+	  Cmd (S[A"ocamlopt"; A src; A "-shared"; A "-o"; A dest])
+	end;
+
+      rule ".cmxs to _dynnative.ml (no threads)"
+	~prod:"%_dynnative.ml"
+	~dep:"%.cmxs"
+	begin fun env build -> 
+	  let dest   = env "%_dynnative.ml"
+	  and bin    = env "%.cmxs"
+          and runner = "@batteries_nothreads/run.native" in
+	    (*Note: we'll need to determine if it's batteries_nothreads 
+	      or batteries-threads, at compile-time.*)
+	  let contents = generate_stub runner bin
+	  in Echo ([contents], dest)
+	end;
+
+      rule "_dynnative.ml to .dynnative"
+	~prod:"%.dynnative"
+	~dep: "%_dynnative.native" 
+	begin
+	  fun env build ->
+	  let dest = env "%.dynnative"
+	  and src  = env "%_dynnative.native"
 	  in
 	    Cmd (S[A"cp"; A src; A dest])
 	end
