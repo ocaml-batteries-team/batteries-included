@@ -620,8 +620,8 @@ val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> InnerIO.inp
     {!IO}. Barring very specific needs (e.g. using file descriptors as
     locks), you probably want [autoclose] to be [true].
 
-    @param cleanup If true, close the process when the {!type:input}
-    is closed. If false or unspecified, do nothing, in which case you
+    @param cleanup If true or unspecified, close the process when the {!type:input}
+    is closed. If false, do nothing, in which case you
     will need to close the process yourself to ensure proper cleanup.
 *)
 
@@ -635,8 +635,8 @@ val open_process_out : ?cleanup:bool -> string -> unit InnerIO.output
       to call {!Pervasives.flush} at the right times to ensure
       correct synchronization. 
 
-      @param cleanup If true, close the process when the {!type:output}
-      is closed. If false or unspecified, do nothing, in which case you
+      @param cleanup If true or unspecified, close the process when the {!type:output}
+      is closed. If false, do nothing, in which case you
       will need to close the process yourself to ensure proper cleanup.
 *)
 
@@ -655,9 +655,9 @@ val open_process : ?autoclose:bool -> ?cleanup:bool -> string -> InnerIO.input *
       {!IO}. Barring very specific needs (e.g. using file descriptors as
       locks), you probably want [autoclose] to be [true].
 
-      @param cleanup If true, close the process when either the
-      {!type:output} or the {!type:output} is closed. If false or
-      unspecified, do nothing, in which case you will need to close
+      @param cleanup If true or unspecified, close the process when either the
+      {!type:output} or the {!type:output} is closed. If false,
+      do nothing, in which case you will need to close
       the process yourself to ensure proper cleanup.
   *)
 
@@ -677,9 +677,9 @@ val open_process_full :
       {!IO}. Barring very specific needs (e.g. using file descriptors as
       locks), you probably want [autoclose] to be [true].
 
-     @param cleanup If true, close the process when either the
-      {!type:output} or the {!type:output} is closed. If false or
-      unspecified, do nothing, in which case you will need to close
+     @param cleanup If true or unspecified, close the process when either the
+      {!type:output} or the {!type:output} is closed. If false,
+      do nothing, in which case you will need to close
       the process yourself to ensure proper cleanup.
   *)
 
