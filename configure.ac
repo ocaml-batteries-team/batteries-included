@@ -149,7 +149,7 @@ DOCDIR="$DEFAULT_DOCDIR"
 #Should documentation be built?
 AC_ARG_WITH(
 	doc,
-	[ --with-doc                build documentation (yes by default)],
+	[  --with-doc                build documentation (yes by default)],
         BUILD_DOC=yes,
         BUILD_DOC=no)
 
