@@ -98,12 +98,12 @@ DESTDIR = @DESTDIR@
 BYTE_TARGETS = src/main/threads/batteries.cma src/main/threads/run.byte \
 		src/main/nothreads/batteries.cma src/main/nothreads/run.byte
 
-ifeq ($(BUILD_RUNNER),yes)
+#ifeq ($(BUILD_RUNNER),yes)
 OPT_TARGETS = src/main/threads/batteries.cmxa src/main/threads/run.native \
 	src/main/nothreads/batteries.cmxa src/main/nothreads/run.native
-else
-OPT_TARGETS = src/main/threads/batteries.cmxa src/main/nothreads/batteries.cmxa
-endif
+#else
+#OPT_TARGETS = src/main/threads/batteries.cmxa src/main/nothreads/batteries.cmxa
+#endif
 
 SYNTAX_TARGETS = src/syntax/pa_openin/pa_openin.cmo \
 	  src/syntax/pa_openin/pa_openin_r.cmo \
