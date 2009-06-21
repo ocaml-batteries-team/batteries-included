@@ -1,3 +1,1 @@
 not(<*_dyn*>): use_batteries,debug
-<*_dyn*>: pkg_findlib
-<cat*>: pkg_threads

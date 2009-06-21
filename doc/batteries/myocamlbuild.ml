@@ -248,7 +248,11 @@ module Dynamic = struct
 	  and bin    = env "%.cma" 
           and runner = decide_runner (env "%.dynbyte") "run.byte" in
 	  let contents = generate_stub runner bin
-	  in Echo ([contents], dest)
+	  in
+	    tag_file dest ["pkg_findlib"]; (*Magically depend on findlib, without requiring user-intervention in _tags*)
+	    tag_file (env "%_dynbyte.cmo")  ["pkg_findlib"];
+	    tag_file (env "%_dynbyte.byte") ["pkg_findlib"];
+	    Echo ([contents], dest)
 	end;
 
       rule "_dynbyte.ml to .dynbyte"
@@ -259,10 +263,11 @@ module Dynamic = struct
 	  let dest = env "%.dynbyte"
 	  and src  = env "%_dynbyte.byte"
 	  in
+	    tag_file dest ["pkg_findlib"];
 	    Cmd (S[A"cp"; A src; A dest])
 	end;
 
-      rule ".a to cmxs"
+      rule ".cmx to cmxs"
 	~prod:"%.cmxs"
 	~dep:"%.cmx"
 	begin fun env build ->
@@ -279,7 +284,11 @@ module Dynamic = struct
 	  and bin    = env "%.cmxs"
           and runner = decide_runner (env "%.dynnative") "run.native" in
 	  let contents = generate_stub runner bin
-	  in Echo ([contents], dest)
+	  in
+	    tag_file dest ["pkg_findlib"]; (*Magically depend on findlib, without requiring user-intervention in _tags*)
+	    tag_file (env "%_dynnative.cmx")    ["pkg_findlib"];
+	    tag_file (env "%_dynnative.native") ["pkg_findlib"];
+	    Echo ([contents], dest)
 	end;
 
       rule "_dynnative.ml to .dynnative"
@@ -290,6 +299,7 @@ module Dynamic = struct
 	  let dest = env "%.dynnative"
 	  and src  = env "%_dynnative.native"
 	  in
+	    tag_file dest ["pkg_findlib"];
 	    Cmd (S[A"cp"; A src; A dest])
 	end
 
