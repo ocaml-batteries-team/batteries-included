@@ -18,7 +18,7 @@ case $uname in
   CYGWIN*)
       AC_MSG_RESULT(Windows with Cygwin)
       DEFAULT_BROWSER="cygstart %s &> /dev/null";;
-  Mingw*)
+  MINGW*)
       AC_MSG_RESULT(Windows with Mingw)
       DEFAULT_BROWSER="start %s &> /dev/null";;
   *) 
