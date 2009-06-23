@@ -15,7 +15,7 @@ case $uname in
   Darwin)
       AC_MSG_RESULT(MacOS X / Darwin)
       DEFAULT_BROWSER="open %s &> /dev/null";;
-  Cygwin*)
+  CYGWIN*)
       AC_MSG_RESULT(Windows with Cygwin)
       DEFAULT_BROWSER="cygstart %s &> /dev/null";;
   Mingw*)
