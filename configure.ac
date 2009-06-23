@@ -15,7 +15,14 @@ case $uname in
   Darwin)
       AC_MSG_RESULT(MacOS X / Darwin)
       DEFAULT_BROWSER="open %s &> /dev/null";;
-  *) AC_MSG_RESULT($uname)
+  Cygwin*)
+      AC_MSG_RESULT(Windows with Cygwin)
+      DEFAULT_BROWSER="cygstart %s &> /dev/null";;
+  Mingw*)
+      AC_MSG_RESULT(Windows with Mingw)
+      DEFAULT_BROWSER="start %s &> /dev/null";;
+  *) 
+      AC_MSG_RESULT($uname)
       DEFAULT_BROWSER="x-www-browser %s &> /dev/null";;
 esac
 
