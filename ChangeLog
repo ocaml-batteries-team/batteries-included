@@ -1,3 +1,7 @@
+2009-06-23  Bruno Daniel  <Bruno.Daniel@gmx.net>
+
+	* dynArray.ml: fixed memory corruption in [insert]
+	
 2009-06-23  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* configure.ac: Now detecting OS
