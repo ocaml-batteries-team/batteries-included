@@ -5,8 +5,20 @@ INSTALLATION=
 AC_SUBST(INSTALLATION)
 
 # version info
-VERSION=0.20090331
+VERSION=0.20090623
 AC_SUBST(VERSION)
+
+# check for OS
+AC_MSG_CHECKING(operating system)
+uname=`uname -s`
+case $uname in
+  Darwin)
+      AC_MSG_RESULT(MacOS X / Darwin)
+      DEFAULT_BROWSER="open %s &> /dev/null";;
+  *) AC_MSG_RESULT($uname)
+      DEFAULT_BROWSER="x-www-browser %s &> /dev/null";;
+esac
+
 
 # check for basic OCaml components
 AC_CHECK_PROGS(OCAMLC,[ocamlc.opt ocamlc],)
@@ -117,7 +129,6 @@ AC_SUBST(OCAMLFIND_DEPS)
 # set build-time options
 
 # default browser command
-DEFAULT_BROWSER="x-www-browser %s &> /dev/null"
 AC_ARG_WITH(
 	browser,
 	[  --with-browser=BROWSER  set command to open HTML API reference
