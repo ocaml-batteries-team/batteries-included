@@ -1,6 +1,11 @@
 ocaml-batteries (0.20090405+beta1-2) UNRELEASED; urgency=low
 
+  [ Stephane Glondu ]
   * Use new location of ocamldoc-api-ref-config
+
+  [ Stefano Zacchiroli ]
+  * debian/control: drop deps from the -doc package to ocaml-nox-@ABI@ (it
+    had no reason to exist and hindered binNMU-ability)
 
  -- Stephane Glondu <steph@glondu.net>  Sun, 07 Jun 2009 15:46:35 +0200
 

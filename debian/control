@@ -63,7 +63,6 @@ Package: libbatteries-ocaml-doc
 Section: doc
 Architecture: all
 Depends:
- ocaml-nox-${F:OCamlABI},
  ${shlibs:Depends},
  ${misc:Depends}
 Provides:
