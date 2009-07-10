@@ -19,7 +19,7 @@ Build-Depends:
  quilt,
  cdbs,
  autoconf
-Standards-Version: 3.8.1
+Standards-Version: 3.8.2
 Vcs-Git: git://git.debian.org/git/pkg-ocaml-maint/packages/ocaml-batteries.git
 Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/ocaml-batteries.git
 Homepage: http://batteries.forge.ocamlcore.org

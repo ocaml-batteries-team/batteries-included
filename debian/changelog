@@ -4,6 +4,7 @@ ocaml-batteries (0.20090405+beta1-2) unstable; urgency=low
   * debian/control: drop deps from the -doc package to ocaml-nox-@ABI@ (it
     had no reason to exist and hindered binNMU-ability)
   * rebuild against OCaml 3.11.1 for the transition
+  * debian/control: bump Standards-Version to 3.8.2 (no changes needed)
 
   [ Stephane Glondu ]
   * Use new location of ocamldoc-api-ref-config
