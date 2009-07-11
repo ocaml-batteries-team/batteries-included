@@ -88,17 +88,13 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   EXTEND Gram
     GLOBAL: expr str_item;
 
-    str_item: BEFORE "top"
-      [ NONA
+    str_item:
+      [
           [ e = str_item; "where"; "val";
             rf = opt_rec; lb = binding ->
               <:str_item< value $rec:rf$ $lb$ ; $e$ >>
           ] ];
 
-    (* the test_where_let is necessary because of the dangling
-       str_item/expr case :
-
-       let a = b where val b = 2 *)
     expr: AFTER "top"
       [ "where"
           [ e = SELF; test_where_let; "where"; OPT "let";
