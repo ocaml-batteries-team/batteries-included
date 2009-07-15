@@ -382,7 +382,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner;;
 
 (** {6 Specialized formatted input functions} *)
 
-val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner;;
+val fscanf : IO.input -> ('a, 'b, 'c, 'd) scanner;;
 (** Same as {!Scanf.bscanf}, but reads from the given channel.
 
     Warning: since all formatted input functions operate from a scanning

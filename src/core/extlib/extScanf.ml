@@ -42,7 +42,7 @@ struct
   exception Scan_failure of string;;
 
   open Scanf
-  let fscanf        = fscanf
+  let fscanf inp    = bscanf (Scanf.Scanning.from_function (fun () -> InnerIO.read inp))
   let sscanf        = sscanf
   let scanf         = scanf
   let kscanf        = kscanf
