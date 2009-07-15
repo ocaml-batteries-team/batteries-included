@@ -1,6 +1,6 @@
 Common
-GZip
-InnerGZip
+ExtGzip
+InnerGzip
 ExtNetchannels
 ExtNetdate
 ExtFindlib
