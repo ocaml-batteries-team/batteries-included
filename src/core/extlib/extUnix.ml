@@ -72,14 +72,14 @@ struct
   *)
 
   let input_of_descr ?autoclose ?cleanup fd =
-    wrap_in ?autoclose (in_channel_of_descr fd)
+    wrap_in ?autoclose ?cleanup (in_channel_of_descr fd)
 
   let descr_of_input cin =
     try  descr_of_in_channel (input_get cin)
     with Not_found -> raise (Invalid_argument "Unix.descr_of_in_channel")
 
   let output_of_descr ?cleanup fd =
-    wrap_out (out_channel_of_descr fd)
+    wrap_out ?cleanup (out_channel_of_descr fd)
 
   let descr_of_output cout =
     try  descr_of_out_channel (output_get (cast_output cout))
