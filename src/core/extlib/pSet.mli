@@ -104,6 +104,19 @@ val exists: ('a -> bool) -> 'a t -> bool
   
 val cardinal: 'a t -> int
   (** Return the number of elements of a set. *)
+
+
+val choose : 'a t -> 'a
+  (** returns one binding of the given map, deterministically.  Raises
+      [Invalid_argument] if given an empty map. *)
+
+val min_elt : 'a t -> 'a
+  (** returns the binding with the smallest key. Raises
+      [Invalid_argument] if given an empty map. *)
+
+val max_elt : 'a t -> 'a
+  (** returns the binding with the largest key. Raises
+      [Invalid_argument] if given an empty map.*)
   
 val enum: 'a t -> 'a Enum.t
   (** Return an enumeration of all elements of the given set.

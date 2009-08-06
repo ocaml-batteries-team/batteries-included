@@ -59,6 +59,12 @@ let exists f t = Return.label (fun label ->
 let cardinal t =
   fold (fun _ acc -> acc + 1) t 0 
 
+let choose t = fst (PMap.choose t)
+
+let min_elt t = fst (PMap.min_binding t)
+
+let max_elt t = fst (PMap.max_binding t)
+
 let enum t = 
   Enum.map (fun (k, _) -> k) (PMap.enum t)
 

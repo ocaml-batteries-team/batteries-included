@@ -110,6 +110,15 @@ val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
       pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
       [None], the corresponding element of [m] is discarded). *)
 
+val choose : ('key, 'a) t -> ('key * 'a)
+  (** returns one pair of the given map, deterministically *)
+
+val min_binding : ('key, 'a) t -> ('key * 'a)
+  (** returns the binding with the smallest key *)
+
+val max_binding : ('key, 'a) t -> ('key * 'a)
+  (** returns the binding with the largest key *)
+
 val enum : ('a, 'b) t -> ('a * 'b) Enum.t
 (** creates an enumeration for this map. *)
 

@@ -64,7 +64,7 @@ let bal l k v r =
     | Empty -> assert false
   else Node (l, k, v, r, max hl hr + 1)
 
-let rec min_binding = function
+let rec min_binding = function (* shadowed by definition at end of file *)
   | Node (Empty, k, v, _, _) -> k, v
   | Node (l, _, _, _, _) -> min_binding l
   | Empty -> raise Not_found
@@ -221,3 +221,18 @@ let filteri f t = foldi (fun k a acc -> if f k a then add k a acc else acc) t em
 let filter_map f t = foldi (fun k a acc -> match f k a with
 			     | None   -> acc
 			     | Some v -> add k v acc)  t empty
+
+let _choose = function   
+  | Empty -> invalid_arg "PMap.choose: empty tree"
+  | Node (_l,k,v,_r,_h) -> (k,v)
+
+let choose t = _choose t.map
+
+let rec max_binding = function (* shadowed by below definition *)
+  | Node (_, k, v, Empty, _) -> k, v
+  | Node (_, _, _, r, _) -> max_binding r
+  | Empty -> invalid_arg "PMap.max_binding: empty tree"
+
+let max_binding t = max_binding t.map (* shadows earlier definition *)
+
+let min_binding t = min_binding t.map (* shadows earlier definition *)
