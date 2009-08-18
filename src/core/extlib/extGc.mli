@@ -297,13 +297,4 @@ val delete_alarm : alarm -> unit
 (** [delete_alarm a] will stop the calls to the function associated
    to [a].  Calling [delete_alarm a] again has no effect. *)
 
-(*
-(** {6 Boilerplate code}*)
-(** {7 S-Expressions}*)
-  
-val stat_of_sexp    : Sexplib.Sexp.t -> stat
-val sexp_of_stat    : stat -> Sexplib.Sexp.t
-val control_of_sexp : Sexplib.Sexp.t -> control
-val sexp_of_control : conrol -> Sexplib.Sexp.t
-*)
 end

@@ -20,8 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 open ExtString
 
@@ -39,14 +37,6 @@ struct
 
   external buffer_of_t : t -> buffer = "%identity"
   external t_of_buffer : buffer -> t = "%identity"
-
-  let t_of_sexp sexp = 
-    let s   = Conv.string_of_sexp sexp in 
-    let buf = create (String.length s) in
-      add_string buf s;
-      buf
-
-  let sexp_of_t t = Conv.sexp_of_string (Buffer.contents t)
 
   let print out t =
     ExtString.String.print out (contents t)

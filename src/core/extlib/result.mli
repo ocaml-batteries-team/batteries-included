@@ -24,8 +24,3 @@ val ( >>= ): ('a, 'b) result -> ('a -> ('c, 'b) result) -> ('c, 'b) result
   (** as [bind] *)
 
 (** {6 Boilerplate code}*)
-(** {7 S-Expressions}*)
-
-val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b) t
-val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b) t -> Sexplib.Sexp.t
-

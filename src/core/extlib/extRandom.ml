@@ -20,9 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-open Conv
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 module Random = struct
   open Random
@@ -42,10 +39,6 @@ module Random = struct
   module State =
   struct
     include State (*Note: here, we use [Marshal] to avoid breaking abstraction. So it's not portable.*)
-    let sexp_of_t t =
-      sexp_of_string (Marshal.to_string t [])
-    let t_of_sexp s =
-      Marshal.from_string (string_of_sexp s) 0
 
     let char t   = Char.chr (int t 256)
 

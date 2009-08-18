@@ -19,11 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-open Conv
-TYPE_CONV_PATH "PSet" (*For Sexplib, Bin-prot...*)
 
-type 'a t = ('a, unit) PMap.t with sexp
+type 'a t = ('a, unit) PMap.t
 
 type 'a enumerable = 'a t
 type 'a mappable = 'a t

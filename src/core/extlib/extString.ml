@@ -20,9 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-open Conv
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 (*Minor optimization.*)
 let int_min (x:int) (y:int) = if x < y then x else y
@@ -35,9 +32,6 @@ module String = struct
 exception Invalid_string = Invalid_string
 
 include String
-
-let sexp_of_t = sexp_of_string
-let t_of_sexp = string_of_sexp
 
 let init len f =
 	let s = create len in
@@ -492,7 +486,7 @@ end (* String.Exceptionless *)
 
 module Cap =
 struct
-type 'a t = string with sexp
+type 'a t = string
 
 let make          = make
 let is_empty      = is_empty

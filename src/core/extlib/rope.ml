@@ -27,9 +27,6 @@
  *)
 
 
-open Sexplib
-open Conv
-TYPE_CONV_PATH "Rope" (*For Sexplib, Bin-prot...*)
 open ExtUTF8
 open ExtUChar
 open ExtList
@@ -634,11 +631,6 @@ let to_string t =
   (* We use unsafe version to avoid the copy of the non-reachable
      temporary string: *)
   UTF8.to_string_unsafe (to_ustring t)
-
-let sexp_of_t t =
-  UTF8.sexp_of_t (to_ustring t)
-let t_of_sexp s =
-  of_ustring (UTF8.t_of_sexp s)
 
 let print out t =
   bulk_iter (UTF8.print out) t

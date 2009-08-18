@@ -16,7 +16,6 @@
 (*                                                                     *)
 (***********************************************************************)
 
-TYPE_CONV_PATH "Batteries.Data.Mutable.Weaktbl" (*For Sexplib, Bin-prot...*)
 
 (* weak stack, for ordering purpose *)
 module Stack = struct

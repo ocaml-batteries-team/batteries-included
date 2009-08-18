@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Mutable" (*For Sexplib, Bin-prot...*)
 
 open ExtList
 
@@ -37,9 +35,6 @@ struct
 
   let enum q = Enum.from (fun () -> try pop q with Empty -> raise Enum.No_more_elements)
 
-  let t_of_sexp a_of_sexp s = of_enum (List.enum (List.t_of_sexp a_of_sexp s))
-
-  let sexp_of_t sexp_of_a t = List.sexp_of_t sexp_of_a (List.of_enum (enum (copy t)))
 
   let print ?(first="") ?(last="") ?(sep="") print_a out t =
       Enum.print ~first ~last ~sep print_a out (enum (copy t))

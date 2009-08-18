@@ -126,10 +126,6 @@ val enum: 'a t -> 'a Enum.t
 val of_enum: 'a Enum.t -> 'a t
 
 (** {6 Boilerplate code}*)
-(** {7 S-Expressions}*)
-
-val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
-val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 
 (** {7 Printing}*)

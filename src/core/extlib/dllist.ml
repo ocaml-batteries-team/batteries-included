@@ -19,20 +19,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Dllist" (*For Sexplib, Bin-prot...*)
 
 type 'a node_t = {
 	mutable data : 'a;
 	mutable next : 'a node_t;
 	mutable prev : 'a node_t
-} with sexp
+}
 
 type 'a enum_t = {
 	mutable curr : 'a node_t;
 	mutable valid : bool
-} with sexp
+}
 
-type 'a t = 'a node_t with sexp
+type 'a t = 'a node_t
 
 type 'a mappable = 'a t
 type 'a enumerable = 'a t

@@ -167,5 +167,3 @@ type ('a, 'b) result =
   | Ok  of 'a
   | Bad of 'b
 
-val sexp_of_result : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b) result -> Sexplib.Sexp.t
-val result_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b) result

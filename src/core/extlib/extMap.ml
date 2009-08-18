@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 
 module Map =
@@ -138,10 +136,6 @@ struct
       (** Create a map from a (key, value) enumeration. *)
 
     (** {6 Boilerplate code}*)
-    (** {7 S-Expressions}*)
-      
-    val t_of_sexp : (Sexplib.Sexp.t -> key) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> 'b t
-    val sexp_of_t : (key -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> 'b t -> Sexplib.Sexp.t
 
     (** {7 Printing}*)
 
@@ -258,35 +252,6 @@ struct
               let (lr, pres, rr) = split key r in (join l x d lr, pres, rr)
       let split k s = split k (impl_of_t s) (* define properly for t *)
 *)
-
-      (*The following is a hack to make sure that we're letting sexplib
-	do the conversion automatically, hence that we're following sexplib protocol.*)
-
-      let t_of_sexp key_of_sexp = 
-	let module Local =
-	  struct
-	    let sexp_of_key _ = assert false
-
-	    type 'a t = 'a implementation = 
-			| Empty
-			| Node of 'a t * key * 'a * 'a t * int
-	    with sexp
-		
-	     t_of_sexp
-	  end in fun key_of_a sexp -> t_of_impl (Local.t_of_sexp key_of_a sexp)
-
-      let sexp_of_t sexp_of_key = 
-	let module Local =
-	  struct
-	    let key_of_sexp _ = assert false
-
-	    type 'a t = 'a implementation = 
-			| Empty
-			| Node of 'a t * key * 'a * 'a t * int
-	    with sexp
-		
-	     t_of_sexp
-	  end in fun a_of_key (t:'a t) -> Local.sexp_of_t a_of_key (impl_of_t t)
 
 
       module Exceptionless =

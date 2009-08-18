@@ -100,10 +100,6 @@ val of_enum : ?keys:('a -> 'a -> int) -> ?data:('b -> 'b -> int) -> ('a * 'b) En
   for key comparison or [compare] by default. *)
 
 (** {6 Boilerplate code}*)
-(** {7 S-Expressions}*)
-
-val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b) t
-val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b) t -> Sexplib.Sexp.t
 
 (** {7 Printing}*)
   

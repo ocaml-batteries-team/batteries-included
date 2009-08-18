@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 open Number
 
@@ -36,7 +34,7 @@ let enum () =
 
 module BaseInt = struct
   
-  type t = int with sexp
+  type t = int
   
   let zero, one = 0, 1
 

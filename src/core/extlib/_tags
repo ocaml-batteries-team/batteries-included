@@ -1,6 +1,6 @@
 <*.cmx>: for-pack(Batteries_core_pack.Extlib)
-<*.ml>:  pkg_sexplib,pkg_bin_prot,pkg_sexplib.syntax,syntax_camlp4o,pkg_camomile
-<*.mli>: pkg_camomile,pkg_sexplib,use_optcomp
+<*.ml>: pkg_camomile
+<*.mli>: pkg_camomile,use_optcomp
 <IO.*>: principal
 <innerIO.*>: principal
 <*>: debug

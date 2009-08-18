@@ -4,7 +4,6 @@ open List
 open LazyList
 open IO
 
-TYPE_CONV_PATH "Batteries.Languages.ParserCo" (*For Sexplib, Bin-prot...*)
 
 type 'a state =
   | Eof

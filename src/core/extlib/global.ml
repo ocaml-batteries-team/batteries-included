@@ -18,11 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
  
-TYPE_CONV_PATH "Batteries.Data.Mutable.Global" (*For Sexplib, Bin-prot...*)
 
 exception Global_not_initialized of string
 
-type 'a t = ('a option ref * string) with sexp
+type 'a t = ('a option ref * string)
 
 let empty name = ref None,name
 

@@ -123,19 +123,19 @@ TOPLEVEL_TARGETS = src/batteries_toolchain/toplevel.top \
 
 ifeq ($(BUILD_DOC),yes)
 all: config.ml install-doc
-	$(OCAMLBUILD) $(BYTE_TARGETS) $(SYNTAX_TARGETS) $(TOPLEVEL_TARGETS)
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS)
 #all: byte syntax top install-doc
 else
 all: config.ml
-	$(OCAMLBUILD) $(BYTE_TARGETS) $(SYNTAX_TARGETS) $(TOPLEVEL_TARGETS)
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS)
 #all: byte syntax top
 endif
 
 all_code:
-	$(OCAMLBUILD) $(BYTE_TARGETS) $(OPT_TARGETS) $(TOPLEVEL_TARGETS) $(SYNTAX_TARGETS)
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(OPT_TARGETS) $(TOPLEVEL_TARGETS) 
 
 all_byte_code:
-	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS) $(SYNTAX_TARGETS)
+	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS)
 
 
 ifeq ($(DESTDIR),)
@@ -186,9 +186,6 @@ byte: config.ml
 opt: config.ml
 	$(OCAMLBUILD) $(OPT_TARGETS)
 
-syntax: config.ml
-	$(OCAMLBUILD) $(SYNTAX_TARGETS)
-
 top: config.ml
 	$(OCAMLBUILD) $(TOPLEVEL_TARGETS)
 
@@ -200,12 +197,6 @@ install:
 		_build/src/core/extlib/innerIO.cmi \
 		_build/src/core/extlib.cmi \
 		_build/src/core/batteries_config.cmi \
-		_build/src/syntax/pa_openin/pa_openin.cmo \
-		_build/src/syntax/pa_openin/pa_openin_r.cmo \
-		_build/src/syntax/pa_where/pa_where.cmo \
-		_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
-		_build/src/syntax/pa_batteries/pa_batteries.cmo \
-		_build/src/syntax/pa_strings/pa_strings.cma \
 		-optional \
 			_build/src/batteries_toolchain/batteries_help.cmi \
 			_build/src/batteries_toolchain/batteries_print.cmi \

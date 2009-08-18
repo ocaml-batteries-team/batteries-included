@@ -19,10 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	02111-1307	USA
  *)
 
-open Sexplib
-
-TYPE_CONV_PATH "Batteries.Data.Logical.BitSet" (*For Sexplib, Bin-prot...*)
-
 (**{6 Black magic}*)
 
 type intern
@@ -35,8 +31,6 @@ let fast_blit : intern -> int -> intern -> int -> int -> unit = Obj.magic String
 let fast_fill : intern -> int -> int -> int (* char *) -> unit = Obj.magic String.fill
 let fast_length : intern -> int= Obj.magic String.length
 
-let intern_of_sexp t : intern = Obj.magic (Conv.string_of_sexp t)
-let sexp_of_intern i = Conv.sexp_of_string (Obj.magic i)
 
 
 let bget s ndx =
@@ -60,7 +54,7 @@ exception Negative_index of string
 type t = {
 	mutable data : intern;
 	mutable len : int;
-} with sexp
+}
 
 let error fname = raise (Negative_index fname)
 

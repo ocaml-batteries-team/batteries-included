@@ -20,7 +20,6 @@
  *)
 
 
-TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module Oo =
 struct

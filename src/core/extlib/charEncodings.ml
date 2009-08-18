@@ -21,7 +21,6 @@
 open IO
 open CamomileLibrary
 open ExtString
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 module Encoding = CamomileLibrary.Default.Camomile.CharEncoding
 

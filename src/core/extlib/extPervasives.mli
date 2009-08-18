@@ -1398,9 +1398,6 @@ type ('a, 'b) result = ('a, 'b) Std.result =
   | Ok  of 'a
   | Bad of 'b
 
-val sexp_of_result : ('a -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> ('a, 'b) result -> Sexplib.Sexp.t
-val result_of_sexp : (Sexplib.Sexp.t -> 'a) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> ('a, 'b) result
-
 
 (**
    {6 Thread-safety internals}

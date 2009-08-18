@@ -2,7 +2,6 @@
 (* Copyright 2002, 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* TODO: Check -- this is actually part of a package distributed with LGPL + linking exception *)
 
-TYPE_CONV_PATH "Batteries.Data.Text" (*For Sexplib, Bin-prot...*)
 
 module UChar =
 struct
@@ -31,8 +30,6 @@ struct
   let to_char = char_of
   let to_int  = int_of
 
-  let sexp_of_t t = Sexplib.Conv.sexp_of_int (to_int t)
-  let t_of_sexp s = of_int (Sexplib.Conv.int_of_sexp s)
 
   let is_lowercase  c = match Info.general_category c with `Ll -> true | _ -> false
   let is_uppercase  c = match Info.general_category c with `Lu -> true | _ -> false

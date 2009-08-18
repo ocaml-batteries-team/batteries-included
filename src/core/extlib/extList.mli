@@ -491,10 +491,6 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 		[iter2] on two lists having different size. *)
 
 	(** {6 Boilerplate code}*)
-	(** {7 S-Expressions}*)
-
-	val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
-	val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 	(** {7 Printing}*)
 	  

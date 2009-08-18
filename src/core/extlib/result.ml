@@ -1,11 +1,8 @@
-open Sexplib
-open Conv
-TYPE_CONV_PATH "Batteries.Standard" (*For Sexplib, Bin-prot...*)
 
 open Std
 type ('a, 'b) t = ('a, 'b) Std.result = 
  | Ok  of 'a
- | Bad of 'b with sexp
+ | Bad of 'b
 
 let catch f x =
   try  Ok (f x)

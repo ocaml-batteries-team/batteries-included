@@ -19,7 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 open ExtArray
 
@@ -359,11 +358,6 @@ let of_array = of_string
 let to_array = to_string
 let append = append_char
 let prepend = prepend_char
-
-let sexp_of_t sexp_of_a t =
-  Sexplib.Conv.sexp_of_array sexp_of_a (to_array t)
-let t_of_sexp a_of_sexp s =
-  of_array (Sexplib.Conv.array_of_sexp a_of_sexp s)
 
 
 let rec map f = function

@@ -18,13 +18,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
-open Sexplib
-open Conv
-TYPE_CONV_PATH "Batteries.Option" (*For Sexplib, Bin-prot...*)
  
 exception No_value
 
-type 'a t = 'a option with sexp
+type 'a t = 'a option
 
 let may f = function
 	| None -> ()

@@ -20,13 +20,12 @@
  *)
 
 
-TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module Array = struct
 
 
 
-type 'a t = 'a array with sexp
+type 'a t = 'a array
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
@@ -346,8 +345,6 @@ struct
   let make_compare = make_compare
   let print        = print
   let sprint       = sprint
-  let sexp_of_t    = sexp_of_t
-  let t_of_sexp    = t_of_sexp
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 

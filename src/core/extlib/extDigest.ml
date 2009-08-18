@@ -19,9 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
-
-
 module Digest = struct
 include Digest
 
@@ -45,7 +42,4 @@ let channel inp len = (*TODO: Make efficient*)
       string buf
   else Digest.channel (IO.to_input_channel inp) len
 
-open ExtString
-let t_of_sexp = String.t_of_sexp
-let sexp_of_t = String.sexp_of_t
 end

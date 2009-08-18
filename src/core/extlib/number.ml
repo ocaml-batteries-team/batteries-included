@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.Data.Numeric.Common" (*For Sexplib, Bin-prot...*)
-
 type 'a numeric =
 {
     zero : 'a;
@@ -42,7 +40,7 @@ type 'a numeric =
     to_string : 'a -> string;
     of_float : float -> 'a;
     to_float : 'a -> float
-} with sexp
+}
 
 (**
    The full set of operations of a type of numbers

@@ -349,10 +349,6 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
   *)
 
 (** {6 Boilerplate code}*)
-(** {7 S-Expressions}*)
-
-val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
-val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 (** {7 Printing}*)
 
@@ -691,10 +687,6 @@ val fast_sort : ('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
 
 
 (** {6 Boilerplate code}*)
-(** {7 S-Expressions}*)
-  
-val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> ('a, _) t
-val sexp_of_t : ('a -> Sexplib.Sexp.t) -> ('a, [>`Read]) t -> Sexplib.Sexp.t
   
 (** {7 Printing}*)
   
@@ -789,10 +781,6 @@ end
   end
   
   (** {6 Boilerplate code}*)
-  (** {7 S-Expressions}*)
-  
-  val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
-  val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
     
   (** {7 Printing}*)
     

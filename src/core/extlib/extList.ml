@@ -21,8 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module List = struct
 
@@ -649,8 +647,6 @@ let group cmp lst =
     List.rev_map List.rev (lastgr::groups)
    end
 
-let sexp_of_t = Conv.sexp_of_list
-let t_of_sexp = Conv.list_of_sexp
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
   | []   ->

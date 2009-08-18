@@ -19,9 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
-
 open Number
 
 module BaseBig_int = struct
@@ -66,7 +63,5 @@ module Big_int = struct
     if ge_big_int y x then x -- y 
     else Enum.seq x pred (le_big_int y)
 
-  let sexp_of_t = Conv.sexp_of_big_int
-  let t_of_sexp = Conv.big_int_of_sexp
   let print out t = IO.nwrite out (to_string t)
 end

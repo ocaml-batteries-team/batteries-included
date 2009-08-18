@@ -20,8 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
 
 open Number
 
@@ -37,8 +35,6 @@ module Native_int = struct
   include Number.MakeNumeric(BaseNativeint)
   include BaseNativeint
 
-  let sexp_of_t = Conv.sexp_of_nativeint
-  let t_of_sexp = Conv.nativeint_of_sexp
 
   let print out t = InnerIO.Printf.fprintf out "%nx" t
   let t_printer paren out t = print out t

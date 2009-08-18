@@ -19,15 +19,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-open Conv
-TYPE_CONV_PATH "Batteries.MultiPMap" (*For Sexplib, Bin-prot...*)
 
 type ('a, 'b) t = {
   content : ('a, 'b PSet.t) PMap.t;
   keys    : 'a -> 'a -> int     ;
   data    : 'b -> 'b -> int
-} with sexp
+}
 
 
 let empty =

@@ -154,10 +154,6 @@ module type S =
       (** Create a map from a (key, value) enumeration. *)
 
     (** {6 Boilerplate code}*)
-    (** {7 S-Expressions}*)
-      
-    val t_of_sexp : (Sexplib.Sexp.t -> key) -> (Sexplib.Sexp.t -> 'b) -> Sexplib.Sexp.t -> 'b t
-    val sexp_of_t : (key -> Sexplib.Sexp.t) -> ('b -> Sexplib.Sexp.t) -> 'b t -> Sexplib.Sexp.t
 
     (** {7 Printing}*)
 

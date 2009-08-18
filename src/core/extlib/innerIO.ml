@@ -20,8 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)
-(*David: putting this into "Batteries.Languages" is a work-around for a limitation of type-conv*)
 
 type 'a weak_set = ('a, unit) InnerWeaktbl.t
 let weak_create size     = InnerWeaktbl.create size
@@ -615,8 +613,6 @@ let stdnull= create_out
   ~flush:ignore
   ~close:ignore
 
-
-(*TYPE_CONV_PATH "Batteries.Languages" (*For Sexplib, Bin-prot...*)*)
 
 (**
    {6 Printf}

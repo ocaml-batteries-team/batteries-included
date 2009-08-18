@@ -19,9 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-open Conv
-TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
 
 open ExtString
 open ExtBig_int
@@ -80,8 +77,6 @@ end
 module Num = struct
   include Number.MakeNumeric(BaseNum)
   include BaseNum
-  let sexp_of_t   = sexp_of_num
-  let t_of_sexp   = num_of_sexp
   let print out t = InnerIO.nwrite out (to_string t)
 
 end

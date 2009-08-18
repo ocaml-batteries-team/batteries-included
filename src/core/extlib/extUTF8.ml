@@ -18,9 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-open Conv
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 (*Inlined to avoid circular dependencies between IO, ExtUTF8 and ExtString*)
 let string_splice s1 off len s2 = 
@@ -297,10 +294,6 @@ module UTF8 = struct
   let compare s1 s2 = Pervasives.compare s1 s2
     
   let copy = String.copy
-
-  let sexp_of_t = sexp_of_string
-  let t_of_sexp = string_of_sexp
-
 
   let print out t = InnerIO.nwrite out t
   let t_printer paren out t =

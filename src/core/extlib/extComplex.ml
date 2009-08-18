@@ -19,9 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Numeric" (*For Sexplib, Bin-prot...*)
-
 open Number
 
 module BaseComplex = struct
@@ -79,7 +76,5 @@ end
 module Complex = struct
   include Number.MakeNumeric(BaseComplex)
   include BaseComplex
-  let sexp_of_t {re=re;im=im} = Conv.sexp_of_pair Conv.sexp_of_float Conv.sexp_of_float (re, im)
-  let t_of_sexp s = let (re, im) = Conv.pair_of_sexp Conv.float_of_sexp Conv.float_of_sexp s in {re = re; im = im}
   let print out t = InnerIO.nwrite out (to_string t)
 end

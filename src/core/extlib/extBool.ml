@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "Batteries.Data.Logical" (*For Sexplib, Bin-prot...*)
 
 open Number
 
@@ -82,8 +80,6 @@ end
 module Bool = struct
   include BaseBool
   include Number.MakeNumeric(BaseBool)
-  let sexp_of_t = Sexplib.Conv.sexp_of_bool
-  let t_of_sexp = Sexplib.Conv.bool_of_sexp
   let print out t = InnerIO.nwrite out (to_string t)
   let t_printer paren out t = print out t
 end

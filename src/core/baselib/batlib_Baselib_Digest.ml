@@ -20,7 +20,3 @@
 
 include Digest
 
-TYPE_CONV_PATH "Batteries.Util.Digest" (*For Sexplib, Bin-prot...*)
-
-let t_of_sexp = Sexplib.Conv.string_of_sexp
-let sexp_of_t = Sexplib.Conv.sexp_of_string

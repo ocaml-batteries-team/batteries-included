@@ -296,10 +296,6 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 	The order of the elements in the input array is preserved. *)
 
 (** {6 Boilerplate code}*)
-(** {7 S-Expressions}*)
-
-val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
-val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
 
 (** {7 Printing}*)
   

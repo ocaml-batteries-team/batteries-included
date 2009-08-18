@@ -167,15 +167,6 @@ module State : sig
 
 
   (** {6 Boilerplate code}*)
-  (** {7 S-Expressions}
-
-      Note: Exceptionnally, the S-Expressions obtained from the following
-      functions are not portable between versions of OCaml. They remain
-      portable between architectures, however.*)
-
-
-  val t_of_sexp : Sexplib.Sexp.t -> t
-  val sexp_of_t : t -> Sexplib.Sexp.t
 
 end;;
 

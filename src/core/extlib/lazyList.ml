@@ -17,9 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
-open Sexplib
-open Conv
-TYPE_CONV_PATH "Batteries.Data.Persistent.LazyList" (*For Sexplib, Bin-prot...*)
 
 (** {6 Exceptions} *)
 
@@ -34,7 +31,7 @@ type 'a node_t =
   | Nil 
   | Cons of 'a * 'a t 
 and 'a t =
-  ('a node_t) Lazy.t with sexp
+  ('a node_t) Lazy.t
 
 type 'a enumerable = 'a t
 type 'a mappable = 'a t

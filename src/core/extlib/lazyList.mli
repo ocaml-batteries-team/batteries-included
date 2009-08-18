@@ -524,14 +524,6 @@ val uncombine : ('a * 'b) t -> 'a t * 'b t
   (** Divide a list of pairs into a pair of lists. *)
 
 (** {6 Boilerplate code}*)
-(** {7 S-Expressions}*)
-
-val t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
-val sexp_of_t : ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
-
-
-val node_t_of_sexp : (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a node_t
-val sexp_of_node_t : ('a -> Sexplib.Sexp.t) -> 'a node_t -> Sexplib.Sexp.t
 
 (** {7 Printing}*)
   

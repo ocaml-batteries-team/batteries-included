@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Sexplib
-TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module Set =
 struct
@@ -163,11 +161,6 @@ module type S =
 
 
     (** {6 Boilerplate code}*)
-    (** {7 S-Expressions}*)
-      
-    val t_of_sexp : (Sexplib.Sexp.t -> elt) -> Sexplib.Sexp.t -> t
-    val sexp_of_t : (elt -> Sexplib.Sexp.t) -> t -> Sexplib.Sexp.t
-
 
     (** {7 Printing}*)
       
@@ -261,35 +254,6 @@ module type S =
       Enum.print ~first ~last ~sep print_elt out (enum t)
 
 	
-    (*The following is a hack to make sure that we're letting sexplib
-      do the conversion automatically, hence that we're following sexplib protocol.*)
-	
-    let t_of_sexp elt_of_sexp(*added implicitly by sexplib*) sexp = 
-      let module Local =
-	  struct
-	    let sexp_of_elt _ = assert false
-	      
-	    type t = implementation = 
-			| Empty
-			| Node of t * elt * t * int
-	    with sexp
-		
-	    let result = t_of_sexp sexp
-	  end in t_of_impl (Local.result)
-	    
-    let sexp_of_t sexp_of_elt(*added implicitly by sexplib*) t = 
-      let module Local =
-	  struct
-	    let elt_of_sexp _ = assert false
-	      
-	    type t = implementation = 
-			| Empty
-			| Node of t * elt * t * int
-	    with sexp
-		
-	    let result = sexp_of_t (impl_of_t t)
-	  end in Local.result
-
     module Exceptionless =
     struct
       let min_elt t = try Some (min_elt t) with Not_found -> None

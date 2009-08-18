@@ -377,7 +377,6 @@ module  Print  = Extlib.Print
 module  Value_printer = Extlib.Value_printer
 (* module  PCRE (*placeholder*)*)
 module  Scanf  = Extlib.ExtScanf.Scanf
-module  SExpr  = Libs.ExtSexp_Conv.Sexp_conv
 
 
 (**{3 Operations on the system}

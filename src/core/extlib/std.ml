@@ -20,7 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries"
 
 let input_lines ch =
   Enum.from (fun () ->
@@ -190,7 +189,7 @@ let unique() =
 
 type ('a, 'b) result =
   | Ok  of 'a
-  | Bad of 'b with sexp
+  | Bad of 'b
 
 (** {6 Operators}*)
 

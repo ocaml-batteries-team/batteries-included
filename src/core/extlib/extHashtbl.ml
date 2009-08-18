@@ -21,8 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
  
-open Sexplib
-TYPE_CONV_PATH "Batteries" (*For Sexplib, Bin-prot...*)
 
 module Hashtbl =
   struct
@@ -31,7 +29,7 @@ module Hashtbl =
 
 	Note: We can't directly [include Hashtbl] as this
 	would cause a collision on [Make]*)
-    type ('a, 'b) t = ('a, 'b) Hashtbl.t with sexp
+    type ('a, 'b) t = ('a, 'b) Hashtbl.t
     let create   = Hashtbl.create
     let clear    = Hashtbl.clear
     let add      = Hashtbl.add
@@ -240,8 +238,6 @@ module Hashtbl =
       val values : 'a t -> 'a Enum.t
       val enum : 'a t -> (key * 'a) Enum.t
       val of_enum : (key * 'a) Enum.t -> 'a t
-      val sexp_of_t : (key -> Sexplib.Sexp.t) -> ('a -> Sexplib.Sexp.t) -> 'a t -> Sexplib.Sexp.t
-      val t_of_sexp : (Sexplib.Sexp.t -> key) -> (Sexplib.Sexp.t -> 'a) -> Sexplib.Sexp.t -> 'a t
       val print :  ?first:string -> ?last:string -> ?sep:string -> 
 	('a InnerIO.output -> key -> unit) -> 
 	('a InnerIO.output -> 'b -> unit) -> 
@@ -382,8 +378,6 @@ module Hashtbl =
       let find_default h key v = find_default (to_hash h) key v
       let remove_all h key     = remove_all (to_hash h) key
       let is_empty h           = length h = 0
-      let t_of_sexp a_of_sexp b_of_sexp s = of_hash (t_of_sexp a_of_sexp b_of_sexp s)
-      let sexp_of_t sexp_of_a sexp_of_b t = sexp_of_t sexp_of_a sexp_of_b (to_hash t)
       let print ?first ?last ?sep print_k print_v out t =
 	print ?first ?last ?sep print_k print_v out (to_hash t)
 
@@ -455,8 +449,6 @@ module Hashtbl =
       let values      = values
       let enum        = enum
       let of_enum     = of_enum
-      let sexp_of_t   = sexp_of_t
-      let t_of_sexp   = t_of_sexp
       let print       = print
       let filter      = filter
       let filteri     = filteri
