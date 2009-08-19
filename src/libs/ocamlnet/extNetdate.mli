@@ -20,8 +20,6 @@
  * USA
  *)
 
-open Sexplib
-
 (** 
     Support for dates, including parsing and formating.
 
@@ -155,10 +153,6 @@ val mk_usenet_date : ?zone:int -> float -> string
 *)
 
 (** {6 Boilerplate code}*)
-(** {7 S-Expressions}*)
-  
-val t_of_sexp : Sexplib.Sexp.t -> t
-val sexp_of_t : t -> Sexplib.Sexp.t
   
 (** {7 Printing}*)
 

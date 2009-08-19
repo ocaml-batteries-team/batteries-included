@@ -3,6 +3,5 @@
 <*.mli>: pkg_camomile,use_optcomp
 <IO.*>: principal
 <innerIO.*>: principal
-<*>: debug
 <extUnixThreads.*>: pkg_threads
 <*.mli>: use_optcomp_o

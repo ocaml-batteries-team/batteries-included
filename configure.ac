@@ -243,7 +243,6 @@ AC_CONFIG_FILES([
  Makefile
  build/META
  build/threaded/META
- build/nothreads/META
  src/batteries_toolchain/ocaml
 ])
 AC_OUTPUT

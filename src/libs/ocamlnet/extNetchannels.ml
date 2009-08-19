@@ -20,7 +20,6 @@
  *)
 
 open Extlib
-TYPE_CONV_PATH ""
 
 module Netchannels =
 struct

@@ -1,4 +1,0 @@
-This directory contains Camlp4-based syntax extensions.
-These syntax extensions are not strictly necessary to
-use OCaml Batteries Included but they can prove quite
-useful.

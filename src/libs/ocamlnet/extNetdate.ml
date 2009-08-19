@@ -19,9 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  * USA *)
 
-open Sexplib
 open Extlib
-TYPE_CONV_PATH "" (*For Sexplib, Bin-prot...*)
 
 
 module Netdate =
@@ -56,7 +54,5 @@ struct
     zone     : int(**the local zone offset, in minutes of advance wrt UTC. For instance, 60 = UTC+0100. *);
     week_day : int(**the number of days since sunday, between 0 and 6
 		     {b Note} As a special exception, [week_day] may be [-1], if the day of the week is unknown*)
-  } with sexp
-  let sexp_of_t = sexp_of_internal_t
-  let t_of_sexp = internal_t_of_sexp
+  }
 end

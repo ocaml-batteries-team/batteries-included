@@ -30,9 +30,11 @@
 open Batteries;;
 open Standard;;
 
-Sys.argv.(0) <- Sys.argv.(1);;                                     (*Replace first argument, in case it is used to identify 
-							 	     binary.*)
-let plugins  = List.of_enum (Enum.take_while ((<>) "--") (args ()));;(*Only keep arguments which appear before "--"*)
+(*Replace first argument, in case it is used to identify binary.*)
+Sys.argv.(0) <- Sys.argv.(1);;
+
+(*Only keep arguments which appear before "--"*)
+let plugins  = List.of_enum (Enum.take_while ((<>) "--") (args ()));;
 let hide_args= List.length plugins + 1;;
 invisible_args := !invisible_args + hide_args;;                    
 Arg.current    := !Arg.current    + hide_args;;
