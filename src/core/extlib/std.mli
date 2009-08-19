@@ -159,6 +159,14 @@ val const : 'a -> (_ -> 'a)
 
     Therefore, [const x] is the function which always returns [x].*)
 
+val until : ('a -> bool) -> ('a -> 'a) -> 'a -> 'a
+(** Example: let consume_stack s =
+  let consumed _ = Stack.is_empty s in
+  let prepend l = Stack.pop s :: l in
+  until consumed prepend []
+*)
+
+
 (**
    {6 Results}
 *)
