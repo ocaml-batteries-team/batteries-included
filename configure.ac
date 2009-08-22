@@ -111,21 +111,6 @@ if test -z "$OCAMLPKG_zip" ; then
   fi
 fi
 AC_SUBST(OCAMLPKG_zip)
-AC_CHECK_OCAML_PKG(type-conv, OCAMLPKG_type_conv)
-if test -z "$OCAMLPKG_type_conv" ; then
-   AC_MSG_ERROR([Cannot find type-conv])
-   exit 1
-fi
-AC_CHECK_OCAML_PKG(sexplib, OCAMLPKG_sexplib)
-if test -z "$OCAMLPKG_sexplib" ; then
-   AC_MSG_ERROR([Cannot find sexplib])
-   exit 1
-fi
-AC_CHECK_OCAML_PKG(bin_prot, OCAMLPKG_bin_prot)
-if test -z "$OCAMLPKG_bin_prot" ; then
-   AC_MSG_ERROR([Cannot find bin_prot])
-   exit 1
-fi
 AC_CHECK_OCAML_PKG(netstring, OCAMLPKG_netstring)
 if test -z "$OCAMLPKG_netstring" ; then
    AC_MSG_ERROR([Cannot find netstring (part of ocamlnet)])
