@@ -95,20 +95,13 @@ DESTDIR = @DESTDIR@
 # ocamlbuild will be instructed to create.
 ########################################################################
 
-BYTE_TARGETS = src/main/threads/batteries.cma src/main/threads/run.byte
+BYTE_TARGETS = src/main/threads/batteries.cma
 
 #ifeq ($(BUILD_RUNNER),yes)
-OPT_TARGETS = src/main/threads/batteries.cmxa src/main/threads/run.native
+OPT_TARGETS = src/main/threads/batteries.cmxa
 #else
 #OPT_TARGETS = src/main/threads/batteries.cmxa 
 #endif
-
-SYNTAX_TARGETS = src/syntax/pa_openin/pa_openin.cmo \
-	  src/syntax/pa_openin/pa_openin_r.cmo \
-	  src/syntax/pa_where/pa_where.cmo \
-	  src/syntax/pa_batteries/pa_batteries.cmo \
-	  src/syntax/pa_strings/pa_strings.cma \
-     src/syntax/pa_comprehension/pa_comprehension.cmo
 
 TOPLEVEL_TARGETS = src/batteries_toolchain/toplevel.top \
                 src/batteries_toolchain/batteries_print.cmo \
@@ -211,11 +204,9 @@ install:
 	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
 		build/threaded/META \
 		_build/src/main/threads/batteries.cmi \
-		_build/src/main/threads/run.byte \
 		-optional _build/src/main/threads/batteries.cma \
 			_build/src/main/threads/batteries.cmxa  \
 			_build/src/main/threads/batteries.a     \
-			_build/src/main/threads/run.native
 uninstall:
 	\rm -Rf $(DOCDIR) &&\
 	ocamlfind remove $(DESTDIR_FLAGS) batteries &&\
