@@ -188,6 +188,7 @@ install:
 		_build/src/core/extlib/innerIO.cmi \
 		_build/src/core/extlib.cmi \
 		_build/src/core/batteries_config.cmi \
+		_build/src/main/threads/batteries.cmi \
 		-optional \
 			_build/src/batteries_toolchain/batteries_help.cmi \
 			_build/src/batteries_toolchain/batteries_print.cmi \
@@ -195,22 +196,19 @@ install:
 			_build/src/batteries_toolchain/batteries_print.cmo \
 			_build/src/batteries_toolchain/toplevel.top \
 			src/batteries_toolchain/top.ml \
-			src/batteries_toolchain/ocaml  \
-			src/batteries_toolchain/ocamlbuild  \
-			src/batteries_toolchain/ocamlc    \
-			src/batteries_toolchain/ocamlopt  \
-			src/batteries_toolchain/ocamlcp   \
-			src/batteries_toolchain/ocamldep
-	ocamlfind install $(DESTDIR_FLAGS) batteries_threads \
-		build/threaded/META \
-		_build/src/main/threads/batteries.cmi \
-		-optional _build/src/main/threads/batteries.cma \
-			_build/src/main/threads/batteries.cmxa  \
-			_build/src/main/threads/batteries.a     \
+			src/batteries_toolchain/ocaml \
+			src/batteries_toolchain/ocamlbuild \
+			src/batteries_toolchain/ocamlc \
+			src/batteries_toolchain/ocamlopt \
+			src/batteries_toolchain/ocamlcp \
+			src/batteries_toolchain/ocamldep \
+			_build/src/main/threads/batteries.cma \
+			_build/src/main/threads/batteries.cmxa \
+			_build/src/main/threads/batteries.a
 uninstall:
 	\rm -Rf $(DOCDIR) &&\
 	ocamlfind remove $(DESTDIR_FLAGS) batteries &&\
-	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads &&\
+	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads
 
 quickdoc: quickbyte doc/api.odocl
 	rm -Rf doc/batteries/html/api

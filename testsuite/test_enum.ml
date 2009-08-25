@@ -1,4 +1,5 @@
 open OUnit
+open Batteries
 
 let array     = [|'1';'2';'3';'4';'5'|]
 let array2    = [|[|'1';'2';'3';'4';'5'|];
@@ -19,48 +20,43 @@ let bigarray3 = Big_array.Array3.of_array Big_array.char Big_array.c_layout arra
 let utf8   = UTF8.of_string string
 let rope   = Rope.of_ustring utf8
 
+open Array
 let test_array_enums () =
-  open Array in begin
     let source = array in
     let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" (print Char.print)) in
       aeq (of_backwards (enum source)) (of_enum (backwards source));
       aeq source (of_backwards (backwards source));
-  end
 
+open List
 let test_list_enums () =
-  open List in begin
     let source = list in
     let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" (print Char.print)) in
       aeq (of_backwards (enum source)) (of_enum (backwards source));
       aeq source (of_backwards (backwards source));
-  end
 
+open String
 let test_string_enums () =
-  open String in begin
     let source = string in
     let aeq = assert_equal ~printer:(Printf.sprintf "%S") in
       aeq (of_backwards (enum source)) (of_enum (backwards source));
       aeq source (of_backwards (backwards source));
-  end
 
+open Rope
 let test_rope_enums () =
-  open Rope in begin
     let source = rope in
     let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" print) in
       aeq (of_backwards (enum source)) (of_enum (backwards source));
       aeq source (of_backwards (backwards source));
-  end
 
+open UTF8
 let test_UTF8_enums () =
-  open UTF8 in begin
     let source = utf8 in
     let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" print) in
       aeq (of_backwards (enum source)) (of_enum (backwards source));
       aeq source (of_backwards (backwards source));
-  end
 
+open Array
 let test_bigarray_enums () =
-  open Array in begin
     let aeq = assert_equal ~printer:(Printf.sprintf2 "%a" (print Char.print)) in
     let enum_flatten x = Enum.flatten (Enum.map enum x) in
       aeq (of_enum (enum array)) (of_enum (Big_array.Array1.enum bigarray1));
@@ -70,7 +66,6 @@ let test_bigarray_enums () =
       aeq
         (enum array3 |> enum_flatten |> enum_flatten |> of_enum)
         (of_enum (Big_array.Array3.enum bigarray3))
-  end
 
 let tests = "Enum" >::: [
   "Array" >:: test_array_enums;

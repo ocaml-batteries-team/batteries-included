@@ -1,2 +1,2 @@
 #!/bin/sh
-ocamlfind ocamlcp -syntax camlp4o -package batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax -package batteries -linkpkg $@
+ocamlfind ocamlcp -package batteries -linkpkg $@

@@ -1,10 +1,11 @@
 open OUnit
+open Batteries
 
 (*1. Compute the digest of this file using Legacy.Digest*)
 
+open Legacy.Pervasives
+open Legacy.Digest
 let legacy_result () =
-open Legacy.Pervasives in
-open Legacy.Digest     in
   let inp    = open_in Sys.argv.(0) in
   let result = channel inp (-1) in
     close_in inp;

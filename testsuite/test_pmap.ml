@@ -22,8 +22,8 @@ let test_traversal_order () =
                print_enum (enum_1 ()) print_enum (enum_2 ()))
 
 (* This test is incorrect *)
+open Multi_pmap
 let test_multimap_empty_assoc_lists () =
-  open Multi_pmap in
   let map =
     add 0 "foo" empty |> add 0 "bar" |> add 0 "sna" |>
     remove 0 "foo" |> remove 0 "bar" |> remove 0 "sna"
