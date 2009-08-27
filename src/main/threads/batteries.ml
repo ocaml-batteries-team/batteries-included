@@ -34,6 +34,7 @@
 *)
 module Standard = Extlib.ExtPervasives.Pervasives
 
+include Standard
 (** Access to the modules provided by INRIA or otherwise extended by Batteries. 
 
     For more information, see the documentation of OCaml.

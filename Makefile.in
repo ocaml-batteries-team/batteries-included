@@ -182,7 +182,7 @@ top: config.ml
 
 install:
 	chmod ugo+rx src/batteries_toolchain/ocaml* && \
-	ocamlfind install $(DESTDIR_FLAGS) batteries \
+	ocamlfind install $(DESTDIR_FLAGS) aaa \
 		build/META \
 		_build/src/core/extlib/IO.cmi \
 		_build/src/core/extlib/innerIO.cmi \
@@ -207,8 +207,7 @@ install:
 			_build/src/main/threads/batteries.a
 uninstall:
 	\rm -Rf $(DOCDIR) &&\
-	ocamlfind remove $(DESTDIR_FLAGS) batteries &&\
-	ocamlfind remove $(DESTDIR_FLAGS) batteries_threads
+	ocamlfind remove $(DESTDIR_FLAGS) aaa
 
 quickdoc: quickbyte doc/api.odocl
 	rm -Rf doc/batteries/html/api
