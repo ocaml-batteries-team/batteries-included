@@ -56,7 +56,7 @@ DELETE_RULE Gram str_item: "open"; module_longident END;
 DELETE_RULE Gram module_binding0: "="; module_expr END;
 
 EXTEND Gram
-GLOBAL: expr str_item module_binding0;
+GLOBAL: expr str_item sig_item module_binding0;
 
 
 (** Implement syntax extension [open Foo with e]*)
@@ -66,11 +66,19 @@ GLOBAL: expr str_item module_binding0;
   module_with_init: [
     [a = module_expr; e = OPT module_init -> (a,e)]
   ];
+
 (** Implement the opening of several modules at once*)
+
   one_or_more_modules: [
     [a = LIST1 module_with_init SEP "," -> a]
   ];
+  one_or_more_sig_modules: [
+    [a = LIST1 module_longident SEP "," -> a]
+  ];
+
+
 (** Implement local opening of modules*)
+
   expr: LEVEL ";" [
     ["open"; modules = one_or_more_modules; "in"; e = expr LEVEL "top" ->
        List.fold_left (
@@ -100,6 +108,13 @@ GLOBAL: expr str_item module_binding0;
 		 let st = global_struct _loc <:str_item<module $x$ = $me$ open $uid:x$>> init in
 		   <:str_item<$acc$;; $st$>>
        ) <:str_item<>> modules]
+   ];
+
+   sig_item: LEVEL "top" [
+     ["open"; modules = one_or_more_sig_modules ->
+       List.fold_left (
+	 fun acc mi -> <:sig_item<$acc$ open $id:mi$>>
+       ) <:sig_item<>> modules]
    ];
 
    (*Implement implicit importation of modules.*)
