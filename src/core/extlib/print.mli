@@ -56,11 +56,11 @@
    The foremost concept is that of {!type:format}. A {!type:format} is
    a description of how informations should be printed. For instance,
    a format such as [p"%d\n"] may be used to display an integer (this
-   is what {[%d]} means -- [d] stands for decimal) and will end the
-   line at the end of this integer (this is what {[\n]} means
+   is what [%d] means -- [d] stands for decimal) and will end the
+   line at the end of this integer (this is what [\n] means
    everywhere in OCaml -- it stands for newline). Similarly, a format
    such as [p"(%d, %d)\n"] may be used to display two integers as a
-   pair, and then end the line: {[%d]} and {[\n]} have the same
+   pair, and then end the line: [%d] and [\n] have the same
    meaning as previously, while the other characters are interpreted
    as regular text. Therefore, when applied to numbers 5 and 10, this
    format will output ["(5, 10)\n"].
