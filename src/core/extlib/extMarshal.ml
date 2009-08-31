@@ -1,7 +1,8 @@
 (* 
  * ExtMarshal - Extended marshaling operations 
  * Copyright (C) 1997 Xavier Leroy
- *               2008 David Teller
+ *               2008 David Rajchenbach-Teller, LIFO Universite d'Orleans
+ *               2009 David Rajchenbach-Teller, MLState
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-TYPE_CONV_PATH "Batteries.Meta" (*For Sexplib, Bin-prot...*)
+TYPE_CONV_PATH "Batteries.Marshal" (*For Sexplib, Bin-prot...*)
 
 module Marshal = 
 struct
