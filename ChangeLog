@@ -1,3 +1,7 @@
+2009-06-29  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* src/syntax/pa_openin/pa_openin.ml: should now work also in signatures
+
 2009-06-23  Bruno Daniel  <Bruno.Daniel@gmx.net>
 
 	* dynArray.ml: fixed memory corruption in [insert]
