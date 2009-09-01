@@ -338,6 +338,7 @@ module  Obj      = Batlib_Baselib_Obj
 module  Oo       = Extlib.ExtOo.Oo
 module  Weak     = Batlib_Baselib_Weak
 
+
          
 (*
               =====module  Network (*placeholders*) =====
@@ -418,12 +419,13 @@ module Date             = Libs.ExtNetdate.Netdate
 module  Future =
 struct
 (*  module Lexers = Extlib.ExtGenlex.Languages*)
-  module Genlex      = Extlib.ExtGenlex.Genlex
+  module Genlex       = Extlib.ExtGenlex.Genlex
   module Char_parser  = Extlib.CharParser
   module UChar_parser = Extlib.UCharParser
   module Parser_co    = Extlib.ParserCo
-  module Path        = Extlib.PathGen.OfString
-  module PathGen     = Extlib.PathGen
-  module Result      = Extlib.Result
-  module Logger      = Extlib.Logger
+  module Path         = Extlib.PathGen.OfString
+  module PathGen      = Extlib.PathGen
+  module Result       = Extlib.Result
+  module Logger       = Extlib.Logger
+  module Http         = Libs.Http
 end

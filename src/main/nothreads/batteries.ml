@@ -108,6 +108,7 @@ struct
   module PathGen     = Extlib.PathGen
   module Result      = Extlib.Result
   module Logger      = Extlib.Logger
+  module Http        = Libs.Http
 end
         
 (**

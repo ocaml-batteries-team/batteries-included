@@ -569,6 +569,9 @@ val print_char : char -> unit
 val print_string : string -> unit
 (** Print a string on standard output. *)
 
+val print_rope : Rope.t -> unit
+(** Print a Unicode rope on standard output. *)
+
 val print_int : int -> unit
 (** Print an integer, in decimal, on standard output. *)
 
@@ -578,6 +581,10 @@ val print_float : float -> unit
 val print_endline : string -> unit
 (** Print a string, followed by a newline character, on
    standard output and flush standard output. *)
+
+val print_ropeln : Rope.t -> unit
+(** Print a Unicode rope on standard output, followed by
+    a newline character, then flush standard output. *)
 
 val print_newline : unit -> unit
 (** Print a newline character on standard output, and flush
@@ -604,6 +611,9 @@ val prerr_char : char -> unit
 val prerr_string : string -> unit
 (** Print a string on standard error. *)
 
+val prerr_rope : Rope.t -> unit
+(** Print a Unicode rope on standard error. *)
+
 val prerr_int : int -> unit
 (** Print an integer, in decimal, on standard error. *)
 
@@ -613,6 +623,10 @@ val prerr_float : float -> unit
 val prerr_endline : string -> unit
 (** Print a string, followed by a newline character on standard error
    and flush standard error. *)
+
+val prerr_ropeln : Rope.t -> unit
+(** Print a Unicode rope on standard output, followed by
+    a newline character, then flush standard output. *)
 
 val prerr_newline : unit -> unit
 (** Print a newline character on standard error, and flush

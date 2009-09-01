@@ -1,3 +1,8 @@
+2009-09-01 David Rajchenbach-Teller <D.O.Teller@gmail.com>
+
+	* myocamlbuild.ml, src/core/extlib/extPervasives.ml, src/core/extlib/extPervasives.mli, src/libs/_tags, src/libs/libs.mlpack, src/libs/ocamlnet/_tags, src/main/nothreads/_tags, src/main/nothreads/batteries.ml, src/main/threads/_tags, src/main/threads/batteries.ml: added module [Http]
+
+
 2009-06-29  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/syntax/pa_openin/pa_openin.ml: should now work also in signatures

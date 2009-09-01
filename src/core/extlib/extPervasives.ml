@@ -91,6 +91,10 @@ module Pervasives = struct
     with _ -> ()
   let input_value       = ExtMarshal.Marshal.input
 
+  let print_rope rope   = Rope.print stdout rope
+  let prerr_rope rope   = Rope.print stderr rope
+  let print_ropeln rope = print_rope rope; print_newline ()
+  let prerr_ropeln rope = prerr_rope rope; prerr_newline ()
   let print_all inp     = IO.copy inp IO.stdout
   let prerr_all inp     = IO.copy inp IO.stderr
 
