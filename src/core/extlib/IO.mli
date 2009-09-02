@@ -263,13 +263,13 @@ val flush : 'a output -> unit
 
       If previous write operations have caused errors, this may trigger an exception.
 
-      Example: [flush stdout;]
+      Example: [flush stdout]
 *)
 
 val flush_all : unit -> unit
 (** Flush all outputs, ignore errors.
 
-    Example: [flush_all ();]
+    Example: [flush_all ()]
 *)
 
 
@@ -295,7 +295,7 @@ val close_all : unit -> unit
     You probably should never use it manually, as it also closes
     [stdout], [stderr], [stdnull].
 
-    Example: [close_all ();]
+    Example: [close_all ()]
 *)
 (**/**)
 
@@ -381,6 +381,8 @@ val progress_in : input -> (unit -> unit) -> input
   (** [progress_in inp f] create an input that calls [f ()]
       whenever some content is succesfully read from it.*)
 
+(*val after_newline_in: input -> (unit -> unit) -> input*)
+
 val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
     written through it. *)
@@ -388,6 +390,18 @@ val pos_out : 'a output -> unit output * (unit -> int)
 val progress_out : 'a output -> (unit -> unit) -> unit output
   (** [progress_out out f] create an output that calls [f ()]
       whenever some content is succesfully written to it.*)
+
+val on_lines_out: ?on_line_start:(unit -> unit) -> 
+  ?on_line_end:(unit -> unit) -> 'a output -> unit output
+
+val auto_flush_out: 'a output -> unit output
+(**Produce an unbuffered output
+
+   Use this function to make sure that your text is always written at once,
+   without any optimization. This can be useful for debugging code.
+*)
+
+
 
 external cast_output : 'a output -> unit output = "%identity"
 (** You can safely transform any output to an unit output in a safe way 

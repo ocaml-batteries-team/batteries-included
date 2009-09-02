@@ -78,6 +78,86 @@ let progress_out out f =
     ~flush:(fun () -> flush out)
     ~underlying:[out]
 
+let on_lines_out
+    ?(on_line_start = ignore)
+    ?(on_line_end   = ignore) out =
+  let line_starting = ref true in
+  let handle_possible_start ()=
+	      if !line_starting then
+		begin
+		  line_starting := false;
+		  on_line_start ()
+		end
+  in
+  inherit_out
+    ~write:(fun c ->
+	      handle_possible_start ();
+	      if Char.is_newline c then
+		begin
+		  line_starting := true;
+		  on_line_end();
+		  write out c;
+		end
+	      else
+	   	write out c)
+    ~output:(fun s p l ->
+	       let length    = String.length s                 in
+	       let buffer    = Buffer.create (String.length s) in
+		 for i = p to min (length - 1) l do
+		   let c = String.unsafe_get s i in
+		     handle_possible_start ();
+		     if Char.is_newline c then
+		       begin
+			 write_buf out buffer;
+			 Buffer.clear buffer;
+			 on_line_end ();
+			 write out c;
+			 line_starting := true;
+		       end
+		     else
+		       Buffer.add_char buffer c
+		 done;
+		 write_buf out buffer;
+		 length (*At this stage, we have written everything*)
+	    )
+    ~close:noop
+    out
+
+let auto_flush_out out =
+  inherit_out 
+    ~write: (fun c     -> write out c; flush out)
+    ~output:(fun s p l -> let r = output out s p l in
+	       flush out;
+	       r)
+    ~close:(fun _ -> flush out)
+    out
+
+(*let on_lines_in
+    ?(on_line_start = ignore)
+    ?(on_line_end   = ignore) inp =
+  let line_starting = ref true in
+  let handle_possible_start ()=
+	      if !line_starting then
+		begin
+		  line_starting := false;
+		  on_line_start ()
+		end
+  in
+  wrap_in
+    ~read:(fun () -> 
+	     handle_possible_start ();
+	     let c = read inp in
+	       if Char.is_newline c then 
+		 begin
+		   line_starting := true;
+		   on_line_end ()
+		 end;
+	       c)
+    ~input:(fun s p l ->
+	      let bytes_
+    ~close:noop
+    ~underlying:[inp]
+*)
 (**
    {6 Support for enumerations}
 *)
@@ -602,26 +682,9 @@ let make_list_printer (p:('a output -> 'b -> unit))
 
 let tab_out ?(tab=' ') n out =
   let spaces   = String.make n tab in
-  wrap_out 
-    ~write: (fun c     -> 
-	       write out  c;
-	       if Char.is_newline c then (
-		 nwrite out spaces)
-	    )
-    ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*)
-	       let length = String.length s                 in
-	       let buffer = Buffer.create (String.length s) in
-		 for i = p to min (length - 1) l do
-		   let c = String.unsafe_get s i in
-		     Buffer.add_char buffer c;
-		     if Char.is_newline c then
-		       Buffer.add_string buffer spaces
-		 done;
-		 let s' = Buffer.contents buffer                  in
-		 output out s' 0 (String.length s'))
-    ~flush:noop
-    ~close:noop
-    ~underlying:[out]
+    on_lines_out ~on_line_start:(fun () -> nwrite out spaces) out
+
+
 
 (*
 let lmargin n (p:_ output -> 'a -> unit) out x =
