@@ -43,6 +43,8 @@ struct
 
   let print out t = IO.nwrite out (format t)
 
+  let (printer_date:('a, 'b) Print.directive) k t = k (fun oc -> print oc t)
+
   let now () = create ~zone:localzone (Unix.time ())
 
     (*We replicate the type here to take advantage of sexplib*)

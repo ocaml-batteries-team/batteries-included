@@ -21,7 +21,7 @@
  *)
 
 open Sexplib
-
+open Extlib
 (** 
     Support for dates, including parsing and formating.
 
@@ -166,5 +166,7 @@ val print : _ Extlib.InnerIO.output -> t -> unit
 (** Print a date with a default format.
 
     The default format used is the same as {!mk_mail_date}*)
+
+val printer_date: (t -> 'a, 'a) Print.directive
 
 end
