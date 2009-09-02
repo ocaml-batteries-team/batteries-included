@@ -381,8 +381,6 @@ val progress_in : input -> (unit -> unit) -> input
   (** [progress_in inp f] create an input that calls [f ()]
       whenever some content is succesfully read from it.*)
 
-(*val after_newline_in: input -> (unit -> unit) -> input*)
-
 val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
     written through it. *)
@@ -393,6 +391,14 @@ val progress_out : 'a output -> (unit -> unit) -> unit output
 
 val on_lines_out: ?on_line_start:(unit -> unit) -> 
   ?on_line_end:(unit -> unit) -> 'a output -> unit output
+(**
+   Produce an output that will call a function each time it
+   reaches a newline.
+
+   @param on_line_start Function called after a newline, before the next character.
+   @param on_line_end Function called before a newline, after the previous character.
+*)
+
 
 val auto_flush_out: 'a output -> unit output
 (**Produce an unbuffered output
