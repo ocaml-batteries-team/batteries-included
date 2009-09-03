@@ -5,7 +5,7 @@ INSTALLATION=
 AC_SUBST(INSTALLATION)
 
 # version info
-VERSION=0.20090623
+VERSION=0.20090903
 AC_SUBST(VERSION)
 
 # check for OS
@@ -93,42 +93,68 @@ if tmp=`$OCAMLFIND query $1` 2>/dev/null ; then
    OCAMLFIND_DEPS="$OCAMLFIND_DEPS $tmp"
 fi
 ])
+
+dnl check if a given Findlib package exists, set OCAMLPKG_<PKGNAME>
+dnl accordingly
+AC_DEFUN(AC_CHECK_OCAML_PKG_VERSION_GE,
+[dnl
+AC_MSG_CHECKING(findlib package $1 >= $2)
+if version=`$OCAMLFIND query -format "%v" $1`; then
+   AX_COMPARE_VERSION([$version], [ge], [$2])
+   if test ${ax_compare_version} = "true"; then
+      AC_MSG_RESULT(ok, found $version)
+      NAME=`$OCAMLFIND query $1` 2>/dev/null
+      [$3]=$NAME
+      OCAMLFIND_DEPS="$OCAMLFIND_DEPS $NAME"
+   else
+      AC_MSG_WARN(not found)
+   fi
+else
+   AC_MSG_WARN(not found)
+fi
+])
+
 # check for needed Findlib packages
-AC_CHECK_OCAML_PKG(camomile, OCAMLPKG_camomile)
+AC_CHECK_OCAML_PKG_VERSION_GE(camomile, 0.7, OCAMLPKG_camomile)
 if test -z "$OCAMLPKG_camomile" ; then
    AC_MSG_ERROR([Cannot find Camomile])
    exit 1
 fi
 AC_SUBST(OCAMLPKG_camomile)
 
-AC_CHECK_OCAML_PKG(zip, OCAMLPKG_zip)
+AC_CHECK_OCAML_PKG_VERSION_GE(zip, 1.0, OCAMLPKG_zip)
 # Camlzip has different Findlib-level names on, e.g., Debian and GODI
 if test -z "$OCAMLPKG_zip" ; then
-  AC_CHECK_OCAML_PKG(camlzip, OCAMLPKG_zip)
+  AC_CHECK_OCAML_PKG_VERSION_GE(camlzip, 1.0, OCAMLPKG_zip)
   if test -z "$OCAMLPKG_zip" ; then
      AC_MSG_ERROR([Cannot find Camlzip])
      exit 1
   fi
 fi
 AC_SUBST(OCAMLPKG_zip)
-AC_CHECK_OCAML_PKG(type-conv, OCAMLPKG_type_conv)
+AC_CHECK_OCAML_PKG_VERSION_GE(type-conv, 1.6.7, OCAMLPKG_type_conv)
 if test -z "$OCAMLPKG_type_conv" ; then
    AC_MSG_ERROR([Cannot find type-conv])
    exit 1
 fi
-AC_CHECK_OCAML_PKG(sexplib, OCAMLPKG_sexplib)
+AC_CHECK_OCAML_PKG_VERSION_GE(sexplib, 3.7.5, OCAMLPKG_sexplib)
 if test -z "$OCAMLPKG_sexplib" ; then
    AC_MSG_ERROR([Cannot find sexplib])
    exit 1
 fi
-AC_CHECK_OCAML_PKG(bin_prot, OCAMLPKG_bin_prot)
+AC_CHECK_OCAML_PKG_VERSION_GE(bin_prot, 1.2.18, OCAMLPKG_bin_prot)
 if test -z "$OCAMLPKG_bin_prot" ; then
    AC_MSG_ERROR([Cannot find bin_prot])
    exit 1
 fi
-AC_CHECK_OCAML_PKG(netstring, OCAMLPKG_netstring)
+AC_CHECK_OCAML_PKG_VERSION_GE(netstring, 2.2.9, OCAMLPKG_netstring)
 if test -z "$OCAMLPKG_netstring" ; then
    AC_MSG_ERROR([Cannot find netstring (part of ocamlnet)])
+   exit 1
+fi
+AC_CHECK_OCAML_PKG_VERSION_GE(netclient, 2.2.9, OCAMLPKG_netclient)
+if test -z "$OCAMLPKG_netclient" ; then
+   AC_MSG_ERROR([Cannot find netclient (part of ocamlnet)])
    exit 1
 fi
 AC_SUBST(OCAMLFIND_DEPS)

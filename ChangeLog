@@ -1,3 +1,7 @@
+2009-09-03  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* build/META: version change
+
 2009-09-02  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* src/libs/ocamlnet/extNetdate.ml*: [printer_date] added
