@@ -3,7 +3,7 @@
  * Copyright (C)   2006 Alain Frisch
  *                 2007 Till Varoquaux
  *                 2008 Gabriel Scherer
- *                 2008 David Teller
+ *                 2009 David Rajchenbach-Teller
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@ open Camlp4
 
 module Id = struct
   let name = "pa_open"
-  let version = "1.1"
+  let version = "1.2"
 end
 
 let fresh () = Printf.sprintf "OPENIN_%i" (Oo.id (object end))
@@ -51,6 +51,20 @@ let global_struct _loc st init =
     match init with
       | Some e -> <:str_item<module $x$ = struct $st$ let _ = $e$ end >>
       | None   -> <:str_item<module $x$ = struct $st$ end >>
+
+let build_str_open_in _loc modules init =
+       List.fold_left (
+	 fun acc mi ->
+	   match mi with
+	     | (<:module_expr< $id:i$ >>, Some e') ->
+		 <:str_item<$acc$ open $id:i$ $exp:e'$>>
+	     | (<:module_expr< $id:i$ >>, None) ->
+		 <:str_item<$acc$ open $id:i$>>
+	     | (me, init) ->
+		 let x  = fresh () in
+		 let st = global_struct _loc <:str_item<module $x$ = $me$ open $uid:x$>> init in
+		   <:str_item<$acc$;; $st$>>
+       ) init modules
 
 EXTEND Gram
 GLOBAL: expr str_item module_binding0;
@@ -83,19 +97,8 @@ GLOBAL: expr str_item module_binding0;
      e = expr LEVEL "top" -> local_struct _loc (stSem_of_list st) e None
     ]];
    str_item: LEVEL "top" [
-     ["open"; modules = one_or_more_modules ->
-       List.fold_left (
-	 fun acc mi ->
-	   match mi with
-	     | (<:module_expr< $id:i$ >>, Some e') -> 
-		 <:str_item<$acc$ open $id:i$ $exp:e'$>>
-	     | (<:module_expr< $id:i$ >>, None) -> 
-		 <:str_item<$acc$ open $id:i$>>
-	     | (me, init) -> 
-		 let x  = fresh () in
-		 let st = global_struct _loc <:str_item<module $x$ = $me$ open $uid:x$>> init in
-		   <:str_item<$acc$;; $st$>>
-       ) <:str_item<>> modules]
+     ["open"; modules = one_or_more_modules -> build_str_open_in _loc modules <:str_item<>>
+     |"open"; modules = one_or_more_modules; "in"; str_item = SELF -> build_str_open_in _loc modules str_item]
    ];
    (*Implement implicit importation of modules.*)
    multi_module_expr: [
