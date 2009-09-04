@@ -103,7 +103,7 @@ if version=`$OCAMLFIND query -format "%v" $1`; then
    AX_COMPARE_VERSION([$version], [ge], [$2])
    if test ${ax_compare_version} = "true"; then
       AC_MSG_RESULT(ok, found $version)
-      NAME=`$OCAMLFIND query $1` 2>/dev/null
+      NAME=`$OCAMLFIND query -format "%p" $1` 2>/dev/null
       [$3]=$NAME
       OCAMLFIND_DEPS="$OCAMLFIND_DEPS $NAME"
    else
