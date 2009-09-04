@@ -3,3 +3,5 @@ RMutex
 IOThreads
 ExtUnixThreads
 ExtPervasivesThreads
+ThreadPool
+Cell

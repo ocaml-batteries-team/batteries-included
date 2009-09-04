@@ -428,4 +428,5 @@ struct
   module Result       = Extlib.Result
   module Logger       = Extlib.Logger
   module Http         = Libs.Http
+  module ThreadPool   = Extlib_threads.ThreadPool
 end
