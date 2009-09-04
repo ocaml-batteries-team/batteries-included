@@ -269,13 +269,16 @@ examples:
 
 tests:
 	cd testsuite && ocamlbuild -clean && \
-	ocamlfind batteries/ocamlbuild main.byte main.native 
+	ocamlfind batteries/ocamlbuild main.byte main.native &&\
+	ocamlfind batteries/ocamlbuild main_threads.native
 
 tests_byte:
 	cd testsuite && ocamlfind batteries/ocamlbuild -clean && \
-	ocamlfind batteries/ocamlbuild main.byte
+	ocamlfind batteries/ocamlbuild main.byte &&\
+	ocamlfind batteries/ocamlbuild main_threads.byte
 
-run_tests: tests run_tests_native run_tests_byte run_tests_interp
+run_tests: tests run_tests_native run_tests_byte run_tests_interp run_tests_native_threads run_tests_byte_threads run_tests_interp_threads
+
 
 run_tests_byte:
 	cd testsuite && ./main.byte
