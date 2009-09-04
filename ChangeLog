@@ -1,6 +1,15 @@
+2009-09-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+
+	* build/threaded/META.in, build/nothreads/META.in: dependency towards netclient
+
+	* src/syntax/pa_openin/pa_openin.ml, src/syntax/pa_openin/pa_openin_r.ml: [open...in...] now works as structure item
+
 2009-09-03  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 	* build/META: version change
+
+	* configure.ac, aclocal.m4: now checking the version of dependencies
 
 2009-09-02  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
