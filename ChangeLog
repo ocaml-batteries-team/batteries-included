@@ -1,3 +1,13 @@
+2009-09-05  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
+
+	* configure.ac, Makefile.in: [make install] will now work even if Batteries is already installed
+
+	* src/core/extlib_threads/threadPool.ml: [in_thread_loop] now handles exceptions
+
+	* src/core/extlib_threads/threadPool.ml: [size], [available], [with_available], [spawn_immediately] added
+
+	* src/core/extlib_threads/cell.ml*: [fail] added, [get] can now raise
+
 2009-09-04  David Rajchenbach-Teller  <David.Teller@univ-orleans.fr>
 
 

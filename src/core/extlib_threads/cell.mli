@@ -20,12 +20,19 @@
 
 (**
    Concurrent cells, i.e. a data structure placed to asynchronously 
-   put messages and wait for a message.
+   put {e one} message or synchronously wait for a message.
 *)
 
 type 'a cell
 (** The type of a concurrent cell*)
 
 val make: unit    -> 'a cell
+
 val post: 'a cell -> 'a -> unit
+
 val get:  'a cell -> 'a
+(**
+   Return the value or the exception stored on the cell.
+*)
+
+val fail: 'a cell -> exn -> unit
