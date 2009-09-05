@@ -95,6 +95,10 @@ val make : unit -> Extlib.Concurrent.lock
 end
 
 (**/**)
+
+(**
+   A version of [Mutex] that prints information on mutexes to aid in debugging.
+*)
 module DebugMutex:
 sig
 
