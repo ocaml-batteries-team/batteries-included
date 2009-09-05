@@ -192,7 +192,7 @@ syntax: config.ml
 top: config.ml
 	$(OCAMLBUILD) $(TOPLEVEL_TARGETS)
 
-install:
+install: uninstall
 	chmod ugo+rx src/batteries_toolchain/ocaml* && \
 	ocamlfind install $(DESTDIR_FLAGS) batteries \
 		build/META \

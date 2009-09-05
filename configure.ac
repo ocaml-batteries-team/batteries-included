@@ -216,8 +216,8 @@ else
 	if test -z "$OCAMLPKG_batteries"; then
    	   DESTDIR=`$OCAMLFIND printconf destdir`
 	else
-	   AC_MSG_WARN([Batteries is already installed])
-   	   AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
+	   AC_MSG_NOTICE([Batteries is already installed.])
+	   AC_MSG_NOTICE([It will be upgraded.])
    	   DESTDIR=`dirname $OCAMLPKG_batteries`
 	fi
    else
