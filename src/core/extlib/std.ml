@@ -218,7 +218,11 @@ let uncurry f (x,y) = f x y
 
 let const x _ = x
 
+
 let rec until p f x = if p x then x else until p f (f x)
+
+let until_exn f = try while true do f () done with _ -> ()
+
 
 let invisible_args = ref 1
 (* the number or arguments to ignore at the beginning of Sys.argv,

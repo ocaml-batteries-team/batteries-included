@@ -148,7 +148,8 @@ val first : ('a -> 'b * 'c) -> 'a -> 'b
 val second : ('a -> 'b * 'c) -> 'a -> 'c
 (** Projection of a pair to its second element. *)
 
-
+val until_exn : (unit -> unit) -> unit 
+(** [until_exn f] runs [f] until it raises an exception, then returns *)
 
 val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
 
