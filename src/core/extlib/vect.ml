@@ -355,6 +355,11 @@ let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
     | Concat(l, _, r, _, _) -> aux (aux acc r) l
   in aux acc v
 
+let reduce f v = 
+  let acc = ref (get v 0) in
+  rangeiter (fun e -> acc := f !acc e) 1 (length v - 1) v;
+  !acc
+
 let of_array = of_string
 let to_array = to_string
 let append = append_char
