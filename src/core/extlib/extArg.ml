@@ -37,9 +37,16 @@ module Arg = struct
 
   let of_command c = (c.kwd, c.spec, c.doc)
 
-  let handle ?(usage="") cmd = 
+  let handle ?argv ?(align=false) ?(usage="") cmd =
     let speclist = List.map of_command cmd
-    and anonymous= RefList.empty ()       in
-      parse speclist (fun s -> RefList.push anonymous s) usage;
-      List.rev (RefList.to_list anonymous)
+    and anonymous= RefList.empty () in
+    let spec_to_parse = if align then Arg.align speclist else speclist in
+    let argv_to_parse = match argv with None -> Sys.argv | Some s -> s in
+    let anon_fun = RefList.push anonymous in
+      try
+        parse_argv argv_to_parse spec_to_parse anon_fun usage;
+        List.rev (RefList.to_list anonymous)
+      with
+      | Help s | Bad s -> prerr_string s; []
+
 end

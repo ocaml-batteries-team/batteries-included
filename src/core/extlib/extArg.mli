@@ -95,7 +95,8 @@ val command: ?doc:string -> string -> spec -> command
     no documentation is printed.
 *)
 
-val handle : ?usage:string -> command list -> string list
+val handle : ?argv:string array -> ?align:bool -> ?usage:string ->
+  command list -> string list
 (**
    [Arg.handle commands] parses the command-line and applies
    the specifications of [commands] and returns the list
@@ -110,6 +111,15 @@ val handle : ?usage:string -> command list -> string list
    should contain the name and version of the program. If
    left unspecified, no usage string is displayed in case of
    error.
+
+   @param argv An optional array of strings to be used instead of the global
+   [Shell.argv]
+
+   @param align Align the documentation strings by inserting spaces at the
+   first space, according to the length of the keyword.  Use a space as the
+   first character in a doc string if you want to align the whole string.  The
+   doc strings corresponding to [Symbol] arguments are not aligned. (default:
+   false)
 *)
 
 (**
