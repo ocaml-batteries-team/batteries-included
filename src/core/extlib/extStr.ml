@@ -27,12 +27,21 @@ struct
   include Str
 
   let search ?(offset=0) ?(backwards=false) r s =
-    let next = if backwards then search_backward
-               else              search_forward
-    in
+    let next r s o =
+      if backwards then (
+        let _ = search_backward r s o in
+        match_beginning () - 1
+      ) else (
+        let _ = search_forward r s o in
+        match_end ()
+      ) in
     let aux offset =
-      try let offset' = next r s offset in
-	Some ((match_beginning (), match_end (), matched_string s), offset')
-      with Not_found -> None
+      if offset < 0 then None
+      else (
+        try let next_offset = next r s offset in
+          Some ((match_beginning (), match_end (), matched_string s), next_offset)
+        with Not_found  -> None
+      )
     in Enum.unfold offset aux
+
 end
