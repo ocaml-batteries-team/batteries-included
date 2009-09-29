@@ -20,7 +20,7 @@
  *)
 
 
-open ExtArray
+open BatArray
 
 type 'a t =
     Empty
@@ -37,7 +37,7 @@ let singleton x = Leaf [|x|]
 
 
 
-module STRING = ExtArray.Array
+module STRING = BatArray.Array
 
 (* 48 limits max rope size to 236.10^9 elements on 64 bit,
  * ~ 734.10^6 on 32bit (length fields overflow after that) *)

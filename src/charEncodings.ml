@@ -20,7 +20,7 @@
 
 open IO
 open CamomileLibrary
-open ExtString
+open BatString
 
 module Encoding = CamomileLibrary.Default.Camomile.CharEncoding
 

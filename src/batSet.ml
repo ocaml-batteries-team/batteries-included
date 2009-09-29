@@ -275,10 +275,10 @@ module type S =
   end
 
 
-  module StringSet  = Make(ExtString.String)
-  module IStringSet = Make(ExtString.String.IString)
-  module NumStringSet = Make(ExtString.String.NumString)
+  module StringSet  = Make(BatString.String)
+  module IStringSet = Make(BatString.String.IString)
+  module NumStringSet = Make(BatString.String.NumString)
   module RopeSet    = Make(Rope)
   module IRopeSet   = Make(Rope.IRope)
-  module IntSet     = Make(ExtInt.Int)
+  module IntSet     = Make(BatInt.Int)
 end

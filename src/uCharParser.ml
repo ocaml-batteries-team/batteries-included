@@ -20,14 +20,14 @@
 
 
 
-open ExtUChar
-open ExtInt
-open ExtFloat
-open ExtUTF8
-open ExtString
+open BatUChar
+open BatInt
+open BatFloat
+open BatUTF8
+open BatString
 open ParserCo
-open ExtList
-open ExtPrintf
+open BatList
+open BatPrintf
 
 let string_of_uchar c = (UTF8.to_string (UTF8.of_char c))
 

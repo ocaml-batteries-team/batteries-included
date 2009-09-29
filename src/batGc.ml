@@ -24,7 +24,7 @@ module Gc =
 struct
   include Gc
 
-  open ExtPrintf.Printf;;
+  open BatPrintf.Printf;;
 
   let print_stat c = (*Copied from original module*)
     let st = stat () in

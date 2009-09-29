@@ -21,8 +21,8 @@
  *
  *)
 
-open ExtString
-open ExtChar
+open BatString
+open BatChar
 
 type t = string * int * int (* string, offset, length *)
 
@@ -185,7 +185,7 @@ let span (str1, off1, len1) (str2, off2, len2) =
   (str1, off1, off2+len2-off1)
 
 let translate f (str,off,len) =
-  ExtString.String.init len (fun i -> f str.[off+i])
+  BatString.String.init len (fun i -> f str.[off+i])
 
 let tokens p (str,off,len) =
   let i = ref 0 and j = ref 0 and acc = RefList.empty () in

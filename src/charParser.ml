@@ -20,10 +20,10 @@
 
 
 open ParserCo
-open ExtString
-open ExtChar
-open ExtInt
-open ExtFloat
+open BatString
+open BatChar
+open BatInt
+open BatFloat
 
 (** {6 Entry point} *)
 type position =

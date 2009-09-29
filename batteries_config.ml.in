@@ -1,7 +1,6 @@
-(* 
- * ExtQueue - Extended operations on queues
- * Copyright (C) 1996 Xavier Leroy
- *               2008 David Teller, LIFO, Universite d'Orleans
+(*
+ * config - Configuration module for OCaml Batteries Included
+ * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,23 +18,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+let version = "@VERSION@";;
+let documentation_root = "@DOCROOT@";;
+let (browser: (_, _, _) format) = "@BROWSER_COMMAND@";;
 
-open BatList
+(**The default function to open a www browser.*)
+let default_browse s =
+  let command = Printf.sprintf browser s in
+    Sys.command command
+let current_browse = ref default_browse
 
-module Queue =
-struct
-  include Queue
-    
-  type 'a enumerable = 'a t
+let browse s = !current_browse s
+let set_browser f    = current_browse := f
 
-  let of_enum e =
-    let q = create () in
-      Enum.iter (fun x -> push x q) e;
-      q
-
-  let enum q = Enum.from (fun () -> try pop q with Empty -> raise Enum.No_more_elements)
-
-
-  let print ?(first="") ?(last="") ?(sep="") print_a out t =
-      Enum.print ~first ~last ~sep print_a out (enum (copy t))
-end
+let max_array_length = Sys.max_array_length
+let word_size        = Sys.word_size
+let max_string_length= Sys.max_string_length

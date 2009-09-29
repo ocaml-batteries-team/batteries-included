@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open ExtChar
+open BatChar
 include InnerIO
 
 (**
@@ -648,7 +648,7 @@ let comb (a,b) =
     ~close:(fun () -> flush out)*)
 
 (** {6 Unicode}*)
-open ExtUTF8
+open BatUTF8
  
 (** {7 Reading unicode}
  
@@ -659,14 +659,14 @@ All these functions assume that the input is UTF-8 encoded.
 (** read one UChar from a UTF-8 encoded input*)
 let read_uchar_as_string i =
   let n0  = read i in
-  let len = ExtUTF8.UTF8.length0 (Char.code n0) in
+  let len = UTF8.length0 (Char.code n0) in
   let s   = String.create len in
     String.set s 0 n0;
     ignore(really_input i s 1 ( len - 1));
     s
  
 let read_uchar i =
-  ExtUTF8.UTF8.get (ExtUTF8.UTF8.of_string_unsafe (read_uchar_as_string i)) 0
+  UTF8.get (UTF8.of_string_unsafe (read_uchar_as_string i)) 0
  
 (*val read_rope: input -> int -> Rope.t*)
 (** read up to n uchars from a UTF-8 encoded input*)
@@ -710,10 +710,10 @@ let ulines_of i = make_enum read_uline i
  
 All these functions assume that the output is UTF-8 encoded.*)
 
-let write_ustring o c = write_string o (ExtUTF8.UTF8.to_string_unsafe c) 
+let write_ustring o c = write_string o (UTF8.to_string_unsafe c) 
 
 (*val write_uchar: _ output -> UChar.t -> unit*)
-let write_uchar o c = write_ustring o (ExtUTF8.UTF8.of_char c)
+let write_uchar o c = write_ustring o (UTF8.of_char c)
  
 (*val write_rope : _ output -> Rope.t -> unit*)
 let write_rope = Rope.print
@@ -817,7 +817,7 @@ let synchronize_out ?(lock = !lock_factory ()) out =
    Yes, this is prohibitively expensive.
 *)
 let to_input_channel inp =
-  try Unix.in_channel_of_descr (ExtUnix.Unix.descr_of_input inp) (*Simple case*)
+  try Unix.in_channel_of_descr (BatUnix.Unix.descr_of_input inp) (*Simple case*)
   with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
     let (name, cout) = Filename.open_temp_file "ocaml" "pipe" in
     let out          = output_channel cout                    in

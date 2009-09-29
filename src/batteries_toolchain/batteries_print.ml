@@ -18,16 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Extlib
-open ExtUChar
-open ExtUTF8
-open ExtString
+open BatUChar
+open BatUTF8
+open BatString
 
 let print_uchar fmt t =
   Format.fprintf fmt "UChar.of_char '%s'" (UTF8.to_string (UTF8.of_char t))
 
 let print_rope fmt t =
-  Format.fprintf fmt "r%S" (Extlib.Rope.to_string t)
+  Format.fprintf fmt "r%S" (Rope.to_string t)
 
 let print_ustring fmt t =
   Format.fprintf fmt "u%S" (UTF8.to_string t)

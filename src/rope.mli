@@ -76,8 +76,8 @@ architectures, 220 Gb on 64 bit architectures.
 *)
 
  
-open ExtUChar
-open ExtUTF8
+open BatUChar
+open BatUTF8
  
 type t
   (** The type of the ropes. *)

@@ -20,9 +20,9 @@
  *)
 
 
-open ExtString
-open ExtBig_int
-open ExtInt
+open BatString
+open BatBig_int
+open BatInt
 
 module BaseNum = struct
   include Num

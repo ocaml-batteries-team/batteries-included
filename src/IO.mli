@@ -99,7 +99,7 @@ I    {!flush_out}.
     @documents InnerIO
 *)
 
-open ExtUChar
+open BatUChar
 open InnerIO
 
 type input = InnerIO.input

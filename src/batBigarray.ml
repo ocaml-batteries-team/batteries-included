@@ -21,7 +21,7 @@
  *)
 
 
-open ExtArray
+open BatArray
 
 module Bigarray =
 struct

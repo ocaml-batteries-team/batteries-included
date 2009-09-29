@@ -372,14 +372,14 @@ let trim s =
   let len = length s          in
   let rec aux_1 i = (*locate leading whitespaces*)
     if   i = len then None (*The whole string is whitespace*)
-    else if ExtChar.Char.is_whitespace (unsafe_get s i) then aux_1 (i + 1)
+    else if BatChar.Char.is_whitespace (unsafe_get s i) then aux_1 (i + 1)
     else Some i in
   match aux_1 0 with
     | None -> ""
     | Some last_leading_whitespace ->
   let rec aux_2 i =
     if   i < 0 then None(*?*)
-    else if ExtChar.Char.is_whitespace (unsafe_get s i) then aux_2 (i - 1)
+    else if BatChar.Char.is_whitespace (unsafe_get s i) then aux_2 (i - 1)
     else Some i in
   match aux_2 (len - 1) with
     | None -> ""
@@ -447,13 +447,13 @@ end
 
 let print         = InnerIO.nwrite
 let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
-let print_quoted out s = ExtPrintf.Printf.fprintf out "%S" s
+let print_quoted out s = BatPrintf.Printf.fprintf out "%S" s
 let t_printer paren out x =
   InnerIO.write out '"';
   print out (escaped x);
   InnerIO.write out '"'
 
-let quote = ExtPrintf.Printf.sprintf2 "%S"
+let quote = BatPrintf.Printf.sprintf2 "%S"
 
 module Exceptionless =
 struct

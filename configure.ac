@@ -226,8 +226,8 @@ AC_SUBST(BUILD_RUNNER)
 # fill output templates
 AC_CONFIG_FILES([
  Makefile
+ batteries_config.ml
  build/META
- build/threaded/META
  src/batteries_toolchain/ocaml
 ])
 AC_OUTPUT

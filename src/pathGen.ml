@@ -799,7 +799,7 @@ module StringAdapter (*: StringType*) = struct
   let sub = String.sub
   
   let iter = String.iter
-  let iteri = ExtString.String.iteri
+  let iteri = BatString.String.iteri
   
   let rindex = String.rindex
   
@@ -813,7 +813,7 @@ end
 
 module OfString : PathType with type ustring = string and type uchar = char = Make (StringAdapter) 
             
-module UChar = ExtUChar.UChar
+module UChar = BatUChar.UChar
       
 module RopeAdapter = struct
 

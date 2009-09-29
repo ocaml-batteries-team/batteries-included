@@ -30,8 +30,8 @@
 *)
 
 open ParserCo
-open ExtUChar
-open ExtUTF8
+open BatUChar
+open BatUTF8
 
 (** The position inside one file or one stream. *)
 type position = CharParser.position = 

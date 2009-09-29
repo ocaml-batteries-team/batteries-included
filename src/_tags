@@ -1,27 +1,14 @@
 <*.ml>: pkg_camomile
-<*.mli>: pkg_camomile,use_optcomp,use_optcomp_o
+<*.mli>: pkg_camomile,use_optcomp_o
 <IO.*>: principal
 <innerIO.*>: principal
-<extUnixThreads.*>: pkg_threads
 
 <*>: pkg_threads
-
-<batlib_Baselib_Condition.mli>:pkg_threads, pkg_threads.posix
-<batlib_Baselib_Condition.ml>:pkg_threads,  pkg_threads.posix
-<batlib_Baselib_Event.mli>:pkg_threads,     pkg_threads.posix
-<batlib_Baselib_Event.ml>:pkg_threads,      pkg_threads.posix
-<batlib_Baselib_Mutex.mli>:pkg_threads,     pkg_threads.posix
-<batlib_Baselib_Mutex.ml>:pkg_threads,      pkg_threads.posix
-<batlib_Baselib_Thread.mli>:pkg_threads,    pkg_threads.posix
-<batlib_Baselib_Thread.ml>:pkg_threads,     pkg_threads.posix
 
 <toolchain>:       include
 <toolchain.*>:           use_camlp4,use_camlp4_full
 <toolchain.cma>:         link_all
 <toolchain.mli>:         camlp4o,use_optcomp_o
-
-<batteries_config.*>:    camlp4oof
-
 
 <common>:	include
 <camlzip>:	include

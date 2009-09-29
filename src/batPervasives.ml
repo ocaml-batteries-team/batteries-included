@@ -22,17 +22,17 @@
  *)
 
 
-open ExtUTF8
-open ExtInt
-open ExtInt32
-open ExtInt64
-open ExtNativeint
-open ExtString
-open ExtBool
-open ExtList
-open ExtArray
-open ExtFloat
-open ExtPrintexc
+open BatUTF8
+open BatInt
+open BatInt32
+open BatInt64
+open BatNativeint
+open BatString
+open BatBool
+open BatList
+open BatArray
+open BatFloat
+open BatPrintexc
 
 module Pervasives = struct
   include Pervasives
@@ -58,14 +58,14 @@ module Pervasives = struct
   let flush_all         = IO.flush_all
   let close_all         = IO.close_all
   
-  let output_char       = ExtChar.Char.print
-  let output_string     = ExtString.String.print
+  let output_char       = BatChar.Char.print
+  let output_string     = BatString.String.print
   let output_rope       = Rope.print
   let output oc buf pos len = 
     ignore (IO.output oc buf pos len)
   let output_byte       = IO.write_byte
   let output_binary_int = IO.write_i32
-  let output_value out v= ExtMarshal.Marshal.output out v
+  let output_value out v= BatMarshal.Marshal.output out v
   let close_out         = IO.close_out
   let close_out_noerr out = 
     try IO.close_out out
@@ -87,7 +87,7 @@ module Pervasives = struct
   let close_in_noerr inp=
     try IO.close_in inp
     with _ -> ()
-  let input_value       = ExtMarshal.Marshal.input
+  let input_value       = BatMarshal.Marshal.input
 
   let print_all inp     = IO.copy inp IO.stdout
   let prerr_all inp     = IO.copy inp IO.stderr
@@ -301,7 +301,7 @@ module Pervasives = struct
   let printer_rope k x = k (fun oc -> Rope.print oc x)
   let printer_utf8 k x = k (fun oc -> UTF8.print oc x)
   let printer_obj k x = k x#print
-  let printer_exn k x = k (fun oc -> ExtPrintexc.Printexc.print oc x)
+  let printer_exn k x = k (fun oc -> BatPrintexc.Printexc.print oc x)
 
   let printer_int  = printer_i
   let printer_uint = printer_u

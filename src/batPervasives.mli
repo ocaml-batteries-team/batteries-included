@@ -30,8 +30,8 @@
 *)
 
 open IO
-open ExtUTF8
-open ExtString
+open BatUTF8
+open BatString
 
 (** The initially opened module.
     

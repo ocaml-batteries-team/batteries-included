@@ -522,9 +522,9 @@ let take_while p =
     | _                  -> rev_of_list acc
   in aux []
 
-let sort ?cmp l = of_list (ExtList.List.sort ?cmp (to_list l))
+let sort ?cmp l = of_list (BatList.List.sort ?cmp (to_list l))
 
-let stable_sort cmp l = of_list (ExtList.List.stable_sort cmp (to_list l))
+let stable_sort cmp l = of_list (BatList.List.stable_sort cmp (to_list l))
 
 let map2 f l1 l2 =
   let rec aux l1 l2 =

@@ -444,7 +444,7 @@ module Genarray :
     (** [iter f a] applies function [f] in turn to all
 	the elements of [a].  *)
 
-  val iteri : ((int, [`Read]) ExtArray.Array.Cap.t -> 'a -> unit) -> ('a, 'b, 'c) t -> unit
+  val iteri : ((int, [`Read]) BatArray.Array.Cap.t -> 'a -> unit) -> ('a, 'b, 'c) t -> unit
    (** Same as {!iter}, but the
        function is applied to the index of the coordinates as the first 
        argument, and the element itself as the second argument. *)
@@ -460,7 +460,7 @@ module Genarray :
        and builds a {!Bigarray.t} with the results returned by [f]. *)
  
    val mapi :
-     ((int, [`Read]) ExtArray.Array.Cap.t -> 'a -> 'b) ->
+     ((int, [`Read]) BatArray.Array.Cap.t -> 'a -> 'b) ->
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
    (** Same as {!map}, but the
        function is applied to the index of the coordinates as the first 

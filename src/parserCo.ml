@@ -1,5 +1,5 @@
-open ExtList
-open ExtString
+open BatList
+open BatString
 open List
 open LazyList
 open IO

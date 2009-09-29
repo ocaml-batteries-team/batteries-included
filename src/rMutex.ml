@@ -91,7 +91,7 @@ let unlock m =
 
 end
 
-module Lock = Extlib.Concurrent.MakeLock(BaseRMutex)
+module Lock = Concurrent.MakeLock(BaseRMutex)
 
 include BaseRMutex
 

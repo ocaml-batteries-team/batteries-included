@@ -18,19 +18,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Extlib
-
 (** {6 Printing values}*)
 
 (** {7 Unicode}*)
 
-open ExtUChar
-open ExtUTF8
+open BatUChar
+open BatUTF8
 
 val print_uchar : Format.formatter -> UChar.t -> unit
 (** Pretty-print a [UChar.t]*)
 
-val print_rope : Format.formatter -> Extlib.Rope.t -> unit
+val print_rope : Format.formatter -> Rope.t -> unit
 (** Pretty-print a [Rope.t]*)
 
 val print_ustring : Format.formatter -> UTF8.t -> unit
@@ -38,7 +36,7 @@ val print_ustring : Format.formatter -> UTF8.t -> unit
 
 (** Pretty-print [String.Cap.t]*)
 
-open ExtString
+open BatString
 
 val print_string_cap_rw: Format.formatter -> [> `Read | `Write] String.Cap.t -> unit
 (** Pretty-print a read-write [String.Cap.t] (prefixes output with "rw")*)

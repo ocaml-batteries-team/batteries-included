@@ -46,8 +46,8 @@ module BaseComplex = struct
 
   let compare = Pervasives.compare
 
-  open ExtGenlex.Genlex
-  open ExtString
+  open BatGenlex.Genlex
+  open BatString
 
   let of_string x =
     let enum = 

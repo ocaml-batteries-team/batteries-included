@@ -32,8 +32,8 @@ let string_splice s1 off len s2 =
 
 module UTF8 = struct
   open CamomileLibrary
-  open ExtString
-  open ExtList
+  open BatString
+  open BatList
   include CamomileLibrary.UTF8
   module Case = CaseMap.Make(CamomileDefaultConfig)(UTF8)
 

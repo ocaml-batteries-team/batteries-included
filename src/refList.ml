@@ -19,7 +19,7 @@
  *)
 
 
-open ExtList
+open BatList
 
 exception Empty_list
 exception Invalid_index of int
@@ -110,8 +110,8 @@ let of_enum e = ref (List.of_enum e)
 let backwards     rl = List.backwards !rl
 let of_backwards  e  = ref (List.of_backwards e)
 
-let fold_left f a l = ExtList.List.fold_left f a !l
-let fold_right f l a = ExtList.List.fold_right f !l a
+let fold_left f a l = BatList.List.fold_left f a !l
+let fold_right f l a = BatList.List.fold_right f !l a
 
 module Index = struct
 

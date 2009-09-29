@@ -5,11 +5,11 @@ module Genlex = struct
 include Genlex
 
 open ParserCo
-open ExtHashtbl
-open ExtString
-open ExtChar
-open ExtInt
-open ExtFloat
+open BatHashtbl
+open BatString
+open BatChar
+open BatInt
+open BatFloat
 open CharParser
 open Std
 
@@ -224,7 +224,7 @@ let to_enum_filter kwd_table =
     
 	
 let to_stream_filter (kwd_table:t) (x:char Stream.t) : token Stream.t =
-  (ExtStream.Stream.of_enum (to_enum_filter kwd_table (ExtStream.Stream.enum x)))
+  (BatStream.Stream.of_enum (to_enum_filter kwd_table (BatStream.Stream.enum x)))
 
 let to_lazy_list_filter kwd_table x =
   (LazyList.of_enum (to_enum_filter kwd_table (LazyList.enum x)))

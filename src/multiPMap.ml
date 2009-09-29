@@ -90,4 +90,4 @@ let of_enum ?(keys=compare) ?(data=compare) e =
     Enum.fold (fun acc (k,d) -> add k d acc) base e
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-  Enum.print ~first ~last ~sep (fun out (k, v) -> ExtPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+  Enum.print ~first ~last ~sep (fun out (k, v) -> BatPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)

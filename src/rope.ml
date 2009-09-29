@@ -27,9 +27,9 @@
  *)
 
 
-open ExtUTF8
-open ExtUChar
-open ExtList
+open BatUTF8
+open BatUChar
+open BatList
 open Return
 
 (**Low-level optimization*)

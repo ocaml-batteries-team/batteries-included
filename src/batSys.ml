@@ -24,5 +24,5 @@
 module Sys =
 struct
   include Sys
-  let files_of d = ExtArray.Array.enum (readdir d)
+  let files_of d = BatArray.Array.enum (readdir d)
 end

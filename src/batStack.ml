@@ -20,7 +20,7 @@
  *)
 
 
-open ExtList
+open BatList
 
 module Stack =
 struct

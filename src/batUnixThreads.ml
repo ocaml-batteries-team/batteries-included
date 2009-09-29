@@ -20,6 +20,6 @@
  *)
 
 
-include Extlib.ExtUnix;;
+include BatUnix;;
 
-Unix.lock := ExtMutex.Mutex.make ()
+Unix.lock := BatMutex.Mutex.make ()

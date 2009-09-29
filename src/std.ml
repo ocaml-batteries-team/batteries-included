@@ -222,7 +222,7 @@ let invisible_args = ref 1
 usually because program-name is put in argv.(0) *)
 
 let args () =
-  let e = ExtArray.Array.enum Sys.argv in
+  let e = BatArray.Array.enum Sys.argv in
     Enum.drop !invisible_args e;
     e
 

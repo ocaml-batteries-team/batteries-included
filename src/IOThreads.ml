@@ -21,10 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Extlib
 include IO
 
-open ExtMutex;;
+open BatMutex;;
 lock         := RMutex.make ();;
 lock_factory := RMutex.make;;
 (*

@@ -120,7 +120,7 @@ module Random = struct
     let next state = State.char state in
       random_enum next
 
-  open ExtArray
+  open BatArray
 
   let choice e =
     let a   = Array.of_enum e in

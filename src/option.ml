@@ -65,7 +65,7 @@ let of_enum = Enum.get
 
 let print print_a out = function
   | None   -> InnerIO.nwrite out "None"
-  | Some x -> ExtPrintf.Printf.fprintf out "Some %a" print_a x
+  | Some x -> BatPrintf.Printf.fprintf out "Some %a" print_a x
 
 let t_printer a_printer paren out = function
   | Some x ->

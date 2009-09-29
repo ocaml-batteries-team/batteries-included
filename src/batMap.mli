@@ -36,8 +36,8 @@
 module Map:
 sig
 
-  open ExtString
-  open ExtInt
+  open BatString
+  open BatInt
 
 module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Map.Make}. *)

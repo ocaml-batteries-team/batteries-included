@@ -1,7 +1,0 @@
-name="batteries_threads"
-version="0.1"
-description="Batteries Included, standard distribution of OCaml libraries (mt version)"
-requires="unix,num,bigarray,threads,str,findlib,camomile,@OCAMLPKG_zip@,netstring"
-
-archive(byte)  ="batteries.cma"
-archive(native)="batteries.cmxa"

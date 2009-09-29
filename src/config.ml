@@ -18,7 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-INCLUDE "../config.ml"
+let version = "@VERSION@";;
+let documentation_root = "@DOCROOT@";;
+let (browser: (_, _, _) format) = "@BROWSER_COMMAND@";;
 
 (**The default function to open a www browser.*)
 let default_browse s =
