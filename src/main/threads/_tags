@@ -1,4 +1,0 @@
-<*>  :pkg_threads
-<batteries.cma>         :autolib
-<*>: debug,pkg_camomile,pkg_str,pkg_findlib,pkg_camlzip,pkg_zip,pkg_netstring,pkg_dynlink,pkg_num
-<run.native>: debug,link_all,pkg_camomile,pkg_str,pkg_findlib,pkg_camlzip,pkg_zip,pkg_netstring,pkg_dynlink

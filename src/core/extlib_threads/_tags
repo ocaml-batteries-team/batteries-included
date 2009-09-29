@@ -1,2 +1,0 @@
-<*>: pkg_threads
-<*.cmx>: for-pack(Extlib_threads)

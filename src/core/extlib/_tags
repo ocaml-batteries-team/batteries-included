@@ -1,7 +1,0 @@
-<*.cmx>: for-pack(Batteries_core_pack.Extlib)
-<*.ml>: pkg_camomile
-<*.mli>: pkg_camomile,use_optcomp
-<IO.*>: principal
-<innerIO.*>: principal
-<extUnixThreads.*>: pkg_threads
-<*.mli>: use_optcomp_o
