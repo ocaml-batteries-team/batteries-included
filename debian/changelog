@@ -1,4 +1,4 @@
-ocaml-batteries (0.20090405+beta1-3) UNRELEASED; urgency=low
+ocaml-batteries (0.20090405+beta1-3) unstable; urgency=low
 
   * debian/control
     - bump Standards-Version to 3.8.3 (no changes needed)
@@ -11,7 +11,7 @@ ocaml-batteries (0.20090405+beta1-3) UNRELEASED; urgency=low
     - stop using ocamldoc-api-ref-config (gone now), rather ship a
       hand-written doc-base entry (Closes: #549795)
 
- -- Stefano Zacchiroli <zack@debian.org>  Tue, 06 Oct 2009 20:55:03 +0200
+ -- Stefano Zacchiroli <zack@debian.org>  Wed, 07 Oct 2009 10:51:36 +0200
 
 ocaml-batteries (0.20090405+beta1-2) unstable; urgency=low
 
