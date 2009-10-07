@@ -64,12 +64,7 @@ Description: Batteries included: OCaml development platform - development files
 Package: libbatteries-ocaml-doc
 Section: doc
 Architecture: all
-Depends:
- ${shlibs:Depends},
- ${misc:Depends}
-Provides:
- libbatteries-camlp4-dev,
- ocaml-batteries-included
+Depends: ${misc:Depends}
 Description: Batteries included - OCaml development platform - documentation
  Batteries included is a community-driven effort to standardize on an
  uniform, documented, and comprehensive OCaml development platform.
