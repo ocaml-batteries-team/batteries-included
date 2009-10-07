@@ -13,7 +13,7 @@ Build-Depends:
  libbin-prot-camlp4-dev,
  libzip-ocaml-dev,
  libocamlnet-ocaml-dev,
- dh-ocaml (>= 0.4),
+ dh-ocaml (>= 0.9),
  camlp4,
  camlp4-extra,
  quilt,
@@ -28,7 +28,6 @@ Package: libbatteries-ocaml-dev
 Section: ocaml
 Architecture: any
 Depends:
- ocaml-nox-${F:OCamlABI},
  camlp4,
  ocaml-findlib,
  libcamomile-ocaml-dev,
@@ -37,11 +36,14 @@ Depends:
  libbin-prot-camlp4-dev,
  libzip-ocaml-dev,
  libocamlnet-ocaml-dev,
+ ${ocaml:Depends},
  ${shlibs:Depends},
  ${misc:Depends}
 Recommends: libbatteries-ocaml-doc
 Suggests: ledit
-Provides: libbatteries-camlp4-dev
+Provides:
+ libbatteries-camlp4-dev,
+ ${ocaml:Provides}
 Description: Batteries included: OCaml development platform - development files
  Batteries included is a community-driven effort to standardize on an
  uniform, documented, and comprehensive OCaml development platform.

@@ -2,6 +2,8 @@ ocaml-batteries (0.20090405+beta1-3) UNRELEASED; urgency=low
 
   * debian/control
     - bump Standards-Version to 3.8.3 (no changes needed)
+    - use dh-ocaml to infer/provide dependencies, keep hand-written
+      dependencies for the interim; bump build-dep on dh-ocaml to 0.9
   * debian/rules
     - switch {debhelper,patchsys-quilt}.mk: fix debian/*.log cleanup
     - stop using ocamldoc-api-ref-config (gone now), rather ship a
