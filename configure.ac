@@ -160,28 +160,28 @@ AC_ARG_WITH(
 if test "$INSTALLATION" = "GODI"; then
   AC_MSG_NOTICE([Installing to GODI default directory])
   DESTDIR="`$OCAMLFIND printconf destdir`"
-  AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
-  if test -z "$OCAMLPKG_batteries"; then
+  AC_CHECK_OCAML_PKG_SILENTLY(aaa, OCAMLPKG_aaa)
+  if test -z "$OCAMLPKG_aaa"; then
    	DESTDIR=`$OCAMLFIND printconf destdir`
   else
-	AC_MSG_ERROR([Batteries is already installed])
+	AC_MSG_ERROR([AAA-Batteries is already installed])
 	exit 1
   fi
   BUILD_DOC="yes"
 else
    if test "${prefix}" = "NONE"; then
         AC_MSG_NOTICE([Locating default installation directory])
-	AC_CHECK_OCAML_PKG_SILENTLY(batteries, OCAMLPKG_batteries)
-	if test -z "$OCAMLPKG_batteries"; then
+	AC_CHECK_OCAML_PKG_SILENTLY(aaa, OCAMLPKG_aaa)
+	if test -z "$OCAMLPKG_aaa"; then
    	   DESTDIR=`$OCAMLFIND printconf destdir`
 	else
-	   AC_MSG_WARN([Batteries is already installed])
+	   AC_MSG_WARN([AAA-Batteries is already installed])
    	   AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
-   	   DESTDIR=`dirname $OCAMLPKG_batteries`
+   	   DESTDIR=`dirname $OCAMLPKG_aaa`
 	fi
    else
 	AC_MSG_NOTICE([Using user-provided prefix ${prefix}])
-	DESTDIR="${prefix}/lib/batteries"
+	DESTDIR="${prefix}/lib/aaa"
    fi
 fi
 if test "$BUILD_DOC" = "yes"; then
