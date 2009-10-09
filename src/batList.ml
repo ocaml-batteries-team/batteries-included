@@ -1,5 +1,5 @@
 (*
- * ExtList - additional and modified functions for lists.
+ * BatList - additional and modified functions for lists.
  * Copyright (C) 2003 Brian Hurt
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2008 Red Hat Inc.
@@ -663,7 +663,7 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
 let t_printer a_printer paren out x = print (a_printer false) out x
 
 let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a list =
-  ExtPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
+  BatPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
 (*  let os = InnerIO.output_string  () in
   print ~first ~last ~sep print_a os list;
   InnerIO.close_out os (* returns contents *)*)
