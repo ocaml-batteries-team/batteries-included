@@ -95,14 +95,11 @@ DESTDIR = @DESTDIR@
 # ocamlbuild will be instructed to create.
 ########################################################################
 
-SOURCES = batteries_config.ml base64.ml batArg.ml batArray.ml batBigarray.ml batBig_int.ml batBool.ml batChar.ml batComplex.ml batDigest.ml batFloat.ml batFormat.ml batGc.ml batGenlex.ml batHashtbl.ml batInt32.ml batInt64.ml batInt.ml batLexing.ml batMap.ml batMarshal.ml batMutex.ml batNativeint.ml batNum.ml batOo.ml batPervasives.ml batPrintexc.ml batPrintf.ml batQueue.ml batRandom.ml batScanf.ml batSet.ml batStack.ml batStream.ml batString.ml batStr.ml batSys.ml batUChar.ml batUnit.ml batUnixThreads.ml batUTF8.ml bitSet.ml charEncodings.ml charParser.ml concurrent.ml dllist.ml dynArray.ml enum.ml file.ml global.ml innerIO.ml innerWeaktbl.ml interfaces.ml IO.ml IOThreads.ml lazyList.ml logger.ml monad.ml multiPMap.ml number.ml option.ml optParse.ml parserCo.ml pathGen.ml pMap.ml print.ml pSet.ml refList.ml ref.ml result.ml return.ml rMutex.ml rope.ml seq.ml std.ml substring.ml uCharParser.ml value_printer.ml vect.ml avlTree.ml iMap.ml iSet.ml
-
-
-BYTE_TARGETS = $(SOURCES:.ml=.cmo)
+BYTE_TARGETS = batteries.cma
 
 
 #ifeq ($(BUILD_RUNNER),yes)
-OPT_TARGETS = $(SOURCES:.ml=.cmx)
+OPT_TARGETS = batteries.cmxa
 #else
 #OPT_TARGETS = src/main/threads/batteries.cmxa 
 #endif
@@ -151,13 +148,6 @@ endif
 #endif
 
 
-config.ml: Makefile
-	@\rm -f config.ml &&\
-	echo 'let version = "$(VERSION)";;' >> config.ml &&\
-	echo 'let documentation_root = "$(DOCDIR)";;' >> config.ml &&\
-	echo 'let (browser: (_, _, _) format) = "$(BROWSER)";;' >> config.ml
-
-
 #Useful for testing
 reinstall: test_all_code
 test_all_code: install_all_code
@@ -188,27 +178,13 @@ install:
 	chmod ugo+rx src/batteries_toolchain/ocaml* && \
 	ocamlfind install $(DESTDIR_FLAGS) aaa \
 		build/META \
-		_build/src/core/extlib/IO.cmi \
-		_build/src/core/extlib/innerIO.cmi \
-		_build/src/core/extlib.cmi \
-		_build/src/core/batteries_config.cmi \
-		_build/src/main/threads/batteries.cmi \
+		_build/*.cmi \
+		_build/src/*.cmi \
+		$(addprefix _build/, $(BYTE_TARGETS)) \
 		-optional \
-			_build/src/batteries_toolchain/batteries_help.cmi \
-			_build/src/batteries_toolchain/batteries_print.cmi \
-			_build/src/batteries_toolchain/batteries_help.cmo \
-			_build/src/batteries_toolchain/batteries_print.cmo \
-			_build/src/batteries_toolchain/toplevel.top \
-			src/batteries_toolchain/top.ml \
-			src/batteries_toolchain/ocaml \
-			src/batteries_toolchain/ocamlbuild \
-			src/batteries_toolchain/ocamlc \
-			src/batteries_toolchain/ocamlopt \
-			src/batteries_toolchain/ocamlcp \
-			src/batteries_toolchain/ocamldep \
-			_build/src/main/threads/batteries.cma \
-			_build/src/main/threads/batteries.cmxa \
-			_build/src/main/threads/batteries.a
+			_build/batteries.a \
+			$(addprefix _build/, $(OPT_TARGETS)) 
+
 uninstall:
 	\rm -Rf $(DOCDIR) &&\
 	ocamlfind remove $(DESTDIR_FLAGS) aaa
@@ -241,11 +217,11 @@ examples:
 
 tests:
 	cd testsuite && ocamlbuild -clean && \
-	ocamlfind batteries/ocamlbuild main.byte main.native 
+	ocamlbuild main.byte main.native 
 
 tests_byte:
-	cd testsuite && ocamlfind batteries/ocamlbuild -clean && \
-	ocamlfind batteries/ocamlbuild main.byte
+	cd testsuite && ocamlbuild -clean && \
+	ocamlbuild main.byte
 
 run_tests: tests run_tests_native run_tests_byte run_tests_interp
 
