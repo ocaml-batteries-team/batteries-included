@@ -22,8 +22,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 open Printf
-open BatString
-open BatList
 
 
 let terminal_width =
@@ -44,9 +42,9 @@ module GetOpt =
 
     let split1 haystack needle =
       try 
-        let (h, x) = String.split haystack needle in h, [x] 
+        let (h, x) = BatString.split haystack needle in h, [x] 
       with
-        Invalid_string -> haystack, []
+        Not_found -> haystack, []
 
     let find_opt format_name options s =
       let rec loop l =
@@ -64,14 +62,14 @@ module GetOpt =
       let rec loop args =
         let rec gather_args name n args =
           try 
-            List.split_nth n args 
+            BatList.split_nth n args 
           with
-            List.Invalid_index _ ->
+            Invalid_argument _ ->
               raise (Error (name, "missing required arguments"))
         in
         let gather_long_opt s args =
           let (h, t) = split1 s "=" in
-          let (_, nargs, action) = find_long_opt (String.slice ~first:2 h) in
+          let (_, nargs, action) = find_long_opt (BatString.slice ~first:2 h) in
           let (accum, args') = gather_args h (nargs - List.length t) args in
           action h (t @ accum); args'
         in
@@ -101,7 +99,7 @@ module GetOpt =
           if nargs = 0 then gather_short_opt_concat false s k args
           else
             let (accum, args') =
-              let h = String.slice ~first:(k+1) s in
+              let h = BatString.slice ~first:(k+1) s in
               if String.length h = 0 then gather_args ostr nargs args
               else
                 let (t, args'') = gather_args ostr (nargs - 1) args in
@@ -113,10 +111,10 @@ module GetOpt =
           [] -> []
         | arg :: args' ->
             if arg = "--" then args'
-            else if String.starts_with arg "--" then
+            else if BatString.starts_with arg "--" then
               loop (gather_long_opt arg args')
             else if arg = "-" then begin other arg; loop args' end
-            else if String.starts_with arg "-" then
+            else if BatString.starts_with arg "-" then
               loop (gather_short_opt arg 1 args')
             else begin other arg; loop args' end
       in
@@ -456,7 +454,7 @@ module Formatter =
               fill ~initial_indent:(!indent) ~subsequent_indent:(!indent)
                 description (width - !indent)
             in
-              if not (String.ends_with x "\n") then x ^ "\n\n" else x ^ "\n");
+              if not (BatString.ends_with x "\n") then x ^ "\n\n" else x ^ "\n");
         
         format_option =
          fun names metavars help ->
@@ -489,7 +487,7 @@ module Formatter =
            let contents =
              Buffer.contents buf
            in
-             if String.length contents > 0 && not (String.ends_with contents "\n") then
+             if String.length contents > 0 && not (BatString.ends_with contents "\n") then
                contents ^ "\n"
              else
                contents
@@ -554,7 +552,7 @@ module OptParser =
     }
 
     let unprogify optparser s =
-      (snd (String.replace ~str:s ~sub:"%prog" ~by:optparser.op_prog))
+      (snd (BatString.replace ~str:s ~sub:"%prog" ~by:optparser.op_prog))
 
     let add optparser ?(group = optparser.op_groups) ?help ?(hide = false)
       ?short_name ?(short_names = []) ?long_name ?(long_names = []) opt =

@@ -33,11 +33,6 @@
 
     @documents Map
 *)
-module Map:
-sig
-
-  open BatString
-  open BatInt
 
 module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Map.Make}. *)
@@ -226,7 +221,7 @@ module RopeMap    : S with type key = Rope.t
 module IRopeMap   : S with type key = Rope.t
 (** A map on ropes. Comparison of ropes ignores case (i.e. r"foo" = r"Foo")*)
 
-module IntMap     : S with type key = Int.t
+module IntMap     : S with type key = BatInt.t
 (** A map on integers.*)
 
 module Make (Ord : OrderedType) : S with type key = Ord.t
@@ -235,4 +230,4 @@ module Make (Ord : OrderedType) : S with type key = Ord.t
 
     @documents Map.Make
 *)
-end
+

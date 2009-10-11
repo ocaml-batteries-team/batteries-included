@@ -23,8 +23,6 @@
 
 open BatArray
 
-module Bigarray =
-struct
   type float32_elt = Bigarray.float32_elt
   type float64_elt = Bigarray.float64_elt
   type complex32_elt = Bigarray.complex32_elt
@@ -118,7 +116,7 @@ struct
 
     let iter f e =
       let dims     = dims     e in
-      let coor     = Array.Labels.create (num_dims e) ~init:0 in
+      let coor     = Labels.create (num_dims e) ~init:0 in
 	f (get e coor);
 	while inplace_next ~dims ~coor do
 	  f (get e coor)
@@ -126,15 +124,15 @@ struct
 
     let iteri f e =
       let dims     = dims     e in
-      let coor     = Array.Labels.create (num_dims e) ~init:0 in
-	f (Array.Cap.of_array coor) (get e coor);
+      let coor     = Labels.create (num_dims e) ~init:0 in
+	f (Cap.of_array coor) (get e coor);
 	while inplace_next ~dims ~coor do
-	  f (Array.Cap.of_array coor) (get e coor)
+	  f (Cap.of_array coor) (get e coor)
 	done
 	  
     let enum e =
       let dims   = dims e
-      and coor   = Array.Labels.create (num_dims e) ~init:0 
+      and coor   = Labels.create (num_dims e) ~init:0 
       and status = ref `ongoing in
 	Enum.from (fun () ->
 		     match !status with
@@ -156,13 +154,13 @@ struct
     let map f b_kind a =
       let d = dims a in
       let b = create b_kind (layout a) d in
-	iteri (fun i x -> set b (Array.Cap.to_array i) (f x)) a;
+	iteri (fun i x -> set b (Cap.to_array i) (f x)) a;
 	b
 
     let mapi f b_kind a =
       let d = dims a in
       let b = create b_kind (layout a) d in
-	iteri (fun i x -> set b (Array.Cap.to_array i) (f (Array.Cap.read_only i) x)) a;
+	iteri (fun i x -> set b (Cap.to_array i) (f (Cap.read_only i) x)) a;
 	b
   end
 
@@ -285,4 +283,3 @@ struct
           )
       )
   end
-end

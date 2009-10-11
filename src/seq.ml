@@ -273,7 +273,7 @@ let t_printer a_printer paren out s =
   print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out s
 
 let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a s =
-  BatPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) s
+  InnerIO.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) s
 
 module Exceptionless = struct
   (* This function could be used to eliminate a lot of duplicate code below...

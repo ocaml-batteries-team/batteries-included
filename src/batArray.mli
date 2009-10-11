@@ -47,8 +47,6 @@
     @author Richard W.M. Jones
     @author David Teller
 *)
-module Array :
-sig
 
   type 'a t = 'a array (** The type of arrays.  *)
 
@@ -868,4 +866,4 @@ module Labels : sig
 end
 
 
-end
+

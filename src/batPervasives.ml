@@ -22,19 +22,6 @@
  *)
 
 
-open BatUTF8
-open BatInt
-open BatInt32
-open BatInt64
-open BatNativeint
-open BatString
-open BatBool
-open BatList
-open BatArray
-open BatFloat
-open BatPrintexc
-
-module Pervasives = struct
   include Pervasives
   include Std
   open Enum
@@ -58,14 +45,14 @@ module Pervasives = struct
   let flush_all         = IO.flush_all
   let close_all         = IO.close_all
   
-  let output_char       = BatChar.Char.print
-  let output_string     = BatString.String.print
+  let output_char       = BatChar.print
+  let output_string     = BatString.print
   let output_rope       = Rope.print
   let output oc buf pos len = 
     ignore (IO.output oc buf pos len)
   let output_byte       = IO.write_byte
   let output_binary_int = IO.write_i32
-  let output_value out v= BatMarshal.Marshal.output out v
+  let output_value out v= BatMarshal.output out v
   let close_out         = IO.close_out
   let close_out_noerr out = 
     try IO.close_out out
@@ -87,7 +74,7 @@ module Pervasives = struct
   let close_in_noerr inp=
     try IO.close_in inp
     with _ -> ()
-  let input_value       = BatMarshal.Marshal.input
+  let input_value       = BatMarshal.input
 
   let print_all inp     = IO.copy inp IO.stdout
   let prerr_all inp     = IO.copy inp IO.stderr
@@ -188,11 +175,11 @@ module Pervasives = struct
   let printer_sc ?(flags=default_printer_flags) k x =
     match flags.pf_width with
       | None ->
-          k (fun oc -> String.Cap.print oc x)
+          k (fun oc -> BatString.Cap.print oc x)
       | Some n ->
-          let len = String.Cap.length x in
+          let len = BatString.Cap.length x in
           if len >= n then
-            k (fun oc -> String.Cap.print oc x)
+            k (fun oc -> BatString.Cap.print oc x)
           else
             match flags.pf_justify with
               | `right ->
@@ -200,19 +187,19 @@ module Pervasives = struct
                        for i = len + 1 to n do
                          IO.write oc flags.pf_padding_char
                        done;
-                       String.Cap.print oc x)
+                       BatString.Cap.print oc x)
               | `left ->
                   k (fun oc ->
-                       String.Cap.print oc x;
+                       BatString.Cap.print oc x;
                        for i = len + 1 to n do
                          IO.write oc flags.pf_padding_char
                        done)
 
   let printer_S ?flags k x =
-    printer_s ?flags k (String.quote x)
+    printer_s ?flags k (BatString.quote x)
 
   let printer_Sc ?flags k x =
-    printer_s ?flags k (String.Cap.quote x)
+    printer_s ?flags k (BatString.Cap.quote x)
 
 
     
@@ -232,7 +219,7 @@ module Pervasives = struct
       aux [] n
 
   let printer_unum mk_digit base op ?flags k x =
-    printer_s ?flags k (String.implode (digits mk_digit base op x))
+    printer_s ?flags k (BatString.implode (digits mk_digit base op x))
 
   let printer_snum mk_digit base op ?(flags=default_printer_flags) k x =
     let l = digits mk_digit base op x in
@@ -246,7 +233,7 @@ module Pervasives = struct
           | Some c ->
               c :: l
     in
-    printer_s ~flags k (String.implode l)
+    printer_s ~flags k (BatString.implode l)
 
   let dec_digit x =
     char_of_int (int_of_char '0' + x)
@@ -265,33 +252,33 @@ module Pervasives = struct
     else
       char_of_int (int_of_char 'A' + x - 10)
 
-  let printer_d ?flags k x = printer_snum dec_digit 10 Int.operations ?flags k x
-  let printer_i ?flags k x = printer_snum dec_digit 10 Int.operations ?flags k x
-  let printer_u ?flags k x = printer_unum dec_digit 10 Int.operations ?flags k x
-  let printer_x ?flags k x = printer_unum lhex_digit 16 Int.operations ?flags k x
-  let printer_X ?flags k x = printer_unum uhex_digit 16 Int.operations ?flags k x
-  let printer_o ?flags k x = printer_unum oct_digit 8 Int.operations ?flags k x
+  let printer_d ?flags k x = printer_snum dec_digit 10 BatInt.operations ?flags k x
+  let printer_i ?flags k x = printer_snum dec_digit 10 BatInt.operations ?flags k x
+  let printer_u ?flags k x = printer_unum dec_digit 10 BatInt.operations ?flags k x
+  let printer_x ?flags k x = printer_unum lhex_digit 16 BatInt.operations ?flags k x
+  let printer_X ?flags k x = printer_unum uhex_digit 16 BatInt.operations ?flags k x
+  let printer_o ?flags k x = printer_unum oct_digit 8 BatInt.operations ?flags k x
 
-  let printer_ld ?flags k x = printer_snum dec_digit 10l Int32.operations ?flags k x
-  let printer_li ?flags k x = printer_snum dec_digit 10l Int32.operations ?flags k x
-  let printer_lu ?flags k x = printer_unum dec_digit 10l Int32.operations ?flags k x
-  let printer_lx ?flags k x = printer_unum lhex_digit 16l Int32.operations ?flags k x
-  let printer_lX ?flags k x = printer_unum uhex_digit 16l Int32.operations ?flags k x
-  let printer_lo ?flags k x = printer_unum oct_digit 8l Int32.operations ?flags k x
+  let printer_ld ?flags k x = printer_snum dec_digit 10l BatInt32.operations ?flags k x
+  let printer_li ?flags k x = printer_snum dec_digit 10l BatInt32.operations ?flags k x
+  let printer_lu ?flags k x = printer_unum dec_digit 10l BatInt32.operations ?flags k x
+  let printer_lx ?flags k x = printer_unum lhex_digit 16l BatInt32.operations ?flags k x
+  let printer_lX ?flags k x = printer_unum uhex_digit 16l BatInt32.operations ?flags k x
+  let printer_lo ?flags k x = printer_unum oct_digit 8l BatInt32.operations ?flags k x
 
-  let printer_Ld ?flags k x = printer_snum dec_digit 10L Int64.operations ?flags k x
-  let printer_Li ?flags k x = printer_snum dec_digit 10L Int64.operations ?flags k x
-  let printer_Lu ?flags k x = printer_unum dec_digit 10L Int64.operations ?flags k x
-  let printer_Lx ?flags k x = printer_unum lhex_digit 16L Int64.operations ?flags k x
-  let printer_LX ?flags k x = printer_unum uhex_digit 16L Int64.operations ?flags k x
-  let printer_Lo ?flags k x = printer_unum oct_digit 8L Int64.operations ?flags k x
+  let printer_Ld ?flags k x = printer_snum dec_digit 10L BatInt64.operations ?flags k x
+  let printer_Li ?flags k x = printer_snum dec_digit 10L BatInt64.operations ?flags k x
+  let printer_Lu ?flags k x = printer_unum dec_digit 10L BatInt64.operations ?flags k x
+  let printer_Lx ?flags k x = printer_unum lhex_digit 16L BatInt64.operations ?flags k x
+  let printer_LX ?flags k x = printer_unum uhex_digit 16L BatInt64.operations ?flags k x
+  let printer_Lo ?flags k x = printer_unum oct_digit 8L BatInt64.operations ?flags k x
 
-  let printer_nd ?flags k x = printer_snum dec_digit 10n Native_int.operations ?flags k x
-  let printer_ni ?flags k x = printer_snum dec_digit 10n Native_int.operations ?flags k x
-  let printer_nu ?flags k x = printer_unum dec_digit 10n Native_int.operations ?flags k x
-  let printer_nx ?flags k x = printer_unum lhex_digit 16n Native_int.operations ?flags k x
-  let printer_nX ?flags k x = printer_unum uhex_digit 16n Native_int.operations ?flags k x
-  let printer_no ?flags k x = printer_unum oct_digit 8n Native_int.operations ?flags k x
+  let printer_nd ?flags k x = printer_snum dec_digit 10n BatNativeint.operations ?flags k x
+  let printer_ni ?flags k x = printer_snum dec_digit 10n BatNativeint.operations ?flags k x
+  let printer_nu ?flags k x = printer_unum dec_digit 10n BatNativeint.operations ?flags k x
+  let printer_nx ?flags k x = printer_unum lhex_digit 16n BatNativeint.operations ?flags k x
+  let printer_nX ?flags k x = printer_unum uhex_digit 16n BatNativeint.operations ?flags k x
+  let printer_no ?flags k x = printer_unum oct_digit 8n BatNativeint.operations ?flags k x
 
   let printer_f k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%f" x))
   let printer_F k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%F" x))
@@ -299,9 +286,9 @@ module Pervasives = struct
   let printer_format k fmt = fmt.Print.printer fmt.Print.pattern k
 
   let printer_rope k x = k (fun oc -> Rope.print oc x)
-  let printer_utf8 k x = k (fun oc -> UTF8.print oc x)
+  let printer_utf8 k x = k (fun oc -> BatUTF8.print oc x)
   let printer_obj k x = k x#print
-  let printer_exn k x = k (fun oc -> BatPrintexc.Printexc.print oc x)
+  let printer_exn k x = k (fun oc -> BatPrintexc.print oc x)
 
   let printer_int  = printer_i
   let printer_uint = printer_u
@@ -311,24 +298,23 @@ module Pervasives = struct
 
   (** {6 Value printers} *)
 
-  let bool_printer = Bool.t_printer
-  let int_printer = Int.t_printer
-  let int32_printer = Int32.t_printer
-  let int64_printer = Int64.t_printer
-  let nativeint_printer = Native_int.t_printer
-  let float_printer = Float.t_printer
-  let string_printer = String.t_printer
-  let list_printer = List.t_printer
-  let array_printer = Array.t_printer
+  let bool_printer = BatBool.t_printer
+  let int_printer = BatInt.t_printer
+  let int32_printer = BatInt32.t_printer
+  let int64_printer = BatInt64.t_printer
+  let nativeint_printer = BatNativeint.t_printer
+  let float_printer = BatFloat.t_printer
+  let string_printer = BatString.t_printer
+  let list_printer = BatList.t_printer
+  let array_printer = BatArray.t_printer
   let option_printer = Option.t_printer
   let maybe_printer = Option.maybe_printer
   let exn_printer paren out x =
     if paren then IO.write out '(';
-    Printexc.print out x;
+    BatPrintexc.print out x;
     if paren then IO.write out ')'
 
   (** {6 Clean-up}*)
 
   let _ = at_exit close_all; (*Called second*)
           at_exit flush_all  (*Called first*)
-end

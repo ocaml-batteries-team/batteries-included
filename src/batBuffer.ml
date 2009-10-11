@@ -23,11 +23,6 @@
 
 open ExtString
 
-module Buffer =
-struct
-
-  include Buffer
-
   (**The underlying buffer type.*)
   type buffer = 
       {mutable buffer : string;(**Contents of the buffer*)
@@ -63,4 +58,4 @@ struct
       if srcoff < 0 || len < 0 || srcoff > buf.position - len
       then invalid_arg "Buffer.blit"
       else String.blit buf.buffer srcoff dst dstoff len
-end
+

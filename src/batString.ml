@@ -25,13 +25,11 @@
 let int_min (x:int) (y:int) = if x < y then x else y
 let int_max (x:int) (y:int) = if x < y then y else x
 
-exception Invalid_string
+open String
 
-module String = struct
+type t = string
 
-exception Invalid_string = Invalid_string
-
-include String
+let compare = String.compare
 
 let init len f =
 	let s = create len in
@@ -73,7 +71,7 @@ let find_from str ofs sub =
     if sublen = 0 then ofs (*If [sub] is the empty string, by convention, it may be found wherever we started searching.*)
     else
       let len = length str in
-	if len = 0 then raise Invalid_string else
+	if len = 0 then invalid_arg "Empty string to search in" else
 	if 0 > ofs || ofs >= len then raise (Invalid_argument "index out of bounds")
 	else
 	Return.label (fun label ->
@@ -84,7 +82,7 @@ let find_from str ofs sub =
 		if !j = sublen then Return.return label i
 	      done;
 	  done;
-	  raise Invalid_string
+	  raise Not_found
         )
 
 let find str sub = find_from str 0 sub
@@ -94,7 +92,7 @@ let rfind_from str suf sub =
   and len    = length str in
     if sublen = 0 then len
     else
-      if len = 0 then raise Invalid_string else
+      if len = 0 then invalid_arg "Empty string to search in" else
 	if 0 > suf || suf >= len then raise (Invalid_argument "index out of bounds")
 	else
 	Return.label (fun label ->
@@ -106,7 +104,7 @@ let rfind_from str suf sub =
 		if !j = sublen then Return.return label i
 	      done;
 	  done;
-	  raise Invalid_string
+	  raise Not_found
         )
 
 let rfind str sub = rfind_from str (String.length str - 1) sub
@@ -116,7 +114,7 @@ let exists str sub =
 		ignore(find str sub);
 		true
 	with
-		Invalid_string -> false
+		Not_found -> false
 
 let strip ?(chars=" \t\r\n") s =
 	let p = ref 0 in
@@ -163,7 +161,7 @@ let nsplit str sep =
       if ofs >= 0 then (
         match
           try Some (rfind_from str ofs sep)
-          with Invalid_string -> None
+          with Not_found -> None
         with
           | Some idx -> (* sep found *)
             let end_of_sep = idx + seplen - 1 in
@@ -207,17 +205,9 @@ let of_float = string_of_float
 
 let of_char = make 1
 
-let to_int s =
-	try
-		int_of_string s
-	with
-		_ -> raise Invalid_string
+let to_int s = int_of_string s
 
-let to_float s =
-	try
-		float_of_string s
-	with
-		_ -> raise Invalid_string
+let to_float s = float_of_string s
 
 let enum s =
   let l = length s in
@@ -360,7 +350,7 @@ let replace ~str ~sub ~by =
 		(true, (slice ~last:i str) ^ by ^ 
                    (slice ~first:(i+(String.length sub)) str))
         with
-		Invalid_string -> (false, String.copy str)
+		Not_found -> (false, String.copy str)
 
 
 let repeat s n =
@@ -372,14 +362,14 @@ let trim s =
   let len = length s          in
   let rec aux_1 i = (*locate leading whitespaces*)
     if   i = len then None (*The whole string is whitespace*)
-    else if BatChar.Char.is_whitespace (unsafe_get s i) then aux_1 (i + 1)
+    else if BatChar.is_whitespace (unsafe_get s i) then aux_1 (i + 1)
     else Some i in
   match aux_1 0 with
     | None -> ""
     | Some last_leading_whitespace ->
   let rec aux_2 i =
     if   i < 0 then None(*?*)
-    else if BatChar.Char.is_whitespace (unsafe_get s i) then aux_2 (i - 1)
+    else if BatChar.is_whitespace (unsafe_get s i) then aux_2 (i - 1)
     else Some i in
   match aux_2 (len - 1) with
     | None -> ""
@@ -447,29 +437,29 @@ end
 
 let print         = InnerIO.nwrite
 let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
-let print_quoted out s = BatPrintf.Printf.fprintf out "%S" s
+let print_quoted out s = BatPrintf.fprintf out "%S" s
 let t_printer paren out x =
   InnerIO.write out '"';
   print out (escaped x);
   InnerIO.write out '"'
 
-let quote = BatPrintf.Printf.sprintf2 "%S"
+let quote = BatPrintf.sprintf2 "%S"
 
 module Exceptionless =
 struct
   let find_from str ofs sub =
-    try Some (find_from str ofs sub) with Invalid_string -> None
+    try Some (find_from str ofs sub) with Not_found -> None
 
   let find str sub = find_from str 0 sub
 
   let rfind_from str suf sub =
-    try Some (rfind_from str suf sub) with Invalid_string -> None
+    try Some (rfind_from str suf sub) with Not_found -> None
 
   let rfind str sub = rfind_from str (String.length str - 1) sub
 
-  let to_int s = try Some (to_int s) with Invalid_string -> None
+  let to_int s = try Some (to_int s) with Not_found -> None
 
-  let to_float s = try Some (to_float s) with Invalid_string -> None
+  let to_float s = try Some (to_float s) with Not_found -> None
 
   let index s c = try Some (index s c) with Not_found -> None
 
@@ -479,9 +469,9 @@ struct
 
   let rindex s c = try Some (rindex s c) with Not_found -> None
 
-  let split str sep = try Some (split str sep) with Invalid_string -> None
+  let split str sep = try Some (split str sep) with Not_found -> None
 
-  let rsplit str sep = try Some (rsplit str sep) with Invalid_string -> None
+  let rsplit str sep = try Some (rsplit str sep) with Not_found -> None
 end (* String.Exceptionless *)
 
 module Cap =
@@ -595,5 +585,3 @@ struct
 end (* String.Cap.Exceptionless *)
 
 end (* String.Cap *)
-
-end (* String *)

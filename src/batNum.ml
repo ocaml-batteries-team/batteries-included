@@ -20,9 +20,6 @@
  *)
 
 
-open BatString
-open BatBig_int
-open BatInt
 
 module BaseNum = struct
   include Num
@@ -46,23 +43,23 @@ module BaseNum = struct
   let of_string  = num_of_string
   let pred       = function
     | Int     i -> Int ( i - 1 )
-    | Big_int i -> Big_int (Big_int.pred i)
+    | Big_int i -> Big_int (Big_int.pred_big_int i)
     | _         -> raise (Invalid_argument "Num.pred")
   let succ       = function
     | Int     i -> Int ( i + 1 )
-    | Big_int i -> Big_int (Big_int.succ i)
+    | Big_int i -> Big_int (Big_int.succ_big_int i)
     | _         -> raise (Invalid_argument "Num.succ")
 
 
   let of_float f =
     let s = Printf.sprintf "%f" f in
       try 
-	let (prefix, suffix) = String.split s "."    in
+	let (prefix, suffix) = BatString.split s "."    in
 	let float_digits     = String.length suffix  in
 	let divider = pow (Int 10) (Int (String.length s - float_digits)) in
-	let dividee = Big_int (Big_int.of_string  (prefix^suffix))        in
+	let dividee = Big_int (Big_int.big_int_of_string  (prefix^suffix))        in
 	  div divider dividee
-      with Not_found -> of_int (Int.of_float f)
+      with Not_found -> of_int (BatInt.of_float f)
 
   let round = round_num
   let floor = floor_num
@@ -74,9 +71,7 @@ module BaseNum = struct
   let sign  = sign_num
 end
 
-module Num = struct
   include Number.MakeNumeric(BaseNum)
   include BaseNum
   let print out t = InnerIO.nwrite out (to_string t)
 
-end

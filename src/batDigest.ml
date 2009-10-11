@@ -19,9 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module Digest = struct
-include Digest
-
 open IO
 
 (*Imported from [Digest.input] -- the functions used take advantage of
@@ -39,7 +36,5 @@ let channel inp len = (*TODO: Make efficient*)
   if len >= 0 then 
     let buf = String.create len             in
     let _   = IO.really_input inp buf 0 len in
-      string buf
+      Digest.string buf
   else Digest.channel (IO.to_input_channel inp) len
-
-end

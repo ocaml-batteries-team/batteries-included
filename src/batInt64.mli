@@ -43,8 +43,6 @@
     @author Gabriel Scherer
     @author David Teller
 *)
-module Int64 :
-  sig
 
     type t = int64
 
@@ -243,5 +241,5 @@ external format : string -> int64 -> string = "caml_int64_format"
     (** {7 Printing}*)
     val print: 'a InnerIO.output -> t -> unit
     val t_printer : t Value_printer.t
-  end
+
 

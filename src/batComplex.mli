@@ -34,8 +34,6 @@
     
     @documents Complex
 *)
-module Complex :
-sig
   
   type t = Complex.t = { re: float; im: float }
       (** The type of complex numbers.  [re] is the real part and [im] the
@@ -140,4 +138,4 @@ sig
 
   (** {7 Printing}*)
   val print: 'a InnerIO.output -> t -> unit
-end
+

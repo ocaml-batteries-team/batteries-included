@@ -33,7 +33,7 @@ module BaseInt32 = struct
   let min_num, max_num = min_int, max_int
 end
 
-module Int32 = struct
+
   include BaseInt32
 
   let ( -- )  x y = Enum.seq x (add one) ((>=) y)
@@ -90,5 +90,3 @@ module Int32 = struct
 
   include Number.MakeNumeric(BaseInt32)
 
-
-end

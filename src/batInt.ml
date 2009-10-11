@@ -98,13 +98,10 @@ module BaseInt = struct
 
 end
 
-module Int = struct
-  include BaseInt
-  let operations = let module N = Number.MakeNumeric(BaseInt) in N.operations
+include BaseInt
+module N = Number.MakeNumeric(BaseInt)
+let operations = N.operations
 
-
-
-end
 
 module BaseSafeInt = struct
   include BaseInt

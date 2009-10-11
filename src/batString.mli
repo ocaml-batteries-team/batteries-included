@@ -23,8 +23,6 @@
 
 
 
-exception Invalid_string
-
 (** String operations. 
 
     @author Xavier Leroy (base library)
@@ -33,22 +31,8 @@ exception Invalid_string
     @author Edgar Friendly
 
     @documents String*)
-module String:
-sig
-
-
-exception Invalid_string
-(** An exception thrown when some operation required a string
-    and received an unacceptable string.*)
 
 type t = string
-(** The type of strings. *)
-
-external length : string -> int = "%string_length"
-(** Return the length (number of characters) of the given string. 
-    
-    Example: [ String.length "characters" = 10 ]
-*)
 
 val is_empty : string -> bool
 (** [is_empty s] returns [true] if [s] is the empty string, [false]
@@ -59,46 +43,6 @@ val is_empty : string -> bool
     Example: [ if String.is_empty s then "(Empty)" else s ]
 *)
 
-external get : string -> int -> char = "%string_safe_get"
-(** [String.get s n] returns character number [n] in string [s].
-    The first character is character number 0.
-    The last character is character number [String.length s - 1].
-    You can also write [s.[n]] instead of [String.get s n].
-    
-    Raise [Invalid_argument "index out of bounds"]
-    if [n] is outside the range 0 to [(String.length s - 1)]. 
-    
-    Example: [ let is_twitter_id s = s.[0] = '@' ]
-*)
-
-
-external set : string -> int -> char -> unit = "%string_safe_set"
-(** [String.set s n c] modifies string [s] in place,
-   replacing the character number [n] by [c].
-   You can also write [s.[n] <- c] instead of [String.set s n c].
-   Raise [Invalid_argument "index out of bounds"]
-   if [n] is outside the range 0 to [(String.length s - 1)]. 
-
-    Example: [ for i = 0 to String.length s - 1 do if is_bad_char s.[i] then s.[i] <- '.' done ]
-*)
-
-external create : int -> string = "caml_create_string"
-(** [String.create n] returns a fresh string of length [n].
-   The string initially contains arbitrary characters.
-   Raise [Invalid_argument] if [n < 0] or [n > Sys.max_string_length].
-
-    Example: [ let buf = String.create buf_size in (input ic buf 0 buf_size,buf) ]
-*)
-
-(** {6 Constructors}*)
-
-val make : int -> char -> string
-(** [String.make n c] returns a fresh string of length [n],
-   filled with the character [c].
-   Raise [Invalid_argument] if [n < 0] or [n > ]{!Sys.max_string_length}.
-
-    Example: [String.make 80 ' ']
-*)
 
 val init : int -> (int -> char) -> string
   (** [init l f] returns the string of length [l] with the chars
@@ -223,13 +167,6 @@ val filter_map : (char -> char option) -> string -> string
       Example: [ String.filter_map (function 'a'-'z' as c -> Some c | _ -> None) ]
  *)
 
-val iter : (char -> unit) -> string -> unit
-(** [String.iter f s] applies function [f] in turn to all
-   the characters of [s].  It is equivalent to
-   [f s.[0]; f s.[1]; ...; f s.[String.length s - 1]; ()]. 
-
-    Example: [let counter = ref 0 in String.iter (fun c -> if c = ' ' then incr counter) s]
-*)
 
 val iteri : (int -> char -> unit) -> string -> unit
 (** [String.iteri f s] is equivalent to
@@ -240,63 +177,6 @@ val iteri : (int -> char -> unit) -> string -> unit
 
 (** {6 Finding}*)
 
-val index : string -> char -> int
-(** [String.index s c] returns the position of the leftmost
-   occurrence of character [c] in string [s].
-   Raise [Not_found] if [c] does not occur in [s]. 
-
-    Example: [ String.index "Weeble" 'e' = 1 ]
-*)
-
-val rindex : string -> char -> int
-(** [String.rindex s c] returns the position of the rightmost
-   occurrence of character [c] in string [s].
-   Raise [Not_found] if [c] does not occur in [s]. 
-
-    Example: [ String.rindex "Weeble" 'e' = 5 ]
-*)
-
-val index_from : string -> int -> char -> int
-(** Same as {!String.index}, but start
-   searching at the character position given as second argument.
-   [String.index s c] is equivalent to [String.index_from s 0 c].
-
-    Example: [String.index_from "Weeble" 3 'e' = 5]
-*)
-
-val rindex_from : string -> int -> char -> int
-(** Same as {!String.rindex}, but start
-   searching at the character position given as second argument.
-   [String.rindex s c] is equivalent to
-   [String.rindex_from s (String.length s - 1) c]. 
-
-    Example: [String.rindex_from "Weeble" 3 'e' = 2]
-*)
-
-val contains : string -> char -> bool
-(** [String.contains s c] tests if character [c]
-   appears in the string [s]. 
-
-    Example: [String.contains "Weeble" 'w' = false]
-*)
-
-val contains_from : string -> int -> char -> bool
-  (** [String.contains_from s start c] tests if character [c] appears in
-      the substring of [s] starting from [start] to the end of [s].
-
-      @raise Invalid_argument if [start] is not a valid index of [s]. 
-
-      Example: [String.contains "Weeble" 1 'W' = false]
-*)
-
-val rcontains_from : string -> int -> char -> bool
-(** [String.rcontains_from s stop c] tests if character [c]
-   appears in the substring of [s] starting from the beginning
-   of [s] to index [stop].
-   @raise Invalid_argument if [stop] is not a valid index of [s]. 
-
-    Example: [String.rcontains_from "Weeble" 2 'b' = false]
-*)
 
 
 val find : string -> string -> int
@@ -415,91 +295,6 @@ val strip : ?chars:string -> string -> string
       at the end of the string. By default chars are " \t\r\n".
  
       Example: [String.strip ~chars:" ,()" " boo() bar()" = "boo() bar"]
-*)
-
-val uppercase : string -> string
-(** Return a copy of the argument, with all lowercase letters
-    translated to uppercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. 
-
-    Example: [String.uppercase "Weeble" = "WEEBLE"]
-*)
-
-val lowercase : string -> string
-(** Return a copy of the argument, with all uppercase letters
-    translated to lowercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. 
-
-    Example: [String.lowercase "WeEbLe" = "weeble"]
-*)
-
-val capitalize : string -> string
-(** Return a copy of the argument, with the first character set to uppercase. 
-
-    Example: ["wEeBlE" |> String.lowercase |> String.capitalize  = "Weeble"]
-*)
-
-val uncapitalize : string -> string
-(** Return a copy of the argument, with the first character set to lowercase. 
-    Example: [String.uncapitalize "WeeblE" = "weeblE"]    
-*)
-
-val copy : string -> string
-(** Return a copy of the given string. 
-
-    Example: [let s = "foo" in let s2 = String.copy s in s.[0] = "b"; s2 = "foo"]
-*)
-
-val sub : string -> int -> int -> string
-(** [String.sub s start len] returns a fresh string of length [len],
-   containing the characters number [start] to [start + len - 1]
-   of string [s].
-   @raise Invalid_argument if [start] and [len] do not
-   designate a valid substring of [s]; that is, if [start < 0],
-   or [len < 0], or [start + len > ]{!String.length}[ s]. 
-
-    Example: [String.sub "foobarbaz" 3 4 = "barb"]
-*)
-
-val fill : string -> int -> int -> char -> unit
-(** [String.fill s start len c] modifies string [s] in place,
-   replacing the characters number [start] to [start + len - 1]
-   by [c].
-   @raise Invalid_argument if [start] and [len] do not
-   designate a valid substring of [s]. 
-
-    Example: [let s = "foobarbaz" in String.fill s 3 4 'x'; s = "fooxxxxaz"]
-*)
-
-val blit : string -> int -> string -> int -> int -> unit
-(** [String.blit src srcoff dst dstoff len] copies [len] characters
-   from string [src], starting at character number [srcoff], to
-   string [dst], starting at character number [dstoff]. It works
-   correctly even if [src] and [dst] are the same string,
-   and the source and destination chunks overlap.
-   
-    @raise Invalid_argument if [srcoff] and [len] do not
-   designate a valid substring of [src], or if [dstoff] and [len]
-   do not designate a valid substring of [dst]. 
-
-    Example: [let s = "123456789" in String.blit s 4 s 2 4; s = "125678789"]
-*)
-
-val concat : string -> string list -> string
-(** [String.concat sep sl] concatenates the list of strings [sl],
-   inserting the separator string [sep] between each. 
-
-    Example: [String.concat ", " ["foo"; "bar"; "baz"] = "foo, bar, baz"]
-*)
-
-val escaped : string -> string
-(** Return a copy of the argument, with special characters
-   represented by escape sequences, following the lexical
-   conventions of Objective Caml.  If there is no special
-   character in the argument, return the original string itself,
-   not a copy. 
-
-    Example: TODO
 *)
 
 val replace_chars : (char -> string) -> string -> string
@@ -663,17 +458,6 @@ val print_quoted: 'a InnerIO.output -> string -> unit
 *)
 
 val t_printer : t Value_printer.t
-
-(**/**)
-
-(** Undocumented operations *)
-
-external unsafe_get : string -> int -> char = "%string_unsafe_get"
-external unsafe_set : string -> int -> char -> unit = "%string_unsafe_set"
-external unsafe_blit :
-  string -> int -> string -> int -> int -> unit = "caml_blit_string" "noalloc"
-external unsafe_fill :
-  string -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 
 (**/**)
 
@@ -1231,5 +1015,3 @@ end (* String.Cap.Exceptionless *)
 
 end
 
-
-end

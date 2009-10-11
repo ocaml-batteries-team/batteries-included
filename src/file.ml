@@ -93,7 +93,7 @@ let open_out ?mode ?(perm=user_read lor user_write) name =
 (*  Printf.eprintf "Opening out\n%!";*)
   output_channel ~cleanup:true (open_out_gen (out_chan_mode ?mode true) perm name)
 
-open BatBigarray.Bigarray
+open BatBigarray
 
 let open_in ?mode ?(perm=default_permission) name =
   let unix_mode = in_chan_mode ?mode true in

@@ -1,5 +1,5 @@
 (* 
- * ExtChar - Additional operations on arguments
+ * BArg - Additional operations on arguments
  * Copyright (C) 1996 Damien Doligez
  *               2009 David Teller, LIFO, Universite d'Orleans
  * 
@@ -20,25 +20,22 @@
  *)
 
 
-module Arg = struct
-  include Arg
+type command =
+    { doc : string(**The documentation associated to the keyword, possibly empty.*);
+      kwd : string(**The keyword. Should start with "-"*);
+      spec : Arg.spec (**The behavior associated to the keyword*);
+    }
 
-  type command =
-      { doc : string(**The documentation associated to the keyword, possibly empty.*);
-	kwd : string(**The keyword. Should start with "-"*);
-	spec : spec (**The behavior associated to the keyword*);
-      }
+let command ?(doc="") kwd spec =
+  { doc = doc;
+    kwd = kwd;
+    spec= spec }
 
-  let command ?(doc="") kwd spec =
-    { doc = doc;
-      kwd = kwd;
-      spec= spec }
+let of_command c = (c.kwd, c.spec, c.doc)
 
-  let of_command c = (c.kwd, c.spec, c.doc)
+let handle ?(usage="") cmd = 
+  let speclist = List.map of_command cmd
+  and anonymous= RefList.empty ()       in
+  Arg.parse speclist (fun s -> RefList.push anonymous s) usage;
+  List.rev (RefList.to_list anonymous)
 
-  let handle ?(usage="") cmd = 
-    let speclist = List.map of_command cmd
-    and anonymous= RefList.empty ()       in
-      parse speclist (fun s -> RefList.push anonymous s) usage;
-      List.rev (RefList.to_list anonymous)
-end

@@ -18,15 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open BatPrintf
-open BatString
-open BatList
 open IO
 
 (*let debug fmt =
   Printf.eprintf fmt*)
 let debug fmt =
-  Printf.fprintf IO.stdnull fmt
+  BatPrintf.fprintf IO.stdnull fmt
 
 
 
@@ -130,8 +127,8 @@ let browse pages =
 
    [local_name "a.b.c.d"] produces ["d"]*)
 let local_name s =
-  try snd (String.rsplit s ".")
-  with String.Invalid_string -> s
+  try snd (BatString.rsplit s ".")
+  with Not_found -> s
 
 (**
    Load the contents of an index file into hash tables.
@@ -142,8 +139,8 @@ let load_index ~name ~index ~prefix ~suggestions ~completions =
       (fun line -> 
 	 Scanf.sscanf line " %S : %S " 
 	   (fun item url ->
-	      let full_url = try ignore (String.find url "://"); url
-	      with Invalid_string -> prefix^url
+	      let full_url = try ignore (BatString.find url "://"); url
+	      with Not_found -> prefix^url
 	      in
 		Hashtbl.add suggestions item {spackage = name; url = full_url}; (*Add fully qualified name -> url*)
 		let basename = Filename.basename item in
@@ -227,7 +224,7 @@ let inconsistency topic subject =
    Qualified names which can't be found in the table are dropped and a warning is printed.
 *)
 let result_of_completions table singular subject (l:completion list) =
-  List.filter_map (fun {qualified = q} -> try Some (Hashtbl.find table.suggestions q) with Not_found -> 
+  BatList.filter_map (fun {qualified = q} -> try Some (Hashtbl.find table.suggestions q) with Not_found -> 
 		inconsistency singular subject; (*Report internal inconsistency*)
 		None) l
 
@@ -284,9 +281,9 @@ let man ~cmd ~kind ~singular ~plural ~undefined ~tabs subject =
     |   `Suggestions (l,table) when tabs -> browse (result_of_completions table singular subject l)
     |   `Suggestions ([h],table)         -> browse (result_of_completions table singular subject [h])
     |   `Suggestions (l,_) -> 
-	  Printf.printf "Several %s exist with name %S. To obtain help on one of them, please use one of\n %a%!"
+	  BatPrintf.printf "Several %s exist with name %S. To obtain help on one of them, please use one of\n %a%!"
 	    plural subject
-	    (List.print ~first:"" ~sep:"\n " ~last:"\n" (fun out {qualified = q} -> Printf.fprintf out " %s %S\n" cmd q))
+	    (BatList.print ~first:"" ~sep:"\n " ~last:"\n" (fun out {qualified = q} -> BatPrintf.fprintf out " %s %S\n" cmd q))
 	    l
 
 (**
@@ -319,10 +316,10 @@ let man_all sources ~tabs subject =
 		 (display :: result_as_strings, `Browse (h, table, singular))
 	     | `Suggestions (l,_)  ->
 		 let display : string = 
-		   Printf.sprintf2 "There's information on %S in %s. To read this information, please use one of\n%a%!"
+		   BatPrintf.sprintf2 "There's information on %S in %s. To read this information, please use one of\n%a%!"
 		     subject plural
-		     (List.print ~first:"" ~sep:"" ~last:"" 
-			(fun out {qualified = q} -> Printf.fprintf out " %s %S\n" cmd q))
+		     (BatList.print ~first:"" ~sep:"" ~last:"" 
+			(fun out {qualified = q} -> BatPrintf.fprintf out " %s %S\n" cmd q))
 		     l
 		 in (display::result_as_strings, `No_browsing))
       ([], `No_result) sources
@@ -332,8 +329,8 @@ let man_all sources ~tabs subject =
 	    | [] -> false (*Inconsistency*)
 	    | l' -> let _ = browse l' in true)
 	| (texts, _) ->
-	    Printf.printf "Several definitions exist for %S.\n%a%!" subject
-	      (List.print ~first:"" ~sep:"\n" ~last:"\n" String.print)
+	    BatPrintf.printf "Several definitions exist for %S.\n%a%!" subject
+	      (BatList.print ~first:"" ~sep:"\n" ~last:"\n" BatString.print)
 	      texts;
 	    true
   in if not found_something then

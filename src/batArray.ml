@@ -20,11 +20,6 @@
  *)
 
 
-
-module Array = struct
-
-
-
 type 'a t = 'a array
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
@@ -218,7 +213,7 @@ let of_enum e =
        | None -> assert false)
 
 let of_backwards e =
-  of_list (BatList.List.of_backwards e)
+  of_list (BatList.of_backwards e)
 
 let filter_map p xs =
   of_enum (Enum.filter_map p (enum xs))
@@ -270,7 +265,7 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 let t_printer a_printer paren out x = print (a_printer false) out x
 
 let sprint ?(first="[|") ?(last="|]") ?(sep="; ") print_a array =
-  BatPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) array
+  InnerIO.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) array
 (*  let os = InnerIO.output_string  () in
   print ~first ~last ~sep print_a os list;
   InnerIO.close_out os (* returns contents *)*)
@@ -436,6 +431,6 @@ struct
     let findi ~f e = findi f e
   end
 end
-end
+
 
 

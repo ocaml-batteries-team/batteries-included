@@ -22,9 +22,6 @@
  *)
  
 
-module Hashtbl =
-  struct
-
     (** {6 Import the contents of {!Hashtbl}}
 
 	Note: We can't directly [include Hashtbl] as this
@@ -171,7 +168,7 @@ module Hashtbl =
     let is_empty h = length h = 0
 
     let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-      Enum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+      Enum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
 
     let filteri (f:'key -> 'a -> bool) (t:('key, 'a) t) =
       let result = create 16 in
@@ -472,4 +469,3 @@ module Hashtbl =
       end
     end
 
-  end

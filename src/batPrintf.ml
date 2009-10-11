@@ -19,5 +19,5 @@
  *)
 
 
-module Printf = InnerIO.Printf
+include InnerIO.Printf
 

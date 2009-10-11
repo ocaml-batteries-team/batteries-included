@@ -20,8 +20,6 @@
  *)
 
 
-open BatArray
-
 type 'a t =
     Empty
   | Concat of 'a t * int * 'a t * int * int
@@ -37,7 +35,7 @@ let singleton x = Leaf [|x|]
 
 
 
-module STRING = BatArray.Array
+module STRING = BatArray
 
 (* 48 limits max rope size to 236.10^9 elements on 64 bit,
  * ~ 734.10^6 on 32bit (length fields overflow after that) *)
@@ -378,7 +376,7 @@ let exists f v =
   Return.label (fun label ->
   let rec aux = function
     | Empty                  -> ()
-    | Leaf a                 -> if Array.exists f a then Return.return label true else ()
+    | Leaf a                 -> if BatArray.exists f a then Return.return label true else ()
     | Concat (l, _, r, _, _) -> aux l; aux r
   in aux v; false)
 
@@ -386,7 +384,7 @@ let for_all f v =
   Return.label (fun label ->
   let rec aux = function
     | Empty                  -> ()
-    | Leaf a                 -> if not (Array.for_all f a) then Return.return label false else ()
+    | Leaf a                 -> if not (BatArray.for_all f a) then Return.return label false else ()
     | Concat (l, _, r, _, _) -> aux l; aux r
   in aux v; true)
 
@@ -394,7 +392,7 @@ let find f v =
   Return.label (fun label ->
   let rec aux = function
     | Empty  -> ()
-    | Leaf a -> (try Return.return label (Array.find f a) with Not_found -> ())
+    | Leaf a -> (try Return.return label (BatArray.find f a) with Not_found -> ())
     | Concat (l, _, r, _, _) -> aux l; aux r
   in aux v; raise Not_found)
 

@@ -45,8 +45,6 @@
 
     @documents Nativeint
 *)
-module Native_int :
-  sig
 
 type t = nativeint
 (** An alias for the type of native integers. *)
@@ -243,4 +241,3 @@ external format : string -> nativeint -> string = "caml_nativeint_format"
 (** / **)
 
 
-  end

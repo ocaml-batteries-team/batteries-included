@@ -41,11 +41,6 @@
 
     @documents Set
 *)
-module Set:
-sig
-
-  open BatString
-  open BatInt
 
 module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Set.Make}. *)
@@ -258,7 +253,7 @@ module RopeSet    : S with type elt = Rope.t
 module IRopeSet   : S with type elt = Rope.t
 (** A set of ropes. Comparison of ropes ignores case (i.e. r"foo" = r"Foo")*)
 
-module IntSet     : S with type elt = Int.t
+module IntSet     : S with type elt = BatInt.t
 (** A set of integers.*)
 
 
@@ -268,4 +263,4 @@ module Make (Ord : OrderedType) : S with type elt = Ord.t
 
     @documents Set.Make
 *)
-end
+

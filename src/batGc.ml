@@ -20,11 +20,8 @@
  *)
 
 
-module Gc =
-struct
-  include Gc
-
-  open BatPrintf.Printf;;
+  open BatPrintf;;
+  open Gc
 
   let print_stat c = (*Copied from original module*)
     let st = stat () in
@@ -49,4 +46,4 @@ struct
   let eventually f v =
 *)  
     
-end
+

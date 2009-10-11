@@ -46,14 +46,13 @@ module BaseComplex = struct
 
   let compare = Pervasives.compare
 
-  open BatGenlex.Genlex
-  open BatString
+  open Genlex
 
   let of_string x =
     let enum = 
-      to_enum_filter
-	( of_list ["("; ","; ")"; "i"; "+"; "*"] )
-	( String.enum x ) in
+      BatGenlex.to_enum_filter
+	( BatGenlex.of_list ["("; ","; ")"; "i"; "+"; "*"] )
+	( BatString.enum x ) in
     let rec parse_re () = match Enum.get enum with
       | None           -> zero
       | Some (Int   i) -> parse_im (float_of_int i)
@@ -73,8 +72,8 @@ module BaseComplex = struct
 
 end
 
-module Complex = struct
+
   include Number.MakeNumeric(BaseComplex)
   include BaseComplex
   let print out t = InnerIO.nwrite out (to_string t)
-end
+

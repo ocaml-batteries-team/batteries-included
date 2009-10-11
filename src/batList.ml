@@ -22,13 +22,11 @@
  *)
 
 
-module List = struct
-
+(*
 exception Empty_list
 exception Invalid_index of int
 exception Different_list_size of string
-
-include List
+*)
 
 (* Thanks to Jacques Garrigue for suggesting the following structure *)
 type 'a mut_list =  {
@@ -60,9 +58,9 @@ let tl = function
 	| h :: t -> t
 
 let nth l index =
-	if index < 0 then raise (Invalid_index index);
+	if index < 0 then invalid_arg "Negative index not allowed";
 	let rec loop n = function
-		| [] -> raise (Invalid_index index);
+		| [] -> invalid_arg "Index past end of list";
 		| h :: t -> 
 			if n = 0 then h else loop (n - 1) t
 	in
@@ -489,15 +487,15 @@ let rec last = function
 	| _ :: t -> last t
 
 let split_nth index = function
-	| [] -> if index = 0 then [],[] else raise (Invalid_index index)
+	| [] -> if index = 0 then [],[] else invalid_arg "Index past end of list"
 	| (h :: t as l) ->
 		if index = 0 then [],l
-		else if index < 0 then raise (Invalid_index index)
+		else if index < 0 then invalid_arg "Negative index not allowed"
 		else
 			let rec loop n dst l =
 				if n = 0 then l else
 				match l with
-				| [] -> raise (Invalid_index index)
+				| [] -> invalid_arg "Index past end of list"
 				| h :: t ->
 					let r = { hd =  h; tl = [] } in
 					dst.tl <- inj r;
@@ -689,11 +687,11 @@ module Exceptionless = struct
 
   let split_at n l =
     try   `Ok (split_at n l)
-    with  Invalid_index i -> `Invalid_index i
+    with Invalid_argument s -> `Invalid_argument s
 
   let at n l =
     try `Ok (at n l)
-    with Invalid_index i -> `Invalid_index i
+    with Invalid_argument s -> `Invalid_argument s
 
   let assoc e l =
     try Some (assoc e l)
@@ -713,9 +711,6 @@ end
 
 
 module Labels = struct
-  exception Empty_list          = Empty_list
-  exception Invalid_index       = Invalid_index
-  exception Different_list_size = Different_list_size
 
   type 'a t         = 'a list
   let init i ~f     = init i f

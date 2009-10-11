@@ -170,7 +170,7 @@ let enum { map = map } =
   let rec loop e () = match e with
     | Empty -> Enum.empty ()
     | Node (l, k, v, r, _) ->
-	Enum.flatten (BatList.List.enum [
+	Enum.flatten (BatList.enum [
 			Enum.delay (loop l);
 			Enum.singleton (k, v);
 			Enum.delay (loop r)])
@@ -211,7 +211,7 @@ let of_enum ?(cmp = compare) e = Enum.fold uncurry_add (create cmp) e
 
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-  Enum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+  Enum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
 
 let filter  f t = foldi (fun k a acc -> if f a then add k a acc else acc) t empty
 let filteri f t = foldi (fun k a acc -> if f k a then add k a acc else acc) t empty

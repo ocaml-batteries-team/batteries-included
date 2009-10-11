@@ -32,8 +32,6 @@
 
     @documents Num
 *)
-module Num :
-  sig
 
     open Nat
     open Big_int
@@ -196,6 +194,3 @@ module Num :
     val num_of_int : int -> num
     val compare_num : num -> num -> int
 
-
-
-  end

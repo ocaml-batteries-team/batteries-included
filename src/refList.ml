@@ -22,7 +22,6 @@
 open BatList
 
 exception Empty_list
-exception Invalid_index of int
 
 type 'a t = 'a list ref
 
@@ -55,9 +54,9 @@ let find f rl = List.find f !rl
 let rev rl = rl := List.rev !rl
 let find_exc f exn rl = try List.find f !rl with _ -> raise exn
 let exists f rl = List.exists f !rl
-let sort ?(cmp=compare) rl = rl := List.sort ~cmp !rl
+let sort ?(cmp=compare) rl = rl := BatList.sort ~cmp !rl
 
-let rfind f rl = List.rfind f !rl
+let rfind f rl = BatList.rfind f !rl
 
 let first = hd
 
@@ -71,9 +70,9 @@ let last rl =
 	| [] -> raise Empty_list
 	| l -> loop l
 
-let remove rl item = rl := List.remove !rl item
-let remove_if pred rl = rl := List.remove_if pred !rl
-let remove_all rl item = rl := List.remove_all !rl item
+let remove rl item = rl := BatList.remove !rl item
+let remove_if pred rl = rl := BatList.remove_if pred !rl
+let remove_all rl item = rl := BatList.remove_all !rl item
 let filter pred rl = rl := List.filter pred !rl
 
 let add_sort ?(cmp=compare) rl item =
@@ -102,16 +101,16 @@ let npop rl n =
 	in
 	pop_aux !rl n
 
-let copy_enum ~dst ~src = dst := List.of_enum src
+let copy_enum ~dst ~src = dst := BatList.of_enum src
 
-let enum   rl = List.enum !rl
-let of_enum e = ref (List.of_enum e)
+let enum   rl = BatList.enum !rl
+let of_enum e = ref (BatList.of_enum e)
 
-let backwards     rl = List.backwards !rl
-let of_backwards  e  = ref (List.of_backwards e)
+let backwards     rl = BatList.backwards !rl
+let of_backwards  e  = ref (BatList.of_backwards e)
 
-let fold_left f a l = BatList.List.fold_left f a !l
-let fold_right f l a = BatList.List.fold_right f !l a
+let fold_left f a l = BatList.fold_left f a !l
+let fold_right f l a = BatList.fold_right f !l a
 
 module Index = struct
 
@@ -133,16 +132,12 @@ module Index = struct
 		List.find (fun it -> incr index; it = item; ) !rl;
 		!index
 
-	let at_index rl pos =
-		try
-			List.nth !rl pos
-		with
-			_ -> raise (Invalid_index pos)
+	let at_index rl pos = List.nth !rl pos
 
 	let set rl pos newitem =
 		let p = ref (-1) in
 		rl := List.map (fun item -> incr p; if !p = pos then newitem else item) !rl;
-		if !p < pos || pos < 0 then raise (Invalid_index pos)
+		if !p < pos || pos < 0 then invalid_arg "Index out of range"
 
 
 end

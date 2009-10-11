@@ -19,7 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open BatChar
 include InnerIO
 
 (**
@@ -603,7 +602,7 @@ let tab_out ?(tab=' ') n out =
   wrap_out 
     ~write: (fun c     -> 
 	       write out  c;
-	       if Char.is_newline c then (
+	       if BatChar.is_newline c then (
 		 nwrite out spaces)
 	    )
     ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*)
@@ -612,7 +611,7 @@ let tab_out ?(tab=' ') n out =
 		 for i = p to min (length - 1) l do
 		   let c = String.unsafe_get s i in
 		     Buffer.add_char buffer c;
-		     if Char.is_newline c then
+		     if BatChar.is_newline c then
 		       Buffer.add_string buffer spaces
 		 done;
 		 let s' = Buffer.contents buffer                  in
@@ -648,7 +647,6 @@ let comb (a,b) =
     ~close:(fun () -> flush out)*)
 
 (** {6 Unicode}*)
-open BatUTF8
  
 (** {7 Reading unicode}
  
@@ -659,14 +657,14 @@ All these functions assume that the input is UTF-8 encoded.
 (** read one UChar from a UTF-8 encoded input*)
 let read_uchar_as_string i =
   let n0  = read i in
-  let len = UTF8.length0 (Char.code n0) in
+  let len = BatUTF8.length0 (Char.code n0) in
   let s   = String.create len in
     String.set s 0 n0;
     ignore(really_input i s 1 ( len - 1));
     s
  
 let read_uchar i =
-  UTF8.get (UTF8.of_string_unsafe (read_uchar_as_string i)) 0
+  BatUTF8.get (BatUTF8.of_string_unsafe (read_uchar_as_string i)) 0
  
 (*val read_rope: input -> int -> Rope.t*)
 (** read up to n uchars from a UTF-8 encoded input*)
@@ -683,16 +681,16 @@ let read_rope i n =
  
 let read_uline i =
   let line = read_line i in
-  UTF8.validate line;
-  Rope.of_ustring (UTF8.of_string_unsafe line)
+  BatUTF8.validate line;
+  Rope.of_ustring (BatUTF8.of_string_unsafe line)
  
 (*val read_uall : input -> Rope.t*)
 (** read the whole contents of a UTF-8 encoded input*)
  
 let read_uall i = 
   let all = read_all i in
-  UTF8.validate all;
-  Rope.of_ustring (UTF8.of_string_unsafe all) 
+  BatUTF8.validate all;
+  Rope.of_ustring (BatUTF8.of_string_unsafe all) 
 (* TODO: make efficient - possibly similar to above - buffering leaf_size chars at a time *)
  
  
@@ -710,10 +708,10 @@ let ulines_of i = make_enum read_uline i
  
 All these functions assume that the output is UTF-8 encoded.*)
 
-let write_ustring o c = write_string o (UTF8.to_string_unsafe c) 
+let write_ustring o c = write_string o (BatUTF8.to_string_unsafe c) 
 
 (*val write_uchar: _ output -> UChar.t -> unit*)
-let write_uchar o c = write_ustring o (UTF8.of_char c)
+let write_uchar o c = write_ustring o (BatUTF8.of_char c)
  
 (*val write_rope : _ output -> Rope.t -> unit*)
 let write_rope = Rope.print

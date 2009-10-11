@@ -20,9 +20,7 @@
  *)
 
 
-module Set =
-struct
-  module type OrderedType = Interfaces.OrderedType
+module type OrderedType = Interfaces.OrderedType
 (** Input signature of the functor {!Set.Make}. *)
 
 module type S =
@@ -275,10 +273,9 @@ module type S =
   end
 
 
-  module StringSet  = Make(BatString.String)
-  module IStringSet = Make(BatString.String.IString)
-  module NumStringSet = Make(BatString.String.NumString)
+  module StringSet  = Make(BatString)
+  module IStringSet = Make(BatString.IString)
+  module NumStringSet = Make(BatString.NumString)
   module RopeSet    = Make(Rope)
   module IRopeSet   = Make(Rope.IRope)
-  module IntSet     = Make(BatInt.Int)
-end
+  module IntSet     = Make(BatInt)

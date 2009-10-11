@@ -44,9 +44,6 @@
     @author Gabriel Scherer
     @author David Teller
 *)
-module Int32 :
-  sig
-
     type t = int32
 
     val zero : int32
@@ -243,4 +240,4 @@ module Int32 :
     (** {7 Printing}*)
     val print: 'a InnerIO.output -> t -> unit
     val t_printer : t Value_printer.t
-  end
+

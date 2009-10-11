@@ -19,6 +19,7 @@
  *)
 
 open BatUChar
+open CamomileLibrary
 
 (** UTF-8 encoded Unicode strings. 
 
@@ -36,9 +37,6 @@ open BatUChar
 
     @documents UTF8
 *)
-module UTF8 :
-sig
-
 
 (** UTF-8 encoded Unicode strings.*)
 type t 
@@ -275,5 +273,5 @@ external to_string_unsafe : t -> string = "%identity"
 val unsafe_get : t -> int -> UChar.t
 val copy_set   : t -> int -> UChar.t -> t
 (**/**)
-end
+
 

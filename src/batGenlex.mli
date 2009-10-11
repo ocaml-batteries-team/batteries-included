@@ -32,18 +32,8 @@
 
     @documents Genlex
 *)
-module Genlex : sig
 
-
-type token = 
-  | 	Kwd    of string
-  | 	Ident  of string
-  | 	Int    of int
-  | 	Float  of float
-  | 	String of string
-  | 	Char   of char
-
-(*Genlex.token*)
+open Genlex
 
 type t
 (** A lexer*)
@@ -59,18 +49,6 @@ val to_enum_filter     :  t -> char Enum.t     ->  token Enum.t
 
 val to_lazy_list_filter:  t -> char LazyList.t ->  token LazyList.t
 (** Apply the lexer to a lazy list.*)
-
-(**
-   {6 Old functions}
-*)
-val make_lexer : string list -> char Stream.t -> token Stream.t
-(** Construct the lexer function. The first argument is the list of
-   keywords. An identifier s is returned as Kwd s if s belongs to this
-   list, and as Ident s otherwise. A special character s is returned
-   as Kwd s if s belongs to this list, and cause a lexical error
-   (exception Parse_error) otherwise. Blanks and newlines are
-   skipped. Comments delimited by (* and *) are skipped as well, and
-   can be nested. *)
 
 (**{6 Extending to other languages}*)
 open CharParser
@@ -171,4 +149,4 @@ sig
 end
   
 end
-end
+

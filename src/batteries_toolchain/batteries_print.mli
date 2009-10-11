@@ -22,8 +22,7 @@
 
 (** {7 Unicode}*)
 
-open BatUChar
-open BatUTF8
+open CamomileLibrary
 
 val print_uchar : Format.formatter -> UChar.t -> unit
 (** Pretty-print a [UChar.t]*)
@@ -31,17 +30,15 @@ val print_uchar : Format.formatter -> UChar.t -> unit
 val print_rope : Format.formatter -> Rope.t -> unit
 (** Pretty-print a [Rope.t]*)
 
-val print_ustring : Format.formatter -> UTF8.t -> unit
+val print_ustring : Format.formatter -> BatUTF8.t -> unit
 (** Pretty-print a [UTF8.t]*)
 
 (** Pretty-print [String.Cap.t]*)
 
-open BatString
-
-val print_string_cap_rw: Format.formatter -> [> `Read | `Write] String.Cap.t -> unit
+val print_string_cap_rw: Format.formatter -> [> `Read | `Write] BatString.Cap.t -> unit
 (** Pretty-print a read-write [String.Cap.t] (prefixes output with "rw")*)
 
-val print_string_cap_ro: Format.formatter -> [`Read]  String.Cap.t -> unit
+val print_string_cap_ro: Format.formatter -> [`Read]  BatString.Cap.t -> unit
 (** Pretty-print a read-only [String.Cap.t] (prefixes output with "ro")*)
 
 (** {7 Data structures}*)

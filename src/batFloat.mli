@@ -43,9 +43,6 @@
    
    @documents Float
 *)
-module Float :
-  sig
-
 
     type t = float
 	(**The type of floating-point numbers.
@@ -218,7 +215,7 @@ module Float :
     (** {7 Printing}*)
     val print: 'a InnerIO.output -> t -> unit
     val t_printer : t Value_printer.t
-end
+
 
 
 (**Operations on floating-point numbers, with exceptions raised in

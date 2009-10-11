@@ -86,12 +86,10 @@ module BaseFloat = struct
   let pi           = 4. *. atan 1.
 end
 
-module Float = struct
   include Number.MakeNumeric(BaseFloat)
   include BaseFloat
   let print out t = InnerIO.nwrite out (to_string t)
   let t_printer paren out t = print out t
-end
 
 module Base_safe_float = struct
   include BaseFloat
@@ -144,6 +142,6 @@ end
 module Safe_float = struct
   include Number.MakeNumeric(Base_safe_float)
   include Base_safe_float
-  let print = Float.print
+  let print = print
   let t_printer paren out t = print out t
 end

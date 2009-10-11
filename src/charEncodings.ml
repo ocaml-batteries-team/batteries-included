@@ -20,7 +20,6 @@
 
 open IO
 open CamomileLibrary
-open BatString
 
 module Encoding = CamomileLibrary.Default.Camomile.CharEncoding
 
@@ -1151,8 +1150,8 @@ let transcode_in inp enc = (*TODO: Make more efficient*)
       let push_next () =
 	(*Need to read one char, convert it, decompose the converted string and return the first byte*)
 	let c       = read inp.content in
-	let encoded = Encoding.recode_string (String.of_char c) ~in_enc ~out_enc in
-	  RefList.copy_enum ~dst:buffer ~src:(String.enum encoded)
+	let encoded = Encoding.recode_string (BatString.of_char c) ~in_enc ~out_enc in
+	  RefList.copy_enum ~dst:buffer ~src:(BatString.enum encoded)
       in
       let transcoded = 
 	wrap_in 
@@ -1183,7 +1182,7 @@ let transcode_out out enc = (*TODO: Make more efficient*)
     else 
       let transcoded = (*We don't use [Encoding.convert_out] as this seems to cause a problem with flushing.*)
       wrap_out
-	~write: (fun c     -> nwrite out.content (Encoding.recode_string ~in_enc ~out_enc (String.of_char c)))
+	~write: (fun c     -> nwrite out.content (Encoding.recode_string ~in_enc ~out_enc (BatString.of_char c)))
 	~output:(fun s o l -> let converted = Encoding.recode_string ~in_enc ~out_enc (String.sub s o l) in
 		   nwrite out.content converted;
 		   l)

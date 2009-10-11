@@ -31,8 +31,6 @@
     
     @documents Hashtbl
 *)
-module Hashtbl :
-  sig
 
 
 
@@ -620,4 +618,3 @@ end
 
 end
 
-end

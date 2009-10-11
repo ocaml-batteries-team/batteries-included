@@ -95,7 +95,7 @@ let satisfy f e = match get e with
 
 let depth = ref 0
 let label s p e =
-  if String.is_empty s then
+  if BatString.is_empty s then
     match apply p e with
       | Success _ as x      -> x
       | Setback c           -> Setback (Report [])

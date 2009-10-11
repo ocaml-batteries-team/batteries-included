@@ -33,7 +33,6 @@
     @author David Teller
     @author Dawid Toton
 *)
-module Buffer: sig
 
 type t = Buffer.t
 (** The abstract type of buffers. *)
@@ -151,4 +150,3 @@ val output_buffer : _ InnerIO.output -> t -> unit
 
 val print: 'a InnerIO.output -> t -> unit
 
-end

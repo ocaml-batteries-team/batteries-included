@@ -54,9 +54,9 @@ module BaseBig_int = struct
   let to_float  = float_of_big_int
 end
 
-module Big_int = struct
+
   include BaseBig_int
-  include Number.MakeNumeric(BaseBig_int)
+  include MakeNumeric(BaseBig_int)
 
   let ( -- )  x y = Enum.seq x (add one) ( ge_big_int y )
   let ( --- ) x y = 
@@ -64,4 +64,4 @@ module Big_int = struct
     else Enum.seq x pred (le_big_int y)
 
   let print out t = IO.nwrite out (to_string t)
-end
+

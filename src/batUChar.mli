@@ -15,11 +15,8 @@
 
     @documents UChar
 *)
-module UChar :
-sig
 
-type t = CamomileLibrary.UChar.t
-(** The type of unicode characters. All 31bit code points are allowed.*) 
+open CamomileLibrary.UChar
 
 val is_whitespace : t -> bool
 (** Determine if a character is a whitespace.
@@ -47,40 +44,14 @@ val uppercase : t -> t
   (** Convert the given character to its equivalent uppercase
       character. *)
 
-exception Out_of_range
-
 (**
    {6 Conversion functions}
 *)
-
-val of_char : char -> t
-  (** [of_char c] returns the Unicode character of the Latin-1 character [c] *)
 
 val to_char : t -> char
   (** [to_char u] returns the Latin-1 representation of [u].  
 
       @raise Out_of_range if [u] can not be represented by Latin-1.*)
-
-val code : t -> int
-(** [code u] returns the Unicode code number of [u].
-    If the value can not be represented by a positive integer,
-    raise Out_of_range *)
-
-val chr : int -> t
-(** [code n] returns the Unicode character with the code number [n]. 
-   If n >= 2^31 or n < 0, raises [invalid_arg] *)
-
-
-external uint_code : t -> int = "%identity"
-(** [uint_code u] returns the Unicode code number of [u].
-   The returned int is unsigned, that is, on 32-bits platforms,
-   the sign bit is used for storing the 31-th bit of the code number. *)
-
-val chr_of_uint : int -> t
-(** [chr_of_uint n] returns the Unicode character of the code number [n].
-   [n] is interpreted as unsigned, that is, on 32-bits platforms,
-   the sign bit is treated as the 31-th bit of the code number.
-   If n exceed 31-bits values, then raise [invalid_arg]. *)
 
 val of_digit: int -> t
 (** Return the character representing a given digit.
@@ -91,36 +62,15 @@ val of_digit: int -> t
 (** Alias of [uint_code] *)
 val to_int : t   -> int
 
-(** Alias of [chr_of_uint] *)
-val of_int : int -> t
-
 
 (**
    {6 Comparaison}
 *)
-val eq : t -> t -> bool
-(** Equality by code point comparison *)
-
-
-val compare : t -> t -> int
-(** [compare u1 u2] returns, 
-   a value > 0 if [u1] has a larger Unicode code number than [u2], 
-   0 if [u1] and [u2] are the same Unicode character,
-   a value < 0 if [u1] has a smaller Unicode code number than [u2]. *)
 
 val icompare : t -> t -> int
   (** Compare two unicode characters, case-insensitive. *)
 
 module IUChar : Interfaces.OrderedType with type t = t
-
-(**/**)
-val char_of : t -> char
-(**As {!to_char}*)
-
-val int_of : t -> int
-(**As {!to_int}*)
-
-
 
 (** {6 Detailed information}*)
 
@@ -215,10 +165,6 @@ val category : t -> category
 val print: 'a InnerIO.output -> t -> unit
 val t_printer : t Value_printer.t
 
-(**/**)
 
-(**{6 Deprecated}*)
 
-type uchar = t
-(**Alias for type [t]*)
-end
+

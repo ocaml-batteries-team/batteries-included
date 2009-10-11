@@ -25,12 +25,6 @@
     @author Xavier Leroy (Base module)
     @author David Teller
 *)
-module Printexc : sig
-
-
-val to_string : exn -> string
-(** [Printexc.to_string e] returns a string representation of
-   the exception [e]. *)
 
 val pass : ('a -> 'b) -> 'a -> 'b
 (** [Printexc.pass fn x] applies [fn] to [x] and returns the result.
@@ -43,15 +37,3 @@ val pass : ('a -> 'b) -> 'a -> 'b
 val print : _ InnerIO.output -> exn -> unit
 (** Print an exception.*)
 
-(**/**)
-val catch : ('a -> 'b) -> 'a -> 'b
-(** [Printexc.catch fn x] is similar to {!Printexc.print}, but
-   aborts the program with exit code 2 after printing the
-   uncaught exception.  This function is deprecated: the runtime
-   system is now able to print uncaught exceptions as precisely
-   as [Printexc.catch] does.  Moreover, calling [Printexc.catch]
-   makes it harder to track the location of the exception
-   using the debugger or the stack backtrace facility.
-   So, do not use [Printexc.catch] in new code.  *)
-
-end

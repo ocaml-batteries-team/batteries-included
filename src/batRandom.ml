@@ -21,8 +21,8 @@
  *)
 
 
-module Random = struct
   open Random
+(*
   let init      = init
   let full_init = full_init
   let self_init = self_init
@@ -33,6 +33,7 @@ module Random = struct
   let nativeint = nativeint
   let float     = float
   let bool      = bool
+    *)
   let char ()   = Char.chr (int 256)
 
 
@@ -120,15 +121,13 @@ module Random = struct
     let next state = State.char state in
       random_enum next
 
-  open BatArray
-
   let choice e =
-    let a   = Array.of_enum e in
+    let a   = BatArray.of_enum e in
     let len = Array.length  a in
       Array.get a (int len)
 
   let shuffle e =
-    let a = Array.of_enum e in
+    let a = BatArray.of_enum e in
       for n = Array.length a - 1 downto 1 do
 	let k    = int ( n + 1 ) in
 	  if k <> n then
@@ -142,4 +141,3 @@ module Random = struct
   let set_state = set_state
 
 
-end

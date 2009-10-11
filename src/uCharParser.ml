@@ -20,14 +20,9 @@
 
 
 
-open BatUChar
-open BatInt
-open BatFloat
-open BatUTF8
-open BatString
 open ParserCo
-open BatList
-open BatPrintf
+open CamomileLibrary
+module UTF8 = BatUTF8
 
 let string_of_uchar c = (UTF8.to_string (UTF8.of_char c))
 
@@ -39,7 +34,7 @@ let start_position =
   CharParser.line   = 1 }
 
 let advance c p =
-  if UChar.is_newline c then((*Printf.eprintf "[Have reached line %i]\n%!" (p.line + 1);*) { CharParser.offset = 1; CharParser.line = p.CharParser.line + 1})
+  if BatUChar.is_newline c then((*Printf.eprintf "[Have reached line %i]\n%!" (p.line + 1);*) { CharParser.offset = 1; CharParser.line = p.CharParser.line + 1})
   else                      { (p) with CharParser.offset = p.CharParser.offset + 1}
 
 let source_of_enum   s = Source.of_enum s start_position advance
@@ -112,12 +107,12 @@ let case_ustring s = (case_rope (Rope.of_ustring s)) >>= fun s' -> return (Rope.
 
 let case_string s = (case_rope (Rope.of_ustring (UTF8.of_string s))) >>= fun s' -> return (UTF8.to_string (Rope.to_ustring s'))
 
-let whitespace = satisfy UChar.is_whitespace
+let whitespace = satisfy BatUChar.is_whitespace
 
-let uppercase = label "upper case char" (satisfy UChar.is_uppercase)
-let lowercase = label "lower case char" (satisfy UChar.is_lowercase)
+let uppercase = label "upper case char" (satisfy BatUChar.is_uppercase)
+let lowercase = label "lower case char" (satisfy BatUChar.is_lowercase)
 let digit = label "digit"
-  ( satisfy (fun c -> match UChar.category c with `Nd -> true | _ -> false) )
+  ( satisfy (fun c -> match BatUChar.category c with `Nd -> true | _ -> false) )
 
 let first s = String.get s 0
 
@@ -132,16 +127,16 @@ let none_of l = (*label (
        (Vect.of_list (String.to_list "anything but ['"))
        l))))*)
 (*  label (Printf.sprintf2 "anything but [%a]" (List.print *)
-  label (List.sprint 
+  label (BatList.sprint 
 	   ~first:"anything but ["
 	   ~sep:"; "
 	   ~last:"]" 
-	   (fun out c -> (Printf.fprintf out "'%a'" UChar.print c))
+	   (fun out c -> (BatPrintf.fprintf out "'%a'" BatUChar.print c))
 	   l
 	)
 	  (none_of l)
 
-let newline = satisfy UChar.is_newline
+let newline = satisfy BatUChar.is_newline
 
 let hex_uchars =
   List.map UChar.of_char
@@ -152,6 +147,6 @@ let hex_uchars =
 let hex = label "hex" (one_of hex_uchars)
 (*  ( satisfy (fun x -> ( '0' <= x && x <= '9' ) || ('a' <= x && x <= 'f') || ('A' <= x && x <= 'F')))*)
 
-let letter = satisfy (fun c -> match UChar.category c with `Lu | `Ll | `Lt -> true | _ -> false )
+let letter = satisfy (fun c -> match BatUChar.category c with `Lu | `Ll | `Lt -> true | _ -> false )
 
 let parse p s = run p (source_of_rope s)

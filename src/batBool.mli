@@ -24,8 +24,6 @@
    @author Gabriel Scherer
    @author David Teller
 *)
-module Bool :
-sig
 
   type t = bool
       (**The type of booleans. Formally, this is defined as [type t = true | false] *)
@@ -88,4 +86,4 @@ sig
 (** {7 Printing}*)
 val print: 'a InnerIO.output -> t -> unit
 val t_printer : t Value_printer.t
-end
+

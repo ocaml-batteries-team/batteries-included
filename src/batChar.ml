@@ -19,9 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-module Char = struct
-  include Char
+type t = char
 
   let is_whitespace = function
     ' ' | '\010' | '\013' | '\009' | '\026' | '\012' -> true
@@ -64,6 +62,7 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
     is_uppercase c || is_lowercase c
 
   external unsafe_int : char-> int  = "%identity"
+  external unsafe_chr : int -> char = "%identity"
 
   let enum () = 
     Enum.map unsafe_chr (Enum.( -- ) 0 255)
@@ -79,4 +78,4 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
 
 
   let print out t = InnerIO.write out t
-end
+

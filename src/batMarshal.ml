@@ -20,9 +20,7 @@
  *)
 
 
-module Marshal = 
-struct
-  include Marshal
+open Marshal
 
   let output out ?(sharing=true) ?(closures=false) v =
     let buf = to_string v ((if sharing then [] else [No_sharing]) @ (if closures then [Closures] else [])) in
@@ -39,4 +37,4 @@ struct
       v
 
   let from_channel = input
-end
+

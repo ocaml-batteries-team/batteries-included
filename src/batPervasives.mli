@@ -30,8 +30,6 @@
 *)
 
 open IO
-open BatUTF8
-open BatString
 
 (** The initially opened module.
     
@@ -50,8 +48,6 @@ open BatString
 
     @documents Pervasives
 *)
-module Pervasives :
-sig
 
 (** {6 Exceptions} *)
 
@@ -1366,10 +1362,10 @@ val printer_format : (('a, 'b) Print.format -> 'a, 'b) Print.directive
       {[sprintf p"x = %format * %d" p"%d + %d" 1 3 5]} produces ["x = 1 + 3 * 5"]
   *)
 
-val printer_sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive
-val printer_Sc : ?flags : printer_flags -> ([> `Read] String.Cap.t -> 'a, 'a) Print.directive
+val printer_sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) Print.directive
+val printer_Sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) Print.directive
 val printer_rope : (Rope.t -> 'a, 'a) Print.directive
-val printer_utf8 : (UTF8.t -> 'a, 'a) Print.directive
+val printer_utf8 : (BatUTF8.t -> 'a, 'a) Print.directive
 val printer_obj : (< print : unit IO.output -> unit; .. > -> 'a, 'a) Print.directive
 val printer_exn : (exn -> 'a, 'a) Print.directive
 
@@ -1415,4 +1411,3 @@ val lock: Concurrent.lock ref
    to use Batteries with another concurrency model, set the lock appropriately.
 *)
 
-end

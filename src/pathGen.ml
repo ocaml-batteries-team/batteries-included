@@ -799,7 +799,7 @@ module StringAdapter (*: StringType*) = struct
   let sub = String.sub
   
   let iter = String.iter
-  let iteri = BatString.String.iteri
+  let iteri = BatString.iteri
   
   let rindex = String.rindex
   
@@ -813,8 +813,8 @@ end
 
 module OfString : PathType with type ustring = string and type uchar = char = Make (StringAdapter) 
             
-module UChar = BatUChar.UChar
-      
+open CamomileLibrary
+
 module RopeAdapter = struct
 
   type t = Rope.t

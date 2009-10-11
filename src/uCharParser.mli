@@ -29,9 +29,8 @@
     @author David Teller
 *)
 
+open CamomileLibrary
 open ParserCo
-open BatUChar
-open BatUTF8
 
 (** The position inside one file or one stream. *)
 type position = CharParser.position = 
@@ -40,7 +39,7 @@ type position = CharParser.position =
   line:   int (**Line number (starting at 0)*)
 }
 
-val advance : UChar.t-> position -> position
+val advance : UChar.t -> position -> position
 (**Advance by one char. 
 
    [advance c p] returns a new position advanced by one char. If [c] is '\r' or '\n',
@@ -75,16 +74,16 @@ val string : string -> (UChar.t, string, position) t
 val rope : Rope.t -> (UChar.t, Rope.t, position) t
   (** Recognize exactly one string*)
 
-val ustring : UTF8.t -> (UChar.t, UTF8.t, position) t
+val ustring : BatUTF8.t -> (UChar.t, BatUTF8.t, position) t
   (** Recognize exactly one string*)
 
-val case_char : UChar.t -> (UChar.t, UTF8.t, position) t
+val case_char : UChar.t -> (UChar.t, BatUTF8.t, position) t
   (** As [char], but case-insensitive *)
 
 val case_string : string -> (UChar.t, string, position) t
   (** As [string], but case-insensitive *)
 
-val case_ustring : UTF8.t -> (UChar.t, UTF8.t, position) t
+val case_ustring : BatUTF8.t -> (UChar.t, BatUTF8.t, position) t
   (** As [ustring], but case-insensitive *)
 
 val case_rope : Rope.t -> (UChar.t, Rope.t, position) t

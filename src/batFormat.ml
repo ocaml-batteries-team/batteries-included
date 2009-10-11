@@ -21,8 +21,7 @@
 
 
 open IO
-module Format = struct
-  include Format
+open Format
 
   let output_of out = fun s i o -> ignore (really_output out s i o)
   let flush_of  out = InnerIO.get_flush out
@@ -78,6 +77,7 @@ module Format = struct
   let set_formatter_out_channel    = set_formatter_output
   let pp_set_formatter_out_channel = pp_set_formatter_output
   let std_formatter                = formatter_of_output IO.stdout
+  let err_formatter                = formatter_of_output IO.stderr
 
   (**{6 Initialization}*)
 
@@ -87,4 +87,3 @@ module Format = struct
     pp_set_formatter_output Format.err_formatter stderr
 
     
-end

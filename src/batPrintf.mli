@@ -29,8 +29,6 @@ open InnerIO
     @documents Printf
     @documented Printf
 *)
-module Printf : sig
-
 
   (**
      {6 Important note}
@@ -332,4 +330,4 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
    Note that {!Obj.magic} is involved behind this, so be careful.
 *)
 
-end
+

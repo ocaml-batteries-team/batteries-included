@@ -77,9 +77,8 @@ module BaseBool = struct
   let to_string = string_of_bool
 end
 
-module Bool = struct
   include BaseBool
   include Number.MakeNumeric(BaseBool)
   let print out t = InnerIO.nwrite out (to_string t)
   let t_printer paren out t = print out t
-end
+

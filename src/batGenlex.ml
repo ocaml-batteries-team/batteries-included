@@ -1,17 +1,8 @@
-
-
-module Genlex = struct
-
-include Genlex
-
 open ParserCo
-open BatHashtbl
-open BatString
-open BatChar
-open BatInt
-open BatFloat
 open CharParser
 open Std
+open Genlex
+
 
 type lexer_error =
   | IllegalCharacter of char
@@ -35,16 +26,12 @@ let junk e =
 let peek e =
   Enum.peek e.content
 
-
-
 type t = (string, token) Hashtbl.t
 
 let of_list x = 
   let kwd_table = Hashtbl.create (List.length x) in
     List.iter (fun s -> Hashtbl.add kwd_table s (Kwd s)) x;
     kwd_table
-
-
 
 let to_enum_filter kwd_table = 
   let initial_buffer = String.create 32 in
@@ -70,7 +57,7 @@ let to_enum_filter kwd_table =
     try Hashtbl.find kwd_table id with
       Not_found -> Ident id
   and keyword_or_error c pos =
-    let s = String.of_char c in
+    let s = BatString.of_char c in
     try Hashtbl.find kwd_table s with
       Not_found -> raise (LexerError (IllegalCharacter c, pos))
   in
@@ -255,10 +242,10 @@ let ocaml_escape = label "OCaml-style escaped character"
       | '"' -> return '"'
       | 'x' -> 
 	  times 2 hex >>= fun t ->
-	  return (Char.chr (Int.of_string (String.implode ('0'::'x'::t))))
+	  return (Char.chr (BatInt.of_string (BatString.implode ('0'::'x'::t))))
       | '0' .. '9' as x -> 
 	  times 2 digit >>= fun t ->
-	  return (Char.chr (Int.of_string (String.implode (x::t))))
+	  return (Char.chr (BatInt.of_string (BatString.implode (x::t))))
       | _ -> fail
   )
 
@@ -290,7 +277,7 @@ struct
       let nested_comments = true
       let ident_start     = either [uppercase; lowercase; one_of ['_'; '`']]
       let ident_letter    = either [uppercase; lowercase; digit; one_of ['\''; '_']]
-      let op_start        = satisfy (Char.is_symbol)
+      let op_start        = satisfy (BatChar.is_symbol)
       let op_letter       = op_start
       let reserved_names  = ["fun"; "let"; "module"; "begin"; "end"; "sig"; "function";
 			     "{"; "}"; ";"; "|"; ","; ":"; "."; ](*@TODO: Complete*)
@@ -339,7 +326,7 @@ struct
 	  
       let string_compare =
 	if case_sensitive then String.compare
-	else String.icompare
+	else BatString.icompare
 
       (** {6 Whitespace management} *)
       let line_comment =
@@ -389,13 +376,13 @@ struct
 
       let whitespaces = 
 	ignore_zero_plus (either 
-	  [ satisfy Char.is_whitespace >>= (fun _ -> return ());
+	  [ satisfy BatChar.is_whitespace >>= (fun _ -> return ());
 	    comment ])
 	  
       let to_symbol p =
 	p           >>= fun r -> 
 	whitespaces >>= fun _ -> 
-	return (String.of_list r)
+	return (BatString.of_list r)
 	    
       let lexeme p =
 	p           >>= fun r ->
@@ -472,14 +459,14 @@ struct
 		   content (e::chars)
 	   in content [] >>= fun c -> 
 	     (*Printf.eprintf "Sending full string %S\n" (String.of_list (List.rev c));*)
-	     return (String.of_list (List.rev c))))
+	     return (BatString.of_list (List.rev c))))
 	
 	  
       let integer = 
 	label "OCaml-style integer" (
 	  lexeme(maybe (CharParser.char '-') >>= fun sign   ->
 	    one_plus digit   >>= fun digits -> 
-	      let number = Int.of_string (String.of_list digits) in
+	      let number = BatInt.of_string (BatString.of_list digits) in
 		match sign with
 		  | Some _ -> return (~- number)
 		  | None   -> return number ))
@@ -487,16 +474,16 @@ struct
       let float =
 	label "OCaml-style floating-point number" (
 	  lexeme (maybe (CharParser.char '-')                   >>= fun sign     ->
-	  post_map String.of_list (zero_plus digit)     >>= fun int_part ->
+	  post_map BatString.of_list (zero_plus digit)     >>= fun int_part ->
 	  maybe (
 	    CharParser.char '.'  >>= fun _ -> 
-	      post_map String.of_list (zero_plus digit) ) >>= fun decimal_part ->
+	      post_map BatString.of_list (zero_plus digit) ) >>= fun decimal_part ->
 	    maybe (
 	      CharParser.char 'E'  >>= fun _ -> 
 		maybe (CharParser.char '+' <|> CharParser.char '-') >>= fun sign ->
 		  let sign = Option.default '+' sign  in
 		    one_plus digit >>= fun expo -> 
-		      return ("E" ^ (String.of_char sign) ^ (String.of_list expo)))
+		      return ("E" ^ (BatString.of_char sign) ^ (BatString.of_list expo)))
             >>= fun expo ->
 
 	      let number = match (decimal_part, expo) with
@@ -506,7 +493,7 @@ struct
 		| None,   None   -> None
 	      in match number with
 		| None   -> fail
-		| Some n -> let absolute = Float.of_string n in
+		| Some n -> let absolute = BatFloat.of_string n in
 		    return (
 		      match sign with
 			| None   -> absolute
@@ -547,4 +534,4 @@ struct
      
   end
 
-end
+

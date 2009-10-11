@@ -20,10 +20,8 @@
  *)
 
 
-module Printexc =
-struct
-  include Printexc
+open Printexc
 
   let pass = print
   let print out e = InnerIO.nwrite out (to_string e)
-end
+

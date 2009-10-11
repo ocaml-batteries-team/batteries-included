@@ -21,8 +21,4 @@
 
 
 
-module Sys =
-struct
-  include Sys
-  let files_of d = BatArray.Array.enum (readdir d)
-end
+let files_of d = BatArray.enum (Sys.readdir d)

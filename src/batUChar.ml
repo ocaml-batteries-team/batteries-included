@@ -3,10 +3,8 @@
 (* TODO: Check -- this is actually part of a package distributed with LGPL + linking exception *)
 
 
-module UChar =
-struct
   open CamomileLibrary
-  include UChar
+  open UChar
 
   module Info = UCharInfo.Make(CamomileDefaultConfig)
 
@@ -228,4 +226,3 @@ let script     = Info.script
 let category   = Info.general_category
 
 
-end

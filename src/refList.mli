@@ -30,7 +30,6 @@
 *)
 
 exception Empty_list
-exception Invalid_index of int
 
 type 'a t (**The type of an empty ref list*)
 

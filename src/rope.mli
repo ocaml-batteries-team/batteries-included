@@ -75,9 +75,7 @@ architectures, 220 Gb on 64 bit architectures.
 @author Mauricio Fernandez
 *)
 
- 
-open BatUChar
-open BatUTF8
+open CamomileLibrary
  
 type t
   (** The type of the ropes. *)
@@ -106,11 +104,11 @@ val of_string : string -> t
 val to_string : t -> string
   (** [to_string t] returns a UTF-8 encoded string representing [t]*)
 
-val of_ustring : UTF8.t -> t
+val of_ustring : BatUTF8.t -> t
   (** [of_string s] returns a rope corresponding to the string [s].
       Operates in [O(n)] time. *)
   
-val to_ustring : t -> UTF8.t
+val to_ustring : t -> BatUTF8.t
   (** [to_ustring r] returns the string corresponding to the rope [r]. *)
 
 val of_uchar: UChar.t -> t
@@ -250,23 +248,23 @@ val range_iteri :
   (** As [range_iter], but passes base + index of the character in the
       subrope defined by next to arguments. *)
 
-val bulk_iter : (UTF8.t -> unit) -> t -> unit
+val bulk_iter : (BatUTF8.t -> unit) -> t -> unit
   (** as iter but over larger chunks of data *)
 
-val bulk_iteri : ?base:int -> (int -> UTF8.t -> unit) -> t -> unit
+val bulk_iteri : ?base:int -> (int -> BatUTF8.t -> unit) -> t -> unit
   (** as iteri but over larger chunks of data. *)
   
 val fold : ('a -> UChar.t -> 'a ) -> 'a -> t -> 'a
   (** [Rope.fold f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
       where [rn = Rope.get n r ] and [N = length r]. *)
 
-val bulk_fold : ('a -> UTF8.t -> 'a) -> 'a -> t -> 'a
+val bulk_fold : ('a -> BatUTF8.t -> 'a) -> 'a -> t -> 'a
   (** As {!fold} but over larger chunks of data.*)
 
 val enum: t -> UChar.t Enum.t
   (** Returns an enumeration of the characters of a rope. *)
 
-val bulk_enum: t -> UTF8.t Enum.t
+val bulk_enum: t -> BatUTF8.t Enum.t
   (** Returns an enumeration of the UTF-8 encoded strings of a rope.
       Provided for convenience and speed.
   *)
@@ -274,7 +272,7 @@ val bulk_enum: t -> UTF8.t Enum.t
 val of_enum: UChar.t Enum.t -> t
   (** Creates a rope from a character enumeration. *)
 
-val of_bulk_enum: UTF8.t Enum.t -> t
+val of_bulk_enum: BatUTF8.t Enum.t -> t
   (** Creates a rope from an enumeration of UTF-8 encoded strings. 
 
       Provided for convenience and speed.*)
@@ -310,7 +308,7 @@ val to_float : t -> float
   (** Returns the float represented by the given rope or
       raises Invalid_rope if the rope does not represent a float. *)
 
-val bulk_map : (UTF8.t -> UTF8.t) -> t -> t
+val bulk_map : (BatUTF8.t -> BatUTF8.t) -> t -> t
  (** [map f s] returns a rope where all ropes [c] in [s] have been
       replaced by [f c]. **)
 
@@ -319,7 +317,7 @@ val map : (UChar.t -> UChar.t) -> t -> t
       replaced by [f c]. **)
 
 
-val bulk_filter_map : (UTF8.t -> UTF8.t option) -> t -> t
+val bulk_filter_map : (BatUTF8.t -> BatUTF8.t option) -> t -> t
 (** [bulk_filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0..an] are
     the UTF-encoded strings of [l]. It returns the list of elements [bi] such as
     [f ai = Some bi] (when [f] returns [None], the corresponding element of
@@ -496,7 +494,7 @@ val escaped : t -> t
    not a copy. *)
 
 
-val replace_chars : (UChar.t -> UTF8.t) -> t -> t
+val replace_chars : (UChar.t -> BatUTF8.t) -> t -> t
  (** [replace_chars f s] returns a rope where all chars [c] of [s] have been
       replaced by the rope returned by [f c]. *)
 

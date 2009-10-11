@@ -49,9 +49,6 @@
     @author Richard W.M. Jones
     @author David Teller
 *)
-module List :
-    sig
-
       type 'a t = 'a list
 	  (**The type of lists*)
 
@@ -632,7 +629,6 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
           end
 	end
 
-    end
 
 
 val ( @ ) : 'a list -> 'a list -> 'a list

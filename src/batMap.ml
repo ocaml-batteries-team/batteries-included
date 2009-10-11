@@ -21,8 +21,6 @@
 
 
 
-module Map =
-struct
   module type OrderedType = Interfaces.OrderedType
 
   module type S =
@@ -200,7 +198,7 @@ struct
 
 
       let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-	Enum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.Printf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+	Enum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
 
       (*We rely on [fold] rather than on ['a implementation] to
 	make future changes of implementation in the base
@@ -274,11 +272,9 @@ struct
 
     end
 
-  module StringMap  = Make(BatString.String)
-  module IStringMap = Make(BatString.String.IString)
-  module NumStringMap = Make(BatString.String.NumString)
+  module StringMap  = Make(BatString)
+  module IStringMap = Make(BatString.IString)
+  module NumStringMap = Make(BatString.NumString)
   module RopeMap    = Make(Rope)
   module IRopeMap   = Make(Rope.IRope)
-  module IntMap     = Make(BatInt.Int)
-
-end
+  module IntMap     = Make(BatInt)

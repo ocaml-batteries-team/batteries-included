@@ -21,9 +21,6 @@
  *
  *)
 
-open BatString
-open BatChar
-
 type t = string * int * int (* string, offset, length *)
 
 let empty () = "", 0, 0
@@ -185,7 +182,7 @@ let span (str1, off1, len1) (str2, off2, len2) =
   (str1, off1, off2+len2-off1)
 
 let translate f (str,off,len) =
-  BatString.String.init len (fun i -> f str.[off+i])
+  BatString.init len (fun i -> f str.[off+i])
 
 let tokens p (str,off,len) =
   let i = ref 0 and j = ref 0 and acc = RefList.empty () in
@@ -226,7 +223,7 @@ let iter f (str, off, len) =
     f str.[i];
   done
 
-let trim x = dropl Char.is_whitespace (dropr Char.is_whitespace x)
+let trim x = dropl BatChar.is_whitespace (dropr BatChar.is_whitespace x)
 
 let split_on_char c (str, off, len) = 
   let rec loop acc last_pos pos =

@@ -36,9 +36,6 @@
 
     @documents Int
 *)
-module Int :
-  sig
-
     
     type t = int
 	(** An alias for the type of integers. *)
@@ -174,7 +171,7 @@ module Int :
 
     val print: 'a InnerIO.output -> t -> unit
     val t_printer : t Value_printer.t
-  end
+
 
 
 (** 

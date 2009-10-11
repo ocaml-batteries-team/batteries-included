@@ -29,7 +29,6 @@ module BaseInt64 = struct
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul
 end
 
-module Int64 = struct
   include Number.MakeNumeric(BaseInt64)
   include BaseInt64
 
@@ -40,4 +39,4 @@ module Int64 = struct
 
   let print out t = InnerIO.Printf.fprintf out "%Lx" t
   let t_printer paren out t = print out t
-end
+

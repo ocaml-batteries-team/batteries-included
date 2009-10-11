@@ -99,7 +99,7 @@ I    {!flush_out}.
     @documents InnerIO
 *)
 
-open BatUChar
+open CamomileLibrary
 open InnerIO
 
 type input = InnerIO.input

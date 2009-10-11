@@ -26,10 +26,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+module UChar = CamomileLibrary.UChar
+module UTF8 = BatUTF8
 
-open BatUTF8
-open BatUChar
-open BatList
 open Return
 
 (**Low-level optimization*)
@@ -50,9 +49,9 @@ type t =
  
 type forest_element = { mutable c : t; mutable len : int }
  
-let str_append = UTF8.append
-let empty_str = UTF8.empty
-let string_of_string_list l = UTF8.join UTF8.empty l
+let str_append = BatUTF8.append
+let empty_str = BatUTF8.empty
+let string_of_string_list l = BatUTF8.join BatUTF8.empty l
 
 
  
@@ -648,8 +647,8 @@ let uppercase s =
 
 let init len f = of_enum (Enum.init len f)
 
-let of_list cl = of_enum (List.enum cl)
-let to_list r  = List.of_enum (enum r)
+let of_list cl = of_enum (BatList.enum cl)
+let to_list r  = BatList.of_enum (enum r)
 
   
 let of_string_unsafe s = of_ustring (UTF8.of_string_unsafe s)
@@ -783,7 +782,7 @@ let trim rope =
     match Iter.next iter with
       | None ->
           Empty
-      | Some ch when UChar.is_whitespace ch ->
+      | Some ch when BatUChar.is_whitespace ch ->
           trim_left (n + 1) iter
       | _ ->
           sub rope n (trim_right (length rope - n) (Iter.make rope))
@@ -791,7 +790,7 @@ let trim rope =
     match Iter.prev iter with
       | None ->
           assert false
-      | Some ch when UChar.is_whitespace ch ->
+      | Some ch when BatUChar.is_whitespace ch ->
           trim_right (n - 1) iter
       | _ ->
           n
@@ -846,7 +845,7 @@ let fill r start len char =
 let blit rsrc offsrc rdst offdst len = 
   splice rdst offdst len (sub rsrc offsrc len)
 
-let concat sep r_list = List.reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
+let concat sep r_list = BatList.reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
 
 let escaped r = bulk_map UTF8.escaped r
 
@@ -908,9 +907,9 @@ let replace ~str ~sub ~by =
       Invalid_rope -> (false, str)
 
 
-let explode r = List.of_enum (enum r)
+let explode r = BatList.of_enum (enum r)
 
-let implode r = of_enum (List.enum r)
+let implode r = of_enum (BatList.enum r)
 
 type t_alias = t (* fixes [type t = t] bug below *)
 

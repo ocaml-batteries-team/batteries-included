@@ -31,7 +31,6 @@ module BaseNativeint = struct
   let min_num, max_num = min_int, max_int
 end
 
-module Native_int = struct
   include Number.MakeNumeric(BaseNativeint)
   include BaseNativeint
 
@@ -42,4 +41,3 @@ module Native_int = struct
   let ( --- ) x y = 
     if x <= y then x -- y 
     else Enum.seq x pred ((<=) y) 
-end
