@@ -78,6 +78,7 @@ module Format = struct
   let set_formatter_out_channel    = set_formatter_output
   let pp_set_formatter_out_channel = pp_set_formatter_output
   let std_formatter                = formatter_of_output IO.stdout
+  let err_formatter                = formatter_of_output IO.stderr
 
   (**{6 Initialization}*)
 
