@@ -22,11 +22,7 @@
  *)
 
 
-(*
-exception Empty_list
-exception Invalid_index of int
-exception Different_list_size of string
-*)
+open List
 
 (* Thanks to Jacques Garrigue for suggesting the following structure *)
 type 'a mut_list =  {
@@ -48,14 +44,6 @@ let cons h t = h::t
 let is_empty = function
   | [] -> true
   | _  -> false
-
-let hd = function
-	| [] -> raise Empty_list
-	| h :: t -> h
-
-let tl = function
-	| [] -> raise Empty_list
-	| h :: t -> t
 
 let nth l index =
 	if index < 0 then invalid_arg "Negative index not allowed";
@@ -238,7 +226,7 @@ let map2 f l1 l2 =
 				let r = { hd = f h1 h2; tl = [] } in
 				dst.tl <- inj r;
 				loop r t1 t2
-			| _ -> raise (Different_list_size "map2")
+			| _ -> invalid_arg "map2: Different_list_size"
 	in
 	let dummy = dummy_node () in
 	loop dummy l1 l2;
@@ -248,20 +236,20 @@ let rec iter2 f l1 l2 =
 	match l1, l2 with
 	| [], [] -> ()
 	| h1 :: t1, h2 :: t2 -> f h1 h2; iter2 f t1 t2
-	| _ -> raise (Different_list_size "iter2")
+	| _ -> invalid_arg "iter2: Different_list_size"
 
 let rec fold_left2 f accum l1 l2 =
 	match l1, l2 with
 	| [], [] -> accum
 	| h1 :: t1, h2 :: t2 -> fold_left2 f (f accum h1 h2) t1 t2
-	| _ -> raise (Different_list_size "fold_left2")
+	| _ -> invalid_arg "fold_left2: Different_list_size"
 
 let fold_right2 f l1 l2 init =
 	let rec tail_loop acc l1 l2 =
 		match l1, l2 with
 		| [] , [] -> acc
 		| h1 :: t1 , h2 :: t2 -> tail_loop (f h1 h2 acc) t1 t2
-		| _ -> raise (Different_list_size "fold_right2")
+		| _ -> invalid_arg "fold_left2: Different_list_size"
 	in
 	let rec loop n l1 l2 =
 		match l1, l2 with
@@ -271,7 +259,7 @@ let fold_right2 f l1 l2 init =
 				f h1 h2 (loop (n+1) t1 t2)
 			else
 				f h1 h2 (tail_loop init (rev t1) (rev t2))
-		| _ -> raise (Different_list_size "fold_right2")
+		| _ -> invalid_arg "fold_right2: Different_list_size"
 	in
 	loop 0 l1 l2
 
@@ -280,7 +268,7 @@ let for_all2 p l1 l2 =
 		match l1, l2 with
 		| [], [] -> true
 		| h1 :: t1, h2 :: t2 -> if p h1 h2 then loop t1 t2 else false
-		| _ -> raise (Different_list_size "for_all2")
+		| _ -> invalid_arg "for_all2: Different_list_size"
 	in
 	loop l1 l2
 
@@ -289,7 +277,7 @@ let exists2 p l1 l2 =
 		match l1, l2 with
 			| [], [] -> false
 			| h1 :: t1, h2 :: t2 -> if p h1 h2 then true else loop t1 t2
-			| _ -> raise (Different_list_size "exists2")
+			| _ -> invalid_arg "exists2: Different_list_size"
 	in
 	loop l1 l2
 
@@ -425,7 +413,7 @@ let combine l1 l2 =
 			let r = { hd = h1, h2; tl = [] } in
 			dst.tl <- inj r;
 			loop r t1 t2
-		| _, _ -> raise (Different_list_size "combine")
+		| _, _ -> invalid_arg "combine: Different_list_size"
 	in
 	let dummy = dummy_node () in
 	loop dummy l1 l2;
@@ -482,7 +470,7 @@ let iteri f l =
 let first = hd
 
 let rec last = function
-	| [] -> raise Empty_list
+	| [] -> invalid_arg "Empty List"
 	| h :: [] -> h
 	| _ :: t -> last t
 
@@ -661,12 +649,12 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
 let t_printer a_printer paren out x = print (a_printer false) out x
 
 let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a list =
-  BatPrintf.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
+  BatPrintf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
 (*  let os = InnerIO.output_string  () in
   print ~first ~last ~sep print_a os list;
   InnerIO.close_out os (* returns contents *)*)
 
-let reduce f = function [] -> raise Empty_list
+let reduce f = function [] -> invalid_arg "Empty List"
   | h::t -> fold_left f h t
 
 let min l = reduce Pervasives.min l
@@ -752,8 +740,6 @@ module Labels = struct
     let find ~f l = find f l
     let findi ~f l = findi f l
   end
-end
-
 end
 
 let ( @ ) = List.append

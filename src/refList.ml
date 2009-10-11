@@ -109,7 +109,7 @@ let of_enum e = ref (BatList.of_enum e)
 let backwards     rl = BatList.backwards !rl
 let of_backwards  e  = ref (BatList.of_backwards e)
 
-let fold_left f a l = BatList.fold_left f a !l
+let fold_left f a l = List.fold_left f a !l
 let fold_right f l a = BatList.fold_right f !l a
 
 module Index = struct
@@ -118,7 +118,7 @@ module Index = struct
 		let p = ref (-1) in
 		let rec del_aux = function			
 			| x::l -> incr p; if !p = pos then l else x::(del_aux l)
-			| [] -> raise (Invalid_index pos)
+			| [] -> invalid_arg "remove_at: index not found"
 		in
 		rl := del_aux !rl
 

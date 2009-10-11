@@ -57,17 +57,6 @@
 
       (**{6 Base operations}*)
 
-	val length : 'a list -> int
-	  (** Return the length (number of elements) of the given list. *)
-
-	val hd : 'a list -> 'a
-	(** Returns the first element of the list or raise [Empty_list] if the
-	 list is empty. *)
-
-	val tl : 'a list -> 'a list
-	(** Returns the list without its first elements or raise [Empty_list] if
-	 the list is empty. *)
-
 	val is_empty : 'a list -> bool
 	  (** [is_empty e] returns true if [e] does not contains any element. *)
 
@@ -86,17 +75,9 @@
 	  (** [at l n] returns the n-th element of the list [l] or raise
 	      [Invalid_index] is the index is outside of [l] bounds. *)
 
-	val rev : 'a list -> 'a list
-	  (** List reversal. *)
-
 	val append : 'a list -> 'a list -> 'a list
 	  (** Catenate two lists.  Same function as the infix operator [@].
 	      Tail-recursive (length of the first argument).*)
-
-	val rev_append : 'a list -> 'a list -> 'a list
-	  (** [List.rev_append l1 l2] reverses [l1] and concatenates it to [l2].
-	      This is equivalent to {!List.rev}[ l1 @ l2], but [rev_append] is
-	      more efficient. *)
 
 	val concat : 'a list list -> 'a list
 	  (** Concatenate a list of lists.  The elements of the argument are all
@@ -121,11 +102,6 @@
 
 	(**{6 Iterators}*)
 
-	val iter : ('a -> unit) -> 'a list -> unit
-	  (** [List.iter f [a1; ...; an]] applies function [f] in turn to
-	      [a1; ...; an]. It is equivalent to
-	      [begin f a1; f a2; ...; f an; () end]. *)
-
 	val iteri : (int -> 'a -> 'b) -> 'a list -> unit
 	(** [iteri f l] will call [(f 0 a0);(f 1 a1) ... (f n an)] where
 	 [a0..an] are the elements of the list [l]. *)
@@ -139,16 +115,6 @@
 	(** [mapi f l] will build the list containing
 	 [(f 0 a0);(f 1 a1) ... (f n an)] where [a0..an] are the elements of
 	 the list [l]. *)
-
-
-	val rev_map : ('a -> 'b) -> 'a list -> 'b list
-	  (** [List.rev_map f l] gives the same result as
-	      {!List.rev}[ (]{!List.map}[ f l)], but is
-	      more efficient. *)
-
-	val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
-	  (** [List.fold_left f a [b1; ...; bn]] is
-	      [f (... (f (f a b1) b2) ...) bn]. Tail-recursive. *)
 
 	val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 	  (** [List.fold_right f [a1; ...; an] b] is
@@ -182,11 +148,6 @@
 	      @raise Different_list_size if the two lists have
 	      different lengths.  Tail-recursive. *)
 
-	val rev_map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
-	  (** [List.rev_map2 f l1 l2] gives the same result as
-	      {!List.rev}[ (]{!List.map2}[ f l1 l2)], but is tail-recursive and
-	      more efficient. *)
-
 	val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b list -> 'c list -> 'a
 	  (** [List.fold_left2 f a [b1; ...; bn] [c1; ...; cn]] is
 	      [f (... (f (f a b1 c1) b2 c2) ...) bn cn].
@@ -202,16 +163,6 @@
 
 	  (**{6 List scanning}*)
 
-	val for_all : ('a -> bool) -> 'a list -> bool
-	  (** [for_all p [a1; ...; an]] checks if all elements of the list
-	      satisfy the predicate [p]. That is, it returns
-	      [(p a1) && (p a2) && ... && (p an)]. *)
-
-	val exists : ('a -> bool) -> 'a list -> bool
-	  (** [exists p [a1; ...; an]] checks if at least one element of
-	      the list satisfies the predicate [p]. That is, it returns
-	      [(p a1) || (p a2) || ... || (p an)]. *)
-
 	val for_all2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 	  (** Same as {!List.for_all}, but for a two-argument predicate.
 	      
@@ -224,21 +175,9 @@
 	      @raise Invalid_argument if the two lists have
 	      different lengths. *)
 
-	val mem : 'a -> 'a list -> bool
-	  (** [mem a l] is true if and only if [a] is equal
-	      to an element of [l]. *)
-
-	val memq : 'a -> 'a list -> bool
-	  (** Same as {!List.mem}, but uses physical equality instead of structural
-	      equality to compare list elements. *)
 
 	(**{6 List searching}*)
 
-
-	val find : ('a -> bool) -> 'a list -> 'a
-	  (** [find p l] returns the first element of [l] such as [p x]
-	      returns [true] or raises [Not_found] if such an element
-	      has not been found.*)
 
 	val find_exn : ('a -> bool) -> exn -> 'a list -> 'a
 	(** [find_exn p e l] returns the first element of [l] such as [p x]
@@ -307,14 +246,6 @@
 
 	  (**{6 Association lists}*)
 
-	val assoc : 'a -> ('a * 'b) list -> 'b
-	  (** [assoc a l] returns the value associated with key [a] in the list of
-	      pairs [l]. That is,
-	      [assoc a [ ...; (a,b); ...] = b]
-	      if [(a,b)] is the leftmost binding of [a] in list [l].
-	      Raise [Not_found] if there is no value associated with [a] in the
-	      list [l]. *)
-
 	val assoc_inv : 'b -> ('a * 'b) list -> 'a
 	  (** [assoc_inv b l] returns the key associated with value [b] in the list of
 	      pairs [l]. That is,
@@ -322,16 +253,6 @@
 	      if [(a,b)] is the leftmost binding of [a] in list [l].
 	      Raise [Not_found] if there is no key associated with [b] in the
 	      list [l]. *)
-
-	val assq : 'a -> ('a * 'b) list -> 'b
-	  (** As {!assoc} but with physical equality *)
-
-	val mem_assoc : 'a -> ('a * 'b) list -> bool
-	  (** As {!assoc} but simply returns [true] if a binding exists, [false]
-	      otherwise. *)
-
-	val mem_assq : 'a -> ('a * 'b) list -> bool
-	  (** As {!mem_assoc} but with physical equality.*)
 
 	val remove_assoc : 'a -> ('a * 'b) list -> ('a * 'b) list
 	  (** [remove_assoc a l] returns the list of
@@ -437,28 +358,6 @@
 	val sort : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
 	  (** Sort the list using optional comparator (by default [compare]). *)
 
-	val stable_sort : ('a -> 'a -> int) -> 'a list -> 'a list
-	  (** Same as {!List.sort}, but the sorting algorithm is guaranteed to
-	      be stable (i.e. elements that compare equal are kept in their
-	      original order) .
-
-	      The current implementation uses Merge Sort. It runs in constant
-	      heap space and logarithmic stack space.
-	  *)
-	  
-	val fast_sort : ('a -> 'a -> int) -> 'a list -> 'a list
-	  (** Same as {!List.sort} or {!List.stable_sort}, whichever is faster
-	      on typical input. *)
-	  
-	val merge : ('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
-	  (** Merge two lists:
-	      Assuming that [l1] and [l2] are sorted according to the
-	      comparison function [cmp], [merge cmp l1 l2] will return a
-	      sorted list containting all the elements of [l1] and [l2].
-	      If several elements compare equal, the elements of [l1] will be
-	      before the elements of [l2].
-	      Not tail-recursive (sum of the lengths of the arguments).
-	  *)
 	  
 	val sort_unique : ('a -> 'a -> int) -> 'a list -> 'a list
 	(** [sort_unique cmp l] returns the list [l] sorted and without any duplicate element. [cmp] is a usual comparison function providing linear order. 
@@ -472,20 +371,6 @@
 For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if following conditions are met:
 	  [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0],...
 	  *)  
-
-	(** {6 Exceptions} *)
-
-	exception Empty_list
-	(** [Empty_list] is raised when an operation applied on an empty list
-		is invalid : [hd] for example. *)
-
-	exception Invalid_index of int
-	(** [Invalid_index] is raised when an indexed access on a list is
-		out of list bounds. *)
-
-	exception Different_list_size of string
-	(** [Different_list_size] is raised when applying functions such as
-		[iter2] on two lists having different size. *)
 
 	(** {6 Boilerplate code}*)
 
@@ -545,12 +430,12 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 		first element of [l] and its index, such that [p i ai] is true, 
 		or [None] if no	such element has been found. *)
 
-	  val split_at : int -> 'a list -> [`Ok of ('a list * 'a list) | `Invalid_index of int]
+	  val split_at : int -> 'a list -> [`Ok of ('a list * 'a list) | `Invalid_argument of string]
 	    (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns 
 		[Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2] 
 		contains the others. Otherwise, returns [`Invalid_index n] *)
 
-	  val at : 'a list -> int -> [`Ok of 'a | `Invalid_index of int]
+	  val at : 'a list -> int -> [`Ok of 'a | `Invalid_argument of string]
 	    (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
 		[x] is the n-th element of the list [l]. Otherwise, returns [Error
 		(`Invalid_index(n))].*)
@@ -621,8 +506,8 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
             val find : f:('a -> bool) -> 'a list -> 'a option
             val rfind : f:('a -> bool) -> 'a list -> 'a option
             val findi : f:(int -> 'a -> bool) -> 'a list -> (int * 'a) option
-            val split_at : int -> 'a list -> [`Ok of ('a list * 'a list) | `Invalid_index of int]
-            val at : 'a list -> int -> [`Ok of 'a | `Invalid_index of int]
+            val split_at : int -> 'a list -> [`Ok of ('a list * 'a list) | `Invalid_argument of string]
+            val at : 'a list -> int -> [`Ok of 'a | `Invalid_argument of string]
             val assoc : 'a -> ('a * 'b) list -> 'b option
             val assoc_inv : 'b -> ('a * 'b) list -> 'a option
             val assq : 'a -> ('a * 'b) list -> 'b option

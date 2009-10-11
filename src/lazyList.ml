@@ -524,7 +524,7 @@ let take_while p =
 
 let sort ?cmp l = of_list (BatList.sort ?cmp (to_list l))
 
-let stable_sort cmp l = of_list (BatList.stable_sort cmp (to_list l))
+let stable_sort cmp l = of_list (List.stable_sort cmp (to_list l))
 
 let map2 f l1 l2 =
   let rec aux l1 l2 =
