@@ -84,8 +84,8 @@ OCAMLBUILD=@OCAMLBUILD@ $(OBFLAGS)
 
 
 # findlib destdir, if you need to install in non-standard places invoke make as
-#      make install DESTDIR=/some/where/
-DESTDIR = @DESTDIR@
+#      make install DESTINATION=/some/where/
+DESTINATION = @DESTINATION@
 
 
 ########################################################################
@@ -130,21 +130,21 @@ all_byte_code:
 	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS)
 
 
-ifeq ($(DESTDIR),)
-DESTDIR_FLAGS =
+ifeq ($(DESTINATION),)
+DESTINATION_FLAGS =
 else
-DESTDIR_FLAGS = -destdir $(DESTDIR)
+DESTINATION_FLAGS = -destdir $(DESTINATION)
 install: install-mkdir
 install-mkdir:
-	test -d $(DESTDIR) || mkdir -p $(DESTDIR)
+	test -d $(DESTINATION) || mkdir -p $(DESTINATION)
 endif
 
 #DEST_TOP = 
-#ifeq ($(DESTDIR),)
+#ifeq ($(DESTINATION),)
 #ocamlfind install batteries
 #DEST_TOP = $(shell @OCAMLFIND@ query @OCAMLPKG_camomile@ )/../batteries/top.ml
 #else
-#DEST_TOP = $(DESTDIR)/batteries/top.ml
+#DEST_TOP = $(DESTINATION)/batteries/top.ml
 #endif
 
 
@@ -176,7 +176,7 @@ top: config.ml
 
 install:
 	chmod ugo+rx src/batteries_toolchain/ocaml* && \
-	ocamlfind install $(DESTDIR_FLAGS) aaa \
+	ocamlfind install $(DESTINATION_FLAGS) aaa \
 		build/META \
 		_build/*.cmi \
 		_build/src/*.cmi \
@@ -187,7 +187,7 @@ install:
 
 uninstall:
 	\rm -Rf $(DOCDIR) &&\
-	ocamlfind remove $(DESTDIR_FLAGS) aaa
+	ocamlfind remove $(DESTINATION_FLAGS) aaa
 
 quickdoc: quickbyte doc/api.odocl
 	rm -Rf doc/batteries/html/api

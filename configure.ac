@@ -159,10 +159,10 @@ AC_ARG_WITH(
 
 if test "$INSTALLATION" = "GODI"; then
   AC_MSG_NOTICE([Installing to GODI default directory])
-  DESTDIR="`$OCAMLFIND printconf destdir`"
+  DESTINATION="`$OCAMLFIND printconf destdir`"
   AC_CHECK_OCAML_PKG_SILENTLY(aaa, OCAMLPKG_aaa)
   if test -z "$OCAMLPKG_aaa"; then
-   	DESTDIR=`$OCAMLFIND printconf destdir`
+   	DESTINATION=`$OCAMLFIND printconf destdir`
   else
 	AC_MSG_ERROR([AAA-Batteries is already installed])
 	exit 1
@@ -173,15 +173,15 @@ else
         AC_MSG_NOTICE([Locating default installation directory])
 	AC_CHECK_OCAML_PKG_SILENTLY(aaa, OCAMLPKG_aaa)
 	if test -z "$OCAMLPKG_aaa"; then
-   	   DESTDIR=`$OCAMLFIND printconf destdir`
+   	   DESTINATION=`$OCAMLFIND printconf destdir`
 	else
 	   AC_MSG_WARN([AAA-Batteries is already installed])
    	   AC_MSG_WARN([Configuration will succeed but you will need to uninstall Batteries before reinstalling it])
-   	   DESTDIR=`dirname $OCAMLPKG_aaa`
+   	   DESTINATION=`dirname $OCAMLPKG_aaa`
 	fi
    else
 	AC_MSG_NOTICE([Using user-provided prefix ${prefix}])
-	DESTDIR="${prefix}/lib/aaa"
+	DESTINATION="${prefix}/lib/aaa"
    fi
 fi
 if test "$BUILD_DOC" = "yes"; then
@@ -191,13 +191,13 @@ else
 fi
 AC_SUBST(BUILD_DOC)
 
-AC_MSG_NOTICE([Default destination is $DESTDIR])
-AC_SUBST(DESTDIR)
+AC_MSG_NOTICE([Default destination is $DESTINATION])
+AC_SUBST(DESTINATION)
 
 AC_ARG_WITH(
 	docroot,
 	[  --with-docroot=PATH     set documentation root
-	                           default: "$DESTDIR/doc/batteries"],
+	                           default: "$DESTINATION/doc/batteries"],
 	DOCDIR=$withval,
 	DOCDIR=NONE)
 if test "$DOCDIR" = "yes" ; then
@@ -206,7 +206,7 @@ if test "$DOCDIR" = "yes" ; then
 fi
 if test "$DOCDIR" = "NONE"; then
    if test "$prefix" = "NONE"; then
-      DOCDIR=$DESTDIR/doc/batteries
+      DOCDIR=$DESTINATION/doc/batteries
    else
       DOCDIR=$prefix/doc/batteries
    fi
