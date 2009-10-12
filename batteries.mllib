@@ -38,7 +38,6 @@ BatStr
 BatSys 
 BatUChar 
 BatUnit 
-BatUnixThreads 
 BatUTF8		
 BitSet 
 CharEncodings 

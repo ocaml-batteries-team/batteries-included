@@ -1,13 +1,13 @@
 open OUnit
-open Print
+open BatPrintf
 open IO
 
 let string = "hello world"
 
 let test_open_process_readline () =
   try
-    let r,w = Unix.open_process "cat" in
-      fprintf w p"%s\n" string;
+    let r,w = BatUnix.open_process "cat" in
+      fprintf w "%s\n" string;
       close_out w;
       match IO.read_line r with
 	| s when s = string -> ()
@@ -16,7 +16,7 @@ let test_open_process_readline () =
 
 let test_open_process_cleanup () =
   try
-    let r,w = Unix.open_process "cat" in
+    let r,w = BatUnix.open_process "cat" in
       fprintf w p"%s\n" string;                       
       close_out w;
       while true do

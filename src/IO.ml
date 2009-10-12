@@ -815,7 +815,7 @@ let synchronize_out ?(lock = !lock_factory ()) out =
    Yes, this is prohibitively expensive.
 *)
 let to_input_channel inp =
-  try Unix.in_channel_of_descr (BatUnix.Unix.descr_of_input inp) (*Simple case*)
+  try Unix.in_channel_of_descr (BatUnix.descr_of_input inp) (*Simple case*)
   with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
     let (name, cout) = Filename.open_temp_file "ocaml" "pipe" in
     let out          = output_channel cout                    in

@@ -1,8 +1,9 @@
 open OUnit
-open Random
+open BatRandom
+open BatPervasives
 
 let print_enum out enum =
-  Enum.print (fun out (c, _) -> Printf.fprintf out "%d" c) out enum
+  Enum.print (fun out (c, _) -> BatPrintf.fprintf out "%d" c) out enum
 
 let test_traversal_order () =
   let init = State.make [|0|] in
@@ -10,19 +11,19 @@ let test_traversal_order () =
   let map  = PMap.of_enum (Enum.map (fun x -> (x,x)) keys) in
   let enum_1 () = PMap.enum map
   and enum_2 () =
-    let list = Ref_list.empty () in
-      PMap.iter (fun k v -> Ref_list.push list (k, v)) map;
-      Ref_list.backwards list
+    let list = RefList.empty () in
+      PMap.iter (fun k v -> RefList.push list (k, v)) map;
+      RefList.backwards list
   in
     match Enum.compare compare (enum_1 ()) (enum_2 ()) with
       | 0 -> (* pass *) ()
       | _ ->
           assert_failure
-            (Printf.sprintf2 "Expected %a, got %a"
+            (BatPrintf.sprintf2 "Expected %a, got %a"
                print_enum (enum_1 ()) print_enum (enum_2 ()))
 
 (* This test is incorrect *)
-open Multi_pmap
+open MultiPMap
 let test_multimap_empty_assoc_lists () =
   let map =
     add 0 "foo" empty |> add 0 "bar" |> add 0 "sna" |>

@@ -1,5 +1,5 @@
 open OUnit
-open String
+open BatString
 
 let string = "Jon \"Maddog\" Orwant"
 
@@ -39,8 +39,8 @@ let test_ends_with () =
     check false "Jon"
 
 let test_nsplit () =
-  let printer = Printf.sprintf2 "%a" (List.print String.print) in
-  let check exp s sep = assert_equal ~printer exp (String.nsplit s sep) in
+  let printer = BatPrintf.sprintf2 "%a" (BatList.print BatString.print) in
+  let check exp s sep = assert_equal ~printer exp (nsplit s sep) in
     check ["a"; "b"; "c"] "a/b/c" "/";
     check [""; "a"; "b"; "c"; ""; ""] "/a/b/c//" "/";
     check [""; "a"; "b"; "c"; ""; ""] "FOOaFOObFOOcFOOFOO" "FOO"

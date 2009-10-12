@@ -74,7 +74,7 @@ let test_open_close_many_pervasives () =
 
 let test_no_append () =
   try
-    let temp   = Path.temp_file "ocaml_batteries" "noappend_test" in
+    let temp   = Filename.temp_file "ocaml_batteries" "noappend_test" in
     let out    = open_out temp                       in
     let _      = write_bytes out (BatArray.enum buffer) in
     let _      = close_out out                       in
@@ -89,13 +89,13 @@ let test_no_append () =
 
 let test_append () =
   try
-    let temp   = Path.temp_file "ocaml_batteries" "noappend_test" in
+    let temp   = Filename.temp_file "ocaml_batteries" "append_test" in
     let out    = open_out ~mode:[`append] temp       in
-    let _      = write_bytes out (Array.enum buffer) in
+    let _      = write_bytes out (BatArray.enum buffer) in
     let _      = close_out out                       in
     let size_1 = size_of temp                        in
     let out    = open_out ~mode:[`append] temp       in
-    let _      = write_bytes out (Array.enum buffer) in
+    let _      = write_bytes out (BatArray.enum buffer) in
     let _      = close_out out                       in
     let size_2 = size_of temp                        in
       if size_2 <> 2*size_1 then assert_failure

@@ -20,9 +20,7 @@
  *)
 
 
-module Unix =
-struct
-  include Unix
+  open Unix
   open InnerIO
 
 
@@ -155,4 +153,4 @@ struct
   let is_directory fn = (lstat fn).st_kind = S_DIR
 
       
-end
+
