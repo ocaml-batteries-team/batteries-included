@@ -1,17 +1,18 @@
 open OUnit
 open Vect
+open BatPervasives
 
 (**Initialize data sample*)
-let state  = Random.State.make [|0|]
-let buffer = Array.of_enum (Enum.take 1000 (Random.State.enum_int state 255))
+let state  = BatRandom.State.make [|0|]
+let buffer = BatArray.of_enum (Enum.take 1000 (BatRandom.State.enum_int state 255))
 let vect   = of_array buffer
 
 let print_array out =
-  Array.print ~sep:"; " Int.print out
+  BatArray.print ~sep:"; " BatInt.print out
 let print_vect  out =
-  Vect.print ~sep:"; " Int.print out
+  Vect.print ~sep:"; " BatInt.print out
 
-let sprint_vect v = Printf.sprintf2 "%a" print_vect v
+let sprint_vect v = BatPrintf.sprintf2 "%a" print_vect v
 
 let test_array_conversion () =
   assert_equal ~printer:sprint_vect
@@ -23,10 +24,10 @@ let test_init () =
   let vect = init 1000 f
   and array = Array.init 1000 f
   in
-    if Enum.compare ( Int.compare ) (enum vect) (Array.enum array) = 0 then
+    if Enum.compare ( BatInt.compare ) (enum vect) (BatArray.enum array) = 0 then
       () (* pass *)
     else assert_failure
-           (Printf.sprintf2 "Hoping: %a\n\tGot:    %a" print_array array print_vect vect)
+           (BatPrintf.sprintf2 "Hoping: %a\n\tGot:    %a" print_array array print_vect vect)
 
 let test_fold_left () =
   let f i = i * i
