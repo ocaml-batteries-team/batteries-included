@@ -32,7 +32,7 @@
 
     @documents String*)
 
-type t = string
+open String
 
 val is_empty : string -> bool
 (** [is_empty s] returns [true] if [s] is the empty string, [false]

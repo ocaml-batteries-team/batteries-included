@@ -272,7 +272,7 @@
 
     end
 
-  module StringMap  = Make(BatString)
+  module StringMap  = Make(String)
   module IStringMap = Make(BatString.IString)
   module NumStringMap = Make(BatString.NumString)
   module RopeMap    = Make(Rope)

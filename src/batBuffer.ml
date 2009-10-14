@@ -21,7 +21,8 @@
  *)
 
 
-open ExtString
+open BatString
+open Buffer
 
   (**The underlying buffer type.*)
   type buffer = 
@@ -34,16 +35,16 @@ open ExtString
   external t_of_buffer : buffer -> t = "%identity"
 
   let print out t =
-    ExtString.String.print out (contents t)
+    BatString.print out (contents t)
 
   let enum t =
     let buf = buffer_of_t t in
-      Enum.take buf.position (String.enum buf.buffer)
+      Enum.take buf.position (BatString.enum buf.buffer)
 
   let of_enum e =
     let length = Enum.count e  in
     let buf    = create length in
-      add_string buf (ExtString.String.of_enum e);
+      add_string buf (BatString.of_enum e);
       buf
 
   let add_input t inp n =

@@ -22,7 +22,7 @@
 
 
   open Random
-(*
+
   let init      = init
   let full_init = full_init
   let self_init = self_init
@@ -33,7 +33,7 @@
   let nativeint = nativeint
   let float     = float
   let bool      = bool
-    *)
+
   let char ()   = Char.chr (int 256)
 
 

@@ -27,8 +27,6 @@ let int_max (x:int) (y:int) = if x < y then y else x
 
 open String
 
-type t = string
-
 let compare = String.compare
 
 let init len f =

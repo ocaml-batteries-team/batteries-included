@@ -273,7 +273,7 @@ module type S =
   end
 
 
-  module StringSet  = Make(BatString)
+  module StringSet  = Make(String)
   module IStringSet = Make(BatString.IString)
   module NumStringSet = Make(BatString.NumString)
   module RopeSet    = Make(Rope)

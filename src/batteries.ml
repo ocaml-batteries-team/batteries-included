@@ -11,21 +11,21 @@ module Digest = struct include Digest include BatDigest end
 module Format = struct include Format include BatFormat end
 module Gc = struct include Gc include BatGc end
 module Genlex = struct include Gc include BatGc end
-module Hashtbl = struct include Hashtbl include BatHashtbl end
-module Int32 = struct include Int32 include BatInt32 end
-module Int64 = struct include Int64 include BatInt64 end
+module Hashtbl = BatHashtbl
+module Int32 = BatInt32
+module Int64 = BatInt64
 module Lexing = struct include Lexing include BatLexing end
 module List = struct include List include BatList end
-module Map = struct include Map include BatMap end
+module Map = BatMap
 module Marshal = struct include Marshal include BatMarshal end
-module Nativeint = struct include Nativeint include BatNativeint end
+module Nativeint = BatNativeint
 module Oo = struct include Oo include BatOo end
 module Printexc = struct include Printexc include BatPrintexc end
 module Printf = struct include Printf include BatPrintf end
 module Queue = struct include Queue include BatQueue end
-module Random = struct include Random include BatRandom end
+module Random = BatRandom
 module Scanf = struct include Scanf include BatScanf end
-module Set = struct include Set include BatSet end
+module Set = BatSet
 module Stack = struct include Stack include BatStack end
 module Stream = struct include Stream include BatStream end
 module String = struct include String include BatString end
@@ -49,7 +49,7 @@ module Bool = BatBool
 module Unit = BatUnit
 
 (* Chamomile *)
-module UChar = struct include UChar include BatUChar end
+module UChar = struct include CamomileLibrary.UChar include BatUChar end
 module UTF8 = BatUTF8 (* replaces, doesn't extend UTF8 *)
 
 
@@ -57,7 +57,7 @@ module UTF8 = BatUTF8 (* replaces, doesn't extend UTF8 *)
 module Big_int = struct include Big_int include BatBig_int end
 
 (* Bigarray *)
-module Bigarray = struct include Bigarray include BatBigarray end
+module Bigarray = BatBigarray
 
 
 (* Pervasives *)

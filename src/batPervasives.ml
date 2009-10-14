@@ -22,7 +22,7 @@
  *)
 
 
-  include Pervasives
+open Pervasives
   include Std
   open Enum
 
@@ -78,6 +78,8 @@
 
   let print_all inp     = IO.copy inp IO.stdout
   let prerr_all inp     = IO.copy inp IO.stderr
+
+  let (@) = List.append
 
   (**{6 Importing Enum}*)
 

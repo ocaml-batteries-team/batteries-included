@@ -35,9 +35,8 @@
 *)
   
 open Nat
+open Big_int
  
-type big_int = Big_int.big_int 
-        (** The type of big integers. *)
 type t = big_int
 
     val zero : big_int
