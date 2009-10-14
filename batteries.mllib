@@ -18,6 +18,7 @@ BatInt32
 BatInt64 
 BatInt 
 BatLexing 
+BatList
 BatMap	
 BatMarshal 
 BatMutex 
@@ -37,7 +38,7 @@ BatString
 BatStr	
 BatSys 
 BatUChar 
-BatUnit 
+BatUnix 
 BatUTF8		
 BitSet 
 CharEncodings 
