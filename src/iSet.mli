@@ -70,3 +70,5 @@ val min_elt : t -> int
 val max_elt : t -> int
 
 val choose : t -> int
+
+val enum : t -> (int * int) Enum.t
