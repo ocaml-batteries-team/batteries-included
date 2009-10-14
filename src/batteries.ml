@@ -43,13 +43,15 @@ module Mutex = struct include Mutex include BatMutex end
 
 
 (* Batteries Specific *)
-Float
-Int
+module Float = BatFloat
+module Int = BatInt
+module Bool = BatBool
+module Unit = BatUnit
 
-UChar
-UTF8
-Bool
-Unit
+(* Chamomile *)
+module UChar = struct include UChar include BatUChar end
+module UTF8 = BatUTF8 (* replaces, doesn't extend UTF8 *)
+
 
 (* Num *)
 module Big_int = struct include Big_int include BatBig_int end

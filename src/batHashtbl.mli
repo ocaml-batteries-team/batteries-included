@@ -32,10 +32,7 @@
     @documents Hashtbl
 *)
 
-
-
-type ('a,'b) t =  ('a,'b)  Hashtbl.t
-    (** The type of a hashtable. *)
+open Hashtbl
 
 (**{6 Base operations}*)
 

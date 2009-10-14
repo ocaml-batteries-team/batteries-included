@@ -31,9 +31,6 @@
     @documents Char
 *)
 
-type t = char
-(** An alias for the type of characters. *)
-
 
 val is_whitespace : char -> bool
 (** Determine if a character is a whitespace.
@@ -107,7 +104,7 @@ val ( -- ): char -> char -> char Enum.t
 
 (** {7 Printing}*)
 
-val print: 'a InnerIO.output -> t -> unit
+val print: 'a InnerIO.output -> Char.t -> unit
 
 (**/**)
 

@@ -38,6 +38,7 @@ BatString
 BatStr	
 BatSys 
 BatUChar 
+BatUnit
 BatUnix 
 BatUTF8		
 BitSet 

@@ -33,9 +33,7 @@
     @author David Teller
     @author Dawid Toton
 *)
-
-type t = Buffer.t
-(** The abstract type of buffers. *)
+open Buffer
 
 val create : int -> t
 (** [create n] returns a fresh buffer, initially empty.
