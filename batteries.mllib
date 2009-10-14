@@ -6,6 +6,7 @@ BatArray
 BatBigarray 
 BatBig_int 
 BatBool 
+BatBuffer
 BatChar 
 BatComplex	
 BatDigest 
