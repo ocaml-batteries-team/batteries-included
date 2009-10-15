@@ -17,4 +17,4 @@
 <sexplib>:      include
 <compilers>:    include
 
-<batteries_toolchain>: included
+<batteries_toolchain/*>: pkg_camomile
