@@ -1,6 +1,6 @@
 *~
 _build
-Makefile
+/Makefile
 autom4te.cache
 config.ml
 config.log
