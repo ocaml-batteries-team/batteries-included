@@ -81,7 +81,7 @@ let rec until n s =
 let rec before n s = if n = min_int then empty else until (n - 1) s
 
 let add_range n1 n2 s =
-  if n1 > n2 then invalid_arg "ISet.add_range" else
+  if n1 > n2 then invalid_arg (Printf.sprintf "ISet.add_range - %d > %d" n1 n2)else
   let n1, l =
     if n1 = min_int then n1, empty else
     let l = until (n1 - 1) s in
@@ -92,7 +92,7 @@ let add_range n1 n2 s =
     if n2 = max_int then n2, empty else
     let r = from (n2 + 1) s in
     if is_empty r then n2, empty else
-    let (v1, v2), r' = split_rightmost r in
+    let (v1, v2), r' = split_leftmost r in
     if n2 + 1 = v1 then v2, r' else n2, r in
   make_tree l (n1, n2) r
 
@@ -130,14 +130,14 @@ let rec union s1 s2 =
     if n1 = min_int then n1, empty else
     let l = union l1 l2 in
     if is_empty l then n1, l else
-    let (v1, v2), l' = split_rightmost l in
+    let (v1, v2), l' = split_rightmost l in (* merge left *)
     if v2 + 1 = n1 then v1, l' else n1, l in
   let n2, r =
     if n1 = max_int then n2, empty else
     let r = union r1 r2 in
     if is_empty r then n2, r else
-    let (v1, v2), r' = split_rightmost r in
-    if n1 + 1 = v1 then v2, r' else n2, r in
+    let (v1, v2), r' = split_leftmost r in (* merge right *)
+    if n2 + 1 = v1 then v2, r' else n2, r in
   make_tree l (n1, n2) r
   
 let rec inter s1 s2 =
