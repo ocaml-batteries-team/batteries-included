@@ -2,9 +2,10 @@
 
 DESCRIPTION:
 
-This Objective Caml library provides easy access to compressed files in ZIP
-and GZIP format, as well as to Java JAR files.  It provides functions
-for reading from and writing to compressed files in these formats.
+This Objective Caml library provides easy access to compressed files
+in ZIP, GZIP and BZIP2 formats, as well as to Java JAR files and Unix
+Tar archives.  It provides functions for reading from and writing to
+compressed files in these formats.
 
 REQUIREMENTS:
 
@@ -16,11 +17,18 @@ REQUIREMENTS:
   are that your distribution provides precompiled binaries for this
   library.
 
+- [Optional] The BZip2 C library, version 1.0.2. If it is not
+  installed on your system (Look for libbz2.a or libbz2.so), get it
+  from http://sources.redhat.com/bzip2/. If you are running Linux or BSD,
+  chances are that your distribution provides precompiled binaries for
+  this library.
+
+
 INSTALLATION:
 
 - Edit the three variables at the beginning of the Makefile to reflect
-  the location where Zlib is installed on your system.  The defaults
-  are OK for Linux.
+  the location where Zlib and BZip2 is installed on your system.  
+  The defaults are OK for Linux.
 
 - Do "make all".
 
@@ -30,6 +38,7 @@ INSTALLATION:
 - Become super-user if necessary and do
          make install
          make installopt        # if you did "make allopt" earlier
+         ocamlfind install zip META # If you use findlib
   This installs the library in the standard Objective Caml library directory.
 
 DOCUMENTATION:
@@ -39,6 +48,8 @@ See the comments in files zip.mli and gzip.mli.
 Compilation options:      -I +zip
 ocamlc linking options:   -I +zip zip.cma
 ocamlopt linking options: -I +zip zip.cmxa
+
+With findlib, use the 'zip' package.
 
 The directory test/ contains examples of using this library.
 
@@ -50,7 +61,10 @@ terms of the GNU Library General Public License (LGPL) with a special
 exception concerning static linking.  See the file LICENSE for the
 exact licensing terms.
 
+Portions copyright 2004 Shawn Wagner.
+
 BUG REPORTS AND USER FEEDBACK:
 
 Please e-mail Xavier.Leroy@inria.fr
 
+Bzip2, Tar and findlib problems should go to shawnw@speakeasy.org

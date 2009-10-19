@@ -1,0 +1,6 @@
+requires="unix"
+description="Access to gzip and bzip2 compression and zip, jar and tar archives"
+version="1.03p1"
+archive(byte)="zip.cma"
+archive(native)="zip.cmxa"
+directory="+zip"
