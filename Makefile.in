@@ -165,13 +165,13 @@ install-doc: doc
 	install -d $(DOCDIR) &&\
 	cp -R doc/batteries/* $(DOCDIR)
 
-byte: config.ml
+byte: 
 	$(OCAMLBUILD) $(BYTE_TARGETS)
 
-opt: config.ml
+opt: 
 	$(OCAMLBUILD) $(OPT_TARGETS)
 
-top: config.ml
+top: 
 	$(OCAMLBUILD) $(TOPLEVEL_TARGETS)
 
 install:
@@ -196,7 +196,7 @@ quickdoc: quickbyte doc/api.odocl
 	rm -f api.docdir
 	cp -RpP _build/doc/api.docdir/ doc/batteries/html/api
 
-quickbyte: config.ml
+quickbyte:
 	$(OCAMLBUILD) src/main/threads/batteries.cma 
 
 doc: byte doc/api.odocl
