@@ -114,11 +114,11 @@ TOPLEVEL_TARGETS = src/batteries_toolchain/toplevel.top \
 ########################################################################
 
 ifeq ($(BUILD_DOC),yes)
-all: config.ml install-doc
+all: install-doc
 	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS)
 #all: byte syntax top install-doc
 else
-all: config.ml
+all: 
 	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS)
 #all: byte syntax top
 endif
@@ -180,6 +180,7 @@ install:
 		build/META \
 		_build/*.cmi \
 		_build/src/*.cmi \
+		$(addprefix _build/, $(TOPLEVEL_TARGETS)) \
 		$(addprefix _build/, $(BYTE_TARGETS)) \
 		-optional \
 			_build/batteries.a \
