@@ -145,6 +145,8 @@
     (** [Array.fold_left f x a] computes
 	[f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],
 	where [n] is the length of the array [a]. *)
+
+  val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b array -> 'a
     
   val fold_right : ('b -> 'a -> 'a) -> 'b array -> 'a -> 'a
     (** [Array.fold_right f a x] computes

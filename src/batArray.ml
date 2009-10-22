@@ -53,6 +53,13 @@ open Array
   let stable_sort  = stable_sort
   let fast_sort    = fast_sort
 
+let fold_lefti f x a =
+  let r = ref x in
+  for i = 0 to length a - 1 do
+    r := f !r i (unsafe_get a i)
+  done;
+  !r
+
 
 
 let rev_in_place xs =
