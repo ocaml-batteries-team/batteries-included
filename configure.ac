@@ -53,6 +53,7 @@ AC_SUBST(OCAMLOPT)
 AC_SUBST(OCAMLBUILD)
 AC_SUBST(OCAMLDOC)
 AC_SUBST(OCAMLVERION)
+AC_SUBST(DEPS)
 
 OCAMLVERSION=$($OCAMLC -version)
 OCAMLLIBDIR=$($OCAMLC -where)
@@ -106,8 +107,8 @@ AC_CHECK_OCAML_PKG(zip, OCAMLPKG_zip)
 if test -z "$OCAMLPKG_zip" ; then
   AC_CHECK_OCAML_PKG(camlzip, OCAMLPKG_zip)
   if test -z "$OCAMLPKG_zip" ; then
-     AC_MSG_ERROR([Cannot find Camlzip])
-     exit 1
+     AC_MSG_NOTICE([Cannot find Camlzip, will install local version (TODO)])
+     DEPS="install-ocamlzip $DEPS"
   fi
 fi
 AC_SUBST(OCAMLPKG_zip)

@@ -114,11 +114,11 @@ TOPLEVEL_TARGETS = src/batteries_toolchain/toplevel.top \
 ########################################################################
 
 ifeq ($(BUILD_DOC),yes)
-all: install-doc
+all: install-doc @DEPS@
 	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS)
 #all: byte syntax top install-doc
 else
-all: 
+all: @DEPS@
 	$(OCAMLBUILD) $(BYTE_TARGETS) $(TOPLEVEL_TARGETS)
 #all: byte syntax top
 endif
@@ -164,6 +164,10 @@ install_byte_code: all_byte_code uninstall
 install-doc: doc
 	install -d $(DOCDIR) &&\
 	cp -R doc/batteries/* $(DOCDIR)
+
+install-camlzip:
+	cd lib/camlzip-1.03 && make ocamlfind-install
+
 
 byte: 
 	$(OCAMLBUILD) $(BYTE_TARGETS)
