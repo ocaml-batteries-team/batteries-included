@@ -158,6 +158,10 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b node_t -> 'a
 *)
 val fold_right : ('a -> 'b -> 'b) -> 'a node_t -> 'b -> 'b
 
+val for_all : ('a -> bool) -> 'a node_t -> bool
+val exists : ('a -> bool) -> 'a node_t -> bool
+
+
 (** Allocate a new list, with entirely new nodes, whose values are
     the transforms of the values of the original list.  Note that this
     does not modify the given list.  This is an O(N) operation.

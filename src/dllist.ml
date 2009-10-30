@@ -164,6 +164,21 @@ let iter f node =
 	in
 	loop node.next
 
+let for_all p node =
+  let rec loop n =
+    if n == node then true
+    else p n.data && loop n.next
+  in
+  p node.data && loop node.next
+
+let exists p node =
+  let rec loop n =
+    if n == node then false
+    else p n.data || loop n.next
+  in
+  p node.data || loop node.next
+
+
 let fold_left f init node =
 	let rec loop accu n =
 		if n == node then
