@@ -134,9 +134,9 @@ module type S =
     val max_key : 'a t -> (key * 'a)
       (** return the [(key,value)] pair with the largest key *)
 
+*)
     val choose : 'a t -> (key * 'a)
       (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
-*)
 (*
     val split : key -> 'a t -> ('a t * 'a option * 'a t)
       (** as [Set.split] *)
