@@ -228,19 +228,25 @@ module type S =
       in Queue.add (impl_of_t t) queue;
 	Enum.from next*)
 
-    (* s1 in s2 -> -1, s2 in s1 -> 1, neither a subset -> 0 *)
+    open Printf
+    (* s1 in s2 -> -1, s2 in s1 -> 1, neither a subset -> min_int, eq -> 0 *)
     let rec compare_subset s1 s2 =
       match (s1, impl_of_t s2) with
-        (Empty, t2) -> -1
-      | (t1, Empty) -> 1
-      | (Node(l1, v1, r1, _), t2) ->
-          match split v1 (t_of_impl t2) with
-            (l2, false, r2) ->
-	      if (compare_subset l1 l2) = 1 && (compare_subset r1 r2) = 1
-	      then 1 else 0
-          | (l2, true, r2) ->
-              if (compare_subset l1 l2) = -1 && (compare_subset r1 r2) = -1
-	      then -1 else 0
+	  (Empty, Empty) -> 0
+	| (Empty, t2) -> -1
+	| (t1, Empty) -> 1
+	| (Node(l1, v1, r1, _), t2) ->
+            match split v1 (t_of_impl t2) with
+		(l2, true, r2) -> (* v1 in both s1 and s2 *)
+		  ( match compare_subset l1 l2, compare_subset r1 r2 with
+		      | -1, -1 | -1, 0 | 0, -1 -> -1
+		      | 0, 0 -> 0
+		      | 1, 1 | 1, 0 | 0, 1 -> 1
+		      | _ -> min_int
+		  )
+              | (l2, false, r2) -> (* v1 in s1, but not in s2 *)
+		  if (compare_subset l1 l2) >= 0 && (compare_subset r1 r2) >= 0
+		  then 1 else min_int
 
     let compare_subset s1 s2 = compare_subset (impl_of_t s1) s2
 
