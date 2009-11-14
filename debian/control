@@ -9,7 +9,7 @@ Build-Depends:
  ocaml-findlib,
  libcamomile-ocaml-dev,
  libtype-conv-camlp4-dev,
- libsexplib-camlp4-dev,
+ libsexplib-camlp4-dev (>= 4.2.16),
  libbin-prot-camlp4-dev,
  libzip-ocaml-dev,
  libocamlnet-ocaml-dev,

@@ -7,7 +7,8 @@ ocaml-batteries (0.20090405+beta1-4) unstable; urgency=low
     - 0002-debian-specific-info-on-doc-availability
   * debian/control: clean up non-automatic OCaml deps, now that all
     build-deps have been ported to recent dh-ocaml
-  * rebuild against recent sexplib (Closes: #556034)
+  * rebuild against recent sexplib, bump build-dep accordingly
+    (Closes: #556034)
 
  -- Stefano Zacchiroli <zack@debian.org>  Sat, 14 Nov 2009 12:45:12 +0100
 
