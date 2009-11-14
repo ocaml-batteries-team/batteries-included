@@ -1,0 +1,71 @@
+From: Stefano Zacchiroli <zack@upsilon.cc>
+Date: Sat, 14 Nov 2009 12:50:41 +0100
+Subject: [PATCH] debian-specific info on doc availability
+
+Provides Debian-specific info on how to install the documentation (needed for
+
+Signed-off-by: Stefano Zacchiroli <zack@upsilon.cc>
+---
+ src/batteries_toolchain/batteries_help.ml |   32 ++++++++++++++++++++++------
+ 1 files changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/src/batteries_toolchain/batteries_help.ml b/src/batteries_toolchain/batteries_help.ml
+index be9696f..08aa133 100644
+--- a/src/batteries_toolchain/batteries_help.ml
++++ b/src/batteries_toolchain/batteries_help.ml
+@@ -108,6 +108,17 @@ let append_to_table table k v =
+     in
+       RefList.push found v
+ 
++let debian_doc_hint_warn =
++  "Warning: help will not be available, because Batteries documentation\n"
++  ^ "is not installed.\n"
++
++let debian_doc_hint_req =
++  "You have requested Batteries-specific help, but Batteries documentation\n"
++  ^ "is not installed.\n"
++
++let debian_doc_hint_inst =
++  "To fix this: please install the `libbatteries-ocaml-doc' Debian package\n"
++  ^ "(which ships Batteries documentation and its indexes) and try again.\n"
+ 
+ (**
+    {6 Browsing}
+@@ -204,12 +215,16 @@ let get_table =
+ 	      result
+ 	      
+ 	with e ->
+-	  Printf.eprintf
+-	    "While initializing the on-line help, error in root doc file %S\n%s\n%!" root_file
+-	    (Printexc.to_string e);
+-	    let result = {suggestions = Hashtbl.create 0; completions = Hashtbl.create 0} in
+-	      Hashtbl.add tables kind result;
+-	      result
++	  let result = {suggestions = Hashtbl.create 0; completions = Hashtbl.create 0} in
++	  Hashtbl.add tables kind result;
++	  (match e with
++	     | Sys_error msg when String.ends_with msg "No such file or directory" ->
++		 Printf.eprintf "%s%s%!" debian_doc_hint_warn debian_doc_hint_inst
++	     | e ->
++		 Printf.eprintf
++		   "While initializing the on-line help, error in root doc file %S\n%s\n%!" root_file
++		   (Printexc.to_string e));
++	  result
+ 
+ 	      
+ 
+@@ -365,9 +380,12 @@ let helpers =
+ 
+ (**Launch the introductory help text.*)
+ let help () =
++  try
+   File.with_file_in (Batteries_config.documentation_root ^ "/toplevel.help")
+     (fun file -> copy file stdout);
+-  flush stdout;;
++  flush stdout
++  with Sys_error msg when String.ends_with msg "No such file or directory" ->
++    Printf.eprintf "%s%s%!" debian_doc_hint_req debian_doc_hint_inst
+ 
+ (**Print the signature of a module.*)
+ let print_module name = 
+-- 

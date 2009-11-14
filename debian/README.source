@@ -5,10 +5,9 @@ This source package uses quilt to apply and remove its patches. Please
 refer to `/usr/share/doc/quilt/README.source' for information about
 how to use quilt for source packages.
 
-The quilt series is generated from the Git repository, using TopGit
-(from the `topgit' Debian package). This process is documented in
-`/usr/share/doc/topgit/HOWTO-tg2quilt.gz'.
+The quilt series is generated from the Git repository, using
+dom-{apply,save}-patches, from the dh-ocaml (>= 0.5) package. Please
+refer to the appendix about Git in the Debian OCaml Packaging Policy
+(from the same package).
 
-The branch layout is those described in the aforementioned document.
-
- -- Stefano Zacchiroli <zack@debian.org>, Wed,  1 Apr 2009 15:55:50 +0200
+ -- Stefano Zacchiroli <zack@debian.org>, Sat, 14 Nov 2009 12:47:28 +0100

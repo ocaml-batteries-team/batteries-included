@@ -1,4 +1,3 @@
-debian/patches/
 *~
 _build
 Makefile

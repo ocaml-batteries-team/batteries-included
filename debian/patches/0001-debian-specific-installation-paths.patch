@@ -1,0 +1,22 @@
+From: Stefano Zacchiroli <zack@upsilon.cc>
+Date: Sat, 14 Nov 2009 12:49:57 +0100
+Subject: [PATCH] debian-specific installation paths
+
+Patch batteries toolchain command wrappers to rely on
+`ocamlc -where`/batteries/ as the installation place where the
+wrappers will be available upon installation.
+
+Signed-off-by: Stefano Zacchiroli <zack@upsilon.cc>
+---
+ src/batteries_toolchain/ocaml.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/batteries_toolchain/ocaml.in b/src/batteries_toolchain/ocaml.in
+index 002fd04..2d8e9f0 100755
+--- a/src/batteries_toolchain/ocaml.in
++++ b/src/batteries_toolchain/ocaml.in
+@@ -1,2 +1,2 @@
+ #!/bin/sh
+-"@DESTDIR@/batteries/toplevel.top" "@DESTDIR@/batteries/top.ml" $@
++"@OCAMLLIBDIR@/batteries/toplevel.top" "@OCAMLLIBDIR@/batteries/top.ml" $@
+-- 
