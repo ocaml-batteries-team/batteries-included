@@ -5,6 +5,8 @@ ocaml-batteries (0.20090405+beta1-4) UNRELEASED; urgency=low
     now as follows:
     - 0001-debian-specific-installation-paths
     - 0002-debian-specific-info-on-doc-availability
+  * debian/control: clean up non-automatic OCaml deps, now that all
+    build-deps have been ported to recent dh-ocaml
 
  -- Stefano Zacchiroli <zack@debian.org>  Sat, 14 Nov 2009 12:45:12 +0100
 

@@ -28,14 +28,7 @@ Package: libbatteries-ocaml-dev
 Section: ocaml
 Architecture: any
 Depends:
- camlp4,
  ocaml-findlib,
- libcamomile-ocaml-dev,
- libtype-conv-camlp4-dev,
- libsexplib-camlp4-dev,
- libbin-prot-camlp4-dev,
- libzip-ocaml-dev,
- libocamlnet-ocaml-dev,
  ${ocaml:Depends},
  ${shlibs:Depends},
  ${misc:Depends}
