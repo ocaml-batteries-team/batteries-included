@@ -9,8 +9,9 @@ ocaml-batteries (0.20090405+beta1-4) unstable; urgency=low
     build-deps have been ported to recent dh-ocaml
   * rebuild against recent sexplib, bump build-dep accordingly
     (Closes: #556034)
+  * add debian/gbp.conf to enforce pristine-tar usage with gbp
 
- -- Stefano Zacchiroli <zack@debian.org>  Sat, 14 Nov 2009 12:45:12 +0100
+ -- Stefano Zacchiroli <zack@debian.org>  Sat, 14 Nov 2009 13:03:57 +0100
 
 ocaml-batteries (0.20090405+beta1-3) unstable; urgency=low
 
