@@ -141,14 +141,10 @@ val lexeme_end_p : lexbuf -> position
     of an offset. *)
 
 
-#if ocaml_version >= (3, 11)
-
 val new_line : lexbuf -> unit
 (** Update the [lex_curr_p] field of the lexbuf to reflect the start
     of a new line.  You can call this function in the semantic action
     of the rule that matches the end-of-line character. *)
-
-#endif
 
 (** {6 Miscellaneous functions} *)
 

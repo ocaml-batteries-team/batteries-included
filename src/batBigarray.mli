@@ -557,8 +557,6 @@ module Array1 : sig
 	given big array.  *)
 
 
-#if ocaml_version >= (3,11)
-
   (**{6 Unsafe operations}
 
      In case of doubt, don't use them.*)
@@ -574,7 +572,6 @@ module Array1 : sig
       Use with caution and only when the program logic guarantees that
       the access is within bounds. *)
 
-#endif
 
 end
 
@@ -692,8 +689,6 @@ module Array2 :
    (** Build a two-dimensional array initialized from the
        given big array.  *)
 
-#if ocaml_version >= (3,11)
-
   (**{6 Unsafe operations}
 
      In case of doubt, don't use them.*)
@@ -708,7 +703,6 @@ module Array2 :
   (** Like {!Bigarray.Array2.set}, but bounds checking is not always
       performed. *)
 
-#endif
 
   end
 
@@ -849,8 +843,6 @@ module Array3 :
    (** Build a three-dimensional array initialized from the
        given big array.  *)
 
-#if ocaml_version >= (3,11)
-
   (**{6 Unsafe operations}
 
      In case of doubt, don't use them.*)
@@ -864,8 +856,6 @@ module Array3 :
                      = "%caml_ba_unsafe_set_3"
   (** Like {!Bigarray.Array3.set}, but bounds checking is not always
       performed. *)
-
-#endif
 
 
   end

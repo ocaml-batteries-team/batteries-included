@@ -1,5 +1,5 @@
 <*.ml>: pkg_camomile
-<*.mli>: pkg_camomile,use_optcomp_o
+<*.mli>: pkg_camomile
 <IO.*>: principal
 <innerIO.*>: principal
 
