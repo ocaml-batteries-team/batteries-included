@@ -1,19 +1,10 @@
 *~
-_build
-/Makefile
-autom4te.cache
-config.ml
-config.log
-config.status
-config.post
-configure
 build/META
 build/threaded/META
 build/nothreads/META
 doc/batteries/html/api/
 examples/benchmark/*.png
-src/batteries_toolchain/ocaml
-patches/
+/.omake*
 *.cmx
 *.cmo
 *.cmi
@@ -21,6 +12,5 @@ patches/
 *.cmxa
 *.o
 *.a
-/.omake*
 *.omc
 *.swp
