@@ -1,3 +1,12 @@
+This is the Release Candidate release of AAA Batteries.
+= Changes from Batteries Included
+== General
+* Removed sexplib dependency
+* Removed camlp4 processors
+* Simplified build structure - all source in src/
+
+
+
 This is the first beta release of Batteries Included.
 
 = Changes since alpha 3
