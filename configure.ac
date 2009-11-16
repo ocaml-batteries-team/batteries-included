@@ -229,7 +229,7 @@ AC_CONFIG_FILES([
  Makefile
  batteries_config.ml
  build/META
- src/toplevel/ocaml
+ toplevel/ocaml
 ])
 AC_OUTPUT
 
