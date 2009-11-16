@@ -93,3 +93,11 @@ OBJECTS[] =
     batteries
 
 OCamlLibrary(batteries, $(OBJECTS))
+
+batteries_config.ml: batteries_config.mlp
+	@rm -f batteries_config.ml
+	sed -e 's|@VERSION@|$(VERSION)|' \
+            -e 's|@DOCROOT@|$(DOCROOT)|' \
+            -e 's|@BROWSER_COMMAND@|$(BROWSER_COMMAND)|' \
+	    batteries_config.mlp > batteries_config.ml
+	@chmod -w batteries_config.ml

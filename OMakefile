@@ -6,6 +6,7 @@ USE_OCAMLFIND = true
 OCAMLDEP_MODULES_ENABLED = false
 
 NAME = aaa
+VERSION = 2009.11
 
 .PHONY: clean
 clean:
@@ -27,3 +28,6 @@ uninstall:
 
 .DEFAULT: all
 
+#doc:
+#	$(OCAMLFIND) ocamldoc -package camomile,threads \
+#	-html -d doc -I src src/*.mli
