@@ -39,25 +39,16 @@
 *)
 
 (** Signature for monads *)
-module type S =
-sig
-  type 'a t
+module type S = sig
+  type 'a m
     (** The type of a monad producing values of type ['a].*)
 
-  val bind : 'a t -> ('a -> 'b t) -> 'b t
+  val bind : 'a m -> ('a -> 'b m) -> 'b m
     (** Monadic binding.
 
 	[bind m f] executes first [m] then [f], using the
 	result of [m]. *)
 
-  val return: 'a -> 'a t
-    (**Return a value.*)
-
-  val failwith: string -> 'a t
-    (**Report a fatal error and leave the monadic world.
-
-       [failwith msg] leaves the monadic world as a consequence of
-       a programming accident, such as a pattern match error.
-       This function should not be used for {e exceptions}, only
-       for {e fatal errors}.*)    
+  val return: 'a -> 'a m
+    (**Return a value, that is, put a value in the monad.*)
 end

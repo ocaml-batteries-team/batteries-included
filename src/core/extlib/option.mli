@@ -86,6 +86,25 @@ val of_enum: 'a Enum.t -> 'a option
 exception No_value
 (** Raised when calling [get None]. *)
 
+(** {6 The Option Monad} *)
+
+(**
+    This module provides everything needed to write and execute computations
+    in the Option monad.
+*)
+module Monad : sig
+  type 'a m = 'a option
+(** The type of values in this monad : option *)
+
+  val return : 'a -> 'a m
+(** [return x] puts a value in the Option monad, that is, returns [Some x]. *)
+
+  val bind : 'a m -> ('a -> 'b m) -> 'b m
+(** [bind m f] combines the calculation result [m] with the function [f].
+    E.g, in the Option monad : 
+    [bind (Some 1) (fun x -> if x = 1 then Some 4 else None)] returns Some 4. *)
+end
+
 (** {6 Boilerplate code}*)
 (** {7 S-Expressions}*)
 

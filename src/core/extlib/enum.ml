@@ -984,3 +984,33 @@ module type Enumerable = sig
   val enum : 'a enumerable -> 'a t
   val of_enum : 'a t -> 'a enumerable
 end
+  
+module WithMonad (Mon : Monad.S) =
+struct    
+  type 'a m = 'a Mon.m
+      
+  let sequence enum =
+    let queue = Queue.create () in
+    let (>>=) = Mon.bind and return = Mon.return in
+    let of_queue q = from (fun () -> try Queue.pop q with Queue.Empty -> raise No_more_elements) in
+    let rec loop () = match get enum with
+      | None -> return (of_queue queue)
+      | Some elem -> elem >>= (fun x -> Queue.push x queue; loop ())
+    in
+      loop ()
+	
+  let fold_monad f init enum = 
+    let (>>=) = Mon.bind and return = Mon.return in 
+    let rec fold m = match get enum with
+      |	None -> m
+      | Some x -> m >>= fun acc -> fold (f acc x)
+    in
+      fold (return init)   
+end
+
+module Monad =
+struct
+  type 'a m = 'a t
+  let return x = singleton x
+  let bind m f = concat (map f m)
+end

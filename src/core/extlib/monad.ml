@@ -18,10 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module type S =
-sig
-  type 'a t
-  val bind : 'a t -> ('a -> 'b t) -> 'b t
-  val return: 'a -> 'a t
-  val failwith: string -> 'a t
+module type S = sig
+  type 'a m
+  val bind : 'a m -> ('a -> 'b m) -> 'b m
+  val return: 'a -> 'a m
 end
