@@ -42,11 +42,8 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
 			 for the toplevel. This may be the reason for this bug.*)
 #predicates "preprocessor";;
 #require "dynlink";;
-#camlp4o;;
-#require "camlp4";;
-#load "camlp4o.cma";;
-#require "batteries";;
-#require "batteries.syntax";;
+#thread;;
+#require "aaa";;
 
 
 if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
