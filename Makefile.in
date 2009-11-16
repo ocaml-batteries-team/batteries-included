@@ -204,15 +204,15 @@ quickbyte:
 	$(OCAMLBUILD) src/main/threads/batteries.cma 
 
 doc: byte doc/api.odocl
-	rm -Rf doc/batteries/html/api
+#	rm -Rf doc/batteries/html/api
 	$(OCAMLBUILD) -I src/main/threads doc/api.docdir/index.html
-	rm -f api.docdir
-	cp -RpP _build/doc/api.docdir/ doc/batteries/html/api
+#	rm -f api.docdir
+#	cp -RpP _build/doc/api.docdir/ doc/batteries/html/api
 
 doc/api.odocl: 
 	@echo Generating documentation. This usually lasts 15+ minutes.
 	@echo You should go and take some coffee.
-	cp src/main/threads/batteries.mllib doc/api.odocl
+	cp batteries.mllib doc/api.odocl
 
 examples:
 	@echo Note: to build the examples, you must first have installed Batteries
