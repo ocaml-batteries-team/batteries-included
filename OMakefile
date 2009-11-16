@@ -6,7 +6,6 @@ USE_OCAMLFIND = true
 OCAMLDEP_MODULES_ENABLED = false
 
 NAME = aaa
-DESTDIR = $(shell $(OCAMLFIND) printconf destdir)
 
 .PHONY: clean
 clean:
@@ -14,17 +13,17 @@ clean:
 
 .SUBDIRS: src
 
-.DEFAULT: all
-
 .PHONY: all
 all: src/batteries.cmxa src/batteries.cma
 
 .PHONY: install
 install: all
-	mkdir -p "$(DESTDIR)"
-	$(OCAMLFIND) install $(NAME) -destdir "$(DESTDIR)" build/META \
+	$(OCAMLFIND) install $(NAME) build/META \
 	src/*.mli src/*.cmi src/*.cma src/*.cmxa
 
 .PHONY: uninstall
 uninstall:
-	$(OCAMLFIND) remove $(NAME) -destdir "$(DESTDIR)"
+	$(OCAMLFIND) remove $(NAME)
+
+.DEFAULT: all
+
