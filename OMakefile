@@ -1,0 +1,14 @@
+BYTE_ENABLED   = true
+NATIVE_ENABLED = true
+
+USE_OCAMLFIND = true
+
+OCAMLDEP_MODULES_ENABLED = false
+
+.PHONY: clean
+clean:
+    rm -f $(filter-proper-targets $(ls R, .))
+
+.SUBDIRS: src
+
+.DEFAULT: src/batteries.cmxa src/batteries.cma

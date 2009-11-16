@@ -14,3 +14,13 @@ doc/batteries/html/api/
 examples/benchmark/*.png
 src/batteries_toolchain/ocaml
 patches/
+*.cmx
+*.cmo
+*.cmi
+*.cma
+*.cmxa
+*.o
+*.a
+/.omake*
+*.omc
+*.swp
