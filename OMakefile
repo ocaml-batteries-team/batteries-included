@@ -4,6 +4,9 @@ NATIVE_ENABLED = true
 USE_OCAMLFIND = true
 
 OCAMLDEP_MODULES_ENABLED = false
+DOCROOT = /usr/share/doc/ocaml-aaa
+BROWSER_COMMAND = "x-www-browser %s"
+
 
 NAME = aaa
 VERSION = 2009.11
@@ -28,6 +31,6 @@ uninstall:
 
 .DEFAULT: all
 
-#doc:
-#	$(OCAMLFIND) ocamldoc -package camomile,threads \
-#	-html -d doc -I src src/*.mli
+doc:
+	$(OCAMLFIND) ocamldoc -package camomile,threads \
+	-html -d hdoc -I src src/*.mli
