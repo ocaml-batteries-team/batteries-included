@@ -27,7 +27,7 @@ uninstall:
 	$(OCAMLFIND) remove $(NAME)
 
 doc:
-	$(OCAMLFIND) ocamldoc -package camomile \
+	$(OCAMLFIND) ocamldoc -package camomile -sort \
 	-html -d hdoc -I src -I +threads src/*.mli
 
 
