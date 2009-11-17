@@ -38,7 +38,7 @@ module Unix = struct include Unix include BatUnix end
 module Str = struct include Str include BatStr end
 
 (* Threads *)
-module Mutex = struct include Mutex include BatMutex end
+module Mutex = BatMutex
 
 
 
