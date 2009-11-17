@@ -21,14 +21,12 @@
 
 let unit_string = "()"
 
-module Unit =
-struct
-  type t = unit
-  let as_string   = unit_string
-  let string_of _ = as_string
-  let of_string   = function
-    | "()" -> ()
-    | _    -> raise (Invalid_argument "unit_of_string")
-  let compare _ _ = 0
-  let print out t = InnerIO.nwrite out unit_string
-end
+type t = unit
+let as_string   = unit_string
+let string_of _ = as_string
+let of_string   = function
+  | "()" -> ()
+  | _    -> raise (Invalid_argument "unit_of_string")
+let compare _ _ = 0
+let print out t = InnerIO.nwrite out unit_string
+  

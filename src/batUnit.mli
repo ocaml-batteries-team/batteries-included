@@ -23,8 +23,6 @@
    
    @author David Teller
 *)
-module Unit :
-  sig
 
     type t = unit
 	(**The unit type, i.e. a type with only one element, [()].*)
@@ -50,4 +48,4 @@ module Unit :
 
     (** {7 Printing}*)
     val print: 'a InnerIO.output -> t -> unit
-  end
+
