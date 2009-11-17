@@ -36,12 +36,6 @@
 let interactive = !Sys.interactive;;
 Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
 #use "topfind";;
-#require "num";;       (*For some reason, if [num] is not loaded before Camlp4, an exception is launched*)
-#require "netstring";; (*For some reason, if [netstring] is not loaded before Camlp4, an exception is launched*)
-                       (*Note: a common point between num and netstring is that they both define custom printers
-			 for the toplevel. This may be the reason for this bug.*)
-#predicates "preprocessor";;
-#require "dynlink";;
 #thread;;
 #require "aaa";;
 
@@ -49,14 +43,12 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
 if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
 begin
   Batteries_help.init ();
-  print_endline "      _________________________________";
-  print_endline "     |       | |                       |";
-  print_endline "    [| +     | | Batteries Included  - |";
-  print_endline "     |_______|_|_______________________|";
-  print_endline "      _________________________________";
-  print_endline "     |                       | |       |";
-  print_endline "     | -    Type '#help;;'   | |     + |]";
-  print_endline "     |_______________________|_|_______|";
+  print_endline "      _________________________";
+  print_endline "    [| +   | | AAA Batteries - |";
+  print_endline "     |_____|_|_________________|";
+  print_endline "      _________________________";
+  print_endline "     | -  Type '#help;;' | | + |]";
+  print_endline "     |___________________|_|___|";
   print_newline ();
   print_newline ();
   flush_all ()
