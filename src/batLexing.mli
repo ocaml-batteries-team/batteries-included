@@ -1,5 +1,5 @@
 (*
- * ExtString - Additional functions for string manipulations.
+ * BatLexing - Additional functions for string manipulations.
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  * 
@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 open Lexing
+(** Simple lexing using ocaml conventions *)
 
 
 val from_input   : IO.input   -> lexbuf
