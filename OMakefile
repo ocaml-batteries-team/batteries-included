@@ -11,26 +11,24 @@ BROWSER_COMMAND = x-www-browser %s
 NAME = aaa
 VERSION = 2009.11
 
-.PHONY: clean
+.PHONY: doc uninstall install all clean
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
 
 .SUBDIRS: src
 
-.PHONY: all
 all: src/batteries.cmxa src/batteries.cma
 
-.PHONY: install
 install: all
 	$(OCAMLFIND) install $(NAME) build/META \
 	src/*.mli src/*.cmi src/*.cma src/*.cmxa
 
-.PHONY: uninstall
 uninstall:
 	$(OCAMLFIND) remove $(NAME)
 
-.DEFAULT: all
-
 doc:
-	$(OCAMLFIND) ocamldoc -package camomile,threads \
-	-html -d hdoc -I src src/*.mli
+	$(OCAMLFIND) ocamldoc -package camomile \
+	-html -d hdoc -I src -I +threads src/*.mli
+
+
+.DEFAULT: all
