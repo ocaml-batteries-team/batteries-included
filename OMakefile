@@ -19,7 +19,13 @@ clean:
 
 all: src/batteries.cmxa src/batteries.cma
 
-install: all
+build/META: build/META.in
+	rm(-f build/META)
+	sed -e 's|@VERSION@|$(VERSION)|' \
+	    build/META.in > build/META
+	chmod(444 build/META)
+
+install: all build/META
 	$(OCAMLFIND) install $(NAME) build/META \
 	src/*.mli src/*.cmi src/*.cma src/*.cmxa
 
