@@ -25,8 +25,6 @@
    Initialization consists in
    - loading Findlib
    - loading dependencies
-   - initializing and starting Camlp4
-   - loading syntax extensions
    - loading the contents of the on-line help system
    - printing a welcome message
 
