@@ -9,8 +9,6 @@ Batteries Included serves the following purposes:
   expected on every compliant installation of OCaml
 * organize these libraries into a hierarchy of modules,
   with one source of documentation
-* define a standard set of language extensions which
-  may be expected on every compliant installation of OCaml
 * provide a consistent API for otherwise independent
   libraries.
 
@@ -19,12 +17,8 @@ Batteries Included serves the following purposes:
 **** Requirements ****
 You will need
 * OCaml >= 3.10.2 (preferably OCaml >= 3.11)
-* GNU Make
+* OMake
 * Findlib   (http://projects.camlcity.org/projects/findlib.html/)
-* Type-conv (http://www.ocaml.info/home/ocaml_sources.html)
-* Sexplib  >= 3.7.5 if you're using OCaml 3.11
-           <  3.7.5 if you're using OCaml 3.10 (http://www.ocaml.info/home/ocaml_sources.html)
-* Bin-prot  (http://www.ocaml.info/home/ocaml_sources.html)
 * Camomile >= 0.7 (http://camomile.sourceforge.net/)
 * Camlzip   (http://cristal.inria.fr/~xleroy/software.html#camlzip)
    ( Note: By default, the distribution of Camlzip is not quite sufficient for actual use.
@@ -32,43 +26,14 @@ You will need
 * Ocamlnet  2.2.9 (http://projects.camlcity.org/projects/ocamlnet.html)
 * OUnit    to build and run the tests
 
-**** Pre-configuration ****
-
-If you have downloaded Batteries Included from the official download page or from
-a mirror, you may skip this step. It is only required for adventurous people who
-have downloaded Batteries Included from the git repository.
-
-In this case, you will also need
-
-* autoconf
-
-Before proceeding to configuration and installation, you will need to run
-
-    $ autoconf
-
-This will create some files which are necessary for the next step.
-
-
 **** Configuration and installation ****
 
 To install the full version of OCaml Batteries Included in the default
 directory (/usr/local/), execute
 
-    $ ./configure
-    $ make all opt top syntax install install-doc
+    $ omake all doc install install-doc
 
-If you wish to install to a directory other than the default directory,
-execute
-
-    $ ./configure --prefix=/path/to/some/other/directory/
-    $ make all opt top syntax install install-doc
-
-Be patient, documentation generation may take more than 15 minutes.
-If you do not want the documentation generation, remove "install-doc"
-from the previous commands.
-
-
-*** Using Batteries Included ***
+*** Using AAA Batteries ***
 
 See doc/batteries/html/index.html
 
