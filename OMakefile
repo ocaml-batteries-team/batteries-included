@@ -32,7 +32,8 @@ install: all build/META
 uninstall:
 	$(OCAMLFIND) remove $(NAME)
 
-doc:
+doc: all
+	mkdir hdoc
 	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
 	-sort -html -d hdoc -I src src/*.mli
 
