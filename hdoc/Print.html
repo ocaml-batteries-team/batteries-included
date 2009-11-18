@@ -1,0 +1,573 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="PathGen.html">
+<link rel="next" href="RMutex.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="AvlTree" rel="Chapter" href="AvlTree.html">
+<link title="Base64" rel="Chapter" href="Base64.html">
+<link title="BatArg" rel="Chapter" href="BatArg.html">
+<link title="BatArray" rel="Chapter" href="BatArray.html">
+<link title="BatBig_int" rel="Chapter" href="BatBig_int.html">
+<link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
+<link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatChar" rel="Chapter" href="BatChar.html">
+<link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatDigest" rel="Chapter" href="BatDigest.html">
+<link title="BatFloat" rel="Chapter" href="BatFloat.html">
+<link title="BatFormat" rel="Chapter" href="BatFormat.html">
+<link title="BatGc" rel="Chapter" href="BatGc.html">
+<link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
+<link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatInt" rel="Chapter" href="BatInt.html">
+<link title="BatInt32" rel="Chapter" href="BatInt32.html">
+<link title="BatInt64" rel="Chapter" href="BatInt64.html">
+<link title="BatLexing" rel="Chapter" href="BatLexing.html">
+<link title="BatList" rel="Chapter" href="BatList.html">
+<link title="BatMap" rel="Chapter" href="BatMap.html">
+<link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMutex" rel="Chapter" href="BatMutex.html">
+<link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
+<link title="BatNum" rel="Chapter" href="BatNum.html">
+<link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
+<link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
+<link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
+<link title="BatQueue" rel="Chapter" href="BatQueue.html">
+<link title="BatRandom" rel="Chapter" href="BatRandom.html">
+<link title="BatScanf" rel="Chapter" href="BatScanf.html">
+<link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStr" rel="Chapter" href="BatStr.html">
+<link title="BatStream" rel="Chapter" href="BatStream.html">
+<link title="BatString" rel="Chapter" href="BatString.html">
+<link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
+<link title="BatUnit" rel="Chapter" href="BatUnit.html">
+<link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BitSet" rel="Chapter" href="BitSet.html">
+<link title="CharEncodings" rel="Chapter" href="CharEncodings.html">
+<link title="CharParser" rel="Chapter" href="CharParser.html">
+<link title="Concurrent" rel="Chapter" href="Concurrent.html">
+<link title="Dllist" rel="Chapter" href="Dllist.html">
+<link title="DynArray" rel="Chapter" href="DynArray.html">
+<link title="Enum" rel="Chapter" href="Enum.html">
+<link title="File" rel="Chapter" href="File.html">
+<link title="Global" rel="Chapter" href="Global.html">
+<link title="IMap" rel="Chapter" href="IMap.html">
+<link title="IO" rel="Chapter" href="IO.html">
+<link title="ISet" rel="Chapter" href="ISet.html">
+<link title="InnerIO" rel="Chapter" href="InnerIO.html">
+<link title="InnerWeaktbl" rel="Chapter" href="InnerWeaktbl.html">
+<link title="Interfaces" rel="Chapter" href="Interfaces.html">
+<link title="LazyList" rel="Chapter" href="LazyList.html">
+<link title="Logger" rel="Chapter" href="Logger.html">
+<link title="Monad" rel="Chapter" href="Monad.html">
+<link title="MultiPMap" rel="Chapter" href="MultiPMap.html">
+<link title="Number" rel="Chapter" href="Number.html">
+<link title="OptParse" rel="Chapter" href="OptParse.html">
+<link title="Option" rel="Chapter" href="Option.html">
+<link title="PMap" rel="Chapter" href="PMap.html">
+<link title="PSet" rel="Chapter" href="PSet.html">
+<link title="ParserCo" rel="Chapter" href="ParserCo.html">
+<link title="PathGen" rel="Chapter" href="PathGen.html">
+<link title="Print" rel="Chapter" href="Print.html">
+<link title="RMutex" rel="Chapter" href="RMutex.html">
+<link title="Ref" rel="Chapter" href="Ref.html">
+<link title="RefList" rel="Chapter" href="RefList.html">
+<link title="Result" rel="Chapter" href="Result.html">
+<link title="Return" rel="Chapter" href="Return.html">
+<link title="Rope" rel="Chapter" href="Rope.html">
+<link title="Seq" rel="Chapter" href="Seq.html">
+<link title="Std" rel="Chapter" href="Std.html">
+<link title="Substring" rel="Chapter" href="Substring.html">
+<link title="UCharParser" rel="Chapter" href="UCharParser.html">
+<link title="Value_printer" rel="Chapter" href="Value_printer.html">
+<link title="Vect" rel="Chapter" href="Vect.html"><link title="General overview" rel="Section" href="#6_Generaloverview">
+<link title="Directives and formats" rel="Section" href="#6_Directivesandformats">
+<link title="Formatting functions" rel="Section" href="#6_Formattingfunctions">
+<link title="Generic functions" rel="Section" href="#6_Genericfunctions">
+<link title="Functions with continuations" rel="Section" href="#6_Functionswithcontinuations">
+<link title="Formats" rel="Subsection" href="#7_Formats">
+<link title="Directives" rel="Subsection" href="#7_Directives">
+<link title="Extending formats" rel="Subsection" href="#7_Extendingformats">
+<link title="Flags" rel="Subsection" href="#7_Flags">
+<title>Print</title>
+</head>
+<body>
+<div class="navbar"><a href="PathGen.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="RMutex.html">Next</a>
+</div>
+<center><h1>Module <a href="type_Print.html">Print</a></h1></center>
+<br>
+<pre><span class="keyword">module</span> Print: <code class="code">sig</code> <a href="Print.html">..</a> <code class="code">end</code></pre>Formatted output functions (also known as unparsing).
+<p>
+
+    This module define a printf facility similar to the one defined by
+    <code class="code">ExtPrintf</code> but in a safer and extensible way.
+<p>
+
+    Classical printf implementation (in ocaml and other languages)
+    deals with format strings as regular strings which are parsed at
+    runtime. This approach is problematic considering typing and make
+    it almost impossible to define new directives.
+<p>
+
+    This module attempts to handle the problem in a more functional
+    way. For convenience it can be used with the syntax extension
+    <code class="code">batteries.pa_string.syntax</code>.
+<p>
+
+    Look at the example <code class="code">"examples/snippets/test_printf.ml"</code> for an
+    example of the use of this module.<br>
+<b>Author(s):</b> Jeremie Dimino, David Rajchenbach-Teller (documentation)<br>
+<hr width="100%">
+<br>
+<a name="6_Generaloverview"></a>
+<h6>General overview</h6>
+<p>
+
+   The functions of this module produce output, according to <a href="Print.html#TYPEdirective"><code class="code">Print.directive</code></a>s,
+   as described below. Output may be used to write to the screen, to error
+   channels, to strings, to buffers, to the network, etc.
+<p>
+
+   This module is very powerful and allows concise and extensible definition
+   of output formats. The downside is that this module may be quite confusing
+   at first. Don't worry, it's worth it.
+<p>
+
+   The foremost concept is that of <code class="code">format</code>. A <code class="code">format</code> is
+   a description of how informations should be printed. For instance,
+   a format such as <code class="code">p"%d\n"</code> may be used to display an integer (this
+   is what <pre><code class="code">%d</code></pre> means -- <code class="code">d</code> stands for decimal) and will end the
+   line at the end of this integer (this is what <pre><code class="code">\n</code></pre> means
+   everywhere in OCaml -- it stands for newline). Similarly, a format
+   such as <code class="code">p"(%d, %d)\n"</code> may be used to display two integers as a
+   pair, and then end the line: <pre><code class="code">%d</code></pre> and <pre><code class="code">\n</code></pre> have the same
+   meaning as previously, while the other characters are interpreted
+   as regular text. Therefore, when applied to numbers 5 and 10, this
+   format will output <code class="code">"(5, 10)\n"</code>.
+<p>
+
+   Formats may be applied using functions such as <a href="Print.html#VALprintf"><code class="code">Print.printf</code></a>. For
+   instance, <code class="code">Print.printf p"(%d, %d)\n" 5 10</code> will print on the
+   screen <code class="code">"(5, 10)\n"</code>. Similarly, if <code class="code">foo</code> is an <a href="IO.html#TYPEoutput"><code class="code">IO.output</code></a>
+   which may be used to write on a file, <code class="code">Printf.fprintf foo p"(%d,
+   %d)\n" 5 10</code> will write <code class="code">"(5, 10)\n"</code> to this file.
+<p>
+
+   Let us consider formats more in detail.
+<p>
+
+   <a name="7_Formats"></a>
+<div class="h7">Formats</div>
+<p>
+
+   The simplest format is the empty format, or <code class="code">p""</code> -- notice the <code class="code">p</code>
+   (for "print"), all formats start with this letter. This format is
+   unable to display any information. Actually, this format is only
+   able to output the empty string, which is not very useful. Its type
+   is <code class="code">('a, 'a, 'b) format</code>. This <code class="code">'b</code> states that it can be used with
+   any kind of output.
+<p>
+
+   Slightly more complex is format <code class="code">p"foo"</code>. This format is also
+   unable to display any information but, when applied, it will output
+   text <code class="code">"foo"</code>. Its type is also <code class="code">('a, 'a, 'b) format</code>. More generally,
+   any text without special characters may be used as a format, which
+   can be used to display exactly that text, without any additional
+   information.
+<p>
+
+   Formats also support <em>directives</em>, which serve to insert
+   additional pieces of information inside the text. Directives are
+   always introduced with special character <code class="code">%</code>. For instance, format
+   <code class="code">p"%d"</code> may be used to display integers. Its type is <code class="code">(int -&gt; 'a,
+   'a, 'b) format</code>. Here, type parameter <code class="code">int -&gt; 'a</code> states that this
+   directive expects an integer. A more complex format such as <code class="code">p"some
+   text before the number%d"</code> or, equivalently, <code class="code">p"some text before
+   the number%(d)"</code> would have the same type <code class="code">(int -&gt; 'a, 'a, 'b)
+   format</code>. Again,<code class="code">p"some text before the number%(d)some text after
+   the number"</code> would have the same type -- in this case, parenthesis
+   are compulsory, for reasons we will detail later. When applied with
+   argument 5, this last format will output text <code class="code">p"some text before the
+   number5some text after the number"</code>.
+<p>
+
+   <a name="7_Directives"></a>
+<div class="h7">Directives</div>
+<p>
+
+   <a name="8_Generalpurposedirectives"></a>
+<div class="h8">General-purpose directives</div>
+<p>
+
+   General-purpose directives start with <code class="code">{%{}</code> and end with <code class="code">{}}</code>. By default,
+   functions of this module recognize the following general-purpose directives:
+<p>
+<ul>
+<li><code class="code">{%{int}}</code> or <code class="code">{%{Int.t}}</code> format an integer with the usual notation (i.e. signed decimal).</li>
+<li><code class="code">{%{char}}</code> or <code class="code">{%{Char.t}}</code> insert a character</li>
+<li><code class="code">{%{string}}</code> or <code class="code">{%{String.t}}</code> insert a string</li>
+<li><code class="code">{%{float}}</code> or <code class="code">{%{Float.t}}</code> format a floating-point number as a decimal, in the style <code class="code">dddd.ddd</code></li>
+<li><code class="code">{%{bool}}</code> or <code class="code">{%{Bool.t}}</code> format a boolean argument to the string <code class="code">"true"</code> or <code class="code">"false"</code></li>
+<li><code class="code">{%{int32}}</code> or <code class="code">{%{Int32.t}}</code> format an integer with the usual notation (i.e. signed decimal).</li>
+<li><code class="code">{%{int64}}</code> or <code class="code">{%{Int64.t}}</code> format an integer with the usual notation (i.e. signed decimal).</li>
+<li><code class="code">{%{nativeint}}</code> or <code class="code">{%{Native_int.t}}</code> format an integer with the usual notation (i.e. signed decimal).</li>
+<li><code class="code">{%{Rope.t}}</code> insert a <a href="Rope.html"><code class="code">Rope</code></a></li>
+<li><code class="code">{%{foo list}}</code> or <code class="code">{%{foo List.t}}</code>, where <code class="code">foo</code> is the name of another directive, such as <code class="code">int</code>, <code class="code">char</code>, <code class="code">string</code>, <code class="code">int list</code>. etc., format a list of items (for more control on list formatting, see <code class="code">List.print</code></li>
+<li><code class="code">{%{foo array}}</code> or <code class="code">{%{foo Array.t}}</code>, where <code class="code">foo</code> is the name of another directive, such as <code class="code">int</code>, <code class="code">char</code>, <code class="code">string</code>, etc., format a array of items (for more control on array formatting, see <code class="code">Array.print</code></li>
+<li><code class="code">{%{foo maybe}}</code> , where <code class="code">foo</code> is the name of another directive, such as <code class="code">int</code>, <code class="code">char</code>, <code class="code">string</code>, etc., format an optional <code class="code">x</code> item to nothing if <code class="code">x</code> is <code class="code">None</code> or to the result of directive <code class="code">foo</code> applied to <code class="code">y</code>, if <code class="code">x</code> is <code class="code">Some y</code></li>
+<li><code class="code">{%{foo option}}</code> or <code class="code">{%{foo Option.t}}</code>, where <code class="code">foo</code> is the name of another directive, such as <code class="code">int</code>, <code class="code">char</code>, <code class="code">string</code>, etc., format an <code class="code">'a option</code> to OCaml syntax, i.e. <code class="code">"None"</code> or <code class="code">"Some bar"</code></li>
+</ul>
+
+   Additional directives may be plugged-in.
+<p>
+
+   <a name="8_Shorthanddirectives"></a>
+<div class="h8">Short-hand directives</div>
+<p>
+
+   A number of short-hand directives are also provided for most common
+   situations.  By default, functions of this module recognize the
+   following short-hand directives:
+<p>
+<ul>
+<li><code class="code">%d</code>, <code class="code">%i</code>, <code class="code">%n</code>, <code class="code">%l</code>, <code class="code">%L</code>, or <code class="code">%N</code>: format an integer with the
+   usual notation (i.e. signed decimal). </li>
+<li><code class="code">%u</code>: format an integer as an unsigned decimal.</li>
+<li><code class="code">%x</code>: format an integer as an unsigned hexadecimal, using lowercase letters.</li>
+<li><code class="code">%X</code>: format an integer as an unsigned hexadecimal, using upper letters.</li>
+<li><code class="code">%o</code>: format an integer as an unsigned octal.</li>
+<li><code class="code">%s</code>: insert a string.</li>
+<li><code class="code">%S</code>: insert a quoted string in Caml syntax (double quotes, escapes).</li>
+<li><code class="code">%sc</code>: insert a read-only/read-write string (see <code class="code">String.Cap</code>).</li>
+<li><code class="code">%Sc</code>: insert a quoted read-only/read-write string in Caml syntax (double quotes, escapes).</li>
+<li><code class="code">%rope</code>: insert a rope (see <a href="Rope.html"><code class="code">Rope</code></a>).</li>
+<li><code class="code">%utf8</code>: insert a UTF-8 encoded string.</li>
+<li><code class="code">%c</code>: insert a character argument.</li>
+<li><code class="code">%C</code>: insert a character argument in Caml syntax (single quotes, escapes).</li>
+<li><code class="code">%f</code>: format a floating-point number as a decimal,
+   in the style <code class="code">dddd.ddd</code>.</li>
+<li><code class="code">%F</code>: format a floating-point number in Caml syntax (<code class="code">dddd.</code>
+   or <code class="code">dddd.ddd</code> or <code class="code">d.ddd e+-dd</code>).</li>
+<li><code class="code">%e</code> or <code class="code">%E</code>: format a floating-point number as a decimal,
+   in the style <code class="code">d.ddd e+-dd</code> (mantissa and exponent).</li>
+<li><code class="code">%g</code> or <code class="code">%G</code>: format a floating-point number as a decimal
+   in style <code class="code">%f</code> or <code class="code">%e</code>, <code class="code">E</code> (whichever is more compact).</li>
+<li><code class="code">%B</code>: format a boolean argument to the string <code class="code">"true"</code> or <code class="code">"false"</code></li>
+<li><code class="code">%b</code>: format a boolean argument (for backward compatibility; do not
+   use in new programs).</li>
+<li><code class="code">%ld</code>, <code class="code">%li</code>, <code class="code">%lu</code>, <code class="code">%lx</code>, <code class="code">%lX</code>, <code class="code">%lo</code>: format an <code class="code">int32</code> 
+   respectively as a signed decimal/a signed decimal/an unsigned decimal/
+   an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
+   an unsigned octal.</li>
+<li><code class="code">%nd</code>, <code class="code">%ni</code>, <code class="code">%nu</code>, <code class="code">%nx</code>, <code class="code">%nX</code>, <code class="code">%no</code>: format a <code class="code">nativeint</code> 
+   respectively as a signed decimal/a signed decimal/an unsigned decimal/
+   an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
+   an unsigned octal.</li>
+<li><code class="code">%Ld</code>, <code class="code">%Li</code>, <code class="code">%Lu</code>, <code class="code">%Lx</code>, <code class="code">%LX</code>, <code class="code">%Lo</code>: format an <code class="code">int64</code> 
+   respectively as a signed decimal/a signed decimal/an unsigned decimal/
+   an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
+   an unsigned octal.</li>
+<li><code class="code">%obj</code>: format an object using its method <code class="code">print: 'a output -&gt; unit</code></li>
+<li><code class="code">%!</code>: take no argument and flush the output.</li>
+<li><code class="code">%%</code>: take no argument and output one <code class="code">%</code> character.</li>
+</ul>
+
+   Additional short-hand directives may also be plugged-in.
+<p>
+
+   <a name="7_Extendingformats"></a>
+<div class="h7">Extending formats</div>
+<p>
+
+   In addition to the above default set of directives, you may define your
+   own directives or override existing ones. This is actually quite simple.
+<p>
+
+   <a name="8_Addinggeneralpurposedirectiveswithamodule"></a>
+<div class="h8">Adding general-purpose directives (with a module)</div>
+<p>
+
+   When defining a new data structure <code class="code">Foo.t</code>, it is usually a good
+   idea to implement a function <code class="code">Foo.t_printer</code>, with type <code class="code">Foo.t
+   Value_printer</code>. That's it. Once this function is created, you may
+   use directive <code class="code">{%{Foo.t}}</code> in any printing function of this module.
+<p>
+
+   If the data structure has type arguments, as is the case of lists,
+   arrays, etc., you will probably want to be able to print the
+   contents of your data structure. For this purpose, you may define
+   printers which accept as arguments other printers. For instance,
+   the type of <code class="code">List.t_printer</code> is actually <code class="code">'a Value_printer.t -&gt; 'a
+   list Value_printer.t</code>, etc. If you have given such a type to
+   <code class="code">Foo.t_printer</code>, you may use <code class="code">{%{Foo.t bar}}</code> in any printing
+   function of this module, where <code class="code">bar</code> is the name of another
+   general-purpose directive.
+<p>
+
+   <a name="8_Addinggeneralpurposedirectiveswithoutamodule"></a>
+<div class="h8">Adding general-purpose directives (without a module)</div>
+<p>
+
+   An alternative technique for adding general-purpose directives is
+   to define functions outside of their module. For instance, to
+   plug-in a general-purpose directive for elements of type <code class="code">foo</code>, it
+   is sufficient to define a function <code class="code">bar_printer</code>, with type <code class="code">foo
+   Value_printer</code>. That's it. Once this function is created, you may
+   use directive <code class="code">{%{bar}}</code> in any printing function of this module.
+<p>
+
+   Again, you may also choose to define functions which take other
+   printer as arguments, as before.
+<p>
+
+   <a name="8_Addingshorthanddirectives"></a>
+<div class="h8">Adding short-hand directives</div>
+<p>
+
+   Short-hands are convenient and easier to write but are also less
+   powerful than general-purpose directives, insofar as they may not
+   accept printers as arguments and may not be passed as arguments
+   to printers.
+<p>
+
+   To define a short-hand directive <code class="code">%foo</code> for formatting elements of type <code class="code">bar</code>,
+   it is sufficient to create a function <code class="code">printer_foo</code> with type <code class="code">(bar
+   -&gt; 'a, 'a) directive</code>. Assuming that you already have a function
+   <code class="code">string_of_bar: bar -&gt; string</code>, <code class="code">printer_foo</code> may be implemented
+   simply as
+   <pre><code class="code">   let printer_foo k x = k (fun oc -&gt; IO.nwrite oc (string_of_bar x))
+   </code></pre>
+<p>
+
+   That's it. Once this function is created you may use directive <code class="code">%foo</code>
+   in any printing function of this module.
+<p>
+
+   To improve the flexibility of your newly created directive, you may wish
+   to add an optional argument <code class="code">flags</code> to function <code class="code">printer_foo</code>, to handle
+   flags, as detailed in the following section.
+<p>
+
+   <a name="7_Flags"></a>
+<div class="h7">Flags</div>
+<p>
+
+   The general format of directives is
+<p>
+
+   <code class="code">% ( [options] [width] [.precision] name )</code>
+<p>
+
+   <code class="code">name</code> is one of <code class="code">d</code>, <code class="code">i</code>, <code class="code">n</code>, <code class="code">l</code>, <code class="code">L</code>, <code class="code">N</code>, <code class="code">u</code>, <code class="code">x</code> ..., and
+   behaves as explained above.
+<p>
+
+   The optional <code class="code">options</code> are:<ul>
+<li><code class="code">-</code>: left-justify the output (default is right justification).</li>
+<li><code class="code">0</code>: for numerical conversions, pad with zeroes instead of spaces.</li>
+<li><code class="code">+</code>: for numerical conversions, prefix number with a <code class="code">+</code> sign if positive.</li>
+<li>space: for numerical conversions, prefix number with a space if positive.</li>
+<li><code class="code">#</code>: request an alternate formatting style for numbers.</li>
+</ul>
+
+   The optional <code class="code">width</code> is an integer indicating the minimal
+   width of the result. For instance, <code class="code">%6d</code> prints an integer,
+   prefixing it with spaces to fill at least 6 characters.
+<p>
+
+   The optional <code class="code">precision</code> is a dot <code class="code">.</code> followed by an integer
+   indicating how many digits follow the decimal point in the <code class="code">%f</code>,
+   <code class="code">%e</code>, and <code class="code">%E</code> conversions. For instance, <code class="code">%.4f</code> prints a <code class="code">float</code> with
+   4 fractional digits.
+<p>
+
+   The integer in a <code class="code">width</code> or <code class="code">precision</code> can also be specified as
+   <code class="code">*</code>, in which case an extra integer argument is taken to specify
+   the corresponding <code class="code">width</code> or <code class="code">precision</code>. This integer argument
+   precedes immediately the argument to print.
+   For instance, <code class="code">%.*f</code> prints a <code class="code">float</code> with as many fractional
+   digits as the value of the argument given before the float.
+<p>
+
+   For more informations on supporting flags in your directives, see
+   the documentation of type <a href="Print.html#TYPEdirective"><code class="code">Print.directive</code></a>.<br>
+<br>
+<a name="6_Directivesandformats"></a>
+<h6>Directives and formats</h6> 
+<p>
+
+    You can skip this section if you are only interested in using this module
+    and not in extending its behavior or understanding its internal mechanisms.<br>
+<pre><span class="keyword">type</span> <a name="TYPEdirective"></a><code class="type">('a, 'b)</code> directive = <code class="type">((unit <a href="InnerIO.html#TYPEoutput">InnerIO.output</a> -> unit) -> 'b) -> 'a</code> </pre>
+<div class="info">
+The underlying type of a directive. Directives are the basic elements of
+      formats.
+<p>
+
+      A directive takes as arguments:
+<p>
+<ul>
+<li>a continuation</li>
+<li>any arguments they need</li>
+</ul>
+
+      its goal is to create a printer which prints the arguments of
+      the directives and to pass it to the continuation.
+<p>
+
+      For example, directive <code class="code">%d</code> has the following type
+<p>
+
+      <pre><code class="code">        val printer_d : (int -&gt; 'a, 'a) directive
+      </code></pre>
+<p>
+
+      And here is a possible implementation:
+<p>
+
+      <pre><code class="code">        let printer_d k x = k (fun oc -&gt; IO.nwrite oc (string_of_int x))
+      </code></pre>
+<p>
+
+      Additionally, directives can takes ``flags'' (like in <code class="code">"%2d"</code>
+      where <code class="code">2</code> is here a width). Flags are passed to the
+      directive as optional argument before the continuation, for
+      example:
+<p>
+
+      <pre><code class="code">        val printer_d : ?width : int -&gt; (int -&gt; 'a, 'a) directive
+      </code></pre>
+<p>
+
+      with:
+<p>
+
+      <pre><code class="code">        let printer_d ?width k x =
+          let str = string_of_int x in
+          let str = match width with
+            | None -&gt;
+                str
+            | Some n -&gt;
+                let len = String.length str in
+                if len &lt; n then
+                  String.make (n - len) ' ' ^ str
+                else
+                  str
+          in
+          k (fun oc -&gt; IO.nwrite oc str)
+      </code></pre>
+<p>
+
+      Standard flags, i.e. the ones supported by the syntax extension,
+      are:
+<p>
+<ul>
+<li>the boolean flags (which must default to <code class="code">false</code>):</li>
+</ul>
+<ul>
+<li><code class="code">-</code> with label <code class="code">left_justify</code></li>
+<li><code class="code">0</code> with label <code class="code">pad_with_zeros</code></li>
+<li><code class="code">+</code> with label <code class="code">prefix_with_plus</code></li>
+<li><code class="code"> </code> with lavel <code class="code">prefix_with_space</code></li>
+<li><code class="code">#</code> with label <code class="code">alternate</code></li>
+</ul>
+<ul>
+<li>the integer flags <code class="code">width</code> and <code class="code">precision</code></li>
+</ul>
+<br>
+</div>
+
+<pre><span class="keyword">val</span> <a name="VALliteral"></a>literal : <code class="type">string -> ('a, 'a) <a href="Print.html#TYPEdirective">directive</a></code></pre><div class="info">
+<code class="code">literal str</code> create a directive which do not take any argument
+      from a literal string<br>
+</div>
+<br>
+<a name="6_Formattingfunctions"></a>
+<h6>Formatting functions</h6><br>
+<pre><span class="keyword">val</span> <a name="VALprintf"></a>printf : <code class="type">('a, unit) format -> 'a</code></pre><div class="info">
+<code class="code">printf fmt args</code> formats the arguments in <code class="code">args</code> as specified by <code class="code">fmt</code>
+      and prints the result on the standard output <a href="IO.html#VALstdout"><code class="code">IO.stdout</code></a>, i.e. normally
+      to the screen. If you are lost, this is probably the function you're looking for.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALeprintf"></a>eprintf : <code class="type">('a, unit) format -> 'a</code></pre><div class="info">
+<code class="code">eprintf fmt args</code> behaves as <code class="code">printf fmt args</code> but prints the result on
+      the error out put <a href="IO.html#VALstderr"><code class="code">IO.stderr</code></a> rather on the screen. This function is typically
+      used to display warnings and errors, which may later be separated from "regular"
+      printouts.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALsprintf"></a>sprintf : <code class="type">('a, string) format -> 'a</code></pre><div class="info">
+A function which doesn't print its result but returns it as a string. Useful
+      for building messages, for translation purposes or for display in a window,
+      for instance.
+<p>
+
+      While this function is quite convenient, don't abuse it to create very large
+      strings such as files, that's not its role. For this kind of usage, prefer
+      the more modular and usually faster <a href="Print.html#VALfprintf"><code class="code">Print.fprintf</code></a>.<br>
+</div>
+<br>
+<a name="6_Genericfunctions"></a>
+<h6>Generic functions</h6><br>
+<pre><span class="keyword">val</span> <a name="VALfprintf"></a>fprintf : <code class="type">'a <a href="InnerIO.html#TYPEoutput">InnerIO.output</a> -> ('b, unit) format -> 'b</code></pre><div class="info">
+General formatting function. 
+<p>
+
+     This function behaves mostly as <a href="Print.html#VALprintf"><code class="code">Print.printf</code></a> or <a href="Print.html#VALeprintf"><code class="code">Print.eprintf</code></a> but,
+     instead of printing to a predefined output, it takes as argument
+     the output to which it should print.
+<p>
+
+     Typically, if you are attempting to build a large output such as a
+     file, this is probably the function you are looking for. If you
+     are writing a pretty-printer, this is probably the function you
+     are looking for. If you are you are looking for a function to
+     combine with directive <code class="code">%a</code>, this is also probably the function
+     you are looking for.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALifprintf"></a>ifprintf : <code class="type">'a -> ('b, unit) format -> 'b</code></pre><div class="info">
+As <a href="Print.html#VALfprintf"><code class="code">Print.fprintf</code></a> but doesn't actually print anything.
+     Sometimes useful for debugging.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALbprintf"></a>bprintf : <code class="type">Buffer.t -> ('a, unit) format -> 'a</code></pre><div class="info">
+This function behaves as <a href="Print.html#VALfprintf"><code class="code">Print.fprintf</code></a> but prints into a buffer rather than into an <code class="code">output</code>.<br>
+</div>
+<br>
+<a name="6_Functionswithcontinuations"></a>
+<h6>Functions with continuations</h6><br>
+<pre><span class="keyword">val</span> <a name="VALkfprintf"></a>kfprintf : <code class="type">('a <a href="InnerIO.html#TYPEoutput">InnerIO.output</a> -> 'b) -> 'a <a href="InnerIO.html#TYPEoutput">InnerIO.output</a> -> ('c, 'b) format -> 'c</code></pre><div class="info">
+<code class="code">kfprintf k oc fmt</code> prints on <code class="code">oc</code> then call <code class="code">k</code> with <code class="code">oc</code> as
+      argument<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALrprintf"></a>rprintf : <code class="type">('a, <a href="Rope.html#TYPEt">Rope.t</a>) format -> 'a</code></pre><div class="info">
+<code class="code">rprintf fmt</code> returns the result as a rope<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALkrprintf"></a>krprintf : <code class="type">(<a href="Rope.html#TYPEt">Rope.t</a> -> 'a) -> ('b, 'a) format -> 'b</code></pre><div class="info">
+<code class="code">krprintf k fmt</code> creates a rope from the format and other
+      arguments and pass it to <code class="code">k</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALksprintf"></a>ksprintf : <code class="type">(string -> 'a) -> ('b, 'a) format -> 'b</code></pre><div class="info">
+<code class="code">ksprintf k fmt</code> creates a string from the format and other
+      arguments and pass it to <code class="code">k</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALkbprintf"></a>kbprintf : <code class="type">(Buffer.t -> 'a) -> Buffer.t -> ('b, 'a) format -> 'b</code></pre><div class="info">
+<code class="code">bprintf k buf fmt</code> prints into the buffer <code class="code">buf</code>, then call <code class="code">k</code>
+      with <code class="code">buf</code> as argument.<br>
+</div>
+</body></html>

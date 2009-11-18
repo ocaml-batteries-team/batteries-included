@@ -1,0 +1,768 @@
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="AvlTree" rel="Chapter" href="AvlTree.html">
+<link title="Base64" rel="Chapter" href="Base64.html">
+<link title="BatArg" rel="Chapter" href="BatArg.html">
+<link title="BatArray" rel="Chapter" href="BatArray.html">
+<link title="BatBig_int" rel="Chapter" href="BatBig_int.html">
+<link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
+<link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatChar" rel="Chapter" href="BatChar.html">
+<link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatDigest" rel="Chapter" href="BatDigest.html">
+<link title="BatFloat" rel="Chapter" href="BatFloat.html">
+<link title="BatFormat" rel="Chapter" href="BatFormat.html">
+<link title="BatGc" rel="Chapter" href="BatGc.html">
+<link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
+<link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatInt" rel="Chapter" href="BatInt.html">
+<link title="BatInt32" rel="Chapter" href="BatInt32.html">
+<link title="BatInt64" rel="Chapter" href="BatInt64.html">
+<link title="BatLexing" rel="Chapter" href="BatLexing.html">
+<link title="BatList" rel="Chapter" href="BatList.html">
+<link title="BatMap" rel="Chapter" href="BatMap.html">
+<link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMutex" rel="Chapter" href="BatMutex.html">
+<link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
+<link title="BatNum" rel="Chapter" href="BatNum.html">
+<link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
+<link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
+<link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
+<link title="BatQueue" rel="Chapter" href="BatQueue.html">
+<link title="BatRandom" rel="Chapter" href="BatRandom.html">
+<link title="BatScanf" rel="Chapter" href="BatScanf.html">
+<link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStr" rel="Chapter" href="BatStr.html">
+<link title="BatStream" rel="Chapter" href="BatStream.html">
+<link title="BatString" rel="Chapter" href="BatString.html">
+<link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
+<link title="BatUnit" rel="Chapter" href="BatUnit.html">
+<link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BitSet" rel="Chapter" href="BitSet.html">
+<link title="CharEncodings" rel="Chapter" href="CharEncodings.html">
+<link title="CharParser" rel="Chapter" href="CharParser.html">
+<link title="Concurrent" rel="Chapter" href="Concurrent.html">
+<link title="Dllist" rel="Chapter" href="Dllist.html">
+<link title="DynArray" rel="Chapter" href="DynArray.html">
+<link title="Enum" rel="Chapter" href="Enum.html">
+<link title="File" rel="Chapter" href="File.html">
+<link title="Global" rel="Chapter" href="Global.html">
+<link title="IMap" rel="Chapter" href="IMap.html">
+<link title="IO" rel="Chapter" href="IO.html">
+<link title="ISet" rel="Chapter" href="ISet.html">
+<link title="InnerIO" rel="Chapter" href="InnerIO.html">
+<link title="InnerWeaktbl" rel="Chapter" href="InnerWeaktbl.html">
+<link title="Interfaces" rel="Chapter" href="Interfaces.html">
+<link title="LazyList" rel="Chapter" href="LazyList.html">
+<link title="Logger" rel="Chapter" href="Logger.html">
+<link title="Monad" rel="Chapter" href="Monad.html">
+<link title="MultiPMap" rel="Chapter" href="MultiPMap.html">
+<link title="Number" rel="Chapter" href="Number.html">
+<link title="OptParse" rel="Chapter" href="OptParse.html">
+<link title="Option" rel="Chapter" href="Option.html">
+<link title="PMap" rel="Chapter" href="PMap.html">
+<link title="PSet" rel="Chapter" href="PSet.html">
+<link title="ParserCo" rel="Chapter" href="ParserCo.html">
+<link title="PathGen" rel="Chapter" href="PathGen.html">
+<link title="Print" rel="Chapter" href="Print.html">
+<link title="RMutex" rel="Chapter" href="RMutex.html">
+<link title="Ref" rel="Chapter" href="Ref.html">
+<link title="RefList" rel="Chapter" href="RefList.html">
+<link title="Result" rel="Chapter" href="Result.html">
+<link title="Return" rel="Chapter" href="Return.html">
+<link title="Rope" rel="Chapter" href="Rope.html">
+<link title="Seq" rel="Chapter" href="Seq.html">
+<link title="Std" rel="Chapter" href="Std.html">
+<link title="Substring" rel="Chapter" href="Substring.html">
+<link title="UCharParser" rel="Chapter" href="UCharParser.html">
+<link title="Value_printer" rel="Chapter" href="Value_printer.html">
+<link title="Vect" rel="Chapter" href="Vect.html"><title>Index of types</title>
+</head>
+<body>
+<center><h1>Index of types</h1></center>
+<table>
+<tr><td align="left"><br>B</td></tr>
+<tr><td><a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> [<a href="BatUTF8.Byte.html">BatUTF8.Byte</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUTF8.Buf.html#TYPEbuf">buf</a> [<a href="BatUTF8.Buf.html">BatUTF8.Buf</a>]</td>
+<td><div class="info">
+Buffers for UTF-8 strings.
+</div>
+</td></tr>
+<tr><td align="left"><br>C</td></tr>
+<tr><td><a href="BatBigarray.html#TYPEc_layout">c_layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td><div class="info">
+See <code class="code">Bigarray.fortran_layout</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatUChar.html#TYPEcategory">category</a> [<a href="BatUChar.html">BatUChar</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUTF8.html#TYPEchar_idx">char_idx</a> [<a href="BatUTF8.html">BatUTF8</a>]</td>
+<td><div class="info">
+Positions in the string as indexes by characters.
+</div>
+</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEclosure">closure</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td><div class="info">
+Internal representation of a method.
+</div>
+</td></tr>
+<tr><td><a href="BatArg.html#TYPEcommand">command</a> [<a href="BatArg.html">BatArg</a>]</td>
+<td><div class="info">
+The type describing both the name, documentation and behavior
+	  associated with a keyword.
+</div>
+</td></tr>
+<tr><td><a href="BatBigarray.html#TYPEcomplex32_elt">complex32_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPEcomplex64_elt">complex64_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="PathGen.PathType.html#TYPEcomponents">components</a> [<a href="PathGen.PathType.html">PathGen.PathType</a>]</td>
+<td><div class="info">
+A <code class="code">path</code> can be represented by the following triple:
+  <code class="code">(Path.parent path, Path.name_core path, Path.ext path)</code>
+</div>
+</td></tr>
+<tr><td align="left"><br>D</td></tr>
+<tr><td><a href="Base64.html#TYPEdecoding_table">decoding_table</a> [<a href="Base64.html">Base64</a>]</td>
+<td><div class="info">
+A decoding table maps chars 0..255 to the corresponding 0..63 value
+ or -1 if the char is not accepted.
+</div>
+</td></tr>
+<tr><td><a href="Print.html#TYPEdirective">directive</a> [<a href="Print.html">Print</a>]</td>
+<td><div class="info">
+The underlying type of a directive.
+</div>
+</td></tr>
+<tr><td align="left"><br>E</td></tr>
+<tr><td><a href="ISet.html#TYPEelt">elt</a> [<a href="ISet.html">ISet</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatSet.S.html#TYPEelt">elt</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+The type of the set elements.
+</div>
+</td></tr>
+<tr><td><a href="CharEncodings.html#TYPEencoding">encoding</a> [<a href="CharEncodings.html">CharEncodings</a>]</td>
+<td><div class="info">
+The list if known encodings.
+</div>
+</td></tr>
+<tr><td><a href="Base64.html#TYPEencoding_table">encoding_table</a> [<a href="Base64.html">Base64</a>]</td>
+<td><div class="info">
+An encoding table maps integers 0..63 to the corresponding char.
+</div>
+</td></tr>
+<tr><td><a href="Enum.Enumerable.html#TYPEenumerable">enumerable</a> [<a href="Enum.Enumerable.html">Enum.Enumerable</a>]</td>
+<td><div class="info">
+The data structure, e.g.
+</div>
+</td></tr>
+<tr><td><a href="Logger.html#TYPEevent">event</a> [<a href="Logger.html">Logger</a>]</td>
+<td><div class="info">
+A log <code class="code">event</code> consists of an event name and a list of key-value
+       parameters (an association list).
+</div>
+</td></tr>
+<tr><td align="left"><br>F</td></tr>
+<tr><td><a href="BatBigarray.html#TYPEfloat32_elt">float32_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPEfloat64_elt">float64_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="Logger.html#TYPEformatter">formatter</a> [<a href="Logger.html">Logger</a>]</td>
+<td><div class="info">
+the type of a log formatter is a function that takes the
+       logger, the level of the log statement (which will be the
+       currently enabled level or one of its successors), the event
+       record, and a unix timestamp indicating the time the event was
+       created.
+</div>
+</td></tr>
+<tr><td><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td><div class="info">
+To facilitate interoperability with existing C and Fortran code,
+   this library supports two different memory layouts for big arrays,
+   one compatible with the C conventions,
+   the other compatible with the Fortran conventions.
+</div>
+</td></tr>
+<tr><td><a href="BatFloat.Safe_float.html#TYPEfpkind">fpkind</a> [<a href="BatFloat.Safe_float.html">BatFloat.Safe_float</a>]</td>
+<td><div class="info">
+Classes of floating point numbers
+</div>
+</td></tr>
+<tr><td><a href="BatFloat.html#TYPEfpkind">fpkind</a> [<a href="BatFloat.html">BatFloat</a>]</td>
+<td><div class="info">
+Classes of floating point numbers
+</div>
+</td></tr>
+<tr><td align="left"><br>G</td></tr>
+<tr><td><a href="OptParse.OptParser.html#TYPEgroup">group</a> [<a href="OptParse.OptParser.html">OptParse.OptParser</a>]</td>
+<td><div class="info">
+The type of an option group.
+</div>
+</td></tr>
+<tr><td align="left"><br>I</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEimpl">impl</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td></td></tr>
+<tr><td><a href="IO.html#TYPEin_bits">in_bits</a> [<a href="IO.html">IO</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUTF8.html#TYPEindex">index</a> [<a href="BatUTF8.html">BatUTF8</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEinit_table">init_table</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td></td></tr>
+<tr><td><a href="InnerIO.html#TYPEinput">input</a> [<a href="InnerIO.html">InnerIO</a>]</td>
+<td></td></tr>
+<tr><td><a href="IO.html#TYPEinput">input</a> [<a href="IO.html">IO</a>]</td>
+<td><div class="info">
+The abstract input type.
+</div>
+</td></tr>
+<tr><td><a href="BatBigarray.html#TYPEint16_signed_elt">int16_signed_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPEint16_unsigned_elt">int16_unsigned_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPEint32_elt">int32_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPEint64_elt">int64_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPEint8_signed_elt">int8_signed_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPEint8_unsigned_elt">int8_unsigned_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPEint_elt">int_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td align="left"><br>K</td></tr>
+<tr><td><a href="IMap.html#TYPEkey">key</a> [<a href="IMap.html">IMap</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatMap.S.html#TYPEkey">key</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+The type of the map keys.
+</div>
+</td></tr>
+<tr><td><a href="BatHashtbl.S.html#TYPEkey">key</a> [<a href="BatHashtbl.S.html">BatHashtbl.S</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPEkind">kind</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td><div class="info">
+To each element kind is associated a Caml type, which is
+   the type of Caml values that can be stored in the big array
+   or read back from it.
+</div>
+</td></tr>
+<tr><td align="left"><br>L</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPElabel">label</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBigarray.html#TYPElayout">layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td><div class="info">
+The type <code class="code">'a layout</code> represents one of the two supported
+   memory layouts: C-style if <code class="code">'a</code> is <code class="code">Bigarray.c_layout</code>, Fortran-style
+   if <code class="code">'a</code> is <code class="code">Bigarray.fortran_layout</code>.
+</div>
+</td></tr>
+<tr><td><a href="Logger.html#TYPElevel">level</a> [<a href="Logger.html">Logger</a>]</td>
+<td></td></tr>
+<tr><td><a href="Concurrent.html#TYPElock">lock</a> [<a href="Concurrent.html">Concurrent</a>]</td>
+<td><div class="info">
+The light-weight type of a lock, i.e.
+</div>
+</td></tr>
+<tr><td><a href="Logger.html#TYPElog">log</a> [<a href="Logger.html">Logger</a>]</td>
+<td></td></tr>
+<tr><td align="left"><br>M</td></tr>
+<tr><td><a href="Option.Monad.html#TYPEm">m</a> [<a href="Option.Monad.html">Option.Monad</a>]</td>
+<td><div class="info">
+The type of values in this monad : option
+</div>
+</td></tr>
+<tr><td><a href="Monad.S.html#TYPEm">m</a> [<a href="Monad.S.html">Monad.S</a>]</td>
+<td><div class="info">
+The type of a monad producing values of type <code class="code">'a</code>.
+</div>
+</td></tr>
+<tr><td><a href="Enum.Monad.html#TYPEm">m</a> [<a href="Enum.Monad.html">Enum.Monad</a>]</td>
+<td><div class="info">
+The type of the Enum monad's elements, thus <code class="code">Enum.t</code>.
+</div>
+</td></tr>
+<tr><td><a href="Enum.WithMonad.html#TYPEm">m</a> [<a href="Enum.WithMonad.html">Enum.WithMonad</a>]</td>
+<td><div class="info">
+Type of the monadic elements.
+</div>
+</td></tr>
+<tr><td><a href="Interfaces.Mappable.html#TYPEmappable">mappable</a> [<a href="Interfaces.Mappable.html">Interfaces.Mappable</a>]</td>
+<td><div class="info">
+The data structure, e.g.
+</div>
+</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEmeth">meth</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td></td></tr>
+<tr><td align="left"><br>N</td></tr>
+<tr><td><a href="BatBigarray.html#TYPEnativeint_elt">nativeint_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="Seq.html#TYPEnode">node</a> [<a href="Seq.html">Seq</a>]</td>
+<td></td></tr>
+<tr><td><a href="LazyList.html#TYPEnode_t">node_t</a> [<a href="LazyList.html">LazyList</a>]</td>
+<td></td></tr>
+<tr><td><a href="Dllist.html#TYPEnode_t">node_t</a> [<a href="Dllist.html">Dllist</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNum.html#TYPEnum">num</a> [<a href="BatNum.html">BatNum</a>]</td>
+<td><div class="info">
+The type of numbers.
+</div>
+</td></tr>
+<tr><td><a href="Number.html#TYPEnumeric">numeric</a> [<a href="Number.html">Number</a>]</td>
+<td><div class="info">
+The smallest set of operations supported by every set of numbers.
+</div>
+</td></tr>
+<tr><td align="left"><br>O</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEobj">obj</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td><div class="info">
+Internal representation of an object.
+</div>
+</td></tr>
+<tr><td><a href="File.html#TYPEopen_in_flag">open_in_flag</a> [<a href="File.html">File</a>]</td>
+<td></td></tr>
+<tr><td><a href="File.html#TYPEopen_out_flag">open_out_flag</a> [<a href="File.html">File</a>]</td>
+<td></td></tr>
+<tr><td><a href="File.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> [<a href="File.html">File</a>]</td>
+<td></td></tr>
+<tr><td><a href="IO.html#TYPEout_bits">out_bits</a> [<a href="IO.html">IO</a>]</td>
+<td></td></tr>
+<tr><td><a href="InnerIO.html#TYPEoutput">output</a> [<a href="InnerIO.html">InnerIO</a>]</td>
+<td></td></tr>
+<tr><td><a href="IO.html#TYPEoutput">output</a> [<a href="IO.html">IO</a>]</td>
+<td><div class="info">
+The abstract output type, <code class="code">'a</code> is the accumulator data, it is returned
+	when the <code class="code">close_out</code> function is called.
+</div>
+</td></tr>
+<tr><td align="left"><br>P</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEparams">params</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td><div class="info">
+currently disabled
+</div>
+</td></tr>
+<tr><td><a href="File.html#TYPEpermission">permission</a> [<a href="File.html">File</a>]</td>
+<td><div class="info">
+The list of operations which are permitted on a file.
+</div>
+</td></tr>
+<tr><td><a href="UCharParser.html#TYPEposition">position</a> [<a href="UCharParser.html">UCharParser</a>]</td>
+<td><div class="info">
+The position inside one file or one stream.
+</div>
+</td></tr>
+<tr><td><a href="CharParser.html#TYPEposition">position</a> [<a href="CharParser.html">CharParser</a>]</td>
+<td><div class="info">
+The position inside one file or one stream.
+</div>
+</td></tr>
+<tr><td align="left"><br>R</td></tr>
+<tr><td><a href="BatStr.Str.html#TYPEregexp">regexp</a> [<a href="BatStr.Str.html">BatStr.Str</a>]</td>
+<td><div class="info">
+The type of compiled regular expressions.
+</div>
+</td></tr>
+<tr><td><a href="ParserCo.html#TYPEreport">report</a> [<a href="ParserCo.html">ParserCo</a>]</td>
+<td></td></tr>
+<tr><td><a href="DynArray.html#TYPEresizer_t">resizer_t</a> [<a href="DynArray.html">DynArray</a>]</td>
+<td><div class="info">
+The type of a resizer function.
+</div>
+</td></tr>
+<tr><td><a href="Std.html#TYPEresult">result</a> [<a href="Std.html">Std</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatPervasives.html#TYPEresult">result</a> [<a href="BatPervasives.html">BatPervasives</a>]</td>
+<td></td></tr>
+<tr><td align="left"><br>S</td></tr>
+<tr><td><a href="BatScanf.Scanf.Scanning.html#TYPEscanbuf">scanbuf</a> [<a href="BatScanf.Scanf.Scanning.html">BatScanf.Scanf.Scanning</a>]</td>
+<td><div class="info">
+The type of scanning buffers.
+</div>
+</td></tr>
+<tr><td><a href="BatScanf.Scanf.html#TYPEscanner">scanner</a> [<a href="BatScanf.Scanf.html">BatScanf.Scanf</a>]</td>
+<td><div class="info">
+The type of formatted input scanners: <code class="code">('a, 'b, 'c, 'd) scanner</code> is the
+    type of a formatted input function that reads from some scanning buffer
+    according to some format string; more precisely, if <code class="code">scan</code> is some
+    formatted input function, then <code class="code">scan ib fmt f</code> applies <code class="code">f</code> to the arguments
+    specified by the format string <code class="code">fmt</code>, when <code class="code">scan</code> has read those arguments
+    from the scanning input buffer <code class="code">ib</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatUChar.html#TYPEscript">script</a> [<a href="BatUChar.html">BatUChar</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatStr.Str.html#TYPEsplit_result">split_result</a> [<a href="BatStr.Str.html">BatStr.Str</a>]</td>
+<td></td></tr>
+<tr><td><a href="ParserCo.html#TYPEstate">state</a> [<a href="ParserCo.html">ParserCo</a>]</td>
+<td><div class="info">
+The current state of the parser.
+</div>
+</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEstats">stats</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td></td></tr>
+<tr><td align="left"><br>T</td></tr>
+<tr><td><a href="Vect.RANDOMACCESS.html#TYPEt">t</a> [<a href="Vect.RANDOMACCESS.html">Vect.RANDOMACCESS</a>]</td>
+<td></td></tr>
+<tr><td><a href="Vect.Make.html#TYPEt">t</a> [<a href="Vect.Make.html">Vect.Make</a>]</td>
+<td><div class="info">
+The type of a polymorphic vect.
+</div>
+</td></tr>
+<tr><td><a href="Vect.html#TYPEt">t</a> [<a href="Vect.html">Vect</a>]</td>
+<td><div class="info">
+The type of a polymorphic vect.
+</div>
+</td></tr>
+<tr><td><a href="Value_printer.html#TYPEt">t</a> [<a href="Value_printer.html">Value_printer</a>]</td>
+<td><div class="info">
+Type of a value-printer, the boolean argument indicates whether
+      composed expression must be parenthesized.
+</div>
+</td></tr>
+<tr><td><a href="Substring.html#TYPEt">t</a> [<a href="Substring.html">Substring</a>]</td>
+<td><div class="info">
+<code class="code">Substring.t</code> is the type of substrings of a basestring, an efficient 
+   representation of a piece of a string.
+</div>
+</td></tr>
+<tr><td><a href="Seq.html#TYPEt">t</a> [<a href="Seq.html">Seq</a>]</td>
+<td><div class="info">
+A sequence is a computation which returns a list-like node
+</div>
+</td></tr>
+<tr><td><a href="Rope.html#TYPEt">t</a> [<a href="Rope.html">Rope</a>]</td>
+<td><div class="info">
+The type of the ropes.
+</div>
+</td></tr>
+<tr><td><a href="Return.html#TYPEt">t</a> [<a href="Return.html">Return</a>]</td>
+<td><div class="info">
+A label which may be used to return values of type <code class="code">'a</code>
+</div>
+</td></tr>
+<tr><td><a href="Result.html#TYPEt">t</a> [<a href="Result.html">Result</a>]</td>
+<td><div class="info">
+The type of a result
+</div>
+</td></tr>
+<tr><td><a href="RefList.html#TYPEt">t</a> [<a href="RefList.html">RefList</a>]</td>
+<td><div class="info">
+The type of an empty ref list
+</div>
+</td></tr>
+<tr><td><a href="Ref.html#TYPEt">t</a> [<a href="Ref.html">Ref</a>]</td>
+<td><div class="info">
+The type of references.
+</div>
+</td></tr>
+<tr><td><a href="RMutex.html#TYPEt">t</a> [<a href="RMutex.html">RMutex</a>]</td>
+<td><div class="info">
+The type of mutexes.
+</div>
+</td></tr>
+<tr><td><a href="PathGen.StringType.html#TYPEt">t</a> [<a href="PathGen.StringType.html">PathGen.StringType</a>]</td>
+<td><div class="info">
+Type for strings.
+</div>
+</td></tr>
+<tr><td><a href="PathGen.PathType.html#TYPEt">t</a> [<a href="PathGen.PathType.html">PathGen.PathType</a>]</td>
+<td><div class="info">
+A type for storing paths.
+</div>
+</td></tr>
+<tr><td><a href="ParserCo.Source.html#TYPEt">t</a> [<a href="ParserCo.Source.html">ParserCo.Source</a>]</td>
+<td><div class="info">
+A source of elements of type <code class="code">'a</code>, with a user-defined state
+	of type <code class="code">'b</code>
+</div>
+</td></tr>
+<tr><td><a href="ParserCo.html#TYPEt">t</a> [<a href="ParserCo.html">ParserCo</a>]</td>
+<td><div class="info">
+A parser for elements of type <code class="code">'a</code>, producing 
+     elements of type <code class="code">'b</code>, with user-defined states
+     of type <code class="code">'c</code>.
+</div>
+</td></tr>
+<tr><td><a href="PSet.html#TYPEt">t</a> [<a href="PSet.html">PSet</a>]</td>
+<td><div class="info">
+The type of sets.
+</div>
+</td></tr>
+<tr><td><a href="PMap.html#TYPEt">t</a> [<a href="PMap.html">PMap</a>]</td>
+<td></td></tr>
+<tr><td><a href="Option.html#TYPEt">t</a> [<a href="Option.html">Option</a>]</td>
+<td></td></tr>
+<tr><td><a href="OptParse.OptParser.html#TYPEt">t</a> [<a href="OptParse.OptParser.html">OptParse.OptParser</a>]</td>
+<td><div class="info">
+The type of an option parser.
+</div>
+</td></tr>
+<tr><td><a href="OptParse.Formatter.html#TYPEt">t</a> [<a href="OptParse.Formatter.html">OptParse.Formatter</a>]</td>
+<td></td></tr>
+<tr><td><a href="OptParse.Opt.html#TYPEt">t</a> [<a href="OptParse.Opt.html">OptParse.Opt</a>]</td>
+<td><div class="info">
+Option type.
+</div>
+</td></tr>
+<tr><td><a href="Number.Discrete.html#TYPEt">t</a> [<a href="Number.Discrete.html">Number.Discrete</a>]</td>
+<td></td></tr>
+<tr><td><a href="Number.Bounded.html#TYPEt">t</a> [<a href="Number.Bounded.html">Number.Bounded</a>]</td>
+<td></td></tr>
+<tr><td><a href="Number.Numeric.html#TYPEt">t</a> [<a href="Number.Numeric.html">Number.Numeric</a>]</td>
+<td></td></tr>
+<tr><td><a href="MultiPMap.html#TYPEt">t</a> [<a href="MultiPMap.html">MultiPMap</a>]</td>
+<td></td></tr>
+<tr><td><a href="LazyList.html#TYPEt">t</a> [<a href="LazyList.html">LazyList</a>]</td>
+<td><div class="info">
+The type of a lazy list.
+</div>
+</td></tr>
+<tr><td><a href="InnerWeaktbl.html#TYPEt">t</a> [<a href="InnerWeaktbl.html">InnerWeaktbl</a>]</td>
+<td><div class="info">
+The type of hash tables from type <code class="code">'a</code> to type <code class="code">'b</code>.
+</div>
+</td></tr>
+<tr><td><a href="InnerIO.Printf.html#TYPEt">t</a> [<a href="InnerIO.Printf.html">InnerIO.Printf</a>]</td>
+<td><div class="info">
+The format to use for displaying the various arguments passed to the function.
+</div>
+</td></tr>
+<tr><td><a href="InnerIO.Output.html#TYPEt">t</a> [<a href="InnerIO.Output.html">InnerIO.Output</a>]</td>
+<td></td></tr>
+<tr><td><a href="InnerIO.Input.html#TYPEt">t</a> [<a href="InnerIO.Input.html">InnerIO.Input</a>]</td>
+<td></td></tr>
+<tr><td><a href="ISet.html#TYPEt">t</a> [<a href="ISet.html">ISet</a>]</td>
+<td></td></tr>
+<tr><td><a href="IMap.html#TYPEt">t</a> [<a href="IMap.html">IMap</a>]</td>
+<td></td></tr>
+<tr><td><a href="Global.html#TYPEt">t</a> [<a href="Global.html">Global</a>]</td>
+<td><div class="info">
+Abstract type of a global
+</div>
+</td></tr>
+<tr><td><a href="Enum.html#TYPEt">t</a> [<a href="Enum.html">Enum</a>]</td>
+<td></td></tr>
+<tr><td><a href="DynArray.html#TYPEt">t</a> [<a href="DynArray.html">DynArray</a>]</td>
+<td></td></tr>
+<tr><td><a href="Dllist.html#TYPEt">t</a> [<a href="Dllist.html">Dllist</a>]</td>
+<td></td></tr>
+<tr><td><a href="Concurrent.BaseLock.html#TYPEt">t</a> [<a href="Concurrent.BaseLock.html">Concurrent.BaseLock</a>]</td>
+<td><div class="info">
+The type of a lock.
+</div>
+</td></tr>
+<tr><td><a href="Concurrent.Lock.html#TYPEt">t</a> [<a href="Concurrent.Lock.html">Concurrent.Lock</a>]</td>
+<td><div class="info">
+The type of a lock.
+</div>
+</td></tr>
+<tr><td><a href="CharEncodings.html#TYPEt">t</a> [<a href="CharEncodings.html">CharEncodings</a>]</td>
+<td><div class="info">
+The type of items of type <code class="code">'a</code>, encoded using encoding <code class="code">'b</code>.
+</div>
+</td></tr>
+<tr><td><a href="BitSet.html#TYPEt">t</a> [<a href="BitSet.html">BitSet</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUnit.html#TYPEt">t</a> [<a href="BatUnit.html">BatUnit</a>]</td>
+<td><div class="info">
+The unit type, i.e.
+</div>
+</td></tr>
+<tr><td><a href="BatUTF8.html#TYPEt">t</a> [<a href="BatUTF8.html">BatUTF8</a>]</td>
+<td><div class="info">
+UTF-8 encoded Unicode strings.
+</div>
+</td></tr>
+<tr><td><a href="BatStream.StreamLabels.html#TYPEt">t</a> [<a href="BatStream.StreamLabels.html">BatStream.StreamLabels</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatStream.Stream.html#TYPEt">t</a> [<a href="BatStream.Stream.html">BatStream.Stream</a>]</td>
+<td><div class="info">
+The type of streams holding values of type <code class="code">'a</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatStack.Stack.html#TYPEt">t</a> [<a href="BatStack.Stack.html">BatStack.Stack</a>]</td>
+<td><div class="info">
+The type of stacks containing elements of type <code class="code">'a</code>.
+</div>
+</td></tr>
+<tr><td><a href="Interfaces.OrderedType.html#TYPEt">t</a> [<a href="Interfaces.OrderedType.html">Interfaces.OrderedType</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatSet.S.html#TYPEt">t</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+The type of sets.
+</div>
+</td></tr>
+<tr><td><a href="BatRandom.State.html#TYPEt">t</a> [<a href="BatRandom.State.html">BatRandom.State</a>]</td>
+<td><div class="info">
+The type of PRNG states.
+</div>
+</td></tr>
+<tr><td><a href="BatQueue.Queue.html#TYPEt">t</a> [<a href="BatQueue.Queue.html">BatQueue.Queue</a>]</td>
+<td><div class="info">
+The type of queues containing elements of type <code class="code">'a</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatPrintf.html#TYPEt">t</a> [<a href="BatPrintf.html">BatPrintf</a>]</td>
+<td><div class="info">
+The format to use for displaying the various arguments passed to the function.
+</div>
+</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEt">t</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNum.html#TYPEt">t</a> [<a href="BatNum.html">BatNum</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNativeint.html#TYPEt">t</a> [<a href="BatNativeint.html">BatNativeint</a>]</td>
+<td><div class="info">
+An alias for the type of native integers.
+</div>
+</td></tr>
+<tr><td><a href="BatMutex.Mutex.html#TYPEt">t</a> [<a href="BatMutex.Mutex.html">BatMutex.Mutex</a>]</td>
+<td><div class="info">
+The type of mutexes.
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#TYPEt">t</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+The type of maps from type <code class="code">key</code> to type <code class="code">'a</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatList.html#TYPEt">t</a> [<a href="BatList.html">BatList</a>]</td>
+<td><div class="info">
+List operations.
+</div>
+</td></tr>
+<tr><td><a href="BatInt64.html#TYPEt">t</a> [<a href="BatInt64.html">BatInt64</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatInt32.html#TYPEt">t</a> [<a href="BatInt32.html">BatInt32</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatInt.Safe_int.html#TYPEt">t</a> [<a href="BatInt.Safe_int.html">BatInt.Safe_int</a>]</td>
+<td><div class="info">
+An alias for the type of integers.
+</div>
+</td></tr>
+<tr><td><a href="BatInt.html#TYPEt">t</a> [<a href="BatInt.html">BatInt</a>]</td>
+<td><div class="info">
+An alias for the type of integers.
+</div>
+</td></tr>
+<tr><td><a href="BatHashtbl.HashedType.html#TYPEt">t</a> [<a href="BatHashtbl.HashedType.html">BatHashtbl.HashedType</a>]</td>
+<td><div class="info">
+The type of the hashtable keys.
+</div>
+</td></tr>
+<tr><td><a href="BatHashtbl.Cap.html#TYPEt">t</a> [<a href="BatHashtbl.Cap.html">BatHashtbl.Cap</a>]</td>
+<td><div class="info">
+The type of a hashtable.
+</div>
+</td></tr>
+<tr><td><a href="BatHashtbl.S.html#TYPEt">t</a> [<a href="BatHashtbl.S.html">BatHashtbl.S</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatGenlex.html#TYPEt">t</a> [<a href="BatGenlex.html">BatGenlex</a>]</td>
+<td><div class="info">
+A lexer
+</div>
+</td></tr>
+<tr><td><a href="BatFloat.Safe_float.html#TYPEt">t</a> [<a href="BatFloat.Safe_float.html">BatFloat.Safe_float</a>]</td>
+<td><div class="info">
+The type of floating-point numbers.
+</div>
+</td></tr>
+<tr><td><a href="BatFloat.html#TYPEt">t</a> [<a href="BatFloat.html">BatFloat</a>]</td>
+<td><div class="info">
+The type of floating-point numbers.
+</div>
+</td></tr>
+<tr><td><a href="BatBool.html#TYPEt">t</a> [<a href="BatBool.html">BatBool</a>]</td>
+<td><div class="info">
+The type of booleans.
+</div>
+</td></tr>
+<tr><td><a href="BatBigarray.Array3.html#TYPEt">t</a> [<a href="BatBigarray.Array3.html">BatBigarray.Array3</a>]</td>
+<td><div class="info">
+The type of three-dimensional big arrays whose elements have
+     Caml type <code class="code">'a</code>, representation kind <code class="code">'b</code>, and memory layout <code class="code">'c</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatBigarray.Array2.html#TYPEt">t</a> [<a href="BatBigarray.Array2.html">BatBigarray.Array2</a>]</td>
+<td><div class="info">
+The type of two-dimensional big arrays whose elements have
+     Caml type <code class="code">'a</code>, representation kind <code class="code">'b</code>, and memory layout <code class="code">'c</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatBigarray.Array1.html#TYPEt">t</a> [<a href="BatBigarray.Array1.html">BatBigarray.Array1</a>]</td>
+<td><div class="info">
+The type of one-dimensional big arrays whose elements have
+     Caml type <code class="code">'a</code>, representation kind <code class="code">'b</code>, and memory layout <code class="code">'c</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatBigarray.Genarray.html#TYPEt">t</a> [<a href="BatBigarray.Genarray.html">BatBigarray.Genarray</a>]</td>
+<td><div class="info">
+The type <code class="code">Genarray.t</code> is the type of big arrays with variable
+	  numbers of dimensions.
+</div>
+</td></tr>
+<tr><td><a href="BatBig_int.html#TYPEt">t</a> [<a href="BatBig_int.html">BatBig_int</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatArray.Cap.html#TYPEt">t</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
+<td><div class="info">
+The type of arrays with capabilities.
+</div>
+</td></tr>
+<tr><td><a href="BatArray.html#TYPEt">t</a> [<a href="BatArray.html">BatArray</a>]</td>
+<td><div class="info">
+The type of arrays.
+</div>
+</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEtable">table</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td><div class="info">
+Internal representation of the vtable, i.e.
+</div>
+</td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEtables">tables</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatOo.Oo.Internal.html#TYPEtag">tag</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<td></td></tr>
+<tr><td><a href="PathGen.StringType.html#TYPEtchar">tchar</a> [<a href="PathGen.StringType.html">PathGen.StringType</a>]</td>
+<td><div class="info">
+Character type used by <code class="code">t</code>.
+</div>
+</td></tr>
+<tr><td><a href="AvlTree.html#TYPEtree">tree</a> [<a href="AvlTree.html">AvlTree</a>]</td>
+<td></td></tr>
+<tr><td align="left"><br>U</td></tr>
+<tr><td><a href="PathGen.PathType.html#TYPEuchar">uchar</a> [<a href="PathGen.PathType.html">PathGen.PathType</a>]</td>
+<td><div class="info">
+Type of characters.
+</div>
+</td></tr>
+<tr><td><a href="PathGen.PathType.html#TYPEustring">ustring</a> [<a href="PathGen.PathType.html">PathGen.PathType</a>]</td>
+<td><div class="info">
+Type of strings used.
+</div>
+</td></tr>
+<tr><td align="left"><br>V</td></tr>
+<tr><td><a href="PathGen.PathType.html#TYPEvalidator">validator</a> [<a href="PathGen.PathType.html">PathGen.PathType</a>]</td>
+<td><div class="info">
+Validators should check if all characters of given string can be used in a name (path component).
+</div>
+</td></tr>
+</table><br>
+</body>
+</html>

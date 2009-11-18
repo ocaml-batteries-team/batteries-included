@@ -1,0 +1,57 @@
+body { font-family: sans-serif; }
+a:visited {color : #416DFF; text-decoration : none; }
+a:link {color : #416DFF; text-decoration : none;}
+a:hover {color : Red; text-decoration : none; background-color: #5FFF88}
+a:active {color : Red; text-decoration : underline; }
+.keyword { font-weight : bold ; color : Red }
+.keywordsign { color : #C04600 }
+.superscript { font-size : 4 }
+.subscript { font-size : 4 }
+.comment { color : Green }
+.constructor { color : Blue }
+.type { color : #5C6585 }
+.string { color : Maroon }
+.warning { color : Red ; font-weight : bold }
+.info { margin-left : 3em; margin-right : 3em }
+.param_info { margin-top: 4px; margin-left : 3em; margin-right : 3em }
+.code { color : #465F91 ; }
+h1, h2, h3, h4, h5, h6, div.h7, div.h8, div.h9 {
+    font-size : 18pt ;
+    font-weight: normal;
+    border: 1px solid #000000;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    background-color: #90BDFF;
+    padding: 2px;
+    padding-left: 1em;
+}
+h1 {
+    font-size : 20pt;
+    border: 0pt;
+    border-bottom:  solid 1pt;
+    background-color: inherit;
+}
+h6 { background-color: #C0FFFF; }
+div.h7 { background-color: #E0FFFF; }
+div.h8 { background-color: #F0FFFF; }
+div.h9 { background-color: #FFFFFF; }
+.typetable { border-style : hidden }
+.indextable { border-style : hidden }
+.paramstable { border-style : hidden ; padding: 5pt 5pt}
+body { background-color : White; margin-left:5%; margin-right:5% }
+tr { background-color : White }
+td.typefieldcomment { background-color : #FFFFFF ; font-size: smaller ;}
+pre { margin-bottom: 4px }
+div.sig_block {margin-left: 2em}
+li.index_of {display:inline}
+ul.indices  {display:inline;font-variant:small-caps;list-style-position: inside;list-style-type:none;padding:0px}
+div.indices {text-align:center}
+.index_entry{font-size:x-small}
+ul.index_entry {list-style-type:none;padding:0px; margin-left:none; text-ident:-1em}
+li.index_entry_entry div.info {margin-left:1em}
+pre {background-color:rgb(250,250,250);margin-top:2em}
+pre.example {margin-top:2px; margin-bottom:2em}
+code.example {background-color:rgb(250,250,250)}
+span.developer {font-weight:bold}
+code.terminal {display:block;padding:1em;background-color:black;color:white;width:90ex;margin:1em;white-space:pre}
+li {margin-top:1em}
