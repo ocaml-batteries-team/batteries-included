@@ -6,7 +6,6 @@ OCAMLFLAGS += -thread
 
 OBJECTS[] =
     legacy
-    batteries_config
     base64
     batArg
     batArray
@@ -90,6 +89,9 @@ OBJECTS[] =
     avlTree
     iSet
     iMap
+    batteries_config
+    batteries_help
+    batteries_print
     batteries
 
 OCamlLibrary(batteries, $(OBJECTS))
