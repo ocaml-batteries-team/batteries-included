@@ -40,6 +40,7 @@ doc: src/batteries.cma
 install-doc: doc
 	$(INSTALL) -d $(DOCROOT)
 	$(INSTALL) hdoc/* $(DOCROOT)
+	$(INSTALL) doc/batteries/*.idex doc/batteries/*.help $(DOCROOT)
 
 test: all
 	cd testsuite && ocamlbuild main.native main.byte
