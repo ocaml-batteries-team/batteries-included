@@ -33,13 +33,17 @@ directory (/usr/local/), execute
 
    $ omake all doc install install-doc
 
+
 To test your install, execute
 
    $ omake test
 
+
 *** Using AAA Batteries ***
 
-See doc/batteries/html/index.html
+To get started using AAA-batteries at the toplevel, type
+   
+   # use "aaa";;
 
 *** Extending Batteries Included ***
 
