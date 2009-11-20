@@ -11,7 +11,7 @@ BROWSER_COMMAND = x-www-browser %s
 NAME = aaa
 VERSION = 2009.11
 
-.PHONY: doc uninstall install all clean
+.PHONY: doc uninstall install all clean test
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
 
@@ -41,10 +41,10 @@ install-doc: doc
 	$(INSTALL) -d $(DOCROOT)
 	$(INSTALL) hdoc/* $(DOCROOT)
 
-test:
-	cd testsuite
-	ocamlbuild main.native main.byte
-	./main.byte
-	./main.native
+test: all
+	cd testsuite && ocamlbuild main.native main.byte
+	testsuite/main.native
+	testsuite/main.byte
 
 .DEFAULT: all
+
