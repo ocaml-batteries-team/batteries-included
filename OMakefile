@@ -4,6 +4,7 @@ NATIVE_ENABLED = true
 USE_OCAMLFIND = true
 
 OCAMLDEP_MODULES_ENABLED = false
+OCAMLROOT = $(shell ocamlc -where)
 DOCROOT = /usr/share/doc/ocaml-aaa/
 BROWSER_COMMAND = x-www-browser %s
 
@@ -28,6 +29,7 @@ build/META: build/META.in
 install: all build/META
 	$(OCAMLFIND) install $(NAME) build/META \
 	src/*.mli src/*.cmi src/*.cma src/*.cmxa
+	$(INSTALL) aaa $(OCAMLROOT)
 
 uninstall:
 	$(OCAMLFIND) remove $(NAME)
