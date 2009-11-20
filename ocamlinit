@@ -28,8 +28,7 @@
    - loading the contents of the on-line help system
    - printing a welcome message
 
-   To take advantage of this file, run
-   [ocaml -init top.ml] (or, equivalently, use our customized version of [ocaml])
+   To take advantage of this file, copy it to ~/.ocamlinit.
 *)
 let interactive = !Sys.interactive;;
 Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
@@ -53,7 +52,6 @@ begin
 end
 
 open Batteries;;
-open Standard;;
 #install_printer Batteries_print.print_uchar;;
 #install_printer Batteries_print.print_ustring;;
 #install_printer Batteries_print.print_rope;;
