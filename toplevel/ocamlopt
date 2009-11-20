@@ -1,2 +1,0 @@
-#!/bin/sh
-ocamlfind ocamlopt -thread -package batteries -linkpkg $@
