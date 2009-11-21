@@ -28,7 +28,7 @@ build/META: build/META.in
 
 install: all build/META
 	$(OCAMLFIND) install $(NAME) build/META \
-	src/*.mli src/*.cmi src/*.cma src/*.cmxa
+	src/*.mli src/*.cmi src/*.cma src/*.cmxa src/*.a
 	$(INSTALL) aaa $(OCAMLROOT)
 
 uninstall:
