@@ -2,6 +2,7 @@ BYTE_ENABLED   = true
 NATIVE_ENABLED = true
 
 USE_OCAMLFIND = true
+OCAMLCFLAGS += -g
 
 OCAMLDEP_MODULES_ENABLED = false
 OCAMLROOT = $(shell ocamlc -where)
@@ -12,7 +13,8 @@ BROWSER_COMMAND = x-www-browser %s
 NAME = aaa
 VERSION = 2009.11
 
-.PHONY: doc uninstall install all clean test
+
+.PHONY: doc uninstall install all clean test reinstall
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
 
@@ -26,13 +28,13 @@ build/META: build/META.in
 	    build/META.in > build/META
 	chmod(444 build/META)
 
+uninstall:
+	$(OCAMLFIND) remove $(NAME)
+
 install: all build/META
 	$(OCAMLFIND) install $(NAME) build/META \
 	src/*.mli src/*.cmi src/*.cma src/*.cmxa src/*.a
 	$(INSTALL) aaa $(OCAMLROOT)
-
-uninstall:
-	$(OCAMLFIND) remove $(NAME)
 
 doc: src/batteries.cma
 	mkdir -p hdoc
@@ -44,10 +46,15 @@ install-doc: doc
 	$(INSTALL) hdoc/* $(DOCROOT)
 	$(INSTALL) doc/batteries/*.idex doc/batteries/*.help $(DOCROOT)
 
+reinstall: uninstall install install-doc
+
 test: all
 	cd testsuite && ocamlbuild main.native main.byte
 	testsuite/main.native
 	testsuite/main.byte
+
+release: 
+	false
 
 .DEFAULT: all
 
