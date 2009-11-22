@@ -1,7 +1,11 @@
 open Batteries
 open Printf
 
-module ISet = Set.Make(struct type t = int let compare (x: int) (y:int) = Pervasives.compare x y end)
+module ISet = Set.Make(struct
+                         type t = int
+                         let compare (x : int) y =
+                           if x > y then 1 else if x < y then -1 else 0
+                       end)
 module IMap = Map.IntMap
 
 module G = struct
