@@ -250,13 +250,34 @@ module type S =
 
     let compare_subset s1 s2 = compare_subset (impl_of_t s1) s2
 
-    let enum t =
-      let rec aux = function
-	| Empty             -> Enum.empty ()
-	| Node (l, e, r, _) ->
-	    Enum.append (aux l) (Enum.delay (fun () -> Enum.append (Enum.singleton e) (aux r)))
-      in aux (impl_of_t t)
+    type enum_elm = T of implementation | E of elt
 
+    let enum t =
+      let rec make l =
+        let l = ref l in
+
+        let rec next () =
+          match !l with
+            | [] -> raise Enum.No_more_elements
+            | T Empty :: tl -> l := tl; next()
+            | T (Node (m1, elt, m2, h)) :: tl ->
+                l := T m1 :: E elt :: T m2 :: tl; next ()
+            | E elt :: tl -> l := tl; elt in
+
+        let count () =
+          let rec aux n = function
+              [] -> n
+            | E _ :: tl -> aux (n + 1) tl
+            | T s :: tl -> aux (n + cardinal (t_of_impl s)) tl
+          in aux 0 !l in
+
+        let clone() = make !l
+
+        in Enum.make ~next ~count ~clone
+
+      in make [T (impl_of_t t)]
+
+    (* TODO: same optimization as enum  *)
     let backwards t =
       let rec aux = function
 	| Empty             -> Enum.empty ()
