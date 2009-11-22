@@ -22,13 +22,14 @@
    This file is meant to be invoked by a toplevel and performs initialization
    of OCaml Batteries Included and its libraries.
 
-   Initialization consists in
+   To take advantage of this file, add the following line to your ~/.ocamlinit
+      #use "aaa";;
+   
+   Initialization consists of
    - loading Findlib
    - loading dependencies
    - loading the contents of the on-line help system
    - printing a welcome message
-
-   To take advantage of this file, copy it to ~/.ocamlinit.
 *)
 let interactive = !Sys.interactive;;
 Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
