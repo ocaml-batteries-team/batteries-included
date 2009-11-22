@@ -2,6 +2,13 @@ BYTE_ENABLED   = true
 NATIVE_ENABLED = true
 
 USE_OCAMLFIND = true
+OCAMLPACKS[] +=
+    camomile
+    num
+    str
+    threads
+
+OCAMLFLAGS += -thread
 OCAMLCFLAGS += -g
 
 OCAMLDEP_MODULES_ENABLED = false
@@ -18,7 +25,7 @@ VERSION = 2009.11
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
 
-.SUBDIRS: src
+.SUBDIRS: src testsuite
 
 all: src/batteries.cmxa src/batteries.cma
 
@@ -48,10 +55,8 @@ install-doc: doc
 
 reinstall: uninstall install install-doc
 
-test: all
-	cd testsuite && ocamlbuild main.native main.byte
-	testsuite/main.native
-	testsuite/main.byte
+test: testsuite/main.opt testsuite/main.run
+	testsuite/main.opt && testsuite/main.run
 
 release: 
 	false

@@ -1,9 +1,3 @@
-OCAMLPACKS[] +=
-    camomile
-    threads
-
-OCAMLFLAGS += -thread
-
 OBJECTS[] =
     legacy
     base64
