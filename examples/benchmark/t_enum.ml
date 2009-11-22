@@ -996,6 +996,9 @@ let () =
   Scanf.bscanf in_f "%d " read_edges;
 
   (* extend the graph with loops and reduce *)
+  let dg = fold (fun g i -> G.add g i i) !full_g (0--(n-1)) in  
   let t0 = Sys.time () in
-  let _dg = fold (fun g i -> G.add g i i) !full_g (0--(n-1)) |> reduce_all in
-  printf "Time taken: %.3f\n" (Sys.time () -. t0)
+  for i = 1 to 1000 do
+    ignore (reduce_all dg);
+  done;
+  printf "Time taken: %.3fs\n" (Sys.time () -. t0)
