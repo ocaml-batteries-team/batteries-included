@@ -57,7 +57,7 @@ module BaseInt = struct
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> n / 2) ~mod_two:(fun n -> n mod 2) ~mul
 
   let min_num, max_num = min_int, max_int
-  let compare = ( - )
+  let compare = if x > y then 1 else if y > x then -1 else 0
 
   external of_int : int -> int = "%identity"
   external to_int : int -> int = "%identity"
