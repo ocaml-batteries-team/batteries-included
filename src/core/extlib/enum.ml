@@ -159,21 +159,30 @@ let from f =
 		  let e' =  MicroLazyList.enum(MicroLazyList.from f) in
 		    e.next <- e'.next;
 		    e.clone<- e'.clone;
-		    e.count<- e'.count;
+		    e.count<- (fun () -> force e; e.count());
+                    (* we can't use [e'.count] because that would force [e'],
+                       which doesn't update [e].  That would for example,
+                       cause e.fast to not be updated to true.  A simple test
+                       to see the problem with [e'.count] is to do the
+                       following: (1) create a enum using this [from]
+                       function, (2) clone that enum, (3) grab the count of
+                       the original enum and then iterate over it.  A
+                       discrepancy between the count and the elements will
+                       result. *)
 		    e.fast <- e'.fast;
 	            e.clone () );
     e
 
 
 let from2 next clone =
-	let e = {
-		next = next;
-		count = _dummy;
-		clone = clone;
-		fast = false;
-	} in
-	e.count <- (fun () -> force e; e.count());
-	e
+  let e = {
+    next = next;
+    count = _dummy;
+    clone = clone;
+    fast = false;
+  } in
+  e.count <- (fun () -> force e; e.count());
+  e
 
 let init n f = (*Experimental fix for init*)
   if n < 0 then invalid_arg "Enum.init";
