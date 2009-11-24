@@ -6,4 +6,11 @@ OCAMLINCLUDES += ../estring
 
 .PHONY: pa_strings
 
-all: pa_strings.cmo pa_format.cmo
+OCamlLibrary(pa_strings, pa_strings pa_format)
+
+all: pa_strings.cma
+
+FILES[] = pa_strings.cma
+
+AAA_FILES[] += $(file $(FILES))
+export AAA_FILES
