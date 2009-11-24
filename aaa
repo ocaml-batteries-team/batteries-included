@@ -22,15 +22,19 @@
    This file is meant to be invoked by a toplevel and performs initialization
    of OCaml Batteries Included and its libraries.
 
-   To take advantage of this file, add the following line to your ~/.ocamlinit
-      #use "aaa";;
-   
    Initialization consists of
    - loading Findlib
    - loading dependencies
    - loading the contents of the on-line help system
    - printing a welcome message
+
+   To take advantage of this file, merge this file with your ~/.ocamlinit.
 *)
+
+(* Set the below to false to disable use of syntax extensions in toplevel *)
+let ext_syntax = true
+
+
 let interactive = !Sys.interactive;;
 Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
 #use "topfind";;
@@ -50,7 +54,7 @@ begin
   print_newline ();
   print_newline ();
   flush_all ()
-end
+end;;
 
 open Batteries;;
 #install_printer Batteries_print.print_uchar;;
@@ -58,4 +62,15 @@ open Batteries;;
 #install_printer Batteries_print.print_rope;;
 #install_printer Batteries_print.print_string_cap_rw;;
 #install_printer Batteries_print.print_string_cap_ro;;
+
+if ext_syntax then begin
+   print_endline "SS";
+   Topfind.standard_syntax();
+   print_endline "p4";
+   Topfind.load_deeply ["camlp4"];
+   print_endline "PA";
+   Topfind.load_deeply ["aaa.pa_string.syntax"];
+   print_endline "DN";
+end;;
+
 Sys.interactive := interactive;; (*Return to regular interactive mode*)

@@ -42,7 +42,6 @@ uninstall:
 
 install: all build/META
 	$(OCAMLFIND) install $(NAME) build/META $(AAA_FILES)
-	$(INSTALL) aaa $(OCAMLROOT)
 
 doc: src/batteries.cma
 	mkdir -p hdoc
