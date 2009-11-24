@@ -29,3 +29,9 @@ package "pa_comprehension" (
 		archive(syntax, toploop)      = "pa_comprehension.cmo"
 	)
 )
+
+package "syntax" (
+        version = "@VERSION@"
+        description = "Standard extensions to the OCaml language, full package"
+        requires = "aaa, aaa.pa_string.syntax, aaa.pa_comprehension.syntax"
+)
