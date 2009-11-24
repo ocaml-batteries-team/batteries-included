@@ -96,6 +96,7 @@ open Pervasives
   let filter            = filter
   let concat            = concat
   let ( -- )            = ( -- )
+  let ( --^ )            = ( --^ )
   let ( --. )           = ( --. )
   let ( --- )           = ( --- )
   let ( --~ )           = ( --~ )

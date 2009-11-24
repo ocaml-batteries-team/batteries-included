@@ -706,6 +706,8 @@ let ( --. ) (a, step) b =
   else
     init n (fun i -> float_of_int i *. step +. a)
 
+let ( --^ ) x y = range x ~until:(y-1)
+
 let ( --- ) x y = 
   if x <= y then x -- y
   else          seq x ((+) (-1)) ( (<=) y )

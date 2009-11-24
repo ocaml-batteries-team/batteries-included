@@ -466,6 +466,12 @@ val ( -- ) : int -> int -> int t
     [5 -- 10] is the enumeration 5,6,7,8,9,10.
     [10 -- 5] is the empty enumeration*)
 
+val ( --^ ) : int -> int -> int t
+(** As [(--)] but without the right endpoint
+
+    [5 -- 10] is the enumeration 5,6,7,8,9.
+*)
+
 val ( --. ) : (float * float) -> float -> float t
 (** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
     increment of [step] between elements.
