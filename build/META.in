@@ -15,7 +15,7 @@ package "pa_string" (
 		description = "pseudo-native Unicode strings (syntax extension)"
 		version     = "@VERSION@"
 		archive(syntax, preprocessor) = "pa_strings.cma"
-		archive(syntax, toploop)      = "Camlp4Top.cmo, pa_strings.cma"
+		archive(syntax, toploop)      = "pa_strings.cma"
 	)
 )
 
