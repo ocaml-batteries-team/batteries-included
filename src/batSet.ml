@@ -250,27 +250,28 @@ module type S =
 
     let compare_subset s1 s2 = compare_subset (impl_of_t s1) s2
 
-    type enum_elm = T of implementation | E of elt
+    type iter = E | C of elt * implementation * iter
+
+    let rec cons_iter s t = match s with
+        Empty -> t
+      | Node (l, e, r, _) -> cons_iter l (C (e, r, t))
+
+    let rec rev_cons_iter s t = match s with
+        Empty -> t
+      | Node (l, e, r, _) -> rev_cons_iter r (C (e, l, t))
 
     let rec enum_next l () = match !l with
-        [] -> raise Enum.No_more_elements
-      | T Empty :: tl -> l := tl; enum_next l ()
-      | T (Node (m1, elt, m2, h)) :: tl -> l := T m1 :: E elt :: T m2 :: tl;
-                                           enum_next l ()
-      | E elt :: tl -> l := tl; elt
+        E -> raise Enum.No_more_elements
+      | C (e, s, t) -> l := cons_iter s t; e
 
     let rec enum_backwards_next l () = match !l with
-        [] -> raise Enum.No_more_elements
-      | T Empty :: tl -> l := tl; enum_backwards_next l ()
-      | T (Node (m1, elt, m2, h)) :: tl -> l := T m2 :: E elt :: T m1 :: tl;
-                                           enum_backwards_next l ()
-      | E elt :: tl -> l := tl; elt
+        E -> raise Enum.No_more_elements
+      | C (e, s, t) -> l := rev_cons_iter s t; e
 
     let rec enum_count l () =
       let rec aux n = function
-          [] -> n
-        | E _ :: tl -> aux (n + 1) tl
-        | T s :: tl -> aux (n + cardinal (t_of_impl s)) tl
+          E -> n
+        | C (e, s, t) -> aux (n + 1 + cardinal (t_of_impl s)) t
       in aux 0 !l
 
     let enum t =
@@ -278,14 +279,14 @@ module type S =
         let l = ref l in
         let clone() = make !l in
           Enum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
-      in make [T (impl_of_t t)]
+      in make (cons_iter (impl_of_t t) E)
 
     let backwards t =
       let rec make l =
         let l = ref l in
         let clone() = make !l in
           Enum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
-      in make [T (impl_of_t t)]
+      in make (rev_cons_iter (impl_of_t t) E)
 
     let of_enum e = 
       Enum.fold (fun acc elem -> add elem acc) empty e
