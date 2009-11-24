@@ -13,3 +13,5 @@ examples/benchmark/*.png
 *.a
 *.omc
 *.swp
+*.opt
+*.run
