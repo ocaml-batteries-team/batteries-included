@@ -1,6 +1,6 @@
 
 .SUBDIRS: syntax
-	.SUBDIRS: estring
+	.SUBDIRS: estring pa_strings
 
 OBJECTS[] =
     legacy

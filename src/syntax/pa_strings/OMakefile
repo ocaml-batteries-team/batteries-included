@@ -1,0 +1,9 @@
+
+OCAMLPACKS[] = camlp4.lib
+OCAMLFLAGS += -pp camlp4of
+OCAMLDEPFLAGS += -pp camlp4of
+OCAMLINCLUDES += ../estring
+
+.PHONY: pa_strings
+
+all: pa_strings.cmo pa_format.cmo
