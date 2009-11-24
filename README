@@ -41,9 +41,11 @@ To test your install, execute
 
 *** Using AAA Batteries ***
 
-To get started using AAA-batteries at the toplevel, type
-   
-   # use "aaa";;
+To get started using AAA-batteries at the toplevel, copy the ocamlinit
+file to ~/.ocamlinit:
+
+   $ cp ocamlinit ~/.ocamlinit
+
 
 *** Extending Batteries Included ***
 
