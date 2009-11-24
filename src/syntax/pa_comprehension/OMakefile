@@ -1,0 +1,15 @@
+
+OCAMLPACKS[] = camlp4.lib
+OCAMLFLAGS += -pp camlp4rf
+OCAMLDEPFLAGS += -pp camlp4rf
+
+.PHONY: pa_strings
+
+OCamlLibrary(pa_strings, pa_strings pa_format)
+
+all: pa_comprehension.cmo
+
+FILES[] = pa_comprehension.cmo
+
+AAA_FILES[] += $(file $(FILES))
+export AAA_FILES

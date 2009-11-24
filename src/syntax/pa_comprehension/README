@@ -1,0 +1,31 @@
+  Syntax description :
+   
+     The global form is "[? output | comp_item ; comp_item ; ... ?]".
+     A comp_item is either a guard (a boolean expression), or
+     a generator of the form "<patt> <- <expr>" . Variables bound in
+     the pattern can be used in the following comp_items, and in the
+     output expression.
+
+     Both the output and the generator expression can be optionally
+     prefixed with a module specifier : "[? Module : output | ... ?]"
+     and "patt <- Module : expr". In the output position, it specifies
+     the data structure module (eg. List, Array...) used for the whole
+     comprehension value. In the generator position, it specifies the
+     data structure module corresponding to the generator expression,
+     eg. "p <- List : [1; 2; 3]". In the absence of module specifier,
+     the Enum module is choosed by default.
+
+  Example Input :
+    [? Array : pow p k | p <- 2--100; prime p; k <- List : (seq 1 (p - 1)) ?]
+
+  Output :
+    Array.of_enum
+     (Enum.concat
+       (Enum.map
+         (fun p -> Enum.map (fun k -> pow p k) (List.enum (seq 1 (p - 1))))
+         (Enum.filter (fun p -> prime p) (2 -- 100))))
+
+  Compilation : ocamlbuild pa_comprehension.cmo  
+  or ocamlc -pp camlp4rf -c -I +camlp4 pa_comprehension.ml
+
+  Use : camlp4o pa_comprehension.cmo test.ml

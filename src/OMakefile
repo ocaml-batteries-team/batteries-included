@@ -1,7 +1,7 @@
 
 .SUBDIRS: syntax
     export AAA_FILES
-    .SUBDIRS: estring pa_strings
+    .SUBDIRS: estring pa_comprehension pa_strings
 	include OMakefile
 	export AAA_FILES
 
