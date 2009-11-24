@@ -16,14 +16,13 @@ Batteries Included serves the following purposes:
 
 **** Requirements ****
 You will need
-* OCaml >= 3.10.2 (preferably OCaml >= 3.11)
+* OCaml >= 3.11
 * OMake
 * Findlib   (http://projects.camlcity.org/projects/findlib.html/)
 * Camomile >= 0.7 (http://camomile.sourceforge.net/)
 * Camlzip   (http://cristal.inria.fr/~xleroy/software.html#camlzip)
    ( Note: By default, the distribution of Camlzip is not quite sufficient for actual use.
      We provide the missing files in directory camlzip/ .)
-* Ocamlnet  2.2.9 (http://projects.camlcity.org/projects/ocamlnet.html)
 * OUnit    to build and run the tests
 
 **** Configuration and installation ****
