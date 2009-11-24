@@ -18,3 +18,14 @@ package "pa_string" (
 		archive(syntax, toploop)      = "Camlp4Top.cmo, pa_strings.cma"
 	)
 )
+
+package "pa_comprehension" (
+	description = "comprehension expressions (container)"
+	version     = "@VERSION@"
+	package "syntax" (
+		description = "comprehension expressions (syntax extension)"
+		version                       = "@VERSION@"
+		archive(syntax, preprocessor) = "pa_comprehension.cmo"
+		archive(syntax, toploop)      = "pa_comprehension.cmo"
+	)
+)
