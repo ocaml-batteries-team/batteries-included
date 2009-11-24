@@ -25,7 +25,11 @@ VERSION = 2009.11
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
 
+AAA_FILES[] =
+
 .SUBDIRS: src testsuite
+	include OMakefile
+	export AAA_FILES
 
 build/META: build/META.in
 	rm(-f build/META)
@@ -37,8 +41,7 @@ uninstall:
 	$(OCAMLFIND) remove $(NAME)
 
 install: all build/META
-	$(OCAMLFIND) install $(NAME) build/META \
-	src/*.mli src/*.cmi src/*.cma src/*.cmxa src/*.a
+	$(OCAMLFIND) install $(NAME) build/META $(AAA_FILES)
 	$(INSTALL) aaa $(OCAMLROOT)
 
 doc: src/batteries.cma

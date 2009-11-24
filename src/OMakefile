@@ -1,3 +1,10 @@
+
+.SUBDIRS: syntax
+    export AAA_FILES
+    .SUBDIRS: estring pa_strings
+	include OMakefile
+	export AAA_FILES
+
 OBJECTS[] =
     legacy
     base64
@@ -97,5 +104,7 @@ batteries_config.ml: batteries_config.mlp
             -e 's|@BROWSER_COMMAND@|$(BROWSER_COMMAND)|' \
 	    batteries_config.mlp > batteries_config.ml
 	chmod(444 batteries_config.ml)
+
+AAA_FILES[] += $(file $(glob *.mli *.cmi *.cma *.cmxa *.a))
 
 all: batteries.cmxa batteries.cma

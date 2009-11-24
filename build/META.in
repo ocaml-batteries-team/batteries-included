@@ -6,3 +6,15 @@ requires(mt)="unix,num,bigarray,threads,str,findlib,camomile"
 #archive(toploop)="batteries_print.cmo, batteries_help.cmo"
 archive(byte)  ="batteries.cma"
 archive(native)="batteries.cmxa"
+
+package "pa_string" (
+        description = "pseudo-native Unicode strings (container)"
+	version     = "@VERSION@"
+	package "syntax" (
+                requires="camlp4,estring"
+		description = "pseudo-native Unicode strings (syntax extension)"
+		version     = "@VERSION@"
+		archive(syntax, preprocessor) = "pa_strings.cma"
+		archive(syntax, toploop)      = "Camlp4Top.cmo, pa_strings.cma"
+	)
+)
