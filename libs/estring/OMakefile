@@ -14,8 +14,8 @@ install: $(FILES) META
 uninstall:
 	$(OCAMLFIND) remove estring
 
-.PHONY: estring
+.PHONY: estring all
 
-esttring:$(FILES)
+estring:$(FILES)
 
 all: $(FILES)
