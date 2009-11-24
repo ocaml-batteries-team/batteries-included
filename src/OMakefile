@@ -1,3 +1,7 @@
+
+.SUBDIRS: syntax
+	.SUBDIRS: estring
+
 OBJECTS[] =
     legacy
     base64
