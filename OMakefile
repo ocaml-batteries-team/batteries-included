@@ -12,7 +12,7 @@ OCAMLFLAGS += -thread
 OCAMLCFLAGS += -g
 
 OCAMLDEP_MODULES_ENABLED = false
-OCAMLROOT = $(shell ocamlc -where)
+OCAMLROOT = $(shell ocamlfind printconf destdir)
 DOCROOT = /usr/share/doc/ocaml-aaa/
 BROWSER_COMMAND = x-www-browser %s
 
