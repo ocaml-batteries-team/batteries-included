@@ -19,10 +19,10 @@ OCAMLROOT = $(shell ocamlfind printconf destdir)
 DOCROOT = /usr/share/doc/ocaml-aaa/
 BROWSER_COMMAND = x-www-browser %s
 
-
 NAME = aaa
 VERSION = 2009.11
 
+LIBSDIR = $(ROOT)/libs
 
 .PHONY: doc uninstall install all clean test reinstall
 clean:
