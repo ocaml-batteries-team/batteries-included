@@ -8,6 +8,9 @@ OCAMLPACKS[] +=
     str
     threads
 
+zip_pack = $(shell ocamlfind list | grep "zip\ " | cut -d\  -f1)
+OCAMLPACKS[] += $(zip_pack)
+
 OCAMLFLAGS += -thread
 OCAMLCFLAGS += -g
 
@@ -28,8 +31,14 @@ clean:
 AAA_FILES[] =
 
 .SUBDIRS: src testsuite
-	include OMakefile
-	export AAA_FILES
+    include OMakefile
+    export AAA_FILES
+
+.SUBDIRS: libs
+    .SUBDIRS: estring
+        include OMakefile
+        export AAA_FILES
+
 
 build/META: build/META.in
 	rm(-f build/META)
