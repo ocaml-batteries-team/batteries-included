@@ -27,8 +27,6 @@ clean:
 
 .SUBDIRS: src testsuite
 
-all: src/batteries.cmxa src/batteries.cma
-
 build/META: build/META.in
 	rm(-f build/META)
 	sed -e 's|@VERSION@|$(VERSION)|' \

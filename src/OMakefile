@@ -97,3 +97,5 @@ batteries_config.ml: batteries_config.mlp
             -e 's|@BROWSER_COMMAND@|$(BROWSER_COMMAND)|' \
 	    batteries_config.mlp > batteries_config.ml
 	chmod(444 batteries_config.ml)
+
+all: batteries.cmxa batteries.cma
