@@ -35,6 +35,8 @@
 let ext_syntax = true
 
 
+(* END CONFIGURATION *)
+
 let interactive = !Sys.interactive;;
 Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
 #use "topfind";;
@@ -64,13 +66,11 @@ open Batteries;;
 #install_printer Batteries_print.print_string_cap_ro;;
 
 if ext_syntax then begin
-   print_endline "SS";
+   print_endline "Loading syntax extensions...";
    Topfind.standard_syntax();
-   print_endline "p4";
-   Topfind.load_deeply ["camlp4"];
-   print_endline "PA";
-   Topfind.load_deeply ["aaa.pa_string.syntax"];
-   print_endline "DN";
-end;;
+   Topfind.load_deeply ["camlp4"; "aaa.pa_string.syntax"];
+end else 
+    print_endline "AAA Syntax extensions disabled.";
+;;
 
 Sys.interactive := interactive;; (*Return to regular interactive mode*)
