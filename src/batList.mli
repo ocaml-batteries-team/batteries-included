@@ -133,6 +133,11 @@
 	  (** [min l] returns the smallest value in [l] as judged by
 	      [Pervasives.compare] *)
 
+	val sum : int list -> int
+	  (** [sum l] returns the sum of the elements of [l] *)
+
+	val fsum : float list -> float
+	  (** [sum l] returns the sum of the elements of [l] *)
 
 	(** {6 Iterators on two lists} *)
 

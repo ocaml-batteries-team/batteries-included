@@ -659,6 +659,8 @@ let reduce f = function [] -> invalid_arg "Empty List"
 
 let min l = reduce Pervasives.min l
 let max l = reduce Pervasives.max l
+let sum l = reduce (+) l
+let fsum l = reduce (+.) l
 
 module Exceptionless = struct
   let rfind p l =
