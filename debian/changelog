@@ -1,3 +1,10 @@
+ocaml-batteries (0.20090405+beta1-5) unstable; urgency=low
+
+  * debian/control: add explicit dep on libbin-prot-camlp4-dev, it is a
+    needed CamlP4 dep, not inferrable by dh_ocaml (Closes: #557538)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Wed, 25 Nov 2009 13:11:18 +0100
+
 ocaml-batteries (0.20090405+beta1-4) unstable; urgency=low
 
   * Get rid of TopGit for packaging, use dom-{save,apply}-patches to

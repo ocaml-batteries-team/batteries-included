@@ -29,6 +29,7 @@ Section: ocaml
 Architecture: any
 Depends:
  ocaml-findlib,
+ libbin-prot-camlp4-dev,
  ${ocaml:Depends},
  ${shlibs:Depends},
  ${misc:Depends}
