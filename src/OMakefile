@@ -70,6 +70,7 @@ OBJECTS[] =
     number
     option
     optParse
+    pair
     parserCo
     pathGen
     pMap
