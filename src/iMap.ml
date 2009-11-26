@@ -39,7 +39,7 @@ let make ?(eq = (==)) l (n1, n2, v) r =
     if k2 + 1 = n1 && eq v v0 then k1, l' else n1, l in
   let n2, r =
     if is_empty r || n2 = max_int then n2, empty else
-    let (k1, k2, v0), r' = split_rightmost r in
+    let (k1, k2, v0), r' = split_leftmost r in
     if n2 + 1 = k1 && eq v v0 then k2, r' else n2, r in
   make_tree l (n1, n2, v) r
 
