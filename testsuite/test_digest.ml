@@ -13,7 +13,7 @@ let legacy_result () =
 let batteries_result () =
   let inp    = File.open_in Sys.argv.(0) in
   let result = BatDigest.channel inp (-1)   in
-    IO.close_in inp;
+    BatIO.close_in inp;
     result
 
 (*3. Compare*)

@@ -1,12 +1,12 @@
 open OUnit
 open File
-open IO
+open BatIO
 open Print
 open BatPervasives
 
 (**Initialize data sample*)
 let state  = BatRandom.State.make [|0|];;
-let buffer = BatArray.of_enum (Enum.take 60 (BatRandom.State.enum_int state 255));;
+let buffer = BatArray.of_enum (BatEnum.take 60 (BatRandom.State.enum_int state 255));;
 
 (**Write sample to temporary file*)
 let write buf =
@@ -38,17 +38,17 @@ let test_open_files_not_autoclosed () =
   let name = write buffer in
   let f    = open_in name in
     try
-      let _ = IO.read_all f in
-      let c = IO.read f in
-        assert_failure (BatPrintf.sprintf "Expecting: IO.No_more_input, got char %C" c)
+      let _ = BatIO.read_all f in
+      let c = BatIO.read f in
+        assert_failure (BatPrintf.sprintf "Expecting: BatIO.No_more_input, got char %C" c)
     with
-      | IO.No_more_input -> () (* pass *)
-      | IO.Input_closed ->
-          assert_failure "Expected: IO.No_more_input, got IO.Input_closed."
+      | BatIO.No_more_input -> () (* pass *)
+      | BatIO.Input_closed ->
+          assert_failure "Expected: BatIO.No_more_input, got BatIO.Input_closed."
       | e ->
-          let _ = IO.close_in f in
+          let _ = BatIO.close_in f in
             assert_failure
-              (BatPrintf.sprintf "Expected: IO.No_more_input, got %s"
+              (BatPrintf.sprintf "Expected: BatIO.No_more_input, got %s"
                  (Printexc.to_string e))
 
 let test_open_close_many () =

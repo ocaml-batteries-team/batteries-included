@@ -4,7 +4,7 @@ open BatPervasives
 
 (**Initialize data sample*)
 let state  = BatRandom.State.make [|0|]
-let buffer = BatArray.of_enum (Enum.take 1000 (BatRandom.State.enum_int state 255))
+let buffer = BatArray.of_enum (BatEnum.take 1000 (BatRandom.State.enum_int state 255))
 let vect   = of_array buffer
 
 let print_array out =
@@ -24,7 +24,7 @@ let test_init () =
   let vect = init 1000 f
   and array = Array.init 1000 f
   in
-    if Enum.compare ( BatInt.compare ) (enum vect) (BatArray.enum array) = 0 then
+    if BatEnum.compare ( BatInt.compare ) (enum vect) (BatArray.enum array) = 0 then
       () (* pass *)
     else assert_failure
            (BatPrintf.sprintf2 "Hoping: %a\n\tGot:    %a" print_array array print_vect vect)

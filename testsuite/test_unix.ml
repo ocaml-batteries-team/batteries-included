@@ -1,6 +1,6 @@
 open OUnit
 open BatPrintf
-open IO
+open BatIO
 
 let string = "hello world"
 
@@ -9,7 +9,7 @@ let test_open_process_readline () =
     let r,w = BatUnix.open_process "cat" in
       fprintf w "%s\n" string;
       close_out w;
-      match IO.read_line r with
+      match BatIO.read_line r with
 	| s when s = string -> ()
 	| s                 -> assert_failure (BatPrintf.sprintf "Expected %S, got %S" string s)
   with e -> assert_failure (BatPrintf.sprintf "Expected %S, got exception %s" string (Printexc.to_string e))

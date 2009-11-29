@@ -3,19 +3,19 @@ open BatRandom
 open BatPervasives
 
 let print_enum out enum =
-  Enum.print (fun out (c, _) -> BatPrintf.fprintf out "%d" c) out enum
+  BatEnum.print (fun out (c, _) -> BatPrintf.fprintf out "%d" c) out enum
 
 let test_traversal_order () =
   let init = State.make [|0|] in
-  let keys = Enum.take 50 (State.enum_int init 10) in
-  let map  = PMap.of_enum (Enum.map (fun x -> (x,x)) keys) in
+  let keys = BatEnum.take 50 (State.enum_int init 10) in
+  let map  = PMap.of_enum (BatEnum.map (fun x -> (x,x)) keys) in
   let enum_1 () = PMap.enum map
   and enum_2 () =
     let list = RefList.empty () in
       PMap.iter (fun k v -> RefList.push list (k, v)) map;
       RefList.backwards list
   in
-    match Enum.compare compare (enum_1 ()) (enum_2 ()) with
+    match BatEnum.compare compare (enum_1 ()) (enum_2 ()) with
       | 0 -> (* pass *) ()
       | _ ->
           assert_failure

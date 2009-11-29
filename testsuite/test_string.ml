@@ -3,7 +3,7 @@ open BatString
 
 let string = "Jon \"Maddog\" Orwant"
 
-open Enum
+open BatEnum
 (*
 let test_take_and_skip () =
   let foo s : string list =

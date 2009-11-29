@@ -76,7 +76,7 @@ let test_UTF8_enums () =
 open BatArray
 let test_bigarray_enums () =
     let aeq = assert_equal ~printer:(BatPrintf.sprintf2 "%a" (print BatChar.print)) in
-    let enum_flatten x = Enum.flatten (Enum.map enum x) in
+    let enum_flatten x = BatEnum.flatten (BatEnum.map enum x) in
       aeq (of_enum (enum array)) (of_enum (Array1.enum bigarray1));
       aeq
         (enum array2 |> enum_flatten |> of_enum)
@@ -85,7 +85,7 @@ let test_bigarray_enums () =
         (enum array3 |> enum_flatten |> enum_flatten |> of_enum)
         (of_enum (Array3.enum bigarray3))
 
-let tests = "Enum" >::: [
+let tests = "BatEnum" >::: [
   "Array" >:: test_array_enums;
   "List" >:: test_list_enums;
   "String" >:: test_string_enums;
