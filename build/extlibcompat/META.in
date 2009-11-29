@@ -1,0 +1,8 @@
+name="aaa-extlibcompat"
+version="@VERSION@"
+description="Batteries Included AAA, lite distribution of OCaml libraries (extlib compatibility)"
+requires="unix,num,bigarray,str,findlib,camomile"
+requires(mt)="unix,num,bigarray,threads,str,findlib,camomile"
+archive(toploop)="batteries_extlib.cma"
+archive(byte)  ="batteries_extlib.cma"
+archive(native)="batteries_extlib.cmxa"

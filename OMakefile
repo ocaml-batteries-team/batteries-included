@@ -29,16 +29,16 @@ clean:
     rm -f $(filter-proper-targets $(ls R, .))
 
 AAA_FILES[] =
+EXTLIB_COMPAT_FILES[] =
 
 .SUBDIRS: src testsuite
     include OMakefile
-    export AAA_FILES
+    export AAA_FILES EXTLIB_COMPAT_FILES
 
 .SUBDIRS: libs
     .SUBDIRS: estring
         include OMakefile
-        export AAA_FILES
-
+        export AAA_FILES EXTLIB_COMPAT_FILES
 
 build/META: build/META.in
 	rm(-f build/META)
@@ -46,11 +46,18 @@ build/META: build/META.in
 	    build/META.in > build/META
 	chmod(444 build/META)
 
+build/extlibcompat/META: build/extlibcompat/META.in
+	rm(-f $@)
+	sed -e 's|@VERSION@|$(VERSION)|' $< > $@
+	chmod(444 $@)
+
 uninstall:
 	$(OCAMLFIND) remove $(NAME)
+	$(OCAMLFIND) remove $(NAME)-extlibcompat
 
-install: all build/META
+install: all build/META build/extlibcompat/META
 	$(OCAMLFIND) install $(NAME) build/META $(AAA_FILES)
+	$(OCAMLFIND) install $(NAME)-extlibcompat build/extlibcompat/META $(EXTLIB_COMPAT_FILES)
 
 doc: src/batteries.cma
 	mkdir -p hdoc
