@@ -71,7 +71,7 @@ let string s = label ("\"" ^ s ^ "\"") (
 )
 
 let rope s = label ("\"" ^ ( UTF8.to_string (Rope.to_ustring s) ) ^ "\"") (
-  Enum.fold (fun (acc:(_, _, _) ParserCo.t) c -> (exactly c) >>> acc ) (return s) (Rope.backwards s)
+  BatEnum.fold (fun (acc:(_, _, _) ParserCo.t) c -> (exactly c) >>> acc ) (return s) (Rope.backwards s)
 )
 
 let case_char c =
@@ -84,17 +84,17 @@ let case_char c =
 let case_rope s = label ("case insensitive \"" ^ (UTF8.to_string (Rope.to_ustring s)) ^ "\"") (
   let lower_rope  = Rope.lowercase s       in                          (*lowercase the original string*)
   let pick enum   =
-    match Enum.get enum with
+    match BatEnum.get enum with
       | None   -> raise Not_found
       | Some x -> x
   in
   let rec aux enum acc =
-    if Enum.is_empty enum then return acc
+    if BatEnum.is_empty enum then return acc
     else
       ParserCo.any >>= fun c ->                                         (*lowercase the next char*)
 	let lower_char = UTF8.lowercase (UTF8.of_char c) in             (*check that's what follows in the string*)
 	let char_enum  = UTF8.enum lower_char            in
-	match try Some (Enum.for_all (fun c -> pick enum = c) char_enum)
+	match try Some (BatEnum.for_all (fun c -> pick enum = c) char_enum)
 	      with Not_found -> None
 	with Some false         (*The substring doesn't match.                                  *)
 	  |  None       -> fail (*We have reached the end of the enumeration but not that of [s]*)

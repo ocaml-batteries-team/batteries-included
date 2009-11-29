@@ -324,9 +324,9 @@ let to_array l = Array.of_list (to_list l)
 let enum l =
   let rec aux l = 
     let reference = ref l in
-      Enum.make ~next:(fun () -> match next !reference with
+      BatEnum.make ~next:(fun () -> match next !reference with
 			 | Cons(x,t) -> reference := t; x
-			 | _         -> raise Enum.No_more_elements )
+			 | _         -> raise BatEnum.No_more_elements )
         ~count:(fun () -> length !reference)
         ~clone:(fun () -> aux !reference)
   in aux l
@@ -374,7 +374,7 @@ let of_array l =
 *)
 let of_enum e =
   let rec aux () =
-    lazy (match Enum.get e with
+    lazy (match BatEnum.get e with
       |	Some x -> Cons (x, aux () ) 
       | _      -> Nil )
   in
@@ -582,7 +582,7 @@ let combine l1 l2 =
   in aux l1 l2
 
 let uncombine l =
-  let (l1, l2) = Enum.uncombine (enum l) in
+  let (l1, l2) = BatEnum.uncombine (enum l) in
     (of_enum l1, of_enum l2)
 (*let uncombine l =
   let rec aux l = match next l with
@@ -598,7 +598,7 @@ let uncombine l =
 
 
 let print ?(first="[^") ?(last="^]") ?(sep="; ") print_a out t = 
-  Enum.print ~first ~last ~sep print_a out (enum t)
+  BatEnum.print ~first ~last ~sep print_a out (enum t)
 
 
 module Exceptionless = struct

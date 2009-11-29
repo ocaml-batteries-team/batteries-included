@@ -45,8 +45,8 @@ let parse p s =
 (*let parse_enum p e =
   let latest = ref "" in
   let lines  = lines_of (input_enum e) in
-  let chars  = Enum.concat (Enum.from (fun () -> match get lines with
-    | None   -> raise Enum.No_more_elements
+  let chars  = BatEnum.concat (BatEnum.from (fun () -> match get lines with
+    | None   -> raise BatEnum.No_more_elements
     | Some l -> latest := l;
 	String.enum l)) in
   let source = source_of_enum chars in

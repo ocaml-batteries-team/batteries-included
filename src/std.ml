@@ -22,12 +22,12 @@
 
 
 let input_lines ch =
-  Enum.from (fun () ->
-    try input_line ch with End_of_file -> raise Enum.No_more_elements)
+  BatEnum.from (fun () ->
+    try input_line ch with End_of_file -> raise BatEnum.No_more_elements)
 
 let input_chars ch =
-  Enum.from (fun () ->
-    try input_char ch with End_of_file -> raise Enum.No_more_elements)
+  BatEnum.from (fun () ->
+    try input_char ch with End_of_file -> raise BatEnum.No_more_elements)
 
 type 'a _mut_list = {
   hd : 'a;
@@ -223,7 +223,7 @@ usually because program-name is put in argv.(0) *)
 
 let args () =
   let e = BatArray.enum Sys.argv in
-    Enum.drop !invisible_args e;
+    BatEnum.drop !invisible_args e;
     e
 
 let exe =

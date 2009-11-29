@@ -58,25 +58,25 @@ let map_default f v = function
 	| Some v2 -> f v2
 
 let enum = function
-        | None   -> Enum.from (fun () -> raise Enum.No_more_elements)
-        | Some e -> Enum.singleton e
+        | None   -> BatEnum.from (fun () -> raise BatEnum.No_more_elements)
+        | Some e -> BatEnum.singleton e
 
-let of_enum = Enum.get
+let of_enum = BatEnum.get
 
 let print print_a out = function
-  | None   -> InnerIO.nwrite out "None"
+  | None   -> BatInnerIO.nwrite out "None"
   | Some x -> BatPrintf.fprintf out "Some %a" print_a x
 
 let t_printer a_printer paren out = function
   | Some x ->
       if paren then
-        IO.write out '(';
-      IO.nwrite out "Some ";
+        BatIO.write out '(';
+      BatIO.nwrite out "Some ";
       a_printer true out x;
       if paren then
-        IO.write out ')';
+        BatIO.write out ')';
   | None ->
-      IO.nwrite out "None"
+      BatIO.nwrite out "None"
 
 let maybe_printer a_printer paren out = function
   | None -> ()

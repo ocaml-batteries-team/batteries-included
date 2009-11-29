@@ -110,4 +110,4 @@ val protect : 'a ref -> 'a -> (unit -> 'b) -> 'b
 
 (** {7 Printing}*)
 
-val print: (InnerIO.input -> 'a -> unit) -> InnerIO.input -> 'a t -> unit
+val print: (BatInnerIO.input -> 'a -> unit) -> BatInnerIO.input -> 'a t -> unit

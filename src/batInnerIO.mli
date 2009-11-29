@@ -1,5 +1,5 @@
 (* 
- * InnerIO - Abstract input/output (inner module)
+ * BatInnerIO - Abstract input/output (inner module)
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller
  *               2008 Philippe Strauss
@@ -22,13 +22,13 @@
 
 
 (**
-   Core of the IO module.
+   Core of the BatIO module.
 
-   This module contains the core definitions of {!IO}, so as to avoid circular
-   dependencies between modules which only need simple functions of {!IO} and
+   This module contains the core definitions of {!BatIO}, so as to avoid circular
+   dependencies between modules which only need simple functions of {!BatIO} and
    that module itself.
    
-   Don't use this module, use {!IO}.
+   Don't use this module, use {!BatIO}.
 
    @author Nicolas Cannasse
    @author David Teller
@@ -80,7 +80,7 @@ val input : input -> string -> int -> int -> int
 val really_input : input -> string -> int -> int -> int
 (** [really_input i s p l] reads exactly [l] characters from the given input,
   storing them in the string [s], starting at position [p]. For consistency with
-  {!IO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
+  {!BatIO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
   not available. Raises [Invalid_argument] if [p] and [l] do not designate a
   valid substring of [s]. *)
 
@@ -108,7 +108,7 @@ val output : 'a output -> string -> int -> int -> int
 val really_output : 'a output -> string -> int -> int -> int
 (** [really_output o s p l] writes exactly [l] characters from string [s] onto
   the the output, starting with the character at offset [p]. For consistency with
-  {!IO.output} it returns [l]. Raises [Invalid_argument] if [p] and [l] do not
+  {!BatIO.output} it returns [l]. Raises [Invalid_argument] if [p] and [l] do not
   designate a valid substring of [s]. *)
 
 val flush : 'a output -> unit
@@ -340,7 +340,7 @@ val write_string : 'a output -> string -> unit
 
 val write_line : 'a output -> string -> unit
 (** Write a line and append a LF (it might be converted
-	to CRLF on some systems depending on the underlying IO). *)
+	to CRLF on some systems depending on the underlying BatIO). *)
 
 external cast_output : 'a output -> unit output = "%identity"
 (** You can safely transform any output to an unit output in a safe way 

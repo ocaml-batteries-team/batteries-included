@@ -19,5 +19,5 @@
  *)
 
 
-include InnerIO.Printf
+include BatInnerIO.Printf
 

@@ -56,8 +56,8 @@ type t = big_int
     val to_int : big_int -> int
     val of_int : int -> big_int
     val compare : big_int -> big_int -> int
-    val ( -- ) : big_int -> big_int -> big_int Enum.t
-    val ( --- ): big_int -> big_int -> big_int Enum.t
+    val ( -- ) : big_int -> big_int -> big_int BatEnum.t
+    val ( --- ): big_int -> big_int -> big_int BatEnum.t
 
 
     val ( + ) : t -> t -> t
@@ -207,5 +207,5 @@ val gcd_big_int : big_int -> big_int -> big_int
 
     (** {7 Printing}*)
 
-    val print : 'a IO.output -> t -> unit
+    val print : 'a BatIO.output -> t -> unit
 

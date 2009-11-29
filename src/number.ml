@@ -92,8 +92,8 @@ module type Discrete = sig
   val to_int: t -> int
   val succ  : t -> t
   val pred  : t -> t
-  val ( -- ): t -> t -> t Enum.t
-  val ( --- ): t -> t -> t Enum.t
+  val ( -- ): t -> t -> t BatEnum.t
+  val ( --- ): t -> t -> t BatEnum.t
 end
 
 (**

@@ -29,16 +29,16 @@ let compare ?(c1=Pervasives.compare) ?(c2=Pervasives.compare) (a,b) (c,d) =
 
 let enum (x,y) = BatList.enum [x;y] (* Make efficient? *)
 
-let of_enum e = match Enum.get e with 
+let of_enum e = match BatEnum.get e with 
     None -> failwith "Pair.of_enum: not enough elements" 
-  | Some x -> match Enum.get e with 
+  | Some x -> match BatEnum.get e with 
 	None -> failwith "Pair.of_enum: not enough elements" 
       | Some y -> (x,y)
 
 let print print_a print_b out (a,b) = 
-  IO.write out '(';
+  BatIO.write out '(';
   print_a out a;
-  IO.write out ',';
+  BatIO.write out ',';
   print_b out b;
-  IO.write out ')'
+  BatIO.write out ')'
 

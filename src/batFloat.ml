@@ -88,7 +88,7 @@ end
 
   include Number.MakeNumeric(BaseFloat)
   include BaseFloat
-  let print out t = InnerIO.nwrite out (to_string t)
+  let print out t = BatInnerIO.nwrite out (to_string t)
   let t_printer paren out t = print out t
 
 module Base_safe_float = struct

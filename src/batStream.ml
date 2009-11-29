@@ -70,15 +70,15 @@ module Stream =
       
     let on_channel ch = iter (output_char ch)
       
-    let on_output o = iter (IO.write o)
+    let on_output o = iter (BatIO.write o)
       
     let rec of_input i =
       Stream.slazy
         (fun _ ->
            try
-             let h = IO.read i
+             let h = BatIO.read i
              in Stream.icons h (Stream.slazy (fun _ -> of_input i))
-           with | IO.No_more_input -> Stream.sempty)
+           with | BatIO.No_more_input -> Stream.sempty)
       
     let rec cycle times x =
       match times with
@@ -506,14 +506,14 @@ module Stream =
     let ( ||| ) exp1 exp2 = exp1 |- exp2
       
     let enum x =
-      Enum.from
+      BatEnum.from
         (fun () ->
-           try next x with | End_of_flow -> raise Enum.No_more_elements)
+           try next x with | End_of_flow -> raise BatEnum.No_more_elements)
       
     let rec of_enum e =
       Stream.slazy
         (fun _ ->
-           match Enum.get e with
+           match BatEnum.get e with
            | Some h -> Stream.icons h (Stream.slazy (fun _ -> of_enum e))
            | None -> Stream.sempty)
       

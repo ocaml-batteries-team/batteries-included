@@ -28,7 +28,7 @@
      list and [[^ a;b;c ^]] is the lazy list containing elements [a],
      [b], [c].
 
-     {b Note} Enumerations (as featured in module {!Enum}) and lazy
+     {b Note} Enumerations (as featured in module {!BatEnum}) and lazy
      lists (as featured in this module) are quite similar in
      purpose. Lazy lists are slightly higher level, insofar as no
      cloning is required to get them to work, which makes them
@@ -67,7 +67,7 @@ type 'a t = ('a node_t) Lazy.t (**The type of a lazy list.*)
 and 'a node_t = | Nil | Cons of 'a * 'a t
 (**The type of an item in the list.*)
 
-include Enum.Enumerable with type 'a enumerable = 'a t
+include BatEnum.Enumerable with type 'a enumerable = 'a t
 include Interfaces.Mappable with type 'a mappable = 'a t
 
 (** {6 Access } *)
@@ -395,7 +395,7 @@ val to_stream : 'a t -> 'a Stream.t
 val to_array : 'a t -> 'a array
 (** Eager conversion to array.*)
 
-val enum  : 'a t -> 'a Enum.t
+val enum  : 'a t -> 'a BatEnum.t
 (**Lazy conversion to enumeration*)
 
 val of_list : 'a list -> 'a t
@@ -410,7 +410,7 @@ val of_list : 'a list -> 'a t
 val of_stream : 'a Stream.t -> 'a t
 (**Lazy conversion from stream.*)
 
-val of_enum : 'a Enum.t -> 'a t  
+val of_enum : 'a BatEnum.t -> 'a t  
 (**Lazy conversion from enum.*)
 
 val eager_of_list : 'a list -> 'a t
@@ -527,7 +527,7 @@ val uncombine : ('a * 'b) t -> 'a t * 'b t
 
 (** {7 Printing}*)
   
-val print : ?first:string -> ?last:string -> ?sep:string ->('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string ->('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 
 (** {6 Override modules}*)

@@ -466,7 +466,7 @@ let rec iteri ?(base=0) f = function
     Empty -> ()
   | Leaf (_,s) ->
       let e = UTF8.enum s in
-      Enum.iteri (fun j c -> f (base+j) c) e
+      BatEnum.iteri (fun j c -> f (base+j) c) e
   | Concat(l,cl,r,_,_) -> iteri ~base f l; iteri ~base:(base + cl) f r
  
 let rec bulk_iter f = function
@@ -538,7 +538,7 @@ let rec range_iteri f ?(base = 0) start len = function
 let rec fold f a = function
     Empty -> a
   | Leaf (_,s) ->
-      Enum.fold (fun a c -> f a c) a (UTF8.enum s)
+      BatEnum.fold (fun a c -> f a c) a (UTF8.enum s)
   | Concat(l,_,r,_,_) -> fold f (fold f a l) r
  
 let rec bulk_fold f a = function
@@ -547,31 +547,31 @@ let rec bulk_fold f a = function
   | Concat (l, _, r, _, _) -> bulk_fold f (bulk_fold f a l) r
 
 (*let rec enum = function (* return an enumeration of UChars --*)
-    Empty                  -> Enum.empty ()
+    Empty                  -> BatEnum.empty ()
   | Leaf (_,s)             -> UTF8.enum s
-  | Concat (l, _, r, _, _) -> Enum.append (enum l) (enum r)*)
+  | Concat (l, _, r, _, _) -> BatEnum.append (enum l) (enum r)*)
 
 let enum s =
   let iter = Iter.make s in
-  Enum.from_while (fun _ -> Iter.next iter)
+  BatEnum.from_while (fun _ -> Iter.next iter)
 
 let backwards s =
   let iter = Iter.make s in
-  Enum.from_while (fun _ -> Iter.prev iter)
+  BatEnum.from_while (fun _ -> Iter.prev iter)
 
 let bulk_enum s =
   let r = ref [s] in
-  Enum.from (fun _ -> match Iter.prev_leaf !r with
+  BatEnum.from (fun _ -> match Iter.prev_leaf !r with
                | Some(leaf, l) -> r := l; leaf
-               | None -> raise Enum.No_more_elements)
+               | None -> raise BatEnum.No_more_elements)
 
 (*Probably useless
 let bulk_backwards s = 
   let rec aux = function
-    | Empty      -> Enum.empty ()
-    | Leaf(_, s) -> Enum.singleton s
-    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux r)) 
-                                           (Enum.delay (fun () -> aux l))
+    | Empty      -> BatEnum.empty ()
+    | Leaf(_, s) -> BatEnum.singleton s
+    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux r)) 
+                                           (BatEnum.delay (fun () -> aux l))
   in aux s
 *)
 
@@ -581,7 +581,7 @@ let of_enum e =
       (fun label ->
 	 let b = Buffer.create 256 in
 	 for i = 1 to 256 do
-	   match Enum.get e with
+	   match BatEnum.get e with
 	       None   -> return label (false, UTF8.of_string_unsafe (Buffer.contents b))
 	     | Some c -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c))
 	 done;
@@ -596,7 +596,7 @@ let of_enum e =
     
 let of_bulk_enum e = 
   let rec loop r = 
-    match Enum.get e with
+    match BatEnum.get e with
 	None -> r
       | Some us -> loop (append r (of_ustring us))
   in
@@ -609,17 +609,17 @@ let of_enum e =
     (fun c -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c))),
     (fun () -> let ret = UTF8.of_string_unsafe (Buffer.contents b) in Buffer.clear b; ret)
   in
-  of_bulk_enum (Enum.clump leaf_size add get e)
+  of_bulk_enum (BatEnum.clump leaf_size add get e)
 *)
 
 let of_backwards e =(*(Yoric) I'll keep the implementation simple at least until I understand [of_enum]*)
-  Enum.fold (fun acc c -> append (of_uchar c) acc) Empty e
+  BatEnum.fold (fun acc c -> append (of_uchar c) acc) Empty e
   
 let of_bulk_enum e =
-  Enum.fold (fun acc s -> append acc (of_ustring s)) Empty e
+  BatEnum.fold (fun acc s -> append acc (of_ustring s)) Empty e
 (*Probably useless 
 let of_bulk_backwards e =
-  Enum.fold (fun s acc -> append (of_ustring s) acc) Empty e
+  BatEnum.fold (fun s acc -> append (of_ustring s) acc) Empty e
 *)
 module CE = CamomileLibrary.CharEncoding.Configure(CamomileLibrary.CamomileDefaultConfig)
  
@@ -635,9 +635,9 @@ let print out t =
   bulk_iter (UTF8.print out) t
 
 let t_printer paren out x =
-  InnerIO.nwrite out "ur\"";
+  BatInnerIO.nwrite out "ur\"";
   bulk_iter (fun us -> UTF8.print out (UTF8.escaped us)) x;
-  InnerIO.write out '"'
+  BatInnerIO.write out '"'
 
 let lowercase s =
   bulk_fold (fun acc c -> append acc (of_ustring (UTF8.lowercase c)))  Empty s
@@ -645,7 +645,7 @@ let lowercase s =
 let uppercase s =
   bulk_fold (fun acc c -> append acc (of_ustring (UTF8.uppercase c)))  Empty s
 
-let init len f = of_enum (Enum.init len f)
+let init len f = of_enum (BatEnum.init len f)
 
 let of_list cl = of_enum (BatList.enum cl)
 let to_list r  = BatList.of_enum (enum r)

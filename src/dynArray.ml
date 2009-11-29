@@ -437,7 +437,7 @@ let enum d =
 		let idxref = ref 0 in
 		let next () =
 			if !idxref >= d.len then
-				raise Enum.No_more_elements
+				raise BatEnum.No_more_elements
 			else
 				let retval = iget d.arr !idxref in
 				incr idxref;
@@ -448,15 +448,15 @@ let enum d =
 		and clone () =
 			make !idxref
 		in
-		Enum.make ~next:next ~count:count ~clone:clone
+		BatEnum.make ~next:next ~count:count ~clone:clone
 	in
 	make 0
 
 let of_enum e =
-	if Enum.fast_count e then begin
-		let c = Enum.count e in
+	if BatEnum.fast_count e then begin
+		let c = BatEnum.count e in
 		let arr = imake 0 c in
-		Enum.iteri (fun i x -> iset arr i x) e;
+		BatEnum.iteri (fun i x -> iset arr i x) e;
 		{
 			resize = default_resizer;
 			len = c;
@@ -464,7 +464,7 @@ let of_enum e =
 		}
 	end else
 		let d = make 0 in
-		Enum.iter (add d) e;
+		BatEnum.iter (add d) e;
 		d
 
 let unsafe_get a n =
@@ -474,5 +474,5 @@ let unsafe_set a n x =
 	iset a.arr n x
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
-  Enum.print ~first ~last ~sep print_a out (enum t)
+  BatEnum.print ~first ~last ~sep print_a out (enum t)
 let t_printer a_printer paren out t = print (a_printer false) out t

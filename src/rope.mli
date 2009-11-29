@@ -261,31 +261,31 @@ val fold : ('a -> UChar.t -> 'a ) -> 'a -> t -> 'a
 val bulk_fold : ('a -> BatUTF8.t -> 'a) -> 'a -> t -> 'a
   (** As {!fold} but over larger chunks of data.*)
 
-val enum: t -> UChar.t Enum.t
+val enum: t -> UChar.t BatEnum.t
   (** Returns an enumeration of the characters of a rope. *)
 
-val bulk_enum: t -> BatUTF8.t Enum.t
+val bulk_enum: t -> BatUTF8.t BatEnum.t
   (** Returns an enumeration of the UTF-8 encoded strings of a rope.
       Provided for convenience and speed.
   *)
 
-val of_enum: UChar.t Enum.t -> t
+val of_enum: UChar.t BatEnum.t -> t
   (** Creates a rope from a character enumeration. *)
 
-val of_bulk_enum: BatUTF8.t Enum.t -> t
+val of_bulk_enum: BatUTF8.t BatEnum.t -> t
   (** Creates a rope from an enumeration of UTF-8 encoded strings. 
 
       Provided for convenience and speed.*)
 
-val backwards: t -> UChar.t Enum.t
+val backwards: t -> UChar.t BatEnum.t
   (** Returns an enumeration of the characters of a rope, from last to first. *)
 
-val of_backwards: UChar.t Enum.t -> t
+val of_backwards: UChar.t BatEnum.t -> t
   (** Build a rope from an enumeration, starting with last character, ending with first. *)
 
 (*These functions are probably completely useless
-  val bulk_backwards: t -> UTF8.t Enum.t
-  val of_bulk_backwards: UTF8.t Enum.t -> t
+  val bulk_backwards: t -> UTF8.t BatEnum.t
+  val of_bulk_backwards: UTF8.t BatEnum.t -> t
   val create : int -> t
 *)
 
@@ -536,6 +536,6 @@ module IRope : Interfaces.OrderedType with type t = t
 
 (** {7 Printing}*)
 
-val print: 'a InnerIO.output -> t -> unit
+val print: 'a BatInnerIO.output -> t -> unit
 
 val t_printer : t Value_printer.t

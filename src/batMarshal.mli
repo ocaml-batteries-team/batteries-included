@@ -59,7 +59,7 @@
 
 open Marshal
 
-val output: _ InnerIO.output -> ?sharing:bool -> ?closures:bool -> 'a -> unit
+val output: _ BatInnerIO.output -> ?sharing:bool -> ?closures:bool -> 'a -> unit
   (** [output out v] writes the representation of [v] on [chan]. 
 
       @param sharing If [true] (default value), circularities
@@ -84,16 +84,16 @@ val output: _ InnerIO.output -> ?sharing:bool -> ?closures:bool -> 'a -> unit
       un-marshaling time, using an MD5 digest of the code transmitted
       along with the code position.) *)
 
-val input : InnerIO.input -> 'a
+val input : BatInnerIO.input -> 'a
   (** [input inp] reads from [inp] the
       byte representation of a structured value, as produced by
       one of the [Marshal.to_*] functions, and reconstructs and
       returns the corresponding value.*)
 
 
-val to_channel : _ InnerIO.output -> 'a -> extern_flags list -> unit
+val to_channel : _ BatInnerIO.output -> 'a -> extern_flags list -> unit
   (** @deprecated Use {!output} instead *)
 
-val from_channel : InnerIO.input -> 'a
+val from_channel : BatInnerIO.input -> 'a
   (** @deprecated Use {!input} instead *)
 

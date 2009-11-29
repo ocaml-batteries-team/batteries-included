@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open IO
+open BatIO
 
 (**
    Character encodings.
@@ -665,7 +665,7 @@ val transcode_out : (unit output,'a) t -> ([< encoding] as 'c) -> (unit output,'
 
      Example: [
      let out_utf8 = Char_encodings.transcode_out (Char_encodings.as_encoded stdout `utf8) `latin1 in
-     IO.nwrite out_utf8 "«αι» in unicode";
+     BatIO.nwrite out_utf8 "«αι» in unicode";
      ]
 
      This code writes the UTF-8 version of the given latin1 string to stdout.

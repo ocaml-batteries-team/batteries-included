@@ -82,18 +82,18 @@ val clear : ('a, 'b) t -> unit
 
 (**{6 Enumerations}*)
 
-val keys : ('a,'b) t -> 'a Enum.t
+val keys : ('a,'b) t -> 'a BatEnum.t
   (** Return an enumeration of all the keys of a hashtable.
       If the key is in the Hashtable multiple times, all occurrences
       will be returned.  *)
 
-val values : ('a,'b) t -> 'b Enum.t
+val values : ('a,'b) t -> 'b BatEnum.t
   (** Return an enumeration of all the values of a hashtable. *)
 
-val enum : ('a, 'b) t -> ('a * 'b) Enum.t
+val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
   (** Return an enumeration of (key,value) pairs of a hashtable. *)
 
-val of_enum : ('a * 'b) Enum.t -> ('a, 'b) t
+val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
   (** Create a hashtable from a (key,value) enumeration. *)
 
 
@@ -129,15 +129,15 @@ val mem : ('a, 'b) t -> 'a -> bool
    A number of higher-order functions are provided to allow
    purely functional traversal or transformation of hashtables.
    These functions are similar to their counterparts in module
-   {!Enum}.
+   {!BatEnum}.
 
    Whenever you wish to traverse or transfor a hashtable, you have the
-   choice between using the more general functions of {!Enum}, with
+   choice between using the more general functions of {!BatEnum}, with
    {!keys}, {!values}, {!enum} and {!of_enum}, or the more optimized
    functions of this section.
    
    If you are new to OCaml or unsure about data structure, using the
-   functions of {!Enum} is a safe bet. Should you wish to improve
+   functions of {!BatEnum} is a safe bet. Should you wish to improve
    performance at the cost of generality, you will always be able to
    rewrite your code to make use of the functions of this section.
 *)
@@ -214,9 +214,9 @@ external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
 
 (** {7 Printing}*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 
-                                                             ('a InnerIO.output -> 'c -> unit) -> 
-  'a InnerIO.output -> ('b, 'c) t -> unit
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 
+                                                             ('a BatInnerIO.output -> 'c -> unit) -> 
+  'a BatInnerIO.output -> ('b, 'c) t -> unit
 
      (** {6 Override modules}*)
 
@@ -317,14 +317,14 @@ module type S =
     val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
     val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
 
-    val keys : 'a t -> key Enum.t
-    val values : 'a t -> 'a Enum.t
-    val enum : 'a t -> (key * 'a) Enum.t
-    val of_enum : (key * 'a) Enum.t -> 'a t
+    val keys : 'a t -> key BatEnum.t
+    val values : 'a t -> 'a BatEnum.t
+    val enum : 'a t -> (key * 'a) BatEnum.t
+    val of_enum : (key * 'a) BatEnum.t -> 'a t
     val print :  ?first:string -> ?last:string -> ?sep:string -> 
-      ('a InnerIO.output -> key -> unit) -> 
-      ('a InnerIO.output -> 'b -> unit) -> 
-      'a InnerIO.output -> 'b t -> unit
+      ('a BatInnerIO.output -> key -> unit) -> 
+      ('a BatInnerIO.output -> 'b -> unit) -> 
+      'a BatInnerIO.output -> 'b t -> unit
       
     (** {6 Override modules}*)
       
@@ -547,27 +547,27 @@ val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b
 
 (**{6 Conversions}*)
 
-val keys : ('a,'b, [>`Read]) t -> 'a Enum.t
+val keys : ('a,'b, [>`Read]) t -> 'a BatEnum.t
   (** Return an enumeration of all the keys of a hashtable.
       If the key is in the Hashtable multiple times, all occurrences
       will be returned.  *)
 
-val values : ('a, 'b, [>`Read]) t -> 'b Enum.t
+val values : ('a, 'b, [>`Read]) t -> 'b BatEnum.t
   (** Return an enumeration of all the values of a hashtable. *)
 
-val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) Enum.t
+val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) BatEnum.t
   (** Return an enumeration of (key,value) pairs of a hashtable. *)
 
-val of_enum : ('a * 'b) Enum.t -> ('a, 'b, _) t
+val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b, _) t
   (** Create a hashtable from a (key,value) enumeration. *)
 
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 
-                                                             ('a InnerIO.output -> 'c -> unit) -> 
-  'a InnerIO.output -> ('b, 'c, [>`Read]) t -> unit
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 
+                                                             ('a BatInnerIO.output -> 'c -> unit) -> 
+  'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
 
 
 

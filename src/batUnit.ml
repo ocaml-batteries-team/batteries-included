@@ -28,5 +28,5 @@ let of_string   = function
   | "()" -> ()
   | _    -> raise (Invalid_argument "unit_of_string")
 let compare _ _ = 0
-let print out t = InnerIO.nwrite out unit_string
+let print out t = BatInnerIO.nwrite out unit_string
   

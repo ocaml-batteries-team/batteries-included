@@ -180,12 +180,12 @@ let partition p xs =
 let enum xs =
   let rec make start xs =
     let n = length xs in(*Inside the loop, as [make] may later be called with another array*)
-    Enum.make
+    BatEnum.make
       ~next:(fun () ->
 	       if !start < n then
 		 xs.(Ref.post_incr start)
 	       else
-		 raise Enum.No_more_elements)
+		 raise BatEnum.No_more_elements)
       ~count:(fun () ->
 		n - !start)
       ~clone:(fun () ->
@@ -196,12 +196,12 @@ let enum xs =
 
 let backwards xs =
   let rec make start xs =
-    Enum.make
+    BatEnum.make
       ~next:(fun () ->
 	       if !start > 0 then 
 		 xs.(Ref.pre_decr start)
 	       else
-		 raise Enum.No_more_elements)
+		 raise BatEnum.No_more_elements)
       ~count:(fun () ->
 		!start)
       ~clone:(fun () ->
@@ -211,11 +211,11 @@ let backwards xs =
   make (ref (length xs)) xs
 
 let of_enum e =
-  let n = Enum.count e in
+  let n = BatEnum.count e in
   (* This assumes, reasonably, that init traverses the array in order. *)
   Array.init n
     (fun i ->
-       match Enum.get e with
+       match BatEnum.get e with
        | Some x -> x
        | None -> assert false)
 
@@ -223,7 +223,7 @@ let of_backwards e =
   of_list (BatList.of_backwards e)
 
 let filter_map p xs =
-  of_enum (Enum.filter_map p (enum xs))
+  of_enum (BatEnum.filter_map p (enum xs))
 
 let iter2 f a1 a2 =
   if Array.length a1 <> Array.length a2
@@ -257,25 +257,25 @@ let make_compare cmp a b =
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
   match length t with
     | 0 ->
-	InnerIO.nwrite out first;
-	InnerIO.nwrite out last
+	BatInnerIO.nwrite out first;
+	BatInnerIO.nwrite out last
     | 1 ->
-	InnerIO.Printf.fprintf out "%s%a%s" first print_a (unsafe_get t 0) last
+	BatInnerIO.Printf.fprintf out "%s%a%s" first print_a (unsafe_get t 0) last
     | n -> 
-	InnerIO.nwrite out first;
+	BatInnerIO.nwrite out first;
 	print_a out (unsafe_get t 0);
 	for i = 1 to n - 1 do
-	  InnerIO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i) 
+	  BatInnerIO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i) 
 	done;
-	InnerIO.nwrite out last
+	BatInnerIO.nwrite out last
 
 let t_printer a_printer paren out x = print (a_printer false) out x
 
 let sprint ?(first="[|") ?(last="|]") ?(sep="; ") print_a array =
-  InnerIO.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) array
-(*  let os = InnerIO.output_string  () in
+  BatInnerIO.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) array
+(*  let os = BatInnerIO.output_string  () in
   print ~first ~last ~sep print_a os list;
-  InnerIO.close_out os (* returns contents *)*)
+  BatInnerIO.close_out os (* returns contents *)*)
 
 let reduce f a =
   if Array.length a = 0 then

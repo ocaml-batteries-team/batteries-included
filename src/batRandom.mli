@@ -82,33 +82,33 @@ val char : unit -> char
     to obtain reproducible enumerations of pseudo-random numbers.
 *)
 
-val enum_bits  : unit    -> int Enum.t
+val enum_bits  : unit    -> int BatEnum.t
 
-val enum_int   : int     -> int Enum.t
+val enum_int   : int     -> int BatEnum.t
 
-val enum_bool  : unit    -> bool Enum.t
+val enum_bool  : unit    -> bool BatEnum.t
 
-val enum_float : float   -> float Enum.t
+val enum_float : float   -> float BatEnum.t
 
-val enum_int32 : Int32.t -> Int32.t Enum.t
+val enum_int32 : Int32.t -> Int32.t BatEnum.t
 
-val enum_int64 : Int64.t -> Int64.t Enum.t
+val enum_int64 : Int64.t -> Int64.t BatEnum.t
 
-val enum_nativeint : Nativeint.t -> Nativeint.t Enum.t
+val enum_nativeint : Nativeint.t -> Nativeint.t BatEnum.t
 
-val enum_char : unit -> char Enum.t
+val enum_char : unit -> char BatEnum.t
 
-(*val enum_uchar : unit -> UChar.t Enum.t*)
+(*val enum_uchar : unit -> UChar.t BatEnum.t*)
 
 (** {6 Working with data structures.} *)
 
-val choice : 'a Enum.t -> 'a
+val choice : 'a BatEnum.t -> 'a
 (** [choice e] returns a randomly-chosen element of [e].
 
     This function only works on finite enumerations with
     less than 2{^30} elements.*)
 
-val shuffle: 'a Enum.t -> 'a array
+val shuffle: 'a BatEnum.t -> 'a array
 (** [shuffle e] returns a new array, containing the
     same set of elements as [e], but in a random order.
 
@@ -150,15 +150,15 @@ module State : sig
   val bool       : t -> bool
   val char       : t -> char
 (*  val uchar      : t -> UChar.t*)
-  val enum_bits  : t -> unit    -> int Enum.t
-  val enum_int   : t -> int     -> int Enum.t
-  val enum_bool  : t -> unit    -> bool Enum.t
-  val enum_float : t -> float   -> float Enum.t
-  val enum_int32 : t -> Int32.t -> Int32.t Enum.t
-  val enum_int64 : t -> Int64.t -> Int64.t Enum.t
-  val enum_nativeint : t -> Nativeint.t -> Nativeint.t Enum.t
-  val enum_char  : t -> unit    -> char Enum.t
-(*  val enum_uchar : t -> unit    -> UChar.t Enum.t*)
+  val enum_bits  : t -> unit    -> int BatEnum.t
+  val enum_int   : t -> int     -> int BatEnum.t
+  val enum_bool  : t -> unit    -> bool BatEnum.t
+  val enum_float : t -> float   -> float BatEnum.t
+  val enum_int32 : t -> Int32.t -> Int32.t BatEnum.t
+  val enum_int64 : t -> Int64.t -> Int64.t BatEnum.t
+  val enum_nativeint : t -> Nativeint.t -> Nativeint.t BatEnum.t
+  val enum_char  : t -> unit    -> char BatEnum.t
+(*  val enum_uchar : t -> unit    -> UChar.t BatEnum.t*)
 
   (** These functions are the same as the basic functions, except that they
       use (and update) the given PRNG state instead of the default one.

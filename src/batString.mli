@@ -52,25 +52,25 @@ val init : int -> (int -> char) -> string
 *)
 
 (** {6 Conversions}*)
-val enum : string -> char Enum.t
+val enum : string -> char BatEnum.t
   (** Returns an enumeration of the characters of a string. 
 
       Example: [String.enum se // (fun c -> not (is_bad_char c)) |> String.of_enum ]
 *)
 
-val of_enum : char Enum.t -> string
+val of_enum : char BatEnum.t -> string
   (** Creates a string from a character enumeration. 
 
       Example: [String.enum se // (fun c -> not (is_bad_char c)) |> String.of_enum ]
 *)
 
-val backwards : string -> char Enum.t
+val backwards : string -> char BatEnum.t
   (** Returns an enumeration of the characters of a string, from last to first. 
 
       Example: [ let rev s = String.backwards s |> String.of_enum ]
 *)
   
-val of_backwards : char Enum.t -> string
+val of_backwards : char BatEnum.t -> string
   (** Build a string from an enumeration, starting with last character, ending with first. 
 
       Example: [ let rev s = String.enum s |> String.of_backwards ]
@@ -437,19 +437,19 @@ module NumString : Interfaces.OrderedType with type t = t
 
 (** {7 Printing}*)
 
-val print: 'a InnerIO.output -> string -> unit
+val print: 'a BatInnerIO.output -> string -> unit
 (**Print a string.
 
    Example: [String.print stdout "foo\n"]
 *)
 
-val println: 'a InnerIO.output -> string -> unit
+val println: 'a BatInnerIO.output -> string -> unit
 (**Print a string, end the line.
 
    Example: [String.println stdout "foo"]
 *)
 
-val print_quoted: 'a InnerIO.output -> string -> unit
+val print_quoted: 'a BatInnerIO.output -> string -> unit
 (**Print a string, with quotes.
 
    [print_quoted stdout "foo"] prints ["foo"] (with the quotes)
@@ -606,16 +606,16 @@ val init : int -> (int -> char) -> _ t
       f 0 , f 1 , f 2 ... f (l-1). *)
 
 (** {6 Conversions}*)
-val enum : [> `Read] t -> char Enum.t
+val enum : [> `Read] t -> char BatEnum.t
   (** Returns an enumeration of the characters of a string.*)
 
-val of_enum : char Enum.t -> _ t
+val of_enum : char BatEnum.t -> _ t
   (** Creates a string from a character enumeration. *)
 
-val backwards : [> `Read] t -> char Enum.t
+val backwards : [> `Read] t -> char BatEnum.t
   (** Returns an enumeration of the characters of a string, from last to first. *)
   
-val of_backwards : char Enum.t -> _ t
+val of_backwards : char BatEnum.t -> _ t
   (** Build a string from an enumeration, starting with last character, ending with first. *)
 
 val of_list : char list -> _ t
@@ -916,13 +916,13 @@ val icompare: [> `Read] t -> [> `Read] t -> int
 
 (** {7 Printing}*)
 
-val print: 'a InnerIO.output -> [> `Read] t -> unit
+val print: 'a BatInnerIO.output -> [> `Read] t -> unit
 (**Print a string.*)
 
-val println: 'a InnerIO.output -> [> `Read] t -> unit
+val println: 'a BatInnerIO.output -> [> `Read] t -> unit
 (**Print a string, end the line.*)
 
-val print_quoted: 'a InnerIO.output -> [> `Read] t -> unit
+val print_quoted: 'a BatInnerIO.output -> [> `Read] t -> unit
 (**Print a string, with quotes.
 
    [print_quoted stdout "foo"] prints ["foo"] (with the quotes)

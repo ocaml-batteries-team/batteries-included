@@ -24,12 +24,12 @@ open Marshal
 
   let output out ?(sharing=true) ?(closures=false) v =
     let buf = to_string v ((if sharing then [] else [No_sharing]) @ (if closures then [Closures] else [])) in
-      InnerIO.nwrite out buf
+      BatInnerIO.nwrite out buf
 
   let input inp =
-    let header = InnerIO.really_nread inp header_size in
+    let header = BatInnerIO.really_nread inp header_size in
     let size   = data_size header 0                   in 
-      from_string (header ^ (InnerIO.really_nread inp size)) 0
+      from_string (header ^ (BatInnerIO.really_nread inp size)) 0
 
   let to_channel out v flags =
     output out ~sharing:(not (List.mem No_sharing flags))

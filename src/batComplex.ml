@@ -53,13 +53,13 @@ module BaseComplex = struct
       BatGenlex.to_enum_filter
 	( BatGenlex.of_list ["("; ","; ")"; "i"; "+"; "*"] )
 	( BatString.enum x ) in
-    let rec parse_re () = match Enum.get enum with
+    let rec parse_re () = match BatEnum.get enum with
       | None           -> zero
       | Some (Int   i) -> parse_im (float_of_int i)
       | Some (Float f) -> parse_im f
       | Some (Kwd "(") -> parse_re ()
       | _              -> parse_im 0.
-    and parse_im x = match Enum.get enum with
+    and parse_im x = match BatEnum.get enum with
       | None           -> {re = x; im = 0.}
       | Some (Kwd "+") -> parse_im x
       | Some (Kwd ",") -> parse_im x
@@ -75,5 +75,5 @@ end
 
   include Number.MakeNumeric(BaseComplex)
   include BaseComplex
-  let print out t = InnerIO.nwrite out (to_string t)
+  let print out t = BatInnerIO.nwrite out (to_string t)
 

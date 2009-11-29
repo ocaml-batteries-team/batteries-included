@@ -121,13 +121,13 @@ external shift_right_logical : int64 -> int -> int64 = "%int64_lsr"
    regardless of the sign of [x].
    The result is unspecified if [y < 0] or [y >= 64]. *)
 
-val ( -- ) : t -> t -> t Enum.t
+val ( -- ) : t -> t -> t BatEnum.t
   (** Enumerate an interval.
       
       [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.
       [10L -- 5L] is the empty enumeration*)
   
-val ( --- ) : t -> t -> t Enum.t
+val ( --- ) : t -> t -> t BatEnum.t
   (** Enumerate an interval.
       
       [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.
@@ -239,7 +239,7 @@ external format : string -> int64 -> string = "caml_int64_format"
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
-    val print: 'a InnerIO.output -> t -> unit
+    val print: 'a BatInnerIO.output -> t -> unit
     val t_printer : t Value_printer.t
 
 

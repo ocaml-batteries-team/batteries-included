@@ -36,13 +36,13 @@
 open Buffer
 
 
-val enum : t -> char Enum.t
+val enum : t -> char BatEnum.t
   (** Returns an enumeration of the characters of a buffer. 
 
       Contents of the enumeration is unspecified if the buffer is modified after
       the enumeration is returned.*)
 
-val of_enum : char Enum.t -> t
+val of_enum : char BatEnum.t -> t
   (** Creates a buffer from a character enumeration. *)
 
 
@@ -56,15 +56,15 @@ val blit : t -> int -> string -> int -> int -> unit
     valid substring of the buffer, or if [dstoff] and [len] do not
     designate a valid substring of [dst]. *)
 
-val add_input : t -> InnerIO.input -> int -> unit
+val add_input : t -> BatInnerIO.input -> int -> unit
   (** [add_input b ic n] reads exactly [n] character from the input [ic]
       and stores them at the end of buffer [b].  Raise [End_of_file] if
       the channel contains fewer than [n] characters. *)
 
-val add_channel : t -> InnerIO.input -> int -> unit
+val add_channel : t -> BatInnerIO.input -> int -> unit
   (** @obsolete replaced by {!add_input}*)
 
-val output_buffer : _ InnerIO.output -> t -> unit
+val output_buffer : _ BatInnerIO.output -> t -> unit
   (** [output_buffer oc b] writes the current contents of buffer [b]
       on the output channel [oc]. *)
 
@@ -72,5 +72,5 @@ val output_buffer : _ InnerIO.output -> t -> unit
 
 (** {7 Printing}*)
 
-val print: 'a InnerIO.output -> t -> unit
+val print: 'a BatInnerIO.output -> t -> unit
 

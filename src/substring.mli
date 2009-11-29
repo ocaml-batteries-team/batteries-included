@@ -24,7 +24,7 @@ val make : int -> char -> t
 
 val create : int -> t
 
-val of_input : IO.input -> t
+val of_input : BatIO.input -> t
 
 val substring : string -> int -> int -> t
   (** [substring s o l] returns a substring with base-string [s], offset

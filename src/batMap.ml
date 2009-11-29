@@ -108,10 +108,10 @@
 	  equal data.  [cmp] is the equality predicate used to compare
 	  the data associated with the keys. *)
       
-    val keys : _ t -> key Enum.t
+    val keys : _ t -> key BatEnum.t
       (** Return an enumeration of all the keys of a map.*)
       
-    val values: 'a t -> 'a Enum.t
+    val values: 'a t -> 'a BatEnum.t
       (** Return an enumeration of al the values of a map.*)
 (*
     val min_key : 'a t -> (key * 'a)
@@ -127,10 +127,10 @@
     val split : key -> 'a t -> ('a t * 'a option * 'a t)
       (** as [Set.split] *)
 *)
-    val enum  : 'a t -> (key * 'a) Enum.t
+    val enum  : 'a t -> (key * 'a) BatEnum.t
       (** Return an enumeration of (key, value) pairs of a map.*)
 
-    val of_enum: (key * 'a) Enum.t -> 'a t
+    val of_enum: (key * 'a) BatEnum.t -> 'a t
       (** Create a map from a (key, value) enumeration. *)
 
     (** {6 Boilerplate code}*)
@@ -138,9 +138,9 @@
     (** {7 Printing}*)
 
     val print :  ?first:string -> ?last:string -> ?sep:string -> 
-      ('a InnerIO.output -> key -> unit) -> 
-      ('a InnerIO.output -> 'c -> unit) -> 
-      'a InnerIO.output -> 'c t -> unit
+      ('a BatInnerIO.output -> key -> unit) -> 
+      ('a BatInnerIO.output -> 'c -> unit) -> 
+      'a BatInnerIO.output -> 'c t -> unit
 
     module Exceptionless : sig
       val find: key -> 'a t -> 'a option
@@ -182,23 +182,23 @@
 	  match 
 	    try  Some (Queue.pop queue) 
 	    with Queue.Empty -> None
-	  with None       -> raise Enum.No_more_elements
+	  with None       -> raise BatEnum.No_more_elements
 	    |  Some Empty -> next ()
 	    | Some Node (l, key, data, r, _) -> 
 		Queue.push l queue;
 		Queue.push r queue;
 		(key, data)
 	in Queue.add (impl_of_t t) queue;
-	  Enum.from next
+	  BatEnum.from next
 
-      let keys    t = Enum.map fst (enum t)
-      let values  t = Enum.map snd (enum t)
+      let keys    t = BatEnum.map fst (enum t)
+      let values  t = BatEnum.map snd (enum t)
       let of_enum e =
-	Enum.fold (fun acc (key, data) -> add key data acc) empty e
+	BatEnum.fold (fun acc (key, data) -> add key data acc) empty e
 
 
       let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-	Enum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+	BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
 
       (*We rely on [fold] rather than on ['a implementation] to
 	make future changes of implementation in the base

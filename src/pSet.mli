@@ -48,7 +48,7 @@
 type 'a t
   (** The type of sets. *)
 
-include Enum.Enumerable with type 'a enumerable = 'a t
+include BatEnum.Enumerable with type 'a enumerable = 'a t
 include Interfaces.Mappable with type 'a mappable = 'a t
 
 val empty: 'a t
@@ -118,12 +118,12 @@ val max_elt : 'a t -> 'a
   (** returns the binding with the largest key. Raises
       [Invalid_argument] if given an empty map.*)
   
-val enum: 'a t -> 'a Enum.t
+val enum: 'a t -> 'a BatEnum.t
   (** Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in increasing order with respect
       to the ordering of this set.*)
   
-val of_enum: 'a Enum.t -> 'a t
+val of_enum: 'a BatEnum.t -> 'a t
 
 (** {6 Boilerplate code}*)
 
@@ -131,5 +131,5 @@ val of_enum: 'a Enum.t -> 'a t
 (** {7 Printing}*)
   
 val print :  ?first:string -> ?last:string -> ?sep:string -> 
-  ('a InnerIO.output -> 'c -> unit) -> 
-  'a InnerIO.output -> 'c t -> unit
+  ('a BatInnerIO.output -> 'c -> unit) -> 
+  'a BatInnerIO.output -> 'c t -> unit

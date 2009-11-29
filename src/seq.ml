@@ -36,10 +36,10 @@ let length s =
   aux 0 s
 
 let rec enum_of_ref r =
-  Enum.make
+  BatEnum.make
     ~next:(fun _ -> match !r () with
              | Nil ->
-                 raise Enum.No_more_elements
+                 raise BatEnum.No_more_elements
              | Cons(e, s) ->
                  r := s;
                  e)
@@ -257,23 +257,23 @@ let rec combine s1 s2 () = match s1 (), s2 () with
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
   | Nil ->
-      InnerIO.nwrite out first;
-      InnerIO.nwrite out last
+      BatInnerIO.nwrite out first;
+      BatInnerIO.nwrite out last
   | Cons(e, s) ->
       match s () with
         | Nil ->
-            InnerIO.Printf.fprintf out "%s%a%s" first print_a e last
+            BatInnerIO.Printf.fprintf out "%s%a%s" first print_a e last
         | _ ->
-            InnerIO.nwrite out first;
+            BatInnerIO.nwrite out first;
             print_a out e;
-            iter (InnerIO.Printf.fprintf out "%s%a" sep print_a) s;
-            InnerIO.nwrite out last
+            iter (BatInnerIO.Printf.fprintf out "%s%a" sep print_a) s;
+            BatInnerIO.nwrite out last
 
 let t_printer a_printer paren out s =
   print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out s
 
 let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a s =
-  InnerIO.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) s
+  BatInnerIO.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) s
 
 module Exceptionless = struct
   (* This function could be used to eliminate a lot of duplicate code below...

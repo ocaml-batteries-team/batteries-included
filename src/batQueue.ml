@@ -30,12 +30,12 @@ struct
 
   let of_enum e =
     let q = create () in
-      Enum.iter (fun x -> push x q) e;
+      BatEnum.iter (fun x -> push x q) e;
       q
 
-  let enum q = Enum.from (fun () -> try pop q with Empty -> raise Enum.No_more_elements)
+  let enum q = BatEnum.from (fun () -> try pop q with Empty -> raise BatEnum.No_more_elements)
 
 
   let print ?(first="") ?(last="") ?(sep="") print_a out t =
-      Enum.print ~first ~last ~sep print_a out (enum (copy t))
+      BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
 end

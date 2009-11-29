@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-type ('a, 'b) directive = ((unit InnerIO.output -> unit) -> 'b) -> 'a
+type ('a, 'b) directive = ((unit BatInnerIO.output -> unit) -> 'b) -> 'a
 type pattern = string
 type ('a, 'b) format = {
   pattern : pattern;
@@ -69,11 +69,11 @@ let format oc pattern directives =
                     end
 
                 | '%' ->
-                    InnerIO.write oc '%';
+                    BatInnerIO.write oc '%';
                     aux (i + 2)
 
                 | '!' ->
-                    InnerIO.flush oc;
+                    BatInnerIO.flush oc;
                     aux (i + 2)
 
                 | _ ->
@@ -81,31 +81,31 @@ let format oc pattern directives =
             end
 
         | ch ->
-            InnerIO.write oc ch;
+            BatInnerIO.write oc ch;
             aux (i + 1)
   in
   aux 0
 
-let literal str k = k (fun oc -> InnerIO.nwrite oc str)
+let literal str k = k (fun oc -> BatInnerIO.nwrite oc str)
 
-let kfprintf k oc fmt = fmt.printer fmt.pattern (fun f -> f (IO.cast_output oc); k oc)
-let fprintf oc fmt = fmt.printer fmt.pattern (fun f -> f (IO.cast_output oc))
+let kfprintf k oc fmt = fmt.printer fmt.pattern (fun f -> f (BatIO.cast_output oc); k oc)
+let fprintf oc fmt = fmt.printer fmt.pattern (fun f -> f (BatIO.cast_output oc))
 
-let ifprintf _ fmt = fprintf InnerIO.stdnull fmt
+let ifprintf _ fmt = fprintf BatInnerIO.stdnull fmt
 
-let printf fmt = fprintf InnerIO.stdout fmt
-let eprintf fmt = fprintf InnerIO.stderr fmt
+let printf fmt = fprintf BatInnerIO.stdout fmt
+let eprintf fmt = fprintf BatInnerIO.stderr fmt
 
-let bprintf buf fmt = fprintf (InnerIO.output_buffer buf) fmt
-let kbprintf k buf fmt = kfprintf (fun _ -> k buf) (InnerIO.output_buffer buf) fmt
+let bprintf buf fmt = fprintf (BatInnerIO.output_buffer buf) fmt
+let kbprintf k buf fmt = kfprintf (fun _ -> k buf) (BatInnerIO.output_buffer buf) fmt
 
 let sprintf fmt =
-  let oc = InnerIO.output_buffer (Buffer.create 42) in
-  kfprintf InnerIO.close_out oc fmt
+  let oc = BatInnerIO.output_buffer (Buffer.create 42) in
+  kfprintf BatInnerIO.close_out oc fmt
 
 let ksprintf k fmt =
-  let oc = InnerIO.output_buffer (Buffer.create 42) in
-  kfprintf (fun oc -> k (InnerIO.close_out oc)) oc fmt
+  let oc = BatInnerIO.output_buffer (Buffer.create 42) in
+  kfprintf (fun oc -> k (BatInnerIO.close_out oc)) oc fmt
 
 let rprintf fmt =
   ksprintf Rope.of_string fmt

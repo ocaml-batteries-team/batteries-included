@@ -23,5 +23,5 @@
 open Printexc
 
   let pass = print
-  let print out e = InnerIO.nwrite out (to_string e)
+  let print out e = BatInnerIO.nwrite out (to_string e)
 

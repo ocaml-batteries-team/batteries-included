@@ -119,10 +119,10 @@ val min_binding : ('key, 'a) t -> ('key * 'a)
 val max_binding : ('key, 'a) t -> ('key * 'a)
   (** returns the binding with the largest key *)
 
-val enum : ('a, 'b) t -> ('a * 'b) Enum.t
+val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map. *)
 
-val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) Enum.t -> ('a, 'b) t
+val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
   for key comparison or [compare] by default. *)
 
@@ -131,6 +131,6 @@ val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) Enum.t -> ('a, 'b) t
 (** {7 Printing}*)
   
 val print :  ?first:string -> ?last:string -> ?sep:string -> 
-  ('a InnerIO.output -> 'b -> unit) -> 
-  ('a InnerIO.output -> 'c -> unit) -> 
-  'a InnerIO.output -> ('b, 'c) t -> unit
+  ('a BatInnerIO.output -> 'b -> unit) -> 
+  ('a BatInnerIO.output -> 'c -> unit) -> 
+  'a BatInnerIO.output -> ('b, 'c) t -> unit

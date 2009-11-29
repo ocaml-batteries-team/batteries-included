@@ -18,12 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open IO
+open BatIO
 
 (*let debug fmt =
   Printf.eprintf fmt*)
 let debug fmt =
-  BatPrintf.fprintf IO.stdnull fmt
+  BatPrintf.fprintf BatIO.stdnull fmt
 
 
 
@@ -135,7 +135,7 @@ let local_name s =
 *)
 let load_index ~name ~index ~prefix ~suggestions ~completions =
   try
-    Enum.iter
+    BatEnum.iter
       (fun line -> 
 	 Scanf.sscanf line " %S : %S " 
 	   (fun item url ->
@@ -174,7 +174,7 @@ let get_table =
 	try
 	  let suggestions = Hashtbl.create 256
 	  and completions = Hashtbl.create 256 in
-	  Enum.iter
+	  BatEnum.iter
 	    (fun line -> 
 	       try
 	       Scanf.sscanf line "%s %s " 

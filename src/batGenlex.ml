@@ -16,15 +16,15 @@ exception EarlyEndOfStream
 type enum =
     { 
       mutable position : int;
-      content  : char Enum.t
+      content  : char BatEnum.t
     }
 
 let junk e =
   e.position <- e.position + 1;
-  Enum.junk e.content
+  BatEnum.junk e.content
 
 let peek e =
-  Enum.peek e.content
+  BatEnum.peek e.content
 
 type t = (string, token) Hashtbl.t
 
@@ -207,7 +207,7 @@ let to_enum_filter kwd_table =
     | Some c   -> junk enum; comment enum
     | _        -> raise EarlyEndOfStream
   in
-  fun input -> Enum.from_while (fun count -> next_token {position = 0; content = input})
+  fun input -> BatEnum.from_while (fun count -> next_token {position = 0; content = input})
     
 	
 let to_stream_filter (kwd_table:t) (x:char Stream.t) : token Stream.t =

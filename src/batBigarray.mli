@@ -447,7 +447,7 @@ module Genarray :
        function is applied to the index of the coordinates as the first 
        argument, and the element itself as the second argument. *)
 
-  val enum : ('a, 'b, 'c) t -> 'a Enum.t
+  val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
 
@@ -535,7 +535,7 @@ module Array1 : sig
   (** Memory mapping of a file as a one-dimensional big array.
      See {!Bigarray.Genarray.map_file} for more details. *)
 
-  val enum : ('a, 'b, 'c) t -> 'a Enum.t
+  val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
 
@@ -668,7 +668,7 @@ module Array2 :
      See {!Bigarray.Genarray.map_file} for more details. *)
 
 
-  val enum : ('a, 'b, 'c) t -> 'a Enum.t
+  val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
 
@@ -822,7 +822,7 @@ module Array3 :
   (** Memory mapping of a file as a three-dimensional big array.
      See {!Bigarray.Genarray.map_file} for more details. *)
 
-  val enum : ('a, 'b, 'c) t -> 'a Enum.t
+  val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
     (** [enum e] returns an enumeration on the elements of [e].
 	The order of enumeration is unspecified.*)
 

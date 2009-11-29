@@ -28,4 +28,4 @@ val iter : ('a -> unit) -> 'a tree -> unit
 
 val fold : ('a -> 'b -> 'b) -> 'a tree -> 'b -> 'b
 
-val enum : 'a tree -> 'a Enum.t
+val enum : 'a tree -> 'a BatEnum.t

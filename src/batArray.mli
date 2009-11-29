@@ -50,7 +50,7 @@
 
   type 'a t = 'a array (** The type of arrays.  *)
 
-  include Enum.Enumerable with type 'a enumerable = 'a t
+  include BatEnum.Enumerable with type 'a enumerable = 'a t
   include Interfaces.Mappable with type 'a mappable = 'a t
 
   (**{6 Base operations}*)
@@ -281,17 +281,17 @@
     
   (** {6 Conversions} *)
 
-  val enum : 'a array -> 'a Enum.t
+  val enum : 'a array -> 'a BatEnum.t
     (** Returns an enumeration of the elements of an array. 
 	Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
-  val of_enum : 'a Enum.t -> 'a array
+  val of_enum : 'a BatEnum.t -> 'a array
     (** Build an array from an enumeration. *)
 
-  val backwards : 'a array -> 'a Enum.t
+  val backwards : 'a array -> 'a BatEnum.t
     (** Returns an enumeration of the elements of an array, from last to first. *)
 
-  val of_backwards : 'a Enum.t -> 'a array
+  val of_backwards : 'a BatEnum.t -> 'a array
     (** Build an array from an enumeration, going into reverse order. *)
 
   val to_list : 'a array -> 'a list
@@ -352,10 +352,10 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
 
 (** {7 Printing}*)
 
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
   (** Print the contents of an array *)
 
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> 'b t -> string
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
   (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
 
 val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
@@ -619,17 +619,17 @@ val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
     
   (** {6 Conversions} *)
 
-  val enum : ('a, [> `Read]) t -> 'a Enum.t
+  val enum : ('a, [> `Read]) t -> 'a BatEnum.t
     (** Returns an enumeration of the elements of an array. 
 	Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
-  val of_enum : 'a Enum.t -> ('a, _) t
+  val of_enum : 'a BatEnum.t -> ('a, _) t
     (** Build an array from an enumeration. *)
 
-  val backwards : ('a, [> `Read]) t -> 'a Enum.t
+  val backwards : ('a, [> `Read]) t -> 'a BatEnum.t
     (** Returns an enumeration of the elements of an array, from end to start. *)
 
-  val of_backwards : 'a Enum.t -> ('a, _) t
+  val of_backwards : 'a BatEnum.t -> ('a, _) t
     (** Build an array from an enumeration, from end to start. *)
 
   val to_list : ('a, [> `Read]) t -> 'a list
@@ -690,10 +690,10 @@ val fast_sort : ('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
   
 (** {7 Printing}*)
   
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> ('b, [>`Read]) t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> ('b, [>`Read]) t -> unit
   (** Print the contents of an array *)
   
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> ('b, [>`Read]) t -> string
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> ('b, [>`Read]) t -> string
   (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
   
   
@@ -784,9 +784,9 @@ end
     
   (** {7 Printing}*)
     
-  val print : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) ->  'a IO.output -> 'b t -> unit
+  val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
 
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a IO.output -> 'b -> unit) -> 'b t -> string
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
   (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
 
   (** {6 Override modules}*)

@@ -92,10 +92,10 @@ val foldi : ('a -> 'b PSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** Same as [fold], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
 
-val enum : ('a, 'b) t -> ('a * 'b) Enum.t
+val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map. *)
 
-val of_enum : ?keys:('a -> 'a -> int) -> ?data:('b -> 'b -> int) -> ('a * 'b) Enum.t -> ('a, 'b) t
+val of_enum : ?keys:('a -> 'a -> int) -> ?data:('b -> 'b -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
   for key comparison or [compare] by default. *)
 
@@ -103,6 +103,6 @@ val of_enum : ?keys:('a -> 'a -> int) -> ?data:('b -> 'b -> int) -> ('a * 'b) En
 
 (** {7 Printing}*)
   
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 
-                                                            ('a InnerIO.output -> 'c -> unit) -> 
- 'a InnerIO.output -> ('b, 'c) t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 
+                                                            ('a BatInnerIO.output -> 'c -> unit) -> 
+ 'a BatInnerIO.output -> ('b, 'c) t -> unit

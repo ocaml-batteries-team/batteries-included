@@ -405,7 +405,7 @@ let get_animation_frames working_dir count =
     ,Some "png"
     )
    in
-  Enum.map frame_file (1 -- count)
+  BatEnum.map frame_file (1 -- count)
 ]}
 *)
 

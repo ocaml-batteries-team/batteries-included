@@ -1,5 +1,5 @@
 (* 
- * InnerIO - Abstract input/output (inner module)
+ * BatInnerIO - Abstract input/output (inner module)
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 Philippe Strauss
  *               2008 David Teller
@@ -203,7 +203,7 @@ let create_out ~write ~output ~flush ~close =
 let read i = i.in_read()
 
 let nread i n =
-	if n < 0 then invalid_arg "IO.nread";
+	if n < 0 then invalid_arg "BatIO.nread";
 	if n = 0 then
 		""
 	else
@@ -225,7 +225,7 @@ let nread i n =
 
 let really_output o s p l' =
 	let sl = String.length s in
-	if p + l' > sl || p < 0 || l' < 0 then invalid_arg "IO.really_output";
+	if p + l' > sl || p < 0 || l' < 0 then invalid_arg "BatIO.really_output";
    	let l = ref l' in
 	let p = ref p in
 	while !l > 0 do 
@@ -238,7 +238,7 @@ let really_output o s p l' =
 
 let input i s p l =
 	let sl = String.length s in
-	if p + l > sl || p < 0 || l < 0 then invalid_arg "IO.input";
+	if p + l > sl || p < 0 || l < 0 then invalid_arg "BatIO.input";
 	if l = 0 then
 		0
 	else
@@ -246,7 +246,7 @@ let input i s p l =
 
 let really_input i s p l' =
 	let sl = String.length s in
-	if p + l' > sl || p < 0 || l' < 0 then invalid_arg "IO.really_input";
+	if p + l' > sl || p < 0 || l' < 0 then invalid_arg "BatIO.really_input";
 	let l = ref l' in
 	let p = ref p in
 	while !l > 0 do
@@ -258,7 +258,7 @@ let really_input i s p l' =
 	l'
 
 let really_nread i n =
-	if n < 0 then invalid_arg "IO.really_nread";
+	if n < 0 then invalid_arg "BatIO.really_nread";
 	if n = 0 then ""
 	else
 	let s = String.create n 
@@ -283,7 +283,7 @@ let write_buf o b = nwrite o (Buffer.contents b)
 
 let output o s p l =
 	let sl = String.length s in
-	if p + l > sl || p < 0 || l < 0 then invalid_arg "IO.output";
+	if p + l > sl || p < 0 || l < 0 then invalid_arg "BatIO.output";
 	o.out_output s p l
 
 let flush o = o.out_flush()
@@ -333,7 +333,7 @@ let input_string s =
 
 
 (**
-   {6 Standard IO}
+   {6 Standard BatIO}
 *)
 
 
@@ -622,7 +622,7 @@ let stdnull= create_out
    of {!Obj.magic}.
 
    {b Note} this module is inlined because of circular dependencies (themselves
-   caused by the legacy definition of a function {!printf} in module {!IO}).
+   caused by the legacy definition of a function {!printf} in module {!BatIO}).
 *)
 module Printf :
 sig

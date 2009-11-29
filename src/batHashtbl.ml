@@ -89,7 +89,7 @@
 	  force();
 	  match !buck with
 	    | Empty ->					
-		if !hcount = 0 then raise Enum.No_more_elements;
+		if !hcount = 0 then raise BatEnum.No_more_elements;
 		incr pos;
 		buck := Array.unsafe_get !hdata !pos;
 		next()
@@ -105,15 +105,15 @@
 	  force();
 	  make !pos !buck !hdata !hcount
 	in
-	  Enum.make ~next ~count ~clone
+	  BatEnum.make ~next ~count ~clone
       in		
 	make (-1) Empty (Obj.magic()) (-1)
 	  
     let keys h =
-      Enum.map (fun (k,_) -> k) (enum h)
+      BatEnum.map (fun (k,_) -> k) (enum h)
 	
     let values h =
-      Enum.map (fun (_,v) -> v) (enum h)
+      BatEnum.map (fun (_,v) -> v) (enum h)
 	
     let map f h =
       let rec loop = function
@@ -158,8 +158,8 @@
 	loop (Array.unsafe_get (h_conv h).data pos)
 	  
     let of_enum e =
-      let h = create (if Enum.fast_count e then Enum.count e else 0) in
-	Enum.iter (fun (k,v) -> add h k v) e;
+      let h = create (if BatEnum.fast_count e then BatEnum.count e else 0) in
+	BatEnum.iter (fun (k,v) -> add h k v) e;
 	h
 	  
     let length h =
@@ -168,7 +168,7 @@
     let is_empty h = length h = 0
 
     let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-      Enum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+      BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
 
     let filteri (f:'key -> 'a -> bool) (t:('key, 'a) t) =
       let result = create 16 in
@@ -231,14 +231,14 @@
       val filter: ('a -> bool) -> 'a t -> 'a t
       val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
       val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
-      val keys : 'a t -> key Enum.t
-      val values : 'a t -> 'a Enum.t
-      val enum : 'a t -> (key * 'a) Enum.t
-      val of_enum : (key * 'a) Enum.t -> 'a t
+      val keys : 'a t -> key BatEnum.t
+      val values : 'a t -> 'a BatEnum.t
+      val enum : 'a t -> (key * 'a) BatEnum.t
+      val of_enum : (key * 'a) BatEnum.t -> 'a t
       val print :  ?first:string -> ?last:string -> ?sep:string -> 
-	('a InnerIO.output -> key -> unit) -> 
-	('a InnerIO.output -> 'b -> unit) -> 
-	'a InnerIO.output -> 'b t -> unit
+	('a BatInnerIO.output -> key -> unit) -> 
+	('a BatInnerIO.output -> 'b -> unit) -> 
+	'a BatInnerIO.output -> 'b t -> unit
 
       (** Operations on {!Hashtbl} without exceptions.*)
       module Exceptionless :

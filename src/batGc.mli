@@ -27,6 +27,6 @@
 *)
 
 
-val print_stat : _ InnerIO.output -> unit
+val print_stat : _ BatInnerIO.output -> unit
 (** Print the current values of the memory management counters (in
    human-readable form) into the channel argument. *)

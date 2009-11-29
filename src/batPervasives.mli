@@ -29,7 +29,7 @@
     @author Zheng Li
 *)
 
-open IO
+open BatIO
 
 (** The initially opened module.
     
@@ -98,7 +98,7 @@ val ( @ ) : 'a list -> 'a list -> 'a list
 (** {6 Input/output} 
 
     This section only contains the most common input/output operations.
-    More operations may be found in modules {!IO} and {!File}.
+    More operations may be found in modules {!BatIO} and {!File}.
 *)
 
 val stdin : input
@@ -163,7 +163,7 @@ val prerr_all : input -> unit
 
 val open_out : ?mode:(File.open_out_flag list) -> 
                ?perm:File.permission           ->
-  string -> unit IO.output
+  string -> unit BatIO.output
   (** Open the named file for writing, and return a new output channel
       on that file. You will need to close the file once you have
       finished using it.
@@ -183,14 +183,14 @@ val open_out : ?mode:(File.open_out_flag list) ->
 
       Raise [Sys_error] if the file could not be opened. *)
 
-val open_out_bin : string -> unit IO.output
+val open_out_bin : string -> unit BatIO.output
   (** Same as {!open_out}, but the file is opened in binary mode, so
       that no translation takes place during writes. On operating
       systems that do not distinguish between text mode and binary
       mode, this function behaves like {!open_out} without any
       [mode] or [perm]. *)
 
-val open_out_gen : open_flag list -> int -> string -> unit IO.output
+val open_out_gen : open_flag list -> int -> string -> unit BatIO.output
   (**
      [open_out_gen mode perm filename] opens the named file for writing,
      as described above. The extra argument [mode]
@@ -199,7 +199,7 @@ val open_out_gen : open_flag list -> int -> string -> unit IO.output
 
      @deprecated Use {!open_out instead}*)
 
-val flush : unit IO.output -> unit
+val flush : unit BatIO.output -> unit
   (** Flush the buffer associated with the given output, performing
       all pending writes on that channel. Interactive programs must be
       careful about flushing standard output and standard error at the
@@ -207,27 +207,27 @@ val flush : unit IO.output -> unit
 
 
 
-val output_char : unit IO.output -> char -> unit
+val output_char : unit BatIO.output -> char -> unit
 (** Write the character on the given output channel. *)
 
-val output_string : unit IO.output -> string -> unit
+val output_string : unit BatIO.output -> string -> unit
 (** Write the string on the given output channel. *)
 
-val output_rope : unit IO.output -> Rope.t -> unit
+val output_rope : unit BatIO.output -> Rope.t -> unit
 (** Write the rope on the given output channel. *)
 
-val output : unit IO.output -> string -> int -> int -> unit
+val output : unit BatIO.output -> string -> int -> int -> unit
 (** [output oc buf pos len] writes [len] characters from string [buf],
    starting at offset [pos], to the given output channel [oc].
    Raise [Invalid_argument "output"] if [pos] and [len] do not
    designate a valid substring of [buf]. *)
 
-val output_byte : unit IO.output -> int -> unit
+val output_byte : unit BatIO.output -> int -> unit
 (** Write one 8-bit integer (as the single character with that code)
    on the given output channel. The given integer is taken modulo
    256. *)
 
-val output_binary_int : unit IO.output -> int -> unit
+val output_binary_int : unit BatIO.output -> int -> unit
   (** Write one integer in binary format (4 bytes, big-endian)
       on the given output channel.
       The given integer is taken modulo 2{^32}.
@@ -235,7 +235,7 @@ val output_binary_int : unit IO.output -> int -> unit
       {!Pervasives.input_binary_int} function. The format is compatible across
       all machines for a given version of Objective Caml. *)
 
-val output_value : unit IO.output -> 'a -> unit
+val output_value : unit BatIO.output -> 'a -> unit
   (** Write the representation of a structured value of any type
       to a channel. Circularities and sharing inside the value
       are detected and preserved. The object can be read back,
@@ -244,7 +244,7 @@ val output_value : unit IO.output -> 'a -> unit
       to {!Marshal.output} with an empty list of flags. *)
 
 
-val close_out : unit IO.output -> unit
+val close_out : unit BatIO.output -> unit
   (** Close the given channel, flushing all buffered write operations.
       Output functions raise a [Sys_error] exception when they are
       applied to a closed output channel, except [close_out] and [flush],
@@ -252,14 +252,14 @@ val close_out : unit IO.output -> unit
       Note that [close_out] may raise [Sys_error] if the operating
       system signals an error when flushing or closing. *)
   
-val close_out_noerr : unit IO.output -> unit
+val close_out_noerr : unit BatIO.output -> unit
   (** Same as [close_out], but ignore all errors. *)
  
 (** {7 General input functions} *)
 
 val open_in : ?mode:(File.open_in_flag list) -> 
   ?perm:File.permission -> 
-  string -> IO.input
+  string -> BatIO.input
 (** Open the named file for reading. You will need to close the file once you have
     finished using it.
     
@@ -278,13 +278,13 @@ val open_in : ?mode:(File.open_in_flag list) ->
     Raise [Sys_error] if the file could not be opened. *)
 
 
-val open_in_bin : string -> IO.input
+val open_in_bin : string -> BatIO.input
 (** Same as {!Pervasives.open_in}, but the file is opened in binary mode,
    so that no translation takes place during reads. On operating
    systems that do not distinguish between text mode and binary
    mode, this function behaves like {!Pervasives.open_in}. *)
 
-val open_in_gen : open_flag list -> int -> string -> IO.input
+val open_in_gen : open_flag list -> int -> string -> BatIO.input
 (** [open_in mode perm filename] opens the named file for reading,
     as described above. The extra arguments [mode] and [perm]
     specify the opening mode and file permissions.
@@ -294,18 +294,18 @@ val open_in_gen : open_flag list -> int -> string -> IO.input
     @deprecated Use {!open_in instead}*)
 
 
-val input_char : IO.input -> char
+val input_char : BatIO.input -> char
 (** Read one character from the given input channel.
    Raise [End_of_file] if there are no more characters to read. *)
 
-val input_line : IO.input -> string
+val input_line : BatIO.input -> string
 (** Read characters from the given input channel, until a
    newline character is encountered. Return the string of
    all characters read, without the newline character at the end.
    Raise [End_of_file] if the end of the file is reached
    at the beginning of line. *)
 
-val input : IO.input -> string -> int -> int -> int
+val input : BatIO.input -> string -> int -> int -> int
 (** [input ic buf pos len] reads up to [len] characters from
    the given channel [ic], storing them in string [buf], starting at
    character number [pos].
@@ -322,7 +322,7 @@ val input : IO.input -> string -> int -> int -> int
    Exception [Invalid_argument "input"] is raised if [pos] and [len]
    do not designate a valid substring of [buf]. *)
 
-val really_input : IO.input -> string -> int -> int -> unit
+val really_input : BatIO.input -> string -> int -> int -> unit
 (** [really_input ic buf pos len] reads [len] characters from channel [ic],
     storing them in string [buf], starting at character number [pos].
     Raise [End_of_file] if the end of file is reached before [len]
@@ -330,32 +330,32 @@ val really_input : IO.input -> string -> int -> int -> unit
     Raise [Invalid_argument "really_input"] if
     [pos] and [len] do not designate a valid substring of [buf]. *)
 
-val input_byte : IO.input -> int
+val input_byte : BatIO.input -> int
 (** Same as {!Pervasives.input_char}, but return the 8-bit integer representing
     the character.
     Raise [End_of_file] if an end of file was reached. *)
 
-val input_binary_int : IO.input -> int
+val input_binary_int : BatIO.input -> int
 (** Read an integer encoded in binary format (4 bytes, big-endian)
     from the given input channel. See {!Pervasives.output_binary_int}.
     Raise [End_of_file] if an end of file was reached while reading the
     integer. *)
 
-val input_value : IO.input -> 'a
+val input_value : BatIO.input -> 'a
 (** Read the representation of a structured value, as produced
     by {!output_value}, and return the corresponding value.
     This function is identical to {!Marshal.input};
     see the description of module {!Marshal} for more information,
     in particular concerning the lack of type safety. *)
   
-val close_in : IO.input -> unit
+val close_in : BatIO.input -> unit
   (** Close the given channel.  Input functions raise a [Sys_error]
       exception when they are applied to a closed input channel,
       except [close_in], which does nothing when applied to an already
       closed channel.  Note that [close_in] may raise [Sys_error] if
       the operating system signals an error. *)
   
-val close_in_noerr : IO.input -> unit
+val close_in_noerr : BatIO.input -> unit
 (** Same as [close_in], but ignore all errors. *)
   
 
@@ -466,7 +466,7 @@ val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
       an exception. *)
 
-val args : unit -> string Enum.t
+val args : unit -> string BatEnum.t
   (** An enumeration of the arguments passed to this program through the command line.
 
       [args ()] is given by the elements of [Sys.argv], minus the first element.*)
@@ -514,14 +514,14 @@ val exe  : string
    {!List.backwards} instead of {!String.backwards} to visit them
    in the opposite order, or {!Hashtbl.enum} for hash tables, etc.
 
-   More operations on enumerations are defined in module {!Enum},
+   More operations on enumerations are defined in module {!BatEnum},
    including the necessary constructors to make your own structures
    enumerable.
 
    The various kinds of loops are detailed further in this documentation.
 *)
 
-val foreach: 'a Enum.t -> ('a -> unit) ->  unit
+val foreach: 'a BatEnum.t -> ('a -> unit) ->  unit
   (** Imperative loop on an enumeration.
 
       [foreach e f] applies function [f] to each successive element of [e].
@@ -557,7 +557,7 @@ val foreach: 'a Enum.t -> ('a -> unit) ->  unit
 *)
 
 
-val iter : ('a -> unit) -> 'a Enum.t -> unit
+val iter : ('a -> unit) -> 'a BatEnum.t -> unit
   (** Imperative loop on an enumeration. This loop is typically used
       to lift a function with an effect but no meaningful result and
       get it to work on enumerations.
@@ -575,7 +575,7 @@ val iter : ('a -> unit) -> 'a Enum.t -> unit
       [2], ..., [10] and produces value [()].
   *)
 
-val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
+val map : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
   (** Transformation loop on an enumeration, used to build an enumeration
       from another enumeration. This loop is typically used to transform
       an enumeration into another enumeration with the same number of
@@ -600,7 +600,7 @@ val map : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
 *)
 
 
-val reduce : ('a -> 'a -> 'a) -> 'a Enum.t -> 'a
+val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
   (** Transformation loop on an enumeration, used to build a single value
       from an enumeration.
 
@@ -622,7 +622,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a Enum.t -> 'a
       produces result [55].
   *)
 
-val fold : ('b -> 'a -> 'b) -> 'b -> 'a Enum.t -> 'b
+val fold : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b
   (** Transformation loop on an enumeration, used to build a single value
       from an enumeration. This is the most powerful general-purpose
       loop and also the most complex.
@@ -643,7 +643,7 @@ val fold : ('b -> 'a -> 'b) -> 'b -> 'a Enum.t -> 'b
       produces result [55].
   *)
 
-val scanl : ('b -> 'a -> 'b) -> 'b -> 'a Enum.t -> 'b Enum.t
+val scanl : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b BatEnum.t
   (** Functional loop on an enumeration, used to build an enumeration
       from both an enumeration and an initial value. This function may
       be seen as a variant of {!fold} which returns not only the final
@@ -662,9 +662,9 @@ val scanl : ('b -> 'a -> 'b) -> 'b -> 'a Enum.t -> 'b Enum.t
       produces result the enumeration with elements [0, 1, 3, 6, 10,
       15, 21, 28, 36, 45, 55].  *)
 
-val ( /@ ) : 'a Enum.t -> ('a -> 'b) -> 'b Enum.t
+val ( /@ ) : 'a BatEnum.t -> ('a -> 'b) -> 'b BatEnum.t
 
-val ( @/ ) : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
+val ( @/ ) : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
   (**
      Mapping operators.
 
@@ -677,16 +677,16 @@ val ( @/ ) : ('a -> 'b) -> 'a Enum.t -> 'b Enum.t
    {7 Other operations on enumerations}
 *)
 
-val exists: ('a -> bool) -> 'a Enum.t -> bool
+val exists: ('a -> bool) -> 'a BatEnum.t -> bool
 (** [exists f e] returns [true] if there is some [x] in [e] such
     that [f x]*)
 
-val for_all: ('a -> bool) -> 'a Enum.t -> bool
+val for_all: ('a -> bool) -> 'a BatEnum.t -> bool
 (** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
 
 
 
-val find : ('a -> bool) -> 'a Enum.t -> 'a
+val find : ('a -> bool) -> 'a BatEnum.t -> 'a
   (** [find f e] returns the first element [x] of [e] such that [f x] returns
       [true], consuming the enumeration up to and including the
       found element, or, raises [Not_found] if no such element exists
@@ -695,49 +695,49 @@ val find : ('a -> bool) -> 'a Enum.t -> 'a
       Since [find] consumes a prefix of the enumeration, it can be used several 
       times on the same enumeration to find the next element. *)
 
-val peek : 'a Enum.t -> 'a option
+val peek : 'a BatEnum.t -> 'a option
   (** [peek e] returns [None] if [e] is empty or [Some x] where [x] is
       the next element of [e]. The element is not removed from the
       enumeration. *)
 
-val get : 'a Enum.t -> 'a option
+val get : 'a BatEnum.t -> 'a option
   (** [get e] returns [None] if [e] is empty or [Some x] where [x] is
       the next element of [e], in which case the element is removed
       from the enumeration. *)
 
-val push : 'a Enum.t -> 'a -> unit
+val push : 'a BatEnum.t -> 'a -> unit
   (** [push e x] will add [x] at the beginning of [e]. *)
   
-val junk : 'a Enum.t -> unit
+val junk : 'a BatEnum.t -> unit
   (** [junk e] removes the first element from the enumeration, if any. *)
 
-val filter : ('a -> bool) -> 'a Enum.t -> 'a Enum.t
+val filter : ('a -> bool) -> 'a BatEnum.t -> 'a BatEnum.t
   (** [filter f e] returns an enumeration over all elements [x] of [e] such
       as [f x] returns [true]. *)
 
-val ( // ) : 'a Enum.t -> ('a -> bool) -> 'a Enum.t
+val ( // ) : 'a BatEnum.t -> ('a -> bool) -> 'a BatEnum.t
 (** Filtering (pronounce this operator name "such that").
 
     For instance, [(1 -- 37) // odd] is the enumeration of all odd
     numbers between 1 and 37.*)
 
-val concat : 'a Enum.t Enum.t -> 'a Enum.t
+val concat : 'a BatEnum.t BatEnum.t -> 'a BatEnum.t
   (** [concat e] returns an enumeration over all elements of all enumerations
       of [e]. *)
 
-val ( -- ) : int -> int -> int Enum.t
+val ( -- ) : int -> int -> int BatEnum.t
 (** Enumerate numbers.
 
     [5 -- 10] is the enumeration 5,6,7,8,9,10.
     [10 -- 5] is the empty enumeration*)
 
-val ( --^ ) : int -> int -> int Enum.t
+val ( --^ ) : int -> int -> int BatEnum.t
 (** Enumerate numbers, without the right endpoint
 
     [5 -- 10] is the enumeration 5,6,7,8,9.
 *)
 
-val ( --. ) : (float * float) -> float -> float Enum.t
+val ( --. ) : (float * float) -> float -> float BatEnum.t
 (** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
     increment of [step] between elements.
 
@@ -745,16 +745,16 @@ val ( --. ) : (float * float) -> float -> float Enum.t
     [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
     [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
 
-val ( --- ) : int -> int -> int Enum.t
+val ( --- ) : int -> int -> int BatEnum.t
 (** As [--], but accepts enumerations in reverse order.
 
     [5 --- 10] is the enumeration 5,6,7,8,9,10.
     [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
 
-val ( --~ ) : char -> char -> char Enum.t
+val ( --~ ) : char -> char -> char BatEnum.t
 (** As ( -- ), but for characters.*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b Enum.t -> unit
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b BatEnum.t -> unit
 (** Print and consume the contents of an enumeration.*)
 
 (**/**)
@@ -781,8 +781,8 @@ val default_printer_flags : printer_flags
 
 (** {7 Equivalent of classical directives} *)
 
-val printer_a : ((unit IO.output -> 'a -> unit) -> 'a -> 'b, 'b) Print.directive
-val printer_t : ((unit IO.output -> unit) -> 'a, 'a) Print.directive
+val printer_a : ((unit BatIO.output -> 'a -> unit) -> 'a -> 'b, 'b) Print.directive
+val printer_t : ((unit BatIO.output -> unit) -> 'a, 'a) Print.directive
 val printer_B : (bool -> 'a, 'a) Print.directive
 val printer_c : (char -> 'a, 'a) Print.directive
 val printer_C : (char -> 'a, 'a) Print.directive
@@ -835,7 +835,7 @@ val printer_sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a)
 val printer_Sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) Print.directive
 val printer_rope : (Rope.t -> 'a, 'a) Print.directive
 val printer_utf8 : (BatUTF8.t -> 'a, 'a) Print.directive
-val printer_obj : (< print : unit IO.output -> unit; .. > -> 'a, 'a) Print.directive
+val printer_obj : (< print : unit BatIO.output -> unit; .. > -> 'a, 'a) Print.directive
 val printer_exn : (exn -> 'a, 'a) Print.directive
 
 (** {7 Value printers} *)

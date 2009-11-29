@@ -67,7 +67,7 @@
 
    Formats may be applied using functions such as {!printf}. For
    instance, [Print.printf p"(%d, %d)\n" 5 10] will print on the
-   screen ["(5, 10)\n"]. Similarly, if [foo] is an {!type:IO.output}
+   screen ["(5, 10)\n"]. Similarly, if [foo] is an {!type:BatIO.output}
    which may be used to write on a file, [Printf.fprintf foo p"(%d,
    %d)\n" 5 10] will write ["(5, 10)\n"] to this file.
 
@@ -224,7 +224,7 @@
    [string_of_bar: bar -> string], [printer_foo] may be implemented
    simply as
    {[
-   let printer_foo k x = k (fun oc -> IO.nwrite oc (string_of_bar x))
+   let printer_foo k x = k (fun oc -> BatIO.nwrite oc (string_of_bar x))
    ]}
    
    That's it. Once this function is created you may use directive [%foo]
@@ -276,7 +276,7 @@
     and not in extending its behavior or understanding its internal mechanisms.
 *)
 
-type ('a, 'b) directive = ((unit InnerIO.output -> unit) -> 'b) -> 'a
+type ('a, 'b) directive = ((unit BatInnerIO.output -> unit) -> 'b) -> 'a
   (** The underlying type of a directive. Directives are the basic elements of
       formats.
 
@@ -297,7 +297,7 @@ type ('a, 'b) directive = ((unit InnerIO.output -> unit) -> 'b) -> 'a
       And here is a possible implementation:
 
       {[
-        let printer_d k x = k (fun oc -> IO.nwrite oc (string_of_int x))
+        let printer_d k x = k (fun oc -> BatIO.nwrite oc (string_of_int x))
       ]}
 
       Additionally, directives can takes ``flags'' (like in ["%2d"]
@@ -324,7 +324,7 @@ type ('a, 'b) directive = ((unit InnerIO.output -> unit) -> 'b) -> 'a
                 else
                   str
           in
-          k (fun oc -> IO.nwrite oc str)
+          k (fun oc -> BatIO.nwrite oc str)
       ]}
 
       Standard flags, i.e. the ones supported by the syntax extension,
@@ -353,15 +353,15 @@ type pattern = string
         For example the format string (with the syntax extension)
         [p"%s = %d"] will produce the pattern ["%(0) = %(1)"] *)
 
-val format : unit InnerIO.output -> pattern -> (unit InnerIO.output -> unit) array -> unit
+val format : unit BatInnerIO.output -> pattern -> (unit BatInnerIO.output -> unit) array -> unit
   (** [format oc pattern directives] prints [pattern] on [oc], using
       [directives] to handle directives (as indices) in the pattern.
 
       For example:
 
       {[
-        format IO.stdout "x=%(0), y=%(1)" [|fun oc -> IO.nwrite oc "foo";
-                                            fun oc -> IO.nwrite oc "bar"|]
+        format BatIO.stdout "x=%(0), y=%(1)" [|fun oc -> BatIO.nwrite oc "foo";
+                                            fun oc -> BatIO.nwrite oc "bar"|]
       ]}
 
       will produce the following output:
@@ -424,12 +424,12 @@ type ('a, 'b) format = {
 
 val printf : ('a, unit) format -> 'a
   (** [printf fmt args] formats the arguments in [args] as specified by [fmt]
-      and prints the result on the standard output {!IO.stdout}, i.e. normally
+      and prints the result on the standard output {!BatIO.stdout}, i.e. normally
       to the screen. If you are lost, this is probably the function you're looking for.*)
 
 val eprintf : ('a, unit) format -> 'a
   (** [eprintf fmt args] behaves as [printf fmt args] but prints the result on
-      the error out put {!IO.stderr} rather on the screen. This function is typically
+      the error out put {!BatIO.stderr} rather on the screen. This function is typically
       used to display warnings and errors, which may later be separated from "regular"
       printouts.*)
 
@@ -445,7 +445,7 @@ val sprintf : ('a, string) format -> 'a
 
 (** {6 Generic functions}*)
 
-val fprintf : 'a InnerIO.output -> ('b, unit) format -> 'b
+val fprintf : 'a BatInnerIO.output -> ('b, unit) format -> 'b
   (**General formatting function. 
 
      This function behaves mostly as {!printf} or {!eprintf} but,
@@ -468,7 +468,7 @@ val bprintf : Buffer.t -> ('a, unit) format -> 'a
 
 (** {6 Functions with continuations}*)
 
-val kfprintf : ('a InnerIO.output -> 'b) -> 'a InnerIO.output -> ('c, 'b) format -> 'c
+val kfprintf : ('a BatInnerIO.output -> 'b) -> 'a BatInnerIO.output -> ('c, 'b) format -> 'c
   (** [kfprintf k oc fmt] prints on [oc] then call [k] with [oc] as
       argument *)
 

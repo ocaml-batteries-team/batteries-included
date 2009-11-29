@@ -27,11 +27,11 @@
 *)
 
 (**/**)
-val input_lines : in_channel -> string Enum.t
+val input_lines : in_channel -> string BatEnum.t
 (** Returns an enumeration over lines of an input channel, as read by the
  [input_line] function. *)
 
-val input_chars : in_channel -> char Enum.t
+val input_chars : in_channel -> char BatEnum.t
 (** Returns an enumeration over characters of an input channel. *)
 
 val input_list : in_channel -> string list
@@ -76,7 +76,7 @@ val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
       an exception. *)
 
-val args : unit -> string Enum.t
+val args : unit -> string BatEnum.t
   (** An enumeration of the arguments passed to this program through the command line.
 
       [args ()] is given by the elements of [Sys.argv], minus the first element.*)

@@ -149,13 +149,13 @@
       
     val operations : int Number.numeric
 
-    val ( -- ) : t -> t -> t Enum.t
+    val ( -- ) : t -> t -> t BatEnum.t
       (** Enumerate an interval.
 	  
 	  [5 -- 10] is the enumeration 5,6,7,8,9,10.
 	  [10 -- 5] is the empty enumeration*)
 
-    val ( --- ) : t -> t -> t Enum.t
+    val ( --- ) : t -> t -> t BatEnum.t
       (** Enumerate an interval.
 	  
 	  [5 -- 10] is the enumeration 5,6,7,8,9,10.
@@ -169,7 +169,7 @@
 
     (** {7 Printing}*)
 
-    val print: 'a InnerIO.output -> t -> unit
+    val print: 'a BatInnerIO.output -> t -> unit
     val t_printer : t Value_printer.t
 
 
@@ -325,6 +325,6 @@ module Safe_int :
 
     (** {7 Printing}*)
 
-    val print: 'a InnerIO.output -> t -> unit
+    val print: 'a BatInnerIO.output -> t -> unit
   end
 

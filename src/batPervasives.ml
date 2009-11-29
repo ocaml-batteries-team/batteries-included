@@ -24,64 +24,64 @@
 
 open Pervasives
   include Std
-  open Enum
+  open BatEnum
 
   (** {6 I/O}*)
   let print_guess   = Std.print
   let prerr_guess v = prerr_endline (dump v)
 
-  let stdin             = IO.stdin
-  let stdout            = IO.stdout
-  let stderr            = IO.stderr
-  let stdnull           = IO.stdnull
+  let stdin             = BatIO.stdin
+  let stdout            = BatIO.stdout
+  let stderr            = BatIO.stderr
+  let stdnull           = BatIO.stdnull
 
   let open_out          = File.open_out
   let open_out_bin name = 
-    IO.output_channel ~cleanup:true (open_out_bin name)
+    BatIO.output_channel ~cleanup:true (open_out_bin name)
   let open_out_gen mode perm name = 
-    IO.output_channel ~cleanup:true (open_out_gen mode perm name)
+    BatIO.output_channel ~cleanup:true (open_out_gen mode perm name)
 
-  let flush             = IO.flush
-  let flush_all         = IO.flush_all
-  let close_all         = IO.close_all
+  let flush             = BatIO.flush
+  let flush_all         = BatIO.flush_all
+  let close_all         = BatIO.close_all
   
   let output_char       = BatChar.print
   let output_string     = BatString.print
   let output_rope       = Rope.print
   let output oc buf pos len = 
-    ignore (IO.output oc buf pos len)
-  let output_byte       = IO.write_byte
-  let output_binary_int = IO.write_i32
+    ignore (BatIO.output oc buf pos len)
+  let output_byte       = BatIO.write_byte
+  let output_binary_int = BatIO.write_i32
   let output_value out v= BatMarshal.output out v
-  let close_out         = IO.close_out
+  let close_out         = BatIO.close_out
   let close_out_noerr out = 
-    try IO.close_out out
+    try BatIO.close_out out
     with _ -> ()
 
   let open_in           = File.open_in
-  let open_in_bin name  = IO.input_channel ~cleanup:true (open_in_bin name)
+  let open_in_bin name  = BatIO.input_channel ~cleanup:true (open_in_bin name)
   let open_in_gen mode perm filename = 
-    IO.input_channel ~cleanup:true (open_in_gen mode perm filename)
+    BatIO.input_channel ~cleanup:true (open_in_gen mode perm filename)
 
-  let input_char        = IO.read
-  let input_line        = IO.read_line
-  let input             = IO.input
+  let input_char        = BatIO.read
+  let input_line        = BatIO.read_line
+  let input             = BatIO.input
   let really_input inp buf pos len = 
-    ignore (IO.really_input inp buf pos len)
-  let input_byte        = IO.read_byte
-  let input_binary_int  = IO.read_i32
-  let close_in          = IO.close_in
+    ignore (BatIO.really_input inp buf pos len)
+  let input_byte        = BatIO.read_byte
+  let input_binary_int  = BatIO.read_i32
+  let close_in          = BatIO.close_in
   let close_in_noerr inp=
-    try IO.close_in inp
+    try BatIO.close_in inp
     with _ -> ()
   let input_value       = BatMarshal.input
 
-  let print_all inp     = IO.copy inp IO.stdout
-  let prerr_all inp     = IO.copy inp IO.stderr
+  let print_all inp     = BatIO.copy inp BatIO.stdout
+  let prerr_all inp     = BatIO.copy inp BatIO.stderr
 
   let (@) = List.append
 
-  (**{6 Importing Enum}*)
+  (**{6 Importing BatEnum}*)
 
   let foreach e f       = iter f e
   let exists            = exists
@@ -145,34 +145,34 @@ open Pervasives
 
   let printer_a k f x = k (fun oc -> f oc x)
   let printer_t k f = k (fun oc -> f oc)
-  let printer_B k x = k (fun oc -> IO.nwrite oc (string_of_bool x))
-  let printer_c k x = k (fun oc -> IO.write oc x)
+  let printer_B k x = k (fun oc -> BatIO.nwrite oc (string_of_bool x))
+  let printer_c k x = k (fun oc -> BatIO.write oc x)
   let printer_C k x = k (fun oc ->
-                           IO.write oc '\'';
-                           IO.nwrite oc (Char.escaped x);
-                           IO.write oc '\'')
+                           BatIO.write oc '\'';
+                           BatIO.nwrite oc (Char.escaped x);
+                           BatIO.write oc '\'')
 
   let printer_s ?(flags=default_printer_flags) k x =
     match flags.pf_width with
       | None ->
-          k (fun oc -> IO.nwrite oc x)
+          k (fun oc -> BatIO.nwrite oc x)
       | Some n ->
           let len = String.length x in
           if len >= n then
-            k (fun oc -> IO.nwrite oc x)
+            k (fun oc -> BatIO.nwrite oc x)
           else
             match flags.pf_justify with
               | `right ->
                   k (fun oc ->
                        for i = len + 1 to n do
-                         IO.write oc flags.pf_padding_char
+                         BatIO.write oc flags.pf_padding_char
                        done;
-                       IO.nwrite oc x)
+                       BatIO.nwrite oc x)
               | `left ->
                   k (fun oc ->
-                       IO.nwrite oc x;
+                       BatIO.nwrite oc x;
                        for i = len + 1 to n do
-                         IO.write oc flags.pf_padding_char
+                         BatIO.write oc flags.pf_padding_char
                        done)
 
   let printer_sc ?(flags=default_printer_flags) k x =
@@ -188,14 +188,14 @@ open Pervasives
               | `right ->
                   k (fun oc ->
                        for i = len + 1 to n do
-                         IO.write oc flags.pf_padding_char
+                         BatIO.write oc flags.pf_padding_char
                        done;
                        BatString.Cap.print oc x)
               | `left ->
                   k (fun oc ->
                        BatString.Cap.print oc x;
                        for i = len + 1 to n do
-                         IO.write oc flags.pf_padding_char
+                         BatIO.write oc flags.pf_padding_char
                        done)
 
   let printer_S ?flags k x =
@@ -283,8 +283,8 @@ open Pervasives
   let printer_nX ?flags k x = printer_unum uhex_digit 16n BatNativeint.operations ?flags k x
   let printer_no ?flags k x = printer_unum oct_digit 8n BatNativeint.operations ?flags k x
 
-  let printer_f k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%f" x))
-  let printer_F k x = k (fun oc -> IO.nwrite oc (Printf.sprintf "%F" x))
+  let printer_f k x = k (fun oc -> BatIO.nwrite oc (Printf.sprintf "%f" x))
+  let printer_F k x = k (fun oc -> BatIO.nwrite oc (Printf.sprintf "%F" x))
 
   let printer_format k fmt = fmt.Print.printer fmt.Print.pattern k
 
@@ -313,9 +313,9 @@ open Pervasives
   let option_printer = Option.t_printer
   let maybe_printer = Option.maybe_printer
   let exn_printer paren out x =
-    if paren then IO.write out '(';
+    if paren then BatIO.write out '(';
     BatPrintexc.print out x;
-    if paren then IO.write out ')'
+    if paren then BatIO.write out ')'
 
   (** {6 Clean-up}*)
 

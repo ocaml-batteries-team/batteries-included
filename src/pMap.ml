@@ -168,12 +168,12 @@ let foldi f { cmp = cmp; map = map } acc =
 
 let enum { map = map } =
   let rec loop e () = match e with
-    | Empty -> Enum.empty ()
+    | Empty -> BatEnum.empty ()
     | Node (l, k, v, r, _) ->
-	Enum.flatten (BatList.enum [
-			Enum.delay (loop l);
-			Enum.singleton (k, v);
-			Enum.delay (loop r)])
+	BatEnum.flatten (BatList.enum [
+			BatEnum.delay (loop l);
+			BatEnum.singleton (k, v);
+			BatEnum.delay (loop r)])
   in loop map ()
 		       
 
@@ -182,7 +182,7 @@ let enum { map = map } =
     let l = ref l in
     let rec next() =
       match !l with
-      | [] -> raise Enum.No_more_elements
+      | [] -> raise BatEnum.No_more_elements
       | Empty :: tl -> l := tl; next()
       | Node (m1, key, data, m2, h) :: tl ->
         l := m1 :: m2 :: tl;
@@ -198,20 +198,20 @@ let enum { map = map } =
         done;
         assert false
       with
-		Enum.No_more_elements -> l := r; !n
+		BatEnum.No_more_elements -> l := r; !n
     in
     let clone() = make !l in
-	Enum.make ~next ~count ~clone
+	BatEnum.make ~next ~count ~clone
   in
   make [m.map]*)
 
 
 let uncurry_add m (k, v) = add k v m
-let of_enum ?(cmp = compare) e = Enum.fold uncurry_add (create cmp) e
+let of_enum ?(cmp = compare) e = BatEnum.fold uncurry_add (create cmp) e
 
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-  Enum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+  BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
 
 let filter  f t = foldi (fun k a acc -> if f a then add k a acc else acc) t empty
 let filteri f t = foldi (fun k a acc -> if f k a then add k a acc else acc) t empty

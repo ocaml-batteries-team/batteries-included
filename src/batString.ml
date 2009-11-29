@@ -210,10 +210,10 @@ let to_float s = float_of_string s
 let enum s =
   let l = length s in
   let rec make i =
-    Enum.make 
+    BatEnum.make 
       ~next:(fun () ->
 	       if !i = l then
-		 raise Enum.No_more_elements
+		 raise BatEnum.No_more_elements
 	       else
 		 unsafe_get s (Ref.post_incr i)
 	    )
@@ -224,10 +224,10 @@ let enum s =
 
 let backwards s =
       let rec make i =
-	Enum.make 
+	BatEnum.make 
 	  ~next:(fun () ->
 		   if !i <= 0 then
-		     raise Enum.No_more_elements
+		     raise BatEnum.No_more_elements
 		   else
 		     unsafe_get s (Ref.pre_decr i)
 		)
@@ -237,17 +237,17 @@ let backwards s =
 	make (ref (length s))
 
 let of_enum e =
-  let l = Enum.count e in
+  let l = BatEnum.count e in
   let s = create l in
   let i = ref 0 in
-    Enum.iter (fun c -> unsafe_set s (Ref.post_incr i) c) e;
+    BatEnum.iter (fun c -> unsafe_set s (Ref.post_incr i) c) e;
     s
 
 let of_backwards e =
-  let l = Enum.count e in
+  let l = BatEnum.count e in
   let s = create l in
   let i = ref (l - 1) in
-    Enum.iter (fun c -> unsafe_set s (Ref.post_decr i) c) e;
+    BatEnum.iter (fun c -> unsafe_set s (Ref.post_decr i) c) e;
     s
 
 
@@ -433,13 +433,13 @@ struct
 end
 
 
-let print         = InnerIO.nwrite
-let println out s = InnerIO.nwrite out s; InnerIO.write out '\n'
+let print         = BatInnerIO.nwrite
+let println out s = BatInnerIO.nwrite out s; BatInnerIO.write out '\n'
 let print_quoted out s = BatPrintf.fprintf out "%S" s
 let t_printer paren out x =
-  InnerIO.write out '"';
+  BatInnerIO.write out '"';
   print out (escaped x);
-  InnerIO.write out '"'
+  BatInnerIO.write out '"'
 
 let quote = BatPrintf.sprintf2 "%S"
 

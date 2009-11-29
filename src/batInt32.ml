@@ -36,12 +36,12 @@ end
 
   include BaseInt32
 
-  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
+  let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)
   let ( --- ) x y = 
     if x <= y then x -- y 
-    else Enum.seq x pred ((<=) y) 
+    else BatEnum.seq x pred ((<=) y) 
 
-  let print out t = InnerIO.Printf.fprintf out "%lx" t
+  let print out t = BatInnerIO.Printf.fprintf out "%lx" t
   let t_printer paren out t = print out t
 
   let to_byte n = Int32.logand 0xffl n |> Int32.to_int |> Char.chr

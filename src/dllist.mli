@@ -40,7 +40,7 @@ type 'a t = 'a node_t (*For uniformity*)
 *)
 
 include Interfaces.Mappable with type 'a mappable = 'a t
-include Enum.Enumerable with type 'a enumerable = 'a t
+include BatEnum.Enumerable with type 'a enumerable = 'a t
 
 exception Empty
 
@@ -202,22 +202,22 @@ val of_list : 'a list -> 'a node_t
     Note that modifying the list while the enum exists will have undefined
     effects.  This is an O(1) operation.
 *)
-val enum : 'a node_t -> 'a Enum.t
+val enum : 'a node_t -> 'a BatEnum.t
 
 (** Create a reverse enum of the list.
     Note that modifying the list while the enum exists will have undefined
     effects.  This is an O(1) operation.
 *)
-val rev_enum : 'a node_t -> 'a Enum.t
+val rev_enum : 'a node_t -> 'a BatEnum.t
 
 (** Create a dllist from an enum.
     This consumes the enum, and allocates a whole new dllist. Raises
     [Empty] if given enum is empty.  This is an O(N) operation.
 *)
-val of_enum : 'a Enum.t -> 'a node_t
+val of_enum : 'a BatEnum.t -> 'a node_t
 
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
 
-val print : ?first:string -> ?last:string -> ?sep:string ->('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string ->('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit

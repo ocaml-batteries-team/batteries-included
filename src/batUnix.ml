@@ -21,7 +21,7 @@
 
 
   open Unix
-  open InnerIO
+  open BatInnerIO
 
 
   (**
@@ -55,12 +55,12 @@
     Concurrent.sync !lock (Wrapped_out.find wrapped_out) k
 
   let wrap_in ?autoclose ?cleanup cin =
-    let input = InnerIO.input_channel ?autoclose ?cleanup cin in
+    let input = BatInnerIO.input_channel ?autoclose ?cleanup cin in
       Concurrent.sync !lock (Wrapped_in.add wrapped_in input) cin;
       input
 
   let wrap_out ?cleanup cout =
-    let output = cast_output (InnerIO.output_channel ?cleanup cout) in
+    let output = cast_output (BatInnerIO.output_channel ?cleanup cout) in
       Concurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
       output
 

@@ -33,7 +33,7 @@
 
 type 'a t
 
-include Enum.Enumerable with type 'a enumerable = 'a t
+include BatEnum.Enumerable with type 'a enumerable = 'a t
 include Interfaces.Mappable with type 'a mappable = 'a t
 
 exception Invalid_arg of int * string * string
@@ -120,7 +120,7 @@ val to_list : 'a t -> 'a list
 val to_array : 'a t -> 'a array
 (** [to_array darr] returns the elements of [darr] in order as an array. *)
 
-val enum : 'a t -> 'a Enum.t
+val enum : 'a t -> 'a BatEnum.t
 (** [enum darr] returns the enumeration of [darr] elements. *)
 
 val of_list : 'a list -> 'a t
@@ -131,7 +131,7 @@ val of_array : 'a array -> 'a t
 (** [of_array arr] returns an array with the elements of [arr] in it
 	in order. *)
 
-val of_enum : 'a Enum.t -> 'a t
+val of_enum : 'a BatEnum.t -> 'a t
 (** [of_enum e] returns an array that holds, in order, the elements of [e]. *)
 
 val copy : 'a t -> 'a t
@@ -317,5 +317,5 @@ val unsafe_set : 'a t -> int -> 'a -> unit
 
 (** {7 Printing}*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> unit
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 val t_printer : 'a Value_printer.t -> 'a t Value_printer.t

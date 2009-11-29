@@ -26,7 +26,7 @@ open Concurrent
     This module only provides low-level functions and types. Unless you
     know that you need low-level access to the operating system, you
     probably don't. For higher-level functions, see modules {!Shell},
-    {!IO}, {!File}.
+    {!BatIO}, {!File}.
 
     {b Note} This module is thread-safe.
 
@@ -36,12 +36,12 @@ open Concurrent
     @documents Unix
 *)
 
-  open InnerIO
+  open BatInnerIO
   open Unix
 
 (** {6 Interfacing with the standard input/output library} *)
 
-val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> InnerIO.input
+val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> BatInnerIO.input
 (** Create an {!type:input} reading from the given descriptor.
     The {!type: input} is initially in binary mode; use
     [set_binary_mode_in ic false] if text mode is desired. 
@@ -49,7 +49,7 @@ val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> InnerIO.in
     @param autoclose If true (default value), close the input
     automatically once there is no more content to read. Otherwise,
     the input will be closed according to the usual rules of module
-    {!IO}. Barring very specific needs (e.g. using file descriptors as
+    {!BatIO}. Barring very specific needs (e.g. using file descriptors as
     locks), you probably want [autoclose] to be [true].
 
     @param cleanup If true, close the underlying file descriptor
@@ -58,7 +58,7 @@ val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> InnerIO.in
     file descriptor yourself to ensure proper cleanup.
 *)
 
-val output_of_descr: ?cleanup:bool -> file_descr -> unit InnerIO.output
+val output_of_descr: ?cleanup:bool -> file_descr -> unit BatInnerIO.output
   (** Create an {!type:output} writing on the given descriptor.
       The {!type:output} is initially in binary mode; use
       [set_binary_mode_out oc false] if text mode is desired. 
@@ -69,7 +69,7 @@ val output_of_descr: ?cleanup:bool -> file_descr -> unit InnerIO.output
       file descriptor yourself to ensure proper cleanup.
 *)
 
-val descr_of_input : InnerIO.input -> file_descr
+val descr_of_input : BatInnerIO.input -> file_descr
 (** Return the descriptor corresponding to an input.
 
     Not all inputs have file descriptors. This function works
@@ -79,7 +79,7 @@ val descr_of_input : InnerIO.input -> file_descr
     channel doesn't have a file descriptor
 *)
 
-val descr_of_output : unit InnerIO.output -> file_descr
+val descr_of_output : unit BatInnerIO.output -> file_descr
   (** Return the descriptor corresponding to an output. 
       
       Not all inputs have file descriptors. This function works
@@ -97,7 +97,7 @@ val descr_of_output : unit InnerIO.output -> file_descr
   
 
 
-val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> InnerIO.input
+val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> BatInnerIO.input
 (** High-level pipe and process management. This function
     runs the given command in parallel with the program.
     The standard output of the command is redirected to a pipe,
@@ -107,7 +107,7 @@ val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> InnerIO.inp
     @param autoclose If true (default value), close the input
     automatically once there is no more content to read. Otherwise,
     the input will be closed according to the usual rules of module
-    {!IO}. Barring very specific needs (e.g. using file descriptors as
+    {!BatIO}. Barring very specific needs (e.g. using file descriptors as
     locks), you probably want [autoclose] to be [true].
 
     @param cleanup If true or unspecified, close the process when the {!type:input}
@@ -115,7 +115,7 @@ val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> InnerIO.inp
     will need to close the process yourself to ensure proper cleanup.
 *)
 
-val open_process_out : ?cleanup:bool -> string -> unit InnerIO.output
+val open_process_out : ?cleanup:bool -> string -> unit BatInnerIO.output
   (** 
       Same as {!Unix.open_process_in}, but redirect the standard input of
       the command to a pipe.  Data written to the returned output
@@ -130,7 +130,7 @@ val open_process_out : ?cleanup:bool -> string -> unit InnerIO.output
       will need to close the process yourself to ensure proper cleanup.
 *)
 
-val open_process : ?autoclose:bool -> ?cleanup:bool -> string -> InnerIO.input * unit InnerIO.output
+val open_process : ?autoclose:bool -> ?cleanup:bool -> string -> BatInnerIO.input * unit BatInnerIO.output
   (** 
       Same as {!Unix.open_process_out}, but redirects both the
       standard input and standard output of the command to pipes
@@ -142,7 +142,7 @@ val open_process : ?autoclose:bool -> ?cleanup:bool -> string -> InnerIO.input *
       @param autoclose If true (default value), close the input
       automatically once there is no more content to read. Otherwise,
       the input will be closed according to the usual rules of module
-      {!IO}. Barring very specific needs (e.g. using file descriptors as
+      {!BatIO}. Barring very specific needs (e.g. using file descriptors as
       locks), you probably want [autoclose] to be [true].
 
       @param cleanup If true or unspecified, close the process when either the
@@ -154,7 +154,7 @@ val open_process : ?autoclose:bool -> ?cleanup:bool -> string -> InnerIO.input *
 
 
 val open_process_full :
-  ?autoclose:bool -> ?cleanup:bool -> string -> string array -> InnerIO.input * unit InnerIO.output * InnerIO.input
+  ?autoclose:bool -> ?cleanup:bool -> string -> string array -> BatInnerIO.input * unit BatInnerIO.output * BatInnerIO.input
   (** Similar to {!Unix.open_process}, but the second argument
       specifies the environment passed to the command.  The result is
       a triple of {!type:input}/{!type:output} connected respectively
@@ -164,7 +164,7 @@ val open_process_full :
       @param autoclose If true (default value), close the input
       automatically once there is no more content to read. Otherwise,
       the input will be closed according to the usual rules of module
-      {!IO}. Barring very specific needs (e.g. using file descriptors as
+      {!BatIO}. Barring very specific needs (e.g. using file descriptors as
       locks), you probably want [autoclose] to be [true].
 
      @param cleanup If true or unspecified, close the process when either the
@@ -173,7 +173,7 @@ val open_process_full :
       the process yourself to ensure proper cleanup.
   *)
 
-val close_process_in : InnerIO.input -> process_status
+val close_process_in : BatInnerIO.input -> process_status
   (** Close {!type:input} opened by {!Unix.open_process_in},
       wait for the associated command to terminate,
       and return its termination status.
@@ -182,7 +182,7 @@ val close_process_in : InnerIO.input -> process_status
       is not an {!type:input} opened by {!Unix.open_process_in}.
   *)
 
-val close_process_out : unit InnerIO.output -> process_status
+val close_process_out : unit BatInnerIO.output -> process_status
   (** Close {!type:output} opened by {!Unix.open_process_out},
       wait for the associated command to terminate,
       and return its termination status. 
@@ -191,7 +191,7 @@ val close_process_out : unit InnerIO.output -> process_status
       is not an {!type:output} opened by {!Unix.open_process_out}.
 *)
 
-val close_process : InnerIO.input * unit InnerIO.output -> process_status
+val close_process : BatInnerIO.input * unit BatInnerIO.output -> process_status
   (** Close {!type:input}/{!type:output} opened by {!Unix.open_process},
       wait for the associated command to terminate,
       and return its termination status.
@@ -201,7 +201,7 @@ val close_process : InnerIO.input * unit InnerIO.output -> process_status
   *)
 
 val close_process_full :
-  InnerIO.input * unit InnerIO.output * InnerIO.input -> process_status
+  BatInnerIO.input * unit BatInnerIO.output * BatInnerIO.input -> process_status
   (** Close i/o opened by {!Unix.open_process_full},
       wait for the associated command to terminate,
       and return its termination status. 
@@ -213,7 +213,7 @@ val close_process_full :
 (** {6 High-level network connection functions} *)
 
 
-val open_connection : ?autoclose:bool -> sockaddr -> InnerIO.input * unit InnerIO.output
+val open_connection : ?autoclose:bool -> sockaddr -> BatInnerIO.input * unit BatInnerIO.output
   (** Connect to a server at the given address.
       Return a pair of input/output connected to the server. The
       connection is closed whenever either the input or the output
@@ -225,21 +225,21 @@ val open_connection : ?autoclose:bool -> sockaddr -> InnerIO.input * unit InnerI
       @param autoclose If true (default value), close the input
       automatically once there is no more content to read. Otherwise,
       the input will be closed according to the usual rules of module
-      {!IO}. Barring very specific needs (e.g. using file descriptors as
+      {!BatIO}. Barring very specific needs (e.g. using file descriptors as
       locks), you probably want [autoclose] to be [true].
   *)
 
-val shutdown_connection : InnerIO.input -> unit
+val shutdown_connection : BatInnerIO.input -> unit
   (** 
       ``Shut down'' a connection established with {!Unix.open_connection};
       that is, transmit an end-of-file condition to the server reading
       on the other side of the connection. 
 
       @deprecated Connections do not require a special function anymore.
-      Use regular function {!IO.close_in} for closing connections.
+      Use regular function {!BatIO.close_in} for closing connections.
 *)
 
-val establish_server : ?autoclose:bool -> ?cleanup:bool -> (InnerIO.input -> unit InnerIO.output -> unit) -> sockaddr -> unit
+val establish_server : ?autoclose:bool -> ?cleanup:bool -> (BatInnerIO.input -> unit BatInnerIO.output -> unit) -> sockaddr -> unit
   (** Establish a server on the given address.
 
       [establish_server f addr] establishes a server on address
@@ -251,7 +251,7 @@ val establish_server : ?autoclose:bool -> ?cleanup:bool -> (InnerIO.input -> uni
       @param autoclose If true (default value), inputs passed to [f]
       close the input automatically once there is no more content to
       read. Otherwise, the input will be closed according to the usual
-      rules of module {!IO}. Barring very specific needs (e.g. using
+      rules of module {!BatIO}. Barring very specific needs (e.g. using
       file descriptors as locks), you probably want [autoclose] to be
       [true].
 
@@ -286,15 +286,15 @@ val lock: Concurrent.lock ref
 
 (**{6 Obsolete stuff}*)
 
-val in_channel_of_descr: file_descr -> InnerIO.input
+val in_channel_of_descr: file_descr -> BatInnerIO.input
 (** @deprecated use {!input_of_descr}*)
 
-val out_channel_of_descr: file_descr -> unit InnerIO.output
+val out_channel_of_descr: file_descr -> unit BatInnerIO.output
 (** @deprecated use {!output_of_descr}. *)
 
-val descr_of_in_channel : InnerIO.input -> file_descr
+val descr_of_in_channel : BatInnerIO.input -> file_descr
 (** @deprecated use {!descr_of_input}. *)
 
-val descr_of_out_channel : unit InnerIO.output -> file_descr
+val descr_of_out_channel : unit BatInnerIO.output -> file_descr
 (** @deprecated use {!descr_of_output}. *)
 

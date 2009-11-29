@@ -128,13 +128,13 @@
 	  regardless of the sign of [x].
 	  The result is unspecified if [y < 0] or [y >= 32]. *)
 
-    val ( -- ) : t -> t -> t Enum.t
+    val ( -- ) : t -> t -> t BatEnum.t
       (** Enumerate an interval.
 	  
 	  [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.
 	  [10l -- 5l] is the empty enumeration*)
 
-    val ( --- ) : t -> t -> t Enum.t
+    val ( --- ) : t -> t -> t BatEnum.t
       (** Enumerate an interval.
 	  
 	  [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.
@@ -238,6 +238,6 @@
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
-    val print: 'a InnerIO.output -> t -> unit
+    val print: 'a BatInnerIO.output -> t -> unit
     val t_printer : t Value_printer.t
 

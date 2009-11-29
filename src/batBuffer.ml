@@ -39,18 +39,18 @@ open Buffer
 
   let enum t =
     let buf = buffer_of_t t in
-      Enum.take buf.position (BatString.enum buf.buffer)
+      BatEnum.take buf.position (BatString.enum buf.buffer)
 
   let of_enum e =
-    let length = Enum.count e  in
+    let length = BatEnum.count e  in
     let buf    = create length in
       add_string buf (BatString.of_enum e);
       buf
 
   let add_input t inp n =
-    add_string t (InnerIO.really_nread inp n)
+    add_string t (BatInnerIO.really_nread inp n)
 
-  let output_buffer = InnerIO.write_buf
+  let output_buffer = BatInnerIO.write_buf
     
   let add_channel = add_input
 

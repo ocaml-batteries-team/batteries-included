@@ -238,7 +238,7 @@ let of_list lst =
 let enum node =
 	let next e () =
 		if e.valid == false then
-			raise Enum.No_more_elements
+			raise BatEnum.No_more_elements
 		else
 			begin
 			let rval = e.curr.data in
@@ -262,15 +262,15 @@ let enum node =
 	in
 	let rec clone e () =
 		let e' = { curr = e.curr; valid = e.valid } in
-		Enum.make ~next:(next e') ~count:(count e') ~clone:(clone e')
+		BatEnum.make ~next:(next e') ~count:(count e') ~clone:(clone e')
 	in
 	let e = { curr = node; valid = true } in
-	Enum.make ~next:(next e) ~count:(count e) ~clone:(clone e)
+	BatEnum.make ~next:(next e) ~count:(count e) ~clone:(clone e)
 
 let rev_enum node =
 	let prev e () =
 		if e.valid == false then
-			raise Enum.No_more_elements
+			raise BatEnum.No_more_elements
 		else
 			begin
 			let rval = e.curr.data in
@@ -294,25 +294,25 @@ let rev_enum node =
 	in
 	let rec clone e () =
 		let e' = { curr = e.curr; valid = e.valid } in
-		Enum.make ~next:(prev e') ~count:(count e') ~clone:(clone e')
+		BatEnum.make ~next:(prev e') ~count:(count e') ~clone:(clone e')
 	in
 	let e = { curr = node; valid = true } in
-	Enum.make ~next:(prev e) ~count:(count e) ~clone:(clone e)
+	BatEnum.make ~next:(prev e) ~count:(count e) ~clone:(clone e)
 
 let of_enum enm =
-	match Enum.get enm with
+	match BatEnum.get enm with
 		| None -> raise Empty
 		| Some(d) ->
 			let first = create d in
 			let f n d = append n d in
-			ignore(Enum.fold f first enm);
+			ignore(BatEnum.fold f first enm);
 			first
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a out t =
-  Enum.print ~first ~last ~sep print_a out (enum t)
+  BatEnum.print ~first ~last ~sep print_a out (enum t)
 
 let filter f node = (*TODO : make faster*)
-  of_enum (Enum.filter f (enum node))
+  of_enum (BatEnum.filter f (enum node))
 
 let filter_map f node = (*TODO : make faster*)
-  of_enum (Enum.filter_map f (enum node))
+  of_enum (BatEnum.filter_map f (enum node))

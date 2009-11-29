@@ -83,7 +83,7 @@
     @documents Format
 *)
 
-  open IO
+  open BatIO
   open Format
 (** {6 Boxes} *)
 

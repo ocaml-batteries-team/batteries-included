@@ -108,25 +108,25 @@
 
   let print out c = 
     let code = uint_code c in
-      if code = backslash then InnerIO.nwrite out "\\\\"
+      if code = backslash then BatInnerIO.nwrite out "\\\\"
       else if code < 0x80 then 
-	InnerIO.nwrite out (UTF8.init 1 (fun _ -> c)) (*Note [UTF8.t] is [string] -- not [ExtUTF8.t]*)
+	BatInnerIO.nwrite out (UTF8.init 1 (fun _ -> c)) (*Note [UTF8.t] is [string] -- not [ExtUTF8.t]*)
       else
 	let n2 = code land 0xffff in
 	let n1 = code lsr 16 in
 	  if n1 = 0 then 
-	    InnerIO.Printf.fprintf out "\\u%04X" n2
+	    BatInnerIO.Printf.fprintf out "\\u%04X" n2
 	  else
-	    InnerIO.Printf.fprintf out "\\U%04X%04X" n1 n2
+	    BatInnerIO.Printf.fprintf out "\\U%04X%04X" n1 n2
 
   let t_printer paren out c =
-    if paren then InnerIO.write out '(';
+    if paren then BatInnerIO.write out '(';
     let n = code c in
     if n >= 0 && n <= 255 then
-      InnerIO.Printf.fprintf out "UChar.of_char %C" (Char.chr n)
+      BatInnerIO.Printf.fprintf out "UChar.of_char %C" (Char.chr n)
     else
-      InnerIO.Printf.fprintf out "UChar.of_int 0x%04x" n;
-    if paren then InnerIO.write out ')'
+      BatInnerIO.Printf.fprintf out "UChar.of_int 0x%04x" n;
+    if paren then BatInnerIO.write out ')'
 
   let of_digit = function
     | 0 -> zero

@@ -26,7 +26,7 @@
    Streams and stream parsers
 
    {b Note} This module is provided essentially for backwards-compatibility.
-   If you feel like using [Stream.t], please take a look at [Enum]
+   If you feel like using [Stream.t], please take a look at [BatEnum]
    or [LazyList] and [GenParser].
 
    This module is based on {{:http://www.pps.jussieu.fr/~li/software/sdflow/}Zheng Li's SDFlow}
@@ -36,7 +36,7 @@
 
     Streams are a read-and-forget data structure, comparable to enumerations.
     In Batteries Included, streams are deprecated in favor of enumerations,
-    defined in module {!Enum}.
+    defined in module {!BatEnum}.
 
     @author Zheng Li (SDFlow)
     @author David Teller
@@ -49,7 +49,7 @@ module Stream : sig
 type 'a t = 'a Stream.t
 (** The type of streams holding values of type ['a]. *)
 
-include Enum.Enumerable with type 'a enumerable = 'a t
+include BatEnum.Enumerable with type 'a enumerable = 'a t
 include Interfaces.Mappable with type 'a mappable = 'a t
 
 exception Failure
@@ -62,12 +62,12 @@ exception Error of string
 
 (** {6 Conversion functions} *)
 
-val enum : 'a t -> 'a Enum.t
+val enum : 'a t -> 'a BatEnum.t
 (** Convert an enumeration to a stream.
     Reading the resulting stream will consume elements from the enumeration.
     This is the preferred manner of creating a stream.*)
 
-val of_enum : 'a Enum.t -> 'a t
+val of_enum : 'a BatEnum.t -> 'a t
 (** Convert a stream to an enumeration.
     Reading the resulting enumeration will consume elements from the stream.
     This is the preferred manner of converting from a stream to any other
@@ -82,13 +82,13 @@ val of_list : 'a list -> 'a t
 (** Return the stream holding the elements of the list in the same
    order. *)
 
-val of_input :   IO.input    -> char t
+val of_input :   BatIO.input    -> char t
 (** Convert an [input] to a stream.*)
 
 
 (** {6 Stream consumers} *)
 
-val on_output:   'a IO.output-> char t -> unit
+val on_output:   'a BatIO.output-> char t -> unit
 (** Convert an [output] to a stream.*)
 
 (** {6 Stream builders}
@@ -288,7 +288,7 @@ end
 module StreamLabels : sig
 (**
    {b Note} This module is provided essentially for backwards-compatibility.
-   If you feel like using [Stream.t], please take a look at [Enum]
+   If you feel like using [Stream.t], please take a look at [BatEnum]
    or [LazyList] and [GenParser].
 *)
 
@@ -298,11 +298,11 @@ module StreamLabels : sig
 type 'a t = 'a Stream.t
 
 (** {6 Conversion functions} *)
-val enum : 'a t -> 'a Enum.t
+val enum : 'a t -> 'a BatEnum.t
 
 val of_fun  : (unit -> 'a) -> 'a t
 
-val of_enum : 'a Enum.t -> 'a t
+val of_enum : 'a BatEnum.t -> 'a t
 
 val of_string  : string -> char t
 
@@ -316,9 +316,9 @@ val of_list : 'a list -> 'a t
 val on_channel : out_channel -> char t -> unit
 (** Obsolete *)
 
-val of_input :   IO.input    -> char t
+val of_input :   BatIO.input    -> char t
 
-val on_output:   'a IO.output-> char t -> unit
+val on_output:   'a BatIO.output-> char t -> unit
 
 (** {6 Stream builders}
 

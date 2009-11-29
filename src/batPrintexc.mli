@@ -34,6 +34,6 @@ val pass : ('a -> 'b) -> 'a -> 'b
     The typical use is to catch and report exceptions that
     escape a function application. *)
 
-val print : _ InnerIO.output -> exn -> unit
+val print : _ BatInnerIO.output -> exn -> unit
 (** Print an exception.*)
 

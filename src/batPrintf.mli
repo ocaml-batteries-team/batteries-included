@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open InnerIO
+open BatInnerIO
 
 (** Formatted output functions (also known as unparsing).
 

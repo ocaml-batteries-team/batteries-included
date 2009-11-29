@@ -74,16 +74,16 @@ val of_string : string -> t
 val to_string : t -> string
   (**Return an UTF-8 encoded string representing this Unicode string.*)
 
-val enum : t -> UChar.t Enum.t
+val enum : t -> UChar.t BatEnum.t
   (**As {!String.enum}*)
 
-val of_enum: UChar.t Enum.t -> t
+val of_enum: UChar.t BatEnum.t -> t
   (**As {!String.of_enum}*)
 
-val backwards : t -> UChar.t Enum.t
+val backwards : t -> UChar.t BatEnum.t
   (**As {!String.backwards}*)
 
-val of_backwards: UChar.t Enum.t -> t
+val of_backwards: UChar.t BatEnum.t -> t
   (**As {!String.of_backwards}*)
 
 val sub : t -> int -> int ->  t
@@ -261,7 +261,7 @@ end with type buf = Buffer.t
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
-val print: 'a InnerIO.output -> t -> unit
+val print: 'a BatInnerIO.output -> t -> unit
 
 val t_printer : t Value_printer.t
 

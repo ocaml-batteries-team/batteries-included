@@ -1,5 +1,5 @@
 (* 
- * Enum - Enumeration over abstract collection of elements.
+ * BatEnum - Enumeration over abstract collection of elements.
  * Copyright (C) 2003 Nicolas Cannasse
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
@@ -174,7 +174,7 @@ let from2 next clone =
 	e
 
 let init n f = (*Experimental fix for init*)
-  if n < 0 then invalid_arg "Enum.init";
+  if n < 0 then invalid_arg "BatEnum.init";
   let count = ref n in
   let f' () =
     match !count with
@@ -899,16 +899,16 @@ let hard_count t =
       with No_more_elements -> !length
 
 let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
-  InnerIO.nwrite out first;
+  BatInnerIO.nwrite out first;
   match get e with
-    | None    -> InnerIO.nwrite out last
+    | None    -> BatInnerIO.nwrite out last
     | Some x  -> 
 	print_a out x;
 	let rec aux () =
 	  match get e with
-	    | None   -> InnerIO.nwrite out last
+	    | None   -> BatInnerIO.nwrite out last
 	    | Some x -> 
-		InnerIO.nwrite out sep;
+		BatInnerIO.nwrite out sep;
 		print_a out x;
 		aux ()
 	in aux()

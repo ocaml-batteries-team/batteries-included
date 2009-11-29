@@ -20,11 +20,14 @@ OBJECTS[] =
     batChar
     batComplex
     batDigest
+    batEnum
     batFloat
     batFormat
     batGc
     batGenlex
     batHashtbl
+    batIO
+    batInnerIO
     batInt32
     batInt64
     batInt
@@ -58,13 +61,10 @@ OBJECTS[] =
     concurrent
     dllist
     dynArray
-    enum
     file
     global
-    innerIO
     innerWeaktbl
     interfaces
-    IO
     IOThreads
     lazyList
     logger

@@ -547,10 +547,10 @@ let rec remove_all l x =
 
 let enum l =
 	let rec make lr count =
-		Enum.make
+		BatEnum.make
 			~next:(fun () ->
 				match !lr with
-				| [] -> raise Enum.No_more_elements
+				| [] -> raise BatEnum.No_more_elements
 				| h :: t ->
 					decr count;
 					lr := t;
@@ -568,7 +568,7 @@ let enum l =
 
 let of_enum e =
 	let h = dummy_node() in
-	let _ = Enum.fold (fun acc x ->
+	let _ = BatEnum.fold (fun acc x ->
 		let r = { hd = x; tl = [] }  in
 		acc.tl <- inj r;
 		r) h e in
@@ -580,12 +580,12 @@ let backwards l = enum (rev l) (*TODO: should we make it more efficient?*)
 (*let backwards l = (*This version only needs one pass but is actually less lazy*)
   let rec aux acc = function
     | []   -> acc
-    | h::t -> aux Enum.append (Enum.singleton h) acc
+    | h::t -> aux BatEnum.append (BatEnum.singleton h) acc
   in aux l*)
   
 
 let of_backwards e =
-  let rec aux acc = match Enum.get e with
+  let rec aux acc = match BatEnum.get e with
     | Some h -> aux (h::acc)
     | None   -> acc
   in aux []
@@ -636,23 +636,23 @@ let group cmp lst =
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
   | []   ->
-      InnerIO.nwrite out first;
-      InnerIO.nwrite out last
+      BatInnerIO.nwrite out first;
+      BatInnerIO.nwrite out last
   | [h]  ->
-      InnerIO.Printf.fprintf out "%s%a%s" first print_a h last
+      BatInnerIO.Printf.fprintf out "%s%a%s" first print_a h last
   | h::t -> 
-      InnerIO.nwrite out first;
+      BatInnerIO.nwrite out first;
       print_a out h;
-      iter (InnerIO.Printf.fprintf out "%s%a" sep print_a) t;
-      InnerIO.nwrite out last
+      iter (BatInnerIO.Printf.fprintf out "%s%a" sep print_a) t;
+      BatInnerIO.nwrite out last
 
 let t_printer a_printer paren out x = print (a_printer false) out x
 
 let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a list =
   BatPrintf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
-(*  let os = InnerIO.output_string  () in
+(*  let os = BatInnerIO.output_string  () in
   print ~first ~last ~sep print_a os list;
-  InnerIO.close_out os (* returns contents *)*)
+  BatInnerIO.close_out os (* returns contents *)*)
 
 let reduce f = function [] -> invalid_arg "Empty List"
   | h::t -> fold_left f h t

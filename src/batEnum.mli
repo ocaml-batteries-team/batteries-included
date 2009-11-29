@@ -1,5 +1,5 @@
 (* 
- * Enum - enumeration over abstract collection of elements.
+ * BatEnum - enumeration over abstract collection of elements.
  * Copyright (C) 2003 Nicolas Cannasse
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  * 
@@ -362,7 +362,7 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
   (**[from_loop data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
      result, etc. The list ends whenever the function raises 
-     {!Enum.No_more_elements}*)
+     {!BatEnum.No_more_elements}*)
 
 val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
   (** [seq init step cond] creates a sequence of data, which starts
@@ -407,9 +407,9 @@ val delay : (unit -> 'a t) -> 'a t
 
       let enum_tree =
       let rec aux = function
-      | Leaf           -> Enum.empty ()
-      | Node (n, l, r) -> Enum.append (Enum.singleton n)
-      (Enum.append (delay (fun () -> aux l))
+      | Leaf           -> BatEnum.empty ()
+      | Node (n, l, r) -> BatEnum.append (BatEnum.singleton n)
+      (BatEnum.append (delay (fun () -> aux l))
       (delay (fun () -> aux r)))
       ]
 
@@ -581,24 +581,24 @@ module WithMonad : functor (Mon : Monad.S) -> sig
   
   val sequence : 'a m t -> 'a t m
 (** [sequence e] evaluates each monadic elements (of type ['a m] contained in the enumeration [e] to get a monadic enumeration of ['a] elements, 
-    of type ['a m Enum.t]. *)
+    of type ['a m BatEnum.t]. *)
  
   val fold_monad : ('a -> 'b -> 'a m) -> 'a -> 'b t -> 'a m
 (** [fold_monad f init e] does a folding of the enumeration [e] applying step by step the function [f] that gives back results in the [Mon] monad, 
     with the [init] initial element. The result is a value in the [Mond] monad. *)
 end
 
-(** The Enum Monad 
+(** The BatEnum Monad 
 
     This module provides everything needed for writing and executing
-    computations in the Enum Monad.
+    computations in the BatEnum Monad.
 *)
 module Monad : sig
   type 'a m = 'a t
-(** The type of the Enum monad's elements, thus [Enum.t]. *)
+(** The type of the BatEnum monad's elements, thus [BatEnum.t]. *)
 
   val return : 'a -> 'a m
-(** This function puts a single value in the Enum monad, that is to say it creates an enumeration containing a single element. *)
+(** This function puts a single value in the BatEnum monad, that is to say it creates an enumeration containing a single element. *)
 
   val bind : 'a m -> ('a -> 'b m) -> 'b m
 (** [bind m f] takes the result of the monadic computation m, puts the f function in the monadic context passing it the result of m and then
@@ -608,7 +608,7 @@ end
 
 (** {6 Boilerplate code}*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> unit
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
 val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
@@ -616,22 +616,22 @@ val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
 (** {6 Override modules}*)
 
 (**
-   The following modules replace functions defined in {!Enum} with functions
+   The following modules replace functions defined in {!BatEnum} with functions
    behaving slightly differently but having the same name. This is by design:
-   the functions meant to override the corresponding functions of {!Enum}.
+   the functions meant to override the corresponding functions of {!BatEnum}.
 
    To take advantage of these overrides, you probably want to
    {{:../extensions.html#multiopen}{open several modules in one
    operation}} or {{:../extensions.html#multialias}{alias several
-   modules to one name}}. For instance, to open a version of {!Enum}
-   with exceptionless error management, you may write [open Enum,
-   Exceptionless]. To locally replace module {!Enum} with a module of
+   modules to one name}}. For instance, to open a version of {!BatEnum}
+   with exceptionless error management, you may write [open BatEnum,
+   Exceptionless]. To locally replace module {!BatEnum} with a module of
    the same name but with exceptionless error management, you may
-   write {v module Enum = Enum include Exceptionless v}.
+   write {v module BatEnum = BatEnum include Exceptionless v}.
 
 *)
 
-(** Operations on {!Enum} without exceptions.*)
+(** Operations on {!BatEnum} without exceptions.*)
 module Exceptionless : sig
   val find : ('a -> bool) -> 'a t -> 'a option
     (** [find f e] returns [Some x] where [x] is the first element [x] of [e] 
@@ -644,13 +644,13 @@ module Exceptionless : sig
 end
 
 
-(** Operations on {!Enum} with labels.
+(** Operations on {!BatEnum} with labels.
 
-    This module overrides a number of functions of {!Enum} by
+    This module overrides a number of functions of {!BatEnum} by
     functions in which some arguments require labels. These labels are
     there to improve readability and safety and to let you change the
     order of arguments to functions. In every case, the behavior of the
-    function is identical to that of the corresponding function of {!Enum}.
+    function is identical to that of the corresponding function of {!BatEnum}.
 *)
 module Labels : sig
   val iter:       f:('a -> unit) -> 'a t -> unit

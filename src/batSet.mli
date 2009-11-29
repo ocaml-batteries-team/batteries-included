@@ -169,19 +169,19 @@ module type S =
           [present] is [false] if [s] contains no element equal to [x],
           or [true] if [s] contains an element equal to [x]. *)
 
-    val enum: t -> elt Enum.t
+    val enum: t -> elt BatEnum.t
       (** Return an enumeration of all elements of the given set.
 	  The returned enumeration is sorted in increasing order with respect
 	  to the ordering [Ord.compare], where [Ord] is the argument
 	  given to {!Set.Make}. *)
 
-    val backwards: t -> elt Enum.t
+    val backwards: t -> elt BatEnum.t
       (** Return an enumeration of all elements of the given set.
 	  The returned enumeration is sorted in decreasing order with respect
 	  to the ordering [Ord.compare], where [Ord] is the argument
 	  given to {!Set.Make}. *)
 
-    val of_enum: elt Enum.t -> t
+    val of_enum: elt BatEnum.t -> t
 
 
     (** {6 Boilerplate code}*)
@@ -189,8 +189,8 @@ module type S =
     (** {7 Printing}*)
       
     val print :  ?first:string -> ?last:string -> ?sep:string -> 
-      ('a InnerIO.output -> elt -> unit) -> 
-      'a InnerIO.output -> t -> unit
+      ('a BatInnerIO.output -> elt -> unit) -> 
+      'a BatInnerIO.output -> t -> unit
 
 
       (** {6 Override modules}*)

@@ -50,7 +50,7 @@ let encode ?(tbl=chars) ch =
 	let flush() =
 		if !count > 0 then begin
 			let d = (!data lsl (6 - !count)) land 63 in
-			IO.write ch (Array.unsafe_get tbl d);
+			BatIO.write ch (Array.unsafe_get tbl d);
 		end;		
 	in
 	let write c =
@@ -60,7 +60,7 @@ let encode ?(tbl=chars) ch =
 		while !count >= 6 do
 			count := !count - 6;
 			let d = (!data asr !count) land 63 in
-			IO.write ch (Array.unsafe_get tbl d)
+			BatIO.write ch (Array.unsafe_get tbl d)
 		done;
 	in
 	let output s p l =
@@ -69,9 +69,9 @@ let encode ?(tbl=chars) ch =
 		done;
 		l
 	in
-	IO.create_out ~write ~output
-		~flush:(fun () -> flush(); IO.flush ch)
-		~close:(fun() -> flush(); IO.close_out ch)
+	BatIO.create_out ~write ~output
+		~flush:(fun () -> flush(); BatIO.flush ch)
+		~close:(fun() -> flush(); BatIO.close_out ch)
 
 
 let decode ?(tbl=inv_chars) ch =
@@ -84,7 +84,7 @@ let decode ?(tbl=inv_chars) ch =
 			let d = (!data asr !count) land 0xFF in
 			unsafe_char_of_int d
 		end else
-			let c = int_of_char (IO.read ch) in
+			let c = int_of_char (BatIO.read ch) in
 			let c = Array.unsafe_get tbl c in
 			if c = -1 then raise Invalid_char;
 			data := (!data lsl 6) lor c;
@@ -101,20 +101,20 @@ let decode ?(tbl=inv_chars) ch =
 			done;
 			l
 		with
-			IO.No_more_input when !i > 0 ->
+			BatIO.No_more_input when !i > 0 ->
 				!i
 	in
 	let close() =
 		count := 0;
-		IO.close_in ch
+		BatIO.close_in ch
 	in
-	IO.create_in ~read ~input ~close
+	BatIO.create_in ~read ~input ~close
 
 let str_encode ?(tbl=chars) s =
-	let ch = encode ~tbl (IO.output_string()) in
-	IO.nwrite ch s;
-	IO.close_out ch
+	let ch = encode ~tbl (BatIO.output_string()) in
+	BatIO.nwrite ch s;
+	BatIO.close_out ch
 
 let str_decode ?(tbl=inv_chars) s =
-	let ch = decode ~tbl (IO.input_string s) in
-	IO.nread ch ((String.length s * 6) / 8)
+	let ch = decode ~tbl (BatIO.input_string s) in
+	BatIO.nread ch ((String.length s * 6) / 8)

@@ -1,5 +1,5 @@
 (*
- * IO - Abstract input/output
+ * BatIO - Abstract input/output
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller (contributor)
  *
@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include InnerIO
+include BatInnerIO
 
 (**
    {6 API}
@@ -79,15 +79,15 @@ let progress_out out f =
    {6 Support for enumerations}
 *)
 
-(*Function inlined here to avoid circular dependencies between [IO]
+(*Function inlined here to avoid circular dependencies between [BatIO]
   and [ExtString].*)
 let string_enum s =
   let l = String.length s in
   let rec make i =
-    Enum.make 
+    BatEnum.make 
       ~next:(fun () ->
 	       if !i = l then
-		 raise Enum.No_more_elements
+		 raise BatEnum.No_more_elements
 	       else
 		 let p = !i in
 		   incr i;
@@ -103,7 +103,7 @@ let input_enum e =
   let pos = ref 0 in
     create_in
       ~read:(fun () ->
-	       match Enum.get e with
+	       match BatEnum.get e with
 		 | None -> raise No_more_input
 		 | Some c ->
 		     incr pos;
@@ -114,7 +114,7 @@ let input_enum e =
 		  if l = 0 then
 		    0
 		  else
-		    match Enum.get e with
+		    match BatEnum.get e with
 		      | None -> l
 		      | Some c ->
 			  String.unsafe_set s p c;
@@ -144,20 +144,20 @@ let output_enum() =
     
 
 (** [apply_enum f x] applies [f] to [x] and converts exceptions
-    [No_more_input] and [Input_closed] to [Enum.No_more_elements]*)
+    [No_more_input] and [Input_closed] to [BatEnum.No_more_elements]*)
 let apply_enum f x =
   try f x
   with No_more_input 
-    |  InnerIO.Input_closed  -> raise Enum.No_more_elements
+    |  BatInnerIO.Input_closed  -> raise BatEnum.No_more_elements
 
 (** [close_at_end input e] returns an enumeration which behaves as [e]
     and has the secondary effect of closing [input] once everything has
     been read.*)
 let close_at_end (input:input) e=
-  Enum.suffix_action (fun () -> close_in input) e
+  BatEnum.suffix_action (fun () -> close_in input) e
 
 let make_enum f input =
-  close_at_end input (Enum.from (fun () -> apply_enum f input))
+  close_at_end input (BatEnum.from (fun () -> apply_enum f input))
 
 
 let combine (a,b) =
@@ -176,7 +176,7 @@ let combine (a,b) =
 
 
 let write_enum out f enum =
-  Enum.iter f enum
+  BatEnum.iter f enum
 (*;
   flush out*)
       
@@ -398,7 +398,7 @@ let flush_bits b =
 	if b.nbits > 0 then write_bits b (8 - b.nbits) 0
 
 (**
-   {6 Generic IO}
+   {6 Generic BatIO}
 *)
 
 
@@ -522,10 +522,10 @@ let chunks_of n input     = make_enum (fun input -> nread input n) input
 (**The number of chars to read at once*)
 let buffer_size = 1024 (*Arbitrary size.*)
 
-let chars_of input = close_at_end input (Enum.concat (Enum.from (fun () -> 
+let chars_of input = close_at_end input (BatEnum.concat (BatEnum.from (fun () -> 
    apply_enum (fun source -> string_enum (nread source buffer_size)) input)))
 
-let bits_of input = close_at_end input.ch (Enum.from (fun () -> apply_enum read_bits input 1))
+let bits_of input = close_at_end input.ch (BatEnum.from (fun () -> apply_enum read_bits input 1))
 
 let write_bytes output enum =
   write_enum output (write_byte output) enum
@@ -564,12 +564,12 @@ let write_chunks output enum =
   write_enum output (nwrite output) enum
 
 let write_bitss ~nbits output enum =
-  Enum.iter (write_bits ~nbits output) enum
+  BatEnum.iter (write_bits ~nbits output) enum
 (*;
   flush output.ch*)
 
 (**
-   {6 Standard IO}
+   {6 Standard BatIO}
 *)
 
 
@@ -694,13 +694,13 @@ let read_uall i =
 (* TODO: make efficient - possibly similar to above - buffering leaf_size chars at a time *)
  
  
-(*val uchars_of : input -> UChar.t Enum.t*)
+(*val uchars_of : input -> UChar.t BatEnum.t*)
 (** offer the characters of an UTF-8 encoded input as an enumeration*)
  
 let uchars_of i = make_enum read_uchar i
  
  
-(*val ulines_of : input -> Rope.t Enum.t*)
+(*val ulines_of : input -> Rope.t BatEnum.t*)
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
 let ulines_of i = make_enum read_uline i
  
@@ -719,13 +719,13 @@ let write_rope = Rope.print
 (*val write_uline: _ output -> Rope.t -> unit*)
 let write_uline o r = write_rope o r; write o '\n'
   
-(*val write_ulines : _ output -> Rope.t Enum.t -> unit*)
+(*val write_ulines : _ output -> Rope.t BatEnum.t -> unit*)
 let write_ulines o re = write_enum o (write_uline o) re
  
-(*val write_ropes : _ output -> Rope.t Enum.t -> unit*)
+(*val write_ropes : _ output -> Rope.t BatEnum.t -> unit*)
 let write_ropes o re = write_enum o (write_rope o) re
 
-(*val write_uchars : _ output -> UChar.t Enum.t -> unit*)
+(*val write_uchars : _ output -> UChar.t BatEnum.t -> unit*)
 let write_uchars o uce = write_enum o (write_uchar o) uce
 
 (*let copy input output = write_chunks output (chunks_of default_buffer_size input)*)

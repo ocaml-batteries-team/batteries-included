@@ -32,7 +32,7 @@ sig
 type 'a t
 (** The type of queues containing elements of type ['a]. *)
 
-include Enum.Enumerable with type 'a enumerable = 'a t
+include BatEnum.Enumerable with type 'a enumerable = 'a t
 
 exception Empty
 (** Raised when {!Queue.take} or {!Queue.peek} is applied to an empty queue. *)
@@ -89,12 +89,12 @@ val transfer : 'a t -> 'a t -> unit
     sequence [iter (fun x -> add x q2) q1; clear q1], but runs
     in constant time. *)
 
-val enum : 'a t -> 'a Enum.t
+val enum : 'a t -> 'a BatEnum.t
 (** [enum q] returns a destructive enumeration of the elements of queue 
     [q], from the least recently entered to the most recently entered.
     Reading the enumeration will progressively empty [q].*)
 
-val of_enum : 'a Enum.t -> 'a t
+val of_enum : 'a BatEnum.t -> 'a t
 (** [of_enum e] returns a new queue containing all the elements of [e].
     This is equivalent to calling [push] with the first element of the
     enumeration, then with the second, etc.*)
@@ -103,6 +103,6 @@ val of_enum : 'a Enum.t -> 'a t
   
 (** {7 Printing}*)
   
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 end

@@ -83,11 +83,11 @@ let fold f d i  = PMap.fold f d.content i
 
 let foldi f d i = PMap.foldi f d.content i
 
-let enum t      = Enum.concat (Enum.map (fun (k,e) -> Enum.map (fun x -> (k,x)) (PSet.enum e)) (PMap.enum t.content))
+let enum t      = BatEnum.concat (BatEnum.map (fun (k,e) -> BatEnum.map (fun x -> (k,x)) (PSet.enum e)) (PMap.enum t.content))
 
 let of_enum ?(keys=compare) ?(data=compare) e = 
   let base = create keys data in
-    Enum.fold (fun acc (k,d) -> add k d acc) base e
+    BatEnum.fold (fun acc (k,d) -> add k d acc) base e
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-  Enum.print ~first ~last ~sep (fun out (k, v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+  BatEnum.print ~first ~last ~sep (fun out (k, v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)

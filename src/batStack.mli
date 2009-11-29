@@ -33,7 +33,7 @@ sig
 type 'a t
 (** The type of stacks containing elements of type ['a]. *)
 
-include Enum.Enumerable with type 'a enumerable = 'a t
+include BatEnum.Enumerable with type 'a enumerable = 'a t
 
 exception Empty
 (** Raised when {!Stack.pop} or {!Stack.top} is applied to an empty stack. *)
@@ -70,12 +70,12 @@ val iter : ('a -> unit) -> 'a t -> unit
    from the element at the top of the stack to the element at the
    bottom of the stack. The stack itself is unchanged. *)
 
-val enum : 'a t -> 'a Enum.t
+val enum : 'a t -> 'a BatEnum.t
 (** [enum s] returns a destructive enumeration of the elements of stack 
     [s], from the most recently entered to the least recently entered.
     Reading the enumeration will progressively empty [s].*)
 
-val of_enum : 'a Enum.t -> 'a t
+val of_enum : 'a BatEnum.t -> 'a t
 (** [of_enum e] returns a new stack containing all the elements of [e].
     This is equivalent to calling [push] with the first element of the
     enumeration, then with the second, etc.*)
@@ -84,7 +84,7 @@ val of_enum : 'a Enum.t -> 'a t
   
 (** {7 Printing}*)
   
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 end
 

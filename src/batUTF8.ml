@@ -19,7 +19,7 @@
  *)
 
 
-(*Inlined to avoid circular dependencies between IO, ExtUTF8 and ExtString*)
+(*Inlined to avoid circular dependencies between BatIO, ExtUTF8 and ExtString*)
 (*
 let string_splice s1 off len s2 = 
   let len1 = String.length s1 and len2 = String.length s2 in
@@ -169,10 +169,10 @@ let string_splice s1 off len s2 =
     
   let enum us =
     let rec make i =
-      Enum.make
+      BatEnum.make
 	~next:(fun () ->
 		 if Byte.at_end us !i then
-                   raise Enum.No_more_elements
+                   raise BatEnum.No_more_elements
 		 else
 		   look us (Ref.post i (Byte.next us))
               )
@@ -183,7 +183,7 @@ let string_splice s1 off len s2 =
       
   let of_enum e =
     let buf = Buffer.create 16 in
-      Enum.iter (fun c -> Buffer.add_string buf (of_char c)) e;
+      BatEnum.iter (fun c -> Buffer.add_string buf (of_char c)) e;
       adopt (Buffer.contents buf)
 
   let rec rev_length_aux s ci bi =
@@ -194,10 +194,10 @@ let string_splice s1 off len s2 =
 
   let backwards us =
     let rec make i =
-      Enum.make
+      BatEnum.make
 	~next:(fun () ->
 		 if Byte.out_of_range us !i then
-                   raise Enum.No_more_elements
+                   raise BatEnum.No_more_elements
 		 else
                    look us (Ref.post i (Byte.prev us))
               )
@@ -294,11 +294,11 @@ let string_splice s1 off len s2 =
     
   let copy = String.copy
 
-  let print out t = InnerIO.nwrite out t
+  let print out t = BatInnerIO.nwrite out t
   let t_printer paren out t =
-    InnerIO.nwrite out "u\"";
+    BatInnerIO.nwrite out "u\"";
     print out (escaped t);
-    InnerIO.write out '"'
+    BatInnerIO.write out '"'
 
   let uppercase c = Case.uppercase c
   let lowercase c = Case.lowercase c

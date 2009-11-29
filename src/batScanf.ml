@@ -27,11 +27,11 @@ struct
     include Scanf.Scanning
 
     let from_input inp =
-      from_function (fun () -> InnerIO.read inp)
+      from_function (fun () -> BatInnerIO.read inp)
 
     let from_channel = from_input
 
-    let stdib = from_input (InnerIO.stdin)
+    let stdib = from_input (BatInnerIO.stdin)
   end
 
   type ('a, 'b, 'c, 'd) scanner =

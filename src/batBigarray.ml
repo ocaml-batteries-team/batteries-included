@@ -134,7 +134,7 @@ open BatArray
       let dims   = dims e
       and coor   = Labels.create (num_dims e) ~init:0 
       and status = ref `ongoing in
-	Enum.from (fun () ->
+	BatEnum.from (fun () ->
 		     match !status with
 		       | `ongoing ->
 			   begin
@@ -145,10 +145,10 @@ open BatArray
 				 result
 			     with _ -> 
 			       status := `dry;
-			       raise Enum.No_more_elements
+			       raise BatEnum.No_more_elements
 			   end
  		        | `dry -> 
-			    raise Enum.No_more_elements
+			    raise BatEnum.No_more_elements
 		  )
 
     let map f b_kind a =

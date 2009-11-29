@@ -79,7 +79,7 @@ val equals : t -> t -> bool
 val count : t -> int
 (** [count s] returns the number of bits set in the bitset [s]. *)
 
-val enum : t -> int Enum.t
+val enum : t -> int BatEnum.t
 (** [enum s] returns an enumeration of bits which are set
   in the bitset [s]. *)
 
@@ -113,4 +113,4 @@ val sym_diff : t -> t -> t
 
 (** {7 Printing}*)
 
-val print: 'a InnerIO.output -> t -> unit
+val print: 'a BatInnerIO.output -> t -> unit

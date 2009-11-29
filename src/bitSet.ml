@@ -254,8 +254,8 @@ let enum t =
           cur := (elem+1);
           elem
       | None ->
-          raise Enum.No_more_elements in
-    Enum.make
+          raise BatEnum.No_more_elements in
+    BatEnum.make
       ~next
       ~count:(fun () -> partial_count t !cur)
       ~clone:(fun () -> make !cur)
@@ -350,21 +350,21 @@ let differentiate_sym t t' =
 (*print a BitSet between [| and |]*)
 (*let print ?(first="[|") ?(last="|]") ?(sep="") out t = 
   let print_bit i =
-    if is_set t i then InnerIO.write out '1'
-    else               InnerIO.write out '0'
+    if is_set t i then BatInnerIO.write out '1'
+    else               BatInnerIO.write out '0'
   in
-  InnerIO.nwrite out first;
+  BatInnerIO.nwrite out first;
     if t.len = 0 then ()
     else begin
       print_bit 0;
       for i = 1 to t.len - 1 do
-	InnerIO.nwrite out sep;
+	BatInnerIO.nwrite out sep;
 	print_bit i
       done
     end*)
 let print out t =
   let print_bit i =
-    InnerIO.write out (if is_set t i then '1' else '0')
+    BatInnerIO.write out (if is_set t i then '1' else '0')
   in
   for i = 0 to 8*t.len - 1 do
     print_bit i

@@ -31,7 +31,7 @@
     @author Xavier Leroy (Base module)
     @author David Rajchenbach-Teller
 *)
-open IO
+open BatIO
 
 val channel : input -> int -> Digest.t
 (** If [len] is nonnegative, [Digest.channel ic len] reads [len]

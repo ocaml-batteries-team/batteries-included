@@ -49,7 +49,7 @@ val advance : UChar.t -> position -> position
 val source_of_rope : Rope.t      -> (UChar.t, position) Source.t
 (** Create a source from a Unicode Rope.*)
 
-val source_of_enum : UChar.t Enum.t -> (UChar.t, position) Source.t
+val source_of_enum : UChar.t BatEnum.t -> (UChar.t, position) Source.t
 (** Create a source from an enumeration of unicode characters.*)
 
 val parse : (UChar.t, 'a, position) t -> Rope.t -> ('a, position report) Std.result

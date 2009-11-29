@@ -22,7 +22,7 @@ open Lexing
 (** Simple lexing using ocaml conventions *)
 
 
-val from_input   : IO.input   -> lexbuf
+val from_input   : BatIO.input   -> lexbuf
 (** Create a lexer buffer on the given input
    [Lexing.from_input inp] returns a lexer buffer which reads
    from the input [inp], at the current reading position. *)
@@ -30,7 +30,7 @@ val from_input   : IO.input   -> lexbuf
 
 (** {6 Deprecated}*)
 
-val from_channel : IO.input -> lexbuf
+val from_channel : BatIO.input -> lexbuf
 (** @deprecated As {!from_input}*)
 
 (**/**)

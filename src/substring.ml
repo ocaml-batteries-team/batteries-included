@@ -50,7 +50,7 @@ let of_input inp =
   let buf = Buffer.create tempsize 
   and tmp = String.create tempsize in
   let n = ref 0 in
-  while n := IO.input inp tmp 0 tempsize; !n > 0 do
+  while n := BatIO.input inp tmp 0 tempsize; !n > 0 do
     Buffer.add_substring buf tmp 0 !n;
   done;
   Buffer.contents buf, 0, Buffer.length buf

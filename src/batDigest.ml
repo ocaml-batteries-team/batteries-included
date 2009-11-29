@@ -19,22 +19,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open IO
+open BatIO
 
 (*Imported from [Digest.input] -- the functions used take advantage of
-  [IO.input] rather than [in_channel]*)
+  [BatIO.input] rather than [in_channel]*)
 let input inp = 
   let digest = String.create 16 in
   let _      = really_input inp digest 0 16 in
     digest
 
 
-let output = IO.nwrite
+let output = BatIO.nwrite
 
 
 let channel inp len = (*TODO: Make efficient*)
   if len >= 0 then 
     let buf = String.create len             in
-    let _   = IO.really_input inp buf 0 len in
+    let _   = BatIO.really_input inp buf 0 len in
       Digest.string buf
-  else Digest.channel (IO.to_input_channel inp) len
+  else Digest.channel (BatIO.to_input_channel inp) len

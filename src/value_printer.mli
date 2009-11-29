@@ -24,7 +24,7 @@
     @author Jeremie Dimino
 *)
 
-type 'a t = bool -> unit InnerIO.output -> 'a -> unit
+type 'a t = bool -> unit BatInnerIO.output -> 'a -> unit
   (** Type of a value-printer, the boolean argument indicates whether
       composed expression must be parenthesized. *)
 

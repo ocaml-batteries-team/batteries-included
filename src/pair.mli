@@ -32,11 +32,11 @@ val map : ('a -> 'b) -> ('a * 'a) -> ('b * 'b)
 val compare : ?c1:('a -> 'a -> int) -> ?c2:('b -> 'b -> int) -> ('a * 'b) -> ('a * 'b) -> int
 
 (** builds a two-element enum of a pair *)
-val enum : ('a * 'a) -> 'a Enum.t
+val enum : ('a * 'a) -> 'a BatEnum.t
 
 (** builds a pair out of the first two values of an enum.  Raises [Failure] if insufficient elements *)
-val of_enum : 'a Enum.t -> ('a * 'a)
+val of_enum : 'a BatEnum.t -> ('a * 'a)
 
 (** Prints a pair using given printing functions *)
-val print : ('o IO.output -> 'a -> unit) -> ('o IO.output -> 'b -> unit) -> 'o IO.output -> ('a * 'b) -> unit
+val print : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> 'o BatIO.output -> ('a * 'b) -> unit
 

@@ -30,7 +30,7 @@
     O(1).
 
     Note that if you want a ``consumable sequence'', you should prefer
-    using enumerations (from module {!Enum}).
+    using enumerations (from module {!BatEnum}).
 
     @author Jeremie Dimino
 *)
@@ -44,7 +44,7 @@ and 'a node =
 
 include Interfaces.Mappable with type 'a mappable = 'a t
 
-val enum : 'a t -> 'a Enum.t
+val enum : 'a t -> 'a BatEnum.t
   (** [enum s] returns the enumeration of all element of [s].
 
       Since enumerations are consumable and sequence are not, it is
@@ -204,10 +204,10 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 
 (** {6 Printing} *)
 
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
   (**Print the contents of a sequence*)
 
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) -> 'b t -> string
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b t -> string
   (** Using a string printer, print a sequence to a string (as sprintf vs. printf) *)
 
 val t_printer : 'a Value_printer.t -> 'a t Value_printer.t

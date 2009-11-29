@@ -58,10 +58,10 @@ end
   include BaseBig_int
   include MakeNumeric(BaseBig_int)
 
-  let ( -- )  x y = Enum.seq x (add one) ( ge_big_int y )
+  let ( -- )  x y = BatEnum.seq x (add one) ( ge_big_int y )
   let ( --- ) x y = 
     if ge_big_int y x then x -- y 
-    else Enum.seq x pred (le_big_int y)
+    else BatEnum.seq x pred (le_big_int y)
 
-  let print out t = IO.nwrite out (to_string t)
+  let print out t = BatIO.nwrite out (to_string t)
 

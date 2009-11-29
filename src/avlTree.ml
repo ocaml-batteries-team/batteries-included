@@ -87,18 +87,18 @@ let rec fold f t init =
       fold f r x
 	
 let rec enum = function
-  | Empty             -> Enum.empty ()
+  | Empty             -> BatEnum.empty ()
   | Node (l, v, r, _) ->
-      Enum.append (enum l) (Enum.delay (fun () -> Enum.append (Enum.singleton v) (enum r)))
+      BatEnum.append (enum l) (BatEnum.delay (fun () -> BatEnum.append (BatEnum.singleton v) (enum r)))
 
 let rec enum_f f = function
-  | Empty             -> Enum.empty ()
+  | Empty             -> BatEnum.empty ()
   | Node (l, v, r, _) ->
-      Enum.append (enum l) (Enum.delay (fun () -> Enum.append (Enum.singleton (f v)) (enum r)))
+      BatEnum.append (enum l) (BatEnum.delay (fun () -> BatEnum.append (BatEnum.singleton (f v)) (enum r)))
 
 (*
 let rec enum_post = function
-  | Empty             -> Enum.empty ()
+  | Empty             -> BatEnum.empty ()
   | Node (l, v, r, _) ->
-      Enum.append (enum l) (Enum.delay (fun () -> Enum.append (enum r) (Enum.singleton v)))
+      BatEnum.append (enum l) (BatEnum.delay (fun () -> BatEnum.append (enum r) (BatEnum.singleton v)))
 *)

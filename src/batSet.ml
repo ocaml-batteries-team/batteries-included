@@ -146,19 +146,19 @@ module type S =
           [present] is [false] if [s] contains no element equal to [x],
           or [true] if [s] contains an element equal to [x]. *)
 
-    val enum: t -> elt Enum.t
+    val enum: t -> elt BatEnum.t
       (** Return an enumeration of all elements of the given set.
 	  The returned enumeration is sorted in increasing order with respect
 	  to the ordering [Ord.compare], where [Ord] is the argument
 	  given to {!Set.Make}. *)
 
-    val backwards: t -> elt Enum.t
+    val backwards: t -> elt BatEnum.t
       (** Return an enumeration of all elements of the given set.
 	  The returned enumeration is sorted in decreasing order with respect
 	  to the ordering [Ord.compare], where [Ord] is the argument
 	  given to {!Set.Make}. *)
 
-    val of_enum: elt Enum.t -> t
+    val of_enum: elt BatEnum.t -> t
 
 
     (** {6 Boilerplate code}*)
@@ -166,8 +166,8 @@ module type S =
     (** {7 Printing}*)
       
     val print :  ?first:string -> ?last:string -> ?sep:string -> 
-      ('a InnerIO.output -> elt -> unit) -> 
-      'a InnerIO.output -> t -> unit
+      ('a BatInnerIO.output -> elt -> unit) -> 
+      'a BatInnerIO.output -> t -> unit
 
       (** {6 Override modules}*)
       
@@ -217,7 +217,7 @@ module type S =
 	let item =
 	  try Queue.pop queue
 	  with Queue.Empty ->
-	    raise Enum.No_more_elements
+	    raise BatEnum.No_more_elements
 	in
 	match item with
 	  | Empty -> next ()
@@ -226,7 +226,7 @@ module type S =
 	      Queue.push r queue;
 	      e
       in Queue.add (impl_of_t t) queue;
-	Enum.from next*)
+	BatEnum.from next*)
 
     open Printf
     (* s1 in s2 -> -1, s2 in s1 -> 1, neither a subset -> min_int, eq -> 0 *)
@@ -261,11 +261,11 @@ module type S =
       | Node (l, e, r, _) -> rev_cons_iter r (C (e, l, t))
 
     let rec enum_next l () = match !l with
-        E -> raise Enum.No_more_elements
+        E -> raise BatEnum.No_more_elements
       | C (e, s, t) -> l := cons_iter s t; e
 
     let rec enum_backwards_next l () = match !l with
-        E -> raise Enum.No_more_elements
+        E -> raise BatEnum.No_more_elements
       | C (e, s, t) -> l := rev_cons_iter s t; e
 
     let rec enum_count l () =
@@ -278,18 +278,18 @@ module type S =
       let rec make l =
         let l = ref l in
         let clone() = make !l in
-          Enum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
+          BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
       in make (cons_iter (impl_of_t t) E)
 
     let backwards t =
       let rec make l =
         let l = ref l in
         let clone() = make !l in
-          Enum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
+          BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
       in make (rev_cons_iter (impl_of_t t) E)
 
     let of_enum e = 
-      Enum.fold (fun acc elem -> add elem acc) empty e
+      BatEnum.fold (fun acc elem -> add elem acc) empty e
 
     let map f e = fold (fun x acc -> add (f x) acc) e empty
 	
@@ -298,7 +298,7 @@ module type S =
     let filter_map f e = fold (fun x acc -> match f x with Some v -> add v acc | _ -> acc) e empty
 
     let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
-      Enum.print ~first ~last ~sep print_elt out (enum t)
+      BatEnum.print ~first ~last ~sep print_elt out (enum t)
 
 	
     module Exceptionless =

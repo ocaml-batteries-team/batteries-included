@@ -63,10 +63,10 @@ let min_elt t = fst (PMap.min_binding t)
 let max_elt t = fst (PMap.max_binding t)
 
 let enum t = 
-  Enum.map (fun (k, _) -> k) (PMap.enum t)
+  BatEnum.map (fun (k, _) -> k) (PMap.enum t)
 
 let of_enum t =
-  Enum.fold (fun acc elem -> add elem acc) empty t
+  BatEnum.fold (fun acc elem -> add elem acc) empty t
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
-  Enum.print ~first ~last ~sep print_elt out (enum t)
+  BatEnum.print ~first ~last ~sep print_elt out (enum t)

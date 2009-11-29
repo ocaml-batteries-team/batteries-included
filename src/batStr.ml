@@ -31,5 +31,5 @@ struct
       try let offset' = next r s offset in
 	Some ((match_beginning (), match_end (), matched_string s), offset')
       with Not_found -> None
-    in Enum.unfold offset aux
+    in BatEnum.unfold offset aux
 end

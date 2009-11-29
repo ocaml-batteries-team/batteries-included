@@ -48,4 +48,4 @@ val domain : 'a t -> ISet.t
 
 val map_to_set : ('a -> bool) -> 'a t -> ISet.t
 
-val enum : 'a t -> (int * int * 'a) Enum.t
+val enum : 'a t -> (int * int * 'a) BatEnum.t

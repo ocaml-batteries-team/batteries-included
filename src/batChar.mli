@@ -89,12 +89,12 @@ val of_digit : int -> char
     Raise [Invalid_argument "Char.of_digit"] if the
     argument is outside the range 0--9*)
 
-val enum: unit -> char Enum.t
+val enum: unit -> char BatEnum.t
 (** Produce the enumeration of all characters *)
 
-val range: ?until:char -> char -> char Enum.t
+val range: ?until:char -> char -> char BatEnum.t
 
-val ( -- ): char -> char -> char Enum.t
+val ( -- ): char -> char -> char BatEnum.t
 (** Produce the enumeration of a segment of characters.
 
     ['a' -- 'z'] is the enumeration of all characters
@@ -104,7 +104,7 @@ val ( -- ): char -> char -> char Enum.t
 
 (** {7 Printing}*)
 
-val print: 'a InnerIO.output -> Char.t -> unit
+val print: 'a BatInnerIO.output -> Char.t -> unit
 
 (**/**)
 

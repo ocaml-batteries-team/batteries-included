@@ -73,5 +73,5 @@ end
 
   include Number.MakeNumeric(BaseNum)
   include BaseNum
-  let print out t = InnerIO.nwrite out (to_string t)
+  let print out t = BatInnerIO.nwrite out (to_string t)
 

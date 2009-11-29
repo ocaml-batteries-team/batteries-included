@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-include IO
+include BatIO
 
 open BatMutex;;
 lock         := RMutex.make ();;
@@ -48,7 +48,7 @@ let in_channel_of_input inp =
 	let buf = String.create 4096 in
 	try
 	  while true do
-	    let read = IO.input inp buf 0 buffer in
+	    let read = BatIO.input inp buf 0 buffer in
 	      if read = 0 then
 		raise No_more_input;
 	      Pervasives.output cout buf 0 read
@@ -82,7 +82,7 @@ let out_channel_for_output out =
 		    aux ()
 	    in aux ())
   in
-  Thread.create (IO.copy inp) out;
+  Thread.create (BatIO.copy inp) out;
   cout
 
 *)

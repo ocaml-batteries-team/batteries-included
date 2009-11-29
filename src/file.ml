@@ -1,4 +1,4 @@
-open IO
+open BatIO
 open ListLabels
 open Unix
 
@@ -129,10 +129,10 @@ let with_do opener closer x f =
 let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
 let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
 
-let lines_of file = IO.lines_of (open_in file)
+let lines_of file = BatIO.lines_of (open_in file)
 
 let write_lines file lines = 
-  let doit output = IO.write_lines output lines in
+  let doit output = BatIO.write_lines output lines in
   let mode = [`trunc; `create] in
   with_file_out ~mode file doit 
     
@@ -152,7 +152,7 @@ let open_temporary_out ?mode ?perm ?(prefix="ocaml") ?(suffix="tmp") () : (_ out
       | Some l when List.mem `delete_on_exit l -> 
 	  Pervasives.at_exit (fun () -> 
 				try
-				  IO.close_out out;
+				  BatIO.close_out out;
 				  Sys.remove name
 				with
 				    _ -> ())

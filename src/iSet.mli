@@ -71,4 +71,4 @@ val max_elt : t -> int
 
 val choose : t -> int
 
-val enum : t -> (int * int) Enum.t
+val enum : t -> (int * int) BatEnum.t

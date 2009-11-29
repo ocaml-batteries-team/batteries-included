@@ -52,10 +52,10 @@ val str_encode : ?tbl:encoding_table -> string -> string
 val str_decode : ?tbl:decoding_table -> string -> string
 
 (** Generic base64 encoding over an output. *)
-val encode : ?tbl:encoding_table -> 'a IO.output -> 'a IO.output
+val encode : ?tbl:encoding_table -> 'a BatIO.output -> 'a BatIO.output
 
 (** Generic base64 decoding over an input. *)
-val decode : ?tbl:decoding_table -> IO.input -> IO.input
+val decode : ?tbl:decoding_table -> BatIO.input -> BatIO.input
 
 (** Create a valid decoding table from an encoding one. *)
 val make_decoding_table : encoding_table -> decoding_table

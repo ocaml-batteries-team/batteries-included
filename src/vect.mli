@@ -176,18 +176,18 @@ val remove : int -> int -> 'a t -> 'a t
 
 (** {6 Conversion}*)
 
-val enum : 'a t -> 'a Enum.t
+val enum : 'a t -> 'a BatEnum.t
   (** Returns an enumeration of the elements of the vector. 
       Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
 
-val of_enum : 'a Enum.t -> 'a t
+val of_enum : 'a BatEnum.t -> 'a t
   (** Build a vector from an enumeration.*)
 
-val backwards : 'a t -> 'a Enum.t
+val backwards : 'a t -> 'a BatEnum.t
   (** Returns an enumeration of the elements of a vector, from last to first. 
       Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
 
-val of_backwards : 'a Enum.t -> 'a t
+val of_backwards : 'a BatEnum.t -> 'a t
   (** Build a vector from an enumeration, from last to first.*)
 
 (** {6 Iteration and higher-order functions } *)
@@ -303,7 +303,7 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 
 (** {7 Printing}*)
   
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 
 (** {6 Functorial interface} *)
@@ -325,10 +325,10 @@ sig
   val iter : ('a -> unit) -> 'a t -> unit
   val map : ('a -> 'b) -> 'a t -> 'b t
   val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  val enum : 'a t -> 'a Enum.t
-  val backwards : 'a t -> 'a Enum.t
-  val of_enum : 'a Enum.t -> 'a t
-  val of_backwards : 'a Enum.t -> 'a t
+  val enum : 'a t -> 'a BatEnum.t
+  val backwards : 'a t -> 'a BatEnum.t
+  val of_enum : 'a BatEnum.t -> 'a t
+  val of_backwards : 'a BatEnum.t -> 'a t
 end
 
 module Make :
@@ -498,6 +498,6 @@ sig
 	The order of the elements in the input array is preserved. *)
 
   (** {7 Printing}*)
-  val print : ?first:string -> ?last:string -> ?sep:string -> ('a InnerIO.output -> 'b -> unit) ->  'a InnerIO.output -> 'b t -> unit
+  val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 end
 

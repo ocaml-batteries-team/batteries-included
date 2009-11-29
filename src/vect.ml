@@ -279,25 +279,25 @@ let rec iter f = function
 
 let enum e =
   let rec aux = function
-    | Empty                 -> Enum.empty ()
+    | Empty                 -> BatEnum.empty ()
     | Leaf s                -> STRING.enum s
-    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux l))
-	                                   (Enum.delay (fun () -> aux r))
+    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux l))
+	                                   (BatEnum.delay (fun () -> aux r))
   in aux e
 
 let backwards e =
   let rec aux = function
-    | Empty                 -> Enum.empty ()
+    | Empty                 -> BatEnum.empty ()
     | Leaf s                -> STRING.backwards s
-    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux r))
-	                                   (Enum.delay (fun () -> aux l))
+    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux r))
+	                                   (BatEnum.delay (fun () -> aux l))
   in aux e
 
 let of_enum e =
-  Enum.fold (fun acc x -> append_char x acc) empty e
+  BatEnum.fold (fun acc x -> append_char x acc) empty e
 
 let of_backwards e =
-  Enum.fold (fun acc x -> prepend_char x acc) empty e
+  BatEnum.fold (fun acc x -> prepend_char x acc) empty e
 
 let iteri f r =
   let rec aux f i = function
@@ -459,7 +459,7 @@ let init n f =
     List.fold_left (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc) (empty:'a t) (base:'a array list)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
-  Enum.print ~first ~last ~sep print_a out (enum t)
+  BatEnum.print ~first ~last ~sep print_a out (enum t)
 
 (* Functorial interface *)
 
@@ -480,10 +480,10 @@ sig
   val iter : ('a -> unit) -> 'a t -> unit
   val map : ('a -> 'b) -> 'a t -> 'b t
   val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  val enum : 'a t -> 'a Enum.t
-  val backwards : 'a t -> 'a Enum.t
-  val of_enum : 'a Enum.t -> 'a t
-  val of_backwards : 'a Enum.t -> 'a t
+  val enum : 'a t -> 'a BatEnum.t
+  val backwards : 'a t -> 'a BatEnum.t
+  val of_enum : 'a BatEnum.t -> 'a t
+  val of_backwards : 'a BatEnum.t -> 'a t
 end
 
 module Make(RANDOMACCESS : RANDOMACCESS)
@@ -865,27 +865,27 @@ let filter_map f =
 
 let enum e =
   let rec aux = function
-    | Empty                 -> Enum.empty ()
+    | Empty                 -> BatEnum.empty ()
     | Leaf s                -> RANDOMACCESS.enum s
-    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux l))
-	                                   (Enum.delay (fun () -> aux r))
+    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux l))
+	                                   (BatEnum.delay (fun () -> aux r))
   in aux e
 
 let backwards e =
   let rec aux = function
-    | Empty                 -> Enum.empty ()
+    | Empty                 -> BatEnum.empty ()
     | Leaf s                -> RANDOMACCESS.backwards s
-    | Concat(l, _, r, _, _) -> Enum.append (Enum.delay (fun () -> aux r))
-	                                   (Enum.delay (fun () -> aux l))
+    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux r))
+	                                   (BatEnum.delay (fun () -> aux l))
   in aux e
 
 let of_enum e =
-  Enum.fold (fun acc x -> append_char x acc) empty e
+  BatEnum.fold (fun acc x -> append_char x acc) empty e
 
 let of_backwards e =
-  Enum.fold (fun acc x -> prepend_char x acc) empty e
+  BatEnum.fold (fun acc x -> prepend_char x acc) empty e
 
   let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
-    Enum.print ~first ~last ~sep print_a out (enum t)
+    BatEnum.print ~first ~last ~sep print_a out (enum t)
 
 end

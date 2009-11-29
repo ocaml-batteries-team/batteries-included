@@ -98,7 +98,7 @@ val string_partial_match : regexp -> string -> int -> bool
    This includes the case of a true complete match. *)
 
 
-val search : ?offset:int -> ?backwards:bool -> regexp -> string -> (int * int * string) Enum.t
+val search : ?offset:int -> ?backwards:bool -> regexp -> string -> (int * int * string) BatEnum.t
   (**[search r s] searches for all the substrings of [s] matching
      regular expression [r]. The result is a triple start offset/end offset/
      matched string.

@@ -27,10 +27,10 @@ let enum () =
   let already_through = ref false   in
   let f  () =
     if  !current_value = max_int then
-      if !already_through then raise Enum.No_more_elements
+      if !already_through then raise BatEnum.No_more_elements
       else ( already_through := true; max_int )
     else Ref.post_incr current_value
-  in Enum.from f
+  in BatEnum.from f
 
 module BaseInt = struct
   
@@ -88,13 +88,13 @@ module BaseInt = struct
 
   let ( ** ) a b = pow a b
 
-  let print out t = InnerIO.nwrite out (string_of_int t)
+  let print out t = BatInnerIO.nwrite out (string_of_int t)
   let t_printer paren out t = print out t
 
-  let ( -- )  x y = Enum.seq x (add one) ((>=) y)
+  let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)
   let ( --- ) x y = 
     if x <= y then x -- y 
-    else Enum.seq x pred ((<=) y) 
+    else BatEnum.seq x pred ((<=) y) 
 
 end
 

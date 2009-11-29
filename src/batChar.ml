@@ -65,10 +65,10 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
   external unsafe_chr : int -> char = "%identity"
 
   let enum () = 
-    Enum.map unsafe_chr (Enum.( -- ) 0 255)
+    BatEnum.map unsafe_chr (BatEnum.( -- ) 0 255)
 
   let ( -- ) from last =
-    Enum.map unsafe_chr (Enum.( -- ) (unsafe_int from) (unsafe_int last))
+    BatEnum.map unsafe_chr (BatEnum.( -- ) (unsafe_int from) (unsafe_int last))
 
   let range ?until from =
     let last = match until with
@@ -77,5 +77,5 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
       from -- last
 
 
-  let print out t = InnerIO.write out t
+  let print out t = BatInnerIO.write out t
 

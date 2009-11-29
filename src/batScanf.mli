@@ -137,7 +137,7 @@ val from_function : (unit -> char) -> scanbuf;;
     When the function has no more character to provide, it must signal an
     end-of-input condition by raising the exception [End_of_file]. *)
 
-val from_input : IO.input -> scanbuf;;
+val from_input : BatIO.input -> scanbuf;;
 (** [Scanning.from_channel ic] returns a scanning buffer which reads from the
     input channel [ic], starting at the current reading position. *)
 
@@ -157,7 +157,7 @@ val name_of_input : scanbuf -> string;;
    {6 Obsolete}
 *)
 
-val from_channel : IO.input -> scanbuf;;
+val from_channel : BatIO.input -> scanbuf;;
 (** @obsolete use {!from_input}*)
 
 

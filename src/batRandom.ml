@@ -48,9 +48,9 @@
     let random_enum state next =
       let rec aux state =
 	let next  () = next state in
-	let count () = raise Enum.Infinite_enum in
+	let count () = raise BatEnum.Infinite_enum in
 	let clone () = aux ( State.copy state ) in
-	  Enum.make next count clone
+	  BatEnum.make next count clone
       in aux state
 
     let enum_bits state () =

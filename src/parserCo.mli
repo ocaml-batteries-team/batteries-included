@@ -69,7 +69,7 @@ sig
   val get_state : ('a, 'b) t -> 'b state
   val set_full_state : ('a, 'b) t -> 'c -> ('a  -> 'c -> 'c) -> ('a, 'c) t
 
-  val of_enum      : 'a Enum.t     -> 'b -> ('a  -> 'b -> 'b) -> ('a, 'b) t
+  val of_enum      : 'a BatEnum.t     -> 'b -> ('a  -> 'b -> 'b) -> ('a, 'b) t
 
 end
 
@@ -151,7 +151,7 @@ val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) Std.result
      details on the parsing error.*)
 
 
-(*val enum_runs: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> 'b Enum.t
+(*val enum_runs: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> 'b BatEnum.t
 val list_runs: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> 'b LazyList.t*)
 
 

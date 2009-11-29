@@ -75,11 +75,11 @@ val get : 'a option -> 'a
 val get_exn : 'a option -> exn -> 'a
 (** [get_exn (Some x) e] returns [x] and [get_exn None e] raises [e]. *)
 
-val enum: 'a option -> 'a Enum.t
+val enum: 'a option -> 'a BatEnum.t
 (** [enum (Some x)] returns the singleton [x], while [enum None] returns
     the empty enumeration*)
 
-val of_enum: 'a Enum.t -> 'a option
+val of_enum: 'a BatEnum.t -> 'a option
 (** [of_enum e] consumes the first element of [e], if it exists, and 
     returns [Some e]. If [e] is empty, return [None] *)
 
@@ -109,7 +109,7 @@ end
 
 (** {7 Printing}*)
 
-val print : ('a InnerIO.output -> 'b -> unit) -> 'a InnerIO.output -> 'b t -> unit
+val print : ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 
 val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
 
