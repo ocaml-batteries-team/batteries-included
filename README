@@ -45,6 +45,11 @@ file to ~/.ocamlinit:
 
    $ cp ocamlinit ~/.ocamlinit
 
+If your project currently uses ExtLib, most likely you can just change
+[-package extlib] to [-package aaa] and you'll be using AAA-batteries.
+If your project depends on libraries that depend on extlib, you'll
+have to use [-package extlib,aaa-extlibcompat] and continue to use
+ExtLib, but also be able to use much of AAA.
 
 *** Extending Batteries Included ***
 
