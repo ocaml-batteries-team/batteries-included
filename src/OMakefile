@@ -98,35 +98,7 @@ OBJECTS[] =
     batteries_print
     batteries
 
-EXTLIB_OBJS[] =
-     base64
-     bitSet
-     dllist
-     dynArray
-     enum
-     extArray
-     extHashtbl
-     extList
-     extString
-     global
-     IO
-     option
-     optParse
-     pMap
-     refList
-     std
-     # uChar
-     # unzip
-     # uTF8
-
-EXTLIB_COMPAT_LAYER_OBJS[] =
-     extlibcompat
-
-EXTLIB_COMPAT_OBJS = $(EXTLIB_COMPAT_LAYER_OBJS) $(filter-out $(EXTLIB_OBJS), $(OBJECTS))
-
-OCamlLibrary(batteries, $(set $(EXTLIB_COMPAT_LAYER_OBJS) $(EXTLIB_OBJS) $(OBJECTS)))
-
-OCamlLibrary(batteries_extlib, $(EXTLIB_COMPAT_OBJS))
+OCamlLibrary(batteries, $(OBJECTS))
 
 batteries_config.ml: batteries_config.mlp
 	rm(-f batteries_config.ml)
@@ -136,9 +108,6 @@ batteries_config.ml: batteries_config.mlp
 	    batteries_config.mlp > batteries_config.ml
 	chmod(444 batteries_config.ml)
 
-AAA_FILES[] += $(file $(glob *.mli *.cmi batteries.cma batteries.cmxa batteries.a $(EXTRA)))
-EXTLIB_COMPAT_FILES[] += \
-    $(file batteries_extlib.cma batteries_extlib.cmxa \
-           $(filter-exists $(addsuffixes .cmi .mli, $(EXTLIB_COMPAT_OBJS))))
+AAA_FILES[] += $(file $(glob *.mli *.cmi *.cma *.cmxa *.a $(EXTRA)))
 
-all: $(addsuffixes .cma .cmxa, batteries batteries_extlib) $(EXTRA)
+all: batteries.cmxa batteries.cma $(EXTRA)
