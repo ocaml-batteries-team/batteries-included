@@ -10,7 +10,6 @@ EXTRA[] =
 
 OBJECTS[] =
     legacy
-    base64
     batArg
     batArray
     batBigarray
@@ -55,21 +54,21 @@ OBJECTS[] =
     batUnit
     batUnix
     batUTF8
-    bitSet
-    charEncodings
-    charParser
-    concurrent
-    dllist
-    dynArray
-    file
-    global
+    batBase64
+    batBitSet
+    batCharEncodings
+    batCharParser
+    batConcurrent
+    batDllist
+    batDynArray
+    batFile
+    batGlobal
     innerWeaktbl
-    interfaces
-    IOThreads
-    lazyList
-    logger
-    monad
-    multiPMap
+    batInterfaces
+    batLazyList
+    batLogger
+    batMonad
+    batMultiPMap
     number
     option
     optParse

@@ -1,5 +1,6 @@
 (* open this to extend all Foo with BatFoo *)
 
+(* stdlib modules *)
 module Arg = struct include Arg include BatArg end
 module Array = struct include Array include BatArray end
 (* ArrayLabels *)
@@ -30,6 +31,25 @@ module Stack = struct include Stack include BatStack end
 module Stream = struct include Stream include BatStream end
 module String = struct include String include BatString end
 module Sys = struct include Sys include BatSys end
+
+(* Extlib modules not replacing stdlib *)
+module Base64 = BatBase64
+module BitSet = BatBitSet
+module Bit_set = BatBitSet
+module Dllist = BatDllist
+module DynArray = BatDynArray
+module File = BatFile
+module Global = BatGlobal
+module Interfaces = BatInterfaces
+module LazyList = BatLazyList
+module Logger = BatLogger
+module Monad = BatMonad
+module MultiPMap = BatMultiPMap
+
+
+(* Batteries specific modules *)
+module CharParser = BatCharParser
+module Concurrent = BatConcurrent
 
 (* Unix *)
 module Unix = struct include Unix include BatUnix end

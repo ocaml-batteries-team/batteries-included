@@ -128,17 +128,17 @@ let find p xs = xs.(findi p xs)
 let filter p xs =
   let n = length xs in
   (* Use a bitset to store which elements will be in the final array. *)
-  let bs = BitSet.create n in
+  let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p xs.(i) then BitSet.set bs i
+    if p xs.(i) then BatBitSet.set bs i
   done;
   (* Allocate the final array and copy elements into it. *)
-  let n' = BitSet.count bs in
+  let n' = BatBitSet.count bs in
   let j = ref 0 in
   let xs' = init n'
     (fun _ ->
        (* Find the next set bit in the BitSet. *)
-       while not (BitSet.is_set bs !j) do incr j done;
+       while not (BatBitSet.is_set bs !j) do incr j done;
        let r = xs.(!j) in
        incr j;
        r) in
@@ -152,18 +152,18 @@ let find_all = filter
 let partition p xs =
   let n = length xs in
   (* Use a bitset to store which elements will be in which final array. *)
-  let bs = BitSet.create n in
+  let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p xs.(i) then BitSet.set bs i
+    if p xs.(i) then BatBitSet.set bs i
   done;
   (* Allocate the final arrays and copy elements into them. *)
-  let n1 = BitSet.count bs in
+  let n1 = BatBitSet.count bs in
   let n2 = n - n1 in
   let j = ref 0 in
   let xs1 = init n1
     (fun _ ->
        (* Find the next set bit in the BitSet. *)
-       while not (BitSet.is_set bs !j) do incr j done;
+       while not (BatBitSet.is_set bs !j) do incr j done;
        let r = xs.(!j) in
        incr j;
        r) in
@@ -171,7 +171,7 @@ let partition p xs =
   let xs2 = init n2
     (fun _ ->
        (* Find the next clear bit in the BitSet. *)
-       while BitSet.is_set bs !j do incr j done;
+       while BatBitSet.is_set bs !j do incr j done;
        let r = xs.(!j) in
        incr j;
        r) in
