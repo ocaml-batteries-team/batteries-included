@@ -1146,29 +1146,29 @@ let transcode_in inp enc = (*TODO: Make more efficient*)
     if Encoding.name_of in_enc = Encoding.name_of out_enc then 
 	unsafe_convert inp enc (*No need to get through objects for something that simple.*)
     else
-      let buffer       = RefList.empty () (*A list of bytes already read*) in
+      let buffer       = BatRefList.empty () (*A list of bytes already read*) in
       let push_next () =
 	(*Need to read one char, convert it, decompose the converted string and return the first byte*)
 	let c       = read inp.content in
 	let encoded = Encoding.recode_string (BatString.of_char c) ~in_enc ~out_enc in
-	  RefList.copy_enum ~dst:buffer ~src:(BatString.enum encoded)
+	  BatRefList.copy_enum ~dst:buffer ~src:(BatString.enum encoded)
       in
       let transcoded = 
 	wrap_in 
-	  ~read: (fun ()    -> if RefList.is_empty buffer then push_next (); RefList.pop buffer)
+	  ~read: (fun ()    -> if BatRefList.is_empty buffer then push_next (); BatRefList.pop buffer)
 	  ~input:(fun s o l -> 
-		    Return.label (fun label ->
+		    BatReturn.label (fun label ->
   		      for i = 0 to l - 1 do
-			if RefList.is_empty buffer then 
+			if BatRefList.is_empty buffer then 
 			  try
 			    push_next ();
-			    String.set s ( o + i ) ( RefList.pop buffer )
+			    String.set s ( o + i ) ( BatRefList.pop buffer )
 			  with No_more_input as e -> (*We're done reading.*)
 			                             (*Now, we must determine if it's cause to raise an exception.*)
 			    if i = 0 then (*The input was empty*) raise e
-			    else          (*The input was just shorter than expected*) Return.return label i
+			    else          (*The input was just shorter than expected*) BatReturn.return label i
 		      done;l))
-	  ~close:(fun () -> RefList.clear buffer)
+	  ~close:(fun () -> BatRefList.clear buffer)
 	  ~underlying:[inp.content]
       in as_encoded transcoded enc
       

@@ -35,7 +35,7 @@ let of_command c = (c.kwd, c.spec, c.doc)
 
 let handle ?(usage="") cmd = 
   let speclist = List.map of_command cmd
-  and anonymous= RefList.empty ()       in
-  Arg.parse speclist (fun s -> RefList.push anonymous s) usage;
-  List.rev (RefList.to_list anonymous)
+  and anonymous= BatRefList.empty ()       in
+  Arg.parse speclist (fun s -> BatRefList.push anonymous s) usage;
+  List.rev (BatRefList.to_list anonymous)
 

@@ -185,24 +185,24 @@ let translate f (str,off,len) =
   BatString.init len (fun i -> f str.[off+i])
 
 let tokens p (str,off,len) =
-  let i = ref 0 and j = ref 0 and acc = RefList.empty () in
+  let i = ref 0 and j = ref 0 and acc = BatRefList.empty () in
   while !j < len do
     while !i < len && p str.[off+ !i] do incr i; done;
     j := !i+1;
     while !j < len && not (p str.[off+ !j]) do incr j; done;
-    RefList.push acc (str, !i, !j);
+    BatRefList.push acc (str, !i, !j);
     i := !j+1;
   done;
-  RefList.to_list acc
+  BatRefList.to_list acc
 
 let fields p (str, off, len) =
-  let i = ref 0 and j = ref 0 and acc = RefList.empty() in
+  let i = ref 0 and j = ref 0 and acc = BatRefList.empty() in
   while !j < len do
     while !j < len && not (p str.[off+ !j]) do incr j; done;
-    RefList.push acc (str, !i, !j);
+    BatRefList.push acc (str, !i, !j);
     incr j; i := !j; 
   done;
-  RefList.to_list acc
+  BatRefList.to_list acc
 
 let fold_left f init (str, off, len) =
   let rec loop i result =

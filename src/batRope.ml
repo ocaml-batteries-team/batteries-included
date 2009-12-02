@@ -29,7 +29,7 @@
 module UChar = CamomileLibrary.UChar
 module UTF8 = BatUTF8
 
-open Return
+open BatReturn
 
 (**Low-level optimization*)
 let int_max (x:int) (y:int) = if x < y then y else x
@@ -577,7 +577,7 @@ let bulk_backwards s =
 
 let of_enum e =
   let get_leaf () =
-    Return.label
+    BatReturn.label
       (fun label ->
 	 let b = Buffer.create 256 in
 	 for i = 1 to 256 do

@@ -20,7 +20,7 @@
  *)
 
 
-open Number
+open BatNumber
 
 module BaseInt64 = struct
   include Int64
@@ -29,7 +29,7 @@ module BaseInt64 = struct
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul
 end
 
-  include Number.MakeNumeric(BaseInt64)
+  include BatNumber.MakeNumeric(BaseInt64)
   include BaseInt64
 
   let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)

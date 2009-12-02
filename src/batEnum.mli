@@ -575,7 +575,7 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 
     This module will let you use sequence and fold_monad functions over enumerations.
 *)
-module WithMonad : functor (Mon : Monad.S) -> sig
+module WithMonad : functor (Mon : BatMonad.S) -> sig
   type 'a m = 'a Mon.m
 (** Type of the monadic elements. *)
   

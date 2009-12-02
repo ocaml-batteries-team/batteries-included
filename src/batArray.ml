@@ -183,7 +183,7 @@ let enum xs =
     BatEnum.make
       ~next:(fun () ->
 	       if !start < n then
-		 xs.(Ref.post_incr start)
+		 xs.(BatRef.post_incr start)
 	       else
 		 raise BatEnum.No_more_elements)
       ~count:(fun () ->
@@ -199,14 +199,14 @@ let backwards xs =
     BatEnum.make
       ~next:(fun () ->
 	       if !start > 0 then 
-		 xs.(Ref.pre_decr start)
+		 xs.(BatRef.pre_decr start)
 	       else
 		 raise BatEnum.No_more_elements)
       ~count:(fun () ->
 		!start)
       ~clone:(fun () ->
 		let xs' = Array.sub xs 0 !start in
-		make (Ref.copy start) xs')
+		make (BatRef.copy start) xs')
   in
   make (ref (length xs)) xs
 

@@ -161,8 +161,8 @@ val prerr_all : input -> unit
 
 (** {7 General output functions} *)
 
-val open_out : ?mode:(File.open_out_flag list) -> 
-               ?perm:File.permission           ->
+val open_out : ?mode:(BatFile.open_out_flag list) -> 
+               ?perm:BatFile.permission           ->
   string -> unit BatIO.output
   (** Open the named file for writing, and return a new output channel
       on that file. You will need to close the file once you have
@@ -213,7 +213,7 @@ val output_char : unit BatIO.output -> char -> unit
 val output_string : unit BatIO.output -> string -> unit
 (** Write the string on the given output channel. *)
 
-val output_rope : unit BatIO.output -> Rope.t -> unit
+val output_rope : unit BatIO.output -> BatRope.t -> unit
 (** Write the rope on the given output channel. *)
 
 val output : unit BatIO.output -> string -> int -> int -> unit
@@ -257,8 +257,8 @@ val close_out_noerr : unit BatIO.output -> unit
  
 (** {7 General input functions} *)
 
-val open_in : ?mode:(File.open_in_flag list) -> 
-  ?perm:File.permission -> 
+val open_in : ?mode:(BatFile.open_in_flag list) -> 
+  ?perm:BatFile.permission -> 
   string -> BatIO.input
 (** Open the named file for reading. You will need to close the file once you have
     finished using it.
@@ -781,62 +781,62 @@ val default_printer_flags : printer_flags
 
 (** {7 Equivalent of classical directives} *)
 
-val printer_a : ((unit BatIO.output -> 'a -> unit) -> 'a -> 'b, 'b) Print.directive
-val printer_t : ((unit BatIO.output -> unit) -> 'a, 'a) Print.directive
-val printer_B : (bool -> 'a, 'a) Print.directive
-val printer_c : (char -> 'a, 'a) Print.directive
-val printer_C : (char -> 'a, 'a) Print.directive
-val printer_s : ?flags : printer_flags -> (string -> 'a, 'a) Print.directive
-val printer_S : ?flags : printer_flags -> (string -> 'a, 'a) Print.directive
+val printer_a : ((unit BatIO.output -> 'a -> unit) -> 'a -> 'b, 'b) BatPrint.directive
+val printer_t : ((unit BatIO.output -> unit) -> 'a, 'a) BatPrint.directive
+val printer_B : (bool -> 'a, 'a) BatPrint.directive
+val printer_c : (char -> 'a, 'a) BatPrint.directive
+val printer_C : (char -> 'a, 'a) BatPrint.directive
+val printer_s : ?flags : printer_flags -> (string -> 'a, 'a) BatPrint.directive
+val printer_S : ?flags : printer_flags -> (string -> 'a, 'a) BatPrint.directive
 
-val printer_d : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_i    : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_int  : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_u    : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_uint : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_x : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_X : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_hex : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_HEX : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_o : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_oct : ?flags : printer_flags -> (int -> 'a, 'a) Print.directive
-val printer_ld : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
-val printer_li : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
-val printer_lu : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
-val printer_lx : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
-val printer_lX : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
-val printer_lo : ?flags : printer_flags -> (int32 -> 'a, 'a) Print.directive
-val printer_Ld : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
-val printer_Li : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
-val printer_Lu : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
-val printer_Lx : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
-val printer_LX : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
-val printer_Lo : ?flags : printer_flags -> (int64 -> 'a, 'a) Print.directive
-val printer_nd : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
-val printer_ni : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
-val printer_nu : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
-val printer_nx : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
-val printer_nX : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
-val printer_no : ?flags : printer_flags -> (nativeint -> 'a, 'a) Print.directive
+val printer_d : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_i    : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_int  : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_u    : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_uint : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_x : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_X : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_hex : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_HEX : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_o : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_oct : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
+val printer_ld : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
+val printer_li : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
+val printer_lu : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
+val printer_lx : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
+val printer_lX : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
+val printer_lo : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
+val printer_Ld : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
+val printer_Li : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
+val printer_Lu : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
+val printer_Lx : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
+val printer_LX : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
+val printer_Lo : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
+val printer_nd : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
+val printer_ni : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
+val printer_nu : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
+val printer_nx : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
+val printer_nX : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
+val printer_no : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
 
-val printer_f : (float -> 'a, 'a) Print.directive
-val printer_F : (float -> 'a, 'a) Print.directive
+val printer_f : (float -> 'a, 'a) BatPrint.directive
+val printer_F : (float -> 'a, 'a) BatPrint.directive
 
 (** {7 Batteries-specific directives} *)
 
-val printer_format : (('a, 'b) Print.format -> 'a, 'b) Print.directive
+val printer_format : (('a, 'b) BatPrint.format -> 'a, 'b) BatPrint.directive
   (** [printer_format] takes a format, then the arguments of the format and
       print according to it. For instance,
 
       {[sprintf p"x = %format * %d" p"%d + %d" 1 3 5]} produces ["x = 1 + 3 * 5"]
   *)
 
-val printer_sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) Print.directive
-val printer_Sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) Print.directive
-val printer_rope : (Rope.t -> 'a, 'a) Print.directive
-val printer_utf8 : (BatUTF8.t -> 'a, 'a) Print.directive
-val printer_obj : (< print : unit BatIO.output -> unit; .. > -> 'a, 'a) Print.directive
-val printer_exn : (exn -> 'a, 'a) Print.directive
+val printer_sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
+val printer_Sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
+val printer_rope : (BatRope.t -> 'a, 'a) BatPrint.directive
+val printer_utf8 : (BatUTF8.t -> 'a, 'a) BatPrint.directive
+val printer_obj : (< print : unit BatIO.output -> unit; .. > -> 'a, 'a) BatPrint.directive
+val printer_exn : (exn -> 'a, 'a) BatPrint.directive
 
 (** {7 Value printers} *)
 
@@ -871,7 +871,7 @@ type ('a, 'b) result = ('a, 'b) Std.result =
    concurrency, you probably won't need this.
 *)
 
-val lock: Concurrent.lock ref
+val lock: BatConcurrent.lock ref
 (**
    A lock used to synchronize internal operations.
 

@@ -147,7 +147,7 @@
 	  allows the module [Int] to be passed as argument to the functors
 	  {!Set.Make} and {!Map.Make}. *)
       
-    val operations : int Number.numeric
+    val operations : int BatNumber.numeric
 
     val ( -- ) : t -> t -> t BatEnum.t
       (** Enumerate an interval.
@@ -316,7 +316,7 @@ module Safe_int :
 	  allows the module [Int] to be passed as argument to the functors
 	  {!Set.Make} and {!Map.Make}. *)
       
-    val operations : t Number.numeric
+    val operations : t BatNumber.numeric
 
     external of_int : int -> t = "%identity"
     external to_int : t -> int = "%identity"

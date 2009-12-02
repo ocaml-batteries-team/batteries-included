@@ -71,7 +71,7 @@ type t = big_int
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
-    val operations : t Number.numeric
+    val operations : t BatNumber.numeric
 
 (** {6 Arithmetic operations} *)
 

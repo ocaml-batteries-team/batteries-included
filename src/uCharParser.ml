@@ -20,26 +20,26 @@
 
 
 
-open ParserCo
+open BatParserCo
 open CamomileLibrary
 module UTF8 = BatUTF8
 
 let string_of_uchar c = (UTF8.to_string (UTF8.of_char c))
 
 (** {6 Entry point} *)
-type position = CharParser.position = { offset : int; line : int; }
+type position = BatCharParser.position = { offset : int; line : int; }
 
 let start_position =
-{ CharParser.offset = 1;
-  CharParser.line   = 1 }
+{ BatCharParser.offset = 1;
+  BatCharParser.line   = 1 }
 
 let advance c p =
-  if BatUChar.is_newline c then((*Printf.eprintf "[Have reached line %i]\n%!" (p.line + 1);*) { CharParser.offset = 1; CharParser.line = p.CharParser.line + 1})
-  else                      { (p) with CharParser.offset = p.CharParser.offset + 1}
+  if BatUChar.is_newline c then((*Printf.eprintf "[Have reached line %i]\n%!" (p.line + 1);*) { BatCharParser.offset = 1; line = p.BatCharParser.line + 1})
+  else                      { (p) with BatCharParser.offset = p.BatCharParser.offset + 1}
 
 let source_of_enum   s = Source.of_enum s start_position advance
 
-let source_of_rope   s = source_of_enum (Rope.enum s)
+let source_of_rope   s = source_of_enum (BatRope.enum s)
 
 let source_of_utf8   s = source_of_enum (UTF8.enum s)
 
@@ -70,8 +70,8 @@ let string s = label ("\"" ^ s ^ "\"") (
   in aux 0
 )
 
-let rope s = label ("\"" ^ ( UTF8.to_string (Rope.to_ustring s) ) ^ "\"") (
-  BatEnum.fold (fun (acc:(_, _, _) ParserCo.t) c -> (exactly c) >>> acc ) (return s) (Rope.backwards s)
+let rope s = label ("\"" ^ ( UTF8.to_string (BatRope.to_ustring s) ) ^ "\"") (
+  BatEnum.fold (fun (acc:(_, _, _) BatParserCo.t) c -> (exactly c) >>> acc ) (return s) (BatRope.backwards s)
 )
 
 let case_char c =
@@ -81,8 +81,8 @@ let case_char c =
 
 (*That one is somewhat harder as the lower-cased/upper-cased string don't necessarily
   have the same length...*)
-let case_rope s = label ("case insensitive \"" ^ (UTF8.to_string (Rope.to_ustring s)) ^ "\"") (
-  let lower_rope  = Rope.lowercase s       in                          (*lowercase the original string*)
+let case_rope s = label ("case insensitive \"" ^ (UTF8.to_string (BatRope.to_ustring s)) ^ "\"") (
+  let lower_rope  = BatRope.lowercase s       in                          (*lowercase the original string*)
   let pick enum   =
     match BatEnum.get enum with
       | None   -> raise Not_found
@@ -91,21 +91,21 @@ let case_rope s = label ("case insensitive \"" ^ (UTF8.to_string (Rope.to_ustrin
   let rec aux enum acc =
     if BatEnum.is_empty enum then return acc
     else
-      ParserCo.any >>= fun c ->                                         (*lowercase the next char*)
+      BatParserCo.any >>= fun c ->                                         (*lowercase the next char*)
 	let lower_char = UTF8.lowercase (UTF8.of_char c) in             (*check that's what follows in the string*)
 	let char_enum  = UTF8.enum lower_char            in
 	match try Some (BatEnum.for_all (fun c -> pick enum = c) char_enum)
 	      with Not_found -> None
 	with Some false         (*The substring doesn't match.                                  *)
 	  |  None       -> fail (*We have reached the end of the enumeration but not that of [s]*)
-	  |  Some true  -> aux enum (Rope.append (Rope.of_ustring lower_char) acc)
+	  |  Some true  -> aux enum (BatRope.append (BatRope.of_ustring lower_char) acc)
 (*  in aux (Rope.get 0 lower_rope)*)
-  in aux (Rope.enum lower_rope) s
+  in aux (BatRope.enum lower_rope) s
 )
 
-let case_ustring s = (case_rope (Rope.of_ustring s)) >>= fun s' -> return (Rope.to_ustring s')
+let case_ustring s = (case_rope (BatRope.of_ustring s)) >>= fun s' -> return (BatRope.to_ustring s')
 
-let case_string s = (case_rope (Rope.of_ustring (UTF8.of_string s))) >>= fun s' -> return (UTF8.to_string (Rope.to_ustring s'))
+let case_string s = (case_rope (BatRope.of_ustring (UTF8.of_string s))) >>= fun s' -> return (UTF8.to_string (BatRope.to_ustring s'))
 
 let whitespace = satisfy BatUChar.is_whitespace
 

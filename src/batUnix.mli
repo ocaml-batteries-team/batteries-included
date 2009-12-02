@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Concurrent
+open BatConcurrent
 
 (** Low-level interface to the operating system (both Unix and Windows).
 
@@ -275,7 +275,7 @@ val is_directory : string -> bool
    concurrency, you probably won't need this.
 *)
 
-val lock: Concurrent.lock ref
+val lock: BatConcurrent.lock ref
 (**
    A lock used to synchronize internal operations.
 

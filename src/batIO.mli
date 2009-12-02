@@ -358,7 +358,7 @@ val tab_out : ?tab:char -> int -> 'a output -> unit output
 val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
 
-val read_uall : input -> Rope.t
+val read_uall : input -> BatRope.t
 (** Read the whole contents of a UTF-8 encoded input*)
 
 val pipe : unit -> input * unit output
@@ -440,13 +440,13 @@ val read_uchar: input -> UChar.t
 val read_string : input -> string
 (** Read a null-terminated string. *)
 
-val read_rope: input -> int -> Rope.t
+val read_rope: input -> int -> BatRope.t
 (** Read up to n uchars from a UTF-8 encoded input*)
 
 val read_line : input -> string
 (** Read a LF or CRLF terminated string. *)
 
-val read_uline: input -> Rope.t
+val read_uline: input -> BatRope.t
 (** Read a line of UTF-8*)
 
 val write_byte : 'a output -> int -> unit
@@ -479,7 +479,7 @@ val write_float : 'a output -> float -> unit
 val write_string : 'a output -> string -> unit
 (** Write a string and append an null character. *)
 
-val write_rope : _ output -> Rope.t -> unit
+val write_rope : _ output -> BatRope.t -> unit
 (** Write a character rope onto a UTF-8 encoded output.*)
 
 val write_line : 'a output -> string -> unit
@@ -491,7 +491,7 @@ val write_line : 'a output -> string -> unit
     then a LF is inserted at the end of the line. If your system
     favors CRLF (or ['\r\n']), then this is what will be inserted.*)
 
-val write_uline: _ output -> Rope.t -> unit
+val write_uline: _ output -> BatRope.t -> unit
 (** Write one line onto a UTF-8 encoded output.*)
 
 (** Same operations as module {!BatIO}, but with big-endian encoding *)
@@ -880,7 +880,7 @@ val lines_of : input -> string BatEnum.t
 val chunks_of : int -> input -> string BatEnum.t
 (** Read an input as an enumeration of strings of given maximal length.*)
 
-val ulines_of : input -> Rope.t BatEnum.t
+val ulines_of : input -> BatRope.t BatEnum.t
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
 
 val chars_of : input -> char BatEnum.t
@@ -931,11 +931,11 @@ val write_lines : 'a output -> string BatEnum.t -> unit
 (** Write an enumeration of lines, appending a LF (it might be converted
     to CRLF on some systems depending on the underlying BatIO). *)
 
-val write_ropes : 'a output -> Rope.t BatEnum.t -> unit
+val write_ropes : 'a output -> BatRope.t BatEnum.t -> unit
 (** Write an enumeration of ropes onto a UTF-8 encoded output,
     without appending a line-end.*)
 
-val write_ulines : _ output -> Rope.t BatEnum.t -> unit
+val write_ulines : _ output -> BatRope.t BatEnum.t -> unit
 (** Write an enumeration of lines onto a UTF-8 encoded output.*)
 
 val write_bitss : nbits:int -> out_bits -> int BatEnum.t -> unit
@@ -958,7 +958,7 @@ val default_buffer_size : int
    {6 Thread-safety}
 *)
 
-val synchronize_in : ?lock:Concurrent.lock -> input  -> input
+val synchronize_in : ?lock:BatConcurrent.lock -> input  -> input
 (**[synchronize_in inp] produces a new {!type: input} which reads from [input]
    in a thread-safe way. In other words, a lock prevents two distinct threads
    from reading from that input simultaneously, something which would potentially
@@ -970,7 +970,7 @@ val synchronize_in : ?lock:Concurrent.lock -> input  -> input
    of pipes.
 *)
 
-val synchronize_out: ?lock:Concurrent.lock -> _ output -> unit output
+val synchronize_out: ?lock:BatConcurrent.lock -> _ output -> unit output
 (**[synchronize_out out] produces a new {!type: output} which writes to [output]
    in a thread-safe way. In other words, a lock prevents two distinct threads
    from writing to that output simultaneously, something which would potentially
@@ -990,7 +990,7 @@ val synchronize_out: ?lock:Concurrent.lock -> _ output -> unit output
    concurrency, you probably won't need this.
 *)
 
-val lock: Concurrent.lock ref
+val lock: BatConcurrent.lock ref
 (**
    A lock used to synchronize internal operations.
 
@@ -999,7 +999,7 @@ val lock: Concurrent.lock ref
    to use Batteries with another concurrency model, set the lock appropriately.
 *)
 
-val lock_factory: (unit -> Concurrent.lock) ref
+val lock_factory: (unit -> BatConcurrent.lock) ref
 (**
    A factory used to create locks. This is used transparently by {!synchronize_in}
    and {!synchronize_out}.

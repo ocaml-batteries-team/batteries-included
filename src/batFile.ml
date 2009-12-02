@@ -106,7 +106,7 @@ let open_in ?mode ?(perm=default_permission) name =
 	    create_in
 	      ~read:(fun () ->
 		       if !pos >= len then raise No_more_input
-		       else Array1.get array (Ref.post_incr pos))
+		       else Array1.get array (BatRef.post_incr pos))
 	      ~input:(fun sout p l ->
 			if !pos >= len then raise No_more_input;
 			let n = (if !pos + l > len then len - !pos else l) in

@@ -22,7 +22,7 @@ let print_uchar fmt t =
   Format.fprintf fmt "UChar.of_char '%s'" (BatUTF8.to_string (BatUTF8.of_char t))
 
 let print_rope fmt t =
-  Format.fprintf fmt "r%S" (Rope.to_string t)
+  Format.fprintf fmt "r%S" (BatRope.to_string t)
 
 let print_ustring fmt t =
   Format.fprintf fmt "u%S" (BatUTF8.to_string t)

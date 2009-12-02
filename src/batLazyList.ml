@@ -175,20 +175,20 @@ let may_rfindi p l =
   in aux l None 0
 
 let find_exn p e l =
-  Option.get_exn (may_find p l) e
+  BatOption.get_exn (may_find p l) e
 
 let rfind_exn p e l =
-  Option.get_exn (may_rfind p l) e
+  BatOption.get_exn (may_rfind p l) e
 
 let find  p l = find_exn p Not_found l
 
 let rfind p l = rfind_exn p Not_found l
 
 let findi p l =
-  Option.get_exn (may_findi p l) Not_found
+  BatOption.get_exn (may_findi p l) Not_found
 
 let rfindi p l =
-  Option.get_exn (may_rfindi p l) Not_found
+  BatOption.get_exn (may_rfindi p l) Not_found
 
 let index_of e l =
   match may_findi (fun _ x -> e = x) l with
@@ -457,9 +457,9 @@ let assoc e l = snd (find (fun (a,_) -> a = e) l)
 
 let assq  e l = snd (find (fun (a,_) -> a == e) l)
 
-let mem_assoc e l = Option.is_some (may_find (fun (a, _) -> a = e) l)
+let mem_assoc e l = BatOption.is_some (may_find (fun (a, _) -> a = e) l)
 
-let mem_assq e l = Option.is_some (may_find (fun (a, _) -> a == e) l)
+let mem_assq e l = BatOption.is_some (may_find (fun (a, _) -> a == e) l)
 
 
 
@@ -472,9 +472,9 @@ let mem_assq e l = Option.is_some (may_find (fun (a, _) -> a == e) l)
   in lazy (aux l)*)
 
 let unique ?(cmp = compare) l =
-  let set      = ref (PMap.create cmp) in
-  let filter x = if PMap.mem x !set then None
-                 else                  ( set := PMap.add x true !set; Some x )
+  let set      = ref (BatPMap.create cmp) in
+  let filter x = if BatPMap.mem x !set then None
+                 else                  ( set := BatPMap.add x true !set; Some x )
   in
     filter_map filter l
 

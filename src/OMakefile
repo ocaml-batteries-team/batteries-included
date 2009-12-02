@@ -69,21 +69,21 @@ OBJECTS[] =
     batLogger
     batMonad
     batMultiPMap
-    number
-    option
-    optParse
-    pair
-    parserCo
-    pathGen
-    pMap
-    print
-    pSet
-    refList
-    ref
-    result
-    return
-    rMutex
-    rope
+    batNumber
+    batOption
+    batOptParse
+    batPair
+    batParserCo
+    batPathGen
+    batPMap
+    batPrint
+    batPSet
+    batRefList
+    batRef
+    batResult
+    batReturn
+    batRMutex
+    batRope
     seq
     std
     substring

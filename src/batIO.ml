@@ -671,10 +671,10 @@ let read_uchar i =
 let read_rope i n =
   let rec loop r j =
     if j = 0 then r
-    else loop (Rope.append_char (read_uchar i) r) (j-1) (* TODO: make efficient by appending a string of Rope.leaf_size (256) chars at a time *)
+    else loop (BatRope.append_char (read_uchar i) r) (j-1) (* TODO: make efficient by appending a string of Rope.leaf_size (256) chars at a time *)
   in
-  if n <= 0 then Rope.empty
-  else loop Rope.empty n
+  if n <= 0 then BatRope.empty
+  else loop BatRope.empty n
     
 (*val read_uline: input -> Rope.t*)
 (** read a line of UTF-8*)
@@ -682,7 +682,7 @@ let read_rope i n =
 let read_uline i =
   let line = read_line i in
   BatUTF8.validate line;
-  Rope.of_ustring (BatUTF8.of_string_unsafe line)
+  BatRope.of_ustring (BatUTF8.of_string_unsafe line)
  
 (*val read_uall : input -> Rope.t*)
 (** read the whole contents of a UTF-8 encoded input*)
@@ -690,7 +690,7 @@ let read_uline i =
 let read_uall i = 
   let all = read_all i in
   BatUTF8.validate all;
-  Rope.of_ustring (BatUTF8.of_string_unsafe all) 
+  BatRope.of_ustring (BatUTF8.of_string_unsafe all) 
 (* TODO: make efficient - possibly similar to above - buffering leaf_size chars at a time *)
  
  
@@ -714,7 +714,7 @@ let write_ustring o c = write_string o (BatUTF8.to_string_unsafe c)
 let write_uchar o c = write_ustring o (BatUTF8.of_char c)
  
 (*val write_rope : _ output -> Rope.t -> unit*)
-let write_rope = Rope.print
+let write_rope = BatRope.print
  
 (*val write_uline: _ output -> Rope.t -> unit*)
 let write_uline o r = write_rope o r; write o '\n'
@@ -778,21 +778,21 @@ let in_channel_of_input i =
    {6 Thread-safety}
 *)
 
-let lock_factory = ref (fun () -> Concurrent.nolock)
+let lock_factory = ref (fun () -> BatConcurrent.nolock)
 
 
 let synchronize_in ?(lock = !lock_factory ()) inp = 
   wrap_in
-    ~read:(Concurrent.sync lock (fun () -> read inp))
-    ~input:(Concurrent.sync lock (fun s p l -> input inp s p l))
+    ~read:(BatConcurrent.sync lock (fun () -> read inp))
+    ~input:(BatConcurrent.sync lock (fun s p l -> input inp s p l))
     ~close:noop
     ~underlying:[inp]
 
 let synchronize_out ?(lock = !lock_factory ()) out = 
   wrap_out
-    ~write: (Concurrent.sync lock (fun c     -> write out c))
-    ~output:(fun s p -> Concurrent.sync lock (fun l -> output out s p l))
-    ~flush: (Concurrent.sync lock (fun ()    -> flush out))
+    ~write: (BatConcurrent.sync lock (fun c     -> write out c))
+    ~output:(fun s p -> BatConcurrent.sync lock (fun l -> output out s p l))
+    ~flush: (BatConcurrent.sync lock (fun ()    -> flush out))
     ~close: noop
     ~underlying:[out]
 

@@ -60,7 +60,7 @@ struct
     end
 
   include M
-  module Lock = Concurrent.MakeLock(M)
+  module Lock = BatConcurrent.MakeLock(M)
   let make        = Lock.make
   let synchronize = Lock.synchronize
 end
@@ -68,7 +68,7 @@ end
 module Mutex =
 struct
   include Mutex
-  module Lock = Concurrent.MakeLock(Mutex)
+  module Lock = BatConcurrent.MakeLock(Mutex)
   let make        = Lock.make
   let synchronize = Lock.synchronize
 end

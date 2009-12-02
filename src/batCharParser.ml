@@ -19,7 +19,7 @@
  *)
 
 
-open ParserCo
+open BatParserCo
 
 (** {6 Entry point} *)
 type position =

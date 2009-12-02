@@ -20,50 +20,50 @@
  *)
 
 
-type 'a t = ('a, unit) PMap.t
+type 'a t = ('a, unit) BatPMap.t
 
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
-let empty    = PMap.empty
+let empty    = BatPMap.empty
 
-let create   = PMap.create
+let create   = BatPMap.create
 
-let is_empty = PMap.is_empty
+let is_empty = BatPMap.is_empty
 
-let mem      = PMap.mem
+let mem      = BatPMap.mem
 
-let add e t  = PMap.add e () t
+let add e t  = BatPMap.add e () t
 
-let remove   = PMap.remove
+let remove   = BatPMap.remove
 
 let for_map f = fun x _ -> f x
 
-let iter f   = PMap.iter (for_map f)
+let iter f   = BatPMap.iter (for_map f)
 
-let fold f   = PMap.foldi (for_map f)
+let fold f   = BatPMap.foldi (for_map f)
 
-let map f e  = PMap.foldi (fun k _ acc -> add (f k) acc) e empty
+let map f e  = BatPMap.foldi (fun k _ acc -> add (f k) acc) e empty
 
-let filter f = PMap.filteri (for_map f)
+let filter f = BatPMap.filteri (for_map f)
 
-let filter_map f e = PMap.foldi (fun k _ acc -> match f k with None -> acc | Some v -> add v acc) e empty
+let filter_map f e = BatPMap.foldi (fun k _ acc -> match f k with None -> acc | Some v -> add v acc) e empty
 
-let exists f t = Return.label (fun label ->
-			       iter (fun k -> if f k then Return.return label true) t;
+let exists f t = BatReturn.label (fun label ->
+			       iter (fun k -> if f k then BatReturn.return label true) t;
 			       false)
 
 let cardinal t =
   fold (fun _ acc -> acc + 1) t 0 
 
-let choose t = fst (PMap.choose t)
+let choose t = fst (BatPMap.choose t)
 
-let min_elt t = fst (PMap.min_binding t)
+let min_elt t = fst (BatPMap.min_binding t)
 
-let max_elt t = fst (PMap.max_binding t)
+let max_elt t = fst (BatPMap.max_binding t)
 
 let enum t = 
-  BatEnum.map (fun (k, _) -> k) (PMap.enum t)
+  BatEnum.map (fun (k, _) -> k) (BatPMap.enum t)
 
 let of_enum t =
   BatEnum.fold (fun acc elem -> add elem acc) empty t

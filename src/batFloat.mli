@@ -101,7 +101,7 @@
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
-    val operations : t Number.numeric
+    val operations : t BatNumber.numeric
 
     (**
        {6 Operations specific to floating-point numbers}
@@ -306,7 +306,7 @@ module Safe_float :
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
-    val operations : t Number.numeric
+    val operations : t BatNumber.numeric
 
     (**
        {6 Operations specific to floating-point numbers}

@@ -108,7 +108,7 @@ let ksprintf k fmt =
   kfprintf (fun oc -> k (BatInnerIO.close_out oc)) oc fmt
 
 let rprintf fmt =
-  ksprintf Rope.of_string fmt
+  ksprintf BatRope.of_string fmt
 
 let krprintf k fmt =
-  ksprintf (fun s -> k (Rope.of_string s)) fmt
+  ksprintf (fun s -> k (BatRope.of_string s)) fmt

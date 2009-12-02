@@ -724,7 +724,7 @@ let uniq e =
       None -> empty ()
     | Some first -> 
 	let prev = ref first in
-	let not_last x = (Ref.post prev (fun _ -> x)) != x in
+	let not_last x = (BatRef.post prev (fun _ -> x)) != x in
 	let result = filter not_last e in
 	push result first;
 	result
@@ -985,7 +985,7 @@ module type Enumerable = sig
   val of_enum : 'a t -> 'a enumerable
 end
   
-module WithMonad (Mon : Monad.S) =
+module WithMonad (Mon : BatMonad.S) =
 struct    
   type 'a m = 'a Mon.m
       

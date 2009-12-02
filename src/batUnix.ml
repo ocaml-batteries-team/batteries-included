@@ -27,7 +27,7 @@
   (**
      {6 Thread-safety internals}
   *)
-  let lock = ref Concurrent.nolock
+  let lock = ref BatConcurrent.nolock
 
   (**
      {6 Tracking additional information on inputs/outputs}
@@ -43,25 +43,25 @@
   let wrapped_out   = Wrapped_out.create 16
 
   let input_add k v =
-    Concurrent.sync !lock (Wrapped_in.add wrapped_in k) v
+    BatConcurrent.sync !lock (Wrapped_in.add wrapped_in k) v
       
   let input_get k =
-    Concurrent.sync !lock (Wrapped_in.find wrapped_in) k
+    BatConcurrent.sync !lock (Wrapped_in.find wrapped_in) k
 
   let output_add k v =
-    Concurrent.sync !lock (Wrapped_out.add wrapped_out k) v
+    BatConcurrent.sync !lock (Wrapped_out.add wrapped_out k) v
       
   let output_get k =
-    Concurrent.sync !lock (Wrapped_out.find wrapped_out) k
+    BatConcurrent.sync !lock (Wrapped_out.find wrapped_out) k
 
   let wrap_in ?autoclose ?cleanup cin =
     let input = BatInnerIO.input_channel ?autoclose ?cleanup cin in
-      Concurrent.sync !lock (Wrapped_in.add wrapped_in input) cin;
+      BatConcurrent.sync !lock (Wrapped_in.add wrapped_in input) cin;
       input
 
   let wrap_out ?cleanup cout =
     let output = cast_output (BatInnerIO.output_channel ?cleanup cout) in
-      Concurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
+      BatConcurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
       output
 
   (**

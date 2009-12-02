@@ -79,8 +79,8 @@ module type StringType = sig
   val rindex : t -> char -> int
   
   module Parse : sig
-    val source : t -> (tchar, CharParser.position) ParserCo.Source.t
-    val letter : (tchar, tchar, CharParser.position) ParserCo.t
+    val source : t -> (tchar, BatCharParser.position) BatParserCo.Source.t
+    val letter : (tchar, tchar, BatCharParser.position) BatParserCo.t
   end
 end
 

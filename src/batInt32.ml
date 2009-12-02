@@ -20,7 +20,7 @@
  *)
 
 
-open Number
+open BatNumber
 
 let (|>) x f = f x
     
@@ -88,5 +88,5 @@ end
     of_byte str.[pos] |> shift |> add str.[pos+1] |> shift 
       |> add str.[pos+2] |> shift |> add str.[pos+3]
 
-  include Number.MakeNumeric(BaseInt32)
+  include BatNumber.MakeNumeric(BaseInt32)
 

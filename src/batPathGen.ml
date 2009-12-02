@@ -82,8 +82,8 @@ module type StringType = sig
   val rindex : t -> char -> int
   
   module Parse : sig
-    val source : t -> (tchar, CharParser.position) ParserCo.Source.t
-    val letter : (tchar, tchar, CharParser.position) ParserCo.t
+    val source : t -> (tchar, BatCharParser.position) BatParserCo.Source.t
+    val letter : (tchar, tchar, BatCharParser.position) BatParserCo.t
   end
 end
 
@@ -485,8 +485,8 @@ module Make = functor (S : StringType) -> struct
   open OperatorLift
 
   let full_match pars ss =
-    let parser_final = ParserCo.( >>> ) pars ParserCo.eof in
-    match ParserCo.run parser_final (S.Parse.source ss) with
+    let parser_final = BatParserCo.( >>> ) pars BatParserCo.eof in
+    match BatParserCo.run parser_final (S.Parse.source ss) with
      | Std.Ok _ -> true
      | _ -> false
 
@@ -525,7 +525,7 @@ module Make = functor (S : StringType) -> struct
   (* Returns true if windows and the arugment is letter-colon, false otherwise *)  
   let is_win_disk_letter =
     if windows then
-      let pars = ParserCo.(>>>) S.Parse.letter (ParserCo.exactly (S.lift_char ':')) in
+      let pars = BatParserCo.(>>>) S.Parse.letter (BatParserCo.exactly (S.lift_char ':')) in
       (fun name -> full_match pars name)  
      else (fun _ -> false)
 
@@ -806,8 +806,8 @@ module StringAdapter (*: StringType*) = struct
   module Parse = struct
   
   (*  type source = (char, CharParser.position) ParserCo.Source.t*)
-    let source = CharParser.source_of_string
-    let letter = CharParser.letter
+    let source = BatCharParser.source_of_string
+    let letter = BatCharParser.letter
   end
 end
 
@@ -817,19 +817,19 @@ open CamomileLibrary
 
 module RopeAdapter = struct
 
-  type t = Rope.t
-  let length = Rope.length
+  type t = BatRope.t
+  let length = BatRope.length
   type tchar = UChar.t
-  let get = Rope.get
+  let get = BatRope.get
   let lift_char ch = UChar.of_char ch
-  let lift = Rope.of_string
-  let to_string = Rope.to_string
-  let concat_with_separators sep lst = Rope.concat sep lst
-  let compare = Rope.compare
-  let iter = Rope.iter
-  let iteri fu ss = Rope.iteri fu ss
-  let sub = Rope.sub
-  let rindex ss pch = Rope.rindex ss (UChar.of_char pch)
+  let lift = BatRope.of_string
+  let to_string = BatRope.to_string
+  let concat_with_separators sep lst = BatRope.concat sep lst
+  let compare = BatRope.compare
+  let iter = BatRope.iter
+  let iteri fu ss = BatRope.iteri fu ss
+  let sub = BatRope.sub
+  let rindex ss pch = BatRope.rindex ss (UChar.of_char pch)
   module Parse = struct
     let source = UCharParser.source_of_rope
     let letter = UCharParser.letter

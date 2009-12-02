@@ -103,7 +103,7 @@
     val sign  : num -> int
       (** Return [-1], [0] or [1] according to the sign of the argument. *)
 
-    val operations : num Number.numeric
+    val operations : num BatNumber.numeric
 
       
 

@@ -1,5 +1,5 @@
-open ParserCo
-open CharParser
+open BatParserCo
+open BatCharParser
 open Std
 open Genlex
 
@@ -214,7 +214,7 @@ let to_stream_filter (kwd_table:t) (x:char Stream.t) : token Stream.t =
   (BatStream.Stream.of_enum (to_enum_filter kwd_table (BatStream.Stream.enum x)))
 
 let to_lazy_list_filter kwd_table x =
-  (LazyList.of_enum (to_enum_filter kwd_table (LazyList.enum x)))
+  (BatLazyList.of_enum (to_enum_filter kwd_table (BatLazyList.enum x)))
 
 
 
@@ -258,10 +258,10 @@ struct
     val comment_delimiters : (string * string) option
     val line_comment_start : string option
     val nested_comments  : bool
-    val ident_start      : (char, char, position) ParserCo.t
-    val ident_letter     : (char, char, position) ParserCo.t
-    val op_start         : (char, char, position) ParserCo.t
-    val op_letter        : (char, char, position) ParserCo.t
+    val ident_start      : (char, char, position) BatParserCo.t
+    val ident_letter     : (char, char, position) BatParserCo.t
+    val op_start         : (char, char, position) BatParserCo.t
+    val op_letter        : (char, char, position) BatParserCo.t
     val reserved_names   : string list
     val case_sensitive   : bool
   end
@@ -438,16 +438,16 @@ struct
 	    else                                 fail)*)
 
       let char_literal = label "Character literal" 
-	(CharParser.char '\'' >>= fun _ ->
+	(BatCharParser.char '\'' >>= fun _ ->
 	   any       >>= function
 	     | '\\' -> ocaml_escape
 	     | c    -> return c
 	) >>= fun c -> 
-	  CharParser.char '\'' >>= fun _ -> return c
+	  BatCharParser.char '\'' >>= fun _ -> return c
 	    
       let string_literal =  label "String Literal" 
 	(lexeme
-	(CharParser.char '"' >>>
+	(BatCharParser.char '"' >>>
 	   let rec content chars =
 	     any >>= function
 	       | '"'  -> 
@@ -464,7 +464,7 @@ struct
 	  
       let integer = 
 	label "OCaml-style integer" (
-	  lexeme(maybe (CharParser.char '-') >>= fun sign   ->
+	  lexeme(maybe (BatCharParser.char '-') >>= fun sign   ->
 	    one_plus digit   >>= fun digits -> 
 	      let number = BatInt.of_string (BatString.of_list digits) in
 		match sign with
@@ -473,15 +473,15 @@ struct
 
       let float =
 	label "OCaml-style floating-point number" (
-	  lexeme (maybe (CharParser.char '-')                   >>= fun sign     ->
+	  lexeme (maybe (BatCharParser.char '-')                   >>= fun sign     ->
 	  post_map BatString.of_list (zero_plus digit)     >>= fun int_part ->
 	  maybe (
-	    CharParser.char '.'  >>= fun _ -> 
+	    BatCharParser.char '.'  >>= fun _ -> 
 	      post_map BatString.of_list (zero_plus digit) ) >>= fun decimal_part ->
 	    maybe (
-	      CharParser.char 'E'  >>= fun _ -> 
-		maybe (CharParser.char '+' <|> CharParser.char '-') >>= fun sign ->
-		  let sign = Option.default '+' sign  in
+	      BatCharParser.char 'E'  >>= fun _ -> 
+		maybe (BatCharParser.char '+' <|> BatCharParser.char '-') >>= fun sign ->
+		  let sign = BatOption.default '+' sign  in
 		    one_plus digit >>= fun expo -> 
 		      return ("E" ^ (BatString.of_char sign) ^ (BatString.of_list expo)))
             >>= fun expo ->

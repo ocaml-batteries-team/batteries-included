@@ -47,11 +47,11 @@ val to_stream_filter   :  t -> char Stream.t   ->  token Stream.t
 val to_enum_filter     :  t -> char BatEnum.t     ->  token BatEnum.t
 (** Apply the lexer to an enum.*)
 
-val to_lazy_list_filter:  t -> char LazyList.t ->  token LazyList.t
+val to_lazy_list_filter:  t -> char BatLazyList.t ->  token BatLazyList.t
 (** Apply the lexer to a lazy list.*)
 
 (**{6 Extending to other languages}*)
-open CharParser
+open BatCharParser
 module Languages :
 sig
 module type Definition = 
@@ -59,10 +59,10 @@ sig
   val comment_delimiters : (string * string) option
   val line_comment_start : string option
   val nested_comments    : bool
-  val ident_start        : (char, char, position) ParserCo.t
-  val ident_letter       : (char, char, position) ParserCo.t
-  val op_start           : (char, char, position) ParserCo.t
-  val op_letter          : (char, char, position) ParserCo.t
+  val ident_start        : (char, char, position) BatParserCo.t
+  val ident_letter       : (char, char, position) BatParserCo.t
+  val op_start           : (char, char, position) BatParserCo.t
+  val op_letter          : (char, char, position) BatParserCo.t
   val reserved_names     : string list
   val case_sensitive     : bool
     (**[true] if the language is case-sensitive, [false] otherwise.
@@ -90,59 +90,59 @@ sig
       If the language is not [case_sensitive], identifiers and
       keywords are returned in lower-case.
   *)
-  val feed               : (char, position) ParserCo.Source.t -> (token, position) ParserCo.Source.t
+  val feed               : (char, position) BatParserCo.Source.t -> (token, position) BatParserCo.Source.t
 
 
   (** {6 Medium-level API} *)
-  val start  : (char, unit, position) ParserCo.t
+  val start  : (char, unit, position) BatParserCo.t
     (**Remove any leading whitespaces*)
 
 
-  val ident  : (char, string, position) ParserCo.t
+  val ident  : (char, string, position) BatParserCo.t
     (**Accepts any non-reserved identifier/operator.
        If the language is not [case_sensitive], the identifier
        is returned in lower-case.*)
 
-  val kwd     : (char, string, position) ParserCo.t
+  val kwd     : (char, string, position) BatParserCo.t
     (**Accepts any identifier.
        If the language is not [case_sensitive], the identifier
        is returned in lower-case.*)
 
-  val identifier : string -> (char, unit, position) ParserCo.t
-  val keyword    : string -> (char, unit, position) ParserCo.t
+  val identifier : string -> (char, unit, position) BatParserCo.t
+  val keyword    : string -> (char, unit, position) BatParserCo.t
 
-  val char_literal     : (char, char, position) ParserCo.t
+  val char_literal     : (char, char, position) BatParserCo.t
     (**Accepts a character literal, i.e. one character
        (or an escape) between two quotes.*)
 
-  val string_literal   :(char, string, position) ParserCo.t
+  val string_literal   :(char, string, position) BatParserCo.t
     (**Accepts a string, i.e. one sequence of
        characters or escapes between two double
        quotes, on one line.*)
 
-  val integer:       (char, int , position) ParserCo.t
+  val integer:       (char, int , position) BatParserCo.t
     (**Parse an integer.*)
 
-  val float:         (char, float , position) ParserCo.t
+  val float:         (char, float , position) BatParserCo.t
     (**Parse a floating-point number.*)
 
-  val number:        (char, [`Float of float | `Integer of int] , position) ParserCo.t
+  val number:        (char, [`Float of float | `Integer of int] , position) BatParserCo.t
     (**Parse either an integer or a floating-point number.*)
 
   (** {6 Low-level API} *)
-  val char         : char -> (char, char , position) ParserCo.t
+  val char         : char -> (char, char , position) BatParserCo.t
     (** As {!CharParser.char}, but case-insensitive if specified
 	by {!case_sensitive}. *)
 
-  val string       : string -> (char, string, position) ParserCo.t
+  val string       : string -> (char, string, position) BatParserCo.t
     (** As {!CharParser.string}, but case-insensitive if specified
 	by {!case_sensitive}. *)
 
-  val line_comment : (char, unit , position) ParserCo.t
-  val multiline_comment : (char, unit , position) ParserCo.t
-  val comment      : (char, unit , position) ParserCo.t
-  val whitespaces  : (char, unit , position) ParserCo.t
-(*  val lexeme       : (char, 'a , position) ParserCo.t -> (char, 'a , position) ParserCo.t*)
+  val line_comment : (char, unit , position) BatParserCo.t
+  val multiline_comment : (char, unit , position) BatParserCo.t
+  val comment      : (char, unit , position) BatParserCo.t
+  val whitespaces  : (char, unit , position) BatParserCo.t
+(*  val lexeme       : (char, 'a , position) BatParserCo.t -> (char, 'a , position) BatParserCo.t*)
     (**Apply this filter to your own parsers if you want them
        to ignore following comments.*)
 

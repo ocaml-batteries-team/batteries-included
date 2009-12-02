@@ -145,7 +145,7 @@ module Opt =
     let set opt v =
       opt.option_set_value v
 
-    let is_set opt = Option.is_some (opt.option_get ())
+    let is_set opt = BatOption.is_some (opt.option_get ())
 
     let opt opt = opt.option_get ()
 
@@ -182,7 +182,7 @@ module Opt =
                   exn -> raise (Option_error (option, errfmt exn arg))
               end;
 
-              Option.may f !datum)
+              BatOption.may f !datum)
       }
   end
 
@@ -473,7 +473,7 @@ module Formatter =
                  bprintf buf "%*s%-*s  " !indent "" opt_width opt_strings; 0
                end
            in
-           Option.may
+           BatOption.may
              (fun option_help ->
                 let lines = wrap option_help !help_width in
                 match lines with
@@ -534,8 +534,8 @@ module OptParser =
       og_heading : string;
       og_description : string option;
       og_options :
-        ((char list * string list) * string list * string option) RefList.t;
-      og_children : group RefList.t 
+        ((char list * string list) * string list * string option) BatRefList.t;
+      og_children : group BatRefList.t 
     }
 
     type t = { 
@@ -545,8 +545,8 @@ module OptParser =
 
       op_formatter : Formatter.t;
       
-      op_long_options : GetOpt.long_opt RefList.t;
-      op_short_options : GetOpt.short_opt RefList.t;
+      op_long_options : GetOpt.long_opt BatRefList.t;
+      op_short_options : GetOpt.short_opt BatRefList.t;
       
       op_groups : group 
     }
@@ -571,10 +571,10 @@ module OptParser =
         (* Checking for duplicates: *)
         let snames' =
           List.fold_left (fun r (x, _, _) -> x :: r) []
-            (RefList.to_list optparser.op_short_options)
+            (BatRefList.to_list optparser.op_short_options)
         and lnames' =
           List.fold_left (fun r (x, _, _) -> x :: r) []
-            (RefList.to_list optparser.op_long_options)
+            (BatRefList.to_list optparser.op_long_options)
         in
         let sconf =
           List.filter (fun e -> List.exists (( = ) e) snames') snames
@@ -588,7 +588,7 @@ module OptParser =
           
         (* Add to display list. *)
         if not hide then
-          RefList.add group.og_options
+          BatRefList.add group.og_options
             ((snames, lnames), opt.option_metavars,
              (match help with
                   None -> opt.option_defhelp
@@ -598,12 +598,12 @@ module OptParser =
         let nargs = List.length opt.option_metavars in
           List.iter
             (fun short ->
-               RefList.add optparser.op_short_options
+               BatRefList.add optparser.op_short_options
                (short, nargs, opt.option_set))
             snames;
           List.iter
             (fun long ->
-               RefList.add optparser.op_long_options
+               BatRefList.add optparser.op_long_options
                (long, nargs, opt.option_set))
             lnames
             
@@ -612,11 +612,11 @@ module OptParser =
         {
           og_heading = heading; 
           og_description = description;
-          og_options = RefList.empty (); 
-          og_children = RefList.empty ()
+          og_options = BatRefList.empty (); 
+          og_children = BatRefList.empty ()
         }
       in
-      RefList.add parent.og_children g; g
+      BatRefList.add parent.og_children g; g
 
     let make ?(usage = "%prog [options]") ?description ?version
       ?(suppress_usage = false) ?(suppress_help = false) ?prog 
@@ -625,19 +625,19 @@ module OptParser =
         {
           op_usage = usage; 
           op_suppress_usage = suppress_usage;
-          op_prog = Option.default (Filename.basename Sys.argv.(0)) prog;
+          op_prog = BatOption.default (Filename.basename Sys.argv.(0)) prog;
           op_formatter = formatter; 
-          op_short_options = RefList.empty ();
-          op_long_options = RefList.empty ();
+          op_short_options = BatRefList.empty ();
+          op_long_options = BatRefList.empty ();
           op_groups = {
             og_heading = "options"; 
-            og_options = RefList.empty ();
-            og_children = RefList.empty ();
+            og_options = BatRefList.empty ();
+            og_children = BatRefList.empty ();
             og_description = description
           }
         }
       in
-      Option.may                         (* Add version option? *)
+      BatOption.may                         (* Add version option? *)
         (fun version ->
            add optparser ~long_name:"version"
              (StdOpt.version_option
@@ -670,19 +670,19 @@ module OptParser =
 
         optparser.op_formatter.indent ();
         (* Description: *)
-        Option.may
+        BatOption.may
           (fun x ->
              output_string chn (optparser.op_formatter.format_description x))
           g.og_description;
         (* Options: *)
-        RefList.iter
+        BatRefList.iter
           (fun (names, metavars, help) ->
              output_string chn
                (optparser.op_formatter.format_option names metavars help))
           g.og_options;
         (* Child groups: *)
         output_string chn "\n";
-        RefList.iter loop g.og_children;
+        BatRefList.iter loop g.og_children;
 
         optparser.op_formatter.dedent ()
       in
@@ -691,7 +691,7 @@ module OptParser =
       flush chn
 
     let parse optparser ?(first = 0) ?last argv =
-      let args = RefList.empty ()
+      let args = BatRefList.empty ()
       and n =
         match last with
           None -> Array.length argv - first
@@ -699,10 +699,10 @@ module OptParser =
       in
       begin 
         try
-          GetOpt.parse (RefList.push args)
+          GetOpt.parse (BatRefList.push args)
             (GetOpt.find_short_opt
-               (RefList.to_list optparser.op_short_options))
-            (GetOpt.find_long_opt (RefList.to_list optparser.op_long_options))
+               (BatRefList.to_list optparser.op_short_options))
+            (GetOpt.find_long_opt (BatRefList.to_list optparser.op_long_options))
             (Array.to_list (Array.sub argv first n))
         with
             GetOpt.Error (opt, errmsg) ->
@@ -711,7 +711,7 @@ module OptParser =
               error optparser (sprintf "option '%s': %s" opt errmsg)
           | Option_help -> usage optparser (); exit 0
       end;
-      List.rev (RefList.to_list args)
+      List.rev (BatRefList.to_list args)
 
     let parse_argv optparser = 
       parse optparser ~first:1 Sys.argv

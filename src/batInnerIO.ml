@@ -73,15 +73,15 @@ module Outputs= Weak.Make(Output)
 
 external noop        : unit      -> unit        = "%ignore"
 external cast_output : 'a output -> unit output = "%identity"
-let lock = ref Concurrent.nolock
+let lock = ref BatConcurrent.nolock
 
 
 let outputs = Outputs.create 32
 let outputs_add out =
-  Concurrent.sync !lock (Outputs.add outputs) out
+  BatConcurrent.sync !lock (Outputs.add outputs) out
 
 let outputs_remove out =
-  Concurrent.sync !lock (Outputs.remove outputs) out
+  BatConcurrent.sync !lock (Outputs.remove outputs) out
 
 
 exception No_more_input
@@ -104,12 +104,12 @@ let uid = ref 0
 let uid () = post_incr uid
 
 let on_close_out out f =
-  Concurrent.sync !lock (fun () -> 
+  BatConcurrent.sync !lock (fun () -> 
 			   let do_close = out.out_close in
 			     out.out_close <- (fun () -> f out; do_close ())) ()
 
 let on_close_in inp f =
-  Concurrent.sync !lock (fun () -> 
+  BatConcurrent.sync !lock (fun () -> 
 			   let do_close = inp.in_close in
 			     inp.in_close <- (fun () -> f inp; do_close ())) ()
 
@@ -131,7 +131,7 @@ let wrap_in ~read ~input ~close ~underlying =
     in_upstream = weak_create 2
   }
 in 
-    Concurrent.sync !lock (List.iter (fun x -> weak_add x.in_upstream result)) underlying;
+    BatConcurrent.sync !lock (List.iter (fun x -> weak_add x.in_upstream result)) underlying;
     Gc.finalise close_in result;
     result
 
@@ -185,7 +185,7 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
     }
   in 
   let o = cast_output out in
-    Concurrent.sync !lock (List.iter (fun x -> weak_add x.out_upstream o)) underlying;
+    BatConcurrent.sync !lock (List.iter (fun x -> weak_add x.out_upstream o)) underlying;
     outputs_add (cast_output out); 
     Gc.finalise ignore_close_out out;
     out
@@ -289,10 +289,10 @@ let output o s p l =
 let flush o = o.out_flush()
 
 let flush_all () =
-  Concurrent.sync !lock ( Outputs.iter (fun o -> try flush o with _ -> ())) outputs
+  BatConcurrent.sync !lock ( Outputs.iter (fun o -> try flush o with _ -> ())) outputs
 
 let close_all () =
-  Concurrent.sync !lock  (Outputs.iter (fun o -> try close_out o with _ -> ())) outputs
+  BatConcurrent.sync !lock  (Outputs.iter (fun o -> try close_out o with _ -> ())) outputs
 
 let read_all i =
   let maxlen = 1024 in

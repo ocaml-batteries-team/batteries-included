@@ -30,10 +30,10 @@
 *)
 
 open CamomileLibrary
-open ParserCo
+open BatParserCo
 
 (** The position inside one file or one stream. *)
-type position = CharParser.position = 
+type position = BatCharParser.position = 
 {
   offset: int;(**Offset on the line (starting at 0)*)
   line:   int (**Line number (starting at 0)*)
@@ -46,13 +46,13 @@ val advance : UChar.t -> position -> position
    the result is [{offset = 0; line = p.line + 1}]. Other wise, the result is
    [{offset = p.offset + 1; line = p.line}].*)
 
-val source_of_rope : Rope.t      -> (UChar.t, position) Source.t
+val source_of_rope : BatRope.t      -> (UChar.t, position) Source.t
 (** Create a source from a Unicode Rope.*)
 
 val source_of_enum : UChar.t BatEnum.t -> (UChar.t, position) Source.t
 (** Create a source from an enumeration of unicode characters.*)
 
-val parse : (UChar.t, 'a, position) t -> Rope.t -> ('a, position report) Std.result
+val parse : (UChar.t, 'a, position) t -> BatRope.t -> ('a, position report) Std.result
 (**Apply a parser to a Unicode Rope.*)
 
 (**{6 Utilities}*)
@@ -71,7 +71,7 @@ val not_char : UChar.t -> (UChar.t, UChar.t, position) t
 val string : string -> (UChar.t, string, position) t
   (** Recognize exactly one string*)
 
-val rope : Rope.t -> (UChar.t, Rope.t, position) t
+val rope : BatRope.t -> (UChar.t, BatRope.t, position) t
   (** Recognize exactly one string*)
 
 val ustring : BatUTF8.t -> (UChar.t, BatUTF8.t, position) t
@@ -86,7 +86,7 @@ val case_string : string -> (UChar.t, string, position) t
 val case_ustring : BatUTF8.t -> (UChar.t, BatUTF8.t, position) t
   (** As [ustring], but case-insensitive *)
 
-val case_rope : Rope.t -> (UChar.t, Rope.t, position) t
+val case_rope : BatRope.t -> (UChar.t, BatRope.t, position) t
   (** As [rope], but case-insensitive *)
 
 val newline : (UChar.t, UChar.t, position) t

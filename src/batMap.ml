@@ -275,6 +275,6 @@
   module StringMap  = Make(String)
   module IStringMap = Make(BatString.IString)
   module NumStringMap = Make(BatString.NumString)
-  module RopeMap    = Make(Rope)
-  module IRopeMap   = Make(Rope.IRope)
+  module RopeMap    = Make(BatRope)
+  module IRopeMap   = Make(BatRope.IRope)
   module IntMap     = Make(BatInt)

@@ -472,10 +472,10 @@ val kfprintf : ('a BatInnerIO.output -> 'b) -> 'a BatInnerIO.output -> ('c, 'b) 
   (** [kfprintf k oc fmt] prints on [oc] then call [k] with [oc] as
       argument *)
 
-val rprintf : ('a, Rope.t) format -> 'a
+val rprintf : ('a, BatRope.t) format -> 'a
   (** [rprintf fmt] returns the result as a rope *)
 
-val krprintf : (Rope.t -> 'b) -> ('a, 'b) format -> 'a
+val krprintf : (BatRope.t -> 'b) -> ('a, 'b) format -> 'a
   (** [krprintf k fmt] creates a rope from the format and other
       arguments and pass it to [k] *)
 

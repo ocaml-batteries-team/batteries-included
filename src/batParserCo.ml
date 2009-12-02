@@ -1,7 +1,7 @@
 open BatList
 open BatString
 open List
-open LazyList
+open BatLazyList
 open BatIO
 
 
@@ -19,7 +19,7 @@ let debug_mode = ref false
 module Source =
 struct
 
-  type ('a, 'b) t = ('a * 'b) LazyList.t
+  type ('a, 'b) t = ('a * 'b) BatLazyList.t
 
   let of_lazy_list l init f =
     let rec aux l acc = match get l with

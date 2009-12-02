@@ -97,7 +97,7 @@ open Complex
   val pow: t -> t -> t
     (** Power function.  [pow z1 z2] returns [z1] to the [z2] power. *)
     
-  val operations : t Number.numeric
+  val operations : t BatNumber.numeric
 
   val inv : t -> t
     (** [inv x] returns the value of [1/x]*)

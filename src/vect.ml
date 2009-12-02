@@ -370,29 +370,29 @@ let rec map f = function
 
 let mapi f v =
   let off = ref 0 in
-    map (fun x -> f (Ref.post_incr off) x) v
+    map (fun x -> f (BatRef.post_incr off) x) v
 
 let exists f v =
-  Return.label (fun label ->
+  BatReturn.label (fun label ->
   let rec aux = function
     | Empty                  -> ()
-    | Leaf a                 -> if BatArray.exists f a then Return.return label true else ()
+    | Leaf a                 -> if BatArray.exists f a then BatReturn.return label true else ()
     | Concat (l, _, r, _, _) -> aux l; aux r
   in aux v; false)
 
 let for_all f v = 
-  Return.label (fun label ->
+  BatReturn.label (fun label ->
   let rec aux = function
     | Empty                  -> ()
-    | Leaf a                 -> if not (BatArray.for_all f a) then Return.return label false else ()
+    | Leaf a                 -> if not (BatArray.for_all f a) then BatReturn.return label false else ()
     | Concat (l, _, r, _, _) -> aux l; aux r
   in aux v; true)
 
 let find f v =
-  Return.label (fun label ->
+  BatReturn.label (fun label ->
   let rec aux = function
     | Empty  -> ()
-    | Leaf a -> (try Return.return label (BatArray.find f a) with Not_found -> ())
+    | Leaf a -> (try BatReturn.return label (BatArray.find f a) with Not_found -> ())
     | Concat (l, _, r, _, _) -> aux l; aux r
   in aux v; raise Not_found)
 
@@ -805,7 +805,7 @@ struct
 
   let mapi f v =
     let off = ref 0 in
-      map (fun x -> f (Ref.post_incr off) x) v
+      map (fun x -> f (BatRef.post_incr off) x) v
 
 	
   let rec fold f a = function
@@ -827,18 +827,18 @@ struct
     in aux acc v
 
   let exists f v =
-    Return.label (fun label ->
+    BatReturn.label (fun label ->
   let rec aux = function
     | Empty                  -> ()
-    | Leaf a                 -> RANDOMACCESS.iter (fun x -> if f x then Return.return label true) a
+    | Leaf a                 -> RANDOMACCESS.iter (fun x -> if f x then BatReturn.return label true) a
     | Concat (l, _, r, _, _) -> aux l; aux r
   in aux v; false)
 
 let for_all f v = 
-  Return.label (fun label ->
+  BatReturn.label (fun label ->
   let rec aux = function
     | Empty                  -> ()
-    | Leaf a                 -> RANDOMACCESS.iter (fun x -> if not (f x) then Return.return label false) a
+    | Leaf a                 -> RANDOMACCESS.iter (fun x -> if not (f x) then BatReturn.return label false) a
     | Concat (l, _, r, _, _) -> aux l; aux r
   in aux v; true)
 

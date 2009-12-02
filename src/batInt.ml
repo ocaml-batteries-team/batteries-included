@@ -20,7 +20,7 @@
  *)
 
 
-open Number
+open BatNumber
 
 let enum () =
   let current_value   = ref min_int in
@@ -29,7 +29,7 @@ let enum () =
     if  !current_value = max_int then
       if !already_through then raise BatEnum.No_more_elements
       else ( already_through := true; max_int )
-    else Ref.post_incr current_value
+    else BatRef.post_incr current_value
   in BatEnum.from f
 
 module BaseInt = struct
@@ -99,7 +99,7 @@ module BaseInt = struct
 end
 
 include BaseInt
-module N = Number.MakeNumeric(BaseInt)
+module N = BatNumber.MakeNumeric(BaseInt)
 let operations = N.operations
 
 
@@ -150,13 +150,13 @@ module BaseSafeInt = struct
 
   let ( * ) = mul
 
-  let pow = Number.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 2) ~mul
+  let pow = BatNumber.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 2) ~mul
     
 end
 
 module Safe_int = struct
   include BaseSafeInt
-  let operations = let module N = Number.MakeNumeric(BaseSafeInt) in N.operations
+  let operations = let module N = BatNumber.MakeNumeric(BaseSafeInt) in N.operations
 end
 
 (*

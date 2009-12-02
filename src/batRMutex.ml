@@ -91,7 +91,7 @@ let unlock m =
 
 end
 
-module Lock = Concurrent.MakeLock(BaseRMutex)
+module Lock = BatConcurrent.MakeLock(BaseRMutex)
 
 include BaseRMutex
 

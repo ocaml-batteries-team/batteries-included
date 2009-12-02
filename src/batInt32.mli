@@ -232,7 +232,7 @@
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
-    val operations : t Number.numeric
+    val operations : t BatNumber.numeric
 
 
     (** {6 Boilerplate code}*)

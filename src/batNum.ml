@@ -71,7 +71,7 @@ module BaseNum = struct
   let sign  = sign_num
 end
 
-  include Number.MakeNumeric(BaseNum)
+  include BatNumber.MakeNumeric(BaseNum)
   include BaseNum
   let print out t = BatInnerIO.nwrite out (to_string t)
 
