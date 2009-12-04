@@ -137,7 +137,7 @@ val flush_all : unit -> unit
 val print_bool : bool -> unit
 (** Print a boolean on standard output. *)
 
-val print_guess : 'a -> unit
+val print_guess : 'a BatIO.output -> 'b -> unit
   (** Attempt to print the representation of a runtime value on the
       standard output.  See remarks for {!dump}. This function is
       useful mostly for debugging. As a general rule, it should not be

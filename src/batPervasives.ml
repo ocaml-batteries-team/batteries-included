@@ -27,7 +27,7 @@ open Pervasives
   open BatEnum
 
   (** {6 I/O}*)
-  let print_guess   = BatStd.print
+  let print_guess oc v = BatIO.nwrite oc (dump v)
   let prerr_guess v = prerr_endline (dump v)
 
   let stdin             = BatIO.stdin
