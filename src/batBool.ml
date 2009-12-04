@@ -66,7 +66,7 @@ module BaseBool = struct
     | false -> 0
     | true  -> 1
 
-  open Std
+  open BatStd
   let of_float = of_int -| int_of_float
   let to_float = float_of_int -| to_int
   let of_string = function

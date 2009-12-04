@@ -214,7 +214,7 @@
 
     (** {7 Printing}*)
     val print: 'a BatInnerIO.output -> t -> unit
-    val t_printer : t Value_printer.t
+    val t_printer : t BatValue_printer.t
 
 
 
@@ -419,5 +419,5 @@ module Safe_float :
 
     (** {7 Printing}*)
     val print: 'a BatInnerIO.output -> t -> unit
-    val t_printer : t Value_printer.t
+    val t_printer : t BatValue_printer.t
 end

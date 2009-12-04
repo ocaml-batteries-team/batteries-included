@@ -21,10 +21,10 @@
  *)
 
 
-type 'a weak_set = ('a, unit) InnerWeaktbl.t
-let weak_create size     = InnerWeaktbl.create size
-let weak_add set element = InnerWeaktbl.add set element ()
-let weak_iter f s        = InnerWeaktbl.iter (fun x _ -> f x) s
+type 'a weak_set = ('a, unit) BatInnerWeaktbl.t
+let weak_create size     = BatInnerWeaktbl.create size
+let weak_add set element = BatInnerWeaktbl.add set element ()
+let weak_iter f s        = BatInnerWeaktbl.iter (fun x _ -> f x) s
 
 type input = {
   mutable in_read  : unit -> char;

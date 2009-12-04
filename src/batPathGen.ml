@@ -487,7 +487,7 @@ module Make = functor (S : StringType) -> struct
   let full_match pars ss =
     let parser_final = BatParserCo.( >>> ) pars BatParserCo.eof in
     match BatParserCo.run parser_final (S.Parse.source ss) with
-     | Std.Ok _ -> true
+     | BatStd.Ok _ -> true
      | _ -> false
 
 (*  let full_match_none_of raw_excluded ss =
@@ -831,8 +831,8 @@ module RopeAdapter = struct
   let sub = BatRope.sub
   let rindex ss pch = BatRope.rindex ss (UChar.of_char pch)
   module Parse = struct
-    let source = UCharParser.source_of_rope
-    let letter = UCharParser.letter
+    let source = BatUCharParser.source_of_rope
+    let letter = BatUCharParser.letter
   end
 end
 

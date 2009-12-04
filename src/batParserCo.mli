@@ -144,7 +144,7 @@ val filter: ('b -> bool) -> ('a, 'b, 'c) t ->  ('a, 'b, 'c) t
   (**[filter f p] is only accepts values [x] such that [p]
      accepts [x] and [f (p x)] is [true]*)
 
-val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) Std.result
+val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) BatStd.result
   (**[run p s] executes parser [p] on source [s]. In case of
      success, returns [Ok v], where [v] is the return value of [p].
      In case of failure, returns [Error f], with [f] containing

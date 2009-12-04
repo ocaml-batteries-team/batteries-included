@@ -274,8 +274,8 @@ let lookahead p e = match apply p e with
   | Failure _ as result              -> result
 
 let run p e = match apply p e with
-  | Setback f | Failure f                -> Std.Bad f
-  | Success (r, _) | Backtrack (r, _, _) -> Std.Ok r
+  | Setback f | Failure f                -> BatStd.Bad f
+  | Success (r, _) | Backtrack (r, _, _) -> BatStd.Ok r
 	
 
 let source_map p e =

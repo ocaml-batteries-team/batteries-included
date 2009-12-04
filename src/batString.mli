@@ -457,7 +457,7 @@ val print_quoted: 'a BatInnerIO.output -> string -> unit
    [print_quoted stdout "\"bar\""] prints ["\"bar\""] (with the quotes)
 *)
 
-val t_printer : t Value_printer.t
+val t_printer : t BatValue_printer.t
 
 (**/**)
 
@@ -930,7 +930,7 @@ val print_quoted: 'a BatInnerIO.output -> [> `Read] t -> unit
    [print_quoted stdout "\"bar\""] prints ["\"bar\""] (with the quotes)
 *)
 
-val t_printer : [> `Read] t Value_printer.t
+val t_printer : [> `Read] t BatValue_printer.t
 
 (**/**)
 

@@ -23,11 +23,11 @@
 
 
 open Pervasives
-  include Std
+  include BatStd
   open BatEnum
 
   (** {6 I/O}*)
-  let print_guess   = Std.print
+  let print_guess   = BatStd.print
   let prerr_guess v = prerr_endline (dump v)
 
   let stdin             = BatIO.stdin

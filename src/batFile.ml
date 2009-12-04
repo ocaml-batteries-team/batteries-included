@@ -124,7 +124,7 @@ let open_in ?mode ?(perm=default_permission) name =
 
 let with_do opener closer x f =
   let file = opener x in
-    Std.finally (fun () -> closer file) f file
+    BatStd.finally (fun () -> closer file) f file
  
 let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
 let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
@@ -161,7 +161,7 @@ let open_temporary_out ?mode ?perm ?(prefix="ocaml") ?(suffix="tmp") () : (_ out
 
 let with_temporary_out ?mode ?perm ?prefix ?suffix f =
   let (file, name) = open_temporary_out ?mode ?perm ?prefix ?suffix () in
-    Std.finally (fun () -> close_out file)
+    BatStd.finally (fun () -> close_out file)
       (fun (file, name) -> f file name)
       (file, name)
 

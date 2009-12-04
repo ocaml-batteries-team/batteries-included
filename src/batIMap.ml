@@ -22,13 +22,13 @@ let max_int = ~-1
 let min_int = 0
 *)
 
-type 'a t = (int * int * 'a) AvlTree.tree
+type 'a t = (int * int * 'a) BatAvlTree.tree
 
 type 'a map = 'a t
 
 type key = int
 
-include AvlTree
+include BatAvlTree
 
 let singleton n v = singleton_tree (n, n, v)
 
@@ -128,10 +128,10 @@ let rec mem n m =
   mem n (right_branch m)
 
 let iter_range proc m =
-  AvlTree.iter (fun (n1, n2, v) -> proc n1 n2 v) m
+  BatAvlTree.iter (fun (n1, n2, v) -> proc n1 n2 v) m
 
 let fold_range f m a =
-  AvlTree.fold (fun (n1, n2, v) a -> f n1 n2 v a) m a
+  BatAvlTree.fold (fun (n1, n2, v) a -> f n1 n2 v a) m a
 
 let fold f m a =
   let rec loop n1 n2 v a =

@@ -210,7 +210,7 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outpu
 val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b t -> string
   (** Using a string printer, print a sequence to a string (as sprintf vs. printf) *)
 
-val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
+val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
 
 module Exceptionless : sig
   val hd : 'a t -> 'a option

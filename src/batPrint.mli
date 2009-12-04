@@ -186,15 +186,15 @@
 
    When defining a new data structure [Foo.t], it is usually a good
    idea to implement a function [Foo.t_printer], with type [Foo.t
-   Value_printer]. That's it. Once this function is created, you may
+   BatValue_printer]. That's it. Once this function is created, you may
    use directive [{%{Foo.t}}] in any printing function of this module.
 
    If the data structure has type arguments, as is the case of lists,
    arrays, etc., you will probably want to be able to print the
    contents of your data structure. For this purpose, you may define
    printers which accept as arguments other printers. For instance,
-   the type of [List.t_printer] is actually ['a Value_printer.t -> 'a
-   list Value_printer.t], etc. If you have given such a type to
+   the type of [List.t_printer] is actually ['a BatValue_printer.t -> 'a
+   list BatValue_printer.t], etc. If you have given such a type to
    [Foo.t_printer], you may use [{%{Foo.t bar}}] in any printing
    function of this module, where [bar] is the name of another
    general-purpose directive.
@@ -205,7 +205,7 @@
    to define functions outside of their module. For instance, to
    plug-in a general-purpose directive for elements of type [foo], it
    is sufficient to define a function [bar_printer], with type [foo
-   Value_printer]. That's it. Once this function is created, you may
+   BatValue_printer]. That's it. Once this function is created, you may
    use directive [{%{bar}}] in any printing function of this module.
 
    Again, you may also choose to define functions which take other

@@ -1,7 +1,7 @@
 (* $Id: iSet.ml,v 1.2 2006/08/13 17:13:01 yori Exp $ *)
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 
-include AvlTree
+include BatAvlTree
 
 let (>!) = (>)
 
@@ -203,7 +203,7 @@ let rec subset s1 s2 =
   let r1 = after v2 s1 in
   (subset l1 l2) && (subset r1 r2)
 
-let fold_range f = AvlTree.fold (fun (n1, n2) x -> f n1 n2 x)
+let fold_range f = BatAvlTree.fold (fun (n1, n2) x -> f n1 n2 x)
 
 let fold f =
   let rec g n1 n2 a =
@@ -213,7 +213,7 @@ let fold f =
 
 let iter proc s = fold (fun n () -> proc n) s ()
 
-let iter_range proc = AvlTree.iter (fun (n1, n2) -> proc n1 n2)
+let iter_range proc = BatAvlTree.iter (fun (n1, n2) -> proc n1 n2)
 
 let for_all p s =
   let rec test_range n1 n2 =

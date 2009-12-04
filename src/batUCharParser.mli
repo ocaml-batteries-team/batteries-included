@@ -52,7 +52,7 @@ val source_of_rope : BatRope.t      -> (UChar.t, position) Source.t
 val source_of_enum : UChar.t BatEnum.t -> (UChar.t, position) Source.t
 (** Create a source from an enumeration of unicode characters.*)
 
-val parse : (UChar.t, 'a, position) t -> BatRope.t -> ('a, position report) Std.result
+val parse : (UChar.t, 'a, position) t -> BatRope.t -> ('a, position report) BatStd.result
 (**Apply a parser to a Unicode Rope.*)
 
 (**{6 Utilities}*)

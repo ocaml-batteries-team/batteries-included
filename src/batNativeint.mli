@@ -225,7 +225,7 @@ val operations : t BatNumber.numeric
 (** {7 Printing}*)
 
 val print : 'a BatIO.output -> t -> unit
-val t_printer : t Value_printer.t
+val t_printer : t BatValue_printer.t
 
 (**/**)
 

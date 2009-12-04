@@ -1,6 +1,6 @@
 open BatParserCo
 open BatCharParser
-open Std
+open BatStd
 open Genlex
 
 
@@ -321,7 +321,7 @@ struct
 	else                   case_string
 
       let adapt_case =
-	if case_sensitive then Std.identity
+	if case_sensitive then BatStd.identity
 	else String.lowercase
 	  
       let string_compare =

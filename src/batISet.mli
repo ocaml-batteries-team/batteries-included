@@ -1,7 +1,7 @@
 (* $Id: iSet.mli,v 1.1 2003/12/19 17:24:34 yori Exp $ *)
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 
-type t = (int * int) AvlTree.tree
+type t = (int * int) BatAvlTree.tree
 
 type elt = int
 

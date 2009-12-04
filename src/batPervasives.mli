@@ -840,18 +840,18 @@ val printer_exn : (exn -> 'a, 'a) BatPrint.directive
 
 (** {7 Value printers} *)
 
-val bool_printer : bool Value_printer.t
-val int_printer : int Value_printer.t
-val int32_printer : int32 Value_printer.t
-val int64_printer : int64 Value_printer.t
-val nativeint_printer : nativeint Value_printer.t
-val float_printer : float Value_printer.t
-val string_printer : string Value_printer.t
-val list_printer : 'a Value_printer.t -> 'a list Value_printer.t
-val array_printer : 'a Value_printer.t -> 'a array Value_printer.t
-val option_printer : 'a Value_printer.t -> 'a option Value_printer.t
-val maybe_printer : 'a Value_printer.t -> 'a option Value_printer.t
-val exn_printer : exn Value_printer.t
+val bool_printer : bool BatValue_printer.t
+val int_printer : int BatValue_printer.t
+val int32_printer : int32 BatValue_printer.t
+val int64_printer : int64 BatValue_printer.t
+val nativeint_printer : nativeint BatValue_printer.t
+val float_printer : float BatValue_printer.t
+val string_printer : string BatValue_printer.t
+val list_printer : 'a BatValue_printer.t -> 'a list BatValue_printer.t
+val array_printer : 'a BatValue_printer.t -> 'a array BatValue_printer.t
+val option_printer : 'a BatValue_printer.t -> 'a option BatValue_printer.t
+val maybe_printer : 'a BatValue_printer.t -> 'a option BatValue_printer.t
+val exn_printer : exn BatValue_printer.t
 
 (**/**)
 
@@ -859,7 +859,7 @@ val exn_printer : exn Value_printer.t
    {6 Results}
 *)
 
-type ('a, 'b) result = ('a, 'b) Std.result =
+type ('a, 'b) result = ('a, 'b) BatStd.result =
   | Ok  of 'a
   | Bad of 'b
 

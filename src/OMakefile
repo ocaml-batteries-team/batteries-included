@@ -9,7 +9,6 @@ EXTRA[] =
     batteries_help.cmo
 
 OBJECTS[] =
-    legacy
     batArg
     batArray
     batBigarray
@@ -63,7 +62,7 @@ OBJECTS[] =
     batDynArray
     batFile
     batGlobal
-    innerWeaktbl
+    batInnerWeaktbl
     batInterfaces
     batLazyList
     batLogger
@@ -84,15 +83,15 @@ OBJECTS[] =
     batReturn
     batRMutex
     batRope
-    seq
-    std
-    substring
-    uCharParser
-    value_printer
-    vect
-    avlTree
-    iSet
-    iMap
+    batSeq
+    batStd
+    batSubstring
+    batUCharParser
+    batValue_printer
+    batVect
+    batAvlTree
+    batISet
+    batIMap
     batteries_config
     batteries_print
     batteries

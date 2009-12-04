@@ -178,19 +178,19 @@ let init name_level_list formatter =
 let init_from_string name_level_string formatter =
   let init_key_value ss =
     try
-      let name_ss, level_ss = Substring.splitl (fun c -> c <> ':') ss in
-      let name = Substring.to_string name_ss in
-      let level = level_of_name (Substring.to_string level_ss) in
+      let name_ss, level_ss = BatSubstring.splitl (fun c -> c <> ':') ss in
+      let name = BatSubstring.to_string name_ss in
+      let level = level_of_name (BatSubstring.to_string level_ss) in
       let lm = make_log name in
       log_enable lm level
     with Not_found -> try
-      let level = level_of_name (Substring.to_string ss) in
+      let level = level_of_name (BatSubstring.to_string ss) in
       default_level := int_of_level level;
       Hashtbl.iter (fun name lm -> log_enable lm level) logs
     with Failure _ ->
-      failwith ("invalid log initialization: " ^ Substring.to_string ss)
+      failwith ("invalid log initialization: " ^ BatSubstring.to_string ss)
   in
-  List.iter init_key_value (Substring.split_on_comma (Substring.of_string name_level_string) );
+  List.iter init_key_value (BatSubstring.split_on_comma (BatSubstring.of_string name_level_string) );
   register_formatter "default" formatter
 
 (******************************************************************************)

@@ -2,7 +2,7 @@
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* Modified by Edgar Friendly <thelema314@gmail.com> *)
 
-type +'a t = (int * int * 'a) AvlTree.tree
+type +'a t = (int * int * 'a) BatAvlTree.tree
 
 type key = int
 
@@ -42,10 +42,10 @@ val fold : (int -> 'b -> 'a -> 'a) -> 'b t -> 'a -> 'a
 
 val fold_range : (int -> int -> 'b -> 'a -> 'a) -> 'b t -> 'a -> 'a
 
-val set_to_map : ISet.t -> 'a -> 'a t
+val set_to_map : BatISet.t -> 'a -> 'a t
 
-val domain : 'a t -> ISet.t
+val domain : 'a t -> BatISet.t
 
-val map_to_set : ('a -> bool) -> 'a t -> ISet.t
+val map_to_set : ('a -> bool) -> 'a t -> BatISet.t
 
 val enum : 'a t -> (int * int * 'a) BatEnum.t

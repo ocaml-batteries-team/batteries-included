@@ -105,9 +105,9 @@ let not_char c = label ("anything but '" ^ BatString.of_char c ^ "'")
 )
 
 let none_of l = label (
-  BatString.of_list (Vect.to_list (Vect.append ']'
-    (List.fold_left (fun acc x -> Vect.append x acc)
-       (Vect.of_list (BatString.to_list "anything but ['"))
+  BatString.of_list (BatVect.to_list (BatVect.append ']'
+    (List.fold_left (fun acc x -> BatVect.append x acc)
+       (BatVect.of_list (BatString.to_list "anything but ['"))
        l))))
   (none_of l)
 

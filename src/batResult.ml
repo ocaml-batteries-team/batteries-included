@@ -1,6 +1,6 @@
 
-open Std
-type ('a, 'b) t = ('a, 'b) Std.result = 
+open BatStd
+type ('a, 'b) t = ('a, 'b) BatStd.result = 
  | Ok  of 'a
  | Bad of 'b
 

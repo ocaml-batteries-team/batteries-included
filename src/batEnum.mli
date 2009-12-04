@@ -611,7 +611,7 @@ end
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
-val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
+val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
 
 (** {6 Override modules}*)
 

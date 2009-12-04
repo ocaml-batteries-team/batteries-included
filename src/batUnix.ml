@@ -37,8 +37,8 @@
      track low-level information on our [input]s/[output]s.
   *)
 
-  module Wrapped_in = InnerWeaktbl.Make(Input) (*input  -> in_channel *)
-  module Wrapped_out= InnerWeaktbl.Make(Output)(*output -> out_channel*)
+  module Wrapped_in = BatInnerWeaktbl.Make(Input) (*input  -> in_channel *)
+  module Wrapped_out= BatInnerWeaktbl.Make(Output)(*output -> out_channel*)
   let wrapped_in    = Wrapped_in.create 16
   let wrapped_out   = Wrapped_out.create 16
 

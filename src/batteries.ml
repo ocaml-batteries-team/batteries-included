@@ -1,5 +1,63 @@
 (* open this to extend all Foo with BatFoo *)
 
+module Legacy = struct
+  include Pervasives
+  module Arg = Arg
+  module Array = Array
+  module ArrayLabels = ArrayLabels
+  module Buffer = Buffer
+  module Callback = Callback
+  module Char = Char
+  module Complex = Complex
+  module Digest = Digest
+  module Filename = Filename
+  module Format = Format
+  module Gc = Gc
+  module Genlex = Genlex
+  module Hashtbl = Hashtbl
+  module Int32 = Int32
+  module Int64 = Int64
+  module Lazy = Lazy
+  module Lexing = Lexing
+  module List = List
+  module ListLabels = ListLabels
+  module Map = Map
+  module Marshal = Marshal
+  module MoreLabels = MoreLabels
+  module Nativeint = Nativeint
+  module Oo = Oo
+  module Parsing = Parsing
+  module Printexc = Printexc
+  module Printf = Printf
+  module Queue = Queue
+  module Random = Random
+  module Scanf = Scanf
+  module Set = Set
+  module Sort = Sort
+  module Stack = Stack
+  module StdLabels = StdLabels
+  module Stream = Stream
+  module String = String
+  module StringLabels = StringLabels
+  module Sys = Sys
+  module Weak = Weak
+end
+
+module Extlib = struct
+  module ExtArray = struct 
+    module Array = struct include Array include BatArray end 
+  end
+  module ExtHashtbl = struct 
+    module Hashtbl = BatHashtbl 
+  end
+  module ExtList = struct
+    module List = struct include List include BatList end
+  end
+  module ExtString = struct
+    module String = struct include String include BatString end
+  end
+end
+
 (* stdlib modules *)
 module Arg = struct include Arg include BatArg end
 module Array = struct include Array include BatArray end
@@ -45,7 +103,10 @@ module LazyList = BatLazyList
 module Logger = BatLogger
 module Monad = BatMonad
 module MultiPMap = BatMultiPMap
-
+module Number = BatNumber
+module Option = BatOption
+module OptParse = BatOptParse
+module Pair = BatPair
 
 (* Batteries specific modules *)
 module CharParser = BatCharParser
