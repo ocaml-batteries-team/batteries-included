@@ -96,34 +96,54 @@ module BitSet = BatBitSet
 module Bit_set = BatBitSet
 module Dllist = BatDllist
 module DynArray = BatDynArray
+module Enum = BatEnum
 module File = BatFile
 module Global = BatGlobal
-module Interfaces = BatInterfaces
+module IO = BatIO
 module LazyList = BatLazyList
-module Logger = BatLogger
-module Monad = BatMonad
 module MultiPMap = BatMultiPMap
-module Number = BatNumber
 module Option = BatOption
 module OptParse = BatOptParse
-module Pair = BatPair
+module PMap = BatPMap
+module PSet = BatPSet
+module RefList = BatRefList
+module Ref = BatRef
+module Std = BatStd
 
 (* Batteries specific modules *)
 module CharParser = BatCharParser
-module Concurrent = BatConcurrent
+module Logger = BatLogger
+module Monad = BatMonad
+module Pair = BatPair
+module ParserCo = BatParserCo
+module PathGen = BatPathGen
+module Print = BatPrint
+module Result = BatResult
+module Return = BatReturn
+module Seq = BatSeq
+module UCharParser = BatUCharParser
+module Value_printer = BatValue_printer
+module Vect = BatVect
+module ISet = BatISet
+module IMap = BatIMap
 
 (* Unix *)
 module Unix = struct include Unix include BatUnix end
 
 (* Str *)
 module Str = struct include Str include BatStr end
+module Substring = BatSubstring
+module Rope = BatRope
 
 (* Threads *)
+module Concurrent = BatConcurrent
 module Mutex = BatMutex
-
+module RMutex = BatRMutex
 
 
 (* Batteries Specific *)
+module Interfaces = BatInterfaces
+module Number = BatNumber
 module Float = BatFloat
 module Int = BatInt
 module Bool = BatBool
