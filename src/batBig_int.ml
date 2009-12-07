@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Number
+open BatNumber
 
 module BaseBig_int = struct
   include Big_int

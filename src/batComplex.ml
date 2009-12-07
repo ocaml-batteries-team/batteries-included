@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open Number
+open BatNumber
 
 module BaseComplex = struct
   include Complex
@@ -73,7 +73,7 @@ module BaseComplex = struct
 end
 
 
-  include Number.MakeNumeric(BaseComplex)
+  include BatNumber.MakeNumeric(BaseComplex)
   include BaseComplex
   let print out t = BatInnerIO.nwrite out (to_string t)
 

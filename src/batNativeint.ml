@@ -21,7 +21,7 @@
  *)
 
 
-open Number
+open BatNumber
 
 module BaseNativeint = struct
   include Nativeint
@@ -31,7 +31,7 @@ module BaseNativeint = struct
   let min_num, max_num = min_int, max_int
 end
 
-  include Number.MakeNumeric(BaseNativeint)
+  include BatNumber.MakeNumeric(BaseNativeint)
   include BaseNativeint
 
 

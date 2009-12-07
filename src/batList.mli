@@ -387,7 +387,7 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b t -> string
 	  (** Using a string printer, print a list to a string (as sprintf vs. printf) *)
 
-        val t_printer : 'a Value_printer.t -> 'a t Value_printer.t
+        val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
 
 	(** {6 Obsolete functions} *)
 

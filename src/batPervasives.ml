@@ -23,11 +23,11 @@
 
 
 open Pervasives
-  include Std
+  include BatStd
   open BatEnum
 
   (** {6 I/O}*)
-  let print_guess   = Std.print
+  let print_guess oc v = BatIO.nwrite oc (dump v)
   let prerr_guess v = prerr_endline (dump v)
 
   let stdin             = BatIO.stdin
@@ -35,7 +35,7 @@ open Pervasives
   let stderr            = BatIO.stderr
   let stdnull           = BatIO.stdnull
 
-  let open_out          = File.open_out
+  let open_out          = BatFile.open_out
   let open_out_bin name = 
     BatIO.output_channel ~cleanup:true (open_out_bin name)
   let open_out_gen mode perm name = 
@@ -47,7 +47,7 @@ open Pervasives
   
   let output_char       = BatChar.print
   let output_string     = BatString.print
-  let output_rope       = Rope.print
+  let output_rope       = BatRope.print
   let output oc buf pos len = 
     ignore (BatIO.output oc buf pos len)
   let output_byte       = BatIO.write_byte
@@ -58,7 +58,7 @@ open Pervasives
     try BatIO.close_out out
     with _ -> ()
 
-  let open_in           = File.open_in
+  let open_in           = BatFile.open_in
   let open_in_bin name  = BatIO.input_channel ~cleanup:true (open_in_bin name)
   let open_in_gen mode perm filename = 
     BatIO.input_channel ~cleanup:true (open_in_gen mode perm filename)
@@ -111,9 +111,9 @@ open Pervasives
   (** {6 Concurrency}*)
 
   let unique_value  = ref 0
-  let lock          = ref Concurrent.nolock
+  let lock          = ref BatConcurrent.nolock
   let unique ()     =
-    Concurrent.sync !lock Ref.post_incr unique_value
+    BatConcurrent.sync !lock BatRef.post_incr unique_value
 
   (** {6 Operators}*)
 
@@ -207,7 +207,7 @@ open Pervasives
 
     
 
-  open Number
+  open BatNumber
 
   let digits mk_digit base op n =
     let rec aux acc n =
@@ -286,9 +286,9 @@ open Pervasives
   let printer_f k x = k (fun oc -> BatIO.nwrite oc (Printf.sprintf "%f" x))
   let printer_F k x = k (fun oc -> BatIO.nwrite oc (Printf.sprintf "%F" x))
 
-  let printer_format k fmt = fmt.Print.printer fmt.Print.pattern k
+  let printer_format k fmt = fmt.BatPrint.printer fmt.BatPrint.pattern k
 
-  let printer_rope k x = k (fun oc -> Rope.print oc x)
+  let printer_rope k x = k (fun oc -> BatRope.print oc x)
   let printer_utf8 k x = k (fun oc -> BatUTF8.print oc x)
   let printer_obj k x = k x#print
   let printer_exn k x = k (fun oc -> BatPrintexc.print oc x)
@@ -310,8 +310,8 @@ open Pervasives
   let string_printer = BatString.t_printer
   let list_printer = BatList.t_printer
   let array_printer = BatArray.t_printer
-  let option_printer = Option.t_printer
-  let maybe_printer = Option.maybe_printer
+  let option_printer = BatOption.t_printer
+  let maybe_printer = BatOption.maybe_printer
   let exn_printer paren out x =
     if paren then BatIO.write out '(';
     BatPrintexc.print out x;

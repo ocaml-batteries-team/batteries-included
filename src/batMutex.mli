@@ -87,7 +87,7 @@ val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
     to normal termination or to some exception being raised.
 *)
 
-val make : unit -> Concurrent.lock
+val make : unit -> BatConcurrent.lock
 (**
    Create a new abstract lock based on Mutexes.
 *)
@@ -142,7 +142,7 @@ val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
     to normal termination or to some exception being raised.
 *)
 
-val make : unit -> Concurrent.lock
+val make : unit -> BatConcurrent.lock
 (**
    Create a new abstract lock based on Mutexes.
 *)

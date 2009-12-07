@@ -1,5 +1,64 @@
 (* open this to extend all Foo with BatFoo *)
 
+module Legacy = struct
+  include Pervasives
+  module Arg = Arg
+  module Array = Array
+  module ArrayLabels = ArrayLabels
+  module Buffer = Buffer
+  module Callback = Callback
+  module Char = Char
+  module Complex = Complex
+  module Digest = Digest
+  module Filename = Filename
+  module Format = Format
+  module Gc = Gc
+  module Genlex = Genlex
+  module Hashtbl = Hashtbl
+  module Int32 = Int32
+  module Int64 = Int64
+  module Lazy = Lazy
+  module Lexing = Lexing
+  module List = List
+  module ListLabels = ListLabels
+  module Map = Map
+  module Marshal = Marshal
+  module MoreLabels = MoreLabels
+  module Nativeint = Nativeint
+  module Oo = Oo
+  module Parsing = Parsing
+  module Printexc = Printexc
+  module Printf = Printf
+  module Queue = Queue
+  module Random = Random
+  module Scanf = Scanf
+  module Set = Set
+  module Sort = Sort
+  module Stack = Stack
+  module StdLabels = StdLabels
+  module Stream = Stream
+  module String = String
+  module StringLabels = StringLabels
+  module Sys = Sys
+  module Weak = Weak
+end
+
+module Extlib = struct
+  module ExtArray = struct 
+    module Array = struct include Array include BatArray end 
+  end
+  module ExtHashtbl = struct 
+    module Hashtbl = BatHashtbl 
+  end
+  module ExtList = struct
+    module List = struct include List include BatList end
+  end
+  module ExtString = struct
+    module String = struct include String include BatString end
+  end
+end
+
+(* stdlib modules *)
 module Arg = struct include Arg include BatArg end
 module Array = struct include Array include BatArray end
 (* ArrayLabels *)
@@ -31,18 +90,60 @@ module Stream = struct include Stream include BatStream end
 module String = struct include String include BatString end
 module Sys = struct include Sys include BatSys end
 
+(* Extlib modules not replacing stdlib *)
+module Base64 = BatBase64
+module BitSet = BatBitSet
+module Bit_set = BatBitSet
+module Dllist = BatDllist
+module DynArray = BatDynArray
+module Enum = BatEnum
+module File = BatFile
+module Global = BatGlobal
+module IO = BatIO
+module LazyList = BatLazyList
+module MultiPMap = BatMultiPMap
+module Option = BatOption
+module OptParse = BatOptParse
+module PMap = BatPMap
+module PSet = BatPSet
+module RefList = BatRefList
+module Ref = BatRef
+module Std = BatStd
+
+(* Batteries specific modules *)
+module CharParser = BatCharParser
+module Logger = BatLogger
+module Monad = BatMonad
+module Pair = BatPair
+module ParserCo = BatParserCo
+module PathGen = BatPathGen
+module Print = BatPrint
+module Result = BatResult
+module Return = BatReturn
+module Seq = BatSeq
+module UCharParser = BatUCharParser
+module Value_printer = BatValue_printer
+module Vect = BatVect
+module ISet = BatISet
+module IMap = BatIMap
+
 (* Unix *)
 module Unix = struct include Unix include BatUnix end
 
 (* Str *)
 module Str = struct include Str include BatStr end
+module Substring = BatSubstring
+module Rope = BatRope
 
 (* Threads *)
+module Concurrent = BatConcurrent
 module Mutex = BatMutex
-
+module RMutex = BatRMutex
 
 
 (* Batteries Specific *)
+module Interfaces = BatInterfaces
+module Number = BatNumber
 module Float = BatFloat
 module Int = BatInt
 module Bool = BatBool

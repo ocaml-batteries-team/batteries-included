@@ -91,18 +91,18 @@ type table =
 *)
 let table_of_tableref t = 
   let result = Hashtbl.create (Hashtbl.length t) in
-    Hashtbl.iter (fun k d -> Hashtbl.add result k (RefList.to_list d)) t;
+    Hashtbl.iter (fun k d -> Hashtbl.add result k (BatRefList.to_list d)) t;
     result
 
 let append_to_table table k v =
     let found = 
       try Hashtbl.find table k
       with Not_found -> 
-	let l = RefList.empty ()
+	let l = BatRefList.empty ()
 	in Hashtbl.add table k l;
 	  l
     in
-      RefList.push found v
+      BatRefList.push found v
 
 
 (**
@@ -152,7 +152,7 @@ let load_index ~name ~index ~prefix ~suggestions ~completions =
 		debug "Adding completion %S => %S (%S)\n" basename item name;
 		debug "Adding completion %S => %S (%S)\n" leafname item name
 	   ))
-      (File.lines_of index)
+      (BatFile.lines_of index)
   with e -> 
     Printf.eprintf
       "While initializing the on-line help, error reading index file %S\n%s\n%!"
@@ -194,7 +194,7 @@ let get_table =
 		 )
 	       with _ -> () (*At this point, ignore syntax errors, they're probably comments.*)
 	    ) 
-	    (File.lines_of root_file);
+	    (BatFile.lines_of root_file);
 	    let result = {suggestions = suggestions; completions = table_of_tableref completions} in
 	      Hashtbl.add tables kind result;
 	      result
@@ -361,7 +361,7 @@ let helpers =
 
 (**Launch the introductory help text.*)
 let help () =
-  File.with_file_in (Batteries_config.documentation_root ^ "/toplevel.help")
+  BatFile.with_file_in (Batteries_config.documentation_root ^ "/toplevel.help")
     (fun file -> copy file stdout);
   flush stdout;;
 

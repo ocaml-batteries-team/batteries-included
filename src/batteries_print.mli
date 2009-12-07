@@ -27,7 +27,7 @@ open CamomileLibrary
 val print_uchar : Format.formatter -> UChar.t -> unit
 (** Pretty-print a [UChar.t]*)
 
-val print_rope : Format.formatter -> Rope.t -> unit
+val print_rope : Format.formatter -> BatRope.t -> unit
 (** Pretty-print a [Rope.t]*)
 
 val print_ustring : Format.formatter -> BatUTF8.t -> unit

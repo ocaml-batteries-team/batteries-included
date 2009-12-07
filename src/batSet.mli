@@ -250,10 +250,10 @@ module IStringSet : S with type elt = String.t
 module NumStringSet : S with type elt = String.t
 (** A set of strings. Comparison of strings takes into account embedded numbers (i.e. "a23" < "a123", "a01" = "a1") *)
 
-module RopeSet    : S with type elt = Rope.t
+module RopeSet    : S with type elt = BatRope.t
 (** A set of ropes. Comparison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
 
-module IRopeSet   : S with type elt = Rope.t
+module IRopeSet   : S with type elt = BatRope.t
 (** A set of ropes. Comparison of ropes ignores case (i.e. r"foo" = r"Foo")*)
 
 module IntSet     : S with type elt = BatInt.t

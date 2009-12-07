@@ -234,12 +234,12 @@ external format : string -> int64 -> string = "caml_int64_format"
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
-    val operations : t Number.numeric
+    val operations : t BatNumber.numeric
 
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
     val print: 'a BatInnerIO.output -> t -> unit
-    val t_printer : t Value_printer.t
+    val t_printer : t BatValue_printer.t
 
 

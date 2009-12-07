@@ -40,11 +40,11 @@ let starts_with str p =
   let len = length p in
     if length str < len then false
     else 
-      Return.label 
+      BatReturn.label 
 	(fun label ->
 	   for i = 0 to len - 1 do
 	     if unsafe_get str i <> unsafe_get p i then
-	       Return.return label false
+	       BatReturn.return label false
 	   done;
 	   true)
 
@@ -55,11 +55,11 @@ let ends_with str p =
   let diff = sl - el  in
     if diff < 0 then false (*string is too short*)
     else
-      Return.label
+      BatReturn.label
 	(fun label ->
 	   for i = 0 to el - 1 do
 	     if get str (diff + i) <> get p i then
-	       Return.return label false
+	       BatReturn.return label false
 	   done;
 	   true)
 
@@ -72,12 +72,12 @@ let find_from str ofs sub =
 	if len = 0 then invalid_arg "Empty string to search in" else
 	if 0 > ofs || ofs >= len then raise (Invalid_argument "index out of bounds")
 	else
-	Return.label (fun label ->
+	BatReturn.label (fun label ->
   	  for i = ofs to len - sublen do
 	    let j = ref 0 in
 	      while unsafe_get str (i + !j) = unsafe_get sub !j do
 		incr j;
-		if !j = sublen then Return.return label i
+		if !j = sublen then BatReturn.return label i
 	      done;
 	  done;
 	  raise Not_found
@@ -93,13 +93,13 @@ let rfind_from str suf sub =
       if len = 0 then invalid_arg "Empty string to search in" else
 	if 0 > suf || suf >= len then raise (Invalid_argument "index out of bounds")
 	else
-	Return.label (fun label ->
+	BatReturn.label (fun label ->
   	  for i = suf - sublen + 1 downto 0 do
 	    (*Printf.printf "i:%i/suf:%i/sublen:%i/len:%i\n" i suf sublen len;*)
 	    let j = ref 0 in
 	      while unsafe_get str ( i + !j ) = unsafe_get sub !j do
 		incr j;
-		if !j = sublen then Return.return label i
+		if !j = sublen then BatReturn.return label i
 	      done;
 	  done;
 	  raise Not_found
@@ -215,10 +215,10 @@ let enum s =
 	       if !i = l then
 		 raise BatEnum.No_more_elements
 	       else
-		 unsafe_get s (Ref.post_incr i)
+		 unsafe_get s (BatRef.post_incr i)
 	    )
       ~count:(fun () -> l - !i)
-      ~clone:(fun () -> make (Ref.copy i))
+      ~clone:(fun () -> make (BatRef.copy i))
   in
     make (ref 0)
 
@@ -229,10 +229,10 @@ let backwards s =
 		   if !i <= 0 then
 		     raise BatEnum.No_more_elements
 		   else
-		     unsafe_get s (Ref.pre_decr i)
+		     unsafe_get s (BatRef.pre_decr i)
 		)
 	  ~count:(fun () -> !i)
-	  ~clone:(fun () -> make (Ref.copy i))
+	  ~clone:(fun () -> make (BatRef.copy i))
       in
 	make (ref (length s))
 
@@ -240,14 +240,14 @@ let of_enum e =
   let l = BatEnum.count e in
   let s = create l in
   let i = ref 0 in
-    BatEnum.iter (fun c -> unsafe_set s (Ref.post_incr i) c) e;
+    BatEnum.iter (fun c -> unsafe_set s (BatRef.post_incr i) c) e;
     s
 
 let of_backwards e =
   let l = BatEnum.count e in
   let s = create l in
   let i = ref (l - 1) in
-    BatEnum.iter (fun c -> unsafe_set s (Ref.post_decr i) c) e;
+    BatEnum.iter (fun c -> unsafe_set s (BatRef.post_decr i) c) e;
     s
 
 

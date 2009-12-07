@@ -174,10 +174,10 @@ let string_splice s1 off len s2 =
 		 if Byte.at_end us !i then
                    raise BatEnum.No_more_elements
 		 else
-		   look us (Ref.post i (Byte.next us))
+		   look us (BatRef.post i (Byte.next us))
               )
 	~count:(fun () -> length_aux us 0 !i)
-	~clone:(fun () -> make (Ref.copy i))
+	~clone:(fun () -> make (BatRef.copy i))
     in
     make (ref Byte.first)
       
@@ -199,10 +199,10 @@ let string_splice s1 off len s2 =
 		 if Byte.out_of_range us !i then
                    raise BatEnum.No_more_elements
 		 else
-                   look us (Ref.post i (Byte.prev us))
+                   look us (BatRef.post i (Byte.prev us))
               )
   ~count:(fun () -> rev_length_aux us 0 !i)
-  ~clone:(fun () -> make (Ref.copy i))
+  ~clone:(fun () -> make (BatRef.copy i))
     in
     make (ref (Byte.last us))
       

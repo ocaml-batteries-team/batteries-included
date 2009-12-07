@@ -20,7 +20,7 @@
  *)
 
 
-open Number
+open BatNumber
 
 module BaseBool = struct
   type t = bool
@@ -66,7 +66,7 @@ module BaseBool = struct
     | false -> 0
     | true  -> 1
 
-  open Std
+  open BatStd
   let of_float = of_int -| int_of_float
   let to_float = float_of_int -| to_int
   let of_string = function
@@ -78,7 +78,7 @@ module BaseBool = struct
 end
 
   include BaseBool
-  include Number.MakeNumeric(BaseBool)
+  include BatNumber.MakeNumeric(BaseBool)
   let print out t = BatInnerIO.nwrite out (to_string t)
   let t_printer paren out t = print out t
 

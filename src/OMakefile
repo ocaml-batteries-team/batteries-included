@@ -9,8 +9,6 @@ EXTRA[] =
     batteries_help.cmo
 
 OBJECTS[] =
-    legacy
-    base64
     batArg
     batArray
     batBigarray
@@ -55,45 +53,45 @@ OBJECTS[] =
     batUnit
     batUnix
     batUTF8
-    bitSet
-    charEncodings
-    charParser
-    concurrent
-    dllist
-    dynArray
-    file
-    global
-    innerWeaktbl
-    interfaces
-    IOThreads
-    lazyList
-    logger
-    monad
-    multiPMap
-    number
-    option
-    optParse
-    pair
-    parserCo
-    pathGen
-    pMap
-    print
-    pSet
-    refList
-    ref
-    result
-    return
-    rMutex
-    rope
-    seq
-    std
-    substring
-    uCharParser
-    value_printer
-    vect
-    avlTree
-    iSet
-    iMap
+    batBase64
+    batBitSet
+    batCharEncodings
+    batCharParser
+    batConcurrent
+    batDllist
+    batDynArray
+    batFile
+    batGlobal
+    batInnerWeaktbl
+    batInterfaces
+    batLazyList
+    batLogger
+    batMonad
+    batMultiPMap
+    batNumber
+    batOption
+    batOptParse
+    batPair
+    batParserCo
+    batPathGen
+    batPMap
+    batPrint
+    batPSet
+    batRefList
+    batRef
+    batResult
+    batReturn
+    batRMutex
+    batRope
+    batSeq
+    batStd
+    batSubstring
+    batUCharParser
+    batValue_printer
+    batVect
+    batAvlTree
+    batISet
+    batIMap
     batteries_config
     batteries_print
     batteries

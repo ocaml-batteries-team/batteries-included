@@ -20,7 +20,7 @@
  *)
 
 
-open Number
+open BatNumber
 
 module BaseFloat = struct
   type t = float
@@ -86,7 +86,7 @@ module BaseFloat = struct
   let pi           = 4. *. atan 1.
 end
 
-  include Number.MakeNumeric(BaseFloat)
+  include BatNumber.MakeNumeric(BaseFloat)
   include BaseFloat
   let print out t = BatInnerIO.nwrite out (to_string t)
   let t_printer paren out t = print out t
@@ -140,7 +140,7 @@ module Base_safe_float = struct
 end
 
 module Safe_float = struct
-  include Number.MakeNumeric(Base_safe_float)
+  include BatNumber.MakeNumeric(Base_safe_float)
   include Base_safe_float
   let print = print
   let t_printer paren out t = print out t

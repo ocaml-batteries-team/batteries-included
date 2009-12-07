@@ -263,7 +263,7 @@ end with type buf = Buffer.t
 (** {7 Printing}*)
 val print: 'a BatInnerIO.output -> t -> unit
 
-val t_printer : t Value_printer.t
+val t_printer : t BatValue_printer.t
 
 (**/**)
 external of_string_unsafe : string -> t = "%identity"
