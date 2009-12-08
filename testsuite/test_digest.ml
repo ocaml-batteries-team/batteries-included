@@ -11,7 +11,7 @@ let legacy_result () =
 (*2. Compute the digest of this file using Batteries.Digest*)
 
 let batteries_result () =
-  let inp    = File.open_in Sys.argv.(0) in
+  let inp    = BatFile.open_in Sys.argv.(0) in
   let result = BatDigest.channel inp (-1)   in
     BatIO.close_in inp;
     result

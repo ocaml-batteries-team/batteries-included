@@ -8,12 +8,12 @@ let print_enum out enum =
 let test_traversal_order () =
   let init = State.make [|0|] in
   let keys = BatEnum.take 50 (State.enum_int init 10) in
-  let map  = PMap.of_enum (BatEnum.map (fun x -> (x,x)) keys) in
-  let enum_1 () = PMap.enum map
+  let map  = BatPMap.of_enum (BatEnum.map (fun x -> (x,x)) keys) in
+  let enum_1 () = BatPMap.enum map
   and enum_2 () =
-    let list = RefList.empty () in
-      PMap.iter (fun k v -> RefList.push list (k, v)) map;
-      RefList.backwards list
+    let list = BatRefList.empty () in
+      BatPMap.iter (fun k v -> BatRefList.push list (k, v)) map;
+      BatRefList.backwards list
   in
     match BatEnum.compare compare (enum_1 ()) (enum_2 ()) with
       | 0 -> (* pass *) ()
@@ -23,7 +23,7 @@ let test_traversal_order () =
                print_enum (enum_1 ()) print_enum (enum_2 ()))
 
 (* This test is incorrect *)
-open MultiPMap
+open BatMultiPMap
 let test_multimap_empty_assoc_lists () =
   let map =
     add 0 "foo" empty |> add 0 "bar" |> add 0 "sna" |>
@@ -32,7 +32,7 @@ let test_multimap_empty_assoc_lists () =
     if not (mem 0 map) then
       assert_failure
         (Printf.sprintf "map[0] should be empty but contains %d bindings\n"
-           (PSet.cardinal (find 0 map)))
+           (BatPSet.cardinal (find 0 map)))
 
 let tests = "PMap" >::: [
   "traversal order iter vs. enum" >:: test_traversal_order;

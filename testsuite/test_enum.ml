@@ -1,6 +1,6 @@
 open OUnit
 open BatBigarray
-open Std
+open BatStd
 
 let array     = [|'1';'2';'3';'4';'5'|]
 let array2    = [|[|'1';'2';'3';'4';'5'|];
@@ -19,7 +19,7 @@ let bigarray2 = Array2.of_array char c_layout array2
 let bigarray3 = Array3.of_array char c_layout array3
 
 let utf8   = BatUTF8.of_string string
-let rope   = Rope.of_ustring utf8
+let rope   = BatRope.of_ustring utf8
 
 module S = BatSet.Make(struct
                          type t = char
@@ -59,7 +59,7 @@ let test_set_enums () =
       aeq (of_enum (enum source)) (of_enum (backwards source));
       aeq source (of_enum (backwards source));
 
-open Rope
+open BatRope
 let test_rope_enums () =
     let source = rope in
     let aeq = assert_equal ~printer:(BatPrintf.sprintf2 "%a" print) in

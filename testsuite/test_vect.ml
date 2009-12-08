@@ -1,5 +1,5 @@
 open OUnit
-open Vect
+open BatVect
 open BatPervasives
 
 (**Initialize data sample*)
@@ -10,7 +10,7 @@ let vect   = of_array buffer
 let print_array out =
   BatArray.print ~sep:"; " BatInt.print out
 let print_vect  out =
-  Vect.print ~sep:"; " BatInt.print out
+  BatVect.print ~sep:"; " BatInt.print out
 
 let sprint_vect v = BatPrintf.sprintf2 "%a" print_vect v
 
