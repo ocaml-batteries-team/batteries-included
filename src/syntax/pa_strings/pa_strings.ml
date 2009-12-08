@@ -111,7 +111,7 @@ let _ =
 
   let rope_of_latin1 _loc str =
     let str = utf8_of_latin1 str in
-    <:expr< Rope.of_ustring (BatUTF8.of_string_unsafe $str:String.escaped str$) >>
+    <:expr< BatRope.of_ustring (BatUTF8.of_string_unsafe $str:String.escaped str$) >>
   in
 
   register_expr_specifier "r"
@@ -121,11 +121,11 @@ let _ =
   register_when_specifier "r"
     (fun ctx _loc id str ->
        let shared_id = register_shared_expr ctx (rope_of_latin1 _loc str) in
-       <:expr< Rope.compare $id:shared_id$ $id:id$ = 0 >>);
+       <:expr< BatRope.compare $id:shared_id$ $id:id$ = 0 >>);
 
   let rope_of_utf8 _loc str =
     validate_utf8 _loc str;
-    <:expr< Rope.of_ustring (BatUTF8.of_string_unsafe $str:str$) >>
+    <:expr< BatRope.of_ustring (BatUTF8.of_string_unsafe $str:str$) >>
   in
 
   register_expr_specifier "ur"

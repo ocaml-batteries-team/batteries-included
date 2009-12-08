@@ -241,7 +241,7 @@ struct
   (* Convert a type to a value printer: *)
   let rec vprinter_of_ctyp = function
     | <:ctyp@_loc< _ >> ->
-        <:expr< fun paren out x -> IO.nwrite out "<abstract>" >>
+        <:expr< fun paren out x -> BatIO.nwrite out "<abstract>" >>
     | <:ctyp@_loc< $id:id$ >> ->
         <:expr< $id:map_id id$ >>
     | <:ctyp@_loc< $a$ $b$ >> ->
@@ -252,7 +252,7 @@ struct
           (fun acc t ->
              let _loc = Ast.loc_of_expr acc in
              <:expr< $acc$ $vprinter_of_ctyp t$ >>)
-          <:expr< Value_printer.$lid:"print_tuple" ^ string_of_int (List.length l)$ >>
+          <:expr< BatValue_printer.$lid:"print_tuple" ^ string_of_int (List.length l)$ >>
           l
     | t ->
         Loc.raise (Ast.loc_of_ctyp t) (Failure "pa_strings: i do not understand this type")
@@ -341,7 +341,7 @@ let expr_of_directive _loc names expr =
             printer_s
               (fun __printer ->
                  __printers.(1) <-- __printer;
-                 __k (fun oc -> Print.format oc __pattern __printers)))
+                 __k (fun oc -> BatPrint.format oc __pattern __printers)))
      >>
 *)
 let make_printer _loc ast =
@@ -368,7 +368,7 @@ let make_printer _loc ast =
                      (fun __out -> $dir$ false __out $id:id$);
                   $aux (n + 1) l$ >>
     | Nil _loc ->
-        <:expr< __k (fun oc -> Print.format oc __pattern __printers) >>
+        <:expr< __k (fun oc -> BatPrint.format oc __pattern __printers) >>
   in
   aux 0 ast
 
@@ -392,8 +392,8 @@ let _ =
        let directive_count = count_directives ast in
 
        (* Creates the format expression *)
-       <:expr< { Print.pattern = $str:String.escaped(make_pattern ast)$;
-                 Print.printer = (fun __pattern __k ->
+       <:expr< { BatPrint.pattern = $str:String.escaped(make_pattern ast)$;
+                 BatPrint.printer = (fun __pattern __k ->
                                                 let __printers =
                                                   Array.create
                                                     $int:string_of_int directive_count$
