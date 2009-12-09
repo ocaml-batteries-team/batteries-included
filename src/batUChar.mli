@@ -70,7 +70,7 @@ val to_int : t   -> int
 val icompare : t -> t -> int
   (** Compare two unicode characters, case-insensitive. *)
 
-module IUChar : Interfaces.OrderedType with type t = t
+module IUChar : BatInterfaces.OrderedType with type t = t
 
 (** {6 Detailed information}*)
 

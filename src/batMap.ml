@@ -21,7 +21,7 @@
 
 
 
-  module type OrderedType = Interfaces.OrderedType
+  module type OrderedType = BatInterfaces.OrderedType
 
   module type S =
   sig

@@ -42,7 +42,7 @@ and 'a node =
   | Nil
   | Cons of 'a * 'a t
 
-include Interfaces.Mappable with type 'a mappable = 'a t
+include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 val enum : 'a t -> 'a BatEnum.t
   (** [enum s] returns the enumeration of all element of [s].

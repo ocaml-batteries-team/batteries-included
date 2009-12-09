@@ -20,7 +20,7 @@
  *)
 
 
-module type OrderedType = Interfaces.OrderedType
+module type OrderedType = BatInterfaces.OrderedType
 (** Input signature of the functor {!Set.Make}. *)
 
 module type S =

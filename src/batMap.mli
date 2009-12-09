@@ -34,7 +34,7 @@
     @documents Map
 *)
 
-(* module type OrderedType = Interfaces.OrderedType *)
+(* module type OrderedType = BatInterfaces.OrderedType *)
 (** Input signature of the functor {!Map.Make}. *)
 
 module type S =
@@ -224,7 +224,7 @@ module IRopeMap   : S with type key = BatRope.t
 module IntMap     : S with type key = BatInt.t
 (** A map on integers.*)
 
-module Make (Ord : Interfaces.OrderedType) : S with type key = Ord.t
+module Make (Ord : BatInterfaces.OrderedType) : S with type key = Ord.t
 (** Functor building an implementation of the map structure
    given a totally ordered type. 
 

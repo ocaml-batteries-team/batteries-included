@@ -1,7 +1,7 @@
-(* 
+(*
  * Interfaces - Common interfaces for data structures
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -33,7 +33,7 @@
 *)
 module type Mappable = sig
   type 'a mappable (** The data structure, e.g. ['a List.t] *)
-    
+
   val map : ('a -> 'b) -> ('a mappable -> 'b mappable)
     (** [map f e] applies [f] to every element of [e] and returns the corresponding data structure *)
 end

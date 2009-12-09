@@ -51,7 +51,7 @@
   type 'a t = 'a array (** The type of arrays.  *)
 
   include BatEnum.Enumerable with type 'a enumerable = 'a t
-  include Interfaces.Mappable with type 'a mappable = 'a t
+  include BatInterfaces.Mappable with type 'a mappable = 'a t
 
   (**{6 Base operations}*)
 

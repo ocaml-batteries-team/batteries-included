@@ -39,7 +39,7 @@ type 'a t = 'a node_t (*For uniformity*)
    The type of a non-empty doubly-linked list.
 *)
 
-include Interfaces.Mappable with type 'a mappable = 'a t
+include BatInterfaces.Mappable with type 'a mappable = 'a t
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 
 exception Empty
