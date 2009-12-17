@@ -49,3 +49,9 @@ val domain : 'a t -> BatISet.t
 val map_to_set : ('a -> bool) -> 'a t -> BatISet.t
 
 val enum : 'a t -> (int * int * 'a) BatEnum.t
+
+val fold2_range : (int -> int -> 'a option -> 'b option -> 'c -> 'c) -> 'a t -> 'b t -> 'c -> 'c
+
+val union : ('a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
+
+val forall2_range : (int -> int -> 'a option -> 'b option -> bool) -> 'a t -> 'b t -> bool
