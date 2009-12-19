@@ -1,0 +1,930 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="BatIMap.html">
+<link rel="next" href="BatISet.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="BatArg" rel="Chapter" href="BatArg.html">
+<link title="BatArray" rel="Chapter" href="BatArray.html">
+<link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
+<link title="BatBase64" rel="Chapter" href="BatBase64.html">
+<link title="BatBig_int" rel="Chapter" href="BatBig_int.html">
+<link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
+<link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
+<link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatChar" rel="Chapter" href="BatChar.html">
+<link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
+<link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
+<link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDigest" rel="Chapter" href="BatDigest.html">
+<link title="BatDllist" rel="Chapter" href="BatDllist.html">
+<link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEnum" rel="Chapter" href="BatEnum.html">
+<link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFloat" rel="Chapter" href="BatFloat.html">
+<link title="BatFormat" rel="Chapter" href="BatFormat.html">
+<link title="BatGc" rel="Chapter" href="BatGc.html">
+<link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
+<link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatIMap" rel="Chapter" href="BatIMap.html">
+<link title="BatIO" rel="Chapter" href="BatIO.html">
+<link title="BatISet" rel="Chapter" href="BatISet.html">
+<link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
+<link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
+<link title="BatInt" rel="Chapter" href="BatInt.html">
+<link title="BatInt32" rel="Chapter" href="BatInt32.html">
+<link title="BatInt64" rel="Chapter" href="BatInt64.html">
+<link title="BatInterfaces" rel="Chapter" href="BatInterfaces.html">
+<link title="BatLazyList" rel="Chapter" href="BatLazyList.html">
+<link title="BatLexing" rel="Chapter" href="BatLexing.html">
+<link title="BatList" rel="Chapter" href="BatList.html">
+<link title="BatLogger" rel="Chapter" href="BatLogger.html">
+<link title="BatMap" rel="Chapter" href="BatMap.html">
+<link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMonad" rel="Chapter" href="BatMonad.html">
+<link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
+<link title="BatMutex" rel="Chapter" href="BatMutex.html">
+<link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
+<link title="BatNum" rel="Chapter" href="BatNum.html">
+<link title="BatNumber" rel="Chapter" href="BatNumber.html">
+<link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
+<link title="BatOption" rel="Chapter" href="BatOption.html">
+<link title="BatPMap" rel="Chapter" href="BatPMap.html">
+<link title="BatPSet" rel="Chapter" href="BatPSet.html">
+<link title="BatPair" rel="Chapter" href="BatPair.html">
+<link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
+<link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
+<link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
+<link title="BatPrint" rel="Chapter" href="BatPrint.html">
+<link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
+<link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
+<link title="BatQueue" rel="Chapter" href="BatQueue.html">
+<link title="BatRMutex" rel="Chapter" href="BatRMutex.html">
+<link title="BatRandom" rel="Chapter" href="BatRandom.html">
+<link title="BatRef" rel="Chapter" href="BatRef.html">
+<link title="BatRefList" rel="Chapter" href="BatRefList.html">
+<link title="BatResult" rel="Chapter" href="BatResult.html">
+<link title="BatReturn" rel="Chapter" href="BatReturn.html">
+<link title="BatRope" rel="Chapter" href="BatRope.html">
+<link title="BatScanf" rel="Chapter" href="BatScanf.html">
+<link title="BatSeq" rel="Chapter" href="BatSeq.html">
+<link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStd" rel="Chapter" href="BatStd.html">
+<link title="BatStr" rel="Chapter" href="BatStr.html">
+<link title="BatStream" rel="Chapter" href="BatStream.html">
+<link title="BatString" rel="Chapter" href="BatString.html">
+<link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
+<link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
+<link title="BatUnit" rel="Chapter" href="BatUnit.html">
+<link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
+<link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
+<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Standard inputs/outputs" rel="Section" href="#6_Standardinputsoutputs">
+<link title="Standard API" rel="Section" href="#6_StandardAPI">
+<link title="Creation of BatIO Inputs/Outputs" rel="Section" href="#6_CreationofBatIOInputsOutputs">
+<link title="Utilities" rel="Section" href="#6_Utilities">
+<link title="Binary files API" rel="Section" href="#6_BinaryfilesAPI">
+<link title="Bits API" rel="Section" href="#6_BitsAPI">
+<link title="Creating new types of inputs/outputs" rel="Section" href="#6_Creatingnewtypesofinputsoutputs">
+<link title="For compatibility purposes" rel="Section" href="#6_Forcompatibilitypurposes">
+<link title="Generic BatIO Object Wrappers" rel="Section" href="#6_GenericBatIOObjectWrappers">
+<link title="Enumeration API" rel="Section" href="#6_EnumerationAPI">
+<link title="Printing" rel="Section" href="#6_Printing">
+<link title="Thread-safety" rel="Section" href="#6_Threadsafety">
+<link title="Thread-safety internals" rel="Section" href="#6_Threadsafetyinternals">
+<title>BatIO</title>
+</head>
+<body>
+<div class="navbar"><a href="BatIMap.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatISet.html">Next</a>
+</div>
+<center><h1>Module <a href="type_BatIO.html">BatIO</a></h1></center>
+<br>
+<pre><span class="keyword">module</span> BatIO: <code class="code">sig</code> <a href="BatIO.html">..</a> <code class="code">end</code></pre>High-order abstract I/O.
+<p>
+
+    This module deals with <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>s and <a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a>s. Inputs are manners of getting information from the
+    outside world and into your program (for instance, reading from
+    the network, from a file, etc.)  Outputs are manners of getting
+    information out from your program and into the outside world (for
+    instance, sending something onto the network, onto a file, etc.)
+    In other words, if you are looking for a way to modify files, read
+    from the network, etc., you're in the right place.
+<p>
+
+    To perform I/O, you first need to <em>open</em> your <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a> or
+    your <a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a>. Chances are that there is an <em>opening</em>
+    operation for this task. Note that most opening operations are
+    defined in their respective module.  Operations for opening files
+    are defined in module <code class="code">File</code>, operations for opening
+    communications with the network or with other processes are
+    defined in module <code class="code">Unix</code>. Opening operations related to
+    compression and decompression are defined in module <code class="code">Compress</code>,
+    etc.
+<p>
+
+    Once you have opened an <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>, you may read the data it
+    contains by using functions such as <a href="BatIO.html#VALread"><code class="code">BatIO.read</code></a> (to read one
+    character), <a href="BatIO.html#VALnread"><code class="code">BatIO.nread</code></a> or <a href="BatIO.html#VALinput"><code class="code">BatIO.input</code></a> (to read one string) or one
+    of the <code class="code">read_*</code> functions. If you need not one information but a
+    complete enumeration, for instance for processing many information
+    before writing them, you may also convert the input into an
+    enumeration, by using one of the <code class="code">*s_of</code> functions.
+<p>
+
+    Once you have opened an <a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a>, you may write data to
+    this output by using functions scuh as <a href="BatIO.html#VALwrite"><code class="code">BatIO.write</code></a> (to write one
+    char), <a href="BatIO.html#VALnwrite"><code class="code">BatIO.nwrite</code></a> or <a href="BatIO.html#VALoutput"><code class="code">BatIO.output</code></a> (to write one string) or one of
+    the <code class="code">write_*</code> functions. If you have not just one piece of data
+    but a complete enumeration, you may write this whole enumeration
+    to the output by using one of the <code class="code">write_*s</code> functions. Note that
+    most operations on output are said to be <em>buffered</em>. This means
+    that small writing operations may be automatically delayed and
+    grouped into large writing operations, as these are generally
+    faster and induce less wear on the hardware. Occasionally, you
+    may wish to force all waiting operations to take place <em>now</em>.
+    For this purpose, you may either function <a href="BatIO.html#VALflush"><code class="code">BatIO.flush</code></a> or function
+I    <code class="code">flush_out</code>.
+<p>
+
+    Once you have finished using your <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a> or your <a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a>, chances are that you will want to close it. This is not a
+    strict necessity, as OCaml will eventually close it for you when
+    it detects that you have no more need of that <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>/<a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a>, but this is generally a good policy, as
+    this will let other programs access the resources which are
+    currently allocated to that <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>/<a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a> --
+    typically, under Windows, if you are reading the contents of a
+    file from a program, no other program may read the contents of
+    that file simultaneously and you may also not rename or move the
+    file to another directory. To close an <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>, use
+    function <a href="BatIO.html#VALclose_in"><code class="code">BatIO.close_in</code></a> and to close an <a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a>, use function
+    <a href="BatIO.html#VALclose_out"><code class="code">BatIO.close_out</code></a>.
+<p>
+
+    <b>Note</b> Some <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>s are built on top of other
+    <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>s to provide transparent translations (e.g.
+    on-the-fly decompression of a file or network information) and
+    that some <a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a>s are built on top of other
+    <a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a>s for the same purpose (e.g. on-the-fly compression
+    of a file or network information). In this case, closing the
+    "outer" <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>/<a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a> (e.g. the
+    decompressor/compressor) will <em>not</em> close the "inner"
+    <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>/<a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a> (e.g. access to the file or to the
+    network). You will need to close the "inner"
+    <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>/<a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a>, which will automatically flush
+    the outer <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>/<a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a> and close it.<br>
+<b>Author(s):</b> Nicolas Cannasse, David Teller, Philippe Strauss, Edgar Friendly<br>
+<hr width="100%">
+<pre><span class="keyword">type</span> <a name="TYPEinput"></a><code class="type"></code>input = <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code> </pre>
+<div class="info">
+The abstract input type.<br>
+</div>
+
+<pre><span class="keyword">type</span> <a name="TYPEoutput"></a><code class="type">'a</code> output = <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code> </pre>
+<div class="info">
+The abstract output type, <code class="code">'a</code> is the accumulator data, it is returned
+	when the <code class="code">close_out</code> function is called.<br>
+</div>
+
+<pre><span class="keyword">exception</span> <a name="EXCEPTIONNo_more_input"></a>No_more_input</pre>
+<div class="info">
+This exception is raised when reading on an input with the <code class="code">read</code> or
+  <code class="code">nread</code> functions while there is no available token to read.<br>
+</div>
+<pre><span class="keyword">exception</span> <a name="EXCEPTIONInput_closed"></a>Input_closed</pre>
+<div class="info">
+This exception is raised when reading on a closed input.<br>
+</div>
+<pre><span class="keyword">exception</span> <a name="EXCEPTIONOutput_closed"></a>Output_closed</pre>
+<div class="info">
+This exception is raised when reading on a closed output.<br>
+</div>
+<br>
+<a name="6_Standardinputsoutputs"></a>
+<h6>Standard inputs/outputs</h6><br>
+<pre><span class="keyword">val</span> <a name="VALstdin"></a>stdin : <code class="type"><a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
+Standard input, as per Unix/Windows conventions (by default, keyboard).
+<p>
+
+    Example: <code class="code">if read_line stdin |&gt; Int.of_string &gt; 10 then failwith "too big a number read"; </code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALstdout"></a>stdout : <code class="type">unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Standard output, as per Unix/Windows conventions (by default, console).
+<p>
+
+    Use this output to display regular messages.
+    Example: <code class="code">
+       write_string stdout "Enter your name:";
+       let name = read_line stdin in
+       write_line stdout ("Your name is " ^ name);
+    </code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALstderr"></a>stderr : <code class="type">unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Standard error output, as per Unix/Windows conventions.
+<p>
+
+    Use this output to display warnings and error messages.
+<p>
+
+    Example: <code class="code">
+       write_line stderr "Error on Internet - please delete google.com";
+    </code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALstdnull"></a>stdnull : <code class="type">unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+An output which discards everything written to it.
+<p>
+
+    Use this output to ignore messages.
+<p>
+
+    Example: <code class="code">
+      let out_ch = if debug then stderr else stdnull in
+      write_line out_ch "Program running.";
+    </code><br>
+</div>
+<br>
+<a name="6_StandardAPI"></a>
+<h6>Standard API</h6><br>
+<pre><span class="keyword">val</span> <a name="VALread"></a>read : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> char</code></pre><div class="info">
+Read a single char from an input or raise <code class="code">No_more_input</code> if
+    no input is available.
+<p>
+
+    Example: <code class="code">let rec skip_line ch = if read ch = '\n' then skip_line ch else ();</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALnread"></a>nread : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int -> string</code></pre><div class="info">
+<code class="code">nread i n</code> reads a string of size up to <code class="code">n</code> from an input.
+  The function will raise <code class="code">No_more_input</code> if no input is available.
+  It will raise <code class="code">Invalid_argument</code> if <code class="code">n</code> &lt; 0.
+<p>
+
+    Example: <code class="code">let read_md5 ch = nread ch 32</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALreally_nread"></a>really_nread : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int -> string</code></pre><div class="info">
+<code class="code">really_nread i n</code> reads a string of exactly <code class="code">n</code> characters
+  from the input. Raises <code class="code">No_more_input</code> if at least <code class="code">n</code> characters are
+  not available. Raises <code class="code">Invalid_argument</code> if <code class="code">n</code> &lt; 0.
+<p>
+
+    Example: <code class="code">let read_md5 ch = really_nread ch 32</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALinput"></a>input : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string -> int -> int -> int</code></pre><div class="info">
+<code class="code">input i s p l</code> reads up to <code class="code">l</code> characters from the given input,
+      storing them in string <code class="code">s</code>, starting at character number <code class="code">p</code>. It
+      returns the actual number of characters read (which may be 0) or
+      raise <code class="code">No_more_input</code> if no character can be read. It will raise
+      <code class="code">Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not designate a valid
+      substring of <code class="code">s</code>.
+<p>
+
+      Example: <code class="code">let map_ch f ?(block_size=100) =
+      let b = String.create block_size in
+      try while true do
+        let l = input ch b 0 block_size in
+        f b 0 l;
+      done with No_more_input -&gt; ()</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALreally_input"></a>really_input : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string -> int -> int -> int</code></pre><div class="info">
+<code class="code">really_input i s p l</code> reads exactly <code class="code">l</code> characters from the
+      given input, storing them in the string <code class="code">s</code>, starting at
+      position <code class="code">p</code>. For consistency with <a href="BatIO.html#VALinput"><code class="code">BatIO.input</code></a> it returns
+      <code class="code">l</code>. Raises <code class="code">No_more_input</code> if at <code class="code">l</code> characters are not
+      available. Raises <code class="code">Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not
+      designate a valid substring of <code class="code">s</code>.
+<p>
+
+      Example: <code class="code">let _ = really_input stdin b 0 3</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALclose_in"></a>close_in : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> unit</code></pre><div class="info">
+Close the input. It can no longer be read from.
+<p>
+
+    Example: <code class="code">close_in network_in;</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite"></a>write : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> char -> unit</code></pre><div class="info">
+Write a single char to an output.
+<p>
+
+    Example: <code class="code">write stdout 'x';</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALnwrite"></a>nwrite : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string -> unit</code></pre><div class="info">
+Write a string to an output.
+<p>
+
+    Example: <code class="code">nwrite stdout "Enter your name: ";</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_buf"></a>write_buf : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> Buffer.t -> unit</code></pre><div class="info">
+Write the contents of a buffer to an output.
+<p>
+
+    Example: <code class="code">let b = Buffer.create 10 in for i = 1 to 100 do Buffer.add (string_of_int i); Buffer.add " "; done; nwrite stdout b;</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALoutput"></a>output : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info">
+<code class="code">output o s p l</code> writes up to <code class="code">l</code> characters from string <code class="code">s</code>, starting at
+  offset <code class="code">p</code>. It returns the number of characters written. It will raise
+  <code class="code">Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not designate a valid substring of <code class="code">s</code>.
+<p>
+
+    Example: <code class="code">let str = "Foo Bar Baz" in let written = output stdout str 2 4;</code>
+<p>
+
+    This writes "o Ba" to stdout.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALreally_output"></a>really_output : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info">
+<code class="code">really_output o s p l</code> writes exactly <code class="code">l</code> characters from string <code class="code">s</code> onto
+  the the output, starting with the character at offset <code class="code">p</code>. For consistency with
+  <a href="BatIO.html#VALoutput"><code class="code">BatIO.output</code></a> it returns <code class="code">l</code>. Raises <code class="code">Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not
+  designate a valid substring of <code class="code">s</code>.
+<p>
+
+    This function is useful for networking situations where the output
+    buffer might fill resulting in not the entire substring being
+    readied for transmission.  Uses <code class="code">output</code> internally, and will
+    raise <code class="code">Sys_blocked_io</code> in the case that any call returns 0.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALflush"></a>flush : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> unit</code></pre><div class="info">
+Flush an output.
+<p>
+
+      If previous write operations have caused errors, this may trigger an exception.
+<p>
+
+      Example: <code class="code">flush stdout;</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALflush_all"></a>flush_all : <code class="type">unit -> unit</code></pre><div class="info">
+Flush all outputs, ignore errors.
+<p>
+
+    Example: <code class="code">flush_all ();</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALclose_out"></a>close_out : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> 'a</code></pre><div class="info">
+Close the output and return its accumulator data.
+<p>
+
+    The output is flushed before being closed and can no longer be
+    written. Attempting to flush or write after the output has been
+    closed will have no effect.
+<p>
+
+    Example: <code class="code">
+    let strout = output_string () in
+    write strout 'x';
+    if 2+3&gt;5 then write strout "y";
+    print_string (close_out strout) </code><br>
+</div>
+<br>
+<a name="6_CreationofBatIOInputsOutputs"></a>
+<h6>Creation of BatIO Inputs/Outputs</h6> 
+<p>
+
+    To open a file for reading/writing, see <code class="code">File.open_file_in</code>
+    and <code class="code">File.open_file_out</code><br>
+<pre><span class="keyword">val</span> <a name="VALinput_string"></a>input_string : <code class="type">string -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
+Create an input that will read from a string.
+<p>
+
+    Example: <code class="code">
+    let inch = input_string "1234554321" in
+    let str1 = nread inch 3 in (* "123" *)
+    let str2 = nread inch 5 in (* "45543" *)
+    let str3 = nread inch 2 in (* "21" *)
+    try string_of_char(read inch) with BatIO.No_more_input -&gt; "End of string";
+    </code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALoutput_string"></a>output_string : <code class="type">unit -> string <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Create an output that will write into a string in an efficient way.
+  When closed, the output returns all the data written into it.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALoutput_buffer"></a>output_buffer : <code class="type">Buffer.t -> string <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Create an output that will append its results at the end of a buffer
+    in an efficient way. Closing  returns the whole contents of the buffer
+    -- the buffer remains usable.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALinput_enum"></a>input_enum : <code class="type">char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
+Create an input that will read from an <code class="code">enum</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALoutput_enum"></a>output_enum : <code class="type">unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a> <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Create an output that will write into an <code class="code">enum</code>. The 
+    final enum is returned when the output is closed.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALcombine"></a>combine : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> * 'b <a href="BatIO.html#TYPEoutput">output</a> -> ('a * 'b) <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+<code class="code">combine (a,b)</code> creates a new <code class="code">output</code> <code class="code">c</code> such that
+    writing to <code class="code">c</code> will actually write to both <code class="code">a</code> and <code class="code">b</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALtab_out"></a>tab_out : <code class="type">?tab:char -> int -> 'a <a href="BatIO.html#TYPEoutput">output</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Create an output shifted to the right by a number of white spaces
+      (or <code class="code">tab</code>, if given).
+<p>
+
+      <code class="code">tab_out n out</code> produces a new output for writing into <code class="code">out</code>, in
+      which every new line starts with <code class="code">n</code> white spaces.
+      Raises <code class="code">Invalid_argument</code> if <code class="code">n</code> &lt; 0.
+<p>
+
+      Closing <code class="code">tab_out n out</code> does not close <code class="code">out</code>. Rather,
+      closing <code class="code">out</code> closes <code class="code">tab_out n out</code>.<br>
+</div>
+<br>
+<a name="6_Utilities"></a>
+<h6>Utilities</h6><br>
+<pre><span class="keyword">val</span> <a name="VALread_all"></a>read_all : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string</code></pre><div class="info">
+read all the contents of the input until <code class="code">No_more_input</code> is raised.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_uall"></a>read_uall : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> <a href="BatRope.html#TYPEt">BatRope.t</a></code></pre><div class="info">
+Read the whole contents of a UTF-8 encoded input<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALpipe"></a>pipe : <code class="type">unit -> <a href="BatIO.html#TYPEinput">input</a> * unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Create a pipe between an input and an ouput. Data written from
+    the output can be read from the input.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALcopy"></a>copy : <code class="type">?buffer:int -> <a href="BatIO.html#TYPEinput">input</a> -> 'a <a href="BatIO.html#TYPEoutput">output</a> -> unit</code></pre><div class="info">
+Read everything from an input and copy it to an output.<br>
+</div>
+<div class="param_info"><code class="code">buffer</code> : The size of the buffer to use for copying, in
+    bytes. By default, this is 4,096b.</div>
+<pre><span class="keyword">val</span> <a name="VALpos_in"></a>pos_in : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> <a href="BatIO.html#TYPEinput">input</a> * (unit -> int)</code></pre><div class="info">
+Create an input that provide a count function of the number of bytes
+      read from it.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALprogress_in"></a>progress_in : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> (unit -> unit) -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
+<code class="code">progress_in inp f</code> create an input that calls <code class="code">f ()</code>
+      whenever some content is succesfully read from it.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALpos_out"></a>pos_out : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> unit <a href="BatIO.html#TYPEoutput">output</a> * (unit -> int)</code></pre><div class="info">
+Create an output that provide a count function of the number of bytes
+    written through it.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALprogress_out"></a>progress_out : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> (unit -> unit) -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+<code class="code">progress_out out f</code> create an output that calls <code class="code">f ()</code>
+      whenever some content is succesfully written to it.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALcast_output"></a>cast_output : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+You can safely transform any output to an unit output in a safe way 
+    by using this function.<br>
+</div>
+<br>
+<a name="6_BinaryfilesAPI"></a>
+<h6>Binary files API</h6>
+<p>
+
+    Here is some API useful for working with binary files, in particular
+    binary files generated by C applications. By default, encoding of
+    multibyte integers is low-endian. The <a href="BatIO.BigEndian.html"><code class="code">BatIO.BigEndian</code></a> module provide multibyte
+    operations with other encoding.<br>
+<pre><span class="keyword">exception</span> <a name="EXCEPTIONOverflow"></a>Overflow <span class="keyword">of</span> <code class="type">string</code></pre>
+<div class="info">
+Exception raised when a read or write operation cannot be completed.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_byte"></a>read_byte : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int</code></pre><div class="info">
+Read an unsigned 8-bit integer.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_signed_byte"></a>read_signed_byte : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int</code></pre><div class="info">
+Read an signed 8-bit integer.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_ui16"></a>read_ui16 : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int</code></pre><div class="info">
+Read an unsigned 16-bit word.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_i16"></a>read_i16 : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int</code></pre><div class="info">
+Read a signed 16-bit word.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_i32"></a>read_i32 : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int</code></pre><div class="info">
+Read a signed 32-bit integer. Raise <code class="code">Overflow</code> if the
+      read integer cannot be represented as a Caml 31-bit integer.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_real_i32"></a>read_real_i32 : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int32</code></pre><div class="info">
+Read a signed 32-bit integer as an OCaml int32.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_i64"></a>read_i64 : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int64</code></pre><div class="info">
+Read a signed 64-bit integer as an OCaml int64.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_float"></a>read_float : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> float</code></pre><div class="info">
+Read an IEEE single precision floating point value.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_double"></a>read_double : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> float</code></pre><div class="info">
+Read an IEEE double precision floating point value.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_uchar"></a>read_uchar : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> CamomileLibrary.UChar.t</code></pre><div class="info">
+Read one UChar from a UTF-8 encoded input<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_string"></a>read_string : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string</code></pre><div class="info">
+Read a null-terminated string.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_rope"></a>read_rope : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int -> <a href="BatRope.html#TYPEt">BatRope.t</a></code></pre><div class="info">
+Read up to n uchars from a UTF-8 encoded input<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_line"></a>read_line : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string</code></pre><div class="info">
+Read a LF or CRLF terminated string.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_uline"></a>read_uline : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> <a href="BatRope.html#TYPEt">BatRope.t</a></code></pre><div class="info">
+Read a line of UTF-8<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_byte"></a>write_byte : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int -> unit</code></pre><div class="info">
+Write an unsigned 8-bit byte.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_ui16"></a>write_ui16 : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int -> unit</code></pre><div class="info">
+Write an unsigned 16-bit word.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_i16"></a>write_i16 : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int -> unit</code></pre><div class="info">
+Write a signed 16-bit word.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_i32"></a>write_i32 : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int -> unit</code></pre><div class="info">
+Write a signed 32-bit integer.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_real_i32"></a>write_real_i32 : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int32 -> unit</code></pre><div class="info">
+Write an OCaml int32.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_i64"></a>write_i64 : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int64 -> unit</code></pre><div class="info">
+Write an OCaml int64.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_double"></a>write_double : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> float -> unit</code></pre><div class="info">
+Write an IEEE double precision floating point value.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_uchar"></a>write_uchar : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> CamomileLibrary.UChar.t -> unit</code></pre><div class="info">
+Write one uchar to a UTF-8 encoded output.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_float"></a>write_float : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> float -> unit</code></pre><div class="info">
+Write an IEEE single precision floating point value.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_string"></a>write_string : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string -> unit</code></pre><div class="info">
+Write a string and append an null character.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_rope"></a>write_rope : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> <a href="BatRope.html#TYPEt">BatRope.t</a> -> unit</code></pre><div class="info">
+Write a character rope onto a UTF-8 encoded output.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_line"></a>write_line : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string -> unit</code></pre><div class="info">
+Write a line and append a line end.
+<p>
+
+    This adds the correct line end for your operating system.  That
+    is, if you are writing to a file and your system imposes that
+    files should end lines with character LF (or <code class="code">'\n'</code>), as Unix,
+    then a LF is inserted at the end of the line. If your system
+    favors CRLF (or <code class="code">'\r\n'</code>), then this is what will be inserted.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_uline"></a>write_uline : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> <a href="BatRope.html#TYPEt">BatRope.t</a> -> unit</code></pre><div class="info">
+Write one line onto a UTF-8 encoded output.<br>
+</div>
+<pre><span class="keyword">module</span> <a href="BatIO.BigEndian.html">BigEndian</a>: <code class="code">sig</code> <a href="BatIO.BigEndian.html">..</a> <code class="code">end</code></pre><div class="info">
+Same operations as module <a href="BatIO.html"><code class="code">BatIO</code></a>, but with big-endian encoding
+</div>
+<br>
+<a name="6_BitsAPI"></a>
+<h6>Bits API</h6>
+<p>
+
+    This enable you to read and write from an BatIO bit-by-bit or several bits
+    at the same time.<br>
+<pre><span class="keyword">type</span> <a name="TYPEin_bits"></a><code class="type"></code>in_bits </pre>
+
+<pre><span class="keyword">type</span> <a name="TYPEout_bits"></a><code class="type"></code>out_bits </pre>
+
+<pre><span class="keyword">exception</span> <a name="EXCEPTIONBits_error"></a>Bits_error</pre>
+<pre><span class="keyword">val</span> <a name="VALinput_bits"></a>input_bits : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> <a href="BatIO.html#TYPEin_bits">in_bits</a></code></pre><div class="info">
+Read bits from an input<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALoutput_bits"></a>output_bits : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> <a href="BatIO.html#TYPEout_bits">out_bits</a></code></pre><div class="info">
+Write bits to an output<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALread_bits"></a>read_bits : <code class="type"><a href="BatIO.html#TYPEin_bits">in_bits</a> -> int -> int</code></pre><div class="info">
+Read up to 31 bits, raise Bits_error if n &lt; 0 or n &gt; 31<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_bits"></a>write_bits : <code class="type"><a href="BatIO.html#TYPEout_bits">out_bits</a> -> nbits:int -> int -> unit</code></pre><div class="info">
+Write up to 31 bits represented as a value, raise Bits_error if nbits &lt; 0
+ or nbits &gt; 31 or the value representation excess nbits.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALflush_bits"></a>flush_bits : <code class="type"><a href="BatIO.html#TYPEout_bits">out_bits</a> -> unit</code></pre><div class="info">
+Flush remaining unwritten bits, adding up to 7 bits which values 0.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALdrop_bits"></a>drop_bits : <code class="type"><a href="BatIO.html#TYPEin_bits">in_bits</a> -> unit</code></pre><div class="info">
+Drop up to 7 buffered bits and restart to next input character.<br>
+</div>
+<br>
+<a name="6_Creatingnewtypesofinputsoutputs"></a>
+<h6>Creating new types of inputs/outputs</h6><br>
+<pre><span class="keyword">val</span> <a name="VALcreate_in"></a>create_in : <code class="type">read:(unit -> char) -><br>       input:(string -> int -> int -> int) -> close:(unit -> unit) -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
+Fully create an input by giving all the needed functions. 
+<p>
+
+    <b>Note</b> Do <em>not</em> use this function for creating an input
+    which reads from one or more underlying inputs. Rather, use
+    <a href="BatIO.html#VALwrap_in"><code class="code">BatIO.wrap_in</code></a>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrap_in"></a>wrap_in : <code class="type">read:(unit -> char) -><br>       input:(string -> int -> int -> int) -><br>       close:(unit -> unit) -> underlying:<a href="BatIO.html#TYPEinput">input</a> list -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
+Fully create an input reading from other inputs by giving all 
+    the needed functions. 
+<p>
+
+    This function is a more general version of <a href="BatIO.html#VALcreate_in"><code class="code">BatIO.create_in</code></a>
+    which also handles dependency management between inputs.
+<p>
+
+    <b>Note</b> When you create an input which reads from another
+    input, function <code class="code">close</code> should <em>not</em> close the inputs of 
+    <code class="code">underlying</code>. Doing so is a common error, which could result
+    in inadvertently closing <a href="BatIO.html#VALstdin"><code class="code">BatIO.stdin</code></a> or a network socket, etc.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALinherit_in"></a>inherit_in : <code class="type">?read:(unit -> char) -><br>       ?input:(string -> int -> int -> int) -><br>       ?close:(unit -> unit) -> <a href="BatIO.html#TYPEinput">input</a> -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
+Simplified and optimized version of <a href="BatIO.html#VALwrap_in"><code class="code">BatIO.wrap_in</code></a> which may be used
+      whenever only one input appears as dependency.
+<p>
+
+      <code class="code">inherit_in inp</code> will return an input identical to <code class="code">inp</code>.
+      <code class="code">inherit_in ~read inp</code> will return an input identical to
+      <code class="code">inp</code> except for method <code class="code">input</code>, etc.
+<p>
+
+      You do not need to close <code class="code">inp</code> in <code class="code">close</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALcreate_out"></a>create_out : <code class="type">write:(char -> unit) -><br>       output:(string -> int -> int -> int) -><br>       flush:(unit -> unit) -> close:(unit -> 'a) -> 'a <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Fully create an output by giving all the needed functions.<br>
+</div>
+<div class="param_info"><code class="code">write</code> : Write one character to the output (see <a href="BatIO.html#VALwrite"><code class="code">BatIO.write</code></a>).</div>
+<div class="param_info"><code class="code">output</code> : Write a (sub)string to the output (see <a href="BatIO.html#VALoutput"><code class="code">BatIO.output</code></a>).</div>
+<div class="param_info"><code class="code">flush</code> : Flush any buffers of this output  (see <a href="BatIO.html#VALflush"><code class="code">BatIO.flush</code></a>).</div>
+<div class="param_info"><code class="code">close</code> : Close this output. The output will be automatically
+	flushed.
+<p>
+
+	<b>Note</b> Do <em>not</em> use this function for creating an output which
+	writes to one or more underlying outputs. Rather, use <a href="BatIO.html#VALwrap_out"><code class="code">BatIO.wrap_out</code></a>.</div>
+<pre><span class="keyword">val</span> <a name="VALwrap_out"></a>wrap_out : <code class="type">write:(char -> unit) -><br>       output:(string -> int -> int -> int) -><br>       flush:(unit -> unit) -><br>       close:(unit -> 'a) -> underlying:'b <a href="BatIO.html#TYPEoutput">output</a> list -> 'a <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Fully create an output that writes to one or more underlying outputs.
+<p>
+
+   This function is a more general version of <a href="BatIO.html#VALcreate_out"><code class="code">BatIO.create_out</code></a>,
+   which also handles dependency management between outputs.
+<p>
+
+   To illustrate the need for dependency management, let us consider
+   the following values:<ul>
+<li>an output <code class="code">out</code></li>
+<li>a function <code class="code">f : _ output -&gt; _ output</code>, using <a href="BatIO.html#VALcreate_out"><code class="code">BatIO.create_out</code></a> to
+   create a new output for writing some data to an underyling
+   output (for instance, a function comparale to <a href="BatIO.html#VALtab_out"><code class="code">BatIO.tab_out</code></a> or a
+   function performing transparent compression or transparent
+   traduction between encodings)</li>
+</ul>
+
+   With these values, let us consider the following scenario<ul>
+<li>a new output <code class="code">f out</code> is created</li>
+<li>some data is written to <code class="code">f out</code> but not flushed</li>
+<li>output <code class="code">out</code> is closed, perhaps manually or as a consequence
+   of garbage-collection, or because the program has ended</li>
+<li>data written to <code class="code">f out</code> is flushed.</li>
+</ul>
+
+   In this case, data reaches <code class="code">out</code> only after <code class="code">out</code> has been closed.
+   Despite appearances, it is quite easy to reach such situation,
+   especially in short programs.
+<p>
+
+   If, instead, <code class="code">f</code> uses <code class="code">wrap_out</code>, then when output <code class="code">out</code> is closed,
+   <code class="code">f out</code> is first automatically flushed and closed, which avoids the
+   issue.<br>
+</div>
+<div class="param_info"><code class="code">write</code> : Write one character to the output (see <a href="BatIO.html#VALwrite"><code class="code">BatIO.write</code></a>).</div>
+<div class="param_info"><code class="code">output</code> : Write a (sub)string to the output (see <a href="BatIO.html#VALoutput"><code class="code">BatIO.output</code></a>).</div>
+<div class="param_info"><code class="code">flush</code> : Flush any buffers of this output  (see <a href="BatIO.html#VALflush"><code class="code">BatIO.flush</code></a>).</div>
+<div class="param_info"><code class="code">close</code> : Close this output. The output will be automatically
+   flushed.</div>
+<div class="param_info"><code class="code">underlying</code> : The list of outputs to which the new output will
+   write.
+<p>
+
+   <b>Note</b> Function <code class="code">close</code> should <em>not</em> close <code class="code">underlying</code>
+   yourself. This is a common mistake which may cause sockets or
+   standard output to be closed while they are still being used by
+   another part of the program.</div>
+<pre><span class="keyword">val</span> <a name="VALinherit_out"></a>inherit_out : <code class="type">?write:(char -> unit) -><br>       ?output:(string -> int -> int -> int) -><br>       ?flush:(unit -> unit) -><br>       ?close:(unit -> unit) -> 'a <a href="BatIO.html#TYPEoutput">output</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Simplified and optimized version of <a href="BatIO.html#VALwrap_out"><code class="code">BatIO.wrap_out</code></a> whenever only
+   one output appears as dependency.
+<p>
+
+   <code class="code">inherit_out out</code> will return an output identical to <code class="code">out</code>.
+   <code class="code">inherit_out ~write out</code> will return an output identical to
+   <code class="code">out</code> except for its <code class="code">write</code> method, etc.
+<p>
+
+   You do not need to close <code class="code">out</code> in <code class="code">close</code>.<br>
+</div>
+<br>
+<a name="6_Forcompatibilitypurposes"></a>
+<h6>For compatibility purposes</h6><br>
+<pre><span class="keyword">val</span> <a name="VALinput_channel"></a>input_channel : <code class="type">?autoclose:bool -> ?cleanup:bool -> Pervasives.in_channel -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
+Create an input that will read from a channel.<br>
+</div>
+<div class="param_info"><code class="code">autoclose</code> : If true or unspecified, the <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a>
+    will be automatically closed when the underlying <code class="code">in_channel</code>
+    has reached its end.</div>
+<div class="param_info"><code class="code">cleanup</code> : If true, the channel
+    will be automatically closed when the <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a> is closed.
+    Otherwise, you will need to close the channel manually.</div>
+<pre><span class="keyword">val</span> <a name="VALoutput_channel"></a>output_channel : <code class="type">?cleanup:bool -> Pervasives.out_channel -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+Create an output that will write into a channel.<br>
+</div>
+<div class="param_info"><code class="code">cleanup</code> : If true, the channel
+    will be automatically closed when the <a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a> is closed.
+    Otherwise, you will need to close the channel manually.</div>
+<pre><span class="keyword">val</span> <a name="VALto_input_channel"></a>to_input_channel : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> Pervasives.in_channel</code></pre><div class="info">
+Create a channel that will read from an input.
+<p>
+
+    <b>Note</b> This function is extremely costly and is provided
+    essentially for debugging purposes or for reusing legacy
+    libraries which can't be adapted. As a general rule, if
+    you can avoid using this function, don't use it.<br>
+</div>
+<br>
+<a name="6_GenericBatIOObjectWrappers"></a>
+<h6>Generic BatIO Object Wrappers</h6>
+<p>
+
+    Theses OO Wrappers have been written to provide easy support of ExtLib
+    BatIO by external librairies. If you want your library to support ExtLib
+    BatIO without actually requiring ExtLib to compile, you can should implement
+    the classes <code class="code">in_channel</code>, <code class="code">out_channel</code>, <code class="code">poly_in_channel</code> and/or
+    <code class="code">poly_out_channel</code> which are the common BatIO specifications established
+    for ExtLib, OCamlNet and Camomile.
+<p>
+
+    (see http://www.ocaml-programming.de/tmp/BatIO-Classes.html for more details).
+<p>
+
+    <b>Note</b> In this version of Batteries Included, the object wrappers are <em>not</em>
+    closed automatically by garbage-collection.<br>
+<pre><span class="keyword">class</span> <a name="TYPEin_channel"></a><a href="BatIO.in_channel.html">in_channel</a> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> </code><code class="code">object</code> <a href="BatIO.in_channel.html">..</a> <code class="code">end</code></pre><pre><span class="keyword">class</span> <a name="TYPEout_channel"></a><a href="BatIO.out_channel.html">out_channel</a> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> </code><code class="code">object</code> <a href="BatIO.out_channel.html">..</a> <code class="code">end</code></pre><pre><span class="keyword">class</span> <a name="TYPEin_chars"></a><a href="BatIO.in_chars.html">in_chars</a> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> </code><code class="code">object</code> <a href="BatIO.in_chars.html">..</a> <code class="code">end</code></pre><pre><span class="keyword">class</span> <a name="TYPEout_chars"></a><a href="BatIO.out_chars.html">out_chars</a> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> </code><code class="code">object</code> <a href="BatIO.out_chars.html">..</a> <code class="code">end</code></pre><pre><span class="keyword">val</span> <a name="VALfrom_in_channel"></a>from_in_channel : <code class="type">#<a href="BatIO.in_channel.html">in_channel</a> -> <a href="BatIO.html#TYPEinput">input</a></code></pre><pre><span class="keyword">val</span> <a name="VALfrom_out_channel"></a>from_out_channel : <code class="type">#<a href="BatIO.out_channel.html">out_channel</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><pre><span class="keyword">val</span> <a name="VALfrom_in_chars"></a>from_in_chars : <code class="type">#<a href="BatIO.in_chars.html">in_chars</a> -> <a href="BatIO.html#TYPEinput">input</a></code></pre><pre><span class="keyword">val</span> <a name="VALfrom_out_chars"></a>from_out_chars : <code class="type">#<a href="BatIO.out_chars.html">out_chars</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><br>
+<a name="6_EnumerationAPI"></a>
+<h6>Enumeration API</h6><br>
+<pre><span class="keyword">val</span> <a name="VALbytes_of"></a>bytes_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of unsigned 8-bit integers.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALsigned_bytes_of"></a>signed_bytes_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of signed 8-bit integers.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALui16s_of"></a>ui16s_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of unsigned 16-bit words.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALi16s_of"></a>i16s_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumartion of signed 16-bit words.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALi32s_of"></a>i32s_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of signed 32-bit integers. Raise <code class="code">Overflow</code> if the
+  read integer cannot be represented as a Caml 31-bit integer.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALreal_i32s_of"></a>real_i32s_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int32 <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of signed 32-bit integers as OCaml <code class="code">int32</code>s.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALi64s_of"></a>i64s_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int64 <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of signed 64-bit integers as OCaml <code class="code">int64</code>s.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALdoubles_of"></a>doubles_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of IEEE double precision floating point values.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALstrings_of"></a>strings_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of null-terminated strings.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALlines_of"></a>lines_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of LF or CRLF terminated strings.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALchunks_of"></a>chunks_of : <code class="type">int -> <a href="BatIO.html#TYPEinput">input</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an input as an enumeration of strings of given maximal length.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALulines_of"></a>ulines_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> <a href="BatRope.html#TYPEt">BatRope.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+offer the lines of a UTF-8 encoded input as an enumeration<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALchars_of"></a>chars_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of Latin-1 characters. 
+<p>
+
+    <b>Note</b> Usually faster than calling <code class="code">read</code> several times.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALuchars_of"></a>uchars_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+offer the characters of an UTF-8 encoded input as an enumeration<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALbits_of"></a>bits_of : <code class="type"><a href="BatIO.html#TYPEin_bits">in_bits</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Read an enumeration of bits<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_bytes"></a>write_bytes : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of unsigned 8-bit bytes.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_chars"></a>write_chars : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of chars.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_uchars"></a>write_uchars : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of characters onto a UTF-8 encoded output.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_ui16s"></a>write_ui16s : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of unsigned 16-bit words.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_i16s"></a>write_i16s : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of signed 16-bit words.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_i32s"></a>write_i32s : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of signed 32-bit integers.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_real_i32s"></a>write_real_i32s : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int32 <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of OCaml int32s.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_i64s"></a>write_i64s : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int64 <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of OCaml int64s.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_doubles"></a>write_doubles : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of IEEE double precision floating point value.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_strings"></a>write_strings : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of strings, appending null characters.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_chunks"></a>write_chunks : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of strings, without appending null characters.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_lines"></a>write_lines : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of lines, appending a LF (it might be converted
+    to CRLF on some systems depending on the underlying BatIO).<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_ropes"></a>write_ropes : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> <a href="BatRope.html#TYPEt">BatRope.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of ropes onto a UTF-8 encoded output,
+    without appending a line-end.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_ulines"></a>write_ulines : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> <a href="BatRope.html#TYPEt">BatRope.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of lines onto a UTF-8 encoded output.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrite_bitss"></a>write_bitss : <code class="type">nbits:int -> <a href="BatIO.html#TYPEout_bits">out_bits</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+Write an enumeration of bits<br>
+</div>
+<br>
+<a name="6_Printing"></a>
+<h6>Printing</h6><br>
+<pre><span class="keyword">val</span> <a name="VALprintf"></a>printf : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> ('b, 'a <a href="BatIO.html#TYPEoutput">output</a>, unit) Pervasives.format -> 'b</code></pre><div class="info">
+A <code class="code">fprintf</code>-style unparser. For more information
+    about printing, see the documentation of <code class="code">Printf</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALdefault_buffer_size"></a>default_buffer_size : <code class="type">int</code></pre><div class="info">
+The default size for internal buffers.<br>
+</div>
+<br>
+<a name="6_Threadsafety"></a>
+<h6>Thread-safety</h6><br>
+<pre><span class="keyword">val</span> <a name="VALsynchronize_in"></a>synchronize_in : <code class="type">?lock:<a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> -> <a href="BatIO.html#TYPEinput">input</a> -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
+<code class="code">synchronize_in inp</code> produces a new <a href="BatIO.html#TYPEinput"><code class="code">BatIO.input</code></a> which reads from <code class="code">input</code>
+   in a thread-safe way. In other words, a lock prevents two distinct threads
+   from reading from that input simultaneously, something which would potentially
+   wreak havoc otherwise<br>
+</div>
+<div class="param_info"><code class="code">lock</code> : An optional lock. If none is provided, the lock will be specific
+   to this <code class="code">input</code>. Specifiying a custom lock may be useful to associate one
+   common lock for several inputs and/or outputs, for instance in the case
+   of pipes.</div>
+<pre><span class="keyword">val</span> <a name="VALsynchronize_out"></a>synchronize_out : <code class="type">?lock:<a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> -> 'a <a href="BatIO.html#TYPEoutput">output</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
+<code class="code">synchronize_out out</code> produces a new <a href="BatIO.html#TYPEoutput"><code class="code">BatIO.output</code></a> which writes to <code class="code">output</code>
+   in a thread-safe way. In other words, a lock prevents two distinct threads
+   from writing to that output simultaneously, something which would potentially
+   wreak havoc otherwise<br>
+</div>
+<div class="param_info"><code class="code">lock</code> : An optional lock. If none is provided, the lock will be specific
+   to this <code class="code">output</code>. Specifiying a custom lock may be useful to associate one
+   common lock for several inputs and/or outputs, for instance in the case
+   of pipes.</div>
+<br>
+<a name="6_Threadsafetyinternals"></a>
+<h6>Thread-safety internals</h6>
+<p>
+
+   Unless you are attempting to adapt Batteries Included to a new model of
+   concurrency, you probably won't need this.<br>
+<pre><span class="keyword">val</span> <a name="VALlock"></a>lock : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre><div class="info">
+A lock used to synchronize internal operations.
+<p>
+
+   By default, this is <code class="code">Concurrent.nolock</code>. However, if you're using a version
+   of Batteries compiled in threaded mode, this uses <code class="code">Mutex</code>. If you're attempting
+   to use Batteries with another concurrency model, set the lock appropriately.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALlock_factory"></a>lock_factory : <code class="type">(unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a>) Pervasives.ref</code></pre><div class="info">
+A factory used to create locks. This is used transparently by <a href="BatIO.html#VALsynchronize_in"><code class="code">BatIO.synchronize_in</code></a>
+   and <a href="BatIO.html#VALsynchronize_out"><code class="code">BatIO.synchronize_out</code></a>.
+<p>
+
+   By default, this always returns <code class="code">Concurrent.nolock</code>. However, if you're using
+   a version of Batteries compiled in threaded mode, this uses <code class="code">Mutex</code>.<br>
+</div>
+</body></html>
