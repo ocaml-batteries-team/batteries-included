@@ -23,11 +23,6 @@ module type Mappable = sig
   val map : ('a -> 'b) -> ('a mappable -> 'b mappable)
 end
 
-module type Printable = sig
-  type t
-  val print : 'a output -> t -> unit
-end
-
 module type OrderedType =
 sig
   type t

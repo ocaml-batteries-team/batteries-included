@@ -36,13 +36,6 @@ module type Mappable = sig
     (** [map f e] applies [f] to every element of [e] and returns the corresponding data structure *)
 end
 
-
-module type Printable = sig
-  type t
-  val print : 'a output -> t -> unit
-    (** [print oc x] prints [x] to the output channel [oc] *)
-end
-
 module type OrderedType =
 sig
   type t
