@@ -711,16 +711,6 @@ external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_se
    The following modules replace functions defined in {!Array.Cap} with functions
    behaving slightly differently but having the same name. This is by design:
    the functions meant to override the corresponding functions of {!Array.Cap}.
-
-   To take advantage of these overrides, you probably want to
-   {{:../extensions.html#multiopen}{open several modules in one
-   operation}} or {{:../extensions.html#multialias}{alias several
-   modules to one name}}. For instance, to open a version of {!Array.Cap}
-   with exceptionless error management, you may write {v open Array.Cap,
-   Exceptionless v}. To locally replace module {!Array.Cap} with a module of
-   the same name but with exceptionless error management, you may
-   write [module Array = Array.Cap include Exceptionless]
-
 *)
 
 (** Operations on {!Array} without exceptions.*)
@@ -795,16 +785,6 @@ val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output ->
    The following modules replace functions defined in {!Array} with functions
    behaving slightly differently but having the same name. This is by design:
    the functions meant to override the corresponding functions of {!Array}.
-
-   To take advantage of these overrides, you probably want to
-   {{:../extensions.html#multiopen}{open several modules in one
-   operation}} or {{:../extensions.html#multialias}{alias several
-   modules to one name}}. For instance, to open a version of {!Array}
-   with exceptionless error management, you may write [open Array,
-   Exceptionless]. To locally replace module {!Array} with a module of
-   the same name but with exceptionless error management, you may
-   write [module Array = Array include Exceptionless].
-
 *)
 
 (** Operations on {!Array} without exceptions.*)

@@ -20,8 +20,6 @@
 
 (**
    Common signatures for data structures.
-
-   @documents Data
 *)
 
 
@@ -29,13 +27,20 @@
     [map : ('a -> 'b) -> ('a t -> 'b t)] operation.
 
     If you create a new data structure, you should make it compatible
-    with [Enumerable].
+    with [Mappable].
 *)
 module type Mappable = sig
   type 'a mappable (** The data structure, e.g. ['a List.t] *)
 
   val map : ('a -> 'b) -> ('a mappable -> 'b mappable)
     (** [map f e] applies [f] to every element of [e] and returns the corresponding data structure *)
+end
+
+
+module type Printable = sig
+  type t
+  val print : 'a output -> t -> unit
+    (** [print oc x] prints [x] to the output channel [oc] *)
 end
 
 module type OrderedType =

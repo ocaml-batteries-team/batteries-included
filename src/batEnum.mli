@@ -619,16 +619,6 @@ val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
    The following modules replace functions defined in {!BatEnum} with functions
    behaving slightly differently but having the same name. This is by design:
    the functions meant to override the corresponding functions of {!BatEnum}.
-
-   To take advantage of these overrides, you probably want to
-   {{:../extensions.html#multiopen}{open several modules in one
-   operation}} or {{:../extensions.html#multialias}{alias several
-   modules to one name}}. For instance, to open a version of {!BatEnum}
-   with exceptionless error management, you may write [open BatEnum,
-   Exceptionless]. To locally replace module {!BatEnum} with a module of
-   the same name but with exceptionless error management, you may
-   write {v module BatEnum = BatEnum include Exceptionless v}.
-
 *)
 
 (** Operations on {!BatEnum} without exceptions.*)
@@ -678,22 +668,6 @@ module Labels : sig
   val init:       int -> f:(int -> 'a) -> 'a t
   val switch:     f:('a -> bool) -> 'a t -> 'a t * 'a t
   val compare:    ?cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
-  (** [compare ~cmp a b] compares enumerations [a] and [b]
-      by lexicographical order using comparison [cmp].
-
-      @param cmp a comparison function. If left unspecified, {!Pervasives.compare}
-      is used.
-      @return 0 if [a] and [b] are equal wrt [cmp]
-      @return -1 if [a] is empty and [b] is not
-      @return 1 if [b] is empty and [a] is not
-      @return [cmp x y], where [x] is the first element of [a]
-      and [y] is the first element of [b], if [cmp x y <> 0]
-      @return [compare cmp a' b'], where [a'] and [b'] are
-      respectively equal to [a] and [b] without their first
-      element, if both [a] and [b] are non-empty and [cmp x y = 0],
-      where [x] is the first element of [a] and [y] is the first
-      element of [b]
-  *)
 
   module LExceptionless : sig
     val find : f:('a -> bool) -> 'a t -> 'a option

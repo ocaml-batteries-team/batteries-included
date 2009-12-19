@@ -224,16 +224,6 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
        The following modules replace functions defined in {!Hashtbl} with functions
        behaving slightly differently but having the same name. This is by design:
        the functions meant to override the corresponding functions of {!Hashtbl}.
-       
-       To take advantage of these overrides, you probably want to
-       {{:../extensions.html#multiopen}{open several modules in one
-       operation}} or {{:../extensions.html#multialias}{alias several
-       modules to one name}}. For instance, to open a version of {!Hashtbl}
-       with exceptionless error management, you may write [open Hashtbl,
-       Exceptionless]. To locally replace module {!Hashtbl} with a module of
-       the same name but with exceptionless error management, you may
-       write {v module Hashtbl = Hashtbl include Exceptionless v}.
-       
     *)
       
     (** Operations on {!Hashtbl} without exceptions.
@@ -332,16 +322,6 @@ module type S =
        The following modules replace functions defined in {!Hashtbl} with functions
        behaving slightly differently but having the same name. This is by design:
        the functions meant to override the corresponding functions of {!Hashtbl}.
-       
-       To take advantage of these overrides, you probably want to
-       {{:../extensions.html#multiopen}{open several modules in one
-       operation}} or {{:../extensions.html#multialias}{alias several
-       modules to one name}}. For instance, to open a version of {!Hashtbl}
-       with exceptionless error management, you may write [open Hashtbl,
-       Exceptionless]. To locally replace module {!Hashtbl} with a module of
-       the same name but with exceptionless error management, you may
-       write {v module Hashtbl = Hashtbl include Exceptionless v}.
-       
     *)
       
     (** Operations on {!Hashtbl} without exceptions.
@@ -577,17 +557,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
    The following modules replace functions defined in {!Hashtbl} with functions
    behaving slightly differently but having the same name. This is by design:
    the functions meant to override the corresponding functions of {!Hashtbl}.
-   
-   To take advantage of these overrides, you probably want to
-   {{:../extensions.html#multiopen}{open several modules in one
-   operation}} or {{:../extensions.html#multialias}{alias several
-   modules to one name}}. For instance, to open a version of {!Hashtbl}
-   with exceptionless error management, you may write [open Hashtbl,
-   Exceptionless]. To locally replace module {!Hashtbl} with a module of
-   the same name but with exceptionless error management, you may
-   write {v module Hashtbl = Hashtbl.Cap include Exceptionless v}.
-   
-*)
+   *)
   
 (** Operations on {!Hashtbl} without exceptions.*)
 module Exceptionless :

@@ -199,16 +199,6 @@ module type S =
        The following modules replace functions defined in {!Set} with functions
        behaving slightly differently but having the same name. This is by design:
        the functions meant to override the corresponding functions of {!Set}.
-       
-       To take advantage of these overrides, you probably want to
-       {{:../extensions.html#multiopen}{open several modules in one
-       operation}} or {{:../extensions.html#multialias}{alias several
-       modules to one name}}. For instance, to open a version of {!Set}
-       with exceptionless error management, you may write {v open Set,
-       Exceptionless v}. To locally replace module {!Set} with a module of
-       the same name but with exceptionless error management, you may
-       write {v module Set = Set include Exceptionless v}.
-       
     *)
       
     (** Operations on {!Set} without exceptions.*)

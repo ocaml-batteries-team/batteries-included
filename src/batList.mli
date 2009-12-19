@@ -407,15 +407,6 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	   behaving slightly differently but having the same name. This is by design:
 	   the functions meant to override the corresponding functions of {!List}.
 	   
-	   To take advantage of these overrides, you probably want to
-	   {{:../extensions.html#multiopen}{open several modules in one
-	   operation}} or {{:../extensions.html#multialias}{alias several
-	   modules to one name}}. For instance, to open a version of {!List}
-	   with exceptionless error management, you may write {v open List,
-	   Exceptionless v}. To locally replace module {!List} with a module of
-	   the same name but with exceptionless error management, you may
-	   write [module List = List include Exceptionless]
-	   
 	*)
 
 	(** Exceptionless counterparts for error-raising operations*)

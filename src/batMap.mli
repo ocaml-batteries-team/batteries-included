@@ -166,15 +166,6 @@ module type S =
        behaving slightly differently but having the same name. This is by design:
        the functions meant to override the corresponding functions of {!Map}.
        
-       To take advantage of these overrides, you probably want to
-       {{:../extensions.html#multiopen}{open several modules in one
-       operation}} or {{:../extensions.html#multialias}{alias several
-       modules to one name}}. For instance, to open a version of {!Map}
-       with exceptionless error management, you may write {v open Map,
-       Exceptionless v}. To locally replace module {!Map} with a module of
-       the same name but with exceptionless error management, you may
-       write {v module Map = Map include Exceptionless v}.
-       
     *)
       
     (** Operations on {!Map} without exceptions.*)
