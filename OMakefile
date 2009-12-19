@@ -53,7 +53,6 @@ install: all build/META
 	$(OCAMLFIND) install $(NAME) build/META $(AAA_FILES)
 
 doc: src/batteries.cma
-	mkdir -p hdoc
 	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
 	-sort -html -d hdoc -I src src/*.mli
 
