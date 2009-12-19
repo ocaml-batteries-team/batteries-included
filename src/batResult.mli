@@ -1,6 +1,5 @@
 open BatStd
-(**
-*)
+(**  Monadic results of computations that can raise exceptions *)
 
 type ('a, 'b) t = ('a, 'b) result 
     (** The type of a result*)

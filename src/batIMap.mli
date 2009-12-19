@@ -2,6 +2,8 @@
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* Modified by Edgar Friendly <thelema314@gmail.com> *)
 
+(** DIET Maps from integers, packed using ranges *)
+
 type +'a t = (int * int * 'a) BatAvlTree.tree
 
 type key = int

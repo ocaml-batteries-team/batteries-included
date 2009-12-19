@@ -2,6 +2,8 @@
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* Modified by Edgar Friendly <thelema314@gmail.com> *)
 
+(** Internals of ISet and IMap, usable as generic tree library *)
+
 type +'a tree
 
 val empty : 'a tree
