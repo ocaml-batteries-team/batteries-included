@@ -28,7 +28,7 @@ LIBSDIR = $(ROOT)/libs
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
 
-AAA_FILES[] =
+AAA_FILES[] = aaa.ml
 
 .SUBDIRS: src testsuite
     include OMakefile

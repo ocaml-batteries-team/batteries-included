@@ -1,77 +1,9 @@
-(* 
- * Top - An interpreted preambule for the toplevel
- * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version,
- * with the special exception on linking described in file LICENSE.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *)
-
-(**
-   This file is meant to be invoked by a toplevel and performs initialization
-   of OCaml Batteries Included and its libraries.
-
-   Initialization consists of
-   - loading Findlib
-   - loading dependencies
-   - loading the contents of the on-line help system
-   - printing a welcome message
-
-   To take advantage of this file, merge this file with your ~/.ocamlinit.
-*)
-
-(* Set the below to false to disable use of syntax extensions in toplevel *)
-let ext_syntax = true
-
-
-(* END CONFIGURATION *)
-
 let interactive = !Sys.interactive;;
-Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
+Sys.interactive := false;; (*Pretend to be in non-interactive mode*)
+
 #use "topfind";;
-#thread;;
-#require "aaa";;
-
-
-if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
-begin
-  Batteries_help.init ();
-  print_endline "      _________________________";
-  print_endline "    [| +   | | AAA Batteries - |";
-  print_endline "     |_____|_|_________________|";
-  print_endline "      _________________________";
-  print_endline "     | -  Type '#help;;' | | + |]";
-  print_endline "     |___________________|_|___|";
-  print_newline ();
-  print_newline ();
-  flush_all ()
-end;;
-
-open Batteries;;
-#install_printer Batteries_print.print_uchar;;
-#install_printer Batteries_print.print_ustring;;
-#install_printer Batteries_print.print_rope;;
-#install_printer Batteries_print.print_string_cap_rw;;
-#install_printer Batteries_print.print_string_cap_ro;;
-
-if ext_syntax then begin
-   print_endline "Loading syntax extensions...";
-   Topfind.standard_syntax();
-   Topfind.load_deeply ["camlp4"; "aaa.pa_string.syntax"; 
-   		       "aaa.pa_comprehension.syntax"];
-end else 
-    print_endline "AAA Syntax extensions disabled.";
-;;
-
 Sys.interactive := interactive;; (*Return to regular interactive mode*)
+Toploop.use_silently 
+             Format.err_formatter (Filename.concat (Findlib.package_directory 
+             "aaa") "aaa.ml");;
+
