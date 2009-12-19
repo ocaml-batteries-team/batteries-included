@@ -33,11 +33,9 @@ directory (/usr/local/), execute
 
    $ omake all doc install install-doc
 
-
 To test your install, execute
 
    $ omake test
-
 
 *** Using AAA Batteries ***
 
@@ -46,11 +44,14 @@ file to ~/.ocamlinit:
 
    $ cp ocamlinit ~/.ocamlinit
 
+If you already have findlib in your ~/.ocamlinit, you only need the
+last line in our ocamlinit to load batteries.
+
 If your project currently uses ExtLib, most likely you can just change
-[-package extlib] to [-package aaa] and you'll be using AAA-batteries.
-If your project depends on libraries that depend on extlib, you'll
-have to use [-package extlib,aaa-extlibcompat] and continue to use
-ExtLib, but also be able to use much of AAA.
+[-package extlib] to [-package aaa] and add [open Extlibcompat] to the
+top of any extlib-using modules.  Batteries' modules are all named
+BatFoo to differentiate them from extlib's modules, so one can use
+Batteries and ExtLib in the same project.
 
 *** Extending Batteries Included ***
 
