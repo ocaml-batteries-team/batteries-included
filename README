@@ -20,10 +20,6 @@ You will need
 * OMake (http://omake.metaprl.org/index.html)
 * Findlib   (http://projects.camlcity.org/projects/findlib.html/)
 * Camomile >= 0.7 (http://camomile.sourceforge.net/)
-* Camlzip   (http://cristal.inria.fr/~xleroy/software.html#camlzip)
-   ( Note: By default, the distribution of Camlzip is not quite 
-     sufficient for actual use.  We provide the missing files in 
-     the directory camlzip/. )
 * OUnit    to build and run the tests
 
 **** Configuration and installation ****
@@ -47,11 +43,16 @@ file to ~/.ocamlinit:
 If you already have findlib in your ~/.ocamlinit, you only need the
 last line in our ocamlinit to load batteries.
 
+*** ExtLib Compatibility ***
+
 If your project currently uses ExtLib, most likely you can just change
 [-package extlib] to [-package aaa] and add [open Extlibcompat] to the
 top of any extlib-using modules.  Batteries' modules are all named
 BatFoo to differentiate them from extlib's modules, so one can use
-Batteries and ExtLib in the same project.
+Batteries and ExtLib in the same project.  
+
+COMPATIBILITY NOTE: If you're using ExtLib's Unzip module, it does not
+have a corresponding module in batteries at the moment.
 
 *** Extending Batteries Included ***
 
