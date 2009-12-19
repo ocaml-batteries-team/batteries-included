@@ -48,7 +48,7 @@
     @author Damien Doligez (Base module)
     @author David Teller
 
-    @documents BArg
+    This module extends Stdlib's {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Arg.html}Arg} module.
 *)
 
 type command (**The type describing both the name, documentation and behavior
