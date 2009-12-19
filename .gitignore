@@ -2,7 +2,7 @@
 build/META
 src/batteries_config.ml
 doc/batteries/html/api/
-examples/benchmark/*.png
+hdoc/*
 /.omake*
 *.cmx
 *.cmo
