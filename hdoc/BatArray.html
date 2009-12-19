@@ -143,7 +143,13 @@ Array operations.
     module <a href="BatArray.Cap.html"><code class="code">BatArray.Cap</code></a>. This notion of capabilities permit the transformation
     of a mutable array into a read-only or a write-only arrays, without
     loss of speed and with the possibility of distributing different
-    capabilities to different expressions.<br>
+    capabilities to different expressions.
+<p>
+
+    This module extends Stdlib's
+    <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Array.html">Array</a>
+    module, go there for documentation on the rest of the functions
+    and types.<br>
 <pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t = <code class="type">'a array</code> </pre>
 <div class="info">
 The type of arrays.<br>

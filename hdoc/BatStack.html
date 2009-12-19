@@ -99,7 +99,9 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
 <link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><title>BatStack</title>
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Printing" rel="Subsection" href="#7_Printing">
+<title>BatStack</title>
 </head>
 <body>
 <div class="navbar"><a href="BatSet.html">Previous</a>
@@ -111,7 +113,30 @@
 <pre><span class="keyword">module</span> BatStack: <code class="code">sig</code> <a href="BatStack.html">..</a> <code class="code">end</code></pre>Last-in first-out stacks.
 <p>
 
-    This module implements stacks (LIFOs), with in-place modification.<br>
+    This module implements stacks (LIFOs), with in-place modification.
+<p>
+
+    This module extends Stdlib's
+    <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Stack.html">Stack</a>
+    module, go there for documentation on the rest of the functions
+    and types.<br>
 <b>Author(s):</b> Xavier Leroy (Base module), David Teller<br>
 <hr width="100%">
-<pre><span class="keyword">module</span> <a href="BatStack.Stack.html">Stack</a>: <code class="code">sig</code> <a href="BatStack.Stack.html">..</a> <code class="code">end</code></pre></body></html>
+<pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
+<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">'a Stack.t -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<code class="code">enum s</code> returns a destructive enumeration of the elements of stack 
+    <code class="code">s</code>, from the most recently entered to the least recently entered.
+    Reading the enumeration will progressively empty <code class="code">s</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a Stack.t</code></pre><div class="info">
+<code class="code">of_enum e</code> returns a new stack containing all the elements of <code class="code">e</code>.
+    This is equivalent to calling <code class="code">push</code> with the first element of the
+    enumeration, then with the second, etc.<br>
+</div>
+<br>
+<a name="6_Boilerplatecode"></a>
+<h6>Boilerplate code</h6><br>
+<br>
+<a name="7_Printing"></a>
+<div class="h7">Printing</div><br>
+<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b Stack.t -> unit</code></pre></body></html>

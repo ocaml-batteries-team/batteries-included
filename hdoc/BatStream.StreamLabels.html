@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatStream.Stream.html">
 <link rel="Up" href="BatStream.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -98,19 +97,14 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
 <link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Stream builders" rel="Section" href="#6_Streambuilders">
-<link title="Other constructors" rel="Section" href="#6_Otherconstructors">
-<link title="Stream iterators" rel="Section" href="#6_Streamiterators">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Stream iterators" rel="Section" href="#6_Streamiterators">
 <link title="Computation over stream" rel="Section" href="#6_Computationoverstream">
 <link title="Streams pair arithmetic" rel="Section" href="#6_Streamspairarithmetic">
 <link title="Stream arithmetic" rel="Section" href="#6_Streamarithmetic">
-<link title="Predefined parsers" rel="Section" href="#6_Predefinedparsers">
-<link title="Useful functions" rel="Section" href="#6_Usefulfunctions">
 <title>BatStream.StreamLabels</title>
 </head>
 <body>
-<div class="navbar"><a href="BatStream.Stream.html">Previous</a>
-&nbsp;<a href="BatStream.html">Up</a>
+<div class="navbar">&nbsp;<a href="BatStream.html">Up</a>
 &nbsp;</div>
 <center><h1>Module <a href="type_BatStream.StreamLabels.html">BatStream.StreamLabels</a></h1></center>
 <br>
@@ -120,56 +114,13 @@
    If you feel like using <code class="code">Stream.t</code>, please take a look at <code class="code">BatEnum</code>
    or <code class="code">LazyList</code> and <code class="code">GenParser</code>.<br>
 <br>
-Streams and parsers.<br>
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t = <code class="type">'a <a href="BatStream.Stream.html#TYPEt">BatStream.Stream.t</a></code> </pre>
-
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-<a name="6_Conversionfunctions"></a>
-<h6>Conversion functions</h6><br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALof_fun"></a>of_fun : <code class="type">(unit -> 'a) -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALof_string"></a>of_string : <code class="type">string -> char <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALof_channel"></a>of_channel : <code class="type">Pervasives.in_channel -> char <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-Obsolete<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALof_list"></a>of_list : <code class="type">'a list -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-Return the stream holding the elements of the list in the same
-   order.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALon_channel"></a>on_channel : <code class="type">Pervasives.out_channel -> char <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-Obsolete<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALof_input"></a>of_input : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> char <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALon_output"></a>on_output : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> char <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> unit</code></pre><br>
-<a name="6_Streambuilders"></a>
-<h6>Stream builders</h6>
-<p>
-
-   Warning: these functions create streams with fast access; it is illegal
-   to mix them with streams built with <code class="code">[&lt; &gt;]</code>; would raise <code class="code">Failure</code>
-   when accessing such mixed streams.<br>
-<pre><span class="keyword">val</span> <a name="VALfrom"></a>from : <code class="type">(int -> 'a option) -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">Stream.from f</code> returns a stream built from the function <code class="code">f</code>.
-   To create a new stream element, the function <code class="code">f</code> is called with
-   the current stream count. The user function <code class="code">f</code> must return either
-   <code class="code">Some &lt;value&gt;</code> for a value or <code class="code">None</code> to specify the end of the
-   stream.<br>
-</div>
-<br>
-<a name="6_Otherconstructors"></a>
-<h6>Other constructors</h6><br>
-<pre><span class="keyword">val</span> <a name="VALof_fun"></a>of_fun : <code class="type">(unit -> 'a) -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">Stream.from f</code> returns a stream built from the function <code class="code">f</code>.
-   To create a new stream element, the function <code class="code">f</code> is called with
-   the current stream count. The user function <code class="code">f</code> must return either
-   <code class="code">Some &lt;value&gt;</code> for a value or <code class="code">None</code> to specify the end of the
-   stream.<br>
-</div>
-<br>
 <a name="6_Streamiterators"></a>
 <h6>Stream iterators</h6><br>
-<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">f:('a -> unit) -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">f:('a -> unit) -> 'a Stream.t -> unit</code></pre><div class="info">
 <code class="code">Stream.iter f s</code> scans the whole stream s, applying function <code class="code">f</code>
    in turn to each stream element encountered.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfoldl"></a>foldl : <code class="type">f:('a -> 'b -> 'a * bool option) -><br>       init:'a -> 'b <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfoldl"></a>foldl : <code class="type">f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b Stream.t -> 'a</code></pre><div class="info">
 <code class="code">foldl f init stream</code> is a lazy fold_left. <code class="code">f accu elt</code> should return
       <code class="code">(new_accu, state)</code> where <code class="code">new_accu</code> is normal accumulation result, and
       <code class="code">state</code> is a flag representing whether the computation should continue
@@ -177,18 +128,18 @@ Obsolete<br>
       means stop where <code class="code">b = true</code> means the last addition is still valid and <code class="code">b
       = false</code> means the last addition is invalid and should be revert.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfoldr"></a>foldr : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfoldr"></a>foldr : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a Stream.t -> 'b</code></pre><div class="info">
 <code class="code">foldr f init stream</code> is a lazy fold_right. Unlike the normal fold_right,
       the accumulation parameter of <code class="code">f elt accu</code> is lazy, hence it can decide
       not to force the evaluation of <code class="code">accu</code> if the current element <code class="code">elt</code> can
       determin the result by itself.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">f:('a -> 'a -> 'a * bool option) -> init:'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">f:('a -> 'a -> 'a * bool option) -> init:'a Stream.t -> 'a</code></pre><div class="info">
 <code class="code">fold</code> is <code class="code">foldl</code> without initialization value, where the first
       element of stream is taken as <code class="code">init</code>. It raises <code class="code">End_of_stream</code> exception
       when the input stream is empty.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">f:('a -> bool) -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
 <code class="code">filter test stream</code> picks all the elements satisfying <code class="code">test</code> from <code class="code">stream</code>
       and return the results in the same order as a stream.<br>
 </div>
@@ -198,41 +149,30 @@ Obsolete<br>
 <p>
 
     All the functions in this part are lazy.<br>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">f:('a -> 'b) -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'b <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">f:('a -> 'b) -> 'a Stream.t -> 'b Stream.t</code></pre><div class="info">
 <code class="code">map f stream</code> applies <code class="code">f</code> in turn to elements from <code class="code">stream</code> and return the
       results as a stream in the same order.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap2"></a>map2 : <code class="type">f:('a -> 'b -> 'c) -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -><br>       'b <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'c <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALmap2"></a>map2 : <code class="type">f:('a -> 'b -> 'c) -> 'a Stream.t -> 'b Stream.t -> 'c Stream.t</code></pre><div class="info">
 <code class="code">map2 f streama streamb</code> applies <code class="code">f</code> in turn to elements of corresponding
       positions from <code class="code">streama</code> and <code class="code">streamb</code>. The results are constructed in the
       same order as a stream. If one stream is short, excess elements of the longer
       stream are ignored.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALscanl"></a>scanl : <code class="type">f:('a -> 'b -> 'a) -><br>       'a -> 'b <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALscanl"></a>scanl : <code class="type">f:('a -> 'b -> 'a) -> 'a -> 'b Stream.t -> 'a Stream.t</code></pre><div class="info">
 <code class="code">scanl f init stream</code> returns a stream of successive reduced values from the
       left: <code class="code">scanl f init [&lt;'e1;'e2;..&gt;] = [&lt;'init; '((f init e1) as e1'); '(f
       e1' e2); ..&gt;]</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALscan"></a>scan : <code class="type">f:('a -> 'a -> 'a) -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALscan"></a>scan : <code class="type">f:('a -> 'a -> 'a) -> 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
 <code class="code">scan</code> is similar to <code class="code">scanl</code> but without the <code class="code">init</code> value: <code class="code">scan f
       [&lt;'e1;'e2;..&gt;] = [&lt;'e1;'(f e1 e2);..&gt;]</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALconcat"></a>concat : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> <a href="BatStream.StreamLabels.html#TYPEt">t</a> -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-concatenate a stream of streams<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALtake"></a>take : <code class="type">int -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">take n stream</code> returns the prefix of <code class="code">stream</code> of length <code class="code">n</code>, or <code class="code">stream</code>
-      itself if <code class="code">n</code> is greater than the length of <code class="code">stream</code><br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALdrop"></a>drop : <code class="type">int -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">drop n stream</code> returns the suffix of <code class="code">stream</code> after the first <code class="code">n</code> elements,
-      or a empty stream if <code class="code">n</code> is greater than the length of <code class="code">stream</code><br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALtake_while"></a>take_while : <code class="type">f:('a -> bool) -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALtake_while"></a>take_while : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
 <code class="code">take_while test stream</code> returns the longest (possibly empty) prefix of
       <code class="code">stream</code> of elements that satisfy <code class="code">test</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdrop_while"></a>drop_while : <code class="type">f:('a -> bool) -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALdrop_while"></a>drop_while : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
 <code class="code">drop_while test stream</code> returns the remaining suffix of <code class="code">take_while test
       stream</code>.<br>
 </div>
@@ -242,20 +182,7 @@ concatenate a stream of streams<br>
 <p>
 
     All the functions in this part are lazy.<br>
-<pre><span class="keyword">val</span> <a name="VALdup"></a>dup : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> * 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">dup stream</code> returns a pair of streams which are identical to <code class="code">stream</code>. Note
-      that stream is a destructive data structure, the point of <code class="code">dup</code> is to
-      return two streams can be used independently.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALcomb"></a>comb : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> * 'b <a href="BatStream.StreamLabels.html#TYPEt">t</a> -><br>       ('a * 'b) <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">comb</code> transform a pair of stream into a stream of pairs of corresponding
-      elements. If one stream is short, excess elements of the longer stream are
-      ignored.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALsplit"></a>split : <code class="type">('a * 'b) <a href="BatStream.StreamLabels.html#TYPEt">t</a> -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> * 'b <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">split</code> is the opposite of <code class="code">comb</code><br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALmerge"></a>merge : <code class="type">f:(bool -> 'a -> bool) -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> * 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALmerge"></a>merge : <code class="type">f:(bool -> 'a -> bool) -> 'a Stream.t * 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
 <code class="code">merge test (streama, streamb)</code> merge the elements from <code class="code">streama</code> and
       <code class="code">streamb</code> into a single stream. The <code class="code">bool</code> type here represents the id of the
       two input streams where <code class="code">true</code> is the first and <code class="code">false</code> represents the
@@ -266,7 +193,7 @@ concatenate a stream of streams<br>
       process will continue to take elements from the other stream until both
       streams reach their ends.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALswitch"></a>switch : <code class="type">f:('a -> bool) -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> * 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALswitch"></a>switch : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t * 'a Stream.t</code></pre><div class="info">
 <code class="code">switch ~f:test stream</code> split <code class="code">stream</code> into two streams, where the first stream have
       all the elements satisfying <code class="code">test</code>, the second stream is opposite. The
       order of elements in the source stream is preserved.<br>
@@ -277,44 +204,4 @@ concatenate a stream of streams<br>
 <p>
 
     All the functions in this part are lazy.<br>
-<pre><span class="keyword">val</span> <a name="VALcons"></a>cons : <code class="type">'a -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">cons x stream</code> equals <code class="code">[&lt;'x; stream&gt;]</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALapnd"></a>apnd : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -><br>       'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">apnd fla flb</code> equals <code class="code">[&lt;fla;flb&gt;]</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALis_empty"></a>is_empty : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">is_empty stream</code> tests whether <code class="code">stream</code> is empty. But note that it forces
-      the evaluation of the head element if any.<br>
-</div>
-<br>
-<a name="6_Predefinedparsers"></a>
-<h6>Predefined parsers</h6><br>
-<pre><span class="keyword">val</span> <a name="VALnext"></a>next : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-Return the first element of the stream and remove it from the
-   stream. Raise Stream.Failure if the stream is empty.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALempty"></a>empty : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-Return <code class="code">()</code> if the stream is empty, else raise <code class="code">Stream.Failure</code>.<br>
-</div>
-<br>
-<a name="6_Usefulfunctions"></a>
-<h6>Useful functions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALpeek"></a>peek : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
-Return <code class="code">Some</code> of "the first element" of the stream, or <code class="code">None</code> if
-   the stream is empty.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALjunk"></a>junk : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-Remove the first element of the stream, possibly unfreezing
-   it before.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALcount"></a>count : <code class="type">'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> int</code></pre><div class="info">
-Return the current count of the stream elements, i.e. the number
-   of the stream elements discarded.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALnpeek"></a>npeek : <code class="type">int -> 'a <a href="BatStream.StreamLabels.html#TYPEt">t</a> -> 'a list</code></pre><div class="info">
-<code class="code">npeek n</code> returns the list of the <code class="code">n</code> first elements of
-   the stream, or all its remaining elements if less than <code class="code">n</code>
-   elements are available.<br>
-</div>
 </body></html>

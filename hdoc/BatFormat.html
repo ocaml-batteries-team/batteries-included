@@ -114,69 +114,10 @@
 <pre><span class="keyword">module</span> BatFormat: <code class="code">sig</code> <a href="BatFormat.html">..</a> <code class="code">end</code></pre>Pretty printing.
 <p>
 
-   This module implements a pretty-printing facility to format text
-   within ``pretty-printing boxes''. The pretty-printer breaks lines
-   at specified break hints, and indents lines according to the box
-   structure.
-<p>
-
-   For a gentle introduction to the basics of pretty-printing using
-   <code class="code">Format</code>, read
-   <a href="http://caml.inria.fr/resources/doc/guides/format.html">http://caml.inria.fr/resources/doc/guides/format.html</a>.
-<p>
-
-   You may consider this module as providing an extension to the
-   <code class="code">printf</code> facility to provide automatic line breaking. The addition of
-   pretty-printing annotations to your regular <code class="code">printf</code> formats gives you
-   fancy indentation and line breaks.
-   Pretty-printing annotations are described below in the documentation of
-   the function <code class="code">Format.fprintf</code>.
-<p>
-
-   You may also use the explicit box management and printing functions
-   provided by this module. This style is more basic but more verbose
-   than the <code class="code">fprintf</code> concise formats.
-<p>
-
-   For instance, the sequence
-   <code class="code">open_box 0; print_string "x ="; print_space (); print_int 1; close_box ()</code>
-   that prints <code class="code">x = 1</code> within a pretty-printing box, can be
-   abbreviated as <code class="code">printf "@[%s@ %i@]" "x =" 1</code>, or even shorter
-   <code class="code">printf "@[x =@ %i@]" 1</code>.
-<p>
-
-   Rule of thumb for casual users of this library:<ul>
-<li>use simple boxes (as obtained by <code class="code">open_box 0</code>);</li>
-<li>use simple break hints (as obtained by <code class="code">print_cut ()</code> that outputs a
-   simple break hint, or by <code class="code">print_space ()</code> that outputs a space
-   indicating a break hint);</li>
-<li>once a box is opened, display its material with basic printing
-   functions (e. g. <code class="code">print_int</code> and <code class="code">print_string</code>);</li>
-<li>when the material for a box has been printed, call <code class="code">close_box ()</code> to
-   close the box;</li>
-<li>at the end of your routine, evaluate <code class="code">print_newline ()</code> to close
-   all remaining boxes and flush the pretty-printer.</li>
-</ul>
-
-   The behaviour of pretty-printing commands is unspecified
-   if there is no opened pretty-printing box. Each box opened via
-   one of the <code class="code">open_</code> functions below must be closed using <code class="code">close_box</code>
-   for proper formatting. Otherwise, some of the material printed in the
-   boxes may not be output, or may be formatted incorrectly.
-<p>
-
-   In case of interactive use, the system closes all opened boxes and
-   flushes all pending text (as with the <code class="code">print_newline</code> function)
-   after each phrase. Each phrase is therefore executed in the initial
-   state of the pretty-printer.
-<p>
-
-   Warning: the material output by the following functions is delayed
-   in the pretty-printer queue in order to compute the proper line
-   breaking. Hence, you should not mix calls to the printing functions
-   of the basic I/O system with calls to the functions of this module:
-   this could result in some strange output seemingly unrelated with
-   the evaluation order of printing commands.<br>
+    This module extends Stdlib's
+    <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Format.html">Format</a>
+    module, go there for documentation on the rest of the functions
+    and types.<br>
 <b>Author(s):</b> Pierre Weis (Base module), David Teller<br>
 <hr width="100%">
 <br>

@@ -115,7 +115,18 @@
 </div>
 <center><h1>Module <a href="type_BatString.html">BatString</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> BatString: <code class="code">sig</code> <a href="BatString.html">..</a> <code class="code">end</code></pre>String operations.<br>
+<pre><span class="keyword">module</span> BatString: <code class="code">sig</code> <a href="BatString.html">..</a> <code class="code">end</code></pre>String operations. 
+<p>
+
+    This module extends Stdlib's
+    <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/String.html">String</a>
+    module, go there for documentation on the rest of the functions
+    and types.
+<p>
+
+    If you're going to do a lot of string slicing, BatSubstring might be
+    a useful module to represent slices of strings, as it doesn't
+    allocate new strings on every operation.<br>
 <b>Author(s):</b> Xavier Leroy (base library), Nicolas Cannasse, David Teller, Edgar Friendly<br>
 <hr width="100%">
 <pre><span class="keyword">val</span> <a name="VALis_empty"></a>is_empty : <code class="type">string -> bool</code></pre><div class="info">
