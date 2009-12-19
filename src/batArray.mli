@@ -42,7 +42,11 @@
     loss of speed and with the possibility of distributing different
     capabilities to different expressions.
 
-    @documents Array
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Array.html}Array}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Xavier Leroy
     @author Richard W.M. Jones
     @author David Teller

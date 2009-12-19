@@ -25,10 +25,14 @@
     Western Europe and North America. For international characters,
     another, richer, module is provided: {!UChar}.
 
+    
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Char.html}Char}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Xavier Leroy (base module)
     @author David Teller
-
-    @documents Char
 *)
 
 

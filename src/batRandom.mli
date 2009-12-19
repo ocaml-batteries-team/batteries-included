@@ -21,6 +21,11 @@
 
 (** Pseudo-random number generators (PRNG). 
     
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Random.html}Random}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Damien Doligez (base library)
     @author David Teller
     @author Pierre Chambart

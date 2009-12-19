@@ -21,11 +21,7 @@
  *)
 
 
-module OldStream = Stream
-
-module Stream =
-  struct
-    include Stream
+open Stream
 
     type 'a enumerable = 'a t
     type 'a mappable = 'a t
@@ -517,11 +513,8 @@ module Stream =
            | Some h -> Stream.icons h (Stream.slazy (fun _ -> of_enum e))
            | None -> Stream.sempty)
       
-  end
-  
 module StreamLabels =
   struct
-    include Stream
       
     let iter ~f x = iter f x
       

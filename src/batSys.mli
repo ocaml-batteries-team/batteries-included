@@ -25,7 +25,10 @@
     and should, wherever possible, be used rather than the {!Unix} module
     to ensure portability.
 
-    @documents Sys
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Sys.html}Sys}
+    module, go there for documentation on the rest of the functions
+    and types.
 
     @author Xavier Leroy (Base module)
     @author David Teller

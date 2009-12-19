@@ -39,11 +39,14 @@
     Any integer literal followed by [n] is taken to be a [nativeint].
     For instance, [1n] is {!Native_int.one}.
 
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Nativeint.html}Nativeint}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Xavier Leroy (base module)
     @author Gabriel Scherer
     @author David Teller
-
-    @documents Nativeint
 *)
 
 type t = nativeint

@@ -27,10 +27,13 @@
    roughly the lexical conventions of Caml, but is parameterized by the
    set of keywords of your language.
 
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Genlex.html}Genlex}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Jacques Garrigue
     @author David Teller
-
-    @documents Genlex
 *)
 
 open Genlex

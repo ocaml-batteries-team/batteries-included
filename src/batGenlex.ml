@@ -211,7 +211,7 @@ let to_enum_filter kwd_table =
     
 	
 let to_stream_filter (kwd_table:t) (x:char Stream.t) : token Stream.t =
-  (BatStream.Stream.of_enum (to_enum_filter kwd_table (BatStream.Stream.enum x)))
+  (BatStream.of_enum (to_enum_filter kwd_table (BatStream.enum x)))
 
 let to_lazy_list_filter kwd_table x =
   (BatLazyList.of_enum (to_enum_filter kwd_table (BatLazyList.enum x)))

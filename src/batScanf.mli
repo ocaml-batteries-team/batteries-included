@@ -24,7 +24,6 @@
     @author Pierre Weis (Base module)
     @author David Teller
 *)
-module Scanf : sig
 
 (** {6 Introduction} *)
 
@@ -435,4 +434,3 @@ val format_from_string :
     Raise [Scan_failure] if [s], considered as a format string, does not
     have the same type as [fmt]. *)
 
-end

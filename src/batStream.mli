@@ -30,6 +30,11 @@
    or [LazyList] and [GenParser].
 
    This module is based on {{:http://www.pps.jussieu.fr/~li/software/sdflow/}Zheng Li's SDFlow}
+
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Stream.html}Stream}
+    module, go there for documentation on the rest of the functions
+    and types.
 *)
 
 (** Streams and parsers. 
@@ -43,22 +48,11 @@
 
     @documents Stream
 *)
-module Stream : sig
+open Stream
 
-
-type 'a t = 'a Stream.t
-(** The type of streams holding values of type ['a]. *)
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
-
-exception Failure
-(** Raised by parsers when none of the first components of the stream
-   patterns is accepted. *)
-
-exception Error of string
-(** Raised by parsers when the first component of a stream pattern is
-   accepted, but one of the following components is rejected. *)
 
 (** {6 Conversion functions} *)
 
@@ -72,15 +66,6 @@ val of_enum : 'a BatEnum.t -> 'a t
     Reading the resulting enumeration will consume elements from the stream.
     This is the preferred manner of converting from a stream to any other
     data structure.*)
-
-val of_string  : string -> char t
-(** Convert a string to a stream.
-    Modifying the string after conversion may have unintended side-effects
-    on the stream.*)
-
-val of_list : 'a list -> 'a t
-(** Return the stream holding the elements of the list in the same
-   order. *)
 
 val of_input :   BatIO.input    -> char t
 (** Convert an [input] to a stream.*)
@@ -98,13 +83,6 @@ val on_output:   'a BatIO.output-> char t -> unit
    when accessing such mixed streams.
 *)
 
-val from : (int -> 'a option) -> 'a t
-(** [Stream.from f] returns a stream built from the function [f].
-   To create a new stream element, the function [f] is called with
-   the current stream count. The user function [f] must return either
-   [Some <value>] for a value or [None] to specify the end of the
-   stream. *)
-
 (** {6 Other constructors} *)
 
 val of_fun : (unit -> 'a) -> 'a t
@@ -115,10 +93,6 @@ val of_fun : (unit -> 'a) -> 'a t
    stream. *)
 
 (** {6 Stream iterators} *)
-
-val iter : ('a -> unit) -> 'a t -> unit
-(** [Stream.iter f s] scans the whole stream s, applying function [f]
-   in turn to each stream element encountered. *)
 
 val foldl : ('a -> 'b -> 'a * bool option) -> 'a -> 'b t -> 'a
   (** [foldl f init stream] is a lazy fold_left. [f accu elt] should return
@@ -242,48 +216,7 @@ val next : 'a t -> 'a
 (** Return the first element of the stream and remove it from the
    stream. Raise Stream.Failure if the stream is empty. *)
 
-val empty : 'a t -> unit
-(** Return [()] if the stream is empty, else raise [Stream.Failure]. *)
 
-
-(** {6 Useful functions} *)
-
-val peek : 'a t -> 'a option
-(** Return [Some] of "the first element" of the stream, or [None] if
-   the stream is empty. *)
-
-val junk : 'a t -> unit
-(** Remove the first element of the stream, possibly unfreezing
-   it before. *)
-
-val count : 'a t -> int
-(** Return the current count of the stream elements, i.e. the number
-   of the stream elements discarded. *)
-
-val npeek : int -> 'a t -> 'a list
-(** [npeek n] returns the list of the [n] first elements of
-   the stream, or all its remaining elements if less than [n]
-   elements are available. *)
-
-(**/**)
-
-(** {6 For system use only, not for the casual user} *)
-
-val iapp : 'a t -> 'a t -> 'a t
-val icons : 'a -> 'a t -> 'a t
-val ising : 'a -> 'a t
-
-val lapp : (unit -> 'a t) -> 'a t -> 'a t
-val lcons : (unit -> 'a) -> 'a t -> 'a t
-val lsing : (unit -> 'a) -> 'a t
-
-val sempty : 'a t
-val slazy : (unit -> 'a t) -> 'a t
-
-val dump : ('a -> unit) -> 'a t -> unit
-
-
-end
 
 module StreamLabels : sig
 (**
@@ -292,56 +225,6 @@ module StreamLabels : sig
    or [LazyList] and [GenParser].
 *)
 
-
-(** Streams and parsers. *)
-
-type 'a t = 'a Stream.t
-
-(** {6 Conversion functions} *)
-val enum : 'a t -> 'a BatEnum.t
-
-val of_fun  : (unit -> 'a) -> 'a t
-
-val of_enum : 'a BatEnum.t -> 'a t
-
-val of_string  : string -> char t
-
-val of_channel : in_channel -> char t
-(** Obsolete *)
-
-val of_list : 'a list -> 'a t
-(** Return the stream holding the elements of the list in the same
-   order. *)
-
-val on_channel : out_channel -> char t -> unit
-(** Obsolete *)
-
-val of_input :   BatIO.input    -> char t
-
-val on_output:   'a BatIO.output-> char t -> unit
-
-(** {6 Stream builders}
-
-   Warning: these functions create streams with fast access; it is illegal
-   to mix them with streams built with [[< >]]; would raise [Failure]
-   when accessing such mixed streams.
-*)
-
-val from : (int -> 'a option) -> 'a t
-(** [Stream.from f] returns a stream built from the function [f].
-   To create a new stream element, the function [f] is called with
-   the current stream count. The user function [f] must return either
-   [Some <value>] for a value or [None] to specify the end of the
-   stream. *)
-
-(** {6 Other constructors} *)
-
-val of_fun : (unit -> 'a) -> 'a t
-(** [Stream.from f] returns a stream built from the function [f].
-   To create a new stream element, the function [f] is called with
-   the current stream count. The user function [f] must return either
-   [Some <value>] for a value or [None] to specify the end of the
-   stream. *)
 
 (** {6 Stream iterators} *)
 
@@ -396,18 +279,6 @@ val scan : f:('a -> 'a -> 'a) -> 'a t -> 'a t
   (** [scan] is similar to [scanl] but without the [init] value: [scan f
       [<'e1;'e2;..>] = [<'e1;'(f e1 e2);..>]]. *)
 
-
-val concat : 'a t t -> 'a t
-  (** concatenate a stream of streams *)
-
-val take : int -> 'a t -> 'a t
-  (** [take n stream] returns the prefix of [stream] of length [n], or [stream]
-      itself if [n] is greater than the length of [stream] *)
-
-val drop : int -> 'a t -> 'a t
-  (** [drop n stream] returns the suffix of [stream] after the first [n] elements,
-      or a empty stream if [n] is greater than the length of [stream] *)
-
 val take_while : f:('a -> bool) -> 'a t -> 'a t
   (** [take_while test stream] returns the longest (possibly empty) prefix of
       [stream] of elements that satisfy [test]. *)
@@ -419,19 +290,6 @@ val drop_while : f:('a -> bool) -> 'a t -> 'a t
 (** {6 Streams pair arithmetic}
 
     All the functions in this part are lazy.*)
-
-val dup : 'a t -> 'a t * 'a t
-  (** [dup stream] returns a pair of streams which are identical to [stream]. Note
-      that stream is a destructive data structure, the point of [dup] is to
-      return two streams can be used independently. *)
-
-val comb : 'a t * 'b t -> ('a * 'b) t
-  (** [comb] transform a pair of stream into a stream of pairs of corresponding
-      elements. If one stream is short, excess elements of the longer stream are
-      ignored. *)
-
-val split : ('a * 'b) t -> 'a t * 'b t
-  (** [split] is the opposite of [comb] *)
 
 val merge : f:(bool -> 'a -> bool) -> 'a t * 'a t -> 'a t
   (** [merge test (streama, streamb)] merge the elements from [streama] and
@@ -452,61 +310,5 @@ val switch : f:('a -> bool) -> 'a t -> 'a t * 'a t
 (** {6 Stream arithmetic} 
 
     All the functions in this part are lazy.*)
-
-val cons : 'a -> 'a t -> 'a t
-  (** [cons x stream] equals [[<'x; stream>]]. *)
-
-val apnd : 'a t -> 'a t -> 'a t
-  (** [apnd fla flb] equals [[<fla;flb>]]. *)
-
-val is_empty : 'a t -> bool
-  (** [is_empty stream] tests whether [stream] is empty. But note that it forces
-      the evaluation of the head element if any. *)
-
-(** {6 Predefined parsers} *)
-
-val next : 'a t -> 'a
-(** Return the first element of the stream and remove it from the
-   stream. Raise Stream.Failure if the stream is empty. *)
-
-val empty : 'a t -> unit
-(** Return [()] if the stream is empty, else raise [Stream.Failure]. *)
-
-
-(** {6 Useful functions} *)
-
-val peek : 'a t -> 'a option
-(** Return [Some] of "the first element" of the stream, or [None] if
-   the stream is empty. *)
-
-val junk : 'a t -> unit
-(** Remove the first element of the stream, possibly unfreezing
-   it before. *)
-
-val count : 'a t -> int
-(** Return the current count of the stream elements, i.e. the number
-   of the stream elements discarded. *)
-
-val npeek : int -> 'a t -> 'a list
-(** [npeek n] returns the list of the [n] first elements of
-   the stream, or all its remaining elements if less than [n]
-   elements are available. *)
-
-(**/**)
-
-(** {6 For system use only, not for the casual user} *)
-
-val iapp : 'a t -> 'a t -> 'a t
-val icons : 'a -> 'a t -> 'a t
-val ising : 'a -> 'a t
-
-val lapp : (unit -> 'a t) -> 'a t -> 'a t
-val lcons : (unit -> 'a) -> 'a t -> 'a t
-val lsing : (unit -> 'a) -> 'a t
-
-val sempty : 'a t
-val slazy : (unit -> 'a t) -> 'a t
-
-val dump : ('a -> unit) -> 'a t -> unit
 
 end

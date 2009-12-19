@@ -22,6 +22,11 @@
 
 (** Facilities for printing exceptions. 
 
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Printexc.html}Printexc}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Xavier Leroy (Base module)
     @author David Teller
 *)

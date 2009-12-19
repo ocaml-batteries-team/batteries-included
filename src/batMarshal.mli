@@ -51,7 +51,11 @@
     mode will cause unmarshaling errors on platforms where text
     channels behave differently than binary channels, e.g. Windows.
 
-    @documents Marshal
+
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Marshal.html}Marshal}
+    module, go there for documentation on the rest of the functions
+    and types.
     
     @author Xavier Leroy (base module)
     @author David Teller

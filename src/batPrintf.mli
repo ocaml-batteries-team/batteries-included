@@ -22,12 +22,14 @@ open BatInnerIO
 
 (** Formatted output functions (also known as unparsing).
 
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Printf.html}Printf}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Xavier Leroy
     @author Pierre Weiss
     @author David Teller
-
-    @documents Printf
-    @documented Printf
 *)
 
   (**

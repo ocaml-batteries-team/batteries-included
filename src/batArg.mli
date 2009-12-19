@@ -45,10 +45,13 @@
 -   [cmd a b -- c d      ](two anonymous arguments and a rest option with
                            two arguments)
 
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Arg.html}Arg}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Damien Doligez (Base module)
     @author David Teller
-
-    This module extends Stdlib's {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Arg.html}Arg} module.
 *)
 
 type command (**The type describing both the name, documentation and behavior

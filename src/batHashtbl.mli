@@ -24,12 +24,14 @@
 
 (** Operations over hashtables. 
     
+    This module replaces Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html}Hashtbl}
+    module.  All functions and types are provided here.
+
     @author Xavier Leroy (base module)
     @author Damien Doligez (base module)
     @author Nicolas Cannasse
     @author David Teller
-    
-    @documents Hashtbl
 *)
 
 open Hashtbl

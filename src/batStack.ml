@@ -20,13 +20,9 @@
  *)
 
 
-open BatList
+open Stack
 
-module Stack =
-struct
-  include Stack
-
-  type 'a enumerable = 'a t
+  type 'a enumerable = 'a Stack.t
 
   let of_enum e =
     let s = create () in
@@ -37,4 +33,3 @@ struct
 
   let print ?(first="") ?(last="") ?(sep="") print_a out t =
       BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
-end

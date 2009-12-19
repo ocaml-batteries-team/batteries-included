@@ -41,8 +41,11 @@
      and {!Pervasives.input_value}, as well as the functions from the
      {!Marshal} module).
 
-    @documents Bigarray
-
+    
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Bigarray.html}Bigarray}
+    module, go there for documentation on the rest of the functions
+    and types.
 
    @author Michel Serrano (Base library)
    @author Xavier Leroy (Base library)

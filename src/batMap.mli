@@ -30,8 +30,6 @@
 
     @author Xavier Leroy (Base module)
     @author David Rajchenbach-Teller
-
-    @documents Map
 *)
 
 (* module type OrderedType = BatInterfaces.OrderedType *)

@@ -37,6 +37,13 @@
 
     The implementation might be a little more slow in bytecode,
     but compiling in native code will not affect performances. 
+
+
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html}List}
+    module, go there for documentation on the rest of the functions
+    and types.
+    
 *)
 
 (** List operations.

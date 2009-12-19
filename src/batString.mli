@@ -25,12 +25,20 @@
 
 (** String operations. 
 
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/String.html}String}
+    module, go there for documentation on the rest of the functions
+    and types.
+
+    If you're going to do a lot of string slicing, BatSubstring might be
+    a useful module to represent slices of strings, as it doesn't
+    allocate new strings on every operation.
+
     @author Xavier Leroy (base library)
     @author Nicolas Cannasse
     @author David Teller
     @author Edgar Friendly
-
-    @documents String*)
+*)
 
 open String
 

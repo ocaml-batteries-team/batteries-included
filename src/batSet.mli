@@ -36,10 +36,12 @@
     easier to shoot yourself in the foot. In case of doubt, use
     {!Set}.
 
+    This module is built upon Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Set.html}Set}
+    module, but provides the complete interface.
+
     @author Xavier Leroy (Base module)
     @author David Teller
-
-    @documents Set
 *)
 
 module type OrderedType = BatInterfaces.OrderedType

@@ -28,7 +28,11 @@
     memory given to OCaml. The downside is speed, as big integers
     are much slower than any other type of integer known to OCaml.
     
-    @documents Big_int
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Big_int.html}Big_int}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Valerie Menissier-Morain (base module)
     @author Gabriel Scherer
     @author David Teller

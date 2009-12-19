@@ -19,9 +19,6 @@
  *)
 
 
-module Scanf = 
-struct
-
   module Scanning =
   struct
     include Scanf.Scanning
@@ -49,4 +46,3 @@ struct
   let bscanf_format = bscanf_format
   let sscanf_format = sscanf_format
   let format_from_string = format_from_string
-end

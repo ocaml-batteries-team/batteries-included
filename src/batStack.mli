@@ -24,51 +24,18 @@
 
     This module implements stacks (LIFOs), with in-place modification.
     
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Stack.html}Stack}
+    module, go there for documentation on the rest of the functions
+    and types.
+
+
     @author Xavier Leroy (Base module)
     @author David Teller
 *)
-module Stack:
-sig
-
-type 'a t
-(** The type of stacks containing elements of type ['a]. *)
+open Stack
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
-
-exception Empty
-(** Raised when {!Stack.pop} or {!Stack.top} is applied to an empty stack. *)
-
-
-val create : unit -> 'a t
-(** Return a new stack, initially empty. *)
-
-val push : 'a -> 'a t -> unit
-(** [push x s] adds the element [x] at the top of stack [s]. *)
-
-val pop : 'a t -> 'a
-(** [pop s] removes and returns the topmost element in stack [s],
-   or raises [Empty] if the stack is empty. *)
-
-val top : 'a t -> 'a
-(** [top s] returns the topmost element in stack [s],
-   or raises [Empty] if the stack is empty. *)
-
-val clear : 'a t -> unit
-(** Discard all elements from a stack. *)
-
-val copy : 'a t -> 'a t
-(** Return a copy of the given stack. *)
-
-val is_empty : 'a t -> bool
-(** Return [true] if the given stack is empty, [false] otherwise. *)
-
-val length : 'a t -> int
-(** Return the number of elements in a stack. *)
-
-val iter : ('a -> unit) -> 'a t -> unit
-(** [iter f s] applies [f] in turn to all elements of [s],
-   from the element at the top of the stack to the element at the
-   bottom of the stack. The stack itself is unchanged. *)
 
 val enum : 'a t -> 'a BatEnum.t
 (** [enum s] returns a destructive enumeration of the elements of stack 
@@ -86,5 +53,4 @@ val of_enum : 'a BatEnum.t -> 'a t
   
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
-end
 

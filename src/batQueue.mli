@@ -23,6 +23,11 @@
 
     This module implements queues (FIFOs), with in-place modification.
     
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Queue.html}Queue}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Xavier Leroy (Base module)
     @author David Teller
 *)

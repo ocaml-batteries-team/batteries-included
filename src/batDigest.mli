@@ -27,7 +27,11 @@
    quality: it is very hard, given a digest, to forge a string having
    that digest. The algorithm used is MD5.
 
-    @documents MD5
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Digest.html}Digest}
+    module, go there for documentation on the rest of the functions
+    and types.
+
     @author Xavier Leroy (Base module)
     @author David Rajchenbach-Teller
 *)

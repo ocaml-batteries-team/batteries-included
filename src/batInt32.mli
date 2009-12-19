@@ -30,15 +30,17 @@
 
     Any integer literal followed by [l] is taken to be an [int32].
     For instance, [1l] is {!Int32.one}.
-
-
-
-   Performance notice: values of type [int32] occupy more memory
-   space than values of type [int], and arithmetic operations on
-   [int32] are generally slower than those on [int].  Use [int32]
-   only when the application requires exact 32-bit arithmetic. 
-
-    @documents Int32
+    
+    Performance notice: values of type [int32] occupy more memory
+    space than values of type [int], and arithmetic operations on
+    [int32] are generally slower than those on [int].  Use [int32]
+    only when the application requires exact 32-bit arithmetic. 
+    
+    
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Int32.html}Int32}
+    module, go there for documentation on the rest of the functions
+    and types.
     
     @author Xavier Leroy (base module)
     @author Gabriel Scherer

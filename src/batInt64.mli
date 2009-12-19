@@ -37,8 +37,12 @@
     Any integer literal followed by [L] is taken to be an [int64].
     For instance, [1L] is {!Int64.one}.
 
-    @documents Int64
-    
+
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Int64.html}Int64}
+    module, go there for documentation on the rest of the functions
+    and types.
+        
     @author Xavier Leroy (base module)
     @author Gabriel Scherer
     @author David Teller
