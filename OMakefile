@@ -20,7 +20,7 @@ DOCROOT = /usr/share/doc/ocaml-aaa/
 BROWSER_COMMAND = x-www-browser %s
 
 NAME = aaa
-VERSION = 2009.11
+VERSION = 0.9.1
 
 LIBSDIR = $(ROOT)/libs
 
