@@ -27,7 +27,11 @@ You will need
 To install the full version of OCaml Batteries Included in the default
 directory (/usr/local/), execute
 
-   $ omake all doc install install-doc
+   $ omake all
+   $ sudo omake install 
+   [optional]
+   $ omake doc
+   $ sudo omake install-doc
 
 To test your install, execute
 

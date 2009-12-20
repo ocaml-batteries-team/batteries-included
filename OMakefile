@@ -24,9 +24,10 @@ VERSION = 2009.11
 
 LIBSDIR = $(ROOT)/libs
 
-.PHONY: doc uninstall install all clean test reinstall
+.PHONY: doc uninstall install all clean test reinstall install-doc
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
+    rm -f hdoc/*
 
 AAA_FILES[] = aaa.ml
 
@@ -48,20 +49,21 @@ build/META: build/META.in
 
 uninstall:
 	$(OCAMLFIND) remove $(NAME)
+	if $(test -e $(DOCROOT))
+	  rm -rf $(DOCROOT)
 
 install: all build/META
 	$(OCAMLFIND) install $(NAME) build/META $(AAA_FILES)
 
 doc: src/batteries.cma
-	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
-	-sort -html -d hdoc -I src src/*.mli
+	if $(not $(test -e hdoc/index.html))
+	  $(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
+	  -sort -html -d hdoc -I src src/*.mli
 
 install-doc: doc
 	$(INSTALL) -d $(DOCROOT)
 	$(INSTALL) hdoc/* $(DOCROOT)
 	$(INSTALL) doc/batteries/*.idex doc/batteries/*.help $(DOCROOT)
-
-reinstall: uninstall install install-doc
 
 test: testsuite/main.opt testsuite/main.run
 	testsuite/main.opt && testsuite/main.run
