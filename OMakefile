@@ -24,7 +24,7 @@ VERSION = 0.9.1
 
 LIBSDIR = $(ROOT)/libs
 
-.PHONY: doc uninstall install all clean test reinstall install-doc
+.PHONY: doc uninstall install all clean test reinstall install-doc release
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
     rm -f hdoc/*
@@ -68,8 +68,8 @@ install-doc: doc
 test: testsuite/main.opt testsuite/main.run
 	testsuite/main.opt && testsuite/main.run
 
-release: 
-	false
+release: :exists: aaa-batteries-$(VERSION).tar.gz
+	git archive --format=tar --prefix=aaa-batteries-$(VERSION)/ HEAD | gzip > aaa-batteries-$(VERSION).tar.gz
 
 .DEFAULT: all
 
