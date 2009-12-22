@@ -64,6 +64,11 @@
       BatConcurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
       output
 
+  let _ = 
+    input_add stdin Pervasives.stdin; 
+    output_add stdout Pervasives.stdout;
+    output_add stderr Pervasives.stderr
+
   (**
      {6 File descriptors}
   *)
