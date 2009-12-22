@@ -126,6 +126,31 @@ val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
   for key comparison or [compare] by default. *)
 
+val for_all : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
+(** Tests whether all key value pairs satisfy some predicate function *)
+
+val exists_f : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
+(** Tests whether some key value pair satisfies some predicate function *)
+
+val partition : ('a -> 'b -> bool) -> ('a, 'b) t -> ('a, 'b) t * ('a, 'b) t
+(** Divides a map into two maps based on a test function *)
+
+val add_carry : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t * 'b option
+(** [add_carry k v m] adds the binding [(k,v)] to [m], returning the new map and optionally the previous value bound to [k]. *)
+
+val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> ('a, 'b) t
+  (** [modify k f m] replaces the previous binding for [k] with [f]
+      applied to that value.  If [k] is unbound in [m] or [Not_found] is
+      raised during the search, [m] is returned unchanged. *)
+
+val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
+  (** [extract k m] removes the current binding of [k] from [m],
+      returning the value [k] was bound to and the updated [m]. *)
+
+val pop : ('a, 'b) t -> ('a * 'b) * ('a, 'b) t
+  (** [pop m] returns a binding from [m] and [m] without that
+      binding. *)
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)

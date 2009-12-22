@@ -233,3 +233,98 @@ let rec max_binding = function (* shadowed by below definition *)
 let max_binding t = max_binding t.map (* shadows earlier definition *)
 
 let min_binding t = min_binding t.map (* shadows earlier definition *)
+
+let singleton ?(cmp = compare) k v = add k v (create cmp)
+
+let for_all f { cmp = cmp; map = map } =
+  let rec loop = function
+    | Empty -> true
+    | Node (l, k, v, r, _) ->
+	  f k v && loop l && loop r in
+  loop map
+
+let exists_f f { cmp = cmp; map = map } =
+  let rec loop = function
+    | Empty -> false
+    | Node (l, k, v, r, _) ->
+	  f k v || loop l || loop r in
+  loop map
+
+let partition f { cmp = cmp; map = map } =
+  let rec loop m1 m2 = function
+    | Empty -> (m1,m2)
+    | Node (l, k, v, r, _) ->
+	let m1, m2 = loop m1 m2 l in
+	let m1, m2 = loop m1 m2 r in
+	if f k v then 
+	  (add k v m1, m2)
+	else
+	  (m1, add k v m2)
+  in
+  loop (create cmp) (create cmp) map
+
+let cardinal {cmp = cmp; map = map} =
+  let rec loop acc = function
+    | Empty -> acc
+    | Node (l, _, _, r, _) ->
+	loop (loop (acc+1) r) l 
+  in
+  loop 0 map
+
+let choose {cmp = cmp; map = map} =
+  match map with
+    | Empty -> raise Not_found
+    | Node (_, k, v, _, _) -> (k,v)
+
+
+let add_carry x d { cmp = cmp; map = map } =
+  let rec loop = function
+    | Node (l, k, v, r, h) ->
+        let c = cmp x k in
+        if c = 0 then Node (l, x, d, r, h), Some v
+        else if c < 0 then
+          let nl,carry = loop l in
+          bal nl k v r, carry
+        else
+          let nr, carry = loop r in
+          bal l k v nr, carry
+    | Empty -> Node (Empty, x, d, Empty, 1), None in
+  let map, carry = loop map in
+  { cmp = cmp; map = map }, carry
+
+let modify x f ({ cmp = cmp; map = map } as m) =
+  let rec loop = function
+    | Node (l, k, v, r, h) ->
+        let c = cmp x k in
+        if c = 0 then Node (l, x, f v, r, h)
+        else if c < 0 then
+          let nl = loop l in
+          bal nl k v r
+        else
+          let nr = loop r in
+          bal l k v nr
+    | Empty -> raise Not_found in
+  try 
+    { cmp = cmp; map = loop map }
+  with Not_found -> m
+
+let extract x { cmp = cmp; map = map } =
+  let rec loop = function
+    | Node (l, k, v, r, _) ->
+        let c = cmp x k in
+        if c = 0 then v, merge l r else
+        if c < 0 then 
+	  let vout, nl = loop l in
+	  vout, bal nl k v r
+	else 
+	  let vout, nr = loop r in
+	  vout, bal l k v nr
+    | Empty -> raise Not_found in
+  let vout, nmap = loop map in
+  vout, { cmp = cmp; map = nmap }
+
+let pop {cmp = cmp; map = map} =
+  match map with
+    | Empty -> raise Not_found
+    | Node (l, k, v, r, _) ->
+	(k, v), {cmp = cmp; map = merge l r}

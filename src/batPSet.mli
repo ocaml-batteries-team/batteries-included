@@ -108,15 +108,15 @@ val cardinal: 'a t -> int
 
 val choose : 'a t -> 'a
   (** returns one binding of the given map, deterministically.  Raises
-      [Invalid_argument] if given an empty map. *)
+      [Invalid_argument] if given an empty set. *)
 
 val min_elt : 'a t -> 'a
   (** returns the binding with the smallest key. Raises
-      [Invalid_argument] if given an empty map. *)
+      [Invalid_argument] if given an empty set. *)
 
 val max_elt : 'a t -> 'a
   (** returns the binding with the largest key. Raises
-      [Invalid_argument] if given an empty map.*)
+      [Invalid_argument] if given an empty set.*)
   
 val enum: 'a t -> 'a BatEnum.t
   (** Return an enumeration of all elements of the given set.
@@ -124,6 +124,21 @@ val enum: 'a t -> 'a BatEnum.t
       to the ordering of this set.*)
   
 val of_enum: 'a BatEnum.t -> 'a t
+
+val for_all : ('a -> bool) -> 'a t -> bool
+(** Returns whether the given predicate applies to all elements in the set *)
+
+
+val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+  (** returns two disjoint subsets, those that satisfy the given
+      predicate and those that don't *)
+
+val filter : ('a -> bool) -> 'a t -> 'a t
+  (** returns the subset of items satisfying the given predicate *)
+
+val pop : 'a t -> 'a * 'a t
+  (** returns one element of the set and the set without that element.
+      Raises [Not_found] if given an empty set *)
 
 (** {6 Boilerplate code}*)
 

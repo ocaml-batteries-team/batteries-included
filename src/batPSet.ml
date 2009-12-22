@@ -70,3 +70,11 @@ let of_enum t =
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
   BatEnum.print ~first ~last ~sep print_elt out (enum t)
+
+let for_all f t = BatPMap.for_all (fun k _ -> f k) t
+
+let partition f t = BatPMap.partition (fun k _ -> f k) t
+
+let filter f t = BatPMap.filteri (fun k _ -> f k) t
+
+let pop t = let (k, _), m = BatPMap.pop t in k, m
