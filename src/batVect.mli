@@ -145,9 +145,14 @@ val at : 'a t -> int -> 'a
   (** as [get] *)
 
 val set : 'a t -> int -> 'a -> 'a t
-  (** [set n c r] returns a copy of the [r] vect where the (n+1)th element
+  (** [set v n c] returns a copy of the [v] vect where the (n+1)th element
       (see also [get]) has been set to [c].
       Operates in worst-case [O(log size)] time. *)
+
+val modify : 'a t -> int -> ('a -> 'a) -> 'a t
+  (** [modify v n f] is equivalent to [set v n (f (get v n))], but
+      more efficient.  Operates in worst-case [O(log size)] time. *)
+
 
 val destructive_set : 'a t -> int -> 'a -> unit
   (** [destructive_set n e v] sets the element of index [n] in the [v] vect

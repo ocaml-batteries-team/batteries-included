@@ -204,7 +204,21 @@ let set (v:'a t) (i: int) (x:'a) =
   in aux i v
 
 let at = get
-
+  
+let modify (v:'a t) (i: int) (f:'a -> 'a) = 
+  let rec aux i = function
+      Empty -> raise Out_of_bounds
+    | Leaf s ->
+	if i >= 0 && i < STRING.length s then
+          let s = STRING.copy s in
+          STRING.unsafe_set s i (f (STRING.unsafe_get s i));
+	  Leaf s
+	else raise Out_of_bounds
+    | Concat(l, cl, r, cr, _) ->
+	if i < cl then concat (aux i l) r
+	else concat l (aux (i - cl) r)
+  in aux i v
+       
 let of_string = function
     s when STRING.length s = 0 -> Empty
   | s ->
