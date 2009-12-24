@@ -230,10 +230,14 @@ val fold_right : ('a -> 'b -> 'b ) -> 'a t -> 'b -> 'b
   (** [fold_right f r a] computes [ f (r0 ... (f rN-2 (f rN-1 a)) ...)) ]
       where [rn = Vect.get n r ] and [N = length r]. *)
 
+val foldi : (int -> 'b -> 'a -> 'b) -> 'b -> 'a t -> 'b
+  (** As {!fold}, but with the position of each value passed to the
+      folding function *)
+
 val map : ('a -> 'b) -> 'a t -> 'b t
   (** [map f v] returns a vect isomorphic to [v] where each element of index
-    [i] equals [f (get v i)]. Therefore, the height of the returned vect
-    is the same as that of the original one. Operates in [O(n)] time. *)
+      [i] equals [f (get v i)]. Therefore, the height of the returned vect
+      is the same as that of the original one. Operates in [O(n)] time. *)
 
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
   (** Same as {!map}, but the

@@ -314,15 +314,15 @@ let of_backwards e =
   BatEnum.fold (fun acc x -> prepend_char x acc) empty e
 
 let iteri f r =
-  let rec aux f i = function
+  let rec aux i = function
     Empty -> ()
   | Leaf s ->
       for j = 0 to STRING.length s - 1 do
         f (i + j) (STRING.unsafe_get s j)
       done
-  | Concat(l,cl,r,_,_) -> aux f i l; aux f (i + cl) r
+  | Concat(l,cl,r,_,_) -> aux i l; aux (i + cl) r
   in
-    aux f 0 r
+    aux 0 r
 
 let rec rangeiter f start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
@@ -357,6 +357,20 @@ let rec fold f a = function
         done;
         !acc
   | Concat(l,_,r,_,_) -> fold f (fold f a l) r
+
+let foldi f a v = 
+  let rec aux i a = function
+      Empty -> a
+    | Leaf s ->
+	let acc = ref a in
+        for j = 0 to STRING.length s - 1 do
+          acc := f (i+j) !acc (STRING.unsafe_get s j)
+        done;
+        !acc
+  | Concat(l,cl,r,_,_) -> aux (i+cl) (aux i a l) r
+  in
+  aux 0 a v
+
 
 let fold_left = fold
 let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
