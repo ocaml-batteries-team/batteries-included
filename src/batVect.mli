@@ -305,6 +305,11 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 	elements of [a] that do not satisfy [p].
 	The order of the elements in the input array is preserved. *)
 
+(** {6 Convenience Functions} *)
+  val first : 'a t -> 'a
+  val last : 'a t -> 'a
+    (** These return the first and last values in the vector *)
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
