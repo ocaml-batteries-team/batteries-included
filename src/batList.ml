@@ -633,6 +633,17 @@ let group cmp lst =
     List.rev_map List.rev (lastgr::groups)
    end
 
+let cartesian_product l1 l2 =
+   List.concat (List.map (fun i -> List.map (fun j -> (i,j)) l2) l1)
+
+
+let rec n_cartesian_product = function [] -> assert false
+  | [l] -> List.map (fun i -> [i]) l
+  | h :: t ->
+      let rest = n_cartesian_product t in
+      List.concat (List.map (fun i -> List.map (fun r -> i :: r) rest) h)
+
+
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
   | []   ->

@@ -384,6 +384,19 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	  [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0],...
 	  *)  
 
+	val cartesian_product : 'a list -> 'b list -> ('a * 'b) list
+	  (** Different from [List.combine], this returns every pair
+	      of elements formed out of the two lists.  [cartesian_product
+	      [a1; ...; an] [b1; ...; bn] = [(a1,b1);(a1,b2); ...;
+	      (a1,bn); (a2,b1); ...; (an,bn)]].  The lists can be of
+	      unequal size. *)
+
+	val n_cartesian_product : 'a list list -> 'a list list
+	  (** Given n lists, return the n-way cartesian product of
+	      these lists.  Given [[a;b];[c];[d;e;f]], returns
+	      [[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]], all
+	      ways of choosing one element from each input list. *)
+
 	(** {6 Boilerplate code}*)
 
 	(** {7 Printing}*)
