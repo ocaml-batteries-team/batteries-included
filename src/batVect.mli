@@ -217,9 +217,6 @@ val fold_left : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
   (** [fold_left f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
       where [rn = Vect.get n r ] and [N = length r]. *)
   
-val fold: ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
-  (**as {!fold_left}*)
-  
 val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
   (** as {!fold_left}, but no initial value - just applies reducing
       function to elements from left to right. *)
