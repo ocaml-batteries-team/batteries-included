@@ -441,7 +441,9 @@ let memq m v = try let _ = find ( ( == ) m ) v in true with Not_found -> false
 
 let first v = get v 0
 let last v = get v (length v - 1)
-  
+let shift v = first v, sub 1 (length v - 1) v
+let pop v = last v, sub 0 (length v - 1) v
+
 
 let to_list r =
   let rec aux acc = function
