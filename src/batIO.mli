@@ -1008,7 +1008,7 @@ val lock_factory: (unit -> BatConcurrent.lock) ref
    a version of Batteries compiled in threaded mode, this uses {!Mutex}. 
 *)
 
-
+val to_string : (string output -> 'a -> unit) -> 'a -> string
 
 (**/**)
 val comb : ('a output * 'a output) -> 'a output

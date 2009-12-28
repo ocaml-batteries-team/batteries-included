@@ -834,3 +834,9 @@ let out_channel_of_output out =
     create_out
       
     cout*)
+
+
+let to_string print_x x = 
+  let strout = output_string () in
+  let () = print_x strout x in
+  close_out strout
