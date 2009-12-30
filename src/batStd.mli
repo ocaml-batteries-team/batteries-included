@@ -150,14 +150,18 @@ val second : ('a -> 'b * 'c) -> 'a -> 'c
 
 
 
-val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
+val curry : ('a * 'b -> 'c) -> ('a -> 'b -> 'c)
+  (** Turn a function that takes a pair into a function that takes its
+      arguments one at a time. *)
 
-val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
+val uncurry : ('a -> 'b -> 'c) -> ('a * 'b -> 'c)
+  (** Turn a function that takes its arguments one at a time into a
+      function that takes a pair as argument. *)
 
 val const : 'a -> (_ -> 'a)
-(** Ignore its second argument.
+  (** Ignore its second argument.
 
-    Therefore, [const x] is the function which always returns [x].*)
+      Therefore, [const x] is the function which always returns [x].*)
 
 (**
    {6 Results}
