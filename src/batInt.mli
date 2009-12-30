@@ -170,6 +170,10 @@
     (** {7 Printing}*)
 
     val print: 'a BatInnerIO.output -> t -> unit
+    val xprint: 'a BatInnerIO.output -> t -> unit
+      (** prints as hex string *)
+(*    val bprint: 'a BatInnerIO.output -> t -> unit
+      (** prints as binary string *) *)
     val t_printer : t BatValue_printer.t
 
 

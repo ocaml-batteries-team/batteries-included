@@ -89,6 +89,7 @@ module BaseInt = struct
   let ( ** ) a b = pow a b
 
   let print out t = BatInnerIO.nwrite out (string_of_int t)
+  let xprint out t = BatInnerIO.Printf.fprintf out "%X" t
   let t_printer paren out t = print out t
 
   let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)
