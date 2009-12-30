@@ -352,7 +352,18 @@ val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
       on typical input.
   *)
 
-(** {6 Boilerplate code}*)
+val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
+  (** [decorate_sort f a] returns a sorted copy of [a] such that if [f
+      x < f y] then [x] is earlier in the result than [y].  This
+      function is useful when [f] is expensive, as it only computes [f
+      x] once for each element in the array.  See
+      [:[http://en.wikipedia.org/wiki/Schwartzian_transform]Schwartzian
+      Transform]. *)
+
+val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array
+  (** As {!Array.decorate_sort}, but uses fast_sort internally *)
+
+  (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
 

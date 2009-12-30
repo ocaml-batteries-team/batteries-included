@@ -289,6 +289,16 @@ let reduce f a =
 let min a = reduce Pervasives.min a
 let max a = reduce Pervasives.max a
 
+let decorate_stable_sort f xs = 
+  let decorated = map (fun x -> (f x, x)) xs in
+  let () = stable_sort (fun (i,_) (j,_) -> compare i j) decorated in
+  map (fun (_,x) -> x) decorated
+
+let decorate_fast_sort f xs = 
+  let decorated = map (fun x -> (f x, x)) xs in
+  let () = fast_sort (fun (i,_) (j,_) -> compare i j) decorated in
+  map (fun (_,x) -> x) decorated
+
 module Cap =
 struct
   (** Implementation note: in [('a, 'b) t], ['b] serves only as
