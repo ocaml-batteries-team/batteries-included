@@ -289,6 +289,7 @@ let reduce f a =
 let min a = reduce Pervasives.min a
 let max a = reduce Pervasives.max a
 
+(* TODO: Investigate whether a second array is better than pairs *)
 let decorate_stable_sort f xs = 
   let decorated = map (fun x -> (f x, x)) xs in
   let () = stable_sort (fun (i,_) (j,_) -> compare i j) decorated in
