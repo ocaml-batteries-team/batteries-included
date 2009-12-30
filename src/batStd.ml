@@ -191,6 +191,17 @@ type ('a, 'b) result =
   | Ok  of 'a
   | Bad of 'b
 
+(* Ideas taken from Nicholas Pouillard's my_std.ml in ocamlbuild/ *)
+let ignore_ok = function
+    Ok _ -> ()
+  | Bad ex -> raise ex
+
+let ok = function
+    Ok v -> v
+  | Bad ex -> raise ex
+
+let wrap f x = try Ok (f x) with ex -> Bad ex
+
 (** {6 Operators}*)
 
 let ( |> ) x f = f x
