@@ -52,28 +52,36 @@ module Buffer = struct include Buffer include BatBuffer end
 module Char = struct include Char include BatChar end
 module Complex = struct include Complex include BatComplex end
 module Digest = struct include Digest include BatDigest end
+(* Filename *)
 module Format = struct include Format include BatFormat end
 module Gc = struct include Gc include BatGc end
 module Genlex = struct include Gc include BatGc end
 module Hashtbl = BatHashtbl
 module Int32 = BatInt32
 module Int64 = BatInt64
+(* Lazy *)
 module Lexing = struct include Lexing include BatLexing end
 module List = struct include List include BatList end
+(* ListLabels *)
 module Map = BatMap
 module Marshal = struct include Marshal include BatMarshal end
+(* MoreLabels *)
 module Nativeint = BatNativeint
 module Oo = struct include Oo include BatOo end
+(* Parsing *)
 module Printexc = struct include Printexc include BatPrintexc end
 module Printf = struct include Printf include BatPrintf end
 module Queue = struct include Queue include BatQueue end
 module Random = BatRandom
 module Scanf = BatScanf
 module Set = BatSet
+(* Sort - Deprecated *)
 module Stack = struct include Stack include BatStack end
 module Stream = struct include Stream include BatStream end
 module String = struct include String include BatString end
+(* StringLabels *)
 module Sys = struct include Sys include BatSys end
+(* Weak *)
 
 (* Extlib modules not replacing stdlib *)
 module Base64 = BatBase64
@@ -141,6 +149,7 @@ module UTF8 = BatUTF8 (* replaces, doesn't extend UTF8 *)
 
 (* Num *)
 module Big_int = struct include Big_int include BatBig_int end
+
 
 (* Bigarray *)
 module Bigarray = BatBigarray
