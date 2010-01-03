@@ -1,6 +1,6 @@
-name="aaa"
+name="batteries"
 version="@VERSION@"
-description="Batteries Included AAA, lite distribution of OCaml libraries"
+description="Batteries Included, the stdlib of choice"
 requires="unix,num,bigarray,str,findlib,camomile"
 requires(mt)="unix,num,bigarray,threads,str,findlib,camomile"
 archive(toploop)="batteries.cma,batteries_help.cmo"
@@ -39,7 +39,7 @@ package "syntax" (
         # be set" even when we require camlp4 or set preprocessor here, so
         # we use a brute-force approach
         requires = "camlp4, estring"
-        requires(toploop) = "camlp4, estring, aaa"
+        requires(toploop) = "camlp4, estring, batteries"
         archive(syntax, preprocessor) = "pa_strings.cma pa_comprehension.cmo"
         archive(syntax, toploop)      = "pa_strings.cma pa_comprehension.cmo"
 )

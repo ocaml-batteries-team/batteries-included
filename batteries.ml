@@ -43,14 +43,14 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
 #use "topfind";; 
 *)
 #thread;;
-#require "aaa";;
+#require "batteries";;
 
 
 if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
 begin
   Batteries_help.init ();
   print_endline "      _________________________";
-  print_endline "    [| +   | | AAA Batteries - |";
+  print_endline "    [| +   | |   Batteries   - |";
   print_endline "     |_____|_|_________________|";
   print_endline "      _________________________";
   print_endline "     | -  Type '#help;;' | | + |]";
@@ -70,10 +70,10 @@ open Batteries;;
 if ext_syntax then begin
    print_endline "Loading syntax extensions...";
    Topfind.standard_syntax();
-   Topfind.load_deeply ["camlp4"; "aaa.pa_string.syntax"; 
-   		       "aaa.pa_comprehension.syntax"];
+   Topfind.load_deeply ["camlp4"; "batteries.pa_string.syntax"; 
+   		       "batteries.pa_comprehension.syntax"];
 end else 
-    print_endline "AAA Syntax extensions disabled.";
+    print_endline "Batteries Syntax extensions disabled.";
 ;;
 
 Sys.interactive := interactive;; (*Return to regular interactive mode*)

@@ -37,9 +37,9 @@ To test your install, execute
 
    $ omake test
 
-*** Using AAA Batteries ***
+*** Using Batteries ***
 
-To get started using AAA-batteries at the toplevel, copy the ocamlinit
+To get started using Batteries at the toplevel, copy the ocamlinit
 file to ~/.ocamlinit:
 
    $ cp ocamlinit ~/.ocamlinit
@@ -50,10 +50,10 @@ last line in our ocamlinit to load batteries.
 *** ExtLib Compatibility ***
 
 If your project currently uses ExtLib, most likely you can just change
-[-package extlib] to [-package aaa] and add [open Extlibcompat] to the
-top of any extlib-using modules.  Batteries' modules are all named
-BatFoo to differentiate them from extlib's modules, so one can use
-Batteries and ExtLib in the same project.  
+[-package extlib] to [-package batteries] and add [open Extlibcompat]
+to the top of any extlib-using modules.  Batteries' modules are all
+named BatFoo to differentiate them from extlib's modules, so one can
+use Batteries and ExtLib in the same project.
 
 COMPATIBILITY NOTE: If you're using ExtLib's Unzip module, it does not
 have a corresponding module in batteries at the moment.

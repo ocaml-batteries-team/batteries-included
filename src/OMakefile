@@ -1,9 +1,9 @@
 
 .SUBDIRS: syntax
-    export AAA_FILES
+    export BAT_FILES
     .SUBDIRS: pa_comprehension pa_strings
 	include OMakefile
-	export AAA_FILES
+	export BAT_FILES
 
 EXTRA[] =
     batteries_help.cmo
@@ -106,6 +106,6 @@ batteries_config.ml: batteries_config.mlp
 	    batteries_config.mlp > batteries_config.ml
 	chmod(444 batteries_config.ml)
 
-AAA_FILES[] += $(file $(glob *.mli *.cmi *.cma *.cmxa *.a $(EXTRA)))
+BAT_FILES[] += $(file $(glob *.mli *.cmi *.cma *.cmxa *.a $(EXTRA)))
 
 all: batteries.cmxa batteries.cma $(EXTRA)

@@ -16,11 +16,11 @@ OCAMLCFLAGS += -g
 
 OCAMLDEP_MODULES_ENABLED = false
 OCAMLROOT = $(shell ocamlfind printconf destdir)
-DOCROOT = /usr/share/doc/ocaml-aaa/
+DOCROOT = /usr/share/doc/ocaml-batteries/
 BROWSER_COMMAND = x-www-browser %s
 
-NAME = aaa
-VERSION = 0.9.1
+NAME = batteries
+VERSION = 0.9.2
 
 LIBSDIR = $(ROOT)/libs
 
@@ -31,16 +31,16 @@ clean:
     rm -f $(filter-proper-targets $(ls R, .))
     rm -f hdoc/*
 
-AAA_FILES[] = aaa.ml
+BAT_FILES[] = batteries.ml
 
 .SUBDIRS: src testsuite
     include OMakefile
-    export AAA_FILES
+    export BAT_FILES
 
 .SUBDIRS: libs
     .SUBDIRS: estring
         include OMakefile
-        export AAA_FILES
+        export BAT_FILES
 
 
 build/META: build/META.in
@@ -55,7 +55,7 @@ uninstall:
 	  rm -rf $(DOCROOT)
 
 install: all build/META
-	$(OCAMLFIND) install $(NAME) build/META $(AAA_FILES)
+	$(OCAMLFIND) install $(NAME) build/META $(BAT_FILES)
 
 doc: src/batteries.cma
 	if $(not $(test -e hdoc/index.html))
@@ -70,7 +70,7 @@ install-doc: doc
 test: testsuite/main.opt testsuite/main.run
 	testsuite/main.opt && testsuite/main.run
 
-release: :exists: aaa-batteries-$(VERSION).tar.gz
-	git archive --format=tar --prefix=aaa-batteries-$(VERSION)/ HEAD | gzip > aaa-batteries-$(VERSION).tar.gz
+release: :exists: ocaml-batteries-$(VERSION).tar.gz
+	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD | gzip > batteries-$(VERSION).tar.gz
 
 

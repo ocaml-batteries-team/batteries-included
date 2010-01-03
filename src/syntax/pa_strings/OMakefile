@@ -12,5 +12,5 @@ all: pa_strings.cma
 
 FILES[] = pa_strings.cma
 
-AAA_FILES[] += $(file $(FILES))
-export AAA_FILES
+BAT_FILES[] += $(file $(FILES))
+export BAT_FILES

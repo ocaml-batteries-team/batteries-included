@@ -7,5 +7,5 @@ FILES[] = pa_comprehension.cmo
 
 all: $(FILES)
 
-AAA_FILES[] += $(file $(FILES))
-export AAA_FILES
+BAT_FILES[] += $(file $(FILES))
+export BAT_FILES
