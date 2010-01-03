@@ -9,8 +9,6 @@ Batteries Included serves the following purposes:
   expected on every compliant installation of OCaml
 * organize these libraries into a hierarchy of modules,
   with one source of documentation
-* define a standard set of language extensions which
-  may be expected on every compliant installation of OCaml
 * provide a consistent API for otherwise independent
   libraries.
 
@@ -18,61 +16,48 @@ Batteries Included serves the following purposes:
 
 **** Requirements ****
 You will need
-* OCaml >= 3.10.2 (preferably OCaml >= 3.11)
-* GNU Make
+* OCaml >= 3.11
+* OMake (http://omake.metaprl.org/index.html)
 * Findlib   (http://projects.camlcity.org/projects/findlib.html/)
-* Type-conv (http://www.ocaml.info/home/ocaml_sources.html)
-* Sexplib  >= 3.7.5 if you're using OCaml 3.11
-           <  3.7.5 if you're using OCaml 3.10 (http://www.ocaml.info/home/ocaml_sources.html)
-* Bin-prot  (http://www.ocaml.info/home/ocaml_sources.html)
 * Camomile >= 0.7 (http://camomile.sourceforge.net/)
-* Camlzip   (http://cristal.inria.fr/~xleroy/software.html#camlzip)
-   ( Note: By default, the distribution of Camlzip is not quite sufficient for actual use.
-     We provide the missing files in directory camlzip/ .)
-* Ocamlnet  2.2.9 (http://projects.camlcity.org/projects/ocamlnet.html)
 * OUnit    to build and run the tests
-
-**** Pre-configuration ****
-
-If you have downloaded Batteries Included from the official download page or from
-a mirror, you may skip this step. It is only required for adventurous people who
-have downloaded Batteries Included from the git repository.
-
-In this case, you will also need
-
-* autoconf
-
-Before proceeding to configuration and installation, you will need to run
-
-    $ autoconf
-
-This will create some files which are necessary for the next step.
-
 
 **** Configuration and installation ****
 
 To install the full version of OCaml Batteries Included in the default
 directory (/usr/local/), execute
 
-    $ ./configure
-    $ make all opt top syntax install install-doc
+   $ omake all
+   $ sudo omake install 
+   [optional]
+   $ omake doc
+   $ sudo omake install-doc
 
-If you wish to install to a directory other than the default directory,
-execute
+To test your install, execute
 
-    $ ./configure --prefix=/path/to/some/other/directory/
-    $ make all opt top syntax install install-doc
+   $ omake test
 
-Be patient, documentation generation may take more than 15 minutes.
-If you do not want the documentation generation, remove "install-doc"
-from the previous commands.
+*** Using AAA Batteries ***
 
+To get started using AAA-batteries at the toplevel, copy the ocamlinit
+file to ~/.ocamlinit:
 
-*** Using Batteries Included ***
+   $ cp ocamlinit ~/.ocamlinit
 
-See doc/batteries/html/index.html
+If you already have findlib in your ~/.ocamlinit, you only need the
+last line in our ocamlinit to load batteries.
 
+*** ExtLib Compatibility ***
+
+If your project currently uses ExtLib, most likely you can just change
+[-package extlib] to [-package aaa] and add [open Extlibcompat] to the
+top of any extlib-using modules.  Batteries' modules are all named
+BatFoo to differentiate them from extlib's modules, so one can use
+Batteries and ExtLib in the same project.  
+
+COMPATIBILITY NOTE: If you're using ExtLib's Unzip module, it does not
+have a corresponding module in batteries at the moment.
 
 *** Extending Batteries Included ***
 
-See doc/batteries/GUIDELINES
+See doc/batteries/GUIDELINES (may apply to AAA-batteries)

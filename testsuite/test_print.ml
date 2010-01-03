@@ -21,25 +21,22 @@ let test_leak_legacy () =
   let words_many= run_legacy many_tests in
     if words_few < words_many then assert_failure (Printf.sprintf "Memory use grew by %d" (words_many - words_few))
 *)
+open Printf
 let run_oldstyle number_of_runs = 
-open Printf in
-  begin
   Gc.full_major ();
   foreach (1 -- number_of_runs) (fun _ ->
     fprintf stdnull "%a%!" (fun ch () -> fprintf ch "Hello, world!") ()
   );
   Gc.full_major ();
   (Gc.stat()).live_words
-end
 
 let test_leak_oldstyle () =
   let words_few = run_oldstyle few_tests  in
   let words_many= run_oldstyle many_tests in
     if words_few < words_many then assert_failure (Printf.sprintf "Memory use grew by %d" (words_many - words_few))
 
+open Print
 let run_newstyle number_of_runs = 
-open Print in
-  begin
   Gc.full_major ();
   let printer_hello k () = k (fun ch -> fprintf ch p"Hello, world!") in
   foreach (1 -- number_of_runs) (fun _ ->
@@ -47,7 +44,6 @@ open Print in
   );
   Gc.full_major ();
   (Gc.stat()).live_words
-end
 
 let test_leak_newstyle () =
   let words_few = run_newstyle few_tests  in

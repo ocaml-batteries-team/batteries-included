@@ -1,8 +1,0 @@
-<common>:	include
-<camlzip>:	include
-<ocamlnet>:	include
-<findlib>:      include
-<sexplib>:      include
-<compilers>:    include
-<*.ml>:  pkg_netstring,pkg_netclient,pkg_sexplib,pkg_bin_prot,pkg_sexplib.syntax
-<*.mli>: pkg_netstring,pkg_netclient,pkg_camomile,pkg_sexplib,use_optcomp_o

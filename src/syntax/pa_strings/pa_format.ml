@@ -10,10 +10,6 @@ open Pa_estring
 
 (* Syntax extension for format string *)
 
-#if ocaml_version < (3, 11)
-  (*For the moment, we don't have a version compatible with OCaml < 3.11*)
-#else
-
 (* An element of a format: *)
 type element =
   | Cst of char
@@ -64,17 +60,17 @@ struct
 
     let rec loop acc = function
       | Cons(_loc, '-', l) ->
-          loop (<:rec_binding< Batteries.Standard.pf_justify = `left >> :: acc) l
+          loop (<:rec_binding< BatPervasives.pf_justify = `left >> :: acc) l
 
       | Cons(_loc, '0', l) ->
-          loop (<:rec_binding< Batteries.Standard.pf_padding_char = '0' >> :: acc) l
+          loop (<:rec_binding< BatPervasives.pf_padding_char = '0' >> :: acc) l
 
       | Cons(_loc, ('+' | ' ' as ch), l) ->
-          loop (<:rec_binding< Batteries.Standard.pf_positive_prefix = $chr:Char.escaped ch$ >> :: acc) l
+          loop (<:rec_binding< BatPervasives.pf_positive_prefix = $chr:Char.escaped ch$ >> :: acc) l
 
       | Cons(_loc, '1' .. '9', _) as l ->
           let n, l = number l in
-          loop (<:rec_binding< Batteries.Standard.pf_width = Some $int:string_of_int n$ >> :: acc) l
+          loop (<:rec_binding< BatPervasives.pf_width = Some $int:string_of_int n$ >> :: acc) l
 
       | l ->
           (acc, l)
@@ -88,7 +84,7 @@ struct
         | (flags, l) ->
             (Some(Ast.ExRec(_loc,
                             Ast.rbSem_of_list flags,
-                            <:expr< Batteries.Standard.default_printer_flags >>)),
+                            <:expr< BatPervasives.default_printer_flags >>)),
              l)
   end
 
@@ -245,7 +241,7 @@ struct
   (* Convert a type to a value printer: *)
   let rec vprinter_of_ctyp = function
     | <:ctyp@_loc< _ >> ->
-        <:expr< fun paren out x -> IO.nwrite out "<abstract>" >>
+        <:expr< fun paren out x -> BatIO.nwrite out "<abstract>" >>
     | <:ctyp@_loc< $id:id$ >> ->
         <:expr< $id:map_id id$ >>
     | <:ctyp@_loc< $a$ $b$ >> ->
@@ -256,7 +252,7 @@ struct
           (fun acc t ->
              let _loc = Ast.loc_of_expr acc in
              <:expr< $acc$ $vprinter_of_ctyp t$ >>)
-          <:expr< Batteries.Value_printer.$lid:"print_tuple" ^ string_of_int (List.length l)$ >>
+          <:expr< BatValue_printer.$lid:"print_tuple" ^ string_of_int (List.length l)$ >>
           l
     | t ->
         Loc.raise (Ast.loc_of_ctyp t) (Failure "pa_strings: i do not understand this type")
@@ -345,7 +341,7 @@ let expr_of_directive _loc names expr =
             printer_s
               (fun __printer ->
                  __printers.(1) <-- __printer;
-                 __k (fun oc -> Batteries.Print.format oc __pattern __printers)))
+                 __k (fun oc -> BatPrint.format oc __pattern __printers)))
      >>
 *)
 let make_printer _loc ast =
@@ -372,7 +368,7 @@ let make_printer _loc ast =
                      (fun __out -> $dir$ false __out $id:id$);
                   $aux (n + 1) l$ >>
     | Nil _loc ->
-        <:expr< __k (fun oc -> Batteries.Print.format oc __pattern __printers) >>
+        <:expr< __k (fun oc -> BatPrint.format oc __pattern __printers) >>
   in
   aux 0 ast
 
@@ -396,12 +392,11 @@ let _ =
        let directive_count = count_directives ast in
 
        (* Creates the format expression *)
-       <:expr< { Batteries.Print.pattern = $str:String.escaped(make_pattern ast)$;
-                 Batteries.Print.printer = (fun __pattern __k ->
+       <:expr< { BatPrint.pattern = $str:String.escaped(make_pattern ast)$;
+                 BatPrint.printer = (fun __pattern __k ->
                                                 let __printers =
                                                   Array.create
                                                     $int:string_of_int directive_count$
                                                     Pervasives.ignore in
                                                 $make_printer _loc ast$) } >>)
 
-#endif

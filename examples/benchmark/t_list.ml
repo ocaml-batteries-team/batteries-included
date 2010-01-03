@@ -1,6 +1,5 @@
 open Printf
 open Batteries
-open Standard
 
 exception Done_measuring
 
@@ -105,7 +104,7 @@ type impl_type = [`Gallium | `Extlib | `Core | `Bluestorm]
 
 let nth_impls = [`Gallium, Legacy.List.nth;
 		 `Extlib, List.nth;
-		 `Core, Core.Std.List.nth_exn ]
+(*		 `Core, Core.Std.List.nth_exn*) ]
 and map_impls = [`Gallium, Legacy.List.map;
 		 `Extlib, List.map;
 		 `Core, core_map ]
@@ -167,6 +166,7 @@ let tests =
 (*****************************************)
 (*  GLOBALS FOR ARGUMENT HANDLING        *)
 (*****************************************)
+module Ref_list = RefList
 
 let seed = ref (-1)
 let time = ref 1.

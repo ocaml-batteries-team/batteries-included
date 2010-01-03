@@ -8,10 +8,6 @@
 open Camlp4.PreCast
 open Pa_estring
 
-#if ocaml_version < (3, 11)
-  (*For the moment, we don't have a version compatible with OCaml < 3.11*)
-#else
-
 (* Validation of UTF-8 strings *)
 
 let validate_utf8 loc str =
@@ -72,50 +68,50 @@ let _ =
 
   (*register_expr_specifier "u"
     (fun ctx _loc str ->
-       let id = register_shared_expr ctx <:expr< Batteries.UTF8.of_string $str:str$ >> in
+       let id = register_shared_expr ctx <:expr< BatUTF8.of_string $str:str$ >> in
        <:expr< $id:id$ >>);*)
   register_expr_specifier "u"
     (fun ctx _loc str ->
        validate_utf8 _loc str;
-       <:expr< Batteries.UTF8.of_string_unsafe $str:str$ >>);
+       <:expr< BatUTF8.of_string_unsafe $str:str$ >>);
   register_when_specifier "u"
     (fun ctx _loc id str ->
        validate_utf8 _loc str;
-       let shared_id = register_shared_expr ctx <:expr< Batteries.UTF8.of_string_unsafe $str:str$ >> in
-       <:expr< Batteries.UTF8.compare $id:shared_id$ $id:id$ = 0 >>);
+       let shared_id = register_shared_expr ctx <:expr< BatUTF8.of_string_unsafe $str:str$ >> in
+       <:expr< BatUTF8.compare $id:shared_id$ $id:id$ = 0 >>);
 
   (* Strings with capabilities *)
 
   register_expr_specifier "rw"
     (fun ctx _loc str ->
-       <:expr< Batteries.String.Cap.of_string $str:str$ >>);
+       <:expr< BatString.Cap.of_string $str:str$ >>);
   register_when_specifier "rw"
     (fun ctx _loc id str ->
-       let shared_id = register_shared_expr ctx <:expr< Batteries.String.Cap.of_string $str:str$ >> in
-       <:expr< Batteries.String.Cap.compare $id:shared_id$ $id:id$ = 0 >>);
+       let shared_id = register_shared_expr ctx <:expr< BatString.Cap.of_string $str:str$ >> in
+       <:expr< BatString.Cap.compare $id:shared_id$ $id:id$ = 0 >>);
 
   register_expr_specifier "ro"
     (fun ctx _loc str ->
-       let id = register_shared_expr ctx <:expr< Batteries.String.Cap.read_only (Batteries.String.Cap.of_string $str:str$) >> in
+       let id = register_shared_expr ctx <:expr< BatString.Cap.read_only (BatString.Cap.of_string $str:str$) >> in
        <:expr< $id:id$ >>);
   register_when_specifier "ro"
     (fun ctx _loc id str ->
-       let shared_id = register_shared_expr ctx <:expr< Batteries.String.Cap.of_string $str:str$ >> in
-       <:expr< Batteries.String.Cap.compare $id:shared_id$ $id:id$ = 0 >>);
+       let shared_id = register_shared_expr ctx <:expr< BatString.Cap.of_string $str:str$ >> in
+       <:expr< BatString.Cap.compare $id:shared_id$ $id:id$ = 0 >>);
 
   register_expr_specifier "wo"
     (fun ctx _loc str ->
-       <:expr< Batteries.String.Cap.write_only (Batteries.String.Cap.of_string $str:str$) >>);
+       <:expr< BatString.Cap.write_only (BatString.Cap.of_string $str:str$) >>);
   register_when_specifier "wo"
     (fun ctx _loc id str ->
-       let shared_id = register_shared_expr ctx <:expr< Batteries.String.Cap.of_string $str:str$ >> in
-       <:expr< Batteries.String.Cap.compare $id:shared_id$ $id:id$ = 0 >>);
+       let shared_id = register_shared_expr ctx <:expr< BatString.Cap.of_string $str:str$ >> in
+       <:expr< BatString.Cap.compare $id:shared_id$ $id:id$ = 0 >>);
 
   (* Ropes *)
 
   let rope_of_latin1 _loc str =
     let str = utf8_of_latin1 str in
-    <:expr< Batteries.Rope.of_ustring (Batteries.UTF8.of_string_unsafe $str:String.escaped str$) >>
+    <:expr< BatRope.of_ustring (BatUTF8.of_string_unsafe $str:String.escaped str$) >>
   in
 
   register_expr_specifier "r"
@@ -125,11 +121,11 @@ let _ =
   register_when_specifier "r"
     (fun ctx _loc id str ->
        let shared_id = register_shared_expr ctx (rope_of_latin1 _loc str) in
-       <:expr< Batteries.Rope.compare $id:shared_id$ $id:id$ = 0 >>);
+       <:expr< BatRope.compare $id:shared_id$ $id:id$ = 0 >>);
 
   let rope_of_utf8 _loc str =
     validate_utf8 _loc str;
-    <:expr< Batteries.Rope.of_ustring (Batteries.UTF8.of_string_unsafe $str:str$) >>
+    <:expr< BatRope.of_ustring (BatUTF8.of_string_unsafe $str:str$) >>
   in
 
   register_expr_specifier "ur"
@@ -139,6 +135,4 @@ let _ =
   register_when_specifier "ur"
     (fun ctx _loc id str ->
        let shared_id = register_shared_expr ctx (rope_of_utf8 _loc str) in
-       <:expr< Batteries.UTF8.compare $id:shared_id$ $id:id$ = 0 >>)
-
-#endif
+       <:expr< BatUTF8.compare $id:shared_id$ $id:id$ = 0 >>)

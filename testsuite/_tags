@@ -1,3 +1,1 @@
-<*>: pkg_oUnit
-<test_threadpool.*>: pkg_threads
-<main_threads.*>: pkg_threads
+<*>: pkg_oUnit, pkg_aaa, thread

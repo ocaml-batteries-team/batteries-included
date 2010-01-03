@@ -197,9 +197,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
       | [ (Gen m' p gen) :: tail ] -> (* middle generator (map + concat) *)
           let m' = get m' in
           if eq_ident m m'
-          then
-            let filtered = apply_guards m p guards gen in
-            concat _loc m (map _loc m p (build m expr [] tail) filtered)
+          then concat _loc m (map _loc m p (build m expr [] tail) gen)
           else
             let filtered = apply_guards enum p guards (to_enum m' gen) in
             let product = map _loc enum p (build enum expr [] tail) filtered in

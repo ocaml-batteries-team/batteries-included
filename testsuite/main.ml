@@ -3,14 +3,15 @@ open OUnit
 let all_tests =
   [
     Test_unix.tests;
-    Test_print.tests;
-    Test_toplevel.tests;
+(*    Test_print.tests;
+    Test_toplevel.tests; *)
     Test_pmap.tests;
     Test_vect.tests;
     Test_file.tests;
     Test_string.tests;
     Test_digest.tests;
     Test_enum.tests;
+    Test_set.tests;
   ]
 
 let _ = OUnit.run_test_tt_main ("All" >::: all_tests)

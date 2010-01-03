@@ -1,2 +1,0 @@
-<compress.cmx> :for-pack(Libs.Common)
-<common.cmx> :for-pack(Libs)

@@ -1,0 +1,20 @@
+
+OCAMLPACKS[] += oUnit
+
+OCAML_LIBS += $(ROOT)/src/batteries
+OCAMLINCLUDES += $(ROOT)/src
+
+TESTS[] = 
+    test_digest
+    test_enum
+    test_file
+    test_pmap
+    # test_print
+    test_set
+    test_string
+    # test_toplevel
+    test_unix
+    test_vect
+
+OCamlProgram(main, $(TESTS) main)
+

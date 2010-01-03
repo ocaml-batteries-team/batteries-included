@@ -1,0 +1,76 @@
+BYTE_ENABLED   = true
+NATIVE_ENABLED = true
+
+USE_OCAMLFIND = true
+OCAMLPACKS[] +=
+    camomile
+    num
+    str
+    threads
+
+#zip_pack = $(shell ocamlfind list | grep "zip\ " | cut -d\  -f1)
+#OCAMLPACKS[] += $(zip_pack)
+
+OCAMLFLAGS += -thread
+OCAMLCFLAGS += -g
+
+OCAMLDEP_MODULES_ENABLED = false
+OCAMLROOT = $(shell ocamlfind printconf destdir)
+DOCROOT = /usr/share/doc/ocaml-aaa/
+BROWSER_COMMAND = x-www-browser %s
+
+NAME = aaa
+VERSION = 0.9.1
+
+LIBSDIR = $(ROOT)/libs
+
+.PHONY: doc uninstall install all clean test reinstall install-doc release
+.DEFAULT: all
+
+clean:
+    rm -f $(filter-proper-targets $(ls R, .))
+    rm -f hdoc/*
+
+AAA_FILES[] = aaa.ml
+
+.SUBDIRS: src testsuite
+    include OMakefile
+    export AAA_FILES
+
+.SUBDIRS: libs
+    .SUBDIRS: estring
+        include OMakefile
+        export AAA_FILES
+
+
+build/META: build/META.in
+	rm(-f build/META)
+	sed -e 's|@VERSION@|$(VERSION)|' \
+	    build/META.in > build/META
+	chmod(444 build/META)
+
+uninstall:
+	$(OCAMLFIND) remove $(NAME)
+	if $(test -e $(DOCROOT))
+	  rm -rf $(DOCROOT)
+
+install: all build/META
+	$(OCAMLFIND) install $(NAME) build/META $(AAA_FILES)
+
+doc: src/batteries.cma
+	if $(not $(test -e hdoc/index.html))
+	  $(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
+	  -sort -html -d hdoc -I src src/*.mli
+
+install-doc: doc
+	$(INSTALL) -d $(DOCROOT)
+	$(INSTALL) hdoc/* $(DOCROOT)
+	$(INSTALL) doc/batteries/*.idex doc/batteries/*.help $(DOCROOT)
+
+test: testsuite/main.opt testsuite/main.run
+	testsuite/main.opt && testsuite/main.run
+
+release: :exists: aaa-batteries-$(VERSION).tar.gz
+	git archive --format=tar --prefix=aaa-batteries-$(VERSION)/ HEAD | gzip > aaa-batteries-$(VERSION).tar.gz
+
+

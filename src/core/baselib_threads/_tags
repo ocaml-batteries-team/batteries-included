@@ -1,8 +1,0 @@
-<batlib_Baselib_Condition.mli>:pkg_threads, pkg_threads.posix
-<batlib_Baselib_Condition.ml>:pkg_threads,  pkg_threads.posix
-<batlib_Baselib_Event.mli>:pkg_threads,     pkg_threads.posix
-<batlib_Baselib_Event.ml>:pkg_threads,      pkg_threads.posix
-<batlib_Baselib_Mutex.mli>:pkg_threads,     pkg_threads.posix
-<batlib_Baselib_Mutex.ml>:pkg_threads,      pkg_threads.posix
-<batlib_Baselib_Thread.mli>:pkg_threads,    pkg_threads.posix
-<batlib_Baselib_Thread.ml>:pkg_threads,     pkg_threads.posix

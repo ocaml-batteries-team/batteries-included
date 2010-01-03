@@ -1,5 +1,0 @@
-<core>:     include
-<libs>:     include
-<layer_1>:  include
-<main>:     include
-<batteries_toolchain>: included

@@ -1,0 +1,111 @@
+
+.SUBDIRS: syntax
+    export AAA_FILES
+    .SUBDIRS: pa_comprehension pa_strings
+	include OMakefile
+	export AAA_FILES
+
+EXTRA[] =
+    batteries_help.cmo
+
+OBJECTS[] =
+    batArg
+    batArray
+    batBigarray
+    batBig_int
+    batBool
+    batBuffer
+    batChar
+    batComplex
+    batDigest
+    batEnum
+    batFloat
+    batFormat
+    batGc
+    batGenlex
+    batHashtbl
+    batIO
+    batInnerIO
+    batInt32
+    batInt64
+    batInt
+    batLexing
+    batList
+    batMap
+    batMarshal
+    batMutex
+    batNativeint
+    batNum
+    batOo
+    batPervasives
+    batPrintexc
+    batPrintf
+    batQueue
+    batRandom
+    batScanf
+    batSet
+    batStack
+    batStream
+    batString
+    batStr
+    batSys
+    batUChar
+    batUnit
+    batUnix
+    batUTF8
+    batBase64
+    batBitSet
+    batCharEncodings
+    batCharParser
+    batConcurrent
+    batDllist
+    batDynArray
+    batFile
+    batGlobal
+    batInnerWeaktbl
+    batInterfaces
+    batLazyList
+    batLogger
+    batMonad
+    batMultiPMap
+    batNumber
+    batOption
+    batOptParse
+    batPair
+    batParserCo
+    batPathGen
+    batPMap
+    batPrint
+    batPSet
+    batRefList
+    batRef
+    batResult
+    batReturn
+    batRMutex
+    batRope
+    batSeq
+    batStd
+    batSubstring
+    batUCharParser
+    batValue_printer
+    batVect
+    batAvlTree
+    batISet
+    batIMap
+    batteries_config
+    batteries_print
+    batteries
+
+OCamlLibrary(batteries, $(OBJECTS))
+
+batteries_config.ml: batteries_config.mlp
+	rm(-f batteries_config.ml)
+	sed -e 's|@VERSION@|$(VERSION)|' \
+            -e 's|@DOCROOT@|$(DOCROOT)|' \
+            -e 's|@BROWSER_COMMAND@|$(BROWSER_COMMAND)|' \
+	    batteries_config.mlp > batteries_config.ml
+	chmod(444 batteries_config.ml)
+
+AAA_FILES[] += $(file $(glob *.mli *.cmi *.cma *.cmxa *.a $(EXTRA)))
+
+all: batteries.cmxa batteries.cma $(EXTRA)

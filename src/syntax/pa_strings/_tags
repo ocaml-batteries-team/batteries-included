@@ -1,2 +1,0 @@
-<pa_*.ml>: camlp4oof, use_pa_optcomp
-<pa_*>: pkg_camlp4.lib

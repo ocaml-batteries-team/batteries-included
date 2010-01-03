@@ -1,9 +1,0 @@
-name = "pa_where"
-version = "0.4"
-description = "'where' backward declarations"
-
-package "syntax" (
-        requires = "camlp4"
-        archive(syntax,preprocessor) = "pa_where.cmo"
-        archive(syntax,toploop) = "pa_where.cmo"
-)
