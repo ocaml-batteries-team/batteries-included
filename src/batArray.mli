@@ -185,6 +185,25 @@
 	
 	@raise Invalid_argument if the length of [a1] does not equal the
 	length of [a2]. *)
+  
+  val for_all2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
+    (** As {!Array.for_all} but on two arrays.  
+
+	@raise Invalid_argument if the arrays aren't the same
+	length. *)
+
+
+  val exists2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
+    (** As {!Array.exists} but on two arrays.  
+
+	@raise Invalid_argument if the arrays aren't the same
+	length. *)
+    
+  val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
+    (** As {!Array.map} but on two arrays.  
+
+	@raise Invalid_argument if the arrays aren't the same
+	length. *)
     
   (**{6 Predicates}*)
     

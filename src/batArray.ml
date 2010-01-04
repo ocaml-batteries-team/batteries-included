@@ -234,10 +234,35 @@ let iter2 f a1 a2 =
 
 let iter2i f a1 a2 =
   if Array.length a1 <> Array.length a2
-  then raise (Invalid_argument "Array.iter2");
+  then raise (Invalid_argument "Array.iter2i");
   for i = 0 to Array.length a1 - 1 do
     f i a1.(i) a2.(i);
   done;;
+
+let for_all2 p xs ys =
+  let n = length xs in
+  if length ys <> n then raise (Invalid_argument "Array.for_all2");
+  let rec loop i =
+    if i = n then true
+    else if p xs.(i) ys.(i) then loop (succ i)
+    else false
+  in
+  loop 0
+
+let exists2 p xs ys =
+  let n = length xs in
+  if length ys <> n then raise (Invalid_argument "Array.exists2");
+  let rec loop i =
+    if i = n then false
+    else if p xs.(i) ys.(i) then true
+    else loop (succ i)
+  in
+  loop 0
+
+let map2 f xs ys =
+  let n = length xs in
+  if length ys <> n then raise (Invalid_argument "Array.exists2");
+  Array.init n (fun i -> f xs.(i) ys.(i))
 
 let make_compare cmp a b =
   let length_a = Array.length a
