@@ -217,11 +217,19 @@ Projection of a pair to its first element.<br>
 <pre><span class="keyword">val</span> <a name="VALsecond"></a>second : <code class="type">('a -> 'b * 'c) -> 'a -> 'c</code></pre><div class="info">
 Projection of a pair to its second element.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcurry"></a>curry : <code class="type">('a * 'b -> 'c) -> 'a -> 'b -> 'c</code></pre><pre><span class="keyword">val</span> <a name="VALuncurry"></a>uncurry : <code class="type">('a -> 'b -> 'c) -> 'a * 'b -> 'c</code></pre><pre><span class="keyword">val</span> <a name="VALconst"></a>const : <code class="type">'a -> 'b -> 'a</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcurry"></a>curry : <code class="type">('a * 'b -> 'c) -> 'a -> 'b -> 'c</code></pre><div class="info">
+Turn a function that takes a pair into a function that takes its
+      arguments one at a time.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALuncurry"></a>uncurry : <code class="type">('a -> 'b -> 'c) -> 'a * 'b -> 'c</code></pre><div class="info">
+Turn a function that takes its arguments one at a time into a
+      function that takes a pair as argument.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALconst"></a>const : <code class="type">'a -> 'b -> 'a</code></pre><div class="info">
 Ignore its second argument.
 <p>
 
-    Therefore, <code class="code">const x</code> is the function which always returns <code class="code">x</code>.<br>
+      Therefore, <code class="code">const x</code> is the function which always returns <code class="code">x</code>.<br>
 </div>
 <br>
 <a name="6_Results"></a>
@@ -239,8 +247,23 @@ Ignore its second argument.
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span class="constructor">Bad</span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
-
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The result of a computation - either an <code class="code">Ok</code> with the normal
+result or a <code class="code">Bad</code> with some value (often an exception) containing
+failure information</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 
+<pre><span class="keyword">val</span> <a name="VALignore_ok"></a>ignore_ok : <code class="type">('a, exn) <a href="BatStd.html#TYPEresult">result</a> -> unit</code></pre><div class="info">
+<code class="code">ignore_ok (f x)</code> ignores the result of <code class="code">f x</code> if it's ok, but
+throws the exception contained if <code class="code">Bad</code> is returned.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALok"></a>ok : <code class="type">('a, exn) <a href="BatStd.html#TYPEresult">result</a> -> 'a</code></pre><div class="info">
+<code class="code">f x |&gt; ok</code> unwraps the <code class="code">Ok</code> result of <code class="code">f x</code> and returns it, or
+throws the exception contained if <code class="code">Bad</code> is returned.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALwrap"></a>wrap : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatStd.html#TYPEresult">result</a></code></pre><div class="info">
+<code class="code">wrap f x</code> wraps a function that would normally throw an exception
+on failure such that it now returns a result with either the <code class="code">Ok</code>
+return value or the <code class="code">Bad</code> exception.<br>
+</div>
 </body></html>

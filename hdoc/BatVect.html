@@ -242,9 +242,13 @@ Returns the length of the vect (<code class="code">O(1)</code>).<br>
 as <code class="code">get</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALset"></a>set : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> int -> 'a -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">set n c r</code> returns a copy of the <code class="code">r</code> vect where the (n+1)th element
+<code class="code">set v n c</code> returns a copy of the <code class="code">v</code> vect where the (n+1)th element
       (see also <code class="code">get</code>) has been set to <code class="code">c</code>.
       Operates in worst-case <code class="code">O(log size)</code> time.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALmodify"></a>modify : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> int -> ('a -> 'a) -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">modify v n f</code> is equivalent to <code class="code">set v n (f (get v n))</code>, but
+      more efficient.  Operates in worst-case <code class="code">O(log size)</code> time.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALdestructive_set"></a>destructive_set : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info">
 <code class="code">destructive_set n e v</code> sets the element of index <code class="code">n</code> in the <code class="code">v</code> vect
@@ -316,9 +320,6 @@ Operates like iter, but also passes the index of the character
 <code class="code">fold_left f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN-1 </code>
       where <code class="code">rn = Vect.get n r </code> and <code class="code">N = length r</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-as <a href="BatVect.html#VALfold_left"><code class="code">BatVect.fold_left</code></a><br>
-</div>
 <pre><span class="keyword">val</span> <a name="VALreduce"></a>reduce : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 as <a href="BatVect.html#VALfold_left"><code class="code">BatVect.fold_left</code></a>, but no initial value - just applies reducing
       function to elements from left to right.<br>
@@ -327,10 +328,14 @@ as <a href="BatVect.html#VALfold_left"><code class="code">BatVect.fold_left</cod
 <code class="code">fold_right f r a</code> computes <code class="code"> f (r0 ... (f rN-2 (f rN-1 a)) ...)) </code>
       where <code class="code">rn = Vect.get n r </code> and <code class="code">N = length r</code>.<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALfoldi"></a>foldi : <code class="type">(int -> 'a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+As <a href="BatVect.html#VALfold"><code class="code">BatVect.fold</code></a>, but with the position of each value passed to the
+      folding function<br>
+</div>
 <pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'b <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f v</code> returns a vect isomorphic to <code class="code">v</code> where each element of index
-    <code class="code">i</code> equals <code class="code">f (get v i)</code>. Therefore, the height of the returned vect
-    is the same as that of the original one. Operates in <code class="code">O(n)</code> time.<br>
+      <code class="code">i</code> equals <code class="code">f (get v i)</code>. Therefore, the height of the returned vect
+      is the same as that of the original one. Operates in <code class="code">O(n)</code> time.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'b <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 Same as <a href="BatVect.html#VALmap"><code class="code">BatVect.map</code></a>, but the
@@ -387,6 +392,19 @@ Same as <code class="code">Array.mem</code> but uses physical equality instead o
 	satisfy the predicate <code class="code">p</code>, and <code class="code">a2</code> is the array of all the
 	elements of <code class="code">a</code> that do not satisfy <code class="code">p</code>.
 	The order of the elements in the input array is preserved.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALfirst"></a>first : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<a name="6_ConvenienceFunctions"></a>
+<h6>Convenience Functions</h6><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALlast"></a>last : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+These return the first and last values in the vector<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALshift"></a>shift : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> 'a * 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
+Return the first element of a vector and its last <code class="code">n-1</code> elements.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALpop"></a>pop : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> 'a * 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
+Return the last element of a vector and its first <code class="code">n-1</code> elements.<br>
 </div>
 <br>
 <a name="6_Boilerplatecode"></a>

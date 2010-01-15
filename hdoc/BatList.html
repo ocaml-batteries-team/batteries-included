@@ -478,6 +478,19 @@ Sort the list using optional comparator (by default <code class="code">compare</
 For example <code class="code">group cmp [f;c;b;e;d;a]</code> can give <code class="code">[[a;b];[c];[d;e;f]]</code> if following conditions are met:
 	  <code class="code">cmp a b = 0</code>, <code class="code">cmp b c = -1</code>, <code class="code">cmp c d = -1</code>, <code class="code">cmp d e = 0</code>,...<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALcartesian_product"></a>cartesian_product : <code class="type">'a list -> 'b list -> ('a * 'b) list</code></pre><div class="info">
+Different from <code class="code">List.combine</code>, this returns every pair
+	      of elements formed out of the two lists.  <code class="code">cartesian_product
+	      [a1; ...; an] [b1; ...; bn] = [(a1,b1);(a1,b2); ...;
+	      (a1,bn); (a2,b1); ...; (an,bn)]</code>.  The lists can be of
+	      unequal size.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALn_cartesian_product"></a>n_cartesian_product : <code class="type">'a list list -> 'a list list</code></pre><div class="info">
+Given n lists, return the n-way cartesian product of
+	      these lists.  Given <code class="code">[a;b];[c];[d;e;f]</code>, returns
+	      <code class="code">[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]</code>, all
+	      ways of choosing one element from each input list.<br>
+</div>
 <br>
 <a name="6_Boilerplatecode"></a>
 <h6>Boilerplate code</h6><br>

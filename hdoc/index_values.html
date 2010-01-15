@@ -868,6 +868,11 @@ Addition
 <code class="code">add_buffer b1 b2</code> adds the contents of <code class="code">b2</code> to <code class="code">b1</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatPMap.html#VALadd_carry">add_carry</a> [<a href="BatPMap.html">BatPMap</a>]</td>
+<td><div class="info">
+<code class="code">add_carry k v m</code> adds the binding <code class="code">(k,v)</code> to <code class="code">m</code>, returning the new map and optionally the previous value bound to <code class="code">k</code>.
+</div>
+</td></tr>
 <tr><td><a href="BatBuffer.html#VALadd_channel">add_channel</a> [<a href="BatBuffer.html">BatBuffer</a>]</td>
 <td><div class="info">
 </div>
@@ -1564,6 +1569,12 @@ Return the number of elements of a set.
 </td></tr>
 <tr><td><a href="BatISet.html#VALcardinal">cardinal</a> [<a href="BatISet.html">BatISet</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatList.html#VALcartesian_product">cartesian_product</a> [<a href="BatList.html">BatList</a>]</td>
+<td><div class="info">
+Different from <code class="code">List.combine</code>, this returns every pair
+	      of elements formed out of the two lists.
+</div>
+</td></tr>
 <tr><td><a href="BatUCharParser.html#VALcase_char">case_char</a> [<a href="BatUCharParser.html">BatUCharParser</a>]</td>
 <td><div class="info">
 As <code class="code">char</code>, but case-insensitive
@@ -2533,7 +2544,11 @@ Fully create an output by giving all the needed functions.
 <tr><td><a href="BatOo.Oo.Internal.html#VALcreate_table">create_table</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatStd.html#VALcurry">curry</a> [<a href="BatStd.html">BatStd</a>]</td>
-<td></td></tr>
+<td><div class="info">
+Turn a function that takes a pair into a function that takes its
+      arguments one at a time.
+</div>
+</td></tr>
 <tr><td><a href="BatPervasives.html#VALcurry">curry</a> [<a href="BatPervasives.html">BatPervasives</a>]</td>
 <td><div class="info">
 Convert a function which accepts a pair of arguments into
@@ -2561,6 +2576,17 @@ If set to <code class="code">true</code>, debugging information will be printed 
 <tr><td><a href="BatBase64.html#VALdecode">decode</a> [<a href="BatBase64.html">BatBase64</a>]</td>
 <td><div class="info">
 Generic base64 decoding over an input.
+</div>
+</td></tr>
+<tr><td><a href="BatArray.html#VALdecorate_fast_sort">decorate_fast_sort</a> [<a href="BatArray.html">BatArray</a>]</td>
+<td><div class="info">
+As <code class="code">Array.decorate_sort</code>, but uses fast_sort internally
+</div>
+</td></tr>
+<tr><td><a href="BatArray.html#VALdecorate_stable_sort">decorate_stable_sort</a> [<a href="BatArray.html">BatArray</a>]</td>
+<td><div class="info">
+<code class="code">decorate_sort f a</code> returns a sorted copy of <code class="code">a</code> such that if <code class="code">f
+      x &lt; f y</code> then <code class="code">x</code> is earlier in the result than <code class="code">y</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatOptParse.StdOpt.html#VALdecr_option">decr_option</a> [<a href="BatOptParse.StdOpt.html">BatOptParse.StdOpt</a>]</td>
@@ -3471,6 +3497,16 @@ Same as <code class="code">List.exists</code>, but for a two-argument predicate.
 Same as <a href="BatLazyList.html#VALexists"><code class="code">BatLazyList.exists</code></a>, but for a two-argument predicate.
 </div>
 </td></tr>
+<tr><td><a href="BatArray.html#VALexists2">exists2</a> [<a href="BatArray.html">BatArray</a>]</td>
+<td><div class="info">
+As <code class="code">Array.exists</code> but on two arrays.
+</div>
+</td></tr>
+<tr><td><a href="BatPMap.html#VALexists_f">exists_f</a> [<a href="BatPMap.html">BatPMap</a>]</td>
+<td><div class="info">
+Tests whether some key value pair satisfies some predicate function
+</div>
+</td></tr>
 <tr><td><a href="BatFloat.Safe_float.html#VALexp">exp</a> [<a href="BatFloat.Safe_float.html">BatFloat.Safe_float</a>]</td>
 <td><div class="info">
 Exponential.
@@ -3517,6 +3553,12 @@ Returns extension of the name of the object the pathname points to.
 <td><div class="info">
 <code class="code">extract(s, i, NONE)</code> creates the substring (s, i, size s-i)
       consisting of the tail of s starting at i.
+</div>
+</td></tr>
+<tr><td><a href="BatPMap.html#VALextract">extract</a> [<a href="BatPMap.html">BatPMap</a>]</td>
+<td><div class="info">
+<code class="code">extract k m</code> removes the current binding of <code class="code">k</code> from <code class="code">m</code>,
+      returning the value <code class="code">k</code> was bound to and the updated <code class="code">m</code>.
 </div>
 </td></tr>
 <tr><td align="left"><br>F</td></tr>
@@ -4323,6 +4365,11 @@ Find a binding for the key, or return <code class="code">None</code> if no
 	that satisfies the predicate <code class="code">p</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatVect.html#VALfirst">first</a> [<a href="BatVect.html">BatVect</a>]</td>
+<td><div class="info">
+Convenience Functions
+</div>
+</td></tr>
 <tr><td><a href="BatUTF8.Byte.html#VALfirst">first</a> [<a href="BatUTF8.Byte.html">BatUTF8.Byte</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatSubstring.html#VALfirst">first</a> [<a href="BatSubstring.html">BatSubstring</a>]</td>
@@ -4838,6 +4885,12 @@ Accumulate a value over the entire list.
       <code class="code">f a1 b1 (f a2 b2 (... (f an bn c) ...))</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatVect.html#VALfoldi">foldi</a> [<a href="BatVect.html">BatVect</a>]</td>
+<td><div class="info">
+As <a href="BatVect.html#VALfold"><code class="code">BatVect.fold</code></a>, but with the position of each value passed to the
+      folding function
+</div>
+</td></tr>
 <tr><td><a href="BatPMap.html#VALfoldi">foldi</a> [<a href="BatPMap.html">BatPMap</a>]</td>
 <td><div class="info">
 Same as <code class="code">fold</code>, but the function receives as arguments both the
@@ -4905,6 +4958,16 @@ Return <code class="code">true</code> if all elements match the specified
 <code class="code">exists f e</code> returns <code class="code">true</code> if for every <code class="code">x</code> in <code class="code">e</code>, <code class="code">f x</code> is true
 </div>
 </td></tr>
+<tr><td><a href="BatPSet.html#VALfor_all">for_all</a> [<a href="BatPSet.html">BatPSet</a>]</td>
+<td><div class="info">
+Returns whether the given predicate applies to all elements in the set
+</div>
+</td></tr>
+<tr><td><a href="BatPMap.html#VALfor_all">for_all</a> [<a href="BatPMap.html">BatPMap</a>]</td>
+<td><div class="info">
+Tests whether all key value pairs satisfy some predicate function
+</div>
+</td></tr>
 <tr><td><a href="BatList.Labels.html#VALfor_all">for_all</a> [<a href="BatList.Labels.html">BatList.Labels</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatLazyList.Labels.html#VALfor_all">for_all</a> [<a href="BatLazyList.Labels.html">BatLazyList.Labels</a>]</td>
@@ -4952,6 +5015,11 @@ Same as <code class="code">List.for_all</code>, but for a two-argument predicate
 <tr><td><a href="BatLazyList.html#VALfor_all2">for_all2</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
 <td><div class="info">
 Same as <a href="BatLazyList.html#VALfor_all"><code class="code">BatLazyList.for_all</code></a>, but for a two-argument predicate.
+</div>
+</td></tr>
+<tr><td><a href="BatArray.html#VALfor_all2">for_all2</a> [<a href="BatArray.html">BatArray</a>]</td>
+<td><div class="info">
+As <code class="code">Array.for_all</code> but on two arrays.
 </div>
 </td></tr>
 <tr><td><a href="BatIMap.html#VALforall2_range">forall2_range</a> [<a href="BatIMap.html">BatIMap</a>]</td>
@@ -5583,6 +5651,12 @@ As <a href="BatPrint.html#VALfprintf"><code class="code">BatPrint.fprintf</code>
 <tr><td><a href="BatInnerIO.Printf.html#VALifprintf">ifprintf</a> [<a href="BatInnerIO.Printf.html">BatInnerIO.Printf</a>]</td>
 <td><div class="info">
 As <a href="BatInnerIO.Printf.html#VALfprintf"><code class="code">BatInnerIO.Printf.fprintf</code></a> but doesn't actually print anything.
+</div>
+</td></tr>
+<tr><td><a href="BatStd.html#VALignore_ok">ignore_ok</a> [<a href="BatStd.html">BatStd</a>]</td>
+<td><div class="info">
+<code class="code">ignore_ok (f x)</code> ignores the result of <code class="code">f x</code> if it's ok, but
+throws the exception contained if <code class="code">Bad</code> is returned.
 </div>
 </td></tr>
 <tr><td><a href="BatParserCo.html#VALignore_one_plus">ignore_one_plus</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
@@ -6797,6 +6871,11 @@ Accepts any identifier.
 Give a name to a parser, for debugging purposes.
 </div>
 </td></tr>
+<tr><td><a href="BatVect.html#VALlast">last</a> [<a href="BatVect.html">BatVect</a>]</td>
+<td><div class="info">
+These return the first and last values in the vector
+</div>
+</td></tr>
 <tr><td><a href="BatUTF8.Byte.html#VALlast">last</a> [<a href="BatUTF8.Byte.html">BatUTF8.Byte</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatSeq.Exceptionless.html#VALlast">last</a> [<a href="BatSeq.Exceptionless.html">BatSeq.Exceptionless</a>]</td>
@@ -7417,7 +7496,7 @@ Create a new state and initialize it with a system-dependent
 <tr><td><a href="BatVect.html#VALmap">map</a> [<a href="BatVect.html">BatVect</a>]</td>
 <td><div class="info">
 <code class="code">map f v</code> returns a vect isomorphic to <code class="code">v</code> where each element of index
-    <code class="code">i</code> equals <code class="code">f (get v i)</code>.
+      <code class="code">i</code> equals <code class="code">f (get v i)</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatUTF8.html#VALmap">map</a> [<a href="BatUTF8.html">BatUTF8</a>]</td>
@@ -7653,6 +7732,11 @@ Allocate a new list, with entirely new nodes, whose values are
 <tr><td><a href="BatLazyList.html#VALmap2">map2</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
 <td><div class="info">
 Operations on two lists
+</div>
+</td></tr>
+<tr><td><a href="BatArray.html#VALmap2">map2</a> [<a href="BatArray.html">BatArray</a>]</td>
+<td><div class="info">
+As <code class="code">Array.map</code> but on two arrays.
 </div>
 </td></tr>
 <tr><td><a href="BatOption.Labels.html#VALmap_default">map_default</a> [<a href="BatOption.Labels.html">BatOption.Labels</a>]</td>
@@ -8221,6 +8305,18 @@ The integer <code class="code">-1</code>.
 	  part of <code class="code">f</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatVect.html#VALmodify">modify</a> [<a href="BatVect.html">BatVect</a>]</td>
+<td><div class="info">
+<code class="code">modify v n f</code> is equivalent to <code class="code">set v n (f (get v n))</code>, but
+      more efficient.
+</div>
+</td></tr>
+<tr><td><a href="BatPMap.html#VALmodify">modify</a> [<a href="BatPMap.html">BatPMap</a>]</td>
+<td><div class="info">
+<code class="code">modify k f m</code> replaces the previous binding for <code class="code">k</code> with <code class="code">f</code>
+      applied to that value.
+</div>
+</td></tr>
 <tr><td><a href="BatNumber.Numeric.html#VALmodulo">modulo</a> [<a href="BatNumber.Numeric.html">BatNumber.Numeric</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNum.html#VALmodulo">modulo</a> [<a href="BatNum.html">BatNum</a>]</td>
@@ -8310,6 +8406,12 @@ Prevent backtracking.
 </div>
 </td></tr>
 <tr><td align="left"><br>N</td></tr>
+<tr><td><a href="BatList.html#VALn_cartesian_product">n_cartesian_product</a> [<a href="BatList.html">BatList</a>]</td>
+<td><div class="info">
+Given n lists, return the n-way cartesian product of
+	      these lists.
+</div>
+</td></tr>
 <tr><td><a href="BatPathGen.PathType.html#VALname">name</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
 <td><div class="info">
 Returns name of the object the pathname points to, i.e.
@@ -9159,6 +9261,12 @@ Adopt a regular hashtable as a capability hashtble, allowing
 <code class="code">of_string s</code> returns a rope corresponding to the string <code class="code">s</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatStd.html#VALok">ok</a> [<a href="BatStd.html">BatStd</a>]</td>
+<td><div class="info">
+<code class="code">f x |&gt; ok</code> unwraps the <code class="code">Ok</code> result of <code class="code">f x</code> and returns it, or
+throws the exception contained if <code class="code">Bad</code> is returned.
+</div>
+</td></tr>
 <tr><td><a href="BatInnerIO.html#VALon_close_out">on_close_out</a> [<a href="BatInnerIO.html">BatInnerIO</a>]</td>
 <td><div class="info">
 Register a function to be triggered just before an output is closed.
@@ -9563,6 +9671,17 @@ Parse all the arguments in <code class="code">Sys.argv</code>.
        <code class="code">s</code> that do not satisfy <code class="code">p</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatPSet.html#VALpartition">partition</a> [<a href="BatPSet.html">BatPSet</a>]</td>
+<td><div class="info">
+returns two disjoint subsets, those that satisfy the given
+      predicate and those that don't
+</div>
+</td></tr>
+<tr><td><a href="BatPMap.html#VALpartition">partition</a> [<a href="BatPMap.html">BatPMap</a>]</td>
+<td><div class="info">
+Divides a map into two maps based on a test function
+</div>
+</td></tr>
 <tr><td><a href="BatList.Labels.html#VALpartition">partition</a> [<a href="BatList.Labels.html">BatList.Labels</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatList.html#VALpartition">partition</a> [<a href="BatList.html">BatList</a>]</td>
@@ -9650,6 +9769,11 @@ Create a pipe between an input and an ouput.
 	and argument <code class="code">arg</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatVect.html#VALpop">pop</a> [<a href="BatVect.html">BatVect</a>]</td>
+<td><div class="info">
+Return the last element of a vector and its first <code class="code">n-1</code> elements.
+</div>
+</td></tr>
 <tr><td><a href="BatRefList.html#VALpop">pop</a> [<a href="BatRefList.html">BatRefList</a>]</td>
 <td><div class="info">
 Removes and returns the first element or
@@ -9659,6 +9783,17 @@ Removes and returns the first element or
 <tr><td><a href="BatQueue.Queue.html#VALpop">pop</a> [<a href="BatQueue.Queue.html">BatQueue.Queue</a>]</td>
 <td><div class="info">
 <code class="code">pop</code> is a synonym for <code class="code">take</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatPSet.html#VALpop">pop</a> [<a href="BatPSet.html">BatPSet</a>]</td>
+<td><div class="info">
+returns one element of the set and the set without that element.
+</div>
+</td></tr>
+<tr><td><a href="BatPMap.html#VALpop">pop</a> [<a href="BatPMap.html">BatPMap</a>]</td>
+<td><div class="info">
+<code class="code">pop m</code> returns a binding from <code class="code">m</code> and <code class="code">m</code> without that
+      binding.
 </div>
 </td></tr>
 <tr><td><a href="BatIO.html#VALpos_in">pos_in</a> [<a href="BatIO.html">BatIO</a>]</td>
@@ -11323,7 +11458,7 @@ Initialize the generator with a more-or-less random seed chosen
 </td></tr>
 <tr><td><a href="BatVect.html#VALset">set</a> [<a href="BatVect.html">BatVect</a>]</td>
 <td><div class="info">
-<code class="code">set n c r</code> returns a copy of the <code class="code">r</code> vect where the (n+1)th element
+<code class="code">set v n c</code> returns a copy of the <code class="code">v</code> vect where the (n+1)th element
       (see also <code class="code">get</code>) has been set to <code class="code">c</code>.
 </div>
 </td></tr>
@@ -11440,6 +11575,11 @@ Set the state of the generator used by the basic functions.
 </td></tr>
 <tr><td><a href="BatIMap.html#VALset_to_map">set_to_map</a> [<a href="BatIMap.html">BatIMap</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatVect.html#VALshift">shift</a> [<a href="BatVect.html">BatVect</a>]</td>
+<td><div class="info">
+Return the first element of a vector and its last <code class="code">n-1</code> elements.
+</div>
+</td></tr>
 <tr><td><a href="BatNativeint.html#VALshift_left">shift_left</a> [<a href="BatNativeint.html">BatNativeint</a>]</td>
 <td><div class="info">
 <code class="code">Nativeint.shift_left x y</code> shifts <code class="code">x</code> to the left by <code class="code">y</code> bits.
@@ -13004,6 +13144,8 @@ Return the string representation of its argument, in signed decimal.
 Return the string representation of its argument, in signed decimal.
 </div>
 </td></tr>
+<tr><td><a href="BatIO.html#VALto_string">to_string</a> [<a href="BatIO.html">BatIO</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatFloat.Safe_float.html#VALto_string">to_string</a> [<a href="BatFloat.Safe_float.html">BatFloat.Safe_float</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatFloat.html#VALto_string">to_string</a> [<a href="BatFloat.html">BatFloat</a>]</td>
@@ -13158,7 +13300,11 @@ Divide a list of pairs into a pair of lists.
 </div>
 </td></tr>
 <tr><td><a href="BatStd.html#VALuncurry">uncurry</a> [<a href="BatStd.html">BatStd</a>]</td>
-<td></td></tr>
+<td><div class="info">
+Turn a function that takes its arguments one at a time into a
+      function that takes a pair as argument.
+</div>
+</td></tr>
 <tr><td><a href="BatPervasives.html#VALuncurry">uncurry</a> [<a href="BatPervasives.html">BatPervasives</a>]</td>
 <td><div class="info">
 Convert a function which accepts a two arguments into a function
@@ -13495,6 +13641,13 @@ Size of one word on the machine currently executing the Caml
      than <code class="code">n</code> elements, <code class="code">false</code> otherwise
 </div>
 </td></tr>
+<tr><td><a href="BatStd.html#VALwrap">wrap</a> [<a href="BatStd.html">BatStd</a>]</td>
+<td><div class="info">
+<code class="code">wrap f x</code> wraps a function that would normally throw an exception
+on failure such that it now returns a result with either the <code class="code">Ok</code>
+return value or the <code class="code">Bad</code> exception.
+</div>
+</td></tr>
 <tr><td><a href="BatOptParse.Formatter.html#VALwrap">wrap</a> [<a href="BatOptParse.Formatter.html">BatOptParse.Formatter</a>]</td>
 <td><div class="info">
 <code class="code">wrap text width</code> reflows the given text paragraph into lines
@@ -13825,6 +13978,12 @@ Write one line onto a UTF-8 encoded output.
 <tr><td><a href="BatIO.html#VALwrite_ulines">write_ulines</a> [<a href="BatIO.html">BatIO</a>]</td>
 <td><div class="info">
 Write an enumeration of lines onto a UTF-8 encoded output.
+</div>
+</td></tr>
+<tr><td align="left"><br>X</td></tr>
+<tr><td><a href="BatInt.html#VALxprint">xprint</a> [<a href="BatInt.html">BatInt</a>]</td>
+<td><div class="info">
+prints as hex string
 </div>
 </td></tr>
 <tr><td align="left"><br>Z</td></tr>

@@ -192,22 +192,36 @@ Return the number of elements of a set.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALchoose"></a>choose : <code class="type">'a <a href="BatPSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 returns one binding of the given map, deterministically.  Raises
-      <code class="code">Invalid_argument</code> if given an empty map.<br>
+      <code class="code">Invalid_argument</code> if given an empty set.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmin_elt"></a>min_elt : <code class="type">'a <a href="BatPSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 returns the binding with the smallest key. Raises
-      <code class="code">Invalid_argument</code> if given an empty map.<br>
+      <code class="code">Invalid_argument</code> if given an empty set.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmax_elt"></a>max_elt : <code class="type">'a <a href="BatPSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 returns the binding with the largest key. Raises
-      <code class="code">Invalid_argument</code> if given an empty map.<br>
+      <code class="code">Invalid_argument</code> if given an empty set.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">'a <a href="BatPSet.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in increasing order with respect
       to the ordering of this set.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><br>
+<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALfor_all"></a>for_all : <code class="type">('a -> bool) -> 'a <a href="BatPSet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+Returns whether the given predicate applies to all elements in the set<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALpartition"></a>partition : <code class="type">('a -> bool) -> 'a <a href="BatPSet.html#TYPEt">t</a> -> 'a <a href="BatPSet.html#TYPEt">t</a> * 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
+returns two disjoint subsets, those that satisfy the given
+      predicate and those that don't<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">('a -> bool) -> 'a <a href="BatPSet.html#TYPEt">t</a> -> 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
+returns the subset of items satisfying the given predicate<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALpop"></a>pop : <code class="type">'a <a href="BatPSet.html#TYPEt">t</a> -> 'a * 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
+returns one element of the set and the set without that element.
+      Raises <code class="code">Not_found</code> if given an empty set<br>
+</div>
+<br>
 <a name="6_Boilerplatecode"></a>
 <h6>Boilerplate code</h6><br>
 <br>

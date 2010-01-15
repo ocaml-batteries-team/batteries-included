@@ -280,6 +280,21 @@ Same as <code class="code">Array.map</code>, but the
 <b>Raises</b> <code>Invalid_argument</code> if the length of <code class="code">a1</code> does not equal the
 	length of <code class="code">a2</code>.<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALfor_all2"></a>for_all2 : <code class="type">('a -> 'b -> bool) -> 'a array -> 'b array -> bool</code></pre><div class="info">
+As <code class="code">Array.for_all</code> but on two arrays.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the arrays aren't the same
+	length.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALexists2"></a>exists2 : <code class="type">('a -> 'b -> bool) -> 'a array -> 'b array -> bool</code></pre><div class="info">
+As <code class="code">Array.exists</code> but on two arrays.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the arrays aren't the same
+	length.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALmap2"></a>map2 : <code class="type">('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array</code></pre><div class="info">
+As <code class="code">Array.map</code> but on two arrays.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the arrays aren't the same
+	length.<br>
+</div>
 <br>
 <a name="6_Predicates"></a>
 <h6>Predicates</h6><br>
@@ -449,6 +464,17 @@ Same as <code class="code">Array.sort</code>, but the sorting algorithm is stabl
 <pre><span class="keyword">val</span> <a name="VALfast_sort"></a>fast_sort : <code class="type">('a -> 'a -> int) -> 'a array -> unit</code></pre><div class="info">
 Same as <code class="code">Array.sort</code> or <code class="code">Array.stable_sort</code>, whichever is faster
       on typical input.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALdecorate_stable_sort"></a>decorate_stable_sort : <code class="type">('a -> 'b) -> 'a array -> 'a array</code></pre><div class="info">
+<code class="code">decorate_sort f a</code> returns a sorted copy of <code class="code">a</code> such that if <code class="code">f
+      x &lt; f y</code> then <code class="code">x</code> is earlier in the result than <code class="code">y</code>.  This
+      function is useful when <code class="code">f</code> is expensive, as it only computes <code class="code">f
+      x</code> once for each element in the array.  See
+      <code class="code">:[http://en.wikipedia.org/wiki/Schwartzian_transform]Schwartzian
+      Transform</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALdecorate_fast_sort"></a>decorate_fast_sort : <code class="type">('a -> 'b) -> 'a array -> 'a array</code></pre><div class="info">
+As <code class="code">Array.decorate_sort</code>, but uses fast_sort internally<br>
 </div>
 <br>
 <a name="6_Boilerplatecode"></a>
