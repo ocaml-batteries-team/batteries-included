@@ -32,13 +32,11 @@
 *)
 
 (* Set the below to false to disable use of syntax extensions in toplevel *)
-let ext_syntax = true
+let ext_syntax = true;;
 
 
 (* END CONFIGURATION *)
 
-let interactive = !Sys.interactive;;
-Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid toplib messages*)
 (* MUST BE ALREADY HANDLED BY .ocamlinit
 #use "topfind";; 
 *)
@@ -46,7 +44,7 @@ Sys.interactive := false;; (*Pretend to be in non-interactive mode to avoid topl
 #require "batteries";;
 
 
-if interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
+if !Sys.interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
 begin
   Batteries_help.init ();
   print_endline "      _________________________";
@@ -68,12 +66,12 @@ open Batteries;;
 #install_printer Batteries_print.print_string_cap_ro;;
 
 if ext_syntax then begin
-   print_endline "Loading syntax extensions...";
-   Topfind.standard_syntax();
-   Topfind.load_deeply ["camlp4"; "batteries.pa_string.syntax"; 
+  if !Sys.interactive then 
+    print_endline "Loading syntax extensions...";
+  Topfind.standard_syntax();
+  Topfind.load_deeply ["camlp4"; "batteries.pa_string.syntax"; 
    		       "batteries.pa_comprehension.syntax"];
 end else 
+  if !Sys.interactive then 
     print_endline "Batteries Syntax extensions disabled.";
 ;;
-
-Sys.interactive := interactive;; (*Return to regular interactive mode*)
