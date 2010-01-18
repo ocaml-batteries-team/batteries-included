@@ -5,5 +5,5 @@ Sys.interactive := interactive;; (*Return to regular interactive mode*)
 
 Toploop.use_silently 
              Format.err_formatter (Filename.concat (Findlib.package_directory 
-             "batteries") "batteries.ml");;
+             "batteries") "battop.ml");;
 

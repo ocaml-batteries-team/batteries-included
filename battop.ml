@@ -28,7 +28,7 @@
    - loading the contents of the on-line help system
    - printing a welcome message
 
-   To take advantage of this file, merge this file with your ~/.ocamlinit.
+   This file is loaded by the magic line in the ocamlinit file.
 *)
 
 (* Set the below to false to disable use of syntax extensions in toplevel *)
