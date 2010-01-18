@@ -444,7 +444,9 @@ val read_rope: input -> int -> BatRope.t
 (** Read up to n uchars from a UTF-8 encoded input*)
 
 val read_line : input -> string
-(** Read a LF or CRLF terminated string. *)
+  (** Read a LF or CRLF terminated string. If the source runs out of
+      input before a LF is found, returns a string of the remaining input.
+      Will raise [No_more_input] only if no characters are available. *)
 
 val read_uline: input -> BatRope.t
 (** Read a line of UTF-8*)
