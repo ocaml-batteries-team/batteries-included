@@ -5,5 +5,5 @@ The following directories contain:
 * hdoc/       the html documentation
 * src/	      the core of Batteries Included, all the batFoo modules
 * src/syntax/ several syntax extensions for OCaml
-* testsuite/  a minimal testsuite for AAA-batteries
+* testsuite/  a minimal testsuite for batteries
 
