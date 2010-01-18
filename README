@@ -18,7 +18,7 @@ Batteries Included serves the following purposes:
 You will need
 * OCaml >= 3.11
 * OMake (http://omake.metaprl.org/index.html)
-* Findlib   (http://projects.camlcity.org/projects/findlib.html/)
+* Findlib >= 1.2.5  (http://projects.camlcity.org/projects/findlib.html/)
 * Camomile >= 0.7 (http://camomile.sourceforge.net/)
 * OUnit    to build and run the tests
 
