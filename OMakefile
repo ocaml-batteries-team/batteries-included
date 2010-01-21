@@ -31,7 +31,7 @@ clean:
     rm -f $(filter-proper-targets $(ls R, .))
     rm -f hdoc/*
 
-BAT_FILES[] = batteries.ml
+BAT_FILES[] = battop.ml
 
 .SUBDIRS: src testsuite
     include OMakefile
