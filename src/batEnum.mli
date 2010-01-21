@@ -37,7 +37,7 @@
     {!scanl} et al) or performing loops (functions {!iter} and
     {!map}).
 
-    For instance, function {!ExtRandom.Random.enum_int} creates an
+    For instance, function {!BatRandom.enum_int} creates an
     infinite enumeration of random numbers. Combined with [//]
     and {!map}, we may turn this into an infinite enumeration of
     squares of random even numbers:
@@ -339,7 +339,7 @@ val make : next:(unit -> 'a) -> count:(unit -> int) -> clone:(unit -> 'a t) -> '
     clone. }}
 
     For some samples on how to correctly use [make], you can have a look
-    at implementation of [ExtList.enum]. 
+    at implementation of [BatList.enum].
 *)
 
 val from : (unit -> 'a) -> 'a t

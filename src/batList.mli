@@ -1,5 +1,5 @@
 (*
- * ExtList - additional and modified functions for lists.
+ * BatList - additional and modified functions for lists.
  * Copyright (C) 2003 Brian Hurt
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2008 Red Hat Inc.
@@ -24,7 +24,7 @@
 (** Additional and modified functions for lists.
 
     The OCaml standard library provides a module for list functions.
-    This ExtList module can be used to override the List module or
+    This BatList module can be used to extend the List module or
     as a standalone module. It provides new functions and modify
     the behavior of some other ones (in particular all functions
     are now {b tail-recursive}).
@@ -104,7 +104,7 @@
 	val init : int -> (int -> 'a) -> 'a list
 	  (** Similar to [Array.init], [init n f] returns the list containing
 	      the results of (f 0),(f 1).... (f (n-1)).
-	      Raise [Invalid_arg "ExtList.init"] if n < 0.*)
+	      Raise [Invalid_arg "BatList.init"] if n < 0.*)
 
 
 	(**{6 Iterators}*)

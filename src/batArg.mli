@@ -1,5 +1,5 @@
 (* 
- * ExtChar - Additional operations on arguments
+ * ExtArg - Additional operations on arguments
  * Copyright (C) 1996 Damien Doligez
  *               2009 David Teller, LIFO, Universite d'Orleans
  * 

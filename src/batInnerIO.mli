@@ -441,7 +441,7 @@ end
 
 (** Formatted output functions (also known as unparsing).
 
-    Note: Don't use this module directly, use {!ExtPrintf.Printf}
+    Note: Don't use this module directly, use {!BatPrintf.Printf}
 
     @author Xavier Leroy
     @author Pierre Weiss

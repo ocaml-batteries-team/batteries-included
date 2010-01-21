@@ -39,14 +39,12 @@ open BatIO
     
     This module is automatically opened at the beginning of each compilation.
     All components of this module can therefore be referred by their short
-    name, without prefixing them by [Standard].
+    name, without prefixing them by [BatPervasives].
 
     @author Xavier Leroy (Base module)
     @author Nicolas Cannasse
     @author David Teller
     @author Zheng Li
-
-    @documents Pervasives
 *)
 
 

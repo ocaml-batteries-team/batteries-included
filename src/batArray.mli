@@ -1,5 +1,5 @@
 (*
- * ExtArray - additional and modified functions for arrays.
+ * BatArray - additional and modified functions for arrays.
  * Copyright (C) 1996 Xavier Leroy
  *               2005 Richard W.M. Jones (rich @ annexia.org)
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
@@ -23,7 +23,7 @@
 (** Additional and modified functions for arrays.
 
     The OCaml standard library provides a module of array functions.
-    This ExtArray module can be used to override the Array module or
+    This BatArray module can be used to override the Array module or
     as a standalone module. It provides some additional functions.
 *)
 

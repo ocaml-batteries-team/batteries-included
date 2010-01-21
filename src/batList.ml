@@ -423,7 +423,7 @@ let sort ?(cmp=compare) = List.sort cmp
 
 let rec init size f =
 	if size = 0 then [] 
-	else if size < 0 then invalid_arg "ExtList.init"
+	else if size < 0 then invalid_arg "BatList.init"
 	else
 		let rec loop dst n =
 			if n < size then

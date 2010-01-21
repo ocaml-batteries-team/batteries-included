@@ -46,11 +46,10 @@
     uses bytes that are not printable characters. Therefore, input and
     output channels used in conjunction with {!Marshal.output} and
     {!Marshal.input} must be opened in binary mode, using e.g.
-    {!ExtPervasives.Pervasives.open_out_bin} or
-    {!ExtPervasives.Pervasives.open_in_bin}; channels opened in text
+    {!BatPervasives.open_out_bin} or
+    {!BatPervasives.open_in_bin}; channels opened in text
     mode will cause unmarshaling errors on platforms where text
     channels behave differently than binary channels, e.g. Windows.
-
 
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Marshal.html}Marshal}

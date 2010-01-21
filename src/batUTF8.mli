@@ -1,5 +1,5 @@
 (* 
- * ExtUTF-8 - Additional functions for UTF8 string manipulation
+ * BatUTF-8 - Additional functions for UTF8 string manipulation
  * Copyright 2002, 2003 (C) Yamagata Yoriyuki. 
  * Copyright (C) 2008 Edgar Friendly, David Teller
  *

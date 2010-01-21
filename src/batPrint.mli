@@ -22,7 +22,7 @@
 (** Formatted output functions (also known as unparsing).
 
     This module define a printf facility similar to the one defined by
-    {!ExtPrintf} but in a safer and extensible way.
+    {!BatPrintf} but in a safer and extensible way.
 
     Classical printf implementation (in ocaml and other languages)
     deals with format strings as regular strings which are parsed at
