@@ -51,7 +51,7 @@ open BatIO
 
 (** {6 String operations}
 
-   More string operations are provided in module {!String}.
+   More string operations are provided in module {!BatString}.
 *)
 
 val uppercase : string -> string
