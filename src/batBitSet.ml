@@ -81,7 +81,7 @@ let create_full n =
   if n < 0 then error "BitSet.create_full";
   let size = (n+int_size) lsr log_int_size in
   let b = bcreate size in
-  bfill b 0 size 0x255;
+  bfill b 0 size 0xFF;
   {
     data = b;
     len = size;
