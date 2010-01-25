@@ -20,12 +20,8 @@
  *)
 
 
-open BatList
+open Queue
 
-module Queue =
-struct
-  include Queue
-    
   type 'a enumerable = 'a t
 
   let of_enum e =
@@ -38,4 +34,4 @@ struct
 
   let print ?(first="") ?(last="") ?(sep="") print_a out t =
       BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
-end
+
