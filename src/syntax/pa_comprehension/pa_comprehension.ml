@@ -84,9 +84,9 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
           | Some (KEYWORD "(") ->
               ignore_upto end_kwd (ignore_upto ")" (n + 1) + 1)
           | Some (KEYWORD "{") -> 
-              ignore_upto end_kwd (ignore_upto "}" (n + 1) + 1)
-          | Some _ -> ignore_upto end_kwd (n + 1)
-          | None -> raise Stream.Failure ]
+              ignore_upto end_kwd (ignore_upto "}" (n + 1) + 1)        
+          | None | Some EOI -> raise Stream.Failure
+          | Some _ -> ignore_upto end_kwd (n + 1) ]
         in
         skip_patt 0);
 
