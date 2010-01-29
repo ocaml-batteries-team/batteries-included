@@ -24,12 +24,12 @@ struct
   include Str
 
   let search ?(offset=0) ?(backwards=false) r s =
-    let next = if backwards then search_backward
-               else              search_forward
+    let next,next_offset = if backwards then search_backward, -1
+                           else              search_forward,   1
     in
     let aux offset =
       try let offset' = next r s offset in
-	Some ((match_beginning (), match_end (), matched_string s), offset')
+        Some ((match_beginning (), match_end (), matched_string s), offset' + next_offset)
       with Not_found -> None
     in BatEnum.unfold offset aux
 end
