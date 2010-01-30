@@ -20,6 +20,7 @@
 
 exception Invalid_char
 exception Invalid_table
+exception Invalid_padding
 
 external unsafe_char_of_int : int -> char = "%identity"
 
@@ -51,7 +52,8 @@ let encode ?(tbl=chars) ch =
 		if !count > 0 then begin
 			let d = (!data lsl (6 - !count)) land 63 in
 			BatIO.write ch (Array.unsafe_get tbl d);
-		end;		
+		end;
+		count := 0;
 	in
 	let write c =
 		let c = int_of_char c in
@@ -118,3 +120,4 @@ let str_encode ?(tbl=chars) s =
 let str_decode ?(tbl=inv_chars) s =
 	let ch = decode ~tbl (BatIO.input_string s) in
 	BatIO.nread ch ((String.length s * 6) / 8)
+
