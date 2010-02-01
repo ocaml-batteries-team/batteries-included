@@ -168,8 +168,6 @@ let diff s1 s2 = inter s1 (compl s2)
 let rec compare_aux x1 x2 =
   match x1, x2 with
     [], [] -> 0
-  | [], _ -> ~-1
-  | _, [] -> 1
   | `Set s :: rest, x ->
       if is_empty s then compare_aux rest x2 else
       let l = left_branch s in
@@ -188,6 +186,8 @@ let rec compare_aux x1 x2 =
       let sgn = compare v2 v4 in
       if sgn <> 0 then sgn else
       compare_aux rest1 rest2
+  | [], _ -> ~-1
+  | _, [] -> 1
 
 let compare s1 s2 = compare_aux [`Set s1] [`Set s2]
 
