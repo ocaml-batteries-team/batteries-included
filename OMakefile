@@ -20,7 +20,7 @@ DOCROOT = /usr/share/doc/ocaml-batteries/
 BROWSER_COMMAND = x-www-browser %s
 
 NAME = batteries
-VERSION = 1.0.0
+VERSION = 1.0.1
 
 LIBSDIR = $(ROOT)/libs
 
