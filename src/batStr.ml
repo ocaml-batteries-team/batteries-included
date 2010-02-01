@@ -18,10 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-module Str =
-struct
-  include Str
+open Str
 
   let search ?(offset=0) ?(backwards=false) r s =
     let next,next_offset = if backwards then search_backward, -1
@@ -32,4 +29,3 @@ struct
         Some ((match_beginning (), match_end (), matched_string s), offset' + next_offset)
       with Not_found -> None
     in BatEnum.unfold offset aux
-end
