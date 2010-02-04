@@ -63,14 +63,18 @@ doc: src/batteries.cma
 	  -sort -html -d hdoc -I src src/*.mli
 
 install-doc: doc
-	$(INSTALL) -d $(DOCROOT)
-	$(INSTALL) hdoc/* $(DOCROOT)
-	$(INSTALL) doc/batteries/*.idex doc/batteries/*.help $(DOCROOT)
+	if $(equal $(OSTYPE), Win32)
+		mkdir $(DOCROOT)
+		copy hdoc.* doc/batteries/*.idex doc/batteries/*.help $(DOCROOT)
+	else
+		$(INSTALL) -d $(DOCROOT)
+		$(INSTALL) -m 644 hdoc/* $(DOCROOT)
+		$(INSTALL) -m 644 doc/batteries/*.idex doc/batteries/*.help $(DOCROOT)
 
 test: testsuite/main.opt testsuite/main.run
 	testsuite/main.opt && testsuite/main.run
 
-release: :exists: ocaml-batteries-$(VERSION).tar.gz
+release: test :exists: ocaml-batteries-$(VERSION).tar.gz
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD | gzip > batteries-$(VERSION).tar.gz
 
 
