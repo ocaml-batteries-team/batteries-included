@@ -1,0 +1,30 @@
+*** FAQ for Batteries Included ***
+
+*** General ***
+
+**** What is OCaml Batteries ****
+
+OCaml Batteries Included: a community-maintained foundation library for your OCaml projecs.
+
+
+**** What is it good for ****
+
+Batteries Included serves the following purposes:
+* define a standard set of libraries which may be
+  expected on every compliant installation of OCaml
+* organize these libraries into a hierarchy of modules,
+  with one source of documentation
+* provide a consistent API for otherwise independent
+  libraries.
+
+*** Installation ***
+
+**** Errors ****
+
+ERROR: omake: Symbol `FamErrlist' has different size in shared object, consider re-linking
+
+If you get this error when you try to run "omake all" on a Ubuntu based OS, try to run the following command:
+
+	sudo apt-get install libfam0
+
+
