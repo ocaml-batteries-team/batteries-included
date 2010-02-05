@@ -35,7 +35,7 @@ let singleton x = Leaf [|x|]
 
 
 
-module STRING = BatArray
+module STRING = struct include Array include BatArray end
 
 (* 48 limits max rope size to 236.10^9 elements on 64 bit,
  * ~ 734.10^6 on 32bit (length fields overflow after that) *)
