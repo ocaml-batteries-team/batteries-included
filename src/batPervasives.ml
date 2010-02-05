@@ -64,7 +64,7 @@ open Pervasives
     BatIO.input_channel ~cleanup:true (open_in_gen mode perm filename)
 
   let input_char        = BatIO.read
-  let input_line        = BatIO.read_line
+  let input_line ic     = try BatIO.read_line ic with BatIO.No_more_input -> raise End_of_file
   let input             = BatIO.input
   let really_input inp buf pos len = 
     ignore (BatIO.really_input inp buf pos len)
