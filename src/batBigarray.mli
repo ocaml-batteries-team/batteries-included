@@ -836,7 +836,7 @@ module Array3 :
        and builds a {!Bigarray.Array3.t} with the results returned by [f]. *)
  
    val mapijk :
-     (int -> int -> 'a -> 'b) ->
+     (int -> int -> int -> 'a -> 'b) ->
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
    (** Same as {!Bigarray.Array3.map}, but the
        function is applied to the index of the element as the first three

@@ -266,7 +266,7 @@ open BatArray
       for i = 0 to b_dim1 - 1 do
         for j = 0 to b_dim2 - 1 do
           for k = 0 to b_dim3 - 1 do
-            b.{i, j, k} <- f i j a.{i, j, k}
+            b.{i, j, k} <- f i j k a.{i, j, k}
           done
         done
       done;
