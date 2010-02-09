@@ -4,7 +4,9 @@ description="Batteries Included, the stdlib of choice"
 requires(mt)="unix,num,bigarray,threads,str,findlib,camomile"
 archive(toploop)="batteries.cma,batteries_help.cmo"
 archive(byte)  ="batteries.cma"
+archive(byte,mt)  ="batteries.cma batteries-mt.cma"
 archive(native)="batteries.cmxa"
+archive(native,mt)="batteries.cmxa batteries-mt.cmxa"
 
 package "pa_string" (
         description = "pseudo-native Unicode strings (container)"
