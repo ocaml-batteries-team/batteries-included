@@ -1,7 +1,6 @@
 name="batteries"
 version="@VERSION@"
 description="Batteries Included, the stdlib of choice"
-requires="unix,num,bigarray,str,findlib,camomile"
 requires(mt)="unix,num,bigarray,threads,str,findlib,camomile"
 archive(toploop)="batteries.cma,batteries_help.cmo"
 archive(byte)  ="batteries.cma"
