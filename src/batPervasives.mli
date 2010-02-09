@@ -873,8 +873,9 @@ val lock: BatConcurrent.lock ref
 (**
    A lock used to synchronize internal operations.
 
-   By default, this is {!Concurrent.nolock}. However, if you're using a version
-   of Batteries compiled in threaded mode, this uses {!Mutex}. If you're attempting
-   to use Batteries with another concurrency model, set the lock appropriately.
+   By default, this is {!BatConcurrent.nolock}. However, if you're
+   using a version of Batteries compiled in threaded mode, this uses
+   {!BatMutex}. If you're attempting to use Batteries with another
+   concurrency model, set the lock appropriately.
 *)
 

@@ -997,19 +997,20 @@ val lock: BatConcurrent.lock ref
 (**
    A lock used to synchronize internal operations.
 
-   By default, this is {!Concurrent.nolock}. However, if you're using a version
-   of Batteries compiled in threaded mode, this uses {!Mutex}. If you're attempting
-   to use Batteries with another concurrency model, set the lock appropriately.
+   By default, this is {!BatConcurrent.nolock}. However, if you're
+   using a version of Batteries compiled in threaded mode, this uses
+   {!BatMutex}. If you're attempting to use Batteries with another
+   concurrency model, set the lock appropriately.
 *)
 
 val lock_factory: (unit -> BatConcurrent.lock) ref
-(**
-   A factory used to create locks. This is used transparently by {!synchronize_in}
-   and {!synchronize_out}.
+  (**
+     A factory used to create locks. This is used transparently by {!synchronize_in}
+     and {!synchronize_out}.
 
-   By default, this always returns {!Concurrent.nolock}. However, if you're using
-   a version of Batteries compiled in threaded mode, this uses {!Mutex}. 
-*)
+     By default, this always returns {!BatConcurrent.nolock}. However,
+     if you're using a version of Batteries compiled in threaded mode,
+     this uses {!BatMutex}.  *)
 
 val to_string : (string output -> 'a -> unit) -> 'a -> string
 
