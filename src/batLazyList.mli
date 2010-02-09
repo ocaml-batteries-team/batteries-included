@@ -43,6 +43,7 @@
 *)
 
 (** {6 Exceptions} *)
+
 exception Empty_list
   (** [Empty_list] is raised when an operation applied on an empty list
       is invalid. For instance, [hd nil] will raise [Empty_list]. *)
@@ -63,14 +64,17 @@ exception No_more_elements
    {b Note} The types are kept concrete so as to allow pattern-matching.
    However, it is generally easier to manipulate {!nil} and {!cons}.*)
 
-type 'a t = ('a node_t) Lazy.t (**The type of a lazy list.*)
-and 'a node_t = | Nil | Cons of 'a * 'a t
+type 'a t = ('a node_t) Lazy.t 
+(**The type of a lazy list.*)
+
+and 'a node_t = | Nil | Cons of 'a * 'a t 
 (**The type of an item in the list.*)
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 (** {6 Access } *)
+
 val nil : 'a t
 (**The empty list.*)
 
@@ -183,6 +187,7 @@ val fold_right : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
    evaluation of all the elements of the list. Not tail-recursive.*)
 
 (** {6 Finding}*)
+
 val mem : 'a -> 'a t -> bool
   (** [mem x l] determines if [x] is part of [l].
       Evaluates all the elements of [l] which appear
@@ -344,6 +349,7 @@ val split_nth : int -> 'a t -> 'a t * 'a t
   (** Obsolete. As [split_at]. *)
 
 (**{6 Dropping elements}*)
+
 val unique : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
   (** [unique cmp l] returns the list [l] without any duplicate element.
       Default comparator ( = ) is used if no comparison function specified. *)
