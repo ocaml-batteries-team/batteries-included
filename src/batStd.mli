@@ -163,6 +163,9 @@ val const : 'a -> (_ -> 'a)
 
       Therefore, [const x] is the function which always returns [x].*)
 
+val tap : ('a -> unit) -> 'a -> 'a
+  (** Apply the function to the given value, and return the value as the result *)
+
 (**
    {6 Results}
 *)

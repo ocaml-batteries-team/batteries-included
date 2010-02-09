@@ -723,6 +723,10 @@ val concat : 'a BatEnum.t BatEnum.t -> 'a BatEnum.t
   (** [concat e] returns an enumeration over all elements of all enumerations
       of [e]. *)
 
+val tap : ('a -> unit) -> 'a -> 'a
+  (** Apply the function to the given value, and return the value as the result *)
+
+
 val ( -- ) : int -> int -> int BatEnum.t
 (** Enumerate numbers.
 
