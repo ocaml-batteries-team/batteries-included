@@ -177,19 +177,14 @@
       external impl_of_t: 'a t -> 'a implementation = "%identity"
 
       let enum t =
-	let queue = Queue.create () in
-	let rec next () = 
-	  match 
-	    try  Some (Queue.pop queue) 
-	    with Queue.Empty -> None
-	  with None       -> raise BatEnum.No_more_elements
-	    |  Some Empty -> next ()
-	    | Some Node (l, key, data, r, _) -> 
-		Queue.push l queue;
-		Queue.push r queue;
-		(key, data)
-	in Queue.add (impl_of_t t) queue;
-	  BatEnum.from next
+	let rec loop e () = match e with
+	  | Empty -> BatEnum.empty ()
+	  | Node (l, k, v, r, _) ->
+	      BatEnum.flatten (BatList.enum [
+				 BatEnum.delay (loop l);
+				 BatEnum.singleton (k, v);
+				 BatEnum.delay (loop r)])
+	in loop (impl_of_t t) ()
 
       let keys    t = BatEnum.map fst (enum t)
       let values  t = BatEnum.map snd (enum t)
