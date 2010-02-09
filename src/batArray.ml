@@ -25,33 +25,8 @@ type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
 open Array
-  let init         = init
-  external unsafe_get : 'a t -> int -> 'a = "%array_unsafe_get"
-  external unsafe_set : 'a t -> int -> 'a -> unit = "%array_unsafe_set"
-  external length : 'a t -> int = "%array_length"
-  external get : 'a t -> int -> 'a = "%array_safe_get"
-  external set : 'a t -> int -> 'a -> unit = "%array_safe_set"
-  external make : int -> 'a -> 'a t = "caml_make_vect"
-  external create : int -> 'a -> 'a t = "caml_make_vect"
-  let make_matrix  = make_matrix
-  let create_matrix= create_matrix
-  let iter         = iter
-  let map          = map
-  let iteri        = iteri
-  let mapi         = mapi
-  let fold_left    = fold_left
-  let fold_right   = fold_right
-  let append       = append
-  let concat       = concat
-  let sub          = sub
-  let copy         = copy
-  let fill         = fill
-  let blit         = blit
-  let to_list      = to_list
-  let of_list      = of_list
-  let sort         = sort
-  let stable_sort  = stable_sort
-  let fast_sort    = fast_sort
+
+let map = map
 
 let fold_lefti f x a =
   let r = ref x in
