@@ -23,8 +23,13 @@ Batteries Included serves the following purposes:
 
 ERROR: omake: Symbol `FamErrlist' has different size in shared object, consider re-linking
 
-If you get this error when you try to run "omake all" on a Ubuntu based OS, try to run the following command:
+This error is caused when using Gamin rather than Fam; omake is
+probably linked against libfam.  libgamin is compatible and works; the
+error does not cause a problem and can be ignored?  Switching from
+Gamin to Fam can break things in some situations (e.g. AFS home
+directories).
+
+If you really want to get rid of the warning, on an Ubuntu based OS,
+run the following command:
 
 	sudo apt-get install libfam0
-
-
