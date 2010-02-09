@@ -33,7 +33,6 @@ OBJECTS[] =
     batList
     batMap
     batMarshal
-    batMutex
     batNativeint
     batNum
     batOo
@@ -81,7 +80,6 @@ OBJECTS[] =
     batRef
     batResult
     batReturn
-    batRMutex
     batRope
     batSeq
     batStd
@@ -96,7 +94,20 @@ OBJECTS[] =
     batteries_print
     batteries
 
+THREAD_OBJECTS[] =
+    batMutex
+    batRMutex
+    batteries_mt
+
+section
+    # turn on -thread for the threaded objects
+    OCAMLFLAGS += -thread
+    foreach(mod,$(THREAD_OBJECTS))
+        $(mod).cmo $(mod).cmi:
+        $(mod).cmx $(mod).o $(mod).cmi:
+
 OCamlLibrary(batteries, $(OBJECTS))
+OCamlLibrary(batteries-mt, $(THREAD_OBJECTS))
 
 batteries_config.ml: batteries_config.mlp
 	rm(-f batteries_config.ml)
@@ -108,4 +119,4 @@ batteries_config.ml: batteries_config.mlp
 
 BAT_FILES[] += $(file $(glob *.mli *.cmi *.cma *.cmxa *.a $(EXTRA)))
 
-all: batteries.cmxa batteries.cma $(EXTRA)
+all: batteries.cmxa batteries.cma batteries-mt.cmxa batteries-mt.cma $(EXTRA)

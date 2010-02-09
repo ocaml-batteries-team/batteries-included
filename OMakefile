@@ -6,12 +6,10 @@ OCAMLPACKS[] +=
     camomile
     num
     str
-    threads
 
 #zip_pack = $(shell ocamlfind list | grep "zip\ " | cut -d\  -f1)
 #OCAMLPACKS[] += $(zip_pack)
 
-OCAMLFLAGS += -thread
 OCAMLCFLAGS += -g
 
 OCAMLDEP_MODULES_ENABLED = false

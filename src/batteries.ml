@@ -130,8 +130,6 @@ module Rope = BatRope
 
 (* Threads *)
 module Concurrent = BatConcurrent
-module Mutex = BatMutex
-module RMutex = BatRMutex
 
 
 (* Batteries Specific *)
