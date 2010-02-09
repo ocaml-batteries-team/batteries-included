@@ -273,3 +273,5 @@
   module RopeMap    = Make(BatRope)
   module IRopeMap   = Make(BatRope.IRope)
   module IntMap     = Make(BatInt)
+
+  include BatPMap
