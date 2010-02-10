@@ -176,15 +176,40 @@
       external t_of_impl: 'a implementation -> 'a t = "%identity"
       external impl_of_t: 'a t -> 'a implementation = "%identity"
 
+      type 'a iter = E | C of key * 'a * 'a implementation * 'a iter
+
+      let rec cardinal = function
+          Empty -> 0
+        | Node(l, _, _, r, _) -> cardinal l + 1 + cardinal r
+
+      let rec cons_iter s t = match s with
+          Empty -> t
+        | Node (l, k, v, r, _) -> cons_iter l (C (k, v, r, t))
+
+      let rec rev_cons_iter s t = match s with
+          Empty -> t
+        | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
+
+      let rec enum_next l () = match !l with
+          E -> raise BatEnum.No_more_elements
+        | C (k, v, m, t) -> l := cons_iter m t; (k, v)
+
+      let rec enum_backwards_next l () = match !l with
+          E -> raise BatEnum.No_more_elements
+        | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
+
+      let rec enum_count l () =
+        let rec aux n = function
+            E -> n
+          | C (_, _, m, t) -> aux (n + 1 + cardinal m) t
+        in aux 0 !l
+
       let enum t =
-	let rec loop e () = match e with
-	  | Empty -> BatEnum.empty ()
-	  | Node (l, k, v, r, _) ->
-	      BatEnum.flatten (BatList.enum [
-				 BatEnum.delay (loop l);
-				 BatEnum.singleton (k, v);
-				 BatEnum.delay (loop r)])
-	in loop (impl_of_t t) ()
+        let rec make l =
+          let l = ref l in
+          let clone() = make !l in
+            BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
+        in make (cons_iter (impl_of_t t) E)
 
       let keys    t = BatEnum.map fst (enum t)
       let values  t = BatEnum.map snd (enum t)
