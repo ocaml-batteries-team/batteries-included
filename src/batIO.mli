@@ -674,7 +674,7 @@ val inherit_in:
 
       [inherit_in inp] will return an input identical to [inp].
       [inherit_in ~read inp] will return an input identical to
-      [inp] except for method [input], etc.
+      [inp] except for method [read], etc.
 
       You do not need to close [inp] in [close].
   *)
