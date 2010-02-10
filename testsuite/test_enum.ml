@@ -21,12 +21,17 @@ let bigarray3 = Array3.of_array char c_layout array3
 let utf8   = BatUTF8.of_string string
 let rope   = BatRope.of_ustring utf8
 
-module S = BatSet.Make(struct
-                         type t = char
-                         let compare x y = Char.code x - Char.code y
-                       end)
+module C =
+struct
+  type t = char
+  let compare x y = Char.code x - Char.code y
+end
+
+module S = BatSet.Make(C)
+module M = BatMap.Make(C)
 
 let theset = List.fold_right S.add list S.empty
+let themap = List.fold_left (fun m c -> M.add c () m) M.empty list
 
 open BatArray
 let test_array_enums () =
@@ -58,6 +63,17 @@ let test_set_enums () =
     in
       aeq (of_enum (enum source)) (of_enum (backwards source));
       aeq source (of_enum (backwards source));
+
+open M
+let test_map_enums () =
+    let source = themap in
+    let aeq = assert_equal
+                ~cmp:(fun m1 m2 -> M.compare (fun _ _ -> 0) m1 m2 = 0)
+                ~printer:(BatPrintf.sprintf2 "%a"
+                            (print BatChar.print (fun io v -> ())))
+    in
+      aeq (of_enum (enum source)) (of_enum (backwards source));
+      aeq source (of_enum (backwards source))
 
 open BatRope
 let test_rope_enums () =
