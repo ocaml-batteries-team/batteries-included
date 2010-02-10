@@ -117,6 +117,6 @@ batteries_config.ml: batteries_config.mlp
 	    batteries_config.mlp > batteries_config.ml
 	chmod(444 batteries_config.ml)
 
-BAT_FILES[] += $(file $(glob *.mli *.cmi *.cma *.cmxa *.a $(EXTRA)))
+BAT_FILES[] += $(file $(glob *.mli *.cmi *.cmx *.cma *.cmxa *.a $(EXTRA)))
 
 all: batteries.cmxa batteries.cma batteries-mt.cmxa batteries-mt.cma $(EXTRA)
