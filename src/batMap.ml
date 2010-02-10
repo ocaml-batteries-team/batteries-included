@@ -130,6 +130,8 @@
     val enum  : 'a t -> (key * 'a) BatEnum.t
       (** Return an enumeration of (key, value) pairs of a map.*)
 
+    val backwards  : 'a t -> (key * 'a) BatEnum.t
+
     val of_enum: (key * 'a) BatEnum.t -> 'a t
       (** Create a map from a (key, value) enumeration. *)
 
@@ -210,6 +212,13 @@
           let clone() = make !l in
             BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
         in make (cons_iter (impl_of_t t) E)
+
+      let backwards t =
+        let rec make l =
+          let l = ref l in
+          let clone() = make !l in
+            BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
+        in make (rev_cons_iter (impl_of_t t) E)
 
       let keys    t = BatEnum.map fst (enum t)
       let values  t = BatEnum.map snd (enum t)
