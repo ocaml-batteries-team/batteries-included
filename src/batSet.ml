@@ -211,23 +211,6 @@ module type S =
     external impl_of_t : t -> implementation = "%identity"
     external t_of_impl : implementation -> t = "%identity"
 
-(*    let enum t =
-      let queue = Queue.create () in
-      let rec next () = 
-	let item =
-	  try Queue.pop queue
-	  with Queue.Empty ->
-	    raise BatEnum.No_more_elements
-	in
-	match item with
-	  | Empty -> next ()
-	  | Node (l, e, r, _) ->
-	      Queue.push l queue;
-	      Queue.push r queue;
-	      e
-      in Queue.add (impl_of_t t) queue;
-	BatEnum.from next*)
-
     open Printf
     (* s1 in s2 -> -1, s2 in s1 -> 1, neither a subset -> min_int, eq -> 0 *)
     let rec compare_subset s1 s2 =
