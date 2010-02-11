@@ -141,7 +141,16 @@ module type S =
 *)
 
     val enum  : 'a t -> (key * 'a) BatEnum.t
-      (** Return an enumeration of (key, value) pairs of a map.*)
+      (** Return an enumeration of (key, value) pairs of a map.
+        The returned enumeration is sorted in increasing order with respect
+        to the ordering [Ord.compare], where [Ord] is the argument given to
+        {!Map.Make}. *)
+
+    val backwards  : 'a t -> (key * 'a) BatEnum.t
+      (** Return an enumeration of (key, value) pairs of a map.
+        The returned enumeration is sorted in decreasing order with respect
+        to the ordering [Ord.compare], where [Ord] is the argument given to
+        {!Map.Make}. *)
 
     val of_enum: (key * 'a) BatEnum.t -> 'a t
       (** Create a map from a (key, value) enumeration. *)
