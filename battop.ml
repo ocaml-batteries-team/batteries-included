@@ -40,7 +40,7 @@ let ext_syntax = true;;
 (* MUST BE ALREADY HANDLED BY .ocamlinit
 #use "topfind";; 
 *)
-#thread;;
+(* #thread;; *)
 #require "batteries";;
 
 
