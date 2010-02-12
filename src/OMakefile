@@ -107,7 +107,7 @@ section
         $(mod).cmx $(mod).o $(mod).cmi:
 
 OCamlLibrary(batteries, $(OBJECTS))
-OCamlLibrary(batteries-mt, $(THREAD_OBJECTS))
+OCamlLibrary(batteries_mt, $(THREAD_OBJECTS))
 
 batteries_config.ml: batteries_config.mlp
 	rm(-f batteries_config.ml)
@@ -119,4 +119,4 @@ batteries_config.ml: batteries_config.mlp
 
 BAT_FILES[] += $(file $(glob *.mli *.cmi *.cmx *.cma *.cmxa *.a $(EXTRA)))
 
-all: batteries.cmxa batteries.cma batteries-mt.cmxa batteries-mt.cma $(EXTRA)
+all: batteries.cmxa batteries.cma batteries_mt.cmxa batteries_mt.cma $(EXTRA)
