@@ -200,15 +200,17 @@ let read_i16 i =
 	else
 		n
 
+let fix = lnot 0x7FFFFFFF (* -:) *)
+
 let read_i32 ch =
 	let ch4 = read_byte ch in
 	let ch3 = read_byte ch in
 	let ch2 = read_byte ch in
 	let ch1 = read_byte ch in
-	if ch4 land 128 <> 0 then begin
+	if ch4 land 128 <> 0 then begin (* negative number *)
 		if ch4 land 64 = 0 then raise (Overflow "read_i32");
-		ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor ((ch4 land 127) lsl 24)
-	end else begin
+		(ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor ((ch4 land 127) lsl 24)) lor fix (* FIX HERE *)
+	end else begin (*positive number*)
 		if ch4 land 64 <> 0 then raise (Overflow "read_i32");
 		ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor (ch4 lsl 24)
 	end
