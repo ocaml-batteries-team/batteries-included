@@ -1,5 +1,5 @@
 BYTE_ENABLED   = true
-#NATIVE_ENABLED = false # true only if ocamlopt exists
+NATIVE_ENABLED = $(getenv BATTERIES_NATIVE, true)
 
 USE_OCAMLFIND = true
 OCAMLPACKS[] +=
@@ -14,13 +14,17 @@ OCAMLCFLAGS += -g
 
 OCAMLDEP_MODULES_ENABLED = false
 OCAMLROOT = $(shell ocamlfind printconf destdir)
-DOCROOT = /usr/share/doc/ocaml-batteries/
+DOCROOT = $(getenv BATTERIES_DOCROOT,/usr/share/doc/ocaml-batteries/)
 BROWSER_COMMAND = x-www-browser %s
 
 NAME = batteries
 VERSION = 1.1.0
 
 LIBSDIR = $(ROOT)/libs
+DESTOPT = 
+if $(defined-env DESTDIR)
+    DESTOPT += -destdir $(getenv DESTDIR)
+    export DESTOPT
 
 .PHONY: doc uninstall install all clean test reinstall install-doc release
 .DEFAULT: all
@@ -53,7 +57,7 @@ uninstall:
 	  rm -rf $(DOCROOT)
 
 install: all build/META
-	$(OCAMLFIND) install $(NAME) build/META $(BAT_FILES)
+	$(OCAMLFIND) install $(DESTOPT) $(NAME) build/META $(BAT_FILES)
 
 doc: src/batteries.cma
 	if $(not $(test -e hdoc/index.html))
