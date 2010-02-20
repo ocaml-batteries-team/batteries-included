@@ -121,5 +121,6 @@ batteries_config.ml: batteries_config.mlp
 BAT_FILES[] += $(file $(glob *.mli *.cmi *.cma $(EXTRA) *.a))
 if $(NATIVE_ENABLED)
 	BAT_FILES[] += $(file $(glob *.cmx *.cmxa))
+	export BAT_FILES
 
 all: batteries.cma batteries_mt.cma $(if $(NATIVE_ENABLED), batteries.cmxa batteries_mt.cmxa) $(EXTRA)
