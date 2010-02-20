@@ -100,12 +100,12 @@ THREAD_OBJECTS[] =
     batteries_mt
 
 section
-    # turn on -thread for the threaded objects
-    OCAMLFLAGS += -thread
-    foreach(mod,$(THREAD_OBJECTS))
-        $(mod).cmo $(mod).cmi:
-	if $(NATIVE_ENABLED)
-	        $(mod).cmx $(mod).o $(mod).cmi:
+	# turn on -thread for the threaded objects
+	OCAMLFLAGS += -thread
+	foreach(mod,$(THREAD_OBJECTS))
+		$(mod).cmo $(mod).cmi:
+		if $(NATIVE_ENABLED)
+			$(mod).cmx $(mod).o $(mod).cmi:
 
 OCamlLibrary(batteries, $(OBJECTS))
 OCamlLibrary(batteries_mt, $(THREAD_OBJECTS))
