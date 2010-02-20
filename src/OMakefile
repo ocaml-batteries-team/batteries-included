@@ -92,12 +92,12 @@ OBJECTS[] =
     batIMap
     batteries_config
     batteries_print
-    batteries
+    batteries_uni
 
 THREAD_OBJECTS[] =
     batMutex
     batRMutex
-    batteries_mt
+    batteries
 
 section
 	# turn on -thread for the threaded objects
@@ -107,8 +107,8 @@ section
 		if $(NATIVE_ENABLED)
 			$(mod).cmx $(mod).o $(mod).cmi:
 
-OCamlLibrary(batteries, $(OBJECTS))
-OCamlLibrary(batteries_mt, $(THREAD_OBJECTS))
+OCamlLibrary(batteries_uni, $(OBJECTS))
+OCamlLibrary(batteries, $(THREAD_OBJECTS))
 
 batteries_config.ml: batteries_config.mlp
 	rm(-f batteries_config.ml)
@@ -123,4 +123,5 @@ if $(NATIVE_ENABLED)
 	BAT_FILES[] += $(file $(glob *.cmx *.cmxa))
 	export BAT_FILES
 
-all: batteries.cma batteries_mt.cma $(if $(NATIVE_ENABLED), batteries.cmxa batteries_mt.cmxa) $(EXTRA)
+all: batteries.cma batteries_uni.cma $(if $(NATIVE_ENABLED), batteries.cmxa batteries_uni.cmxa) $(EXTRA)
+
