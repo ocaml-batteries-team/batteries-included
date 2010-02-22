@@ -95,6 +95,7 @@ OBJECTS[] =
     batteries_uni
 
 THREAD_OBJECTS[] =
+    batConcurrent
     batMutex
     batRMutex
     batteries
@@ -108,7 +109,7 @@ section
 			$(mod).cmx $(mod).o $(mod).cmi:
 
 OCamlLibrary(batteries_uni, $(OBJECTS))
-OCamlLibrary(batteries, $(THREAD_OBJECTS))
+OCamlLibrary(batteries, $(OBJECTS) $(THREAD_OBJECTS))
 
 batteries_config.ml: batteries_config.mlp
 	rm(-f batteries_config.ml)
