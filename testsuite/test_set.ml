@@ -1,4 +1,4 @@
-open Batteries
+open Batteries_uni
 open OUnit
 
 module IS = Set.IntSet

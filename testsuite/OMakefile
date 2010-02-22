@@ -1,8 +1,7 @@
 
 OCAMLPACKS[] += oUnit
 
-OCAMLFLAGS += -thread
-OCAML_LIBS += $(ROOT)/src/batteries
+OCAML_LIBS += $(ROOT)/src/batteries_uni
 OCAMLINCLUDES += $(ROOT)/src
 
 TESTS[] = 
