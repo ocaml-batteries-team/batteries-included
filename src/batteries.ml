@@ -1,4 +1,4 @@
-include Batteries_uni
+include Batteries_uni (* the meat of this module is in batteries_uni.mli *)
 module Mutex = BatMutex;;
 module RMutex = BatRMutex;;
 
