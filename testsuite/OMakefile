@@ -1,6 +1,7 @@
 
 OCAMLPACKS[] += oUnit
 
+OCAMLFLAGS += -thread
 OCAML_LIBS += $(ROOT)/src/batteries
 OCAMLINCLUDES += $(ROOT)/src
 
