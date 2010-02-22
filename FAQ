@@ -37,3 +37,33 @@ run the following command:
 
 Note that FAM misbehaves in certain environments, notably AFS-based
 systems.
+
+
+*** Using Batteries ***
+
+In your source code, add [open Batteries] for the multithreaded
+batteries library.  If you want to build without threads, use [open
+Batteries_uni] instead.  When you've done this, you'll have access to
+the batteries modules that extend stdlib modules as part of the stdlib
+modules.  To access the original stdlib modules, use [Legacy.List],
+for example.  Other [BatFoo] modules provided by batteries are
+available as simply [Foo].
+
+**** Compiling with Ocamlbuild ****
+
+Copy doc/batteries/myocamlbuild.ml into your source directory, and use:
+
+    <*>: pkg_batteries, pkg_threads
+
+in your _tags file to enable batteries for all modules.
+
+**** Bare Findlib ****
+
+ocamlfind compile -thread -package batteries foo.ml -linkpkg
+
+**** OMake ****
+
+Add the following to your OMakefile:
+
+OCAMLPACKS[] += batteries
+OCAMLFLAGS += -thread
