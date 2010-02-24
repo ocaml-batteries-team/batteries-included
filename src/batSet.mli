@@ -29,20 +29,22 @@
     set, for instance.
 
     {b Note} OCaml, Batteries Included, provides two implementations
-    of sets: polymorphic sets (module {!PSet}) and functorized sets
-    (this module). Module {!Set} offers a more complex and slightly
-    poorer set of features but stronger type-safety. Module {!PSet} is
-    easier to use and has a few more powerful features but makes it
-    easier to shoot yourself in the foot. In case of doubt, use
-    {!Set}.
+    of sets: polymorphic sets and functorized sets. Functorized sets
+    (see {!S} and {!Make}) offer a more complex and slightly poorer
+    set of features but stronger type-safety. Polymorphic sets are
+    easier to use and have a few more powerful features but make it
+    easier to shoot yourself in the foot. In case of doubt,
+    functorized sets.
 
-    This module is built upon Stdlib's
+    The functorized set implementation is built upon Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Set.html}Set}
     module, but provides the complete interface.
 
     @author Xavier Leroy (Base module)
     @author David Teller
 *)
+
+(** {4 Functorized Sets} *)
 
 module type OrderedType = BatInterfaces.OrderedType
 (** Input signature of the functor {!Set.Make}. *)
@@ -281,24 +283,7 @@ module Make (Ord : OrderedType) : S with type elt = Ord.t
  *)
 
 (**
-   Polymorphic sets of elements.
-
-   This module defines a type of sets, a functional representation of
-   sets of elements. The base operations are adding an element to a
-   set or removing an element from a set. This implementation is
-   functional insofar as the act of adding or substracting an element
-   to/from a set does not modify the existing set, rather producing a
-   new set.  The implementation uses balanced binary trees, and is
-   therefore reasonably efficient: insertion and membership take time
-   logarithmic in the size of the set, for instance.
-
-   {b Note} OCaml, Batteries Included, provides two implementations of
-   sets: polymorphic sets (this module) and functorized sets (module
-   {!Set}). Module {!Set} offers a more complex and slightly poorer
-   set of features but stronger type-safety. Module {!PSet} is easier
-   to use and has a few more powerful features but makes it easier to
-   shoot yourself in the foot. In case of doubt, use {!Set}.
-
+   {4 Polymorphic sets}
 
    @author Xavier Leroy
    @author Nicolas Cannasse
