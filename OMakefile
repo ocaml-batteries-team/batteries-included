@@ -59,10 +59,12 @@ uninstall:
 install: all build/META
 	$(OCAMLFIND) install $(DESTOPT) $(NAME) build/META $(BAT_FILES)
 
-doc: src/batteries.cma
-	if $(not $(test -e hdoc/index.html))
-	  $(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
-	  -sort -html -d hdoc -I src src/*.mli
+MLIS = $(glob src/*.mli)
+hdoc/index.html: $(MLIS) $(replacesuffixes .mli,.cmi,$(MLIS))
+	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
+		-sort -html -d hdoc -I src src/*.mli
+
+doc: hdoc/index.html
 
 install-doc: doc
 	if $(equal $(OSTYPE), Win32)
