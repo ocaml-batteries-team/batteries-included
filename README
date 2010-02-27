@@ -56,6 +56,15 @@ file to ~/.ocamlinit:
 If you already have findlib in your ~/.ocamlinit, you only need the
 last line in our ocamlinit to load batteries.
 
+*** Backwards-incompatible Changes ***
+
+**** Changes from v1.x to v2.x
+
+* Batteries_uni and Batteries have been renamed to Batteries and
+  Batteries_mt, respectively.
+* BatLogger has been changed to use BatIO.output rather than legacy
+  output channels.
+
 *** ExtLib Compatibility ***
 
 If your project currently uses ExtLib, most likely you can just change
