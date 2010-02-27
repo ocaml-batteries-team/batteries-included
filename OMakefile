@@ -64,7 +64,12 @@ hdoc/index.html: $(MLIS) $(replacesuffixes .mli,.cmi,$(MLIS))
 	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
 		-sort -html -d hdoc -I src src/*.mli
 
-doc: hdoc/index.html
+man/BatStd.3o:
+	mkdir man
+	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
+		-sort -man -d man -I src src/*.mli
+
+doc: hdoc/index.html man/BatStd.3o
 
 install-doc: doc
 	if $(equal $(OSTYPE), Win32)
