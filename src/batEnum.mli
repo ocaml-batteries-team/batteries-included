@@ -469,7 +469,7 @@ val ( -- ) : int -> int -> int t
 val ( --^ ) : int -> int -> int t
 (** As [(--)] but without the right endpoint
 
-    [5 -- 10] is the enumeration 5,6,7,8,9.
+    [5 --^ 10] is the enumeration 5,6,7,8,9.
 *)
 
 val ( --. ) : (float * float) -> float -> float t

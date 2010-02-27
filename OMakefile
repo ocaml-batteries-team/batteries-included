@@ -1,5 +1,5 @@
 BYTE_ENABLED   = true
-NATIVE_ENABLED = true
+NATIVE_ENABLED = $(getenv BATTERIES_NATIVE, true)
 
 USE_OCAMLFIND = true
 OCAMLPACKS[] +=
@@ -14,13 +14,17 @@ OCAMLCFLAGS += -g
 
 OCAMLDEP_MODULES_ENABLED = false
 OCAMLROOT = $(shell ocamlfind printconf destdir)
-DOCROOT = /usr/share/doc/ocaml-batteries/
+DOCROOT = $(getenv BATTERIES_DOCROOT,/usr/share/doc/ocaml-batteries/)
 BROWSER_COMMAND = x-www-browser %s
 
 NAME = batteries
-VERSION = 1.0.1
+VERSION = 1.1.0pre2
 
 LIBSDIR = $(ROOT)/libs
+DESTOPT = 
+if $(defined-env DESTDIR)
+    DESTOPT += -destdir $(getenv DESTDIR)
+    export DESTOPT
 
 .PHONY: doc uninstall install all clean test reinstall install-doc release
 .DEFAULT: all
@@ -53,12 +57,19 @@ uninstall:
 	  rm -rf $(DOCROOT)
 
 install: all build/META
-	$(OCAMLFIND) install $(NAME) build/META $(BAT_FILES)
+	$(OCAMLFIND) install $(DESTOPT) $(NAME) build/META $(BAT_FILES)
 
-doc: src/batteries.cma
-	if $(not $(test -e hdoc/index.html))
-	  $(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
-	  -sort -html -d hdoc -I src src/*.mli
+MLIS = $(glob src/*.mli)
+hdoc/index.html: $(MLIS) $(replacesuffixes .mli,.cmi,$(MLIS))
+	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
+		-sort -html -d hdoc -I src src/*.mli
+
+man/BatStd.3o:
+	mkdir man
+	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
+		-sort -man -d man -I src src/*.mli
+
+doc: hdoc/index.html man/BatStd.3o
 
 install-doc: doc
 	if $(equal $(OSTYPE), Win32)
@@ -69,8 +80,8 @@ install-doc: doc
 		$(INSTALL) -m 644 hdoc/* $(DOCROOT)
 		$(INSTALL) -m 644 doc/batteries/*.idex doc/batteries/*.help $(DOCROOT)
 
-test: testsuite/main.opt testsuite/main.run
-	testsuite/main.opt && testsuite/main.run
+test: $(if $(NATIVE_ENABLED), testsuite/main.opt) testsuite/main.run
+	$(if $(NATIVE_ENABLED), testsuite/main.opt &&) testsuite/main.run
 
 release: test :exists: ocaml-batteries-$(VERSION).tar.gz
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD | gzip > batteries-$(VERSION).tar.gz

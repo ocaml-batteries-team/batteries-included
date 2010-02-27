@@ -36,6 +36,9 @@
 
 open Hashtbl
 
+type ('a, 'b) t = ('a, 'b) Hashtbl.t
+(** A Hashtable wth keys of type 'a and values 'b *)
+
 (**{6 Base operations}*)
 
 val create : int -> ('a, 'b) t

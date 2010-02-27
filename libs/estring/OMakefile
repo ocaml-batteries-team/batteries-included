@@ -9,7 +9,7 @@ META: VERSION META.in
 FILES[] = pa_estring.cmi pa_estring.cmo pa_estring_top.cmo
 
 install: $(FILES) META
-	$(OCAMLFIND) install estring META *.mli *.cmi *.cmo
+	$(OCAMLFIND) install $(DESTOPT) estring META *.mli *.cmi *.cmo
 
 uninstall:
 	$(OCAMLFIND) remove estring

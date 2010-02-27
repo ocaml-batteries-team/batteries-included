@@ -55,7 +55,7 @@ module Digest = struct include Digest include BatDigest end
 (* Filename *)
 module Format = struct include Format include BatFormat end
 module Gc = struct include Gc include BatGc end
-module Genlex = struct include Gc include BatGc end
+module Genlex = struct include Genlex include BatGenlex end
 module Hashtbl = BatHashtbl
 module Int32 = BatInt32
 module Int64 = BatInt64
