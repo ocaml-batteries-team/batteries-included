@@ -98,6 +98,7 @@ val exe  : string
 
 
 (** {6 Operators}*)
+
 val ( |> ) : 'a -> ('a -> 'b) -> 'b
 (** Function application. [x |> f] is equivalent to [f x]. 
 
