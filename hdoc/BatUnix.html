@@ -117,8 +117,8 @@
 
     This module only provides low-level functions and types. Unless you
     know that you need low-level access to the operating system, you
-    probably don't. For higher-level functions, see modules <code class="code">Shell</code>,
-    <a href="BatIO.html"><code class="code">BatIO</code></a>, <code class="code">File</code>.
+    probably don't. For higher-level functions, see modules <code class="code">BatShell</code>,
+    <a href="BatIO.html"><code class="code">BatIO</code></a>, <a href="BatFile.html"><code class="code">BatFile</code></a>.
 <p>
 
     <b>Note</b> This module is thread-safe.<br>
@@ -130,8 +130,8 @@ Low-level interface to the operating system (both Unix and Windows).
 
     This module only provides low-level functions and types. Unless you
     know that you need low-level access to the operating system, you
-    probably don't. For higher-level functions, see modules <code class="code">Shell</code>,
-    <a href="BatIO.html"><code class="code">BatIO</code></a>, <code class="code">File</code>.
+    probably don't. For higher-level functions, see modules <code class="code">BatShell</code>,
+    <a href="BatIO.html"><code class="code">BatIO</code></a>, <a href="BatFile.html"><code class="code">BatFile</code></a>.
 <p>
 
     <b>Note</b> This module is thread-safe.<br>
@@ -328,9 +328,10 @@ Establish a server on the given address.
 A lock used to synchronize internal operations.
 <p>
 
-   By default, this is <code class="code">Concurrent.nolock</code>. However, if you're using a version
-   of Batteries compiled in threaded mode, this uses <code class="code">Mutex</code>. If you're attempting
-   to use Batteries with another concurrency model, set the lock appropriately.<br>
+   By default, this is <a href="BatConcurrent.html#VALnolock"><code class="code">BatConcurrent.nolock</code></a>. However, if you're
+   using a version of Batteries compiled in threaded mode, this uses
+   <a href="BatMutex.html"><code class="code">BatMutex</code></a>. If you're attempting to use Batteries with another
+   concurrency model, set the lock appropriately.<br>
 </div>
 <br>
 <a name="6_Obsoletestuff"></a>

@@ -533,7 +533,9 @@ Read a null-terminated string.<br>
 Read up to n uchars from a UTF-8 encoded input<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALread_line"></a>read_line : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string</code></pre><div class="info">
-Read a LF or CRLF terminated string.<br>
+Read a LF or CRLF terminated string. If the source runs out of
+      input before a LF is found, returns a string of the remaining input.
+      Will raise <code class="code">No_more_input</code> only if no characters are available.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALread_uline"></a>read_uline : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> <a href="BatRope.html#TYPEt">BatRope.t</a></code></pre><div class="info">
 Read a line of UTF-8<br>
@@ -650,7 +652,7 @@ Simplified and optimized version of <a href="BatIO.html#VALwrap_in"><code class=
 
       <code class="code">inherit_in inp</code> will return an input identical to <code class="code">inp</code>.
       <code class="code">inherit_in ~read inp</code> will return an input identical to
-      <code class="code">inp</code> except for method <code class="code">input</code>, etc.
+      <code class="code">inp</code> except for method <code class="code">read</code>, etc.
 <p>
 
       You do not need to close <code class="code">inp</code> in <code class="code">close</code>.<br>
@@ -759,12 +761,13 @@ Create a channel that will read from an input.
 <h6>Generic BatIO Object Wrappers</h6>
 <p>
 
-    Theses OO Wrappers have been written to provide easy support of ExtLib
-    BatIO by external librairies. If you want your library to support ExtLib
-    BatIO without actually requiring ExtLib to compile, you can should implement
-    the classes <code class="code">in_channel</code>, <code class="code">out_channel</code>, <code class="code">poly_in_channel</code> and/or
-    <code class="code">poly_out_channel</code> which are the common BatIO specifications established
-    for ExtLib, OCamlNet and Camomile.
+    Theses OO Wrappers have been written to provide easy support of
+    BatIO by external librairies. If you want your library to support
+    BatIO without actually requiring Batteries to compile, you can
+    should implement the classes <code class="code">in_channel</code>, <code class="code">out_channel</code>,
+    <code class="code">poly_in_channel</code> and/or <code class="code">poly_out_channel</code> which are the common
+    BatIO specifications established for ExtLib, OCamlNet and
+    Camomile.
 <p>
 
     (see http://www.ocaml-programming.de/tmp/BatIO-Classes.html for more details).
@@ -915,16 +918,18 @@ The default size for internal buffers.<br>
 A lock used to synchronize internal operations.
 <p>
 
-   By default, this is <code class="code">Concurrent.nolock</code>. However, if you're using a version
-   of Batteries compiled in threaded mode, this uses <code class="code">Mutex</code>. If you're attempting
-   to use Batteries with another concurrency model, set the lock appropriately.<br>
+   By default, this is <a href="BatConcurrent.html#VALnolock"><code class="code">BatConcurrent.nolock</code></a>. However, if you're
+   using a version of Batteries compiled in threaded mode, this uses
+   <a href="BatMutex.html"><code class="code">BatMutex</code></a>. If you're attempting to use Batteries with another
+   concurrency model, set the lock appropriately.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALlock_factory"></a>lock_factory : <code class="type">(unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a>) Pervasives.ref</code></pre><div class="info">
 A factory used to create locks. This is used transparently by <a href="BatIO.html#VALsynchronize_in"><code class="code">BatIO.synchronize_in</code></a>
-   and <a href="BatIO.html#VALsynchronize_out"><code class="code">BatIO.synchronize_out</code></a>.
+     and <a href="BatIO.html#VALsynchronize_out"><code class="code">BatIO.synchronize_out</code></a>.
 <p>
 
-   By default, this always returns <code class="code">Concurrent.nolock</code>. However, if you're using
-   a version of Batteries compiled in threaded mode, this uses <code class="code">Mutex</code>.<br>
+     By default, this always returns <a href="BatConcurrent.html#VALnolock"><code class="code">BatConcurrent.nolock</code></a>. However,
+     if you're using a version of Batteries compiled in threaded mode,
+     this uses <a href="BatMutex.html"><code class="code">BatMutex</code></a>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALto_string"></a>to_string : <code class="type">(string <a href="BatIO.html#TYPEoutput">output</a> -> 'a -> unit) -> 'a -> string</code></pre></body></html>

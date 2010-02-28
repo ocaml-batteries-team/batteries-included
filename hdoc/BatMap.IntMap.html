@@ -210,7 +210,16 @@ Return an enumeration of al the values of a map.<br>
 return an implementation defined <code class="code">(key,value)</code> pair.  As <code class="code">Set.choose</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> (<a href="BatMap.S.html#TYPEkey">key</a> * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-Return an enumeration of (key, value) pairs of a map.<br>
+Return an enumeration of (key, value) pairs of a map.
+        The returned enumeration is sorted in increasing order with respect
+        to the ordering <code class="code">Ord.compare</code>, where <code class="code">Ord</code> is the argument given to
+        <code class="code">Map.Make</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALbackwards"></a>backwards : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> (<a href="BatMap.S.html#TYPEkey">key</a> * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Return an enumeration of (key, value) pairs of a map.
+        The returned enumeration is sorted in decreasing order with respect
+        to the ordering <code class="code">Ord.compare</code>, where <code class="code">Ord</code> is the argument given to
+        <code class="code">Map.Make</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">(<a href="BatMap.S.html#TYPEkey">key</a> * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info">
 Create a map from a (key, value) enumeration.<br>

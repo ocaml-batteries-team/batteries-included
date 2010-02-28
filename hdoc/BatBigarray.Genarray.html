@@ -351,7 +351,7 @@ Memory mapping of a file as a big array.
 <code class="code">iter f a</code> applies function <code class="code">f</code> in turn to all
 	the elements of <code class="code">a</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">((int, [ `Read ]) <a href="BatArray.Cap.html#TYPEt">BatArray.Cap.t</a> -> 'a -> unit) -><br>       ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">((int, [ `Read ]) BatArray.Cap.t -> 'a -> unit) -><br>       ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Same as <a href="BatBigarray.Genarray.html#VALiter"><code class="code">BatBigarray.Genarray.iter</code></a>, but the
        function is applied to the index of the coordinates as the first 
        argument, and the element itself as the second argument.<br>
@@ -364,7 +364,7 @@ Same as <a href="BatBigarray.Genarray.html#VALiter"><code class="code">BatBigarr
 <code class="code">map f a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
        and builds a <code class="code">Bigarray.t</code> with the results returned by <code class="code">f</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">((int, [ `Read ]) <a href="BatArray.Cap.html#TYPEt">BatArray.Cap.t</a> -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">((int, [ `Read ]) BatArray.Cap.t -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info">
 Same as <a href="BatBigarray.Genarray.html#VALmap"><code class="code">BatBigarray.Genarray.map</code></a>, but the
        function is applied to the index of the coordinates as the first 
        argument, and the element itself as the second argument.<br>

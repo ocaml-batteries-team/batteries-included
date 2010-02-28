@@ -138,7 +138,7 @@
     <a href="BatEnum.html#VALmap"><code class="code">BatEnum.map</code></a>).
 <p>
 
-    For instance, function <code class="code">ExtRandom.Random.enum_int</code> creates an
+    For instance, function <a href="BatRandom.html#VALenum_int"><code class="code">BatRandom.enum_int</code></a> creates an
     infinite enumeration of random numbers. Combined with <code class="code">//</code>
     and <a href="BatEnum.html#VALmap"><code class="code">BatEnum.map</code></a>, we may turn this into an infinite enumeration of
     squares of random even numbers:
@@ -435,7 +435,7 @@ This function creates a fully defined enumeration.
 <p>
 
     For some samples on how to correctly use <code class="code">make</code>, you can have a look
-    at implementation of <code class="code">ExtList.enum</code>.<br>
+    at implementation of <code class="code">BatList.enum</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfrom"></a>from : <code class="type">(unit -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">from next</code> creates an enumeration from the <code class="code">next</code> function.
@@ -570,7 +570,7 @@ As <code class="code">range</code>, without the label.
 As <code class="code">(--)</code> but without the right endpoint
 <p>
 
-    <code class="code">5 -- 10</code> is the enumeration 5,6,7,8,9.<br>
+    <code class="code">5 --^ 10</code> is the enumeration 5,6,7,8,9.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VAL(--.)"></a>(--.) : <code class="type">float * float -> float -> float <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">(a, step) --. b)</code> creates a float enumeration from <code class="code">a</code> to <code class="code">b</code> with an

@@ -219,7 +219,7 @@ Memory mapping of a file as a three-dimensional big array.
 <code class="code">Array3.map f a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
        and builds a <code class="code">Bigarray.Array3.t</code> with the results returned by <code class="code">f</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmapijk"></a>mapijk : <code class="type">(int -> int -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array3.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array3.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALmapijk"></a>mapijk : <code class="type">(int -> int -> int -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array3.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array3.html#TYPEt">t</a></code></pre><div class="info">
 Same as <code class="code">Bigarray.Array3.map</code>, but the
        function is applied to the index of the element as the first three
        arguments, and the element itself as the fourth argument.<br>

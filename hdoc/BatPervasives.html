@@ -137,13 +137,13 @@ The initially opened module.
 
     This module is automatically opened at the beginning of each compilation.
     All components of this module can therefore be referred by their short
-    name, without prefixing them by <code class="code">Standard</code>.<br>
+    name, without prefixing them by <code class="code">BatPervasives</code>.<br>
 <br>
 <a name="6_Stringoperations"></a>
 <h6>String operations</h6>
 <p>
 
-   More string operations are provided in module <code class="code">String</code>.<br>
+   More string operations are provided in module <a href="BatString.html"><code class="code">BatString</code></a>.<br>
 <pre><span class="keyword">val</span> <a name="VALuppercase"></a>uppercase : <code class="type">string -> string</code></pre><div class="info">
 Return a copy of the argument, with all lowercase letters
     translated to uppercase, including accented letters of the ISO
@@ -812,6 +812,9 @@ Filtering (pronounce this operator name "such that").
 <code class="code">concat e</code> returns an enumeration over all elements of all enumerations
       of <code class="code">e</code>.<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALtap"></a>tap : <code class="type">('a -> unit) -> 'a -> 'a</code></pre><div class="info">
+Apply the function to the given value, and return the value as the result<br>
+</div>
 <pre><span class="keyword">val</span> <a name="VAL(--)"></a>(--) : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Enumerate numbers.
 <p>
@@ -878,8 +881,9 @@ Print and consume the contents of an enumeration.<br>
 A lock used to synchronize internal operations.
 <p>
 
-   By default, this is <code class="code">Concurrent.nolock</code>. However, if you're using a version
-   of Batteries compiled in threaded mode, this uses <code class="code">Mutex</code>. If you're attempting
-   to use Batteries with another concurrency model, set the lock appropriately.<br>
+   By default, this is <a href="BatConcurrent.html#VALnolock"><code class="code">BatConcurrent.nolock</code></a>. However, if you're
+   using a version of Batteries compiled in threaded mode, this uses
+   <a href="BatMutex.html"><code class="code">BatMutex</code></a>. If you're attempting to use Batteries with another
+   concurrency model, set the lock appropriately.<br>
 </div>
 </body></html>

@@ -100,17 +100,12 @@
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
 <link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
 <link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
-<link title="Constructors" rel="Section" href="#6_Constructors">
-<link title="Iterators" rel="Section" href="#6_Iterators">
 <link title="Operations on two arrays" rel="Section" href="#6_Operationsontwoarrays">
 <link title="Predicates" rel="Section" href="#6_Predicates">
 <link title="Array transformations" rel="Section" href="#6_Arraytransformations">
 <link title="Conversions" rel="Section" href="#6_Conversions">
 <link title="Utilities" rel="Section" href="#6_Utilities">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
-<link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
-<link title="Override modules" rel="Section" href="#6_Overridemodules">
-<link title="Printing" rel="Subsection" href="#7_Printing">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>BatArray</title>
 </head>
@@ -125,7 +120,7 @@
 <p>
 
     The OCaml standard library provides a module of array functions.
-    This ExtArray module can be used to override the Array module or
+    This BatArray module can be used to override the Array module or
     as a standalone module. It provides some additional functions.<br>
 <hr width="100%">
 <br>
@@ -140,7 +135,7 @@ Array operations.
 <p>
 
     A variant of arrays, arrays with capabilities, is provided in
-    module <a href="BatArray.Cap.html"><code class="code">BatArray.Cap</code></a>. This notion of capabilities permit the transformation
+    module <code class="code">Cap</code>. This notion of capabilities permit the transformation
     of a mutable array into a read-only or a write-only arrays, without
     loss of speed and with the possibility of distributing different
     capabilities to different expressions.
@@ -160,98 +155,8 @@ The type of arrays.<br>
 <br>
 <a name="6_Baseoperations"></a>
 <h6>Base operations</h6><br>
-<pre><span class="keyword">val</span> <a name="VALlength"></a>length : <code class="type">'a array -> int</code></pre><div class="info">
-Return the length (number of elements) of the given array.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type">'a array -> int -> 'a</code></pre><div class="info">
-<code class="code">Array.get a n</code> returns the element number <code class="code">n</code> of array <code class="code">a</code>.
-	The first element has number 0.
-	The last element has number <code class="code">Array.length a - 1</code>.
-	You can also write <code class="code">a.(n)</code> instead of <code class="code">Array.get a n</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> <code class="code">"index out of bounds"</code>
-	if <code class="code">n</code> is outside the range 0 to <code class="code">(Array.length a - 1)</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALset"></a>set : <code class="type">'a array -> int -> 'a -> unit</code></pre><div class="info">
-<code class="code">Array.set a n x</code> modifies array <code class="code">a</code> in place, replacing
-	element number <code class="code">n</code> with <code class="code">x</code>.
-	You can also write <code class="code">a.(n) &lt;- x</code> instead of <code class="code">Array.set a n x</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> <code class="code">"index out of bounds"</code>
-	if <code class="code">n</code> is outside the range 0 to <code class="code">Array.length a - 1</code>.<br>
-</div>
-<br>
-<a name="6_Constructors"></a>
-<h6>Constructors</h6><br>
-<pre><span class="keyword">val</span> <a name="VALmake"></a>make : <code class="type">int -> 'a -> 'a array</code></pre><div class="info">
-<code class="code">Array.make n x</code> returns a fresh array of length <code class="code">n</code>,
-	initialized with <code class="code">x</code>.
-	All the elements of this new array are initially
-	physically equal to <code class="code">x</code> (in the sense of the <code class="code">==</code> predicate).
-	Consequently, if <code class="code">x</code> is mutable, it is shared among all elements
-	of the array, and modifying <code class="code">x</code> through one of the array entries
-	will modify all other entries at the same time.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; Sys.max_array_length</code>.
-	If the value of <code class="code">x</code> is a floating-point number, then the maximum
-	size is only <code class="code">Sys.max_array_length / 2</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">int -> 'a -> 'a array</code></pre><div class="info">
-<span class="warning">Deprecated.</span><code class="code">Array.create</code> is an alias for <code class="code">Array.make</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> (int -> 'a) -> 'a array</code></pre><div class="info">
-<code class="code">Array.init n f</code> returns a fresh array of length <code class="code">n</code>,
-	with element number <code class="code">i</code> initialized to the result of <code class="code">f i</code>.
-	In other terms, <code class="code">Array.init n f</code> tabulates the results of <code class="code">f</code>
-	applied to the integers <code class="code">0</code> to <code class="code">n-1</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; Sys.max_array_length</code>.
-	If the return type of <code class="code">f</code> is <code class="code">float</code>, then the maximum
-	size is only <code class="code">Sys.max_array_length / 2</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALmake_matrix"></a>make_matrix : <code class="type">int -> int -> 'a -> 'a array array</code></pre><div class="info">
-<code class="code">Array.make_matrix dimx dimy e</code> returns a two-dimensional array
-	(an array of arrays) with first dimension <code class="code">dimx</code> and
-	second dimension <code class="code">dimy</code>. All the elements of this new matrix
-	are initially physically equal to <code class="code">e</code>.
-	The element (<code class="code">x,y</code>) of a matrix <code class="code">m</code> is accessed
-	with the notation <code class="code">m.(x).(y)</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code">dimx</code> or <code class="code">dimy</code> is negative or
-	greater than <code class="code">Sys.max_array_length</code>.
-	If the value of <code class="code">e</code> is a floating-point number, then the maximum
-	size is only <code class="code">Sys.max_array_length / 2</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALcreate_matrix"></a>create_matrix : <code class="type">int -> int -> 'a -> 'a array array</code></pre><div class="info">
-<span class="warning">Deprecated.</span><code class="code">Array.create_matrix</code> is an alias for <code class="code">Array.make_matrix</code>.<br>
-</div>
-<br>
-<a name="6_Iterators"></a>
-<h6>Iterators</h6><br>
-<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">('a -> unit) -> 'a array -> unit</code></pre><div class="info">
-<code class="code">Array.iter f a</code> applies function <code class="code">f</code> in turn to all
-      the elements of <code class="code">a</code>.  It is equivalent to
-      <code class="code">f a.(0); f a.(1); ...; f a.(Array.length a - 1); ()</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a array -> 'b array</code></pre><div class="info">
-<code class="code">Array.map f a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
-      and builds an array with the results returned by <code class="code">f</code>:
-      <code class="code">[| f a.(0); f a.(1); ...; f a.(Array.length a - 1) |]</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">(int -> 'a -> unit) -> 'a array -> unit</code></pre><div class="info">
-Same as <code class="code">Array.iter</code>, but the
-	function is applied to the index of the element as first argument,
-	and the element itself as second argument.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">(int -> 'a -> 'b) -> 'a array -> 'b array</code></pre><div class="info">
-Same as <code class="code">Array.map</code>, but the
-	function is applied to the index of the element as first argument,
-	and the element itself as second argument.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfold_left"></a>fold_left : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b array -> 'a</code></pre><div class="info">
-<code class="code">Array.fold_left f x a</code> computes
-	<code class="code">f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)</code>,
-	where <code class="code">n</code> is the length of the array <code class="code">a</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfold_lefti"></a>fold_lefti : <code class="type">('a -> int -> 'b -> 'a) -> 'a -> 'b array -> 'a</code></pre><pre><span class="keyword">val</span> <a name="VALfold_right"></a>fold_right : <code class="type">('a -> 'b -> 'b) -> 'a array -> 'b -> 'b</code></pre><div class="info">
-<code class="code">Array.fold_right f a x</code> computes
-	<code class="code">f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))</code>,
-	where <code class="code">n</code> is the length of the array <code class="code">a</code>.<br>
+<pre><span class="keyword">val</span> <a name="VALfold_lefti"></a>fold_lefti : <code class="type">('a -> int -> 'b -> 'a) -> 'a -> 'b array -> 'a</code></pre><div class="info">
+As <code class="code">fold_left</code>, but with a counter<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALreduce"></a>reduce : <code class="type">('a -> 'a -> 'a) -> 'a array -> 'a</code></pre><div class="info">
 <code class="code">Array.reduce f a</code> is <code class="code">fold_left f a.(0) a.(1 .. n-1)</code>.<br>
@@ -356,41 +261,6 @@ Array reversal.<br>
 <pre><span class="keyword">val</span> <a name="VALrev_in_place"></a>rev_in_place : <code class="type">'a array -> unit</code></pre><div class="info">
 In-place array reversal.  The array argument is updated.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALappend"></a>append : <code class="type">'a array -> 'a array -> 'a array</code></pre><div class="info">
-<code class="code">Array.append v1 v2</code> returns a fresh array containing the
-	concatenation of the arrays <code class="code">v1</code> and <code class="code">v2</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALconcat"></a>concat : <code class="type">'a array list -> 'a array</code></pre><div class="info">
-Same as <code class="code">Array.append</code>, but concatenates a list of arrays.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALsub"></a>sub : <code class="type">'a array -> int -> int -> 'a array</code></pre><div class="info">
-<code class="code">Array.sub a start len</code> returns a fresh array of length <code class="code">len</code>,
-	containing the elements number <code class="code">start</code> to <code class="code">start + len - 1</code>
-	of array <code class="code">a</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> <code class="code">"Array.sub"</code> if <code class="code">start</code> and <code class="code">len</code> do not
-	designate a valid subarray of <code class="code">a</code>; that is, if
-	<code class="code">start &lt; 0</code>, or <code class="code">len &lt; 0</code>, or <code class="code">start + len &gt; Array.length a</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALcopy"></a>copy : <code class="type">'a array -> 'a array</code></pre><div class="info">
-<code class="code">Array.copy a</code> returns a copy of <code class="code">a</code>, that is, a fresh array
-	containing the same elements as <code class="code">a</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfill"></a>fill : <code class="type">'a array -> int -> int -> 'a -> unit</code></pre><div class="info">
-<code class="code">Array.fill a ofs len x</code> modifies the array <code class="code">a</code> in place,
-	storing <code class="code">x</code> in elements number <code class="code">ofs</code> to <code class="code">ofs + len - 1</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> <code class="code">"Array.fill"</code> if <code class="code">ofs</code> and <code class="code">len</code> do not
-	designate a valid subarray of <code class="code">a</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALblit"></a>blit : <code class="type">'a array -> int -> 'a array -> int -> int -> unit</code></pre><div class="info">
-<code class="code">Array.blit v1 o1 v2 o2 len</code> copies <code class="code">len</code> elements
-	from array <code class="code">v1</code>, starting at element number <code class="code">o1</code>, to array <code class="code">v2</code>,
-	starting at element number <code class="code">o2</code>. It works correctly even if
-	<code class="code">v1</code> and <code class="code">v2</code> are the same array, and the source and
-	destination chunks overlap.<br>
-<b>Raises</b> <code>Invalid_argument</code> <code class="code">"Array.blit"</code> if <code class="code">o1</code> and <code class="code">len</code> do not
-	designate a valid subarray of <code class="code">v1</code>, or if <code class="code">o2</code> and <code class="code">len</code> do not
-	designate a valid subarray of <code class="code">v2</code>.<br>
-</div>
 <br>
 <a name="6_Conversions"></a>
 <h6>Conversions</h6><br>
@@ -407,63 +277,12 @@ Returns an enumeration of the elements of an array, from last to first.<br>
 <pre><span class="keyword">val</span> <a name="VALof_backwards"></a>of_backwards : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a array</code></pre><div class="info">
 Build an array from an enumeration, going into reverse order.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_list"></a>to_list : <code class="type">'a array -> 'a list</code></pre><div class="info">
-<code class="code">Array.to_list a</code> returns the list of all the elements of <code class="code">a</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALof_list"></a>of_list : <code class="type">'a list -> 'a array</code></pre><div class="info">
-<code class="code">Array.of_list l</code> returns a fresh array containing the elements
-	of <code class="code">l</code>.<br>
-</div>
 <br>
 <a name="6_Utilities"></a>
 <h6>Utilities</h6><br>
 <pre><span class="keyword">val</span> <a name="VALmake_compare"></a>make_compare : <code class="type">('a -> 'a -> int) -> 'a array -> 'a array -> int</code></pre><div class="info">
 <code class="code">make_compare c</code> generates the lexicographical order on arrays
 	induced by <code class="code">c</code><br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALsort"></a>sort : <code class="type">('a -> 'a -> int) -> 'a array -> unit</code></pre><div class="info">
-Sort an array in increasing order according to a comparison
-    function.  The comparison function must return 0 if its arguments
-    compare as equal, a positive integer if the first is greater,
-    and a negative integer if the first is smaller (see below for a
-    complete specification).  For example, <code class="code">Pervasives.compare</code> is
-    a suitable comparison function, provided there are no floating-point
-    NaN values in the data.  After calling <code class="code">Array.sort</code>, the
-    array is sorted in place in increasing order.
-    <code class="code">Array.sort</code> is guaranteed to run in constant heap space
-    and (at most) logarithmic stack space.
-<p>
-
-    The current implementation uses Heap Sort.  It runs in constant
-    stack space.
-<p>
-
-    Specification of the comparison function:
-    Let <code class="code">a</code> be the array and <code class="code">cmp</code> the comparison function.  The following
-    must be true for all x, y, z in a :<ul>
-<li>  <code class="code">cmp x y</code> &gt; 0 if and only if <code class="code">cmp y x</code> &lt; 0</li>
-<li>  if <code class="code">cmp x y</code> &gt;= 0 and <code class="code">cmp y z</code> &gt;= 0 then <code class="code">cmp x z</code> &gt;= 0</li>
-</ul>
-
-    When <code class="code">Array.sort</code> returns, <code class="code">a</code> contains the same elements as before,
-    reordered in such a way that for all i and j valid indices of <code class="code">a</code> :<ul>
-<li>  <code class="code">cmp a.(i) a.(j)</code> &gt;= 0 if and only if i &gt;= j</li>
-</ul>
-<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALstable_sort"></a>stable_sort : <code class="type">('a -> 'a -> int) -> 'a array -> unit</code></pre><div class="info">
-Same as <code class="code">Array.sort</code>, but the sorting algorithm is stable (i.e.
-    elements that compare equal are kept in their original order) and
-    not guaranteed to run in constant heap space.
-<p>
-
-    The current implementation uses Merge Sort. It uses <code class="code">n/2</code>
-    words of heap space, where <code class="code">n</code> is the length of the array.
-    It is usually faster than the current implementation of <code class="code">Array.sort</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfast_sort"></a>fast_sort : <code class="type">('a -> 'a -> int) -> 'a array -> unit</code></pre><div class="info">
-Same as <code class="code">Array.sort</code> or <code class="code">Array.stable_sort</code>, whichever is faster
-      on typical input.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALdecorate_stable_sort"></a>decorate_stable_sort : <code class="type">('a -> 'b) -> 'a array -> 'a array</code></pre><div class="info">
 <code class="code">decorate_sort f a</code> returns a sorted copy of <code class="code">a</code> such that if <code class="code">f
@@ -488,29 +307,4 @@ Print the contents of an array<br>
 <pre><span class="keyword">val</span> <a name="VALsprint"></a>sprint : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -> 'b <a href="BatArray.html#TYPEt">t</a> -> string</code></pre><div class="info">
 Using a string printer, print an array to a string (as sprintf vs. printf)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatArray.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatArray.Cap.html">Cap</a>: <code class="code">sig</code> <a href="BatArray.Cap.html">..</a> <code class="code">end</code></pre><div class="info">
-Capabilities for arrays.
-</div>
-<br>
-<a name="6_Boilerplatecode"></a>
-<h6>Boilerplate code</h6><br>
-<br>
-<a name="7_Printing"></a>
-<div class="h7">Printing</div><br>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b <a href="BatArray.html#TYPEt">t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALsprint"></a>sprint : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -> 'b <a href="BatArray.html#TYPEt">t</a> -> string</code></pre><div class="info">
-Using a string printer, print an array to a string (as sprintf vs. printf)<br>
-</div>
-<br>
-<a name="6_Overridemodules"></a>
-<h6>Override modules</h6><br>
-<br>
-The following modules replace functions defined in <code class="code">Array</code> with functions
-   behaving slightly differently but having the same name. This is by design:
-   the functions meant to override the corresponding functions of <code class="code">Array</code>.<br>
-<pre><span class="keyword">module</span> <a href="BatArray.Exceptionless.html">Exceptionless</a>: <code class="code">sig</code> <a href="BatArray.Exceptionless.html">..</a> <code class="code">end</code></pre><div class="info">
-Operations on <code class="code">Array</code> without exceptions.
-</div>
-<pre><span class="keyword">module</span> <a href="BatArray.Labels.html">Labels</a>: <code class="code">sig</code> <a href="BatArray.Labels.html">..</a> <code class="code">end</code></pre><div class="info">
-Operations on <code class="code">Array</code> with labels.
-</div>
-</body></html>
+<pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatArray.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre></body></html>

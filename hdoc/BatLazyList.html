@@ -99,11 +99,15 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
 <link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title=" Type" rel="Section" href="#6_Type">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Exceptions" rel="Section" href="#6_Exceptions">
+<link title=" Type" rel="Section" href="#6_Type">
+<link title="Access " rel="Section" href="#6_Access">
 <link title="List creation" rel="Section" href="#6_Listcreation">
 <link title="Higher-order functions" rel="Section" href="#6_Higherorderfunctions">
+<link title="Finding" rel="Section" href="#6_Finding">
 <link title="Association lists" rel="Section" href="#6_Associationlists">
 <link title="Transformations" rel="Section" href="#6_Transformations">
+<link title="Dropping elements" rel="Section" href="#6_Droppingelements">
 <link title=" Conversions" rel="Section" href="#6_Conversions">
 <link title=" Predicates" rel="Section" href="#6_Predicates">
 <link title="Misc." rel="Section" href="#6_Misc">
@@ -146,11 +150,11 @@
      over OCaml's built-in <code class="code">Stream</code>.<br>
 <b>Author(s):</b> David Teller<br>
 <hr width="100%">
+<br>
+<a name="6_Exceptions"></a>
+<h6>Exceptions</h6><br>
 <pre><span class="keyword">exception</span> <a name="EXCEPTIONEmpty_list"></a>Empty_list</pre>
 <div class="info">
-<a name="6_Exceptions"></a>
-<h6>Exceptions</h6>
-<p>
 <code class="code">Empty_list</code> is raised when an operation applied on an empty list
       is invalid. For instance, <code class="code">hd nil</code> will raise <code class="code">Empty_list</code>.<br>
 </div>
@@ -199,10 +203,10 @@ The type of a lazy list.<br>
 
 <pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
 <pre><span class="keyword">include</span> <a href="BatInterfaces.Mappable.html">BatInterfaces.Mappable</a></pre>
-<pre><span class="keyword">val</span> <a name="VALnil"></a>nil : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
+<br>
 <a name="6_Access"></a>
-<h6>Access </h6>
-<p>
+<h6>Access </h6><br>
+<pre><span class="keyword">val</span> <a name="VALnil"></a>nil : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 The empty list.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALcons"></a>cons : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
@@ -312,10 +316,10 @@ Eager fold_right
    <code class="code">fold_right f a [^ b1; ...; bn ^]</code> is <code class="code">f ( f (... (f (f a bn) ...) b2) b1</code>. This causes
    evaluation of all the elements of the list. Not tail-recursive.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmem"></a>mem : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<br>
 <a name="6_Finding"></a>
-<h6>Finding</h6>
-<p>
+<h6>Finding</h6><br>
+<pre><span class="keyword">val</span> <a name="VALmem"></a>mem : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">mem x l</code> determines if <code class="code">x</code> is part of <code class="code">l</code>.
       Evaluates all the elements of <code class="code">l</code> which appear
       before <code class="code">x</code>.<br>
@@ -482,10 +486,10 @@ Lazy concatenation of a list of lazy lists<br>
 <pre><span class="keyword">val</span> <a name="VALsplit_nth"></a>split_nth : <code class="type">int -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a> * 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Obsolete. As <code class="code">split_at</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALunique"></a>unique : <code class="type">?cmp:('a -> 'a -> int) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
+<br>
 <a name="6_Droppingelements"></a>
-<h6>Dropping elements</h6>
-<p>
+<h6>Dropping elements</h6><br>
+<pre><span class="keyword">val</span> <a name="VALunique"></a>unique : <code class="type">?cmp:('a -> 'a -> int) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">unique cmp l</code> returns the list <code class="code">l</code> without any duplicate element.
       Default comparator ( = ) is used if no comparison function specified.<br>
 </div>

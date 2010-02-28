@@ -137,8 +137,8 @@
     uses bytes that are not printable characters. Therefore, input and
     output channels used in conjunction with <code class="code">Marshal.output</code> and
     <code class="code">Marshal.input</code> must be opened in binary mode, using e.g.
-    <code class="code">ExtPervasives.Pervasives.open_out_bin</code> or
-    <code class="code">ExtPervasives.Pervasives.open_in_bin</code>; channels opened in text
+    <a href="BatPervasives.html#VALopen_out_bin"><code class="code">BatPervasives.open_out_bin</code></a> or
+    <a href="BatPervasives.html#VALopen_in_bin"><code class="code">BatPervasives.open_in_bin</code></a>; channels opened in text
     mode will cause unmarshaling errors on platforms where text
     channels behave differently than binary channels, e.g. Windows.
 <p>

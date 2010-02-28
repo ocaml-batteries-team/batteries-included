@@ -127,7 +127,7 @@
 <p>
 
     The OCaml standard library provides a module for list functions.
-    This ExtList module can be used to override the List module or
+    This BatList module can be used to extend the List module or
     as a standalone module. It provides new functions and modify
     the behavior of some other ones (in particular all functions
     are now <b>tail-recursive</b>).
@@ -203,7 +203,7 @@ Similar to <code class="code">String.make</code>, <code class="code">make n x</c
 <pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> (int -> 'a) -> 'a list</code></pre><div class="info">
 Similar to <code class="code">Array.init</code>, <code class="code">init n f</code> returns the list containing
 	      the results of (f 0),(f 1).... (f (n-1)).
-	      Raise <code class="code">Invalid_arg "ExtList.init"</code> if n &lt; 0.<br>
+	      Raise <code class="code">Invalid_arg "BatList.init"</code> if n &lt; 0.<br>
 </div>
 <br>
 <a name="6_Iterators"></a>
