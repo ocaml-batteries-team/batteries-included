@@ -1,3 +1,14 @@
+This is Batteries Included version 0.9.2
+= Changes from beta 1
+== General
+* Reorganized all files, redoing the fundamental structure of batteries
+* Changed build system to OMake
+* Simplified documentation generation
+* Removed most dependencies (camlp4 optional, only needs camomile,findlib)
+
+
+
+
 This is the first beta release of Batteries Included.
 
 = Changes since alpha 3

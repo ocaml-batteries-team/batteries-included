@@ -1,44 +1,24 @@
 name="batteries"
 version="@VERSION@"
-description="Batteries Included, standard distribution of OCaml libraries"
-requires(mt) ="batteries_threads,threads"
-requires(-mt)="batteries_nothreads"
-archive(toploop)="batteries_print.cmo, batteries_help.cmo"
+description="Batteries Included, the stdlib of choice"
+requires="unix,num,bigarray,str,findlib,camomile"
+requires(mt)="unix,num,bigarray,threads,str,findlib,camomile"
+archive(toploop)="batteries_uni.cma batteries_help.cmo"
+archive(toploop,mt)="batteries.cma batteries_help.cmo"
+archive(byte,mt)  ="batteries.cma"
+archive(byte)  ="batteries_uni.cma"
+archive(native,mt)="batteries.cmxa"
+archive(native)="batteries_uni.cmxa"
 
-
-package "pa_openin" (
-	description = "Local opening/inclusion of modules (container)"
+package "pa_string" (
+        description = "pseudo-native Unicode strings (container)"
 	version     = "@VERSION@"
 	package "syntax" (
-		description = "Local opening/inclusion of modules (syntax extension)"
-		version                       = "@VERSION@"
-		requires                      = "camlp4"
-		requires(byte)                = "batteries"
-		archive(syntax, preprocessor, camlp4o) = "pa_openin.cmo"
-		archive(syntax, toploop, camlp4o)      = "pa_openin.cmo"
-		archive(syntax, preprocessor, camlp4r) = "pa_openin_r.cmo"
-		archive(syntax, toploop, camlp4r)      = "pa_openin_r.cmo"
-	)
-)
-
-package "pa_type_conv" (
-	description = "Support library for generating boilerplate code from type definitions (container)"
-	version     = "@VERSION@"
-	package "syntax" (
-		description = "Generating boilerplate code from type definitions (syntax extension)"
-		version                       = "@VERSION@"
-		requires                      = "type-conv.syntax"
-	)
-)
-
-package "pa_where" (
-	description = "'where' backward declarations (container)"
-	version     = "@VERSION@"
-	package "syntax" (
-		description = "'where' backward declarations (syntax extension)"
-		version                       = "0.4"
-		archive(syntax, preprocessor) = "pa_where.cmo"
-		archive(syntax, toploop)      = "pa_where.cmo"
+                requires="camlp4,estring"
+		description = "pseudo-native Unicode strings (syntax extension)"
+		version     = "@VERSION@"
+		archive(syntax, preprocessor) = "pa_strings.cma"
+		archive(syntax, toploop)      = "pa_strings.cma"
 	)
 )
 
@@ -46,6 +26,7 @@ package "pa_comprehension" (
 	description = "comprehension expressions (container)"
 	version     = "@VERSION@"
 	package "syntax" (
+                requires = "camlp4"
 		description = "comprehension expressions (syntax extension)"
 		version                       = "@VERSION@"
 		archive(syntax, preprocessor) = "pa_comprehension.cmo"
@@ -53,62 +34,15 @@ package "pa_comprehension" (
 	)
 )
 
-package "pa_batteries" (
-	description = "auto-opener for Batteries (container)"
-	version     = "@VERSION@"
-	package "syntax" (
-	    	description = "auto-opener for Batteries (syntax extension)"
-		version     = "@VERSION@"
-		archive(syntax, preprocessor) = "pa_batteries.cmo"
-		archive(syntax, toploop)      = "pa_batteries.cmo"
-	)
-)
-
-package "pa_strings" (
-	description = "pseudo-native Unicode strings (container)"
-	version     = "@VERSION@"
-	package "syntax" (
-		description = "pseudo-native Unicode strings (syntax extension)"
-		version     = "@VERSION@"
-		archive(syntax, preprocessor) = "pa_strings.cma"
-		archive(syntax, toploop)      = "Camlp4Top.cmo, pa_strings.cma"
-	)
-)
-
-#
-# Doesn't work, for some reason -- calling "sexplib.syntax" directly works, though.
-#
-package "sexplib" (
-	description = "Saving data to/loading data from a human-readable format (container)"
-	version     = "@VERSION@"
-	package "syntax" (
-		version     = "@VERSION@"
-		description = "Saving data to/loading data from a human-readable format (syntax extension)"
-		requires    = "sexplib.syntax"
-	)
-)
-
-
-
-package "bin_prot" (
-	description = "Saving data to/loading data from a compact binary protocol (container)"
-	version     = "@VERSION@"
-	package "syntax" (
-		version     = "@VERSION@"
-		description = "Saving data to/loading data from a compact binary protocol (syntax extension)"
-		requires    = "bin_prot.syntax"
-	)
-)
-
-
-
-#
-# Doesn't work, for some reason.
-# The feature is actually implemented in myocamlbuild.ml
-#
 package "syntax" (
-	version     = "@VERSION@"
-	description = "Standard syntax extensions to the OCaml language, full package (requires Camlp4 >= 3.10)"
-	requires    = "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax,batteries.pa_strings.syntax,batteries.pa_comprehension.syntax"
-	requires(boilerplate) = "type-conv.syntax,bin_prot.syntax"
+        version = "@VERSION@"
+        description = "Standard extensions to the OCaml language, full package"
+        # the direct approach (requiring the .syntax packages) doesn't work:
+        # you get "When using -syntax, the META variable 'preprocessor' must
+        # be set" even when we require camlp4 or set preprocessor here, so
+        # we use a brute-force approach
+        requires = "camlp4, estring"
+        requires(toploop) = "camlp4, estring, batteries"
+        archive(syntax, preprocessor) = "pa_strings.cma pa_comprehension.cmo"
+        archive(syntax, toploop)      = "pa_strings.cma pa_comprehension.cmo"
 )

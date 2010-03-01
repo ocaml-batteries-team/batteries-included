@@ -11,7 +11,7 @@ where let f name =
   if check_suffix name ".gz" then
     with_file_in  name                     (fun inp -> 
     with_file_out (chop_suffix name ".gz") (fun out -> 
-    GZip.with_in  inp                      (fun inp'->
+    Gzip.with_in  inp                      (fun inp'->
       copy inp' out;
       Sys.remove name)))
   else prerr_endline ("I don't know what to do with file "^name)

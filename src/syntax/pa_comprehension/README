@@ -1,13 +1,13 @@
   Syntax description :
    
-     The global form is "[? output | comp_item ; comp_item ; ... ]".
+     The global form is "[? output | comp_item ; comp_item ; ... ?]".
      A comp_item is either a guard (a boolean expression), or
      a generator of the form "<patt> <- <expr>" . Variables bound in
      the pattern can be used in the following comp_items, and in the
      output expression.
 
      Both the output and the generator expression can be optionally
-     prefixed with a module specifier : "[? Module : output | ... ]"
+     prefixed with a module specifier : "[? Module : output | ... ?]"
      and "patt <- Module : expr". In the output position, it specifies
      the data structure module (eg. List, Array...) used for the whole
      comprehension value. In the generator position, it specifies the
@@ -16,7 +16,7 @@
      the Enum module is choosed by default.
 
   Example Input :
-    [? Array : pow p k | p <- 2--100; prime p; k <- List : (seq 1 (p - 1)) ]
+    [? Array : pow p k | p <- 2--100; prime p; k <- List : (seq 1 (p - 1)) ?]
 
   Output :
     Array.of_enum

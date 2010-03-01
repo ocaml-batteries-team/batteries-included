@@ -1,0 +1,11 @@
+
+OCAMLPACKS[] = camlp4.lib
+OCAMLFLAGS += -pp camlp4rf
+OCAMLDEPFLAGS += -pp camlp4rf
+
+FILES[] = pa_comprehension.cmo
+
+all: $(FILES)
+
+BAT_FILES[] += $(file $(FILES))
+export BAT_FILES

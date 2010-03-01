@@ -64,6 +64,7 @@ struct
          flag ["ocaml"; "ocamldep"; "pkg_"^pkg] & S[A"-package"; A pkg];
          flag ["ocaml"; "doc";      "pkg_"^pkg] & S[A"-package"; A pkg];
          flag ["ocaml"; "link";     "pkg_"^pkg] & S[A"-package"; A pkg];
+         flag ["ocaml"; "infer_interface"; "pkg_"^pkg] & S[A"-package"; A pkg];
        end (find_packages ());
 
        (* Like -package but for extensions syntax. Morover -syntax is useless
@@ -72,6 +73,7 @@ struct
          flag ["ocaml"; "compile";  "syntax_"^syntax] & S[A"-syntax"; A syntax];
          flag ["ocaml"; "ocamldep"; "syntax_"^syntax] & S[A"-syntax"; A syntax];
          flag ["ocaml"; "doc";      "syntax_"^syntax] & S[A"-syntax"; A syntax];
+         flag ["ocaml"; "infer_interface"; "syntax_"^syntax] & S[A"-syntax"; A syntax];
        end (find_syntaxes ());
        
        (* The default "thread" tag is not compatible with ocamlfind.
@@ -85,6 +87,21 @@ struct
        flag ["ocaml"; "pkg_threads"; "compile"]  (S[A "-thread"]);
        flag ["ocaml"; "pkg_threads"; "link"]     (S[A "-thread"]);
 end
+
+(**
+   {1 Utilities}
+*)
+
+(**
+   Determine if a pathname must be compiled as threaded.
+
+   A pathname is considered as threaded if it has tag ["pkg_threads"].
+*)
+let is_threaded name =
+(*  Tags.print Format.std_formatter (tags_of_pathname name);*)
+  let result = Tags.does_match (tags_of_pathname name) (Tags.of_list ["pkg_threads"]) in
+    Printf.eprintf "file %s is %s\n" name (if result then "threaded" else "non-threaded");
+    result
 
 (**
    {1 OCaml Batteries Included}
@@ -126,6 +143,7 @@ struct
     flag ["ocaml"; "ocamldep"; "use_boilerplate"] & S cl_boilerplate_original ;
     flag ["ocaml"; "doc";      "use_boilerplate"] & S cl_boilerplate_original ;
     flag ["ocaml"; "link";     "use_boilerplate"] & S cl_boilerplate_original ;
+    flag ["ocaml"; "infer_interface"; "use_boilerplate"] & S cl_boilerplate_original;
 
       (** Tag [use_boilerplate_r] provides boilerplate syntax extensions,
 	  in original syntax*)
@@ -134,6 +152,7 @@ struct
     flag ["ocaml"; "ocamldep"; "use_boilerplate_r"] & S cl_boilerplate_revised ;
     flag ["ocaml"; "doc";      "use_boilerplate_r"] & S cl_boilerplate_revised ;
     flag ["ocaml"; "link";     "use_boilerplate_r"] & S cl_boilerplate_revised ;
+    flag ["ocaml"; "infer_interface"; "use_boilerplate_r"] & S cl_boilerplate_revised;
 
     (** Tag [use_batteries] provides both package [batteries]
 	and all syntax extensions, in original syntax. *)
@@ -142,6 +161,7 @@ struct
     flag ["ocaml"; "ocamldep"; "use_batteries"] & S cl_batteries_original ;
     flag ["ocaml"; "doc";      "use_batteries"] & S cl_batteries_original ;
     flag ["ocaml"; "link";     "use_batteries"] & S cl_batteries_original ;
+    flag ["ocaml"; "infer_interface"; "use_batteries"] & S cl_batteries_original;
 
     (** Tag [use_batteries_r] provides both package [batteries]
 	and all syntax extensions, in revised syntax. *)
@@ -149,7 +169,8 @@ struct
     flag ["ocaml"; "compile";  "use_batteries_r"] & S cl_batteries_revised;
     flag ["ocaml"; "ocamldep"; "use_batteries_r"] & S cl_batteries_revised;
     flag ["ocaml"; "doc";      "use_batteries_r"] & S cl_batteries_revised;
-    flag ["ocaml"; "link";     "use_batteries_r"] & S cl_batteries_revised
+    flag ["ocaml"; "link";     "use_batteries_r"] & S cl_batteries_revised;
+    flag ["ocaml"; "infer_interface"; "use_batteries_r"] & S cl_batteries_revised;
 
 
 (*    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose"; 
@@ -177,49 +198,113 @@ end
    program compiled by the user is actually compiled to a dynamically-loaded .cma/.cmxs.
 *)
 module Dynamic = struct
-  let before_options () = ()
-  let after_rules () =
-    begin
-      rule ".cma to .dynml (no threads)"
-	~prod:"%.dyn.ml"
-	~dep:"%.cma"
-	begin fun env build -> 
-	  let dest = env "%.dyn.ml"
-	  and cma  = env "%.cma" in
-	  let contents = Printf.sprintf "%s%S%s"
-"(*Locate Batteries loader*)
-Findlib.init ();;
-let binary = Findlib.resolve_path \"@batteries_nothreads/run.byte\";; (*Note: we'll need to determine if it's batteries_nothreads 
-		  				               or batteries-threads, at compile-time.*)
 
+  (**
+     Produce the name of the runner, depending on whether the code is threaded
+  *)
+  let decide_runner source runner =
+    let dir = if is_threaded source then "@batteries_threads"
+              else                       "@batteries_nothreads"
+    in
+    Printf.sprintf "%s/%s" dir runner
 
-(*Prepare command-line*)
-let buf = Buffer.create 80;;
-Printf.bprintf buf \"%S %S -- \" binary (Filename.concat (Filename.dirname (Sys.argv.(0)))" cma
+  let generate_stub runner bin =
+    let init_loader = 
+      Printf.sprintf 
+	 "(*Locate Batteries loader*)
+          Findlib.init ();;
+          let binary = Findlib.resolve_path %S;;" 
+	 runner
+    and cl_loader =
 (*(Pathname.concat Pathname.current_dir_name cma)(*Should do one of the following:
 						 - replace this with the complete path
 						 - build the path at run-time from [Sys.argv.(0)]
 						 - find a way to embed the plug-in inside the .byte *)*)
-");;\nfor i = 1 to Array.length Sys.argv - 1 do
-  Printf.bprintf buf \"%S \" Sys.argv.(i)
-done;;
+      Printf.sprintf
+	"(*Prepare command-line*)
+         let buf = Buffer.create 80;;
+         Printf.bprintf buf %S binary (Filename.concat (Filename.dirname (Sys.argv.(0))) %S);;"
+	"%S %S -- "
+	bin
+    and start =
+        "for i = 1 to Array.length Sys.argv - 1 do
+           Printf.bprintf buf \"%S \" Sys.argv.(i)
+         done;;
+        let command = Buffer.contents buf in
+        Printf.eprintf \"Requesting load of %S\\n...\\n%!\" command;
+        Sys.command command
+        " 
+    in Printf.sprintf "%s\n%s\n%s\n" init_loader cl_loader start
 
-let command = Buffer.contents buf in
-  Printf.eprintf \"Requesting load of %S\\n...\\n%!\" command;
-  Sys.command command
-"
-	  in Echo ([contents], dest)
+
+  let before_options () = ()
+  let after_rules () =
+    begin
+      rule ".cma to _dyn.ml (no threads)"
+	~prod:"%_dynbyte.ml"
+	~dep:"%.cma"
+	begin fun env build -> 
+	  let dest   = env "%_dynbyte.ml"
+	  and bin    = env "%.cma" 
+          and runner = decide_runner (env "%.dynbyte") "run.byte" in
+	  let contents = generate_stub runner bin
+	  in
+	    tag_file dest ["pkg_findlib"]; (*Magically depend on findlib, without requiring user-intervention in _tags*)
+	    tag_file (env "%_dynbyte.cmo")  ["pkg_findlib"];
+	    tag_file (env "%_dynbyte.byte") ["pkg_findlib"];
+	    Echo ([contents], dest)
 	end;
 
-      rule ".dyn.ml to .dynbyte"
+      rule "_dynbyte.ml to .dynbyte"
 	~prod:"%.dynbyte"
-	~dep: "%.dyn.byte" 
+	~dep: "%_dynbyte.byte" 
 	begin
 	  fun env build ->
 	  let dest = env "%.dynbyte"
-	  and src  = env "%.dyn.byte"
+	  and src  = env "%_dynbyte.byte"
 	  in
-	    Cmd (S[A"cp"; A src; A dest])
+	    tag_file dest ["pkg_findlib"];
+	    Seq [Cmd (S[A"cp"; A src;  A dest]);
+		 Cmd (S[A"ln"; A"-sf"; P (!Options.build_dir/dest); A Pathname.pwd]
+		     )]
+	end;
+
+      rule ".cmx to cmxs"
+	~prod:"%.cmxs"
+	~dep:"%.cmx"
+	begin fun env build ->
+	  let dest = env "%.cmxs"
+	  and src  = env "%.cmx" in
+	  Cmd (S[A"ocamlopt"; A src; A "-shared"; A "-o"; A dest])
+	end;
+
+      rule ".cmxs to _dynnative.ml (no threads)"
+	~prod:"%_dynnative.ml"
+	~dep:"%.cmxs"
+	begin fun env build ->
+	  let dest   = env "%_dynnative.ml"
+	  and bin    = env "%.cmxs"
+          and runner = decide_runner (env "%.dynnative") "run.native" in
+	  let contents = generate_stub runner bin
+	  in
+	    tag_file dest ["pkg_findlib"]; (*Magically depend on findlib, without requiring user-intervention in _tags*)
+	    tag_file (env "%_dynnative.cmx")    ["pkg_findlib"];
+	    tag_file (env "%_dynnative.native") ["pkg_findlib"];
+	    Echo ([contents], dest)
+	end;
+
+      rule "_dynnative.ml to .dynnative"
+	~prod:"%.dynnative"
+	~dep: "%_dynnative.native" 
+	begin
+	  fun env build ->
+	  let dest = env "%.dynnative"
+	  and src  = env "%_dynnative.native"
+	  in
+	    tag_file dest ["pkg_findlib"];
+	    Seq [Cmd (S[A"cp"; A src;  A dest]);
+		 Cmd (S[A"ln"; A"-sf"; P (!Options.build_dir/dest); A Pathname.pwd]
+		     )]
 	end
 
     end

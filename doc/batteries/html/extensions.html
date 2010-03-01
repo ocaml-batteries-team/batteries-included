@@ -130,20 +130,17 @@ Where <code>let...in...</code> lets you define a value and use it immediately,
 <code>... where...</code> lets you use a value and define it immediately, as
 is often done in mathematic notations. Consider
 <pre class="example">
-let fibo n = fst fibo_aux n
+let fibo n = fst (fibo_aux n)
   where rec fibo_aux = function
-    | 0 -> (1, 1)
-    | 1 -> (1, 2)
-    | n -> (a, a + b) where let (a, b) = fibo_aux ( n - 1 )
+    | 0 -> (0, 1)
+    | n -> (b, a + b) where let (a, b) = fibo_aux (n - 1)
 </pre>
 This extract is equivalent to
 <pre class="example">
 let fibo n =
-  let rec fibo_aux =
-    function
-    | 0 -> (1, 1)
-    | 1 -> (1, 2)
-    | n -> let (a, b) = fibo_aux (n - 1) in (a, (a + b))
+  let rec fibo_aux = function
+    | 0 -> (0, 1)
+    | n -> let (a, b) = fibo_aux (n - 1) in (b, a + b)
   in fst (fibo_aux n)
 </pre>
 
@@ -156,7 +153,7 @@ As a convenience, you may wrote <code>where let</code> instead of <code>where</c
 
 
 <dl>
-<dt>Associativity</dt><dd> <code>a where b where c</code> is equivalent to <code>(a where b) where c</code></dd>
+<dt>Associativity</dt><dd> <code>a where b where c</code> is equivalent to <code>a where (b where c)</code></dd>
 <dt>Precedence</dt><dd> <code>let a = b where c and d</code> is equivalent to <code>let a = (b where c and d)</code></dd>
 </dl>
 
@@ -171,7 +168,7 @@ comprehension syntax</a> for batteries, using enumerations by default.
 <center><h3>Output, generators and guards<a name="comprehension_syntax"/></h3></center>
 
 <p>The global form is
-<code>[? <em>output</em> | <em>comp_item</em> ; <em>comp_item</em> ; ... ]</code>.<br/>
+<code>[? <em>output</em> | <em>comp_item</em> ; <em>comp_item</em> ; ... ?]</code>.<br/>
 <em>output</em> is an expression and a <em>comp_item</em> is either
 a <em>guard</em> (a boolean expression), or a <em>generator</em> of
 the form <code><em>pattern</em> <- <em>expression</em></code>.
@@ -180,7 +177,7 @@ comprehension items, and in the output expression.</p>
 
 Example :
 <pre class="example">let pythagorean_triples n =
-  [? (a,b,c) | a <- 1--n; b <- a--n; c <- b--n; a*a + b*b = c*c ]</pre>
+  [? (a,b,c) | a <- 1--n; b <- a--n; c <- b--n; a*a + b*b = c*c ?]</pre>
 
 <center><h3>Module parametrization<a name="comprehension_custom_modules"/></h3></center>
 
@@ -190,10 +187,10 @@ data structure with the <code><em>module</em> : <em>expression</em></code> synta
 
 Examples :
 <pre class="example">let positive_array_of_enum e =
-  [? Array : n | n <- e; n > 0 ]
+  [? Array : n | n <- e; n > 0 ?]
 
 let combine la lb =
-  [? List : (a, b) | a <- List : la; b <- List : lb ]</pre>
+  [? List : (a, b) | a <- List : la; b <- List : lb ?]</pre>
 
 <p>Comprehension expressions rely on the presence in the given module of
 the following operations (where <code>'a t</code> represents the
@@ -319,7 +316,7 @@ For more information, see the manual of <a href="http://www.ocaml.info/ocaml_sou
 <center><h1>Summary of new keywords<a name="new_keywords"/></h1></center>
 <ul>
 <li><code>where</code>, defined by <a href="#where">pa_where</a></li>
-<li><code>[? .. | .. ]</code> (and <code>[ .. | .. ]</code>), defined by <a href="#comprehension>pa_comprehension</a></li>
+<li><code>[? .. | .. ?]</code>, defined by <a href="#comprehension>pa_comprehension</a></li>
 </ul>
 
 </body>

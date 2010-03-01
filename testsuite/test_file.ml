@@ -1,85 +1,113 @@
-open File
-open IO
+open OUnit
+open BatFile
+open BatIO
+open BatPrint
+open BatPervasives
 
 (**Initialize data sample*)
-let state  = Random.State.make [|0|]
-let buffer = Array.of_enum (Enum.take 60 (Random.State.enum_int state 255))
+let state  = BatRandom.State.make [|0|];;
+let buffer = BatArray.of_enum (BatEnum.take 60 (BatRandom.State.enum_int state 255));;
 
 (**Write sample to temporary file*)
 let write buf =
   let (out, name) = open_temporary_out () in
-    write_bytes out (Array.enum buffer);
+    write_bytes out (BatArray.enum buf);
     close_out out;
     name
 
 (**Read from temporary file*)
 let read_regular name =
-  with_file_in name (fun inp -> Array.of_enum (bytes_of inp))
+  with_file_in name (fun inp -> BatArray.of_enum (bytes_of inp))
 
 let read_mmap    name =
-  with_file_in ~mode:[`mmap] name (fun inp -> Array.of_enum (bytes_of inp))
+  with_file_in ~mode:[`mmap] name (fun inp -> BatArray.of_enum (bytes_of inp))
 
 
 (**Actual tests*)
 
-let print_array out = 
-  Array.print ~sep:"; " Int.print out
+let print_array out =
+  BatPrintf.sprintf2 "%a" (BatArray.print ~sep:"; " BatInt.print) out
 
-let test_1 = ("File: Reading back output to temporary file",
-	     fun () ->
+let test_read_back_tmp () =
+  let name = write buffer in
+  let aeq msg result = assert_equal ~printer:print_array ~msg buffer result in
+    aeq "regular" (read_regular name);
+    aeq "mmap" (read_mmap name)
 
-	       let name = write buffer      in
-	       let found= read_regular name in
-		 if found = buffer then Testing.Pass
-		 else Testing.Fail (Printf.sprintf2 "Hoping: %a\n\tGot:    %a" print_array buffer print_array found)
-	    )
+let test_open_files_not_autoclosed () =
+  let name = write buffer in
+  let f    = open_in name in
+    try
+      let _ = BatIO.read_all f in
+      let c = BatIO.read f in
+        assert_failure (BatPrintf.sprintf "Expecting: BatIO.No_more_input, got char %C" c)
+    with
+      | BatIO.No_more_input -> () (* pass *)
+      | BatIO.Input_closed ->
+          assert_failure "Expected: BatIO.No_more_input, got BatIO.Input_closed."
+      | e ->
+          let _ = BatIO.close_in f in
+            assert_failure
+              (BatPrintf.sprintf "Expected: BatIO.No_more_input, got %s"
+                 (Printexc.to_string e))
 
-
-let test_2 = ("File: MMap Reading back output to temporary file",
-	     fun () ->
-
-	       let name = write buffer      in
-	       let found= read_mmap name    in
-		 if found = buffer then Testing.Pass
-		 else Testing.Fail (Printf.sprintf2 "Hoping: %a\n\tGot:    %a" print_array buffer print_array found)
-	    )
-
-let test_3 = ("File: open_in'd files should not autoclose",
-	    fun () ->
-	      let name = write buffer in
-	      let f    = open_in name in
-	      try
-		let _ = IO.read_all f in
-		let c = IO.read f in Testing.Fail
-                  (Printf.sprintf "Hoping: IO.No_more_input\n\tGot:    char \'%c\'" c)
-	      with
-	      | IO.No_more_input ->
-		let _ = IO.close_in f in Testing.Pass
-	      | IO.Input_closed ->
-		Testing.Fail "Hoping: IO.No_more_input\n\tGot:    IO.Input_closed"
-	      | _ ->
-		let _ = IO.close_in f in
-		Testing.Fail "Hoping: IO.No_more_input\n\tGot:    (Different exception)"
-	    )
+let test_open_close_many () =
+  try
+    for i = 0 to 10000 do
+      Unix.unlink (write buffer)
+    done;
+    (* pass *)
+  with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)
 
 
-let test_4 = ("File: opening and closing many files",
-	      fun () ->
-	      try
-		for i = 0 to 10000 do
-		  Unix.unlink (write buffer)
-	      done;Testing.Pass
-	      with Sys_error e -> Testing.Fail e)
+let test_open_close_many_pervasives () =
+  try
+    for i = 0 to 10000 do
+      let temp = Filename.temp_file "batteries" "test" in
+      let oc   = open_out temp                         in
+        output_string oc "test";
+        close_out oc;
+        Unix.unlink temp
+    done;
+    (* pass *)
+  with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)
 
+let test_no_append () =
+  try
+    let temp   = Filename.temp_file "ocaml_batteries" "noappend_test" in
+    let out    = open_out temp                       in
+    let _      = write_bytes out (BatArray.enum buffer) in
+    let _      = close_out out                       in
+    let size_1 = size_of temp                        in
+    let out    = open_out temp                       in
+    let _      = write_bytes out (BatArray.enum buffer) in
+    let _      = close_out out                       in
+    let size_2 = size_of temp                        in
+      if size_1 <> size_2 then assert_failure
+	(BatPrintf.sprintf "Expected two files with size %d, got one with size %d and one with size %d" size_1 size_1 size_2)
+  with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)
 
-let test_5 = ("File: opening and closing many files (Pervasives)",
-	      fun () ->
-		try
-		for i = 0 to 10000 do
-		  let temp = Filename.temp_file "batteries" "test" in
-		  let oc   = open_out temp                         in
-		    Standard.output_string oc "test";
-		    close_out oc;
-		    Unix.unlink temp
-	      done;Testing.Pass
-	    with Sys_error e -> Testing.Fail e )
+let test_append () =
+  try
+    let temp   = Filename.temp_file "ocaml_batteries" "append_test" in
+    let out    = open_out ~mode:[`append] temp       in
+    let _      = write_bytes out (BatArray.enum buffer) in
+    let _      = close_out out                       in
+    let size_1 = size_of temp                        in
+    let out    = open_out ~mode:[`append] temp       in
+    let _      = write_bytes out (BatArray.enum buffer) in
+    let _      = close_out out                       in
+    let size_2 = size_of temp                        in
+      if size_2 <> 2*size_1 then assert_failure
+	(BatPrintf.sprintf "Expected a files with size %d, got a first chunk with size %d and a second chunk with size %d" 
+	   (2*size_1) size_1 size_2)
+  with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)
+
+let tests = "File" >::: [
+  "Reading back output to temporary file" >:: test_read_back_tmp;
+  "open_in'd files should not autoclose" >:: test_open_files_not_autoclosed;
+  "opening and closing many files" >:: test_open_close_many;
+  "opening and closing many files (Pervasives)" >:: test_open_close_many_pervasives;
+  "default truncation of files" >:: test_no_append;
+  "appending to a file" >:: test_append
+]

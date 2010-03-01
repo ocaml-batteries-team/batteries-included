@@ -1,2 +1,0 @@
-<hello.ml>: use_batteries
-<hello.dyn.*>:pkg_findlib

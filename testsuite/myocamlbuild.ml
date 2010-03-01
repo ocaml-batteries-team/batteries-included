@@ -1,2 +1,1 @@
-(*foo*)
-(*bar*)
+../doc/batteries/myocamlbuild.ml
