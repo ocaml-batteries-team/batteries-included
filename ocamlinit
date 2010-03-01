@@ -1,0 +1,9 @@
+let interactive = !Sys.interactive;;
+Sys.interactive := false;; (*Pretend to be in non-interactive mode*)
+#use "topfind";;
+Sys.interactive := interactive;; (*Return to regular interactive mode*)
+
+Toploop.use_silently 
+             Format.err_formatter (Filename.concat (Findlib.package_directory 
+             "batteries") "battop.ml");;
+

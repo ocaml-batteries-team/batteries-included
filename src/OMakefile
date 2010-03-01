@@ -1,0 +1,128 @@
+
+.SUBDIRS: syntax
+    export BAT_FILES
+    .SUBDIRS: pa_comprehension pa_strings
+	include OMakefile
+	export BAT_FILES
+
+EXTRA[] =
+    batteries_help.cmo
+
+OBJECTS[] =
+    batArg
+    batArray
+    batBigarray
+    batBig_int
+    batBool
+    batBuffer
+    batChar
+    batComplex
+    batDigest
+    batEnum
+    batFloat
+    batFormat
+    batGc
+    batGenlex
+    batHashtbl
+    batIO
+    batInnerIO
+    batInt32
+    batInt64
+    batInt
+    batLexing
+    batList
+    batMap
+    batMarshal
+    batNativeint
+    batNum
+    batOo
+    batPervasives
+    batPrintexc
+    batPrintf
+    batQueue
+    batRandom
+    batScanf
+    batSet
+    batStack
+    batStream
+    batString
+    batStr
+    batSys
+    batUChar
+    batUnit
+    batUnix
+    batUTF8
+    batBase64
+    batBitSet
+    batCharEncodings
+    batCharParser
+    batConcurrent
+    batDllist
+    batDynArray
+    batFile
+    batGlobal
+    batInnerWeaktbl
+    batInterfaces
+    batLazyList
+    batLogger
+    batMonad
+    batMultiPMap
+    batNumber
+    batOption
+    batOptParse
+    batPair
+    batParserCo
+    batPathGen
+    batPMap
+    batPrint
+    batPSet
+    batRefList
+    batRef
+    batResult
+    batReturn
+    batRope
+    batSeq
+    batStd
+    batSubstring
+    batUCharParser
+    batValue_printer
+    batVect
+    batAvlTree
+    batISet
+    batIMap
+    batteries_config
+    batteries_print
+    batteries_uni
+
+THREAD_OBJECTS[] =
+    batConcurrent
+    batMutex
+    batRMutex
+    batteries
+
+section
+	# turn on -thread for the threaded objects
+	OCAMLFLAGS += -thread
+	foreach(mod,$(THREAD_OBJECTS))
+		$(mod).cmo $(mod).cmi:
+		if $(NATIVE_ENABLED)
+			$(mod).cmx $(mod).o $(mod).cmi:
+
+OCamlLibrary(batteries_uni, $(OBJECTS))
+OCamlLibrary(batteries, $(OBJECTS) $(THREAD_OBJECTS))
+
+batteries_config.ml: batteries_config.mlp
+	rm(-f batteries_config.ml)
+	sed -e 's|@VERSION@|$(VERSION)|' \
+            -e 's|@DOCROOT@|$(DOCROOT)|' \
+            -e 's|@BROWSER_COMMAND@|$(BROWSER_COMMAND)|' \
+	    batteries_config.mlp > batteries_config.ml
+	chmod(444 batteries_config.ml)
+
+BAT_FILES[] += $(file $(glob *.mli *.cmi *.cma $(EXTRA) *.a))
+if $(NATIVE_ENABLED)
+	BAT_FILES[] += $(file $(glob *.cmx *.cmxa))
+	export BAT_FILES
+
+all: batteries.cma batteries_uni.cma $(if $(NATIVE_ENABLED), batteries.cmxa batteries_uni.cmxa) $(EXTRA)
+

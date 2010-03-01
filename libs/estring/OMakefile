@@ -1,0 +1,21 @@
+
+OCAMLPACKS[] = camlp4.lib
+OCAMLFLAGS += -pp camlp4of
+OCAMLDEPFLAGS += -pp camlp4of
+
+META: VERSION META.in
+	sed -e 's/@VERSION@/$(VERSION)/' META.in > META
+
+FILES[] = pa_estring.cmi pa_estring.cmo pa_estring_top.cmo
+
+install: $(FILES) META
+	$(OCAMLFIND) install $(DESTOPT) estring META *.mli *.cmi *.cmo
+
+uninstall:
+	$(OCAMLFIND) remove estring
+
+.PHONY: estring all
+
+estring:$(FILES)
+
+all: $(FILES)

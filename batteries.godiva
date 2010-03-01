@@ -1,21 +1,18 @@
 Package: godi-batteries
-Version: 0.20090331
-Revision: 20
-Depends: godi-ocaml (>= 3.10), godi-findlib (>= 1.2), godi-type-conv, godi-bin-prot, godi-camomile (>= 0.7), godi-sexplib (>= 3.7.0), godi-zip (>= 1.0), godi-ocamlnet (>= 2.2.9)
-Build-Depends: godi-findlib (>= 1.2), godi-type-conv, godi-sexplib (>= 3.7.0)
-Sources: http://forge.ocamlcore.org/frs/download.php/196/batteries-20090331.tgz
+Version: 0.200911
+Revision: 1
+Depends: godi-ocaml (>= 3.10), godi-findlib (>= 1.2), godi-camomile (>= 0.7), godi-zip (>= 1.0), godi-ocamlnet (>= 2.2.9)
+Build-Depends: godi-findlib (>= 1.2)
+Sources: https://forge.ocamlcore.org/frs/download.php/334/aaa-batteries-0.9.1.tar.gz
 Homepage: http://batteries.forge.ocamlcore.org
-Maintainer: David Teller <David.Teller@univ-orleans.fr>
+Maintainer: Edgar Friendly <thelema314@gmail.com>
 Options: opt, htdoc, configure
 Docfiles: README, VERSION, LICENSE, doc
-Description: OCaml Batteries Included: a community-maintained foundation library for your OCaml projects.
-Batteries Included serves the following purposes:
+Description: OCaml Batteries: a simplified community-maintained foundation library for your OCaml projects.
+Ocaml Batteries Included serves the following purposes:
 * define a standard set of libraries which may be
   expected on every compliant installation of OCaml
-* organize these libraries into a hierarchy of modules,
-  with one source of documentation
-* define a standard set of language extensions which
-  may be expected on every compliant installation of OCaml
+* organize these libraries into a hierarchy of modules
 * provide a consistent API for otherwise independent
   libraries.
 .

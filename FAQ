@@ -1,0 +1,69 @@
+*** FAQ for Batteries Included ***
+
+*** General ***
+
+**** What is OCaml Batteries ****
+
+OCaml Batteries Included: a community-maintained foundation library for your OCaml projecs.
+
+
+**** What is it good for ****
+
+Batteries Included serves the following purposes:
+* define a standard set of libraries which may be
+  expected on every compliant installation of OCaml
+* organize these libraries into a hierarchy of modules,
+  with one source of documentation
+* provide a consistent API for otherwise independent
+  libraries.
+
+*** Installation ***
+
+**** Errors ****
+
+ERROR: omake: Symbol `FamErrlist' has different size in shared object, consider re-linking
+
+This error is caused when using Gamin rather than FAM.  Gamin is a
+binary-compatible replacement for libfam that does not use the
+system-wide monitor daemon.  Most packages, however, are compiled and
+linked against libfam from the FAM package.  They will work with Gamin
+without recompilation, but display the symbol size discrepancy
+warning.  This error can safely be ignored.
+
+If you really want to get rid of the warning, on an Ubuntu based OS,
+run the following command:
+
+	sudo apt-get install libfam0
+
+Note that FAM misbehaves in certain environments, notably AFS-based
+systems.
+
+
+*** Using Batteries ***
+
+In your source code, add [open Batteries] for the multithreaded
+batteries library.  If you want to build without threads, use [open
+Batteries_uni] instead.  When you've done this, you'll have access to
+the batteries modules that extend stdlib modules as part of the stdlib
+modules.  To access the original stdlib modules, use [Legacy.List],
+for example.  Other [BatFoo] modules provided by batteries are
+available as simply [Foo].
+
+**** Compiling with Ocamlbuild ****
+
+Copy doc/batteries/myocamlbuild.ml into your source directory, and use:
+
+    <*>: pkg_batteries, pkg_threads
+
+in your _tags file to enable batteries for all modules.
+
+**** Bare Findlib ****
+
+ocamlfind compile -thread -package batteries foo.ml -linkpkg
+
+**** OMake ****
+
+Add the following to your OMakefile:
+
+OCAMLPACKS[] += batteries
+OCAMLFLAGS += -thread

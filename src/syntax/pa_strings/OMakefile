@@ -1,0 +1,16 @@
+
+OCAMLPACKS[] = camlp4.lib
+OCAMLFLAGS += -pp camlp4of
+OCAMLDEPFLAGS += -pp camlp4of
+OCAMLINCLUDES += $(LIBSDIR)/estring
+
+.PHONY: pa_strings
+
+OCamlLibrary(pa_strings, pa_strings pa_format)
+
+all: pa_strings.cma
+
+FILES[] = pa_strings.cma
+
+BAT_FILES[] += $(file $(FILES))
+export BAT_FILES
