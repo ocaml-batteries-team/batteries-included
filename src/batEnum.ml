@@ -778,7 +778,7 @@ let uncombine e =
 	with Queue.Empty ->
 	  let (x,y) = e.next()  in
 	    Queue.push x queue_fst;
-	    advance := `first;
+	    advance := `second;
 	    y
   in (from first, from second)
 
