@@ -1,3 +1,10 @@
+ocaml-batteries (1.1.0-1) UNRELEASED; urgency=low
+
+  * New upstream release
+    - major changes, "diet" version of the library
+
+ -- Stefano Zacchiroli <zack@debian.org>  Mon, 01 Mar 2010 18:20:54 +0100
+
 ocaml-batteries (0.20090405+beta1-5) unstable; urgency=low
 
   * debian/control: add explicit dep on libbin-prot-camlp4-dev, it is a
