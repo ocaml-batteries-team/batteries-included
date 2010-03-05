@@ -8,6 +8,7 @@ ocaml-batteries (1.1.0-1) UNRELEASED; urgency=low
     - adapt dependencies (generally: reduce them)
   * remove old debian/patches/{debian-specific-installation-paths,
     debian-specific-info-on-doc-availability} as obsolete
+  * remove debian/README.Debian (previous content is now obsolete)
 
  -- Stefano Zacchiroli <zack@debian.org>  Mon, 01 Mar 2010 18:20:54 +0100
 
