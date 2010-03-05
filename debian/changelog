@@ -2,6 +2,10 @@ ocaml-batteries (1.1.0-1) UNRELEASED; urgency=low
 
   * New upstream release
     - major changes, "diet" version of the library
+  * Revamp packaging
+    - adapt to new stuff shipped by upstream
+    - switch from CDBS to dh
+    - adapt dependencies (generally: reduce them)
 
  -- Stefano Zacchiroli <zack@debian.org>  Mon, 01 Mar 2010 18:20:54 +0100
 

@@ -4,21 +4,14 @@ Priority: optional
 Maintainer: Debian OCaml Maintainers <debian-ocaml-maint@lists.debian.org>
 Uploaders: Stefano Zacchiroli <zack@debian.org>
 Build-Depends:
- debhelper (>= 7),
- ocaml-nox,
- ocaml-findlib,
- libcamomile-ocaml-dev,
- libtype-conv-camlp4-dev,
- libsexplib-camlp4-dev (>= 4.2.16),
- libbin-prot-camlp4-dev,
- libzip-ocaml-dev,
- libocamlnet-ocaml-dev,
+ debhelper (>= 7.0.50),
+ ocaml-nox (>= 3.11),
+ ocaml-findlib (>= 1.2.5),
+ libcamomile-ocaml-dev (>= 0.7),
+ libounit-ocaml-dev,
  dh-ocaml (>= 0.9),
- camlp4,
- camlp4-extra,
- quilt,
- cdbs,
- autoconf
+ omake,
+ quilt
 Standards-Version: 3.8.3
 Vcs-Git: git://git.debian.org/git/pkg-ocaml-maint/packages/ocaml-batteries.git
 Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/ocaml-batteries.git
@@ -29,7 +22,6 @@ Section: ocaml
 Architecture: any
 Depends:
  ocaml-findlib,
- libbin-prot-camlp4-dev,
  ${ocaml:Depends},
  ${shlibs:Depends},
  ${misc:Depends}

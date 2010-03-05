@@ -1,35 +1,39 @@
 #!/usr/bin/make -f
-include /usr/share/cdbs/1/class/autotools.mk
-include /usr/share/cdbs/1/rules/patchsys-quilt.mk
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/rules/ocaml.mk
+include /usr/share/ocaml/ocamlvars.mk
 
-LIB_NAME = batteries
-DEV_PKG_NAME = lib$(LIB_NAME)-ocaml-dev
-DOC_PKG_NAME = lib$(LIB_NAME)-ocaml-doc
-DEST_DIR = $(CURDIR)/debian/$(DEV_PKG_NAME)$(OCAML_STDLIB_DIR)
-DEB_AUTO_UPDATE_AUTOCONF = yes
+export DESTDIR = $(CURDIR)/debian/tmp/$(OCAML_STDLIB_DIR)
+export BATTERIES_DOCROOT = $(CURDIR)/debian/tmp/doc
+DOC_PKG = libbatteries-ocaml-doc
 
-OCAMLBUILD_FLAGS = -classic-display
-DEB_CONFIGURE_EXTRA_FLAGS = --with-browser="x-www-browser %s"
-DEB_CONFIGURE_EXTRA_FLAGS += --with-docroot="/usr/share/doc/$(DOC_PKG_NAME)"
-DEB_MAKE_BUILD_TARGET = all
-ifeq ($(OCAML_HAVE_OCAMLOPT),yes)
-DEB_MAKE_BUILD_TARGET += opt
-else
-OCAMLBUILD_FLAGS += -byte-plugin
+%:
+	dh --with quilt,ocaml $@
+
+ifneq ($(OCAML_HAVE_OCAMLOPT),yes)
+export BATTERIES_NATIVE = false
 endif
-DEB_MAKE_BUILD_TARGET += OBFLAGS="$(OCAMLBUILD_FLAGS)"
-DEB_MAKE_INSTALL_TARGET = install DESTDIR=$(DEST_DIR)
-DEB_MAKE_CLEAN_TARGET = clean
 
-DEB_COMPRESS_EXCLUDE += myocamlbuild.ml
-DEB_COMPRESS_EXCLUDE += .idex
+override_dh_auto_build:
+	omake all
+ifneq (,$(findstring $(DOC_PKG),$(shell dh_listpackages)))
+	omake doc
+endif
 
-export OCAMLFIND_COMMANDS="ocamldoc=ocamldoc"
-install/$(DOC_PKG_NAME):: ocamldoc-stamp
-ocamldoc-stamp:
-	OCAMLRUNPARAM=l=16M make doc OBFLAGS="-classic-display -no-hygiene"
-	touch $@
-clean::
-	rm -f ocamldoc-stamp
+override_dh_auto_test:
+	omake test
+
+override_dh_auto_install:
+	mkdir -p $(DESTDIR) $(BATTERIES_DOCROOT)
+	omake install
+ifneq (,$(findstring $(DOC_PKG),$(shell dh_listpackages)))
+	omake install-doc
+endif
+
+override_dh_auto_clean:
+	omake clean
+	rm -rf man/
+
+.PHONY: override_dh_auto_build override_dh_auto_test override_dh_auto_install
+.PHONY: override_dh_auto_clean
+
+# DEB_COMPRESS_EXCLUDE += myocamlbuild.ml
+# DEB_COMPRESS_EXCLUDE += .idex
