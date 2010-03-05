@@ -32,8 +32,8 @@ override_dh_auto_clean:
 	omake clean
 	rm -rf man/
 
-.PHONY: override_dh_auto_build override_dh_auto_test override_dh_auto_install
-.PHONY: override_dh_auto_clean
+override_dh_compress:
+	dh_compress -Xmyocamlbuild.ml -X.idex
 
-# DEB_COMPRESS_EXCLUDE += myocamlbuild.ml
-# DEB_COMPRESS_EXCLUDE += .idex
+.PHONY: override_dh_auto_build override_dh_auto_test override_dh_auto_install
+.PHONY: override_dh_auto_clean override_dh_compress
