@@ -10,6 +10,7 @@ ocaml-batteries (1.1.0-1) UNRELEASED; urgency=low
     debian-specific-info-on-doc-availability} as obsolete
   * remove debian/README.Debian (previous content is now obsolete)
   * bump Standards-Version to 3.8.4 (no changes needed)
+  * debian/watch: update to match new upstream version convention
 
  -- Stefano Zacchiroli <zack@debian.org>  Mon, 01 Mar 2010 18:20:54 +0100
 
