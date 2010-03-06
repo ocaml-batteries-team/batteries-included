@@ -6,8 +6,11 @@ ocaml-batteries (1.1.0-1) UNRELEASED; urgency=low
     - adapt to new stuff shipped by upstream
     - switch from CDBS to dh
     - adapt dependencies (generally: reduce them)
-  * remove old debian/patches/{debian-specific-installation-paths,
-    debian-specific-info-on-doc-availability} as obsolete
+  * debian/patches/
+    - remove old debian/patches/{debian-specific-installation-paths,
+      debian-specific-info-on-doc-availability} as obsolete
+    - new patch 0001-install-fix-for-bytecode-only-build: avoid
+      installing *.a files with bytecode only compilation
   * remove debian/README.Debian (previous content is now obsolete)
   * bump Standards-Version to 3.8.4 (no changes needed)
   * debian/watch: update to match new upstream version convention

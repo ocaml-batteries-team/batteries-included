@@ -1,0 +1,27 @@
+From: Stefano Zacchiroli <zack@upsilon.cc>
+Date: Sat, 6 Mar 2010 15:14:09 +0100
+Subject: [PATCH] install fix for bytecode only build
+
+do not try to install *.a files when native code compilation has not
+been performed
+---
+ src/OMakefile |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/OMakefile b/src/OMakefile
+index e4b1648..e520f8e 100644
+--- a/src/OMakefile
++++ b/src/OMakefile
+@@ -119,9 +119,9 @@ batteries_config.ml: batteries_config.mlp
+ 	    batteries_config.mlp > batteries_config.ml
+ 	chmod(444 batteries_config.ml)
+ 
+-BAT_FILES[] += $(file $(glob *.mli *.cmi *.cma $(EXTRA) *.a))
++BAT_FILES[] += $(file $(glob *.mli *.cmi *.cma $(EXTRA)))
+ if $(NATIVE_ENABLED)
+-	BAT_FILES[] += $(file $(glob *.cmx *.cmxa))
++	BAT_FILES[] += $(file $(glob *.cmx *.cmxa *.a))
+ 	export BAT_FILES
+ 
+ all: batteries.cma batteries_uni.cma $(if $(NATIVE_ENABLED), batteries.cmxa batteries_uni.cmxa) $(EXTRA)
+-- 
