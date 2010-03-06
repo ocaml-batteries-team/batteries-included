@@ -11,6 +11,8 @@ ocaml-batteries (1.1.0-1) UNRELEASED; urgency=low
       debian-specific-info-on-doc-availability} as obsolete
     - new patch 0001-install-fix-for-bytecode-only-build: avoid
       installing *.a files with bytecode only compilation
+  * debian/libbatteries-ocaml-dev.links: remove file, shortend
+    /usr/bin/ocaml-batteries to the top-level no longer exists
   * remove debian/README.Debian (previous content is now obsolete)
   * bump Standards-Version to 3.8.4 (no changes needed)
   * debian/watch: update to match new upstream version convention
