@@ -4,6 +4,7 @@ include /usr/share/ocaml/ocamlvars.mk
 export DESTDIR = $(CURDIR)/debian/tmp/$(OCAML_STDLIB_DIR)
 export BATTERIES_DOCROOT = $(CURDIR)/debian/tmp/doc
 DOC_PKG = libbatteries-ocaml-doc
+OFLAGS = --verbose
 
 %:
 	dh --with quilt,ocaml $@
@@ -13,23 +14,23 @@ export BATTERIES_NATIVE = false
 endif
 
 override_dh_auto_build:
-	omake all
+	omake $(OFLAGS) all
 ifneq (,$(findstring $(DOC_PKG),$(shell dh_listpackages)))
-	omake doc
+	omake $(OFLAGS) doc
 endif
 
 override_dh_auto_test:
-	omake test
+	omake $(OFLAGS) test
 
 override_dh_auto_install:
 	mkdir -p $(DESTDIR) $(BATTERIES_DOCROOT)
-	omake install
+	omake $(OFLAGS) install
 ifneq (,$(findstring $(DOC_PKG),$(shell dh_listpackages)))
-	omake install-doc
+	omake $(OFLAGS) install-doc
 endif
 
 override_dh_auto_clean:
-	omake clean
+	omake $(OFLAGS) clean
 	rm -rf man/ .omakedb .omakedb.lock
 	-find . -name '*.omc' -exec rm {} \;
 
