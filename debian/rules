@@ -30,7 +30,8 @@ endif
 
 override_dh_auto_clean:
 	omake clean
-	rm -rf man/
+	rm -rf man/ .omakedb .omakedb.lock
+	-find . -name '*.omc' -exec rm {} \;
 
 override_dh_compress:
 	dh_compress -Xmyocamlbuild.ml -X.idex
