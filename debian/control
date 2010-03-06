@@ -6,6 +6,7 @@ Uploaders: Stefano Zacchiroli <zack@debian.org>
 Build-Depends:
  debhelper (>= 7.0.50),
  ocaml-nox (>= 3.11),
+ camlp4, camlp4-extra,
  ocaml-findlib (>= 1.2.5),
  libcamomile-ocaml-dev (>= 0.7),
  libounit-ocaml-dev,
