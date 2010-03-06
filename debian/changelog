@@ -1,4 +1,4 @@
-ocaml-batteries (1.1.0-1) UNRELEASED; urgency=low
+ocaml-batteries (1.1.0-1) unstable; urgency=low
 
   * New upstream release
     - major changes, "diet" version of the library
@@ -17,7 +17,7 @@ ocaml-batteries (1.1.0-1) UNRELEASED; urgency=low
   * bump Standards-Version to 3.8.4 (no changes needed)
   * debian/watch: update to match new upstream version convention
 
- -- Stefano Zacchiroli <zack@debian.org>  Mon, 01 Mar 2010 18:20:54 +0100
+ -- Stefano Zacchiroli <zack@debian.org>  Sat, 06 Mar 2010 15:31:39 +0100
 
 ocaml-batteries (0.20090405+beta1-5) unstable; urgency=low
 
