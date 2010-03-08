@@ -18,7 +18,7 @@ DOCROOT = $(getenv BATTERIES_DOCROOT,/usr/share/doc/ocaml-batteries/)
 BROWSER_COMMAND = x-www-browser %s
 
 NAME = batteries
-VERSION = 1.1.0pre2
+VERSION = 1.1.0
 
 LIBSDIR = $(ROOT)/libs
 DESTOPT = 
