@@ -119,9 +119,9 @@ batteries_config.ml: batteries_config.mlp
 	    batteries_config.mlp > batteries_config.ml
 	chmod(444 batteries_config.ml)
 
-BAT_FILES[] += $(file $(glob *.mli *.cmi *.cma $(EXTRA) *.a))
+BAT_FILES[] += $(file $(glob *.mli *.cmi *.cma $(EXTRA)))
 if $(NATIVE_ENABLED)
-	BAT_FILES[] += $(file $(glob *.cmx *.cmxa))
+	BAT_FILES[] += $(file $(glob *.cmx *.cmxa *.a))
 	export BAT_FILES
 
 all: batteries.cma batteries_uni.cma $(if $(NATIVE_ENABLED), batteries.cmxa batteries_uni.cmxa) $(EXTRA)
