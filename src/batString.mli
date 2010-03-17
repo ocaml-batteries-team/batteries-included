@@ -117,7 +117,7 @@ val of_char : char -> string
 
 val to_int : string -> int
   (** Returns the integer represented by the given string or raises
-      [Invalid_string] if the string does not represent an
+      [Failure "int_of_string"] if the string does not represent an
       integer. This follows OCaml's int literal rules, so "0x"
       prefixes hexadecimal integers, "0o" for octal and "0b" for
       binary.  Underscores within the number are allowed for
@@ -128,7 +128,7 @@ val to_int : string -> int
 
 val to_float : string -> float
   (** Returns the float represented by the given string or raises
-      Invalid_string if the string does not represent a float.
+      [Failure "float_of_string"] if the string does not represent a float.
       Decimal points aren't required in the given string, as they are
       for float literals in OCaml, but otherwise the rules for float
       literals apply.
@@ -193,7 +193,7 @@ val find : string -> string -> int
 
       {b Note} This implementation is optimized for short strings.
 
-      @raise Invalid_string if [x] is not a substring of [s]. 
+      @raise Not_found if [x] is not a substring of [s]. 
 
       Example: [String.find "foobarbaz" "bar" = 3]
 *)
@@ -211,7 +211,7 @@ val rfind : string -> string -> int
 
       {b Note} This implementation is optimized for short strings.
 
-      @raise Invalid_string if [x] is not a substring of [s]. 
+      @raise Not_found if [x] is not a substring of [s]. 
 
       Example: [String.rfind "foobarbaz" "ba" = 6]
 *)
@@ -332,7 +332,7 @@ val repeat: string -> int -> string
 val split : string -> string -> string * string
   (** [split s sep] splits the string [s] between the first
       occurrence of [sep].
-      @raise Invalid_string if the separator is not found. 
+      @raise Not_found if the separator is not found. 
 
       Example: [String.split "abcabcabc" "bc" = ("a","abcabc")]
 *)
@@ -340,7 +340,7 @@ val split : string -> string -> string * string
 val rsplit : string -> string -> string * string
   (** [rsplit s sep] splits the string [s] between the last
       occurrence of [sep].
-      @raise Invalid_string if the separator is not found. 
+      @raise Not_found if the separator is not found. 
 
       Example: [String.rsplit "abcabcabc" "bc" = ("abcabca","")]
 *)
@@ -643,11 +643,11 @@ val of_char : char -> _ t
 
 val to_int : [> `Read] t -> int
   (** Returns the integer represented by the given string or
-      raises [Invalid_string] if the string does not represent an integer.*)
+      raises [Failure "int_of_string"] if the string does not represent an integer.*)
 
 val to_float : [> `Read] t -> float
   (** Returns the float represented by the given string or
-      raises Invalid_string if the string does not represent a float. *)
+      raises [Failure "float_of_string"] if the string does not represent a float. *)
 
 (** {6 String traversals}*)
 
@@ -722,7 +722,7 @@ val rcontains_from : [> `Read] t -> int -> char -> bool
 
 val find : [> `Read] t -> [> `Read] t -> int
   (** [find s x] returns the starting index of the string [x]
-      within the string [s] or raises [Invalid_string] if [x]
+      within the string [s] or raises [Not_found] if [x]
       is not a substring of [s]. *)
 
 val find_from: [> `Read] t -> int -> [> `Read] t -> int
@@ -735,7 +735,7 @@ val rfind : [> `Read] t -> [> `Read] t -> int
 
       {b Note} This implementation is optimized for short strings.
 
-      @raise Invalid_string if [x] is not a substring of [s]. *)
+      @raise Not_found if [x] is not a substring of [s]. *)
 
 val rfind_from: [> `Read] t -> int -> [> `Read] t -> int
   (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
@@ -865,12 +865,12 @@ val repeat: [> `Read] t -> int -> _ t
 val split : [> `Read] t -> [> `Read] t -> _ t * _ t
   (** [split s sep] splits the string [s] between the first
       occurrence of [sep].
-      raises [Invalid_string] if the separator is not found. *)
+      raises [Not_found] if the separator is not found. *)
 
 val rsplit : [> `Read] t -> string -> string * string
   (** [rsplit s sep] splits the string [s] between the last
       occurrence of [sep].
-      raises [Invalid_string] if the separator is not found. *)
+      raises [Not_found] if the separator is not found. *)
 
 val nsplit : [> `Read] t -> [> `Read] t -> _ t list
   (** [nsplit s sep] splits the string [s] into a list of strings
