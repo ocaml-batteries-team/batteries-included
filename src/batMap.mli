@@ -62,6 +62,11 @@ module type S =
     (** [remove x m] returns a map containing the same bindings as
        [m], except for [x] which is unbound in the returned map. *)
 
+    val modify: key -> ('a -> 'a) -> 'a t -> 'a t
+      (** [modify k f m] replaces the previous binding for [k] with [f] applied to
+	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
+	  search, [m] is returned unchanged. *)
+
     val mem: key -> 'a t -> bool
     (** [mem x m] returns [true] if [m] contains a binding for [x],
        and [false] otherwise. *)

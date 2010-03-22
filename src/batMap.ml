@@ -49,6 +49,11 @@
     val remove: key -> 'a t -> 'a t
       (** [remove x m] returns a map containing the same bindings as
 	  [m], except for [x] which is unbound in the returned map. *)
+
+    val modify: key -> ('a -> 'a) -> 'a t -> 'a t
+      (** [modify k f m] replaces the previous binding for [k] with [f] applied to
+	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
+	  search, [m] is returned unchanged. *)
       
     val mem: key -> 'a t -> bool
       (** [mem x m] returns [true] if [m] contains a binding for [x],
@@ -255,6 +260,19 @@
 	  Empty -> raise Not_found
 	| Node(_, x, d, _, _) -> (x, d)
       let choose s = choose (impl_of_t s) (* define properly for t *)
+
+      let modify x f m =
+	let rec loop = function
+	  | Node (l, k, v, r, h) ->
+              let c = Ord.compare x k in
+              if c = 0 then Node (l, x, f v, r, h)
+              else if c < 0 then Node (loop l, k, v, r, h)
+              else (* c > 0 *)	Node (l, k, v, loop r, h)
+	  | Empty -> raise Not_found in
+	try 
+	  t_of_impl (loop (impl_of_t m))
+	with Not_found -> m
+
 
 (*	NEEDS BAL FROM MAP IMPLEMENTATION
       (* needed by split, not exposed atm *)
