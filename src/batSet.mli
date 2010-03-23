@@ -386,6 +386,16 @@ val pop : 'a t -> 'a * 'a t
   (** returns one element of the set and the set without that element.
       Raises [Not_found] if given an empty set *)
 
+val union: 'a t -> 'a t -> 'a t
+  (** [union s t] returns the union of [s] and [t] - the set containing
+      all elements in either [s] and [t].  The returned set uses [t]'s
+      comparison function.  The current implementation works better for
+      small [s]. *)
+
+val diff: 'a t -> 'a t -> 'a t
+  (** [diff s t] returns the set of all elements in [s] but not in
+      [t]. The returned set uses [s]'s comparison function.*)
+
 (** {6 Boilerplate code}*)
 
 

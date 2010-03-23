@@ -151,6 +151,15 @@ val pop : ('a, 'b) t -> ('a * 'b) * ('a, 'b) t
   (** [pop m] returns a binding from [m] and [m] without that
       binding. *)
 
+val union : ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
+  (** [union m1 m2] merges two maps, using the comparison function of
+      the second map and containing all bindings of the two maps.  In
+      case of conflicted bindings, the first map's bindings override the
+      second map's. Equivalent to [foldi add m1 m2]*)
+
+val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
+  (** [diff m1 m2] removes all bindings of keys found in [m2] from [m1].  Equivalent to [fold remove m2 m1] *)
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
