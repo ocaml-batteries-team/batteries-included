@@ -458,7 +458,11 @@ val unique : unit -> int
 
     {b Note} This is thread-safe.*)
 
-
+val tee : ('a -> unit) -> 'a -> 'a
+  (** Allows application of a function in the middle of a pipe
+      sequence without disturbing the sequence.  [x |> tee f]
+      evaluates to [x], but has the side effect of [f x].  Useful for
+      debugging. *)
 
 val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b 
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
