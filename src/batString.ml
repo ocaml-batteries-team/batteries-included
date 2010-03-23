@@ -441,7 +441,7 @@ let t_printer paren out x =
   print out (escaped x);
   BatInnerIO.write out '"'
 
-let quote = BatPrintf.sprintf2 "%S"
+let quote s = BatPrintf.sprintf2 "%S" s
 
 module Exceptionless =
 struct
