@@ -14,7 +14,7 @@ open Command (* no longer needed for OCaml >= 3.10.2 *)
 *)
 
 let run_and_read      = Ocamlbuild_pack.My_unix.run_and_read
-    
+
 let blank_sep_strings = Ocamlbuild_pack.Lexers.blank_sep_strings
 
 module OCamlFind =
@@ -34,7 +34,7 @@ struct
   let  before_options () =
     (* by using Before_options one let command line options have an higher priority *)
     (* on the contrary using After_options will guarantee to have the higher priority *)
-    
+
     (* override default commands by ocamlfind ones *)
     Options.ocamlc     := ocamlfind & A"ocamlc";
     Options.ocamlopt   := ocamlfind & A"ocamlopt";
@@ -49,7 +49,7 @@ struct
       let char = ocamldoc_directory.[length - 1] in
 	if (char = '\n') || (char = '\r') then String.sub ocamldoc_directory 0 (length - 1)
 	else ocamldoc_directory
-    
+
   let after_rules () =
        (* When one link an OCaml library/binary/package, one should use -linkpkg *)
        flag ["ocaml"; "byte";   "link"; "program"] & A"-linkpkg";
@@ -57,8 +57,8 @@ struct
 
 
        (* For each ocamlfind package one inject the -package option when
-       	* compiling, computing dependencies, generating documentation and
-       	* linking. *)
+	* compiling, computing dependencies, generating documentation and
+	* linking. *)
        List.iter begin fun pkg ->
          flag ["ocaml"; "compile";  "pkg_"^pkg] & S[A"-package"; A pkg];
          flag ["ocaml"; "ocamldep"; "pkg_"^pkg] & S[A"-package"; A pkg];
@@ -68,19 +68,19 @@ struct
        end (find_packages ());
 
        (* Like -package but for extensions syntax. Morover -syntax is useless
-       	* when linking. *)
+	* when linking. *)
        List.iter begin fun syntax ->
          flag ["ocaml"; "compile";  "syntax_"^syntax] & S[A"-syntax"; A syntax];
          flag ["ocaml"; "ocamldep"; "syntax_"^syntax] & S[A"-syntax"; A syntax];
          flag ["ocaml"; "doc";      "syntax_"^syntax] & S[A"-syntax"; A syntax];
          flag ["ocaml"; "infer_interface"; "syntax_"^syntax] & S[A"-syntax"; A syntax];
        end (find_syntaxes ());
-       
+
        (* The default "thread" tag is not compatible with ocamlfind.
           Indeed, the default rules add the "threads.cma" or "threads.cmxa"
           options when using this tag. When using the "-linkpkg" option with
           ocamlfind, this module will then be added twice on the command line.
-       
+
           To solve this, one approach is to add the "-thread" option when using
           the "threads" package using the previous plugin.
         *)
@@ -173,11 +173,11 @@ struct
     flag ["ocaml"; "infer_interface"; "use_batteries_r"] & S cl_batteries_revised;
 
 
-(*    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose"; 
-						    A"-package"; A "batteries.syntax.full"; 
+(*    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose";
+						    A"-package"; A "batteries.syntax.full";
 						    A"-syntax";  A "batteries.syntax.full"];
     flag ["ocaml"; "ocamldep"; "use_batteries"] & S[A "-verbose";
-						    A"-package"; A "batteries.syntax.full"; 
+						    A"-package"; A "batteries.syntax.full";
 						    A"-syntax"; A "batteries.syntax.full"];
     flag ["ocaml"; "doc";      "use_batteries"] & S[A "-verbose";
 						    A"-package"; A "batteries.syntax.full";
@@ -209,11 +209,11 @@ module Dynamic = struct
     Printf.sprintf "%s/%s" dir runner
 
   let generate_stub runner bin =
-    let init_loader = 
-      Printf.sprintf 
+    let init_loader =
+      Printf.sprintf
 	 "(*Locate Batteries loader*)
           Findlib.init ();;
-          let binary = Findlib.resolve_path %S;;" 
+          let binary = Findlib.resolve_path %S;;"
 	 runner
     and cl_loader =
 (*(Pathname.concat Pathname.current_dir_name cma)(*Should do one of the following:
@@ -233,7 +233,7 @@ module Dynamic = struct
         let command = Buffer.contents buf in
         Printf.eprintf \"Requesting load of %S\\n...\\n%!\" command;
         Sys.command command
-        " 
+        "
     in Printf.sprintf "%s\n%s\n%s\n" init_loader cl_loader start
 
 
@@ -243,9 +243,9 @@ module Dynamic = struct
       rule ".cma to _dyn.ml (no threads)"
 	~prod:"%_dynbyte.ml"
 	~dep:"%.cma"
-	begin fun env build -> 
+	begin fun env build ->
 	  let dest   = env "%_dynbyte.ml"
-	  and bin    = env "%.cma" 
+	  and bin    = env "%.cma"
           and runner = decide_runner (env "%.dynbyte") "run.byte" in
 	  let contents = generate_stub runner bin
 	  in
@@ -257,7 +257,7 @@ module Dynamic = struct
 
       rule "_dynbyte.ml to .dynbyte"
 	~prod:"%.dynbyte"
-	~dep: "%_dynbyte.byte" 
+	~dep: "%_dynbyte.byte"
 	begin
 	  fun env build ->
 	  let dest = env "%.dynbyte"
@@ -295,7 +295,7 @@ module Dynamic = struct
 
       rule "_dynnative.ml to .dynnative"
 	~prod:"%.dynnative"
-	~dep: "%_dynnative.native" 
+	~dep: "%_dynnative.native"
 	begin
 	  fun env build ->
 	  let dest = env "%.dynnative"
@@ -320,7 +320,7 @@ let _ = dispatch begin function
        Batteries.after_rules ();
        Dynamic.after_rules()
 
-       
+
    | _ -> ()
 end
 
