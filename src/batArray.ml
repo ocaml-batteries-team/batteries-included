@@ -197,6 +197,8 @@ let of_enum e =
 let of_backwards e =
   of_list (BatList.of_backwards e)
 
+let range xs = BatEnum.(--^) 0 (Array.length xs)
+
 let filter_map p xs =
   of_enum (BatEnum.filter_map p (enum xs))
 
