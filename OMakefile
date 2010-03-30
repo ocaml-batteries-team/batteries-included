@@ -65,7 +65,8 @@ hdoc/index.html: $(MLIS) $(replacesuffixes .mli,.cmi,$(MLIS))
 		-sort -html -d hdoc -I src src/*.mli
 
 man/BatStd.3o:
-	mkdir man
+	if $(not $(file-exists man))
+		mkdir man
 	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
 		-sort -man -d man -I src src/*.mli
 
