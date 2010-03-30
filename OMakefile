@@ -31,7 +31,7 @@ if $(defined-env DESTDIR)
 
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
-    rm -f hdoc/*
+    rm -rf hdoc
     rm -rf man
 
 BAT_FILES[] = battop.ml
@@ -61,19 +61,23 @@ install: all build/META
 	$(OCAMLFIND) install $(DESTOPT) $(NAME) build/META $(BAT_FILES)
 
 MLIS = $(glob src/*.mli)
-hdoc/index.html: $(MLIS) $(replacesuffixes .mli,.cmi,$(MLIS))
+DOC_DEPENDS = $(MLIS) $(replacesuffixes .mli,.cmi,$(MLIS))
+hdoc/index.html: $(DOC_DEPENDS)
 	if $(not $(file-exists hdoc))
 		mkdir hdoc
+	@echo "Building HTML documentation..."
 	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
-		-sort -html -d hdoc -I src src/*.mli
+		-hide-warnings -sort -html -d hdoc -I src src/*.mli
 
-man/BatStd.3o:
+man/BatStd.3o: $(DOC_DEPENDS)
 	if $(not $(file-exists man))
 		mkdir man
+	@echo "Building man pages..."
 	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
-		-sort -man -d man -I src src/*.mli
+		-hide-warnings -sort -man -d man -I src src/*.mli
 
-doc: hdoc/index.html man/BatStd.3o
+#don't build man pages on win32
+doc: hdoc/index.html $(if $(not $(equal $(OSTYPE), Win32)), man/BatStd.3o)
 
 install-doc: doc
 	if $(equal $(OSTYPE), Win32)
