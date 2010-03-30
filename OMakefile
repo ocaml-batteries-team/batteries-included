@@ -32,6 +32,7 @@ if $(defined-env DESTDIR)
 clean:
     rm -f $(filter-proper-targets $(ls R, .))
     rm -f hdoc/*
+    rm -rf man
 
 BAT_FILES[] = battop.ml
 
@@ -61,6 +62,8 @@ install: all build/META
 
 MLIS = $(glob src/*.mli)
 hdoc/index.html: $(MLIS) $(replacesuffixes .mli,.cmi,$(MLIS))
+	if $(not $(file-exists hdoc))
+		mkdir hdoc
 	$(OCAMLFIND) ocamldoc -package camomile -package threads.posix \
 		-sort -html -d hdoc -I src src/*.mli
 
