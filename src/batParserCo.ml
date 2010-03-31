@@ -273,10 +273,15 @@ let lookahead p e = match apply p e with
   | Backtrack (result, report, _)    -> Backtrack (Some result, report, e)
   | Failure _ as result              -> result
 
-let run p e = match apply p e with
+let interpret_result = function
   | Setback f | Failure f                -> BatStd.Bad f
   | Success (r, _) | Backtrack (r, _, _) -> BatStd.Ok r
-	
+
+let suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatStd.result), 'c) t = fun s e ->
+  let resume () = interpret_result (s e) in
+    Success (resume, e)
+
+let run p e = interpret_result (apply p e)
 
 let source_map p e =
   let rec aux e = match peek e with
