@@ -664,3 +664,8 @@ let union m1 m2 =
 let diff m1 m2 =
   foldi (fun k _ acc -> remove k acc) m2 m1
     (* TODO: as union - use tree operations for large maps *)
+
+let intersect merge m1 m2 = 
+  foldi (fun k v acc -> try add k (merge v (find k m2)) acc
+                        with Not_found -> acc) m1 empty
+  (* TODO: implement and compare with tree-based implementation *)
