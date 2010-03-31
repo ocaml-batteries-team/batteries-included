@@ -130,14 +130,13 @@ module type S =
 
     val values: 'a t -> 'a BatEnum.t
       (** Return an enumeration of al the values of a map.*)
-(*
-    val min_key : 'a t -> (key * 'a)
+    
+    val min_binding : 'a t -> (key * 'a)
       (** return the ([key,value]) pair with the smallest key *)
 
-    val max_key : 'a t -> (key * 'a)
+    val max_binding : 'a t -> (key * 'a)
       (** return the [(key,value)] pair with the largest key *)
 
-*)
     val choose : 'a t -> (key * 'a)
       (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
 (*
