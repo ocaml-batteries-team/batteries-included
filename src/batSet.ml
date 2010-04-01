@@ -335,34 +335,36 @@ module type S =
  *)
 
 
-type 'a t = ('a, unit) BatPMap.t
+type 'a t = ('a, unit) BatMap.t
 
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
-let empty    = BatPMap.empty
+let empty    = BatMap.empty
 
-let create   = BatPMap.create
+let create   = BatMap.create
 
-let is_empty = BatPMap.is_empty
+let singleton ?cmp x = BatMap.singleton ?cmp x ()
 
-let mem      = BatPMap.mem
+let is_empty = BatMap.is_empty
 
-let add e t  = BatPMap.add e () t
+let mem      = BatMap.mem
 
-let remove   = BatPMap.remove
+let add e t  = BatMap.add e () t
+
+let remove   = BatMap.remove
 
 let for_map f = fun x _ -> f x
 
-let iter f   = BatPMap.iter (for_map f)
+let iter f   = BatMap.iter (for_map f)
 
-let fold f   = BatPMap.foldi (for_map f)
+let fold f   = BatMap.foldi (for_map f)
 
-let map f e  = BatPMap.foldi (fun k _ acc -> add (f k) acc) e empty
+let map f e  = BatMap.foldi (fun k _ acc -> add (f k) acc) e empty
 
-let filter f = BatPMap.filteri (for_map f)
+let filter f = BatMap.filteri (for_map f)
 
-let filter_map f e = BatPMap.foldi (fun k _ acc -> match f k with None -> acc | Some v -> add v acc) e empty
+let filter_map f e = BatMap.foldi (fun k _ acc -> match f k with None -> acc | Some v -> add v acc) e empty
 
 let exists f t = BatReturn.label (fun label ->
 			       iter (fun k -> if f k then BatReturn.return label true) t;
@@ -371,14 +373,14 @@ let exists f t = BatReturn.label (fun label ->
 let cardinal t =
   fold (fun _ acc -> acc + 1) t 0
 
-let choose t = fst (BatPMap.choose t)
+let choose t = fst (BatMap.choose t)
 
-let min_elt t = fst (BatPMap.min_binding t)
+let min_elt t = fst (BatMap.min_binding t)
 
-let max_elt t = fst (BatPMap.max_binding t)
+let max_elt t = fst (BatMap.max_binding t)
 
 let enum t =
-  BatEnum.map (fun (k, _) -> k) (BatPMap.enum t)
+  BatEnum.map (fun (k, _) -> k) (BatMap.enum t)
 
 let of_enum t =
   BatEnum.fold (fun acc elem -> add elem acc) empty t
@@ -386,15 +388,17 @@ let of_enum t =
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
   BatEnum.print ~first ~last ~sep print_elt out (enum t)
 
-let for_all f t = BatPMap.for_all (fun k _ -> f k) t
+let for_all f t = BatMap.for_all (fun k _ -> f k) t
 
-let partition f t = BatPMap.partition (fun k _ -> f k) t
+let partition f t = BatMap.partition (fun k _ -> f k) t
 
-let filter f t = BatPMap.filteri (fun k _ -> f k) t
+let filter f t = BatMap.filteri (fun k _ -> f k) t
 
-let pop t = let (k, _), m = BatPMap.pop t in k, m
+let pop t = let (k, _), m = BatMap.pop t in k, m
 
-let union m n = BatPMap.union m n
+let union m n = BatMap.union m n
 
-let diff m n = BatPMap.diff m n
+let diff m n = BatMap.diff m n
+
+let intersect m n = BatMap.intersect (fun _ x -> x) m n
 

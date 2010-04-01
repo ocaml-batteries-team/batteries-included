@@ -303,6 +303,9 @@ val empty: 'a t
 val create : ('a -> 'a -> int) -> 'a t
   (** Creates a new empty set, using the provided function for key comparison.*)
 
+val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'a t
+(** Creates a new set with the single given element in it. *)
+
 val is_empty: 'a t -> bool
   (** Test whether a set is empty or not. *)
   

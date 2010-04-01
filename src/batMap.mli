@@ -276,6 +276,9 @@ val is_empty : ('a, 'b) t -> bool
 val create : ('a -> 'a -> int) -> ('a, 'b) t
 (** creates a new empty map, using the provided function for key comparison.*)
 
+val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'b -> ('a, 'b) t
+(** creates a new map with a single binding *)
+
 val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
     [m], plus a binding of [x] to [y]. If [x] was already bound
