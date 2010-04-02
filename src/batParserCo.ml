@@ -319,7 +319,7 @@ let one_of l e =
     satisfy exists e
 
 let none_of l e = 
-  let for_all x = not (List.for_all (( <> ) x) l) in
+  let for_all x = List.for_all (( <> ) x) l in
     satisfy for_all e
 
 let range a b = satisfy (fun x -> a <= x && x <= b)
