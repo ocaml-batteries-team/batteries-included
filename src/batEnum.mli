@@ -120,6 +120,10 @@ val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
       element if e is a singleton, otherwise [f (... (f (f a1 a2)
       a3)...) aN] where a1..N are the elements of [e]. *)
 
+val sum : int t -> int
+  (** [sum] returns the sum of the given int enum.  If the argument is
+      empty, returns 0 *)
+
 val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
   (** [fold2] is similar to [fold] but will fold over two enumerations at the
       same time until one of the two enumerations ends. *)

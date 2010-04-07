@@ -373,6 +373,10 @@ let reduce f t =
   with None -> raise Not_found
     |  Some init -> fold f init t
 
+let sum t = 
+  match get t with
+    | None -> 0
+    | Some i -> fold (+) i t
 
 let exists f t =
   try let rec aux () = f (t.next()) || aux ()
