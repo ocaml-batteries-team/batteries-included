@@ -253,13 +253,16 @@ module IRopeSet   : S with type elt = BatRope.t
 module IntSet     : S with type elt = BatInt.t
 (** A set of integers.*)
 
+module CharSet    : S with type elt = BatChar.t
+  (** A set of characters.  May be better to use a bitarray or ISet,
+      depending on your situation *)
 
 module Make (Ord : OrderedType) : S with type elt = Ord.t
-(** Functor building an implementation of the set structure
-   given a totally ordered type. 
+  (** Functor building an implementation of the set structure
+      given a totally ordered type.
 
-    @documents Set.Make
-*)
+      @documents Set.Make
+  *)
 
 (*
  * PSet - Polymorphic sets

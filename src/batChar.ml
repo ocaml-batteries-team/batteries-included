@@ -21,6 +21,8 @@
 
 type t = char
 
+let compare (x:char) y = Pervasives.compare x y
+
   let is_whitespace = function
     ' ' | '\010' | '\013' | '\009' | '\026' | '\012' -> true
   | _ -> false

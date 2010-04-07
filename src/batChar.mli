@@ -34,7 +34,9 @@
     @author Xavier Leroy (base module)
     @author David Teller
 *)
+type t = char
 
+val compare : char -> char -> int
 
 val is_whitespace : char -> bool
 (** Determine if a character is a whitespace.
