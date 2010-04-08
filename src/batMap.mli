@@ -65,7 +65,11 @@ module type S =
     val modify: key -> ('a -> 'a) -> 'a t -> 'a t
       (** [modify k f m] replaces the previous binding for [k] with [f] applied to
 	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
-	  search, [m] is returned unchanged. *)
+	  search, [Not_found] is raised.
+
+	  @since 1.2.0
+	  @raise Not_found
+*)
 
     val mem: key -> 'a t -> bool
     (** [mem x m] returns [true] if [m] contains a binding for [x],
@@ -379,7 +383,10 @@ val add_carry : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t * 'b option
 val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> ('a, 'b) t
   (** [modify k f m] replaces the previous binding for [k] with [f]
       applied to that value.  If [k] is unbound in [m] or [Not_found] is
-      raised during the search, [m] is returned unchanged. *)
+      raised during the search,  [Not_found] is raised.
+
+      @since 1.2.0
+      @raise Not_found *)
 
 val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
   (** [extract k m] removes the current binding of [k] from [m],

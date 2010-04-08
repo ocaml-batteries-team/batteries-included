@@ -53,7 +53,7 @@
     val modify: key -> ('a -> 'a) -> 'a t -> 'a t
       (** [modify k f m] replaces the previous binding for [k] with [f] applied to
 	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
-	  search, [m] is returned unchanged. *)
+	  search, [Not_found] is raised. *)
       
     val mem: key -> 'a t -> bool
       (** [mem x m] returns [true] if [m] contains a binding for [x],
@@ -269,9 +269,7 @@
               else if c < 0 then Node (loop l, k, v, r, h)
               else (* c > 0 *)	Node (l, k, v, loop r, h)
 	  | Empty -> raise Not_found in
-	try 
-	  t_of_impl (loop (impl_of_t m))
-	with Not_found -> m
+	t_of_impl (loop (impl_of_t m))
 
 
 (*	NEEDS BAL FROM MAP IMPLEMENTATION
@@ -631,10 +629,10 @@ let modify x f ({ cmp = cmp; map = map } as m) =
         else
           let nr = loop r in
           bal l k v nr
-    | Empty -> raise Not_found in
-  try
-    { cmp = cmp; map = loop map }
-  with Not_found -> m
+    | Empty -> raise Not_found
+  in
+  { cmp = cmp; map = loop map }
+
 
 let extract x { cmp = cmp; map = map } =
   let rec loop = function
