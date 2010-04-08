@@ -122,8 +122,6 @@ open Pervasives
   let ( **> )        = ( <| )
   let undefined ?(message="Undefined") = failwith message
 
-  let tee f x = f x; x
-
   (** {6 String operations}*)
 
   let lowercase = String.lowercase

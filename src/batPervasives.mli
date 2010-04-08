@@ -458,9 +458,9 @@ val unique : unit -> int
 
     {b Note} This is thread-safe.*)
 
-val tee : ('a -> unit) -> 'a -> 'a
+val tap : ('a -> unit) -> 'a -> 'a
   (** Allows application of a function in the middle of a pipe
-      sequence without disturbing the sequence.  [x |> tee f]
+      sequence without disturbing the sequence.  [x |> tap f]
       evaluates to [x], but has the side effect of [f x].  Useful for
       debugging. *)
 
@@ -726,9 +726,6 @@ val ( // ) : 'a BatEnum.t -> ('a -> bool) -> 'a BatEnum.t
 val concat : 'a BatEnum.t BatEnum.t -> 'a BatEnum.t
   (** [concat e] returns an enumeration over all elements of all enumerations
       of [e]. *)
-
-val tap : ('a -> unit) -> 'a -> 'a
-  (** Apply the function to the given value, and return the value as the result *)
 
 
 val ( -- ) : int -> int -> int BatEnum.t
