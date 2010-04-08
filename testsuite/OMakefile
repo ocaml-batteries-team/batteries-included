@@ -9,6 +9,7 @@ OCAMLINCLUDES += $(ROOT)/src
 TESTS[] = 
     test_base64
     test_digest
+    test_dynarray
     test_enum
     test_file
     test_pmap
