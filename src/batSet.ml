@@ -311,7 +311,7 @@ module type S =
   module RopeSet    = Make(BatRope)
   module IRopeSet   = Make(BatRope.IRope)
   module IntSet     = Make(BatInt)
-  module CharSet    = Make(BatChar)
+  module CharSet    = Make(Char)
 
 (*
  * PMap - Polymorphic sets

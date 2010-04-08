@@ -43,19 +43,19 @@ let int_dynarray = to_format (BatDynArray.print BatInt.print)
 let char_dynarray = to_format (BatDynArray.print BatChar.print)
 let float_dynarray = to_format (BatDynArray.print BatFloat.print)
 
-let int_set = to_format BatSet.IntSet.print
-let string_set = to_format BatSet.StringSet.print
-let istring_set = to_format BatSet.IStringSet.print
-let rope_set = to_format BatSet.RopeSet.print
-let irope_set = to_format BatSet.IRopeSet.print
-let char_set = to_format BatSet.CharSet.print
+let int_set = to_format (BatSet.IntSet.print BatInt.print)
+let string_set = to_format (BatSet.StringSet.print BatString.print)
+let istring_set = to_format (BatSet.IStringSet.print BatString.print)
+let rope_set = to_format (BatSet.RopeSet.print BatRope.print)
+let irope_set = to_format (BatSet.IRopeSet.print BatRope.print)
+let char_set = to_format (BatSet.CharSet.print BatChar.print)
 
 let int_pset = to_format (BatSet.print BatInt.print)
 let string_pset = to_format (BatSet.print BatString.print)
 let rope_pset = to_format (BatSet.print BatRope.print)
 let char_pset = to_format (BatSet.print BatChar.print)
 
-let iset = to_format BatISet.print
+(*let iset = to_format BatISet.print *)
 
 
 let int_pset = to_format (BatSet.print BatInt.print)

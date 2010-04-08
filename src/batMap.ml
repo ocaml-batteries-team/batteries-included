@@ -618,7 +618,7 @@ let add_carry x d { cmp = cmp; map = map } =
   let map, carry = loop map in
   { cmp = cmp; map = map }, carry
 
-let modify x f ({ cmp = cmp; map = map } as m) =
+let modify x f { cmp = cmp; map = map } =
   let rec loop = function
     | Node (l, k, v, r, h) ->
         let c = cmp x k in

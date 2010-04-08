@@ -253,7 +253,7 @@ module IRopeSet   : S with type elt = BatRope.t
 module IntSet     : S with type elt = BatInt.t
 (** A set of integers.*)
 
-module CharSet    : S with type elt = BatChar.t
+module CharSet    : S with type elt = Char.t
   (** A set of characters.  May be better to use a bitarray or ISet,
       depending on your situation *)
 
