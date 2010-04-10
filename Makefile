@@ -3,18 +3,19 @@
 
 NAME = batteries
 VERSION = 1.1.0
+DOCROOT ?= /usr/share/doc/ocaml-batteries
+BROWSER_COMMAND ?= x-www-browser %s
 
 OCAMLBUILD ?= ocamlbuild
 
-NATIVE_ENABLED ?= yes
+BATTERIES_NATIVE ?= yes
 
 .PHONY: all clean doc
 
 all: build/META
+	test ! -e src/batteries_config.ml || rm src/batteries_config.ml
 	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo
-	if [ X$(NATIVE_ENABLED) = Xyes ]; then \
-		$(OCAMLBUILD) native.otarget; \
-	fi
+	test X$(BATTERIES_NATIVE) != Xyes || $(OCAMLBUILD) native.otarget
 
 clean:
 	rm -f build/META apidocs
@@ -22,9 +23,14 @@ clean:
 
 doc:
 	$(OCAMLBUILD) batteries.docdir/index.html
-	[ -e apidocs ] || ln -s _build/batteries.docdir apidocs
+	test -e apidocs || ln -s _build/batteries.docdir apidocs
 
 build/META: build/META.in
 	sed -e 's|@VERSION@|$(VERSION)|' \
 	    build/META.in > build/META
 
+src/batteries_config.ml: src/batteries_config.mlp
+	sed -e 's|@VERSION@|$(VERSION)|' \
+            -e 's|@DOCROOT@|$(DOCROOT)|' \
+            -e 's|@BROWSER_COMMAND@|$(BROWSER_COMMAND)|' \
+	    src/batteries_config.mlp >src/batteries_config.ml

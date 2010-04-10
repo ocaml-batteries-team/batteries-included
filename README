@@ -17,8 +17,8 @@ Batteries Included serves the following purposes:
 **** Requirements ****
 You will need
 * OCaml >= 3.11
-* OMake (http://omake.metaprl.org/index.html)
 * Findlib >= 1.2.5  (http://projects.camlcity.org/projects/findlib.html/)
+* make (optional; aids build and installation)
 * Camomile >= 0.7 (http://camomile.sourceforge.net/)
 * OUnit    to build and run the tests
 
@@ -26,17 +26,17 @@ You will need
 
 To install the full version of OCaml Batteries Included, execute
 
-   $ omake all
-   $ omake test     [ optional ]
-   $ sudo omake install 
+   $ make all
+   $ make test     [ optional ]
+   $ sudo make install 
 
-   $ omake doc      [ optional ]
-   $ sudo omake install-doc   [ optional ]
+   $ make doc      [ optional ]
+   $ sudo make install-doc   [ optional ]
 
 If you want the documentation installed elsewhere, set this *before*
 starting the build process (it becomes part of batteries_config.ml).
 
-   $ export BATTERIES_DOCROOT=/path/to/new/docroot/
+   $ export DOCROOT=/path/to/new/docroot/
 
 If you want findlib to use a -destdir argument to [ocamlfind install], set
 

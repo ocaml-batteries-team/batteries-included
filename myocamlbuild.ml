@@ -18,6 +18,13 @@ let _ = dispatch begin function
       Options.ocamldep   := ocamlfind "ocamldep";
       Options.ocamldoc   := ocamlfind "ocamldoc";
       Options.ocamlmktop := ocamlfind "ocamlmktop"
+  | Before_rules ->
+      rule "preprocess config file"
+        ~prod:"%.ml"
+        ~deps:["%.mlp"; "Makefile"]
+        begin fun env build ->
+          Cmd(S[A"make"; P(env "%.ml")])
+        end
   | After_rules ->
       flag ["ocaml"; "compile"] & S[A"-package"; A packs];
       flag ["ocaml"; "ocamldep"] & S[A"-package"; A packs];
