@@ -82,7 +82,6 @@ BatIMap
 Batteries_config
 Batteries_print
 Batteries_uni
-BatConcurrent
 BatMutex
 BatRMutex
 Batteries
