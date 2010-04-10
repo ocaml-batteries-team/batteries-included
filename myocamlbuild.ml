@@ -27,5 +27,8 @@ let _ = dispatch begin function
 
       flag ["ocaml"; "compile"; "threads"] & A"-thread";
       flag ["ocaml"; "link"; "threads"] & A"-thread";
+      flag ["ocaml"; "doc"; "threads"] & S[A"-I"; A "+threads"];
+
+      flag ["ocaml"; "doc"] & A"-hide-warnings";
   | _ -> ()
 end
