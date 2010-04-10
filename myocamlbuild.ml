@@ -30,5 +30,15 @@ let _ = dispatch begin function
       flag ["ocaml"; "doc"; "threads"] & S[A"-I"; A "+threads"];
 
       flag ["ocaml"; "doc"] & A"-hide-warnings";
+      
+      flag ["ocaml"; "compile"; "camlp4rf"] &
+        S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4rf"];
+      flag ["ocaml"; "ocamldep"; "camlp4rf"] &
+        S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4rf"];
+
+      flag ["ocaml"; "compile"; "camlp4of"] &
+        S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4of"];
+      flag ["ocaml"; "ocamldep"; "camlp4of"] &
+        S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4of"];
   | _ -> ()
 end
