@@ -1,4 +1,5 @@
 *~
+_build
 build/META
 src/batteries_config.ml
 doc/batteries/html/api/
