@@ -10,7 +10,7 @@ OCAMLBUILD ?= ocamlbuild
 
 BATTERIES_NATIVE ?= yes
 
-.PHONY: all clean doc
+.PHONY: all clean doc install uninstall reinstall
 
 all: build/META
 	test ! -e src/batteries_config.ml || rm src/batteries_config.ml
@@ -24,6 +24,30 @@ clean:
 doc:
 	$(OCAMLBUILD) batteries.docdir/index.html
 	test -e apidocs || ln -s _build/batteries.docdir apidocs
+
+install: all
+	ocamlfind install estring libs/estring/META \
+		_build/libs/estring/*.cmo \
+		_build/libs/estring/*.cmi \
+		_build/libs/estring/*.mli
+	ocamlfind install $(NAME) build/META \
+		 _build/src/*.cma _build/src/*.cmxa \
+		_build/src/*.cmx _build/src/*.cmi _build/src/*.mli \
+		_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
+		_build/src/syntax/pa_strings/pa_strings.cma
+
+uninstall:
+	ocamlfind remove estring
+	ocamlfind remove $(NAME)
+	rm -rf $(DOCROOT)
+
+install-doc: doc
+	mkdir -p $(DOCROOT)
+	cp apidocs/* $(DOCROOT)
+
+reinstall:
+	$(MAKE) uninstall
+	$(MAKE) install
 
 build/META: build/META.in
 	sed -e 's|@VERSION@|$(VERSION)|' \
