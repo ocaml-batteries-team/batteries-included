@@ -36,7 +36,7 @@ let _ = dispatch begin function
       flag ["ocaml"; "link"; "threads"] & A"-thread";
       flag ["ocaml"; "doc"; "threads"] & S[A"-I"; A "+threads"];
 
-      flag ["ocaml"; "doc"] & A"-hide-warnings";
+      flag ["ocaml"; "doc"] & S[A"-hide-warnings"; A"-sort"];
       
       flag ["ocaml"; "compile"; "camlp4rf"] &
         S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4rf"];
