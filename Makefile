@@ -31,7 +31,7 @@ install: all
 		_build/libs/estring/*.cmi \
 		_build/libs/estring/*.mli
 	ocamlfind install $(NAME) build/META \
-		 _build/src/*.cma _build/src/*.cmxa \
+		 _build/src/*.cma _build/src/*.cmxa _build/src/*.a \
 		_build/src/*.cmx _build/src/*.cmi _build/src/*.mli \
 		_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 		_build/src/syntax/pa_strings/pa_strings.cma
