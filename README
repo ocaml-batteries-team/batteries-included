@@ -46,6 +46,10 @@ To disable native compilation:
    
    $ export BATTERIES_NATIVE=false
 
+To disable building of native shared libraries:
+
+   $ export BATTERIES_NATIVE_SHLIB=false
+
 *** Using Batteries ***
 
 To get started using Batteries at the toplevel, copy the ocamlinit

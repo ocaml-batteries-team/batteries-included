@@ -24,7 +24,21 @@ let _ = dispatch begin function
         ~deps:["%.mlp"; "Makefile"]
         begin fun env build ->
           Cmd(S[A"make"; P(env "%.ml")])
+        end;
+
+      rule "build shared module"
+        ~prod:"%.cmxs"
+        ~dep:"%.cmxa"
+        begin fun env build ->
+          let tags = Tags.union
+            (tags_of_pathname (env "%.cmxs"))
+            (tags_of_pathname (env "%.cmxa"))
+            ++ "ocaml" ++ "link" ++ "module"
+          in
+            Cmd(S[!Options.ocamlopt; A"-shared"; A"-linkall";
+                  T tags; A"-o"; P(env "%.cmxs"); P(env "%.cmxa")])
         end
+
   | After_rules ->
       flag ["ocaml"; "compile"] & S[A"-package"; A packs];
       flag ["ocaml"; "ocamldep"] & S[A"-package"; A packs];

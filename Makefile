@@ -9,13 +9,18 @@ BROWSER_COMMAND ?= x-www-browser %s
 OCAMLBUILD ?= ocamlbuild
 
 BATTERIES_NATIVE ?= yes
+BATTERIES_NATIVE_SHLIB ?= yes
 
 .PHONY: all clean doc install uninstall reinstall
 
 all: build/META
 	test ! -e src/batteries_config.ml || rm src/batteries_config.ml
 	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo
-	test X$(BATTERIES_NATIVE) != Xyes || $(OCAMLBUILD) native.otarget
+	if test X$(BATTERIES_NATIVE_SHLIB) = Xyes; then \
+		$(OCAMLBUILD) shared.otarget; \
+	elif test X$(BATTERIES_NATIVE) = Xyes; then \
+		$(OCAMLBUILD) native.otarget; \
+	fi
 
 clean:
 	rm -f build/META apidocs
@@ -31,7 +36,8 @@ install: all
 		_build/libs/estring/*.cmi \
 		_build/libs/estring/*.mli
 	ocamlfind install $(NAME) build/META \
-		 _build/src/*.cma _build/src/*.cmxa _build/src/*.a \
+		 _build/src/*.cma _build/src/*.cmxa _build/src/*.cmxs \
+		 _build/src/*.a \
 		_build/src/*.cmx _build/src/*.cmi _build/src/*.mli \
 		_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 		_build/src/syntax/pa_strings/pa_strings.cma
