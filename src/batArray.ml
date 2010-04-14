@@ -248,7 +248,7 @@ let make_compare cmp a b =
   in
   let rec aux i = 
     if i < length then
-      let result = compare (unsafe_get a i) (unsafe_get b i) in
+      let result = cmp (unsafe_get a i) (unsafe_get b i) in
 	if result = 0 then aux (i + 1)
 	else               result
     else
