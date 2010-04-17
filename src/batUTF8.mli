@@ -38,10 +38,11 @@ open CamomileLibrary
     @documents UTF8
 *)
 
-(** UTF-8 encoded Unicode strings.*)
-type t 
-(* maybe use new private types in 3.11 once that's released *)
- 
+(** UTF-8 encoded Unicode strings.  If you coerce it to a string,
+    modify it at your own risk.  Call {!validate} to verify that the
+    contents are still valid UTF-8.  *)
+type t = private string
+    
 exception Malformed_code
 
 val validate : string -> unit
