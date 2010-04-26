@@ -68,7 +68,7 @@ module type S =
 	  search, [Not_found] is raised.
 
 	  @since 1.2.0
-	  @raise Not_found
+	  @raise Not_found if [k] is unbound in [m] (or [f] raises [Not_found])
 *)
 
     val mem: key -> 'a t -> bool
@@ -386,7 +386,7 @@ val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> ('a, 'b) t
       raised during the search,  [Not_found] is raised.
 
       @since 1.2.0
-      @raise Not_found *)
+      @raise Not_found if [k] is unbound in [m] (or [f] raises [Not_found]) *)
 
 val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
   (** [extract k m] removes the current binding of [k] from [m],
