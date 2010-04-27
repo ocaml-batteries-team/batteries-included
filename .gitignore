@@ -6,14 +6,6 @@ doc/batteries/html/api/
 hdoc/*
 man/*
 /.omake*
-*.cmx
-*.cmo
-*.cmi
-*.cma
-*.cmxa
-*.o
-*.a
-*.omc
 *.swp
 *.opt
 *.run

@@ -2,7 +2,7 @@
 # It punts to ocamlbuild for all the heavy lifting.
 
 NAME = batteries
-VERSION = 1.1.0
+VERSION = 1.2.0pre
 DOCROOT ?= /usr/share/doc/ocaml-batteries
 BROWSER_COMMAND ?= x-www-browser %s
 
@@ -11,16 +11,23 @@ OCAMLBUILD ?= ocamlbuild
 BATTERIES_NATIVE ?= yes
 BATTERIES_NATIVE_SHLIB ?= yes
 
-.PHONY: all clean doc install uninstall reinstall
+# What to build
+TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo
+TEST_TARGETS = testsuite/main.byte
+
+ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
+  TARGETS += shared.otarget
+  TEST_TARGETS += testsuite/main.native
+else ifeq ($(BATTERIES_NATIVE), yes)
+  TARGETS += native.otarget
+  TEST_TARGETS += testsuite/main.native
+endif
+
+.PHONY: all clean doc install uninstall reinstall test
 
 all: build/META
 	test ! -e src/batteries_config.ml || rm src/batteries_config.ml
-	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo
-	if test X$(BATTERIES_NATIVE_SHLIB) = Xyes; then \
-		$(OCAMLBUILD) shared.otarget; \
-	elif test X$(BATTERIES_NATIVE) = Xyes; then \
-		$(OCAMLBUILD) native.otarget; \
-	fi
+	$(OCAMLBUILD) $(TARGETS)
 
 clean:
 	rm -f build/META apidocs
@@ -64,3 +71,7 @@ src/batteries_config.ml: src/batteries_config.mlp
             -e 's|@DOCROOT@|$(DOCROOT)|' \
             -e 's|@BROWSER_COMMAND@|$(BROWSER_COMMAND)|' \
 	    src/batteries_config.mlp >src/batteries_config.ml
+
+test: 
+	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
+	$(foreach TEST, $(TEST_TARGETS), _build/$(TEST); )

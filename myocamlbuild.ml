@@ -40,12 +40,22 @@ let _ = dispatch begin function
         end
 
   | After_rules ->
+      (* When one links an OCaml program, one should use -linkpkg *)
+      flag ["ocaml"; "link"; "program"] & A"-linkpkg";
+
       flag ["ocaml"; "compile"] & S[A"-package"; A packs];
       flag ["ocaml"; "ocamldep"] & S[A"-package"; A packs];
       flag ["ocaml"; "doc"] & S[A"-package"; A packs];
       flag ["ocaml"; "link"] & S[A"-package"; A packs];
       flag ["ocaml"; "infer_interface"] & S[A"-package"; A packs];
 
+      flag ["ocaml"; "infer_interface"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
+      flag ["ocaml"; "ocamldep"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
+      flag ["ocaml"; "compile"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
+      flag ["ocaml"; "link"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
+
+      (* DON'T USE TAG 'thread', USE 'threads' 
+	 for compatibility with ocamlbuild *)
       flag ["ocaml"; "compile"; "threads"] & A"-thread";
       flag ["ocaml"; "link"; "threads"] & A"-thread";
       flag ["ocaml"; "doc"; "threads"] & S[A"-I"; A "+threads"];
