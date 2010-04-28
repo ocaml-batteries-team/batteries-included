@@ -2,7 +2,7 @@ Package: godi-batteries
 Version: 1.2.0pre
 Revision: 0
 Depends: godi-ocaml (>= 3.11), godi-camomile (>= 0.7), godi-findlib (>= 1.2.5)
-Sources: http://download.github.com/elehack-batteries-included-8633933.tar.gz
+Sources: http://github.com/downloads/elehack/batteries-included/batteries-included-1.2.0pre1.tar.gz
 Homepage: http://github.com/thelema/batteries-included
 Maintainer: Michael Ekstrand <michael@elehack.net>
 Docfiles: README, LICENSE
