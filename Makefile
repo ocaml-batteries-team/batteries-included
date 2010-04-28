@@ -4,7 +4,9 @@
 NAME = batteries
 VERSION = 1.2.0pre
 DOCROOT ?= /usr/share/doc/ocaml-batteries
+export DOCROOT
 BROWSER_COMMAND ?= x-www-browser %s
+export BROWSER_COMMAND
 
 OCAMLBUILD ?= ocamlbuild
 
@@ -12,7 +14,7 @@ BATTERIES_NATIVE ?= yes
 BATTERIES_NATIVE_SHLIB ?= yes
 
 # What to build
-TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo
+TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
 TEST_TARGETS = testsuite/main.byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
@@ -25,12 +27,12 @@ endif
 
 .PHONY: all clean doc install uninstall reinstall test
 
-all: build/META
+all:
 	test ! -e src/batteries_config.ml || rm src/batteries_config.ml
 	$(OCAMLBUILD) $(TARGETS)
 
 clean:
-	rm -f build/META apidocs
+	rm -f apidocs
 	$(OCAMLBUILD) -clean
 
 doc:
@@ -42,7 +44,7 @@ install: all
 		_build/libs/estring/*.cmo \
 		_build/libs/estring/*.cmi \
 		_build/libs/estring/*.mli
-	ocamlfind install $(NAME) build/META \
+	ocamlfind install $(NAME) _build/META \
 		 _build/src/*.cma _build/src/*.cmxa _build/src/*.cmxs \
 		 _build/src/*.a battop.ml \
 		_build/src/*.cmx _build/src/*.cmi _build/src/*.mli \
@@ -61,16 +63,6 @@ install-doc: doc
 reinstall:
 	$(MAKE) uninstall
 	$(MAKE) install
-
-build/META: build/META.in
-	sed -e 's|@VERSION@|$(VERSION)|' \
-	    build/META.in > build/META
-
-src/batteries_config.ml: src/batteries_config.mlp
-	sed -e 's|@VERSION@|$(VERSION)|' \
-            -e 's|@DOCROOT@|$(DOCROOT)|' \
-            -e 's|@BROWSER_COMMAND@|$(BROWSER_COMMAND)|' \
-	    src/batteries_config.mlp >src/batteries_config.ml
 
 test: 
 	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)

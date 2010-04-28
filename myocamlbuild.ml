@@ -19,13 +19,6 @@ let _ = dispatch begin function
       Options.ocamldoc   := ocamlfind "ocamldoc";
       Options.ocamlmktop := ocamlfind "ocamlmktop"
   | Before_rules ->
-      rule "preprocess config file"
-        ~prod:"%.ml"
-        ~deps:["%.mlp"; "Makefile"]
-        begin fun env build ->
-          Cmd(S[A"make"; P(env "%.ml")])
-        end;
-
       rule "build shared module"
         ~prod:"%.cmxs"
         ~dep:"%.cmxa"
@@ -37,6 +30,20 @@ let _ = dispatch begin function
           in
             Cmd(S[!Options.ocamlopt; A"-shared"; A"-linkall";
                   T tags; A"-o"; P(env "%.cmxs"); P(env "%.cmxa")])
+        end;
+
+      rule "process config file"
+        ~prod:"%.ml"
+        ~deps:["%.mlp"; "VERSION"; "mkconf.byte"]
+        begin fun env build ->
+          Cmd(S[A"ocamlrun"; P"mkconf.byte"; P(env "%.mlp"); P(env "%.ml")])
+        end;
+      
+      rule "process meta file"
+        ~prod:"META"
+        ~deps:["META.in"; "VERSION"; "mkconf.byte"]
+        begin fun env build ->
+          Cmd(S[A"ocamlrun"; P"mkconf.byte"; P"META.in"; P"META"])
         end
 
   | After_rules ->
