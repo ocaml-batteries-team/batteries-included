@@ -2,7 +2,11 @@
 # It punts to ocamlbuild for all the heavy lifting.
 
 NAME = batteries
+
+# This is also defined in the VERSION file
 VERSION = 1.2.0pre
+
+# Define variables and export them for mkconf.ml
 DOCROOT ?= /usr/share/doc/ocaml-batteries
 export DOCROOT
 BROWSER_COMMAND ?= x-www-browser %s
