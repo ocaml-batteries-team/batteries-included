@@ -771,6 +771,8 @@ type printer_flags = {
   pf_width : int option;
   (** If with of printed material is less than this one, padding is
       added *)
+  pf_frac_digits : int option;
+  (** When printing a float, print this many digits after the decimal point *)
   pf_padding_char : char;
   (** Character used for padding *)
   pf_justify : [ `right | `left ];
@@ -822,8 +824,8 @@ val printer_nx : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.direct
 val printer_nX : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
 val printer_no : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
 
-val printer_f : (float -> 'a, 'a) BatPrint.directive
-val printer_F : (float -> 'a, 'a) BatPrint.directive
+val printer_f : ?flags : printer_flags -> (float -> 'a, 'a) BatPrint.directive
+val printer_F : ?flags : printer_flags -> (float -> 'a, 'a) BatPrint.directive
 
 (** {7 Batteries-specific directives} *)
 
