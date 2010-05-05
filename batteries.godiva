@@ -1,5 +1,5 @@
 Package: godi-batteries
-Version: 1.2.0pre
+Version: 1.2.0pre1
 Revision: 0
 Depends: godi-ocaml (>= 3.11), godi-camomile (>= 0.7), godi-findlib (>= 1.2.5)
 Sources: http://github.com/downloads/elehack/batteries-included/batteries-included-1.2.0pre1.tar.gz
