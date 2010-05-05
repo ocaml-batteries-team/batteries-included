@@ -74,6 +74,10 @@ val of_string : string -> t
 val to_string : t -> string
   (**Return an UTF-8 encoded string representing this Unicode string.*)
 
+val adopt : string -> t
+  (** Adopt a string without copying. Modifying the original string
+      will modify this value, possibly breaking safety guarantees. *)
+
 val enum : t -> UChar.t BatEnum.t
   (**As {!String.enum}*)
 
