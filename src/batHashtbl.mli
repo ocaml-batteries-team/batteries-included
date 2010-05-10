@@ -240,6 +240,23 @@ sig
   val find : ('a, 'b) t -> 'a -> 'b option
 end
 
+(** Infix operators over a {!BatHashtbl} *)
+module Infix :
+sig
+  val (-->) : ('a, 'b) t -> 'a -> 'b
+  (** [tbl-->x] returns the current binding of [x] in [tbl],
+      or raises [Not_found] if no such binding exists.
+      Equivalent to [Hashtbl.find tbl x]*)
+
+  val (<--) : ('a, 'b) t -> 'a * 'b -> unit
+  (** [tbl<--(x, y)] adds a binding of [x] to [y] in table [tbl].
+      Previous bindings for [x] are not removed, but simply
+      hidden. That is, after performing {!Hashtbl.remove}[ tbl x],
+      the previous binding for [x], if any, is restored.
+      (Same behavior as with association lists.)
+      Equivalent to [Hashtbl.add tbl x y]*)
+end
+
    (** Operations on {!Hashtbl} with labels.
 	
 	This module overrides a number of functions of {!Hashtbl} by
@@ -337,6 +354,23 @@ module type S =
       val find : 'a t -> key -> 'a option
     end
     
+    (** Infix operators over a {!BatHashtbl} *)
+    module Infix :
+    sig
+      val (-->) : 'a t -> key -> 'a
+      (** [tbl-->x] returns the current binding of [x] in [tbl],
+          or raises [Not_found] if no such binding exists.
+          Equivalent to [Hashtbl.find tbl x]*)
+
+      val (<--) : 'a t -> key * 'a -> unit
+      (** [tbl<--(x, y)] adds a binding of [x] to [y] in table [tbl].
+          Previous bindings for [x] are not removed, but simply
+          hidden. That is, after performing {!Hashtbl.remove}[ tbl x],
+          the previous binding for [x], if any, is restored.
+          (Same behavior as with association lists.)
+          Equivalent to [Hashtbl.add tbl x y]*)
+    end
+
     (** Operations on {!Hashtbl} with labels.
 	
 	This module overrides a number of functions of {!Hashtbl} by

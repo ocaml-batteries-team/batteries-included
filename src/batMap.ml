@@ -153,6 +153,11 @@
       val find: key -> 'a t -> 'a option
     end
 
+    module Infix : sig
+      val (-->) : 'a t -> key -> 'a
+      val (<--) : 'a t -> key * 'a -> 'a t
+    end
+
     module Labels : sig
       val add : key:key -> data:'a -> 'a t -> 'a t
       val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
@@ -300,6 +305,12 @@
       module Exceptionless =
       struct
 	let find k t = try Some (find k t) with Not_found -> None
+      end
+
+      module Infix =
+      struct
+        let (-->) map key = find key map
+        let (<--) map (key, value) = add key value map
       end
 	
       module Labels =
@@ -662,6 +673,12 @@ let union m1 m2 =
 let diff m1 m2 =
   foldi (fun k _ acc -> remove k acc) m2 m1
     (* TODO: as union - use tree operations for large maps *)
+
+module Infix =
+struct
+  let (-->) map key = find key map
+  let (<--) map (key, value) = add key value map
+end
 
 let intersect merge m1 m2 = 
   foldi (fun k v acc -> try add k (merge v (find k m2)) acc

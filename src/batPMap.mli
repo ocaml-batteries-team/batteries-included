@@ -160,6 +160,19 @@ val union : ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
 val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
   (** [diff m1 m2] removes all bindings of keys found in [m2] from [m1].  Equivalent to [fold remove m2 m1] *)
 
+(** Infix operators over a {!BatPMap} *)
+module Infix : sig
+  val (-->) : ('a, 'b) t -> 'a -> 'b
+    (** [map-->key] returns the current binding of [key] in [map],
+        or raises [Not_found] if no such binding exists.
+        Equivalent to [find key map]. *)
+
+  val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
+    (** [map<--(key, value)] returns a map containing the same bindings as
+        [map], plus a binding of [key] to [value]. If [key] was already bound
+        in [map], its previous binding disappears. Equivalent to [add key value map] *)
+end
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)

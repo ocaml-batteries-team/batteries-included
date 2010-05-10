@@ -187,8 +187,20 @@ module type S =
     module Exceptionless : sig
       val find: key -> 'a t -> 'a option
     end
-      
-      
+
+    (** Infix operators over a {!BatMap} *)
+    module Infix : sig
+      val (-->) : 'a t -> key -> 'a
+        (** [map-->key] returns the current binding of [key] in [map],
+            or raises [Not_found]. Equivalent to [find key map]. *)
+
+      val (<--) : 'a t -> key * 'a -> 'a t
+        (** [map<--(key, value)] returns a map containing the same bindings as
+            [map], plus a binding of [key] to [value]. If [key] was already bound
+            in [map], its previous binding disappears. Equivalent
+            to [add key value map]*)
+    end
+
     (** Operations on {!Map} with labels.
 	
 	This module overrides a number of functions of {!Map} by
@@ -407,6 +419,19 @@ val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
 
 val intersect : ('b -> 'c -> 'd) -> ('a, 'b) t -> ('a, 'c) t -> ('a, 'd) t
   (** [intersect merge_f m1 m2] returns a map with bindings only for keys bound in both [m1] and [m2], and with [k] bound to [merge_f v1 v2], where [v1] and [v2] are [k]'s bindings from [m1] and [m2]*)
+
+(** Infix operators over a {!BatMap} *)
+module Infix : sig
+  val (-->) : ('a, 'b) t -> 'a -> 'b
+    (** [map-->key] returns the current binding of [key] in [map],
+        or raises [Not_found]. Equivalent to [find key map]. *)
+
+  val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
+    (** [map<--(key, value)] returns a map containing the same bindings as
+        [map], plus a binding of [key] to [value]. If [key] was already bound
+        in [map], its previous binding disappears. Equivalent
+        to [add key value map]*)
+end
 
 (** {6 Boilerplate code}*)
 

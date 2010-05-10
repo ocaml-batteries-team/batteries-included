@@ -57,3 +57,23 @@ val fold2_range : (int -> int -> 'a option -> 'b option -> 'c -> 'c) -> 'a t -> 
 val union : ('a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
 
 val forall2_range : (int -> int -> 'a option -> 'b option -> bool) -> 'a t -> 'b t -> bool
+
+(** Infix operators over a {!BatIMap} *)
+module Infix : sig
+  val (-->) : 'a t -> int -> 'a
+    (** [map-->key] returns the current binding of [key] in [map],
+        or raises [Not_found] if no such binding exists.
+        Equivalent to [find key map]. *)
+
+  val (<--) : 'a t -> int * 'a -> 'a t
+    (** [map<--(key, value)] returns a map containing the same bindings as
+        [map], plus a binding of [key] to [value]. If [key] was already bound
+        in [map], its previous binding disappears. Equivalent to [add key value map]
+        
+        {b Important warning}: {!BatIMap.add} takes an optional argument, [eq] that
+        is missing in this operator [<--]. As a consequence, using [<--] implies the
+        use of {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html#VAL(==)}Pervasives.(==)}
+        as comparison function.
+    *)
+end
+
