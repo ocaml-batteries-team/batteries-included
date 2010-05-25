@@ -4,7 +4,7 @@
 NAME = batteries
 
 # This is also defined in the VERSION file
-VERSION = 1.2.0pre
+VERSION = 1.2.0
 
 # Define variables and export them for mkconf.ml
 DOCROOT ?= /usr/share/doc/ocaml-batteries
@@ -72,3 +72,7 @@ reinstall:
 test: 
 	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
 	$(foreach TEST, $(TEST_TARGETS), _build/$(TEST); )
+
+release: test
+	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
+	  | gzip > batteries-$(VERSION).tar.gz
