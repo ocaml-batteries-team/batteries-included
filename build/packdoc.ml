@@ -27,8 +27,8 @@ struct
       (l:  'b list  ) = 
     let rec aux out l = match l with
       | []    -> ()
-  | [h]   -> p out h
-  | h::t  -> fprintf out "%a%s%a" p h separate aux t
+      | [h]   -> p out h
+      | h::t  -> fprintf out "%a%s%a" p h separate aux t
     in fprintf out "%s%a%s" start aux l finish
 end
 
