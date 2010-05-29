@@ -31,10 +31,10 @@ let string_splice s1 off len s2 =
   s
 *)
 
-  open CamomileLibrary
+  open BatCamomile
 
-  include CamomileLibrary.UTF8
-  module Case = CaseMap.Make(CamomileDefaultConfig)(UTF8)
+  include UTF8
+  module Case = CaseMap.Make(UTF8)
 
   external of_string_unsafe : string -> t = "%identity"
   external to_string_unsafe : t -> string = "%identity"

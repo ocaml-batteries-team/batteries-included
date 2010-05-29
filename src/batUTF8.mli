@@ -19,7 +19,7 @@
  *)
 
 open BatUChar
-open CamomileLibrary
+open BatCamomile
 
 (** UTF-8 encoded Unicode strings. 
 
