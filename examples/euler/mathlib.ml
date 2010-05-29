@@ -1,3 +1,5 @@
+open Batteries
+
 let rec factorial = function 1 -> 1 | n -> n * factorial (n-1)
 
 let factors i f x =
