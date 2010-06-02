@@ -1,8 +1,10 @@
 #!/usr/bin/make -f
 include /usr/share/ocaml/ocamlvars.mk
 
-export DESTDIR = $(CURDIR)/debian/tmp/$(OCAML_STDLIB_DIR)
-export BATTERIES_DOCROOT = $(CURDIR)/debian/tmp/doc
+DEB_DESTDIR = $(CURDIR)/debian/tmp/$(OCAML_STDLIB_DIR)
+BATTERIES_DEB_DOCROOT = $(CURDIR)/debian/tmp/doc
+export BATTERIES_DOCROOT = /usr/share/doc/libbatteries-ocaml-doc/html/api/
+export DESTDIR = $(OCAML_STDLIB_DIR)
 DOC_PKG = libbatteries-ocaml-doc
 OFLAGS = --verbose
 
@@ -23,10 +25,10 @@ override_dh_auto_test:
 	omake $(OFLAGS) test
 
 override_dh_auto_install:
-	mkdir -p $(DESTDIR) $(BATTERIES_DOCROOT)
-	omake $(OFLAGS) install
+	mkdir -p $(DEB_DESTDIR) $(BATTERIES_DEB_DOCROOT)
+	DESTDIR=$(DEB_DESTDIR) omake $(OFLAGS) install
 ifneq (,$(findstring $(DOC_PKG),$(shell dh_listpackages)))
-	omake $(OFLAGS) install-doc
+	DESTDIR=$(DEB_DESTDIR) BATTERIES_DOCROOT=$(BATTERIES_DEB_DOCROOT) omake $(OFLAGS) install-doc
 endif
 
 override_dh_auto_clean:

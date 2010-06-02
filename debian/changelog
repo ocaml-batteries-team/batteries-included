@@ -1,8 +1,9 @@
 ocaml-batteries (1.1.0-2) unstable; urgency=low
 
   * Add myself to Uploaders (and remove Zack as he asked).
+  * Fix configuration of Batteries (Closes: #578671).
 
- -- Mehdi Dogguy <mehdi@debian.org>  Wed, 02 Jun 2010 14:32:05 +0200
+ -- Mehdi Dogguy <mehdi@debian.org>  Wed, 02 Jun 2010 19:17:30 +0200
 
 ocaml-batteries (1.1.0-1) unstable; urgency=low
 
