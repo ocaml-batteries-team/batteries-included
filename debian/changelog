@@ -2,8 +2,11 @@ ocaml-batteries (1.1.0-2) unstable; urgency=low
 
   * Add myself to Uploaders (and remove Zack as he asked).
   * Fix configuration of Batteries (Closes: #578671).
+  * Bump ocaml version in build-dependencies to (>= 3.11.1-3~) and
+    dh-ocaml (>= 0.9~).
+  * Bump quilt version to (>= 0.46-7~).
 
- -- Mehdi Dogguy <mehdi@debian.org>  Wed, 02 Jun 2010 19:17:30 +0200
+ -- Mehdi Dogguy <mehdi@debian.org>  Thu, 03 Jun 2010 13:55:30 +0200
 
 ocaml-batteries (1.1.0-1) unstable; urgency=low
 
