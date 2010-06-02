@@ -2,7 +2,7 @@ Source: ocaml-batteries
 Section: ocaml
 Priority: optional
 Maintainer: Debian OCaml Maintainers <debian-ocaml-maint@lists.debian.org>
-Uploaders: Stefano Zacchiroli <zack@debian.org>
+Uploaders: Mehdi Dogguy <mehdi@debian.org>
 Build-Depends:
  debhelper (>= 7.0.50),
  ocaml-nox (>= 3.11),
