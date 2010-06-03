@@ -19,7 +19,6 @@ Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/ocaml-batteries.g
 Homepage: http://batteries.forge.ocamlcore.org
 
 Package: libbatteries-ocaml-dev
-Section: ocaml
 Architecture: any
 Depends:
  ocaml-findlib,
@@ -70,7 +69,6 @@ Description: Batteries included - OCaml development platform - documentation
  batteries included in your programs.
 
 Package: ocaml-batteries-included
-Section: ocaml
 Architecture: all
 Depends:
  libbatteries-ocaml-dev,
