@@ -3,6 +3,7 @@
 
 let camomile_base = "CAMOMILE_BASE"
 
+(* default to default config dirs if unset *)
 let try_env suff default =
   try Filename.concat (Sys.getenv camomile_base) suff
   with Not_found -> default
