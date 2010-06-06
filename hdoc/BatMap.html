@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>BatMap</title>
 </head>
@@ -161,6 +163,9 @@ returns true if the map is empty.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">('a -> 'a -> int) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 creates a new empty map, using the provided function for key comparison.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALsingleton"></a>singleton : <code class="type">?cmp:('a -> 'a -> int) -> 'a -> 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+creates a new map with a single binding<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALadd"></a>add : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">add x y m</code> returns a map containing the same bindings as
@@ -262,7 +267,9 @@ Divides a map into two maps based on a test function<br>
 <pre><span class="keyword">val</span> <a name="VALmodify"></a>modify : <code class="type">'a -> ('b -> 'b) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">modify k f m</code> replaces the previous binding for <code class="code">k</code> with <code class="code">f</code>
       applied to that value.  If <code class="code">k</code> is unbound in <code class="code">m</code> or <code class="code">Not_found</code> is
-      raised during the search, <code class="code">m</code> is returned unchanged.<br>
+      raised during the search,  <code class="code">Not_found</code> is raised.<br>
+<b>Since</b> 1.2.0<br>
+<b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">m</code> (or <code class="code">f</code> raises <code class="code">Not_found</code>)<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALextract"></a>extract : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'b * ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">extract k m</code> removes the current binding of <code class="code">k</code> from <code class="code">m</code>,
@@ -271,6 +278,21 @@ Divides a map into two maps based on a test function<br>
 <pre><span class="keyword">val</span> <a name="VALpop"></a>pop : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a * 'b) * ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">pop m</code> returns a binding from <code class="code">m</code> and <code class="code">m</code> without that
       binding.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALunion"></a>union : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">union m1 m2</code> merges two maps, using the comparison function of
+      the second map and containing all bindings of the two maps.  In
+      case of conflicted bindings, the first map's bindings override the
+      second map's. Equivalent to <code class="code">foldi add m1 m2</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALdiff"></a>diff : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">diff m1 m2</code> removes all bindings of keys found in <code class="code">m2</code> from <code class="code">m1</code>.  Equivalent to <code class="code">fold remove m2 m1</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALintersect"></a>intersect : <code class="type">('a -> 'b -> 'c) -><br>       ('d, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('d, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('d, 'c) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">intersect merge_f m1 m2</code> returns a map with bindings only for keys bound in both <code class="code">m1</code> and <code class="code">m2</code>, and with <code class="code">k</code> bound to <code class="code">merge_f v1 v2</code>, where <code class="code">v1</code> and <code class="code">v2</code> are <code class="code">k</code>'s bindings from <code class="code">m1</code> and <code class="code">m2</code><br>
+</div>
+<pre><span class="keyword">module</span> <a href="BatMap.Infix.html">Infix</a>: <code class="code">sig</code> <a href="BatMap.Infix.html">..</a> <code class="code">end</code></pre><div class="info">
+Infix operators over a <a href="BatMap.html"><code class="code">BatMap</code></a>
 </div>
 <br>
 <a name="6_Boilerplatecode"></a>

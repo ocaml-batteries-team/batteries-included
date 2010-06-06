@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Conversion functions" rel="Section" href="#6_Conversionfunctions">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Conversion functions" rel="Section" href="#6_Conversionfunctions">
 <link title="Comparaison" rel="Section" href="#6_Comparaison">
 <link title="Detailed information" rel="Section" href="#6_Detailedinformation">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
@@ -122,7 +124,7 @@
     <b>Note</b> For conversions to lower/upercase, see modules <code class="code">UTF8</code> and <code class="code">Rope</code>.<br>
 <b>Author(s):</b> Yamagata Yoriyuki (Camomile module), Edgar Friendly, David Teller<br>
 <hr width="100%">
-<pre><span class="keyword">val</span> <a name="VALis_whitespace"></a>is_whitespace : <code class="type">CamomileLibrary.UChar.t -> bool</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALis_whitespace"></a>is_whitespace : <code class="type">BatCamomile.UChar.t -> bool</code></pre><div class="info">
 Determine if a character is a whitespace.
 <p>
 
@@ -130,44 +132,44 @@ Determine if a character is a whitespace.
     whitespaces (characters 9, 10, 12, 13, 26 and 32), or a part of
     Unicode category <code class="code">Z</code> (separators).<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALis_uppercase"></a>is_uppercase : <code class="type">CamomileLibrary.UChar.t -> bool</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALis_uppercase"></a>is_uppercase : <code class="type">BatCamomile.UChar.t -> bool</code></pre><div class="info">
 Determine if a character is an uppercase character.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALis_lowercase"></a>is_lowercase : <code class="type">CamomileLibrary.UChar.t -> bool</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALis_lowercase"></a>is_lowercase : <code class="type">BatCamomile.UChar.t -> bool</code></pre><div class="info">
 Determine if a character is an lowercase character.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALis_newline"></a>is_newline : <code class="type">CamomileLibrary.UChar.t -> bool</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALis_newline"></a>is_newline : <code class="type">BatCamomile.UChar.t -> bool</code></pre><div class="info">
 Determine if a character is a newline.  Newline characters are
       characters 10 ('\r'), 13 (\'n') and characters which are part of
       Unicode category <code class="code">`Zl</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlowercase"></a>lowercase : <code class="type">CamomileLibrary.UChar.t -> CamomileLibrary.UChar.t</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALlowercase"></a>lowercase : <code class="type">BatCamomile.UChar.t -> BatCamomile.UChar.t</code></pre><div class="info">
 Convert the given character to its equivalent lowercase
       character.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALuppercase"></a>uppercase : <code class="type">CamomileLibrary.UChar.t -> CamomileLibrary.UChar.t</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALuppercase"></a>uppercase : <code class="type">BatCamomile.UChar.t -> BatCamomile.UChar.t</code></pre><div class="info">
 Convert the given character to its equivalent uppercase
       character.<br>
 </div>
 <br>
 <a name="6_Conversionfunctions"></a>
 <h6>Conversion functions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALto_char"></a>to_char : <code class="type">CamomileLibrary.UChar.t -> char</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALto_char"></a>to_char : <code class="type">BatCamomile.UChar.t -> char</code></pre><div class="info">
 <code class="code">to_char u</code> returns the Latin-1 representation of <code class="code">u</code>.<br>
 <b>Raises</b> <code>Out_of_range</code> if <code class="code">u</code> can not be represented by Latin-1.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_digit"></a>of_digit : <code class="type">int -> CamomileLibrary.UChar.t</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALof_digit"></a>of_digit : <code class="type">int -> BatCamomile.UChar.t</code></pre><div class="info">
 Return the character representing a given digit.<br>
 <b>Raises</b> <code>Invalid_argument</code> "UChar.of_digit" if the
     argument is outside the range 0--9<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_int"></a>to_int : <code class="type">CamomileLibrary.UChar.t -> int</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALto_int"></a>to_int : <code class="type">BatCamomile.UChar.t -> int</code></pre><div class="info">
 Alias of <code class="code">uint_code</code><br>
 </div>
 <br>
 <a name="6_Comparaison"></a>
 <h6>Comparaison</h6><br>
-<pre><span class="keyword">val</span> <a name="VALicompare"></a>icompare : <code class="type">CamomileLibrary.UChar.t -> CamomileLibrary.UChar.t -> int</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALicompare"></a>icompare : <code class="type">BatCamomile.UChar.t -> BatCamomile.UChar.t -> int</code></pre><div class="info">
 Compare two unicode characters, case-insensitive.<br>
 </div>
 <pre><span class="keyword">module</span> <a href="BatUChar.IUChar.html">IUChar</a>: <code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="type">  with type t = t</code></pre><br>
@@ -177,16 +179,16 @@ Compare two unicode characters, case-insensitive.<br>
 Determine to which script this character belongs.<br>
 <pre><span class="keyword">type</span> <a name="TYPEscript"></a><code class="type"></code>script = <code class="type">[ `Arabic<br>       | `Armenian<br>       | `Bengali<br>       | `Bopomofo<br>       | `Buhid<br>       | `Canadian_Aboriginal<br>       | `Cherokee<br>       | `Common<br>       | `Cyrillic<br>       | `Deseret<br>       | `Devanagari<br>       | `Ethiopic<br>       | `Georgian<br>       | `Gothic<br>       | `Greek<br>       | `Gujarati<br>       | `Gurmukhi<br>       | `Han<br>       | `Hangul<br>       | `Hanunoo<br>       | `Hebrew<br>       | `Hiragana<br>       | `Inherited<br>       | `Kannada<br>       | `Katakana<br>       | `Khmer<br>       | `Lao<br>       | `Latin<br>       | `Malayalam<br>       | `Mongolian<br>       | `Myanmar<br>       | `Ogham<br>       | `Old_Italic<br>       | `Oriya<br>       | `Runic<br>       | `Sinhala<br>       | `Syriac<br>       | `Tagalog<br>       | `Tagbanwa<br>       | `Tamil<br>       | `Telugu<br>       | `Thaana<br>       | `Thai<br>       | `Tibetan<br>       | `Yi ]</code> </pre>
 
-<pre><span class="keyword">val</span> <a name="VALscript"></a>script : <code class="type">CamomileLibrary.UChar.t -> <a href="BatUChar.html#TYPEscript">script</a></code></pre><pre><span class="keyword">type</span> <a name="TYPEcategory"></a><code class="type"></code>category = <code class="type">[ `Cc<br>       | `Cf<br>       | `Cn<br>       | `Co<br>       | `Cs<br>       | `Ll<br>       | `Lm<br>       | `Lo<br>       | `Lt<br>       | `Lu<br>       | `Mc<br>       | `Me<br>       | `Mn<br>       | `Nd<br>       | `Nl<br>       | `No<br>       | `Pc<br>       | `Pd<br>       | `Pe<br>       | `Pf<br>       | `Pi<br>       | `Po<br>       | `Ps<br>       | `Sc<br>       | `Sk<br>       | `Sm<br>       | `So<br>       | `Zl<br>       | `Zp<br>       | `Zs ]</code> </pre>
+<pre><span class="keyword">val</span> <a name="VALscript"></a>script : <code class="type">BatCamomile.UChar.t -> <a href="BatUChar.html#TYPEscript">script</a></code></pre><pre><span class="keyword">type</span> <a name="TYPEcategory"></a><code class="type"></code>category = <code class="type">[ `Cc<br>       | `Cf<br>       | `Cn<br>       | `Co<br>       | `Cs<br>       | `Ll<br>       | `Lm<br>       | `Lo<br>       | `Lt<br>       | `Lu<br>       | `Mc<br>       | `Me<br>       | `Mn<br>       | `Nd<br>       | `Nl<br>       | `No<br>       | `Pc<br>       | `Pd<br>       | `Pe<br>       | `Pf<br>       | `Pi<br>       | `Po<br>       | `Ps<br>       | `Sc<br>       | `Sk<br>       | `Sm<br>       | `So<br>       | `Zl<br>       | `Zp<br>       | `Zs ]</code> </pre>
 
-<pre><span class="keyword">val</span> <a name="VALcategory"></a>category : <code class="type">CamomileLibrary.UChar.t -> <a href="BatUChar.html#TYPEcategory">category</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcategory"></a>category : <code class="type">BatCamomile.UChar.t -> <a href="BatUChar.html#TYPEcategory">category</a></code></pre><div class="info">
 Determine to which category the character belongs.<br>
 </div>
 <br>
 <a name="6_Boilerplatecode"></a>
 <h6>Boilerplate code</h6><br>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> CamomileLibrary.UChar.t -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> BatCamomile.UChar.t -> unit</code></pre><div class="info">
 <a name="7_Printing"></a>
 <div class="h7">Printing</div><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">CamomileLibrary.UChar.t <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre></body></html>
+<pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">BatCamomile.UChar.t <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre></body></html>

@@ -1,12 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
+<html><head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="Batteries_config.html">
-<link rel="next" href="Batteries_print.html">
-<link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
@@ -23,6 +18,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,114 +93,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><title>Batteries_help</title>
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>Batteries_print.char_dynarray</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries_config.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="Batteries_print.html">Next</a>
-</div>
-<center><h1>Module <a href="type_Batteries_help.html">Batteries_help</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Batteries_help: <code class="code">sig</code> <a href="Batteries_help.html">..</a> <code class="code">end</code></pre>Tools for reading the documentation from the toplevel
-<p>
-
-    All these tools are invoked automatically by the Batteries
-    Toplevel.  They are provided here if you wish to integrate them
-    into your own toplevel.<br>
-<b>Author(s):</b> David Teller<br>
-<hr width="100%">
-<br><code><span class="keyword">type</span> <a name="TYPEkinds"></a><code class="type"></code>kinds = </code><table class="typetable">
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Values</span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Types</span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Topics</span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Modules</span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Exns</span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Modtypes</span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Classes</span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Methods</span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Attributes</span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span class="constructor">Objtypes</span></code></td>
-
-</tr></table>
-
-
-<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">unit -> unit</code></pre><div class="info">
-Proceed to initialization.
-<p>
-
-    This function loads the primary help files and registers the
-    toplevel directives.
-<p>
-
-    If you integrate the on-line help system into your toplevel, you
-    must call this function before any of the other functions of this
-    module.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALhelp"></a>help : <code class="type">unit -> unit</code></pre><div class="info">
-<code class="code">help ()</code> opens the tutorial.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALman"></a>man : <code class="type">string -> unit</code></pre><div class="info">
-<code class="code">man "something"</code> opens the help about subject <code class="code">"something"</code>.<br>
-</div>
-</body></html>
+<code class="code"><span class="keyword">let</span>&nbsp;char_dynarray&nbsp;=&nbsp;to_format&nbsp;(<span class="constructor">BatDynArray</span>.print&nbsp;<span class="constructor">BatChar</span>.print)</code></body></html>

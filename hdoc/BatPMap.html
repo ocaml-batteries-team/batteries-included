@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>BatPMap</title>
 </head>
@@ -237,6 +239,18 @@ Divides a map into two maps based on a test function<br>
 <pre><span class="keyword">val</span> <a name="VALpop"></a>pop : <code class="type">('a, 'b) <a href="BatPMap.html#TYPEt">t</a> -> ('a * 'b) * ('a, 'b) <a href="BatPMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">pop m</code> returns a binding from <code class="code">m</code> and <code class="code">m</code> without that
       binding.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALunion"></a>union : <code class="type">('a, 'b) <a href="BatPMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatPMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatPMap.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">union m1 m2</code> merges two maps, using the comparison function of
+      the second map and containing all bindings of the two maps.  In
+      case of conflicted bindings, the first map's bindings override the
+      second map's. Equivalent to <code class="code">foldi add m1 m2</code><br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALdiff"></a>diff : <code class="type">('a, 'b) <a href="BatPMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatPMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatPMap.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">diff m1 m2</code> removes all bindings of keys found in <code class="code">m2</code> from <code class="code">m1</code>.  Equivalent to <code class="code">fold remove m2 m1</code><br>
+</div>
+<pre><span class="keyword">module</span> <a href="BatPMap.Infix.html">Infix</a>: <code class="code">sig</code> <a href="BatPMap.Infix.html">..</a> <code class="code">end</code></pre><div class="info">
+Infix operators over a <a href="BatPMap.html"><code class="code">BatPMap</code></a>
 </div>
 <br>
 <a name="6_Boilerplatecode"></a>

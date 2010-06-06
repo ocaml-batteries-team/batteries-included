@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>BatPSet</title>
 </head>
@@ -220,6 +222,16 @@ returns the subset of items satisfying the given predicate<br>
 <pre><span class="keyword">val</span> <a name="VALpop"></a>pop : <code class="type">'a <a href="BatPSet.html#TYPEt">t</a> -> 'a * 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
 returns one element of the set and the set without that element.
       Raises <code class="code">Not_found</code> if given an empty set<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALunion"></a>union : <code class="type">'a <a href="BatPSet.html#TYPEt">t</a> -> 'a <a href="BatPSet.html#TYPEt">t</a> -> 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">union s t</code> returns the union of <code class="code">s</code> and <code class="code">t</code> - the set containing
+      all elements in either <code class="code">s</code> and <code class="code">t</code>.  The returned set uses <code class="code">t</code>'s
+      comparison function.  The current implementation works better for
+      small <code class="code">s</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALdiff"></a>diff : <code class="type">'a <a href="BatPSet.html#TYPEt">t</a> -> 'a <a href="BatPSet.html#TYPEt">t</a> -> 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">diff s t</code> returns the set of all elements in <code class="code">s</code> but not in
+      <code class="code">t</code>. The returned set uses <code class="code">s</code>'s comparison function.<br>
 </div>
 <br>
 <a name="6_Boilerplatecode"></a>

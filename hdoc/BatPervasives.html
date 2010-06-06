@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="String operations" rel="Section" href="#6_Stringoperations">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="String operations" rel="Section" href="#6_Stringoperations">
 <link title="String conversion functions" rel="Section" href="#6_Stringconversionfunctions">
 <link title="List operations" rel="Section" href="#6_Listoperations">
 <link title="Input/output" rel="Section" href="#6_Inputoutput">
@@ -558,6 +560,12 @@ Returns an unique identifier every time it is called.
 
     <b>Note</b> This is thread-safe.<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALtap"></a>tap : <code class="type">('a -> unit) -> 'a -> 'a</code></pre><div class="info">
+Allows application of a function in the middle of a pipe
+      sequence without disturbing the sequence.  <code class="code">x |&gt; tap f</code>
+      evaluates to <code class="code">x</code>, but has the side effect of <code class="code">f x</code>.  Useful for
+      debugging.<br>
+</div>
 <pre><span class="keyword">val</span> <a name="VALfinally"></a>finally : <code class="type">(unit -> unit) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 <code class="code">finally fend f x</code> calls <code class="code">f x</code> and then <code class="code">fend()</code> even if <code class="code">f x</code> raised
       an exception.<br>
@@ -811,9 +819,6 @@ Filtering (pronounce this operator name "such that").
 <pre><span class="keyword">val</span> <a name="VALconcat"></a>concat : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">concat e</code> returns an enumeration over all elements of all enumerations
       of <code class="code">e</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALtap"></a>tap : <code class="type">('a -> unit) -> 'a -> 'a</code></pre><div class="info">
-Apply the function to the given value, and return the value as the result<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VAL(--)"></a>(--) : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Enumerate numbers.

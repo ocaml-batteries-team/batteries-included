@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>BatMap.IRopeMap</title>
@@ -141,6 +143,13 @@ Test whether a map is empty or not.<br>
 <pre><span class="keyword">val</span> <a name="VALremove"></a>remove : <code class="type"><a href="BatMap.S.html#TYPEkey">key</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">remove x m</code> returns a map containing the same bindings as
        <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALmodify"></a>modify : <code class="type"><a href="BatMap.S.html#TYPEkey">key</a> -> ('a -> 'a) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">modify k f m</code> replaces the previous binding for <code class="code">k</code> with <code class="code">f</code> applied to
+	  that value. If <code class="code">k</code> is unbound in <code class="code">m</code> or <code class="code">Not_found</code> is raised during the
+	  search, <code class="code">Not_found</code> is raised.<br>
+<b>Since</b> 1.2.0<br>
+<b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">m</code> (or <code class="code">f</code> raises <code class="code">Not_found</code>)<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmem"></a>mem : <code class="type"><a href="BatMap.S.html#TYPEkey">key</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">mem x m</code> returns <code class="code">true</code> if <code class="code">m</code> contains a binding for <code class="code">x</code>,
@@ -206,6 +215,12 @@ Return an enumeration of all the keys of a map.<br>
 <pre><span class="keyword">val</span> <a name="VALvalues"></a>values : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Return an enumeration of al the values of a map.<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALmin_binding"></a>min_binding : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> <a href="BatMap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info">
+return the (<code class="code">key,value</code>) pair with the smallest key<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALmax_binding"></a>max_binding : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> <a href="BatMap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info">
+return the <code class="code">(key,value)</code> pair with the largest key<br>
+</div>
 <pre><span class="keyword">val</span> <a name="VALchoose"></a>choose : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> <a href="BatMap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info">
 return an implementation defined <code class="code">(key,value)</code> pair.  As <code class="code">Set.choose</code><br>
 </div>
@@ -241,6 +256,9 @@ The following modules replace functions defined in <code class="code">Map</code>
        the functions meant to override the corresponding functions of <code class="code">Map</code>.<br>
 <pre><span class="keyword">module</span> <a href="BatMap.S.Exceptionless.html">Exceptionless</a>: <code class="code">sig</code> <a href="BatMap.S.Exceptionless.html">..</a> <code class="code">end</code></pre><div class="info">
 Operations on <code class="code">Map</code> without exceptions.
+</div>
+<pre><span class="keyword">module</span> <a href="BatMap.S.Infix.html">Infix</a>: <code class="code">sig</code> <a href="BatMap.S.Infix.html">..</a> <code class="code">end</code></pre><div class="info">
+Infix operators over a <a href="BatMap.html"><code class="code">BatMap</code></a>
 </div>
 <pre><span class="keyword">module</span> <a href="BatMap.S.Labels.html">Labels</a>: <code class="code">sig</code> <a href="BatMap.S.Labels.html">..</a> <code class="code">end</code></pre><div class="info">
 Operations on <code class="code">Map</code> with labels.

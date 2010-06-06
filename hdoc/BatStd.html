@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,11 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Results" rel="Section" href="#6_Results">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Operators" rel="Section" href="#6_Operators">
+<link title="Results" rel="Section" href="#6_Results">
 <title>BatStd</title>
 </head>
 <body>
@@ -159,10 +162,10 @@ The name of the current executable.
 
       <code class="code">exe</code> is given by the first argument of <code class="code">Sys.argv</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL(|>)"></a>(|&gt;) : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre><div class="info">
+<br>
 <a name="6_Operators"></a>
-<h6>Operators</h6>
-<p>
+<h6>Operators</h6><br>
+<pre><span class="keyword">val</span> <a name="VAL(|>)"></a>(|&gt;) : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre><div class="info">
 Function application. <code class="code">x |&gt; f</code> is equivalent to <code class="code">f x</code>. 
 <p>
 
@@ -232,7 +235,9 @@ Ignore its second argument.
       Therefore, <code class="code">const x</code> is the function which always returns <code class="code">x</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtap"></a>tap : <code class="type">('a -> unit) -> 'a -> 'a</code></pre><div class="info">
-Apply the function to the given value, and return the value as the result<br>
+<b>Since</b> v1.1.0
+
+      Apply the function to the given value, and return the original value as the result.  Useful as part of a pipeline of operations.<br>
 </div>
 <br>
 <a name="6_Results"></a>

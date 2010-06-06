@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="String traversals" rel="Section" href="#6_Stringtraversals">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="String traversals" rel="Section" href="#6_Stringtraversals">
 <link title="Finding" rel="Section" href="#6_Finding">
 <link title="Transformations" rel="Section" href="#6_Transformations">
 <link title="Splitting around" rel="Section" href="#6_Splittingaround">
@@ -205,7 +207,7 @@ Returns a string containing one given character.
 </div>
 <pre><span class="keyword">val</span> <a name="VALto_int"></a>to_int : <code class="type">string -> int</code></pre><div class="info">
 Returns the integer represented by the given string or raises
-      <code class="code">Invalid_string</code> if the string does not represent an
+      <code class="code">Failure "int_of_string"</code> if the string does not represent an
       integer. This follows OCaml's int literal rules, so "0x"
       prefixes hexadecimal integers, "0o" for octal and "0b" for
       binary.  Underscores within the number are allowed for
@@ -216,7 +218,7 @@ Returns the integer represented by the given string or raises
 </div>
 <pre><span class="keyword">val</span> <a name="VALto_float"></a>to_float : <code class="type">string -> float</code></pre><div class="info">
 Returns the float represented by the given string or raises
-      Invalid_string if the string does not represent a float.
+      <code class="code">Failure "float_of_string"</code> if the string does not represent a float.
       Decimal points aren't required in the given string, as they are
       for float literals in OCaml, but otherwise the rules for float
       literals apply.
@@ -281,7 +283,7 @@ Returns the float represented by the given string or raises
 <p>
 
       <b>Note</b> This implementation is optimized for short strings.<br>
-<b>Raises</b> <code>Invalid_string</code> if <code class="code">x</code> is not a substring of <code class="code">s</code>. 
+<b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not a substring of <code class="code">s</code>. 
 <p>
 
       Example: <code class="code">String.find "foobarbaz" "bar" = 3</code><br>
@@ -299,7 +301,7 @@ Returns the float represented by the given string or raises
 <p>
 
       <b>Note</b> This implementation is optimized for short strings.<br>
-<b>Raises</b> <code>Invalid_string</code> if <code class="code">x</code> is not a substring of <code class="code">s</code>. 
+<b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not a substring of <code class="code">s</code>. 
 <p>
 
       Example: <code class="code">String.rfind "foobarbaz" "ba" = 6</code><br>
@@ -420,7 +422,7 @@ Returns the string without the chars if they are at the beginning or
 <pre><span class="keyword">val</span> <a name="VALsplit"></a>split : <code class="type">string -> string -> string * string</code></pre><div class="info">
 <code class="code">split s sep</code> splits the string <code class="code">s</code> between the first
       occurrence of <code class="code">sep</code>.<br>
-<b>Raises</b> <code>Invalid_string</code> if the separator is not found. 
+<b>Raises</b> <code>Not_found</code> if the separator is not found. 
 <p>
 
       Example: <code class="code">String.split "abcabcabc" "bc" = ("a","abcabc")</code><br>
@@ -428,7 +430,7 @@ Returns the string without the chars if they are at the beginning or
 <pre><span class="keyword">val</span> <a name="VALrsplit"></a>rsplit : <code class="type">string -> string -> string * string</code></pre><div class="info">
 <code class="code">rsplit s sep</code> splits the string <code class="code">s</code> between the last
       occurrence of <code class="code">sep</code>.<br>
-<b>Raises</b> <code>Invalid_string</code> if the separator is not found. 
+<b>Raises</b> <code>Not_found</code> if the separator is not found. 
 <p>
 
       Example: <code class="code">String.rsplit "abcabcabc" "bc" = ("abcabca","")</code><br>

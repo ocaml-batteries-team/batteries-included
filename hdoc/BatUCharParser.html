@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Utilities" rel="Section" href="#6_Utilities">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Utilities" rel="Section" href="#6_Utilities">
 <title>BatUCharParser</title>
 </head>
 <body>
@@ -141,7 +143,7 @@
 The position inside one file or one stream.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALadvance"></a>advance : <code class="type">CamomileLibrary.UChar.t -> <a href="BatUCharParser.html#TYPEposition">position</a> -> <a href="BatUCharParser.html#TYPEposition">position</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALadvance"></a>advance : <code class="type">BatCamomile.UChar.t -> <a href="BatUCharParser.html#TYPEposition">position</a> -> <a href="BatUCharParser.html#TYPEposition">position</a></code></pre><div class="info">
 Advance by one char. 
 <p>
 
@@ -149,71 +151,71 @@ Advance by one char.
    the result is <code class="code">{offset = 0; line = p.line + 1}</code>. Other wise, the result is
    <code class="code">{offset = p.offset + 1; line = p.line}</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsource_of_rope"></a>source_of_rope : <code class="type"><a href="BatRope.html#TYPEt">BatRope.t</a> -><br>       (CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.Source.html#TYPEt">BatParserCo.Source.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALsource_of_rope"></a>source_of_rope : <code class="type"><a href="BatRope.html#TYPEt">BatRope.t</a> -><br>       (BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.Source.html#TYPEt">BatParserCo.Source.t</a></code></pre><div class="info">
 Create a source from a Unicode Rope.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsource_of_enum"></a>source_of_enum : <code class="type">CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -><br>       (CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.Source.html#TYPEt">BatParserCo.Source.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALsource_of_enum"></a>source_of_enum : <code class="type">BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -><br>       (BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.Source.html#TYPEt">BatParserCo.Source.t</a></code></pre><div class="info">
 Create a source from an enumeration of unicode characters.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALparse"></a>parse : <code class="type">(CamomileLibrary.UChar.t, 'a, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a> -><br>       <a href="BatRope.html#TYPEt">BatRope.t</a> -> ('a, <a href="BatUCharParser.html#TYPEposition">position</a> <a href="BatParserCo.html#TYPEreport">BatParserCo.report</a>) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALparse"></a>parse : <code class="type">(BatCamomile.UChar.t, 'a, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a> -><br>       <a href="BatRope.html#TYPEt">BatRope.t</a> -> ('a, <a href="BatUCharParser.html#TYPEposition">position</a> <a href="BatParserCo.html#TYPEreport">BatParserCo.report</a>) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
 Apply a parser to a Unicode Rope.<br>
 </div>
 <br>
 <a name="6_Utilities"></a>
 <h6>Utilities</h6><br>
-<pre><span class="keyword">val</span> <a name="VALchar"></a>char : <code class="type">CamomileLibrary.UChar.t -><br>       (CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALchar"></a>char : <code class="type">BatCamomile.UChar.t -><br>       (BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognize exactly one char<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALnone_of"></a>none_of : <code class="type">CamomileLibrary.UChar.t list -><br>       (CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALnone_of"></a>none_of : <code class="type">BatCamomile.UChar.t list -><br>       (BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Accept any value not in a list
      As <code class="code">ParserCo.none_of</code>, just with improved error message.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALnot_char"></a>not_char : <code class="type">CamomileLibrary.UChar.t -><br>       (CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALnot_char"></a>not_char : <code class="type">BatCamomile.UChar.t -><br>       (BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Accept any value not a given char
      As <code class="code">none_of</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALstring"></a>string : <code class="type">string -><br>       (CamomileLibrary.UChar.t, string, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALstring"></a>string : <code class="type">string -><br>       (BatCamomile.UChar.t, string, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognize exactly one string<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrope"></a>rope : <code class="type"><a href="BatRope.html#TYPEt">BatRope.t</a> -><br>       (CamomileLibrary.UChar.t, <a href="BatRope.html#TYPEt">BatRope.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALrope"></a>rope : <code class="type"><a href="BatRope.html#TYPEt">BatRope.t</a> -><br>       (BatCamomile.UChar.t, <a href="BatRope.html#TYPEt">BatRope.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognize exactly one string<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALustring"></a>ustring : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -><br>       (CamomileLibrary.UChar.t, <a href="BatUTF8.html#TYPEt">BatUTF8.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALustring"></a>ustring : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -><br>       (BatCamomile.UChar.t, <a href="BatUTF8.html#TYPEt">BatUTF8.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognize exactly one string<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcase_char"></a>case_char : <code class="type">CamomileLibrary.UChar.t -><br>       (CamomileLibrary.UChar.t, <a href="BatUTF8.html#TYPEt">BatUTF8.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcase_char"></a>case_char : <code class="type">BatCamomile.UChar.t -><br>       (BatCamomile.UChar.t, <a href="BatUTF8.html#TYPEt">BatUTF8.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 As <code class="code">char</code>, but case-insensitive<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcase_string"></a>case_string : <code class="type">string -><br>       (CamomileLibrary.UChar.t, string, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcase_string"></a>case_string : <code class="type">string -><br>       (BatCamomile.UChar.t, string, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 As <code class="code">string</code>, but case-insensitive<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcase_ustring"></a>case_ustring : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -><br>       (CamomileLibrary.UChar.t, <a href="BatUTF8.html#TYPEt">BatUTF8.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcase_ustring"></a>case_ustring : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -><br>       (BatCamomile.UChar.t, <a href="BatUTF8.html#TYPEt">BatUTF8.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 As <code class="code">ustring</code>, but case-insensitive<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcase_rope"></a>case_rope : <code class="type"><a href="BatRope.html#TYPEt">BatRope.t</a> -><br>       (CamomileLibrary.UChar.t, <a href="BatRope.html#TYPEt">BatRope.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcase_rope"></a>case_rope : <code class="type"><a href="BatRope.html#TYPEt">BatRope.t</a> -><br>       (BatCamomile.UChar.t, <a href="BatRope.html#TYPEt">BatRope.t</a>, <a href="BatUCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 As <code class="code">rope</code>, but case-insensitive<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALnewline"></a>newline : <code class="type">(CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALnewline"></a>newline : <code class="type">(BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes a newline<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALwhitespace"></a>whitespace : <code class="type">(CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALwhitespace"></a>whitespace : <code class="type">(BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes white-space<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALuppercase"></a>uppercase : <code class="type">(CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALuppercase"></a>uppercase : <code class="type">(BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one upper-case ASCII character, including
      accentuated characters.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlowercase"></a>lowercase : <code class="type">(CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALlowercase"></a>lowercase : <code class="type">(BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one lower-case character, including
      accentuated characters.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALletter"></a>letter : <code class="type">(CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALletter"></a>letter : <code class="type">(BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one lower- or upper-case character.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdigit"></a>digit : <code class="type">(CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALdigit"></a>digit : <code class="type">(BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one decimal digit<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALhex"></a>hex : <code class="type">(CamomileLibrary.UChar.t, CamomileLibrary.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALhex"></a>hex : <code class="type">(BatCamomile.UChar.t, BatCamomile.UChar.t, <a href="BatUCharParser.html#TYPEposition">position</a>)<br>       <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one hexadecimal digit (case-insensitive)<br>
 </div>
 </body></html>

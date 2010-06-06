@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Creation and conversions" rel="Section" href="#6_Creationandconversions">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Creation and conversions" rel="Section" href="#6_Creationandconversions">
 <link title="Properties " rel="Section" href="#6_Properties">
 <link title="Operations " rel="Section" href="#6_Operations">
 <link title="Iteration" rel="Section" href="#6_Iteration">
@@ -198,13 +200,13 @@ Constructs a unicode rope from a latin-1 string.<br>
 <pre><span class="keyword">val</span> <a name="VALto_ustring"></a>to_ustring : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">BatUTF8.t</a></code></pre><div class="info">
 <code class="code">to_ustring r</code> returns the string corresponding to the rope <code class="code">r</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_uchar"></a>of_uchar : <code class="type">CamomileLibrary.UChar.t -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALof_uchar"></a>of_uchar : <code class="type">BatCamomile.UChar.t -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">of_uchar c</code> returns a rope containing exactly character <code class="code">c</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALof_char"></a>of_char : <code class="type">char -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">of_char c</code> returns a rope containing exactly Latin-1 character <code class="code">c</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmake"></a>make : <code class="type">int -> CamomileLibrary.UChar.t -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALmake"></a>make : <code class="type">int -> BatCamomile.UChar.t -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">make i c</code> returns a rope of length <code class="code">i</code> consisting of <code class="code">c</code> chars;
       it is similar to String.make<br>
 </div>
@@ -233,10 +235,10 @@ Return a copy of the argument, with the first character set to lowercase.<br>
 <pre><span class="keyword">val</span> <a name="VALjoin"></a>join : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a> list -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 Same as <a href="BatRope.html#VALconcat"><code class="code">BatRope.concat</code></a><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALexplode"></a>explode : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> CamomileLibrary.UChar.t list</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALexplode"></a>explode : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> BatCamomile.UChar.t list</code></pre><div class="info">
 <code class="code">explode s</code> returns the list of characters in the rope <code class="code">s</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALimplode"></a>implode : <code class="type">CamomileLibrary.UChar.t list -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALimplode"></a>implode : <code class="type">BatCamomile.UChar.t list -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">implode cs</code> returns a rope resulting from concatenating
       the characters in the list <code class="code">cs</code>.<br>
 </div>
@@ -270,21 +272,21 @@ Returns the height (depth) of the rope.<br>
 <pre><span class="keyword">val</span> <a name="VAL(^^^)"></a>(^^^) : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 As <a href="BatRope.html#VALappend"><code class="code">BatRope.append</code></a><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALappend_char"></a>append_char : <code class="type">CamomileLibrary.UChar.t -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALappend_char"></a>append_char : <code class="type">BatCamomile.UChar.t -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">append_char c r</code> returns a new rope with the <code class="code">c</code> character at the end
       in amortized <code class="code">O(1)</code> time.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALprepend_char"></a>prepend_char : <code class="type">CamomileLibrary.UChar.t -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALprepend_char"></a>prepend_char : <code class="type">BatCamomile.UChar.t -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">prepend_char c r</code> returns a new rope with the <code class="code">c</code> character at the
       beginning in amortized <code class="code">O(1)</code> time.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> CamomileLibrary.UChar.t</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> BatCamomile.UChar.t</code></pre><div class="info">
 <code class="code">get r n</code> returns the (n+1)th character from the rope <code class="code">r</code>; i.e.
       <code class="code">get r 0</code> returns the first character.
       Operates in worst-case <code class="code">O(log size)</code> time.
       Raises Out_of_bounds if a character out of bounds is requested.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALset"></a>set : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> CamomileLibrary.UChar.t -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALset"></a>set : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> BatCamomile.UChar.t -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">set r n c</code> returns a copy of rope <code class="code">r</code>  where the (n+1)th character
       has been set to <code class="code">c</code>. See also <a href="BatRope.html#VALget"><code class="code">BatRope.get</code></a>.
       Operates in worst-case <code class="code">O(log size)</code> time.<br>
@@ -316,15 +318,15 @@ As <a href="BatRope.html#VALappend"><code class="code">BatRope.append</code></a>
 <br>
 <a name="6_Iteration"></a>
 <h6>Iteration</h6><br>
-<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">(CamomileLibrary.UChar.t -> unit) -> <a href="BatRope.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">(BatCamomile.UChar.t -> unit) -> <a href="BatRope.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter f r</code> applies <code class="code">f</code> to all the characters in the <code class="code">r</code> rope,
       in order.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">?base:int -> (int -> CamomileLibrary.UChar.t -> unit) -> <a href="BatRope.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">?base:int -> (int -> BatCamomile.UChar.t -> unit) -> <a href="BatRope.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Operates like <code class="code">iter</code>, but also passes the index of the character
       to the given function.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrange_iter"></a>range_iter : <code class="type">(CamomileLibrary.UChar.t -> unit) -> int -> int -> <a href="BatRope.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALrange_iter"></a>range_iter : <code class="type">(BatCamomile.UChar.t -> unit) -> int -> int -> <a href="BatRope.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">rangeiter f m n r</code> applies <code class="code">f</code> to all the characters whose
       indices <code class="code">k</code> satisfy <code class="code">m</code> &lt;= <code class="code">k</code> &lt; <code class="code">m + n</code>.
       It is thus equivalent to <code class="code">iter f (sub m n r)</code>, but does not
@@ -333,7 +335,7 @@ Operates like <code class="code">iter</code>, but also passes the index of the c
       from an explicit loop using <code class="code">get</code>.
       Raises Out_of_bounds in the same cases as <code class="code">sub</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrange_iteri"></a>range_iteri : <code class="type">(int -> CamomileLibrary.UChar.t -> unit) -><br>       ?base:int -> int -> int -> <a href="BatRope.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALrange_iteri"></a>range_iteri : <code class="type">(int -> BatCamomile.UChar.t -> unit) -><br>       ?base:int -> int -> int -> <a href="BatRope.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 As <code class="code">range_iter</code>, but passes base + index of the character in the
       subrope defined by next to arguments.<br>
 </div>
@@ -343,21 +345,21 @@ as iter but over larger chunks of data<br>
 <pre><span class="keyword">val</span> <a name="VALbulk_iteri"></a>bulk_iteri : <code class="type">?base:int -> (int -> <a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> unit) -> <a href="BatRope.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 as iteri but over larger chunks of data.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a -> CamomileLibrary.UChar.t -> 'a) -> 'a -> <a href="BatRope.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a -> BatCamomile.UChar.t -> 'a) -> 'a -> <a href="BatRope.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">Rope.fold f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN-1 </code>
       where <code class="code">rn = Rope.get n r </code> and <code class="code">N = length r</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALbulk_fold"></a>bulk_fold : <code class="type">('a -> <a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> 'a) -> 'a -> <a href="BatRope.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 As <a href="BatRope.html#VALfold"><code class="code">BatRope.fold</code></a> but over larger chunks of data.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Returns an enumeration of the characters of a rope.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALbulk_enum"></a>bulk_enum : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">BatUTF8.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Returns an enumeration of the UTF-8 encoded strings of a rope.
       Provided for convenience and speed.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 Creates a rope from a character enumeration.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALof_bulk_enum"></a>of_bulk_enum : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
@@ -366,13 +368,13 @@ Creates a rope from an enumeration of UTF-8 encoded strings.
 
       Provided for convenience and speed.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbackwards"></a>backwards : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALbackwards"></a>backwards : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Returns an enumeration of the characters of a rope, from last to first.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_backwards"></a>of_backwards : <code class="type">CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALof_backwards"></a>of_backwards : <code class="type">BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 Build a rope from an enumeration, starting with last character, ending with first.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> (int -> CamomileLibrary.UChar.t) -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> (int -> BatCamomile.UChar.t) -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">init l f</code> returns the rope of length <code class="code">l</code> with the chars f 0 , f
       1 , f 2 ... f (l-1).<br>
 </div>
@@ -394,7 +396,7 @@ Returns the float represented by the given rope or
 <code class="code">map f s</code> returns a rope where all ropes <code class="code">c</code> in <code class="code">s</code> have been
       replaced by <code class="code">f c</code>. *<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">(CamomileLibrary.UChar.t -> CamomileLibrary.UChar.t) -><br>       <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">(BatCamomile.UChar.t -> BatCamomile.UChar.t) -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f s</code> returns a rope where all characters <code class="code">c</code> in <code class="code">s</code> have been
       replaced by <code class="code">f c</code>. *<br>
 </div>
@@ -404,50 +406,50 @@ Returns the float represented by the given rope or
     <code class="code">f ai = Some bi</code> (when <code class="code">f</code> returns <code class="code">None</code>, the corresponding element of
     <code class="code">l</code> is discarded).<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">(CamomileLibrary.UChar.t -> CamomileLibrary.UChar.t option) -><br>       <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">(BatCamomile.UChar.t -> BatCamomile.UChar.t option) -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f l</code> calls <code class="code">(f a0) (f a1).... (f an)</code> where <code class="code">a0..an</code> are
     the characters of <code class="code">l</code>. It returns the list of elements <code class="code">bi</code> such as
     <code class="code">f ai = Some bi</code> (when <code class="code">f</code> returns <code class="code">None</code>, the corresponding element of
     <code class="code">l</code> is discarded).<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">(CamomileLibrary.UChar.t -> bool) -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">(BatCamomile.UChar.t -> bool) -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter f s</code> returns a copy of rope <code class="code">s</code> in which only
       characters <code class="code">c</code> such that <code class="code">f c = true</code> remain.<br>
 </div>
 <br>
 <a name="6_Finding"></a>
 <h6>Finding</h6><br>
-<pre><span class="keyword">val</span> <a name="VALindex"></a>index : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> CamomileLibrary.UChar.t -> int</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALindex"></a>index : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> BatCamomile.UChar.t -> int</code></pre><div class="info">
 <code class="code">Rope.index s c</code> returns the position of the leftmost
     occurrence of character <code class="code">c</code> in rope <code class="code">s</code>.
     Raise <code class="code">Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALindex_from"></a>index_from : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> CamomileLibrary.UChar.t -> int</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALindex_from"></a>index_from : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> BatCamomile.UChar.t -> int</code></pre><div class="info">
 Same as <code class="code">Rope.index</code>, but start searching at the character
       position given as second argument.  <code class="code">Rope.index s c</code> is
       equivalent to <code class="code">Rope.index_from s 0 c</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrindex"></a>rindex : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> CamomileLibrary.UChar.t -> int</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALrindex"></a>rindex : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> BatCamomile.UChar.t -> int</code></pre><div class="info">
 <code class="code">Rope.rindex s c</code> returns the position of the rightmost
    occurrence of character <code class="code">c</code> in rope <code class="code">s</code>.
    Raise <code class="code">Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrindex_from"></a>rindex_from : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> CamomileLibrary.UChar.t -> int</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALrindex_from"></a>rindex_from : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> BatCamomile.UChar.t -> int</code></pre><div class="info">
 Same as <a href="BatRope.html#VALrindex"><code class="code">BatRope.rindex</code></a>, but start
    searching at the character position given as second argument.
    <code class="code">rindex s c</code> is equivalent to
    <code class="code">rindex_from s (length s - 1) c</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcontains"></a>contains : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> CamomileLibrary.UChar.t -> bool</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcontains"></a>contains : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> BatCamomile.UChar.t -> bool</code></pre><div class="info">
 <code class="code">contains s c</code> tests if character <code class="code">c</code>
    appears in the rope <code class="code">s</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcontains_from"></a>contains_from : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> CamomileLibrary.UChar.t -> bool</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcontains_from"></a>contains_from : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> BatCamomile.UChar.t -> bool</code></pre><div class="info">
 <code class="code">contains_from s start c</code> tests if character <code class="code">c</code> appears in
       the subrope of <code class="code">s</code> starting from <code class="code">start</code> to the end of <code class="code">s</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> is not a valid index of <code class="code">s</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrcontains_from"></a>rcontains_from : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> CamomileLibrary.UChar.t -> bool</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALrcontains_from"></a>rcontains_from : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> BatCamomile.UChar.t -> bool</code></pre><div class="info">
 <code class="code">rcontains_from s stop c</code> tests if character <code class="code">c</code>
    appears in the subrope of <code class="code">s</code> starting from the beginning
    of <code class="code">s</code> to index <code class="code">stop</code>.<br>
@@ -506,7 +508,7 @@ as <a href="BatRope.html#VALleft"><code class="code">BatRope.left</code></a><br>
 <pre><span class="keyword">val</span> <a name="VALtail"></a>tail : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">tail r pos</code> returns the rope containing all but the <code class="code">pos</code> first characters of <code class="code">r</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALstrip"></a>strip : <code class="type">?chars:CamomileLibrary.UChar.t list -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALstrip"></a>strip : <code class="type">?chars:BatCamomile.UChar.t list -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 Returns the rope without the chars if they are at the beginning or
       at the end of the rope. By default chars are " \t\r\n".<br>
 </div>
@@ -544,7 +546,7 @@ Returns the same rope but without the last character.
 
     Negative indices are interpreted as counting from the end of the string.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfill"></a>fill : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> int -> CamomileLibrary.UChar.t -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfill"></a>fill : <code class="type"><a href="BatRope.html#TYPEt">t</a> -> int -> int -> BatCamomile.UChar.t -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">fill s start len c</code> returns the rope in which
    characters number <code class="code">start</code> to <code class="code">start + len - 1</code> of <code class="code">s</code> has
     been replaced by <code class="code">c</code>.<br>
@@ -573,7 +575,7 @@ Return a copy of the argument, with special characters
    character in the argument, return the original rope itself,
    not a copy.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALreplace_chars"></a>replace_chars : <code class="type">(CamomileLibrary.UChar.t -> <a href="BatUTF8.html#TYPEt">BatUTF8.t</a>) -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALreplace_chars"></a>replace_chars : <code class="type">(BatCamomile.UChar.t -> <a href="BatUTF8.html#TYPEt">BatUTF8.t</a>) -> <a href="BatRope.html#TYPEt">t</a> -> <a href="BatRope.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">replace_chars f s</code> returns a rope where all chars <code class="code">c</code> of <code class="code">s</code> have been
       replaced by the rope returned by <code class="code">f c</code>.<br>
 </div>

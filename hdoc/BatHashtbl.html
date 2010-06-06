@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
 <link title="Enumerations" rel="Section" href="#6_Enumerations">
 <link title="Searching" rel="Section" href="#6_Searching">
 <link title="Traversing" rel="Section" href="#6_Traversing">
@@ -325,6 +327,9 @@ The following modules replace functions defined in <code class="code">Hashtbl</c
        the functions meant to override the corresponding functions of <code class="code">Hashtbl</code>.<br>
 <pre><span class="keyword">module</span> <a href="BatHashtbl.Exceptionless.html">Exceptionless</a>: <code class="code">sig</code> <a href="BatHashtbl.Exceptionless.html">..</a> <code class="code">end</code></pre><div class="info">
 Operations on <code class="code">Hashtbl</code> without exceptions.
+</div>
+<pre><span class="keyword">module</span> <a href="BatHashtbl.Infix.html">Infix</a>: <code class="code">sig</code> <a href="BatHashtbl.Infix.html">..</a> <code class="code">end</code></pre><div class="info">
+Infix operators over a <a href="BatHashtbl.html"><code class="code">BatHashtbl</code></a>
 </div>
 <pre><span class="keyword">module</span> <a href="BatHashtbl.Labels.html">Labels</a>: <code class="code">sig</code> <a href="BatHashtbl.Labels.html">..</a> <code class="code">end</code></pre><div class="info">
 Operations on <code class="code">Hashtbl</code> with labels.

@@ -19,6 +19,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -93,9 +94,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><title>Index of types</title>
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>Index of types</title>
 </head>
 <body>
 <center><h1>Index of types</h1></center>
@@ -268,8 +270,6 @@ To each element kind is associated a Caml type, which is
    or read back from it.
 </div>
 </td></tr>
-<tr><td><a href="Batteries_help.html#TYPEkinds">kinds</a> [<a href="Batteries_help.html">Batteries_help</a>]</td>
-<td></td></tr>
 <tr><td align="left"><br>L</td></tr>
 <tr><td><a href="BatOo.Oo.Internal.html#TYPElabel">label</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
 <td></td></tr>
@@ -345,7 +345,11 @@ Internal representation of an object.
 <tr><td><a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> [<a href="BatFile.html">BatFile</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> [<a href="BatFile.html">BatFile</a>]</td>
-<td></td></tr>
+<td><div class="info">
+Flags governing file output; they correspond to the relevant
+        flags to the POSIX <code class="code">open()</code> call.
+</div>
+</td></tr>
 <tr><td><a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> [<a href="BatFile.html">BatFile</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatIO.html#TYPEout_bits">out_bits</a> [<a href="BatIO.html">BatIO</a>]</td>

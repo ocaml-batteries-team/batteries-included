@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -96,9 +97,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><title>BatUTF8.Buf</title>
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>BatUTF8.Buf</title>
 </head>
 <body>
 <div class="navbar"><a href="BatUTF8.Byte.html">Previous</a>
@@ -126,7 +128,7 @@ Empty the buffer,
 <pre><span class="keyword">val</span> <a name="VALreset"></a>reset : <code class="type"><a href="BatUTF8.Buf.html#TYPEbuf">buf</a> -> unit</code></pre><div class="info">
 Empty the buffer and de-allocate the internal storage.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALadd_char"></a>add_char : <code class="type"><a href="BatUTF8.Buf.html#TYPEbuf">buf</a> -> CamomileLibrary.UChar.t -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALadd_char"></a>add_char : <code class="type"><a href="BatUTF8.Buf.html#TYPEbuf">buf</a> -> BatCamomile.UChar.t -> unit</code></pre><div class="info">
 Add one Unicode character to the buffer.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALadd_string"></a>add_string : <code class="type"><a href="BatUTF8.Buf.html#TYPEbuf">buf</a> -> <a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> unit</code></pre><div class="info">

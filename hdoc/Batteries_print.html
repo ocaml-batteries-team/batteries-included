@@ -4,7 +4,8 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="Batteries_help.html">
+<link rel="previous" href="Batteries_config.html">
+<link rel="next" href="Batteries_uni.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -22,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -96,42 +98,17 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Unicode" rel="Section" href="#7_Unicode">
-<link title="Data structures" rel="Section" href="#7_Datastructures">
-<title>Batteries_print</title>
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>Batteries_print</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries_help.html">Previous</a>
+<div class="navbar"><a href="Batteries_config.html">Previous</a>
 &nbsp;<a href="index.html">Up</a>
-&nbsp;</div>
+&nbsp;<a href="Batteries_uni.html">Next</a>
+</div>
 <center><h1>Module <a href="type_Batteries_print.html">Batteries_print</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> Batteries_print: <code class="code">sig</code> <a href="Batteries_print.html">..</a> <code class="code">end</code></pre><a name="6_Printingvalues"></a>
-<h6>Printing values</h6><br>
-<hr width="100%">
-<br>
-<a name="7_Unicode"></a>
-<div class="h7">Unicode</div><br>
-<pre><span class="keyword">val</span> <a name="VALprint_uchar"></a>print_uchar : <code class="type">Format.formatter -> CamomileLibrary.UChar.t -> unit</code></pre><div class="info">
-Pretty-print a <code class="code">UChar.t</code><br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALprint_rope"></a>print_rope : <code class="type">Format.formatter -> <a href="BatRope.html#TYPEt">BatRope.t</a> -> unit</code></pre><div class="info">
-Pretty-print a <code class="code">Rope.t</code><br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALprint_ustring"></a>print_ustring : <code class="type">Format.formatter -> <a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> unit</code></pre><div class="info">
-Pretty-print a <code class="code">UTF8.t</code><br>
-</div>
-<br>
-Pretty-print <code class="code">String.Cap.t</code><br>
-<pre><span class="keyword">val</span> <a name="VALprint_string_cap_rw"></a>print_string_cap_rw : <code class="type">Format.formatter -> [> `Read | `Write ] BatString.Cap.t -> unit</code></pre><div class="info">
-Pretty-print a read-write <code class="code">String.Cap.t</code> (prefixes output with "rw")<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALprint_string_cap_ro"></a>print_string_cap_ro : <code class="type">Format.formatter -> [ `Read ] BatString.Cap.t -> unit</code></pre><div class="info">
-Pretty-print a read-only <code class="code">String.Cap.t</code> (prefixes output with "ro")<br>
-</div>
-<br>
-<a name="7_Datastructures"></a>
-<div class="h7">Data structures</div><br>
-</body></html>
+<pre><span class="keyword">module</span> Batteries_print: <code class="code">sig</code> <a href="Batteries_print.html">..</a> <code class="code">end</code></pre><hr width="100%">
+<pre><span class="keyword">val</span> <a name="VALprint_uchar"></a><a href="code_VALBatteries_print.print_uchar.html">print_uchar</a> : <code class="type">Format.formatter -> BatCamomile.UChar.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALprint_rope"></a><a href="code_VALBatteries_print.print_rope.html">print_rope</a> : <code class="type">Format.formatter -> <a href="BatRope.html#TYPEt">BatRope.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALprint_ustring"></a><a href="code_VALBatteries_print.print_ustring.html">print_ustring</a> : <code class="type">Format.formatter -> <a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALstring_of_cap"></a><a href="code_VALBatteries_print.string_of_cap.html">string_of_cap</a> : <code class="type">[> `Read ] BatString.Cap.t -> string</code></pre><pre><span class="keyword">val</span> <a name="VALprint_string_cap_rw"></a><a href="code_VALBatteries_print.print_string_cap_rw.html">print_string_cap_rw</a> : <code class="type">Format.formatter -> [> `Read ] BatString.Cap.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALprint_string_cap_ro"></a><a href="code_VALBatteries_print.print_string_cap_ro.html">print_string_cap_ro</a> : <code class="type">Format.formatter -> [> `Read ] BatString.Cap.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALto_format"></a><a href="code_VALBatteries_print.to_format.html">to_format</a> : <code class="type">(string <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'a -> unit) -> Format.formatter -> 'a -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALstring_dynarray"></a><a href="code_VALBatteries_print.string_dynarray.html">string_dynarray</a> : <code class="type">Format.formatter -> string <a href="BatDynArray.html#TYPEt">BatDynArray.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALint_dynarray"></a><a href="code_VALBatteries_print.int_dynarray.html">int_dynarray</a> : <code class="type">Format.formatter -> int <a href="BatDynArray.html#TYPEt">BatDynArray.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALchar_dynarray"></a><a href="code_VALBatteries_print.char_dynarray.html">char_dynarray</a> : <code class="type">Format.formatter -> Char.t <a href="BatDynArray.html#TYPEt">BatDynArray.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALfloat_dynarray"></a><a href="code_VALBatteries_print.float_dynarray.html">float_dynarray</a> : <code class="type">Format.formatter -> <a href="BatFloat.html#TYPEt">BatFloat.t</a> <a href="BatDynArray.html#TYPEt">BatDynArray.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALint_set"></a><a href="code_VALBatteries_print.int_set.html">int_set</a> : <code class="type">Format.formatter -> BatSet.IntSet.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALstring_set"></a><a href="code_VALBatteries_print.string_set.html">string_set</a> : <code class="type">Format.formatter -> BatSet.StringSet.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VAListring_set"></a><a href="code_VALBatteries_print.istring_set.html">istring_set</a> : <code class="type">Format.formatter -> BatSet.IStringSet.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALrope_set"></a><a href="code_VALBatteries_print.rope_set.html">rope_set</a> : <code class="type">Format.formatter -> BatSet.RopeSet.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALirope_set"></a><a href="code_VALBatteries_print.irope_set.html">irope_set</a> : <code class="type">Format.formatter -> BatSet.IRopeSet.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALchar_set"></a><a href="code_VALBatteries_print.char_set.html">char_set</a> : <code class="type">Format.formatter -> BatSet.CharSet.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALint_pset"></a><a href="code_VALBatteries_print.int_pset.html">int_pset</a> : <code class="type">Format.formatter -> int <a href="BatSet.html#TYPEt">BatSet.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALstring_pset"></a><a href="code_VALBatteries_print.string_pset.html">string_pset</a> : <code class="type">Format.formatter -> string <a href="BatSet.html#TYPEt">BatSet.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALrope_pset"></a><a href="code_VALBatteries_print.rope_pset.html">rope_pset</a> : <code class="type">Format.formatter -> <a href="BatRope.html#TYPEt">BatRope.t</a> <a href="BatSet.html#TYPEt">BatSet.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALchar_pset"></a><a href="code_VALBatteries_print.char_pset.html">char_pset</a> : <code class="type">Format.formatter -> Char.t <a href="BatSet.html#TYPEt">BatSet.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALint_pset"></a><a href="code_VALBatteries_print.int_pset.html">int_pset</a> : <code class="type">Format.formatter -> int <a href="BatSet.html#TYPEt">BatSet.t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALint_pset"></a><a href="code_VALBatteries_print.int_pset.html">int_pset</a> : <code class="type">Format.formatter -> int <a href="BatSet.html#TYPEt">BatSet.t</a> -> unit</code></pre></body></html>

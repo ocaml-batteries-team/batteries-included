@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Final functions" rel="Section" href="#6_Finalfunctions">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Final functions" rel="Section" href="#6_Finalfunctions">
 <link title="Useful functions" rel="Section" href="#6_Usefulfunctions">
 <link title="Lazy constructors" rel="Section" href="#6_Lazyconstructors">
 <link title="Constructors" rel="Section" href="#6_Constructors">
@@ -208,6 +210,10 @@ A simplified version of <code class="code">fold</code>, which uses the first ele
       <code class="code">fold f e</code> throws <code class="code">Not_found</code> if <code class="code">e</code> is empty, returns its only
       element if e is a singleton, otherwise <code class="code">f (... (f (f a1 a2)
       a3)...) aN</code> where a1..N are the elements of <code class="code">e</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALsum"></a>sum : <code class="type">int <a href="BatEnum.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<code class="code">sum</code> returns the sum of the given int enum.  If the argument is
+      empty, returns 0<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold2"></a>fold2 : <code class="type">('a -> 'b -> 'c -> 'c) -> 'c -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'c</code></pre><div class="info">
 <code class="code">fold2</code> is similar to <code class="code">fold</code> but will fold over two enumerations at the

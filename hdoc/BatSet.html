@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Functorized Sets" rel="Section" href="#4_FunctorizedSets">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Functorized Sets" rel="Section" href="#4_FunctorizedSets">
 <link title="Polymorphic sets" rel="Section" href="#4_Polymorphicsets">
 <link title="Boilerplate code" rel="Subsection" href="#6_Boilerplatecode">
 <title>BatSet</title>
@@ -163,9 +165,12 @@ A set of ropes.
 <pre><span class="keyword">module</span> <a href="BatSet.IntSet.html">IntSet</a>: <code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = BatInt.t</code></pre><div class="info">
 A set of integers.
 </div>
+<pre><span class="keyword">module</span> <a href="BatSet.CharSet.html">CharSet</a>: <code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = Char.t</code></pre><div class="info">
+A set of characters.
+</div>
 <pre><span class="keyword">module</span> <a href="BatSet.Make.html">Make</a>: <div class="sig_block"><code class="code">functor (</code><code class="code">Ord</code><code class="code"> : </code><code class="type"><a href="BatSet.OrderedType.html">OrderedType</a></code><code class="code">) -&gt; </code><code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = Ord.t</code></div></pre><div class="info">
 Functor building an implementation of the set structure
-   given a totally ordered type.
+      given a totally ordered type.
 </div>
 <br>
 <a name="4_Polymorphicsets"></a>
@@ -182,6 +187,9 @@ The empty set, using <code class="code">compare</code> as comparison function<br
 </div>
 <pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">('a -> 'a -> int) -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info">
 Creates a new empty set, using the provided function for key comparison.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALsingleton"></a>singleton : <code class="type">?cmp:('a -> 'a -> int) -> 'a -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info">
+Creates a new set with the single given element in it.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALis_empty"></a>is_empty : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Test whether a set is empty or not.<br>
@@ -259,6 +267,16 @@ returns the subset of items satisfying the given predicate<br>
 <pre><span class="keyword">val</span> <a name="VALpop"></a>pop : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a * 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info">
 returns one element of the set and the set without that element.
       Raises <code class="code">Not_found</code> if given an empty set<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALunion"></a>union : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">union s t</code> returns the union of <code class="code">s</code> and <code class="code">t</code> - the set containing
+      all elements in either <code class="code">s</code> and <code class="code">t</code>.  The returned set uses <code class="code">t</code>'s
+      comparison function.  The current implementation works better for
+      small <code class="code">s</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALdiff"></a>diff : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">diff s t</code> returns the set of all elements in <code class="code">s</code> but not in
+      <code class="code">t</code>. The returned set uses <code class="code">s</code>'s comparison function.<br>
 </div>
 <br>
 <a name="6_Boilerplatecode"></a>

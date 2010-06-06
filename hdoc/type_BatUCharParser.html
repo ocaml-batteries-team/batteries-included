@@ -18,6 +18,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -92,93 +93,78 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><title>BatUCharParser</title>
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>BatUCharParser</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;position&nbsp;=&nbsp;<span class="constructor">BatCharParser</span>.position&nbsp;=&nbsp;{&nbsp;offset&nbsp;:&nbsp;int;&nbsp;line&nbsp;:&nbsp;int;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;advance&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUCharParser</span>.position<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUCharParser</span>.position&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUCharParser</span>.position<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;source_of_rope&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRope</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;source_of_enum&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRope</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="constructor">BatUCharParser</span>.position&nbsp;<span class="constructor">BatParserCo</span>.report)&nbsp;<span class="constructor">BatStd</span>.result<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;char&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;none_of&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;not_char&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;string,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;string,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;rope&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRope</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatRope</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatRope</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ustring&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUTF8</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUTF8</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUTF8</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;case_char&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUTF8</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUTF8</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;case_string&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;string,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;string,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;case_ustring&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUTF8</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUTF8</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUTF8</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;case_rope&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRope</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatRope</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatRope</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;newline&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;whitespace&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;uppercase&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lowercase&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;letter&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;digit&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;hex&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">CamomileLibrary</span>.<span class="constructor">UChar</span>.t,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatCamomile</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="constructor">BatUCharParser</span>.position)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
 <span class="keyword">end</span></code></body></html>

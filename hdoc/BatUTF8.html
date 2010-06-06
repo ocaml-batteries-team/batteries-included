@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <title>BatUTF8</title>
 </head>
 <body>
@@ -134,9 +136,11 @@ UTF-8 encoded Unicode strings.
 
     <b>Note</b> For type-safety reasons, the definition of type <a href="BatUTF8.html#TYPEt"><code class="code">BatUTF8.t</code></a> is
     kept abstract. This may cause incompatibilities with Camomile library.<br>
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t </pre>
+<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t = private <code class="type">string</code> </pre>
 <div class="info">
-UTF-8 encoded Unicode strings.<br>
+UTF-8 encoded Unicode strings.  If you coerce it to a string,
+    modify it at your own risk.  Call <a href="BatUTF8.html#VALvalidate"><code class="code">BatUTF8.validate</code></a> to verify that the
+    contents are still valid UTF-8.<br>
 </div>
 
 <pre><span class="keyword">exception</span> <a name="EXCEPTIONMalformed_code"></a>Malformed_code</pre>
@@ -152,10 +156,10 @@ Concatenate two UTF8 strings<br>
 <pre><span class="keyword">val</span> <a name="VALempty"></a>empty : <code class="type"><a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 The empty UTF8 string<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_char"></a>of_char : <code class="type">CamomileLibrary.UChar.t -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALof_char"></a>of_char : <code class="type">BatCamomile.UChar.t -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.of_char</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmake"></a>make : <code class="type">int -> CamomileLibrary.UChar.t -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALmake"></a>make : <code class="type">int -> BatCamomile.UChar.t -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.make</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALof_string"></a>of_string : <code class="type">string -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
@@ -164,26 +168,30 @@ Adopt a string. Involves copying.<br>
 <pre><span class="keyword">val</span> <a name="VALto_string"></a>to_string : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> string</code></pre><div class="info">
 Return an UTF-8 encoded string representing this Unicode string.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALadopt"></a>adopt : <code class="type">string -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+Adopt a string without copying. Modifying the original string
+      will modify this value, possibly breaking safety guarantees.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 As <code class="code">String.enum</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.of_enum</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbackwards"></a>backwards : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALbackwards"></a>backwards : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 As <code class="code">String.backwards</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_backwards"></a>of_backwards : <code class="type">CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALof_backwards"></a>of_backwards : <code class="type">BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.of_backwards</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsub"></a>sub : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> int -> int -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.sub</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> int -> CamomileLibrary.UChar.t</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> int -> BatCamomile.UChar.t</code></pre><div class="info">
 <code class="code">get s n</code> returns the <code class="code">n</code>-th Unicode character of <code class="code">s</code>.  The call
       requires O(n)-time.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> (int -> CamomileLibrary.UChar.t) -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> (int -> BatCamomile.UChar.t) -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">init len f</code> 
     returns a new string which contains <code class="code">len</code> Unicode characters.
     The i-th Unicode character is initialized by <code class="code">f i</code><br>
@@ -210,7 +218,7 @@ Positions in the string represented by the number of bytes from
 </div>
 <pre><span class="keyword">type</span> <a name="TYPEindex"></a><code class="type"></code>index = <code class="type">int</code> </pre>
 
-<pre><span class="keyword">val</span> <a name="VALlook"></a>look : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">Byte.b_idx</a> -> CamomileLibrary.UChar.t</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALlook"></a>look : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">Byte.b_idx</a> -> BatCamomile.UChar.t</code></pre><div class="info">
 <code class="code">look s i</code>
    returns the Unicode character of the location <code class="code">i</code> in the string <code class="code">s</code>.<br>
 </div>
@@ -248,7 +256,7 @@ Positions in the string represented by the number of bytes from
    <code class="code">n</code>-th Unicode character before <code class="code">i</code> if n &lt; 0.
    If there is no such character, the result is unspecified.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">(CamomileLibrary.UChar.t -> unit) -> <a href="BatUTF8.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">(BatCamomile.UChar.t -> unit) -> <a href="BatUTF8.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter f s</code>
    applies <code class="code">f</code> to all Unicode characters in <code class="code">s</code>.  
    The order of application is same to the order 
@@ -274,28 +282,28 @@ Return a copy of the argument, with all lowercase letters
 Return a copy of the argument, with all uppercase letters
    translated to lowercase.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> (int -> CamomileLibrary.UChar.t) -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> (int -> BatCamomile.UChar.t) -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.init</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">(CamomileLibrary.UChar.t -> CamomileLibrary.UChar.t) -><br>       <a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">(BatCamomile.UChar.t -> BatCamomile.UChar.t) -> <a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.map</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">(CamomileLibrary.UChar.t -> CamomileLibrary.UChar.t option) -><br>       <a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">(BatCamomile.UChar.t -> BatCamomile.UChar.t option) -> <a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.filter_map</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">(CamomileLibrary.UChar.t -> bool) -> <a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">(BatCamomile.UChar.t -> bool) -> <a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.filter</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALindex"></a>index : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> CamomileLibrary.UChar.t -> int</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALindex"></a>index : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> BatCamomile.UChar.t -> int</code></pre><div class="info">
 As <code class="code">String.index</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrindex"></a>rindex : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> CamomileLibrary.UChar.t -> int</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALrindex"></a>rindex : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> BatCamomile.UChar.t -> int</code></pre><div class="info">
 As <code class="code">String.rindex</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcontains"></a>contains : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> CamomileLibrary.UChar.t -> bool</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcontains"></a>contains : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> BatCamomile.UChar.t -> bool</code></pre><div class="info">
 As <code class="code">String.contains</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcontains_from"></a>contains_from : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> CamomileLibrary.UChar.t -> <a href="BatUTF8.Byte.html#TYPEb_idx">Byte.b_idx</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALrcontains_from"></a>rcontains_from : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> CamomileLibrary.UChar.t -> <a href="BatUTF8.Byte.html#TYPEb_idx">Byte.b_idx</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALescaped"></a>escaped : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><pre><span class="keyword">module</span> <a href="BatUTF8.Buf.html">Buf</a>: <code class="code">sig</code> <a href="BatUTF8.Buf.html">..</a> <code class="code">end</code><code class="type">  with type buf = Buffer.t</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcontains_from"></a>contains_from : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> BatCamomile.UChar.t -> <a href="BatUTF8.Byte.html#TYPEb_idx">Byte.b_idx</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALrcontains_from"></a>rcontains_from : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> BatCamomile.UChar.t -> <a href="BatUTF8.Byte.html#TYPEb_idx">Byte.b_idx</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALescaped"></a>escaped : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><pre><span class="keyword">module</span> <a href="BatUTF8.Buf.html">Buf</a>: <code class="code">sig</code> <a href="BatUTF8.Buf.html">..</a> <code class="code">end</code><code class="type">  with type buf = Buffer.t</code></pre><div class="info">
 Buffer module for UTF-8 strings
 </div>
 <br>

@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Utilities" rel="Section" href="#6_Utilities">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Utilities" rel="Section" href="#6_Utilities">
 <link title="File permissions" rel="Section" href="#6_Filepermissions">
 <link title="Opening a file for reading" rel="Section" href="#6_Openingafileforreading">
 <link title="Opening a file for writing" rel="Section" href="#6_Openingafileforwriting">
@@ -227,16 +229,21 @@ As <a href="BatFile.html#VALset_permissions"><code class="code">BatFile.set_perm
 <a name="6_Openingafileforwriting"></a>
 <h6>Opening a file for writing</h6><br>
 <pre><span class="keyword">type</span> <a name="TYPEopen_out_flag"></a><code class="type"></code>open_out_flag = <code class="type">[ `append | `create | `excl | `nonblock | `text | `trunc ]</code> </pre>
+<div class="info">
+Flags governing file output; they correspond to the relevant
+        flags to the POSIX <code class="code">open()</code> call.  The default flags are
+        <code class="code">[`create; `trunc]</code>.<br>
+</div>
 
 <pre><span class="keyword">val</span> <a name="VALopen_out"></a>open_out : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
 <code class="code">open_out file_name</code> opens the file named <code class="code">file_name</code> for writing.
 <p>
 
-    <b>Note</b> You will need to close the file manually. An alternative is
-    to call <code class="code">with_file_out</code> instead of <code class="code">open_out</code>.
+      <b>Note</b> You will need to close the file manually. An alternative is
+      to call <code class="code">with_file_out</code> instead of <code class="code">open_out</code>.
 <p>
 
-    Naming conventions for files are platform-dependent.<br>
+      Naming conventions for files are platform-dependent.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALwith_file_out"></a>with_file_out : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a) -> 'a</code></pre><div class="info">
 <code class="code">with_file_out file_name f</code> opens the file named <code class="code">file_name</code> for writing,

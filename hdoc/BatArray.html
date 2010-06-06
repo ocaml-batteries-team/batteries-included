@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
 <link title="Operations on two arrays" rel="Section" href="#6_Operationsontwoarrays">
 <link title="Predicates" rel="Section" href="#6_Predicates">
 <link title="Array transformations" rel="Section" href="#6_Arraytransformations">
@@ -294,6 +296,10 @@ Build an array from an enumeration, going into reverse order.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALdecorate_fast_sort"></a>decorate_fast_sort : <code class="type">('a -> 'b) -> 'a array -> 'a array</code></pre><div class="info">
 As <code class="code">Array.decorate_sort</code>, but uses fast_sort internally<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALrange"></a>range : <code class="type">'a array -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+returns an enumeration of all valid indexes into the given
+      array.<br>
 </div>
 <br>
 <a name="6_Boilerplatecode"></a>

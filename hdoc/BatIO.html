@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -97,9 +98,10 @@
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
+<link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
-<link title="Batteries_help" rel="Chapter" href="Batteries_help.html">
-<link title="Batteries_print" rel="Chapter" href="Batteries_print.html"><link title="Standard inputs/outputs" rel="Section" href="#6_Standardinputsoutputs">
+<link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Standard inputs/outputs" rel="Section" href="#6_Standardinputsoutputs">
 <link title="Standard API" rel="Section" href="#6_StandardAPI">
 <link title="Creation of BatIO Inputs/Outputs" rel="Section" href="#6_CreationofBatIOInputsOutputs">
 <link title="Utilities" rel="Section" href="#6_Utilities">
@@ -523,7 +525,7 @@ Read an IEEE single precision floating point value.<br>
 <pre><span class="keyword">val</span> <a name="VALread_double"></a>read_double : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> float</code></pre><div class="info">
 Read an IEEE double precision floating point value.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALread_uchar"></a>read_uchar : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> CamomileLibrary.UChar.t</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALread_uchar"></a>read_uchar : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> BatCamomile.UChar.t</code></pre><div class="info">
 Read one UChar from a UTF-8 encoded input<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALread_string"></a>read_string : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string</code></pre><div class="info">
@@ -561,7 +563,7 @@ Write an OCaml int64.<br>
 <pre><span class="keyword">val</span> <a name="VALwrite_double"></a>write_double : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> float -> unit</code></pre><div class="info">
 Write an IEEE double precision floating point value.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALwrite_uchar"></a>write_uchar : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> CamomileLibrary.UChar.t -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALwrite_uchar"></a>write_uchar : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> BatCamomile.UChar.t -> unit</code></pre><div class="info">
 Write one uchar to a UTF-8 encoded output.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALwrite_float"></a>write_float : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> float -> unit</code></pre><div class="info">
@@ -821,7 +823,7 @@ Read an enumeration of Latin-1 characters.
 
     <b>Note</b> Usually faster than calling <code class="code">read</code> several times.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALuchars_of"></a>uchars_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALuchars_of"></a>uchars_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 offer the characters of an UTF-8 encoded input as an enumeration<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALbits_of"></a>bits_of : <code class="type"><a href="BatIO.html#TYPEin_bits">in_bits</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
@@ -833,7 +835,7 @@ Write an enumeration of unsigned 8-bit bytes.<br>
 <pre><span class="keyword">val</span> <a name="VALwrite_chars"></a>write_chars : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
 Write an enumeration of chars.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALwrite_uchars"></a>write_uchars : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> CamomileLibrary.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALwrite_uchars"></a>write_uchars : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> BatCamomile.UChar.t <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
 Write an enumeration of characters onto a UTF-8 encoded output.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALwrite_ui16s"></a>write_ui16s : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
