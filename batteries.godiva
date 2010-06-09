@@ -1,9 +1,9 @@
 Package: godi-batteries
-Version: 1.2.0pre1
+Version: 1.2.0
 Revision: 0
 Depends: godi-ocaml (>= 3.11), godi-camomile (>= 0.7), godi-findlib (>= 1.2.5)
-Sources: http://github.com/downloads/elehack/batteries-included/batteries-included-1.2.0pre1.tar.gz
-Homepage: http://github.com/thelema/batteries-included
+Sources: https://forge.ocamlcore.org/frs/download.php/416/batteries-1.2.0.tar.gz
+Homepage: http://batteries.forge.ocamlcore.org
 Maintainer: Michael Ekstrand <michael@elehack.net>
 Docfiles: README, LICENSE
 Description: OCaml Batteries: a simplified community-maintained foundation library for your OCaml projects.
