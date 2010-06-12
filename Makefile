@@ -68,8 +68,8 @@ install-doc: doc
 	mkdir -p $(DOCROOT)
 	cp -r doc/batteries/* $(DOCROOT)
 	# deal with symlink that will break
-	rm -f $(DOCROOT)/batteries_large.png
-	cp -f doc/batteries_large.png $(DOCROOT)
+	rm -f $(DOCROOT)/html/batteries_large.png
+	cp -f doc/batteries_large.png $(DOCROOT)/html
 	mkdir -p $(DOCROOT)/html/api
 	cp apidocs/* $(DOCROOT)/html/api
 	cp LICENSE README FAQ VERSION $(DOCROOT)
