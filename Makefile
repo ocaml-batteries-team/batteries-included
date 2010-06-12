@@ -17,6 +17,13 @@ OCAMLBUILD ?= ocamlbuild
 BATTERIES_NATIVE ?= yes
 BATTERIES_NATIVE_SHLIB ?= yes
 
+INSTALL_FILES = _build/META _build/src/*.cma \
+	battop.ml _build/src/*.cmi _build/src/*.mli \
+	_build/src/batteries_help.cmo \
+	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
+	_build/src/syntax/pa_strings/pa_strings.cma
+NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
+
 # What to build
 TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
 TEST_TARGETS = testsuite/main.byte
@@ -24,9 +31,11 @@ TEST_TARGETS = testsuite/main.byte
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   TARGETS += shared.otarget
   TEST_TARGETS += testsuite/main.native
+  INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
 else ifeq ($(BATTERIES_NATIVE), yes)
   TARGETS += native.otarget
   TEST_TARGETS += testsuite/main.native
+  INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 endif
 
 .PHONY: all clean doc install uninstall reinstall test
@@ -48,13 +57,7 @@ install: all
 		_build/libs/estring/*.cmo \
 		_build/libs/estring/*.cmi \
 		_build/libs/estring/*.mli
-	ocamlfind install $(NAME) _build/META \
-		 _build/src/*.cma _build/src/*.cmxa _build/src/*.cmxs \
-		 _build/src/*.a battop.ml \
-		_build/src/*.cmx _build/src/*.cmi _build/src/*.mli \
-		_build/src/batteries_help.cmo \
-		_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
-		_build/src/syntax/pa_strings/pa_strings.cma
+	ocamlfind install $(NAME) $(INSTALL_FILES)
 
 uninstall:
 	ocamlfind remove estring
@@ -62,8 +65,10 @@ uninstall:
 	rm -rf $(DOCROOT)
 
 install-doc: doc
-	mkdir -p $(DOCROOT)
-	cp apidocs/* $(DOCROOT)
+	mkdir -p $(DOCROOT)/html
+	cp apidocs/* $(DOCROOT)/html
+	cp doc/batteries/documentation.idex $(DOCROOT)
+	cp LICENSE README FAQ VERSION $(DOCROOT)
 
 reinstall:
 	$(MAKE) uninstall
