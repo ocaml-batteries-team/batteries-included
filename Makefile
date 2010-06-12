@@ -4,7 +4,7 @@
 NAME = batteries
 
 # This is also defined in the VERSION file
-VERSION = 1.2.0
+VERSION := $(shell cat VERSION)
 
 # Define variables and export them for mkconf.ml
 DOCROOT ?= /usr/share/doc/ocaml-batteries
