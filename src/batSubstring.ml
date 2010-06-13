@@ -145,7 +145,7 @@ let dropl p (str,off,len) =
   
 let dropr p (str, off, len) =
   let i = ref len in
-  while !i >= 0 && p str.[off+ !i] do decr i; done;
+  while !i > 0 && p str.[off+ !i - 1] do decr i; done;
   (str, off, !i)
 
 let takel p (str,off,len) =
@@ -155,17 +155,17 @@ let takel p (str,off,len) =
 
 let taker p (str, off, len) =
   let i = ref len in
-  while !i >= 0 && p str.[off+ !i] do decr i; done;
+  while !i > 0 && p str.[off+ !i - 1] do decr i; done;
   (str, off+ !i, len- !i)
 
 let splitl p (str, off, len) = 
   let i = ref 0 in
   while !i < len && p str.[off+ !i] do incr i; done;
-  (str, off+ !i, len- !i), (str, off, !i)
+  (str, off, !i), (str, off+ !i, len- !i)
   
 let splitr p (str, off, len) =
   let i = ref len in
-  while !i >= 0 && p str.[off+ !i] do decr i; done;
+  while !i > 0 && p str.[off+ !i - 1] do decr i; done;
   (str, off, !i), (str, off+ !i, len- !i)
 
 let split_at k (str, off, len) =
