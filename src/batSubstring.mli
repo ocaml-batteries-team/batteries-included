@@ -24,9 +24,6 @@ val make : int -> char -> t
 
 val create : int -> t
 
-val length: t -> int
-  (** [length s] returns the length of the substring [s]. *)
-
 val of_input : BatIO.input -> t
 
 val substring : string -> int -> int -> t
@@ -90,6 +87,8 @@ val get : int -> t -> char
 val size : t -> int
   (** [size (s, i, n)] returns the size of the substring, that is, n.
   *)
+val length: t -> int
+  (** Equivalent to {!size}. *)
 
 val slice : t -> int -> int option -> t
   (** [slice (sus, i', NONE)] returns the substring (s, i+i', n-i'),

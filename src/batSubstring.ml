@@ -33,8 +33,6 @@ let make len c = String.make len c, 0, len
 
 let create len = String.make len '\000', 0, len
 
-let length (_,_,l) = l
-
 (*
 let of_chan chan =
   let tempsize = 16384 in
@@ -93,6 +91,7 @@ let get k (str, off, len) =
   str.[off+k]
 
 let size (_,_,len) = len
+let length = size
 
 let slice (str,off,len) off2 len2_opt = 
   if off2 < 0 then invalid_arg "Substring.slice: negative offset not allowed";
