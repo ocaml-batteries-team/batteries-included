@@ -24,6 +24,9 @@ val make : int -> char -> t
 
 val create : int -> t
 
+val length: t -> int
+  (** [length s] returns the length of the substring [s]. *)
+
 val of_input : BatIO.input -> t
 
 val substring : string -> int -> int -> t

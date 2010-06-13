@@ -33,6 +33,8 @@ let make len c = String.make len c, 0, len
 
 let create len = String.make len '\000', 0, len
 
+let length (_,_,l) = l
+
 (*
 let of_chan chan =
   let tempsize = 16384 in
