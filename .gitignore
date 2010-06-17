@@ -11,3 +11,5 @@ man/*
 *.swp
 *.opt
 *.run
+apidocs
+batteries.docdir
