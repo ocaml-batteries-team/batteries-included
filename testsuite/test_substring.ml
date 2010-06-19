@@ -116,6 +116,33 @@ let test_splitl =
     end;
   ];;
 
+let test_slice =
+  let printer sus =
+    let (s,i,n) = base sus in Printf.sprintf "(%S,%d,%d)" s i n
+  in
+  let cmp sus1 sus2 = to_string sus1 = to_string sus2 in
+  let aeq = assert_equal ~printer ~cmp in
+  [
+    begin "slice empty" >:: fun () ->
+      aeq (empty ()) (slice (empty ()) 0 None)
+    end;
+    begin "slice all" >:: fun () ->
+      aeq (of_string "foo") (slice (of_string "foo") 0 None);
+      aeq (of_string "foo") (slice (of_string "foo") 0 (Some 3));
+    end;
+    begin "slice none" >:: fun () ->
+      aeq (of_string "") (slice (of_string "foo") 3 None);
+      aeq (of_string "") (slice (of_string "foo") 3 (Some 0));
+    end;
+    begin "slice some" >:: fun () ->
+      aeq (of_string "oo") (slice (of_string "foo") 1 None);
+      aeq (of_string "oo") (slice (of_string "foo") 1 (Some 2));
+    end;
+    begin "slice pick" >:: fun () ->
+      aeq (of_string "i") (slice (of_string "jim") 1 (Some 1));
+    end;
+  ];;
+
 let tests = "Substring" >::: [
   "dropr" >::: test_dropr;
   "dropl" >::: test_dropl;
@@ -123,4 +150,5 @@ let tests = "Substring" >::: [
   "takel" >::: test_takel;
   "splitr" >::: test_splitr;
   "splitl" >::: test_splitl;
+  "slice" >::: test_slice;
 ];;
