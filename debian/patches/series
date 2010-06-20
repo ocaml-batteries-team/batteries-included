@@ -1,1 +1,2 @@
 0001-install-fix-for-bytecode-only-build.patch
+0002-Fix-build-with-OCaml-3.12.0.patch
