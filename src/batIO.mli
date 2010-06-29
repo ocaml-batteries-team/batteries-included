@@ -338,11 +338,11 @@ val combine : ('a output * 'b output) -> ('a * 'b) output
     writing to [c] will actually write to both [a] and [b] *)
 
 val tab_out : ?tab:char -> int -> 'a output -> unit output
-  (** Create an output shifted to the right by a number of white spaces
-      (or [tab], if given).
+  (** Create an output shifted to the right by a number of spaces
+      (or other character as specified by [tab]).
 
       [tab_out n out] produces a new output for writing into [out], in
-      which every new line starts with [n] white spaces.
+      which every new line starts with [n] spaces.
       Raises [Invalid_argument] if [n] < 0.
 
       Closing [tab_out n out] does not close [out]. Rather,
