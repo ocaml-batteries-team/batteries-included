@@ -381,7 +381,7 @@ let filter_map f d =
 	    incr p;
 	end
     done;
-    changelen dest !p; (*Trim the destination array to the right size*)
+    changelen dest (!p-1); (*Trim the destination array to the right size*)
     dest
 
 
