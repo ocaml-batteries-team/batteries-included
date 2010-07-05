@@ -74,7 +74,7 @@ if ext_syntax then begin
   if !Sys.interactive then 
     print_endline "Loading syntax extensions...";
   Topfind.standard_syntax();
-  Topfind.load_deeply ["camlp4"; "batteries.pa_string.syntax"; 
+  Topfind.load_deeply ["dynlink"; "camlp4"; "batteries.pa_string.syntax";
    		       "batteries.pa_comprehension.syntax"];
 end else 
   if !Sys.interactive then 
