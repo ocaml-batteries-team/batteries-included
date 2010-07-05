@@ -373,6 +373,10 @@ let reduce f t =
   with None -> raise Not_found
     |  Some init -> fold f init t
 
+let sum t = 
+  match get t with
+    | None -> 0
+    | Some i -> fold (+) i t
 
 let exists f t =
   try let rec aux () = f (t.next()) || aux ()
@@ -778,7 +782,7 @@ let uncombine e =
 	with Queue.Empty ->
 	  let (x,y) = e.next()  in
 	    Queue.push x queue_fst;
-	    advance := `first;
+	    advance := `second;
 	    y
   in (from first, from second)
 

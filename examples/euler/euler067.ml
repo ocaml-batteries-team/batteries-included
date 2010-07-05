@@ -1,3 +1,4 @@
+open Batteries
 let tri =
 [|
 [| 59|];

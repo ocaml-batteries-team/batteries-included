@@ -201,7 +201,11 @@ val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
 val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array
   (** As {!Array.decorate_sort}, but uses fast_sort internally *)
 
-  (** {6 Boilerplate code}*)
+val range : 'a array -> int BatEnum.t
+  (** returns an enumeration of all valid indexes into the given
+      array.*)
+
+(** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
 

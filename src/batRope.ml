@@ -26,7 +26,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module UChar = CamomileLibrary.UChar
+module UChar = BatCamomile.UChar
 module UTF8 = BatUTF8
 
 open BatReturn
@@ -621,7 +621,7 @@ let of_bulk_enum e =
 let of_bulk_backwards e =
   BatEnum.fold (fun s acc -> append (of_ustring s) acc) Empty e
 *)
-module CE = CamomileLibrary.CharEncoding.Configure(CamomileLibrary.CamomileDefaultConfig)
+module CE = BatCamomile.CharEncoding
  
 let of_latin1 s =
   of_ustring (UTF8.of_string (CE.recode_string CE.latin1 CE.utf8 s))

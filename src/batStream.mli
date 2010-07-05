@@ -27,7 +27,7 @@
 
    {b Note} This module is provided essentially for backwards-compatibility.
    If you feel like using [Stream.t], please take a look at [BatEnum]
-   or [LazyList] and [GenParser].
+   or [LazyList].
 
    This module is based on {{:http://www.pps.jussieu.fr/~li/software/sdflow/}Zheng Li's SDFlow}
 

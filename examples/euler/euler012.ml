@@ -1,3 +1,4 @@
+open Batteries
 let num_div x = 
   let count = ref 1 in (* already counted 1 *)
   let max_test = x |> float |> sqrt |> Float.to_int in

@@ -257,3 +257,10 @@ let forall2_range f m1 m2 =
 	(f lo1 hi (Some rx1) (Some rx2)) && aux (v1, v2)
   in
   aux (Enum.get e1, Enum.get e2)
+
+module Infix =
+struct
+  let (-->) map key = find key map
+  let (<--) map (key, value) = add key value map
+end
+

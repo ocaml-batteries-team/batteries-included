@@ -29,7 +29,7 @@
     @author David Teller
 *)
 
-open CamomileLibrary
+open BatCamomile
 open BatParserCo
 
 (** The position inside one file or one stream. *)

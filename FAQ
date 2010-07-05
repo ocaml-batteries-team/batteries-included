@@ -51,7 +51,7 @@ available as simply [Foo].
 
 **** Compiling with Ocamlbuild ****
 
-Copy doc/batteries/myocamlbuild.ml into your source directory, and use:
+Copy build/myocamlbuild.ml into your source directory, and use:
 
     <*>: pkg_batteries, pkg_threads
 
@@ -59,7 +59,7 @@ in your _tags file to enable batteries for all modules.
 
 **** Bare Findlib ****
 
-ocamlfind compile -thread -package batteries foo.ml -linkpkg
+ocamlfind ocamlc -thread -package batteries -linkpkg foo.ml -o foo
 
 **** OMake ****
 

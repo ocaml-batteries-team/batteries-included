@@ -64,6 +64,11 @@ open Batteries;;
 #install_printer Batteries_print.print_rope;;
 #install_printer Batteries_print.print_string_cap_rw;;
 #install_printer Batteries_print.print_string_cap_ro;;
+#install_printer Batteries_print.string_dynarray;;
+#install_printer Batteries_print.int_dynarray;;
+#install_printer Batteries_print.char_dynarray;;
+#install_printer Batteries_print.float_dynarray;;
+
 
 if ext_syntax then begin
   if !Sys.interactive then 

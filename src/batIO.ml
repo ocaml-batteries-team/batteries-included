@@ -819,11 +819,12 @@ let synchronize_out ?(lock = !lock_factory ()) out =
 let to_input_channel inp =
   try Unix.in_channel_of_descr (BatUnix.descr_of_input inp) (*Simple case*)
   with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
-    let (name, cout) = Filename.open_temp_file "ocaml" "pipe" in
+    let (name, cout) = 
+      Filename.open_temp_file ~mode:[Open_binary] "ocaml" "pipe" in
     let out          = output_channel cout                    in
       copy inp out;
       close_out out;
-      Pervasives.open_in name    
+      Pervasives.open_in_bin name    
 
 
 

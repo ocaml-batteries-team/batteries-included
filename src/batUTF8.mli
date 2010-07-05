@@ -19,7 +19,7 @@
  *)
 
 open BatUChar
-open CamomileLibrary
+open BatCamomile
 
 (** UTF-8 encoded Unicode strings. 
 
@@ -38,10 +38,11 @@ open CamomileLibrary
     @documents UTF8
 *)
 
-(** UTF-8 encoded Unicode strings.*)
-type t 
-(* maybe use new private types in 3.11 once that's released *)
- 
+(** UTF-8 encoded Unicode strings.  If you coerce it to a string,
+    modify it at your own risk.  Call {!validate} to verify that the
+    contents are still valid UTF-8.  *)
+type t = private string
+    
 exception Malformed_code
 
 val validate : string -> unit
@@ -73,6 +74,10 @@ val of_string : string -> t
 
 val to_string : t -> string
   (**Return an UTF-8 encoded string representing this Unicode string.*)
+
+val adopt : string -> t
+  (** Adopt a string without copying. Modifying the original string
+      will modify this value, possibly breaking safety guarantees. *)
 
 val enum : t -> UChar.t BatEnum.t
   (**As {!String.enum}*)

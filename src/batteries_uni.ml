@@ -141,7 +141,7 @@ module Bool = BatBool
 module Unit = BatUnit
 
 (* Chamomile *)
-module UChar = struct include CamomileLibrary.UChar include BatUChar end
+module UChar = struct include BatCamomile.UChar include BatUChar end
 module UTF8 = BatUTF8 (* replaces, doesn't extend UTF8 *)
 
 

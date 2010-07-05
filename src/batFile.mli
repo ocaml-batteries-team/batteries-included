@@ -123,8 +123,9 @@ type open_in_flag =
 val open_in : ?mode:(open_in_flag list) -> ?perm:permission -> string -> input
 (** [open_in file_name] opens the file named [file_name] for reading.
 
-    {b Note} You will need to close the file manually. An alternative is
-    to call [with_file_in] instead of [open_in].
+    {b Note} You will need to close the file manually, with
+    {!BatIO.close_in}. An alternative is to call [with_file_in] instead
+    of [open_in].
 
     Naming conventions for files are platform-dependent.*)
 
@@ -138,21 +139,25 @@ val with_file_in : ?mode:(open_in_flag list) -> ?perm:permission -> string -> (i
 type open_out_flag =
   [ `append   (**Start writing at the end of the file rather than the start *)
   | `create   (**Create the file if it does not exist                       *)
-  | `trunc    (**Empty the file if it already exists                        *)
+  | `trunc    (**Empty the file if it already exists; on by default         *)
   | `excl     (**Fail if the file exists and [`create] is set               *)
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
 		 operating system does not perform conversions, the file is
 		 opened in binary mode.                                     *)
   | `nonblock (**Open in non-blocking mode                                  *) ]
+    (** Flags governing file output; they correspond to the relevant
+        flags to the POSIX [open()] call.  The default flags are
+        [[`create; `trunc]]. *)
 
 
 val open_out : ?mode:(open_out_flag list) -> ?perm:permission -> string -> unit output
-(** [open_out file_name] opens the file named [file_name] for writing.
+  (** [open_out file_name] opens the file named [file_name] for writing.
 
-    {b Note} You will need to close the file manually. An alternative is
-    to call [with_file_out] instead of [open_out].
+      {b Note} You will need to close the file manually, with
+      {!BatIO.close_out}. An alternative is to call [with_file_out]
+      instead of [open_out].
 
-    Naming conventions for files are platform-dependent.*)
+      Naming conventions for files are platform-dependent.*)
 
 val with_file_out: ?mode:(open_out_flag list) -> ?perm:permission -> string -> (unit output -> 'a) -> 'a
 (** [with_file_out file_name f] opens the file named [file_name] for writing,

@@ -27,15 +27,26 @@ type 'a t =
 
 type 'a forest_element = { mutable c : 'a t; mutable len : int }
 
-let str_append = Array.append
+module STRING : sig
+(* this module must provide the following functions: *)
+  type 'a t = 'a array
+  val length : 'a t -> int
+  val make : int -> 'a -> 'a t
+  val copy : 'a t -> 'a t
+  val unsafe_get : 'a t -> int -> 'a
+  val unsafe_set : 'a t -> int -> 'a -> unit
+  val sub : 'a t -> int -> int -> 'a t
+  val iter : ('a -> unit) -> 'a t -> unit
+  val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val append : 'a t -> 'a t -> 'a t
+  val concat : 'a t list -> 'a t
+end = struct include Array include BatArray end
+
+let str_append = STRING.append
 let empty_str = [||]
-let string_of_string_list = Array.concat
+let string_of_string_list = STRING.concat
 
 let singleton x = Leaf [|x|]
-
-
-
-module STRING = struct include Array include BatArray end
 
 (* 48 limits max rope size to 236.10^9 elements on 64 bit,
  * ~ 734.10^6 on 32bit (length fields overflow after that) *)
@@ -291,22 +302,62 @@ let rec iter f = function
   | Leaf s -> STRING.iter f s
   | Concat(l,_,r,_,_) -> iter f l; iter f r
 
-let enum e =
-  let rec aux = function
-    | Empty                 -> BatEnum.empty ()
-    | Leaf s                -> STRING.enum s
-    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux l))
-	                                   (BatEnum.delay (fun () -> aux r))
-  in aux e
+type 'a iter = E | C of 'a STRING.t * int * 'a t * 'a iter
+  
+let rec cons_iter s t = match s with
+    Empty -> t
+  | Leaf s -> C (s, 0, Empty, t)
+  | Concat (l, _llen, r, _rlen, _h) -> cons_iter l (cons_iter r t)
 
-let backwards e =
-  let rec aux = function
-    | Empty                 -> BatEnum.empty ()
-    | Leaf s                -> STRING.backwards s
-    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux r))
-	                                   (BatEnum.delay (fun () -> aux l))
-  in aux e
+let rec rev_cons_iter s t = match s with
+    Empty -> t
+  | Leaf s -> C (s, (STRING.length s - 1), Empty, t)
+  | Concat (l, _, r, _, _) -> rev_cons_iter r (rev_cons_iter l t)
+      
+let rec enum_next l () = match !l with
+    E -> raise BatEnum.No_more_elements
+  | C (s, p, r, t) -> 
+      if p+1 = STRING.length s then
+	l := cons_iter r t
+      else 
+	l := C(s,p+1,r,t);
+      STRING.unsafe_get s p
 
+let rec enum_backwards_next l () = match !l with
+    E -> raise BatEnum.No_more_elements
+  | C (s, p, r, t) ->  
+      if p = 0 then
+	l := rev_cons_iter r t
+      else 
+	l := C(s,p-1,r,t);
+      STRING.unsafe_get s p
+      
+let rec enum_count l () =
+  let rec aux n = function
+      E -> n
+    | C (s, p, m, t) -> aux (n + (STRING.length s - p) + length m) t
+  in aux 0 !l
+
+let rec rev_enum_count l () =
+  let rec aux n = function
+      E -> n
+    | C (s, p, m, t) -> aux (n + (p+1) + length m) t
+  in aux 0 !l
+       
+let enum t =
+  let rec make l =
+    let l = ref l in
+    let clone() = make !l in
+    BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
+  in make (cons_iter t E)
+       
+let backwards t =
+  let rec make l =
+    let l = ref l in
+    let clone() = make !l in
+    BatEnum.make ~next:(enum_backwards_next l) ~count:(rev_enum_count l) ~clone
+  in make (rev_cons_iter t E)
+       
 let of_enum e =
   BatEnum.fold (fun acc x -> append_char x acc) empty e
 

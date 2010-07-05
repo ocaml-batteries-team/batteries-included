@@ -292,7 +292,10 @@ let flush_all () =
   BatConcurrent.sync !lock ( Outputs.iter (fun o -> try flush o with _ -> ())) outputs
 
 let close_all () =
-  BatConcurrent.sync !lock  (Outputs.iter (fun o -> try close_out o with _ -> ())) outputs
+  let outs =
+    BatConcurrent.sync !lock (Outputs.fold (fun o os -> o :: os) outputs) []
+  in
+    List.iter (fun o -> try close_out o with _ -> ()) outs
 
 let read_all i =
   let maxlen = 1024 in

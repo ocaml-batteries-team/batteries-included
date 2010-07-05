@@ -16,7 +16,7 @@
     @documents UChar
 *)
 
-open CamomileLibrary.UChar
+open BatCamomile.UChar
 
 val is_whitespace : t -> bool
 (** Determine if a character is a whitespace.

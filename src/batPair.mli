@@ -40,3 +40,4 @@ val of_enum : 'a BatEnum.t -> ('a * 'a)
 (** Prints a pair using given printing functions *)
 val print : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> 'o BatIO.output -> ('a * 'b) -> unit
 
+val print2 : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a) -> unit
