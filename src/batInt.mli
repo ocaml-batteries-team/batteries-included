@@ -169,8 +169,8 @@
 
     (** {7 Printing}*)
 
-    val print: 'a BatInnerIO.output -> t -> unit
-    val xprint: 'a BatInnerIO.output -> t -> unit
+    val print: 'a BatInnerIO.output -> int -> unit
+    val xprint: 'a BatInnerIO.output -> int -> unit
       (** prints as hex string *)
 (*    val bprint: 'a BatInnerIO.output -> t -> unit
       (** prints as binary string *) *)

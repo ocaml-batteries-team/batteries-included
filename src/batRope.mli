@@ -75,7 +75,7 @@ architectures, 220 Gb on 64 bit architectures.
 @author Mauricio Fernandez
 *)
 
-open CamomileLibrary
+open BatCamomile
  
 type t
   (** The type of the ropes. *)

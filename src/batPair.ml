@@ -42,3 +42,5 @@ let print print_a print_b out (a,b) =
   print_b out b;
   BatIO.write out ')'
 
+let print2 printer out pair = print printer printer out pair
+  

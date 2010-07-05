@@ -62,6 +62,15 @@ module type S =
     (** [remove x m] returns a map containing the same bindings as
        [m], except for [x] which is unbound in the returned map. *)
 
+    val modify: key -> ('a -> 'a) -> 'a t -> 'a t
+      (** [modify k f m] replaces the previous binding for [k] with [f] applied to
+	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
+	  search, [Not_found] is raised.
+
+	  @since 1.2.0
+	  @raise Not_found if [k] is unbound in [m] (or [f] raises [Not_found])
+*)
+
     val mem: key -> 'a t -> bool
     (** [mem x m] returns [true] if [m] contains a binding for [x],
        and [false] otherwise. *)
@@ -125,14 +134,13 @@ module type S =
 
     val values: 'a t -> 'a BatEnum.t
       (** Return an enumeration of al the values of a map.*)
-(*
-    val min_key : 'a t -> (key * 'a)
+    
+    val min_binding : 'a t -> (key * 'a)
       (** return the ([key,value]) pair with the smallest key *)
 
-    val max_key : 'a t -> (key * 'a)
+    val max_binding : 'a t -> (key * 'a)
       (** return the [(key,value)] pair with the largest key *)
 
-*)
     val choose : 'a t -> (key * 'a)
       (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
 (*
@@ -179,8 +187,20 @@ module type S =
     module Exceptionless : sig
       val find: key -> 'a t -> 'a option
     end
-      
-      
+
+    (** Infix operators over a {!BatMap} *)
+    module Infix : sig
+      val (-->) : 'a t -> key -> 'a
+        (** [map-->key] returns the current binding of [key] in [map],
+            or raises [Not_found]. Equivalent to [find key map]. *)
+
+      val (<--) : 'a t -> key * 'a -> 'a t
+        (** [map<--(key, value)] returns a map containing the same bindings as
+            [map], plus a binding of [key] to [value]. If [key] was already bound
+            in [map], its previous binding disappears. Equivalent
+            to [add key value map]*)
+    end
+
     (** Operations on {!Map} with labels.
 	
 	This module overrides a number of functions of {!Map} by
@@ -271,6 +291,9 @@ val is_empty : ('a, 'b) t -> bool
 
 val create : ('a -> 'a -> int) -> ('a, 'b) t
 (** creates a new empty map, using the provided function for key comparison.*)
+
+val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'b -> ('a, 'b) t
+(** creates a new map with a single binding *)
 
 val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
@@ -372,7 +395,10 @@ val add_carry : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t * 'b option
 val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> ('a, 'b) t
   (** [modify k f m] replaces the previous binding for [k] with [f]
       applied to that value.  If [k] is unbound in [m] or [Not_found] is
-      raised during the search, [m] is returned unchanged. *)
+      raised during the search,  [Not_found] is raised.
+
+      @since 1.2.0
+      @raise Not_found if [k] is unbound in [m] (or [f] raises [Not_found]) *)
 
 val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
   (** [extract k m] removes the current binding of [k] from [m],
@@ -381,6 +407,31 @@ val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
 val pop : ('a, 'b) t -> ('a * 'b) * ('a, 'b) t
   (** [pop m] returns a binding from [m] and [m] without that
       binding. *)
+
+val union : ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
+  (** [union m1 m2] merges two maps, using the comparison function of
+      the second map and containing all bindings of the two maps.  In
+      case of conflicted bindings, the first map's bindings override the
+      second map's. Equivalent to [foldi add m1 m2]*)
+
+val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
+  (** [diff m1 m2] removes all bindings of keys found in [m2] from [m1].  Equivalent to [fold remove m2 m1] *)
+
+val intersect : ('b -> 'c -> 'd) -> ('a, 'b) t -> ('a, 'c) t -> ('a, 'd) t
+  (** [intersect merge_f m1 m2] returns a map with bindings only for keys bound in both [m1] and [m2], and with [k] bound to [merge_f v1 v2], where [v1] and [v2] are [k]'s bindings from [m1] and [m2]*)
+
+(** Infix operators over a {!BatMap} *)
+module Infix : sig
+  val (-->) : ('a, 'b) t -> 'a -> 'b
+    (** [map-->key] returns the current binding of [key] in [map],
+        or raises [Not_found]. Equivalent to [find key map]. *)
+
+  val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
+    (** [map<--(key, value)] returns a map containing the same bindings as
+        [map], plus a binding of [key] to [value]. If [key] was already bound
+        in [map], its previous binding disappears. Equivalent
+        to [add key value map]*)
+end
 
 (** {6 Boilerplate code}*)
 

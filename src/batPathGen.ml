@@ -813,7 +813,7 @@ end
 
 module OfString : PathType with type ustring = string and type uchar = char = Make (StringAdapter) 
             
-open CamomileLibrary
+open BatCamomile
 
 module RopeAdapter = struct
 

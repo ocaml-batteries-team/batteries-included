@@ -35,7 +35,6 @@
     @author David Teller
 *)
 
-
 val is_whitespace : char -> bool
 (** Determine if a character is a whitespace.
     Whitespace characters are defined as 

@@ -197,6 +197,8 @@ let of_enum e =
 let of_backwards e =
   of_list (BatList.of_backwards e)
 
+let range xs = BatEnum.(--^) 0 (Array.length xs)
+
 let filter_map p xs =
   of_enum (BatEnum.filter_map p (enum xs))
 
@@ -246,7 +248,7 @@ let make_compare cmp a b =
   in
   let rec aux i = 
     if i < length then
-      let result = compare (unsafe_get a i) (unsafe_get b i) in
+      let result = cmp (unsafe_get a i) (unsafe_get b i) in
 	if result = 0 then aux (i + 1)
 	else               result
     else

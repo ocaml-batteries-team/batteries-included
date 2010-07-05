@@ -19,9 +19,9 @@
  *)
 
 open BatIO
-open CamomileLibrary
+open BatCamomile
 
-module Encoding = CamomileLibrary.Default.Camomile.CharEncoding
+module Encoding = BatCamomile.CharEncoding
 
 exception Malformed_code = Encoding.Malformed_code
 

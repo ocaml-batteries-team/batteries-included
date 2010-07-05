@@ -71,7 +71,9 @@ struct
       | Cons(_loc, '1' .. '9', _) as l ->
           let n, l = number l in
           loop (<:rec_binding< BatPervasives.pf_width = Some $int:string_of_int n$ >> :: acc) l
-
+      | Cons(_loc, '.', (Cons(_l2, '0'..'9',_) as l)) ->
+	  let n, l = number l in
+	  loop (<:rec_binding< BatPervasives.pf_frac_digits = Some $int:string_of_int n$ >> :: acc) l
       | l ->
           (acc, l)
 
