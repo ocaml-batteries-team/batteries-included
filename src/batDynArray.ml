@@ -361,7 +361,8 @@ let filter f d =
 	  incr p;
 	end;
     done;
-    changelen dest (!p-1); (* len = p-1 *)
+    dest.len <- !p;
+    changelen dest !p;
     dest
 
 let keep f d = let result = filter f d in 
@@ -381,7 +382,8 @@ let filter_map f d =
 	    incr p;
 	end
     done;
-    changelen dest (!p-1); (*Trim the destination array to the right size*)
+    dest.len <- !p;
+    changelen dest !p; (*Trim the destination array to the right size*)
     dest
 
 
