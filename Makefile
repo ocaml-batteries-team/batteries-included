@@ -38,7 +38,7 @@ else ifeq ($(BATTERIES_NATIVE), yes)
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 endif
 
-.PHONY: all clean doc install uninstall reinstall test
+.PHONY: all clean doc install uninstall reinstall test camomile81
 
 all:
 	test ! -e src/batteries_config.ml || rm src/batteries_config.ml
@@ -85,3 +85,7 @@ test:
 release: test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
+
+camomile81:
+	mv src/batCamomile.ml batCamomile-0.7.ml
+	mv src/batCamomile-0.8.1.ml batCamomile.ml

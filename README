@@ -24,6 +24,8 @@ You will need
 
 **** Configuration and installation ****
 
+NOTE: to use camomile 0.8.1, run [make camomile81] first
+
 To install the full version of OCaml Batteries Included, execute
 
    $ make all
