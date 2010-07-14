@@ -10,7 +10,7 @@ Build-Depends:
  ocaml-findlib (>= 1.2.5),
  libcamomile-ocaml-dev (>= 0.7),
  libounit-ocaml-dev,
- dh-ocaml (>= 0.9~)
+ dh-ocaml (>= 0.9.5~)
 Standards-Version: 3.8.4
 Vcs-Git: git://git.debian.org/git/pkg-ocaml-maint/packages/ocaml-batteries.git
 Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/ocaml-batteries.git
