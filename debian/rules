@@ -6,7 +6,6 @@ BATTERIES_DEB_DOCROOT = $(CURDIR)/debian/tmp/doc
 export BATTERIES_DOCROOT = /usr/share/doc/libbatteries-ocaml-doc/html/api/
 export DESTDIR = $(OCAML_STDLIB_DIR)
 DOC_PKG = libbatteries-ocaml-doc
-OFLAGS = --verbose
 
 %:
 	dh --with quilt,ocaml $@
@@ -15,24 +14,28 @@ ifneq ($(OCAML_HAVE_OCAMLOPT),yes)
 export BATTERIES_NATIVE = false
 endif
 
+ifneq ($(OCAML_NATDYNLINK),yes)
+export BATTERIES_NATIVE_SHLIB=false
+endif
+
 override_dh_auto_build:
-	omake $(OFLAGS) all
+	make all
 ifneq (,$(findstring $(DOC_PKG),$(shell dh_listpackages)))
-	omake $(OFLAGS) doc
+	make doc
 endif
 
 override_dh_auto_test:
-	omake $(OFLAGS) test
+	make test
 
 override_dh_auto_install:
 	mkdir -p $(DEB_DESTDIR) $(BATTERIES_DEB_DOCROOT)
-	DESTDIR=$(DEB_DESTDIR) omake $(OFLAGS) install
+	DESTDIR=$(DEB_DESTDIR) make install
 ifneq (,$(findstring $(DOC_PKG),$(shell dh_listpackages)))
-	DESTDIR=$(DEB_DESTDIR) BATTERIES_DOCROOT=$(BATTERIES_DEB_DOCROOT) omake $(OFLAGS) install-doc
+	make DOCROOT=$(BATTERIES_DEB_DOCROOT) install-doc
 endif
 
 override_dh_auto_clean:
-	omake $(OFLAGS) clean
+	make clean
 	rm -rf man/ .omakedb .omakedb.lock
 	-find . -name '*.omc' -exec rm {} \;
 
