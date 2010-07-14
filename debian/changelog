@@ -8,6 +8,8 @@ ocaml-batteries (1.2.2-1) UNRELEASED; urgency=low
     - Add 0001-Add-Set-an-installation-prefix-path.patch
     - Remove omake from build-depends
   * Adapt debian/rules to new upstream's build system.
+  * Convert source package to 3.0 (quilt) format.
+    - Remove quilt from build-depends
 
  -- Mehdi Dogguy <mehdi@debian.org>  Wed, 14 Jul 2010 22:06:41 +0200
 

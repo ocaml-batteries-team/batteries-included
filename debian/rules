@@ -8,7 +8,7 @@ export DESTDIR = $(OCAML_STDLIB_DIR)
 DOC_PKG = libbatteries-ocaml-doc
 
 %:
-	dh --with quilt,ocaml $@
+	dh --with ocaml $@
 
 ifneq ($(OCAML_HAVE_OCAMLOPT),yes)
 export BATTERIES_NATIVE = false
