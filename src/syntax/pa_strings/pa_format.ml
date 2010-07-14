@@ -246,7 +246,7 @@ struct
         <:expr< fun paren out x -> BatIO.nwrite out "<abstract>" >>
     | <:ctyp@_loc< $id:id$ >> ->
         <:expr< $id:map_id id$ >>
-    | <:ctyp@_loc< $a$ $b$ >> ->
+    | Ast.TyApp (_loc, b, a) ->
         <:expr< $vprinter_of_ctyp b$ $vprinter_of_ctyp a$ >>
     | <:ctyp@_loc< $tup:t$ >> ->
         let l = Ast.list_of_ctyp t [] in
