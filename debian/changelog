@@ -1,8 +1,12 @@
-ocaml-batteries (1.1.0-3) UNRELEASED; urgency=low
+ocaml-batteries (1.2.2-1) UNRELEASED; urgency=low
 
+  [ Stéphane Glondu ]
   * Add 0002-Fix-build-with-OCaml-3.12.0.patch (Closes: #586493)
 
- -- Stéphane Glondu <glondu@debian.org>  Sat, 19 Jun 2010 20:40:57 -0700
+  [ Mehdi Dogguy ]
+  * New upstream release
+
+ -- Mehdi Dogguy <mehdi@debian.org>  Wed, 14 Jul 2010 20:31:02 +0200
 
 ocaml-batteries (1.1.0-2) unstable; urgency=low
 
