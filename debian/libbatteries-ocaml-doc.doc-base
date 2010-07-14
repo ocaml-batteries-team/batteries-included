@@ -4,5 +4,5 @@ Abstract: API reference manual for libbatteries-ocaml-doc (generated via OCamldo
 Section: Programming/OCaml
 
 Format: HTML
-Index: /usr/share/doc/libbatteries-ocaml-doc/html/api/index.html
-Files: /usr/share/doc/libbatteries-ocaml-doc/html/api/*
+Index: /usr/share/doc/libbatteries-ocaml-doc/html/index.html
+Files: /usr/share/doc/libbatteries-ocaml-doc/html/*

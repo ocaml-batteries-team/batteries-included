@@ -3,7 +3,7 @@ include /usr/share/ocaml/ocamlvars.mk
 
 DEB_DESTDIR = $(CURDIR)/debian/tmp/$(OCAML_STDLIB_DIR)
 BATTERIES_DEB_DOCROOT = $(CURDIR)/debian/tmp/doc
-export BATTERIES_DOCROOT = /usr/share/doc/libbatteries-ocaml-doc/html/api/
+export BATTERIES_DOCROOT = /usr/share/doc/libbatteries-ocaml-doc/
 export DESTDIR = $(OCAML_STDLIB_DIR)
 DOC_PKG = libbatteries-ocaml-doc
 
