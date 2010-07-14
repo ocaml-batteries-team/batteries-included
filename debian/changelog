@@ -6,13 +6,14 @@ ocaml-batteries (1.2.2-1) UNRELEASED; urgency=low
   [ Mehdi Dogguy ]
   * New upstream release
     - Add 0001-Add-Set-an-installation-prefix-path.patch
+    - Add 0003-Do-not-enforce-sanity-check-rules.patch
     - Remove omake from build-depends
   * Adapt debian/rules to new upstream's build system.
   * Convert source package to 3.0 (quilt) format.
     - Remove quilt from build-depends
   * Bump dh-ocaml version to 0.9.5 in Build-Depends.
 
- -- Mehdi Dogguy <mehdi@debian.org>  Wed, 14 Jul 2010 22:10:52 +0200
+ -- Mehdi Dogguy <mehdi@debian.org>  Wed, 14 Jul 2010 22:22:19 +0200
 
 ocaml-batteries (1.1.0-2) unstable; urgency=low
 

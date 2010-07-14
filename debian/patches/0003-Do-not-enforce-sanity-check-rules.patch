@@ -1,0 +1,22 @@
+From: Mehdi Dogguy <mehdi@debian.org>
+Date: Wed, 14 Jul 2010 22:22:08 +0200
+Subject: [PATCH] Do not enforce sanity-check rules
+
+---
+ Makefile |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index e8f1c4c..b9adb0d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -50,7 +50,7 @@ clean:
+ 	$(OCAMLBUILD) -clean
+ 
+ doc:
+-	$(OCAMLBUILD) batteries.docdir/index.html
++	$(OCAMLBUILD) -no-hygiene batteries.docdir/index.html
+ 	test -e apidocs || ln -s _build/batteries.docdir apidocs
+ 
+ install: all
+-- 
