@@ -42,10 +42,9 @@
      {!Marshal} module).
 
     
-    This module extends Stdlib's
+    This module replaces Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Bigarray.html}Bigarray}
-    module, go there for documentation on the rest of the functions
-    and types.
+    module.
 
    @author Michel Serrano (Base library)
    @author Xavier Leroy (Base library)
