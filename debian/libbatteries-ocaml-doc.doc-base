@@ -1,8 +1,8 @@
 Document: libbatteries-ocaml-dev-ocamldoc-api-reference
 Title: libbatteries-ocaml-dev OCamldoc API Reference
-Abstract: API reference manual for libbatteries-ocaml-dev (generated via OCamldoc)
+Abstract: API reference manual for libbatteries-ocaml-doc (generated via OCamldoc)
 Section: Programming/OCaml
 
 Format: HTML
-Index: /usr/share/doc/libbatteries-ocaml-dev/html/api/index.html
-Files: /usr/share/doc/libbatteries-ocaml-dev/html/api/*
+Index: /usr/share/doc/libbatteries-ocaml-doc/html/api/index.html
+Files: /usr/share/doc/libbatteries-ocaml-doc/html/api/*
