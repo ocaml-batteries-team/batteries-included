@@ -5,9 +5,10 @@ ocaml-batteries (1.2.2-1) UNRELEASED; urgency=low
 
   [ Mehdi Dogguy ]
   * New upstream release
+    - Add 0001-Add-Set-an-installation-prefix-path.patch
   * Adapt debian/rules to new upstream's build system.
 
- -- Mehdi Dogguy <mehdi@debian.org>  Wed, 14 Jul 2010 20:31:33 +0200
+ -- Mehdi Dogguy <mehdi@debian.org>  Wed, 14 Jul 2010 21:39:15 +0200
 
 ocaml-batteries (1.1.0-2) unstable; urgency=low
 

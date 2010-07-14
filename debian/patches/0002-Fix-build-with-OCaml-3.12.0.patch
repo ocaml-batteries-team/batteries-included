@@ -13,10 +13,10 @@ Signed-off-by: Stephane Glondu <steph@glondu.net>
  1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/src/syntax/pa_strings/pa_format.ml b/src/syntax/pa_strings/pa_format.ml
-index 58396ff..f71a150 100644
+index 0b40904..aa402ca 100644
 --- a/src/syntax/pa_strings/pa_format.ml
 +++ b/src/syntax/pa_strings/pa_format.ml
-@@ -244,7 +244,7 @@ struct
+@@ -246,7 +246,7 @@ struct
          <:expr< fun paren out x -> BatIO.nwrite out "<abstract>" >>
      | <:ctyp@_loc< $id:id$ >> ->
          <:expr< $id:map_id id$ >>

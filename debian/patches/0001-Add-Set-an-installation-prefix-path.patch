@@ -1,0 +1,36 @@
+From: Mehdi Dogguy <mehdi@debian.org>
+Date: Wed, 14 Jul 2010 21:35:14 +0200
+Subject: [PATCH] Add/Set an installation prefix path
+
+---
+ Makefile |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index b5101e2..e8f1c4c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -8,6 +8,7 @@ VERSION := $(shell cat VERSION)
+ 
+ # Define variables and export them for mkconf.ml
+ DOCROOT ?= /usr/share/doc/ocaml-batteries
++PREFIX ?= $(shell ocamlc -where)
+ export DOCROOT
+ BROWSER_COMMAND ?= x-www-browser %s
+ export BROWSER_COMMAND
+@@ -53,11 +54,12 @@ doc:
+ 	test -e apidocs || ln -s _build/batteries.docdir apidocs
+ 
+ install: all
+-	ocamlfind install estring libs/estring/META \
++	ocamlfind install -destdir $(PREFIX) estring \
++		libs/estring/META \
+ 		_build/libs/estring/*.cmo \
+ 		_build/libs/estring/*.cmi \
+ 		_build/libs/estring/*.mli
+-	ocamlfind install $(NAME) $(INSTALL_FILES)
++	ocamlfind install -destdir $(PREFIX) $(NAME) $(INSTALL_FILES)
+ 
+ uninstall:
+ 	ocamlfind remove estring
+-- 
