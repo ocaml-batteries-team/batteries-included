@@ -21,7 +21,7 @@
  *)
 
 
-module A = BatArray.Labels
+module A = struct include BatArray include BatArray.Labels end
 
   type float32_elt = Bigarray.float32_elt
   type float64_elt = Bigarray.float64_elt
@@ -131,9 +131,9 @@ module A = BatArray.Labels
       let dims     = dims     e in
       let offset   = ofs e in
       let coor     = A.create (num_dims e) ~init:offset in
-	f (Cap.of_array coor) (get e coor);
+	f (A.Cap.of_array coor) (get e coor);
 	while inplace_next ~ofs:offset ~dims ~coor do
-	  f (Cap.of_array coor) (get e coor)
+	  f (A.Cap.of_array coor) (get e coor)
 	done
 	  
     let enum e =
@@ -161,13 +161,13 @@ module A = BatArray.Labels
     let map f b_kind a =
       let d = dims a in
       let b = create b_kind (layout a) d in
-	iteri (fun i x -> set b (Cap.to_array i) (f x)) a;
+	iteri (fun i x -> set b (A.Cap.to_array i) (f x)) a;
 	b
 
     let mapi f b_kind a =
       let d = dims a in
       let b = create b_kind (layout a) d in
-	iteri (fun i x -> set b (Cap.to_array i) (f (Cap.read_only i) x)) a;
+	iteri (fun i x -> set b (A.Cap.to_array i) (f (A.Cap.read_only i) x)) a;
 	b
   end
 
