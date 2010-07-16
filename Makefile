@@ -8,10 +8,13 @@ VERSION := $(shell cat VERSION)
 
 # Define variables and export them for mkconf.ml
 DOCROOT ?= /usr/share/doc/ocaml-batteries
-PREFIX ?= $(shell ocamlc -where)
 export DOCROOT
 BROWSER_COMMAND ?= x-www-browser %s
 export BROWSER_COMMAND
+
+ifdef DESTDIR
+OCAMLFIND_DEST += -destdir $(DESTDIR)
+endif
 
 OCAMLBUILD ?= ocamlbuild
 
@@ -54,16 +57,16 @@ doc:
 	test -e apidocs || ln -s _build/batteries.docdir apidocs
 
 install: all
-	ocamlfind install -destdir $(PREFIX) estring \
+	ocamlfind install $(OCAMLFIND_DEST) estring \
 		libs/estring/META \
 		_build/libs/estring/*.cmo \
 		_build/libs/estring/*.cmi \
 		_build/libs/estring/*.mli
-	ocamlfind install -destdir $(PREFIX) $(NAME) $(INSTALL_FILES)
+	ocamlfind install $(OCAMLFIND_DEST) $(NAME) $(INSTALL_FILES)
 
 uninstall:
-	ocamlfind remove estring
-	ocamlfind remove $(NAME)
+	ocamlfind remove $(OCAMLFIND_DEST) estring
+	ocamlfind remove $(OCAMLFIND_DEST) $(NAME)
 	rm -rf $(DOCROOT)
 
 install-doc: doc
