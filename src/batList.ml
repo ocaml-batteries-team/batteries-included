@@ -179,6 +179,23 @@ let rec unique ?(cmp = ( = )) l =
 	loop dummy l;
 	dummy.tl
 
+let unique_eq ?eq l = unique ?cmp:eq l
+
+let rec unique_cmp ?(cmp = Pervasives.compare) l =
+  let rec loop dst = function
+    | [] -> ()
+    | h :: t ->
+      if exists (fun x -> cmp h x = 0) t 
+      then  loop dst t
+      else 
+	let r = { hd =  h; tl = [] } in
+	dst.tl <- inj r;
+	loop r t
+  in
+  let dummy = dummy_node() in
+  loop dummy l;
+  dummy.tl
+
 let filter_map f l =
 	let rec loop dst = function
 		| [] -> ()

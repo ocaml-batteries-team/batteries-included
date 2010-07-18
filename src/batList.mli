@@ -256,6 +256,13 @@
 	 @see 'sort_unique' to save time in cases when reordering the list is acceptable
 	 *)
 
+	val unique_eq : ?eq:('a -> 'a -> bool) -> 'a list -> 'a list
+	(** As [unique] except comparator label is ~eq.  Will
+	    replace [unique] in 2.0.  *)
+
+	val unique_cmp : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
+	(** As [unique], except comparator parameter returns an int *)
+
 	  (**{6 Association lists}*)
 
 	val assoc_inv : 'b -> ('a * 'b) list -> 'a
