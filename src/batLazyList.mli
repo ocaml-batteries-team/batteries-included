@@ -354,10 +354,17 @@ val unique : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
   (** [unique cmp l] returns the list [l] without any duplicate element.
       Default comparator ( = ) is used if no comparison function specified. *)
 
+val unique_eq : ?eq:('a -> 'a -> bool) -> 'a t -> 'a t
+(** as [unique] except only uses an equality function.  Use for
+    short lists when comparing is expensive compared to equality
+    testing 
+    @since 1.3.0
+*)
+
 val remove : 'a -> 'a t -> 'a t
-  (** [remove l x] returns the list [l] without the first element [x] found
-      or returns  [l] if no element is equal to [x]. Elements are compared
-      using ( = ). *)
+(** [remove l x] returns the list [l] without the first element [x] found
+    or returns  [l] if no element is equal to [x]. Elements are compared
+    using ( = ). *)
   
 val remove_if : ('a -> bool) -> 'a t -> 'a t
   (** [remove_if cmp l] is similar to [remove], but with [cmp] used
