@@ -257,13 +257,15 @@
 	 *)
 
 	val unique_eq : ?eq:('a -> 'a -> bool) -> 'a list -> 'a list
-	(** As [unique] except comparator label is ~eq.  Will
-	    replace [unique] in 2.0.  *)
+	(** As [unique] except comparator label is ~eq.  
+	    @since 1.3.0
+	 *)
 
 	val unique_cmp : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
-	(** As [unique], except comparator parameter returns an int *)
+	(** As [unique], except comparator parameter returns an int
+	    @since 1.3.0 *)
 
-	  (**{6 Association lists}*)
+	(**{6 Association lists}*)
 
 	val assoc_inv : 'b -> ('a * 'b) list -> 'a
 	  (** [assoc_inv b l] returns the key associated with value [b] in the list of

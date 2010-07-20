@@ -181,20 +181,14 @@ let rec unique ?(cmp = ( = )) l =
 
 let unique_eq ?eq l = unique ?cmp:eq l
 
-let rec unique_cmp ?(cmp = Pervasives.compare) l =
-  let rec loop dst = function
-    | [] -> ()
-    | h :: t ->
-      if exists (fun x -> cmp h x = 0) t 
-      then  loop dst t
-      else 
-	let r = { hd =  h; tl = [] } in
-	dst.tl <- inj r;
-	loop r t
+let unique_cmp ?(cmp = Pervasives.compare) l =
+  let set      = ref (BatMap.create cmp) in
+  let should_keep x = 
+    if BatMap.mem x !set then false
+    else ( set := BatMap.add x true !set; true )
   in
-  let dummy = dummy_node() in
-  loop dummy l;
-  dummy.tl
+  (* use a stateful filter to remove duplicate elements *)
+  filter should_keep l
 
 let filter_map f l =
 	let rec loop dst = function
