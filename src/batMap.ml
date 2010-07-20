@@ -331,8 +331,8 @@
   module StringMap  = Make(String)
   module IStringMap = Make(BatString.IString)
   module NumStringMap = Make(BatString.NumString)
-  module RopeMap    = Make(BatRope)
-  module IRopeMap   = Make(BatRope.IRope)
+(*  module RopeMap    = Make(BatRope) 
+  module IRopeMap   = Make(BatRope.IRope) *)
   module IntMap     = Make(BatInt)
 
 (*
@@ -499,20 +499,51 @@ let fold f { cmp = cmp; map = map } acc =
 let foldi f { cmp = cmp; map = map } acc =
   let rec loop acc = function
     | Empty -> acc
-	| Node (l, k, v, r, _) ->
-       loop (f k v (loop acc l)) r in
+    | Node (l, k, v, r, _) ->
+      loop (f k v (loop acc l)) r in
   loop acc map
 
-let enum { map = map } =
-  let rec loop e () = match e with
-    | Empty -> BatEnum.empty ()
-    | Node (l, k, v, r, _) ->
-	BatEnum.flatten (BatList.enum [
-			BatEnum.delay (loop l);
-			BatEnum.singleton (k, v);
-			BatEnum.delay (loop r)])
-  in loop map ()
+type ('key,'a) iter = E | C of 'key * 'a * ('key,'a) map * ('key,'a) iter
 
+let rec cardinal = function
+  | Empty -> 0
+  | Node(l, _, _, r, _) -> cardinal l + 1 + cardinal r
+
+let rec cons_iter s t = match s with
+  | Empty -> t
+  | Node (l, k, v, r, _) -> cons_iter l (C (k, v, r, t))
+    
+let rec rev_cons_iter s t = match s with
+  | Empty -> t
+  | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
+
+let rec enum_next l () = match !l with
+    E -> raise BatEnum.No_more_elements
+  | C (k, v, m, t) -> l := cons_iter m t; (k, v)
+    
+let rec enum_backwards_next l () = match !l with
+    E -> raise BatEnum.No_more_elements
+  | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
+    
+let rec enum_count l () =
+  let rec aux n = function
+    | E -> n
+    | C (_, _, m, t) -> aux (n + 1 + cardinal m) t
+  in aux 0 !l
+  
+let enum t =
+  let rec make l =
+    let l = ref l in
+    let clone() = make !l in
+    BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
+  in make (cons_iter t.map E)
+  
+let backwards t =
+  let rec make l =
+    let l = ref l in
+    let clone() = make !l in
+    BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
+  in make (rev_cons_iter t.map E)
 
 (*let rec enum m =
   let rec make l =

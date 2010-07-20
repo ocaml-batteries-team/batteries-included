@@ -233,11 +233,15 @@ module IStringMap : S with type key = String.t
 module NumStringMap : S with type key = String.t
 (** A map on strings. Strings are handled as prefix + number (i.e. "abc23" < "abc123", "abc012" = "abc12")*)
 
+(* 
+
 module RopeMap    : S with type key = BatRope.t
 (** A map on ropes. Comparison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
 
 module IRopeMap   : S with type key = BatRope.t
 (** A map on ropes. Comparison of ropes ignores case (i.e. r"foo" = r"Foo")*)
+
+ *)
 
 module IntMap     : S with type key = BatInt.t
 (** A map on integers.*)
@@ -374,7 +378,10 @@ val max_binding : ('key, 'a) t -> ('key * 'a)
   (** returns the binding with the largest key *)
 
 val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
-(** creates an enumeration for this map. *)
+(** creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order. *)
+
+val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
+(** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
 
 val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
