@@ -1,7 +1,7 @@
 (*
  * Path - Path and directory manipulation
  * Copyright (C) 2008 Dawid Toton
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -28,7 +28,7 @@ Paths can be used with different string implementations:
 
     @author Dawid Toton
 *)
- 
+
 
 (**
    {6 Functorized interface}
@@ -42,42 +42,42 @@ module type StringType = sig
   (** The actual implementation may use any (coherent) scheme of indexing of strings. Below the term 'indexing unit' can stay either for byte or character (or whatever employed by the implementation).
   This determines meaning of all [int] arguments and results (excluding result of [compare]).
   *)
- 
+
   type t
   (** Type for strings. *)
-  
+
   val length : t -> int
   (** Length - number of indexing units *)
-  
+
   type tchar
   (** Character type used by [t].*)
-  
+
   val get : t -> int -> tchar
   (** Usual get function. *)
-  
+
   val lift_char : char -> tchar
   (** Convert Latin-1 character to [tchar]. *)
-  
+
   val lift : string -> t
   (** Convert from UTF-8 string of primitive [string] type. *)
-  
+
   val to_string : t -> string
   (** Convert to primitive string with UTF-8 content. *)
-  
+
   val concat_with_separators : t -> t list -> t
   (** [concat_with_separators sep lst] catenates all {i n} elements of [lst] inserting {i (n-1)} copies of [sep] in between. *)
-  
+
   val compare : t -> t -> int
   (** Usual comparison function. *)
-  
+
   val iter : (tchar -> unit) -> t -> unit
   val iteri : (int -> tchar -> unit) -> t -> unit
-  
+
   val sub : t -> int -> int -> t
   (** As {!String.sub}, but indexed in specific way. *)
-  
+
   val rindex : t -> char -> int
-  
+
   module Parse : sig
     val source : t -> (tchar, BatCharParser.position) BatParserCo.Source.t
     val letter : (tchar, tchar, BatCharParser.position) BatParserCo.t
@@ -94,17 +94,17 @@ type ustring
 type uchar
 (** Type of characters. It corresponds to [ustring] type. *)
 
-(** Convenience operator for lifting primitive strings to [ustring] type. 
+(** Convenience operator for lifting primitive strings to [ustring] type.
 
     @documents Future.Path.OperatorLift
 *)
 module OperatorLift : sig
 
- val (!!) : string -> ustring 
- (** Prefix operator that converts primitive string to [ustring]. May raise some exceptions depending on actual strings implementation. 
- 
+ val (!!) : string -> ustring
+ (** Prefix operator that converts primitive string to [ustring]. May raise some exceptions depending on actual strings implementation.
+
   You might want to [open Path.OperatorLift] to improve readability of path construction using string literals. Example:
-[Path.root/:!!"foo"/:!!"bar"] = [Path.root/:(S.lift "foo")/:(S.lift "bar")] (where [S.lift] converts to  [ustring] type) 
+[Path.root/:!!"foo"/:!!"bar"] = [Path.root/:(S.lift "foo")/:(S.lift "bar")] (where [S.lift] converts to  [ustring] type)
  *)
 
 end
@@ -115,23 +115,23 @@ type t = ustring list
   Examples: [\["a";"b";"c"\]] is c/b/a (relative path); [\["d";"e";""\]] stays for /e/d (absolute path).
 
   All examples here and below are given for [ustring]=[string] case for clarity. To have the code working with other string types, one should prepend the [!!] operator ({!OperatorLift.(!!)}) to all string literals.
-  
+
   There are two infix operators provided to allow to write expressions in natural order. For example, to build a path using {!PathType.Operators.(/:)} one can write:
-  
+
   [base_dir/:"bar"] instead of ["bar"::base_dir]
-  
+
   However it may be sometimes inevitable to write components in reverse, for example:
-  
+
   [let whose_readme = function "README"::app::"doc"::"share"::_ -> Some app | _ -> None]
-  
+
 {e Windows:} Windows absolute paths start with "\\" or with drive letter. Use following representation:
  - [Path.root/:"."/:"pipe" = \["pipe";".";""\]]  for "\\.\pipe"
  - [\["C:"\]/:"foo" = \["foo";"C:"\]] for "C:\foo"
- 
- In principle the first type of paths has broader range of allowed characters, but this implementation applies more strict rules to both ({!default_validator}). 
+
+ In principle the first type of paths has broader range of allowed characters, but this implementation applies more strict rules to both ({!default_validator}).
 *)
 (* If we wanted more safety, we'd have (making usage inconvenient):
-type t = private P of ustring list 
+type t = private P of ustring list
 *)
 
 val is_relative : t -> bool
@@ -140,10 +140,10 @@ val is_absolute : t -> bool
 (** {6 Construction} *)
 
 val root : t
-(** Root of the filesystem ([\[""\]]). It is minimal absolute path. Below it is called 'empty'. However it yields "/" or "\\" when converted to a string. 
+(** Root of the filesystem ([\[""\]]). It is minimal absolute path. Below it is called 'empty'. However it yields "/" or "\\" when converted to a string.
 
 {e Windows:} This path (root and nothing more) is meaningless, but for simplicity it is considered valid here. To create absolute path starting with drive letter, construct the list explicitly (as in [\["C:"\]/:"foo"]).
-A path consisting of drive letter only is also called 'empty' here. 
+A path consisting of drive letter only is also called 'empty' here.
 *)
 (* ocamldoc problem: try to get double_quot-backslash-double_quot in a docstring! *)
 
@@ -161,18 +161,18 @@ val concat : t -> t -> t
 module Operators : sig
 
  val (/:) : t -> ustring -> t
- (** [path/:name] is a path of [name] located in a directory [path]. For example: 
+ (** [path/:name] is a path of [name] located in a directory [path]. For example:
  - {!PathType.root}[/:"var"/:"log"] builds absolute path "/var/log"
  - [\[user\]/:".ssh"] can be either:
  {ul {- absolute path "/.ssh" in case [user] is an empty string}
-     {- relative path otherwise}}    
-     
- {!PathType.default_validator} is applied to the argument. [name] must not contain path separator (causes Illegal_char exception).   
+     {- relative path otherwise}}
+
+ {!PathType.default_validator} is applied to the argument. [name] must not contain path separator (causes Illegal_char exception).
 @raise Illegal_char (raised by validator on any bad character)
  *)
-  
+
  val (//@) : t -> t -> t
-(** [basepath//\@relpath] catenates two paths. 
+(** [basepath//\@relpath] catenates two paths.
 
 {e Windows:} As a special exception it is possible to pass absolute path as [relpath], provided that [basepath] is simple absolute path (i.e. of the form [\[...; ""\]]) and [relpath] is not simple absolute path.
 
@@ -182,15 +182,33 @@ end
 
 exception Malformed_path
 
-val normalize : t -> t
+val normalize_filepath : t -> t
+(**
+  Consumes single dots where possible, e.g.:
+
+  [normalize (\[".."\]/:"foo"/:"."/:"bar"/:"sub1"/:".."/:"sub2") = \[".."\]/:"foo"/:"bar"/:"sub1"/:".."/:"sub2"]
+
+  When a directory structure contains links, it can be not pefectly pure tree. Then meaing of the ".." symbol depends on the real nature of parent of what is denoted by the name that preceded the ".." symbol. This symbol cannot be resolved for a graph traversal case when dealing with abstract paths only.
+
+{e Windows:} If single dot is next to root, it is preserved.
+*)
+val normalize_in_graph : t -> t
+(** Another name for [normalize_filepath]. *)
+
+val normalize_in_tree : t -> t
 (**
   Consumes single dots and applies double dots where possible, e.g.:
-  
+
   [normalize (\[".."\]/:"foo"/:"."/:"bar"/:"sub1"/:".."/:"sub2") = \[".."\]/:"foo"/:"bar"/:"sub2"]
 
-{e Windows:} If single dot is next to root, it is preserved.    
-@raise Malformed_path when absolute path is given that contains double dots that would be applied to the root.  
+  This normalization is useful when dealing with paths that describe locations in a tree and the ".." symbol always points to the only parent of what precedes this symbol.
+
+{e Windows:} If single dot is next to root, it is preserved.
+@raise Malformed_path when absolute path is given that contains double dots that would be applied to the root.
 *)
+
+val normalize : t -> t
+(** Deprecated name for [normalize_in_tree] *)
 
 val parent : t -> t
 (** Returns parent path, i.e. immediate ancestor: [parent (foo/:bar) = foo]
@@ -199,21 +217,21 @@ val parent : t -> t
 
 val belongs : t -> t -> bool
 (** [belongs base sub] is [true] when [sub] descends from [base], i.e. [base] is a prefix of [sub]. If [base]=[sub] the function returns [true]. It is otherwise [false].
-Both arguments must be absolute paths or both relative. 
+Both arguments must be absolute paths or both relative.
 
-If both arguments have a root portion with drive letter and these letters are different, [belongs base sub] returns false. 
+If both arguments have a root portion with drive letter and these letters are different, [belongs base sub] returns false.
 
 @raise Invalid_argument if exactly one of given arguments is absolute path
 *) (* Should this function normalize its arguments? *)
 
 val relative_to_any : t -> t -> t
-(** [relative_to_any base sub] returns relative path [rel] such that 
+(** [relative_to_any base sub] returns relative path [rel] such that
 [normalize (base/:rel) = normalize sub], i.e. common base is stripped and ".." are added if necessary.
-Both arguments must be absolute paths or both relative. 
+Both arguments must be absolute paths or both relative.
 
 This function normalizes [base] and [sub] before calculation of the relative path.
 
-{e Windows:} If [base] and [sub] are absolute, they must have the same root element: have the same drive letter or both starting with {!root} (i.e. [""] is the last element of the list). 
+{e Windows:} If [base] and [sub] are absolute, they must have the same root element: have the same drive letter or both starting with {!root} (i.e. [""] is the last element of the list).
 Exceptionally it is possible to get an absolute path as a result if drive letter is in [sub] but not as a root element (e .g. [base = root/:"bar"] and [sub = root/:bar//@(\["C:"\]/:"foo"]).
 
 @see 'relative_to_parent' may be sometimes more suitable
@@ -224,7 +242,7 @@ Exceptionally it is possible to get an absolute path as a result if drive letter
 exception Not_parent
 
 val relative_to_parent : t -> t -> t
-(** [relative_to_parent parent sub] returns relative path [rel] such that 
+(** [relative_to_parent parent sub] returns relative path [rel] such that
 [(normalize parent)/:rel = normalize sub]. It is checked if [sub] is really a descendant of [parent].
 Both arguments must be absolute paths or both relative.
 
@@ -248,28 +266,28 @@ Validators should check if all characters of given string can be used in a name 
 
 If a name should be rejected for some other reason, user defined validator may raise an exception.
 *)
- 
+
 val default_validator : validator ref
 (**
   Forward slash and code zero are considered invalid.
-  
-{e Windows:} Invalid characters are *?:\/<> and all with code <32. Exception: the function {!PathType.of_string} doesn't use validator against drive letter with colon. 
+
+{e Windows:} Invalid characters are *?:\/<> and all with code <32. Exception: the function {!PathType.of_string} doesn't use validator against drive letter with colon.
 *)
 (*TODO: Windows:
  On reserved names and ones ending with dot (except "." and "..") Illegal_name is raised.
 *)
 
 (** {6 Conversions} *)
-   
-val to_ustring : t -> ustring 
+
+val to_ustring : t -> ustring
 (** Convert to the chosen [ustring] type. Empty relative path is converted to "." (single dot).
 
  {e Windows:} backslash is used as a separator and double backslash for root. If the path is only a drive letter (empty absolute path) trailing backslash is added (e.g. [to_string \["C:"\] = "C:\"]).
- 
+
  @see 'to_string' is likely to bo more useful
  "*)(* Dangling quote character because of ocamldoc lexer being apparently incompatible with OCaml. *)
 
-val to_string : t -> string 
+val to_string : t -> string
 (** Convert to type primitive string with UTF-8 content. The string is built in the same way as by [to_ustring] function. *)
 
 val of_string : ustring -> t
@@ -277,7 +295,7 @@ val of_string : ustring -> t
 
 {e Windows:} both slashes '\' and '/' are accepted as separators. Paths of the 'semi-relative' form "C:foo\bar" are not recognized. For example "C:" string is parsed as [\["C:"\]] which has different meaning (see {!to_string}).
 @raise Illegal_char when a character not allowed in paths is found.
-*) 
+*)
 
 (** {7 Convenience aliases} *)
 
@@ -287,7 +305,7 @@ val s : t -> string
 val p : ustring -> t
 (** = {!of_string} *)
 
-(** {6 Name related functions} 
+(** {6 Name related functions}
 These funtions do not accept empty paths, i.e. [\[\]], [\[""\]] or [\["C:"\]].
 *)
 
@@ -302,7 +320,7 @@ val map_name : (ustring -> ustring) -> t -> t
 
 Example: [map_name (fun nn -> nn ^ ".backup") (["foo"]/:"bar") = ["foo"]/:"bar.backup"]
 
-{!PathType.default_validator} is applied to new name.  
+{!PathType.default_validator} is applied to new name.
 @raise Illegal_char (raised by validator if any bad character is found)
 *)
 
@@ -336,15 +354,15 @@ let count_music_parts download_dir =
 *)
 
 val map_ext : (ustring option -> ustring option) -> t -> t
-(** [map_ext fu path] returns [path] but with the name with extension given by [fu (]{!PathType.ext}[ path)]. If [fu] returns [Some _], the original extension may be replaced (when [Some ext] is passed to [fu]) or new added (when [fu] gets [None]). In case [fu] returns [None], the extension is removed (if exists). 
+(** [map_ext fu path] returns [path] but with the name with extension given by [fu (]{!PathType.ext}[ path)]. If [fu] returns [Some _], the original extension may be replaced (when [Some ext] is passed to [fu]) or new added (when [fu] gets [None]). In case [fu] returns [None], the extension is removed (if exists).
 
-@example "A name for file being encoded in a new format." 
+@example "A name for file being encoded in a new format."
 {[
 let pngname file = map_ext (function Some _ | None -> Some "png") file
 let new_bar = pngname (["foo"]/:"bar.jpeg") (* = ["foo"]/:"bar.png" *)
 ]}
 
-{!PathType.default_validator} is applied to the resulting name.  
+{!PathType.default_validator} is applied to the resulting name.
 
 The replacement string returned by the mapping function [fu] can contain dots. Consequently, this string doesn't need to be an extension as defined by the {!ext} function. Consider for example:
 {[
@@ -385,7 +403,7 @@ type components = t * ustring * ustring option
 val split : t -> components
 (** Dissect the path to its components (parent path, core part of name and possibly an extension).
 
-Resulting [name_core] string can be empty. For example, 
+Resulting [name_core] string can be empty. For example,
 [Path.split (Path.root/:"home"/:"user"/:".bashrc")] equals [(Path.root/:"home"/:"user", "", Some "bashrc")].
 
 @raise Invalid_argument if empty path (relative [\[\]] or absolute [\[""\]]) is given
