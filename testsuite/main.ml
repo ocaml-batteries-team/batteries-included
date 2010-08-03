@@ -15,6 +15,7 @@ let all_tests =
     Test_enum.tests;
     Test_set.tests;
     Test_dynarray.tests;
+    Test_stack.tests;
   ]
 
 let () = 
