@@ -21,7 +21,7 @@ index 0b40904..aa402ca 100644
      | <:ctyp@_loc< $id:id$ >> ->
          <:expr< $id:map_id id$ >>
 -    | <:ctyp@_loc< $a$ $b$ >> ->
-+    | Ast.TyApp (_loc, b, a) ->
++    | <:ctyp@_loc< ($a$ $b$) >> ->
          <:expr< $vprinter_of_ctyp b$ $vprinter_of_ctyp a$ >>
      | <:ctyp@_loc< $tup:t$ >> ->
          let l = Ast.list_of_ctyp t [] in
