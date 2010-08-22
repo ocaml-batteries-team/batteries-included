@@ -881,7 +881,7 @@ val lines_of : input -> string BatEnum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
  
 val chunks_of : int -> input -> string BatEnum.t
-(** Read an input as an enumeration of strings of given maximal length.*)
+(** Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest. *)
 
 val ulines_of : input -> BatRope.t BatEnum.t
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
