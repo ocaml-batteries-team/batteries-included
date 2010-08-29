@@ -611,7 +611,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
       expression and to the third element of [e], then to the result of this
       new expression and to the fourth element of [e]...
 
-      In other words, [fold f e] returns [a_1] if [e] contains only
+      In other words, [reduce f e] returns [a_1] if [e] contains only
       one element, otherwise [f (... (f (f a1) a2) ...) aN] where
       a1..N are the elements of [e]. 
 
