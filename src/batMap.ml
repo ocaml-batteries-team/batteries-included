@@ -54,6 +54,9 @@
       (** [modify k f m] replaces the previous binding for [k] with [f] applied to
 	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
 	  search, [Not_found] is raised. *)
+
+    val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
+
       
     val mem: key -> 'a t -> bool
       (** [mem x m] returns [true] if [m] contains a binding for [x],
@@ -276,6 +279,15 @@
 	  | Empty -> raise Not_found in
 	t_of_impl (loop (impl_of_t m))
 
+      let modify_def v0 x f m =
+	let rec loop = function
+	  | Node (l, k, v, r, h) ->
+              let c = Ord.compare x k in
+              if c = 0 then Node (l, x, f v, r, h)
+              else if c < 0 then Node (loop l, k, v, r, h)
+              else (* c > 0 *)	Node (l, k, v, loop r, h)
+	  | Empty -> Node (Empty, x, f v0, Empty, 1) in
+	t_of_impl (loop (impl_of_t m))
 
 (*	NEEDS BAL FROM MAP IMPLEMENTATION
       (* needed by split, not exposed atm *)
@@ -672,6 +684,21 @@ let modify x f { cmp = cmp; map = map } =
           let nr = loop r in
           bal l k v nr
     | Empty -> raise Not_found
+  in
+  { cmp = cmp; map = loop map }
+
+let modify_def v0 x f { cmp = cmp; map = map } =
+  let rec loop = function
+    | Node (l, k, v, r, h) ->
+        let c = cmp x k in
+        if c = 0 then Node (l, x, f v, r, h)
+        else if c < 0 then
+          let nl = loop l in
+          bal nl k v r
+        else
+          let nr = loop r in
+          bal l k v nr
+    | Empty -> Node (Empty, x, f v0, Empty, 1)
   in
   { cmp = cmp; map = loop map }
 
