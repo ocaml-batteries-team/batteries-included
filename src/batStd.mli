@@ -98,6 +98,7 @@ val exe  : string
 
 
 (** {6 Operators}*)
+
 val ( |> ) : 'a -> ('a -> 'b) -> 'b
 (** Function application. [x |> f] is equivalent to [f x]. 
 
@@ -164,7 +165,11 @@ val const : 'a -> (_ -> 'a)
       Therefore, [const x] is the function which always returns [x].*)
 
 val tap : ('a -> unit) -> 'a -> 'a
-  (** Apply the function to the given value, and return the value as the result *)
+  (** 
+      @since v1.1.0
+
+      Apply the function to the given value, and return the original value as the result.  Useful as part of a pipeline of operations.  
+  *)
 
 (**
    {6 Results}

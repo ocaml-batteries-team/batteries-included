@@ -21,7 +21,7 @@
 
 
 open BatParserCo
-open CamomileLibrary
+open BatCamomile
 module UTF8 = BatUTF8
 
 let string_of_uchar c = (UTF8.to_string (UTF8.of_char c))

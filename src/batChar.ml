@@ -19,7 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-type t = char
 
   let is_whitespace = function
     ' ' | '\010' | '\013' | '\009' | '\026' | '\012' -> true

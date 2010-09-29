@@ -6,4 +6,6 @@
      
 *)
 
+open Batteries
+
 iter (fun x -> IO.copy (File.open_in x) stdout) (args ());;

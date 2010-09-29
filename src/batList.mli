@@ -256,7 +256,16 @@
 	 @see 'sort_unique' to save time in cases when reordering the list is acceptable
 	 *)
 
-	  (**{6 Association lists}*)
+	val unique_eq : ?eq:('a -> 'a -> bool) -> 'a list -> 'a list
+	(** As [unique] except comparator label is ~eq.  
+	    @since 1.3.0
+	 *)
+
+	val unique_cmp : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
+	(** As [unique], except comparator parameter returns an int
+	    @since 1.3.0 *)
+
+	(**{6 Association lists}*)
 
 	val assoc_inv : 'b -> ('a * 'b) list -> 'a
 	  (** [assoc_inv b l] returns the key associated with value [b] in the list of
@@ -401,10 +410,10 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 
 	(** {7 Printing}*)
 	  
-	val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
+	val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b list -> unit
 	  (**Print the contents of a list*)
 
-	val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b t -> string
+	val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b list -> string
 	  (** Using a string printer, print a list to a string (as sprintf vs. printf) *)
 
         val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t

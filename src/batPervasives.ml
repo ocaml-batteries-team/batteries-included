@@ -131,6 +131,7 @@ open Pervasives
 
   type printer_flags = {
     pf_width : int option;
+    pf_frac_digits : int option;
     pf_padding_char : char;
     pf_justify : [ `right | `left ];
     pf_positive_prefix : char option;
@@ -139,6 +140,7 @@ open Pervasives
   let default_printer_flags = {
     pf_justify = `right;
     pf_width = None;
+    pf_frac_digits = None;
     pf_padding_char = ' ';
     pf_positive_prefix = None;
   }
@@ -283,8 +285,32 @@ open Pervasives
   let printer_nX ?flags k x = printer_unum uhex_digit 16n BatNativeint.operations ?flags k x
   let printer_no ?flags k x = printer_unum oct_digit 8n BatNativeint.operations ?flags k x
 
-  let printer_f k x = k (fun oc -> BatIO.nwrite oc (Printf.sprintf "%f" x))
-  let printer_F k x = k (fun oc -> BatIO.nwrite oc (Printf.sprintf "%F" x))
+  let printer_f ?flags k x =
+    k (fun oc -> BatIO.nwrite oc
+	 (match flags with
+	   | None | Some {pf_width=None; pf_frac_digits=None} ->
+	       Printf.sprintf "%f" x
+	   | Some {pf_width=Some w; pf_frac_digits=None} ->
+	       Printf.sprintf "%*f" w x
+	   | Some {pf_width=None; pf_frac_digits=Some f} ->
+	       Printf.sprintf "%.*f" f x
+	   | Some {pf_width=Some w; pf_frac_digits=Some f} ->
+	       Printf.sprintf "%*.*f" w f x
+	 )
+      )
+  let printer_F ?flags k x =
+    k (fun oc -> BatIO.nwrite oc
+	 (match flags with
+	   | None | Some {pf_width=None; pf_frac_digits=None} ->
+	       Printf.sprintf "%F" x
+	   | Some {pf_width=Some w; pf_frac_digits=None} ->
+	       Printf.sprintf "%*F" w x
+	   | Some {pf_width=None; pf_frac_digits=Some f} ->
+	       Printf.sprintf "%.*F" f x
+	   | Some {pf_width=Some w; pf_frac_digits=Some f} ->
+	       Printf.sprintf "%*.*F" w f x
+	 )
+      )
 
   let printer_format k fmt = fmt.BatPrint.printer fmt.BatPrint.pattern k
 

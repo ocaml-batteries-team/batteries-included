@@ -3,10 +3,10 @@
 (* TODO: Check -- this is actually part of a package distributed with LGPL + linking exception *)
 
 
-  open CamomileLibrary
+  open BatCamomile
   open UChar
 
-  module Info = UCharInfo.Make(CamomileDefaultConfig)
+  module Info = UCharInfo
 
 
   let backslash = uint_code (of_char '\\')
@@ -95,7 +95,7 @@
     end
   end
 
-  module Case = CaseMap.Make(CamomileDefaultConfig)(Text)
+  module Case = CaseMap.Make(Text)
 
   let lowercase x = Case.lowercase x
   let uppercase x = Case.uppercase x

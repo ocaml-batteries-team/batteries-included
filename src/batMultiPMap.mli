@@ -99,6 +99,18 @@ val of_enum : ?keys:('a -> 'a -> int) -> ?data:('b -> 'b -> int) -> ('a * 'b) Ba
 (** creates a map from an enumeration, using the specified function
   for key comparison or [compare] by default. *)
 
+(** Infix operators over a {!BatMultiPMap} *)
+module Infix : sig
+  val (-->) : ('a, 'b) t -> 'a -> 'b BatPSet.t
+    (** [map-->key] returns the current binding of [key] in [map].
+        Equivalent to [find key map]. *)
+
+  val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
+    (** [map<--(key, value)] returns a map containing the same bindings as
+        [map], plus a binding of [key] to [value]. Equivalent to
+        [add key value map] *)
+end
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)

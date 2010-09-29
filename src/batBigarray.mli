@@ -42,10 +42,9 @@
      {!Marshal} module).
 
     
-    This module extends Stdlib's
+    This module replaces Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Bigarray.html}Bigarray}
-    module, go there for documentation on the rest of the functions
-    and types.
+    module.
 
    @author Michel Serrano (Base library)
    @author Xavier Leroy (Base library)
@@ -457,15 +456,16 @@ module Genarray :
    val map :
      ('a -> 'b) ->
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
-   (** [map f a] applies function [f] to all the elements of [a],
-       and builds a {!Bigarray.t} with the results returned by [f]. *)
- 
+   (** [map f kind a] applies function [f] to all the elements of [a],
+       and builds a {!Bigarray.t} of kind [kind] with the results
+       returned by [f]. *)
+     
    val mapi :
      ((int, [`Read]) BatArray.Cap.t -> 'a -> 'b) ->
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
-   (** Same as {!map}, but the
-       function is applied to the index of the coordinates as the first 
-       argument, and the element itself as the second argument. *)
+  (** Same as {!map}, but the function is applied to the index of the
+      coordinates as the first argument, and the element itself as the
+      second argument. *)
 
 
   end

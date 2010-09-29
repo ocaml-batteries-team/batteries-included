@@ -20,15 +20,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Additional and modified functions for arrays.
+(** {6 Additional and modified functions for arrays}
 
     The OCaml standard library provides a module of array functions.
     This BatArray module can be used to override the Array module or
-    as a standalone module. It provides some additional functions.
+    as a standalone module. It provides many additional functions.
+
+    This module extends Stdlib's
+    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Array.html}Array}
+    module, go there for documentation on the rest of the functions
+    and types.
+
+    A variant of arrays, arrays with capabilities, is provided in
+    module {!BatArray.Cap}. This notion of capabilities permit the
+    transformation of a mutable array into a read-only or a write-only
+    arrays, without loss of speed and with the possibility of
+    distributing different capabilities to different expressions.
+
+    @author Xavier Leroy
+    @author Richard W.M. Jones
+    @author David Teller
 *)
 
 
-(** Array operations.
+(** {6 Array operations}
     
     Arrays are mutable data structures with a fixed size, which
     support fast access and modification, and are used pervasively in
@@ -36,21 +51,7 @@
     OCaml, it is often a good idea to investigate persistent
     alternatives, such as lists or hash maps.
 
-    A variant of arrays, arrays with capabilities, is provided in
-    module {!Cap}. This notion of capabilities permit the transformation
-    of a mutable array into a read-only or a write-only arrays, without
-    loss of speed and with the possibility of distributing different
-    capabilities to different expressions.
-
-    This module extends Stdlib's
-    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Array.html}Array}
-    module, go there for documentation on the rest of the functions
-    and types.
-
-    @author Xavier Leroy
-    @author Richard W.M. Jones
-    @author David Teller
-*)
+ *)
 
   type 'a t = 'a array (** The type of arrays.  *)
 
@@ -63,17 +64,23 @@
     (** As [fold_left], but with a counter *)
     
   val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
-    (** [Array.reduce f a] is [fold_left f a.(0) a.(1 .. n-1)].
+  (** [Array.reduce f a] is [fold_left f a.(0) a.(1 .. n-1)].  This
+      is useful for merging a group of things that have no
+      reasonable default value to return if the group is empty.
 
-        @raise Invalid_argument on empty arrays. *)
+      @raise Invalid_argument on empty arrays. *)
 
   val max : 'a array -> 'a
     (** [max a] returns the largest value in [a] as judged by
-        [Pervasives.compare] *)
+        [Pervasives.compare] 
+	
+	@raise Invalid_argument on empty input *)
 
   val min : 'a array -> 'a
-    (** [min a] returns the smallest value in [a] as judged by
-        [Pervasives.compare] *)
+  (** [min a] returns the smallest value in [a] as judged by
+      [Pervasives.compare]
+
+      @raise Invalid_argument on empty input *)
 
   (**{6 Operations on two arrays}*)
     
@@ -182,13 +189,15 @@
     (** Returns an enumeration of the elements of an array, from last to first. *)
 
   val of_backwards : 'a BatEnum.t -> 'a array
-    (** Build an array from an enumeration, going into reverse order. *)
+  (** Build an array from an enumeration, with the first element of
+      the enumeration as the last element of the array and vice
+      versa. *)
 
   (** {6 Utilities} *)
 
   val make_compare : ('a -> 'a -> int) -> 'a array -> 'a array -> int
     (** [make_compare c] generates the lexicographical order on arrays
-	induced by [c]*)
+	induced by [c]. *)
 
 val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
   (** [decorate_sort f a] returns a sorted copy of [a] such that if [f
@@ -199,9 +208,13 @@ val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
       Transform]. *)
 
 val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array
-  (** As {!Array.decorate_sort}, but uses fast_sort internally *)
+  (** As {!Array.decorate_sort}, but uses fast_sort internally. *)
 
-  (** {6 Boilerplate code}*)
+val range : 'a array -> int BatEnum.t
+  (** [range a] returns an enumeration of all valid indexes into the given
+      array.  For example, [range [|2;4;6;8|] = 0--3].*)
+
+(** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
 
@@ -213,156 +226,173 @@ val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output ->
 
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
 
-  (**/**)
+  
+  (** {6 Boilerplate code}*)
+    
+  (** {7 Printing}*)
+    
+val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
 
-  (** Capabilities for arrays.
+val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
+  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
 
-      This modules provides the same set of features as {!Array}, but
-      with the added twist that arrays can be made read-only or write-only.
-      Read-only arrays may then be safely shared and distributed.
+  (** {6 Override modules}*)
 
-      There is no loss of performance involved.
+(** The following modules replace functions defined in {!Array} with
+    functions behaving slightly differently but having the same
+    name. This is by design: the functions are meant to override the
+    corresponding functions of {!Array}.
+ *)
 
-  *)
-  module Cap :
-  sig
-    type ('a, 'b) t constraint 'b = [< `Read | `Write]
-	(**The type of arrays with capabilities.
-	   An [('a, [`Read | `Write])] array behaves as a regular ['a array],
-	   while a [('a, [`Read]) array] only has read-only capabilities
-	   and a [('a, [`Write]) array] only has write-only capabilities.*)
+(** Capabilities for arrays.
+
+    This modules provides the same set of features as {!Array}, but
+    with the added twist that arrays can be made read-only or
+    write-only.  Read-only arrays may then be safely shared and
+    distributed.
+
+    There is no loss of performance involved.
+
+ *)
+module Cap :
+sig
+  type ('a, 'b) t constraint 'b = [< `Read | `Write]
+    (**The type of arrays with capabilities.
+       An [('a, [`Read | `Write])] array behaves as a regular ['a array],
+       while a [('a, [`Read]) array] only has read-only capabilities
+       and a [('a, [`Write]) array] only has write-only capabilities.*)
 
     (**{6 Base operations}*)
 
-    external length : ('a, [> ]) t -> int = "%array_length"
-	(** Return the length (number of elements) of the given array. *)
+  external length : ('a, [> ]) t -> int = "%array_length"
+    (** Return the length (number of elements) of the given array. *)
       
-    external get : ('a, [> `Read]) t -> int -> 'a = "%array_safe_get"
-	(** [Array.get a n] returns the element number [n] of array [a].
-	    The first element has number 0.
-	    The last element has number [Array.length a - 1].
-	    You can also write [a.(n)] instead of [Array.get a n].
-	    
-	    Raise [Invalid_argument "index out of bounds"]
-	    if [n] is outside the range 0 to [(Array.length a - 1)]. *)
+  external get : ('a, [> `Read]) t -> int -> 'a = "%array_safe_get"
+    (** [Array.get a n] returns the element number [n] of array [a].
+	The first element has number 0.
+	The last element has number [Array.length a - 1].
+	You can also write [a.(n)] instead of [Array.get a n].
+	
+	Raise [Invalid_argument "index out of bounds"]
+	if [n] is outside the range 0 to [(Array.length a - 1)]. *)
 
-    external set : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
-	(** [Array.set a n x] modifies array [a] in place, replacing
-	    element number [n] with [x].
-	    You can also write [a.(n) <- x] instead of [Array.set a n x].
-	    
-	    Raise [Invalid_argument "index out of bounds"]
-	    if [n] is outside the range 0 to [Array.length a - 1]. *)    
+  external set : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
+    (** [Array.set a n x] modifies array [a] in place, replacing
+	element number [n] with [x].
+	You can also write [a.(n) <- x] instead of [Array.set a n x].
+	
+	Raise [Invalid_argument "index out of bounds"]
+	if [n] is outside the range 0 to [Array.length a - 1]. *)    
 
     (**{6 Constructors}*)
-    external make : int -> 'a -> ('a, _) t = "caml_make_vect"
-	(** [Array.make n x] returns a fresh array of length [n],
-	    initialized with [x].
-	    All the elements of this new array are initially
-	    physically equal to [x] (in the sense of the [==] predicate).
-	    Consequently, if [x] is mutable, it is shared among all elements
-	    of the array, and modifying [x] through one of the array entries
-	    will modify all other entries at the same time.
-	    
-	    Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].
-	    If the value of [x] is a floating-point number, then the maximum
-	    size is only [Sys.max_array_length / 2].*)
+  external make : int -> 'a -> ('a, _) t = "caml_make_vect"
+    (** [Array.make n x] returns a fresh array of length [n],
+	initialized with [x].
+	All the elements of this new array are initially
+	physically equal to [x] (in the sense of the [==] predicate).
+	Consequently, if [x] is mutable, it is shared among all elements
+	of the array, and modifying [x] through one of the array entries
+	will modify all other entries at the same time.
 	
-    external create : int -> 'a -> ('a, _) t = "caml_make_vect"
-	(** @deprecated [Array.create] is an alias for {!Array.make}. *)    
-
-    external of_array  : 'a array -> ('a, _ ) t = "%identity"
-	(** Adopt a regular array as a capability array, allowing
-	    to decrease capabilities if necessary.
-
-	    This operation involves no copying. In other words, in
-	    [let cap = of_array a in ...], any modification in [a]
-	    will also have effect on [cap] and reciprocally.*)
-
-    external to_array  : ('a, [`Read | `Write]) t -> 'a array = "%identity"
-	(** Return a capability array as an array.
-
-	    This operation requires both read and write permissions
-	    on the capability array and involves no copying. In other
-	    words, in [let a = of_array cap in ...], any modification
-	    in [a] will also have effect on [cap] and reciprocally.*)
-
-    external read_only :  ('a, [>`Read])  t -> ('a, [`Read])  t = "%identity"
-	(** Drop to read-only permissions.
-
-	    This operation involves no copying.*)
-
-    external write_only : ('a, [>`Write]) t -> ('a, [`Write]) t = "%identity"
-	(** Drop to write-only permissions.
-
-	    This operation involves no copying.*)
-
-    val init : int -> (int -> 'a) -> ('a, _) t
-      (** [Array.init n f] returns a fresh array of length [n],
-	  with element number [i] initialized to the result of [f i].
-	  In other terms, [Array.init n f] tabulates the results of [f]
-	  applied to the integers [0] to [n-1].
-	  
-	  Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].
-	  If the return type of [f] is [float], then the maximum
-	  size is only [Sys.max_array_length / 2].*)
-
-    val make_matrix : int -> int -> 'a -> (('a, _)t, _) t
-      (** [Array.make_matrix dimx dimy e] returns a two-dimensional array
-	  (an array of arrays) with first dimension [dimx] and
-	  second dimension [dimy]. All the elements of this new matrix
-	  are initially physically equal to [e].
-	  The element ([x,y]) of a matrix [m] is accessed
-	  with the notation [m.(x).(y)].
-	  
-	  Raise [Invalid_argument] if [dimx] or [dimy] is negative or
-	  greater than [Sys.max_array_length].
-	  If the value of [e] is a floating-point number, then the maximum
-	  size is only [Sys.max_array_length / 2]. *)
+	Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].
+	If the value of [x] is a floating-point number, then the maximum
+	size is only [Sys.max_array_length / 2].*)
       
-    val create_matrix : int -> int -> 'a ->  (('a, _)t, _) t
-      (** @deprecated [Array.create_matrix] is an alias for {!Array.make_matrix}. *)
-      
+  external create : int -> 'a -> ('a, _) t = "caml_make_vect"
+    (** @deprecated [Array.create] is an alias for {!Array.make}. *)    
+
+  external of_array  : 'a array -> ('a, _ ) t = "%identity"
+    (** Adopt a regular array as a capability array, allowing
+	to decrease capabilities if necessary.
+
+	This operation involves no copying. In other words, in
+	[let cap = of_array a in ...], any modification in [a]
+	will also have effect on [cap] and reciprocally.*)
+
+  external to_array  : ('a, [`Read | `Write]) t -> 'a array = "%identity"
+    (** Return a capability array as an array.
+
+	This operation requires both read and write permissions
+	on the capability array and involves no copying. In other
+	words, in [let a = of_array cap in ...], any modification
+	in [a] will also have effect on [cap] and reciprocally.*)
+
+  external read_only :  ('a, [>`Read])  t -> ('a, [`Read])  t = "%identity"
+    (** Drop to read-only permissions.
+
+	This operation involves no copying.*)
+
+  external write_only : ('a, [>`Write]) t -> ('a, [`Write]) t = "%identity"
+    (** Drop to write-only permissions.
+
+	This operation involves no copying.*)
+
+  val init : int -> (int -> 'a) -> ('a, _) t
+    (** [Array.init n f] returns a fresh array of length [n],
+	with element number [i] initialized to the result of [f i].
+	In other terms, [Array.init n f] tabulates the results of [f]
+	applied to the integers [0] to [n-1].
+	
+	Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].
+	If the return type of [f] is [float], then the maximum
+	size is only [Sys.max_array_length / 2].*)
+
+  val make_matrix : int -> int -> 'a -> (('a, _)t, _) t
+    (** [Array.make_matrix dimx dimy e] returns a two-dimensional array
+	(an array of arrays) with first dimension [dimx] and
+	second dimension [dimy]. All the elements of this new matrix
+	are initially physically equal to [e].
+	The element ([x,y]) of a matrix [m] is accessed
+	with the notation [m.(x).(y)].
+	
+	Raise [Invalid_argument] if [dimx] or [dimy] is negative or
+	greater than [Sys.max_array_length].
+	If the value of [e] is a floating-point number, then the maximum
+	size is only [Sys.max_array_length / 2]. *)
+		    
+  val create_matrix : int -> int -> 'a ->  (('a, _)t, _) t
+    (** @deprecated [Array.create_matrix] is an alias for {!Array.make_matrix}. *)
+		    
     (** {6 Iterators}*)
-    val iter : ('a -> unit) -> ('a, [> `Read]) t -> unit
-      (** [Array.iter f a] applies function [f] in turn to all
-	  the elements of [a].  It is equivalent to
-	  [f a.(0); f a.(1); ...; f a.(Array.length a - 1); ()]. *)
-      
-    val map : ('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
-      (** [Array.map f a] applies function [f] to all the elements of [a],
-	  and builds an array with the results returned by [f]:
-	  [[| f a.(0); f a.(1); ...; f a.(Array.length a - 1) |]]. *)
-      
-    val iteri : (int -> 'a -> unit) -> ('a, [> `Read]) t -> unit
-      (** Same as {!Array.iter}, but the
-	  function is applied to the index of the element as first argument,
-	  and the element itself as second argument. *)
-      
-    val mapi : (int -> 'a -> 'b) -> ('a, [> `Read]) t -> ('b, _) t
-      (** Same as {!Array.map}, but the
-	  function is applied to the index of the element as first argument,
-	  and the element itself as second argument. *)
+  val iter : ('a -> unit) -> ('a, [> `Read]) t -> unit
+    (** [Array.iter f a] applies function [f] in turn to all
+	the elements of [a].  It is equivalent to
+	[f a.(0); f a.(1); ...; f a.(Array.length a - 1); ()]. *)
+		    
+  val map : ('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
+    (** [Array.map f a] applies function [f] to all the elements of [a],
+	and builds an array with the results returned by [f]:
+	[[| f a.(0); f a.(1); ...; f a.(Array.length a - 1) |]]. *)
+		    
+  val iteri : (int -> 'a -> unit) -> ('a, [> `Read]) t -> unit
+    (** Same as {!Array.iter}, but the
+	function is applied to the index of the element as first argument,
+	and the element itself as second argument. *)
+		    
+  val mapi : (int -> 'a -> 'b) -> ('a, [> `Read]) t -> ('b, _) t
+    (** Same as {!Array.map}, but the
+	function is applied to the index of the element as first argument,
+	and the element itself as second argument. *)
 
-    val fold_left : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
-      (** [Array.fold_left f x a] computes
-	  [f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],
-	  where [n] is the length of the array [a]. *)
+  val fold_left : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
+    (** [Array.fold_left f x a] computes
+	[f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],
+	where [n] is the length of the array [a]. *)
 
-    val fold_right : ('b -> 'a -> 'a) -> ('b, [> `Read]) t -> 'a -> 'a
-      (** [Array.fold_right f a x] computes
-	  [f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
-	  where [n] is the length of the array [a]. *)
+  val fold_right : ('b -> 'a -> 'a) -> ('b, [> `Read]) t -> 'a -> 'a
+    (** [Array.fold_right f a x] computes
+	[f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
+	where [n] is the length of the array [a]. *)
 
     (**{6 Operations on two arrays}*)
-    val iter2 : ('a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
-      (** [Array.iter2 f [|a1; ...; an|] [|b1; ...; bn|]] performs
-	  calls [f a1 b1; ...; f an bn] in that order.
-	  
-	  @raise Invalid_argument if the length of [a1] does not equal the
-	  length of [a2]. *)
+  val iter2 : ('a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
+    (** [Array.iter2 f [|a1; ...; an|] [|b1; ...; bn|]] performs
+	calls [f a1 b1; ...; f an bn] in that order.
+	
+	@raise Invalid_argument if the length of [a1] does not equal the
+	length of [a2]. *)
 
-    val iter2i : (int -> 'a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
+  val iter2i : (int -> 'a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
     (** [Array.iter2i f [|a1; ...; an|] [|b1; ...; bn|]] performs
 	calls [f 0 a1 b1; ...; f (n - 1) an bn] in that order.
 	
@@ -370,129 +400,129 @@ val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
 	length of [a2]. *)
 
     (**{6 Predicates}*)
-    val for_all : ('a -> bool) -> ('a, [> `Read]) t -> bool
-      (** [for_all p [a1; ...; an]] checks if all elements of the array
-	  satisfy the predicate [p].  That is, it returns
-	  [ (p a1) && (p a2) && ... && (p an)]. *)
+  val for_all : ('a -> bool) -> ('a, [> `Read]) t -> bool
+    (** [for_all p [a1; ...; an]] checks if all elements of the array
+	satisfy the predicate [p].  That is, it returns
+	[ (p a1) && (p a2) && ... && (p an)]. *)
 
-    val exists : ('a -> bool) -> ('a, [> `Read]) t -> bool
-      (** [exists p [a1; ...; an]] checks if at least one element of
-	  the array satisfies the predicate [p].  That is, it returns
-	  [ (p a1) || (p a2) || ... || (p an)]. *)
-      
-    val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a
-      (** [find p a] returns the first element of array [a]
-	  that satisfies the predicate [p].
-	  @raise Not_found if there is no value that satisfies [p] in the
-	  array [a]. *)
+  val exists : ('a -> bool) -> ('a, [> `Read]) t -> bool
+    (** [exists p [a1; ...; an]] checks if at least one element of
+	the array satisfies the predicate [p].  That is, it returns
+	[ (p a1) || (p a2) || ... || (p an)]. *)
+		    
+  val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a
+    (** [find p a] returns the first element of array [a]
+	that satisfies the predicate [p].
+	@raise Not_found if there is no value that satisfies [p] in the
+	array [a]. *)
 
-    val mem : 'a -> ('a, [> `Read]) t -> bool
-      (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
+  val mem : 'a -> ('a, [> `Read]) t -> bool
+    (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
 
-    val memq : 'a -> ('a, [> `Read]) t -> bool
-      (** Same as {!Array.mem} but uses physical equality instead of
-	  structural equality to compare array elements.  *)
-      
-    val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
-      (** [findi p a] returns the index of the first element of array [a]
-	  that satisfies the predicate [p].
-	  @raise Not_found if there is no value that satisfies [p] in the
-	  array [a].  *)
-      
-    val filter : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
-      (** [filter p a] returns all the elements of the array [a]
-	  that satisfy the predicate [p].  The order of the elements
-	  in the input array is preserved.  *)
-      
+  val memq : 'a -> ('a, [> `Read]) t -> bool
+    (** Same as {!Array.mem} but uses physical equality instead of
+	structural equality to compare array elements.  *)
+		    
+  val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
+    (** [findi p a] returns the index of the first element of array [a]
+	that satisfies the predicate [p].
+	@raise Not_found if there is no value that satisfies [p] in the
+	array [a].  *)
+		    
+  val filter : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
+    (** [filter p a] returns all the elements of the array [a]
+	that satisfy the predicate [p].  The order of the elements
+	in the input array is preserved.  *)
+		    
   val filter_map : ('a -> 'b option) -> ('a, [> `Read]) t -> ('b, _) t
     (** [filter_map f e] returns an array consisting in all elements
 	[x] such that [f y] returns [Some x] , where [y] is an element
 	of [e]. *)
 
-    val find_all : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
-      (** [find_all] is another name for {!Array.filter}. *)
-      
-    val partition : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t * ('a, _)t
-      (** [partition p a] returns a pair of arrays [(a1, a2)], where
-	  [a1] is the array of all the elements of [a] that
-	  satisfy the predicate [p], and [a2] is the array of all the
-	  elements of [a] that do not satisfy [p].
-	  The order of the elements in the input array is preserved. *)
-      
+  val find_all : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
+    (** [find_all] is another name for {!Array.filter}. *)
+		    
+  val partition : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t * ('a, _)t
+    (** [partition p a] returns a pair of arrays [(a1, a2)], where
+	[a1] is the array of all the elements of [a] that
+	satisfy the predicate [p], and [a2] is the array of all the
+	elements of [a] that do not satisfy [p].
+	The order of the elements in the input array is preserved. *)
+		    
     (** {6 Array transformations} *)
-    val rev : ('a, [> `Read]) t -> ('a, _) t
-      (** Array reversal.*)
-      
-    val rev_in_place : ('a, [`Read | `Write]) t -> unit
-      (** In-place array reversal.  The array argument is updated. *)
-      
-    val append : ('a, [> `Read]) t ->  ('a, [> `Read]) t -> ('a, _) t
-      (** [Array.append v1 v2] returns a fresh array containing the
-	  concatenation of the arrays [v1] and [v2]. *)
-      
-    val concat : ('a, [> `Read]) t list -> ('a, _) t
-      (** Same as [Array.append], but concatenates a list of arrays. *)
-      
-    val sub : ('a, [> `Read]) t -> int -> int -> ('a, _) t
-      (** [Array.sub a start len] returns a fresh array of length [len],
-	  containing the elements number [start] to [start + len - 1]
-	  of array [a].
-	  
-	  Raise [Invalid_argument "Array.sub"] if [start] and [len] do not
-	  designate a valid subarray of [a]; that is, if
-	  [start < 0], or [len < 0], or [start + len > Array.length a]. *)
-      
-    val copy : ('a, [> `Read]) t -> 'a array
-      (** [Array.copy a] returns a copy of [a], that is, a fresh array
-	  containing the same elements as [a]. *)
-      
-    val fill : ('a, [> `Write]) t -> int -> int -> 'a -> unit
-      (** [Array.fill a ofs len x] modifies the array [a] in place,
-	  storing [x] in elements number [ofs] to [ofs + len - 1].
-	  
-	  Raise [Invalid_argument "Array.fill"] if [ofs] and [len] do not
-	  designate a valid subarray of [a]. *)
-      
-  val blit : ('a, [> `Read]) t -> int -> ('a, [>`Write]) t -> int -> int -> unit
-    (** [Array.blit v1 o1 v2 o2 len] copies [len] elements
-	from array [v1], starting at element number [o1], to array [v2],
-	starting at element number [o2]. It works correctly even if
-	[v1] and [v2] are the same array, and the source and
-	destination chunks overlap.
+  val rev : ('a, [> `Read]) t -> ('a, _) t
+    (** Array reversal.*)
+		    
+  val rev_in_place : ('a, [`Read | `Write]) t -> unit
+    (** In-place array reversal.  The array argument is updated. *)
+		    
+  val append : ('a, [> `Read]) t ->  ('a, [> `Read]) t -> ('a, _) t
+    (** [Array.append v1 v2] returns a fresh array containing the
+	concatenation of the arrays [v1] and [v2]. *)
+		    
+  val concat : ('a, [> `Read]) t list -> ('a, _) t
+    (** Same as [Array.append], but concatenates a list of arrays. *)
+		    
+  val sub : ('a, [> `Read]) t -> int -> int -> ('a, _) t
+    (** [Array.sub a start len] returns a fresh array of length [len],
+	containing the elements number [start] to [start + len - 1]
+	of array [a].
 	
-	Raise [Invalid_argument "Array.blit"] if [o1] and [len] do not
-	designate a valid subarray of [v1], or if [o2] and [len] do not
-	designate a valid subarray of [v2]. *)
-    
+	Raise [Invalid_argument "Array.sub"] if [start] and [len] do not
+	designate a valid subarray of [a]; that is, if
+	[start < 0], or [len < 0], or [start + len > Array.length a]. *)
+		    
+  val copy : ('a, [> `Read]) t -> 'a array
+    (** [Array.copy a] returns a copy of [a], that is, a fresh array
+	containing the same elements as [a]. *)
+		    
+  val fill : ('a, [> `Write]) t -> int -> int -> 'a -> unit
+  (** [Array.fill a ofs len x] modifies the array [a] in place,
+      storing [x] in elements number [ofs] to [ofs + len - 1].
+      
+      Raise [Invalid_argument "Array.fill"] if [ofs] and [len] do not
+      designate a valid subarray of [a]. *)
+		    
+  val blit : ('a, [> `Read]) t -> int -> ('a, [>`Write]) t -> int -> int -> unit
+  (** [Array.blit v1 o1 v2 o2 len] copies [len] elements
+      from array [v1], starting at element number [o1], to array [v2],
+      starting at element number [o2]. It works correctly even if
+      [v1] and [v2] are the same array, and the source and
+      destination chunks overlap.
+      
+      Raise [Invalid_argument "Array.blit"] if [o1] and [len] do not
+      designate a valid subarray of [v1], or if [o2] and [len] do not
+      designate a valid subarray of [v2]. *)
+		    
   (** {6 Conversions} *)
 
   val enum : ('a, [> `Read]) t -> 'a BatEnum.t
-    (** Returns an enumeration of the elements of an array. 
-	Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
+  (** Returns an enumeration of the elements of an array. 
+      Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
   val of_enum : 'a BatEnum.t -> ('a, _) t
-    (** Build an array from an enumeration. *)
+  (** Build an array from an enumeration. *)
 
   val backwards : ('a, [> `Read]) t -> 'a BatEnum.t
-    (** Returns an enumeration of the elements of an array, from end to start. *)
+  (** Returns an enumeration of the elements of an array, from end to start. *)
 
   val of_backwards : 'a BatEnum.t -> ('a, _) t
-    (** Build an array from an enumeration, from end to start. *)
+  (** Build an array from an enumeration, from end to start. *)
 
   val to_list : ('a, [> `Read]) t -> 'a list
-    (** [Array.to_list a] returns the list of all the elements of [a]. *)
+  (** [Array.to_list a] returns the list of all the elements of [a]. *)
 
   val of_list : 'a list -> ('a, _) t
-    (** [Array.of_list l] returns a fresh array containing the elements
-	of [l]. *)
+  (** [Array.of_list l] returns a fresh array containing the elements
+      of [l]. *)
 
   (** {6 Utilities} *)
   val make_compare : ('a -> 'a -> int) -> ('a, [> `Read]) t -> ('a, [> `Read]) t -> int
-    (** [make_compare c] generates the lexicographical order on arrays
-	induced by [c]*)
+  (** [make_compare c] generates the lexicographical order on arrays
+      induced by [c]*)
 
   val sort : ('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
-  (** Sort an array in increasing order according to a comparison
+(** Sort an array in increasing order according to a comparison
     function.  The comparison function must return 0 if its arguments
     compare as equal, a positive integer if the first is greater,
     and a negative integer if the first is smaller (see below for a
@@ -515,68 +545,58 @@ val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
     When [Array.sort] returns, [a] contains the same elements as before,
     reordered in such a way that for all i and j valid indices of [a] :
     -   [cmp a.(i) a.(j)] >= 0 if and only if i >= j
-*)
+ *)
 
-val stable_sort : ('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
-  (** Same as {!Array.sort}, but the sorting algorithm is stable (i.e.
+  val stable_sort : ('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
+(** Same as {!Array.sort}, but the sorting algorithm is stable (i.e.
     elements that compare equal are kept in their original order) and
     not guaranteed to run in constant heap space.
     
     The current implementation uses Merge Sort. It uses [n/2]
     words of heap space, where [n] is the length of the array.
     It is usually faster than the current implementation of {!Array.sort}.
-*)
+ *)
 
-val fast_sort : ('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
-  (** Same as {!Array.sort} or {!Array.stable_sort}, whichever is faster
-      on typical input.
-  *)
+  val fast_sort : ('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
+(** Same as {!Array.sort} or {!Array.stable_sort}, whichever is faster
+    on typical input.
+ *)
 
 
 (** {6 Boilerplate code}*)
-  
+		    
 (** {7 Printing}*)
-  
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> ('b, [>`Read]) t -> unit
-  (** Print the contents of an array *)
-  
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> ('b, [>`Read]) t -> string
-  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
-  
-  
-(**/**)
-(** {6 Undocumented functions} *)
-  
-external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
-external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
+		    
+  val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> ('b, [>`Read]) t -> unit
+(** Print the contents of an array *)
+		    
+  val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> ('b, [>`Read]) t -> string
+(** Using a string printer, print an array to a string (as sprintf vs. printf) *)
+		    
+		    
+(** {6 Override modules}*)
 
-(**/**)
+(** The following modules replace functions defined in {!BatArray.Cap}
+    with functions behaving slightly differently but having the same
+    name. This is by design: the functions are meant to override the
+    corresponding functions of {!BatArray.Cap}.  *)
 
-  (** {6 Override modules}*)
+(** Operations on {!BatArray.Cap} without exceptions.*)
+  module Exceptionless : sig
 
-(**
-   The following modules replace functions defined in {!Array.Cap} with functions
-   behaving slightly differently but having the same name. This is by design:
-   the functions meant to override the corresponding functions of {!Array.Cap}.
-*)
+		      
+    val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a option
+  (** [find p a] returns [Some x], where [x] is the first element of
+      array [a] that satisfies the predicate [p], or [None] if there
+      is no such element.*)
 
-(** Operations on {!Array} without exceptions.*)
-module Exceptionless : sig
+    val findi : ('a -> bool) -> ('a, [> `Read]) t -> int option
+(** [findi p a] returns [Some n], where [n] is the index of the
+    first element of array [a] that satisfies the predicate [p],
+    or [None] if there is no such element.*)
 
+  end
     
-  val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a option
-    (** [find p a] returns [Some x], where [x] is the first element of
-	array [a] that satisfies the predicate [p], or [None] if there
-	is no such element.*)
-
-  val findi : ('a -> bool) -> ('a, [> `Read]) t -> int option
-    (** [findi p a] returns [Some n], where [n] is the index of the
-	first element of array [a] that satisfies the predicate [p],
-	or [None] if there is no such element.*)
-
-end
-
-
 (** Operations on {!Array} with labels.
 
     This module overrides a number of functions of {!Array} by
@@ -584,60 +604,48 @@ end
     there to improve readability and safety and to let you change the
     order of arguments to functions. In every case, the behavior of the
     function is identical to that of the corresponding function of {!Array}.
-*)
-module Labels : sig
-  val init : int -> f:(int -> 'a) -> ('a, _) t
-  val make: int -> init:'a -> ('a, _) t
-  val create: int -> init:'a -> ('a, _) t
-  val make_matrix : dimx:int -> dimy:int -> 'a -> (('a, _)t, _) t
-  val create_matrix : dimx:int -> dimy:int -> 'a -> (('a, _)t, _) t
-  val sub : ('a, [> `Read]) t -> pos:int -> len:int -> ('a, _) t
-  val fill : ('a, [> `Write]) t -> pos:int -> len:int -> 'a -> unit
-  val blit : src:('a, [> `Read]) t -> src_pos:int -> dst:('a, [>`Write]) t -> dst_pos:int -> len:int ->
-    unit
-  val iter : f:('a -> unit) -> ('a, [> `Read]) t -> unit
-  val map : f:('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
-  val iteri : f:(int -> 'a -> unit) -> ('a, [> `Read]) t -> unit
-  val mapi : f:(int -> 'a -> 'b) -> ('a, [> `Read]) t -> ('b, _) t
-  val fold_left : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
-  val fold_right : f:('b -> 'a -> 'a) -> ('b, [> `Read]) t -> init:'a -> 'a
-  val sort : cmp:('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
-  val stable_sort : cmp:('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
-  val fast_sort : cmp:('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
-  val iter2:      f:('a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
-  val iter2i:     f:( int -> 'a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
-  val exists:     f:('a -> bool) -> ('a, [> `Read]) t -> bool
-  val for_all:    f:('a -> bool) -> ('a, [> `Read]) t -> bool
-  val find:       f:('a -> bool) -> ('a, [> `Read]) t -> 'a
-  val map:        f:('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
-  val mapi:       f:(int -> 'a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
-  val filter:     f:('a -> bool) -> ('a, [>`Read]) t -> ('a, _) t
-  val filter_map: f:('a -> 'b option) -> ('a, [>`Read]) t -> ('b, _) t
-end
-  
+ *)
+  module Labels : sig
+    val init : int -> f:(int -> 'a) -> ('a, _) t
+    val make: int -> init:'a -> ('a, _) t
+    val create: int -> init:'a -> ('a, _) t
+    val make_matrix : dimx:int -> dimy:int -> 'a -> (('a, _)t, _) t
+    val create_matrix : dimx:int -> dimy:int -> 'a -> (('a, _)t, _) t
+    val sub : ('a, [> `Read]) t -> pos:int -> len:int -> ('a, _) t
+    val fill : ('a, [> `Write]) t -> pos:int -> len:int -> 'a -> unit
+    val blit : src:('a, [> `Read]) t -> src_pos:int -> dst:('a, [>`Write]) t -> 
+      dst_pos:int -> len:int -> unit
+    val iter : f:('a -> unit) -> ('a, [> `Read]) t -> unit
+    val map : f:('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
+    val iteri : f:(int -> 'a -> unit) -> ('a, [> `Read]) t -> unit
+    val mapi : f:(int -> 'a -> 'b) -> ('a, [> `Read]) t -> ('b, _) t
+    val fold_left : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
+    val fold_right : f:('b -> 'a -> 'a) -> ('b, [> `Read]) t -> init:'a -> 'a
+    val sort : cmp:('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
+    val stable_sort : cmp:('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
+    val fast_sort : cmp:('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
+    val iter2:      f:('a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
+    val iter2i:     f:( int -> 'a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
+    val exists:     f:('a -> bool) -> ('a, [> `Read]) t -> bool
+    val for_all:    f:('a -> bool) -> ('a, [> `Read]) t -> bool
+    val find:       f:('a -> bool) -> ('a, [> `Read]) t -> 'a
+    val map:        f:('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
+    val mapi:       f:(int -> 'a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
+    val filter:     f:('a -> bool) -> ('a, [>`Read]) t -> ('a, _) t
+    val filter_map: f:('a -> 'b option) -> ('a, [>`Read]) t -> ('b, _) t
   end
-  
-  (** {6 Boilerplate code}*)
+(**/**)
+(** {6 Undocumented functions} *)
     
-  (** {7 Printing}*)
-    
-  val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
+  external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
+  external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
-  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
-
-  (** {6 Override modules}*)
-
-(**
-   The following modules replace functions defined in {!Array} with functions
-   behaving slightly differently but having the same name. This is by design:
-   the functions meant to override the corresponding functions of {!Array}.
-*)
+(**/**)
+end
 
 (** Operations on {!Array} without exceptions.*)
 module Exceptionless : sig
 
-    
   val find : ('a -> bool) -> 'a t -> 'a option
     (** [find p a] returns [Some x], where [x] is the first element of
 	array [a] that satisfies the predicate [p], or [None] if there
@@ -647,9 +655,7 @@ module Exceptionless : sig
     (** [findi p a] returns [Some n], where [n] is the index of the
 	first element of array [a] that satisfies the predicate [p],
 	or [None] if there is no such element.*)
-
 end
-
 
 (** Operations on {!Array} with labels.
 
@@ -660,24 +666,23 @@ end
     function is identical to that of the corresponding function of {!Array}.
 *)
 module Labels : sig
-  val init : int -> f:(int -> 'a) -> 'a array
+  val init :  int -> f:(int -> 'a) -> 'a array
   val create: int -> init:'a -> 'a array
-  val make_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
+  val make_matrix :   dimx:int -> dimy:int -> 'a -> 'a array array
   val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
-  val sub : 'a array -> pos:int -> len:int -> 'a array
+  val sub :  'a array -> pos:int -> len:int -> 'a array
   val fill : 'a array -> pos:int -> len:int -> 'a -> unit
-  val blit :
-    src:'a array -> src_pos:int -> dst:'a array -> dst_pos:int -> len:int ->
-    unit
-  val iter : f:('a -> unit) -> 'a array -> unit
-  val map : f:('a -> 'b) -> 'a array -> 'b array
-  val iteri : f:(int -> 'a -> unit) -> 'a array -> unit
-  val mapi : f:(int -> 'a -> 'b) -> 'a array -> 'b array
-  val fold_left : f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
+  val blit : src:'a array -> src_pos:int -> dst:'a array -> 
+    dst_pos:int -> len:int -> unit
+  val iter :       f:('a -> unit) -> 'a array -> unit
+  val map :        f:('a -> 'b) -> 'a array -> 'b array
+  val iteri :      f:(int -> 'a -> unit) -> 'a array -> unit
+  val mapi :       f:(int -> 'a -> 'b) -> 'a array -> 'b array
+  val fold_left :  f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
   val fold_right : f:('b -> 'a -> 'a) -> 'b array -> init:'a -> 'a
-  val sort : cmp:('a -> 'a -> int) -> 'a array -> unit
+  val sort :        cmp:('a -> 'a -> int) -> 'a array -> unit
   val stable_sort : cmp:('a -> 'a -> int) -> 'a array -> unit
-  val fast_sort : cmp:('a -> 'a -> int) -> 'a array -> unit
+  val fast_sort :   cmp:('a -> 'a -> int) -> 'a array -> unit
   val iter2:      f:('a -> 'b -> unit) -> 'a t -> 'b t -> unit
   val exists:     f:('a -> bool) -> 'a t -> bool
   val for_all:    f:('a -> bool) -> 'a t -> bool
@@ -693,6 +698,4 @@ module Labels : sig
     val findi:      f:('a -> bool) -> 'a t -> int option
   end
 end
-
-
 

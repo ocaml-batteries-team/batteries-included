@@ -253,13 +253,16 @@ module IRopeSet   : S with type elt = BatRope.t
 module IntSet     : S with type elt = BatInt.t
 (** A set of integers.*)
 
+module CharSet    : S with type elt = Char.t
+  (** A set of characters.  May be better to use a bitarray or ISet,
+      depending on your situation *)
 
 module Make (Ord : OrderedType) : S with type elt = Ord.t
-(** Functor building an implementation of the set structure
-   given a totally ordered type. 
+  (** Functor building an implementation of the set structure
+      given a totally ordered type.
 
-    @documents Set.Make
-*)
+      @documents Set.Make
+  *)
 
 (*
  * PSet - Polymorphic sets
@@ -302,6 +305,9 @@ val empty: 'a t
 
 val create : ('a -> 'a -> int) -> 'a t
   (** Creates a new empty set, using the provided function for key comparison.*)
+
+val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'a t
+(** Creates a new set with the single given element in it. *)
 
 val is_empty: 'a t -> bool
   (** Test whether a set is empty or not. *)
@@ -385,6 +391,16 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 val pop : 'a t -> 'a * 'a t
   (** returns one element of the set and the set without that element.
       Raises [Not_found] if given an empty set *)
+
+val union: 'a t -> 'a t -> 'a t
+  (** [union s t] returns the union of [s] and [t] - the set containing
+      all elements in either [s] and [t].  The returned set uses [t]'s
+      comparison function.  The current implementation works better for
+      small [s]. *)
+
+val diff: 'a t -> 'a t -> 'a t
+  (** [diff s t] returns the set of all elements in [s] but not in
+      [t]. The returned set uses [s]'s comparison function.*)
 
 (** {6 Boilerplate code}*)
 

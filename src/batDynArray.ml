@@ -353,7 +353,7 @@ let filter f d =
   let l    = d.len  in
   let dest = make l in
   let a2   = d.arr  in
-  let p    = ref 0  in
+  let p    = ref 0  in (* p is index of next unused element *)
     for i  = 0 to l - 1 do
       let x = iget a2 i in
 	if f x then begin
@@ -361,6 +361,7 @@ let filter f d =
 	  incr p;
 	end;
     done;
+    dest.len <- !p;
     changelen dest !p;
     dest
 
@@ -381,6 +382,7 @@ let filter_map f d =
 	    incr p;
 	end
     done;
+    dest.len <- !p;
     changelen dest !p; (*Trim the destination array to the right size*)
     dest
 

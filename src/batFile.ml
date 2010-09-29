@@ -39,7 +39,7 @@ type open_in_flag =
 type open_out_flag =
   [ `append   (**Start writing at the end of the file rather than the start *)
   | `create   (**Create the file if it does not exist                       *)
-  | `trunc    (**Empty the file if it already already exists                *)
+  | `trunc    (**Empty the file if it already exists (on by default)        *)
   | `excl     (**Fail if the file exists and [`create] is set               *)
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
 		 operating system does not perform conversions, the file is
@@ -85,11 +85,11 @@ let out_chan_mode ?mode binary =
       | _::t         -> aux acc is_binary t (*Allow for future extensions*)
     in aux [] binary l
   in match mode with
-    | None   -> [Open_wronly; Open_binary; Open_creat]
+    | None   -> [Open_wronly; Open_binary; Open_creat; Open_trunc]
     | Some l -> Open_wronly :: (mode_to_open_flag l)
 
 
-let open_out ?mode ?(perm=user_read lor user_write) name =
+let open_out ?mode ?(perm=0o666) name =
 (*  Printf.eprintf "Opening out\n%!";*)
   output_channel ~cleanup:true (open_out_gen (out_chan_mode ?mode true) perm name)
 

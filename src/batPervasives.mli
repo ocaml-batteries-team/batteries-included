@@ -458,7 +458,11 @@ val unique : unit -> int
 
     {b Note} This is thread-safe.*)
 
-
+val tap : ('a -> unit) -> 'a -> 'a
+  (** Allows application of a function in the middle of a pipe
+      sequence without disturbing the sequence.  [x |> tap f]
+      evaluates to [x], but has the side effect of [f x].  Useful for
+      debugging. *)
 
 val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b 
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
@@ -607,7 +611,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
       expression and to the third element of [e], then to the result of this
       new expression and to the fourth element of [e]...
 
-      In other words, [fold f e] returns [a_1] if [e] contains only
+      In other words, [reduce f e] returns [a_1] if [e] contains only
       one element, otherwise [f (... (f (f a1) a2) ...) aN] where
       a1..N are the elements of [e]. 
 
@@ -723,9 +727,6 @@ val concat : 'a BatEnum.t BatEnum.t -> 'a BatEnum.t
   (** [concat e] returns an enumeration over all elements of all enumerations
       of [e]. *)
 
-val tap : ('a -> unit) -> 'a -> 'a
-  (** Apply the function to the given value, and return the value as the result *)
-
 
 val ( -- ) : int -> int -> int BatEnum.t
 (** Enumerate numbers.
@@ -770,6 +771,8 @@ type printer_flags = {
   pf_width : int option;
   (** If with of printed material is less than this one, padding is
       added *)
+  pf_frac_digits : int option;
+  (** When printing a float, print this many digits after the decimal point *)
   pf_padding_char : char;
   (** Character used for padding *)
   pf_justify : [ `right | `left ];
@@ -821,8 +824,8 @@ val printer_nx : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.direct
 val printer_nX : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
 val printer_no : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
 
-val printer_f : (float -> 'a, 'a) BatPrint.directive
-val printer_F : (float -> 'a, 'a) BatPrint.directive
+val printer_f : ?flags : printer_flags -> (float -> 'a, 'a) BatPrint.directive
+val printer_F : ?flags : printer_flags -> (float -> 'a, 'a) BatPrint.directive
 
 (** {7 Batteries-specific directives} *)
 

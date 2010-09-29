@@ -175,8 +175,8 @@ let combine (a,b) =
     ~underlying:[cast_output a; cast_output b]
 
 
-let write_enum out f enum =
-  BatEnum.iter f enum
+let write_enum f out enum =
+  BatEnum.iter (f out) enum
 (*;
   flush out*)
       
@@ -185,141 +185,116 @@ let write_enum out f enum =
 *)
 
 module BigEndian = struct
+    
+  let read_ui16 i =
+    let ch2 = read_byte i in
+    let ch1 = read_byte i in
+    ch1 lor (ch2 lsl 8)
+      
+  let read_i16 i =
+    let ch2 = read_byte i in
+    let ch1 = read_byte i in
+    let n = ch1 lor (ch2 lsl 8) in
+    if ch2 land 128 <> 0 then
+      n - 65536
+    else
+      n
+	
+  let fix = lnot 0x7FFFFFFF (* -:) *)
+    
+  let read_i32 ch =
+    let ch4 = read_byte ch in
+    let ch3 = read_byte ch in
+    let ch2 = read_byte ch in
+    let ch1 = read_byte ch in
+    if ch4 land 128 <> 0 then begin (* negative number *)
+      if ch4 land 64 = 0 then raise (Overflow "read_i32");
+      (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor ((ch4 land 127) lsl 24)) 
+        lor fix (* FIX HERE *)
+    end else begin (*positive number*)
+      if ch4 land 64 <> 0 then raise (Overflow "read_i32");
+      ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor (ch4 lsl 24)
+    end
 
-let read_ui16 i =
-	let ch2 = read_byte i in
-	let ch1 = read_byte i in
-	ch1 lor (ch2 lsl 8)
+  let read_real_i32 ch =
+    let big = Int32.shift_left (Int32.of_int (read_byte ch)) 24 in
+    let ch3 = read_byte ch in
+    let ch2 = read_byte ch in
+    let ch1 = read_byte ch in
+    let base = Int32.of_int (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16)) in
+    Int32.logor base big
+      
+  let read_i64 ch =
+    let big = Int64.of_int32 (read_real_i32 ch) in
+    let ch4 = read_byte ch in
+    let ch3 = read_byte ch in
+    let ch2 = read_byte ch in
+    let ch1 = read_byte ch in
+    let base = Int64.of_int (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16)) in
+    let small = Int64.logor base (Int64.shift_left (Int64.of_int ch4) 24) in
+    Int64.logor (Int64.shift_left big 32) small
+      
+  let read_double ch =
+    Int64.float_of_bits (read_i64 ch)
+      
+  let read_float ch =
+    Int32.float_of_bits (read_real_i32 ch)
 
-let read_i16 i =
-	let ch2 = read_byte i in
-	let ch1 = read_byte i in
-	let n = ch1 lor (ch2 lsl 8) in
-	if ch2 land 128 <> 0 then
-		n - 65536
-	else
-		n
+  let write_ui16 ch n =
+    if n < 0 || n > 0xFFFF then raise (Overflow "write_ui16");
+    write_byte ch (n lsr 8);
+    write_byte ch n
 
-let fix = lnot 0x7FFFFFFF (* -:) *)
+  let write_i16 ch n =
+    if n < -0x8000 || n > 0x7FFF then raise (Overflow "write_i16");
+    if n < 0 then
+      write_ui16 ch (65536 + n)
+    else
+      write_ui16 ch n
+	
+  let write_i32 ch n =
+    write_byte ch (n asr 24);
+    write_byte ch (n lsr 16);
+    write_byte ch (n lsr 8);
+    write_byte ch n
+      
+  let write_real_i32 ch n =
+    let base = Int32.to_int n in
+    let big = Int32.to_int (Int32.shift_right_logical n 24) in
+    write_byte ch big;
+    write_byte ch (base lsr 16);
+    write_byte ch (base lsr 8);
+    write_byte ch base
+      
+  let write_i64 ch n =
+    write_real_i32 ch (Int64.to_int32 (Int64.shift_right_logical n 32));
+    write_real_i32 ch (Int64.to_int32 n)
+      
+  let write_double ch f =
+    write_i64 ch (Int64.bits_of_float f)
+      
+  let write_float ch f = 
+    write_real_i32 ch (Int32.bits_of_float f)
+      
+  let ui16s_of input     = make_enum read_ui16 input
+  let i16s_of input      = make_enum read_i16 input
+  let i32s_of input      = make_enum read_i32 input
+  let real_i32s_of input = make_enum read_real_i32 input
+  let i64s_of input      = make_enum read_i64 input
+  let doubles_of input   = make_enum read_double input
+  let floats_of input    = make_enum read_float input
 
-let read_i32 ch =
-	let ch4 = read_byte ch in
-	let ch3 = read_byte ch in
-	let ch2 = read_byte ch in
-	let ch1 = read_byte ch in
-	if ch4 land 128 <> 0 then begin (* negative number *)
-		if ch4 land 64 = 0 then raise (Overflow "read_i32");
-		(ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor ((ch4 land 127) lsl 24)) lor fix (* FIX HERE *)
-	end else begin (*positive number*)
-		if ch4 land 64 <> 0 then raise (Overflow "read_i32");
-		ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor (ch4 lsl 24)
-	end
-
-let read_real_i32 ch =
-	let big = Int32.shift_left (Int32.of_int (read_byte ch)) 24 in
-	let ch3 = read_byte ch in
-	let ch2 = read_byte ch in
-	let ch1 = read_byte ch in
-	let base = Int32.of_int (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16)) in
-	Int32.logor base big
-
-let read_i64 ch =
-	let big = Int64.of_int32 (read_real_i32 ch) in
-	let ch4 = read_byte ch in
-	let ch3 = read_byte ch in
-	let ch2 = read_byte ch in
-	let ch1 = read_byte ch in
-	let base = Int64.of_int (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16)) in
-	let small = Int64.logor base (Int64.shift_left (Int64.of_int ch4) 24) in
-	Int64.logor (Int64.shift_left big 32) small
-
-let read_double ch =
-	Int64.float_of_bits (read_i64 ch)
-
-let read_float ch =
-	Int32.float_of_bits (read_real_i32 ch)
-
-let write_ui16 ch n =
-	if n < 0 || n > 0xFFFF then raise (Overflow "write_ui16");
-	write_byte ch (n lsr 8);
-	write_byte ch n
-
-let write_i16 ch n =
-	if n < -0x8000 || n > 0x7FFF then raise (Overflow "write_i16");
-	if n < 0 then
-		write_ui16 ch (65536 + n)
-	else
-		write_ui16 ch n
-
-let write_i32 ch n =
-	write_byte ch (n asr 24);
-	write_byte ch (n lsr 16);
-	write_byte ch (n lsr 8);
-	write_byte ch n
-
-let write_real_i32 ch n =
-	let base = Int32.to_int n in
-	let big = Int32.to_int (Int32.shift_right_logical n 24) in
-	write_byte ch big;
-	write_byte ch (base lsr 16);
-	write_byte ch (base lsr 8);
-	write_byte ch base
-
-let write_i64 ch n =
-	write_real_i32 ch (Int64.to_int32 (Int64.shift_right_logical n 32));
-	write_real_i32 ch (Int64.to_int32 n)
-
-let write_double ch f =
-	write_i64 ch (Int64.bits_of_float f)
-
-let write_float ch f =
-	write_real_i32 ch (Int32.bits_of_float f)
-
-let ui16s_of input     = make_enum read_ui16 input
-
-let i16s_of input      = make_enum read_i16 input
-
-let i32s_of input      = make_enum read_i32 input
-
-let real_i32s_of input = make_enum read_real_i32 input
-
-let i64s_of input      = make_enum read_i64 input
-
-let doubles_of input   = make_enum read_double input
-
-let floats_of input    = make_enum read_float input
-
-let write_bytes output enum =
-  write_enum output (write_byte output) enum
-
-let write_ui16s output enum =
-  write_enum output (write_ui16 output) enum
-
-let write_i16s output enum =
-  write_enum output (write_i16 output) enum
-
-let write_i32s output enum =
-  write_enum output (write_i32 output) enum
-
-let write_real_i32s output enum =
-  write_enum output (write_real_i32 output) enum
-
-let write_i64s output enum =
-  write_enum output (write_i64 output) enum
-
-let write_doubles output enum =
-  write_enum output (write_double output) enum
-
-let write_floats output enum =
-  write_enum output (write_float output) enum
-
-let write_strings output enum =
-  write_enum output (write_string output) enum
-
-let write_lines output enum =
-  write_enum output (write_line output) enum
-
-
+  let write_bytes output enum = write_enum write_byte output enum
+  let write_ui16s output enum = write_enum write_ui16 output enum
+  let write_i16s output enum = write_enum write_i16 output enum
+  let write_i32s output enum = write_enum write_i32 output enum
+  let write_real_i32s output enum = write_enum write_real_i32 output enum
+  let write_i64s output enum = write_enum write_i64 output enum
+  let write_doubles output enum = write_enum write_double output enum
+  let write_floats output enum = write_enum write_float output enum
+  let write_strings output enum = write_enum write_string output enum
+  let write_lines output enum = write_enum write_line output enum
+    
 end
 
 (**
@@ -498,27 +473,16 @@ let from_out_chars ch =
 *)
 
 let bytes_of input        = make_enum read_byte input
-
 let signed_bytes_of input = make_enum read_signed_byte input
-
 let ui16s_of input        = make_enum read_ui16 input
-
 let i16s_of input         = make_enum read_i16 input
-
 let i32s_of input         = make_enum read_i32 input
-
 let real_i32s_of input    = make_enum read_real_i32 input
-
 let i64s_of input         = make_enum read_i64 input
-
 let doubles_of input      = make_enum read_double input
-
 let floats_of input       = make_enum read_float input
-
 let strings_of input      = make_enum read_string input
-
 let lines_of input        = make_enum read_line input
-
 let chunks_of n input     = make_enum (fun input -> nread input n) input
 
 (**The number of chars to read at once*)
@@ -529,46 +493,19 @@ let chars_of input = close_at_end input (BatEnum.concat (BatEnum.from (fun () ->
 
 let bits_of input = close_at_end input.ch (BatEnum.from (fun () -> apply_enum read_bits input 1))
 
-let write_bytes output enum =
-  write_enum output (write_byte output) enum
-
-let write_chars output enum =
-  write_enum output (write output) enum
-
-let write_ui16s output enum =
-  write_enum output (write_ui16 output) enum
-
-let write_i16s output enum =
-  write_enum output (write_i16 output) enum
-
-let write_i32s output enum =
-  write_enum output (write_i32 output) enum
-
-let write_real_i32s output enum =
-  write_enum output (write_real_i32 output) enum
-
-let write_i64s output enum =
-  write_enum output (write_i64 output) enum
-
-let write_doubles output enum =
-  write_enum output (write_double output) enum
-
-let write_floats output enum =
-  write_enum output (write_float output) enum
-
-let write_strings output enum =
-  write_enum output (write_string output) enum
-
-let write_lines output enum =
-  write_enum output (write_line output) enum
-
-let write_chunks output enum =
-  write_enum output (nwrite output) enum
-
-let write_bitss ~nbits output enum =
-  BatEnum.iter (write_bits ~nbits output) enum
-(*;
-  flush output.ch*)
+let write_bytes output enum = write_enum write_byte output enum
+let write_chars output enum = write_enum write output enum
+let write_ui16s output enum = write_enum write_ui16 output enum
+let write_i16s output enum = write_enum write_i16 output enum
+let write_i32s output enum = write_enum write_i32 output enum
+let write_real_i32s output enum = write_enum write_real_i32 output enum
+let write_i64s output enum = write_enum write_i64 output enum
+let write_doubles output enum = write_enum write_double output enum
+let write_floats output enum = write_enum write_float output enum
+let write_strings output enum = write_enum write_string output enum
+let write_lines output enum = write_enum write_line output enum
+let write_chunks output enum = write_enum nwrite output enum
+let write_bitss ~nbits output enum = write_enum (write_bits ~nbits) output enum
 
 (**
    {6 Standard BatIO}
@@ -584,19 +521,6 @@ let printf = Printf.fprintf
 (**
    {6 Utilities}
 *)
-
-let make_list_printer (p:('a output -> 'b -> unit)) 
-                      (start:   string)
-		      (finish:  string)
-		      (separate:string)
-		      (out:'a output)
-		      (l:  'b list  ) = 
-  let rec aux out l = match l with
-  | []    -> ()
-  | [h]   -> p out h
-  | h::t  -> printf out "%a%s%a" p h separate aux t
-  in printf out "%s%a%s" start aux l finish
-
 
 
 let tab_out ?(tab=' ') n out =
@@ -722,13 +646,13 @@ let write_rope = BatRope.print
 let write_uline o r = write_rope o r; write o '\n'
   
 (*val write_ulines : _ output -> Rope.t BatEnum.t -> unit*)
-let write_ulines o re = write_enum o (write_uline o) re
+let write_ulines o re = write_enum write_uline o re
  
 (*val write_ropes : _ output -> Rope.t BatEnum.t -> unit*)
-let write_ropes o re = write_enum o (write_rope o) re
+let write_ropes o re = write_enum write_rope o re
 
 (*val write_uchars : _ output -> UChar.t BatEnum.t -> unit*)
-let write_uchars o uce = write_enum o (write_uchar o) uce
+let write_uchars o uce = write_enum write_uchar o uce
 
 (*let copy input output = write_chunks output (chunks_of default_buffer_size input)*)
 (*let copy input output = write_chars output (chars_of input)*)
@@ -819,11 +743,12 @@ let synchronize_out ?(lock = !lock_factory ()) out =
 let to_input_channel inp =
   try Unix.in_channel_of_descr (BatUnix.descr_of_input inp) (*Simple case*)
   with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
-    let (name, cout) = Filename.open_temp_file "ocaml" "pipe" in
+    let (name, cout) = 
+      Filename.open_temp_file ~mode:[Open_binary] "ocaml" "pipe" in
     let out          = output_channel cout                    in
       copy inp out;
       close_out out;
-      Pervasives.open_in name    
+      Pervasives.open_in_bin name    
 
 
 

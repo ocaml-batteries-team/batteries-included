@@ -102,7 +102,7 @@ let rec remove n s =
   if is_empty s then empty else
   let (v1, v2) as v = root s in
   let s1 = left_branch s in
-  let s2 = left_branch s in
+  let s2 = right_branch s in
   if n < v1 then make_tree (remove n s1) v s2
   else if n = v1 then
     if v1 = v2 then concat s1 s2 else

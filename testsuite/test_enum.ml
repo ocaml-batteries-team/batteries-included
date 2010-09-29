@@ -101,6 +101,20 @@ let test_bigarray_enums () =
         (enum array3 |> enum_flatten |> enum_flatten |> of_enum)
         (of_enum (Array3.enum bigarray3))
 
+let test_uncombine () =
+  let pair_list = [1,2;3,4;5,6;7,8;9,0] in
+  let a,b = BatEnum.uncombine (BatList.enum pair_list) in
+  let a = BatArray.of_enum a in
+  let b = BatArray.of_enum b in
+  let c,d = BatEnum.uncombine (BatList.enum pair_list) in
+  let d = BatArray.of_enum d in
+  let c = BatArray.of_enum c in
+  let aeq = assert_equal ~printer:(BatIO.to_string (BatArray.print BatInt.print)) in
+  aeq a [|1;3;5;7;9|];
+  aeq b [|2;4;6;8;0|];
+  aeq a c;
+  aeq b d
+
 let tests = "BatEnum" >::: [
   "Array" >:: test_array_enums;
   "List" >:: test_list_enums;
@@ -109,4 +123,5 @@ let tests = "BatEnum" >::: [
   "UTF8" >:: test_UTF8_enums;
   "bigarray" >:: test_bigarray_enums;
   "Set" >:: test_set_enums;
+  "uncombine" >:: test_uncombine;
 ]

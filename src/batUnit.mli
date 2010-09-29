@@ -47,5 +47,5 @@
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
-    val print: 'a BatInnerIO.output -> t -> unit
+    val print: 'a BatInnerIO.output -> unit -> unit
 
