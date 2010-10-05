@@ -91,6 +91,6 @@ release: test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
-camomile81:
-	mv src/batCamomile.ml batCamomile-0.7.ml
-	mv src/batCamomile-0.8.1.ml batCamomile.ml
+camomile82:
+	mv src/batCamomile.ml src/batCamomile-0.7.ml
+	mv src/batCamomile-0.8.2.ml src/batCamomile.ml
