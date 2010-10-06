@@ -24,6 +24,7 @@
 *)
 
 type ('a,'b) t = 'a * 'b
+include BatInterfaces.Mappable with type 'a mappable = 'a * 'a
 
 (** map a function across both values in a pair *)
 val map : ('a -> 'b) -> ('a * 'a) -> ('b * 'b)
