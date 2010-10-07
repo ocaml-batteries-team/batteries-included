@@ -16,6 +16,7 @@ let all_tests =
     Test_set.tests;
     Test_dynarray.tests;
     Test_stack.tests;
+    Test_mappable.tests;
   ]
 
 let () = 
