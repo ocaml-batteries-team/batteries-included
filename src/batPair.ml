@@ -20,6 +20,8 @@
  *)
  
 type ('a,'b) t = 'a * 'b
+
+type 'a enumerable = 'a * 'a
 type 'a mappable = 'a * 'a
 
 let map f (x,y) = (f x, f y)
