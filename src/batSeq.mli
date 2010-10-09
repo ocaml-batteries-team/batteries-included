@@ -200,7 +200,9 @@ val split : ('a * 'b) t -> 'a t * 'b t
   (** [split s = (map fst s, map snd s)] *)
 
 val combine : 'a t -> 'b t -> ('a * 'b) t
-  (** Transform a pair of sequences into a sequence of pairs. *)
+  (** Transform a pair of sequences into a sequence of pairs.
+
+      @raise [Invalid_argument] if given sequences of different length. *)
 
 (** {6 Printing} *)
 
