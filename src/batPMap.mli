@@ -80,9 +80,9 @@ val mapi : ('a -> 'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
     key and the associated value for each binding of the map. *)
 
 val fold : ('b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
-(** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
-    where [k1 ... kN] are the keys of all bindings in [m],
-    and [d1 ... dN] are the associated data.
+(** [fold f m a] computes [(f kN dN ... (f k1 d1 (f k0 d0 a))...)],
+    where [k0,k1..kN] are the keys of all bindings in [m],
+    and [d0,d1.dN] are the associated data.
     The order in which the bindings are presented to [f] is
     unspecified. *)
 

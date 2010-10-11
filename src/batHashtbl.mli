@@ -158,9 +158,9 @@ val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
 
 val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
 (** [Hashtbl.fold f tbl init] computes
-   [(f kN dN ... (f k1 d1 init)...)],
-   where [k1 ... kN] are the keys of all bindings in [tbl],
-   and [d1 ... dN] are the associated values.
+   [(f kN dN ... (f k1 d1 (f k0 d0 init))...)],
+   where [k0,k1..kN] are the keys of all bindings in [tbl],
+   and [d0,d1..dN] are the associated values.
    Each binding is presented exactly once to [f].
    The order in which the bindings are passed to [f] is unspecified.
    However, if the table contains several bindings for the same key,
@@ -184,8 +184,8 @@ val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
 
 val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
   (** [filter_map f m] combines the features of [filteri] and
-      [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
-      where [a0..an] are the elements of [m] and [key0..keyn] the
+      [map].  It calls [f key0 a0], [f key1 a1], [f keyn an]
+      where [a0,a1..an] are the elements of [m] and [key0..keyn] the
       respective corresponding keys. It returns the map of
       pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
       [None], the corresponding element of [m] is discarded). *)

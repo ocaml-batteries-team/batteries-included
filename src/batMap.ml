@@ -51,16 +51,17 @@
 	  [m], except for [x] which is unbound in the returned map. *)
 
     val modify: key -> ('a -> 'a) -> 'a t -> 'a t
-      (** [modify k f m] replaces the previous binding for [k] with [f] applied to
-	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
-	  search, [Not_found] is raised. *)
+      (** [modify k f m] replaces the previous binding for [k] with
+          [f] applied to that value. If [k] is unbound in [m] or
+          [Not_found] is raised during the search, [Not_found] is
+          raised. *)
 
     val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
 
       
     val mem: key -> 'a t -> bool
-      (** [mem x m] returns [true] if [m] contains a binding for [x],
-	  and [false] otherwise. *)
+       (** [mem x m] returns [true] if [m] contains a binding for [x],
+	   and [false] otherwise. *)
       
     val iter: (key -> 'a -> unit) -> 'a t -> unit
       (** [iter f m] applies [f] to all bindings in map [m].
@@ -83,8 +84,8 @@
 
     val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
       (** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
-	  where [k1 ... kN] are the keys of all bindings in [m]
-	  (in increasing order), and [d1 ... dN] are the associated data. *)
+	  where [k0 k1 ... kN] are the keys of all bindings in [m]
+	  (in increasing order), and [d0 d1 ... dN] are the associated data. *)
 
    val filter: ('a -> bool) -> 'a t -> 'a t
       (**[filter f m] returns a map where only the values [a] of [m]
@@ -100,7 +101,7 @@
             
     val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
       (** [filter_map f m] combines the features of [filteri] and
-	  [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
+	  [map].  It calls [f key0 a0], [f key1 a1], [f keyn an]
 	  where [a0..an] are the elements of [m] and [key0..keyn] the
 	  respective corresponding keys. It returns the map of
 	  pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns

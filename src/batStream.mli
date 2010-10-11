@@ -135,12 +135,12 @@ val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 
 val scanl : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a t
   (** [scanl f init stream] returns a stream of successive reduced values from the
-      left: [scanl f init [<'e1;'e2;..>] = [<'init; '((f init e1) as e1'); '(f
-      e1' e2); ..>]] *)
+      left: [scanl f init [< 'e0; 'e1; ... >] = [< 'init; '((f init e0) as e0'); '(f
+      e0' e1); ... >]] *)
 
 val scan : ('a -> 'a -> 'a) -> 'a t -> 'a t
   (** [scan] is similar to [scanl] but without the [init] value: [scan f
-      [<'e1;'e2;..>] = [<'e1;'(f e1 e2);..>]]. *)
+      [< 'e0; 'e1; ... >] = [< 'e0; '(f e0 e1); ... >]]. *)
 
 val concat : 'a t t -> 'a t
   (** concatenate a stream of streams *)

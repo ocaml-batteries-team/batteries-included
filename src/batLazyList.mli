@@ -146,45 +146,50 @@ val iter : ('a -> 'b) -> 'a t -> unit
 (**
    Eager iteration
 
-   [iter f [^ a1; ...; an ^]] applies function [f] in turn to [a1; ...; an]. 
-   It is equivalent to [begin f a1; f a2; ...; f an; () end]. In particular, it
-   causes all the elements of the list to be evaluated.*)
+   [iter f [^ a0; a1; ...; an ^]] applies function [f] in turn to [a0;
+   a1; ...; an].  It is equivalent to [begin f a0; f a1; ...; f an; ()
+   end]. In particular, it causes all the elements of the list to be
+   evaluated.*)
   
 val iteri : (int -> 'a -> 'b) -> 'a t -> unit
 (**Eager iteration, with indices
 
-   [iteri f [^ a1; ...; an ^]] applies function [f] in turn to [a1 0; ...; an (n - 1)]. 
-   It is equivalent to [begin f a1 0; f a2 0; ...; f an (n-1); () end]. In particular, it
-   causes all the elements of the list to be evaluated.*)
+   [iteri f [^ a0; a1; ...; an ^]] applies function [f] in turn to
+   [a0; a1;...; an], along with the corresponding [0,1..n] index.  It
+   is equivalent to [begin f 0 a0; f 1 a1; ...; f n an; ()
+   end]. In particular, it causes all the elements of the list to be
+   evaluated.*)
 
 
 val map : ('a -> 'b) -> 'a t -> 'b t
 (**Lazy map
 
-   [map f [^ a1; ...; an ^]] applies function [f] to [a1, ..., an], and builds the list 
-   [^ f a1; ...; f an ^]  with the results returned by [f]. Not tail-recursive. Evaluations
+   [map f [^ a0; a1; ...; aN ^]] builds the list [[^ f a0; f a1; ...; aN ^]]
+   with the results returned by [f]. Not tail-recursive. Evaluations
    of [f] take place only when the contents of the list are forced.*)
 
   
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
 (**Lazy map, with indices
 
-   [mapi f [^ a1; ...; an ^]] applies function [f] to [a1, ..., an],
-   and builds the list [^ f 0 a1; ...; f ( n - 1) an ^] with the
-   results returned by [f]. Not tail-recursive. Evaluations of [f]
-   take place only when the contents of the list are forced.*)
+   [mapi f [^ a0; a1; ...; aN ^]] builds the list [[^ f 0 a0; f 1 a1;
+   ...; f aN ^]] with the results returned by [f]. Not
+   tail-recursive. Evaluations of [f] take place only when the
+   contents of the list are forced.
+*)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 (**Eager fold_left
 
-   [LazyList.fold_left f a [^ b1; ...; bn ^]] is [f (... (f (f a b1) b2) ...) bn]. This causes
-   evaluation of all the elements of the list.*)
+   [LazyList.fold_left f a [^ b0; b1; ...; bn ^]] is [f (... (f (f
+   a b0) b1) ...) bn]. This causes evaluation of all the elements of
+   the list.*)
 
 
 val fold_right : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
 (**Eager fold_right
 
-   [fold_right f a [^ b1; ...; bn ^]] is [f ( f (... (f (f a bn) ...) b2) b1]. This causes
+   [fold_right f a [^ b0; b1; ...; bn ^]] is [f ( f (... (f (f a bn) ...) b1) b0]. This causes
    evaluation of all the elements of the list. Not tail-recursive.*)
 
 (** {6 Finding}*)
@@ -196,7 +201,6 @@ val mem : 'a -> 'a t -> bool
 
 val memq : 'a -> 'a t -> bool
   (** As [mem], but with physical equality*)
-
 
 val find : ('a -> bool) -> 'a t -> 'a
   (** [find p l] returns the first element of [l] such as [p x]
@@ -279,8 +283,9 @@ val last : 'a t -> 'a
       evaluation of all elements of the list*)
 
 val at : 'a t -> int -> 'a
-  (** [at l n] returns the n-th element of the list [l] or raise
-      [Invalid_index] is the index is outside of [l] bounds. *)
+(** [at l n] returns the element at index [n] (starting from [0]) in
+    the list [l] or raise [Invalid_index] is the index is outside of
+    [l] bounds. *)
 
 val nth : 'a t -> int -> 'a
   (**  Obsolete. As [at]*)
@@ -449,33 +454,32 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 val exists : ('a -> bool) -> 'a t -> bool
 (**Eager existential.
 
-   [exists p [^ a1; ...; an ^]] checks if at least one element of the list satisfies the predicate [p]. 
-   That is, it returns [ (p a1) || (p a2) || ... || (p an) ].*)  
+   [exists p [^ a0; a1; ...; aN ^]] checks if at least one element of the list satisfies the predicate [p]. 
+   That is, it returns [ (p a0) || (p a1) || ... || (p aN) ].*)  
 
 val for_all : ('a -> bool) -> 'a t -> bool
 (**Eager universal.
 
-   [for_all p [^ a1; ...; an ^]] checks if all elements of the list satisfy the predicate [p]. 
-   That is, it returns [(p a1) && (p a2) && ... && (p an)].*)  
+   [for_all p [^ a0; a1; ...; aN ^]] checks if all elements of the list satisfy the predicate [p]. 
+   That is, it returns [(p a0) && (p a1) && ... && (p aN) ].*)  
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
 (**Lazily eliminate some elements and transform others.
 
-   [filter_map f [^ a1; a2; ... ;an ^]] applies [f] to each
-   [a1], ..., [an]. If [f ai] evaluates to [None], the element
-   is not included in the result. Otherwise, if [f ai] evaluates 
-   to [Some x], element [x] is included in the result.
+   [filter_map f [^ a0; a1; ...; aN ^]] applies lazily [f] to each [a0],
+   [a1]..[aN] If [f ai] evaluates to [None], the element is not included
+   in the result. Otherwise, if [f ai] evaluates to [Some x], element
+   [x] is included in the result.
 
    This is equivalent to
-   [match f a1 with
-     | Some x1 -> x1 ^:^ (match f a2 with
-            |Some x2 -> x2 ^:^ (match ...
-                       (match f an with
-                            | Some xn -> [^ xn ^]
-                            | None    -> [^ ^]
-                       ) ... )
-            | ...) 
-     | None   -> ... ].*)
+   [match f a0 with
+     | Some x0 -> x0 ^:^ (match f a1 with
+            | Some x1 -> x1 ^:^ (... (match f aN with
+                                      | Some xN -> [^ xN ^]
+                                      | None -> [^ ^])
+              ...)
+            | None -> [^ ^]) 
+     | None   -> [^ ^] ].*)
 
 
 (**{6 Misc.}*)    
@@ -492,28 +496,28 @@ val stable_sort : ('a -> 'a -> int) -> 'a t -> 'a t
 
 (**{6 Operations on two lists}*)
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
-  (** [map2 f [^a1; ...; an^] [^b1; ...; bn^]] is
-      [[f a1 b1; ...; f an bn]].
-      Raise [Different_list_size] if the two lists have
-      different lengths. Not tail-recursive, lazy. *)
-
+(** [map2 f [^ a0; a1; ...; aN ^] [^ b0; b1; ...; bN ^]] is [[^ f a0 b0; f a1
+    b1; ...; f aN bN ^]]. Raise [Different_list_size] if the two lists have
+    different lengths. Not tail-recursive, lazy. In particular, the
+    exception is raised only after the shortest list has been
+    entirely consumed. *)
   
 val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
-  (** [iter2 f [a1; ...; an] [b1; ...; bn]] calls in turn
-      [f a1 b1; ...; f an bn]. Tail-recursive, eager.
-      Raise [Different_list_size] if the two lists have
-      different lengths. *)
+(** [iter2 f [^ a0; ...; an ^] [^ b0; ...; bn ^]] calls in turn
+    [f a0 b0; ...; f an bn]. Tail-recursive, eager.
+    Raise [Different_list_size] if the two lists have
+    different lengths. *)
 
 
 val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b t -> 'c t -> 'a
-  (** [fold_left2 f a [b1; ...; bn] [c1; ...; cn]] is
-      [f (... (f (f a b1 c1) b2 c2) ...) bn cn]. Eager.
+  (** [fold_left2 f a [^ b0; b1; ...; bn ^] [^ c0; c1; ...; cn ^]] is
+      [f (... (f (f a b0 c0) b1 c1) ...) bn cn]. Eager.
       Raise [Different_list_size] if the two lists have
       different lengths. *)
 
 val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a t -> 'b t -> 'c -> 'c
-  (** [fold_right2 f [a1; ...; an] [b1; ...; bn] c] is
-      [f a1 b1 (f a2 b2 (... (f an bn c) ...))]. Eager.
+  (** [fold_right2 f [^ a0; a1; ...; an ^] [^ b0; b1; ...; bn ^] c] is
+      [f a0 b0 (f a1 b1 (... (f an bn c) ...))]. Eager.
       Raise [Different_list_size] if the two lists have
       different lengths.  Tail-recursive. *)
 
@@ -529,10 +533,10 @@ val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 
 val combine : 'a t -> 'b t -> ('a * 'b) t
   (** Transform a pair of lists into a list of pairs:
-      [combine [a1; ...; an] [b1; ...; bn]] is
-      [[(a1,b1); ...; (an,bn)]].
+      [combine [^ a0; a1; ...; aN ^] [^ b0; b1; ...; bN ^]] is
+      [[^ (a0, b0); (a1, b1); ...; (aN, bN) ^]].
       Raise [Different_list_size] if the two lists
-      have different lengths.  Tail-recursive. *)
+      have different lengths.  Tail-recursive, lazy. *)
 
 val uncombine : ('a * 'b) t -> 'a t * 'b t
   (** Divide a list of pairs into a pair of lists. *)

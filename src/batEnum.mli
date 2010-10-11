@@ -92,7 +92,7 @@ val iter : ('a -> unit) -> 'a t -> unit
 (** [iter f e] calls the function [f] with each elements of [e] in turn. *)
 
 val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
-(** [iter2 f e1 e2] calls the function [f] with the next elements of [e] and
+(** [iter2 f e1 e2] calls the function [f] with the next elements of [e1] and
  [e2] repeatedly until one of the two enumerations ends. *)
 
 val exists: ('a -> bool) -> 'a t -> bool
@@ -106,7 +106,7 @@ val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** A general loop on an enumeration.
 
     If [e] is empty, [fold f v e] returns [v]. Otherwise, [fold v e]
-    returns [f (... (f (f v a1) a2) ...) aN] where a1..N are the
+    returns [f (... (f (f v a0) a1) ...) aN] where [a0,a1..aN] are the
     elements of [e]. This function may be used, for instance, to
     compute the sum of all elements of an enumeration [e] as follows:
     [fold ( + ) 0 e].
@@ -116,9 +116,9 @@ val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
   (** A simplified version of [fold], which uses the first element
       of the enumeration as a default value.
 
-      [fold f e] throws [Not_found] if [e] is empty, returns its only
-      element if e is a singleton, otherwise [f (... (f (f a1 a2)
-      a3)...) aN] where a1..N are the elements of [e]. *)
+      [reduce f e] throws [Not_found] if [e] is empty, returns its only
+      element if e is a singleton, otherwise [f (... (f (f a0 a1)
+      a2)...) aN] where [a0,a1..aN] are the elements of [e]. *)
 
 val sum : int t -> int
   (** [sum] returns the sum of the given int enum.  If the argument is
@@ -130,14 +130,13 @@ val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
 
 val scanl : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b t
 (** A variant of [fold] producing an enumeration of its intermediate values.
-    If [e] contains [x1], [x2], ..., [scanl f init e] is the enumeration 
-    containing [init], [f init x1], [f (f init x1) x2]... *)
+    If [e] contains [x0], [x1], ..., [scanl f init e] is the enumeration 
+    containing [init], [f init x0], [f (f init x0) x1]... *)
 
 val scan : ('a -> 'a -> 'a) -> 'a t -> 'a t
 (** [scan] is similar to [scanl] but without the [init] value: if [e]
-    contains [x1], [x2], [x3] ..., [scan f e] is the enumeration containing
-    [x1], [f x1 x2], [f (f x1 x2) x3]... 
-
+    contains [x0], [x1], [x2] ..., [scan f e] is the enumeration containing
+    [x0], [f x0 x1], [f (f x0 x1) x2]... 
 
     For instance, [scan ( * ) (1 -- 10)] will produce an enumeration 
     containing the successive values of the factorial function.*)
@@ -252,12 +251,14 @@ val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
     underlying enumerations they were created from are also consumed. *)
 
 val map : ('a -> 'b) -> 'a t -> 'b t
-  (** [map f e] returns an enumeration over [(f a1, f a2, ... , f aN)] where
-      a1...N are the elements of [e]. *)
+  (** [map f e] returns an enumeration over [(f a0, f a1, ... , f aN)] where
+      [a0,a1...aN] are the elements of [e]. *)
   
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
   (** [mapi] is similar to [map] except that [f] is passed one extra argument
-      which is the index of the element in the enumeration, starting from 0. *)
+      which is the index of the element in the enumeration, starting from 0 :
+      mapi f e returns an enumeration over [(f 0 a0, f 1 a1, .., f N aN)] where
+      [a0,a1...aN] are the elements of [e]. *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
   (** [filter f e] returns an enumeration over all elements [x] of [e] such
@@ -569,9 +570,13 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 (** [while_do cont f e] is a loop on [e] using [f] as body and [cont] as
     condition for continuing. 
 
-    If [e] contains elements [x1], [x2], [x3]..., then if [cont x1] is [false], 
-    [x1] is returned as such and treatment stops. On the other hand, if [cont x1] 
-    is [true], [f x1] is returned and the loop proceeds with [x2]...*)
+    If [e] contains elements [x0], [x1], [x2]..., then if [cont x0] is [false], 
+    [x0] is returned as such and treatment stops. On the other hand, if [cont x0] 
+    is [true], [f x0] is returned and the loop proceeds with [x1]...
+
+    Note that f is used as halting condition {i after} the
+    corresponding element has been added to the result stream.
+*)
 
 (** {6 Monad related modules} *)
 

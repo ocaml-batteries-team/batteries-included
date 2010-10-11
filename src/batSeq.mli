@@ -76,8 +76,9 @@ val last : 'a t -> 'a
       the sequence is empty. *)
 
 val at : 'a t -> int -> 'a
-  (** [at l n] returns the n-th element of the sequence [l] or raise
-      [Invalid_argument] is the index is outside of [l] bounds. *)
+(** [at l n] returns the element at index [n] (starting from [0]) in
+    the sequence [l] or raise [Invalid_argument] is the index is
+    outside of [l] bounds. *)
 
 val append : 'a t -> 'a t -> 'a t
   (** [append s1 s2] returns the sequence which first returns all
@@ -116,11 +117,11 @@ val map : ('a -> 'b) -> 'a t -> 'b t
       [s] mapped with [f]. *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
-  (** [fold_left f a (cons b1 (... bn))] is [f (... (f (f a b1) b2) ...)
+  (** [fold_left f a (cons b0 (... bn))] is [f (... (f (f a b0) b1) ...)
       bn]. Tail-recursive. *)
 
 val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  (** [fold_right f (cons a1 (... an)) b] is [f a1 (f a2 (... (f an b)
+  (** [fold_right f (cons a0 (... an)) b] is [f a0 (f a1 (... (f an b)
       ...))]. Not tail-recursive. *)
 
 val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
@@ -139,14 +140,14 @@ val min : 'a t -> 'a
 (** {6 Sequence scanning} *)
 
 val for_all : ('a -> bool) -> 'a t -> bool
-  (** [for_all p (cons a1 (... an))] checks if all elements of the
+  (** [for_all p (cons a0 (... an))] checks if all elements of the
       given sequence satisfy the predicate [p]. That is, it returns
-      [(p a1) && (p a2) && ... && (p an)]. *)
+      [(p a0) && (p a1) && ... && (p an)]. *)
 
 val exists : ('a -> bool) -> 'a t -> bool
-  (** [exists p (cons a1 (... an))] checks if at least one element of
+  (** [exists p (cons a0 (... an))] checks if at least one element of
       the sequence satisfies the predicate [p]. That is, it returns
-      [(p a1) || (p a2) || ... || (p an)]. *)
+      [(p a0) || (p a1) || ... || (p an)]. *)
 
 val mem : 'a -> 'a t -> bool
   (** [mem a l] is true if and only if [a] is equal to an element of

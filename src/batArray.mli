@@ -64,7 +64,7 @@
     (** As [fold_left], but with a counter *)
     
   val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
-  (** [Array.reduce f a] is [fold_left f a.(0) a.(1 .. n-1)].  This
+  (** [Array.reduce f a] is [fold_left f a.(0) [|a.(1); ..; a.(n-1)|]].  This
       is useful for merging a group of things that have no
       reasonable default value to return if the group is empty.
 
@@ -85,14 +85,14 @@
   (**{6 Operations on two arrays}*)
     
   val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
-    (** [Array.iter2 f [|a1; ...; an|] [|b1; ...; bn|]] performs
-	calls [f a1 b1; ...; f an bn] in that order.
+    (** [Array.iter2 f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]] performs
+	calls [f a0 b0; f a1 b1; ...; f an bn] in that order.
 	
 	@raise Invalid_argument if the two arrays have different lengths. *)
 
   val iter2i : (int -> 'a -> 'b -> unit) -> 'a array -> 'b array -> unit
-    (** [Array.iter2i f [|a1; ...; an|] [|b1; ...; bn|]] performs
-	calls [f 0 a1 b1; ...; f (n - 1) an bn] in that order.
+    (** [Array.iter2i f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]] performs
+	calls [f 0 a0 b0; f 1 a1 b1; ...; f n an bn] in that order.
 	
 	@raise Invalid_argument if the two arrays have different lengths. *)
   
@@ -103,7 +103,7 @@
 
 
   val exists2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
-    (** As {!Array.exists} but on two arrays.  
+  (** As {!Array.exists} but on two arrays.  
 
       @raise Invalid_argument if the two arrays have different lengths. *)
     
@@ -115,14 +115,14 @@
   (**{6 Predicates}*)
     
   val for_all : ('a -> bool) -> 'a array -> bool
-    (** [for_all p [a1; ...; an]] checks if all elements of the array
+    (** [for_all p [|a0; a1; ...; an|]] checks if all elements of the array
 	satisfy the predicate [p].  That is, it returns
-	[ (p a1) && (p a2) && ... && (p an)]. *)
+	[ (p a0) && (p a1) && ... && (p an)]. *)
 
   val exists : ('a -> bool) -> 'a array -> bool
-    (** [exists p [a1; ...; an]] checks if at least one element of
+    (** [exists p [|a0; a1; ...; an|]] checks if at least one element of
 	the array satisfies the predicate [p].  That is, it returns
-	[ (p a1) || (p a2) || ... || (p an)]. *)
+	[ (p a0) || (p a1) || ... || (p an)]. *)
 
   val find : ('a -> bool) -> 'a array -> 'a
     (** [find p a] returns the first element of array [a]
