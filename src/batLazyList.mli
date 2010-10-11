@@ -164,7 +164,7 @@ val iteri : (int -> 'a -> 'b) -> 'a t -> unit
 val map : ('a -> 'b) -> 'a t -> 'b t
 (**Lazy map
 
-   [map f [^ a0; a1; ...; aN ^]] builds the list [[^ f a0; f a1; ...; aN ^]]
+   [map f [^ a0; a1; ... ^]] builds the list [[^ f a0; f a1; ... ^]]
    with the results returned by [f]. Not tail-recursive. Evaluations
    of [f] take place only when the contents of the list are forced.*)
 
@@ -172,8 +172,8 @@ val map : ('a -> 'b) -> 'a t -> 'b t
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
 (**Lazy map, with indices
 
-   [mapi f [^ a0; a1; ...; aN ^]] builds the list [[^ f 0 a0; f 1 a1;
-   ...; f aN ^]] with the results returned by [f]. Not
+   [mapi f [^ a0; a1; ... ^]] builds the list [[^ f 0 a0; f 1 a1;
+   ... ^]] with the results returned by [f]. Not
    tail-recursive. Evaluations of [f] take place only when the
    contents of the list are forced.
 *)
@@ -454,30 +454,27 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 val exists : ('a -> bool) -> 'a t -> bool
 (**Eager existential.
 
-   [exists p [^ a0; a1; ...; aN ^]] checks if at least one element of the list satisfies the predicate [p]. 
-   That is, it returns [ (p a0) || (p a1) || ... || (p aN) ].*)  
+   [exists p [^ a0; a1; ... ^]] checks if at least one element of the list satisfies the predicate [p]. 
+   That is, it returns [ (p a0) || (p a1) || ... ].*)  
 
 val for_all : ('a -> bool) -> 'a t -> bool
 (**Eager universal.
 
-   [for_all p [^ a0; a1; ...; aN ^]] checks if all elements of the list satisfy the predicate [p]. 
-   That is, it returns [(p a0) && (p a1) && ... && (p aN) ].*)  
+   [for_all p [^ a0; a1; ... ^]] checks if all elements of the list satisfy the predicate [p]. 
+   That is, it returns [(p a0) && (p a1) && ... ].*)  
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
 (**Lazily eliminate some elements and transform others.
 
-   [filter_map f [^ a0; a1; ...; aN ^]] applies lazily [f] to each [a0],
-   [a1]..[aN] If [f ai] evaluates to [None], the element is not included
+   [filter_map f [^ a0; a1; ... ^]] applies lazily [f] to each [a0],
+   [a1]... If [f ai] evaluates to [None], the element is not included
    in the result. Otherwise, if [f ai] evaluates to [Some x], element
    [x] is included in the result.
 
    This is equivalent to
    [match f a0 with
      | Some x0 -> x0 ^:^ (match f a1 with
-            | Some x1 -> x1 ^:^ (... (match f aN with
-                                      | Some xN -> [^ xN ^]
-                                      | None -> [^ ^])
-              ...)
+            | Some x1 -> x1 ^:^ ...
             | None -> [^ ^]) 
      | None   -> [^ ^] ].*)
 
@@ -496,8 +493,8 @@ val stable_sort : ('a -> 'a -> int) -> 'a t -> 'a t
 
 (**{6 Operations on two lists}*)
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
-(** [map2 f [^ a0; a1; ...; aN ^] [^ b0; b1; ...; bN ^]] is [[^ f a0 b0; f a1
-    b1; ...; f aN bN ^]]. Raise [Different_list_size] if the two lists have
+(** [map2 f [^ a0; a1; ...^] [^ b0; b1; ... ^]] is [[^ f a0 b0; f a1
+    b1; ... ^]]. Raise [Different_list_size] if the two lists have
     different lengths. Not tail-recursive, lazy. In particular, the
     exception is raised only after the shortest list has been
     entirely consumed. *)
@@ -533,8 +530,8 @@ val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 
 val combine : 'a t -> 'b t -> ('a * 'b) t
   (** Transform a pair of lists into a list of pairs:
-      [combine [^ a0; a1; ...; aN ^] [^ b0; b1; ...; bN ^]] is
-      [[^ (a0, b0); (a1, b1); ...; (aN, bN) ^]].
+      [combine [^ a0; a1; ... ^] [^ b0; b1; ... ^]] is
+      [[^ (a0, b0); (a1, b1); ... ^]].
       Raise [Different_list_size] if the two lists
       have different lengths.  Tail-recursive, lazy. *)
 
