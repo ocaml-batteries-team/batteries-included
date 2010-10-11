@@ -88,34 +88,29 @@
     (** [Array.iter2 f [|a1; ...; an|] [|b1; ...; bn|]] performs
 	calls [f a1 b1; ...; f an bn] in that order.
 	
-	@raise Invalid_argument if the length of [a1] does not equal the
-	length of [a2]. *)
+	@raise Invalid_argument if the two arrays have different lengths. *)
 
   val iter2i : (int -> 'a -> 'b -> unit) -> 'a array -> 'b array -> unit
     (** [Array.iter2i f [|a1; ...; an|] [|b1; ...; bn|]] performs
 	calls [f 0 a1 b1; ...; f (n - 1) an bn] in that order.
 	
-	@raise Invalid_argument if the length of [a1] does not equal the
-	length of [a2]. *)
+	@raise Invalid_argument if the two arrays have different lengths. *)
   
   val for_all2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
     (** As {!Array.for_all} but on two arrays.  
 
-	@raise Invalid_argument if the arrays aren't the same
-	length. *)
+	@raise Invalid_argument if the two arrays have different lengths.*)
 
 
   val exists2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
     (** As {!Array.exists} but on two arrays.  
 
-	@raise Invalid_argument if the arrays aren't the same
-	length. *)
+      @raise Invalid_argument if the two arrays have different lengths. *)
     
   val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
     (** As {!Array.map} but on two arrays.  
 
-	@raise Invalid_argument if the arrays aren't the same
-	length. *)
+	@raise Invalid_argument if the two arrays have different lengths. *)
     
   (**{6 Predicates}*)
     
