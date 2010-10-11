@@ -108,7 +108,7 @@ module type S =
 
     val map: (elt -> elt) -> t -> t
       (** [map f x] creates a new set with elements [f a0],
-	  [f a1]... [f an], where [a1], ..., [an] are the
+	  [f a1]... [f an], where [a0], [a1], ..., [an] are the
 	  values contained in [x]*)
 
     val filter: (elt -> bool) -> t -> t
@@ -331,9 +331,9 @@ val iter: ('a -> unit) -> 'a t -> unit
 
 val map: ('a -> 'b) -> 'a t -> 'b t
   (** [map f x] creates a new set with elements [f a0],
-      [f a1]... [f an], where [a1], ..., [an] are the
+      [f a1]... [f an], where [a0], [a1], ..., [an] are the
       values contained in [x]*)
-  
+
 val filter: ('a -> bool) -> 'a t -> 'a t
   (** [filter p s] returns the set of all elements in [s]
       that satisfy predicate [p]. *)
