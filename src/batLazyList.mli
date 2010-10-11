@@ -169,9 +169,10 @@ val map : ('a -> 'b) -> 'a t -> 'b t
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
 (**Lazy map, with indices
 
-   [map f [^ a1; ...; an ^]] applies function [f] to [a1, ..., an], and builds the list 
-   [^ f 0 a1; ...; f ( n - 1) an ^]  with the results returned by [f]. Not tail-recursive. Evaluations
-   of [f] take place only when the contents of the list are forced.*)
+   [mapi f [^ a1; ...; an ^]] applies function [f] to [a1, ..., an],
+   and builds the list [^ f 0 a1; ...; f ( n - 1) an ^] with the
+   results returned by [f]. Not tail-recursive. Evaluations of [f]
+   take place only when the contents of the list are forced.*)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 (**Eager fold_left
