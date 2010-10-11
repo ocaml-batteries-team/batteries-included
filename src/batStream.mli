@@ -134,16 +134,20 @@ val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
       stream are ignored. *)
 
 val scanl : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a t
-  (** [scanl f init stream] returns a stream of successive reduced values from the
-      left: [scanl f init [< 'e0; 'e1; ... >] = [< 'init; '((f init e0) as e0'); '(f
-      e0' e1); ... >]] *)
+(** [scanl f init stream] returns a stream of successive reduced
+    values from the left: [scanl f init [< 'e0; 'e1; ... >]] is
+    equivalent to
+      [[< 'init; '(f init e0); '(f (f init e0) e1); ... >]]
+*)
 
 val scan : ('a -> 'a -> 'a) -> 'a t -> 'a t
-  (** [scan] is similar to [scanl] but without the [init] value: [scan f
-      [< 'e0; 'e1; ... >] = [< 'e0; '(f e0 e1); ... >]]. *)
+(** [scan] is similar to [scanl] but without the [init] value:
+    [scanl f init [< 'e0; 'e1; 'e2; ... >]] is equivalent to
+      [[< 'e0; '(f e0 e1); '(f (f e0 e1) e2); ... >]]
+*)
 
 val concat : 'a t t -> 'a t
-  (** concatenate a stream of streams *)
+(** concatenate a stream of streams *)
 
 val take : int -> 'a t -> 'a t
   (** [take n stream] returns the prefix of [stream] of length [n], or [stream]
