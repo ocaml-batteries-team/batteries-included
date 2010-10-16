@@ -63,10 +63,14 @@ let _ = dispatch begin function
       flag ["ocaml"; "link"] & S[A"-package"; A packs];
       flag ["ocaml"; "infer_interface"] & S[A"-package"; A packs];
 
-      flag ["ocaml"; "infer_interface"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
-      flag ["ocaml"; "ocamldep"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
-      flag ["ocaml"; "compile"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
-      flag ["ocaml"; "link"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
+      List.iter
+        (fun pkg ->
+          flag ["ocaml"; "infer_interface"; "pkg_"^pkg] & S[A"-package"; A pkg];
+          flag ["ocaml"; "ocamldep"; "pkg_"^pkg] & S[A"-package"; A pkg];
+          flag ["ocaml"; "compile"; "pkg_"^pkg] & S[A"-package"; A pkg];
+          flag ["ocaml"; "link"; "pkg_"^pkg] & S[A"-package"; A pkg];
+          ())
+        ["oUnit"; "benchmark"];
 
       (* DON'T USE TAG 'thread', USE 'threads'
 	 for compatibility with ocamlbuild *)

@@ -4,3 +4,4 @@
 "libs" or "libs/estring": include
 "testsuite": include
 "qtest": include
+"benchsuite": include

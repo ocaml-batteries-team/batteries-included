@@ -26,11 +26,13 @@ You will need the following libraries:
 * [Camomile][] >= 0.7
 * GNU make
 * [OUnit][] to build and run the tests
+* [ocaml-benchmark][] to build and run the performance tests (optional)
 
 [Findlib]: http://projects.camlcity.org/projects/findlib.html/
 [OCaml]: http://caml.inria.fr/ocaml/release.en.html
 [Camomile]: http://camomile.sourceforge.net/
 [OUnit]: http://ounit.forge.ocamlcore.org/
+[ocaml-benchmark]: http://ocaml-benchmark.forge.ocamlcore.org/
 
 ### Configuration and Installation
 
