@@ -108,7 +108,7 @@ module type S =
 
     val map: (elt -> elt) -> t -> t
       (** [map f x] creates a new set with elements [f a0],
-	  [f a1]... [f an], where [a1], ..., [an] are the
+	  [f a1]... [f aN], where [a0],[a1]..[aN] are the
 	  values contained in [x]*)
 
     val filter: (elt -> bool) -> t -> t
@@ -117,14 +117,14 @@ module type S =
 
     val filter_map: (elt -> elt option) -> t -> t
       (** [filter_map f m] combines the features of [filter] and
-	  [map].  It calls calls [f a0], [f a1], [f an] where [a0..an]
+	  [map].  It calls calls [f a0], [f a1], [f aN] where [a0],[a1]..[aN]
 	  are the elements of [m] and returns the set of pairs [bi]
 	  such as [f ai = Some bi] (when [f] returns [None], the
 	  corresponding element of [m] is discarded). *)
 
     val fold: (elt -> 'a -> 'a) -> t -> 'a -> 'a
-      (** [fold f s a] computes [(f xN ... (f x2 (f x1 a))...)],
-	  where [x1 ... xN] are the elements of [s], in increasing order. *)
+      (** [fold f s a] computes [(f xN ... (f x1 (f x0 a))...)],
+	  where [x0],[x1]..[xN] are the elements of [s], in increasing order. *)
 
     val for_all: (elt -> bool) -> t -> bool
     (** [for_all p s] checks if all elements of the set
@@ -331,23 +331,23 @@ val iter: ('a -> unit) -> 'a t -> unit
 
 val map: ('a -> 'b) -> 'a t -> 'b t
   (** [map f x] creates a new set with elements [f a0],
-      [f a1]... [f an], where [a1], ..., [an] are the
+      [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
       values contained in [x]*)
-  
+
 val filter: ('a -> bool) -> 'a t -> 'a t
   (** [filter p s] returns the set of all elements in [s]
       that satisfy predicate [p]. *)
   
 val filter_map: ('a -> 'b option) -> 'a t -> 'b t
   (** [filter_map f m] combines the features of [filter] and
-      [map].  It calls calls [f a0], [f a1], [f an] where [a0..an]
+      [map].  It calls calls [f a0], [f a1], [f aN] where [a0,a1..an]
       are the elements of [m] and returns the set of pairs [bi]
       such as [f ai = Some bi] (when [f] returns [None], the
       corresponding element of [m] is discarded). *)
   
 val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  (** [fold f s a] computes [(f xN ... (f x2 (f x1 a))...)],
-      where [x1 ... xN] are the elements of [s], in increasing order. *)
+  (** [fold f s a] computes [(f xN ... (f x1 (f x0 a))...)],
+      where [x0,x1..xN] are the elements of [s], in increasing order. *)
   
 val exists: ('a -> bool) -> 'a t -> bool
   (** [exists p s] checks if at least one element of

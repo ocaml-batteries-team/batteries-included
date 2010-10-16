@@ -104,8 +104,8 @@ module type S =
        key and the associated value for each binding of the map. *)
 
     val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-    (** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
-       where [k1 ... kN] are the keys of all bindings in [m]
+    (** [fold f m a] computes [(f kN dN ... (f k1 d1 (f k0 d0 a))...)],
+       where [k0,k1..kN] are the keys of all bindings in [m]
        (in increasing order), and [d1 ... dN] are the associated data. *)
 
     val filter: ('a -> bool) -> 'a t -> 'a t
@@ -123,7 +123,7 @@ module type S =
     val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
       (** [filter_map f m] combines the features of [filteri] and
 	  [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
-	  where [a0..an] are the elements of [m] and [key0..keyn] the
+	  where [a0,a1..an] are the elements of [m] and [key0..keyn] the
 	  respective corresponding keys. It returns the map of
 	  pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
 	  [None], the corresponding element of [m] is discarded). *)

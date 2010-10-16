@@ -177,7 +177,7 @@ val filter : ('a -> bool) -> 'a node_t -> 'a node_t
       @raise Empty if the resulting list is empty.*)
 
 val filter_map : ('a -> 'b option) -> 'a node_t -> 'b node_t
-  (** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0..an]
+  (** [filter_map f l] calls [(f a0) (f a1) ... (f an)] where [a0,a1...an]
       are the elements of [l]. It returns a new list of elements [bi]
       such as [f ai = Some bi] (when [f] returns [None], the
       corresponding element of [l] is discarded). 

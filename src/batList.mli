@@ -114,9 +114,12 @@
 	 [a0..an] are the elements of the list [l]. *)
 
 	val map : ('a -> 'b) -> 'a list -> 'b list
-	  (** [map f [a1; ...; an]] applies function [f] to [a1, ..., an],
-	      and builds the list [[f a1; ...; f an]]
+	  (** [map f [a0; a1; ...; an]] applies function [f] to [a0, a1, ..., an],
+	      and builds the list [[f a0; f a1; ...; f an]]
 	      with the results returned by [f].  Tail-recursive. *)
+        (* why that formulation emphasizing "applies function f to
+           ..." ? Because map is specifically designed to respect
+           a left-to-right order of evaluation *)
 
 	val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
 	(** [mapi f l] will build the list containing
@@ -124,8 +127,8 @@
 	 the list [l]. *)
 
 	val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
-	  (** [List.fold_right f [a1; ...; an] b] is
-	      [f a1 (f a2 (... (f an b) ...))].  Tail-recursive. *)
+	  (** [List.fold_right f [a0; a1; ...; an] b] is
+	      [f a0 (f a1 (... (f an b) ...))].  Tail-recursive. *)
 
 	val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 	  (** [List.reduce f h::t] is [fold_left f h t].  
@@ -149,26 +152,26 @@
 	(** {6 Iterators on two lists} *)
 
 	val iter2 : ('a -> 'b -> unit) -> 'a list -> 'b list -> unit
-	  (** [List.iter2 f [a1; ...; an] [b1; ...; bn]] calls in turn
-	      [f a1 b1; ...; f an bn].
+	  (** [List.iter2 f [a0; a1; ...; an] [b0; b1; ...; bn]] calls in turn
+	      [f a0 b0; f a1 b1; ...; f an bn].
 	      @raise Different_list_size if the two lists have
 	      different lengths. *)
 
 	val map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
-	  (** [List.map2 f [a1; ...; an] [b1; ...; bn]] is
-	      [[f a1 b1; ...; f an bn]].
+	  (** [List.map2 f [a0; a1; ...; an] [b0; b1; ...; bn]] is
+	      [[f a0 b0; f a1 b1; ...; f an bn]].
 	      @raise Different_list_size if the two lists have
 	      different lengths.  Tail-recursive. *)
 
 	val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b list -> 'c list -> 'a
-	  (** [List.fold_left2 f a [b1; ...; bn] [c1; ...; cn]] is
-	      [f (... (f (f a b1 c1) b2 c2) ...) bn cn].
+	  (** [List.fold_left2 f a [b0; b1; ...; bn] [c0; c1; ...; cn]] is
+	      [f (... (f (f a b0 c0) b1 c1) ...) bn cn].
 	      @raise Different_list_size if the two lists have
 	      different lengths. *)
 
 	val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> 'c -> 'c
-	  (** [List.fold_right2 f [a1; ...; an] [b1; ...; bn] c] is
-	      [f a1 b1 (f a2 b2 (... (f an bn c) ...))].
+	  (** [List.fold_right2 f [a0; a1; ...; an] [b0; b1; ...; bn] c] is
+	      [f a0 b0 (f a1 b1 (... (f an bn c) ...))].
 	      
 	      @raise Different_list_size if the two lists have
 	      different lengths.  Tail-recursive. *)
@@ -217,7 +220,7 @@
 	      in the input list is preserved.  *)
 
 	val filter_map : ('a -> 'b option) -> 'a list -> 'b list
-	(** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0..an] are
+	(** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0,a1..an] are
 	 the elements of [l]. It returns the list of elements [bi] such as
 	 [f ai = Some bi] (when [f] returns [None], the corresponding element of
 	 [l] is discarded). *)
@@ -327,8 +330,8 @@
 
 
 	val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
-	  (** [interleave ~first ~last sep [a1;a2;a3;...;an]] returns
-	      [first; a1; sep; a2; sep; a3; sep; ...; sep; an] *)
+	  (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
+	      [first; a0; sep; a1; sep; a2; sep; ...; sep; an] *)
 
 	(** {6 BatEnum functions} 
 	    
@@ -359,14 +362,14 @@
 	  
 	val split : ('a * 'b) list -> 'a list * 'b list
 	  (** Transform a list of pairs into a pair of lists:
-	      [split [(a1,b1); ...; (an,bn)]] is [([a1; ...; an], [b1; ...; bn])].
+	      [split [(a0,b0); (a1,b1); ...; (an,bn)]] is [([a0; a1; ...; an], [b0; b1; ...; bn])].
 	      Tail-recursive.
 	  *)
 
 	val combine : 'a list -> 'b list -> ('a * 'b) list
 	  (** Transform a pair of lists into a list of pairs:
-	      [combine [a1; ...; an] [b1; ...; bn]] is
-	      [[(a1,b1); ...; (an,bn)]].
+	      [combine [a0; a1; ...; an] [b0; b1; ...; bn]] is
+	      [[(a0,b0); (a1,b1); ...; (an,bn)]].
 	      @raise Different_list_size if the two lists
 	      have different lengths.  Tail-recursive. *)
 
@@ -394,17 +397,17 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	  *)  
 
 	val cartesian_product : 'a list -> 'b list -> ('a * 'b) list
-	  (** Different from [List.combine], this returns every pair
-	      of elements formed out of the two lists.  [cartesian_product
-	      [a1; ...; an] [b1; ...; bn] = [(a1,b1);(a1,b2); ...;
-	      (a1,bn); (a2,b1); ...; (an,bn)]].  The lists can be of
-	      unequal size. *)
+	(** Different from [List.combine], this returns every pair
+	    of elements formed out of the two lists.
+	    [cartesian_product [a0; a1; ...; an] [b0; b1; ...; bn] =
+	    [(a0,b0);(a0,b1); ...; (a0,bn); (a1,b0); ..; (a1, bn);
+	    ...; (an,bn)]].  The lists can be of unequal size. *)
 
 	val n_cartesian_product : 'a list list -> 'a list list
-	  (** Given n lists, return the n-way cartesian product of
-	      these lists.  Given [[a;b];[c];[d;e;f]], returns
-	      [[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]], all
-	      ways of choosing one element from each input list. *)
+	(** Given n lists, return the n-way cartesian product of
+	    these lists.  Given [[a;b];[c];[d;e;f]], returns
+	    [[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]], all
+	    ways of choosing one element from each input list. *)
 
 	(** {6 Boilerplate code}*)
 
@@ -538,7 +541,6 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
             val assq : 'a -> ('a * 'b) list -> 'b option
           end
 	end
-
 
 
 val ( @ ) : 'a list -> 'a list -> 'a list
