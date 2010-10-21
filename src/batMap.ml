@@ -384,32 +384,52 @@ let height = function
   | Node (_, _, _, _, h) -> h
   | Empty -> 0
 
-let make l k v r = Node (l, k, v, r, max (height l) (height r) + 1)
+(* The create and bal functions are from stdlib's map.ml (3.12)
+   differences from the old (extlib) implementation :
 
-let bal l k v r =
-  let hl = height l in
-  let hr = height r in
-  if hl > hr + 2 then
+   1. create use direct integer comparison instead of calling
+   polymorphic 'max'
+
+   2. the two calls of 'height' for hl and hr in the beginning of 'bal'
+   (hot path) are inlined
+
+   The difference in performances is important for bal-heavy worflows,
+   such as "adding a lot of elements". On a test system, we go from
+   1800 op/s to 2500 op/s.
+*)
+let create l x d r =
+  let hl = height l and hr = height r in
+  Node(l, x, d, r, (if hl >= hr then hl + 1 else hr + 1))
+
+let bal l x d r =
+  let hl = match l with Empty -> 0 | Node(_,_,_,_,h) -> h in
+  let hr = match r with Empty -> 0 | Node(_,_,_,_,h) -> h in
+  if hl > hr + 2 then begin
     match l with
-    | Node (ll, lk, lv, lr, _) ->
-        if height ll >= height lr then make ll lk lv (make lr k v r)
-        else
-          (match lr with
-          | Node (lrl, lrk, lrv, lrr, _) ->
-              make (make ll lk lv lrl) lrk lrv (make lrr k v r)
-          | Empty -> assert false)
-    | Empty -> assert false
-  else if hr > hl + 2 then
+        Empty -> invalid_arg "Map.bal"
+      | Node(ll, lv, ld, lr, _) ->
+        if height ll >= height lr then
+          create ll lv ld (create lr x d r)
+        else begin
+          match lr with
+              Empty -> invalid_arg "Map.bal"
+            | Node(lrl, lrv, lrd, lrr, _)->
+              create (create ll lv ld lrl) lrv lrd (create lrr x d r)
+        end
+  end else if hr > hl + 2 then begin
     match r with
-    | Node (rl, rk, rv, rr, _) ->
-        if height rr >= height rl then make (make l k v rl) rk rv rr
-        else
-          (match rl with
-          | Node (rll, rlk, rlv, rlr, _) ->
-              make (make l k v rll) rlk rlv (make rlr rk rv rr)
-          | Empty -> assert false)
-    | Empty -> assert false
-  else Node (l, k, v, r, max hl hr + 1)
+        Empty -> invalid_arg "Map.bal"
+      | Node(rl, rv, rd, rr, _) ->
+        if height rr >= height rl then
+          create (create l x d rl) rv rd rr
+        else begin
+          match rl with
+              Empty -> invalid_arg "Map.bal"
+            | Node(rll, rlv, rld, rlr, _) ->
+              create (create l x d rll) rlv rld (create rlr rv rd rr)
+        end
+  end else
+      Node(l, x, d, r, (if hl >= hr then hl + 1 else hr + 1))
 
 let rec min_binding = function (* shadowed by definition at end of file *)
   | Node (Empty, k, v, _, _) -> k, v
