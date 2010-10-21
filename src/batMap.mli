@@ -152,6 +152,9 @@ module type S =
     val choose : 'a t -> (key * 'a)
       (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
 
+    val split : key -> 'a t -> ('a t * 'a option * 'a t)
+      (** as [Set.split] *)
+
     val enum  : 'a t -> (key * 'a) BatEnum.t
       (** Return an enumeration of (key, value) pairs of a map.
         The returned enumeration is sorted in increasing order with respect

@@ -175,6 +175,14 @@ struct
     | Empty -> invalid_arg "choose"
     | Node (_, kv, _) -> kv
 
+  (*TODO : add an implementation of split
+
+    The "split" function from stdlib 3.12 was imported into Batteries
+    after the batSplay module. We have not yet provided an
+    implementation of the split function. *)
+  let split k (Map tr) =
+    failwith "split not yet implemented in batSplay"
+
   let min_binding (Map tr) =
     let rec bfind = function
       | Node (Empty, kv, _) -> kv
@@ -195,15 +203,15 @@ struct
     let rec visit t cont = match t with
       | Empty -> cont Empty
       | Node (l, (k, v), r) ->
-          visit l begin fun l ->
-            let w = f k v in
-            visit r begin fun r ->
-              match w with
-                | None -> cont (bst_append l r)
-                | Some w ->
-                    cont (Node (l, (k, w), r))
-            end
+        visit l begin fun l ->
+          let w = f k v in
+          visit r begin fun r ->
+            match w with
+              | None -> cont (bst_append l r)
+              | Some w ->
+                cont (Node (l, (k, w), r))
           end
+        end
     in
     fun (Map tr) -> visit tr (fun tr -> Map tr)
 
@@ -225,19 +233,19 @@ struct
     let rec count k = function
       | End -> k
       | More (_, _, tr, en) ->
-          count (1 + k + size tr) en
+        count (1 + k + size tr) en
     in
     fun en -> count 0 en
 
   let rec cons_enum m e = match m with
     | Empty -> e
     | Node (l, (k, v), r) ->
-        cons_enum l (More (k, v, r, e))
+      cons_enum l (More (k, v, r, e))
 
   let rec rev_cons_enum m e = match m with
     | Empty -> e
     | Node (l, (k, v), r) ->
-        rev_cons_enum r (More (k, v, l, e))
+      rev_cons_enum r (More (k, v, l, e))
 
   let compare cmp (Map tr1) (Map tr2) =
     let rec aux e1 e2 = match (e1, e2) with
@@ -245,11 +253,11 @@ struct
       | (End, _)  -> -1
       | (_, End) -> 1
       | (More (v1, d1, r1, e1), More (v2, d2, r2, e2)) ->
-          let c = Ord.compare v1 v2 in
+        let c = Ord.compare v1 v2 in
+        if c <> 0 then c else
+          let c = cmp d1 d2 in
           if c <> 0 then c else
-            let c = cmp d1 d2 in
-            if c <> 0 then c else
-              aux (cons_enum r1 e1) (cons_enum r2 e2)
+            aux (cons_enum r1 e1) (cons_enum r2 e2)
     in aux (cons_enum tr1 End) (cons_enum tr2 End)
 
   let equal cmp (Map tr1) (Map tr2) =
@@ -259,7 +267,7 @@ struct
         | (End, _)  -> false
         | (_, End) -> false
         | (More (v1, d1, r1, e1), More (v2, d2, r2, e2)) ->
-            Ord.compare v1 v2 = 0 && cmp d1 d2 &&
+          Ord.compare v1 v2 = 0 && cmp d1 d2 &&
       aux (cons_enum r1 e1) (cons_enum r2 e2)
     in aux (cons_enum tr1 End) (cons_enum tr2 End)
 
@@ -268,8 +276,8 @@ struct
     let next () = match !cur with
       | End -> raise Enum.No_more_elements
       | More (k, v, r, e) ->
-          cur := cfn r e ;
-          (k, v)
+        cur := cfn r e ;
+        (k, v)
     in
     let count () = count_enum !cur in
     let clone () = enum_bst cfn !cur in
