@@ -26,123 +26,62 @@
   module type S =
   sig
     type key
-      (** The type of the map keys. *)
       
     type (+'a) t
-      (** The type of maps from type [key] to type ['a]. *)
       
     val empty: 'a t
-      (** The empty map. *)
       
     val is_empty: 'a t -> bool
-      (** Test whether a map is empty or not. *)
       
     val add: key -> 'a -> 'a t -> 'a t
-      (** [add x y m] returns a map containing the same bindings as
-	  [m], plus a binding of [x] to [y]. If [x] was already bound
-	  in [m], its previous binding disappears. *)
       
     val find: key -> 'a t -> 'a
-      (** [find x m] returns the current binding of [x] in [m],
-	  or raises [Not_found] if no such binding exists. *)
       
     val remove: key -> 'a t -> 'a t
-      (** [remove x m] returns a map containing the same bindings as
-	  [m], except for [x] which is unbound in the returned map. *)
 
     val modify: key -> ('a -> 'a) -> 'a t -> 'a t
-      (** [modify k f m] replaces the previous binding for [k] with
-          [f] applied to that value. If [k] is unbound in [m] or
-          [Not_found] is raised during the search, [Not_found] is
-          raised. *)
 
     val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
 
       
     val mem: key -> 'a t -> bool
-       (** [mem x m] returns [true] if [m] contains a binding for [x],
-	   and [false] otherwise. *)
       
     val iter: (key -> 'a -> unit) -> 'a t -> unit
-      (** [iter f m] applies [f] to all bindings in map [m].
-	  [f] receives the key as first argument, and the associated value
-	  as second argument.  The bindings are passed to [f] in increasing
-	  order with respect to the ordering over the type of the keys.
-	  Only current bindings are presented to [f]:
-	  bindings hidden by more recent bindings are not passed to [f]. *)
       
     val map: ('a -> 'b) -> 'a t -> 'b t
-      (** [map f m] returns a map with same domain as [m], where the
-	  associated value [a] of all bindings of [m] has been
-	  replaced by the result of the application of [f] to [a].
-	  The bindings are passed to [f] in increasing order
-	  with respect to the ordering over the type of the keys. *)
       
     val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
-      (** Same as {!Map.S.map}, but the function receives as arguments both the
-	  key and the associated value for each binding of the map. *)
 
     val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-      (** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
-	  where [k0 k1 ... kN] are the keys of all bindings in [m]
-	  (in increasing order), and [d0 d1 ... dN] are the associated data. *)
 
-   val filter: ('a -> bool) -> 'a t -> 'a t
-      (**[filter f m] returns a map where only the values [a] of [m]
-	 such that [f a = true] remain. The bindings are passed to [f]
-	 in increasing order with respect to the ordering over the
-	 type of the keys. *)
+    val filter: ('a -> bool) -> 'a t -> 'a t
 
     val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
-      (**[filter f m] returns a map where only the key, values pairs
-	 [key], [a] of [m] such that [f key a = true] remain. The
-	 bindings are passed to [f] in increasing order with respect
-	 to the ordering over the type of the keys. *)
-            
+                
     val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
-      (** [filter_map f m] combines the features of [filteri] and
-	  [map].  It calls [f key0 a0], [f key1 a1], [f keyn an]
-	  where [a0..an] are the elements of [m] and [key0..keyn] the
-	  respective corresponding keys. It returns the map of
-	  pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
-	  [None], the corresponding element of [m] is discarded). *)
-
-    val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
-      (** Total ordering between maps.  The first argument is a total ordering
-          used to compare data associated with equal keys in the two maps. *)
-      
-    val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-      (** [equal cmp m1 m2] tests whether the maps [m1] and [m2] are
-	  equal, that is, contain equal keys and associate them with
-	  equal data.  [cmp] is the equality predicate used to compare
-	  the data associated with the keys. *)
-      
-    val keys : _ t -> key BatEnum.t
-      (** Return an enumeration of all the keys of a map.*)
-      
-    val values: 'a t -> 'a BatEnum.t
-      (** Return an enumeration of al the values of a map.*)
     
+    val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
+          
+    val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+          
+    val keys : _ t -> key BatEnum.t
+          
+    val values: 'a t -> 'a BatEnum.t
+        
     val min_binding : 'a t -> (key * 'a)
-      (** return the ([key,value]) pair with the smallest key *)
-
+    
     val max_binding : 'a t -> (key * 'a)
-      (** return the [(key,value)] pair with the largest key *)
     
     val choose : 'a t -> (key * 'a)
-      (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
-
+    
 (*
     val split : key -> 'a t -> ('a t * 'a option * 'a t)
-      (** as [Set.split] *)
 *)
     val enum  : 'a t -> (key * 'a) BatEnum.t
-      (** Return an enumeration of (key, value) pairs of a map.*)
-
+    
     val backwards  : 'a t -> (key * 'a) BatEnum.t
 
     val of_enum: (key * 'a) BatEnum.t -> 'a t
-      (** Create a map from a (key, value) enumeration. *)
 
     (** {6 Boilerplate code}*)
 
