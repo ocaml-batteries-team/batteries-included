@@ -414,104 +414,104 @@ module Concrete = struct
 end
 
 
-  module type OrderedType = BatInterfaces.OrderedType
+module type OrderedType = BatInterfaces.OrderedType
 
-  module type S =
-  sig
-    type key
-      
-    type (+'a) t
-      
-    val empty: 'a t
-      
-    val is_empty: 'a t -> bool
-      
-    val add: key -> 'a -> 'a t -> 'a t
-      
-    val find: key -> 'a t -> 'a
-      
-    val remove: key -> 'a t -> 'a t
-
-    val modify: key -> ('a -> 'a) -> 'a t -> 'a t
-
-    val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
-
-      
-    val mem: key -> 'a t -> bool
-      
-    val iter: (key -> 'a -> unit) -> 'a t -> unit
-      
-    val map: ('a -> 'b) -> 'a t -> 'b t
-      
-    val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
-
-    val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-
-    val filter: ('a -> bool) -> 'a t -> 'a t
-
-    val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
-                
-    val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
+module type S =
+sig
+  type key
     
-    val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
-          
-    val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-          
-    val keys : _ t -> key BatEnum.t
-          
-    val values: 'a t -> 'a BatEnum.t
-        
-    val min_binding : 'a t -> (key * 'a)
+  type (+'a) t
     
-    val max_binding : 'a t -> (key * 'a)
+  val empty: 'a t
     
-    val choose : 'a t -> (key * 'a)
+  val is_empty: 'a t -> bool
     
-    val split : key -> 'a t -> ('a t * 'a option * 'a t)
+  val add: key -> 'a -> 'a t -> 'a t
+    
+  val find: key -> 'a t -> 'a
+    
+  val remove: key -> 'a t -> 'a t
 
-    val enum  : 'a t -> (key * 'a) BatEnum.t
-    
-    val backwards  : 'a t -> (key * 'a) BatEnum.t
+  val modify: key -> ('a -> 'a) -> 'a t -> 'a t
 
-    val of_enum: (key * 'a) BatEnum.t -> 'a t
+  val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
+
+    
+  val mem: key -> 'a t -> bool
+    
+  val iter: (key -> 'a -> unit) -> 'a t -> unit
+    
+  val map: ('a -> 'b) -> 'a t -> 'b t
+    
+  val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
+
+  val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+
+  val filter: ('a -> bool) -> 'a t -> 'a t
+
+  val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
+    
+  val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
+    
+  val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
+    
+  val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+    
+  val keys : _ t -> key BatEnum.t
+    
+  val values: 'a t -> 'a BatEnum.t
+    
+  val min_binding : 'a t -> (key * 'a)
+    
+  val max_binding : 'a t -> (key * 'a)
+    
+  val choose : 'a t -> (key * 'a)  
+    
+  val split : key -> 'a t -> ('a t * 'a option * 'a t)
+
+  val enum  : 'a t -> (key * 'a) BatEnum.t
+    
+  val backwards  : 'a t -> (key * 'a) BatEnum.t
+
+  val of_enum: (key * 'a) BatEnum.t -> 'a t
 
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
 
-    val print :  ?first:string -> ?last:string -> ?sep:string -> 
-      ('a BatInnerIO.output -> key -> unit) -> 
-      ('a BatInnerIO.output -> 'c -> unit) -> 
-      'a BatInnerIO.output -> 'c t -> unit
+  val print :  ?first:string -> ?last:string -> ?sep:string -> 
+    ('a BatInnerIO.output -> key -> unit) -> 
+    ('a BatInnerIO.output -> 'c -> unit) -> 
+    'a BatInnerIO.output -> 'c t -> unit
 
-    module Exceptionless : sig
-      val find: key -> 'a t -> 'a option
-    end
-
-    module Infix : sig
-      val (-->) : 'a t -> key -> 'a
-      val (<--) : 'a t -> key * 'a -> 'a t
-    end
-
-    module Labels : sig
-      val add : key:key -> data:'a -> 'a t -> 'a t
-      val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
-      val map : f:('a -> 'b) -> 'a t -> 'b t
-      val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
-      val filter: f:('a -> bool) -> 'a t -> 'a t
-      val filteri:f:(key -> 'a -> bool) -> 'a t -> 'a t
-      val fold :
-	f:(key:key -> data:'a -> 'b -> 'b) ->
-	'a t -> init:'b -> 'b
-      val compare: cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
-      val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-
-    end
+  module Exceptionless : sig
+    val find: key -> 'a t -> 'a option
   end
 
-  module Make(Ord : OrderedType) =
-    struct
-      include Map.Make(Ord)
+  module Infix : sig
+    val (-->) : 'a t -> key -> 'a
+    val (<--) : 'a t -> key * 'a -> 'a t
+  end
+
+  module Labels : sig
+    val add : key:key -> data:'a -> 'a t -> 'a t
+    val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+    val map : f:('a -> 'b) -> 'a t -> 'b t
+    val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+    val filter: f:('a -> bool) -> 'a t -> 'a t
+    val filteri:f:(key -> 'a -> bool) -> 'a t -> 'a t
+    val fold :
+      f:(key:key -> data:'a -> 'b -> 'b) ->
+      'a t -> init:'b -> 'b
+    val compare: cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+    val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+
+  end
+end
+
+module Make(Ord : OrderedType) =
+struct
+  include Map.Make(Ord)
 
       (* We break the abstraction of stdlib's Map module by exposing
          it's underlyding datatype, which is exactly ((key, 'a)
@@ -525,77 +525,77 @@ end
          implementations everywhere. Breaking this abstraction is not
          our fate, it's only a convenient choice for now.
       *)
-      type 'a implementation = (key, 'a) Concrete.map
+  type 'a implementation = (key, 'a) Concrete.map
 
-      external t_of_impl: 'a implementation -> 'a t = "%identity"
-      external impl_of_t: 'a t -> 'a implementation = "%identity"
+  external t_of_impl: 'a implementation -> 'a t = "%identity"
+  external impl_of_t: 'a t -> 'a implementation = "%identity"
 
-      type 'a iter = E | C of key * 'a * 'a implementation * 'a iter
+  type 'a iter = E | C of key * 'a * 'a implementation * 'a iter
 
-      let cardinal t = Concrete.cardinal (impl_of_t t)
-      let enum t = Concrete.enum (impl_of_t t)
-      let backwards t = Concrete.backwards (impl_of_t t)
-      let keys t = Concrete.keys (impl_of_t t)
-      let values t = Concrete.values (impl_of_t t)
+  let cardinal t = Concrete.cardinal (impl_of_t t)
+  let enum t = Concrete.enum (impl_of_t t)
+  let backwards t = Concrete.backwards (impl_of_t t)
+  let keys t = Concrete.keys (impl_of_t t)
+  let values t = Concrete.values (impl_of_t t)
 
-      let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
+  let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
 
-      let print ?first ?last ?sep print_k print_v out t =
-        Concrete.print ?first ?last ?sep print_k print_v out (impl_of_t t)
+  let print ?first ?last ?sep print_k print_v out t =
+    Concrete.print ?first ?last ?sep print_k print_v out (impl_of_t t)
 
-      let filter f t =
-        t_of_impl (Concrete.filter f Ord.compare (impl_of_t t))
-      let filteri f t =
-        t_of_impl (Concrete.filteri f Ord.compare (impl_of_t t))
-      let filter_map f t =
-        t_of_impl (Concrete.filter_map f Ord.compare (impl_of_t t))
+  let filter f t =
+    t_of_impl (Concrete.filter f Ord.compare (impl_of_t t))
+  let filteri f t =
+    t_of_impl (Concrete.filteri f Ord.compare (impl_of_t t))
+  let filter_map f t =
+    t_of_impl (Concrete.filter_map f Ord.compare (impl_of_t t))
 
-      let min_binding t = Concrete.min_binding (impl_of_t t)
-      let max_binding t = Concrete.max_binding (impl_of_t t)
+  let min_binding t = Concrete.min_binding (impl_of_t t)
+  let max_binding t = Concrete.max_binding (impl_of_t t)
 
-      let choose t = Concrete.choose (impl_of_t t)
+  let choose t = Concrete.choose (impl_of_t t)
 
-      let split k t =
-        let l, v, r = Concrete.split k Ord.compare (impl_of_t t) in
-        (t_of_impl l, v, t_of_impl r)
+  let split k t =
+    let l, v, r = Concrete.split k Ord.compare (impl_of_t t) in
+    (t_of_impl l, v, t_of_impl r)
+      
+  let modify x f m = t_of_impl (Concrete.modify x f Ord.compare (impl_of_t m))
 
-      let modify x f m = t_of_impl (Concrete.modify x f Ord.compare (impl_of_t m))
+  let modify_def v0 x f m =
+    t_of_impl (Concrete.modify_def v0 x f Ord.compare (impl_of_t m))
 
-      let modify_def v0 x f m =
-        t_of_impl (Concrete.modify_def v0 x f Ord.compare (impl_of_t m))
+  module Exceptionless =
+  struct
+    let find k t = try Some (find k t) with Not_found -> None
+  end
 
-      module Exceptionless =
-      struct
-	let find k t = try Some (find k t) with Not_found -> None
-      end
-
-      module Infix =
-      struct
-        let (-->) map key = find key map
-        let (<--) map (key, value) = add key value map
-      end
-	
-      module Labels =
-      struct
-	let add ~key ~data t = add key data t
-	let iter ~f t = iter (fun key data -> f ~key ~data) t
-	let map ~f t = map f t
-	let mapi ~f t = mapi (fun key data -> f ~key ~data) t
-	let fold ~f t ~init = fold (fun key data acc -> f ~key ~data acc) t init
-	let compare ~cmp a b = compare cmp a b
-	let equal ~cmp a b = equal cmp a b
-	let filter ~f = filter f
-	let filteri ~f = filteri f
-      end  
-
-    end
-
-  module StringMap  = Make(String)
-  module IStringMap = Make(BatString.IString)
-  module NumStringMap = Make(BatString.NumString)
+  module Infix =
+  struct
+    let (-->) map key = find key map
+    let (<--) map (key, value) = add key value map
+  end
+    
+  module Labels =
+  struct
+    let add ~key ~data t = add key data t
+    let iter ~f t = iter (fun key data -> f ~key ~data) t
+    let map ~f t = map f t
+    let mapi ~f t = mapi (fun key data -> f ~key ~data) t
+    let fold ~f t ~init = fold (fun key data acc -> f ~key ~data acc) t init
+    let compare ~cmp a b = compare cmp a b
+    let equal ~cmp a b = equal cmp a b
+    let filter ~f = filter f
+    let filteri ~f = filteri f
+  end  
+    
+end
+  
+module StringMap  = Make(String)
+module IStringMap = Make(BatString.IString)
+module NumStringMap = Make(BatString.NumString)
 (*  module RopeMap    = Make(BatRope) 
   module IRopeMap   = Make(BatRope.IRope) *)
-  module IntMap     = Make(BatInt)
+module IntMap     = Make(BatInt)
 
 
 (**
