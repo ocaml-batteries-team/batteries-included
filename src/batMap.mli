@@ -153,7 +153,15 @@ module type S =
       (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
 
     val split : key -> 'a t -> ('a t * 'a option * 'a t)
-      (** as [Set.split] *)
+    (** [split x m] returns a triple [(l, data, r)], where
+          [l] is the map with all the bindings of [m] whose key
+        is strictly less than [x];
+          [r] is the map with all the bindings of [m] whose key
+        is strictly greater than [x];
+          [data] is [None] if [m] contains no binding for [x],
+          or [Some v] if [m] binds [v] to [x].
+     *)
+   (* the previous comment is from stdlib's map.mli *)
 
     val enum  : 'a t -> (key * 'a) BatEnum.t
       (** Return an enumeration of (key, value) pairs of a map.

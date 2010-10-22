@@ -83,7 +83,7 @@ let (@!) msg (exn, f) = U.assert_raises ~msg exn f
 
    Functions that have been added in 3.12 stdlib's map, already
    present in batteries's Map or PMap:
-     singleton, cardinal, for_all, exists, filter, `bindings` (to_list), choose
+     singleton, cardinal, for_all, exists, filter, `bindings` (to_list), choose, split
 *)
 module TestMap
   (M: sig

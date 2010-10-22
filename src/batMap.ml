@@ -206,7 +206,6 @@ module Concrete = struct
         loop (f k v (loop acc l)) r in
     loop acc map
 
-
   (* join and split also are from stdlib 3.12 *)
   (* Same as create and bal, but no assumptions are made on the
      relative heights of l and r. *)
@@ -233,7 +232,6 @@ module Concrete = struct
       else
         let (lr, pres, rr) = split key cmp r in (join cmp l x d lr, pres, rr)
 
-
   type ('key,'a) iter = E | C of 'key * 'a * ('key,'a) map * ('key,'a) iter
 
   let cardinal map =
@@ -247,7 +245,7 @@ module Concrete = struct
   let rec cons_iter s t = match s with
     | Empty -> t
     | Node (l, k, v, r, _) -> cons_iter l (C (k, v, r, t))
-    
+      
   let rec rev_cons_iter s t = match s with
     | Empty -> t
     | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
@@ -255,11 +253,11 @@ module Concrete = struct
   let rec enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := cons_iter m t; (k, v)
-    
+      
   let rec enum_backwards_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
-    
+      
   let rec enum_count l () =
     let rec aux n = function
       | E -> n
@@ -272,7 +270,7 @@ module Concrete = struct
       let clone() = make !l in
       BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
     in make (cons_iter t E)
-  
+    
   let backwards t =
     let rec make l =
       let l = ref l in
@@ -298,8 +296,8 @@ module Concrete = struct
     foldi (fun k a acc -> if f k a then add k a cmp acc else acc) t empty
   let filter_map f cmp t =
     foldi (fun k a acc -> match f k a with
-			  | None   -> acc
-			  | Some v -> add k v cmp acc) t empty
+      | None   -> acc
+      | Some v -> add k v cmp acc) t empty
 
   let choose = function
     | Empty -> invalid_arg "PMap.choose: empty tree"
@@ -404,7 +402,7 @@ module Concrete = struct
 
   let union m1 cmp2 m2 =
     foldi (fun k v acc -> add k v cmp2 acc) m1 m2
-(* TODO: use split/bal to merge similarly compared maps more efficiently *)
+  (* TODO: use split/bal to merge similarly compared maps more efficiently *)
 
   let diff cmp1 m1 m2 =
     foldi (fun k _ acc -> remove k cmp1 acc) m2 m1
@@ -467,9 +465,9 @@ sig
   val min_binding : 'a t -> (key * 'a)
     
   val max_binding : 'a t -> (key * 'a)
-    
+
   val choose : 'a t -> (key * 'a)  
-    
+
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
 
   val enum  : 'a t -> (key * 'a) BatEnum.t
@@ -574,7 +572,7 @@ struct
   let split k t =
     let l, v, r = Concrete.split k Ord.compare (impl_of_t t) in
     (t_of_impl l, v, t_of_impl r)
-      
+
   let modify x f m = t_of_impl (Concrete.modify x f Ord.compare (impl_of_t m))
 
   let modify_def v0 x f m =
