@@ -144,7 +144,7 @@ type open_temporary_out_flag =
   [ open_out_flag
   | `delete_on_exit (**Should the file be deleted when program ends?*) ]
 
-let open_temporary_out ?mode ?perm ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * string) =
+let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * string) =
   let chan_mode = out_chan_mode ?mode true in
   let (name, cout) = Filename.open_temp_file ~mode:chan_mode prefix suffix in
   let out          = output_channel ~cleanup:true cout   in
@@ -159,8 +159,8 @@ let open_temporary_out ?mode ?perm ?(prefix="ocaml") ?(suffix="tmp") () : (_ out
       | _ -> ());
   (out, name)
 
-let with_temporary_out ?mode ?perm ?prefix ?suffix f =
-  let (file, name) = open_temporary_out ?mode ?perm ?prefix ?suffix () in
+let with_temporary_out ?mode ?prefix ?suffix f =
+  let (file, name) = open_temporary_out ?mode ?prefix ?suffix () in
     BatStd.finally (fun () -> close_out file)
       (fun (file, name) -> f file name)
       (file, name)
