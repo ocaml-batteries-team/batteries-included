@@ -649,35 +649,6 @@ let backwards t = Concrete.backwards t.map
 let keys    t = BatEnum.map fst (enum t)
 let values  t = BatEnum.map snd (enum t)
 
-
-(*let rec enum m =
-  let rec make l =
-    let l = ref l in
-    let rec next() =
-      match !l with
-      | [] -> raise BatEnum.No_more_elements
-      | Empty :: tl -> l := tl; next()
-      | Node (m1, key, data, m2, h) :: tl ->
-        l := m1 :: m2 :: tl;
-        (key, data)
-    in
-    let count() =
-      let n = ref 0 in
-      let r = !l in
-      try
-        while true do
-          ignore (next());
-          incr n
-        done;
-        assert false
-      with
-		BatEnum.No_more_elements -> l := r; !n
-    in
-    let clone() = make !l in
-	BatEnum.make ~next ~count ~clone
-  in
-  make [m.map]*)
-
 let of_enum ?(cmp = compare) e =
   { cmp = cmp; map = Concrete.of_enum cmp e }
 

@@ -391,7 +391,7 @@ val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
 
 val keys : ('a,'b) t -> 'a BatEnum.t
-    (** Return an enumeration of all the keys of a map.*)
+(** Return an enumeration of all the keys of a map.*)
   
 val values: ('a,'b) t -> 'b BatEnum.t
 (** Return an enumeration of al the values of a map.*)
