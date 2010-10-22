@@ -47,7 +47,19 @@ let test_split () =
     do_test (gen_map init bound count) (State.int init bound)
   done
 
+let test_multimap_empty_assoc_lists () =
+  let module M = BatMultiPMap in
+  let map =
+    M.add 0 "foo" M.empty |> M.add 0 "bar" |> M.add 0 "sna" |>
+    M.remove 0 "foo" |> M.remove 0 "bar" |> M.remove 0 "sna"
+  in
+    if M.mem 0 map then
+      assert_failure
+        (Printf.sprintf "map[0] should be empty but contains %d bindings\n"
+           (BatPSet.cardinal (M.find 0 map)))
+
 let tests = "PMap" >::: [
   "traversal order iter vs. enum" >:: test_traversal_order;
   "split" >:: test_split;
+  "MultiPMap: removing empty association lists" >:: test_multimap_empty_assoc_lists;
 ]
