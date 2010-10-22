@@ -41,6 +41,9 @@ val is_empty : ('a, 'b) t -> bool
 val create : ('a -> 'a -> int) -> ('a, 'b) t
 (** creates a new empty map, using the provided function for key comparison.*)
 
+val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'b -> ('a, 'b) t
+(** creates a new map with a single binding *)
+
 val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
     [m], plus a binding of [x] to [y]. If [x] was already bound
@@ -122,6 +125,9 @@ val max_binding : ('key, 'a) t -> ('key * 'a)
 val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map. *)
 
+val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
+(** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
+
 val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
   for key comparison or [compare] by default. *)
@@ -142,6 +148,15 @@ val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> ('a, 'b) t
   (** [modify k f m] replaces the previous binding for [k] with [f]
       applied to that value.  If [k] is unbound in [m] or [Not_found] is
       raised during the search, [m] is returned unchanged. *)
+
+val modify_def: 'b -> 'a -> ('b -> 'b) -> ('a,'b) t -> ('a,'b) t
+(** [modify_def v0 k f m] replaces the previous binding for [k]
+    with [f] applied to that value. If [k] is unbound in [m] or
+    [Not_found] is raised during the search, [f v0] is
+    inserted (as if the value found were [v0]).
+
+    @since 1.3.0
+ *)
 
 val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
   (** [extract k m] removes the current binding of [k] from [m],
