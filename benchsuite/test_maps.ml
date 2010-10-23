@@ -1,3 +1,5 @@
+(* cd .. && ocamlbuild benchsuite/test_maps.native && _build/benchsuite/test_maps.native *)
+
 (* The purpose of this test is to compare different implementation of
    the Map associative data structure. *)
 
@@ -19,7 +21,10 @@ module MapBench (M : sig val input_length : int end) = struct
   let random_input () =
     BatList.init input_length (fun _ -> Random.int input_length)
 
-  module StdMap = BatMap.Make(BatInt)
+  (* we don't use BatInt to ensure that the same comparison function
+     is used (PMap use Pervasives.compare by default), in order to
+     have comparable performance results. *)
+  module StdMap = BatMap.Make(struct type t = int let compare = compare end)
 
   module PMap = BatPMap
 
