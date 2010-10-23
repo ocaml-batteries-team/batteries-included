@@ -206,31 +206,50 @@ module Concrete = struct
         loop (f k v (loop acc l)) r in
     loop acc map
 
-  (* join and split also are from stdlib 3.12 *)
+  let singleton x d = Node(Empty, x, d, Empty, 1)
+
+  (* beware : those two functions assume that the added k is *strictly*
+     smaller (or bigger) than all the present keys in the tree; it
+     does not test for equality with the current min (or max) key.
+     
+     Indeed, they are only used during the "join" operation which
+     respects this precondition.
+  *)
+  let rec add_min_binding k v = function
+    | Empty -> singleton k v
+    | Node (l, x, d, r, h) ->
+      bal (add_min_binding k v l) x d r
+
+  let rec add_max_binding k v = function
+    | Empty -> singleton k v
+    | Node (l, x, d, r, h) ->
+      bal l x d (add_max_binding k v r)
+
   (* Same as create and bal, but no assumptions are made on the
-     relative heights of l and r. *)
-  let rec join cmp l v d r =
+     relative heights of l and r.
+     
+     The stdlib implementation was changed to use the new
+     [add_{min,max}_binding] functions instead of the [add] function
+     that would require to pass a comparison function.  *)
+  let rec join l v d r =
     match (l, r) with
-        (Empty, _) -> add v d cmp r
-      | (_, Empty) -> add v d cmp l
+        (Empty, _) -> add_min_binding v d r
+      | (_, Empty) -> add_max_binding v d l
       | (Node(ll, lv, ld, lr, lh), Node(rl, rv, rd, rr, rh)) ->
-          if lh > rh + 2 then bal ll lv ld (join cmp lr v d r) else
-          if rh > lh + 2 then bal (join cmp l v d rl) rv rd rr else
-          create l v d r
-  (* join doesn't actually need a comparison function [cmp]; [add] is
-     only used here for convenience, in reality we could implement two
-     add_min_binding and add_max_binding functions that could be used
-     here, without needing any comparison function. *)
-            
+        if lh > rh + 2 then bal ll lv ld (join lr v d r) else
+        if rh > lh + 2 then bal (join l v d rl) rv rd rr else
+        create l v d r
+              
+  (* split also is from stdlib 3.12 *)
   let rec split key cmp = function
     | Empty -> (Empty, None, Empty)
     | Node(l, x, d, r, _) ->
       let c = cmp key x in
       if c = 0 then (l, Some d, r)
       else if c < 0 then
-        let (ll, pres, rl) = split key cmp l in (ll, pres, join cmp rl x d r)
+        let (ll, pres, rl) = split key cmp l in (ll, pres, join rl x d r)
       else
-        let (lr, pres, rr) = split key cmp r in (join cmp l x d lr, pres, rr)
+        let (lr, pres, rr) = split key cmp r in (join l x d lr, pres, rr)
 
   type ('key,'a) iter = E | C of 'key * 'a * ('key,'a) map * ('key,'a) iter
 
@@ -302,8 +321,6 @@ module Concrete = struct
   let choose = function
     | Empty -> invalid_arg "PMap.choose: empty tree"
     | Node (_l,k,v,_r,_h) -> (k,v)
-
-  let singleton x d = Node(Empty, x, d, Empty, 1)
 
   let for_all f map =
     let rec loop = function
