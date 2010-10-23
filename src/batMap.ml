@@ -29,8 +29,8 @@
    information, and to possibly pass it along with the result).
 
    I tried to keep the interface mininal with respect to ordering
-   information : function that do not need an order (they do not need
-   to find the position of a specific key in the map) do not have
+   information : function that do not need the ordering (they do not
+   need to find the position of a specific key in the map) do not have
    a 'cmp' parameter.
 
    Most of those implementations are derived from Extlib's PMap

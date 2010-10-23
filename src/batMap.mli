@@ -332,7 +332,10 @@ val mem : 'a -> ('a, 'b) t -> bool
     and [false] otherwise. *)
 
 val exists : 'a -> ('a, 'b) t -> bool
-(** same as [mem]. *)
+(** same as [mem].
+
+    @deprecated [mem] should be used instead, as [exists] conflicts with the function checking arbitrary predicates, which is instead named [exists_f].
+*)
 
 val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
 (** [iter f m] applies [f] to all bindings in map [m].
@@ -353,9 +356,9 @@ val mapi : ('a -> 'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
     key and the associated value for each binding of the map. *)
 
 val fold : ('b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
-(** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
-    where [k1 ... kN] are the keys of all bindings in [m],
-    and [d1 ... dN] are the associated data.
+(** [fold f m a] computes [(f kN dN ... (f k1 d1 (f k0 d0 a))...)],
+    where [k0,k1..kN] are the keys of all bindings in [m],
+    and [d0,d1..dN] are the associated data.
     The order in which the bindings are presented to [f] is
     unspecified. *)
 
@@ -403,6 +406,7 @@ val keys : ('a,'b) t -> 'a BatEnum.t
   
 val values: ('a,'b) t -> 'b BatEnum.t
 (** Return an enumeration of al the values of a map.*)
+
 
 val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
@@ -459,8 +463,7 @@ val intersect : ('b -> 'c -> 'd) -> ('a, 'b) t -> ('a, 'c) t -> ('a, 'd) t
 (** [intersect merge_f m1 m2] returns a map with bindings only for
     keys bound in both [m1] and [m2], and with [k] bound to [merge_f
     v1 v2], where [v1] and [v2] are [k]'s bindings from [m1] and [m2].
-    The resulting map uses the comparison function from [m1]. O(|m1| *
-    log |m2|).*)
+    The resulting map uses the comparison function from [m1]. *)
 
 val split : 'a -> ('a, 'b) t -> (('a, 'b) t * 'b option * ('a, 'b) t)
 (** [split k m] returns the map of keys less than [k] in [m], [k]'s
@@ -472,7 +475,7 @@ module Exceptionless : sig
   val find: 'a -> ('a,'b) t -> 'b option
 end
 
-(** Infix operators over a {!BatMap} *)
+(** Infix operators over a {!BatPMap} *)
 module Infix : sig
   val (-->) : ('a, 'b) t -> 'a -> 'b
     (** [map-->key] returns the current binding of [key] in [map],
@@ -493,7 +496,6 @@ val print :  ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'b -> unit) -> 
   ('a BatInnerIO.output -> 'c -> unit) -> 
   'a BatInnerIO.output -> ('b, 'c) t -> unit
-
 
 (**/**)
 module type OrderedType = BatInterfaces.OrderedType

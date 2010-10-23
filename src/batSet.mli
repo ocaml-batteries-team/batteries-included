@@ -285,17 +285,19 @@ module Make (Ord : OrderedType) : S with type elt = Ord.t
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+
 (**
-   {4 Polymorphic sets}
+   Polymorphic sets
 
    @author Xavier Leroy
    @author Nicolas Cannasse
    @author Markus Mottl
    @author David Rajchenbach-Teller
+
 *)
 
 type 'a t
-  (** The type of sets. *)
+(** The type of sets. *)
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
@@ -382,7 +384,6 @@ val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
 val of_list: 'a list -> 'a t
 (** builds a set from the given list, using the default comparison
     function *)
-
 
 val for_all : ('a -> bool) -> 'a t -> bool
 (** Returns whether the given predicate applies to all elements in the set *)
