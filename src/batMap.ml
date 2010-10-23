@@ -174,26 +174,29 @@ module Concrete = struct
     let rec loop = function
       | Empty -> Empty
       | Node (l, k, v, r, h) ->
-          (* ensure left-to-right evaluation *)
-	let l = loop l in
-	let r = loop r in
-	Node (l, k, f v, r, h) in
+        (* ensure evaluation in increasing order *)
+        let l' = loop l in
+        let v' = f v in
+        let r' = loop r in
+        Node (l', k, v', r', h) in
     loop map
 
   let mapi f map =
     let rec loop = function
       | Empty -> Empty
       | Node (l, k, v, r, h) ->
-	let l = loop l in
-	let r = loop r in
-	Node (l, k, f k v, r, h) in
+        (* ensure evaluation in increasing order *)
+        let l' = loop l in
+        let v' = f k v in
+        let r' = loop r in
+        Node (l', k, v', r', h) in
     loop map
 
   let fold f map acc =
     let rec loop acc = function
       | Empty -> acc
       | Node (l, k, v, r, _) ->
-	loop (f v (loop acc l)) r in
+        loop (f v (loop acc l)) r in
     loop acc map
 
   let foldi f map acc =
@@ -540,6 +543,19 @@ struct
 
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
 
+  (* In Ocaml 3.11.2, the implementation of stdlib's Map.S.map(i) are
+     slightly incorrect in that they don't apply their function
+     parameter in increasing key order, as advertised in the
+     documentation. This was fixed in 3.12.
+     
+     http://caml.inria.fr/mantis/view.php?id=4012
+
+     We replace map(i) implementations with the ones derived from
+     Concrete, to have the expected evaluation order even with 3.11.
+  *)
+  let mapi f t = t_of_impl (Concrete.mapi f (impl_of_t t))
+  let map f t = t_of_impl (Concrete.map f (impl_of_t t))
+
   let print ?first ?last ?sep print_k print_v out t =
     Concrete.print ?first ?last ?sep print_k print_v out (impl_of_t t)
 
@@ -594,7 +610,7 @@ module StringMap  = Make(String)
 module IStringMap = Make(BatString.IString)
 module NumStringMap = Make(BatString.NumString)
 (*  module RopeMap    = Make(BatRope) 
-  module IRopeMap   = Make(BatRope.IRope) *)
+    module IRopeMap   = Make(BatRope.IRope) *)
 module IntMap     = Make(BatInt)
 
 
