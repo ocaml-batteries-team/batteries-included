@@ -64,7 +64,11 @@ module BaseInt = struct
      BatInt.compare performance matters as it is very often used to
      construct binary trees balanced by int comparisons
      (Map,Set...) *)
-  let compare = (Pervasives.compare : int -> int -> int)
+  external compare : int -> int -> int = "caml_int_compare"
+  (* caml_int_compare is the specialized primitive for int comparison,
+     implemented in the ocaml runtime (byterun/ints.c). Testing
+     reveals that it is significantly faster (around twice faster)
+     than using the polymorphic comparison function. *)
 
   external of_int : int -> int = "%identity"
   external to_int : int -> int = "%identity"
