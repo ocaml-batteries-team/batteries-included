@@ -57,7 +57,14 @@ module BaseInt = struct
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> n / 2) ~mod_two:(fun n -> n mod 2) ~mul
 
   let min_num, max_num = min_int, max_int
-  let compare x y = if x > y then 1 else if y > x then -1 else 0
+
+  (* the previous implementation was naive and slow :
+     if x < y then -1 else ...
+
+     BatInt.compare performance matters as it is very often used to
+     construct binary trees balanced by int comparisons
+     (Map,Set...) *)
+  let compare = (Pervasives.compare : int -> int -> int)
 
   external of_int : int -> int = "%identity"
   external to_int : int -> int = "%identity"
@@ -74,7 +81,7 @@ module BaseInt = struct
 
   external to_float : int -> float = "%floatofint"
   external of_float : float -> int = "%intoffloat"
-      
+    
   external of_string : string -> int = "caml_int_of_string"
 
   external rem : int -> int -> int = "%modint"
