@@ -58,17 +58,17 @@ module BaseInt = struct
 
   let min_num, max_num = min_int, max_int
 
-  (* the previous implementation was naive and slow :
-     if x < y then -1 else ...
-
-     BatInt.compare performance matters as it is very often used to
-     construct binary trees balanced by int comparisons
-     (Map,Set...) *)
-  external compare : int -> int -> int = "caml_int_compare"
-  (* caml_int_compare is the specialized primitive for int comparison,
-     implemented in the ocaml runtime (byterun/ints.c). Testing
-     reveals that it is significantly faster (around twice faster)
-     than using the polymorphic comparison function. *)
+  (* this function is performance sensitive : it is heavily used by
+     associative data structures using ordered keys (Set, Map). The
+     current version, due to Mauricio "mfp" Fernandez, only uses
+     a type annotation to benefit from the excellent compilation of
+     statically-known integer comparisons. It outperforms the previous
+     version calling directly the external primitive
+     "caml_int_compare". *)
+  let compare (x : int) y =
+    if x > y then 1
+    else if y > x then -1
+    else 0
 
   external of_int : int -> int = "%identity"
   external to_int : int -> int = "%identity"

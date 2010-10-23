@@ -1,5 +1,8 @@
 (* cd .. && ocamlbuild benchsuite/test_int.native && _build/benchsuite/test_int.native *)
 
+
+external primitive_int_compare : int -> int -> int = "caml_int_compare"
+
 let test_compare () =
   Printf.printf "test compare against stdlib's compare and a naive impl.";
   
@@ -27,11 +30,18 @@ let test_compare () =
     else if y > x then -1
     else 0 in
 
+  let mfp_compare (x : int) y =
+    if x > y then 1
+    else if y > x then -1
+    else 0 in
+
   let samples =
-    Benchmark.throughputN ~repeat:3 1
+    Benchmark.throughputN ~repeat:1 1
       [
-        "stdlib's compare", test, Pervasives.compare;
         "BatInt.compare", test, BatInt.compare;
+        "stdlib's compare", test, Pervasives.compare;
+        "external compare", test, primitive_int_compare;
+        "mfp's compare", test, mfp_compare;
         "naive compare", test, naive_compare;
       ]
   in
