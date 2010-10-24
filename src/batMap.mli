@@ -48,6 +48,9 @@ module type S =
     val is_empty: 'a t -> bool
     (** Test whether a map is empty or not. *)
 
+    val cardinal: 'a t -> int
+    (** Return the number of bindings of a map. *)
+
     val add: key -> 'a -> 'a t -> 'a t
     (** [add x y m] returns a map containing the same bindings as
        [m], plus a binding of [x] to [y]. If [x] was already bound
@@ -149,12 +152,16 @@ module type S =
     val max_binding : 'a t -> (key * 'a)
       (** return the [(key,value)] pair with the largest key *)
 
+   (* The following documentations comments are from stdlib's map.mli:
+        - choose
+        - split
+        - singleton
+   *)
     val choose : 'a t -> (key * 'a)
     (** Return one binding of the given map, or raise [Not_found] if
        the map is empty. Which binding is chosen is unspecified,
        but equal bindings will be chosen for equal maps.
      *)
-   (* comment from stdlib's map.mli *)
 
     val split : key -> 'a t -> ('a t * 'a option * 'a t)
     (** [split x m] returns a triple [(l, data, r)], where
@@ -165,7 +172,11 @@ module type S =
           [data] is [None] if [m] contains no binding for [x],
           or [Some v] if [m] binds [v] to [x].
      *)
-   (* comment from stdlib's map.mli *)
+
+    val singleton: key -> 'a -> 'a t
+    (** [singleton x y] returns the one-element map that contains a binding [y]
+        for [x].
+     *)
 
     val enum  : 'a t -> (key * 'a) BatEnum.t
       (** Return an enumeration of (key, value) pairs of a map.

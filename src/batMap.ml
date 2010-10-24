@@ -444,6 +444,8 @@ sig
     
   val is_empty: 'a t -> bool
     
+  val cardinal: 'a t -> int
+
   val add: key -> 'a -> 'a t -> 'a t
     
   val find: key -> 'a t -> 'a
@@ -486,6 +488,8 @@ sig
   val choose : 'a t -> (key * 'a)  
 
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
+
+  val singleton : key -> 'a -> 'a t
 
   val enum  : 'a t -> (key * 'a) BatEnum.t
     
@@ -594,6 +598,8 @@ struct
 
   let modify_def v0 x f m =
     t_of_impl (Concrete.modify_def v0 x f Ord.compare (impl_of_t m))
+
+  let singleton k v = t_of_impl (Concrete.singleton k v)
 
   module Exceptionless =
   struct

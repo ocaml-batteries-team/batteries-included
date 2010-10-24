@@ -44,6 +44,9 @@ val create : ('a -> 'a -> int) -> ('a, 'b) t
 val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'b -> ('a, 'b) t
 (** creates a new map with a single binding *)
 
+val cardinal: ('a, 'b) t -> int
+(** Return the number of bindings of a map. *)
+
 val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
     [m], plus a binding of [x] to [y]. If [x] was already bound
@@ -116,12 +119,15 @@ val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
     pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
     [None], the corresponding element of [m] is discarded). *)
 
+(* The following documentations comments are from stdlib's map.mli:
+   - choose
+   - split
+*)
 val choose : ('key, 'a) t -> ('key * 'a)
 (** Return one binding of the given map, or raise [Not_found] if
     the map is empty. Which binding is chosen is unspecified,
     but equal bindings will be chosen for equal maps.
 *)
-(* comment from stdlib's map.mli *)
 
 val split : 'key -> ('key, 'a) t -> (('key, 'a) t * 'a option * ('key, 'a) t)
 (** [split x m] returns a triple [(l, data, r)], where
@@ -132,7 +138,6 @@ val split : 'key -> ('key, 'a) t -> (('key, 'a) t * 'a option * ('key, 'a) t)
       [data] is [None] if [m] contains no binding for [x],
       or [Some v] if [m] binds [v] to [x].
 *)
-(* comment from stdlib's map.mli *)
 
 val min_binding : ('key, 'a) t -> ('key * 'a)
 (** returns the binding with the smallest key *)

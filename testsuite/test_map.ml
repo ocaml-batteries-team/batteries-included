@@ -83,7 +83,7 @@ let (@!) msg (exn, f) = U.assert_raises ~msg exn f
 
    Functions that have been added in 3.12 stdlib's map, already
    present in batteries's Map or PMap:
-     singleton, cardinal, for_all, exists, filter, `bindings` (to_list)
+     for_all, exists, filter, `bindings` (to_list)
 *)
 module TestMap
   (M: sig
@@ -103,6 +103,7 @@ module TestMap
     val max_binding : 'a m -> (key * 'a)
     val modify : key -> ('a -> 'a) -> 'a m -> 'a m
     val modify_def : 'a -> key -> ('a -> 'a) -> 'a m -> 'a m
+
     val fold : ('a -> 'b -> 'b) -> 'a m -> 'b -> 'b
     val foldi : (key -> 'a -> 'b -> 'b) -> 'a m -> 'b -> 'b
     val iter : ('a -> unit) -> 'a m -> unit
@@ -119,7 +120,6 @@ module TestMap
     val of_enum : (key * 'a) BatEnum.t -> 'a m
 
     val choose : 'a m -> (key * 'a)
-
     val split : key -> 'a m -> ('a m * 'a option * 'a m)
 
     val print :
@@ -168,6 +168,19 @@ module TestMap
     eq BatInt.compare BatInt.print
       (M.add 4 8 t)
       (il [(3,4); (4,8); (5,6)]);
+    ()
+
+  let test_cardinal () =
+    let k, k', v = 1, 2, 3 in
+    "cardinal empty = 0" @?
+      (M.cardinal M.empty = 0);
+    "cardinal (singleton k v) = 1" @?
+      (M.cardinal (M.singleton k v) = 1);
+    "k <> k' => cardinal (add k' v (singleton k v)) = 2" @?
+      (k <> k' && M.cardinal (M.add k' v (M.singleton k v)) = 2);
+    "mem k t => cardinal (remove k t) = cardinal t - 1" @?
+      (let t = il [k,v; k',v] in
+       M.cardinal (M.remove k t) = M.cardinal t - 1);
     ()
 
   let test_find () =
@@ -422,6 +435,7 @@ module TestMap
   let tests = [
     "test_is_empty" >:: test_is_empty;
     "test_singleton" >:: test_singleton;
+    "test_cardinal" >:: test_cardinal;
     "test_add" >:: test_add;
     "test_find" >:: test_find;
     "test_remove" >:: test_remove;
@@ -443,8 +457,6 @@ module M = struct
   include M
   type 'a m = 'a M.t
 
-  let cardinal t = BatEnum.count (M.enum t)
-
   let fold f = M.fold (fun _ -> f)
   let foldi = M.fold
 
@@ -453,9 +465,6 @@ module M = struct
 
   let filter_map f = M.filter_map (fun _ -> f)
   let filteri_map = M.filter_map
-
-  (* Map doesn't have singleton *)
-  let singleton k v = M.of_enum (BatList.enum [(k,v)])
 end
 
 module P = struct
@@ -465,7 +474,6 @@ module P = struct
   type key = int
   type 'a m = (key, 'a) M.t
 
-  let cardinal t = BatEnum.count (M.enum t)
   let singleton k v = M.singleton ?cmp:None k v
 
   let of_enum t = M.of_enum ?cmp:None t
