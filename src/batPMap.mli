@@ -62,7 +62,10 @@ val mem : 'a -> ('a, 'b) t -> bool
     and [false] otherwise. *)
 
 val exists : 'a -> ('a, 'b) t -> bool
-(** same as [mem]. *)
+(** same as [mem].
+
+    @deprecated [mem] should be used instead, as [exists] conflicts with the function checking arbitrary predicates, which is instead named [exists_f].
+*)
 
 val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
 (** [iter f m] applies [f] to all bindings in map [m].
