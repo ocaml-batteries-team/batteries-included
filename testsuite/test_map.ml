@@ -119,6 +119,9 @@ module TestMap
     val backwards : 'a m -> (key * 'a) BatEnum.t
     val of_enum : (key * 'a) BatEnum.t -> 'a m
 
+    val for_all : (key -> 'a -> bool) -> 'a m -> bool
+    val exists : (key -> 'a -> bool) -> 'a m -> bool
+
     val choose : 'a m -> (key * 'a)
     val split : key -> 'a m -> ('a m * 'a option * 'a m)
 
@@ -277,6 +280,33 @@ module TestMap
        let (l, m, r) =  M.split mk t in
        li l = li (M.remove mk l) && m = Some mv && M.is_empty r);
     ()
+
+  let test_for_all_exists () =
+    let test (msg, for_all) =
+      let (@?) str = (@?) (Printf.sprintf "[%s] %s" msg str) in
+      "for_all (fun _ _ -> false) empty" @?
+        for_all (fun _ _ -> false) M.empty;
+      "for_all (fun _ _ -> true) empty" @?
+        for_all (fun _ _ -> true) M.empty;
+      let k, v = 1, 2 in
+      "for_all (fun _ _ -> true) (singleton k v)" @?
+        for_all (fun _ _ -> true) (M.singleton k v);
+      "not (for_all (fun _ _ -> false) (singleton k v))" @?
+        not (for_all (fun _ _ -> false) (M.singleton k v));
+      "for_all (fun k' _ -> k = k') (singleton k v)" @?
+        for_all (fun k' _ -> k = k') (M.singleton k v);
+      "for_all (=) [0,0; 1,1]" @?
+        for_all (=) (il [0,0; 1,1]);
+      "not (for_all (=) [0,0; 1,2])" @?
+        not (for_all (=) (il [0,0; 1,2]));
+      ()
+    in
+    let not_not_exists f li =
+      let not_f k v = not (f k v) in
+      not (M.exists not_f li) in
+    List.iter test
+      [ "for_all", M.for_all;
+        "not not exists", not_not_exists ]
 
   let test_print () =
     let test str li =
@@ -446,6 +476,7 @@ module TestMap
     "test_modify_def" >:: test_modify_def;
     "test_choose" >:: test_choose;
     "test_split" >:: test_split;
+    "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;
     "test_enums" >:: test_enums;
     "test_iterators" >:: test_iterators;
@@ -483,6 +514,8 @@ module P = struct
 
   let filter_map f = M.filter_map (fun _ -> f)
   let filteri_map = M.filter_map
+
+  let exists = M.exists_f
 end
 
 module TM = TestMap(M)

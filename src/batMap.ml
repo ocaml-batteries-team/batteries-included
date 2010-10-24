@@ -497,6 +497,10 @@ sig
 
   val of_enum: (key * 'a) BatEnum.t -> 'a t
 
+  val for_all: (key -> 'a -> bool) -> 'a t -> bool
+  
+  val exists: (key -> 'a -> bool) -> 'a t -> bool
+  
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
@@ -584,6 +588,9 @@ struct
     t_of_impl (Concrete.filteri f Ord.compare (impl_of_t t))
   let filter_map f t =
     t_of_impl (Concrete.filter_map f Ord.compare (impl_of_t t))
+
+  let exists f t = Concrete.exists f (impl_of_t t)
+  let for_all f t = Concrete.for_all f (impl_of_t t)
 
   let min_binding t = Concrete.min_binding (impl_of_t t)
   let max_binding t = Concrete.max_binding (impl_of_t t)

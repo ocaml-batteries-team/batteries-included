@@ -193,6 +193,17 @@ module type S =
     val of_enum: (key * 'a) BatEnum.t -> 'a t
       (** Create a map from a (key, value) enumeration. *)
 
+    val for_all: (key -> 'a -> bool) -> 'a t -> bool
+    (** [for_all p m] checks if all the bindings of the map
+        satisfy the predicate [p].
+    *)
+
+    val exists: (key -> 'a -> bool) -> 'a t -> bool
+    (** [exists p m] checks if at least one binding of the map
+        satisfy the predicate [p].
+    *)
+
+
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
