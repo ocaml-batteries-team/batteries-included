@@ -261,6 +261,13 @@ module Concrete = struct
     in
     loop 0 map
 
+  let rec bindings_aux accu = function
+    | Empty -> accu
+    | Node(l, v, d, r, _) -> bindings_aux ((v, d) :: bindings_aux accu r) l
+
+  let bindings s =
+    bindings_aux [] s
+
   let rec cons_iter s t = match s with
     | Empty -> t
     | Node (l, k, v, r, _) -> cons_iter l (C (k, v, r, t))
@@ -456,7 +463,6 @@ sig
 
   val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
 
-    
   val mem: key -> 'a t -> bool
     
   val iter: (key -> 'a -> unit) -> 'a t -> unit
@@ -490,6 +496,8 @@ sig
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
 
   val singleton : key -> 'a -> 'a t
+
+  val bindings : 'a t -> (key * 'a) list
 
   val enum  : 'a t -> (key * 'a) BatEnum.t
     
@@ -607,6 +615,8 @@ struct
     t_of_impl (Concrete.modify_def v0 x f Ord.compare (impl_of_t m))
 
   let singleton k v = t_of_impl (Concrete.singleton k v)
+
+  let bindings t = Concrete.bindings (impl_of_t t)
 
   module Exceptionless =
   struct
@@ -758,6 +768,9 @@ let diff m1 m2 =
 let intersect merge m1 m2 =
   (* the use of 'empty' is strange here, but mimicks the older PMap implementation *)
   { empty with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
+
+let bindings m =
+  Concrete.bindings m.map
 
 module Exceptionless = 
 struct

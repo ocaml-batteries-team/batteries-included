@@ -80,10 +80,6 @@ let (@!) msg (exn, f) = U.assert_raises ~msg exn f
    Functions that have been added in 3.12 stdlib's Map, but not yet
    added in Batteries :
      merge
-
-   Functions that have been added in 3.12 stdlib's map, already
-   present in batteries's Map or PMap:
-     for_all, exists, filter, `bindings` (to_list)
 *)
 module TestMap
   (M: sig
@@ -115,9 +111,11 @@ module TestMap
     val filter_map : ('a -> 'b option) -> 'a m -> 'b m
     val filteri_map : (key -> 'a -> 'b option) -> 'a m -> 'b m
 
+    val bindings : 'a m -> (key * 'a) list
     val enum : 'a m -> (key * 'a) BatEnum.t
     val backwards : 'a m -> (key * 'a) BatEnum.t
     val of_enum : (key * 'a) BatEnum.t -> 'a m
+    val bindings : 'a m -> (key * 'a) list
 
     val for_all : (key -> 'a -> bool) -> 'a m -> bool
     val exists : (key -> 'a -> bool) -> 'a m -> bool
@@ -337,6 +335,7 @@ module TestMap
       [
         M.enum, "enum";
         M.backwards, "backwards";
+        BatList.enum -| M.bindings, "enum bindings";
       ]
 
   let reindex (f : M.key -> 'a -> 'b) : 'a -> 'b =

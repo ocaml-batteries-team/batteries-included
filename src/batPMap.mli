@@ -237,6 +237,14 @@ module Infix : sig
         to [add key value map]*)
 end
 
+val bindings : ('key, 'a) t -> ('key * 'a) list
+(** Return the list of all bindings of the given map.
+    The returned list is sorted in increasing key order.
+
+    Added for compatibility with stdlib 3.12
+*)
+
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)

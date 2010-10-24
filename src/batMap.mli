@@ -178,6 +178,13 @@ module type S =
         for [x].
      *)
 
+    val bindings : 'a t -> (key * 'a) list
+    (** Return the list of all bindings of the given map.
+        The returned list is sorted in increasing key order.
+    
+        Added for compatibility with stdlib 3.12
+    *)
+
     val enum  : 'a t -> (key * 'a) BatEnum.t
       (** Return an enumeration of (key, value) pairs of a map.
         The returned enumeration is sorted in increasing order with respect
