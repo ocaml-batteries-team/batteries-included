@@ -710,6 +710,10 @@ let cardinal m = Concrete.cardinal m.map
 
 let choose m = Concrete.choose m.map
 
+let split k m =
+  let (l, v, r) = Concrete.split k m.cmp m.map in
+  { m with map = l }, v, { m with map = r }
+
 let add_carry x d m =
   let map', carry = Concrete.add_carry x d m.cmp m.map in
   { m with map = map' }, carry

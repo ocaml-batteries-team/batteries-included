@@ -117,7 +117,22 @@ val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
     [None], the corresponding element of [m] is discarded). *)
 
 val choose : ('key, 'a) t -> ('key * 'a)
-(** returns one pair of the given map, deterministically *)
+(** Return one binding of the given map, or raise [Not_found] if
+    the map is empty. Which binding is chosen is unspecified,
+    but equal bindings will be chosen for equal maps.
+*)
+(* comment from stdlib's map.mli *)
+
+val split : 'key -> ('key, 'a) t -> (('key, 'a) t * 'a option * ('key, 'a) t)
+(** [split x m] returns a triple [(l, data, r)], where
+      [l] is the map with all the bindings of [m] whose key
+    is strictly less than [x];
+      [r] is the map with all the bindings of [m] whose key
+    is strictly greater than [x];
+      [data] is [None] if [m] contains no binding for [x],
+      or [Some v] if [m] binds [v] to [x].
+*)
+(* comment from stdlib's map.mli *)
 
 val min_binding : ('key, 'a) t -> ('key * 'a)
 (** returns the binding with the smallest key *)

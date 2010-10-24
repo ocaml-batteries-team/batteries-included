@@ -83,7 +83,7 @@ let (@!) msg (exn, f) = U.assert_raises ~msg exn f
 
    Functions that have been added in 3.12 stdlib's map, already
    present in batteries's Map or PMap:
-     singleton, cardinal, for_all, exists, filter, `bindings` (to_list), choose, split
+     singleton, cardinal, for_all, exists, filter, `bindings` (to_list)
 *)
 module TestMap
   (M: sig
@@ -119,6 +119,8 @@ module TestMap
     val of_enum : (key * 'a) BatEnum.t -> 'a m
 
     val choose : 'a m -> (key * 'a)
+
+    val split : key -> 'a m -> ('a m * 'a option * 'a m)
 
     val print :
       ?first:string -> ?last:string -> ?sep:string ->
@@ -237,6 +239,30 @@ module TestMap
     let t = il [(1,2); (3,4)] in
     "mem (fst (choose t)) t" @?
       (M.mem (M.choose t |> fst) t);
+    ()
+
+  let test_split () =
+    let k, v, t = 1, 2, il [0,1; 2,3; 4,5] in
+    "split k empty = (empty, None, empty)" @?
+      (let (l, m, r) = M.split k M.empty in
+       M.is_empty l && m = None && M.is_empty r);
+    "split k (singleton k v) = (empty, Some v, empty)" @?
+      (let (l, m, r) = M.split k (M.singleton k v) in
+       M.is_empty l && m = Some v && M.is_empty r);
+    "split 2 [0,1; 2,3; 4,5] = [0,1], Some 3, [4,5]" @?
+      (let (l, m, r) = M.split 2 t in
+       li l = [0,1] && m = Some 3 && li r = [4,5]);
+    "split 1 [0,1; 2,3; 4,5] = [0,1], None, [2,3; 4,5]" @?
+      (let (l, m, r) = M.split 1 t in
+       li l = [0,1] && m = None && li r = [2,3; 4,5]);
+    "split (fst (min_binding t)) t = (empty, Some (snd (min_binding t)), remove_min_binding t)" @?
+      (let mk, mv = M.min_binding t in
+       let (l, m, r) =  M.split mk t in
+       M.is_empty l && m = Some mv && li r = li (M.remove mk r));
+    "split (fst (max_binding t)) t = (empty, Some (snd (max_binding t)), remove_max_binding t)" @?
+      (let mk, mv = M.max_binding t in
+       let (l, m, r) =  M.split mk t in
+       li l = li (M.remove mk l) && m = Some mv && M.is_empty r);
     ()
 
   let test_print () =
@@ -405,6 +431,7 @@ module TestMap
     "test_modify" >:: test_modify;
     "test_modify_def" >:: test_modify_def;
     "test_choose" >:: test_choose;
+    "test_split" >:: test_split;
     "test_print" >:: test_print;
     "test_enums" >:: test_enums;
     "test_iterators" >:: test_iterators;
