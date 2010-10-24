@@ -111,5 +111,22 @@ let _ = dispatch begin function
       dep ["ocaml"; "link"; "include_tests"; "native"] & 
 	[Pathname.mk "qtest/test_mods.cmxa"]; *)
 
+      (* Some .mli files use INCLUDE "foo.mli" to avoid interface duplication;
+         
+         The problem is that the automatic dependency detector of
+         ocamlbuild doesn't detect the implicit dependency on the
+         included .mli, and doesn't copy it into _build before
+         preprocessing the including file.
+
+         Here, we add flags denoting explicit dependencies on the
+         included .mli. This solution comes from the following
+         explanation of Xavier Clerc:
+           http://caml.inria.fr/mantis/print_bug_page.php?bug_id=5162
+      *)
+      dep ["pset_mli"] [Pathname.concat "src" "batPSet.mli"];
+      dep ["pmap_mli"] [Pathname.concat "src" "batPMap.mli"];
+
+
+
   | _ -> ()
 end
