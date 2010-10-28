@@ -224,6 +224,26 @@ module Exceptionless : sig
   val find: 'a -> ('a,'b) t -> 'b option
 end
 
+val merge:
+  ('key -> 'a option -> 'b option -> 'c option)
+  -> ('key, 'a) t -> ('key, 'b) t -> ('key, 'c) t
+(** [merge f m1 m2] computes a map whose keys is a subset of keys of [m1]
+    and of [m2]. The presence of each such binding, and the corresponding
+    value, is determined with the function [f].
+    
+    As with [union], the result map uses the comparison function of
+    the second map.
+*)
+
+val merge_unsafe:
+  ('key -> 'a option -> 'b option -> 'c option)
+  -> ('key, 'a) t -> ('key, 'b) t -> ('key, 'c) t
+(** Same as merge, but assumes the comparison function of both maps
+    are equal. If it's not the case, the result is undefined.
+*)
+
+
+
 (** Infix operators over a {!BatPMap} *)
 module Infix : sig
   val (-->) : ('a, 'b) t -> 'a -> 'b

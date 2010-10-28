@@ -175,14 +175,6 @@ struct
     | Empty -> invalid_arg "choose"
     | Node (_, kv, _) -> kv
 
-  (*TODO : add an implementation of split
-
-    The "split" function from stdlib 3.12 was imported into Batteries
-    after the batSplay module. We have not yet provided an
-    implementation of the split function. *)
-  let split k (Map tr) =
-    failwith "split not yet implemented in batSplay"
-
   let min_binding (Map tr) =
     let rec bfind = function
       | Node (Empty, kv, _) -> kv
@@ -328,4 +320,24 @@ struct
     let ( <-- ) m (k, v) = add k v m
   end
 
+  (*TODO : add an implementation for these functions
+
+    The following functions are required to conform to the Map
+    interface since ocaml 3.12. They have not yet been implemented in
+    BatSplay, but that must come soon.
+  *)
+  let split _ =
+    failwith "split not yet implemented in batSplay"
+  let merge _ =
+    failwith "merge not yet implemented in batSplay"
+  let exists _ =
+    failwith "exists not yet implemented in batSplay"
+  let for_all _ =
+    failwith "for_all not yet implemented in batSplay"
+  let bindings _ =
+    failwith "bindings not yet implemented in batSplay"
+  let singleton _ =
+    failwith "singleton not yet implemented in batSplay"
+  let cardinal _ =
+    failwith "cardinal not yet implemented in batSplay"
 end

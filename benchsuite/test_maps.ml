@@ -18,8 +18,15 @@ module MapBench (M : sig val input_length : int end) = struct
   
   let () = Printf.printf "%d iterations\n" nb_iter
 
-  let random_input () =
-    BatList.init input_length (fun _ -> Random.int input_length)
+  let random_key () = Random.int input_length
+  let random_value () = Random.int input_length
+
+  let random_inputs random_elt () =
+    BatList.init input_length (fun _ -> random_elt ())
+
+  let make_samples tests =
+    Benchmark.latencyN ~repeat (Int64.of_int nb_iter)
+      (List.map (fun (name, test) -> name, test, ()) tests)
 
   (* we don't use BatInt to ensure that the same comparison function
      is used (PMap use Pervasives.compare by default), in order to
@@ -34,9 +41,9 @@ module MapBench (M : sig val input_length : int end) = struct
 
   (* A benchmark for key insertion *)
   let create_input_keys =
-    random_input ()
+    random_inputs random_key ()
   let create_input_values =
-    random_input ()
+    random_inputs random_value ()
 
   let create_std_map () =
     BatList.fold_left2
@@ -58,11 +65,9 @@ module MapBench (M : sig val input_length : int end) = struct
   let () =
     assert (same_elts std_created_map poly_created_map)
 
-  let samples_create =
-    Benchmark.latencyN ~repeat (Int64.of_int nb_iter) [
-      "stdmap create", ignore -| create_std_map, ();
-      "pmap create", ignore -| create_poly_map, ();
-    ]
+  let samples_create = make_samples
+    [ "stdmap create", ignore -| create_std_map;
+      "pmap create", ignore -| create_poly_map ]
 
   (* A benchmark for fast import *)
   let key_val_list =
@@ -83,15 +88,13 @@ module MapBench (M : sig val input_length : int end) = struct
     assert (same_elts std_created_map poly_imported_map);
     ()
 
-  let samples_import =
-    Benchmark.latencyN ~repeat (Int64.of_int nb_iter) [
-      "stdmap import", ignore -| import_std_map, ();
-      "pmap import", ignore -| import_poly_map, ();
-    ]
+  let samples_import = make_samples
+    [ "stdmap import", ignore -| import_std_map;
+      "pmap import", ignore -| import_poly_map ]
 
   (* A benchmark for key lookup *)
   let lookup_keys =
-    random_input ()
+    random_inputs random_key ()
 
   let lookup_std_map () =
     List.iter
@@ -103,15 +106,47 @@ module MapBench (M : sig val input_length : int end) = struct
       (fun k -> ignore (StdMap.mem k std_created_map))
       lookup_keys
 
-  let samples_lookup =
-    Benchmark.latencyN ~repeat (Int64.of_int nb_iter) [
-      "stdmap lookup", lookup_std_map, ();
-      "pmap lookup", lookup_poly_map, ();
-    ]
+  let samples_lookup = make_samples
+    [ "stdmap lookup", lookup_std_map;
+      "pmap lookup", lookup_poly_map ]
+
+  (* A benchmark for merging *)
+  let random_pairlist () =
+    BatList.combine
+      (random_inputs random_key ())
+      (random_inputs random_value ())
+
+  let p1 = random_pairlist ()
+  let p2 = random_pairlist ()
+
+  let merge_fun k a b =
+    if k mod 2 = 0 then None else Some ()
+
+  let merge_std_map =
+    let m1 = StdMap.of_enum (BatList.enum p1) in
+    let m2 = StdMap.of_enum (BatList.enum p2) in
+    fun () ->
+      StdMap.merge merge_fun m1 m2
+
+  let merge_poly_map, merge_unsafe_poly_map =
+    let m1 = PMap.of_enum (BatList.enum p1) in
+    let m2 = PMap.of_enum (BatList.enum p2) in
+    (fun () -> PMap.merge merge_fun m1 m2),
+    (fun () -> PMap.merge_unsafe merge_fun m1 m2)
+
+  let () =
+    assert (same_elts (merge_std_map ()) (merge_poly_map ()));
+    assert (same_elts (merge_std_map ()) (merge_unsafe_poly_map ()));
+    ()
+
+  let samples_merge = make_samples
+    [ "stdmap merge", ignore -| merge_std_map;
+      "pmap merge", ignore -| merge_poly_map;
+      "pmap merge_unsafe", ignore -| merge_unsafe_poly_map ]
 
   (* A benchmark for key removal *)
   let remove_keys =
-    random_input ()
+    random_inputs random_key ()
 
   let remove_std_map () =
     List.fold_left
@@ -128,12 +163,9 @@ module MapBench (M : sig val input_length : int end) = struct
   let () =
     assert (same_elts (remove_std_map ()) (remove_poly_map ()))
 
-  let samples_remove =
-    Benchmark.latencyN ~repeat (Int64.of_int nb_iter) [
-      "stdmap remove", ignore -| remove_std_map, ();
-      "pmap remove", ignore -| remove_poly_map, ();
-    ]
-
+  let samples_remove = make_samples
+    [ "stdmap remove", ignore -| remove_std_map;
+      "pmap remove", ignore -| remove_poly_map ]
 
   let () =
     List.iter
@@ -142,6 +174,7 @@ module MapBench (M : sig val input_length : int end) = struct
         samples_create;
         samples_import;
         samples_lookup;
+        samples_merge;
         samples_remove;
       ]
 end

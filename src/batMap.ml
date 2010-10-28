@@ -147,6 +147,10 @@ module Concrete = struct
       | Empty -> raise Not_found in
     loop map
 
+  let find_option x cmp map =
+    try Some (find x cmp map)
+    with Not_found -> None
+
   let remove x cmp map =
     let rec loop = function
       | Node (l, k, v, r, _) ->
@@ -436,6 +440,105 @@ module Concrete = struct
     foldi (fun k v acc -> try add k (merge v (find k cmp2 m2)) cmp1 acc
                           with Not_found -> acc) m1 empty
   (* TODO: implement and compare with tree-based implementation *)
+
+  (* Merge two trees l and r into one.
+     All elements of l must precede the elements of r.
+     No assumption on the heights of l and r. *)
+  let concat t1 t2 =
+    match (t1, t2) with
+      (Empty, t) -> t
+    | (t, Empty) -> t
+    | (_, _) ->
+        let (x, d) = min_binding t2 in
+        join t1 x d (remove_min_binding t2)
+
+  let concat_or_join t1 v d t2 =
+    match d with
+    | Some d -> join t1 v d t2
+    | None -> concat t1 t2
+
+  let rec merge f cmp12 s1 s2 =
+    let rec loop s1 s2 =
+      match (s1, s2) with
+        | (Empty, Empty) -> Empty
+        | (Node (l1, v1, d1, r1, h1), _) when h1 >= height s2 ->
+          let (l2, d2, r2) = split v1 cmp12 s2 in
+          (* TODO force correct evaluation order *)
+          concat_or_join (loop l1 l2) v1 (f v1 (Some d1) d2) (loop r1 r2)
+        | (_, Node (l2, v2, d2, r2, h2)) ->
+          let (l1, d1, r1) = split v2 cmp12 s1 in
+          concat_or_join (loop l1 l2) v2 (f v2 d1 (Some d2)) (loop r1 r2)
+        | _ ->
+          assert false in
+    loop s1 s2
+
+  let rec merge_diverse f cmp1 s1 cmp2 s2 cmp3 =
+    (* This implementation does not presuppose that the comparison
+       function of s1 and s2 are the same. It is necessary in the PMap
+       case, were we can't enforce that the same comparison function is
+       used on both maps.
+
+       For maximal flexibility, we will suppose that we build the
+       result using a third comparison function cmp3. In practice PMap
+       will make an arbitrary choice and pass cmp1 or cmp2 here.
+
+       The idea of the algorithm is the following : iterates on keys
+       of (s1 union s2), computing the merge result for each
+         f k (find_option k s1) (find_option k s2)
+       , and adding values to the result s3 accordingly.
+       
+       The crucial point is that we need to iterate on both keys of s1
+       and s2. There are several possible implementations :
+
+       1. first build the union of the set of keys, then iterate on
+       it.
+
+       2. iterate on s1, then reiterate on s2 checking that the key
+       wasn't already in s1
+
+       3. iterate on s1, and remove keys from s2 during the traversal,
+       then iterate on the remainder of s2.
+
+       Method 1. allocates a temporary map the size of (s1 union s2),
+       which I think is too costly. Method 3 may seem better than
+       method 2 (as we only have at the end to iterate on the
+       remaining keys, instead of dropping almost all keys because
+       they were in s1 already), but is actually less efficient : the
+       cost of removing is amortized during s1 traversal, but in
+       effect we will, for all keys of s2, either remove it (in the
+       first phase) or traverse it in the second phase. With method 2,
+       we either ignore it or traverse it (both in the second
+       phase). As removal induces rebalancing and allocation, it is
+       indeed more costly.
+       Method 2 only allocations and rebalancing are during the
+       building of the final map : s1 and s2 are only looked at, never
+       changed. This is optimal memory-wise.
+
+       Those informal justifications ought to be tested with
+       a concrete performance measurements, but the current benchmark
+       methods, outside the module, don't make it easy to test
+       Concrete values directly (as they're hidden by the interface).
+       An old benchmark reports than method 2 is sensibly faster than
+       method 1 : 2700 op/s vs 951 op/s on the test input.
+
+       This algorithm is still sensibly slower than the 'merge'
+       implementation using the same comparison on both maps : a 270%
+       performance penalty has been measured (it runs three times
+       slower).
+    *)
+    let first_phase_result =
+      foldi (fun k v1 acc ->
+        match f k (Some v1) (find_option k cmp2 s2) with
+          | None -> acc
+          | Some v3 -> add k v3 cmp3 acc)
+        s1 empty in
+    (* the second phase will return the result *)
+    foldi (fun k v2 acc ->
+      if mem k cmp1 s1 then acc
+      else match f k None (Some v2) with
+        | None -> acc
+        | Some v3 -> add k v3 cmp3 acc)
+      s2 first_phase_result
 end
 
 
@@ -506,12 +609,15 @@ sig
   val of_enum: (key * 'a) BatEnum.t -> 'a t
 
   val for_all: (key -> 'a -> bool) -> 'a t -> bool
-  
+    
   val exists: (key -> 'a -> bool) -> 'a t -> bool
-  
-    (** {6 Boilerplate code}*)
+    
+  val merge:
+    (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
 
-    (** {7 Printing}*)
+  (** {6 Boilerplate code}*)
+
+  (** {7 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string -> 
     ('a BatInnerIO.output -> key -> unit) -> 
@@ -617,6 +723,9 @@ struct
   let singleton k v = t_of_impl (Concrete.singleton k v)
 
   let bindings t = Concrete.bindings (impl_of_t t)
+
+  let merge f t1 t2 =
+    t_of_impl (Concrete.merge f Ord.compare (impl_of_t t1) (impl_of_t t2))
 
   module Exceptionless =
   struct
@@ -768,6 +877,12 @@ let diff m1 m2 =
 let intersect merge m1 m2 =
   (* the use of 'empty' is strange here, but mimicks the older PMap implementation *)
   { empty with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
+
+let merge f m1 m2 =
+  { m2 with map = Concrete.merge_diverse f m1.cmp m1.map m2.cmp m2.map m2.cmp }
+
+let merge_unsafe f m1 m2 =
+  { m2 with map = Concrete.merge f m2.cmp m1.map m2.map }
 
 let bindings m =
   Concrete.bindings m.map

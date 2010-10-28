@@ -123,6 +123,10 @@ module TestMap
     val choose : 'a m -> (key * 'a)
     val split : key -> 'a m -> ('a m * 'a option * 'a m)
 
+    val merge :
+      (key -> 'a option -> 'b option -> 'c option)
+      -> 'a m -> 'b m -> 'c m
+
     val print :
       ?first:string -> ?last:string -> ?sep:string ->
       ('a BatInnerIO.output -> key -> unit) ->
@@ -146,6 +150,9 @@ module TestMap
   let eq ?msg cmp_elt print_elt t1 t2 =
     eq_li ?msg cmp_elt print_elt (li t1) (li t2)
 
+  let (@=) msg (t1, t2) =
+    eq ~msg BatInt.compare BatInt.print t1 t2
+
   let test_is_empty () =
     "empty is empty" @? M.is_empty M.empty;
     "singleton is not empty" @? not (M.is_empty <| M.singleton 1 ());
@@ -162,13 +169,11 @@ module TestMap
     ()
 
   let test_add () =
-    let t = il [(3,4); (5, 6)] in
-    eq BatInt.compare BatInt.print
-      (M.add 1 4 (M.add 1 7 t))
-      (M.add 1 4 t);
-    eq BatInt.compare BatInt.print
-      (M.add 4 8 t)
-      (il [(3,4); (4,8); (5,6)]);
+    let k, v, v', t = 1, 4, 7, il [(3,4); (5, 6)] in
+    "add k v (add k v' t) = add k v t" @=
+      (M.add k v (M.add k v' t), M.add k v t);
+    "add 4 8 [3,4; 5,6] = [3,4; 4,8; 5,6]" @=
+        (M.add 4 8 t, il [(3,4); (4,8); (5,6)]);
     ()
 
   let test_cardinal () =
@@ -277,6 +282,38 @@ module TestMap
       (let mk, mv = M.max_binding t in
        let (l, m, r) =  M.split mk t in
        li l = li (M.remove mk l) && m = Some mv && M.is_empty r);
+    ()
+
+  let test_merge () =
+    let t, t' = il [0,0; 1,1; 3,3], il [1,-1; 2,-2; 3,-3; 4,-4] in
+    "is_empty (merge (fun k a b -> None) t t')" @?
+      M.is_empty (M.merge (fun _ _ _ -> None) t t');
+    "t = merge (fun k a b -> a) t t'" @=
+      (t, M.merge (fun _ a _ -> a) t t');
+    "t' = merge (fun k a b -> b) t t'" @=
+      (t', M.merge (fun _ _ b -> b) t t');
+    let option_compare cmp a b =
+      match a, b with
+        | None, None -> 0
+        | None, Some _ -> -1
+        | Some _, None -> 1
+        | Some a, Some b -> cmp a b in
+    let pair_compare2 cmp = BatPair.compare ~c1:cmp ~c2:cmp in
+    eq ~msg:
+      "merge (fun k a b -> Some (a, b)) [0,0; 1,1; 3,3] [1,-1; 2,-2; 3,-3; 4,-4
+       = [0, (Some 0, None);
+          1, (Some 1, Some -1);
+          2, (None, Some -2);
+          3, (Some 3, Some -3);
+          4, (None, Some -4)]"
+      (pair_compare2 (option_compare BatInt.compare))
+      (BatPair.print2 (BatOption.print BatInt.print))
+      (M.merge (fun k a b -> Some (a, b)) t t')
+      (il [0, (Some 0, None);
+           1, (Some 1, Some ~-1);
+           2, (None, Some ~-2);
+           3, (Some 3, Some ~-3);
+           4, (None, Some ~-4)]);
     ()
 
   let test_for_all_exists () =
@@ -475,6 +512,7 @@ module TestMap
     "test_modify_def" >:: test_modify_def;
     "test_choose" >:: test_choose;
     "test_split" >:: test_split;
+    "test_merge" >:: test_merge;
     "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;
     "test_enums" >:: test_enums;

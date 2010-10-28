@@ -210,6 +210,12 @@ module type S =
         satisfy the predicate [p].
     *)
 
+    val merge:
+         (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
+    (** [merge f m1 m2] computes a map whose keys is a subset of keys of [m1]
+        and of [m2]. The presence of each such binding, and the corresponding
+        value, is determined with the function [f].
+     *)
 
     (** {6 Boilerplate code}*)
 
