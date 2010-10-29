@@ -320,11 +320,14 @@ module Concrete = struct
     make future changes of implementation in the base
     library's version of [Map] easier to track, even if the
     result is a tad slower.*)
-  let filter  f cmp t =
+  (* [filter{,i,_map} f t cmp] do not use [cmp] on [t], but only to
+     build the result map. The unusual parameter order was choosed to
+     reflect this.  *)
+  let filter f t cmp =
     foldi (fun k a acc -> if f a then add k a cmp acc else acc) t empty
-  let filteri f cmp t =
+  let filteri f t cmp =
     foldi (fun k a acc -> if f k a then add k a cmp acc else acc) t empty
-  let filter_map f cmp t =
+  let filter_map f t cmp =
     foldi (fun k a acc -> match f k a with
       | None   -> acc
       | Some v -> add k v cmp acc) t empty
@@ -728,11 +731,11 @@ struct
     Concrete.print ?first ?last ?sep print_k print_v out (impl_of_t t)
 
   let filter f t =
-    t_of_impl (Concrete.filter f Ord.compare (impl_of_t t))
+    t_of_impl (Concrete.filter f (impl_of_t t) Ord.compare)
   let filteri f t =
-    t_of_impl (Concrete.filteri f Ord.compare (impl_of_t t))
+    t_of_impl (Concrete.filteri f (impl_of_t t) Ord.compare)
   let filter_map f t =
-    t_of_impl (Concrete.filter_map f Ord.compare (impl_of_t t))
+    t_of_impl (Concrete.filter_map f (impl_of_t t) Ord.compare)
 
   let exists f t = Concrete.exists f (impl_of_t t)
   let for_all f t = Concrete.for_all f (impl_of_t t)
@@ -849,9 +852,9 @@ let of_enum ?(cmp = compare) e =
 let print ?first ?last ?sep print_k print_v out t =
   Concrete.print ?first ?last ?sep print_k print_v out t.map
 
-let filter  f t = { t with map = Concrete.filter f t.cmp t.map }
-let filteri f t = { t with map = Concrete.filteri f t.cmp t.map }
-let filter_map f t = { t with map = Concrete.filter_map f t.cmp t.map }
+let filter  f t = { t with map = Concrete.filter f t.map t.cmp }
+let filteri f t = { t with map = Concrete.filteri f t.map t.cmp }
+let filter_map f t = { t with map = Concrete.filter_map f t.map t.cmp }
 
 let choose t = Concrete.choose t.map
 
