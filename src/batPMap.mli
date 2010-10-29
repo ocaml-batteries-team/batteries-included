@@ -242,6 +242,7 @@ val merge_unsafe:
     are equal. If it's not the case, the result is undefined.
 *)
 
+val union_unsafe : ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
 
 
 (** Infix operators over a {!BatPMap} *)
