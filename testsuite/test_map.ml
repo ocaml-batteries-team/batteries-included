@@ -558,9 +558,74 @@ end
 module TM = TestMap(M)
 module TP = TestMap(P)
 
+(* what we want to test is the behaviour of PMap binary operators
+   (union, diff, intersect, merge) in presence of different and funky
+   comparison functions. We will check :
+   - that the bindings of the result are correct
+   - that the comparison function of the result map is as specified
+*)
+let heterogeneous_tests =
+  let module P = BatPMap in
+  let li m = BatList.of_enum (P.enum m) in
+
+  let (@=) msg (l1, l2) =
+    let cmp t1 t2 =
+      let cmp = BatPair.compare ~c1:BatInt.compare ~c2:BatInt.compare in
+      0 = BatList.make_compare cmp t1 t2 in
+    let printer =
+      BatIO.to_string -| BatList.print <| BatPair.print2 BatInt.print in
+    U.assert_equal ~msg ~cmp ~printer l1 l2 in
+
+  let compare_modulo p x y = BatInt.compare (x mod p) (y mod p) in
+  let il p m = P.of_enum ~cmp:(compare_modulo p) (BatList.enum m) in
+
+  let m13 = il 13 [4,-4; 8,-8; 12,-5] in
+  let m7 = il 7 [9,0; 3,3; 2,2; 5,5] in
+
+  let test_modulo () =
+    (* we check that we really have a modulo 7 comparison function :
+       the 9.0 binding should be rewritten by the later 2,2 binding;
+       when a binding is rewritten, the key is also changed, so the
+       result is 2,2 rather than the also meaningful 9,2. *)
+    "[9,0; 2,2]/7 = [2,2]" @=
+    (li (il 7 [9,0; 2,2]), [2,2]) in
+
+  let test_union () =
+    (* We check that the result and all 'add' have been done modulo 7 :
+       - the 8,-8 binding of m13 is now placed in first (smallest) position 
+       - the 5,5 binding has been rewritten by the 12,-5 binding*)
+    "union [4,-4; 8,-8; 12,-5]/13 [2,2; 3,3; 5,5]/7
+     = [8,-8; 2,2; 3,3; 4,-4; 12,-5]/7" @=
+        (li (P.union m13 m7), [8,-8; 2,2; 3,3; 4,-4; 12,-5]) in
+
+  let test_diff () =
+    (* We check that difference is made modulo 5 : 12,-5 remove 5,5
+       from the map *)
+    "diff [2,2; 3,3; 5,5]/7 [4,-4; 8,-8; 12,-5]/13
+     = [2,2; 3,3]" @=
+    (li (P.diff m7 m13), [2,2; 3,3]) in
+
+  let test_intersect () =
+    (* as intersect is currently underspecified, this test is rather
+       fragile *)
+    "intersect (+) [5,5; 8,8]/7 [4,-4; 5,-5; 8,-8]/13
+    = [8,0; 5,0]/7" @=
+    (li (P.intersect (+)
+           (il 7 [5,5; 8,8])
+           (il 13 [4,-4; 5,-5; 8,-8])),
+     [8,0; 5,0]) in
+
+  [
+    "modulo" >:: test_modulo;
+    "union" >:: test_union;
+    "diff" >:: test_diff;
+    "intersect" >:: test_intersect;
+  ]
+
 let tests = "(P)Map" >::: [
   "traversal order iter vs. enum" >:: test_traversal_order;
   "split" >:: test_split;
   "usual tests on Map" >::: TM.tests;
   "usual tests on PMap" >::: TP.tests;
+  "PMap's heterogeneous operators" >::: heterogeneous_tests;
 ]
