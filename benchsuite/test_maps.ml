@@ -144,6 +144,27 @@ module MapBench (M : sig val input_length : int end) = struct
       "pmap merge", ignore -| merge_poly_map;
       "pmap merge_unsafe", ignore -| merge_unsafe_poly_map ]
 
+  (* compare fold-based and merge-based union *)
+  let fold_union, merge_union, merge_unsafe_union =
+    let m1 = PMap.of_enum (BatList.enum p1) in
+    let m2 = PMap.of_enum (BatList.enum p2) in
+    let merge_fun k a b = if a <> None then a else b in
+    (fun () -> PMap.foldi PMap.add m1 m2),
+    (fun () -> PMap.merge merge_fun m1 m2),
+    (fun () -> PMap.merge_unsafe merge_fun m1 m2)
+
+
+  let () =
+    let li m = BatList.of_enum (PMap.enum m) in
+    assert (li (fold_union ()) = li (merge_union ()));
+    assert (li (fold_union ()) = li (merge_unsafe_union ()));
+    ()
+
+  let samples_union = make_samples
+    [ "fold-based union", ignore -| fold_union;
+      "merge-based union", ignore -| merge_union;
+      "merge-unsafe union", ignore -| merge_unsafe_union ]
+
   (* A benchmark for key removal *)
   let remove_keys =
     random_inputs random_key ()
@@ -175,6 +196,7 @@ module MapBench (M : sig val input_length : int end) = struct
         samples_import;
         samples_lookup;
         samples_merge;
+        samples_union;
         samples_remove;
       ]
 end
