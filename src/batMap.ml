@@ -539,6 +539,37 @@ module Concrete = struct
         | None -> acc
         | Some v3 -> add k v3 cmp3 acc)
       s2 first_phase_result
+
+  (* Checks if a given map is "ordered" wrt. a given comparison
+     function. This means that the key are ordered in strictly
+     increasing order.
+     
+     If [ordered cmp s] holds, [cmp] can be used to search elements in
+     the map *even* if it is not the original comparison function that
+     was used to build the map; we know that the two comparison
+     function "agree" on the present keys. Of course, adding an
+     element with one or the other comparison function may break that
+     relation.
+
+     The [ordered] function will be useful to choose between different
+     implementations having different comparison requirements. For
+     example, the implementation of [merge] assuming both maps have
+     the same comparison function is much faster than the
+     implementation assuming heterogeneous maps. Before calling the
+     heterogeneous implementation, one may first check if one of the
+     comparison actually orders the other map, and in that case use
+     the fast homogeneous implementation instead.
+  *)
+  let rec ordered cmp s =
+    try
+      ignore
+        (foldi (fun k _ last_k ->
+          if cmp last_k k >= 0 then raise Exit
+          else k)
+           (remove_min_binding s)
+           (fst (min_binding s)));
+      true
+    with Exit -> false    
 end
 
 
@@ -879,7 +910,17 @@ let intersect merge m1 m2 =
   { empty with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
 
 let merge f m1 m2 =
-  { m2 with map = Concrete.merge_diverse f m1.cmp m1.map m2.cmp m2.map m2.cmp }
+  { m2 with map =
+      (* as merge_diverse is much slower than merge, we first try to
+         see if we could possibly use merge; this is the case when
+         m2.cmp is a correct ordering on m1.map.
+
+         See more detailed comment in [Concrete.ordered]
+      *)
+      if Concrete.ordered m2.cmp m1.map then
+        Concrete.merge f m2.cmp m1.map m2.map
+      else
+        Concrete.merge_diverse f m1.cmp m1.map m2.cmp m2.map m2.cmp }
 
 let merge_unsafe f m1 m2 =
   { m2 with map = Concrete.merge f m2.cmp m1.map m2.map }
