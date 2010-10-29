@@ -472,28 +472,6 @@ module Concrete = struct
           assert false in
     loop s1 s2
 
-  (* A specialized 'union' implementation to test the performance
-     gains vs. implementing it on top of 'merge', in the homogeneous
-     case.
-     
-     Note that the implemented behavior is different from [union] : in
-     case the key is in both maps, it is unspecified which one gets
-     added to the result. It would not be difficult to correct
-     this. *)
-  let union_homogeneous cmp12 s1 s2 =
-    let rec loop s1 s2 =
-      match (s1, s2) with
-        | (Empty, Empty) -> Empty
-        | (Node (l1, v1, d1, r1, h1), _) when h1 >= height s2 ->
-          let (l2, _, r2) = split v1 cmp12 s2 in
-          join (loop l1 l2) v1 d1 (loop r1 r2)
-        | (_, Node (l2, v2, d2, r2, h2)) ->
-          let (l1, _, r1) = split v2 cmp12 s1 in
-          join (loop l1 l2) v2 d2 (loop r1 r2)
-        | _ ->
-          assert false in
-    loop s1 s2
-
   let rec merge_diverse f cmp1 s1 cmp2 s2 cmp3 =
     (* This implementation does not presuppose that the comparison
        function of s1 and s2 are the same. It is necessary in the PMap
@@ -506,7 +484,7 @@ module Concrete = struct
 
        The idea of the algorithm is the following : iterates on keys
        of (s1 union s2), computing the merge result for each
-       f k (find_option k s1) (find_option k s2)
+         f k (find_option k s1) (find_option k s2)
        , and adding values to the result s3 accordingly.
        
        The crucial point is that we need to iterate on both keys of s1
@@ -946,9 +924,6 @@ let merge f m1 m2 =
 
 let merge_unsafe f m1 m2 =
   { m2 with map = Concrete.merge f m2.cmp m1.map m2.map }
-
-let union_unsafe m1 m2 =
-  { m2 with map = Concrete.union_homogeneous m2.cmp m1.map m2.map }
 
 let bindings m =
   Concrete.bindings m.map
