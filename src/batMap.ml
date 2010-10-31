@@ -581,23 +581,24 @@ module Concrete = struct
     then merge f cmp3 m1 m2
     else merge_diverse f cmp1 m1 cmp2 m2 cmp3      
 
-  let union m1 cmp2 m2 =
-    foldi (fun k v acc -> add k v cmp2 acc) m1 m2
-  (* TODO: use split/bal to merge similarly compared maps more efficiently *)
+  let union cmp1 m1 cmp2 m2 =
+    (* we respect the specified behaviour that the first binding is
+       chosen when both are present, and that the result uses the
+       second comparison *)
+    let merge_fun k a b = if a <> None then a else b in
+    heuristic_merge merge_fun cmp1 m1 cmp2 m2 false
 
-  let diff cmp1 m1 m2 =
-    foldi (fun k _ acc -> remove k cmp1 acc) m2 m1
-  (* TODO: as union - use tree operations for large maps *)
+  let diff cmp1 m1 cmp2 m2 =
+    let merge_fun k a b = if b <> None then None else a in
+    heuristic_merge merge_fun cmp1 m1 cmp2 m2 true
 
-  let intersect merge cmp1 m1 m2 =
-    let maybe_add k v2 =
-      match find_option k cmp1 m1 with
-        | None -> None
-        | Some v1 -> Some (merge v1 v2) in
-    filter_map maybe_add m2 cmp1
-  (* TODO: implement and compare with tree-based implementation *)
+  let intersect f cmp1 m1 cmp2 m2 =
+    let merge_fun k a b =
+      match a, b with
+        | Some v1, Some v2 -> Some (f v1 v2)
+        | None, _ | _, None -> None in
+    heuristic_merge merge_fun cmp1 m1 cmp2 m2 true
 end
-
 
 module type OrderedType = BatInterfaces.OrderedType
 
@@ -926,14 +927,14 @@ let split k m =
   { m with map = l }, v, { m with map = r }
 
 let union m1 m2 =
-  { m2 with map = Concrete.union m1.map m2.cmp m2.map }
+  { m2 with map = Concrete.union m1.cmp m1.map m2.cmp m2.map }
 
 let diff m1 m2 =
-  { m1 with map = Concrete.diff m1.cmp m1.map m2.map }
+  { m1 with map = Concrete.diff m1.cmp m1.map m2.cmp m2.map }
 
 let intersect merge m1 m2 =
   (* the use of 'empty' is strange here, but mimicks the older PMap implementation *)
-  { empty with map = Concrete.intersect merge m1.cmp m1.map m2.map }
+  { empty with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
 
 let merge f m1 m2 =
   { m2 with map = Concrete.heuristic_merge f m1.cmp m1.map m2.cmp m2.map true }
