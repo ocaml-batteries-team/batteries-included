@@ -299,7 +299,7 @@ let big_length = 100_000
 let small_length = 500
 
 let () =
-  Printf.printf "Test with small maps (length = %d)\n" small_length;
+  Printf.printf "Test with small maps (length = %d)\n%!" small_length;
   let () =
     let module M = MapBench(struct let input_length = small_length end) in
     () in
@@ -307,7 +307,7 @@ let () =
   print_newline ();
   print_newline ();
   
-  Printf.printf "Test with big maps (length = %d)\n" big_length;
+  Printf.printf "Test with big maps (length = %d)\n%!" big_length;
   let () =
     let module M = MapBench(struct let input_length = big_length end) in
     () in

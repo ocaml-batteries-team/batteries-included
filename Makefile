@@ -37,7 +37,7 @@ NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
 TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
 TEST_TARGETS = testsuite/main.byte qtest/test_runner.byte
 TEST_TARGETS = testsuite/main.byte
-BENCH_TARGETS = benchsuite/test_int.native benchsuite/test_maps.native
+BENCH_TARGETS = benchsuite/bench_int.native benchsuite/bench_map.native
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   EXT = native
