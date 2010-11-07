@@ -181,6 +181,11 @@ let finally handler f x =
 	handler();
 	r
 
+let using ?dispose x f =
+  match dispose with
+      Some c -> finally (fun () -> c x) f x
+    | None -> f x
+
 let __unique_counter = ref 0
 
 let unique() =
