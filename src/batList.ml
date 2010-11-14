@@ -717,7 +717,9 @@ module Exceptionless = struct
     try Some (assoc_inv e l)
     with Not_found -> None
 
-
+  let find_map f l =
+    try Some(find_map f l)
+    with Not_found -> None
 end
 
 

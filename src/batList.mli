@@ -470,14 +470,14 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 
 
 	  val assoc : 'a -> ('a * 'b) list -> 'b option
-	    (** [assoc a l] returns [Some b] where [b] is the value associated with key [a] 
+	    (** [assoc a l] returns [Some b] where [b] is the value associated with key [b]
 		in the list of pairs [l]. That is, [assoc a [ ...; (a,b); ...] = Some b]
 		if [(a,b)] is the leftmost binding of [a] in list [l].
 		Return [None] if there is no value associated with [a] in the
 		list [l]. *)
 
 	  val assoc_inv : 'b -> ('a * 'b) list -> 'a option
-	    (** [assoc_inv b l] returns [Some a] where [a] is the key associated with value [a] 
+	    (** [assoc_inv b l] returns [Some a] where [a] is the key associated with value [b]
 		in the list of pairs [l]. That is, [assoc b [ ...; (a,b); ...] = Some a]
 		if [(a,b)] is the leftmost binding of [a] in list [l].
 		Return [None] if there is no key associated with [b] in the
@@ -486,6 +486,12 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 
 	  val assq : 'a -> ('a * 'b) list -> 'b option
 	    (** As {!assoc} but with physical equality. *)
+
+	  val find_map : ('a -> 'b option) -> 'a list -> 'b option
+	(** [find_map f xs] returns [Some y] such that [x] is the first
+	    element of the list where [f x] returns [Some y].  It returns [None]
+	    if no such element exists. *)
+
 	end
 
 
@@ -497,7 +503,7 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	    there to improve readability and safety and to let you change the
 	    order of arguments to functions. In every case, the behavior of the
 	    function is identical to that of the corresponding function of {!List}.
-	*)
+	 *)
 	module Labels : sig
 	  val init : int -> f:(int -> 'a) -> 'a list
 	  val iter : f:('a -> unit) -> 'a list -> unit
