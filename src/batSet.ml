@@ -385,6 +385,9 @@ let enum t =
 let of_enum t =
   BatEnum.fold (fun acc elem -> add elem acc) empty t
 
+let of_enum_cmp ~cmp t =
+  BatEnum.fold (fun acc elem -> add elem acc) (create cmp) t
+
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
   BatEnum.print ~first ~last ~sep print_elt out (enum t)
 

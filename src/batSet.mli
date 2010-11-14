@@ -377,6 +377,8 @@ val enum: 'a t -> 'a BatEnum.t
   
 val of_enum: 'a BatEnum.t -> 'a t
 
+val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
+
 val for_all : ('a -> bool) -> 'a t -> bool
 (** Returns whether the given predicate applies to all elements in the set *)
 
