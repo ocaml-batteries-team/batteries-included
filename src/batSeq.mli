@@ -233,7 +233,7 @@ val split : ('a * 'b) t -> 'a t * 'b t
 val combine : 'a t -> 'b t -> ('a * 'b) t
   (** Transform a pair of sequences into a sequence of pairs. Lazy.
 
-      @raise [Invalid_argument] if given sequences of different length. *)
+      @raise Invalid_argument if given sequences of different length. *)
 
 (** {6 Printing} *)
 
