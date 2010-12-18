@@ -61,7 +61,9 @@ external identity : 'a -> 'a = "%identity"
 (** the identity function. *)
 
 val unique : unit -> int
-(** returns an unique identifier every time it is called. *)
+(** returns an unique identifier every time it is called.  This
+    function is not thread-safe.  Use {!BatPervasives.unique}
+    instead. *)
 
 val dump : 'a -> string
 (** represent a runtime value as a string. Since types are lost at compile
