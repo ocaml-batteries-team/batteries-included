@@ -13,3 +13,5 @@ man/*
 *.run
 apidocs
 batteries.docdir
+qtest/*_t.ml
+qtest/test_mods.mllib

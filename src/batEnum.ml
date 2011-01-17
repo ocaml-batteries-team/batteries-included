@@ -22,10 +22,10 @@
 (** {6 Representation} *)
 
 type 'a t = {
-  mutable count : unit -> int; (**Return the number of remaining elements in the enumeration. *)
-  mutable next  : unit -> 'a;  (**Return the next element of the enumeration or raise [No_more_elements].*)
-  mutable clone : unit -> 'a t;(**Return a copy of the enumeration. *)
-  mutable fast  : bool;        (**[true] if [count] can be done without reading all elements, [false] otherwise.*)
+  mutable count : unit -> int; (** Return the number of remaining elements in the enumeration. *)
+  mutable next  : unit -> 'a;  (** Return the next element of the enumeration or raise [No_more_elements].*)
+  mutable clone : unit -> 'a t;(** Return a copy of the enumeration. *)
+  mutable fast  : bool;        (** [true] if [count] can be done without reading all elements, [false] otherwise.*)
 }
 
 type 'a enumerable = 'a t
@@ -61,7 +61,7 @@ type 'a _mut_list = {
 	mutable tl : 'a _mut_list;
 }
 
-let force t =(**Transform [t] into a list*)
+let force t =(** Transform [t] into a list *)
   let rec clone enum count =
     let enum = ref !enum
     and	count = ref !count in
@@ -785,6 +785,21 @@ let uncombine e =
 	    advance := `second;
 	    y
   in (from first, from second)
+
+(*** 
+  let pair_list = [1,2;3,4;5,6;7,8;9,0] in
+  let a,b = BatEnum.uncombine (BatList.enum pair_list) in
+  let a = BatArray.of_enum a in
+  let b = BatArray.of_enum b in
+  let c,d = BatEnum.uncombine (BatList.enum pair_list) in
+  let d = BatArray.of_enum d in
+  let c = BatArray.of_enum c in
+  let aeq = assert_equal ~printer:(BatIO.to_string (BatArray.print BatInt.print)) in
+  aeq a [|1;3;5;7;9|];
+  aeq b [|2;4;6;8;0|];
+  aeq a c;
+  aeq b d
+  **)
 
 let group test e =
   match peek e with

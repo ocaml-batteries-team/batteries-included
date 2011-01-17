@@ -365,6 +365,14 @@ let filter f d =
     changelen dest !p;
     dest
 
+(*** 
+  let e = BatDynArray.create () in
+  BatDynArray.add e "a";
+  BatDynArray.add e "b";
+  BatDynArray.keep ((=) "a") e;
+  assert_equal ~printer:(fun x -> x) (BatDynArray.get e 0) "a"
+ **)
+
 let keep f d = let result = filter f d in 
   d.arr <- result.arr;
   d.len <- result.len
