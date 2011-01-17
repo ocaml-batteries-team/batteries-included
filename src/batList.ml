@@ -430,8 +430,6 @@ let combine l1 l2 =
 	loop dummy l1 l2;
 	dummy.tl
 
-let sort ?(cmp=compare) = List.sort cmp
-
 let rec init size f =
 	if size = 0 then [] 
 	else if size < 0 then invalid_arg "BatList.init"

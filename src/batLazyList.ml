@@ -534,7 +534,7 @@ let take_while p =
     | _                  -> rev_of_list acc
   in aux []
 
-let sort ?cmp l = of_list (BatList.sort ?cmp (to_list l))
+let sort ?(cmp=Pervasives.compare) l = of_list (List.sort cmp (to_list l))
 
 let stable_sort cmp l = of_list (List.stable_sort cmp (to_list l))
 

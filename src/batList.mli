@@ -376,10 +376,6 @@
 	  (** [make_compare c] generates the lexicographical order on lists
 	      induced by [c]*)
 
-	val sort : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
-	  (** Sort the list using optional comparator (by default [compare]). *)
-
-	  
 	val sort_unique : ('a -> 'a -> int) -> 'a list -> 'a list
 	(** [sort_unique cmp l] returns the list [l] sorted and without any duplicate element. [cmp] is a usual comparison function providing linear order. 
 	
