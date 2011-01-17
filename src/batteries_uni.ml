@@ -117,8 +117,8 @@ module Seq = BatSeq
 module UCharParser = BatUCharParser
 module Value_printer = BatValue_printer
 module Vect = BatVect
-module ISet = BatISet
-module IMap = BatIMap
+module ISet = ISet
+module IMap = IMap
 
 (* Unix *)
 module Unix = struct include Unix include BatUnix end
