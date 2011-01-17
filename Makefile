@@ -42,9 +42,9 @@ else ifeq ($(BATTERIES_NATIVE), yes)
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 endif
 
-.PHONY: all clean doc install uninstall reinstall test camomile81
+.PHONY: all clean doc install uninstall reinstall test fix_camomile camomile82 camomile81 camomile7 camfail
 
-all:
+all: fix-camomile
 	test ! -e src/batteries_config.ml || rm src/batteries_config.ml
 	$(OCAMLBUILD) $(TARGETS)
 
@@ -91,6 +91,40 @@ release: test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
+
+##
+## Magic to detect which version of camomile is installed 
+##
+
+CAMVER=$(shell sh -c 'ocamlfind list | grep camomile | grep -o "[0-9\.]*"')
+ifeq ($(CAMVER),0.8.2)
+	CAMFIX=camomile82
+endif
+ifeq ($(CAMVER),0.8.1)
+	CAMFIX=camomile81
+endif
+ifeq ($(CAMVER),0.7.2)
+	CAMFIX=camomile7
+endif
+ifeq ($(CAMVER),)
+	CAMFIX=camfail
+endif
+
+fix-camomile: $(CAMFIX)
+
+#replace batcamomile with a version appropriate for camomile 0.8.2
 camomile82:
-	mv src/batCamomile.ml src/batCamomile-0.7.ml
-	mv src/batCamomile-0.8.2.ml src/batCamomile.ml
+	cp -f src/batCamomile-0.8.2.ml src/batCamomile.ml
+
+#replace batcamomile with a version appropriate for camomile 0.8.1
+camomile81:
+	cp -f src/batCamomile-0.8.1.ml src/batCamomile.ml
+
+#replace batcamomile with a version appropriate for camomile 0.7.*
+camomile7:
+	cp -f src/batCamomile-0.7.ml src/batCamomile.ml
+
+camfail:
+	echo "Camomile not detected, cannot compile batteries"
+	exit 1
+
