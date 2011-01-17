@@ -36,6 +36,10 @@ let init len f =
 	done;
 	s
 
+(**T 
+   init 5 (fun i -> Char.chr (i+0x30)) = "01234";
+**)
+
 let starts_with str p =
   let len = length p in
     if length str < len then false

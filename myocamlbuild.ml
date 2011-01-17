@@ -78,5 +78,15 @@ let _ = dispatch begin function
         S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4of"];
       flag ["ocaml"; "ocamldep"; "camlp4of"] &
         S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4of"];
+
+      ocaml_lib "qtest/test_mods";
+      ocaml_lib "src/batteries";
+
+      flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
+(*
+      dep ["ocaml"; "link"; "include_tests"; "byte"] & 
+	[Pathname.mk "qtest/test_mods.cma"];
+      dep ["ocaml"; "link"; "include_tests"; "native"] & 
+	[Pathname.mk "qtest/test_mods.cmxa"]; *)
   | _ -> ()
 end

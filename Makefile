@@ -42,7 +42,7 @@ else ifeq ($(BATTERIES_NATIVE), yes)
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 endif
 
-.PHONY: all clean doc install uninstall reinstall test camomile81
+.PHONY: all clean doc install uninstall reinstall test camomile81 qtest
 
 all:
 	test ! -e src/batteries_config.ml || rm src/batteries_config.ml
@@ -94,3 +94,21 @@ release: test
 camomile82:
 	mv src/batCamomile.ml src/batCamomile-0.7.ml
 	mv src/batCamomile-0.8.2.ml src/batCamomile.ml
+
+qtest/%_t.ml: src/%.ml
+	ruby build/make_suite.rb -v $^ > $@
+
+
+DONTTEST=$(wildcard src/batCamomile-*.ml)
+TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
+#TESTABLE=src/batString.ml
+
+qtest/test_mods.mllib:
+	echo -n "Quickcheck Tests " > $@
+	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
+
+
+qtest: $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
+	ocamlbuild qtest/test_runner.byte qtest/test_runner.native
+	./test_runner.byte
+	./test_runner.native
