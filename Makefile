@@ -99,7 +99,7 @@ qtest/%_t.ml: src/%.ml
 	ruby build/make_suite.rb -v $^ > $@
 
 
-DONTTEST=$(wildcard src/batCamomile-*.ml)
+DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
 TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 #TESTABLE=src/batString.ml
 
