@@ -8,6 +8,7 @@ let all_tests =
 (*    Test_print.tests;
     Test_toplevel.tests; *)
     Test_pmap.tests;
+    Test_multipmap.tests;
     Test_vect.tests;
     Test_file.tests;
     Test_string.tests;

@@ -446,6 +446,8 @@ val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
 val intersect : ('b -> 'c -> 'd) -> ('a, 'b) t -> ('a, 'c) t -> ('a, 'd) t
   (** [intersect merge_f m1 m2] returns a map with bindings only for keys bound in both [m1] and [m2], and with [k] bound to [merge_f v1 v2], where [v1] and [v2] are [k]'s bindings from [m1] and [m2]*)
 
+val split : 'a -> ('a, 'b) t -> (('a, 'b) t * 'b option * ('a, 'b) t)
+
 (** Infix operators over a {!BatMap} *)
 module Infix : sig
   val (-->) : ('a, 'b) t -> 'a -> 'b

@@ -725,6 +725,36 @@ let pop {cmp = cmp; map = map} =
     | Node (l, k, v, r, _) ->
 	(k, v), {cmp = cmp; map = merge l r}
 
+let rec join l x d r cmp =
+  let m tree = {cmp = cmp; map = tree} in
+  match (l, r) with
+  | (Empty, _) -> (add x d (m r)).map
+  | (_, Empty) -> (add x d (m l)).map
+  | (Node(ll, lx, ld, lr, lh), Node(rl, rx, rd, rr, rh)) ->
+      if lh > rh + 2 then
+        bal ll lx ld (join lr x d r cmp)
+      else if rh > lh + 2 then
+        bal (join l x d rl cmp) rx rd rr
+      else
+        make l x d r
+
+let rec split key map cmp =
+  match map with
+  | Empty -> (Empty, None, Empty)
+  | Node(l, x, d, r, _) ->
+      let c = cmp key x in
+      if c = 0 then
+        (l, Some d, r)
+      else if c < 0 then
+        let (ll, pres, rl) = split key l cmp in (ll, pres, join rl x d r cmp)
+      else
+        let (lr, pres, rr) = split key r cmp in (join l x d lr cmp, pres, rr)
+
+let split key {cmp = cmp; map = map} =
+  let ltree, ov, rtree = split key map cmp in
+  let m tree = {cmp = cmp; map = tree} in
+  m ltree, ov, m rtree
+
 let union m1 m2 =
   foldi add m1 m2
 (* TODO: use split/bal to merge similarly compared maps more efficiently *)
