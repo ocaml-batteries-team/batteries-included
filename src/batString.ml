@@ -411,9 +411,8 @@ let numeric_compare s1 s2 =
     if i = l1 then -2 else if i = l2 then -1
     else if s1.[i] = s2.[i] then pos_diff (i+1) else i
   and num_end i s = (* scans for the end of a numeric value *)
-    try (* TODO: bounds check here *)
+    if i >= String.length s then i else
       if s.[i] >= '0' && s.[i] <= '9' then num_end (i+1) s else i
-    with _ -> i-1 (* let ocaml do our bounds checking for us *)
   in
   if l1 = l2 then String.compare s1 s2
   else let d = pos_diff 0 in
@@ -426,9 +425,21 @@ let numeric_compare s1 s2 =
       let n1 = Int64.of_string (String.sub s1 d (e1-d))
 	(* FIXME?: trailing numbers must be less than Int64.max_int *)
       and n2 = Int64.of_string (String.sub s2 d (e2-d)) in
-(*      Printf.eprintf " %Ld & %Ld\n" n1 n2;*)
+(*      Printf.eprintf " %Ld & %Ld\n" n1 n2; *)
       Int64.compare n1 n2 (* FIXME: ignores text after equal numbers -- "a1b" = "a01c" *)
     end
+
+(**T numeric_compare
+   numeric_compare "xx43" "xx320" = -1
+   numeric_compare "xx3" "xx21" = -1
+   numeric_compare "xx02" "xx2" = 0
+   numeric_compare "xx20" "xx5" = 1
+   numeric_compare "abc" "def" = compare "abc" "def"
+**)
+
+(**Q numeric_compare_qt
+   (Q.triple Q.string Q.pos_int Q.pos_int) (fun (s,m,n) -> numeric_compare (s^(string_of_int m)) (s^(string_of_int n)) = BatInt.compare m n)
+**)
 
 module NumString =
 struct
