@@ -50,6 +50,7 @@ all: fix-camomile
 
 clean:
 	rm -f apidocs
+	rm qtest/*_t.ml
 	$(OCAMLBUILD) -clean
 
 doc:
@@ -106,8 +107,14 @@ endif
 ifeq ($(CAMVER),0.7.2)
 	CAMFIX=camomile7
 endif
+ifeq ($(CAMVER),0.7.1)
+	CAMFIX=camomile7
+endif
 ifeq ($(CAMVER),)
 	CAMFIX=camfail
+endif
+ifeq ($(CAMFIX),)
+	CAMFIX=camfailunk
 endif
 
 fix-camomile: $(CAMFIX)
@@ -126,6 +133,10 @@ camomile7:
 
 camfail:
 	echo "Camomile not detected, cannot compile batteries"
+	exit 1
+
+camfailunk:
+	echo "Unknown build of camomile detected ( $(CAMVER) ), cannot auto-config batcamomile"
 	exit 1
 
 ##
