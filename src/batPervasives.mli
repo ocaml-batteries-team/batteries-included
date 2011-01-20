@@ -468,6 +468,11 @@ val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
       an exception. *)
 
+val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
+(** [with_dispose dispose f x] invokes [f] on [x], calling [dispose x]
+    when [f] terminates (either with a return value or an
+    exception). *)
+
 val args : unit -> string BatEnum.t
   (** An enumeration of the arguments passed to this program through the command line.
 
