@@ -845,7 +845,13 @@ let fill r start len char =
 let blit rsrc offsrc rdst offdst len = 
   splice rdst offdst len (sub rsrc offsrc len)
 
-let concat sep r_list = BatList.reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
+let concat sep r_list = 
+  if r_list = [] then empty else
+  BatList.reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
+
+(**T concat
+   concat (of_string "xyz") [] = empty
+**)
 
 let escaped r = bulk_map UTF8.escaped r
 
