@@ -107,7 +107,7 @@ let rec find_min_tree ts k = match ts with
       find_min_tree ts begin
         fun u ->
           if Pervasives.compare t.root u.root <= 0
-          then t else u
+          then k t else k u
       end
 
 let rec del_min_tree bts k = match bts with
@@ -241,7 +241,7 @@ module Make (Ord : Set.OrderedType) = struct
         find_min_tree ts begin
           fun u ->
             if Ord.compare t.root u.root <= 0
-            then t else u
+            then k t else k u
         end
 
   let rec del_min_tree bts k = match bts with
