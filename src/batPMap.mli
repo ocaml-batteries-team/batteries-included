@@ -183,6 +183,11 @@ val split : 'a -> ('a, 'b) t -> (('a, 'b) t * 'b option * ('a, 'b) t)
     binding in [m], if there was one, and the map of keys greater then
     [k] in [m] *)
 
+(** Exceptionless versions of functions *)
+module Exceptionless : sig
+  val find: 'a -> ('a,'b) t -> 'b option
+end
+
 (** Infix operators over a {!BatPMap} *)
 module Infix : sig
   val (-->) : ('a, 'b) t -> 'a -> 'b

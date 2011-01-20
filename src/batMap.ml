@@ -722,6 +722,11 @@ let diff m1 m2 =
   foldi (fun k _ acc -> remove k acc) m2 m1
     (* TODO: as union - use tree operations for large maps *)
 
+module Exceptionless = 
+struct
+  let find k m = try Some (find k m) with Not_found -> None
+end
+
 module Infix =
 struct
   let (-->) map key = find key map
