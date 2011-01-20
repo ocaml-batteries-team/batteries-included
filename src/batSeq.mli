@@ -105,7 +105,7 @@ val make : int -> 'a -> 'a t
 
 val init : int -> (int -> 'a) -> 'a t
   (** [init n f] returns the sequence returning the results of [f 0],
-      [f 1].... [f (n-1)]. Raise [Invalid_arg] if [n < 0]. *)
+      [f 1].... [f (n-1)]. Raise [Invalid_argument] if [n < 0]. *)
 
 (** {6 Iterators} *)
 
@@ -233,7 +233,7 @@ val split : ('a * 'b) t -> 'a t * 'b t
 val combine : 'a t -> 'b t -> ('a * 'b) t
   (** Transform a pair of sequences into a sequence of pairs. Lazy.
 
-      @raise [Invalid_argument] if given sequences of different length. *)
+      @raise Invalid_argument if given sequences of different length. *)
 
 (** {6 Printing} *)
 
