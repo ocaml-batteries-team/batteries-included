@@ -145,6 +145,10 @@ let elems bh =
    elems empty = []
 **)
 
+(**Q elems_q
+   (Q.list Q.int) (fun l -> elems (List.fold_left add empty l) = List.sort Pervasives.compare l)
+**)
+
 module type H = sig
   module Ord : Set.OrderedType
   type t
