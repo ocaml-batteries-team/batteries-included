@@ -13,6 +13,7 @@ BatFloat
 BatFormat
 BatGc
 BatGenlex
+BatHashcons
 BatHashtbl
 BatIO
 BatInnerIO
