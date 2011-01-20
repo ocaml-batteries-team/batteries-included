@@ -712,8 +712,8 @@ module Array2 :
 
   val modifyij : (int -> int -> 'a -> 'a) -> ('a, 'b, 'c) t -> unit
     (** Same as {!Bigarray.Array2.modify}, but the function is applied
-        to the index of the element as the first argument, and the
-        element itself as the second argument. *)
+        to the index of the element as the first two arguments, and the
+        element itself as the third argument. *)
 
   val to_array : ('a, 'b, 'c) t -> 'a array array
     (** Build a two-dimensional array initialized from the
@@ -875,8 +875,8 @@ module Array3 :
 
   val modifyijk : (int -> int -> int -> 'a -> 'a) -> ('a, 'b, 'c) t -> unit
     (** Same as {!Bigarray.Array3.modify}, but the function is applied
-        to the index of the coordinates as the first argument, and the
-        element itself as the second argument. *)
+        to the index of the coordinates as the first three arguments, and the
+        element itself as the fourth argument. *)
 
    val to_array : ('a, 'b, 'c) t -> 'a array array array
    (** Build a three-dimensional array initialized from the
