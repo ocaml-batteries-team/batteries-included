@@ -124,7 +124,7 @@ let array (gen,pp) = (ag gen, pp_array pp)
 let array_of_size size (gen,pp) = (ag_size gen, pp_array pp)
 
 let pair (g1,p1) (g2,p2) = (pg g1 g2, pp_pair p1 p2)
-let triple (g1,p1) (g2,p2) (g3,p3) = (tg g1 g2 g3, pp_pair p1 p2 p3)
+let triple (g1,p1) (g2,p2) (g3,p3) = (tg g1 g2 g3, pp_triple p1 p2 p3)
 
 
 
