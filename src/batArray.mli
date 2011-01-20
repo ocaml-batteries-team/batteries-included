@@ -44,7 +44,7 @@
 
 
 (** {6 Array operations}
-    
+
     Arrays are mutable data structures with a fixed size, which
     support fast access and modification, and are used pervasively in
     imperative computing. While arrays are completely supported in
@@ -58,11 +58,19 @@
   include BatEnum.Enumerable with type 'a enumerable = 'a t
   include BatInterfaces.Mappable with type 'a mappable = 'a t
 
+  val modify : ('a -> 'a) -> 'a array -> unit
+    (** [modify f a] replaces every element [x] of [a] with [f x]. *)
+
+  val modifyi : (int -> 'a -> 'a) -> 'a array -> unit
+    (** Same as {!modify}, but the function is applied to the index of
+        the element as the first argument, and the element itself as
+        the second argument. *)
+
   (**{6 Base operations}*)
 
   val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b array -> 'a
     (** As [fold_left], but with a counter *)
-    
+
   val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
   (** [Array.reduce f a] is [fold_left f a.(0) [|a.(1); ..; a.(n-1)|]].  This
       is useful for merging a group of things that have no
@@ -72,8 +80,8 @@
 
   val max : 'a array -> 'a
     (** [max a] returns the largest value in [a] as judged by
-        [Pervasives.compare] 
-	
+        [Pervasives.compare]
+
 	@raise Invalid_argument on empty input *)
 
   val min : 'a array -> 'a
@@ -83,37 +91,37 @@
       @raise Invalid_argument on empty input *)
 
   (**{6 Operations on two arrays}*)
-    
+
   val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
     (** [Array.iter2 f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]] performs
 	calls [f a0 b0; f a1 b1; ...; f an bn] in that order.
-	
+
 	@raise Invalid_argument if the two arrays have different lengths. *)
 
   val iter2i : (int -> 'a -> 'b -> unit) -> 'a array -> 'b array -> unit
     (** [Array.iter2i f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]] performs
 	calls [f 0 a0 b0; f 1 a1 b1; ...; f n an bn] in that order.
-	
+
 	@raise Invalid_argument if the two arrays have different lengths. *)
-  
+
   val for_all2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
-    (** As {!Array.for_all} but on two arrays.  
+    (** As {!Array.for_all} but on two arrays.
 
 	@raise Invalid_argument if the two arrays have different lengths.*)
 
 
   val exists2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
-  (** As {!Array.exists} but on two arrays.  
+  (** As {!Array.exists} but on two arrays.
 
       @raise Invalid_argument if the two arrays have different lengths. *)
-    
+
   val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
-    (** As {!Array.map} but on two arrays.  
+    (** As {!Array.map} but on two arrays.
 
 	@raise Invalid_argument if the two arrays have different lengths. *)
-    
+
   (**{6 Predicates}*)
-    
+
   val for_all : ('a -> bool) -> 'a array -> bool
     (** [for_all p [|a0; a1; ...; an|]] checks if all elements of the array
 	satisfy the predicate [p].  That is, it returns
@@ -174,7 +182,7 @@
   (** {6 Conversions} *)
 
   val enum : 'a array -> 'a BatEnum.t
-    (** Returns an enumeration of the elements of an array. 
+    (** Returns an enumeration of the elements of an array.
 	Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
   val of_enum : 'a BatEnum.t -> 'a array
@@ -221,15 +229,24 @@ val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output ->
 
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
 
-  
+
   (** {6 Boilerplate code}*)
-    
+
   (** {7 Printing}*)
-    
+
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
 
 val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
   (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
+
+(**/**)
+  (** {6 Undocumented functions} *)
+
+external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
+external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
+
+(**/**)
+
 
   (** {6 Override modules}*)
 
@@ -268,12 +285,14 @@ module Labels : sig
   val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
   val sub :  'a array -> pos:int -> len:int -> 'a array
   val fill : 'a array -> pos:int -> len:int -> 'a -> unit
-  val blit : src:'a array -> src_pos:int -> dst:'a array -> 
+  val blit : src:'a array -> src_pos:int -> dst:'a array ->
     dst_pos:int -> len:int -> unit
   val iter :       f:('a -> unit) -> 'a array -> unit
   val map :        f:('a -> 'b) -> 'a array -> 'b array
   val iteri :      f:(int -> 'a -> unit) -> 'a array -> unit
   val mapi :       f:(int -> 'a -> 'b) -> 'a array -> 'b array
+  val modify :     f:('a -> 'a) -> 'a array -> unit
+  val modifyi :    f:(int -> 'a -> 'a) -> 'a array -> unit
   val fold_left :  f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
   val fold_right : f:('b -> 'a -> 'a) -> 'b array -> init:'a -> 'a
   val sort :        cmp:('a -> 'a -> int) -> 'a array -> unit
@@ -293,6 +312,13 @@ module Labels : sig
     val find:       f:('a -> bool) -> 'a t -> 'a option
     val findi:      f:('a -> bool) -> 'a t -> int option
   end
+(**/**)
+    (** {6 Undocumented functions} **)
+
+  external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
+  external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
+
+(**/**)
 end
 
 
@@ -321,14 +347,14 @@ sig
     (**{6 Base operations}*)
 
   external length : ('a, [> ]) t -> int = "%array_length"
-      
+
   external get : ('a, [> `Read]) t -> int -> 'a = "%array_safe_get"
 
   external set : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
 
     (**{6 Constructors}*)
   external make : int -> 'a -> ('a, _) t = "caml_make_vect"
-      
+
   external create : int -> 'a -> ('a, _) t = "caml_make_vect"
 
   external of_array  : 'a array -> ('a, _ ) t = "%identity"
@@ -360,17 +386,21 @@ sig
   val init : int -> (int -> 'a) -> ('a, _) t
 
   val make_matrix : int -> int -> 'a -> (('a, _)t, _) t
-		    
+
   val create_matrix : int -> int -> 'a ->  (('a, _)t, _) t
-		    
+
     (** {6 Iterators}*)
   val iter : ('a -> unit) -> ('a, [> `Read]) t -> unit
-		    
+
   val map : ('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
-		    
+
   val iteri : (int -> 'a -> unit) -> ('a, [> `Read]) t -> unit
-		    
+
   val mapi : (int -> 'a -> 'b) -> ('a, [> `Read]) t -> ('b, _) t
+
+  val modify : ('a -> 'a) -> ('a, [`Read | `Write]) t -> unit
+
+  val modifyi : (int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
 
   val fold_left : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
 
@@ -385,40 +415,40 @@ sig
   val for_all : ('a -> bool) -> ('a, [> `Read]) t -> bool
 
   val exists : ('a -> bool) -> ('a, [> `Read]) t -> bool
-		    
+
   val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a
 
   val mem : 'a -> ('a, [> `Read]) t -> bool
 
   val memq : 'a -> ('a, [> `Read]) t -> bool
-		    
+
   val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
-		    
+
   val filter : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
-		    
+
   val filter_map : ('a -> 'b option) -> ('a, [> `Read]) t -> ('b, _) t
 
   val find_all : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
-		    
+
   val partition : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t * ('a, _)t
-		    
+
     (** {6 Array transformations} *)
   val rev : ('a, [> `Read]) t -> ('a, _) t
-		    
+
   val rev_in_place : ('a, [`Read | `Write]) t -> unit
-		    
+
   val append : ('a, [> `Read]) t ->  ('a, [> `Read]) t -> ('a, _) t
-		    
+
   val concat : ('a, [> `Read]) t list -> ('a, _) t
-		    
+
   val sub : ('a, [> `Read]) t -> int -> int -> ('a, _) t
-		    
+
   val copy : ('a, [> `Read]) t -> 'a array
-		    
+
   val fill : ('a, [> `Write]) t -> int -> int -> 'a -> unit
-		    
+
   val blit : ('a, [> `Read]) t -> int -> ('a, [>`Write]) t -> int -> int -> unit
-		    
+
   (** {6 Conversions} *)
 
   val enum : ('a, [> `Read]) t -> 'a BatEnum.t
@@ -444,26 +474,26 @@ sig
 
 
 (** {6 Boilerplate code}*)
-		    
+
 (** {7 Printing}*)
-		    
+
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> ('b, [>`Read]) t -> unit
-		    
+
   val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> ('b, [>`Read]) t -> string
-		    
-		    
+
+
 (** {6 Override modules}*)
 
 (** Operations on {!BatArray.Cap} without exceptions.*)
   module Exceptionless : sig
 
-		      
+
     val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a option
 
     val findi : ('a -> bool) -> ('a, [> `Read]) t -> int option
 
   end
-    
+
 (** Operations on {!BatArray.Cap} with labels. *)
   module Labels : sig
     val init : int -> f:(int -> 'a) -> ('a, _) t
@@ -473,12 +503,14 @@ sig
     val create_matrix : dimx:int -> dimy:int -> 'a -> (('a, _)t, _) t
     val sub : ('a, [> `Read]) t -> pos:int -> len:int -> ('a, _) t
     val fill : ('a, [> `Write]) t -> pos:int -> len:int -> 'a -> unit
-    val blit : src:('a, [> `Read]) t -> src_pos:int -> dst:('a, [>`Write]) t -> 
+    val blit : src:('a, [> `Read]) t -> src_pos:int -> dst:('a, [>`Write]) t ->
       dst_pos:int -> len:int -> unit
     val iter : f:('a -> unit) -> ('a, [> `Read]) t -> unit
     val map : f:('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
     val iteri : f:(int -> 'a -> unit) -> ('a, [> `Read]) t -> unit
     val mapi : f:(int -> 'a -> 'b) -> ('a, [> `Read]) t -> ('b, _) t
+    val modify : f:('a -> 'a) -> ('a, [`Read | `Write]) t -> unit
+    val modifyi : f:(int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
     val fold_left : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
     val fold_right : f:('b -> 'a -> 'a) -> ('b, [> `Read]) t -> init:'a -> 'a
     val sort : cmp:('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
@@ -496,7 +528,7 @@ sig
   end
 (**/**)
 (** {6 Undocumented functions} *)
-    
+
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 

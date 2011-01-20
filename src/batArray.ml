@@ -26,7 +26,20 @@ type 'a mappable = 'a t
 
 open Array
 
+external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
+external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
+
 let map = map
+
+let modify f a =
+  for i = 0 to length a - 1 do
+    unsafe_set a i (f (unsafe_get a i))
+  done
+
+let modifyi f a =
+  for i = 0 to length a - 1 do
+    unsafe_set a i (f i (unsafe_get a i))
+  done
 
 let fold_lefti f x a =
   let r = ref x in
@@ -34,8 +47,6 @@ let fold_lefti f x a =
     r := f !r i (unsafe_get a i)
   done;
   !r
-
-
 
 let rev_in_place xs =
   let n = length xs in
@@ -328,6 +339,8 @@ struct
   let filter_map   = filter_map
   let iteri        = iteri
   let mapi         = mapi
+  let modify       = modify
+  let modifyi      = modifyi
   let fold_left    = fold_left
   let fold_right   = fold_right
   let iter2        = iter2
@@ -377,6 +390,8 @@ struct
       let map  ~f a = map  f a
       let iteri ~f a = iteri f a
       let mapi  ~f a = mapi f a
+      let modify ~f a = modify f a
+      let modifyi ~f a = modifyi f a
       let fold_left ~f ~init a = fold_left f init a
       let fold_right ~f a ~init= fold_right f a init
       let sort ~cmp a = sort cmp a
@@ -430,6 +445,8 @@ struct
   let map  ~f a = map  f a
   let iteri ~f a = iteri f a
   let mapi  ~f a = mapi f a
+  let modify ~f a = modify f a
+  let modifyi ~f a = modifyi f a
   let fold_left ~f ~init a = fold_left f init a
   let fold_right ~f a ~init= fold_right f a init
   let sort ~cmp a = sort cmp a
@@ -450,6 +467,8 @@ struct
     let find ~f e = find f e
     let findi ~f e = findi f e
   end
+  external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
+  external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
 end
 
 

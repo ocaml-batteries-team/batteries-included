@@ -53,7 +53,7 @@ module A = struct include BatArray include BatArray.Labels end
   let int64 = Bigarray.int64
   let nativeint = Bigarray.nativeint
   let char = Bigarray.char
-    
+
   let c_layout = Bigarray.c_layout
   let fortran_layout = Bigarray.fortran_layout
 
@@ -90,7 +90,7 @@ module A = struct include BatArray include BatArray.Labels end
 
       let product = ref 1 in
 	for i = 0 to Array.length dims - 1 do
-	  indices.(i) <- 
+	  indices.(i) <-
 	done*)
 
     (**
@@ -111,7 +111,7 @@ module A = struct include BatArray include BatArray.Labels end
 		coor.(i) <- ofs;
 		aux (i - 1)
 	      end
-	    else 
+	    else
 	      begin
 		coor.(i) <- new_value;
 		true
@@ -135,11 +135,31 @@ module A = struct include BatArray include BatArray.Labels end
 	while inplace_next ~ofs:offset ~dims ~coor do
 	  f (A.Cap.of_array coor) (get e coor)
 	done
-	  
+
+    let modify f e =
+      let dims = dims e in
+      let offset = ofs e in
+      let change c = set e c (f (get e c)) in
+      let coor = A.create (num_dims e) ~init:offset in
+      change coor;
+      while inplace_next ~ofs:offset ~dims ~coor do
+        change coor
+      done
+
+    let modifyi f e =
+      let dims = dims e in
+      let offset = ofs e in
+      let change c = set e c (f (A.Cap.of_array c) (get e c)) in
+      let coor = A.create (num_dims e) ~init:offset in
+      change coor;
+      while inplace_next ~ofs:offset ~dims ~coor do
+        change coor
+      done
+
     let enum e =
       let dims   = dims e
       and offset = ofs e in
-      let coor   = A.create (num_dims e) ~init:offset 
+      let coor   = A.create (num_dims e) ~init:offset
       and status = ref `ongoing in
 	BatEnum.from (fun () ->
 		     match !status with
@@ -150,11 +170,11 @@ module A = struct include BatArray include BatArray.Labels end
 			       let update = inplace_next ~ofs:offset ~dims ~coor in
 				 if not update then status := `dry;
 				 result
-			     with _ -> 
+			     with _ ->
 			       status := `dry;
 			       raise BatEnum.No_more_elements
 			   end
- 		        | `dry -> 
+		        | `dry ->
 			    raise BatEnum.No_more_elements
 		  )
 
@@ -215,6 +235,16 @@ module A = struct include BatArray include BatArray.Labels end
       done;
       b
 
+    let modify f a =
+      for i = ofs a to ofs a + dim a - 1 do
+        unsafe_set a i (f (unsafe_get a i))
+      done
+
+    let modifyi f a =
+      for i = ofs a to ofs a + dim a - 1 do
+        unsafe_set a i (f i (unsafe_get a i))
+      done
+
     let to_array a = Array.init (dim a) (fun i -> a.{i+(ofs a)})
   end
   module Array2 = struct
@@ -246,6 +276,20 @@ module A = struct include BatArray include BatArray.Labels end
         done
       done;
       b
+
+    let modify f a =
+      for i = ofs a to ofs a + dim1 a - 1 do
+        for j = ofs a to ofs a + dim2 a - 1 do
+          unsafe_set a i j (f (unsafe_get a i j))
+        done
+      done
+
+    let modifyij f a =
+      for i = ofs a to ofs a + dim1 a - 1 do
+        for j = ofs a to ofs a + dim2 a - 1 do
+          unsafe_set a i j (f i j (unsafe_get a i j))
+        done
+      done
 
     let to_array a =
       Array.init (dim1 a) (
@@ -290,6 +334,24 @@ module A = struct include BatArray include BatArray.Labels end
         done
       done;
       b
+
+    let modify f a =
+      for i = ofs a to ofs a + dim1 a - 1 do
+        for j = ofs a to ofs a + dim2 a - 1 do
+          for k = ofs a to ofs a + dim3 a - 1 do
+            unsafe_set a i j k (f (unsafe_get a i j k))
+          done
+        done
+      done
+
+    let modifyijk f a =
+      for i = ofs a to ofs a + dim1 a - 1 do
+        for j = ofs a to ofs a + dim2 a - 1 do
+          for k = ofs a to ofs a + dim3 a - 1 do
+            unsafe_set a i j k (f i j k (unsafe_get a i j k))
+          done
+        done
+      done
 
     let to_array a =
       Array.init (dim1 a) (
