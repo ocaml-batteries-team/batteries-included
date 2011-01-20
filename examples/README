@@ -3,8 +3,14 @@ A few examples of short programs written using OCaml Batteries Included.
 Directory tools/ contains small tools.
 Directory snippets/ contains random code extracts.
 Directory euler/ contains solution programs to varous eulerproject.com puzzles
+Directory pleac/ contains the start of a PLEAC for batteries
 
-(*To build all these programs, run
-   make examples
-from the top-level directory. *)
-Currently there's no easy to build these programs, is on todo.  Use ocamlbuild by hand to build most of these example programs.
+To build all these programs, install batteries and run
+
+    make 
+
+from each directory.  If this doesn't work, steal the makefile, _tags
+and myocamlbuild from another example directory, make them work for
+the files in the new directory and send us the patch.  :) Extra points
+for implementing a toplevel `make examples` that makes the examples.
+
