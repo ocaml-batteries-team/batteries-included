@@ -336,7 +336,7 @@ let height = function
    such as "adding a lot of elements". On a test system, we go from
    1800 op/s to 2500 op/s.
 *)
-let create l x d r =
+let make l x d r =
   let hl = height l and hr = height r in
   Node(l, x, d, r, (if hl >= hr then hl + 1 else hr + 1))
 
@@ -348,24 +348,24 @@ let bal l x d r =
         Empty -> invalid_arg "Map.bal"
       | Node(ll, lv, ld, lr, _) ->
         if height ll >= height lr then
-          create ll lv ld (create lr x d r)
+          make ll lv ld (make lr x d r)
         else begin
           match lr with
               Empty -> invalid_arg "Map.bal"
             | Node(lrl, lrv, lrd, lrr, _)->
-              create (create ll lv ld lrl) lrv lrd (create lrr x d r)
+              make (make ll lv ld lrl) lrv lrd (make lrr x d r)
         end
   end else if hr > hl + 2 then begin
     match r with
         Empty -> invalid_arg "Map.bal"
       | Node(rl, rv, rd, rr, _) ->
         if height rr >= height rl then
-          create (create l x d rl) rv rd rr
+          make (make l x d rl) rv rd rr
         else begin
           match rl with
               Empty -> invalid_arg "Map.bal"
             | Node(rll, rlv, rld, rlr, _) ->
-              create (create l x d rll) rlv rld (create rlr rv rd rr)
+              make (make l x d rll) rlv rld (make rlr rv rd rr)
         end
   end else
       Node(l, x, d, r, (if hl >= hr then hl + 1 else hr + 1))
