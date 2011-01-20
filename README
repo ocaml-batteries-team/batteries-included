@@ -1,5 +1,5 @@
-*** Welcome to Batteries Included ***
-
+Welcome to Batteries Included 
+================================
 OCaml Batteries Included: the community-maintained foundation library
 for your OCaml projects.
 
@@ -12,52 +12,55 @@ Batteries Included serves the following purposes:
 * provide a consistent API for otherwise independent
   libraries.
 
-*** Building Batteries Included ***
+Building Batteries Included 
+==============================
 
-**** Requirements ****
-You will need
+Requirements
+------------------------------
+You will need the following libraries:
+
 * OCaml >= 3.11
 * Findlib >= 1.2.5  (http://projects.camlcity.org/projects/findlib.html/)
-* make (optional; aids build and installation)
+* GNU make (optional; aids build and installation)
 * Camomile >= 0.7 (http://camomile.sourceforge.net/)
 * OUnit    to build and run the tests
 
-**** Configuration and installation ****
-
-NOTE: to use camomile 0.8.2, run [make camomile82] first
+Configuration and installation
+------------------------------
 
 To install the full version of OCaml Batteries Included, execute
 
-   $ make all
-   $ make test     [ optional ]
-   $ sudo make install 
+    $ make all
+    $ make test qtest    [ optional ]
+    $ sudo make install 
 
-   $ make doc      [ optional ]
-   $ sudo make install-doc   [ optional ]
+    $ make doc      [ optional ]
+    $ sudo make install-doc   [ optional ]
 
 If you want the documentation installed elsewhere, set this *before*
 starting the build process (it becomes part of batteries_config.ml).
 
-   $ export DOCROOT=/path/to/new/docroot/
+    $ export DOCROOT=/path/to/new/docroot/
 
 If you want findlib to use a -destdir argument to [ocamlfind install], set
 
-   $ export DESTDIR=/path/to/findlib/dest
+    $ export DESTDIR=/path/to/findlib/dest
 
 To disable native compilation:
    
-   $ export BATTERIES_NATIVE=false
+    $ export BATTERIES_NATIVE=false
 
 To disable building of native shared libraries:
 
-   $ export BATTERIES_NATIVE_SHLIB=false
+    $ export BATTERIES_NATIVE_SHLIB=false
 
-*** Using Batteries ***
+Using Batteries
+==============================
 
 To get started using Batteries at the toplevel, copy the ocamlinit
 file to ~/.ocamlinit:
 
-   $ cp ocamlinit ~/.ocamlinit
+    $ cp ocamlinit ~/.ocamlinit
 
 If you already have findlib in your ~/.ocamlinit, you only need the
 last line in our ocamlinit to load batteries.
@@ -65,7 +68,8 @@ last line in our ocamlinit to load batteries.
 More usage help available on the batteries-included wiki: 
 http://wiki.github.com/thelema/batteries-included/
 
-*** ExtLib Compatibility ***
+ExtLib Compatibility
+==============================
 
 If your project currently uses ExtLib, most likely you can just change
 [-package extlib] to [-package batteries] and add [open Extlibcompat]
@@ -76,6 +80,7 @@ use Batteries and ExtLib in the same project.
 COMPATIBILITY NOTE: If you're using ExtLib's Unzip module, it does not
 have a corresponding module in batteries at the moment.
 
-*** Extending Batteries Included ***
+Extending Batteries Included 
+==============================
 
-See doc/batteries/GUIDELINES
+See doc/batteries/GUIDELINES and https://github.com/ocaml-batteries-team/batteries-included/wiki/Developers-guidelines
