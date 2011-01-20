@@ -26,9 +26,6 @@ type 'a mappable = 'a t
 
 open Array
 
-external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
-external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
-
 let map = map
 
 let modify f a =
@@ -467,8 +464,6 @@ struct
     let find ~f e = find f e
     let findi ~f e = findi f e
   end
-  external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
-  external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
 end
 
 

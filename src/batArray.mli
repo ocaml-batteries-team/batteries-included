@@ -239,15 +239,6 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 
 val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
   (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
 
-(**/**)
-  (** {6 Undocumented functions} *)
-
-external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
-external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
-
-(**/**)
-
-
   (** {6 Override modules}*)
 
 (** The following modules replace functions defined in {!Array} with
@@ -312,13 +303,6 @@ module Labels : sig
     val find:       f:('a -> bool) -> 'a t -> 'a option
     val findi:      f:('a -> bool) -> 'a t -> int option
   end
-(**/**)
-    (** {6 Undocumented functions} **)
-
-  external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
-  external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
-
-(**/**)
 end
 
 
