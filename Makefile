@@ -50,7 +50,7 @@ all: fix-camomile
 
 clean:
 	rm -f apidocs
-	rm qtest/*_t.ml
+	rm qtest/*_t.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) -clean
 
 doc:
@@ -153,7 +153,7 @@ TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 #TESTABLE=src/batString.ml
 
 #put all the testing modules in a library
-qtest/test_mods.mllib:
+qtest/test_mods.mllib: $(TESTABLE)
 	echo -n "Quickcheck Tests " > $@
 	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
 
