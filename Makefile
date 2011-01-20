@@ -30,15 +30,15 @@ NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
 
 # What to build
 TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
-TEST_TARGETS = testsuite/main.byte
+TEST_TARGETS = testsuite/main.byte qtest/test_runner.byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   TARGETS += shared.otarget
-  TEST_TARGETS += testsuite/main.native
+  TEST_TARGETS += testsuite/main.native qtest/test_runner.native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
 else ifeq ($(BATTERIES_NATIVE), yes)
   TARGETS += native.otarget
-  TEST_TARGETS += testsuite/main.native
+  TEST_TARGETS += testsuite/main.native qtest/test_runner.native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 endif
 
@@ -84,7 +84,11 @@ reinstall:
 	$(MAKE) uninstall
 	$(MAKE) install
 
-test: 
+#List of source files that it's okay to try to test
+DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
+TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
+
+test: all $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
 	$(foreach TEST, $(TEST_TARGETS), _build/$(TEST); )
 
@@ -147,18 +151,7 @@ camfailunk:
 qtest/%_t.ml: src/%.ml
 	ruby build/make_suite.rb $^ > $@
 
-#List of source files that it's okay to try to test
-DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
-TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
-#TESTABLE=src/batString.ml
-
 #put all the testing modules in a library
 qtest/test_mods.mllib: $(TESTABLE)
 	echo -n "Quickcheck Tests " > $@
 	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
-
-#compile test_runners which need the test_mods.cm?a library
-qtest: $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
-	ocamlbuild qtest/test_runner.byte qtest/test_runner.native
-	./test_runner.byte
-	./test_runner.native
