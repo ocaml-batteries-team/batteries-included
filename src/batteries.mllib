@@ -15,6 +15,7 @@ BatGc
 BatGenlex
 BatHashcons
 BatHashtbl
+BatHeap
 BatIO
 BatInnerIO
 BatInt32
