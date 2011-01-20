@@ -161,6 +161,9 @@ val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
   (** [diff m1 m2] removes all bindings of keys found in [m2] from [m1].  Equivalent to [fold remove m2 m1] *)
 
 val split : 'a -> ('a, 'b) t -> (('a, 'b) t * 'b option * ('a, 'b) t)
+(** [split k m] returns the map of keys less than [k] in [m], [k]'s
+    binding in [m], if there was one, and the map of keys greater then
+    [k] in [m] *)
 
 (** Infix operators over a {!BatPMap} *)
 module Infix : sig
