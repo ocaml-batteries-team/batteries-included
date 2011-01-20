@@ -108,13 +108,6 @@ open Pervasives
   let iter              = iter
   let scanl             = scanl
 
-  (** {6 Concurrency}*)
-
-  let unique_value  = ref 0
-  let lock          = ref BatConcurrent.nolock
-  let unique ()     =
-    BatConcurrent.sync !lock BatRef.post_incr unique_value
-
   (** {6 Operators}*)
 
   let first f (x, y) = (f x, y)

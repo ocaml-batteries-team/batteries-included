@@ -201,3 +201,20 @@ val wrap : ('a -> 'b) -> 'a -> ('b, exn) result
 (** [wrap f x] wraps a function that would normally throw an exception
 on failure such that it now returns a result with either the [Ok]
 return value or the [Bad] exception. *)
+
+(**
+   {6 Thread-safety internals}
+
+   Unless you are attempting to adapt Batteries Included to a new model of
+   concurrency, you probably won't need this.
+*)
+
+val lock: BatConcurrent.lock ref
+(**
+   A lock used to synchronize internal operations.
+
+   By default, this is {!BatConcurrent.nolock}. However, if you're
+   using a version of Batteries compiled in threaded mode, this uses
+   {!BatMutex}. If you're attempting to use Batteries with another
+   concurrency model, set the lock appropriately.
+*)
