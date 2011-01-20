@@ -35,6 +35,10 @@ let empty = { size = 0 ; data = [] ; mind = None }
 
 let size bh = bh.size
 
+(**T size_empty
+   size empty = 0
+**)
+
 let link bt1 bt2 =
   assert (bt1.rank = bt2.rank) ;
   let rank = bt1.rank + 1 in
@@ -59,6 +63,10 @@ let add bh x =
   in {
     size = size ; data = data ; mind = mind
   }
+
+(**T size_non_empty
+   size (add empty 3) = 1
+**)
 
 let insert x bh = add bh x
 
@@ -85,6 +93,12 @@ let merge bh1 bh2 =
 let find_min bh = match bh.mind with
   | None -> invalid_arg "find_min"
   | Some d -> d
+
+(**T find_min
+   find_min (add (add empty 3) 5) = 3
+   find_min (add (add empty 5) 3) = 3
+**)
+
 
 let rec find_min_tree ts k = match ts with
   | [] -> failwith "find_min_tree"
@@ -124,6 +138,12 @@ let elems bh =
       elems (m :: acc) bh
   in
   List.rev (elems [] bh)
+
+(**T elems
+   elems (add (add empty 4) 6) = [4; 6]
+   elems (add (add empty 6) 4) = [4; 6]
+   elems empty = []
+**)
 
 module type H = sig
   module Ord : Set.OrderedType
