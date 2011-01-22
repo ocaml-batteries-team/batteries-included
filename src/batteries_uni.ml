@@ -56,7 +56,6 @@ module Digest = struct include Digest include BatDigest end
 module Format = struct include Format include BatFormat end
 module Gc = struct include Gc include BatGc end
 module Genlex = struct include Genlex include BatGenlex end
-module Hashcons = BatHashcons
 module Hashtbl = BatHashtbl
 module Heap = BatHeap
 module Int32 = BatInt32
@@ -107,6 +106,7 @@ module Std = BatStd
 
 (* Batteries specific modules *)
 module CharParser = BatCharParser
+module Hashcons = BatHashcons
 module Logger = BatLogger
 module Monad = BatMonad
 module Pair = BatPair
