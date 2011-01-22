@@ -78,6 +78,7 @@ BatSeq
 BatStd
 BatSubstring
 BatUCharParser
+BatUref
 BatValue_printer
 BatVect
 BatAvlTree
