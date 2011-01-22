@@ -41,7 +41,13 @@ let nng () =
 let neg_ig () = -(nng ())
 
 (* Uniform random int generator *)
-let uig () = Random.bits () - max_int / 2
+let uig = 
+  if Sys.word_size = 32 then 
+    fun () -> if Random.bool () then - Random.bits () - 1 else Random.bits ()
+  else (* word size = 64 *)
+    fun () -> 
+	let b = Random.bits () lor (Random.bits () lsl 30) lor (Random.bits () lsl 60) in
+	if Random.bool () then - b - 1 else b
 
 let lg_size size gen () =
   foldn ~f:(fun acc _ -> (gen ())::acc) ~init:[] (size ())
