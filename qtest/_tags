@@ -1,4 +1,4 @@
-<*>: pkg_oUnit, pkg_camomile, pkg_threads
+<*>: pkg_oUnit, pkg_threads
 <test_mods.cma>: linkall
 <test_mods.cmxa>: linkall
-<test_runner.*>: use_batteries, use_test_mods
+<test_runner.*>: use_batteries, use_test_mods, threads
