@@ -68,7 +68,7 @@ val mapi : (int -> 'a -> 'b) -> 'a dq -> 'b dq
       been replaces with [f n x], where [n] is the position of [x]
       from the front of [dq]. O(n) *)
 
-val iteri : ('a -> unit) -> 'a dq -> unit
+val iter : ('a -> unit) -> 'a dq -> unit
   (** [map f dq] calls [f x] on each element [x] of [dq]. O(n) *)
 
 val iteri  : (int -> 'a -> unit) -> 'a dq -> unit
