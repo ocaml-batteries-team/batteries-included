@@ -32,8 +32,26 @@ let size q =
 let cons x q =
   { q with front = x :: q.front ; flen = q.flen + 1 }
 
+(**T cons_one_size
+   size (cons 1 empty) = 1
+   to_list(cons 1 empty) <> to_list(cons 2 empty)
+ **)
+
+(**Q cons_qt
+   (Q.list Q.pos_int) ~count:10 (fun l -> List.fold_left (flip cons) empty l |> to_list = List.rev l)
+ **)
+
 let snoc q x =
   { q with rear = x :: q.rear ; rlen = q.rlen + 1 }
+
+(**T cons_one_eq_snoc_one
+   to_list(cons 1 empty) = to_list(snoc empty 1)
+   to_list(cons 1 (cons 2 empty)) = (to_list (snoc (snoc empty 2) 1) |> List.rev)
+ **)
+
+(**Q snoc_eq_rev
+   (Q.list Q.int) (fun l -> List.fold_left snoc empty l |> to_list = l)
+ **)
 
 let front q =
   match q.front with
@@ -48,6 +66,11 @@ let front q =
                                      rear = [] ;
                                      rlen = 0 })
 
+(**T front
+   front(cons 1 empty) = Some(1,empty)
+   front(snoc empty 1) = Some(1,empty)
+ **)
+
 let rear q =
   match q.rear with
     | t :: rear -> Some ({ q with rear = rear ; rlen = q.rlen - 1 }, t)
@@ -60,8 +83,16 @@ let rear q =
                       rear = List.tl rear ; rlen = q.flen - 1 },
                     List.hd rear)
 
+(**T rear
+   match rear(empty |> cons 1 |> cons 2) with | Some(_, 1) -> true | _ -> false
+ **)   
+
 let rev q = { front = q.rear ; flen = q.rlen ;
               rear = q.front ; rlen = q.flen }
+
+(**Q rev
+   (Q.list Q.pos_int) (fun l -> let q = of_list l in rev q |> to_list = List.rev l)
+ **)
 
 let of_list l = { front = l ; flen = List.length l ;
                   rear = [] ; rlen = 0 }
