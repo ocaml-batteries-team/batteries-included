@@ -113,6 +113,7 @@ let _iteri f l = ignore (List.fold_left (fun i v -> f v i; i + 1) 0 l)
 let _TL = _iteri (fun (n,b) i ->
   OUnit.assert_bool ("Line " ^ string_of_int (i+1) ^ " of bool test: " ^ n) b)
 
+open Batteries
 open #{mod}
 
 EOF
@@ -125,27 +126,27 @@ data = data.gsub(/\(\*\*\T(.*?)\*\*\)/m){ |match|
   lines = match.split(/\n/)
   head = "_TL [ "
   tail = "] "
-  lines[1..-2] = lines[1..-2].map{|l|
-    if !l.strip.empty? and not l.strip =~ /^\(\*.*?\*\)$/
-      "(#{l.strip.dump}, (#{l}));"
+    lines[1..-2] = lines[1..-2].map{|l| l.strip}.find_all{|l| not l.empty?}.map{|l|
+    if not l =~ /^\(\*.*?\*\)$/
+      "(#{l.dump}, (#{l}));"
     else
       l
     end
   }
-  [ lines[0], head + lines[1..-2].map{|l| l.strip}.join("\n      ") + tail, lines[-1] ].join("\n")
+    [ lines[0], head + lines[1..-2].join("\n      ") + tail, lines[-1] ].join("\n")
 }
 
 data = data.gsub(/\(\*\*\Q(.*?)\*\*\)/m){ |match|
   match[0,4] = "(***"
   lines = match.split(/\n/)
-  lines[1..-2] = lines[1..-2].map{|l|
-    if !l.strip.empty? and not l.strip =~ /^\(\*.*?\*\)$/
+    lines[1..-2] = lines[1..-2].map{|l| l.strip}.find_all{|l| not l.empty?}.map{|l|
+    if not l =~ /^\(\*.*?\*\)$/
       l.sub(/\S+/){|m| "Quickcheck.laws_exn #{l.strip.dump} "+m } + ";"
     else
       l
     end
   }
-  [ lines[0], lines[1..-2].map{|l| l.strip}.join("\n      ") + "()", lines[-1] ].join("\n")
+  [ lines[0], lines[1..-2].join("\n      ") + "()", lines[-1] ].join("\n")
 }
 
 auto_name = File.basename(file).downcase.
