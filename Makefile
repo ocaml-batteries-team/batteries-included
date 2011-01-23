@@ -88,7 +88,7 @@ reinstall:
 DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
 TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
-test: all $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
+test: fix-camomile $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
 	$(foreach TEST, $(TEST_TARGETS), _build/$(TEST); )
 
