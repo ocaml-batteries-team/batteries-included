@@ -146,7 +146,7 @@ let elems bh =
 **)
 
 (**Q elems_q
-   (Q.list Q.int) (fun l -> elems (List.fold_left add empty l) = List.sort Pervasives.compare l)
+   (Q.list Q.int) ~count:10 (fun l -> elems (List.fold_left add empty l) = List.sort ~cmp:Pervasives.compare l)
 **)
 
 module type H = sig
