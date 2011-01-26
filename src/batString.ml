@@ -131,10 +131,20 @@ let strip ?(chars=" \t\r\n") s =
 	done;
 	sub s p (!l - p + 1)
 
-let left r len = sub r 0 len
-let right r len = let rlen = length r in sub r (rlen - len) len
+let left r len = if String.length r < len then r else sub r 0 len
+let right r len = let rlen = length r in
+		  if rlen < len then r else sub r (rlen - len) len
 let head = left
-let tail r pos = sub r pos (length r - pos)
+let tail r pos = if pos > length r then "" else sub r pos (length r - pos)
+
+(**T head_tail
+   left "abc" 1 = "a"
+   right "abc" 1 = "c"
+   left "ab" 3 = "ab"
+   right "ab" 3 = "ab"
+   tail "abc" 1 = "bc"
+   tail "ab" 3 = ""
+ **)
 
 let split str sep =
 	let p = find str sep in
