@@ -20,6 +20,7 @@ let all_tests =
     Test_stack.tests;
     Test_mappable.tests;
     Test_hashcons.tests;
+    Test_lazy_pattern.tests;
   ]
 
 let () = 
