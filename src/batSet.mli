@@ -379,6 +379,11 @@ val of_enum: 'a BatEnum.t -> 'a t
 
 val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
 
+val of_list: 'a list -> 'a t
+(** builds a set from the given list, using the default comparison
+    function *)
+
+
 val for_all : ('a -> bool) -> 'a t -> bool
 (** Returns whether the given predicate applies to all elements in the set *)
 
