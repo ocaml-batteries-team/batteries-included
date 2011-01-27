@@ -18,14 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(*
-
-% ocamllex build/make_suite.mll -o build/make_suite.ml
-% ocamlfind ocamlopt -package str -linkpkg -o build/make_suite build/make_suite.ml
-% build/make_suite src/batDeque.ml
-
-*)
-
 {
   open Lexing
 
@@ -35,20 +27,15 @@
                              pos_lnum = curr.pos_lnum + 1 ;
                              pos_bol = curr.pos_cnum }
 
-  let announce_prag lb =
-    Printf.eprintf "Entering pragma at file %S, line %d\n%!"
-      lb.lex_start_p.pos_fname
-      lb.lex_start_p.pos_lnum
-
   let withbuf lexfn lb =
     let buf = Buffer.create 19 in
-    Buffer.add_char buf ' ' ;
     lexfn buf lb
 
-  let wspre = Str.regexp "[ \t]+"
+  let wspre = Str.regexp "[ \t]*\\(.*\\)[ \t]*"
 
   let strip s =
-    String.concat " " (Str.split wspre s)
+    ignore (Str.string_match wspre s 0) ;
+    Str.matched_group 1 s
 
   let all_tests : string list ref = ref []
 
@@ -98,9 +85,15 @@ let newline  = ('\r' | '\n' | "\r\n")
 
 rule scan = parse
   | newline { eol lexbuf ; scan lexbuf }
-  | "(**Q " { withbuf (pragma `Q lexbuf.lex_start_p) lexbuf }
-  | "(**T " { withbuf (pragma `T lexbuf.lex_start_p) lexbuf }
-  | "(*** " { withbuf (pragma `S lexbuf.lex_start_p) lexbuf }
+  | "(**Q " { withbuf (fun buf ->
+                         Buffer.add_char buf ' ' ;
+                         pragma `Q lexbuf.lex_start_p buf) lexbuf }
+  | "(**T " { withbuf (fun buf ->
+                         Buffer.add_char buf ' ' ;
+                         pragma `T lexbuf.lex_start_p buf) lexbuf }
+  | "(*** " { withbuf (fun buf ->
+                         Buffer.add_char buf ' ' ;
+                         pragma `S lexbuf.lex_start_p buf) lexbuf }
   | "(*" { withbuf (comment 1) lexbuf ; scan lexbuf }
   | _ { scan lexbuf }
 
@@ -113,6 +106,7 @@ and comment dep buf = parse
       comment (dep + 1) buf lexbuf
     }
   | "*)" {
+      Buffer.add_string buf "*)" ;
       if dep = 1 then ()
       else comment (dep - 1) buf lexbuf
     }

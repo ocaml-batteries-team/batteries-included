@@ -50,7 +50,7 @@ all: fix-camomile
 
 clean:
 	rm -f apidocs
-	rm -f qtest/*_t.ml qtest/test_mods.mllib build/make_suite
+	rm -f qtest/*_t.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) -clean
 
 doc:
@@ -144,18 +144,15 @@ camfailunk:
 	exit 1
 
 ##
-## Magic for qtest target - auto-generated test files from source comments
+## Magic for test target - auto-generated test files from source comments
 ##
 
-build/make_suite: build/make_suite.mll
-	ocamlbuild make_suite.native
-	cp make_suite.native build/make_suite
-#ocamllex build/make_suite.mll -o build/make_suite.ml
-#ocamlfind ocamlopt -package str -linkpkg -o build/make_suite build/make_suite.ml
+_build/build/make_suite.native: build/make_suite.mll
+	ocamlbuild -no-links make_suite.native
 
 #convert a source file to a test suite by filtering special comments
-qtest/%_t.ml: src/%.ml build/make_suite
-	build/make_suite $< > $@
+qtest/%_t.ml: src/%.ml _build/build/make_suite.native
+	_build/build/make_suite.native $< > $@
 
 #put all the testing modules in a library
 qtest/test_mods.mllib: $(TESTABLE)
