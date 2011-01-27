@@ -329,3 +329,11 @@ let diff m n = BatMap.diff m n
 
 let intersect m n = BatMap.intersect (fun _ x -> x) m n
 
+let subset s1 s2 = for_all (fun x -> mem x s2) s1
+
+(**T subset
+   subset (of_list [1;2;3]) (of_list [1;2;3;4])
+   not (subset (of_list [1;2;3;5]) (of_list [1;2;3;4]))
+   not (subset (of_list [1;2;3;4]) (of_list [1;2;3]))
+**)
+
