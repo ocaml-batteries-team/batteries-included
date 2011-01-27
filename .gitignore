@@ -1,6 +1,7 @@
 *~
 _build
 build/META
+build/make_suite
 src/batteries_config.ml
 doc/batteries/html/api/
 hdoc/*
