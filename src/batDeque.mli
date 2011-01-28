@@ -18,7 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Functional double-ended queues *)
+(** Functional double-ended queues
+
+    Ascribes to:
+
+    [BatEnum.Enumerable with type 'a enumerable = 'a t]
+    [BatInterfaces.Mappable with type 'a mappable = 'a t]
+
+ *)
 
 type +'a dq
   (** The type of double-ended queues *)
@@ -26,17 +33,21 @@ type +'a dq
 type 'a t = 'a dq
   (** A synonym for convenience *)
 
-val empty : 'a dq
-  (** The empty dequeue. O(1) *)
-
 val size : 'a dq -> int
   (** [size dq] is the number of elements in the [dq]. O(1) *)
+
+(** {6 Construction} *)
+
+val empty : 'a dq
+  (** The empty dequeue. O(1) *)
 
 val cons : 'a -> 'a dq -> 'a dq
   (** [cons x dq] adds [x] to the front of [dq]. O(1) *)
 
 val snoc : 'a dq -> 'a -> 'a dq
   (** [snoc x dq] adds [x] to the rear of [dq]. O(1) *)
+
+(** {6 Deconstruction} *)
 
 val front : 'a dq -> ('a * 'a dq) option
   (** [front dq] returns [Some (x, dq')] iff [x] is at the front of
@@ -48,14 +59,16 @@ val rear : 'a dq -> ('a dq * 'a) option
       and [dq'] is the rest of [dq] excluding [x], and [None] if [dq]
       has no elements. O(1) amortized, O(n) worst case *)
 
+(** {6 Basic operations} *)
+
 val rev : 'a dq -> 'a dq
   (** [rev dq] reverses [dq]. O(1) *)
 
 val is_empty : 'a dq -> bool
   (** [is_empty dq] returns [false] iff [dq] has no elements. O(1) *)
 
-val nth : ?backwards:bool -> 'a dq -> int -> 'a option
-  (** [nth ~backwards dq k] returns the [k]th element of [dq], from
+val at : ?backwards:bool -> 'a dq -> int -> 'a option
+  (** [at ~backwards dq k] returns the [k]th element of [dq], from
       the front if [backwards] is false, and from the rear if
       [backwards] is true. By default, [backwards = false]. O(n) *)
 
@@ -103,10 +116,35 @@ val prepend_list : 'a list -> 'a dq -> 'a dq
   (** [prepent_list l dq] is equivalent to [append (of_list l) dq],
       but more efficient. O(min(m, n)) *)
 
+(** {6 Transformation} *)
+
 val of_list : 'a list -> 'a dq
   (** [of_list l] is a deque representation of the elements of [l].
       O(1) *)
 
 val to_list : 'a dq -> 'a list
-  (** [to_list] is a list representation of the elements of [dq].
+  (** [to_list dq] is a list representation of the elements of [dq].
       O(n) *)
+
+val of_enum : 'a BatEnum.t -> 'a dq
+  (** [of_enum e] is a deque representation of the elements of [e].
+      Consumes the enumeration [e]. O(n) *)
+
+val enum : 'a dq -> 'a BatEnum.t
+  (** [enum dq] is an enumeration of the elements of [dq] from the
+      front to the rear. *)
+
+(** {6 Printing} *)
+
+val print : ?first:string -> ?last:string -> ?sep:string
+  -> ('a BatInnerIO.output -> 'b -> unit)
+  -> 'a BatInnerIO.output -> 'b dq -> unit
+  (** Print the contents of the deque. O(n) *)
+
+val sprint : ?first:string -> ?last:string -> ?sep:string
+  -> ('a BatInnerIO.output -> 'b -> unit)
+  -> 'b dq -> string
+  (** Using a string printer, print a deque to a string. O(n) *)
+
+val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+  (** See {!BatValue_printer}. *)
