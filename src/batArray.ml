@@ -38,12 +38,22 @@ let modifyi f a =
     unsafe_set a i (f i (unsafe_get a i))
   done
 
+(**T modify
+   let a = [|3;2;1|] in modify (fun x -> x + 1) a; a = [|4;3;2|]
+   let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
+ **)
+
 let fold_lefti f x a =
   let r = ref x in
   for i = 0 to length a - 1 do
     r := f !r i (unsafe_get a i)
   done;
   !r
+
+(**T fold_left
+   fold_lefti (fun a i x -> a + i * x) 1 [|2;4;5|] = 1 + 0 + 4 + 10
+   fold_lefti (fun a i x -> a + i * x) 1 [||] = 1
+ **)
 
 let rev_in_place xs =
   let n = length xs in
@@ -55,10 +65,20 @@ let rev_in_place xs =
     decr j
   done
 
+(**T rev_in_place
+   let a = [|1;2;3;4|] in rev_in_place a; a = [|4;3;2;1|]
+   let a = [|1;2;3|] in rev_in_place a; a = [|3;2;1|]
+   let a = [||] in rev_in_place a; a=[||]
+ **)
+
 let rev xs =
   let ys = Array.copy xs in
   rev_in_place ys;
   ys
+
+(**Q rev
+   (Q.array Q.int) ~count:5 (fun l -> rev l |> rev = l)
+ **)
 
 let for_all p xs =
   let n = length xs in
@@ -69,6 +89,12 @@ let for_all p xs =
   in
   loop 0
 
+(**T for_all
+   for_all (fun x -> x mod 2 = 0) [|2;4;6|]
+   for_all (fun x -> x mod 2 = 0) [|2;3;6|] = false
+   for_all (fun _ -> false) [||]
+ **)
+
 let exists p xs =
   let n = length xs in
   let rec loop i =
@@ -77,6 +103,13 @@ let exists p xs =
     else loop (succ i)
   in
   loop 0
+
+(**T for_all
+   exists (fun x -> x mod 2 = 0) [|1;4;5|]
+   exists (fun x -> x mod 2 = 0) [|1;3;5|] = false
+   exists (fun _ -> false) [||] = false
+ **)
+
 
 let mem a xs =
   let n = length xs in
@@ -87,6 +120,12 @@ let mem a xs =
   in
   loop 0
 
+(**T mem
+   mem 2 [|1;2;3|] 
+   mem 2 [||] = false
+   mem (ref 3) [|ref 1; ref 2; ref 3|]
+ **)
+
 let memq a xs =
   let n = length xs in
   let rec loop i =
@@ -95,6 +134,12 @@ let memq a xs =
     else loop (succ i)
   in
   loop 0
+
+(**T memq
+   memq 2 [|1;2;3|]
+   memq 2 [||] = false
+   memq (ref 3) [|ref 1; ref 2; ref 3|] = false
+ **)
 
 let findi p xs =
   let n = length xs in
