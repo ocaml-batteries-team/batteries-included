@@ -50,7 +50,7 @@ all: fix-camomile
 
 clean:
 	rm -f apidocs
-	rm qtest/*_t.ml qtest/test_mods.mllib
+	rm -f qtest/*_t.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) -clean
 
 doc:
