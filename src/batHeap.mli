@@ -83,7 +83,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string
 val sprint : ?first:string -> ?last:string -> ?sep:string
   -> ('a BatInnerIO.output -> 'b -> unit)
   -> 'b t -> string
-  (** Using a string printer, print a deque to a string. O(n log n) *)
+  (** Using a string printer, print a heap to a string. O(n log n) *)
 
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
   (** See {!BatValue_printer}. *)

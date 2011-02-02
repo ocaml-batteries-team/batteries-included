@@ -183,7 +183,7 @@ let rec enum bh =
   let clone () = enum !cur in
   BatEnum.make ~next ~count ~clone
 
-let rec of_enum e = BatEnum.fold add empty e
+let of_enum e = BatEnum.fold add empty e
 
 module type H = sig
   type elem
@@ -335,7 +335,7 @@ module Make (Ord : Set.OrderedType) = struct
     let clone () = enum !cur in
     BatEnum.make ~next ~count ~clone
 
-  let rec of_enum e = BatEnum.fold add empty e
+  let of_enum e = BatEnum.fold add empty e
 
   let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
     let rec spin bh =
