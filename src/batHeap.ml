@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** binomial trees (bintre) *)
+(** binomial trees *)
 type 'a bt = {
   rank : int ;
   root : 'a ;
@@ -130,40 +130,61 @@ let del_min bh =
       { size = size ; data = data ; mind = mind }
   end
 
-let elems bh =
-  let rec elems acc bh =
+let of_list l = List.fold_left add empty l
+
+let to_list bh =
+  let rec aux acc bh =
     if size bh = 0 then acc else
       let m = find_min bh in
       let bh = del_min bh in
-      elems (m :: acc) bh
+      aux (m :: acc) bh
   in
-  List.rev (elems [] bh)
+  List.rev (aux [] bh)
 
-(**T elems
-   elems (add (add empty 4) 6) = [4; 6]
-   elems (add (add empty 6) 4) = [4; 6]
-   elems empty = []
+(**T to_list
+   to_list (add (add empty 4) 6) = [4; 6]
+   to_list (add (add empty 6) 4) = [4; 6]
+   to_list empty = []
 **)
 
-(**Q elems_q
-   (Q.list Q.int) ~count:10 (fun l -> elems (List.fold_left add empty l) = List.sort ~cmp:Pervasives.compare l)
+(**Q to_list_q
+   (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left add empty l) = List.sort ~cmp:Pervasives.compare l)
 **)
+
+let elems = to_list
+
+let rec enum bh =
+  let cur = ref bh in
+  let next () =
+    let bh = !cur in
+    if size bh = 0 then raise BatEnum.No_more_elements ;
+    cur := (del_min bh) ; find_min bh
+  in
+  let count () = size !cur in
+  let clone () = enum !cur in
+  BatEnum.make ~next ~count ~clone
+
+let rec of_enum e = BatEnum.fold add empty e
 
 module type H = sig
-  module Ord : Set.OrderedType
+  type elem
   type t
   val empty    : t
   val size     : t -> int
-  val add      : t -> Ord.t -> t
-  val insert   : Ord.t -> t -> t
+  val add      : t -> elem -> t
+  val insert   : elem -> t -> t
   val merge    : t -> t -> t
-  val find_min : t -> Ord.t
+  val find_min : t -> elem
   val del_min  : t -> t
-  val elems    : t -> Ord.t list
+  val of_list  : elem list -> t
+  val to_list  : t -> elem list
+  val elems    : t -> elem list
+  val of_enum  : elem BatEnum.t -> t
+  val enum     : t -> elem BatEnum.t
 end
 
 module Make (Ord : Set.OrderedType) = struct
-  module Ord = Ord
+  type elem = Ord.t
 
   let ord_min x y =
     if Ord.compare x y <= 0 then x else y
@@ -264,12 +285,30 @@ module Make (Ord : Set.OrderedType) = struct
         { size = size ; data = data ; mind = mind }
     end
 
-  let elems bh =
-    let rec elems acc bh =
+  let to_list bh =
+    let rec aux acc bh =
       if size bh = 0 then acc else
         let m = find_min bh in
         let bh = del_min bh in
-        elems (m :: acc) bh
+        aux (m :: acc) bh
     in
-    List.rev (elems [] bh)
+    List.rev (aux [] bh)
+
+  let elems = to_list
+
+  let of_list l = List.fold_left add empty l
+
+  let rec enum bh =
+    let cur = ref bh in
+    let next () =
+      let bh = !cur in
+      if size bh = 0 then raise BatEnum.No_more_elements ;
+      cur := (del_min bh) ; find_min bh
+    in
+    let count () = size !cur in
+    let clone () = enum !cur in
+    BatEnum.make ~next ~count ~clone
+
+  let rec of_enum e = BatEnum.fold add empty e
+
 end
