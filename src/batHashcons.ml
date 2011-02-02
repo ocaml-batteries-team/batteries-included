@@ -25,10 +25,14 @@
  *)
 
 type 'a hobj = {
-  obj : 'a ;
-  tag  : int ;
-  key : int ;
+  obj   : 'a ;
+  tag   : int ;
+  hcode : int ;
 }
+
+type 'a t = 'a hobj
+
+let compare ho1 ho2 = BatInt.compare ho1.tag ho2.tag
 
 let gentag =
   let tags = ref 0 in
@@ -113,7 +117,7 @@ struct
     end
 
   and add t d =
-    let index = d.key mod (Array.length t.table) in
+    let index = d.hcode mod (Array.length t.table) in
     let bucket = t.table.(index) in
     let sz = Weak.length bucket in
     let rec loop i =
@@ -136,13 +140,13 @@ struct
     loop 0
 
   let hashcons t d =
-    let key = HT.hash d in
-    let index = key mod (Array.length t.table) in
+    let hcode = HT.hash d in
+    let index = hcode mod (Array.length t.table) in
     let bucket = t.table.(index) in
     let sz = Weak.length bucket in
     let rec loop i =
       if i >= sz then begin
-	let hdata = { key = key ; tag = gentag () ; obj = d } in
+	let hdata = { hcode = hcode ; tag = gentag () ; obj = d } in
 	add t hdata ;
 	hdata
       end else begin
@@ -160,7 +164,7 @@ end
 
 module H = struct
   let hc0_ h = h
-  let hc0 x = x.key
+  let hc0 x = x.hcode
   let hc1_ x h = x + 19 * h
-  let hc1  x = hc1_ x.key
+  let hc1  x = hc1_ x.hcode
 end
