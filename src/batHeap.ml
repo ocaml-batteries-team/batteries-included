@@ -167,9 +167,6 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
   spin bh ;
   BatInnerIO.nwrite out last
 
-let sprint ?(first="[") ?(last="]") ?(sep="; ") elepr bh =
-  BatPrintf.sprintf2 "%a" (print ~first ~last ~sep elepr) bh
-
 let t_printer elepr paren out x = print (elepr false) out x
 
 let rec enum bh =
@@ -203,9 +200,6 @@ module type H = sig
   val print     :  ?first:string -> ?last:string -> ?sep:string
     -> ('a BatInnerIO.output -> elem -> unit)
     -> 'a BatInnerIO.output -> t -> unit
-  val sprint    : ?first:string -> ?last:string -> ?sep:string
-    -> ('a BatInnerIO.output -> elem -> unit)
-    -> t -> string
   val t_printer : elem BatValue_printer.t -> t BatValue_printer.t
 end
 
@@ -350,9 +344,6 @@ module Make (Ord : Set.OrderedType) = struct
     BatInnerIO.nwrite out first ;
     spin bh ;
     BatInnerIO.nwrite out last
-
-  let sprint ?(first="[") ?(last="]") ?(sep="; ") elepr bh =
-    BatPrintf.sprintf2 "%a" (print ~first ~last ~sep elepr) bh
 
   let t_printer elepr paren out x = print (elepr false) out x
 

@@ -80,11 +80,6 @@ val print :  ?first:string -> ?last:string -> ?sep:string
   -> 'a BatInnerIO.output -> 'b t -> unit
   (** Print the contents of the heap in heap order. O(n log n) *)
 
-val sprint : ?first:string -> ?last:string -> ?sep:string
-  -> ('a BatInnerIO.output -> 'b -> unit)
-  -> 'b t -> string
-  (** Using a string printer, print a heap to a string. O(n log n) *)
-
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
   (** See {!BatValue_printer}. *)
 
@@ -125,10 +120,6 @@ sig
     -> ('a BatInnerIO.output -> elem -> unit)
     -> 'a BatInnerIO.output -> t -> unit
     (** See {!BatHeap.print}. *)
-  val sprint    : ?first:string -> ?last:string -> ?sep:string
-    -> ('a BatInnerIO.output -> elem -> unit)
-    -> t -> string
-    (** See {!BatHeap.sprint}. *)
   val t_printer : elem BatValue_printer.t -> t BatValue_printer.t
     (** See {!BatHeap.t_printer}. *)
 end

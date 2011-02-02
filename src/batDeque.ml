@@ -248,12 +248,9 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out dq =
   spin dq ;
   BatInnerIO.nwrite out last
 
-let sprint ?(first="[") ?(last="]") ?(sep="; ") elepr dq =
-  BatPrintf.sprintf2 "%a" (print ~first ~last ~sep elepr) dq
-
 (**Q printing
-   (Q.list Q.int) (fun l -> sprint Int.print (of_list l) = List.sprint Int.print l)
-   (Q.list Q.int) (fun l -> sprint ~first:"<" ~last:">" ~sep:"," Int.print (of_list l) = List.sprint ~first:"<" ~last:">" ~sep:"," Int.print l)
+   (Q.list Q.int) (fun l -> BatIO.to_string (print ~first:"<" ~last:">" ~sep:"," Int.print) (of_list l) = BatIO.to_string (List.print ~first:"<" ~last:">" ~sep:"," Int.print) l)
 **)
 
 let t_printer elepr paren out x = print (elepr false) out x
+let dq_printer elepr paren out x =  print (elepr false) out x
