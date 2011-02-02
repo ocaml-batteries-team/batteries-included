@@ -46,3 +46,15 @@ val equal : 'a uref -> 'a uref -> bool
   (** [equal ur1 ur2] returns [true] iff [ur1] and [ur2] are equal
       urefs, either because they are physically the same or because
       they have been {!unite}d. *)
+
+(** {6 Printing} *)
+
+val print : ('a BatInnerIO.output -> 'b -> unit)
+  -> 'a BatInnerIO.output -> 'b uref -> unit
+  (** Print the uref. *)
+
+val uref_printer : 'a BatValue_printer.t -> 'a uref BatValue_printer.t
+  (** See {!BatValue_printer}. *)
+
+val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+  (** See {!BatValue_printer}. *)
