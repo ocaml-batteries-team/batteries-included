@@ -310,6 +310,8 @@ let of_enum t =
 let of_enum_cmp ~cmp t =
   BatEnum.fold (fun acc elem -> add elem acc) (create cmp) t
 
+let of_list l = List.fold_left (fun a x -> add x a) empty l
+
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
   BatEnum.print ~first ~last ~sep print_elt out (enum t)
 
@@ -326,4 +328,12 @@ let union m n = BatMap.union m n
 let diff m n = BatMap.diff m n
 
 let intersect m n = BatMap.intersect (fun _ x -> x) m n
+
+let subset s1 s2 = for_all (fun x -> mem x s2) s1
+
+(**T subset
+   subset (of_list [1;2;3]) (of_list [1;2;3;4])
+   not (subset (of_list [1;2;3;5]) (of_list [1;2;3;4]))
+   not (subset (of_list [1;2;3;4]) (of_list [1;2;3]))
+**)
 

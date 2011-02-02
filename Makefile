@@ -144,12 +144,15 @@ camfailunk:
 	exit 1
 
 ##
-## Magic for qtest target - auto-generated test files from source comments
+## Magic for test target - auto-generated test files from source comments
 ##
 
+_build/build/make_suite.native: build/make_suite.mll
+	ocamlbuild -no-links make_suite.native
+
 #convert a source file to a test suite by filtering special comments
-qtest/%_t.ml: src/%.ml
-	ruby build/make_suite.rb $^ > $@
+qtest/%_t.ml: src/%.ml _build/build/make_suite.native
+	_build/build/make_suite.native $< > $@
 
 #put all the testing modules in a library
 qtest/test_mods.mllib: $(TESTABLE)

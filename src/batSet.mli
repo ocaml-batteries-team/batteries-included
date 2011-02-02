@@ -379,6 +379,11 @@ val of_enum: 'a BatEnum.t -> 'a t
 
 val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
 
+val of_list: 'a list -> 'a t
+(** builds a set from the given list, using the default comparison
+    function *)
+
+
 val for_all : ('a -> bool) -> 'a t -> bool
 (** Returns whether the given predicate applies to all elements in the set *)
 
@@ -403,6 +408,9 @@ val union: 'a t -> 'a t -> 'a t
 val diff: 'a t -> 'a t -> 'a t
   (** [diff s t] returns the set of all elements in [s] but not in
       [t]. The returned set uses [s]'s comparison function.*)
+
+val subset: 'a t -> 'a t -> bool
+  (** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
 
 (** {6 Boilerplate code}*)
 

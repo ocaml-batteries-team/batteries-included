@@ -85,7 +85,7 @@ let rear q =
 
 (**T rear
    match rear(empty |> cons 1 |> cons 2) with | Some(_, 1) -> true | _ -> false
- **)   
+ **)
 
 let rev q = { front = q.rear ; flen = q.rlen ;
               rear = q.front ; rlen = q.flen }
@@ -138,8 +138,8 @@ let prepend_list l q =
       front = l @ q.front ;
       flen = q.flen + n }
 
-let rec nth ?(backwards=false) q n =
-  if backwards then nth (rev q) n
+let rec at ?(backwards=false) q n =
+  if backwards then at (rev q) n
   else if n >= size q then None
   else
     let rec git q n =
@@ -147,7 +147,7 @@ let rec nth ?(backwards=false) q n =
         | Some (x, q) ->
             if n = 0 then Some x else git q (n - 1)
         | None ->
-            failwith "Queue.nth: internal error"
+            failwith "Deque.at: internal error"
     in
     git q n
 
@@ -215,3 +215,45 @@ let find ?(backwards=false) test q =
   else
     spin 0 q.front q.rear
 
+let rec enum q =
+  let cur = ref q in
+  let next () = match front !cur with
+    | None -> raise BatEnum.No_more_elements
+    | Some (x, q) ->
+        cur := q ; x
+  in
+  let count () = size !cur in
+  let clone () = enum !cur in
+  BatEnum.make ~next ~count ~clone
+
+let of_enum e =
+  BatEnum.fold snoc empty e
+
+(**Q enumerable
+   (Q.list Q.int) (fun l -> List.of_enum (enum (List.fold_left snoc empty l)) = l)
+   (Q.list Q.int) (fun l -> to_list (of_enum (List.enum l)) = l)
+**)
+
+let print ?(first="[") ?(last="]") ?(sep="; ") elepr out dq =
+  let rec spin dq = match front dq with
+    | None -> ()
+    | Some (a, dq) when size dq = 0 ->
+        elepr out a
+    | Some (a, dq) ->
+        elepr out a ;
+        BatInnerIO.nwrite out sep ;
+        spin dq
+  in
+  BatInnerIO.nwrite out first ;
+  spin dq ;
+  BatInnerIO.nwrite out last
+
+let sprint ?(first="[") ?(last="]") ?(sep="; ") elepr dq =
+  BatPrintf.sprintf2 "%a" (print ~first ~last ~sep elepr) dq
+
+(**Q printing
+   (Q.list Q.int) (fun l -> sprint Int.print (of_list l) = List.sprint Int.print l)
+   (Q.list Q.int) (fun l -> sprint ~first:"<" ~last:">" ~sep:"," Int.print (of_list l) = List.sprint ~first:"<" ~last:">" ~sep:"," Int.print l)
+**)
+
+let t_printer elepr paren out x = print (elepr false) out x

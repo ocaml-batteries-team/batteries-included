@@ -1,13 +1,1 @@
-<odoc*>: debug,use_ocamldoc
-<batteries.cma>: precious
-<batteries.cmxa>: precious
-<batteries_nothreads.cma>: precious
-<batteries_nothreads.cmxa>:precious
-<batteries.a>: precious
-<batteries_nothreads.a>: precious
-<fix_camlp4_print.*>:camlp4orf,use_camlp4_full
-"optcomp": include
-<generate_mli.*>: pkg_camlp4.lib,use_str
-<extract_mli.*>: pkg_camlp4.lib,use_str
-<odoc_*>:camlp4oof
-<extractdist.*>:camlp4oof,use_camlp4_full
+<make_suite.ml>: package(str)
