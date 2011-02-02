@@ -153,6 +153,25 @@ let to_list bh =
 
 let elems = to_list
 
+let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
+  let rec spin bh =
+    if size bh = 0 then ()
+    else if size bh = 1 then elepr out (find_min bh)
+    else begin
+      elepr out (find_min bh) ;
+      BatInnerIO.nwrite out sep ;
+      spin (del_min bh)
+    end
+  in
+  BatInnerIO.nwrite out first ;
+  spin bh ;
+  BatInnerIO.nwrite out last
+
+let sprint ?(first="[") ?(last="]") ?(sep="; ") elepr bh =
+  BatPrintf.sprintf2 "%a" (print ~first ~last ~sep elepr) bh
+
+let t_printer elepr paren out x = print (elepr false) out x
+
 let rec enum bh =
   let cur = ref bh in
   let next () =
@@ -169,18 +188,25 @@ let rec of_enum e = BatEnum.fold add empty e
 module type H = sig
   type elem
   type t
-  val empty    : t
-  val size     : t -> int
-  val add      : t -> elem -> t
-  val insert   : elem -> t -> t
-  val merge    : t -> t -> t
-  val find_min : t -> elem
-  val del_min  : t -> t
-  val of_list  : elem list -> t
-  val to_list  : t -> elem list
-  val elems    : t -> elem list
-  val of_enum  : elem BatEnum.t -> t
-  val enum     : t -> elem BatEnum.t
+  val empty     : t
+  val size      : t -> int
+  val add       : t -> elem -> t
+  val insert    : elem -> t -> t
+  val merge     : t -> t -> t
+  val find_min  : t -> elem
+  val del_min   : t -> t
+  val of_list   : elem list -> t
+  val to_list   : t -> elem list
+  val elems     : t -> elem list
+  val of_enum   : elem BatEnum.t -> t
+  val enum      : t -> elem BatEnum.t
+  val print     :  ?first:string -> ?last:string -> ?sep:string
+    -> ('a BatInnerIO.output -> elem -> unit)
+    -> 'a BatInnerIO.output -> t -> unit
+  val sprint    : ?first:string -> ?last:string -> ?sep:string
+    -> ('a BatInnerIO.output -> elem -> unit)
+    -> t -> string
+  val t_printer : elem BatValue_printer.t -> t BatValue_printer.t
 end
 
 module Make (Ord : Set.OrderedType) = struct
@@ -310,5 +336,24 @@ module Make (Ord : Set.OrderedType) = struct
     BatEnum.make ~next ~count ~clone
 
   let rec of_enum e = BatEnum.fold add empty e
+
+  let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
+    let rec spin bh =
+      if size bh = 0 then ()
+      else if size bh = 1 then elepr out (find_min bh)
+      else begin
+        elepr out (find_min bh) ;
+        BatInnerIO.nwrite out sep ;
+        spin (del_min bh)
+      end
+    in
+    BatInnerIO.nwrite out first ;
+    spin bh ;
+    BatInnerIO.nwrite out last
+
+  let sprint ?(first="[") ?(last="]") ?(sep="; ") elepr bh =
+    BatPrintf.sprintf2 "%a" (print ~first ~last ~sep elepr) bh
+
+  let t_printer elepr paren out x = print (elepr false) out x
 
 end

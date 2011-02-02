@@ -73,23 +73,64 @@ val enum : 'a t -> 'a BatEnum.t
   (** Enumerate the elements of the heap in heap order. O(log n) per
       {!BatEnum.get}. *)
 
+(** {6 Printing} *)
+
+val print :  ?first:string -> ?last:string -> ?sep:string
+  -> ('a BatInnerIO.output -> 'b -> unit)
+  -> 'a BatInnerIO.output -> 'b t -> unit
+  (** Print the contents of the heap in heap order. O(n log n) *)
+
+val sprint : ?first:string -> ?last:string -> ?sep:string
+  -> ('a BatInnerIO.output -> 'b -> unit)
+  -> 'b t -> string
+  (** Using a string printer, print a deque to a string. O(n log n) *)
+
+val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+  (** See {!BatValue_printer}. *)
+
+(** {6 Functorized version} *)
+
+(** The result of {!Make} *)
 module type H =
 sig
   type elem
+    (** Type of elements of the heap *)
   type t
-  val empty    : t
-  val size     : t -> int
-  val add      : t -> elem -> t
-  val insert   : elem -> t -> t
-  val merge    : t -> t -> t
-  val find_min : t -> elem
-  val del_min  : t -> t
-  val of_list  : elem list -> t
-  val to_list  : t -> elem list
-  val elems    : t -> elem list
+    (** Type of the heap *)
+  val empty     : t
+    (** See {!BatHeap.empty}. *)
+  val size      : t -> int
+    (** See {!BatHeap.size}. *)
+  val add       : t -> elem -> t
+    (** See {!BatHeap.add}. *)
+  val insert    : elem -> t -> t
+    (** See {!BatHeap.insert}. *)
+  val merge     : t -> t -> t
+    (** See {!BatHeap.merge}. *)
+  val find_min  : t -> elem
+    (** See {!BatHeap.find_min}. *)
+  val del_min   : t -> t
+    (** See {!BatHeap.del_min}. *)
+  val of_list   : elem list -> t
+    (** See {!BatHeap.of_list}. *)
+  val to_list   : t -> elem list
+    (** See {!BatHeap.to_list}. *)
+  val elems     : t -> elem list
     (** @deprecated Same as [to_list]. *)
-  val of_enum  : elem BatEnum.t -> t
-  val enum     : t -> elem BatEnum.t
+  val of_enum   : elem BatEnum.t -> t
+    (** See {!BatHeap.of_enum}. *)
+  val enum      : t -> elem BatEnum.t
+    (** See {!BatHeap.enum}. *)
+  val print     :  ?first:string -> ?last:string -> ?sep:string
+    -> ('a BatInnerIO.output -> elem -> unit)
+    -> 'a BatInnerIO.output -> t -> unit
+    (** See {!BatHeap.print}. *)
+  val sprint    : ?first:string -> ?last:string -> ?sep:string
+    -> ('a BatInnerIO.output -> elem -> unit)
+    -> t -> string
+    (** See {!BatHeap.sprint}. *)
+  val t_printer : elem BatValue_printer.t -> t BatValue_printer.t
+    (** See {!BatHeap.t_printer}. *)
 end
 
 module Make (Ord : Set.OrderedType) : H with type elem = Ord.t
