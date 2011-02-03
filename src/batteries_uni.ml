@@ -117,6 +117,7 @@ module Print = BatPrint
 module Result = BatResult
 module Return = BatReturn
 module Seq = BatSeq
+module Tuple2 = BatTuple2
 module UCharParser = BatUCharParser
 module Value_printer = BatValue_printer
 module Vect = BatVect
