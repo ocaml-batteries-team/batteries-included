@@ -87,7 +87,7 @@
     try  descr_of_out_channel (output_get (cast_output cout))
     with Not_found -> raise (Invalid_argument "Unix.descr_of_out_channel")
 
-  let in_channel_of_descr fd    = input_of_descr ~autoclose:false fd
+  let in_channel_of_descr fd    = input_of_descr fd
   let descr_of_in_channel       = descr_of_input
   let out_channel_of_descr fd   = output_of_descr  fd
   let descr_of_out_channel      = descr_of_output
