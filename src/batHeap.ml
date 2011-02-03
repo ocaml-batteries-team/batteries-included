@@ -54,7 +54,7 @@ let rec add_tree t = function
       if t.rank < ut.rank then t :: ts
       else add_tree (link t ut) uts
 
-let add bh x =
+let insert bh x =
   let size = bh.size + 1 in
   let data = add_tree { rank = 0 ; root = x ; kids = [] } bh.data in
   let mind = match bh.mind with
@@ -65,10 +65,10 @@ let add bh x =
   }
 
 (**T size_non_empty
-   size (add empty 3) = 1
+   size (insert empty 3) = 1
 **)
 
-let insert x bh = add bh x
+let add x bh = insert bh x
 
 let rec merge_data ts1 ts2 = match ts1, ts2 with
   | _, [] -> ts1
@@ -95,8 +95,8 @@ let find_min bh = match bh.mind with
   | Some d -> d
 
 (**T find_min
-   find_min (add (add empty 3) 5) = 3
-   find_min (add (add empty 5) 3) = 3
+   find_min (insert (insert empty 3) 5) = 3
+   find_min (insert (insert empty 5) 3) = 3
 **)
 
 
@@ -130,7 +130,7 @@ let del_min bh =
       { size = size ; data = data ; mind = mind }
   end
 
-let of_list l = List.fold_left add empty l
+let of_list l = List.fold_left insert empty l
 
 let to_list bh =
   let rec aux acc bh =
@@ -142,13 +142,13 @@ let to_list bh =
   List.rev (aux [] bh)
 
 (**T to_list
-   to_list (add (add empty 4) 6) = [4; 6]
-   to_list (add (add empty 6) 4) = [4; 6]
+   to_list (insert (insert empty 4) 6) = [4; 6]
+   to_list (insert (insert empty 6) 4) = [4; 6]
    to_list empty = []
 **)
 
 (**Q to_list_q
-   (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left add empty l) = List.sort ~cmp:Pervasives.compare l)
+   (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left insert empty l) = List.sort ~cmp:Pervasives.compare l)
 **)
 
 let elems = to_list
@@ -180,15 +180,15 @@ let rec enum bh =
   let clone () = enum !cur in
   BatEnum.make ~next ~count ~clone
 
-let of_enum e = BatEnum.fold add empty e
+let of_enum e = BatEnum.fold insert empty e
 
 module type H = sig
   type elem
   type t
   val empty     : t
   val size      : t -> int
-  val add       : t -> elem -> t
-  val insert    : elem -> t -> t
+  val insert    : t -> elem -> t
+  val add       : elem -> t -> t
   val merge     : t -> t -> t
   val find_min  : t -> elem
   val del_min   : t -> t
@@ -240,7 +240,7 @@ module Make (Ord : Set.OrderedType) = struct
         if t.rank < ut.rank then t :: ts
         else add_tree (link t ut) uts
 
-  let add bh x =
+  let insert bh x =
     let data = add_tree { rank = 0 ; root = x ; kids = [] } bh.data in
     let mind = match bh.mind with
       | None -> Some x
@@ -249,7 +249,7 @@ module Make (Ord : Set.OrderedType) = struct
       size = bh.size + 1 ; data = data ; mind = mind
     }
 
-  let insert x bh = add bh x
+  let add x bh = insert bh x
 
   let rec merge_data ts1 ts2 = match ts1, ts2 with
     | _, [] -> ts1
@@ -316,7 +316,7 @@ module Make (Ord : Set.OrderedType) = struct
 
   let elems = to_list
 
-  let of_list l = List.fold_left add empty l
+  let of_list l = List.fold_left insert empty l
 
   let rec enum bh =
     let cur = ref bh in
@@ -329,7 +329,7 @@ module Make (Ord : Set.OrderedType) = struct
     let clone () = enum !cur in
     BatEnum.make ~next ~count ~clone
 
-  let of_enum e = BatEnum.fold add empty e
+  let of_enum e = BatEnum.fold insert empty e
 
   let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
     let rec spin bh =

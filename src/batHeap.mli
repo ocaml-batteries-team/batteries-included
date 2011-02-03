@@ -36,11 +36,11 @@ val size : 'a t -> int
 val empty : 'a t
   (** The empty heap. *)
 
-val add : 'a t -> 'a -> 'a t
-  (** Add an element to the heap. Duplicates are kept. O(log m) *)
+val insert : 'a t -> 'a -> 'a t
+  (** Insert an element into the heap. Duplicates are kept. O(log m) *)
 
-val insert : 'a -> 'a t -> 'a t
-  (** [insert x h] is the same as [add h x]. This function is intended
+val add : 'a -> 'a t -> 'a t
+  (** [add x h] is the same as [insert h x]. This function is intended
       to be used with [fold_right]. *)
 
 (** {6 Operations} *)
@@ -96,9 +96,9 @@ sig
     (** See {!BatHeap.empty}. *)
   val size      : t -> int
     (** See {!BatHeap.size}. *)
-  val add       : t -> elem -> t
+  val insert    : t -> elem -> t
     (** See {!BatHeap.add}. *)
-  val insert    : elem -> t -> t
+  val add       : elem -> t -> t
     (** See {!BatHeap.insert}. *)
   val merge     : t -> t -> t
     (** See {!BatHeap.merge}. *)
