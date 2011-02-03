@@ -66,3 +66,16 @@ let unite ?(sel=(fun x y -> x)) ur vr =
             ur := Ptr vr
           end
       | _ -> failwith "Uref.unite"      (* impossible *)
+
+let print elepr out ur = match !(find ur) with
+  | Ranked (x, _) ->
+      BatInnerIO.nwrite out "uref " ;
+      elepr out x ;
+  | _ -> failwith "Uref.print"          (* impossible *)
+
+let t_printer elepr paren out ur =
+  if paren then BatInnerIO.nwrite out "(" ;
+  print (elepr false) out ur ;
+  if paren then BatInnerIO.nwrite out ")"
+
+let uref_printer = t_printer

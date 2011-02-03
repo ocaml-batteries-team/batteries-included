@@ -141,10 +141,8 @@ val print : ?first:string -> ?last:string -> ?sep:string
   -> 'a BatInnerIO.output -> 'b dq -> unit
   (** Print the contents of the deque. O(n) *)
 
-val sprint : ?first:string -> ?last:string -> ?sep:string
-  -> ('a BatInnerIO.output -> 'b -> unit)
-  -> 'b dq -> string
-  (** Using a string printer, print a deque to a string. O(n) *)
-
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+  (** See {!BatValue_printer}. *)
+
+val dq_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
   (** See {!BatValue_printer}. *)
