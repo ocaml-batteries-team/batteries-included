@@ -1,4 +1,4 @@
-Welcome to Batteries Included 
+Welcome to Batteries Included
 ================================
 OCaml Batteries Included: the community-maintained foundation library
 for your OCaml projects.
@@ -13,7 +13,7 @@ Batteries Included serves the following purposes:
 * provide a consistent API for otherwise independent
   libraries.
 
-Building Batteries Included 
+Building Batteries Included
 ==============================
 
 Requirements
@@ -21,9 +21,9 @@ Requirements
 You will need the following libraries:
 
 * OCaml >= 3.11
-* [Findlib](http://projects.camlcity.org/projects/findlib.html/) >= 1.2.5  
+* [Findlib](http://projects.camlcity.org/projects/findlib.html/) >= 1.2.5
 * GNU make (optional; aids build and installation)
-* [Camomile](http://camomile.sourceforge.net/) >= 0.7 
+* [Camomile](http://camomile.sourceforge.net/) >= 0.7
 * [OUnit](http://ounit.forge.ocamlcore.org/)    to build and run the tests
 
 Configuration and installation
@@ -33,7 +33,7 @@ To install the full version of OCaml Batteries Included, execute
 
     $ make all
     $ make test qtest    [ optional ]
-    $ sudo make install 
+    $ sudo make install
 
     $ make doc      [ optional ]
     $ sudo make install-doc   [ optional ]
@@ -48,7 +48,7 @@ If you want findlib to use a `-destdir` argument to [ocamlfind install], set
     $ export DESTDIR=/path/to/findlib/dest
 
 To disable native compilation:
-   
+
     $ export BATTERIES_NATIVE=false
 
 To disable building of native shared libraries:
@@ -66,8 +66,7 @@ file to `~/.ocamlinit`:
 If you already have findlib in your `~/.ocamlinit`, you only need the
 last line in our ocamlinit to load batteries.
 
-More usage help available on the [batteries-included wiki]
-(http://wiki.github.com/ocaml-batteries-team/batteries-included/)
+More usage help available on the [batteries-included wiki](http://wiki.github.com/ocaml-batteries-team/batteries-included/)
 
 ExtLib Compatibility
 ==============================
@@ -81,7 +80,7 @@ use Batteries and ExtLib in the same project.
 COMPATIBILITY NOTE: If you're using ExtLib's Unzip module, it does not
 have a corresponding module in batteries at the moment.
 
-Extending Batteries Included 
+Extending Batteries Included
 ==============================
 
 See doc/batteries/GUIDELINES and the [guidelines wiki page](https://github.com/ocaml-batteries-team/batteries-included/wiki/Developers-guidelines)
