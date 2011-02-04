@@ -45,12 +45,12 @@ endif
 .PHONY: all clean doc install uninstall reinstall test qtest fix_camomile camomile82 camomile81 camomile7 camfail
 
 all: fix-camomile
-	test ! -e src/batteries_config.ml || rm src/batteries_config.ml
+	${RM} src/batteries_config.ml
 	$(OCAMLBUILD) $(TARGETS)
 
 clean:
-	rm -f apidocs
-	rm -f qtest/*_t.ml qtest/test_mods.mllib
+	${RM} apidocs
+	${RM} qtest/*_t.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) -clean
 
 doc:
@@ -68,13 +68,13 @@ install: all
 uninstall:
 	ocamlfind remove $(OCAMLFIND_DEST) estring
 	ocamlfind remove $(OCAMLFIND_DEST) $(NAME)
-	rm -rf $(DOCROOT)
+	${RM} -r $(DOCROOT)
 
 install-doc: doc
 	mkdir -p $(DOCROOT)
 	cp -r doc/batteries/* $(DOCROOT)
 # deal with symlink that will break
-	rm -f $(DOCROOT)/html/batteries_large.png
+	${RM} $(DOCROOT)/html/batteries_large.png
 	cp -f doc/batteries_large.png $(DOCROOT)/html
 	mkdir -p $(DOCROOT)/html/api
 	cp apidocs/* $(DOCROOT)/html/api
