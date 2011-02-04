@@ -123,8 +123,9 @@ type open_in_flag =
 val open_in : ?mode:(open_in_flag list) -> ?perm:permission -> string -> input
 (** [open_in file_name] opens the file named [file_name] for reading.
 
-    {b Note} You will need to close the file manually. An alternative is
-    to call [with_file_in] instead of [open_in].
+    {b Note} You will need to close the file manually, with
+    {!BatIO.close_in}. An alternative is to call [with_file_in] instead
+    of [open_in].
 
     Naming conventions for files are platform-dependent.*)
 
@@ -152,8 +153,9 @@ type open_out_flag =
 val open_out : ?mode:(open_out_flag list) -> ?perm:permission -> string -> unit output
   (** [open_out file_name] opens the file named [file_name] for writing.
 
-      {b Note} You will need to close the file manually. An alternative is
-      to call [with_file_out] instead of [open_out].
+      {b Note} You will need to close the file manually, with
+      {!BatIO.close_out}. An alternative is to call [with_file_out]
+      instead of [open_out].
 
       Naming conventions for files are platform-dependent.*)
 
