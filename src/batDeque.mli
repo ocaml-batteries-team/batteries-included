@@ -82,10 +82,10 @@ val mapi : (int -> 'a -> 'b) -> 'a dq -> 'b dq
       from the front of [dq]. O(n) *)
 
 val iter : ('a -> unit) -> 'a dq -> unit
-  (** [map f dq] calls [f x] on each element [x] of [dq]. O(n) *)
+  (** [iter f dq] calls [f x] on each element [x] of [dq]. O(n) *)
 
 val iteri  : (int -> 'a -> unit) -> 'a dq -> unit
-  (** [map f dq] calls [f n x] on each element [x] of [dq]. The first
+  (** [iteri f dq] calls [f n x] on each element [x] of [dq]. The first
       argument to [f] is the position of the element from the front of
       [dq]. O(n) *)
 
@@ -120,7 +120,7 @@ val prepend_list : 'a list -> 'a dq -> 'a dq
 
 val of_list : 'a list -> 'a dq
   (** [of_list l] is a deque representation of the elements of [l].
-      O(1) *)
+      O(n) *)
 
 val to_list : 'a dq -> 'a list
   (** [to_list dq] is a list representation of the elements of [dq].
@@ -141,10 +141,8 @@ val print : ?first:string -> ?last:string -> ?sep:string
   -> 'a BatInnerIO.output -> 'b dq -> unit
   (** Print the contents of the deque. O(n) *)
 
-val sprint : ?first:string -> ?last:string -> ?sep:string
-  -> ('a BatInnerIO.output -> 'b -> unit)
-  -> 'b dq -> string
-  (** Using a string printer, print a deque to a string. O(n) *)
-
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+  (** See {!BatValue_printer}. *)
+
+val dq_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
   (** See {!BatValue_printer}. *)

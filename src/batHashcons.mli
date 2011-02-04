@@ -23,10 +23,16 @@
 (** The type [t hobj] represents hashed objects of type [t]. A hashed
     object contains a unique tag and a hash code. *)
 type 'a hobj = private {
-  obj : 'a ;
-  tag : int ;
-  key : int ;
+  obj   : 'a ;
+  tag   : int ;                       (** Unique id for this object *)
+  hcode : int ;                       (** Hash code for this object *)
 }
+
+type 'a t = 'a hobj
+  (** A synonym for convenience *)
+
+val compare : 'a hobj -> 'a hobj -> int
+  (** Comparison on the tags *)
 
 (** Hashcons tables *)
 module type Table = sig
@@ -73,3 +79,5 @@ module H : sig
     (** [hc1 ho k] corresponds to the hashcode of the [k]th
         constructor applied to the hashed object [ho]. *)
 end
+
+

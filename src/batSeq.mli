@@ -241,7 +241,9 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outpu
   (**Print the contents of a sequence*)
 
 val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b t -> string
-  (** Using a string printer, print a sequence to a string (as sprintf vs. printf) *)
+  (** Using a string printer, print a sequence to a string (as sprintf vs. printf)
+      @deprecated use {!BatIO.to_string}.
+   *)
 
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
 

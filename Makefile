@@ -101,7 +101,7 @@ release: test
 ## Magic to detect which version of camomile is installed 
 ##
 
-CAMVER=$(shell sh -c 'ocamlfind list | grep camomile | grep -o "[0-9\.]*"')
+CAMVER=$(shell sh -c 'ocamlfind query -format %v camomile')
 ifeq ($(CAMVER),0.8.2)
 	CAMFIX=camomile82
 endif

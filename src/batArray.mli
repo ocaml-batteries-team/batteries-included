@@ -225,21 +225,27 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 
   (** Print the contents of an array *)
 
 val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
-  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
+(** Using a string printer, print an array to a string (as sprintf
+    vs. printf)
+    @deprecated use {!BatIO.to_string}.
+*)
 
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
 
 
-  (** {6 Boilerplate code}*)
+(** {6 Boilerplate code}*)
 
   (** {7 Printing}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
 
 val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
-  (** Using a string printer, print an array to a string (as sprintf vs. printf) *)
+(** Using a string printer, print an array to a string (as sprintf
+    vs. printf)
+    @deprecated use {!BatIO.to_string}.
+*)
 
-  (** {6 Override modules}*)
+(** {6 Override modules}*)
 
 (** The following modules replace functions defined in {!Array} with
     functions behaving slightly differently but having the same

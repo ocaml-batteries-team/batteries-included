@@ -36,11 +36,11 @@ val size : 'a t -> int
 val empty : 'a t
   (** The empty heap. *)
 
-val add : 'a t -> 'a -> 'a t
-  (** Add an element to the heap. Duplicates are kept. O(log m) *)
+val insert : 'a t -> 'a -> 'a t
+  (** Insert an element into the heap. Duplicates are kept. O(log m) *)
 
-val insert : 'a -> 'a t -> 'a t
-  (** [insert x h] is the same as [add h x]. This function is intended
+val add : 'a -> 'a t -> 'a t
+  (** [add x h] is the same as [insert h x]. This function is intended
       to be used with [fold_right]. *)
 
 (** {6 Operations} *)
@@ -80,11 +80,6 @@ val print :  ?first:string -> ?last:string -> ?sep:string
   -> 'a BatInnerIO.output -> 'b t -> unit
   (** Print the contents of the heap in heap order. O(n log n) *)
 
-val sprint : ?first:string -> ?last:string -> ?sep:string
-  -> ('a BatInnerIO.output -> 'b -> unit)
-  -> 'b t -> string
-  (** Using a string printer, print a heap to a string. O(n log n) *)
-
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
   (** See {!BatValue_printer}. *)
 
@@ -101,9 +96,9 @@ sig
     (** See {!BatHeap.empty}. *)
   val size      : t -> int
     (** See {!BatHeap.size}. *)
-  val add       : t -> elem -> t
+  val insert    : t -> elem -> t
     (** See {!BatHeap.add}. *)
-  val insert    : elem -> t -> t
+  val add       : elem -> t -> t
     (** See {!BatHeap.insert}. *)
   val merge     : t -> t -> t
     (** See {!BatHeap.merge}. *)
@@ -125,10 +120,6 @@ sig
     -> ('a BatInnerIO.output -> elem -> unit)
     -> 'a BatInnerIO.output -> t -> unit
     (** See {!BatHeap.print}. *)
-  val sprint    : ?first:string -> ?last:string -> ?sep:string
-    -> ('a BatInnerIO.output -> elem -> unit)
-    -> t -> string
-    (** See {!BatHeap.sprint}. *)
   val t_printer : elem BatValue_printer.t -> t BatValue_printer.t
     (** See {!BatHeap.t_printer}. *)
 end
