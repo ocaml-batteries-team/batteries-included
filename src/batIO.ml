@@ -765,4 +765,4 @@ let out_channel_of_output out =
 let to_string print_x x = BatInnerIO.Printf.sprintf2 "%a" print_x x
 
 let to_format printer = 
-  fun fmt t -> Format.pp_print_string fmt (BatIO.to_string printer t)
+  fun fmt t -> Format.pp_print_string fmt (to_string printer t)
