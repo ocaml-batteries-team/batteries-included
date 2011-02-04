@@ -114,9 +114,12 @@
 	 [a0..an] are the elements of the list [l]. *)
 
 	val map : ('a -> 'b) -> 'a list -> 'b list
-	  (** [map f [a1; ...; an]] applies function [f] to [a1, ..., an],
-	      and builds the list [[f a1; ...; f an]]
+	  (** [map f [a0; a1; ...; an]] applies function [f] to [a0, a1, ..., an],
+	      and builds the list [[f a0; f a1; ...; f an]]
 	      with the results returned by [f].  Tail-recursive. *)
+        (* why that formulation emphasizing "applies function f to
+           ..." ? Because map is specifically designed to respect
+           a left-to-right order of evaluation *)
 
 	val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
 	(** [mapi f l] will build the list containing
@@ -124,8 +127,8 @@
 	 the list [l]. *)
 
 	val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
-	  (** [List.fold_right f [a1; ...; an] b] is
-	      [f a1 (f a2 (... (f an b) ...))].  Tail-recursive. *)
+	  (** [List.fold_right f [a0; a1; ...; an] b] is
+	      [f a0 (f a1 (... (f an b) ...))].  Tail-recursive. *)
 
 	val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 	  (** [List.reduce f h::t] is [fold_left f h t].  
@@ -149,26 +152,26 @@
 	(** {6 Iterators on two lists} *)
 
 	val iter2 : ('a -> 'b -> unit) -> 'a list -> 'b list -> unit
-	  (** [List.iter2 f [a1; ...; an] [b1; ...; bn]] calls in turn
-	      [f a1 b1; ...; f an bn].
+	  (** [List.iter2 f [a0; a1; ...; an] [b0; b1; ...; bn]] calls in turn
+	      [f a0 b0; f a1 b1; ...; f an bn].
 	      @raise Different_list_size if the two lists have
 	      different lengths. *)
 
 	val map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
-	  (** [List.map2 f [a1; ...; an] [b1; ...; bn]] is
-	      [[f a1 b1; ...; f an bn]].
+	  (** [List.map2 f [a0; a1; ...; an] [b0; b1; ...; bn]] is
+	      [[f a0 b0; f a1 b1; ...; f an bn]].
 	      @raise Different_list_size if the two lists have
 	      different lengths.  Tail-recursive. *)
 
 	val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b list -> 'c list -> 'a
-	  (** [List.fold_left2 f a [b1; ...; bn] [c1; ...; cn]] is
-	      [f (... (f (f a b1 c1) b2 c2) ...) bn cn].
+	  (** [List.fold_left2 f a [b0; b1; ...; bn] [c0; c1; ...; cn]] is
+	      [f (... (f (f a b0 c0) b1 c1) ...) bn cn].
 	      @raise Different_list_size if the two lists have
 	      different lengths. *)
 
 	val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> 'c -> 'c
-	  (** [List.fold_right2 f [a1; ...; an] [b1; ...; bn] c] is
-	      [f a1 b1 (f a2 b2 (... (f an bn c) ...))].
+	  (** [List.fold_right2 f [a0; a1; ...; an] [b0; b1; ...; bn] c] is
+	      [f a0 b0 (f a1 b1 (... (f an bn c) ...))].
 	      
 	      @raise Different_list_size if the two lists have
 	      different lengths.  Tail-recursive. *)
@@ -217,7 +220,7 @@
 	      in the input list is preserved.  *)
 
 	val filter_map : ('a -> 'b option) -> 'a list -> 'b list
-	(** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0..an] are
+	(** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0,a1..an] are
 	 the elements of [l]. It returns the list of elements [bi] such as
 	 [f ai = Some bi] (when [f] returns [None], the corresponding element of
 	 [l] is discarded). *)
@@ -256,7 +259,16 @@
 	 @see 'sort_unique' to save time in cases when reordering the list is acceptable
 	 *)
 
-	  (**{6 Association lists}*)
+	val unique_eq : ?eq:('a -> 'a -> bool) -> 'a list -> 'a list
+	(** As [unique] except comparator label is ~eq.  
+	    @since 1.3.0
+	 *)
+
+	val unique_cmp : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
+	(** As [unique], except comparator parameter returns an int
+	    @since 1.3.0 *)
+
+	(**{6 Association lists}*)
 
 	val assoc_inv : 'b -> ('a * 'b) list -> 'a
 	  (** [assoc_inv b l] returns the key associated with value [b] in the list of
@@ -318,8 +330,8 @@
 
 
 	val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
-	  (** [interleave ~first ~last sep [a1;a2;a3;...;an]] returns
-	      [first; a1; sep; a2; sep; a3; sep; ...; sep; an] *)
+	  (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
+	      [first; a0; sep; a1; sep; a2; sep; ...; sep; an] *)
 
 	(** {6 BatEnum functions} 
 	    
@@ -350,14 +362,14 @@
 	  
 	val split : ('a * 'b) list -> 'a list * 'b list
 	  (** Transform a list of pairs into a pair of lists:
-	      [split [(a1,b1); ...; (an,bn)]] is [([a1; ...; an], [b1; ...; bn])].
+	      [split [(a0,b0); (a1,b1); ...; (an,bn)]] is [([a0; a1; ...; an], [b0; b1; ...; bn])].
 	      Tail-recursive.
 	  *)
 
 	val combine : 'a list -> 'b list -> ('a * 'b) list
 	  (** Transform a pair of lists into a list of pairs:
-	      [combine [a1; ...; an] [b1; ...; bn]] is
-	      [[(a1,b1); ...; (an,bn)]].
+	      [combine [a0; a1; ...; an] [b0; b1; ...; bn]] is
+	      [[(a0,b0); (a1,b1); ...; (an,bn)]].
 	      @raise Different_list_size if the two lists
 	      have different lengths.  Tail-recursive. *)
 
@@ -385,17 +397,17 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	  *)  
 
 	val cartesian_product : 'a list -> 'b list -> ('a * 'b) list
-	  (** Different from [List.combine], this returns every pair
-	      of elements formed out of the two lists.  [cartesian_product
-	      [a1; ...; an] [b1; ...; bn] = [(a1,b1);(a1,b2); ...;
-	      (a1,bn); (a2,b1); ...; (an,bn)]].  The lists can be of
-	      unequal size. *)
+	(** Different from [List.combine], this returns every pair
+	    of elements formed out of the two lists.
+	    [cartesian_product [a0; a1; ...; an] [b0; b1; ...; bn] =
+	    [(a0,b0);(a0,b1); ...; (a0,bn); (a1,b0); ..; (a1, bn);
+	    ...; (an,bn)]].  The lists can be of unequal size. *)
 
 	val n_cartesian_product : 'a list list -> 'a list list
-	  (** Given n lists, return the n-way cartesian product of
-	      these lists.  Given [[a;b];[c];[d;e;f]], returns
-	      [[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]], all
-	      ways of choosing one element from each input list. *)
+	(** Given n lists, return the n-way cartesian product of
+	    these lists.  Given [[a;b];[c];[d;e;f]], returns
+	    [[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]], all
+	    ways of choosing one element from each input list. *)
 
 	(** {6 Boilerplate code}*)
 
@@ -405,7 +417,7 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	  (**Print the contents of a list*)
 
 	val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b list -> string
-	  (** Using a string printer, print a list to a string (as sprintf vs. printf) *)
+	  (** Using a string printer, print a list to a string (as sprintf vs. printf)     @deprecated use {!BatIO.to_string}. *)
 
         val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
 
@@ -458,14 +470,14 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 
 
 	  val assoc : 'a -> ('a * 'b) list -> 'b option
-	    (** [assoc a l] returns [Some b] where [b] is the value associated with key [a] 
+	    (** [assoc a l] returns [Some b] where [b] is the value associated with key [b]
 		in the list of pairs [l]. That is, [assoc a [ ...; (a,b); ...] = Some b]
 		if [(a,b)] is the leftmost binding of [a] in list [l].
 		Return [None] if there is no value associated with [a] in the
 		list [l]. *)
 
 	  val assoc_inv : 'b -> ('a * 'b) list -> 'a option
-	    (** [assoc_inv b l] returns [Some a] where [a] is the key associated with value [a] 
+	    (** [assoc_inv b l] returns [Some a] where [a] is the key associated with value [b]
 		in the list of pairs [l]. That is, [assoc b [ ...; (a,b); ...] = Some a]
 		if [(a,b)] is the leftmost binding of [a] in list [l].
 		Return [None] if there is no key associated with [b] in the
@@ -474,6 +486,12 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 
 	  val assq : 'a -> ('a * 'b) list -> 'b option
 	    (** As {!assoc} but with physical equality. *)
+
+	  val find_map : ('a -> 'b option) -> 'a list -> 'b option
+	(** [find_map f xs] returns [Some y] such that [x] is the first
+	    element of the list where [f x] returns [Some y].  It returns [None]
+	    if no such element exists. *)
+
 	end
 
 
@@ -485,7 +503,7 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	    there to improve readability and safety and to let you change the
 	    order of arguments to functions. In every case, the behavior of the
 	    function is identical to that of the corresponding function of {!List}.
-	*)
+	 *)
 	module Labels : sig
 	  val init : int -> f:(int -> 'a) -> 'a list
 	  val iter : f:('a -> unit) -> 'a list -> unit
@@ -529,7 +547,6 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
             val assq : 'a -> ('a * 'b) list -> 'b option
           end
 	end
-
 
 
 val ( @ ) : 'a list -> 'a list -> 'a list

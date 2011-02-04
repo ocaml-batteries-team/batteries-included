@@ -1,3 +1,3 @@
-<*>: use_batteries,debug
+<*>: pkg_batteries, syntax_camlp4o, pkg_batteries.syntax, debug
 <netchan-*>: pkg_netstring
 <parallelsort*>: thread

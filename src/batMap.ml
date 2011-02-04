@@ -26,119 +26,62 @@
   module type S =
   sig
     type key
-      (** The type of the map keys. *)
       
     type (+'a) t
-      (** The type of maps from type [key] to type ['a]. *)
       
     val empty: 'a t
-      (** The empty map. *)
       
     val is_empty: 'a t -> bool
-      (** Test whether a map is empty or not. *)
       
     val add: key -> 'a -> 'a t -> 'a t
-      (** [add x y m] returns a map containing the same bindings as
-	  [m], plus a binding of [x] to [y]. If [x] was already bound
-	  in [m], its previous binding disappears. *)
       
     val find: key -> 'a t -> 'a
-      (** [find x m] returns the current binding of [x] in [m],
-	  or raises [Not_found] if no such binding exists. *)
       
     val remove: key -> 'a t -> 'a t
-      (** [remove x m] returns a map containing the same bindings as
-	  [m], except for [x] which is unbound in the returned map. *)
 
     val modify: key -> ('a -> 'a) -> 'a t -> 'a t
-      (** [modify k f m] replaces the previous binding for [k] with [f] applied to
-	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
-	  search, [Not_found] is raised. *)
+
+    val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
+
       
     val mem: key -> 'a t -> bool
-      (** [mem x m] returns [true] if [m] contains a binding for [x],
-	  and [false] otherwise. *)
       
     val iter: (key -> 'a -> unit) -> 'a t -> unit
-      (** [iter f m] applies [f] to all bindings in map [m].
-	  [f] receives the key as first argument, and the associated value
-	  as second argument.  The bindings are passed to [f] in increasing
-	  order with respect to the ordering over the type of the keys.
-	  Only current bindings are presented to [f]:
-	  bindings hidden by more recent bindings are not passed to [f]. *)
       
     val map: ('a -> 'b) -> 'a t -> 'b t
-      (** [map f m] returns a map with same domain as [m], where the
-	  associated value [a] of all bindings of [m] has been
-	  replaced by the result of the application of [f] to [a].
-	  The bindings are passed to [f] in increasing order
-	  with respect to the ordering over the type of the keys. *)
       
     val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
-      (** Same as {!Map.S.map}, but the function receives as arguments both the
-	  key and the associated value for each binding of the map. *)
 
     val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-      (** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
-	  where [k1 ... kN] are the keys of all bindings in [m]
-	  (in increasing order), and [d1 ... dN] are the associated data. *)
 
-   val filter: ('a -> bool) -> 'a t -> 'a t
-      (**[filter f m] returns a map where only the values [a] of [m]
-	 such that [f a = true] remain. The bindings are passed to [f]
-	 in increasing order with respect to the ordering over the
-	 type of the keys. *)
+    val filter: ('a -> bool) -> 'a t -> 'a t
 
     val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
-      (**[filter f m] returns a map where only the key, values pairs
-	 [key], [a] of [m] such that [f key a = true] remain. The
-	 bindings are passed to [f] in increasing order with respect
-	 to the ordering over the type of the keys. *)
-            
+                
     val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
-      (** [filter_map f m] combines the features of [filteri] and
-	  [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
-	  where [a0..an] are the elements of [m] and [key0..keyn] the
-	  respective corresponding keys. It returns the map of
-	  pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
-	  [None], the corresponding element of [m] is discarded). *)
-
-    val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
-      (** Total ordering between maps.  The first argument is a total ordering
-          used to compare data associated with equal keys in the two maps. *)
-      
-    val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-      (** [equal cmp m1 m2] tests whether the maps [m1] and [m2] are
-	  equal, that is, contain equal keys and associate them with
-	  equal data.  [cmp] is the equality predicate used to compare
-	  the data associated with the keys. *)
-      
-    val keys : _ t -> key BatEnum.t
-      (** Return an enumeration of all the keys of a map.*)
-      
-    val values: 'a t -> 'a BatEnum.t
-      (** Return an enumeration of al the values of a map.*)
     
+    val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
+          
+    val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+          
+    val keys : _ t -> key BatEnum.t
+          
+    val values: 'a t -> 'a BatEnum.t
+        
     val min_binding : 'a t -> (key * 'a)
-      (** return the ([key,value]) pair with the smallest key *)
-
+    
     val max_binding : 'a t -> (key * 'a)
-      (** return the [(key,value)] pair with the largest key *)
     
     val choose : 'a t -> (key * 'a)
-      (** return an implementation defined [(key,value)] pair.  As [Set.choose] *)
-
+    
 (*
     val split : key -> 'a t -> ('a t * 'a option * 'a t)
-      (** as [Set.split] *)
 *)
     val enum  : 'a t -> (key * 'a) BatEnum.t
-      (** Return an enumeration of (key, value) pairs of a map.*)
-
+    
     val backwards  : 'a t -> (key * 'a) BatEnum.t
 
     val of_enum: (key * 'a) BatEnum.t -> 'a t
-      (** Create a map from a (key, value) enumeration. *)
 
     (** {6 Boilerplate code}*)
 
@@ -276,6 +219,15 @@
 	  | Empty -> raise Not_found in
 	t_of_impl (loop (impl_of_t m))
 
+      let modify_def v0 x f m =
+	let rec loop = function
+	  | Node (l, k, v, r, h) ->
+              let c = Ord.compare x k in
+              if c = 0 then Node (l, x, f v, r, h)
+              else if c < 0 then Node (loop l, k, v, r, h)
+              else (* c > 0 *)	Node (l, k, v, loop r, h)
+	  | Empty -> Node (Empty, x, f v0, Empty, 1) in
+	t_of_impl (loop (impl_of_t m))
 
 (*	NEEDS BAL FROM MAP IMPLEMENTATION
       (* needed by split, not exposed atm *)
@@ -331,8 +283,8 @@
   module StringMap  = Make(String)
   module IStringMap = Make(BatString.IString)
   module NumStringMap = Make(BatString.NumString)
-  module RopeMap    = Make(BatRope)
-  module IRopeMap   = Make(BatRope.IRope)
+(*  module RopeMap    = Make(BatRope) 
+  module IRopeMap   = Make(BatRope.IRope) *)
   module IntMap     = Make(BatInt)
 
 (*
@@ -371,32 +323,52 @@ let height = function
   | Node (_, _, _, _, h) -> h
   | Empty -> 0
 
-let make l k v r = Node (l, k, v, r, max (height l) (height r) + 1)
+(* The create and bal functions are from stdlib's map.ml (3.12)
+   differences from the old (extlib) implementation :
 
-let bal l k v r =
-  let hl = height l in
-  let hr = height r in
-  if hl > hr + 2 then
+   1. create use direct integer comparison instead of calling
+   polymorphic 'max'
+
+   2. the two calls of 'height' for hl and hr in the beginning of 'bal'
+   (hot path) are inlined
+
+   The difference in performances is important for bal-heavy worflows,
+   such as "adding a lot of elements". On a test system, we go from
+   1800 op/s to 2500 op/s.
+*)
+let make l x d r =
+  let hl = height l and hr = height r in
+  Node(l, x, d, r, (if hl >= hr then hl + 1 else hr + 1))
+
+let bal l x d r =
+  let hl = match l with Empty -> 0 | Node(_,_,_,_,h) -> h in
+  let hr = match r with Empty -> 0 | Node(_,_,_,_,h) -> h in
+  if hl > hr + 2 then begin
     match l with
-    | Node (ll, lk, lv, lr, _) ->
-        if height ll >= height lr then make ll lk lv (make lr k v r)
-        else
-          (match lr with
-          | Node (lrl, lrk, lrv, lrr, _) ->
-              make (make ll lk lv lrl) lrk lrv (make lrr k v r)
-          | Empty -> assert false)
-    | Empty -> assert false
-  else if hr > hl + 2 then
+        Empty -> invalid_arg "Map.bal"
+      | Node(ll, lv, ld, lr, _) ->
+        if height ll >= height lr then
+          make ll lv ld (make lr x d r)
+        else begin
+          match lr with
+              Empty -> invalid_arg "Map.bal"
+            | Node(lrl, lrv, lrd, lrr, _)->
+              make (make ll lv ld lrl) lrv lrd (make lrr x d r)
+        end
+  end else if hr > hl + 2 then begin
     match r with
-    | Node (rl, rk, rv, rr, _) ->
-        if height rr >= height rl then make (make l k v rl) rk rv rr
-        else
-          (match rl with
-          | Node (rll, rlk, rlv, rlr, _) ->
-              make (make l k v rll) rlk rlv (make rlr rk rv rr)
-          | Empty -> assert false)
-    | Empty -> assert false
-  else Node (l, k, v, r, max hl hr + 1)
+        Empty -> invalid_arg "Map.bal"
+      | Node(rl, rv, rd, rr, _) ->
+        if height rr >= height rl then
+          make (make l x d rl) rv rd rr
+        else begin
+          match rl with
+              Empty -> invalid_arg "Map.bal"
+            | Node(rll, rlv, rld, rlr, _) ->
+              make (make l x d rll) rlv rld (make rlr rv rd rr)
+        end
+  end else
+      Node(l, x, d, r, (if hl >= hr then hl + 1 else hr + 1))
 
 let rec min_binding = function (* shadowed by definition at end of file *)
   | Node (Empty, k, v, _, _) -> k, v
@@ -499,20 +471,51 @@ let fold f { cmp = cmp; map = map } acc =
 let foldi f { cmp = cmp; map = map } acc =
   let rec loop acc = function
     | Empty -> acc
-	| Node (l, k, v, r, _) ->
-       loop (f k v (loop acc l)) r in
+    | Node (l, k, v, r, _) ->
+      loop (f k v (loop acc l)) r in
   loop acc map
 
-let enum { map = map } =
-  let rec loop e () = match e with
-    | Empty -> BatEnum.empty ()
-    | Node (l, k, v, r, _) ->
-	BatEnum.flatten (BatList.enum [
-			BatEnum.delay (loop l);
-			BatEnum.singleton (k, v);
-			BatEnum.delay (loop r)])
-  in loop map ()
+type ('key,'a) iter = E | C of 'key * 'a * ('key,'a) map * ('key,'a) iter
 
+let rec cardinal = function
+  | Empty -> 0
+  | Node(l, _, _, r, _) -> cardinal l + 1 + cardinal r
+
+let rec cons_iter s t = match s with
+  | Empty -> t
+  | Node (l, k, v, r, _) -> cons_iter l (C (k, v, r, t))
+    
+let rec rev_cons_iter s t = match s with
+  | Empty -> t
+  | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
+
+let rec enum_next l () = match !l with
+    E -> raise BatEnum.No_more_elements
+  | C (k, v, m, t) -> l := cons_iter m t; (k, v)
+    
+let rec enum_backwards_next l () = match !l with
+    E -> raise BatEnum.No_more_elements
+  | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
+    
+let rec enum_count l () =
+  let rec aux n = function
+    | E -> n
+    | C (_, _, m, t) -> aux (n + 1 + cardinal m) t
+  in aux 0 !l
+  
+let enum t =
+  let rec make l =
+    let l = ref l in
+    let clone() = make !l in
+    BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
+  in make (cons_iter t.map E)
+  
+let backwards t =
+  let rec make l =
+    let l = ref l in
+    let clone() = make !l in
+    BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
+  in make (rev_cons_iter t.map E)
 
 (*let rec enum m =
   let rec make l =
@@ -644,6 +647,21 @@ let modify x f { cmp = cmp; map = map } =
   in
   { cmp = cmp; map = loop map }
 
+let modify_def v0 x f { cmp = cmp; map = map } =
+  let rec loop = function
+    | Node (l, k, v, r, h) ->
+        let c = cmp x k in
+        if c = 0 then Node (l, x, f v, r, h)
+        else if c < 0 then
+          let nl = loop l in
+          bal nl k v r
+        else
+          let nr = loop r in
+          bal l k v nr
+    | Empty -> Node (Empty, x, f v0, Empty, 1)
+  in
+  { cmp = cmp; map = loop map }
+
 
 let extract x { cmp = cmp; map = map } =
   let rec loop = function
@@ -666,6 +684,36 @@ let pop {cmp = cmp; map = map} =
     | Node (l, k, v, r, _) ->
 	(k, v), {cmp = cmp; map = merge l r}
 
+let rec join l x d r cmp =
+  let m tree = {cmp = cmp; map = tree} in
+  match (l, r) with
+  | (Empty, _) -> (add x d (m r)).map
+  | (_, Empty) -> (add x d (m l)).map
+  | (Node(ll, lx, ld, lr, lh), Node(rl, rx, rd, rr, rh)) ->
+      if lh > rh + 2 then
+        bal ll lx ld (join lr x d r cmp)
+      else if rh > lh + 2 then
+        bal (join l x d rl cmp) rx rd rr
+      else
+        make l x d r
+
+let rec split key map cmp =
+  match map with
+  | Empty -> (Empty, None, Empty)
+  | Node(l, x, d, r, _) ->
+      let c = cmp key x in
+      if c = 0 then
+        (l, Some d, r)
+      else if c < 0 then
+        let (ll, pres, rl) = split key l cmp in (ll, pres, join rl x d r cmp)
+      else
+        let (lr, pres, rr) = split key r cmp in (join l x d lr cmp, pres, rr)
+
+let split key {cmp = cmp; map = map} =
+  let ltree, ov, rtree = split key map cmp in
+  let m tree = {cmp = cmp; map = tree} in
+  m ltree, ov, m rtree
+
 let union m1 m2 =
   foldi add m1 m2
 (* TODO: use split/bal to merge similarly compared maps more efficiently *)
@@ -673,6 +721,11 @@ let union m1 m2 =
 let diff m1 m2 =
   foldi (fun k _ acc -> remove k acc) m2 m1
     (* TODO: as union - use tree operations for large maps *)
+
+module Exceptionless = 
+struct
+  let find k m = try Some (find k m) with Not_found -> None
+end
 
 module Infix =
 struct

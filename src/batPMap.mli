@@ -41,6 +41,9 @@ val is_empty : ('a, 'b) t -> bool
 val create : ('a -> 'a -> int) -> ('a, 'b) t
 (** creates a new empty map, using the provided function for key comparison.*)
 
+val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'b -> ('a, 'b) t
+(** creates a new map with a single binding *)
+
 val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
     [m], plus a binding of [x] to [y]. If [x] was already bound
@@ -59,7 +62,10 @@ val mem : 'a -> ('a, 'b) t -> bool
     and [false] otherwise. *)
 
 val exists : 'a -> ('a, 'b) t -> bool
-(** same as [mem]. *)
+(** same as [mem].
+
+    @deprecated [mem] should be used instead, as [exists] conflicts with the function checking arbitrary predicates, which is instead named [exists_f].
+*)
 
 val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
 (** [iter f m] applies [f] to all bindings in map [m].
@@ -80,9 +86,9 @@ val mapi : ('a -> 'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
     key and the associated value for each binding of the map. *)
 
 val fold : ('b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
-(** [fold f m a] computes [(f kN dN ... (f k1 d1 a)...)],
-    where [k1 ... kN] are the keys of all bindings in [m],
-    and [d1 ... dN] are the associated data.
+(** [fold f m a] computes [(f kN dN ... (f k1 d1 (f k0 d0 a))...)],
+    where [k0,k1..kN] are the keys of all bindings in [m],
+    and [d0,d1.dN] are the associated data.
     The order in which the bindings are presented to [f] is
     unspecified. *)
 
@@ -122,6 +128,9 @@ val max_binding : ('key, 'a) t -> ('key * 'a)
 val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map. *)
 
+val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
+(** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
+
 val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
   for key comparison or [compare] by default. *)
@@ -143,6 +152,15 @@ val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> ('a, 'b) t
       applied to that value.  If [k] is unbound in [m] or [Not_found] is
       raised during the search, [m] is returned unchanged. *)
 
+val modify_def: 'b -> 'a -> ('b -> 'b) -> ('a,'b) t -> ('a,'b) t
+(** [modify_def v0 k f m] replaces the previous binding for [k]
+    with [f] applied to that value. If [k] is unbound in [m] or
+    [Not_found] is raised during the search, [f v0] is
+    inserted (as if the value found were [v0]).
+
+    @since 1.3.0
+ *)
+
 val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
   (** [extract k m] removes the current binding of [k] from [m],
       returning the value [k] was bound to and the updated [m]. *)
@@ -159,6 +177,16 @@ val union : ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
 
 val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
   (** [diff m1 m2] removes all bindings of keys found in [m2] from [m1].  Equivalent to [fold remove m2 m1] *)
+
+val split : 'a -> ('a, 'b) t -> (('a, 'b) t * 'b option * ('a, 'b) t)
+(** [split k m] returns the map of keys less than [k] in [m], [k]'s
+    binding in [m], if there was one, and the map of keys greater then
+    [k] in [m] *)
+
+(** Exceptionless versions of functions *)
+module Exceptionless : sig
+  val find: 'a -> ('a,'b) t -> 'b option
+end
 
 (** Infix operators over a {!BatPMap} *)
 module Infix : sig

@@ -1,6 +1,6 @@
-(* ocamlbuild plugin for building Batteries.  
+(* ocamlbuild plugin for building Batteries.
  * Copyright (C) 2010 Michael Ekstrand
- * 
+ *
  * Portions (hopefully trivial) from build/myocamlbuild.ml and the
  * Gallium wiki. *)
 
@@ -38,7 +38,7 @@ let _ = dispatch begin function
         begin fun env build ->
           Cmd(S[A"ocamlrun"; P"mkconf.byte"; P(env "%.mlp"); P(env "%.ml")])
         end;
-      
+
       rule "process meta file"
         ~prod:"META"
         ~deps:["META.in"; "VERSION"; "mkconf.byte"]
@@ -49,6 +49,8 @@ let _ = dispatch begin function
   | After_rules ->
       (* When one links an OCaml program, one should use -linkpkg *)
       flag ["ocaml"; "link"; "program"] & A"-linkpkg";
+
+      flag ["ocaml"; "compile"] & S[A"-annot"; A "-warn-error"; A "A"];
 
       flag ["ocaml"; "compile"] & S[A"-package"; A packs];
       flag ["ocaml"; "ocamldep"] & S[A"-package"; A packs];
@@ -61,14 +63,14 @@ let _ = dispatch begin function
       flag ["ocaml"; "compile"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
       flag ["ocaml"; "link"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
 
-      (* DON'T USE TAG 'thread', USE 'threads' 
+      (* DON'T USE TAG 'thread', USE 'threads'
 	 for compatibility with ocamlbuild *)
       flag ["ocaml"; "compile"; "threads"] & A"-thread";
       flag ["ocaml"; "link"; "threads"] & A"-thread";
       flag ["ocaml"; "doc"; "threads"] & S[A"-I"; A "+threads"];
 
       flag ["ocaml"; "doc"] & S[A"-hide-warnings"; A"-sort"];
-      
+
       flag ["ocaml"; "compile"; "camlp4rf"] &
         S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4rf"];
       flag ["ocaml"; "ocamldep"; "camlp4rf"] &
@@ -78,5 +80,15 @@ let _ = dispatch begin function
         S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4of"];
       flag ["ocaml"; "ocamldep"; "camlp4of"] &
         S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4of"];
+
+      ocaml_lib "qtest/test_mods";
+      ocaml_lib "src/batteries";
+
+      flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
+(*
+      dep ["ocaml"; "link"; "include_tests"; "byte"] & 
+	[Pathname.mk "qtest/test_mods.cma"];
+      dep ["ocaml"; "link"; "include_tests"; "native"] & 
+	[Pathname.mk "qtest/test_mods.cmxa"]; *)
   | _ -> ()
 end

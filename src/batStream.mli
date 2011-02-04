@@ -134,16 +134,20 @@ val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
       stream are ignored. *)
 
 val scanl : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a t
-  (** [scanl f init stream] returns a stream of successive reduced values from the
-      left: [scanl f init [<'e1;'e2;..>] = [<'init; '((f init e1) as e1'); '(f
-      e1' e2); ..>]] *)
+(** [scanl f init stream] returns a stream of successive reduced
+    values from the left: [scanl f init [< 'e0; 'e1; ... >]] is
+    equivalent to
+      [[< 'init; '(f init e0); '(f (f init e0) e1); ... >]]
+*)
 
 val scan : ('a -> 'a -> 'a) -> 'a t -> 'a t
-  (** [scan] is similar to [scanl] but without the [init] value: [scan f
-      [<'e1;'e2;..>] = [<'e1;'(f e1 e2);..>]]. *)
+(** [scan] is similar to [scanl] but without the [init] value:
+    [scanl f init [< 'e0; 'e1; 'e2; ... >]] is equivalent to
+      [[< 'e0; '(f e0 e1); '(f (f e0 e1) e2); ... >]]
+*)
 
 val concat : 'a t t -> 'a t
-  (** concatenate a stream of streams *)
+(** concatenate a stream of streams *)
 
 val take : int -> 'a t -> 'a t
   (** [take n stream] returns the prefix of [stream] of length [n], or [stream]
@@ -223,92 +227,35 @@ module StreamLabels : sig
    {b Note} This module is provided essentially for backwards-compatibility.
    If you feel like using [Stream.t], please take a look at [BatEnum]
    or [LazyList] and [GenParser].
+
+   See the complete [Stream] module for the function documentations.
 *)
 
 
-(** {6 Stream iterators} *)
-
 val iter : f:('a -> unit) -> 'a t -> unit
-(** [Stream.iter f s] scans the whole stream s, applying function [f]
-   in turn to each stream element encountered. *)
 
 val foldl : f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b t -> 'a
-  (** [foldl f init stream] is a lazy fold_left. [f accu elt] should return
-      [(new_accu, state)] where [new_accu] is normal accumulation result, and
-      [state] is a flag representing whether the computation should continue
-      and whether the last operation is valid: [None] means continue, [Some b]
-      means stop where [b = true] means the last addition is still valid and [b
-      = false] means the last addition is invalid and should be revert. *)
 
 val foldr : f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a t -> 'b
-  (** [foldr f init stream] is a lazy fold_right. Unlike the normal fold_right,
-      the accumulation parameter of [f elt accu] is lazy, hence it can decide
-      not to force the evaluation of [accu] if the current element [elt] can
-      determin the result by itself. *)
 
 val fold : f:('a -> 'a -> 'a * bool option) -> init:'a t -> 'a
-  (** [fold] is [foldl] without initialization value, where the first
-      element of stream is taken as [init]. It raises [End_of_stream] exception
-      when the input stream is empty. *)
-
 
 val filter : f:('a -> bool) -> 'a t -> 'a t
-  (** [filter test stream] picks all the elements satisfying [test] from [stream]
-      and return the results in the same order as a stream. *)
-
-(** {6 Computation over stream}
-
-    All the functions in this part are lazy.*)
 
 val map : f:('a -> 'b) -> 'a t -> 'b t
-  (** [map f stream] applies [f] in turn to elements from [stream] and return the
-      results as a stream in the same order. *)
 
 val map2 : f:('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
-  (** [map2 f streama streamb] applies [f] in turn to elements of corresponding
-      positions from [streama] and [streamb]. The results are constructed in the
-      same order as a stream. If one stream is short, excess elements of the longer
-      stream are ignored. *)
 
 val scanl : f:('a -> 'b -> 'a) -> 'a -> 'b t -> 'a t
-  (** [scanl f init stream] returns a stream of successive reduced values from the
-      left: [scanl f init [<'e1;'e2;..>] = [<'init; '((f init e1) as e1'); '(f
-      e1' e2); ..>]] *)
 
 val scan : f:('a -> 'a -> 'a) -> 'a t -> 'a t
-  (** [scan] is similar to [scanl] but without the [init] value: [scan f
-      [<'e1;'e2;..>] = [<'e1;'(f e1 e2);..>]]. *)
 
 val take_while : f:('a -> bool) -> 'a t -> 'a t
-  (** [take_while test stream] returns the longest (possibly empty) prefix of
-      [stream] of elements that satisfy [test]. *)
 
 val drop_while : f:('a -> bool) -> 'a t -> 'a t
-  (** [drop_while test stream] returns the remaining suffix of [take_while test
-      stream]. *)
-
-(** {6 Streams pair arithmetic}
-
-    All the functions in this part are lazy.*)
 
 val merge : f:(bool -> 'a -> bool) -> 'a t * 'a t -> 'a t
-  (** [merge test (streama, streamb)] merge the elements from [streama] and
-      [streamb] into a single stream. The [bool] type here represents the id of the
-      two input streams where [true] is the first and [false] represents the
-      second. The [test] function is applied to each element of the output stream
-      together with the id of the input stream from which it was extracted, to
-      decide which stream should the next element come from. The first element is
-      always taken from [streama]. When a stream runs out of elements, the merge
-      process will continue to take elements from the other stream until both
-      streams reach their ends. *)
 
 val switch : f:('a -> bool) -> 'a t -> 'a t * 'a t
-  (** [switch ~f:test stream] split [stream] into two streams, where the first stream have
-      all the elements satisfying [test], the second stream is opposite. The
-      order of elements in the source stream is preserved. *)
-
-(** {6 Stream arithmetic} 
-
-    All the functions in this part are lazy.*)
 
 end

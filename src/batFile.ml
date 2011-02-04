@@ -89,7 +89,7 @@ let out_chan_mode ?mode binary =
     | Some l -> Open_wronly :: (mode_to_open_flag l)
 
 
-let open_out ?mode ?(perm=user_read lor user_write) name =
+let open_out ?mode ?(perm=0o666) name =
 (*  Printf.eprintf "Opening out\n%!";*)
   output_channel ~cleanup:true (open_out_gen (out_chan_mode ?mode true) perm name)
 

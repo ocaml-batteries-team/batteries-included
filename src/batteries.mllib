@@ -7,13 +7,16 @@ BatBool
 BatBuffer
 BatChar
 BatComplex
+BatDeque
 BatDigest
 BatEnum
 BatFloat
 BatFormat
 BatGc
 BatGenlex
+BatHashcons
 BatHashtbl
+BatHeap
 BatIO
 BatInnerIO
 BatInt32
@@ -75,6 +78,7 @@ BatSeq
 BatStd
 BatSubstring
 BatUCharParser
+BatUref
 BatValue_printer
 BatVect
 BatAvlTree

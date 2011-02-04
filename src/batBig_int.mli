@@ -59,6 +59,8 @@ type t = big_int
     val of_string : string -> big_int
     val to_int : big_int -> int
     val of_int : int -> big_int
+    val of_float: float -> big_int
+    val to_float: big_int -> float
     val compare : big_int -> big_int -> int
     val ( -- ) : big_int -> big_int -> big_int BatEnum.t
     val ( --- ): big_int -> big_int -> big_int BatEnum.t

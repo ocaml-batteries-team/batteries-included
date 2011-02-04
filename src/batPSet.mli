@@ -19,8 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+
 (**
-   Polymorphic sets of elements.
+   Polymorphic sets
+
+   @author Xavier Leroy
+   @author Nicolas Cannasse
+   @author Markus Mottl
+   @author David Rajchenbach-Teller
 
    This module defines a type of sets, a functional representation of
    sets of elements. The base operations are adding an element to a
@@ -37,12 +43,6 @@
    set of features but stronger type-safety. Module {!PSet} is easier
    to use and has a few more powerful features but makes it easier to
    shoot yourself in the foot. In case of doubt, use {!Set}.
-
-
-   @author Xavier Leroy
-   @author Nicolas Cannasse
-   @author Markus Mottl
-   @author David Rajchenbach-Teller
 *)
 
 type 'a t
@@ -56,6 +56,9 @@ val empty: 'a t
 
 val create : ('a -> 'a -> int) -> 'a t
   (** Creates a new empty set, using the provided function for key comparison.*)
+
+val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'a t
+(** Creates a new set with the single given element in it. *)
 
 val is_empty: 'a t -> bool
   (** Test whether a set is empty or not. *)
@@ -79,23 +82,23 @@ val iter: ('a -> unit) -> 'a t -> unit
 
 val map: ('a -> 'b) -> 'a t -> 'b t
   (** [map f x] creates a new set with elements [f a0],
-      [f a1]... [f an], where [a1], ..., [an] are the
+      [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
       values contained in [x]*)
-  
+
 val filter: ('a -> bool) -> 'a t -> 'a t
   (** [filter p s] returns the set of all elements in [s]
       that satisfy predicate [p]. *)
   
 val filter_map: ('a -> 'b option) -> 'a t -> 'b t
   (** [filter_map f m] combines the features of [filter] and
-      [map].  It calls calls [f a0], [f a1], [f an] where [a0..an]
+      [map].  It calls calls [f a0], [f a1], [f aN] where [a0,a1..an]
       are the elements of [m] and returns the set of pairs [bi]
       such as [f ai = Some bi] (when [f] returns [None], the
       corresponding element of [m] is discarded). *)
   
 val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  (** [fold f s a] computes [(f xN ... (f x2 (f x1 a))...)],
-      where [x1 ... xN] are the elements of [s], in increasing order. *)
+  (** [fold f s a] computes [(f xN ... (f x1 (f x0 a))...)],
+      where [x0,x1..xN] are the elements of [s], in increasing order. *)
   
 val exists: ('a -> bool) -> 'a t -> bool
   (** [exists p s] checks if at least one element of
@@ -158,3 +161,4 @@ val diff: 'a t -> 'a t -> 'a t
 val print :  ?first:string -> ?last:string -> ?sep:string -> 
   ('a BatInnerIO.output -> 'c -> unit) -> 
   'a BatInnerIO.output -> 'c t -> unit
+

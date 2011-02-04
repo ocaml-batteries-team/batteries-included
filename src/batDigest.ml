@@ -38,3 +38,26 @@ let channel inp len = (*TODO: Make efficient*)
     let _   = BatIO.really_input inp buf 0 len in
       Digest.string buf
   else Digest.channel (BatIO.to_input_channel inp) len
+
+(***
+
+(*1. Compute the digest of this file using Legacy.Digest*)
+
+let legacy_result () =
+  let inp    = Pervasives.open_in_bin Sys.argv.(0) in
+  let result = Legacy.Digest.channel inp (-1) in
+    Pervasives.close_in inp;
+    result
+in
+(*2. Compute the digest of this file using Batteries.Digest*)
+
+let batteries_result () =
+  let inp    = BatFile.open_in Sys.argv.(0) in
+  let result = BatDigest.channel inp (-1)   in
+    BatIO.close_in inp;
+    result
+in
+(*3. Compare*)
+  assert_equal ~printer:(Printf.sprintf "%S")
+    (legacy_result ()) (batteries_result ())
+ **)

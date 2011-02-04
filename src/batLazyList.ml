@@ -473,10 +473,22 @@ let mem_assq e l = BatOption.is_some (may_find (fun (a, _) -> a == e) l)
 
 let unique ?(cmp = compare) l =
   let set      = ref (BatPMap.create cmp) in
-  let filter x = if BatPMap.mem x !set then None
-                 else                  ( set := BatPMap.add x true !set; Some x )
+  let should_keep x = 
+    if BatPMap.mem x !set then false
+    else ( set := BatPMap.add x true !set; true )
   in
-    filter_map filter l
+  (* use a stateful filter to remove duplicate elements *)
+  filter should_keep l
+
+let unique_eq ?(eq = (=)) l =
+  let rec next_true l = match next l with (*Compute the next accepted predicate without thunkification*)
+    | Cons (x, l) when exists (eq x) l -> next_true l
+    | l                                -> l
+  in
+  let rec aux l = lazy(match next_true l with
+    | Cons (x, l) -> Cons (x, aux l)
+    | Nil         -> Nil)
+  in aux l
 
 let remove_if p l =
   let rec aux acc l = match next l with

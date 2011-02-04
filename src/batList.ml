@@ -179,6 +179,17 @@ let rec unique ?(cmp = ( = )) l =
 	loop dummy l;
 	dummy.tl
 
+let unique_eq ?eq l = unique ?cmp:eq l
+
+let unique_cmp ?(cmp = Pervasives.compare) l =
+  let set      = ref (BatMap.create cmp) in
+  let should_keep x = 
+    if BatMap.mem x !set then false
+    else ( set := BatMap.add x true !set; true )
+  in
+  (* use a stateful filter to remove duplicate elements *)
+  filter should_keep l
+
 let filter_map f l =
 	let rec loop dst = function
 		| [] -> ()
@@ -706,7 +717,9 @@ module Exceptionless = struct
     try Some (assoc_inv e l)
     with Not_found -> None
 
-
+  let find_map f l =
+    try Some(find_map f l)
+    with Not_found -> None
 end
 
 

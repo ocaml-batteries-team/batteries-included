@@ -57,6 +57,7 @@ module Format = struct include Format include BatFormat end
 module Gc = struct include Gc include BatGc end
 module Genlex = struct include Genlex include BatGenlex end
 module Hashtbl = BatHashtbl
+module Heap = BatHeap
 module Int32 = BatInt32
 module Int64 = BatInt64
 (* Lazy *)
@@ -105,6 +106,8 @@ module Std = BatStd
 
 (* Batteries specific modules *)
 module CharParser = BatCharParser
+module Deque = BatDeque
+module Hashcons = BatHashcons
 module Logger = BatLogger
 module Monad = BatMonad
 module Pair = BatPair
@@ -119,6 +122,7 @@ module Value_printer = BatValue_printer
 module Vect = BatVect
 module ISet = BatISet
 module IMap = BatIMap
+module Uref = BatUref
 
 (* Unix *)
 module Unix = struct include Unix include BatUnix end
