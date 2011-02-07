@@ -36,6 +36,7 @@ BatQueue
 BatRandom
 BatScanf
 BatSet
+batSplay
 BatStack
 BatStream
 BatString

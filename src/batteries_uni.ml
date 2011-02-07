@@ -122,6 +122,7 @@ module Value_printer = BatValue_printer
 module Vect = BatVect
 module ISet = BatISet
 module IMap = BatIMap
+module Splay = BatSplay
 module Uref = BatUref
 
 (* Unix *)
