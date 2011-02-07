@@ -75,6 +75,7 @@ last line in our ocamlinit to load batteries.
 
 More usage help available on the [batteries-included wiki][batwiki].
 
+[batwiki]: https://github.com/ocaml-batteries-team/batteries-included/wiki/
 
 ExtLib Compatibility
 --------------------
@@ -94,6 +95,6 @@ have a corresponding module in batteries at the moment.
 Extending Batteries
 -------------------
 
-See doc/batteries/GUIDELINES and the [guidelines wiki page][batwiki].
+See doc/batteries/GUIDELINES and the [guidelines wiki page][batwiki-dev].
 
-[batwiki]: https://github.com/ocaml-batteries-team/batteries-included/wiki/Developers-guidelines
+[batwiki-dev]: https://github.com/ocaml-batteries-team/batteries-included/wiki/Developers-guidelines
