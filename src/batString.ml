@@ -191,6 +191,12 @@ let nsplit str sep =
     in
       aux [] (length str - 1 )
 
+(**T
+   nsplit "a;b;c" ";" = ["a"; "b"; "c"]
+   nsplit "" "x" = []
+   nsplit "abc" "" = ["a"; "b"; "c"]
+**)
+
 let join = concat
 
 let slice ?(first=0) ?(last=Sys.max_string_length) s =
