@@ -124,22 +124,22 @@ endif
 fix-camomile: $(CAMFIX)
 
 #replace batcamomile with a version appropriate for camomile 0.8.2
-camomile82: src/batCamomile.ml
+camomile82:
 	cp -f src/batCamomile-0.8.2.ml src/batCamomile.ml
 
 #replace batcamomile with a version appropriate for camomile 0.8.1
-camomile81: src/batCamomile.ml
+camomile81:
 	cp -f src/batCamomile-0.8.1.ml src/batCamomile.ml
 
 #replace batcamomile with a version appropriate for camomile 0.7.*
-camomile7: src/batCamomile.ml
+camomile7:
 	cp -f src/batCamomile-0.7.ml src/batCamomile.ml
 
-camfail: src/batCamomile.ml
+camfail:
 	echo "Camomile not detected, cannot compile batteries"
 	exit 1
 
-camfailunk: src/batCamomile.ml
+camfailunk:
 	echo "Unknown build of camomile detected ( $(CAMVER) ), cannot auto-config batcamomile"
 	exit 1
 
