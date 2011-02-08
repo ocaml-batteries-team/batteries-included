@@ -42,15 +42,16 @@ else ifeq ($(BATTERIES_NATIVE), yes)
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest fix_camomile camomile82 camomile81 camomile7 camfail
+.PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk
 
-all: fix-camomile
+all: src/batCamomile.ml
 	${RM} src/batteries_config.ml
 	$(OCAMLBUILD) $(TARGETS)
 
 clean:
 	${RM} apidocs
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
+	${RM} src/batCamomile.ml
 	$(OCAMLBUILD) -clean
 
 doc:
@@ -88,7 +89,7 @@ reinstall:
 DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
 TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
-test: fix-camomile $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
+test: src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
 	$(foreach TEST, $(TEST_TARGETS), _build/$(TEST); )
 
@@ -103,16 +104,16 @@ release: test
 
 CAMVER=$(shell sh -c 'ocamlfind query -format %v camomile')
 ifeq ($(CAMVER),0.8.2)
-	CAMFIX=camomile82
+	CAMFIX=src/batCamomile-0.8.2.ml
 endif
 ifeq ($(CAMVER),0.8.1)
-	CAMFIX=camomile81
+	CAMFIX=src/batCamomile-0.8.1.ml
 endif
 ifeq ($(CAMVER),0.7.2)
-	CAMFIX=camomile7
+	CAMFIX=src/batCamomile-0.7.ml
 endif
 ifeq ($(CAMVER),0.7.1)
-	CAMFIX=camomile7
+	CAMFIX=src/batCamomile-0.7.ml
 endif
 ifeq ($(CAMVER),)
 	CAMFIX=camfail
@@ -121,19 +122,8 @@ ifeq ($(CAMFIX),)
 	CAMFIX=camfailunk
 endif
 
-fix-camomile: $(CAMFIX)
-
-#replace batcamomile with a version appropriate for camomile 0.8.2
-camomile82:
-	cp -f src/batCamomile-0.8.2.ml src/batCamomile.ml
-
-#replace batcamomile with a version appropriate for camomile 0.8.1
-camomile81:
-	cp -f src/batCamomile-0.8.1.ml src/batCamomile.ml
-
-#replace batcamomile with a version appropriate for camomile 0.7.*
-camomile7:
-	cp -f src/batCamomile-0.7.ml src/batCamomile.ml
+src/batCamomile.ml: $(CAMFIX)
+	cp -f $< $@
 
 camfail:
 	echo "Camomile not detected, cannot compile batteries"
