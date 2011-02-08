@@ -69,7 +69,7 @@ struct
   let emptybucket = Weak.create 0
 
   let create sz =
-    let sz = Pervasives.min (Pervasives.min sz 7) (Sys.max_array_length - 1) in
+    let sz = Pervasives.min (Pervasives.max sz 7) (Sys.max_array_length - 1) in
     { table = Array.make sz emptybucket
     ; totsize = 0 ; limit = 3 }
 
@@ -118,7 +118,6 @@ struct
 
   and add t d =
     let index = d.hcode mod (Array.length t.table) in
-    assert (0 <= index && index < Array.length t.table) ;
     let bucket = t.table.(index) in
     let sz = Weak.length bucket in
     let rec loop i =
@@ -129,7 +128,6 @@ struct
         let newbucket = Weak.create newsz in
         Weak.blit bucket 0 newbucket 0 sz ;
         Weak.set newbucket i (Some d) ;
-        assert (0 <= index && index < Array.length t.table) ;
         t.table.(index) <- newbucket ;
         t.totsize <- t.totsize + (newsz - sz) ;
         if t.totsize > t.limit * Array.length t.table then resize t ;
@@ -142,9 +140,8 @@ struct
     loop 0
 
   let hashcons t d =
-    let hcode = Pervasives.abs (HT.hash d) in
+    let hcode = (HT.hash d) land Pervasives.max_int in
     let index = hcode mod (Array.length t.table) in
-    assert (0 <= index && index < Array.length t.table) ;
     let bucket = t.table.(index) in
     let sz = Weak.length bucket in
     let rec loop i =
