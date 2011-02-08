@@ -22,7 +22,13 @@
    implementation:
 
    http://www.lri.fr/~filliatr/ftp/ocaml/ds/hashcons.ml
- *)
+*)
+
+module Pervasives = struct include Pervasives include BatPervasives end
+module Int = BatInt
+module Sys = struct include Sys include BatSys end
+module Hashtbl = BatHashtbl
+module Array = struct include Array include BatArray end
 
 type 'a hobj = {
   obj   : 'a ;
@@ -32,7 +38,7 @@ type 'a hobj = {
 
 type 'a t = 'a hobj
 
-let compare ho1 ho2 = BatInt.compare ho1.tag ho2.tag
+let compare ho1 ho2 = Int.compare ho1.tag ho2.tag
 
 let gentag =
   let tags = ref 0 in
@@ -48,7 +54,7 @@ sig
   val iter     : (key hobj -> unit) -> t -> unit
 end
 
-module MakeTable (HT : BatHashtbl.HashedType) : Table with type key = HT.t =
+module MakeTable (HT : Hashtbl.HashedType) : Table with type key = HT.t =
 struct
   type key = HT.t
 
@@ -63,47 +69,41 @@ struct
   let emptybucket = Weak.create 0
 
   let create sz =
-    let sz = if sz < 7 then 7 else sz in
-    let sz = if sz > Sys.max_array_length then Sys.max_array_length else sz
-    in {
-      table = Array.make sz emptybucket ;
-      totsize = 0 ;
-      limit = 3 ;
-    }
+    let sz = Pervasives.min (Pervasives.min sz 7) (Sys.max_array_length - 1) in
+    { table = Array.make sz emptybucket
+    ; totsize = 0 ; limit = 3 }
 
   let clear t =
-    for i = 0 to Array.length t.table - 1 do
-      t.table.(i) <- emptybucket
-    done ;
+    Array.modify (fun _ -> emptybucket) t.table ;
     t.totsize <- 0 ;
     t.limit <- 3
 
   let fold f t init =
     let rec fold_bucket i b accu =
       if i >= Weak.length b then accu else
-      match Weak.get b i with
-      | Some v -> fold_bucket (i + 1) b (f v accu)
-      | None -> fold_bucket (i + 1) b accu
+        match Weak.get b i with
+          | Some v -> fold_bucket (i + 1) b (f v accu)
+          | None -> fold_bucket (i + 1) b accu
     in
     Array.fold_right (fold_bucket 0) t.table init
 
   let iter f t =
     let rec iter_bucket i b =
       if i >= Weak.length b then () else
-      match Weak.get b i with
-      | Some v -> f v ; iter_bucket (i + 1) b
-      | None -> iter_bucket (i + 1) b
+        match Weak.get b i with
+          | Some v -> f v ; iter_bucket (i + 1) b
+          | None -> iter_bucket (i + 1) b
     in
     Array.iter (iter_bucket 0) t.table
 
   let count t =
     let rec count_bucket i b accu =
       if i >= Weak.length b then accu else
-      count_bucket (i + 1) b (accu + (if Weak.check b i then 1 else 0))
+        count_bucket (i + 1) b (accu + (if Weak.check b i then 1 else 0))
     in
     Array.fold_right (count_bucket 0) t.table 0
 
-  let next_sz n = min (3*n/2 + 3) (Sys.max_array_length - 1)
+  let next_sz n = Pervasives.min (3 * n / 2 + 3) (Sys.max_array_length - 1)
 
   let rec resize t =
     let oldlen = Array.length t.table in
@@ -111,23 +111,25 @@ struct
     if newlen > oldlen then begin
       let newt = create newlen in
       newt.limit <- t.limit + 100 ;          (* prevent resizing of newt *)
-      fold (fun d () -> add newt d) t () ;
+      iter (add newt) t ;
       t.table <- newt.table ;
       t.limit <- t.limit + 2 ;
     end
 
   and add t d =
     let index = d.hcode mod (Array.length t.table) in
+    assert (0 <= index && index < Array.length t.table) ;
     let bucket = t.table.(index) in
     let sz = Weak.length bucket in
     let rec loop i =
       if i >= sz then begin
-        let newsz = min (sz + 3) (Sys.max_array_length - 1) in
+        let newsz = Pervasives.min (sz + 3) (Sys.max_array_length - 1) in
         if newsz <= sz then
 	  failwith "Hashcons.Make: hash bucket cannot grow more" ;
         let newbucket = Weak.create newsz in
         Weak.blit bucket 0 newbucket 0 sz ;
         Weak.set newbucket i (Some d) ;
+        assert (0 <= index && index < Array.length t.table) ;
         t.table.(index) <- newbucket ;
         t.totsize <- t.totsize + (newsz - sz) ;
         if t.totsize > t.limit * Array.length t.table then resize t ;
@@ -140,8 +142,9 @@ struct
     loop 0
 
   let hashcons t d =
-    let hcode = HT.hash d in
+    let hcode = Pervasives.abs (HT.hash d) in
     let index = hcode mod (Array.length t.table) in
+    assert (0 <= index && index < Array.length t.table) ;
     let bucket = t.table.(index) in
     let sz = Weak.length bucket in
     let rec loop i =
@@ -151,12 +154,12 @@ struct
 	hdata
       end else begin
         match Weak.get_copy bucket i with
-        | Some v when HT.equal v.obj d ->
-	    begin match Weak.get bucket i with
-              | Some v -> v
-              | None -> loop (i + 1)
-            end
-        | _ -> loop (i + 1)
+          | Some v when HT.equal v.obj d ->
+	      begin match Weak.get bucket i with
+                | Some v -> v
+                | None -> loop (i + 1)
+              end
+          | _ -> loop (i + 1)
       end
     in
     loop 0
