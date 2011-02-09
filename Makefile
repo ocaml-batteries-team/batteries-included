@@ -33,16 +33,19 @@ TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
 TEST_TARGETS = testsuite/main.byte qtest/test_runner.byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
+  EXT = native
   MODE = shared
   TARGETS += shared.otarget
   TEST_TARGETS += testsuite/main.native qtest/test_runner.native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
 else ifeq ($(BATTERIES_NATIVE), yes)
+  EXT = native
   MODE = native
   TARGETS += native.otarget
   TEST_TARGETS += testsuite/main.native qtest/test_runner.native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 else
+  EXT = byte
   MODE = bytecode
 endif
 
@@ -96,7 +99,7 @@ TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
 test: src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
-	$(foreach TEST, $(TEST_TARGETS), _build/$(TEST); )
+	$(foreach TEST, $(TEST_TARGETS), _build/$(TEST); echo; )
 
 release: test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
@@ -142,12 +145,12 @@ camfailunk:
 ## Magic for test target - auto-generated test files from source comments
 ##
 
-_build/build/make_suite.native: build/make_suite.mll
-	ocamlbuild -no-links make_suite.native
+_build/build/make_suite.$(EXT): build/make_suite.mll
+	$(OCAMLBUILD) -no-links make_suite.$(EXT)
 
 #convert a source file to a test suite by filtering special comments
-qtest/%_t.ml: src/%.ml _build/build/make_suite.native
-	_build/build/make_suite.native $< > $@
+qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
+	_build/build/make_suite.$(EXT) $< > $@
 
 #put all the testing modules in a library
 qtest/test_mods.mllib: $(TESTABLE)
