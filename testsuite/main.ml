@@ -23,6 +23,5 @@ let all_tests =
   ]
 
 let () = 
-  print_endline "Running Batteries tests";
   ignore(OUnit.run_test_tt_main ("All" >::: all_tests));
 
