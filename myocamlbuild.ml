@@ -50,7 +50,9 @@ let _ = dispatch begin function
       (* When one links an OCaml program, one should use -linkpkg *)
       flag ["ocaml"; "link"; "program"] & A"-linkpkg";
 
-      flag ["ocaml"; "compile"] & S[A"-annot"; A"-warn-error"; A"A"];
+(* Causes build to fail on armel under ocaml 3.10.2
+      flag ["ocaml"; "native"; "compile"] & A"-annot"; *)
+      flag ["ocaml"; "compile"] & S[A"-warn-error"; A"A"];
 
       flag ["ocaml"; "compile"] & S[A"-package"; A packs];
       flag ["ocaml"; "ocamldep"] & S[A"-package"; A packs];
