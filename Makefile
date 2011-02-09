@@ -19,7 +19,7 @@ endif
 OCAMLBUILD ?= ocamlbuild
 
 BATTERIES_NATIVE ?= yes
-BATTERIES_NATIVE_SHLIB ?= yes
+BATTERIES_NATIVE_SHLIB ?= $(BATTERIES_NATIVE)
 
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
@@ -33,18 +33,23 @@ TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
 TEST_TARGETS = testsuite/main.byte qtest/test_runner.byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
+  MODE = shared
   TARGETS += shared.otarget
   TEST_TARGETS += testsuite/main.native qtest/test_runner.native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
 else ifeq ($(BATTERIES_NATIVE), yes)
+  MODE = native
   TARGETS += native.otarget
   TEST_TARGETS += testsuite/main.native qtest/test_runner.native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
+else
+  MODE = bytecode
 endif
 
 .PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk
 
 all: src/batCamomile.ml
+	@echo "Build mode:" $(MODE)
 	${RM} src/batteries_config.ml
 	$(OCAMLBUILD) $(TARGETS)
 
