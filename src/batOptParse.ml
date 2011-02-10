@@ -58,7 +58,7 @@ module GetOpt =
 
     let find_long_opt options = find_opt (fun s -> "--" ^ s) options
 
-    let parse other find_short_opt find_long_opt args =
+    let parse stop_on_nonopt other find_short_opt find_long_opt args =
       let rec loop args =
         let rec gather_args name n args =
           try 
@@ -116,6 +116,7 @@ module GetOpt =
             else if arg = "-" then begin other arg; loop args' end
             else if BatString.starts_with arg "-" then
               loop (gather_short_opt arg 1 args')
+            else if stop_on_nonopt then args'
             else begin other arg; loop args' end
       in
       let args' = loop args in List.iter other args'
@@ -541,6 +542,7 @@ module OptParser =
     type t = { 
       op_usage : string;
       op_suppress_usage : bool;
+      op_stop_on_nonopt : bool;
       op_prog : string;
 
       op_formatter : Formatter.t;
@@ -619,12 +621,13 @@ module OptParser =
       BatRefList.add parent.og_children g; g
 
     let make ?(usage = "%prog [options]") ?description ?version
-      ?(suppress_usage = false) ?(suppress_help = false) ?prog 
-      ?(formatter = Formatter.indented_formatter ()) () =
+      ?(suppress_usage = false) ?(suppress_help = false) ?(stop_on_nonopt = false)
+      ?prog ?(formatter = Formatter.indented_formatter ()) () =
       let optparser =
         {
           op_usage = usage; 
           op_suppress_usage = suppress_usage;
+          op_stop_on_nonopt = stop_on_nonopt;
           op_prog = BatOption.default (Filename.basename Sys.argv.(0)) prog;
           op_formatter = formatter; 
           op_short_options = BatRefList.empty ();
@@ -699,7 +702,8 @@ module OptParser =
       in
       begin 
         try
-          GetOpt.parse (BatRefList.push args)
+          GetOpt.parse optparser.op_stop_on_nonopt
+            (BatRefList.push args)
             (GetOpt.find_short_opt
                (BatRefList.to_list optparser.op_short_options))
             (GetOpt.find_long_opt (BatRefList.to_list optparser.op_long_options))
