@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -215,8 +219,8 @@ Similar to <code class="code">Array.init</code>, <code class="code">init n f</co
 	 <code class="code">a0..an</code> are the elements of the list <code class="code">l</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a list -> 'b list</code></pre><div class="info">
-<code class="code">map f [a1; ...; an]</code> applies function <code class="code">f</code> to <code class="code">a1, ..., an</code>,
-	      and builds the list <code class="code">[f a1; ...; f an]</code>
+<code class="code">map f [a0; a1; ...; an]</code> applies function <code class="code">f</code> to <code class="code">a0, a1, ..., an</code>,
+	      and builds the list <code class="code">[f a0; f a1; ...; f an]</code>
 	      with the results returned by <code class="code">f</code>.  Tail-recursive.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">(int -> 'a -> 'b) -> 'a list -> 'b list</code></pre><div class="info">
@@ -225,8 +229,8 @@ Similar to <code class="code">Array.init</code>, <code class="code">init n f</co
 	 the list <code class="code">l</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_right"></a>fold_right : <code class="type">('a -> 'b -> 'b) -> 'a list -> 'b -> 'b</code></pre><div class="info">
-<code class="code">List.fold_right f [a1; ...; an] b</code> is
-	      <code class="code">f a1 (f a2 (... (f an b) ...))</code>.  Tail-recursive.<br>
+<code class="code">List.fold_right f [a0; a1; ...; an] b</code> is
+	      <code class="code">f a0 (f a1 (... (f an b) ...))</code>.  Tail-recursive.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALreduce"></a>reduce : <code class="type">('a -> 'a -> 'a) -> 'a list -> 'a</code></pre><div class="info">
 <code class="code">List.reduce f h::t</code> is <code class="code">fold_left f h t</code>.<br>
@@ -250,26 +254,26 @@ Similar to <code class="code">Array.init</code>, <code class="code">init n f</co
 <a name="6_Iteratorsontwolists"></a>
 <h6>Iterators on two lists</h6><br>
 <pre><span class="keyword">val</span> <a name="VALiter2"></a>iter2 : <code class="type">('a -> 'b -> unit) -> 'a list -> 'b list -> unit</code></pre><div class="info">
-<code class="code">List.iter2 f [a1; ...; an] [b1; ...; bn]</code> calls in turn
-	      <code class="code">f a1 b1; ...; f an bn</code>.<br>
+<code class="code">List.iter2 f [a0; a1; ...; an] [b0; b1; ...; bn]</code> calls in turn
+	      <code class="code">f a0 b0; f a1 b1; ...; f an bn</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
 	      different lengths.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmap2"></a>map2 : <code class="type">('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre><div class="info">
-<code class="code">List.map2 f [a1; ...; an] [b1; ...; bn]</code> is
-	      <code class="code">[f a1 b1; ...; f an bn]</code>.<br>
+<code class="code">List.map2 f [a0; a1; ...; an] [b0; b1; ...; bn]</code> is
+	      <code class="code">[f a0 b0; f a1 b1; ...; f an bn]</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
 	      different lengths.  Tail-recursive.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_left2"></a>fold_left2 : <code class="type">('a -> 'b -> 'c -> 'a) -> 'a -> 'b list -> 'c list -> 'a</code></pre><div class="info">
-<code class="code">List.fold_left2 f a [b1; ...; bn] [c1; ...; cn]</code> is
-	      <code class="code">f (... (f (f a b1 c1) b2 c2) ...) bn cn</code>.<br>
+<code class="code">List.fold_left2 f a [b0; b1; ...; bn] [c0; c1; ...; cn]</code> is
+	      <code class="code">f (... (f (f a b0 c0) b1 c1) ...) bn cn</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
 	      different lengths.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_right2"></a>fold_right2 : <code class="type">('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> 'c -> 'c</code></pre><div class="info">
-<code class="code">List.fold_right2 f [a1; ...; an] [b1; ...; bn] c</code> is
-	      <code class="code">f a1 b1 (f a2 b2 (... (f an bn c) ...))</code>.<br>
+<code class="code">List.fold_right2 f [a0; a1; ...; an] [b0; b1; ...; bn] c</code> is
+	      <code class="code">f a0 b0 (f a1 b1 (... (f an bn c) ...))</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
 	      different lengths.  Tail-recursive.<br>
 </div>
@@ -314,7 +318,7 @@ Same as <code class="code">List.exists</code>, but for a two-argument predicate.
 	      in the input list is preserved.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">('a -> 'b option) -> 'a list -> 'b list</code></pre><div class="info">
-<code class="code">filter_map f l</code> calls <code class="code">(f a0) (f a1).... (f an)</code> where <code class="code">a0..an</code> are
+<code class="code">filter_map f l</code> calls <code class="code">(f a0) (f a1).... (f an)</code> where <code class="code">a0,a1..an</code> are
 	 the elements of <code class="code">l</code>. It returns the list of elements <code class="code">bi</code> such as
 	 <code class="code">f ai = Some bi</code> (when <code class="code">f</code> returns <code class="code">None</code>, the corresponding element of
 	 <code class="code">l</code> is discarded).<br>
@@ -352,6 +356,14 @@ Same as <code class="code">List.exists</code>, but for a two-argument predicate.
 
 	 This function takes O(n²) time.<br>
 <b>See also</b> <code class="code">sort_unique</code> to save time in cases when reordering the list is acceptable<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALunique_eq"></a>unique_eq : <code class="type">?eq:('a -> 'a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
+As <code class="code">unique</code> except comparator label is ~eq.<br>
+<b>Since</b> 1.3.0<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALunique_cmp"></a>unique_cmp : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info">
+As <code class="code">unique</code>, except comparator parameter returns an int<br>
+<b>Since</b> 1.3.0<br>
 </div>
 <br>
 <a name="6_Associationlists"></a>
@@ -414,8 +426,8 @@ Obsolete. As <code class="code">split_at</code>.<br>
 	      elements satisfying the predicate <code class="code">f</code> dropped.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALinterleave"></a>interleave : <code class="type">?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list</code></pre><div class="info">
-<code class="code">interleave ~first ~last sep [a1;a2;a3;...;an]</code> returns
-	      <code class="code">first; a1; sep; a2; sep; a3; sep; ...; sep; an</code><br>
+<code class="code">interleave ~first ~last sep [a0;a1;a2;...;an]</code> returns
+	      <code class="code">first; a0; sep; a1; sep; a2; sep; ...; sep; an</code><br>
 </div>
 <br>
 <a name="6_BatEnumfunctions"></a>
@@ -447,13 +459,13 @@ Build a list from an enumeration. The first element of the enumeration
 <h6>List of pairs</h6><br>
 <pre><span class="keyword">val</span> <a name="VALsplit"></a>split : <code class="type">('a * 'b) list -> 'a list * 'b list</code></pre><div class="info">
 Transform a list of pairs into a pair of lists:
-	      <code class="code">split [(a1,b1); ...; (an,bn)]</code> is <code class="code">([a1; ...; an], [b1; ...; bn])</code>.
+	      <code class="code">split [(a0,b0); (a1,b1); ...; (an,bn)]</code> is <code class="code">([a0; a1; ...; an], [b0; b1; ...; bn])</code>.
 	      Tail-recursive.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALcombine"></a>combine : <code class="type">'a list -> 'b list -> ('a * 'b) list</code></pre><div class="info">
 Transform a pair of lists into a list of pairs:
-	      <code class="code">combine [a1; ...; an] [b1; ...; bn]</code> is
-	      <code class="code">[(a1,b1); ...; (an,bn)]</code>.<br>
+	      <code class="code">combine [a0; a1; ...; an] [b0; b1; ...; bn]</code> is
+	      <code class="code">[(a0,b0); (a1,b1); ...; (an,bn)]</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists
 	      have different lengths.  Tail-recursive.<br>
 </div>
@@ -482,16 +494,16 @@ For example <code class="code">group cmp [f;c;b;e;d;a]</code> can give <code cla
 </div>
 <pre><span class="keyword">val</span> <a name="VALcartesian_product"></a>cartesian_product : <code class="type">'a list -> 'b list -> ('a * 'b) list</code></pre><div class="info">
 Different from <code class="code">List.combine</code>, this returns every pair
-	      of elements formed out of the two lists.  <code class="code">cartesian_product
-	      [a1; ...; an] [b1; ...; bn] = [(a1,b1);(a1,b2); ...;
-	      (a1,bn); (a2,b1); ...; (an,bn)]</code>.  The lists can be of
-	      unequal size.<br>
+	    of elements formed out of the two lists.
+	    <code class="code">cartesian_product [a0; a1; ...; an] [b0; b1; ...; bn] =
+	    [(a0,b0);(a0,b1); ...; (a0,bn); (a1,b0); ..; (a1, bn);
+	    ...; (an,bn)]</code>.  The lists can be of unequal size.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALn_cartesian_product"></a>n_cartesian_product : <code class="type">'a list list -> 'a list list</code></pre><div class="info">
 Given n lists, return the n-way cartesian product of
-	      these lists.  Given <code class="code">[a;b];[c];[d;e;f]</code>, returns
-	      <code class="code">[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]</code>, all
-	      ways of choosing one element from each input list.<br>
+	    these lists.  Given <code class="code">[a;b];[c];[d;e;f]</code>, returns
+	    <code class="code">[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]</code>, all
+	    ways of choosing one element from each input list.<br>
 </div>
 <br>
 <a name="6_Boilerplatecode"></a>
@@ -503,6 +515,7 @@ Given n lists, return the n-way cartesian product of
 Print the contents of a list<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsprint"></a>sprint : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -> 'b list -> string</code></pre><div class="info">
+<span class="warning">Deprecated.</span>use <a href="BatIO.html#VALto_string"><code class="code">BatIO.to_string</code></a>.<br>
 Using a string printer, print a list to a string (as sprintf vs. printf)<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatList.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><br>

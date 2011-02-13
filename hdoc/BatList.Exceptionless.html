@@ -28,6 +28,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -38,7 +39,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -95,6 +98,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -135,14 +139,14 @@ If <code class="code">n</code> is inside the bounds of <code class="code">l</cod
 		(`Invalid_index(n))</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALassoc"></a>assoc : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre><div class="info">
-<code class="code">assoc a l</code> returns <code class="code">Some b</code> where <code class="code">b</code> is the value associated with key <code class="code">a</code> 
+<code class="code">assoc a l</code> returns <code class="code">Some b</code> where <code class="code">b</code> is the value associated with key <code class="code">b</code>
 		in the list of pairs <code class="code">l</code>. That is, <code class="code">assoc a [ ...; (a,b); ...] = Some b</code>
 		if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
 		Return <code class="code">None</code> if there is no value associated with <code class="code">a</code> in the
 		list <code class="code">l</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALassoc_inv"></a>assoc_inv : <code class="type">'a -> ('b * 'a) list -> 'b option</code></pre><div class="info">
-<code class="code">assoc_inv b l</code> returns <code class="code">Some a</code> where <code class="code">a</code> is the key associated with value <code class="code">a</code> 
+<code class="code">assoc_inv b l</code> returns <code class="code">Some a</code> where <code class="code">a</code> is the key associated with value <code class="code">b</code>
 		in the list of pairs <code class="code">l</code>. That is, <code class="code">assoc b [ ...; (a,b); ...] = Some a</code>
 		if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
 		Return <code class="code">None</code> if there is no key associated with <code class="code">b</code> in the
@@ -150,5 +154,10 @@ If <code class="code">n</code> is inside the bounds of <code class="code">l</cod
 </div>
 <pre><span class="keyword">val</span> <a name="VALassq"></a>assq : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre><div class="info">
 As <a href="BatList.Exceptionless.html#VALassoc"><code class="code">BatList.Exceptionless.assoc</code></a> but with physical equality.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALfind_map"></a>find_map : <code class="type">('a -> 'b option) -> 'a list -> 'b option</code></pre><div class="info">
+<code class="code">find_map f xs</code> returns <code class="code">Some y</code> such that <code class="code">x</code> is the first
+	    element of the list where <code class="code">f x</code> returns <code class="code">Some y</code>.  It returns <code class="code">None</code>
+	    if no such element exists.<br>
 </div>
 </body></html>

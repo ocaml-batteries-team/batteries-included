@@ -24,6 +24,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -34,7 +35,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -91,6 +94,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -114,6 +118,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dump&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;finally&nbsp;:&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;with_dispose&nbsp;:&nbsp;dispose:(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;args&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;invisible_args&nbsp;:&nbsp;int&nbsp;<span class="constructor">Pervasives</span>.ref<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exe&nbsp;:&nbsp;string<br>
@@ -134,4 +139,5 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ignore_ok&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;exn)&nbsp;<span class="constructor">BatStd</span>.result&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ok&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;exn)&nbsp;<span class="constructor">BatStd</span>.result&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;wrap&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>b,&nbsp;exn)&nbsp;<span class="constructor">BatStd</span>.result<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lock&nbsp;:&nbsp;<span class="constructor">BatConcurrent</span>.lock&nbsp;<span class="constructor">Pervasives</span>.ref<br>
 <span class="keyword">end</span></code></body></html>

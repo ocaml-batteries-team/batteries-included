@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -193,12 +197,13 @@ Returns the last element of the sequence, or raise <code class="code">Invalid_ar
       the sequence is empty.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALat"></a>at : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
-<code class="code">at l n</code> returns the n-th element of the sequence <code class="code">l</code> or raise
-      <code class="code">Invalid_argument</code> is the index is outside of <code class="code">l</code> bounds.<br>
+<code class="code">at l n</code> returns the element at index <code class="code">n</code> (starting from <code class="code">0</code>) in
+    the sequence <code class="code">l</code> or raise <code class="code">Invalid_argument</code> is the index is
+    outside of <code class="code">l</code> bounds.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALappend"></a>append : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">append s1 s2</code> returns the sequence which first returns all
-      elements of <code class="code">s1</code> then all elements of <code class="code">s2</code>.<br>
+    elements of <code class="code">s1</code> then all elements of <code class="code">s2</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALconcat"></a>concat : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">concat s</code> returns the sequence which returns all the elements
@@ -222,25 +227,26 @@ Same as <a href="BatSeq.html#VALconcat"><code class="code">BatSeq.concat</code><
 </div>
 <pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> (int -> 'a) -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">init n f</code> returns the sequence returning the results of <code class="code">f 0</code>,
-      <code class="code">f 1</code>.... <code class="code">f (n-1)</code>. Raise <code class="code">Invalid_arg</code> if <code class="code">n &lt; 0</code>.<br>
+      <code class="code">f 1</code>.... <code class="code">f (n-1)</code>. Raise <code class="code">Invalid_argument</code> if <code class="code">n &lt; 0</code>.<br>
 </div>
 <br>
 <a name="6_Iterators"></a>
 <h6>Iterators</h6><br>
 <pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">('a -> unit) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<code class="code">iter f s</code> applies <code class="code">f</code> to all the elements of the sequence.<br>
+<code class="code">iter f s</code> applies <code class="code">f</code> to all the elements of the sequence. Eager.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'b <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f s</code> returns the sequence where elements are elements of
-      <code class="code">s</code> mapped with <code class="code">f</code>.<br>
+      <code class="code">s</code> mapped with <code class="code">f</code>. Lazy.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_left"></a>fold_left : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-<code class="code">fold_left f a (cons b1 (... bn))</code> is <code class="code">f (... (f (f a b1) b2) ...)
-      bn</code>. Tail-recursive.<br>
+<code class="code">fold_left f a (cons b0 (... bn))</code> is <code class="code">f (... (f (f a b0) b1) ...)
+      bn</code>. Tail-recursive, eager.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_right"></a>fold_right : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
-<code class="code">fold_right f (cons a1 (... an)) b</code> is <code class="code">f a1 (f a2 (... (f an b)
-      ...))</code>. Not tail-recursive.<br>
+<code class="code">fold_right f (cons a0 (cons a1 (cons a2 ...))) b</code> is <code class="code">f a0 (f
+    a1 (f a2 ...))</code>.
+    Not tail-recursive, eager.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALreduce"></a>reduce : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">reduce f (cons e s)</code> is <code class="code">fold_left f e s</code>.<br>
@@ -256,74 +262,98 @@ Same as <a href="BatSeq.html#VALconcat"><code class="code">BatSeq.concat</code><
 </div>
 <br>
 <a name="6_Sequencescanning"></a>
-<h6>Sequence scanning</h6><br>
+<h6>Sequence scanning</h6>
+<p>
+
+    Most functions in the following sections have a shortcut semantic
+    similar to the behavior of the usual (&amp;&amp;) and (||) operators :
+    they will force the sequence until they find an satisfying
+    element, and then return immediately.
+<p>
+
+    For example, <code class="code">for_all</code> will only diverge if the sequence begins
+    with an infinite number of true elements --- elements for which
+    the predicate <code class="code">p</code> returns <code class="code">true</code>.<br>
 <pre><span class="keyword">val</span> <a name="VALfor_all"></a>for_all : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">for_all p (cons a1 (... an))</code> checks if all elements of the
-      given sequence satisfy the predicate <code class="code">p</code>. That is, it returns
-      <code class="code">(p a1) &amp;&amp; (p a2) &amp;&amp; ... &amp;&amp; (p an)</code>.<br>
+<code class="code">for_all p (cons a0 (cons a1 ...))</code> checks if all elements of the
+    given sequence satisfy the predicate <code class="code">p</code>. That is, it returns
+    <code class="code">(p a0) &amp;&amp; (p a1) &amp;&amp; ...</code>. Eager, shortcut.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALexists"></a>exists : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">exists p (cons a1 (... an))</code> checks if at least one element of
-      the sequence satisfies the predicate <code class="code">p</code>. That is, it returns
-      <code class="code">(p a1) || (p a2) || ... || (p an)</code>.<br>
+<code class="code">exists p (cons a0 (cons a1 ...))</code> checks if at least one element of
+    the sequence satisfies the predicate <code class="code">p</code>. That is, it returns
+    <code class="code">(p a0) || (p a1) || ...</code>. Eager, shortcut.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmem"></a>mem : <code class="type">'a -> 'a <a href="BatSeq.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">mem a l</code> is true if and only if <code class="code">a</code> is equal to an element of
-      <code class="code">l</code>.<br>
+    <code class="code">l</code>. Eager, shortcut.<br>
 </div>
 <br>
 <a name="6_Sequencesearching"></a>
 <h6>Sequence searching</h6><br>
 <pre><span class="keyword">val</span> <a name="VALfind"></a>find : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
 <code class="code">find p s</code> returns the first element of <code class="code">s</code> such as <code class="code">p e</code>
-      returns <code class="code">true</code>, if any.<br>
+      returns <code class="code">true</code>, if any. Eager, shortcut.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfind_map"></a>find_map : <code class="type">('a -> 'b option) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'b option</code></pre><div class="info">
 <code class="code">find_map p s</code> finds the first element of <code class="code">s</code> for which <code class="code">p e</code>
-      returns <code class="code">Some r</code>, if any.<br>
+      returns <code class="code">Some r</code>, if any. Eager, short-cut.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter p s</code> returns the sequence of elements of <code class="code">s</code> satisfying
-      <code class="code">p</code>.<br>
+    <code class="code">p</code>. Lazy.
+<p>
+
+    <b>Note</b> filter is lazy in that it returns a lazy sequence, but
+    each element in the result is eagerly searched in the input
+    sequence. Therefore, the access to a given element in the result
+    will diverge if it is preceded, in the input sequence, by
+    infinitely many false elements (elements on which the predicate
+    <code class="code">p</code> returns <code class="code">false</code>).
+<p>
+
+    Other functions that may drop an unbound number of elements
+    (<code class="code">filter_map</code>, <code class="code">take_while</code>, etc.) have the same behavior.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">('a -> 'b option) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'b <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f s</code> returns the sequence of elements filtered and
-      mapped by <code class="code">f</code>.<br>
+    mapped by <code class="code">f</code>. Lazy.<br>
 </div>
 <br>
 <a name="6_Associationsequences"></a>
 <h6>Association sequences</h6><br>
 <pre><span class="keyword">val</span> <a name="VALassoc"></a>assoc : <code class="type">'a -> ('a * 'b) <a href="BatSeq.html#TYPEt">t</a> -> 'b option</code></pre><div class="info">
 <code class="code">assoc a s</code> returns the value associated with key <code class="code">a</code> in the
-      sequence of pairs <code class="code">s</code>.<br>
+    sequence of pairs <code class="code">s</code>. Eager, shortcut.<br>
 </div>
 <br>
 <a name="6_Sequencetransformations"></a>
 <h6>Sequence transformations</h6><br>
 <pre><span class="keyword">val</span> <a name="VALtake"></a>take : <code class="type">int -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">take n s</code> returns up to the <code class="code">n</code> first elements from sequence
-      <code class="code">s</code>, if available.<br>
+      <code class="code">s</code>, if available. Lazy.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALdrop"></a>drop : <code class="type">int -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">drop n s</code> returns <code class="code">s</code> without the first <code class="code">n</code> elements, or the
-      empty sequence if <code class="code">s</code> have less than <code class="code">n</code> elements.<br>
+      empty sequence if <code class="code">s</code> have less than <code class="code">n</code> elements. Lazy.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtake_while"></a>take_while : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">take_while f s</code> returns the first elements of sequence <code class="code">s</code>
-      which satisfy the predicate <code class="code">f</code>.<br>
+      which satisfy the predicate <code class="code">f</code>. Lazy.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALdrop_while"></a>drop_while : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">drop_while f s</code> returns the sequence <code class="code">s</code> with the first
-      elements satisfying the predicate <code class="code">f</code> dropped.<br>
+    elements satisfying the predicate <code class="code">f</code> dropped. Lazy.<br>
 </div>
 <br>
 <a name="6_Sequenceofpairs"></a>
 <h6>Sequence of pairs</h6><br>
 <pre><span class="keyword">val</span> <a name="VALsplit"></a>split : <code class="type">('a * 'b) <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a> * 'b <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">split s = (map fst s, map snd s)</code><br>
+<code class="code">split s = (map fst s, map snd s)</code>. Lazy.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALcombine"></a>combine : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'b <a href="BatSeq.html#TYPEt">t</a> -> ('a * 'b) <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
-Transform a pair of sequences into a sequence of pairs.<br>
+Transform a pair of sequences into a sequence of pairs. Lazy.<br>
+<b>Raises</b> <code>Invalid_argument</code> if given sequences of different length.<br>
 </div>
 <br>
 <a name="6_Printing"></a>
@@ -332,6 +362,7 @@ Transform a pair of sequences into a sequence of pairs.<br>
 Print the contents of a sequence<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsprint"></a>sprint : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -> 'b <a href="BatSeq.html#TYPEt">t</a> -> string</code></pre><div class="info">
+<span class="warning">Deprecated.</span>use <a href="BatIO.html#VALto_string"><code class="code">BatIO.to_string</code></a>.<br>
 Using a string printer, print a sequence to a string (as sprintf vs. printf)<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatSeq.Exceptionless.html">Exceptionless</a>: <code class="code">sig</code> <a href="BatSeq.Exceptionless.html">..</a> <code class="code">end</code></pre></body></html>

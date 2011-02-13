@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -361,12 +365,12 @@ Create an output that will write into an <code class="code">enum</code>. The
     writing to <code class="code">c</code> will actually write to both <code class="code">a</code> and <code class="code">b</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtab_out"></a>tab_out : <code class="type">?tab:char -> int -> 'a <a href="BatIO.html#TYPEoutput">output</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info">
-Create an output shifted to the right by a number of white spaces
-      (or <code class="code">tab</code>, if given).
+Create an output shifted to the right by a number of spaces
+      (or other character as specified by <code class="code">tab</code>).
 <p>
 
       <code class="code">tab_out n out</code> produces a new output for writing into <code class="code">out</code>, in
-      which every new line starts with <code class="code">n</code> white spaces.
+      which every new line starts with <code class="code">n</code> spaces.
       Raises <code class="code">Invalid_argument</code> if <code class="code">n</code> &lt; 0.
 <p>
 
@@ -739,7 +743,7 @@ Read an enumeration of null-terminated strings.<br>
 Read an enumeration of LF or CRLF terminated strings.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALchunks_of"></a>chunks_of : <code class="type">int -> <a href="BatIO.html#TYPEinput">input</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-Read an input as an enumeration of strings of given maximal length.<br>
+Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALulines_of"></a>ulines_of : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> <a href="BatRope.html#TYPEt">BatRope.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 offer the lines of a UTF-8 encoded input as an enumeration<br>
@@ -861,4 +865,4 @@ A factory used to create locks. This is used transparently by <a href="BatIO.htm
      if you're using a version of Batteries compiled in threaded mode,
      this uses <a href="BatMutex.html"><code class="code">BatMutex</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_string"></a>to_string : <code class="type">(string <a href="BatIO.html#TYPEoutput">output</a> -> 'a -> unit) -> 'a -> string</code></pre></body></html>
+<pre><span class="keyword">val</span> <a name="VALto_string"></a>to_string : <code class="type">(string <a href="BatIO.html#TYPEoutput">output</a> -> 'a -> unit) -> 'a -> string</code></pre><pre><span class="keyword">val</span> <a name="VALto_format"></a>to_format : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -> Format.formatter -> 'b -> unit</code></pre></body></html>

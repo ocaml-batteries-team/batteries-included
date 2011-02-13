@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -151,6 +155,13 @@ Test whether a map is empty or not.<br>
 <b>Since</b> 1.2.0<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">m</code> (or <code class="code">f</code> raises <code class="code">Not_found</code>)<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALmodify_def"></a>modify_def : <code class="type">'a -> <a href="BatMap.S.html#TYPEkey">key</a> -> ('a -> 'a) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">modify_def v0 k f m</code> replaces the previous binding for <code class="code">k</code>
+	with <code class="code">f</code> applied to that value. If <code class="code">k</code> is unbound in <code class="code">m</code> or
+	<code class="code">Not_found</code> is raised during the search, <code class="code">f v0</code> is
+	inserted (as if the value found were .<br>
+<b>Since</b> 1.3.0<br>
+</div>
 <pre><span class="keyword">val</span> <a name="VALmem"></a>mem : <code class="type"><a href="BatMap.S.html#TYPEkey">key</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">mem x m</code> returns <code class="code">true</code> if <code class="code">m</code> contains a binding for <code class="code">x</code>,
        and <code class="code">false</code> otherwise.<br>
@@ -175,8 +186,8 @@ Same as <code class="code">Map.S.map</code>, but the function receives as argume
        key and the associated value for each binding of the map.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">(<a href="BatMap.S.html#TYPEkey">key</a> -> 'a -> 'b -> 'b) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
-<code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 a)...)</code>,
-       where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">m</code>
+<code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 (f k0 d0 a))...)</code>,
+       where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">m</code>
        (in increasing order), and <code class="code">d1 ... dN</code> are the associated data.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">('a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info">
@@ -194,7 +205,7 @@ Same as <code class="code">Map.S.map</code>, but the function receives as argume
 <pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">(<a href="BatMap.S.html#TYPEkey">key</a> -> 'a -> 'b option) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'b <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f m</code> combines the features of <code class="code">filteri</code> and
 	  <code class="code">map</code>.  It calls calls <code class="code">f key0 a0</code>, <code class="code">f key1 a1</code>, <code class="code">f keyn an</code>
-	  where <code class="code">a0..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
+	  where <code class="code">a0,a1..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
 	  respective corresponding keys. It returns the map of
 	  pairs <code class="code">keyi</code>,<code class="code">bi</code> such as <code class="code">f keyi ai = Some bi</code> (when <code class="code">f</code> returns
 	  <code class="code">None</code>, the corresponding element of <code class="code">m</code> is discarded).<br>

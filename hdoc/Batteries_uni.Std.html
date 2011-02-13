@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -103,6 +107,7 @@
 <link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
 <link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Operators" rel="Section" href="#6_Operators">
 <link title="Results" rel="Section" href="#6_Results">
+<link title="Thread-safety internals" rel="Section" href="#6_Threadsafetyinternals">
 <title>Batteries_uni.Std</title>
 </head>
 <body>
@@ -132,7 +137,9 @@ creates a string from a char.<br>
 the identity function.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALunique"></a>unique : <code class="type">unit -> int</code></pre><div class="info">
-returns an unique identifier every time it is called.<br>
+returns an unique identifier every time it is called.  This
+    function is not thread-safe.  Use <a href="BatPervasives.html#VALunique"><code class="code">BatPervasives.unique</code></a>
+    instead.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALdump"></a>dump : <code class="type">'a -> string</code></pre><div class="info">
 represent a runtime value as a string. Since types are lost at compile
@@ -147,11 +154,16 @@ print the representation of a runtime value on stdout.
 <code class="code">finally fend f x</code> calls <code class="code">f x</code> and then <code class="code">fend()</code> even if <code class="code">f x</code> raised
       an exception.<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALwith_dispose"></a>with_dispose : <code class="type">dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+<code class="code">with_dispose dispose f x</code> invokes <code class="code">f</code> on <code class="code">x</code>, calling <code class="code">dispose x</code>
+    when <code class="code">f</code> terminates (either with a return value or an
+    exception).<br>
+</div>
 <pre><span class="keyword">val</span> <a name="VALargs"></a>args : <code class="type">unit -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 An enumeration of the arguments passed to this program through the command line.
 <p>
 
-      <code class="code">args ()</code> is given by the elements of <code class="code">Sys.argv</code>, minus the first element.<br>
+    <code class="code">args ()</code> is given by the elements of <code class="code">Sys.argv</code>, minus the first element.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALexe"></a>exe : <code class="type">string</code></pre><div class="info">
 The name of the current executable.
@@ -270,5 +282,21 @@ throws the exception contained if <code class="code">Bad</code> is returned.<br>
 <code class="code">wrap f x</code> wraps a function that would normally throw an exception
 on failure such that it now returns a result with either the <code class="code">Ok</code>
 return value or the <code class="code">Bad</code> exception.<br>
+</div>
+<br>
+<a name="6_Threadsafetyinternals"></a>
+<h6>Thread-safety internals</h6>
+<p>
+
+   Unless you are attempting to adapt Batteries Included to a new model of
+   concurrency, you probably won't need this.<br>
+<pre><span class="keyword">val</span> <a name="VALlock"></a>lock : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre><div class="info">
+A lock used to synchronize internal operations.
+<p>
+
+   By default, this is <a href="BatConcurrent.html#VALnolock"><code class="code">BatConcurrent.nolock</code></a>. However, if you're
+   using a version of Batteries compiled in threaded mode, this uses
+   <a href="BatMutex.html"><code class="code">BatMutex</code></a>. If you're attempting to use Batteries with another
+   concurrency model, set the lock appropriately.<br>
 </div>
 </body></html>

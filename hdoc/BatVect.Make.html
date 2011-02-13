@@ -27,6 +27,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -37,7 +38,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -94,6 +97,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -200,21 +204,20 @@ Returns the length of the vect (<code class="code">O(1)</code>).<br>
     beginning in amortized <code class="code">O(1)</code> time.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type">int -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-<code class="code">get n r</code> returns the (n+1)th element from the vect <code class="code">r</code>; i.e.
-    <code class="code">get 0 r</code> returns the first element.
-    Operates in worst-case <code class="code">O(log size)</code> time.
+<code class="code">get n r</code> returns the element at index <code class="code">n</code> (starting from 0) in the vect <code class="code">r</code>.
+   Operates in worst-case <code class="code">O(log size)</code> time.
     Raises Out_of_bounds if a character out of bounds is requested.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALset"></a>set : <code class="type">'a <a href="BatVect.Make.html#TYPEt">t</a> -> int -> 'a -> 'a <a href="BatVect.Make.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">set r n c</code> returns a copy of the <code class="code">r</code> vect where the (n+1)th element
-    (see also <code class="code">get</code>) has been set to <code class="code">c</code>.
-    Operates in worst-case <code class="code">O(log size)</code> time.<br>
+<code class="code">set r n c</code> returns a copy of the <code class="code">r</code> vect where the element at
+      index <code class="code">n</code> (see also <code class="code">get</code>) has been set to <code class="code">c</code>.  Operates in
+      worst-case <code class="code">O(log size)</code> time.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsub"></a>sub : <code class="type">int -> int -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'a <a href="BatVect.Make.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">sub m n r</code> returns a sub-vect of <code class="code">r</code> containing all the elements
-    whose indexes range from <code class="code">m</code> to <code class="code">m + n - 1</code> (included).
-    Raises Out_of_bounds in the same cases as Array.sub.
-    Operates in worst-case <code class="code">O(log size)</code> time.<br>
+      whose indexes range from <code class="code">m</code> to <code class="code">m + n - 1</code> (included).
+      Raises Out_of_bounds in the same cases as Array.sub.
+      Operates in worst-case <code class="code">O(log size)</code> time.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALinsert"></a>insert : <code class="type">int -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'a <a href="BatVect.Make.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">insert n r u</code> returns a copy of the <code class="code">u</code> vect where <code class="code">r</code> has been
@@ -251,15 +254,15 @@ Operates like iter, but also passes the index of the character
     Raises Out_of_bounds in the same cases as <code class="code">sub</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_left"></a>fold_left : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.Make.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-<code class="code">fold_left f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN-1 </code>
-    where <code class="code">rn = Vect.get n r </code> and <code class="code">N = length r</code>.<br>
+<code class="code">fold_left f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN </code>
+    where <code class="code">r0,r1..rN</code> are the indexed elements of <code class="code">r</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.Make.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 as <code class="code">fold_left</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_right"></a>fold_right : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
-<code class="code">fold_right f r a</code> computes <code class="code"> f (r0 ... (f rN-2 (f rN-1 a)) ...)) </code>
-      where <code class="code">rn = Vect.get n r </code> and <code class="code">N = length r</code>.<br>
+<code class="code">fold_right f r a</code> computes <code class="code"> f (r0 (f r1 ... (f rN  a) ...)) </code>
+      where <code class="code">r0,r1..rN</code> are the indexed elements of <code class="code">r</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'b <a href="BatVect.Make.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f v</code> returns a vect isomorphic to <code class="code">v</code> where each element of index

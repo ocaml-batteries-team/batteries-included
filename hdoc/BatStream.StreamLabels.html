@@ -27,6 +27,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -37,7 +38,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -94,16 +97,13 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
 <link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
-<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Stream iterators" rel="Section" href="#6_Streamiterators">
-<link title="Computation over stream" rel="Section" href="#6_Computationoverstream">
-<link title="Streams pair arithmetic" rel="Section" href="#6_Streamspairarithmetic">
-<link title="Stream arithmetic" rel="Section" href="#6_Streamarithmetic">
-<title>BatStream.StreamLabels</title>
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>BatStream.StreamLabels</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a href="BatStream.html">Up</a>
@@ -114,96 +114,8 @@
 <br>
 <b>Note</b> This module is provided essentially for backwards-compatibility.
    If you feel like using <code class="code">Stream.t</code>, please take a look at <code class="code">BatEnum</code>
-   or <code class="code">LazyList</code> and <code class="code">GenParser</code>.<br>
-<br>
-<a name="6_Streamiterators"></a>
-<h6>Stream iterators</h6><br>
-<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">f:('a -> unit) -> 'a Stream.t -> unit</code></pre><div class="info">
-<code class="code">Stream.iter f s</code> scans the whole stream s, applying function <code class="code">f</code>
-   in turn to each stream element encountered.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfoldl"></a>foldl : <code class="type">f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b Stream.t -> 'a</code></pre><div class="info">
-<code class="code">foldl f init stream</code> is a lazy fold_left. <code class="code">f accu elt</code> should return
-      <code class="code">(new_accu, state)</code> where <code class="code">new_accu</code> is normal accumulation result, and
-      <code class="code">state</code> is a flag representing whether the computation should continue
-      and whether the last operation is valid: <code class="code">None</code> means continue, <code class="code">Some b</code>
-      means stop where <code class="code">b = true</code> means the last addition is still valid and <code class="code">b
-      = false</code> means the last addition is invalid and should be revert.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfoldr"></a>foldr : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a Stream.t -> 'b</code></pre><div class="info">
-<code class="code">foldr f init stream</code> is a lazy fold_right. Unlike the normal fold_right,
-      the accumulation parameter of <code class="code">f elt accu</code> is lazy, hence it can decide
-      not to force the evaluation of <code class="code">accu</code> if the current element <code class="code">elt</code> can
-      determin the result by itself.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">f:('a -> 'a -> 'a * bool option) -> init:'a Stream.t -> 'a</code></pre><div class="info">
-<code class="code">fold</code> is <code class="code">foldl</code> without initialization value, where the first
-      element of stream is taken as <code class="code">init</code>. It raises <code class="code">End_of_stream</code> exception
-      when the input stream is empty.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
-<code class="code">filter test stream</code> picks all the elements satisfying <code class="code">test</code> from <code class="code">stream</code>
-      and return the results in the same order as a stream.<br>
-</div>
-<br>
-<a name="6_Computationoverstream"></a>
-<h6>Computation over stream</h6>
+   or <code class="code">LazyList</code> and <code class="code">GenParser</code>.
 <p>
 
-    All the functions in this part are lazy.<br>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">f:('a -> 'b) -> 'a Stream.t -> 'b Stream.t</code></pre><div class="info">
-<code class="code">map f stream</code> applies <code class="code">f</code> in turn to elements from <code class="code">stream</code> and return the
-      results as a stream in the same order.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALmap2"></a>map2 : <code class="type">f:('a -> 'b -> 'c) -> 'a Stream.t -> 'b Stream.t -> 'c Stream.t</code></pre><div class="info">
-<code class="code">map2 f streama streamb</code> applies <code class="code">f</code> in turn to elements of corresponding
-      positions from <code class="code">streama</code> and <code class="code">streamb</code>. The results are constructed in the
-      same order as a stream. If one stream is short, excess elements of the longer
-      stream are ignored.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALscanl"></a>scanl : <code class="type">f:('a -> 'b -> 'a) -> 'a -> 'b Stream.t -> 'a Stream.t</code></pre><div class="info">
-<code class="code">scanl f init stream</code> returns a stream of successive reduced values from the
-      left: <code class="code">scanl f init [&lt;'e1;'e2;..&gt;] = [&lt;'init; '((f init e1) as e1'); '(f
-      e1' e2); ..&gt;]</code><br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALscan"></a>scan : <code class="type">f:('a -> 'a -> 'a) -> 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
-<code class="code">scan</code> is similar to <code class="code">scanl</code> but without the <code class="code">init</code> value: <code class="code">scan f
-      [&lt;'e1;'e2;..&gt;] = [&lt;'e1;'(f e1 e2);..&gt;]</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALtake_while"></a>take_while : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
-<code class="code">take_while test stream</code> returns the longest (possibly empty) prefix of
-      <code class="code">stream</code> of elements that satisfy <code class="code">test</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALdrop_while"></a>drop_while : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
-<code class="code">drop_while test stream</code> returns the remaining suffix of <code class="code">take_while test
-      stream</code>.<br>
-</div>
-<br>
-<a name="6_Streamspairarithmetic"></a>
-<h6>Streams pair arithmetic</h6>
-<p>
-
-    All the functions in this part are lazy.<br>
-<pre><span class="keyword">val</span> <a name="VALmerge"></a>merge : <code class="type">f:(bool -> 'a -> bool) -> 'a Stream.t * 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
-<code class="code">merge test (streama, streamb)</code> merge the elements from <code class="code">streama</code> and
-      <code class="code">streamb</code> into a single stream. The <code class="code">bool</code> type here represents the id of the
-      two input streams where <code class="code">true</code> is the first and <code class="code">false</code> represents the
-      second. The <code class="code">test</code> function is applied to each element of the output stream
-      together with the id of the input stream from which it was extracted, to
-      decide which stream should the next element come from. The first element is
-      always taken from <code class="code">streama</code>. When a stream runs out of elements, the merge
-      process will continue to take elements from the other stream until both
-      streams reach their ends.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALswitch"></a>switch : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t * 'a Stream.t</code></pre><div class="info">
-<code class="code">switch ~f:test stream</code> split <code class="code">stream</code> into two streams, where the first stream have
-      all the elements satisfying <code class="code">test</code>, the second stream is opposite. The
-      order of elements in the source stream is preserved.<br>
-</div>
-<br>
-<a name="6_Streamarithmetic"></a>
-<h6>Stream arithmetic</h6> 
-<p>
-
-    All the functions in this part are lazy.<br>
-</body></html>
+   See the complete <code class="code">Stream</code> module for the function documentations.<br>
+<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">f:('a -> unit) -> 'a Stream.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALfoldl"></a>foldl : <code class="type">f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b Stream.t -> 'a</code></pre><pre><span class="keyword">val</span> <a name="VALfoldr"></a>foldr : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a Stream.t -> 'b</code></pre><pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">f:('a -> 'a -> 'a * bool option) -> init:'a Stream.t -> 'a</code></pre><pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">f:('a -> 'b) -> 'a Stream.t -> 'b Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALmap2"></a>map2 : <code class="type">f:('a -> 'b -> 'c) -> 'a Stream.t -> 'b Stream.t -> 'c Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALscanl"></a>scanl : <code class="type">f:('a -> 'b -> 'a) -> 'a -> 'b Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALscan"></a>scan : <code class="type">f:('a -> 'a -> 'a) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALtake_while"></a>take_while : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALdrop_while"></a>drop_while : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALmerge"></a>merge : <code class="type">f:(bool -> 'a -> bool) -> 'a Stream.t * 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALswitch"></a>switch : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t * 'a Stream.t</code></pre></body></html>

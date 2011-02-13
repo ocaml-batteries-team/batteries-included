@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -165,9 +169,9 @@ Same as <code class="code">map</code>, but the function receives as arguments bo
     key and the associated value for each binding of the map.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a <a href="BatPSet.html#TYPEt">BatPSet.t</a> -> 'b -> 'b) -> ('c, 'a) <a href="BatMultiPMap.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
-<code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 a)...)</code>,
-    where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">m</code>,
-    and <code class="code">d1 ... dN</code> are the associated data.
+<code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 (f k0 d0 a))...)</code>,
+    where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">m</code>,
+    and <code class="code">d0,d1..dN</code> are the associated data.
     The order in which the bindings are presented to <code class="code">f</code> is
     unspecified.<br>
 </div>

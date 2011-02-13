@@ -25,6 +25,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -35,7 +36,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -92,6 +95,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -156,7 +160,17 @@ A decoding table maps chars 0..255 to the corresponding 0..63 value
 The underlying type of a directive.
 </div>
 </td></tr>
+<tr><td><a href="BatDeque.html#TYPEdq">dq</a> [<a href="BatDeque.html">BatDeque</a>]</td>
+<td><div class="info">
+The type of double-ended queues
+</div>
+</td></tr>
 <tr><td align="left"><br>E</td></tr>
+<tr><td><a href="BatHeap.H.html#TYPEelem">elem</a> [<a href="BatHeap.H.html">BatHeap.H</a>]</td>
+<td><div class="info">
+Type of elements of the heap
+</div>
+</td></tr>
 <tr><td><a href="BatSet.S.html#TYPEelt">elt</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
 <td><div class="info">
 The type of the set elements.
@@ -223,6 +237,12 @@ Classes of floating point numbers
 The type of an option group.
 </div>
 </td></tr>
+<tr><td align="left"><br>H</td></tr>
+<tr><td><a href="BatHashcons.html#TYPEhobj">hobj</a> [<a href="BatHashcons.html">BatHashcons</a>]</td>
+<td><div class="info">
+The type <code class="code">t hobj</code> represents hashed objects of type <code class="code">t</code>.
+</div>
+</td></tr>
 <tr><td align="left"><br>I</td></tr>
 <tr><td><a href="BatOo.Oo.Internal.html#TYPEimpl">impl</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
 <td></td></tr>
@@ -263,6 +283,11 @@ The type of the map keys.
 <td></td></tr>
 <tr><td><a href="BatHashtbl.S.html#TYPEkey">key</a> [<a href="BatHashtbl.S.html">BatHashtbl.S</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatHashcons.Table.html#TYPEkey">key</a> [<a href="BatHashcons.Table.html">BatHashcons.Table</a>]</td>
+<td><div class="info">
+type of objects in the table
+</div>
+</td></tr>
 <tr><td><a href="BatBigarray.html#TYPEkind">kind</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td><div class="info">
 To each element kind is associated a Caml type, which is
@@ -437,6 +462,11 @@ The type of a polymorphic vect.
 <td><div class="info">
 Type of a value-printer, the boolean argument indicates whether
       composed expression must be parenthesized.
+</div>
+</td></tr>
+<tr><td><a href="BatUref.html#TYPEt">t</a> [<a href="BatUref.html">BatUref</a>]</td>
+<td><div class="info">
+A synonym for convenience
 </div>
 </td></tr>
 <tr><td><a href="BatUnit.html#TYPEt">t</a> [<a href="BatUnit.html">BatUnit</a>]</td>
@@ -629,6 +659,16 @@ The format to use for displaying the various arguments passed to the function.
 <td></td></tr>
 <tr><td><a href="BatIMap.html#TYPEt">t</a> [<a href="BatIMap.html">BatIMap</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatHeap.H.html#TYPEt">t</a> [<a href="BatHeap.H.html">BatHeap.H</a>]</td>
+<td><div class="info">
+Type of the heap
+</div>
+</td></tr>
+<tr><td><a href="BatHeap.html#TYPEt">t</a> [<a href="BatHeap.html">BatHeap</a>]</td>
+<td><div class="info">
+Heap of elements that are compared with <code class="code">Pervasives.compare</code>.
+</div>
+</td></tr>
 <tr><td><a href="BatHashtbl.HashedType.html#TYPEt">t</a> [<a href="BatHashtbl.HashedType.html">BatHashtbl.HashedType</a>]</td>
 <td><div class="info">
 The type of the hashtable keys.
@@ -644,6 +684,16 @@ The type of a hashtable.
 <tr><td><a href="BatHashtbl.html#TYPEt">t</a> [<a href="BatHashtbl.html">BatHashtbl</a>]</td>
 <td><div class="info">
 A Hashtable wth keys of type 'a and values 'b
+</div>
+</td></tr>
+<tr><td><a href="BatHashcons.Table.html#TYPEt">t</a> [<a href="BatHashcons.Table.html">BatHashcons.Table</a>]</td>
+<td><div class="info">
+type of the table
+</div>
+</td></tr>
+<tr><td><a href="BatHashcons.html#TYPEt">t</a> [<a href="BatHashcons.html">BatHashcons</a>]</td>
+<td><div class="info">
+A synonym for convenience
 </div>
 </td></tr>
 <tr><td><a href="BatGlobal.html#TYPEt">t</a> [<a href="BatGlobal.html">BatGlobal</a>]</td>
@@ -672,6 +722,11 @@ The type of floating-point numbers.
 <td></td></tr>
 <tr><td><a href="BatDllist.html#TYPEt">t</a> [<a href="BatDllist.html">BatDllist</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatDeque.html#TYPEt">t</a> [<a href="BatDeque.html">BatDeque</a>]</td>
+<td><div class="info">
+A synonym for convenience
+</div>
+</td></tr>
 <tr><td><a href="BatConcurrent.BaseLock.html#TYPEt">t</a> [<a href="BatConcurrent.BaseLock.html">BatConcurrent.BaseLock</a>]</td>
 <td><div class="info">
 The type of a lock.
@@ -720,6 +775,11 @@ The type <code class="code">Genarray.t</code> is the type of big arrays with var
 </td></tr>
 <tr><td><a href="BatBig_int.html#TYPEt">t</a> [<a href="BatBig_int.html">BatBig_int</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatArray.Cap.html#TYPEt">t</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
+<td><div class="info">
+The type of arrays with capabilities.
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#TYPEt">t</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 The type of arrays.
@@ -745,6 +805,12 @@ Character type used by <code class="code">t</code>.
 <tr><td><a href="BatPathGen.PathType.html#TYPEuchar">uchar</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
 <td><div class="info">
 Type of characters.
+</div>
+</td></tr>
+<tr><td><a href="BatUref.html#TYPEuref">uref</a> [<a href="BatUref.html">BatUref</a>]</td>
+<td><div class="info">
+A <code class="code">t uref</code> is a reference to a cell that contains a
+      value of type <code class="code">t</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>

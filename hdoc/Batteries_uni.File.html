@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -212,8 +216,9 @@ As <a href="BatFile.html#VALset_permissions"><code class="code">BatFile.set_perm
 <code class="code">open_in file_name</code> opens the file named <code class="code">file_name</code> for reading.
 <p>
 
-    <b>Note</b> You will need to close the file manually. An alternative is
-    to call <code class="code">with_file_in</code> instead of <code class="code">open_in</code>.
+    <b>Note</b> You will need to close the file manually, with
+    <a href="BatIO.html#VALclose_in"><code class="code">BatIO.close_in</code></a>. An alternative is to call <code class="code">with_file_in</code> instead
+    of <code class="code">open_in</code>.
 <p>
 
     Naming conventions for files are platform-dependent.<br>
@@ -237,8 +242,9 @@ Flags governing file output; they correspond to the relevant
 <code class="code">open_out file_name</code> opens the file named <code class="code">file_name</code> for writing.
 <p>
 
-      <b>Note</b> You will need to close the file manually. An alternative is
-      to call <code class="code">with_file_out</code> instead of <code class="code">open_out</code>.
+      <b>Note</b> You will need to close the file manually, with
+      <a href="BatIO.html#VALclose_out"><code class="code">BatIO.close_out</code></a>. An alternative is to call <code class="code">with_file_out</code>
+      instead of <code class="code">open_out</code>.
 <p>
 
       Naming conventions for files are platform-dependent.<br>

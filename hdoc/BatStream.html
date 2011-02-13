@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -228,13 +232,15 @@ Convert an <code class="code">output</code> to a stream.<br>
       stream are ignored.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALscanl"></a>scanl : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b Stream.t -> 'a Stream.t</code></pre><div class="info">
-<code class="code">scanl f init stream</code> returns a stream of successive reduced values from the
-      left: <code class="code">scanl f init [&lt;'e1;'e2;..&gt;] = [&lt;'init; '((f init e1) as e1'); '(f
-      e1' e2); ..&gt;]</code><br>
+<code class="code">scanl f init stream</code> returns a stream of successive reduced
+    values from the left: <code class="code">scanl f init [&lt; 'e0; 'e1; ... &gt;]</code> is
+    equivalent to
+      <code class="code">[&lt; 'init; '(f init e0); '(f (f init e0) e1); ... &gt;]</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALscan"></a>scan : <code class="type">('a -> 'a -> 'a) -> 'a Stream.t -> 'a Stream.t</code></pre><div class="info">
-<code class="code">scan</code> is similar to <code class="code">scanl</code> but without the <code class="code">init</code> value: <code class="code">scan f
-      [&lt;'e1;'e2;..&gt;] = [&lt;'e1;'(f e1 e2);..&gt;]</code>.<br>
+<code class="code">scan</code> is similar to <code class="code">scanl</code> but without the <code class="code">init</code> value:
+    <code class="code">scanl f init [&lt; 'e0; 'e1; 'e2; ... &gt;]</code> is equivalent to
+      <code class="code">[&lt; 'e0; '(f e0 e1); '(f (f e0 e1) e2); ... &gt;]</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALconcat"></a>concat : <code class="type">'a Stream.t Stream.t -> 'a Stream.t</code></pre><div class="info">
 concatenate a stream of streams<br>

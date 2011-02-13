@@ -4,8 +4,8 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatGlobal.html">
-<link rel="next" href="BatIMap.html">
+<link rel="previous" href="BatHashcons.html">
+<link rel="next" href="BatHeap.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -113,9 +117,9 @@
 <title>BatHashtbl</title>
 </head>
 <body>
-<div class="navbar"><a href="BatGlobal.html">Previous</a>
+<div class="navbar"><a href="BatHashcons.html">Previous</a>
 &nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatIMap.html">Next</a>
+&nbsp;<a href="BatHeap.html">Next</a>
 </div>
 <center><h1>Module <a href="type_BatHashtbl.html">BatHashtbl</a></h1></center>
 <br>
@@ -256,9 +260,9 @@ Find a binding for the key, or return <code class="code">None</code> if no
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a -> 'b -> 'c -> 'c) -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info">
 <code class="code">Hashtbl.fold f tbl init</code> computes
-   <code class="code">(f kN dN ... (f k1 d1 init)...)</code>,
-   where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">tbl</code>,
-   and <code class="code">d1 ... dN</code> are the associated values.
+   <code class="code">(f kN dN ... (f k1 d1 (f k0 d0 init))...)</code>,
+   where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">tbl</code>,
+   and <code class="code">d0,d1..dN</code> are the associated values.
    Each binding is presented exactly once to <code class="code">f</code>.
    The order in which the bindings are passed to <code class="code">f</code> is unspecified.
    However, if the table contains several bindings for the same key,
@@ -282,8 +286,8 @@ Find a binding for the key, or return <code class="code">None</code> if no
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">('a -> 'b -> 'c option) -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a, 'c) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f m</code> combines the features of <code class="code">filteri</code> and
-      <code class="code">map</code>.  It calls calls <code class="code">f key0 a0</code>, <code class="code">f key1 a1</code>, <code class="code">f keyn an</code>
-      where <code class="code">a0..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
+      <code class="code">map</code>.  It calls <code class="code">f key0 a0</code>, <code class="code">f key1 a1</code>, <code class="code">f keyn an</code>
+      where <code class="code">a0,a1..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
       respective corresponding keys. It returns the map of
       pairs <code class="code">keyi</code>,<code class="code">bi</code> such as <code class="code">f keyi ai = Some bi</code> (when <code class="code">f</code> returns
       <code class="code">None</code>, the corresponding element of <code class="code">m</code> is discarded).<br>

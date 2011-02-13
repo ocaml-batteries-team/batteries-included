@@ -28,6 +28,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -38,7 +39,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -95,6 +98,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -353,22 +357,32 @@ Memory mapping of a file as a big array.
 <code class="code">iter f a</code> applies function <code class="code">f</code> in turn to all
 	the elements of <code class="code">a</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">((int, [ `Read ]) BatArray.Cap.t -> 'a -> unit) -><br>       ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-Same as <a href="BatBigarray.Genarray.html#VALiter"><code class="code">BatBigarray.Genarray.iter</code></a>, but the
-       function is applied to the index of the coordinates as the first 
-       argument, and the element itself as the second argument.<br>
+<pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">((int, [ `Read ]) <a href="BatArray.Cap.html#TYPEt">BatArray.Cap.t</a> -> 'a -> unit) -><br>       ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+Same as <a href="BatBigarray.Genarray.html#VALiter"><code class="code">BatBigarray.Genarray.iter</code></a>, but the function is applied to the index of
+        the element as the first argument, and the element itself as
+        the second argument.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALmodify"></a>modify : <code class="type">('a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<code class="code">modify f a</code> changes each element <code class="code">x</code> in <code class="code">a</code> to <code class="code">f x</code>
+        in-place.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALmodifyi"></a>modifyi : <code class="type">((int, [ `Read ]) <a href="BatArray.Cap.html#TYPEt">BatArray.Cap.t</a> -> 'a -> 'a) -><br>       ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+Same as <a href="BatBigarray.Genarray.html#VALmodify"><code class="code">BatBigarray.Genarray.modify</code></a>, but the function is applied to the index of
+        the coordinates as the first argument, and the element itself
+        as the second argument.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">enum e</code> returns an enumeration on the elements of <code class="code">e</code>.
 	The order of enumeration is unspecified.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">map f a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
-       and builds a <code class="code">Bigarray.t</code> with the results returned by <code class="code">f</code>.<br>
+<code class="code">map f kind a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
+       and builds a <code class="code">Bigarray.t</code> of kind <code class="code">kind</code> with the results
+       returned by <code class="code">f</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">((int, [ `Read ]) BatArray.Cap.t -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info">
-Same as <a href="BatBigarray.Genarray.html#VALmap"><code class="code">BatBigarray.Genarray.map</code></a>, but the
-       function is applied to the index of the coordinates as the first 
-       argument, and the element itself as the second argument.<br>
+<pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">((int, [ `Read ]) <a href="BatArray.Cap.html#TYPEt">BatArray.Cap.t</a> -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info">
+Same as <a href="BatBigarray.Genarray.html#VALmap"><code class="code">BatBigarray.Genarray.map</code></a>, but the function is applied to the index of the
+      coordinates as the first argument, and the element itself as the
+      second argument.<br>
 </div>
 </body></html>

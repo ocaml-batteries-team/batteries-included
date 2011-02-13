@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -310,14 +314,14 @@ Same as <a href="BatVect.html#VALmap"><code class="code">BatVect.map</code></a>,
 <a name="6_Predicates"></a>
 <h6>Predicates</h6><br>
 <pre><span class="keyword">val</span> <a name="VALfor_all"></a>for_all : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">for_all p [a1; ...; an]</code> checks if all elements of the array
+<code class="code">for_all p [a0; a1; ...; an]</code> checks if all elements of the array
 	satisfy the predicate <code class="code">p</code>.  That is, it returns
-	<code class="code"> (p a1) &amp;&amp; (p a2) &amp;&amp; ... &amp;&amp; (p an)</code>.<br>
+	<code class="code"> (p a0) &amp;&amp; (p a1) &amp;&amp; ... &amp;&amp; (p an)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALexists"></a>exists : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">exists p [a1; ...; an]</code> checks if at least one element of
+<code class="code">exists p [a0; a1; ...; an]</code> checks if at least one element of
 	the array satisfies the predicate <code class="code">p</code>.  That is, it returns
-	<code class="code"> (p a1) || (p a2) || ... || (p an)</code>.<br>
+	<code class="code"> (p a0) || (p a1) || ... || (p an)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfind"></a>find : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">find p a</code> returns the first element of array <code class="code">a</code>

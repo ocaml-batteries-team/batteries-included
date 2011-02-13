@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -135,118 +139,121 @@
       <code class="code">o</code> and length <code class="code">l</code>.  Arguments are checked for validity
 <p>
 
-      <code class="code">substring(s, i, n)</code> creates the substring (s, i, n), consisting
+      <code class="code">substring s i n</code> creates the substring <code class="code">(s, i, n)</code>, consisting
       of the substring of s with length n starting at i.  Raises
-      Inavlid_argument if i&lt;0 or n&lt;0 or i+n &gt; size s.  Equivalent to
-      extract(s, i, SOME n).<br>
+      Inavlid_argument if <code class="code">i&lt;0</code> or <code class="code">n&lt;0</code> or <code class="code">i+n &gt; size s</code>.  Equivalent to
+      <code class="code">extract s i (Some n)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALextract"></a>extract : <code class="type">string -> int -> int option -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">extract(s, i, NONE)</code> creates the substring (s, i, size s-i)
+<code class="code">extract s i None</code> creates the substring (s, i, size s-i)
       consisting of the tail of s starting at i.  Raises
-      Invalid_argument if i&lt;0 or i &gt; size s.
+      <code class="code">Invalid_argument</code> if <code class="code">i&lt;0</code> or <code class="code">i &gt; size s</code>.
 <p>
 
-      <code class="code">extract(s, i, SOME n)</code> creates the substring (s, i, n), consisting
+      <code class="code">extract s i (Some n)</code> creates the substring (s, i, n), consisting
       of the substring of s with length n starting at i.  Raises
-      Invalid_argument if i&lt;0 or n&lt;0 or i+n &gt; size s.<br>
+      <code class="code">Invalid_argument</code> if <code class="code">i&lt;0</code> or <code class="code">n&lt;0</code> or <code class="code">i+n &gt; size s</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALall"></a>all : <code class="type">string -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">all s</code> is the substring (s, 0, size s).<br>
+<code class="code">all s</code> is the substring <code class="code">(s, 0, size s)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALbase"></a>base : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> string * int * int</code></pre><div class="info">
-<code class="code">base sus</code> is the concrete triple (s, i, n), where sus = (s, i,
-      n).<br>
+<code class="code">base sus</code> is the concrete triple <code class="code">(s, i, n)</code>, where <code class="code">psus = (s, i,
+      n)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALis_empty"></a>is_empty : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">isEmpty (s, i, n)</code> true if the substring is empty (that is, n =
-      0).<br>
+<code class="code">isEmpty (s, i, n)</code> true if the substring is empty (that is,
+      <code class="code">n = 0</code>).<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALgetc"></a>getc : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> (char * <a href="BatSubstring.html#TYPEt">t</a>) option</code></pre><div class="info">
-<code class="code">getc sus</code> returns SOME(c, rst) where c is the first character and
-      rst the remainder of sus, if sus is non-empty; otherwise returns
-      NONE.<br>
+<code class="code">getc sus</code> returns <code class="code">Some(c, rst)</code> where <code class="code">c</code> is the first character and
+      <code class="code">rst</code> the remainder of <code class="code">sus</code>, if <code class="code">sus</code> is non-empty; otherwise returns
+      <code class="code">None</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfirst"></a>first : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> char option</code></pre><div class="info">
-<code class="code">first sus</code> returns SOME c where c is the first character in
-      sus, if sus is non-empty; otherwise returns NONE.<br>
+<code class="code">first sus</code> returns <code class="code">Some c</code> where <code class="code">c</code> is the first character in
+      <code class="code">sus</code>, if <code class="code">sus</code> is non-empty; otherwise returns <code class="code">None</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtriml"></a>triml : <code class="type">int -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">triml k sus</code> returns sus less its leftmost k characters; or the
       empty string at the end of sus if it has less than k characters.
-       if k &lt; 0, even in the partial application
-      triml(k).<br>
+      Raises <code class="code">Invalid_argument</code>  if <code class="code">k &lt; 0</code>, even in the partial application
+      <code class="code">triml k</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtrimr"></a>trimr : <code class="type">int -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">trimr k sus</code> returns sus less its rightmost k characters; or the
       empty string at the beginning of sus if it has less than k
-      characters.  Raises Invalid_argument if k &lt; 0, even in the partial
-      application triml(k).<br>
+      characters.  Raises <code class="code">Invalid_argument</code> if <code class="code">k &lt; 0</code>, even in the partial
+      application <code class="code">trimr k</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type">int -> <a href="BatSubstring.html#TYPEt">t</a> -> char</code></pre><div class="info">
-<code class="code">sub (sus, k)</code> returns the k'th character of the substring; that
-      is, s(i+k) where sus = (s, i, n).  Raises Invalid_argument if
-      k&lt;0 or k&gt;=n.<br>
+<code class="code">sub sus k</code> returns the k'th character of the substring; that
+      is, s(i+k) where sus = (s, i, n).  Raises <code class="code">Invalid_argument</code> if
+      <code class="code">k&lt;0</code> or <code class="code">k&gt;=n</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsize"></a>size : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int</code></pre><div class="info">
-<code class="code">size (s, i, n)</code> returns the size of the substring, that is, n.<br>
+<code class="code">size (s, i, n)</code> returns the size of the substring, that is, <code class="code">n</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALlength"></a>length : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int</code></pre><div class="info">
+Equivalent to <a href="BatSubstring.html#VALsize"><code class="code">BatSubstring.size</code></a>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALslice"></a>slice : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> int option -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">slice (sus, i', NONE)</code> returns the substring (s, i+i', n-i'),
-      where sus = (s, i, n).  Raises Invalid_argument if i' &lt; 0 or i' &gt; n.  
+<code class="code">slice sus i' None</code> returns the substring <code class="code">(s, i+i', n-i')</code>,
+      where <code class="code">sus = (s, i, n)</code>.  Raises Invalid_argument if <code class="code">i' &lt; 0</code> or
+      <code class="code">i' &gt; n</code>.
 <p>
 
-      <code class="code">slice (sus, i', SOME n')</code> returns the substring (s, i+i', n'),
-      where sus = (s, i, n).  Raises Invalid_argument if i' &lt; 0 or n' &lt; 0 or
-      i'+n' &gt;= n.<br>
+      <code class="code">slice sus i' (Some n')</code> returns the substring <code class="code">(s, i+i', n')</code>,
+      where <code class="code">sus</code> = <code class="code">(s, i, n)</code>.  Raises <code class="code">Invalid_argument</code> if <code class="code">i' &lt; 0</code>
+      or <code class="code">n' &lt; 0</code> or <code class="code">i'+n' &gt;= n</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALconcat"></a>concat : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> list -> string</code></pre><div class="info">
 <code class="code">concat suss</code> returns a string consisting of the concatenation of
-      the substrings.  Equivalent to String.concat (List.map string
-      suss).<br>
+      the substrings.  Equivalent to <code class="code">String.concat (List.map to_string
+      suss)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALexplode"></a>explode : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> char list</code></pre><div class="info">
 <code class="code">explode sus</code> returns the list of characters of sus, that is,
-      <code class="code">s(i), s(i+1), ..., s(i+n-1)</code> where sus = (s, i, n).  Equivalent
-      to String.explode(string ss).<br>
+      <code class="code">s(i), s(i+1), ..., s(i+n-1)</code> where <code class="code">sus = (s, i, n)</code>.  Equivalent
+      to <code class="code">String.explode (to_string ss)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALis_prefix"></a>is_prefix : <code class="type">string -> <a href="BatSubstring.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">isPrefix s1 s2</code> is true if s1 is a prefix of s2. That is, if
-      there exists a string t such that string s1 ^ t = string s2.<br>
+<code class="code">is_prefix s1 s2</code> is true if <code class="code">s1</code> is a prefix of <code class="code">s2</code>. That is, if
+      there exists a string <code class="code">t</code> such that string <code class="code">s1 ^ t = to_string s2</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALcompare"></a>compare : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> -> int</code></pre><div class="info">
-<code class="code">compare (sus1, sus2)</code> performs lexicographic comparison, using
-      the standard ordering Char.compare on the characters.  Returns
-      LESS, EQUAL, or GREATER, according as sus1 is less than, equal
-      to, or greater than sus2.  Equivalent to, but more efficient
-      than, String.compare(string sus1, string sus2).<br>
+<code class="code">compare sus1 sus2</code> performs lexicographic comparison, using the
+    standard ordering Char.compare on the characters.p Equivalent to,
+    but more efficient than, <code class="code">String.compare (to_string sus1)
+    (to_string sus2)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALdropl"></a>dropl : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">dropl p sus</code> drops the longest prefix (left substring) of sus
-      all of whose characters satisfy predicate p.  If all characters
-      do, it returns the empty substring (s, i+n, 0) where sus = (s,
-      i, n).<br>
+<code class="code">dropl p sus</code> drops the longest prefix (left substring) of <code class="code">sus</code>
+    all of whose characters satisfy predicate <code class="code">p</code>.  If all
+    characters do, it returns the empty substring <code class="code">(s, i+n, 0)</code>
+    where <code class="code">sus = (s, i, n)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALdropr"></a>dropr : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">dropr p sus</code> drops the longest suffix (right substring) of sus all
-   of whose characters satisfy predicate p.  If all characters do, it
-   returns the empty substring (s, i, 0) where sus = (s, i, n).<br>
+   of whose characters satisfy predicate <code class="code">p</code>.  If all characters do, it
+   returns the empty substring <code class="code">(s, i, 0)</code> where <code class="code">sus = (s, i, n)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtakel"></a>takel : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">takel p sus</code> returns the longest prefix (left substring) of sus
-   all of whose characters satisfy predicate p.  That is, if the
-   left-most character does not satisfy p, returns the empty (s, i, 0)
-   where sus = (s, i, n).<br>
+<code class="code">takel p sus</code> returns the longest prefix (left substring) of <code class="code">sus</code>
+   all of whose characters satisfy predicate <code class="code">p</code>.  That is, if the
+   left-most character does not satisfy p, returns the empty <code class="code">(s, i, 0)</code>
+   where <code class="code">sus = (s, i, n)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtaker"></a>taker : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">taker p sus</code> returns the longest suffix (right substring) of sus
-   all of whose characters satisfy predicate p.  That is, if the
-   right-most character satisfies p, returns the empty (s, i+n, 0)
-   where sus = (s, i, n).
+<code class="code">taker p sus</code> returns the longest suffix (right substring) of <code class="code">sus</code>
+   all of whose characters satisfy predicate <code class="code">p</code>.  That is, if the
+   right-most character satisfies <code class="code">p</code>, returns the empty <code class="code">(s, i+n, 0)</code>
+   where <code class="code">sus = (s, i, n)</code>.
 <p>
 
-   Let p be a predicate and xxxxfyyyyfzzzz a string where all
-   characters in xxxx and zzzz satisfy p, and f a is character
-   not satisfying p.  Then
+   Let <code class="code">p</code> be a predicate and xxxxfyyyyfzzzz a string where all
+   characters in xxxx and zzzz satisfy <code class="code">p</code>, and f a character not
+   satisfying <code class="code">p</code>.  Then
 <p>
 
    sus = xxxxfyyyyfzzzz         sus = xxxxzzzz
@@ -258,85 +265,88 @@
 <p>
 
    It also holds that 
-   concat<code class="code">takel p sus, dropl p sus</code> = string sus
-   concat<code class="code">dropr p sus, taker p sus</code> = string sus<br>
+   <code class="code">concat (takel p sus) (dropl p sus) = string sus</code>
+   <code class="code">concat (dropr p sus) (taker p sus) = string sus</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsplitl"></a>splitl : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> * <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">splitl p sus</code> splits sus into a pair (sus1, sus2) of substrings
-   where sus1 is the longest prefix (left substring) all of whose
-   characters satisfy p, and sus2 is the rest.  That is, sus2 begins
-   with the leftmost character not satisfying p.  Disregarding
-   sideeffects, we have: 
-   splitl p sus = (takel p sus, dropl p sus).<br>
+<code class="code">splitl p sus</code> splits <code class="code">sus</code> into a pair <code class="code">(sus1, sus2)</code> of
+    substrings where <code class="code">sus1</code> is the longest prefix (left substring) all
+    of whose characters satisfy <code class="code">p</code>, and <code class="code">sus2</code> is the rest.  That is,
+    <code class="code">sus2</code> begins with the leftmost character not satisfying <code class="code">p</code>.
+    Disregarding sideeffects, we have: <code class="code">splitl p sus = (takel p sus,
+    dropl p sus)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsplitr"></a>splitr : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> * <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">splitr p sus</code> splits sus into a pair (sus1, sus2) of substrings
-   where sus2 is the longest suffix (right substring) all of whose
-   characters satisfy p, and sus1 is the rest.  That is, sus1 ends
-   with the rightmost character not satisfying p.  Disregarding
-   sideeffects, we have:
-   splitr p sus = (dropr p sus, taker p sus)<br>
+<code class="code">splitr p sus</code> splits <code class="code">sus</code> into a pair <code class="code">(sus1, sus2)</code> of
+    substrings where <code class="code">sus2</code> is the longest suffix (right substring) all
+    of whose characters satisfy <code class="code">p</code>, and <code class="code">sus1</code> is the rest.  That is,
+    <code class="code">sus1</code> ends with the rightmost character not satisfying <code class="code">p</code>.
+    Disregarding sideeffects, we have: <code class="code">splitr p sus = (dropr p sus,
+    taker p sus)</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsplit_at"></a>split_at : <code class="type">int -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> * <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">splitAt (sus, k)</code> returns the pair (sus1, sus2) of substrings,
-   where sus1 contains the first k characters of sus, and sus2
-   contains the rest.  Raises Invalid_argument if k &lt; 0 or k &gt; size sus.<br>
+<code class="code">split_at sus k</code> returns the pair <code class="code">(sus1, sus2)</code> of substrings,
+    where <code class="code">sus1</code> contains the first <code class="code">k</code> characters of <code class="code">sus</code>, and
+    <code class="code">sus2</code> contains the rest.  Raises <code class="code">Invalid_argument</code> if <code class="code">k &lt; 0</code> or
+    <code class="code">k &gt; size sus</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALspan"></a>span : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">span (sus1, sus2)</code> returns a substring spanning from the start of
-   sus1 to the end of sus2, provided this is well-defined: sus1 and
-   sus2 must have the same underlying string, and the start of sus1
-   must not be to the right of the end of sus2; otherwise raises Span.
+<code class="code">span sus1 sus2</code> returns a substring spanning from the start of
+    <code class="code">sus1</code> to the end of <code class="code">sus2</code>, provided this is well-defined: <code class="code">sus1</code>
+    and <code class="code">sus2</code> must have the same underlying string, and the start of
+    <code class="code">sus1</code> must not be to the right of the end of <code class="code">sus2</code>; otherwise
+    raises <code class="code">Invalid_argument</code>.
 <p>
 
-   More precisely, if base(sus1) = (s,i,n) and base(sus2) = (s',i',n') 
-   and s = s' and i &lt;= i'+n', then base(join(sus1, sus2)) = (s, i, i'+n'-i).
-   This may be used to compute `span', `union', and `intersection'.<br>
+    More precisely, if <code class="code">base sus1 = (s,i,n)</code> and <code class="code">base sus2 =
+    (s',i',n')</code> and <code class="code">s = s'</code> and <code class="code">i &lt;= i'+n'</code>, then <code class="code">base (span sus1
+    sus2) = (s, i, i'+n'-i)</code>.  This may be used to compute <code class="code">span</code>,
+    <code class="code">union</code>, and <code class="code">intersection</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtranslate"></a>translate : <code class="type">(char -> char) -> <a href="BatSubstring.html#TYPEt">t</a> -> string</code></pre><div class="info">
-<code class="code">translate f sus</code> applies f to every character of sus, from left to
-   right, and returns the concatenation of the results.  Raises Size
-   if the sum of their sizes is greater than String.maxSize.
-   Equivalent to String.concat(List.map f (explode sus)).<br>
+<code class="code">translate f sus</code> applies <code class="code">f</code> to every character of <code class="code">sus</code>, from
+    left to right, and returns the concatenation of the results.
+    Equivalent to <code class="code">String.of_list (List.map f (explode sus))</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtokens"></a>tokens : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> list</code></pre><div class="info">
-<code class="code">tokens p sus</code> returns the list of tokens in sus, from left to right, 
-   where a token is a non-empty maximal substring of sus not containing 
-   any delimiter, and a delimiter is a character satisfying p.<br>
+<code class="code">tokens p sus</code> returns the list of tokens in <code class="code">sus</code>, from left to
+    right, where a token is a non-empty maximal substring of <code class="code">sus</code> not
+    containing any delimiter, and a delimiter is a character satisfying
+    <code class="code">p</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfields"></a>fields : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> list</code></pre><div class="info">
-<code class="code">fields p sus</code> returns the list of fields in sus, from left to right, 
-   where a field is a (possibly empty) maximal substring of sus not 
-   containing any delimiter, and a delimiter is a character satisfying p.
+<code class="code">fields p sus</code> returns the list of fields in <code class="code">sus</code>, from left to right, 
+   where a field is a (possibly empty) maximal substring of <code class="code">sus</code> not 
+   containing any delimiter, and a delimiter is a character satisfying <code class="code">p</code>.
 <p>
 
    Two tokens may be separated by more than one delimiter, whereas two
    fields are separated by exactly one delimiter.  If the only delimiter 
-   is the character #"|", then
+   is the character <code class="code">'|'</code>, then
    "abc||def" contains two tokens:   "abc" and "def"
    "abc||def" contains three fields: "abc" and "" and "def"<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_left"></a>fold_left : <code class="type">('a -> char -> 'a) -> 'a -> <a href="BatSubstring.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-<code class="code">foldl f e sus</code> folds f over sus from left to right.  That is,
-      evaluates f(s<code class="code">i+n-1</code>, f( ... f(s<code class="code">i+1</code>, f(s<code class="code">i</code> % e)) ...))
-      tail-recursively, where sus = (s, i, n).  Equivalent to List.foldl
-      f e (explode sus).<br>
+<code class="code">foldl f e sus</code> folds <code class="code">f</code> over <code class="code">sus</code> from left to right.  That is,
+    evaluates <code class="code">f s.[i+n-1] (f ... (f s.[i+1] (f s.[i] e)) ...)</code>
+    tail-recursively, where <code class="code">sus = (s, i, n)</code>.  Equivalent to
+    <code class="code">List.fold_left f e (explode sus)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_right"></a>fold_right : <code class="type">(char -> 'a -> 'a) -> <a href="BatSubstring.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info">
-<code class="code">foldr f e sus</code> folds f over sus from right to left.  That is,
-      evaluates f(s<code class="code">i</code>, f(s<code class="code">i+1</code>, f(... f(s<code class="code">i+n-1</code> % e) ...)))
-      tail-recursively, where sus = (s, i, n).  Equivalent to List.foldr
-      f e (explode sus).<br>
+<code class="code">foldr f e sus</code> folds <code class="code">f</code> over <code class="code">sus</code> from right to left.  That is,
+    evaluates <code class="code">f s.[i] (f s.[i+1] (f ... (f s.[i+n-1] e) ...))</code>
+    tail-recursively, where <code class="code">sus = (s, i, n)</code>.  Equivalent to
+    <code class="code">List.fold_right f e (explode sus)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">(char -> unit) -> <a href="BatSubstring.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<code class="code">iter f sus</code> applies f to all characters of sus, from left to
-      right.  Equivalent to List.app f (explode sus).<br>
+<code class="code">iter f sus</code> applies <code class="code">f</code> to all characters of <code class="code">sus</code>, from left to
+    right.  Equivalent to <code class="code">List.iter f (explode sus)</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALtrim"></a>trim : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 removes whitespace from left and right ends of input<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsplit_on_char"></a>split_on_char : <code class="type">char -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> list</code></pre><div class="info">
 <code class="code">split_on_char c ss</code> returns substrings of input <code class="code">ss</code> as divided
-  by <code class="code">c</code><br>
+    by <code class="code">c</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsplit_on_pipe"></a>split_on_pipe : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> list</code></pre><pre><span class="keyword">val</span> <a name="VALsplit_on_dot"></a>split_on_dot : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> list</code></pre><pre><span class="keyword">val</span> <a name="VALsplit_on_comma"></a>split_on_comma : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> list</code></pre><pre><span class="keyword">val</span> <a name="VALsplit_on_slash"></a>split_on_slash : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> list</code></pre></body></html>

@@ -28,6 +28,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -38,7 +39,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -95,6 +98,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -178,7 +182,7 @@ A type for storing paths. It is reversed list of names. In case of absolute path
 <a name="6_Construction"></a>
 <h6>Construction</h6><br>
 <pre><span class="keyword">val</span> <a name="VALroot"></a>root : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
-Root of the filesystem (<code class="code">[""]</code>). It is minimal absolute path. Below it is called 'empty'. However it yields "/" or "\\" when converted to a string. 
+Root of the filesystem (<code class="code">[""]</code>). It is minimal absolute path. Below it is called 'empty'. However it yields "/" or "\\" when converted to a string.
 <p>
 
 <em>Windows:</em> This path (root and nothing more) is meaningless, but for simplicity it is considered valid here. To create absolute path starting with drive letter, construct the list explicitly (as in <code class="code">["C:"]/:"foo"</code>).
@@ -194,15 +198,36 @@ Alternative name for <a href="BatPathGen.PathType.Operators.html#VAL(//@)"><code
 Infix operators for path construction.
 </div>
 <pre><span class="keyword">exception</span> <a name="EXCEPTIONMalformed_path"></a>Malformed_path</pre>
-<pre><span class="keyword">val</span> <a name="VALnormalize"></a>normalize : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALnormalize_filepath"></a>normalize_filepath : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+Consumes single dots where possible, e.g.:
+<p>
+
+  <code class="code">normalize ([".."]/:"foo"/:"."/:"bar"/:"sub1"/:".."/:"sub2") = [".."]/:"foo"/:"bar"/:"sub1"/:".."/:"sub2"</code>
+<p>
+
+  When a directory structure contains links, it can be not pefectly pure tree. Then meaing of the ".." symbol depends on the real nature of parent of what is denoted by the name that preceded the ".." symbol. This symbol cannot be resolved for a graph traversal case when dealing with abstract paths only.
+<p>
+
+<em>Windows:</em> If single dot is next to root, it is preserved.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALnormalize_in_graph"></a>normalize_in_graph : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+Another name for <code class="code">normalize_filepath</code>.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALnormalize_in_tree"></a>normalize_in_tree : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Consumes single dots and applies double dots where possible, e.g.:
 <p>
 
   <code class="code">normalize ([".."]/:"foo"/:"."/:"bar"/:"sub1"/:".."/:"sub2") = [".."]/:"foo"/:"bar"/:"sub2"</code>
 <p>
 
+  This normalization is useful when dealing with paths that describe locations in a tree and the ".." symbol always points to the only parent of what precedes this symbol.
+<p>
+
 <em>Windows:</em> If single dot is next to root, it is preserved.<br>
 <b>Raises</b> <code>Malformed_path</code> when absolute path is given that contains double dots that would be applied to the root.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALnormalize"></a>normalize : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+Deprecated name for <code class="code">normalize_in_tree</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALparent"></a>parent : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Returns parent path, i.e. immediate ancestor: <code class="code">parent (foo/:bar) = foo</code><br>
@@ -210,22 +235,22 @@ Returns parent path, i.e. immediate ancestor: <code class="code">parent (foo/:ba
 </div>
 <pre><span class="keyword">val</span> <a name="VALbelongs"></a>belongs : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">belongs base sub</code> is <code class="code">true</code> when <code class="code">sub</code> descends from <code class="code">base</code>, i.e. <code class="code">base</code> is a prefix of <code class="code">sub</code>. If <code class="code">base</code>=<code class="code">sub</code> the function returns <code class="code">true</code>. It is otherwise <code class="code">false</code>.
-Both arguments must be absolute paths or both relative. 
+Both arguments must be absolute paths or both relative.
 <p>
 
 If both arguments have a root portion with drive letter and these letters are different, <code class="code">belongs base sub</code> returns false.<br>
 <b>Raises</b> <code>Invalid_argument</code> if exactly one of given arguments is absolute path<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALrelative_to_any"></a>relative_to_any : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">relative_to_any base sub</code> returns relative path <code class="code">rel</code> such that 
+<code class="code">relative_to_any base sub</code> returns relative path <code class="code">rel</code> such that
 <code class="code">normalize (base/:rel) = normalize sub</code>, i.e. common base is stripped and ".." are added if necessary.
-Both arguments must be absolute paths or both relative. 
+Both arguments must be absolute paths or both relative.
 <p>
 
 This function normalizes <code class="code">base</code> and <code class="code">sub</code> before calculation of the relative path.
 <p>
 
-<em>Windows:</em> If <code class="code">base</code> and <code class="code">sub</code> are absolute, they must have the same root element: have the same drive letter or both starting with <a href="BatPathGen.PathType.html#VALroot"><code class="code">BatPathGen.PathType.root</code></a> (i.e. <code class="code">""</code> is the last element of the list). 
+<em>Windows:</em> If <code class="code">base</code> and <code class="code">sub</code> are absolute, they must have the same root element: have the same drive letter or both starting with <a href="BatPathGen.PathType.html#VALroot"><code class="code">BatPathGen.PathType.root</code></a> (i.e. <code class="code">""</code> is the last element of the list).
 Exceptionally it is possible to get an absolute path as a result if drive letter is in <code class="code">sub</code> but not as a root element (e .g. <code class="code">base = root/:"bar"</code> and <code class="code">sub = root/:bar//@(["C:"]/:"foo"</code>).<br>
 <b>Raises</b><ul><li><code>Invalid_argument</code> if exactly one of given arguments is an absolute path</li>
 <li><code>Malformed_path</code> if normalization fails (see <a href="BatPathGen.PathType.html#VALnormalize"><code class="code">BatPathGen.PathType.normalize</code></a>)</li>
@@ -234,7 +259,7 @@ Exceptionally it is possible to get an absolute path as a result if drive letter
 </div>
 <pre><span class="keyword">exception</span> <a name="EXCEPTIONNot_parent"></a>Not_parent</pre>
 <pre><span class="keyword">val</span> <a name="VALrelative_to_parent"></a>relative_to_parent : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">relative_to_parent parent sub</code> returns relative path <code class="code">rel</code> such that 
+<code class="code">relative_to_parent parent sub</code> returns relative path <code class="code">rel</code> such that
 <code class="code">(normalize parent)/:rel = normalize sub</code>. It is checked if <code class="code">sub</code> is really a descendant of <code class="code">parent</code>.
 Both arguments must be absolute paths or both relative.
 <p>
@@ -301,7 +326,7 @@ Parse path in a given string. Any number of consecutive separators collapse ("a/
 </div>
 <br>
 <a name="6_Namerelatedfunctions"></a>
-<h6>Name related functions</h6> 
+<h6>Name related functions</h6>
 These funtions do not accept empty paths, i.e. <code class="code">[]</code>, <code class="code">[""]</code> or <code class="code">["C:"]</code>.<br>
 <pre><span class="keyword">val</span> <a name="VALname"></a>name : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a></code></pre><div class="info">
 Returns name of the object the pathname points to, i.e.
@@ -357,7 +382,7 @@ A <code class="code">path</code> can be represented by the following triple:
 Dissect the path to its components (parent path, core part of name and possibly an extension).
 <p>
 
-Resulting <code class="code">name_core</code> string can be empty. For example, 
+Resulting <code class="code">name_core</code> string can be empty. For example,
 <code class="code">Path.split (Path.root/:"home"/:"user"/:".bashrc")</code> equals <code class="code">(Path.root/:"home"/:"user", "", Some "bashrc")</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[""]</code>) is given<br>
 </div>

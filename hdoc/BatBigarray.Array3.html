@@ -28,6 +28,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -38,7 +39,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -95,6 +98,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -225,6 +229,15 @@ Memory mapping of a file as a three-dimensional big array.
 Same as <code class="code">Bigarray.Array3.map</code>, but the
        function is applied to the index of the element as the first three
        arguments, and the element itself as the fourth argument.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALmodify"></a>modify : <code class="type">('a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<code class="code">modify f a</code> changes each element <code class="code">x</code> in <code class="code">a</code> to <code class="code">f x</code>
+        in-place.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALmodifyijk"></a>modifyijk : <code class="type">(int -> int -> int -> 'a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+Same as <code class="code">Bigarray.Array3.modify</code>, but the function is applied
+        to the index of the coordinates as the first three arguments, and the
+        element itself as the fourth argument.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALto_array"></a>to_array : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">t</a> -> 'a array array array</code></pre><div class="info">
 Build a three-dimensional array initialized from the

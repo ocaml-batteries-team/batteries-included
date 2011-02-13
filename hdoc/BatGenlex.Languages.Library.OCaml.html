@@ -28,6 +28,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -38,7 +39,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -95,6 +98,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -111,7 +115,7 @@
 <pre><span class="keyword">module</span> OCaml: <code class="type"><a href="BatGenlex.Languages.Definition.html">BatGenlex.Languages.Definition</a></code><code class="type"> </code></pre><hr width="100%">
 <pre><span class="keyword">val</span> <a name="VALcomment_delimiters"></a>comment_delimiters : <code class="type">(string * string) option</code></pre><pre><span class="keyword">val</span> <a name="VALline_comment_start"></a>line_comment_start : <code class="type">string option</code></pre><pre><span class="keyword">val</span> <a name="VALnested_comments"></a>nested_comments : <code class="type">bool</code></pre><pre><span class="keyword">val</span> <a name="VALident_start"></a>ident_start : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALident_letter"></a>ident_letter : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALop_start"></a>op_start : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALop_letter"></a>op_letter : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALreserved_names"></a>reserved_names : <code class="type">string list</code></pre><pre><span class="keyword">val</span> <a name="VALcase_sensitive"></a>case_sensitive : <code class="type">bool</code></pre><div class="info">
 <code class="code">true</code> if the language is case-sensitive, <code class="code">false</code> otherwise.
-       If the language is case-sensitive, every identifier is returned
+       If the language is not case-sensitive, every identifier is returned
        as lower-case.<br>
 </div>
 </body></html>

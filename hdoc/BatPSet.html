@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -112,8 +116,8 @@
 </div>
 <center><h1>Module <a href="type_BatPSet.html">BatPSet</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> BatPSet: <code class="code">sig</code> <a href="BatPSet.html">..</a> <code class="code">end</code></pre>Polymorphic sets of elements.
-<p>
+<pre><span class="keyword">module</span> BatPSet: <code class="code">sig</code> <a href="BatPSet.html">..</a> <code class="code">end</code></pre>Polymorphic sets<br>
+<b>Author(s):</b> Xavier Leroy, Nicolas Cannasse, Markus Mottl, David Rajchenbach-Teller
 
    This module defines a type of sets, a functional representation of
    sets of elements. The base operations are adding an element to a
@@ -123,15 +127,13 @@
    new set.  The implementation uses balanced binary trees, and is
    therefore reasonably efficient: insertion and membership take time
    logarithmic in the size of the set, for instance.
-<p>
 
-   <b>Note</b> OCaml, Batteries Included, provides two implementations of
+   {b Note} OCaml, Batteries Included, provides two implementations of
    sets: polymorphic sets (this module) and functorized sets (module
-   <code class="code">Set</code>). Module <code class="code">Set</code> offers a more complex and slightly poorer
-   set of features but stronger type-safety. Module <code class="code">PSet</code> is easier
+   {!Set}). Module {!Set} offers a more complex and slightly poorer
+   set of features but stronger type-safety. Module {!PSet} is easier
    to use and has a few more powerful features but makes it easier to
-   shoot yourself in the foot. In case of doubt, use <code class="code">Set</code>.<br>
-<b>Author(s):</b> Xavier Leroy, Nicolas Cannasse, Markus Mottl, David Rajchenbach-Teller<br>
+   shoot yourself in the foot. In case of doubt, use {!Set}.<br>
 <hr width="100%">
 <pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t </pre>
 <div class="info">
@@ -145,6 +147,9 @@ The empty set, using <code class="code">compare</code> as comparison function<br
 </div>
 <pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">('a -> 'a -> int) -> 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
 Creates a new empty set, using the provided function for key comparison.<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALsingleton"></a>singleton : <code class="type">?cmp:('a -> 'a -> int) -> 'a -> 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
+Creates a new set with the single given element in it.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALis_empty"></a>is_empty : <code class="type">'a <a href="BatPSet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Test whether a set is empty or not.<br>
@@ -167,7 +172,7 @@ Test whether a set is empty or not.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a <a href="BatPSet.html#TYPEt">t</a> -> 'b <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f x</code> creates a new set with elements <code class="code">f a0</code>,
-      <code class="code">f a1</code>... <code class="code">f an</code>, where <code class="code">a1</code>, ..., <code class="code">an</code> are the
+      <code class="code">f a1</code>... <code class="code">f aN</code>, where <code class="code">a0</code>, <code class="code">a1</code>, ..., <code class="code">aN</code> are the
       values contained in <code class="code">x</code><br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">('a -> bool) -> 'a <a href="BatPSet.html#TYPEt">t</a> -> 'a <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
@@ -176,14 +181,14 @@ Test whether a set is empty or not.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">('a -> 'b option) -> 'a <a href="BatPSet.html#TYPEt">t</a> -> 'b <a href="BatPSet.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f m</code> combines the features of <code class="code">filter</code> and
-      <code class="code">map</code>.  It calls calls <code class="code">f a0</code>, <code class="code">f a1</code>, <code class="code">f an</code> where <code class="code">a0..an</code>
+      <code class="code">map</code>.  It calls calls <code class="code">f a0</code>, <code class="code">f a1</code>, <code class="code">f aN</code> where <code class="code">a0,a1..an</code>
       are the elements of <code class="code">m</code> and returns the set of pairs <code class="code">bi</code>
       such as <code class="code">f ai = Some bi</code> (when <code class="code">f</code> returns <code class="code">None</code>, the
       corresponding element of <code class="code">m</code> is discarded).<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatPSet.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
-<code class="code">fold f s a</code> computes <code class="code">(f xN ... (f x2 (f x1 a))...)</code>,
-      where <code class="code">x1 ... xN</code> are the elements of <code class="code">s</code>, in increasing order.<br>
+<code class="code">fold f s a</code> computes <code class="code">(f xN ... (f x1 (f x0 a))...)</code>,
+      where <code class="code">x0,x1..xN</code> are the elements of <code class="code">s</code>, in increasing order.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALexists"></a>exists : <code class="type">('a -> bool) -> 'a <a href="BatPSet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">exists p s</code> checks if at least one element of

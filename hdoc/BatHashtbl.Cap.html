@@ -28,6 +28,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -38,7 +39,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -95,6 +98,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -124,14 +128,7 @@ The type of a hashtable.<br>
 <br>
 <a name="6_Constructors"></a>
 <h6>Constructors</h6><br>
-<pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">int -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">Hashtbl.create n</code> creates a new, empty hash table, with
-   initial size <code class="code">n</code>.  For best results, <code class="code">n</code> should be on the
-   order of the expected number of elements that will be in
-   the table.  The table grows as needed, so <code class="code">n</code> is just an
-   initial guess.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALof_table"></a>of_table : <code class="type">('a, 'b) Hashtbl.t -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">int -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALof_table"></a>of_table : <code class="type">('a, 'b) Hashtbl.t -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info">
 Adopt a regular hashtable as a capability hashtble, allowing
       to decrease capabilities if necessary.
 <p>
@@ -163,135 +160,22 @@ Drop to write-only permissions.
 </div>
 <pre><span class="keyword">val</span> <a name="VALlength"></a>length : <code class="type">('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> int</code></pre><div class="info">
 <a name="6_Baseoperations"></a>
-<h6>Base operations</h6>
-<p>
-<code class="code">Hashtbl.length tbl</code> returns the number of bindings in <code class="code">tbl</code>.
-   Multiple bindings are counted multiply, so <code class="code">Hashtbl.length</code>
-   gives the number of times <code class="code">Hashtbl.iter</code> calls its first argument.<br>
+<h6>Base operations</h6><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALis_empty"></a>is_empty : <code class="type">('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">Hashtbl.is_empty tbl</code> returns <code class="code">true</code> if there are no bindings
-      in <code class="code">tbl</code>, false otherwise.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALadd"></a>add : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre><div class="info">
-<code class="code">Hashtbl.add tbl x y</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
-   Previous bindings for <code class="code">x</code> are not removed, but simply
-   hidden. That is, after performing <code class="code">Hashtbl.remove</code><code class="code"> tbl x</code>,
-   the previous binding for <code class="code">x</code>, if any, is restored.
-   (Same behavior as with association lists.)<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALremove"></a>remove : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
-<code class="code">Hashtbl.remove tbl x</code> removes the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
-   restoring the previous binding if it exists.
-   It does nothing if <code class="code">x</code> is not bound in <code class="code">tbl</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALremove_all"></a>remove_all : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
-Remove all bindings for the given key<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALreplace"></a>replace : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre><div class="info">
-<code class="code">Hashtbl.replace tbl x y</code> replaces the current binding of <code class="code">x</code>
-   in <code class="code">tbl</code> by a binding of <code class="code">x</code> to <code class="code">y</code>.  If <code class="code">x</code> is unbound in <code class="code">tbl</code>,
-   a binding of <code class="code">x</code> to <code class="code">y</code> is added to <code class="code">tbl</code>.
-   This is functionally equivalent to <code class="code">Hashtbl.remove</code><code class="code"> tbl x</code>
-   followed by <code class="code">Hashtbl.add</code><code class="code"> tbl x y</code>.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALcopy"></a>copy : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info">
-Return a copy of the given hashtable.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALclear"></a>clear : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-Empty a hash table.<br>
-</div>
-<br>
+<pre><span class="keyword">val</span> <a name="VALis_empty"></a>is_empty : <code class="type">('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALadd"></a>add : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALremove"></a>remove : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALremove_all"></a>remove_all : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALreplace"></a>replace : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALcopy"></a>copy : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALclear"></a>clear : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><br>
 <a name="6_Searching"></a>
 <h6>Searching</h6><br>
-<pre><span class="keyword">val</span> <a name="VALfind"></a>find : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info">
-<code class="code">Hashtbl.find tbl x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
-   or raises <code class="code">Not_found</code> if no such binding exists.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfind_all"></a>find_all : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b list</code></pre><div class="info">
-<code class="code">Hashtbl.find_all tbl x</code> returns the list of all data
-   associated with <code class="code">x</code> in <code class="code">tbl</code>.
-   The current binding is returned first, then the previous
-   bindings, in reverse order of introduction in the table.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfind_default"></a>find_default : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b -> 'b</code></pre><div class="info">
-Find a binding for the key, and return a default
-      value if not found<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfind_option"></a>find_option : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b option</code></pre><div class="info">
-Find a binding for the key, or return <code class="code">None</code> if no
-      value is found<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALmem"></a>mem : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> bool</code></pre><div class="info">
-<code class="code">Hashtbl.mem tbl x</code> checks if <code class="code">x</code> is bound in <code class="code">tbl</code>.<br>
-</div>
-<br>
+<pre><span class="keyword">val</span> <a name="VALfind"></a>find : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b</code></pre><pre><span class="keyword">val</span> <a name="VALfind_all"></a>find_all : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b list</code></pre><pre><span class="keyword">val</span> <a name="VALfind_default"></a>find_default : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b -> 'b</code></pre><pre><span class="keyword">val</span> <a name="VALfind_option"></a>find_option : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b option</code></pre><pre><span class="keyword">val</span> <a name="VALmem"></a>mem : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> bool</code></pre><br>
 <code class="code">exists h k</code> returns true is at least one item with key <code class="code">k</code> is
       found in the hashtable.<br>
 <pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">('a -> 'b -> unit) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <a name="6_Traversing"></a>
-<h6>Traversing</h6>
-<p>
-<code class="code">Hashtbl.iter f tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.
-   <code class="code">f</code> receives the key as first argument, and the associated value
-   as second argument. Each binding is presented exactly once to <code class="code">f</code>.
-   The order in which the bindings are passed to <code class="code">f</code> is unspecified.
-   However, if the table contains several bindings for the same key,
-   they are passed to <code class="code">f</code> in reverse order of introduction, that is,
-   the most recent binding is passed first.<br>
+<h6>Traversing</h6><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a -> 'b -> 'c -> 'c) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info">
-<code class="code">Hashtbl.fold f tbl init</code> computes
-   <code class="code">(f kN dN ... (f k1 d1 init)...)</code>,
-   where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">tbl</code>,
-   and <code class="code">d1 ... dN</code> are the associated values.
-   Each binding is presented exactly once to <code class="code">f</code>.
-   The order in which the bindings are passed to <code class="code">f</code> is unspecified.
-   However, if the table contains several bindings for the same key,
-   they are passed to <code class="code">f</code> in reverse order of introduction, that is,
-   the most recent binding is passed first.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b -> 'c) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'c, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">map f x</code> creates a new hashtable with the same
-      keys as <code class="code">x</code>, but with the function <code class="code">f</code> applied to
-      all the values<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">('a -> bool) -><br>       ('b, 'a, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('b, 'a, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">filter f m</code> returns a new hashtable where only the values <code class="code">a</code> of <code class="code">m</code>
-     such that <code class="code">f a = true</code> remain.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfilteri"></a>filteri : <code class="type">('a -> 'b -> bool) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">filter f m</code> returns a map where only the key, values pairs
-     <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f key a = true</code> remain. The
-     bindings are passed to <code class="code">f</code> in increasing order with respect
-     to the ordering over the type of the keys.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">('a -> 'b -> 'c option) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'c, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">filter_map f m</code> combines the features of <code class="code">filteri</code> and
-      <code class="code">map</code>.  It calls calls <code class="code">f key0 a0</code>, <code class="code">f key1 a1</code>, <code class="code">f keyn an</code>
-      where <code class="code">a0..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
-      respective corresponding keys. It returns the map of
-      pairs <code class="code">keyi</code>,<code class="code">bi</code> such as <code class="code">f keyi ai = Some bi</code> (when <code class="code">f</code> returns
-      <code class="code">None</code>, the corresponding element of <code class="code">m</code> is discarded).<br>
-</div>
-<br>
+<pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a -> 'b -> 'c -> 'c) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b -> 'c) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'c, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">('a -> bool) -><br>       ('b, 'a, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('b, 'a, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALfilteri"></a>filteri : <code class="type">('a -> 'b -> bool) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">('a -> 'b -> 'c option) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'c, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><br>
 <a name="6_Conversions"></a>
 <h6>Conversions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALkeys"></a>keys : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-Return an enumeration of all the keys of a hashtable.
-      If the key is in the Hashtable multiple times, all occurrences
-      will be returned.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALvalues"></a>values : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-Return an enumeration of all the values of a hashtable.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-Return an enumeration of (key,value) pairs of a hashtable.<br>
-</div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info">
-Create a hashtable from a (key,value) enumeration.<br>
-</div>
-<br>
+<pre><span class="keyword">val</span> <a name="VALkeys"></a>keys : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALvalues"></a>values : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><br>
 <a name="6_Boilerplatecode"></a>
 <h6>Boilerplate code</h6><br>
 <br>
@@ -300,14 +184,10 @@ Create a hashtable from a (key,value) enumeration.<br>
 <pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('b, 'c, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><br>
 <a name="6_Overridemodules"></a>
 <h6>Override modules</h6><br>
-<br>
-The following modules replace functions defined in <code class="code">Hashtbl</code> with functions
-   behaving slightly differently but having the same name. This is by design:
-   the functions meant to override the corresponding functions of <code class="code">Hashtbl</code>.<br>
 <pre><span class="keyword">module</span> <a href="BatHashtbl.Cap.Exceptionless.html">Exceptionless</a>: <code class="code">sig</code> <a href="BatHashtbl.Cap.Exceptionless.html">..</a> <code class="code">end</code></pre><div class="info">
-Operations on <code class="code">Hashtbl</code> without exceptions.
+Operations on <a href="BatHashtbl.Cap.html"><code class="code">BatHashtbl.Cap</code></a> without exceptions.
 </div>
 <pre><span class="keyword">module</span> <a href="BatHashtbl.Cap.Labels.html">Labels</a>: <code class="code">sig</code> <a href="BatHashtbl.Cap.Labels.html">..</a> <code class="code">end</code></pre><div class="info">
-Operations on <code class="code">Hashtbl</code> with labels.
+Operations on <a href="BatHashtbl.Cap.html"><code class="code">BatHashtbl.Cap</code></a> with labels.
 </div>
 </body></html>

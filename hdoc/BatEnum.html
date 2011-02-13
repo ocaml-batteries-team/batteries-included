@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -182,7 +186,7 @@ A signature for data structures which may be converted to and from <code class="
 <code class="code">iter f e</code> calls the function <code class="code">f</code> with each elements of <code class="code">e</code> in turn.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALiter2"></a>iter2 : <code class="type">('a -> 'b -> unit) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<code class="code">iter2 f e1 e2</code> calls the function <code class="code">f</code> with the next elements of <code class="code">e</code> and
+<code class="code">iter2 f e1 e2</code> calls the function <code class="code">f</code> with the next elements of <code class="code">e1</code> and
  <code class="code">e2</code> repeatedly until one of the two enumerations ends.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALexists"></a>exists : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info">
@@ -197,23 +201,23 @@ A general loop on an enumeration.
 <p>
 
     If <code class="code">e</code> is empty, <code class="code">fold f v e</code> returns <code class="code">v</code>. Otherwise, <code class="code">fold v e</code>
-    returns <code class="code">f (... (f (f v a1) a2) ...) aN</code> where a1..N are the
+    returns <code class="code">f (... (f (f v a0) a1) ...) aN</code> where <code class="code">a0,a1..aN</code> are the
     elements of <code class="code">e</code>. This function may be used, for instance, to
     compute the sum of all elements of an enumeration <code class="code">e</code> as follows:
-    <code class="code">fold ( + ) 0 e</code>.<br>
+    <code class="code">fold ( + ) 0 e</code>. Eager.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALreduce"></a>reduce : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 A simplified version of <code class="code">fold</code>, which uses the first element
-      of the enumeration as a default value.
+    of the enumeration as a default value.
 <p>
 
-      <code class="code">fold f e</code> throws <code class="code">Not_found</code> if <code class="code">e</code> is empty, returns its only
-      element if e is a singleton, otherwise <code class="code">f (... (f (f a1 a2)
-      a3)...) aN</code> where a1..N are the elements of <code class="code">e</code>.<br>
+      <code class="code">reduce f e</code> throws <code class="code">Not_found</code> if <code class="code">e</code> is empty, returns its only
+      element if e is a singleton, otherwise <code class="code">f (... (f (f a0 a1)
+      a2)...) aN</code> where <code class="code">a0,a1..aN</code> are the elements of <code class="code">e</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALsum"></a>sum : <code class="type">int <a href="BatEnum.html#TYPEt">t</a> -> int</code></pre><div class="info">
 <code class="code">sum</code> returns the sum of the given int enum.  If the argument is
-      empty, returns 0<br>
+      empty, returns 0. Eager<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold2"></a>fold2 : <code class="type">('a -> 'b -> 'c -> 'c) -> 'c -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'c</code></pre><div class="info">
 <code class="code">fold2</code> is similar to <code class="code">fold</code> but will fold over two enumerations at the
@@ -221,13 +225,13 @@ A simplified version of <code class="code">fold</code>, which uses the first ele
 </div>
 <pre><span class="keyword">val</span> <a name="VALscanl"></a>scanl : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 A variant of <code class="code">fold</code> producing an enumeration of its intermediate values.
-    If <code class="code">e</code> contains <code class="code">x1</code>, <code class="code">x2</code>, ..., <code class="code">scanl f init e</code> is the enumeration 
-    containing <code class="code">init</code>, <code class="code">f init x1</code>, <code class="code">f (f init x1) x2</code>...<br>
+    If <code class="code">e</code> contains <code class="code">x0</code>, <code class="code">x1</code>, ..., <code class="code">scanl f init e</code> is the enumeration 
+    containing <code class="code">init</code>, <code class="code">f init x0</code>, <code class="code">f (f init x0) x1</code>... Lazy.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALscan"></a>scan : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">scan</code> is similar to <code class="code">scanl</code> but without the <code class="code">init</code> value: if <code class="code">e</code>
-    contains <code class="code">x1</code>, <code class="code">x2</code>, <code class="code">x3</code> ..., <code class="code">scan f e</code> is the enumeration containing
-    <code class="code">x1</code>, <code class="code">f x1 x2</code>, <code class="code">f (f x1 x2) x3</code>... 
+    contains <code class="code">x0</code>, <code class="code">x1</code>, <code class="code">x2</code> ..., <code class="code">scan f e</code> is the enumeration containing
+    <code class="code">x0</code>, <code class="code">f x0 x1</code>, <code class="code">f (f x0 x1) x2</code>...
 <p>
 
     For instance, <code class="code">scan ( * ) (1 -- 10)</code> will produce an enumeration 
@@ -247,11 +251,13 @@ Indexed functions : these functions are similar to previous ones
       in the enumeration, consuming the whole enumeration in the search.
 <p>
 
-      Since <code class="code">find</code> consumes a prefix of the enumeration, it can be used several 
-      times on the same enumeration to find the next element.<br>
+      Since <code class="code">find</code> (eagerly) consumes a prefix of the enumeration, it
+      can be used several times on the same enumeration to find the
+      next element.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALis_empty"></a>is_empty : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">is_empty e</code> returns true if <code class="code">e</code> does not contains any element.<br>
+<code class="code">is_empty e</code> returns true if <code class="code">e</code> does not contains any element.
+    Forces at most one element.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALpeek"></a>peek : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
 <code class="code">peek e</code> returns <code class="code">None</code> if <code class="code">e</code> is empty or <code class="code">Some x</code> where <code class="code">x</code> is
@@ -339,24 +345,41 @@ Negated span.
     When the resulting enumerations of these functions are consumed, the
     underlying enumerations they were created from are also consumed.<br>
 <pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">map f e</code> returns an enumeration over <code class="code">(f a1, f a2, ... , f aN)</code> where
-      a1...N are the elements of <code class="code">e</code>.<br>
+<code class="code">map f e</code> returns an enumeration over <code class="code">(f a0, f a1, ...)</code> where
+      <code class="code">a0,a1...</code> are the elements of <code class="code">e</code>. Lazy.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">mapi</code> is similar to <code class="code">map</code> except that <code class="code">f</code> is passed one extra argument
-      which is the index of the element in the enumeration, starting from 0.<br>
+    which is the index of the element in the enumeration, starting from 0 :
+    mapi f e returns an enumeration over <code class="code">(f 0 a0, f 1 a1, ...)</code> where
+    <code class="code">a0,a1...</code> are the elements of <code class="code">e</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter f e</code> returns an enumeration over all elements <code class="code">x</code> of <code class="code">e</code> such
-      as <code class="code">f x</code> returns <code class="code">true</code>.<br>
+      as <code class="code">f x</code> returns <code class="code">true</code>. Lazy.
+<p>
+
+    <b>Note</b> filter is lazy in that it returns a lazy enumeration, but
+    each element in the result is eagerly searched in the input
+    enumeration. Therefore, the access to a given element in the result
+    will diverge if it is preceded, in the input enumeration, by
+    infinitely many false elements (elements on which the predicate
+    <code class="code">p</code> returns <code class="code">false</code>).
+<p>
+
+    Other functions that may drop an unbound number of elements
+    (<code class="code">filter_map</code>, <code class="code">take_while</code>, etc.) have the same behavior.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f e</code> returns an enumeration over all elements <code class="code">x</code> such as
-      <code class="code">f y</code> returns <code class="code">Some x</code> , where <code class="code">y</code> is an element of <code class="code">e</code>.<br>
+    <code class="code">f y</code> returns <code class="code">Some x</code> , where <code class="code">y</code> is an element of <code class="code">e</code>.
+<p>
+
+    <code class="code">filter_map</code> works on infinite enumerations; see <code class="code">filter</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALappend"></a>append : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">append e1 e2</code> returns an enumeration that will enumerate over all
-      elements of <code class="code">e1</code> followed by all elements of <code class="code">e2</code>.
+      elements of <code class="code">e1</code> followed by all elements of <code class="code">e2</code>. Lazy.
 <p>
 
       <b>Note</b> The behavior of appending <code class="code">e</code> to itself or to something
@@ -659,9 +682,13 @@ Mapping operators.
     condition for continuing. 
 <p>
 
-    If <code class="code">e</code> contains elements <code class="code">x1</code>, <code class="code">x2</code>, <code class="code">x3</code>..., then if <code class="code">cont x1</code> is <code class="code">false</code>, 
-    <code class="code">x1</code> is returned as such and treatment stops. On the other hand, if <code class="code">cont x1</code> 
-    is <code class="code">true</code>, <code class="code">f x1</code> is returned and the loop proceeds with <code class="code">x2</code>...<br>
+    If <code class="code">e</code> contains elements <code class="code">x0</code>, <code class="code">x1</code>, <code class="code">x2</code>..., then if <code class="code">cont x0</code> is <code class="code">false</code>, 
+    <code class="code">x0</code> is returned as such and treatment stops. On the other hand, if <code class="code">cont x0</code> 
+    is <code class="code">true</code>, <code class="code">f x0</code> is returned and the loop proceeds with <code class="code">x1</code>...
+<p>
+
+    Note that f is used as halting condition <i>after</i> the
+    corresponding element has been added to the result stream.<br>
 </div>
 <br>
 <a name="6_Monadrelatedmodules"></a>

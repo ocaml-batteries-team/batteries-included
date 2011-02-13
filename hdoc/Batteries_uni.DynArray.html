@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -255,18 +259,17 @@ remove all elements from the array and resize it to 0.<br>
     <code class="code">Array.mapi</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_left"></a>fold_left : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatDynArray.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-<code class="code">fold_left f x darr</code> computes
-      <code class="code">f ( ... ( f ( f (get darr 0) x) (get darr 1) ) ... ) (get darr n-1)</code>,
-      similar to <code class="code">Array.fold_left</code> or <code class="code">List.fold_left</code>.<br>
+<code class="code">fold_left f x darr</code> computes <code class="code">f ( ... ( f ( f a0 x) a1) ) ... )
+    aN</code>, where <code class="code">a0,a1..aN</code> are the indexed elements of <code class="code">darr</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_right"></a>fold_right : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
-<code class="code">fold_right f darr x</code> computes
-      <code class="code"> f (get darr 0) (f (get darr 1) ( ... ( f (get darr n-1) x ) ... ) ) </code>
-      similar to <code class="code">Array.fold_right</code> or <code class="code">List.fold_right</code>.<br>
+<code class="code">fold_right f darr x</code> computes <code class="code"> f a0 (f a1 ( ... ( f aN x )
+    ... ) ) </code>, where <code class="code">a0,a1..aN</code> are the indexed elements of
+    <code class="code">darr</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALindex_of"></a>index_of : <code class="type">('a -> bool) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> int</code></pre><div class="info">
 <code class="code">index_of f darr</code> returns the index of the first element <code class="code">x</code> in darr such
-	as <code class="code">f x</code> returns <code class="code">true</code> or raise <code class="code">Not_found</code> if not found.<br>
+    as <code class="code">f x</code> returns <code class="code">true</code> or raise <code class="code">Not_found</code> if not found.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALkeep"></a>keep : <code class="type">('a -> bool) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">keep p darr</code> removes in place all the element <code class="code">x</code> of <code class="code">darr</code>

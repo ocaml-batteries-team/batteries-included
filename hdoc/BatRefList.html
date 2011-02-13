@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -207,12 +211,12 @@ Reverses the ref list - O(n)<br>
 <a name="6_FunctionalOperations"></a>
 <h6>Functional Operations</h6><br>
 <pre><span class="keyword">val</span> <a name="VALfold_left"></a>fold_left : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-<code class="code">List.fold_left f a [b1; ...; bn]</code> is
-      <code class="code">f (... (f (f a b1) b2) ...) bn</code>.<br>
+<code class="code">List.fold_left f a (ref [b0; b1; ...; bn])</code> is
+      <code class="code">f (... (f (f a b0) b1) ...) bn</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_right"></a>fold_right : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
-<code class="code">List.fold_right f [a1; ...; an] b</code> is
-      <code class="code">f a1 (f a2 (... (f an b) ...))</code>.  Tail-recursive.<br>
+<code class="code">List.fold_right f (ref [a0; a1; ...; an]) b</code> is
+      <code class="code">f a0 (f a1 (... (f an b) ...))</code>.  Tail-recursive.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">('a -> unit) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Apply the given function to all elements of the
@@ -279,6 +283,7 @@ Remove all elements equal to the specified
 <a name="6_Boilerplatecode"></a>
 <h6>Boilerplate code</h6><br>
 <pre><span class="keyword">module</span> <a href="BatRefList.Index.html">Index</a>: <code class="code">sig</code> <a href="BatRefList.Index.html">..</a> <code class="code">end</code></pre><div class="info">
-Functions that operate on the <code class="code">i</code>th element of a list.
+Functions that operate on the element at index <code class="code">i</code> in a list (with
+    indices starting from 0).
 </div>
 </body></html>

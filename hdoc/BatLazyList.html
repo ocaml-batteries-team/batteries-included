@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -276,46 +280,51 @@ Compute lazily a range of integers a .. b as a lazy list.
 Eager iteration
 <p>
 
-   <code class="code">iter f [^ a1; ...; an ^]</code> applies function <code class="code">f</code> in turn to <code class="code">a1; ...; an</code>. 
-   It is equivalent to <code class="code">begin f a1; f a2; ...; f an; () end</code>. In particular, it
-   causes all the elements of the list to be evaluated.<br>
+   <code class="code">iter f [^ a0; a1; ...; an ^]</code> applies function <code class="code">f</code> in turn to <code class="code">a0;
+   a1; ...; an</code>.  It is equivalent to <code class="code">begin f a0; f a1; ...; f an; ()
+   end</code>. In particular, it causes all the elements of the list to be
+   evaluated.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Eager iteration, with indices
 <p>
 
-   <code class="code">iteri f [^ a1; ...; an ^]</code> applies function <code class="code">f</code> in turn to <code class="code">a1 0; ...; an (n - 1)</code>. 
-   It is equivalent to <code class="code">begin f a1 0; f a2 0; ...; f an (n-1); () end</code>. In particular, it
-   causes all the elements of the list to be evaluated.<br>
+   <code class="code">iteri f [^ a0; a1; ...; an ^]</code> applies function <code class="code">f</code> in turn to
+   <code class="code">a0; a1;...; an</code>, along with the corresponding <code class="code">0,1..n</code> index.  It
+   is equivalent to <code class="code">begin f 0 a0; f 1 a1; ...; f n an; ()
+   end</code>. In particular, it causes all the elements of the list to be
+   evaluated.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Lazy map
 <p>
 
-   <code class="code">map f [^ a1; ...; an ^]</code> applies function <code class="code">f</code> to <code class="code">a1, ..., an</code>, and builds the list 
-   <code class="code">^ f a1; ...; f an ^</code>  with the results returned by <code class="code">f</code>. Not tail-recursive. Evaluations
+   <code class="code">map f [^ a0; a1; ... ^]</code> builds the list <code class="code">[^ f a0; f a1; ... ^]</code>
+   with the results returned by <code class="code">f</code>. Not tail-recursive. Evaluations
    of <code class="code">f</code> take place only when the contents of the list are forced.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Lazy map, with indices
 <p>
 
-   <code class="code">map f [^ a1; ...; an ^]</code> applies function <code class="code">f</code> to <code class="code">a1, ..., an</code>, and builds the list 
-   <code class="code">^ f 0 a1; ...; f ( n - 1) an ^</code>  with the results returned by <code class="code">f</code>. Not tail-recursive. Evaluations
-   of <code class="code">f</code> take place only when the contents of the list are forced.<br>
+   <code class="code">mapi f [^ a0; a1; ... ^]</code> builds the list <code class="code">[^ f 0 a0; f 1 a1;
+   ... ^]</code> with the results returned by <code class="code">f</code>. Not
+   tail-recursive. Evaluations of <code class="code">f</code> take place only when the
+   contents of the list are forced.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_left"></a>fold_left : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Eager fold_left
 <p>
 
-   <code class="code">LazyList.fold_left f a [^ b1; ...; bn ^]</code> is <code class="code">f (... (f (f a b1) b2) ...) bn</code>. This causes
-   evaluation of all the elements of the list.<br>
+   <code class="code">LazyList.fold_left f a [^ b0; b1; ...; bn ^]</code> is <code class="code">f (... (f (f
+   a b0) b1) ...) bn</code>. This causes evaluation of all the elements of
+   the list.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_right"></a>fold_right : <code class="type">('a -> 'b -> 'b) -> 'b -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 Eager fold_right
 <p>
 
-   <code class="code">fold_right f a [^ b1; ...; bn ^]</code> is <code class="code">f ( f (... (f (f a bn) ...) b2) b1</code>. This causes
+   <code class="code">fold_right f a [^ b0; b1; ...; bn ^]</code> is <code class="code">f ( f (... (f (f a bn) ...) b1) b0</code>. This causes
    evaluation of all the elements of the list. Not tail-recursive.<br>
 </div>
 <br>
@@ -414,8 +423,9 @@ Returns the last element of the list, or raise <code class="code">Empty_list</co
       evaluation of all elements of the list<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALat"></a>at : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
-<code class="code">at l n</code> returns the n-th element of the list <code class="code">l</code> or raise
-      <code class="code">Invalid_index</code> is the index is outside of <code class="code">l</code> bounds.<br>
+<code class="code">at l n</code> returns the element at index <code class="code">n</code> (starting from <code class="code">0</code>) in
+    the list <code class="code">l</code> or raise <code class="code">Invalid_index</code> is the index is outside of
+    <code class="code">l</code> bounds.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALnth"></a>nth : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
 Obsolete. As <code class="code">at</code><br>
@@ -495,10 +505,16 @@ Obsolete. As <code class="code">split_at</code>.<br>
 <code class="code">unique cmp l</code> returns the list <code class="code">l</code> without any duplicate element.
       Default comparator ( = ) is used if no comparison function specified.<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALunique_eq"></a>unique_eq : <code class="type">?eq:('a -> 'a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
+as <code class="code">unique</code> except only uses an equality function.  Use for
+    short lists when comparing is expensive compared to equality
+    testing<br>
+<b>Since</b> 1.3.0<br>
+</div>
 <pre><span class="keyword">val</span> <a name="VALremove"></a>remove : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">remove l x</code> returns the list <code class="code">l</code> without the first element <code class="code">x</code> found
-      or returns  <code class="code">l</code> if no element is equal to <code class="code">x</code>. Elements are compared
-      using ( = ).<br>
+    or returns  <code class="code">l</code> if no element is equal to <code class="code">x</code>. Elements are compared
+    using ( = ).<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALremove_if"></a>remove_if : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">remove_if cmp l</code> is similar to <code class="code">remove</code>, but with <code class="code">cmp</code> used
@@ -581,36 +597,32 @@ Lazy filtering.
 Eager existential.
 <p>
 
-   <code class="code">exists p [^ a1; ...; an ^]</code> checks if at least one element of the list satisfies the predicate <code class="code">p</code>. 
-   That is, it returns <code class="code"> (p a1) || (p a2) || ... || (p an) </code>.<br>
+   <code class="code">exists p [^ a0; a1; ... ^]</code> checks if at least one element of the list satisfies the predicate <code class="code">p</code>. 
+   That is, it returns <code class="code"> (p a0) || (p a1) || ... </code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfor_all"></a>for_all : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Eager universal.
 <p>
 
-   <code class="code">for_all p [^ a1; ...; an ^]</code> checks if all elements of the list satisfy the predicate <code class="code">p</code>. 
-   That is, it returns <code class="code">(p a1) &amp;&amp; (p a2) &amp;&amp; ... &amp;&amp; (p an)</code>.<br>
+   <code class="code">for_all p [^ a0; a1; ... ^]</code> checks if all elements of the list satisfy the predicate <code class="code">p</code>. 
+   That is, it returns <code class="code">(p a0) &amp;&amp; (p a1) &amp;&amp; ... </code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfilter_map"></a>filter_map : <code class="type">('a -> 'b option) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Lazily eliminate some elements and transform others.
 <p>
 
-   <code class="code">filter_map f [^ a1; a2; ... ;an ^]</code> applies <code class="code">f</code> to each
-   <code class="code">a1</code>, ..., <code class="code">an</code>. If <code class="code">f ai</code> evaluates to <code class="code">None</code>, the element
-   is not included in the result. Otherwise, if <code class="code">f ai</code> evaluates 
-   to <code class="code">Some x</code>, element <code class="code">x</code> is included in the result.
+   <code class="code">filter_map f [^ a0; a1; ... ^]</code> applies lazily <code class="code">f</code> to each <code class="code">a0</code>,
+   <code class="code">a1</code>... If <code class="code">f ai</code> evaluates to <code class="code">None</code>, the element is not included
+   in the result. Otherwise, if <code class="code">f ai</code> evaluates to <code class="code">Some x</code>, element
+   <code class="code">x</code> is included in the result.
 <p>
 
    This is equivalent to
-   <code class="code">match f a1 with
-     | Some x1 -&gt; x1 ^:^ (match f a2 with
-            |Some x2 -&gt; x2 ^:^ (match ...
-                       (match f an with
-                            | Some xn -&gt; [^ xn ^]
-                            | None    -&gt; [^ ^]
-                       ) ... )
-            | ...) 
-     | None   -&gt; ... </code>.<br>
+   <code class="code">match f a0 with
+     | Some x0 -&gt; x0 ^:^ (match f a1 with
+            | Some x1 -&gt; x1 ^:^ ...
+            | None -&gt; [^ ^]) 
+     | None   -&gt; [^ ^] </code>.<br>
 </div>
 <br>
 <a name="6_Misc"></a>
@@ -628,26 +640,27 @@ Sort the list using optional comparator (by default <code class="code">compare</
 <a name="6_Operationsontwolists"></a>
 <h6>Operations on two lists</h6>
 <p>
-<code class="code">map2 f [^a1; ...; an^] [^b1; ...; bn^]</code> is
-      <code class="code">[f a1 b1; ...; f an bn]</code>.
-      Raise <code class="code">Different_list_size</code> if the two lists have
-      different lengths. Not tail-recursive, lazy.<br>
+<code class="code">map2 f [^ a0; a1; ...^] [^ b0; b1; ... ^]</code> is <code class="code">[^ f a0 b0; f a1
+    b1; ... ^]</code>. Raise <code class="code">Different_list_size</code> if the two lists have
+    different lengths. Not tail-recursive, lazy. In particular, the
+    exception is raised only after the shortest list has been
+    entirely consumed.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALiter2"></a>iter2 : <code class="type">('a -> 'b -> unit) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<code class="code">iter2 f [a1; ...; an] [b1; ...; bn]</code> calls in turn
-      <code class="code">f a1 b1; ...; f an bn</code>. Tail-recursive, eager.
-      Raise <code class="code">Different_list_size</code> if the two lists have
-      different lengths.<br>
+<code class="code">iter2 f [^ a0; ...; an ^] [^ b0; ...; bn ^]</code> calls in turn
+    <code class="code">f a0 b0; ...; f an bn</code>. Tail-recursive, eager.
+    Raise <code class="code">Different_list_size</code> if the two lists have
+    different lengths.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_left2"></a>fold_left2 : <code class="type">('a -> 'b -> 'c -> 'a) -> 'a -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> 'c <a href="BatLazyList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-<code class="code">fold_left2 f a [b1; ...; bn] [c1; ...; cn]</code> is
-      <code class="code">f (... (f (f a b1 c1) b2 c2) ...) bn cn</code>. Eager.
+<code class="code">fold_left2 f a [^ b0; b1; ...; bn ^] [^ c0; c1; ...; cn ^]</code> is
+      <code class="code">f (... (f (f a b0 c0) b1 c1) ...) bn cn</code>. Eager.
       Raise <code class="code">Different_list_size</code> if the two lists have
       different lengths.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold_right2"></a>fold_right2 : <code class="type">('a -> 'b -> 'c -> 'c) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info">
-<code class="code">fold_right2 f [a1; ...; an] [b1; ...; bn] c</code> is
-      <code class="code">f a1 b1 (f a2 b2 (... (f an bn c) ...))</code>. Eager.
+<code class="code">fold_right2 f [^ a0; a1; ...; an ^] [^ b0; b1; ...; bn ^] c</code> is
+      <code class="code">f a0 b0 (f a1 b1 (... (f an bn c) ...))</code>. Eager.
       Raise <code class="code">Different_list_size</code> if the two lists have
       different lengths.  Tail-recursive.<br>
 </div>
@@ -663,10 +676,10 @@ Same as <a href="BatLazyList.html#VALexists"><code class="code">BatLazyList.exis
 </div>
 <pre><span class="keyword">val</span> <a name="VALcombine"></a>combine : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> ('a * 'b) <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Transform a pair of lists into a list of pairs:
-      <code class="code">combine [a1; ...; an] [b1; ...; bn]</code> is
-      <code class="code">[(a1,b1); ...; (an,bn)]</code>.
+      <code class="code">combine [^ a0; a1; ... ^] [^ b0; b1; ... ^]</code> is
+      <code class="code">[^ (a0, b0); (a1, b1); ... ^]</code>.
       Raise <code class="code">Different_list_size</code> if the two lists
-      have different lengths.  Tail-recursive.<br>
+      have different lengths.  Tail-recursive, lazy.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALuncombine"></a>uncombine : <code class="type">('a * 'b) <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a> * 'b <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Divide a list of pairs into a pair of lists.<br>

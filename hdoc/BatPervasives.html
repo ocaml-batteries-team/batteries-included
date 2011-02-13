@@ -29,6 +29,7 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
+<link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
@@ -39,7 +40,9 @@
 <link title="BatGc" rel="Chapter" href="BatGc.html">
 <link title="BatGenlex" rel="Chapter" href="BatGenlex.html">
 <link title="BatGlobal" rel="Chapter" href="BatGlobal.html">
+<link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
+<link title="BatHeap" rel="Chapter" href="BatHeap.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -96,6 +99,7 @@
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
+<link title="BatUref" rel="Chapter" href="BatUref.html">
 <link title="BatValue_printer" rel="Chapter" href="BatValue_printer.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
@@ -570,6 +574,11 @@ Allows application of a function in the middle of a pipe
 <code class="code">finally fend f x</code> calls <code class="code">f x</code> and then <code class="code">fend()</code> even if <code class="code">f x</code> raised
       an exception.<br>
 </div>
+<pre><span class="keyword">val</span> <a name="VALwith_dispose"></a>with_dispose : <code class="type">dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+<code class="code">with_dispose dispose f x</code> invokes <code class="code">f</code> on <code class="code">x</code>, calling <code class="code">dispose x</code>
+    when <code class="code">f</code> terminates (either with a return value or an
+    exception).<br>
+</div>
 <pre><span class="keyword">val</span> <a name="VALargs"></a>args : <code class="type">unit -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 An enumeration of the arguments passed to this program through the command line.
 <p>
@@ -688,8 +697,8 @@ Transformation loop on an enumeration, used to build an enumeration
 <p>
 
       In other words, <code class="code">map f</code> is a function which, when applied
-      upon an enumeration containing elements <code class="code">e1</code>, <code class="code">e2</code>, ...,
-      produces enumeration <code class="code">f e1</code>, <code class="code">f e2</code>, ...
+      upon an enumeration containing elements <code class="code">e0</code>, <code class="code">e1</code>, ...,
+      produces enumeration <code class="code">f e0</code>, <code class="code">f e1</code>, ...
 <p>
 
       For instance, if <code class="code">odd</code> is the function which returns <code class="code">true</code>
@@ -713,9 +722,9 @@ Transformation loop on an enumeration, used to build a single value
       new expression and to the fourth element of <code class="code">e</code>...
 <p>
 
-      In other words, <code class="code">fold f e</code> returns <code class="code">a_1</code> if <code class="code">e</code> contains only
-      one element, otherwise <code class="code">f (... (f (f a1) a2) ...) aN</code> where
-      a1..N are the elements of <code class="code">e</code>.<br>
+      In other words, <code class="code">reduce f e</code> returns <code class="code">a0</code> if <code class="code">e</code> contains only
+      one element <code class="code">a0</code>, otherwise <code class="code">f (... (f (f a0) a1) ...) aN</code> where
+      <code class="code">a0,a1..aN</code> are the elements of <code class="code">e</code>.<br>
 </div>
 <pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a</code></pre><div class="info">
 Transformation loop on an enumeration, used to build a single value
@@ -731,7 +740,7 @@ Transformation loop on an enumeration, used to build a single value
 <p>
 
       In other words, <code class="code">fold f v e</code> returns <code class="code">v</code> if <code class="code">e</code> is empty,
-      otherwise <code class="code">f (... (f (f v a1) a2) ...) aN</code> where a1..N are
+      otherwise <code class="code">f (... (f (f v a0) a1) ...) aN</code> where a0,a1..aN are
       the elements of <code class="code">e</code>. 
 <p>
 
