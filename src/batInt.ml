@@ -90,12 +90,12 @@ module BaseInt = struct
 
   external rem : int -> int -> int = "%modint"
 
-  let ( <> ) a b = a <> b
-  let ( <= ) a b = a <= b
-  let ( >= ) a b = a >= b
-  let ( < )  a b = a < b
-  let ( > )  a b = a > b
-  let ( = )  a b = a = b
+  let ( <> ) (a:int) b = a <> b
+  let ( <= ) (a:int) b = a <= b
+  let ( >= ) (a:int) b = a >= b
+  let ( < )  (a:int) b = a < b
+  let ( > )  (a:int) b = a > b
+  let ( = )  (a:int) b = a = b
 
   let ( ** ) a b = pow a b
 
@@ -156,9 +156,24 @@ module BaseSafeInt = struct
     bits). This trick turned out to be *wrong* on 64-bit machines, where
     [Nativeint.mul 2432902008176640000n 21n] and [2432902008176640000 * 21]
     yield the same result, [-4249290049419214848]. *)
-  let mul a b =
-    if b = 0 then 0
-    else if (abs a) > max_int / (abs b) then raise Overflow else a * b
+  let shift_bits, mask = if Sys.word_size = 32 then 16,0xFFFF else 32, 0xFFFFFFFF
+
+  let mul a b = 
+    match a asr shift_bits, b asr shift_bits with
+      |	0,0 -> a * b
+      | 0,bh -> 
+	let al = a land mask in
+	let cross = bh * al in
+	if cross > mask then raise Overflow;
+	let bl = b land mask in
+	add (cross lsl shift_bits) (al*bl)
+      | ah, 0 ->
+	let bl = b land mask in
+	let cross = ah * bl in
+	if cross > mask then raise Overflow;
+	let al = a land mask in
+	add (cross lsl shift_bits) (al+bl)
+      | _,_ -> raise Overflow
 
   let ( * ) = mul
 
@@ -170,6 +185,19 @@ module Safe_int = struct
   include BaseSafeInt
   let operations = let module N = BatNumber.MakeNumeric(BaseSafeInt) in N.operations
 end
+
+(**T safe_int_tests
+   try Safe_int.add max_int max_int |> ignore; false with Number.Overflow -> true
+   Safe_int.neg max_int = -max_int
+   try Safe_int.neg min_int |> ignore; false with Number.Overflow -> true
+   try Safe_int.mul 2432902008176640000 21 |> ignore; false with Number.Overflow -> true
+ **)
+
+(**Q safe_int_qtests
+   (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> let (a,b) = max a b, min a b in let b = max_int - a + b in try Safe_int.add a b|>ignore; false with BatNumber.Overflow -> true)
+   (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> let (a,b) = max a b, min a b in let b = max_int - a + b in try Safe_int.sub (-a) b|>ignore; false with BatNumber.Overflow -> true)
+   (Q.pair Q.int Q.int) (fun (a,b) -> let slow_mul a b = if b = 0 then 0 else if (abs a) > max_int / (abs b) then raise BatNumber.Overflow else a*b in Pervasives.(=) (Result.catch (Safe_int.mul a) b) (Result.catch (slow_mul a) b))
+ **)
 
 (*
 module Int     = struct
