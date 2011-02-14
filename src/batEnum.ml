@@ -815,6 +815,22 @@ let group test e =
 	    
 	in from f
 
+let change_flip f =
+  let st = ref None in
+  let ret = ref true in
+  (fun x -> match !st with 
+    | Some x0 when x0 <> f x -> st := Some (f x); ret := not !ret; !ret
+    | Some _ -> !ret
+    | None                   -> st := Some (f x); !ret 
+  )
+
+(**T change_flip
+   let ff = change_flip (fun x -> x land 1) in List.map ff [1;2;4;1] = [true; false; false; true]
+   let ff = change_flip (fun x -> x mod 3) in List.map ff [1;2;4;1] = [true; false; true; true]
+   let ff = change_flip (fun s -> s.[0]) in List.map ff ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [true; true; false; false; true; false]
+**)
+
+
 let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
   let next () = 
     match peek e with
@@ -846,6 +862,29 @@ let unfold data next =
   from_loop data (fun data -> match next data with
 		    | None   -> raise No_more_elements
 		    | Some x -> x )
+
+let arg_min f enum =
+  match get enum with
+      None -> failwith "arg_min: Empty enum"
+    | Some v ->
+	let item, eval = ref v, ref (f v) in
+	iter (fun v -> let fv = f v in 
+		       if fv < !eval then (item := v; eval := fv)) enum;
+	!item
+
+let arg_max f enum =
+  match get enum with
+      None -> failwith "arg_max: Empty enum"
+    | Some v ->
+	let item, eval = ref v, ref (f v) in
+	iter (fun v -> let fv = f v in 
+		       if fv > !eval then (item := v; eval := fv)) enum;
+	!item
+
+(**T arg_min_max
+   List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"
+   -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
+**)
 
 (* -----------
    Concurrency 
