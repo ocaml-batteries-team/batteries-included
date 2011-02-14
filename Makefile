@@ -66,7 +66,7 @@ doc:
 	$(OCAMLBUILD) batteries.docdir/index.html
 	test -e apidocs || ln -s _build/batteries.docdir apidocs
 
-install: all
+install: all uninstall_packages
 	ocamlfind install $(OCAMLFIND_DEST) estring \
 		libs/estring/META \
 		_build/libs/estring/*.cmo \
@@ -74,9 +74,11 @@ install: all
 		_build/libs/estring/*.mli
 	ocamlfind install $(OCAMLFIND_DEST) $(NAME) $(INSTALL_FILES)
 
-uninstall:
+uninstall_packages:
 	ocamlfind remove $(OCAMLFIND_DEST) estring
 	ocamlfind remove $(OCAMLFIND_DEST) $(NAME)
+
+uninstall: uninstall_packages
 	${RM} -r $(DOCROOT)
 
 install-doc: doc
