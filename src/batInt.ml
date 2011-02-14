@@ -156,7 +156,8 @@ module BaseSafeInt = struct
     bits). This trick turned out to be *wrong* on 64-bit machines, where
     [Nativeint.mul 2432902008176640000n 21n] and [2432902008176640000 * 21]
     yield the same result, [-4249290049419214848]. *)
-  let shift_bits, mask = if Sys.word_size = 32 then 16,0xFFFF else 32, 0xFFFFFFFF
+  let shift_bits, mask = 
+    if Sys.word_size = 32 then 16,0xFFFF else 32, (1 lsl 32) - 1
 
   let mul a b = 
     match a asr shift_bits, b asr shift_bits with
@@ -190,7 +191,7 @@ end
    try Safe_int.add max_int max_int |> ignore; false with Number.Overflow -> true
    Safe_int.neg max_int = -max_int
    try Safe_int.neg min_int |> ignore; false with Number.Overflow -> true
-   try Safe_int.mul 2432902008176640000 21 |> ignore; false with Number.Overflow -> true
+   try Safe_int.mul (Safe_int.mul ((1 lsl 18) * (3*3*3*3*3*3*3*3)) (5*5*5*5*7*7*11*13*17*19)) 21 |> ignore; false with Number.Overflow -> true
  **)
 
 (**Q safe_int_qtests
