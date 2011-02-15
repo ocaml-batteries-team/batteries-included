@@ -50,6 +50,9 @@ end
 let tests =
   let module MT1 = MkTest (BatMap.Make) in
   let mt1_tests = "Map.Make" >::: MT1.tests in
+  let module MT2 = MkTest (BatSplay.Map) in
+  let mt2_tests = "Splay.Make" >::: MT2.tests in
   "Generic Map tests" >::: [
     mt1_tests ;
+    mt2_tests ;
   ]
