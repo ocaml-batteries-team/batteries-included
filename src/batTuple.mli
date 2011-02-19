@@ -146,3 +146,48 @@ module Tuple3 : sig
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a
   include BatInterfaces.Mappable with type 'a mappable = 'a * 'a * 'a
 end
+
+(** 4-Tuples. *)
+module Tuple4 : sig
+
+  type ('a,'b,'c,'d) t = 'a * 'b * 'c * 'd
+
+  val fst : 'a * 'b * 'c * 'd -> 'a
+  val snd : 'a * 'b * 'c * 'd -> 'b
+  val thrd : 'a * 'b * 'c * 'd -> 'c
+  val frth : 'a * 'b * 'c * 'd -> 'd
+
+  val prj12 : 'a * 'b * 'c * 'd -> 'a * 'b
+  val prj13 : 'a * 'b * 'c * 'd -> 'a * 'c
+  val prj14 : 'a * 'b * 'c * 'd -> 'a * 'd
+  val prj23 : 'a * 'b * 'c * 'd -> 'b * 'c
+  val prj24 : 'a * 'b * 'c * 'd -> 'b * 'd
+  val prj34 : 'a * 'b * 'c * 'd -> 'c * 'd
+
+  val prj123 : 'a * 'b * 'c * 'd -> 'a * 'b * 'c
+  val prj124 : 'a * 'b * 'c * 'd -> 'a * 'b * 'd
+  val prj234 : 'a * 'b * 'c * 'd -> 'b * 'c * 'd
+
+  val map : ('a -> 'b) -> ('a * 'a * 'a * 'a) -> ('b * 'b * 'b * 'b)
+  val mapn : ('a -> 'e) -> ('b -> 'f) -> ('c -> 'g) -> ('d -> 'h) -> 'a * 'b * 'c * 'd -> 'e * 'f * 'g * 'h
+  val map1 : ('a -> 'e) -> ('a * 'b * 'c * 'd) -> ('e * 'b * 'c * 'd)
+  val map2 : ('b -> 'e) -> ('a * 'b * 'c * 'd) -> ('a * 'e * 'c * 'd)
+  val map3 : ('c -> 'e) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'e * 'd)
+  val map4 : ('d -> 'e) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'c * 'e)
+
+  val curry : ('a * 'b * 'c * 'd -> 'e) -> 'a -> 'b -> 'c -> 'd -> 'e
+  val uncurry : ('a -> 'b -> 'c -> 'd -> 'e) -> 'a * 'b * 'c * 'd -> 'e
+
+  val enum : ('a * 'a * 'a * 'a) -> 'a BatEnum.t
+  val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a)
+    (** Raises [Failure] if enum does not contain at least 4
+        elements. *)
+
+  val printn : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> 'o BatIO.output -> ('a * 'b * 'c * 'd) -> unit
+  val print : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a * 'a * 'a) -> unit
+
+  val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'c * 'd) -> int
+
+  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
+  include BatInterfaces.Mappable with type 'a mappable = 'a * 'a * 'a * 'a
+end

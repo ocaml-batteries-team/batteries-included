@@ -126,3 +126,80 @@ module Tuple3 = struct
       if c2 <> 0 then c2 else
         cmp3 a3 b3
 end
+
+module Tuple4 = struct
+  type ('a,'b,'c,'d) t = 'a * 'b * 'c * 'd
+
+  type 'a enumerable = 'a * 'a * 'a * 'a
+  type 'a mappable = 'a * 'a * 'a * 'a
+
+  let fst (a,_,_,_) = a
+  let snd (_,b,_,_) = b
+  let thrd (_,_,c,_) = c
+  let frth (_,_,_,d) = d
+
+  let prj12 (a,b,_,_) = (a,b)
+  let prj13 (a,_,c,_) = (a,c)
+  let prj14 (a,_,_,d) = (a,d)
+  let prj23 (_,b,c,_) = (b,c)
+  let prj24 (_,b,_,d) = (b,d)
+  let prj34 (_,_,c,d) = (c,d)
+
+  let prj123 (a,b,c,_) = (a,b,c)
+  let prj124 (a,b,_,d) = (a,b,d)
+  let prj234 (_,b,c,d) = (b,c,d)
+
+  let map f (a,b,c,d) =
+    let a = f a in
+    let b = f b in
+    let c = f c in
+    (a, b, c, f d)
+
+  let mapn f1 f2 f3 f4 (a,b,c,d) =
+    let a = f1 a in
+    let b = f2 b in
+    let c = f3 c in
+    (a, b, c, f4 d)
+
+  let map1 f (a,b,c,d) = (f a, b, c, d)
+  let map2 f (a,b,c,d) = (a, f b, c, d)
+  let map3 f (a,b,c,d) = (a, b, f c, d)
+  let map4 f (a,b,c,d) = (a, b, c, f d)
+
+  let curry f a b c d = f (a,b,c,d)
+  let uncurry f (a,b,c,d) = f a b c d
+
+  let enum (a,b,c,d) = BatList.enum [a;b;c;d] (* Make efficient? *)
+
+  let of_enum e = match BatEnum.get e with
+      None -> failwith "Tuple4.of_enum: not enough elements"
+    | Some a -> match BatEnum.get e with
+	  None -> failwith "Tuple4.of_enum: not enough elements"
+        | Some b -> match BatEnum.get e with
+	      None -> failwith "Tuple4.of_enum: not enough elements"
+            | Some c -> match BatEnum.get e with
+	          None -> failwith "Tuple4.of_enum: not enough elements"
+                | Some d -> (a,b,c,d)
+
+  let printn print_a print_b print_c print_d out (a,b,c,d) =
+    BatIO.write out '(';
+    print_a out a;
+    BatIO.write out ',';
+    print_b out b;
+    BatIO.write out ',';
+    print_c out c;
+    BatIO.write out ',';
+    print_d out d;
+    BatIO.write out ')'
+
+  let print printer out pair = printn printer printer printer printer out pair
+
+  let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) ?(cmp4=Pervasives.compare) (a1,a2,a3,a4) (b1,b2,b3,b4) =
+    let c1 = cmp1 a1 b1 in
+    if c1 <> 0 then c1 else
+      let c2 = cmp2 a2 b2 in
+      if c2 <> 0 then c2 else
+        let c3 = cmp3 a3 b3 in
+        if c3 <> 0 then c3 else
+          cmp4 a4 b4
+end
