@@ -66,3 +66,63 @@ module Tuple2 = struct
     let comp = cmp1 a c in 
     if comp <> 0 then comp else cmp2 b d
 end
+
+module Tuple3 = struct
+  type ('a,'b,'c) t = 'a * 'b * 'c
+
+  type 'a enumerable = 'a * 'a * 'a
+  type 'a mappable = 'a * 'a * 'a
+
+  let fst (a,_,_) = a
+  let snd (_,b,_) = b
+  let thrd (_,_,c) = c
+
+  let prj12 (a,b,_) = (a,b)
+  let prj13 (a,_,c) = (a,c)
+  let prj23 (_,b,c) = (b,c)
+
+  let map f (a,b,c) =
+    let a = f a in
+    let b = f b in
+    (a, b, f c)
+
+  let mapn f1 f2 f3 (a,b,c) =
+    let a = f1 a in
+    let b = f2 b in
+    (a, b, f3 c)
+
+  let map1 f (a,b,c) = (f a, b, c)
+  let map2 f (a,b,c) = (a, f b, c)
+  let map3 f (a,b,c) = (a, b, f c)
+
+  let curry f a b c = f (a,b,c)
+  let uncurry f (a,b,c) = f a b c
+
+  let enum (a,b,c) = BatList.enum [a;b;c] (* Make efficient? *)
+
+  let of_enum e = match BatEnum.get e with
+      None -> failwith "Tuple3.of_enum: not enough elements"
+    | Some a -> match BatEnum.get e with
+	  None -> failwith "Tuple3.of_enum: not enough elements"
+        | Some b -> match BatEnum.get e with
+	      None -> failwith "Tuple3.of_enum: not enough elements"
+            | Some c -> (a,b,c)
+
+  let printn print_a print_b print_c out (a,b,c) =
+    BatIO.write out '(';
+    print_a out a;
+    BatIO.write out ',';
+    print_b out b;
+    BatIO.write out ',';
+    print_c out c;
+    BatIO.write out ')'
+
+  let print printer out pair = printn printer printer printer out pair
+
+  let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) (a1,a2,a3) (b1,b2,b3) =
+    let c1 = cmp1 a1 b1 in
+    if c1 <> 0 then c1 else
+      let c2 = cmp2 a2 b2 in
+      if c2 <> 0 then c2 else
+        cmp3 a3 b3
+end
