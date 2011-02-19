@@ -191,3 +191,67 @@ module Tuple4 : sig
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
   include BatInterfaces.Mappable with type 'a mappable = 'a * 'a * 'a * 'a
 end
+
+(** 5-Tuples. *)
+module Tuple5 : sig
+
+  type ('a,'b,'c,'d,'e) t = 'a * 'b * 'c * 'd * 'e
+
+  val fst : 'a * 'b * 'c * 'd * 'e -> 'a
+  val snd : 'a * 'b * 'c * 'd * 'e -> 'b
+  val thrd : 'a * 'b * 'c * 'd * 'e -> 'c
+  val frth : 'a * 'b * 'c * 'd * 'e -> 'd
+  val fvth : 'a * 'b * 'c * 'd * 'e -> 'e
+
+  val prj12 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b
+  val prj13 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c
+  val prj14 : 'a * 'b * 'c * 'd * 'e -> 'a * 'd
+  val prj15 : 'a * 'b * 'c * 'd * 'e -> 'a * 'e
+  val prj23 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c
+  val prj24 : 'a * 'b * 'c * 'd * 'e -> 'b * 'd
+  val prj25 : 'a * 'b * 'c * 'd * 'e -> 'b * 'e
+  val prj34 : 'a * 'b * 'c * 'd * 'e -> 'c * 'd
+  val prj35 : 'a * 'b * 'c * 'd * 'e -> 'c * 'e
+  val prj45 : 'a * 'b * 'c * 'd * 'e -> 'd * 'e
+
+  val prj123 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'c
+  val prj124 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'd
+  val prj125 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'e
+  val prj134 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c * 'd
+  val prj135 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c * 'e
+  val prj145 : 'a * 'b * 'c * 'd * 'e -> 'a * 'd * 'e
+  val prj234 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c * 'd
+  val prj235 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c * 'e
+  val prj245 : 'a * 'b * 'c * 'd * 'e -> 'b * 'd * 'e
+  val prj345 : 'a * 'b * 'c * 'd * 'e -> 'c * 'd * 'e
+
+  val prj1234 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'c * 'd
+  val prj1235 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'c * 'e
+  val prj1245 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'd * 'e
+  val prj1345 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c * 'd * 'e
+  val prj2345 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c * 'd * 'e
+
+  val map : ('a -> 'b) -> ('a * 'a * 'a * 'a * 'a) -> ('b * 'b * 'b * 'b * 'b)
+  val mapn : ('a -> 'f) -> ('b -> 'g) -> ('c -> 'h) -> ('d -> 'i) -> ('e -> 'j) -> 'a * 'b * 'c * 'd * 'e -> 'f * 'g * 'h * 'i * 'j
+  val map1 : ('a -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('f * 'b * 'c * 'd * 'e)
+  val map2 : ('b -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'f * 'c * 'd * 'e)
+  val map3 : ('c -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'f * 'd * 'e)
+  val map4 : ('d -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'f * 'e)
+  val map5 : ('e -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'd * 'f)
+
+  val curry : ('a * 'b * 'c * 'd * 'e -> 'f) -> 'a -> 'b -> 'c -> 'd -> 'e -> 'f
+  val uncurry : ('a -> 'b -> 'c -> 'd -> 'e -> 'f) -> 'a * 'b * 'c * 'd * 'e -> 'f
+
+  val enum : ('a * 'a * 'a * 'a * 'a) -> 'a BatEnum.t
+  val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a * 'a)
+    (** Raises [Failure] if enum does not contain at least 5
+        elements. *)
+
+  val printn : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> ('o BatIO.output -> 'e -> unit) -> 'o BatIO.output -> ('a * 'b * 'c * 'd * 'e) -> unit
+  val print : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a * 'a * 'a * 'a) -> unit
+
+  val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ?cmp5:('e -> 'e -> int) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'd * 'e) -> int
+
+  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a * 'a
+  include BatInterfaces.Mappable with type 'a mappable = 'a * 'a * 'a * 'a * 'a
+end

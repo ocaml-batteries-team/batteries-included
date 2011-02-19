@@ -203,3 +203,107 @@ module Tuple4 = struct
         if c3 <> 0 then c3 else
           cmp4 a4 b4
 end
+
+module Tuple5 = struct
+  type ('a,'b,'c,'d,'e) t = 'a * 'b * 'c * 'd * 'e
+
+  type 'a enumerable = 'a * 'a * 'a * 'a * 'a
+  type 'a mappable = 'a * 'a * 'a * 'a * 'a
+
+  let fst (a,_,_,_,_) = a
+  let snd (_,b,_,_,_) = b
+  let thrd (_,_,c,_,_) = c
+  let frth (_,_,_,d,_) = d
+  let fvth (_,_,_,_,e) = e
+
+  let prj12 (a,b,_,_,_) = (a,b)
+  let prj13 (a,_,c,_,_) = (a,c)
+  let prj14 (a,_,_,d,_) = (a,d)
+  let prj15 (a,_,_,_,e) = (a,e)
+  let prj23 (_,b,c,_,_) = (b,c)
+  let prj24 (_,b,_,d,_) = (b,d)
+  let prj25 (_,b,_,_,e) = (b,e)
+  let prj34 (_,_,c,d,_) = (c,d)
+  let prj35 (_,_,c,_,e) = (c,e)
+  let prj45 (_,_,_,d,e) = (d,e)
+
+  let prj123 (a,b,c,_,_) = (a,b,c)
+  let prj124 (a,b,_,d,_) = (a,b,d)
+  let prj125 (a,b,_,_,e) = (a,b,e)
+  let prj134 (a,_,c,d,_) = (a,c,d)
+  let prj135 (a,_,c,_,e) = (a,c,e)
+  let prj145 (a,_,_,d,e) = (a,d,e)
+  let prj234 (_,b,c,d,_) = (b,c,d)
+  let prj235 (_,b,c,_,e) = (b,c,e)
+  let prj245 (_,b,_,d,e) = (b,d,e)
+  let prj345 (_,_,c,d,e) = (c,d,e)
+
+  let prj1234 (a,b,c,d,_) = (a,b,c,d)
+  let prj1235 (a,b,c,_,e) = (a,b,c,e)
+  let prj1245 (a,b,_,d,e) = (a,b,d,e)
+  let prj1345 (a,_,c,d,e) = (a,c,d,e)
+  let prj2345 (_,b,c,d,e) = (b,c,d,e)
+
+  let map f (a,b,c,d,e) =
+    let a = f a in
+    let b = f b in
+    let c = f c in
+    let d = f d in
+    (a, b, c, d, f e)
+
+  let mapn f1 f2 f3 f4 f5 (a,b,c,d,e) =
+    let a = f1 a in
+    let b = f2 b in
+    let c = f3 c in
+    let d = f4 d in
+    (a, b, c, d, f5 e)
+
+  let map1 f (a,b,c,d,e) = (f a, b, c, d, e)
+  let map2 f (a,b,c,d,e) = (a, f b, c, d, e)
+  let map3 f (a,b,c,d,e) = (a, b, f c, d, e)
+  let map4 f (a,b,c,d,e) = (a, b, c, f d, e)
+  let map5 f (a,b,c,d,e) = (a, b, c, d, f e)
+
+  let curry f a b c d e = f (a,b,c,d,e)
+  let uncurry f (a,b,c,d,e) = f a b c d e
+
+  let enum (a,b,c,d,e) = BatList.enum [a;b;c;d;e] (* Make efficient? *)
+
+  let of_enum e = match BatEnum.get e with
+      None -> failwith "Tuple5.of_enum: not enough elements"
+    | Some a -> match BatEnum.get e with
+	  None -> failwith "Tuple5.of_enum: not enough elements"
+        | Some b -> match BatEnum.get e with
+	      None -> failwith "Tuple5.of_enum: not enough elements"
+            | Some c -> match BatEnum.get e with
+	          None -> failwith "Tuple5.of_enum: not enough elements"
+                | Some d -> match BatEnum.get e with
+	              None -> failwith "Tuple5.of_enum: not enough elements"
+                    | Some e -> (a,b,c,d,e)
+
+  let printn print_a print_b print_c print_d print_e out (a,b,c,d,e) =
+    BatIO.write out '(';
+    print_a out a;
+    BatIO.write out ',';
+    print_b out b;
+    BatIO.write out ',';
+    print_c out c;
+    BatIO.write out ',';
+    print_d out d;
+    BatIO.write out ',';
+    print_e out e;
+    BatIO.write out ')'
+
+  let print printer out pair = printn printer printer printer printer printer out pair
+
+  let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) ?(cmp4=Pervasives.compare) ?(cmp5=Pervasives.compare) (a1,a2,a3,a4,a5) (b1,b2,b3,b4,b5) =
+    let c1 = cmp1 a1 b1 in
+    if c1 <> 0 then c1 else
+      let c2 = cmp2 a2 b2 in
+      if c2 <> 0 then c2 else
+        let c3 = cmp3 a3 b3 in
+        if c3 <> 0 then c3 else
+          let c4 = cmp4 a4 b4 in
+          if c4 <> 0 then c4 else
+            cmp5 a5 b5
+end
