@@ -235,11 +235,23 @@ val group : ('a -> bool) -> 'a t -> 'a t t
       each sub-enumeration is the longest continuous enumeration of elements whose [test]
       results are the same. *)
 
+val change_flip : ('a -> 'b) -> 'a -> bool
+(** [let ff = change_flip f in map ff xs] returns an enum of booleans
+    that stays the same as long as [f x] is the same.
+
+   let ff = change_flip (fun x -> x land 1) in List.map [1;2;4;1] = [true; false; false; true]
+   let ff = change_flip (fun x -> x mod 3) in List.map [1;2;4;1] = [true; false; true; true]
+   let ff = change_flip (fun s -> s.[0]) in List.map ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [true; true; false; false; true; false]
+
+    @added 1.4.0
+    *)
+
+
 val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
-  (** [clump size add get e] runs [add] on [size] (or less at the end)
-      elements of [e] and then runs [get] to produce value for the
-      result enumeration.  Useful to convert a char enum into string
-      enum. *)
+(** [clump size add get e] runs [add] on [size] (or less at the end)
+    elements of [e] and then runs [get] to produce value for the
+    result enumeration.  Useful to convert a char enum into string
+    enum. *)
 
 (** {6 Lazy constructors}
 
@@ -579,6 +591,19 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
   (** [switchn] is the array version of [switch]. [switch n f fl] split [fl] to an array of [n] enums, [f] is
       applied to each element of [fl] to decide the id of its destination
       enum. *)*)
+
+val arg_min : ('a -> 'b) -> 'a t -> 'a
+val arg_max : ('a -> 'b) -> 'a t -> 'a
+(** [arg_min f xs] returns the [x] in [xs] for which [f x] is minimum.
+    Similarly for [arg_max], except it returns the maximum.  If
+    multiple values reach the maximum, one of them is
+    returned. (currently the first, but this is not guaranteed)
+
+    Example: [-5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3]
+    Example: [List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"]
+
+    @added v1.4.0
+*)
 
 (** {6 Trampolining} *)
 

@@ -33,7 +33,6 @@
 *)
 
 (* module type OrderedType = BatInterfaces.OrderedType *)
-(** Input signature of the functor {!Map.Make}. *)
 
 module type S =
   sig
@@ -473,3 +472,8 @@ val print :  ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'b -> unit) -> 
   ('a BatInnerIO.output -> 'c -> unit) -> 
   'a BatInnerIO.output -> ('b, 'c) t -> unit
+
+
+(**/**)
+module type OrderedType = BatInterfaces.OrderedType
+(** Input signature of the functor {!Map.Make}. *)

@@ -124,6 +124,6 @@ sig
     (** See {!BatHeap.t_printer}. *)
 end
 
-module Make (Ord : Set.OrderedType) : H with type elem = Ord.t
+module Make (Ord : BatInterfaces.OrderedType) : H with type elem = Ord.t
   (** Functorized heaps over arbitrary orderings. All the functions have
       the same complexity as the non-functorized versions. *)

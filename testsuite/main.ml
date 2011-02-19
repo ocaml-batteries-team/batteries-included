@@ -20,9 +20,9 @@ let all_tests =
     Test_stack.tests;
     Test_mappable.tests;
     Test_hashcons.tests;
+    Test_mapfunctors.tests;
   ]
 
 let () = 
-  print_endline "Running Batteries tests";
   ignore(OUnit.run_test_tt_main ("All" >::: all_tests));
 

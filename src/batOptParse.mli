@@ -369,8 +369,9 @@ module OptParser :
     (** {6 Option parser creation} *)
 
     val make : ?usage: string -> ?description: string -> ?version: string ->
-      ?suppress_usage: bool -> ?suppress_help: bool -> ?prog: string ->
-      ?formatter: Formatter.t -> unit -> t
+      ?suppress_usage: bool -> ?suppress_help: bool ->
+      ?only_leading_opts: bool ->
+      ?prog: string -> ?formatter: Formatter.t -> unit -> t
     (** Creates a new option parser with the given options.
 
       @param usage Usage message. The default is a reasonable usage
@@ -385,6 +386,11 @@ module OptParser :
 
       @param suppress_help Suppress the 'help' option which is
       otherwise added by default.
+
+      @param only_leading_opts Only consider leading options (options
+      appearing before the first non-option argument). All arguments
+      from the first non-option argument on are returned as the
+      arguments.
 
       @param version Version string. If set, a '--version' option is
       automatically added. When encountered on the command line it

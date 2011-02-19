@@ -19,7 +19,7 @@ endif
 OCAMLBUILD ?= ocamlbuild
 
 BATTERIES_NATIVE ?= yes
-BATTERIES_NATIVE_SHLIB ?= yes
+BATTERIES_NATIVE_SHLIB ?= $(BATTERIES_NATIVE)
 
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
@@ -33,31 +33,40 @@ TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
 TEST_TARGETS = testsuite/main.byte qtest/test_runner.byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
+  EXT = native
+  MODE = shared
   TARGETS += shared.otarget
   TEST_TARGETS += testsuite/main.native qtest/test_runner.native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
 else ifeq ($(BATTERIES_NATIVE), yes)
+  EXT = native
+  MODE = native
   TARGETS += native.otarget
   TEST_TARGETS += testsuite/main.native qtest/test_runner.native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
+else
+  EXT = byte
+  MODE = bytecode
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest fix_camomile camomile82 camomile81 camomile7 camfail
+.PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk
 
-all: fix-camomile
+all: src/batCamomile.ml
+	@echo "Build mode:" $(MODE)
 	${RM} src/batteries_config.ml
 	$(OCAMLBUILD) $(TARGETS)
 
 clean:
 	${RM} apidocs
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
+	${RM} src/batCamomile.ml
 	$(OCAMLBUILD) -clean
 
 doc:
 	$(OCAMLBUILD) batteries.docdir/index.html
 	test -e apidocs || ln -s _build/batteries.docdir apidocs
 
-install: all
+install: all uninstall_packages
 	ocamlfind install $(OCAMLFIND_DEST) estring \
 		libs/estring/META \
 		_build/libs/estring/*.cmo \
@@ -65,9 +74,11 @@ install: all
 		_build/libs/estring/*.mli
 	ocamlfind install $(OCAMLFIND_DEST) $(NAME) $(INSTALL_FILES)
 
-uninstall:
+uninstall_packages:
 	ocamlfind remove $(OCAMLFIND_DEST) estring
 	ocamlfind remove $(OCAMLFIND_DEST) $(NAME)
+
+uninstall: uninstall_packages
 	${RM} -r $(DOCROOT)
 
 install-doc: doc
@@ -88,9 +99,9 @@ reinstall:
 DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
 TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
-test: fix-camomile $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
+test: src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
-	$(foreach TEST, $(TEST_TARGETS), _build/$(TEST); )
+	$(foreach TEST, $(TEST_TARGETS), echo "Running $(TEST)"; _build/$(TEST); echo; )
 
 release: test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
@@ -103,16 +114,16 @@ release: test
 
 CAMVER=$(shell sh -c 'ocamlfind query -format %v camomile')
 ifeq ($(CAMVER),0.8.2)
-	CAMFIX=camomile82
+	CAMFIX=src/batCamomile-0.8.2.ml
 endif
 ifeq ($(CAMVER),0.8.1)
-	CAMFIX=camomile81
+	CAMFIX=src/batCamomile-0.8.1.ml
 endif
 ifeq ($(CAMVER),0.7.2)
-	CAMFIX=camomile7
+	CAMFIX=src/batCamomile-0.7.ml
 endif
 ifeq ($(CAMVER),0.7.1)
-	CAMFIX=camomile7
+	CAMFIX=src/batCamomile-0.7.ml
 endif
 ifeq ($(CAMVER),)
 	CAMFIX=camfail
@@ -121,19 +132,8 @@ ifeq ($(CAMFIX),)
 	CAMFIX=camfailunk
 endif
 
-fix-camomile: $(CAMFIX)
-
-#replace batcamomile with a version appropriate for camomile 0.8.2
-camomile82:
-	cp -f src/batCamomile-0.8.2.ml src/batCamomile.ml
-
-#replace batcamomile with a version appropriate for camomile 0.8.1
-camomile81:
-	cp -f src/batCamomile-0.8.1.ml src/batCamomile.ml
-
-#replace batcamomile with a version appropriate for camomile 0.7.*
-camomile7:
-	cp -f src/batCamomile-0.7.ml src/batCamomile.ml
+src/batCamomile.ml: $(CAMFIX)
+	cp -f $< $@
 
 camfail:
 	echo "Camomile not detected, cannot compile batteries"
@@ -147,12 +147,12 @@ camfailunk:
 ## Magic for test target - auto-generated test files from source comments
 ##
 
-_build/build/make_suite.native: build/make_suite.mll
-	ocamlbuild -no-links make_suite.native
+_build/build/make_suite.$(EXT): build/make_suite.mll
+	$(OCAMLBUILD) -no-links make_suite.$(EXT)
 
 #convert a source file to a test suite by filtering special comments
-qtest/%_t.ml: src/%.ml _build/build/make_suite.native
-	_build/build/make_suite.native $< > $@
+qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
+	_build/build/make_suite.$(EXT) $< > $@
 
 #put all the testing modules in a library
 qtest/test_mods.mllib: $(TESTABLE)
