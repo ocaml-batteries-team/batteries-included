@@ -99,3 +99,50 @@ module Tuple2 : sig
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a
   include BatInterfaces.Mappable with type 'a mappable = 'a * 'a
 end
+
+(** Triples. *)
+module Tuple3 : sig
+
+  type ('a,'b,'c) t = 'a * 'b * 'c
+
+  val fst : 'a * 'b * 'c -> 'a
+
+  val snd : 'a * 'b * 'c -> 'b
+
+  val thrd : 'a * 'b * 'c -> 'c
+
+  val prj12 : 'a * 'b * 'c -> 'a * 'b
+
+  val prj13 : 'a * 'b * 'c -> 'a * 'c
+
+  val prj23 : 'a * 'b * 'c -> 'b * 'c
+
+  val map : ('a -> 'b) -> ('a * 'a * 'a) -> ('b * 'b * 'b)
+
+  val mapn : ('a -> 'd) -> ('b -> 'e) -> ('c -> 'f) -> 'a * 'b * 'c -> 'd * 'e * 'f
+
+  val map1 : ('a -> 'd) -> ('a * 'b * 'c) -> ('d * 'b * 'c)
+
+  val map2 : ('b -> 'd) -> ('a * 'b * 'c) -> ('a * 'd * 'c)
+
+  val map3 : ('c -> 'd) -> ('a * 'b * 'c) -> ('a * 'b * 'd)
+
+  val curry : ('a * 'b * 'c -> 'd) -> 'a -> 'b -> 'c -> 'd
+
+  val uncurry : ('a -> 'b -> 'c -> 'd) -> 'a * 'b * 'c -> 'd
+
+  val enum : ('a * 'a * 'a) -> 'a BatEnum.t
+
+  val of_enum : 'a BatEnum.t -> ('a * 'a * 'a)
+    (** Raises [Failure] if enum does not contain at least 3
+        elements. *)
+
+  val printn : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> 'o BatIO.output -> ('a * 'b * 'c) -> unit
+
+  val print : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a * 'a) -> unit
+
+  val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ('a * 'b * 'c) -> ('a * 'b * 'c) -> int
+
+  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a
+  include BatInterfaces.Mappable with type 'a mappable = 'a * 'a * 'a
+end
