@@ -1,5 +1,5 @@
 (*
- * Pair - functions for pairs of values
+ * Tuples - functions for tuples
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller (Contributor)
  *               2011 Ashish Agarwal
