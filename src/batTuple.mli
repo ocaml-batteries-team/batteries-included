@@ -1,5 +1,5 @@
 (*
- * Pair - functions for pairs of values
+ * Tuples - functions for tuples
  * Copyright (C) 2009 Edgar Friendly
  *               2011 Ashish Agarwal
  *
@@ -23,16 +23,16 @@
     elements. Each provides the following categories of functions.
 
     Projection. Functions [fst], [snd], [thrd], [frth], and [fvth]
-    extract a single element. Multiple elements can be extracted. For
-    example, {!Tuple3.prj13} returns the first and third elements of a
-    3-tuple. All possible combinations are provided. Note there are
-    no [prj] functions in Tuple2 because [fst] and [snd] already cover
-    all possibilities.
+    extract a single element. Also, multiple elements can be
+    extracted. For example, {!Tuple3.prj13} returns the first and
+    third elements of a 3-tuple. All possible combinations are
+    provided. Note there are no [prj] functions in Tuple2 because
+    [fst] and [snd] already cover all possibilities.
 
     Mapping. Apply a function to one or all elements of a
     tuple. Functions [map1], [map2], etc. map a given function to the
     first, second, etc. element of a tuple. All elements can be mapped
-    using [map] or [mapn]. For example, {!Tuple.Tuple3.mapn f g h}
+    using [map] or [mapn]. For example, {!Tuple3.mapn} [f g h]
     will apply [f], [g], and [h] to the three elements, respectively,
     of a 3-tuple. Function [map] is similar but applies the same
     function to all elements, which thus requires the elements to be
@@ -55,7 +55,7 @@
     element. {!Pervasives.compare} is used by default.
 *)
 
-(** Pairs of values. Several of the functions here are also exposed in
+(** Pairs. Some of the functions here are also exposed in
     {!Pervasives}, as documented below.
     
     @author Edgar Friendly
@@ -77,21 +77,20 @@ module Tuple2 : sig
     (** Equivalent to {!BatPervasives.(***)}. *)
 
   val map1 : ('a -> 'c) -> ('a * 'b) -> ('c * 'b)
+    (** Equivalent to {!BatPervasives.first}. *)
     
   val map2 : ('b -> 'c) -> ('a * 'b) -> ('a * 'c)
+    (** Equivalent to {!BatPervasives.second}. *)
 
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
-
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
 
   val enum : ('a * 'a) -> 'a BatEnum.t
-
   val of_enum : 'a BatEnum.t -> ('a * 'a)
-    (** Raises [Failure] if enum does not contain at least 2
+    (** @raise Failure if enum does not contain at least 2
         elements. *)
 
   val printn : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> 'o BatIO.output -> ('a * 'b) -> unit
-
   val print : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ('a * 'b) -> ('a * 'b) -> int
@@ -100,45 +99,37 @@ module Tuple2 : sig
   include BatInterfaces.Mappable with type 'a mappable = 'a * 'a
 end
 
-(** Triples. *)
+(** Triples.
+
+    @author Ashish Agarwal
+*)
 module Tuple3 : sig
 
   type ('a,'b,'c) t = 'a * 'b * 'c
 
   val fst : 'a * 'b * 'c -> 'a
-
   val snd : 'a * 'b * 'c -> 'b
-
   val thrd : 'a * 'b * 'c -> 'c
 
   val prj12 : 'a * 'b * 'c -> 'a * 'b
-
   val prj13 : 'a * 'b * 'c -> 'a * 'c
-
   val prj23 : 'a * 'b * 'c -> 'b * 'c
 
   val map : ('a -> 'b) -> ('a * 'a * 'a) -> ('b * 'b * 'b)
-
   val mapn : ('a -> 'd) -> ('b -> 'e) -> ('c -> 'f) -> 'a * 'b * 'c -> 'd * 'e * 'f
-
   val map1 : ('a -> 'd) -> ('a * 'b * 'c) -> ('d * 'b * 'c)
-
   val map2 : ('b -> 'd) -> ('a * 'b * 'c) -> ('a * 'd * 'c)
-
   val map3 : ('c -> 'd) -> ('a * 'b * 'c) -> ('a * 'b * 'd)
 
   val curry : ('a * 'b * 'c -> 'd) -> 'a -> 'b -> 'c -> 'd
-
   val uncurry : ('a -> 'b -> 'c -> 'd) -> 'a * 'b * 'c -> 'd
 
   val enum : ('a * 'a * 'a) -> 'a BatEnum.t
-
   val of_enum : 'a BatEnum.t -> ('a * 'a * 'a)
-    (** Raises [Failure] if enum does not contain at least 3
+    (** @raise Failure if enum does not contain at least 3
         elements. *)
 
   val printn : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> 'o BatIO.output -> ('a * 'b * 'c) -> unit
-
   val print : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ('a * 'b * 'c) -> ('a * 'b * 'c) -> int
@@ -147,7 +138,10 @@ module Tuple3 : sig
   include BatInterfaces.Mappable with type 'a mappable = 'a * 'a * 'a
 end
 
-(** 4-Tuples. *)
+(** 4-Tuples.
+
+    @author Ashish Agarwal
+*)
 module Tuple4 : sig
 
   type ('a,'b,'c,'d) t = 'a * 'b * 'c * 'd
@@ -180,7 +174,7 @@ module Tuple4 : sig
 
   val enum : ('a * 'a * 'a * 'a) -> 'a BatEnum.t
   val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a)
-    (** Raises [Failure] if enum does not contain at least 4
+    (** @raise Failure if enum does not contain at least 4
         elements. *)
 
   val printn : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> 'o BatIO.output -> ('a * 'b * 'c * 'd) -> unit
@@ -192,7 +186,10 @@ module Tuple4 : sig
   include BatInterfaces.Mappable with type 'a mappable = 'a * 'a * 'a * 'a
 end
 
-(** 5-Tuples. *)
+(** 5-Tuples.
+
+    @author Ashish Agarwal
+*)
 module Tuple5 : sig
 
   type ('a,'b,'c,'d,'e) t = 'a * 'b * 'c * 'd * 'e
@@ -244,7 +241,7 @@ module Tuple5 : sig
 
   val enum : ('a * 'a * 'a * 'a * 'a) -> 'a BatEnum.t
   val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a * 'a)
-    (** Raises [Failure] if enum does not contain at least 5
+    (** @raise Failure if enum does not contain at least 5
         elements. *)
 
   val printn : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> ('o BatIO.output -> 'e -> unit) -> 'o BatIO.output -> ('a * 'b * 'c * 'd * 'e) -> unit
