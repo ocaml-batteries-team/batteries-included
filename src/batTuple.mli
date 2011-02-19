@@ -19,7 +19,41 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Tuples. *)
+(** Tuples. Modules are provided for tuples with 2, 3, 4, and 5
+    elements. Each provides the following categories of functions.
+
+    Projection. Functions [fst], [snd], [thrd], [frth], and [fvth]
+    extract a single element. Multiple elements can be extracted. For
+    example, {!Tuple3.prj13} returns the first and third elements of a
+    3-tuple. All possible combinations are provided. Note there are
+    no [prj] functions in Tuple2 because [fst] and [snd] already cover
+    all possibilities.
+
+    Mapping. Apply a function to one or all elements of a
+    tuple. Functions [map1], [map2], etc. map a given function to the
+    first, second, etc. element of a tuple. All elements can be mapped
+    using [map] or [mapn]. For example, {!Tuple.Tuple3.mapn f g h}
+    will apply [f], [g], and [h] to the three elements, respectively,
+    of a 3-tuple. Function [map] is similar but applies the same
+    function to all elements, which thus requires the elements to be
+    of the same type. Tuples satisfy {!BatInterfaces.Mappable}.
+
+    Currying. Every tuple has a [curry] and [uncurry] function, which
+    allow converting between functions that take [n] arguments to ones
+    that take a single [n]-tuple argument.
+
+    Enumeration. Every [n]-tuple can be converted to an enum with [n]
+    elements using its [enum] function, and can be constructed from an
+    enum using [of_enum]. Tuples satisfy {!BatEnum.Enumerable}.
+
+    Printing. Function [printn] prints a tuple given a method for
+    printing each of its elements. The simpler [print] function can be
+    used when all elements are of the same type.
+
+    Comparison. Every tuple has a [compare] function, which can
+    optionally be customized by specifying methods for comparing each
+    element. {!Pervasives.compare} is used by default.
+*)
 
 (** Pairs of values. Several of the functions here are also exposed in
     {!Pervasives}, as documented below.
@@ -32,55 +66,35 @@ module Tuple2 : sig
   type ('a,'b) t = 'a * 'b
 
   external fst : 'a * 'b -> 'a = "%field0"
-      (** Project out first element of a pair. Equivalent to
-          {!Pervasives.fst}. *)
+      (** Equivalent to {!Pervasives.fst}. *)
 
   external snd : 'a * 'b -> 'b = "%field1"
-      (** Project out second element of a pair. Equivalent to
-          {!Pervasives.snd}. *)
+      (** Equivalent to {!Pervasives.snd}. *)
 
   val map : ('a -> 'b) -> ('a * 'a) -> ('b * 'b)
-    (** Map all values in a pair with the same function.
-        [map f (a,b) = (f a, f b)]. *)
 
   val mapn : ('a -> 'c) -> ('b -> 'd) -> 'a * 'b -> 'c * 'd
-    (** Map all values in a pair with different functions.
-        [mapn f g (a,b) = (f a, g b)]. Equivalent to
-        {!BatPervasives.(***)}. *)
+    (** Equivalent to {!BatPervasives.(***)}. *)
 
   val map1 : ('a -> 'c) -> ('a * 'b) -> ('c * 'b)
-    (** Map first item in a pair. [map1 f (a,b) = (f a, b)]. *)
     
   val map2 : ('b -> 'c) -> ('a * 'b) -> ('a * 'c)
-    (** Map second item in a pair. [map2 f (a,b) = (a, f b)]. *)
 
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
-    (** Convert a function that accepts a pair of arguments into a
-        function that accepts two arguments. Equivalent to
-        {!Pervasives.curry}. *)
 
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
-    (** Convert a function that accepts two arguments into a function
-        that accepts a pair of arguments. Equivalent to
-        {!Pervasives.uncurry}. *)
 
   val enum : ('a * 'a) -> 'a BatEnum.t
-    (** Build a two-element enum from a pair. *)
 
   val of_enum : 'a BatEnum.t -> ('a * 'a)
-    (** Build a pair out of the first two elements of an enum. Raises
-        [Failure] if insufficient elements. *)
+    (** Raises [Failure] if enum does not contain at least 2
+        elements. *)
 
   val printn : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> 'o BatIO.output -> ('a * 'b) -> unit
-    (** Print a pair using given printing functions. *)
 
   val print : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a) -> unit
-    (** Print a pair using given printing function. Like [printn] but
-        elements must be of same type. *)
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ('a * 'b) -> ('a * 'b) -> int
-    (** Compare two pairs in lexicographic order, possibly using
-        custom comparators for the two fields. *)
 
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a
   include BatInterfaces.Mappable with type 'a mappable = 'a * 'a
