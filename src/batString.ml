@@ -418,32 +418,52 @@ struct
 end
 
 
+(* Helper functions for numeric_compare *)
+let rec pos_diff s1 s2 i =  (* finds the first position where the strings differ *)
+  if i = String.length s1 then -2 else 
+    if i = String.length s2 then -1 else 
+      if s1.[i] = s2.[i] then pos_diff s1 s2 (i+1) 
+      else i
+
+(* scans for the end of a numeric value embedded in a string *)
+let rec num_end i s = 
+  if i >= String.length s then i else
+    if BatChar.is_digit s.[i] then num_end (i+1) s else i
+
+(* scans for the beginning of a numeric value embedded in a string *)
+let rec num_begin i s = 
+  if i < 0 then i+1 else
+    if BatChar.is_digit s.[i] then num_begin (i-1) s else i+1
+
+
+let rec numeric_compare_aux s1 s2 ~off =
+  match pos_diff s1 s2 off with
+      -2 -> -1 (* < *)
+    | -1 -> 1  (* > *)
+    | d (* position of first differing character *)
+	when BatChar.is_digit s1.[d] && BatChar.is_digit s2.[d] -> 
+	(* Scan backwards for start of number *)
+      let b1 = num_begin d s1 and b2 = num_begin d s2 in
+	(* Scan forwards for end of number *)
+      let e1 = num_end d s1 and e2 = num_end d s2 in
+(*      Printf.eprintf "Compare: %S & %S @ d:%d b1:%d b2:%d e1:%d e2:%d->" s1 s2 d b1 b2 e1 e2; *)
+      let sl1 = (slice s1 ~first:b1 ~last:e1) in
+      let sl2 = (slice s2 ~first:b2 ~last:e2) in
+(*      Printf.eprintf " %s & %s\n" sl1 sl2;  *)
+      let n1 = Big_int.big_int_of_string sl1 in
+      let n2 = Big_int.big_int_of_string sl2 in
+	  (* FIXME: ignores text after equal numbers -- "a1b" = "a01c" *)
+      Big_int.compare_big_int n1 n2 
+    | _ -> (* differing character isn't a number in both *)
+      Pervasives.compare s1 s2 (* normal compare *)
+
 
 let numeric_compare s1 s2 =
-(* TODO pluggable transformation functions (for lowercase) *)
-(*  let s1 = String.lowercase s1 and s2 = String.lowercase s2 in*)
+  (* TODO pluggable transformation functions (for lowercase) *)
+  (*  let s1 = String.lowercase s1 and s2 = String.lowercase s2 in*)
   let l1 = String.length s1 and l2 = String.length s2 in
-  let rec pos_diff i =  (* finds the first position where the strings differ *)
-    if i = l1 then -2 else if i = l2 then -1
-    else if s1.[i] = s2.[i] then pos_diff (i+1) else i
-  and num_end i s = (* scans for the end of a numeric value *)
-    if i >= String.length s then i else
-      if s.[i] >= '0' && s.[i] <= '9' then num_end (i+1) s else i
-  in
   if l1 = l2 then String.compare s1 s2
-  else let d = pos_diff 0 in
-  if d = -2 then -1 else if d = -1 then 1 else
-    let e1 = num_end d s1 and e2 = num_end d s2 in
-    if e1 = d || e2 = d then Pervasives.compare s1 s2
-      (*    else if e1 <> e2 then e1 - e2 else Pervasives.compare s1 s2 *)
-    else begin
-(*      Printf.eprintf "Compare: %s & %s @ d:%d e1:%d e2:%d->" s1 s2 d e1 e2;*)
-      let n1 = Int64.of_string (String.sub s1 d (e1-d))
-	(* FIXME?: trailing numbers must be less than Int64.max_int *)
-      and n2 = Int64.of_string (String.sub s2 d (e2-d)) in
-(*      Printf.eprintf " %Ld & %Ld\n" n1 n2; *)
-      Int64.compare n1 n2 (* FIXME: ignores text after equal numbers -- "a1b" = "a01c" *)
-    end
+  else numeric_compare_aux s1 s2 ~off:0
 
 (**T numeric_compare
    numeric_compare "xx43" "xx320" = -1
@@ -451,10 +471,11 @@ let numeric_compare s1 s2 =
    numeric_compare "xx02" "xx2" = 0
    numeric_compare "xx20" "xx5" = 1
    numeric_compare "abc" "def" = compare "abc" "def"
+   numeric_compare "x50y" "x51y" = -1
 **)
 
 (**Q numeric_compare_qt
-   (Q.triple Q.string Q.pos_int Q.pos_int) (fun (s,m,n) -> numeric_compare (s^(string_of_int m)) (s^(string_of_int n)) = BatInt.compare m n)
+   (Q.triple Q.printable_string Q.pos_int Q.pos_int) (fun (s,m,n) -> numeric_compare (s^(string_of_int m)) (s^(string_of_int n)) = BatInt.compare m n)
 **)
 
 module NumString =
