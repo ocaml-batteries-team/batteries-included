@@ -10,6 +10,8 @@ let ocamlfind x = S[A"ocamlfind"; A x]
 
 let packs = String.concat "," ["camomile"; "num"; "str"]
 
+let mkconf = "build/mkconf.byte"
+
 let _ = dispatch begin function
   | Before_options ->
       (* Set up to use ocamlfind *)
@@ -34,16 +36,16 @@ let _ = dispatch begin function
 
       rule "process config file"
         ~prod:"%.ml"
-        ~deps:["%.mlp"; "VERSION"; "mkconf.byte"]
+        ~deps:["%.mlp"; "VERSION"; mkconf]
         begin fun env build ->
-          Cmd(S[A"ocamlrun"; P"mkconf.byte"; P(env "%.mlp"); P(env "%.ml")])
+          Cmd(S[A"ocamlrun"; P mkconf; P(env "%.mlp"); P(env "%.ml")])
         end;
 
       rule "process meta file"
         ~prod:"META"
-        ~deps:["META.in"; "VERSION"; "mkconf.byte"]
+        ~deps:["META.in"; "VERSION"; mkconf]
         begin fun env build ->
-          Cmd(S[A"ocamlrun"; P"mkconf.byte"; P"META.in"; P"META"])
+          Cmd(S[A"ocamlrun"; P mkconf; P"META.in"; P"META"])
         end
 
   | After_rules ->
