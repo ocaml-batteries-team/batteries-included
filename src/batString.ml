@@ -131,19 +131,28 @@ let strip ?(chars=" \t\r\n") s =
 	done;
 	sub s p (!l - p + 1)
 
-let left r len = if String.length r < len then r else sub r 0 len
-let right r len = let rlen = length r in
-		  if rlen < len then r else sub r (rlen - len) len
-let head = left
-let tail r pos = if pos > length r then "" else sub r pos (length r - pos)
+let left s len = if len >= length s then s else sub s 0 len
+let right s len = let slen = length s in
+		  if len >= slen then s else sub s (slen - len) len
+let head s pos = left s pos
+let tail s pos = let slen = length s in
+		 if pos >= slen then "" else sub s pos (slen - pos)
 
-(**T head_tail
+(**T string_head_tail
    left "abc" 1 = "a"
    right "abc" 1 = "c"
    left "ab" 3 = "ab"
    right "ab" 3 = "ab"
    tail "abc" 1 = "bc"
    tail "ab" 3 = ""
+   left "abc" 3 = "abc"
+   right "abc" 3 = "abc"
+   head "abc" 3 = "abc"
+   tail "abc" 3 = ""
+   left "abc" 0 = ""
+   right "abc" 0 = ""
+   head "abc" 0 = ""
+   tail "abc" 0 = "abc"
  **)
 
 let split str sep =
@@ -151,6 +160,12 @@ let split str sep =
 	let len = length sep in
 	let slen = length str in
 	sub str 0 p, sub str (p + len) (slen - p - len)
+
+(**T string_split
+   split "abcGxyzG123" "G" = ("abc","xyzG123")
+   split "abcGHIzyxGHI123" "GHI" = ("abc", "zyxGHI123")
+   try split "abcxyz" "G" |> ignore; false with Not_found -> true
+**)
 
 let rsplit str sep = 
   let p = rfind str sep in
