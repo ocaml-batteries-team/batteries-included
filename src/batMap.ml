@@ -735,5 +735,5 @@ end
 
 let intersect merge m1 m2 = 
   foldi (fun k v acc -> try add k (merge v (find k m2)) acc
-                        with Not_found -> acc) m1 empty
+                        with Not_found -> acc) m1 (create m1.cmp)
   (* TODO: implement and compare with tree-based implementation *)

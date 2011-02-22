@@ -409,8 +409,12 @@ val diff: 'a t -> 'a t -> 'a t
   (** [diff s t] returns the set of all elements in [s] but not in
       [t]. The returned set uses [s]'s comparison function.*)
 
+val intersect: 'a t -> 'a t -> 'a t
+(** [intersect s t] returns a new set of those elements that are in
+    both [s] and [t].  The returned set uses [s]'s comparison function. *)
+
 val subset: 'a t -> 'a t -> bool
-  (** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
+(** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
 
 (** {6 Boilerplate code}*)
 
