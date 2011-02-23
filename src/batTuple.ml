@@ -26,8 +26,8 @@ module Tuple2 = struct
   type 'a enumerable = 'a * 'a
   type 'a mappable = 'a * 'a
       
-  external fst : 'a * 'b -> 'a = "%field0"
-  external snd : 'a * 'b -> 'b = "%field1"
+  external first : 'a * 'b -> 'a = "%field0"
+  external second : 'a * 'b -> 'b = "%field1"
       
   let map f (x,y) =
     (* force left-to-right evaluation order (this principle of least
@@ -73,9 +73,9 @@ module Tuple3 = struct
   type 'a enumerable = 'a * 'a * 'a
   type 'a mappable = 'a * 'a * 'a
 
-  let fst (a,_,_) = a
-  let snd (_,b,_) = b
-  let thrd (_,_,c) = c
+  let first (a,_,_) = a
+  let second (_,b,_) = b
+  let third (_,_,c) = c
 
   let prj12 (a,b,_) = (a,b)
   let prj13 (a,_,c) = (a,c)
@@ -133,10 +133,10 @@ module Tuple4 = struct
   type 'a enumerable = 'a * 'a * 'a * 'a
   type 'a mappable = 'a * 'a * 'a * 'a
 
-  let fst (a,_,_,_) = a
-  let snd (_,b,_,_) = b
-  let thrd (_,_,c,_) = c
-  let frth (_,_,_,d) = d
+  let first (a,_,_,_) = a
+  let second (_,b,_,_) = b
+  let third (_,_,c,_) = c
+  let fourth (_,_,_,d) = d
 
   let prj12 (a,b,_,_) = (a,b)
   let prj13 (a,_,c,_) = (a,c)
@@ -210,11 +210,11 @@ module Tuple5 = struct
   type 'a enumerable = 'a * 'a * 'a * 'a * 'a
   type 'a mappable = 'a * 'a * 'a * 'a * 'a
 
-  let fst (a,_,_,_,_) = a
-  let snd (_,b,_,_,_) = b
-  let thrd (_,_,c,_,_) = c
-  let frth (_,_,_,d,_) = d
-  let fvth (_,_,_,_,e) = e
+  let first (a,_,_,_,_) = a
+  let second (_,b,_,_,_) = b
+  let third (_,_,c,_,_) = c
+  let fourth (_,_,_,d,_) = d
+  let fifth (_,_,_,_,e) = e
 
   let prj12 (a,b,_,_,_) = (a,b)
   let prj13 (a,_,c,_,_) = (a,c)

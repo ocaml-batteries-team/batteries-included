@@ -22,12 +22,12 @@
 (** Tuples. Modules are provided for tuples with 2, 3, 4, and 5
     elements. Each provides the following categories of functions.
 
-    Projection. Functions [fst], [snd], [thrd], [frth], and [fvth]
+    Projection. Functions [first], [second], [third], [fourth], and [fifth]
     extract a single element. Also, multiple elements can be
     extracted. For example, {!Tuple3.prj13} returns the first and
     third elements of a 3-tuple. All possible combinations are
     provided. Note there are no [prj] functions in Tuple2 because
-    [fst] and [snd] already cover all possibilities.
+    [first] and [second] already cover all possibilities.
 
     Mapping. Apply a function to one or all elements of a
     tuple. Functions [map1], [map2], etc. map a given function to the
@@ -65,10 +65,10 @@ module Tuple2 : sig
 
   type ('a,'b) t = 'a * 'b
 
-  external fst : 'a * 'b -> 'a = "%field0"
+  external first : 'a * 'b -> 'a = "%field0"
       (** Equivalent to {!Pervasives.fst}. *)
 
-  external snd : 'a * 'b -> 'b = "%field1"
+  external second : 'a * 'b -> 'b = "%field1"
       (** Equivalent to {!Pervasives.snd}. *)
 
   val map : ('a -> 'b) -> ('a * 'a) -> ('b * 'b)
@@ -107,9 +107,9 @@ module Tuple3 : sig
 
   type ('a,'b,'c) t = 'a * 'b * 'c
 
-  val fst : 'a * 'b * 'c -> 'a
-  val snd : 'a * 'b * 'c -> 'b
-  val thrd : 'a * 'b * 'c -> 'c
+  val first : 'a * 'b * 'c -> 'a
+  val second : 'a * 'b * 'c -> 'b
+  val third : 'a * 'b * 'c -> 'c
 
   val prj12 : 'a * 'b * 'c -> 'a * 'b
   val prj13 : 'a * 'b * 'c -> 'a * 'c
@@ -146,10 +146,10 @@ module Tuple4 : sig
 
   type ('a,'b,'c,'d) t = 'a * 'b * 'c * 'd
 
-  val fst : 'a * 'b * 'c * 'd -> 'a
-  val snd : 'a * 'b * 'c * 'd -> 'b
-  val thrd : 'a * 'b * 'c * 'd -> 'c
-  val frth : 'a * 'b * 'c * 'd -> 'd
+  val first : 'a * 'b * 'c * 'd -> 'a
+  val second : 'a * 'b * 'c * 'd -> 'b
+  val third : 'a * 'b * 'c * 'd -> 'c
+  val fourth : 'a * 'b * 'c * 'd -> 'd
 
   val prj12 : 'a * 'b * 'c * 'd -> 'a * 'b
   val prj13 : 'a * 'b * 'c * 'd -> 'a * 'c
@@ -194,11 +194,11 @@ module Tuple5 : sig
 
   type ('a,'b,'c,'d,'e) t = 'a * 'b * 'c * 'd * 'e
 
-  val fst : 'a * 'b * 'c * 'd * 'e -> 'a
-  val snd : 'a * 'b * 'c * 'd * 'e -> 'b
-  val thrd : 'a * 'b * 'c * 'd * 'e -> 'c
-  val frth : 'a * 'b * 'c * 'd * 'e -> 'd
-  val fvth : 'a * 'b * 'c * 'd * 'e -> 'e
+  val first : 'a * 'b * 'c * 'd * 'e -> 'a
+  val second : 'a * 'b * 'c * 'd * 'e -> 'b
+  val third : 'a * 'b * 'c * 'd * 'e -> 'c
+  val fourth : 'a * 'b * 'c * 'd * 'e -> 'd
+  val fifth : 'a * 'b * 'c * 'd * 'e -> 'e
 
   val prj12 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b
   val prj13 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c
