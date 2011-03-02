@@ -217,6 +217,11 @@ val range : 'a array -> int BatEnum.t
   (** [range a] returns an enumeration of all valid indexes into the given
       array.  For example, [range [|2;4;6;8|] = 0--3].*)
 
+val insert : 'a array -> 'a -> int -> 'a array
+(** [insert xs x i] returns a copy of [xs] except the value [x] is
+    inserted in position [i] (and all later indices are shifted to the
+    right). *)
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)

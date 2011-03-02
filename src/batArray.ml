@@ -355,6 +355,10 @@ let decorate_fast_sort f xs =
   let () = fast_sort (fun (i,_) (j,_) -> compare i j) decorated in
   map (fun (_,x) -> x) decorated
 
+
+let insert xs x i =
+  Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
+
 module Cap =
 struct
   (** Implementation note: in [('a, 'b) t], ['b] serves only as
