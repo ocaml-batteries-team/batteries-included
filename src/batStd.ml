@@ -259,3 +259,18 @@ let exe =
 
 let argv = Sys.argv
 
+type ('a,'b) cache = {get : 'a -> 'b; del : 'a -> unit}
+let cache_ht ~gen init_size =
+  let ht = Hashtbl.create init_size in
+  {get = (fun k -> 
+    try Hashtbl.find ht k
+    with Not_found -> gen k |> tap (Hashtbl.add ht k));
+   del = (fun k -> Hashtbl.remove ht k)}
+
+let cache_map ~gen =
+  let m = ref BatMap.empty in
+  {get = (fun k -> 
+    try BatMap.find k !m
+    with Not_found -> gen k |> tap (fun v -> m := BatMap.add k v !m));
+   del = (fun k -> m := BatMap.remove k !m)}
+
