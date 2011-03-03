@@ -157,7 +157,7 @@ and pragma k start buf = parse
     Pervasives.flush stdout
 
   let _ =
-    if Array.length Sys.argv != 2 then failwith "bad args" ;
+    if Array.length Sys.argv != 2 then failwith "make_suite: Missing filename to process" ;
     process Sys.argv.(1)
 
 }
