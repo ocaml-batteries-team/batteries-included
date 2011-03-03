@@ -1,0 +1,24 @@
+OASISFormat:  0.2
+OCamlVersion: >= 3.11.0
+Name:         batteries
+Version:      1.3.0
+Authors:      Batteries Included Team
+License:      LGPL-2.1 with OCaml linking exception
+LicenseFile:  LICENSE
+BuildTools:   make
+Synopsis:     Extended OCaml Standard Library
+
+Library batteries
+  BuildDepends:	camomile (>= 0.7.0)
+  XCustomConf: echo "configured"
+  XCustomBuild: $make all
+  XCustomInstall: $make install
+  XCustomUninstall: $make uninstall
+  XCustomDoc: $make doc
+  XCustomTest: $make test
+
+SourceRepository master
+  Type: git
+  Location: https://thelema@github.com/ocaml-batteries-team/batteries-included.git
+  Branch: master
+  Browser: https://github.com/ocaml-batteries-team/batteries-included
