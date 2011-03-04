@@ -156,6 +156,6 @@ qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
 
 #put all the testing modules in a library
 qtest/test_mods.mllib: $(TESTABLE)
-	echo -n "Quickcheck Tests " > $@
+	/bin/echo -n "Quickcheck Tests " > $@
 	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
 
