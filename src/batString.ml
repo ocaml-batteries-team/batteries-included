@@ -181,6 +181,7 @@ let rsplit str sep =
 *)
 let nsplit str sep =
   if str = "" then []
+  else if sep = "" then invalid_arg "nsplit: empty sep not allowed"
   else
     (* str is non empty *)
     let seplen = String.length sep in
@@ -209,7 +210,7 @@ let nsplit str sep =
 (**T string_nsplit
    nsplit "a;b;c" ";" = ["a"; "b"; "c"]
    nsplit "" "x" = []
-   nsplit "abc" "" = ["a"; "b"; "c"]
+   try nsplit "abc" "" = ["a"; "b"; "c"] with Invalid_argument _ -> true
 **)
 
 let join = concat
