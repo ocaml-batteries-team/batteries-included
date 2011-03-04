@@ -786,7 +786,7 @@ let uncombine e =
 	    y
   in (from first, from second)
 
-(*** 
+(*** enum_combine_uncombine
   let pair_list = [1,2;3,4;5,6;7,8;9,0] in
   let a,b = BatEnum.uncombine (BatList.enum pair_list) in
   let a = BatArray.of_enum a in

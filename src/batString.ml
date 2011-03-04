@@ -36,7 +36,7 @@ let init len f =
 	done;
 	s
 
-(**T 
+(**T string_init
    init 5 (fun i -> Char.chr (i+0x30)) = "01234";
 **)
 
@@ -206,7 +206,7 @@ let nsplit str sep =
     in
       aux [] (length str - 1 )
 
-(**T
+(**T string_nsplit
    nsplit "a;b;c" ";" = ["a"; "b"; "c"]
    nsplit "" "x" = []
    nsplit "abc" "" = ["a"; "b"; "c"]

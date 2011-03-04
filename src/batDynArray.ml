@@ -365,7 +365,7 @@ let filter f d =
     changelen dest !p;
     dest
 
-(*** 
+(*** dynarray_filter
   let e = BatDynArray.create () in
   BatDynArray.add e "a";
   BatDynArray.add e "b";

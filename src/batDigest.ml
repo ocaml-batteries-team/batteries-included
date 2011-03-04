@@ -39,7 +39,7 @@ let channel inp len = (*TODO: Make efficient*)
       Digest.string buf
   else Digest.channel (BatIO.to_input_channel inp) len
 
-(***
+(*** batdigest
 
 (*1. Compute the digest of this file using Legacy.Digest*)
 
