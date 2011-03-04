@@ -11,6 +11,7 @@ let ocamlfind x = S[A"ocamlfind"; A x]
 let packs = String.concat "," ["camomile"; "num"; "str"]
 
 let mkconf = "build/mkconf.byte"
+let pa_llist = "src/syntax/pa_llist/pa_llist.cmo"
 
 let _ = dispatch begin function
   | Before_options ->
@@ -84,6 +85,17 @@ let _ = dispatch begin function
         S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4of"];
       flag ["ocaml"; "ocamldep"; "camlp4of"] &
         S[A"-package"; A"camlp4.lib"; A"-pp"; A"camlp4of"];
+
+      flag ["ocaml"; "compile"; "syntax_camlp4o"] &
+        S[A"-syntax"; A"camlp4o"; A"-package"; A"camlp4"];
+      flag ["ocaml"; "ocamldep"; "syntax_camlp4o"] &
+        S[A"-syntax"; A"camlp4o"; A"-package"; A"camlp4"];
+
+      flag ["ocaml"; "compile";  "with_pa_llist"] &
+        S[A"-ppopt"; P pa_llist];
+      flag ["ocaml"; "ocamldep";  "with_pa_llist"] &
+        S[A"-ppopt"; P pa_llist];
+      dep ["ocaml"; "ocamldep"; "with_pa_llist"] [pa_llist];
 
       ocaml_lib "qtest/test_mods";
       ocaml_lib "src/batteries";

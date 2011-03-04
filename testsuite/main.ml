@@ -21,6 +21,7 @@ let all_tests =
     Test_mappable.tests;
     Test_hashcons.tests;
     Test_mapfunctors.tests;
+    Test_lazy_pattern.tests;
   ]
 
 let () = 
