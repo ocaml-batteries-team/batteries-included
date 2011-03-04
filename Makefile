@@ -158,6 +158,3 @@ qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
 qtest/test_mods.mllib: $(TESTABLE)
 	echo -n "Quickcheck Tests " > $@
 	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
-
-qtest: test
-	echo "Don't run 'make qtest' anymore, just run 'make test'"
