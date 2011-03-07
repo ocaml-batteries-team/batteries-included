@@ -3,8 +3,8 @@
 
 NAME = batteries
 
-# This is also defined in the VERSION file
 VERSION := $(shell cat VERSION)
+uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 
 # Define variables and export them for mkconf.ml
 DOCROOT ?= /usr/share/doc/ocaml-batteries
@@ -18,8 +18,13 @@ endif
 
 OCAMLBUILD ?= ocamlbuild
 
-BATTERIES_NATIVE ?= yes
-BATTERIES_NATIVE_SHLIB ?= $(BATTERIES_NATIVE)
+ifeq ($(uname_S),Darwin)
+  BATTERIES_NATIVE ?= yes
+  BATTERIES_NATIVE_SHLIB ?= no
+else 
+  BATTERIES_NATIVE ?= yes
+  BATTERIES_NATIVE_SHLIB ?= $(BATTERIES_NATIVE)
+endif
 
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
