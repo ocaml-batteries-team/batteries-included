@@ -206,7 +206,12 @@ return value or the [Bad] exception. *)
    {6 Caches}
 *)
 
-type ('a,'b) cache = {get : 'a -> 'b; del : 'a -> unit}
+type ('a,'b) cache = {
+  get : 'a -> 'b;
+  del : 'a -> unit;
+  enum : unit -> ('a * 'b) BatEnum.t;
+}
+
 val cache_ht : gen:('a -> 'b) -> int -> ('a,'b) cache
 val cache_map : gen:('a -> 'b) -> ('a,'b) cache
 (** These functions build a cache with either a hashtbl or a map.  The
