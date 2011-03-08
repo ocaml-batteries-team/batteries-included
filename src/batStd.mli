@@ -202,6 +202,10 @@ val wrap : ('a -> 'b) -> 'a -> ('b, exn) result
 on failure such that it now returns a result with either the [Ok]
 return value or the [Bad] exception. *)
 
+(**
+   {6 Caches}
+*)
+
 type ('a,'b) cache = {get : 'a -> 'b; del : 'a -> unit}
 val cache_ht : gen:('a -> 'b) -> int -> ('a,'b) cache
 val cache_map : gen:('a -> 'b) -> ('a,'b) cache
