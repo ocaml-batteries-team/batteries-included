@@ -387,6 +387,12 @@ val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
 
+val keys : ('a,'b) t -> 'a BatEnum.t
+    (** Return an enumeration of all the keys of a map.*)
+  
+val values: ('a,'b) t -> 'b BatEnum.t
+(** Return an enumeration of al the values of a map.*)
+
 val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
     for key comparison or [compare] by default. *)

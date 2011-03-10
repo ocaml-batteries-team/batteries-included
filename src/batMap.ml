@@ -517,6 +517,10 @@ let backwards t =
     BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
   in make (rev_cons_iter t.map E)
 
+let keys    t = BatEnum.map fst (enum t)
+let values  t = BatEnum.map snd (enum t)
+
+
 (*let rec enum m =
   let rec make l =
     let l = ref l in
