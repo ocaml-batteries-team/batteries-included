@@ -105,6 +105,7 @@ module Ref = BatRef
 module Std = BatStd
 
 (* Batteries specific modules *)
+module Cache = BatCache
 module CharParser = BatCharParser
 module Deque = BatDeque
 module Hashcons = BatHashcons

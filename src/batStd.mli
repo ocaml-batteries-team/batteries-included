@@ -202,16 +202,6 @@ val wrap : ('a -> 'b) -> 'a -> ('b, exn) result
 on failure such that it now returns a result with either the [Ok]
 return value or the [Bad] exception. *)
 
-type ('a,'b) cache = {get : 'a -> 'b; del : 'a -> unit}
-val cache_ht : gen:('a -> 'b) -> int -> ('a,'b) cache
-val cache_map : gen:('a -> 'b) -> ('a,'b) cache
-(** These functions build a cache with either a hashtbl or a map.  The
-    [cache.get] function gets a value from the cache, generating it
-    with the generator function [gen] and adding it to the cache if
-    needed.  The [cache.del] function removes a value from the
-    cache. *)
-
-
 (**
    {6 Thread-safety internals}
 
