@@ -171,6 +171,13 @@ let for_all p node =
   in
   p node.data && loop node.next
 
+let find p node =
+  let rec loop n =
+    if n == node then raise Not_found
+    else if p n.data then n else loop n.next
+  in
+  if p node.data then node else loop node.next
+
 let exists p node =
   let rec loop n =
     if n == node then false
