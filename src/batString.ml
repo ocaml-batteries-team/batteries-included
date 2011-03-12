@@ -73,7 +73,7 @@ let find_from str ofs sub =
     if sublen = 0 then ofs (*If [sub] is the empty string, by convention, it may be found wherever we started searching.*)
     else
       let len = length str in
-	if len = 0 then invalid_arg "Empty string to search in" else
+	if len = 0 then raise Not_found else
 	if 0 > ofs || ofs >= len then raise (Invalid_argument "index out of bounds")
 	else
 	BatReturn.label (fun label ->
