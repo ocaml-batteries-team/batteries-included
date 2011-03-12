@@ -802,25 +802,28 @@ let uncombine e =
   **)
 
 let group test e =
-  let prev = ref (empty ()) in
+  let prev_group = ref (empty ()) in
   let f () =
-    force !prev;
-    let e' =
-      let latest_test = ref None in
-      take_while (fun x ->
-        let previous_test = !latest_test in
-        let current_test  = test x       in
-	if previous_test = None || previous_test = Some current_test then (
-	  latest_test := Some current_test;
-	  true
-	) else
-	  false
-      ) e
+    (* Make sure elements belonging to prev group are consumed from e *)
+    force !prev_group;
+    let grp =
+      let last = ref None in (* Last seen element, to compare against *)
+      let flt x =
+	let good =
+	  match !last with
+	  | None -> true
+	  | Some y -> test x = test y
+	in
+	if good then
+	  last := Some x;
+	good
+      in
+      take_while flt e
     in
-    if is_empty e' then
+    if is_empty grp then
       raise No_more_elements;
-    prev := e';
-    e'
+    prev_group := grp;
+    grp
   in from f
 
 (**T enum_group
