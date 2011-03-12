@@ -823,6 +823,11 @@ let group test e =
           e'
         in from f
 
+(**T
+   List.enum [1;2;3;4] |> Enum.group (const true) |> List.of_enum |> List.map List.of_enum = [[1;2;3;4]]
+   List.enum [1;2;3;5;6;7;9;10;4;5] |> Enum.group (fun x -> x mod 2 = 1) |> List.of_enum |> List.map List.of_enum = [[1];[2];[3;5];[6];[7;9];[10;4];[5]]
+ **)
+
 let change_flip f =
   let st = ref None in
   let ret = ref true in
