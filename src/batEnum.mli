@@ -233,18 +233,13 @@ val break : ('a -> bool) -> 'a t -> 'a t * 'a t
 val group : ('a -> 'b) -> 'a t -> 'a t t
 (** [group test e] devides [e] into an enumeration of enumerations,
     where each sub-enumeration is the longest continuous enumeration
-    of elements whose [test] results are the same. *)
+    of elements whose [test] results are the same. 
 
-val change_flip : ('a -> 'b) -> 'a -> bool
-(** [let ff = change_flip f in map ff xs] returns an enum of booleans
-    that stays the same as long as [f x] is the same.
+    Enum.group (x -> x mod 2) [!1;2;4;1] = [![!1];[!2;4];[!1]]
+    Enum.group (fun x -> x mod 3) [1;2;4;1] = [![!1];[!2];[!4;1]]
+    Enum.group (fun s -> s.[0]) [!"cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [![!"cat"; "canary"];[!"dog";"dodo"];[!"ant"];[!"cow"]]
 
-    let ff = change_flip (fun x -> x land 1) in List.map [1;2;4;1] = [true; false; false; true]
-    let ff = change_flip (fun x -> x mod 3) in List.map [1;2;4;1] = [true; false; true; true]
-    let ff = change_flip (fun s -> s.[0]) in List.map ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [true; true; false; false; true; false]
-
-    @added 1.4.0
- *)
+*)
 
 
 val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
