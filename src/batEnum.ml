@@ -803,17 +803,25 @@ let uncombine e =
 
 let group test e =
   match peek e with
-    | None   -> raise No_more_elements
+    | None   -> empty ()
     | Some x ->
-	let latest_test = ref (test x) in
-	let f () =
-	  take_while (fun x -> 
-			let previous_test = !latest_test in
-			let current_test  = test x       in
-			  latest_test := current_test;
-			  current_test = previous_test) e
-	    
-	in from f
+        let prev = ref (empty ()) in
+        let f () =
+          force !prev;
+          let latest_test = ref (test x) in
+          let e' =
+            take_while (fun x -> 
+              let previous_test = !latest_test in
+              let current_test  = test x       in
+              latest_test := current_test;
+              current_test = previous_test
+            ) e
+          in
+          if is_empty e' then
+            raise No_more_elements;
+          prev := e';
+          e'
+        in from f
 
 let change_flip f =
   let st = ref None in
