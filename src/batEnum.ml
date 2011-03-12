@@ -805,15 +805,16 @@ let group test e =
   let prev = ref (empty ()) in
   let f () =
     force !prev;
-    let latest_test = ref None in
     let e' =
+      let latest_test = ref None in
       take_while (fun x ->
         let previous_test = !latest_test in
         let current_test  = test x       in
-        latest_test := Some current_test;
-        match previous_test with
-        | None -> true
-        | Some t -> current_test = t
+	if previous_test = None || previous_test = Some current_test then (
+	  latest_test := Some current_test;
+	  true
+	) else
+	  false
       ) e
     in
     if is_empty e' then
