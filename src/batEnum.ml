@@ -802,26 +802,25 @@ let uncombine e =
   **)
 
 let group test e =
-  match peek e with
-    | None   -> empty ()
-    | Some x ->
-        let prev = ref (empty ()) in
-        let f () =
-          force !prev;
-          let latest_test = ref (test x) in
-          let e' =
-            take_while (fun x -> 
-              let previous_test = !latest_test in
-              let current_test  = test x       in
-              latest_test := current_test;
-              current_test = previous_test
-            ) e
-          in
-          if is_empty e' then
-            raise No_more_elements;
-          prev := e';
-          e'
-        in from f
+  let prev = ref (empty ()) in
+  let f () =
+    force !prev;
+    let latest_test = ref None in
+    let e' =
+      take_while (fun x ->
+        let previous_test = !latest_test in
+        let current_test  = test x       in
+        latest_test := Some current_test;
+        match previous_test with
+        | None -> true
+        | Some t -> current_test = t
+      ) e
+    in
+    if is_empty e' then
+      raise No_more_elements;
+    prev := e';
+    e'
+  in from f
 
 (**T enum_group
    List.enum [1;2;3;4] |> Enum.group (const true) |> List.of_enum |> List.map List.of_enum = [[1;2;3;4]]
