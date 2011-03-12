@@ -89,12 +89,16 @@ let find_from str ofs sub =
 
 let find str sub = find_from str 0 sub
 
+(**T string_find
+   find "foobarbaz" "bar" = 3
+ **)
+
 let rfind_from str suf sub = 
   let sublen = length sub 
   and len    = length str in
     if sublen = 0 then len
     else
-      if len = 0 then invalid_arg "Empty string to search in" else
+      if len = 0 then raise Not_found else
 	if 0 > suf || suf >= len then raise (Invalid_argument "index out of bounds")
 	else
 	BatReturn.label (fun label ->
