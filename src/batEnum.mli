@@ -230,21 +230,21 @@ val break : ('a -> bool) -> 'a t -> 'a t * 'a t
   (** Negated span.
       [break test e] is equivalent to [span (fun x -> not (test x)) e] *)
 
-val group : ('a -> bool) -> 'a t -> 'a t t
-  (** [group test e] devides [e] into an enumeration of enumerations, where
-      each sub-enumeration is the longest continuous enumeration of elements whose [test]
-      results are the same. *)
+val group : ('a -> 'b) -> 'a t -> 'a t t
+(** [group test e] devides [e] into an enumeration of enumerations,
+    where each sub-enumeration is the longest continuous enumeration
+    of elements whose [test] results are the same. *)
 
 val change_flip : ('a -> 'b) -> 'a -> bool
 (** [let ff = change_flip f in map ff xs] returns an enum of booleans
     that stays the same as long as [f x] is the same.
 
-   let ff = change_flip (fun x -> x land 1) in List.map [1;2;4;1] = [true; false; false; true]
-   let ff = change_flip (fun x -> x mod 3) in List.map [1;2;4;1] = [true; false; true; true]
-   let ff = change_flip (fun s -> s.[0]) in List.map ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [true; true; false; false; true; false]
+    let ff = change_flip (fun x -> x land 1) in List.map [1;2;4;1] = [true; false; false; true]
+    let ff = change_flip (fun x -> x mod 3) in List.map [1;2;4;1] = [true; false; true; true]
+    let ff = change_flip (fun s -> s.[0]) in List.map ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [true; true; false; false; true; false]
 
     @added 1.4.0
-    *)
+ *)
 
 
 val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
