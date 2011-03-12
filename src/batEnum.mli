@@ -231,7 +231,7 @@ val break : ('a -> bool) -> 'a t -> 'a t * 'a t
       [break test e] is equivalent to [span (fun x -> not (test x)) e] *)
 
 val group : ('a -> 'b) -> 'a t -> 'a t t
-(** [group test e] devides [e] into an enumeration of enumerations,
+(** [group test e] divides [e] into an enumeration of enumerations,
     where each sub-enumeration is the longest continuous enumeration
     of elements whose [test] results are the same. 
 
@@ -241,6 +241,11 @@ val group : ('a -> 'b) -> 'a t -> 'a t t
 
 *)
 
+val group_by : ('a -> 'a -> bool) -> 'a t -> 'a t t
+(** [group_by eq e] divides [e] into an enumeration of enumerations,
+    where each sub-enumeration is the longest continuous enumeration
+    of elements that are equal, as judged by [eq]
+*)
 
 val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
 (** [clump size add get e] runs [add] on [size] (or less at the end)
