@@ -823,7 +823,7 @@ let group test e =
           e'
         in from f
 
-(**T
+(**T enum_group
    List.enum [1;2;3;4] |> Enum.group (const true) |> List.of_enum |> List.map List.of_enum = [[1;2;3;4]]
    List.enum [1;2;3;5;6;7;9;10;4;5] |> Enum.group (fun x -> x mod 2) |> List.of_enum |> List.map List.of_enum = [[1];[2];[3;5];[6];[7;9];[10;4];[5]]
  **)
