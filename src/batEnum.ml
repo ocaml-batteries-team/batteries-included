@@ -824,6 +824,7 @@ let group test e =
 
 (**T enum_group
    Enum.empty () |> Enum.group (const ()) |> is_empty
+   List.enum [1;2;3;4] |> Enum.group identity |> Enum.map List.of_enum |> List.of_enum = [[1];[2];[3];[4]]
    List.enum [1;2;3;4] |> Enum.group (const true) |> List.of_enum |> List.map List.of_enum = [[1;2;3;4]]
    List.enum [1;2;3;5;6;7;9;10;4;5] |> Enum.group (fun x -> x mod 2) |> List.of_enum |> List.map List.of_enum = [[1];[2];[3;5];[6];[7;9];[10;4];[5]]
  **)
