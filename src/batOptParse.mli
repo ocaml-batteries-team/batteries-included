@@ -143,7 +143,7 @@ module Opt :
       an error message for display. [metavar] is the name of the
       metavariable of the option.
 
-      [default] is the default value of the option. If [None], the the
+      [default] is the default value of the option. If [None], the
       option has no default value.
 
       @return the newly created option.
