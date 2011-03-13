@@ -228,6 +228,9 @@ module StdOpt =
     let str_callback ?(metavar = "STR") =
       callback_option metavar (fun s -> s) (fun _ _ -> "cannot happen")
 
+    let any_option ?(default = None) ?(metavar = "val") f =
+      value_option metavar default f (fun _ _ -> "invalid option")
+
     let count_option ?(dest = ref 0) ?(increment = 1) () =
       {
         option_metavars = []; 

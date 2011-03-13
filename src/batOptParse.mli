@@ -227,6 +227,14 @@ module StdOpt :
       ?default: string -> ?metavar: string -> unit -> string Opt.t
     (** See {!OptParse.StdOpt.int_option}. *)
 
+    val any_option :
+      ?default:'a option -> ?metavar: string -> (string -> 'a) -> 'a Opt.t
+    (** [any_option ?default ?metavar coerce] returns an option which takes
+	a single argument from the command line and calls [coerce] to coerce
+	it to the proper type.
+
+	[default] is the default value of the option.  If [None], the
+	option has no default value. *)
 
     (** {6 Callback options} *)
 
