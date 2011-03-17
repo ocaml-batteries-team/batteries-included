@@ -87,10 +87,13 @@ let find_from str ofs sub =
 	  raise Not_found
         )
 
+
+
 let find str sub = find_from str 0 sub
 
 (**T string_find
    find "foobarbaz" "bar" = 3
+   find_from "foobarbaz" 4 "ba" = 6
  **)
 
 let rfind_from str suf sub = 
