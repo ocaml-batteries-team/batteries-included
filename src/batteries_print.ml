@@ -55,6 +55,11 @@ let string_pset = to_format (BatSet.print BatString.print)
 let rope_pset = to_format (BatSet.print BatRope.print)
 let char_pset = to_format (BatSet.print BatChar.print)
 
+let int_enum = to_format (BatEnum.print BatInt.print)
+let string_enum = to_format (BatEnum.print BatString.print)
+let rope_enum = to_format (BatEnum.print BatRope.print)
+let char_enum = to_format (BatEnum.print BatChar.print)
+
 (*let iset = to_format BatISet.print *)
 
 
