@@ -173,19 +173,104 @@ module MapBench (M : sig val input_length : int end) = struct
     "pmap merge_unsafe", ignore -| merge_unsafe_poly_map;
   ]
 
-  (* compare fold-based and merge-based union *)
-  let fold_union, merge_union, merge_unsafe_union =
+  (* compare fold-based and merge-based union, diff, intersect *)
+  let pmap_union (m1, m2) = PMap.union m1 m2
+  let fold_union (m1, m2) =
+    PMap.foldi PMap.add m1 m2
+  let merge_union (m1, m2) =
+    let merge_fun k a b = if a <> None then a else b in
+    PMap.merge merge_fun m1 m2
+  let merge_unsafe_union (m1, m2) =
+    let merge_fun k a b = if a <> None then a else b in
+    PMap.merge_unsafe merge_fun m1 m2
+    
+  let union_input =
     let m1 = PMap.of_enum (BatList.enum p1) in
     let m2 = PMap.of_enum (BatList.enum p2) in
-    let merge_fun k a b = if a <> None then a else b in
-    (fun () -> PMap.foldi PMap.add m1 m2),
-    (fun () -> PMap.merge merge_fun m1 m2),
-    (fun () -> PMap.merge_unsafe merge_fun m1 m2)
+    m1, m2
 
   let () =
     let li m = BatList.of_enum (PMap.enum m) in
-    assert (li (fold_union ()) = li (merge_union ()));
-    assert (li (fold_union ()) = li (merge_unsafe_union ()));
+    let test impl_union =
+      li (pmap_union union_input) = li (impl_union union_input) in
+    assert (test fold_union);
+    assert (test merge_union);
+    assert (test merge_unsafe_union);
+    ()
+
+  let samples_union = make_samples union_input [
+    "pmap union", ignore -| pmap_union;
+    "fold-based union", ignore -| fold_union;
+    "merge-based union", ignore -| merge_union;
+    "merge-unsafe union", ignore -| merge_unsafe_union;
+  ]
+
+  let pmap_diff (m1, m2) =
+    PMap.diff m1 m2
+  let fold_diff (m1, m2) =
+    PMap.foldi (fun k _ acc -> PMap.remove k acc) m2 m1
+  let merge_diff (m1, m2) =
+    let merge_fun k a b = if b <> None then None else a in
+    PMap.merge merge_fun m1 m2
+
+  let diff_input =
+    let m1 = PMap.of_enum (BatList.enum p1) in
+    let m2 = PMap.of_enum (BatList.enum p2) in
+    m1, m2
+
+  let () =
+    let li m = BatList.of_enum (PMap.enum m) in
+    let test impl_diff =
+      li (pmap_diff diff_input) = li (impl_diff diff_input) in
+    assert (test fold_diff);
+    assert (test merge_diff);
+    ()
+
+  let samples_diff = make_samples diff_input [
+    "pmap diff", ignore -| pmap_diff;
+    "fold-based diff", ignore -| fold_diff;
+    "merge-based diff", ignore -| merge_diff;
+  ]
+
+  let pmap_intersect f (m1, m2) =
+    PMap.intersect f m1 m2
+
+  let filter_intersect f (m1, m2) =
+    let filter_fun k v1 =
+      match
+        try Some (PMap.find k m2)
+        with Not_found -> None
+      with
+        | None -> None
+        | Some v2 -> Some (f v1 v2) in
+    PMap.filter_map filter_fun m1
+
+  let merge_intersect f (m1, m2) =
+    let merge_fun k a b =
+      match a, b with
+        | Some v1, Some v2 -> Some (f v1 v2)
+        | None, _ | _, None -> None in
+    PMap.merge merge_fun m1 m2
+
+  let intersect_input =
+    let m1 = PMap.of_enum (BatList.enum p1) in
+    let m2 = PMap.of_enum (BatList.enum p2) in
+    m1, m2
+
+  let () =
+    let li m = BatList.of_enum (PMap.enum m) in
+    let test impl_intersect =
+      li (pmap_intersect (-) intersect_input)
+      = li (impl_intersect (-) intersect_input) in
+    assert (test filter_intersect);
+    assert (test merge_intersect);
+    ()
+
+  let samples_intersect = make_samples intersect_input [
+    "pmap intersect", ignore -| pmap_intersect (-);
+    "filter-based intersect", ignore -| filter_intersect (-);
+    "merge-based intersect", ignore -| merge_intersect (-);
+  ]
 
   let () =
     let create = samples_create () in
@@ -193,6 +278,9 @@ module MapBench (M : sig val input_length : int end) = struct
     let lookup = samples_lookup () in
     let remove = samples_remove () in
     let merge = samples_merge () in
+    let union = samples_union () in
+    let diff = samples_diff () in
+    let intersect = samples_intersect () in
     List.iter
       (print_newline -| Benchmark.tabulate)
       [
@@ -201,6 +289,9 @@ module MapBench (M : sig val input_length : int end) = struct
         lookup;
         remove;
         merge;
+        union;
+        diff;
+        intersect;
       ]
 end
 
