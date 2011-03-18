@@ -437,11 +437,14 @@ module Concrete = struct
 
   let diff cmp1 m1 m2 =
     foldi (fun k _ acc -> remove k cmp1 acc) m2 m1
-(* TODO: as union - use tree operations for large maps *)
+  (* TODO: as union - use tree operations for large maps *)
 
-  let intersect merge cmp1 m1 cmp2 m2 = 
-    foldi (fun k v acc -> try add k (merge v (find k cmp2 m2)) cmp1 acc
-                          with Not_found -> acc) m1 empty
+  let intersect merge cmp1 m1 m2 =
+    let maybe_add k v2 =
+      match find_option k cmp1 m1 with
+        | None -> None
+        | Some v1 -> Some (merge v1 v2) in
+    filter_map maybe_add m2 cmp1
   (* TODO: implement and compare with tree-based implementation *)
 
   (* Merge two trees l and r into one.
@@ -910,7 +913,7 @@ let diff m1 m2 =
 
 let intersect merge m1 m2 =
   (* the use of 'empty' is strange here, but mimicks the older PMap implementation *)
-  { empty with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
+  { empty with map = Concrete.intersect merge m1.cmp m1.map m2.map }
 
 let merge f m1 m2 =
   { m2 with map =
@@ -920,10 +923,10 @@ let merge f m1 m2 =
 
          See more detailed comment in [Concrete.ordered]
       *)
-      if Concrete.ordered m2.cmp m1.map then
-        Concrete.merge f m2.cmp m1.map m2.map
+      if Concrete.ordered m1.cmp m2.map then
+        Concrete.merge f m1.cmp m1.map m2.map
       else
-        Concrete.merge_diverse f m1.cmp m1.map m2.cmp m2.map m2.cmp }
+        Concrete.merge_diverse f m1.cmp m1.map m2.cmp m2.map m1.cmp }
 
 let merge_unsafe f m1 m2 =
   { m2 with map = Concrete.merge f m2.cmp m1.map m2.map }

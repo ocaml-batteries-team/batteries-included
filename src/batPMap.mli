@@ -201,12 +201,13 @@ val pop : ('a, 'b) t -> ('a * 'b) * ('a, 'b) t
 
 val union : ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
 (** [union m1 m2] merges two maps, using the comparison function of
-    the second map and containing all bindings of the two maps.  In
-    case of conflicted bindings, the first map's bindings override the
-    second map's. Equivalent to [foldi add m1 m2]*)
+    [m2] and containing all bindings of [m1] and [m2]. In case of
+    conflicted bindings, [m1]'s bindings override [m2]'s. Equivalent
+    to [foldi add m1 m2] *)
 
 val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
-(** [diff m1 m2] removes all bindings of keys found in [m2] from [m1].  Equivalent to [fold remove m2 m1] *)
+(** [diff m1 m2] removes all bindings of keys found in [m2] from [m1].
+    Equivalent to [fold remove m2 m1] *)
 
 val intersect : ('b -> 'c -> 'd) -> ('a, 'b) t -> ('a, 'c) t -> ('a, 'd) t
 (** [intersect merge_f m1 m2] returns a map with bindings only for
@@ -219,11 +220,6 @@ val split : 'a -> ('a, 'b) t -> (('a, 'b) t * 'b option * ('a, 'b) t)
     binding in [m], if there was one, and the map of keys greater then
     [k] in [m] *)
 
-(** Exceptionless versions of functions *)
-module Exceptionless : sig
-  val find: 'a -> ('a,'b) t -> 'b option
-end
-
 val merge:
   ('key -> 'a option -> 'b option -> 'c option)
   -> ('key, 'a) t -> ('key, 'b) t -> ('key, 'c) t
@@ -231,8 +227,8 @@ val merge:
     and of [m2]. The presence of each such binding, and the corresponding
     value, is determined with the function [f].
     
-    As with [union], the result map uses the comparison function of
-    the second map.
+    As for [diff] and [intersection], the result map uses the
+    comparison function of [m1].
 *)
 
 val merge_unsafe:
@@ -241,6 +237,11 @@ val merge_unsafe:
 (** Same as merge, but assumes the comparison function of both maps
     are equal. If it's not the case, the result is undefined.
 *)
+
+(** Exceptionless versions of functions *)
+module Exceptionless : sig
+  val find: 'a -> ('a,'b) t -> 'b option
+end
 
 
 
