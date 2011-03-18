@@ -431,22 +431,6 @@ module Concrete = struct
       | Node (l, k, v, r, _) ->
 	(k, v), merge l r
 
-  let union m1 cmp2 m2 =
-    foldi (fun k v acc -> add k v cmp2 acc) m1 m2
-  (* TODO: use split/bal to merge similarly compared maps more efficiently *)
-
-  let diff cmp1 m1 m2 =
-    foldi (fun k _ acc -> remove k cmp1 acc) m2 m1
-  (* TODO: as union - use tree operations for large maps *)
-
-  let intersect merge cmp1 m1 m2 =
-    let maybe_add k v2 =
-      match find_option k cmp1 m1 with
-        | None -> None
-        | Some v1 -> Some (merge v1 v2) in
-    filter_map maybe_add m2 cmp1
-  (* TODO: implement and compare with tree-based implementation *)
-
   (* Merge two trees l and r into one.
      All elements of l must precede the elements of r.
      No assumption on the heights of l and r. *)
@@ -564,7 +548,8 @@ module Concrete = struct
      implementation assuming heterogeneous maps. Before calling the
      heterogeneous implementation, one may first check if one of the
      comparison actually orders the other map, and in that case use
-     the fast homogeneous implementation instead.
+     the fast homogeneous implementation instead. This is the
+     [heuristic_merge] function.
   *)
   let rec ordered cmp s =
     try
@@ -576,6 +561,41 @@ module Concrete = struct
            (fst (min_binding s)));
       true
     with Exit -> false    
+
+
+  let heuristic_merge f cmp1 m1 cmp2 m2 cmp1or2 =
+    (* as merge_diverse is much slower than merge, we first try to
+       see if we could possibly use merge; this is the case when either:
+       - cmp1 and cmp2 are the *same* function (physical equality)
+       - cmp1 is a correct ordering on m2 (see comment in [ordered])
+       
+       In the "same comparisons" case, we return a map ordered with
+       the given comparison. To have a continuous behavior, in the
+       other case we must still return a result ordered with one of
+       the input comparison (which was not the case in
+       [merge_diverse]). Which one is decided by the cmp1or2 boolean.
+    *)
+    let cmp3 = if cmp1or2 then cmp1 else cmp2 in
+    if cmp1 == cmp2 ||
+      (if cmp1or2 then ordered cmp1 m2 else ordered cmp2 m1)
+    then merge f cmp3 m1 m2
+    else merge_diverse f cmp1 m1 cmp2 m2 cmp3      
+
+  let union m1 cmp2 m2 =
+    foldi (fun k v acc -> add k v cmp2 acc) m1 m2
+  (* TODO: use split/bal to merge similarly compared maps more efficiently *)
+
+  let diff cmp1 m1 m2 =
+    foldi (fun k _ acc -> remove k cmp1 acc) m2 m1
+  (* TODO: as union - use tree operations for large maps *)
+
+  let intersect merge cmp1 m1 m2 =
+    let maybe_add k v2 =
+      match find_option k cmp1 m1 with
+        | None -> None
+        | Some v1 -> Some (merge v1 v2) in
+    filter_map maybe_add m2 cmp1
+  (* TODO: implement and compare with tree-based implementation *)
 end
 
 
@@ -916,17 +936,7 @@ let intersect merge m1 m2 =
   { empty with map = Concrete.intersect merge m1.cmp m1.map m2.map }
 
 let merge f m1 m2 =
-  { m2 with map =
-      (* as merge_diverse is much slower than merge, we first try to
-         see if we could possibly use merge; this is the case when
-         m2.cmp is a correct ordering on m1.map.
-
-         See more detailed comment in [Concrete.ordered]
-      *)
-      if Concrete.ordered m1.cmp m2.map then
-        Concrete.merge f m1.cmp m1.map m2.map
-      else
-        Concrete.merge_diverse f m1.cmp m1.map m2.cmp m2.map m1.cmp }
+  { m2 with map = Concrete.heuristic_merge f m1.cmp m1.map m2.cmp m2.map true }
 
 let merge_unsafe f m1 m2 =
   { m2 with map = Concrete.merge f m2.cmp m1.map m2.map }
