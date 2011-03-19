@@ -24,216 +24,216 @@ module type OrderedType = BatInterfaces.OrderedType
 (** Input signature of the functor {!Set.Make}. *)
 
 module type S =
-  sig
-    type elt
+sig
+  type elt
 
-    type t
+  type t
 
-    val empty: t
+  val empty: t
 
-    val is_empty: t -> bool
+  val is_empty: t -> bool
 
-    val mem: elt -> t -> bool
+  val mem: elt -> t -> bool
 
-    val add: elt -> t -> t
+  val add: elt -> t -> t
 
-    val singleton: elt -> t
+  val singleton: elt -> t
 
-    val remove: elt -> t -> t
+  val remove: elt -> t -> t
 
-    val union: t -> t -> t
+  val union: t -> t -> t
 
-    val inter: t -> t -> t
+  val inter: t -> t -> t
 
-    val diff: t -> t -> t
+  val diff: t -> t -> t
 
-    val compare: t -> t -> int
+  val compare: t -> t -> int
 
-    val equal: t -> t -> bool
+  val equal: t -> t -> bool
 
-    val subset: t -> t -> bool
+  val subset: t -> t -> bool
 
-    val compare_subset: t -> t -> int
+  val compare_subset: t -> t -> int
 
-    val iter: (elt -> unit) -> t -> unit
+  val iter: (elt -> unit) -> t -> unit
 
-    val map: (elt -> elt) -> t -> t
+  val map: (elt -> elt) -> t -> t
 
-    val filter: (elt -> bool) -> t -> t
+  val filter: (elt -> bool) -> t -> t
 
-    val filter_map: (elt -> elt option) -> t -> t
+  val filter_map: (elt -> elt option) -> t -> t
 
-    val fold: (elt -> 'a -> 'a) -> t -> 'a -> 'a
+  val fold: (elt -> 'a -> 'a) -> t -> 'a -> 'a
 
-    val for_all: (elt -> bool) -> t -> bool
+  val for_all: (elt -> bool) -> t -> bool
 
-    val exists: (elt -> bool) -> t -> bool
+  val exists: (elt -> bool) -> t -> bool
 
-    val partition: (elt -> bool) -> t -> t * t
+  val partition: (elt -> bool) -> t -> t * t
 
-    val cardinal: t -> int
+  val cardinal: t -> int
 
-    val elements: t -> elt list
+  val elements: t -> elt list
 
-    val min_elt: t -> elt
+  val min_elt: t -> elt
 
-    val max_elt: t -> elt
+  val max_elt: t -> elt
 
-    val choose: t -> elt
+  val choose: t -> elt
 
-    val split: elt -> t -> t * bool * t
+  val split: elt -> t -> t * bool * t
 
-    val enum: t -> elt BatEnum.t
+  val enum: t -> elt BatEnum.t
 
-    val backwards: t -> elt BatEnum.t
+  val backwards: t -> elt BatEnum.t
 
-    val of_enum: elt BatEnum.t -> t
+  val of_enum: elt BatEnum.t -> t
 
 
-    (** {6 Boilerplate code}*)
+  (** {6 Boilerplate code}*)
 
-    (** {7 Printing}*)
-      
-    val print :  ?first:string -> ?last:string -> ?sep:string -> 
-      ('a BatInnerIO.output -> elt -> unit) -> 
-      'a BatInnerIO.output -> t -> unit
+  (** {7 Printing}*)
+    
+  val print :  ?first:string -> ?last:string -> ?sep:string -> 
+    ('a BatInnerIO.output -> elt -> unit) -> 
+    'a BatInnerIO.output -> t -> unit
 
-      (** {6 Override modules}*)
-      
-    (** Operations on {!Set} without exceptions.*)
-    module Exceptionless : sig
-      val min_elt: t -> elt option
-      val max_elt: t -> elt option
-      val choose:  t -> elt option
-    end
-      
-      
-    (** Operations on {!Set} with labels. *)
-    module Labels : sig
-      val iter : f:(elt -> unit) -> t -> unit
-      val fold : f:(elt -> 'a -> 'a) -> t -> init:'a -> 'a
-      val for_all : f:(elt -> bool) -> t -> bool
-      val exists : f:(elt -> bool) -> t -> bool
-      val map: f:(elt -> elt) -> t -> t
-      val filter : f:(elt -> bool) -> t -> t
-      val filter_map: f:(elt -> elt option) -> t -> t
-      val partition : f:(elt -> bool) -> t -> t * t
-    end
-      
+  (** {6 Override modules}*)
+    
+  (** Operations on {!Set} without exceptions.*)
+  module Exceptionless : sig
+    val min_elt: t -> elt option
+    val max_elt: t -> elt option
+    val choose:  t -> elt option
   end
+    
+    
+  (** Operations on {!Set} with labels. *)
+  module Labels : sig
+    val iter : f:(elt -> unit) -> t -> unit
+    val fold : f:(elt -> 'a -> 'a) -> t -> init:'a -> 'a
+    val for_all : f:(elt -> bool) -> t -> bool
+    val exists : f:(elt -> bool) -> t -> bool
+    val map: f:(elt -> elt) -> t -> t
+    val filter : f:(elt -> bool) -> t -> t
+    val filter_map: f:(elt -> elt option) -> t -> t
+    val partition : f:(elt -> bool) -> t -> t * t
+  end
+    
+end
     (** Output signature of the functor {!Set.Make}. *)
 
-  module Make (Ord : OrderedType) = 
+module Make (Ord : OrderedType) = 
+struct
+  include Set.Make(Ord)
+
+  (*Breaking the abstraction*)
+
+  type implementation = Empty | Node of implementation * elt * implementation * int
+  external impl_of_t : t -> implementation = "%identity"
+  external t_of_impl : implementation -> t = "%identity"
+
+  open Printf
+  (* s1 in s2 -> -1, s2 in s1 -> 1, neither a subset -> min_int, eq -> 0 *)
+  let rec compare_subset s1 s2 =
+    match (s1, impl_of_t s2) with
+	(Empty, Empty) -> 0
+      | (Empty, t2) -> -1
+      | (t1, Empty) -> 1
+      | (Node(l1, v1, r1, _), t2) ->
+        match split v1 (t_of_impl t2) with
+	    (l2, true, r2) -> (* v1 in both s1 and s2 *)
+	      ( match compare_subset l1 l2, compare_subset r1 r2 with
+		| -1, -1 | -1, 0 | 0, -1 -> -1
+		| 0, 0 -> 0
+		| 1, 1 | 1, 0 | 0, 1 -> 1
+		| _ -> min_int
+	      )
+          | (l2, false, r2) -> (* v1 in s1, but not in s2 *)
+	    if (compare_subset l1 l2) >= 0 && (compare_subset r1 r2) >= 0
+	    then 1 else min_int
+
+  let compare_subset s1 s2 = compare_subset (impl_of_t s1) s2
+
+  type iter = E | C of elt * implementation * iter
+
+  let rec cons_iter s t = match s with
+      Empty -> t
+    | Node (l, e, r, _) -> cons_iter l (C (e, r, t))
+
+  let rec rev_cons_iter s t = match s with
+      Empty -> t
+    | Node (l, e, r, _) -> rev_cons_iter r (C (e, l, t))
+
+  let rec enum_next l () = match !l with
+      E -> raise BatEnum.No_more_elements
+    | C (e, s, t) -> l := cons_iter s t; e
+
+  let rec enum_backwards_next l () = match !l with
+      E -> raise BatEnum.No_more_elements
+    | C (e, s, t) -> l := rev_cons_iter s t; e
+
+  let rec enum_count l () =
+    let rec aux n = function
+    E -> n
+      | C (e, s, t) -> aux (n + 1 + cardinal (t_of_impl s)) t
+    in aux 0 !l
+
+  let enum t =
+    let rec make l =
+      let l = ref l in
+      let clone() = make !l in
+      BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
+    in make (cons_iter (impl_of_t t) E)
+
+  let backwards t =
+    let rec make l =
+      let l = ref l in
+      let clone() = make !l in
+      BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
+    in make (rev_cons_iter (impl_of_t t) E)
+
+  let of_enum e = 
+    BatEnum.fold (fun acc elem -> add elem acc) empty e
+
+  let map f e = fold (fun x acc -> add (f x) acc) e empty
+    
+  let filter f e = fold (fun x acc -> if f x then add x acc else acc) e empty
+
+  let filter_map f e = fold (fun x acc -> match f x with Some v -> add v acc | _ -> acc) e empty
+
+  let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
+    BatEnum.print ~first ~last ~sep print_elt out (enum t)
+
+      
+  module Exceptionless =
   struct
-    include Set.Make(Ord)
-
-    (*Breaking the abstraction*)
-
-    type implementation = Empty | Node of implementation * elt * implementation * int
-    external impl_of_t : t -> implementation = "%identity"
-    external t_of_impl : implementation -> t = "%identity"
-
-    open Printf
-    (* s1 in s2 -> -1, s2 in s1 -> 1, neither a subset -> min_int, eq -> 0 *)
-    let rec compare_subset s1 s2 =
-      match (s1, impl_of_t s2) with
-	  (Empty, Empty) -> 0
-	| (Empty, t2) -> -1
-	| (t1, Empty) -> 1
-	| (Node(l1, v1, r1, _), t2) ->
-            match split v1 (t_of_impl t2) with
-		(l2, true, r2) -> (* v1 in both s1 and s2 *)
-		  ( match compare_subset l1 l2, compare_subset r1 r2 with
-		      | -1, -1 | -1, 0 | 0, -1 -> -1
-		      | 0, 0 -> 0
-		      | 1, 1 | 1, 0 | 0, 1 -> 1
-		      | _ -> min_int
-		  )
-              | (l2, false, r2) -> (* v1 in s1, but not in s2 *)
-		  if (compare_subset l1 l2) >= 0 && (compare_subset r1 r2) >= 0
-		  then 1 else min_int
-
-    let compare_subset s1 s2 = compare_subset (impl_of_t s1) s2
-
-    type iter = E | C of elt * implementation * iter
-
-    let rec cons_iter s t = match s with
-        Empty -> t
-      | Node (l, e, r, _) -> cons_iter l (C (e, r, t))
-
-    let rec rev_cons_iter s t = match s with
-        Empty -> t
-      | Node (l, e, r, _) -> rev_cons_iter r (C (e, l, t))
-
-    let rec enum_next l () = match !l with
-        E -> raise BatEnum.No_more_elements
-      | C (e, s, t) -> l := cons_iter s t; e
-
-    let rec enum_backwards_next l () = match !l with
-        E -> raise BatEnum.No_more_elements
-      | C (e, s, t) -> l := rev_cons_iter s t; e
-
-    let rec enum_count l () =
-      let rec aux n = function
-          E -> n
-        | C (e, s, t) -> aux (n + 1 + cardinal (t_of_impl s)) t
-      in aux 0 !l
-
-    let enum t =
-      let rec make l =
-        let l = ref l in
-        let clone() = make !l in
-          BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
-      in make (cons_iter (impl_of_t t) E)
-
-    let backwards t =
-      let rec make l =
-        let l = ref l in
-        let clone() = make !l in
-          BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
-      in make (rev_cons_iter (impl_of_t t) E)
-
-    let of_enum e = 
-      BatEnum.fold (fun acc elem -> add elem acc) empty e
-
-    let map f e = fold (fun x acc -> add (f x) acc) e empty
-	
-    let filter f e = fold (fun x acc -> if f x then add x acc else acc) e empty
-
-    let filter_map f e = fold (fun x acc -> match f x with Some v -> add v acc | _ -> acc) e empty
-
-    let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
-      BatEnum.print ~first ~last ~sep print_elt out (enum t)
-
-	
-    module Exceptionless =
-    struct
-      let min_elt t = try Some (min_elt t) with Not_found -> None
-      let max_elt t = try Some (max_elt t) with Not_found -> None
-      let choose  t = try Some (choose t)  with Not_found -> None
-    end
-
-    module Labels =
-    struct
-      let iter ~f t = iter f t
-      let fold ~f t ~init = fold f t init
-      let for_all ~f t    = for_all f t
-      let exists ~f t     = exists f t
-      let map    ~f t     = map f t
-      let filter ~f t     = filter f t
-      let filter_map ~f t = filter_map f t
-      let partition ~f t  = partition f t
-    end
+    let min_elt t = try Some (min_elt t) with Not_found -> None
+    let max_elt t = try Some (max_elt t) with Not_found -> None
+    let choose  t = try Some (choose t)  with Not_found -> None
   end
 
+  module Labels =
+  struct
+    let iter ~f t = iter f t
+    let fold ~f t ~init = fold f t init
+    let for_all ~f t    = for_all f t
+    let exists ~f t     = exists f t
+    let map    ~f t     = map f t
+    let filter ~f t     = filter f t
+    let filter_map ~f t = filter_map f t
+    let partition ~f t  = partition f t
+  end
+end
 
-  module StringSet  = Make(String)
-  module IStringSet = Make(BatString.IString)
-  module NumStringSet = Make(BatString.NumString)
-  module RopeSet    = Make(BatRope)
-  module IRopeSet   = Make(BatRope.IRope)
-  module IntSet     = Make(BatInt)
-  module CharSet    = Make(Char)
+
+module StringSet  = Make(String)
+module IStringSet = Make(BatString.IString)
+module NumStringSet = Make(BatString.NumString)
+module RopeSet    = Make(BatRope)
+module IRopeSet   = Make(BatRope.IRope)
+module IntSet     = Make(BatInt)
+module CharSet    = Make(Char)
 
 (*
  * PMap - Polymorphic sets

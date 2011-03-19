@@ -39,14 +39,15 @@
 
    {b Note} OCaml, Batteries Included, provides two implementations of
    sets: polymorphic sets (this module) and functorized sets (module
-   {!Set}). Module {!Set} offers a more complex and slightly poorer
-   set of features but stronger type-safety. Module {!PSet} is easier
-   to use and has a few more powerful features but makes it easier to
-   shoot yourself in the foot. In case of doubt, use {!Set}.
+   {!Set.Make}). Module {!Set.Make} offers a more complex and slightly
+   poorer set of features but stronger type-safety. Module {!PSet} is
+   easier to use and has a few more powerful features but makes it
+   easier to shoot yourself in the foot. In case of doubt, use
+   {!Set.Make}.
 *)
 
 type 'a t
-  (** The type of sets. *)
+(** The type of sets. *)
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
@@ -128,6 +129,12 @@ val enum: 'a t -> 'a BatEnum.t
   
 val of_enum: 'a BatEnum.t -> 'a t
 
+val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
+
+val of_list: 'a list -> 'a t
+(** builds a set from the given list, using the default comparison
+    function *)
+
 val for_all : ('a -> bool) -> 'a t -> bool
 (** Returns whether the given predicate applies to all elements in the set *)
 
@@ -152,6 +159,13 @@ val union: 'a t -> 'a t -> 'a t
 val diff: 'a t -> 'a t -> 'a t
   (** [diff s t] returns the set of all elements in [s] but not in
       [t]. The returned set uses [s]'s comparison function.*)
+
+val intersect: 'a t -> 'a t -> 'a t
+(** [intersect s t] returns a new set of those elements that are in
+    both [s] and [t].  The returned set uses [s]'s comparison function. *)
+
+val subset: 'a t -> 'a t -> bool
+(** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
 
 (** {6 Boilerplate code}*)
 

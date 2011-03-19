@@ -63,10 +63,14 @@ let _ = dispatch begin function
       flag ["ocaml"; "link"] & S[A"-package"; A packs];
       flag ["ocaml"; "infer_interface"] & S[A"-package"; A packs];
 
-      flag ["ocaml"; "infer_interface"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
-      flag ["ocaml"; "ocamldep"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
-      flag ["ocaml"; "compile"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
-      flag ["ocaml"; "link"; "pkg_oUnit"] & S[A"-package"; A"oUnit"];
+      List.iter
+        (fun pkg ->
+          flag ["ocaml"; "infer_interface"; "pkg_"^pkg] & S[A"-package"; A pkg];
+          flag ["ocaml"; "ocamldep"; "pkg_"^pkg] & S[A"-package"; A pkg];
+          flag ["ocaml"; "compile"; "pkg_"^pkg] & S[A"-package"; A pkg];
+          flag ["ocaml"; "link"; "pkg_"^pkg] & S[A"-package"; A pkg];
+          ())
+        ["oUnit"; "benchmark"];
 
       (* DON'T USE TAG 'thread', USE 'threads'
 	 for compatibility with ocamlbuild *)
@@ -106,5 +110,23 @@ let _ = dispatch begin function
 	[Pathname.mk "qtest/test_mods.cma"];
       dep ["ocaml"; "link"; "include_tests"; "native"] & 
 	[Pathname.mk "qtest/test_mods.cmxa"]; *)
+
+      (* Some .mli files use INCLUDE "foo.mli" to avoid interface duplication;
+         
+         The problem is that the automatic dependency detector of
+         ocamlbuild doesn't detect the implicit dependency on the
+         included .mli, and doesn't copy it into _build before
+         preprocessing the including file.
+
+         Here, we add flags denoting explicit dependencies on the
+         included .mli. This solution comes from the following
+         explanation of Xavier Clerc:
+           http://caml.inria.fr/mantis/print_bug_page.php?bug_id=5162
+      *)
+      dep ["pset_mli"] [Pathname.concat "src" "batPSet.mli"];
+      dep ["pmap_mli"] [Pathname.concat "src" "batPMap.mli"];
+
+
+
   | _ -> ()
 end

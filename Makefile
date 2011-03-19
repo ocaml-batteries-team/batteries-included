@@ -36,6 +36,8 @@ NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
 # What to build
 TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
 TEST_TARGETS = testsuite/main.byte qtest/test_runner.byte
+TEST_TARGETS = testsuite/main.byte
+BENCH_TARGETS = benchsuite/bench_int.native benchsuite/bench_map.native
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   EXT = native
@@ -107,6 +109,10 @@ TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 test: src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
 	$(foreach TEST, $(TEST_TARGETS), echo "Running $(TEST)"; _build/$(TEST); echo; )
+
+bench: 
+	$(OCAMLBUILD) $(TARGETS) $(BENCH_TARGETS)
+	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH); )
 
 release: test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \

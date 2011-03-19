@@ -4,3 +4,6 @@
 "libs" or "libs/estring": include
 "testsuite": include
 "qtest": include
+"benchsuite": include
+"src/batSet.mli": pp(camlp4of -I src), pset_mli
+"src/batMap.mli": pp(camlp4of -I src), pmap_mli

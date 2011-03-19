@@ -195,15 +195,15 @@ struct
     let rec visit t cont = match t with
       | Empty -> cont Empty
       | Node (l, (k, v), r) ->
-          visit l begin fun l ->
-            let w = f k v in
-            visit r begin fun r ->
-              match w with
-                | None -> cont (bst_append l r)
-                | Some w ->
-                    cont (Node (l, (k, w), r))
-            end
+        visit l begin fun l ->
+          let w = f k v in
+          visit r begin fun r ->
+            match w with
+              | None -> cont (bst_append l r)
+              | Some w ->
+                cont (Node (l, (k, w), r))
           end
+        end
     in
     fun (Map tr) -> visit tr (fun tr -> Map tr)
 
@@ -225,19 +225,19 @@ struct
     let rec count k = function
       | End -> k
       | More (_, _, tr, en) ->
-          count (1 + k + size tr) en
+        count (1 + k + size tr) en
     in
     fun en -> count 0 en
 
   let rec cons_enum m e = match m with
     | Empty -> e
     | Node (l, (k, v), r) ->
-        cons_enum l (More (k, v, r, e))
+      cons_enum l (More (k, v, r, e))
 
   let rec rev_cons_enum m e = match m with
     | Empty -> e
     | Node (l, (k, v), r) ->
-        rev_cons_enum r (More (k, v, l, e))
+      rev_cons_enum r (More (k, v, l, e))
 
   let compare cmp (Map tr1) (Map tr2) =
     let rec aux e1 e2 = match (e1, e2) with
@@ -245,11 +245,11 @@ struct
       | (End, _)  -> -1
       | (_, End) -> 1
       | (More (v1, d1, r1, e1), More (v2, d2, r2, e2)) ->
-          let c = Ord.compare v1 v2 in
+        let c = Ord.compare v1 v2 in
+        if c <> 0 then c else
+          let c = cmp d1 d2 in
           if c <> 0 then c else
-            let c = cmp d1 d2 in
-            if c <> 0 then c else
-              aux (cons_enum r1 e1) (cons_enum r2 e2)
+            aux (cons_enum r1 e1) (cons_enum r2 e2)
     in aux (cons_enum tr1 End) (cons_enum tr2 End)
 
   let equal cmp (Map tr1) (Map tr2) =
@@ -259,7 +259,7 @@ struct
         | (End, _)  -> false
         | (_, End) -> false
         | (More (v1, d1, r1, e1), More (v2, d2, r2, e2)) ->
-            Ord.compare v1 v2 = 0 && cmp d1 d2 &&
+          Ord.compare v1 v2 = 0 && cmp d1 d2 &&
       aux (cons_enum r1 e1) (cons_enum r2 e2)
     in aux (cons_enum tr1 End) (cons_enum tr2 End)
 
@@ -268,8 +268,8 @@ struct
     let next () = match !cur with
       | End -> raise Enum.No_more_elements
       | More (k, v, r, e) ->
-          cur := cfn r e ;
-          (k, v)
+        cur := cfn r e ;
+        (k, v)
     in
     let count () = count_enum !cur in
     let clone () = enum_bst cfn !cur in
@@ -320,4 +320,24 @@ struct
     let ( <-- ) m (k, v) = add k v m
   end
 
+  (*TODO : add an implementation for these functions
+
+    The following functions are required to conform to the Map
+    interface since ocaml 3.12. They have not yet been implemented in
+    BatSplay, but that must come soon.
+  *)
+  let split _ =
+    failwith "split not yet implemented in batSplay"
+  let merge _ =
+    failwith "merge not yet implemented in batSplay"
+  let exists _ =
+    failwith "exists not yet implemented in batSplay"
+  let for_all _ =
+    failwith "for_all not yet implemented in batSplay"
+  let bindings _ =
+    failwith "bindings not yet implemented in batSplay"
+  let singleton _ =
+    failwith "singleton not yet implemented in batSplay"
+  let cardinal _ =
+    failwith "cardinal not yet implemented in batSplay"
 end
