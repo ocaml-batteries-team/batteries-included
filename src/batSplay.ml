@@ -91,8 +91,7 @@ let rec cfind ?(cx=[]) ~sel = function
       else if sx < 0 then cfind ~cx:(Left (x, r) :: cx) ~sel l
       else cfind ~cx:(Right (l, x) :: cx) ~sel r
 
-module Map (Ord : BatInterfaces.OrderedType)
-  : BatMap.S with type key = Ord.t =
+module Map (Ord : BatInterfaces.OrderedType) =
 struct
 
   type key = Ord.t
@@ -291,14 +290,20 @@ struct
   let to_list m = List.of_enum (enum m)
   let of_list l = of_enum (List.enum l)
 
-  let print ?(first="of_list [") ?(last="]") ?(sep="; ")
-      kpr vpr out m =
-    Enum.print ~first ~last ~sep begin
-      fun out (k, v) ->
-        kpr out k ;
-        BatInnerIO.nwrite out ", " ;
-        vpr out v
-    end out (enum m)
+  let custom_print ~first ~last ~sep kvpr out m =
+    Enum.print ~first ~last ~sep
+      (fun out (k, v) -> kvpr out k v)
+      out (enum m)
+
+  let print ?(first="{\n") ?(last="}\n") ?(sep=",\n") kpr vpr out m =
+    custom_print ~first ~last ~sep
+      (fun out k v -> BatPrintf.fprintf out "%a: %a" kpr k vpr v)
+      out m
+
+  let print_as_list kpr vpr out m =
+    custom_print ~first:"[" ~last:"]" ~sep:"; "
+      (fun out k v -> BatPrintf.fprintf out "%a, %a" kpr k vpr v)
+      out m
 
   module Labels = struct
     let add ~key ~data t = add key data t

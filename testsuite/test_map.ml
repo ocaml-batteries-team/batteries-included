@@ -669,11 +669,25 @@ let heterogeneous_tests =
     "intersect" >:: test_intersect;
   ]
 
+(* as specific test for the BatSplay.print_as_list function *)
+let test_splay_print_as_list () =
+  let module M = BatSplay.Map(BatInt) in
+  let test list =
+    let splay = M.of_enum (BatList.enum list) in
+    let print_pair out (a, b) = BatPrintf.fprintf out "%d, %d" a b in
+    U.assert_equal ~printer:identity
+      (BatIO.to_string (M.print_as_list BatInt.print BatInt.print) splay)
+      (BatIO.to_string (BatList.print print_pair) list) in
+  test [];
+  test [0,1; 2,3];
+  ()
+
 let tests = "(P)Map" >::: [
   "traversal order iter vs. enum" >:: test_traversal_order;
   "split" >:: test_split;
   "usual tests on Map" >::: TM.tests;
   "usual tests on PMap" >::: TP.tests;
   "usual tests on Splay" >::: TS.tests;
+  "test BatSPlay.print_as_list" >:: test_splay_print_as_list;
   (* "PMap's heterogeneous operators" >::: heterogeneous_tests; *)
 ]

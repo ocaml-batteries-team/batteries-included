@@ -21,4 +21,10 @@
 (** Maps and sets based on splay trees *)
 
 module Map (Ord : BatInterfaces.OrderedType)
-  : BatMap.S with type key = Ord.t
+  : sig
+    include BatMap.S with type key = Ord.t
+    val print_as_list:
+      ('a BatInnerIO.output -> key -> unit) ->
+      ('a BatInnerIO.output -> 'c -> unit) ->
+      'a BatInnerIO.output -> 'c t -> unit
+end
