@@ -586,8 +586,24 @@ module P = struct
     for_all (as_in m1) m2 && for_all (as_in m2) m1
 end
 
+module S = struct
+  module M = BatSplay.Map(BatInt)
+  include M
+  type 'a m = 'a M.t
+
+  let filter_map f = M.filter_map (fun _ -> f)
+  let filteri_map = M.filter_map
+
+  let iter f = M.iter (fun _ -> f)
+  let iteri = M.iter
+
+  let fold f = M.fold (fun _ -> f)
+  let foldi = M.fold
+end
+
 module TM = TestMap(M)
 module TP = TestMap(P)
+module TS = TestMap(S)
 
 (* what we want to test is the behaviour of PMap binary operators
    (union, diff, intersect, merge) in presence of different and funky
@@ -658,5 +674,6 @@ let tests = "(P)Map" >::: [
   "split" >:: test_split;
   "usual tests on Map" >::: TM.tests;
   "usual tests on PMap" >::: TP.tests;
-  "PMap's heterogeneous operators" >::: heterogeneous_tests;
+  "usual tests on Splay" >::: TS.tests;
+  (* "PMap's heterogeneous operators" >::: heterogeneous_tests; *)
 ]
