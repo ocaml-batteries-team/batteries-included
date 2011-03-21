@@ -53,34 +53,36 @@ let rec top' cx t = match cx with
 
 let top (C (cx, t)) = top' cx t
 
-let rec csplay' cx l x r = match cx with
+let rec csplay' cx l r = match cx with
   | [] ->
-      Node (l, x, r)
+      (l, r)
   | [Left (p, pr)] ->
-      Node (l, x, Node (r, p, pr))
+      (l, Node (r, p, pr))
   | [Right (pl, px)] ->
-      Node (Node (pl, px, l), x, r)
+      (Node (pl, px, l), r)
   | (Left (px, pr) :: Left (ppx, ppr) :: cx) ->
       (* zig zig *)
       let r = Node (r, px, Node (pr, ppx, ppr)) in
-      csplay' cx l x r
+      csplay' cx l r
   | (Left (px, pr) :: Right (ppl, ppx) :: cx) ->
       (* zig zag *)
       let l = Node (ppl, ppx, l) in
       let r = Node (r, px, pr) in
-      csplay' cx l x r
+      csplay' cx l r
   | (Right (pl, px) :: Right (ppl, ppx) :: cx) ->
       (* zig zig *)
       let l = Node (Node (ppl, ppx, pl), px, l) in
-      csplay' cx l x r
+      csplay' cx l r
   | (Right (pl, px) :: Left (ppx, ppr) :: cx) ->
       (* zig zag *)
       let l = Node (pl, px, l) in
       let r = Node (r, ppx, ppr) in
-      csplay' cx l x r
+      csplay' cx l r
 
 let csplay = function
-  | C (cx, Node (l, x, r)) -> csplay' cx l x r
+  | C (cx, Node (l, x, r)) ->
+    let l', r' = csplay' cx l r in
+    Node (l', x, r')
   | _ -> raise Not_found
 
 let rec cfind ?(cx=[]) ~sel = function
@@ -132,12 +134,15 @@ struct
     end
   end
 
+  let rebalance m tr =
+    Obj.set_field (Obj.repr m) 0 (Obj.repr tr)
+
   let find k (Map tr as m) =
     let tr = csplay (cfind ~sel:(ksel k) tr) in
     match tr with
       | Node (_, (_, v), _) ->
-          Obj.set_field (Obj.repr m) 0 (Obj.repr tr) ;
-          v
+	rebalance m tr;
+	v
       | _ -> raise Not_found
 
   let cchange fn (C (cx, t)) = C (cx, fn t)
@@ -340,18 +345,85 @@ struct
 
   let cardinal m = fold (fun _k _v -> succ) m 0
 
-  let split k m =
-    (* this implementation of 'split' is quite naive, with two
-       traversals of the map to collect the left and right trees.
-       A better implementaion, making use of the Splay properties and
-       using 'csplay', should be devised. *)
-    let center =
-      try Some (find k m)
-      with Not_found -> None
-    in
-    let left = filteri (fun k' _v -> Ord.compare k k' > 0) m in
-    let right = filteri (fun k' _v -> Ord.compare k k' < 0) m in
-    (left, center, right)
+  let split k (Map tr as m) =
+    let C (cx, center) = cfind ~sel:(ksel k) tr in
+    match center with
+      | Empty ->
+	let l, r = csplay' cx Empty Empty in
+	(Map l, None, Map r)
+      | Node (l, x, r) ->
+	let l', r' = csplay' cx l r in
+	(* we rebalance as in 'find' *)
+	rebalance m (Node (l', x, r'));
+	(Map l', Some (snd x), Map r')
+
+  let merge f m1 m2 =
+    (* The implementation is a bit long, but has the important
+       property of applying `f` in increasing key order. *)
+    (* we will iterate on both enumerations in increasing order simultaneously *)
+    let e1 = enum m1 in
+    let e2 = enum m2 in
+    (* we will push the results in increasing order from left to
+       right; the result will be very unbalanced, but this will be
+       corrected by the rebalancing at the first lookup in the splay
+       tree. *)
+    let maybe_push acc k maybe_v1 maybe_v2 =
+      match f k maybe_v1 maybe_v2 with
+	| None -> acc
+	| Some v -> Node (acc, (k, v), Empty) in
+    let push1 acc (k, v1) = maybe_push acc k (Some v1) None in
+    let push2 acc (k, v2) = maybe_push acc k None (Some v2) in
+    (* we iterate simultaneously on both inputs, in increasing
+       order of keys. There are four different "states" to consider :
+       - we have no idea of the inputs :
+	 none_known
+       - we know the next (key, value) pair of e1, and that e2 is empty :
+	 only_e1 (k1, v1)
+       - we know the next (key, value) pair of e2, and that e1 is empty :
+	 only_e2 (k2, v2)
+       - we know the next (key, value) pair of both e1 and e2 :
+	 both_known (k1, v1) (k2, v2)
+    *)
+  let rec none_known acc =
+    match Enum.peek e1, Enum.peek e2 with
+      | None, None -> acc
+      | None, Some kv2 ->
+	Enum.junk e2;
+	only_e2 acc kv2
+      | Some kv1, None ->
+	Enum.junk e1;
+	only_e1 acc kv1
+      | Some kv1, Some kv2 ->
+	Enum.junk e1; Enum.junk e2;
+	both_known acc kv1 kv2
+  and only_e1 acc kv1 =
+    Enum.fold push1 (push1 acc kv1) e1
+  and only_e2 acc kv2 =
+    Enum.fold push2 (push2 acc kv2) e2
+  and both_known acc ((k1, v1) as kv1) ((k2, v2) as kv2) =
+    let cmp = Ord.compare k1 k2 in
+    if cmp < 0 then begin
+      let acc = push1 acc kv1 in
+      match Enum.peek e1 with
+	| None -> only_e2 acc kv2
+	| Some kv1' ->
+	  Enum.junk e1;
+	  both_known acc kv1' kv2
+    end
+    else if cmp > 0 then begin
+      let acc = push2 acc kv2 in
+      match Enum.peek e2 with
+	| None -> only_e1 acc kv1
+	| Some kv2' ->
+	  Enum.junk e2;
+	  both_known acc kv1 kv2'
+    end
+    else begin
+      let acc = maybe_push acc k1 (Some v1) (Some v2) in
+      none_known acc
+    end
+  in
+  Map (none_known Empty)
 
   (*TODO : add an implementation for these functions
 
@@ -359,11 +431,9 @@ struct
     interface since ocaml 3.12. They have not yet been implemented in
     BatSplay, but that must come soon.
   *)
-  let merge _ =
-    failwith "merge not yet implemented in batSplay"
-
   let pop _ =
     failwith "pop not yet implemented in batSplay"
   let extract _ =
     failwith "extract not yet implemented in batSplay"
+
 end
