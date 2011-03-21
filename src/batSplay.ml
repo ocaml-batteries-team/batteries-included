@@ -106,11 +106,14 @@ struct
   let kcmp (j, _) (k, _) = Ord.compare j k
   let ksel j (k, _) = Ord.compare j k
 
+  let singleton' k v = Node (Empty, (k, v), Empty)
+  let singleton k v = Map (singleton' k v)
+
   let add k v (Map tr) = Map begin
     csplay begin
       match cfind ~sel:(ksel k) tr with
         | C (cx, Node (l, (k, _), r)) -> C (cx, Node (l, (k, v), r))
-        | C (cx, Empty) -> C (cx, Node (Empty, (k, v), Empty))
+        | C (cx, Empty) -> C (cx, singleton' k v)
     end
   end
 
@@ -126,7 +129,7 @@ struct
     csplay begin
       match cfind ~sel:(ksel k) tr with
         | C (cx, Node (l, (k, v), r)) -> C (cx, Node (l, (k, fn v), r))
-        | C (cx, Empty) -> C (cx, Node (Empty, (k, fn def), Empty))
+        | C (cx, Empty) -> C (cx, singleton' k (fn def))
     end
   end
 
@@ -320,6 +323,18 @@ struct
     let ( <-- ) m (k, v) = add k v m
   end
 
+  let bindings m = List.of_enum (enum m)
+
+  let exist_bool b f m =
+    try
+      iter (fun k v -> if f k v = b then raise Exit) m;
+      false
+    with Exit -> true
+  let exists f m = exist_bool true f m
+  let for_all f m = not (exist_bool false f m)
+
+  let cardinal m = fold (fun _k _v -> succ) m 0
+
   (*TODO : add an implementation for these functions
 
     The following functions are required to conform to the Map
@@ -330,16 +345,6 @@ struct
     failwith "split not yet implemented in batSplay"
   let merge _ =
     failwith "merge not yet implemented in batSplay"
-  let exists _ =
-    failwith "exists not yet implemented in batSplay"
-  let for_all _ =
-    failwith "for_all not yet implemented in batSplay"
-  let bindings _ =
-    failwith "bindings not yet implemented in batSplay"
-  let singleton _ =
-    failwith "singleton not yet implemented in batSplay"
-  let cardinal _ =
-    failwith "cardinal not yet implemented in batSplay"
 
   let pop _ =
     failwith "pop not yet implemented in batSplay"
