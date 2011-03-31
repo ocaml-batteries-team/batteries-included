@@ -70,6 +70,9 @@ val of_enum : 'a BatEnum.t -> 'a t
 val of_input :   BatIO.input    -> char t
 (** Convert an [input] to a stream.*)
 
+val to_list : 'a t -> 'a list
+(** Convert a stream to a list *)
+
 val to_string : char t -> string
 (** convert stream of chars to string, using buffer *)
 
