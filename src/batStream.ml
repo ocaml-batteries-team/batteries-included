@@ -59,10 +59,18 @@ open Stream
       in (iter (fun x -> buf := x :: !buf) fl; List.rev !buf)
       
     let to_string fl =
-      let sl = to_list fl in
-      let len = List.length sl in
-      let s = String.create len
-      in (List.iter (let i = ref 0 in fun x -> (s.[!i] <- x; incr i)) sl; s)
+      let buf = Buffer.create 16
+      in (iter (Buffer.add_char buf) s; Buffer.contents buf)
+
+    let to_string_fmt fmt st =
+      let buf = Buffer.create 16
+      in (Stream.iter (fun it ->
+        Buffer.add_string buf (Printf.sprintf fmt st)) st; Buffer.contents buf)
+
+    let to_string_fun fn st =
+      let buf = Buffer.create 16
+      in (Stream.iter (fun it ->
+        Buffer.add_string buf (fn it)) st; Buffer.contents buf)
       
     let on_channel ch = iter (output_char ch)
       
