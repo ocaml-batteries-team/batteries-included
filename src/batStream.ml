@@ -527,7 +527,11 @@ module StreamLabels =
     let iter ~f x = iter f x
       
     let switch ~f x = switch f x
+
+    let to_string_fmt ~fmt = to_string_fmt fmt
       
+    let to_string_fun ~fn = to_string_fun fn
+
     let foldl ~f ~init = foldl f init
       
     let foldr ~f ~init = foldr f init

@@ -245,6 +245,10 @@ module StreamLabels : sig
 
 val iter : f:('a -> unit) -> 'a t -> unit
 
+val to_string_fmt : fmt:('a t -> string, unit, string) format -> 'a t -> string
+
+val to_string_fun : fn:('a -> string) -> 'a t -> string
+
 val foldl : f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b t -> 'a
 
 val foldr : f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a t -> 'b
