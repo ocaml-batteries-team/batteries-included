@@ -57,24 +57,36 @@ include BatInterfaces.Mappable with type 'a mappable = 'a t
 (** {6 Conversion functions} *)
 
 val enum : 'a t -> 'a BatEnum.t
-(** Convert an enumeration to a stream.
-    Reading the resulting stream will consume elements from the enumeration.
-    This is the preferred manner of creating a stream.*)
-
-val of_enum : 'a BatEnum.t -> 'a t
 (** Convert a stream to an enumeration.
     Reading the resulting enumeration will consume elements from the stream.
     This is the preferred manner of converting from a stream to any other
     data structure.*)
 
+val of_enum : 'a BatEnum.t -> 'a t
+(** Convert an enumeration to a stream.
+    Reading the resulting stream will consume elements from the enumeration.
+    This is the preferred manner of creating a stream.*)
+
 val of_input :   BatIO.input    -> char t
 (** Convert an [input] to a stream.*)
 
+val to_list : 'a t -> 'a list
+(** Convert a stream to a list *)
+
+val to_string : char t -> string
+(** convert stream of chars to string, using buffer *)
+
+val to_string_fmt : ('a -> string, unit, string) format -> 'a t -> string
+(** convert stream to string, using Printf with given format *)
+
+val to_string_fun : ('a -> string) -> 'a t -> string
+(** convert stream to string, using given conversion function *)
 
 (** {6 Stream consumers} *)
 
 val on_output:   'a BatIO.output-> char t -> unit
 (** Convert an [output] to a stream.*)
+
 
 (** {6 Stream builders}
 
@@ -233,6 +245,10 @@ module StreamLabels : sig
 
 
 val iter : f:('a -> unit) -> 'a t -> unit
+
+val to_string_fmt : fmt:('a -> string, unit, string) format -> 'a t -> string
+
+val to_string_fun : fn:('a -> string) -> 'a t -> string
 
 val foldl : f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b t -> 'a
 
