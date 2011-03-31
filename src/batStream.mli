@@ -57,15 +57,15 @@ include BatInterfaces.Mappable with type 'a mappable = 'a t
 (** {6 Conversion functions} *)
 
 val enum : 'a t -> 'a BatEnum.t
-(** Convert an enumeration to a stream.
-    Reading the resulting stream will consume elements from the enumeration.
-    This is the preferred manner of creating a stream.*)
-
-val of_enum : 'a BatEnum.t -> 'a t
 (** Convert a stream to an enumeration.
     Reading the resulting enumeration will consume elements from the stream.
     This is the preferred manner of converting from a stream to any other
     data structure.*)
+
+val of_enum : 'a BatEnum.t -> 'a t
+(** Convert an enumeration to a stream.
+    Reading the resulting stream will consume elements from the enumeration.
+    This is the preferred manner of creating a stream.*)
 
 val of_input :   BatIO.input    -> char t
 (** Convert an [input] to a stream.*)
