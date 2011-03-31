@@ -60,17 +60,17 @@ open Stream
       
     let to_string fl =
       let buf = Buffer.create 16
-      in (iter (Buffer.add_char buf) s; Buffer.contents buf)
+      in (iter (Buffer.add_char buf) fl; Buffer.contents buf)
 
-    let to_string_fmt fmt st =
+    let to_string_fmt fmt fl =
       let buf = Buffer.create 16
       in (Stream.iter (fun it ->
-        Buffer.add_string buf (Printf.sprintf fmt st)) st; Buffer.contents buf)
+        Buffer.add_string buf (Printf.sprintf fmt it)) fl; Buffer.contents buf)
 
-    let to_string_fun fn st =
+    let to_string_fun fn fl =
       let buf = Buffer.create 16
       in (Stream.iter (fun it ->
-        Buffer.add_string buf (fn it)) st; Buffer.contents buf)
+        Buffer.add_string buf (fn it)) fl; Buffer.contents buf)
       
     let on_channel ch = iter (output_char ch)
       

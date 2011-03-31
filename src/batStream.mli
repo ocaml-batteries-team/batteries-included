@@ -76,7 +76,7 @@ val to_list : 'a t -> 'a list
 val to_string : char t -> string
 (** convert stream of chars to string, using buffer *)
 
-val to_string_fmt : ('a t -> string, unit, string) format -> 'a t -> string
+val to_string_fmt : ('a -> string, unit, string) format -> 'a t -> string
 (** convert stream to string, using Printf with given format *)
 
 val to_string_fun : ('a -> string) -> 'a t -> string
@@ -86,6 +86,7 @@ val to_string_fun : ('a -> string) -> 'a t -> string
 
 val on_output:   'a BatIO.output-> char t -> unit
 (** Convert an [output] to a stream.*)
+
 
 (** {6 Stream builders}
 
@@ -245,7 +246,7 @@ module StreamLabels : sig
 
 val iter : f:('a -> unit) -> 'a t -> unit
 
-val to_string_fmt : fmt:('a t -> string, unit, string) format -> 'a t -> string
+val to_string_fmt : fmt:('a -> string, unit, string) format -> 'a t -> string
 
 val to_string_fun : fn:('a -> string) -> 'a t -> string
 
