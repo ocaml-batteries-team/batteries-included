@@ -9,7 +9,7 @@ uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 # Define variables and export them for mkconf.ml
 DOCROOT ?= /usr/share/doc/ocaml-batteries
 export DOCROOT
-BROWSER_COMMAND ?= x-www-browser %s
+BROWSER_COMMAND ?= x-www-browser
 export BROWSER_COMMAND
 
 ifdef DESTDIR
