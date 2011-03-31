@@ -163,6 +163,8 @@ module Big_int = struct include Big_int include BatBig_int end
 (* Bigarray *)
 module Bigarray = BatBigarray
 
+(* Config *)
+module Batteries_config = Batteries_config
 
 (* Pervasives *)
 include Pervasives
