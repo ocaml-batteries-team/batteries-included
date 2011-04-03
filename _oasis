@@ -5,14 +5,12 @@ Version:      1.3.0
 Authors:      Batteries Included Team
 License:      LGPL-2.1 with OCaml linking exception
 LicenseFile:  LICENSE
-ConfType:     custom (0.2)
 BuildType:    custom (0.2)
 InstallType:  custom (0.2)
 BuildTools:   make
 Synopsis:     Extended OCaml Standard Library
 
 BuildDepends:	camomile (>= 0.7.0)
-XCustomConf: echo "configured"
 XCustomBuild: $make all
 XCustomInstall: $make install
 XCustomUninstall: $make uninstall
