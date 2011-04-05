@@ -568,13 +568,13 @@ let heterogeneous_tests =
   let module P = BatPMap in
   let li m = BatList.of_enum (P.enum m) in
 
-  let (@=) msg (l1, l2) =
+  let (@=) msg (act, exp) =
     let cmp t1 t2 =
       let cmp = BatPair.compare ~c1:BatInt.compare ~c2:BatInt.compare in
       0 = BatList.make_compare cmp t1 t2 in
     let printer =
       BatIO.to_string -| BatList.print <| BatPair.print2 BatInt.print in
-    U.assert_equal ~msg ~cmp ~printer l1 l2 in
+    U.assert_equal ~msg ~cmp ~printer exp act in
 
   let compare_modulo p x y = BatInt.compare (x mod p) (y mod p) in
   let il p m = P.of_enum ~cmp:(compare_modulo p) (BatList.enum m) in
