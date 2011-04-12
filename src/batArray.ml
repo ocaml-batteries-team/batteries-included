@@ -172,8 +172,28 @@ let filter p xs =
        r) in
   xs'
 
+let filteri p xs =
+  let n = length xs in
+  (* Use a bitset to store which elements will be in the final array. *)
+  let bs = BatBitSet.create n in
+  for i = 0 to n-1 do
+    if p i xs.(i) then BatBitSet.set bs i
+  done;
+  (* Allocate the final array and copy elements into it. *)
+  let n' = BatBitSet.count bs in
+  let j = ref 0 in
+  let xs' = init n'
+    (fun _ ->
+       (* Find the next set bit in the BitSet. *)
+       while not (BatBitSet.is_set bs !j) do incr j done;
+       let r = xs.(!j) in
+       incr j;
+       r) in
+  xs'
 
-
+(**T array_filteri
+   filteri (fun i x -> (i+x) mod 2 = 0) [|1;2;3;4;0;1;2;3|] = [|0;1;2;3|]
+**)
 
 let find_all = filter
 
