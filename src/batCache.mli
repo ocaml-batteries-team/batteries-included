@@ -19,7 +19,11 @@
  *)
 
 
-type ('a,'b) manual_cache = {get : 'a -> 'b; del : 'a -> unit}
+type ('a,'b) manual_cache = {
+  get : 'a -> 'b; 
+  del : 'a -> unit; 
+  enum: unit -> ('a * 'b) BatEnum.t
+}
 
 val make_ht : gen:('a -> 'b) -> int -> ('a,'b) manual_cache
 

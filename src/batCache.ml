@@ -21,21 +21,27 @@
 let (|>) x f = f x
 let tap f x = f x; x
 
-type ('a,'b) manual_cache = {get : 'a -> 'b; del : 'a -> unit}
+type ('a,'b) manual_cache = {
+  get : 'a -> 'b; 
+  del : 'a -> unit; 
+  enum: unit -> ('a * 'b) BatEnum.t
+}
 
 let make_ht ~gen init_size =
-  let ht = Hashtbl.create init_size in
+  let ht = BatHashtbl.create init_size in
   {get = (fun k -> 
-    try Hashtbl.find ht k
-    with Not_found -> gen k |> tap (Hashtbl.add ht k));
-   del = (fun k -> Hashtbl.remove ht k)}
+    try BatHashtbl.find ht k
+    with Not_found -> gen k |> tap (BatHashtbl.add ht k));
+   del = (fun k -> BatHashtbl.remove ht k);
+   enum = (fun () -> BatHashtbl.enum ht) }
 
 let make_map ~gen =
   let m = ref BatMap.empty in
   {get = (fun k -> 
     try BatMap.find k !m
     with Not_found -> gen k |> tap (fun v -> m := BatMap.add k v !m));
-   del = (fun k -> m := BatMap.remove k !m)}
+   del = (fun k -> m := BatMap.remove k !m);
+   enum = (fun () -> BatMap.enum !m) }
 
 type ('a, 'b) auto_cache = 'a -> 'b
 
