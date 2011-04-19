@@ -30,7 +30,8 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
 	_build/src/batteries_help.cmo \
 	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
-	_build/src/syntax/pa_strings/pa_strings.cma
+	_build/src/syntax/pa_strings/pa_strings.cma \
+	_build/src/syntax/pa_llist/llist.cmo
 NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
 
 # What to build
