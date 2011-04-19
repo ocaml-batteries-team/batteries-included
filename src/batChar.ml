@@ -77,4 +77,5 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
 
 
   let print out t = BatInnerIO.write out t
+  let t_printer paren out t = print out t
 

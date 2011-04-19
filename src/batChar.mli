@@ -108,6 +108,8 @@ val ( -- ): char -> char -> char BatEnum.t
 (** {7 Printing}*)
 
 val print: 'a BatInnerIO.output -> Char.t -> unit
+val t_printer : char BatValue_printer.t
+
 
 (**/**)
 

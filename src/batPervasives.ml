@@ -324,6 +324,7 @@ open Pervasives
   let int_printer = BatInt.t_printer
   let int32_printer = BatInt32.t_printer
   let int64_printer = BatInt64.t_printer
+  let char_printer = BatChar.t_printer
   let nativeint_printer = BatNativeint.t_printer
   let float_printer = BatFloat.t_printer
   let string_printer = BatString.t_printer

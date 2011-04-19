@@ -852,6 +852,7 @@ val printer_exn : (exn -> 'a, 'a) BatPrint.directive
 
 val bool_printer : bool BatValue_printer.t
 val int_printer : int BatValue_printer.t
+val char_printer : char BatValue_printer.t
 val int32_printer : int32 BatValue_printer.t
 val int64_printer : int64 BatValue_printer.t
 val nativeint_printer : nativeint BatValue_printer.t
