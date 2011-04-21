@@ -109,7 +109,7 @@ TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
 test: src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
-	$(foreach TEST, $(TEST_TARGETS), echo "Running $(TEST)"; _build/$(TEST); echo; )
+	$(foreach TEST, $(TEST_TARGETS), echo "Running $(TEST)" && _build/$(TEST) && echo && ) /bin/true
 
 bench: 
 	$(OCAMLBUILD) $(TARGETS) $(BENCH_TARGETS)
