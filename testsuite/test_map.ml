@@ -599,7 +599,7 @@ let heterogeneous_tests =
         (li (P.union m13 m7), [8,-8; 2,2; 3,3; 4,-4; 12,-5]) in
 
   let test_diff () =
-    (* We check that difference is made modulo 5 : 12,-5 remove 5,5
+    (* We check that difference is made modulo 7 : 12,-5 remove 5,5
        from the map *)
     "diff [2,2; 3,3; 5,5]/7 [4,-4; 8,-8; 12,-5]/13
      = [2,2; 3,3]" @=
