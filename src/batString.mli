@@ -472,6 +472,8 @@ val print_quoted: 'a BatInnerIO.output -> string -> unit
 
 val t_printer : t BatValue_printer.t
 
+val unquoted_printer : t BatValue_printer.t
+
 (**/**)
 
 

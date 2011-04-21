@@ -516,6 +516,8 @@ let t_printer paren out x =
   print out (escaped x);
   BatInnerIO.write out '"'
 
+let unquoted_printer paren out x = print out x
+
 let quote s = BatPrintf.sprintf2 "%S" s
 
 module Exceptionless =
