@@ -560,8 +560,13 @@ module Concrete = struct
            (remove_min_binding s)
            (fst (min_binding s)));
       true
-    with Exit -> false    
+    with Exit -> false
 
+  let compatible_cmp cmp1 m1 cmp2 m2 cmp1or2 =
+    cmp1 == cmp2 ||
+      (match cmp1or2 with
+        | `Cmp1 -> ordered cmp1 m2
+        | `Cmp2 -> ordered cmp2 m1)
 
   let heuristic_merge f cmp1 m1 cmp2 m2 cmp1or2 =
     (* as merge_diverse is much slower than merge, we first try to
@@ -576,30 +581,43 @@ module Concrete = struct
        [merge_diverse]). Which one is decided by the cmp1or2 boolean.
     *)
     let cmp3 = (match cmp1or2 with `Cmp1 -> cmp1 | `Cmp2 -> cmp2) in
-    if cmp1 == cmp2 ||
-      (match cmp1or2 with
-        | `Cmp1 -> ordered cmp1 m2
-        | `Cmp2 -> ordered cmp2 m1)
+    if compatible_cmp cmp1 m1 cmp2 m2 cmp1or2
     then merge f cmp3 m1 m2
     else merge_diverse f cmp1 m1 cmp2 m2 cmp3
 
   let union cmp1 m1 cmp2 m2 =
-    (* we respect the specified behaviour that the first binding is
-       chosen when both are present, and that the result uses the
-       second comparison *)
-    let merge_fun k a b = if a <> None then a else b in
-    heuristic_merge merge_fun cmp1 m1 cmp2 m2 `Cmp2
+    (* compatibility heuristic: see heuristic_merge *)
+    if compatible_cmp cmp1 m1 cmp2 m2 `Cmp2 then
+      (* we respect the specified behaviour that the first binding is
+         chosen when both are present, and that the result uses the
+         second comparison *)
+      let merge_fun k a b = if a <> None then a else b in
+      merge merge_fun cmp2 m1 m2
+    else
+      foldi (fun k v m -> add k v cmp2 m) m1 m2
 
   let diff cmp1 m1 cmp2 m2 =
-    let merge_fun k a b = if b <> None then None else a in
-    heuristic_merge merge_fun cmp1 m1 cmp2 m2 `Cmp1
+    (* compatibility heuristic: see heuristic_merge *)
+    if compatible_cmp cmp1 m1 cmp2 m2 `Cmp1 then
+      let merge_fun k a b = if b <> None then None else a in
+      merge merge_fun cmp1 m1 m2
+    else
+      foldi (fun k _v m -> remove k cmp1 m) m2 m1
 
   let intersect f cmp1 m1 cmp2 m2 =
-    let merge_fun k a b =
-      match a, b with
-        | Some v1, Some v2 -> Some (f v1 v2)
-        | None, _ | _, None -> None in
-    heuristic_merge merge_fun cmp1 m1 cmp2 m2 `Cmp1
+    (* compatibility heuristic: see heuristic_merge *)
+    if compatible_cmp cmp1 m1 cmp2 m2 `Cmp1 then
+      let merge_fun k a b =
+        match a, b with
+          | Some v1, Some v2 -> Some (f v1 v2)
+          | None, _ | _, None -> None in
+      merge merge_fun cmp1 m1 m2
+    else
+      foldi (fun k v1 m ->
+        match find_option k cmp2 m2 with
+          | None -> m
+          | Some v2 -> add k (f v1 v2) cmp1 m)
+        m1 empty
 end
 
 module type OrderedType = BatInterfaces.OrderedType
