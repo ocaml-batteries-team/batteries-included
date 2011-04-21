@@ -575,29 +575,31 @@ module Concrete = struct
        the input comparison (which was not the case in
        [merge_diverse]). Which one is decided by the cmp1or2 boolean.
     *)
-    let cmp3 = if cmp1or2 then cmp1 else cmp2 in
+    let cmp3 = (match cmp1or2 with `Cmp1 -> cmp1 | `Cmp2 -> cmp2) in
     if cmp1 == cmp2 ||
-      (if cmp1or2 then ordered cmp1 m2 else ordered cmp2 m1)
+      (match cmp1or2 with
+        | `Cmp1 -> ordered cmp1 m2
+        | `Cmp2 -> ordered cmp2 m1)
     then merge f cmp3 m1 m2
-    else merge_diverse f cmp1 m1 cmp2 m2 cmp3      
+    else merge_diverse f cmp1 m1 cmp2 m2 cmp3
 
   let union cmp1 m1 cmp2 m2 =
     (* we respect the specified behaviour that the first binding is
        chosen when both are present, and that the result uses the
        second comparison *)
     let merge_fun k a b = if a <> None then a else b in
-    heuristic_merge merge_fun cmp1 m1 cmp2 m2 false
+    heuristic_merge merge_fun cmp1 m1 cmp2 m2 `Cmp2
 
   let diff cmp1 m1 cmp2 m2 =
     let merge_fun k a b = if b <> None then None else a in
-    heuristic_merge merge_fun cmp1 m1 cmp2 m2 true
+    heuristic_merge merge_fun cmp1 m1 cmp2 m2 `Cmp1
 
   let intersect f cmp1 m1 cmp2 m2 =
     let merge_fun k a b =
       match a, b with
         | Some v1, Some v2 -> Some (f v1 v2)
         | None, _ | _, None -> None in
-    heuristic_merge merge_fun cmp1 m1 cmp2 m2 true
+    heuristic_merge merge_fun cmp1 m1 cmp2 m2 `Cmp1
 end
 
 module type OrderedType = BatInterfaces.OrderedType
@@ -963,7 +965,7 @@ let intersect merge m1 m2 =
   { empty with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
 
 let merge f m1 m2 =
-  { m2 with map = Concrete.heuristic_merge f m1.cmp m1.map m2.cmp m2.map true }
+  { m2 with map = Concrete.heuristic_merge f m1.cmp m1.map m2.cmp m2.map `Cmp1 }
 
 let merge_unsafe f m1 m2 =
   { m2 with map = Concrete.merge f m2.cmp m1.map m2.map }
