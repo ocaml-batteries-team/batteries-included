@@ -70,12 +70,8 @@ let (@!) msg (exn, f) = U.assert_raises ~msg exn f
    added to the other, and eventually all the features of both will be
    present here.
 
-
    Functions that are currently Map-specific :
      compare, equal, keys, values
-
-   Functions that are currently PMap-specific :
-     extract, pop, union, diff, intersect, add_carry, partition
 
    Functions that have been added in 3.12 stdlib's Map, but not yet
    added in Batteries :
@@ -594,12 +590,12 @@ let heterogeneous_tests =
     (* We check that the result and all 'add' have been done modulo 7 :
        - the 8,-8 binding of m13 is now placed in first (smallest) position 
        - the 5,5 binding has been rewritten by the 12,-5 binding*)
-    "union [4,-4; 8,-8; 12,-5]/13 [2,2; 3,3; 5,5]/7
+    "union [2,2; 3,3; 5,5]/7 [4,-4; 8,-8; 12,-5]/13
      = [8,-8; 2,2; 3,3; 4,-4; 12,-5]/7" @=
-        (li (P.union m13 m7), [8,-8; 2,2; 3,3; 4,-4; 12,-5]) in
+        (li (P.union m7 m13), [8,-8; 2,2; 3,3; 4,-4; 12,-5]) in
 
   let test_diff () =
-    (* We check that difference is made modulo 5 : 12,-5 remove 5,5
+    (* We check that difference is made modulo 7 : 12,-5 remove 5,5
        from the map *)
     "diff [2,2; 3,3; 5,5]/7 [4,-4; 8,-8; 12,-5]/13
      = [2,2; 3,3]" @=
