@@ -637,6 +637,10 @@ sig
 
   val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
 
+  val extract : key -> 'a t -> 'a * 'a t
+
+  val pop : 'a t -> (key * 'a) * 'a t
+
   val mem: key -> 'a t -> bool
     
   val iter: (key -> 'a -> unit) -> 'a t -> unit
@@ -790,6 +794,14 @@ struct
 
   let modify_def v0 x f m =
     t_of_impl (Concrete.modify_def v0 x f Ord.compare (impl_of_t m))
+
+  let extract k t =
+    let (v, t') = Concrete.extract k Ord.compare (impl_of_t t) in
+    (v, t_of_impl t')
+
+  let pop t =
+    let kv, t' = Concrete.pop (impl_of_t t) in
+    kv, t_of_impl t'
 
   let singleton k v = t_of_impl (Concrete.singleton k v)
 

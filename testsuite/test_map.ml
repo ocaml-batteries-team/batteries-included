@@ -82,6 +82,8 @@ module TestMap
     type 'a m
     type key = int
 
+    val equal : ('a -> 'a -> bool) -> 'a m -> 'a m -> bool
+
     (* tested functions *)
     val empty : 'a m
     val is_empty : _ m -> bool
@@ -96,6 +98,9 @@ module TestMap
     val modify : key -> ('a -> 'a) -> 'a m -> 'a m
     val modify_def : 'a -> key -> ('a -> 'a) -> 'a m -> 'a m
 
+    val extract : key -> 'a m -> 'a * 'a m
+    val pop : 'a m -> (key * 'a) * 'a m
+    
     val fold : ('a -> 'b -> 'b) -> 'a m -> 'b -> 'b
     val foldi : (key -> 'a -> 'b -> 'b) -> 'a m -> 'b -> 'b
     val iter : ('a -> unit) -> 'a m -> unit
@@ -254,6 +259,29 @@ module TestMap
     let t = il [(1,2); (3,4)] in
     "mem (fst (choose t)) t" @?
       (M.mem (M.choose t |> fst) t);
+    ()
+
+  let test_extract () =
+    "extract 1 empty -> Not_found" @!
+      (Not_found, fun () -> M.extract 1 M.empty);
+    let t = il [(1,2); (3,4)] in
+    "not <| mem k <| snd <| extract k t" @?
+      (not -| M.mem 1 -| snd <| M.extract 1 t);
+    "extract k (add k v t) = (v, t)" @?
+      (let (k, v) = (5, 6) in
+       let (v', t') = M.extract k (M.add k v t) in
+       v = v' && M.equal (=) t t');
+    ()
+
+  let test_pop () =
+    "pop empty -> Not_found" @!
+      (Not_found, fun () -> M.pop M.empty);
+    let t = il [(1,2); (3,4)] in
+    "not (mem (fst (fst (pop t))) (snd (pop t)))" @?
+      (not <| M.mem (fst -| fst <| M.pop t) (snd <| M.pop t));
+    "let ((k,v),t') = pop t in add k v t' = t" @?
+      (let (k,v), t' = M.pop t in
+       M.equal (=) (M.add k v t') t);
     ()
 
   let test_split () =
@@ -549,6 +577,13 @@ module P = struct
   let filteri_map = M.filter_map
 
   let exists = M.exists_f
+
+  let equal eqv m1 m2 =
+    let as_in m k v =
+      match Exceptionless.find k m with
+        | None -> false
+        | Some v' -> eqv v v' in
+    for_all (as_in m1) m2 && for_all (as_in m2) m1
 end
 
 module TM = TestMap(M)

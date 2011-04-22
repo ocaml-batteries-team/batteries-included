@@ -82,6 +82,20 @@ module type S =
 	@since 1.3.0
      *)
 
+    val extract : key -> 'a t -> 'a * 'a t
+    (** [extract k m] removes the current binding of [k] from [m],
+        returning the value [k] was bound to and the updated [m].
+        
+        @since 1.4.0
+    *)
+
+    val pop : 'a t -> (key * 'a) * 'a t
+    (** [pop m] returns a binding from [m] and [m] without that
+        binding.
+        
+        @since 1.4.0
+    *)
+
     val mem: key -> 'a t -> bool
     (** [mem x m] returns [true] if [m] contains a binding for [x],
        and [false] otherwise. *)

@@ -340,4 +340,9 @@ struct
     failwith "singleton not yet implemented in batSplay"
   let cardinal _ =
     failwith "cardinal not yet implemented in batSplay"
+
+  let pop _ =
+    failwith "pop not yet implemented in batSplay"
+  let extract _ =
+    failwith "extract not yet implemented in batSplay"
 end
