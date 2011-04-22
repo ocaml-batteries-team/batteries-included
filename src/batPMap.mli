@@ -201,19 +201,21 @@ val pop : ('a, 'b) t -> ('a * 'b) * ('a, 'b) t
 
 val union : ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
 (** [union m1 m2] merges two maps, using the comparison function of
-    [m2] and containing all bindings of [m1] and [m2]. In case of
-    conflicted bindings, [m1]'s bindings override [m2]'s. Equivalent
-    to [foldi add m1 m2] *)
+    [m1]. In case of conflicted bindings, [m2]'s bindings override
+    [m1]'s. Equivalent to [foldi add m2 m1].
+    The resulting map uses the comparison function of [m1]. *)
 
 val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
-(** [diff m1 m2] removes all bindings of keys found in [m2] from [m1].
-    Equivalent to [foldi (fun k _v m -> remove k m) m2 m1] *)
+(** [diff m1 m2] removes all bindings of keys found in [m2] from [m1],
+    using the comparison function of [m1]. Equivalent to
+      [foldi (fun k _v m -> remove k m) m2 m1]
+    The resulting map uses the comparison function of [m1].*)
 
 val intersect : ('b -> 'c -> 'd) -> ('a, 'b) t -> ('a, 'c) t -> ('a, 'd) t
 (** [intersect merge_f m1 m2] returns a map with bindings only for
     keys bound in both [m1] and [m2], and with [k] bound to [merge_f
-    v1 v2], where [v1] and [v2] are [k]'s bindings from [m1] and [m2].
-    The resulting map uses the comparison function from [m1]. *)
+    v1 v2], where [v1] and [v2] are [k]'s bindings in [m1] and [m2].
+    The resulting map uses the comparison function of [m1]. *)
 
 val split : 'a -> ('a, 'b) t -> (('a, 'b) t * 'b option * ('a, 'b) t)
 (** [split k m] returns the map of keys less than [k] in [m], [k]'s
@@ -225,17 +227,17 @@ val merge:
   -> ('key, 'a) t -> ('key, 'b) t -> ('key, 'c) t
 (** [merge f m1 m2] computes a map whose keys is a subset of keys of [m1]
     and of [m2]. The presence of each such binding, and the corresponding
-    value, is determined with the function [f].
-    
-    As for [diff] and [intersection], the result map uses the
-    comparison function of [m1].
+    value, is determined with the function [f].    
+    The resulting map uses the comparison function of [m1].
 *)
 
 val merge_unsafe:
   ('key -> 'a option -> 'b option -> 'c option)
   -> ('key, 'a) t -> ('key, 'b) t -> ('key, 'c) t
 (** Same as merge, but assumes the comparison function of both maps
-    are equal. If it's not the case, the result is undefined.
+    are equal. If it's not the case, the result is a map using the
+    comparison function of its first parameter, but which ['b option]
+    elements are passed to the function is unspecified.
 *)
 
 (** Exceptionless versions of functions *)

@@ -462,19 +462,18 @@ module Concrete = struct
           assert false in
     loop s1 s2
 
-  let rec merge_diverse f cmp1 s1 cmp2 s2 cmp3 =
+  let rec merge_diverse f cmp1 s1 cmp2 s2 =
     (* This implementation does not presuppose that the comparison
        function of s1 and s2 are the same. It is necessary in the PMap
        case, were we can't enforce that the same comparison function is
        used on both maps.
 
-       For maximal flexibility, we will suppose that we build the
-       result using a third comparison function cmp3. In practice PMap
-       will make an arbitrary choice and pass cmp1 or cmp2 here.
+       For consistency, we will always return a result built with the
+       comparison function of [m1].
 
        The idea of the algorithm is the following : iterates on keys
        of (s1 union s2), computing the merge result for each
-         f k (find_option k s1) (find_option k s2)
+       f k (find_option k s1) (find_option k s2)
        , and adding values to the result s3 accordingly.
        
        The crucial point is that we need to iterate on both keys of s1
@@ -520,14 +519,14 @@ module Concrete = struct
       foldi (fun k v1 acc ->
         match f k (Some v1) (find_option k cmp2 s2) with
           | None -> acc
-          | Some v3 -> add k v3 cmp3 acc)
+          | Some v3 -> add k v3 cmp1 acc)
         s1 empty in
     (* the second phase will return the result *)
     foldi (fun k v2 acc ->
       if mem k cmp1 s1 then acc
       else match f k None (Some v2) with
         | None -> acc
-        | Some v3 -> add k v3 cmp3 acc)
+        | Some v3 -> add k v3 cmp1 acc)
       s2 first_phase_result
 
   (* Checks if a given map is "ordered" wrt. a given comparison
@@ -562,51 +561,45 @@ module Concrete = struct
       true
     with Exit -> false
 
-  let compatible_cmp cmp1 m1 cmp2 m2 cmp1or2 =
-    cmp1 == cmp2 ||
-      (match cmp1or2 with
-        | `Cmp1 -> ordered cmp1 m2
-        | `Cmp2 -> ordered cmp2 m1)
+  let compatible_cmp cmp1 m1 cmp2 m2 =
+    cmp1 == cmp2 || ordered cmp1 m2
 
-  let heuristic_merge f cmp1 m1 cmp2 m2 cmp1or2 =
+  let heuristic_merge f cmp1 m1 cmp2 m2 =
     (* as merge_diverse is much slower than merge, we first try to
        see if we could possibly use merge; this is the case when either:
        - cmp1 and cmp2 are the *same* function (physical equality)
        - cmp1 is a correct ordering on m2 (see comment in [ordered])
        
        In the "same comparisons" case, we return a map ordered with
-       the given comparison. To have a continuous behavior, in the
-       other case we must still return a result ordered with one of
-       the input comparison (which was not the case in
-       [merge_diverse]). Which one is decided by the cmp1or2 boolean.
-    *)
-    let cmp3 = (match cmp1or2 with `Cmp1 -> cmp1 | `Cmp2 -> cmp2) in
-    if compatible_cmp cmp1 m1 cmp2 m2 cmp1or2
-    then merge f cmp3 m1 m2
-    else merge_diverse f cmp1 m1 cmp2 m2 cmp3
+       the given comparison. In the other case, we arbitrarily use the
+       comparison function of [m1]. *)
+    if compatible_cmp cmp1 m1 cmp2 m2
+    then merge f cmp1 m1 m2
+    else merge_diverse f cmp1 m1 cmp2 m2
 
+  (* Binary PMap operations;
+     
+     When the comparison function are compatible, we use an efficient
+     merge-based implementation.
+
+     Otherwise, we compute the result so that the return comparison
+     function is the same as the first map parameter. *)
   let union cmp1 m1 cmp2 m2 =
-    (* compatibility heuristic: see heuristic_merge *)
-    if compatible_cmp cmp1 m1 cmp2 m2 `Cmp2 then
-      (* we respect the specified behaviour that the first binding is
-         chosen when both are present, and that the result uses the
-         second comparison *)
+    if compatible_cmp cmp1 m1 cmp2 m2 then
       let merge_fun k a b = if a <> None then a else b in
       merge merge_fun cmp2 m1 m2
     else
-      foldi (fun k v m -> add k v cmp2 m) m1 m2
+      foldi (fun k v m -> add k v cmp1 m) m2 m1
 
   let diff cmp1 m1 cmp2 m2 =
-    (* compatibility heuristic: see heuristic_merge *)
-    if compatible_cmp cmp1 m1 cmp2 m2 `Cmp1 then
+    if compatible_cmp cmp1 m1 cmp2 m2 then
       let merge_fun k a b = if b <> None then None else a in
       merge merge_fun cmp1 m1 m2
     else
       foldi (fun k _v m -> remove k cmp1 m) m2 m1
 
   let intersect f cmp1 m1 cmp2 m2 =
-    (* compatibility heuristic: see heuristic_merge *)
-    if compatible_cmp cmp1 m1 cmp2 m2 `Cmp1 then
+    if compatible_cmp cmp1 m1 cmp2 m2 then
       let merge_fun k a b =
         match a, b with
           | Some v1, Some v2 -> Some (f v1 v2)
@@ -973,20 +966,19 @@ let split k m =
   { m with map = l }, v, { m with map = r }
 
 let union m1 m2 =
-  { m2 with map = Concrete.union m1.cmp m1.map m2.cmp m2.map }
+  { m1 with map = Concrete.union m1.cmp m1.map m2.cmp m2.map }
 
 let diff m1 m2 =
   { m1 with map = Concrete.diff m1.cmp m1.map m2.cmp m2.map }
 
 let intersect merge m1 m2 =
-  (* the use of 'empty' is strange here, but mimicks the older PMap implementation *)
-  { empty with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
+  { m1 with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
 
 let merge f m1 m2 =
-  { m2 with map = Concrete.heuristic_merge f m1.cmp m1.map m2.cmp m2.map `Cmp1 }
+  { m1 with map = Concrete.heuristic_merge f m1.cmp m1.map m2.cmp m2.map }
 
 let merge_unsafe f m1 m2 =
-  { m2 with map = Concrete.merge f m2.cmp m1.map m2.map }
+  { m1 with map = Concrete.merge f m1.cmp m1.map m2.map }
 
 let bindings m =
   Concrete.bindings m.map
