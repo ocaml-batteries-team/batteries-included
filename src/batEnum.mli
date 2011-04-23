@@ -630,12 +630,12 @@ module WithMonad : functor (Mon : BatMonad.S) -> sig
 (** Type of the monadic elements. *)
   
   val sequence : 'a m t -> 'a t m
-(** [sequence e] evaluates each monadic elements (of type ['a m] contained in the enumeration [e] to get a monadic enumeration of ['a] elements, 
+(** [sequence e] evaluates each monadic elements (of type ['a m]) contained in the enumeration [e] to get a monadic enumeration of ['a] elements, 
     of type ['a m BatEnum.t]. *)
  
   val fold_monad : ('a -> 'b -> 'a m) -> 'a -> 'b t -> 'a m
 (** [fold_monad f init e] does a folding of the enumeration [e] applying step by step the function [f] that gives back results in the [Mon] monad, 
-    with the [init] initial element. The result is a value in the [Mond] monad. *)
+    with the [init] initial element. The result is a value in the [Mon] monad. *)
 end
 
 (** The BatEnum Monad 
