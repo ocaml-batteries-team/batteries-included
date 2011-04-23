@@ -1065,22 +1065,37 @@ struct
   type 'a m = 'a Mon.m
       
   let sequence enum =
-    let queue = Queue.create () in
     let (>>=) = Mon.bind and return = Mon.return in
-    let of_queue q = from (fun () -> try Queue.pop q with Queue.Empty -> raise No_more_elements) in
-    let rec loop () = match get enum with
-      | None -> return (of_queue queue)
-      | Some elem -> elem >>= (fun x -> Queue.push x queue; loop ())
+    (* We use a list as an accumulator for the result sequence
+       computed under the monad. A previous version of this code used
+       a Queue instead, which was problematic for backtracking
+       monads. Due to the destructive nature of Enums, the current
+       version will still be problematic but at least the result will
+       be consistent. *)
+    let of_acc acc =
+      (* we don't use List functions to avoid creating a cyclic
+         dependency *)
+      let li = ref (List.rev acc) in
+      from (fun () ->
+        match !li with
+          | [] -> raise No_more_elements
+          | hd::tl ->
+            li := tl;
+            hd)
     in
-      loop ()
-	
+    let rec loop acc = match get enum with
+      | None -> return (of_acc acc)
+      | Some elem -> elem >>= (fun x -> loop (x :: acc))
+    in
+    loop []
+      
   let fold_monad f init enum = 
     let (>>=) = Mon.bind and return = Mon.return in 
     let rec fold m = match get enum with
       |	None -> m
       | Some x -> m >>= fun acc -> fold (f acc x)
     in
-      fold (return init)   
+    fold (return init)   
 end
 
 module Monad =
