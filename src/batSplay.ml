@@ -425,15 +425,23 @@ struct
   in
   Map (none_known Empty)
 
-  (*TODO : add an implementation for these functions
+  let pop = function
+    | Map Empty -> raise Not_found
+    | Map (Node (l, kv, r)) -> kv, Map (bst_append l r)
 
-    The following functions are required to conform to the Map
-    interface since ocaml 3.12. They have not yet been implemented in
-    BatSplay, but that must come soon.
-  *)
-  let pop _ =
-    failwith "pop not yet implemented in batSplay"
-  let extract _ =
-    failwith "extract not yet implemented in batSplay"
-
+  let extract k (Map tr) =
+    (* the reference here is a tad ugly but allows to reuse `cfind`
+       without fuss *)
+    let maybe_v = ref None in
+    let replace = function
+      | Empty -> Empty
+      | Node (l, (_, v), r) ->
+        maybe_v := Some v;
+        bst_append l r
+    in
+    let tr = top (cchange replace (cfind ~sel:(ksel k) tr)) in
+    (* like in the `remove` case, we don't bother rebalancing *)
+    match !maybe_v with
+      | None -> raise Not_found
+      | Some v -> v, Map tr
 end
