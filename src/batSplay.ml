@@ -134,6 +134,36 @@ struct
     end
   end
 
+  (* Didactic implementation note : why that ugly Obj module here? Why not
+     use a reference or mutable record field instead?
+
+     This is due to the covariance of the Map interface. OCaml checks
+     the internal definition to verify that the internal datatype is
+     consistent with the variance annotation. Using a reference in the
+     implementation of BatSplay would make the compiler reject the
+     implementation, because reference types must be invariant.
+
+     The idea of covariance for data structure is the following : if
+     you have an ('a list), and a type 'b which is less specific than
+     'a (a subtype, eg. with OCaml polymorphic variants or object
+     types), you can at any type pretend that your list is a ('b
+     list): if all 'a can be used as 'b, then all ('a list) can be
+     used as ('b list).
+
+     But this is not true for ('a list ref), orelese I may locally
+     consider it a ('b list) and mutate it to add an element of type
+     'b in it. But it is unsound because I may still have other part
+     of the code that consider it an ('a list), and the added 'b
+     element won't behave correctly as a 'a.
+
+     In our case however, the mutation is soundly compatible with
+     variance. Indeed, rebalancing never adds any element to the splay
+     tree, it only reorders the element that were already there. There
+     is therefore no risk of unsoudness due to forced
+     covariance. However, we must be careful to ensure that all
+     rebalancings keep the set of elements of the splay tree
+     unchanged.
+  *)
   let rebalance m tr =
     Obj.set_field (Obj.repr m) 0 (Obj.repr tr)
 
