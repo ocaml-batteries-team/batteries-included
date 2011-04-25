@@ -541,6 +541,8 @@ module TestMap
     "test_print" >:: test_print;
     "test_enums" >:: test_enums;
     "test_iterators" >:: test_iterators;
+    "test_pop" >:: test_pop;
+    "test_extract" >:: test_extract;
   ]
 end
 
