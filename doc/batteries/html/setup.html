@@ -45,6 +45,8 @@ that you have already installed all the following tools and libraries:
 <li>Findlib</li>
 <li>Camomile, version 0.7 or greater</li>
 <li>GNU Make</li>
+<li>OUnit (optional, to run tests)</li>
+<li>Ocaml-benchmark (optional, to run benchmarks)</li>
 </ul>
 
 <p>
@@ -137,19 +139,15 @@ packages:
 <dl>
 <dt>batteries</dt> <dd>
 The main package for Batteries Included. In turn, this package defines subpackages
+<!--
    <dt>batteries.pa_openin.syntax</dt> <dd>A language extension adding new possibilities for the opening of modules.</dd>
    <dt>batteries.pa_type_conv.syntax</dt> <dd>A language extension adding boiler-plate possibilities.</dd>
    <dt>batteries.pa_where.syntax</dt> <dd>A language extension adding a construction <code>where</code> dual to <code>let</code>.</dd>
+-->
    <dt>batteries.pa_batteries.syntax</dt> <dd>A language extension for automatically opening module <code>Batteries</code>.</dd>
    <dt>batteries.pa_comprehension.syntax</dt> <dd>A language extension for list comprehension.</dd>
-   <dt>batteries.pa_strings.syntax</dt> <dd>A language extension added the ability to declare and pattern-match against new kinds of strings.</dd>
+   <dt>batteries.pa_string.syntax</dt> <dd>A language extension added the ability to declare and pattern-match against new kinds of strings.</dd>
 </dd>
-<dt>batteries_threads</dt> <dd>You will probably never need to manipulate this package yourself.
-It is automatically linked to your files when you use both package <code>batteries</code>
-and package <code>threads</code>.</dd>
-<dt>batteries_nothreads</dt> <dd>You will probably never need to manipulate this package yourself.
-It is automatically linked to your files when you use package <code>batteries</code>
-without using package <code>threads</code>.</dd>
 </dl>
 
 For more information on how to use these packages, please see the documentation of
@@ -164,12 +162,8 @@ adding the following to your OMakefile:
 USE_OCAMLFIND = true
 
 OCAMLPACKS[] +=
-   batteries.pa_openin.syntax
-   batteries.pa_where.syntax
-   batteries.pa_batteries.syntax
    batteries.pa_comprehension.syntax
-   batteries.pa_type_conv.syntax
-   batteries.pa_strings.syntax
+   batteries.pa_string.syntax
    batteries
 
 OCAMLDEPFLAGS += -syntax camlp4o
@@ -185,14 +179,7 @@ find under the examples/ subdirectory:
 <pre>
 USE_OCAMLFIND = true
 
-OCAMLPACKS[] +=
-   batteries.pa_openin.syntax
-   batteries.pa_where.syntax
-   batteries.pa_batteries.syntax
-   batteries
-
-OCAMLDEPFLAGS += -syntax camlp4o
-OCAMLFLAGS += -syntax camlp4o
+OCAMLPACKS[] += batteries
 
 OCamlProgram(cat, cat)
 </pre>
@@ -201,7 +188,7 @@ OCamlProgram(cat, cat)
 
 The above OCAMLPACKS definition uses Batteries and all the non-destructive
 syntax extensions available as of 2008-11-16; this corresponds to the
-<code>use_batteries</code> tag in ocamlbuild.
+<code>pkg_batteries</code> tag in ocamlbuild.
 
 If you only want to use Batteries as a library, without syntax extensions, use
 
@@ -216,4 +203,3 @@ and drop the <code>OCAMLDEPFLAGS</code> and <code>OCAMLFLAGS</code>
 lines in the above examples, as they are no longer needed.
 </body>
 </html>
-
