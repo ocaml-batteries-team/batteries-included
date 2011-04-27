@@ -135,34 +135,108 @@ struct
   end
 
   (* Didactic implementation note : why that ugly Obj module here? Why not
-     use a reference or mutable record field instead?
+     use a reference or mutable record field instead? 
+     
+     This is due to the covariance of the Map interface
+     (type (+'a) t). OCaml checks the internal definition to verify
+     that the internal datatype is consistent with the variance
+     annotation. Using a reference in the implementation of BatSplay
+     would make the compiler reject the implementation, because
+     reference types must be invariant.
 
-     This is due to the covariance of the Map interface. OCaml checks
-     the internal definition to verify that the internal datatype is
-     consistent with the variance annotation. Using a reference in the
-     implementation of BatSplay would make the compiler reject the
-     implementation, because reference types must be invariant.
 
-     The idea of covariance for data structure is the following : if
-     you have an ('a list), and a type 'b which is less specific than
-     'a (a subtype, eg. with OCaml polymorphic variants or object
-     types), you can at any type pretend that your list is a ('b
-     list): if all 'a can be used as 'b, then all ('a list) can be
-     used as ('b list).
+     Following is an explanation of covariance and reference
+     invariance, feel free to skip it if you already know.
 
-     But this is not true for ('a list ref), orelese I may locally
-     consider it a ('b list) and mutate it to add an element of type
-     'b in it. But it is unsound because I may still have other part
-     of the code that consider it an ('a list), and the added 'b
-     element won't behave correctly as a 'a.
-
-     In our case however, the mutation is soundly compatible with
-     variance. Indeed, rebalancing never adds any element to the splay
-     tree, it only reorders the element that were already there. There
-     is therefore no risk of unsoudness due to forced
-     covariance. However, we must be careful to ensure that all
+         The idea of covariance for data structure is the following : if
+         you have an ('a list), and a type 'b which is less specific than
+         'a (a subtype, eg. with OCaml polymorphic variants or object
+         types), you can at any type pretend that your list is
+         a ('b list): if all 'a can be used as 'b, then all ('a list) can
+         be used as ('b list).
+         
+           # type a = < f1 : int; f2 : float >;;
+           # type b = < f1 : int >;;
+           # let t : a = object method f1 = 1 method f2 = 2. end;;
+           val t : a = <obj>
+           # (t :> b);;
+           - : b = <obj>
+           # ([t] :> b list);;
+           - : b list = [<obj>]
+         
+         But this is not true for ('a list ref), orelese I may locally
+         consider it a ('b list) and mutate it to add an element of type
+         'b in it, then observe it at type ('a list ref) again. This is
+         unsound because the added 'b element won't behave correctly as
+         a 'a.
+         
+           # let tref = ref [t];;
+           # (tref :> b list ref);;
+           Error: Type a list ref is not a subtype of b list ref 
+           Type a = < f1 : int; f2 : float > is not compatible with type
+             b = < f1 : int > 
+           The second object type has no method f2
+         
+         Imagine I think I know better, and break the type safety.
+         
+           # let forced_tref = (Obj.magic tref : b list ref);;
+         
+         Then I can add a element of type b to the list :
+         
+           # forced_tref := object method f1 = 1 end :: !forced_tref;;
+         
+         But this is unsound as I can now look at tref again, at type
+         (a list ref).
+         
+           # !tref;;
+           - : a list = [<obj>; <obj>]
+           # (List.hd !tref)#f2;;
+           Segmentation fault
+         
+         So in general, reference types cannot be safely subtyped (note
+         that Java has had a blatant flaw in its type system for years, as
+         mutable Arrays were covariant). If we used a `ref` in the
+         internal definition of BatSplay.t, the typer would reject the
+         module (the interface claims its covariant, while it's
+         invariant).
+       
+     In our case however, the mutation that actually happen (that are
+     confined in the internal implementation of BatSplay) are soundly
+     compatible with subtyping. Indeed, rebalancing never adds any
+     element to the splay tree, it only reorders the element that were
+     already there. There is therefore no risk of unsoudness due to
+     forced covariance. However, we must be careful to ensure that all
      rebalancings keep the set of elements of the splay tree
      unchanged.
+
+     We use the dirty Obj magic to use the (Map of (key * 'a) bst)
+     constructor as a reference that the type checked would accept as
+     invariant. Note that the mutations are therefore confined to the
+     "top" of the structure, the balanced tree itself is purely
+     functional, and that we must be careful to preserve the physical
+     identity of maps if we want to do mutations. For example,
+     
+       rebalance ((fun m -> m) some_map)
+     
+     will mutate some_map, but
+
+       rebelance ((fun (Map tr) -> Map tr) some_map)
+
+     won't, as the boxing/unboxing of (tr) made a shallow copy of the
+     Map constructor. This explains the (Map tr as m) pattern,
+
+       let find k (Map tr as m) = ...
+
+     which ensures that we retain the physical identity of the map, to
+     be able to rebalance it in the implementation. On the contrary,
+
+       let remove k (Map tr) = ...
+
+     will not perform a rebalancing, and the rebalancing the result
+     will not affect the initial parameter.
+
+     PS : No list reference were harmed during the implementation of
+     this module.
   *)
   let rebalance m tr =
     Obj.set_field (Obj.repr m) 0 (Obj.repr tr)
