@@ -36,21 +36,20 @@ NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
 
 # What to build
 TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
-TEST_TARGETS = testsuite/main.byte qtest/test_runner.byte
-TEST_TARGETS = testsuite/main.byte
 BENCH_TARGETS = benchsuite/bench_int.native benchsuite/bench_map.native
+TEST_TARGET = test-byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   EXT = native
   MODE = shared
   TARGETS += shared.otarget
-  TEST_TARGETS += testsuite/main.native qtest/test_runner.native
+  TEST_TARGET = test-native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
 else ifeq ($(BATTERIES_NATIVE), yes)
   EXT = native
   MODE = native
   TARGETS += native.otarget
-  TEST_TARGETS += testsuite/main.native qtest/test_runner.native
+  TEST-DEPS = test-native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 else
   EXT = byte
@@ -107,9 +106,25 @@ reinstall:
 DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
 TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
-test: src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
-	$(OCAMLBUILD) $(TARGETS) $(TEST_TARGETS)
-	$(foreach TEST, $(TEST_TARGETS), echo "Running $(TEST)" && _build/$(TEST) && echo && ) /bin/true
+TESTDEPS = src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
+
+compile-test-byte: $(TESTDEPS)
+	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte
+
+compile-test-native: $(TESTDEPS)
+	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
+
+run-test-byte:
+	_build/testsuite/main.byte
+	_build/qtest/test_runner.byte
+
+run-test-native: run-test-byte
+	_build/testsuite/main.native
+	_build/qtest/test_runner.native
+
+test-byte: compile-test-byte run-test-byte
+test-native: compile-test-native run-test-byte
+test: $(TEST_TARGET)
 
 bench: 
 	$(OCAMLBUILD) $(TARGETS) $(BENCH_TARGETS)
