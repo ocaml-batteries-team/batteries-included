@@ -118,6 +118,16 @@ module Tuple2 : sig
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ('a * 'b) -> ('a * 'b) -> int
 
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a
+
+  module Incubator : sig
+    open BatOrd.Incubator
+    val eq : 'a eq -> 'b eq -> ('a * 'b) eq
+    val ord : 'a ord -> 'b ord -> ('a * 'b) ord
+    val comp : 'a comp -> 'b comp -> ('a * 'b) comp
+    module Eq (T1 : Eq) (T2 : Eq) : Eq with type t = T1.t * T2.t
+    module Ord (T1 : Ord) (T2 : Ord) : Ord with type t = T1.t * T2.t
+    module Comp (T1 : Comp) (T2 : Comp) : Comp with type t = T1.t * T2.t
+  end
 end
 
 (** Triples.
@@ -168,6 +178,19 @@ module Tuple3 : sig
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ('a * 'b * 'c) -> ('a * 'b * 'c) -> int
 
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a
+
+  module Incubator : sig
+    open BatOrd.Incubator
+    val eq : 'a eq -> 'b eq -> 'c eq -> ('a * 'b * 'c) eq
+    val ord : 'a ord -> 'b ord -> 'c ord -> ('a * 'b * 'c) ord
+    val comp : 'a comp -> 'b comp -> 'c comp -> ('a * 'b * 'c) comp
+    module Eq (T1 : Eq) (T2 : Eq) (T3 : Eq)
+      : Eq with type t = T1.t * T2.t * T3.t
+    module Ord (T1 : Ord) (T2 : Ord) (T3 : Ord)
+      : Ord with type t = T1.t * T2.t * T3.t
+    module Comp (T1 : Comp) (T2 : Comp) (T3 : Comp)
+      : Comp with type t = T1.t * T2.t * T3.t
+  end
 end
 
 (** 4-Tuples.
@@ -227,6 +250,19 @@ module Tuple4 : sig
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'c * 'd) -> int
 
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
+
+  module Incubator : sig
+    open BatOrd.Incubator
+    val eq : 'a eq -> 'b eq -> 'c eq -> 'd eq -> ('a * 'b * 'c * 'd) eq
+    val ord : 'a ord -> 'b ord -> 'c ord -> 'd ord -> ('a * 'b * 'c * 'd) ord
+    val comp : 'a comp -> 'b comp -> 'c comp -> 'd comp -> ('a * 'b * 'c * 'd) comp
+    module Eq (T1 : Eq) (T2 : Eq) (T3 : Eq) (T4 : Eq)
+      : Eq with type t = T1.t * T2.t * T3.t * T4.t
+    module Ord (T1 : Ord) (T2 : Ord) (T3 : Ord) (T4 : Ord)
+      : Ord with type t = T1.t * T2.t * T3.t * T4.t
+    module Comp (T1 : Comp) (T2 : Comp) (T3 : Comp) (T4 : Comp)
+      : Comp with type t = T1.t * T2.t * T3.t * T4.t
+  end
 end
 
 (** 5-Tuples.
@@ -305,4 +341,20 @@ module Tuple5 : sig
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ?cmp5:('e -> 'e -> int) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'd * 'e) -> int
 
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a * 'a
+
+  module Incubator : sig
+    open BatOrd.Incubator
+    val eq : 'a eq -> 'b eq -> 'c eq -> 'd eq -> 'e eq
+	-> ('a * 'b * 'c * 'd * 'e) eq
+    val ord : 'a ord -> 'b ord -> 'c ord -> 'd ord -> 'e ord
+	-> ('a * 'b * 'c * 'd * 'e) ord
+    val comp : 'a comp -> 'b comp -> 'c comp -> 'd comp -> 'e comp
+	-> ('a * 'b * 'c * 'd * 'e) comp
+    module Eq (T1 : Eq) (T2 : Eq) (T3 : Eq) (T4 : Eq) (T5 : Eq)
+      : Eq with type t = T1.t * T2.t * T3.t * T4.t * T5.t
+    module Ord (T1 : Ord) (T2 : Ord) (T3 : Ord) (T4 : Ord) (T5 : Ord)
+      : Ord with type t = T1.t * T2.t * T3.t * T4.t * T5.t
+    module Comp (T1 : Comp) (T2 : Comp) (T3 : Comp) (T4 : Comp) (T5 : Comp)
+      : Comp with type t = T1.t * T2.t * T3.t * T4.t * T5.t
+  end
 end
