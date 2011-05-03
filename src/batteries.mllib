@@ -61,6 +61,7 @@ BatMultiPMap
 BatNumber
 BatOption
 BatOptParse
+BatOrd
 BatPair
 BatParserCo
 BatPathGen
