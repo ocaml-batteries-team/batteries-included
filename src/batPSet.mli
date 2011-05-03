@@ -78,6 +78,8 @@ val for_all : ('a -> bool) -> 'a t -> bool
 
 val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
 
+val split : 'a -> 'a t -> 'a t * bool * 'a t
+
 val filter : ('a -> bool) -> 'a t -> 'a t
 
 val pop : 'a t -> 'a * 'a t

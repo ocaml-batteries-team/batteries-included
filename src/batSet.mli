@@ -141,6 +141,15 @@ module type S =
        predicate [p], and [s2] is the set of all the elements of
        [s] that do not satisfy [p]. *)
 
+    val split: elt -> t -> t * bool * t
+    (** [split x s] returns a triple [(l, present, r)], where
+          [l] is the set of elements of [s] that are
+          strictly less than [x];
+          [r] is the set of elements of [s] that are
+          strictly greater than [x];
+          [present] is [false] if [s] contains no element equal to [x],
+          or [true] if [s] contains an element equal to [x]. *)
+
     val cardinal: t -> int
     (** Return the number of elements of a set. *)
 
@@ -165,14 +174,9 @@ module type S =
        the set is empty. Which element is chosen is unspecified,
        but equal elements will be chosen for equal sets. *)
 
-    val split: elt -> t -> t * bool * t
-    (** [split x s] returns a triple [(l, present, r)], where
-          [l] is the set of elements of [s] that are
-          strictly less than [x];
-          [r] is the set of elements of [s] that are
-          strictly greater than [x];
-          [present] is [false] if [s] contains no element equal to [x],
-          or [true] if [s] contains an element equal to [x]. *)
+    val pop : t -> elt * t
+    (** returns one element of the set and the set without that element.
+        Raises [Not_found] if given an empty set *)
 
     val enum: t -> elt BatEnum.t
       (** Return an enumeration of all elements of the given set.
@@ -371,29 +375,35 @@ val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
   (** returns two disjoint subsets, those that satisfy the given
       predicate and those that don't *)
 
+val split : 'a -> 'a t -> 'a t * bool * 'a t
+  (** [split x s] returns a triple [(l, present, r)], where
+      [l] is the set of elements of [s] that are
+      strictly less than [x];
+      [r] is the set of elements of [s] that are
+      strictly greater than [x];
+      [present] is [false] if [s] contains no element equal to [x],
+      or [true] if [s] contains an element equal to [x]. *)
+
 val cardinal: 'a t -> int
   (** Return the number of elements of a set. *)
 
 (* 'elements' missing *)
 
 val min_elt : 'a t -> 'a
-  (** returns the binding with the smallest key. Raises
+  (** returns the smallest element of the set. Raises
       [Invalid_argument] if given an empty set. *)
 
 val max_elt : 'a t -> 'a
-  (** returns the binding with the largest key. Raises
+  (** returns the largest element of the set. Raises
       [Invalid_argument] if given an empty set.*)
 
 val choose : 'a t -> 'a
-  (** returns one binding of the given map, deterministically.  Raises
-      [Invalid_argument] if given an empty set. *)
+  (** returns an arbitrary (but deterministic) element of the given set.
+      Raises [Invalid_argument] if given an empty set. *)
 
-(* pop has no Set.Make counterpart *)
 val pop : 'a t -> 'a * 'a t
   (** returns one element of the set and the set without that element.
       Raises [Not_found] if given an empty set *)
-
-(* 'split' missing *)
 
 val enum: 'a t -> 'a BatEnum.t
   (** Return an enumeration of all elements of the given set.

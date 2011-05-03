@@ -336,11 +336,11 @@ sig
 
   val is_empty: t -> bool
 
+  val singleton: elt -> t
+
   val mem: elt -> t -> bool
 
   val add: elt -> t -> t
-
-  val singleton: elt -> t
 
   val remove: elt -> t -> t
 
@@ -374,6 +374,8 @@ sig
 
   val partition: (elt -> bool) -> t -> t * t
 
+  val split: elt -> t -> t * bool * t
+
   val cardinal: t -> int
 
   val elements: t -> elt list
@@ -384,7 +386,7 @@ sig
 
   val choose: t -> elt
 
-  val split: elt -> t -> t * bool * t
+  val pop: t -> elt * t
 
   val enum: t -> elt BatEnum.t
 
@@ -461,6 +463,9 @@ struct
   let min_elt t = Concrete.min_elt (impl_of_t t)
   let max_elt t = Concrete.max_elt (impl_of_t t)
   let choose t = Concrete.choose (impl_of_t t)
+  let pop t =
+    let e, t = Concrete.pop (impl_of_t t) in
+    e, t_of_impl t
 
   let split e s =
     let l, v, r = Concrete.split Ord.compare e (impl_of_t s) in
@@ -617,6 +622,10 @@ let filter f s = { s with set = Concrete.filter s.cmp f s.set }
 let pop s =
   let v, s' = Concrete.pop s.set in
   v, { s with set = s' }
+
+let split e s =
+  let s1, found, s2 = Concrete.split s.cmp e s.set in
+  { s with set = s1 }, found, { s with set = s2 }
 
 let union s1 s2 =
   { s1 with set = Concrete.union s1.cmp s1.set s2.set }

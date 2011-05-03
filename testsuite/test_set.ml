@@ -37,6 +37,8 @@ module TestSet
     type s
     type elt = int
 
+    val equal : s -> s -> bool
+
     (* tested functions *)
     val empty : s
     val is_empty : s -> bool
@@ -48,8 +50,7 @@ module TestSet
     val min_elt : s -> elt
     val max_elt : s -> elt
 
-    (* val extract : elt -> s -> s *)
-    (* val pop : s -> elt * s *)
+    val pop : s -> elt * s
     
     val fold : (elt -> 'b -> 'b) -> s -> 'b -> 'b
     val iter : (elt -> unit) -> s -> unit
@@ -167,30 +168,15 @@ module TestSet
       (S.mem (S.choose t) t);
     ()
 
-(*
-  let test_extract () =
-    "extract 1 empty -> Not_found" @!
-      (Not_found, fun () -> S.extract 1 S.empty);
-    let t = il [(1,2); (3,4)] in
-    "not <| mem k <| snd <| extract k t" @?
-      (not -| S.mem 1 -| snd <| S.extract 1 t);
-    "extract k (add k v t) = (v, t)" @?
-      (let (k, v) = (5, 6) in
-       let (v', t') = S.extract k (S.add k v t) in
-       v = v' && S.equal (=) t t');
-    ()
-
   let test_pop () =
     "pop empty -> Not_found" @!
       (Not_found, fun () -> S.pop S.empty);
-    let t = il [(1,2); (3,4)] in
-    "not (mem (fst (fst (pop t))) (snd (pop t)))" @?
-      (not <| S.mem (fst -| fst <| S.pop t) (snd <| S.pop t));
-    "let ((k,v),t') = pop t in add k v t' = t" @?
-      (let (k,v), t' = S.pop t in
-       S.equal (=) (S.add k v t') t);
+    let t = il [1; 2; 3; 4] in
+    "not (mem (fst (pop t)) (snd (pop t)))" @?
+      (not <| S.mem (fst <| S.pop t) (snd <| S.pop t));
+    "let (k,t') = pop t in add k t' = t" @?
+      (let k, t' = S.pop t in S.equal (S.add k t') t);
     ()
-*)
 
   let test_split () =
     let k, v, t = 1, 2, il [0; 1; 2; 4; 5] in
@@ -361,8 +347,7 @@ module TestSet
     "test_print" >:: test_print;
     (* "test_enums" >:: test_enums; *)
     "test_iterators" >:: test_iterators;
-    (* "test_pop" >:: test_pop; *)
-    (* "test_extract" >:: test_extract; *)
+    "test_pop" >:: test_pop;
   ]
 end
 
@@ -380,10 +365,9 @@ module P = struct
 
   let singleton k = S.singleton ?cmp:None k
 
-  let split k t =
-    filter (fun e -> BatInt.compare e k < 0) t,
-    mem k t,
-    filter (fun e -> BatInt.compare e k > 0) t
+  let equal s1 s2 =
+    let is_in s e = S.mem e s in
+    S.for_all (is_in s1) s2 && S.for_all (is_in s2) s1
 
   let backwards t =
     BatList.enum -| List.rev -| BatList.of_enum <| S.enum t
