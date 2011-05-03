@@ -64,15 +64,15 @@ module type S =
     val is_empty: t -> bool
     (** Test whether a set is empty or not. *)
 
+    val singleton: elt -> t
+    (** [singleton x] returns the one-element set containing only [x]. *)
+
     val mem: elt -> t -> bool
     (** [mem x s] tests whether [x] belongs to the set [s]. *)
 
     val add: elt -> t -> t
     (** [add x s] returns a set containing all elements of [s],
        plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
-
-    val singleton: elt -> t
-    (** [singleton x] returns the one-element set containing only [x]. *)
 
     val remove: elt -> t -> t
     (** [remove x s] returns a set containing all elements of [s],
@@ -293,12 +293,12 @@ val empty: 'a t
 val create : ('a -> 'a -> int) -> 'a t
   (** Creates a new empty set, using the provided function for key comparison.*)
 
+val is_empty: 'a t -> bool
+  (** Test whether a set is empty or not. *)
+
 val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'a t
 (** Creates a new set with the single given element in it. *)
 
-val is_empty: 'a t -> bool
-  (** Test whether a set is empty or not. *)
-  
 val mem: 'a -> 'a t -> bool
   (** [mem x s] tests whether [x] belongs to the set [s]. *)
   
@@ -309,13 +309,36 @@ val add: 'a -> 'a t -> 'a t
 val remove: 'a -> 'a t -> 'a t
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged. *)
-  
-  
+
+val union: 'a t -> 'a t -> 'a t
+  (** [union s t] returns the union of [s] and [t] - the set containing
+      all elements in either [s] and [t].  The returned set uses [t]'s
+      comparison function.  The current implementation works better for
+      small [s]. *)
+
+(* Set.Make uses intersect *)
+val intersect: 'a t -> 'a t -> 'a t
+(** [intersect s t] returns a new set of those elements that are in
+    both [s] and [t].  The returned set uses [s]'s comparison function. *)
+
+val diff: 'a t -> 'a t -> 'a t
+  (** [diff s t] returns the set of all elements in [s] but not in
+      [t]. The returned set uses [s]'s comparison function.*)
+
+(* No compare nor equal; they don't make sense if the comparison
+   functions of the two sets may be different, but apparently this
+   wasn't a problem for 'subset'? *)
+
+val subset: 'a t -> 'a t -> bool
+(** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
+
 val iter: ('a -> unit) -> 'a t -> unit
   (** [iter f s] applies [f] in turn to all elements of [s].
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
 
+(* under-specified; either give a 'b comparison,
+   or keep ('a -> 'a) (preferred choice) *)
 val map: ('a -> 'b) -> 'a t -> 'b t
   (** [map f x] creates a new set with elements [f a0],
       [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
@@ -325,6 +348,7 @@ val filter: ('a -> bool) -> 'a t -> 'a t
   (** [filter p s] returns the set of all elements in [s]
       that satisfy predicate [p]. *)
   
+(* as under-specified as 'map' *)
 val filter_map: ('a -> 'b option) -> 'a t -> 'b t
   (** [filter_map f m] combines the features of [filter] and
       [map].  It calls calls [f a0], [f a1], [f aN] where [a0,a1..an]
@@ -339,15 +363,18 @@ val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
 val exists: ('a -> bool) -> 'a t -> bool
   (** [exists p s] checks if at least one element of
       the set satisfies the predicate [p]. *)
-  
-  
+
+val for_all : ('a -> bool) -> 'a t -> bool
+(** Returns whether the given predicate applies to all elements in the set *)
+
+val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+  (** returns two disjoint subsets, those that satisfy the given
+      predicate and those that don't *)
+
 val cardinal: 'a t -> int
   (** Return the number of elements of a set. *)
 
-
-val choose : 'a t -> 'a
-  (** returns one binding of the given map, deterministically.  Raises
-      [Invalid_argument] if given an empty set. *)
+(* 'elements' missing *)
 
 val min_elt : 'a t -> 'a
   (** returns the binding with the smallest key. Raises
@@ -356,7 +383,18 @@ val min_elt : 'a t -> 'a
 val max_elt : 'a t -> 'a
   (** returns the binding with the largest key. Raises
       [Invalid_argument] if given an empty set.*)
-  
+
+val choose : 'a t -> 'a
+  (** returns one binding of the given map, deterministically.  Raises
+      [Invalid_argument] if given an empty set. *)
+
+(* pop has no Set.Make counterpart *)
+val pop : 'a t -> 'a * 'a t
+  (** returns one element of the set and the set without that element.
+      Raises [Not_found] if given an empty set *)
+
+(* 'split' missing *)
+
 val enum: 'a t -> 'a BatEnum.t
   (** Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in increasing order with respect
@@ -366,41 +404,10 @@ val of_enum: 'a BatEnum.t -> 'a t
 
 val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
 
+(* of_list has no Set.Make counterpart *)
 val of_list: 'a list -> 'a t
 (** builds a set from the given list, using the default comparison
     function *)
-
-val for_all : ('a -> bool) -> 'a t -> bool
-(** Returns whether the given predicate applies to all elements in the set *)
-
-
-val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
-  (** returns two disjoint subsets, those that satisfy the given
-      predicate and those that don't *)
-
-val filter : ('a -> bool) -> 'a t -> 'a t
-  (** returns the subset of items satisfying the given predicate *)
-
-val pop : 'a t -> 'a * 'a t
-  (** returns one element of the set and the set without that element.
-      Raises [Not_found] if given an empty set *)
-
-val union: 'a t -> 'a t -> 'a t
-  (** [union s t] returns the union of [s] and [t] - the set containing
-      all elements in either [s] and [t].  The returned set uses [t]'s
-      comparison function.  The current implementation works better for
-      small [s]. *)
-
-val diff: 'a t -> 'a t -> 'a t
-  (** [diff s t] returns the set of all elements in [s] but not in
-      [t]. The returned set uses [s]'s comparison function.*)
-
-val intersect: 'a t -> 'a t -> 'a t
-(** [intersect s t] returns a new set of those elements that are in
-    both [s] and [t].  The returned set uses [s]'s comparison function. *)
-
-val subset: 'a t -> 'a t -> bool
-(** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
 
 (** {6 Boilerplate code}*)
 
