@@ -328,6 +328,21 @@ struct
 
   let mapi f t = filter_map (fun k v -> Some (f k v)) t
 
+  let partition (p : key -> 'a -> bool) : 'a t -> 'a t * 'a t =
+    let rec visit t cont = match t with
+      | Empty -> cont Empty Empty
+      | Node (l, ((k, v) as kv), r) ->
+        visit l begin fun l1 l2 ->
+          let b = p k v in
+          visit r begin fun r1 r2 ->
+            if b
+            then cont (Node (l1, kv, r1)) (bst_append l2 r2)
+            else cont (bst_append l1 r1)  (Node (l2, kv, r2))
+          end
+        end
+    in
+    fun (Map tr) -> visit tr (fun t1 t2 -> Map t1, Map t2)
+
   type 'a enumeration =
     | End
     | More of key * 'a * (key * 'a) bst * 'a enumeration

@@ -202,6 +202,19 @@ module TestSet
        li l = li (S.remove mk l) && p = true && S.is_empty r);
     ()
 
+  let test_partition () =
+    let t = il [0; 1; 2; 3; 4] in
+    let p k = k mod 2 = 0 in
+    "partition (fun k -> k mod 2 = 0) [0; 1; 2; 3; 4] = [0; 2; 4], [1; 3]" @?
+      (let l, r = S.partition p t in
+       li l = [0; 2; 4] && li r = [1; 3]);
+    "partition (fun _ -> true) t = t, empty" @?
+      (let l, r = S.partition (fun _ -> true) t in
+       S.equal l t && S.is_empty r);
+    "partition (fun _ -> false) t = empty, t" @?
+      (let l, r = S.partition (fun _ -> false) t in
+       S.is_empty l && S.equal r t);
+    ()
 (*
   let test_merge () =
     let t, t' = il [0; 1; 3], [1; 2; 3; 4] in
@@ -342,6 +355,7 @@ module TestSet
     "test_max_elt" >:: test_max_elt;
     "test_choose" >:: test_choose;
     "test_split" >:: test_split;
+    "test_partition" >:: test_partition;
     (* "test_merge" >:: test_merge; *)
     "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;

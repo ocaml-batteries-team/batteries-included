@@ -115,6 +115,7 @@ module TestMap
 
     val for_all : (key -> 'a -> bool) -> 'a m -> bool
     val exists : (key -> 'a -> bool) -> 'a m -> bool
+    val partition : (key -> 'a -> bool) -> 'a m -> 'a m * 'a m
 
     val choose : 'a m -> (key * 'a)
     val split : key -> 'a m -> ('a m * 'a option * 'a m)
@@ -301,6 +302,21 @@ module TestMap
       (let mk, mv = M.max_binding t in
        let (l, m, r) =  M.split mk t in
        li l = li (M.remove mk l) && m = Some mv && M.is_empty r);
+    ()
+
+  let test_partition () =
+    let t = il [0,0; 1,1; 2,2; 3,3; 4,4] in
+    let p k _ = k mod 2 = 0 in
+    "partition (fun k _ -> k mod 2 = 0) [0,0; 1,1; 2,2; 3,3; 4,4]
+     = [0,0; 2,2; 4,4], [1,1; 3,3]" @?
+      (let l, r = M.partition p t in
+       li l = [0,0; 2,2; 4,4] && li r = [1,1; 3,3]);
+    "partition (fun _ _ -> true) t = t, empty" @?
+      (let l, r = M.partition (fun _ _ -> true) t in
+       M.equal (=) l t && M.is_empty r);
+    "partition (fun _ _ -> false) t = empty, t" @?
+      (let l, r = M.partition (fun _ _ -> false) t in
+       M.is_empty l && M.equal (=) r t);
     ()
 
   let test_merge () =
@@ -531,6 +547,7 @@ module TestMap
     "test_modify_def" >:: test_modify_def;
     "test_choose" >:: test_choose;
     "test_split" >:: test_split;
+    "test_partition" >:: test_partition;
     "test_merge" >:: test_merge;
     "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;
