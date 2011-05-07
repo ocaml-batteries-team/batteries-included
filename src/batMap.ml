@@ -673,6 +673,8 @@ sig
 
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
 
+  val partition : (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
+
   val singleton : key -> 'a -> 'a t
 
   val bindings : 'a t -> (key * 'a) list
@@ -686,7 +688,7 @@ sig
   val for_all: (key -> 'a -> bool) -> 'a t -> bool
     
   val exists: (key -> 'a -> bool) -> 'a t -> bool
-    
+
   val merge:
     (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
 
@@ -789,6 +791,10 @@ struct
   let split k t =
     let l, v, r = Concrete.split k Ord.compare (impl_of_t t) in
     (t_of_impl l, v, t_of_impl r)
+
+  let partition p t =
+    let l, r = Concrete.partition p Ord.compare (impl_of_t t) in
+    (t_of_impl l, t_of_impl r)
 
   let modify x f m = t_of_impl (Concrete.modify x f Ord.compare (impl_of_t m))
 

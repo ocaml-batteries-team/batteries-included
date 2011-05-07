@@ -1,4 +1,4 @@
-(* cd .. && ocamlbuild benchsuite/test_maps.native && _build/benchsuite/test_maps.native *)
+(* cd .. && ocamlbuild benchsuite/bench_map.native && _build/benchsuite/bench_map.native *)
 
 (* The purpose of this test is to compare different implementation of
    the Map associative data structure. *)

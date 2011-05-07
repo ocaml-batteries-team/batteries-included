@@ -200,6 +200,7 @@ sig
         - choose
         - split
         - singleton
+        - partition
    *)
     val choose : 'a t -> (key * 'a)
     (** Return one binding of the given map, or raise [Not_found] if
@@ -216,6 +217,15 @@ sig
           [data] is [None] if [m] contains no binding for [x],
           or [Some v] if [m] binds [v] to [x].
      *)
+
+    val partition: (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
+    (** [partition p m] returns a pair of maps [(m1, m2)], where
+        [m1] contains all the bindings of [s] that satisfy the
+        predicate [p], and [m2] is the map with all the bindings of
+        [s] that do not satisfy [p].
+        @since 1.4.0
+     *)
+
 
     val singleton: key -> 'a -> 'a t
     (** [singleton x y] returns the one-element map that contains a binding [y]
@@ -500,8 +510,12 @@ val for_all : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
 val exists_f : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
 (** Tests whether some key value pair satisfies some predicate function *)
 
+(* documentation comment from INRIA's stdlib *)
 val partition : ('a -> 'b -> bool) -> ('a, 'b) t -> ('a, 'b) t * ('a, 'b) t
-(** Divides a map into two maps based on a test function *)
+(** [partition p m] returns a pair of maps [(m1, m2)], where [m1]
+    contains all the bindings of [s] that satisfy the predicate
+    [p], and [m2] is the map with all the bindings of [s] that do
+    not satisfy [p]. *)
 
 val add_carry : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t * 'b option
 (** [add_carry k v m] adds the binding [(k,v)] to [m], returning the new map and optionally the previous value bound to [k]. *)
@@ -549,11 +563,6 @@ val intersect : ('b -> 'c -> 'd) -> ('a, 'b) t -> ('a, 'c) t -> ('a, 'd) t
     keys bound in both [m1] and [m2], and with [k] bound to [merge_f
     v1 v2], where [v1] and [v2] are [k]'s bindings in [m1] and [m2].
     The resulting map uses the comparison function of [m1]. *)
-
-val split : 'a -> ('a, 'b) t -> (('a, 'b) t * 'b option * ('a, 'b) t)
-(** [split k m] returns the map of keys less than [k] in [m], [k]'s
-    binding in [m], if there was one, and the map of keys greater then
-    [k] in [m] *)
 
 val merge:
   ('key -> 'a option -> 'b option -> 'c option)

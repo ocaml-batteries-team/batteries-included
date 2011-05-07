@@ -53,7 +53,6 @@ let test_split () =
     do_test (gen_map init bound count) (R.State.int init bound)
   done
 
-
 let (>:), (>::), (>:::) = U.(>:), U.(>::), U.(>:::)
 let (@?) = U.(@?)
 let (@!) msg (exn, f) = U.assert_raises ~msg exn f
@@ -72,10 +71,6 @@ let (@!) msg (exn, f) = U.assert_raises ~msg exn f
 
    Functions that are currently Map-specific :
      compare, equal, keys, values
-
-   Functions that have been added in 3.12 stdlib's Map, but not yet
-   added in Batteries :
-     merge
 *)
 module TestMap
   (M: sig
@@ -120,6 +115,7 @@ module TestMap
 
     val for_all : (key -> 'a -> bool) -> 'a m -> bool
     val exists : (key -> 'a -> bool) -> 'a m -> bool
+    val partition : (key -> 'a -> bool) -> 'a m -> 'a m * 'a m
 
     val choose : 'a m -> (key * 'a)
     val split : key -> 'a m -> ('a m * 'a option * 'a m)
@@ -302,10 +298,25 @@ module TestMap
       (let mk, mv = M.min_binding t in
        let (l, m, r) =  M.split mk t in
        M.is_empty l && m = Some mv && li r = li (M.remove mk r));
-    "split (fst (max_binding t)) t = (empty, Some (snd (max_binding t)), remove_max_binding t)" @?
+    "split (fst (max_binding t)) t = (remove_max_binding t, Some (snd (max_binding t)), empty)" @?
       (let mk, mv = M.max_binding t in
        let (l, m, r) =  M.split mk t in
        li l = li (M.remove mk l) && m = Some mv && M.is_empty r);
+    ()
+
+  let test_partition () =
+    let t = il [0,0; 1,1; 2,2; 3,3; 4,4] in
+    let p k _ = k mod 2 = 0 in
+    "partition (fun k _ -> k mod 2 = 0) [0,0; 1,1; 2,2; 3,3; 4,4]
+     = [0,0; 2,2; 4,4], [1,1; 3,3]" @?
+      (let l, r = M.partition p t in
+       li l = [0,0; 2,2; 4,4] && li r = [1,1; 3,3]);
+    "partition (fun _ _ -> true) t = t, empty" @?
+      (let l, r = M.partition (fun _ _ -> true) t in
+       M.equal (=) l t && M.is_empty r);
+    "partition (fun _ _ -> false) t = empty, t" @?
+      (let l, r = M.partition (fun _ _ -> false) t in
+       M.is_empty l && M.equal (=) r t);
     ()
 
   let test_merge () =
@@ -536,6 +547,7 @@ module TestMap
     "test_modify_def" >:: test_modify_def;
     "test_choose" >:: test_choose;
     "test_split" >:: test_split;
+    "test_partition" >:: test_partition;
     "test_merge" >:: test_merge;
     "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;
@@ -601,7 +613,7 @@ module S = struct
 
   let fold f = M.fold (fun _ -> f)
   let foldi = M.fold
-end
+end  
 
 module TM = TestMap(M)
 module TP = TestMap(P)
@@ -687,7 +699,7 @@ let test_splay_print_as_list () =
 let tests = "(P)Map" >::: [
   "traversal order iter vs. enum" >:: test_traversal_order;
   "split" >:: test_split;
-  "usual tests on Map" >::: TM.tests;
+  "usual tests on Map.Make" >::: TM.tests;
   "usual tests on PMap" >::: TP.tests;
   "usual tests on Splay" >::: TS.tests;
   "test BatSPlay.print_as_list" >:: test_splay_print_as_list;

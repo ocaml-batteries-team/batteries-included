@@ -114,7 +114,7 @@ struct
     csplay begin
       match cfind ~sel:(ksel k) tr with
         | C (cx, Node (l, (k, _), r)) -> C (cx, Node (l, (k, v), r))
-	| C (cx, Empty) -> C (cx, singleton' k v)
+        | C (cx, Empty) -> C (cx, singleton' k v)
     end
   end
 
@@ -328,6 +328,21 @@ struct
 
   let mapi f t = filter_map (fun k v -> Some (f k v)) t
 
+  let partition (p : key -> 'a -> bool) : 'a t -> 'a t * 'a t =
+    let rec visit t cont = match t with
+      | Empty -> cont Empty Empty
+      | Node (l, ((k, v) as kv), r) ->
+        visit l begin fun l1 l2 ->
+          let b = p k v in
+          visit r begin fun r1 r2 ->
+            if b
+            then cont (Node (l1, kv, r1)) (bst_append l2 r2)
+            else cont (bst_append l1 r1)  (Node (l2, kv, r2))
+          end
+        end
+    in
+    fun (Map tr) -> visit tr (fun t1 t2 -> Map t1, Map t2)
+
   type 'a enumeration =
     | End
     | More of key * 'a * (key * 'a) bst * 'a enumeration
@@ -453,13 +468,13 @@ struct
     let C (cx, center) = cfind ~sel:(ksel k) tr in
     match center with
       | Empty ->
-	let l, r = csplay' cx Empty Empty in
-	(Map l, None, Map r)
+        let l, r = csplay' cx Empty Empty in
+        (Map l, None, Map r)
       | Node (l, x, r) ->
-	let l', r' = csplay' cx l r in
-	(* we rebalance as in 'find' *)
-	rebalance m (Node (l', x, r'));
-	(Map l', Some (snd x), Map r')
+        let l', r' = csplay' cx l r in
+        (* we rebalance as in 'find' *)
+        rebalance m (Node (l', x, r'));
+        (Map l', Some (snd x), Map r')
 
   let merge f m1 m2 =
     (* The implementation is a bit long, but has the important
@@ -473,33 +488,33 @@ struct
        tree. *)
     let maybe_push acc k maybe_v1 maybe_v2 =
       match f k maybe_v1 maybe_v2 with
-	| None -> acc
-	| Some v -> Node (acc, (k, v), Empty) in
+        | None -> acc
+        | Some v -> Node (acc, (k, v), Empty) in
     let push1 acc (k, v1) = maybe_push acc k (Some v1) None in
     let push2 acc (k, v2) = maybe_push acc k None (Some v2) in
     (* we iterate simultaneously on both inputs, in increasing
        order of keys. There are four different "states" to consider :
        - we have no idea of the inputs :
-	 none_known
+         none_known
        - we know the next (key, value) pair of e1, and that e2 is empty :
-	 only_e1 (k1, v1)
+         only_e1 (k1, v1)
        - we know the next (key, value) pair of e2, and that e1 is empty :
-	 only_e2 (k2, v2)
+         only_e2 (k2, v2)
        - we know the next (key, value) pair of both e1 and e2 :
-	 both_known (k1, v1) (k2, v2)
+         both_known (k1, v1) (k2, v2)
     *)
   let rec none_known acc =
     match Enum.peek e1, Enum.peek e2 with
       | None, None -> acc
       | None, Some kv2 ->
-	Enum.junk e2;
-	only_e2 acc kv2
+        Enum.junk e2;
+        only_e2 acc kv2
       | Some kv1, None ->
-	Enum.junk e1;
-	only_e1 acc kv1
+        Enum.junk e1;
+        only_e1 acc kv1
       | Some kv1, Some kv2 ->
-	Enum.junk e1; Enum.junk e2;
-	both_known acc kv1 kv2
+        Enum.junk e1; Enum.junk e2;
+        both_known acc kv1 kv2
   and only_e1 acc kv1 =
     Enum.fold push1 (push1 acc kv1) e1
   and only_e2 acc kv2 =
@@ -509,18 +524,18 @@ struct
     if cmp < 0 then begin
       let acc = push1 acc kv1 in
       match Enum.peek e1 with
-	| None -> only_e2 acc kv2
-	| Some kv1' ->
-	  Enum.junk e1;
-	  both_known acc kv1' kv2
+        | None -> only_e2 acc kv2
+        | Some kv1' ->
+          Enum.junk e1;
+          both_known acc kv1' kv2
     end
     else if cmp > 0 then begin
       let acc = push2 acc kv2 in
       match Enum.peek e2 with
-	| None -> only_e1 acc kv1
-	| Some kv2' ->
-	  Enum.junk e2;
-	  both_known acc kv1 kv2'
+        | None -> only_e1 acc kv1
+        | Some kv2' ->
+          Enum.junk e2;
+          both_known acc kv1 kv2'
     end
     else begin
       let acc = maybe_push acc k1 (Some v1) (Some v2) in
@@ -540,8 +555,8 @@ struct
     let replace = function
       | Empty -> Empty
       | Node (l, (_, v), r) ->
-	maybe_v := Some v;
-	bst_append l r
+        maybe_v := Some v;
+        bst_append l r
     in
     let tr = top (cchange replace (cfind ~sel:(ksel k) tr)) in
     (* like in the `remove` case, we don't bother rebalancing *)
