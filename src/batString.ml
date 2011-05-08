@@ -458,7 +458,8 @@ let fold_right f str init =
 
 let iteri f str =
   for i = 0 to (String.length str) - 1 do f i str.[i] done
-(*
+
+(*** iteri
   let letter_positions word =
     let positions = Array.make 256 [] in
     let count_letter pos c =
@@ -468,8 +469,10 @@ let iteri f str =
     |> Array.to_list
     |> List.filter (fun (c,pos) -> pos <> [])
   in
-  aeq (letter_positions "hello") ['e',[1]; 'h',[0]; 'l',[2;3]; 'o',[4] ]
-*)
+ assert_equal ~msg:"String.iteri test"
+     (letter_positions "hello")
+     ['e',[1]; 'h',[0]; 'l',[2;3]; 'o',[4] ]
+**)
 
 (* explode and implode from the OCaml Expert FAQ. *)
 let explode s =
