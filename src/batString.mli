@@ -192,7 +192,7 @@ val iteri : (int -> char -> unit) -> string -> unit
 (** [String.iteri f s] is equivalent to
    [f 0 s.[0]; f 1 s.[1]; ...; f len s.[len]] where [len] is length of string [s]. 
     Example:
-    {| let letter_positions word =
+    [ let letter_positions word =
          let positions = Array.make 256 [] in
          let count_letter pos c =
            positions.(int_of_char c) <- pos :: positions.(int_of_char c) in
@@ -202,7 +202,7 @@ val iteri : (int -> char -> unit) -> string -> unit
          |> List.filter (fun (c,pos) -> pos <> [])
        in
        letter_positions "hello" = ['e',[1]; 'h',[0]; 'l',[2;3]; 'o',[4] ]
-    |}
+    ]
 *)
 
 (** {6 Finding}*)
