@@ -233,6 +233,13 @@ val output_binary_int : unit BatIO.output -> int -> unit
       {!Pervasives.input_binary_int} function. The format is compatible across
       all machines for a given version of Objective Caml. *)
 
+val output_binary_float : unit BatIO.output -> float -> unit
+  (** Write one float in binary format (8 bytes, IEEE 754 double format)
+      on the given output channel.
+      The only reliable way to read it back is through the
+      {!Pervasives.input_binary_float} function. The format is compatible across
+      all machines for a given version of Objective Caml. *)
+
 val output_value : unit BatIO.output -> 'a -> unit
   (** Write the representation of a structured value of any type
       to a channel. Circularities and sharing inside the value
@@ -338,6 +345,12 @@ val input_binary_int : BatIO.input -> int
     from the given input channel. See {!Pervasives.output_binary_int}.
     Raise [End_of_file] if an end of file was reached while reading the
     integer. *)
+
+val input_binary_float : BatIO.input -> float
+(** Read a float encoded in binary format (8 bytes, IEEE 754 double format)
+    from the given input channel. See {!Pervasives.output_binary_float}.
+    Raise [End_of_file] if an end of file was reached while reading the
+    float. *)
 
 val input_value : BatIO.input -> 'a
 (** Read the representation of a structured value, as produced
