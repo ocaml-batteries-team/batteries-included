@@ -41,3 +41,8 @@ val of_enum : 'a BatEnum.t -> ('a * 'a)
 val print : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> 'o BatIO.output -> ('a * 'b) -> unit
 
 val print2 : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a) -> unit
+
+
+include BatEnum.Enumerable with type 'a enumerable = 'a * 'a
+include BatInterfaces.Mappable with type 'a mappable = 'a * 'a
+

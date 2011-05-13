@@ -34,6 +34,18 @@ package "pa_comprehension" (
 	)
 )
 
+package "pa_llist" (
+        descriptions = "lazy list syntax (container)"
+        version = "@VERSION@"
+        package "syntax" (
+                requires = "camlp4"
+                description = "lazy list syntax (syntax extension)"
+                version = "@VERSION@"
+                archive(syntax, preprocessor) = "pa_llist.cmo"
+                archive(syntax, toploop) = "pa_llist.cmo"
+        )
+)
+
 package "syntax" (
         version = "@VERSION@"
         description = "Standard extensions to the OCaml language, full package"
@@ -43,6 +55,6 @@ package "syntax" (
         # we use a brute-force approach
         requires = "camlp4, estring"
         requires(toploop) = "camlp4, estring, batteries"
-        archive(syntax, preprocessor) = "pa_strings.cma pa_comprehension.cmo"
-        archive(syntax, toploop)      = "pa_strings.cma pa_comprehension.cmo"
+        archive(syntax, preprocessor) = "pa_strings.cma pa_comprehension.cmo pa_llist.cmo"
+        archive(syntax, toploop)      = "pa_strings.cma pa_comprehension.cmo pa_llist"
 )

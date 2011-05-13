@@ -1,0 +1,7 @@
+The purpose of this directory is to provide performance evaluations of
+Batteries functions implementations. This is specially useful when
+testing changes against an upstream library such as INRIA's stdlib or
+Extlib.
+The benchmarks rely on the Ocaml [benchmark] library.
+
+ [benchmark] http://ocaml-benchmark.sourceforge.net/

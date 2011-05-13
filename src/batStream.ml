@@ -59,10 +59,18 @@ open Stream
       in (iter (fun x -> buf := x :: !buf) fl; List.rev !buf)
       
     let to_string fl =
-      let sl = to_list fl in
-      let len = List.length sl in
-      let s = String.create len
-      in (List.iter (let i = ref 0 in fun x -> (s.[!i] <- x; incr i)) sl; s)
+      let buf = Buffer.create 16
+      in (iter (Buffer.add_char buf) fl; Buffer.contents buf)
+
+    let to_string_fmt fmt fl =
+      let buf = Buffer.create 16
+      in (Stream.iter (fun it ->
+        Buffer.add_string buf (Printf.sprintf fmt it)) fl; Buffer.contents buf)
+
+    let to_string_fun fn fl =
+      let buf = Buffer.create 16
+      in (Stream.iter (fun it ->
+        Buffer.add_string buf (fn it)) fl; Buffer.contents buf)
       
     let on_channel ch = iter (output_char ch)
       
@@ -519,7 +527,11 @@ module StreamLabels =
     let iter ~f x = iter f x
       
     let switch ~f x = switch f x
+
+    let to_string_fmt ~fmt = to_string_fmt fmt
       
+    let to_string_fun ~fn = to_string_fun fn
+
     let foldl ~f ~init = foldl f init
       
     let foldr ~f ~init = foldr f init

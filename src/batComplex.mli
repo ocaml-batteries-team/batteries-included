@@ -134,6 +134,12 @@ open Complex
   val ( < ) : t -> t -> bool
   val ( = ) : t -> t -> bool
 
+  val of_float : float -> t
+  (** [Complex.of_float x] returns the complex number [x+0i] *)
+
+  val to_float : t -> float
+  (** [Complex.to_float (a+bi)] returns the float [a] *)
+
   (** {6 Boilerplate code}*)
 
   (** {7 Printing}*)

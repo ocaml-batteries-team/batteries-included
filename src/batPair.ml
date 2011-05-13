@@ -21,7 +21,14 @@
  
 type ('a,'b) t = 'a * 'b
 
-let map f (x,y) = (f x, f y)
+type 'a enumerable = 'a * 'a
+type 'a mappable = 'a * 'a
+
+let map f (x,y) =
+  (* force left-to-right evaluation order (this principle of least
+     surprise is already applied in stdlib's List.map) *)
+  let a = f x in
+  (a, f y)
 
 let compare ?(c1=Pervasives.compare) ?(c2=Pervasives.compare) (a,b) (c,d) = 
   let comp = c1 a c in 

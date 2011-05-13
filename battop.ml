@@ -68,6 +68,19 @@ open Batteries;;
 #install_printer Batteries_print.int_dynarray;;
 #install_printer Batteries_print.char_dynarray;;
 #install_printer Batteries_print.float_dynarray;;
+#install_printer Batteries_print.int_set;;
+#install_printer Batteries_print.string_set;;
+#install_printer Batteries_print.istring_set;;
+#install_printer Batteries_print.rope_set;;
+#install_printer Batteries_print.char_set;;
+#install_printer Batteries_print.int_pset;;
+#install_printer Batteries_print.string_pset;;
+#install_printer Batteries_print.rope_pset;;
+#install_printer Batteries_print.char_pset;;
+#install_printer Batteries_print.int_enum;;
+#install_printer Batteries_print.string_enum;;
+#install_printer Batteries_print.rope_enum;;
+#install_printer Batteries_print.char_enum;;
 
 
 if ext_syntax then begin

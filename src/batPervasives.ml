@@ -108,13 +108,6 @@ open Pervasives
   let iter              = iter
   let scanl             = scanl
 
-  (** {6 Concurrency}*)
-
-  let unique_value  = ref 0
-  let lock          = ref BatConcurrent.nolock
-  let unique ()     =
-    BatConcurrent.sync !lock BatRef.post_incr unique_value
-
   (** {6 Operators}*)
 
   let first f (x, y) = (f x, y)
@@ -331,6 +324,7 @@ open Pervasives
   let int_printer = BatInt.t_printer
   let int32_printer = BatInt32.t_printer
   let int64_printer = BatInt64.t_printer
+  let char_printer = BatChar.t_printer
   let nativeint_printer = BatNativeint.t_printer
   let float_printer = BatFloat.t_printer
   let string_printer = BatString.t_printer

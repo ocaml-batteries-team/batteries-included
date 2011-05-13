@@ -1,6 +1,7 @@
 *~
 _build
 build/META
+build/make_suite
 src/batteries_config.ml
 doc/batteries/html/api/
 hdoc/*
@@ -13,3 +14,6 @@ man/*
 *.run
 apidocs
 batteries.docdir
+qtest/*_t.ml
+qtest/test_mods.mllib
+src/batCamomile.ml

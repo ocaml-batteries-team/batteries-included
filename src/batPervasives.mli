@@ -468,6 +468,11 @@ val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
       an exception. *)
 
+val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
+(** [with_dispose dispose f x] invokes [f] on [x], calling [dispose x]
+    when [f] terminates (either with a return value or an
+    exception). *)
+
 val args : unit -> string BatEnum.t
   (** An enumeration of the arguments passed to this program through the command line.
 
@@ -588,8 +593,8 @@ val map : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
       and builds a new enumeration from the results of each application.
 
       In other words, [map f] is a function which, when applied
-      upon an enumeration containing elements [e1], [e2], ...,
-      produces enumeration [f e1], [f e2], ...
+      upon an enumeration containing elements [e0], [e1], ...,
+      produces enumeration [f e0], [f e1], ...
 
       For instance, if [odd] is the function which returns [true]
       when applied to an odd number or [false] when applied to
@@ -611,9 +616,9 @@ val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
       expression and to the third element of [e], then to the result of this
       new expression and to the fourth element of [e]...
 
-      In other words, [reduce f e] returns [a_1] if [e] contains only
-      one element, otherwise [f (... (f (f a1) a2) ...) aN] where
-      a1..N are the elements of [e]. 
+      In other words, [reduce f e] returns [a0] if [e] contains only
+      one element [a0], otherwise [f (... (f (f a0) a1) ...) aN] where
+      [a0,a1..aN] are the elements of [e]. 
 
       @raises Not_found if [e] is empty.
 
@@ -636,7 +641,7 @@ val fold : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b
       to the third element of [e]...
 
       In other words, [fold f v e] returns [v] if [e] is empty,
-      otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
+      otherwise [f (... (f (f v a0) a1) ...) aN] where a0,a1..aN are
       the elements of [e]. 
 
       For instance, if [add] is the function [fun x y -> x + y],
@@ -847,6 +852,7 @@ val printer_exn : (exn -> 'a, 'a) BatPrint.directive
 
 val bool_printer : bool BatValue_printer.t
 val int_printer : int BatValue_printer.t
+val char_printer : char BatValue_printer.t
 val int32_printer : int32 BatValue_printer.t
 val int64_printer : int64 BatValue_printer.t
 val nativeint_printer : nativeint BatValue_printer.t

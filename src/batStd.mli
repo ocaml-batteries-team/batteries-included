@@ -61,7 +61,9 @@ external identity : 'a -> 'a = "%identity"
 (** the identity function. *)
 
 val unique : unit -> int
-(** returns an unique identifier every time it is called. *)
+(** returns an unique identifier every time it is called.  This
+    function is not thread-safe.  Use {!BatPervasives.unique}
+    instead. *)
 
 val dump : 'a -> string
 (** represent a runtime value as a string. Since types are lost at compile
@@ -76,10 +78,15 @@ val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
       an exception. *)
 
-val args : unit -> string BatEnum.t
-  (** An enumeration of the arguments passed to this program through the command line.
+val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
+(** [with_dispose dispose f x] invokes [f] on [x], calling [dispose x]
+    when [f] terminates (either with a return value or an
+    exception). *)
 
-      [args ()] is given by the elements of [Sys.argv], minus the first element.*)
+val args : unit -> string BatEnum.t
+(** An enumeration of the arguments passed to this program through the command line.
+
+    [args ()] is given by the elements of [Sys.argv], minus the first element.*)
 
 (**/**)
 val invisible_args : int ref
@@ -194,3 +201,20 @@ val wrap : ('a -> 'b) -> 'a -> ('b, exn) result
 (** [wrap f x] wraps a function that would normally throw an exception
 on failure such that it now returns a result with either the [Ok]
 return value or the [Bad] exception. *)
+
+(**
+   {6 Thread-safety internals}
+
+   Unless you are attempting to adapt Batteries Included to a new model of
+   concurrency, you probably won't need this.
+*)
+
+val lock: BatConcurrent.lock ref
+(**
+   A lock used to synchronize internal operations.
+
+   By default, this is {!BatConcurrent.nolock}. However, if you're
+   using a version of Batteries compiled in threaded mode, this uses
+   {!BatMutex}. If you're attempting to use Batteries with another
+   concurrency model, set the lock appropriately.
+*)

@@ -104,7 +104,10 @@ module Ref = BatRef
 module Std = BatStd
 
 (* Batteries specific modules *)
+module Cache = BatCache
 module CharParser = BatCharParser
+module Deque = BatDeque
+module Hashcons = BatHashcons
 module Logger = BatLogger
 module Monad = BatMonad
 module Pair = BatPair
@@ -114,11 +117,18 @@ module Print = BatPrint
 module Result = BatResult
 module Return = BatReturn
 module Seq = BatSeq
+module Tuple = BatTuple
+module Tuple2 = BatTuple.Tuple2
+module Tuple3 = BatTuple.Tuple3
+module Tuple4 = BatTuple.Tuple4
+module Tuple5 = BatTuple.Tuple5
 module UCharParser = BatUCharParser
 module Value_printer = BatValue_printer
 module Vect = BatVect
 module ISet = BatISet
 module IMap = BatIMap
+module Splay = BatSplay
+module Uref = BatUref
 
 (* Unix *)
 module Unix = struct include Unix include BatUnix end
