@@ -268,17 +268,20 @@ let nsplit str sep =
 
 let join = concat
 
+let unsafe_slice i j s =
+  if i >= j || i = length s then
+    create 0
+  else
+    sub s i (j-i)
+
+let clip ~lo ~hi (x:int) = if x < lo then lo else if x > hi then hi else x
+let wrap (x:int) ~hi = if x < 0 then hi + x else x
 let slice ?(first=0) ?(last=Sys.max_string_length) s =
-	let clip _min _max x = max _min (min _max x) in
-	let i = clip 0 (length s)
-		(if (first<0) then (length s) + first else first)
-	and j = clip 0 (length s)
-		(if (last<0) then (length s) + last else last)
-	in
-	if i>=j || i=length s then
-		create 0
-        else
-          	sub s i (j-i)
+  let lo = 0 and hi = length s in
+  let i = clip ~lo ~hi (wrap first ~hi) in
+  let j = clip ~lo ~hi (wrap last ~hi) in
+  unsafe_slice i j s
+
 (**T String.slice
    slice ~first:1 ~last:(-3) " foo bar baz" = "foo bar "
    slice "foo" = "foo"
@@ -346,8 +349,8 @@ let enum s =
   in
     make (ref 0)
 (**T String.enum
-   "" |> enum |> of_enum = "" 
-   "foo" |> enum |> of_enum = "foo"
+   "" |> enum |> List.of_enum = []
+   "foo" |> enum |> List.of_enum = ['f'; 'o'; 'o']
 **)
 
 let backwards s =
@@ -387,6 +390,7 @@ let of_backwards e =
     s
 (**T String.of_backwards
    "" |> enum |> of_backwards = ""
+   "foo" |> enum |> of_backwards = "oof"
    "foo" |> backwards |> of_backwards = "foo"
 **)
 
@@ -576,7 +580,7 @@ let trim s =
   match aux_2 (len - 1) with
     | None -> ""
     | Some first_trailing_whitespace ->
-	sub s last_leading_whitespace (first_trailing_whitespace - last_leading_whitespace + 1)
+	unsafe_slice last_leading_whitespace (first_trailing_whitespace + 1) s
 
 (**T String.trim
    trim " \t foo\n  " = "foo"
@@ -586,18 +590,22 @@ let trim s =
 **)
 
 let splice s1 off len s2 =
-  let len1 = length s1 and len2 = length s2           in
-  let off  = if off < 0 then len1 + off - 1 else off  in
-  let len  = int_min (len1 - off) len                 in
-  let out_len = len1 - len + len2                     in
+  let len1 = length s1 and len2 = length s2 in
+  let off  = wrap off ~hi:len1 in
+  let len  = clip ~lo:0 ~hi:(len1 - off) len in
+  let out_len = len1 - len + len2 in
   let s = create out_len in
   blit s1 0 s 0 off; (* s1 before splice point *)
   blit s2 0 s off len2; (* s2 at splice point *)
   blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
   s
 (**T String.splice
-    splice "foo bar baz" 3 5 "XXX" = "fooXXXbaz"
-    splice "foo bar baz" 5 (-10) "XXX" |> const true (*bug!*)    
+   splice "foo bar baz" 3 5 "XXX" = "fooXXXbaz"
+   splice "foo bar baz" 5 0 "XXX" = "foo bXXXar baz"
+   splice "foo bar baz" 5 (-10) "XXX" = "foo bXXXar baz"
+   splice "foo bar baz" 5 50 "XXX" = "foo bXXX"
+   splice "foo bar baz" (-4) 2 "XXX" = "foo barXXXaz"
+   splice "bar baz" (-4) 2 "XXX" = "barXXXaz"
 **)
 
 

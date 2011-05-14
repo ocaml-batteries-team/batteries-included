@@ -434,8 +434,11 @@ val splice: string -> int -> int -> string -> string
       the end of the string is used, regardless of the value of
       [len].
 
+      If [len] is zero or negative, [rep] is inserted at position
+      [off] without replacing any of [s].
+
       Example: [String.splice "foo bar baz" 3 5 "XXX" = "fooXXXbaz"]
-*)
+   *)
 
 val explode : string -> char list
   (** [explode s] returns the list of characters in the string [s]. 
