@@ -22,3 +22,12 @@ let bind m k = match m with
 
 let (>>=) = bind
 
+let return x = Ok x
+
+let default def = function
+  | Ok x  -> x
+  | Bad _ -> def
+
+let default_map def f = function
+  | Ok x -> f x
+  | Bad _ -> def
