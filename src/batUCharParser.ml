@@ -127,11 +127,11 @@ let none_of l = (*label (
        (Vect.of_list (String.to_list "anything but ['"))
        l))))*)
 (*  label (Printf.sprintf2 "anything but [%a]" (List.print *)
-  label (BatList.sprint 
+  label (BatIO.to_string (BatList.print 
 	   ~first:"anything but ["
 	   ~sep:"; "
 	   ~last:"]" 
-	   (fun out c -> (BatPrintf.fprintf out "'%a'" BatUChar.print c))
+	   (fun out c -> (BatPrintf.fprintf out "'%a'" BatUChar.print c)))
 	   l
 	)
 	  (none_of l)

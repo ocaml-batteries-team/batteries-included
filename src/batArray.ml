@@ -346,12 +346,6 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 
 let t_printer a_printer paren out x = print (a_printer false) out x
 
-let sprint ?(first="[|") ?(last="|]") ?(sep="; ") print_a array =
-  BatInnerIO.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) array
-(*  let os = BatInnerIO.output_string  () in
-  print ~first ~last ~sep print_a os list;
-  BatInnerIO.close_out os (* returns contents *)*)
-
 let reduce f a =
   if Array.length a = 0 then
     invalid_arg "Array.reduce: empty array"
@@ -438,7 +432,6 @@ struct
   let fast_sort    = fast_sort
   let make_compare = make_compare
   let print        = print
-  let sprint       = sprint
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 

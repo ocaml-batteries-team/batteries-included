@@ -31,7 +31,7 @@ struct
       let li = ref [] in
       ignore (M.map (fun x -> li := x :: !li) t);
       List.rev !li in
-    assert_equal ~printer:(BatList.sprint printer)
+    assert_equal ~printer:(BatIO.to_string (BatList.print printer))
       elems_in_enum_order
       elems_in_map_order
 end

@@ -230,28 +230,15 @@ val insert : 'a array -> 'a -> int -> 'a array
 (** {7 Printing}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
-  (** Print the contents of an array *)
+(** Print the contents of an array, with [~first] preceeding the first
+    item (default: "[|"), [~last] following the last item (default:
+    "|]") and [~sep] separating items (default: "; ").  A printing
+    function must be provided to print the items in the array.
 
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
-(** Using a string printer, print an array to a string (as sprintf
-    vs. printf)
-    @deprecated use {!BatIO.to_string}.
+    Example: IO.to_string (Array.print Int.print) [|2;4;66|] = "[|2;4;66|]"
 *)
 
 val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
-
-
-(** {6 Boilerplate code}*)
-
-  (** {7 Printing}*)
-
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
-
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> 'b t -> string
-(** Using a string printer, print an array to a string (as sprintf
-    vs. printf)
-    @deprecated use {!BatIO.to_string}.
-*)
 
 (** {6 Override modules}*)
 
@@ -476,9 +463,6 @@ sig
 (** {7 Printing}*)
 
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> ('b, [>`Read]) t -> unit
-
-  val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) -> ('b, [>`Read]) t -> string
-
 
 (** {6 Override modules}*)
 
