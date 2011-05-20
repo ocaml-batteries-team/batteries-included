@@ -83,6 +83,19 @@ module String = struct include String include BatString end
 module Sys = struct include Sys include BatSys end
 (* Weak *)
 
+(* Unix *)
+module Unix = struct include Unix include BatUnix end
+
+(* Str *)
+module Str = struct include Str include BatStr end
+
+(* Num *)
+module Big_int = struct include Big_int include BatBig_int end
+
+(* Bigarray *)
+module Bigarray = BatBigarray
+
+
 (* Extlib modules not replacing stdlib *)
 module Base64 = BatBase64
 module BitSet = BatBitSet
@@ -129,18 +142,9 @@ module ISet = BatISet
 module IMap = BatIMap
 module Splay = BatSplay
 module Uref = BatUref
-
-(* Unix *)
-module Unix = struct include Unix include BatUnix end
-
-(* Str *)
-module Str = struct include Str include BatStr end
 module Substring = BatSubstring
-module Rope = BatRope
-
-(* Threads *)
+module Text = Ulib.Text
 module Concurrent = BatConcurrent
-
 
 (* Batteries Specific *)
 module Interfaces = BatInterfaces
@@ -150,19 +154,6 @@ module Int = BatInt
 module Bool = BatBool
 module Unit = BatUnit
 
-(* Chamomile *)
-module UChar = struct include BatCamomile.UChar include BatUChar end
-module UTF8 = BatUTF8 (* replaces, doesn't extend UTF8 *)
-
-
-(* Num *)
-module Big_int = struct include Big_int include BatBig_int end
-
-
-(* Bigarray *)
-module Bigarray = BatBigarray
-
-
-(* Pervasives *)
+(* Pervasives last *)
 include Pervasives
 include BatPervasives
