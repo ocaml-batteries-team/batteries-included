@@ -523,14 +523,6 @@ struct
 end
 
 
-module StringSet  = Make(String)
-module IStringSet = Make(BatString.IString)
-module NumStringSet = Make(BatString.NumString)
-module RopeSet    = Make(BatRope)
-module IRopeSet   = Make(BatRope.IRope)
-module IntSet     = Make(BatInt)
-module CharSet    = Make(Char)
-
 (*
  * PMap - Polymorphic sets
  * Copyright (C) 1996-2003 Xavier Leroy, Nicolas Cannasse, Markus Mottl

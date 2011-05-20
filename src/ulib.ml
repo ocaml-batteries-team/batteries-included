@@ -148,6 +148,11 @@ module UTF8 = struct
 
   type index = int
 
+  let length0 n =
+    if n < 0x80 then 1 else
+    if n < 0xe0 then 2 else
+    if n < 0xf0 then 3 else 4
+
   let look s i =
     let n' =
       let n = Char.code (String.unsafe_get s i) in
@@ -1271,11 +1276,9 @@ let of_list l =
 
   let implode l = of_list l
 
-  type t_alias = t (* fixes [type t = t] bug below *)
-
-
   let of_latin1 s = of_ustring (UTF8.of_latin1 s)
 
+  let print out t = bulk_iter (BatString.print out) t
 
   (* =end *)
 end

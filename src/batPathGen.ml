@@ -836,29 +836,27 @@ module StringAdapter (*: StringType*) = struct
 end
 
 module OfString : PathType with type ustring = string and type uchar = char = Make (StringAdapter)
+(*
+module TextAdapter = struct
 
-open BatCamomile
-
-module RopeAdapter = struct
-
-  type t = BatRope.t
-  let length = BatRope.length
-  type tchar = UChar.t
-  let get = BatRope.get
-  let lift_char ch = UChar.of_char ch
-  let lift = BatRope.of_string
-  let to_string = BatRope.to_string
-  let concat_with_separators sep lst = BatRope.concat sep lst
-  let compare = BatRope.compare
-  let iter = BatRope.iter
-  let iteri fu ss = BatRope.iteri fu ss
-  let sub = BatRope.sub
-  let rindex ss pch = BatRope.rindex ss (UChar.of_char pch)
+  type t = Ulib.Text.t
+  let length = Ulib.Text.length
+  type tchar = Ulib.UChar.t
+  let get = Ulib.Text.get
+  let lift_char ch = Ulib.UChar.of_char ch
+  let lift = Ulib.Text.of_string
+  let to_string = Ulib.Text.to_string
+  let concat_with_separators sep lst = Ulib.Text.concat sep lst
+  let compare = Ulib.Text.compare
+  let iter = Ulib.Text.iter
+  let iteri fu ss = Ulib.Text.iteri fu ss
+  let sub = Ulib.Text.sub
+  let rindex ss pch = Ulib.Text.rindex ss (Ulib.UChar.of_char pch)
   module Parse = struct
     let source = BatUCharParser.source_of_rope
     let letter = BatUCharParser.letter
   end
 end
 
-module OfRope = Make (RopeAdapter)
-
+module OfText = Make (TextAdapter)
+  *)

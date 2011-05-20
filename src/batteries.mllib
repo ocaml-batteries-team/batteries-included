@@ -1,4 +1,3 @@
-BatCamomile
 BatArg
 BatArray
 BatBigarray
@@ -42,13 +41,10 @@ BatStream
 BatString
 BatStr
 BatSys
-BatUChar
 BatUnit
 BatUnix
-BatUTF8
 BatBase64
 BatBitSet
-BatCharEncodings
 BatCharParser
 BatConcurrent
 BatDllist
@@ -74,12 +70,10 @@ BatRefList
 BatRef
 BatResult
 BatReturn
-BatRope
 BatSeq
 BatStd
 BatSubstring
 BatTuple
-BatUCharParser
 BatUref
 BatValue_printer
 BatVect

@@ -236,47 +236,52 @@ module UTF8 : sig
 	    The contents of [b2] is not changed. *)
     val add_buffer : buf -> buf -> unit
   end with type buf = Buffer.t
+
+  (* Returns the length of the Unicode character starting with the
+     given byte *)
+  val length0 : int -> int
+
 end
 
 (* Rope: a simple implementation of ropes as described in
- 
-Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
-strings. Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
- 
-Motivated by Luca de Alfaro's extensible array implementation Vec.
- 
-Copyright (C) 2011 Yoriyuki Yamagata <yoriyuki.y@gmail.com>
-              2007 Mauricio Fernandez <mfp@acm.org>
-http://eigenclass.org
- 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Library General Public
-License as published by the Free Software Foundation; either
-version 2 of the License, or (at your option) any later version,
-with the following special exception:
+   
+   Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
+   strings. Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
+   
+   Motivated by Luca de Alfaro's extensible array implementation Vec.
+   
+   Copyright (C) 2011 Yoriyuki Yamagata <yoriyuki.y@gmail.com>
+   2007 Mauricio Fernandez <mfp@acm.org>
+   http://eigenclass.org
+   
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Library General Public
+   License as published by the Free Software Foundation; either
+   version 2 of the License, or (at your option) any later version,
+   with the following special exception:
 
-You may link, statically or dynamically, a "work that uses the
-Library" with a publicly distributed version of the Library to
-produce an executable file containing portions of the Library, and
-distribute that executable file under terms of your choice, without
-any of the additional requirements listed in clause 6 of the GNU
-Library General Public License. By "a publicly distributed version
-of the Library", we mean either the unmodified Library as
-distributed by the author, or a modified version of the Library that is
-distributed under the conditions defined in clause 2 of the GNU
-Library General Public License. This exception does not however
-invalidate any other reasons why the executable file might be
-covered by the GNU Library General Public License.
- 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-Library General Public License for more details.
- 
-The GNU Library General Public License is available at
-http://www.gnu.org/copyleft/lgpl.html; to obtain it, you can also
-write to the Free Software Foundation, Inc., 59 Temple Place -
-Suite 330, Boston, MA 02111-1307, USA.
+   You may link, statically or dynamically, a "work that uses the
+   Library" with a publicly distributed version of the Library to
+   produce an executable file containing portions of the Library, and
+   distribute that executable file under terms of your choice, without
+   any of the additional requirements listed in clause 6 of the GNU
+   Library General Public License. By "a publicly distributed version
+   of the Library", we mean either the unmodified Library as
+   distributed by the author, or a modified version of the Library that is
+   distributed under the conditions defined in clause 2 of the GNU
+   Library General Public License. This exception does not however
+   invalidate any other reasons why the executable file might be
+   covered by the GNU Library General Public License.
+   
+   This library is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+   Library General Public License for more details.
+   
+   The GNU Library General Public License is available at
+   http://www.gnu.org/copyleft/lgpl.html; to obtain it, you can also
+   write to the Free Software Foundation, Inc., 59 Temple Place -
+   Suite 330, Boston, MA 02111-1307, USA.
 *)
  
 (** Heavyweight strings ("ropes")
@@ -659,5 +664,8 @@ module Text : sig
         {!Pervasives.compare}.  Along with the type [t], this function [compare]
         allows the module [Rope] to be passed as argument to the functors
         {!Set.Make} and {!Map.Make}. *)
+
+  val print : 'a BatInnerIO.output -> t -> unit
+    (** Prints a rope to the given out_channel *)
 
 end

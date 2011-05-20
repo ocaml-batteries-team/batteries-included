@@ -135,7 +135,6 @@ module Tuple2 = BatTuple.Tuple2
 module Tuple3 = BatTuple.Tuple3
 module Tuple4 = BatTuple.Tuple4
 module Tuple5 = BatTuple.Tuple5
-module UCharParser = BatUCharParser
 module Value_printer = BatValue_printer
 module Vect = BatVect
 module ISet = BatISet

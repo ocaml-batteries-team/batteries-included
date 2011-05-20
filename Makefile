@@ -58,7 +58,7 @@ endif
 
 .PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk
 
-all: src/batCamomile.ml
+all: 
 	@echo "Build mode:" $(MODE)
 	${RM} src/batteries_config.ml
 	$(OCAMLBUILD) $(TARGETS)
@@ -66,7 +66,6 @@ all: src/batCamomile.ml
 clean:
 	${RM} apidocs
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
-	${RM} src/batCamomile.ml
 	$(OCAMLBUILD) -clean
 
 doc:
@@ -103,10 +102,10 @@ reinstall:
 	$(MAKE) install
 
 #List of source files that it's okay to try to test
-DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
+DONTTEST=src/batteries_help.ml
 TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
-TESTDEPS = src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
+TESTDEPS = $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 
 compile-test-byte: $(TESTDEPS)
 	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte
@@ -133,42 +132,6 @@ bench:
 release: test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
-
-
-##
-## Magic to detect which version of camomile is installed 
-##
-
-CAMVER=$(shell sh -c 'ocamlfind query -format %v camomile')
-ifeq ($(CAMVER),0.8.2)
-	CAMFIX=src/batCamomile-0.8.2.ml
-endif
-ifeq ($(CAMVER),0.8.1)
-	CAMFIX=src/batCamomile-0.8.1.ml
-endif
-ifeq ($(CAMVER),0.7.2)
-	CAMFIX=src/batCamomile-0.7.ml
-endif
-ifeq ($(CAMVER),0.7.1)
-	CAMFIX=src/batCamomile-0.7.ml
-endif
-ifeq ($(CAMVER),)
-	CAMFIX=camfail
-endif
-ifeq ($(CAMFIX),)
-	CAMFIX=camfailunk
-endif
-
-src/batCamomile.ml: $(CAMFIX)
-	cp -f $< $@
-
-camfail:
-	echo "Camomile not detected, cannot compile batteries"
-	exit 1
-
-camfailunk:
-	echo "Unknown build of camomile detected ( $(CAMVER) ), cannot auto-config batcamomile"
-	exit 1
 
 ##
 ## Magic for test target - auto-generated test files from source comments

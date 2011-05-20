@@ -47,7 +47,7 @@ open Pervasives
   
   let output_char       = BatChar.print
   let output_string     = BatString.print
-  let output_rope       = BatRope.print
+  let output_text       = Ulib.Text.print
   let output oc buf pos len = 
     ignore (BatIO.output oc buf pos len)
   let output_byte       = BatIO.write_byte
@@ -307,8 +307,7 @@ open Pervasives
 
   let printer_format k fmt = fmt.BatPrint.printer fmt.BatPrint.pattern k
 
-  let printer_rope k x = k (fun oc -> BatRope.print oc x)
-  let printer_utf8 k x = k (fun oc -> BatUTF8.print oc x)
+  let printer_text k x = k (fun oc -> Ulib.Text.print oc x)
   let printer_obj k x = k x#print
   let printer_exn k x = k (fun oc -> BatPrintexc.print oc x)
 

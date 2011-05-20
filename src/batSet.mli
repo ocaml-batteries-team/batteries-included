@@ -239,7 +239,7 @@ module type S =
       
   end
 (** Output signature of the functor {!Set.Make}. *)
-
+(*
 module StringSet  : S with type elt = String.t
 (** A set of strings. Comparison of strings takes case into account (i.e. "foo" <> "Foo")*)
 
@@ -261,6 +261,7 @@ module IntSet     : S with type elt = BatInt.t
 module CharSet    : S with type elt = Char.t
   (** A set of characters.  May be better to use a bitarray or ISet,
       depending on your situation *)
+  *)
 
 module Make (Ord : OrderedType) : S with type elt = Ord.t
 (** Functor building an implementation of the set structure
