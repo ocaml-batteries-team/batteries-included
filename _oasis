@@ -10,7 +10,6 @@ InstallType:  custom (0.2)
 BuildTools:   make
 Synopsis:     Extended OCaml Standard Library
 
-BuildDepends:	camomile (>= 0.7.0)
 XCustomBuild: $make all
 XCustomInstall: $make install
 XCustomUninstall: $make uninstall

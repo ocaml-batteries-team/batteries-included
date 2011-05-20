@@ -23,7 +23,6 @@ You will need the following libraries:
 
 * [OCaml][] >= 3.11
 * [Findlib][] >= 1.2.5
-* [Camomile][] >= 0.7
 * GNU make
 * [OUnit][] to build and run the tests
 * [ocaml-benchmark][] to build and run the performance tests (optional)
