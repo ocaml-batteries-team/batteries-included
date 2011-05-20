@@ -200,7 +200,7 @@ module type H = sig
   val print     :  ?first:string -> ?last:string -> ?sep:string
     -> ('a BatInnerIO.output -> elem -> unit)
     -> 'a BatInnerIO.output -> t -> unit
-  val t_printer : elem BatValue_printer.t -> t BatValue_printer.t
+  val t_printer : elem BatValuePrinter.t -> t BatValuePrinter.t
 end
 
 module Make (Ord : BatInterfaces.OrderedType) = struct

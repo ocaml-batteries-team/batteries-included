@@ -412,7 +412,7 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b list -> unit
 	  (**Print the contents of a list*)
 
-        val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+        val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
 	(** {6 Obsolete functions} *)
 

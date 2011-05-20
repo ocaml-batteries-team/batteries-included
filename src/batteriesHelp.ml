@@ -113,7 +113,7 @@ let browse pages =
   try
     List.iter (fun page -> 
 		 debug "Showing %s\n" page.url;
-		 if Batteries_config.browse page.url <> 0 then failwith "Browser") pages
+		 if BatteriesConfig.browse page.url <> 0 then failwith "Browser") pages
   with Failure "Browser" -> 
     Printf.eprintf "Sorry, I had a problem communicating with your browser and I couldn't open the manual.\n%!"
 
@@ -169,7 +169,7 @@ let get_table =
   in fun kind ->
     try Hashtbl.find tables kind
     with Not_found ->
-      let root_dir   = Batteries_config.documentation_root           in
+      let root_dir   = BatteriesConfig.documentation_root           in
       let root_file  = Filename.concat root_dir "documentation.idex" in
 	try
 	  let suggestions = Hashtbl.create 256
@@ -361,7 +361,7 @@ let helpers =
 
 (**Launch the introductory help text.*)
 let help () =
-  BatFile.with_file_in (Batteries_config.documentation_root ^ "/toplevel.help")
+  BatFile.with_file_in (BatteriesConfig.documentation_root ^ "/toplevel.help")
     (fun file -> copy file stdout);
   flush stdout;;
 

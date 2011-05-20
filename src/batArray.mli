@@ -238,7 +238,7 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 
     Example: IO.to_string (Array.print Int.print) [|2;4;66|] = "[|2;4;66|]"
 *)
 
-val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
 (** {6 Override modules}*)
 
