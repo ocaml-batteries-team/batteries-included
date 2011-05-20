@@ -18,8 +18,7 @@ let bigarray1 = Array1.of_array char c_layout array
 let bigarray2 = Array2.of_array char c_layout array2
 let bigarray3 = Array3.of_array char c_layout array3
 
-let utf8   = BatUTF8.of_string string
-let rope   = BatRope.of_ustring utf8
+let text   = Ulib.Text.of_string string
 
 module C =
 struct
@@ -75,9 +74,10 @@ let test_map_enums () =
       aeq (of_enum (enum source)) (of_enum (backwards source));
       aeq source (of_enum (backwards source))
 
-open BatRope
+(*
+open Ulib.Text
 let test_rope_enums () =
-    let source = rope in
+    let source = text in
     let aeq = assert_equal ~printer:(BatPrintf.sprintf2 "%a" print) in
       aeq (of_backwards (enum source)) (of_enum (backwards source));
       aeq source (of_backwards (backwards source));
@@ -88,6 +88,7 @@ let test_UTF8_enums () =
     let aeq = assert_equal ~printer:(BatPrintf.sprintf2 "%a" print) in
       aeq (of_backwards (enum source)) (of_enum (backwards source));
       aeq source (of_backwards (backwards source));
+*)
 
 open BatArray
 let test_bigarray_enums () =
@@ -119,8 +120,8 @@ let tests = "BatEnum" >::: [
   "Array" >:: test_array_enums;
   "List" >:: test_list_enums;
   "String" >:: test_string_enums;
-  "Rope" >:: test_rope_enums;
-  "UTF8" >:: test_UTF8_enums;
+(*  "Rope" >:: test_rope_enums;
+  "UTF8" >:: test_UTF8_enums; *)
   "bigarray" >:: test_bigarray_enums;
   "Set" >:: test_set_enums;
   "uncombine" >:: test_uncombine;

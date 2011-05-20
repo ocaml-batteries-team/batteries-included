@@ -2,7 +2,7 @@ open BatStd
 open Batteries
 module U = OUnit
 
-module IS = Set.IntSet
+module IS = Set.Make(Int)
 
 let of_list l = List.fold_left (fun a i -> IS.add i a) IS.empty l
 

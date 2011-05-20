@@ -8,7 +8,7 @@ open Ocamlbuild_plugin
 
 let ocamlfind x = S[A"ocamlfind"; A x]
 
-let packs = String.concat "," ["num"; "str"]
+let packs = "bigarray,num,str"
 
 let mkconf = "build/mkconf.byte"
 let pa_llist = "src/syntax/pa_llist/pa_llist.cmo"
