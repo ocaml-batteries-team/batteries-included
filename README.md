@@ -24,7 +24,7 @@ You will need the following libraries:
 * [OCaml][] >= 3.11
 * [Findlib][] >= 1.2.5
 * GNU make
-* [OUnit][] to build and run the tests
+* [OUnit][] to build and run the tests (optional)
 * [ocaml-benchmark][] to build and run the performance tests (optional)
 
 [Findlib]: http://projects.camlcity.org/projects/findlib.html/

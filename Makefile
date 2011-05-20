@@ -28,14 +28,14 @@ endif
 
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
-	_build/src/batteries_help.cmo \
+	_build/src/batteriesHelp.cmo \
 	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 	_build/src/syntax/pa_strings/pa_strings.cma \
 	_build/src/syntax/pa_llist/pa_llist.cmo
 NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
 
 # What to build
-TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
+TARGETS = syntax.otarget byte.otarget src/batteriesHelp.cmo META
 BENCH_TARGETS = benchsuite/bench_int.native benchsuite/bench_map.native
 TEST_TARGET = test-byte
 
@@ -60,7 +60,7 @@ endif
 
 all: 
 	@echo "Build mode:" $(MODE)
-	${RM} src/batteries_config.ml
+	${RM} src/batteriesConfig.ml
 	$(OCAMLBUILD) $(TARGETS)
 
 clean:
@@ -102,16 +102,16 @@ reinstall:
 	$(MAKE) install
 
 #List of source files that it's okay to try to test
-DONTTEST=src/batteries_help.ml
+DONTTEST=src/batteriesHelp.ml
 TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
 TESTDEPS = $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 
 compile-test-byte: $(TESTDEPS)
-	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte
+	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteriesHelp.cmo META testsuite/main.byte qtest/test_runner.byte
 
 compile-test-native: $(TESTDEPS)
-	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
+	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteriesHelp.cmo META testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
 
 run-test-byte:
 	_build/testsuite/main.byte
