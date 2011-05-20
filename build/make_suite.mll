@@ -80,17 +80,17 @@ let handle_test mn (k, str, pos) =
             let tests = number [] (pos.pos_lnum + 1) tests in
             List.iter begin fun (k, t) ->
               Printf.printf
-                "\"%s:%d\" >:: (fun () -> Q.laws_exn %S %s) ;\n" pos.pos_fname k t t
+		"#%d \"%s\"\n\"%s:%d\" >:: (fun () -> Q.laws_exn %S %s) ;\n" k pos.pos_fname pos.pos_fname k t t
             end tests
           | `T ->
             let tests = number [] (pos.pos_lnum + 1) tests in
             List.iter begin fun (k, t) ->
               Printf.printf
-                "\"%s:%d\" >:: (fun () -> OUnit.assert_bool \"%s:%d\" (%s)) ;\n" pos.pos_fname k pos.pos_fname k t
+		"#%d \"%s\"\n\"%s:%d\" >:: (fun () -> OUnit.assert_bool \"%s:%d\" (%s)) ;\n" k pos.pos_fname pos.pos_fname k pos.pos_fname k t
             end tests
           | `S ->
             let tests = String.concat "\n" tests in
-            Printf.printf "\"%s:%d\" >:: (fun () -> %s) ;\n" pos.pos_fname pos.pos_lnum tests
+	    Printf.printf "#%d \"%s\"\n\"%s:%d\" >:: (fun () -> %s) ;\n" pos.pos_lnum pos.pos_fname pos.pos_fname pos.pos_lnum tests
       end ; Printf.printf "] ;;\n%!"
     end
     | _ ->
@@ -172,7 +172,7 @@ and pragma k start buf = parse
     ] ;
     Pervasives.flush stdout
 
-  let _ =
+  let () =
     if Array.length Sys.argv != 2 then failwith "make_suite: Missing filename to process" ;
     process Sys.argv.(1)
 

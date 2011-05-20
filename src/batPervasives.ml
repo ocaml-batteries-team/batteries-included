@@ -52,6 +52,7 @@ open Pervasives
     ignore (BatIO.output oc buf pos len)
   let output_byte       = BatIO.write_byte
   let output_binary_int = BatIO.write_i32
+  let output_binary_float out v= BatIO.write_i64 out (BatInt64.bits_of_float v)
   let output_value out v= BatMarshal.output out v
   let close_out         = BatIO.close_out
   let close_out_noerr out = 
@@ -70,6 +71,7 @@ open Pervasives
     ignore (BatIO.really_input inp buf pos len)
   let input_byte        = BatIO.read_byte
   let input_binary_int  = BatIO.read_i32
+  let input_binary_float inp= BatInt64.float_of_bits (BatIO.read_i64 inp)
   let close_in          = BatIO.close_in
   let close_in_noerr inp=
     try BatIO.close_in inp
