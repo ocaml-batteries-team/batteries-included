@@ -45,7 +45,8 @@ ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   TARGETS += shared.otarget
   TEST_TARGET = test-native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
-else ifeq ($(BATTERIES_NATIVE), yes)
+else 
+ifeq ($(BATTERIES_NATIVE), yes)
   EXT = native
   MODE = native
   TARGETS += native.otarget
@@ -54,6 +55,7 @@ else ifeq ($(BATTERIES_NATIVE), yes)
 else
   EXT = byte
   MODE = bytecode
+endif
 endif
 
 .PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk
