@@ -10,6 +10,7 @@ let ocamlfind x = S[A"ocamlfind"; A x]
 
 let packs = "bigarray,num,str"
 
+let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
 let pa_llist = "src/syntax/pa_llist/pa_llist.cmo"
 
@@ -125,8 +126,14 @@ let _ = dispatch begin function
       *)
       dep ["pset_mli"] [Pathname.concat "src" "batPSet.mli"];
       dep ["pmap_mli"] [Pathname.concat "src" "batPMap.mli"];
+      
 
-
+      dep ["ocaml"; "doc"; "extension:html"] &
+           [doc_intro];
+      flag ["ocaml"; "doc"; "extension:html"] &
+        (S[A"-t"; A"Batteries user guide"; 
+           A"-intro"; P doc_intro; 
+           A"-colorize-code"]);
 
   | _ -> ()
 end
