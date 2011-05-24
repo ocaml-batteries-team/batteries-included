@@ -21,12 +21,26 @@
  * THE SOFTWARE. 
  *)
 
+let strip ?(chars=" \t\r\n") s =
+	let p = ref 0 in
+	let l = String.length s in
+	while !p < l && String.contains chars (String.unsafe_get s !p) do
+		incr p;
+	done;
+	let p = !p in
+	let l = ref (l - 1) in
+	while !l >= p && String.contains chars (String.unsafe_get s !l) do
+		decr l;
+	done;
+	String.sub s p (!l - p + 1)
+
 let version =
   try
-    let chan = open_in "VERSION" in
-    let v = input_line chan in
+    let chan = open_in (Filename.concat Filename.parent_dir_name "_oasis") in
+    let v = ref (input_line chan) in
+    while String.sub !v 0 8 <> "Version:" do v := input_line chan done;
     let _ = close_in chan in
-      v
+    strip !v
   with x ->
     prerr_endline (Printexc.to_string x);
     exit 2

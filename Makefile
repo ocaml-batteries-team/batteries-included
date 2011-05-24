@@ -3,7 +3,7 @@
 
 NAME = batteries
 
-VERSION := $(shell cat VERSION)
+VERSION := $(shell grep "^Version:" _oasis | cut -c 15-)
 uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 
 # Define variables and export them for mkconf.ml
@@ -62,11 +62,10 @@ endif
 
 all: 
 	@echo "Build mode:" $(MODE)
-	${RM} src/batteriesConfig.ml
 	$(OCAMLBUILD) $(TARGETS)
 
 clean:
-	${RM} apidocs
+	${RM} apidocs src/batteriesConfig.ml META
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) -clean
 

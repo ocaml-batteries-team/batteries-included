@@ -28,3 +28,6 @@ SourceRepository master
   Location: git://github.com/ocaml-batteries-team/batteries-included.git
   Branch: master
   Browser: https://github.com/ocaml-batteries-team/batteries-included
+
+Library "batteries"
+    Path: src/
