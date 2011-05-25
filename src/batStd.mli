@@ -83,6 +83,13 @@ val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
     when [f] terminates (either with a return value or an
     exception). *)
 
+val forever : ('a -> 'b) -> 'a -> unit
+(** [forever f x] invokes [f] on [x] repeatedly (until an exception occurs). *)
+
+val ignore_exceptions : ('a -> 'b) -> 'a -> unit
+(** [ignore_exceptions f x] invokes [f] on [x], ignoring both the returned value
+    and the exceptions that may be raised. *)
+
 val args : unit -> string BatEnum.t
 (** An enumeration of the arguments passed to this program through the command line.
 
