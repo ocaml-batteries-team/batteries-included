@@ -155,7 +155,13 @@
     let f' cin cout = f (wrap_in ?autoclose ?cleanup cin) (wrap_out cout) in
       establish_server f' addr
 
+(**
+   {6 Tools}
+*)
+
   let is_directory fn = (lstat fn).st_kind = S_DIR
 
-      
+  let rec restart_on_EINTR f x =
+    try f x
+    with Unix_error(EINTR, _, _) -> restart_on_EINTR f x
 

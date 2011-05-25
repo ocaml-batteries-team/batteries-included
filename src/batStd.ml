@@ -184,6 +184,10 @@ let finally handler f x =
 let with_dispose ~dispose f x =
   finally (fun () -> dispose x) f x
 
+let forever f x = ignore (while true do f x done)
+
+let ignore_exceptions f x = try ignore (f x) with _ -> ()
+
 (* unique int generation from batPervasives *)
 let unique_value  = ref 0
 let lock          = ref BatConcurrent.nolock
