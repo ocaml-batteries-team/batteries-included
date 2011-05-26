@@ -130,9 +130,13 @@ bench:
 	$(OCAMLBUILD) $(TARGETS) $(BENCH_TARGETS)
 	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH); )
 
-release: test
+release: setup.ml doc test 
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
+
+setup.ml: _oasis
+	oasis setup
+	git commit setup.ml -m"Update setup.ml based on _oasis"
 
 ##
 ## Magic for test target - auto-generated test files from source comments
