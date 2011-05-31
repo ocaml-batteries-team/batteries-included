@@ -539,6 +539,12 @@ val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
      several transformations in a row.
   *)
 
+val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
+
+val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
+  (**
+    Map combined with filter. Same as {!filter_map}.
+  *)
 
 val dup : 'a t -> 'a t * 'a t
   (** [dup stream] returns a pair of streams which are identical to [stream]. Note
