@@ -96,6 +96,7 @@ open Pervasives
   let junk              = junk
   let map               = map
   let filter            = filter
+  let filter_map        = filter_map
   let concat            = concat
   let ( -- )            = ( -- )
   let ( --^ )            = ( --^ )
@@ -105,6 +106,8 @@ open Pervasives
   let ( // )            = ( // )
   let ( /@ ) e f        = map f e
   let ( @/ )            = map
+  let ( //@ ) e f       = filter_map f e
+  let ( @// )           = filter_map
   let print             = print
   let get               = get
   let iter              = iter

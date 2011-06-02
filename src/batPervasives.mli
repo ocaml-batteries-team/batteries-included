@@ -617,7 +617,14 @@ val map : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
       Similarly, if [square] is the function [fun x -> x * x],
       [map square (1 -- 10)] produces the enumeration of the
       square numbers of all numbers between [1] and [10].
-*)
+  *)
+
+
+val filter_map : ('a -> 'b option) -> 'a BatEnum.t -> 'b BatEnum.t
+  (** Similar to a map, except that you can skip over some items of the
+      incoming enumeration by returning None instead of Some value.
+      Think of it as a {!filter} combined with a {!map}.
+  *)
 
 
 val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
@@ -691,6 +698,13 @@ val ( @/ ) : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
      These operators have the same meaning as function {!map} but are
      sometimes more readable than this function, when chaining
      several transformations in a row.
+  *)
+
+val ( //@ ) : 'a BatEnum.t -> ('a -> 'b option) -> 'b BatEnum.t
+
+val ( @// ) : ('a -> 'b option) -> 'a BatEnum.t -> 'b BatEnum.t
+  (**
+    Map combined with filter. Same as {!filter_map}.
   *)
 
 (**
