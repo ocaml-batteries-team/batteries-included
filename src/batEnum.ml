@@ -731,6 +731,8 @@ let ( // ) e f = filter f e
 
 let ( /@ ) e f        = map f e
 let ( @/ )            = map
+let ( //@ ) e f       = filter_map f e
+let ( @// )           = filter_map
 
 let uniq e = 
   match peek e with 
