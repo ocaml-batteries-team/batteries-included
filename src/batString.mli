@@ -275,18 +275,28 @@ val exists : string -> string -> bool
 
 (** {6 Transformations}*)
   
-val lchop : string -> string
-  (** Returns the same string but without the first character.
-      If the string is empty, returns the empty string. 
+val lchop : ?n:int -> string -> string
+(** Returns the same string but without the first [n] characters.
+    By default [n] is 1.
+    If [n] is less than zero raises [Invalid_argument].
+    If the string has [n] or less characters, returns the empty string.
 
-      Example: [String.lchop "Weeble" = "eeble"]
+      Example:
+      [String.lchop "Weeble" = "eeble"]
+      [String.lchop ~n:3 "Weeble" = "ble"]
+      [String.lchop ~n:1000 "Weeble" = ""]
 *)
 
-val rchop : string -> string
-  (** Returns the same string but without the last character.
-      If the string is empty, returns the empty string.
+val rchop : ?n:int -> string -> string
+(** Returns the same string but without the last [n] characters.
+    By default [n] is 1.
+    If [n] is less than zero raises [Invalid_argument].
+    If the string has [n] or less characters , returns the empty string.
       
-      Example: [String.rchop "Weeble" = "Weebl"]
+      Example:
+      [String.rchop "Weeble" = "Weebl"]
+      [String.rchop ~n:3 "Weeble" = "Wee"]
+      [String.rchop ~n:1000 "Weeble" = ""]
 *)
 
 val trim : string -> string
@@ -718,9 +728,9 @@ val exists : [> `Read] t -> [> `Read] t -> bool
 
 (** {6 Transformations}*)
   
-val lchop : [> `Read] t -> _ t
+val lchop : ?n:int -> [> `Read] t -> _ t
 
-val rchop : [> `Read] t -> _ t
+val rchop : ?n:int -> [> `Read] t -> _ t
 
 val trim : [> `Read] t -> _ t
 
