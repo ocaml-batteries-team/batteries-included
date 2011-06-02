@@ -292,18 +292,30 @@ let slice ?(first=0) ?(last=Sys.max_string_length) s =
 **)
 
 
-let lchop s =
-	if s = "" then "" else sub s 1 (length s - 1)
+let lchop ?(n=1) s =
+  if n < 0 then
+    invalid_arg "lchop: number of characters to chop is negative"
+  else
+    let slen = length s in
+    if slen <= n then "" else sub s n (slen - n)
 (**T String.lchop
    lchop "Weeble" = "eeble"
    lchop "" = ""
+   lchop ~n:3 "Weeble" = "ble"
+   lchop ~n:1000 "Weeble" = ""
 **)
 
-let rchop s =
-	if s = "" then "" else sub s 0 (length s - 1)
+let rchop ?(n=1) s =
+  if n < 0 then
+    invalid_arg "rchop: number of characters to chop is negative"
+  else
+    let slen = length s in
+    if slen <= n then "" else sub s 0 (slen - n)
 (**T String.rchop
    rchop "Weeble" = "Weebl"
    rchop "" = ""
+   rchop ~n:3 "Weeble" = "Wee"
+   rchop ~n:1000 "Weeble" = ""
 **)
 
 let of_int = string_of_int
