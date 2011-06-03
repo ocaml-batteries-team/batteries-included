@@ -68,6 +68,7 @@ module BaseComplex = struct
 end
 
 include BatNumber.MakeNumeric(BaseComplex)
+module Infix = BatNumber.MakeInfix(BaseComplex)
 
 let inv    = Complex.inv
 let i      = Complex.i

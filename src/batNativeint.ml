@@ -29,6 +29,7 @@ module BaseNativeint = struct
 end
 
 include BatNumber.MakeNumeric(BaseNativeint)
+module Infix = BatNumber.MakeInfix(BaseNativeint)
 
 let min_int = Nativeint.min_int
 let max_int = Nativeint.max_int

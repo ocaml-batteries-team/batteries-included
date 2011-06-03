@@ -502,7 +502,10 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
  
 end
 
-
+	(** {6 Infix submodule regrouping all infix operators} *)
+	module Infix : sig
+	  val ( @ ) : 'a list -> 'a list -> 'a list
+	end
 
 	(** Operations on {!List} with labels.
 	    

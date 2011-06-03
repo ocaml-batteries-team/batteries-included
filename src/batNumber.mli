@@ -83,6 +83,26 @@ type 'a numeric =
 }
 
 (**
+   The infix operators available with any type of numbers
+*)
+module type NumericInfix = sig
+  type numeric_infix_t
+  val ( + ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( - ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( * ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( / ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( ** ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( <> ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( >= ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( <= ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( > ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( < ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( = ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( -- ): numeric_infix_t -> numeric_infix_t -> numeric_infix_t BatEnum.t
+  val ( --- ): numeric_infix_t -> numeric_infix_t -> numeric_infix_t BatEnum.t
+end
+
+(**
    The full set of operations of a type of numbers
 *)
 module type Numeric =
@@ -105,26 +125,16 @@ sig
   val to_float: t     -> float
   val of_string : string -> t
   val to_string : t -> string
-  val ( + ) : t -> t -> t
-  val ( - ) : t -> t -> t
-  val ( * ) : t -> t -> t
-  val ( / ) : t -> t -> t
-  val ( ** ) : t -> t -> t
-  val ( <> ) : t -> t -> bool
-  val ( >= ) : t -> t -> bool
-  val ( <= ) : t -> t -> bool
-  val ( > ) : t -> t -> bool
-  val ( < ) : t -> t -> bool
-  val ( = ) : t -> t -> bool
-    
+
   val operations : t numeric
 
   type discrete = t
   (* to_int already provided *)
   val succ : t -> t
   val pred : t -> t
-  val ( -- ): t -> t -> t BatEnum.t
-  val ( --- ): t -> t -> t BatEnum.t
+
+  include NumericInfix with type numeric_infix_t = t
+
 end
 
 module type Bounded =
@@ -193,6 +203,12 @@ sig
 
 end
 
+(** Automated definition of infix operators for a given numeric type,
+    so that you can open it without poluting your namespace
+	(apart from the type numeric_infix_t *)
+
+module MakeInfix :
+  functor (Base : NUMERIC_BASE) -> NumericInfix with type numeric_infix_t = Base.t
 
 (** Automated definition of operators for a given numeric type.
     You will only need this if you develop your own numeric modules.*)

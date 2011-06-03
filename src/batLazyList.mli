@@ -538,6 +538,12 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 val uncombine : ('a * 'b) t -> 'a t * 'b t
   (** Divide a list of pairs into a pair of lists. *)
 
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( ^:^ ) : 'a -> 'a t -> 'a t
+  val ( ^@^ ) : 'a t -> 'a t -> 'a t
+end
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
@@ -643,3 +649,5 @@ module Labels : sig
     val assq : 'a -> ('a * 'b) t -> 'b option
   end
 end
+
+

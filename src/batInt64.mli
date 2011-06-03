@@ -211,6 +211,23 @@ val compare: t -> t -> int
     allows the module [Int64] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( + ) : t -> t -> t
+  val ( - ) : t -> t -> t
+  val ( * ) : t -> t -> t
+  val ( / ) : t -> t -> t
+  val ( ** ) : t -> t -> t
+  val ( <> ) : t -> t -> bool
+  val ( >= ) : t -> t -> bool
+  val ( <= ) : t -> t -> bool
+  val ( > ) : t -> t -> bool
+  val ( < ) : t -> t -> bool
+  val ( = ) : t -> t -> bool
+  val ( -- ): t -> t -> t BatEnum.t
+  val ( --- ): t -> t -> t BatEnum.t
+end
+
 (**/**)
 
 (** {6 Deprecated functions} *)

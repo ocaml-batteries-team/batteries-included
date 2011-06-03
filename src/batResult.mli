@@ -22,4 +22,9 @@ val bind:    ('a, 'b) result -> ('a -> ('c, 'b) result) -> ('c, 'b) result
 val ( >>= ): ('a, 'b) result -> ('a -> ('c, 'b) result) -> ('c, 'b) result
   (** as [bind] *)
 
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( >>= ): ('a, 'b) result -> ('a -> ('c, 'b) result) -> ('c, 'b) result
+end
+
 (** {6 Boilerplate code}*)

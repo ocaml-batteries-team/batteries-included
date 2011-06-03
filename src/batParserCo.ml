@@ -325,3 +325,7 @@ let none_of l e =
 let range a b = satisfy (fun x -> a <= x && x <= b)
 
 let sat f = (satisfy f) >>> return ()
+
+module Infix = struct
+  let (<|>), (~?), (>>=), (>>>), (>::), (~*), (~+), (^^) = (<|>), (~?), (>>=), (>>>), (>::), (~*), (~+), (^^)
+end

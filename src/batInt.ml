@@ -114,6 +114,12 @@ include BaseInt
 module N = BatNumber.MakeNumeric(BaseInt)
 let operations = N.operations
 
+(* We want BaseInt versions of these function instead of MakeNumeric ones *)
+module Infix = struct
+  let ( + ), ( - ), ( * ), ( / ), ( ** ) = ( + ), ( - ), ( * ), ( / ), ( ** )
+  let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
+  let ( -- ), ( --- ) = ( -- ), ( --- )
+end
 
 module BaseSafeInt = struct
   include BaseInt
@@ -127,13 +133,11 @@ module BaseSafeInt = struct
     let c = Pervasives.( + ) a b in
       if a < 0 && b < 0 && c >= 0 || a > 0 && b > 0 && c <= 0	then raise Overflow
       else c
-  let ( + ) = add
 
   let sub a b =
     let c = Pervasives.( - ) a b in
       if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0	then raise Overflow
       else c
-  let ( - ) a b = sub a b
 
   let neg x = 
     if x <> min_int then ~- x
@@ -176,15 +180,21 @@ module BaseSafeInt = struct
 	add (cross lsl shift_bits) (al+bl)
       | _,_ -> raise Overflow
 
-  let ( * ) = mul
-
   let pow = BatNumber.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 2) ~mul
-    
+
 end
 
 module Safe_int = struct
   include BaseSafeInt
   let operations = let module N = BatNumber.MakeNumeric(BaseSafeInt) in N.operations
+
+  module Infix = struct
+    (* These are ok from BaseSafeInt *)
+    let ( + ), ( - ), ( * ), ( / ), ( ** ) = add, sub, mul, div, pow
+    (* MakeNumeric versions of these are not optimal, we want BaseInt ones *)
+    let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
+    let ( -- ), ( --- ) = ( -- ), ( --- )
+  end
 end
 
 (**T safe_int_tests

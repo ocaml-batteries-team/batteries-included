@@ -43,6 +43,27 @@ type 'a numeric =
 }
 
 (**
+   The infix operators
+*)
+module type NumericInfix =
+sig
+  type numeric_infix_t
+  val ( + ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( - ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( * ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( / ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( ** ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
+  val ( <> ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( >= ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( <= ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( > ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( < ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( = ) : numeric_infix_t -> numeric_infix_t -> bool
+  val ( -- ): numeric_infix_t -> numeric_infix_t -> numeric_infix_t BatEnum.t
+  val ( --- ): numeric_infix_t -> numeric_infix_t -> numeric_infix_t BatEnum.t
+end
+
+(**
    The full set of operations of a type of numbers
 *)
 module type Numeric =
@@ -66,23 +87,13 @@ sig
   val to_float: t     -> float
   val of_string : string -> t
   val to_string : t -> string
-  val ( + ) : t -> t -> t
-  val ( - ) : t -> t -> t
-  val ( * ) : t -> t -> t
-  val ( / ) : t -> t -> t
-  val ( ** ) : t -> t -> t
-  val ( <> ) : t -> t -> bool
-  val ( >= ) : t -> t -> bool
-  val ( <= ) : t -> t -> bool
-  val ( > ) : t -> t -> bool
-  val ( < ) : t -> t -> bool
-  val ( = ) : t -> t -> bool
-    
+
   val operations : t numeric
   val succ  : t -> t
   val pred  : t -> t
-  val ( -- ): t -> t -> t BatEnum.t
-  val ( --- ): t -> t -> t BatEnum.t
+
+  include NumericInfix with type numeric_infix_t = t
+
 end
 
 module type Bounded =
@@ -151,21 +162,34 @@ module type NUMERIC_BASE = sig
 end
 
 (**
+    Automatic generation of infix operators of a NUMERIC_BASE
+*)
+module MakeInfix (Base : NUMERIC_BASE) :
+  NumericInfix with type numeric_infix_t = Base.t = struct
+
+  type numeric_infix_t = Base.t
+  let ( + ), ( - ), ( * ), ( / ), ( ** ) = Base.add, Base.sub, Base.mul, Base.div, Base.pow
+
+  let ( = )  a b = Base.compare a b = 0
+  let ( < )  a b = Base.compare a b < 0
+  let ( > )  a b = Base.compare a b > 0
+  let ( <= ) a b = Base.compare a b <= 0
+  let ( >= ) a b = Base.compare a b >= 0
+  let ( <> ) a b = Base.compare a b <> 0
+
+  let ( -- )  x y = BatEnum.seq x Base.succ ( (>=) y )
+  let ( --- ) x y = 
+    if y >= x then x -- y 
+    else BatEnum.seq x Base.pred ((<=) y)
+end
+
+(**
    Automated definition of operators for a given numeric type.
 
    see open...in...
 *)
 module MakeNumeric (Base : NUMERIC_BASE) : Numeric with type t = Base.t = struct
   include Base
-  let ( + ), ( - ), ( * ), ( / ) = Base.add, Base.sub, Base.mul, Base.div 
-  let ( ** ) = Base.pow
-
-  let ( =  ) a b = Base.compare a b = 0
-  let ( <  ) a b = Base.compare a b < 0
-  let ( >  ) a b = Base.compare a b > 0
-  let ( <= ) a b = Base.compare a b <= 0
-  let ( >= ) a b = Base.compare a b >= 0
-  let ( <> ) a b = Base.compare a b <> 0
 
   let operations =
     {
@@ -191,10 +215,8 @@ module MakeNumeric (Base : NUMERIC_BASE) : Numeric with type t = Base.t = struct
     }    
 
   type discrete = t
-  let ( -- )  x y = BatEnum.seq x succ ( (>=) y )
-  let ( --- ) x y = 
-    if y >= x then x -- y 
-    else BatEnum.seq x pred ((<=) y)
+
+  include MakeInfix (Base)
 
 end
 

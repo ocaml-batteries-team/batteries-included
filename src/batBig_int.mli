@@ -163,7 +163,23 @@ val float_of_big_int : big_int -> float
            given big integer. *)
 
 
-
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( -- ) : big_int -> big_int -> big_int BatEnum.t
+  val ( --- ): big_int -> big_int -> big_int BatEnum.t
+  val ( + ) : t -> t -> t
+  val ( - ) : t -> t -> t
+  val ( * ) : t -> t -> t
+  val ( / ) : t -> t -> t
+  val ( ** ) : t -> t -> t
+  val ( <> ) : t -> t -> bool
+  val ( >= ) : t -> t -> bool
+  val ( <= ) : t -> t -> bool
+  val ( > ) : t -> t -> bool
+  val ( < ) : t -> t -> bool
+  val ( = ) : t -> t -> bool
+end 
+ 
 (**/**)
 
 (** {6 For internal use} *)
@@ -204,9 +220,6 @@ val gcd_big_int : big_int -> big_int -> big_int
         (** Greatest common divisor of two big integers. *)
 (**/**)
 
-
-
- 
 
     (** {6 Boilerplate code}*)
 

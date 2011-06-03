@@ -129,12 +129,32 @@ type t = Complex.t
   val ( > ) : t -> t -> bool
   val ( < ) : t -> t -> bool
   val ( = ) : t -> t -> bool
+  val ( -- ): t -> t -> t BatEnum.t
+  val ( --- ): t -> t -> t BatEnum.t
 
   val of_float : float -> t
   (** [Complex.of_float x] returns the complex number [x+0i] *)
 
   val to_float : t -> float
   (** [Complex.to_float (a+bi)] returns the float [a] *)
+
+  (** {6 Infix submodule regrouping all infix operators} *)
+
+  module Infix : sig
+    val ( + ) : t -> t -> t
+    val ( - ) : t -> t -> t
+    val ( * ) : t -> t -> t
+    val ( / ) : t -> t -> t
+    val ( ** ) : t -> t -> t
+    val ( <> ) : t -> t -> bool
+    val ( >= ) : t -> t -> bool
+    val ( <= ) : t -> t -> bool
+    val ( > ) : t -> t -> bool
+    val ( < ) : t -> t -> bool
+    val ( = ) : t -> t -> bool
+    val ( -- ): t -> t -> t BatEnum.t
+    val ( --- ): t -> t -> t BatEnum.t
+  end
 
   (** {6 Boilerplate code}*)
 

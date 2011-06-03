@@ -156,7 +156,37 @@
 
     (** {7 Printing}*)
     val print: 'a BatInnerIO.output -> t -> unit
+
+	(** {6 Infix submodule regrouping all infix operators} *)
+	module Infix : sig
+      val ( + ) : num -> num -> num
+      val ( - ) : num -> num -> num
+      val ( * ) : num -> num -> num
+      val ( / ) : num -> num -> num
+      val ( ** ) : num -> num -> num
+      val ( <> ) : num -> num -> bool
+      val ( >= ) : num -> num -> bool
+      val ( <= ) : num -> num -> bool
+      val ( > ) : num -> num -> bool
+      val ( < ) : num -> num -> bool
+      val ( = ) : num -> num -> bool
+
+      val ( =/ ) : num -> num -> bool
+      val ( </ ) : num -> num -> bool
+      val ( >/ ) : num -> num -> bool
+      val ( <=/ ) : num -> num -> bool
+      val ( >=/ ) : num -> num -> bool
+      val ( <>/ ) : num -> num -> bool
+
+      val ( +/ ) : num -> num -> num
+      val ( -/ ) : num -> num -> num
+      val ( */ ) : num -> num -> num
+      val ( // ) : num -> num -> num
+      val ( **/ ) : num -> num -> num
+    end
+
     (**/**)
+
     (** {6 Deprecated} *)
 	 	  
     val ( +/ ) : num -> num -> num
@@ -193,4 +223,5 @@
     val int_of_num : num -> int
     val num_of_int : int -> num
     val compare_num : num -> num -> int
+
 
