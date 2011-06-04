@@ -121,6 +121,7 @@ module Cache = BatCache
 module CharParser = BatCharParser
 module Deque = BatDeque
 module Hashcons = BatHashcons
+module Heap = BatHeap
 module Logger = BatLogger
 module Monad = BatMonad
 module Pair = BatPair
