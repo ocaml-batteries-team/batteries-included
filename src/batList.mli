@@ -543,4 +543,4 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 
 
 val ( @ ) : 'a list -> 'a list -> 'a list
-(** the new implementation for ( @ ) operator, see [List.append]. *)
+(** Tail recursive [List.append]. *)
