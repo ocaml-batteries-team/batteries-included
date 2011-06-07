@@ -115,16 +115,18 @@ compile-test-native: $(TESTDEPS)
 	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
 
 run-test-byte:
-	_build/testsuite/main.byte
-	_build/qtest/test_runner.byte
+	_build/testsuite/main.byte 
+	_build/qtest/test_runner.byte $(VERBOSE)
 
 run-test-native: run-test-byte
 	_build/testsuite/main.native
-	_build/qtest/test_runner.native
+	_build/qtest/test_runner.native $(VERBOSE)
 
 test-byte: compile-test-byte run-test-byte
-test-native: compile-test-native run-test-byte
+test-native: compile-test-native run-test-byte run-test-native
 test: $(TEST_TARGET)
+testv: 
+	VERBOSE=-v $(MAKE) test
 
 bench: 
 	$(OCAMLBUILD) $(TARGETS) $(BENCH_TARGETS)
