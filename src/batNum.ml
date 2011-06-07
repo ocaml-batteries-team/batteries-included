@@ -60,18 +60,19 @@ module BaseNum = struct
 	let dividee = Big_int (Big_int.big_int_of_string  (prefix^suffix))        in
 	  div divider dividee
       with Not_found -> of_int (BatInt.of_float f)
-
-  let round = round_num
-  let floor = floor_num
-  let ceil  = ceiling_num
-  let square= square_num
-  let is_integer = is_integer_num
-  let approx= integer_num
-  let quo   = quo_num
-  let sign  = sign_num
 end
-
-  include BatNumber.MakeNumeric(BaseNum)
-  include BaseNum
-  let print out t = BatInnerIO.nwrite out (to_string t)
+  
+include BatNumber.MakeNumeric(BaseNum)
+  
+include Num
+let round = round_num
+let floor = floor_num
+let ceil  = ceiling_num
+let square= square_num
+let is_integer = is_integer_num
+let approx= integer_num
+let quo   = quo_num
+let sign  = sign_num
+  
+let print out t = BatInnerIO.nwrite out (to_string t)
 

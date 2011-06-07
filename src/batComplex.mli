@@ -28,16 +28,12 @@
     (cartesian representation).  Each part is represented by a
     double-precision floating-point number (type {!float}).  
     
-    This module extends Stdlib's
-    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Complex.html}Complex}
-    module, go there for documentation on the rest of the functions
-    and types.
-
     @author Xavier Leroy (base module)
     @author Gabriel Scherer
     @author David Teller
 *)
-open Complex
+
+type t = Complex.t
   
   val zero: t
     (** The complex number [0]. *)

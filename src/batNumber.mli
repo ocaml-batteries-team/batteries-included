@@ -118,23 +118,30 @@ sig
   val ( = ) : t -> t -> bool
     
   val operations : t numeric
+
+  type discrete = t
+  (* to_int already provided *)
+  val succ : t -> t
+  val pred : t -> t
+  val ( -- ): t -> t -> t BatEnum.t
+  val ( --- ): t -> t -> t BatEnum.t
 end
 
 module type Bounded =
 sig
-  type t
-  val min_num: t
-  val max_num: t
+  type bounded
+  val min_num: bounded
+  val max_num: bounded
 end
 
 module type Discrete =
 sig
-  type t
-  val to_int: t -> int
-  val succ  : t -> t
-  val pred  : t -> t
-  val ( -- ): t -> t -> t BatEnum.t
-  val ( --- ): t -> t -> t BatEnum.t
+  type discrete
+  val to_int: discrete -> int
+  val succ  : discrete -> discrete
+  val pred  : discrete -> discrete
+  val ( -- ): discrete -> discrete -> discrete BatEnum.t
+  val ( --- ): discrete -> discrete -> discrete BatEnum.t
 end
 
 (**/**)
@@ -145,28 +152,27 @@ end
    The smallest set of operations supported by every set of numbers
 *)
 module type NUMERIC_BASE =
-  sig
-    type t
+sig
+  type t
 
+  val zero : t
+  val one  : t
 
-    val zero : t
-    val one  : t
-
-  (** {6 Arithmetic operations} 
-      
-      Depending on the implementation, some of these operations
-      {i may} raise exceptions at run-time to represent over/under-flows.*)
-    val neg : t -> t
-    val succ : t -> t
-    val pred : t -> t
-    val abs : t -> t
-    val add : t -> t -> t
-    val sub : t -> t -> t
-    val mul : t -> t -> t
-    val div : t -> t -> t
-    val modulo : t -> t -> t
-    val pow : t -> t -> t
-    val compare : t -> t -> int
+    (** {6 Arithmetic operations} 
+	
+	Depending on the implementation, some of these operations
+	{i may} raise exceptions at run-time to represent over/under-flows.*)
+  val neg : t -> t
+  val succ : t -> t
+  val pred : t -> t
+  val abs : t -> t
+  val add : t -> t -> t
+  val sub : t -> t -> t
+  val mul : t -> t -> t
+  val div : t -> t -> t
+  val modulo : t -> t -> t
+  val pow : t -> t -> t
+  val compare : t -> t -> int
 
     (** {6 Conversions} *)
   val of_int : int -> t
@@ -178,35 +184,23 @@ module type NUMERIC_BASE =
   val of_string : string -> t
     (** Convert the representation of a number to the corresponding
 	number. Raises [Invalid_arg] if the string does not represent
-        a valid number of type [t]*)
+	a valid number of type [t]*)
 
   val to_string : t -> string
 
   val of_float : float -> t
   val to_float : t -> float
-  end
 
-
-(** Automated definition of operators for a given numeric type.
-
-    You will only need this if you develop your own numeric modules.*)
-
-module MakeNumeric :
-  functor (Base : NUMERIC_BASE) ->
-sig
-  val operations : Base.t numeric
-  val ( + ) :  Base.t -> Base.t -> Base.t
-  val ( - ) :  Base.t -> Base.t -> Base.t
-  val ( * ) :  Base.t -> Base.t -> Base.t
-  val ( / ) :  Base.t -> Base.t -> Base.t
-  val ( ** ) : Base.t -> Base.t -> Base.t
-  val ( <> ) : Base.t -> Base.t -> bool
-  val ( >= ) : Base.t -> Base.t -> bool
-  val ( <= ) : Base.t -> Base.t -> bool
-  val ( > ) :  Base.t -> Base.t -> bool
-  val ( < ) :  Base.t -> Base.t -> bool
-  val ( = ) :  Base.t -> Base.t -> bool
 end
 
 
+(** Automated definition of operators for a given numeric type.
+    You will only need this if you develop your own numeric modules.*)
+
+module MakeNumeric :
+  functor (Base : NUMERIC_BASE) -> Numeric with type t = Base.t
+
+(* a generic exponentiation function which efficiently computes a^n as
+   the product of repeated squares, depending on the base-2 expansion
+   of the exponent. ex. a^1 * a^4 * ... a^8 for n=13 *)
 val generic_pow : zero:'a -> one:'a -> div_two:('a -> 'a) -> mod_two:('a -> 'a) -> mul:('a -> 'a -> 'a) -> 'a -> 'a -> 'a

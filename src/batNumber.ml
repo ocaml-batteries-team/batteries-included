@@ -48,6 +48,7 @@ type 'a numeric =
 module type Numeric =
 sig  
   type t
+  type discrete = t
   val zero : t
   val one : t
   val neg : t -> t
@@ -78,22 +79,27 @@ sig
   val ( = ) : t -> t -> bool
     
   val operations : t numeric
-end
-
-module type Bounded = sig
-  type t
-
-  val min_num : t
-  val max_num : t
-end
-
-module type Discrete = sig
-  type t
-  val to_int: t -> int
   val succ  : t -> t
   val pred  : t -> t
   val ( -- ): t -> t -> t BatEnum.t
   val ( --- ): t -> t -> t BatEnum.t
+end
+
+module type Bounded =
+sig
+  type bounded
+  val min_num: bounded
+  val max_num: bounded
+end
+
+module type Discrete =
+sig
+  type discrete
+  val to_int: discrete -> int
+  val succ  : discrete -> discrete
+  val pred  : discrete -> discrete
+  val ( -- ): discrete -> discrete -> discrete BatEnum.t
+  val ( --- ): discrete -> discrete -> discrete BatEnum.t
 end
 
 (**
@@ -149,14 +155,14 @@ end
 
    see open...in...
 *)
-module MakeNumeric (Base : NUMERIC_BASE) = struct
+module MakeNumeric (Base : NUMERIC_BASE) : Numeric with type t = Base.t = struct
   include Base
   let ( + ), ( - ), ( * ), ( / ) = Base.add, Base.sub, Base.mul, Base.div 
   let ( ** ) = Base.pow
 
-  let ( =  )  a b = Base.compare a b = 0
-  let ( <  )  a b = Base.compare a b < 0
-  let ( >  )  a b = Base.compare a b > 0
+  let ( =  ) a b = Base.compare a b = 0
+  let ( <  ) a b = Base.compare a b < 0
+  let ( >  ) a b = Base.compare a b > 0
   let ( <= ) a b = Base.compare a b <= 0
   let ( >= ) a b = Base.compare a b >= 0
   let ( <> ) a b = Base.compare a b <> 0
@@ -179,14 +185,21 @@ module MakeNumeric (Base : NUMERIC_BASE) = struct
       of_int    = Base.of_int;
       to_int    = Base.to_int;
       of_float  = Base.of_float;
-      to_float = Base.to_float;
+      to_float  = Base.to_float;
       of_string = Base.of_string;
       to_string = Base.to_string;
     }    
+
+  type discrete = t
+  let ( -- )  x y = BatEnum.seq x succ ( (>=) y )
+  let ( --- ) x y = 
+    if y >= x then x -- y 
+    else BatEnum.seq x pred ((<=) y)
+
 end
 
 (**
-   A generic implementation of fast exponenciation
+   A generic implementation of fast exponentiation
 *)
 let generic_pow ~zero ~one ~div_two ~mod_two ~mul:( * ) =
   let rec pow a n =

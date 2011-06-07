@@ -25,61 +25,60 @@
    @author David Teller
 *)
 
-  type t = bool
-      (**The type of booleans. Formally, this is defined as [type t = true | false] *)
+type t = bool
+  (**The type of booleans. Formally, this is defined as [type t = true | false] *)
 
-  external not : bool -> bool = "%boolnot"
-      (** The boolean negation. *)
+external not : bool -> bool = "%boolnot"
+  (** The boolean negation. *)
 
-  external ( && ) : bool -> bool -> bool = "%sequand"
-      (** The boolean ``and''. Evaluation is sequential, left-to-right:
-	  in [e1 && e2], [e1] is evaluated first, and if it returns [false],
-	  [e2] is not evaluated at all. *)
+external ( && ) : bool -> bool -> bool = "%sequand"
+  (** The boolean ``and''. Evaluation is sequential, left-to-right:
+      in [e1 && e2], [e1] is evaluated first, and if it returns [false],
+      [e2] is not evaluated at all. *)
 
-  external ( || ) : bool -> bool -> bool = "%sequor"
-      (** The boolean ``or''. Evaluation is sequential, left-to-right:
-	  in [e1 || e2], [e1] is evaluated first, and if it returns [true],
-	  [e2] is not evaluated at all. *)
+external ( || ) : bool -> bool -> bool = "%sequor"
+  (** The boolean ``or''. Evaluation is sequential, left-to-right:
+      in [e1 || e2], [e1] is evaluated first, and if it returns [true],
+      [e2] is not evaluated at all. *)
 
+val zero : bool
+val one : bool
+val neg : bool -> bool
+val succ : bool -> bool
+val pred : bool -> bool
+val abs : bool -> bool
+val add : bool -> bool -> bool
+val mul : bool -> bool -> bool
+val sub : bool -> bool -> bool
+val div : t -> t -> t
+val modulo : t -> t -> t
+val pow : t -> t -> t
+val min_num : bool
+val max_num : bool
+val compare : bool -> bool -> int
+val of_int : int -> bool
+val to_int : bool -> int
+val of_string : string -> bool
+  (** Convert the given string to a boolean.
+      Raise [Invalid_argument "Bool.of_string"] if the string is not
+      ["true"], ["false"], ["0"], ["1"], ["tt"] or ["ff"]. *)
 
-  val zero : bool
-  val one : bool
-  val neg : bool -> bool
-  val succ : 'a -> bool
-  val pred : 'a -> bool
-  val abs : 'a -> 'a
-  val add : bool -> bool -> bool
-  val mul : bool -> bool -> bool
-  val sub : 'a -> bool -> bool
-  val div : 'a -> 'b -> 'c
-  val modulo : 'a -> 'b -> 'c
-  val pow : 'a -> 'b -> 'c
-  val min_num : bool
-  val max_num : bool
-  val compare : 'a -> 'a -> int
-  val of_int : int -> bool
-  val to_int : bool -> int
-  val of_string : string -> bool
-    (** Convert the given string to a boolean.
-	Raise [Invalid_argument "Bool.of_string"] if the string is not
-	["true"], ["false"], ["0"], ["1"], ["tt"] or ["ff"]. *)
+val to_string : bool -> string
+val of_float  : float -> bool
+val to_float  : bool  -> float
 
-  val to_string : bool -> string
-  val of_float  : float -> bool
-  val to_float  : bool  -> float
-
-  val ( + ) : t -> t -> t
-  val ( - ) : t -> t -> t
-  val ( * ) : t -> t -> t
-  val ( / ) : t -> t -> t
-  val ( ** ) : t -> t -> t
-  val ( <> ) : t -> t -> bool
-  val ( >= ) : t -> t -> bool
-  val ( <= ) : t -> t -> bool
-  val ( > ) : t -> t -> bool
-  val ( < ) : t -> t -> bool
-  val ( = ) : t -> t -> bool
-  val operations : t BatNumber.numeric
+val ( + ) : t -> t -> t
+val ( - ) : t -> t -> t
+val ( * ) : t -> t -> t
+val ( / ) : t -> t -> t
+val ( ** ) : t -> t -> t
+val ( <> ) : t -> t -> bool
+val ( >= ) : t -> t -> bool
+val ( <= ) : t -> t -> bool
+val ( > ) : t -> t -> bool
+val ( < ) : t -> t -> bool
+val ( = ) : t -> t -> bool
+val operations : t BatNumber.numeric
 
 (** {6 Boilerplate code}*)
 

@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open BatNumber
-
 module BaseComplex = struct
   include Complex
 
@@ -30,8 +28,6 @@ module BaseComplex = struct
   let to_string x = 
     ( string_of_float x.re ) ^ "+ i" ^ ( string_of_float x.im )
 
-
-
   let pred x = {x with re = x.re -. 1.}
 
   let succ x = {x with re = x.re +. 1.}
@@ -40,7 +36,6 @@ module BaseComplex = struct
   let of_int x   = {re = float_of_int x; im = 0.}
   let to_float x = x.re
   let of_float x = {re = x; im = 0.}
-
 
   let abs x    = { re = norm x; im = 0. }
 
@@ -72,8 +67,19 @@ module BaseComplex = struct
 
 end
 
+include BatNumber.MakeNumeric(BaseComplex)
 
-  include BatNumber.MakeNumeric(BaseComplex)
-  include BaseComplex
-  let print out t = BatInnerIO.nwrite out (to_string t)
+let inv    = Complex.inv
+let i      = Complex.i
+let conj   = Complex.conj
+let sqrt   = Complex.sqrt
+let norm2  = Complex.norm2
+let norm   = Complex.norm
+let arg    = Complex.arg
+let polar  = Complex.polar
+let exp    = Complex.exp
+let log    = Complex.log
+let pow    = Complex.pow
+
+let print out t = BatInnerIO.nwrite out (to_string t)
 

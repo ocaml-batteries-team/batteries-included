@@ -50,7 +50,7 @@ module Array = struct include Array include BatArray end
 module Buffer = struct include Buffer include BatBuffer end
 (* Callback *)
 module Char = struct include Char include BatChar end
-module Complex = struct include Complex include BatComplex end
+module Complex = BatComplex
 module Digest = struct include Digest include BatDigest end
 (* Filename *)
 module Format = struct include Format include BatFormat end

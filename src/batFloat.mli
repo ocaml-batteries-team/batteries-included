@@ -83,7 +83,7 @@
     val pow : float -> float -> float
     val min_num : float
     val max_num : float
-    val compare : 'a -> 'a -> int
+    val compare : float -> float -> int
     val of_int : int -> float
     val to_int : float -> int
     external of_float : float -> float = "%identity"
@@ -288,7 +288,7 @@ module Safe_float :
     val pow : float -> float -> float
     val min_num : float
     val max_num : float
-    val compare : 'a -> 'a -> int
+    val compare : float -> float -> int
     val of_int : int -> float
     val to_int : float -> int
     external of_float : float -> float = "%identity"

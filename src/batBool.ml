@@ -38,9 +38,9 @@ module BaseBool = struct
 	  [e2] is not evaluated at all. *)
   let zero, one = false, true
   let neg = not
-
-  let succ x = true
-  let pred x = false
+    
+  let succ _ = true
+  let pred _ = false
   let abs  x = x
 
   let add    = ( || )
@@ -55,7 +55,6 @@ module BaseBool = struct
   let pow _ _ = 
     raise (Invalid_argument "Bool.pow")
 
-  let min_num, max_num = false, true
   let compare = compare
     
   let of_int = function
@@ -77,8 +76,15 @@ module BaseBool = struct
   let to_string = string_of_bool
 end
 
-  include BaseBool
-  include BatNumber.MakeNumeric(BaseBool)
-  let print out t = BatInnerIO.nwrite out (to_string t)
-  let t_printer paren out t = print out t
+include BatNumber.MakeNumeric(BaseBool)
+  
+external not : bool -> bool = "%boolnot"
+external ( && ) : bool -> bool -> bool = "%sequand"
+external ( || ) : bool -> bool -> bool = "%sequor"
 
+type bounded = t
+let min_num, max_num = false, true
+  
+let print out t = BatInnerIO.nwrite out (to_string t)
+let t_printer paren out t = print out t
+  
