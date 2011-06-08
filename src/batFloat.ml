@@ -115,12 +115,6 @@ module Base_safe_float = struct
   let pred    = safe1 pred
   let succ    = safe1 succ
   let pow     = safe2 pow
-
-  let ( + )   = add
-  let ( - )   = sub
-  let ( / )   = div
-  let ( * )   = mul
-  let ( ** )  = pow
 end
 
 module Safe_float = struct
