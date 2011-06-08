@@ -719,6 +719,14 @@ module Exceptionless = struct
   let find_map f l =
     try Some(find_map f l)
     with Not_found -> None
+      
+  let hd l = 
+    try Some (hd l) 
+    with Failure "hd" -> None 
+
+  let tl l = 
+    try Some (tl l)
+    with Failure "tl" -> None
 end
 
 
