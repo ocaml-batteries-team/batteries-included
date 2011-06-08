@@ -492,7 +492,15 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	    element of the list where [f x] returns [Some y].  It returns [None]
 	    if no such element exists. *)
 
-	end
+	  val hd : ('a list -> 'a option)
+	(** [hd l] returns [Some x] such that [x] is the first element of the given list [l]. 
+	    Returns [None] if list [l] is empty. *)
+	
+	  val tl : ('a list -> 'a list option)
+	(** [tl l] returns [Some x] such that [x] is the given list [l] without its first element. 
+	    Returns [None] if list [l] is empty *)
+ 
+end
 
 
 
