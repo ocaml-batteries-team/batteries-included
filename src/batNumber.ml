@@ -45,22 +45,27 @@ type 'a numeric =
 (**
    The infix operators
 *)
-module type NumericInfix =
+module type Infix =
 sig
-  type numeric_infix_t
-  val ( + ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
-  val ( - ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
-  val ( * ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
-  val ( / ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
-  val ( ** ) : numeric_infix_t -> numeric_infix_t -> numeric_infix_t
-  val ( <> ) : numeric_infix_t -> numeric_infix_t -> bool
-  val ( >= ) : numeric_infix_t -> numeric_infix_t -> bool
-  val ( <= ) : numeric_infix_t -> numeric_infix_t -> bool
-  val ( > ) : numeric_infix_t -> numeric_infix_t -> bool
-  val ( < ) : numeric_infix_t -> numeric_infix_t -> bool
-  val ( = ) : numeric_infix_t -> numeric_infix_t -> bool
-  val ( -- ): numeric_infix_t -> numeric_infix_t -> numeric_infix_t BatEnum.t
-  val ( --- ): numeric_infix_t -> numeric_infix_t -> numeric_infix_t BatEnum.t
+  type bat__infix_t
+  val ( + ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( - ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( * ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( / ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( ** ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( -- ): bat__infix_t -> bat__infix_t -> bat__infix_t BatEnum.t
+  val ( --- ): bat__infix_t -> bat__infix_t -> bat__infix_t BatEnum.t
+end
+
+module type Compare =
+sig
+  type bat__compare_t
+  val ( <> ) : bat__compare_t -> bat__compare_t -> bool
+  val ( >= ) : bat__compare_t -> bat__compare_t -> bool
+  val ( <= ) : bat__compare_t -> bat__compare_t -> bool
+  val ( > ) : bat__compare_t -> bat__compare_t -> bool
+  val ( < ) : bat__compare_t -> bat__compare_t -> bool
+  val ( = ) : bat__compare_t -> bat__compare_t -> bool
 end
 
 (**
@@ -92,7 +97,8 @@ sig
   val succ  : t -> t
   val pred  : t -> t
 
-  include NumericInfix with type numeric_infix_t = t
+  include Infix with type bat__infix_t = t
+  include Compare with type bat__compare_t = t
 
 end
 
@@ -165,22 +171,29 @@ end
     Automatic generation of infix operators of a NUMERIC_BASE
 *)
 module MakeInfix (Base : NUMERIC_BASE) :
-  NumericInfix with type numeric_infix_t = Base.t = struct
+  Infix with type bat__infix_t = Base.t = struct
 
-  type numeric_infix_t = Base.t
+  type bat__infix_t = Base.t
   let ( + ), ( - ), ( * ), ( / ), ( ** ) = Base.add, Base.sub, Base.mul, Base.div, Base.pow
+  let ( -- )  x y = BatEnum.seq x Base.succ ( (>=) y )
+  let ( --- ) x y = 
+    if y >= x then x -- y 
+    else BatEnum.seq x Base.pred ((<=) y)
+end
 
+(**
+    Automatic generation of comparison operations of a NUMERIC_BASE
+*)
+module MakeCompare (Base : NUMERIC_BASE) :
+  Compare with type bat__compare_t = Base.t = struct
+
+  type bat__compare_t = Base.t
   let ( = )  a b = Base.compare a b = 0
   let ( < )  a b = Base.compare a b < 0
   let ( > )  a b = Base.compare a b > 0
   let ( <= ) a b = Base.compare a b <= 0
   let ( >= ) a b = Base.compare a b >= 0
   let ( <> ) a b = Base.compare a b <> 0
-
-  let ( -- )  x y = BatEnum.seq x Base.succ ( (>=) y )
-  let ( --- ) x y = 
-    if y >= x then x -- y 
-    else BatEnum.seq x Base.pred ((<=) y)
 end
 
 (**
@@ -217,7 +230,7 @@ module MakeNumeric (Base : NUMERIC_BASE) : Numeric with type t = Base.t = struct
   type discrete = t
 
   include MakeInfix (Base)
-
+  include MakeCompare (Base)
 end
 
 (**

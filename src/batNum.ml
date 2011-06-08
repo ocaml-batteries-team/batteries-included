@@ -81,3 +81,6 @@ module Infix = struct
   let (=/), (</), (>/), (<=/), (>=/), (<>/) = (=/), (</), (>/), (<=/), (>=/), (<>/)
   let (+/), (-/), ( */ ), (//), ( **/ ) = (+/), (-/), ( */ ), (//), ( **/ )
 end 
+
+module Compare = BatNumber.MakeCompare (BaseNum)
+

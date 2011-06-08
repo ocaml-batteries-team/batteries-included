@@ -157,19 +157,10 @@
     (** {7 Printing}*)
     val print: 'a BatInnerIO.output -> t -> unit
 
-	(** {6 Infix submodule regrouping all infix operators} *)
+	(** {6 Submodules grouping all infix operators} *)
+
 	module Infix : sig
-      val ( + ) : num -> num -> num
-      val ( - ) : num -> num -> num
-      val ( * ) : num -> num -> num
-      val ( / ) : num -> num -> num
-      val ( ** ) : num -> num -> num
-      val ( <> ) : num -> num -> bool
-      val ( >= ) : num -> num -> bool
-      val ( <= ) : num -> num -> bool
-      val ( > ) : num -> num -> bool
-      val ( < ) : num -> num -> bool
-      val ( = ) : num -> num -> bool
+	  include BatNumber.Infix with type bat__infix_t = t
 
       val ( =/ ) : num -> num -> bool
       val ( </ ) : num -> num -> bool
@@ -184,6 +175,8 @@
       val ( // ) : num -> num -> num
       val ( **/ ) : num -> num -> num
     end
+
+	module Compare : BatNumber.Compare with type bat__compare_t = t
 
     (**/**)
 

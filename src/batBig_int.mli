@@ -163,22 +163,10 @@ val float_of_big_int : big_int -> float
            given big integer. *)
 
 
-(** {6 Infix submodule regrouping all infix operators} *)
-module Infix : sig
-  val ( -- ) : big_int -> big_int -> big_int BatEnum.t
-  val ( --- ): big_int -> big_int -> big_int BatEnum.t
-  val ( + ) : t -> t -> t
-  val ( - ) : t -> t -> t
-  val ( * ) : t -> t -> t
-  val ( / ) : t -> t -> t
-  val ( ** ) : t -> t -> t
-  val ( <> ) : t -> t -> bool
-  val ( >= ) : t -> t -> bool
-  val ( <= ) : t -> t -> bool
-  val ( > ) : t -> t -> bool
-  val ( < ) : t -> t -> bool
-  val ( = ) : t -> t -> bool
-end 
+(** {6 Submodules grouping all infix operators}  *)
+
+module Infix : BatNumber.Infix with type bat__infix_t = t
+module Compare : BatNumber.Compare with type bat__compare_t = t
  
 (**/**)
 

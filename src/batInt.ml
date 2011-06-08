@@ -114,11 +114,12 @@ include BaseInt
 module N = BatNumber.MakeNumeric(BaseInt)
 let operations = N.operations
 
+module Infix = BatNumber.MakeInfix(BaseInt)
+
 (* We want BaseInt versions of these function instead of MakeNumeric ones *)
-module Infix = struct
-  let ( + ), ( - ), ( * ), ( / ), ( ** ) = ( + ), ( - ), ( * ), ( / ), ( ** )
+module Compare = struct
+  type bat__compare_t = t
   let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
-  let ( -- ), ( --- ) = ( -- ), ( --- )
 end
 
 module BaseSafeInt = struct
@@ -188,12 +189,11 @@ module Safe_int = struct
   include BaseSafeInt
   let operations = let module N = BatNumber.MakeNumeric(BaseSafeInt) in N.operations
 
-  module Infix = struct
-    (* These are ok from BaseSafeInt *)
-    let ( + ), ( - ), ( * ), ( / ), ( ** ) = add, sub, mul, div, pow
-    (* MakeNumeric versions of these are not optimal, we want BaseInt ones *)
+  module Infix = BatNumber.MakeInfix(BaseSafeInt)
+  (* MakeNumeric versions of these are not optimal, we want BaseInt ones *)
+  module Compare = struct
+    type bat__compare_t = t
     let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
-    let ( -- ), ( --- ) = ( -- ), ( --- )
   end
 end
 
@@ -202,6 +202,8 @@ end
    Safe_int.neg max_int = -max_int
    try Safe_int.neg min_int |> ignore; false with Number.Overflow -> true
    try Safe_int.mul (Safe_int.mul ((1 lsl 18) * (3*3*3*3*3*3*3*3)) (5*5*5*5*7*7*11*13*17*19)) 21 |> ignore; false with Number.Overflow -> true
+   (* Check Safe_int.infix is safe as well *)
+   try Safe_int.Infix.(+) max_int 1 |> ignore; false with Number.Overflow -> true
  **)
 
 (**Q safe_int_qtests

@@ -167,21 +167,8 @@
 
     (** {6 Submodules regrouping all infix operations} *)
 
-    module Infix : sig
-      val ( + ) :  int -> int -> int
-      val ( - ) :  int -> int -> int
-      val ( * ) :  int -> int -> int
-      val ( / ) :  int -> int -> int
-      val ( ** ) : int -> int -> int
-      val ( <> ) : int -> int -> bool
-      val ( >= ) : int -> int -> bool
-      val ( <= ) : int -> int -> bool
-      val ( > ) :  int -> int -> bool
-      val ( < ) :  int -> int -> bool
-      val ( = ) :  int -> int -> bool
-      val ( -- ) : int -> int -> int BatEnum.t
-      val ( --- ) : int -> int -> int BatEnum.t
-    end
+    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Compare : BatNumber.Compare with type bat__compare_t = t
 
     (** {6 Boilerplate code}*)
 
@@ -345,21 +332,8 @@ module Safe_int :
 
     (** {6 Submodules regrouping all infix operations on safe integers} *)
 
-    module Infix : sig
-      val ( + ) :  int -> int -> int
-      val ( - ) :  int -> int -> int
-      val ( * ) :  int -> int -> int
-      val ( / ) :  int -> int -> int
-      val ( ** ) : int -> int -> int
-      val ( <> ) : int -> int -> bool
-      val ( >= ) : int -> int -> bool
-      val ( <= ) : int -> int -> bool
-      val ( > ) :  int -> int -> bool
-      val ( < ) :  int -> int -> bool
-      val ( = ) :  int -> int -> bool
-      val ( -- ) : int -> int -> int BatEnum.t
-      val ( --- ) : int -> int -> int BatEnum.t
-    end
+    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Compare : BatNumber.Compare with type bat__compare_t = t
 
     (** {6 Boilerplate code}*)
 

@@ -69,6 +69,7 @@ end
 
 include BatNumber.MakeNumeric(BaseComplex)
 module Infix = BatNumber.MakeInfix(BaseComplex)
+module Compare = BatNumber.MakeCompare(BaseComplex)
 
 let inv    = Complex.inv
 let i      = Complex.i

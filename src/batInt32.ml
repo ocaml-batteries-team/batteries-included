@@ -78,6 +78,7 @@ end
 
 include BatNumber.MakeNumeric(BaseInt32)
 module Infix = BatNumber.MakeInfix(BaseInt32)
+module Compare = BatNumber.MakeCompare(BaseInt32)
 
 let min_int = Int32.min_int
 let max_int = Int32.max_int
