@@ -27,4 +27,3 @@ module Infix : sig
   val ( >>= ): ('a, 'b) result -> ('a -> ('c, 'b) result) -> ('c, 'b) result
 end
 
-(** {6 Boilerplate code}*)
