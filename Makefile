@@ -132,7 +132,7 @@ bench:
 	$(OCAMLBUILD) $(TARGETS) $(BENCH_TARGETS)
 	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH); )
 
-release: test
+release: clean test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
