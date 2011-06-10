@@ -851,7 +851,7 @@ let unfold data next =
 
 let arg_min f enum =
   match get enum with
-      None -> failwith "arg_min: Empty enum"
+      None -> invalid_arg "arg_min: Empty enum"
     | Some v ->
 	let item, eval = ref v, ref (f v) in
 	iter (fun v -> let fv = f v in 
@@ -860,7 +860,7 @@ let arg_min f enum =
 
 let arg_max f enum =
   match get enum with
-      None -> failwith "arg_max: Empty enum"
+      None -> invalid_arg "arg_max: Empty enum"
     | Some v ->
 	let item, eval = ref v, ref (f v) in
 	iter (fun v -> let fv = f v in 
