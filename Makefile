@@ -60,12 +60,12 @@ endif
 
 all: src/batCamomile.ml
 	@echo "Build mode:" $(MODE)
-	${RM} src/batteries_config.ml
 	$(OCAMLBUILD) $(TARGETS)
 
 clean:
 	${RM} apidocs
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
+	${RM} src/batteries_config.ml
 	${RM} src/batCamomile.ml
 	$(OCAMLBUILD) -clean
 
@@ -142,6 +142,9 @@ release: test
 ##
 
 CAMVER=$(shell sh -c 'ocamlfind query -format %v camomile')
+ifeq ($(CAMVER),0.8.3)
+	CAMFIX=src/batCamomile-0.8.2.ml
+endif
 ifeq ($(CAMVER),0.8.2)
 	CAMFIX=src/batCamomile-0.8.2.ml
 endif
@@ -169,7 +172,10 @@ camfail:
 	exit 1
 
 camfailunk:
-	echo "Unknown build of camomile detected ( $(CAMVER) ), cannot auto-config batcamomile"
+	echo "Unknown build of camomile detected ( $(CAMVER) ), cannot auto-config batcamomile."
+	echo "If your camomile is more recent than 0.8.3, you can probably do"
+	echo "  cp src/batCamomile-0.8.2.ml src/batCamomile.ml"
+	echo "and everything will work fine."
 	exit 1
 
 ##
