@@ -710,30 +710,6 @@ let while_do cont f e =
 
 let break test e = span (fun x -> not (test x)) e
 
-let ( -- ) x y = range x ~until:y
-
-let ( --. ) (a, step) b =
-  let n = int_of_float ((b -. a) /. step) + 1 in
-  if n < 0 then
-    empty ()
-  else
-    init n (fun i -> float_of_int i *. step +. a)
-
-let ( --^ ) x y = range x ~until:(y-1)
-
-let ( --- ) x y = 
-  if x <= y then x -- y
-  else          seq x ((+) (-1)) ( (<=) y )
-
-let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
-
-let ( // ) e f = filter f e
-
-let ( /@ ) e f        = map f e
-let ( @/ )            = map
-let ( //@ ) e f       = filter_map f e
-let ( @// )           = filter_map
-
 let uniq e = 
   match peek e with 
       None -> empty ()
@@ -895,6 +871,33 @@ let arg_max f enum =
    List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"
    -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
 **)
+
+module Infix = struct
+  let ( -- ) x y = range x ~until:y
+
+  let ( --. ) (a, step) b =
+    let n = int_of_float ((b -. a) /. step) + 1 in
+    if n < 0 then
+      empty ()
+    else
+      init n (fun i -> float_of_int i *. step +. a)
+
+  let ( --^ ) x y = range x ~until:(y-1)
+
+  let ( --- ) x y = 
+    if x <= y then x -- y
+    else          seq x ((+) (-1)) ( (<=) y )
+
+  let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
+
+  let ( // ) e f = filter f e
+
+  let ( /@ ) e f        = map f e
+  let ( @/ )            = map
+  let ( //@ ) e f       = filter_map f e
+  let ( @// )           = filter_map
+end
+include Infix
 
 (* -----------
    Concurrency 

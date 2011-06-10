@@ -77,6 +77,8 @@ module BaseBool = struct
 end
 
 include BatNumber.MakeNumeric(BaseBool)
+module Infix = BatNumber.MakeInfix(BaseBool)
+module Compare = BatNumber.MakeCompare(BaseBool)
   
 external not : bool -> bool = "%boolnot"
 external ( && ) : bool -> bool -> bool = "%sequand"

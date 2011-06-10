@@ -81,7 +81,7 @@ open Pervasives
   let print_all inp     = BatIO.copy inp BatIO.stdout
   let prerr_all inp     = BatIO.copy inp BatIO.stderr
 
-  let (@) = List.append
+  include BatList.Infix
 
   (**{6 Importing BatEnum}*)
 
@@ -98,20 +98,11 @@ open Pervasives
   let filter            = filter
   let filter_map        = filter_map
   let concat            = concat
-  let ( -- )            = ( -- )
-  let ( --^ )            = ( --^ )
-  let ( --. )           = ( --. )
-  let ( --- )           = ( --- )
-  let ( --~ )           = ( --~ )
-  let ( // )            = ( // )
-  let ( /@ ) e f        = map f e
-  let ( @/ )            = map
-  let ( //@ ) e f       = filter_map f e
-  let ( @// )           = filter_map
   let print             = print
   let get               = get
   let iter              = iter
   let scanl             = scanl
+  include Infix
 
   (** {6 Operators}*)
 

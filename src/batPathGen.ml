@@ -183,6 +183,17 @@ module Operators : sig
 
 end
 
+(**
+   As other Operators modules in batteries are named "Infix" we provide Infix as well.
+   This is a mere copy of Operators.
+*)
+module Infix : sig
+
+ val (/:) : t -> ustring -> t
+ val (//@) : t -> t -> t
+
+end
+
 exception Malformed_path
 
 val normalize_filepath : t -> t
@@ -608,6 +619,8 @@ module Make = functor (S : StringType) -> struct
     let (//@) = concat
 
   end
+
+  module Infix = Operators
 
   let normalize_gen ~assume path =
     let can_dotdot = match assume with

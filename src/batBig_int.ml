@@ -55,6 +55,8 @@ end
 
 include Big_int
 include MakeNumeric(BaseBig_int)
+module Infix = MakeInfix(BaseBig_int)
+module Compare = MakeCompare(BaseBig_int)
     
 let print out t = BatIO.nwrite out (to_string t)
 

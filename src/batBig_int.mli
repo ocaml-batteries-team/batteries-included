@@ -163,7 +163,11 @@ val float_of_big_int : big_int -> float
            given big integer. *)
 
 
+(** {6 Submodules grouping all infix operators}  *)
 
+module Infix : BatNumber.Infix with type bat__infix_t = t
+module Compare : BatNumber.Compare with type bat__compare_t = t
+ 
 (**/**)
 
 (** {6 For internal use} *)
@@ -204,9 +208,6 @@ val gcd_big_int : big_int -> big_int -> big_int
         (** Greatest common divisor of two big integers. *)
 (**/**)
 
-
-
- 
 
     (** {6 Boilerplate code}*)
 

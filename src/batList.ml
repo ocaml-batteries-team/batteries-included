@@ -777,3 +777,6 @@ end
 
 let ( @ ) = List.append
 
+module Infix = struct
+  let ( @ ) = ( @ )
+end

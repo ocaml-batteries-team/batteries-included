@@ -493,59 +493,6 @@ val range : ?until:int -> int -> int t
     If [until] is omitted, the enumeration is not bounded. Behaviour is 
     not-specified once [max_int] has been reached.*)
 
-val ( -- ) : int -> int -> int t
-(** As [range], without the label. 
-
-    [5 -- 10] is the enumeration 5,6,7,8,9,10.
-    [10 -- 5] is the empty enumeration*)
-
-val ( --^ ) : int -> int -> int t
-(** As [(--)] but without the right endpoint
-
-    [5 --^ 10] is the enumeration 5,6,7,8,9.
-*)
-
-val ( --. ) : (float * float) -> float -> float t
-(** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
-    increment of [step] between elements.
-
-    [(5.0, 1.0) --. 10.0] is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
-    [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
-    [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
-
-val ( --- ) : int -> int -> int t
-(** As [--], but accepts enumerations in reverse order.
-
-    [5 --- 10] is the enumeration 5,6,7,8,9,10.
-    [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
-
-val ( --~ ) : char -> char -> char t
-(** As ( -- ), but for characters.*)
-
-val ( // ) : 'a t -> ('a -> bool) -> 'a t
-(** Filtering (pronounce this operator name "such that").
-
-    For instance, [(1 -- 37) // odd] is the enumeration of all odd
-    numbers between 1 and 37.*)
-
-val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
-
-val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
-  (**
-     Mapping operators.
-
-     These operators have the same meaning as function {!map} but are
-     sometimes more readable than this function, when chaining
-     several transformations in a row.
-  *)
-
-val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
-
-val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
-  (**
-    Map combined with filter. Same as {!filter_map}.
-  *)
-
 val dup : 'a t -> 'a t * 'a t
   (** [dup stream] returns a pair of streams which are identical to [stream]. Note
       that stream is a destructive data structure, the point of [dup] is to
@@ -624,6 +571,80 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
     Note that f is used as halting condition {i after} the
     corresponding element has been added to the result stream.
 *)
+
+(** {6 Infix operators} *)
+
+(** Infix versions of some functions
+
+	This module groups together all infix operators so that
+    you can open it without opening the whole batEnum module.
+*)
+
+module Infix : sig
+  val ( -- ) : int -> int -> int t
+(** As [range], without the label. 
+
+    [5 -- 10] is the enumeration 5,6,7,8,9,10.
+    [10 -- 5] is the empty enumeration*)
+
+  val ( --^ ) : int -> int -> int t
+(** As [(--)] but without the right endpoint
+
+    [5 --^ 10] is the enumeration 5,6,7,8,9.
+*)
+
+  val ( --. ) : (float * float) -> float -> float t
+(** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
+    increment of [step] between elements.
+
+    [(5.0, 1.0) --. 10.0] is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
+    [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
+    [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
+
+  val ( --- ) : int -> int -> int t
+(** As [--], but accepts enumerations in reverse order.
+
+    [5 --- 10] is the enumeration 5,6,7,8,9,10.
+    [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
+
+  val ( --~ ) : char -> char -> char t
+(** As ( -- ), but for characters.*)
+
+  val ( // ) : 'a t -> ('a -> bool) -> 'a t
+(** Filtering (pronounce this operator name "such that").
+
+    For instance, [(1 -- 37) // odd] is the enumeration of all odd
+    numbers between 1 and 37.*)
+
+  val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
+
+  val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
+  (**
+     Mapping operators.
+
+     These operators have the same meaning as function {!map} but are
+     sometimes more readable than this function, when chaining
+     several transformations in a row.
+  *)
+
+  val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
+
+  val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
+  (**
+    Map combined with filter. Same as {!filter_map}.
+  *)
+end
+
+val ( -- ) : int -> int -> int t
+val ( --^ ) : int -> int -> int t
+val ( --. ) : (float * float) -> float -> float t
+val ( --- ) : int -> int -> int t
+val ( --~ ) : char -> char -> char t
+val ( // ) : 'a t -> ('a -> bool) -> 'a t
+val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
+val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
+val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
+val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
 
 (** {6 Monad related modules} *)
 

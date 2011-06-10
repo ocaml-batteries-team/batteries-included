@@ -101,6 +101,8 @@
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
+    val ( -- ): t -> t -> t BatEnum.t
+    val ( --- ): t -> t -> t BatEnum.t
     val operations : t BatNumber.numeric
 
     (**
@@ -209,6 +211,10 @@
 	(** Return the class of the given floating-point number:
 	    normal, subnormal, zero, infinite, or not a number. *)
 
+    (** {6 Submodules grouping all infix operators} *)
+
+    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Compare : BatNumber.Compare with type bat__compare_t = t
 
     (** {6 Boilerplate code}*)
 

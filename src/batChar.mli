@@ -103,6 +103,11 @@ val ( -- ): char -> char -> char BatEnum.t
     ['a' -- 'z'] is the enumeration of all characters
     between ['a'] and ['z'] included.*)
 
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( -- ): char -> char -> char BatEnum.t
+end
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
