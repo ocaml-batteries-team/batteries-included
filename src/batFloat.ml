@@ -49,6 +49,8 @@ module BaseFloat = struct
 end
 
 include BatNumber.MakeNumeric(BaseFloat)
+module Infix = BatNumber.MakeInfix(BaseFloat)
+module Compare = BatNumber.MakeCompare(BaseFloat)
 
 external of_float : float -> float = "%identity"
 external to_float : float -> float = "%identity"

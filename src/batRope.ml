@@ -940,5 +940,9 @@ struct
   let compare = icompare
 end
 
+module Infix =
+struct
+  let ( ^^^ ) = append
+end
 
 (* =end *)

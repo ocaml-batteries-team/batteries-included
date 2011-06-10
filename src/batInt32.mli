@@ -236,6 +236,11 @@
     val ( = ) : t -> t -> bool
     val operations : t BatNumber.numeric
 
+    (** {6 Submodules grouping all infix operators} *)
+
+    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Compare : BatNumber.Compare with type bat__compare_t = t
+
 
     (** {6 Boilerplate code}*)
 

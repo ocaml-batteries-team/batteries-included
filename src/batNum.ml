@@ -76,3 +76,11 @@ let sign  = sign_num
   
 let print out t = BatInnerIO.nwrite out (to_string t)
 
+module Infix = struct
+  include BatNumber.MakeInfix (BaseNum)
+  let (=/), (</), (>/), (<=/), (>=/), (<>/) = (=/), (</), (>/), (<=/), (>=/), (<>/)
+  let (+/), (-/), ( */ ), (//), ( **/ ) = (+/), (-/), ( */ ), (//), ( **/ )
+end 
+
+module Compare = BatNumber.MakeCompare (BaseNum)
+

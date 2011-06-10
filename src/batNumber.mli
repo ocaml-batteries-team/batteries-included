@@ -83,6 +83,34 @@ type 'a numeric =
 }
 
 (**
+   The infix operators available with any type of numbers
+*)
+module type Infix = sig
+  type bat__infix_t
+  val ( + ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( - ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( * ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( / ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( ** ) : bat__infix_t -> bat__infix_t -> bat__infix_t
+  val ( -- ): bat__infix_t -> bat__infix_t -> bat__infix_t BatEnum.t
+  val ( --- ): bat__infix_t -> bat__infix_t -> bat__infix_t BatEnum.t
+end
+
+(**
+   And if you are ready to drop generic comparison operators,
+    then you can open this one as well
+*)
+module type Compare = sig
+  type bat__compare_t
+  val ( <> ) : bat__compare_t -> bat__compare_t -> bool
+  val ( >= ) : bat__compare_t -> bat__compare_t -> bool
+  val ( <= ) : bat__compare_t -> bat__compare_t -> bool
+  val ( > ) : bat__compare_t -> bat__compare_t -> bool
+  val ( < ) : bat__compare_t -> bat__compare_t -> bool
+  val ( = ) : bat__compare_t -> bat__compare_t -> bool
+end
+
+(**
    The full set of operations of a type of numbers
 *)
 module type Numeric =
@@ -105,26 +133,17 @@ sig
   val to_float: t     -> float
   val of_string : string -> t
   val to_string : t -> string
-  val ( + ) : t -> t -> t
-  val ( - ) : t -> t -> t
-  val ( * ) : t -> t -> t
-  val ( / ) : t -> t -> t
-  val ( ** ) : t -> t -> t
-  val ( <> ) : t -> t -> bool
-  val ( >= ) : t -> t -> bool
-  val ( <= ) : t -> t -> bool
-  val ( > ) : t -> t -> bool
-  val ( < ) : t -> t -> bool
-  val ( = ) : t -> t -> bool
-    
+
   val operations : t numeric
 
   type discrete = t
   (* to_int already provided *)
   val succ : t -> t
   val pred : t -> t
-  val ( -- ): t -> t -> t BatEnum.t
-  val ( --- ): t -> t -> t BatEnum.t
+
+  include Infix with type bat__infix_t = t
+  include Compare with type bat__compare_t = t
+
 end
 
 module type Bounded =
@@ -193,6 +212,19 @@ sig
 
 end
 
+(** Automated definition of infix operators for a given numeric type,
+    so that you can open it without poluting your namespace.
+	(apart from the type bat__infix_t) *)
+
+module MakeInfix :
+  functor (Base : NUMERIC_BASE) -> Infix with type bat__infix_t = Base.t
+
+(** Automated definition of infix comparison operators for a given numeric type,
+    so that you can open it only when you mean it.
+	(apart from the type bat__compare_t) *)
+
+module MakeCompare :
+  functor (Base : NUMERIC_BASE) -> Compare with type bat__compare_t = Base.t
 
 (** Automated definition of operators for a given numeric type.
     You will only need this if you develop your own numeric modules.*)
