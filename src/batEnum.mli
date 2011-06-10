@@ -405,7 +405,7 @@ val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
 
 
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
-  (**More powerful version of [seq], with the ability of hiding data.
+  (**As [from_loop], except uses option type to signal the end of the enumeration.
 
      [unfold data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
@@ -488,6 +488,7 @@ val hard_count : 'a t -> int
 (**
    {6 Utilities }
 *)
+
 val range : ?until:int -> int -> int t
 (** [range p until:q] creates an enumeration of integers [[p, p+1, ..., q]].
     If [until] is omitted, the enumeration is not bounded. Behaviour is 
