@@ -597,6 +597,14 @@ let switch f e =
 
 let partition = switch
 
+(**T partition
+   let a,b = partition ((>) 3) (List.enum [1;2;3;4;5;1;5;0]) in List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
+**)
+
+(**Q partition
+   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l = (Enum.partition f (List.enum l) |> Pair.map List.of_enum))
+**)
+
 let seq init f cond = 
   let acc = ref init in
   let aux () = if cond !acc then begin 
