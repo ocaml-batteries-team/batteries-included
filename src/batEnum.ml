@@ -595,6 +595,8 @@ let switch f e =
   let a = switchn 2 (fun x -> if f x then 0 else 1) e in
     (a.(0), a.(1))
 
+let partition = switch
+
 let seq init f cond = 
   let acc = ref init in
   let aux () = if cond !acc then begin 

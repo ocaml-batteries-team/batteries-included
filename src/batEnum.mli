@@ -541,6 +541,12 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
       all the elements satisfying [test], the second enum is opposite. The
       order of elements in the source enum is preserved. *)
 
+val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+  (** as [switch]
+
+      @added v1.4.0
+  *)
+
 (*val switchn: int -> ('a -> int) -> 'a t -> 'a t array
   (** [switchn] is the array version of [switch]. [switch n f fl] split [fl] to an array of [n] enums, [f] is
       applied to each element of [fl] to decide the id of its destination
