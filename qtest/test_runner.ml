@@ -28,5 +28,5 @@ OTHER DEALINGS IN THE SOFTWARE.
 open OUnit
 
 let () =
-  let tests = "Unit tests" >::: !Tests.tests in
+  let tests = "Bat" >::: !Tests.tests in
   ignore (run_test_tt_main tests)

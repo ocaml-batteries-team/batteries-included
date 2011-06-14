@@ -168,7 +168,7 @@ and pragma k start buf = parse
     ] ;
     spin () ;
     List.iter (Printf.printf "%s\n") [
-      "let suite = \"" ^ mn ^ " unit tests\" >::: [" ;
+      "let suite = \"" ^ mn ^ "\" >::: [" ;
       String.concat ";" !all_tests ;
       "];;" ;
       "let () = Tests.register suite;;"
