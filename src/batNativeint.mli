@@ -184,6 +184,15 @@ external to_int32 : nativeint -> int32 = "%nativeint_to_int32"
    i.e. the top 32 bits are lost.  On 32-bit platforms,
    the conversion is exact. *)
 
+external of_int64 : int64 -> nativeint = "%nativeint_of_int64"
+(** Convert the given 64-bit integer (type [int64])
+   to a native integer. On 32-bit platforms, the top
+   32 bits are lost. *)
+
+external to_int64 : nativeint -> int64 = "%nativeint_to_int64"
+(** Convert the given native integer to a
+   64-bit integer (type [int64]). *)
+
 external of_string : string -> nativeint = "caml_nativeint_of_string"
 (** Convert the given string to a native integer.
    The string is read in decimal (by default) or in hexadecimal,
