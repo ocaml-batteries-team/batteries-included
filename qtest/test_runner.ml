@@ -28,6 +28,5 @@ OTHER DEALINGS IN THE SOFTWARE.
 open OUnit
 
 let () =
-  Arg.parse ["-v",Arg.Set Tests.verbose, "Verbose testing"] (fun _ -> ()) "";
   let tests = "Unit tests" >::: !Tests.tests in
   ignore (run_test_tt_main tests)

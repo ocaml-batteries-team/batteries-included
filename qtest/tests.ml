@@ -38,7 +38,7 @@ OTHER DEALINGS IN THE SOFTWARE.
    * Test_runner
  *)
 
-let verbose = ref false
+let verbose = ref true
 (* tests should refer to this to determine whether to print verbose messages *)
 
 let tests : OUnit.test list ref = ref []
