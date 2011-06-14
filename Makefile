@@ -104,35 +104,33 @@ reinstall:
 
 #List of source files that it's okay to try to test
 DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
-TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
+TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
 TESTDEPS = src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 
-compile-test-byte: $(TESTDEPS)
+_build/testsuite/main.byte _build/qtest/test_runner.byte: $(TESTDEPS)
 	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte
 
-compile-test-native: $(TESTDEPS)
-	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
+_build/testsuite/main.native _build/qtest/test_runner.native: $(TESTDEPS)
+	$(OCAMLBUILD) testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
 
-run-test-byte:
+test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte
 	_build/testsuite/main.byte 
-	_build/qtest/test_runner.byte $(VERBOSE)
+	_build/qtest/test_runner.byte
 
-run-test-native: run-test-byte
+test-native: _build/testsuite/main.native _build/qtest/test_runner.native
+	_build/testsuite/main.byte 
+	_build/qtest/test_runner.byte
 	_build/testsuite/main.native
-	_build/qtest/test_runner.native $(VERBOSE)
+	_build/qtest/test_runner.native
 
-test-byte: compile-test-byte run-test-byte
-test-native: compile-test-native run-test-byte run-test-native
 test: $(TEST_TARGET)
-testv: 
-	VERBOSE=-v $(MAKE) test
 
 bench: 
 	$(OCAMLBUILD) $(TARGETS) $(BENCH_TARGETS)
 	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH); )
 
-release: clean test
+release: clean all test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
@@ -190,7 +188,8 @@ qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
 	_build/build/make_suite.$(EXT) $< > $@
 
 #put all the testing modules in a library
-qtest/test_mods.mllib: $(TESTABLE)
+qtest/test_mods.mllib:
 	/bin/echo -n "Quickcheck Tests " > $@
 	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
 
+.PHONY: qtest/test_mods.mllib
