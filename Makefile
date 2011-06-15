@@ -109,7 +109,7 @@ TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
 TESTDEPS = src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 
 _build/testsuite/main.byte _build/qtest/test_runner.byte: $(TESTDEPS)
-	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte
+	$(OCAMLBUILD) testsuite/main.byte qtest/test_runner.byte
 
 _build/testsuite/main.native _build/qtest/test_runner.native: $(TESTDEPS)
 	$(OCAMLBUILD) testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
@@ -140,9 +140,6 @@ release: clean all test
 ##
 
 CAMVER=$(shell sh -c 'ocamlfind query -format %v camomile')
-ifeq ($(CAMVER),0.8.3)
-	CAMFIX=src/batCamomile-0.8.2.ml
-endif
 ifeq ($(CAMVER),0.8.2)
 	CAMFIX=src/batCamomile-0.8.2.ml
 endif
@@ -158,16 +155,12 @@ endif
 ifeq ($(CAMVER),)
 	CAMFIX=camfail
 endif
-ifeq ($(CAMFIX),)
-	CAMFIX=camfailunk
+ifeq ($(CAMFIX),) # Assume is compatible with the latest camomile, TODO: warn user about assumption
+	CAMFIX=src/batCamomile-0.8.2.ml
 endif
 
 src/batCamomile.ml: $(CAMFIX)
 	cp -f $< $@
-
-camfail:
-	echo "Camomile not detected, cannot compile batteries"
-	exit 1
 
 camfailunk:
 	echo "Unknown build of camomile detected ( $(CAMVER) ), cannot auto-config batcamomile."
