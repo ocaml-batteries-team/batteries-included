@@ -2,6 +2,12 @@ open Batteries
 
 let rec factorial = function 1 -> 1 | n -> n * factorial (n-1)
 
+let rec big_factorial acc = function
+  | 1 -> acc
+  | n -> big_factorial (Big_int.mult_int_big_int n acc) (n-1)
+
+let big_factorial n = big_factorial Big_int.unit_big_int n
+
 let factors i f x =
   let acc = ref i in (* already counted 1 *)
   let max_test = x |> float |> sqrt |> Float.to_int in
