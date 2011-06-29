@@ -87,6 +87,7 @@ BatAvlTree
 BatISet
 BatIMap
 BatCache
+BatLog
 Batteries_config
 Batteries_print
 Batteries_uni

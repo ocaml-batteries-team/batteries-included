@@ -155,7 +155,6 @@ module Unit = BatUnit
 module UChar = struct include BatCamomile.UChar include BatUChar end
 module UTF8 = BatUTF8 (* replaces, doesn't extend UTF8 *)
 
-
 (* Num *)
 module Big_int = struct include Big_int include BatBig_int end
 
@@ -165,6 +164,10 @@ module Bigarray = BatBigarray
 
 (* Config *)
 module Batteries_config = Batteries_config
+
+module Future = struct
+  module Log = BatLog
+end
 
 (* Pervasives *)
 include Pervasives
