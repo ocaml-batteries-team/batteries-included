@@ -146,6 +146,11 @@
 	  {!Pervasives.compare}.  Along with the type [t], this function [compare]
 	  allows the module [Int] to be passed as argument to the functors
 	  {!Set.Make} and {!Map.Make}. *)
+
+    (** custom min and max for integers is much faster than using 
+       polymorphic one in stdlib *)
+    val min : int -> int -> int
+    val max : int -> int -> int
       
     val operations : int BatNumber.numeric
 

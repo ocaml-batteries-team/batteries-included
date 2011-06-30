@@ -114,6 +114,21 @@ include BaseInt
 module N = BatNumber.MakeNumeric(BaseInt)
 let operations = N.operations
 
+let min a b = if a < b then a else b
+let max a b = if a > b then a else b
+(**T Int.min/max
+   min 3 4 = 3
+   min 4 4 = 4
+   min (-3) 5 = -3
+   min min_int max_int = min_int
+   max 3 4 = 4
+   max 4 4 = 4
+   max (-3) 5 = 5
+   max min_int max_int = max_int
+   max max_int max_int = max_int
+   max min_int min_int = min_int
+**)
+
 module Infix = BatNumber.MakeInfix(BaseInt)
 
 (* We want BaseInt versions of these function instead of MakeNumeric ones *)
