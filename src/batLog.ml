@@ -43,10 +43,10 @@ let set_flags fs = flags := fs
 let print_flag t oc = function
   | `Date -> 
     let {Unix.tm_year=y; tm_mon=m; tm_mday=d} = Lazy.force t in 
-    BatPrintf.fprintf oc "%4d/%2d%2d" (y + 1900) (m + 1) d
+    BatPrintf.fprintf oc "%4d/%02d%02d" (y + 1900) (m + 1) d
   | `Time -> 
     let {Unix.tm_hour=h; tm_min=m; tm_sec=s} = Lazy.force t in
-    BatPrintf.fprintf oc "%2d:%2d:%2d" h m s
+    BatPrintf.fprintf oc "%2d:%02d:%02d" h m s
   | `Filepos ->
     failwith "Filepos unimplemented"
 
