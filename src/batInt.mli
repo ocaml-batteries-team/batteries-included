@@ -146,6 +146,11 @@
 	  {!Pervasives.compare}.  Along with the type [t], this function [compare]
 	  allows the module [Int] to be passed as argument to the functors
 	  {!Set.Make} and {!Map.Make}. *)
+
+    (** custom min and max for integers is much faster than using 
+       polymorphic one in stdlib *)
+    val min : int -> int -> int
+    val max : int -> int -> int
       
     val operations : int BatNumber.numeric
 
@@ -164,6 +169,11 @@
 
     external of_int : int -> int = "%identity"
     external to_int : int -> int = "%identity"
+
+    (** {6 Submodules regrouping all infix operations} *)
+
+    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Compare : BatNumber.Compare with type bat__compare_t = t
 
     (** {6 Boilerplate code}*)
 
@@ -324,6 +334,11 @@ module Safe_int :
 
     external of_int : int -> t = "%identity"
     external to_int : t -> int = "%identity"
+
+    (** {6 Submodules regrouping all infix operations on safe integers} *)
+
+    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Compare : BatNumber.Compare with type bat__compare_t = t
 
     (** {6 Boilerplate code}*)
 

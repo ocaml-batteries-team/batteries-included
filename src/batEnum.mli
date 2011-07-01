@@ -405,7 +405,7 @@ val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
 
 
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
-  (**More powerful version of [seq], with the ability of hiding data.
+  (**As [from_loop], except uses option type to signal the end of the enumeration.
 
      [unfold data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
@@ -488,57 +488,11 @@ val hard_count : 'a t -> int
 (**
    {6 Utilities }
 *)
+
 val range : ?until:int -> int -> int t
 (** [range p until:q] creates an enumeration of integers [[p, p+1, ..., q]].
     If [until] is omitted, the enumeration is not bounded. Behaviour is 
     not-specified once [max_int] has been reached.*)
-
-val ( -- ) : int -> int -> int t
-(** As [range], without the label. 
-
-    [5 -- 10] is the enumeration 5,6,7,8,9,10.
-    [10 -- 5] is the empty enumeration*)
-
-val ( --^ ) : int -> int -> int t
-(** As [(--)] but without the right endpoint
-
-    [5 --^ 10] is the enumeration 5,6,7,8,9.
-*)
-
-val ( --. ) : (float * float) -> float -> float t
-(** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
-    increment of [step] between elements.
-
-    [(5.0, 1.0) --. 10.0] is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
-    [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
-    [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
-
-val ( --- ) : int -> int -> int t
-(** As [--], but accepts enumerations in reverse order.
-
-    [5 --- 10] is the enumeration 5,6,7,8,9,10.
-    [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
-
-val ( --~ ) : char -> char -> char t
-(** As ( -- ), but for characters.*)
-
-val ( // ) : 'a t -> ('a -> bool) -> 'a t
-(** Filtering (pronounce this operator name "such that").
-
-    For instance, [(1 -- 37) // odd] is the enumeration of all odd
-    numbers between 1 and 37.*)
-
-val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
-
-val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
-  (**
-     Mapping operators.
-
-     These operators have the same meaning as function {!map} but are
-     sometimes more readable than this function, when chaining
-     several transformations in a row.
-  *)
-
 
 val dup : 'a t -> 'a t * 'a t
   (** [dup stream] returns a pair of streams which are identical to [stream]. Note
@@ -587,6 +541,12 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
       all the elements satisfying [test], the second enum is opposite. The
       order of elements in the source enum is preserved. *)
 
+val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+  (** as [switch]
+
+      @added v1.4.0
+  *)
+
 (*val switchn: int -> ('a -> int) -> 'a t -> 'a t array
   (** [switchn] is the array version of [switch]. [switch n f fl] split [fl] to an array of [n] enums, [f] is
       applied to each element of [fl] to decide the id of its destination
@@ -603,6 +563,7 @@ val arg_max : ('a -> 'b) -> 'a t -> 'a
     Example: [List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"]
 
     @added v1.4.0
+    @raises Invalid_argument if the input enum is empty
 *)
 
 (** {6 Trampolining} *)
@@ -618,6 +579,80 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
     Note that f is used as halting condition {i after} the
     corresponding element has been added to the result stream.
 *)
+
+(** {6 Infix operators} *)
+
+(** Infix versions of some functions
+
+	This module groups together all infix operators so that
+    you can open it without opening the whole batEnum module.
+*)
+
+module Infix : sig
+  val ( -- ) : int -> int -> int t
+(** As [range], without the label. 
+
+    [5 -- 10] is the enumeration 5,6,7,8,9,10.
+    [10 -- 5] is the empty enumeration*)
+
+  val ( --^ ) : int -> int -> int t
+(** As [(--)] but without the right endpoint
+
+    [5 --^ 10] is the enumeration 5,6,7,8,9.
+*)
+
+  val ( --. ) : (float * float) -> float -> float t
+(** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
+    increment of [step] between elements.
+
+    [(5.0, 1.0) --. 10.0] is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
+    [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
+    [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
+
+  val ( --- ) : int -> int -> int t
+(** As [--], but accepts enumerations in reverse order.
+
+    [5 --- 10] is the enumeration 5,6,7,8,9,10.
+    [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
+
+  val ( --~ ) : char -> char -> char t
+(** As ( -- ), but for characters.*)
+
+  val ( // ) : 'a t -> ('a -> bool) -> 'a t
+(** Filtering (pronounce this operator name "such that").
+
+    For instance, [(1 -- 37) // odd] is the enumeration of all odd
+    numbers between 1 and 37.*)
+
+  val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
+
+  val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
+  (**
+     Mapping operators.
+
+     These operators have the same meaning as function {!map} but are
+     sometimes more readable than this function, when chaining
+     several transformations in a row.
+  *)
+
+  val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
+
+  val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
+  (**
+    Map combined with filter. Same as {!filter_map}.
+  *)
+end
+
+val ( -- ) : int -> int -> int t
+val ( --^ ) : int -> int -> int t
+val ( --. ) : (float * float) -> float -> float t
+val ( --- ) : int -> int -> int t
+val ( --~ ) : char -> char -> char t
+val ( // ) : 'a t -> ('a -> bool) -> 'a t
+val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
+val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
+val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
+val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
 
 (** {6 Monad related modules} *)
 

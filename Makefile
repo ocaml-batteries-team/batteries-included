@@ -104,26 +104,26 @@ reinstall:
 
 #List of source files that it's okay to try to test
 DONTTEST=src/batteriesHelp.ml
-TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
+TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
 TESTDEPS = $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 
-compile-test-byte: $(TESTDEPS)
-	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteriesHelp.cmo META testsuite/main.byte qtest/test_runner.byte
+_build/testsuite/main.byte _build/qtest/test_runner.byte: $(TESTDEPS)
+	$(OCAMLBUILD) testsuite/main.byte qtest/test_runner.byte
 
-compile-test-native: $(TESTDEPS)
-	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteriesHelp.cmo META testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
+_build/testsuite/main.native _build/qtest/test_runner.native: $(TESTDEPS)
+	$(OCAMLBUILD) testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
 
-run-test-byte:
-	_build/testsuite/main.byte
+test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte
+	_build/testsuite/main.byte 
 	_build/qtest/test_runner.byte
 
-run-test-native: run-test-byte
+test-native: _build/testsuite/main.native _build/qtest/test_runner.native
+	_build/testsuite/main.byte 
+	_build/qtest/test_runner.byte
 	_build/testsuite/main.native
 	_build/qtest/test_runner.native
 
-test-byte: compile-test-byte run-test-byte
-test-native: compile-test-native run-test-byte
 test: $(TEST_TARGET)
 
 bench: 
@@ -150,7 +150,8 @@ qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
 	_build/build/make_suite.$(EXT) $< > $@
 
 #put all the testing modules in a library
-qtest/test_mods.mllib: $(TESTABLE)
+qtest/test_mods.mllib:
 	/bin/echo -n "Quickcheck Tests " > $@
 	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
 
+.PHONY: qtest/test_mods.mllib

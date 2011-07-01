@@ -242,3 +242,15 @@ val sat: ('a -> bool) -> ('a, unit, _) t
 
 val debug_mode : bool ref
   (**If set to [true], debugging information will be printed to the standard error.*)
+
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( <|> ) : ('a, 'b, 'c) t -> ('a, 'b, 'c) t -> ('a, 'b, 'c) t
+  val ( ~? ): ('a, 'b, 'c) t -> ('a, 'b option, 'c) t
+  val ( >>= ) : ('a, 'b, 'c) t -> ('b -> ('a, 'd, 'c) t ) -> ('a, 'd, 'c) t
+  val ( >>> ) : ('a, _, 'c) t -> ('a, 'd, 'c) t  -> ('a, 'd, 'c) t
+  val ( >::) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t -> ('a, 'b list, 'c) t
+  val ( ~* ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  val ( ~+ ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  val ( ^^ ) : ('a, 'b, 'c) t -> int -> ('a, 'b list, 'c) t
+end

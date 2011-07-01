@@ -22,3 +22,6 @@ let bind m k = match m with
 
 let (>>=) = bind
 
+module Infix = struct
+  let (>>=) = (>>=)
+end

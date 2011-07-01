@@ -74,7 +74,9 @@ let handle_test mn (k, str, pos) =
           in
           number tests (k + 1) ts
       in
-      Printf.printf "let %s = %S >::: [\n" test_name name ; begin
+      Printf.printf "let %s = %S >::: [\n" test_name name ; 
+      Printf.printf "\"label\" >:: (fun () -> print_string %S) ;\n" name;
+      begin
         match k with
           | `Q ->
             let tests = number [] (pos.pos_lnum + 1) tests in
@@ -91,7 +93,8 @@ let handle_test mn (k, str, pos) =
           | `S ->
             let tests = String.concat "\n" tests in
 	    Printf.printf "#%d \"%s\"\n\"%s:%d\" >:: (fun () -> %s) ;\n" pos.pos_lnum pos.pos_fname pos.pos_fname pos.pos_lnum tests
-      end ; Printf.printf "] ;;\n%!"
+      end ; 
+      Printf.printf "] ;;\n%!"
     end
     | _ ->
       failwith "handle_test"
@@ -165,7 +168,7 @@ and pragma k start buf = parse
     ] ;
     spin () ;
     List.iter (Printf.printf "%s\n") [
-      "let suite = \"" ^ mn ^ " unit tests\" >::: [" ;
+      "let suite = \"" ^ mn ^ "\" >::: [" ;
       String.concat ";" !all_tests ;
       "];;" ;
       "let () = Tests.register suite;;"

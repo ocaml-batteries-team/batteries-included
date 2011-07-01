@@ -595,6 +595,16 @@ let switch f e =
   let a = switchn 2 (fun x -> if f x then 0 else 1) e in
     (a.(0), a.(1))
 
+let partition = switch
+
+(**T partition
+   let a,b = partition ((>) 3) (List.enum [1;2;3;4;5;1;5;0]) in List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
+**)
+
+(**Q partition
+   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l = (Enum.partition f (List.enum l) |> Pair.map List.of_enum))
+**)
+
 let seq init f cond = 
   let acc = ref init in
   let aux () = if cond !acc then begin 
@@ -709,28 +719,6 @@ let while_do cont f e =
     append (f head) tail
 
 let break test e = span (fun x -> not (test x)) e
-
-let ( -- ) x y = range x ~until:y
-
-let ( --. ) (a, step) b =
-  let n = int_of_float ((b -. a) /. step) + 1 in
-  if n < 0 then
-    empty ()
-  else
-    init n (fun i -> float_of_int i *. step +. a)
-
-let ( --^ ) x y = range x ~until:(y-1)
-
-let ( --- ) x y = 
-  if x <= y then x -- y
-  else          seq x ((+) (-1)) ( (<=) y )
-
-let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
-
-let ( // ) e f = filter f e
-
-let ( /@ ) e f        = map f e
-let ( @/ )            = map
 
 let uniq e = 
   match peek e with 
@@ -873,7 +861,7 @@ let unfold data next =
 
 let arg_min f enum =
   match get enum with
-      None -> failwith "arg_min: Empty enum"
+      None -> invalid_arg "arg_min: Empty enum"
     | Some v ->
 	let item, eval = ref v, ref (f v) in
 	iter (fun v -> let fv = f v in 
@@ -882,7 +870,7 @@ let arg_min f enum =
 
 let arg_max f enum =
   match get enum with
-      None -> failwith "arg_max: Empty enum"
+      None -> invalid_arg "arg_max: Empty enum"
     | Some v ->
 	let item, eval = ref v, ref (f v) in
 	iter (fun v -> let fv = f v in 
@@ -893,6 +881,33 @@ let arg_max f enum =
    List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"
    -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
 **)
+
+module Infix = struct
+  let ( -- ) x y = range x ~until:y
+
+  let ( --. ) (a, step) b =
+    let n = int_of_float ((b -. a) /. step) + 1 in
+    if n < 0 then
+      empty ()
+    else
+      init n (fun i -> float_of_int i *. step +. a)
+
+  let ( --^ ) x y = range x ~until:(y-1)
+
+  let ( --- ) x y = 
+    if x <= y then x -- y
+    else          seq x ((+) (-1)) ( (<=) y )
+
+  let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
+
+  let ( // ) e f = filter f e
+
+  let ( /@ ) e f        = map f e
+  let ( @/ )            = map
+  let ( //@ ) e f       = filter_map f e
+  let ( @// )           = filter_map
+end
+include Infix
 
 (* -----------
    Concurrency 

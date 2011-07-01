@@ -42,12 +42,12 @@ let of_enum e = match BatEnum.get e with
 	None -> failwith "Pair.of_enum: not enough elements" 
       | Some y -> (x,y)
 
-let print print_a print_b out (a,b) = 
-  BatIO.write out '(';
+let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b out (a,b) = 
+  BatIO.nwrite out first;
   print_a out a;
-  BatIO.write out ',';
+  BatIO.nwrite out sep;
   print_b out b;
-  BatIO.write out ')'
+  BatIO.nwrite out last
 
 let print2 printer out pair = print printer printer out pair
   

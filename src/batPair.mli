@@ -37,8 +37,9 @@ val enum : ('a * 'a) -> 'a BatEnum.t
 (** builds a pair out of the first two values of an enum.  Raises [Failure] if insufficient elements *)
 val of_enum : 'a BatEnum.t -> ('a * 'a)
 
-(** Prints a pair using given printing functions *)
-val print : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> 'o BatIO.output -> ('a * 'b) -> unit
+(** Prints a pair using given printing functions.  The parameters
+    [first], [sep], and [last] default to produce "(a,b)". *)
+val print : ?first:string -> ?sep:string -> ?last:string -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> 'o BatIO.output -> ('a * 'b) -> unit
 
 val print2 : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a) -> unit
 

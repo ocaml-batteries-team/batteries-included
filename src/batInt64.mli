@@ -211,6 +211,11 @@ val compare: t -> t -> int
     allows the module [Int64] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
+(** {6 Submodules grouping all infix operators} *)
+
+module Infix : BatNumber.Infix with type bat__infix_t = t
+module Compare: BatNumber.Compare with type bat__compare_t = t
+
 (**/**)
 
 (** {6 Deprecated functions} *)

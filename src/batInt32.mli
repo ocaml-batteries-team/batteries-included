@@ -162,6 +162,25 @@
     external to_float : int32 -> float = "caml_int32_to_float"
       (** Convert the given 32-bit integer to a floating-point number. *)
       
+    external of_int64 : int64 -> int32 = "%int64_to_int32"
+      (** Convert the given 64-bit integer (type [int64]) to a
+         32-bit integer (type [int32]). The 64-bit integer
+         is taken modulo 2{^32}, i.e. the top 32 bits are lost
+         during the conversion.  *)
+
+    external to_int64 : int32 -> int64 = "%int64_of_int32"
+      (** Convert the given 32-bit integer (type [int32])
+         to a 64-bit integer (type [int64]). *)
+
+    external of_nativeint : nativeint -> int32 = "%int32_of_nativeint"
+      (** Convert the given native integer (type [nativeint])
+         to a 32-bit integer (type [int32]). On 64-bits platform
+         the top 32 bits are lost. *)
+
+    external to_nativeint : int32 -> nativeint = "%int32_to_nativeint"
+      (** Convert the given 32-bit integer (type [int32]) to a
+         native integer. *)
+
     external of_string : string -> int32 = "caml_int32_of_string"
       (** Convert the given string to a 32-bit integer.
 	  The string is read in decimal (by default) or in hexadecimal,
@@ -235,6 +254,11 @@
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
     val operations : t BatNumber.numeric
+
+    (** {6 Submodules grouping all infix operators} *)
+
+    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Compare : BatNumber.Compare with type bat__compare_t = t
 
 
     (** {6 Boilerplate code}*)

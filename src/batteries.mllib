@@ -82,6 +82,7 @@ BatAvlTree
 BatISet
 BatIMap
 BatCache
+BatLog
 BatteriesConfig
 BatteriesPrint
 Batteries

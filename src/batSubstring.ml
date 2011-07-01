@@ -243,3 +243,5 @@ let split_on_pipe str = split_on_char '|' str;;
 let split_on_dot str = split_on_char '.' str;;
 let split_on_comma str = split_on_char ',' str;;
 let split_on_slash str = split_on_char '/' str;;
+
+let print oc ss = iter (fun c -> BatIO.write oc c) ss 

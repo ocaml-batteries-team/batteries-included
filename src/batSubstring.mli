@@ -272,3 +272,6 @@ val split_on_pipe : t -> t list
 val split_on_dot : t -> t list
 val split_on_comma : t -> t list
 val split_on_slash : t -> t list
+
+val print : 'a BatIO.output -> t -> unit
+(** [print oc ss] prints [ss] to the output channel [oc] *)

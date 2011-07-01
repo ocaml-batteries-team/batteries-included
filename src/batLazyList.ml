@@ -612,6 +612,9 @@ let uncombine l =
 let print ?(first="[^") ?(last="^]") ?(sep="; ") print_a out t = 
   BatEnum.print ~first ~last ~sep print_a out (enum t)
 
+module Infix = struct
+  let ( ^:^ ), ( ^@^ ) = ( ^:^ ), ( ^@^ )
+end
 
 module Exceptionless = struct
   (** Exceptionless counterparts for error-raising operations*)

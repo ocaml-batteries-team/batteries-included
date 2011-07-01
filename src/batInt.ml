@@ -114,6 +114,28 @@ include BaseInt
 module N = BatNumber.MakeNumeric(BaseInt)
 let operations = N.operations
 
+let min a b = if a < b then a else b
+let max a b = if a > b then a else b
+(**T Int.min/max
+   min 3 4 = 3
+   min 4 4 = 4
+   min (-3) 5 = -3
+   min min_int max_int = min_int
+   max 3 4 = 4
+   max 4 4 = 4
+   max (-3) 5 = 5
+   max min_int max_int = max_int
+   max max_int max_int = max_int
+   max min_int min_int = min_int
+**)
+
+module Infix = BatNumber.MakeInfix(BaseInt)
+
+(* We want BaseInt versions of these function instead of MakeNumeric ones *)
+module Compare = struct
+  type bat__compare_t = t
+  let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
+end
 
 module BaseSafeInt = struct
   include BaseInt
@@ -127,13 +149,11 @@ module BaseSafeInt = struct
     let c = Pervasives.( + ) a b in
       if a < 0 && b < 0 && c >= 0 || a > 0 && b > 0 && c <= 0	then raise Overflow
       else c
-  let ( + ) = add
 
   let sub a b =
     let c = Pervasives.( - ) a b in
       if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0	then raise Overflow
       else c
-  let ( - ) a b = sub a b
 
   let neg x = 
     if x <> min_int then ~- x
@@ -176,15 +196,20 @@ module BaseSafeInt = struct
 	add (cross lsl shift_bits) (al+bl)
       | _,_ -> raise Overflow
 
-  let ( * ) = mul
-
   let pow = BatNumber.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 2) ~mul
-    
+
 end
 
 module Safe_int = struct
   include BaseSafeInt
   let operations = let module N = BatNumber.MakeNumeric(BaseSafeInt) in N.operations
+
+  module Infix = BatNumber.MakeInfix(BaseSafeInt)
+  (* MakeNumeric versions of these are not optimal, we want BaseInt ones *)
+  module Compare = struct
+    type bat__compare_t = t
+    let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
+  end
 end
 
 (**T safe_int_tests
@@ -192,6 +217,8 @@ end
    Safe_int.neg max_int = -max_int
    try Safe_int.neg min_int |> ignore; false with Number.Overflow -> true
    try Safe_int.mul (Safe_int.mul ((1 lsl 18) * (3*3*3*3*3*3*3*3)) (5*5*5*5*7*7*11*13*17*19)) 21 |> ignore; false with Number.Overflow -> true
+   (* Check Safe_int.infix is safe as well *)
+   try Safe_int.Infix.(+) max_int 1 |> ignore; false with Number.Overflow -> true
  **)
 
 (**Q safe_int_qtests
