@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -128,131 +131,126 @@
     <code class="code">BatEnum.Enumerable with type 'a enumerable = 'a t</code>
     <code class="code">BatInterfaces.Mappable with type 'a mappable = 'a t</code><br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEdq"></a><code class="type">+'a</code> dq </pre>
+<pre><span id="TYPEdq"><span class="keyword">type</span> <code class="type">+'a</code> dq</span> </pre>
 <div class="info">
 The type of double-ended queues<br>
 </div>
 
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t = <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a></code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a></code> </pre>
 <div class="info">
 A synonym for convenience<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALsize"></a>size : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> int</code></pre><div class="info">
+<pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> int</code></pre><div class="info">
 <code class="code">size dq</code> is the number of elements in the <code class="code">dq</code>. O(1)<br>
 </div>
 <br>
-<a name="6_Construction"></a>
-<h6>Construction</h6><br>
-<pre><span class="keyword">val</span> <a name="VALempty"></a>empty : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<span id="6_Construction"><h6>Construction</h6></span><br>
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 The empty dequeue. O(1)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcons"></a>cons : <code class="type">'a -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<pre><span id="VALcons"><span class="keyword">val</span> cons</span> : <code class="type">'a -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">cons x dq</code> adds <code class="code">x</code> to the front of <code class="code">dq</code>. O(1)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsnoc"></a>snoc : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<pre><span id="VALsnoc"><span class="keyword">val</span> snoc</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">snoc x dq</code> adds <code class="code">x</code> to the rear of <code class="code">dq</code>. O(1)<br>
 </div>
 <br>
-<a name="6_Deconstruction"></a>
-<h6>Deconstruction</h6><br>
-<pre><span class="keyword">val</span> <a name="VALfront"></a>front : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> ('a * 'a <a href="BatDeque.html#TYPEdq">dq</a>) option</code></pre><div class="info">
+<span id="6_Deconstruction"><h6>Deconstruction</h6></span><br>
+<pre><span id="VALfront"><span class="keyword">val</span> front</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> ('a * 'a <a href="BatDeque.html#TYPEdq">dq</a>) option</code></pre><div class="info">
 <code class="code">front dq</code> returns <code class="code">Some (x, dq')</code> iff <code class="code">x</code> is at the front of
       <code class="code">dq</code> and <code class="code">dq'</code> is the rest of <code class="code">dq</code> excluding <code class="code">x</code>, and <code class="code">None</code> if
       <code class="code">dq</code> has no elements. O(1) amortized, O(n) worst case<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrear"></a>rear : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> ('a <a href="BatDeque.html#TYPEdq">dq</a> * 'a) option</code></pre><div class="info">
+<pre><span id="VALrear"><span class="keyword">val</span> rear</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> ('a <a href="BatDeque.html#TYPEdq">dq</a> * 'a) option</code></pre><div class="info">
 <code class="code">rear dq</code> returns <code class="code">Some (dq', x)</code> iff <code class="code">x</code> is at the rear of <code class="code">dq</code>
       and <code class="code">dq'</code> is the rest of <code class="code">dq</code> excluding <code class="code">x</code>, and <code class="code">None</code> if <code class="code">dq</code>
       has no elements. O(1) amortized, O(n) worst case<br>
 </div>
 <br>
-<a name="6_Basicoperations"></a>
-<h6>Basic operations</h6><br>
-<pre><span class="keyword">val</span> <a name="VALrev"></a>rev : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<span id="6_Basicoperations"><h6>Basic operations</h6></span><br>
+<pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">rev dq</code> reverses <code class="code">dq</code>. O(1)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALis_empty"></a>is_empty : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> bool</code></pre><div class="info">
+<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> bool</code></pre><div class="info">
 <code class="code">is_empty dq</code> returns <code class="code">false</code> iff <code class="code">dq</code> has no elements. O(1)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALat"></a>at : <code class="type">?backwards:bool -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> int -> 'a option</code></pre><div class="info">
+<pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">?backwards:bool -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> int -> 'a option</code></pre><div class="info">
 <code class="code">at ~backwards dq k</code> returns the <code class="code">k</code>th element of <code class="code">dq</code>, from
       the front if <code class="code">backwards</code> is false, and from the rear if
       <code class="code">backwards</code> is true. By default, <code class="code">backwards = false</code>. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">map f dq</code> returns a deque where every element <code class="code">x</code> of <code class="code">dq</code> has
       been replaces with <code class="code">f x</code>. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">map f dq</code> returns a deque where every element <code class="code">x</code> of <code class="code">dq</code> has
       been replaces with <code class="code">f n x</code>, where <code class="code">n</code> is the position of <code class="code">x</code>
       from the front of <code class="code">dq</code>. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">('a -> unit) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> unit</code></pre><div class="info">
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> unit</code></pre><div class="info">
 <code class="code">iter f dq</code> calls <code class="code">f x</code> on each element <code class="code">x</code> of <code class="code">dq</code>. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">(int -> 'a -> unit) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> unit</code></pre><div class="info">
+<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> unit</code></pre><div class="info">
 <code class="code">iteri f dq</code> calls <code class="code">f n x</code> on each element <code class="code">x</code> of <code class="code">dq</code>. The first
       argument to <code class="code">f</code> is the position of the element from the front of
       <code class="code">dq</code>. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfind"></a>find : <code class="type">?backwards:bool -> ('a -> bool) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> (int * 'a) option</code></pre><div class="info">
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">?backwards:bool -> ('a -> bool) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> (int * 'a) option</code></pre><div class="info">
 <code class="code">find ~backwards f dq</code> returns <code class="code">Some (n, x)</code> if <code class="code">x</code> at position
       <code class="code">n</code> is such that <code class="code">f x</code> is true, or <code class="code">None</code> if there is no such
       element. The position <code class="code">n</code> is from the rear if <code class="code">backwards</code> is
       true, and from the front if <code class="code">backwards</code> is <code class="code">false</code>. By default,
       <code class="code">backwards</code> is <code class="code">false</code>. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfold_left"></a>fold_left : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatDeque.html#TYPEdq">dq</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatDeque.html#TYPEdq">dq</a> -> 'a</code></pre><div class="info">
 <code class="code">fold_left f acc dq</code> is equivalent to <code class="code">List.fold_left f acc
       (to_list dq)</code>, but more efficient. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfold_right"></a>fold_right : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b -> 'b</code></pre><div class="info">
+<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b -> 'b</code></pre><div class="info">
 <code class="code">fold_right f dq acc</code> is equivalent to <code class="code">List.fold_right f
       (to_list dq) acc</code>, but more efficient. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALappend"></a>append : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">append dq1 dq2</code> represents the concatenateion of <code class="code">dq1</code> and
       <code class="code">dq2</code>. O(min(m, n))<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALappend_list"></a>append_list : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<pre><span id="VALappend_list"><span class="keyword">val</span> append_list</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">append_list dq l</code> is equivalent to <code class="code">append dq (of_list l)</code>, but
       more efficient. O(min(m, n))<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALprepend_list"></a>prepend_list : <code class="type">'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<pre><span id="VALprepend_list"><span class="keyword">val</span> prepend_list</span> : <code class="type">'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">prepent_list l dq</code> is equivalent to <code class="code">append (of_list l) dq</code>,
       but more efficient. O(min(m, n))<br>
 </div>
 <br>
-<a name="6_Transformation"></a>
-<h6>Transformation</h6><br>
-<pre><span class="keyword">val</span> <a name="VALof_list"></a>of_list : <code class="type">'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<span id="6_Transformation"><h6>Transformation</h6></span><br>
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">of_list l</code> is a deque representation of the elements of <code class="code">l</code>.
       O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_list"></a>to_list : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a list</code></pre><div class="info">
+<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a list</code></pre><div class="info">
 <code class="code">to_list dq</code> is a list representation of the elements of <code class="code">dq</code>.
       O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">of_enum e</code> is a deque representation of the elements of <code class="code">e</code>.
       Consumes the enumeration <code class="code">e</code>. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">enum dq</code> is an enumeration of the elements of <code class="code">dq</code> from the
       front to the rear.<br>
 </div>
 <br>
-<a name="6_Printing"></a>
-<h6>Printing</h6><br>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatDeque.html#TYPEdq">dq</a> -> unit</code></pre><div class="info">
+<span id="6_Printing"><h6>Printing</h6></span><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatDeque.html#TYPEdq">dq</a> -> unit</code></pre><div class="info">
 Print the contents of the deque. O(n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatDeque.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatDeque.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
 See <a href="BatValue_printer.html"><code class="code">BatValue_printer</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdq_printer"></a>dq_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatDeque.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
+<pre><span id="VALdq_printer"><span class="keyword">val</span> dq_printer</span> : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatDeque.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
 See <a href="BatValue_printer.html"><code class="code">BatValue_printer</code></a>.<br>
 </div>
 </body></html>

@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -117,47 +120,46 @@
 <br>
 <pre><span class="keyword">module</span> BatUref: <code class="code">sig</code> <a href="BatUref.html">..</a> <code class="code">end</code></pre>Unifiable references using destructive union-find<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEuref"></a><code class="type">'a</code> uref </pre>
+<pre><span id="TYPEuref"><span class="keyword">type</span> <code class="type">'a</code> uref</span> </pre>
 <div class="info">
 A <code class="code">t uref</code> is a reference to a cell that contains a
       value of type <code class="code">t</code>.<br>
 </div>
 
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t = <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a></code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a></code> </pre>
 <div class="info">
 A synonym for convenience<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALuref"></a>uref : <code class="type">'a -> 'a <a href="BatUref.html#TYPEuref">uref</a></code></pre><div class="info">
+<pre><span id="VALuref"><span class="keyword">val</span> uref</span> : <code class="type">'a -> 'a <a href="BatUref.html#TYPEuref">uref</a></code></pre><div class="info">
 <code class="code">uref x</code> allocates a new uref and places the value <code class="code">x</code> in it.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALuget"></a>uget : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALuget"><span class="keyword">val</span> uget</span> : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a</code></pre><div class="info">
 <code class="code">uget ur</code> returns the value stored in the uref <code class="code">ur</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALuset"></a>uset : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a -> unit</code></pre><div class="info">
+<pre><span id="VALuset"><span class="keyword">val</span> uset</span> : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a -> unit</code></pre><div class="info">
 <code class="code">uset ur x</code> updates the contents of <code class="code">ur</code> with <code class="code">x</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALunite"></a>unite : <code class="type">?sel:('a -> 'a -> 'a) -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> unit</code></pre><div class="info">
+<pre><span id="VALunite"><span class="keyword">val</span> unite</span> : <code class="type">?sel:('a -> 'a -> 'a) -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> unit</code></pre><div class="info">
 <code class="code">unite ~sel ur1 ur2</code> unites the urefs <code class="code">ur1</code> and <code class="code">ur2</code>, selecting
       the result of <code class="code">sel (uget ur1) (uget ur2)</code> for the contents of
       the resulting united uref. After this operation, <code class="code">uget ur1 ==
       uget ur2</code>. By default, <code class="code">sel</code> is <code class="code">fst</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALequal"></a>equal : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> bool</code></pre><div class="info">
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> bool</code></pre><div class="info">
 <code class="code">equal ur1 ur2</code> returns <code class="code">true</code> iff <code class="code">ur1</code> and <code class="code">ur2</code> are equal
       urefs, either because they are physically the same or because
       they have been <a href="BatUref.html#VALunite"><code class="code">BatUref.unite</code></a>d.<br>
 </div>
 <br>
-<a name="6_Printing"></a>
-<h6>Printing</h6><br>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatUref.html#TYPEuref">uref</a> -> unit</code></pre><div class="info">
+<span id="6_Printing"><h6>Printing</h6></span><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatUref.html#TYPEuref">uref</a> -> unit</code></pre><div class="info">
 Print the uref.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALuref_printer"></a>uref_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
+<pre><span id="VALuref_printer"><span class="keyword">val</span> uref_printer</span> : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
 See <a href="BatValue_printer.html"><code class="code">BatValue_printer</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatUref.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatUref.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
 See <a href="BatValue_printer.html"><code class="code">BatValue_printer</code></a>.<br>
 </div>
 </body></html>

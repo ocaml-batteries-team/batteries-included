@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -116,41 +119,40 @@
 <center><h1>Module <a href="type_Batteries_uni.Global.html">Batteries_uni.Global</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Global: <code class="type">BatGlobal</code></pre><hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 <div class="info">
 Abstract type of a global<br>
 </div>
 
-<pre><span class="keyword">exception</span> <a name="EXCEPTIONGlobal_not_initialized"></a>Global_not_initialized <span class="keyword">of</span> <code class="type">string</code></pre>
+<pre><span id="EXCEPTIONGlobal_not_initialized"><span class="keyword">exception</span> Global_not_initialized</span> <span class="keyword">of</span> <code class="type">string</code></pre>
 <div class="info">
 Raised when a global variable is accessed without first having been
  assigned a value. The parameter contains the name of the global.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALempty"></a>empty : <code class="type">string -> 'a <a href="BatGlobal.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">string -> 'a <a href="BatGlobal.html#TYPEt">t</a></code></pre><div class="info">
 Returns an new named empty global. The name of the global can be any
  string. It identifies the global and makes debugging easier.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALname"></a>name : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> string</code></pre><div class="info">
+<pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> string</code></pre><div class="info">
 Retrieve the name of a global.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALset"></a>set : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
 Set the global value contents.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Get the global value contents - raise Global_not_initialized if not
  defined.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALundef"></a>undef : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALundef"><span class="keyword">val</span> undef</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Reset the global value contents to undefined.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALisdef"></a>isdef : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<pre><span id="VALisdef"><span class="keyword">val</span> isdef</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Return <code class="code">true</code> if the global value has been set.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALopt"></a>opt : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
+<pre><span id="VALopt"><span class="keyword">val</span> opt</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
 Return <code class="code">None</code> if the global is undefined, else <code class="code">Some v</code> where v is the
   current global value contents.<br>
 </div>
 <br>
-<a name="6_Boilerplatecode"></a>
-<h6>Boilerplate code</h6><br>
+<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
 </body></html>

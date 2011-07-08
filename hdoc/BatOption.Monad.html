@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -115,15 +118,15 @@
 <pre><span class="keyword">module</span> Monad: <code class="code">sig</code> <a href="BatOption.Monad.html">..</a> <code class="code">end</code></pre>This module provides everything needed to write and execute computations
     in the Option monad.<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEm"></a><code class="type">'a</code> m = <code class="type">'a option</code> </pre>
+<pre><span id="TYPEm"><span class="keyword">type</span> <code class="type">'a</code> m</span> = <code class="type">'a option</code> </pre>
 <div class="info">
 The type of values in this monad : option<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALreturn"></a>return : <code class="type">'a -> 'a <a href="BatOption.Monad.html#TYPEm">m</a></code></pre><div class="info">
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> 'a <a href="BatOption.Monad.html#TYPEm">m</a></code></pre><div class="info">
 <code class="code">return x</code> puts a value in the Option monad, that is, returns <code class="code">Some x</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbind"></a>bind : <code class="type">'a <a href="BatOption.Monad.html#TYPEm">m</a> -> ('a -> 'b <a href="BatOption.Monad.html#TYPEm">m</a>) -> 'b <a href="BatOption.Monad.html#TYPEm">m</a></code></pre><div class="info">
+<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">'a <a href="BatOption.Monad.html#TYPEm">m</a> -> ('a -> 'b <a href="BatOption.Monad.html#TYPEm">m</a>) -> 'b <a href="BatOption.Monad.html#TYPEm">m</a></code></pre><div class="info">
 <code class="code">bind m f</code> combines the calculation result <code class="code">m</code> with the function <code class="code">f</code>.
     E.g, in the Option monad : 
     <code class="code">bind (Some 1) (fun x -&gt; if x = 1 then Some 4 else None)</code> returns Some 4.<br>

@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -113,15 +116,15 @@
 <center><h1>Module <a href="type_Batteries.RMutex.html">Batteries.RMutex</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> RMutex: <code class="type">BatRMutex</code></pre><hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info">
 The type of mutexes.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">unit -> <a href="BatRMutex.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -> <a href="BatRMutex.html#TYPEt">t</a></code></pre><div class="info">
 Return a new mutex.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlock"></a>lock : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Lock the given mutex. Only one thread can have the mutex locked
       at any time. A thread that attempts to lock a mutex already locked
       will suspend until the other mutex is unlocked.
@@ -130,17 +133,17 @@ Lock the given mutex. Only one thread can have the mutex locked
       <b>Note</b> attempting to lock a mutex you already have locked from
       the same thread will not suspend your thread.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALtry_lock"></a>try_lock : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<pre><span id="VALtry_lock"><span class="keyword">val</span> try_lock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Same as <code class="code">RMutex.lock</code>, but does not suspend the calling thread if
     the mutex is already locked: just return <code class="code">false</code> immediately
     in that case. If the mutex is unlocked, lock it and
     return <code class="code">true</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALunlock"></a>unlock : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALunlock"><span class="keyword">val</span> unlock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Unlock the given mutex. Other threads suspended trying to lock
     the mutex will restart. If the mutex wasn't locked, nothing happens.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsynchronize"></a>synchronize : <code class="type">?lock:<a href="BatRMutex.html#TYPEt">t</a> -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+<pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:<a href="BatRMutex.html#TYPEt">t</a> -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 Protect a function.
 <p>
 
@@ -158,7 +161,7 @@ Protect a function.
     and released when the function call ends, whether this is due
     to normal termination or to some exception being raised.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmake"></a>make : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre><div class="info">
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre><div class="info">
 Create a new abstract lock based on Reentrant Mutexes.<br>
 </div>
 </body></html>

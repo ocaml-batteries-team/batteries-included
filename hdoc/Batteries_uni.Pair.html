@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -115,23 +118,24 @@
 <center><h1>Module <a href="type_Batteries_uni.Pair.html">Batteries_uni.Pair</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Pair: <code class="type">BatPair</code></pre><hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">('a, 'b)</code> t = <code class="type">'a * 'b</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = <code class="type">'a * 'b</code> </pre>
 
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a mappable -> 'b mappable</code></pre><div class="info">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a mappable -> 'b mappable</code></pre><div class="info">
 map a function across both values in a pair<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcompare"></a>compare : <code class="type">?c1:('a -> 'a -> int) -> ?c2:('b -> 'b -> int) -> 'a * 'b -> 'a * 'b -> int</code></pre><div class="info">
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">?c1:('a -> 'a -> int) -> ?c2:('b -> 'b -> int) -> 'a * 'b -> 'a * 'b -> int</code></pre><div class="info">
 Compare two pairs in lexicographic order, possibly using custom comparators for the two fields<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">'a enumerable -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a enumerable -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 builds a two-element enum of a pair<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a enumerable</code></pre><div class="info">
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a enumerable</code></pre><div class="info">
 builds a pair out of the first two values of an enum.  Raises <code class="code">Failure</code> if insufficient elements<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'c -> unit) -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b * 'c -> unit</code></pre><div class="info">
-Prints a pair using given printing functions<br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?sep:string -><br>       ?last:string -><br>       ('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'c -> unit) -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b * 'c -> unit</code></pre><div class="info">
+Prints a pair using given printing functions.  The parameters
+    <code class="code">first</code>, <code class="code">sep</code>, and <code class="code">last</code> default to produce "(a,b)".<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALprint2"></a>print2 : <code class="type">('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b * 'b -> unit</code></pre><pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
+<pre><span id="VALprint2"><span class="keyword">val</span> print2</span> : <code class="type">('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b * 'b -> unit</code></pre><pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
 <pre><span class="keyword">include</span> <a href="BatInterfaces.Mappable.html">BatInterfaces.Mappable</a></pre>
 </body></html>

@@ -21,6 +21,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -85,6 +86,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -92,6 +94,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -111,7 +114,7 @@
 <center><h1>Module type <a href="type_BatGenlex.Languages.Definition.html">BatGenlex.Languages.Definition</a></h1></center>
 <br>
 <pre><span class="keyword">module type</span> Definition = <code class="code">sig</code> <a href="BatGenlex.Languages.Definition.html">..</a> <code class="code">end</code></pre><hr width="100%">
-<pre><span class="keyword">val</span> <a name="VALcomment_delimiters"></a>comment_delimiters : <code class="type">(string * string) option</code></pre><pre><span class="keyword">val</span> <a name="VALline_comment_start"></a>line_comment_start : <code class="type">string option</code></pre><pre><span class="keyword">val</span> <a name="VALnested_comments"></a>nested_comments : <code class="type">bool</code></pre><pre><span class="keyword">val</span> <a name="VALident_start"></a>ident_start : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALident_letter"></a>ident_letter : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALop_start"></a>op_start : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALop_letter"></a>op_letter : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALreserved_names"></a>reserved_names : <code class="type">string list</code></pre><pre><span class="keyword">val</span> <a name="VALcase_sensitive"></a>case_sensitive : <code class="type">bool</code></pre><div class="info">
+<pre><span id="VALcomment_delimiters"><span class="keyword">val</span> comment_delimiters</span> : <code class="type">(string * string) option</code></pre><pre><span id="VALline_comment_start"><span class="keyword">val</span> line_comment_start</span> : <code class="type">string option</code></pre><pre><span id="VALnested_comments"><span class="keyword">val</span> nested_comments</span> : <code class="type">bool</code></pre><pre><span id="VALident_start"><span class="keyword">val</span> ident_start</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span id="VALident_letter"><span class="keyword">val</span> ident_letter</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span id="VALop_start"><span class="keyword">val</span> op_start</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span id="VALop_letter"><span class="keyword">val</span> op_letter</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><pre><span id="VALreserved_names"><span class="keyword">val</span> reserved_names</span> : <code class="type">string list</code></pre><pre><span id="VALcase_sensitive"><span class="keyword">val</span> case_sensitive</span> : <code class="type">bool</code></pre><div class="info">
 <code class="code">true</code> if the language is case-sensitive, <code class="code">false</code> otherwise.
        If the language is not case-sensitive, every identifier is returned
        as lower-case.<br>

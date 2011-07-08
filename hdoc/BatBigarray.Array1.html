@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -123,29 +126,29 @@
    Statically knowing the number of dimensions of the array allows
    faster operations, and more precise static type-checking.<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">('a, 'b, 'c)</code> t = <code class="type">('a, 'b, 'c) Bigarray.Array1.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'c)</code> t</span> = <code class="type">('a, 'b, 'c) Bigarray.Array1.t</code> </pre>
 <div class="info">
 The type of one-dimensional big arrays whose elements have
      Caml type <code class="code">'a</code>, representation kind <code class="code">'b</code>, and memory layout <code class="code">'c</code>.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">Array1.create kind layout dim</code> returns a new bigarray of
      one dimension, whose size is <code class="code">dim</code>.  <code class="code">kind</code> and <code class="code">layout</code>
      determine the array element kind and the array layout
      as described for <code class="code">Genarray.create</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdim"></a>dim : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<pre><span id="VALdim"><span class="keyword">val</span> dim</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Return the size (dimension) of the given one-dimensional
      big array.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALkind"></a>kind : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> ('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a></code></pre><div class="info">
+<pre><span id="VALkind"><span class="keyword">val</span> kind</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> ('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a></code></pre><div class="info">
 Return the kind of the given big array.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlayout"></a>layout : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> 'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a></code></pre><div class="info">
+<pre><span id="VALlayout"><span class="keyword">val</span> layout</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> 'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a></code></pre><div class="info">
 Return the layout of the given big array.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
 <code class="code">Array1.get a x</code>, or alternatively <code class="code">a.{x}</code>,
      returns the element of <code class="code">a</code> at index <code class="code">x</code>.
      <code class="code">x</code> must be greater or equal than <code class="code">0</code> and strictly less than
@@ -153,71 +156,70 @@ Return the layout of the given big array.<br>
      <code class="code">x</code> must be greater or equal than <code class="code">1</code> and less or equal than
      <code class="code">Array1.dim a</code>.  Otherwise, <code class="code">Invalid_arg</code> is raised.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALset"></a>set : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info">
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info">
 <code class="code">Array1.set a x v</code>, also written <code class="code">a.{x} &lt;- v</code>,
      stores the value <code class="code">v</code> at index <code class="code">x</code> in <code class="code">a</code>.
      <code class="code">x</code> must be inside the bounds of <code class="code">a</code> as described in
      <code class="code">Bigarray.Array1.get</code>;
      otherwise, <code class="code">Invalid_arg</code> is raised.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsub"></a>sub : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -><br>       int -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -><br>       int -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
 Extract a sub-array of the given one-dimensional big array.
      See <code class="code">Genarray.sub_left</code> for more details.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALblit"></a>blit : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -><br>       ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -><br>       ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Copy the first big array to the second big array.
      See <code class="code">Genarray.blit</code> for more details.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfill"></a>fill : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
+<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
 Fill the given big array with the given value.
      See <code class="code">Genarray.fill</code> for more details.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_array"></a>of_array : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> 'a array -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> 'a array -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
 Build a one-dimensional big array initialized from the
      given array.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap_file"></a>map_file : <code class="type">Unix.file_descr -><br>       ?pos:int64 -><br>       ('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> bool -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap_file"><span class="keyword">val</span> map_file</span> : <code class="type">Unix.file_descr -><br>       ?pos:int64 -><br>       ('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> bool -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
 Memory mapping of a file as a one-dimensional big array.
      See <code class="code">Bigarray.Genarray.map_file</code> for more details.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">enum e</code> returns an enumeration on the elements of <code class="code">e</code>.
 	The order of enumeration is unspecified.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">Array1.map f a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
 	and builds a <code class="code">Bigarray.Array1.t</code> with the results returned by <code class="code">f</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmapi"></a>mapi : <code class="type">(int -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
 Same as <code class="code">Bigarray.Array1.map</code>, but the
 	function is applied to the index of the element as the first argument,
 	and the element itself as the second argument.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmodify"></a>modify : <code class="type">('a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">modify f a</code> changes each element <code class="code">x</code> in <code class="code">a</code> to <code class="code">f x</code>
         in-place.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmodifyi"></a>modifyi : <code class="type">(int -> 'a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALmodifyi"><span class="keyword">val</span> modifyi</span> : <code class="type">(int -> 'a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Same as <code class="code">Bigarray.Array1.modify</code>, but the function is applied
         to the index of the element as the first argument, and the
         element itself as the second argument.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_array"></a>to_array : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> 'a array</code></pre><div class="info">
+<pre><span id="VALto_array"><span class="keyword">val</span> to_array</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> 'a array</code></pre><div class="info">
 Build a one-dimensional array initialized from the
 	given big array.<br>
 </div>
 <br>
-<a name="6_Unsafeoperations"></a>
-<h6>Unsafe operations</h6>
+<span id="6_Unsafeoperations"><h6>Unsafe operations</h6></span>
 <p>
 
      In case of doubt, don't use them.<br>
-<pre><span class="keyword">val</span> <a name="VALunsafe_get"></a>unsafe_get : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
+<pre><span id="VALunsafe_get"><span class="keyword">val</span> unsafe_get</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
 Like <code class="code">Bigarray.Array1.get</code>, but bounds checking is not always performed.
       Use with caution and only when the program logic guarantees that
       the access is within bounds.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALunsafe_set"></a>unsafe_set : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info">
+<pre><span id="VALunsafe_set"><span class="keyword">val</span> unsafe_set</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info">
 Like <code class="code">Bigarray.Array1.set</code>, but bounds checking is not always performed.
       Use with caution and only when the program logic guarantees that
       the access is within bounds.<br>

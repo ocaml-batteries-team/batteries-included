@@ -4,8 +4,8 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatIO.in_chars.html">
-<link rel="Up" href="BatIO.html">
+<link rel="previous" href="BatInt.Safe_int.Infix.html">
+<link rel="Up" href="BatInt.Safe_int.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -104,13 +107,15 @@
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
 <link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
-<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>BatIO.out_chars</title>
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>BatInt.Safe_int.Compare</title>
 </head>
 <body>
-<div class="navbar"><a href="BatIO.in_chars.html">Previous</a>
-&nbsp;<a href="BatIO.html">Up</a>
+<div class="navbar"><a href="BatInt.Safe_int.Infix.html">Previous</a>
+&nbsp;<a href="BatInt.Safe_int.html">Up</a>
 &nbsp;</div>
-<center><h1>Class <a href="type_BatIO.out_chars.html">BatIO.out_chars</a></h1></center>
+<center><h1>Module <a href="type_BatInt.Safe_int.Compare.html">BatInt.Safe_int.Compare</a></h1></center>
 <br>
-<pre><span class="keyword">class</span> <a name="TYPEout_chars"></a>out_chars : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> </code><code class="code">object</code> <a href="BatIO.out_chars.html">..</a> <code class="code">end</code></pre><hr width="100%">
-<pre><span class="keyword">method</span> <a name="METHODput"></a>put : <code class="type">char -> unit</code></pre><pre><span class="keyword">method</span> <a name="METHODflush"></a>flush : <code class="type">unit -> unit</code></pre><pre><span class="keyword">method</span> <a name="METHODclose_out"></a>close_out : <code class="type">unit -> unit</code></pre></body></html>
+<pre><span class="keyword">module</span> Compare: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><hr width="100%">
+<pre><span id="TYPEbat__compare_t"><span class="keyword">type</span> <code class="type"></code>bat__compare_t</span> </pre>
+
+<pre><span id="VAL(<>)"><span class="keyword">val</span> (&lt;&gt;)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre><pre><span id="VAL(>=)"><span class="keyword">val</span> (&gt;=)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre><pre><span id="VAL(<=)"><span class="keyword">val</span> (&lt;=)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre><pre><span id="VAL(>)"><span class="keyword">val</span> (&gt;)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre><pre><span id="VAL(<)"><span class="keyword">val</span> (&lt;)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre><pre><span id="VAL(=)"><span class="keyword">val</span> (=)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre></body></html>

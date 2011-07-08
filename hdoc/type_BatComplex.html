@@ -18,6 +18,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -82,6 +83,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -89,6 +91,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -104,46 +107,70 @@
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;zero&nbsp;:&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;one&nbsp;:&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;i&nbsp;:&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;neg&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;conj&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;mul&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;inv&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;div&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sqrt&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;norm2&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;norm&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;arg&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;polar&nbsp;:&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exp&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pow&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;operations&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="constructor">BatNumber</span>.numeric<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;inv&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;succ&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pred&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;abs&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;modulo&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pow&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compare&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_int&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_string&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;+&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;-&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;*&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;**&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&gt;&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;=&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;=&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;=&nbsp;)&nbsp;:&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;<span class="constructor">Complex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;zero&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;one&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;i&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;neg&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;conj&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;mul&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;div&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sqrt&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;norm2&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;norm&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;arg&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;polar&nbsp;:&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exp&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;operations&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="constructor">BatNumber</span>.numeric<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;inv&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;succ&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pred&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;abs&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;modulo&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pow&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compare&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_int&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_string&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;+&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;-&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;*&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;**&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&gt;&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;=&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;=&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;=&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;--&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;---&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_float&nbsp;:&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_float&nbsp;:&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Infix</span>&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bat__infix_t&nbsp;=&nbsp;t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;+&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;-&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;*&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;**&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;--&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;---&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Compare</span>&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bat__compare_t&nbsp;=&nbsp;t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&gt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatComplex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 <span class="keyword">end</span></code></body></html>

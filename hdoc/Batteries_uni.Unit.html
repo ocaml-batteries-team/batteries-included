@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -116,35 +119,33 @@
 <center><h1>Module <a href="type_Batteries_uni.Unit.html">Batteries_uni.Unit</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Unit: <code class="type">BatUnit</code></pre><hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t = <code class="type">unit</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">unit</code> </pre>
 <div class="info">
 The unit type, i.e. a type with only one element, <code class="code">()</code>.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALstring_of"></a>string_of : <code class="type"><a href="BatUnit.html#TYPEt">t</a> -> string</code></pre><div class="info">
+<pre><span id="VALstring_of"><span class="keyword">val</span> string_of</span> : <code class="type"><a href="BatUnit.html#TYPEt">t</a> -> string</code></pre><div class="info">
 Convert the given unit to a string.
 <p>
 
        Returns <code class="code">"()"</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_string"></a>of_string : <code class="type">string -> <a href="BatUnit.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatUnit.html#TYPEt">t</a></code></pre><div class="info">
 Convert the given string to a unit.
 <p>
 
 	 Accepts <code class="code">"()"</code>. Raises <code class="code">Invalid_argument "unit_of_string"</code> if the
 	 given string is not <code class="code">"()"</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcompare"></a>compare : <code class="type"><a href="BatUnit.html#TYPEt">t</a> -> <a href="BatUnit.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatUnit.html#TYPEt">t</a> -> <a href="BatUnit.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Compare two units.
 <p>
 
 	  Always returns 0.<br>
 </div>
 <br>
-<a name="6_Boilerplatecode"></a>
-<h6>Boilerplate code</h6><br>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> unit -> unit</code></pre><div class="info">
-<a name="7_Printing"></a>
-<div class="h7">Printing</div><br>
+<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> unit -> unit</code></pre><div class="info">
+<span id="7_Printing"><div class="h7">Printing</div></span><br>
 </div>
 </body></html>

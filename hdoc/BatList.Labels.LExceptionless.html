@@ -21,6 +21,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -85,6 +86,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -92,6 +94,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -111,4 +114,4 @@
 <center><h1>Module <a href="type_BatList.Labels.LExceptionless.html">BatList.Labels.LExceptionless</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> LExceptionless: <code class="code">sig</code> <a href="BatList.Labels.LExceptionless.html">..</a> <code class="code">end</code></pre><hr width="100%">
-<pre><span class="keyword">val</span> <a name="VALfind"></a>find : <code class="type">f:('a -> bool) -> 'a list -> 'a option</code></pre><pre><span class="keyword">val</span> <a name="VALrfind"></a>rfind : <code class="type">f:('a -> bool) -> 'a list -> 'a option</code></pre><pre><span class="keyword">val</span> <a name="VALfindi"></a>findi : <code class="type">f:(int -> 'a -> bool) -> 'a list -> (int * 'a) option</code></pre><pre><span class="keyword">val</span> <a name="VALsplit_at"></a>split_at : <code class="type">int -> 'a list -> [ `Invalid_argument of string | `Ok of 'a list * 'a list ]</code></pre><pre><span class="keyword">val</span> <a name="VALat"></a>at : <code class="type">'a list -> int -> [ `Invalid_argument of string | `Ok of 'a ]</code></pre><pre><span class="keyword">val</span> <a name="VALassoc"></a>assoc : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre><pre><span class="keyword">val</span> <a name="VALassoc_inv"></a>assoc_inv : <code class="type">'a -> ('b * 'a) list -> 'b option</code></pre><pre><span class="keyword">val</span> <a name="VALassq"></a>assq : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre></body></html>
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a option</code></pre><pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a option</code></pre><pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">f:(int -> 'a -> bool) -> 'a list -> (int * 'a) option</code></pre><pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -> 'a list -> [ `Invalid_argument of string | `Ok of 'a list * 'a list ]</code></pre><pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a list -> int -> [ `Invalid_argument of string | `Ok of 'a ]</code></pre><pre><span id="VALassoc"><span class="keyword">val</span> assoc</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre><pre><span id="VALassoc_inv"><span class="keyword">val</span> assoc_inv</span> : <code class="type">'a -> ('b * 'a) list -> 'b option</code></pre><pre><span id="VALassq"><span class="keyword">val</span> assq</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre></body></html>

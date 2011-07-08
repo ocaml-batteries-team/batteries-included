@@ -5,6 +5,7 @@
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries_uni.Big_int.html">
+<link rel="next" href="Batteries_uni.Batteries_config.html">
 <link rel="Up" href="Batteries_uni.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -22,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -117,7 +121,8 @@
 <body>
 <div class="navbar"><a href="Batteries_uni.Big_int.html">Previous</a>
 &nbsp;<a href="Batteries_uni.html">Up</a>
-&nbsp;</div>
+&nbsp;<a href="Batteries_uni.Batteries_config.html">Next</a>
+</div>
 <center><h1>Module <a href="type_Batteries_uni.Bigarray.html">Batteries_uni.Bigarray</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Bigarray: <code class="type">BatBigarray</code></pre><hr width="100%">
@@ -148,8 +153,7 @@ Large, multi-dimensional, numerical arrays.
     <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Bigarray.html">Bigarray</a>
     module.<br>
 <br>
-<a name="6_Elementkinds"></a>
-<h6>Element kinds</h6><br>
+<span id="6_Elementkinds"><h6>Element kinds</h6></span><br>
 <br>
 Big arrays can contain elements of the following kinds:<ul>
 <li>IEEE single precision (32 bits) floating-point numbers
@@ -174,31 +178,31 @@ Big arrays can contain elements of the following kinds:<ul>
 
    Each element kind is represented at the type level by one
    of the abstract types defined below.<br>
-<pre><span class="keyword">type</span> <a name="TYPEfloat32_elt"></a><code class="type"></code>float32_elt = <code class="type">Bigarray.float32_elt</code> </pre>
+<pre><span id="TYPEfloat32_elt"><span class="keyword">type</span> <code class="type"></code>float32_elt</span> = <code class="type">Bigarray.float32_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEfloat64_elt"></a><code class="type"></code>float64_elt = <code class="type">Bigarray.float64_elt</code> </pre>
+<pre><span id="TYPEfloat64_elt"><span class="keyword">type</span> <code class="type"></code>float64_elt</span> = <code class="type">Bigarray.float64_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEcomplex32_elt"></a><code class="type"></code>complex32_elt = <code class="type">Bigarray.complex32_elt</code> </pre>
+<pre><span id="TYPEcomplex32_elt"><span class="keyword">type</span> <code class="type"></code>complex32_elt</span> = <code class="type">Bigarray.complex32_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEcomplex64_elt"></a><code class="type"></code>complex64_elt = <code class="type">Bigarray.complex64_elt</code> </pre>
+<pre><span id="TYPEcomplex64_elt"><span class="keyword">type</span> <code class="type"></code>complex64_elt</span> = <code class="type">Bigarray.complex64_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEint8_signed_elt"></a><code class="type"></code>int8_signed_elt = <code class="type">Bigarray.int8_signed_elt</code> </pre>
+<pre><span id="TYPEint8_signed_elt"><span class="keyword">type</span> <code class="type"></code>int8_signed_elt</span> = <code class="type">Bigarray.int8_signed_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEint8_unsigned_elt"></a><code class="type"></code>int8_unsigned_elt = <code class="type">Bigarray.int8_unsigned_elt</code> </pre>
+<pre><span id="TYPEint8_unsigned_elt"><span class="keyword">type</span> <code class="type"></code>int8_unsigned_elt</span> = <code class="type">Bigarray.int8_unsigned_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEint16_signed_elt"></a><code class="type"></code>int16_signed_elt = <code class="type">Bigarray.int16_signed_elt</code> </pre>
+<pre><span id="TYPEint16_signed_elt"><span class="keyword">type</span> <code class="type"></code>int16_signed_elt</span> = <code class="type">Bigarray.int16_signed_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEint16_unsigned_elt"></a><code class="type"></code>int16_unsigned_elt = <code class="type">Bigarray.int16_unsigned_elt</code> </pre>
+<pre><span id="TYPEint16_unsigned_elt"><span class="keyword">type</span> <code class="type"></code>int16_unsigned_elt</span> = <code class="type">Bigarray.int16_unsigned_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEint_elt"></a><code class="type"></code>int_elt = <code class="type">Bigarray.int_elt</code> </pre>
+<pre><span id="TYPEint_elt"><span class="keyword">type</span> <code class="type"></code>int_elt</span> = <code class="type">Bigarray.int_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEint32_elt"></a><code class="type"></code>int32_elt = <code class="type">Bigarray.int32_elt</code> </pre>
+<pre><span id="TYPEint32_elt"><span class="keyword">type</span> <code class="type"></code>int32_elt</span> = <code class="type">Bigarray.int32_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEint64_elt"></a><code class="type"></code>int64_elt = <code class="type">Bigarray.int64_elt</code> </pre>
+<pre><span id="TYPEint64_elt"><span class="keyword">type</span> <code class="type"></code>int64_elt</span> = <code class="type">Bigarray.int64_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEnativeint_elt"></a><code class="type"></code>nativeint_elt = <code class="type">Bigarray.nativeint_elt</code> </pre>
+<pre><span id="TYPEnativeint_elt"><span class="keyword">type</span> <code class="type"></code>nativeint_elt</span> = <code class="type">Bigarray.nativeint_elt</code> </pre>
 
-<pre><span class="keyword">type</span> <a name="TYPEkind"></a><code class="type">('a, 'b)</code> kind = <code class="type">('a, 'b) Bigarray.kind</code> </pre>
+<pre><span id="TYPEkind"><span class="keyword">type</span> <code class="type">('a, 'b)</code> kind</span> = <code class="type">('a, 'b) Bigarray.kind</code> </pre>
 <div class="info">
 To each element kind is associated a Caml type, which is
    the type of Caml values that can be stored in the big array
@@ -218,43 +222,43 @@ To each element kind is associated a Caml type, which is
    element kinds:<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALfloat32"></a>float32 : <code class="type">(float, <a href="BatBigarray.html#TYPEfloat32_elt">float32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALfloat32"><span class="keyword">val</span> float32</span> : <code class="type">(float, <a href="BatBigarray.html#TYPEfloat32_elt">float32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfloat64"></a>float64 : <code class="type">(float, <a href="BatBigarray.html#TYPEfloat64_elt">float64_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALfloat64"><span class="keyword">val</span> float64</span> : <code class="type">(float, <a href="BatBigarray.html#TYPEfloat64_elt">float64_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcomplex32"></a>complex32 : <code class="type">(Complex.t, <a href="BatBigarray.html#TYPEcomplex32_elt">complex32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALcomplex32"><span class="keyword">val</span> complex32</span> : <code class="type">(Complex.t, <a href="BatBigarray.html#TYPEcomplex32_elt">complex32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcomplex64"></a>complex64 : <code class="type">(Complex.t, <a href="BatBigarray.html#TYPEcomplex64_elt">complex64_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALcomplex64"><span class="keyword">val</span> complex64</span> : <code class="type">(Complex.t, <a href="BatBigarray.html#TYPEcomplex64_elt">complex64_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint8_signed"></a>int8_signed : <code class="type">(int, <a href="BatBigarray.html#TYPEint8_signed_elt">int8_signed_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALint8_signed"><span class="keyword">val</span> int8_signed</span> : <code class="type">(int, <a href="BatBigarray.html#TYPEint8_signed_elt">int8_signed_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint8_unsigned"></a>int8_unsigned : <code class="type">(int, <a href="BatBigarray.html#TYPEint8_unsigned_elt">int8_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALint8_unsigned"><span class="keyword">val</span> int8_unsigned</span> : <code class="type">(int, <a href="BatBigarray.html#TYPEint8_unsigned_elt">int8_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint16_signed"></a>int16_signed : <code class="type">(int, <a href="BatBigarray.html#TYPEint16_signed_elt">int16_signed_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALint16_signed"><span class="keyword">val</span> int16_signed</span> : <code class="type">(int, <a href="BatBigarray.html#TYPEint16_signed_elt">int16_signed_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint16_unsigned"></a>int16_unsigned : <code class="type">(int, <a href="BatBigarray.html#TYPEint16_unsigned_elt">int16_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALint16_unsigned"><span class="keyword">val</span> int16_unsigned</span> : <code class="type">(int, <a href="BatBigarray.html#TYPEint16_unsigned_elt">int16_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint"></a>int : <code class="type">(int, <a href="BatBigarray.html#TYPEint_elt">int_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALint"><span class="keyword">val</span> int</span> : <code class="type">(int, <a href="BatBigarray.html#TYPEint_elt">int_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint32"></a>int32 : <code class="type">(int32, <a href="BatBigarray.html#TYPEint32_elt">int32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALint32"><span class="keyword">val</span> int32</span> : <code class="type">(int32, <a href="BatBigarray.html#TYPEint32_elt">int32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint64"></a>int64 : <code class="type">(int64, <a href="BatBigarray.html#TYPEint64_elt">int64_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALint64"><span class="keyword">val</span> int64</span> : <code class="type">(int64, <a href="BatBigarray.html#TYPEint64_elt">int64_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALnativeint"></a>nativeint : <code class="type">(nativeint, <a href="BatBigarray.html#TYPEnativeint_elt">nativeint_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALnativeint"><span class="keyword">val</span> nativeint</span> : <code class="type">(nativeint, <a href="BatBigarray.html#TYPEnativeint_elt">nativeint_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 See <code class="code">Bigarray.char</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALchar"></a>char : <code class="type">(char, <a href="BatBigarray.html#TYPEint8_unsigned_elt">int8_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
+<pre><span id="VALchar"><span class="keyword">val</span> char</span> : <code class="type">(char, <a href="BatBigarray.html#TYPEint8_unsigned_elt">int8_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info">
 As shown by the types of the values above,
    big arrays of kind <code class="code">float32_elt</code> and <code class="code">float64_elt</code> are
    accessed using the Caml type <code class="code">float</code>.  Big arrays of complex kinds
@@ -271,14 +275,13 @@ As shown by the types of the values above,
    the kind value <code class="code">char</code> instead of <code class="code">int8_unsigned</code>.<br>
 </div>
 <br>
-<a name="6_Arraylayouts"></a>
-<h6>Array layouts</h6><br>
-<pre><span class="keyword">type</span> <a name="TYPEc_layout"></a><code class="type"></code>c_layout = <code class="type">Bigarray.c_layout</code> </pre>
+<span id="6_Arraylayouts"><h6>Array layouts</h6></span><br>
+<pre><span id="TYPEc_layout"><span class="keyword">type</span> <code class="type"></code>c_layout</span> = <code class="type">Bigarray.c_layout</code> </pre>
 <div class="info">
 See <code class="code">Bigarray.fortran_layout</code>.<br>
 </div>
 
-<pre><span class="keyword">type</span> <a name="TYPEfortran_layout"></a><code class="type"></code>fortran_layout = <code class="type">Bigarray.fortran_layout</code> </pre>
+<pre><span id="TYPEfortran_layout"><span class="keyword">type</span> <code class="type"></code>fortran_layout</span> = <code class="type">Bigarray.fortran_layout</code> </pre>
 <div class="info">
 To facilitate interoperability with existing C and Fortran code,
    this library supports two different memory layouts for big arrays,
@@ -306,7 +309,7 @@ To facilitate interoperability with existing C and Fortran code,
    abstract types <code class="code">Bigarray.c_layout</code> and <code class="code">fortran_layout</code> respectively.<br>
 </div>
 
-<pre><span class="keyword">type</span> <a name="TYPElayout"></a><code class="type">'a</code> layout = <code class="type">'a Bigarray.layout</code> </pre>
+<pre><span id="TYPElayout"><span class="keyword">type</span> <code class="type">'a</code> layout</span> = <code class="type">'a Bigarray.layout</code> </pre>
 <div class="info">
 The type <code class="code">'a layout</code> represents one of the two supported
    memory layouts: C-style if <code class="code">'a</code> is <code class="code">Bigarray.c_layout</code>, Fortran-style
@@ -314,67 +317,61 @@ The type <code class="code">'a layout</code> represents one of the two supported
 </div>
 
 <br>
-<a name="7_Supportedlayouts"></a>
-<div class="h7">Supported layouts</div>
+<span id="7_Supportedlayouts"><div class="h7">Supported layouts</div></span>
 <p>
 
    The abstract values <code class="code">c_layout</code> and <code class="code">fortran_layout</code> represent
    the two supported layouts at the level of values.<br>
-<pre><span class="keyword">val</span> <a name="VALc_layout"></a>c_layout : <code class="type"><a href="BatBigarray.html#TYPEc_layout">c_layout</a> <a href="BatBigarray.html#TYPElayout">layout</a></code></pre><pre><span class="keyword">val</span> <a name="VALfortran_layout"></a>fortran_layout : <code class="type"><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> <a href="BatBigarray.html#TYPElayout">layout</a></code></pre><pre><span class="keyword">module</span> <a href="BatBigarray.Genarray.html">Genarray</a>: <code class="code">sig</code> <a href="BatBigarray.Genarray.html">..</a> <code class="code">end</code></pre><div class="info">
+<pre><span id="VALc_layout"><span class="keyword">val</span> c_layout</span> : <code class="type"><a href="BatBigarray.html#TYPEc_layout">c_layout</a> <a href="BatBigarray.html#TYPElayout">layout</a></code></pre><pre><span id="VALfortran_layout"><span class="keyword">val</span> fortran_layout</span> : <code class="type"><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> <a href="BatBigarray.html#TYPElayout">layout</a></code></pre><pre><span class="keyword">module</span> <a href="BatBigarray.Genarray.html">Genarray</a>: <code class="code">sig</code> <a href="BatBigarray.Genarray.html">..</a> <code class="code">end</code></pre><div class="info">
 Generic arrays (of arbitrarily many dimensions)
 </div>
 <br>
-<a name="6_Onedimensionalarrays"></a>
-<h6>One-dimensional arrays</h6><br>
+<span id="6_Onedimensionalarrays"><h6>One-dimensional arrays</h6></span><br>
 <pre><span class="keyword">module</span> <a href="BatBigarray.Array1.html">Array1</a>: <code class="code">sig</code> <a href="BatBigarray.Array1.html">..</a> <code class="code">end</code></pre><div class="info">
 One-dimensional arrays.
 </div>
 <br>
-<a name="6_Twodimensionalarrays"></a>
-<h6>Two-dimensional arrays</h6><br>
+<span id="6_Twodimensionalarrays"><h6>Two-dimensional arrays</h6></span><br>
 <pre><span class="keyword">module</span> <a href="BatBigarray.Array2.html">Array2</a>: <code class="code">sig</code> <a href="BatBigarray.Array2.html">..</a> <code class="code">end</code></pre><div class="info">
 Two-dimensional arrays.
 </div>
 <br>
-<a name="6_Threedimensionalarrays"></a>
-<h6>Three-dimensional arrays</h6><br>
+<span id="6_Threedimensionalarrays"><h6>Three-dimensional arrays</h6></span><br>
 <pre><span class="keyword">module</span> <a href="BatBigarray.Array3.html">Array3</a>: <code class="code">sig</code> <a href="BatBigarray.Array3.html">..</a> <code class="code">end</code></pre><div class="info">
 Three-dimensional arrays.
 </div>
 <br>
-<a name="6_Coercionsbetweengenericbigarraysandfixeddimensionbigarrays"></a>
-<h6>Coercions between generic big arrays and fixed-dimension big arrays</h6><br>
-<pre><span class="keyword">val</span> <a name="VALgenarray_of_array1"></a>genarray_of_array1 : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">Array1.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info">
+<span id="6_Coercionsbetweengenericbigarraysandfixeddimensionbigarrays"><h6>Coercions between generic big arrays and fixed-dimension big arrays</h6></span><br>
+<pre><span id="VALgenarray_of_array1"><span class="keyword">val</span> genarray_of_array1</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">Array1.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info">
 Return the generic big array corresponding to the given one-dimensional
    big array.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALgenarray_of_array2"></a>genarray_of_array2 : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">Array2.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info">
+<pre><span id="VALgenarray_of_array2"><span class="keyword">val</span> genarray_of_array2</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">Array2.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info">
 Return the generic big array corresponding to the given two-dimensional
    big array.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALgenarray_of_array3"></a>genarray_of_array3 : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">Array3.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info">
+<pre><span id="VALgenarray_of_array3"><span class="keyword">val</span> genarray_of_array3</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">Array3.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info">
 Return the generic big array corresponding to the given three-dimensional
    big array.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALarray1_of_genarray"></a>array1_of_genarray : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">Array1.t</a></code></pre><div class="info">
+<pre><span id="VALarray1_of_genarray"><span class="keyword">val</span> array1_of_genarray</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">Array1.t</a></code></pre><div class="info">
 Return the one-dimensional big array corresponding to the given
    generic big array.  Raise <code class="code">Invalid_arg</code> if the generic big array
    does not have exactly one dimension.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALarray2_of_genarray"></a>array2_of_genarray : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">Array2.t</a></code></pre><div class="info">
+<pre><span id="VALarray2_of_genarray"><span class="keyword">val</span> array2_of_genarray</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">Array2.t</a></code></pre><div class="info">
 Return the two-dimensional big array corresponding to the given
    generic big array.  Raise <code class="code">Invalid_arg</code> if the generic big array
    does not have exactly two dimensions.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALarray3_of_genarray"></a>array3_of_genarray : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">Array3.t</a></code></pre><div class="info">
+<pre><span id="VALarray3_of_genarray"><span class="keyword">val</span> array3_of_genarray</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">Array3.t</a></code></pre><div class="info">
 Return the three-dimensional big array corresponding to the given
    generic big array.  Raise <code class="code">Invalid_arg</code> if the generic big array
    does not have exactly three dimensions.<br>
 </div>
 <br>
-<a name="6_Reshapingbigarrays"></a>
-<h6>Re-shaping big arrays</h6><br>
-<pre><span class="keyword">val</span> <a name="VALreshape"></a>reshape : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int array -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info">
+<span id="6_Reshapingbigarrays"><h6>Re-shaping big arrays</h6></span><br>
+<pre><span id="VALreshape"><span class="keyword">val</span> reshape</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int array -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info">
 <code class="code">reshape b [|d1;...;dN|]</code> converts the big array <code class="code">b</code> to a
    <code class="code">N</code>-dimensional array of dimensions <code class="code">d1</code>...<code class="code">dN</code>.  The returned
    array and the original array <code class="code">b</code> share their data
@@ -390,15 +387,15 @@ Return the three-dimensional big array corresponding to the given
    of the dimensions of <code class="code">b</code> must be equal to <code class="code">i1 * ... * iN</code>.
    Otherwise, <code class="code">Invalid_arg</code> is raised.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALreshape_1"></a>reshape_1 : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">Array1.t</a></code></pre><div class="info">
+<pre><span id="VALreshape_1"><span class="keyword">val</span> reshape_1</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">Array1.t</a></code></pre><div class="info">
 Specialized version of <code class="code">Bigarray.reshape</code> for reshaping to
    one-dimensional arrays.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALreshape_2"></a>reshape_2 : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">Array2.t</a></code></pre><div class="info">
+<pre><span id="VALreshape_2"><span class="keyword">val</span> reshape_2</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">Array2.t</a></code></pre><div class="info">
 Specialized version of <code class="code">Bigarray.reshape</code> for reshaping to
    two-dimensional arrays.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALreshape_3"></a>reshape_3 : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int -> int -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">Array3.t</a></code></pre><div class="info">
+<pre><span id="VALreshape_3"><span class="keyword">val</span> reshape_3</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int -> int -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">Array3.t</a></code></pre><div class="info">
 Specialized version of <code class="code">Bigarray.reshape</code> for reshaping to
    three-dimensional arrays.<br>
 </div>

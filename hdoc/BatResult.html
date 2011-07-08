@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -105,8 +108,7 @@
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
 <link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
-<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
-<title>BatResult</title>
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>BatResult</title>
 </head>
 <body>
 <div class="navbar"><a href="BatRefList.html">Previous</a>
@@ -119,31 +121,31 @@
 <hr width="100%">
 <br>
 Monadic results of computations that can raise exceptions<br>
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">('a, 'b)</code> t = <code class="type">('a, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a></code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = <code class="type">('a, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a></code> </pre>
 <div class="info">
 The type of a result<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALcatch"></a>catch : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
+<pre><span id="VALcatch"><span class="keyword">val</span> catch</span> : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
 Execute a function and catch any exception as a <code class="code">!result</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_option"></a>of_option : <code class="type">'a option -> ('a, unit) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
+<pre><span id="VALof_option"><span class="keyword">val</span> of_option</span> : <code class="type">'a option -> ('a, unit) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
 Convert an <code class="code">option</code> to a <code class="code">result</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_option"></a>to_option : <code class="type">('a, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a> -> 'a option</code></pre><div class="info">
+<pre><span id="VALto_option"><span class="keyword">val</span> to_option</span> : <code class="type">('a, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a> -> 'a option</code></pre><div class="info">
 Convert a <code class="code">result</code> to an <code class="code">option</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbind"></a>bind : <code class="type">('a, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a> -><br>       ('a -> ('c, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a>) -> ('c, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
+<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">('a, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a> -><br>       ('a -> ('c, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a>) -> ('c, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
 Monadic composition.
 <p>
 
       <code class="code">bind r f</code> proceeds as <code class="code">f x</code> if <code class="code">r</code> is <code class="code">Ok x</code>, or returns <code class="code">r</code> if
       <code class="code">r</code> is an error.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL(>>=)"></a>(&gt;&gt;=) : <code class="type">('a, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a> -><br>       ('a -> ('c, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a>) -> ('c, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
+<pre><span id="VAL(>>=)"><span class="keyword">val</span> (&gt;&gt;=)</span> : <code class="type">('a, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a> -><br>       ('a -> ('c, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a>) -> ('c, 'b) <a href="BatStd.html#TYPEresult">BatStd.result</a></code></pre><div class="info">
 as <code class="code">bind</code><br>
 </div>
-<br>
-<a name="6_Boilerplatecode"></a>
-<h6>Boilerplate code</h6><br>
+<pre><span class="keyword">module</span> <a href="BatResult.Infix.html">Infix</a>: <code class="code">sig</code> <a href="BatResult.Infix.html">..</a> <code class="code">end</code></pre><div class="info">
+Infix submodule regrouping all infix operators
+</div>
 </body></html>

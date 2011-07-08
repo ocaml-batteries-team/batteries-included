@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -127,8 +130,7 @@
 <b>Author(s):</b> Xavier Leroy, Pierre Weiss, David Teller<br>
 <hr width="100%">
 <br>
-<a name="6_Generaloverview"></a>
-<h6>General overview</h6>
+<span id="6_Generaloverview"><h6>General overview</h6></span>
 <p>
 
    The functions of this module produce output according to a
@@ -179,9 +181,8 @@
    the user's language. For more information, see the documentation
    of <code class="code">format</code> and the various functions.<br>
 <br>
-<a name="6_Formats"></a>
-<h6>Formats</h6><br>
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">('a, 'b, 'c)</code> t = <code class="type">('a, 'b, 'c) Pervasives.format</code> </pre>
+<span id="6_Formats"><h6>Formats</h6></span><br>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'c)</code> t</span> = <code class="type">('a, 'b, 'c) Pervasives.format</code> </pre>
 <div class="info">
 The format to use for displaying the various arguments passed to the function.
 <p>
@@ -191,8 +192,7 @@ The format to use for displaying the various arguments passed to the function.
    each of which causes the conversion and printing of arguments.
 <p>
 
-   <a name="7_Simpledirectives"></a>
-<div class="h7">Simple directives</div>
+   <span id="7_Simpledirectives"><div class="h7">Simple directives</div></span>
 <p>
 
    All directives start with the <code class="code">%</code> character. In their simplest form,
@@ -232,8 +232,7 @@ The format to use for displaying the various arguments passed to the function.
 <li><code class="code">%</code>: take no argument and output one <code class="code">%</code> character.</li>
 </ul>
 
-   <a name="7_Unparsers"></a>
-<div class="h7">Unparsers</div>
+   <span id="7_Unparsers"><div class="h7">Unparsers</div></span>
 <p>
 <ul>
 <li><code class="code">%a</code>: user-defined printer. Typically, this printer corresponds to two
@@ -253,8 +252,7 @@ The format to use for displaying the various arguments passed to the function.
      <code class="code">'b -&gt; 'd</code>.</li>
 </ul>
 
-   <a name="7_Formattingformats"></a>
-<div class="h7">Formatting formats</div><ul>
+   <span id="7_Formattingformats"><div class="h7">Formatting formats</div></span><ul>
 <li><code class="code">%{ fmt %}</code>: convert a <code class="code">format</code> to a string. The format argument
      must have the same type as the internal format string <code class="code">fmt</code>.
      In other words, <code class="code">printf "%{ %s %}"</code> accepts an argument
@@ -268,8 +266,7 @@ The format to use for displaying the various arguments passed to the function.
      uses that argument to print the following arguments.</li>
 </ul>
 
-   <a name="7_Additionaloptions"></a>
-<div class="h7">Additional options</div>
+   <span id="7_Additionaloptions"><div class="h7">Additional options</div></span>
    The general format of directives is
 <p>
 
@@ -308,17 +305,16 @@ The format to use for displaying the various arguments passed to the function.
 </div>
 
 <br>
-<a name="6_Commonfunctions"></a>
-<h6>Common functions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALprintf"></a>printf : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<span id="6_Commonfunctions"><h6>Common functions</h6></span><br>
+<pre><span id="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 The usual <code class="code">printf</code> function, prints to the standard output <a href="BatInnerIO.html#VALstdout"><code class="code">BatInnerIO.stdout</code></a>, i.e. normally
      to the screen. If you are lost, this is probably the function you're looking for.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALeprintf"></a>eprintf : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 The usual <code class="code">eprintf</code> function, prints to the standard error output <a href="BatInnerIO.html#VALstderr"><code class="code">BatInnerIO.stderr</code></a>, used
      to display warnings and errors. Otherwise identical to <a href="BatInnerIO.Printf.html#VALprintf"><code class="code">BatInnerIO.Printf.printf</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsprintf"></a>sprintf : <code class="type">('a, unit, string) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, unit, string) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 A function which doesn't print its result but returns it as a string. Useful
       for building messages, for translation purposes or for display in a window,
       for instance.
@@ -332,7 +328,7 @@ A function which doesn't print its result but returns it as a string. Useful
       Note that any function called with <code class="code">%a</code> should return strings, i.e.
       should have type <code class="code">unit -&gt; string</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsprintf2"></a>sprintf2 : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info">
+<pre><span id="VALsprintf2"><span class="keyword">val</span> sprintf2</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info">
 A function which doesn't print its result but returns it as a string. Useful
       for building messages, for translation purposes or for display in a window,
       for instance.
@@ -345,9 +341,8 @@ A function which doesn't print its result but returns it as a string. Useful
       i.e. should have type <code class="code">'b output -&gt; unit</code>.<br>
 </div>
 <br>
-<a name="6_Generalfunctions"></a>
-<h6>General functions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALfprintf"></a>fprintf : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<span id="6_Generalfunctions"><h6>General functions</h6></span><br>
+<pre><span id="VALfprintf"><span class="keyword">val</span> fprintf</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 General function. This function prints to any output. Typically,
      if you are attempting to build a large output such as a file,
      this is probably the function you are looking for. If you are
@@ -359,58 +354,55 @@ General function. This function prints to any output. Typically,
      <code class="code">(_, _ output, unit, _) format4</code>, this is also probably the
      function you are looking for.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALifprintf"></a>ifprintf : <code class="type">'a -> ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<pre><span id="VALifprintf"><span class="keyword">val</span> ifprintf</span> : <code class="type">'a -> ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 As <a href="BatInnerIO.Printf.html#VALfprintf"><code class="code">BatInnerIO.Printf.fprintf</code></a> but doesn't actually print anything.
      Sometimes useful for debugging.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbprintf"></a>bprintf : <code class="type">Buffer.t -> ('a, Buffer.t, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALbprintf"><span class="keyword">val</span> bprintf</span> : <code class="type">Buffer.t -> ('a, Buffer.t, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 As <a href="BatInnerIO.Printf.html#VALfprintf"><code class="code">BatInnerIO.Printf.fprintf</code></a>, but with buffers instead of outputs.
      In particular, any unparser called with <code class="code">%a</code> should
      write to a buffer rather than to an output<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbprintf2"></a>bprintf2 : <code class="type">Buffer.t -> ('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALbprintf2"><span class="keyword">val</span> bprintf2</span> : <code class="type">Buffer.t -> ('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatInnerIO.Printf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 As <a href="BatInnerIO.Printf.html#VALprintf"><code class="code">BatInnerIO.Printf.printf</code></a> but writes to a buffer instead
      of printing to the output. By opposition to
      <a href="BatInnerIO.Printf.html#VALbprintf"><code class="code">BatInnerIO.Printf.bprintf</code></a>, only the result is changed with
      respect to <a href="BatInnerIO.Printf.html#VALprintf"><code class="code">BatInnerIO.Printf.printf</code></a>, not the inner workings.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALkfprintf"></a>kfprintf : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info">
-<a name="6_Functionswithcontinuations"></a>
-<h6>Functions with continuations</h6>
+<pre><span id="VALkfprintf"><span class="keyword">val</span> kfprintf</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info">
+<span id="6_Functionswithcontinuations"><h6>Functions with continuations</h6></span>
 <p>
 Same as <code class="code">fprintf</code>, but instead of returning immediately, passes the <code class="code">output</code> to its first
      argument at the end of printing.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALksprintf"></a>ksprintf : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
+<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 Same as <code class="code">sprintf</code> above, but instead of returning the string,
       passes it to the first argument.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALksprintf2"></a>ksprintf2 : <code class="type">(string -> 'a) -><br>       ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
+<pre><span id="VALksprintf2"><span class="keyword">val</span> ksprintf2</span> : <code class="type">(string -> 'a) -><br>       ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 Same as <code class="code">sprintf2</code> above, but instead of returning the string,
       passes it to the first argument.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALkbprintf"></a>kbprintf : <code class="type">(Buffer.t -> 'a) -><br>       Buffer.t -> ('b, Buffer.t, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
+<pre><span id="VALkbprintf"><span class="keyword">val</span> kbprintf</span> : <code class="type">(Buffer.t -> 'a) -><br>       Buffer.t -> ('b, Buffer.t, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 Same as <code class="code">bprintf</code>, but instead of returning immediately,
       passes the buffer to its first argument at the end of printing.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALkbprintf2"></a>kbprintf2 : <code class="type">(Buffer.t -> 'a) -><br>       Buffer.t -> ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
+<pre><span id="VALkbprintf2"><span class="keyword">val</span> kbprintf2</span> : <code class="type">(Buffer.t -> 'a) -><br>       Buffer.t -> ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 Same as <code class="code">bprintf2</code>, but instead of returning immediately,
       passes the buffer to its first argument at the end of printing.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALkprintf"></a>kprintf : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
+<pre><span id="VALkprintf"><span class="keyword">val</span> kprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 <span class="warning">Deprecated.</span>This is a deprecated synonym for <code class="code">ksprintf</code>.<br>
 </div>
 <br>
-<a name="6_Aboutformats"></a>
-<h6>About formats</h6>
+<span id="6_Aboutformats"><h6>About formats</h6></span>
 <p>
 
    You only need to read this if you intend to create your new printf-like functions,
    which happens generally by toying with <code class="code">mkprintf</code>.
 <p>
 
-   <a name="7_Format4"></a>
-<div class="h7">Format4</div>
+   <span id="7_Format4"><div class="h7">Format4</div></span>
 <p>
 
    <code class="code">('a, 'b, 'c, 'd) format4</code> = is the type of arguments for
@@ -445,12 +437,10 @@ Same as <code class="code">bprintf2</code>, but instead of returning immediately
    arguments have been printed</li>
 </ul>
 
-   <a name="7_Format"></a>
-<div class="h7">Format</div>
+   <span id="7_Format"><div class="h7">Format</div></span>
    <code class="code">('a, 'b, 'c) format</code> or <code class="code">('a, 'b, 'c) t</code> is just a shortcut for <code class="code">('a, 'b, 'c, 'c) format4</code>.
 <p>
 
-   <a name="7_Important"></a>
-<div class="h7">Important</div>
+   <span id="7_Important"><div class="h7">Important</div></span>
    Note that <code class="code">Obj.magic</code> is involved behind this, so be careful.<br>
 </body></html>

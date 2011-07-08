@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -116,13 +119,13 @@
 <br>
 <pre><span class="keyword">module</span> Batteries_config: <code class="code">sig</code> <a href="Batteries_config.html">..</a> <code class="code">end</code></pre>This system's configuration.<br>
 <hr width="100%">
-<pre><span class="keyword">val</span> <a name="VALversion"></a>version : <code class="type">string</code></pre><div class="info">
+<pre><span id="VALversion"><span class="keyword">val</span> version</span> : <code class="type">string</code></pre><div class="info">
 The version of OCaml Batteries Included, as a human-readable freeform string.
 <p>
 
    e.g. <code class="code">"0.20081006b"</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdocumentation_root"></a>documentation_root : <code class="type">string</code></pre><div class="info">
+<pre><span id="VALdocumentation_root"><span class="keyword">val</span> documentation_root</span> : <code class="type">string</code></pre><div class="info">
 A path to the root of the documentation. This directory is expected to contain
    subdirectories <code class="code">html</code> and <code class="code">html/api</code>, as well as a documentation index file
    <code class="code">documentations.idex</code>.
@@ -130,17 +133,17 @@ A path to the root of the documentation. This directory is expected to contain
 
    e.g. <code class="code">"/usr/share/doc/batteries"</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbrowse"></a>browse : <code class="type">string -> int</code></pre><div class="info">
+<pre><span id="VALbrowse"><span class="keyword">val</span> browse</span> : <code class="type">string -> int</code></pre><div class="info">
 <code class="code">browse s</code> opens the platform's default www browser to browse url <code class="code">s</code>.
 <p>
 
    Return the error status.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALset_browser"></a>set_browser : <code class="type">(string -> int) -> unit</code></pre><div class="info">
+<pre><span id="VALset_browser"><span class="keyword">val</span> set_browser</span> : <code class="type">(string -> int) -> unit</code></pre><div class="info">
 <code class="code">set_browser f</code> replaces the default browser with a function <code class="code">f</code>. This
    may be used to add debugging information, use a custom browser, etc.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmax_array_length"></a>max_array_length : <code class="type">int</code></pre><div class="info">
+<pre><span id="VALmax_array_length"><span class="keyword">val</span> max_array_length</span> : <code class="type">int</code></pre><div class="info">
 The maximal length of a normal array on this system.
 <p>
 
@@ -150,11 +153,11 @@ The maximal length of a normal array on this system.
    <code class="code">max_array_length/2</code> on 32-bit machines and <code class="code">max_array_length</code> on
    64-bit machines.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALword_size"></a>word_size : <code class="type">int</code></pre><div class="info">
+<pre><span id="VALword_size"><span class="keyword">val</span> word_size</span> : <code class="type">int</code></pre><div class="info">
 Size of one word on the machine currently executing the Caml
       program, in bits: 32 or 64.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmax_string_length"></a>max_string_length : <code class="type">int</code></pre><div class="info">
+<pre><span id="VALmax_string_length"><span class="keyword">val</span> max_string_length</span> : <code class="type">int</code></pre><div class="info">
 Maximum length of a string.<br>
 </div>
 </body></html>

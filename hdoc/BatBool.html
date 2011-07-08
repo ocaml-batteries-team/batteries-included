@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -105,7 +108,8 @@
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="Batteries_config" rel="Chapter" href="Batteries_config.html">
 <link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
-<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
+<link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <title>BatBool</title>
 </head>
 <body>
@@ -118,34 +122,34 @@
 <pre><span class="keyword">module</span> BatBool: <code class="code">sig</code> <a href="BatBool.html">..</a> <code class="code">end</code></pre>Operations on booleans<br>
 <b>Author(s):</b> Gabriel Scherer, David Teller<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t = <code class="type">bool</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">bool</code> </pre>
 <div class="info">
 The type of booleans. Formally, this is defined as <code class="code">type t = true | false</code><br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALnot"></a>not : <code class="type">bool -> bool</code></pre><div class="info">
+<pre><span id="VALnot"><span class="keyword">val</span> not</span> : <code class="type">bool -> bool</code></pre><div class="info">
 The boolean negation.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL(&&)"></a>(&amp;&amp;) : <code class="type">bool -> bool -> bool</code></pre><div class="info">
+<pre><span id="VAL(&&)"><span class="keyword">val</span> (&amp;&amp;)</span> : <code class="type">bool -> bool -> bool</code></pre><div class="info">
 The boolean ``and''. Evaluation is sequential, left-to-right:
-	  in <code class="code">e1 &amp;&amp; e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code">false</code>,
-	  <code class="code">e2</code> is not evaluated at all.<br>
+      in <code class="code">e1 &amp;&amp; e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code">false</code>,
+      <code class="code">e2</code> is not evaluated at all.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL(||)"></a>(||) : <code class="type">bool -> bool -> bool</code></pre><div class="info">
+<pre><span id="VAL(||)"><span class="keyword">val</span> (||)</span> : <code class="type">bool -> bool -> bool</code></pre><div class="info">
 The boolean ``or''. Evaluation is sequential, left-to-right:
-	  in <code class="code">e1 || e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code">true</code>,
-	  <code class="code">e2</code> is not evaluated at all.<br>
+      in <code class="code">e1 || e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code">true</code>,
+      <code class="code">e2</code> is not evaluated at all.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALzero"></a>zero : <code class="type">bool</code></pre><pre><span class="keyword">val</span> <a name="VALone"></a>one : <code class="type">bool</code></pre><pre><span class="keyword">val</span> <a name="VALneg"></a>neg : <code class="type">bool -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALsucc"></a>succ : <code class="type">'a -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALpred"></a>pred : <code class="type">'a -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALabs"></a>abs : <code class="type">'a -> 'a</code></pre><pre><span class="keyword">val</span> <a name="VALadd"></a>add : <code class="type">bool -> bool -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALmul"></a>mul : <code class="type">bool -> bool -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALsub"></a>sub : <code class="type">'a -> bool -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALdiv"></a>div : <code class="type">'a -> 'b -> 'c</code></pre><pre><span class="keyword">val</span> <a name="VALmodulo"></a>modulo : <code class="type">'a -> 'b -> 'c</code></pre><pre><span class="keyword">val</span> <a name="VALpow"></a>pow : <code class="type">'a -> 'b -> 'c</code></pre><pre><span class="keyword">val</span> <a name="VALmin_num"></a>min_num : <code class="type">bool</code></pre><pre><span class="keyword">val</span> <a name="VALmax_num"></a>max_num : <code class="type">bool</code></pre><pre><span class="keyword">val</span> <a name="VALcompare"></a>compare : <code class="type">'a -> 'a -> int</code></pre><pre><span class="keyword">val</span> <a name="VALof_int"></a>of_int : <code class="type">int -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALto_int"></a>to_int : <code class="type">bool -> int</code></pre><pre><span class="keyword">val</span> <a name="VALof_string"></a>of_string : <code class="type">string -> bool</code></pre><div class="info">
+<pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type">bool</code></pre><pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type">bool</code></pre><pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">bool -> bool</code></pre><pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">bool -> bool</code></pre><pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">bool -> bool</code></pre><pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">bool -> bool</code></pre><pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">bool -> bool -> bool</code></pre><pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">bool -> bool -> bool</code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">bool -> bool -> bool</code></pre><pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">bool</code></pre><pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">bool</code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">bool -> bool -> int</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> bool</code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">bool -> int</code></pre><pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> bool</code></pre><div class="info">
 Convert the given string to a boolean.
-	Raise <code class="code">Invalid_argument "Bool.of_string"</code> if the string is not
-	<code class="code">"true"</code>, <code class="code">"false"</code>, <code class="code">"0"</code>, <code class="code">"1"</code>, <code class="code">"tt"</code> or <code class="code">"ff"</code>.<br>
+      Raise <code class="code">Invalid_argument "Bool.of_string"</code> if the string is not
+      <code class="code">"true"</code>, <code class="code">"false"</code>, <code class="code">"0"</code>, <code class="code">"1"</code>, <code class="code">"tt"</code> or <code class="code">"ff"</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_string"></a>to_string : <code class="type">bool -> string</code></pre><pre><span class="keyword">val</span> <a name="VALof_float"></a>of_float : <code class="type">float -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALto_float"></a>to_float : <code class="type">bool -> float</code></pre><pre><span class="keyword">val</span> <a name="VAL(+)"></a>(+) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VAL(-)"></a>(-) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VAL( * )"></a>( * ) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VAL(/)"></a>(/) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VAL( ** )"></a>( ** ) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VAL(<>)"></a>(&lt;&gt;) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VAL(>=)"></a>(&gt;=) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VAL(<=)"></a>(&lt;=) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VAL(>)"></a>(&gt;) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VAL(<)"></a>(&lt;) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VAL(=)"></a>(=) : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALoperations"></a>operations : <code class="type"><a href="BatBool.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
-<a name="6_Boilerplatecode"></a>
-<h6>Boilerplate code</h6><br>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatBool.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<a name="7_Printing"></a>
-<div class="h7">Printing</div><br>
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">bool -> string</code></pre><pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> bool</code></pre><pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">bool -> float</code></pre><pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre><pre><span id="VAL(<>)"><span class="keyword">val</span> (&lt;&gt;)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(>=)"><span class="keyword">val</span> (&gt;=)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(<=)"><span class="keyword">val</span> (&lt;=)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(>)"><span class="keyword">val</span> (&gt;)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(<)"><span class="keyword">val</span> (&lt;)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(=)"><span class="keyword">val</span> (=)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
+<span id="6_Submodulesgroupingallinfixoperators"><h6>Submodules grouping all infix operators</h6></span><br>
+<pre><span class="keyword">module</span> <a href="BatBool.Infix.html">Infix</a>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre><pre><span class="keyword">module</span> <a href="BatBool.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><br>
+<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatBool.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<span id="7_Printing"><div class="h7">Printing</div></span><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type"><a href="BatBool.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre></body></html>
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre></body></html>

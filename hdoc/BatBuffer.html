@@ -5,7 +5,7 @@
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatBool.html">
-<link rel="next" href="BatCamomile.html">
+<link rel="next" href="BatCache.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -112,7 +115,7 @@
 <body>
 <div class="navbar"><a href="BatBool.html">Previous</a>
 &nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatCamomile.html">Next</a>
+&nbsp;<a href="BatCache.html">Next</a>
 </div>
 <center><h1>Module <a href="type_BatBuffer.html">BatBuffer</a></h1></center>
 <br>
@@ -131,17 +134,17 @@
     and types.<br>
 <b>Author(s):</b> Pierre Weis (Base module), Xavier Leroy (Base module), David Teller, Dawid Toton<br>
 <hr width="100%">
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">Buffer.t -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">Buffer.t -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Returns an enumeration of the characters of a buffer. 
 <p>
 
       Contents of the enumeration is unspecified if the buffer is modified after
       the enumeration is returned.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> Buffer.t</code></pre><div class="info">
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> Buffer.t</code></pre><div class="info">
 Creates a buffer from a character enumeration.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALblit"></a>blit : <code class="type">Buffer.t -> int -> string -> int -> int -> unit</code></pre><div class="info">
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">Buffer.t -> int -> string -> int -> int -> unit</code></pre><div class="info">
 <code class="code">Buffer.blit b srcoff dst dstoff len</code> copies <code class="code">len</code> characters from
    the current contents of the buffer <code class="code">b</code> starting at offset <code class="code">off</code>,
    starting at character number <code class="code">srcoff</code>, to string <code class="code">dst</code>, starting at
@@ -150,21 +153,19 @@ Creates a buffer from a character enumeration.<br>
     valid substring of the buffer, or if <code class="code">dstoff</code> and <code class="code">len</code> do not
     designate a valid substring of <code class="code">dst</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALadd_input"></a>add_input : <code class="type">Buffer.t -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> int -> unit</code></pre><div class="info">
+<pre><span id="VALadd_input"><span class="keyword">val</span> add_input</span> : <code class="type">Buffer.t -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> int -> unit</code></pre><div class="info">
 <code class="code">add_input b ic n</code> reads exactly <code class="code">n</code> character from the input <code class="code">ic</code>
       and stores them at the end of buffer <code class="code">b</code>.  Raise <code class="code">End_of_file</code> if
       the channel contains fewer than <code class="code">n</code> characters.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALadd_channel"></a>add_channel : <code class="type">Buffer.t -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> int -> unit</code></pre><div class="info">
+<pre><span id="VALadd_channel"><span class="keyword">val</span> add_channel</span> : <code class="type">Buffer.t -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> int -> unit</code></pre><div class="info">
 </div>
-<pre><span class="keyword">val</span> <a name="VALoutput_buffer"></a>output_buffer : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Buffer.t -> unit</code></pre><div class="info">
+<pre><span id="VALoutput_buffer"><span class="keyword">val</span> output_buffer</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Buffer.t -> unit</code></pre><div class="info">
 <code class="code">output_buffer oc b</code> writes the current contents of buffer <code class="code">b</code>
       on the output channel <code class="code">oc</code>.<br>
 </div>
 <br>
-<a name="6_Boilerplatecode"></a>
-<h6>Boilerplate code</h6><br>
+<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
 <br>
-<a name="7_Printing"></a>
-<div class="h7">Printing</div><br>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Buffer.t -> unit</code></pre></body></html>
+<span id="7_Printing"><div class="h7">Printing</div></span><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Buffer.t -> unit</code></pre></body></html>

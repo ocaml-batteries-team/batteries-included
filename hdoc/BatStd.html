@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -117,67 +120,72 @@
 </div>
 <center><h1>Module <a href="type_BatStd.html">BatStd</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> BatStd: <code class="code">sig</code> <a href="BatStd.html">..</a> <code class="code">end</code></pre><a name="6_Additionalfunctions"></a>
-<h6>Additional functions.</h6><br>
+<pre><span class="keyword">module</span> BatStd: <code class="code">sig</code> <a href="BatStd.html">..</a> <code class="code">end</code></pre><span id="6_Additionalfunctions"><h6>Additional functions.</h6></span><br>
 <b>Author(s):</b> Nicolas Cannasse, David Teller, Zheng Li<br>
 <hr width="100%">
-<pre><span class="keyword">val</span> <a name="VALprint_bool"></a>print_bool : <code class="type">bool -> unit</code></pre><div class="info">
+<pre><span id="VALprint_bool"><span class="keyword">val</span> print_bool</span> : <code class="type">bool -> unit</code></pre><div class="info">
 Print a boolean to stdout.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALprerr_bool"></a>prerr_bool : <code class="type">bool -> unit</code></pre><div class="info">
+<pre><span id="VALprerr_bool"><span class="keyword">val</span> prerr_bool</span> : <code class="type">bool -> unit</code></pre><div class="info">
 Print a boolean to stderr.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALinput_file"></a>input_file : <code class="type">?bin:bool -> string -> string</code></pre><div class="info">
+<pre><span id="VALinput_file"><span class="keyword">val</span> input_file</span> : <code class="type">?bin:bool -> string -> string</code></pre><div class="info">
 returns the data of a given filename.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALoutput_file"></a>output_file : <code class="type">filename:string -> text:string -> unit</code></pre><div class="info">
+<pre><span id="VALoutput_file"><span class="keyword">val</span> output_file</span> : <code class="type">filename:string -> text:string -> unit</code></pre><div class="info">
 creates a filename, write text into it and close it.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALstring_of_char"></a>string_of_char : <code class="type">char -> string</code></pre><div class="info">
+<pre><span id="VALstring_of_char"><span class="keyword">val</span> string_of_char</span> : <code class="type">char -> string</code></pre><div class="info">
 creates a string from a char.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALidentity"></a>identity : <code class="type">'a -> 'a</code></pre><div class="info">
+<pre><span id="VALidentity"><span class="keyword">val</span> identity</span> : <code class="type">'a -> 'a</code></pre><div class="info">
 the identity function.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALunique"></a>unique : <code class="type">unit -> int</code></pre><div class="info">
+<pre><span id="VALunique"><span class="keyword">val</span> unique</span> : <code class="type">unit -> int</code></pre><div class="info">
 returns an unique identifier every time it is called.  This
     function is not thread-safe.  Use <a href="BatPervasives.html#VALunique"><code class="code">BatPervasives.unique</code></a>
     instead.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdump"></a>dump : <code class="type">'a -> string</code></pre><div class="info">
+<pre><span id="VALdump"><span class="keyword">val</span> dump</span> : <code class="type">'a -> string</code></pre><div class="info">
 represent a runtime value as a string. Since types are lost at compile
     time, the representation might not match your type. For example, None
     will be printed 0 since they share the same runtime representation.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">'a -> unit</code></pre><div class="info">
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a -> unit</code></pre><div class="info">
 print the representation of a runtime value on stdout.
     See remarks for <code class="code">dump</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfinally"></a>finally : <code class="type">(unit -> unit) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+<pre><span id="VALfinally"><span class="keyword">val</span> finally</span> : <code class="type">(unit -> unit) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 <code class="code">finally fend f x</code> calls <code class="code">f x</code> and then <code class="code">fend()</code> even if <code class="code">f x</code> raised
       an exception.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALwith_dispose"></a>with_dispose : <code class="type">dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+<pre><span id="VALwith_dispose"><span class="keyword">val</span> with_dispose</span> : <code class="type">dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 <code class="code">with_dispose dispose f x</code> invokes <code class="code">f</code> on <code class="code">x</code>, calling <code class="code">dispose x</code>
     when <code class="code">f</code> terminates (either with a return value or an
     exception).<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALargs"></a>args : <code class="type">unit -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALforever"><span class="keyword">val</span> forever</span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre><div class="info">
+<code class="code">forever f x</code> invokes <code class="code">f</code> on <code class="code">x</code> repeatedly (until an exception occurs).<br>
+</div>
+<pre><span id="VALignore_exceptions"><span class="keyword">val</span> ignore_exceptions</span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre><div class="info">
+<code class="code">ignore_exceptions f x</code> invokes <code class="code">f</code> on <code class="code">x</code>, ignoring both the returned value
+    and the exceptions that may be raised.<br>
+</div>
+<pre><span id="VALargs"><span class="keyword">val</span> args</span> : <code class="type">unit -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 An enumeration of the arguments passed to this program through the command line.
 <p>
 
     <code class="code">args ()</code> is given by the elements of <code class="code">Sys.argv</code>, minus the first element.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALexe"></a>exe : <code class="type">string</code></pre><div class="info">
+<pre><span id="VALexe"><span class="keyword">val</span> exe</span> : <code class="type">string</code></pre><div class="info">
 The name of the current executable.
 <p>
 
       <code class="code">exe</code> is given by the first argument of <code class="code">Sys.argv</code><br>
 </div>
 <br>
-<a name="6_Operators"></a>
-<h6>Operators</h6><br>
-<pre><span class="keyword">val</span> <a name="VAL(|>)"></a>(|&gt;) : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre><div class="info">
+<span id="6_Operators"><h6>Operators</h6></span><br>
+<pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre><div class="info">
 Function application. <code class="code">x |&gt; f</code> is equivalent to <code class="code">f x</code>. 
 <p>
 
@@ -192,69 +200,68 @@ Function application. <code class="code">x |&gt; f</code> is equivalent to <code
     This operator may also be useful for composing sequences of
     function calls without too many parenthesis.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL(<|)"></a>(&lt;|) : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+<pre><span id="VAL(<|)"><span class="keyword">val</span> (&lt;|)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 Function application. <code class="code">f &lt;| x</code> is equivalent to <code class="code">f x</code>. 
 <p>
 
       This operators may be useful for composing sequences of
       function calls without too many parenthesis.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL(|-)"></a>(|-) : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre><div class="info">
+<pre><span id="VAL(|-)"><span class="keyword">val</span> (|-)</span> : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre><div class="info">
 Function composition. <code class="code">f |- g</code> is <code class="code">fun x -&gt; g (f x)</code>. 
     This is also equivalent to applying <code class="code">|&gt;</code> twice.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL(-|)"></a>(-|) : <code class="type">('a -> 'b) -> ('c -> 'a) -> 'c -> 'b</code></pre><div class="info">
+<pre><span id="VAL(-|)"><span class="keyword">val</span> (-|)</span> : <code class="type">('a -> 'b) -> ('c -> 'a) -> 'c -> 'b</code></pre><div class="info">
 Function composition. <code class="code">f -| g</code> is <code class="code">fun x -&gt; f (g x)</code>. Mathematically, this is
     operator o.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALflip"></a>flip : <code class="type">('a -> 'b -> 'c) -> 'b -> 'a -> 'c</code></pre><div class="info">
+<pre><span id="VALflip"><span class="keyword">val</span> flip</span> : <code class="type">('a -> 'b -> 'c) -> 'b -> 'a -> 'c</code></pre><div class="info">
 Argument flipping. 
 <p>
 
       <code class="code">flip f x y</code> is <code class="code">f y x</code>. Don't abuse this function, it may shorten considerably
       your code but it also has the nasty habit of making it harder to read.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL( *** )"></a>( *** ) : <code class="type">('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd</code></pre><div class="info">
+<pre><span id="VAL( *** )"><span class="keyword">val</span> ( *** )</span> : <code class="type">('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd</code></pre><div class="info">
 Function pairing.
 <p>
 
     <code class="code">f *** g</code> is <code class="code">fun (x,y) -&gt; (f x, g y)</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL(&&&)"></a>(&amp;&amp;&amp;) : <code class="type">('a -> 'b) -> ('a -> 'c) -> 'a -> 'b * 'c</code></pre><div class="info">
+<pre><span id="VAL(&&&)"><span class="keyword">val</span> (&amp;&amp;&amp;)</span> : <code class="type">('a -> 'b) -> ('a -> 'c) -> 'a -> 'b * 'c</code></pre><div class="info">
 Applying two functions to the same argument.
 <p>
 
       <code class="code"> f &amp;&amp;&amp; g</code> is <code class="code">fun x -&gt; (f x, g x)</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfirst"></a>first : <code class="type">('a -> 'b * 'c) -> 'a -> 'b</code></pre><div class="info">
+<pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">('a -> 'b * 'c) -> 'a -> 'b</code></pre><div class="info">
 Projection of a pair to its first element.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsecond"></a>second : <code class="type">('a -> 'b * 'c) -> 'a -> 'c</code></pre><div class="info">
+<pre><span id="VALsecond"><span class="keyword">val</span> second</span> : <code class="type">('a -> 'b * 'c) -> 'a -> 'c</code></pre><div class="info">
 Projection of a pair to its second element.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcurry"></a>curry : <code class="type">('a * 'b -> 'c) -> 'a -> 'b -> 'c</code></pre><div class="info">
+<pre><span id="VALcurry"><span class="keyword">val</span> curry</span> : <code class="type">('a * 'b -> 'c) -> 'a -> 'b -> 'c</code></pre><div class="info">
 Turn a function that takes a pair into a function that takes its
       arguments one at a time.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALuncurry"></a>uncurry : <code class="type">('a -> 'b -> 'c) -> 'a * 'b -> 'c</code></pre><div class="info">
+<pre><span id="VALuncurry"><span class="keyword">val</span> uncurry</span> : <code class="type">('a -> 'b -> 'c) -> 'a * 'b -> 'c</code></pre><div class="info">
 Turn a function that takes its arguments one at a time into a
       function that takes a pair as argument.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALconst"></a>const : <code class="type">'a -> 'b -> 'a</code></pre><div class="info">
+<pre><span id="VALconst"><span class="keyword">val</span> const</span> : <code class="type">'a -> 'b -> 'a</code></pre><div class="info">
 Ignore its second argument.
 <p>
 
       Therefore, <code class="code">const x</code> is the function which always returns <code class="code">x</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALtap"></a>tap : <code class="type">('a -> unit) -> 'a -> 'a</code></pre><div class="info">
+<pre><span id="VALtap"><span class="keyword">val</span> tap</span> : <code class="type">('a -> unit) -> 'a -> 'a</code></pre><div class="info">
 <b>Since</b> v1.1.0
 
       Apply the function to the given value, and return the original value as the result.  Useful as part of a pipeline of operations.<br>
 </div>
 <br>
-<a name="6_Results"></a>
-<h6>Results</h6><br>
-<br><code><span class="keyword">type</span> <a name="TYPEresult"></a><code class="type">('a, 'b)</code> result = </code><table class="typetable">
+<span id="6_Results"><h6>Results</h6></span><br>
+<br><code><span id="TYPEresult"><span class="keyword">type</span> <code class="type">('a, 'b)</code> result</span> = </code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
@@ -273,27 +280,26 @@ failure information</td><td class="typefieldcomment" align="left" valign="bottom
 </tr></table>
 
 
-<pre><span class="keyword">val</span> <a name="VALignore_ok"></a>ignore_ok : <code class="type">('a, exn) <a href="BatStd.html#TYPEresult">result</a> -> unit</code></pre><div class="info">
+<pre><span id="VALignore_ok"><span class="keyword">val</span> ignore_ok</span> : <code class="type">('a, exn) <a href="BatStd.html#TYPEresult">result</a> -> unit</code></pre><div class="info">
 <code class="code">ignore_ok (f x)</code> ignores the result of <code class="code">f x</code> if it's ok, but
 throws the exception contained if <code class="code">Bad</code> is returned.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALok"></a>ok : <code class="type">('a, exn) <a href="BatStd.html#TYPEresult">result</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALok"><span class="keyword">val</span> ok</span> : <code class="type">('a, exn) <a href="BatStd.html#TYPEresult">result</a> -> 'a</code></pre><div class="info">
 <code class="code">f x |&gt; ok</code> unwraps the <code class="code">Ok</code> result of <code class="code">f x</code> and returns it, or
 throws the exception contained if <code class="code">Bad</code> is returned.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALwrap"></a>wrap : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatStd.html#TYPEresult">result</a></code></pre><div class="info">
+<pre><span id="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatStd.html#TYPEresult">result</a></code></pre><div class="info">
 <code class="code">wrap f x</code> wraps a function that would normally throw an exception
 on failure such that it now returns a result with either the <code class="code">Ok</code>
 return value or the <code class="code">Bad</code> exception.<br>
 </div>
 <br>
-<a name="6_Threadsafetyinternals"></a>
-<h6>Thread-safety internals</h6>
+<span id="6_Threadsafetyinternals"><h6>Thread-safety internals</h6></span>
 <p>
 
    Unless you are attempting to adapt Batteries Included to a new model of
    concurrency, you probably won't need this.<br>
-<pre><span class="keyword">val</span> <a name="VALlock"></a>lock : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre><div class="info">
+<pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre><div class="info">
 A lock used to synchronize internal operations.
 <p>
 

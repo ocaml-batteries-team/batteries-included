@@ -21,6 +21,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -85,6 +86,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -92,6 +94,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -111,4 +114,4 @@
 <center><h1>Module <a href="type_BatSeq.Exceptionless.html">BatSeq.Exceptionless</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Exceptionless: <code class="code">sig</code> <a href="BatSeq.Exceptionless.html">..</a> <code class="code">end</code></pre><hr width="100%">
-<pre><span class="keyword">val</span> <a name="VALhd"></a>hd : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span class="keyword">val</span> <a name="VALtl"></a>tl : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> option</code></pre><pre><span class="keyword">val</span> <a name="VALfirst"></a>first : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span class="keyword">val</span> <a name="VALlast"></a>last : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span class="keyword">val</span> <a name="VALat"></a>at : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> int -> 'a option</code></pre><pre><span class="keyword">val</span> <a name="VALreduce"></a>reduce : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span class="keyword">val</span> <a name="VALmax"></a>max : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span class="keyword">val</span> <a name="VALmin"></a>min : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span class="keyword">val</span> <a name="VALcombine"></a>combine : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('a * 'b) <a href="BatSeq.html#TYPEt">BatSeq.t</a> option</code></pre></body></html>
+<pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span id="VALtl"><span class="keyword">val</span> tl</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> option</code></pre><pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> int -> 'a option</code></pre><pre><span id="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a option</code></pre><pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('a * 'b) <a href="BatSeq.html#TYPEt">BatSeq.t</a> option</code></pre></body></html>

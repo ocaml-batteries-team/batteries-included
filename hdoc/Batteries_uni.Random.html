@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -120,74 +123,71 @@
 <br>
 <pre><span class="keyword">module</span> Random: <code class="type">BatRandom</code></pre><hr width="100%">
 <br>
-<a name="6_Basicfunctions"></a>
-<h6>Basic functions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">int -> unit</code></pre><div class="info">
+<span id="6_Basicfunctions"><h6>Basic functions</h6></span><br>
+<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> unit</code></pre><div class="info">
 Initialize the generator, using the argument as a seed.
      The same seed will always yield the same sequence of numbers.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfull_init"></a>full_init : <code class="type">int array -> unit</code></pre><div class="info">
+<pre><span id="VALfull_init"><span class="keyword">val</span> full_init</span> : <code class="type">int array -> unit</code></pre><div class="info">
 Same as <code class="code">Random.init</code> but takes more data as seed.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALself_init"></a>self_init : <code class="type">unit -> unit</code></pre><div class="info">
+<pre><span id="VALself_init"><span class="keyword">val</span> self_init</span> : <code class="type">unit -> unit</code></pre><div class="info">
 Initialize the generator with a more-or-less random seed chosen
    in a system-dependent way.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbits"></a>bits : <code class="type">unit -> int</code></pre><div class="info">
+<pre><span id="VALbits"><span class="keyword">val</span> bits</span> : <code class="type">unit -> int</code></pre><div class="info">
 Return 30 random bits in a nonnegative integer.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint"></a>int : <code class="type">int -> int</code></pre><div class="info">
+<pre><span id="VALint"><span class="keyword">val</span> int</span> : <code class="type">int -> int</code></pre><div class="info">
 <code class="code">Random.int bound</code> returns a random integer between 0 (inclusive)
      and <code class="code">bound</code> (exclusive).  <code class="code">bound</code> must be greater than 0 and less
      than 2<sup class="superscript">30</sup>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint32"></a>int32 : <code class="type">Int32.t -> Int32.t</code></pre><div class="info">
+<pre><span id="VALint32"><span class="keyword">val</span> int32</span> : <code class="type">Int32.t -> Int32.t</code></pre><div class="info">
 <code class="code">Random.int32 bound</code> returns a random integer between 0 (inclusive)
      and <code class="code">bound</code> (exclusive).  <code class="code">bound</code> must be greater than 0.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALnativeint"></a>nativeint : <code class="type">Nativeint.t -> Nativeint.t</code></pre><div class="info">
+<pre><span id="VALnativeint"><span class="keyword">val</span> nativeint</span> : <code class="type">Nativeint.t -> Nativeint.t</code></pre><div class="info">
 <code class="code">Random.nativeint bound</code> returns a random integer between 0 (inclusive)
      and <code class="code">bound</code> (exclusive).  <code class="code">bound</code> must be greater than 0.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALint64"></a>int64 : <code class="type">Int64.t -> Int64.t</code></pre><div class="info">
+<pre><span id="VALint64"><span class="keyword">val</span> int64</span> : <code class="type">Int64.t -> Int64.t</code></pre><div class="info">
 <code class="code">Random.int64 bound</code> returns a random integer between 0 (inclusive)
      and <code class="code">bound</code> (exclusive).  <code class="code">bound</code> must be greater than 0.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfloat"></a>float : <code class="type">float -> float</code></pre><div class="info">
+<pre><span id="VALfloat"><span class="keyword">val</span> float</span> : <code class="type">float -> float</code></pre><div class="info">
 <code class="code">Random.float bound</code> returns a random floating-point number
    between 0 (inclusive) and <code class="code">bound</code> (exclusive).  If <code class="code">bound</code> is
    negative, the result is negative or zero.  If <code class="code">bound</code> is 0,
    the result is 0.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbool"></a>bool : <code class="type">unit -> bool</code></pre><div class="info">
+<pre><span id="VALbool"><span class="keyword">val</span> bool</span> : <code class="type">unit -> bool</code></pre><div class="info">
 <code class="code">Random.bool ()</code> returns <code class="code">true</code> or <code class="code">false</code> with probability 0.5 each.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALchar"></a>char : <code class="type">unit -> char</code></pre><div class="info">
+<pre><span id="VALchar"><span class="keyword">val</span> char</span> : <code class="type">unit -> char</code></pre><div class="info">
 Return a random Latin-1 character.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfull_range"></a>full_range : <code class="type">unit -> int</code></pre><div class="info">
+<pre><span id="VALfull_range"><span class="keyword">val</span> full_range</span> : <code class="type">unit -> int</code></pre><div class="info">
 <code class="code">Random.full_range ()</code> returns the maximum entropy possible in a
     single int: 31 bits on 32-bit platforms and 63 bits on 64-bit
     platforms<br>
 </div>
 <br>
-<a name="6_Enumerationsofrandomvalues"></a>
-<h6>Enumerations of random values.</h6> 
+<span id="6_Enumerationsofrandomvalues"><h6>Enumerations of random values.</h6></span> 
 <p>
 
     These enumerations may be cloned without loss of performance,
     to obtain reproducible enumerations of pseudo-random numbers.<br>
-<pre><span class="keyword">val</span> <a name="VALenum_bits"></a>enum_bits : <code class="type">unit -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_int"></a>enum_int : <code class="type">int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_bool"></a>enum_bool : <code class="type">unit -> bool <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_float"></a>enum_float : <code class="type">float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_int32"></a>enum_int32 : <code class="type">Int32.t -> Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_int64"></a>enum_int64 : <code class="type">Int64.t -> Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_nativeint"></a>enum_nativeint : <code class="type">Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_char"></a>enum_char : <code class="type">unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><br>
-<a name="6_Workingwithdatastructures"></a>
-<h6>Working with data structures.</h6><br>
-<pre><span class="keyword">val</span> <a name="VALchoice"></a>choice : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALenum_bits"><span class="keyword">val</span> enum_bits</span> : <code class="type">unit -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int"><span class="keyword">val</span> enum_int</span> : <code class="type">int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_bool"><span class="keyword">val</span> enum_bool</span> : <code class="type">unit -> bool <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_float"><span class="keyword">val</span> enum_float</span> : <code class="type">float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int32"><span class="keyword">val</span> enum_int32</span> : <code class="type">Int32.t -> Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int64"><span class="keyword">val</span> enum_int64</span> : <code class="type">Int64.t -> Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_nativeint"><span class="keyword">val</span> enum_nativeint</span> : <code class="type">Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_char"><span class="keyword">val</span> enum_char</span> : <code class="type">unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><br>
+<span id="6_Workingwithdatastructures"><h6>Working with data structures.</h6></span><br>
+<pre><span id="VALchoice"><span class="keyword">val</span> choice</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a</code></pre><div class="info">
 <code class="code">choice e</code> returns a randomly-chosen element of <code class="code">e</code>.
 <p>
 
     This function only works on finite enumerations with
     less than 2<sup class="superscript">30</sup> elements.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALshuffle"></a>shuffle : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a array</code></pre><div class="info">
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a array</code></pre><div class="info">
 <code class="code">shuffle e</code> returns a new array, containing the
     same set of elements as <code class="code">e</code>, but in a random order.
 <p>
@@ -201,15 +201,14 @@ Return a random Latin-1 character.<br>
     less than 2<sup class="superscript">30</sup> elements.<br>
 </div>
 <br>
-<a name="6_Advancedfunctions"></a>
-<h6>Advanced functions</h6><br>
+<span id="6_Advancedfunctions"><h6>Advanced functions</h6></span><br>
 <pre><span class="keyword">module</span> <a href="BatRandom.State.html">State</a>: <code class="code">sig</code> <a href="BatRandom.State.html">..</a> <code class="code">end</code></pre><div class="info">
 Manipulate the current state of the random generator.
 </div>
-<pre><span class="keyword">val</span> <a name="VALget_state"></a>get_state : <code class="type">unit -> <a href="BatRandom.State.html#TYPEt">State.t</a></code></pre><div class="info">
+<pre><span id="VALget_state"><span class="keyword">val</span> get_state</span> : <code class="type">unit -> <a href="BatRandom.State.html#TYPEt">State.t</a></code></pre><div class="info">
 Return the current state of the generator used by the basic functions.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALset_state"></a>set_state : <code class="type"><a href="BatRandom.State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALset_state"><span class="keyword">val</span> set_state</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">State.t</a> -> unit</code></pre><div class="info">
 Set the state of the generator used by the basic functions.<br>
 </div>
 </body></html>

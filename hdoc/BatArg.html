@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -148,13 +151,13 @@
     and types.<br>
 <b>Author(s):</b> Damien Doligez (Base module), David Teller<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEcommand"></a><code class="type"></code>command </pre>
+<pre><span id="TYPEcommand"><span class="keyword">type</span> <code class="type"></code>command</span> </pre>
 <div class="info">
 The type describing both the name, documentation and behavior
 	  associated with a keyword.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALcommand"></a>command : <code class="type">?doc:string -> string -> Arg.spec -> <a href="BatArg.html#TYPEcommand">command</a></code></pre><div class="info">
+<pre><span id="VALcommand"><span class="keyword">val</span> command</span> : <code class="type">?doc:string -> string -> Arg.spec -> <a href="BatArg.html#TYPEcommand">command</a></code></pre><div class="info">
 Construct a new command, i.e. the specification of a keyword,
     an associated behavior and optionally a usage documentation.<br>
 </div>
@@ -162,7 +165,7 @@ Construct a new command, i.e. the specification of a keyword,
     case of parsing error, and which should explain both the
     behavior and the syntax of this keyword. If left unspecified,
     no documentation is printed.</div>
-<pre><span class="keyword">val</span> <a name="VALhandle"></a>handle : <code class="type">?usage:string -> <a href="BatArg.html#TYPEcommand">command</a> list -> string list</code></pre><div class="info">
+<pre><span id="VALhandle"><span class="keyword">val</span> handle</span> : <code class="type">?usage:string -> <a href="BatArg.html#TYPEcommand">command</a> list -> string list</code></pre><div class="info">
 <code class="code">Arg.handle commands</code> parses the command-line and applies
    the specifications of <code class="code">commands</code> and returns the list
    of anonymous arguments.

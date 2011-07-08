@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -146,8 +149,7 @@
 <b>Author(s):</b> Jeremie Dimino, David Rajchenbach-Teller (documentation)<br>
 <hr width="100%">
 <br>
-<a name="6_Generaloverview"></a>
-<h6>General overview</h6>
+<span id="6_Generaloverview"><h6>General overview</h6></span>
 <p>
 
    The functions of this module produce output, according to <a href="BatPrint.html#TYPEdirective"><code class="code">BatPrint.directive</code></a>s,
@@ -183,8 +185,7 @@
    Let us consider formats more in detail.
 <p>
 
-   <a name="7_Formats"></a>
-<div class="h7">Formats</div>
+   <span id="7_Formats"><div class="h7">Formats</div></span>
 <p>
 
    The simplest format is the empty format, or <code class="code">p""</code> -- notice the <code class="code">p</code>
@@ -218,12 +219,10 @@
    number5some text after the number"</code>.
 <p>
 
-   <a name="7_Directives"></a>
-<div class="h7">Directives</div>
+   <span id="7_Directives"><div class="h7">Directives</div></span>
 <p>
 
-   <a name="8_Generalpurposedirectives"></a>
-<div class="h8">General-purpose directives</div>
+   <span id="8_Generalpurposedirectives"><div class="h8">General-purpose directives</div></span>
 <p>
 
    General-purpose directives start with <code class="code">{%{}</code> and end with <code class="code">{}}</code>. By default,
@@ -248,8 +247,7 @@
    Additional directives may be plugged-in.
 <p>
 
-   <a name="8_Shorthanddirectives"></a>
-<div class="h8">Short-hand directives</div>
+   <span id="8_Shorthanddirectives"><div class="h8">Short-hand directives</div></span>
 <p>
 
    A number of short-hand directives are also provided for most common
@@ -302,16 +300,14 @@
    Additional short-hand directives may also be plugged-in.
 <p>
 
-   <a name="7_Extendingformats"></a>
-<div class="h7">Extending formats</div>
+   <span id="7_Extendingformats"><div class="h7">Extending formats</div></span>
 <p>
 
    In addition to the above default set of directives, you may define your
    own directives or override existing ones. This is actually quite simple.
 <p>
 
-   <a name="8_Addinggeneralpurposedirectiveswithamodule"></a>
-<div class="h8">Adding general-purpose directives (with a module)</div>
+   <span id="8_Addinggeneralpurposedirectiveswithamodule"><div class="h8">Adding general-purpose directives (with a module)</div></span>
 <p>
 
    When defining a new data structure <code class="code">Foo.t</code>, it is usually a good
@@ -331,8 +327,7 @@
    general-purpose directive.
 <p>
 
-   <a name="8_Addinggeneralpurposedirectiveswithoutamodule"></a>
-<div class="h8">Adding general-purpose directives (without a module)</div>
+   <span id="8_Addinggeneralpurposedirectiveswithoutamodule"><div class="h8">Adding general-purpose directives (without a module)</div></span>
 <p>
 
    An alternative technique for adding general-purpose directives is
@@ -347,8 +342,7 @@
    printer as arguments, as before.
 <p>
 
-   <a name="8_Addingshorthanddirectives"></a>
-<div class="h8">Adding short-hand directives</div>
+   <span id="8_Addingshorthanddirectives"><div class="h8">Adding short-hand directives</div></span>
 <p>
 
    Short-hands are convenient and easier to write but are also less
@@ -375,8 +369,7 @@
    flags, as detailed in the following section.
 <p>
 
-   <a name="7_Flags"></a>
-<div class="h7">Flags</div>
+   <span id="7_Flags"><div class="h7">Flags</div></span>
 <p>
 
    The general format of directives is
@@ -419,13 +412,12 @@
    For more informations on supporting flags in your directives, see
    the documentation of type <a href="BatPrint.html#TYPEdirective"><code class="code">BatPrint.directive</code></a>.<br>
 <br>
-<a name="6_Directivesandformats"></a>
-<h6>Directives and formats</h6> 
+<span id="6_Directivesandformats"><h6>Directives and formats</h6></span> 
 <p>
 
     You can skip this section if you are only interested in using this module
     and not in extending its behavior or understanding its internal mechanisms.<br>
-<pre><span class="keyword">type</span> <a name="TYPEdirective"></a><code class="type">('a, 'b)</code> directive = <code class="type">((unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> unit) -> 'b) -> 'a</code> </pre>
+<pre><span id="TYPEdirective"><span class="keyword">type</span> <code class="type">('a, 'b)</code> directive</span> = <code class="type">((unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> unit) -> 'b) -> 'a</code> </pre>
 <div class="info">
 The underlying type of a directive. Directives are the basic elements of
       formats.
@@ -504,25 +496,24 @@ The underlying type of a directive. Directives are the basic elements of
 <br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALliteral"></a>literal : <code class="type">string -> ('a, 'a) <a href="BatPrint.html#TYPEdirective">directive</a></code></pre><div class="info">
+<pre><span id="VALliteral"><span class="keyword">val</span> literal</span> : <code class="type">string -> ('a, 'a) <a href="BatPrint.html#TYPEdirective">directive</a></code></pre><div class="info">
 <code class="code">literal str</code> create a directive which do not take any argument
       from a literal string<br>
 </div>
 <br>
-<a name="6_Formattingfunctions"></a>
-<h6>Formatting functions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALprintf"></a>printf : <code class="type">('a, unit) format -> 'a</code></pre><div class="info">
+<span id="6_Formattingfunctions"><h6>Formatting functions</h6></span><br>
+<pre><span id="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">('a, unit) format -> 'a</code></pre><div class="info">
 <code class="code">printf fmt args</code> formats the arguments in <code class="code">args</code> as specified by <code class="code">fmt</code>
       and prints the result on the standard output <a href="BatIO.html#VALstdout"><code class="code">BatIO.stdout</code></a>, i.e. normally
       to the screen. If you are lost, this is probably the function you're looking for.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALeprintf"></a>eprintf : <code class="type">('a, unit) format -> 'a</code></pre><div class="info">
+<pre><span id="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type">('a, unit) format -> 'a</code></pre><div class="info">
 <code class="code">eprintf fmt args</code> behaves as <code class="code">printf fmt args</code> but prints the result on
       the error out put <a href="BatIO.html#VALstderr"><code class="code">BatIO.stderr</code></a> rather on the screen. This function is typically
       used to display warnings and errors, which may later be separated from "regular"
       printouts.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsprintf"></a>sprintf : <code class="type">('a, string) format -> 'a</code></pre><div class="info">
+<pre><span id="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, string) format -> 'a</code></pre><div class="info">
 A function which doesn't print its result but returns it as a string. Useful
       for building messages, for translation purposes or for display in a window,
       for instance.
@@ -533,9 +524,8 @@ A function which doesn't print its result but returns it as a string. Useful
       the more modular and usually faster <a href="BatPrint.html#VALfprintf"><code class="code">BatPrint.fprintf</code></a>.<br>
 </div>
 <br>
-<a name="6_Genericfunctions"></a>
-<h6>Generic functions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALfprintf"></a>fprintf : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, unit) format -> 'b</code></pre><div class="info">
+<span id="6_Genericfunctions"><h6>Generic functions</h6></span><br>
+<pre><span id="VALfprintf"><span class="keyword">val</span> fprintf</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, unit) format -> 'b</code></pre><div class="info">
 General formatting function. 
 <p>
 
@@ -551,32 +541,31 @@ General formatting function.
      combine with directive <code class="code">%a</code>, this is also probably the function
      you are looking for.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALifprintf"></a>ifprintf : <code class="type">'a -> ('b, unit) format -> 'b</code></pre><div class="info">
+<pre><span id="VALifprintf"><span class="keyword">val</span> ifprintf</span> : <code class="type">'a -> ('b, unit) format -> 'b</code></pre><div class="info">
 As <a href="BatPrint.html#VALfprintf"><code class="code">BatPrint.fprintf</code></a> but doesn't actually print anything.
      Sometimes useful for debugging.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbprintf"></a>bprintf : <code class="type">Buffer.t -> ('a, unit) format -> 'a</code></pre><div class="info">
+<pre><span id="VALbprintf"><span class="keyword">val</span> bprintf</span> : <code class="type">Buffer.t -> ('a, unit) format -> 'a</code></pre><div class="info">
 This function behaves as <a href="BatPrint.html#VALfprintf"><code class="code">BatPrint.fprintf</code></a> but prints into a buffer rather than into an <code class="code">output</code>.<br>
 </div>
 <br>
-<a name="6_Functionswithcontinuations"></a>
-<h6>Functions with continuations</h6><br>
-<pre><span class="keyword">val</span> <a name="VALkfprintf"></a>kfprintf : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('c, 'b) format -> 'c</code></pre><div class="info">
+<span id="6_Functionswithcontinuations"><h6>Functions with continuations</h6></span><br>
+<pre><span id="VALkfprintf"><span class="keyword">val</span> kfprintf</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('c, 'b) format -> 'c</code></pre><div class="info">
 <code class="code">kfprintf k oc fmt</code> prints on <code class="code">oc</code> then call <code class="code">k</code> with <code class="code">oc</code> as
       argument<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrprintf"></a>rprintf : <code class="type">('a, <a href="BatRope.html#TYPEt">BatRope.t</a>) format -> 'a</code></pre><div class="info">
+<pre><span id="VALrprintf"><span class="keyword">val</span> rprintf</span> : <code class="type">('a, <a href="BatRope.html#TYPEt">BatRope.t</a>) format -> 'a</code></pre><div class="info">
 <code class="code">rprintf fmt</code> returns the result as a rope<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALkrprintf"></a>krprintf : <code class="type">(<a href="BatRope.html#TYPEt">BatRope.t</a> -> 'a) -> ('b, 'a) format -> 'b</code></pre><div class="info">
+<pre><span id="VALkrprintf"><span class="keyword">val</span> krprintf</span> : <code class="type">(<a href="BatRope.html#TYPEt">BatRope.t</a> -> 'a) -> ('b, 'a) format -> 'b</code></pre><div class="info">
 <code class="code">krprintf k fmt</code> creates a rope from the format and other
       arguments and pass it to <code class="code">k</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALksprintf"></a>ksprintf : <code class="type">(string -> 'a) -> ('b, 'a) format -> 'b</code></pre><div class="info">
+<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(string -> 'a) -> ('b, 'a) format -> 'b</code></pre><div class="info">
 <code class="code">ksprintf k fmt</code> creates a string from the format and other
       arguments and pass it to <code class="code">k</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALkbprintf"></a>kbprintf : <code class="type">(Buffer.t -> 'a) -> Buffer.t -> ('b, 'a) format -> 'b</code></pre><div class="info">
+<pre><span id="VALkbprintf"><span class="keyword">val</span> kbprintf</span> : <code class="type">(Buffer.t -> 'a) -> Buffer.t -> ('b, 'a) format -> 'b</code></pre><div class="info">
 <code class="code">bprintf k buf fmt</code> prints into the buffer <code class="code">buf</code>, then call <code class="code">k</code>
       with <code class="code">buf</code> as argument.<br>
 </div>

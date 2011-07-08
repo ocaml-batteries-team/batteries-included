@@ -19,6 +19,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -83,6 +84,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -90,6 +92,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -106,8 +109,17 @@
 <body>
 <center><h1>Index of types</h1></center>
 <table>
+<tr><td align="left"><br>A</td></tr>
+<tr><td><a href="BatCache.html#TYPEauto_cache">auto_cache</a> [<a href="BatCache.html">BatCache</a>]</td>
+<td></td></tr>
 <tr><td align="left"><br>B</td></tr>
 <tr><td><a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> [<a href="BatUTF8.Byte.html">BatUTF8.Byte</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> [<a href="BatNumber.Compare.html">BatNumber.Compare</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNumber.Infix.html#TYPEbat__infix_t">bat__infix_t</a> [<a href="BatNumber.Infix.html">BatNumber.Infix</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNumber.Bounded.html#TYPEbounded">bounded</a> [<a href="BatNumber.Bounded.html">BatNumber.Bounded</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatUTF8.Buf.html#TYPEbuf">buf</a> [<a href="BatUTF8.Buf.html">BatUTF8.Buf</a>]</td>
 <td><div class="info">
@@ -160,6 +172,10 @@ A decoding table maps chars 0..255 to the corresponding 0..63 value
 The underlying type of a directive.
 </div>
 </td></tr>
+<tr><td><a href="BatNumber.Discrete.html#TYPEdiscrete">discrete</a> [<a href="BatNumber.Discrete.html">BatNumber.Discrete</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNumber.Numeric.html#TYPEdiscrete">discrete</a> [<a href="BatNumber.Numeric.html">BatNumber.Numeric</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatDeque.html#TYPEdq">dq</a> [<a href="BatDeque.html">BatDeque</a>]</td>
 <td><div class="info">
 The type of double-ended queues
@@ -335,6 +351,8 @@ The type of the BatEnum monad's elements, thus <code class="code">BatEnum.t</cod
 Type of the monadic elements.
 </div>
 </td></tr>
+<tr><td><a href="BatCache.html#TYPEmanual_cache">manual_cache</a> [<a href="BatCache.html">BatCache</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInterfaces.Mappable.html#TYPEmappable">mappable</a> [<a href="BatInterfaces.Mappable.html">BatInterfaces.Mappable</a>]</td>
 <td><div class="info">
 The data structure, e.g.
@@ -479,6 +497,14 @@ The unit type, i.e.
 UTF-8 encoded Unicode strings.
 </div>
 </td></tr>
+<tr><td><a href="BatTuple.Tuple5.html#TYPEt">t</a> [<a href="BatTuple.Tuple5.html">BatTuple.Tuple5</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatTuple.Tuple4.html#TYPEt">t</a> [<a href="BatTuple.Tuple4.html">BatTuple.Tuple4</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatTuple.Tuple3.html#TYPEt">t</a> [<a href="BatTuple.Tuple3.html">BatTuple.Tuple3</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatTuple.Tuple2.html#TYPEt">t</a> [<a href="BatTuple.Tuple2.html">BatTuple.Tuple2</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatSubstring.html#TYPEt">t</a> [<a href="BatSubstring.html">BatSubstring</a>]</td>
 <td><div class="info">
 <code class="code">Substring.t</code> is the type of substrings of a basestring, an efficient 
@@ -553,7 +579,7 @@ A type for storing paths.
 <tr><td><a href="BatParserCo.Source.html#TYPEt">t</a> [<a href="BatParserCo.Source.html">BatParserCo.Source</a>]</td>
 <td><div class="info">
 A source of elements of type <code class="code">'a</code>, with a user-defined state
-	of type <code class="code">'b</code>
+      of type <code class="code">'b</code>
 </div>
 </td></tr>
 <tr><td><a href="BatParserCo.html#TYPEt">t</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
@@ -566,10 +592,7 @@ A parser for elements of type <code class="code">'a</code>, producing
 <tr><td><a href="BatPair.html#TYPEt">t</a> [<a href="BatPair.html">BatPair</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatPSet.html#TYPEt">t</a> [<a href="BatPSet.html">BatPSet</a>]</td>
-<td><div class="info">
-The type of sets.
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatPMap.html#TYPEt">t</a> [<a href="BatPMap.html">BatPMap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatOption.html#TYPEt">t</a> [<a href="BatOption.html">BatOption</a>]</td>
@@ -587,10 +610,6 @@ Option type.
 </div>
 </td></tr>
 <tr><td><a href="BatOo.Oo.Internal.html#TYPEt">t</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
-<td></td></tr>
-<tr><td><a href="BatNumber.Discrete.html#TYPEt">t</a> [<a href="BatNumber.Discrete.html">BatNumber.Discrete</a>]</td>
-<td></td></tr>
-<tr><td><a href="BatNumber.Bounded.html#TYPEt">t</a> [<a href="BatNumber.Bounded.html">BatNumber.Bounded</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNumber.Numeric.html#TYPEt">t</a> [<a href="BatNumber.Numeric.html">BatNumber.Numeric</a>]</td>
 <td></td></tr>
@@ -737,6 +756,8 @@ The type of a lock.
 The type of a lock.
 </div>
 </td></tr>
+<tr><td><a href="BatComplex.html#TYPEt">t</a> [<a href="BatComplex.html">BatComplex</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatCharEncodings.html#TYPEt">t</a> [<a href="BatCharEncodings.html">BatCharEncodings</a>]</td>
 <td><div class="info">
 The type of items of type <code class="code">'a</code>, encoded using encoding <code class="code">'b</code>.

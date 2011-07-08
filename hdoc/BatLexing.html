@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -131,15 +134,14 @@ Simple lexing using ocaml conventions
     <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Lexing.html">Lexing</a>
     module, go there for documentation on the rest of the functions
     and types.<br>
-<pre><span class="keyword">val</span> <a name="VALfrom_input"></a>from_input : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> Lexing.lexbuf</code></pre><div class="info">
+<pre><span id="VALfrom_input"><span class="keyword">val</span> from_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> Lexing.lexbuf</code></pre><div class="info">
 Create a lexer buffer on the given input
    <code class="code">Lexing.from_input inp</code> returns a lexer buffer which reads
    from the input <code class="code">inp</code>, at the current reading position.<br>
 </div>
 <br>
-<a name="6_Deprecated"></a>
-<h6>Deprecated</h6><br>
-<pre><span class="keyword">val</span> <a name="VALfrom_channel"></a>from_channel : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> Lexing.lexbuf</code></pre><div class="info">
+<span id="6_Deprecated"><h6>Deprecated</h6></span><br>
+<pre><span id="VALfrom_channel"><span class="keyword">val</span> from_channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> Lexing.lexbuf</code></pre><div class="info">
 <span class="warning">Deprecated.</span>As <a href="BatLexing.html#VALfrom_input"><code class="code">BatLexing.from_input</code></a><br>
 </div>
 </body></html>

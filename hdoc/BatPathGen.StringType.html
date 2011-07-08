@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -117,38 +120,38 @@
 <br>
 The actual implementation may use any (coherent) scheme of indexing of strings. Below the term 'indexing unit' can stay either for byte or character (or whatever employed by the implementation).
   This determines meaning of all <code class="code">int</code> arguments and results (excluding result of <code class="code">compare</code>).<br>
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info">
 Type for strings.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALlength"></a>length : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Length - number of indexing units<br>
 </div>
-<pre><span class="keyword">type</span> <a name="TYPEtchar"></a><code class="type"></code>tchar </pre>
+<pre><span id="TYPEtchar"><span class="keyword">type</span> <code class="type"></code>tchar</span> </pre>
 <div class="info">
 Character type used by <code class="code">t</code>.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a></code></pre><div class="info">
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a></code></pre><div class="info">
 Usual get function.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlift_char"></a>lift_char : <code class="type">char -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a></code></pre><div class="info">
+<pre><span id="VALlift_char"><span class="keyword">val</span> lift_char</span> : <code class="type">char -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a></code></pre><div class="info">
 Convert Latin-1 character to <code class="code">tchar</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlift"></a>lift : <code class="type">string -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALlift"><span class="keyword">val</span> lift</span> : <code class="type">string -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info">
 Convert from UTF-8 string of primitive <code class="code">string</code> type.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_string"></a>to_string : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> string</code></pre><div class="info">
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> string</code></pre><div class="info">
 Convert to primitive string with UTF-8 content.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALconcat_with_separators"></a>concat_with_separators : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -><br>       <a href="BatPathGen.StringType.html#TYPEt">t</a> list -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALconcat_with_separators"><span class="keyword">val</span> concat_with_separators</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -><br>       <a href="BatPathGen.StringType.html#TYPEt">t</a> list -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">concat_with_separators sep lst</code> catenates all <i>n</i> elements of <code class="code">lst</code> inserting <i>(n-1)</i> copies of <code class="code">sep</code> in between.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcompare"></a>compare : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> <a href="BatPathGen.StringType.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> <a href="BatPathGen.StringType.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Usual comparison function.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">(<a href="BatPathGen.StringType.html#TYPEtchar">tchar</a> -> unit) -> <a href="BatPathGen.StringType.html#TYPEt">t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALiteri"></a>iteri : <code class="type">(int -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a> -> unit) -><br>       <a href="BatPathGen.StringType.html#TYPEt">t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALsub"></a>sub : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int -> int -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatPathGen.StringType.html#TYPEtchar">tchar</a> -> unit) -> <a href="BatPathGen.StringType.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a> -> unit) -><br>       <a href="BatPathGen.StringType.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int -> int -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">String.sub</code>, but indexed in specific way.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrindex"></a>rindex : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> char -> int</code></pre><pre><span class="keyword">module</span> <a href="BatPathGen.StringType.Parse.html">Parse</a>: <code class="code">sig</code> <a href="BatPathGen.StringType.Parse.html">..</a> <code class="code">end</code></pre></body></html>
+<pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> char -> int</code></pre><pre><span class="keyword">module</span> <a href="BatPathGen.StringType.Parse.html">Parse</a>: <code class="code">sig</code> <a href="BatPathGen.StringType.Parse.html">..</a> <code class="code">end</code></pre></body></html>

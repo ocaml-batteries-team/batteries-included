@@ -21,6 +21,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -85,6 +86,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -92,6 +94,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -112,56 +115,56 @@
 <br>
 <pre><span class="keyword">module type</span> H = <code class="code">sig</code> <a href="BatHeap.H.html">..</a> <code class="code">end</code></pre>The result of <a href="BatHeap.Make.html"><code class="code">BatHeap.Make</code></a><br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEelem"></a><code class="type"></code>elem </pre>
+<pre><span id="TYPEelem"><span class="keyword">type</span> <code class="type"></code>elem</span> </pre>
 <div class="info">
 Type of elements of the heap<br>
 </div>
 
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info">
 Type of the heap<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALempty"></a>empty : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALempty"><code class="code">BatHeap.empty</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsize"></a>size : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> int</code></pre><div class="info">
 See <a href="BatHeap.html#VALsize"><code class="code">BatHeap.size</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALinsert"></a>insert : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALadd"><code class="code">BatHeap.add</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALadd"></a>add : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> -> <a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> -> <a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALinsert"><code class="code">BatHeap.insert</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmerge"></a>merge : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALmerge"><code class="code">BatHeap.merge</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfind_min"></a>find_min : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a></code></pre><div class="info">
+<pre><span id="VALfind_min"><span class="keyword">val</span> find_min</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALfind_min"><code class="code">BatHeap.find_min</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdel_min"></a>del_min : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALdel_min"><span class="keyword">val</span> del_min</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALdel_min"><code class="code">BatHeap.del_min</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_list"></a>of_list : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> list -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> list -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALof_list"><code class="code">BatHeap.of_list</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_list"></a>to_list : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> list</code></pre><div class="info">
+<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> list</code></pre><div class="info">
 See <a href="BatHeap.html#VALto_list"><code class="code">BatHeap.to_list</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALelems"></a>elems : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> list</code></pre><div class="info">
+<pre><span id="VALelems"><span class="keyword">val</span> elems</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> list</code></pre><div class="info">
 <span class="warning">Deprecated.</span>Same as <code class="code">to_list</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALof_enum"><code class="code">BatHeap.of_enum</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALenum"><code class="code">BatHeap.enum</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatHeap.H.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatHeap.H.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 See <a href="BatHeap.html#VALprint"><code class="code">BatHeap.print</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> <a href="BatHeap.H.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> <a href="BatHeap.H.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
 See <a href="BatHeap.html#VALt_printer"><code class="code">BatHeap.t_printer</code></a>.<br>
 </div>
 </body></html>

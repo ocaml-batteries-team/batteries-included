@@ -21,6 +21,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -85,6 +86,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -92,6 +94,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -118,25 +121,24 @@
     multi-threaded program, without interference from other parts of
     the program.<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info">
 The type of PRNG states.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALmake"></a>make : <code class="type">int array -> <a href="BatRandom.State.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int array -> <a href="BatRandom.State.html#TYPEt">t</a></code></pre><div class="info">
 Create a new state and initialize it with the given seed.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmake_self_init"></a>make_self_init : <code class="type">unit -> <a href="BatRandom.State.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmake_self_init"><span class="keyword">val</span> make_self_init</span> : <code class="type">unit -> <a href="BatRandom.State.html#TYPEt">t</a></code></pre><div class="info">
 Create a new state and initialize it with a system-dependent
       low-entropy seed.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcopy"></a>copy : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> <a href="BatRandom.State.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> <a href="BatRandom.State.html#TYPEt">t</a></code></pre><div class="info">
 Return a copy of the given state.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbits"></a>bits : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int</code></pre><pre><span class="keyword">val</span> <a name="VALint"></a>int : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int -> int</code></pre><pre><span class="keyword">val</span> <a name="VALint32"></a>int32 : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int32.t -> Int32.t</code></pre><pre><span class="keyword">val</span> <a name="VALnativeint"></a>nativeint : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Nativeint.t -> Nativeint.t</code></pre><pre><span class="keyword">val</span> <a name="VALint64"></a>int64 : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int64.t -> Int64.t</code></pre><pre><span class="keyword">val</span> <a name="VALfloat"></a>float : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALbool"></a>bool : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALchar"></a>char : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> char</code></pre><pre><span class="keyword">val</span> <a name="VALenum_bits"></a>enum_bits : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_int"></a>enum_int : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_bool"></a>enum_bool : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> bool <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_float"></a>enum_float : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_int32"></a>enum_int32 : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int32.t -> Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_int64"></a>enum_int64 : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int64.t -> Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_nativeint"></a>enum_nativeint : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALenum_char"></a>enum_char : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><br>
+<pre><span id="VALbits"><span class="keyword">val</span> bits</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALint"><span class="keyword">val</span> int</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int -> int</code></pre><pre><span id="VALint32"><span class="keyword">val</span> int32</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int32.t -> Int32.t</code></pre><pre><span id="VALnativeint"><span class="keyword">val</span> nativeint</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Nativeint.t -> Nativeint.t</code></pre><pre><span id="VALint64"><span class="keyword">val</span> int64</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int64.t -> Int64.t</code></pre><pre><span id="VALfloat"><span class="keyword">val</span> float</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> float -> float</code></pre><pre><span id="VALbool"><span class="keyword">val</span> bool</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VALchar"><span class="keyword">val</span> char</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> char</code></pre><pre><span id="VALenum_bits"><span class="keyword">val</span> enum_bits</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int"><span class="keyword">val</span> enum_int</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_bool"><span class="keyword">val</span> enum_bool</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> bool <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_float"><span class="keyword">val</span> enum_float</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int32"><span class="keyword">val</span> enum_int32</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int32.t -> Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int64"><span class="keyword">val</span> enum_int64</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int64.t -> Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_nativeint"><span class="keyword">val</span> enum_nativeint</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_char"><span class="keyword">val</span> enum_char</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><br>
 These functions are the same as the basic functions, except that they
       use (and update) the given PRNG state instead of the default one.<br>
 <br>
-<a name="6_Boilerplatecode"></a>
-<h6>Boilerplate code</h6><br>
+<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
 </body></html>

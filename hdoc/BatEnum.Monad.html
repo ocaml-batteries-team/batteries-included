@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -120,15 +123,15 @@
     This module provides everything needed for writing and executing
     computations in the BatEnum Monad.<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEm"></a><code class="type">'a</code> m = <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code> </pre>
+<pre><span id="TYPEm"><span class="keyword">type</span> <code class="type">'a</code> m</span> = <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code> </pre>
 <div class="info">
 The type of the BatEnum monad's elements, thus <code class="code">BatEnum.t</code>.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALreturn"></a>return : <code class="type">'a -> 'a <a href="BatEnum.Monad.html#TYPEm">m</a></code></pre><div class="info">
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> 'a <a href="BatEnum.Monad.html#TYPEm">m</a></code></pre><div class="info">
 This function puts a single value in the BatEnum monad, that is to say it creates an enumeration containing a single element.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbind"></a>bind : <code class="type">'a <a href="BatEnum.Monad.html#TYPEm">m</a> -> ('a -> 'b <a href="BatEnum.Monad.html#TYPEm">m</a>) -> 'b <a href="BatEnum.Monad.html#TYPEm">m</a></code></pre><div class="info">
+<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">'a <a href="BatEnum.Monad.html#TYPEm">m</a> -> ('a -> 'b <a href="BatEnum.Monad.html#TYPEm">m</a>) -> 'b <a href="BatEnum.Monad.html#TYPEm">m</a></code></pre><div class="info">
 <code class="code">bind m f</code> takes the result of the monadic computation m, puts the f function in the monadic context passing it the result of m and then
     returning a monadic result.<br>
 </div>

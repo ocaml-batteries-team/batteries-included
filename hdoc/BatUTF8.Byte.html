@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -116,10 +119,10 @@
     the head.  The location of the first character is <code class="code">Byte.first</code>.
     The location of the second is <code class="code">Byte.next Byte.first</code>.<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEb_idx"></a><code class="type"></code>b_idx </pre>
+<pre><span id="TYPEb_idx"><span class="keyword">type</span> <code class="type"></code>b_idx</span> </pre>
 
-<pre><span class="keyword">val</span> <a name="VALof_int_unsafe"></a>of_int_unsafe : <code class="type">int -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span class="keyword">val</span> <a name="VALto_int"></a>to_int : <code class="type"><a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> int</code></pre><pre><span class="keyword">val</span> <a name="VALnext"></a>next : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span class="keyword">val</span> <a name="VALprev"></a>prev : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span class="keyword">val</span> <a name="VALof_char_idx"></a>of_char_idx : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.html#TYPEchar_idx">BatUTF8.char_idx</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><div class="info">
+<pre><span id="VALof_int_unsafe"><span class="keyword">val</span> of_int_unsafe</span> : <code class="type">int -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> int</code></pre><pre><span id="VALnext"><span class="keyword">val</span> next</span> : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span id="VALprev"><span class="keyword">val</span> prev</span> : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span id="VALof_char_idx"><span class="keyword">val</span> of_char_idx</span> : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.html#TYPEchar_idx">BatUTF8.char_idx</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><div class="info">
 <code class="code">of_char_idx s n</code> returns the position of the <code class="code">n</code>-th Unicode
 	character.  The call requires O(n)-time<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALat_end"></a>at_end : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALout_of_range"></a>out_of_range : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALfirst"></a>first : <code class="type"><a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span class="keyword">val</span> <a name="VALlast"></a>last : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span class="keyword">val</span> <a name="VALmove"></a>move : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> int -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre></body></html>
+<pre><span id="VALat_end"><span class="keyword">val</span> at_end</span> : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> bool</code></pre><pre><span id="VALout_of_range"><span class="keyword">val</span> out_of_range</span> : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> bool</code></pre><pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type"><a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre><pre><span id="VALmove"><span class="keyword">val</span> move</span> : <code class="type"><a href="BatUTF8.html#TYPEt">BatUTF8.t</a> -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a> -> int -> <a href="BatUTF8.Byte.html#TYPEb_idx">b_idx</a></code></pre></body></html>

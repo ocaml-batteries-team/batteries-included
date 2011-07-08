@@ -21,6 +21,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -85,6 +86,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -92,6 +94,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -118,4 +121,4 @@
 <p>
 
    See the complete <code class="code">Stream</code> module for the function documentations.<br>
-<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">f:('a -> unit) -> 'a Stream.t -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALfoldl"></a>foldl : <code class="type">f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b Stream.t -> 'a</code></pre><pre><span class="keyword">val</span> <a name="VALfoldr"></a>foldr : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a Stream.t -> 'b</code></pre><pre><span class="keyword">val</span> <a name="VALfold"></a>fold : <code class="type">f:('a -> 'a -> 'a * bool option) -> init:'a Stream.t -> 'a</code></pre><pre><span class="keyword">val</span> <a name="VALfilter"></a>filter : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">f:('a -> 'b) -> 'a Stream.t -> 'b Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALmap2"></a>map2 : <code class="type">f:('a -> 'b -> 'c) -> 'a Stream.t -> 'b Stream.t -> 'c Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALscanl"></a>scanl : <code class="type">f:('a -> 'b -> 'a) -> 'a -> 'b Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALscan"></a>scan : <code class="type">f:('a -> 'a -> 'a) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALtake_while"></a>take_while : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALdrop_while"></a>drop_while : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALmerge"></a>merge : <code class="type">f:(bool -> 'a -> bool) -> 'a Stream.t * 'a Stream.t -> 'a Stream.t</code></pre><pre><span class="keyword">val</span> <a name="VALswitch"></a>switch : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t * 'a Stream.t</code></pre></body></html>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a Stream.t -> unit</code></pre><pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">fmt:('a -> string, unit, string) Pervasives.format -> 'a Stream.t -> string</code></pre><pre><span id="VALto_string_fun"><span class="keyword">val</span> to_string_fun</span> : <code class="type">fn:('a -> string) -> 'a Stream.t -> string</code></pre><pre><span id="VALfoldl"><span class="keyword">val</span> foldl</span> : <code class="type">f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b Stream.t -> 'a</code></pre><pre><span id="VALfoldr"><span class="keyword">val</span> foldr</span> : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a Stream.t -> 'b</code></pre><pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">f:('a -> 'a -> 'a * bool option) -> init:'a Stream.t -> 'a</code></pre><pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a Stream.t -> 'b Stream.t</code></pre><pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">f:('a -> 'b -> 'c) -> 'a Stream.t -> 'b Stream.t -> 'c Stream.t</code></pre><pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">f:('a -> 'b -> 'a) -> 'a -> 'b Stream.t -> 'a Stream.t</code></pre><pre><span id="VALscan"><span class="keyword">val</span> scan</span> : <code class="type">f:('a -> 'a -> 'a) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">f:(bool -> 'a -> bool) -> 'a Stream.t * 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALswitch"><span class="keyword">val</span> switch</span> : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t * 'a Stream.t</code></pre></body></html>

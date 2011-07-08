@@ -21,6 +21,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -85,6 +86,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -92,6 +94,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -121,25 +124,25 @@
     might prefer to use <code class="code">Array</code> or <code class="code">DynArray</code> for constant
     time indexed element access.<br>
 <hr width="100%">
-<pre><span class="keyword">val</span> <a name="VALindex_of"></a>index_of : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> 'a -> int</code></pre><div class="info">
+<pre><span id="VALindex_of"><span class="keyword">val</span> index_of</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> 'a -> int</code></pre><div class="info">
 Return the index (position : 0 starting) of an element in
 	    a ref list, using ( = ) for testing element equality
 	    raise <code class="code">Not_found</code> if no element was found<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALindex"></a>index : <code class="type">('a -> bool) -> 'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int</code></pre><div class="info">
+<pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type">('a -> bool) -> 'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int</code></pre><div class="info">
 Return the index (position : 0 starting) of an element in
 	    a ref list, using the specified comparator
 	    raise <code class="code">Not_found</code> if no element was found<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALat_index"></a>at_index : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int -> 'a</code></pre><div class="info">
+<pre><span id="VALat_index"><span class="keyword">val</span> at_index</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int -> 'a</code></pre><div class="info">
 Return the element of ref list at the specified index
 	    raise <code class="code">Invalid_index</code> if the index is outside <code class="code">0 ; length-1</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALset"></a>set : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int -> 'a -> unit</code></pre><div class="info">
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int -> 'a -> unit</code></pre><div class="info">
 Change the element at the specified index
 	    raise <code class="code">Invalid_index</code> if the index is outside <code class="code">0 ; length-1</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALremove_at"></a>remove_at : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int -> unit</code></pre><div class="info">
+<pre><span id="VALremove_at"><span class="keyword">val</span> remove_at</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int -> unit</code></pre><div class="info">
 Remove the element at the specified index
 	    raise <code class="code">Invalid_index</code> if the index is outside <code class="code">0 ; length-1</code><br>
 </div>

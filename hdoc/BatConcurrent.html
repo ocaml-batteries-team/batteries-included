@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -117,7 +120,7 @@
 <pre><span class="keyword">module</span> BatConcurrent: <code class="code">sig</code> <a href="BatConcurrent.html">..</a> <code class="code">end</code></pre>Definition of concurrency primitives.<br>
 <b>Author(s):</b> David Teller<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPElock"></a><code class="type"></code>lock </pre>
+<pre><span id="TYPElock"><span class="keyword">type</span> <code class="type"></code>lock</span> </pre>
 <div class="info">
 The light-weight type of a lock, i.e. a construction which may be
       used to guarantee that a section will not be interrupted by
@@ -129,16 +132,16 @@ The light-weight type of a lock, i.e. a construction which may be
       will run with vmthreads, Posix threads, coThreads, etc.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">enter:(unit -> unit) -> leave:(unit -> unit) -> <a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info">
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">enter:(unit -> unit) -> leave:(unit -> unit) -> <a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info">
 Create a lock from a pair of locking/unlocking functions<br>
 </div>
 <div class="param_info"><code class="code">enter</code> : Enter critical section.</div>
 <div class="param_info"><code class="code">leave</code> : Leave critical section.
 .</div>
-<pre><span class="keyword">val</span> <a name="VALnolock"></a>nolock : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info">
+<pre><span id="VALnolock"><span class="keyword">val</span> nolock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info">
 A lock which does nothing.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsynchronize"></a>synchronize : <code class="type">(unit -> <a href="BatConcurrent.html#TYPElock">lock</a>) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+<pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">(unit -> <a href="BatConcurrent.html#TYPElock">lock</a>) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 <code class="code">synchronize locker f</code> returns a function <code class="code">f'</code> which behaves as
      <code class="code">f</code> but whose executions are protected by one lock obtained from
      <code class="code">locker</code>.  The same lock will be reused for all subsequent uses of
@@ -151,13 +154,13 @@ A lock which does nothing.<br>
      <code class="code">synchronize (const my_lock) f</code> is a new function whose executions
      will be synchronized by an existing lock <code class="code">my_lock</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALsync"></a>sync : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a> -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+<pre><span id="VALsync"><span class="keyword">val</span> sync</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a> -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 Specialized version of <code class="code">synchronized</code>.
 <p>
 
    <code class="code">sync lock f</code> behaves as <code class="code">synchronize (const lock) f</code> but slightly faster<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcompose"></a>compose : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a> -> <a href="BatConcurrent.html#TYPElock">lock</a> -> <a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info">
+<pre><span id="VALcompose"><span class="keyword">val</span> compose</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a> -> <a href="BatConcurrent.html#TYPElock">lock</a> -> <a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info">
 Compose two lock systems into a third lock system.<br>
 </div>
 <pre><span class="keyword">module type</span> <a href="BatConcurrent.BaseLock.html">BaseLock</a> = <code class="code">sig</code> <a href="BatConcurrent.BaseLock.html">..</a> <code class="code">end</code></pre><div class="info">

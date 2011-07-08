@@ -5,6 +5,7 @@
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatPathGen.PathType.OperatorLift.html">
+<link rel="next" href="BatPathGen.PathType.Infix.html">
 <link rel="Up" href="BatPathGen.PathType.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -22,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -109,12 +113,13 @@
 <body>
 <div class="navbar"><a href="BatPathGen.PathType.OperatorLift.html">Previous</a>
 &nbsp;<a href="BatPathGen.PathType.html">Up</a>
-&nbsp;</div>
+&nbsp;<a href="BatPathGen.PathType.Infix.html">Next</a>
+</div>
 <center><h1>Module <a href="type_BatPathGen.PathType.Operators.html">BatPathGen.PathType.Operators</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Operators: <code class="code">sig</code> <a href="BatPathGen.PathType.Operators.html">..</a> <code class="code">end</code></pre>Infix operators for path construction. They are in separate module, so one can <code class="code">open Path.Operators</code> to use them.<br>
 <hr width="100%">
-<pre><span class="keyword">val</span> <a name="VAL(/:)"></a>(/:) : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">BatPathGen.PathType.ustring</a> -> <a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a></code></pre><div class="info">
+<pre><span id="VAL(/:)"><span class="keyword">val</span> (/:)</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">BatPathGen.PathType.ustring</a> -> <a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a></code></pre><div class="info">
 <code class="code">path/:name</code> is a path of <code class="code">name</code> located in a directory <code class="code">path</code>. For example:<ul>
 <li><a href="BatPathGen.PathType.html#VALroot"><code class="code">BatPathGen.PathType.root</code></a><code class="code">/:"var"/:"log"</code> builds absolute path "/var/log"</li>
 <li><code class="code">[user]/:".ssh"</code> can be either:
@@ -128,7 +133,7 @@
  <a href="BatPathGen.PathType.html#VALdefault_validator"><code class="code">BatPathGen.PathType.default_validator</code></a> is applied to the argument. <code class="code">name</code> must not contain path separator (causes Illegal_char exception).<br>
 <b>Raises</b> <code>Illegal_char</code> (raised by validator on any bad character)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VAL(//@)"></a>(//@) : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a> -> <a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a> -> <a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a></code></pre><div class="info">
+<pre><span id="VAL(//@)"><span class="keyword">val</span> (//@)</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a> -> <a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a> -> <a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a></code></pre><div class="info">
 <code class="code">basepath//@relpath</code> catenates two paths.
 <p>
 

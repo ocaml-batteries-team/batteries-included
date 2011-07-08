@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -120,12 +123,12 @@
 <br>
 <pre><span class="keyword">module type</span> PathType = <code class="code">sig</code> <a href="BatPathGen.PathType.html">..</a> <code class="code">end</code></pre>All implementations of <code class="code">Path</code> functionality have this module type.<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEustring"></a><code class="type"></code>ustring </pre>
+<pre><span id="TYPEustring"><span class="keyword">type</span> <code class="type"></code>ustring</span> </pre>
 <div class="info">
 Type of strings used. In case of <code class="code">Path.OfRope</code> it is <code class="code">Rope.t</code> and in <code class="code">Path.OfString</code> module it is  <code class="code">string</code>.<br>
 </div>
 
-<pre><span class="keyword">type</span> <a name="TYPEuchar"></a><code class="type"></code>uchar </pre>
+<pre><span id="TYPEuchar"><span class="keyword">type</span> <code class="type"></code>uchar</span> </pre>
 <div class="info">
 Type of characters. It corresponds to <code class="code">ustring</code> type.<br>
 </div>
@@ -133,7 +136,7 @@ Type of characters. It corresponds to <code class="code">ustring</code> type.<br
 <pre><span class="keyword">module</span> <a href="BatPathGen.PathType.OperatorLift.html">OperatorLift</a>: <code class="code">sig</code> <a href="BatPathGen.PathType.OperatorLift.html">..</a> <code class="code">end</code></pre><div class="info">
 Convenience operator for lifting primitive strings to <code class="code">ustring</code> type.
 </div>
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t = <code class="type"><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> list</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type"><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> list</code> </pre>
 <div class="info">
 A type for storing paths. It is reversed list of names. In case of absolute path, the last element of the list is empty string (<em>Windows:</em> empty or letter-colon; details below). Empty list represents empty relative path.
 <p>
@@ -164,27 +167,29 @@ A type for storing paths. It is reversed list of names. In case of absolute path
  In principle the first type of paths has broader range of allowed characters, but this implementation applies more strict rules to both (<a href="BatPathGen.PathType.html#VALdefault_validator"><code class="code">BatPathGen.PathType.default_validator</code></a>).<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALis_relative"></a>is_relative : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">val</span> <a name="VALis_absolute"></a>is_absolute : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> bool</code></pre><br>
-<a name="6_Construction"></a>
-<h6>Construction</h6><br>
-<pre><span class="keyword">val</span> <a name="VALroot"></a>root : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALis_relative"><span class="keyword">val</span> is_relative</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VALis_absolute"><span class="keyword">val</span> is_absolute</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> bool</code></pre><br>
+<span id="6_Construction"><h6>Construction</h6></span><br>
+<pre><span id="VALroot"><span class="keyword">val</span> root</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Root of the filesystem (<code class="code">[""]</code>). It is minimal absolute path. Below it is called 'empty'. However it yields "/" or "\\" when converted to a string.
 <p>
 
 <em>Windows:</em> This path (root and nothing more) is meaningless, but for simplicity it is considered valid here. To create absolute path starting with drive letter, construct the list explicitly (as in <code class="code">["C:"]/:"foo"</code>).
 A path consisting of drive letter only is also called 'empty' here.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALappend"></a>append : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Alternative name for <a href="BatPathGen.PathType.Operators.html#VAL(/:)"><code class="code">BatPathGen.PathType.Operators.(/:)</code></a><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALconcat"></a>concat : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Alternative name for <a href="BatPathGen.PathType.Operators.html#VAL(//@)"><code class="code">BatPathGen.PathType.Operators.(//@)</code></a><br>
 </div>
 <pre><span class="keyword">module</span> <a href="BatPathGen.PathType.Operators.html">Operators</a>: <code class="code">sig</code> <a href="BatPathGen.PathType.Operators.html">..</a> <code class="code">end</code></pre><div class="info">
 Infix operators for path construction.
 </div>
-<pre><span class="keyword">exception</span> <a name="EXCEPTIONMalformed_path"></a>Malformed_path</pre>
-<pre><span class="keyword">val</span> <a name="VALnormalize_filepath"></a>normalize_filepath : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span class="keyword">module</span> <a href="BatPathGen.PathType.Infix.html">Infix</a>: <code class="code">sig</code> <a href="BatPathGen.PathType.Infix.html">..</a> <code class="code">end</code></pre><div class="info">
+As other Operators modules in batteries are named "Infix" we provide Infix as well.
+</div>
+<pre><span id="EXCEPTIONMalformed_path"><span class="keyword">exception</span> Malformed_path</span></pre>
+<pre><span id="VALnormalize_filepath"><span class="keyword">val</span> normalize_filepath</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Consumes single dots where possible, e.g.:
 <p>
 
@@ -196,10 +201,10 @@ Consumes single dots where possible, e.g.:
 
 <em>Windows:</em> If single dot is next to root, it is preserved.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALnormalize_in_graph"></a>normalize_in_graph : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALnormalize_in_graph"><span class="keyword">val</span> normalize_in_graph</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Another name for <code class="code">normalize_filepath</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALnormalize_in_tree"></a>normalize_in_tree : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALnormalize_in_tree"><span class="keyword">val</span> normalize_in_tree</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Consumes single dots and applies double dots where possible, e.g.:
 <p>
 
@@ -212,14 +217,14 @@ Consumes single dots and applies double dots where possible, e.g.:
 <em>Windows:</em> If single dot is next to root, it is preserved.<br>
 <b>Raises</b> <code>Malformed_path</code> when absolute path is given that contains double dots that would be applied to the root.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALnormalize"></a>normalize : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALnormalize"><span class="keyword">val</span> normalize</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Deprecated name for <code class="code">normalize_in_tree</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALparent"></a>parent : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALparent"><span class="keyword">val</span> parent</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Returns parent path, i.e. immediate ancestor: <code class="code">parent (foo/:bar) = foo</code><br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[""]</code>) is given<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbelongs"></a>belongs : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<pre><span id="VALbelongs"><span class="keyword">val</span> belongs</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">belongs base sub</code> is <code class="code">true</code> when <code class="code">sub</code> descends from <code class="code">base</code>, i.e. <code class="code">base</code> is a prefix of <code class="code">sub</code>. If <code class="code">base</code>=<code class="code">sub</code> the function returns <code class="code">true</code>. It is otherwise <code class="code">false</code>.
 Both arguments must be absolute paths or both relative.
 <p>
@@ -227,7 +232,7 @@ Both arguments must be absolute paths or both relative.
 If both arguments have a root portion with drive letter and these letters are different, <code class="code">belongs base sub</code> returns false.<br>
 <b>Raises</b> <code>Invalid_argument</code> if exactly one of given arguments is absolute path<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALrelative_to_any"></a>relative_to_any : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALrelative_to_any"><span class="keyword">val</span> relative_to_any</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">relative_to_any base sub</code> returns relative path <code class="code">rel</code> such that
 <code class="code">normalize (base/:rel) = normalize sub</code>, i.e. common base is stripped and ".." are added if necessary.
 Both arguments must be absolute paths or both relative.
@@ -243,8 +248,8 @@ Exceptionally it is possible to get an absolute path as a result if drive letter
 </ul>
 <b>See also</b> <code class="code">relative_to_parent</code> may be sometimes more suitable<br>
 </div>
-<pre><span class="keyword">exception</span> <a name="EXCEPTIONNot_parent"></a>Not_parent</pre>
-<pre><span class="keyword">val</span> <a name="VALrelative_to_parent"></a>relative_to_parent : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="EXCEPTIONNot_parent"><span class="keyword">exception</span> Not_parent</span></pre>
+<pre><span id="VALrelative_to_parent"><span class="keyword">val</span> relative_to_parent</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">relative_to_parent parent sub</code> returns relative path <code class="code">rel</code> such that
 <code class="code">(normalize parent)/:rel = normalize sub</code>. It is checked if <code class="code">sub</code> is really a descendant of <code class="code">parent</code>.
 Both arguments must be absolute paths or both relative.
@@ -260,13 +265,12 @@ This function normalizes <code class="code">base</code> and <code class="code">s
 </ul>
 </div>
 <br>
-<a name="6_Validation"></a>
-<h6>Validation</h6><br>
-<pre><span class="keyword">exception</span> <a name="EXCEPTIONIllegal_char"></a>Illegal_char</pre>
+<span id="6_Validation"><h6>Validation</h6></span><br>
+<pre><span id="EXCEPTIONIllegal_char"><span class="keyword">exception</span> Illegal_char</span></pre>
 <div class="info">
 Raised by <a href="BatPathGen.PathType.html#VALof_string"><code class="code">BatPathGen.PathType.of_string</code></a>, <a href="BatPathGen.PathType.html#VALappend"><code class="code">BatPathGen.PathType.append</code></a> and <a href="BatPathGen.PathType.Operators.html#VAL(/:)"><code class="code">BatPathGen.PathType.Operators.(/:)</code></a> when used validator finds illegal character.<br>
 </div>
-<pre><span class="keyword">type</span> <a name="TYPEvalidator"></a><code class="type"></code>validator = <code class="type"><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> bool</code> </pre>
+<pre><span id="TYPEvalidator"><span class="keyword">type</span> <code class="type"></code>validator</span> = <code class="type"><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> bool</code> </pre>
 <div class="info">
 Validators should check if all characters of given string can be used in a name (path component). Return true if the name is valid. Return false if illegal character is found.
 <p>
@@ -274,16 +278,15 @@ Validators should check if all characters of given string can be used in a name 
 If a name should be rejected for some other reason, user defined validator may raise an exception.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALdefault_validator"></a>default_validator : <code class="type"><a href="BatPathGen.PathType.html#TYPEvalidator">validator</a> Pervasives.ref</code></pre><div class="info">
+<pre><span id="VALdefault_validator"><span class="keyword">val</span> default_validator</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEvalidator">validator</a> Pervasives.ref</code></pre><div class="info">
 Forward slash and code zero are considered invalid.
 <p>
 
 <em>Windows:</em> Invalid characters are *?:\/&lt;&gt; and all with code &lt;32. Exception: the function <a href="BatPathGen.PathType.html#VALof_string"><code class="code">BatPathGen.PathType.of_string</code></a> doesn't use validator against drive letter with colon.<br>
 </div>
 <br>
-<a name="6_Conversions"></a>
-<h6>Conversions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALto_ustring"></a>to_ustring : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a></code></pre><div class="info">
+<span id="6_Conversions"><h6>Conversions</h6></span><br>
+<pre><span id="VALto_ustring"><span class="keyword">val</span> to_ustring</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a></code></pre><div class="info">
 Convert to the chosen <code class="code">ustring</code> type. Empty relative path is converted to "." (single dot).
 <p>
 
@@ -291,10 +294,10 @@ Convert to the chosen <code class="code">ustring</code> type. Empty relative pat
 <b>See also</b> <code class="code">to_string</code> is likely to bo more useful
  "<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_string"></a>to_string : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> string</code></pre><div class="info">
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> string</code></pre><div class="info">
 Convert to type primitive string with UTF-8 content. The string is built in the same way as by <code class="code">to_ustring</code> function.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_string"></a>of_string : <code class="type"><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Parse path in a given string. Any number of consecutive separators collapse ("a//b" becomes "a/b"). <code class="code">Path.default_validator</code> is applied to each resulting name.
 <p>
 
@@ -302,24 +305,22 @@ Parse path in a given string. Any number of consecutive separators collapse ("a/
 <b>Raises</b> <code>Illegal_char</code> when a character not allowed in paths is found.<br>
 </div>
 <br>
-<a name="7_Conveniencealiases"></a>
-<div class="h7">Convenience aliases</div><br>
-<pre><span class="keyword">val</span> <a name="VALs"></a>s : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> string</code></pre><div class="info">
+<span id="7_Conveniencealiases"><div class="h7">Convenience aliases</div></span><br>
+<pre><span id="VALs"><span class="keyword">val</span> s</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> string</code></pre><div class="info">
 = <a href="BatPathGen.PathType.html#VALto_string"><code class="code">BatPathGen.PathType.to_string</code></a><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALp"></a>p : <code class="type"><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALp"><span class="keyword">val</span> p</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 = <a href="BatPathGen.PathType.html#VALof_string"><code class="code">BatPathGen.PathType.of_string</code></a><br>
 </div>
 <br>
-<a name="6_Namerelatedfunctions"></a>
-<h6>Name related functions</h6>
+<span id="6_Namerelatedfunctions"><h6>Name related functions</h6></span>
 These funtions do not accept empty paths, i.e. <code class="code">[]</code>, <code class="code">[""]</code> or <code class="code">["C:"]</code>.<br>
-<pre><span class="keyword">val</span> <a name="VALname"></a>name : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a></code></pre><div class="info">
+<pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a></code></pre><div class="info">
 Returns name of the object the pathname points to, i.e.
 <code class="code">name (foo/:bar) = bar</code><br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[""]</code>) is given<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap_name"></a>map_name : <code class="type">(<a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a>) -><br>       <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap_name"><span class="keyword">val</span> map_name</span> : <code class="type">(<a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a>) -><br>       <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map_name fu path</code> returns <code class="code">path</code> with the name replaced by <code class="code">fu (</code><a href="BatPathGen.PathType.html#VALname"><code class="code">BatPathGen.PathType.name</code></a><code class="code"> path)</code>.
 <p>
 
@@ -329,7 +330,7 @@ Example: <code class="code">map_name (fun nn -&gt; nn ^ ".backup") (["foo"]/:"ba
 <a href="BatPathGen.PathType.html#VALdefault_validator"><code class="code">BatPathGen.PathType.default_validator</code></a> is applied to new name.<br>
 <b>Raises</b> <code>Illegal_char</code> (raised by validator if any bad character is found)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALext"></a>ext : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option</code></pre><div class="info">
+<pre><span id="VALext"><span class="keyword">val</span> ext</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option</code></pre><div class="info">
 Returns extension of the name of the object the pathname points to. Examples:
 <p>
 
@@ -348,23 +349,23 @@ Returns extension of the name of the object the pathname points to. Examples:
 Extension begins where the rightmost dot in the name is found. If the name ends with a dot, the extension is empty and <code class="code">Some ""</code> is returned. If there is no extension (no dot) the function returns <code class="code">None</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[""]</code>) is given<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap_ext"></a>map_ext : <code class="type">(<a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option) -><br>       <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap_ext"><span class="keyword">val</span> map_ext</span> : <code class="type">(<a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option) -><br>       <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map_ext fu path</code> returns <code class="code">path</code> but with the name with extension given by <code class="code">fu (</code><a href="BatPathGen.PathType.html#VALext"><code class="code">BatPathGen.PathType.ext</code></a><code class="code"> path)</code>. If <code class="code">fu</code> returns <code class="code">Some _</code>, the original extension may be replaced (when <code class="code">Some ext</code> is passed to <code class="code">fu</code>) or new added (when <code class="code">fu</code> gets <code class="code">None</code>). In case <code class="code">fu</code> returns <code class="code">None</code>, the extension is removed (if exists).<br>
 <b>Raises</b><ul><li><code>Illegal_char</code> (raised by validator if any bad character is found)</li>
 <li><code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[""]</code>) is given</li>
 </ul>
 </div>
-<pre><span class="keyword">val</span> <a name="VALname_core"></a>name_core : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a></code></pre><div class="info">
+<pre><span id="VALname_core"><span class="keyword">val</span> name_core</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a></code></pre><div class="info">
 Returns part of the name to the left of rightmost dot. Returns empty string if the name starts with a dot.<br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[""]</code>) is given<br>
 </div>
-<pre><span class="keyword">type</span> <a name="TYPEcomponents"></a><code class="type"></code>components = <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> * <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> *<br>       <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option</code> </pre>
+<pre><span id="TYPEcomponents"><span class="keyword">type</span> <code class="type"></code>components</span> = <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> * <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> *<br>       <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option</code> </pre>
 <div class="info">
 A <code class="code">path</code> can be represented by the following triple:
   <code class="code">(Path.parent path, Path.name_core path, Path.ext path)</code><br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALsplit"></a>split : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEcomponents">components</a></code></pre><div class="info">
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEcomponents">components</a></code></pre><div class="info">
 Dissect the path to its components (parent path, core part of name and possibly an extension).
 <p>
 
@@ -372,20 +373,19 @@ Resulting <code class="code">name_core</code> string can be empty. For example,
 <code class="code">Path.split (Path.root/:"home"/:"user"/:".bashrc")</code> equals <code class="code">(Path.root/:"home"/:"user", "", Some "bashrc")</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[""]</code>) is given<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALjoin"></a>join : <code class="type"><a href="BatPathGen.PathType.html#TYPEcomponents">components</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALjoin"><span class="keyword">val</span> join</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEcomponents">components</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Create a path from given components.<br>
 <b>Raises</b> <code>Illegal_char</code> (raised by validator on any bad character)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">(<a href="BatPathGen.PathType.html#TYPEcomponents">components</a> -> <a href="BatPathGen.PathType.html#TYPEcomponents">components</a>) -><br>       <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(<a href="BatPathGen.PathType.html#TYPEcomponents">components</a> -> <a href="BatPathGen.PathType.html#TYPEcomponents">components</a>) -><br>       <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info">
 Map a path through a function that operates on separate components.<br>
 <b>Raises</b><ul><li><code>Illegal_char</code> (raised by validator on any bad character)</li>
 <li><code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[""]</code>) is given</li>
 </ul>
 </div>
 <br>
-<a name="6_Supplementaryfunctions"></a>
-<h6>Supplementary functions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALdrive_letter"></a>drive_letter : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEuchar">uchar</a> option</code></pre><div class="info">
+<span id="6_Supplementaryfunctions"><h6>Supplementary functions</h6></span><br>
+<pre><span id="VALdrive_letter"><span class="keyword">val</span> drive_letter</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEuchar">uchar</a> option</code></pre><div class="info">
 Return drive letter of the given absolute path.
 <p>
 

@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
+<link rel="next" href="BatParserCo.Infix.html">
 <link rel="Up" href="BatParserCo.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -21,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -85,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -92,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -107,20 +111,18 @@
 </head>
 <body>
 <div class="navbar">&nbsp;<a href="BatParserCo.html">Up</a>
-&nbsp;</div>
+&nbsp;<a href="BatParserCo.Infix.html">Next</a>
+</div>
 <center><h1>Module <a href="type_BatParserCo.Source.html">BatParserCo.Source</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> Source: <code class="code">sig</code> <a href="BatParserCo.Source.html">..</a> <code class="code">end</code></pre>A source for parsing.
-<p>
-
-   Unless you are parsing from exotic sources, you will probably not
-   need to use this module directly. Rather, use <code class="code">CharParser.source_of_string</code>
-   or <code class="code">CharParser.source_of_enum</code>.<br>
+<pre><span class="keyword">module</span> Source: <code class="code">sig</code> <a href="BatParserCo.Source.html">..</a> <code class="code">end</code></pre>A source for parsing.  Unless you are parsing from exotic sources,
+    you will probably not need to use this module directly. Rather, use
+    <code class="code">CharParser.source_of_string</code> or <code class="code">CharParser.source_of_enum</code>.<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">('a, 'b)</code> t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> </pre>
 <div class="info">
 A source of elements of type <code class="code">'a</code>, with a user-defined state
-	of type <code class="code">'b</code><br>
+      of type <code class="code">'b</code><br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALget_state"></a>get_state : <code class="type">('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a> -> 'b <a href="BatParserCo.html#TYPEstate">BatParserCo.state</a></code></pre><pre><span class="keyword">val</span> <a name="VALset_full_state"></a>set_full_state : <code class="type">('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a> -><br>       'c -> ('a -> 'c -> 'c) -> ('a, 'c) <a href="BatParserCo.Source.html#TYPEt">t</a></code></pre><pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b -> ('a -> 'b -> 'b) -> ('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a></code></pre></body></html>
+<pre><span id="VALget_state"><span class="keyword">val</span> get_state</span> : <code class="type">('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a> -> 'b <a href="BatParserCo.html#TYPEstate">BatParserCo.state</a></code></pre><pre><span id="VALset_full_state"><span class="keyword">val</span> set_full_state</span> : <code class="type">('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a> -><br>       'c -> ('a -> 'c -> 'c) -> ('a, 'c) <a href="BatParserCo.Source.html#TYPEt">t</a></code></pre><pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b -> ('a -> 'b -> 'b) -> ('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a></code></pre></body></html>

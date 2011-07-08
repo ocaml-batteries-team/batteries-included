@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
+<link rel="previous" href="BatEnum.Infix.html">
 <link rel="next" href="BatEnum.Monad.html">
 <link rel="Up" href="BatEnum.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -22,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -107,7 +111,8 @@
 <link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><title>BatEnum.WithMonad</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatEnum.html">Up</a>
+<div class="navbar"><a href="BatEnum.Infix.html">Previous</a>
+&nbsp;<a href="BatEnum.html">Up</a>
 &nbsp;<a href="BatEnum.Monad.html">Next</a>
 </div>
 <center><h1>Functor <a href="type_BatEnum.WithMonad.html">BatEnum.WithMonad</a></h1></center>
@@ -131,17 +136,17 @@
 </tr>
 </table>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEm"></a><code class="type">'a</code> m = <code class="type">'a Mon.m</code> </pre>
+<pre><span id="TYPEm"><span class="keyword">type</span> <code class="type">'a</code> m</span> = <code class="type">'a Mon.m</code> </pre>
 <div class="info">
 Type of the monadic elements.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALsequence"></a>sequence : <code class="type">'a <a href="BatEnum.WithMonad.html#TYPEm">m</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> <a href="BatEnum.WithMonad.html#TYPEm">m</a></code></pre><div class="info">
-<code class="code">sequence e</code> evaluates each monadic elements (of type <code class="code">'a m</code> contained in the enumeration <code class="code">e</code> to get a monadic enumeration of <code class="code">'a</code> elements, 
-    of type <code class="code">'a m BatEnum.t</code>.<br>
+<pre><span id="VALsequence"><span class="keyword">val</span> sequence</span> : <code class="type">'a <a href="BatEnum.WithMonad.html#TYPEm">m</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> <a href="BatEnum.WithMonad.html#TYPEm">m</a></code></pre><div class="info">
+<code class="code">sequence e</code> evaluates each monadic elements (of type <code class="code">'a m</code>) contained in the enumeration <code class="code">e</code> to get a monadic enumeration of <code class="code">'a</code> elements, 
+    of type <code class="code">'a BatEnum.t m</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfold_monad"></a>fold_monad : <code class="type">('a -> 'b -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a>) -><br>       'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a></code></pre><div class="info">
+<pre><span id="VALfold_monad"><span class="keyword">val</span> fold_monad</span> : <code class="type">('a -> 'b -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a>) -><br>       'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a></code></pre><div class="info">
 <code class="code">fold_monad f init e</code> does a folding of the enumeration <code class="code">e</code> applying step by step the function <code class="code">f</code> that gives back results in the <code class="code">Mon</code> monad, 
-    with the <code class="code">init</code> initial element. The result is a value in the <code class="code">Mond</code> monad.<br>
+    with the <code class="code">init</code> initial element. The result is a value in the <code class="code">Mon</code> monad.<br>
 </div>
 </body></html>

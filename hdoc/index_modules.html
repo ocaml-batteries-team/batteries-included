@@ -19,6 +19,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -83,6 +84,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -90,6 +92,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -178,6 +181,11 @@ Operations on booleans
 <tr><td><a href="BatBuffer.html">BatBuffer</a> </td>
 <td><div class="info">
 Extensible string buffers.
+</div>
+</td></tr>
+<tr><td><a href="BatCache.html">BatCache</a> </td>
+<td><div class="info">
+These functions build a cache with either a hashtbl or a map.
 </div>
 </td></tr>
 <tr><td><a href="BatCamomile.html">BatCamomile</a> </td>
@@ -498,6 +506,11 @@ Sequence of elements
 Sets over ordered types.
 </div>
 </td></tr>
+<tr><td><a href="BatSplay.html">BatSplay</a> </td>
+<td><div class="info">
+Maps and sets based on splay trees
+</div>
+</td></tr>
 <tr><td><a href="BatStack.html">BatStack</a> </td>
 <td><div class="info">
 Last-in first-out stacks.
@@ -532,6 +545,11 @@ String operations.
 <tr><td><a href="BatSys.html">BatSys</a> </td>
 <td><div class="info">
 System interface.
+</div>
+</td></tr>
+<tr><td><a href="BatTuple.html">BatTuple</a> </td>
+<td><div class="info">
+Tuples.
 </div>
 </td></tr>
 <tr><td><a href="BatUChar.html">BatUChar</a> </td>
@@ -575,6 +593,8 @@ Extensible vectors with constant-time append/prepend.
 </div>
 </td></tr>
 <tr><td><a href="Batteries.html">Batteries</a> </td>
+<td></td></tr>
+<tr><td><a href="Batteries_uni.Batteries_config.html">Batteries_config</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries_config.html">Batteries_config</a> </td>
 <td><div class="info">
@@ -620,6 +640,8 @@ Positions in the string represented by the number of bytes from
 <td></td></tr>
 <tr><td><a href="BatCamomile.CDC.html">CDC</a> [<a href="BatCamomile.html">BatCamomile</a>]</td>
 <td></td></tr>
+<tr><td><a href="Batteries_uni.Cache.html">Cache</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries_uni.Legacy.Callback.html">Callback</a> [<a href="Batteries_uni.Legacy.html">Batteries_uni.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatCamomile.CamConfig.html">CamConfig</a> [<a href="BatCamomile.html">BatCamomile</a>]</td>
@@ -645,6 +667,24 @@ Capabilities for arrays.
 A set of characters.
 </div>
 </td></tr>
+<tr><td><a href="BatNum.Compare.html">Compare</a> [<a href="BatNum.html">BatNum</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNativeint.Compare.html">Compare</a> [<a href="BatNativeint.html">BatNativeint</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatInt64.Compare.html">Compare</a> [<a href="BatInt64.html">BatInt64</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatInt.Safe_int.Compare.html">Compare</a> [<a href="BatInt.Safe_int.html">BatInt.Safe_int</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatInt.Compare.html">Compare</a> [<a href="BatInt.html">BatInt</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatFloat.Compare.html">Compare</a> [<a href="BatFloat.html">BatFloat</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatComplex.Compare.html">Compare</a> [<a href="BatComplex.html">BatComplex</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBool.Compare.html">Compare</a> [<a href="BatBool.html">BatBool</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBig_int.Compare.html">Compare</a> [<a href="BatBig_int.html">BatBig_int</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries_uni.Complex.html">Complex</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries_uni.Legacy.Complex.html">Complex</a> [<a href="Batteries_uni.Legacy.html">Batteries_uni.Legacy</a>]</td>
@@ -665,6 +705,8 @@ A set of characters.
 <tr><td align="left"><br>E</td></tr>
 <tr><td><a href="Batteries_uni.Enum.html">Enum</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatStack.Exceptionless.html">Exceptionless</a> [<a href="BatStack.html">BatStack</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatSet.S.Exceptionless.html">Exceptionless</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
 <td><div class="info">
 Operations on <code class="code">Set</code> without exceptions.
@@ -672,11 +714,10 @@ Operations on <code class="code">Set</code> without exceptions.
 </td></tr>
 <tr><td><a href="BatSeq.Exceptionless.html">Exceptionless</a> [<a href="BatSeq.html">BatSeq</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatQueue.Exceptionless.html">Exceptionless</a> [<a href="BatQueue.html">BatQueue</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatPMap.Exceptionless.html">Exceptionless</a> [<a href="BatPMap.html">BatPMap</a>]</td>
-<td><div class="info">
-Exceptionless versions of functions
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatMap.Exceptionless.html">Exceptionless</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
 Exceptionless versions of functions
@@ -813,11 +854,32 @@ Functions that operate on the element at index <code class="code">i</code> in a 
     indices starting from 0).
 </div>
 </td></tr>
-<tr><td><a href="BatPMap.Infix.html">Infix</a> [<a href="BatPMap.html">BatPMap</a>]</td>
+<tr><td><a href="BatRope.Infix.html">Infix</a> [<a href="BatRope.html">BatRope</a>]</td>
 <td><div class="info">
-Infix operators over a <a href="BatPMap.html"><code class="code">BatPMap</code></a>
+Infix submodule regrouping all infix operators
 </div>
 </td></tr>
+<tr><td><a href="BatResult.Infix.html">Infix</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+Infix submodule regrouping all infix operators
+</div>
+</td></tr>
+<tr><td><a href="BatPathGen.PathType.Infix.html">Infix</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
+<td><div class="info">
+As other Operators modules in batteries are named "Infix" we provide Infix as well.
+</div>
+</td></tr>
+<tr><td><a href="BatParserCo.Infix.html">Infix</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
+<td><div class="info">
+Infix submodule regrouping all infix operators
+</div>
+</td></tr>
+<tr><td><a href="BatPMap.Infix.html">Infix</a> [<a href="BatPMap.html">BatPMap</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNum.Infix.html">Infix</a> [<a href="BatNum.html">BatNum</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNativeint.Infix.html">Infix</a> [<a href="BatNativeint.html">BatNativeint</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatMultiPMap.Infix.html">Infix</a> [<a href="BatMultiPMap.html">BatMultiPMap</a>]</td>
 <td><div class="info">
 Infix operators over a <a href="BatMultiPMap.html"><code class="code">BatMultiPMap</code></a>
@@ -825,7 +887,7 @@ Infix operators over a <a href="BatMultiPMap.html"><code class="code">BatMultiPM
 </td></tr>
 <tr><td><a href="BatMap.Infix.html">Infix</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-Infix operators over a <a href="BatMap.html"><code class="code">BatMap</code></a>
+Infix operators over a <a href="BatPMap.html"><code class="code">BatPMap</code></a>
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.Infix.html">Infix</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
@@ -833,6 +895,22 @@ Infix operators over a <a href="BatMap.html"><code class="code">BatMap</code></a
 Infix operators over a <a href="BatMap.html"><code class="code">BatMap</code></a>
 </div>
 </td></tr>
+<tr><td><a href="BatList.Infix.html">Infix</a> [<a href="BatList.html">BatList</a>]</td>
+<td><div class="info">
+Infix submodule regrouping all infix operators
+</div>
+</td></tr>
+<tr><td><a href="BatLazyList.Infix.html">Infix</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
+<td><div class="info">
+Infix submodule regrouping all infix operators
+</div>
+</td></tr>
+<tr><td><a href="BatInt64.Infix.html">Infix</a> [<a href="BatInt64.html">BatInt64</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatInt.Safe_int.Infix.html">Infix</a> [<a href="BatInt.Safe_int.html">BatInt.Safe_int</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatInt.Infix.html">Infix</a> [<a href="BatInt.html">BatInt</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatIMap.Infix.html">Infix</a> [<a href="BatIMap.html">BatIMap</a>]</td>
 <td><div class="info">
 Infix operators over a <a href="BatIMap.html"><code class="code">BatIMap</code></a>
@@ -848,6 +926,21 @@ Infix operators over a <a href="BatHashtbl.html"><code class="code">BatHashtbl</
 Infix operators over a <a href="BatHashtbl.html"><code class="code">BatHashtbl</code></a>
 </div>
 </td></tr>
+<tr><td><a href="BatFloat.Infix.html">Infix</a> [<a href="BatFloat.html">BatFloat</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatEnum.Infix.html">Infix</a> [<a href="BatEnum.html">BatEnum</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatComplex.Infix.html">Infix</a> [<a href="BatComplex.html">BatComplex</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatChar.Infix.html">Infix</a> [<a href="BatChar.html">BatChar</a>]</td>
+<td><div class="info">
+Infix submodule regrouping all infix operators
+</div>
+</td></tr>
+<tr><td><a href="BatBool.Infix.html">Infix</a> [<a href="BatBool.html">BatBool</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBig_int.Infix.html">Infix</a> [<a href="BatBig_int.html">BatBig_int</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerIO.Input.html">Input</a> [<a href="BatInnerIO.html">BatInnerIO</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries_uni.Int.html">Int</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
@@ -964,7 +1057,7 @@ Operations on <code class="code">Array</code> with labels.
 <tr><td><a href="BatSet.Make.html">Make</a> [<a href="BatSet.html">BatSet</a>]</td>
 <td><div class="info">
 Functor building an implementation of the set structure
-      given a totally ordered type.
+    given a totally ordered type.
 </div>
 </td></tr>
 <tr><td><a href="BatPathGen.Make.html">Make</a> [<a href="BatPathGen.html">BatPathGen</a>]</td>
@@ -1002,6 +1095,8 @@ Functor building an implementation of the hashtable structure.
 <tr><td><a href="Batteries_uni.Map.html">Map</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries_uni.Legacy.Map.html">Map</a> [<a href="Batteries_uni.Legacy.html">Batteries_uni.Legacy</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatSplay.Map.html">Map</a> [<a href="BatSplay.html">BatSplay</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries_uni.Marshal.html">Marshal</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
 <td></td></tr>
@@ -1184,6 +1279,8 @@ Scanning buffers
 A source for parsing.
 </div>
 </td></tr>
+<tr><td><a href="Batteries_uni.Splay.html">Splay</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries_uni.Stack.html">Stack</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries_uni.Legacy.Stack.html">Stack</a> [<a href="Batteries_uni.Legacy.html">Batteries_uni.Legacy</a>]</td>
@@ -1232,6 +1329,37 @@ A set of strings.
 <td></td></tr>
 <tr><td><a href="Batteries_uni.Legacy.Sys.html">Sys</a> [<a href="Batteries_uni.Legacy.html">Batteries_uni.Legacy</a>]</td>
 <td></td></tr>
+<tr><td align="left"><br>T</td></tr>
+<tr><td><a href="Batteries_uni.Tuple.html">Tuple</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
+<td></td></tr>
+<tr><td><a href="Batteries_uni.Tuple2.html">Tuple2</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatTuple.Tuple2.html">Tuple2</a> [<a href="BatTuple.html">BatTuple</a>]</td>
+<td><div class="info">
+Pairs.
+</div>
+</td></tr>
+<tr><td><a href="Batteries_uni.Tuple3.html">Tuple3</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatTuple.Tuple3.html">Tuple3</a> [<a href="BatTuple.html">BatTuple</a>]</td>
+<td><div class="info">
+Triples.
+</div>
+</td></tr>
+<tr><td><a href="Batteries_uni.Tuple4.html">Tuple4</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatTuple.Tuple4.html">Tuple4</a> [<a href="BatTuple.html">BatTuple</a>]</td>
+<td><div class="info">
+4-Tuples.
+</div>
+</td></tr>
+<tr><td><a href="Batteries_uni.Tuple5.html">Tuple5</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatTuple.Tuple5.html">Tuple5</a> [<a href="BatTuple.html">BatTuple</a>]</td>
+<td><div class="info">
+5-Tuples.
+</div>
+</td></tr>
 <tr><td align="left"><br>U</td></tr>
 <tr><td><a href="Batteries_uni.UChar.html">UChar</a> [<a href="Batteries_uni.html">Batteries_uni</a>]</td>
 <td></td></tr>

@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -138,12 +141,12 @@
    </code></pre><br>
 <b>Author(s):</b> David Teller<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 <div class="info">
 A label which may be used to return values of type <code class="code">'a</code><br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALlabel"></a>label : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info">
+<pre><span id="VALlabel"><span class="keyword">val</span> label</span> : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info">
 <code class="code">label f</code> creates a new label <code class="code">x</code> and invokes
     <code class="code">f x</code>. If, during the execution of <code class="code">f</code>, <code class="code">return x v</code>
     is invoked, the execution of <code class="code">f x</code> stops
@@ -156,10 +159,10 @@ A label which may be used to return values of type <code class="code">'a</code><
     is a run-time error and causes termination
     of the program.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALwith_label"></a>with_label : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info">
+<pre><span id="VALwith_label"><span class="keyword">val</span> with_label</span> : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info">
 as <code class="code">label</code><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALreturn"></a>return : <code class="type">'a <a href="BatReturn.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info">
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a <a href="BatReturn.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info">
 Return to a label. <code class="code">return l v</code> returns
     to the point where label <code class="code">l</code> was obtained
     and produces value <code class="code">l</code>.

@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -119,7 +122,7 @@
 <pre><span class="keyword">module</span> Formatter: <code class="code">sig</code> <a href="BatOptParse.Formatter.html">..</a> <code class="code">end</code></pre>This module contains the types and functions for implementing
   custom usage message formatters.<br>
 <hr width="100%">
-<br><code><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t = {</code><table class="typetable">
+<br><code><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
@@ -173,9 +176,8 @@ This is the type of a formatter. The <code class="code">format_option</code> has
       metavars the option takes as arguments, and <code class="code">help</code> is the help
       string supplied by the user.<br>
 <br>
-<a name="6_Standardformatters"></a>
-<h6>Standard formatters</h6><br>
-<pre><span class="keyword">val</span> <a name="VALindented_formatter"></a>indented_formatter : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info">
+<span id="6_Standardformatters"><h6>Standard formatters</h6></span><br>
+<pre><span id="VALindented_formatter"><span class="keyword">val</span> indented_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info">
 Create an "indented" formatter with the given options.<br>
 </div>
 <div class="param_info"><code class="code">level</code> : Reference to the current indentation level. Its
@@ -188,16 +190,15 @@ Create an "indented" formatter with the given options.<br>
       messages relating to each option.</div>
 <div class="param_info"><code class="code">width</code> : Total with of the usage messages printed.</div>
 <div class="param_info"><code class="code">short_first</code> : List all the short option names first?</div>
-<pre><span class="keyword">val</span> <a name="VALtitled_formatter"></a>titled_formatter : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALtitled_formatter"><span class="keyword">val</span> titled_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info">
 Creates a titled formatter which is quite similar to the
       indented formatter. See
       <code class="code">OptParse.Formatter.indented_formatter</code> for a description of
       the options.<br>
 </div>
 <br>
-<a name="6_Lowlevelformatting"></a>
-<h6>Low-level formatting</h6><br>
-<pre><span class="keyword">val</span> <a name="VALwrap"></a>wrap : <code class="type">?initial_indent:int -> ?subsequent_indent:int -> string -> int -> string list</code></pre><div class="info">
+<span id="6_Lowlevelformatting"><h6>Low-level formatting</h6></span><br>
+<pre><span id="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">?initial_indent:int -> ?subsequent_indent:int -> string -> int -> string list</code></pre><div class="info">
 <code class="code">wrap text width</code> reflows the given text paragraph into lines
       of width at most <code class="code">width</code> (lines may exceed this if the are
       single words that exceed this limit).<br>
@@ -205,7 +206,7 @@ Creates a titled formatter which is quite similar to the
 </div>
 <div class="param_info"><code class="code">initial_indent</code> : Indentation of the first line.</div>
 <div class="param_info"><code class="code">subsequent_indent</code> : Indentation of the following lines.</div>
-<pre><span class="keyword">val</span> <a name="VALfill"></a>fill : <code class="type">?initial_indent:int -> ?subsequent_indent:int -> string -> int -> string</code></pre><div class="info">
+<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">?initial_indent:int -> ?subsequent_indent:int -> string -> int -> string</code></pre><div class="info">
 See <code class="code">OptParse.Formatter.wrap</code>.<br>
 <b>Returns</b> a string containing the reformatted paragraph.<br>
 </div>

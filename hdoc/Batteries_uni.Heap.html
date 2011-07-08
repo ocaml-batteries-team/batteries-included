@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -120,71 +123,66 @@
 <center><h1>Module <a href="type_Batteries_uni.Heap.html">Batteries_uni.Heap</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Heap: <code class="type">BatHeap</code></pre><hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">+'a</code> t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">+'a</code> t</span> </pre>
 <div class="info">
 Heap of elements that are compared with <code class="code">Pervasives.compare</code>.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALsize"></a>size : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Number of elements in the heap. O(1)<br>
 </div>
 <br>
-<a name="6_Construction"></a>
-<h6>Construction</h6><br>
-<pre><span class="keyword">val</span> <a name="VALempty"></a>empty : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
+<span id="6_Construction"><h6>Construction</h6></span><br>
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
 The empty heap.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALinsert"></a>insert : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
 Insert an element into the heap. Duplicates are kept. O(log m)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALadd"></a>add : <code class="type">'a -> 'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a -> 'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">add x h</code> is the same as <code class="code">insert h x</code>. This function is intended
       to be used with <code class="code">fold_right</code>.<br>
 </div>
 <br>
-<a name="6_Operations"></a>
-<h6>Operations</h6><br>
-<pre><span class="keyword">val</span> <a name="VALmerge"></a>merge : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
+<span id="6_Operations"><h6>Operations</h6></span><br>
+<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
 Merge two heaps. O(log m)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALfind_min"></a>find_min : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfind_min"><span class="keyword">val</span> find_min</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Find the minimal element of the heap. O(1)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdel_min"></a>del_min : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALdel_min"><span class="keyword">val</span> del_min</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
 Delete the minimal element of the heap. O(log n)<br>
 </div>
 <br>
-<a name="6_Transformation"></a>
-<h6>Transformation</h6><br>
-<pre><span class="keyword">val</span> <a name="VALof_list"></a>of_list : <code class="type">'a list -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
+<span id="6_Transformation"><h6>Transformation</h6></span><br>
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
 Build a heap from a given list. O(n log n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_list"></a>to_list : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a list</code></pre><div class="info">
+<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a list</code></pre><div class="info">
 Enumerate the elements of the heap. O(n log n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALelems"></a>elems : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a list</code></pre><div class="info">
+<pre><span id="VALelems"><span class="keyword">val</span> elems</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a list</code></pre><div class="info">
 <span class="warning">Deprecated.</span>Same as <code class="code">to_list</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
 Build a heap from an enumeration. Consumes the enumeration.
       O(n log n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Enumerate the elements of the heap in heap order. O(log n) per
       <a href="BatEnum.html#VALget"><code class="code">BatEnum.get</code></a>.<br>
 </div>
 <br>
-<a name="6_Printing"></a>
-<h6>Printing</h6><br>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatHeap.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<span id="6_Printing"><h6>Printing</h6></span><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatHeap.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Print the contents of the heap in heap order. O(n log n)<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><div class="info">
 See <a href="BatValue_printer.html"><code class="code">BatValue_printer</code></a>.<br>
 </div>
 <br>
-<a name="6_Functorizedversion"></a>
-<h6>Functorized version</h6><br>
+<span id="6_Functorizedversion"><h6>Functorized version</h6></span><br>
 <pre><span class="keyword">module type</span> <a href="BatHeap.H.html">H</a> = <code class="code">sig</code> <a href="BatHeap.H.html">..</a> <code class="code">end</code></pre><div class="info">
 The result of <a href="BatHeap.Make.html"><code class="code">BatHeap.Make</code></a>
 </div>

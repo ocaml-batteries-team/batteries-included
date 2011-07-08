@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -130,24 +133,23 @@
     and types.<br>
 <b>Author(s):</b> Jacques Garrigue, David Teller<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info">
 A lexer<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALof_list"></a>of_list : <code class="type">string list -> <a href="BatGenlex.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">string list -> <a href="BatGenlex.html#TYPEt">t</a></code></pre><div class="info">
 Create a lexer from a list of keywords<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_stream_filter"></a>to_stream_filter : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char Stream.t -> Genlex.token Stream.t</code></pre><div class="info">
+<pre><span id="VALto_stream_filter"><span class="keyword">val</span> to_stream_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char Stream.t -> Genlex.token Stream.t</code></pre><div class="info">
 Apply the lexer to a stream.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_enum_filter"></a>to_enum_filter : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> Genlex.token <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALto_enum_filter"><span class="keyword">val</span> to_enum_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> Genlex.token <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Apply the lexer to an enum.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALto_lazy_list_filter"></a>to_lazy_list_filter : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> Genlex.token <a href="BatLazyList.html#TYPEt">BatLazyList.t</a></code></pre><div class="info">
+<pre><span id="VALto_lazy_list_filter"><span class="keyword">val</span> to_lazy_list_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> Genlex.token <a href="BatLazyList.html#TYPEt">BatLazyList.t</a></code></pre><div class="info">
 Apply the lexer to a lazy list.<br>
 </div>
 <br>
-<a name="6_Extendingtootherlanguages"></a>
-<h6>Extending to other languages</h6><br>
+<span id="6_Extendingtootherlanguages"><h6>Extending to other languages</h6></span><br>
 <pre><span class="keyword">module</span> <a href="BatGenlex.Languages.html">Languages</a>: <code class="code">sig</code> <a href="BatGenlex.Languages.html">..</a> <code class="code">end</code></pre></body></html>

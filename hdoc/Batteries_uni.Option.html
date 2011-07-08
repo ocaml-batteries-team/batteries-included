@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -118,62 +121,70 @@
 <center><h1>Module <a href="type_Batteries_uni.Option.html">Batteries_uni.Option</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Option: <code class="type">BatOption</code></pre><hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t = <code class="type">'a option</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a option</code> </pre>
 
-<pre><span class="keyword">val</span> <a name="VALmay"></a>may : <code class="type">('a -> unit) -> 'a option -> unit</code></pre><div class="info">
+<pre><span id="VALmay"><span class="keyword">val</span> may</span> : <code class="type">('a -> unit) -> 'a option -> unit</code></pre><div class="info">
 <code class="code">may f (Some x)</code> calls <code class="code">f x</code> and <code class="code">may f None</code> does nothing.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap"></a>map : <code class="type">('a -> 'b) -> 'a option -> 'b option</code></pre><div class="info">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a option -> 'b option</code></pre><div class="info">
 <code class="code">map f (Some x)</code> returns <code class="code">Some (f x)</code> and <code class="code">map f None</code> returns <code class="code">None</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALbind"></a>bind : <code class="type">('a -> 'b option) -> 'a option -> 'b option</code></pre><div class="info">
+<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">('a -> 'b option) -> 'a option -> 'b option</code></pre><div class="info">
 <code class="code">bind f (Some x)</code> returns <code class="code">f x</code> and <code class="code">bind f None</code> returns <code class="code">None</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdefault"></a>default : <code class="type">'a -> 'a option -> 'a</code></pre><div class="info">
+<pre><span id="VALdefault"><span class="keyword">val</span> default</span> : <code class="type">'a -> 'a option -> 'a</code></pre><div class="info">
 <code class="code">default x (Some v)</code> returns <code class="code">v</code> and <code class="code">default x None</code> returns <code class="code">x</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmap_default"></a>map_default : <code class="type">('a -> 'b) -> 'b -> 'a option -> 'b</code></pre><div class="info">
+<pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">('a -> 'b) -> 'b -> 'a option -> 'b</code></pre><div class="info">
 <code class="code">map_default f x (Some v)</code> returns <code class="code">f v</code> and <code class="code">map_default f x None</code>
 	returns <code class="code">x</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALis_none"></a>is_none : <code class="type">'a option -> bool</code></pre><div class="info">
+<pre><span id="VALis_none"><span class="keyword">val</span> is_none</span> : <code class="type">'a option -> bool</code></pre><div class="info">
 <code class="code">is_none None</code> returns <code class="code">true</code> otherwise it returns <code class="code">false</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALis_some"></a>is_some : <code class="type">'a option -> bool</code></pre><div class="info">
+<pre><span id="VALis_some"><span class="keyword">val</span> is_some</span> : <code class="type">'a option -> bool</code></pre><div class="info">
 <code class="code">is_some (Some x)</code> returns <code class="code">true</code> otherwise it returns <code class="code">false</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type">'a option -> 'a</code></pre><div class="info">
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a option -> 'a</code></pre><div class="info">
 <code class="code">get (Some x)</code> returns <code class="code">x</code> and <code class="code">get None</code> raises <code class="code">No_value</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALget_exn"></a>get_exn : <code class="type">'a option -> exn -> 'a</code></pre><div class="info">
+<pre><span id="VALget_exn"><span class="keyword">val</span> get_exn</span> : <code class="type">'a option -> exn -> 'a</code></pre><div class="info">
 <code class="code">get_exn (Some x) e</code> returns <code class="code">x</code> and <code class="code">get_exn None e</code> raises <code class="code">e</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALenum"></a>enum : <code class="type">'a option -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a option -> 'a option -> int</code></pre><div class="info">
+Compare two options, possibly using custom comparators for the
+    value.  <code class="code">None</code> is always assumed to be less than <code class="code">Some _</code>.  The
+    parameter <code class="code">cmp</code> defaults to <code class="code">Pervasives.compare</code>.<br>
+</div>
+<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool</code></pre><div class="info">
+Test for equality between option types, possibly using a custom
+    equality predicate.  The parameter <code class="code">eq</code> defaults to
+    <code class="code">Pervasives.(=)</code>.<br>
+<b>Since</b> 1.4.0<br>
+</div>
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a option -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">enum (Some x)</code> returns the singleton <code class="code">x</code>, while <code class="code">enum None</code> returns
     the empty enumeration<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALof_enum"></a>of_enum : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info">
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info">
 <code class="code">of_enum e</code> consumes the first element of <code class="code">e</code>, if it exists, and 
     returns <code class="code">Some e</code>. If <code class="code">e</code> is empty, return <code class="code">None</code><br>
 </div>
-<pre><span class="keyword">exception</span> <a name="EXCEPTIONNo_value"></a>No_value</pre>
+<pre><span id="EXCEPTIONNo_value"><span class="keyword">exception</span> No_value</span></pre>
 <div class="info">
 Raised when calling <code class="code">get None</code>.<br>
 </div>
 <br>
-<a name="6_TheOptionMonad"></a>
-<h6>The Option Monad</h6><br>
+<span id="6_TheOptionMonad"><h6>The Option Monad</h6></span><br>
 <pre><span class="keyword">module</span> <a href="BatOption.Monad.html">Monad</a>: <code class="code">sig</code> <a href="BatOption.Monad.html">..</a> <code class="code">end</code></pre><div class="info">
 This module provides everything needed to write and execute computations
     in the Option monad.
 </div>
 <br>
-<a name="6_Boilerplatecode"></a>
-<h6>Boilerplate code</h6><br>
+<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
 <br>
-<a name="7_Printing"></a>
-<div class="h7">Printing</div><br>
-<pre><span class="keyword">val</span> <a name="VALprint"></a>print : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatOption.html#TYPEt">t</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALt_printer"></a>t_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatOption.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><pre><span class="keyword">val</span> <a name="VALmaybe_printer"></a>maybe_printer : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatOption.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatOption.Labels.html">Labels</a>: <code class="code">sig</code> <a href="BatOption.Labels.html">..</a> <code class="code">end</code></pre><div class="info">
+<span id="7_Printing"><div class="h7">Printing</div></span><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatOption.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatOption.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><pre><span id="VALmaybe_printer"><span class="keyword">val</span> maybe_printer</span> : <code class="type">'a <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a> -> 'a <a href="BatOption.html#TYPEt">t</a> <a href="BatValue_printer.html#TYPEt">BatValue_printer.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatOption.Labels.html">Labels</a>: <code class="code">sig</code> <a href="BatOption.Labels.html">..</a> <code class="code">end</code></pre><div class="info">
 Operations on options, with labels.
 </div>
 </body></html>

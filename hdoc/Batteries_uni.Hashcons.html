@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -115,7 +118,7 @@
 <center><h1>Module <a href="type_Batteries_uni.Hashcons.html">Batteries_uni.Hashcons</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Hashcons: <code class="type">BatHashcons</code></pre><hr width="100%">
-<br><code><span class="keyword">type</span> <a name="TYPEhobj"></a><code class="type">'a</code> hobj = private {</code><table class="typetable">
+<br><code><span id="TYPEhobj"><span class="keyword">type</span> <code class="type">'a</code> hobj</span> = private {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
@@ -144,12 +147,12 @@ The type <code class="code">t hobj</code> represents hashed objects of type <cod
     object contains a unique tag and a hash code.<br>
 </div>
 
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t = <code class="type">'a <a href="BatHashcons.html#TYPEhobj">hobj</a></code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatHashcons.html#TYPEhobj">hobj</a></code> </pre>
 <div class="info">
 A synonym for convenience<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALcompare"></a>compare : <code class="type">'a <a href="BatHashcons.html#TYPEhobj">hobj</a> -> 'a <a href="BatHashcons.html#TYPEhobj">hobj</a> -> int</code></pre><div class="info">
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatHashcons.html#TYPEhobj">hobj</a> -> 'a <a href="BatHashcons.html#TYPEhobj">hobj</a> -> int</code></pre><div class="info">
 Comparison on the tags<br>
 </div>
 <pre><span class="keyword">module type</span> <a href="BatHashcons.Table.html">Table</a> = <code class="code">sig</code> <a href="BatHashcons.Table.html">..</a> <code class="code">end</code></pre><div class="info">

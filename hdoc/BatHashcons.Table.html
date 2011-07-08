@@ -21,6 +21,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -85,6 +86,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -92,6 +94,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -112,28 +115,28 @@
 <br>
 <pre><span class="keyword">module type</span> Table = <code class="code">sig</code> <a href="BatHashcons.Table.html">..</a> <code class="code">end</code></pre>Hashcons tables<br>
 <hr width="100%">
-<pre><span class="keyword">type</span> <a name="TYPEkey"></a><code class="type"></code>key </pre>
+<pre><span id="TYPEkey"><span class="keyword">type</span> <code class="type"></code>key</span> </pre>
 <div class="info">
 type of objects in the table<br>
 </div>
 
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info">
 type of the table<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALcreate"></a>create : <code class="type">int -> <a href="BatHashcons.Table.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> <a href="BatHashcons.Table.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">create n</code> creates a table with at least <code class="code">n</code> cells.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALclear"></a>clear : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">clear tab</code> removes all entries from the table <code class="code">tab</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALhashcons"></a>hashcons : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -><br>       <a href="BatHashcons.Table.html#TYPEkey">key</a> -> <a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a></code></pre><div class="info">
+<pre><span id="VALhashcons"><span class="keyword">val</span> hashcons</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -><br>       <a href="BatHashcons.Table.html#TYPEkey">key</a> -> <a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a></code></pre><div class="info">
 <code class="code">hashcons tab k</code> returns either <code class="code">k</code>, adding it to the table
         <code class="code">tab</code> as a side effect, or if <code class="code">k</code> is already in the table then
         it returns the hashed object corresponding to that entry.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALiter"></a>iter : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> unit) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> unit) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter f tab</code> applied <code class="code">f</code> to every live hashed object in the
         table <code class="code">tab</code>.<br>
 </div>

@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -107,6 +110,7 @@
 <link title="Batteries_print" rel="Chapter" href="Batteries_print.html">
 <link title="Batteries_uni" rel="Chapter" href="Batteries_uni.html"><link title="Interfacing with the standard input/output library" rel="Section" href="#6_Interfacingwiththestandardinputoutputlibrary">
 <link title="High-level network connection functions" rel="Section" href="#6_Highlevelnetworkconnectionfunctions">
+<link title="Small tools" rel="Section" href="#6_Smalltools">
 <link title="Thread-safety internals" rel="Section" href="#6_Threadsafetyinternals">
 <link title="Obsolete stuff" rel="Section" href="#6_Obsoletestuff">
 <title>BatUnix</title>
@@ -142,9 +146,8 @@ Low-level interface to the operating system (both Unix and Windows).
 
     <b>Note</b> This module is thread-safe.<br>
 <br>
-<a name="6_Interfacingwiththestandardinputoutputlibrary"></a>
-<h6>Interfacing with the standard input/output library</h6><br>
-<pre><span class="keyword">val</span> <a name="VALinput_of_descr"></a>input_of_descr : <code class="type">?autoclose:bool -> ?cleanup:bool -> Unix.file_descr -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info">
+<span id="6_Interfacingwiththestandardinputoutputlibrary"><h6>Interfacing with the standard input/output library</h6></span><br>
+<pre><span id="VALinput_of_descr"><span class="keyword">val</span> input_of_descr</span> : <code class="type">?autoclose:bool -> ?cleanup:bool -> Unix.file_descr -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info">
 Create an <code class="code">input</code> reading from the given descriptor.
     The <code class="code">input</code> is initially in binary mode; use
     <code class="code">set_binary_mode_in ic false</code> if text mode is desired.<br>
@@ -158,7 +161,7 @@ Create an <code class="code">input</code> reading from the given descriptor.
     when the <code class="code">input</code> is closed. If false or unspecified,
     do nothing, in which case you will need to close the underlying
     file descriptor yourself to ensure proper cleanup.</div>
-<pre><span class="keyword">val</span> <a name="VALoutput_of_descr"></a>output_of_descr : <code class="type">?cleanup:bool -> Unix.file_descr -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
+<pre><span id="VALoutput_of_descr"><span class="keyword">val</span> output_of_descr</span> : <code class="type">?cleanup:bool -> Unix.file_descr -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
 Create an <code class="code">output</code> writing on the given descriptor.
       The <code class="code">output</code> is initially in binary mode; use
       <code class="code">set_binary_mode_out oc false</code> if text mode is desired.<br>
@@ -167,7 +170,7 @@ Create an <code class="code">output</code> writing on the given descriptor.
       when the <code class="code">output</code> is closed. If false or unspecified,
       do nothing, in which case you will need to close the underlying
       file descriptor yourself to ensure proper cleanup.</div>
-<pre><span class="keyword">val</span> <a name="VALdescr_of_input"></a>descr_of_input : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> Unix.file_descr</code></pre><div class="info">
+<pre><span id="VALdescr_of_input"><span class="keyword">val</span> descr_of_input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> Unix.file_descr</code></pre><div class="info">
 Return the descriptor corresponding to an input.
 <p>
 
@@ -176,7 +179,7 @@ Return the descriptor corresponding to an input.
 <b>Raises</b> <code>Invalid_argument</code> "Unix.descr_of_in_channel" if this input
     channel doesn't have a file descriptor<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdescr_of_output"></a>descr_of_output : <code class="type">unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Unix.file_descr</code></pre><div class="info">
+<pre><span id="VALdescr_of_output"><span class="keyword">val</span> descr_of_output</span> : <code class="type">unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Unix.file_descr</code></pre><div class="info">
 Return the descriptor corresponding to an output. 
 <p>
 
@@ -185,7 +188,7 @@ Return the descriptor corresponding to an output.
 <b>Raises</b> <code>Invalid_arg</code> "Unix.descr_of_out_channel" if this input
       channel doesn't have a file descriptor<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALopen_process_in"></a>open_process_in : <code class="type">?autoclose:bool -> ?cleanup:bool -> string -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info">
+<pre><span id="VALopen_process_in"><span class="keyword">val</span> open_process_in</span> : <code class="type">?autoclose:bool -> ?cleanup:bool -> string -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info">
 High-level pipe and process management. This function
     runs the given command in parallel with the program.
     The standard output of the command is redirected to a pipe,
@@ -200,7 +203,7 @@ High-level pipe and process management. This function
 <div class="param_info"><code class="code">cleanup</code> : If true or unspecified, close the process when the <code class="code">input</code>
     is closed. If false, do nothing, in which case you
     will need to close the process yourself to ensure proper cleanup.</div>
-<pre><span class="keyword">val</span> <a name="VALopen_process_out"></a>open_process_out : <code class="type">?cleanup:bool -> string -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
+<pre><span id="VALopen_process_out"><span class="keyword">val</span> open_process_out</span> : <code class="type">?cleanup:bool -> string -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
 Same as <code class="code">Unix.open_process_in</code>, but redirect the standard input of
       the command to a pipe.  Data written to the returned output
       is sent to the standard input of the command.
@@ -213,7 +216,7 @@ Same as <code class="code">Unix.open_process_in</code>, but redirect the standar
 <div class="param_info"><code class="code">cleanup</code> : If true or unspecified, close the process when the <code class="code">output</code>
       is closed. If false, do nothing, in which case you
       will need to close the process yourself to ensure proper cleanup.</div>
-<pre><span class="keyword">val</span> <a name="VALopen_process"></a>open_process : <code class="type">?autoclose:bool -><br>       ?cleanup:bool -> string -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
+<pre><span id="VALopen_process"><span class="keyword">val</span> open_process</span> : <code class="type">?autoclose:bool -><br>       ?cleanup:bool -> string -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
 Same as <code class="code">Unix.open_process_out</code>, but redirects both the
       standard input and standard output of the command to pipes
       connected to the two returned <code class="code">input</code>/<code class="code">output</code>.
@@ -230,7 +233,7 @@ Same as <code class="code">Unix.open_process_out</code>, but redirects both the
       <code class="code">output</code> or the <code class="code">output</code> is closed. If false,
       do nothing, in which case you will need to close
       the process yourself to ensure proper cleanup.</div>
-<pre><span class="keyword">val</span> <a name="VALopen_process_full"></a>open_process_full : <code class="type">?autoclose:bool -><br>       ?cleanup:bool -><br>       string -><br>       string array -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> * <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info">
+<pre><span id="VALopen_process_full"><span class="keyword">val</span> open_process_full</span> : <code class="type">?autoclose:bool -><br>       ?cleanup:bool -><br>       string -><br>       string array -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> * <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info">
 Similar to <code class="code">Unix.open_process</code>, but the second argument
       specifies the environment passed to the command.  The result is
       a triple of <code class="code">input</code>/<code class="code">output</code> connected respectively
@@ -246,28 +249,28 @@ Similar to <code class="code">Unix.open_process</code>, but the second argument
       <code class="code">output</code> or the <code class="code">output</code> is closed. If false,
       do nothing, in which case you will need to close
       the process yourself to ensure proper cleanup.</div>
-<pre><span class="keyword">val</span> <a name="VALclose_process_in"></a>close_process_in : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> Unix.process_status</code></pre><div class="info">
+<pre><span id="VALclose_process_in"><span class="keyword">val</span> close_process_in</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> Unix.process_status</code></pre><div class="info">
 Close <code class="code">input</code> opened by <code class="code">Unix.open_process_in</code>,
       wait for the associated command to terminate,
       and return its termination status.<br>
 <b>Raises</b> <code>Unix_error(EBADF,</code> "close_process_in", "") if the argument
       is not an <code class="code">input</code> opened by <code class="code">Unix.open_process_in</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALclose_process_out"></a>close_process_out : <code class="type">unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Unix.process_status</code></pre><div class="info">
+<pre><span id="VALclose_process_out"><span class="keyword">val</span> close_process_out</span> : <code class="type">unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Unix.process_status</code></pre><div class="info">
 Close <code class="code">output</code> opened by <code class="code">Unix.open_process_out</code>,
       wait for the associated command to terminate,
       and return its termination status.<br>
 <b>Raises</b> <code>Unix_error(EBADF,</code> "close_process_out", "") if the argument
       is not an <code class="code">output</code> opened by <code class="code">Unix.open_process_out</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALclose_process"></a>close_process : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Unix.process_status</code></pre><div class="info">
+<pre><span id="VALclose_process"><span class="keyword">val</span> close_process</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Unix.process_status</code></pre><div class="info">
 Close <code class="code">input</code>/<code class="code">output</code> opened by <code class="code">Unix.open_process</code>,
       wait for the associated command to terminate,
       and return its termination status.<br>
 <b>Raises</b> <code>Unix_error(EBADF,</code> "close_process", "") if the argument
       is not pair of <code class="code">input</code>/<code class="code">output</code> opened by <code class="code">Unix.open_process</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALclose_process_full"></a>close_process_full : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> * <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -><br>       Unix.process_status</code></pre><div class="info">
+<pre><span id="VALclose_process_full"><span class="keyword">val</span> close_process_full</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> * <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -><br>       Unix.process_status</code></pre><div class="info">
 Close i/o opened by <code class="code">Unix.open_process_full</code>,
       wait for the associated command to terminate,
       and return its termination status.<br>
@@ -275,9 +278,8 @@ Close i/o opened by <code class="code">Unix.open_process_full</code>,
       is not a triple of <code class="code">input</code>/<code class="code">output</code> opened by <code class="code">Unix.open_process_full</code>.<br>
 </div>
 <br>
-<a name="6_Highlevelnetworkconnectionfunctions"></a>
-<h6>High-level network connection functions</h6><br>
-<pre><span class="keyword">val</span> <a name="VALopen_connection"></a>open_connection : <code class="type">?autoclose:bool -> Unix.sockaddr -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
+<span id="6_Highlevelnetworkconnectionfunctions"><h6>High-level network connection functions</h6></span><br>
+<pre><span id="VALopen_connection"><span class="keyword">val</span> open_connection</span> : <code class="type">?autoclose:bool -> Unix.sockaddr -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> * unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
 Connect to a server at the given address.
       Return a pair of input/output connected to the server. The
       connection is closed whenever either the input or the output
@@ -292,14 +294,14 @@ Connect to a server at the given address.
       the input will be closed according to the usual rules of module
       <a href="BatIO.html"><code class="code">BatIO</code></a>. Barring very specific needs (e.g. using file descriptors as
       locks), you probably want <code class="code">autoclose</code> to be <code class="code">true</code>.</div>
-<pre><span class="keyword">val</span> <a name="VALshutdown_connection"></a>shutdown_connection : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> unit</code></pre><div class="info">
+<pre><span id="VALshutdown_connection"><span class="keyword">val</span> shutdown_connection</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> unit</code></pre><div class="info">
 <span class="warning">Deprecated.</span>Connections do not require a special function anymore.
       Use regular function <a href="BatIO.html#VALclose_in"><code class="code">BatIO.close_in</code></a> for closing connections.<br>
 ``Shut down'' a connection established with <code class="code">Unix.open_connection</code>;
       that is, transmit an end-of-file condition to the server reading
       on the other side of the connection.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALestablish_server"></a>establish_server : <code class="type">?autoclose:bool -><br>       ?cleanup:bool -><br>       (<a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> unit) -> Unix.sockaddr -> unit</code></pre><div class="info">
+<pre><span id="VALestablish_server"><span class="keyword">val</span> establish_server</span> : <code class="type">?autoclose:bool -><br>       ?cleanup:bool -><br>       (<a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> unit) -> Unix.sockaddr -> unit</code></pre><div class="info">
 Establish a server on the given address.
 <p>
 
@@ -320,17 +322,22 @@ Establish a server on the given address.
       garbage-collected. If false, do nothing, in which case you will
       need to shutdown the connection using <a href="BatUnix.html#VALshutdown_connection"><code class="code">BatUnix.shutdown_connection</code></a> to
       ensure proper cleanup.</div>
-<pre><span class="keyword">val</span> <a name="VALis_directory"></a>is_directory : <code class="type">string -> bool</code></pre><div class="info">
-<code class="code">is_directory filename</code> returns true if <code class="code">filename</code> refers to a directory (or symlink of a directory<br>
+<br>
+<span id="6_Smalltools"><h6>Small tools</h6></span><br>
+<pre><span id="VALis_directory"><span class="keyword">val</span> is_directory</span> : <code class="type">string -> bool</code></pre><div class="info">
+<code class="code">is_directory filename</code> returns true if <code class="code">filename</code> refers to a directory (or symlink of a directory)<br>
+</div>
+<pre><span id="VALrestart_on_EINTR"><span class="keyword">val</span> restart_on_EINTR</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+<code class="code">restart_on_EINTR f x</code> invokes <code class="code">f</code> on <code class="code">x</code> repetedly until the function returns
+    a value or raise another exception than EINTR.<br>
 </div>
 <br>
-<a name="6_Threadsafetyinternals"></a>
-<h6>Thread-safety internals</h6>
+<span id="6_Threadsafetyinternals"><h6>Thread-safety internals</h6></span>
 <p>
 
    Unless you are attempting to adapt Batteries Included to a new model of
    concurrency, you probably won't need this.<br>
-<pre><span class="keyword">val</span> <a name="VALlock"></a>lock : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre><div class="info">
+<pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre><div class="info">
 A lock used to synchronize internal operations.
 <p>
 
@@ -340,18 +347,17 @@ A lock used to synchronize internal operations.
    concurrency model, set the lock appropriately.<br>
 </div>
 <br>
-<a name="6_Obsoletestuff"></a>
-<h6>Obsolete stuff</h6><br>
-<pre><span class="keyword">val</span> <a name="VALin_channel_of_descr"></a>in_channel_of_descr : <code class="type">Unix.file_descr -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info">
+<span id="6_Obsoletestuff"><h6>Obsolete stuff</h6></span><br>
+<pre><span id="VALin_channel_of_descr"><span class="keyword">val</span> in_channel_of_descr</span> : <code class="type">Unix.file_descr -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info">
 <span class="warning">Deprecated.</span>use <a href="BatUnix.html#VALinput_of_descr"><code class="code">BatUnix.input_of_descr</code></a><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALout_channel_of_descr"></a>out_channel_of_descr : <code class="type">Unix.file_descr -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
+<pre><span id="VALout_channel_of_descr"><span class="keyword">val</span> out_channel_of_descr</span> : <code class="type">Unix.file_descr -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
 <span class="warning">Deprecated.</span>use <a href="BatUnix.html#VALoutput_of_descr"><code class="code">BatUnix.output_of_descr</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdescr_of_in_channel"></a>descr_of_in_channel : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> Unix.file_descr</code></pre><div class="info">
+<pre><span id="VALdescr_of_in_channel"><span class="keyword">val</span> descr_of_in_channel</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> Unix.file_descr</code></pre><div class="info">
 <span class="warning">Deprecated.</span>use <a href="BatUnix.html#VALdescr_of_input"><code class="code">BatUnix.descr_of_input</code></a>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdescr_of_out_channel"></a>descr_of_out_channel : <code class="type">unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Unix.file_descr</code></pre><div class="info">
+<pre><span id="VALdescr_of_out_channel"><span class="keyword">val</span> descr_of_out_channel</span> : <code class="type">unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Unix.file_descr</code></pre><div class="info">
 <span class="warning">Deprecated.</span>use <a href="BatUnix.html#VALdescr_of_output"><code class="code">BatUnix.descr_of_output</code></a>.<br>
 </div>
 </body></html>

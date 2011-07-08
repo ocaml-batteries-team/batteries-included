@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -124,9 +127,8 @@
   parse command line arguments.<br>
 <hr width="100%">
 <br>
-<a name="6_Exceptions"></a>
-<h6>Exceptions</h6><br>
-<pre><span class="keyword">exception</span> <a name="EXCEPTIONOption_conflict"></a>Option_conflict <span class="keyword">of</span> <code class="type">string</code></pre>
+<span id="6_Exceptions"><h6>Exceptions</h6></span><br>
+<pre><span id="EXCEPTIONOption_conflict"><span class="keyword">exception</span> Option_conflict</span> <span class="keyword">of</span> <code class="type">string</code></pre>
 <div class="info">
 <code class="code">Option_conflict name</code> is raised by <code class="code">OptParse.OptParser.add</code>
       when two different options are added with identical
@@ -135,22 +137,20 @@
       conflicting option names.<br>
 </div>
 <br>
-<a name="6_Types"></a>
-<h6>Types</h6><br>
-<pre><span class="keyword">type</span> <a name="TYPEt"></a><code class="type"></code>t </pre>
+<span id="6_Types"><h6>Types</h6></span><br>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info">
 The type of an option parser.<br>
 </div>
 
-<pre><span class="keyword">type</span> <a name="TYPEgroup"></a><code class="type"></code>group </pre>
+<pre><span id="TYPEgroup"><span class="keyword">type</span> <code class="type"></code>group</span> </pre>
 <div class="info">
 The type of an option group.<br>
 </div>
 
 <br>
-<a name="6_Optionparsercreation"></a>
-<h6>Option parser creation</h6><br>
-<pre><span class="keyword">val</span> <a name="VALmake"></a>make : <code class="type">?usage:string -><br>       ?description:string -><br>       ?version:string -><br>       ?suppress_usage:bool -><br>       ?suppress_help:bool -><br>       ?prog:string -><br>       ?formatter:<a href="BatOptParse.Formatter.html#TYPEt">BatOptParse.Formatter.t</a> -> unit -> <a href="BatOptParse.OptParser.html#TYPEt">t</a></code></pre><div class="info">
+<span id="6_Optionparsercreation"><h6>Option parser creation</h6></span><br>
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">?usage:string -><br>       ?description:string -><br>       ?version:string -><br>       ?suppress_usage:bool -><br>       ?suppress_help:bool -><br>       ?only_leading_opts:bool -><br>       ?prog:string -><br>       ?formatter:<a href="BatOptParse.Formatter.html#TYPEt">BatOptParse.Formatter.t</a> -> unit -> <a href="BatOptParse.OptParser.html#TYPEt">t</a></code></pre><div class="info">
 Creates a new option parser with the given options.<br>
 <b>Returns</b> the new option parser.<br>
 </div>
@@ -165,9 +165,13 @@ Creates a new option parser with the given options.<br>
 <div class="param_info"><code class="code">suppress_usage</code> : Suppress the usage message if set.</div>
 <div class="param_info"><code class="code">suppress_help</code> : Suppress the 'help' option which is
       otherwise added by default.</div>
+<div class="param_info"><code class="code">only_leading_opts</code> : Only consider leading options (options
+      appearing before the first non-option argument). All arguments
+      from the first non-option argument on are returned as the
+      arguments.</div>
 <div class="param_info"><code class="code">prog</code> : Program name. The default is the base name of the
       executable.</div>
-<pre><span class="keyword">val</span> <a name="VALadd"></a>add : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?group:<a href="BatOptParse.OptParser.html#TYPEgroup">group</a> -><br>       ?help:string -><br>       ?hide:bool -><br>       ?short_name:char -><br>       ?short_names:char list -><br>       ?long_name:string -> ?long_names:string list -> 'a <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?group:<a href="BatOptParse.OptParser.html#TYPEgroup">group</a> -><br>       ?help:string -><br>       ?hide:bool -><br>       ?short_name:char -><br>       ?short_names:char list -><br>       ?long_name:string -> ?long_names:string list -> 'a <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a> -> unit</code></pre><div class="info">
 Add an option to the option parser.<br>
 <b>Raises</b> <code>Option_conflict</code> if the short name(s) or long name(s)
       have alread been used for some other option.<br>
@@ -187,35 +191,33 @@ Add an option to the option parser.<br>
       on the command line).</div>
 <div class="param_info"><code class="code">long_names</code> : is a list of names for the long form of the
       option (see <code class="code">long_name</code>).</div>
-<pre><span class="keyword">val</span> <a name="VALadd_group"></a>add_group : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?parent:<a href="BatOptParse.OptParser.html#TYPEgroup">group</a> -><br>       ?description:string -> string -> <a href="BatOptParse.OptParser.html#TYPEgroup">group</a></code></pre><div class="info">
+<pre><span id="VALadd_group"><span class="keyword">val</span> add_group</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?parent:<a href="BatOptParse.OptParser.html#TYPEgroup">group</a> -><br>       ?description:string -> string -> <a href="BatOptParse.OptParser.html#TYPEgroup">group</a></code></pre><div class="info">
 Add a group to the option parser.<br>
 <b>Returns</b> the new group.<br>
 </div>
 <div class="param_info"><code class="code">parent</code> : is the parent group (if any).</div>
 <div class="param_info"><code class="code">description</code> : is a description of the group.</div>
 <br>
-<a name="6_Outputanderrorhandling"></a>
-<h6>Output and error handling</h6><br>
-<pre><span class="keyword">val</span> <a name="VALerror"></a>error : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?chn:Pervasives.out_channel -> ?status:int -> string -> unit</code></pre><div class="info">
+<span id="6_Outputanderrorhandling"><h6>Output and error handling</h6></span><br>
+<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?chn:Pervasives.out_channel -> ?status:int -> string -> unit</code></pre><div class="info">
 Display an error message and exit the program. The error
       message is printed to the channel <code class="code">chn</code> (default is
       <code class="code">Pervasives.stderr</code>) and the program exits with exit status
       <code class="code">status</code> (default is 1).<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALusage"></a>usage : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -> ?chn:Pervasives.out_channel -> unit -> unit</code></pre><div class="info">
+<pre><span id="VALusage"><span class="keyword">val</span> usage</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -> ?chn:Pervasives.out_channel -> unit -> unit</code></pre><div class="info">
 Display the usage message to the channel <code class="code">chn</code> (default is
       <code class="code">Pervasives.stdout</code>) and return.<br>
 </div>
 <br>
-<a name="6_Optionparsing"></a>
-<h6>Option parsing</h6><br>
-<pre><span class="keyword">val</span> <a name="VALparse"></a>parse : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?first:int -> ?last:int -> string array -> string list</code></pre><div class="info">
+<span id="6_Optionparsing"><h6>Option parsing</h6></span><br>
+<pre><span id="VALparse"><span class="keyword">val</span> parse</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?first:int -> ?last:int -> string array -> string list</code></pre><div class="info">
 Parse arguments as if the arguments <code class="code">args.(first)</code>,
       <code class="code">args.(first+1)</code>, ..., <code class="code">args.(last)</code> had been given on the
       command line. By default <code class="code">first</code> is 0 and <code class="code">last</code> is the index
       of the last element of the array.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALparse_argv"></a>parse_argv : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -> string list</code></pre><div class="info">
+<pre><span id="VALparse_argv"><span class="keyword">val</span> parse_argv</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -> string list</code></pre><div class="info">
 Parse all the arguments in <code class="code">Sys.argv</code>.<br>
 </div>
 </body></html>

@@ -22,6 +22,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -86,6 +87,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -93,6 +95,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -120,14 +123,13 @@
   new option types and accessing the values of options.<br>
 <hr width="100%">
 <br>
-<a name="6_Exceptions"></a>
-<h6>Exceptions</h6><br>
-<pre><span class="keyword">exception</span> <a name="EXCEPTIONNo_value"></a>No_value</pre>
+<span id="6_Exceptions"><h6>Exceptions</h6></span><br>
+<pre><span id="EXCEPTIONNo_value"><span class="keyword">exception</span> No_value</span></pre>
 <div class="info">
 <code class="code">No_value</code> gets raised by <code class="code">OptParse.Opt.get</code> when an option
       value is not available.<br>
 </div>
-<pre><span class="keyword">exception</span> <a name="EXCEPTIONOption_error"></a>Option_error <span class="keyword">of</span> <code class="type">string * string</code></pre>
+<pre><span id="EXCEPTIONOption_error"><span class="keyword">exception</span> Option_error</span> <span class="keyword">of</span> <code class="type">string * string</code></pre>
 <div class="info">
 This exception signals that an option value is invalid. The
       first string contains the option string ('-x' or '--long-name')
@@ -138,7 +140,7 @@ This exception signals that an option value is invalid. The
       and can never "escape" the scope of a <code class="code">OptParse.OptParser.parse</code>.
       The user should therefore not attempt to catch it.<br>
 </div>
-<pre><span class="keyword">exception</span> <a name="EXCEPTIONOption_help"></a>Option_help</pre>
+<pre><span id="EXCEPTIONOption_help"><span class="keyword">exception</span> Option_help</span></pre>
 <div class="info">
 When an option wants to display a usage message, this exception
       may be raised.  It can never "escape" the scope of a
@@ -146,9 +148,8 @@ When an option wants to display a usage message, this exception
       attempt to catch it.<br>
 </div>
 <br>
-<a name="6_Types"></a>
-<h6>Types</h6><br>
-<br><code><span class="keyword">type</span> <a name="TYPEt"></a><code class="type">'a</code> t = {</code><table class="typetable">
+<span id="6_Types"><h6>Types</h6></span><br>
+<br><code><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
@@ -222,9 +223,8 @@ Option type.
 </div>
 
 <br>
-<a name="6_Optionvalueretrieval"></a>
-<h6>Option value retrieval</h6><br>
-<pre><span class="keyword">val</span> <a name="VALget"></a>get : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<span id="6_Optionvalueretrieval"><h6>Option value retrieval</h6></span><br>
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Get the value of an option.<br>
 <b>Raises</b> <code>No_value</code> if no default values has been given
       and the option value has not been set from the command line.<br>
@@ -232,24 +232,23 @@ Get the value of an option.<br>
       encountered while parsing the command line, the default value is
       returned.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALset"></a>set : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
 Set the value of an option.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALopt"></a>opt : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
+<pre><span id="VALopt"><span class="keyword">val</span> opt</span> : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
 Get the value of an option as an optional value.<br>
 <b>Returns</b> <code class="code">Some x</code> if the option has value <code class="code">x</code> (either by default or
       from the command line). If the option doesn't have a value <code class="code">None</code>
       is returned.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALis_set"></a>is_set : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<pre><span id="VALis_set"><span class="keyword">val</span> is_set</span> : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Find out if the option has a value (either by default or
       from the command line).<br>
 <b>Returns</b> <code class="code">True</code> iff the option has a value.<br>
 </div>
 <br>
-<a name="6_Optioncreation"></a>
-<h6>Option creation</h6><br>
-<pre><span class="keyword">val</span> <a name="VALvalue_option"></a>value_option : <code class="type">string -><br>       'a option -><br>       (string -> 'a) -> (exn -> string -> string) -> 'a <a href="BatOptParse.Opt.html#TYPEt">t</a></code></pre><div class="info">
+<span id="6_Optioncreation"><h6>Option creation</h6></span><br>
+<pre><span id="VALvalue_option"><span class="keyword">val</span> value_option</span> : <code class="type">string -><br>       'a option -><br>       (string -> 'a) -> (exn -> string -> string) -> 'a <a href="BatOptParse.Opt.html#TYPEt">t</a></code></pre><div class="info">
 Make an option which takes a single argument.
 <p>
 
@@ -261,11 +260,11 @@ Make an option which takes a single argument.
       metavariable of the option.
 <p>
 
-      <code class="code">default</code> is the default value of the option. If <code class="code">None</code>, the the
+      <code class="code">default</code> is the default value of the option. If <code class="code">None</code>, the
       option has no default value.<br>
 <b>Returns</b> the newly created option.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALcallback_option"></a>callback_option : <code class="type">string -><br>       (string -> 'a) -><br>       (exn -> string -> string) -> ('a -> unit) -> unit <a href="BatOptParse.Opt.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALcallback_option"><span class="keyword">val</span> callback_option</span> : <code class="type">string -><br>       (string -> 'a) -><br>       (exn -> string -> string) -> ('a -> unit) -> unit <a href="BatOptParse.Opt.html#TYPEt">t</a></code></pre><div class="info">
 Make a callback option which takes a single argument.
 <p>
 

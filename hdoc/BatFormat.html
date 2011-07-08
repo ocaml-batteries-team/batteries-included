@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -127,36 +130,32 @@
 <b>Author(s):</b> Pierre Weis (Base module), David Teller<br>
 <hr width="100%">
 <br>
-<a name="6_Boxes"></a>
-<h6>Boxes</h6><br>
+<span id="6_Boxes"><h6>Boxes</h6></span><br>
 <br>
-<a name="6_Redirectingformatteroutput"></a>
-<h6>Redirecting formatter output</h6><br>
-<pre><span class="keyword">val</span> <a name="VALset_formatter_output"></a>set_formatter_output : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><pre><span class="keyword">val</span> <a name="VALformatter_of_output"></a>formatter_of_output : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> Format.formatter</code></pre><div class="info">
+<span id="6_Redirectingformatteroutput"><h6>Redirecting formatter output</h6></span><br>
+<pre><span id="VALset_formatter_output"><span class="keyword">val</span> set_formatter_output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><pre><span id="VALformatter_of_output"><span class="keyword">val</span> formatter_of_output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> Format.formatter</code></pre><div class="info">
 <code class="code">formatter_of_output out</code> returns a new formatter that
    writes to the corresponding output <code class="code">out</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALstd_formatter"></a>std_formatter : <code class="type">Format.formatter</code></pre><div class="info">
+<pre><span id="VALstd_formatter"><span class="keyword">val</span> std_formatter</span> : <code class="type">Format.formatter</code></pre><div class="info">
 The standard formatter used by the formatting functions
    above. It is defined as <code class="code">formatter_of_output stdout</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALerr_formatter"></a>err_formatter : <code class="type">Format.formatter</code></pre><div class="info">
+<pre><span id="VALerr_formatter"><span class="keyword">val</span> err_formatter</span> : <code class="type">Format.formatter</code></pre><div class="info">
 A formatter to use with formatting functions below for
    output to standard error. It is defined as
    <code class="code">formatter_of_output stderr</code>.<br>
 </div>
 <br>
-<a name="6_Basicfunctionstousewithformatters"></a>
-<h6>Basic functions to use with formatters</h6><br>
-<pre><span class="keyword">val</span> <a name="VALpp_set_formatter_output"></a>pp_set_formatter_output : <code class="type">Format.formatter -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><div class="info">
-<a name="6_Deprecated"></a>
-<h6>Deprecated</h6><br>
+<span id="6_Basicfunctionstousewithformatters"><h6>Basic functions to use with formatters</h6></span><br>
+<pre><span id="VALpp_set_formatter_output"><span class="keyword">val</span> pp_set_formatter_output</span> : <code class="type">Format.formatter -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><div class="info">
+<span id="6_Deprecated"><h6>Deprecated</h6></span><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALset_formatter_out_channel"></a>set_formatter_out_channel : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><div class="info">
+<pre><span id="VALset_formatter_out_channel"><span class="keyword">val</span> set_formatter_out_channel</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><div class="info">
 Redirect the pretty-printer output to the given channel.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALformatter_of_out_channel"></a>formatter_of_out_channel : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> Format.formatter</code></pre><div class="info">
+<pre><span id="VALformatter_of_out_channel"><span class="keyword">val</span> formatter_of_out_channel</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> Format.formatter</code></pre><div class="info">
 <code class="code">formatter_of_out_channel oc</code> returns a new formatter that
    writes to the corresponding channel <code class="code">oc</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALpp_set_formatter_out_channel"></a>pp_set_formatter_out_channel : <code class="type">Format.formatter -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre></body></html>
+<pre><span id="VALpp_set_formatter_out_channel"><span class="keyword">val</span> pp_set_formatter_out_channel</span> : <code class="type">Format.formatter -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre></body></html>

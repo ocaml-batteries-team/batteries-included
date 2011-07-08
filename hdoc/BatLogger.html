@@ -23,6 +23,7 @@
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatCamomile" rel="Chapter" href="BatCamomile.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharEncodings" rel="Chapter" href="BatCharEncodings.html">
@@ -87,6 +88,7 @@
 <link title="BatScanf" rel="Chapter" href="BatScanf.html">
 <link title="BatSeq" rel="Chapter" href="BatSeq.html">
 <link title="BatSet" rel="Chapter" href="BatSet.html">
+<link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
 <link title="BatStd" rel="Chapter" href="BatStd.html">
 <link title="BatStr" rel="Chapter" href="BatStr.html">
@@ -94,6 +96,7 @@
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUChar" rel="Chapter" href="BatUChar.html">
 <link title="BatUCharParser" rel="Chapter" href="BatUCharParser.html">
 <link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
@@ -119,8 +122,7 @@
 </div>
 <center><h1>Module <a href="type_BatLogger.html">BatLogger</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> BatLogger: <code class="code">sig</code> <a href="BatLogger.html">..</a> <code class="code">end</code></pre><a name="1_LoggingLibrary"></a>
-<h1>Logging Library</h1>
+<pre><span class="keyword">module</span> BatLogger: <code class="code">sig</code> <a href="BatLogger.html">..</a> <code class="code">end</code></pre><span id="1_LoggingLibrary"><h1>Logging Library</h1></span>
 <p>
 
 This module defines functions which implement a flexible error logging
@@ -128,11 +130,10 @@ system for applications.<br>
 <b>Author(s):</b> Warren Harris, Metaweb Technologies<br>
 <hr width="100%">
 <br>
-<a name="6_logmodules"></a>
-<h6>log modules</h6><br>
-<pre><span class="keyword">type</span> <a name="TYPElog"></a><code class="type"></code>log </pre>
+<span id="6_logmodules"><h6>log modules</h6></span><br>
+<pre><span id="TYPElog"><span class="keyword">type</span> <code class="type"></code>log</span> </pre>
 
-<br><code><span class="keyword">type</span> <a name="TYPElevel"></a><code class="type"></code>level = </code><table class="typetable">
+<br><code><span id="TYPElevel"><span class="keyword">type</span> <code class="type"></code>level</span> = </code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
@@ -184,26 +185,25 @@ system for applications.<br>
 </tr></table>
 
 
-<pre><span class="keyword">val</span> <a name="VALmake_log"></a>make_log : <code class="type">string -> <a href="BatLogger.html#TYPElog">log</a></code></pre><div class="info">
+<pre><span id="VALmake_log"><span class="keyword">val</span> make_log</span> : <code class="type">string -> <a href="BatLogger.html#TYPElog">log</a></code></pre><div class="info">
 <code class="code">make_log name</code> returns a new logger.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlog_name"></a>log_name : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> string</code></pre><div class="info">
+<pre><span id="VALlog_name"><span class="keyword">val</span> log_name</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> string</code></pre><div class="info">
 <code class="code">log_name logger</code> returns the name of the logger.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlog_enable"></a>log_enable : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> unit</code></pre><div class="info">
+<pre><span id="VALlog_enable"><span class="keyword">val</span> log_enable</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> unit</code></pre><div class="info">
 <code class="code">log_enable logger level</code> enables a log level for a logger.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlog_level"></a>log_level : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a></code></pre><div class="info">
+<pre><span id="VALlog_level"><span class="keyword">val</span> log_level</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a></code></pre><div class="info">
 <code class="code">log_level logger</code> returns the currently enabled level for a logger.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALlog_enabled"></a>log_enabled : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> bool</code></pre><div class="info">
+<pre><span id="VALlog_enabled"><span class="keyword">val</span> log_enabled</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> bool</code></pre><div class="info">
 <code class="code">log_enabled logger level</code> returns true if the specified level is
        currently enabled for the logger.<br>
 </div>
 <br>
-<a name="6_logevents"></a>
-<h6>log events</h6><br>
-<pre><span class="keyword">type</span> <a name="TYPEevent"></a><code class="type"></code>event = <code class="type">string * (string * string) list</code> </pre>
+<span id="6_logevents"><h6>log events</h6></span><br>
+<pre><span id="TYPEevent"><span class="keyword">type</span> <code class="type"></code>event</span> = <code class="type">string * (string * string) list</code> </pre>
 <div class="info">
 A log <code class="code">event</code> consists of an event name and a list of key-value
        parameters (an association list). Events are constructed by
@@ -211,7 +211,7 @@ A log <code class="code">event</code> consists of an event name and a list of ke
        to render them to any logging output stream.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALlog"></a>log : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> (unit -> <a href="BatLogger.html#TYPEevent">event</a>) -> unit</code></pre><div class="info">
+<pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> (unit -> <a href="BatLogger.html#TYPEevent">event</a>) -> unit</code></pre><div class="info">
 <code class="code">log logger level event_fun</code> raises a log event if if the
        specified level is currently enabled for the logger. The
        function <code class="code">event_fun ()</code> is called to return the event record,
@@ -227,7 +227,7 @@ A log <code class="code">event</code> consists of an event name and a list of ke
        parameter) when the <code class="code">INFO</code> log level was enabled for the
        <code class="code">io_log</code> logger.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALwith_log"></a>with_log : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -><br>       <a href="BatLogger.html#TYPElevel">level</a> -><br>       (unit -> <a href="BatLogger.html#TYPEevent">event</a>) -> ?result:('a -> string) -> (unit -> 'a) -> 'a</code></pre><div class="info">
+<pre><span id="VALwith_log"><span class="keyword">val</span> with_log</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -><br>       <a href="BatLogger.html#TYPElevel">level</a> -><br>       (unit -> <a href="BatLogger.html#TYPEevent">event</a>) -> ?result:('a -> string) -> (unit -> 'a) -> 'a</code></pre><div class="info">
 <code class="code">with_log logger level event_fun ?result body</code> logs an event
        before and after calling <code class="code">body ()</code>. The function <code class="code">event_fun ()</code>
        is called to return the event record to be logged. After the
@@ -244,9 +244,8 @@ A log <code class="code">event</code> consists of an event name and a list of ke
        parameter.<br>
 </div>
 <br>
-<a name="6_logformatters"></a>
-<h6>log formatters</h6><br>
-<pre><span class="keyword">type</span> <a name="TYPEformatter"></a><code class="type"></code>formatter = <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> <a href="BatLogger.html#TYPEevent">event</a> -> float -> unit</code> </pre>
+<span id="6_logformatters"><h6>log formatters</h6></span><br>
+<pre><span id="TYPEformatter"><span class="keyword">type</span> <code class="type"></code>formatter</span> = <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> <a href="BatLogger.html#TYPEevent">event</a> -> float -> unit</code> </pre>
 <div class="info">
 the type of a log formatter is a function that takes the
        logger, the level of the log statement (which will be the
@@ -255,15 +254,15 @@ the type of a log formatter is a function that takes the
        created.<br>
 </div>
 
-<pre><span class="keyword">val</span> <a name="VALregister_formatter"></a>register_formatter : <code class="type">string -> <a href="BatLogger.html#TYPEformatter">formatter</a> -> unit</code></pre><div class="info">
+<pre><span id="VALregister_formatter"><span class="keyword">val</span> register_formatter</span> : <code class="type">string -> <a href="BatLogger.html#TYPEformatter">formatter</a> -> unit</code></pre><div class="info">
 <code class="code">register_formatter name formatter</code> registers a named log
        formatter. The name is only used for subsequent calls to
        identify the formatter via <code class="code">unregister_formatter</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALunregister_formatter"></a>unregister_formatter : <code class="type">string -> unit</code></pre><div class="info">
+<pre><span id="VALunregister_formatter"><span class="keyword">val</span> unregister_formatter</span> : <code class="type">string -> unit</code></pre><div class="info">
 <code class="code">unregister_formatter name</code> unregisters a named log formatter.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmake_std_formatter"></a>make_std_formatter : <code class="type">Pervasives.out_channel -> <a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
+<pre><span id="VALmake_std_formatter"><span class="keyword">val</span> make_std_formatter</span> : <code class="type">Pervasives.out_channel -> <a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
 <code class="code">make_std_formatter oc</code> constructs a formatter from an output
        channel.  This formatter will format log events as
        tab-separated <code class="code">&lt;keyword&gt;:&lt;value&gt;</code> pairs. The resulting
@@ -286,18 +285,18 @@ the type of a log formatter is a function that takes the
 
        <pre><code class="code">D:2009-01-26T00:47:45.033329Z   E:io.connect   L:INFO   I:1   ADDR:localhost:8080</code></pre><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALstderr_formatter"></a>stderr_formatter : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
+<pre><span id="VALstderr_formatter"><span class="keyword">val</span> stderr_formatter</span> : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
 <code class="code">stderr_formatter</code> is a standard formatter that outputs log
        events to stderr using the same format as
        <code class="code">make_std_formatter</code>. The resulting formatter must be
        registered via <code class="code">register_formatter</code> or supplied to <code class="code">init</code> or
        <code class="code">init_from_string</code> to be used when events are raised.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALnull_formatter"></a>null_formatter : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
+<pre><span id="VALnull_formatter"><span class="keyword">val</span> null_formatter</span> : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
 <code class="code">null_formatter</code> is a formatter that does not output any
        events, but simply discards them.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALmake_dbg_formatter"></a>make_dbg_formatter : <code class="type">Pervasives.out_channel -> <a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
+<pre><span id="VALmake_dbg_formatter"><span class="keyword">val</span> make_dbg_formatter</span> : <code class="type">Pervasives.out_channel -> <a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
 <code class="code">make_dbg_formatter oc</code> constructs a debug formatter from an
        output channel. The debug formatter outputs simplified format
        that is easier to read for debugging purposes and displays
@@ -320,7 +319,7 @@ the type of a log formatter is a function that takes the
        ### io.listener ADDR:localhost:8080 RESULT:- [DEBUG]
        </code></pre><br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALdbg_formatter"></a>dbg_formatter : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
+<pre><span id="VALdbg_formatter"><span class="keyword">val</span> dbg_formatter</span> : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
 <code class="code">dbg_formatter</code> is a debug formatter that outputs log events to
        stderr using the same format as <code class="code">make_dbg_formatter</code>. The
        resulting formatter must be registered via <code class="code">register_formatter</code>
@@ -328,9 +327,8 @@ the type of a log formatter is a function that takes the
        events are raised.<br>
 </div>
 <br>
-<a name="6_loggerinitialization"></a>
-<h6>logger initialization</h6><br>
-<pre><span class="keyword">val</span> <a name="VALinit"></a>init : <code class="type">(string * <a href="BatLogger.html#TYPElevel">level</a>) list -> <a href="BatLogger.html#TYPEformatter">formatter</a> -> unit</code></pre><div class="info">
+<span id="6_loggerinitialization"><h6>logger initialization</h6></span><br>
+<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">(string * <a href="BatLogger.html#TYPElevel">level</a>) list -> <a href="BatLogger.html#TYPEformatter">formatter</a> -> unit</code></pre><div class="info">
 <code class="code">init name_level_list formatter</code> initializes the logging
         system enabling the specified levels for each named
         logger. The formatter is the initial formatter for any log
@@ -338,7 +336,7 @@ the type of a log formatter is a function that takes the
         "default" (other formatters may be registered by
         <code class="code">register_formatter</code>).<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALinit_from_string"></a>init_from_string : <code class="type">string -> <a href="BatLogger.html#TYPEformatter">formatter</a> -> unit</code></pre><div class="info">
+<pre><span id="VALinit_from_string"><span class="keyword">val</span> init_from_string</span> : <code class="type">string -> <a href="BatLogger.html#TYPEformatter">formatter</a> -> unit</code></pre><div class="info">
 <code class="code">init_from_string name_level_string formatter</code> initializes the
        logging system enabling the specified levels for each named
        logger. The string must be a comma separated list of <code class="code">&lt;logger
@@ -352,15 +350,14 @@ the type of a log formatter is a function that takes the
        <code class="code">register_formatter</code>).<br>
 </div>
 <br>
-<a name="6_logutilities"></a>
-<h6>log utilities</h6><br>
-<pre><span class="keyword">val</span> <a name="VALlevel_of_name"></a>level_of_name : <code class="type">string -> <a href="BatLogger.html#TYPElevel">level</a></code></pre><div class="info">
+<span id="6_logutilities"><h6>log utilities</h6></span><br>
+<pre><span id="VALlevel_of_name"><span class="keyword">val</span> level_of_name</span> : <code class="type">string -> <a href="BatLogger.html#TYPElevel">level</a></code></pre><div class="info">
 <code class="code">level_of_name str</code> returns the <code class="code">level</code> associated with <code class="code">str</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALname_of_level"></a>name_of_level : <code class="type"><a href="BatLogger.html#TYPElevel">level</a> -> string</code></pre><div class="info">
+<pre><span id="VALname_of_level"><span class="keyword">val</span> name_of_level</span> : <code class="type"><a href="BatLogger.html#TYPElevel">level</a> -> string</code></pre><div class="info">
 <code class="code">name_of_level level</code> returns the name of the specified <code class="code">level</code>.<br>
 </div>
-<pre><span class="keyword">val</span> <a name="VALformat_timestamp"></a>format_timestamp : <code class="type">Pervasives.out_channel -> float -> unit</code></pre><div class="info">
+<pre><span id="VALformat_timestamp"><span class="keyword">val</span> format_timestamp</span> : <code class="type">Pervasives.out_channel -> float -> unit</code></pre><div class="info">
 <code class="code">format_timestamp oc timestamp</code> prints an ISO-8601 formatted
        timestamp (extended to specify higher-resolution seconds) to
        the output channel, <code class="code">oc</code>.<br>
