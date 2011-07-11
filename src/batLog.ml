@@ -54,17 +54,21 @@ let write_flags ?fp oc fs =
   let t = lazy (Unix.localtime (Unix.time ())) in
   BatList.print ~first:"" ~sep:" " ~last:":" (print_flag ?fp t) oc fs
 
+
+(*  BatPrintf.fprintf !output "%a%s%s\n" (write_flags ?fp) !flags !prefix s *)
 let print ?fp s =
   write_flags ?fp !output !flags;
   nwrite !output !prefix;
   nwrite !output s;
   write !output '\n'
 
+(*  BatPrintf.fprintf !output ("%a%s" ^^ fmt ^^"\n") (write_flags ?fp) !flags !prefix *)
 let printf ?fp fmt =
   write_flags ?fp !output !flags;
   nwrite !output !prefix;
   BatPrintf.fprintf !output fmt
 
+(*  BatPrintf.kfprintf (fun _ -> exit 1) !output "%a%s%s\n" (write_flags ?fp) !flags !prefix s *)
 let fatal ?fp s =
   write_flags ?fp !output !flags;
   nwrite !output !prefix;
@@ -76,10 +80,6 @@ let fatalf ?fp fmt =
   BatPrintf.kfprintf (fun _ -> exit 1) !output ("%a%s" ^^ fmt ^^ "%!")
     (write_flags ?fp) !flags
     !prefix
-(** [fatalf] allows a format string (as [Printf.printf])and the
-    arguments to that format string to build the logging message.
-    Exits the program with return code 1. *)
-
 
 module type S = sig
   val out: 'a output
