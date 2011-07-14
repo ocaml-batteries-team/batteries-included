@@ -109,7 +109,7 @@
 
 	(**{6 Iterators}*)
 
-	val iteri : (int -> 'a -> 'b) -> 'a list -> unit
+	val iteri : (int -> 'a -> unit) -> 'a list -> unit
 	(** [iteri f l] will call [(f 0 a0);(f 1 a1) ... (f n an)] where
 	 [a0..an] are the elements of the list [l]. *)
 
@@ -511,7 +511,7 @@ end
 	module Labels : sig
 	  val init : int -> f:(int -> 'a) -> 'a list
 	  val iter : f:('a -> unit) -> 'a list -> unit
-	  val iteri : f:(int -> 'a -> 'b) -> 'a list -> unit
+	  val iteri : f:(int -> 'a -> unit) -> 'a list -> unit
 	  val map : f:('a -> 'b) -> 'a list -> 'b list
 	  val mapi : f:(int -> 'a -> 'b) -> 'a list -> 'b list
 	  val rev_map : f:('a -> 'b) -> 'a list -> 'b list
