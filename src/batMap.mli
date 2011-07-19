@@ -602,6 +602,11 @@ module Infix : sig
         to [add key value map]*)
 end
 
+(** Map find and insert from Infix *)
+  val (-->) : ('a, 'b) t -> 'a -> 'b
+  val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
+
+
 val bindings : ('key, 'a) t -> ('key * 'a) list
 (** Return the list of all bindings of the given map.
     The returned list is sorted in increasing key order.

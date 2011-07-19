@@ -1011,3 +1011,5 @@ struct
   let (-->) map key = find key map
   let (<--) map (key, value) = add key value map
 end
+
+include Infix
