@@ -567,12 +567,12 @@ let replace ~str ~sub ~by =
 **)
 
 
-let global_replace ~str ~sub ~by =
+let nreplace ~str ~sub ~by =
   let parts = nsplit str sub in
   String.concat by parts
-(**T String.global_replace
-   global_replace ~str:"bar foo aaa bar" ~sub:"aa" ~by:"foo" = "bar foo afoo bar"
-   global_replace ~str:"bar foo bar" ~sub:"bar" ~by:"foo" = "foo foo foo"
+(**T String.nreplace
+   nreplace ~str:"bar foo aaa bar" ~sub:"aa" ~by:"foo" = "bar foo afoo bar"
+   nreplace ~str:"bar foo bar" ~sub:"bar" ~by:"foo" = "foo foo foo"
 **)
 
 
@@ -820,7 +820,7 @@ let concat        = concat
 let escaped       = escaped
 let replace_chars = replace_chars
 let replace       = replace
-let global_replace= global_replace
+let nreplace      = nreplace
 let split         = split
 let repeat        = repeat
 let rsplit        = rsplit
