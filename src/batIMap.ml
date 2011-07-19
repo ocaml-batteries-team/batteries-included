@@ -151,12 +151,21 @@ let iter proc m =
 let rec map ?(eq=(==)) f m =
   if is_empty m then empty else
   let n1, n2, v = root m in
-  let l = map f (left_branch m) in
-  let r = map f (right_branch m) in
+  let l = map ~eq f (left_branch m) in
+  let r = map ~eq f (right_branch m) in
   let v = f v in
   make eq l (n1, n2, v) r
 
 let mapi ?eq f m = fold (fun n v a -> add ?eq n (f n v) a) m empty
+
+let rec map_range ?(eq=(==)) f m =
+  if is_empty m then empty else
+  let n1, n2, v = root m in
+  let l = map_range ~eq f (left_branch m) in
+  let r = map_range ~eq f (right_branch m) in
+  let v = f n1 n2 v in
+  make eq l (n1, n2, v) r
+
 
 let rec set_to_map s v =
   if is_empty s then empty else
