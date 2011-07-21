@@ -383,14 +383,13 @@ let of_ustring ustr =
         add_slice rope start_byte_idx current_byte_idx slice_size
 
     end else begin
-      let next_byte_idx = UTF8.next ustr current_byte_idx in
-
       if slice_size = leaf_size then
         (* We have enough unicode characters for this slice, extract
            it and add a leaf to the rope: *)
         loop (add_slice rope start_byte_idx current_byte_idx slice_size)
-          next_byte_idx next_byte_idx 0
+          current_byte_idx current_byte_idx 0
       else
+	let next_byte_idx = UTF8.next ustr current_byte_idx in
         loop rope start_byte_idx next_byte_idx (slice_size + 1)
     end
   and add_slice rope start_byte_idx end_byte_idx slice_size =
