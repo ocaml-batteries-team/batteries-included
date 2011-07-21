@@ -403,10 +403,15 @@ let of_ustring ustr =
   loop Empty 0 0 0
 
 let of_string s =
-  (* Validate + unsafe to avoid an extra copy (it is OK because
-     of_ustring do not reuse its argument in the resulting rope): *)
+  (* Validate + unsafe to avoid an extra copy.  This is safe because
+     of_ustring does not reuse its argument in the result. *)
   UTF8.validate s;
   of_ustring (UTF8.of_string_unsafe s)
+
+(**Q rope/string_conversions
+   Q.string (fun s -> try UTF8.validate s; (of_string s |> to_string = s) with UTF8.Malformed_code -> true)
+   Q.printable_string (fun s -> of_string s |> to_string = s)
+**)
 
 let append_us r us = append r (of_ustring us)
 
