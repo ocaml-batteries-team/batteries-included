@@ -35,6 +35,10 @@ let bind f = function
   | None -> None
   | Some v -> f v
 
+let apply = function
+  | None -> (fun x -> x)
+  | Some f -> f
+
 let default v = function
 	| None -> v
 	| Some v -> v

@@ -56,6 +56,9 @@ let interesting_positions dataset =
 ]}
 *)
 
+val apply : ('a -> 'a) option -> 'a -> 'a
+(** [apply None x] returns [x] and [apply (Some f) x] returns [f x] *)
+
 val default : 'a -> 'a option -> 'a
 (** [default x (Some v)] returns [v] and [default x None] returns [x]. *)
 
