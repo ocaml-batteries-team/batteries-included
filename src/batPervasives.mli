@@ -440,12 +440,16 @@ val first : ('a -> 'b) -> ('a * 'c) -> ('b * 'c)
 (** Apply a function to the first element of a pair.
 
     [first f (x, y)] is [(f x, y)]
+
+    @deprecated Use {!Tuple.Tuple2.map1} instead.
  *)
 
 val second : ('a -> 'b) -> ('c * 'a) -> ('c * 'b)
 (** Apply a function to the second element of a pair.
 
     [second f (x, y)] is [(x, f y)]
+
+    @deprecated Use {!Tuple.Tuple2.map2} instead.
  *)
 
 

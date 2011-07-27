@@ -77,10 +77,10 @@ module Tuple2 : sig
     (** Equivalent to {!BatPervasives.(***)}. *)
 
   val map1 : ('a -> 'c) -> ('a * 'b) -> ('c * 'b)
-    (** Equivalent to {!BatPervasives.first}. *)
+    (** Equivalent to {!BatPervasives.first}, which is now deprecated. *)
     
   val map2 : ('b -> 'c) -> ('a * 'b) -> ('a * 'c)
-    (** Equivalent to {!BatPervasives.second}. *)
+    (** Equivalent to {!BatPervasives.second}, which is now deprecated. *)
 
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
