@@ -21,6 +21,7 @@
 (** Functions for pairs of values
 
     @author Edgar Friendly
+    @deprecated Use {!Tuple.Tuple2} instead.
 *)
 
 type ('a,'b) t = 'a * 'b
