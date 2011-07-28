@@ -27,6 +27,8 @@ module Tuple2 = struct
       
   external first : 'a * 'b -> 'a = "%field0"
   external second : 'a * 'b -> 'b = "%field1"
+
+  let swap (a,b) = (b,a)
       
   let map f g (a,b) =
     let a = f a in

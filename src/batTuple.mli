@@ -26,8 +26,12 @@
     extract a single element. Also, multiple elements can be
     extracted. For example, {!Tuple3.prj13} returns the first and
     third elements of a 3-tuple. All possible combinations are
-    provided. Note there are no [prj] functions in Tuple2 because
-    [first] and [second] already cover all possibilities.
+    provided.
+
+    Note there are no [prj] functions in Tuple2 because [first] and
+    [second] already cover all possibilities. However, [swap] is
+    provided, which can be thought of as projecting items in a
+    different order.
 
     Mapping. Apply a function to one or all elements of a
     tuple. Functions [map1], [map2], etc. map a given function to the
@@ -70,6 +74,8 @@ module Tuple2 : sig
 
   external second : 'a * 'b -> 'b = "%field1"
       (** Equivalent to {!Pervasives.snd}. *)
+
+  val swap : ('a * 'b) -> ('b * 'a)
 
   val map : ('a -> 'c) -> ('b -> 'd) -> 'a * 'b -> 'c * 'd
     (** Equivalent to {!BatPervasives.(***)}. *)
