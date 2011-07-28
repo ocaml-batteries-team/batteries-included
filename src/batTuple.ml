@@ -78,9 +78,9 @@ module Tuple3 = struct
   let second (_,b,_) = b
   let third (_,_,c) = c
 
-  let prj12 (a,b,_) = (a,b)
-  let prj13 (a,_,c) = (a,c)
-  let prj23 (_,b,c) = (b,c)
+  let get12 (a,b,_) = (a,b)
+  let get13 (a,_,c) = (a,c)
+  let get23 (_,b,c) = (b,c)
 
   let map f1 f2 f3 (a,b,c) =
     let a = f1 a in
@@ -139,16 +139,16 @@ module Tuple4 = struct
   let third (_,_,c,_) = c
   let fourth (_,_,_,d) = d
 
-  let prj12 (a,b,_,_) = (a,b)
-  let prj13 (a,_,c,_) = (a,c)
-  let prj14 (a,_,_,d) = (a,d)
-  let prj23 (_,b,c,_) = (b,c)
-  let prj24 (_,b,_,d) = (b,d)
-  let prj34 (_,_,c,d) = (c,d)
+  let get12 (a,b,_,_) = (a,b)
+  let get13 (a,_,c,_) = (a,c)
+  let get14 (a,_,_,d) = (a,d)
+  let get23 (_,b,c,_) = (b,c)
+  let get24 (_,b,_,d) = (b,d)
+  let get34 (_,_,c,d) = (c,d)
 
-  let prj123 (a,b,c,_) = (a,b,c)
-  let prj124 (a,b,_,d) = (a,b,d)
-  let prj234 (_,b,c,d) = (b,c,d)
+  let get123 (a,b,c,_) = (a,b,c)
+  let get124 (a,b,_,d) = (a,b,d)
+  let get234 (_,b,c,d) = (b,c,d)
 
   let map f1 f2 f3 f4 (a,b,c,d) =
     let a = f1 a in
@@ -217,33 +217,33 @@ module Tuple5 = struct
   let fourth (_,_,_,d,_) = d
   let fifth (_,_,_,_,e) = e
 
-  let prj12 (a,b,_,_,_) = (a,b)
-  let prj13 (a,_,c,_,_) = (a,c)
-  let prj14 (a,_,_,d,_) = (a,d)
-  let prj15 (a,_,_,_,e) = (a,e)
-  let prj23 (_,b,c,_,_) = (b,c)
-  let prj24 (_,b,_,d,_) = (b,d)
-  let prj25 (_,b,_,_,e) = (b,e)
-  let prj34 (_,_,c,d,_) = (c,d)
-  let prj35 (_,_,c,_,e) = (c,e)
-  let prj45 (_,_,_,d,e) = (d,e)
+  let get12 (a,b,_,_,_) = (a,b)
+  let get13 (a,_,c,_,_) = (a,c)
+  let get14 (a,_,_,d,_) = (a,d)
+  let get15 (a,_,_,_,e) = (a,e)
+  let get23 (_,b,c,_,_) = (b,c)
+  let get24 (_,b,_,d,_) = (b,d)
+  let get25 (_,b,_,_,e) = (b,e)
+  let get34 (_,_,c,d,_) = (c,d)
+  let get35 (_,_,c,_,e) = (c,e)
+  let get45 (_,_,_,d,e) = (d,e)
 
-  let prj123 (a,b,c,_,_) = (a,b,c)
-  let prj124 (a,b,_,d,_) = (a,b,d)
-  let prj125 (a,b,_,_,e) = (a,b,e)
-  let prj134 (a,_,c,d,_) = (a,c,d)
-  let prj135 (a,_,c,_,e) = (a,c,e)
-  let prj145 (a,_,_,d,e) = (a,d,e)
-  let prj234 (_,b,c,d,_) = (b,c,d)
-  let prj235 (_,b,c,_,e) = (b,c,e)
-  let prj245 (_,b,_,d,e) = (b,d,e)
-  let prj345 (_,_,c,d,e) = (c,d,e)
+  let get123 (a,b,c,_,_) = (a,b,c)
+  let get124 (a,b,_,d,_) = (a,b,d)
+  let get125 (a,b,_,_,e) = (a,b,e)
+  let get134 (a,_,c,d,_) = (a,c,d)
+  let get135 (a,_,c,_,e) = (a,c,e)
+  let get145 (a,_,_,d,e) = (a,d,e)
+  let get234 (_,b,c,d,_) = (b,c,d)
+  let get235 (_,b,c,_,e) = (b,c,e)
+  let get245 (_,b,_,d,e) = (b,d,e)
+  let get345 (_,_,c,d,e) = (c,d,e)
 
-  let prj1234 (a,b,c,d,_) = (a,b,c,d)
-  let prj1235 (a,b,c,_,e) = (a,b,c,e)
-  let prj1245 (a,b,_,d,e) = (a,b,d,e)
-  let prj1345 (a,_,c,d,e) = (a,c,d,e)
-  let prj2345 (_,b,c,d,e) = (b,c,d,e)
+  let get1234 (a,b,c,d,_) = (a,b,c,d)
+  let get1235 (a,b,c,_,e) = (a,b,c,e)
+  let get1245 (a,b,_,d,e) = (a,b,d,e)
+  let get1345 (a,_,c,d,e) = (a,c,d,e)
+  let get2345 (_,b,c,d,e) = (b,c,d,e)
 
   let map f1 f2 f3 f4 f5 (a,b,c,d,e) =
     let a = f1 a in

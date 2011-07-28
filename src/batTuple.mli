@@ -24,11 +24,11 @@
 
     Projection. Functions [first], [second], [third], [fourth], and [fifth]
     extract a single element. Also, multiple elements can be
-    extracted. For example, {!Tuple3.prj13} returns the first and
+    extracted. For example, {!Tuple3.get13} returns the first and
     third elements of a 3-tuple. All possible combinations are
     provided.
 
-    Note there are no [prj] functions in Tuple2 because [first] and
+    Note there are no [get] functions in Tuple2 because [first] and
     [second] already cover all possibilities. However, [swap] is
     provided, which can be thought of as projecting items in a
     different order.
@@ -128,9 +128,9 @@ module Tuple3 : sig
   val second : 'a * 'b * 'c -> 'b
   val third : 'a * 'b * 'c -> 'c
 
-  val prj12 : 'a * 'b * 'c -> 'a * 'b
-  val prj13 : 'a * 'b * 'c -> 'a * 'c
-  val prj23 : 'a * 'b * 'c -> 'b * 'c
+  val get12 : 'a * 'b * 'c -> 'a * 'b
+  val get13 : 'a * 'b * 'c -> 'a * 'c
+  val get23 : 'a * 'b * 'c -> 'b * 'c
 
   val map : ('a -> 'd) -> ('b -> 'e) -> ('c -> 'f) -> 'a * 'b * 'c -> 'd * 'e * 'f
 
@@ -179,16 +179,16 @@ module Tuple4 : sig
   val third : 'a * 'b * 'c * 'd -> 'c
   val fourth : 'a * 'b * 'c * 'd -> 'd
 
-  val prj12 : 'a * 'b * 'c * 'd -> 'a * 'b
-  val prj13 : 'a * 'b * 'c * 'd -> 'a * 'c
-  val prj14 : 'a * 'b * 'c * 'd -> 'a * 'd
-  val prj23 : 'a * 'b * 'c * 'd -> 'b * 'c
-  val prj24 : 'a * 'b * 'c * 'd -> 'b * 'd
-  val prj34 : 'a * 'b * 'c * 'd -> 'c * 'd
+  val get12 : 'a * 'b * 'c * 'd -> 'a * 'b
+  val get13 : 'a * 'b * 'c * 'd -> 'a * 'c
+  val get14 : 'a * 'b * 'c * 'd -> 'a * 'd
+  val get23 : 'a * 'b * 'c * 'd -> 'b * 'c
+  val get24 : 'a * 'b * 'c * 'd -> 'b * 'd
+  val get34 : 'a * 'b * 'c * 'd -> 'c * 'd
 
-  val prj123 : 'a * 'b * 'c * 'd -> 'a * 'b * 'c
-  val prj124 : 'a * 'b * 'c * 'd -> 'a * 'b * 'd
-  val prj234 : 'a * 'b * 'c * 'd -> 'b * 'c * 'd
+  val get123 : 'a * 'b * 'c * 'd -> 'a * 'b * 'c
+  val get124 : 'a * 'b * 'c * 'd -> 'a * 'b * 'd
+  val get234 : 'a * 'b * 'c * 'd -> 'b * 'c * 'd
 
   val map : ('a -> 'e) -> ('b -> 'f) -> ('c -> 'g) -> ('d -> 'h) -> 'a * 'b * 'c * 'd -> 'e * 'f * 'g * 'h
 
@@ -239,33 +239,33 @@ module Tuple5 : sig
   val fourth : 'a * 'b * 'c * 'd * 'e -> 'd
   val fifth : 'a * 'b * 'c * 'd * 'e -> 'e
 
-  val prj12 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b
-  val prj13 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c
-  val prj14 : 'a * 'b * 'c * 'd * 'e -> 'a * 'd
-  val prj15 : 'a * 'b * 'c * 'd * 'e -> 'a * 'e
-  val prj23 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c
-  val prj24 : 'a * 'b * 'c * 'd * 'e -> 'b * 'd
-  val prj25 : 'a * 'b * 'c * 'd * 'e -> 'b * 'e
-  val prj34 : 'a * 'b * 'c * 'd * 'e -> 'c * 'd
-  val prj35 : 'a * 'b * 'c * 'd * 'e -> 'c * 'e
-  val prj45 : 'a * 'b * 'c * 'd * 'e -> 'd * 'e
+  val get12 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b
+  val get13 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c
+  val get14 : 'a * 'b * 'c * 'd * 'e -> 'a * 'd
+  val get15 : 'a * 'b * 'c * 'd * 'e -> 'a * 'e
+  val get23 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c
+  val get24 : 'a * 'b * 'c * 'd * 'e -> 'b * 'd
+  val get25 : 'a * 'b * 'c * 'd * 'e -> 'b * 'e
+  val get34 : 'a * 'b * 'c * 'd * 'e -> 'c * 'd
+  val get35 : 'a * 'b * 'c * 'd * 'e -> 'c * 'e
+  val get45 : 'a * 'b * 'c * 'd * 'e -> 'd * 'e
 
-  val prj123 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'c
-  val prj124 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'd
-  val prj125 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'e
-  val prj134 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c * 'd
-  val prj135 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c * 'e
-  val prj145 : 'a * 'b * 'c * 'd * 'e -> 'a * 'd * 'e
-  val prj234 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c * 'd
-  val prj235 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c * 'e
-  val prj245 : 'a * 'b * 'c * 'd * 'e -> 'b * 'd * 'e
-  val prj345 : 'a * 'b * 'c * 'd * 'e -> 'c * 'd * 'e
+  val get123 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'c
+  val get124 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'd
+  val get125 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'e
+  val get134 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c * 'd
+  val get135 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c * 'e
+  val get145 : 'a * 'b * 'c * 'd * 'e -> 'a * 'd * 'e
+  val get234 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c * 'd
+  val get235 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c * 'e
+  val get245 : 'a * 'b * 'c * 'd * 'e -> 'b * 'd * 'e
+  val get345 : 'a * 'b * 'c * 'd * 'e -> 'c * 'd * 'e
 
-  val prj1234 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'c * 'd
-  val prj1235 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'c * 'e
-  val prj1245 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'd * 'e
-  val prj1345 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c * 'd * 'e
-  val prj2345 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c * 'd * 'e
+  val get1234 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'c * 'd
+  val get1235 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'c * 'e
+  val get1245 : 'a * 'b * 'c * 'd * 'e -> 'a * 'b * 'd * 'e
+  val get1345 : 'a * 'b * 'c * 'd * 'e -> 'a * 'c * 'd * 'e
+  val get2345 : 'a * 'b * 'c * 'd * 'e -> 'b * 'c * 'd * 'e
 
   val map : ('a -> 'f) -> ('b -> 'g) -> ('c -> 'h) -> ('d -> 'i) -> ('e -> 'j) -> 'a * 'b * 'c * 'd * 'e -> 'f * 'g * 'h * 'i * 'j
 
