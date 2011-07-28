@@ -103,8 +103,13 @@ module Tuple2 : sig
     (** @raise Failure if enum does not contain at least 2
         elements. *)
 
-  val print : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> 'o BatIO.output -> ('a * 'b) -> unit
-  val printn : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a) -> unit
+  val print : ?first:string -> ?sep:string -> ?last:string
+    -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit)
+    -> 'o BatIO.output -> ('a * 'b) -> unit
+
+  val printn : ?first:string -> ?sep:string -> ?last:string
+    -> ('o BatIO.output -> 'a -> unit)
+    -> 'o BatIO.output -> ('a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ('a * 'b) -> ('a * 'b) -> int
 
@@ -148,8 +153,13 @@ module Tuple3 : sig
     (** @raise Failure if enum does not contain at least 3
         elements. *)
 
-  val print : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> 'o BatIO.output -> ('a * 'b * 'c) -> unit
-  val printn : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a * 'a) -> unit
+  val print : ?first:string -> ?sep:string -> ?last:string
+    -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit)
+    -> 'o BatIO.output -> ('a * 'b * 'c) -> unit
+
+  val printn : ?first:string -> ?sep:string -> ?last:string
+    -> ('o BatIO.output -> 'a -> unit)
+    -> 'o BatIO.output -> ('a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ('a * 'b * 'c) -> ('a * 'b * 'c) -> int
 
@@ -202,8 +212,13 @@ module Tuple4 : sig
     (** @raise Failure if enum does not contain at least 4
         elements. *)
 
-  val print : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> 'o BatIO.output -> ('a * 'b * 'c * 'd) -> unit
-  val printn : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a * 'a * 'a) -> unit
+  val print : ?first:string -> ?sep:string -> ?last:string
+    -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit)
+    -> 'o BatIO.output -> ('a * 'b * 'c * 'd) -> unit
+
+  val printn : ?first:string -> ?sep:string -> ?last:string
+    -> ('o BatIO.output -> 'a -> unit)
+    -> 'o BatIO.output -> ('a * 'a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'c * 'd) -> int
 
@@ -275,8 +290,13 @@ module Tuple5 : sig
     (** @raise Failure if enum does not contain at least 5
         elements. *)
 
-  val print : ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> ('o BatIO.output -> 'e -> unit) -> 'o BatIO.output -> ('a * 'b * 'c * 'd * 'e) -> unit
-  val printn : ('o BatIO.output -> 'a -> unit) -> 'o BatIO.output -> ('a * 'a * 'a * 'a * 'a) -> unit
+  val print : ?first:string -> ?sep:string -> ?last:string
+    -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> ('o BatIO.output -> 'e -> unit)
+    -> 'o BatIO.output -> ('a * 'b * 'c * 'd * 'e) -> unit
+
+  val printn : ?first:string -> ?sep:string -> ?last:string
+    -> ('o BatIO.output -> 'a -> unit)
+    -> 'o BatIO.output -> ('a * 'a * 'a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ?cmp5:('e -> 'e -> int) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'd * 'e) -> int
 

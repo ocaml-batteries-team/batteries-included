@@ -54,14 +54,15 @@ module Tuple2 = struct
 	  None -> failwith "Tuple2.of_enum: not enough elements" 
         | Some y -> (x,y)
             
-  let print print_a print_b out (a,b) = 
-    BatIO.write out '(';
+  let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b out (a,b) = 
+    BatIO.nwrite out first;
     print_a out a;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_b out b;
-    BatIO.write out ')'
+    BatIO.nwrite out last
       
-  let printn printer out pair = print printer printer out pair
+  let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
+    print ~first ~sep ~last printer printer out pair
     
   let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) (a,b) (c,d) = 
     let comp = cmp1 a c in 
@@ -108,16 +109,17 @@ module Tuple3 = struct
 	      None -> failwith "Tuple3.of_enum: not enough elements"
             | Some c -> (a,b,c)
 
-  let print print_a print_b print_c out (a,b,c) =
-    BatIO.write out '(';
+  let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b print_c out (a,b,c) =
+    BatIO.nwrite out first;
     print_a out a;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_b out b;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_c out c;
-    BatIO.write out ')'
+    BatIO.nwrite out last
 
-  let printn printer out pair = print printer printer printer out pair
+  let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
+    print ~first ~sep ~last printer printer printer out pair
 
   let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) (a1,a2,a3) (b1,b2,b3) =
     let c1 = cmp1 a1 b1 in
@@ -180,18 +182,19 @@ module Tuple4 = struct
 	          None -> failwith "Tuple4.of_enum: not enough elements"
                 | Some d -> (a,b,c,d)
 
-  let print print_a print_b print_c print_d out (a,b,c,d) =
-    BatIO.write out '(';
+  let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b print_c print_d out (a,b,c,d) =
+    BatIO.nwrite out first;
     print_a out a;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_b out b;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_c out c;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_d out d;
-    BatIO.write out ')'
+    BatIO.nwrite out last
 
-  let printn printer out pair = print printer printer printer printer out pair
+  let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
+    print ~first ~sep ~last printer printer printer printer out pair
 
   let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) ?(cmp4=Pervasives.compare) (a1,a2,a3,a4) (b1,b2,b3,b4) =
     let c1 = cmp1 a1 b1 in
@@ -279,20 +282,21 @@ module Tuple5 = struct
 	              None -> failwith "Tuple5.of_enum: not enough elements"
                     | Some e -> (a,b,c,d,e)
 
-  let print print_a print_b print_c print_d print_e out (a,b,c,d,e) =
-    BatIO.write out '(';
+  let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b print_c print_d print_e out (a,b,c,d,e) =
+    BatIO.nwrite out first;
     print_a out a;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_b out b;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_c out c;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_d out d;
-    BatIO.write out ',';
+    BatIO.nwrite out sep;
     print_e out e;
-    BatIO.write out ')'
+    BatIO.nwrite out last
 
-  let printn printer out pair = print printer printer printer printer printer out pair
+  let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
+    print ~first ~sep ~last printer printer printer printer printer out pair
 
   let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) ?(cmp4=Pervasives.compare) ?(cmp5=Pervasives.compare) (a1,a2,a3,a4,a5) (b1,b2,b3,b4,b5) =
     let c1 = cmp1 a1 b1 in
