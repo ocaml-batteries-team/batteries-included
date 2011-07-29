@@ -26,25 +26,58 @@ let height = function
     Empty -> 0
   | Node (_, _, _, h) -> h
 
+
 let create l v r =
   let h' = 1 + max (height l) (height r) in
+  assert(abs (height l - height r ) < 2);
   Node (l, v, r, h')
 
-let rec make_tree l v r =
+(* Assume |hl - hr| < 3 *)
+let rec bal l v r =
   let hl = height l in
   let hr = height r in
   if hl >= hr + 2 then
     match l with
       Empty -> assert false
-    | Node (ll, u, lr, _) ->
-	create ll u (make_tree lr v r)
+    | Node (ll, lv, lr, _) ->
+	if height ll >= height lr then
+	  create ll lv (create lr v r)
+	else
+	  match lr with
+	    Empty -> assert false
+	  | Node (lrl, lrv, lrr, _) ->
+	      create (create ll lv lrl) lrv (create lrr v r)
   else if hr >= hl + 2 then
     match r with
       Empty -> assert false
-    | Node (rl, u, rr, _) ->
-	create (make_tree l v rl) u rr
+    | Node (rl, rv, rr, _) ->
+	if height rr >= height rl then
+	  create (create l v rl) rv rr 
+	else
+	  match rl with
+	    Empty -> assert false
+	  | Node (rll, rlv, rlr, _) ->
+	      create (create l v rll) rlv (create rlr rv rr) 
   else
     create l v r
+
+let rec add_left v = function
+    Empty -> Node(Empty, v, Empty, 1)
+  | Node(l, v', r, _) -> bal (add_left v l) v' r
+
+let rec add_right v = function
+    Empty -> Node(Empty, v, Empty, 1)
+  | Node(l, v', r, _) -> bal l v' (add_right v r)
+
+(* No assumption of height of l and r. *)
+let rec make_tree l v r =
+  match l , r with
+    Empty, _ -> add_left v r
+  | _, Empty -> add_right v l
+  | Node(ll, lv, lr, lh), Node(rl, rv, rr, rh) ->
+      if lh > rh + 1 then bal ll lv (make_tree lr v r) else
+      if rh > lh + 1 then bal (make_tree l v rl) rv rr else
+      create l v r
 
 (* Utilities *)
 let rec split_leftmost = function
