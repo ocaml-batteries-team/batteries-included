@@ -329,10 +329,6 @@ val diff: 'a t -> 'a t -> 'a t
   (** [diff s t] returns the set of all elements in [s] but not in
       [t]. The returned set uses [s]'s comparison function.*)
 
-(* No compare nor equal; they don't make sense if the comparison
-   functions of the two sets may be different, but apparently this
-   wasn't a problem for 'subset'? *)
-
 val subset: 'a t -> 'a t -> bool
 (** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
 
