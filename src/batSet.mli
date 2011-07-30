@@ -329,6 +329,10 @@ val diff: 'a t -> 'a t -> 'a t
   (** [diff s t] returns the set of all elements in [s] but not in
       [t]. The returned set uses [s]'s comparison function.*)
 
+val compare: 'a t -> 'a t -> int
+(** Total ordering between sets. Can be used as the ordering function
+    for doing sets of sets. *)
+
 val subset: 'a t -> 'a t -> bool
 (** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
 
