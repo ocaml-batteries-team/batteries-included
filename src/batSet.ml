@@ -310,6 +310,22 @@ module Concrete = struct
             | (l2, true, r2) ->
                 concat (diff cmp12 l1 l2) (diff cmp12 r1 r2)
 
+  let compare cmp s1 s2 =
+    let rec compare_aux t1' t2' =
+      match (t1', t2') with
+          E, E ->  0
+        | E, _ -> -1
+        | _, E ->  1
+        | C (e1, r1, t1), C (e2, r2, t2) ->
+            let c = cmp e1 e2 in
+            if c = 0 then
+              compare_aux (cons_iter r1 t1) (cons_iter r2 t2)
+            else
+              c in
+    compare_aux (cons_iter s1 E) (cons_iter s2 E)
+
+  let equal cmp s1 s2 = compare cmp s1 s2 = 0
+
   let rec subset cmp s1 s2 =
     match (s1, s2) with
         Empty, _ ->
@@ -478,6 +494,8 @@ struct
   let diff s1 s2 = t_of_impl (Concrete.diff Ord.compare (impl_of_t s1) (impl_of_t s2))
   let inter s1 s2 = t_of_impl (Concrete.inter Ord.compare (impl_of_t s1) (impl_of_t s2))
 
+  let compare t1 t2 = Concrete.compare Ord.compare (impl_of_t t1) (impl_of_t t2)
+  let equal t1 t2 = Concrete.equal Ord.compare (impl_of_t t1) (impl_of_t t2)
   let subset t1 t2 = Concrete.subset Ord.compare (impl_of_t t1) (impl_of_t t2)
 
   let rec compare_subset s1 s2 =
@@ -636,10 +654,21 @@ let diff s1 s2 =
 let intersect s1 s2 =
   { s1 with set = Concrete.inter s1.cmp s1.set s2.set }
 
+let compare s1 s2 = Concrete.compare s1.cmp s1.set s2.set
+
+let equal s1 s2 = Concrete.equal s1.cmp s1.set s2.set
+
 let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
 
 (**T subset
    subset (of_list [1;2;3]) (of_list [1;2;3;4])
    not (subset (of_list [1;2;3;5]) (of_list [1;2;3;4]))
    not (subset (of_list [1;2;3;4]) (of_list [1;2;3]))
+**)
+
+(**T compare
+   compare (of_list [1;2;3]) (of_list [1;2;3;4]) <> 0
+   compare (of_list [1;2;3]) (of_list [1;2;3;4]) = - (compare (of_list [1;2;3;4]) (of_list [1;2;3]))
+   compare (of_list [1;2;3]) (of_list [1;2;3;4]) = - (compare (of_list [1;2;3;4]) (of_list [3;1;2]))
+   compare (of_list [1;2;3]) (of_list [3;1;2]) = 0
 **)
