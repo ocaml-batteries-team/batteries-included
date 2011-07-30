@@ -324,6 +324,8 @@ module Concrete = struct
               c in
     compare_aux (cons_iter s1 E) (cons_iter s2 E)
 
+  let equal cmp s1 s2 = compare cmp s1 s2 = 0
+
   let rec subset cmp s1 s2 =
     match (s1, s2) with
         Empty, _ ->
@@ -493,6 +495,7 @@ struct
   let inter s1 s2 = t_of_impl (Concrete.inter Ord.compare (impl_of_t s1) (impl_of_t s2))
 
   let compare t1 t2 = Concrete.compare Ord.compare (impl_of_t t1) (impl_of_t t2)
+  let equal t1 t2 = Concrete.equal Ord.compare (impl_of_t t1) (impl_of_t t2)
   let subset t1 t2 = Concrete.subset Ord.compare (impl_of_t t1) (impl_of_t t2)
 
   let rec compare_subset s1 s2 =
@@ -652,6 +655,8 @@ let intersect s1 s2 =
   { s1 with set = Concrete.inter s1.cmp s1.set s2.set }
 
 let compare s1 s2 = Concrete.compare s1.cmp s1.set s2.set
+
+let equal s1 s2 = Concrete.equal s1.cmp s1.set s2.set
 
 let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
 

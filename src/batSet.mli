@@ -333,6 +333,10 @@ val compare: 'a t -> 'a t -> int
 (** Total ordering between sets. Can be used as the ordering function
     for doing sets of sets. *)
 
+val equal: 'a t -> 'a t -> bool
+(** [equal s1 s2] tests whether the sets [s1] and [s2] are
+    equal, that is, contain equal elements. *)
+
 val subset: 'a t -> 'a t -> bool
 (** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
 
