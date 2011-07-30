@@ -610,6 +610,8 @@ let exists f s = Concrete.exists f s.set
 let cardinal s =
   fold (fun _ acc -> acc + 1) s 0
 
+let elements s = Concrete.elements s.set
+
 let choose s = Concrete.choose s.set
 
 let min_elt s = Concrete.min_elt s.set

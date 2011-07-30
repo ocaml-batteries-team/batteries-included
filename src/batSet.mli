@@ -391,7 +391,10 @@ val split : 'a -> 'a t -> 'a t * bool * 'a t
 val cardinal: 'a t -> int
   (** Return the number of elements of a set. *)
 
-(* 'elements' missing *)
+val elements: 'a t -> 'a list
+(** Return the list of all elements of the given set.
+    The returned list is sorted in increasing order with respect
+    to the ordering of the given set. *)
 
 val min_elt : 'a t -> 'a
   (** returns the smallest element of the set. Raises
