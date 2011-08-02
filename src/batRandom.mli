@@ -118,6 +118,10 @@ val choice : 'a BatEnum.t -> 'a
     This function only works on finite enumerations with
     less than 2{^30} elements.*)
 
+val multi_choice : int -> 'a BatEnum.t -> 'a BatEnum.t
+(** [multi_choice n e] returns an enumeration of [n]
+    randomly-chosen elements of [e]. *)
+
 val shuffle: 'a BatEnum.t -> 'a array
 (** [shuffle e] returns a new array, containing the
     same set of elements as [e], but in a random order.
