@@ -24,9 +24,9 @@ struct
   let of_lazy_list l init f =
     let rec aux l acc = match get l with
       | None        -> nil
-      | Some (h, t) -> 
+      | Some (h, t) ->
 	  let acc' = f h acc in
-	  lazy( Cons ((h, acc'), (aux t acc')))
+	  BatLazyList.lcons (fun () -> Cons ((h, acc'), (aux t acc')))
     in aux l init
 
   let of_enum l =
@@ -50,7 +50,7 @@ struct
       | None        -> nil
       | Some ((h, _), t) -> 
 	  let acc' = f h acc in
-	  lazy( Cons ((h, acc'), (aux t acc')))
+	  BatLazyList.lcons (fun () -> Cons ((h, acc'), (aux t acc')))
     in aux l init
 end
 
@@ -287,8 +287,8 @@ let source_map p e =
   let rec aux e = match peek e with
     | None        -> nil
     | Some (_, c) -> match apply p e with
-	| Success   (result, rest)    -> lazy (Cons ((result, c), (aux rest)))
-	| Backtrack (result, _, rest) -> lazy (Cons ((result, c), (aux rest)))
+	| Success   (result, rest)    -> BatLazyList.lcons (fun () -> Cons ((result, c), (aux rest)))
+	| Backtrack (result, _, rest) -> BatLazyList.lcons (fun () -> Cons ((result, c), (aux rest)))
 	| Setback _ | Failure _       -> nil (*@TODO: improve error reporting !*)
   in aux e
 	    
