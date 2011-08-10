@@ -104,7 +104,7 @@ let exists p xs =
   in
   loop 0
 
-(**T for_all
+(**T exists
    exists (fun x -> x mod 2 = 0) [|1;4;5|]
    exists (fun x -> x mod 2 = 0) [|1;3;5|] = false
    exists (fun _ -> false) [||] = false
@@ -299,6 +299,12 @@ let for_all2 p xs ys =
   in
   loop 0
 
+(**T for_all2
+   for_all2 (=) [|1;2;3|] [|3;2;1|] = false
+   for_all2 (=) [|1;2;3|] [|1;2;3|]
+   for_all2 (<>) [|1;2;3|] [|3;2;1|] = false
+ **)
+
 let exists2 p xs ys =
   let n = length xs in
   if length ys <> n then raise (Invalid_argument "Array.exists2");
@@ -309,12 +315,17 @@ let exists2 p xs ys =
   in
   loop 0
 
+(**T exists2
+   exists2 (=) [|1;2;3|] [|3;2;1|]
+   exists2 (<>) [|1;2;3|] [|1;2;3|] = false
+ **)
+
 let map2 f xs ys =
   let n = length xs in
   if length ys <> n then raise (Invalid_argument "Array.exists2");
   Array.init n (fun i -> f xs.(i) ys.(i))
 
-(**T Array.map2
+(**T map2
    map2 (-) [|1;2;3|] [|6;3;1|] = [|-5;-1;2|]
    map2 (-) [|2;4;6|] [|1;2;3|] = [|1;2;3|]
  **)
@@ -335,7 +346,7 @@ let make_compare cmp a b =
   in 
   aux 0
 
-(**T Array.make_compare
+(**T make_compare
    make_compare compare [|1;2;3|] [|1;2|] = 1
    make_compare compare [|1;2|] [|1;2;4|] = -1
    make_compare compare [|1|] [||] = 1
@@ -369,8 +380,20 @@ let reduce f a =
     !acc
   )
 
+(**T reduce
+   reduce (+) [|1;2;3|] = 6
+   reduce (fun _ -> assert false) [|1|] = 1
+ **)
+
 let min a = reduce Pervasives.min a
 let max a = reduce Pervasives.max a
+
+(**T min/max
+   min [|1;2;3|] = 1
+   max [|1;2;3|] = 3
+   min [|2;3;1|] = 1
+   max [|2;3;1|] = 3
+ **)
 
 (* TODO: Investigate whether a second array is better than pairs *)
 let decorate_stable_sort f xs = 
@@ -378,14 +401,21 @@ let decorate_stable_sort f xs =
   let () = stable_sort (fun (i,_) (j,_) -> compare i j) decorated in
   map (fun (_,x) -> x) decorated
 
+
 let decorate_fast_sort f xs = 
   let decorated = map (fun x -> (f x, x)) xs in
   let () = fast_sort (fun (i,_) (j,_) -> compare i j) decorated in
   map (fun (_,x) -> x) decorated
 
-
 let insert xs x i =
+  if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
   Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
+
+(**T insert
+   insert [|1;2;3|] 4 0 = [|4;1;2;3|]
+   insert [|1;2;3|] 4 3 = [|1;2;3;4|]
+   insert [|1;2;3|] 4 2 = [|1;2;4;3|]
+ **)
 
 module Cap =
 struct

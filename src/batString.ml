@@ -28,7 +28,7 @@ let int_max (x:int) (y:int) = if x < y then y else x
 open String
 
 let compare = String.compare
-(**T String.compare
+(**T compare
    compare "FOO" "bar" = -1
 **)
 
@@ -39,7 +39,7 @@ let init len f =
 	done;
 	s
 
-(**T String.init
+(**T init
    init 5 (fun i -> Char.chr (i + int_of_char '0')) = "01234";
 **)
 
@@ -54,7 +54,7 @@ let starts_with str p =
 	       BatReturn.return label false
 	   done;
 	   true)
-(**T String.starts_with
+(**T starts_with
    starts_with "foobarbaz" "foob"
    starts_with "foobarbaz" ""
    starts_with "" ""
@@ -76,7 +76,7 @@ let ends_with str p =
 	       BatReturn.return label false
 	   done;
 	   true)
-(**T String.ends_with
+(**T ends_with
    ends_with "foobarbaz" "rbaz"
    ends_with "foobarbaz" ""
    ends_with "" ""
@@ -106,7 +106,7 @@ let find_from str ofs sub =
 
 
 let find str sub = find_from str 0 sub
-(**T String.find
+(**T find
    find "foobarbaz" "bar" = 3
    try ignore (find "foo" "bar"); false with Not_found -> true
    find_from "foobarbaz" 4 "ba" = 6
@@ -134,7 +134,7 @@ let rfind_from str suf sub =
         )
 
 let rfind str sub = rfind_from str (String.length str - 1) sub
-(**T String.rfind
+(**T rfind
    rfind "foobarbaz" "ba" = 6
    try ignore(rfind "foo" "barr"); false with Not_found -> true
    rfind_from "foobarbaz" 5 "ba" = 3
@@ -146,7 +146,7 @@ let exists str sub =
 		true
 	with
 		Not_found -> false
-(**T String.exists 
+(**T exists 
    exists "foobarbaz" "obar"
    exists "obar" "obar"
    exists "foobarbaz" ""
@@ -167,7 +167,7 @@ let strip ?(chars=" \t\r\n") s =
 		decr l;
 	done;
 	sub s p (!l - p + 1)
-(**T String.strip
+(**T strip
    strip ~chars:" ,()" " boo() bar()" = "boo() bar"
 **)
 
@@ -180,7 +180,7 @@ let head s pos = left s pos
 let tail s pos = let slen = length s in
 		 if pos >= slen then "" else sub s pos (slen - pos)
 
-(**T String.{left,right,head,tail}
+(**T {left,right,head,tail}
    left "abc" 1 = "a"
    right "abc" 1 = "c"
    left "ab" 3 = "ab"
@@ -207,7 +207,7 @@ let split str sep =
 	let slen = length str in
 	sub str 0 p, sub str (p + len) (slen - p - len)
 
-(**T String.split
+(**T split
    split "abcGxyzG123" "G" = ("abc","xyzG123")
    split "abcGHIzyxGHI123" "GHI" = ("abc", "zyxGHI123")
    split "abcGHIzyxGHI123" "" = ("", "abcGHIzyxGHI123")
@@ -219,7 +219,7 @@ let rsplit str sep =
   let len = length sep in
   let slen = length str in
     sub str 0 p, sub str (p + len) (slen - p - len)
-(**T String.rsplit
+(**T rsplit
    rsplit "abcGxyzG123" "G" = ("abcGxyz","123")
    rsplit "abcGHIzyxGHI123" "GHI" = ("abcGHIzyx", "123")
    rsplit "abcGHIzyxGHI123" "" = ("abcGHIzyxGHI123", "")
@@ -260,7 +260,7 @@ let nsplit str sep =
     in
       aux [] (length str - 1 )
 
-(**T String.nsplit
+(**T nsplit
    nsplit "a;b;c" ";" = ["a"; "b"; "c"]
    nsplit "" "x" = []
    try nsplit "abc" "" = ["a"; "b"; "c"] with Invalid_argument _ -> true
@@ -282,7 +282,7 @@ let slice ?(first=0) ?(last=Sys.max_string_length) s =
   let j = clip ~lo ~hi (wrap last ~hi) in
   unsafe_slice i j s
 
-(**T String.slice
+(**T slice
    slice ~first:1 ~last:(-3) " foo bar baz" = "foo bar "
    slice "foo" = "foo"
    slice ~first:0 ~last:10 "foo" = "foo"
@@ -298,7 +298,7 @@ let lchop ?(n=1) s =
   else
     let slen = length s in
     if slen <= n then "" else sub s n (slen - n)
-(**T String.lchop
+(**T lchop
    lchop "Weeble" = "eeble"
    lchop "" = ""
    lchop ~n:3 "Weeble" = "ble"
@@ -311,7 +311,7 @@ let rchop ?(n=1) s =
   else
     let slen = length s in
     if slen <= n then "" else sub s 0 (slen - n)
-(**T String.rchop
+(**T rchop
    rchop "Weeble" = "Weebl"
    rchop "" = ""
    rchop ~n:3 "Weeble" = "Wee"
@@ -319,7 +319,7 @@ let rchop ?(n=1) s =
 **)
 
 let of_int = string_of_int
-(**T String.of_int
+(**T of_int
    of_int 56 = "56"
    of_int (-1) = "-1"
 **)
@@ -327,20 +327,20 @@ let of_int = string_of_int
 let of_float = string_of_float
 
 let of_char = make 1
-(**T String.of_char
+(**T of_char
    of_char 's' = "s"
    of_char '\000' = "\000"
 **)
 
 let to_int s = int_of_string s
-(**T String.to_int
+(**T to_int
    to_int "8_480" = to_int "0x21_20"
    try ignore(to_int ""); false with Failure "int_of_string" -> true
    try ignore(to_int "2,3"); false with Failure "int_of_string" -> true
 **)
 
 let to_float s = float_of_string s
-(**T String.to_float
+(**T to_float
    to_float "12.34e-1" = to_float "1.234"
    to_float "1" = 1.
    try ignore(to_float ""); false with Failure _ -> true
@@ -360,7 +360,7 @@ let enum s =
       ~clone:(fun () -> make (BatRef.copy i))
   in
     make (ref 0)
-(**T String.enum
+(**T enum
    "" |> enum |> List.of_enum = []
    "foo" |> enum |> List.of_enum = ['f'; 'o'; 'o']
 **)
@@ -378,7 +378,7 @@ let backwards s =
 	  ~clone:(fun () -> make (BatRef.copy i))
       in
 	make (ref (length s))
-(**T String.backwards
+(**T backwards
    "" |> backwards |> of_enum = ""
    "foo" |> backwards |> of_enum = "oof"
  **)
@@ -389,7 +389,7 @@ let of_enum e =
   let i = ref 0 in
     BatEnum.iter (fun c -> unsafe_set s (BatRef.post_incr i) c) e;
     s
-(**T String.of_enum
+(**T of_enum
     Enum.init 3 (fun i -> char_of_int (i + int_of_char '0')) |> of_enum = "012"
     Enum.init 0 (fun i -> ' ') |> of_enum = ""
 **)
@@ -400,7 +400,7 @@ let of_backwards e =
   let i = ref (l - 1) in
     BatEnum.iter (fun c -> unsafe_set s (BatRef.post_decr i) c) e;
     s
-(**T String.of_backwards
+(**T of_backwards
    "" |> enum |> of_backwards = ""
    "foo" |> enum |> of_backwards = "oof"
    "foo" |> backwards |> of_backwards = "foo"
@@ -413,7 +413,7 @@ let map f s =
 		unsafe_set sc i (f (unsafe_get s i))
 	done;
 	sc
-(**T String.map
+(**T map
    map Char.uppercase "Five" = "FIVE"
    map Char.uppercase "" = ""
    map (String.of_char |- failwith) "" = ""
@@ -428,7 +428,7 @@ let filter_map f s =
 	| None   -> ()
     done;
     Buffer.contents sc
-(**T String.filter_map
+(**T filter_map
    filter_map (function 'a'..'z' as c -> Some (Char.uppercase c) | _ -> None) "a b c" = "ABC"
 **)
 
@@ -440,7 +440,7 @@ let filter f s =
 	if f c then Buffer.add_char sc c
     done;
     Buffer.contents sc
-(**T String.filter
+(**T filter
    String.filter ((<>) ' ') "a b c" = "abc"
 **)
 
@@ -452,7 +452,7 @@ let fold_left f init str =
     else loop (i + 1) (f result str.[i])
   in
   loop 0 init
-(**T String.fold_left
+(**T fold_left
    fold_left (fun li c -> c::li) [] "foo" = ['o';'o';'f']
    fold_left max 'a' "apples" = 's'
 **)
@@ -467,7 +467,7 @@ let fold_right f str init =
       loop i' (f str.[i'] result)
   in
   loop n init
-(**T String.fold_right
+(**T fold_right
    fold_right List.cons "foo" [] = ['f';'o';'o']
    fold_right (fun c a -> if c = ' ' then a+1 else a) "a b c" 0 = 2
 **)
@@ -495,14 +495,14 @@ let explode s =
   let rec exp i l =
     if i < 0 then l else exp (i - 1) (s.[i] :: l) in
   exp (String.length s - 1) []
-(**T String.explode
+(**T explode
    explode "foo" = ['f'; 'o'; 'o']
    explode "" = []
 **)
 
 
 let to_list = explode
-(**T String.to_list
+(**T to_list
    to_list "string" |> List.interleave ';' |> of_list = "s;t;r;i;n;g"
 **)
 
@@ -512,14 +512,14 @@ let implode l =
   | [] -> res
   | c :: l -> res.[i] <- c; imp (i + 1) l in
   imp 0 l
-(**T String.implode
+(**T implode
    implode ['b';'a';'r'] = "bar"
    implode [] = ""
 **)
 
 
 let of_list = implode
-(**T String.of_list
+(**T of_list
    ['c'; 'h'; 'a'; 'r'; 's'] |> of_list = "chars"
    [] |> of_list = ""
 **)
@@ -548,7 +548,7 @@ let replace_chars f s =
 	in
 	loop2 strs;
 	sbuf
-(**T String.replace_chars
+(**T replace_chars
    replace_chars (function ' ' -> "(space)" | c -> of_char c) "foo bar" = "foo(space)bar"
    replace_chars (fun _ -> "") "foo" = ""
    replace_chars (fun _ -> assert false) "" = ""
@@ -561,7 +561,7 @@ let replace ~str ~sub ~by =
                    (slice ~first:(i+(String.length sub)) str))
         with
 		Not_found -> (false, String.copy str)
-(**T String.replace
+(**T replace
    replace "foobarbaz" "bar" "rab" = (true, "foorabbaz")
    replace "foo" "bar" "" = (false, "foo")
 **)
@@ -570,7 +570,7 @@ let repeat s n =
   let buf = Buffer.create ( n * (String.length s) ) in
     for i = 1 to n do Buffer.add_string buf s done;
     Buffer.contents buf
-(**T String.repeat
+(**T repeat
    repeat "fo" 4 = "fofofofo"
    repeat "fo" 0 = ""
    repeat "" 4 = ""
@@ -594,7 +594,7 @@ let trim s =
     | Some first_trailing_whitespace ->
 	unsafe_slice last_leading_whitespace (first_trailing_whitespace + 1) s
 
-(**T String.trim
+(**T trim
    trim " \t foo\n  " = "foo"
    trim " foo bar " = "foo bar"
    trim "  \t " = ""
@@ -611,7 +611,7 @@ let splice s1 off len s2 =
   blit s2 0 s off len2; (* s2 at splice point *)
   blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
   s
-(**T String.splice
+(**T splice
    splice "foo bar baz" 3 5 "XXX" = "fooXXXbaz"
    splice "foo bar baz" 5 0 "XXX" = "foo bXXXar baz"
    splice "foo bar baz" 5 (-10) "XXX" = "foo bXXXar baz"
@@ -622,14 +622,14 @@ let splice s1 off len s2 =
 
 
 let is_empty s = length s = 0 
-(**T String.is_empty
+(**T is_empty
    String.is_empty ""
    not (String.is_empty "foo")
    String.is_empty (String.make 0 'a')
 **)
 
 let icompare s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
-(**T String.icompare
+(**T icompare
    icompare "FOO" "bar" = 1
 **)
 
@@ -689,7 +689,7 @@ let numeric_compare s1 s2 =
   if l1 = l2 then String.compare s1 s2
   else numeric_compare_aux s1 s2 ~off:0
 
-(**T String.numeric_compare
+(**T numeric_compare
    numeric_compare "xx43" "xx320" = -1
    numeric_compare "xx3" "xx21" = -1
    numeric_compare "xx02" "xx2" = 0
@@ -724,7 +724,7 @@ let unquoted_printer paren out x = print out x
    they both use "%S", but any change in 'quote' here should be
    careful to preserve this consistency. *)
 let quote s = BatPrintf.sprintf2 "%S" s
-(**T String.quote
+(**T quote
    quote "foo" = "\"foo\""
    quote "\"foo\"" = "\"\\\"foo\\\"\""
    quote "\n" = "\"\\n\""

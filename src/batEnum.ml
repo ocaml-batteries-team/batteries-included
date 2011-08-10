@@ -820,7 +820,7 @@ let group test e =
 let group_by eq e =
   group_aux (fun x -> x) eq e
 
-(**T enum_group
+(**T group
    Enum.empty () |> Enum.group (const ()) |> is_empty
    List.enum [1;2;3;4] |> Enum.group identity |> Enum.map List.of_enum |> List.of_enum = [[1];[2];[3];[4]]
    List.enum [1;2;3;4] |> Enum.group (const true) |> List.of_enum |> List.map List.of_enum = [[1;2;3;4]]
