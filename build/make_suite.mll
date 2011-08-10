@@ -76,7 +76,7 @@ let handle_test mn (k, str, pos) =
       in
       Printf.printf "let %s = %S >::: [\n" test_name name;
       (* dummy test that prints the test group name *)
-      Printf.printf "\"label\" >:: (fun () -> print_string %S) ;\n" name;
+      Printf.printf "\"label\" >:: (fun () -> print_string %S; print_string \".\"; print_string %S) ;\n" mn name;
       begin
         match k with
           | `Q ->
