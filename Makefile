@@ -114,11 +114,11 @@ _build/testsuite/main.byte _build/qtest/test_runner.byte: $(TESTDEPS)
 _build/testsuite/main.native _build/qtest/test_runner.native: $(TESTDEPS)
 	$(OCAMLBUILD) testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
 
-test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte
+test-byte: _build/testsuite/main.byte #_build/qtest/test_runner.byte
 	_build/testsuite/main.byte 
 	_build/qtest/test_runner.byte
 
-test-native: _build/testsuite/main.native _build/qtest/test_runner.native
+test-native: _build/testsuite/main.native #_build/qtest/test_runner.native
 	_build/testsuite/main.byte 
 	_build/qtest/test_runner.byte
 	_build/testsuite/main.native
