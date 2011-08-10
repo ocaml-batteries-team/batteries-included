@@ -74,7 +74,8 @@ let handle_test mn (k, str, pos) =
           in
           number tests (k + 1) ts
       in
-      Printf.printf "let %s = %S >::: [\n" test_name name ; 
+      Printf.printf "let %s = %S >::: [\n" test_name name;
+      (* dummy test that prints the test group name *)
       Printf.printf "\"label\" >:: (fun () -> print_string %S) ;\n" name;
       begin
         match k with
@@ -169,7 +170,7 @@ and pragma k start buf = parse
     spin () ;
     List.iter (Printf.printf "%s\n") [
       "let suite = \"" ^ mn ^ "\" >::: [" ;
-      String.concat ";" !all_tests ;
+      String.concat ";" (List.rev !all_tests) ;
       "];;" ;
       "let () = Tests.register suite;;"
     ] ;
