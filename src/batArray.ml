@@ -314,20 +314,34 @@ let map2 f xs ys =
   if length ys <> n then raise (Invalid_argument "Array.exists2");
   Array.init n (fun i -> f xs.(i) ys.(i))
 
+(**T Array.map2
+   map2 (-) [|1;2;3|] [|6;3;1|] = [|-5;-1;2|]
+   map2 (-) [|2;4;6|] [|1;2;3|] = [|1;2;3|]
+ **)
+
 let make_compare cmp a b =
-  let length_a = Array.length a
-  and length_b = Array.length b in
-  let length   = min length_a length_b
-  in
+  let length_a = Array.length a in
+  let length_b = Array.length b in
+  let length   = BatInt.min length_a length_b in
   let rec aux i = 
     if i < length then
       let result = cmp (unsafe_get a i) (unsafe_get b i) in
-	if result = 0 then aux (i + 1)
-	else               result
+      if result = 0 then aux (i + 1)
+      else               result
     else
-      if length_a < length_b then -1
-      else                         1
-  in aux 0
+      if length_a = length_b then	0 
+      else if length_a < length_b then -1
+      else                              1
+  in 
+  aux 0
+
+(**T Array.make_compare
+   make_compare compare [|1;2;3|] [|1;2|] = 1
+   make_compare compare [|1;2|] [|1;2;4|] = -1
+   make_compare compare [|1|] [||] = 1
+   make_compare compare [||] [||] = 0
+   make_compare compare [|1;2|] [|1;2|] = 0
+**)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
   match length t with
