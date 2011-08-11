@@ -1,3 +1,4 @@
 0001-Add-Set-an-installation-prefix-path.patch
 0002-Fix-build-with-OCaml-3.12.0.patch
 0003-Do-not-enforce-sanity-check-rules.patch
+0004-Fix-build-with-camomile-0.8.3.patch

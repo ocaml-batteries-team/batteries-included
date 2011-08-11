@@ -1,0 +1,30 @@
+From: Stephane Glondu <steph@glondu.net>
+Date: Thu, 11 Aug 2011 22:35:06 +0200
+Subject: Fix build with camomile 0.8.3
+
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=636024
+Signed-off-by: Stephane Glondu <steph@glondu.net>
+---
+ src/batCamomile.ml |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/batCamomile.ml b/src/batCamomile.ml
+index 8b70e65..06c55ce 100644
+--- a/src/batCamomile.ml
++++ b/src/batCamomile.ml
+@@ -8,7 +8,7 @@ let try_env suff default =
+   try Filename.concat (Sys.getenv camomile_base) suff
+   with Not_found -> default
+ 
+-module CDC = CamomileLibrary.CamomileDefaultConfig
++module CDC = CamomileLibraryDefault.Config
+ 
+ module CamConfig = struct
+   let datadir = try_env "database" CDC.datadir
+@@ -17,4 +17,4 @@ module CamConfig = struct
+   let unimapdir = try_env "mappings" CDC.unimapdir
+ end
+ 
+-include CamomileLibrary.Main.Make(CamConfig)
++include CamomileLibrary.Make(CamConfig)
+-- 

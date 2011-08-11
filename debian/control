@@ -8,7 +8,7 @@ Build-Depends:
  ocaml-nox (>= 3.11.1-3~),
  camlp4, camlp4-extra,
  ocaml-findlib (>= 1.2.5),
- libcamomile-ocaml-dev (>= 0.7),
+ libcamomile-ocaml-dev (>= 0.8),
  libounit-ocaml-dev,
  dh-ocaml (>= 0.9.5~)
 Standards-Version: 3.9.0
