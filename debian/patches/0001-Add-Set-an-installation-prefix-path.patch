@@ -1,6 +1,6 @@
 From: Mehdi Dogguy <mehdi@debian.org>
 Date: Wed, 14 Jul 2010 21:35:14 +0200
-Subject: [PATCH] Add/Set an installation prefix path
+Subject: Add/Set an installation prefix path
 
 ---
  Makefile |    6 ++++--
