@@ -11,7 +11,7 @@ Build-Depends:
  libcamomile-ocaml-dev (>= 0.8),
  libounit-ocaml-dev,
  dh-ocaml (>= 0.9.5~)
-Standards-Version: 3.9.0
+Standards-Version: 3.9.2
 Vcs-Git: git://git.debian.org/git/pkg-ocaml-maint/packages/ocaml-batteries.git
 Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/ocaml-batteries.git
 Homepage: http://batteries.forge.ocamlcore.org
