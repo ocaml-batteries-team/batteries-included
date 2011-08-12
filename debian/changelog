@@ -1,3 +1,11 @@
+ocaml-batteries (1.2.2-2) unstable; urgency=low
+
+  * Team upload
+  * Fix build with camomile 0.8.3 (Closes: #636024)
+  * Bump Standards-Version to 3.9.2 (no changes)
+
+ -- Stéphane Glondu <glondu@debian.org>  Fri, 12 Aug 2011 07:37:39 +0200
+
 ocaml-batteries (1.2.2-1) unstable; urgency=low
 
   [ Stéphane Glondu ]
