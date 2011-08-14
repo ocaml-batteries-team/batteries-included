@@ -50,175 +50,178 @@
     imperative computing. While arrays are completely supported in
     OCaml, it is often a good idea to investigate persistent
     alternatives, such as lists or hash maps.
-
  *)
 
-  type 'a t = 'a array (** The type of arrays.  *)
+type 'a t = 'a array (** The type of arrays. *)
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a t
-  include BatInterfaces.Mappable with type 'a mappable = 'a t
+include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatInterfaces.Mappable with type 'a mappable = 'a t
 
-  val modify : ('a -> 'a) -> 'a array -> unit
-    (** [modify f a] replaces every element [x] of [a] with [f x]. *)
+val modify : ('a -> 'a) -> 'a array -> unit
+(** [modify f a] replaces every element [x] of [a] with [f x]. *)
 
-  val modifyi : (int -> 'a -> 'a) -> 'a array -> unit
-    (** Same as {!modify}, but the function is applied to the index of
-        the element as the first argument, and the element itself as
-        the second argument. *)
+val modifyi : (int -> 'a -> 'a) -> 'a array -> unit
+(** Same as {!modify}, but the function is applied to the index of
+    the element as the first argument, and the element itself as
+    the second argument. *)
 
-  (**{6 Base operations}*)
+(**{6 Base operations}*)
 
-  val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b array -> 'a
-    (** As [fold_left], but with a counter *)
+val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b array -> 'a
+(** As [fold_left], but with a counter *)
 
-  val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
-  (** [Array.reduce f a] is [fold_left f a.(0) [|a.(1); ..; a.(n-1)|]].  This
-      is useful for merging a group of things that have no
-      reasonable default value to return if the group is empty.
+val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
+(** [Array.reduce f a] is [fold_left f a.(0) [|a.(1); ..; a.(n-1)|]].  This
+    is useful for merging a group of things that have no
+    reasonable default value to return if the group is empty.
 
-      @raise Invalid_argument on empty arrays. *)
+    @raise Invalid_argument on empty arrays. *)
 
-  val max : 'a array -> 'a
-    (** [max a] returns the largest value in [a] as judged by
-        [Pervasives.compare]
+val max : 'a array -> 'a
+(** [max a] returns the largest value in [a] as judged by
+    [Pervasives.compare]
 
-	@raise Invalid_argument on empty input *)
+    @raise Invalid_argument on empty input *)
 
-  val min : 'a array -> 'a
-  (** [min a] returns the smallest value in [a] as judged by
-      [Pervasives.compare]
+val min : 'a array -> 'a
+(** [min a] returns the smallest value in [a] as judged by
+    [Pervasives.compare]
 
-      @raise Invalid_argument on empty input *)
+    @raise Invalid_argument on empty input *)
 
-  (**{6 Operations on two arrays}*)
+(**{6 Operations on two arrays}*)
 
-  val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
-    (** [Array.iter2 f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]] performs
-	calls [f a0 b0; f a1 b1; ...; f an bn] in that order.
+val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
+(** [Array.iter2 f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]]
+    performs calls [f a0 b0; f a1 b1; ...; f an bn] in that order.
 
-	@raise Invalid_argument if the two arrays have different lengths. *)
+    @raise Invalid_argument if the two arrays have different lengths. *)
 
-  val iter2i : (int -> 'a -> 'b -> unit) -> 'a array -> 'b array -> unit
-    (** [Array.iter2i f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]] performs
-	calls [f 0 a0 b0; f 1 a1 b1; ...; f n an bn] in that order.
+val iter2i : (int -> 'a -> 'b -> unit) -> 'a array -> 'b array -> unit
+(** [Array.iter2i f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]]
+    performs calls [f 0 a0 b0; f 1 a1 b1; ...; f n an bn] in that
+    order.
 
-	@raise Invalid_argument if the two arrays have different lengths. *)
+    @raise Invalid_argument if the two arrays have different
+    lengths. *)
 
-  val for_all2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
-    (** As {!Array.for_all} but on two arrays.
+val for_all2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
+(** As {!Array.for_all} but on two arrays.
 
-	@raise Invalid_argument if the two arrays have different lengths.*)
+    @raise Invalid_argument if the two arrays have different lengths.*)
 
 
-  val exists2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
-  (** As {!Array.exists} but on two arrays.
+val exists2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
+(** As {!Array.exists} but on two arrays.
 
-      @raise Invalid_argument if the two arrays have different lengths. *)
+    @raise Invalid_argument if the two arrays have different lengths. *)
 
-  val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
-    (** As {!Array.map} but on two arrays.
+val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
+(** As {!Array.map} but on two arrays.
 
-	@raise Invalid_argument if the two arrays have different lengths. *)
+    @raise Invalid_argument if the two arrays have different lengths. *)
 
-  (**{6 Predicates}*)
+(**{6 Predicates}*)
 
-  val for_all : ('a -> bool) -> 'a array -> bool
-    (** [for_all p [|a0; a1; ...; an|]] checks if all elements of the array
-	satisfy the predicate [p].  That is, it returns
-	[ (p a0) && (p a1) && ... && (p an)]. *)
+val for_all : ('a -> bool) -> 'a array -> bool
+(** [for_all p [|a0; a1; ...; an|]] checks if all elements of the
+    array satisfy the predicate [p].  That is, it returns [ (p a0)
+    && (p a1) && ... && (p an)]. *)
 
-  val exists : ('a -> bool) -> 'a array -> bool
-    (** [exists p [|a0; a1; ...; an|]] checks if at least one element of
-	the array satisfies the predicate [p].  That is, it returns
-	[ (p a0) || (p a1) || ... || (p an)]. *)
+val exists : ('a -> bool) -> 'a array -> bool
+(** [exists p [|a0; a1; ...; an|]] checks if at least one element of
+    the array satisfies the predicate [p].  That is, it returns [(p
+    a0) || (p a1) || ... || (p an)]. *)
 
-  val find : ('a -> bool) -> 'a array -> 'a
-    (** [find p a] returns the first element of array [a]
-	that satisfies the predicate [p].
-	@raise Not_found  if there is no value that satisfies [p] in the
-	array [a]. *)
+val find : ('a -> bool) -> 'a array -> 'a
+(** [find p a] returns the first element of array [a] that
+    satisfies the predicate [p].
 
-  val mem : 'a -> 'a array -> bool
-    (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
+    @raise Not_found if there is no value that satisfies [p] in
+    the array [a]. *)
 
-  val memq : 'a -> 'a array -> bool
-    (** Same as {!Array.mem} but uses physical equality instead of
-	structural equality to compare array elements.  *)
+val mem : 'a -> 'a array -> bool
+(** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
 
-  val findi : ('a -> bool) -> 'a array -> int
-    (** [findi p a] returns the index of the first element of array [a]
-	that satisfies the predicate [p].
-	@raise Not_found if there is no value that satisfies [p] in the
-	array [a].  *)
+val memq : 'a -> 'a array -> bool
+(** Same as {!Array.mem} but uses physical equality instead of
+    structural equality to compare array elements.  *)
 
-  val filter : ('a -> bool) -> 'a array -> 'a array
-    (** [filter p a] returns all the elements of the array [a]
-	that satisfy the predicate [p].  The order of the elements
-	in the input array is preserved.  *)
+val findi : ('a -> bool) -> 'a array -> int
+(** [findi p a] returns the index of the first element of array [a]
+    that satisfies the predicate [p].
+    @raise Not_found if there is no value that satisfies [p] in the
+    array [a].  *)
 
-  val filteri : (int -> 'a -> bool) -> 'a array -> 'a array
-    (** As [filter] but with the index passed to the predicate. *)
+val filter : ('a -> bool) -> 'a array -> 'a array
+(** [filter p a] returns all the elements of the array [a]
+    that satisfy the predicate [p].  The order of the elements
+    in the input array is preserved.  *)
 
-  val filter_map : ('a -> 'b option) -> 'a array -> 'b array
-    (** [filter_map f e] returns an array consisting in all elements
-	[x] such that [f y] returns [Some x] , where [y] is an element
-	of [e]. *)
+val filteri : (int -> 'a -> bool) -> 'a array -> 'a array
+(** As [filter] but with the index passed to the predicate. *)
 
-  val find_all : ('a -> bool) -> 'a array -> 'a array
-    (** [find_all] is another name for {!Array.filter}. *)
+val filter_map : ('a -> 'b option) -> 'a array -> 'b array
+(** [filter_map f e] returns an array consisting in all elements
+    [x] such that [f y] returns [Some x] , where [y] is an element
+    of [e]. *)
 
-  val partition : ('a -> bool) -> 'a array -> 'a array * 'a array
-    (** [partition p a] returns a pair of arrays [(a1, a2)], where
-	[a1] is the array of all the elements of [a] that
-	satisfy the predicate [p], and [a2] is the array of all the
-	elements of [a] that do not satisfy [p].
-	The order of the elements in the input array is preserved. *)
+val find_all : ('a -> bool) -> 'a array -> 'a array
+(** [find_all] is another name for {!Array.filter}. *)
 
-  (** {6 Array transformations} *)
+val partition : ('a -> bool) -> 'a array -> 'a array * 'a array
+(** [partition p a] returns a pair of arrays [(a1, a2)], where
+    [a1] is the array of all the elements of [a] that
+    satisfy the predicate [p], and [a2] is the array of all the
+    elements of [a] that do not satisfy [p].
+    The order of the elements in the input array is preserved. *)
 
-  val rev : 'a array -> 'a array
-    (** Array reversal.*)
+(** {6 Array transformations} *)
 
-  val rev_in_place : 'a array -> unit
-    (** In-place array reversal.  The array argument is updated. *)
+val rev : 'a array -> 'a array
+(** Array reversal.*)
 
-  (** {6 Conversions} *)
+val rev_in_place : 'a array -> unit
+(** In-place array reversal.  The array argument is updated. *)
 
-  val enum : 'a array -> 'a BatEnum.t
-    (** Returns an enumeration of the elements of an array.
-	Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
+(** {6 Conversions} *)
 
-  val of_enum : 'a BatEnum.t -> 'a array
-    (** Build an array from an enumeration. *)
+val enum : 'a array -> 'a BatEnum.t
+(** Returns an enumeration of the elements of an array.
+    Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
-  val backwards : 'a array -> 'a BatEnum.t
-    (** Returns an enumeration of the elements of an array, from last to first. *)
+val of_enum : 'a BatEnum.t -> 'a array
+(** Build an array from an enumeration. *)
 
-  val of_backwards : 'a BatEnum.t -> 'a array
-  (** Build an array from an enumeration, with the first element of
-      the enumeration as the last element of the array and vice
-      versa. *)
+val backwards : 'a array -> 'a BatEnum.t
+(** Returns an enumeration of the elements of an array, from last to first. *)
 
-  (** {6 Utilities} *)
+val of_backwards : 'a BatEnum.t -> 'a array
+(** Build an array from an enumeration, with the first element of
+    the enumeration as the last element of the array and vice
+    versa. *)
 
-  val make_compare : ('a -> 'a -> int) -> 'a array -> 'a array -> int
-    (** [make_compare c] generates the lexicographical order on arrays
-	induced by [c]. *)
+(** {6 Utilities} *)
+
+val make_compare : ('a -> 'a -> int) -> 'a array -> 'a array -> int
+(** [make_compare c] generates the lexicographical order on arrays
+    induced by [c]. That is, given a comparison function for the
+    elements of an array, *)
 
 val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
-  (** [decorate_sort f a] returns a sorted copy of [a] such that if [f
-      x < f y] then [x] is earlier in the result than [y].  This
-      function is useful when [f] is expensive, as it only computes [f
-      x] once for each element in the array.  See
-      [:[http://en.wikipedia.org/wiki/Schwartzian_transform]Schwartzian
-      Transform]. *)
+(** [decorate_sort f a] returns a sorted copy of [a] such that if [f
+    x < f y] then [x] is earlier in the result than [y].  This
+    function is useful when [f] is expensive, as it only computes [f
+    x] once for each element in the array.  See
+    [:[http://en.wikipedia.org/wiki/Schwartzian_transform]Schwartzian
+    Transform]. *)
 
 val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array
-  (** As {!Array.decorate_sort}, but uses fast_sort internally. *)
+(** As {!Array.decorate_sort}, but uses fast_sort internally. *)
 
 val range : 'a array -> int BatEnum.t
-  (** [range a] returns an enumeration of all valid indexes into the given
-      array.  For example, [range [|2;4;6;8|] = 0--3].*)
+(** [range a] returns an enumeration of all valid indexes into the given
+    array.  For example, [range [|2;4;6;8|] = 0--3].*)
 
 val insert : 'a array -> 'a -> int -> 'a array
 (** [insert xs x i] returns a copy of [xs] except the value [x] is
@@ -236,7 +239,7 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 
     function must be provided to print the items in the array.
 
     Example: IO.to_string (Array.print Int.print) [|2;4;66|] = "[|2;4;66|]"
-*)
+ *)
 
 val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
