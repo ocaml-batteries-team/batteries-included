@@ -3,24 +3,6 @@
 
 include BatAvlTree
 
-let (>!) = (>)
-
-let compare_uint n1 n2 =
-  let sgn1 = (n1 lsr 24) - (n2 lsr 24) in
-  if sgn1 = 0 then (n1 land 0xffffff) - (n2 land 0xffffff) else sgn1
-
-let (>) n1 n2 = compare_uint n1 n2 > 0
-let (>=) n1 n2 = compare_uint n1 n2 >= 0
-let (<) n1 n2 = compare_uint n1 n2 < 0
-let (<=) n1 n2 = compare_uint n1 n2 <= 0
-let compare = compare_uint
-
-let max n1 n2 = if n1 >= n2 then n1 else n2
-let min n1 n2 = if n1 <= n2 then n1 else n2
-
-let max_int = ~-1
-let min_int = 0
-
 type t = (int * int) tree
 type elt = int
 
@@ -120,7 +102,7 @@ let remove_range n1 n2 s =
 let rec union s1 s2 =
   if is_empty s1 then s2 else
   if is_empty s2 then s1 else
-  let s1, s2 = if height s1 >! height s2 then s1, s2 else s2, s1 in
+  let s1, s2 = if height s1 > height s2 then s1, s2 else s2, s1 in
   let n1, n2 = root s1 in
   let l1 = left_branch s1 in
   let r1 = right_branch s1 in
@@ -143,7 +125,7 @@ let rec union s1 s2 =
 let rec inter s1 s2 =
   if is_empty s1 then empty else
   if is_empty s2 then empty else
-  let s1, s2 = if height s1 >! height s2 then s1, s2 else s2, s1 in
+  let s1, s2 = if height s1 > height s2 then s1, s2 else s2, s1 in
   let n1, n2 = root s1 in
   let l1 = left_branch s1 in
   let r1 = right_branch s1 in
