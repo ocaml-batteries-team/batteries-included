@@ -445,7 +445,7 @@ let prepend = prepend_char
 let rec map f = function
     Empty -> Empty
   | Leaf a -> Leaf (Array.map f a)
-  | Concat(l,cl,r,cr,h) -> Concat(map f l, cl, map f r, cr, h)
+  | Concat(l,cl,r,cr,h) -> let l' = map f l in Concat(l', cl, map f r, cr, h)
 
 let mapi f v =
   let off = ref 0 in
