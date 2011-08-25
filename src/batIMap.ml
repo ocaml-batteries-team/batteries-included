@@ -178,9 +178,9 @@ let rec domain m =
   if is_empty m then empty else
   let (k1, k2, _), m' = split_leftmost m in
   let f n1 n2 _ (k1, k2, s) =
-    if k1 = n2 + 1 then (k1, n2, s) else
+    if n1 = k2 + 1 then (k1, n2, s) else
     (n1, n2, make_tree s (k1, k2) empty) in
-  let k1, k2, s =fold_range f m' (k1, k2, empty) in
+  let k1, k2, s = fold_range f m' (k1, k2, empty) in
   make_tree s (k1, k2) empty
 
 let rec map_to_set p m =
@@ -193,7 +193,7 @@ let rec map_to_set p m =
     Some (k1, k2, m') ->
       let f n1 n2 v (k1, k2, s) =
 	if p v then
-	  if k1 = n2 + 1 then (k1, n2, s) else
+	  if n1 = k2 + 1 then (k1, n2, s) else
 	  (n1, n2, make_tree s (k1, k2) empty) 
 	else
 	  (k1, k2, s) in
