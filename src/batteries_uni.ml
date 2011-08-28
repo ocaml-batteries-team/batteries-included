@@ -167,6 +167,8 @@ module Batteries_config = Batteries_config
 
 module Future = struct
   module Log = BatLog
+  module Counter = BatCounter
+  module Histogram = BatHistogram
 end
 
 (* Pervasives *)

@@ -266,28 +266,51 @@ open Stream
                   Stream.lcons (fun _ -> f h)
                     (Stream.slazy (fun _ -> map f s)))
              | _ -> Stream.sempty)
-      
-    let dup s =
-      let rec gen s qa qb =
-        Stream.slazy
-          (fun _ ->
-             if not (Queue.is_empty qa)
-             then
-               Stream.lcons (fun _ -> Queue.take qa)
-                 (Stream.slazy (fun _ -> gen s qa qb))
-             else
-               (let (__strm : _ Stream.t) = s
-                in
-                  match Stream.peek __strm with
-                  | Some h ->
-                      (Stream.junk __strm;
-                       Queue.add h qb;
-                       Stream.icons h (Stream.slazy (fun _ -> gen s qa qb)))
-                  | _ -> Stream.sempty)) in
-      let q1 = Queue.create ()
-      and q2 = Queue.create ()
-      in ((gen s q1 q2), (gen s q2 q1))
-      
+
+    let dup (s: 'a Stream.t) =
+      let rec gen q_in q_out =
+	Printf.printf "0%!";
+	Stream.slazy (fun () ->
+	  Printf.printf "a%!";
+	  if Queue.is_empty q_in
+	  then (* take from stream, put onto other queue *)
+	    match Stream.peek s with
+	      | Some h ->
+		Printf.printf "b%!";
+		Stream.junk s;
+		Queue.add h q_out;
+		Stream.icons h (Stream.slazy (fun () -> gen q_in q_out))
+	      | _ -> Stream.sempty
+	  else ( (* take from queue *)
+	    Printf.printf "c%!";
+	    Stream.lcons (fun () -> Queue.take q_in)
+	      (Stream.slazy (fun () -> gen q_in q_out))))
+      in
+      let q1 = Queue.create () in
+      let q2 = Queue.create () in
+      Printf.printf "!!%!";
+      gen q1 q2, gen q2 q1
+
+(*** dup
+     let block_stream =
+       let x = ref 10 in
+       BatStream.of_fun (fun pos -> decr x; if !x < 0 then None else Some !x) in
+
+     let rec show count stream =
+       match BatStream.next block_stream with
+       | Some x -> show (succ count) stream
+       | None -> count
+       in
+     let q1, q2 = BatStream.dup block_stream in
+
+     Printf.printf "x%!";
+     assert_equal ~msg:"Second stream from dup length wrong" ~printer:(IO.to_string Int.print) 10 (show 0 q2);
+     Printf.printf "x%!";
+     assert_equal ~msg:"First stream from dup length wrong" ~printer:(IO.to_string Int.print) 10 (show 0 q1);
+     Printf.printf "x%!";
+     ()
+ **)
+
     let rec combn sa =
       Stream.slazy
         (fun _ ->
