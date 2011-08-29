@@ -167,12 +167,13 @@ and pragma k start buf = parse
       "open " ^ mn ^ ";;" ;
     ] ;
     spin () ;
-    List.iter (Printf.printf "%s\n") [
-      "let suite = \"" ^ mn ^ "\" >::: [" ;
-      String.concat ";" !all_tests ;
-      "];;" ;
-      "let () = Tests.register suite;;"
-    ] ;
+    if !all_tests <> [] then
+      List.iter (Printf.printf "%s\n") [
+	"let suite = \"" ^ mn ^ "\" >::: [" ;
+	String.concat ";" !all_tests ;
+	"];;" ;
+	"let () = Tests.register suite;;"
+      ] ;
     Pervasives.flush stdout
 
   let () =
