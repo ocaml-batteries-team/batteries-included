@@ -88,6 +88,8 @@ BatISet
 BatIMap
 BatCache
 BatLog
+BatCounter
+BatHistogram
 Batteries_config
 Batteries_print
 Batteries_uni
