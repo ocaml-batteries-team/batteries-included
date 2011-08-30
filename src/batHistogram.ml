@@ -65,6 +65,7 @@ object (self)
     values <- Map.empty
   method values = Map.values values
   method update x = self#update_time x (now ())
+
   method private update_time x time =  (* TODO: Make concurrent *)
     let prio = weight (time -. start_time) /. Random.float 1.0 in
     count <- count + 1;
@@ -90,9 +91,9 @@ object (self)
 end
 
 
-type t = {mutable count: int; mutable min: int; mutable max: int;
+type t = {mutable count: int; mutable min: float; mutable max: float;
 	  mutable variance_m: float; mutable variance_s: float;
-	  mutable sum: int; sample: sample_t; }
+	  mutable sum: float; sample: sample_t; }
 
 let make_sample s =
   { count=0; min=max_int; max=min_int; sum=0;
@@ -126,10 +127,25 @@ let update t x =
   t.sample#update x
 
 let count t = t.count
-let min t = if t.count = 0 then 0 else t.min
-let max t = if t.count = 0 then 0 else t.max
-let mean t = if t.count = 0 then 0.0 else float t.sum /. float t.count
+let min t = if t.count = 0 then 0.0 else t.min
+let max t = if t.count = 0 then 0.0 else t.max
+let mean t = if t.count = 0 then 0.0 else t.sum /. float t.count
 let variance t = if t.count <= 1 then 0.0 else t.variance_s /. float (t.count-1)
 let std_dev t = if t.count = 0 then 0.0 else sqrt (variance t)
 
 let values t = t.sample#values
+
+(* pcts: input range 0-100 *)
+let percentile t pcs =
+  let values_ordered = t.sample#values |> BatArray.of_enum in
+  Array.sort values_ordered;
+  let array_size = float (Array.length values_ordered) in
+  let get_pctile pct =
+    if pct <= 0. | pct >= 100. then invalid_arg "Percentile: out of range";
+    let pos, weight = (pct /. 100 *. array_size) |> modf in
+    let pos = int_of_float pos in
+    (* weighted average of v.(pos) and v.(pos+1) *)
+    values_ordered.(pos) *. (1. -. weight) +.
+      values_ordered.(pos+1) *. weight
+  in
+  List.map get_pctile pcs

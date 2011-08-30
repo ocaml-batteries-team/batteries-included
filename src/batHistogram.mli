@@ -53,13 +53,31 @@ val make_sample : sample_t -> t
  *)
 val make : [`UNIFORM | `BIASED] -> t
 
+(** Reset the Histogram to its state at creation *)
 val clear : t -> unit
 
+(** Update the Histogram by adding a value *)
 val update : t -> int -> unit
 
+(** Return the count of values added to the histogram *)
 val count : t -> int
+
+(** Return the minimum value added. *)
 val min : t -> int
+
+(** Return the maximum value added. *)
 val max : t -> int
+
+(** Return the mean value added. *)
 val mean : t -> float
+
+(** Return the standard deviation of all values added. *)
 val std_dev : t -> float
+
+(** Return all values currently kept inside the histogram object *)
 val values : t -> int BatEnum.t
+
+(** Given a list of values between 0.0 and 100.0 (excluding
+    endpoints), return the percentile measurement from added values
+    corresponding to each value*)
+val percentile : t -> float list -> float list
