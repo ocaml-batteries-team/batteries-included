@@ -116,7 +116,7 @@ module GetOpt =
             else if arg = "-" then begin other arg; loop args' end
             else if BatString.starts_with arg "-" then
               loop (gather_short_opt arg 1 args')
-            else if only_leading_opts then args'
+            else if only_leading_opts then arg::args'
             else begin other arg; loop args' end
       in
       let args' = loop args in List.iter other args'
