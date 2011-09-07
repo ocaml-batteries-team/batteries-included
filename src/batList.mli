@@ -80,7 +80,7 @@
 
 	val at : 'a list -> int -> 'a
 	  (** [at l n] returns the n-th element of the list [l] or raise
-	      [Invalid_index] is the index is outside of [l] bounds. *)
+	      [Invalid_argument] is the index is outside of [l] bounds. *)
 
 	val append : 'a list -> 'a list -> 'a list
 	  (** Catenate two lists.  Same function as the infix operator [@].
@@ -292,7 +292,7 @@
 
 	val split_at : int -> 'a list -> 'a list * 'a list
 	(** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
-	 first [n] elements of [l] and [l2] the others. Raise [Invalid_index] if
+	 first [n] elements of [l] and [l2] the others. Raise [Invalid_argument] if
 	 [n] is outside of [l] size bounds. *)
 
 	val split_nth : int -> 'a list -> 'a list * 'a list
@@ -454,12 +454,12 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	  val split_at : int -> 'a list -> [`Ok of ('a list * 'a list) | `Invalid_argument of string]
 	    (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns 
 		[Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2] 
-		contains the others. Otherwise, returns [`Invalid_index n] *)
+		contains the others. Otherwise, returns [`Invalid_argument n] *)
 
 	  val at : 'a list -> int -> [`Ok of 'a | `Invalid_argument of string]
 	    (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
 		[x] is the n-th element of the list [l]. Otherwise, returns [Error
-		(`Invalid_index(n))].*)
+		(`Invalid_argument(n))].*)
 
 
 	  val assoc : 'a -> ('a * 'b) list -> 'b option

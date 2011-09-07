@@ -58,6 +58,7 @@ module Gc = struct include Gc include BatGc end
 module Genlex = struct include Genlex include BatGenlex end
 module Hashtbl = BatHashtbl
 module Int32 = BatInt32
+(*module Int63 = BatInt63*)
 module Int64 = BatInt64
 (* Lazy *)
 module Lexing = struct include Lexing include BatLexing end
