@@ -36,21 +36,21 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
 
 # What to build
-TARGETS = syntax.otarget byte.otarget src/batteriesHelp.cmo META
+TARGETS = syntax.otarget src/batteries.cma src/batteriesHelp.cmo META
 BENCH_TARGETS = benchsuite/bench_int.native benchsuite/bench_map.native
 TEST_TARGET = test-byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   EXT = native
   MODE = shared
-  TARGETS += shared.otarget
+  TARGETS += src/batteries.cmxs
   TEST_TARGET = test-native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
 else 
 ifeq ($(BATTERIES_NATIVE), yes)
   EXT = native
   MODE = native
-  TARGETS += native.otarget
+  TARGETS += src/batteries.cmxa
   TEST-DEPS = test-native
   INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 else
