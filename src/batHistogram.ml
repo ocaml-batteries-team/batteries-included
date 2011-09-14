@@ -26,16 +26,16 @@ let now = Unix.gettimeofday
 class type sample_t = object
   method size : int
   method clear : unit
-  method values : int BatEnum.t
-  method update : int -> unit
+  method values : float BatEnum.t
+  method update : float -> unit
 end
 
 class uniformSample : int -> sample_t = fun size ->
 object (self)
   val mutable count = 0
-  val values = Array.make size 0
+  val values = Array.make size 0.
   method size = BatInt.min size count
-  method clear = count <- 0; Array.fill values 0 size 0
+  method clear = count <- 0; Array.fill values 0 size 0.
   method values = BatArray.enum values
   method update x =
     count <- count + 1;
@@ -96,7 +96,7 @@ type t = {mutable count: int; mutable min: float; mutable max: float;
 	  mutable sum: float; sample: sample_t; }
 
 let make_sample s =
-  { count=0; min=max_int; max=min_int; sum=0;
+  { count=0; min=max_float; max=min_float; sum=0.;
     variance_m = -1.; variance_s = 0.; sample = s}
 
 let make = function
@@ -104,11 +104,10 @@ let make = function
   | `BIASED -> make_sample (new exponentiallyDecayingSample 1028 0.015 :> sample_t)
 
 let clear t =
-  t.count <- 0; t.min <- max_int; t.max <- min_int; t.sum <- 0;
+  t.count <- 0; t.min <- max_float; t.max <- min_float; t.sum <- 0.;
   t.variance_m <- -1.; t.variance_s <- 0.; t.sample#clear
 
 let update_variance t x =
-  let x = float x in
   if t.variance_m = -1. then (
     t.variance_m <- x;
     t.variance_s <- 0.;
@@ -122,7 +121,7 @@ let update t x =
   t.count <- t.count + 1;
   if x < t.min then t.min <- x;
   if x > t.max then t.max <- x;
-  t.sum <- t.sum + x;
+  t.sum <- t.sum +. x;
   update_variance t x;
   t.sample#update x
 
@@ -141,7 +140,7 @@ let percentile t pcs =
   Array.sort values_ordered;
   let array_size = float (Array.length values_ordered) in
   let get_pctile pct =
-    if pct <= 0. | pct >= 100. then invalid_arg "Percentile: out of range";
+    if pct <= 0. || pct >= 100. then invalid_arg "Percentile: out of range";
     let pos, weight = (pct /. 100 *. array_size) |> modf in
     let pos = int_of_float pos in
     (* weighted average of v.(pos) and v.(pos+1) *)
