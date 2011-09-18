@@ -23,8 +23,8 @@
 class type sample_t = object
   method size : int
   method clear : unit
-  method values : int BatEnum.t
-  method update : int -> unit
+  method values : float BatEnum.t
+  method update : float -> unit
 end
 
 (** Size of sample -> sample_t *)
@@ -57,16 +57,16 @@ val make : [`UNIFORM | `BIASED] -> t
 val clear : t -> unit
 
 (** Update the Histogram by adding a value *)
-val update : t -> int -> unit
+val update : t -> float -> unit
 
 (** Return the count of values added to the histogram *)
 val count : t -> int
 
 (** Return the minimum value added. *)
-val min : t -> int
+val min : t -> float
 
 (** Return the maximum value added. *)
-val max : t -> int
+val max : t -> float
 
 (** Return the mean value added. *)
 val mean : t -> float
@@ -75,7 +75,7 @@ val mean : t -> float
 val std_dev : t -> float
 
 (** Return all values currently kept inside the histogram object *)
-val values : t -> int BatEnum.t
+val values : t -> float BatEnum.t
 
 (** Given a list of values between 0.0 and 100.0 (excluding
     endpoints), return the percentile measurement from added values

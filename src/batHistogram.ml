@@ -136,12 +136,12 @@ let values t = t.sample#values
 
 (* pcts: input range 0-100 *)
 let percentile t pcs =
-  let values_ordered = t.sample#values |> BatArray.of_enum in
-  Array.sort values_ordered;
+  let values_ordered = BatArray.of_enum t.sample#values in
+  Array.sort BatFloat.compare values_ordered;
   let array_size = float (Array.length values_ordered) in
   let get_pctile pct =
     if pct <= 0. || pct >= 100. then invalid_arg "Percentile: out of range";
-    let pos, weight = (pct /. 100 *. array_size) |> modf in
+    let pos, weight = modf (pct /. 100. *. array_size) in
     let pos = int_of_float pos in
     (* weighted average of v.(pos) and v.(pos+1) *)
     values_ordered.(pos) *. (1. -. weight) +.
