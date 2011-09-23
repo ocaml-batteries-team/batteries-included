@@ -104,6 +104,7 @@ let _ = dispatch begin function
 
       ocaml_lib "qtest/test_mods";
       ocaml_lib "src/batteries";
+      ocaml_lib "src/batteriesThread";
 
       flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
 (*
