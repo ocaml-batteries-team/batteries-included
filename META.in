@@ -1,10 +1,14 @@
 name="batteries"
 version="@VERSION@"
 description="Batteries Included, the stdlib of choice"
-requires(mt)="unix,num,bigarray,threads,str"
-archive(toploop,mt)="batteries.cma batteriesHelp.cmo"
-archive(byte,mt)  ="batteries.cma"
-archive(native,mt)="batteries.cmxa"
+requires    ="unix,num,bigarray,str"
+requires(mt)="unix,num,bigarray,str,threads"
+archive(toploop)   ="batteries.cma batteries_help.cmo"
+archive(toploop,mt)="batteries.cma batteries_help.cmo batteriesThread.cmxa"
+archive(byte)      ="batteries.cma"
+archive(byte,mt)   ="batteries.cma batteriesThread.cmxa"
+archive(native)    ="batteries.cmxa"
+archive(native,mt) ="batteries.cmxa batteriesThread.cmxa"
 
 package "pa_string" (
         description = "pseudo-native Unicode strings (container)"

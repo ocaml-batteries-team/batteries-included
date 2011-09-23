@@ -160,16 +160,6 @@ module Future = struct
   module Log = BatLog
 end
 
-module Mutex = BatMutex;;
-module RMutex = BatRMutex;;
-
 (* Pervasives last *)
 include Pervasives
 include BatPervasives
-
-let () = 
-  Unix.lock := RMutex.make ();
-  IO.lock := RMutex.make ();
-  IO.lock_factory := RMutex.make;
-  lock := RMutex.make ();
-  ()

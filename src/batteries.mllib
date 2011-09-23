@@ -83,8 +83,6 @@ BatISet
 BatIMap
 BatCache
 BatLog
-BatMutex
-BatRMutex
 BatteriesConfig
 BatteriesPrint
 Batteries
