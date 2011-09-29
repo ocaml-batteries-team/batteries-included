@@ -384,6 +384,9 @@ val is_empty : ('a, 'b) t -> bool
 val create : ('a -> 'a -> int) -> ('a, 'b) t
 (** creates a new empty map, using the provided function for key comparison.*)
 
+val get_cmp : ('a, 'b) t -> ('a -> 'a -> int)
+(** returns the comparison function of the given map *)
+
 val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'b -> ('a, 'b) t
 (** creates a new map with a single binding *)
 

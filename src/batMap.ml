@@ -862,7 +862,7 @@ type ('k, 'v) t =
 
 let create cmp = { cmp = cmp; map = Concrete.empty }
 let empty = { cmp = compare; map = Concrete.empty }
-
+let get_cmp {cmp=cmp} = cmp
 let is_empty x = x.map = Concrete.Empty
 
 let add x d m =
