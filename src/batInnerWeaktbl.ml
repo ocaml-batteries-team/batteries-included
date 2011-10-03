@@ -118,6 +118,32 @@ module Make (H: Hashtbl.HashedType) : Hashtbl.S with type key = H.t = struct
   let copy tbl = 
     let tbl'= W.create (W.count tbl * 3 / 2 + 2) in 
     W.iter (fun cls -> W.add tbl' (Stack.copy cls)) tbl; tbl'
+  (* stdlib/weak.ml *)
+  type weak_hashtbl = {
+    mutable table : HX.t Weak.t array;
+    mutable hashes : int array array;
+    mutable limit : int;
+    mutable oversize : int;
+    mutable rover : int;
+  }
+  external weak_hashtbl_of_wt : W.t -> weak_hashtbl = "%identity"""
+  let stats tbl =
+    let bucket_length = Weak.length in
+    let wh = weak_hashtbl_of_wt tbl in
+    let mbl =
+      Array.fold_left (fun m b -> max m (bucket_length b)) 0 wh.table in
+    let histo = Array.make (mbl + 1) 0 in
+    Array.iter
+      (fun b ->
+        let l = bucket_length b in
+        histo.(l) <- histo.(l) + 1)
+      wh.table;
+    {
+      Hashtbl.num_bindings = W.count tbl;
+      Hashtbl.num_buckets = Array.length wh.table;
+      Hashtbl.max_bucket_length = mbl;
+      Hashtbl.bucket_histogram = histo
+    }
 end
 
 module StdHash = Make

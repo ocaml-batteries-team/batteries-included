@@ -41,7 +41,7 @@ type ('a, 'b) t = ('a, 'b) Hashtbl.t
 
 (**{6 Base operations}*)
 
-val create : int -> ('a, 'b) t
+val create : ?seed:int -> int -> ('a, 'b) t
 (** [Hashtbl.create n] creates a new, empty hash table, with
    initial size [n].  For best results, [n] should be on the
    order of the expected number of elements that will be in
@@ -420,7 +420,7 @@ sig
       
   (**{6 Constructors}*)
 
-val create : int -> ('a, 'b, _) t
+val create : ?seed:int -> int -> ('a, 'b, _) t
 
 external of_table  : ('a, 'b) Hashtbl.t -> ('a, 'b, _ ) t = "%identity"
   (** Adopt a regular hashtable as a capability hashtble, allowing
