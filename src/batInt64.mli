@@ -228,7 +228,7 @@ external format : string -> int64 -> string = "caml_int64_format"
    This function is deprecated; use {!Printf.sprintf} with a [%Lx] format
    instead. *)
 
-(** / **)
+(**/**)
     val modulo : int64 -> int64 -> int64
     val pow : int64 -> int64 -> int64
 
