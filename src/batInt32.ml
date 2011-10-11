@@ -116,5 +116,6 @@ external format : string -> int32 -> string = "caml_int32_format"
 type bounded = t
 let min_num, max_num = min_int, max_int
 
-let print out t = BatInnerIO.Printf.fprintf out "%lx" t
+let print out t = BatInnerIO.nwrite out (to_string t)
+let xprint out t = BatInnerIO.Printf.fprintf out "%lx" t
 let t_printer paren out t = print out t
