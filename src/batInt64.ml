@@ -61,6 +61,7 @@ external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
 external format : string -> int64 -> string = "caml_int64_format"
 
   
-let print out t = BatInnerIO.Printf.fprintf out "%Lx" t
+let print out t = BatInnerIO.nwrite out (to_string t)
+let xprint out t = BatInnerIO.Printf.fprintf out "%Lx" t
 let t_printer paren out t = print out t
 
