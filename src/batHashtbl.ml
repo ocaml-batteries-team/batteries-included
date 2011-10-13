@@ -397,34 +397,34 @@
       let find_option h key =
         let hc = h_conv (to_hash h) in
         let rec loop = function
-	  | Empty -> None
-	  | Cons (k,v,next) ->
-	    if H.equal k key then Some v else loop next
+          | Empty -> None
+          | Cons (k,v,next) ->
+            if H.equal k key then Some v else loop next
         in
         let pos = (H.hash key) mod (Array.length hc.data) in
-	loop (Array.unsafe_get hc.data pos)
+        loop (Array.unsafe_get hc.data pos)
       let find_default h key defval =
         let hc = h_conv (to_hash h) in
         let rec loop = function
-	  | Empty -> defval
-	  | Cons (k,v,next) ->
-	    if H.equal k key then v else loop next
+          | Empty -> defval
+          | Cons (k,v,next) ->
+            if H.equal k key then v else loop next
         in
         let pos = (H.hash key) mod (Array.length hc.data) in
-	loop (Array.unsafe_get hc.data pos)
+        loop (Array.unsafe_get hc.data pos)
       let remove_all h key =
         let hc = h_conv (to_hash h) in
         let rec loop = function
-	  | Empty -> Empty
-	  | Cons(k,v,next) ->
-	    if H.equal k key then begin
-	      hc.size <- pred hc.size;
-	      loop next
-	    end else
-	      Cons(k,v,loop next)
+          | Empty -> Empty
+          | Cons(k,v,next) ->
+            if H.equal k key then begin
+              hc.size <- pred hc.size;
+              loop next
+            end else
+              Cons(k,v,loop next)
         in
         let pos = (H.hash key) mod (Array.length hc.data) in
-	Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+        Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
       let is_empty h           = length h = 0
       let print ?first ?last ?sep print_k print_v out t =
 	print ?first ?last ?sep print_k print_v out (to_hash t)
