@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtSet - Extended operations on sets
  * Copyright (C) 1996 Xavier Leroy
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -28,7 +28,7 @@ module Concrete = struct
     | Node of 'a set * 'a * 'a set * int
 
   let empty = Empty
-    
+
   let is_empty = function Empty -> true | _ -> false
   (* Sets are represented by balanced binary trees (the heights of the
      children differ by at most 2 *)
@@ -239,7 +239,7 @@ module Concrete = struct
       BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
     in make (rev_cons_iter t E)
 
-  let of_enum cmp e = 
+  let of_enum cmp e =
     BatEnum.fold (fun acc elem -> add cmp elem acc) empty e
 
   let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
@@ -288,6 +288,17 @@ module Concrete = struct
               join (union cmp12 l1 l2) v2 (union cmp12 r1 r2)
             end
 
+  let rec sdiff cmp12 s1 s2 =
+    match (s1, s2) with
+        (Empty, t2) -> t2
+      | (t1, Empty) -> t1
+      | (Node(l1, v1, r1, _), t2) ->
+          match split cmp12 v1 t2 with
+              (l2, false, r2) ->
+                join (sdiff cmp12 l1 l2) v1 (sdiff cmp12 r1 r2)
+            | (l2, true, r2) ->
+                concat (sdiff cmp12 l1 l2) (sdiff cmp12 r1 r2)
+
   let rec inter cmp12 s1 s2 =
     match (s1, s2) with
         (Empty, t2) -> Empty
@@ -309,6 +320,16 @@ module Concrete = struct
                 join (diff cmp12 l1 l2) v1 (diff cmp12 r1 r2)
             | (l2, true, r2) ->
                 concat (diff cmp12 l1 l2) (diff cmp12 r1 r2)
+
+  let rec disjoint cmp12 s1 s2 =
+    match (s1, s2) with
+        (Empty, _)
+      | (_, Empty) -> true
+      | (Node(l1, v1, r1, _), t2) ->
+          match split cmp12 v1 t2 with
+              (l2, false, r2) ->
+                disjoint cmp12 l1 l2 && disjoint cmp12 r1 r2
+            | (l2, true, r2) -> false
 
   let rec subset cmp s1 s2 =
     match (s1, s2) with
@@ -350,11 +371,15 @@ sig
 
   val diff: t -> t -> t
 
+  val sdiff: t -> t -> t
+
   val compare: t -> t -> int
 
   val equal: t -> t -> bool
 
   val subset: t -> t -> bool
+
+  val disjoint: t -> t -> bool
 
   val compare_subset: t -> t -> int
 
@@ -398,21 +423,21 @@ sig
   (** {6 Boilerplate code}*)
 
   (** {7 Printing}*)
-    
-  val print :  ?first:string -> ?last:string -> ?sep:string -> 
-    ('a BatInnerIO.output -> elt -> unit) -> 
+
+  val print :  ?first:string -> ?last:string -> ?sep:string ->
+    ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
 
   (** {6 Override modules}*)
-    
+
   (** Operations on {!Set} without exceptions.*)
   module Exceptionless : sig
     val min_elt: t -> elt option
     val max_elt: t -> elt option
     val choose:  t -> elt option
   end
-    
-    
+
+
   (** Operations on {!Set} with labels. *)
   module Labels : sig
     val iter : f:(elt -> unit) -> t -> unit
@@ -424,11 +449,11 @@ sig
     val filter_map: f:(elt -> elt option) -> t -> t
     val partition : f:(elt -> bool) -> t -> t * t
   end
-    
+
 end
     (** Output signature of the functor {!Set.Make}. *)
 
-module Make (Ord : OrderedType) = 
+module Make (Ord : OrderedType) =
 struct
   include Set.Make(Ord)
 
@@ -473,12 +498,14 @@ struct
 
   let singleton e = t_of_impl (Concrete.singleton e)
   let elements t = Concrete.elements (impl_of_t t)
-    
+
   let union s1 s2 = t_of_impl (Concrete.union Ord.compare (impl_of_t s1) (impl_of_t s2))
   let diff s1 s2 = t_of_impl (Concrete.diff Ord.compare (impl_of_t s1) (impl_of_t s2))
   let inter s1 s2 = t_of_impl (Concrete.diff Ord.compare (impl_of_t s1) (impl_of_t s2))
+  let sdiff s1 s2 = t_of_impl (Concrete.sdiff Ord.compare (impl_of_t s1) (impl_of_t s2))
 
   let subset t1 t2 = Concrete.subset Ord.compare (impl_of_t t1) (impl_of_t t2)
+  let disjoint t1 t2 = Concrete.disjoint Ord.compare (impl_of_t t1) (impl_of_t t2)
 
   let rec compare_subset s1 s2 =
     match (s1, impl_of_t s2) with
@@ -625,10 +652,15 @@ let union s1 s2 =
 let diff s1 s2 =
   { s1 with set = Concrete.diff s1.cmp s1.set s2.set }
 
+let sdiff s1 s2 =
+  { s1 with set = Concrete.sdiff s1.cmp s1.set s2.set }
+
 let intersect s1 s2 =
   { s1 with set = Concrete.inter s1.cmp s1.set s2.set }
 
 let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
+
+let disjoint s1 s2 = Concrete.disjoint s1.cmp s1.set s2.set
 
 (**T subset
    subset (of_list [1;2;3]) (of_list [1;2;3;4])
