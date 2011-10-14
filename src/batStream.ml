@@ -267,8 +267,8 @@ open Stream
                     (Stream.slazy (fun _ -> map f s)))
              | _ -> Stream.sempty)
 
-    let dup (s: 'a Stream.t) =
-      let rec gen q_in q_out =
+    let dup (s: 'a Stream.t) = failwith "Correct implementation needed"
+(*      let rec gen q_in q_out =
 	Printf.printf "0%!";
 	Stream.slazy (fun () ->
 	  Printf.printf "a%!";
@@ -290,8 +290,8 @@ open Stream
       let q2 = Queue.create () in
       Printf.printf "!!%!";
       gen q1 q2, gen q2 q1
-
-(*** dup
+ *)
+(* dup
      let block_stream =
        let x = ref 10 in
        BatStream.of_fun (fun pos -> decr x; if !x < 0 then None else Some !x) in
