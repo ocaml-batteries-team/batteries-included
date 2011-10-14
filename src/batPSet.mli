@@ -88,9 +88,13 @@ val union: 'a t -> 'a t -> 'a t
 
 val diff: 'a t -> 'a t -> 'a t
 
+val sdiff: 'a t -> 'a t -> 'a t
+
 val intersect: 'a t -> 'a t -> 'a t
 
 val subset: 'a t -> 'a t -> bool
+
+val disjoint: 'a t -> 'a t -> bool
 
 val print :  ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'c -> unit) ->
