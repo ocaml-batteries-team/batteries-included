@@ -51,7 +51,7 @@ module TestSet
     val max_elt : s -> elt
 
     val pop : s -> elt * s
-    
+
     val fold : (elt -> 'b -> 'b) -> s -> 'b -> 'b
     val iter : (elt -> unit) -> s -> unit
     val filter : (elt -> bool) -> s -> s
@@ -67,6 +67,9 @@ module TestSet
 
     val choose : s -> elt
     val split : elt -> s -> s * bool * s
+
+    val sdiff : s -> s -> s
+    val disjoint : s -> s -> bool
 
     (* val merge : (elt -> bool -> bool -> bool) -> s -> s -> s *)
 
@@ -249,6 +252,36 @@ module TestSet
     ()
 *)
 
+  let test_sdiff () =
+    "sdiff [1; 2; 3] [2; 3; 4] = [1; 4]" @=
+      (il [1; 4], S.sdiff (il [1; 2; 3]) (il [2; 3; 4]));
+    "sdiff [1; 2; 3] [2; 3] = [1]" @=
+      (il [1], S.sdiff (il [1; 2; 3]) (il [2; 3]));
+    "sdiff [2; 3] [2; 3; 4] = [4]" @=
+      (il [4], S.sdiff (il [2; 3]) (il [2; 3; 4]));
+    "sdiff [2; 3] [2; 3] = []" @=
+      (il [], S.sdiff (il [2; 3]) (il [2; 3]));
+    "sdiff [2] [] = [2]" @=
+      (il [2], S.sdiff (il [2]) (il []));
+    "sdiff [] [3] = [3]" @=
+      (il [3], S.sdiff (il []) (il [3]));
+    ()
+
+  let test_disjoint () =
+    "disjoint [1] [1] = false" @?
+      (not (S.disjoint (il [1]) (il [1])));
+    "disjoint [1] [2] = true" @?
+      (S.disjoint (il [1]) (il [2]));
+    "disjoint [] [2] = true" @?
+      (S.disjoint (il []) (il [2]));
+    "disjoint [1] [] = true" @?
+      (S.disjoint (il [1]) (il []));
+    "disjoint [1; 2] [3; 4] = true" @?
+      (S.disjoint (il [1; 2]) (il [3; 4]));
+    "disjoint [1; 2; 3] [1; 4; 5] = false" @?
+      (not (S.disjoint (il [1; 2; 3]) (il [1; 4; 5])));
+    ()
+
   let test_for_all_exists () =
     let test (msg, for_all) =
       let (@?) str = (@?) (Printf.sprintf "[%s] %s" msg str) in
@@ -311,13 +344,13 @@ module TestSet
     let from_filter p t =
       li (S.filter p t)
     in
-    
+
     let from_fold p t =
       let acc e li =
         (if p e then [e] else []) @ li in
       List.rev <| S.fold acc t []
     in
-    
+
     let from_iter p t =
       let acc = ref [] in
       S.iter (fun e -> if p e then acc := e :: !acc) t;
@@ -357,6 +390,8 @@ module TestSet
     "test_split" >:: test_split;
     "test_partition" >:: test_partition;
     (* "test_merge" >:: test_merge; *)
+    "test_sdiff" >:: test_sdiff;
+    "test_disjoint" >:: test_disjoint;
     "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;
     (* "test_enums" >:: test_enums; *)
