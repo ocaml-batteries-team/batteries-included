@@ -271,4 +271,4 @@
     val xprint: 'a BatInnerIO.output -> t -> unit
       (** prints as hex string *)
 
-    val t_printer : t BatValue_printer.t
+    val t_printer : t BatValuePrinter.t

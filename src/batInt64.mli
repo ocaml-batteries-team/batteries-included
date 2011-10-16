@@ -252,7 +252,7 @@ external format : string -> int64 -> string = "caml_int64_format"
       (** prints as decimal string *)
     val xprint: 'a BatInnerIO.output -> t -> unit
       (** prints as hex string *)
-    val t_printer : t BatValue_printer.t
+    val t_printer : t BatValuePrinter.t
 
 
 
