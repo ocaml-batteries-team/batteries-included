@@ -19,7 +19,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Tuples. Modules are provided for tuples with 2, 3, 4, and 5
+(** Tuples.
+
+    NOTE: API changes are expected in a future release.
+
+    Modules are provided for tuples with 2, 3, 4, and 5
     elements. Each provides the following categories of functions.
 
     Projection. Functions [first], [second], [third], [fourth], and [fifth]
@@ -77,10 +81,10 @@ module Tuple2 : sig
     (** Equivalent to {!BatPervasives.(***)}. *)
 
   val map1 : ('a -> 'c) -> ('a * 'b) -> ('c * 'b)
-    (** Equivalent to {!BatPervasives.first}. *)
+    (** Equivalent to {!BatPervasives.first}, which is now deprecated. *)
     
   val map2 : ('b -> 'c) -> ('a * 'b) -> ('a * 'c)
-    (** Equivalent to {!BatPervasives.second}. *)
+    (** Equivalent to {!BatPervasives.second}, which is now deprecated. *)
 
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c

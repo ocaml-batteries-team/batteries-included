@@ -256,6 +256,6 @@ external format : string -> nativeint -> string = "caml_nativeint_format"
    one [%d], [%i], [%u], [%x], [%X] or [%o] conversion specification.
    @deprecated use {!Printf.sprintf} with a [%nx] format
    instead. *)
-(** / **)
+(**/**)
 
 

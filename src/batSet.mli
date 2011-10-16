@@ -343,9 +343,13 @@ val sdiff: 'a t -> 'a t -> 'a t
     This is the same as [diff (union s t) (inter s t)]. The returned set uses
     [s]'s comparison function.*)
 
-(* No compare nor equal; they don't make sense if the comparison
-   functions of the two sets may be different, but apparently this
-   wasn't a problem for 'subset'? *)
+val compare: 'a t -> 'a t -> int
+(** Total ordering between sets. Can be used as the ordering function
+    for doing sets of sets. *)
+
+val equal: 'a t -> 'a t -> bool
+(** [equal s1 s2] tests whether the sets [s1] and [s2] are
+    equal, that is, contain equal elements. *)
 
 val subset: 'a t -> 'a t -> bool
 (** [subset a b] returns true if [a] is a subset of [b]. O(|a|). *)
@@ -405,7 +409,10 @@ val split : 'a -> 'a t -> 'a t * bool * 'a t
 val cardinal: 'a t -> int
   (** Return the number of elements of a set. *)
 
-(* 'elements' missing *)
+val elements: 'a t -> 'a list
+(** Return the list of all elements of the given set.
+    The returned list is sorted in increasing order with respect
+    to the ordering of the given set. *)
 
 val min_elt : 'a t -> 'a
   (** returns the smallest element of the set. Raises

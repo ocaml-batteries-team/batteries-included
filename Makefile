@@ -33,7 +33,8 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 	_build/src/syntax/pa_strings/pa_strings.cma \
 	_build/src/syntax/pa_llist/pa_llist.cmo
-NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
+OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
+	_build/src/*.cmxs
 
 # What to build
 TARGETS = syntax.otarget
@@ -49,14 +50,12 @@ ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   MODE = shared
   TARGETS += src/batteries.cmxs src/batteriesThread.cmxs
   TEST_TARGET = test-native
-  INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
 else 
 ifeq ($(BATTERIES_NATIVE), yes)
   EXT = native
   MODE = native
   TARGETS += src/batteries.cmxa src/batteriesThread.cmxa
   TEST-DEPS = test-native
-  INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 else
   EXT = byte
   MODE = bytecode
@@ -84,7 +83,8 @@ install: all uninstall_packages
 		_build/libs/estring/*.cmo \
 		_build/libs/estring/*.cmi \
 		_build/libs/estring/*.mli
-	ocamlfind install $(OCAMLFIND_DEST) $(NAME) $(INSTALL_FILES)
+	ocamlfind install $(OCAMLFIND_DEST) $(NAME) $(INSTALL_FILES) \
+		-optional $(OPT_INSTALL_FILES)
 
 uninstall_packages:
 	ocamlfind remove $(OCAMLFIND_DEST) estring

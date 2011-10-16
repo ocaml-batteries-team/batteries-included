@@ -374,6 +374,14 @@ val replace : str:string -> sub:string -> by:string -> bool * string
       Example: [String.replace "foobarbaz" "bar" "rab" = (true, "foorabbaz")]
 *)
 
+val nreplace : str:string -> sub:string -> by:string -> string
+  (** [nreplace ~str ~sub ~by] returns a string obtained by iteratively
+      replacing each occurrence of [sub] by [by] in [str], from right to left.
+      It returns a copy of [str] if [sub] has no occurrence in [str].
+
+      Example: [nreplace ~str:"bar foo aaa bar" ~sub:"aa" ~by:"foo" = "bar foo afoo bar"]
+*)
+
 val repeat: string -> int -> string
 (** [repeat s n] returns [s ^ s ^ ... ^ s] 
 
@@ -769,6 +777,8 @@ val escaped : [> `Read] t -> _ t
 val replace_chars : (char -> [> `Read] t) -> [> `Read] t -> _ t
 
 val replace : str:[> `Read] t -> sub:[> `Read] t -> by:[> `Read] t -> bool * _ t
+
+val nreplace : str:[> `Read] t -> sub:[> `Read] t -> by:[> `Read] t -> _ t
 
 val repeat: [> `Read] t -> int -> _ t
 

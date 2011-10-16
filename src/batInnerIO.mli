@@ -549,7 +549,7 @@ type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
      the format specified by the second letter.
    - [!]: take no argument and flush the output.
    - [%]: take no argument and output one [%] character.
-
+   - [,]: the no-op delimiter for conversion specifications
 
    {7 Unparsers}
 

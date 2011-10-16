@@ -168,14 +168,15 @@ and pragma k start buf = parse
       "open " ^ mn ^ ";;" ;
     ] ;
     spin () ;
-    List.iter (Printf.printf "%s\n") [
-      "let suite = \"" ^ mn ^ "\" >::: [" ;
-      String.concat ";" (List.rev !all_tests) ;
-      "];;" ;
-      "let () = Tests.register suite;;"
-    ] ;
+    if !all_tests <> [] then
+      List.iter (Printf.printf "%s\n") [
+        "let suite = \"" ^ mn ^ "\" >::: [" ;
+        String.concat ";" (List.rev !all_tests) ;
+        "];;" ;
+        "let () = Tests.register suite;;"
+      ] ;
     Pervasives.flush stdout
-
+      
   let () =
     if Array.length Sys.argv != 2 then failwith "make_suite: Missing filename to process" ;
     process Sys.argv.(1)

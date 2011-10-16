@@ -54,6 +54,7 @@ struct
        (* When one link an OCaml library/binary/package, one should use -linkpkg *)
        flag ["ocaml"; "byte";   "link"; "program"] & A"-linkpkg";
        flag ["ocaml"; "native"; "link"; "program"] & A"-linkpkg";
+       flag ["ocaml"; "native"; "link"; "toplevel"] & A"-linkpkg";
 
 
        (* For each ocamlfind package one inject the -package option when

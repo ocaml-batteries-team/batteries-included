@@ -185,12 +185,16 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
 val dup : 'a t -> 'a t * 'a t
   (** [dup stream] returns a pair of streams which are identical to [stream]. Note
       that stream is a destructive data structure, the point of [dup] is to
-      return two streams can be used independently. *)
+      return two streams can be used independently. 
+
+      NOT IMPLEMENTED CORRECTLY - WILL RAISE Failure UNTIL CORRECT
+      IMPLEMENTATION FOUND
+   *)
 
 val comb : 'a t * 'b t -> ('a * 'b) t
-  (** [comb] transform a pair of stream into a stream of pairs of corresponding
-      elements. If one stream is short, excess elements of the longer stream are
-      ignored. *)
+(** [comb] transform a pair of stream into a stream of pairs of corresponding
+    elements. If one stream is short, excess elements of the longer stream are
+    ignored. *)
 
 val split : ('a * 'b) t -> 'a t * 'b t
   (** [split] is the opposite of [comb] *)

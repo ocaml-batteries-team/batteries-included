@@ -180,6 +180,7 @@
     (** {7 Printing}*)
 
     val print: 'a BatInnerIO.output -> int -> unit
+      (** prints as decimal string *)
     val xprint: 'a BatInnerIO.output -> int -> unit
       (** prints as hex string *)
 (*    val bprint: 'a BatInnerIO.output -> t -> unit

@@ -264,6 +264,11 @@
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
-    val print: 'a BatInnerIO.output -> t -> unit
-    val t_printer : t BatValuePrinter.t
 
+    val print: 'a BatInnerIO.output -> t -> unit
+      (** prints as decimal string *)
+
+    val xprint: 'a BatInnerIO.output -> t -> unit
+      (** prints as hex string *)
+
+    val t_printer : t BatValue_printer.t

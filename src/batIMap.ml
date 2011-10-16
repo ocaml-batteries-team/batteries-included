@@ -2,26 +2,6 @@
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* Modified by Edgar Friendly <thelema314@gmail.com> *)
 
-(*
-let (>!) = (>)
-
-let compare_uint n1 n2 =
-  let sgn1 = (n1 lsr 24) - (n2 lsr 24) in
-  if sgn1 = 0 then (n1 land 0xffffff) - (n2 land 0xffffff) else sgn1
-
-let (>) n1 n2 = compare_uint n1 n2 > 0
-let (>=) n1 n2 = compare_uint n1 n2 >= 0
-let (<) n1 n2 = compare_uint n1 n2 < 0
-let (<=) n1 n2 = compare_uint n1 n2 <= 0
-let compare = compare_uint
-
-let max n1 n2 = if n1 >= n2 then n1 else n2
-let min n1 n2 = if n1 <= n2 then n1 else n2
-
-let max_int = ~-1
-let min_int = 0
-*)
-
 type 'a t = (int * int * 'a) BatAvlTree.tree
 
 type 'a map = 'a t

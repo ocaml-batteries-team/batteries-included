@@ -228,7 +228,7 @@ external format : string -> int64 -> string = "caml_int64_format"
    This function is deprecated; use {!Printf.sprintf} with a [%Lx] format
    instead. *)
 
-(** / **)
+(**/**)
     val modulo : int64 -> int64 -> int64
     val pow : int64 -> int64 -> int64
 
@@ -249,6 +249,10 @@ external format : string -> int64 -> string = "caml_int64_format"
 
     (** {7 Printing}*)
     val print: 'a BatInnerIO.output -> t -> unit
-    val t_printer : t BatValuePrinter.t
+      (** prints as decimal string *)
+    val xprint: 'a BatInnerIO.output -> t -> unit
+      (** prints as hex string *)
+    val t_printer : t BatValue_printer.t
+
 
 

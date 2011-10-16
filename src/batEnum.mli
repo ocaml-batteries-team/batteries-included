@@ -235,9 +235,11 @@ val group : ('a -> 'b) -> 'a t -> 'a t t
     where each sub-enumeration is the longest continuous enumeration
     of elements whose [test] results are the same. 
 
-    Enum.group (x -> x mod 2) [!1;2;4;1] = [![!1];[!2;4];[!1]]
-    Enum.group (fun x -> x mod 3) [1;2;4;1] = [![!1];[!2];[!4;1]]
-    Enum.group (fun s -> s.[0]) [!"cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [![!"cat"; "canary"];[!"dog";"dodo"];[!"ant"];[!"cow"]]
+    [Enum.group (x -> x mod 2) [1;2;4;1] = [[1];[2;4];[1]]]
+
+    [Enum.group (fun x -> x mod 3) [1;2;4;1] = [[1];[2];[4;1]]]
+
+    [Enum.group (fun s -> s.[0]) ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [["cat"; "canary"];["dog";"dodo"];["ant"];["cow"]]]
 
 *)
 

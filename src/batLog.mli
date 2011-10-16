@@ -47,19 +47,19 @@ type flag = [
 val get_flags : unit -> flag list
 val set_flags : flag list -> unit    
 
-val print : string -> unit
+val print : ?fp:string -> string -> unit
 (** [print s] logs the message s, returning unit. *)
 
-val printf: ('a, unit output, unit) Pervasives.format -> 'a
+val printf: ?fp:string -> ('a, unit output, unit) Pervasives.format -> 'a
 (** As [Printf.printf], only the message is printed to the logging
     output and prefixed with status information per the current flags and
     the currently set prefix. *)
 
-val fatal : string -> 'a
+val fatal : ?fp:string -> string -> 'a
 (** [fatal s] logs the message [s] and then calls [exit 1].  This
     exits the program with return code 1.  *)
 
-val fatalf: ('a, unit output, unit) Pervasives.format -> 'a
+val fatalf: ?fp:string -> ('a, unit output, unit) Pervasives.format -> 'a
 (** [fatalf] allows a format string (as [Printf.printf])and the
     arguments to that format string to build the logging message.
     Exits the program with return code 1. *)
@@ -72,19 +72,19 @@ module type S = sig
 end
 
 module Make (S:S) : sig
-  val print : string -> unit
+  val print : ?fp:string -> string -> unit
   (** [print s] logs the message s, returning unit. *)
 
-  val printf: ('a, 'b output, unit) Pervasives.format -> 'a
+  val printf: ?fp:string -> ('a, 'b output, unit) Pervasives.format -> 'a
   (** As [Printf.printf], only the message is printed to the logging
       output and prefixed with status information per the current flags and
       the currently set prefix. *)
 
-  val fatal : string -> 'a
+  val fatal : ?fp:string -> string -> 'a
   (** [fatal s] logs the message [s] and then calls [exit 1].  This
       exits the program with return code 1.  *)
 
-  val fatalf: ('a, 'a output, unit) Pervasives.format -> 'a
+  val fatalf: ?fp:string -> ('a, 'a output, unit) Pervasives.format -> 'a
 (** [fatalf] allows a format string (as [Printf.printf])and the
     arguments to that format string to build the logging message.
     Exits the program with return code 1. *)
@@ -92,10 +92,10 @@ module Make (S:S) : sig
 end
 
 type 'a logger = {
-  print : string -> unit;
-  printf : 'b. ('b, 'a output, unit) Pervasives.format -> 'b;
-  fatal: string -> 'a;
-  fatalf: 'b. ('b, 'a output, unit) Pervasives.format -> 'b;
+  print : ?fp:string -> string -> unit;
+  printf : 'b. ?fp:string -> ('b, 'a output, unit) Pervasives.format -> 'b;
+  fatal: ?fp:string -> string -> 'a;
+  fatalf: 'b. ?fp:string -> ('b, 'a output, unit) Pervasives.format -> 'b;
 }
 
 val make_logger : 'a output -> string -> flag list -> 'a logger
