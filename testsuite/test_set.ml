@@ -68,6 +68,9 @@ module TestSet
     val choose : s -> elt
     val split : elt -> s -> s * bool * s
 
+    val union : s -> s -> s
+    val inter : s -> s -> s
+    val diff : s -> s -> s
     val sdiff : s -> s -> s
     val disjoint : s -> s -> bool
 
@@ -252,6 +255,51 @@ module TestSet
     ()
 *)
 
+  let test_union () =
+    "union [1; 2; 3] [2; 3; 4] = [1; 2; 3; 4]" @=
+      (il [1; 2; 3; 4], S.union (il [1; 2; 3]) (il [2; 3; 4]));
+    "union [1; 2; 3] [2; 3] = [1; 2; 3]" @=
+      (il [1; 2; 3], S.union (il [1; 2; 3]) (il [2; 3]));
+    "union [2; 3] [2; 3; 4] = [2; 3; 4]" @=
+      (il [2; 3; 4], S.union (il [2; 3]) (il [2; 3; 4]));
+    "union [2; 3] [2; 3] = [2; 3]" @=
+      (il [2; 3], S.union (il [2; 3]) (il [2; 3]));
+    "union [2] [] = [2]" @=
+      (il [2], S.union (il [2]) (il []));
+    "union [] [3] = [3]" @=
+      (il [3], S.union (il []) (il [3]));
+    ()
+
+  let test_inter () =
+    "inter [1; 2; 3] [2; 3; 4] = [2; 3]" @=
+      (il [2; 3], S.inter (il [1; 2; 3]) (il [2; 3; 4]));
+    "inter [1; 2; 3] [2; 3] = [2; 3]" @=
+      (il [2; 3], S.inter (il [1; 2; 3]) (il [2; 3]));
+    "inter [2; 3] [2; 3; 4] = [2; 3]" @=
+      (il [2; 3], S.inter (il [2; 3]) (il [2; 3; 4]));
+    "inter [2; 3] [2; 3] = [2; 3]" @=
+      (il [2; 3], S.inter (il [2; 3]) (il [2; 3]));
+    "inter [2] [] = []" @=
+      (il [], S.inter (il [2]) (il []));
+    "inter [] [3] = []" @=
+      (il [], S.inter (il []) (il [3]));
+    ()
+
+  let test_diff () =
+    "diff [1; 2; 3] [2; 3; 4] = [1]" @=
+      (il [1], S.diff (il [1; 2; 3]) (il [2; 3; 4]));
+    "diff [1; 2; 3] [2; 3] = [1]" @=
+      (il [1], S.diff (il [1; 2; 3]) (il [2; 3]));
+    "diff [2; 3] [2; 3; 4] = []" @=
+      (il [], S.diff (il [2; 3]) (il [2; 3; 4]));
+    "diff [2; 3] [2; 3] = []" @=
+      (il [], S.diff (il [2; 3]) (il [2; 3]));
+    "diff [2] [] = [2]" @=
+      (il [2], S.diff (il [2]) (il []));
+    "diff [] [3] = []" @=
+      (il [], S.diff (il []) (il [3]));
+    ()
+
   let test_sdiff () =
     "sdiff [1; 2; 3] [2; 3; 4] = [1; 4]" @=
       (il [1; 4], S.sdiff (il [1; 2; 3]) (il [2; 3; 4]));
@@ -390,6 +438,9 @@ module TestSet
     "test_split" >:: test_split;
     "test_partition" >:: test_partition;
     (* "test_merge" >:: test_merge; *)
+    "test_union" >:: test_union;
+    "test_inter" >:: test_inter;
+    "test_diff" >:: test_diff;
     "test_sdiff" >:: test_sdiff;
     "test_disjoint" >:: test_disjoint;
     "test_for_all_exists" >:: test_for_all_exists;
@@ -420,6 +471,8 @@ module P = struct
 
   let backwards t =
     BatList.enum -| List.rev -| BatList.of_enum <| S.enum t
+
+  let inter = intersect
 end
 
 module TS = TestSet(S)
