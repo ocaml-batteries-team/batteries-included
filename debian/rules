@@ -29,7 +29,7 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	mkdir -p $(DEB_DESTDIR)/estring $(DEB_DESTDIR)/batteries $(BATTERIES_DEB_DOCROOT)
-	make PREFIX=$(DEB_DESTDIR) install
+	make DESTDIR=$(DEB_DESTDIR) install
 ifneq (,$(findstring $(DOC_PKG),$(shell dh_listpackages)))
 	make DOCROOT=$(BATTERIES_DEB_DOCROOT) install-doc
 endif
