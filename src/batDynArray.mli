@@ -165,18 +165,17 @@ val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
     [Array.mapi]. *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
-  (** [fold_left f x darr] computes
-      [f ( ... ( f ( f (get darr 0) x) (get darr 1) ) ... ) (get darr n-1)],
-      similar to [Array.fold_left] or [List.fold_left]. *)
+(** [fold_left f x darr] computes [f ( ... ( f ( f a0 x) a1) ) ... )
+    aN], where [a0,a1..aN] are the indexed elements of [darr]. *)
 
 val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  (** [fold_right f darr x] computes
-      [ f (get darr 0) (f (get darr 1) ( ... ( f (get darr n-1) x ) ... ) ) ]
-      similar to [Array.fold_right] or [List.fold_right]. *)
+(** [fold_right f darr x] computes [ f a0 (f a1 ( ... ( f aN x )
+    ... ) ) ], where [a0,a1..aN] are the indexed elements of
+    [darr]. *)
 
 val index_of : ('a -> bool) -> 'a t -> int
 (** [index_of f darr] returns the index of the first element [x] in darr such
-	as [f x] returns [true] or raise [Not_found] if not found. *)
+    as [f x] returns [true] or raise [Not_found] if not found. *)
 
 val keep : ('a -> bool) -> 'a t -> unit
 (** [keep p darr] removes in place all the element [x] of [darr]

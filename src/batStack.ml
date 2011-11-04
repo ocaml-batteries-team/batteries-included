@@ -29,7 +29,13 @@ open Stack
       BatEnum.iter (fun x -> push x s) e;
       s
 
-  let enum s = BatEnum.from (fun () -> pop s)
+  let enum s = BatEnum.from
+    (fun () -> try pop s with Stack.Empty -> raise BatEnum.No_more_elements)
 
   let print ?(first="") ?(last="") ?(sep="") print_a out t =
       BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
+
+  module Exceptionless = struct
+    let top s = try Some (top s) with Stack.Empty -> None
+    let pop s = try Some (pop s) with Stack.Empty -> None
+  end

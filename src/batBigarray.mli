@@ -41,11 +41,10 @@
      and {!Pervasives.input_value}, as well as the functions from the
      {!Marshal} module).
 
-    
-    This module extends Stdlib's
+
+    This module replaces Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Bigarray.html}Bigarray}
-    module, go there for documentation on the rest of the functions
-    and types.
+    module.
 
    @author Michel Serrano (Base library)
    @author Xavier Leroy (Base library)
@@ -213,7 +212,7 @@ module Genarray :
       (** The type [Genarray.t] is the type of big arrays with variable
 	  numbers of dimensions.  Any number of dimensions between 1 and 16
 	  is supported.
-	  
+
 	  The three type parameters to [Genarray.t] identify the array element
 	  kind and layout, as follows:
 	  - the first parameter, ['a], is the Caml type for accessing array
@@ -223,12 +222,12 @@ module Genarray :
 	  etc);
 	  - the third parameter, ['c], identifies the array layout
 	  ([c_layout] or [fortran_layout]).
-	  
+
 	  For instance, [(float, float32_elt, fortran_layout) Genarray.t]
 	  is the type of generic big arrays containing 32-bit floats
 	  in Fortran layout; reads and writes in this array use the
 	  Caml type [float]. *)
-      
+
   external create: ('a, 'b) kind -> 'c layout -> int array -> ('a, 'b, 'c) t
     = "caml_ba_create"
       (** [Genarray.create kind layout dimensions] returns a new big array
@@ -239,26 +238,26 @@ module Genarray :
 	  integers that indicate the size of the big array in each dimension.
 	  The length of [dimensions] determines the number of dimensions
 	  of the bigarray.
-	  
+
 	  For instance, [Genarray.create int32 c_layout [|4;6;8|]]
 	  returns a fresh big array of 32-bit integers, in C layout,
 	  having three dimensions, the three dimensions being 4, 6 and 8
 	  respectively.
-	  
+
 	  Big arrays returned by [Genarray.create] are not initialized:
 	  the initial values of array elements is unspecified.
-	  
+
 	  [Genarray.create] raises [Invalid_arg] if the number of dimensions
 	  is not in the range 1 to 16 inclusive, or if one of the dimensions
 	  is negative. *)
-      
+
   external num_dims: ('a, 'b, 'c) t -> int = "caml_ba_num_dims"
       (** Return the number of dimensions of the given big array. *)
-      
+
   val dims : ('a, 'b, 'c) t -> int array
     (** [Genarray.dims a] returns all dimensions of the big array [a],
 	as an array of integers of length [Genarray.num_dims a]. *)
-    
+
   external nth_dim: ('a, 'b, 'c) t -> int -> int = "caml_ba_dim"
     (** [Genarray.nth_dim a n] returns the [n]-th dimension of the
 	big array [a].  The first dimension corresponds to [n = 0];
@@ -266,50 +265,50 @@ module Genarray :
 	to [n = Genarray.num_dims a - 1].
 	Raise [Invalid_arg] if [n] is less than 0 or greater or equal than
 	[Genarray.num_dims a]. *)
-    
+
   external kind: ('a, 'b, 'c) t -> ('a, 'b) kind = "caml_ba_kind"
     (** Return the kind of the given big array. *)
-    
+
   external layout: ('a, 'b, 'c) t -> 'c layout = "caml_ba_layout"
     (** Return the layout of the given big array. *)
-    
+
   external get: ('a, 'b, 'c) t -> int array -> 'a = "caml_ba_get_generic"
     (** Read an element of a generic big array.
 	[Genarray.get a [|i1; ...; iN|]] returns the element of [a]
 	whose coordinates are [i1] in the first dimension, [i2] in
 	the second dimension, ..., [iN] in the [N]-th dimension.
-	
+
 	If [a] has C layout, the coordinates must be greater or equal than 0
 	and strictly less than the corresponding dimensions of [a].
 	If [a] has Fortran layout, the coordinates must be greater or equal
 	than 1 and less or equal than the corresponding dimensions of [a].
 	Raise [Invalid_arg] if the array [a] does not have exactly [N]
 	dimensions, or if the coordinates are outside the array bounds.
-	
+
 	If [N > 3], alternate syntax is provided: you can write
 	[a.{i1, i2, ..., iN}] instead of [Genarray.get a [|i1; ...; iN|]].
 	(The syntax [a.{...}] with one, two or three coordinates is
 	reserved for accessing one-, two- and three-dimensional arrays
 	as described below.) *)
-    
+
   external set: ('a, 'b, 'c) t -> int array -> 'a -> unit
     = "caml_ba_set_generic"
     (** Assign an element of a generic big array.
 	[Genarray.set a [|i1; ...; iN|] v] stores the value [v] in the
 	element of [a] whose coordinates are [i1] in the first dimension,
 	[i2] in the second dimension, ..., [iN] in the [N]-th dimension.
-	
+
 	The array [a] must have exactly [N] dimensions, and all coordinates
 	must lie inside the array bounds, as described for [Genarray.get];
 	otherwise, [Invalid_arg] is raised.
-	
+
 	If [N > 3], alternate syntax is provided: you can write
 	[a.{i1, i2, ..., iN} <- v] instead of
 	[Genarray.set a [|i1; ...; iN|] v].
 	(The syntax [a.{...} <- v] with one, two or three coordinates is
 	reserved for updating one-, two- and three-dimensional arrays
 	as described below.) *)
-    
+
   external sub_left: ('a, 'b, c_layout) t -> int -> int -> ('a, 'b, c_layout) t
     = "caml_ba_sub"
     (** Extract a sub-array of the given big array by restricting the
@@ -323,12 +322,12 @@ module Genarray :
 	[[|i1; ...; iN|]] of the sub-array is identical to the
 	element at coordinates [[|i1+ofs; ...; iN|]] of the original
 	array [a].
-	
+
 	[Genarray.sub_left] applies only to big arrays in C layout.
 	Raise [Invalid_arg] if [ofs] and [len] do not designate
 	a valid sub-array of [a], that is, if [ofs < 0], or [len < 0],
 	or [ofs + len > Genarray.nth_dim a 0]. *)
-    
+
   external sub_right:
     ('a, 'b, fortran_layout) t -> int -> int -> ('a, 'b, fortran_layout) t
     = "caml_ba_sub"
@@ -343,12 +342,12 @@ module Genarray :
 	[[|i1; ...; iN|]] of the sub-array is identical to the
 	element at coordinates [[|i1; ...; iN+ofs|]] of the original
 	array [a].
-	
+
 	[Genarray.sub_right] applies only to big arrays in Fortran layout.
 	Raise [Invalid_arg] if [ofs] and [len] do not designate
 	a valid sub-array of [a], that is, if [ofs < 1], or [len < 0],
 	or [ofs + len > Genarray.nth_dim a (Genarray.num_dims a - 1)]. *)
-    
+
   external slice_left:
     ('a, 'b, c_layout) t -> int array -> ('a, 'b, c_layout) t
     = "caml_ba_slice"
@@ -362,11 +361,11 @@ module Genarray :
 	at coordinates [[|i1; ...; iM; j1; ...; j(N-M)|]] in the original
 	array [a].  No copying of elements is involved: the slice and
 	the original array share the same storage space.
-	
+
 	[Genarray.slice_left] applies only to big arrays in C layout.
 	Raise [Invalid_arg] if [M >= N], or if [[|i1; ... ; iM|]]
 	is outside the bounds of [a]. *)
-    
+
   external slice_right:
     ('a, 'b, fortran_layout) t -> int array -> ('a, 'b, fortran_layout) t
     = "caml_ba_slice"
@@ -380,11 +379,11 @@ module Genarray :
 	at coordinates [[|j1; ...; j(N-M); i1; ...; iM|]] in the original
 	array [a].  No copying of elements is involved: the slice and
 	the original array share the same storage space.
-	
+
 	[Genarray.slice_right] applies only to big arrays in Fortran layout.
 	Raise [Invalid_arg] if [M >= N], or if [[|i1; ... ; iM|]]
 	is outside the bounds of [a]. *)
-    
+
   external blit: ('a, 'b, 'c) t -> ('a, 'b, 'c) t -> unit
     = "caml_ba_blit"
     (** Copy all elements of a big array in another big array.
@@ -393,14 +392,14 @@ module Genarray :
 	dimensions and equal dimensions.  Copying a sub-array of [src]
 	to a sub-array of [dst] can be achieved by applying [Genarray.blit]
 	to sub-array or slices of [src] and [dst]. *)
-    
+
   external fill: ('a, 'b, 'c) t -> 'a -> unit = "caml_ba_fill"
     (** Set all elements of a big array to a given value.
 	[Genarray.fill a v] stores the value [v] in all elements of
 	the big array [a].  Setting only some elements of [a] to [v]
 	can be achieved by applying [Genarray.fill] to a sub-array
 	or a slice of [a]. *)
-    
+
   val map_file:
     Unix.file_descr -> ?pos:int64 -> ('a, 'b) kind -> 'c layout ->
     bool -> int array -> ('a, 'b, 'c) t
@@ -413,18 +412,18 @@ module Genarray :
 	[Unix.openfile], for example).  The optional [pos] parameter
 	is the byte offset in the file of the data being mapped;
 	it default to 0 (map from the beginning of the file).
-	
+
 	If [shared] is [true], all modifications performed on the array
 	are reflected in the file.  This requires that [fd] be opened
 	with write permissions.  If [shared] is [false], modifications
 	performed on the array are done in memory only, using
 	copy-on-write of the modified pages; the underlying file is not
 	affected.
-	
+
 	[Genarray.map_file] is much more efficient than reading
 	the whole file in a big array, modifying that big array,
 	and writing it afterwards.
-	
+
 	To adjust automatically the dimensions of the big array to
 	the actual size of the file, the major dimension (that is,
 	the first dimension for an array with C layout, and the last
@@ -433,7 +432,7 @@ module Genarray :
 	from the size of the file.  The file must contain an integral
 	number of sub-arrays as determined by the non-major dimensions,
 	otherwise [Failure] is raised.
-	
+
 	If all dimensions of the big array are given, the file size is
 	matched against the size of the big array.  If the file is larger
 	than the big array, only the initial portion of the file is
@@ -446,9 +445,18 @@ module Genarray :
 	the elements of [a].  *)
 
   val iteri : ((int, [`Read]) BatArray.Cap.t -> 'a -> unit) -> ('a, 'b, 'c) t -> unit
-   (** Same as {!iter}, but the
-       function is applied to the index of the coordinates as the first 
-       argument, and the element itself as the second argument. *)
+    (** Same as {!iter}, but the function is applied to the index of
+        the element as the first argument, and the element itself as
+        the second argument. *)
+
+  val modify : ('a -> 'a) -> ('a, 'b, 'c) t -> unit
+    (** [modify f a] changes each element [x] in [a] to [f x]
+        in-place. *)
+
+  val modifyi : ((int, [`Read]) BatArray.Cap.t -> 'a -> 'a) -> ('a, 'b, 'c) t -> unit
+    (** Same as {!modify}, but the function is applied to the index of
+        the coordinates as the first argument, and the element itself
+        as the second argument. *)
 
   val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
     (** [enum e] returns an enumeration on the elements of [e].
@@ -457,15 +465,16 @@ module Genarray :
    val map :
      ('a -> 'b) ->
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
-   (** [map f a] applies function [f] to all the elements of [a],
-       and builds a {!Bigarray.t} with the results returned by [f]. *)
- 
+   (** [map f kind a] applies function [f] to all the elements of [a],
+       and builds a {!Bigarray.t} of kind [kind] with the results
+       returned by [f]. *)
+
    val mapi :
      ((int, [`Read]) BatArray.Cap.t -> 'a -> 'b) ->
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
-   (** Same as {!map}, but the
-       function is applied to the index of the coordinates as the first 
-       argument, and the element itself as the second argument. *)
+  (** Same as {!map}, but the function is applied to the index of the
+      coordinates as the first argument, and the element itself as the
+      second argument. *)
 
 
   end
@@ -547,14 +556,23 @@ module Array1 : sig
     ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
     (** [Array1.map f a] applies function [f] to all the elements of [a],
 	and builds a {!Bigarray.Array1.t} with the results returned by [f]. *)
-    
+
   val mapi :
     (int -> 'a -> 'b) ->
     ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
     (** Same as {!Bigarray.Array1.map}, but the
 	function is applied to the index of the element as the first argument,
 	and the element itself as the second argument. *)
-    
+
+  val modify : ('a -> 'a) -> ('a, 'b, 'c) t -> unit
+    (** [modify f a] changes each element [x] in [a] to [f x]
+        in-place. *)
+
+  val modifyi : (int -> 'a -> 'a) -> ('a, 'b, 'c) t -> unit
+    (** Same as {!Bigarray.Array1.modify}, but the function is applied
+        to the index of the element as the first argument, and the
+        element itself as the second argument. *)
+
   val to_array : ('a, 'b, 'c) t -> 'a array
     (** Build a one-dimensional array initialized from the
 	given big array.  *)
@@ -680,17 +698,26 @@ module Array2 :
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
    (** [Array2.map f a] applies function [f] to all the elements of [a],
        and builds a {!Bigarray.Array2.t} with the results returned by [f]. *)
- 
+
    val mapij :
      (int -> int -> 'a -> 'b) ->
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
    (** Same as {!Bigarray.Array2.map}, but the
        function is applied to the index of the element as the first two
        arguments, and the element itself as the third argument. *)
- 
-   val to_array : ('a, 'b, 'c) t -> 'a array array
-   (** Build a two-dimensional array initialized from the
-       given big array.  *)
+
+  val modify : ('a -> 'a) -> ('a, 'b, 'c) t -> unit
+    (** [modify f a] changes each element [x] in [a] to [f x]
+        in-place. *)
+
+  val modifyij : (int -> int -> 'a -> 'a) -> ('a, 'b, 'c) t -> unit
+    (** Same as {!Bigarray.Array2.modify}, but the function is applied
+        to the index of the element as the first two arguments, and the
+        element itself as the third argument. *)
+
+  val to_array : ('a, 'b, 'c) t -> 'a array array
+    (** Build a two-dimensional array initialized from the
+        given big array.  *)
 
   (**{6 Unsafe operations}
 
@@ -834,14 +861,23 @@ module Array3 :
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
    (** [Array3.map f a] applies function [f] to all the elements of [a],
        and builds a {!Bigarray.Array3.t} with the results returned by [f]. *)
- 
+
    val mapijk :
      (int -> int -> int -> 'a -> 'b) ->
      ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
    (** Same as {!Bigarray.Array3.map}, but the
        function is applied to the index of the element as the first three
        arguments, and the element itself as the fourth argument. *)
- 
+
+  val modify : ('a -> 'a) -> ('a, 'b, 'c) t -> unit
+    (** [modify f a] changes each element [x] in [a] to [f x]
+        in-place. *)
+
+  val modifyijk : (int -> int -> int -> 'a -> 'a) -> ('a, 'b, 'c) t -> unit
+    (** Same as {!Bigarray.Array3.modify}, but the function is applied
+        to the index of the coordinates as the first three arguments, and the
+        element itself as the fourth argument. *)
+
    val to_array : ('a, 'b, 'c) t -> 'a array array array
    (** Build a three-dimensional array initialized from the
        given big array.  *)

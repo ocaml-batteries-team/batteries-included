@@ -115,12 +115,12 @@ val rev : 'a t -> unit
 (** {6 Functional Operations} *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
-  (** [List.fold_left f a [b1; ...; bn]] is
-      [f (... (f (f a b1) b2) ...) bn]. *)
+  (** [List.fold_left f a (ref [b0; b1; ...; bn])] is
+      [f (... (f (f a b0) b1) ...) bn]. *)
   
 val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  (** [List.fold_right f [a1; ...; an] b] is
-      [f a1 (f a2 (... (f an b) ...))].  Tail-recursive. *)
+  (** [List.fold_right f (ref [a0; a1; ...; an]) b] is
+      [f a0 (f a1 (... (f an b) ...))].  Tail-recursive. *)
 
 val iter : ('a -> unit) -> 'a t -> unit
 (** Apply the given function to all elements of the
@@ -187,7 +187,8 @@ val remove_all : 'a t -> 'a -> unit
 
 
 
-(** Functions that operate on the [i]th element of a list.
+(** Functions that operate on the element at index [i] in a list (with
+    indices starting from 0).
 
     While it is sometimes necessary to perform these
     operations on lists (hence their inclusion here), the

@@ -21,7 +21,14 @@
  
 type ('a,'b) t = 'a * 'b
 
-let map f (x,y) = (f x, f y)
+type 'a enumerable = 'a * 'a
+type 'a mappable = 'a * 'a
+
+let map f (x,y) =
+  (* force left-to-right evaluation order (this principle of least
+     surprise is already applied in stdlib's List.map) *)
+  let a = f x in
+  (a, f y)
 
 let compare ?(c1=Pervasives.compare) ?(c2=Pervasives.compare) (a,b) (c,d) = 
   let comp = c1 a c in 
@@ -35,12 +42,12 @@ let of_enum e = match BatEnum.get e with
 	None -> failwith "Pair.of_enum: not enough elements" 
       | Some y -> (x,y)
 
-let print print_a print_b out (a,b) = 
-  BatIO.write out '(';
+let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b out (a,b) = 
+  BatIO.nwrite out first;
   print_a out a;
-  BatIO.write out ',';
+  BatIO.nwrite out sep;
   print_b out b;
-  BatIO.write out ')'
+  BatIO.nwrite out last
 
 let print2 printer out pair = print printer printer out pair
   

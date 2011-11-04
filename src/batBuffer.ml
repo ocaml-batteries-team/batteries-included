@@ -24,12 +24,12 @@
 open BatString
 open Buffer
 
-  (**The underlying buffer type.*)
+  (** The underlying buffer type. *)
   type buffer = 
-      {mutable buffer : string;(**Contents of the buffer*)
-       mutable position : int; (**The end of the buffer *)
-       mutable length : int;   (**The size of the buffer*)
-       initial_buffer : string (**?**)}
+      {mutable buffer : string;(** Contents of the buffer *)
+       mutable position : int; (** The end of the buffer  *)
+       mutable length : int;   (** The size of the buffer *)
+       initial_buffer : string (** For resetting to the original size **)}
 
   external buffer_of_t : t -> buffer = "%identity"
   external t_of_buffer : buffer -> t = "%identity"

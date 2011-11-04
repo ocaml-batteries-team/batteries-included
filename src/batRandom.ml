@@ -33,6 +33,13 @@
   let nativeint = nativeint
   let float     = float
   let bool      = bool
+  let full_range = 
+    if Sys.word_size = 32 then (* need 31-bits of entropy, bits() gives 30 *)
+      fun () -> if bool () then - (bits ())-1 else bits ()
+    else (* 64-bit words *)
+      fun () ->
+	let b = (bits ()) lor (bits () lsl 30) lor ((bits () land 3) lsl 60) in
+	if bool () then b else -b - 1
 
   let char ()   = Char.chr (int 256)
 

@@ -80,12 +80,17 @@ val char : unit -> char
 (*val uchar : unit -> UChar.t
 (** Return a random Unicode character.*)*)
 
+val full_range : unit -> int
+(** [Random.full_range ()] returns the maximum entropy possible in a
+    single int: 31 bits on 32-bit platforms and 63 bits on 64-bit
+    platforms *)
+
 
 (** {6 Enumerations of random values.} 
 
     These enumerations may be cloned without loss of performance,
     to obtain reproducible enumerations of pseudo-random numbers.
-*)
+ *)
 
 val enum_bits  : unit    -> int BatEnum.t
 

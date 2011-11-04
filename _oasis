@@ -1,0 +1,37 @@
+OASISFormat:  0.2
+OCamlVersion: >= 3.11.0
+Name:         batteries
+Version:      1.4.1
+Authors:      Batteries Included Team
+License:      LGPL-2.1 with OCaml linking exception
+LicenseFile:  LICENSE
+BuildType:    custom (0.2)
+InstallType:  custom (0.2)
+BuildTools:   make
+Synopsis:     Extended OCaml Standard Library
+
+BuildDepends:	camomile (>= 0.7.0)
+XCustomBuild: $make all
+XCustomInstall: $make install
+XCustomUninstall: $make uninstall
+
+Document manual
+  Type: custom (0.2)
+  Title: Ocaml Batteries Documentation
+  XCustom: $make doc
+
+Test main
+  Type: custom (0.2)
+  Command: $make test
+
+SourceRepository master
+  Type: git
+  Location: git://github.com/ocaml-batteries-team/batteries-included.git
+  Branch: master
+  Browser: https://github.com/ocaml-batteries-team/batteries-included
+
+Library "batteries"
+  Path: src/
+
+Library "estring"
+  Path: libs/estring/

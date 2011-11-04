@@ -57,6 +57,25 @@ let map_default f v = function
 	| None -> v
 	| Some v2 -> f v2
 
+let compare ?(cmp=Pervasives.compare) a b = match a with
+    None -> (match b with
+      None -> 0
+    | Some _ -> -1)
+  | Some x -> (match b with
+      None -> 1
+    | Some y -> cmp x y)
+
+let eq ?(eq=(=)) x y = match x,y with 
+  | None, None -> true 
+  | Some a, Some b -> eq a b
+  | _ -> false
+
+(**T eq
+   eq ~eq:(fun a b -> (a land 1) = (b land 1)) (Some 1) (Some 3)
+   eq (Some 3) (None) = false
+   eq None None = true
+**)
+
 let enum = function
         | None   -> BatEnum.from (fun () -> raise BatEnum.No_more_elements)
         | Some e -> BatEnum.singleton e

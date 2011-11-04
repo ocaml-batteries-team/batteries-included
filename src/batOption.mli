@@ -75,6 +75,19 @@ val get : 'a option -> 'a
 val get_exn : 'a option -> exn -> 'a
 (** [get_exn (Some x) e] returns [x] and [get_exn None e] raises [e]. *)
 
+val compare : ?cmp:('a -> 'a -> int) -> 'a option -> 'a option -> int
+(** Compare two options, possibly using custom comparators for the
+    value.  [None] is always assumed to be less than [Some _].  The
+    parameter [cmp] defaults to [Pervasives.compare]. *)
+
+val eq : ?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool
+(** Test for equality between option types, possibly using a custom
+    equality predicate.  The parameter [eq] defaults to
+    [Pervasives.(=)]. 
+
+    @since 1.4.0
+*)
+
 val enum: 'a option -> 'a BatEnum.t
 (** [enum (Some x)] returns the singleton [x], while [enum None] returns
     the empty enumeration*)

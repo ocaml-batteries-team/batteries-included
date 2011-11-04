@@ -87,10 +87,10 @@
     try  descr_of_out_channel (output_get (cast_output cout))
     with Not_found -> raise (Invalid_argument "Unix.descr_of_out_channel")
 
-  let in_channel_of_descr fd    = input_of_descr ~autoclose:false fd
-  let descr_of_in_channel       = descr_of_input
-  let out_channel_of_descr fd   = output_of_descr  fd
-  let descr_of_out_channel      = descr_of_output
+  let in_channel_of_descr fd = input_of_descr ~autoclose:false ~cleanup:true fd
+  let descr_of_in_channel = descr_of_input
+  let out_channel_of_descr fd = output_of_descr  ~cleanup:true fd
+  let descr_of_out_channel = descr_of_output
 
 
   (**
@@ -155,7 +155,13 @@
     let f' cin cout = f (wrap_in ?autoclose ?cleanup cin) (wrap_out cout) in
       establish_server f' addr
 
+(**
+   {6 Tools}
+*)
+
   let is_directory fn = (lstat fn).st_kind = S_DIR
 
-      
+  let rec restart_on_EINTR f x =
+    try f x
+    with Unix_error(EINTR, _, _) -> restart_on_EINTR f x
 

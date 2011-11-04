@@ -165,6 +165,11 @@
     external of_int : int -> int = "%identity"
     external to_int : int -> int = "%identity"
 
+    (** {6 Submodules regrouping all infix operations} *)
+
+    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Compare : BatNumber.Compare with type bat__compare_t = t
+
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
@@ -324,6 +329,11 @@ module Safe_int :
 
     external of_int : int -> t = "%identity"
     external to_int : t -> int = "%identity"
+
+    (** {6 Submodules regrouping all infix operations on safe integers} *)
+
+    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Compare : BatNumber.Compare with type bat__compare_t = t
 
     (** {6 Boilerplate code}*)
 

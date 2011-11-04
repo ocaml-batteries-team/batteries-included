@@ -10,7 +10,7 @@ let buffer = BatArray.of_enum (BatEnum.take 60 (BatRandom.State.enum_int state 2
 
 (**Write sample to temporary file*)
 let write buf =
-  let (out, name) = open_temporary_out () in
+  let (out, name) = open_temporary_out ~mode:[`delete_on_exit] () in
     write_bytes out (BatArray.enum buf);
     close_out out;
     name
@@ -22,6 +22,10 @@ let read_regular name =
 let read_mmap    name =
   with_file_in ~mode:[`mmap] name (fun inp -> BatArray.of_enum (bytes_of inp))
 
+let temp_file ?(autoclean = true) pref suff =
+  let tf = Filename.temp_file pref suff in
+  if autoclean then Pervasives.at_exit (fun () -> try Unix.unlink tf with _ -> ()) ;
+  tf
 
 (**Actual tests*)
 
@@ -63,18 +67,17 @@ let test_open_close_many () =
 let test_open_close_many_pervasives () =
   try
     for i = 0 to 10000 do
-      let temp = Filename.temp_file "batteries" "test" in
+      let temp = temp_file "batteries" "test" in
       let oc   = open_out temp                         in
         output_string oc "test";
-        close_out oc;
-        Unix.unlink temp
+        close_out oc
     done;
     (* pass *)
   with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)
 
 let test_no_append () =
   try
-    let temp   = Filename.temp_file "ocaml_batteries" "noappend_test" in
+    let temp   = temp_file "ocaml_batteries" "noappend_test" in
     let out    = open_out temp                       in
     let _      = write_bytes out (BatArray.enum buffer) in
     let _      = close_out out                       in
@@ -89,7 +92,7 @@ let test_no_append () =
 
 let test_append () =
   try
-    let temp   = Filename.temp_file "ocaml_batteries" "append_test" in
+    let temp   = temp_file "ocaml_batteries" "append_test" in
     let out    = open_out ~mode:[`append] temp       in
     let _      = write_bytes out (BatArray.enum buffer) in
     let _      = close_out out                       in

@@ -69,7 +69,7 @@ sig
   val reserved_names     : string list
   val case_sensitive     : bool
     (**[true] if the language is case-sensitive, [false] otherwise.
-       If the language is case-sensitive, every identifier is returned
+       If the language is not case-sensitive, every identifier is returned
        as lower-case.*)
 end
 

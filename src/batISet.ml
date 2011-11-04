@@ -102,7 +102,7 @@ let rec remove n s =
   if is_empty s then empty else
   let (v1, v2) as v = root s in
   let s1 = left_branch s in
-  let s2 = left_branch s in
+  let s2 = right_branch s in
   if n < v1 then make_tree (remove n s1) v s2
   else if n = v1 then
     if v1 = v2 then concat s1 s2 else
@@ -172,13 +172,13 @@ let rec compare_aux x1 x2 =
       if is_empty s then compare_aux rest x2 else
       let l = left_branch s in
       let v = root s in
-      let r = left_branch s in
+      let r = right_branch s in
       compare_aux (`Set l :: `Range v :: `Set r :: rest) x
   | _x, `Set s :: rest ->
       if is_empty s then compare_aux x1 rest else
       let l = left_branch s in
       let v = root s in
-      let r = left_branch s in
+      let r = right_branch s in
       compare_aux x1 (`Set l :: `Range v :: `Set r :: rest)
   | `Range ((v1, v2)) :: rest1, `Range ((v3, v4)) :: rest2 ->
       let sgn = compare v1 v3 in

@@ -233,6 +233,13 @@ val output_binary_int : unit BatIO.output -> int -> unit
       {!Pervasives.input_binary_int} function. The format is compatible across
       all machines for a given version of Objective Caml. *)
 
+val output_binary_float : unit BatIO.output -> float -> unit
+  (** Write one float in binary format (8 bytes, IEEE 754 double format)
+      on the given output channel.
+      The only reliable way to read it back is through the
+      {!Pervasives.input_binary_float} function. The format is compatible across
+      all machines for a given version of Objective Caml. *)
+
 val output_value : unit BatIO.output -> 'a -> unit
   (** Write the representation of a structured value of any type
       to a channel. Circularities and sharing inside the value
@@ -338,6 +345,12 @@ val input_binary_int : BatIO.input -> int
     from the given input channel. See {!Pervasives.output_binary_int}.
     Raise [End_of_file] if an end of file was reached while reading the
     integer. *)
+
+val input_binary_float : BatIO.input -> float
+(** Read a float encoded in binary format (8 bytes, IEEE 754 double format)
+    from the given input channel. See {!Pervasives.output_binary_float}.
+    Raise [End_of_file] if an end of file was reached while reading the
+    float. *)
 
 val input_value : BatIO.input -> 'a
 (** Read the representation of a structured value, as produced
@@ -468,6 +481,11 @@ val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
       an exception. *)
 
+val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
+(** [with_dispose dispose f x] invokes [f] on [x], calling [dispose x]
+    when [f] terminates (either with a return value or an
+    exception). *)
+
 val args : unit -> string BatEnum.t
   (** An enumeration of the arguments passed to this program through the command line.
 
@@ -588,8 +606,8 @@ val map : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
       and builds a new enumeration from the results of each application.
 
       In other words, [map f] is a function which, when applied
-      upon an enumeration containing elements [e1], [e2], ...,
-      produces enumeration [f e1], [f e2], ...
+      upon an enumeration containing elements [e0], [e1], ...,
+      produces enumeration [f e0], [f e1], ...
 
       For instance, if [odd] is the function which returns [true]
       when applied to an odd number or [false] when applied to
@@ -599,7 +617,14 @@ val map : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
       Similarly, if [square] is the function [fun x -> x * x],
       [map square (1 -- 10)] produces the enumeration of the
       square numbers of all numbers between [1] and [10].
-*)
+  *)
+
+
+val filter_map : ('a -> 'b option) -> 'a BatEnum.t -> 'b BatEnum.t
+  (** Similar to a map, except that you can skip over some items of the
+      incoming enumeration by returning None instead of Some value.
+      Think of it as a {!filter} combined with a {!map}.
+  *)
 
 
 val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
@@ -611,9 +636,9 @@ val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
       expression and to the third element of [e], then to the result of this
       new expression and to the fourth element of [e]...
 
-      In other words, [fold f e] returns [a_1] if [e] contains only
-      one element, otherwise [f (... (f (f a1) a2) ...) aN] where
-      a1..N are the elements of [e]. 
+      In other words, [reduce f e] returns [a0] if [e] contains only
+      one element [a0], otherwise [f (... (f (f a0) a1) ...) aN] where
+      [a0,a1..aN] are the elements of [e]. 
 
       @raises Not_found if [e] is empty.
 
@@ -636,7 +661,7 @@ val fold : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b
       to the third element of [e]...
 
       In other words, [fold f v e] returns [v] if [e] is empty,
-      otherwise [f (... (f (f v a1) a2) ...) aN] where a1..N are
+      otherwise [f (... (f (f v a0) a1) ...) aN] where a0,a1..aN are
       the elements of [e]. 
 
       For instance, if [add] is the function [fun x y -> x + y],
@@ -673,6 +698,13 @@ val ( @/ ) : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
      These operators have the same meaning as function {!map} but are
      sometimes more readable than this function, when chaining
      several transformations in a row.
+  *)
+
+val ( //@ ) : 'a BatEnum.t -> ('a -> 'b option) -> 'b BatEnum.t
+
+val ( @// ) : ('a -> 'b option) -> 'a BatEnum.t -> 'b BatEnum.t
+  (**
+    Map combined with filter. Same as {!filter_map}.
   *)
 
 (**
@@ -847,6 +879,7 @@ val printer_exn : (exn -> 'a, 'a) BatPrint.directive
 
 val bool_printer : bool BatValue_printer.t
 val int_printer : int BatValue_printer.t
+val char_printer : char BatValue_printer.t
 val int32_printer : int32 BatValue_printer.t
 val int64_printer : int64 BatValue_printer.t
 val nativeint_printer : nativeint BatValue_printer.t

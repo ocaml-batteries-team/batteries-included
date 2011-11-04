@@ -50,13 +50,14 @@ module Array = struct include Array include BatArray end
 module Buffer = struct include Buffer include BatBuffer end
 (* Callback *)
 module Char = struct include Char include BatChar end
-module Complex = struct include Complex include BatComplex end
+module Complex = BatComplex
 module Digest = struct include Digest include BatDigest end
 (* Filename *)
 module Format = struct include Format include BatFormat end
 module Gc = struct include Gc include BatGc end
 module Genlex = struct include Genlex include BatGenlex end
 module Hashtbl = BatHashtbl
+module Heap = BatHeap
 module Int32 = BatInt32
 module Int64 = BatInt64
 (* Lazy *)
@@ -104,7 +105,10 @@ module Ref = BatRef
 module Std = BatStd
 
 (* Batteries specific modules *)
+module Cache = BatCache
 module CharParser = BatCharParser
+module Deque = BatDeque
+module Hashcons = BatHashcons
 module Logger = BatLogger
 module Monad = BatMonad
 module Pair = BatPair
@@ -114,11 +118,18 @@ module Print = BatPrint
 module Result = BatResult
 module Return = BatReturn
 module Seq = BatSeq
+module Tuple = BatTuple
+module Tuple2 = BatTuple.Tuple2
+module Tuple3 = BatTuple.Tuple3
+module Tuple4 = BatTuple.Tuple4
+module Tuple5 = BatTuple.Tuple5
 module UCharParser = BatUCharParser
 module Value_printer = BatValue_printer
 module Vect = BatVect
 module ISet = BatISet
 module IMap = BatIMap
+module Splay = BatSplay
+module Uref = BatUref
 
 (* Unix *)
 module Unix = struct include Unix include BatUnix end
@@ -152,6 +163,8 @@ module Big_int = struct include Big_int include BatBig_int end
 (* Bigarray *)
 module Bigarray = BatBigarray
 
+(* Config *)
+module Batteries_config = Batteries_config
 
 (* Pervasives *)
 include Pervasives

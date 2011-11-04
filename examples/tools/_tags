@@ -1,1 +1,1 @@
-not(<*_dyn*>): use_batteries,debug
+not(<*_dyn*>): pkg_batteries,debug

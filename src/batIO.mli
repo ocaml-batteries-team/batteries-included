@@ -338,11 +338,11 @@ val combine : ('a output * 'b output) -> ('a * 'b) output
     writing to [c] will actually write to both [a] and [b] *)
 
 val tab_out : ?tab:char -> int -> 'a output -> unit output
-  (** Create an output shifted to the right by a number of white spaces
-      (or [tab], if given).
+  (** Create an output shifted to the right by a number of spaces
+      (or other character as specified by [tab]).
 
       [tab_out n out] produces a new output for writing into [out], in
-      which every new line starts with [n] white spaces.
+      which every new line starts with [n] spaces.
       Raises [Invalid_argument] if [n] < 0.
 
       Closing [tab_out n out] does not close [out]. Rather,
@@ -881,7 +881,7 @@ val lines_of : input -> string BatEnum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
  
 val chunks_of : int -> input -> string BatEnum.t
-(** Read an input as an enumeration of strings of given maximal length.*)
+(** Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest. *)
 
 val ulines_of : input -> BatRope.t BatEnum.t
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
@@ -1013,6 +1013,8 @@ val lock_factory: (unit -> BatConcurrent.lock) ref
      this uses {!BatMutex}.  *)
 
 val to_string : (string output -> 'a -> unit) -> 'a -> string
+
+val to_format: ('a BatInnerIO.output -> 'b -> unit) -> Format.formatter -> 'b -> unit
 
 (**/**)
 val comb : ('a output * 'a output) -> 'a output

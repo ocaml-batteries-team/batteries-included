@@ -21,7 +21,7 @@
  *)
 
 
-open BatArray
+module A = struct include BatArray include BatArray.Labels end
 
   type float32_elt = Bigarray.float32_elt
   type float64_elt = Bigarray.float64_elt
@@ -53,14 +53,18 @@ open BatArray
   let int64 = Bigarray.int64
   let nativeint = Bigarray.nativeint
   let char = Bigarray.char
-    
+
   let c_layout = Bigarray.c_layout
   let fortran_layout = Bigarray.fortran_layout
-
 
   module Genarray =
   struct
     include Bigarray.Genarray
+
+    let ofs e = match Obj.magic (layout e) with
+      | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
+      | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
+      | _ -> failwith "Unknown layout" (* note four copies of this function *)
 
     (**
        Emulate multi-dimensional coordinates.
@@ -86,7 +90,7 @@ open BatArray
 
       let product = ref 1 in
 	for i = 0 to Array.length dims - 1 do
-	  indices.(i) <- 
+	  indices.(i) <-
 	done*)
 
     (**
@@ -97,17 +101,17 @@ open BatArray
        @return [true] if everything happened correctly, [false] if
        we've passed the last element.
     *)
-    let inplace_next ~dims ~coor =
+    let inplace_next ~ofs ~dims ~coor =
       let rec aux i =
 	if i < 0 then false
 	else
 	  let new_value = coor.(i) + 1 in
-	    if new_value = dims.(i) then  (*Propagate carry*)
+	    if new_value = dims.(i) + ofs then  (*Propagate carry*)
 	      begin
-		coor.(i) <- 0;
+		coor.(i) <- ofs;
 		aux (i - 1)
 	      end
-	    else 
+	    else
 	      begin
 		coor.(i) <- new_value;
 		true
@@ -116,23 +120,46 @@ open BatArray
 
     let iter f e =
       let dims     = dims     e in
-      let coor     = Labels.create (num_dims e) ~init:0 in
+      let offset   = ofs e in
+      let coor     = A.create (num_dims e) ~init:offset in
 	f (get e coor);
-	while inplace_next ~dims ~coor do
+	while inplace_next ~ofs:offset ~dims ~coor do
 	  f (get e coor)
 	done
 
     let iteri f e =
       let dims     = dims     e in
-      let coor     = Labels.create (num_dims e) ~init:0 in
-	f (Cap.of_array coor) (get e coor);
-	while inplace_next ~dims ~coor do
-	  f (Cap.of_array coor) (get e coor)
+      let offset   = ofs e in
+      let coor     = A.create (num_dims e) ~init:offset in
+	f (A.Cap.of_array coor) (get e coor);
+	while inplace_next ~ofs:offset ~dims ~coor do
+	  f (A.Cap.of_array coor) (get e coor)
 	done
-	  
+
+    let modify f e =
+      let dims = dims e in
+      let offset = ofs e in
+      let change c = set e c (f (get e c)) in
+      let coor = A.create (num_dims e) ~init:offset in
+      change coor;
+      while inplace_next ~ofs:offset ~dims ~coor do
+        change coor
+      done
+
+    let modifyi f e =
+      let dims = dims e in
+      let offset = ofs e in
+      let change c = set e c (f (A.Cap.of_array c) (get e c)) in
+      let coor = A.create (num_dims e) ~init:offset in
+      change coor;
+      while inplace_next ~ofs:offset ~dims ~coor do
+        change coor
+      done
+
     let enum e =
       let dims   = dims e
-      and coor   = Labels.create (num_dims e) ~init:0 
+      and offset = ofs e in
+      let coor   = A.create (num_dims e) ~init:offset
       and status = ref `ongoing in
 	BatEnum.from (fun () ->
 		     match !status with
@@ -140,27 +167,27 @@ open BatArray
 			   begin
 			     try
 			       let result = get e coor               in
-			       let update = inplace_next ~dims ~coor in
+			       let update = inplace_next ~ofs:offset ~dims ~coor in
 				 if not update then status := `dry;
 				 result
-			     with _ -> 
+			     with _ ->
 			       status := `dry;
 			       raise BatEnum.No_more_elements
 			   end
- 		        | `dry -> 
+		        | `dry ->
 			    raise BatEnum.No_more_elements
 		  )
 
     let map f b_kind a =
       let d = dims a in
       let b = create b_kind (layout a) d in
-	iteri (fun i x -> set b (Cap.to_array i) (f x)) a;
+	iteri (fun i x -> set b (A.Cap.to_array i) (f x)) a;
 	b
 
     let mapi f b_kind a =
       let d = dims a in
       let b = create b_kind (layout a) d in
-	iteri (fun i x -> set b (Cap.to_array i) (f (Cap.read_only i) x)) a;
+	iteri (fun i x -> set b (A.Cap.to_array i) (f (A.Cap.read_only i) x)) a;
 	b
   end
 
@@ -171,9 +198,9 @@ open BatArray
     = "%identity"
   external genarray_of_array3: ('a, 'b, 'c) Bigarray.Array3.t -> ('a, 'b, 'c) Genarray.t
     = "%identity"
-    external reshape:
-   ('a, 'b, 'c) Genarray.t -> int array -> ('a, 'b, 'c) Genarray.t
-   = "caml_ba_reshape"
+  external reshape:
+    ('a, 'b, 'c) Genarray.t -> int array -> ('a, 'b, 'c) Genarray.t
+      = "caml_ba_reshape"
 
 
   let reshape_3 = Bigarray.reshape_3
@@ -186,12 +213,16 @@ open BatArray
 
   module Array1 = struct
     include Bigarray.Array1
+    let ofs e = match Obj.magic (layout e) with
+      | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
+      | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
+      | _ -> failwith "Unknown layout" (* note four copies of this function *)
     let enum t = Genarray.enum (genarray_of_array1 t)
 
     let map f b_kind a =
       let b_dim = dim a in
       let b = create b_kind (layout a) b_dim in
-      for i = 0 to b_dim - 1 do
+      for i = ofs a to ofs a + b_dim - 1 do
         b.{i} <- f a.{i}
       done;
       b
@@ -199,23 +230,37 @@ open BatArray
     let mapi f b_kind a =
       let b_dim = dim a in
       let b = create b_kind (layout a) b_dim in
-      for i = 0 to b_dim - 1 do
+      for i = ofs a to ofs a + b_dim - 1 do
         b.{i} <- f i a.{i}
       done;
       b
 
-    let to_array a = Array.init (dim a) (fun i -> a.{i})
+    let modify f a =
+      for i = ofs a to ofs a + dim a - 1 do
+        unsafe_set a i (f (unsafe_get a i))
+      done
+
+    let modifyi f a =
+      for i = ofs a to ofs a + dim a - 1 do
+        unsafe_set a i (f i (unsafe_get a i))
+      done
+
+    let to_array a = Array.init (dim a) (fun i -> a.{i+(ofs a)})
   end
   module Array2 = struct
     include Bigarray.Array2
+    let ofs e = match Obj.magic (layout e) with
+      | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
+      | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
+      | _ -> failwith "Unknown layout" (* note four copies of this function *)
     let enum t = Genarray.enum (genarray_of_array2 t)
 
     let map f b_kind a =
       let b_dim1 = dim1 a in
       let b_dim2 = dim2 a in
       let b = create b_kind (layout a) b_dim1 b_dim2 in
-      for i = 0 to b_dim1 - 1 do
-        for j = 0 to b_dim2 - 1 do
+      for i = ofs a to ofs a + b_dim1 - 1 do
+        for j = ofs a to ofs a + b_dim2 - 1 do
           b.{i, j} <- f a.{i, j}
         done
       done;
@@ -225,23 +270,41 @@ open BatArray
       let b_dim1 = dim1 a in
       let b_dim2 = dim2 a in
       let b = create b_kind (layout a) b_dim1 b_dim2 in
-      for i = 0 to b_dim1 - 1 do
-        for j = 0 to b_dim2 - 1 do
+      for i = ofs a to ofs a + b_dim1 - 1 do
+        for j = ofs a to ofs a + b_dim2 - 1 do
           b.{i, j} <- f i j a.{i, j}
         done
       done;
       b
 
+    let modify f a =
+      for i = ofs a to ofs a + dim1 a - 1 do
+        for j = ofs a to ofs a + dim2 a - 1 do
+          unsafe_set a i j (f (unsafe_get a i j))
+        done
+      done
+
+    let modifyij f a =
+      for i = ofs a to ofs a + dim1 a - 1 do
+        for j = ofs a to ofs a + dim2 a - 1 do
+          unsafe_set a i j (f i j (unsafe_get a i j))
+        done
+      done
+
     let to_array a =
       Array.init (dim1 a) (
         fun i ->
           Array.init (dim2 a) (
-            fun j -> a.{i, j}
+            fun j -> a.{i + ofs a, j + ofs a}
           )
       )
   end
   module Array3 = struct
     include Bigarray.Array3
+    let ofs e = match Obj.magic (layout e) with
+      | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
+      | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
+      | _ -> failwith "Unknown layout" (* note four copies of this function *)
     let enum t = Genarray.enum (genarray_of_array3 t)
 
     let map f b_kind a =
@@ -271,6 +334,24 @@ open BatArray
         done
       done;
       b
+
+    let modify f a =
+      for i = ofs a to ofs a + dim1 a - 1 do
+        for j = ofs a to ofs a + dim2 a - 1 do
+          for k = ofs a to ofs a + dim3 a - 1 do
+            unsafe_set a i j k (f (unsafe_get a i j k))
+          done
+        done
+      done
+
+    let modifyijk f a =
+      for i = ofs a to ofs a + dim1 a - 1 do
+        for j = ofs a to ofs a + dim2 a - 1 do
+          for k = ofs a to ofs a + dim3 a - 1 do
+            unsafe_set a i j k (f i j k (unsafe_get a i j k))
+          done
+        done
+      done
 
     let to_array a =
       Array.init (dim1 a) (
