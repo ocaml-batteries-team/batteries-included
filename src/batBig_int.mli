@@ -59,6 +59,8 @@ type t = big_int
     val of_string : string -> big_int
     val to_int : big_int -> int
     val of_int : int -> big_int
+    val of_float: float -> big_int
+    val to_float: big_int -> float
     val compare : big_int -> big_int -> int
     val ( -- ) : big_int -> big_int -> big_int BatEnum.t
     val ( --- ): big_int -> big_int -> big_int BatEnum.t
@@ -161,7 +163,11 @@ val float_of_big_int : big_int -> float
            given big integer. *)
 
 
+(** {6 Submodules grouping all infix operators}  *)
 
+module Infix : BatNumber.Infix with type bat__infix_t = t
+module Compare : BatNumber.Compare with type bat__compare_t = t
+ 
 (**/**)
 
 (** {6 For internal use} *)
@@ -202,9 +208,6 @@ val gcd_big_int : big_int -> big_int -> big_int
         (** Greatest common divisor of two big integers. *)
 (**/**)
 
-
-
- 
 
     (** {6 Boilerplate code}*)
 

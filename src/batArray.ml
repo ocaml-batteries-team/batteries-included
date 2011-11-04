@@ -28,6 +28,21 @@ open Array
 
 let map = map
 
+let modify f a =
+  for i = 0 to length a - 1 do
+    unsafe_set a i (f (unsafe_get a i))
+  done
+
+let modifyi f a =
+  for i = 0 to length a - 1 do
+    unsafe_set a i (f i (unsafe_get a i))
+  done
+
+(**T modify
+   let a = [|3;2;1|] in modify (fun x -> x + 1) a; a = [|4;3;2|]
+   let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
+ **)
+
 let fold_lefti f x a =
   let r = ref x in
   for i = 0 to length a - 1 do
@@ -35,7 +50,10 @@ let fold_lefti f x a =
   done;
   !r
 
-
+(**T fold_left
+   fold_lefti (fun a i x -> a + i * x) 1 [|2;4;5|] = 1 + 0 + 4 + 10
+   fold_lefti (fun a i x -> a + i * x) 1 [||] = 1
+ **)
 
 let rev_in_place xs =
   let n = length xs in
@@ -47,10 +65,20 @@ let rev_in_place xs =
     decr j
   done
 
+(**T rev_in_place
+   let a = [|1;2;3;4|] in rev_in_place a; a = [|4;3;2;1|]
+   let a = [|1;2;3|] in rev_in_place a; a = [|3;2;1|]
+   let a = [||] in rev_in_place a; a=[||]
+ **)
+
 let rev xs =
   let ys = Array.copy xs in
   rev_in_place ys;
   ys
+
+(**Q rev
+   (Q.array Q.int) ~count:5 (fun l -> rev l |> rev = l)
+ **)
 
 let for_all p xs =
   let n = length xs in
@@ -61,6 +89,12 @@ let for_all p xs =
   in
   loop 0
 
+(**T for_all
+   for_all (fun x -> x mod 2 = 0) [|2;4;6|]
+   for_all (fun x -> x mod 2 = 0) [|2;3;6|] = false
+   for_all (fun _ -> false) [||]
+ **)
+
 let exists p xs =
   let n = length xs in
   let rec loop i =
@@ -69,6 +103,13 @@ let exists p xs =
     else loop (succ i)
   in
   loop 0
+
+(**T for_all
+   exists (fun x -> x mod 2 = 0) [|1;4;5|]
+   exists (fun x -> x mod 2 = 0) [|1;3;5|] = false
+   exists (fun _ -> false) [||] = false
+ **)
+
 
 let mem a xs =
   let n = length xs in
@@ -79,6 +120,12 @@ let mem a xs =
   in
   loop 0
 
+(**T mem
+   mem 2 [|1;2;3|] 
+   mem 2 [||] = false
+   mem (ref 3) [|ref 1; ref 2; ref 3|]
+ **)
+
 let memq a xs =
   let n = length xs in
   let rec loop i =
@@ -87,6 +134,12 @@ let memq a xs =
     else loop (succ i)
   in
   loop 0
+
+(**T memq
+   memq 2 [|1;2;3|]
+   memq 2 [||] = false
+   memq (ref 3) [|ref 1; ref 2; ref 3|] = false
+ **)
 
 let findi p xs =
   let n = length xs in
@@ -119,8 +172,28 @@ let filter p xs =
        r) in
   xs'
 
+let filteri p xs =
+  let n = length xs in
+  (* Use a bitset to store which elements will be in the final array. *)
+  let bs = BatBitSet.create n in
+  for i = 0 to n-1 do
+    if p i xs.(i) then BatBitSet.set bs i
+  done;
+  (* Allocate the final array and copy elements into it. *)
+  let n' = BatBitSet.count bs in
+  let j = ref 0 in
+  let xs' = init n'
+    (fun _ ->
+       (* Find the next set bit in the BitSet. *)
+       while not (BatBitSet.is_set bs !j) do incr j done;
+       let r = xs.(!j) in
+       incr j;
+       r) in
+  xs'
 
-
+(**T array_filteri
+   filteri (fun i x -> (i+x) mod 2 = 0) [|1;2;3;4;0;1;2;3|] = [|0;1;2;3|]
+**)
 
 let find_all = filter
 
@@ -302,6 +375,10 @@ let decorate_fast_sort f xs =
   let () = fast_sort (fun (i,_) (j,_) -> compare i j) decorated in
   map (fun (_,x) -> x) decorated
 
+
+let insert xs x i =
+  Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
+
 module Cap =
 struct
   (** Implementation note: in [('a, 'b) t], ['b] serves only as
@@ -328,6 +405,8 @@ struct
   let filter_map   = filter_map
   let iteri        = iteri
   let mapi         = mapi
+  let modify       = modify
+  let modifyi      = modifyi
   let fold_left    = fold_left
   let fold_right   = fold_right
   let iter2        = iter2
@@ -377,6 +456,8 @@ struct
       let map  ~f a = map  f a
       let iteri ~f a = iteri f a
       let mapi  ~f a = mapi f a
+      let modify ~f a = modify f a
+      let modifyi ~f a = modifyi f a
       let fold_left ~f ~init a = fold_left f init a
       let fold_right ~f a ~init= fold_right f a init
       let sort ~cmp a = sort cmp a
@@ -430,6 +511,8 @@ struct
   let map  ~f a = map  f a
   let iteri ~f a = iteri f a
   let mapi  ~f a = mapi f a
+  let modify ~f a = modify f a
+  let modifyi ~f a = modifyi f a
   let fold_left ~f ~init a = fold_left f init a
   let fold_right ~f a ~init= fold_right f a init
   let sort ~cmp a = sort cmp a

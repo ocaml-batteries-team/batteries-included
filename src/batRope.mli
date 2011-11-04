@@ -532,6 +532,11 @@ val icompare: t -> t -> int
 
 module IRope : BatInterfaces.OrderedType with type t = t
 
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( ^^^ ): t -> t -> t
+end
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)

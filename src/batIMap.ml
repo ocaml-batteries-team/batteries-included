@@ -32,7 +32,7 @@ include BatAvlTree
 
 let singleton n v = singleton_tree (n, n, v)
 
-let make ?(eq = (==)) l (n1, n2, v) r =
+let make eq l (n1, n2, v) r =
   let n1, l =
     if is_empty l || n1 = min_int then n1, empty else
     let (k1, k2, v0), l' = split_rightmost l in
@@ -49,7 +49,7 @@ let rec add ?(eq = (==)) n v m =
   let l = left_branch m in
   let r = right_branch m in
   if n1 <> min_int && n = n1 - 1 && eq v v0 then
-    make l (n, n2, v) r
+    make eq l (n, n2, v) r
   else if n < n1 then
     make_tree (add n v l) x r
   else if n1 <= n && n <= n2 then
@@ -60,11 +60,16 @@ let rec add ?(eq = (==)) n v m =
     let r =
       if n2 = n then r else
       make_tree empty (n + 1, n2, v0) r in
-    make l (n, n, v) r
+    make eq l (n, n, v) r
   else if n2 <> max_int && n = n2 + 1 && eq v v0 then
-    make l (n1, n, v) r
+    make eq l (n1, n, v) r
   else
     make_tree l x (add n v r)
+
+(**T imap_add
+   let a = add ~eq:(=) in empty |> a 0 0 |> a 2 0 |> a 1 0 |> enum |> List.of_enum = [(0,2,0)]
+   let a = add ~eq:(=) in empty |> a 0 "foo" |> a 2 "foo" |> a 1 "foo" |> enum |> List.of_enum = [(0,2,"foo")]
+ **)
 
 let rec from n s =
   if is_empty s then empty else
@@ -88,9 +93,9 @@ let rec until n s =
 
 let rec before n s = if n = min_int then empty else until (n - 1) s
 
-let add_range ?eq n1 n2 v s =
+let add_range ?(eq=(==)) n1 n2 v s =
   if n1 > n2 then invalid_arg "IMap.add_range" else
-  make ?eq (before n1 s) (n1, n2, v) (after n2 s)
+  make eq (before n1 s) (n1, n2, v) (after n2 s)
 
 let rec find n m =
   if is_empty m then raise Not_found else
@@ -143,13 +148,13 @@ let fold f m a =
 let iter proc m =
   fold (fun n v () -> proc n v) m ()
 
-let rec map ?eq f m =
+let rec map ?(eq=(==)) f m =
   if is_empty m then empty else
   let n1, n2, v = root m in
   let l = map f (left_branch m) in
   let r = map f (right_branch m) in
   let v = f v in
-  make ?eq l (n1, n2, v) r
+  make eq l (n1, n2, v) r
 
 let mapi ?eq f m = fold (fun n v a -> add ?eq n (f n v) a) m empty
 
@@ -264,3 +269,4 @@ struct
   let (<--) map (key, value) = add key value map
 end
 
+let make ?(eq=(==)) l c r = make eq l c r

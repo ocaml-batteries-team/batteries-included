@@ -75,6 +75,10 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
       | Some s -> s in
       from -- last
 
+  module Infix = struct
+    let (--) = (--)
+  end
 
   let print out t = BatInnerIO.write out t
+  let t_printer paren out t = print out t
 

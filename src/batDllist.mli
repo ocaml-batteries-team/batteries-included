@@ -158,15 +158,28 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b node_t -> 'a
 *)
 val fold_right : ('a -> 'b -> 'b) -> 'a node_t -> 'b -> 'b
 
+val find : ('a -> bool) -> 'a node_t -> 'a node_t
+(** [find p l] returns the first element, [l] or after, for which [p]
+    returns true.  
+
+    @raise Not_found if no such element exists
+    @added 1.4.0
+*)
+
 val for_all : ('a -> bool) -> 'a node_t -> bool
+(** Test whether a given predicate returns true for all members of the
+    given list. O(N) *)
+  
 val exists : ('a -> bool) -> 'a node_t -> bool
+(** Test whether there exists an element of the given list for which
+    the predicate returns true.  O(N) *)
 
 
+val map : ('a -> 'b) -> 'a node_t -> 'b node_t
 (** Allocate a new list, with entirely new nodes, whose values are
     the transforms of the values of the original list.  Note that this
     does not modify the given list.  This is an O(N) operation.
-*)
-val map : ('a -> 'b) -> 'a node_t -> 'b node_t
+ *)
 
 val filter : ('a -> bool) -> 'a node_t -> 'a node_t
   (** [filter p l] returns a new list, with entirely new nodes, whose
@@ -177,7 +190,7 @@ val filter : ('a -> bool) -> 'a node_t -> 'a node_t
       @raise Empty if the resulting list is empty.*)
 
 val filter_map : ('a -> 'b option) -> 'a node_t -> 'b node_t
-  (** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0..an]
+  (** [filter_map f l] calls [(f a0) (f a1) ... (f an)] where [a0,a1...an]
       are the elements of [l]. It returns a new list of elements [bi]
       such as [f ai = Some bi] (when [f] returns [None], the
       corresponding element of [l] is discarded). 

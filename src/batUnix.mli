@@ -262,10 +262,14 @@ val establish_server : ?autoclose:bool -> ?cleanup:bool -> (BatInnerIO.input -> 
       ensure proper cleanup.  *)
 
 
+(** {6 Small tools} *)
+
 val is_directory : string -> bool
-(** [is_directory filename] returns true if [filename] refers to a directory (or symlink of a directory *)
+(** [is_directory filename] returns true if [filename] refers to a directory (or symlink of a directory) *)
 
-
+val restart_on_EINTR : ('a -> 'b) -> 'a -> 'b
+(** [restart_on_EINTR f x] invokes [f] on [x] repetedly until the function returns
+    a value or raise another exception than EINTR. *)
 
 
 (**

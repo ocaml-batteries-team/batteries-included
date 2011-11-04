@@ -91,6 +91,7 @@ let get k (str, off, len) =
   str.[off+k]
 
 let size (_,_,len) = len
+let length = size
 
 let slice (str,off,len) off2 len2_opt = 
   if off2 < 0 then invalid_arg "Substring.slice: negative offset not allowed";
@@ -144,7 +145,7 @@ let dropl p (str,off,len) =
   
 let dropr p (str, off, len) =
   let i = ref len in
-  while !i >= 0 && p str.[off+ !i] do decr i; done;
+  while !i > 0 && p str.[off+ !i - 1] do decr i; done;
   (str, off, !i)
 
 let takel p (str,off,len) =
@@ -154,17 +155,17 @@ let takel p (str,off,len) =
 
 let taker p (str, off, len) =
   let i = ref len in
-  while !i >= 0 && p str.[off+ !i] do decr i; done;
+  while !i > 0 && p str.[off+ !i - 1] do decr i; done;
   (str, off+ !i, len- !i)
 
 let splitl p (str, off, len) = 
   let i = ref 0 in
   while !i < len && p str.[off+ !i] do incr i; done;
-  (str, off+ !i, len- !i), (str, off, !i)
+  (str, off, !i), (str, off+ !i, len- !i)
   
 let splitr p (str, off, len) =
   let i = ref len in
-  while !i >= 0 && p str.[off+ !i] do decr i; done;
+  while !i > 0 && p str.[off+ !i - 1] do decr i; done;
   (str, off, !i), (str, off+ !i, len- !i)
 
 let split_at k (str, off, len) =
@@ -242,3 +243,5 @@ let split_on_pipe str = split_on_char '|' str;;
 let split_on_dot str = split_on_char '.' str;;
 let split_on_comma str = split_on_char ',' str;;
 let split_on_slash str = split_on_char '/' str;;
+
+let print oc ss = iter (fun c -> BatIO.write oc c) ss 

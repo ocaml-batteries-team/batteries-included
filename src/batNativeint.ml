@@ -21,23 +21,49 @@
  *)
 
 
-open BatNumber
-
 module BaseNativeint = struct
   include Nativeint
 
   let modulo = rem
-  let pow = generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul
-  let min_num, max_num = min_int, max_int
+  let pow = BatNumber.generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul
 end
 
-  include BatNumber.MakeNumeric(BaseNativeint)
-  include BaseNativeint
+include BatNumber.MakeNumeric(BaseNativeint)
+module Infix = BatNumber.MakeInfix(BaseNativeint)
+module Compare = BatNumber.MakeCompare(BaseNativeint)
 
+let min_int = Nativeint.min_int
+let max_int = Nativeint.max_int
+let minus_one = Nativeint.minus_one
+let lognot = Nativeint.lognot
+let size = Nativeint.size
+external neg : nativeint -> nativeint = "%nativeint_neg"
+external add : nativeint -> nativeint -> nativeint = "%nativeint_add"
+external sub : nativeint -> nativeint -> nativeint = "%nativeint_sub"
+external mul : nativeint -> nativeint -> nativeint = "%nativeint_mul"
+external div : nativeint -> nativeint -> nativeint = "%nativeint_div"
+external rem : nativeint -> nativeint -> nativeint = "%nativeint_mod"
+external logand : nativeint -> nativeint -> nativeint = "%nativeint_and"
+external logor : nativeint -> nativeint -> nativeint = "%nativeint_or"
+external logxor : nativeint -> nativeint -> nativeint = "%nativeint_xor"
+external shift_left : nativeint -> int -> nativeint = "%nativeint_lsl"
+external shift_right : nativeint -> int -> nativeint = "%nativeint_asr"
+external shift_right_logical :
+  nativeint -> int -> nativeint = "%nativeint_lsr"
+external of_int : int -> nativeint = "%nativeint_of_int"
+external to_int : nativeint -> int = "%nativeint_to_int"
+external of_float : float -> nativeint = "caml_nativeint_of_float"
+external to_float : nativeint -> float = "caml_nativeint_to_float"
+external of_int32 : int32 -> nativeint = "%nativeint_of_int32"
+external to_int32 : nativeint -> int32 = "%nativeint_to_int32"
+external of_int64 : int64 -> nativeint = "%nativeint_of_int64"
+external to_int64 : nativeint -> int64 = "%nativeint_to_int64"
+external of_string : string -> nativeint = "caml_nativeint_of_string"
+external format : string -> nativeint -> string = "caml_nativeint_format"
 
-  let print out t = BatInnerIO.Printf.fprintf out "%nx" t
-  let t_printer paren out t = print out t
-  let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)
-  let ( --- ) x y = 
-    if x <= y then x -- y 
-    else BatEnum.seq x pred ((<=) y) 
+  
+type bounded = t
+let min_num, max_num = min_int, max_int
+  
+let print out t = BatInnerIO.Printf.fprintf out "%nx" t
+let t_printer paren out t = print out t

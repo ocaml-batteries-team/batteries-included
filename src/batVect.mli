@@ -258,14 +258,14 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
   (**{6 Predicates}*)
     
   val for_all : ('a -> bool) -> 'a t -> bool
-    (** [for_all p [a1; ...; an]] checks if all elements of the array
+    (** [for_all p [a0; a1; ...; an]] checks if all elements of the array
 	satisfy the predicate [p].  That is, it returns
-	[ (p a1) && (p a2) && ... && (p an)]. *)
+	[ (p a0) && (p a1) && ... && (p an)]. *)
 
   val exists : ('a -> bool) -> 'a t -> bool
-    (** [exists p [a1; ...; an]] checks if at least one element of
+    (** [exists p [a0; a1; ...; an]] checks if at least one element of
 	the array satisfies the predicate [p].  That is, it returns
-	[ (p a1) || (p a2) || ... || (p an)]. *)
+	[ (p a0) || (p a1) || ... || (p an)]. *)
 
   val find : ('a -> bool) -> 'a t -> 'a
     (** [find p a] returns the first element of array [a]
@@ -414,21 +414,20 @@ sig
     beginning in amortized [O(1)] time. *)
 
   val get : int -> 'a t -> 'a
-  (** [get n r] returns the (n+1)th element from the vect [r]; i.e.
-    [get 0 r] returns the first element.
-    Operates in worst-case [O(log size)] time.
+  (** [get n r] returns the element at index [n] (starting from 0) in the vect [r].
+   Operates in worst-case [O(log size)] time.
     Raises Out_of_bounds if a character out of bounds is requested. *)
 
   val set : 'a t -> int -> 'a  -> 'a t
-  (** [set r n c] returns a copy of the [r] vect where the (n+1)th element
-    (see also [get]) has been set to [c].
-    Operates in worst-case [O(log size)] time. *)
+  (** [set r n c] returns a copy of the [r] vect where the element at
+      index [n] (see also [get]) has been set to [c].  Operates in
+      worst-case [O(log size)] time. *)
 
   val sub : int -> int -> 'a t -> 'a t
   (** [sub m n r] returns a sub-vect of [r] containing all the elements
-    whose indexes range from [m] to [m + n - 1] (included).
-    Raises Out_of_bounds in the same cases as Array.sub.
-    Operates in worst-case [O(log size)] time.  *)
+      whose indexes range from [m] to [m + n - 1] (included).
+      Raises Out_of_bounds in the same cases as Array.sub.
+      Operates in worst-case [O(log size)] time.  *)
 
   val insert : int -> 'a t -> 'a t -> 'a t
   (** [insert n r u] returns a copy of the [u] vect where [r] has been
@@ -464,15 +463,15 @@ sig
     Raises Out_of_bounds in the same cases as [sub]. *)
 
   val fold_left : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
-  (** [fold_left f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
-    where [rn = Vect.get n r ] and [N = length r]. *)
+  (** [fold_left f a r] computes [ f (... (f (f a r0) r1)...) rN ]
+    where [r0,r1..rN] are the indexed elements of [r]. *)
 
   val fold: ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
     (**as {!fold_left}*)
 
   val fold_right : ('a -> 'b -> 'b ) -> 'a t -> 'b -> 'b
-  (** [fold_right f r a] computes [ f (r0 ... (f rN-2 (f rN-1 a)) ...)) ]
-      where [rn = Vect.get n r ] and [N = length r]. *)
+  (** [fold_right f r a] computes [ f (r0 (f r1 ... (f rN  a) ...)) ]
+      where [r0,r1..rN] are the indexed elements of [r]. *)
 
   val map : ('a -> 'b) -> 'a t -> 'b t
   (** [map f v] returns a vect isomorphic to [v] where each element of index

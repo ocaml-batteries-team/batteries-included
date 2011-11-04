@@ -68,13 +68,26 @@ open Batteries;;
 #install_printer Batteries_print.int_dynarray;;
 #install_printer Batteries_print.char_dynarray;;
 #install_printer Batteries_print.float_dynarray;;
+#install_printer Batteries_print.int_set;;
+#install_printer Batteries_print.string_set;;
+#install_printer Batteries_print.istring_set;;
+#install_printer Batteries_print.rope_set;;
+#install_printer Batteries_print.char_set;;
+#install_printer Batteries_print.int_pset;;
+#install_printer Batteries_print.string_pset;;
+#install_printer Batteries_print.rope_pset;;
+#install_printer Batteries_print.char_pset;;
+#install_printer Batteries_print.int_enum;;
+#install_printer Batteries_print.string_enum;;
+#install_printer Batteries_print.rope_enum;;
+#install_printer Batteries_print.char_enum;;
 
 
 if ext_syntax then begin
   if !Sys.interactive then 
     print_endline "Loading syntax extensions...";
   Topfind.standard_syntax();
-  Topfind.load_deeply ["camlp4"; "batteries.pa_string.syntax"; 
+  Topfind.load_deeply ["dynlink"; "camlp4"; "batteries.pa_string.syntax";
    		       "batteries.pa_comprehension.syntax"];
 end else 
   if !Sys.interactive then 

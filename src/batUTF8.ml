@@ -56,16 +56,16 @@ let string_splice s1 off len s2 =
 
   module Byte : sig
     type b_idx(* = private int*)
-    val of_int_unsafe : int -> b_idx
+    val of_int_unsafe : int -> b_idx 
     val to_int : b_idx -> int
-    val next : t -> b_idx -> b_idx
-    val prev : t -> b_idx -> b_idx
-    val of_char_idx : t -> char_idx -> b_idx
-    val at_end : t -> b_idx -> bool
-    val out_of_range : t -> b_idx -> bool
-    val first : b_idx
-    val last : t -> b_idx
-    val move : t -> b_idx -> int -> b_idx
+    val next : t -> b_idx -> b_idx (* advance to the next unicode character *)
+    val prev : t -> b_idx -> b_idx (* move to the previous unicode character *)
+    val of_char_idx : t -> char_idx -> b_idx (* return position of the the nth character *)
+    val at_end : t -> b_idx -> bool (* return true if b_idx is at the end of the given UTF8.t *)
+    val out_of_range : t -> b_idx -> bool (* return true if b_idx is not a valid offset in the given UTF8.t *)
+    val first : b_idx (* the first index of any UTF8.t (0) *)
+    val last : t -> b_idx (* the byte index of the start of the last unicode char *)
+    val move : t -> b_idx -> int -> b_idx (* go next or prev [int] times *)
   end = struct
     type b_idx = int
     external of_int_unsafe : int -> b_idx = "%identity"
@@ -302,3 +302,5 @@ let string_splice s1 off len s2 =
 
   let uppercase c = Case.uppercase c
   let lowercase c = Case.lowercase c
+
+  let casefold s = Case.casefolding s

@@ -54,6 +54,7 @@ struct
        (* When one link an OCaml library/binary/package, one should use -linkpkg *)
        flag ["ocaml"; "byte";   "link"; "program"] & A"-linkpkg";
        flag ["ocaml"; "native"; "link"; "program"] & A"-linkpkg";
+       flag ["ocaml"; "native"; "link"; "toplevel"] & A"-linkpkg";
 
 
        (* For each ocamlfind package one inject the -package option when
@@ -103,8 +104,8 @@ struct
 
     (*The command-line for [use_batteries] and [use_batteries_r]*)
 
-    let cl_use_boilerplate = [A"-package"; A "batteries.pa_type_conv.syntax,batteries,sexplib.syntax"]
-    and cl_use_batteries   = [A"-package"; A "batteries.pa_openin.syntax,batteries.pa_where.syntax,batteries.pa_batteries.syntax"; A "-package"; A "batteries"]
+    let cl_use_boilerplate = [A "-package"; A "batteries"]
+    and cl_use_batteries   = [A "-package"; A "batteries"]
     and cl_use_batteries_o = []
               (*[cl_use_batteries_o]: extensions which only make sense in original syntax*)
     and cl_camlp4o         = [A"-syntax";  A "camlp4o"]

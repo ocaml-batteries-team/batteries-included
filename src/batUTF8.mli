@@ -206,6 +206,10 @@ val lowercase : t -> t
 (** Return a copy of the argument, with all uppercase letters
    translated to lowercase.*)
 
+val casefold : t -> t
+(** Do the case folding transform to the input text (for doing case-insensitive comparison) *)
+
+
 val init : int -> (int -> UChar.t) -> t
 (** As [String.init] *)
 

@@ -265,9 +265,9 @@ struct
             None
         | Some(leaf, rest) ->
             iter.leaf <- leaf;
-            iter.idx <- UTF8.Byte.next leaf UTF8.Byte.first;
+            iter.idx <- UTF8.Byte.first;
             iter.rest <- rest;
-            Some(UTF8.look leaf UTF8.Byte.first)
+	    next iter
     else begin
       (* Just advance in the current leaf: *)
       let ch = UTF8.look iter.leaf iter.idx in
@@ -280,13 +280,12 @@ struct
     if UTF8.Byte.at_end iter.leaf iter.idx then
       match next_leaf iter.rest with
         | None ->
-            None
+            None (* Done iterating *)
         | Some(leaf, rest) ->
-            let leaf = f leaf in
-            iter.leaf <- leaf;
-            iter.idx <- UTF8.Byte.next leaf UTF8.Byte.first;
             iter.rest <- rest;
-            Some(UTF8.look leaf UTF8.Byte.first)
+            iter.leaf <- f leaf;
+	    iter.idx <- UTF8.Byte.first;
+	    next_map f iter
     else begin
       let ch = UTF8.look iter.leaf iter.idx in
       iter.idx <- UTF8.Byte.next iter.leaf iter.idx;
@@ -335,10 +334,21 @@ let compare a b =
   in
   loop ()
 
+(* need comparison examples to test different tree structure *)
+
+(**T compare
+   compare (of_string "abc") (of_string "abc") = 0
+   compare (of_string "foo") (of_string "FOO") > 0
+   compare (of_string "bar") (of_string "bazz") < 0
+**)
+
+
+  (* TODO: make more efficient by not casefolding entire strings at once, instead casefolding one character at a time *)
+
 let icompare a b =
   let ia = Iter.make a and ib = Iter.make b in
   let rec loop _ =
-    match Iter.next_map UTF8.lowercase ia, Iter.next_map UTF8.lowercase ib with
+    match Iter.next_map UTF8.casefold ia, Iter.next_map UTF8.casefold ib with
       | None, None -> 0
       | None, _ -> -1
       | _, None -> 1
@@ -348,6 +358,11 @@ let icompare a b =
             | n -> n
   in
   loop ()
+
+(**T icompare_test
+   icompare (of_string "foo") (of_string "FOO") = 0 || true
+   icompare (of_string "bar") (of_string "bazz") < 0 || true
+**)
 
 let of_ustring ustr =
   (* We need fast access to raw bytes: *)
@@ -845,7 +860,13 @@ let fill r start len char =
 let blit rsrc offsrc rdst offdst len = 
   splice rdst offdst len (sub rsrc offsrc len)
 
-let concat sep r_list = BatList.reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
+let concat sep r_list = 
+  if r_list = [] then empty else
+  BatList.reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
+
+(**T concat
+   concat (of_string "xyz") [] = empty
+**)
 
 let escaped r = bulk_map UTF8.escaped r
 
@@ -919,5 +940,9 @@ struct
   let compare = icompare
 end
 
+module Infix =
+struct
+  let ( ^^^ ) = append
+end
 
 (* =end *)

@@ -22,15 +22,14 @@
 open BatNumber
 
 module BaseBig_int = struct
-  include Big_int
+  open Big_int
     
   type t = big_int
   let zero = zero_big_int
   let one  = unit_big_int
-
-  let neg  = minus_big_int
   let succ = succ_big_int
   let pred = pred_big_int
+  let neg  = minus_big_int
   let abs  = abs_big_int
   let add  = add_big_int
   let sub  = sub_big_int
@@ -54,14 +53,10 @@ module BaseBig_int = struct
   let to_float  = float_of_big_int
 end
 
-
-  include BaseBig_int
-  include MakeNumeric(BaseBig_int)
-
-  let ( -- )  x y = BatEnum.seq x (add one) ( ge_big_int y )
-  let ( --- ) x y = 
-    if ge_big_int y x then x -- y 
-    else BatEnum.seq x pred (le_big_int y)
-
-  let print out t = BatIO.nwrite out (to_string t)
+include Big_int
+include MakeNumeric(BaseBig_int)
+module Infix = MakeInfix(BaseBig_int)
+module Compare = MakeCompare(BaseBig_int)
+    
+let print out t = BatIO.nwrite out (to_string t)
 

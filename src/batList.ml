@@ -179,6 +179,17 @@ let rec unique ?(cmp = ( = )) l =
 	loop dummy l;
 	dummy.tl
 
+let unique_eq ?eq l = unique ?cmp:eq l
+
+let unique_cmp ?(cmp = Pervasives.compare) l =
+  let set      = ref (BatMap.create cmp) in
+  let should_keep x = 
+    if BatMap.mem x !set then false
+    else ( set := BatMap.add x true !set; true )
+  in
+  (* use a stateful filter to remove duplicate elements *)
+  filter should_keep l
+
 let filter_map f l =
 	let rec loop dst = function
 		| [] -> ()
@@ -435,14 +446,13 @@ let rec init size f =
 		loop r 1;
 		inj r
 
-(* make by Richard W.M. Jones. *)
 let make i x =
-  if i < 0 then invalid_arg "ExtList.List.make";
-  let rec make' x = function
-    | 0 -> []
-    | i -> x :: make' x (i-1)
+  if i < 0 then invalid_arg "List.make";
+  let rec loop x acc = function
+    | 0 -> acc
+    | i -> loop x (x::acc) (i-1)
   in
-  make' x i
+  loop x [] i
 
 let mapi f = function
 	| [] -> []
@@ -706,7 +716,17 @@ module Exceptionless = struct
     try Some (assoc_inv e l)
     with Not_found -> None
 
+  let find_map f l =
+    try Some(find_map f l)
+    with Not_found -> None
+      
+  let hd l = 
+    try Some (hd l) 
+    with Failure "hd" -> None 
 
+  let tl l = 
+    try Some (tl l)
+    with Failure "tl" -> None
 end
 
 
@@ -757,3 +777,6 @@ end
 
 let ( @ ) = List.append
 
+module Infix = struct
+  let ( @ ) = ( @ )
+end
