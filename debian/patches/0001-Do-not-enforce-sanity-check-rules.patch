@@ -1,13 +1,13 @@
 From: Mehdi Dogguy <mehdi@debian.org>
 Date: Wed, 14 Jul 2010 22:22:08 +0200
-Subject: Do not enforce sanity-check rules
+Subject: [PATCH] Do not enforce sanity-check rules
 
 ---
  Makefile |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index e8f1c4c..5a136d6 100644
+index 0e186d5..f59c7e9 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -71,7 +71,7 @@ clean:
