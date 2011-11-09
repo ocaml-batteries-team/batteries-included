@@ -145,19 +145,21 @@ let output_enum() =
 
 (** [apply_enum f x] applies [f] to [x] and converts exceptions
     [No_more_input] and [Input_closed] to [BatEnum.No_more_elements]*)
-let apply_enum f x =
+let apply_enum do_close f x =
   try f x
-  with No_more_input 
-    |  BatInnerIO.Input_closed  -> raise BatEnum.No_more_elements
+  with 
+    | No_more_input -> raise BatEnum.No_more_elements
+    | BatInnerIO.Input_closed  -> do_close := false; raise BatEnum.No_more_elements
 
 (** [close_at_end input e] returns an enumeration which behaves as [e]
     and has the secondary effect of closing [input] once everything has
     been read.*)
-let close_at_end (input:input) e=
-  BatEnum.suffix_action (fun () -> close_in input) e
+let close_at_end do_close (input:input) e =
+  BatEnum.suffix_action (fun () -> if !do_close then close_in input) e
 
 let make_enum f input =
-  close_at_end input (BatEnum.from (fun () -> apply_enum f input))
+  let do_close = ref true in
+  close_at_end do_close input (BatEnum.from (fun () -> apply_enum do_close f input))
 
 
 let combine (a,b) =
@@ -472,39 +474,43 @@ let from_out_chars ch =
    {6 Enumerations}
 *)
 
-let bytes_of input        = make_enum read_byte input
+let bytes_of        input = make_enum read_byte        input
 let signed_bytes_of input = make_enum read_signed_byte input
-let ui16s_of input        = make_enum read_ui16 input
-let i16s_of input         = make_enum read_i16 input
-let i32s_of input         = make_enum read_i32 input
-let real_i32s_of input    = make_enum read_real_i32 input
-let i64s_of input         = make_enum read_i64 input
-let doubles_of input      = make_enum read_double input
-let floats_of input       = make_enum read_float input
-let strings_of input      = make_enum read_string input
-let lines_of input        = make_enum read_line input
-let chunks_of n input     = make_enum (fun input -> nread input n) input
+let ui16s_of        input = make_enum read_ui16        input
+let i16s_of         input = make_enum read_i16         input
+let i32s_of         input = make_enum read_i32         input
+let real_i32s_of    input = make_enum read_real_i32    input
+let i64s_of         input = make_enum read_i64         input
+let doubles_of      input = make_enum read_double      input
+let floats_of       input = make_enum read_float       input
+let strings_of      input = make_enum read_string      input
+let lines_of        input = make_enum read_line        input
+let chunks_of n     input = make_enum (fun ic -> nread ic n) input
 
 (**The number of chars to read at once*)
 let buffer_size = 1024 (*Arbitrary size.*)
 
-let chars_of input = close_at_end input (BatEnum.concat (BatEnum.from (fun () -> 
-   apply_enum (fun source -> string_enum (nread source buffer_size)) input)))
+let chars_of input = 
+  let do_close = ref true in
+  close_at_end do_close input (BatEnum.concat (BatEnum.from (fun () -> 
+    apply_enum do_close (fun source -> string_enum (nread source buffer_size)) input)))
 
-let bits_of input = close_at_end input.ch (BatEnum.from (fun () -> apply_enum read_bits input 1))
+let bits_of input = 
+  let do_close = ref true in
+  close_at_end do_close input.ch (BatEnum.from (fun () -> apply_enum do_close read_bits input 1))
 
-let write_bytes output enum = write_enum write_byte output enum
-let write_chars output enum = write_enum write output enum
-let write_ui16s output enum = write_enum write_ui16 output enum
-let write_i16s output enum = write_enum write_i16 output enum
-let write_i32s output enum = write_enum write_i32 output enum
+let write_bytes     output enum = write_enum write_byte     output enum
+let write_chars     output enum = write_enum write          output enum
+let write_ui16s     output enum = write_enum write_ui16     output enum
+let write_i16s      output enum = write_enum write_i16      output enum
+let write_i32s      output enum = write_enum write_i32      output enum
 let write_real_i32s output enum = write_enum write_real_i32 output enum
-let write_i64s output enum = write_enum write_i64 output enum
-let write_doubles output enum = write_enum write_double output enum
-let write_floats output enum = write_enum write_float output enum
-let write_strings output enum = write_enum write_string output enum
-let write_lines output enum = write_enum write_line output enum
-let write_chunks output enum = write_enum nwrite output enum
+let write_i64s      output enum = write_enum write_i64      output enum
+let write_doubles   output enum = write_enum write_double   output enum
+let write_floats    output enum = write_enum write_float    output enum
+let write_strings   output enum = write_enum write_string   output enum
+let write_lines     output enum = write_enum write_line     output enum
+let write_chunks    output enum = write_enum nwrite         output enum
 let write_bitss ~nbits output enum = write_enum (write_bits ~nbits) output enum
 
 (**
