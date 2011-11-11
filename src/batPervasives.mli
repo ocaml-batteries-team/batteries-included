@@ -429,7 +429,7 @@ val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
 val ( *** ) : ('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd
 (** Function pairing.
 
-    [f *** g] is [fun (x,y) -> (f x, g y)].*)
+    [f *** g] is [fun (x,y) -> (f x, g y)]. Equivalent to {!Tuple.Tuple2.map}. *)
 
 val ( &&& ) : ('a -> 'b) -> ('a -> 'c) -> 'a -> ('b * 'c)
   (** Applying two functions to the same argument.
