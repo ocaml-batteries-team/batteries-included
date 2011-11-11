@@ -436,23 +436,6 @@ val ( &&& ) : ('a -> 'b) -> ('a -> 'c) -> 'a -> ('b * 'c)
 
       [ f &&& g] is [fun x -> (f x, g x)]. *)
 
-val first : ('a -> 'b) -> ('a * 'c) -> ('b * 'c)
-(** Apply a function to the first element of a pair.
-
-    [first f (x, y)] is [(f x, y)]
-
-    @deprecated Use {!Tuple.Tuple2.map1} instead.
- *)
-
-val second : ('a -> 'b) -> ('c * 'a) -> ('c * 'b)
-(** Apply a function to the second element of a pair.
-
-    [second f (x, y)] is [(x, f y)]
-
-    @deprecated Use {!Tuple.Tuple2.map2} instead.
- *)
-
-
 val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
 (** Convert a function which accepts a pair of arguments into
     a function which accepts two arguments.
