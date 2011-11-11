@@ -429,29 +429,12 @@ val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
 val ( *** ) : ('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd
 (** Function pairing.
 
-    [f *** g] is [fun (x,y) -> (f x, g y)].*)
+    [f *** g] is [fun (x,y) -> (f x, g y)]. Equivalent to {!Tuple.Tuple2.map}. *)
 
 val ( &&& ) : ('a -> 'b) -> ('a -> 'c) -> 'a -> ('b * 'c)
   (** Applying two functions to the same argument.
 
       [ f &&& g] is [fun x -> (f x, g x)]. *)
-
-val first : ('a -> 'b) -> ('a * 'c) -> ('b * 'c)
-(** Apply a function to the first element of a pair.
-
-    [first f (x, y)] is [(f x, y)]
-
-    @deprecated Use {!Tuple.Tuple2.map1} instead.
- *)
-
-val second : ('a -> 'b) -> ('c * 'a) -> ('c * 'b)
-(** Apply a function to the second element of a pair.
-
-    [second f (x, y)] is [(x, f y)]
-
-    @deprecated Use {!Tuple.Tuple2.map2} instead.
- *)
-
 
 val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
 (** Convert a function which accepts a pair of arguments into
