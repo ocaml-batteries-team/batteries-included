@@ -237,10 +237,6 @@ let ( *** ) f g = fun (x,y) -> (f x, g y)
 
 let ( &&& ) f g = fun x -> (f x, g x)
 
-let first f x = fst (f x)
-
-let second f x = snd (f x)
-
 let curry f x y = f (x,y)
 
 let uncurry f (x,y) = f x y

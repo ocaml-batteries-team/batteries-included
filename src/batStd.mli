@@ -157,14 +157,6 @@ val ( &&& ) : ('a -> 'b) -> ('a -> 'c) -> 'a -> ('b * 'c)
 
       [ f &&& g] is [fun x -> (f x, g x)]. *)
 
-val first : ('a -> 'b * 'c) -> 'a -> 'b
-(** Projection of a pair to its first element. *)
-
-val second : ('a -> 'b * 'c) -> 'a -> 'c
-(** Projection of a pair to its second element. *)
-
-
-
 val curry : ('a * 'b -> 'c) -> ('a -> 'b -> 'c)
   (** Turn a function that takes a pair into a function that takes its
       arguments one at a time. *)
