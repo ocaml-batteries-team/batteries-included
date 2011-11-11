@@ -40,7 +40,7 @@
     apply [f], [g], and [h] to the three elements, respectively, of a
     3-tuple. Function [mapn] is similar but applies the same function
     to all elements, which thus requires the elements to be of the
-    same type. Tuples {e do not} satisfy {!BatInterfaces.Mappable}.
+    same type.
 
     Currying. Every tuple has a [curry] and [uncurry] function, which
     allow converting between functions that take [n] arguments to ones
