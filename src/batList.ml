@@ -446,14 +446,13 @@ let rec init size f =
 		loop r 1;
 		inj r
 
-(* make by Richard W.M. Jones. *)
 let make i x =
-  if i < 0 then invalid_arg "ExtList.List.make";
-  let rec make' x = function
-    | 0 -> []
-    | i -> x :: make' x (i-1)
+  if i < 0 then invalid_arg "List.make";
+  let rec loop x acc = function
+    | 0 -> acc
+    | i -> loop x (x::acc) (i-1)
   in
-  make' x i
+  loop x [] i
 
 let mapi f = function
 	| [] -> []
@@ -720,6 +719,14 @@ module Exceptionless = struct
   let find_map f l =
     try Some(find_map f l)
     with Not_found -> None
+      
+  let hd l = 
+    try Some (hd l) 
+    with Failure "hd" -> None 
+
+  let tl l = 
+    try Some (tl l)
+    with Failure "tl" -> None
 end
 
 
@@ -770,3 +777,6 @@ end
 
 let ( @ ) = List.append
 
+module Infix = struct
+  let ( @ ) = ( @ )
+end

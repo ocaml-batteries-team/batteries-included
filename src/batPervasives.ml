@@ -52,6 +52,7 @@ open Pervasives
     ignore (BatIO.output oc buf pos len)
   let output_byte       = BatIO.write_byte
   let output_binary_int = BatIO.write_i32
+  let output_binary_float out v= BatIO.write_i64 out (BatInt64.bits_of_float v)
   let output_value out v= BatMarshal.output out v
   let close_out         = BatIO.close_out
   let close_out_noerr out = 
@@ -70,6 +71,7 @@ open Pervasives
     ignore (BatIO.really_input inp buf pos len)
   let input_byte        = BatIO.read_byte
   let input_binary_int  = BatIO.read_i32
+  let input_binary_float inp= BatInt64.float_of_bits (BatIO.read_i64 inp)
   let close_in          = BatIO.close_in
   let close_in_noerr inp=
     try BatIO.close_in inp
@@ -79,7 +81,7 @@ open Pervasives
   let print_all inp     = BatIO.copy inp BatIO.stdout
   let prerr_all inp     = BatIO.copy inp BatIO.stderr
 
-  let (@) = List.append
+  include BatList.Infix
 
   (**{6 Importing BatEnum}*)
 
@@ -94,19 +96,13 @@ open Pervasives
   let junk              = junk
   let map               = map
   let filter            = filter
+  let filter_map        = filter_map
   let concat            = concat
-  let ( -- )            = ( -- )
-  let ( --^ )            = ( --^ )
-  let ( --. )           = ( --. )
-  let ( --- )           = ( --- )
-  let ( --~ )           = ( --~ )
-  let ( // )            = ( // )
-  let ( /@ ) e f        = map f e
-  let ( @/ )            = map
   let print             = print
   let get               = get
   let iter              = iter
   let scanl             = scanl
+  include Infix
 
   (** {6 Operators}*)
 
@@ -324,6 +320,7 @@ open Pervasives
   let int_printer = BatInt.t_printer
   let int32_printer = BatInt32.t_printer
   let int64_printer = BatInt64.t_printer
+  let char_printer = BatChar.t_printer
   let nativeint_printer = BatNativeint.t_printer
   let float_printer = BatFloat.t_printer
   let string_printer = BatString.t_printer

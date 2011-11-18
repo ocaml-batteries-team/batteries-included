@@ -28,16 +28,12 @@
     (cartesian representation).  Each part is represented by a
     double-precision floating-point number (type {!float}).  
     
-    This module extends Stdlib's
-    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Complex.html}Complex}
-    module, go there for documentation on the rest of the functions
-    and types.
-
     @author Xavier Leroy (base module)
     @author Gabriel Scherer
     @author David Teller
 *)
-open Complex
+
+type t = Complex.t
   
   val zero: t
     (** The complex number [0]. *)
@@ -133,6 +129,19 @@ open Complex
   val ( > ) : t -> t -> bool
   val ( < ) : t -> t -> bool
   val ( = ) : t -> t -> bool
+  val ( -- ): t -> t -> t BatEnum.t
+  val ( --- ): t -> t -> t BatEnum.t
+
+  val of_float : float -> t
+  (** [Complex.of_float x] returns the complex number [x+0i] *)
+
+  val to_float : t -> float
+  (** [Complex.to_float (a+bi)] returns the float [a] *)
+
+  (** {6 Submodules grouping all infix operators} *)
+
+  module Infix : BatNumber.Infix with type bat__infix_t = t
+  module Compare : BatNumber.Compare with type bat__compare_t = t
 
   (** {6 Boilerplate code}*)
 

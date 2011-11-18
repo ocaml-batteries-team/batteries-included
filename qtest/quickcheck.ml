@@ -41,13 +41,16 @@ let nng () =
 let neg_ig () = -(nng ())
 
 (* Uniform random int generator *)
-let uig = 
+let upos = 
   if Sys.word_size = 32 then 
-    fun () -> if Random.bool () then - Random.bits () - 1 else Random.bits ()
+    fun () -> Random.bits ()
   else (* word size = 64 *)
     fun () -> 
-	let b = Random.bits () lor (Random.bits () lsl 30) lor (Random.bits () lsl 60) in
-	if Random.bool () then - b - 1 else b
+      Random.bits ()                        (* Bottom 30 bits *)
+      lor (Random.bits () lsl 30)           (* Middle 30 bits *)
+      lor ((Random.bits () land 3) lsl 60)  (* Top 2 bits *)  (* top bit = 0 *)
+	
+let uig () = if Random.bool () then - upos () - 1 else upos ()
 
 let lg_size size gen () =
   foldn ~f:(fun acc _ -> (gen ())::acc) ~init:[] (size ())
@@ -104,7 +107,8 @@ let pos_float = (pfg, string_of_float)
 let neg_float = (nfg, string_of_float)
 
 let int = (uig, string_of_int)
-let pos_int = (nng, string_of_int)
+let pos_int = (upos, string_of_int)
+let small_int = (nng, string_of_int)
 let neg_int = (neg_ig, string_of_int)
 
 let char = (cg, sprintf "%C")

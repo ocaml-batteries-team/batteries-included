@@ -45,9 +45,37 @@ let test_nsplit () =
     check [""; "a"; "b"; "c"; ""; ""] "/a/b/c//" "/";
     check [""; "a"; "b"; "c"; ""; ""] "FOOaFOObFOOcFOOFOO" "FOO"
 
+let assert_no_raises : ?msg:string -> (unit -> 'a) -> 'a =
+  fun ?(msg="Function raised an exception when none was expected.") f ->
+    try
+      f ()
+    with exn ->
+      assert_failure (msg ^ " " ^ Printexc.to_string exn)
+
+let test_exists () =
+  let check haystack needle expected =
+    let msg =
+      Printf.sprintf "exists \"%s\" \"%s\" = %b"
+	(String.escaped haystack) (String.escaped needle)
+	expected
+    in
+      assert_equal
+	~msg
+	(assert_no_raises ~msg:(msg ^ " raised exception ")
+	   (fun () -> BatString.exists haystack needle))
+	expected
+  in
+    check "" "" true;
+    check "a" "" true;
+    check "" "a" false;
+    check "ab" "a" true;
+    check "ab" "b" true;
+    check "ab" "c" false
+
 let tests = "String" >::: [
-(*  "Taking and skipping" >:: test_take_and_skip; *)
+  (*  "Taking and skipping" >:: test_take_and_skip; *)
   "Start with" >:: test_starts_with;
   "Ends with" >:: test_ends_with;
   "Splitting with nsplit" >:: test_nsplit;
+  "Exists" >:: test_exists;
 ]

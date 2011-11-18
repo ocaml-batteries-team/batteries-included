@@ -23,142 +23,76 @@
 (**
    Polymorphic sets
 
-   @author Xavier Leroy
-   @author Nicolas Cannasse
-   @author Markus Mottl
-   @author David Rajchenbach-Teller
-
-   This module defines a type of sets, a functional representation of
-   sets of elements. The base operations are adding an element to a
-   set or removing an element from a set. This implementation is
-   functional insofar as the act of adding or substracting an element
-   to/from a set does not modify the existing set, rather producing a
-   new set.  The implementation uses balanced binary trees, and is
-   therefore reasonably efficient: insertion and membership take time
-   logarithmic in the size of the set, for instance.
-
-   {b Note} OCaml, Batteries Included, provides two implementations of
-   sets: polymorphic sets (this module) and functorized sets (module
-   {!Set}). Module {!Set} offers a more complex and slightly poorer
-   set of features but stronger type-safety. Module {!PSet} is easier
-   to use and has a few more powerful features but makes it easier to
-   shoot yourself in the foot. In case of doubt, use {!Set}.
+   The functions below are now integrated as part of the {!BatSet}
+   module. Please go there to find detailed documentation.
 *)
 
 type 'a t
-  (** The type of sets. *)
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 val empty: 'a t
-  (** The empty set, using [compare] as comparison function *)
 
 val create : ('a -> 'a -> int) -> 'a t
-  (** Creates a new empty set, using the provided function for key comparison.*)
 
 val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'a t
-(** Creates a new set with the single given element in it. *)
 
 val is_empty: 'a t -> bool
-  (** Test whether a set is empty or not. *)
-  
+
 val mem: 'a -> 'a t -> bool
-  (** [mem x s] tests whether [x] belongs to the set [s]. *)
-  
+
 val add: 'a -> 'a t -> 'a t
-  (** [add x s] returns a set containing all elements of [s],
-      plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
-  
+
 val remove: 'a -> 'a t -> 'a t
-  (** [remove x s] returns a set containing all elements of [s],
-      except [x]. If [x] was not in [s], [s] is returned unchanged. *)
-  
-  
+
 val iter: ('a -> unit) -> 'a t -> unit
-  (** [iter f s] applies [f] in turn to all elements of [s].
-      The elements of [s] are presented to [f] in increasing order
-      with respect to the ordering over the type of the elements. *)
 
 val map: ('a -> 'b) -> 'a t -> 'b t
-  (** [map f x] creates a new set with elements [f a0],
-      [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
-      values contained in [x]*)
 
 val filter: ('a -> bool) -> 'a t -> 'a t
-  (** [filter p s] returns the set of all elements in [s]
-      that satisfy predicate [p]. *)
-  
-val filter_map: ('a -> 'b option) -> 'a t -> 'b t
-  (** [filter_map f m] combines the features of [filter] and
-      [map].  It calls calls [f a0], [f a1], [f aN] where [a0,a1..an]
-      are the elements of [m] and returns the set of pairs [bi]
-      such as [f ai = Some bi] (when [f] returns [None], the
-      corresponding element of [m] is discarded). *)
-  
-val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  (** [fold f s a] computes [(f xN ... (f x1 (f x0 a))...)],
-      where [x0,x1..xN] are the elements of [s], in increasing order. *)
-  
-val exists: ('a -> bool) -> 'a t -> bool
-  (** [exists p s] checks if at least one element of
-      the set satisfies the predicate [p]. *)
-  
-  
-val cardinal: 'a t -> int
-  (** Return the number of elements of a set. *)
 
+val filter_map: ('a -> 'b option) -> 'a t -> 'b t
+
+val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+
+val exists: ('a -> bool) -> 'a t -> bool
+
+val cardinal: 'a t -> int
 
 val choose : 'a t -> 'a
-  (** returns one binding of the given map, deterministically.  Raises
-      [Invalid_argument] if given an empty set. *)
 
 val min_elt : 'a t -> 'a
-  (** returns the binding with the smallest key. Raises
-      [Invalid_argument] if given an empty set. *)
 
 val max_elt : 'a t -> 'a
-  (** returns the binding with the largest key. Raises
-      [Invalid_argument] if given an empty set.*)
-  
+
 val enum: 'a t -> 'a BatEnum.t
-  (** Return an enumeration of all elements of the given set.
-      The returned enumeration is sorted in increasing order with respect
-      to the ordering of this set.*)
-  
+
 val of_enum: 'a BatEnum.t -> 'a t
 
-val for_all : ('a -> bool) -> 'a t -> bool
-(** Returns whether the given predicate applies to all elements in the set *)
+val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
 
+val of_list: 'a list -> 'a t
+
+val for_all : ('a -> bool) -> 'a t -> bool
 
 val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
-  (** returns two disjoint subsets, those that satisfy the given
-      predicate and those that don't *)
+
+val split : 'a -> 'a t -> 'a t * bool * 'a t
 
 val filter : ('a -> bool) -> 'a t -> 'a t
-  (** returns the subset of items satisfying the given predicate *)
 
 val pop : 'a t -> 'a * 'a t
-  (** returns one element of the set and the set without that element.
-      Raises [Not_found] if given an empty set *)
 
 val union: 'a t -> 'a t -> 'a t
-  (** [union s t] returns the union of [s] and [t] - the set containing
-      all elements in either [s] and [t].  The returned set uses [t]'s
-      comparison function.  The current implementation works better for
-      small [s]. *)
 
 val diff: 'a t -> 'a t -> 'a t
-  (** [diff s t] returns the set of all elements in [s] but not in
-      [t]. The returned set uses [s]'s comparison function.*)
 
-(** {6 Boilerplate code}*)
+val intersect: 'a t -> 'a t -> 'a t
 
+val subset: 'a t -> 'a t -> bool
 
-(** {7 Printing}*)
-  
-val print :  ?first:string -> ?last:string -> ?sep:string -> 
-  ('a BatInnerIO.output -> 'c -> unit) -> 
+val print :  ?first:string -> ?last:string -> ?sep:string ->
+  ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> 'c t -> unit
 

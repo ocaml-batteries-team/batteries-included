@@ -203,7 +203,7 @@ module type H = sig
   val t_printer : elem BatValue_printer.t -> t BatValue_printer.t
 end
 
-module Make (Ord : Set.OrderedType) = struct
+module Make (Ord : BatInterfaces.OrderedType) = struct
   type elem = Ord.t
 
   let ord_min x y =

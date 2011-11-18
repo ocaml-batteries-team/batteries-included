@@ -1,1 +1,2 @@
 <*.ml> or <*.mli>: camlp4of
+true: debug

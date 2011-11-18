@@ -34,3 +34,8 @@ open Stack
 
   let print ?(first="") ?(last="") ?(sep="") print_a out t =
       BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
+
+  module Exceptionless = struct
+    let top s = try Some (top s) with Stack.Empty -> None
+    let pop s = try Some (pop s) with Stack.Empty -> None
+  end

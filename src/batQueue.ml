@@ -35,3 +35,7 @@ open Queue
   let print ?(first="") ?(last="") ?(sep="") print_a out t =
       BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
 
+  module Exceptionless = struct
+    let peek q = try Some (peek q) with Empty -> None
+    let take q = try Some (take q) with Empty -> None
+  end

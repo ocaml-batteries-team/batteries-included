@@ -53,18 +53,15 @@ type 'a state =
 type 'a report = Report of ('a state * string * 'a report) list
 (**The final result of parsing*)
 
-(**
-   A source for parsing.
-
-   Unless you are parsing from exotic sources, you will probably not
-   need to use this module directly. Rather, use {!CharParser.source_of_string}
-   or {!CharParser.source_of_enum}.
+(** A source for parsing.  Unless you are parsing from exotic sources,
+    you will probably not need to use this module directly. Rather, use
+    {!CharParser.source_of_string} or {!CharParser.source_of_enum}.
 *)
 module Source :
 sig
   type ('a, 'b) t
-    (** A source of elements of type ['a], with a user-defined state
-	of type ['b] *)
+  (** A source of elements of type ['a], with a user-defined state
+      of type ['b] *)
 
   val get_state : ('a, 'b) t -> 'b state
   val set_full_state : ('a, 'b) t -> 'c -> ('a  -> 'c -> 'c) -> ('a, 'c) t
@@ -174,6 +171,7 @@ val lookahead: ('a, 'b, 'c) t -> ('a, 'b option, 'c) t
 
 (** {6 Utilities} *)
 (** {7 Singletons} *)
+
 val exactly : 'a -> ('a, 'a, 'c) t
   (**Accept exactly one singleton.*)
 
@@ -189,6 +187,7 @@ val range: 'a -> 'a -> ('a, 'a, 'c) t
   (**Accept any element from a given range.*)
 
 (** {7 Repetitions} *)
+
 val zero_plus : ?sep:('a, _, 'c) t -> ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
   (**Accept a (possibly empty) list of expressions.*)
 
@@ -225,6 +224,7 @@ val should: ('a, 'b, 'c) t -> ('a, 'b, 'c) t
 
 
 (** {7 Maps}*)
+
 val post_map : ('b -> 'c) -> ('a, 'b, 'd) t ->  ('a, 'c, 'd) t
   (**Pass the (successful) result of some parser through a map.*)
 
@@ -236,8 +236,21 @@ val scan: ('a, _, 'c) t -> ('a, 'a list, 'c) t
      parser returned.*)
 
 (** {7 Others}*)
+
 val sat: ('a -> bool) -> ('a, unit, _) t
   (**[satisfy p] accepts one value [p x] such that [p x = true]*)
 
 val debug_mode : bool ref
   (**If set to [true], debugging information will be printed to the standard error.*)
+
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( <|> ) : ('a, 'b, 'c) t -> ('a, 'b, 'c) t -> ('a, 'b, 'c) t
+  val ( ~? ): ('a, 'b, 'c) t -> ('a, 'b option, 'c) t
+  val ( >>= ) : ('a, 'b, 'c) t -> ('b -> ('a, 'd, 'c) t ) -> ('a, 'd, 'c) t
+  val ( >>> ) : ('a, _, 'c) t -> ('a, 'd, 'c) t  -> ('a, 'd, 'c) t
+  val ( >::) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t -> ('a, 'b list, 'c) t
+  val ( ~* ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  val ( ~+ ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  val ( ^^ ) : ('a, 'b, 'c) t -> int -> ('a, 'b list, 'c) t
+end

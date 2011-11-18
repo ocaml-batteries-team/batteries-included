@@ -51,3 +51,8 @@ val of_enum : 'a BatEnum.t -> 'a t
 (** {7 Printing}*)
   
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
+
+module Exceptionless : sig
+  val take : 'a t -> 'a option
+  val peek : 'a t -> 'a option
+end

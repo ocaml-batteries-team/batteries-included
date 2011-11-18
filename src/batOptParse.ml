@@ -58,7 +58,7 @@ module GetOpt =
 
     let find_long_opt options = find_opt (fun s -> "--" ^ s) options
 
-    let parse other find_short_opt find_long_opt args =
+    let parse only_leading_opts other find_short_opt find_long_opt args =
       let rec loop args =
         let rec gather_args name n args =
           try 
@@ -116,6 +116,7 @@ module GetOpt =
             else if arg = "-" then begin other arg; loop args' end
             else if BatString.starts_with arg "-" then
               loop (gather_short_opt arg 1 args')
+            else if only_leading_opts then args'
             else begin other arg; loop args' end
       in
       let args' = loop args in List.iter other args'
@@ -226,6 +227,9 @@ module StdOpt =
 
     let str_callback ?(metavar = "STR") =
       callback_option metavar (fun s -> s) (fun _ _ -> "cannot happen")
+
+    let any_option ?(default = None) ?(metavar = "val") f =
+      value_option metavar default f (fun _ _ -> "invalid option")
 
     let count_option ?(dest = ref 0) ?(increment = 1) () =
       {
@@ -541,6 +545,7 @@ module OptParser =
     type t = { 
       op_usage : string;
       op_suppress_usage : bool;
+      op_only_leading : bool;
       op_prog : string;
 
       op_formatter : Formatter.t;
@@ -619,12 +624,14 @@ module OptParser =
       BatRefList.add parent.og_children g; g
 
     let make ?(usage = "%prog [options]") ?description ?version
-      ?(suppress_usage = false) ?(suppress_help = false) ?prog 
-      ?(formatter = Formatter.indented_formatter ()) () =
+      ?(suppress_usage = false) ?(suppress_help = false)
+      ?(only_leading_opts = false)
+      ?prog ?(formatter = Formatter.indented_formatter ()) () =
       let optparser =
         {
           op_usage = usage; 
           op_suppress_usage = suppress_usage;
+          op_only_leading = only_leading_opts;
           op_prog = BatOption.default (Filename.basename Sys.argv.(0)) prog;
           op_formatter = formatter; 
           op_short_options = BatRefList.empty ();
@@ -699,7 +706,8 @@ module OptParser =
       in
       begin 
         try
-          GetOpt.parse (BatRefList.push args)
+          GetOpt.parse optparser.op_only_leading
+            (BatRefList.push args)
             (GetOpt.find_short_opt
                (BatRefList.to_list optparser.op_short_options))
             (GetOpt.find_long_opt (BatRefList.to_list optparser.op_long_options))

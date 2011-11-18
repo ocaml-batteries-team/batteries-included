@@ -37,48 +37,67 @@
     ignore (Str.string_match wspre s 0) ;
     Str.matched_group 1 s
 
-  let all_tests : string list ref = ref []
+  let sanitize s =
+    (* I want to be able to use "String.foo" as a test name; currently
+       it doesn't work because it gets included in the test
+       identifier, `let __test_String.foo = ...`, which raises
+       a Syntax error *)
+    let s = String.copy s in
+    for i = 0 to String.length s - 1 do
+      s.[i] <- begin match s.[i] with
+        | 'a'..'z' | '_' | '0'..'9' -> s.[i]
+        | 'A'..'Z' -> Char.lowercase s.[i]
+        | _ -> '_'
+      end;
+    done;
+    s
 
-  let handle_test mn (k, str, pos) =
-    let lines = Str.split (Str.regexp "\n") str in
-    match lines with
-      | name :: tests -> begin
-          let name = match strip name with
-            | "" -> Printf.sprintf "%s_%d" mn pos.pos_lnum
-            | nm -> nm
+
+let all_tests : string list ref = ref []
+
+let handle_test mn (k, str, pos) =
+  let lines = Str.split (Str.regexp "\n") str in
+  match lines with
+    | name :: tests -> begin
+      let name = match strip name with
+        | "" -> Printf.sprintf "%s_%d" mn pos.pos_lnum
+        | nm -> nm
+      in
+      let test_name = "__test_" ^ sanitize name in
+      all_tests := test_name :: !all_tests ;
+      let rec number tests k = function
+        | [] -> List.rev tests
+        | t :: ts ->
+          let tests = match strip t with
+            | "" -> tests
+            | t -> (k, t) :: tests
           in
-          let test_name = "__test_" ^ name in
-          all_tests := test_name :: !all_tests ;
-          let rec number tests k = function
-            | [] -> List.rev tests
-            | t :: ts ->
-                let tests = match strip t with
-                  | "" -> tests
-                  | t -> (k, t) :: tests
-                in
-                number tests (k + 1) ts
-          in
-          Printf.printf "let %s = %S >::: [\n" test_name name ; begin
-            match k with
-              | `Q ->
-                  let tests = number [] (pos.pos_lnum + 1) tests in
-                  List.iter begin fun (k, t) ->
-                    Printf.printf
-                      "\"%s:%d\" >:: (fun () -> Q.laws_exn %S %s) ;\n" pos.pos_fname k t t
-                  end tests
-              | `T ->
-                  let tests = number [] (pos.pos_lnum + 1) tests in
-                  List.iter begin fun (k, t) ->
-                    Printf.printf
-                      "\"%s:%d\" >:: (fun () -> OUnit.assert_bool \"%s:%d\" (%s)) ;\n" pos.pos_fname k pos.pos_fname k t
-                  end tests
-              | `S ->
-                  let tests = String.concat "\n" tests in
-                  Printf.printf "\"%s:%d\" >:: (fun () -> %s) ;\n" pos.pos_fname pos.pos_lnum tests
-          end ; Printf.printf "] ;;\n%!"
-        end
-      | _ ->
-          failwith "handle_test"
+          number tests (k + 1) ts
+      in
+      Printf.printf "let %s = %S >::: [\n" test_name name ; 
+      Printf.printf "\"label\" >:: (fun () -> print_string %S) ;\n" name;
+      begin
+        match k with
+          | `Q ->
+            let tests = number [] (pos.pos_lnum + 1) tests in
+            List.iter begin fun (k, t) ->
+              Printf.printf
+		"#%d \"%s\"\n\"%s:%d\" >:: (fun () -> Q.laws_exn %S %s) ;\n" k pos.pos_fname pos.pos_fname k t t
+            end tests
+          | `T ->
+            let tests = number [] (pos.pos_lnum + 1) tests in
+            List.iter begin fun (k, t) ->
+              Printf.printf
+		"#%d \"%s\"\n\"%s:%d\" >:: (fun () -> OUnit.assert_bool \"%s:%d\" (%s)) ;\n" k pos.pos_fname pos.pos_fname k pos.pos_fname k t
+            end tests
+          | `S ->
+            let tests = String.concat "\n" tests in
+	    Printf.printf "#%d \"%s\"\n\"%s:%d\" >:: (fun () -> %s) ;\n" pos.pos_lnum pos.pos_fname pos.pos_fname pos.pos_lnum tests
+      end ; 
+      Printf.printf "] ;;\n%!"
+    end
+    | _ ->
+      failwith "handle_test"
 }
 
 let newline  = ('\r' | '\n' | "\r\n")
@@ -149,15 +168,15 @@ and pragma k start buf = parse
     ] ;
     spin () ;
     List.iter (Printf.printf "%s\n") [
-      "let suite = \"" ^ mn ^ " unit tests\" >::: [" ;
+      "let suite = \"" ^ mn ^ "\" >::: [" ;
       String.concat ";" !all_tests ;
       "];;" ;
       "let () = Tests.register suite;;"
     ] ;
     Pervasives.flush stdout
 
-  let _ =
-    if Array.length Sys.argv != 2 then failwith "bad args" ;
+  let () =
+    if Array.length Sys.argv != 2 then failwith "make_suite: Missing filename to process" ;
     process Sys.argv.(1)
 
 }

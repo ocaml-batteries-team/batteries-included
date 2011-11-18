@@ -595,6 +595,16 @@ let switch f e =
   let a = switchn 2 (fun x -> if f x then 0 else 1) e in
     (a.(0), a.(1))
 
+let partition = switch
+
+(**T partition
+   let a,b = partition ((>) 3) (List.enum [1;2;3;4;5;1;5;0]) in List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
+**)
+
+(**Q partition
+   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l = (Enum.partition f (List.enum l) |> Pair.map List.of_enum))
+**)
+
 let seq init f cond = 
   let acc = ref init in
   let aux () = if cond !acc then begin 
@@ -710,28 +720,6 @@ let while_do cont f e =
 
 let break test e = span (fun x -> not (test x)) e
 
-let ( -- ) x y = range x ~until:y
-
-let ( --. ) (a, step) b =
-  let n = int_of_float ((b -. a) /. step) + 1 in
-  if n < 0 then
-    empty ()
-  else
-    init n (fun i -> float_of_int i *. step +. a)
-
-let ( --^ ) x y = range x ~until:(y-1)
-
-let ( --- ) x y = 
-  if x <= y then x -- y
-  else          seq x ((+) (-1)) ( (<=) y )
-
-let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
-
-let ( // ) e f = filter f e
-
-let ( /@ ) e f        = map f e
-let ( @/ )            = map
-
 let uniq e = 
   match peek e with 
       None -> empty ()
@@ -786,7 +774,7 @@ let uncombine e =
 	    y
   in (from first, from second)
 
-(*** 
+(*** enum_combine_uncombine
   let pair_list = [1,2;3,4;5,6;7,8;9,0] in
   let a,b = BatEnum.uncombine (BatList.enum pair_list) in
   let a = BatArray.of_enum a in
@@ -801,19 +789,43 @@ let uncombine e =
   aeq b d
   **)
 
+let group_aux test eq e =
+  let prev_group = ref (empty ()) in
+  let f () =
+    (* Make sure elements belonging to prev group are consumed from e *)
+    force !prev_group;
+    let grp =
+      let last_test = ref None in
+      let check_test t =
+	let ok =
+	  match !last_test with
+	  | None -> true
+	  | Some t' -> eq t' t
+	in
+	if ok then
+	  last_test := Some t;
+	ok
+      in
+      take_while (fun x -> check_test (test x)) e
+    in
+    if is_empty grp then
+      raise No_more_elements;
+    prev_group := grp;
+    grp
+  in from f
+
 let group test e =
-  match peek e with
-    | None   -> raise No_more_elements
-    | Some x ->
-	let latest_test = ref (test x) in
-	let f () =
-	  take_while (fun x -> 
-			let previous_test = !latest_test in
-			let current_test  = test x       in
-			  latest_test := current_test;
-			  current_test = previous_test) e
-	    
-	in from f
+  group_aux test (=) e
+
+let group_by eq e =
+  group_aux (fun x -> x) eq e
+
+(**T enum_group
+   Enum.empty () |> Enum.group (const ()) |> is_empty
+   List.enum [1;2;3;4] |> Enum.group identity |> Enum.map List.of_enum |> List.of_enum = [[1];[2];[3];[4]]
+   List.enum [1;2;3;4] |> Enum.group (const true) |> List.of_enum |> List.map List.of_enum = [[1;2;3;4]]
+   List.enum [1;2;3;5;6;7;9;10;4;5] |> Enum.group (fun x -> x mod 2) |> List.of_enum |> List.map List.of_enum = [[1];[2];[3;5];[6];[7;9];[10;4];[5]]
+ **)
 
 let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
   let next () = 
@@ -846,6 +858,56 @@ let unfold data next =
   from_loop data (fun data -> match next data with
 		    | None   -> raise No_more_elements
 		    | Some x -> x )
+
+let arg_min f enum =
+  match get enum with
+      None -> invalid_arg "arg_min: Empty enum"
+    | Some v ->
+	let item, eval = ref v, ref (f v) in
+	iter (fun v -> let fv = f v in 
+		       if fv < !eval then (item := v; eval := fv)) enum;
+	!item
+
+let arg_max f enum =
+  match get enum with
+      None -> invalid_arg "arg_max: Empty enum"
+    | Some v ->
+	let item, eval = ref v, ref (f v) in
+	iter (fun v -> let fv = f v in 
+		       if fv > !eval then (item := v; eval := fv)) enum;
+	!item
+
+(**T arg_min_max
+   List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"
+   -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
+**)
+
+module Infix = struct
+  let ( -- ) x y = range x ~until:y
+
+  let ( --. ) (a, step) b =
+    let n = int_of_float ((b -. a) /. step) + 1 in
+    if n < 0 then
+      empty ()
+    else
+      init n (fun i -> float_of_int i *. step +. a)
+
+  let ( --^ ) x y = range x ~until:(y-1)
+
+  let ( --- ) x y = 
+    if x <= y then x -- y
+    else          seq x ((+) (-1)) ( (<=) y )
+
+  let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
+
+  let ( // ) e f = filter f e
+
+  let ( /@ ) e f        = map f e
+  let ( @/ )            = map
+  let ( //@ ) e f       = filter_map f e
+  let ( @// )           = filter_map
+end
+include Infix
 
 (* -----------
    Concurrency 
@@ -1018,22 +1080,37 @@ struct
   type 'a m = 'a Mon.m
       
   let sequence enum =
-    let queue = Queue.create () in
     let (>>=) = Mon.bind and return = Mon.return in
-    let of_queue q = from (fun () -> try Queue.pop q with Queue.Empty -> raise No_more_elements) in
-    let rec loop () = match get enum with
-      | None -> return (of_queue queue)
-      | Some elem -> elem >>= (fun x -> Queue.push x queue; loop ())
+    (* We use a list as an accumulator for the result sequence
+       computed under the monad. A previous version of this code used
+       a Queue instead, which was problematic for backtracking
+       monads. Due to the destructive nature of Enums, the current
+       version will still be problematic but at least the result will
+       be consistent. *)
+    let of_acc acc =
+      (* we don't use List functions to avoid creating a cyclic
+         dependency *)
+      let li = ref (List.rev acc) in
+      from (fun () ->
+        match !li with
+          | [] -> raise No_more_elements
+          | hd::tl ->
+            li := tl;
+            hd)
     in
-      loop ()
-	
+    let rec loop acc = match get enum with
+      | None -> return (of_acc acc)
+      | Some elem -> elem >>= (fun x -> loop (x :: acc))
+    in
+    loop []
+      
   let fold_monad f init enum = 
     let (>>=) = Mon.bind and return = Mon.return in 
     let rec fold m = match get enum with
       |	None -> m
       | Some x -> m >>= fun acc -> fold (f acc x)
     in
-      fold (return init)   
+    fold (return init)   
 end
 
 module Monad =

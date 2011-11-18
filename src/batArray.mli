@@ -156,6 +156,9 @@
 	that satisfy the predicate [p].  The order of the elements
 	in the input array is preserved.  *)
 
+  val filteri : (int -> 'a -> bool) -> 'a array -> 'a array
+    (** As [filter] but with the index passed to the predicate. *)
+
   val filter_map : ('a -> 'b option) -> 'a array -> 'b array
     (** [filter_map f e] returns an array consisting in all elements
 	[x] such that [f y] returns [Some x] , where [y] is an element
@@ -216,6 +219,11 @@ val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array
 val range : 'a array -> int BatEnum.t
   (** [range a] returns an enumeration of all valid indexes into the given
       array.  For example, [range [|2;4;6;8|] = 0--3].*)
+
+val insert : 'a array -> 'a -> int -> 'a array
+(** [insert xs x i] returns a copy of [xs] except the value [x] is
+    inserted in position [i] (and all later indices are shifted to the
+    right). *)
 
 (** {6 Boilerplate code}*)
 

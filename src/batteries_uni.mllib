@@ -36,6 +36,7 @@ BatQueue
 BatRandom
 BatScanf
 BatSet
+batSplay
 BatStack
 BatStream
 BatString
@@ -77,6 +78,7 @@ BatRope
 BatSeq
 BatStd
 BatSubstring
+BatTuple2
 BatUCharParser
 BatUref
 BatValue_printer
@@ -84,6 +86,7 @@ BatVect
 BatAvlTree
 BatISet
 BatIMap
+BatCache
 Batteries_config
 Batteries_print
 Batteries_uni

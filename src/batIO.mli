@@ -1014,6 +1014,8 @@ val lock_factory: (unit -> BatConcurrent.lock) ref
 
 val to_string : (string output -> 'a -> unit) -> 'a -> string
 
+val to_format: ('a BatInnerIO.output -> 'b -> unit) -> Format.formatter -> 'b -> unit
+
 (**/**)
 val comb : ('a output * 'a output) -> 'a output
 (** Old name of [combine]*)

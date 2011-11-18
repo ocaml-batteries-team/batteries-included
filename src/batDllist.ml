@@ -171,6 +171,19 @@ let for_all p node =
   in
   p node.data && loop node.next
 
+let find p node =
+  let rec loop n =
+    if n == node then raise Not_found
+    else if p n.data then n else loop n.next
+  in
+  if p node.data then node else loop node.next
+
+(**T dllist_find
+   find (fun x -> x mod 2 = 0) (of_list [1;3;4;5;7;6]) |> get = 4
+   find (fun x -> x > 3) (of_list [-1;3;9;1;1;1]) |> get = 9
+   try find (fun x -> x land 3 = 2) (of_list [1;4;3])|>ignore; false with Not_found -> true
+**)
+
 let exists p node =
   let rec loop n =
     if n == node then false
