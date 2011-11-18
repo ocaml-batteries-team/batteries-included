@@ -476,7 +476,7 @@ struct
     
   let union s1 s2 = t_of_impl (Concrete.union Ord.compare (impl_of_t s1) (impl_of_t s2))
   let diff s1 s2 = t_of_impl (Concrete.diff Ord.compare (impl_of_t s1) (impl_of_t s2))
-  let inter s1 s2 = t_of_impl (Concrete.diff Ord.compare (impl_of_t s1) (impl_of_t s2))
+  let inter s1 s2 = t_of_impl (Concrete.inter Ord.compare (impl_of_t s1) (impl_of_t s2))
 
   let subset t1 t2 = Concrete.subset Ord.compare (impl_of_t t1) (impl_of_t t2)
 

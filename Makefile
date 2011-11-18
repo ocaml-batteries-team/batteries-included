@@ -17,6 +17,7 @@ OCAMLFIND_DEST += -destdir $(DESTDIR)
 endif
 
 OCAMLBUILD ?= ocamlbuild
+OCAMLBUILDFLAGS ?= -no-links
 
 ifeq ($(uname_S),Darwin)
   BATTERIES_NATIVE ?= yes
@@ -60,7 +61,7 @@ endif
 
 all: src/batCamomile.ml
 	@echo "Build mode:" $(MODE)
-	$(OCAMLBUILD) $(TARGETS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
 clean:
 	${RM} apidocs
@@ -109,10 +110,10 @@ TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
 TESTDEPS = src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 
 _build/testsuite/main.byte _build/qtest/test_runner.byte: $(TESTDEPS)
-	$(OCAMLBUILD) testsuite/main.byte qtest/test_runner.byte
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte qtest/test_runner.byte
 
 _build/testsuite/main.native _build/qtest/test_runner.native: $(TESTDEPS)
-	$(OCAMLBUILD) testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
 
 test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte
 	_build/testsuite/main.byte 
@@ -127,7 +128,7 @@ test-native: _build/testsuite/main.native _build/qtest/test_runner.native
 test: $(TEST_TARGET)
 
 bench: 
-	$(OCAMLBUILD) $(TARGETS) $(BENCH_TARGETS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS) $(BENCH_TARGETS)
 	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH); )
 
 release: clean all test
@@ -174,7 +175,7 @@ camfailunk:
 ##
 
 _build/build/make_suite.$(EXT): build/make_suite.mll
-	$(OCAMLBUILD) -no-links make_suite.$(EXT)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) make_suite.$(EXT)
 
 #convert a source file to a test suite by filtering special comments
 qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
