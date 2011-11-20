@@ -419,6 +419,10 @@ val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
 (** Function composition. [f -| g] is [fun x -> f (g x)]. Mathematically, this is
     operator o.*)
 
+val ( |? ) : 'a option -> 'a -> 'a
+(** Like {!BatOption.default}, with the arguments reversed.
+    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+
 val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
   (** Argument flipping. 
       

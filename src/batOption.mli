@@ -62,6 +62,10 @@ val apply : ('a -> 'a) option -> 'a -> 'a
 val default : 'a -> 'a option -> 'a
 (** [default x (Some v)] returns [v] and [default x None] returns [x]. *)
 
+val ( |? ) : 'a option -> 'a -> 'a
+(** Like {!default}, with the arguments reversed.
+    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+
 val map_default : ('a -> 'b) -> 'b -> 'a option -> 'b
 (** [map_default f x (Some v)] returns [f v] and [map_default f x None]
 	returns [x]. *)
@@ -137,3 +141,10 @@ module Labels : sig
   val map : f:('a -> 'b) -> 'a option -> 'b option
   val map_default : f:('a -> 'b) -> 'b -> 'a option -> 'b
 end
+
+module Infix : sig
+  val ( |? ) : 'a option -> 'a -> 'a
+  (** Like {!default}, with the arguments reversed.
+      [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+end
+

@@ -109,6 +109,8 @@ open Pervasives
   let ( **> )        = ( <| )
   let undefined ?(message="Undefined") = failwith message
 
+  let ( |? ) = BatOption.Infix.( |? )
+
   (** {6 String operations}*)
 
   let lowercase = String.lowercase
