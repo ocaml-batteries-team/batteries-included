@@ -109,6 +109,9 @@ open Pervasives
   let ( **> )        = ( <| )
   let undefined ?(message="Undefined") = failwith message
 
+  let verify x ex = if x then () else raise ex
+  let verify_arg x s = if x then () else invalid_arg s
+
   let ( |? ) = BatOption.Infix.( |? )
 
   (** {6 String operations}*)
