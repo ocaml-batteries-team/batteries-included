@@ -174,6 +174,10 @@
       
     val is_nan : float -> bool
       (** [is_nan f] returns [true] if [f] is [nan], [false] otherwise.*)
+
+    val is_special : float -> bool
+      (** [is_special f] returns [true] if [f] is [nan] or [+/- infinity],
+          [false] otherwise. *)
       
     val epsilon : float
       (** The smallest positive float [x] such that [1.0 +. x <> 1.0]. *)

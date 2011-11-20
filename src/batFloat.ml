@@ -88,6 +88,14 @@ let is_nan f = match classify f with
   | FP_nan -> true
   | _      -> false
 
+let is_special f =
+  match classify f with
+  | FP_nan
+  | FP_infinite -> true
+  | FP_normal
+  | FP_subnormal
+  | FP_zero -> false
+
 let infinity     = Pervasives.infinity
 let neg_infinity = Pervasives.neg_infinity
 let nan          = Pervasives.nan
