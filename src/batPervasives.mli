@@ -83,6 +83,12 @@ val dump : 'a -> string
     match your type. For example, None will be printed 0 since they
     share the same runtime representation. *)
 
+val print_any : 'b BatIO.output -> 'a -> unit
+(** Attempt to print a value to an output.
+
+    Uses [dump] to convert the value to a string and prints that
+    string to the output.
+ *)
 
 (** {6 List operations}
 
@@ -883,7 +889,7 @@ val exn_printer : exn BatValuePrinter.t
    {6 Results}
 *)
 
-type ('a, 'b) result = ('a, 'b) BatStd.result =
+type ('a, 'b) result =
   | Ok  of 'a
   | Bad of 'b
 

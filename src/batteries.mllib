@@ -72,7 +72,6 @@ BatRef
 BatResult
 BatReturn
 BatSeq
-BatStd
 BatSubstring
 BatTuple
 BatUref
@@ -88,4 +87,4 @@ BatHistogram
 BatteriesConfig
 BatteriesPrint
 Batteries
-
+Extlib
