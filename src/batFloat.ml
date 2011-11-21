@@ -88,23 +88,6 @@ let round_to_int x =
    3.5; 5.0]
 *)
 
-(*
-Rounding to a particular decimal place, for future reference.
-
-let round_dec ~decimal x =
-  if precision = 0 then
-    x
-  else
-    let precision' =
-      if precision > 0 then
-        precision - 1
-      else
-        precision
-    in
-    let x' = x /. (10.0 ** float precision') in
-    10.0 ** float precision' *. round x'
-*)
-
 type bounded = t
 let min_num, max_num = neg_infinity, infinity
 
