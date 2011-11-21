@@ -164,8 +164,12 @@ let rec dump r =
 		opaque "custom"
 	| x when x = Obj.final_tag ->
 		opaque "final"
+	| x when x = Obj.double_array_tag ->
+        	let field i = string_of_float (Obj.double_field r i) in
+		let l = BatList.init s field in
+		"[| " ^ String.concat "; " l ^ " |]"
 	| _ ->
-		failwith ("Std.dump: impossible tag (" ^ string_of_int t ^ ")")
+		opaque (Printf.sprintf "unknown: tag %d size %d" t s)
 
 let dump v = dump (Obj.repr v)
 
