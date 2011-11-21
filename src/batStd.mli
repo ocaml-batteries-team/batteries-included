@@ -68,7 +68,11 @@ val unique : unit -> int
 val dump : 'a -> string
 (** represent a runtime value as a string. Since types are lost at compile
     time, the representation might not match your type. For example, None
-    will be printed 0 since they share the same runtime representation. *)
+    will be printed 0 since they share the same runtime representation.
+
+    [dump] may fail for ill-formed values, such as obtained from
+    a faulty C binding or imprudent use of [Obj.set_tag].
+*)
 
 val print : 'a -> unit
 (** print the representation of a runtime value on stdout.

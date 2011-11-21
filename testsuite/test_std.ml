@@ -95,17 +95,6 @@ let test_dump () =
   test "[| 0.; 1.; 2. |]" [| 0.; 1.; 2. |];
   test "[| 0.; 1.; 2. |]" { f1 = 0.; f2 = 1.; f3 = 2. };
 
-  (* resilience *)
-  (* commented: this actually raises an assert failure in the Std.dump code
-  let () =
-    let x = A 1 in
-    for i = -257 to 257 do
-      Obj.set_tag (Obj.repr x) i;
-      ignore (Std.dump x);
-    done
-  in
-  *)
-
   ()
 
 let tests = "Std" >::: [
