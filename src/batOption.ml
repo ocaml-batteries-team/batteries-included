@@ -114,10 +114,17 @@ struct
     | Some x -> f x
 end
 
-
 module Labels =
 struct
   let may ~f o = may f o
   let map ~f o = map f o
   let map_default ~f d o = map_default f d o
 end
+
+module Infix =
+struct
+  let ( |? ) x def = default def x
+end
+
+include Infix
+

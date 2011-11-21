@@ -157,7 +157,17 @@
 	  equal to [f].
 	  [ceil f] returns the least integer value greater than or
 	  equal to [f]. *)
-      
+
+    val round : ?precision:float -> float -> float
+    (** [round ~precision f] rounds [f] to the decimal place indicated by
+        [precision].
+        For example, [round_to ~precision:0.001 0.5555] returns [0.556].
+        If [precision] is not provided it defaults to [1.0]. *)
+
+    val round_to_int : float -> int
+      (** [round_to_int f] is like {!round} except that it converts the result
+          to an [int]. *)
+
     val infinity : float
       (** Positive infinity. *)
       
@@ -174,6 +184,10 @@
       
     val is_nan : float -> bool
       (** [is_nan f] returns [true] if [f] is [nan], [false] otherwise.*)
+
+    val is_special : float -> bool
+      (** [is_special f] returns [true] if [f] is [nan] or [+/- infinity],
+          [false] otherwise. *)
       
     val epsilon : float
       (** The smallest positive float [x] such that [1.0 +. x <> 1.0]. *)
@@ -366,7 +380,7 @@ module Safe_float :
 	  equal to [f].
 	  [ceil f] returns the least integer value greater than or
 	  equal to [f]. *)
-      
+
     val infinity : float
       (** Positive infinity. *)
       
