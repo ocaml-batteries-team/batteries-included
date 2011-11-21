@@ -73,6 +73,21 @@ external frexp : float -> float * int = "caml_frexp_float"
 external ldexp : float -> int -> float = "caml_ldexp_float"            
 external modf : float -> float * float = "caml_modf_float"
 
+let _round x =
+  if x > 0.0 then floor (x +. 0.5) else ceil (x -. 0.5)
+
+let round ?(precision = 1.0) x =
+  precision *. _round (x /. precision)
+
+let round_to_int x =
+  int_of_float (_round x)
+
+(**T round
+   List.map round [1.1; 2.4; 3.3; 3.5; 4.99] = [1; 2; 3; 4; 5]
+   List.map (round ~precision:0.1) [1.1; 2.4; 3.3; 3.5; 4.99] = [1.1; 2.4; 3.3;
+   3.5; 5.0]
+*)
+
 type bounded = t
 let min_num, max_num = neg_infinity, infinity
 
@@ -87,6 +102,14 @@ external classify : float -> fpkind = "caml_classify_float"
 let is_nan f = match classify f with
   | FP_nan -> true
   | _      -> false
+
+let is_special f =
+  match classify f with
+  | FP_nan
+  | FP_infinite -> true
+  | FP_normal
+  | FP_subnormal
+  | FP_zero -> false
 
 let infinity     = Pervasives.infinity
 let neg_infinity = Pervasives.neg_infinity
