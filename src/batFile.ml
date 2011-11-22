@@ -22,6 +22,17 @@ open BatIO
 open ListLabels
 open Unix
 
+(* Moved from batPervasives to break dep cycle *)
+let finally handler f x =
+  let r = (
+    try
+      f x
+    with
+	e -> handler(); raise e
+  ) in
+  handler();
+  r
+
 (*** Permissions *)
 type permission = int
     (**Internally, permissions are represented in Unix-style
@@ -144,7 +155,7 @@ let open_in ?mode ?(perm=default_permission) name =
 
 let with_do opener closer x f =
   let file = opener x in
-    BatStd.finally (fun () -> closer file) f file
+    finally (fun () -> closer file) f file
  
 let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
 let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
@@ -181,7 +192,7 @@ let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * 
 
 let with_temporary_out ?mode ?prefix ?suffix f =
   let (file, name) = open_temporary_out ?mode ?prefix ?suffix () in
-    BatStd.finally (fun () -> close_out file)
+    finally (fun () -> close_out file)
       (fun (file, name) -> f file name)
       (file, name)
 

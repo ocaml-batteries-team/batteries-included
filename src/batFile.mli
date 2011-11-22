@@ -199,3 +199,7 @@ val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -
     @return The name of the file and the [output] for writing in it.
 
     Naming conventions for files are platform-dependent.*)
+
+(**/**)
+val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
+(**/**)

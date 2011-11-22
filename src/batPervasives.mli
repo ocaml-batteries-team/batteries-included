@@ -408,6 +408,7 @@ val ( |> ) : 'a -> ('a -> 'b) -> 'b
     This operator may also be useful for composing sequences of
     function calls without too many parenthesis. *)
 
+
 val ( **>  ) : ('a -> 'b) -> 'a -> 'b
   (** Function application. [f **> x] is equivalent to [f x]. 
       
@@ -416,6 +417,9 @@ val ( **>  ) : ('a -> 'b) -> 'a -> 'b
 
       {b Note} The name of this operator is not written in stone.
       It is bound to change soon.*)
+
+val ( <| ) : ('a -> 'b) -> 'a -> 'b
+(** same as [ ( **> ) ] *)
 
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
 (** Function composition. [f |- g] is [fun x -> g (f x)]. 

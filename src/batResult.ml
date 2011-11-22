@@ -1,6 +1,6 @@
 
-open BatStd
-type ('a, 'b) t = ('a, 'b) BatStd.result = 
+open BatPervasives
+type ('a, 'b) t = ('a, 'b) BatPervasives.result =
  | Ok  of 'a
  | Bad of 'b
 

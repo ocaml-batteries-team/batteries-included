@@ -2,7 +2,7 @@ open OUnit
 open BatPervasives
 open BatOptParse
 
-let printer = BatStd.dump
+let printer = dump
 
 let tests = "OptParse tests" >::: [
   "parse empty" >:: begin function () ->

@@ -167,22 +167,16 @@ let rec dump r =
 	opaque "custom"
       | x when x = Obj.final_tag ->
 	opaque "final"
+      | x when x = Obj.double_array_tag ->
+	BatIO.to_string (BatArray.print BatFloat.print) (Obj.magic r : float array)
       | _ ->
-	failwith ("Std.dump: impossible tag (" ^ string_of_int t ^ ")")
+	opaque (Printf.sprintf "unknown: tag %d size %d" t s)
 
 let dump v = dump (Obj.repr v)
 
 let print_any oc v = BatIO.nwrite oc (dump v)
 
-let finally handler f x =
-  let r = (
-    try
-      f x
-    with
-	e -> handler(); raise e
-  ) in
-  handler();
-  r
+let finally = BatFile.finally
 
 let with_dispose ~dispose f x =
   finally (fun () -> dispose x) f x

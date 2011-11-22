@@ -1,4 +1,3 @@
-open BatStd
 open Batteries
 module U = OUnit
 

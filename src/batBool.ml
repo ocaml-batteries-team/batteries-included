@@ -65,9 +65,8 @@ module BaseBool = struct
     | false -> 0
     | true  -> 1
 
-  open BatStd
-  let of_float = of_int -| int_of_float
-  let to_float = float_of_int -| to_int
+  let of_float x = of_int (int_of_float x)
+  let to_float x = float_of_int (to_int x)
   let of_string = function
     | "true" | "tt" | "1" -> true
     | "false"| "ff" | "0" -> false

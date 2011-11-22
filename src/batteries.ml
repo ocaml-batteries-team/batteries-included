@@ -115,7 +115,7 @@ module PMap = BatPMap
 module PSet = BatPSet
 module RefList = BatRefList
 module Ref = BatRef
-module Std = BatStd
+(*module Std = REMOVED - use BatPervasives *)
 
 (* Batteries specific modules *)
 module Cache = BatCache
