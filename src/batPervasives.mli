@@ -81,7 +81,11 @@ val dump : 'a -> string
 
     Since types are lost at compile time, the representation might not
     match your type. For example, None will be printed 0 since they
-    share the same runtime representation. *)
+    share the same runtime representation.
+
+    [dump] may fail for ill-formed values, such as obtained from
+    a faulty C binding or crazy uses of [Obj.set_tag].
+*)
 
 val print_any : 'b BatIO.output -> 'a -> unit
 (** Attempt to print a value to an output.
