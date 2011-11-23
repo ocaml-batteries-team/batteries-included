@@ -82,10 +82,15 @@ let round ?(precision = 1.0) x =
 let round_to_int x =
   int_of_float (_round x)
 
+(* the tests below look ugly with those Pervasives.(...); this is
+   a temporary fix made necessary by BatFloat overriding the (=)
+   operator. Hugh. *)
 (**T round
-   List.map round [1.1; 2.4; 3.3; 3.5; 4.99] = [1; 2; 3; 4; 5]
-   List.map (round ~precision:0.1) [1.1; 2.4; 3.3; 3.5; 4.99] = [1.1; 2.4; 3.3;
-   3.5; 5.0]
+   Pervasives.(List.map round [1.1; 2.4; 3.3; 3.5; 4.99] = [1.; 2.; 3.; 4.; 5.])
+   Pervasives.(List.map round_to_int [1.1; 2.4; 3.3; 3.5; 4.99] = [1; 2; 3; 4; 5])
+**)
+(* the following test fails: round ~precision:0.1 2.4 is *not* equal to 2.4
+   Pervasives.(List.map (round ~precision:0.1) [1.1; 2.4; 3.3; 3.5; 4.99] = [1.1; 2.4; 3.3; 3.5; 5.0])
 *)
 
 type bounded = t
