@@ -493,7 +493,7 @@ val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
 
 val verify_arg : bool -> string -> unit
 (** [verify_arg condition message] will raise [Invalid_argument message] if
-    [condition] is true, otherwise it does nothing. *)
+    [condition] is false, otherwise it does nothing. *)
 
 val args : unit -> string BatEnum.t
   (** An enumeration of the arguments passed to this program through the command line.
