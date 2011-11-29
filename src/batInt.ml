@@ -210,6 +210,16 @@ module Safe_int = struct
     type bat__compare_t = t
     let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
   end
+
+  module Future = struct
+    open BatOrd
+    let eq (x:int) y = x = y
+    let ord (x:int) y =
+      if x > y then Gt
+      else if y > x then Lt
+      else Eq
+  end
+
 end
 
 (**T Safe_int
@@ -238,3 +248,11 @@ module SafeInt = struct
   module Numeric = struct include Numeric(BaseSafeInt) end
 end
 *)
+module Future = struct
+  open BatOrd
+  let eq (x:int) y = x = y
+  let ord (x:int) y =
+    if x > y then Gt
+    else if y > x then Lt
+    else Eq
+end
