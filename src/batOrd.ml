@@ -1,5 +1,3 @@
-module Incubator = struct
-
 type order = Lt | Eq | Gt
 
 type 'a comp = 'a -> 'a -> int
@@ -116,8 +114,8 @@ let min_comp comp = fun a b ->
   if comp a b <= 0 then a else b
 
 (**T max
-   Incubator.max_ord Incubator.poly_ord 1 2 = 2
-   Incubator.max_comp Incubator.poly_comp 1 2 = 2
+   max_ord poly_ord 1 2 = 2
+   max_comp poly_comp 1 2 = 2
 **)
 let max_ord ord = min_ord (rev_ord ord)
 let max_comp comp = min_comp (rev_comp comp)
@@ -137,4 +135,3 @@ let bin_comp comp1 t1 t1' comp2 t2 t2' =
   match comp1 t1 t1' with
     | 0 -> comp2 t2 t2'
     | nzero -> nzero
-end

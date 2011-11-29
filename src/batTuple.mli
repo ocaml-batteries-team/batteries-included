@@ -120,7 +120,7 @@ module Tuple2 : sig
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a
 
   module Incubator : sig
-    open BatOrd.Incubator
+    open BatOrd
     val eq : 'a eq -> 'b eq -> ('a * 'b) eq
     val ord : 'a ord -> 'b ord -> ('a * 'b) ord
     val comp : 'a comp -> 'b comp -> ('a * 'b) comp
@@ -180,7 +180,7 @@ module Tuple3 : sig
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a
 
   module Incubator : sig
-    open BatOrd.Incubator
+    open BatOrd
     val eq : 'a eq -> 'b eq -> 'c eq -> ('a * 'b * 'c) eq
     val ord : 'a ord -> 'b ord -> 'c ord -> ('a * 'b * 'c) ord
     val comp : 'a comp -> 'b comp -> 'c comp -> ('a * 'b * 'c) comp
@@ -252,7 +252,7 @@ module Tuple4 : sig
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
 
   module Incubator : sig
-    open BatOrd.Incubator
+    open BatOrd
     val eq : 'a eq -> 'b eq -> 'c eq -> 'd eq -> ('a * 'b * 'c * 'd) eq
     val ord : 'a ord -> 'b ord -> 'c ord -> 'd ord -> ('a * 'b * 'c * 'd) ord
     val comp : 'a comp -> 'b comp -> 'c comp -> 'd comp -> ('a * 'b * 'c * 'd) comp
@@ -343,7 +343,7 @@ module Tuple5 : sig
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a * 'a
 
   module Incubator : sig
-    open BatOrd.Incubator
+    open BatOrd
     val eq : 'a eq -> 'b eq -> 'c eq -> 'd eq -> 'e eq
 	-> ('a * 'b * 'c * 'd * 'e) eq
     val ord : 'a ord -> 'b ord -> 'c ord -> 'd ord -> 'e ord

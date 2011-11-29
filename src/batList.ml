@@ -764,7 +764,7 @@ module Infix = struct
 end
 
 module Incubator = struct
-  open BatOrd.Incubator
+  open BatOrd
 
   let rec eq eq_elt l1 l2 =
     match l1 with

@@ -1,4 +1,3 @@
-module Incubator : sig
 
 type order = Lt | Eq | Gt
 (** An algebraic datatype for ordering.
@@ -51,7 +50,7 @@ val poly : 'a ord
     with functions, type abstractions, and structures that would need
     a finer notion of equality/comparison. For example, if one
     represent sets as balanced binary tree, one may want set with
-    equal elements but differently balancings to be equal, which would
+    equal elements but different balancings to be equal, which would
     not be the case using the polymorphic equality function.
 
     When possible, you should therefore avoid relying on these
@@ -122,4 +121,3 @@ val bin_ord : 'a ord -> 'a -> 'a -> 'b ord -> 'b -> 'b -> order
 *)
 val bin_eq : 'a eq -> 'a -> 'a -> 'b eq -> 'b -> 'b -> bool
 
-end

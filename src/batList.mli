@@ -557,7 +557,7 @@ val ( @ ) : 'a list -> 'a list -> 'a list
 (** Tail recursive [List.append]. *)
 
 module Incubator : sig
-  open BatOrd.Incubator
+  open BatOrd
   val eq : 'a eq -> 'a list eq
   val ord : 'a ord -> 'a list ord
   val comp : 'a comp -> 'a list comp

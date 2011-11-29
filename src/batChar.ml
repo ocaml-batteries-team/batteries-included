@@ -88,6 +88,6 @@ module Incubator = struct
     let compare = compare
   end
 
-  module Ord = BatOrd.Incubator.Ord(Comp)
-  module Eq = BatOrd.Incubator.EqComp(Comp)
+  module Ord = BatOrd.Ord(Comp)
+  module Eq = BatOrd.EqComp(Comp)
 end
