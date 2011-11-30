@@ -158,18 +158,41 @@
 	  [ceil f] returns the least integer value greater than or
 	  equal to [f]. *)
 
-    val round : ?precision:float -> float -> float
-    (** [round ~precision f] rounds [f] to the decimal place indicated by
-        [precision].
-        For example, [round_to ~precision:0.001 0.5555] returns [0.556].
-        If [precision] is not provided it defaults to [1.0]. *)
+    val round : float -> float
+    (** [round x] rounds [x] to the nearest integral floating-point
+        (the nearest of [floor x] and [ceil x]). In case the fraction
+        of x is exactly 0.5, we round away from 0. : [round 1.5] is
+        [2.] but [round (-3.5)] is [-4.]. *)
 
     val round_to_int : float -> int
-      (** [round_to_int f] is like {!round} except that it converts the result
-          to an [int]. *)
+    (** [round_to_int x] is [int_of_float (round x)]. *)
+
+    val round_to_string : ?digits:int -> float -> string
+    (** [round_to_string ~digits:d x] will return a string
+        representation of [x] -- in base 10 -- rounded to [d] digits
+        after the decimal point. By default, [digits] is [0], we round
+        to the nearest integer.
+        
+        @raise Invalid_argument if the ~digits argument is negative.
+
+        This is strictly a convenience function for simple end-user
+        printing and you should not rely on its behavior. One possible
+        implementation is to rely on C `sprintf` internally, which
+        means:
+
+        - the round-at-half behavior may not be consistent with
+        [round] or [round_to_int]
+        
+        - [round_to_string ~digits:0 3.] may return "3" instead of
+        "3." as [string_of_float] would
+
+        - no guarantee is given on the behavior for abusively high
+        number of digits precision; for example [round_to_string
+        ~digits:max_int x] may return the empty string.
+    *)
 
     val infinity : float
-      (** Positive infinity. *)
+    (** Positive infinity. *)
       
     val neg_infinity : float
       (** Negative infinity. *)
