@@ -115,17 +115,29 @@ TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
 TESTDEPS = $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 
-_build/testsuite/main.byte _build/qtest/test_runner.byte: $(TESTDEPS)
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte qtest/test_runner.byte
+_build/testsuite/main.byte: $(TESTDEPS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte
+_build/testsuite/main.native: $(TESTDEPS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.native
 
-_build/testsuite/main.native _build/qtest/test_runner.native: $(TESTDEPS)
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
+_build/qtest/test_runner.byte: $(TESTDEPS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest/test_runner.byte
+_build/qtest/test_runner.native: $(TESTDEPS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest/test_runner.native
 
-test-byte: _build/testsuite/main.byte #_build/qtest/test_runner.byte
+#qtest only targets, for quicker test iteration
+qtest-byte: _build/qtest/test_runner.byte
+	_build/qtest/test_runner.byte
+
+qtest-native: _build/qtest/test_runner.native
+	_build/qtest/test_runner.native
+
+# all tests 
+test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte
 	_build/testsuite/main.byte 
 	_build/qtest/test_runner.byte
 
-test-native: _build/testsuite/main.native #_build/qtest/test_runner.native
+test-native: _build/testsuite/main.native _build/qtest/test_runner.native
 	_build/testsuite/main.byte 
 	_build/qtest/test_runner.byte
 	_build/testsuite/main.native
