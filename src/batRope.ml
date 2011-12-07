@@ -1,11 +1,11 @@
-(* 
+(*
  * Rope: Rope: an implementation of the data structure described in
- *   
+ *
  * Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
  * strings. Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
- * 
+ *
  * Motivated by Luca de Alfaro's extensible array implementation Vec.
- * 
+ *
  * Copyright (C) 2007 Mauricio Fernandez <mfp@acm.org>
  * Copyright (C) 2008 Edgar Friendly <thelema314@gmail.com>
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
@@ -36,61 +36,61 @@ let int_max (x:int) (y:int) = if x < y then y else x
 let int_min (x:int) (y:int) = if x < y then x else y
 
 exception Invalid_rope
- 
+
 type t =
     Empty                             (**An empty rope*)
   | Concat of t * int * t * int * int (**[Concat l ls r rs h] is the concatenation of
-                                         ropes [l] and [r], where [ls] is the total 
+                                         ropes [l] and [r], where [ls] is the total
 					 length of [l], [rs] is the length of [r]
 					 and [h] is the height of the node in the
 					 tree, used for rebalancing. *)
   | Leaf of int * UTF8.t              (**[Leaf l t] is string [t] with length [l],
 					 measured in number of Unicode characters.*)
- 
+
 type forest_element = { mutable c : t; mutable len : int }
- 
+
 let str_append = BatUTF8.append
 let empty_str = BatUTF8.empty
 let string_of_string_list l = BatUTF8.join BatUTF8.empty l
 
 
- 
+
 (* 48 limits max rope size to 220GB on 64 bit,
 * ~ 700MB on 32bit (length fields overflow after that) *)
 let max_height = 48
- 
+
 (* actual size will be that plus 1 word header;
 * the code assumes it's an even num.
 * 256 gives up to a 50% overhead in the worst case (all leaf nodes near
 * half-filled *)
 let leaf_size = 256 (* utf-8 characters, not bytes *)
 (* =end *)
- 
+
 (* =begin code *)
- 
+
 exception Out_of_bounds
- 
+
 let empty = Empty
- 
+
 
 
 (* by construction, there cannot be Empty or Leaf "" leaves *)
 let is_empty = function Empty -> true | _ -> false
- 
+
 let height = function
     Empty | Leaf _ -> 0
   | Concat(_,_,_,_,h) -> h
- 
+
 let length = function
     Empty -> 0
   | Leaf (l,_) -> l
   | Concat(_,cl,_,cr,_) -> cl + cr
- 
+
 let make_concat l r =
   let hl = height l and hr = height r in
   let cl = length l and cr = length r in
     Concat(l, cl, r, cr, if hl >= hr then hl + 1 else hr + 1)
- 
+
 let min_len =
   let fib_tbl = Array.make max_height 0 in
   let rec fib n = match fib_tbl.(n) with
@@ -103,16 +103,16 @@ let min_len =
   in
     fib_tbl.(0) <- leaf_size + 1; fib_tbl.(1) <- 3 * leaf_size / 2 + 1;
     Array.init max_height (fun i -> if i = 0 then 1 else fib (i - 1))
- 
+
 let max_length = min_len.(Array.length min_len - 1)
- 
+
 let concat_fast l r = match l with
     Empty -> r
   | Leaf _ | Concat(_,_,_,_,_) ->
       match r with
           Empty -> l
         | Leaf _ | Concat(_,_,_,_,_) -> make_concat l r
- 
+
 (* based on Hans-J. Boehm's *)
 let add_forest forest rope len =
   let i = ref 0 in
@@ -137,10 +137,10 @@ let add_forest forest rope len =
       decr i;
       forest.(!i).c <- !sum;
       forest.(!i).len <- !sum_len
- 
+
 let concat_forest forest =
   Array.fold_left (fun s x -> concat_fast x.c s) Empty forest
- 
+
 let rec balance_insert rope len forest = match rope with
     Empty -> ()
   | Leaf _ -> add_forest forest rope len
@@ -148,7 +148,7 @@ let rec balance_insert rope len forest = match rope with
       balance_insert l cl forest;
       balance_insert r cr forest
   | x -> add_forest forest x len (* function or balanced *)
- 
+
 let balance r =
   match r with
       Empty | Leaf _ -> r
@@ -156,11 +156,11 @@ let balance r =
         let forest = Array.init max_height (fun _ -> {c = Empty; len = 0}) in
           balance_insert r (length r) forest;
           concat_forest forest
- 
+
 let bal_if_needed l r =
   let r = make_concat l r in
     if height r < max_height then r else balance r
- 
+
 let concat_str l = function
     Empty | Concat(_,_,_,_,_) -> invalid_arg "concat_str"
   | Leaf (lenr, rs) as r ->
@@ -177,7 +177,7 @@ let concat_str l = function
             else
               bal_if_needed l r
         | _ -> bal_if_needed l r
- 
+
 let append_char c r = concat_str r (Leaf (1, (UTF8.make 1 c)))
 
 let append l = function
@@ -194,12 +194,12 @@ let append l = function
               else
                 bal_if_needed l r)
   | r -> (match l with Empty -> r | _ -> bal_if_needed l r)
- 
+
 let ( ^^^ ) = append
 
 let prepend_char c r = append (Leaf (1,(UTF8.make 1 c))) r
- 
-let get r i = 
+
+let get r i =
   let rec aux i = function
     Empty -> raise Out_of_bounds
   | Leaf (lens, s) ->
@@ -209,8 +209,8 @@ let get r i =
       if i < cl then aux i l
       else aux (i - cl) r
   in aux i r
- 
-let set r i v = 
+
+let set r i v =
   let rec aux i = function
       Empty -> raise Out_of_bounds
     | Leaf (lens, s) ->
@@ -427,11 +427,11 @@ let rec make len c =
     else
       let rope = concatloop len 2 (of_ustring (UTF8.make 1 c)) in
         append rope (make (len - length rope) c)
- 
+
 let of_uchar c = make 1 c
 let of_char c = of_uchar (UChar.of_char c)
 
-let sub r start len = 
+let sub r start len =
   let rec aux start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
   | Leaf (lens, s) ->
@@ -461,13 +461,13 @@ let sub r start len =
       in
         append left right
   in aux start len r
- 
+
 let insert start rope r =
   append (append (sub r 0 start) rope) (sub r start (length r - start))
- 
+
 let remove start len r =
   append (sub r 0 start) (sub r (start + len) (length r - start - len))
- 
+
 let to_ustring r =
   let rec strings l = function
       Empty -> l
@@ -475,19 +475,19 @@ let to_ustring r =
     | Concat(left,_,right,_,_) -> strings (strings l right) left
   in
     string_of_string_list (strings [] r)
- 
+
 let rec iter f = function
     Empty -> ()
   | Leaf (_,s) -> UTF8.iter f s
   | Concat(l,_,r,_,_) -> iter f l; iter f r
- 
+
 let rec iteri ?(base=0) f = function
     Empty -> ()
   | Leaf (_,s) ->
       let e = UTF8.enum s in
       BatEnum.iteri (fun j c -> f (base+j) c) e
   | Concat(l,cl,r,_,_) -> iteri ~base f l; iteri ~base:(base + cl) f r
- 
+
 let rec bulk_iter f = function
     Empty -> ()
   | Leaf (_,s) -> f s
@@ -496,14 +496,14 @@ let rec bulk_iter f = function
 let rec bulk_iteri ?(base=0) f = function
     Empty -> ()
   | Leaf (_,s) -> f base s
-  | Concat(l,cl,r,_,_) -> 
-      bulk_iteri ~base f l; 
+  | Concat(l,cl,r,_,_) ->
+      bulk_iteri ~base f l;
       bulk_iteri ~base:(base+cl) f r
 
 let rec bulk_iteri_backwards ~top f = function
     Empty -> ()
   | Leaf (lens,s) -> f (top-lens) s (* gives f the base position, not the top *)
-  | Concat(l,_,r,cr,_) -> 
+  | Concat(l,_,r,cr,_) ->
       bulk_iteri_backwards ~top f r;
       bulk_iteri_backwards ~top:(top-cr) f l
 
@@ -529,14 +529,14 @@ let rec range_iter f start len = function
       end else begin
         range_iter f (start - cl) len r
       end
- 
+
 let rec range_iteri f ?(base = 0) start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
   | Leaf (lens, s) ->
       let n = start + len in
       if start >= 0 && len >= 0 && n <= lens then
 	for i = start to n - 1 do
-          f (base+i) (UTF8.unsafe_get s i) 
+          f (base+i) (UTF8.unsafe_get s i)
 	    (*TODO: use enum to iterate efficiently*)
         done
       else raise Out_of_bounds
@@ -559,7 +559,7 @@ let rec fold f a = function
   | Leaf (_,s) ->
       BatEnum.fold (fun a c -> f a c) a (UTF8.enum s)
   | Concat(l,_,r,_,_) -> fold f (fold f a l) r
- 
+
 let rec bulk_fold f a = function
   | Empty                  -> a
   | Leaf   (_, s)          -> f a s
@@ -585,11 +585,11 @@ let bulk_enum s =
                | None -> raise BatEnum.No_more_elements)
 
 (*Probably useless
-let bulk_backwards s = 
+let bulk_backwards s =
   let rec aux = function
     | Empty      -> BatEnum.empty ()
     | Leaf(_, s) -> BatEnum.singleton s
-    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux r)) 
+    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux r))
                                            (BatEnum.delay (fun () -> aux l))
   in aux s
 *)
@@ -612,9 +612,9 @@ let of_enum e =
       | (false, us) -> append r (of_ustring us)
   in
   loop Empty
-    
-let of_bulk_enum e = 
-  let rec loop r = 
+
+let of_bulk_enum e =
+  let rec loop r =
     match BatEnum.get e with
 	None -> r
       | Some us -> loop (append r (of_ustring us))
@@ -622,8 +622,8 @@ let of_bulk_enum e =
   loop Empty
 
 (* REDUNDANT DEFINITION - test speed / correctness
-let of_enum e = 
-  let add, get = 
+let of_enum e =
+  let add, get =
     let b = Buffer.create leaf_size in
     (fun c -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c))),
     (fun () -> let ret = UTF8.of_string_unsafe (Buffer.contents b) in Buffer.clear b; ret)
@@ -633,15 +633,15 @@ let of_enum e =
 
 let of_backwards e =(*(Yoric) I'll keep the implementation simple at least until I understand [of_enum]*)
   BatEnum.fold (fun acc c -> append (of_uchar c) acc) Empty e
-  
+
 let of_bulk_enum e =
   BatEnum.fold (fun acc s -> append acc (of_ustring s)) Empty e
-(*Probably useless 
+(*Probably useless
 let of_bulk_backwards e =
   BatEnum.fold (fun s acc -> append (of_ustring s) acc) Empty e
 *)
 module CE = BatCamomile.CharEncoding
- 
+
 let of_latin1 s =
   of_ustring (UTF8.of_string (CE.recode_string CE.latin1 CE.utf8 s))
 
@@ -669,7 +669,7 @@ let init len f = of_enum (BatEnum.init len f)
 let of_list cl = of_enum (BatList.enum cl)
 let to_list r  = BatList.of_enum (enum r)
 
-  
+
 let of_string_unsafe s = of_ustring (UTF8.of_string_unsafe s)
 let of_int i = of_string_unsafe (string_of_int i)
 let of_float f = of_string_unsafe (string_of_float f)
@@ -690,10 +690,10 @@ let right r len = let rlen = length r in sub r (rlen - len) len
 let head = left
 let tail r pos = sub r pos (length r - pos)
 
-let index r item = 
+let index r item =
   with_label (fun label ->
 	        let index_aux i us =
-	          try 
+	          try
 	            let p = UTF8.index us item in
 	            return label (p+i)
 	          with Not_found -> ()
@@ -701,18 +701,18 @@ let index r item =
 	        bulk_iteri index_aux r;
 	        raise Not_found)
 
-let index_from r base item = 
+let index_from r base item =
   with_label (fun label ->
-	        let index_aux i c = 
+	        let index_aux i c =
 	          if c = item then return label i
 	        in
 	        range_iteri index_aux ~base base (length r - base) r;
 	        raise Not_found)
 
-let rindex r char = 
+let rindex r char =
   with_label (fun label ->
 	        let index_aux i us =
-	          try 
+	          try
 	            let p = UTF8.rindex us char in
 	            return label (p+i)
 	          with Not_found -> ()
@@ -720,11 +720,11 @@ let rindex r char =
 	        bulk_iteri_backwards ~top:(length r) index_aux r;
 	        raise Not_found)
 
-let rindex_from r start char = 
+let rindex_from r start char =
   let rsub = left r start in
   (rindex rsub char)
 
-let contains r char = 
+let contains r char =
   with_label (fun label ->
 	        let contains_aux us =
 	          if UTF8.contains us char then return label true
@@ -732,7 +732,7 @@ let contains r char =
 	        bulk_iter contains_aux r;
 	        false)
 
-let contains_from r start char = 
+let contains_from r start char =
   with_label (fun label ->
 	        let contains_aux c = if c = char then return label true in
 	        range_iter contains_aux start (length r - start) r;
@@ -770,9 +770,9 @@ let ends_with r suffix =
 let find_from r1 ofs r2 =
   let matchlen = length r2 in
   let r2_string = to_ustring r2 in
-  let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in 
+  let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in
   (* TODO: inefficient *)
-  with_label (fun label -> 
+  with_label (fun label ->
 	   for i = ofs to length r1 - matchlen do
 	     if check_at i then return label i
 	   done;
@@ -783,9 +783,9 @@ let find r1 r2 = find_from r1 0 r2
 let rfind_from r1 suf r2 =
   let matchlen = length r2 in
   let r2_string = to_ustring r2 in
-  let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in 
+  let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in
   (* TODO: inefficient *)
-  with_label (fun label -> 
+  with_label (fun label ->
 	   for i = suf - (length r1 + 1 ) downto 0 do
 	     if check_at i then return label i
 	   done;
@@ -853,18 +853,18 @@ let capitalize r = apply1 uppercase r
 let uncapitalize r = apply1 lowercase r
 
 
-let splice r start len new_sub = 
+let splice r start len new_sub =
   let start = if start >= 0 then start else (length r) + start in
-  append (left r start) 
+  append (left r start)
     (append new_sub (tail r (start+len)))
 
-let fill r start len char = 
+let fill r start len char =
   splice r start len (make len char)
 
-let blit rsrc offsrc rdst offdst len = 
+let blit rsrc offsrc rdst offdst len =
   splice rdst offdst len (sub rsrc offsrc len)
 
-let concat sep r_list = 
+let concat sep r_list =
   if r_list = [] then empty else
   BatList.reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
 
@@ -876,11 +876,11 @@ let escaped r = bulk_map UTF8.escaped r
 
 let replace_chars f r = fold (fun acc s -> append_us acc (f s)) Empty r
 
-let split r sep = 
+let split r sep =
   let i = find r sep in
   head r i, tail r (i+length sep)
 
-let rsplit (r:t) sep = 
+let rsplit (r:t) sep =
   let i = rfind r sep in
   head r i, tail r (i+length sep)
 
@@ -893,16 +893,16 @@ let rsplit (r:t) sep =
 let nsplit str sep =
   if is_empty str then []
   else let seplen = length sep in
-       let rec aux acc ofs = match 
+       let rec aux acc ofs = match
 	 try Some(rfind_from str ofs sep)
 	 with Invalid_rope -> None
-       with Some idx -> 
+       with Some idx ->
 	 (*at this point, [idx] to [idx + seplen] contains the separator, which is useless to us
 	   on the other hand, [idx + seplen] to [ofs] contains what's just after the separator,
 	   which is s what we want*)
 	 let end_of_occurrence = idx + seplen in
 	   if end_of_occurrence >= ofs then aux acc idx (*We may be at the end of the string*)
-	   else aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx 
+	   else aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx
 	 |  None     -> (sub str 0 ofs)::acc
        in
 	 aux [] (length str - 1 )
@@ -923,10 +923,10 @@ let slice ?(first=0) ?(last=max_int) s =
       sub s i (j-i)
 
 
-let replace ~str ~sub ~by = 
+let replace ~str ~sub ~by =
   try
     let i = find str sub in
-      (true, append (slice ~last:i str)  (append by 
+      (true, append (slice ~last:i str)  (append by
          (slice ~first:(i+(length sub)) str)))
   with
       Invalid_rope -> (false, str)

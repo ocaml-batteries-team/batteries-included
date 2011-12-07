@@ -4,7 +4,7 @@
  *               2003 Nicolas Cannasse
  *               2007 Zheng Li
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -32,11 +32,11 @@
 open BatIO
 
 (** The initially opened module.
-    
+
     This module provides the basic operations over the built-in types
     (numbers, booleans, strings, exceptions, references, lists, arrays,
     input-output channels, ...)
-    
+
     This module is automatically opened at the beginning of each compilation.
     All components of this module can therefore be referred by their short
     name, without prefixing them by [BatPervasives].
@@ -65,7 +65,7 @@ val lowercase : string -> string
     Latin-1 (8859-1) character set. *)
 
 
-(** {6 String conversion functions} 
+(** {6 String conversion functions}
 
     These are the most common string conversion functions.  For
     additional string conversion functions, see in the corresponding
@@ -93,7 +93,7 @@ val ( @ ) : 'a list -> 'a list -> 'a list
 (** List concatenation. *)
 
 
-(** {6 Input/output} 
+(** {6 Input/output}
 
     This section only contains the most common input/output operations.
     More operations may be found in modules {!BatIO} and {!File}.
@@ -111,7 +111,7 @@ val stdout: unit output
 
 val stderr: unit output
 (** Standard error output, as per Unix/Windows conventions.
-   
+
     Use this output to display warnings and error messages.*)
 
 val stdnull: unit output
@@ -159,13 +159,13 @@ val prerr_all : input -> unit
 
 (** {7 General output functions} *)
 
-val open_out : ?mode:(BatFile.open_out_flag list) -> 
+val open_out : ?mode:(BatFile.open_out_flag list) ->
                ?perm:BatFile.permission           ->
   string -> unit BatIO.output
   (** Open the named file for writing, and return a new output channel
       on that file. You will need to close the file once you have
       finished using it.
-      
+
       You may use optional argument [mode] to decide whether the
       output will overwrite the contents of the file (by default) or
       to add things at the end of the file, whether the file should be
@@ -256,18 +256,18 @@ val close_out : unit BatIO.output -> unit
       which do nothing when applied to an already closed channel.
       Note that [close_out] may raise [Sys_error] if the operating
       system signals an error when flushing or closing. *)
-  
+
 val close_out_noerr : unit BatIO.output -> unit
   (** Same as [close_out], but ignore all errors. *)
- 
+
 (** {7 General input functions} *)
 
-val open_in : ?mode:(BatFile.open_in_flag list) -> 
-  ?perm:BatFile.permission -> 
+val open_in : ?mode:(BatFile.open_in_flag list) ->
+  ?perm:BatFile.permission ->
   string -> BatIO.input
 (** Open the named file for reading. You will need to close the file once you have
     finished using it.
-    
+
     You may use optional argument [mode] to decide whether the opening
     should fail if the file doesn't exist yet (by default) or whether
     the file should be created if it doesn't exist yet, whether the
@@ -295,7 +295,7 @@ val open_in_gen : open_flag list -> int -> string -> BatIO.input
     specify the opening mode and file permissions.
     {!Pervasives.open_in} and {!Pervasives.open_in_bin} are special
     cases of this function.
-    
+
     @deprecated Use {!open_in instead}*)
 
 
@@ -358,17 +358,17 @@ val input_value : BatIO.input -> 'a
     This function is identical to {!Marshal.input};
     see the description of module {!Marshal} for more information,
     in particular concerning the lack of type safety. *)
-  
+
 val close_in : BatIO.input -> unit
   (** Close the given channel.  Input functions raise a [Sys_error]
       exception when they are applied to a closed input channel,
       except [close_in], which does nothing when applied to an already
       closed channel.  Note that [close_in] may raise [Sys_error] if
       the operating system signals an error. *)
-  
+
 val close_in_noerr : BatIO.input -> unit
 (** Same as [close_in], but ignore all errors. *)
-  
+
 
 (**
    {6 Fundamental functions and operators}
@@ -380,31 +380,31 @@ external identity : 'a -> 'a = "%identity"
 val undefined : ?message:string -> 'a -> 'b
 (** The undefined function.
 
-    Evaluating [undefined x] always fails and raises an exception 
-    "Undefined". Optional argument [message] permits the 
+    Evaluating [undefined x] always fails and raises an exception
+    "Undefined". Optional argument [message] permits the
     customization of the error message.*)
 
 
 val ( |> ) : 'a -> ('a -> 'b) -> 'b
-(** Function application. [x |> f] is equivalent to [f x]. 
+(** Function application. [x |> f] is equivalent to [f x].
 
     This operator is commonly used to write a function composition by
     order of evaluation (the order used in object-oriented
     programming) rather than by inverse order (the order typically
-    used in functional programming).  
+    used in functional programming).
 
     For instance, [g (f x)] means "apply [f] to [x], then apply [g] to
     the result." The corresponding notation in most object-oriented
     programming languages would be somewhere along the lines of [x.f.g
     ()], or "starting from [x], apply [f], then apply [g]." In OCaml,
     operator ( |> ) this latest notation maps to [x |> f |> g], or
-    
+
     This operator may also be useful for composing sequences of
     function calls without too many parenthesis. *)
 
 val ( **>  ) : ('a -> 'b) -> 'a -> 'b
-  (** Function application. [f **> x] is equivalent to [f x]. 
-      
+  (** Function application. [f **> x] is equivalent to [f x].
+
       This operators may be useful for composing sequences of
       function calls without too many parenthesis.
 
@@ -412,7 +412,7 @@ val ( **>  ) : ('a -> 'b) -> 'a -> 'b
       It is bound to change soon.*)
 
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
-(** Function composition. [f |- g] is [fun x -> g (f x)]. 
+(** Function composition. [f |- g] is [fun x -> g (f x)].
     This is also equivalent to applying [<**] twice.*)
 
 val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
@@ -420,11 +420,11 @@ val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
     operator o.*)
 
 val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
-  (** Argument flipping. 
-      
+  (** Argument flipping.
+
       [flip f x y] is [f y x]. Don't abuse this function, it may shorten considerably
       your code but it also has the nasty habit of making it harder to read.*)
-      
+
 
 val ( *** ) : ('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd
 (** Function pairing.
@@ -481,7 +481,7 @@ val tap : ('a -> unit) -> 'a -> 'a
       evaluates to [x], but has the side effect of [f x].  Useful for
       debugging. *)
 
-val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b 
+val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
       an exception. *)
 
@@ -642,7 +642,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
 
       In other words, [reduce f e] returns [a0] if [e] contains only
       one element [a0], otherwise [f (... (f (f a0) a1) ...) aN] where
-      [a0,a1..aN] are the elements of [e]. 
+      [a0,a1..aN] are the elements of [e].
 
       @raises Not_found if [e] is empty.
 
@@ -666,7 +666,7 @@ val fold : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b
 
       In other words, [fold f v e] returns [v] if [e] is empty,
       otherwise [f (... (f (f v a0) a1) ...) aN] where a0,a1..aN are
-      the elements of [e]. 
+      the elements of [e].
 
       For instance, if [add] is the function [fun x y -> x + y],
       [fold add 0] is the function which computes the sum of the
@@ -729,8 +729,8 @@ val find : ('a -> bool) -> 'a BatEnum.t -> 'a
       [true], consuming the enumeration up to and including the
       found element, or, raises [Not_found] if no such element exists
       in the enumeration, consuming the whole enumeration in the search.
-      
-      Since [find] consumes a prefix of the enumeration, it can be used several 
+
+      Since [find] consumes a prefix of the enumeration, it can be used several
       times on the same enumeration to find the next element. *)
 
 val peek : 'a BatEnum.t -> 'a option
@@ -745,7 +745,7 @@ val get : 'a BatEnum.t -> 'a option
 
 val push : 'a BatEnum.t -> 'a -> unit
   (** [push e x] will add [x] at the beginning of [e]. *)
-  
+
 val junk : 'a BatEnum.t -> unit
   (** [junk e] removes the first element from the enumeration, if any. *)
 

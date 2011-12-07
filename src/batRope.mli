@@ -1,19 +1,19 @@
 (* Rope: a simple implementation of ropes as described in
- 
+
 Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
 strings. Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
- 
+
 Motivated by Luca de Alfaro's extensible array implementation Vec.
- 
+
 Copyright (C) 2007 Mauricio Fernandez <mfp@acm.org>
 http://eigenclass.org
- 
+
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Library General Public
 License as published by the Free Software Foundation; either
 version 2 of the License, or (at your option) any later version,
 with the following special exception:
- 
+
 You may link, statically or dynamically, a "work that uses the
 Library" with a publicly distributed version of the Library to
 produce an executable file containing portions of the Library, and
@@ -26,75 +26,75 @@ distributed under the conditions defined in clause 2 of the GNU
 Library General Public License. This exception does not however
 invalidate any other reasons why the executable file might be
 covered by the GNU Library General Public License.
- 
+
 This library is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 Library General Public License for more details.
- 
+
 The GNU Library General Public License is available at
 http://www.gnu.org/copyleft/lgpl.html; to obtain it, you can also
 write to the Free Software Foundation, Inc., 59 Temple Place -
 Suite 330, Boston, MA 02111-1307, USA.
 *)
- 
+
 (** Heavyweight strings ("ropes")
- 
+
 This module implements ropes as described in
 Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
 strings. Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
- 
+
 Ropes are an alternative to strings which support efficient operations:
 - determining the length of a rope in constant time
 - appending or prepending a small rope to an arbitrarily large one in amortized constant time
 - concat, substring, insert, remove operations in amortized logarithmic time
 - access to and modification of ropes in logarithmic time
- 
+
 {8 Functional nature and persistence}
- 
+
 All operations are non-destructive: the original rope is never modified. When a
 new rope is returned as the result of an operation, it will share as much data
 as possible with its "parent". For instance, if a rope of length [n] undergoes
 [m] operations (assume [n >> m]) like set, append or prepend, the modified
 rope will only require [O(m)] space in addition to that taken by the
 original one.
- 
+
 However, Rope is an amortized data structure, and its use in a persistent setting
 can easily degrade its amortized time bounds. It is thus mainly intended to be used
 ephemerally. In some cases, it is possible to use Rope persistently with the same
 amortized bounds by explicitly rebalancing ropes to be reused using [balance].
 Special care must be taken to avoid calling [balance] too frequently; in the limit,
 calling [balance] after each modification would defeat the purpose of amortization.
- 
+
 
 {8 Limitations}
 
-The length of ropes is limited to approximately 700 Mb on 32-bit 
+The length of ropes is limited to approximately 700 Mb on 32-bit
 architectures, 220 Gb on 64 bit architectures.
 
 @author Mauricio Fernandez
 *)
 
 open BatCamomile
- 
+
 type t
   (** The type of the ropes. *)
- 
+
 exception Out_of_bounds
   (** Raised when an operation violates the bounds of the rope. *)
-  
+
 exception Invalid_rope
 (** An exception thrown when some operation required a rope
     and received an unacceptable rope.*)
 
 val max_length : int
   (** Maximum length of the rope (number of UTF-8 characters). *)
-  
+
 (** {6 Creation and conversions} *)
-  
+
 val empty : t
   (** The empty rope. *)
-  
+
 val of_latin1: string -> t
   (** Constructs a unicode rope from a latin-1 string. *)
 
@@ -107,7 +107,7 @@ val to_string : t -> string
 val of_ustring : BatUTF8.t -> t
   (** [of_string s] returns a rope corresponding to the string [s].
       Operates in [O(n)] time. *)
-  
+
 val to_ustring : t -> BatUTF8.t
   (** [to_ustring r] returns the string corresponding to the rope [r]. *)
 
@@ -130,7 +130,7 @@ val lowercase: t -> t
 
 val uppercase: t -> t
   (** [uppercase s] returns a uppercase copy of rope [s].
-      
+
       Note that, for some languages, the number of characters in
       [uppercase s] is not the same as the number of characters in
       [s].*)
@@ -153,65 +153,65 @@ val implode : UChar.t list -> t
 
 
 (** {6 Properties } *)
-  
+
 val is_empty : t -> bool
   (** Returns whether the rope is empty or not. *)
-  
+
 val length : t -> int
   (** Returns the length of the rope ([O(1)]).
       This is number of UTF-8 characters. *)
-  
+
 val height : t -> int
   (** Returns the height (depth) of the rope. *)
-  
+
 val balance : t -> t
   (** [balance r] returns a balanced copy of the [r] rope. Note that ropes are
       automatically rebalanced when their height exceeds a given threshold, but
       [balance] allows to invoke that operation explicity. *)
-  
+
 (** {6 Operations } *)
-  
+
 val append : t -> t -> t
   (** [append r u] concatenates the [r] and [u] ropes. In general, it operates
       in [O(log(min n1 n2))] amortized time.
       Small ropes are treated specially and can be appended/prepended in
       amortized [O(1)] time. *)
-  
+
 val ( ^^^ ): t -> t -> t
   (** As {!append}*)
 
 val append_char : UChar.t -> t -> t
   (** [append_char c r] returns a new rope with the [c] character at the end
       in amortized [O(1)] time. *)
-  
+
 val prepend_char : UChar.t -> t -> t
   (** [prepend_char c r] returns a new rope with the [c] character at the
       beginning in amortized [O(1)] time. *)
-  
+
 val get : t -> int -> UChar.t
   (** [get r n] returns the (n+1)th character from the rope [r]; i.e.
       [get r 0] returns the first character.
       Operates in worst-case [O(log size)] time.
       Raises Out_of_bounds if a character out of bounds is requested. *)
-  
+
 val set : t -> int -> UChar.t -> t
   (** [set r n c] returns a copy of rope [r]  where the (n+1)th character
       has been set to [c]. See also {!get}.
       Operates in worst-case [O(log size)] time. *)
-  
+
 val sub : t -> int -> int -> t
   (** [sub r m n] returns a sub-rope of [r] containing all characters
       whose indexes range from [m] to [m + n - 1] (included).
       Raises Out_of_bounds in the same cases as sub.
       Operates in worst-case [O(log size)] time. *)
-  
+
 val insert : int -> t -> t -> t
   (** [insert n r u] returns a copy of the [u] rope where [r] has been
       inserted between the characters with index [n] and [n + 1] in the
       original rope. The length of the new rope is
       [length u + length r].
       Operates in amortized [O(log(size r) + log(size u))] time. *)
-  
+
 val remove : int -> int -> t -> t
   (** [remove m n r] returns the rope resulting from deleting the
       characters with indexes ranging from [m] to [m + n - 1] (included)
@@ -223,17 +223,17 @@ val concat : t -> t list -> t
 (** [concat sep sl] concatenates the list of ropes [sl],
    inserting the separator rope [sep] between each. *)
 
-  
+
 (** {6 Iteration} *)
-  
+
 val iter : (UChar.t -> unit) -> t -> unit
   (** [iter f r] applies [f] to all the characters in the [r] rope,
       in order. *)
-  
+
 val iteri : ?base:int -> (int -> UChar.t -> unit) -> t -> unit
   (** Operates like [iter], but also passes the index of the character
       to the given function. *)
-  
+
 val range_iter : (UChar.t -> unit) -> int -> int -> t -> unit
   (** [rangeiter f m n r] applies [f] to all the characters whose
       indices [k] satisfy [m] <= [k] < [m + n].
@@ -242,8 +242,8 @@ val range_iter : (UChar.t -> unit) -> int -> int -> t -> unit
       [O(n + log m)] time, which improves on the [O(n log m)] bound
       from an explicit loop using [get].
       Raises Out_of_bounds in the same cases as [sub]. *)
-  
-val range_iteri : 
+
+val range_iteri :
   (int -> UChar.t -> unit) -> ?base:int -> int -> int -> t -> unit
   (** As [range_iter], but passes base + index of the character in the
       subrope defined by next to arguments. *)
@@ -253,7 +253,7 @@ val bulk_iter : (BatUTF8.t -> unit) -> t -> unit
 
 val bulk_iteri : ?base:int -> (int -> BatUTF8.t -> unit) -> t -> unit
   (** as iteri but over larger chunks of data. *)
-  
+
 val fold : ('a -> UChar.t -> 'a ) -> 'a -> t -> 'a
   (** [Rope.fold f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
       where [rn = Rope.get n r ] and [N = length r]. *)
@@ -273,7 +273,7 @@ val of_enum: UChar.t BatEnum.t -> t
   (** Creates a rope from a character enumeration. *)
 
 val of_bulk_enum: BatUTF8.t BatEnum.t -> t
-  (** Creates a rope from an enumeration of UTF-8 encoded strings. 
+  (** Creates a rope from an enumeration of UTF-8 encoded strings.
 
       Provided for convenience and speed.*)
 
@@ -447,11 +447,11 @@ val slice : ?first:int -> ?last:int -> t -> t
       [last] is omitted is defaults to point just past the end of
       [s], i.e. [length s].  Thus, [slice s] is equivalent to
       [copy s].
-      
+
       Negative indexes are interpreted as counting from the end of
       the rope. For example, [slice ~last:-2 s] will return the
       rope [s], but without the last two characters.
-      
+
       This function {b never} raises any exceptions. If the
       indexes are out of bounds they are automatically clipped.
   *)
@@ -477,7 +477,7 @@ val blit : t -> int -> t -> int -> int -> t
    rope [dst], starting at character number [dstoff]. It works
    correctly even if [src] and [dst] are the same rope,
    and the source and destination chunks overlap.
-   
+
     @raise Invalid_argument if [srcoff] and [len] do not
    designate a valid subrope of [src], or if [dstoff] and [len]
    do not designate a valid subrope of [dst]. *)
