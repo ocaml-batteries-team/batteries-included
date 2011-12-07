@@ -224,7 +224,7 @@ val find_from: string -> int -> string -> int
   (** [find_from s ofs x] behaves as [find s x] but starts searching
       at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].
 
-      @raises Not_found if [x] is not a substring of [tail ofs s]
+      @raises [Not_found] if [x] is not a substring of [tail ofs s]
 
       Example: [String.find_from "foobarbaz" 4 "ba" = 6]
 *)
@@ -248,7 +248,7 @@ val rfind_from: string -> int -> string -> int
     {b Beware}, it search between the {e beginning} of the string to
     the offset [ofs], {e not} between [ofs] and the end.
 
-    @raises Not_found if [x] is not a substring of [head ofs s]
+    @raises [Not_found] if [x] is not a substring of [head ofs s]
 
     Example: [String.rfind_from "foobarbaz" 6 "ba" = 6]
 *)

@@ -766,7 +766,7 @@ let ends_with r suffix =
   in
   loop ()
 
-(** find [r2] within [r1] or raises Not_found *)
+(** find [r2] within [r1] or raises [Not_found] *)
 let find_from r1 ofs r2 =
   let matchlen = length r2 in
   let r2_string = to_ustring r2 in

@@ -90,7 +90,7 @@ val first : 'a t -> 'a
 
 val last : 'a t -> 'a
 (** Returns the last element - O(n) or
-    raises Empty_list if the ref list is empty *)
+    raises [Empty_list] if the ref list is empty *)
 
 val pop : 'a t -> 'a
 (** Removes and returns the first element or

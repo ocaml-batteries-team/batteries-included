@@ -306,7 +306,7 @@ val to_int : t -> int
 
 val to_float : t -> float
   (** Returns the float represented by the given rope or
-      raises Invalid_rope if the rope does not represent a float. *)
+      raises [Invalid_rope] if the rope does not represent a float. *)
 
 val bulk_map : (BatUTF8.t -> BatUTF8.t) -> t -> t
  (** [map f s] returns a rope where all ropes [c] in [s] have been
