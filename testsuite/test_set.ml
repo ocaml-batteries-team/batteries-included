@@ -20,12 +20,12 @@ let (@?) = U.(@?)
 let (@!) msg (exn, f) = U.assert_raises ~msg exn f
 
 (* This functor is intended the features that are common in both the
-   functorized Set and the polymorphic PSet data structures.
+   functorized Set and the polymorphic Set data structures.
 
    Currently, those two modules have a different interfaces : there
    are functions in one that aren't present in another. The tests are
    therefore not exhaustive : only common features are tested (but all
-   such functions are tested), and PSet-specific functions should be
+   such functions are tested), and Set-specific functions should be
    tested separately. As we hope, however, to make the feature set of
    both module converge in the long term, more features of one will be
    added to the other, and eventually all the features of both will be
@@ -456,7 +456,7 @@ module S = struct
 end
 
 module P = struct
-  module S = BatPSet
+  module S = BatSet
 
   type elt = int
   include S

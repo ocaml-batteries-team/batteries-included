@@ -64,9 +64,7 @@ BatOptParse
 BatPair
 BatParserCo
 BatPathGen
-BatPMap
 BatPrint
-BatPSet
 BatRefList
 BatRef
 BatResult

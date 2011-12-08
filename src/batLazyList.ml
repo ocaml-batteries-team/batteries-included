@@ -472,10 +472,10 @@ let mem_assq e l = BatOption.is_some (may_find (fun (a, _) -> a == e) l)
   in lazy (aux l)*)
 
 let unique ?(cmp = compare) l =
-  let set      = ref (BatPMap.create cmp) in
+  let set      = ref (BatMap.create cmp) in
   let should_keep x = 
-    if BatPMap.mem x !set then false
-    else ( set := BatPMap.add x true !set; true )
+    if BatMap.mem x !set then false
+    else ( set := BatMap.add x true !set; true )
   in
   (* use a stateful filter to remove duplicate elements *)
   filter should_keep l

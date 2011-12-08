@@ -45,7 +45,7 @@ val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
     [m], plus a binding of [x] to [y].*)
 
-val find : 'a -> ('a, 'b) t -> 'b BatPSet.t
+val find : 'a -> ('a, 'b) t -> 'b BatSet.t
 (** [find x m] returns the current binding of [x] in [m]*)
 
 val remove_all : 'a -> ('a, 'b) t -> ('a, 'b) t
@@ -63,32 +63,32 @@ val mem : 'a -> ('a, 'b) t -> bool
 (** [mem x m] returns [true] if [m] contains at least a binding for [x],
     and [false] otherwise. *)
 
-val iter : ('a -> 'b BatPSet.t-> unit) -> ('a, 'b) t -> unit
+val iter : ('a -> 'b BatSet.t-> unit) -> ('a, 'b) t -> unit
 (** [iter f m] applies [f] to all bindings in map [m].
     [f] receives the key as first argument, and the associated value
     as second argument. The order in which the bindings are passed to
     [f] is unspecified. Only current bindings are presented to [f]:
     bindings hidden by more recent bindings are not passed to [f]. *)
 
-val map : ('b BatPSet.t -> 'c BatPSet.t) -> (('b -> 'b -> int) -> ('c -> 'c -> int)) -> ('a, 'b) t -> ('a, 'c) t
+val map : ('b BatSet.t -> 'c BatSet.t) -> (('b -> 'b -> int) -> ('c -> 'c -> int)) -> ('a, 'b) t -> ('a, 'c) t
 (** [map f m] returns a map with same domain as [m], where the
     associated value [a] of all bindings of [m] has been
     replaced by the result of the application of [f] to [a].
     The order in which the associated values are passed to [f]
     is unspecified. *)
 
-val mapi : ('a -> 'b BatPSet.t -> 'c BatPSet.t) -> (('b -> 'b -> int) -> ('c -> 'c -> int)) -> ('a, 'b) t -> ('a, 'c) t
+val mapi : ('a -> 'b BatSet.t -> 'c BatSet.t) -> (('b -> 'b -> int) -> ('c -> 'c -> int)) -> ('a, 'b) t -> ('a, 'c) t
 (** Same as [map], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
 
-val fold : ('b BatPSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
+val fold : ('b BatSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** [fold f m a] computes [(f kN dN ... (f k1 d1 (f k0 d0 a))...)],
     where [k0,k1..kN] are the keys of all bindings in [m],
     and [d0,d1..dN] are the associated data.
     The order in which the bindings are presented to [f] is
     unspecified. *)
 
-val foldi : ('a -> 'b BatPSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
+val foldi : ('a -> 'b BatSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** Same as [fold], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
 
@@ -101,7 +101,7 @@ val of_enum : ?keys:('a -> 'a -> int) -> ?data:('b -> 'b -> int) -> ('a * 'b) Ba
 
 (** Infix operators over a {!BatMultiPMap} *)
 module Infix : sig
-  val (-->) : ('a, 'b) t -> 'a -> 'b BatPSet.t
+  val (-->) : ('a, 'b) t -> 'a -> 'b BatSet.t
     (** [map-->key] returns the current binding of [key] in [map].
         Equivalent to [find key map]. *)
 

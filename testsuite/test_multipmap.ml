@@ -10,7 +10,7 @@ let test_multimap_empty_assoc_lists () =
     if mem 0 map then
       assert_failure
         (Printf.sprintf "map[0] should be empty but contains %d bindings\n"
-           (BatPSet.cardinal (find 0 map)))
+           (BatSet.cardinal (find 0 map)))
 
 let tests = "MultiPMap" >::: [
   "MultiPMap: removing empty association lists" >:: test_multimap_empty_assoc_lists;
