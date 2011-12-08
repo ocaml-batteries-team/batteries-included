@@ -74,7 +74,7 @@
    Let us consider formats more in detail.
 
    {7 Formats}
-   
+
    The simplest format is the empty format, or [p""] -- notice the [p]
    (for "print"), all formats start with this letter. This format is
    unable to display any information. Actually, this format is only
@@ -104,7 +104,7 @@
    number5some text after the number"].
 
    {7 Directives}
-   
+
    {8 General-purpose directives}
 
    General-purpose directives start with [{%{}] and end with [{}}]. By default,
@@ -134,7 +134,7 @@
    following short-hand directives:
 
    - [%d], [%i], [%n], [%l], [%L], or [%N]: format an integer with the
-   usual notation (i.e. signed decimal). 
+   usual notation (i.e. signed decimal).
    - [%u]: format an integer as an unsigned decimal.
    - [%x]: format an integer as an unsigned hexadecimal, using lowercase letters.
    - [%X]: format an integer as an unsigned hexadecimal, using upper letters.
@@ -158,15 +158,15 @@
    - [%B]: format a boolean argument to the string ["true"] or ["false"]
    - [%b]: format a boolean argument (for backward compatibility; do not
    use in new programs).
-   - [%ld], [%li], [%lu], [%lx], [%lX], [%lo]: format an [int32] 
+   - [%ld], [%li], [%lu], [%lx], [%lX], [%lo]: format an [int32]
    respectively as a signed decimal/a signed decimal/an unsigned decimal/
    an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
    an unsigned octal.
-   - [%nd], [%ni], [%nu], [%nx], [%nX], [%no]: format a [nativeint] 
+   - [%nd], [%ni], [%nu], [%nx], [%nX], [%no]: format a [nativeint]
    respectively as a signed decimal/a signed decimal/an unsigned decimal/
    an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
    an unsigned octal.
-   - [%Ld], [%Li], [%Lu], [%Lx], [%LX], [%Lo]: format an [int64] 
+   - [%Ld], [%Li], [%Lu], [%Lx], [%LX], [%Lo]: format an [int64]
    respectively as a signed decimal/a signed decimal/an unsigned decimal/
    an unsigned hexadecimal in lowercase, an unsigned decimal in uppercase/
    an unsigned octal.
@@ -226,14 +226,14 @@
    {[
    let printer_foo k x = k (fun oc -> BatIO.nwrite oc (string_of_bar x))
    ]}
-   
+
    That's it. Once this function is created you may use directive [%foo]
    in any printing function of this module.
 
    To improve the flexibility of your newly created directive, you may wish
    to add an optional argument [flags] to function [printer_foo], to handle
    flags, as detailed in the following section.
-   
+
    {7 Flags}
 
    The general format of directives is
@@ -270,7 +270,7 @@
    the documentation of type {!directive}.
 *)
 
-(** {6 Directives and formats} 
+(** {6 Directives and formats}
 
     You can skip this section if you are only interested in using this module
     and not in extending its behavior or understanding its internal mechanisms.
@@ -380,7 +380,7 @@ val format : unit BatInnerIO.output -> pattern -> (unit BatInnerIO.output -> uni
 
 (**
    The format to use for displaying the various arguments passed to the function.
-   
+
    You probably won't ever need to manipulate values of this type directly.
 
    Syntactically, the format is a character string which contains two types
@@ -446,7 +446,7 @@ val sprintf : ('a, string) format -> 'a
 (** {6 Generic functions}*)
 
 val fprintf : 'a BatInnerIO.output -> ('b, unit) format -> 'b
-  (**General formatting function. 
+  (**General formatting function.
 
      This function behaves mostly as {!printf} or {!eprintf} but,
      instead of printing to a predefined output, it takes as argument

@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtInt - Extended operations on integers
  * Copyright (C) 2008 Gabriel Scherer
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,23 +20,23 @@
  *)
 
 
-(** 
+(**
     Operations on integers.
-    
+
     This module provides operations on the type [int] of
     integers. Values of this type may be either 31 bits on 32-bit
     processors or 63 bits on 64-bit processors. All arithmetic
     operations over [int] are taken modulo 2{^number of bits}.
-    
+
     This module implements {!Number.Numeric},
     {!Number.Bounded}, {!Number.Discrete}.
-    
+
     @author Gabriel Scherer
     @author David Teller
 
     @documents Int
 *)
-    
+
 type t = int
 (** An alias for the type of integers. *)
 
@@ -193,17 +193,17 @@ module Future : sig
   val ord : int -> int -> BatOrd.order
 end
 
-(** 
+(**
     Safe operations on integers.
-    
+
     This module provides operations on the type [int] of
     integers. Values of this type may be either 31 bits on 32-bit
     processors or 63 bits on 64-bit processors. Operations which
     overflow raise exception {!Number.Overflow}.
-    
+
     This module implements {!Number.Numeric},
     {!Number.Bounded}, {!Number.Discrete}.
-    
+
     {b Important note} Untested.
  *)
 module Safe_int : sig
@@ -255,7 +255,7 @@ module Safe_int : sig
       of [Int.rem x y] satisfies the following property:
       [x = Int.add (Int.mul (Int.div x y) y) (Int.rem x y)].
       If [y = 0], [Int.rem x y] raises [Division_by_zero]. *)
-    
+
   external modulo : t -> t -> t = "%modint"
   (** [modulo a b] computes the remainder of the integer
       division of [a] by [b]. This is defined only if [b <> 0].

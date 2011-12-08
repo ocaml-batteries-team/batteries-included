@@ -1,9 +1,9 @@
-(* 
+(*
  * ExtInt64 - Extended 64-bit integers
  * Copyright (C) 2005 Damien Doligez
  *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -32,7 +32,7 @@
    Performance notice: values of type [int64] occupy more memory
    space than values of type [int], and arithmetic operations on
    [int64] are generally slower than those on [int].  Use [int64]
-   only when the application requires exact 64-bit arithmetic. 
+   only when the application requires exact 64-bit arithmetic.
 
     Any integer literal followed by [L] is taken to be an [int64].
     For instance, [1L] is {!Int64.one}.
@@ -42,7 +42,7 @@
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Int64.html}Int64}
     module, go there for documentation on the rest of the functions
     and types.
-        
+
     @author Xavier Leroy (base module)
     @author Gabriel Scherer
     @author David Teller
@@ -127,13 +127,13 @@ external shift_right_logical : int64 -> int -> int64 = "%int64_lsr"
 
 val ( -- ) : t -> t -> t BatEnum.t
   (** Enumerate an interval.
-      
+
       [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.
       [10L -- 5L] is the empty enumeration*)
-  
+
 val ( --- ) : t -> t -> t BatEnum.t
   (** Enumerate an interval.
-      
+
       [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.
       [10L -- 5L] is the enumeration 10L,9L,8L,7L,6L,5L.*)
 

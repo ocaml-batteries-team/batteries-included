@@ -1,9 +1,9 @@
-(* 
+(*
  * ExtNativeint - Extended native ints
  * Copyright (C) 2005 Xavier Leroy
  *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -29,7 +29,7 @@
     integer type in the C compiler.  All arithmetic operations over
     [nativeint] are taken modulo 2{^32} or 2{^64} depending
     on the word size of the architecture.
-    
+
     Performance notice: values of type [nativeint] occupy more memory
     space than values of type [int], and arithmetic operations on
     [nativeint] are generally slower than those on [int].  Use [nativeint]
@@ -144,13 +144,13 @@ external shift_right_logical :
 
 val ( -- ) : t -> t -> t BatEnum.t
   (** Enumerate an interval.
-      
+
       [5n -- 10n] is the enumeration 5n,6n,7n,8n,9n,10n.
       [10n -- 5n] is the empty enumeration*)
-  
+
 val ( --- ) : t -> t -> t BatEnum.t
   (** Enumerate an interval.
-      
+
       [5n -- 10n] is the enumeration 5n,6n,7n,8n,9n,10n.
       [10n -- 5n] is the enumeration 10n,9n,8n,7n,6n,5n.*)
 
@@ -212,13 +212,13 @@ val compare: t -> t -> int
       {!Pervasives.compare}.  Along with the type [t], this function [compare]
       allows the module [Nativeint] to be passed as argument to the functors
       {!Set.Make} and {!Map.Make}. *)
-  
+
 
 val modulo : nativeint -> nativeint -> nativeint
 val pow : nativeint -> nativeint -> nativeint
 val min_num : nativeint
 val max_num : nativeint
-  
+
 val ( + ) : t -> t -> t
 val ( - ) : t -> t -> t
 val ( * ) : t -> t -> t
@@ -231,7 +231,7 @@ val ( > ) : t -> t -> bool
 val ( < ) : t -> t -> bool
 val ( = ) : t -> t -> bool
 val operations : t BatNumber.numeric
-  
+
 (** {6 Submodules grouping all infix operators} *)
 
 module Infix : BatNumber.Infix with type bat__infix_t = t

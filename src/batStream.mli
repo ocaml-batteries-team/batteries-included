@@ -1,9 +1,9 @@
-(* 
+(*
  * Stream - streams and stream parsers
  * Copyright (C) 1997 Daniel de Rauglaudre
  *               2007 Zheng Li
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -37,7 +37,7 @@
     and types.
 *)
 
-(** Streams and parsers. 
+(** Streams and parsers.
 
     Streams are a read-and-forget data structure, comparable to enumerations.
     In Batteries Included, streams are deprecated in favor of enumerations,
@@ -185,7 +185,7 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
 val dup : 'a t -> 'a t * 'a t
   (** [dup stream] returns a pair of streams which are identical to [stream]. Note
       that stream is a destructive data structure, the point of [dup] is to
-      return two streams can be used independently. 
+      return two streams can be used independently.
 
       NOT IMPLEMENTED CORRECTLY - WILL RAISE Failure UNTIL CORRECT
       IMPLEMENTATION FOUND
@@ -216,7 +216,7 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
       order of elements in the source stream is preserved. *)
 
 
-(** {6 Stream arithmetic} 
+(** {6 Stream arithmetic}
 
     All the functions in this part are lazy.*)
 
