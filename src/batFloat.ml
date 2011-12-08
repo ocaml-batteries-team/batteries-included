@@ -48,9 +48,23 @@ module BaseFloat = struct
 
 end
 
+let approx_equal ?(epsilon = 1e-5) f1 f2 = abs_float (f1 -. f2) < epsilon
+
+(**T approx_equal
+   approx_equal 0. 1e-15
+   approx_equal 0.3333333333 (1. /. 3.)
+   not (approx_equal 1. 2.)
+   not (approx_equal 1.5 1.45)
+**)
+
 include BatNumber.MakeNumeric(BaseFloat)
-module Infix = BatNumber.MakeInfix(BaseFloat)
-module Compare = BatNumber.MakeCompare(BaseFloat)
+module Infix = struct
+  include BatNumber.MakeInfix(BaseFloat)
+  let (=~) = approx_equal
+end
+module Compare = struct
+  include BatNumber.MakeCompare(BaseFloat)
+end
 
 external of_float : float -> float = "%identity"
 external to_float : float -> float = "%identity"
@@ -124,6 +138,7 @@ let pi           = 4. *. atan 1.
   
 let print out t = BatInnerIO.nwrite out (to_string t)
 let t_printer paren out t = print out t
+
 
 module Base_safe_float = struct
   include BaseFloat
