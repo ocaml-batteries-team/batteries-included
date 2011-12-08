@@ -104,10 +104,10 @@ val min : 'a ord -> 'a choice
 (** [min ord] will choose the smallest element, according to [ord].
     For example, [min Int.ord 1 2] will return [1].
 
-    {|
+    {[
       (* the minimum element of a list *)
       let list_min ord = List.reduce (min ord)
-    |}
+    ]}
 *)
 
 val max : 'a ord -> 'a choice
