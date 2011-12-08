@@ -388,6 +388,12 @@ let for_all f t =
       in aux ()
   with No_more_elements -> true
 
+(* test paired elements, ignore any extra elements from one enum *)
+let for_all2 f t1 t2 =
+  try
+    let rec aux () = f (t1.next()) (t2.next()) && aux () in
+    aux ()
+  with No_more_elements -> true
 
 let scanl f init t =
   let acc = ref init in
@@ -1118,4 +1124,48 @@ struct
   type 'a m = 'a t
   let return x = singleton x
   let bind m f = concat (map f m)
+end
+
+module Incubator = struct
+  open BatOrd
+
+  let int_eq (x:int) y = x = y
+  let int_ord (x:int) y =
+    if x > y then Gt
+    else if y > x then Lt
+    else Eq
+
+  let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
+
+  let rec ord_elements ord_elt t u =
+    match (get t, get u) with
+      | (None, None)     -> Eq
+      | (None, _)        -> Lt
+      | (_, None)        -> Gt
+      | (Some x, Some y) -> match ord_elt x y with
+	  | Eq -> ord_elements ord_elt t u
+	  | (Gt|Lt) as n -> n
+
+  let eq eq_elt t1 t2 =
+    bin_eq
+      int_eq (count t1) (count t2)
+      (eq_elements eq_elt) t1 t2
+
+  let ord ord_elt t1 t2 =
+    bin_ord
+      int_ord (count t1) (count t2)
+      (ord_elements ord_elt) t1 t2
+
+  module Eq (T : Eq) = struct
+    type 'a enum = 'a t
+    type t = T.t enum
+    let eq = eq T.eq
+  end
+
+  module Ord (T : Ord) = struct
+    type 'a enum = 'a t
+    type t = T.t enum
+    let ord = ord T.ord
+  end
+
 end

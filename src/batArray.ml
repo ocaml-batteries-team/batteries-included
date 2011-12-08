@@ -572,5 +572,39 @@ struct
   end
 end
 
+module Incubator = struct
+  open BatOrd
+
+  let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
+
+  let rec ord_aux eq_elt i a1 a2 =
+    if i >= length a1 then Eq
+    else match eq_elt a1.(i) a2.(i) with
+      | (Lt | Gt) as res -> res
+      | Eq -> ord_aux eq_elt (i+1) a1 a2
+
+  let ord_elements eq_elt a1 a2 = ord_aux eq_elt 0 a1 a2
+
+  let eq eq_elt a1 a2 =
+    bin_eq
+      BatInt.Future.eq (length a1) (length a2)
+      (eq_elements eq_elt) a1 a2
+
+  let ord ord_elt a1 a2 =
+    bin_ord
+      BatInt.Future.ord (length a1) (length a2)
+      (ord_elements ord_elt) a1 a2
+
+  module Eq (T : Eq) = struct
+    type t = T.t array
+    let eq = eq T.eq
+  end
+
+  module Ord (T : Ord) = struct
+    type t = T.t array
+    let ord = ord T.ord
+  end
+
+end
 
 
