@@ -227,13 +227,16 @@
 
     val approx_equal : ?epsilon:float -> float -> float -> bool
     (** Test whether two floats are approximately equal (i.e. within
-	epsilon of each other).  epsilon defaults to 1e-5. *)
+	epsilon of each other).  [epsilon] defaults to 1e-5. *)
 
     (** {6 Submodules grouping all infix operators} *)
 
     module Infix : sig
       include BatNumber.Infix with type bat__infix_t = t
       val (=~) : ?epsilon:float -> float -> float -> bool
+    (** Approximate comparison of two floats, as [approx_equal].
+	[epsilon] defaults to 1e-5. *)
+
     end
     module Compare : BatNumber.Compare with type bat__compare_t = t
 
