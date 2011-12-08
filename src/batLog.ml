@@ -20,10 +20,11 @@
 
 open BatIO
 
+(** Flags enable features in logging *)
 type flag = [
-| `Date (* Print the current date as 2011/0628 *)
-| `Time (* Print the current time as 01:23:45 *)
-| `Filepos (* Print the file and position of this log command (UNIMPLEMENTED) *)
+| `Date (** Print the current date as 2011/0628 *)
+| `Time (** Print the current time as 01:23:45 *)
+| `Filepos (** Print the file and position of this log command (UNIMPLEMENTED) *)
 ]
 
 let output = ref stderr

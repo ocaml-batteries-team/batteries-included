@@ -184,12 +184,12 @@ external to_int32 : nativeint -> int32 = "%nativeint_to_int32"
    i.e. the top 32 bits are lost.  On 32-bit platforms,
    the conversion is exact. *)
 
-external of_int64 : int64 -> nativeint = "%nativeint_of_int64"
+external of_int64 : int64 -> nativeint = "%int64_to_nativeint"
 (** Convert the given 64-bit integer (type [int64])
    to a native integer. On 32-bit platforms, the top
    32 bits are lost. *)
 
-external to_int64 : nativeint -> int64 = "%nativeint_to_int64"
+external to_int64 : nativeint -> int64 = "%int64_of_nativeint"
 (** Convert the given native integer to a
    64-bit integer (type [int64]). *)
 
@@ -243,7 +243,7 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 (** {7 Printing}*)
 
 val print : 'a BatIO.output -> t -> unit
-val t_printer : t BatValue_printer.t
+val t_printer : t BatValuePrinter.t
 
 (**/**)
 

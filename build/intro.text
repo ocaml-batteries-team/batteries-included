@@ -1,7 +1,7 @@
-Welcome to OCaml Batteries Included Beta 1.
+OCaml Batteries Included documentation.
 
-Batteries Included is an effort to develop a comprehensive,
-decentralized yet unified open-source standard library for OCaml.
+OCaml Batteries included (or simply "Batteries") is a community-driven effort to standardize on an consistent, documented, and comprehensive development platform for the OCaml programming language.
+
 For the moment, Batteries Included concentrates on:
 
 {ul
@@ -33,8 +33,8 @@ Future versions will progressively add (not necessarily in that order):
 {- ...}
 }
 
-For more informations on the installation of Batteries Included,
-please read {{:../setup.html}the following guide}. 
+For more information on the installation of Batteries Included,
+please read {{:../setup.html}the setup guide}. 
 
 Do you have suggestions? Remarks? Bug reports ? To contact us or to
 be kept informed, don't hesitate to visit

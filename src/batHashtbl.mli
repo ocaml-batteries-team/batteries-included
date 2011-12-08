@@ -177,18 +177,18 @@ val filter: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
      such that [f a = true] remain.*)
 
 val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
-  (**[filter f m] returns a map where only the key, values pairs
+  (**[filter f m] returns a hashtbl where only the key, values pairs
      [key], [a] of [m] such that [f key a = true] remain. The
      bindings are passed to [f] in increasing order with respect
      to the ordering over the type of the keys. *)
 
 val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
-  (** [filter_map f m] combines the features of [filteri] and
-      [map].  It calls [f key0 a0], [f key1 a1], [f keyn an]
-      where [a0,a1..an] are the elements of [m] and [key0..keyn] the
-      respective corresponding keys. It returns the map of
-      pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
-      [None], the corresponding element of [m] is discarded). *)
+(** [filter_map f m] combines the features of [filteri] and [map].  It
+    calls [f key0 a0], [f key1 a1], [f keyn an] where [a0,a1..an] are
+    the elements of [m] and [key0..keyn] the corresponding keys. It
+    returns a hashtbl with associations [keyi],[bi] where [f keyi ai =
+    Some bi].  When [f] returns [None], the corresponding element of
+    [m] is discarded. *)
 
 
 (** {6 The polymorphic hash primitive}*)

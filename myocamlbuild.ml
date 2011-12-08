@@ -8,8 +8,9 @@ open Ocamlbuild_plugin
 
 let ocamlfind x = S[A"ocamlfind"; A x]
 
-let packs = String.concat "," ["camomile"; "num"; "str"]
+let packs = "bigarray,num,str"
 
+let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
 let pa_llist = "src/syntax/pa_llist/pa_llist.cmo"
 
@@ -37,14 +38,14 @@ let _ = dispatch begin function
 
       rule "process config file"
         ~prod:"%.ml"
-        ~deps:["%.mlp"; "VERSION"; mkconf]
+        ~deps:["%.mlp"; mkconf]
         begin fun env build ->
           Cmd(S[A"ocamlrun"; P mkconf; P(env "%.mlp"); P(env "%.ml")])
         end;
 
       rule "process meta file"
         ~prod:"META"
-        ~deps:["META.in"; "VERSION"; mkconf]
+        ~deps:["META.in"; mkconf]
         begin fun env build ->
           Cmd(S[A"ocamlrun"; P mkconf; P"META.in"; P"META"])
         end
@@ -103,6 +104,7 @@ let _ = dispatch begin function
 
       ocaml_lib "qtest/test_mods";
       ocaml_lib "src/batteries";
+      ocaml_lib "src/batteriesThread";
 
       flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
 (*
@@ -126,7 +128,12 @@ let _ = dispatch begin function
       dep ["pset_mli"] [Pathname.concat "src" "batPSet.mli"];
       dep ["pmap_mli"] [Pathname.concat "src" "batPMap.mli"];
 
-
+      dep ["ocaml"; "doc"; "extension:html"] &
+           [doc_intro];
+      flag ["ocaml"; "doc"; "extension:html"] &
+        (S[A"-t"; A"Batteries user guide"; 
+           A"-intro"; P doc_intro; 
+           A"-colorize-code"]);
 
   | _ -> ()
 end

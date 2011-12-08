@@ -472,10 +472,10 @@ let mem_assq e l = BatOption.is_some (may_find (fun (a, _) -> a == e) l)
   in lazy (aux l)*)
 
 let unique ?(cmp = compare) l =
-  let set      = ref (BatPMap.create cmp) in
+  let set      = ref (BatMap.create cmp) in
   let should_keep x = 
-    if BatPMap.mem x !set then false
-    else ( set := BatPMap.add x true !set; true )
+    if BatMap.mem x !set then false
+    else ( set := BatMap.add x true !set; true )
   in
   (* use a stateful filter to remove duplicate elements *)
   filter should_keep l
@@ -534,7 +534,7 @@ let take_while p =
     | _                  -> rev_of_list acc
   in aux []
 
-let sort ?cmp l = of_list (BatList.sort ?cmp (to_list l))
+let sort ?(cmp=Pervasives.compare) l = of_list (List.sort cmp (to_list l))
 
 let stable_sort cmp l = of_list (List.stable_sort cmp (to_list l))
 

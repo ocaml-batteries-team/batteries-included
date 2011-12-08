@@ -170,7 +170,7 @@ type open_temporary_out_flag =
   [ open_out_flag
   | `delete_on_exit (**Should the file be deleted when program ends?*) ]
 
-val open_temporary_out: ?mode:(open_temporary_out_flag list) -> ?perm:permission -> ?prefix:string -> ?suffix:string -> unit -> 
+val open_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -> ?suffix:string -> unit -> 
   (unit output * string)
 (** [open_temporary_out ()] opens a new temporary file for writing.
 
@@ -186,7 +186,7 @@ val open_temporary_out: ?mode:(open_temporary_out_flag list) -> ?perm:permission
 
     Naming conventions for files are platform-dependent.*)
 
-val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?perm:permission -> ?prefix:string -> ?suffix:string -> (unit output -> string -> 'a) -> 'a
+val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -> ?suffix:string -> (unit output -> string -> 'a) -> 'a
 (** [with_temporary_out f] opens a new temporary file for writing, invokes [f] with
     to write onto that file then, once [f] has returned or triggered an exception,
     closes the file before proceeding.
@@ -200,3 +200,6 @@ val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?perm:permission
 
     Naming conventions for files are platform-dependent.*)
 
+(**/**)
+val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
+(**/**)

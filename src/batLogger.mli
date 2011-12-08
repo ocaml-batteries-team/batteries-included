@@ -114,7 +114,7 @@ val register_formatter : string -> formatter -> unit
 val unregister_formatter : string -> unit
    (** [unregister_formatter name] unregisters a named log formatter. *)
 
-val make_std_formatter : out_channel -> formatter
+val make_std_formatter : 'a BatIO.output -> formatter
    (** [make_std_formatter oc] constructs a formatter from an output
        channel.  This formatter will format log events as
        tab-separated [<keyword>:<value>] pairs. The resulting
@@ -145,7 +145,7 @@ val null_formatter : formatter
    (** [null_formatter] is a formatter that does not output any
        events, but simply discards them. *)
 
-val make_dbg_formatter : out_channel -> formatter
+val make_dbg_formatter : 'a BatIO.output -> formatter
    (** [make_dbg_formatter oc] constructs a debug formatter from an
        output channel. The debug formatter outputs simplified format
        that is easier to read for debugging purposes and displays
@@ -207,7 +207,7 @@ val level_of_name : string -> level
 val name_of_level : level -> string
    (** [name_of_level level] returns the name of the specified [level]. *)
 
-val format_timestamp : out_channel -> float -> unit
+val format_timestamp : 'a BatIO.output -> float -> unit
    (** [format_timestamp oc timestamp] prints an ISO-8601 formatted
        timestamp (extended to specify higher-resolution seconds) to
        the output channel, [oc]. *)

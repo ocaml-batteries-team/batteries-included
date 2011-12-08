@@ -430,8 +430,6 @@ let combine l1 l2 =
 	loop dummy l1 l2;
 	dummy.tl
 
-let sort ?(cmp=compare) = List.sort cmp
-
 let rec init size f =
 	if size = 0 then [] 
 	else if size < 0 then invalid_arg "BatList.init"
@@ -668,12 +666,6 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
       BatInnerIO.nwrite out last
 
 let t_printer a_printer paren out x = print (a_printer false) out x
-
-let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a list =
-  BatPrintf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
-(*  let os = BatInnerIO.output_string  () in
-  print ~first ~last ~sep print_a os list;
-  BatInnerIO.close_out os (* returns contents *)*)
 
 let reduce f = function [] -> invalid_arg "Empty List"
   | h::t -> fold_left f h t

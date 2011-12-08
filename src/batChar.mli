@@ -113,7 +113,7 @@ end
 (** {7 Printing}*)
 
 val print: 'a BatInnerIO.output -> Char.t -> unit
-val t_printer : char BatValue_printer.t
+val t_printer : char BatValuePrinter.t
 
 
 (**/**)

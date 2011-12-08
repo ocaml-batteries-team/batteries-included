@@ -296,16 +296,17 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 	of [e]. *)
 
   val find_all : ('a -> bool) -> 'a t -> 'a t
-    (** [find_all] is another name for {!Array.filter}. *)
+    (** [find_all] is another name for {!Vect.filter}. *)
 
   val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
-    (** [partition p a] returns a pair of arrays [(a1, a2)], where
-	[a1] is the array of all the elements of [a] that
-	satisfy the predicate [p], and [a2] is the array of all the
-	elements of [a] that do not satisfy [p].
+    (** [partition p v] returns a pair of vects [(v1, v2)], where
+	[v1] is the vect of all the elements of [v] that
+	satisfy the predicate [p], and [v2] is the vect of all the
+	elements of [v] that do not satisfy [p].
 	The order of the elements in the input array is preserved. *)
 
 (** {6 Convenience Functions} *)
+
   val first : 'a t -> 'a
   val last : 'a t -> 'a
     (** These return the first and last values in the vector *)

@@ -1,7 +1,7 @@
 OASISFormat:  0.2
 OCamlVersion: >= 3.11.0
 Name:         batteries
-Version:      1.4.1
+Version:      2.0beta
 Authors:      Batteries Included Team
 License:      LGPL-2.1 with OCaml linking exception
 LicenseFile:  LICENSE
@@ -10,7 +10,6 @@ InstallType:  custom (0.2)
 BuildTools:   make
 Synopsis:     Extended OCaml Standard Library
 
-BuildDepends:	camomile (>= 0.7.0)
 XCustomBuild: $make all
 XCustomInstall: $make install
 XCustomUninstall: $make uninstall
@@ -35,3 +34,4 @@ Library "batteries"
 
 Library "estring"
   Path: libs/estring/
+

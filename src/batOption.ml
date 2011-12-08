@@ -35,6 +35,10 @@ let bind f = function
   | None -> None
   | Some v -> f v
 
+let apply = function
+  | None -> (fun x -> x)
+  | Some f -> f
+
 let default v = function
 	| None -> v
 	| Some v -> v
@@ -110,10 +114,17 @@ struct
     | Some x -> f x
 end
 
-
 module Labels =
 struct
   let may ~f o = may f o
   let map ~f o = map f o
   let map_default ~f d o = map_default f d o
 end
+
+module Infix =
+struct
+  let ( |? ) x def = default def x
+end
+
+include Infix
+

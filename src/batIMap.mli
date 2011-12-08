@@ -40,6 +40,8 @@ val map : ?eq:('b -> 'b -> bool) -> ('a -> 'b) -> 'a t -> 'b t
 
 val mapi : ?eq:('b -> 'b -> bool) -> (int -> 'a -> 'b) -> 'a t -> 'b t
     
+val map_range : ?eq:('b -> 'b -> bool) -> (int -> int -> 'a -> 'b) -> 'a t -> 'b t
+
 val fold : (int -> 'b -> 'a -> 'a) -> 'b t -> 'a -> 'a
 
 val fold_range : (int -> int -> 'b -> 'a -> 'a) -> 'b t -> 'a -> 'a

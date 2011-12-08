@@ -318,10 +318,10 @@ struct
     in
     fun (Map tr) -> visit tr (fun tr -> Map tr)
 
-  let filter f t =
+  let filterv f t =
     filter_map (fun _ v -> if f v then Some v else None) t
 
-  let filteri f t =
+  let filter f t =
     filter_map (fun k v -> if f k v then Some v else None) t
 
   let map f t = filter_map (fun _ v -> Some (f v)) t
@@ -438,8 +438,8 @@ struct
       fold (fun key data acc -> f ~key ~data acc) t init
     let compare ~cmp a b = compare cmp a b
     let equal ~cmp a b = equal cmp a b
+    let filterv ~f = filterv f
     let filter ~f = filter f
-    let filteri ~f = filteri f
   end
 
   module Exceptionless = struct

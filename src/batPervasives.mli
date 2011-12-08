@@ -81,8 +81,18 @@ val dump : 'a -> string
 
     Since types are lost at compile time, the representation might not
     match your type. For example, None will be printed 0 since they
-    share the same runtime representation. *)
+    share the same runtime representation.
 
+    [dump] may fail for ill-formed values, such as obtained from
+    a faulty C binding or crazy uses of [Obj.set_tag].
+*)
+
+val print_any : 'b BatIO.output -> 'a -> unit
+(** Attempt to print a value to an output.
+
+    Uses [dump] to convert the value to a string and prints that
+    string to the output.
+ *)
 
 (** {6 List operations}
 
@@ -211,8 +221,8 @@ val output_char : unit BatIO.output -> char -> unit
 val output_string : unit BatIO.output -> string -> unit
 (** Write the string on the given output channel. *)
 
-val output_rope : unit BatIO.output -> BatRope.t -> unit
-(** Write the rope on the given output channel. *)
+val output_text : unit BatIO.output -> Ulib.Text.t -> unit
+(** Write the text on the given output channel. *)
 
 val output : unit BatIO.output -> string -> int -> int -> unit
 (** [output oc buf pos len] writes [len] characters from string [buf],
@@ -402,6 +412,7 @@ val ( |> ) : 'a -> ('a -> 'b) -> 'b
     This operator may also be useful for composing sequences of
     function calls without too many parenthesis. *)
 
+
 val ( **>  ) : ('a -> 'b) -> 'a -> 'b
   (** Function application. [f **> x] is equivalent to [f x].
 
@@ -411,6 +422,9 @@ val ( **>  ) : ('a -> 'b) -> 'a -> 'b
       {b Note} The name of this operator is not written in stone.
       It is bound to change soon.*)
 
+val ( <| ) : ('a -> 'b) -> 'a -> 'b
+(** same as [ ( **> ) ] *)
+
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
 (** Function composition. [f |- g] is [fun x -> g (f x)].
     This is also equivalent to applying [<**] twice.*)
@@ -418,6 +432,10 @@ val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
 val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
 (** Function composition. [f -| g] is [fun x -> f (g x)]. Mathematically, this is
     operator o.*)
+
+val ( |? ) : 'a option -> 'a -> 'a
+(** Like {!BatOption.default}, with the arguments reversed.
+    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
 
 val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
   (** Argument flipping.
@@ -429,29 +447,12 @@ val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
 val ( *** ) : ('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd
 (** Function pairing.
 
-    [f *** g] is [fun (x,y) -> (f x, g y)].*)
+    [f *** g] is [fun (x,y) -> (f x, g y)]. Equivalent to {!Tuple.Tuple2.map}. *)
 
 val ( &&& ) : ('a -> 'b) -> ('a -> 'c) -> 'a -> ('b * 'c)
   (** Applying two functions to the same argument.
 
       [ f &&& g] is [fun x -> (f x, g x)]. *)
-
-val first : ('a -> 'b) -> ('a * 'c) -> ('b * 'c)
-(** Apply a function to the first element of a pair.
-
-    [first f (x, y)] is [(f x, y)]
-
-    @deprecated Use {!Tuple.Tuple2.map1} instead.
- *)
-
-val second : ('a -> 'b) -> ('c * 'a) -> ('c * 'b)
-(** Apply a function to the second element of a pair.
-
-    [second f (x, y)] is [(x, f y)]
-
-    @deprecated Use {!Tuple.Tuple2.map2} instead.
- *)
-
 
 val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
 (** Convert a function which accepts a pair of arguments into
@@ -489,6 +490,10 @@ val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
 (** [with_dispose dispose f x] invokes [f] on [x], calling [dispose x]
     when [f] terminates (either with a return value or an
     exception). *)
+
+val verify_arg : bool -> string -> unit
+(** [verify_arg condition message] will raise [Invalid_argument message] if
+    [condition] is false, otherwise it does nothing. *)
 
 val args : unit -> string BatEnum.t
   (** An enumeration of the arguments passed to this program through the command line.
@@ -874,26 +879,25 @@ val printer_format : (('a, 'b) BatPrint.format -> 'a, 'b) BatPrint.directive
 
 val printer_sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
 val printer_Sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
-val printer_rope : (BatRope.t -> 'a, 'a) BatPrint.directive
-val printer_utf8 : (BatUTF8.t -> 'a, 'a) BatPrint.directive
+val printer_text : (Ulib.Text.t -> 'a, 'a) BatPrint.directive
 val printer_obj : (< print : unit BatIO.output -> unit; .. > -> 'a, 'a) BatPrint.directive
 val printer_exn : (exn -> 'a, 'a) BatPrint.directive
 
 (** {7 Value printers} *)
 
-val bool_printer : bool BatValue_printer.t
-val int_printer : int BatValue_printer.t
-val char_printer : char BatValue_printer.t
-val int32_printer : int32 BatValue_printer.t
-val int64_printer : int64 BatValue_printer.t
-val nativeint_printer : nativeint BatValue_printer.t
-val float_printer : float BatValue_printer.t
-val string_printer : string BatValue_printer.t
-val list_printer : 'a BatValue_printer.t -> 'a list BatValue_printer.t
-val array_printer : 'a BatValue_printer.t -> 'a array BatValue_printer.t
-val option_printer : 'a BatValue_printer.t -> 'a option BatValue_printer.t
-val maybe_printer : 'a BatValue_printer.t -> 'a option BatValue_printer.t
-val exn_printer : exn BatValue_printer.t
+val bool_printer : bool BatValuePrinter.t
+val int_printer : int BatValuePrinter.t
+val char_printer : char BatValuePrinter.t
+val int32_printer : int32 BatValuePrinter.t
+val int64_printer : int64 BatValuePrinter.t
+val nativeint_printer : nativeint BatValuePrinter.t
+val float_printer : float BatValuePrinter.t
+val string_printer : string BatValuePrinter.t
+val list_printer : 'a BatValuePrinter.t -> 'a list BatValuePrinter.t
+val array_printer : 'a BatValuePrinter.t -> 'a array BatValuePrinter.t
+val option_printer : 'a BatValuePrinter.t -> 'a option BatValuePrinter.t
+val maybe_printer : 'a BatValuePrinter.t -> 'a option BatValuePrinter.t
+val exn_printer : exn BatValuePrinter.t
 
 (**/**)
 
@@ -901,7 +905,7 @@ val exn_printer : exn BatValue_printer.t
    {6 Results}
 *)
 
-type ('a, 'b) result = ('a, 'b) BatStd.result =
+type ('a, 'b) result =
   | Ok  of 'a
   | Bad of 'b
 

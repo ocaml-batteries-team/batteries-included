@@ -1,4 +1,4 @@
-open BatStd
+open BatPervasives
 (**  Monadic results of computations that can raise exceptions *)
 
 type ('a, 'b) t = ('a, 'b) result 

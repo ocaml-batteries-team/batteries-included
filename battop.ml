@@ -46,7 +46,7 @@ let ext_syntax = true;;
 
 if !Sys.interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
 begin
-  Batteries_help.init ();
+  BatteriesHelp.init ();
   print_endline "      _________________________";
   print_endline "    [| +   | |   Batteries   - |";
   print_endline "     |_____|_|_________________|";
@@ -59,28 +59,25 @@ begin
 end;;
 
 open Batteries;;
-#install_printer Batteries_print.print_uchar;;
-#install_printer Batteries_print.print_ustring;;
-#install_printer Batteries_print.print_rope;;
-#install_printer Batteries_print.print_string_cap_rw;;
-#install_printer Batteries_print.print_string_cap_ro;;
-#install_printer Batteries_print.string_dynarray;;
-#install_printer Batteries_print.int_dynarray;;
-#install_printer Batteries_print.char_dynarray;;
-#install_printer Batteries_print.float_dynarray;;
-#install_printer Batteries_print.int_set;;
-#install_printer Batteries_print.string_set;;
-#install_printer Batteries_print.istring_set;;
-#install_printer Batteries_print.rope_set;;
-#install_printer Batteries_print.char_set;;
-#install_printer Batteries_print.int_pset;;
-#install_printer Batteries_print.string_pset;;
-#install_printer Batteries_print.rope_pset;;
-#install_printer Batteries_print.char_pset;;
-#install_printer Batteries_print.int_enum;;
-#install_printer Batteries_print.string_enum;;
-#install_printer Batteries_print.rope_enum;;
-#install_printer Batteries_print.char_enum;;
+#install_printer BatteriesPrint.print_uchar;;
+#install_printer BatteriesPrint.print_ustring;;
+#install_printer BatteriesPrint.print_rope;;
+#install_printer BatteriesPrint.print_string_cap_rw;;
+#install_printer BatteriesPrint.print_string_cap_ro;;
+#install_printer BatteriesPrint.string_dynarray;;
+#install_printer BatteriesPrint.int_dynarray;;
+#install_printer BatteriesPrint.char_dynarray;;
+#install_printer BatteriesPrint.float_dynarray;;
+#install_printer BatteriesPrint.int_set;;
+#install_printer BatteriesPrint.string_set;;
+#install_printer BatteriesPrint.int_pset;;
+#install_printer BatteriesPrint.string_pset;;
+#install_printer BatteriesPrint.rope_pset;;
+#install_printer BatteriesPrint.char_pset;;
+#install_printer BatteriesPrint.int_enum;;
+#install_printer BatteriesPrint.string_enum;;
+#install_printer BatteriesPrint.rope_enum;;
+#install_printer BatteriesPrint.char_enum;;
 
 
 if ext_syntax then begin

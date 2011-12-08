@@ -104,7 +104,7 @@ let exists p xs =
   in
   loop 0
 
-(**T for_all
+(**T exists
    exists (fun x -> x mod 2 = 0) [|1;4;5|]
    exists (fun x -> x mod 2 = 0) [|1;3;5|] = false
    exists (fun _ -> false) [||] = false
@@ -299,6 +299,12 @@ let for_all2 p xs ys =
   in
   loop 0
 
+(**T for_all2
+   for_all2 (=) [|1;2;3|] [|3;2;1|] = false
+   for_all2 (=) [|1;2;3|] [|1;2;3|]
+   for_all2 (<>) [|1;2;3|] [|3;2;1|] = false
+ **)
+
 let exists2 p xs ys =
   let n = length xs in
   if length ys <> n then raise (Invalid_argument "Array.exists2");
@@ -309,25 +315,44 @@ let exists2 p xs ys =
   in
   loop 0
 
+(**T exists2
+   exists2 (=) [|1;2;3|] [|3;2;1|]
+   exists2 (<>) [|1;2;3|] [|1;2;3|] = false
+ **)
+
 let map2 f xs ys =
   let n = length xs in
   if length ys <> n then raise (Invalid_argument "Array.exists2");
   Array.init n (fun i -> f xs.(i) ys.(i))
 
+(**T map2
+   map2 (-) [|1;2;3|] [|6;3;1|] = [|-5;-1;2|]
+   map2 (-) [|2;4;6|] [|1;2;3|] = [|1;2;3|]
+ **)
+
 let make_compare cmp a b =
-  let length_a = Array.length a
-  and length_b = Array.length b in
-  let length   = min length_a length_b
-  in
+  let length_a = Array.length a in
+  let length_b = Array.length b in
+  let length   = BatInt.min length_a length_b in
   let rec aux i = 
     if i < length then
       let result = cmp (unsafe_get a i) (unsafe_get b i) in
-	if result = 0 then aux (i + 1)
-	else               result
+      if result = 0 then aux (i + 1)
+      else               result
     else
-      if length_a < length_b then -1
-      else                         1
-  in aux 0
+      if length_a = length_b then	0 
+      else if length_a < length_b then -1
+      else                              1
+  in 
+  aux 0
+
+(**T make_compare
+   make_compare compare [|1;2;3|] [|1;2|] = 1
+   make_compare compare [|1;2|] [|1;2;4|] = -1
+   make_compare compare [|1|] [||] = 1
+   make_compare compare [||] [||] = 0
+   make_compare compare [|1;2|] [|1;2|] = 0
+**)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
   match length t with
@@ -346,12 +371,6 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 
 let t_printer a_printer paren out x = print (a_printer false) out x
 
-let sprint ?(first="[|") ?(last="|]") ?(sep="; ") print_a array =
-  BatInnerIO.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) array
-(*  let os = BatInnerIO.output_string  () in
-  print ~first ~last ~sep print_a os list;
-  BatInnerIO.close_out os (* returns contents *)*)
-
 let reduce f a =
   if Array.length a = 0 then
     invalid_arg "Array.reduce: empty array"
@@ -361,8 +380,20 @@ let reduce f a =
     !acc
   )
 
+(**T reduce
+   reduce (+) [|1;2;3|] = 6
+   reduce (fun _ -> assert false) [|1|] = 1
+ **)
+
 let min a = reduce Pervasives.min a
 let max a = reduce Pervasives.max a
+
+(**T min/max
+   min [|1;2;3|] = 1
+   max [|1;2;3|] = 3
+   min [|2;3;1|] = 1
+   max [|2;3;1|] = 3
+ **)
 
 (* TODO: Investigate whether a second array is better than pairs *)
 let decorate_stable_sort f xs = 
@@ -370,14 +401,21 @@ let decorate_stable_sort f xs =
   let () = stable_sort (fun (i,_) (j,_) -> compare i j) decorated in
   map (fun (_,x) -> x) decorated
 
+
 let decorate_fast_sort f xs = 
   let decorated = map (fun x -> (f x, x)) xs in
   let () = fast_sort (fun (i,_) (j,_) -> compare i j) decorated in
   map (fun (_,x) -> x) decorated
 
-
 let insert xs x i =
+  if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
   Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
+
+(**T insert
+   insert [|1;2;3|] 4 0 = [|4;1;2;3|]
+   insert [|1;2;3|] 4 3 = [|1;2;3;4|]
+   insert [|1;2;3|] 4 2 = [|1;2;4;3|]
+ **)
 
 module Cap =
 struct
@@ -438,7 +476,6 @@ struct
   let fast_sort    = fast_sort
   let make_compare = make_compare
   let print        = print
-  let sprint       = sprint
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 

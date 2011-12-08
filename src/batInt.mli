@@ -185,7 +185,7 @@
       (** prints as hex string *)
 (*    val bprint: 'a BatInnerIO.output -> t -> unit
       (** prints as binary string *) *)
-    val t_printer : t BatValue_printer.t
+    val t_printer : t BatValuePrinter.t
 
 
 

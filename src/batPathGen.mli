@@ -494,6 +494,7 @@ module OfString : PathType with type ustring = string and type uchar = char
 
     @documents Future.Path.OfString
 *)
+
 (*
 module OfRope : PathType with type ustring = Rope.t
 (** In this implementation used strings are always valid UTF-8.

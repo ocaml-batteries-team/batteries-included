@@ -48,9 +48,23 @@ module BaseFloat = struct
 
 end
 
+let approx_equal ?(epsilon = 1e-5) f1 f2 = abs_float (f1 -. f2) < epsilon
+
+(**T approx_equal
+   approx_equal 0. 1e-15
+   approx_equal 0.3333333333 (1. /. 3.)
+   not (approx_equal 1. 2.)
+   not (approx_equal 1.5 1.45)
+**)
+
 include BatNumber.MakeNumeric(BaseFloat)
-module Infix = BatNumber.MakeInfix(BaseFloat)
-module Compare = BatNumber.MakeCompare(BaseFloat)
+module Infix = struct
+  include BatNumber.MakeInfix(BaseFloat)
+  let (=~) = approx_equal
+end
+module Compare = struct
+  include BatNumber.MakeCompare(BaseFloat)
+end
 
 external of_float : float -> float = "%identity"
 external to_float : float -> float = "%identity"
@@ -73,6 +87,26 @@ external frexp : float -> float * int = "caml_frexp_float"
 external ldexp : float -> int -> float = "caml_ldexp_float"            
 external modf : float -> float * float = "caml_modf_float"
 
+let _round x =
+  if x > 0.0 then floor (x +. 0.5) else ceil (x -. 0.5)
+
+let round ?(precision = 1.0) x =
+  precision *. _round (x /. precision)
+
+let round_to_int x =
+  int_of_float (_round x)
+
+(* the tests below look ugly with those Pervasives.(...); this is
+   a temporary fix made necessary by BatFloat overriding the (=)
+   operator. Hugh. *)
+(**T round
+   Pervasives.(=) (List.map round [1.1; 2.4; 3.3; 3.5; 4.99]) [1.; 2.; 3.; 4.; 5.]
+   Pervasives.(=) (List.map round_to_int [1.1; 2.4; 3.3; 3.5; 4.99]) [1; 2; 3; 4; 5]
+**)
+(* the following test fails: round ~precision:0.1 2.4 is *not* equal to 2.4
+   Pervasives.(List.map (round ~precision:0.1) [1.1; 2.4; 3.3; 3.5; 4.99] = [1.1; 2.4; 3.3; 3.5; 5.0])
+*)
+
 type bounded = t
 let min_num, max_num = neg_infinity, infinity
 
@@ -88,6 +122,14 @@ let is_nan f = match classify f with
   | FP_nan -> true
   | _      -> false
 
+let is_special f =
+  match classify f with
+  | FP_nan
+  | FP_infinite -> true
+  | FP_normal
+  | FP_subnormal
+  | FP_zero -> false
+
 let infinity     = Pervasives.infinity
 let neg_infinity = Pervasives.neg_infinity
 let nan          = Pervasives.nan
@@ -96,6 +138,7 @@ let pi           = 4. *. atan 1.
   
 let print out t = BatInnerIO.nwrite out (to_string t)
 let t_printer paren out t = print out t
+
 
 module Base_safe_float = struct
   include BaseFloat

@@ -131,12 +131,21 @@ let iter proc m =
 let rec map ?(eq=(==)) f m =
   if is_empty m then empty else
   let n1, n2, v = root m in
-  let l = map f (left_branch m) in
-  let r = map f (right_branch m) in
+  let l = map ~eq f (left_branch m) in
+  let r = map ~eq f (right_branch m) in
   let v = f v in
   make eq l (n1, n2, v) r
 
 let mapi ?eq f m = fold (fun n v a -> add ?eq n (f n v) a) m empty
+
+let rec map_range ?(eq=(==)) f m =
+  if is_empty m then empty else
+  let n1, n2, v = root m in
+  let l = map_range ~eq f (left_branch m) in
+  let r = map_range ~eq f (right_branch m) in
+  let v = f n1 n2 v in
+  make eq l (n1, n2, v) r
+
 
 let rec set_to_map s v =
   if is_empty s then empty else
@@ -149,9 +158,9 @@ let rec domain m =
   if is_empty m then empty else
   let (k1, k2, _), m' = split_leftmost m in
   let f n1 n2 _ (k1, k2, s) =
-    if k1 = n2 + 1 then (k1, n2, s) else
+    if n1 = k2 + 1 then (k1, n2, s) else
     (n1, n2, make_tree s (k1, k2) empty) in
-  let k1, k2, s =fold_range f m' (k1, k2, empty) in
+  let k1, k2, s = fold_range f m' (k1, k2, empty) in
   make_tree s (k1, k2) empty
 
 let rec map_to_set p m =
@@ -164,7 +173,7 @@ let rec map_to_set p m =
     Some (k1, k2, m') ->
       let f n1 n2 v (k1, k2, s) =
 	if p v then
-	  if k1 = n2 + 1 then (k1, n2, s) else
+	  if n1 = k2 + 1 then (k1, n2, s) else
 	  (n1, n2, make_tree s (k1, k2) empty) 
 	else
 	  (k1, k2, s) in

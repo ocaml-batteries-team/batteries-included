@@ -1,8 +1,7 @@
-open BatStd
 open Batteries
 module U = OUnit
 
-module IS = Set.IntSet
+module IS = Set.Make(Int)
 
 let of_list l = List.fold_left (fun a i -> IS.add i a) IS.empty l
 
@@ -21,12 +20,12 @@ let (@?) = U.(@?)
 let (@!) msg (exn, f) = U.assert_raises ~msg exn f
 
 (* This functor is intended the features that are common in both the
-   functorized Set and the polymorphic PSet data structures.
+   functorized Set and the polymorphic Set data structures.
 
    Currently, those two modules have a different interfaces : there
    are functions in one that aren't present in another. The tests are
    therefore not exhaustive : only common features are tested (but all
-   such functions are tested), and PSet-specific functions should be
+   such functions are tested), and Set-specific functions should be
    tested separately. As we hope, however, to make the feature set of
    both module converge in the long term, more features of one will be
    added to the other, and eventually all the features of both will be
@@ -51,7 +50,7 @@ module TestSet
     val max_elt : s -> elt
 
     val pop : s -> elt * s
-    
+
     val fold : (elt -> 'b -> 'b) -> s -> 'b -> 'b
     val iter : (elt -> unit) -> s -> unit
     val filter : (elt -> bool) -> s -> s
@@ -67,6 +66,12 @@ module TestSet
 
     val choose : s -> elt
     val split : elt -> s -> s * bool * s
+
+    val union : s -> s -> s
+    val inter : s -> s -> s
+    val diff : s -> s -> s
+    val sdiff : s -> s -> s
+    val disjoint : s -> s -> bool
 
     (* val merge : (elt -> bool -> bool -> bool) -> s -> s -> s *)
 
@@ -249,6 +254,81 @@ module TestSet
     ()
 *)
 
+  let test_union () =
+    "union [1; 2; 3] [2; 3; 4] = [1; 2; 3; 4]" @=
+      (il [1; 2; 3; 4], S.union (il [1; 2; 3]) (il [2; 3; 4]));
+    "union [1; 2; 3] [2; 3] = [1; 2; 3]" @=
+      (il [1; 2; 3], S.union (il [1; 2; 3]) (il [2; 3]));
+    "union [2; 3] [2; 3; 4] = [2; 3; 4]" @=
+      (il [2; 3; 4], S.union (il [2; 3]) (il [2; 3; 4]));
+    "union [2; 3] [2; 3] = [2; 3]" @=
+      (il [2; 3], S.union (il [2; 3]) (il [2; 3]));
+    "union [2] [] = [2]" @=
+      (il [2], S.union (il [2]) (il []));
+    "union [] [3] = [3]" @=
+      (il [3], S.union (il []) (il [3]));
+    ()
+
+  let test_inter () =
+    "inter [1; 2; 3] [2; 3; 4] = [2; 3]" @=
+      (il [2; 3], S.inter (il [1; 2; 3]) (il [2; 3; 4]));
+    "inter [1; 2; 3] [2; 3] = [2; 3]" @=
+      (il [2; 3], S.inter (il [1; 2; 3]) (il [2; 3]));
+    "inter [2; 3] [2; 3; 4] = [2; 3]" @=
+      (il [2; 3], S.inter (il [2; 3]) (il [2; 3; 4]));
+    "inter [2; 3] [2; 3] = [2; 3]" @=
+      (il [2; 3], S.inter (il [2; 3]) (il [2; 3]));
+    "inter [2] [] = []" @=
+      (il [], S.inter (il [2]) (il []));
+    "inter [] [3] = []" @=
+      (il [], S.inter (il []) (il [3]));
+    ()
+
+  let test_diff () =
+    "diff [1; 2; 3] [2; 3; 4] = [1]" @=
+      (il [1], S.diff (il [1; 2; 3]) (il [2; 3; 4]));
+    "diff [1; 2; 3] [2; 3] = [1]" @=
+      (il [1], S.diff (il [1; 2; 3]) (il [2; 3]));
+    "diff [2; 3] [2; 3; 4] = []" @=
+      (il [], S.diff (il [2; 3]) (il [2; 3; 4]));
+    "diff [2; 3] [2; 3] = []" @=
+      (il [], S.diff (il [2; 3]) (il [2; 3]));
+    "diff [2] [] = [2]" @=
+      (il [2], S.diff (il [2]) (il []));
+    "diff [] [3] = []" @=
+      (il [], S.diff (il []) (il [3]));
+    ()
+
+  let test_sdiff () =
+    "sdiff [1; 2; 3] [2; 3; 4] = [1; 4]" @=
+      (il [1; 4], S.sdiff (il [1; 2; 3]) (il [2; 3; 4]));
+    "sdiff [1; 2; 3] [2; 3] = [1]" @=
+      (il [1], S.sdiff (il [1; 2; 3]) (il [2; 3]));
+    "sdiff [2; 3] [2; 3; 4] = [4]" @=
+      (il [4], S.sdiff (il [2; 3]) (il [2; 3; 4]));
+    "sdiff [2; 3] [2; 3] = []" @=
+      (il [], S.sdiff (il [2; 3]) (il [2; 3]));
+    "sdiff [2] [] = [2]" @=
+      (il [2], S.sdiff (il [2]) (il []));
+    "sdiff [] [3] = [3]" @=
+      (il [3], S.sdiff (il []) (il [3]));
+    ()
+
+  let test_disjoint () =
+    "disjoint [1] [1] = false" @?
+      (not (S.disjoint (il [1]) (il [1])));
+    "disjoint [1] [2] = true" @?
+      (S.disjoint (il [1]) (il [2]));
+    "disjoint [] [2] = true" @?
+      (S.disjoint (il []) (il [2]));
+    "disjoint [1] [] = true" @?
+      (S.disjoint (il [1]) (il []));
+    "disjoint [1; 2] [3; 4] = true" @?
+      (S.disjoint (il [1; 2]) (il [3; 4]));
+    "disjoint [1; 2; 3] [1; 4; 5] = false" @?
+      (not (S.disjoint (il [1; 2; 3]) (il [1; 4; 5])));
+    ()
+
   let test_for_all_exists () =
     let test (msg, for_all) =
       let (@?) str = (@?) (Printf.sprintf "[%s] %s" msg str) in
@@ -311,13 +391,13 @@ module TestSet
     let from_filter p t =
       li (S.filter p t)
     in
-    
+
     let from_fold p t =
       let acc e li =
         (if p e then [e] else []) @ li in
       List.rev <| S.fold acc t []
     in
-    
+
     let from_iter p t =
       let acc = ref [] in
       S.iter (fun e -> if p e then acc := e :: !acc) t;
@@ -357,6 +437,11 @@ module TestSet
     "test_split" >:: test_split;
     "test_partition" >:: test_partition;
     (* "test_merge" >:: test_merge; *)
+    "test_union" >:: test_union;
+    "test_inter" >:: test_inter;
+    "test_diff" >:: test_diff;
+    "test_sdiff" >:: test_sdiff;
+    "test_disjoint" >:: test_disjoint;
     "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;
     (* "test_enums" >:: test_enums; *)
@@ -371,7 +456,7 @@ module S = struct
 end
 
 module P = struct
-  module S = BatPSet
+  module S = BatSet
 
   type elt = int
   include S
@@ -385,6 +470,8 @@ module P = struct
 
   let backwards t =
     BatList.enum -| List.rev -| BatList.of_enum <| S.enum t
+
+  let inter = intersect
 end
 
 module TS = TestSet(S)

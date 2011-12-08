@@ -1,5 +1,5 @@
 open OUnit
-open Batteries_uni
+open Batteries
 
 let test_using () =
   let obj = (ref 0), (ref 0) in
@@ -11,7 +11,6 @@ let test_using () =
   assert_equal ~printer 42 r;
   assert_equal ~printer 7 (!run);
   assert_equal ~printer 5 (!closed)
-
 
 type test1 = 
   | A of int
@@ -32,7 +31,7 @@ type test3 = {
 
 let test_dump () =
   let test str value =
-    assert_equal ~msg:str ~printer:(fun x -> x) str (BatStd.dump value) in
+    assert_equal ~msg:str ~printer:(fun x -> x) str (BatPervasives.dump value) in
 
   (* integers *)
   test "0" None;
@@ -91,9 +90,11 @@ let test_dump () =
 
 
   (* double array or struct *)
+  let test_arr arr v =
+    test (BatIO.to_string (BatArray.print BatFloat.print) arr) v in
   test "()" ([| |] : float array);
-  test "[| 0.; 1.; 2. |]" [| 0.; 1.; 2. |];
-  test "[| 0.; 1.; 2. |]" { f1 = 0.; f2 = 1.; f3 = 2. };
+  test_arr [| 0.; 1.; 2. |] [| 0.; 1.; 2. |];
+  test_arr [| 0.; 1.; 2. |] { f1 = 0.; f2 = 1.; f3 = 2. };
 
   ()
 

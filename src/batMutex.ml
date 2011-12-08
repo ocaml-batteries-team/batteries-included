@@ -65,10 +65,6 @@ struct
   let synchronize = Lock.synchronize
 end
 
-module Mutex =
-struct
-  include Mutex
-  module Lock = BatConcurrent.MakeLock(Mutex)
-  let make        = Lock.make
-  let synchronize = Lock.synchronize
-end
+module Lock = BatConcurrent.MakeLock(Mutex)
+let make        = Lock.make
+let synchronize = Lock.synchronize

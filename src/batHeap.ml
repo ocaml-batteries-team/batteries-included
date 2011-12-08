@@ -148,7 +148,7 @@ let to_list bh =
 **)
 
 (**Q to_list_q
-   (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left insert empty l) = List.sort ~cmp:Pervasives.compare l)
+   (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left insert empty l) = List.sort Pervasives.compare l)
 **)
 
 let elems = to_list
@@ -200,7 +200,7 @@ module type H = sig
   val print     :  ?first:string -> ?last:string -> ?sep:string
     -> ('a BatInnerIO.output -> elem -> unit)
     -> 'a BatInnerIO.output -> t -> unit
-  val t_printer : elem BatValue_printer.t -> t BatValue_printer.t
+  val t_printer : elem BatValuePrinter.t -> t BatValuePrinter.t
 end
 
 module Make (Ord : BatInterfaces.OrderedType) = struct

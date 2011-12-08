@@ -1,4 +1,4 @@
-open BatStd
+open BatPervasives
 module R = BatRandom
 module U = OUnit
 
@@ -14,18 +14,18 @@ let assert_equal_enums enum_1 enum_2 =
              print_enum (enum_1 ()) print_enum (enum_2 ()))
 
 let assert_equal_maps map_1 map_2 =
-  let enum_1 () = BatPMap.enum map_1 in
-  let enum_2 () = BatPMap.enum map_2 in
+  let enum_1 () = BatMap.enum map_1 in
+  let enum_2 () = BatMap.enum map_2 in
   assert_equal_enums enum_1 enum_2
 
 let test_traversal_order () =
   let init = R.State.make [|0|] in
   let keys = BatEnum.take 50 (R.State.enum_int init 10) in
-  let map  = BatPMap.of_enum (BatEnum.map (fun x -> (x,x)) keys) in
-  let enum_1 () = BatPMap.enum map
+  let map  = BatMap.of_enum (BatEnum.map (fun x -> (x,x)) keys) in
+  let enum_1 () = BatMap.enum map
   and enum_2 () =
     let list = BatRefList.empty () in
-      BatPMap.iter (fun k v -> BatRefList.push list (k, v)) map;
+      BatMap.iter (fun k v -> BatRefList.push list (k, v)) map;
       BatRefList.backwards list
   in
     match BatEnum.compare compare (enum_1 ()) (enum_2 ()) with
@@ -37,14 +37,14 @@ let test_traversal_order () =
 
 let gen_map state bound count =
   let keys = BatEnum.take count (R.State.enum_int state bound) in
-  BatPMap.of_enum (BatEnum.map (fun x -> (x,x)) keys)
+  BatMap.of_enum (BatEnum.map (fun x -> (x,x)) keys)
 
 let test_split () =
   let do_test map v =
-    let m1, vo, m2 = BatPMap.split v map in
-    assert_equal_maps m1 (BatPMap.filteri (fun k _ -> k < v) map);
-    assert_equal_maps m2 (BatPMap.filteri (fun k _ -> k > v) map);
-    U.assert_equal vo (if BatPMap.mem v map then Some v else None)
+    let m1, vo, m2 = BatMap.split v map in
+    assert_equal_maps m1 (BatMap.filter (fun k _ -> k < v) map);
+    assert_equal_maps m2 (BatMap.filter (fun k _ -> k > v) map);
+    U.assert_equal vo (if BatMap.mem v map then Some v else None)
   in
   let init = R.State.make [|0|] in
   for i = 0 to 50 do
@@ -102,10 +102,10 @@ module TestMap
     val iteri : (key -> 'a -> unit) -> 'a m -> unit
     val map : ('a -> 'b) -> 'a m -> 'b m
     val mapi : (key -> 'a -> 'b) -> 'a m -> 'b m
-    val filter : ('a -> bool) -> 'a m -> 'a m
-    val filteri : (key -> 'a -> bool) -> 'a m -> 'a m
-    val filter_map : ('a -> 'b option) -> 'a m -> 'b m
-    val filteri_map : (key -> 'a -> 'b option) -> 'a m -> 'b m
+    val filterv : ('a -> bool) -> 'a m -> 'a m
+    val filter : (key -> 'a -> bool) -> 'a m -> 'a m
+    val filterv_map : ('a -> 'b option) -> 'a m -> 'b m
+    val filter_map : (key -> 'a -> 'b option) -> 'a m -> 'b m
 
     val bindings : 'a m -> (key * 'a) list
     val enum : 'a m -> (key * 'a) BatEnum.t
@@ -432,11 +432,11 @@ module TestMap
        change...), and has already spotted instances of such issues.
     *)
 
-    let from_filteri_map f t =
-      li (M.filteri_map f t) in
-
     let from_filter_map f t =
-      li (M.filter_map (reindex f) t) in
+      li (M.filter_map f t) in
+
+    let from_filterv_map f t =
+      li (M.filterv_map (reindex f) t) in
 
     let of_foldi f k v acc =
       match f k v with
@@ -484,9 +484,9 @@ module TestMap
         t res;
       List.rev !acc in
 
-    let from_filteri f t =
+    let from_filter f t =
       t
-      |> M.filteri (fun k v -> f k v <> None)
+      |> M.filter (fun k v -> f k v <> None)
       |> M.mapi
           (fun k v ->
             match f k v with
@@ -494,9 +494,9 @@ module TestMap
               | Some v' -> v')
       |> li in
 
-    let from_filter f t =
+    let from_filterv f t =
       t
-      |> M.filter (reindex (fun k v -> f k v <> None))
+      |> M.filterv (reindex (fun k v -> f k v <> None))
       |> M.mapi
           (fun k v ->
             match f k v with
@@ -508,7 +508,7 @@ module TestMap
        sorting bugs *)
     let t = il [(4, 4); (5, 5); (3, 3); (0, 0); (6, 6); (2, 2); (1, 1)] in
 
-    (* the function which all filteri_map implementations will use *)
+    (* the function which all filter_map implementations will use *)
     let f k v =
       if k mod 2 = 0 then Some (v + 1)
       else None in
@@ -517,20 +517,20 @@ module TestMap
     let result = [(0, 1); (2, 3); (4, 5); (6, 7)] in
 
     List.iter
-      (fun (name, filteri_map_n) ->
+      (fun (name, filter_map_n) ->
         let msg = Printf.sprintf "iterators test : %s" name in
-        eq_li ~msg BatInt.compare BatInt.print result (filteri_map_n f t))
+        eq_li ~msg BatInt.compare BatInt.print result (filter_map_n f t))
       [
-        "filteri_map", from_filteri_map;
         "filter_map", from_filter_map;
+        "filterv_map", from_filterv_map;
         "foldi", from_foldi;
         "fold", from_fold;
         "iteri", from_iteri;
         "iter", from_iter;
         "mapi", from_mapi;
         "map", from_map;
-        "filteri", from_filteri;
         "filter", from_filter;
+        "filterv", from_filterv;
       ]
 
   let tests = [
@@ -569,12 +569,11 @@ module M = struct
   let iter f = M.iter (fun _ -> f)
   let iteri = M.iter
 
-  let filter_map f = M.filter_map (fun _ -> f)
-  let filteri_map = M.filter_map
+  let filterv_map f = M.filter_map (fun _ -> f)
 end
 
 module P = struct
-  module M = BatPMap
+  module M = BatMap
   include M
 
   type key = int
@@ -587,8 +586,7 @@ module P = struct
   let iter f = M.iter (fun _ -> f)
   let iteri = M.iter
 
-  let filter_map f = M.filter_map (fun _ -> f)
-  let filteri_map = M.filter_map
+  let filterv_map f = M.filter_map (fun _ -> f)
 
   let exists = M.exists_f
 
@@ -605,8 +603,7 @@ module S = struct
   include M
   type 'a m = 'a M.t
 
-  let filter_map f = M.filter_map (fun _ -> f)
-  let filteri_map = M.filter_map
+  let filterv_map f = M.filter_map (fun _ -> f)
 
   let iter f = M.iter (fun _ -> f)
   let iteri = M.iter
@@ -626,7 +623,7 @@ module TS = TestMap(S)
    - that the comparison function of the result map is as specified
 *)
 let heterogeneous_tests =
-  let module P = BatPMap in
+  let module P = BatMap in
   let li m = BatList.of_enum (P.enum m) in
 
   let (@=) msg (act, exp) =
