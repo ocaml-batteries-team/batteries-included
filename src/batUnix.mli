@@ -44,7 +44,7 @@ open BatConcurrent
 val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> BatInnerIO.input
 (** Create an {!type:input} reading from the given descriptor.
     The {!type: input} is initially in binary mode; use
-    [set_binary_mode_in ic false] if text mode is desired. 
+    [set_binary_mode_in ic false] if text mode is desired.
 
     @param autoclose If true (default value), close the input
     automatically once there is no more content to read. Otherwise,
@@ -61,7 +61,7 @@ val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> BatInnerIO
 val output_of_descr: ?cleanup:bool -> file_descr -> unit BatInnerIO.output
   (** Create an {!type:output} writing on the given descriptor.
       The {!type:output} is initially in binary mode; use
-      [set_binary_mode_out oc false] if text mode is desired. 
+      [set_binary_mode_out oc false] if text mode is desired.
 
       @param cleanup If true, close the underlying file descriptor
       when the {!type:output} is closed. If false or unspecified,
@@ -75,17 +75,17 @@ val descr_of_input : BatInnerIO.input -> file_descr
     Not all inputs have file descriptors. This function works
     only for inputs which have been created using module {!Unix}.
 
-    @raise Invalid_argument "Unix.descr_of_in_channel" if this input
+    @raise Invalid_argument ["Unix.descr_of_in_channel"] if this input
     channel doesn't have a file descriptor
 *)
 
 val descr_of_output : unit BatInnerIO.output -> file_descr
-  (** Return the descriptor corresponding to an output. 
-      
+  (** Return the descriptor corresponding to an output.
+
       Not all inputs have file descriptors. This function works
       only for inputs which have been created from module Unix.
 
-      @raise Invalid_arg "Unix.descr_of_out_channel" if this input
+      @raise Invalid_argument ["Unix.descr_of_out_channel"] if this input
       channel doesn't have a file descriptor
   *)
 
@@ -94,7 +94,7 @@ val descr_of_output : unit BatInnerIO.output -> file_descr
 (*val pipeio: unit -> file_descr * file_descr
   (** As {!pipe} but return an input and an output for the
 *)*)
-  
+
 
 
 val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> BatInnerIO.input
@@ -102,7 +102,7 @@ val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> BatInnerIO.
     runs the given command in parallel with the program.
     The standard output of the command is redirected to a pipe,
     which can be read via the returned input.
-    The command is interpreted by the shell [/bin/sh] (cf. [system]). 
+    The command is interpreted by the shell [/bin/sh] (cf. [system]).
 
     @param autoclose If true (default value), close the input
     automatically once there is no more content to read. Otherwise,
@@ -116,14 +116,14 @@ val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> BatInnerIO.
 *)
 
 val open_process_out : ?cleanup:bool -> string -> unit BatInnerIO.output
-  (** 
+  (**
       Same as {!Unix.open_process_in}, but redirect the standard input of
       the command to a pipe.  Data written to the returned output
       is sent to the standard input of the command.
-      
+
       {b Warning} writes on outputs are buffered, hence be careful
       to call {!Pervasives.flush} at the right times to ensure
-      correct synchronization. 
+      correct synchronization.
 
       @param cleanup If true or unspecified, close the process when the {!type:output}
       is closed. If false, do nothing, in which case you
@@ -131,14 +131,14 @@ val open_process_out : ?cleanup:bool -> string -> unit BatInnerIO.output
 *)
 
 val open_process : ?autoclose:bool -> ?cleanup:bool -> string -> BatInnerIO.input * unit BatInnerIO.output
-  (** 
+  (**
       Same as {!Unix.open_process_out}, but redirects both the
       standard input and standard output of the command to pipes
       connected to the two returned {!type: input}/{!type: output}.
       The returned {!type: input} is connected to the output of the
       command, and the returned {!type: output} to the input of the
-      command. 
-      
+      command.
+
       @param autoclose If true (default value), close the input
       automatically once there is no more content to read. Otherwise,
       the input will be closed according to the usual rules of module
@@ -159,7 +159,7 @@ val open_process_full :
       specifies the environment passed to the command.  The result is
       a triple of {!type:input}/{!type:output} connected respectively
       to the standard output, standard input, and standard error of
-      the command. 
+      the command.
 
       @param autoclose If true (default value), close the input
       automatically once there is no more content to read. Otherwise,
@@ -185,7 +185,7 @@ val close_process_in : BatInnerIO.input -> process_status
 val close_process_out : unit BatInnerIO.output -> process_status
   (** Close {!type:output} opened by {!Unix.open_process_out},
       wait for the associated command to terminate,
-      and return its termination status. 
+      and return its termination status.
 
       @raise Unix_error(EBADF, "close_process_out", "") if the argument
       is not an {!type:output} opened by {!Unix.open_process_out}.
@@ -195,7 +195,7 @@ val close_process : BatInnerIO.input * unit BatInnerIO.output -> process_status
   (** Close {!type:input}/{!type:output} opened by {!Unix.open_process},
       wait for the associated command to terminate,
       and return its termination status.
-      
+
       @raise Unix_error(EBADF, "close_process", "") if the argument
       is not pair of {!type:input}/{!type:output} opened by {!Unix.open_process}.
   *)
@@ -204,12 +204,12 @@ val close_process_full :
   BatInnerIO.input * unit BatInnerIO.output * BatInnerIO.input -> process_status
   (** Close i/o opened by {!Unix.open_process_full},
       wait for the associated command to terminate,
-      and return its termination status. 
+      and return its termination status.
 
       @raise Unix_error(EBADF, "close_process_full", "") if the argument
       is not a triple of {!type:input}/{!type:output} opened by {!Unix.open_process_full}.
 *)
-  
+
 (** {6 High-level network connection functions} *)
 
 
@@ -220,7 +220,7 @@ val open_connection : ?autoclose:bool -> sockaddr -> BatInnerIO.input * unit Bat
       is closed.
 
       Remember to call {!Pervasives.flush} on the output  at the right
-      times to ensure correct synchronization. 
+      times to ensure correct synchronization.
 
       @param autoclose If true (default value), close the input
       automatically once there is no more content to read. Otherwise,
@@ -230,10 +230,10 @@ val open_connection : ?autoclose:bool -> sockaddr -> BatInnerIO.input * unit Bat
   *)
 
 val shutdown_connection : BatInnerIO.input -> unit
-  (** 
+  (**
       ``Shut down'' a connection established with {!Unix.open_connection};
       that is, transmit an end-of-file condition to the server reading
-      on the other side of the connection. 
+      on the other side of the connection.
 
       @deprecated Connections do not require a special function anymore.
       Use regular function {!BatIO.close_in} for closing connections.

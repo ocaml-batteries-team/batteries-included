@@ -40,17 +40,17 @@ val map : ('a -> 'b) -> 'a option -> 'b option
 (** [map f (Some x)] returns [Some (f x)] and [map f None] returns [None]. *)
 
 val bind : ('a -> 'b option) -> 'a option -> 'b option
-(** [bind f (Some x)] returns [f x] and [bind f None] returns [None]. 
+(** [bind f (Some x)] returns [f x] and [bind f None] returns [None].
 
 @example "Our functions return option types. Compose them to propagate [None]."
 {[
-let pick_long case = 
-  try 
+let pick_long case =
+  try
     Some (List.find (fun data -> List.length data > 1000) case)
   with Not_found -> None
 let last_null data = List.rindex_of 0 data
-let interesting_positions dataset = 
-  List.filter_map 
+let interesting_positions dataset =
+  List.filter_map
     (fun case -> Option.bind last_null (pick_long case))
     dataset
 ]}
@@ -90,7 +90,7 @@ val compare : ?cmp:('a -> 'a -> int) -> 'a option -> 'a option -> int
 val eq : ?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool
 (** Test for equality between option types, possibly using a custom
     equality predicate.  The parameter [eq] defaults to
-    [Pervasives.(=)]. 
+    [Pervasives.(=)].
 
     @since 1.4.0
 *)
@@ -100,7 +100,7 @@ val enum: 'a option -> 'a BatEnum.t
     the empty enumeration*)
 
 val of_enum: 'a BatEnum.t -> 'a option
-(** [of_enum e] consumes the first element of [e], if it exists, and 
+(** [of_enum e] consumes the first element of [e], if it exists, and
     returns [Some e]. If [e] is empty, return [None] *)
 
 exception No_value
@@ -121,7 +121,7 @@ module Monad : sig
 
   val bind : 'a m -> ('a -> 'b m) -> 'b m
 (** [bind m f] combines the calculation result [m] with the function [f].
-    E.g, in the Option monad : 
+    E.g, in the Option monad :
     [bind (Some 1) (fun x -> if x = 1 then Some 4 else None)] returns Some 4. *)
 end
 

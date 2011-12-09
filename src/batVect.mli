@@ -1,8 +1,8 @@
-(* 
+(*
  * Vect - Extensible arrays based on ropes
  * Copyright (C) 2007 Mauricio Fernandez <mfp@acm.org>
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -73,7 +73,7 @@ val max_length : int
 
 (** {6 Creation and conversions} *)
 
-val empty : 'a t 
+val empty : 'a t
   (** The empty vect. *)
 
 val singleton : 'a -> 'a t
@@ -100,7 +100,7 @@ val init : int -> (int -> 'a) -> 'a t
       with element number [i] initialized to the result of [f i].
       In other terms, [init n f] tabulates the results of [f]
       applied to the integers [0] to [n-1].
-      
+
       @raise Invalid_argument if [n < 0] or [n > max_length].*)
 
 (** {6 Properties } *)
@@ -182,14 +182,14 @@ val remove : int -> int -> 'a t -> 'a t
 (** {6 Conversion}*)
 
 val enum : 'a t -> 'a BatEnum.t
-  (** Returns an enumeration of the elements of the vector. 
+  (** Returns an enumeration of the elements of the vector.
       Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
 
 val of_enum : 'a BatEnum.t -> 'a t
   (** Build a vector from an enumeration.*)
 
 val backwards : 'a t -> 'a BatEnum.t
-  (** Returns an enumeration of the elements of a vector, from last to first. 
+  (** Returns an enumeration of the elements of a vector, from last to first.
       Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
 
 val of_backwards : 'a BatEnum.t -> 'a t
@@ -221,11 +221,11 @@ val fold : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
 val fold_left : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
   (** [fold_left f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
       where [rn = Vect.get n r ] and [N = length r]. *)
-  
+
 val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
   (** as {!fold_left}, but no initial value - just applies reducing
       function to elements from left to right. *)
-  
+
 val fold_right : ('a -> 'b -> 'b ) -> 'a t -> 'b -> 'b
   (** [fold_right f r a] computes [ f (r0 ... (f rN-2 (f rN-1 a)) ...)) ]
       where [rn = Vect.get n r ] and [N = length r]. *)
@@ -256,7 +256,7 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 *)
 
   (**{6 Predicates}*)
-    
+
   val for_all : ('a -> bool) -> 'a t -> bool
     (** [for_all p [a0; a1; ...; an]] checks if all elements of the array
 	satisfy the predicate [p].  That is, it returns
@@ -272,20 +272,20 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 	that satisfies the predicate [p].
 	@raise Not_found  if there is no value that satisfies [p] in the
 	array [a]. *)
-    
+
   val mem : 'a -> 'a t -> bool
     (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
-    
+
   val memq : 'a -> 'a t -> bool
     (** Same as {!Array.mem} but uses physical equality instead of
 	structural equality to compare array elements.  *)
-    
+
   val findi : ('a -> bool) -> 'a t -> int
     (** [findi p a] returns the index of the first element of array [a]
 	that satisfies the predicate [p].
 	@raise Not_found if there is no value that satisfies [p] in the
 	array [a].  *)
-    
+
   val filter : ('a -> bool) -> 'a t -> 'a t
     (** [filter f v] returns a vect with the elements [x] from [v] such that
 	[f x] returns [true]. Operates in [O(n)] time. *)
@@ -318,7 +318,7 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
-  
+
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 

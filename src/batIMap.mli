@@ -11,7 +11,7 @@ type key = int
 val empty : 'a t
 
 val is_empty : 'a t -> bool
-    
+
 val add : ?eq:('a -> 'a -> bool) -> int -> 'a -> 'a t -> 'a t
 
 val add_range : ?eq:('a -> 'a -> bool) -> int -> int -> 'a -> 'a t -> 'a t
@@ -39,7 +39,7 @@ val iter_range : (int -> int -> 'a -> unit) -> 'a t -> unit
 val map : ?eq:('b -> 'b -> bool) -> ('a -> 'b) -> 'a t -> 'b t
 
 val mapi : ?eq:('b -> 'b -> bool) -> (int -> 'a -> 'b) -> 'a t -> 'b t
-    
+
 val map_range : ?eq:('b -> 'b -> bool) -> (int -> int -> 'a -> 'b) -> 'a t -> 'b t
 
 val fold : (int -> 'b -> 'a -> 'a) -> 'b t -> 'a -> 'a
@@ -71,7 +71,7 @@ module Infix : sig
     (** [map<--(key, value)] returns a map containing the same bindings as
         [map], plus a binding of [key] to [value]. If [key] was already bound
         in [map], its previous binding disappears. Equivalent to [add key value map]
-        
+
         {b Important warning}: {!BatIMap.add} takes an optional argument, [eq] that
         is missing in this operator [<--]. As a consequence, using [<--] implies the
         use of {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html#VAL(==)}Pervasives.(==)}

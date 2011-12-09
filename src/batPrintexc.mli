@@ -1,4 +1,4 @@
-(* 
+(*
  * ExtPrintexc - Extended Printexc module
  * Copyright (C) 1996 Xavier Leroy
  *               2008 David Teller, LIFO, Universite d'Orleans
@@ -20,7 +20,7 @@
  *)
 
 
-(** Facilities for printing exceptions. 
+(** Facilities for printing exceptions.
 
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Printexc.html}Printexc}
@@ -43,6 +43,6 @@ val print : _ BatInnerIO.output -> exn -> unit
 (** Print an exception.*)
 
 val print_backtrace: _ BatInnerIO.output -> unit
-(** [print_backtrace oc] Prints the an exception backtrace on the output channel [oc]. 
+(** [print_backtrace oc] Prints the an exception backtrace on the output channel [oc].
     @since 1.4.0
 *)

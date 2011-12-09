@@ -1,7 +1,7 @@
-(* 
+(*
  * Concurrent - Generic interface for concurrent operations
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -40,7 +40,7 @@ val create: enter:(unit -> unit) -> leave:(unit -> unit)  -> lock
       @param enter Enter critical section.
       @param leave Leave critical section.
 .*)
-      
+
 val nolock : lock
   (** A lock which does nothing.*)
 
@@ -50,7 +50,7 @@ val synchronize: (unit -> lock) -> ('a -> 'b) -> 'a -> 'b
      [f] but whose executions are protected by one lock obtained from
      [locker].  The same lock will be reused for all subsequent uses of
      [f'].
-    
+
      For instance,
      [synchronize Mutex.make f] is a new function whose executions
      will by synchronized by a new lock. Conversely,
@@ -76,7 +76,7 @@ val compose : lock -> lock -> lock
 module type BaseLock =
 sig
   type t(**The type of a lock.*)
-    
+
   val create:unit -> t
   val lock : t -> unit
   val unlock:t -> unit
@@ -87,7 +87,7 @@ end
 module type Lock =
 sig
   type t(**The type of a lock.*)
-    
+
   val create: unit -> t
   val lock  : t -> unit
   val unlock: t -> unit

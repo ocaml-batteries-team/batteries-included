@@ -20,8 +20,8 @@
 
 
 type ('a,'b) manual_cache = {
-  get : 'a -> 'b; 
-  del : 'a -> unit; 
+  get : 'a -> 'b;
+  del : 'a -> unit;
   enum: unit -> ('a * 'b) BatEnum.t
 }
 

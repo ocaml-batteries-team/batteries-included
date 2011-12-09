@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtMap - Additional map operations
  * Copyright (C) 1996 Xavier Leroy
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -36,7 +36,7 @@
     maps.
 
     {4 Functorized maps}
-    
+
     The important part is the {!Make} module which builds association
     maps from a user-provided datatype and comparison function. In the
     {!Make} module (or its output signature {!S}) are documentated all
@@ -115,14 +115,15 @@ sig
     val extract : key -> 'a t -> 'a * 'a t
     (** [extract k m] removes the current binding of [k] from [m],
         returning the value [k] was bound to and the updated [m].
-        
+
         @since 1.4.0
     *)
 
     val pop : 'a t -> (key * 'a) * 'a t
     (** [pop m] returns a binding from [m] and [m] without that
         binding.
-        
+
+        @raise Not_found if [m] is empty
         @since 1.4.0
     *)
 
@@ -183,13 +184,13 @@ sig
        equal, that is, contain equal keys and associate them with
        equal data.  [cmp] is the equality predicate used to compare
        the data associated with the keys. *)
-      
+
     val keys : _ t -> key BatEnum.t
       (** Return an enumeration of all the keys of a map.*)
 
     val values: 'a t -> 'a BatEnum.t
       (** Return an enumeration of al the values of a map.*)
-    
+
     val min_binding : 'a t -> (key * 'a)
       (** return the ([key,value]) pair with the smallest key *)
 
@@ -235,7 +236,7 @@ sig
     val bindings : 'a t -> (key * 'a) list
     (** Return the list of all bindings of the given map.
         The returned list is sorted in increasing key order.
-    
+
         Added for compatibility with stdlib 3.12
     *)
 
@@ -275,22 +276,22 @@ sig
 
     (** {7 Printing}*)
 
-    val print :  ?first:string -> ?last:string -> ?sep:string -> 
-      ('a BatInnerIO.output -> key -> unit) -> 
-      ('a BatInnerIO.output -> 'c -> unit) -> 
+    val print :  ?first:string -> ?last:string -> ?sep:string ->
+      ('a BatInnerIO.output -> key -> unit) ->
+      ('a BatInnerIO.output -> 'c -> unit) ->
       'a BatInnerIO.output -> 'c t -> unit
 
     (** Output signature of the functor {!Map.Make}. *)
-      
+
     (** {6 Override modules}*)
-      
+
     (**
        The following modules replace functions defined in {!Map} with functions
        behaving slightly differently but having the same name. This is by design:
        the functions meant to override the corresponding functions of {!Map}.
-       
+
     *)
-      
+
     (** Operations on {!Map} without exceptions.*)
     module Exceptionless : sig
       val find: key -> 'a t -> 'a option
@@ -310,7 +311,7 @@ sig
     end
 
     (** Operations on {!Map} with labels.
-	
+
 	This module overrides a number of functions of {!Map} by
 	functions in which some arguments require labels. These labels are
 	there to improve readability and safety and to let you change the
@@ -341,7 +342,7 @@ module IStringMap : S with type key = String.t
 module NumStringMap : S with type key = String.t
 (** A map on strings. Strings are handled as prefix + number (i.e. "abc23" < "abc123", "abc012" = "abc12")*)
 
-(* 
+(*
 
 module RopeMap    : S with type key = BatRope.t
 (** A map on ropes. Comparison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
@@ -356,7 +357,7 @@ module IntMap     : S with type key = BatInt.t
 
 module Make (Ord : BatInterfaces.OrderedType) : S with type key = Ord.t
 (** Functor building an implementation of the map structure
-   given a totally ordered type. 
+   given a totally ordered type.
 *)
 
 
@@ -450,13 +451,13 @@ val filterv: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
    such that [f a = true] remain. The bindings are passed to [f]
    in increasing order with respect to the ordering over the
    type of the keys. *)
-  
+
 val filter: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
 (**[filter f m] returns a map where only the (key, value) pairs
    [key], [a] of [m] such that [f key a = true] remain. The
    bindings are passed to [f] in increasing order with respect
    to the ordering over the type of the keys. *)
-  
+
 val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
 (** [filter_map f m] combines the features of [filter] and
     [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
@@ -499,7 +500,7 @@ val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
 
 val keys : ('a,'b) t -> 'a BatEnum.t
 (** Return an enumeration of all the keys of a map.*)
-  
+
 val values: ('a,'b) t -> 'b BatEnum.t
 (** Return an enumeration of al the values of a map.*)
 
@@ -572,7 +573,7 @@ val merge:
   -> ('key, 'a) t -> ('key, 'b) t -> ('key, 'c) t
 (** [merge f m1 m2] computes a map whose keys is a subset of keys of [m1]
     and of [m2]. The presence of each such binding, and the corresponding
-    value, is determined with the function [f].    
+    value, is determined with the function [f].
     The resulting map uses the comparison function of [m1].
 *)
 
@@ -621,10 +622,10 @@ val bindings : ('key, 'a) t -> ('key * 'a) list
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
-  
-val print :  ?first:string -> ?last:string -> ?sep:string -> 
-  ('a BatInnerIO.output -> 'b -> unit) -> 
-  ('a BatInnerIO.output -> 'c -> unit) -> 
+
+val print :  ?first:string -> ?last:string -> ?sep:string ->
+  ('a BatInnerIO.output -> 'b -> unit) ->
+  ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> ('b, 'c) t -> unit
 
 

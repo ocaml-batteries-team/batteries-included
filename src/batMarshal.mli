@@ -1,5 +1,5 @@
-(* 
- * ExtMarshal - Extended marshaling operations 
+(*
+ * ExtMarshal - Extended marshaling operations
  * Copyright (C) 1997 Xavier Leroy
  *               2008 David Teller
  *
@@ -55,7 +55,7 @@
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Marshal.html}Marshal}
     module, go there for documentation on the rest of the functions
     and types.
-    
+
     @author Xavier Leroy (base module)
     @author David Teller
 *)
@@ -63,7 +63,7 @@
 open Marshal
 
 val output: _ BatInnerIO.output -> ?sharing:bool -> ?closures:bool -> 'a -> unit
-  (** [output out v] writes the representation of [v] on [chan]. 
+  (** [output out v] writes the representation of [v] on [chan].
 
       @param sharing If [true] (default value), circularities
       and sharing inside the value [v] are detected and preserved

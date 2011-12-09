@@ -1,7 +1,7 @@
-(* 
+(*
  * Ref - Operations on references
  * Copyright (C) 2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Operations on references. 
+(** Operations on references.
 
     References are mutable values, i.e. "variables" which may actually
     change value during their life-time, as variables in imperative
@@ -50,21 +50,21 @@ external set : 'a ref -> 'a -> unit = "%setfield0"
 
 external get : 'a ref -> 'a = "%field0"
     (** As [ ! ]*)
-    
+
 val copy: 'a ref -> 'a ref
   (** [copy r] returns a new reference with the same initial
       content as [r].*)
 
 val pre : 'a ref -> ( 'a -> 'a ) -> 'a
   (** Perform an operation on a reference and return the
-      new value of that reference. 
+      new value of that reference.
 
       For instance, if [x] is a reference to [1],
       [pre x ( ( + ) 1) ] returns [2] and sets [x] to [2].*)
 
 val post: 'a ref -> ('a -> 'a) -> 'a
   (** Perform an operation on a reference and return the
-      previous value of that reference. 
+      previous value of that reference.
 
       For instance, if [x] is a reference to [1],
       [post x ( ( + ) 1)] returns [1] and sets [x] to [2].*)

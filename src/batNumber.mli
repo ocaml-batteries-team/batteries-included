@@ -1,8 +1,8 @@
-(* 
+(*
  * Number - Generic interface for numbers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -37,7 +37,7 @@
    the internal representation. For instance, with module {!Int},
    [max_num + 1] returns [min_num]. By opposition, with module
    {!Safe_int}, [max_num + 1] raises [Overflow].
-   
+
 *)
 exception Overflow
 
@@ -114,7 +114,7 @@ end
    The full set of operations of a type of numbers
 *)
 module type Numeric =
-sig  
+sig
   type t
   val zero : t
   val one : t
@@ -177,8 +177,8 @@ sig
   val zero : t
   val one  : t
 
-    (** {6 Arithmetic operations} 
-	
+    (** {6 Arithmetic operations}
+
 	Depending on the implementation, some of these operations
 	{i may} raise exceptions at run-time to represent over/under-flows.*)
   val neg : t -> t

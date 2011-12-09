@@ -1,7 +1,7 @@
-(* 
+(*
  * ExtUnit - Operations on Unit
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,7 +20,7 @@
 
 (**
    Operations on [unit].
-   
+
    @author David Teller
 *)
 
@@ -29,7 +29,7 @@
 
     val string_of : t -> string
     (**Convert the given unit to a string.
-       
+
        Returns ["()"]. *)
 
     val of_string : string -> t
@@ -38,7 +38,7 @@
 	 Accepts ["()"]. Raises [Invalid_argument "unit_of_string"] if the
 	 given string is not ["()"].
       *)
-      
+
     val compare : t -> t -> int
       (** Compare two units.
 

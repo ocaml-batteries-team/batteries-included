@@ -1,4 +1,4 @@
-(* 
+(*
  * ExtPrintf - Extended Printf module
  * Copyright (C) 2008 David Teller
  *
@@ -39,7 +39,7 @@ open BatInnerIO
      only module {!Print} will be updated and maintained.
 
      {6 General overview}
-     
+
    The functions of this module produce output according to a
    {!Pervasives.format}, as described below. Some functions write to
    the standard output (i.e. the screen), some to error channels,
@@ -77,13 +77,13 @@ open BatInnerIO
    Note that [\n] (the newline character) and [\t] (the tabulation)
    are not specific to this module but rather part of the conventions
    on characters strings in OCaml.
-     
+
    Other directives and functions make this module extremely useful
    for printing, pretty-printing and translation of messages to
    the user's language. For more information, see the documentation
    of {!format} and the various functions.*)
 
-  
+
 
 (**
    {6 Formats}
@@ -92,7 +92,7 @@ open BatInnerIO
 type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
 (**
    The format to use for displaying the various arguments passed to the function.
-   
+
    Syntactically, the format is a character string which contains two types
    of objects: plain characters, which are simply copied, and directives,
    each of which causes the conversion and printing of arguments.
@@ -205,11 +205,11 @@ type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
 val printf: ('b, 'a output, unit) t -> 'b
   (**The usual [printf] function, prints to the standard output {!stdout}, i.e. normally
      to the screen. If you are lost, this is probably the function you're looking for.*)
-  
+
 val eprintf: ('b, 'a output, unit) t -> 'b
   (**The usual [eprintf] function, prints to the standard error output {!stderr}, used
      to display warnings and errors. Otherwise identical to {!printf}.*)
-  
+
 val sprintf:  ('a, unit, string) t -> 'a
   (** A function which doesn't print its result but returns it as a string. Useful
       for building messages, for translation purposes or for display in a window,
@@ -221,7 +221,7 @@ val sprintf:  ('a, unit, string) t -> 'a
 
       Note that any function called with [%a] should return strings, i.e.
       should have type [unit -> string].*)
-  
+
 val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
   (** A function which doesn't print its result but returns it as a string. Useful
       for building messages, for translation purposes or for display in a window,
@@ -233,7 +233,7 @@ val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
       Note that any function called with [%a] should be able to print its result,
       i.e. should have type ['b output -> unit].*)
 
-  
+
 (** {6 General functions}*)
 
 val fprintf: 'a output -> ('b, 'a output, unit) t -> 'b
@@ -252,31 +252,31 @@ val fprintf: 'a output -> ('b, 'a output, unit) t -> 'b
 val ifprintf: _        -> ('b, 'a output, unit) t -> 'b
   (**As {!fprintf} but doesn't actually print anything.
      Sometimes useful for debugging.*)
-  
+
 val bprintf: Buffer.t  -> ('a, Buffer.t, unit) t -> 'a
   (**As {!fprintf}, but with buffers instead of outputs.
      In particular, any unparser called with [%a] should
      write to a buffer rather than to an output*)
-  
+
 val bprintf2: Buffer.t  -> ('b, 'a output, unit) t -> 'b
   (**As {!printf} but writes to a buffer instead
      of printing to the output. By opposition to
      {!bprintf}, only the result is changed with
      respect to {!printf}, not the inner workings.*)
-  
+
 (**{6 Functions with continuations}*)
 
 val kfprintf : ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) format4 -> 'c
   (**Same as [fprintf], but instead of returning immediately, passes the [output] to its first
      argument at the end of printing.*)
-  
+
 val ksprintf: (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
   (** Same as [sprintf] above, but instead of returning the string,
       passes it to the first argument. *)
 val ksprintf2: (string -> 'b) -> ('c, 'a output, unit, 'b) format4 -> 'c
   (** Same as [sprintf2] above, but instead of returning the string,
       passes it to the first argument. *)
-  
+
 val kbprintf : (Buffer.t -> 'a) ->
   Buffer.t -> ('b, Buffer.t, unit, 'a) format4 -> 'b
   (** Same as [bprintf], but instead of returning immediately,
@@ -284,17 +284,17 @@ val kbprintf : (Buffer.t -> 'a) ->
 val kbprintf2 : (Buffer.t -> 'b) ->  Buffer.t -> ('c, 'a output, unit, 'b) format4 -> 'c
   (** Same as [bprintf2], but instead of returning immediately,
       passes the buffer to its first argument at the end of printing.*)
-  
+
 val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
   (** @deprecated This is a deprecated synonym for [ksprintf]. *)
-  
+
 
 (**
    {6 About formats}
-   
+
    You only need to read this if you intend to create your new printf-like functions,
    which happens generally by toying with {!mkprintf}.
-   
+
 
    {7 Format4}
 
@@ -309,9 +309,9 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
    - ['b] is the type of the first argument given to unparsers
    (i.e. functions introduced with [%a] or [%t])
    {ul
-   {- if your unparsers take a [unit] argument, ['b] should be 
+   {- if your unparsers take a [unit] argument, ['b] should be
    [unit]}
-   {- if your unparsers take a [string output], ['b] should be 
+   {- if your unparsers take a [string output], ['b] should be
    [string output]}
    {- ...}
    }
@@ -328,7 +328,7 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 
    {7 Format}
    [('a, 'b, 'c) format] or [('a, 'b, 'c) t] is just a shortcut for [('a, 'b, 'c, 'c) format4].
-   
+
    {7 Important}
    Note that {!Obj.magic} is involved behind this, so be careful.
 *)
