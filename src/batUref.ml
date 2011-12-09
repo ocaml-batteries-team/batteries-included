@@ -49,10 +49,23 @@ let uset ur x =
 let equal ur vr =
   find ur == find vr
 
-let unite ?(sel=(fun x y -> x)) ur vr =
+let unite ?(sel=(fun x _y -> x)) ur vr =
   let ur = find ur in
   let vr = find vr in
-  if ur == vr then () else
+  if ur == vr then begin
+  (* even when ur and vr are the same reference, we need to apply
+     the selection function, as [sel x x] may be different from [x].
+
+     For example, [unite ~sel:(fun _ _ -> v) r r] would fail
+     to set the content of [r] to [v] otherwise. *)
+    match !ur with
+      | Ranked (x, r) ->
+        let x' = sel x x in
+        if x' != x then 
+          ur := Ranked(x', r)
+      | _ -> assert false
+  end 
+  else
     match !ur, !vr with
       | Ranked (x, xr), Ranked (y, yr) ->
           if xr = yr then begin

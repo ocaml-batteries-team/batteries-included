@@ -40,7 +40,7 @@ val unite : ?sel:('a -> 'a -> 'a) -> 'a uref -> 'a uref -> unit
   (** [unite ~sel ur1 ur2] unites the urefs [ur1] and [ur2], selecting
       the result of [sel (uget ur1) (uget ur2)] for the contents of
       the resulting united uref. After this operation, [uget ur1 ==
-      uget ur2]. By default, [sel] is {!fst}. *)
+      uget ur2]. By default, [sel] is [fun x _y -> x]. *)
 
 val equal : 'a uref -> 'a uref -> bool
   (** [equal ur1 ur2] returns [true] iff [ur1] and [ur2] are equal

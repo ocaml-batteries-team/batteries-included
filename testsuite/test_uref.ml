@@ -25,15 +25,12 @@ let test_unite () =
    uget r = v && uget r' = v" @?
     (let r, r' = M.uref v, M.uref v' in
      M.unite ~sel:(fun x y -> y) r r'; M.uget r = v' && M.uget r' = v');
-  if false then begin
-  (* this test is currently broken *)
   "let r = uref v in
    unite ~sel:(fun _ _ -> v') r r;
    uget r = v'" @?
     (let r = M.uref v in
      M.unite ~sel:(fun _ _ -> v') r r;
      M.uget r = v');
-  end;
   "let r, r' = uref v, uref v in
    unite ~sel:(fun _ _ -> v') r r'; uget r = v'" @?
     (let r, r' = M.uref v, M.uref v' in
