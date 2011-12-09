@@ -125,11 +125,7 @@ let _ = dispatch begin function
          explanation of Xavier Clerc:
            http://caml.inria.fr/mantis/print_bug_page.php?bug_id=5162
       *)
-      dep ["pset_mli"] [Pathname.concat "src" "batPSet.mli"];
-      dep ["pmap_mli"] [Pathname.concat "src" "batPMap.mli"];
-
-      dep ["ocaml"; "doc"; "extension:html"] &
-           [doc_intro];
+      dep ["ocaml"; "doc"; "extension:html"] & [doc_intro];
       flag ["ocaml"; "doc"; "extension:html"] &
         (S[A"-t"; A"Batteries user guide"; 
            A"-intro"; P doc_intro; 
