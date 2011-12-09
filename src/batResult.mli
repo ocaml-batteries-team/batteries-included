@@ -1,7 +1,7 @@
 open BatPervasives
 (**  Monadic results of computations that can raise exceptions *)
 
-type ('a, 'b) t = ('a, 'b) result 
+type ('a, 'b) t = ('a, 'b) result
     (** The type of a result*)
 
 val catch: ('a -> 'b) -> 'a -> ('b, exn) result

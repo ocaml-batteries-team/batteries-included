@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtHashtbl - extra functions over hashtables.
  * Copyright (C) 2003 Nicolas Cannasse
  *               2009 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,12 +18,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
- 
+
 (** Extra functions over hashtables. *)
 
 
-(** Operations over hashtables. 
-    
+(** Operations over hashtables.
+
     This module replaces Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html}Hashtbl}
     module.  All functions and types are provided here.
@@ -140,7 +140,7 @@ val mem : ('a, 'b) t -> 'a -> bool
    choice between using the more general functions of {!BatEnum}, with
    {!keys}, {!values}, {!enum} and {!of_enum}, or the more optimized
    functions of this section.
-   
+
    If you are new to OCaml or unsure about data structure, using the
    functions of {!BatEnum} is a safe bet. Should you wish to improve
    performance at the cost of generality, you will always be able to
@@ -219,8 +219,8 @@ external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
 
 (** {7 Printing}*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 
-                                                             ('a BatInnerIO.output -> 'c -> unit) -> 
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->
+                                                             ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> ('b, 'c) t -> unit
 
      (** {6 Override modules}*)
@@ -230,7 +230,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
        behaving slightly differently but having the same name. This is by design:
        the functions meant to override the corresponding functions of {!Hashtbl}.
     *)
-      
+
     (** Operations on {!Hashtbl} without exceptions.
 
 	@documents Hashtbl.Exceptionless
@@ -258,7 +258,7 @@ sig
 end
 
    (** Operations on {!Hashtbl} with labels.
-	
+
 	This module overrides a number of functions of {!Hashtbl} by
 	functions in which some arguments require labels. These labels are
 	there to improve readability and safety and to let you change the
@@ -333,19 +333,19 @@ module type S =
     val values : 'a t -> 'a BatEnum.t
     val enum : 'a t -> (key * 'a) BatEnum.t
     val of_enum : (key * 'a) BatEnum.t -> 'a t
-    val print :  ?first:string -> ?last:string -> ?sep:string -> 
-      ('a BatInnerIO.output -> key -> unit) -> 
-      ('a BatInnerIO.output -> 'b -> unit) -> 
+    val print :  ?first:string -> ?last:string -> ?sep:string ->
+      ('a BatInnerIO.output -> key -> unit) ->
+      ('a BatInnerIO.output -> 'b -> unit) ->
       'a BatInnerIO.output -> 'b t -> unit
-      
+
     (** {6 Override modules}*)
-      
+
     (**
        The following modules replace functions defined in {!Hashtbl} with functions
        behaving slightly differently but having the same name. This is by design:
        the functions meant to override the corresponding functions of {!Hashtbl}.
     *)
-      
+
     (** Operations on {!Hashtbl} without exceptions.
 
 	@documents Hashtbl.S.Exceptionless*)
@@ -353,7 +353,7 @@ module type S =
     sig
       val find : 'a t -> key -> 'a option
     end
-    
+
     (** Infix operators over a {!BatHashtbl} *)
     module Infix :
     sig
@@ -372,7 +372,7 @@ module type S =
     end
 
     (** Operations on {!Hashtbl} with labels.
-	
+
 	This module overrides a number of functions of {!Hashtbl} by
 	functions in which some arguments require labels. These labels are
 	there to improve readability and safety and to let you change the
@@ -397,7 +397,7 @@ module type S =
 
   end
 (** The output signature of the functor {!Hashtbl.Make}. *)
-    
+
 module Make (H : HashedType) : S with type key = H.t
   (** Functor building an implementation of the hashtable structure.
       The functor [Hashtbl.Make] returns a structure containing
@@ -408,7 +408,7 @@ module Make (H : HashedType) : S with type key = H.t
       specified in the functor argument [H] instead of generic
       equality and hashing. *)
 
-(** Capabilities for hashtables. 
+(** Capabilities for hashtables.
 
     @documents Hashtbl.Cap
 *)
@@ -417,7 +417,7 @@ sig
 
   type ('a, 'b, 'c) t constraint 'c = [< `Read | `Write ]
   (** The type of a hashtable. *)
-      
+
   (**{6 Constructors}*)
 
 val create : int -> ('a, 'b, _) t
@@ -425,27 +425,27 @@ val create : int -> ('a, 'b, _) t
 external of_table  : ('a, 'b) Hashtbl.t -> ('a, 'b, _ ) t = "%identity"
   (** Adopt a regular hashtable as a capability hashtble, allowing
       to decrease capabilities if necessary.
-      
+
       This operation involves no copying. In other words, in
       [let cap = of_table a in ...], any modification in [a]
       will also have effect on [cap] and reciprocally.*)
-  
+
 external to_table  : ('a, 'b, [`Read | `Write]) t -> ('a, 'b) Hashtbl.t = "%identity"
   (** Return a capability hashtable as a regular hashtable.
-      
+
       This operation requires both read and write permissions
       on the capability table and involves no copying. In other
       words, in [let a = of_table cap in ...], any modification
       in [a] will also have effect on [cap] and reciprocally.*)
-  
+
 external read_only :  ('a, 'b, [>`Read])  t -> ('a, 'b, [`Read])  t = "%identity"
   (** Drop to read-only permissions.
-      
+
       This operation involves no copying.*)
-  
+
 external write_only : ('a, 'b, [>`Write]) t -> ('a, 'b, [`Write]) t = "%identity"
   (** Drop to write-only permissions.
-      
+
       This operation involves no copying.*)
 
 (**{6 Base operations}*)
@@ -509,20 +509,20 @@ val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b, _) t
 
 (** {7 Printing}*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 
-                                                             ('a BatInnerIO.output -> 'c -> unit) -> 
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->
+                                                             ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
 
 
 
 (** {6 Override modules}*)
-    
+
 (** Operations on {!BatHashtbl.Cap} without exceptions.*)
 module Exceptionless :
 sig
   val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
 end
-  
+
 (** Operations on {!BatHashtbl.Cap} with labels.*)
 module Labels :
 sig

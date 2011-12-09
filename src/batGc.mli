@@ -1,4 +1,4 @@
-(* 
+(*
  * ExtGC - Extended GC operations
  * Copyright (C) 1996 Damien Doligez
  *               2008 David Teller, LIFO, Universite d'Orleans
@@ -20,7 +20,7 @@
  *)
 
 
-(** Memory management control and statistics; finalised values. 
+(** Memory management control and statistics; finalised values.
 
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Gc.html}Gc}

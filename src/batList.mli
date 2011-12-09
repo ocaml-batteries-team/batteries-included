@@ -36,20 +36,20 @@
     cause a [Stack_overflow] when used on very long list.
 
     The implementation might be a little more slow in bytecode,
-    but compiling in native code will not affect performances. 
+    but compiling in native code will not affect performances.
 
 
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html}List}
     module, go there for documentation on the rest of the functions
     and types.
-    
+
 *)
 
 (** List operations.
-    
-    @documents List 
-    
+
+    @documents List
+
     @author Xavier Leroy (base module)
     @author Brian Hurt
     @author Nicolas Cannasse
@@ -96,7 +96,7 @@
 	  (** Same as [concat]. *)
 
 	(**{6 Constructors}*)
-	  
+
 	val make : int -> 'a -> 'a list
 	  (** Similar to [String.make], [make n x] returns a
 	      list containing [n] elements [x]. *)
@@ -104,7 +104,7 @@
 	val init : int -> (int -> 'a) -> 'a list
 	  (** Similar to [Array.init], [init n f] returns the list containing
 	      the results of (f 0),(f 1).... (f (n-1)).
-	      Raise [Invalid_arg "BatList.init"] if n < 0.*)
+	      @raise Invalid_argument ["BatList.init"] if n < 0.*)
 
 
 	(**{6 Iterators}*)
@@ -131,7 +131,7 @@
 	      [f a0 (f a1 (... (f an b) ...))].  Tail-recursive. *)
 
 	val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
-	  (** [List.reduce f h::t] is [fold_left f h t].  
+	  (** [List.reduce f h::t] is [fold_left f h t].
 
 	      @raise Empty_list on empty lists. *)
 
@@ -172,7 +172,7 @@
 	val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> 'c -> 'c
 	  (** [List.fold_right2 f [a0; a1; ...; an] [b0; b1; ...; bn] c] is
 	      [f a0 b0 (f a1 b1 (... (f an bn c) ...))].
-	      
+
 	      @raise Different_list_size if the two lists have
 	      different lengths.  Tail-recursive. *)
 
@@ -180,13 +180,13 @@
 
 	val for_all2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 	  (** Same as {!List.for_all}, but for a two-argument predicate.
-	      
+
 	      @raise Invalid_argument if the two lists have
 	      different lengths. *)
 
 	val exists2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 	  (** Same as {!List.exists}, but for a two-argument predicate.
-	      
+
 	      @raise Invalid_argument if the two lists have
 	      different lengths. *)
 
@@ -253,14 +253,14 @@
 
 	val unique : ?cmp:('a -> 'a -> bool) -> 'a list -> 'a list
 	(** [unique cmp l] returns the list [l] without any duplicate element.
-	 Default comparator ( = ) is used if no comparison function specified. 
-	 
+	 Default comparator ( = ) is used if no comparison function specified.
+
 	 This function takes O(n²) time.
 	 @see 'sort_unique' to save time in cases when reordering the list is acceptable
 	 *)
 
 	val unique_eq : ?eq:('a -> 'a -> bool) -> 'a list -> 'a list
-	(** As [unique] except comparator label is ~eq.  
+	(** As [unique] except comparator label is ~eq.
 	    @since 1.3.0
 	 *)
 
@@ -322,8 +322,8 @@
 	val take_while : ('a -> bool) -> 'a list -> 'a list
 	  (** [takewhile f xs] returns the first elements of list [xs]
 	      which satisfy the predicate [f]. *)
-	  
-	  
+
+
 	val drop_while : ('a -> bool) -> 'a list -> 'a list
 	  (** [dropwhile f xs] returns the list [xs] with the first
 	      elements satisfying the predicate [f] dropped. *)
@@ -333,8 +333,8 @@
 	  (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
 	      [first; a0; sep; a1; sep; a2; sep; ...; sep; an] *)
 
-	(** {6 BatEnum functions} 
-	    
+	(** {6 BatEnum functions}
+
 	    Abstraction layer.*)
 
 	val enum : 'a list -> 'a BatEnum.t
@@ -359,7 +359,7 @@
 
 
 	  (** {6 List of pairs}*)
-	  
+
 	val split : ('a * 'b) list -> 'a list * 'b list
 	  (** Transform a list of pairs into a pair of lists:
 	      [split [(a0,b0); (a1,b1); ...; (an,bn)]] is [([a0; a1; ...; an], [b0; b1; ...; bn])].
@@ -380,17 +380,17 @@
 	      induced by [c]*)
 
 	val sort_unique : ('a -> 'a -> int) -> 'a list -> 'a list
-	(** [sort_unique cmp l] returns the list [l] sorted and without any duplicate element. [cmp] is a usual comparison function providing linear order. 
-	
+	(** [sort_unique cmp l] returns the list [l] sorted and without any duplicate element. [cmp] is a usual comparison function providing linear order.
+
 	  This function takes O(n log n) time.
 	 *)
-	  
+
 	val group : ('a -> 'a -> int) -> 'a list -> 'a list list
 	  (** [group cmp l] returns list of groups and each group consists of elements judged equal by comparison function [cmp]. Groups in the resulting list appear in order given by [cmp]. All groups are always nonempty. [group] returns [[]] only if [l] is empty.
-	  
+
 For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if following conditions are met:
 	  [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0],...
-	  *)  
+	  *)
 
 	val cartesian_product : 'a list -> 'b list -> ('a * 'b) list
 	(** Different from [List.combine], this returns every pair
@@ -408,7 +408,7 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	(** {6 Boilerplate code}*)
 
 	(** {7 Printing}*)
-	  
+
 	val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b list -> unit
 	  (**Print the contents of a list*)
 
@@ -426,12 +426,12 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	  (** obsolete, as {!drop_while} *)
 
 	(** {6 Override modules}*)
-	  
+
 	(**
 	   The following modules replace functions defined in {!List} with functions
 	   behaving slightly differently but having the same name. This is by design:
 	   the functions meant to override the corresponding functions of {!List}.
-	   
+
 	*)
 
 	(** Exceptionless counterparts for error-raising operations*)
@@ -443,17 +443,17 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
                 element has not been found.*)
 
 	  val rfind : ('a -> bool) -> 'a list -> 'a option
-	    (** [rfind p l] returns [Some x] where [x] is the last element of [l] such 
+	    (** [rfind p l] returns [Some x] where [x] is the last element of [l] such
 		that [p x] returns [true] or [None] if such element as not been found. *)
 
 	  val findi : (int -> 'a -> bool) -> 'a list -> (int * 'a) option
-	    (** [findi p e l] returns [Some (i, ai)] where [ai] and [i] are respectively the 
-		first element of [l] and its index, such that [p i ai] is true, 
+	    (** [findi p e l] returns [Some (i, ai)] where [ai] and [i] are respectively the
+		first element of [l] and its index, such that [p i ai] is true,
 		or [None] if no	such element has been found. *)
 
 	  val split_at : int -> 'a list -> [`Ok of ('a list * 'a list) | `Invalid_argument of string]
-	    (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns 
-		[Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2] 
+	    (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns
+		[Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2]
 		contains the others. Otherwise, returns [`Invalid_argument n] *)
 
 	  val at : 'a list -> int -> [`Ok of 'a | `Invalid_argument of string]
@@ -486,13 +486,13 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	    if no such element exists. *)
 
 	  val hd : ('a list -> 'a option)
-	(** [hd l] returns [Some x] such that [x] is the first element of the given list [l]. 
+	(** [hd l] returns [Some x] such that [x] is the first element of the given list [l].
 	    Returns [None] if list [l] is empty. *)
-	
+
 	  val tl : ('a list -> 'a list option)
-	(** [tl l] returns [Some x] such that [x] is the given list [l] without its first element. 
+	(** [tl l] returns [Some x] such that [x] is the given list [l] without its first element.
 	    Returns [None] if list [l] is empty *)
- 
+
 end
 
 	(** {6 Infix submodule regrouping all infix operators} *)
@@ -501,7 +501,7 @@ end
 	end
 
 	(** Operations on {!List} with labels.
-	    
+
 	    This module overrides a number of functions of {!List} by
 	    functions in which some arguments require labels. These labels are
 	    there to improve readability and safety and to let you change the

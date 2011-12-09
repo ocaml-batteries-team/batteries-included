@@ -1,0 +1,79 @@
+#!/bin/bash
+# Simple sanity checking of documentation of exceptions.
+# Usage: go to src/ and run ../check_raise
+
+header() {
+  info=$1
+  shift
+  result=$(mktemp)
+  $* >$result
+  cw=$(wc -w $result | cut -f1 -d\ )
+  if [ "$cw" -ne "0" ]
+  then
+    echo $info
+    cat $result
+    echo
+  fi
+}
+
+setminus() {
+  diff --new-line-format= --unchanged-line-format= $1 $2
+}
+
+# Capitalized Raise should be rare
+header "Interesting places:" \
+  grep -n Raise *
+
+#header "Needs source style:" \
+#  grep -n "Invalid_argument[[:space:]]\"" *.mli
+
+# Modules known to have documentation of exceptions OK
+already_ok=$(mktemp)
+echo "
+batteriesHelp
+batStack
+batSplay
+batReturn
+batRef
+batRandom
+batQueue
+batDeque
+batConcurrent
+batCharParser
+" | sort >$already_ok
+
+use_raise=$(mktemp)
+doc_raise=$(mktemp)
+poor_doc_raise=$(mktemp)
+to_be_verified=$(mktemp)
+
+# Crude check for presence of exceptions in implementations and interfaces
+grep -n "\(raise\|invalid_arg\|failwith\)" *.ml | cut -f1 -d. | uniq | sort >$use_raise
+grep -n @raise *.mli | cut -f1 -d. | uniq | sort >$doc_raise
+grep -ni raise *.mli | cut -f1 -d. | uniq | sort >$poor_doc_raise
+
+setminus $use_raise $already_ok >$to_be_verified
+
+suspicious=$(mktemp)
+setminus $to_be_verified $doc_raise >$suspicious
+
+need_doc=$(mktemp)
+setminus $suspicious $poor_doc_raise >$need_doc
+
+header "Documentation of the following modules mentions exceptions and awaits formal @raise clauses:" \
+  setminus $suspicious $need_doc
+
+header "The following modules need raised exceptions to be documented (quite likely):" \
+  cat $need_doc
+
+# Look for mistakes
+
+header "@raises instead of @raise:" \
+  grep -n @raises *
+
+header Typos: \
+  grep -n "Invalid_arg[[:space:]]" `find . -not -name batDynArray\*`
+
+header Typos: \
+  grep -n Invald_argument *
+

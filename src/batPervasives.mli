@@ -649,7 +649,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
       one element [a0], otherwise [f (... (f (f a0) a1) ...) aN] where
       [a0,a1..aN] are the elements of [e].
 
-      @raises [Not_found] if [e] is empty.
+      @raise Not_found if [e] is empty.
 
       For instance, if [add] is the function [fun x y -> x + y],
       [reduce add] is the function which computes the sum of the

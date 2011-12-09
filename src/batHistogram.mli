@@ -79,5 +79,6 @@ val values : t -> float BatEnum.t
 
 (** Given a list of values between 0.0 and 100.0 (excluding
     endpoints), return the percentile measurement from added values
-    corresponding to each value*)
+    corresponding to each value
+    @raise Invalid_argument if some of the given values is outside the open inteval (0, 100) *)
 val percentile : t -> float list -> float list

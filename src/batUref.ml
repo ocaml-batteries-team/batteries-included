@@ -38,13 +38,13 @@ let uref x = ref (Ranked (x, 0))
 
 let uget ur = match !(find ur) with
   | Ranked (x, _) -> x
-  | _ -> failwith "Uref.get"            (* impossible *)
+  | _ -> assert false
 
 let uset ur x =
   let ur = find ur in
   match !ur with
     | Ranked (_, r) -> ur := Ranked (x, r)
-    | _ -> failwith "Uref.uset"         (* impossible *)
+    | _ -> assert false
 
 let equal ur vr =
   find ur == find vr
@@ -65,13 +65,13 @@ let unite ?(sel=(fun x y -> x)) ur vr =
             vr := Ranked (sel x y, yr) ;
             ur := Ptr vr
           end
-      | _ -> failwith "Uref.unite"      (* impossible *)
+      | _ -> assert false
 
 let print elepr out ur = match !(find ur) with
   | Ranked (x, _) ->
       BatInnerIO.nwrite out "uref " ;
       elepr out x ;
-  | _ -> failwith "Uref.print"          (* impossible *)
+  | _ -> assert false
 
 let t_printer elepr paren out ur =
   if paren then BatInnerIO.nwrite out "(" ;

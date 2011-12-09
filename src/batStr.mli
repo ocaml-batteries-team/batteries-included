@@ -2,7 +2,7 @@
  * ExtStr - Additional functions for regular expressions
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -21,7 +21,7 @@
 
 
 
-(** Regular expressions and high-level string processing 
+(** Regular expressions and high-level string processing
 
     @author Xavier Leroy (Base module)
     @author David Teller

@@ -1,7 +1,7 @@
 (*
  * Base64 - Base64 codec
  * Copyright (C) 2003 Nicolas Cannasse
- *                                    
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -22,7 +22,7 @@
 
     8-bit characters are encoded into 6-bit ones using ASCII lookup tables.
     Default tables maps 0..63 values on characters A-Z, a-z, 0-9, '+' and '/'
-    (in that order). 
+    (in that order).
 
     @documents Base64
 

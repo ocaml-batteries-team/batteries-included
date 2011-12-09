@@ -1,4 +1,4 @@
-(* 
+(*
  * CharParser - Parsing character strings
  * Copyright (C) 2008 David Teller
  *
@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Parsing character strings. 
+(** Parsing character strings.
 
     This module defines common functions for parsing character strings,
     encoded in Latin-1. These functions are meant to be used in conjunction
@@ -40,7 +40,7 @@ type position =
 }
 
 val advance : char -> position -> position
-(**Advance by one char. 
+(**Advance by one char.
 
    [advance c p] returns a new position advanced by one char. If [c] is '\r' or '\n',
    the result is [{offset = 0; line = p.line + 1}]. Other wise, the result is
