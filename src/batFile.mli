@@ -101,7 +101,8 @@ val perm : permission list -> permission
 val unix_perm : int -> permission
 (**Create a permission from a Unix-style octal integer.
    See your favorite Unix documentation on [chmod]
-   for more details.*)
+   for more details.
+   @raise Invalid_argument if given number outside the [[0, 0o777]] range *)
 
 val set_permissions: string -> permission -> unit
 (** Set the permissions on a file.*)

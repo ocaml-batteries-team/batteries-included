@@ -123,6 +123,7 @@ sig
     (** [pop m] returns a binding from [m] and [m] without that
         binding.
 
+        @raise Not_found if [m] is empty
         @since 1.4.0
     *)
 

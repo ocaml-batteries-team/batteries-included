@@ -51,7 +51,8 @@ module type Table = sig
   val hashcons : t -> key -> key hobj
     (** [hashcons tab k] returns either [k], adding it to the table
         [tab] as a side effect, or if [k] is already in the table then
-        it returns the hashed object corresponding to that entry. *)
+        it returns the hashed object corresponding to that entry.
+        @raise Failure if number of objects with the same hash reaches system limit of array size *)
 
   val iter : (key hobj -> unit) -> t -> unit
     (** [iter f tab] applied [f] to every live hashed object in the

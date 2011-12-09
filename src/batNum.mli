@@ -87,7 +87,9 @@
 
     val square: num -> num
     val succ  : num -> num
+    (** @raise Invalid_argument ["Num.succ"] for [Num.Ratio _] argument *)
     val pred  : num -> num
+    (** @raise Invalid_argument ["Num.pred"] for [Num.Ratio _] argument *)
 
     val is_integer : num -> bool
       (** [is_integer x] returns [true] if [x] represents an integer value,
