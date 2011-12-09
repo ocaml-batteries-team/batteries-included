@@ -66,6 +66,13 @@ header "Documentation of the following modules mentions exceptions and awaits fo
 header "The following modules need raised exceptions to be documented (quite likely):" \
   cat $need_doc
 
+# A policy: don't expose string arguments of standard exceptions
+header "String arguments nobody should rely upon:" \
+  grep -n "Invalid_argument[[:space:]]\"" *.mli
+
+header "String arguments nobody should rely upon:" \
+  grep -n "Failure[[:space:]]\"" *.mli
+
 # Look for mistakes
 
 header "@raises instead of @raise:" \
