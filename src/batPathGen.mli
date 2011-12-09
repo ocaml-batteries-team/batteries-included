@@ -475,7 +475,7 @@ Return drive letter of the given absolute path.
     (drive_letter path_from) = (drive_letter path_to)
 ]}
 
-@raise Invald_argument if relative path is given
+@raise Invalid_argument if relative path is given
 *)
 
 end

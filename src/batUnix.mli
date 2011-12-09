@@ -75,7 +75,7 @@ val descr_of_input : BatInnerIO.input -> file_descr
     Not all inputs have file descriptors. This function works
     only for inputs which have been created using module {!Unix}.
 
-    @raise Invalid_argument "Unix.descr_of_in_channel" if this input
+    @raise Invalid_argument ["Unix.descr_of_in_channel"] if this input
     channel doesn't have a file descriptor
 *)
 
@@ -85,7 +85,7 @@ val descr_of_output : unit BatInnerIO.output -> file_descr
       Not all inputs have file descriptors. This function works
       only for inputs which have been created from module Unix.
 
-      @raise Invalid_arg "Unix.descr_of_out_channel" if this input
+      @raise Invalid_argument ["Unix.descr_of_out_channel"] if this input
       channel doesn't have a file descriptor
   *)
 

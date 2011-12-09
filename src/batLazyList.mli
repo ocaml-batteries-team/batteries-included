@@ -126,7 +126,7 @@ val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
 val init : int -> (int -> 'a) -> 'a t
   (** Similar to [Array.init], [init n f] returns the lazy list
       containing the results of (f 0),(f 1).... (f (n-1)).
-      Raise [Invalid_arg "LazyList.init"] if n < 0.*)
+      @raise Invalid_argument ["LazyList.init"] if n < 0.*)
 
 val make : int -> 'a -> 'a t
   (** Similar to [String.make], [make n x] returns a

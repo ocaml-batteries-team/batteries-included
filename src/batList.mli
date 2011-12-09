@@ -104,7 +104,7 @@
 	val init : int -> (int -> 'a) -> 'a list
 	  (** Similar to [Array.init], [init n f] returns the list containing
 	      the results of (f 0),(f 1).... (f (n-1)).
-	      Raise [Invalid_arg "BatList.init"] if n < 0.*)
+	      @raise Invalid_argument ["BatList.init"] if n < 0.*)
 
 
 	(**{6 Iterators}*)
