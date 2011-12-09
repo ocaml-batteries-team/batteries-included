@@ -373,8 +373,8 @@ val format : unit BatInnerIO.output -> pattern -> (unit BatInnerIO.output -> uni
       Additionally, ["%%"] is printed as ["%"] and ["%!"] prints
       nothing and is interpreted as a flush on the output.
 
-      If the pattern is incorrect or one of the index is not a valid
-      index, it raises [Invalid_argument "Batteries.Print.format"].
+      @raise Invalid_argument if the pattern is incorrect or one of the indices
+      is invalid.
       This may happen for example if you use i18n and a format
       translation is not correct. *)
 

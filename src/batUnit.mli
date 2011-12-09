@@ -35,8 +35,8 @@
     val of_string : string -> t
       (**Convert the given string to a unit.
 
-	 Accepts ["()"]. Raises [Invalid_argument "unit_of_string"] if the
-	 given string is not ["()"].
+	 Accepts ["()"].
+	 @raise Invalid_argument if the given string is not ["()"].
       *)
 
     val compare : t -> t -> int

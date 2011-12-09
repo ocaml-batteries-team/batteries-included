@@ -124,7 +124,7 @@ val of_char : char -> string
 
 val to_int : string -> int
   (** Returns the integer represented by the given string or raises
-      [Failure "int_of_string"] if the string does not represent an
+      [Failure] if the string does not represent an
       integer. This follows OCaml's int literal rules, so "0x"
       prefixes hexadecimal integers, "0o" for octal and "0b" for
       binary.  Underscores within the number are allowed for
@@ -132,11 +132,13 @@ val to_int : string -> int
 
       Examples: [ String.to_int "8_480" = String.to_int "0x21_20" ]
       [ try ignore(String.to_int "2,3"); false with Failure _ -> true ]
+
+      @raise Failure if the string does not represent an integer.
   *)
 
 val to_float : string -> float
   (** Returns the float represented by the given string or raises
-      [Failure "float_of_string"] if the string does not represent a float.
+      [Failure] if the string does not represent a float.
       Decimal points aren't required in the given string, as they are
       for float literals in OCaml, but otherwise the rules for float
       literals apply.
@@ -144,6 +146,8 @@ val to_float : string -> float
       Examples: [String.to_float "12.34e-1" = String.to_float "1.234"]
       [String.to_float "1" = 1.]
       [try ignore(String.to_float ""); false with Failure _ -> true]
+
+      @raise Failure if the string does not represent a float.
   *)
 
 (** {6 String traversals}*)
