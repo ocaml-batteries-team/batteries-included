@@ -60,7 +60,7 @@ val of_int : int -> bool
 val to_int : bool -> int
 val of_string : string -> bool
   (** Convert the given string to a boolean.
-      Raise [Invalid_argument "Bool.of_string"] if the string is not
+      Raise [Invalid_argument] if the string is not
       ["true"], ["false"], ["0"], ["1"], ["tt"] or ["ff"]. *)
 
 val to_string : bool -> string

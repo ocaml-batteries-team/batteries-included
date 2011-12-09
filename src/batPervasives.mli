@@ -189,7 +189,7 @@ val open_out : ?mode:(BatFile.open_out_flag list) ->
       of the file, as per Unix conventions. By default, files are created
       with default permissions (which depend on your setup).
 
-      Raise [Sys_error] if the file could not be opened. *)
+      @raise Sys_error if the file could not be opened. *)
 
 val open_out_bin : string -> unit BatIO.output
   (** Same as {!open_out}, but the file is opened in binary mode, so
@@ -227,7 +227,7 @@ val output_text : unit BatIO.output -> Ulib.Text.t -> unit
 val output : unit BatIO.output -> string -> int -> int -> unit
 (** [output oc buf pos len] writes [len] characters from string [buf],
    starting at offset [pos], to the given output channel [oc].
-   Raise [Invalid_argument "output"] if [pos] and [len] do not
+   @raise Invalid_argument if [pos] and [len] do not
    designate a valid substring of [buf]. *)
 
 val output_byte : unit BatIO.output -> int -> unit
@@ -264,7 +264,7 @@ val close_out : unit BatIO.output -> unit
       Output functions raise a [Sys_error] exception when they are
       applied to a closed output channel, except [close_out] and [flush],
       which do nothing when applied to an already closed channel.
-      Note that [close_out] may raise [Sys_error] if the operating
+      @raise Sys_error if the operating
       system signals an error when flushing or closing. *)
 
 val close_out_noerr : unit BatIO.output -> unit
@@ -290,7 +290,7 @@ val open_in : ?mode:(BatFile.open_in_flag list) ->
     default, files are created with default permissions (which depend
     on your setup).
 
-    Raise [Sys_error] if the file could not be opened. *)
+    @raise Sys_error if the file could not be opened. *)
 
 
 val open_in_bin : string -> BatIO.input
@@ -311,13 +311,13 @@ val open_in_gen : open_flag list -> int -> string -> BatIO.input
 
 val input_char : BatIO.input -> char
 (** Read one character from the given input channel.
-   Raise [End_of_file] if there are no more characters to read. *)
+   @raise End_of_file if there are no more characters to read. *)
 
 val input_line : BatIO.input -> string
 (** Read characters from the given input channel, until a
    newline character is encountered. Return the string of
    all characters read, without the newline character at the end.
-   Raise [End_of_file] if the end of the file is reached
+   @raise End_of_file if the end of the file is reached
    at the beginning of line. *)
 
 val input : BatIO.input -> string -> int -> int -> int
@@ -334,32 +334,32 @@ val input : BatIO.input -> string -> int -> int -> int
    [input] must be called again to read the remaining characters,
    if desired.  (See also {!Pervasives.really_input} for reading
    exactly [len] characters.)
-   Exception [Invalid_argument "input"] is raised if [pos] and [len]
+   @raise Invalid_argument if [pos] and [len]
    do not designate a valid substring of [buf]. *)
 
 val really_input : BatIO.input -> string -> int -> int -> unit
 (** [really_input ic buf pos len] reads [len] characters from channel [ic],
     storing them in string [buf], starting at character number [pos].
-    Raise [End_of_file] if the end of file is reached before [len]
+    @raise End_of_file if the end of file is reached before [len]
     characters have been read.
-    Raise [Invalid_argument "really_input"] if
+    @raise Invalid_argument if
     [pos] and [len] do not designate a valid substring of [buf]. *)
 
 val input_byte : BatIO.input -> int
 (** Same as {!Pervasives.input_char}, but return the 8-bit integer representing
     the character.
-    Raise [End_of_file] if an end of file was reached. *)
+    @raise End_of_file if an end of file was reached. *)
 
 val input_binary_int : BatIO.input -> int
 (** Read an integer encoded in binary format (4 bytes, big-endian)
     from the given input channel. See {!Pervasives.output_binary_int}.
-    Raise [End_of_file] if an end of file was reached while reading the
+    @raise End_of_file if an end of file was reached while reading the
     integer. *)
 
 val input_binary_float : BatIO.input -> float
 (** Read a float encoded in binary format (8 bytes, IEEE 754 double format)
     from the given input channel. See {!Pervasives.output_binary_float}.
-    Raise [End_of_file] if an end of file was reached while reading the
+    @raise End_of_file if an end of file was reached while reading the
     float. *)
 
 val input_value : BatIO.input -> 'a
@@ -373,7 +373,8 @@ val close_in : BatIO.input -> unit
   (** Close the given channel.  Input functions raise a [Sys_error]
       exception when they are applied to a closed input channel,
       except [close_in], which does nothing when applied to an already
-      closed channel.  Note that [close_in] may raise [Sys_error] if
+      closed channel.
+      @raise Sys_error if
       the operating system signals an error. *)
 
 val close_in_noerr : BatIO.input -> unit
@@ -736,7 +737,9 @@ val find : ('a -> bool) -> 'a BatEnum.t -> 'a
       in the enumeration, consuming the whole enumeration in the search.
 
       Since [find] consumes a prefix of the enumeration, it can be used several
-      times on the same enumeration to find the next element. *)
+      times on the same enumeration to find the next element.
+
+      @raise Not_found if no element in the whole enumeration satisfies the predicate *)
 
 val peek : 'a BatEnum.t -> 'a option
   (** [peek e] returns [None] if [e] is empty or [Some x] where [x] is
