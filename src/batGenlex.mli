@@ -2,7 +2,7 @@
  * Genlex - Generic lexer
  * Copyright (C) 2002 Jacques Garrigue
  *               2008 David Teller (Contributor)
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -57,7 +57,7 @@ val to_lazy_list_filter:  t -> char BatLazyList.t ->  token BatLazyList.t
 open BatCharParser
 module Languages :
 sig
-module type Definition = 
+module type Definition =
 sig
   val comment_delimiters : (string * string) option
   val line_comment_start : string option
@@ -150,6 +150,6 @@ sig
        to ignore following comments.*)
 
 end
-  
+
 end
 

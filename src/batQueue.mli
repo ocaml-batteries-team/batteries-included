@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtQueue - Extended operations on queues
  * Copyright (C) 1996 Xavier Leroy
  *               2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -22,7 +22,7 @@
 (** First-in first-out queues.
 
     This module implements queues (FIFOs), with in-place modification.
-    
+
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Queue.html}Queue}
     module, go there for documentation on the rest of the functions
@@ -37,7 +37,7 @@ open Queue
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 
 val enum : 'a t -> 'a BatEnum.t
-(** [enum q] returns a destructive enumeration of the elements of queue 
+(** [enum q] returns a destructive enumeration of the elements of queue
     [q], from the least recently entered to the most recently entered.
     Reading the enumeration will progressively empty [q].*)
 
@@ -47,9 +47,9 @@ val of_enum : 'a BatEnum.t -> 'a t
     enumeration, then with the second, etc.*)
 
 	(** {6 Boilerplate code}*)
-  
+
 (** {7 Printing}*)
-  
+
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 module Exceptionless : sig

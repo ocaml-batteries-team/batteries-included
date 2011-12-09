@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtChar - Additional character operations
  * Copyright (C) 1996 Xavier Leroy
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -19,13 +19,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Operations on characters. 
+(** Operations on characters.
 
     Characters range upon Latin-1 encoding, i.e. languages used in
     Western Europe and North America. For international characters,
     another, richer, module is provided: {!UChar}.
 
-    
+
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Char.html}Char}
     module, go there for documentation on the rest of the functions
@@ -37,7 +37,7 @@
 
 val is_whitespace : char -> bool
 (** Determine if a character is a whitespace.
-    Whitespace characters are defined as 
+    Whitespace characters are defined as
     [' '], ['\010'], ['\013'], ['\009'], ['\026']
     and ['\012']. *)
 

@@ -1,4 +1,4 @@
-(* 
+(*
  * BatInnerIO - Abstract input/output (inner module)
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller
@@ -27,7 +27,7 @@
    This module contains the core definitions of {!BatIO}, so as to avoid circular
    dependencies between modules which only need simple functions of {!BatIO} and
    that module itself.
-   
+
    Don't use this module, use {!BatIO}.
 
    @author Nicolas Cannasse
@@ -144,9 +144,9 @@ val on_close_out : 'a output -> ('a output -> unit) -> unit
 
 val create_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) -> 
+  input:(string -> int -> int -> int) ->
   close:(unit -> unit) -> input
-(** Fully create an input by giving all the needed functions. 
+(** Fully create an input by giving all the needed functions.
 
     {b Note} Do {e not} use this function for creating an input
     which reads from one or more underlying inputs. Rather, use
@@ -155,8 +155,8 @@ val create_in :
 
 val inherit_in:
   ?read:(unit -> char) ->
-  ?input:(string -> int -> int -> int) -> 
-  ?close:(unit -> unit) -> 
+  ?input:(string -> int -> int -> int) ->
+  ?close:(unit -> unit) ->
   input -> input
 (**
    Simplified and optimized version of {!wrap_in} whenever only
@@ -166,11 +166,11 @@ val inherit_in:
 
 val wrap_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) -> 
-  close:(unit -> unit) -> 
+  input:(string -> int -> int -> int) ->
+  close:(unit -> unit) ->
   underlying:(input list) ->
   input
-(** Fully create an input reading from other inputs by giving all the needed functions. 
+(** Fully create an input reading from other inputs by giving all the needed functions.
 
     This function is a more general version of {!create_in}
     which also handles dependency management between inputs.
@@ -181,11 +181,11 @@ val wrap_in :
 
 val create_out :
   write:(char -> unit) ->
-  output:(string -> int -> int -> int) ->   
-  flush:(unit -> unit) -> 
-  close:(unit -> 'a) -> 
+  output:(string -> int -> int -> int) ->
+  flush:(unit -> unit) ->
+  close:(unit -> 'a) ->
   'a output
-(** 
+(**
     Fully create an output by giving all the needed functions.
 
     @param write  Write one character to the output (see {!write}).
@@ -200,9 +200,9 @@ val create_out :
 
 val inherit_out:
   ?write:(char -> unit) ->
-  ?output:(string -> int -> int -> int) -> 
+  ?output:(string -> int -> int -> int) ->
   ?flush:(unit -> unit) ->
-  ?close:(unit -> unit) -> 
+  ?close:(unit -> unit) ->
   _ output -> unit output
 (**
    Simplified and optimized version of {!wrap_out} whenever only
@@ -212,10 +212,10 @@ val inherit_out:
 
 val wrap_out :
   write:(char -> unit)         ->
-  output:(string -> int -> int -> int) ->   
-  flush:(unit -> unit)         -> 
-  close:(unit -> 'a)           -> 
-  underlying:('b output list)  -> 
+  output:(string -> int -> int -> int) ->
+  flush:(unit -> unit)         ->
+  close:(unit -> 'a)           ->
+  underlying:('b output list)  ->
   'a output
 (**
    Fully create an output that writes to one or more underlying outputs.
@@ -321,7 +321,7 @@ val write_i16 : 'a output -> int -> unit
 (** Write a signed 16-bit word. *)
 
 val write_i32 : 'a output -> int -> unit
-(** Write a signed 32-bit integer. *) 
+(** Write a signed 32-bit integer. *)
 
 val write_real_i32 : 'a output -> int32 -> unit
 (** Write an OCaml int32. *)
@@ -343,7 +343,7 @@ val write_line : 'a output -> string -> unit
 	to CRLF on some systems depending on the underlying BatIO). *)
 
 external cast_output : 'a output -> unit output = "%identity"
-(** You can safely transform any output to an unit output in a safe way 
+(** You can safely transform any output to an unit output in a safe way
   by using this function. *)
 
 (**
@@ -351,7 +351,7 @@ external cast_output : 'a output -> unit output = "%identity"
 *)
 
 val input_channel : ?autoclose:bool -> ?cleanup:bool -> in_channel -> input
-(** Create an input that will read from a channel. 
+(** Create an input that will read from a channel.
 
     @param autoclose If true or unspecified, the {!type: input}
     will be automatically closed when the underlying [in_channel]
@@ -363,12 +363,12 @@ val input_channel : ?autoclose:bool -> ?cleanup:bool -> in_channel -> input
 *)
 
 val output_channel : ?cleanup:bool -> out_channel -> unit output
-(** Create an output that will write into a channel. 
+(** Create an output that will write into a channel.
 
     @param cleanup If true, the channel
     will be automatically closed when the {!type: output} is closed.
     Otherwise, you will need to close the channel manually.
-*) 
+*)
 (*
 val to_input_channel : input -> in_channel
 (** Create a channel that will read from an input.
@@ -398,7 +398,7 @@ val stdout: unit output
 
 val stderr: unit output
 (** Standard error output, as per Unix/Windows conventions.
-   
+
     Use this output to display warnings and error messages.
 *)
 
@@ -455,7 +455,7 @@ module Printf : sig
 
   (**
      {6 General overview}
-     
+
    The functions of this module produce output according to a
    {!Pervasives.format}, as described below. Some functions write to
    the standard output (i.e. the screen), some to error channels,
@@ -493,13 +493,13 @@ module Printf : sig
    Note that [\n] (the newline character) and [\t] (the tabulation)
    are not specific to this module but rather part of the conventions
    on characters strings in OCaml.
-     
+
    Other directives and functions make this module extremely useful
    for printing, pretty-printing and translation of messages to
    the user's language. For more information, see the documentation
    of {!format} and the various functions.*)
 
-  
+
 
 (**
    {6 Formats}
@@ -508,7 +508,7 @@ module Printf : sig
 type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
 (**
    The format to use for displaying the various arguments passed to the function.
-   
+
    Syntactically, the format is a character string which contains two types
    of objects: plain characters, which are simply copied, and directives,
    each of which causes the conversion and printing of arguments.
@@ -620,11 +620,11 @@ type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
 val printf: ('b, 'a output, unit) t -> 'b
   (**The usual [printf] function, prints to the standard output {!stdout}, i.e. normally
      to the screen. If you are lost, this is probably the function you're looking for.*)
-  
+
 val eprintf: ('b, 'a output, unit) t -> 'b
   (**The usual [eprintf] function, prints to the standard error output {!stderr}, used
      to display warnings and errors. Otherwise identical to {!printf}.*)
-  
+
 val sprintf:  ('a, unit, string) t -> 'a
   (** A function which doesn't print its result but returns it as a string. Useful
       for building messages, for translation purposes or for display in a window,
@@ -636,7 +636,7 @@ val sprintf:  ('a, unit, string) t -> 'a
 
       Note that any function called with [%a] should return strings, i.e.
       should have type [unit -> string].*)
-  
+
 val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
   (** A function which doesn't print its result but returns it as a string. Useful
       for building messages, for translation purposes or for display in a window,
@@ -648,7 +648,7 @@ val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
       Note that any function called with [%a] should be able to print its result,
       i.e. should have type ['b output -> unit].*)
 
-  
+
 (** {6 General functions}*)
 
 val fprintf: 'a output -> ('b, 'a output, unit) t -> 'b
@@ -667,30 +667,30 @@ val fprintf: 'a output -> ('b, 'a output, unit) t -> 'b
 val ifprintf: _        -> ('b, 'a output, unit) t -> 'b
   (**As {!fprintf} but doesn't actually print anything.
      Sometimes useful for debugging.*)
-  
+
 val bprintf: Buffer.t  -> ('a, Buffer.t, unit) t -> 'a
   (**As {!fprintf}, but with buffers instead of outputs.
      In particular, any unparser called with [%a] should
      write to a buffer rather than to an output*)
-  
+
 val bprintf2: Buffer.t  -> ('b, 'a output, unit) t -> 'b
   (**As {!printf} but writes to a buffer instead
      of printing to the output. By opposition to
      {!bprintf}, only the result is changed with
      respect to {!printf}, not the inner workings.*)
-  
+
 (**{6 Functions with continuations}*)
 val kfprintf : ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) format4 -> 'c
   (**Same as [fprintf], but instead of returning immediately, passes the [output] to its first
      argument at the end of printing.*)
-  
+
 val ksprintf: (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
   (** Same as [sprintf] above, but instead of returning the string,
       passes it to the first argument. *)
 val ksprintf2: (string -> 'b) -> ('c, 'a output, unit, 'b) format4 -> 'c
   (** Same as [sprintf2] above, but instead of returning the string,
       passes it to the first argument. *)
-  
+
 val kbprintf : (Buffer.t -> 'a) ->
   Buffer.t -> ('b, Buffer.t, unit, 'a) format4 -> 'b
   (** Same as [bprintf], but instead of returning immediately,
@@ -698,17 +698,17 @@ val kbprintf : (Buffer.t -> 'a) ->
 val kbprintf2 : (Buffer.t -> 'b) ->  Buffer.t -> ('c, 'a output, unit, 'b) format4 -> 'c
   (** Same as [bprintf2], but instead of returning immediately,
       passes the buffer to its first argument at the end of printing.*)
-  
+
 val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
   (** @deprecated This is a deprecated synonym for [ksprintf]. *)
-  
+
 
 (**
    {6 About formats}
-   
+
    You only need to read this if you intend to create your new printf-like functions,
    which happens generally by toying with {!mkprintf}.
-   
+
 
    {7 Format4}
 
@@ -723,9 +723,9 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
    - ['b] is the type of the first argument given to unparsers
    (i.e. functions introduced with [%a] or [%t])
    {ul
-   {- if your unparsers take a [unit] argument, ['b] should be 
+   {- if your unparsers take a [unit] argument, ['b] should be
    [unit]}
-   {- if your unparsers take a [string output], ['b] should be 
+   {- if your unparsers take a [string output], ['b] should be
    [string output]}
    {- ...}
    }
@@ -742,7 +742,7 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 
    {7 Format}
    [('a, 'b, 'c) format] or [('a, 'b, 'c) t] is just a shortcut for [('a, 'b, 'c, 'c) format4].
-   
+
    {7 Important}
    Note that {!Obj.magic} is involved behind this, so be careful.
 *)

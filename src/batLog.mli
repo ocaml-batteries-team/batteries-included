@@ -1,7 +1,7 @@
-(* 
+(*
  * BatLog - Simple Logging module
  * Copyright (C) 2011 The Batteries Included Team
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Simple logging 
+(** Simple logging
     @author Edgar Friendly
 *)
 open BatIO
@@ -36,7 +36,7 @@ val set_prefix : string -> unit
 (** Get and set the output flags.  These flags control how the log
     messages are output.  The default is [`Date; `Time] and log
     messages are printed as:
-    
+
     2011/0628 01:23:45: prefixmessage
  *)
 type flag = [
@@ -45,7 +45,7 @@ type flag = [
 | `Filepos (* Print the file and position of this log command (UNIMPLEMENTED) *)
 ]
 val get_flags : unit -> flag list
-val set_flags : flag list -> unit    
+val set_flags : flag list -> unit
 
 val print : ?fp:string -> string -> unit
 (** [print s] logs the message s, returning unit. *)

@@ -1,4 +1,4 @@
-(* 
+(*
  * Batteries_help - Calling the help system from the toplevel
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  *
@@ -27,7 +27,7 @@
     @author David Teller
 *)
 
-type kinds = 
+type kinds =
   | Values
   | Types
   | Topics

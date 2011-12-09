@@ -65,7 +65,7 @@
 
 (** Pairs. Some of the functions here are also exposed in
     {!Pervasives}, as documented below.
-    
+
     @author Edgar Friendly
     @author Ashish Agarwal
 *)
@@ -86,7 +86,7 @@ module Tuple2 : sig
 
   val mapn : ('a -> 'b) -> ('a * 'a) -> ('b * 'b)
     (** Like {!map} but specialized for tuples with elements of the
-        same type. 
+        same type.
 
         [mapn f] is equivalent to [map f f].
     *)
@@ -94,7 +94,7 @@ module Tuple2 : sig
   val map1 : ('a -> 'c) -> ('a * 'b) -> ('c * 'b)
     (** Equivalent to {!BatPervasives.first}, which is now
         deprecated. *)
-    
+
   val map2 : ('b -> 'c) -> ('a * 'b) -> ('a * 'c)
     (** Equivalent to {!BatPervasives.second}, which is now
         deprecated. *)
@@ -150,7 +150,7 @@ module Tuple3 : sig
 
   val mapn : ('a -> 'b) -> ('a * 'a * 'a) -> ('b * 'b * 'b)
     (** Like {!map} but specialized for tuples with elements of the
-        same type. 
+        same type.
 
         [mapn f] is equivalent to [map f f f].
     *)
@@ -221,7 +221,7 @@ module Tuple4 : sig
 
   val mapn : ('a -> 'b) -> ('a * 'a * 'a * 'a) -> ('b * 'b * 'b * 'b)
     (** Like {!map} but specialized for tuples with elements of the
-        same type. 
+        same type.
 
         [mapn f] is equivalent to [map f f f f].
     *)
@@ -311,7 +311,7 @@ module Tuple5 : sig
 
   val mapn : ('a -> 'b) -> ('a * 'a * 'a * 'a * 'a) -> ('b * 'b * 'b * 'b * 'b)
     (** Like {!map} but specialized for tuples with elements of the
-        same type. 
+        same type.
 
         [mapn f] is equivalent to [map f f f f f].
     *)

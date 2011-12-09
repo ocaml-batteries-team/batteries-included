@@ -1,9 +1,9 @@
-(* 
+(*
  * ExtBuffer - Additional buffer operations
  * Copyright (C) 1999 Pierre Weis, Xavier Leroy
  *               2009 David Teller, LIFO, Universite d'Orleans
  *               2009 Dawid Toton
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -28,7 +28,7 @@
    in quasi-linear time (instead of quadratic time when strings are
    concatenated pairwise).
 
-    
+
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Buffer.html}Buffer}
     module, go there for documentation on the rest of the functions
@@ -43,7 +43,7 @@ open Buffer
 
 
 val enum : t -> char BatEnum.t
-  (** Returns an enumeration of the characters of a buffer. 
+  (** Returns an enumeration of the characters of a buffer.
 
       Contents of the enumeration is unspecified if the buffer is modified after
       the enumeration is returned.*)
@@ -56,7 +56,7 @@ val blit : t -> int -> string -> int -> int -> unit
 (** [Buffer.blit b srcoff dst dstoff len] copies [len] characters from
    the current contents of the buffer [b] starting at offset [off],
    starting at character number [srcoff], to string [dst], starting at
-   character number [dstoff].  
+   character number [dstoff].
 
     @raise Invalid_argument if [srcoff] and [len] do not designate a
     valid substring of the buffer, or if [dstoff] and [len] do not

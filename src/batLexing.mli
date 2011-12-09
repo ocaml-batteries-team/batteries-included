@@ -2,7 +2,7 @@
  * BatLexing - Additional functions for string manipulations.
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -19,13 +19,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 open Lexing
-(** Simple lexing using ocaml conventions 
+(** Simple lexing using ocaml conventions
 
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Lexing.html}Lexing}
     module, go there for documentation on the rest of the functions
     and types.
-    
+
 *)
 
 

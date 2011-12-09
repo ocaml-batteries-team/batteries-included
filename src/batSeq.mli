@@ -184,7 +184,7 @@ val find_map : ('a -> 'b option) -> 'a t -> 'b option
 val filter : ('a -> bool) -> 'a t -> 'a t
 (** [filter p s] returns the sequence of elements of [s] satisfying
     [p]. Lazy.
-    
+
     {b Note} filter is lazy in that it returns a lazy sequence, but
     each element in the result is eagerly searched in the input
     sequence. Therefore, the access to a given element in the result
@@ -193,7 +193,7 @@ val filter : ('a -> bool) -> 'a t -> 'a t
     [p] returns [false]).
 
     Other functions that may drop an unbound number of elements
-    ([filter_map], [take_while], etc.) have the same behavior. 
+    ([filter_map], [take_while], etc.) have the same behavior.
 *)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t

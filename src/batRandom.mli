@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtRandom - Additional randomization operations
  * Copyright (C) 1996 Damien Doligez
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Pseudo-random number generators (PRNG). 
-    
+(** Pseudo-random number generators (PRNG).
+
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Random.html}Random}
     module, go there for documentation on the rest of the functions
@@ -86,7 +86,7 @@ val full_range : unit -> int
     platforms *)
 
 
-(** {6 Enumerations of random values.} 
+(** {6 Enumerations of random values.}
 
     These enumerations may be cloned without loss of performance,
     to obtain reproducible enumerations of pseudo-random numbers.
