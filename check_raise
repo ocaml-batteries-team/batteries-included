@@ -1,0 +1,51 @@
+# Simple sanity checking of documentation of exceptions.
+# Usage: go to src/ and run ../check_raise
+
+header() {
+  info=$1
+  shift
+  result=$(mktemp)
+  $* >$result
+  cw=$(wc -w $result | cut -f1 -d\ )
+  if [ "$cw" -ne "0" ]
+  then
+    echo $info
+    cat $result
+    echo
+  fi
+}
+
+setminus() {
+  diff --new-line-format= --unchanged-line-format= $1 $2
+}
+
+# Look for mistakes
+
+header "@raises instead of @raise:" \
+  grep -n @raises *
+
+header Typos: \
+  grep -n "\(Invalid_arg[[:space:]]\|Invald_argument\)" `find . -not -name batDynArray\*`
+
+use_raise=$(mktemp)
+doc_raise=$(mktemp)
+poor_doc_raise=$(mktemp)
+
+# Crude check for presence of exceptions in implementations and interfaces
+grep -n raise *.ml | cut -f1 -d. | uniq >$use_raise
+grep -n @raise *.mli | cut -f1 -d. | uniq >$doc_raise
+grep -n raise *.mli | cut -f1 -d. | uniq >$poor_doc_raise
+
+suspicious=$(mktemp)
+setminus $use_raise $doc_raise >$suspicious
+
+need_doc=$(mktemp)
+setminus $suspicious $poor_doc_raise >$need_doc
+
+echo "The following modules need raised exceptions to be documented (quite likely):"
+cat $need_doc
+echo
+
+echo Documentation of the following modules mentions exceptions and awaits formal @raise clauses:
+setminus $suspicious $need_doc
+
