@@ -78,6 +78,9 @@ header "String arguments nobody should rely upon:" \
 header "@raises instead of @raise:" \
   grep -n @raises *
 
+header "Square brackets that harm ocamldoc:" \
+  grep -n "@raise[[:space:]]\[" *
+
 header Typos: \
   grep -n "Invalid_arg[[:space:]]" `find . -not -name batDynArray\*`
 
