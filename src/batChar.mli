@@ -89,7 +89,7 @@ val is_newline : char -> bool
 
 val of_digit : int -> char
 (** Return the character representing a given digit.
-    Raise [Invalid_argument "Char.of_digit"] if the
+    Raise [Invalid_argument] if the
     argument is outside the range 0--9*)
 
 val enum: unit -> char BatEnum.t
