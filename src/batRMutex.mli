@@ -21,7 +21,7 @@
  *)
 
 
-(** Locks for mutual exclusion.
+(** Reentrant Mutexes
 
     Mutexes (mutual-exclusion locks) are used to implement critical sections
     and protect shared mutable data structures against concurrent accesses.
