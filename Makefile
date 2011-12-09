@@ -73,9 +73,11 @@ clean:
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) -clean
 
-doc:
+batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
+	cat $^ > $@
+
+doc: batteries.odocl
 	$(OCAMLBUILD) batteries.docdir/index.html
-	test -e apidocs || ln -s _build/batteries.docdir apidocs
 
 install: all uninstall_packages
 	ocamlfind install $(OCAMLFIND_DEST) estring \
