@@ -49,33 +49,42 @@ let uset ur x =
 let equal ur vr =
   find ur == find vr
 
-let unite ?(sel=(fun x _y -> x)) ur vr =
+let unite ?sel ur vr =
+  (* we use ?sel instead of ?(sel=(fun x _y -> x)) because we want to be
+     able to know whether a selection function was passed, for
+     optimization purposes: when sel is the default (expected common
+     case), we can take a short path in the (ur == vr) case. *)
   let ur = find ur in
   let vr = find vr in
   if ur == vr then begin
-  (* even when ur and vr are the same reference, we need to apply
-     the selection function, as [sel x x] may be different from [x].
-
-     For example, [unite ~sel:(fun _ _ -> v) r r] would fail
-     to set the content of [r] to [v] otherwise. *)
-    match !ur with
-      | Ranked (x, r) ->
-        let x' = sel x x in
-        if x' != x then 
-          ur := Ranked(x', r)
-      | _ -> assert false
+    match sel with
+      | None -> ()
+      | Some sel ->
+        (* even when ur and vr are the same reference, we need to apply
+           the selection function, as [sel x x] may be different from [x].
+           
+           For example, [unite ~sel:(fun _ _ -> v) r r] would fail
+           to set the content of [r] to [v] otherwise. *)
+        match !ur with
+          | Ranked (x, r) ->
+            let x' = sel x x in
+            ur := Ranked(x', r)
+          | _ -> assert false
   end 
   else
     match !ur, !vr with
       | Ranked (x, xr), Ranked (y, yr) ->
+        let z = match sel with
+          | None -> x (* in the default case, pick x *)
+          | Some sel -> sel x y in
           if xr = yr then begin
-            ur := Ranked (sel x y, xr + 1) ;
+            ur := Ranked (z, xr + 1) ;
             vr := Ptr ur
           end else if xr < yr then begin
-            ur := Ranked (sel x y, xr) ;
+            ur := Ranked (z, xr) ;
             vr := Ptr ur
           end else begin
-            vr := Ranked (sel x y, yr) ;
+            vr := Ranked (z, yr) ;
             ur := Ptr vr
           end
       | _ -> assert false
