@@ -1,3 +1,4 @@
+#!/bin/bash
 # Simple sanity checking of documentation of exceptions.
 # Usage: go to src/ and run ../check_raise
 
@@ -31,7 +32,7 @@ doc_raise=$(mktemp)
 poor_doc_raise=$(mktemp)
 
 # Crude check for presence of exceptions in implementations and interfaces
-grep -n raise *.ml | cut -f1 -d. | uniq >$use_raise
+grep -n "\(raise\|invalid_arg\|failwith\)" *.ml | cut -f1 -d. | uniq >$use_raise
 grep -n @raise *.mli | cut -f1 -d. | uniq >$doc_raise
 grep -n raise *.mli | cut -f1 -d. | uniq >$poor_doc_raise
 
