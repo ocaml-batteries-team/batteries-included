@@ -565,7 +565,7 @@ val arg_max : ('a -> 'b) -> 'a t -> 'a
     Example: [List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"]
 
     @added v1.4.0
-    @raises [Invalid_argument] if the input enum is empty
+    @raise Invalid_argument if the input enum is empty
 *)
 
 (** {6 Trampolining} *)
