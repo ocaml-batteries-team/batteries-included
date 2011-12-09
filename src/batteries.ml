@@ -141,7 +141,6 @@ module Splay = BatSplay
 module Uref = BatUref
 module Substring = BatSubstring
 module Text = Ulib.Text
-module Concurrent = BatConcurrent
 
 (* Batteries Specific *)
 module Interfaces = BatInterfaces

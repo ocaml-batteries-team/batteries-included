@@ -47,7 +47,6 @@ BatUnix
 BatBase64
 BatBitSet
 BatCharParser
-BatConcurrent
 BatDllist
 BatDynArray
 BatFile
