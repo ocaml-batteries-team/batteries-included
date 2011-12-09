@@ -608,7 +608,7 @@ let partition = switch
 **)
 
 (**Q partition
-   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l = (Enum.partition f (List.enum l) |> Pair.map List.of_enum))
+   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l = (Enum.partition f (List.enum l) |> Tuple.Tuple2.mapn List.of_enum))
 **)
 
 let seq init f cond = 
@@ -1081,7 +1081,7 @@ module type Enumerable = sig
   val of_enum : 'a t -> 'a enumerable
 end
   
-module WithMonad (Mon : BatMonad.S) =
+module WithMonad (Mon : BatInterfaces.Monad) =
 struct    
   type 'a m = 'a Mon.m
       

@@ -56,13 +56,11 @@ BatInnerWeaktbl
 BatInterfaces
 BatLazyList
 BatLogger
-BatMonad
 BatMultiPMap
 BatNumber
 BatOption
 BatOptParse
 BatOrd
-BatPair
 BatParserCo
 BatPathGen
 BatPrint

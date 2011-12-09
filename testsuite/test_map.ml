@@ -138,10 +138,10 @@ module TestMap
 
   let eq_li ?msg cmp_elt print_elt l1 l2 =
     let cmp t1 t2 =
-      let cmp = BatPair.compare ~c1:BatInt.compare ~c2:cmp_elt in
+      let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:cmp_elt in
       0 = BatList.make_compare cmp t1 t2 in
     let printer =
-      BatIO.to_string -| BatList.print <| BatPair.print BatInt.print print_elt in
+      BatIO.to_string -| BatList.print <| BatTuple.Tuple2.print BatInt.print print_elt in
     U.assert_equal ?msg ~cmp ~printer l1 l2
 
   let eq ?msg cmp_elt print_elt t1 t2 =
@@ -333,7 +333,7 @@ module TestMap
         | None, Some _ -> -1
         | Some _, None -> 1
         | Some a, Some b -> cmp a b in
-    let pair_compare2 cmp = BatPair.compare ~c1:cmp ~c2:cmp in
+    let pair_compare2 cmp = BatTuple.Tuple2.compare ~cmp1:cmp ~cmp2:cmp in
     eq ~msg:
       "merge (fun k a b -> Some (a, b)) [0,0; 1,1; 3,3] [1,-1; 2,-2; 3,-3; 4,-4
        = [0, (Some 0, None);
@@ -342,7 +342,7 @@ module TestMap
           3, (Some 3, Some -3);
           4, (None, Some -4)]"
       (pair_compare2 (option_compare BatInt.compare))
-      (BatPair.print2 (BatOption.print BatInt.print))
+      (BatTuple.Tuple2.printn (BatOption.print BatInt.print))
       (M.merge (fun k a b -> Some (a, b)) t t')
       (il [0, (Some 0, None);
            1, (Some 1, Some ~-1);
@@ -628,10 +628,10 @@ let heterogeneous_tests =
 
   let (@=) msg (act, exp) =
     let cmp t1 t2 =
-      let cmp = BatPair.compare ~c1:BatInt.compare ~c2:BatInt.compare in
+      let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:BatInt.compare in
       0 = BatList.make_compare cmp t1 t2 in
     let printer =
-      BatIO.to_string -| BatList.print <| BatPair.print2 BatInt.print in
+      BatIO.to_string -| BatList.print <| BatTuple.Tuple2.printn BatInt.print in
     U.assert_equal ~msg ~cmp ~printer exp act in
 
   let compare_modulo p x y = BatInt.compare (x mod p) (y mod p) in

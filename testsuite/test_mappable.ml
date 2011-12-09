@@ -43,13 +43,14 @@ let test_list_mappable () =
 let test_array_mappable () =
   let module T = TestMappable(BatArray) in
   T.test_map_evaluation_order BatInt.print [|1; 2; 3|]
-
+(*
 let test_pair_mappable () =
-  let module T = TestMappable(BatPair) in
+  let module T = TestMappable(BatTuple.Tuple2) in
   T.test_map_evaluation_order BatInt.print (1, 2)
+ *)
 
 let tests = "Mappable" >::: [
   "Array" >:: test_array_mappable;
   "List" >:: test_list_mappable;
-  "Pair" >:: test_pair_mappable;
+(*  "Pair" >:: test_pair_mappable;*)
 ]

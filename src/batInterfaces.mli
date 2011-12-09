@@ -48,3 +48,40 @@ sig
         Example: a suitable ordering function is the generic structural
         comparison function {!Pervasives.compare}. *)
 end
+
+(** Monads are a design pattern which may be used to enforce strong
+    functional or non-functional constraints on the manipulation of
+    resources, while remaining in the world of functional programming.
+    For instance, monads may serve to implement approximations of a
+    types-and-effects type system, to enforce functional use of arrays
+    or other mutable data structures, or to enforce the fact that only
+    files opened for writing may be actually used for writing.
+
+    For more information on monads, see
+    {{:http://enfranchisedmind.com/blog/2007/08/06/a-monad-tutorial-for-ocaml/}
+    A Monad Tutorial for Ocaml}.
+
+    This definition is compatible with the standard syntax extension
+    for monads.  For more information, see
+    {{:http://www.cas.mcmaster.ca/~carette/pa_monad/} the
+    documentation of pa_monad}.
+
+    @author David Teller
+ *)
+
+(** Signature for monads *)
+module type Monad = sig
+
+  (** The type of a monad producing values of type ['a].*)
+  type 'a m
+
+  (** Monadic binding.
+
+      [bind m f] executes first [m] then [f], using the
+      result of [m]. *)
+  val bind : 'a m -> ('a -> 'b m) -> 'b m
+
+  (**Return a value, that is, put a value in the monad.*)
+  val return: 'a -> 'a m
+
+end

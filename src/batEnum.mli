@@ -662,7 +662,7 @@ val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
 
     This module will let you use sequence and fold_monad functions over enumerations.
 *)
-module WithMonad : functor (Mon : BatMonad.S) -> sig
+module WithMonad : functor (Mon : BatInterfaces.Monad) -> sig
   type 'a m = 'a Mon.m
 (** Type of the monadic elements. *)
 
