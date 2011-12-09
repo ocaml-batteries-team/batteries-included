@@ -1,4 +1,3 @@
-module Concurrent = BatConcurrent
 module Mutex = BatMutex
 module RMutex = BatRMutex
 
