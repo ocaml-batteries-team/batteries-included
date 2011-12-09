@@ -154,20 +154,20 @@ sig
        where [k0,k1..kN] are the keys of all bindings in [m]
        (in increasing order), and [d1 ... dN] are the associated data. *)
 
-    val filter: ('a -> bool) -> 'a t -> 'a t
-      (**[filter f m] returns a map where only the values [a] of [m]
+    val filterv: ('a -> bool) -> 'a t -> 'a t
+      (**[filterv f m] returns a map where only the values [a] of [m]
 	 such that [f a = true] remain. The bindings are passed to [f]
 	 in increasing order with respect to the ordering over the
 	 type of the keys. *)
 
-    val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
+    val filter: (key -> 'a -> bool) -> 'a t -> 'a t
       (**[filter f m] returns a map where only the key, values pairs
 	 [key], [a] of [m] such that [f key a = true] remain. The
 	 bindings are passed to [f] in increasing order with respect
 	 to the ordering over the type of the keys. *)
 
     val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
-      (** [filter_map f m] combines the features of [filteri] and
+      (** [filter_map f m] combines the features of [filter] and
 	  [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
 	  where [a0,a1..an] are the elements of [m] and [key0..keyn] the
 	  respective corresponding keys. It returns the map of
@@ -322,8 +322,8 @@ sig
       val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
       val map : f:('a -> 'b) -> 'a t -> 'b t
       val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
-      val filter: f:('a -> bool) -> 'a t -> 'a t
-      val filteri:f:(key -> 'a -> bool) -> 'a t -> 'a t
+      val filterv: f:('a -> bool) -> 'a t -> 'a t
+      val filter:f:(key -> 'a -> bool) -> 'a t -> 'a t
       val fold :
 	f:(key:key -> data:'a -> 'b -> 'b) ->
 	'a t -> init:'b -> 'b
@@ -445,20 +445,20 @@ val foldi : ('a -> 'b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** Same as [fold], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
 
-val filter: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
-(**[filter f m] returns a map where only the values [a] of [m]
+val filterv: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+(**[filterv f m] returns a map where only the values [a] of [m]
    such that [f a = true] remain. The bindings are passed to [f]
    in increasing order with respect to the ordering over the
    type of the keys. *)
   
-val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+val filter: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
 (**[filter f m] returns a map where only the (key, value) pairs
    [key], [a] of [m] such that [f key a = true] remain. The
    bindings are passed to [f] in increasing order with respect
    to the ordering over the type of the keys. *)
   
 val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
-(** [filter_map f m] combines the features of [filteri] and
+(** [filter_map f m] combines the features of [filter] and
     [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
     where [a0..an] are the elements of [m] and [key0..keyn] the
     respective corresponding keys. It returns the map of

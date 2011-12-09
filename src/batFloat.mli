@@ -248,9 +248,16 @@
 	(** Return the class of the given floating-point number:
 	    normal, subnormal, zero, infinite, or not a number. *)
 
+    val approx_equal : ?epsilon:float -> float -> float -> bool
+    (** Test whether two floats are approximately equal (i.e. within
+	epsilon of each other).  epsilon defaults to 1e-5. *)
+
     (** {6 Submodules grouping all infix operators} *)
 
-    module Infix : BatNumber.Infix with type bat__infix_t = t
+    module Infix : sig
+      include BatNumber.Infix with type bat__infix_t = t
+      val (=~) : ?epsilon:float -> float -> float -> bool
+    end
     module Compare : BatNumber.Compare with type bat__compare_t = t
 
     (** {6 Boilerplate code}*)

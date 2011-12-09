@@ -21,69 +21,69 @@
 
 
 type ('a, 'b) t = {
-  content : ('a, 'b BatPSet.t) BatPMap.t;
+  content : ('a, 'b BatSet.t) BatMap.t;
   keys    : 'a -> 'a -> int     ;
   data    : 'b -> 'b -> int
 }
 
 
 let empty =
-  {content = BatPMap.empty;
+  {content = BatMap.empty;
    keys    = compare;
    data    = compare}
 
-let is_empty t = BatPMap.is_empty t.content
+let is_empty t = BatMap.is_empty t.content
 
 let create keys data = 
   {
-    content = BatPMap.create keys;
+    content = BatMap.create keys;
     data    = data;
     keys    = keys
   }
 
 let find k t =
-  try BatPMap.find k t.content
-  with Not_found -> BatPSet.create t.data
+  try BatMap.find k t.content
+  with Not_found -> BatSet.create t.data
 
 let add k d t =
-  {(t) with content = BatPMap.add k (BatPSet.add d (find k t)) t.content}
+  {(t) with content = BatMap.add k (BatSet.add d (find k t)) t.content}
   
 let remove_all k t =
-  {(t) with content = BatPMap.remove k t.content}
+  {(t) with content = BatMap.remove k t.content}
 
 let remove k d t =
   try 
-    let set = BatPSet.remove d (BatPMap.find k t.content) in
+    let set = BatSet.remove d (BatMap.find k t.content) in
       {(t)
        with content =
-	  if   BatPSet.is_empty set then BatPMap.remove k t.content
-	  else BatPMap.add k set t.content;
+	  if   BatSet.is_empty set then BatMap.remove k t.content
+	  else BatMap.add k set t.content;
       }
   with Not_found -> t
 
 let mem k d =
-  BatPMap.mem k d.content
+  BatMap.mem k d.content
 
 let exists = mem
 
-let iter f d = BatPMap.iter f d.content
+let iter f d = BatMap.iter f d.content
 
-let map  (f:('b BatPSet.t -> 'c BatPSet.t)) (cmp:('b -> 'b -> int) -> ('c -> 'c -> int)) (t:('a, 'b) t) =
-  { content = BatPMap.map f t.content;
+let map  (f:('b BatSet.t -> 'c BatSet.t)) (cmp:('b -> 'b -> int) -> ('c -> 'c -> int)) (t:('a, 'b) t) =
+  { content = BatMap.map f t.content;
     keys    = t.keys;
     data    = cmp t.data}
 
-let mapi  (f:('a -> 'b BatPSet.t -> 'c BatPSet.t)) (cmp:('b -> 'b -> int) -> ('c -> 'c -> int)) (t:('a, 'b) t) =
-  { content = BatPMap.mapi f t.content;
+let mapi  (f:('a -> 'b BatSet.t -> 'c BatSet.t)) (cmp:('b -> 'b -> int) -> ('c -> 'c -> int)) (t:('a, 'b) t) =
+  { content = BatMap.mapi f t.content;
     keys    = t.keys;
     data    = cmp t.data}
 
 
-let fold f d i  = BatPMap.fold f d.content i
+let fold f d i  = BatMap.fold f d.content i
 
-let foldi f d i = BatPMap.foldi f d.content i
+let foldi f d i = BatMap.foldi f d.content i
 
-let enum t      = BatEnum.concat (BatEnum.map (fun (k,e) -> BatEnum.map (fun x -> (k,x)) (BatPSet.enum e)) (BatPMap.enum t.content))
+let enum t      = BatEnum.concat (BatEnum.map (fun (k,e) -> BatEnum.map (fun x -> (k,x)) (BatSet.enum e)) (BatMap.enum t.content))
 
 let of_enum ?(keys=compare) ?(data=compare) e = 
   let base = create keys data in
