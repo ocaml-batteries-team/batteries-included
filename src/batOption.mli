@@ -64,7 +64,12 @@ val default : 'a -> 'a option -> 'a
 
 val ( |? ) : 'a option -> 'a -> 'a
 (** Like {!default}, with the arguments reversed.
-    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"].
+
+    {b Note} This operator does not short circuit like [( || )] and [( && )].
+    Both arguments will be evaluated.
+
+    @since 2.0 *)
 
 val map_default : ('a -> 'b) -> 'b -> 'a option -> 'b
 (** [map_default f x (Some v)] returns [f v] and [map_default f x None]
