@@ -436,7 +436,10 @@ val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
 
 val ( |? ) : 'a option -> 'a -> 'a
 (** Like {!BatOption.default}, with the arguments reversed.
-    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"].
+
+    {b Note} This operator does not short circuit like [( || )] and [( && )].
+    Both arguments will be evaluated. *)
 
 val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
   (** Argument flipping.
