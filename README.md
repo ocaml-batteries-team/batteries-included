@@ -21,7 +21,7 @@ Building Batteries
 
 You will need the following libraries:
 
-* [OCaml][] >= 3.11
+* [OCaml][] >= 3.12
 * [Findlib][] >= 1.2.5
 * GNU make
 * [OUnit][] to build and run the tests (optional)
