@@ -439,7 +439,9 @@ val ( |? ) : 'a option -> 'a -> 'a
     [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"].
 
     {b Note} This operator does not short circuit like [( || )] and [( && )].
-    Both arguments will be evaluated. *)
+    Both arguments will be evaluated.
+
+    @since 2.0 *)
 
 val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
   (** Argument flipping.
@@ -497,7 +499,9 @@ val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
 
 val verify_arg : bool -> string -> unit
 (** [verify_arg condition message] will raise [Invalid_argument message] if
-    [condition] is false, otherwise it does nothing. *)
+    [condition] is false, otherwise it does nothing.
+
+    @since 2.0 *)
 
 val args : unit -> string BatEnum.t
   (** An enumeration of the arguments passed to this program through the command line.

@@ -165,7 +165,9 @@
         [2.] but [round (-3.5)] is [-4.]. *)
 
     val round_to_int : float -> int
-    (** [round_to_int x] is [int_of_float (round x)]. *)
+    (** [round_to_int x] is [int_of_float (round x)].
+
+        @since 2.0 *)
 
     val round_to_string : ?digits:int -> float -> string
     (** [round_to_string ~digits:d x] will return a string
@@ -189,7 +191,8 @@
         - no guarantee is given on the behavior for abusively high
           number of digits precision; for example [round_to_string
           ~digits:max_int x] may return the empty string.
-    *)
+
+        @since 2.0 *)
 
     val infinity : float
       (** Positive infinity. *)
@@ -210,7 +213,9 @@
 
     val is_special : float -> bool
       (** [is_special f] returns [true] if [f] is [nan] or [+/- infinity],
-          [false] otherwise. *)
+          [false] otherwise.
+
+          @since 2.0 *)
 
     val epsilon : float
       (** The smallest positive float [x] such that [1.0 +. x <> 1.0]. *)
