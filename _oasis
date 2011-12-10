@@ -1,5 +1,5 @@
 OASISFormat:  0.2
-OCamlVersion: >= 3.11.0
+OCamlVersion: >= 3.12.0
 Name:         batteries
 Version:      2.0beta
 Authors:      Batteries Included Team
