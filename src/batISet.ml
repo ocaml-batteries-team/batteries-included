@@ -3,24 +3,6 @@
 
 include BatAvlTree
 
-let (>!) = (>)
-
-let compare_uint n1 n2 =
-  let sgn1 = (n1 lsr 24) - (n2 lsr 24) in
-  if sgn1 = 0 then (n1 land 0xffffff) - (n2 land 0xffffff) else sgn1
-
-let (>) n1 n2 = compare_uint n1 n2 > 0
-let (>=) n1 n2 = compare_uint n1 n2 >= 0
-let (<) n1 n2 = compare_uint n1 n2 < 0
-let (<=) n1 n2 = compare_uint n1 n2 <= 0
-let compare = compare_uint
-
-let max n1 n2 = if n1 >= n2 then n1 else n2
-let min n1 n2 = if n1 <= n2 then n1 else n2
-
-let max_int = ~-1
-let min_int = 0
-
 type t = (int * int) tree
 type elt = int
 
@@ -81,7 +63,7 @@ let rec until n s =
 let rec before n s = if n = min_int then empty else until (n - 1) s
 
 let add_range n1 n2 s =
-  if n1 > n2 then invalid_arg (Printf.sprintf "ISet.add_range - %d > %d" n1 n2)else
+  if n1 > n2 then invalid_arg (Printf.sprintf "ISet.add_range - %d > %d" n1 n2) else
   let n1, l =
     if n1 = min_int then n1, empty else
     let l = until (n1 - 1) s in
@@ -120,7 +102,7 @@ let remove_range n1 n2 s =
 let rec union s1 s2 =
   if is_empty s1 then s2 else
   if is_empty s2 then s1 else
-  let s1, s2 = if height s1 >! height s2 then s1, s2 else s2, s1 in
+  let s1, s2 = if height s1 > height s2 then s1, s2 else s2, s1 in
   let n1, n2 = root s1 in
   let l1 = left_branch s1 in
   let r1 = right_branch s1 in
@@ -143,7 +125,7 @@ let rec union s1 s2 =
 let rec inter s1 s2 =
   if is_empty s1 then empty else
   if is_empty s2 then empty else
-  let s1, s2 = if height s1 >! height s2 then s1, s2 else s2, s1 in
+  let s1, s2 = if height s1 > height s2 then s1, s2 else s2, s1 in
   let n1, n2 = root s1 in
   let l1 = left_branch s1 in
   let r1 = right_branch s1 in
@@ -172,13 +154,13 @@ let rec compare_aux x1 x2 =
       if is_empty s then compare_aux rest x2 else
       let l = left_branch s in
       let v = root s in
-      let r = left_branch s in
+      let r = right_branch s in
       compare_aux (`Set l :: `Range v :: `Set r :: rest) x
   | _x, `Set s :: rest ->
       if is_empty s then compare_aux x1 rest else
       let l = left_branch s in
       let v = root s in
-      let r = left_branch s in
+      let r = right_branch s in
       compare_aux x1 (`Set l :: `Range v :: `Set r :: rest)
   | `Range ((v1, v2)) :: rest1, `Range ((v3, v4)) :: rest2 ->
       let sgn = compare v1 v3 in

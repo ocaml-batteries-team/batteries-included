@@ -445,7 +445,7 @@ let prepend = prepend_char
 let rec map f = function
     Empty -> Empty
   | Leaf a -> Leaf (Array.map f a)
-  | Concat(l,cl,r,cr,h) -> Concat(map f l, cl, map f r, cr, h)
+  | Concat(l,cl,r,cr,h) -> let l' = map f l in Concat(l', cl, map f r, cr, h)
 
 let mapi f v =
   let off = ref 0 in
@@ -476,9 +476,9 @@ let find f v =
   in aux v; raise Not_found)
 
 let findi f v = (*We rely on the order of exploration of the tree by [find]*)
-  let off = ref 0 in
+  let off = ref (-1) in (* pre-increment *)
   let _   = find (fun x -> let result = f x in incr off; result) v in
-    !off
+  !off
 
 let partition p v =
   fold_left (fun (yes, no) x -> if p x then (append x yes,no) else (yes,append x no)) (empty,empty) v

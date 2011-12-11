@@ -23,70 +23,99 @@
 open BatNumber
 
 let (|>) x f = f x
+      
+let to_byte n = Int32.logand 0xffl n |> Int32.to_int |> Char.chr
+let of_byte b = Char.code b |> Int32.of_int
     
+(* really need to just blit an int32 word into a string and vice versa *)
+    
+let pack str pos item = 
+  if String.length str > pos + 4 then failwith "Int32.pack: pos + 4 not within string";
+  if pos < 0 then failwith "Int32.pack: pos negative";
+  str.[pos] <- to_byte item;
+  let item = Int32.shift_right item 8 in
+  str.[pos+1] <- to_byte item;
+  let item = Int32.shift_right item 8 in
+  str.[pos+2] <- to_byte item;
+  let item = Int32.shift_right item 8 in
+  str.[pos+3] <- to_byte item (* optimize out last logand? *)
+    
+let pack_big str pos item = 
+  if String.length str > pos + 4 then failwith "Int32.pack_big: pos + 4 not within string";
+  if pos < 0 then failwith "Int32.pack_big: pos negative";
+  str.[pos+3] <- to_byte item;
+  let item = Int32.shift_right item 8 in
+  str.[pos+2] <- to_byte item;
+  let item = Int32.shift_right item 8 in
+  str.[pos+1] <- to_byte item;
+  let item = Int32.shift_right item 8 in
+  str.[pos] <- to_byte item (* optimize out last logand? *)
+    
+let unpack str pos = 
+  if String.length str > pos + 4 then failwith "Int32.unpack: pos + 4 not within string";
+  if pos < 0 then failwith "Int32.unpack: pos negative";
+  let shift n = Int32.shift_left n 8 
+  and add b n = Int32.add (of_byte b) n in
+  of_byte str.[pos+3] |> shift |> add str.[pos+2] |> shift 
+    |> add str.[pos+1] |> shift |> add str.[pos]
+  (* TODO: improve performance of bit twiddling?  will these curried functions get inlined? *)
+
+let unpack_big str pos = 
+  if String.length str > pos + 4 then failwith "Int32.unpack: pos + 4 not within string";
+  if pos < 0 then failwith "Int32.unpack: pos negative";
+  let shift n = Int32.shift_left n 8 
+  and add b n = Int32.add (of_byte b) n in
+  of_byte str.[pos] |> shift |> add str.[pos+1] |> shift 
+    |> add str.[pos+2] |> shift |> add str.[pos+3]
+	
 
 module BaseInt32 = struct
   include Int32
     
   let modulo = rem
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul:mul
-  let min_num, max_num = min_int, max_int
 end
 
+include BatNumber.MakeNumeric(BaseInt32)
+module Infix = BatNumber.MakeInfix(BaseInt32)
+module Compare = BatNumber.MakeCompare(BaseInt32)
 
-  include BaseInt32
+let min_int = Int32.min_int
+let max_int = Int32.max_int
+let minus_one = Int32.minus_one
+let lognot = Int32.lognot
+external neg : int32 -> int32 = "%int32_neg"
+external add : int32 -> int32 -> int32 = "%int32_add"
+external sub : int32 -> int32 -> int32 = "%int32_sub"
+external mul : int32 -> int32 -> int32 = "%int32_mul"
+external div : int32 -> int32 -> int32 = "%int32_div"
+external rem : int32 -> int32 -> int32 = "%int32_mod"
+external logand : int32 -> int32 -> int32 = "%int32_and"
+external logor : int32 -> int32 -> int32 = "%int32_or"
+external logxor : int32 -> int32 -> int32 = "%int32_xor"
+external shift_left : int32 -> int -> int32 = "%int32_lsl"
+external shift_right : int32 -> int -> int32 = "%int32_asr"
+external shift_right_logical : int32 -> int -> int32 = "%int32_lsr"
+external of_int : int -> int32 = "%int32_of_int"
+external to_int : int32 -> int = "%int32_to_int"
+external of_float : float -> int32 = "caml_int32_of_float"
+external to_float : int32 -> float = "caml_int32_to_float"
+external of_string : string -> int32 = "caml_int32_of_string"
+external of_int64 : int64 -> int32 = "%int64_to_int32"
+external to_int64 : int32 -> int64 = "%int64_of_int32"
+external of_nativeint : nativeint -> int32 = "%int32_of_nativeint"
+external to_nativeint : int32 -> nativeint = "%int32_to_nativeint"
 
-  let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)
-  let ( --- ) x y = 
-    if x <= y then x -- y 
-    else BatEnum.seq x pred ((<=) y) 
+external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
+external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
+external format : string -> int32 -> string = "caml_int32_format"
 
-  let print out t = BatInnerIO.Printf.fprintf out "%lx" t
-  let t_printer paren out t = print out t
 
-  let to_byte n = Int32.logand 0xffl n |> Int32.to_int |> Char.chr
-  let of_byte b = Char.code b |> Int32.of_int
-      
-  (* really need to just blit an int32 word into a string and vice versa *)
-      
-  let pack str pos item = 
-    if String.length str > pos + 4 then failwith "Int32.pack: pos + 4 not within string";
-    if pos < 0 then failwith "Int32.pack: pos negative";
-    str.[pos] <- to_byte item;
-    let item = shift_right item 8 in
-    str.[pos+1] <- to_byte item;
-    let item = shift_right item 8 in
-    str.[pos+2] <- to_byte item;
-    let item = shift_right item 8 in
-    str.[pos+3] <- to_byte item (* optimize out last logand? *)
-      
-  let pack_big str pos item = 
-    if String.length str > pos + 4 then failwith "Int32.pack_big: pos + 4 not within string";
-    if pos < 0 then failwith "Int32.pack_big: pos negative";
-    str.[pos+3] <- to_byte item;
-    let item = Int32.shift_right item 8 in
-    str.[pos+2] <- to_byte item;
-    let item = Int32.shift_right item 8 in
-    str.[pos+1] <- to_byte item;
-    let item = Int32.shift_right item 8 in
-    str.[pos] <- to_byte item (* optimize out last logand? *)
-    
-  let unpack str pos = 
-    if String.length str > pos + 4 then failwith "Int32.unpack: pos + 4 not within string";
-    if pos < 0 then failwith "Int32.unpack: pos negative";
-    let shift n = Int32.shift_left n 8 
-    and add b n = Int32.add (of_byte b) n in
-    of_byte str.[pos+3] |> shift |> add str.[pos+2] |> shift 
-      |> add str.[pos+1] |> shift |> add str.[pos]
-      (* TODO: improve performance of bit twiddling?  will these curried functions get inlined? *)
 
-  let unpack_big str pos = 
-    if String.length str > pos + 4 then failwith "Int32.unpack: pos + 4 not within string";
-    if pos < 0 then failwith "Int32.unpack: pos negative";
-    let shift n = Int32.shift_left n 8 
-    and add b n = Int32.add (of_byte b) n in
-    of_byte str.[pos] |> shift |> add str.[pos+1] |> shift 
-      |> add str.[pos+2] |> shift |> add str.[pos+3]
 
-  include BatNumber.MakeNumeric(BaseInt32)
+type bounded = t
+let min_num, max_num = min_int, max_int
 
+let print out t = BatInnerIO.nwrite out (to_string t)
+let xprint out t = BatInnerIO.Printf.fprintf out "%lx" t
+let t_printer paren out t = print out t

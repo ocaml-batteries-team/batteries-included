@@ -1,6 +1,37 @@
+(* 
+ * File - File manipulation
+ * Copyright (C) 2008 David Teller
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
 open BatIO
 open ListLabels
 open Unix
+
+(* Moved from batPervasives to break dep cycle *)
+let finally handler f x =
+  let r = (
+    try
+      f x
+    with
+	e -> handler(); raise e
+  ) in
+  handler();
+  r
 
 (*** Permissions *)
 type permission = int
@@ -124,7 +155,7 @@ let open_in ?mode ?(perm=default_permission) name =
 
 let with_do opener closer x f =
   let file = opener x in
-    BatStd.finally (fun () -> closer file) f file
+    finally (fun () -> closer file) f file
  
 let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
 let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
@@ -161,7 +192,7 @@ let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * 
 
 let with_temporary_out ?mode ?prefix ?suffix f =
   let (file, name) = open_temporary_out ?mode ?prefix ?suffix () in
-    BatStd.finally (fun () -> close_out file)
+    finally (fun () -> close_out file)
       (fun (file, name) -> f file name)
       (file, name)
 

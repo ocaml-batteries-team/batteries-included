@@ -28,3 +28,9 @@ sig
   type t
   val compare : t -> t -> int
 end
+
+module type Monad = sig
+  type 'a m
+  val bind : 'a m -> ('a -> 'b m) -> 'b m
+  val return: 'a -> 'a m
+end

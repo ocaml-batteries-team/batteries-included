@@ -151,7 +151,7 @@ val iter : ('a -> 'b) -> 'a t -> unit
    end]. In particular, it causes all the elements of the list to be
    evaluated.*)
   
-val iteri : (int -> 'a -> 'b) -> 'a t -> unit
+val iteri : (int -> 'a -> unit) -> 'a t -> unit
 (**Eager iteration, with indices
 
    [iteri f [^ a0; a1; ...; an ^]] applies function [f] in turn to
@@ -538,6 +538,12 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 val uncombine : ('a * 'b) t -> 'a t * 'b t
   (** Divide a list of pairs into a pair of lists. *)
 
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( ^:^ ) : 'a -> 'a t -> 'a t
+  val ( ^@^ ) : 'a t -> 'a t -> 'a t
+end
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
@@ -606,7 +612,7 @@ end
 *)
 module Labels : sig
   val iter : f:('a -> 'b) -> 'a t -> unit 
-  val iteri : f:(int -> 'a -> 'b) -> 'a t -> unit
+  val iteri : f:(int -> 'a -> unit) -> 'a t -> unit
   val map : f:('a -> 'b) -> 'a t -> 'b t
   val mapi : f:(int -> 'a -> 'b) -> 'a t -> 'b t
   val fold_left : f:('a -> 'b -> 'a) -> init:'a -> 'b t -> 'a
@@ -643,3 +649,5 @@ module Labels : sig
     val assq : 'a -> ('a * 'b) t -> 'b option
   end
 end
+
+

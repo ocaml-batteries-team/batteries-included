@@ -133,6 +133,31 @@
     let len = Array.length  a in
       Array.get a (int len)
 
+  (* Reservoir sampling algorithm (see for instance http://en.wikipedia.org/wiki/Reservoir_sampling)
+     TODO: a more efficient algorithm when given enum length is known *)
+  let multi_choice n e =
+    if BatEnum.is_empty e then
+      BatEnum.empty ()
+    else
+      let next e = BatOption.get (BatEnum.get e) in
+      (* Note: this assumes that Array.init will call the function for i = 0 to n-1 in that order *)
+      let chosen = Array.init n (fun i -> next e, i) in
+      let rec aux i =
+        if BatEnum.is_empty e then
+          ()
+        else
+          let r = Random.int i in
+          if r < n then chosen.(r) <- next e, i ;
+          aux (i+1) in
+      aux (n+1) ;
+      Array.sort (fun (_, i1) (_, i2) -> compare i1 i2) chosen ;
+      BatArray.enum (Array.map fst chosen)
+  (**T Random.multi_choice
+    BatEnum.is_empty (multi_choice 0 (BatEnum.empty ())) (* you can choose 0 in empty enum *)
+    BatEnum.count (multi_choice 3 (BatList.enum [1;2;3;4;5])) = 3 (* asked 3 got 3 *)
+    let l = [1;2;3;4;5] in let e = multi_choice 2 (BatList.enum l) in let a = BatOption.get (BatEnum.get e) in a < BatOption.get (BatEnum.get e) (* order is preserved *)
+  **)
+
   let shuffle e =
     let a = BatArray.of_enum e in
       for n = Array.length a - 1 downto 1 do

@@ -38,9 +38,9 @@ module BaseBool = struct
 	  [e2] is not evaluated at all. *)
   let zero, one = false, true
   let neg = not
-
-  let succ x = true
-  let pred x = false
+    
+  let succ _ = true
+  let pred _ = false
   let abs  x = x
 
   let add    = ( || )
@@ -55,7 +55,6 @@ module BaseBool = struct
   let pow _ _ = 
     raise (Invalid_argument "Bool.pow")
 
-  let min_num, max_num = false, true
   let compare = compare
     
   let of_int = function
@@ -66,9 +65,8 @@ module BaseBool = struct
     | false -> 0
     | true  -> 1
 
-  open BatStd
-  let of_float = of_int -| int_of_float
-  let to_float = float_of_int -| to_int
+  let of_float x = of_int (int_of_float x)
+  let to_float x = float_of_int (to_int x)
   let of_string = function
     | "true" | "tt" | "1" -> true
     | "false"| "ff" | "0" -> false
@@ -77,8 +75,17 @@ module BaseBool = struct
   let to_string = string_of_bool
 end
 
-  include BaseBool
-  include BatNumber.MakeNumeric(BaseBool)
-  let print out t = BatInnerIO.nwrite out (to_string t)
-  let t_printer paren out t = print out t
+include BatNumber.MakeNumeric(BaseBool)
+module Infix = BatNumber.MakeInfix(BaseBool)
+module Compare = BatNumber.MakeCompare(BaseBool)
+  
+external not : bool -> bool = "%boolnot"
+external ( && ) : bool -> bool -> bool = "%sequand"
+external ( || ) : bool -> bool -> bool = "%sequor"
 
+type bounded = t
+let min_num, max_num = false, true
+  
+let print out t = BatInnerIO.nwrite out (to_string t)
+let t_printer paren out t = print out t
+  

@@ -141,12 +141,12 @@ val filter: ('b -> bool) -> ('a, 'b, 'c) t ->  ('a, 'b, 'c) t
   (**[filter f p] is only accepts values [x] such that [p]
      accepts [x] and [f (p x)] is [true]*)
 
-val suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatStd.result), 'c) t
+val suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatPervasives.result), 'c) t
   (**[suspend s] returns the state of the parser in a form that can be
      resumed by calling the returned function. evaluation will resume
      from parser s *)
 
-val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) BatStd.result
+val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) BatPervasives.result
   (**[run p s] executes parser [p] on source [s]. In case of
      success, returns [Ok v], where [v] is the return value of [p].
      In case of failure, returns [Error f], with [f] containing
@@ -242,3 +242,15 @@ val sat: ('a -> bool) -> ('a, unit, _) t
 
 val debug_mode : bool ref
   (**If set to [true], debugging information will be printed to the standard error.*)
+
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( <|> ) : ('a, 'b, 'c) t -> ('a, 'b, 'c) t -> ('a, 'b, 'c) t
+  val ( ~? ): ('a, 'b, 'c) t -> ('a, 'b option, 'c) t
+  val ( >>= ) : ('a, 'b, 'c) t -> ('b -> ('a, 'd, 'c) t ) -> ('a, 'd, 'c) t
+  val ( >>> ) : ('a, _, 'c) t -> ('a, 'd, 'c) t  -> ('a, 'd, 'c) t
+  val ( >::) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t -> ('a, 'b list, 'c) t
+  val ( ~* ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  val ( ~+ ) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t
+  val ( ^^ ) : ('a, 'b, 'c) t -> int -> ('a, 'b list, 'c) t
+end

@@ -99,7 +99,6 @@ I    {!flush_out}.
     @documents BatInnerIO
 *)
 
-open BatCamomile
 open BatInnerIO
 
 type input = BatInnerIO.input
@@ -358,7 +357,7 @@ val tab_out : ?tab:char -> int -> 'a output -> unit output
 val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
 
-val read_uall : input -> BatRope.t
+val read_uall : input -> Ulib.Text.t
 (** Read the whole contents of a UTF-8 encoded input*)
 
 val pipe : unit -> input * unit output
@@ -434,13 +433,13 @@ val read_float : input -> float
 val read_double : input -> float
 (** Read an IEEE double precision floating point value. *)
 
-val read_uchar: input -> UChar.t
+val read_uchar: input -> Ulib.UChar.t
 (** Read one UChar from a UTF-8 encoded input*)
 
 val read_string : input -> string
 (** Read a null-terminated string. *)
 
-val read_rope: input -> int -> BatRope.t
+val read_text: input -> int -> Ulib.Text.t
 (** Read up to n uchars from a UTF-8 encoded input*)
 
 val read_line : input -> string
@@ -448,7 +447,7 @@ val read_line : input -> string
       input before a LF is found, returns a string of the remaining input.
       Will raise [No_more_input] only if no characters are available. *)
 
-val read_uline: input -> BatRope.t
+val read_uline: input -> Ulib.Text.t
 (** Read a line of UTF-8*)
 
 val write_byte : 'a output -> int -> unit
@@ -472,7 +471,7 @@ val write_i64 : 'a output -> int64 -> unit
 val write_double : 'a output -> float -> unit
 (** Write an IEEE double precision floating point value. *)
 
-val write_uchar: _ output -> UChar.t -> unit
+val write_uchar: _ output -> Ulib.UChar.t -> unit
 (** Write one uchar to a UTF-8 encoded output.*)
 
 val write_float : 'a output -> float -> unit
@@ -481,8 +480,8 @@ val write_float : 'a output -> float -> unit
 val write_string : 'a output -> string -> unit
 (** Write a string and append an null character. *)
 
-val write_rope : _ output -> BatRope.t -> unit
-(** Write a character rope onto a UTF-8 encoded output.*)
+val write_text : _ output -> Ulib.Text.t -> unit
+(** Write a character text onto a UTF-8 encoded output.*)
 
 val write_line : 'a output -> string -> unit
 (** Write a line and append a line end.
@@ -493,7 +492,7 @@ val write_line : 'a output -> string -> unit
     then a LF is inserted at the end of the line. If your system
     favors CRLF (or ['\r\n']), then this is what will be inserted.*)
 
-val write_uline: _ output -> BatRope.t -> unit
+val write_uline: _ output -> Ulib.Text.t -> unit
 (** Write one line onto a UTF-8 encoded output.*)
 
 (** Same operations as module {!BatIO}, but with big-endian encoding *)
@@ -883,7 +882,7 @@ val lines_of : input -> string BatEnum.t
 val chunks_of : int -> input -> string BatEnum.t
 (** Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest. *)
 
-val ulines_of : input -> BatRope.t BatEnum.t
+val ulines_of : input -> Ulib.Text.t BatEnum.t
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
 
 val chars_of : input -> char BatEnum.t
@@ -891,7 +890,7 @@ val chars_of : input -> char BatEnum.t
 
     {b Note} Usually faster than calling [read] several times.*)
 
-val uchars_of : input -> UChar.t BatEnum.t
+val uchars_of : input -> Ulib.UChar.t BatEnum.t
 (** offer the characters of an UTF-8 encoded input as an enumeration*)
 
 val bits_of : in_bits -> int BatEnum.t
@@ -903,7 +902,7 @@ val write_bytes : 'a output -> int BatEnum.t -> unit
 val write_chars : 'a output -> char BatEnum.t -> unit
 (** Write an enumeration of chars. *)
 
-val write_uchars : _ output -> UChar.t BatEnum.t -> unit
+val write_uchars : _ output -> Ulib.UChar.t BatEnum.t -> unit
 (** Write an enumeration of characters onto a UTF-8 encoded output.*)
 
 val write_ui16s : 'a output -> int BatEnum.t -> unit
@@ -934,12 +933,13 @@ val write_lines : 'a output -> string BatEnum.t -> unit
 (** Write an enumeration of lines, appending a LF (it might be converted
     to CRLF on some systems depending on the underlying BatIO). *)
 
-val write_ropes : 'a output -> BatRope.t BatEnum.t -> unit
-(** Write an enumeration of ropes onto a UTF-8 encoded output,
+val write_texts : 'a output -> Ulib.Text.t BatEnum.t -> unit
+(** Write an enumeration of texts onto a UTF-8 encoded output,
     without appending a line-end.*)
 
-val write_ulines : _ output -> BatRope.t BatEnum.t -> unit
-(** Write an enumeration of lines onto a UTF-8 encoded output.*)
+val write_ulines : _ output -> Ulib.Text.t BatEnum.t -> unit
+(** Write an enumeration of texts onto a UTF-8 encoded output, with a
+    newline after each.*)
 
 val write_bitss : nbits:int -> out_bits -> int BatEnum.t -> unit
 (** Write an enumeration of bits*)

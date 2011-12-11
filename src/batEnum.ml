@@ -388,6 +388,12 @@ let for_all f t =
       in aux ()
   with No_more_elements -> true
 
+(* test paired elements, ignore any extra elements from one enum *)
+let for_all2 f t1 t2 =
+  try
+    let rec aux () = f (t1.next()) (t2.next()) && aux () in
+    aux ()
+  with No_more_elements -> true
 
 let scanl f init t =
   let acc = ref init in
@@ -595,6 +601,16 @@ let switch f e =
   let a = switchn 2 (fun x -> if f x then 0 else 1) e in
     (a.(0), a.(1))
 
+let partition = switch
+
+(**T partition
+   let a,b = partition ((>) 3) (List.enum [1;2;3;4;5;1;5;0]) in List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
+**)
+
+(**Q partition
+   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l = (Enum.partition f (List.enum l) |> Tuple.Tuple2.mapn List.of_enum))
+**)
+
 let seq init f cond = 
   let acc = ref init in
   let aux () = if cond !acc then begin 
@@ -710,28 +726,6 @@ let while_do cont f e =
 
 let break test e = span (fun x -> not (test x)) e
 
-let ( -- ) x y = range x ~until:y
-
-let ( --. ) (a, step) b =
-  let n = int_of_float ((b -. a) /. step) + 1 in
-  if n < 0 then
-    empty ()
-  else
-    init n (fun i -> float_of_int i *. step +. a)
-
-let ( --^ ) x y = range x ~until:(y-1)
-
-let ( --- ) x y = 
-  if x <= y then x -- y
-  else          seq x ((+) (-1)) ( (<=) y )
-
-let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
-
-let ( // ) e f = filter f e
-
-let ( /@ ) e f        = map f e
-let ( @/ )            = map
-
 let uniq e = 
   match peek e with 
       None -> empty ()
@@ -832,7 +826,7 @@ let group test e =
 let group_by eq e =
   group_aux (fun x -> x) eq e
 
-(**T enum_group
+(**T group
    Enum.empty () |> Enum.group (const ()) |> is_empty
    List.enum [1;2;3;4] |> Enum.group identity |> Enum.map List.of_enum |> List.of_enum = [[1];[2];[3];[4]]
    List.enum [1;2;3;4] |> Enum.group (const true) |> List.of_enum |> List.map List.of_enum = [[1;2;3;4]]
@@ -873,7 +867,7 @@ let unfold data next =
 
 let arg_min f enum =
   match get enum with
-      None -> failwith "arg_min: Empty enum"
+      None -> invalid_arg "arg_min: Empty enum"
     | Some v ->
 	let item, eval = ref v, ref (f v) in
 	iter (fun v -> let fv = f v in 
@@ -882,7 +876,7 @@ let arg_min f enum =
 
 let arg_max f enum =
   match get enum with
-      None -> failwith "arg_max: Empty enum"
+      None -> invalid_arg "arg_max: Empty enum"
     | Some v ->
 	let item, eval = ref v, ref (f v) in
 	iter (fun v -> let fv = f v in 
@@ -893,6 +887,33 @@ let arg_max f enum =
    List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"
    -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
 **)
+
+module Infix = struct
+  let ( -- ) x y = range x ~until:y
+
+  let ( --. ) (a, step) b =
+    let n = int_of_float ((b -. a) /. step) + 1 in
+    if n < 0 then
+      empty ()
+    else
+      init n (fun i -> float_of_int i *. step +. a)
+
+  let ( --^ ) x y = range x ~until:(y-1)
+
+  let ( --- ) x y = 
+    if x <= y then x -- y
+    else          seq x ((+) (-1)) ( (<=) y )
+
+  let ( --~ ) a b = map Char.chr (range (Char.code a) ~until:(Char.code b))
+
+  let ( // ) e f = filter f e
+
+  let ( /@ ) e f        = map f e
+  let ( @/ )            = map
+  let ( //@ ) e f       = filter_map f e
+  let ( @// )           = filter_map
+end
+include Infix
 
 (* -----------
    Concurrency 
@@ -1060,7 +1081,7 @@ module type Enumerable = sig
   val of_enum : 'a t -> 'a enumerable
 end
   
-module WithMonad (Mon : BatMonad.S) =
+module WithMonad (Mon : BatInterfaces.Monad) =
 struct    
   type 'a m = 'a Mon.m
       
@@ -1103,4 +1124,48 @@ struct
   type 'a m = 'a t
   let return x = singleton x
   let bind m f = concat (map f m)
+end
+
+module Incubator = struct
+  open BatOrd
+
+  let int_eq (x:int) y = x = y
+  let int_ord (x:int) y =
+    if x > y then Gt
+    else if y > x then Lt
+    else Eq
+
+  let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
+
+  let rec ord_elements ord_elt t u =
+    match (get t, get u) with
+      | (None, None)     -> Eq
+      | (None, _)        -> Lt
+      | (_, None)        -> Gt
+      | (Some x, Some y) -> match ord_elt x y with
+	  | Eq -> ord_elements ord_elt t u
+	  | (Gt|Lt) as n -> n
+
+  let eq eq_elt t1 t2 =
+    bin_eq
+      int_eq (count t1) (count t2)
+      (eq_elements eq_elt) t1 t2
+
+  let ord ord_elt t1 t2 =
+    bin_ord
+      int_ord (count t1) (count t2)
+      (ord_elements ord_elt) t1 t2
+
+  module Eq (T : Eq) = struct
+    type 'a enum = 'a t
+    type t = T.t enum
+    let eq = eq T.eq
+  end
+
+  module Ord (T : Ord) = struct
+    type 'a enum = 'a t
+    type t = T.t enum
+    let ord = ord T.ord
+  end
+
 end

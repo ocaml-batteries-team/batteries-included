@@ -53,8 +53,8 @@ val print : ('a BatInnerIO.output -> 'b -> unit)
   -> 'a BatInnerIO.output -> 'b uref -> unit
   (** Print the uref. *)
 
-val uref_printer : 'a BatValue_printer.t -> 'a uref BatValue_printer.t
-  (** See {!BatValue_printer}. *)
+val uref_printer : 'a BatValuePrinter.t -> 'a uref BatValuePrinter.t
+  (** See {!BatValuePrinter}. *)
 
-val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
-  (** See {!BatValue_printer}. *)
+val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
+  (** See {!BatValuePrinter}. *)

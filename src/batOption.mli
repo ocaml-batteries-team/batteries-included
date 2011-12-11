@@ -56,8 +56,15 @@ let interesting_positions dataset =
 ]}
 *)
 
+val apply : ('a -> 'a) option -> 'a -> 'a
+(** [apply None x] returns [x] and [apply (Some f) x] returns [f x] *)
+
 val default : 'a -> 'a option -> 'a
 (** [default x (Some v)] returns [v] and [default x None] returns [x]. *)
+
+val ( |? ) : 'a option -> 'a -> 'a
+(** Like {!default}, with the arguments reversed.
+    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
 
 val map_default : ('a -> 'b) -> 'b -> 'a option -> 'b
 (** [map_default f x (Some v)] returns [f v] and [map_default f x None]
@@ -74,6 +81,19 @@ val get : 'a option -> 'a
 
 val get_exn : 'a option -> exn -> 'a
 (** [get_exn (Some x) e] returns [x] and [get_exn None e] raises [e]. *)
+
+val compare : ?cmp:('a -> 'a -> int) -> 'a option -> 'a option -> int
+(** Compare two options, possibly using custom comparators for the
+    value.  [None] is always assumed to be less than [Some _].  The
+    parameter [cmp] defaults to [Pervasives.compare]. *)
+
+val eq : ?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool
+(** Test for equality between option types, possibly using a custom
+    equality predicate.  The parameter [eq] defaults to
+    [Pervasives.(=)]. 
+
+    @since 1.4.0
+*)
 
 val enum: 'a option -> 'a BatEnum.t
 (** [enum (Some x)] returns the singleton [x], while [enum None] returns
@@ -111,9 +131,9 @@ end
 
 val print : ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 
-val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
-val maybe_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+val maybe_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
 (** Operations on options, with labels.*)
 module Labels : sig
@@ -121,3 +141,10 @@ module Labels : sig
   val map : f:('a -> 'b) -> 'a option -> 'b option
   val map_default : f:('a -> 'b) -> 'b -> 'a option -> 'b
 end
+
+module Infix : sig
+  val ( |? ) : 'a option -> 'a -> 'a
+  (** Like {!default}, with the arguments reversed.
+      [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+end
+

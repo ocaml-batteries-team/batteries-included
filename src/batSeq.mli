@@ -240,12 +240,7 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
   (**Print the contents of a sequence*)
 
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b t -> string
-  (** Using a string printer, print a sequence to a string (as sprintf vs. printf)
-      @deprecated use {!BatIO.to_string}.
-   *)
-
-val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
 module Exceptionless : sig
   val hd : 'a t -> 'a option

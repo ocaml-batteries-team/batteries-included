@@ -49,10 +49,12 @@ val merge : 'a t -> 'a t -> 'a t
   (** Merge two heaps. O(log m) *)
 
 val find_min : 'a t -> 'a
-  (** Find the minimal element of the heap. O(1) *)
+  (** Find the minimal element of the heap. O(1)
+      @raises [Invalid_argument "find_min"] if the heap is empty *)
 
 val del_min : 'a t -> 'a t
-  (** Delete the minimal element of the heap. O(log n) *)
+  (** Delete the minimal element of the heap. O(log n)
+      @raises [Invalid_argument "del_min"] if the heap is empty *)
 
 (** {6 Transformation} *)
 
@@ -80,8 +82,8 @@ val print :  ?first:string -> ?last:string -> ?sep:string
   -> 'a BatInnerIO.output -> 'b t -> unit
   (** Print the contents of the heap in heap order. O(n log n) *)
 
-val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
-  (** See {!BatValue_printer}. *)
+val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
+  (** See {!BatValuePrinter}. *)
 
 (** {6 Functorized version} *)
 
@@ -120,7 +122,7 @@ sig
     -> ('a BatInnerIO.output -> elem -> unit)
     -> 'a BatInnerIO.output -> t -> unit
     (** See {!BatHeap.print}. *)
-  val t_printer : elem BatValue_printer.t -> t BatValue_printer.t
+  val t_printer : elem BatValuePrinter.t -> t BatValuePrinter.t
     (** See {!BatHeap.t_printer}. *)
 end
 

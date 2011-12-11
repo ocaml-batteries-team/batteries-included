@@ -3,7 +3,7 @@
 
 NAME = batteries
 
-VERSION := $(shell cat VERSION)
+VERSION := $(shell grep "^Version:" _oasis | cut -c 15-)
 uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 
 # Define variables and export them for mkconf.ml
@@ -17,6 +17,7 @@ OCAMLFIND_DEST += -destdir $(DESTDIR)
 endif
 
 OCAMLBUILD ?= ocamlbuild
+OCAMLBUILDFLAGS ?= -no-links
 
 ifeq ($(uname_S),Darwin)
   BATTERIES_NATIVE ?= yes
@@ -28,50 +29,55 @@ endif
 
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
-	_build/src/batteries_help.cmo \
+	_build/src/batteriesHelp.cmo \
 	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 	_build/src/syntax/pa_strings/pa_strings.cma \
 	_build/src/syntax/pa_llist/pa_llist.cmo
-NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
+OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
+	_build/src/*.cmxs
 
 # What to build
-TARGETS = syntax.otarget byte.otarget src/batteries_help.cmo META
+TARGETS = syntax.otarget
+TARGETS += src/batteries.cma
+TARGETS += src/batteriesHelp.cmo
+TARGETS += src/batteriesThread.cma
+TARGETS += META
 BENCH_TARGETS = benchsuite/bench_int.native benchsuite/bench_map.native
 TEST_TARGET = test-byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   EXT = native
   MODE = shared
-  TARGETS += shared.otarget
+  TARGETS += src/batteries.cmxs src/batteriesThread.cmxs
   TEST_TARGET = test-native
-  INSTALL_FILES += $(NATIVE_INSTALL_FILES) _build/src/*.cmxs
-else ifeq ($(BATTERIES_NATIVE), yes)
+else 
+ifeq ($(BATTERIES_NATIVE), yes)
   EXT = native
   MODE = native
-  TARGETS += native.otarget
+  TARGETS += src/batteries.cmxa src/batteriesThread.cmxa
   TEST-DEPS = test-native
-  INSTALL_FILES += $(NATIVE_INSTALL_FILES)
 else
   EXT = byte
   MODE = bytecode
 endif
+endif
 
 .PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk
 
-all: src/batCamomile.ml
+all: 
 	@echo "Build mode:" $(MODE)
-	${RM} src/batteries_config.ml
-	$(OCAMLBUILD) $(TARGETS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
 clean:
-	${RM} apidocs
+	${RM} apidocs src/batteriesConfig.ml META
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
-	${RM} src/batCamomile.ml
 	$(OCAMLBUILD) -clean
 
-doc:
+batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
+	cat $^ > $@
+
+doc: batteries.odocl
 	$(OCAMLBUILD) batteries.docdir/index.html
-	test -e apidocs || ln -s _build/batteries.docdir apidocs
 
 install: all uninstall_packages
 	ocamlfind install $(OCAMLFIND_DEST) estring \
@@ -79,7 +85,8 @@ install: all uninstall_packages
 		_build/libs/estring/*.cmo \
 		_build/libs/estring/*.cmi \
 		_build/libs/estring/*.mli
-	ocamlfind install $(OCAMLFIND_DEST) $(NAME) $(INSTALL_FILES)
+	ocamlfind install $(OCAMLFIND_DEST) $(NAME) $(INSTALL_FILES) \
+		-optional $(OPT_INSTALL_FILES)
 
 uninstall_packages:
 	ocamlfind remove $(OCAMLFIND_DEST) estring
@@ -103,86 +110,55 @@ reinstall:
 	$(MAKE) install
 
 #List of source files that it's okay to try to test
-DONTTEST=$(wildcard src/batCamomile-*.ml) src/batteries_help.ml
-TESTABLE=$(filter-out $(DONTTEST), $(wildcard src/*.ml))
+DONTTEST=src/batteriesHelp.ml
+TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
-TESTDEPS = src/batCamomile.ml $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
+TESTDEPS = $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 
-compile-test-byte: $(TESTDEPS)
-	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte
+_build/testsuite/main.byte _build/qtest/test_runner.byte: $(TESTDEPS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte qtest/test_runner.byte
 
-compile-test-native: $(TESTDEPS)
-	$(OCAMLBUILD) syntax.otarget byte.otarget src/batteries_help.cmo META testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
+_build/testsuite/main.native _build/qtest/test_runner.native: $(TESTDEPS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
 
-run-test-byte:
-	_build/testsuite/main.byte
+test-byte: _build/testsuite/main.byte #_build/qtest/test_runner.byte
+	_build/testsuite/main.byte 
 	_build/qtest/test_runner.byte
 
-run-test-native: run-test-byte
+test-native: _build/testsuite/main.native #_build/qtest/test_runner.native
+	_build/testsuite/main.byte 
+	_build/qtest/test_runner.byte
 	_build/testsuite/main.native
 	_build/qtest/test_runner.native
 
-test-byte: compile-test-byte run-test-byte
-test-native: compile-test-native run-test-byte
 test: $(TEST_TARGET)
 
 bench: 
-	$(OCAMLBUILD) $(TARGETS) $(BENCH_TARGETS)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS) $(BENCH_TARGETS)
 	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH); )
 
-release: test
+release: setup.ml doc test 
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
-
-##
-## Magic to detect which version of camomile is installed 
-##
-
-CAMVER=$(shell sh -c 'ocamlfind query -format %v camomile')
-ifeq ($(CAMVER),0.8.2)
-	CAMFIX=src/batCamomile-0.8.2.ml
-endif
-ifeq ($(CAMVER),0.8.1)
-	CAMFIX=src/batCamomile-0.8.1.ml
-endif
-ifeq ($(CAMVER),0.7.2)
-	CAMFIX=src/batCamomile-0.7.ml
-endif
-ifeq ($(CAMVER),0.7.1)
-	CAMFIX=src/batCamomile-0.7.ml
-endif
-ifeq ($(CAMVER),)
-	CAMFIX=camfail
-endif
-ifeq ($(CAMFIX),)
-	CAMFIX=camfailunk
-endif
-
-src/batCamomile.ml: $(CAMFIX)
-	cp -f $< $@
-
-camfail:
-	echo "Camomile not detected, cannot compile batteries"
-	exit 1
-
-camfailunk:
-	echo "Unknown build of camomile detected ( $(CAMVER) ), cannot auto-config batcamomile"
-	exit 1
+setup.ml: _oasis
+	oasis setup
+	git commit setup.ml -m"Update setup.ml based on _oasis"
 
 ##
 ## Magic for test target - auto-generated test files from source comments
 ##
 
 _build/build/make_suite.$(EXT): build/make_suite.mll
-	$(OCAMLBUILD) -no-links make_suite.$(EXT)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) make_suite.$(EXT)
 
 #convert a source file to a test suite by filtering special comments
 qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
 	_build/build/make_suite.$(EXT) $< > $@
 
 #put all the testing modules in a library
-qtest/test_mods.mllib: $(TESTABLE)
+qtest/test_mods.mllib:
 	/bin/echo -n "Quickcheck Tests " > $@
 	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
 
+.PHONY: qtest/test_mods.mllib

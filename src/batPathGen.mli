@@ -180,6 +180,17 @@ module Operators : sig
 
 end
 
+(**
+   As other Operators modules in batteries are named "Infix" we provide Infix as well.
+   This is a mere copy of Operators.
+*)
+module Infix : sig
+
+ val (/:) : t -> ustring -> t
+ val (//@) : t -> t -> t
+
+end
+
 exception Malformed_path
 
 val normalize_filepath : t -> t
@@ -483,6 +494,7 @@ module OfString : PathType with type ustring = string and type uchar = char
 
     @documents Future.Path.OfString
 *)
+
 (*
 module OfRope : PathType with type ustring = Rope.t
 (** In this implementation used strings are always valid UTF-8.

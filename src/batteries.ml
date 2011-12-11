@@ -50,7 +50,7 @@ module Array = struct include Array include BatArray end
 module Buffer = struct include Buffer include BatBuffer end
 (* Callback *)
 module Char = struct include Char include BatChar end
-module Complex = struct include Complex include BatComplex end
+module Complex = BatComplex
 module Digest = struct include Digest include BatDigest end
 (* Filename *)
 module Format = struct include Format include BatFormat end
@@ -58,6 +58,7 @@ module Gc = struct include Gc include BatGc end
 module Genlex = struct include Genlex include BatGenlex end
 module Hashtbl = BatHashtbl
 module Int32 = BatInt32
+(*module Int63 = BatInt63*)
 module Int64 = BatInt64
 (* Lazy *)
 module Lexing = struct include Lexing include BatLexing end
@@ -83,6 +84,19 @@ module String = struct include String include BatString end
 module Sys = struct include Sys include BatSys end
 (* Weak *)
 
+(* Unix *)
+module Unix = struct include Unix include BatUnix end
+
+(* Str *)
+module Str = struct include Str include BatStr end
+
+(* Num *)
+module Big_int = struct include Big_int include BatBig_int end
+
+(* Bigarray *)
+module Bigarray = BatBigarray
+
+
 (* Extlib modules not replacing stdlib *)
 module Base64 = BatBase64
 module BitSet = BatBitSet
@@ -97,20 +111,17 @@ module LazyList = BatLazyList
 module MultiPMap = BatMultiPMap
 module Option = BatOption
 module OptParse = BatOptParse
-module PMap = BatPMap
-module PSet = BatPSet
 module RefList = BatRefList
 module Ref = BatRef
-module Std = BatStd
+(*module Std = REMOVED - use BatPervasives *)
 
 (* Batteries specific modules *)
 module Cache = BatCache
 module CharParser = BatCharParser
 module Deque = BatDeque
 module Hashcons = BatHashcons
+module Heap = BatHeap
 module Logger = BatLogger
-module Monad = BatMonad
-module Pair = BatPair
 module ParserCo = BatParserCo
 module PathGen = BatPathGen
 module Print = BatPrint
@@ -122,25 +133,15 @@ module Tuple2 = BatTuple.Tuple2
 module Tuple3 = BatTuple.Tuple3
 module Tuple4 = BatTuple.Tuple4
 module Tuple5 = BatTuple.Tuple5
-module UCharParser = BatUCharParser
-module Value_printer = BatValue_printer
+module ValuePrinter = BatValuePrinter
 module Vect = BatVect
 module ISet = BatISet
 module IMap = BatIMap
 module Splay = BatSplay
 module Uref = BatUref
-
-(* Unix *)
-module Unix = struct include Unix include BatUnix end
-
-(* Str *)
-module Str = struct include Str include BatStr end
 module Substring = BatSubstring
-module Rope = BatRope
-
-(* Threads *)
+module Text = Ulib.Text
 module Concurrent = BatConcurrent
-
 
 (* Batteries Specific *)
 module Interfaces = BatInterfaces
@@ -150,19 +151,11 @@ module Int = BatInt
 module Bool = BatBool
 module Unit = BatUnit
 
-(* Chamomile *)
-module UChar = struct include BatCamomile.UChar include BatUChar end
-module UTF8 = BatUTF8 (* replaces, doesn't extend UTF8 *)
+(* Modules in-progress, API stability not guaranteed *)
+module Future = struct
+  module Log = BatLog
+end
 
-
-(* Num *)
-module Big_int = struct include Big_int include BatBig_int end
-
-
-(* Bigarray *)
-module Bigarray = BatBigarray
-
-
-(* Pervasives *)
+(* Pervasives last *)
 include Pervasives
 include BatPervasives

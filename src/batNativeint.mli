@@ -184,6 +184,15 @@ external to_int32 : nativeint -> int32 = "%nativeint_to_int32"
    i.e. the top 32 bits are lost.  On 32-bit platforms,
    the conversion is exact. *)
 
+external of_int64 : int64 -> nativeint = "%int64_to_nativeint"
+(** Convert the given 64-bit integer (type [int64])
+   to a native integer. On 32-bit platforms, the top
+   32 bits are lost. *)
+
+external to_int64 : nativeint -> int64 = "%int64_of_nativeint"
+(** Convert the given native integer to a
+   64-bit integer (type [int64]). *)
+
 external of_string : string -> nativeint = "caml_nativeint_of_string"
 (** Convert the given string to a native integer.
    The string is read in decimal (by default) or in hexadecimal,
@@ -223,12 +232,18 @@ val ( < ) : t -> t -> bool
 val ( = ) : t -> t -> bool
 val operations : t BatNumber.numeric
   
+(** {6 Submodules grouping all infix operators} *)
+
+module Infix : BatNumber.Infix with type bat__infix_t = t
+module Compare : BatNumber.Compare with type bat__compare_t = t
+
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
 
 val print : 'a BatIO.output -> t -> unit
-val t_printer : t BatValue_printer.t
+val t_printer : t BatValuePrinter.t
 
 (**/**)
 
@@ -241,6 +256,6 @@ external format : string -> nativeint -> string = "caml_nativeint_format"
    one [%d], [%i], [%u], [%x], [%X] or [%o] conversion specification.
    @deprecated use {!Printf.sprintf} with a [%nx] format
    instead. *)
-(** / **)
+(**/**)
 
 

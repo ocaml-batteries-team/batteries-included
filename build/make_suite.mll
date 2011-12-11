@@ -74,24 +74,28 @@ let handle_test mn (k, str, pos) =
           in
           number tests (k + 1) ts
       in
-      Printf.printf "let %s = %S >::: [\n" test_name name ; begin
+      Printf.printf "let %s = %S >::: [\n" test_name name;
+      (* dummy test that prints the test group name *)
+      Printf.printf "\"label\" >:: (fun () -> print_string %S; print_string \".\"; print_string %S) ;\n" mn name;
+      begin
         match k with
           | `Q ->
             let tests = number [] (pos.pos_lnum + 1) tests in
             List.iter begin fun (k, t) ->
               Printf.printf
-                "\"%s:%d\" >:: (fun () -> Q.laws_exn %S %s) ;\n" pos.pos_fname k t t
+		"#%d \"%s\"\n\"%s:%d\" >:: (fun () -> Q.laws_exn %S %s) ;\n" k pos.pos_fname pos.pos_fname k t t
             end tests
           | `T ->
             let tests = number [] (pos.pos_lnum + 1) tests in
             List.iter begin fun (k, t) ->
               Printf.printf
-                "\"%s:%d\" >:: (fun () -> OUnit.assert_bool \"%s:%d\" (%s)) ;\n" pos.pos_fname k pos.pos_fname k t
+		"#%d \"%s\"\n\"%s:%d\" >:: (fun () -> OUnit.assert_bool \"%s:%d\" (%s)) ;\n" k pos.pos_fname pos.pos_fname k pos.pos_fname k t
             end tests
           | `S ->
             let tests = String.concat "\n" tests in
-            Printf.printf "\"%s:%d\" >:: (fun () -> %s) ;\n" pos.pos_fname pos.pos_lnum tests
-      end ; Printf.printf "] ;;\n%!"
+	    Printf.printf "#%d \"%s\"\n\"%s:%d\" >:: (fun () -> %s) ;\n" pos.pos_lnum pos.pos_fname pos.pos_fname pos.pos_lnum tests
+      end ; 
+      Printf.printf "] ;;\n%!"
     end
     | _ ->
       failwith "handle_test"
@@ -164,15 +168,16 @@ and pragma k start buf = parse
       "open " ^ mn ^ ";;" ;
     ] ;
     spin () ;
-    List.iter (Printf.printf "%s\n") [
-      "let suite = \"" ^ mn ^ " unit tests\" >::: [" ;
-      String.concat ";" !all_tests ;
-      "];;" ;
-      "let () = Tests.register suite;;"
-    ] ;
+    if !all_tests <> [] then
+      List.iter (Printf.printf "%s\n") [
+        "let suite = \"" ^ mn ^ "\" >::: [" ;
+        String.concat ";" (List.rev !all_tests) ;
+        "];;" ;
+        "let () = Tests.register suite;;"
+      ] ;
     Pervasives.flush stdout
-
-  let _ =
+      
+  let () =
     if Array.length Sys.argv != 2 then failwith "make_suite: Missing filename to process" ;
     process Sys.argv.(1)
 

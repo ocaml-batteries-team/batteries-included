@@ -154,16 +154,6 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
     | (h::t, None,   Some y)     -> rev_append (aux [h] t) [y]
     | (h::t, Some x, Some y)     -> x::rev_append (aux [h] t) [y]
 
-let make_compare c l1 l2 =
-  let rec aux l1 l2 = match (l1, l2) with
-    | (h1::t1, h2::t2) -> let result = c h1 h2 in
-	if result = 0 then aux t1 t2
-	else               result
-    | ([],     []    ) -> 0
-    | (_,      []    ) -> 1
-    | ([],     _     ) -> -1
-  in aux l1 l2
-
 let rec unique ?(cmp = ( = )) l =
 	let rec loop dst = function
 		| [] -> ()
@@ -667,12 +657,6 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
 
 let t_printer a_printer paren out x = print (a_printer false) out x
 
-let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a list =
-  BatPrintf.sprintf2 "%a" (print ~first ~last ~sep print_a) list
-(*  let os = BatInnerIO.output_string  () in
-  print ~first ~last ~sep print_a os list;
-  BatInnerIO.close_out os (* returns contents *)*)
-
 let reduce f = function [] -> invalid_arg "Empty List"
   | h::t -> fold_left f h t
 
@@ -717,6 +701,14 @@ module Exceptionless = struct
   let find_map f l =
     try Some(find_map f l)
     with Not_found -> None
+      
+  let hd l = 
+    try Some (hd l) 
+    with Failure "hd" -> None 
+
+  let tl l = 
+    try Some (tl l)
+    with Failure "tl" -> None
 end
 
 
@@ -767,3 +759,51 @@ end
 
 let ( @ ) = List.append
 
+module Infix = struct
+  let ( @ ) = ( @ )
+end
+
+module Incubator = struct
+  open BatOrd
+
+  let rec eq eq_elt l1 l2 =
+    match l1 with
+      | [] -> (match l2 with [] -> true | _ -> false)
+      | hd1::tl1 ->
+	(match l2 with
+	  | [] -> false
+	  | hd2::tl2 -> bin_eq eq_elt hd1 hd2 (eq eq_elt) tl1 tl2)
+
+  let rec ord ord_elt l1 l2 =
+    match l1 with
+      | [] -> (match l2 with [] -> Eq | _::_ -> Lt)
+      | hd1::tl1 ->
+	(match l2 with
+	  | [] -> Gt
+	  | hd2::tl2 -> bin_ord ord_elt hd1 hd2 (ord ord_elt) tl1 tl2)
+
+  let rec comp comp_elt l1 l2 =
+    match l1 with
+      | [] -> (match l2 with [] -> 0 | _::_ -> -1)
+      | hd1::tl1 ->
+	(match l2 with
+	  | [] -> 1
+	  | hd2::tl2 -> bin_comp comp_elt hd1 hd2 (comp comp_elt) tl1 tl2)
+
+  module Eq (T : Eq) = struct
+    type t = T.t list
+    let eq = eq T.eq
+  end
+
+  module Ord (T : Ord) = struct
+    type t = T.t list
+    let ord = ord T.ord
+  end
+
+  module Comp (T : Comp) = struct
+    type t = T.t list
+    let compare = comp T.compare
+  end
+end
+
+let make_compare c = Incubator.comp c

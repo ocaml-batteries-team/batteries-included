@@ -183,6 +183,17 @@ module Operators : sig
 
 end
 
+(**
+   As other Operators modules in batteries are named "Infix" we provide Infix as well.
+   This is a mere copy of Operators.
+*)
+module Infix : sig
+
+ val (/:) : t -> ustring -> t
+ val (//@) : t -> t -> t
+
+end
+
 exception Malformed_path
 
 val normalize_filepath : t -> t
@@ -501,7 +512,7 @@ module Make = functor (S : StringType) -> struct
   let full_match pars ss =
     let parser_final = BatParserCo.( >>> ) pars BatParserCo.eof in
     match BatParserCo.run parser_final (S.Parse.source ss) with
-     | BatStd.Ok _ -> true
+     | BatPervasives.Ok _ -> true
      | _ -> false
 
 (*  let full_match_none_of raw_excluded ss =
@@ -608,6 +619,8 @@ module Make = functor (S : StringType) -> struct
     let (//@) = concat
 
   end
+
+  module Infix = Operators
 
   let normalize_gen ~assume path =
     let can_dotdot = match assume with
@@ -836,29 +849,27 @@ module StringAdapter (*: StringType*) = struct
 end
 
 module OfString : PathType with type ustring = string and type uchar = char = Make (StringAdapter)
+(*
+module TextAdapter = struct
 
-open BatCamomile
-
-module RopeAdapter = struct
-
-  type t = BatRope.t
-  let length = BatRope.length
-  type tchar = UChar.t
-  let get = BatRope.get
-  let lift_char ch = UChar.of_char ch
-  let lift = BatRope.of_string
-  let to_string = BatRope.to_string
-  let concat_with_separators sep lst = BatRope.concat sep lst
-  let compare = BatRope.compare
-  let iter = BatRope.iter
-  let iteri fu ss = BatRope.iteri fu ss
-  let sub = BatRope.sub
-  let rindex ss pch = BatRope.rindex ss (UChar.of_char pch)
+  type t = Ulib.Text.t
+  let length = Ulib.Text.length
+  type tchar = Ulib.UChar.t
+  let get = Ulib.Text.get
+  let lift_char ch = Ulib.UChar.of_char ch
+  let lift = Ulib.Text.of_string
+  let to_string = Ulib.Text.to_string
+  let concat_with_separators sep lst = Ulib.Text.concat sep lst
+  let compare = Ulib.Text.compare
+  let iter = Ulib.Text.iter
+  let iteri fu ss = Ulib.Text.iteri fu ss
+  let sub = Ulib.Text.sub
+  let rindex ss pch = Ulib.Text.rindex ss (Ulib.UChar.of_char pch)
   module Parse = struct
     let source = BatUCharParser.source_of_rope
     let letter = BatUCharParser.letter
   end
 end
 
-module OfRope = Make (RopeAdapter)
-
+module OfText = Make (TextAdapter)
+  *)

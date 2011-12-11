@@ -1,6 +1,6 @@
 
-open BatStd
-type ('a, 'b) t = ('a, 'b) BatStd.result = 
+open BatPervasives
+type ('a, 'b) t = ('a, 'b) BatPervasives.result =
  | Ok  of 'a
  | Bad of 'b
 
@@ -31,3 +31,8 @@ let default def = function
 let default_map def f = function
   | Ok x -> f x
   | Bad _ -> def
+
+module Infix = struct
+  let (>>=) = (>>=)
+end
+

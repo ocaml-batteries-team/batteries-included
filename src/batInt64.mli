@@ -211,6 +211,11 @@ val compare: t -> t -> int
     allows the module [Int64] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
+(** {6 Submodules grouping all infix operators} *)
+
+module Infix : BatNumber.Infix with type bat__infix_t = t
+module Compare: BatNumber.Compare with type bat__compare_t = t
+
 (**/**)
 
 (** {6 Deprecated functions} *)
@@ -223,7 +228,7 @@ external format : string -> int64 -> string = "caml_int64_format"
    This function is deprecated; use {!Printf.sprintf} with a [%Lx] format
    instead. *)
 
-(** / **)
+(**/**)
     val modulo : int64 -> int64 -> int64
     val pow : int64 -> int64 -> int64
 
@@ -244,6 +249,10 @@ external format : string -> int64 -> string = "caml_int64_format"
 
     (** {7 Printing}*)
     val print: 'a BatInnerIO.output -> t -> unit
-    val t_printer : t BatValue_printer.t
+      (** prints as decimal string *)
+    val xprint: 'a BatInnerIO.output -> t -> unit
+      (** prints as hex string *)
+    val t_printer : t BatValuePrinter.t
+
 
 

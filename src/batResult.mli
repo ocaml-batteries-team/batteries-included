@@ -1,4 +1,4 @@
-open BatStd
+open BatPervasives
 (**  Monadic results of computations that can raise exceptions *)
 
 type ('a, 'b) t = ('a, 'b) result 
@@ -34,4 +34,8 @@ val default_map : 'b -> ('a -> 'b) -> ('a, _) result -> 'b
     when [r] is [Ok x] *)
 
 
-(** {6 Boilerplate code}*)
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( >>= ): ('a, 'b) result -> ('a -> ('c, 'b) result) -> ('c, 'b) result
+end
+

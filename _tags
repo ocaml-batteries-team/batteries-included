@@ -5,3 +5,4 @@
 "testsuite": include
 "qtest": include
 "benchsuite": include
+".git": -traverse

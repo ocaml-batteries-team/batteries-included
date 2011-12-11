@@ -80,7 +80,7 @@
 
 	val at : 'a list -> int -> 'a
 	  (** [at l n] returns the n-th element of the list [l] or raise
-	      [Invalid_index] is the index is outside of [l] bounds. *)
+	      [Invalid_argument] is the index is outside of [l] bounds. *)
 
 	val append : 'a list -> 'a list -> 'a list
 	  (** Catenate two lists.  Same function as the infix operator [@].
@@ -109,7 +109,7 @@
 
 	(**{6 Iterators}*)
 
-	val iteri : (int -> 'a -> 'b) -> 'a list -> unit
+	val iteri : (int -> 'a -> unit) -> 'a list -> unit
 	(** [iteri f l] will call [(f 0 a0);(f 1 a1) ... (f n an)] where
 	 [a0..an] are the elements of the list [l]. *)
 
@@ -292,7 +292,7 @@
 
 	val split_at : int -> 'a list -> 'a list * 'a list
 	(** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
-	 first [n] elements of [l] and [l2] the others. Raise [Invalid_index] if
+	 first [n] elements of [l] and [l2] the others. Raise [Invalid_argument] if
 	 [n] is outside of [l] size bounds. *)
 
 	val split_nth : int -> 'a list -> 'a list * 'a list
@@ -412,10 +412,7 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b list -> unit
 	  (**Print the contents of a list*)
 
-	val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b list -> string
-	  (** Using a string printer, print a list to a string (as sprintf vs. printf)     @deprecated use {!BatIO.to_string}. *)
-
-        val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+        val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
 	(** {6 Obsolete functions} *)
 
@@ -457,12 +454,12 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	  val split_at : int -> 'a list -> [`Ok of ('a list * 'a list) | `Invalid_argument of string]
 	    (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns 
 		[Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2] 
-		contains the others. Otherwise, returns [`Invalid_index n] *)
+		contains the others. Otherwise, returns [`Invalid_argument n] *)
 
 	  val at : 'a list -> int -> [`Ok of 'a | `Invalid_argument of string]
 	    (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
 		[x] is the n-th element of the list [l]. Otherwise, returns [Error
-		(`Invalid_index(n))].*)
+		(`Invalid_argument(n))].*)
 
 
 	  val assoc : 'a -> ('a * 'b) list -> 'b option
@@ -488,9 +485,20 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	    element of the list where [f x] returns [Some y].  It returns [None]
 	    if no such element exists. *)
 
+	  val hd : ('a list -> 'a option)
+	(** [hd l] returns [Some x] such that [x] is the first element of the given list [l]. 
+	    Returns [None] if list [l] is empty. *)
+	
+	  val tl : ('a list -> 'a list option)
+	(** [tl l] returns [Some x] such that [x] is the given list [l] without its first element. 
+	    Returns [None] if list [l] is empty *)
+ 
+end
+
+	(** {6 Infix submodule regrouping all infix operators} *)
+	module Infix : sig
+	  val ( @ ) : 'a list -> 'a list -> 'a list
 	end
-
-
 
 	(** Operations on {!List} with labels.
 	    
@@ -503,7 +511,7 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 	module Labels : sig
 	  val init : int -> f:(int -> 'a) -> 'a list
 	  val iter : f:('a -> unit) -> 'a list -> unit
-	  val iteri : f:(int -> 'a -> 'b) -> 'a list -> unit
+	  val iteri : f:(int -> 'a -> unit) -> 'a list -> unit
 	  val map : f:('a -> 'b) -> 'a list -> 'b list
 	  val mapi : f:(int -> 'a -> 'b) -> 'a list -> 'b list
 	  val rev_map : f:('a -> 'b) -> 'a list -> 'b list
@@ -546,4 +554,15 @@ For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if followin
 
 
 val ( @ ) : 'a list -> 'a list -> 'a list
-(** the new implementation for ( @ ) operator, see [List.append]. *)
+(** Tail recursive [List.append]. *)
+
+module Incubator : sig
+  open BatOrd
+  val eq : 'a eq -> 'a list eq
+  val ord : 'a ord -> 'a list ord
+  val comp : 'a comp -> 'a list comp
+
+  module Eq (T : Eq) : Eq with type t = T.t list
+  module Ord (T : Ord) : Ord with type t = T.t list
+  module Comp (T : Comp) : Comp with type t = T.t list
+end

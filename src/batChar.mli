@@ -103,13 +103,24 @@ val ( -- ): char -> char -> char BatEnum.t
     ['a' -- 'z'] is the enumeration of all characters
     between ['a'] and ['z'] included.*)
 
+(** {6 Infix submodule regrouping all infix operators} *)
+module Infix : sig
+  val ( -- ): char -> char -> char BatEnum.t
+end
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
 
 val print: 'a BatInnerIO.output -> Char.t -> unit
-val t_printer : char BatValue_printer.t
+val t_printer : char BatValuePrinter.t
 
+
+module Incubator : sig
+  module Comp : BatOrd.Comp with type t = char
+  module Ord : BatOrd.Ord with type t = char
+  module Eq : BatOrd.Eq with type t = char
+end
 
 (**/**)
 

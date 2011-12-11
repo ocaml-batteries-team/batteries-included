@@ -1,8 +1,8 @@
 (* 
- * ExtMap - Additional map operations
+ * BatMap - Additional map operations
  * Copyright (C) 1996 Xavier Leroy
  *               1996-2003 Nicolas Cannasse, Markus Mottl
- *               2009-2011 David Rajchenbach-Teller, Eric Norige, Gabriel Scherer 
+ *               2009-2011 David Rajchenbach-Teller, Edgar Friendly, Gabriel Scherer
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -323,9 +323,9 @@ module Concrete = struct
   (* [filter{,i,_map} f t cmp] do not use [cmp] on [t], but only to
      build the result map. The unusual parameter order was choosed to
      reflect this.  *)
-  let filter f t cmp =
+  let filterv f t cmp =
     foldi (fun k a acc -> if f a then add k a cmp acc else acc) t empty
-  let filteri f t cmp =
+  let filter f t cmp =
     foldi (fun k a acc -> if f k a then add k a cmp acc else acc) t empty
   let filter_map f t cmp =
     foldi (fun k a acc -> match f k a with
@@ -651,9 +651,9 @@ sig
 
   val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
 
-  val filter: ('a -> bool) -> 'a t -> 'a t
+  val filterv: ('a -> bool) -> 'a t -> 'a t
 
-  val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
+  val filter: (key -> 'a -> bool) -> 'a t -> 'a t
     
   val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
     
@@ -715,8 +715,8 @@ sig
     val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
     val map : f:('a -> 'b) -> 'a t -> 'b t
     val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
-    val filter: f:('a -> bool) -> 'a t -> 'a t
-    val filteri:f:(key -> 'a -> bool) -> 'a t -> 'a t
+    val filterv: f:('a -> bool) -> 'a t -> 'a t
+    val filter: f:(key -> 'a -> bool) -> 'a t -> 'a t
     val fold :
       f:(key:key -> data:'a -> 'b -> 'b) ->
       'a t -> init:'b -> 'b
@@ -773,10 +773,10 @@ struct
   let print ?first ?last ?sep print_k print_v out t =
     Concrete.print ?first ?last ?sep print_k print_v out (impl_of_t t)
 
+  let filterv f t =
+    t_of_impl (Concrete.filterv f (impl_of_t t) Ord.compare)
   let filter f t =
     t_of_impl (Concrete.filter f (impl_of_t t) Ord.compare)
-  let filteri f t =
-    t_of_impl (Concrete.filteri f (impl_of_t t) Ord.compare)
   let filter_map f t =
     t_of_impl (Concrete.filter_map f (impl_of_t t) Ord.compare)
 
@@ -836,8 +836,8 @@ struct
     let fold ~f t ~init = fold (fun key data acc -> f ~key ~data acc) t init
     let compare ~cmp a b = compare cmp a b
     let equal ~cmp a b = equal cmp a b
+    let filterv ~f = filterv f
     let filter ~f = filter f
-    let filteri ~f = filteri f
   end  
     
 end
@@ -862,7 +862,7 @@ type ('k, 'v) t =
 
 let create cmp = { cmp = cmp; map = Concrete.empty }
 let empty = { cmp = compare; map = Concrete.empty }
-
+let get_cmp {cmp=cmp} = cmp
 let is_empty x = x.map = Concrete.Empty
 
 let add x d m =
@@ -933,8 +933,8 @@ let of_enum ?(cmp = compare) e =
 let print ?first ?last ?sep print_k print_v out t =
   Concrete.print ?first ?last ?sep print_k print_v out t.map
 
-let filter  f t = { t with map = Concrete.filter f t.map t.cmp }
-let filteri f t = { t with map = Concrete.filteri f t.map t.cmp }
+let filterv  f t = { t with map = Concrete.filterv f t.map t.cmp }
+let filter f t = { t with map = Concrete.filter f t.map t.cmp }
 let filter_map f t = { t with map = Concrete.filter_map f t.map t.cmp }
 
 let choose t = Concrete.choose t.map
@@ -1011,3 +1011,5 @@ struct
   let (-->) map key = find key map
   let (<--) map (key, value) = add key value map
 end
+
+include Infix

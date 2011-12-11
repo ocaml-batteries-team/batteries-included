@@ -25,15 +25,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 *)
-open Printf
 open OUnit
 
-let cleanup = ref true
-
-let tests =
-  "Unit tests" >::: (Tests.all_tests ())
-
-let verbose = ref false
-
 let () =
+  let tests = "Bat" >::: (List.rev !Tests.tests) in
   ignore (run_test_tt_main tests)

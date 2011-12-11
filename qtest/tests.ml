@@ -25,10 +25,24 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 *)
+
+(* this module is depended on by all the foo_t modules.  They each
+   register a toplevel test function here.  The test_runner program
+   pulls all these tests and runs them.  
+
+   This needs to be separate from test_runner, as the execution order
+   must be:
+
+   * Tests
+   * Foo_t
+   * Test_runner
+ *)
+
+let verbose = ref true
+(* tests should refer to this to determine whether to print verbose messages *)
+
 let tests : OUnit.test list ref = ref []
+(* list of tests to be run *)
 
 let register x = tests := x :: !tests
-
-let all_tests () = !tests
-
-let data_dir = Filename.concat (Sys.getcwd ()) "data"
+(* call this function to register a test to be run *)

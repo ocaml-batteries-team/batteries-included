@@ -274,10 +274,10 @@ let lookahead p e = match apply p e with
   | Failure _ as result              -> result
 
 let interpret_result = function
-  | Setback f | Failure f                -> BatStd.Bad f
-  | Success (r, _) | Backtrack (r, _, _) -> BatStd.Ok r
+  | Setback f | Failure f                -> BatPervasives.Bad f
+  | Success (r, _) | Backtrack (r, _, _) -> BatPervasives.Ok r
 
-let suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatStd.result), 'c) t = fun s e ->
+let suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatPervasives.result), 'c) t = fun s e ->
   let resume () = interpret_result (s e) in
     Success (resume, e)
 
@@ -325,3 +325,7 @@ let none_of l e =
 let range a b = satisfy (fun x -> a <= x && x <= b)
 
 let sat f = (satisfy f) >>> return ()
+
+module Infix = struct
+  let (<|>), (~?), (>>=), (>>>), (>::), (~*), (~+), (^^) = (<|>), (~?), (>>=), (>>>), (>::), (~*), (~+), (^^)
+end
