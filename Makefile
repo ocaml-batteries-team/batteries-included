@@ -137,7 +137,7 @@ test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte
 	_build/testsuite/main.byte 
 	_build/qtest/test_runner.byte
 
-test-native: _build/testsuite/main.native _build/qtest/test_runner.native
+test-native: _build/testsuite/main.native _build/qtest/test_runner.native _build/testsuite/main.byte _build/qtest/test_runner.byte
 	_build/testsuite/main.byte 
 	_build/qtest/test_runner.byte
 	_build/testsuite/main.native
