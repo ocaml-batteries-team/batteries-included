@@ -31,8 +31,8 @@ let is_bad = function Bad _ -> true | Ok _ -> false
 let get = function Ok x -> x | Bad e -> raise e
 
 let print print_val oc = function 
-  | Ok x -> BatInnerIO.fprintf oc "Ok(%a)" print_val x
-  | Bad e -> BatInnerIO.fprintf oc "Bad(%a)" BatPrintexc.print e
+  | Ok x -> BatInnerIO.Printf.fprintf oc "Ok(%a)" print_val x
+  | Bad e -> BatInnerIO.Printf.fprintf oc "Bad(%a)" BatPrintexc.print e
 
 
 module Monad = struct
