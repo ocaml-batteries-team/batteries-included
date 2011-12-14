@@ -103,7 +103,7 @@ install-doc: doc
 	cp -f doc/batteries_large.png $(DOCROOT)/html
 	mkdir -p $(DOCROOT)/html/api
 	cp _build/batteries.docdir/* $(DOCROOT)/html/api
-	cp LICENSE README FAQ VERSION $(DOCROOT)
+	cp LICENSE README.md FAQ VERSION $(DOCROOT)
 
 reinstall:
 	$(MAKE) uninstall
