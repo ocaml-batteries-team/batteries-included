@@ -69,7 +69,7 @@ all:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
 clean:
-	${RM} apidocs src/batteriesConfig.ml META
+	${RM} src/batteriesConfig.ml META
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) -clean
 
@@ -102,7 +102,7 @@ install-doc: doc
 	${RM} $(DOCROOT)/html/batteries_large.png
 	cp -f doc/batteries_large.png $(DOCROOT)/html
 	mkdir -p $(DOCROOT)/html/api
-	cp apidocs/* $(DOCROOT)/html/api
+	cp _build/batteries.docdir/* $(DOCROOT)/html/api
 	cp LICENSE README FAQ VERSION $(DOCROOT)
 
 reinstall:
