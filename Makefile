@@ -69,7 +69,7 @@ all:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
 clean:
-	${RM} src/batteriesConfig.ml META
+	${RM} src/batteriesConfig.ml
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) -clean
 
@@ -103,7 +103,7 @@ install-doc: doc
 	cp -f doc/batteries_large.png $(DOCROOT)/html
 	mkdir -p $(DOCROOT)/html/api
 	cp _build/batteries.docdir/* $(DOCROOT)/html/api
-	cp LICENSE README.md FAQ VERSION $(DOCROOT)
+	cp LICENSE README.md FAQ $(DOCROOT)
 
 reinstall:
 	$(MAKE) uninstall
@@ -138,10 +138,10 @@ test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte
 	_build/qtest/test_runner.byte
 
 test-native: _build/testsuite/main.native _build/qtest/test_runner.native _build/testsuite/main.byte _build/qtest/test_runner.byte
-	_build/testsuite/main.byte 
-	_build/qtest/test_runner.byte
 	_build/testsuite/main.native
 	_build/qtest/test_runner.native
+	_build/testsuite/main.byte
+	_build/qtest/test_runner.byte
 
 test: $(TEST_TARGET)
 
