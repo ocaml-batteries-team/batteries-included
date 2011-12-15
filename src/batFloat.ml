@@ -107,30 +107,6 @@ let round_to_int x =
    Pervasives.(=) (List.map round_to_int [1.1; 2.4; 3.3; 3.5; 4.99]) [1; 2; 3; 4; 5]
 **)
 
-let round_to_string ?(digits=0) x =
-  if Pervasives.(<) digits 0 then invalid_arg "Float.round_to_string";
-  BatInnerIO.Printf.sprintf "%.*f" digits x
-(**T round_to_string
-   List.mem (round_to_string 3.) ["3."; "3"]
-   Pervasives.(=) (round_to_string ~digits:0 3.) (round_to_string 3.)
-   Pervasives.(=) (round_to_string ~digits:1 3.) "3.0"
-   Pervasives.(=) (round_to_string ~digits:1 0.) "0.0"
-   Pervasives.(=) (round_to_string ~digits:1 epsilon_float) "0.0"
-   Pervasives.(=) (round_to_string ~digits:3 1.23456) "1.235"
-   Pervasives.(=) (round_to_string ~digits:3 (- 1.23456)) "-1.235"
-   Pervasives.(=) (round_to_string ~digits:3 1.98765) "1.988"
-   Pervasives.(=) (round_to_string ~digits:3 (- 1.98765)) "-1.988"
-   (try ignore (round_to_string ~digits:(-1) 3.); false with Invalid_argument "Float.round_to_string" -> true)
-   List.mem (round_to_string 0.5) ["0"; "0."; "1"; "1."]
-   List.mem (round_to_string (-0.5)) ["-1"; "-1."; "0"; "0."; "-0"; "-0."]
-   List.mem (round_to_string ~digits:2 0.215) ["0.21"; "0.22"]
-   List.mem (round_to_string ~digits:2 (-0.215)) ["-0.22"; "-0.21"]
-   Pervasives.(=) (round_to_string ~digits:32 epsilon_float) "0.00000000000000022204460492503131"
-   List.mem (round_to_string ~digits:42 infinity) ["inf"; "infinity"]
-   List.mem (round_to_string ~digits:0 neg_infinity) ["-inf"; "-infinity"]
-   List.for_all (fun digits -> Pervasives.(=) "nan" (String.sub (round_to_string ~digits nan) 0 3)) [0; 42]
-**)
-
 type bounded = t
 let min_num, max_num = neg_infinity, infinity
 
@@ -162,6 +138,40 @@ let pi           = 4. *. atan 1.
   
 let print out t = BatInnerIO.nwrite out (to_string t)
 let t_printer paren out t = print out t
+
+
+let round_to_string ?(digits=0) x =
+  if Pervasives.(<) digits 0 then invalid_arg "Float.round_to_string";
+  match classify x with
+    | FP_normal           
+    | FP_subnormal        
+    | FP_zero ->
+        BatInnerIO.Printf.sprintf "%.*f" digits x
+    (* we don't call sprintf in the 'special' cases as it seems to
+       behave weirdly in some cases (eg. on Windows, bug #191) *)
+    | FP_infinite ->
+      if x = neg_infinity then "-inf" else "inf"
+    | FP_nan -> "nan"
+(**T round_to_string
+   List.mem (round_to_string 3.) ["3."; "3"]
+   Pervasives.(=) (round_to_string ~digits:0 3.) (round_to_string 3.)
+   Pervasives.(=) (round_to_string ~digits:1 3.) "3.0"
+   Pervasives.(=) (round_to_string ~digits:1 0.) "0.0"
+   Pervasives.(=) (round_to_string ~digits:1 epsilon_float) "0.0"
+   Pervasives.(=) (round_to_string ~digits:3 1.23456) "1.235"
+   Pervasives.(=) (round_to_string ~digits:3 (- 1.23456)) "-1.235"
+   Pervasives.(=) (round_to_string ~digits:3 1.98765) "1.988"
+   Pervasives.(=) (round_to_string ~digits:3 (- 1.98765)) "-1.988"
+   (try ignore (round_to_string ~digits:(-1) 3.); false with Invalid_argument "Float.round_to_string" -> true)
+   List.mem (round_to_string 0.5) ["0"; "0."; "1"; "1."]
+   List.mem (round_to_string (-0.5)) ["-1"; "-1."; "0"; "0."; "-0"; "-0."]
+   List.mem (round_to_string ~digits:2 0.215) ["0.21"; "0.22"]
+   List.mem (round_to_string ~digits:2 (-0.215)) ["-0.22"; "-0.21"]
+   Pervasives.(=) (round_to_string ~digits:32 epsilon_float) "0.00000000000000022204460492503131"
+   List.mem (round_to_string ~digits:42 infinity) ["inf"; "infinity"]
+   List.mem (round_to_string ~digits:0 neg_infinity) ["-inf"; "-infinity"]
+   List.for_all (fun digits -> Pervasives.(=) "nan" (String.sub (round_to_string ~digits nan) 0 3)) [0; 42]
+**)
 
 
 module Base_safe_float = struct
