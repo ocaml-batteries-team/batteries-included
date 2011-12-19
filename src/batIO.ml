@@ -490,6 +490,8 @@ let chunks_of n     input = make_enum (fun ic -> nread ic n) input
 (**The number of chars to read at once*)
 let buffer_size = 1024 (*Arbitrary size.*)
 
+(* make a bunch of char enums by reading buffer_size at a time and
+   concat them all into into one big char enum *)
 let chars_of input = 
   let do_close = ref true in
   close_at_end do_close input (BatEnum.concat (BatEnum.from (fun () -> 
@@ -498,6 +500,66 @@ let chars_of input =
 let bits_of input = 
   let do_close = ref true in
   close_at_end do_close input.ch (BatEnum.from (fun () -> apply_enum do_close read_bits input 1))
+
+(** Buffered lines_of, for performance.  Ideas taken from ocaml stdlib *)
+let lines_of2 ic =
+  let buf = String.create buffer_size in
+  let read_pos = ref 0 in (* next byte to read *)
+  let end_pos = ref 0 in (* place to write new data *)
+  let find_eol () = 
+    let rec find_loop pos = 
+      if pos >= !end_pos then !read_pos - pos
+      else if buf.[pos] = '\n' then 1 + pos - !read_pos (* TODO: HANDLE CRLF *)
+      else find_loop (pos+1)
+    in
+    find_loop !read_pos
+  in
+  let rec join_strings buf pos = function
+    | [] -> buf
+    | h::t -> 
+      let len = String.length h in
+      String.blit h 0 buf (pos-len) len;
+      join_strings buf (pos-len) t
+  in
+  let input_buf s o l = 
+    String.blit buf !read_pos s o l;
+    read_pos := !read_pos + l;
+    if !end_pos = !read_pos then 
+      try 
+        if !end_pos >= buffer_size then begin
+          read_pos := 0;
+          end_pos := input ic buf 0 buffer_size;
+        end else begin
+          let len_read = input ic buf 0 (buffer_size - !end_pos) in
+          end_pos := !end_pos + len_read;
+        end
+      with BatInnerIO.No_more_input -> end_pos := !read_pos;
+  in
+  let get_line () = 
+    let rec get_pieces accu len =
+      let n = find_eol () in
+      if n = 0 then match accu with  (* EOF *)
+        | [] -> close_in ic; raise BatEnum.No_more_elements
+        | _ -> join_strings (String.create len) len accu
+      else if n > 0 then (* newline found *)
+        let res = String.create (n-1) in
+        input_buf res 0 (n-1);
+        input_buf " " 0 1; (* throw away EOL *)
+        match accu with
+          | [] -> res
+          | _ -> let len = len + n-1 in 
+                 join_strings (String.create len) len (res :: accu)
+      else (* n < 0 ; no newline found *)
+        let piece = String.create (-n) in
+        input_buf piece 0 (-n);
+        get_pieces (piece::accu) (len-n)
+    in
+    get_pieces [] 0
+  in
+  (* prime the buffer *)
+  end_pos := input ic buf 0 buffer_size;
+  BatEnum.from get_line
+  
 
 let write_bytes     output enum = write_enum write_byte     output enum
 let write_chars     output enum = write_enum write          output enum
