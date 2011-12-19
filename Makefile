@@ -42,7 +42,10 @@ TARGETS += src/batteries.cma
 TARGETS += src/batteriesHelp.cmo
 TARGETS += src/batteriesThread.cma
 TARGETS += META
-BENCH_TARGETS = benchsuite/bench_int.native benchsuite/bench_map.native
+BENCH_TARGETS  = benchsuite/bench_int.native 
+BENCH_TARGETS += benchsuite/flip.native
+BENCH_TARGETS += benchsuite/lines_of.native
+BENCH_TARGETS += benchsuite/bench_map.native
 TEST_TARGET = test-byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)

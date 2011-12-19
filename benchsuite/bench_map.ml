@@ -5,8 +5,8 @@
 
 let total_length = 500_000
 
-let (-|) = BatStd.(-|)
-let (<|) = BatStd.(<|)
+let (-|) = BatPervasives.(-|)
+let (<|) = BatPervasives.(<|)
 
 module MapBench (M : sig val input_length : int end) = struct
   let input_length = M.input_length
@@ -22,20 +22,18 @@ module MapBench (M : sig val input_length : int end) = struct
   let random_inputs random_elt () =
     BatList.init input_length (fun _ -> random_elt ())
 
-  let make_samples input tests () =
-    Benchmark.throughputN 1
-      (List.map (fun (name, test) -> name, test, input) tests)
+  let make_samples input tests () = Bench.bench_funs tests input
 
   (* we don't use BatInt to ensure that the same comparison function
      is used (PMap use Pervasives.compare by default), in order to
      have comparable performance results. *)
   module StdMap = BatMap.Make(struct type t = int let compare = compare end)
 
-  module PMap = BatPMap
+  module Map = BatMap
 
   let same_elts stdmap pmap =
     BatList.of_enum (StdMap.enum stdmap)
-    = BatList.of_enum (PMap.enum pmap)
+    = BatList.of_enum (Map.enum pmap)
 
   (* A benchmark for key insertion *)
   let create_std_map input =
@@ -45,8 +43,8 @@ module MapBench (M : sig val input_length : int end) = struct
     
   let create_poly_map input =
     List.fold_left
-      (fun t (k, v) -> PMap.add k v t)
-      PMap.empty input
+      (fun t (k, v) -> Map.add k v t)
+      Map.empty input
 
   let create_input =
     let keys = random_inputs random_key () in
@@ -68,7 +66,7 @@ module MapBench (M : sig val input_length : int end) = struct
     StdMap.of_enum (BatList.enum input)
     
   let import_poly_map input =
-    PMap.of_enum (BatList.enum input)
+    Map.of_enum (BatList.enum input)
 
   let import_input = create_input
 
@@ -94,7 +92,7 @@ module MapBench (M : sig val input_length : int end) = struct
 
   let lookup_poly_map input =
     List.iter
-      (fun k -> ignore (PMap.mem k poly_created_map))
+      (fun k -> ignore (Map.mem k poly_created_map))
       input
 
   let samples_lookup = make_samples lookup_input
@@ -112,7 +110,7 @@ module MapBench (M : sig val input_length : int end) = struct
 
   let remove_poly_map input =
     List.fold_left
-      (fun t k -> PMap.remove k t)
+      (fun t k -> Map.remove k t)
       poly_created_map input
 
   let () =
@@ -144,17 +142,17 @@ module MapBench (M : sig val input_length : int end) = struct
       StdMap.merge merge_fun m1 m2
 
   let merge_poly_map_equal, merge_poly_map_equiv, merge_poly_map_ineq, merge_unsafe_poly_map =
-    let m1 = PMap.of_enum (BatList.enum p1) in
-    let m2_equal = PMap.of_enum (BatList.enum p2) in
+    let m1 = Map.of_enum (BatList.enum p1) in
+    let m2_equal = Map.of_enum (BatList.enum p2) in
     let m2_equiv =
-      PMap.of_enum ~cmp:BatInt.compare (BatList.enum p2) in
+      Map.of_enum ~cmp:BatInt.compare (BatList.enum p2) in
     let m2_ineq =
       let cmp x y = BatInt.compare y x in
-      PMap.of_enum ~cmp (BatList.enum p2) in
-    (fun () -> PMap.merge merge_fun m1 m2_equal),
-    (fun () -> PMap.merge merge_fun m1 m2_equiv),
-    (fun () -> PMap.merge merge_fun m1 m2_ineq),
-    (fun () -> PMap.merge_unsafe merge_fun m1 m2_equal)
+      Map.of_enum ~cmp (BatList.enum p2) in
+    (fun () -> Map.merge merge_fun m1 m2_equal),
+    (fun () -> Map.merge merge_fun m1 m2_equiv),
+    (fun () -> Map.merge merge_fun m1 m2_ineq),
+    (fun () -> Map.merge_unsafe merge_fun m1 m2_equal)
 
   let () =
     let test impl_merge =
@@ -174,23 +172,23 @@ module MapBench (M : sig val input_length : int end) = struct
   ]
 
   (* compare fold-based and merge-based union, diff, intersect *)
-  let pmap_union (m1, m2) = PMap.union m1 m2
+  let pmap_union (m1, m2) = Map.union m1 m2
   let fold_union (m1, m2) =
-    PMap.foldi PMap.add m1 m2
+    Map.foldi Map.add m1 m2
   let merge_union (m1, m2) =
     let merge_fun k a b = if a <> None then a else b in
-    PMap.merge merge_fun m1 m2
+    Map.merge merge_fun m1 m2
   let merge_unsafe_union (m1, m2) =
     let merge_fun k a b = if a <> None then a else b in
-    PMap.merge_unsafe merge_fun m1 m2
+    Map.merge_unsafe merge_fun m1 m2
     
   let union_input =
-    let m1 = PMap.of_enum (BatList.enum p1) in
-    let m2 = PMap.of_enum (BatList.enum p2) in
+    let m1 = Map.of_enum (BatList.enum p1) in
+    let m2 = Map.of_enum (BatList.enum p2) in
     m1, m2
 
   let () =
-    let li m = BatList.of_enum (PMap.enum m) in
+    let li m = BatList.of_enum (Map.enum m) in
     let test impl_union =
       li (pmap_union union_input) = li (impl_union union_input) in
     assert (test fold_union);
@@ -206,20 +204,20 @@ module MapBench (M : sig val input_length : int end) = struct
   ]
 
   let pmap_diff (m1, m2) =
-    PMap.diff m1 m2
+    Map.diff m1 m2
   let fold_diff (m1, m2) =
-    PMap.foldi (fun k _ acc -> PMap.remove k acc) m2 m1
+    Map.foldi (fun k _ acc -> Map.remove k acc) m2 m1
   let merge_diff (m1, m2) =
     let merge_fun k a b = if b <> None then None else a in
-    PMap.merge merge_fun m1 m2
+    Map.merge merge_fun m1 m2
 
   let diff_input =
-    let m1 = PMap.of_enum (BatList.enum p1) in
-    let m2 = PMap.of_enum (BatList.enum p2) in
+    let m1 = Map.of_enum (BatList.enum p1) in
+    let m2 = Map.of_enum (BatList.enum p2) in
     m1, m2
 
   let () =
-    let li m = BatList.of_enum (PMap.enum m) in
+    let li m = BatList.of_enum (Map.enum m) in
     let test impl_diff =
       li (pmap_diff diff_input) = li (impl_diff diff_input) in
     assert (test fold_diff);
@@ -233,32 +231,32 @@ module MapBench (M : sig val input_length : int end) = struct
   ]
 
   let pmap_intersect f (m1, m2) =
-    PMap.intersect f m1 m2
+    Map.intersect f m1 m2
 
   let filter_intersect f (m1, m2) =
     let filter_fun k v1 =
       match
-        try Some (PMap.find k m2)
+        try Some (Map.find k m2)
         with Not_found -> None
       with
         | None -> None
         | Some v2 -> Some (f v1 v2) in
-    PMap.filter_map filter_fun m1
+    Map.filter_map filter_fun m1
 
   let merge_intersect f (m1, m2) =
     let merge_fun k a b =
       match a, b with
         | Some v1, Some v2 -> Some (f v1 v2)
         | None, _ | _, None -> None in
-    PMap.merge merge_fun m1 m2
+    Map.merge merge_fun m1 m2
 
   let intersect_input =
-    let m1 = PMap.of_enum (BatList.enum p1) in
-    let m2 = PMap.of_enum (BatList.enum p2) in
+    let m1 = Map.of_enum (BatList.enum p1) in
+    let m2 = Map.of_enum (BatList.enum p2) in
     m1, m2
 
   let () =
-    let li m = BatList.of_enum (PMap.enum m) in
+    let li m = BatList.of_enum (Map.enum m) in
     let test impl_intersect =
       li (pmap_intersect (-) intersect_input)
       = li (impl_intersect (-) intersect_input) in
@@ -282,7 +280,7 @@ module MapBench (M : sig val input_length : int end) = struct
     let diff = samples_diff () in
     let intersect = samples_intersect () in
     List.iter
-      (print_newline -| Benchmark.tabulate)
+      (print_newline -| Bench.summarize 0.05)
       [
         create;
         import;
@@ -308,6 +306,7 @@ let () =
   print_newline ();
   
   Printf.printf "Test with big maps (length = %d)\n%!" big_length;
+  Bench.config.Bench.samples <- 100;
   let () =
     let module M = MapBench(struct let input_length = big_length end) in
     () in
