@@ -68,6 +68,15 @@ sig
   val ( = ) : bat__compare_t -> bat__compare_t -> bool
 end
 
+module type RefOps =
+sig
+  type bat__refops_t
+  val (+=): bat__refops_t ref -> bat__refops_t -> unit
+  val (-=): bat__refops_t ref -> bat__refops_t -> unit
+  val ( *=): bat__refops_t ref -> bat__refops_t -> unit
+  val (/=): bat__refops_t ref -> bat__refops_t -> unit
+end
+
 (**
    The full set of operations of a type of numbers
 *)
@@ -99,7 +108,7 @@ sig
 
   include Infix with type bat__infix_t = t
   include Compare with type bat__compare_t = t
-
+  include RefOps with type bat__refops_t = t
 end
 
 module type Bounded =
@@ -196,6 +205,16 @@ module MakeCompare (Base : NUMERIC_BASE) :
   let ( <> ) a b = Base.compare a b <> 0
 end
 
+module MakeRefOps (Base: NUMERIC_BASE) :
+  RefOps with type bat__refops_t = Base.t = struct
+
+  type bat__refops_t = Base.t
+  let (+=) a b = a := Base.add !a b
+  let (-=) a b = a := Base.sub !a b
+  let ( *=) a b = a := Base.mul !a b
+  let (/=) a b = a := Base.div !a b
+end
+
 (**
    Automated definition of operators for a given numeric type.
 
@@ -231,6 +250,7 @@ module MakeNumeric (Base : NUMERIC_BASE) : Numeric with type t = Base.t = struct
 
   include MakeInfix (Base)
   include MakeCompare (Base)
+  include MakeRefOps (Base)
 end
 
 (**

@@ -110,9 +110,21 @@ module type Compare = sig
   val ( = ) : bat__compare_t -> bat__compare_t -> bool
 end
 
+(** Reference operators ala C.  Mutates a reference value. [x -= y] is
+    the same as [x := !x - y].  @since 2.0 *)
+module type RefOps =
+sig
+  type bat__refops_t
+  val (+=): bat__refops_t ref -> bat__refops_t -> unit
+  val (-=): bat__refops_t ref -> bat__refops_t -> unit
+  val ( *=): bat__refops_t ref -> bat__refops_t -> unit
+  val (/=): bat__refops_t ref -> bat__refops_t -> unit
+end
+
+
 (**
    The full set of operations of a type of numbers
-*)
+ *)
 module type Numeric =
 sig
   type t
@@ -143,7 +155,7 @@ sig
 
   include Infix with type bat__infix_t = t
   include Compare with type bat__compare_t = t
-
+  include RefOps with type bat__refops_t = t
 end
 
 module type Bounded =
@@ -226,8 +238,16 @@ module MakeInfix :
 module MakeCompare :
   functor (Base : NUMERIC_BASE) -> Compare with type bat__compare_t = Base.t
 
+
+(** Automated definition of reference operators for a given numeric
+    type *)
+module MakeRefOps :
+  functor (Base : NUMERIC_BASE) -> RefOps with type bat__refops_t = Base.t
+
 (** Automated definition of operators for a given numeric type.
-    You will only need this if you develop your own numeric modules.*)
+    You will only need this if you develop your own numeric modules.
+
+    @since 2.0 *)
 
 module MakeNumeric :
   functor (Base : NUMERIC_BASE) -> Numeric with type t = Base.t
