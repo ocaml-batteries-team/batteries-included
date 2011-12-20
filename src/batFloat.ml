@@ -86,9 +86,25 @@ let root m n =
     exp (log m /. (float_of_int n))
 
 (**T root
-   Infix.((root 9. 2) =~ 3.)
-   Infix.((root 8. 3) =~ 2.)
-   Infix.((root 1. 20) =~ 1.)
+   approx_equal (root 9. 2) 3.
+   approx_equal (root 8. 3) 2.
+   approx_equal (root 1. 20) 1.
+ **)
+
+(* sign bit is top bit, shift all other 63 bits away and test if = one *)
+let signbit x = Int64.shift_right_logical (Int64.bits_of_float x) 63 = Int64.one
+
+let copysign x s =
+  if signbit s then
+    -. (abs_float x)
+  else
+    abs_float x
+
+(**T sign
+   signbit (-256.)
+   not (signbit 1e50)
+   copysign 1. 1. = 1.
+   copysign 1. (-1.) = (-1.)
  **)
 
 let round x =

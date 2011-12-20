@@ -201,6 +201,12 @@ val round_to_string : ?digits:int -> float -> string
     be imaginary *)
 val root: float -> int -> float
 
+(** @return True if the sign bit of [x] is set. This usually indicates thet [x] is negative. @since 2.0*)
+val signbit: float -> bool
+
+(** [copysign x y] returns a copy of [x] with the same sign as [y].  @since 2.0*)
+val copysign: float -> float -> float
+
 val is_nan : float -> bool
 (** [is_nan f] returns [true] if [f] is [nan], [false] otherwise.*)
 
