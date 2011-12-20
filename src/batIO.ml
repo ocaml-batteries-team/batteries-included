@@ -145,19 +145,21 @@ let output_enum() =
 
 (** [apply_enum f x] applies [f] to [x] and converts exceptions
     [No_more_input] and [Input_closed] to [BatEnum.No_more_elements]*)
-let apply_enum f x =
+let apply_enum do_close f x =
   try f x
-  with No_more_input 
-    |  BatInnerIO.Input_closed  -> raise BatEnum.No_more_elements
+  with 
+    | No_more_input -> raise BatEnum.No_more_elements
+    | BatInnerIO.Input_closed  -> do_close := false; raise BatEnum.No_more_elements
 
 (** [close_at_end input e] returns an enumeration which behaves as [e]
     and has the secondary effect of closing [input] once everything has
     been read.*)
-let close_at_end (input:input) e=
-  BatEnum.suffix_action (fun () -> close_in input) e
+let close_at_end do_close (input:input) e =
+  BatEnum.suffix_action (fun () -> if !do_close then close_in input) e
 
 let make_enum f input =
-  close_at_end input (BatEnum.from (fun () -> apply_enum f input))
+  let do_close = ref true in
+  close_at_end do_close input (BatEnum.from (fun () -> apply_enum do_close f input))
 
 
 let combine (a,b) =
@@ -472,39 +474,105 @@ let from_out_chars ch =
    {6 Enumerations}
 *)
 
-let bytes_of input        = make_enum read_byte input
+let bytes_of        input = make_enum read_byte        input
 let signed_bytes_of input = make_enum read_signed_byte input
-let ui16s_of input        = make_enum read_ui16 input
-let i16s_of input         = make_enum read_i16 input
-let i32s_of input         = make_enum read_i32 input
-let real_i32s_of input    = make_enum read_real_i32 input
-let i64s_of input         = make_enum read_i64 input
-let doubles_of input      = make_enum read_double input
-let floats_of input       = make_enum read_float input
-let strings_of input      = make_enum read_string input
-let lines_of input        = make_enum read_line input
-let chunks_of n input     = make_enum (fun input -> nread input n) input
+let ui16s_of        input = make_enum read_ui16        input
+let i16s_of         input = make_enum read_i16         input
+let i32s_of         input = make_enum read_i32         input
+let real_i32s_of    input = make_enum read_real_i32    input
+let i64s_of         input = make_enum read_i64         input
+let doubles_of      input = make_enum read_double      input
+let floats_of       input = make_enum read_float       input
+let strings_of      input = make_enum read_string      input
+let lines_of        input = make_enum read_line        input
+let chunks_of n     input = make_enum (fun ic -> nread ic n) input
 
 (**The number of chars to read at once*)
 let buffer_size = 1024 (*Arbitrary size.*)
 
-let chars_of input = close_at_end input (BatEnum.concat (BatEnum.from (fun () -> 
-   apply_enum (fun source -> string_enum (nread source buffer_size)) input)))
+(* make a bunch of char enums by reading buffer_size at a time and
+   concat them all into into one big char enum *)
+let chars_of input = 
+  let do_close = ref true in
+  close_at_end do_close input (BatEnum.concat (BatEnum.from (fun () -> 
+    apply_enum do_close (fun source -> string_enum (nread source buffer_size)) input)))
 
-let bits_of input = close_at_end input.ch (BatEnum.from (fun () -> apply_enum read_bits input 1))
+let bits_of input = 
+  let do_close = ref true in
+  close_at_end do_close input.ch (BatEnum.from (fun () -> apply_enum do_close read_bits input 1))
 
-let write_bytes output enum = write_enum write_byte output enum
-let write_chars output enum = write_enum write output enum
-let write_ui16s output enum = write_enum write_ui16 output enum
-let write_i16s output enum = write_enum write_i16 output enum
-let write_i32s output enum = write_enum write_i32 output enum
+(** Buffered lines_of, for performance.  Ideas taken from ocaml stdlib *)
+let lines_of2 ic =
+  let buf = String.create buffer_size in
+  let read_pos = ref 0 in (* next byte to read *)
+  let end_pos = ref 0 in (* place to write new data *)
+  let find_eol () = 
+    let rec find_loop pos = 
+      if pos >= !end_pos then !read_pos - pos
+      else if buf.[pos] = '\n' then 1 + pos - !read_pos (* TODO: HANDLE CRLF *)
+      else find_loop (pos+1)
+    in
+    find_loop !read_pos
+  in
+  let rec join_strings buf pos = function
+    | [] -> buf
+    | h::t -> 
+      let len = String.length h in
+      String.blit h 0 buf (pos-len) len;
+      join_strings buf (pos-len) t
+  in
+  let input_buf s o l = 
+    String.blit buf !read_pos s o l;
+    read_pos := !read_pos + l;
+    if !end_pos = !read_pos then 
+      try 
+        if !end_pos >= buffer_size then begin
+          read_pos := 0;
+          end_pos := input ic buf 0 buffer_size;
+        end else begin
+          let len_read = input ic buf 0 (buffer_size - !end_pos) in
+          end_pos := !end_pos + len_read;
+        end
+      with BatInnerIO.No_more_input -> end_pos := !read_pos;
+  in
+  let get_line () = 
+    let rec get_pieces accu len =
+      let n = find_eol () in
+      if n = 0 then match accu with  (* EOF *)
+        | [] -> close_in ic; raise BatEnum.No_more_elements
+        | _ -> join_strings (String.create len) len accu
+      else if n > 0 then (* newline found *)
+        let res = String.create (n-1) in
+        input_buf res 0 (n-1);
+        input_buf " " 0 1; (* throw away EOL *)
+        match accu with
+          | [] -> res
+          | _ -> let len = len + n-1 in 
+                 join_strings (String.create len) len (res :: accu)
+      else (* n < 0 ; no newline found *)
+        let piece = String.create (-n) in
+        input_buf piece 0 (-n);
+        get_pieces (piece::accu) (len-n)
+    in
+    get_pieces [] 0
+  in
+  (* prime the buffer *)
+  end_pos := input ic buf 0 buffer_size;
+  BatEnum.from get_line
+  
+
+let write_bytes     output enum = write_enum write_byte     output enum
+let write_chars     output enum = write_enum write          output enum
+let write_ui16s     output enum = write_enum write_ui16     output enum
+let write_i16s      output enum = write_enum write_i16      output enum
+let write_i32s      output enum = write_enum write_i32      output enum
 let write_real_i32s output enum = write_enum write_real_i32 output enum
-let write_i64s output enum = write_enum write_i64 output enum
-let write_doubles output enum = write_enum write_double output enum
-let write_floats output enum = write_enum write_float output enum
-let write_strings output enum = write_enum write_string output enum
-let write_lines output enum = write_enum write_line output enum
-let write_chunks output enum = write_enum nwrite output enum
+let write_i64s      output enum = write_enum write_i64      output enum
+let write_doubles   output enum = write_enum write_double   output enum
+let write_floats    output enum = write_enum write_float    output enum
+let write_strings   output enum = write_enum write_string   output enum
+let write_lines     output enum = write_enum write_line     output enum
+let write_chunks    output enum = write_enum nwrite         output enum
 let write_bitss ~nbits output enum = write_enum (write_bits ~nbits) output enum
 
 (**
@@ -581,42 +649,38 @@ All these functions assume that the input is UTF-8 encoded.
  
 (*val read_uchar: input -> UChar.t*)
 (** read one UChar from a UTF-8 encoded input*)
-let read_uchar_as_string i =
+let read_uchar i =
   let n0  = read i in
-  let len = BatUTF8.length0 (Char.code n0) in
-  let s   = String.create len in
+  let len = Ulib.UTF8.length0 (Char.code n0) in
+  if len = 1 then Ulib.UChar.of_char n0
+  else
+    let s = String.create len in
     String.set s 0 n0;
     ignore(really_input i s 1 ( len - 1));
-    s
- 
-let read_uchar i =
-  BatUTF8.get (BatUTF8.of_string_unsafe (read_uchar_as_string i)) 0
+    Ulib.UTF8.get s 0
  
 (*val read_rope: input -> int -> Rope.t*)
 (** read up to n uchars from a UTF-8 encoded input*)
-let read_rope i n =
+let read_text i n =
   let rec loop r j =
     if j = 0 then r
-    else loop (BatRope.append_char (read_uchar i) r) (j-1) (* TODO: make efficient by appending a string of Rope.leaf_size (256) chars at a time *)
+    else loop (Ulib.Text.append_char (read_uchar i) r) (j-1) (* TODO: make efficient by appending a string of Rope.leaf_size (256) chars at a time *)
   in
-  if n <= 0 then BatRope.empty
-  else loop BatRope.empty n
+  if n <= 0 then Ulib.Text.empty
+  else loop Ulib.Text.empty n
     
 (*val read_uline: input -> Rope.t*)
 (** read a line of UTF-8*)
  
 let read_uline i =
   let line = read_line i in
-  BatUTF8.validate line;
-  BatRope.of_ustring (BatUTF8.of_string_unsafe line)
+  Ulib.UTF8.validate line;
+  Ulib.Text.of_string line
  
 (*val read_uall : input -> Rope.t*)
 (** read the whole contents of a UTF-8 encoded input*)
  
-let read_uall i = 
-  let all = read_all i in
-  BatUTF8.validate all;
-  BatRope.of_ustring (BatUTF8.of_string_unsafe all) 
+let read_uall i = Ulib.Text.of_string (read_all i)
 (* TODO: make efficient - possibly similar to above - buffering leaf_size chars at a time *)
  
  
@@ -629,30 +693,32 @@ let uchars_of i = make_enum read_uchar i
 (*val ulines_of : input -> Rope.t BatEnum.t*)
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
 let ulines_of i = make_enum read_uline i
+
  
 (** {7 Writing unicode}
  
 All these functions assume that the output is UTF-8 encoded.*)
 
-let write_ustring o c = write_string o (BatUTF8.to_string_unsafe c) 
+let write_ustring o c = write_string o c
 
 (*val write_uchar: _ output -> UChar.t -> unit*)
-let write_uchar o c = write_ustring o (BatUTF8.of_char c)
+let write_uchar o c = write_ustring o (Ulib.UTF8.init 1 (fun _ -> c))
  
 (*val write_rope : _ output -> Rope.t -> unit*)
-let write_rope = BatRope.print
+let write_text o t = Ulib.Text.print o t
  
 (*val write_uline: _ output -> Rope.t -> unit*)
-let write_uline o r = write_rope o r; write o '\n'
+let write_uline o r = write_text o r; write o '\n'
   
 (*val write_ulines : _ output -> Rope.t BatEnum.t -> unit*)
 let write_ulines o re = write_enum write_uline o re
  
 (*val write_ropes : _ output -> Rope.t BatEnum.t -> unit*)
-let write_ropes o re = write_enum write_rope o re
+let write_texts o re = write_enum write_text o re
 
 (*val write_uchars : _ output -> UChar.t BatEnum.t -> unit*)
 let write_uchars o uce = write_enum write_uchar o uce
+
 
 (*let copy input output = write_chunks output (chunks_of default_buffer_size input)*)
 (*let copy input output = write_chars output (chars_of input)*)

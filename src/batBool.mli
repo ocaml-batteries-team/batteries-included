@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtBool - Extended booleans
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,7 +20,7 @@
  *)
 
 (**Operations on booleans
-   
+
    @author Gabriel Scherer
    @author David Teller
 *)
@@ -60,7 +60,7 @@ val of_int : int -> bool
 val to_int : bool -> int
 val of_string : string -> bool
   (** Convert the given string to a boolean.
-      Raise [Invalid_argument "Bool.of_string"] if the string is not
+      Raise [Invalid_argument] if the string is not
       ["true"], ["false"], ["0"], ["1"], ["tt"] or ["ff"]. *)
 
 val to_string : bool -> string
@@ -91,5 +91,5 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 
 (** {7 Printing}*)
 val print: 'a BatInnerIO.output -> t -> unit
-val t_printer : t BatValue_printer.t
+val t_printer : t BatValuePrinter.t
 

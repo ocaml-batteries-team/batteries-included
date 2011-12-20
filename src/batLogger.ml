@@ -26,7 +26,7 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************)
 
-open Printf
+open BatPrintf
 
 type log = {
   name : string;
@@ -116,7 +116,7 @@ let make_std_formatter oc lm lev (event_name, event_args) timestamp =
     (*L:*) (name_of_level lev)
     format_kvl event_args
 
-let stderr_formatter = make_std_formatter stderr
+let stderr_formatter = make_std_formatter BatIO.stderr
 
 let null_formatter lm lev event timestamp = ()
 
@@ -132,7 +132,7 @@ let make_dbg_formatter oc lm lev (event_name, event_args) timestamp =
     (log_name lm) event_name
     format_kvl args (name_of_level lev)
 
-let dbg_formatter lm lev ep ts = make_dbg_formatter stderr lm lev ep ts
+let dbg_formatter lm lev ep ts = make_dbg_formatter BatIO.stderr lm lev ep ts
 
 (******************************************************************************)
 (** log events *)

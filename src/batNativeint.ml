@@ -56,8 +56,16 @@ external of_float : float -> nativeint = "caml_nativeint_of_float"
 external to_float : nativeint -> float = "caml_nativeint_to_float"
 external of_int32 : int32 -> nativeint = "%nativeint_of_int32"
 external to_int32 : nativeint -> int32 = "%nativeint_to_int32"
-external of_int64 : int64 -> nativeint = "%nativeint_of_int64"
-external to_int64 : nativeint -> int64 = "%nativeint_to_int64"
+external of_int64 : int64 -> nativeint = "%int64_to_nativeint"
+external to_int64 : nativeint -> int64 = "%int64_of_nativeint"
+
+(**T conversions
+   (Nativeint.of_int32 8l) = 8n
+   Int32.(=) (Nativeint.to_int32 8n) 8l
+   (Nativeint.of_int64 9L) = 9n
+   Int64.(=) (Nativeint.to_int64 9n) 9L
+**)
+
 external of_string : string -> nativeint = "caml_nativeint_of_string"
 external format : string -> nativeint -> string = "caml_nativeint_format"
 

@@ -146,8 +146,7 @@ let rec at ?(backwards=false) q n =
       match front q with
         | Some (x, q) ->
             if n = 0 then Some x else git q (n - 1)
-        | None ->
-            failwith "Deque.at: internal error"
+        | None -> assert false
     in
     git q n
 

@@ -2,6 +2,8 @@
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* Modified by Edgar Friendly <thelema314@gmail.com> *)
 
+module Core = struct
+
 type 'a t = (int * int * 'a) BatAvlTree.tree
 
 type 'a map = 'a t
@@ -45,11 +47,6 @@ let rec add ?(eq = (==)) n v m =
     make eq l (n1, n, v) r
   else
     make_tree l x (add n v r)
-
-(**T imap_add
-   let a = add ~eq:(=) in empty |> a 0 0 |> a 2 0 |> a 1 0 |> enum |> List.of_enum = [(0,2,0)]
-   let a = add ~eq:(=) in empty |> a 0 "foo" |> a 2 "foo" |> a 1 "foo" |> enum |> List.of_enum = [(0,2,"foo")]
- **)
 
 let rec from n s =
   if is_empty s then empty else
@@ -128,15 +125,24 @@ let fold f m a =
 let iter proc m =
   fold (fun n v () -> proc n v) m ()
 
-let rec map ?(eq=(==)) f m =
+let rec map ?(eq=(=)) f m =
   if is_empty m then empty else
   let n1, n2, v = root m in
-  let l = map f (left_branch m) in
-  let r = map f (right_branch m) in
+  let l = map ~eq f (left_branch m) in
+  let r = map ~eq f (right_branch m) in
   let v = f v in
   make eq l (n1, n2, v) r
 
 let mapi ?eq f m = fold (fun n v a -> add ?eq n (f n v) a) m empty
+
+let rec map_range ?(eq=(=)) f m =
+  if is_empty m then empty else
+  let n1, n2, v = root m in
+  let l = map_range ~eq f (left_branch m) in
+  let r = map_range ~eq f (right_branch m) in
+  let v = f n1 n2 v in
+  make eq l (n1, n2, v) r
+
 
 let rec set_to_map s v =
   if is_empty s then empty else
@@ -149,9 +155,9 @@ let rec domain m =
   if is_empty m then empty else
   let (k1, k2, _), m' = split_leftmost m in
   let f n1 n2 _ (k1, k2, s) =
-    if k1 = n2 + 1 then (k1, n2, s) else
+    if n1 = k2 + 1 then (k1, n2, s) else
     (n1, n2, make_tree s (k1, k2) empty) in
-  let k1, k2, s =fold_range f m' (k1, k2, empty) in
+  let k1, k2, s = fold_range f m' (k1, k2, empty) in
   make_tree s (k1, k2) empty
 
 let rec map_to_set p m =
@@ -164,7 +170,7 @@ let rec map_to_set p m =
     Some (k1, k2, m') ->
       let f n1 n2 v (k1, k2, s) =
 	if p v then
-	  if k1 = n2 + 1 then (k1, n2, s) else
+	  if n1 = k2 + 1 then (k1, n2, s) else
 	  (n1, n2, make_tree s (k1, k2) empty) 
 	else
 	  (k1, k2, s) in
@@ -250,3 +256,47 @@ struct
 end
 
 let make ?(eq=(==)) l c r = make eq l c r
+
+end
+
+type 'a t = {m: 'a Core.t; eq: 'a -> 'a -> bool}
+type key = int
+
+let empty ~eq = {m = Core.empty; eq}
+let is_empty {m} = Core.is_empty m
+let add x y {m;eq} = {m=Core.add ~eq x y m; eq}
+
+(**T imap_add
+   let a = add in empty ~eq:(=) |> a 0 0 |> a 2 0 |> a 1 0 |> enum |> List.of_enum = [(0,2,0)]
+   let a = add in empty ~eq:(=) |> a 0 "foo" |> a 2 "foo" |> a 1 "foo" |> enum |> List.of_enum = [(0,2,"foo")]
+ **)
+
+
+let add_range lo hi y {m;eq} = {m=Core.add_range ~eq lo hi y m; eq}
+let find x {m} = Core.find x m
+let remove x {m;eq} = {m=Core.remove x m; eq}
+let remove_range lo hi {m;eq} = {m=Core.remove_range lo hi m; eq}
+let from x {m;eq} = {m=Core.from x m; eq}
+let after x {m;eq} = {m=Core.after x m; eq}
+let until x {m;eq} = {m=Core.until x m; eq}
+let before x {m;eq} = {m=Core.before x m; eq}
+let mem x {m} = Core.mem x m
+let iter f {m} = Core.iter f m
+let iter_range f {m} = Core.iter_range f m
+let map ?(eq=(=)) f {m} = {m=Core.map ~eq f m; eq}
+let mapi ?(eq=(=)) f {m} = {m=Core.mapi ~eq f m; eq}
+let map_range ?(eq=(=)) f {m} = {m = Core.map_range ~eq f m; eq}
+let fold f {m} x0 = Core.fold f m x0
+let fold_range f {m} x0 = Core.fold_range f m x0
+let set_to_map ?(eq=(=)) s x = {m = Core.set_to_map s x; eq}
+let domain {m} = Core.domain m
+let map_to_set f {m} = Core.map_to_set f m
+let enum {m} = Core.enum m
+let fold2_range f {m=m1} {m=m2} x0 = Core.fold2_range f m1 m2 x0
+let union ?(eq=(=)) f {m=m1} {m=m2} = {m=Core.union f m1 m2; eq}
+let forall2_range f {m=m1} {m=m2} = Core.forall2_range f m1 m2
+
+module Infix = struct
+  let (-->) {m} k = Core.find k m
+  let (<--) m (k,v) = add k v m
+end

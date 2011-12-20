@@ -22,6 +22,17 @@ open BatIO
 open ListLabels
 open Unix
 
+(* Moved from batPervasives to break dep cycle *)
+let finally handler f x =
+  let r = (
+    try
+      f x
+    with
+	e -> handler(); raise e
+  ) in
+  handler();
+  r
+
 (*** Permissions *)
 type permission = int
     (**Internally, permissions are represented in Unix-style
@@ -144,7 +155,7 @@ let open_in ?mode ?(perm=default_permission) name =
 
 let with_do opener closer x f =
   let file = opener x in
-    BatStd.finally (fun () -> closer file) f file
+    finally (fun () -> closer file) f file
  
 let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
 let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
@@ -164,7 +175,7 @@ type open_temporary_out_flag =
   [ open_out_flag
   | `delete_on_exit (**Should the file be deleted when program ends?*) ]
 
-let open_temporary_out ?mode ?perm ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * string) =
+let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * string) =
   let chan_mode = out_chan_mode ?mode true in
   let (name, cout) = Filename.open_temp_file ~mode:chan_mode prefix suffix in
   let out          = output_channel ~cleanup:true cout   in
@@ -179,9 +190,9 @@ let open_temporary_out ?mode ?perm ?(prefix="ocaml") ?(suffix="tmp") () : (_ out
       | _ -> ());
   (out, name)
 
-let with_temporary_out ?mode ?perm ?prefix ?suffix f =
-  let (file, name) = open_temporary_out ?mode ?perm ?prefix ?suffix () in
-    BatStd.finally (fun () -> close_out file)
+let with_temporary_out ?mode ?prefix ?suffix f =
+  let (file, name) = open_temporary_out ?mode ?prefix ?suffix () in
+    finally (fun () -> close_out file)
       (fun (file, name) -> f file name)
       (file, name)
 

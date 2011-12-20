@@ -1,9 +1,9 @@
-(* 
+(*
  * ExtInt32 - Extended 32-bit integers
- * Copyright (C) 1996 Xavier Leroy 
+ * Copyright (C) 1996 Xavier Leroy
  *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -30,18 +30,18 @@
 
     Any integer literal followed by [l] is taken to be an [int32].
     For instance, [1l] is {!Int32.one}.
-    
+
     Performance notice: values of type [int32] occupy more memory
     space than values of type [int], and arithmetic operations on
     [int32] are generally slower than those on [int].  Use [int32]
-    only when the application requires exact 32-bit arithmetic. 
-    
-    
+    only when the application requires exact 32-bit arithmetic.
+
+
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Int32.html}Int32}
     module, go there for documentation on the rest of the functions
     and types.
-    
+
     @author Xavier Leroy (base module)
     @author Gabriel Scherer
     @author David Teller
@@ -50,7 +50,7 @@
 
     val zero : int32
       (** The 32-bit integer 0. *)
-      
+
     val one : int32
       (** The 32-bit integer 1. *)
 
@@ -73,13 +73,13 @@
       (** Integer division.  Raise [Division_by_zero] if the second
 	  argument is zero.  This division rounds the real quotient of
 	  its arguments towards zero, as specified for {!Pervasives.(/)}. *)
-      
+
     external rem : int32 -> int32 -> int32 = "%int32_mod"
       (** Integer remainder.  If [y] is not zero, the result
 	  of [Int32.rem x y] satisfies the following property:
 	  [x = Int32.add (Int32.mul (Int32.div x y) y) (Int32.rem x y)].
 	  If [y = 0], [Int32.rem x y] raises [Division_by_zero]. *)
-      
+
 
     val modulo : int32 -> int32 -> int32
     val pow  : int32 -> int32 -> int32
@@ -88,42 +88,42 @@
 
     val succ : int32 -> int32
       (** Successor.  [Int32.succ x] is [Int32.add x Int32.one]. *)
-      
+
     val pred : int32 -> int32
       (** Predecessor.  [Int32.pred x] is [Int32.sub x Int32.one]. *)
-      
+
     val abs : int32 -> int32
       (** Return the absolute value of its argument. *)
-      
+
     val max_int : int32
       (** The greatest representable 32-bit integer, 2{^31} - 1. *)
-      
+
     val min_int : int32
       (** The smallest representable 32-bit integer, -2{^31}. *)
-      
-      
+
+
     external logand : int32 -> int32 -> int32 = "%int32_and"
       (** Bitwise logical and. *)
-      
+
     external logor : int32 -> int32 -> int32 = "%int32_or"
       (** Bitwise logical or. *)
-      
+
     external logxor : int32 -> int32 -> int32 = "%int32_xor"
       (** Bitwise logical exclusive or. *)
-      
+
     val lognot : int32 -> int32
       (** Bitwise logical negation *)
-      
+
     external shift_left : int32 -> int -> int32 = "%int32_lsl"
       (** [Int32.shift_left x y] shifts [x] to the left by [y] bits.
 	  The result is unspecified if [y < 0] or [y >= 32]. *)
-      
+
     external shift_right : int32 -> int -> int32 = "%int32_asr"
       (** [Int32.shift_right x y] shifts [x] to the right by [y] bits.
 	  This is an arithmetic shift: the sign bit of [x] is replicated
 	  and inserted in the vacated bits.
 	  The result is unspecified if [y < 0] or [y >= 32]. *)
-      
+
     external shift_right_logical : int32 -> int -> int32 = "%int32_lsr"
       (** [Int32.shift_right_logical x y] shifts [x] to the right by [y] bits.
 	  This is a logical shift: zeroes are inserted in the vacated bits
@@ -132,36 +132,36 @@
 
     val ( -- ) : t -> t -> t BatEnum.t
       (** Enumerate an interval.
-	  
+
 	  [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.
 	  [10l -- 5l] is the empty enumeration*)
 
     val ( --- ) : t -> t -> t BatEnum.t
       (** Enumerate an interval.
-	  
+
 	  [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.
 	  [10l -- 5l] is the enumeration 10l,9l,8l,7l,6l,5l.*)
-      
+
     external of_int : int -> int32 = "%int32_of_int"
       (** Convert the given integer (type [int]) to a 32-bit integer
 	  (type [int32]). *)
-      
+
     external to_int : int32 -> int = "%int32_to_int"
       (** Convert the given 32-bit integer (type [int32]) to an
 	  integer (type [int]).  On 32-bit platforms, the 32-bit integer
 	  is taken modulo 2{^31}, i.e. the high-order bit is lost
 	  during the conversion.  On 64-bit platforms, the conversion
 	  is exact. *)
-      
+
     external of_float : float -> int32 = "caml_int32_of_float"
       (** Convert the given floating-point number to a 32-bit integer,
 	  discarding the fractional part (truncate towards 0).
 	  The result of the conversion is undefined if, after truncation,
 	  the number is outside the range \[{!Int32.min_int}, {!Int32.max_int}\]. *)
-      
+
     external to_float : int32 -> float = "caml_int32_to_float"
       (** Convert the given 32-bit integer to a floating-point number. *)
-      
+
     external of_int64 : int64 -> int32 = "%int64_to_int32"
       (** Convert the given 64-bit integer (type [int64]) to a
          32-bit integer (type [int32]). The 64-bit integer
@@ -186,20 +186,20 @@
 	  The string is read in decimal (by default) or in hexadecimal,
 	  octal or binary if the string begins with [0x], [0o] or [0b]
 	  respectively.
-	  Raise [Failure "int_of_string"] if the given string is not
+	  @raise Failure if the given string is not
 	  a valid representation of an integer, or if the integer represented
 	  exceeds the range of integers representable in type [int32]. *)
-      
+
     val to_string : int32 -> string
       (** Return the string representation of its argument, in signed decimal. *)
-      
+
     external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
       (** Return the internal representation of the given float according
 	  to the IEEE 754 floating-point ``single format'' bit layout.
 	  Bit 31 of the result represents the sign of the float;
 	  bits 30 to 23 represent the (biased) exponent; bits 22 to 0
 	  represent the mantissa. *)
-      
+
     external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
       (** Return the floating-point number whose internal representation,
 	  according to the IEEE 754 floating-point ``single format'' bit layout,
@@ -223,17 +223,17 @@
     val unpack_big : string -> int -> int32
       (** [unpack str off] reads 4 bytes from string [str] starting at
 	  offset [off] as a big-endian int32 *)
-      
+
     val compare: t -> t -> int
       (** The comparison function for 32-bit integers, with the same specification as
 	  {!Pervasives.compare}.  Along with the type [t], this function [compare]
 	  allows the module [Int32] to be passed as argument to the functors
 	  {!Set.Make} and {!Map.Make}. *)
-      
+
     (**/**)
-      
+
     (** {6 Deprecated functions} *)
-      
+
     external format : string -> int32 -> string = "caml_int32_format"
       (** [Int32.format fmt n] return the string representation of the
 	  32-bit integer [n] in the format specified by [fmt].
@@ -264,6 +264,11 @@
     (** {6 Boilerplate code}*)
 
     (** {7 Printing}*)
-    val print: 'a BatInnerIO.output -> t -> unit
-    val t_printer : t BatValue_printer.t
 
+    val print: 'a BatInnerIO.output -> t -> unit
+      (** prints as decimal string *)
+
+    val xprint: 'a BatInnerIO.output -> t -> unit
+      (** prints as hex string *)
+
+    val t_printer : t BatValuePrinter.t

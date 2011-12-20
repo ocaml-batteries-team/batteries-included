@@ -1,5 +1,5 @@
 open OUnit
-open Batteries_uni
+open Batteries
 module L = LazyList
 
 let tests = "LazyPattern" >::: [

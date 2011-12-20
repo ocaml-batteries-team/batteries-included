@@ -184,7 +184,7 @@ val find_map : ('a -> 'b option) -> 'a t -> 'b option
 val filter : ('a -> bool) -> 'a t -> 'a t
 (** [filter p s] returns the sequence of elements of [s] satisfying
     [p]. Lazy.
-    
+
     {b Note} filter is lazy in that it returns a lazy sequence, but
     each element in the result is eagerly searched in the input
     sequence. Therefore, the access to a given element in the result
@@ -193,7 +193,7 @@ val filter : ('a -> bool) -> 'a t -> 'a t
     [p] returns [false]).
 
     Other functions that may drop an unbound number of elements
-    ([filter_map], [take_while], etc.) have the same behavior. 
+    ([filter_map], [take_while], etc.) have the same behavior.
 *)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
@@ -240,12 +240,7 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
   (**Print the contents of a sequence*)
 
-val sprint : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'b t -> string
-  (** Using a string printer, print a sequence to a string (as sprintf vs. printf)
-      @deprecated use {!BatIO.to_string}.
-   *)
-
-val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
 module Exceptionless : sig
   val hd : 'a t -> 'a option

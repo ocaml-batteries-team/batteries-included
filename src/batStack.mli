@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtQueue - Extended operations on queues
  * Copyright (C) 1996 Xavier Leroy
  *               2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -23,7 +23,7 @@
 (** Last-in first-out stacks.
 
     This module implements stacks (LIFOs), with in-place modification.
-    
+
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Stack.html}Stack}
     module, go there for documentation on the rest of the functions
@@ -38,7 +38,7 @@ open Stack
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 
 val enum : 'a t -> 'a BatEnum.t
-(** [enum s] returns a destructive enumeration of the elements of stack 
+(** [enum s] returns a destructive enumeration of the elements of stack
     [s], from the most recently entered to the least recently entered.
     Reading the enumeration will progressively empty [s].*)
 
@@ -48,9 +48,9 @@ val of_enum : 'a BatEnum.t -> 'a t
     enumeration, then with the second, etc.*)
 
 	(** {6 Boilerplate code}*)
-  
+
 (** {7 Printing}*)
-  
+
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 

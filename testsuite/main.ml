@@ -2,7 +2,7 @@ open OUnit
 
 let all_tests =
   [
-    Test_std.tests;
+    Test_pervasives.tests;
     Test_base64.tests;
     Test_unix.tests;
 (*    Test_print.tests;
@@ -24,6 +24,7 @@ let all_tests =
     Test_hashcons.tests;
     Test_mapfunctors.tests;
     Test_lazy_pattern.tests;
+    Test_optparse.tests;
   ]
 
 let () = 

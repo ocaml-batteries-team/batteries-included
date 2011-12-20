@@ -22,10 +22,10 @@
 
 
 (** Operation on arbitrary-precision numbers.
-    
+
     Numbers (type {!num}) are arbitrary-precision rational numbers,
-    plus the special elements [1/0] (infinity) and [0/0] (undefined). 
-    
+    plus the special elements [1/0] (infinity) and [0/0] (undefined).
+
     @author Valerie Menissier-Morain (base module)
     @author Gabriel Scherer
     @author David Teller
@@ -41,7 +41,7 @@
     type num = Num.num =
 	Int of int
       | Big_int of big_int
-      | Ratio of ratio 
+      | Ratio of ratio
 
     type t = num
 
@@ -87,7 +87,9 @@
 
     val square: num -> num
     val succ  : num -> num
+    (** @raise Invalid_argument ["Num.succ"] for [Num.Ratio _] argument *)
     val pred  : num -> num
+    (** @raise Invalid_argument ["Num.pred"] for [Num.Ratio _] argument *)
 
     val is_integer : num -> bool
       (** [is_integer x] returns [true] if [x] represents an integer value,
@@ -105,10 +107,10 @@
 
     val operations : num BatNumber.numeric
 
-      
+
 
     (** {6 Comparisons between numbers} *)
-      
+
     val ( =/ ) : num -> num -> bool
     val ( </ ) : num -> num -> bool
     val ( >/ ) : num -> num -> bool
@@ -120,19 +122,19 @@
     val le_num : num -> num -> bool
     val gt_num : num -> num -> bool
     val ge_num : num -> num -> bool
-      
 
 
-      
-      
+
+
+
     (** {6 Coercions with strings} *)
-      
 
 
-      
+
+
     val approx_num_fix : int -> num -> string
       (** See {!Num.approx_num_exp}.*)
-      
+
     val approx_num_exp : int -> num -> string
       (** Approximate a number by a decimal. The first argument is the
 	  required precision. The second argument is the number to
@@ -140,7 +142,7 @@
 	  argument is the number of digits after the decimal point.
 	  [approx_num_exp] uses scientific (exponential) notation; the
 	  first argument is the number of digits in the mantissa. *)
-      
+
 
 
     (** {6 Coercions between numerical types} *)
@@ -181,17 +183,17 @@
     (**/**)
 
     (** {6 Deprecated} *)
-	 	  
+
     val ( +/ ) : num -> num -> num
     val add_num : num -> num -> num
     val minus_num : num -> num
     val ( -/ ) : num -> num -> num
     val sub_num : num -> num -> num
     val ( */ ) : num -> num -> num
-    val mult_num : num -> num -> num      
+    val mult_num : num -> num -> num
     val square_num : num -> num
     val ( // ) : num -> num -> num
-    val div_num : num -> num -> num      
+    val div_num : num -> num -> num
     val quo_num : num -> num -> num
     val mod_num : num -> num -> num
     val ( **/ ) : num -> num -> num
@@ -202,7 +204,7 @@
     val incr_num : num ref -> unit
     val decr_num : num ref -> unit
     val is_integer_num : num -> bool
-      
+
     val integer_num : num -> num
     val floor_num : num -> num
     val round_num : num -> num

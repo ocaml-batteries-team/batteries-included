@@ -189,14 +189,14 @@ val keep : ('a -> bool) -> 'a t -> unit
 val filter : ('a -> bool) -> 'a t -> 'a t
   (** [filter p a] returns all the elements of the array [a]
       that satisfy the predicate [p].  The order of the elements
-      in the input array is preserved.  
+      in the input array is preserved.
 
       {b Note} This function replaces another function called [filter],
       available in previous versions of the library. As the old function
       was incompatible with comprehension of dynamic arrays, its name
       was changed to {!keep}.
   *)
-  
+
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
   (** [filter_map f e] returns an array consisting in all elements
       [x] such that [f y] returns [Some x] , where [y] is an element
@@ -317,4 +317,4 @@ val unsafe_set : 'a t -> int -> 'a -> unit
 (** {7 Printing}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
-val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t

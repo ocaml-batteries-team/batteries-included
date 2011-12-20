@@ -43,7 +43,7 @@ let push rl item = rl := item::!rl
 let clear rl = rl := []
 
 let length rl = List.length !rl
-let hd rl = try List.hd !rl with _ -> raise Empty_list
+let hd rl = try List.hd !rl with _ -> raise Empty_list 
 let tl rl = try ref (List.tl !rl) with _ -> raise Empty_list
 let iter f rl = List.iter f !rl
 let for_all f rl = List.for_all f !rl
@@ -54,7 +54,7 @@ let find f rl = List.find f !rl
 let rev rl = rl := List.rev !rl
 let find_exc f exn rl = try List.find f !rl with _ -> raise exn
 let exists f rl = List.exists f !rl
-let sort ?(cmp=compare) rl = rl := BatList.sort ~cmp !rl
+let sort ?(cmp=compare) rl = rl := List.sort cmp !rl
 
 let rfind f rl = BatList.rfind f !rl
 

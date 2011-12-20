@@ -116,7 +116,7 @@ let operations = N.operations
 
 let min a b = if a < b then a else b
 let max a b = if a > b then a else b
-(**T Int.min/max
+(**T min/max
    min 3 4 = 3
    min 4 4 = 4
    min (-3) 5 = -3
@@ -210,9 +210,19 @@ module Safe_int = struct
     type bat__compare_t = t
     let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
   end
+
+  module Future = struct
+    open BatOrd
+    let eq (x:int) y = x = y
+    let ord (x:int) y =
+      if x > y then Gt
+      else if y > x then Lt
+      else Eq
+  end
+
 end
 
-(**T safe_int_tests
+(**T Safe_int
    try Safe_int.add max_int max_int |> ignore; false with Number.Overflow -> true
    Safe_int.neg max_int = -max_int
    try Safe_int.neg min_int |> ignore; false with Number.Overflow -> true
@@ -221,7 +231,7 @@ end
    try Safe_int.Infix.(+) max_int 1 |> ignore; false with Number.Overflow -> true
  **)
 
-(**Q safe_int_qtests
+(**Q Safe_int_Q
    (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> let (a,b) = max a b, min a b in let b = max_int - a + b in try Safe_int.add a b|>ignore; false with BatNumber.Overflow -> true)
    (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> let (a,b) = max a b, min a b in let b = max_int - a + b in try Safe_int.sub (-a) b|>ignore; false with BatNumber.Overflow -> true)
    (Q.pair Q.int Q.int) (fun (a,b) -> let slow_mul a b = if b = 0 then 0 else if (abs a) > max_int / (abs b) then raise BatNumber.Overflow else a*b in Pervasives.(=) (Result.catch (Safe_int.mul a) b) (Result.catch (slow_mul a) b))
@@ -238,3 +248,11 @@ module SafeInt = struct
   module Numeric = struct include Numeric(BaseSafeInt) end
 end
 *)
+module Future = struct
+  open BatOrd
+  let eq (x:int) y = x = y
+  let ord (x:int) y =
+    if x > y then Gt
+    else if y > x then Lt
+    else Eq
+end

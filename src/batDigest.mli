@@ -2,7 +2,7 @@
  * ExtDigest - Additional functions for MD5 message digests
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -43,7 +43,7 @@ val channel : input -> int -> Digest.t
    [End_of_file] if end-of-file is reached before [len] characters
    are read.  If [len] is negative, [Digest.channel ic len] reads
    all characters from [ic] until end-of-file is reached and return
-   their digest. 
+   their digest.
 
     {b Note} This version of [channel] is currently very inefficient
     if [len] < 0 and requires copying the whole input to a temporary

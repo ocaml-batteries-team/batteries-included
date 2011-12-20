@@ -22,8 +22,8 @@
 (** Reference on lists.
 
     RefList is a extended set of functions that manipulate list
-    references. 
-    
+    references.
+
 
     @author Nicolas Cannasse
     @author David Teller (Boilerplate code)
@@ -35,7 +35,7 @@ type 'a t (**The type of an empty ref list*)
 
 val empty : unit -> 'a t
 (** Returns a new empty ref list *)
-  
+
 val is_empty : 'a t -> bool
 (** Return [true] if a ref list is empty *)
 
@@ -53,7 +53,7 @@ val copy_list : dst:'a t -> src:'a list -> unit
 
 val copy_enum : dst:'a t -> src:'a BatEnum.t -> unit
 (** Makes a copy of a enum.
-    
+
     @param dst A reflist, whose contents will be forgotten. *)
 
 val of_list : 'a list -> 'a t
@@ -90,7 +90,7 @@ val first : 'a t -> 'a
 
 val last : 'a t -> 'a
 (** Returns the last element - O(n) or
-    raises Empty_list if the ref list is empty *)
+    raises [Empty_list] if the ref list is empty *)
 
 val pop : 'a t -> 'a
 (** Removes and returns the first element or
@@ -117,7 +117,7 @@ val rev : 'a t -> unit
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
   (** [List.fold_left f a (ref [b0; b1; ...; bn])] is
       [f (... (f (f a b0) b1) ...) bn]. *)
-  
+
 val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
   (** [List.fold_right f (ref [a0; a1; ...; an]) b] is
       [f a0 (f a1 (... (f an b) ...))].  Tail-recursive. *)

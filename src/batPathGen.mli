@@ -475,7 +475,7 @@ Return drive letter of the given absolute path.
     (drive_letter path_from) = (drive_letter path_to)
 ]}
 
-@raise Invald_argument if relative path is given
+@raise Invalid_argument if relative path is given
 *)
 
 end
@@ -494,6 +494,7 @@ module OfString : PathType with type ustring = string and type uchar = char
 
     @documents Future.Path.OfString
 *)
+
 (*
 module OfRope : PathType with type ustring = Rope.t
 (** In this implementation used strings are always valid UTF-8.

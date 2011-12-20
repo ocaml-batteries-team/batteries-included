@@ -40,24 +40,36 @@ val map : ('a -> 'b) -> 'a option -> 'b option
 (** [map f (Some x)] returns [Some (f x)] and [map f None] returns [None]. *)
 
 val bind : ('a -> 'b option) -> 'a option -> 'b option
-(** [bind f (Some x)] returns [f x] and [bind f None] returns [None]. 
+(** [bind f (Some x)] returns [f x] and [bind f None] returns [None].
 
 @example "Our functions return option types. Compose them to propagate [None]."
 {[
-let pick_long case = 
-  try 
+let pick_long case =
+  try
     Some (List.find (fun data -> List.length data > 1000) case)
   with Not_found -> None
 let last_null data = List.rindex_of 0 data
-let interesting_positions dataset = 
-  List.filter_map 
+let interesting_positions dataset =
+  List.filter_map
     (fun case -> Option.bind last_null (pick_long case))
     dataset
 ]}
 *)
 
+val apply : ('a -> 'a) option -> 'a -> 'a
+(** [apply None x] returns [x] and [apply (Some f) x] returns [f x] *)
+
 val default : 'a -> 'a option -> 'a
 (** [default x (Some v)] returns [v] and [default x None] returns [x]. *)
+
+val ( |? ) : 'a option -> 'a -> 'a
+(** Like {!default}, with the arguments reversed.
+    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"].
+
+    {b Note} This operator does not short circuit like [( || )] and [( && )].
+    Both arguments will be evaluated.
+
+    @since 2.0 *)
 
 val map_default : ('a -> 'b) -> 'b -> 'a option -> 'b
 (** [map_default f x (Some v)] returns [f v] and [map_default f x None]
@@ -83,7 +95,7 @@ val compare : ?cmp:('a -> 'a -> int) -> 'a option -> 'a option -> int
 val eq : ?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool
 (** Test for equality between option types, possibly using a custom
     equality predicate.  The parameter [eq] defaults to
-    [Pervasives.(=)]. 
+    [Pervasives.(=)].
 
     @since 1.4.0
 *)
@@ -93,7 +105,7 @@ val enum: 'a option -> 'a BatEnum.t
     the empty enumeration*)
 
 val of_enum: 'a BatEnum.t -> 'a option
-(** [of_enum e] consumes the first element of [e], if it exists, and 
+(** [of_enum e] consumes the first element of [e], if it exists, and
     returns [Some e]. If [e] is empty, return [None] *)
 
 exception No_value
@@ -114,7 +126,7 @@ module Monad : sig
 
   val bind : 'a m -> ('a -> 'b m) -> 'b m
 (** [bind m f] combines the calculation result [m] with the function [f].
-    E.g, in the Option monad : 
+    E.g, in the Option monad :
     [bind (Some 1) (fun x -> if x = 1 then Some 4 else None)] returns Some 4. *)
 end
 
@@ -124,9 +136,9 @@ end
 
 val print : ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 
-val t_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
-val maybe_printer : 'a BatValue_printer.t -> 'a t BatValue_printer.t
+val maybe_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
 (** Operations on options, with labels.*)
 module Labels : sig
@@ -134,3 +146,10 @@ module Labels : sig
   val map : f:('a -> 'b) -> 'a option -> 'b option
   val map_default : f:('a -> 'b) -> 'b -> 'a option -> 'b
 end
+
+module Infix : sig
+  val ( |? ) : 'a option -> 'a -> 'a
+  (** Like {!default}, with the arguments reversed.
+      [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+end
+

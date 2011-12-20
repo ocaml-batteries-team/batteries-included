@@ -74,8 +74,9 @@ let handle_test mn (k, str, pos) =
           in
           number tests (k + 1) ts
       in
-      Printf.printf "let %s = %S >::: [\n" test_name name ; 
-      Printf.printf "\"label\" >:: (fun () -> print_string %S) ;\n" name;
+      Printf.printf "let %s = %S >::: [\n" test_name name;
+      (* dummy test that prints the test group name *)
+      Printf.printf "\"label\" >:: (fun () -> print_string %S; print_string \".\"; print_string %S) ;\n" mn name;
       begin
         match k with
           | `Q ->
@@ -167,14 +168,15 @@ and pragma k start buf = parse
       "open " ^ mn ^ ";;" ;
     ] ;
     spin () ;
-    List.iter (Printf.printf "%s\n") [
-      "let suite = \"" ^ mn ^ "\" >::: [" ;
-      String.concat ";" !all_tests ;
-      "];;" ;
-      "let () = Tests.register suite;;"
-    ] ;
+    if !all_tests <> [] then
+      List.iter (Printf.printf "%s\n") [
+        "let suite = \"" ^ mn ^ "\" >::: [" ;
+        String.concat ";" (List.rev !all_tests) ;
+        "];;" ;
+        "let () = Tests.register suite;;"
+      ] ;
     Pervasives.flush stdout
-
+      
   let () =
     if Array.length Sys.argv != 2 then failwith "make_suite: Missing filename to process" ;
     process Sys.argv.(1)

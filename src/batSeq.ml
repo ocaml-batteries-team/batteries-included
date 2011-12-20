@@ -272,9 +272,6 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
 let t_printer a_printer paren out s =
   print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out s
 
-let sprint ?(first="[") ?(last="]") ?(sep="; ") print_a s =
-  BatInnerIO.Printf.sprintf2 "%a" (print ~first ~last ~sep print_a) s
-
 module Exceptionless = struct
   (* This function could be used to eliminate a lot of duplicate code below...
   let exceptionless_arg f s e =

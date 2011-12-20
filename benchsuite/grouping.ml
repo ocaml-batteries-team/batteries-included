@@ -8,11 +8,14 @@ let make_intervals d = function
   | h::t -> makeintervals_aux d h h [] t
 
 let makeIntervals d =
-  let merge ((start,stop) :: tail as s) num =
-    if abs(num-stop) <= d then
-      (start,num) :: tail
-    else
-      (num,num) :: s
+  let merge s num =
+    match s with
+      | (start,stop) :: tail ->
+	if abs(num-stop) <= d then
+	  (start,num) :: tail
+	else
+	  (num,num) :: s
+      | _ -> assert false
   in
   function
     | []           -> []
@@ -24,6 +27,4 @@ let tests = [ "fsharp", makeIntervals 2, g;
 	      "ocaml", make_intervals 2, g;
 	    ]
 
-open Benchmark
-
-let () = tabulate (latencyN 50_000_000L tests)
+let () = Bench.bench tests
