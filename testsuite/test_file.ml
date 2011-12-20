@@ -27,11 +27,6 @@ let temp_file ?(autoclean = true) pref suff =
   if autoclean then Pervasives.at_exit (fun () -> try Unix.unlink tf with _ -> ()) ;
   tf
 
-let temp_file_with_contents ?(autoclean = true) pref suff contents =
-  let tf = temp_file ~autoclean pref suff in
-  BatFile.write_lines tf contents ;
-  tf
-
 (**Actual tests*)
 
 let print_array out =
@@ -111,16 +106,17 @@ let test_append () =
 	   (2*size_1) size_1 size_2)
   with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)
 
-let file_lines_of fn = 
-  let ic = open_in fn in
-  BatEnum.suffix_action
-    (fun () -> close_in ic)
-    (BatEnum.from (fun () -> try input_line ic with End_of_file -> raise BatEnum.No_more_elements))
-
 let test_lines_of () = 
+  let file_lines_of fn = 
+    let ic = Pervasives.open_in fn in
+    BatEnum.suffix_action
+      (fun () -> Pervasives.close_in ic)
+      (BatEnum.from (fun () -> try Pervasives.input_line ic with End_of_file -> raise BatEnum.No_more_elements))
+  in
   try 
     let open Batteries in
-    let tf = temp_file_with_contents "batteries" "test" (BatList.enum [ "First" ; "Second" ]) in
+    let tf = temp_file "batteries" "test" in
+    BatFile.write_lines tf (BatList.enum [ "First" ; "Second" ]) ;
     (file_lines_of tf
        /@ (fun x -> String.length x, 42)
        |> Enum.group Tuple2.first)
