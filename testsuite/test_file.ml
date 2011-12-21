@@ -106,11 +106,31 @@ let test_append () =
 	   (2*size_1) size_1 size_2)
   with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)
 
+let test_lines_of () = 
+  let file_lines_of fn = 
+    let ic = Pervasives.open_in fn in
+    BatEnum.suffix_action
+      (fun () -> Pervasives.close_in ic)
+      (BatEnum.from (fun () -> try Pervasives.input_line ic with End_of_file -> raise BatEnum.No_more_elements))
+  in
+  try 
+    let open Batteries in
+    let tf = temp_file "batteries" "test" in
+    BatFile.write_lines tf (BatList.enum [ "First" ; "Second" ]) ;
+    (file_lines_of tf
+       /@ (fun x -> String.length x, 42)
+       |> Enum.group Tuple2.first)
+    |> List.of_enum 
+    |> ignore
+  with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)
+
+
 let tests = "File" >::: [
   "Reading back output to temporary file" >:: test_read_back_tmp;
   "open_in'd files should not autoclose" >:: test_open_files_not_autoclosed;
   "opening and closing many files" >:: test_open_close_many;
   "opening and closing many files (Pervasives)" >:: test_open_close_many_pervasives;
   "default truncation of files" >:: test_no_append;
-  "appending to a file" >:: test_append
+  "appending to a file" >:: test_append;
+  "reading lines of a file" >:: test_lines_of
 ]
