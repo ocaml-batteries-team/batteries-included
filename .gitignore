@@ -16,3 +16,4 @@ apidocs
 batteries.docdir
 qtest/*_t.ml
 qtest/test_mods.mllib
+bench.log
