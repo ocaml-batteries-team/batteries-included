@@ -124,9 +124,15 @@ val sum : int t -> int
   (** [sum] returns the sum of the given int enum.  If the argument is
       empty, returns 0. Eager *)
 
+val fsum : float t -> float
+(** @returns the sum of the enum's elements.  Uses Kahan summing to
+    get a more accurate answer than [reduce (+.)] would return, but runs slower.
+    @since 2.0
+ *)
+
 val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
-  (** [fold2] is similar to [fold] but will fold over two enumerations at the
-      same time until one of the two enumerations ends. *)
+(** [fold2] is similar to [fold] but will fold over two enumerations at the
+    same time until one of the two enumerations ends. *)
 
 val scanl : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b t
 (** A variant of [fold] producing an enumeration of its intermediate values.

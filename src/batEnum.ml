@@ -128,7 +128,7 @@ module MicroLazyList = struct
     let rec aux () =
       lazy (
 	let item = try  Some (f ())
-                   with No_more_elements -> None
+		   with No_more_elements -> None
 	in match item with
 	  | Some x -> Cons (x, aux () )
 	  | _      -> Nil
@@ -378,6 +378,27 @@ let sum t =
     | None -> 0
     | Some i -> fold (+) i t
 
+(* Kahan summing.  [Enum.reduce (+.)] is 20% faster, but has
+   cumulative error O(n) instead of O(1) *)
+let fsum t =
+  match get t with
+    | None -> 0.
+    | Some i ->
+      let sum = ref i in
+      let c = ref 0. in
+      iter (fun x ->
+	let y = x -. !c in
+	let t = !sum +. y in
+	c := (t -. !sum) -. y;
+	sum := t
+      ) t;
+      !sum
+
+(* NEED A PROPER TEST OF ROUNDING ERROR *)
+(**T fsum
+   let arr = Array.make 10001 1e-10 in arr.(0) <- 1e10; Float.approx_equal (fsum (Array.enum arr)) (1e10 +. 1e-5)
+ **)
+
 let exists f t =
   try let rec aux () = f (t.next()) || aux ()
       in aux ()
@@ -567,9 +588,9 @@ let suffix_action_without_raise (f:unit -> 'a) (t:'a t) =
     count = t.count;
     next  = (fun () ->
 	       try  t.next ()
-               with No_more_elements -> f() );
+	       with No_more_elements -> f() );
     clone = (fun () -> t.clone());  (* needs to be delayed because [t] may
-                                       mutate and we want the newest clone
+				       mutate and we want the newest clone
                                        function *)
     fast  = t.fast
   }
