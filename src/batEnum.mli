@@ -179,7 +179,10 @@ val find_map : ('a -> 'b option) -> 'a t -> 'b
     enumeration, consuming the whole enumeration in the search.
 
     Since [find_map] (eagerly) consumes a prefix of the enumeration, it can be
-    used several times on the same enumeration to find the next element. *)
+    used several times on the same enumeration to find the next element.
+
+    @since 2.0
+*)
 
 val is_empty : 'a t -> bool
 (** [is_empty e] returns true if [e] does not contains any element.
