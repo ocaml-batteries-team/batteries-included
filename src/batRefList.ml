@@ -43,7 +43,7 @@ let push rl item = rl := item::!rl
 let clear rl = rl := []
 
 let length rl = List.length !rl
-let hd rl = try List.hd !rl with _ -> raise Empty_list 
+let hd rl = try List.hd !rl with _ -> raise Empty_list
 let tl rl = try ref (List.tl !rl) with _ -> raise Empty_list
 let iter f rl = List.iter f !rl
 let for_all f rl = List.for_all f !rl
@@ -60,7 +60,7 @@ let rfind f rl = BatList.rfind f !rl
 
 let first = hd
 
-let last rl = 
+let last rl =
 	let rec loop = function
 		| x :: [] -> x
 		| x :: l -> loop l

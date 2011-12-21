@@ -52,12 +52,12 @@ let rec bal l v r =
       Empty -> assert false
     | Node (rl, rv, rr, _) ->
 	if height rr >= height rl then
-	  create (create l v rl) rv rr 
+	  create (create l v rl) rv rr
 	else
 	  match rl with
 	    Empty -> assert false
 	  | Node (rll, rlv, rlr, _) ->
-	      create (create l v rll) rlv (create rlr rv rr) 
+	      create (create l v rll) rlv (create rlr rv rr)
   else
     create l v r
 

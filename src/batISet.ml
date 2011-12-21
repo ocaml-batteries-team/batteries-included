@@ -121,7 +121,7 @@ let rec union s1 s2 =
     let (v1, v2), r' = split_leftmost r in (* merge right *)
     if n2 + 1 = v1 then v2, r' else n2, r in
   make_tree l (n1, n2) r
-  
+
 let rec inter s1 s2 =
   if is_empty s1 then empty else
   if is_empty s2 then empty else
@@ -204,11 +204,11 @@ let for_all p s =
   let rec test_set s =
     if is_empty s then true else
     let n1, n2 = root s in
-    test_range n1 n2 && 
+    test_range n1 n2 &&
     test_set (left_branch s) &&
     test_set (right_branch s) in
   test_set s
-  
+
 let exists p s =
   let rec test_range n1 n2 =
     if n1 = n2 then p n1 else
@@ -216,12 +216,12 @@ let exists p s =
   let rec test_set s =
     if is_empty s then false else
     let n1, n2 = root s in
-    test_range n1 n2 || 
+    test_range n1 n2 ||
     test_set (left_branch s) ||
     test_set (right_branch s) in
   test_set s
 
-let filter_range p n1 n2 a = 
+let filter_range p n1 n2 a =
   let rec loop n1 n2 a = function
       None ->
 	if n1 = n2 then
@@ -235,12 +235,12 @@ let filter_range p n1 n2 a =
 	else
 	  loop (n1 + 1) n2 (make_tree a (v1, n1 - 1) empty) None in
   loop n1 n2 a None
-  
+
 let filter p s = fold_range (filter_range p) empty s
 
-let partition_range p n1 n2 (a, b) = 
+let partition_range p n1 n2 (a, b) =
   let rec loop n1 n2 acc =
-    let acc = 
+    let acc =
       let a, b, (v, n) = acc in
       if p n1 = v then acc else
       if v then
@@ -267,18 +267,18 @@ let rec burst_range n1 n2 a =
   if n1 = n2 then n1 :: a else
   burst_range n1 (n2 - 1) (n2 :: a)
 
-let elements s = 
+let elements s =
   let f a (n1, n2) = burst_range n1 n2 a in
   List.fold_left f [] (rev_ranges s)
 
 let ranges s = List.rev (rev_ranges s)
 
-let min_elt s =  
-  let (n, _), _ = split_leftmost s in 
+let min_elt s =
+  let (n, _), _ = split_leftmost s in
   n
 
-let max_elt s =  
-  let (_, n), _ = split_rightmost s in 
+let max_elt s =
+  let (_, n), _ = split_rightmost s in
   n
 
 let choose s = fst (root s)

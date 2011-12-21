@@ -1,7 +1,7 @@
 (*
  * RMutex - Reentrant mutexes
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -26,25 +26,25 @@ type owner =
     thread : int;       (**Identity of the latest owner (possibly the current owner)*)
     mutable depth : int (**Number of times the current owner owns the lock.*)
   }
-    
+
 type t =
     {
       primitive : Mutex.t; (**A low-level mutex, used to protect access to [ownership]*)
       wait      : Mutex.t;
       mutable ownership : owner option;
     }
-      
-      
+
+
 let create () =
   {
     primitive = Mutex.create ();
     wait      = Mutex.create ();
     ownership = None
   }
-    
+
 (**
    Attempt to acquire the mutex.
-   
+
    @param hurry If true, in case the mutex cannot be acquired yet, just return [false],
    without waiting. Otherwise, wait.
 *)
@@ -70,11 +70,11 @@ let lock_either hurry m = (*Stuff shared by [lock] and [try_lock]*)
 	  end
       else true
   in aux()
-       
+
 let lock     m = ignore (lock_either false m)
 let try_lock m = lock_either true m
-  
-let unlock m = 
+
+let unlock m =
   let id = Thread.id (Thread.self ()) in
     Mutex.lock m.primitive;     (******Critical section begins*)
     (match m.ownership with

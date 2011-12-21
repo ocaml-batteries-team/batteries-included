@@ -21,11 +21,11 @@ open List
     [b] if [a] is empty.*)
 let concat a b =
   if String.length b = 0      then a
-  else if String.length a = 0 then b 
+  else if String.length a = 0 then b
   else Name.concat a b
 
 (** Return the basename in a path.
-    
+
     [end_of_name "A.B.C.D.E.t"] produces ["t"] *)
 let end_of_name name =
   Name.get_relative (Name.father (Name.father name)) name
@@ -67,7 +67,7 @@ let primitive_types_names =
   ]
 
 let has_parent a ~parent:b =
-  a = b || 
+  a = b ||
   let len_a  = String.length a
   and len_b  = String.length b    in
   let result =
@@ -77,10 +77,10 @@ let has_parent a ~parent:b =
 	  a.[len_b] = '.'
   in verbose (Printf.sprintf "Checking whether %s has parent %s: %b" a b result);
     result
-    
+
 let merge_info_opt a b =
   verbose ("Merging informations");
-  if a <> b then 
+  if a <> b then
     begin
       verbose ("1: "^(string_of_info_opt a));
       verbose ("2: "^(string_of_info_opt b));
@@ -106,7 +106,7 @@ let roots = ["Batteries"]
    module [Foo].
 
    Typical use of this feature:
-   - the documentation of module [Sna] makes use of elements (types, values, etc.) 
+   - the documentation of module [Sna] makes use of elements (types, values, etc.)
      of module [Bar]
    - module [Bar] is not included in the project, as it belongs to another project
    - for some reason, documenting module [Bar] is important, possibly because this
@@ -119,27 +119,27 @@ let roots = ["Batteries"]
 *)
 let get_documents = function
   | None   -> []
-  | Some i -> 
-      List.fold_left (fun acc x -> match x with 
-			| ("documents", [Raw s]) -> 
+  | Some i ->
+      List.fold_left (fun acc x -> match x with
+			| ("documents", [Raw s]) ->
 			    verbose ("This module documents "^s);
 			    s::acc
-			| ("documents", x      ) -> 
-			    warning ("Weird documents "^(string_of_text x)); 
-			    (string_of_text x)::acc 
+			| ("documents", x      ) ->
+			    warning ("Weird documents "^(string_of_text x));
+			    (string_of_text x)::acc
 			| _ -> acc) [] i.i_custom
 
 (* undocumented for now, possibly useless *)
 let get_documented = function
   | None   -> []
-  | Some i -> 
-      List.fold_left (fun acc x -> match x with 
-			| ("documented", [Raw s]) -> 
+  | Some i ->
+      List.fold_left (fun acc x -> match x with
+			| ("documented", [Raw s]) ->
 			    verbose ("This module should take its place as "^s);
 			    s::acc
-			| ("documented", x      ) -> 
-			    warning ("Weird documented "^(string_of_text x)); 
-			    (string_of_text x)::acc 
+			| ("documented", x      ) ->
+			    warning ("Weird documented "^(string_of_text x));
+			    (string_of_text x)::acc
 			| _ -> acc) [] i.i_custom
 
 
@@ -180,19 +180,19 @@ let rebuild_structure modules =
   in
   let add_renamed_module ~old:(old_name,old_info) ~current:(new_name,new_info) =
     verbose ("Setting module renaming from "^old_name^" to "^new_name);
-    try 
+    try
       let (better, better_info) = Hashtbl.find all_renamed_modules new_name in
 	verbose ("... actually setting renaming from "^old_name^" to "^better);
 	let complete_info = merge_info_opt (merge_info_opt old_info new_info) better_info in
 	  Hashtbl.replace all_renamed_modules old_name (better, complete_info);
 	  complete_info
-    with Not_found -> 
+    with Not_found ->
       let complete_info = merge_info_opt old_info new_info in
 	Hashtbl.add all_renamed_modules old_name (new_name, complete_info);
 	complete_info
   and add_renamed_module_type old current =
     verbose ("Setting module type renaming from "^old^" to "^current);
-    try 
+    try
       let further_references = Hashtbl.find all_renamed_module_types current in
 	verbose ("... actually setting renaming from "^old^" to "^further_references);
 	Hashtbl.add all_renamed_module_types old further_references
@@ -223,21 +223,21 @@ let rebuild_structure modules =
     | Element_included_module x as y ->
 (*	verbose ("Meeting inclusion "^x.im_name);*)
 	match x.im_module with
-	  | Some (Mod a) -> 
+	  | Some (Mod a) ->
 	      verbose ("This is an included module, we'll treat it as "^path);
 	      let a' = handle_module path m {(a) with m_name = ""} in
 		(
 		  match a'.m_kind with
-		    | Module_struct l -> 
+		    | Module_struct l ->
 			(*Copy the contents of [a] into [m]*)
 			(*Copy the information on [a] into [m]*)
 			verbose ("Merging "^m.m_name^" and included "^a'.m_name);
-			m.m_info <- merge_info_opt 
+			m.m_info <- merge_info_opt
 			  (add_renamed_module ~old:(a.m_name,a.m_info) ~current:(m.m_name, m.m_info))
-			  (add_renamed_module ~old:(Name.get_relative m.m_name a.m_name, None) 
+			  (add_renamed_module ~old:(Name.get_relative m.m_name a.m_name, None)
 			     ~current:(m.m_name, m.m_info));
-			l 
-		    | _               -> 
+			l
+		    | _               ->
 			verbose ("Structure of the module is complex");
 			[Element_included_module {(x) with im_module = Some (Mod a')}]
 			  (*Otherwise, it's too complicated*)
@@ -246,27 +246,27 @@ let rebuild_structure modules =
 (*	      verbose ("This is an included module type");*)
 	      let a' = handle_module_type path m a in
 		[Element_included_module {(x) with im_module = Some (Modtype a')}]
-	  | None -> 
+	  | None ->
 	      verbose ("Module couldn't be found");
 	      m.m_info <- add_renamed_module ~old:(x.im_name,None) ~current:(m.m_name,m.m_info);
 	      [y]
-  and handle_module path m t      = 
+  and handle_module path m t      =
     let path' = concat path (Name.simple t.m_name) in
       verbose ("Visiting module "^t.m_name^" from "^m.m_name^", at path "^path');
-    let result = 
-      {(t) with 
-	 m_kind = handle_kind path' t t.m_kind; 
+    let result =
+      {(t) with
+	 m_kind = handle_kind path' t t.m_kind;
 	 m_name = path'} in
       result.m_info <- add_renamed_module ~old:(t.m_name,t.m_info) ~current:(path',None);
       (match get_documents t.m_info with
 	 | [] -> verbose ("No @documents for module "^t.m_name)
-	 | l  -> 
+	 | l  ->
 	     List.iter (fun r ->
 			  verbose ("Manual @documents of module "^r^" with "^path');
 			  result.m_info <- add_renamed_module ~old:(r,None) ~current:(path',result.m_info)) l);
       (match get_documented t.m_info with
 	 | [] -> verbose ("No @documented for module "^t.m_name)
-	 | l  -> 
+	 | l  ->
 	     List.iter (fun r ->
 			  verbose ("Manual @documented of module "^r^" with "^path');
 			  result.m_info <- add_renamed_module ~current:(r,None) ~old:(path',result.m_info)) l);
@@ -274,27 +274,27 @@ let rebuild_structure modules =
   and handle_module_type path m (t:Odoc_module.t_module_type) =
     let path' = concat path (Name.simple t.mt_name) in
       verbose ("Visiting module "^t.mt_name^" from "^m.m_name^", at path "^path');
-      let result = 
+      let result =
 	{(t) with mt_kind = (match t.mt_kind with
 	   | None      -> None
-	   | Some kind -> Some (handle_type_kind path' m kind)); 
+	   | Some kind -> Some (handle_type_kind path' m kind));
 	   mt_name = path'} in
 	add_renamed_module_type t.mt_name path';
 	result
   and handle_alias path m (t:module_alias) : module_alias     = (*Module [m] is an alias to [t.ma_module]*)
     match t.ma_module with
-      | None         -> 
+      | None         ->
 	  verbose ("I'd like to merge information from "^m.m_name^" and "^t.ma_name^" but I can't find that module");
 	  t
 	  (*let rec aux = function
 	    | []   -> verbose ("Can't do better"); t
-	    | x::xs -> if Name.prefix x t.ma_name then 
+	    | x::xs -> if Name.prefix x t.ma_name then
 		let suffix = Name.get_relative x t.ma_name in
 		let info = add_renamed_module ~old:(suffix, m.m_info) ~current:(path, None) in
 		  {(t) with ma_name = suffix}
 	      else aux xs
 	  in aux packs*)
-      | Some (Mod a) -> 
+      | Some (Mod a) ->
 (*	  add_renamed_module a.m_name path;*)
 	  verbose ("Merging information from "^m.m_name^" and aliased "^a.m_name);
 	  let info = add_renamed_module ~old:(a.m_name,a.m_info) ~current:(path,m.m_info) in
@@ -328,7 +328,7 @@ let rebuild_structure modules =
   in
   (*1. Find root modules, i.e. modules which are neither included nor aliased*)
 (*  let all_roots = Hashtbl.create 100 in
-    List.iter (fun x -> if Name.father x.m_name = "" then 
+    List.iter (fun x -> if Name.father x.m_name = "" then
 		 (
 (*		   verbose ("Adding "^x.m_name^" to the list of roots");*)
 		   Hashtbl.add all_roots x.m_name x
@@ -337,19 +337,19 @@ let rebuild_structure modules =
 	      ) modules;
 
 
-    List.iter (fun x -> 
+    List.iter (fun x ->
 		    begin
 		      List.iter (fun y -> (*verbose(" removing "^y^" which is brought out by "^x.m_name);*)
 				   Hashtbl.remove all_roots y
 				) (*x.m_top_deps*) (module_dependencies x)
 		    end)  modules;
     Hashtbl.iter (fun name _ -> verbose ("Root: "^name)) all_roots;
-    (*let for_rewriting = Hashtbl.fold (fun k m acc -> if List.mem k roots then 
+    (*let for_rewriting = Hashtbl.fold (fun k m acc -> if List.mem k roots then
 					begin
 					  verbose ("Rewriting: " ^k);
-					  (k,m)::acc 
+					  (k,m)::acc
 					end
-				      else 
+				      else
 					begin
 					  verbose ("Not rewriting: "^k);
 					  acc
@@ -357,12 +357,12 @@ let rebuild_structure modules =
       (*Actually, we're only interested in modules which appear in [roots]*)
       (*Note: we could probably do something much more simple, without resorting
 	to this dependency analysis stuff*)*)
-  let for_rewriting = List.fold_left 
-    (fun acc x -> 
+  let for_rewriting = List.fold_left
+    (fun acc x ->
        Hashtbl.add all_modules x.m_name x;
        if List.mem x.m_name roots then begin
 	 verbose ("We need to visit module "^x.m_name);
-	 (x.m_name, x)::acc 
+	 (x.m_name, x)::acc
        end else begin
 	 verbose ("Discarding module "^x.m_name^" for now");
 	 acc
@@ -373,7 +373,7 @@ let rebuild_structure modules =
     (*let rewritten = Hashtbl.fold (fun name contents acc ->
 		    {(contents) with m_kind = handle_kind name contents contents.m_kind}::acc
 		 ) all_roots [] in*)
-      let rewritten = List.fold_left (fun acc (name, contents) -> 
+      let rewritten = List.fold_left (fun acc (name, contents) ->
 					{(contents) with m_kind = handle_kind "" contents contents.m_kind}::acc)
 	[] for_rewriting in
       let result =  Search.modules rewritten in
@@ -396,10 +396,10 @@ let sort_by_topics modules =
   in
   let add_module top m =
     write ("Adding module "^m.m_name);
-    List.iter (function `Topic t -> 
+    List.iter (function `Topic t ->
 		 write ("Adding module "^m.m_name^" to topic "^t);
 		 (
-		   try 
+		   try
 		     let l = Hashtbl.find modules_by_topic t in
 		       l := m :: !l
 		   with
@@ -414,31 +414,31 @@ let sort_by_topics modules =
     write ("Added topics from "^(string_of_path l)^" to "^(string_of_path result));
       result
   and push_top_level l t = (*Push the latest level on the stack of topics/levels*)
-    write ("Entering level "^(string_of_int t)); 
+    write ("Entering level "^(string_of_int t));
     let result = (`Level t)::l in
       write ("Entered level from "^(string_of_path l)^" to "^(string_of_path result));
       result
-  and pop_top_to_level l level = 
+  and pop_top_to_level l level =
     write ("Removing levels higher than "^(string_of_int level));
     let rec aux prefix = function
       | (`Level l')::t when l' >= level -> aux [] t
       | ((`Topic _ ) as p)::t           -> aux (p::prefix) t
       | _ as t                          -> List.rev_append prefix t
-    in 
+    in
     let result = aux [] l in
       write("From "^(string_of_path l)^" to "^(string_of_path result));
       result
   in
-  let adjust_to_level top level = 
+  let adjust_to_level top level =
     write ("Moving to level "^(string_of_int level));
     let result = push_top_level (pop_top_to_level top level) level in
       write("Moved levels from "^(string_of_path top)^" to "^(string_of_path result));
       result
   in
-  let adjust_top_from_comment top c = 
+  let adjust_top_from_comment top c =
     fold_left (fun acc text -> match text with
-		 | Title  (level, title, text) -> adjust_to_level acc level 
-		 | Custom (("topic" | "{topic"), text)      -> 
+		 | Title  (level, title, text) -> adjust_to_level acc level
+		 | Custom (("topic" | "{topic"), text)      ->
 		     write ("Custom topic "^(string_of_text text));
 		     push_top_topic acc (string_of_text text)
 		 | Custom (other, _) ->
@@ -448,12 +448,12 @@ let sort_by_topics modules =
   in
   let adjust_top_from_info top = function
     | None                -> top
-    | Some ({i_custom = l} as i) -> 
+    | Some ({i_custom = l} as i) ->
 	write ("Meeting custom in info "^(string_of_info i));
-	List.fold_left (fun acc -> function (("topic"|"{topic"), t) -> 
+	List.fold_left (fun acc -> function (("topic"|"{topic"), t) ->
 			  write ("Custom topic in info "^(string_of_text t));
 			  push_top_topic acc (string_of_text t)
-			  |   (other, content)  -> 
+			  |   (other, content)  ->
 				write ("Custom other in info "^other^": "^(string_of_text content));
 				acc
 (*			  |   _ -> acc*)) top l
@@ -462,7 +462,7 @@ let sort_by_topics modules =
     | Module_struct       x  -> List.fold_left handle_module_element top x
     | _                      -> top
   and handle_module_element top = function
-    | Element_module x         -> 
+    | Element_module x         ->
 	let top' = adjust_top_from_info top x.m_info in
 	  add_module top' x;
 	  ignore (handle_kind top' x.m_kind);
@@ -491,19 +491,19 @@ let sort_by_topics modules =
   let _ = List.fold_left handle_module [] modules in
     (StringSet.elements !topics, modules_by_topic)
 
-let find_renaming renamings original = 
-  let rec aux s suffix = 
-    if String.length s = 0 then 
+let find_renaming renamings original =
+  let rec aux s suffix =
+    if String.length s = 0 then
       (
 (*	verbose ("Name '"^original^"' remains unchanged");*)
 	suffix
       )
-    else 
-      let renaming = 
+    else
+      let renaming =
 	try  Some (fst(Hashtbl.find renamings s))
 	with Not_found -> None
       in match renaming with
-	| None -> 
+	| None ->
 	    let father = Name.father s              in
 	    let son    = Name.get_relative father s in
 	      aux father (concat son suffix)

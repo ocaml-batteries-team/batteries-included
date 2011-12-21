@@ -39,7 +39,7 @@ let rec find_map f = function
             y
 
 let path_of_string string =
-  Str.split (Str.regexp "\\.") string 
+  Str.split (Str.regexp "\\.") string
 
 let string_of_path path =
   match path with

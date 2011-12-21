@@ -74,30 +74,30 @@
 (* You can contact the authour by sending email to *)
 (* yoriyuki.y@gmail.com *)
 
-module UChar = struct 
+module UChar = struct
   type t = int
 	
   exception Out_of_range
-      
+
   external code : t -> int = "%identity"
-      
-  let char_of c = 
+
+  let char_of c =
     if c >= 0 && c < 0x100 then Char.chr c else raise Out_of_range
-      
+
   let of_char = Char.code
-      
+
 (* valid range: U+0000..U+D7FF and U+E000..U+10FFFF *)
-  let chr n = 
-    if (n >= 0 && n <= 0xd7ff) or (n >= 0xe000 && n <= 0x10ffff) 
-    then n 
+  let chr n =
+    if (n >= 0 && n <= 0xd7ff) or (n >= 0xe000 && n <= 0x10ffff)
+    then n
     else raise Out_of_range
 
   let unsafe_chr n = n
 
   let eq (u1 : t) (u2 : t) = u1 = u2
-      
+
   let compare u1 u2 = u1 - u2
-      
+
   type uchar = t
 	
   let int_of u = code u
@@ -141,7 +141,7 @@ end
 (* You can contact the authour by sending email to *)
 (* yoriyuki.y@gmail.com *)
 
-module UTF8 = struct 
+module UTF8 = struct
   type t = string
 
   let empty = ""
@@ -172,11 +172,11 @@ module UTF8 = struct
 	let m = Char.code (String.unsafe_get s (i + 2)) in
 	let n' = n' lsl 6 lor (0x7f land m) in
 	let m = Char.code (String.unsafe_get s (i + 3)) in
-	n' lsl 6 lor (0x7f land m)     
+	n' lsl 6 lor (0x7f land m)
     in
     UChar.unsafe_chr n'
-      
-  let next s i = 
+
+  let next s i =
     let n = Char.code s.[i] in
     if n < 0x80 then i + 1 else
     if n <= 0xdf then i + 2
@@ -188,9 +188,9 @@ module UTF8 = struct
     let n = Char.code s.[i] in
     if n < 0x80 || n >= 0xc2 then i else
     search_head_backward s (i - 1)
-      
+
   let prev s i = search_head_backward s (i - 1)
-      
+
   let move s i n =
     if n >= 0 then
       let rec loop i n = if n <= 0 then i else loop (next s i) (n - 1) in
@@ -202,19 +202,19 @@ module UTF8 = struct
   let rec nth_aux s i n =
     if n = 0 then i else
     nth_aux s (next s i) (n - 1)
-      
+
   let nth s n = nth_aux s 0 n
-      
+
   let first _ = 0
-      
+
   let last s = search_head_backward s (String.length s - 1)
-      
+
   let out_of_range s i = i < 0 || i >= String.length s
-    
+
   let compare_index _ i j = i - j
-      
+
   let get s n = look s (nth s n)
-      
+
   let add_uchar buf u =
     let masq = 0b111111 in
     let k = UChar.code u in
@@ -243,9 +243,9 @@ module UTF8 = struct
 
   let of_char u = make 1 u
 
-  let of_string_unsafe s = s 
+  let of_string_unsafe s = s
   let to_string_unsafe s = s
-      
+
   let rec length_aux s c i =
     if i >= String.length s then c else
     let n = Char.code (String.unsafe_get s i) in
@@ -255,15 +255,15 @@ module UTF8 = struct
       if n < 0xf0 then 3 else 4
     in
     length_aux s (c + 1) (i + k)
-      
+
   let length s = length_aux s 0 0
-      
+
   let rec iter_aux proc s i =
     if i >= String.length s then () else
     let u = look s i in
     proc u;
     iter_aux proc s (next s i)
-      
+
   let iter proc s = iter_aux proc s 0
 
   let rec iteri_aux f s i count =
@@ -271,7 +271,7 @@ module UTF8 = struct
     let u = look s i in
     f u count;
     iteri_aux f s (next s i) (count + 1)
-      
+
   let iteri f s = iteri_aux f s 0 0
 
   let compare s1 s2 = String.compare s1 s2
@@ -280,9 +280,9 @@ module UTF8 = struct
     let ipos = move s (first s) n in
     let jpos = move s ipos len in
     String.sub s ipos (jpos-ipos)
-      
+
   exception Malformed_code
-      
+
   let validate s =
     let rec trail c i a =
       if c = 0 then a else
@@ -295,15 +295,15 @@ module UTF8 = struct
       let n = Char.code (String.unsafe_get s i) in
       if n < 0x80 then main (i + 1) else
       if n < 0xc2 then raise Malformed_code else
-      if n <= 0xdf then 
-	if trail 1 (i + 1) (n - 0xc0) < 0x80 then raise Malformed_code else 
+      if n <= 0xdf then
+	if trail 1 (i + 1) (n - 0xc0) < 0x80 then raise Malformed_code else
 	main (i + 2)
-      else if n <= 0xef then 
+      else if n <= 0xef then
 	let n' = trail 2 (i + 1) (n - 0xe0) in
 	if n' < 0x800 then raise Malformed_code else
 	if n' >= 0xd800 && n' <= 0xdfff then raise Malformed_code else
 	main (i + 3)
-      else if n <= 0xf4 then 
+      else if n <= 0xf4 then
 	let n = trail 3 (i + 1) (n - 0xf0) in
 	if n < 0x10000 or n > 0x10FFFF then raise Malformed_code else
 	main (i + 4)
@@ -317,25 +317,25 @@ module UTF8 = struct
     String.copy s
 
   let of_latin1 s = init (String.length s) (fun i -> UChar.of_char s.[i])
-      
-  module Buf = 
+
+  module Buf =
     struct
       include Buffer
       type buf = t
       let add_char = add_uchar
     end
 
-  let map f us = 
+  let map f us =
     let b = Buf.create (length us) in
     iter (fun c -> Buf.add_char b (f c)) us;
     Buf.contents b
 
-  let filter_map f us = 
+  let filter_map f us =
     let b = Buf.create (length us) in
     iter (fun c -> match f c with None -> () | Some c -> Buf.add_char b c) us;
     Buf.contents b
 
-  let filter p us = 
+  let filter p us =
     let b = Buf.create (length us) in
     iter (fun c -> if p c then Buf.add_char b c) us;
     Buf.contents b
@@ -403,14 +403,14 @@ module UTF8 = struct
 
 end
 
-(* 
+(*
  * Rope: Rope: an implementation of the data structure described in
- *   
+ *
  * Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
  * strings. Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
- * 
+ *
  * Motivated by Luca de Alfaro's extensible array implementation Vec.
- * 
+ *
  * Copyright (C) 2007 Mauricio Fernandez <mfp@acm.org>
  * Copyright (C) 2008 Edgar Friendly <thelema314@gmail.com>
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
@@ -432,8 +432,8 @@ end
  *)
 
 
-module Text = struct 
-  
+module Text = struct
+
   (**Low-level optimization*)
   let int_max (x:int) (y:int) = if x < y then y else x
   let int_min (x:int) (y:int) = if x < y then x else y
@@ -450,61 +450,61 @@ module Text = struct
     s
 
   exception Invalid_rope
-   
+
   type t =
       Empty                             (**An empty rope*)
     | Concat of t * int * t * int * int (**[Concat l ls r rs h] is the concatenation of
-                                           ropes [l] and [r], where [ls] is the total 
+                                           ropes [l] and [r], where [ls] is the total
   					 length of [l], [rs] is the length of [r]
   					 and [h] is the height of the node in the
   					 tree, used for rebalancing. *)
     | Leaf of int * UTF8.t              (**[Leaf l t] is string [t] with length [l],
   					 measured in number of Unicode characters.*)
-   
+
   type forest_element = { mutable c : t; mutable len : int }
-   
+
   let str_append = (^)
   let empty_str = ""
   let string_of_string_list l = String.concat empty_str l
 
 
-   
+
   (* 48 limits max rope size to 220GB on 64 bit,
   * ~ 700MB on 32bit (length fields overflow after that) *)
   let max_height = 48
-   
+
   (* actual size will be that plus 1 word header;
   * the code assumes it's an even num.
   * 256 gives up to a 50% overhead in the worst case (all leaf nodes near
   * half-filled *)
   let leaf_size = 256 (* utf-8 characters, not bytes *)
   (* =end *)
-   
+
   (* =begin code *)
-   
+
   exception Out_of_bounds
-   
+
   let empty = Empty
-   
+
 
 
   (* by construction, there cannot be Empty or Leaf "" leaves *)
   let is_empty = function Empty -> true | _ -> false
-   
+
   let height = function
       Empty | Leaf _ -> 0
     | Concat(_,_,_,_,h) -> h
-   
+
   let length = function
       Empty -> 0
     | Leaf (l,_) -> l
     | Concat(_,cl,_,cr,_) -> cl + cr
-   
+
   let make_concat l r =
     let hl = height l and hr = height r in
     let cl = length l and cr = length r in
       Concat(l, cl, r, cr, if hl >= hr then hl + 1 else hr + 1)
-   
+
   let min_len =
     let fib_tbl = Array.make max_height 0 in
     let rec fib n = match fib_tbl.(n) with
@@ -517,16 +517,16 @@ module Text = struct
     in
       fib_tbl.(0) <- leaf_size + 1; fib_tbl.(1) <- 3 * leaf_size / 2 + 1;
       Array.init max_height (fun i -> if i = 0 then 1 else fib (i - 1))
-   
+
   let max_length = min_len.(Array.length min_len - 1)
-   
+
   let concat_fast l r = match l with
       Empty -> r
     | Leaf _ | Concat(_,_,_,_,_) ->
         match r with
             Empty -> l
           | Leaf _ | Concat(_,_,_,_,_) -> make_concat l r
-   
+
   (* based on Hans-J. Boehm's *)
   let add_forest forest rope len =
     let i = ref 0 in
@@ -551,10 +551,10 @@ module Text = struct
         decr i;
         forest.(!i).c <- !sum;
         forest.(!i).len <- !sum_len
-   
+
   let concat_forest forest =
     Array.fold_left (fun s x -> concat_fast x.c s) Empty forest
-   
+
   let rec balance_insert rope len forest = match rope with
       Empty -> ()
     | Leaf _ -> add_forest forest rope len
@@ -562,7 +562,7 @@ module Text = struct
         balance_insert l cl forest;
         balance_insert r cr forest
     | x -> add_forest forest x len (* function or balanced *)
-   
+
   let balance r =
     match r with
         Empty | Leaf _ -> r
@@ -570,11 +570,11 @@ module Text = struct
           let forest = Array.init max_height (fun _ -> {c = Empty; len = 0}) in
             balance_insert r (length r) forest;
             concat_forest forest
-   
+
   let bal_if_needed l r =
     let r = make_concat l r in
       if height r < max_height then r else balance r
-   
+
   let concat_str l = function
       Empty | Concat(_,_,_,_,_) -> invalid_arg "concat_str"
     | Leaf (lenr, rs) as r ->
@@ -591,7 +591,7 @@ module Text = struct
               else
                 bal_if_needed l r
           | _ -> bal_if_needed l r
-   
+
   let append_char c r = concat_str r (Leaf (1, (UTF8.make 1 c)))
 
   let append l = function
@@ -608,12 +608,12 @@ module Text = struct
                 else
                   bal_if_needed l r)
     | r -> (match l with Empty -> r | _ -> bal_if_needed l r)
-   
+
   let ( ^^^ ) = append
 
   let prepend_char c r = append (Leaf (1,(UTF8.make 1 c))) r
-   
-  let get r i = 
+
+  let get r i =
     let rec aux i = function
       Empty -> raise Out_of_bounds
     | Leaf (lens, s) ->
@@ -623,15 +623,15 @@ module Text = struct
         if i < cl then aux i l
         else aux (i - cl) r
     in aux i r
-   
+
   let copy_set us cpos c =
-    let ipos = UTF8.ByteIndex.of_char_idx us cpos in 
+    let ipos = UTF8.ByteIndex.of_char_idx us cpos in
     let jpos = UTF8.ByteIndex.next us ipos in
     let i = UTF8.ByteIndex.to_int ipos
     and j = UTF8.ByteIndex.to_int jpos in
     splice us i (j-i) (UTF8.of_char c)
-      
-  let set r i v = 
+
+  let set r i v =
     let rec aux i = function
         Empty -> raise Out_of_bounds
       | Leaf (lens, s) ->
@@ -697,7 +697,7 @@ module Text = struct
         iter.idx <- UTF8.ByteIndex.next iter.leaf iter.idx;
         Some ch
       end
- 
+
     (* Same thing but map leafs: *)
     let rec next_map f iter =
       if UTF8.ByteIndex.at_end iter.leaf iter.idx then
@@ -818,11 +818,11 @@ module Text = struct
       else
         let rope = concatloop len 2 (of_ustring (UTF8.make 1 c)) in
           append rope (make (len - length rope) c)
-   
+
   let of_uchar c = make 1 c
   let of_char c = of_uchar (UChar.of_char c)
 
-  let sub r start len = 
+  let sub r start len =
     let rec aux start len = function
       Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
     | Leaf (lens, s) ->
@@ -852,13 +852,13 @@ module Text = struct
         in
           append left right
     in aux start len r
-   
+
   let insert start rope r =
     append (append (sub r 0 start) rope) (sub r start (length r - start))
-   
+
   let remove start len r =
     append (sub r 0 start) (sub r (start + len) (length r - start - len))
-   
+
   let to_ustring r =
     let rec strings l = function
         Empty -> l
@@ -866,7 +866,7 @@ module Text = struct
       | Concat(left,_,right,_,_) -> strings (strings l right) left
     in
       string_of_string_list (strings [] r)
-   
+
   let rec bulk_iter f = function
       Empty -> ()
     | Leaf (_,s) -> f s
@@ -875,8 +875,8 @@ module Text = struct
   let rec bulk_iteri ?(base=0) f = function
       Empty -> ()
     | Leaf (_,s) -> f base s
-    | Concat(l,cl,r,_,_) -> 
-        bulk_iteri ~base f l; 
+    | Concat(l,cl,r,_,_) ->
+        bulk_iteri ~base f l;
         bulk_iteri ~base:(base+cl) f r
 
   let rec iter f = function
@@ -884,18 +884,18 @@ module Text = struct
     | Leaf (_,s) -> UTF8.iter f s
     | Concat(l,_,r,_,_) -> iter f l; iter f r
 
-   
+
   let rec iteri ?(base=0) f = function
       Empty -> ()
     | Leaf (_,s) ->
 	UTF8.iteri (fun j c -> f (base + j) c) s
     | Concat(l,cl,r,_,_) -> iteri ~base f l; iteri ~base:(base + cl) f r
-   
+
 
   let rec bulk_iteri_backwards ~top f = function
       Empty -> ()
     | Leaf (lens,s) -> f (top-lens) s (* gives f the base position, not the top *)
-    | Concat(l,_,r,cr,_) -> 
+    | Concat(l,_,r,cr,_) ->
         bulk_iteri_backwards ~top f r;
         bulk_iteri_backwards ~top:(top-cr) f l
 
@@ -921,7 +921,7 @@ module Text = struct
         end else begin
           range_iter f (start - cl) len r
         end
-   
+
   let rec range_iteri f ?(base = 0) start len = function
       Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
     | Leaf (lens, s) ->
@@ -951,19 +951,19 @@ module Text = struct
     | Leaf (_,s) ->
         UTF8.fold (fun a c -> f a c) a s
     | Concat(l,_,r,_,_) -> fold f (fold f a l) r
-   
+
   let rec bulk_fold f a = function
     | Empty                  -> a
     | Leaf   (_, s)          -> f a s
     | Concat (l, _, r, _, _) -> bulk_fold f (bulk_fold f a l) r
-    
+
   let to_string t =
     (* We use unsafe version to avoid the copy of the non-reachable
        temporary string: *)
     UTF8.to_string_unsafe (to_ustring t)
 
   let init len f = Leaf (len, UTF8.init len f)
-    
+
   let of_string_unsafe s = of_ustring (UTF8.of_string_unsafe s)
   let of_int i = of_string_unsafe (string_of_int i)
   let of_float f = of_string_unsafe (string_of_float f)
@@ -998,7 +998,7 @@ module Text = struct
 
   module Return : sig type 'a t
     (** A label which may be used to return values of type ['a]*)
-        
+
     val label : ('a t -> 'a) -> 'a
     (** [label f] creates a new label [x] and invokes
         [f x]. If, during the execution of [f], [return x v]
@@ -1022,9 +1022,9 @@ module Text = struct
         of [l] (i.e. the call to function [label]
         which produced [l]) is a run-time error
         and causes termination of the program.*)
-end = struct 
+end = struct
     type 'a t = 'a option ref
-	  
+	
     exception Return
 	
     let return label value =
@@ -1037,25 +1037,25 @@ end = struct
       with  Return when !r <> None -> (*[!r = None] may happen if the user has let the exception escape its scope *)
 	match !r with                (*in that case, we wish the exception to fall-through for debugging purposes*)
 	| None   -> assert false (*Should be impossible*)
-	| Some x -> 
+	| Some x ->
 	    r := None;             (*Reset the trap for sanity checks should another exception escape scope    *)
 	    x                      (*(not that this should be possible in that case -- let's just be careful)  *)
     let with_label = label
   end
 
-  let index_from r base item = 
+  let index_from r base item =
     Return.with_label (fun label ->
-  	        let index_aux i c = 
+  	        let index_aux i c =
   	          if c = item then Return.return label i
   	        in
   	        range_iteri index_aux ~base base (length r - base) r;
   	        raise Not_found)
 
 
-  let rindex r char = 
+  let rindex r char =
     Return.with_label (fun label ->
   	        let index_aux i us =
-  	          try 
+  	          try
   	            let p = UTF8.rindex us char in
   	            Return.return label (p+i)
   	          with Not_found -> ()
@@ -1063,11 +1063,11 @@ end = struct
   	        bulk_iteri_backwards ~top:(length r) index_aux r;
   	        raise Not_found)
 
-  let rindex_from r start char = 
+  let rindex_from r start char =
     let rsub = left r start in
     (rindex rsub char)
 
-  let contains r char = 
+  let contains r char =
     Return.with_label (fun label ->
   	        let contains_aux us =
   	          if UTF8.contains us char then Return.return label true
@@ -1075,7 +1075,7 @@ end = struct
   	        bulk_iter contains_aux r;
   	        false)
 
-  let contains_from r start char = 
+  let contains_from r start char =
     Return.with_label (fun label ->
   	        let contains_aux c = if c = char then Return.return label true in
   	        range_iter contains_aux start (length r - start) r;
@@ -1113,9 +1113,9 @@ end = struct
   let find_from r1 ofs r2 =
     let matchlen = length r2 in
     let r2_string = to_ustring r2 in
-    let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in 
+    let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in
     (* TODO: inefficient *)
-    Return.with_label (fun label -> 
+    Return.with_label (fun label ->
   	   for i = ofs to length r1 - matchlen do
   	     if check_at i then Return.return label i
   	   done;
@@ -1126,9 +1126,9 @@ end = struct
   let rfind_from r1 suf r2 =
     let matchlen = length r2 in
     let r2_string = to_ustring r2 in
-    let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in 
+    let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in
     (* TODO: inefficient *)
-    Return.with_label (fun label -> 
+    Return.with_label (fun label ->
   	   for i = suf - (length r1 + 1 ) downto 0 do
   	     if check_at i then Return.return label i
   	   done;
@@ -1189,22 +1189,22 @@ let of_list l =
   in
   loop Empty
 
-  let splice r start len new_sub = 
+  let splice r start len new_sub =
     let start = if start >= 0 then start else (length r) + start in
-    append (left r start) 
+    append (left r start)
       (append new_sub (tail r (start+len)))
 
-  let fill r start len char = 
+  let fill r start len char =
     splice r start len (make len char)
 
-  let blit rsrc offsrc rdst offdst len = 
+  let blit rsrc offsrc rdst offdst len =
     splice rdst offdst len (sub rsrc offsrc len)
 
 
   let list_reduce f = function [] -> invalid_arg "Empty List"
     | h::t -> List.fold_left f h t
 
-  let concat sep r_list = 
+  let concat sep r_list =
     if r_list = [] then empty else
     list_reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
 
@@ -1216,11 +1216,11 @@ let of_list l =
 
   let replace_chars f r = fold (fun acc s -> append_us acc (f s)) Empty r
 
-  let split r sep = 
+  let split r sep =
     let i = find r sep in
     head r i, tail r (i+length sep)
 
-  let rsplit (r:t) sep = 
+  let rsplit (r:t) sep =
     let i = rfind r sep in
     head r i, tail r (i+length sep)
 
@@ -1233,16 +1233,16 @@ let of_list l =
   let nsplit str sep =
     if is_empty str then []
     else let seplen = length sep in
-         let rec aux acc ofs = match 
+         let rec aux acc ofs = match
   	 try Some(rfind_from str ofs sep)
   	 with Invalid_rope -> None
-         with Some idx -> 
+         with Some idx ->
   	 (*at this point, [idx] to [idx + seplen] contains the separator, which is useless to us
   	   on the other hand, [idx + seplen] to [ofs] contains what's just after the separator,
   	   which is s what we want*)
   	 let end_of_occurrence = idx + seplen in
   	   if end_of_occurrence >= ofs then aux acc idx (*We may be at the end of the string*)
-  	   else aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx 
+  	   else aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx
   	 |  None     -> (sub str 0 ofs)::acc
          in
   	 aux [] (length str - 1 )
@@ -1263,10 +1263,10 @@ let of_list l =
         sub s i (j-i)
 
 
-  let replace ~str ~sub ~by = 
+  let replace ~str ~sub ~by =
     try
       let i = find str sub in
-        (true, append (slice ~last:i str)  (append by 
+        (true, append (slice ~last:i str)  (append by
            (slice ~first:(i+(length sub)) str)))
     with
         Invalid_rope -> (false, str)

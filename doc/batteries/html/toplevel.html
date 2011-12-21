@@ -56,7 +56,7 @@ and, when Emacs asks you for the name of your OCaml toplevel, answer
 ocamlfind batteries/ocaml
 </pre>
 
-<h2>What is the toplevel?<a name="what"></a></h2> 
+<h2>What is the toplevel?<a name="what"></a></h2>
 
 You can think of the toplevel as a very powerful calculator or as a
 command-line interface comparable to that of your operating system.
@@ -83,7 +83,7 @@ When you launch the toplevel, it displays something along the lines of:
 
         Camlp4 Parsing version 3.10.2
 
-# 
+#
 </pre>
 
 The message informs you that you are running OCaml version 3.10.2,
@@ -98,7 +98,7 @@ is waiting for an order. Whenever you see that character (except when
 you've written it yourself, of course), it means that it's up
 to you to write something.
 
-<h2>Orders for the toplevel<a name="orders"></a></h2> 
+<h2>Orders for the toplevel<a name="orders"></a></h2>
 Orders can take the form of value definitions, type definitions,
 evaluations or directives. Value definitions let you teach OCaml new
 tricks. Type definitions let you teach OCaml how to understand new
@@ -113,7 +113,7 @@ Finally, directives are not part of any program. They just let you
 interact with the Toplevel, for instance by loading other programs,
 reading the documentation, asking the Toplevel for information on
 existing programs, etc. Directives are easy to spot, they also start
-with character '#'. 
+with character '#'.
 
 
 <h2>Directives<a name="directives"></a></h2>
@@ -172,13 +172,13 @@ there should be a module called <code>Foo</code> somewhere around,
 because it is using code which requires that module, but the
 the <code>.cmo</code> or <code>.cmi</code> for that module haven't
 been loaded. To fix this, you need to <code>#load</code> the
-corresponding <code>.cmo</code>/<code>.cmi</code>.  <br /> 
+corresponding <code>.cmo</code>/<code>.cmi</code>.  <br />
 
 Yes, this means that OCaml doesn't automatically attempt
 to <code>#load</code> modules it can't find. There is a simple reason
 for this: you may have thousands of <code>.cmo</code> installed on
 your computer. Loading each of these modules could trigger programs,
-which may run for long time and cause unwanted side-effects. 
+which may run for long time and cause unwanted side-effects.
 Consequently, the developers of OCaml decided that loading
 of external modules would not be automatic. In other words,
 you need to load them.
@@ -189,7 +189,7 @@ you need to load them.
 OCaml performs automatically rather advanced techniques for checking
 that your code is correct and that it will execute without causing any
 weird error. In fact, OCaml won't let you run code which would cause a
-weird error. 
+weird error.
 <br />
 This error message happens because OCaml has found an
 inconsitency in your program: OCaml has determined that a part of your

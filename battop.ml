@@ -1,4 +1,4 @@
-(* 
+(*
  * Top - An interpreted preambule for the toplevel
  * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
@@ -38,7 +38,7 @@ let ext_syntax = true;;
 (* END CONFIGURATION *)
 
 (* MUST BE ALREADY HANDLED BY .ocamlinit
-#use "topfind";; 
+#use "topfind";;
 *)
 #thread;;
 #require "batteries";;
@@ -81,12 +81,12 @@ open Batteries;;
 
 
 if ext_syntax then begin
-  if !Sys.interactive then 
+  if !Sys.interactive then
     print_endline "Loading syntax extensions...";
   Topfind.standard_syntax();
   Topfind.load_deeply ["dynlink"; "camlp4"; "batteries.pa_string.syntax";
    		       "batteries.pa_comprehension.syntax"];
-end else 
-  if !Sys.interactive then 
+end else
+  if !Sys.interactive then
     print_endline "Batteries Syntax extensions disabled.";
 ;;

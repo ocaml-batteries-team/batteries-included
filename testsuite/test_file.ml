@@ -102,7 +102,7 @@ let test_append () =
     let _      = close_out out                       in
     let size_2 = size_of temp                        in
       if size_2 <> 2*size_1 then assert_failure
-	(BatPrintf.sprintf "Expected a files with size %d, got a first chunk with size %d and a second chunk with size %d" 
+	(BatPrintf.sprintf "Expected a files with size %d, got a first chunk with size %d and a second chunk with size %d"
 	   (2*size_1) size_1 size_2)
   with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)
 

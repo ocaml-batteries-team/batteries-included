@@ -1,4 +1,4 @@
-(* 
+(*
  * ExtGC - Extended GC operations
  * Copyright (C) 1996 Damien Doligez
  *               2008 David Teller, LIFO, Universite d'Orleans
@@ -44,6 +44,6 @@
 (*
   let eventually_table = InnerWeaktbl.create 32
   let eventually f v =
-*)  
-    
+*)
+
 

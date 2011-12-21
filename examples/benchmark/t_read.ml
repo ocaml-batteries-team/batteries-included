@@ -1,6 +1,6 @@
 (*
   Requires batteries, benchmark, bitstring
-  To compile: 
+  To compile:
   ocamlopt t_read_stub.c
   ocamlfind ocamlopt -linkpkg -thread -package batteries,threads,benchmark,bitstring t_read.ml -o t_read_stub.o t_read
 *)
@@ -10,7 +10,7 @@ open Benchmark
 (**** THIS CODE UNDER GPL LICENSE FROM CDK/extlib ****)
 let resize s newlen =
   let len = String.length s in
-  if len > newlen then String.sub s 0 newlen 
+  if len > newlen then String.sub s 0 newlen
   else
   let str = String.create newlen in
   String.blit s 0 str 0 len;
@@ -22,12 +22,12 @@ let cdk_read buf_size name =
   let rec iter buf nb_read =
     let buf_size = String.length buf in
     let tmp = input chan buf nb_read (buf_size - nb_read) in
-    if tmp = 0 then 
+    if tmp = 0 then
       String.sub buf 0 nb_read
-    else 
+    else
       let nb_read = nb_read + tmp in
       let buf =
-	if nb_read = buf_size then 
+	if nb_read = buf_size then
           resize buf (2 * buf_size)
 	else buf
       in
@@ -39,7 +39,7 @@ let cdk_read buf_size name =
 (**** END CDK/extlib code ****)
 
 
-let varbuf_unix tmpsize fn = 
+let varbuf_unix tmpsize fn =
   let fd = Unix.openfile fn [Unix.O_RDONLY] 0o600 in
   let buf = Buffer.create tmpsize in
   let tmp = String.create tmpsize in
@@ -91,17 +91,17 @@ let map_file fd ?pos ?(shared=false) len =
   let s = (Obj.magic (Obj.field (Obj.repr ba) 1) : string) in
     { bigarr = ba; data = s; length = Array1.dim ba }
 
-let mmap_fn fn = 
+let mmap_fn fn =
   let fd = Unix.openfile fn [Unix.O_RDONLY] 0o600 in
   let len = (Unix.stat fn).Unix.st_size in
   (map_file fd len).bigarr
-  
+
 
 
 type buffer = (char, int8_unsigned_elt, c_layout) Array1.t
 external pread : Unix.file_descr -> buffer -> int64 -> int = "caml_maid_pread"
 
-let pread_file fn = 
+let pread_file fn =
   let fd = Unix.openfile fn [Unix.O_RDONLY] 0o600 in
   let len = (Unix.stat fn).Unix.st_size in
   let buf = Array1.create char c_layout len in
@@ -115,14 +115,14 @@ let batio_read fn = File.with_file_in fn BatIO.read_all
 
 let check str = String.iter ignore str
 let check_bs (str,_,_) = String.iter ignore str
-let check_ba (ba: buffer) = 
+let check_ba (ba: buffer) =
   for i = 0 to Array1.dim ba - 1 do
     Array1.unsafe_get ba i |> ignore
   done
 
-let tests fn = 
-    [ 
-      "mmap_fn", mmap_fn |- check_ba, fn; 
+let tests fn =
+    [
+      "mmap_fn", mmap_fn |- check_ba, fn;
       "pread", pread_file |- check_ba, fn;
       "batio", batio_read |- check, fn;
       "cdk_orig", cdk_read 1024 |- check, fn;

@@ -6,48 +6,48 @@
     ([exn]) that can be raised.
     @since 1.0
 *)
-type ('a, 'b) t = ('a, 'b) BatPervasives.result = Ok of 'a | Bad of 'b 
+type ('a, 'b) t = ('a, 'b) BatPervasives.result = Ok of 'a | Bad of 'b
 
 (** Execute a function and catch any exception as a result.  This
     function encapsulates code that could throw an exception and returns
-    that exception as a value. 
+    that exception as a value.
     @since 1.0
 *)
 val catch: ('a -> 'b) -> 'a -> ('b, exn) t
 
 (** [get (Ok x)] returns [x], and [get (Bad e)] raises [e].  This
-    function is, in a way, the opposite of the [catch] function 
+    function is, in a way, the opposite of the [catch] function
     @since 2.0
 *)
 val get : ('a, exn) t -> 'a
 
 (** [result d r] evaluates to [d] if [r] is [Bad] else [x] when [r] is
-    [Ok x] 
+    [Ok x]
     @since 2.0
 *)
 val default: 'a -> ('a, _) t -> 'a
 
 (** [map_default d f r] evaluates to [d] if [r] is [Bad] else [f x]
-    when [r] is [Ok x] 
+    when [r] is [Ok x]
     @since 2.0
 *)
 val map_default : 'b -> ('a -> 'b) -> ('a, _) t -> 'b
 
-(** [is_ok (Ok _)] is [true], otherwise [false]. 
+(** [is_ok (Ok _)] is [true], otherwise [false].
     @since 2.0
 *)
 val is_ok : ('a, 'b) t -> bool
 
-(** [is_bad (Bad _)] is [false], otherwise [true] 
+(** [is_bad (Bad _)] is [false], otherwise [true]
     @since 2.0
 *)
 val is_bad : ('a, 'b) t -> bool
 
-(** Convert an [option] to a [result] 
+(** Convert an [option] to a [result]
     @since 1.0 *)
 val of_option: 'a option -> ('a, unit) t
 
-(** Convert a [result] to an [option] 
+(** Convert a [result] to an [option]
     @since 1.0 *)
 val to_option: ('a, _) t -> 'a option
 

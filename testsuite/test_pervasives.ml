@@ -12,7 +12,7 @@ let test_using () =
   assert_equal ~printer 7 (!run);
   assert_equal ~printer 5 (!closed)
 
-type test1 = 
+type test1 =
   | A of int
   | B of float * float
   | C of string * test1
@@ -38,7 +38,7 @@ let test_dump () =
   test "0" false;
   test "1" true;
   test "17" 17;
-  
+
   (* lists *)
   (* despite the specialized list-spotting routine, [] is printed as
      0 as they have the same representation *)
@@ -59,7 +59,7 @@ let test_dump () =
 
   (* closures *)
   test "<closure>" (fun x -> x);
-  
+
   (* objects *)
   let obj = object
     val x = 2
@@ -68,7 +68,7 @@ let test_dump () =
   test (Printf.sprintf "Object #%d (2, 3.)" (Oo.id obj)) obj;
 
   (* infix, forward? *)
-  
+
   (* string *)
   let str = "foo \"bar\"\n" in
   test (Printf.sprintf "%S" str) str;

@@ -14,7 +14,7 @@ exception LexerError of lexer_error * int
 exception EarlyEndOfStream
 
 type enum =
-    { 
+    {
       mutable position : int;
       content  : char BatEnum.t
     }
@@ -28,12 +28,12 @@ let peek e =
 
 type t = (string, token) Hashtbl.t
 
-let of_list x = 
+let of_list x =
   let kwd_table = Hashtbl.create (List.length x) in
     List.iter (fun s -> Hashtbl.add kwd_table s (Kwd s)) x;
     kwd_table
 
-let to_enum_filter kwd_table = 
+let to_enum_filter kwd_table =
   let initial_buffer = String.create 32 in
 
   let buffer = ref initial_buffer       in
@@ -208,7 +208,7 @@ let to_enum_filter kwd_table =
     | _        -> raise EarlyEndOfStream
   in
   fun input -> BatEnum.from_while (fun count -> next_token {position = 0; content = input})
-    
+
 	
 let to_stream_filter (kwd_table:t) (x:char Stream.t) : token Stream.t =
   (BatStream.of_enum (to_enum_filter kwd_table (BatStream.enum x)))
@@ -218,9 +218,9 @@ let to_lazy_list_filter kwd_table x =
 
 
 
-let ocaml_comment = 
+let ocaml_comment =
   string "(*" >>= fun _ ->
-    let rec content () = 
+    let rec content () =
       any         >>= function
 	| '(' -> ( any >>= function
 		     | '*' -> content () >>= const (content ())
@@ -231,7 +231,7 @@ let ocaml_comment =
 	|  _  -> content ()
     in content ()
 
-let ocaml_escape = label "OCaml-style escaped character" 
+let ocaml_escape = label "OCaml-style escaped character"
   (
     any >>= function
       | 'n' -> return '\n'
@@ -240,10 +240,10 @@ let ocaml_escape = label "OCaml-style escaped character"
       | '\\'-> return '\\'
       | 'b' -> return '\b'
       | '"' -> return '"'
-      | 'x' -> 
+      | 'x' ->
 	  times 2 hex >>= fun t ->
 	  return (Char.chr (BatInt.of_string (BatString.implode ('0'::'x'::t))))
-      | '0' .. '9' as x -> 
+      | '0' .. '9' as x ->
 	  times 2 digit >>= fun t ->
 	  return (Char.chr (BatInt.of_string (BatString.implode (x::t))))
       | _ -> fail
@@ -267,7 +267,7 @@ struct
   end
 
 
-  module Library = 
+  module Library =
   struct
     (**A good approximation of language definition for OCaml's lexer*)
     module OCaml =
@@ -284,7 +284,7 @@ struct
       let case_sensitive  = true
     end
 
-    
+
 
     (**A good approximation of language definition for C++'s lexer*)
     module C =
@@ -296,7 +296,7 @@ struct
       let ident_letter    = either [ident_start; digit]
       let op_start        = one_of [';';':';'!';'$';'%';'&';'*';'+';'.';'/';'<';'=';'>';'?';'^';'|';'-';'~']
       let op_letter       = op_start
-      let reserved_names  = ["continue"; "volatile"; "register"; "unsigned"; "typedef"; "default"; 
+      let reserved_names  = ["continue"; "volatile"; "register"; "unsigned"; "typedef"; "default";
 			     "sizeof"; "switch"; "return"; "extern"; "struct"; "static"; "signed"; "while";
 			     "break"; "union"; "const"; "else"; "case"; "enum";
 			     "auto"; "goto"; "for"; "if"; "do" ]
@@ -315,7 +315,7 @@ struct
       let char =
 	if case_sensitive then char
 	else                   case_char
-	  
+	
       let string =
 	if case_sensitive then string
 	else                   case_string
@@ -323,7 +323,7 @@ struct
       let adapt_case =
 	if case_sensitive then identity
 	else String.lowercase
-	  
+	
       let string_compare =
 	if case_sensitive then String.compare
 	else BatString.icompare
@@ -334,7 +334,7 @@ struct
 	  | None   -> fail
 	  | Some s ->
 	      (*label "Line comment"*)label "" (
-	        string s                         >>= fun _ -> 
+	        string s                         >>= fun _ ->
 	        ignore_zero_plus (not_char '\n') >>= fun _ ->
 	        newline                          >>= fun _ ->
 	        return ())
@@ -348,7 +348,7 @@ struct
 	  | Some (l, r) ->
 	      (*label "Multi-line comment"*) label "" (
 	      let l0 = String.get l 0
-	      and r0 = String.get r 0 
+	      and r0 = String.get r 0
 	      and string_r = string r in
 	      let in_comment () =
 		if nested_comments then
@@ -361,36 +361,36 @@ struct
 			      (ignore_one_plus not_lr)      >>= fun _ -> aux () ]
 		    )
 		  in aux ()
-		else 
+		else
 		  string l >>>
 		    label "Contents of comments" (
 		      let rec aux () =
 			  maybe string_r >>= function
 			    | Some _ -> return ()
-			    | None   -> any >>> aux () 
+			    | None   -> any >>> aux ()
 		      in aux ()
 		    )
 	      in in_comment ())
 
-      let comment = ( line_comment <|> multiline_comment ) >>> return () 
+      let comment = ( line_comment <|> multiline_comment ) >>> return ()
 
-      let whitespaces = 
-	ignore_zero_plus (either 
+      let whitespaces =
+	ignore_zero_plus (either
 	  [ satisfy BatChar.is_whitespace >>= (fun _ -> return ());
 	    comment ])
-	  
+	
       let to_symbol p =
-	p           >>= fun r -> 
-	whitespaces >>= fun _ -> 
+	p           >>= fun r ->
+	whitespaces >>= fun _ ->
 	return (BatString.of_list r)
-	    
+	
       let lexeme p =
 	p           >>= fun r ->
 	whitespaces >>= fun _ ->
 	return r
 
       (** {6 Actual content} *)
-      let identifier_content = either [ident_start >:: zero_plus ident_letter ; 
+      let identifier_content = either [ident_start >:: zero_plus ident_letter ;
 				       op_start    >:: zero_plus op_letter]
 
       let is_reserved s = List.mem s reserved_names
@@ -403,23 +403,23 @@ struct
 
       let ident = label "identifier or operator"
 	(label ""
-	(ident_or_kwd >>= fun s -> 
+	(ident_or_kwd >>= fun s ->
 	  if is_reserved s then fail
 	  else                  ((*Printf.eprintf "Got ident %S\n" s;*)return s)))
 
 (*      let kwd   = label "keyword"
-	(ident_or_kwd >>= fun s -> 
+	(ident_or_kwd >>= fun s ->
 	  if is_reserved s then (Printf.eprintf "Got reserved %S\n" s; return s)
 	  else                  fail)*)
       let kwd = label "keyword" (ident_or_kwd)
 
       let identifier s = label ("specific identifier \""^s^"\"") (label ""
-	(ident >>= fun s' -> 
+	(ident >>= fun s' ->
 	  if string_compare s s' = 0 then return ()
 	  else                            fail))
 
       let keyword s = label ("specific keyword \""^s^"\"") (label ""
-	(kwd >>= fun s' -> 
+	(kwd >>= fun s' ->
 	  if string_compare s s' = 0 then return ()
 	  else                            fail))
 
@@ -428,44 +428,44 @@ struct
       let as_operator    p = p >>= fun s -> if List.mem s reserved_op_names then fail else return s*)
 
 (*      let any_reserved = label "reserved name"
-	( to_symbol (ident_start >:: zero_plus ident_letter)   >>= fun s -> 
+	( to_symbol (ident_start >:: zero_plus ident_letter)   >>= fun s ->
 	    if List.mem s reserved_names then return s
 	    else                               fail)
 
       let any_reserved_op = label "reserved operator"
-	( to_symbol (op_start >:: zero_plus op_letter)    >>= fun s -> 
+	( to_symbol (op_start >:: zero_plus op_letter)    >>= fun s ->
 	    if List.mem s reserved_op_names then return s
 	    else                                 fail)*)
 
-      let char_literal = label "Character literal" 
+      let char_literal = label "Character literal"
 	(BatCharParser.char '\'' >>= fun _ ->
 	   any       >>= function
 	     | '\\' -> ocaml_escape
 	     | c    -> return c
-	) >>= fun c -> 
+	) >>= fun c ->
 	  BatCharParser.char '\'' >>= fun _ -> return c
-	    
-      let string_literal =  label "String Literal" 
+	
+      let string_literal =  label "String Literal"
 	(lexeme
 	(BatCharParser.char '"' >>>
 	   let rec content chars =
 	     any >>= function
-	       | '"'  -> 
+	       | '"'  ->
 		   return chars
-	       | '\\' -> 
-		   ocaml_escape >>= fun e -> 
+	       | '\\' ->
+		   ocaml_escape >>= fun e ->
 		     content (e::chars)
 	       | e    -> (*Printf.eprintf "Just received char %c\n" e;*)
 		   content (e::chars)
-	   in content [] >>= fun c -> 
+	   in content [] >>= fun c ->
 	     (*Printf.eprintf "Sending full string %S\n" (String.of_list (List.rev c));*)
 	     return (BatString.of_list (List.rev c))))
 	
-	  
-      let integer = 
+	
+      let integer =
 	label "OCaml-style integer" (
 	  lexeme(maybe (BatCharParser.char '-') >>= fun sign   ->
-	    one_plus digit   >>= fun digits -> 
+	    one_plus digit   >>= fun digits ->
 	      let number = BatInt.of_string (BatString.of_list digits) in
 		match sign with
 		  | Some _ -> return (~- number)
@@ -476,13 +476,13 @@ struct
 	  lexeme (maybe (BatCharParser.char '-')                   >>= fun sign     ->
 	  post_map BatString.of_list (zero_plus digit)     >>= fun int_part ->
 	  maybe (
-	    BatCharParser.char '.'  >>= fun _ -> 
+	    BatCharParser.char '.'  >>= fun _ ->
 	      post_map BatString.of_list (zero_plus digit) ) >>= fun decimal_part ->
 	    maybe (
-	      BatCharParser.char 'E'  >>= fun _ -> 
+	      BatCharParser.char 'E'  >>= fun _ ->
 		maybe (BatCharParser.char '+' <|> BatCharParser.char '-') >>= fun sign ->
 		  let sign = BatOption.default '+' sign  in
-		    one_plus digit >>= fun expo -> 
+		    one_plus digit >>= fun expo ->
 		      return ("E" ^ (BatString.of_char sign) ^ (BatString.of_list expo)))
             >>= fun expo ->
 
@@ -499,7 +499,7 @@ struct
 			| None   -> absolute
 			| Some _ -> ~-. absolute)
 	))
-	  
+	
       let number =
 	   ( float   >>= fun f -> return (`Float f))
 	<|>( integer >>= fun i -> return (`Integer i) )
@@ -507,7 +507,7 @@ struct
     (** Getting it all together. *)
       let check_reserved =
 	if case_sensitive then
-	  fun x -> 
+	  fun x ->
 	    if is_reserved x then (Kwd x)
 	    else                  (Ident x)
 	else
@@ -516,7 +516,7 @@ struct
 	    else                  (Ident x)
 
 
-      let as_parser = 
+      let as_parser =
 	whitespaces >>= fun _ -> either [
 	  ident_or_kwd              >>= (fun x -> return (check_reserved x));
   	  float                     >>= (fun x -> return (Float x) );
@@ -531,7 +531,7 @@ struct
 
 
     end
-     
+
   end
 
 

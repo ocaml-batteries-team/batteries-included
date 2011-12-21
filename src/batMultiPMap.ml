@@ -34,7 +34,7 @@ let empty =
 
 let is_empty t = BatMap.is_empty t.content
 
-let create keys data = 
+let create keys data =
   {
     content = BatMap.create keys;
     data    = data;
@@ -47,12 +47,12 @@ let find k t =
 
 let add k d t =
   {(t) with content = BatMap.add k (BatSet.add d (find k t)) t.content}
-  
+
 let remove_all k t =
   {(t) with content = BatMap.remove k t.content}
 
 let remove k d t =
-  try 
+  try
     let set = BatSet.remove d (BatMap.find k t.content) in
       {(t)
        with content =
@@ -85,7 +85,7 @@ let foldi f d i = BatMap.foldi f d.content i
 
 let enum t      = BatEnum.concat (BatEnum.map (fun (k,e) -> BatEnum.map (fun x -> (k,x)) (BatSet.enum e)) (BatMap.enum t.content))
 
-let of_enum ?(keys=compare) ?(data=compare) e = 
+let of_enum ?(keys=compare) ?(data=compare) e =
   let base = create keys data in
     BatEnum.fold (fun acc (k,d) -> add k d acc) base e
 

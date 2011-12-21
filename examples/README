@@ -7,7 +7,7 @@ Directory pleac/ contains the start of a PLEAC for batteries
 
 To build all these programs, install batteries and run
 
-    make 
+    make
 
 from each directory.  If this doesn't work, steal the makefile, _tags
 and myocamlbuild from another example directory, make them work for

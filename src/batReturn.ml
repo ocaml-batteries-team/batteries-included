@@ -33,7 +33,7 @@ let label f =
     with  Return when !r <> None -> (*[!r = None] may happen if the user has let the exception escape its scope *)
       match !r with                (*in that case, we wish the exception to fall-through for debugging purposes*)
 	| None   -> assert false (*Should be impossible*)
-	| Some x -> 
+	| Some x ->
 	    r := None;             (*Reset the trap for sanity checks should another exception escape scope    *)
 	    x                      (*(not that this should be possible in that case -- let's just be careful)  *)
 let with_label = label

@@ -15,10 +15,10 @@ For the moment, Batteries Included concentrates on:
 }
 
 For more information on the installation of Batteries Included,
-please read the {{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Installing-Batteries}Installation guide} and for an example using it in different build systems, we have the {{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Getting-started}Getting started manual}. 
+please read the {{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Installing-Batteries}Installation guide} and for an example using it in different build systems, we have the {{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Getting-started}Getting started manual}.
 
 Do you have suggestions? Remarks? Bug reports ? To contact us or to
-be kept informed, don't hesitate to visit our 
+be kept informed, don't hesitate to visit our
 {{:http://batteries.forge.ocamlcore.org/}website}, {{:https://github.com/ocaml-batteries-team/batteries-included}Git repo}, and our {{:https://github.com/ocaml-batteries-team/batteries-included/issues?sort=created&direction=desc&state=open}Issue tracker}.
 
 {6 New Modules in Batteries}

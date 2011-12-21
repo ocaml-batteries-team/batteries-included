@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtInt32 - Extended Big integers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -23,7 +23,7 @@ open BatNumber
 
 module BaseBig_int = struct
   open Big_int
-    
+
   type t = big_int
   let zero = zero_big_int
   let one  = unit_big_int
@@ -57,6 +57,6 @@ include Big_int
 include MakeNumeric(BaseBig_int)
 module Infix = MakeInfix(BaseBig_int)
 module Compare = MakeCompare(BaseBig_int)
-    
+
 let print out t = BatIO.nwrite out (to_string t)
 

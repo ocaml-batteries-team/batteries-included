@@ -22,14 +22,14 @@ let (|>) x f = f x
 let tap f x = f x; x
 
 type ('a,'b) manual_cache = {
-  get : 'a -> 'b; 
-  del : 'a -> unit; 
+  get : 'a -> 'b;
+  del : 'a -> unit;
   enum: unit -> ('a * 'b) BatEnum.t
 }
 
 let make_ht ~gen init_size =
   let ht = BatHashtbl.create init_size in
-  {get = (fun k -> 
+  {get = (fun k ->
     try BatHashtbl.find ht k
     with Not_found -> gen k |> tap (BatHashtbl.add ht k));
    del = (fun k -> BatHashtbl.remove ht k);
@@ -37,7 +37,7 @@ let make_ht ~gen init_size =
 
 let make_map ~gen =
   let m = ref BatMap.empty in
-  {get = (fun k -> 
+  {get = (fun k ->
     try BatMap.find k !m
     with Not_found -> gen k |> tap (fun v -> m := BatMap.add k v !m));
    del = (fun k -> m := BatMap.remove k !m);
@@ -47,10 +47,10 @@ type ('a, 'b) auto_cache = 'a -> 'b
 
 let lru_cache ~gen size =
   let entries = ref None in
-  let get k = 
-    match !entries with 
+  let get k =
+    match !entries with
       | Some dll ->
-	let n = 
+	let n =
 	  try BatDllist.find (fun (k1,v1) -> k1 = k) dll |> tap BatDllist.remove
 	  with Not_found -> BatDllist.create (k, gen k)
 	in

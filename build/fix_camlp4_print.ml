@@ -33,22 +33,22 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
       Stream.iter (fun (comm, _) -> pp f "%s@ \n" comm) (CommentFilter.take_stream comment_filter)
 
 
-    method sig_item f sg = 
+    method sig_item f sg =
       match sg with
-	| Ast.SgVal (_, s, t) -> 
+	| Ast.SgVal (_, s, t) ->
 	     self#node f sg Ast.loc_of_sig_item;
 	     pp f "%s %a :%a"
                value_val self#var s self#ctyp t;
 	| _ -> super#sig_item f sg
 
-    method interf f sg = 
+    method interf f sg =
       pp f "@[<v0>%a@]@." self#sig_item sg;
       self#flush_rest_of_comments f
 
-(*      Stream.iter (fun (text, lloc) -> 
+(*      Stream.iter (fun (text, lloc) ->
 		     Printf.eprintf "\n%S\n" text
 		  )
-	(CommentFilter.take_stream comment_filter); 
+	(CommentFilter.take_stream comment_filter);
       super#print_comments_before loc f*)
 (*      Stream.iter (fun (text, lloc) -> pp f "%s@ zz" text) (CommentFilter.take_stream comment_filter)*)
 (*      pp_open_box f 10;*)
@@ -56,7 +56,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
       pp_print_newline f ();
       pp_print_string  f "(*after comment*)"*)
 (*      pp_close_box f ()*)
-      
+
 (*      pp_print_newline f ()*)
 (*      pp_print_string  f "(*after comment*)"*)
 
@@ -72,7 +72,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
 
   let print_implem ?input_file:(_) ?output_file st =
     print output_file (fun o -> o#implem) st
-  
+
 end;;
 
 

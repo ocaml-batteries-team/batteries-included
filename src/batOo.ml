@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtOO - Extended operations on objects
  * Copyright (C) 1996 Jerome Vouillon, INRIA
  *               2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either

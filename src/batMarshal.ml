@@ -1,5 +1,5 @@
-(* 
- * ExtMarshal - Extended marshaling operations 
+(*
+ * ExtMarshal - Extended marshaling operations
  * Copyright (C) 1997 Xavier Leroy
  *               2008 David Teller
  *
@@ -28,7 +28,7 @@ open Marshal
 
   let input inp =
     let header = BatInnerIO.really_nread inp header_size in
-    let size   = data_size header 0                   in 
+    let size   = data_size header 0                   in
       from_string (header ^ (BatInnerIO.really_nread inp size)) 0
 
   let to_channel out v flags =

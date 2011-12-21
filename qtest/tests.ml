@@ -28,7 +28,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 (* this module is depended on by all the foo_t modules.  They each
    register a toplevel test function here.  The test_runner program
-   pulls all these tests and runs them.  
+   pulls all these tests and runs them.
 
    This needs to be separate from test_runner, as the execution order
    must be:

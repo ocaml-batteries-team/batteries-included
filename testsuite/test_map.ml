@@ -95,7 +95,7 @@ module TestMap
 
     val extract : key -> 'a m -> 'a * 'a m
     val pop : 'a m -> (key * 'a) * 'a m
-    
+
     val fold : ('a -> 'b -> 'b) -> 'a m -> 'b -> 'b
     val foldi : (key -> 'a -> 'b -> 'b) -> 'a m -> 'b -> 'b
     val iter : ('a -> unit) -> 'a m -> unit
@@ -610,7 +610,7 @@ module S = struct
 
   let fold f = M.fold (fun _ -> f)
   let foldi = M.fold
-end  
+end
 
 module TM = TestMap(M)
 module TP = TestMap(P)
@@ -650,7 +650,7 @@ let heterogeneous_tests =
 
   let test_union () =
     (* We check that the result and all 'add' have been done modulo 7 :
-       - the 8,-8 binding of m13 is now placed in first (smallest) position 
+       - the 8,-8 binding of m13 is now placed in first (smallest) position
        - the 5,5 binding has been rewritten by the 12,-5 binding*)
     "union [2,2; 3,3; 5,5]/7 [4,-4; 8,-8; 12,-5]/13
      = [8,-8; 2,2; 3,3; 4,-4; 12,-5]/7" @=

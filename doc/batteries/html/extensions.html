@@ -76,7 +76,7 @@ with all the values and types of modules <code>Enum</code>,
 <code>Labels</code> and <code>LExceptionless</code>. In
 particular, some values defined in <code>Enum</code>
 may be overridden with values defined in <code>Labels</code>
-and/or <code>LExceptionless</code>. 
+and/or <code>LExceptionless</code>.
 
 
 <pre class="example">
@@ -124,7 +124,7 @@ open BigEndian
 
 By default, OCaml provides a construction <code>let...in...</code>. This extension adds
 a dual construction <code>... where ...</code>, once again, to increase readability
-when appropriate. 
+when appropriate.
 <br />
 Where <code>let...in...</code> lets you define a value and use it immediately,
 <code>... where...</code> lets you use a value and define it immediately, as
@@ -261,10 +261,10 @@ The same syntax may be used to pattern-match against ropes, UTF-8 strings and st
 <center><h2>Boilerplate construction<a name="boilerplate"/></h2></center>
 <center>(<i>de</i>activated by default, implemented as findlib package <code>sexplib.syntax</code>)</center>
 
-<center><h3>Serialization to S-Expressions<a name="boilerplate_sexplib"/></h3></center> 
+<center><h3>Serialization to S-Expressions<a name="boilerplate_sexplib"/></h3></center>
 <center>(feature provided by <a href="http://www.ocaml.info/home/ocaml_sources.html">Sexplib</a>)</center>
 S-Expressions are a human-readable format for the transmission and
-storage of data, comparable to JSON. 
+storage of data, comparable to JSON.
 <br />
 A new construction <code>with sexp</code> is added to type
 definitions. This construction may be used to automatically (or
@@ -306,7 +306,7 @@ may be used to manipulate S-Expressions, to save them to files, load
 them from files, display them...
 <br />
 Most of the types known to Batteries Included are compatible with
-<code>with sexp</code>. If you encounter a type which is not compatible 
+<code>with sexp</code>. If you encounter a type which is not compatible
 with this boilerplate generator, you may define manually functions
 <code>sexp_of_foo</code> and <code>foo_of_sexp</code>. These functions
 will integrate nicely with the rest of S-Expressions.

@@ -3,11 +3,11 @@ module BitSet = BatBitSet
 module Dllist = BatDllist
 module DynArray = BatDynArray
 module Enum = BatEnum
-module ExtArray = struct 
-  module Array = struct include Array include BatArray end 
+module ExtArray = struct
+  module Array = struct include Array include BatArray end
 end
-module ExtHashtbl = struct 
-  module Hashtbl = BatHashtbl 
+module ExtHashtbl = struct
+  module Hashtbl = BatHashtbl
 end
 module ExtList = struct
   module List = struct include List include BatList end

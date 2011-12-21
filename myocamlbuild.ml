@@ -108,13 +108,13 @@ let _ = dispatch begin function
 
       flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
 (*
-      dep ["ocaml"; "link"; "include_tests"; "byte"] & 
+      dep ["ocaml"; "link"; "include_tests"; "byte"] &
 	[Pathname.mk "qtest/test_mods.cma"];
-      dep ["ocaml"; "link"; "include_tests"; "native"] & 
+      dep ["ocaml"; "link"; "include_tests"; "native"] &
 	[Pathname.mk "qtest/test_mods.cmxa"]; *)
 
       (* Some .mli files use INCLUDE "foo.mli" to avoid interface duplication;
-         
+
          The problem is that the automatic dependency detector of
          ocamlbuild doesn't detect the implicit dependency on the
          included .mli, and doesn't copy it into _build before
@@ -127,8 +127,8 @@ let _ = dispatch begin function
       *)
       dep ["ocaml"; "doc"; "extension:html"] & [doc_intro];
       flag ["ocaml"; "doc"; "extension:html"] &
-        (S[A"-t"; A"Batteries user guide"; 
-           A"-intro"; P doc_intro; 
+        (S[A"-t"; A"Batteries user guide";
+           A"-intro"; P doc_intro;
            A"-colorize-code"]);
 
   | _ -> ()

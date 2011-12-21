@@ -1,9 +1,9 @@
-(* 
+(*
  * ExtBuffer - Additional buffer operations
  * Copyright (C) 1999 Pierre Weis, Xavier Leroy
  *               2009 David Teller, LIFO, Universite d'Orleans
  *               2009 Dawid Toton
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -25,7 +25,7 @@ open BatString
 open Buffer
 
   (** The underlying buffer type. *)
-  type buffer = 
+  type buffer =
       {mutable buffer : string;(** Contents of the buffer *)
        mutable position : int; (** The end of the buffer  *)
        mutable length : int;   (** The size of the buffer *)
@@ -51,7 +51,7 @@ open Buffer
     add_string t (BatInnerIO.really_nread inp n)
 
   let output_buffer = BatInnerIO.write_buf
-    
+
   let add_channel = add_input
 
   let blit t srcoff dst dstoff len =

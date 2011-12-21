@@ -1,9 +1,9 @@
-(* 
+(*
  * BatMap - Additional map operations
  * Copyright (C) 1996 Xavier Leroy
  *               1996-2003 Nicolas Cannasse, Markus Mottl
  *               2009-2011 David Rajchenbach-Teller, Edgar Friendly, Gabriel Scherer
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -122,7 +122,7 @@ module Concrete = struct
       | _ ->
         let k, v = min_binding t2 in
         bal t1 k v (remove_min_binding t2)
-    
+
   let add x d cmp map =
     let rec loop = function
       | Node (l, k, v, r, h) ->
@@ -215,7 +215,7 @@ module Concrete = struct
   (* beware : those two functions assume that the added k is *strictly*
      smaller (or bigger) than all the present keys in the tree; it
      does not test for equality with the current min (or max) key.
-     
+
      Indeed, they are only used during the "join" operation which
      respects this precondition.
   *)
@@ -231,7 +231,7 @@ module Concrete = struct
 
   (* Same as create and bal, but no assumptions are made on the
      relative heights of l and r.
-     
+
      The stdlib implementation was changed to use the new
      [add_{min,max}_binding] functions instead of the [add] function
      that would require to pass a comparison function.  *)
@@ -243,7 +243,7 @@ module Concrete = struct
         if lh > rh + 2 then bal ll lv ld (join lr v d r) else
         if rh > lh + 2 then bal (join l v d rl) rv rd rr else
         create l v d r
-              
+
   (* split also is from stdlib 3.12 *)
   let rec split key cmp = function
     | Empty -> (Empty, None, Empty)
@@ -275,7 +275,7 @@ module Concrete = struct
   let rec cons_iter s t = match s with
     | Empty -> t
     | Node (l, k, v, r, _) -> cons_iter l (C (k, v, r, t))
-      
+
   let rec rev_cons_iter s t = match s with
     | Empty -> t
     | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
@@ -283,11 +283,11 @@ module Concrete = struct
   let rec enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := cons_iter m t; (k, v)
-      
+
   let rec enum_backwards_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
-      
+
   let rec enum_count l () =
     let rec aux n = function
       | E -> n
@@ -300,7 +300,7 @@ module Concrete = struct
       let clone() = make !l in
       BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
     in make (cons_iter t E)
-    
+
   let backwards t =
     let rec make l =
       let l = ref l in
@@ -475,7 +475,7 @@ module Concrete = struct
        of (s1 union s2), computing the merge result for each
        f k (find_option k s1) (find_option k s2)
        , and adding values to the result s3 accordingly.
-       
+
        The crucial point is that we need to iterate on both keys of s1
        and s2. There are several possible implementations :
 
@@ -532,7 +532,7 @@ module Concrete = struct
   (* Checks if a given map is "ordered" wrt. a given comparison
      function. This means that the key are ordered in strictly
      increasing order.
-     
+
      If [ordered cmp s] holds, [cmp] can be used to search elements in
      the map *even* if it is not the original comparison function that
      was used to build the map; we know that the two comparison
@@ -569,7 +569,7 @@ module Concrete = struct
        see if we could possibly use merge; this is the case when either:
        - cmp1 and cmp2 are the *same* function (physical equality)
        - cmp1 is a correct ordering on m2 (see comment in [ordered])
-       
+
        In the "same comparisons" case, we return a map ordered with
        the given comparison. In the other case, we arbitrarily use the
        comparison function of [m1]. *)
@@ -578,7 +578,7 @@ module Concrete = struct
     else merge_diverse f cmp1 m1 cmp2 m2
 
   (* Binary PMap operations;
-     
+
      When the comparison function are compatible, we use an efficient
      merge-based implementation.
 
@@ -618,19 +618,19 @@ module type OrderedType = BatInterfaces.OrderedType
 module type S =
 sig
   type key
-    
+
   type (+'a) t
-    
+
   val empty: 'a t
-    
+
   val is_empty: 'a t -> bool
-    
+
   val cardinal: 'a t -> int
 
   val add: key -> 'a -> 'a t -> 'a t
-    
+
   val find: key -> 'a t -> 'a
-    
+
   val remove: key -> 'a t -> 'a t
 
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
@@ -642,11 +642,11 @@ sig
   val pop : 'a t -> (key * 'a) * 'a t
 
   val mem: key -> 'a t -> bool
-    
+
   val iter: (key -> 'a -> unit) -> 'a t -> unit
-    
+
   val map: ('a -> 'b) -> 'a t -> 'b t
-    
+
   val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
 
   val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
@@ -654,22 +654,22 @@ sig
   val filterv: ('a -> bool) -> 'a t -> 'a t
 
   val filter: (key -> 'a -> bool) -> 'a t -> 'a t
-    
+
   val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
-    
+
   val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
-    
+
   val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-    
+
   val keys : _ t -> key BatEnum.t
-    
+
   val values: 'a t -> 'a BatEnum.t
-    
+
   val min_binding : 'a t -> (key * 'a)
-    
+
   val max_binding : 'a t -> (key * 'a)
 
-  val choose : 'a t -> (key * 'a)  
+  val choose : 'a t -> (key * 'a)
 
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
 
@@ -680,13 +680,13 @@ sig
   val bindings : 'a t -> (key * 'a) list
 
   val enum  : 'a t -> (key * 'a) BatEnum.t
-    
+
   val backwards  : 'a t -> (key * 'a) BatEnum.t
 
   val of_enum: (key * 'a) BatEnum.t -> 'a t
 
   val for_all: (key -> 'a -> bool) -> 'a t -> bool
-    
+
   val exists: (key -> 'a -> bool) -> 'a t -> bool
 
   val merge:
@@ -696,9 +696,9 @@ sig
 
   (** {7 Printing}*)
 
-  val print :  ?first:string -> ?last:string -> ?sep:string -> 
-    ('a BatInnerIO.output -> key -> unit) -> 
-    ('a BatInnerIO.output -> 'c -> unit) -> 
+  val print :  ?first:string -> ?last:string -> ?sep:string ->
+    ('a BatInnerIO.output -> key -> unit) ->
+    ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> 'c t -> unit
 
   module Exceptionless : sig
@@ -761,7 +761,7 @@ struct
      slightly incorrect in that they don't apply their function
      parameter in increasing key order, as advertised in the
      documentation. This was fixed in 3.12.
-     
+
      http://caml.inria.fr/mantis/view.php?id=4012
 
      We replace map(i) implementations with the ones derived from
@@ -826,7 +826,7 @@ struct
     let (-->) map key = find key map
     let (<--) map (key, value) = add key value map
   end
-    
+
   module Labels =
   struct
     let add ~key ~data t = add key data t
@@ -838,14 +838,14 @@ struct
     let equal ~cmp a b = equal cmp a b
     let filterv ~f = filterv f
     let filter ~f = filter f
-  end  
-    
+  end
+
 end
-  
+
 module StringMap  = Make(String)
 module IStringMap = Make(BatString.IString)
 module NumStringMap = Make(BatString.NumString)
-(*  module RopeMap    = Make(BatRope) 
+(*  module RopeMap    = Make(BatRope)
     module IRopeMap   = Make(BatRope.IRope) *)
 module IntMap     = Make(BatInt)
 
@@ -884,7 +884,7 @@ let find x m =
    (Q.list Q.small_int) (fun xs -> let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in of_list (List.filter ((<>) 100) xs) false (singleton 100 true) |> find 100)
  **)
 
-  
+
 let remove x m =
   { m with map = Concrete.remove x m.cmp m.map }
 
@@ -921,7 +921,7 @@ let enum t = Concrete.enum t.map
 (**Q map_enum_q
    (Q.list Q.small_int) (fun xs -> List.fold_left (fun acc x -> add x true acc) (create Int.compare) xs |> keys |> List.of_enum = List.sort_unique Int.compare xs)
  **)
-  
+
 let backwards t = Concrete.backwards t.map
 
 let keys    t = BatEnum.map fst (enum t)
@@ -969,7 +969,7 @@ let modify x f m =
   { m with map = Concrete.modify x f m.cmp m.map }
 
 let modify_def v0 x f m =
-  { m with map = Concrete.modify_def v0 x f m.cmp m.map } 
+  { m with map = Concrete.modify_def v0 x f m.cmp m.map }
 
 let extract x m =
   let out, map' = Concrete.extract x m.cmp m.map in
@@ -1001,7 +1001,7 @@ let merge_unsafe f m1 m2 =
 let bindings m =
   Concrete.bindings m.map
 
-module Exceptionless = 
+module Exceptionless =
 struct
   let find k m = try Some (find k m) with Not_found -> None
 end

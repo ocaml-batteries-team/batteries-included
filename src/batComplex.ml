@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtComplex - Extended Complex Numbers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -25,7 +25,7 @@ module BaseComplex = struct
   let modulo _ = assert false
     (** Meaningless*)
 
-  let to_string x = 
+  let to_string x =
     ( string_of_float x.re ) ^ "+ i" ^ ( string_of_float x.im )
 
   let pred x = {x with re = x.re -. 1.}
@@ -44,7 +44,7 @@ module BaseComplex = struct
   open Genlex
 
   let of_string x =
-    let enum = 
+    let enum =
       BatGenlex.to_enum_filter
 	( BatGenlex.of_list ["("; ","; ")"; "i"; "+"; "*"] )
 	( BatString.enum x ) in

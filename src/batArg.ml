@@ -1,8 +1,8 @@
-(* 
+(*
  * BArg - Additional operations on arguments
  * Copyright (C) 1996 Damien Doligez
  *               2009 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -33,7 +33,7 @@ let command ?(doc="") kwd spec =
 
 let of_command c = (c.kwd, c.spec, c.doc)
 
-let handle ?(usage="") cmd = 
+let handle ?(usage="") cmd =
   let speclist = List.map of_command cmd
   and anonymous= BatRefList.empty ()       in
   Arg.parse speclist (fun s -> BatRefList.push anonymous s) usage;

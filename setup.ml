@@ -9,38 +9,38 @@
 *)
 module OASISGettext = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISGettext.ml"
-  
+
   let ns_ str =
     str
-  
+
   let s_ str =
     str
-  
+
   let f_ (str : ('a, 'b, 'c, 'd) format4) =
     str
-  
+
   let fn_ fmt1 fmt2 n =
     if n = 1 then
       fmt1^^""
     else
       fmt2^^""
-  
+
   let init =
     []
-  
+
 end
 
 module OASISContext = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISContext.ml"
-  
+
   open OASISGettext
-  
+
   type level =
     [ `Debug
     | `Info
     | `Warning
     | `Error]
-  
+
   type t =
     {
       verbose:        bool;
@@ -48,7 +48,7 @@ module OASISContext = struct
       ignore_plugins: bool;
       printf:         level -> string -> unit;
     }
-  
+
   let printf lvl str =
     let beg =
       match lvl with
@@ -58,7 +58,7 @@ module OASISContext = struct
         | `Debug -> s_ "D: "
     in
       prerr_endline (beg^str)
-  
+
   let default =
     ref
       {
@@ -67,19 +67,19 @@ module OASISContext = struct
         ignore_plugins = false;
         printf         = printf;
       }
-  
+
   let quiet =
     {!default with
          verbose = false;
          debug   = false;
     }
-  
-  
+
+
   let args () =
     ["-quiet",
      Arg.Unit (fun () -> default := {!default with verbose = false}),
      (s_ " Run quietly");
-  
+
      "-debug",
      Arg.Unit (fun () -> default := {!default with debug = true}),
      (s_ " Output debug message")]
@@ -87,43 +87,43 @@ end
 
 module OASISUtils = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISUtils.ml"
-  
+
   module MapString = Map.Make(String)
-  
+
   let map_string_of_assoc assoc =
     List.fold_left
       (fun acc (k, v) -> MapString.add k v acc)
       MapString.empty
       assoc
-  
+
   module SetString = Set.Make(String)
-  
+
   let set_string_add_list st lst =
     List.fold_left
       (fun acc e -> SetString.add e acc)
       st
       lst
-  
+
   let set_string_of_list =
     set_string_add_list
       SetString.empty
-  
-  
+
+
   let compare_csl s1 s2 =
     String.compare (String.lowercase s1) (String.lowercase s2)
-  
+
   module HashStringCsl =
     Hashtbl.Make
       (struct
          type t = string
-  
+
          let equal s1 s2 =
              (String.lowercase s1) = (String.lowercase s2)
-  
+
          let hash s =
            Hashtbl.hash (String.lowercase s)
        end)
-  
+
   let split sep str =
     let str_len =
       String.length str
@@ -164,8 +164,8 @@ module OASISUtils = struct
         )
     in
       split_aux [] 0
-  
-  
+
+
   let varname_of_string ?(hyphen='_') s =
     if String.length s = 0 then
       begin
@@ -179,7 +179,7 @@ module OASISUtils = struct
           (* Start with a _ if digit *)
           if '0' <= s.[0] && s.[0] <= '9' then
             Buffer.add_char buff hyphen;
-  
+
           String.iter
             (fun c ->
                if ('a' <= c && c <= 'z')
@@ -191,10 +191,10 @@ module OASISUtils = struct
                else
                  Buffer.add_char buff hyphen)
             s;
-  
+
           String.lowercase (Buffer.contents buff)
       end
-  
+
   let varname_concat ?(hyphen='_') p s =
     let p =
       let p_len =
@@ -215,26 +215,26 @@ module OASISUtils = struct
           s
     in
       Printf.sprintf "%s%c%s" p hyphen s
-  
-  
+
+
   let is_varname str =
     str = varname_of_string str
-  
+
   let failwithf fmt = Printf.ksprintf failwith fmt
-  
+
 end
 
 module PropList = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/PropList.ml"
-  
+
   open OASISGettext
-  
+
   type name = string
-  
+
   exception Not_set of name * string option
   exception No_printer of name
   exception Unknown_field of name * name
-  
+
   let string_of_exception =
     function
       | Not_set (nm, Some rsn) ->
@@ -247,25 +247,25 @@ module PropList = struct
           Printf.sprintf (f_ "Field %s is not defined in schema %s") nm schm
       | e ->
           raise e
-  
+
   module Data =
   struct
-  
+
     type t =
         (name, unit -> unit) Hashtbl.t
-  
+
     let create () =
       Hashtbl.create 13
-  
+
     let clear t =
       Hashtbl.clear t
-  
+
 # 66 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/PropList.ml"
   end
-  
+
   module Schema =
   struct
-  
+
     type ('ctxt, 'extra) value =
         {
           get:   Data.t -> string;
@@ -273,7 +273,7 @@ module PropList = struct
           help:  (unit -> string) option;
           extra: 'extra;
         }
-  
+
     type ('ctxt, 'extra) t =
         {
           name:      name;
@@ -281,7 +281,7 @@ module PropList = struct
           order:     name Queue.t;
           name_norm: string -> string;
         }
-  
+
     let create ?(case_insensitive=false) nm =
       {
         name      = nm;
@@ -293,12 +293,12 @@ module PropList = struct
            else
              fun s -> s);
       }
-  
+
     let add t nm set get extra help =
       let key =
         t.name_norm nm
       in
-  
+
         if Hashtbl.mem t.fields key then
           failwith
             (Printf.sprintf
@@ -314,25 +314,25 @@ module PropList = struct
             extra = extra;
           };
         Queue.add nm t.order
-  
+
     let mem t nm =
       Hashtbl.mem t.fields nm
-  
+
     let find t nm =
       try
         Hashtbl.find t.fields (t.name_norm nm)
       with Not_found ->
         raise (Unknown_field (nm, t.name))
-  
+
     let get t data nm =
       (find t nm).get data
-  
+
     let set t data nm ?context x =
       (find t nm).set
         data
         ?context
         x
-  
+
     let fold f acc t =
       Queue.fold
         (fun acc k ->
@@ -342,20 +342,20 @@ module PropList = struct
              f acc k v.extra v.help)
         acc
         t.order
-  
+
     let iter f t =
       fold
         (fun () -> f)
         ()
         t
-  
+
     let name t =
       t.name
   end
-  
+
   module Field =
   struct
-  
+
     type ('ctxt, 'value, 'extra) t =
         {
           set:    Data.t -> ?context:'ctxt -> 'value -> unit;
@@ -365,33 +365,33 @@ module PropList = struct
           help:   (unit -> string) option;
           extra:  'extra;
         }
-  
+
     let new_id =
       let last_id =
         ref 0
       in
         fun () -> incr last_id; !last_id
-  
+
     let create ?schema ?name ?parse ?print ?default ?update ?help extra =
       (* Default value container *)
       let v =
         ref None
       in
-  
+
       (* If name is not given, create unique one *)
       let nm =
         match name with
           | Some s -> s
           | None -> Printf.sprintf "_anon_%d" (new_id ())
       in
-  
+
       (* Last chance to get a value: the default *)
       let default () =
         match default with
           | Some d -> d
           | None -> raise (Not_set (nm, Some (s_ "no default value")))
       in
-  
+
       (* Get data *)
       let get data =
         (* Get value *)
@@ -403,7 +403,7 @@ module PropList = struct
         with Not_found ->
           default ()
       in
-  
+
       (* Set data *)
       let set data ?context x =
         let x =
@@ -423,7 +423,7 @@ module PropList = struct
             nm
             (fun () -> v := Some x)
       in
-  
+
       (* Parse string value, if possible *)
       let parse =
         match parse with
@@ -437,12 +437,12 @@ module PropList = struct
                      nm
                      s)
       in
-  
+
       (* Set data, from string *)
       let sets data ?context s =
         set ?context data (parse ?context s)
       in
-  
+
       (* Output value as string, if possible *)
       let print =
         match print with
@@ -451,12 +451,12 @@ module PropList = struct
           | None ->
               fun _ -> raise (No_printer nm)
       in
-  
+
       (* Get data, as a string *)
       let gets data =
         print (get data)
       in
-  
+
         begin
           match schema with
             | Some t ->
@@ -464,7 +464,7 @@ module PropList = struct
             | None ->
                 ()
         end;
-  
+
         {
           set   = set;
           get   = get;
@@ -473,40 +473,40 @@ module PropList = struct
           help  = help;
           extra = extra;
         }
-  
+
     let fset data t ?context x =
       t.set data ?context x
-  
+
     let fget data t =
       t.get data
-  
+
     let fsets data t ?context s =
       t.sets data ?context s
-  
+
     let fgets data t =
       t.gets data
-  
+
   end
-  
+
   module FieldRO =
   struct
-  
+
     let create ?schema ?name ?parse ?print ?default ?update ?help extra =
       let fld =
         Field.create ?schema ?name ?parse ?print ?default ?update ?help extra
       in
         fun data -> Field.fget data fld
-  
+
   end
 end
 
 module OASISMessage = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISMessage.ml"
-  
-  
+
+
   open OASISGettext
   open OASISContext
-  
+
   let generic_message ~ctxt lvl fmt =
     let cond =
       match lvl with
@@ -520,20 +520,20 @@ module OASISMessage = struct
                ctxt.printf lvl str
              end)
         fmt
-  
+
   let debug ~ctxt fmt =
     generic_message ~ctxt `Debug fmt
-  
+
   let info ~ctxt fmt =
     generic_message ~ctxt `Info fmt
-  
+
   let warning ~ctxt fmt =
     generic_message ~ctxt `Warning fmt
-  
+
   let error ~ctxt fmt =
     generic_message ~ctxt `Error fmt
-  
-  
+
+
   let string_of_exception e =
     try
       PropList.string_of_exception e
@@ -542,24 +542,24 @@ module OASISMessage = struct
           s
       | e ->
           Printexc.to_string e
-  
+
   (* TODO
   let register_exn_printer f =
    *)
-  
+
 end
 
 module OASISVersion = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISVersion.ml"
-  
+
   open OASISGettext
-  
-  
-  
+
+
+
   type s = string
-  
-  type t = string 
-  
+
+  type t = string
+
   type comparator =
     | VGreater of t
     | VGreaterEqual of t
@@ -568,20 +568,20 @@ module OASISVersion = struct
     | VLesserEqual of t
     | VOr of  comparator * comparator
     | VAnd of comparator * comparator
-    
-  
+
+
   (* Range of allowed characters *)
   let is_digit c =
     '0' <= c && c <= '9'
-  
+
   let is_alpha c =
     ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')
-  
+
   let is_special =
     function
       | '.' | '+' | '-' | '~' -> true
       | _ -> false
-  
+
   let rec version_compare v1 v2 =
     if v1 <> "" || v2 <> "" then
       begin
@@ -595,12 +595,12 @@ module OASISVersion = struct
           else if is_alpha c then Char.code c
           else (Char.code c) + 256
         in
-  
+
         let len1 = String.length v1 in
         let len2 = String.length v2 in
-  
+
         let p = ref 0 in
-  
+
         (** Compare ascii part *)
         let compare_vascii () =
           let cmp = ref 0 in
@@ -617,7 +617,7 @@ module OASISVersion = struct
           else
             !cmp
         in
-  
+
         (** Compare digit part *)
         let compare_digit () =
           let extract_int v p =
@@ -625,11 +625,11 @@ module OASISVersion = struct
               while !p < String.length v && is_digit v.[!p] do
                 incr p
               done;
-              let substr = 
+              let substr =
                 String.sub v !p ((String.length v) - !p)
-              in 
-              let res = 
-                match String.sub v start_p (!p - start_p) with 
+              in
+              let res =
+                match String.sub v start_p (!p - start_p) with
                   | "" -> 0
                   | s -> int_of_string s
               in
@@ -639,7 +639,7 @@ module OASISVersion = struct
           let i2, tl2 = extract_int v2 (ref !p) in
             i1 - i2, tl1, tl2
         in
-  
+
           match compare_vascii () with
             | 0 ->
                 begin
@@ -661,8 +661,8 @@ module OASISVersion = struct
       begin
         0
       end
-  
-  
+
+
   let version_of_string str =
     String.iter
       (fun c ->
@@ -675,10 +675,10 @@ module OASISVersion = struct
                 c str))
       str;
     str
-  
+
   let string_of_version t =
     t
-  
+
   let chop t =
     try
       let pos =
@@ -687,7 +687,7 @@ module OASISVersion = struct
         String.sub t 0 pos
     with Not_found ->
       t
-  
+
   let rec comparator_apply v op =
     match op with
       | VGreater cv ->
@@ -704,7 +704,7 @@ module OASISVersion = struct
           (comparator_apply v op1) || (comparator_apply v op2)
       | VAnd (op1, op2) ->
           (comparator_apply v op1) && (comparator_apply v op2)
-  
+
   let rec string_of_comparator =
     function
       | VGreater v  -> "> "^(string_of_version v)
@@ -716,7 +716,7 @@ module OASISVersion = struct
           (string_of_comparator c1)^" || "^(string_of_comparator c2)
       | VAnd (c1, c2) ->
           (string_of_comparator c1)^" && "^(string_of_comparator c2)
-  
+
   let rec varname_of_comparator =
     let concat p v =
       OASISUtils.varname_concat
@@ -734,53 +734,53 @@ module OASISVersion = struct
             (varname_of_comparator c1)^"_or_"^(varname_of_comparator c2)
         | VAnd (c1, c2) ->
             (varname_of_comparator c1)^"_and_"^(varname_of_comparator c2)
-  
+
 end
 
 module OASISLicense = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISLicense.ml"
-  
+
   (** License for _oasis fields
       @author Sylvain Le Gall
     *)
-  
-  
-  
-  type license = string 
-  
-  type license_exception = string 
-  
+
+
+
+  type license = string
+
+  type license_exception = string
+
   type license_version =
     | Version of OASISVersion.t
     | VersionOrLater of OASISVersion.t
     | NoVersion
-    
-  
+
+
   type license_dep_5 =
       {
         license:    license;
         exceptions: license_exception list;
         version:    license_version;
-      } 
-  
+      }
+
   type t =
     | DEP5License of license_dep_5
     | OtherLicense of string (* URL *)
-    
-  
+
+
 end
 
 module OASISExpr = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISExpr.ml"
-  
-  
-  
+
+
+
   open OASISGettext
-  
-  type test = string 
-  
-  type flag = string 
-  
+
+  type test = string
+
+  type flag = string
+
   type t =
     | EBool of bool
     | ENot of t
@@ -788,32 +788,32 @@ module OASISExpr = struct
     | EOr of t * t
     | EFlag of flag
     | ETest of test * string
-    
-  
-  type 'a choices = (t * 'a) list 
-  
+
+
+  type 'a choices = (t * 'a) list
+
   let eval var_get t =
     let rec eval' =
       function
         | EBool b ->
             b
-  
+
         | ENot e ->
             not (eval' e)
-  
+
         | EAnd (e1, e2) ->
             (eval' e1) && (eval' e2)
-  
+
         | EOr (e1, e2) ->
             (eval' e1) || (eval' e2)
-  
+
         | EFlag nm ->
             let v =
               var_get nm
             in
               assert(v = "true" || v = "false");
               (v = "true")
-  
+
         | ETest (nm, vl) ->
             let v =
               var_get nm
@@ -821,7 +821,7 @@ module OASISExpr = struct
               (v = vl)
     in
       eval' t
-  
+
   let choose ?printer ?name var_get lst =
     let rec choose_aux =
       function
@@ -857,46 +857,46 @@ module OASISExpr = struct
                          str_lst)
     in
       choose_aux (List.rev lst)
-  
+
 end
 
 module OASISTypes = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISTypes.ml"
-  
-  
-  
-  
-  type name          = string 
-  type package_name  = string 
-  type url           = string 
-  type unix_dirname  = string 
-  type unix_filename = string 
-  type host_dirname  = string 
-  type host_filename = string 
-  type prog          = string 
-  type arg           = string 
-  type args          = string list 
-  type command_line  = (prog * arg list) 
-  
-  type findlib_name = string 
-  type findlib_full = string 
-  
+
+
+
+
+  type name          = string
+  type package_name  = string
+  type url           = string
+  type unix_dirname  = string
+  type unix_filename = string
+  type host_dirname  = string
+  type host_filename = string
+  type prog          = string
+  type arg           = string
+  type args          = string list
+  type command_line  = (prog * arg list)
+
+  type findlib_name = string
+  type findlib_full = string
+
   type compiled_object =
     | Byte
     | Native
     | Best
-    
-  
+
+
   type dependency =
     | FindlibPackage of findlib_full * OASISVersion.comparator option
     | InternalLibrary of name
-    
-  
+
+
   type tool =
     | ExternalTool of name
     | InternalExecutable of name
-    
-  
+
+
   type vcs =
     | Darcs
     | Git
@@ -907,8 +907,8 @@ module OASISTypes = struct
     | Arch
     | Monotone
     | OtherVCS of url
-    
-  
+
+
   type plugin_kind =
       [  `Configure
        | `Build
@@ -917,7 +917,7 @@ module OASISTypes = struct
        | `Install
        | `Extra
       ]
-  
+
   type plugin_data_purpose =
       [  `Configure
        | `Build
@@ -931,32 +931,32 @@ module OASISTypes = struct
        | `Extra
        | `Other of string
       ]
-  
-  type 'a plugin = 'a * name * OASISVersion.t option 
-  
+
+  type 'a plugin = 'a * name * OASISVersion.t option
+
   type all_plugin = plugin_kind plugin
-  
+
   type plugin_data = (all_plugin * plugin_data_purpose * (unit -> unit)) list
-  
+
 # 102 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISTypes.ml"
-  
-  type 'a conditional = 'a OASISExpr.choices 
-  
+
+  type 'a conditional = 'a OASISExpr.choices
+
   type custom =
       {
         pre_command:  (command_line option) conditional;
         post_command: (command_line option) conditional;
       }
-      
-  
+
+
   type common_section =
       {
         cs_name: name;
         cs_data: PropList.Data.t;
         cs_plugin_data: plugin_data;
       }
-      
-  
+
+
   type build_section =
       {
         bs_build:           bool conditional;
@@ -974,8 +974,8 @@ module OASISTypes = struct
         bs_byteopt:         args conditional;
         bs_nativeopt:       args conditional;
       }
-      
-  
+
+
   type library =
       {
         lib_modules:            string list;
@@ -983,20 +983,20 @@ module OASISTypes = struct
         lib_findlib_parent:     findlib_name option;
         lib_findlib_name:       findlib_name option;
         lib_findlib_containers: findlib_name list;
-      } 
-  
+      }
+
   type executable =
       {
         exec_custom:          bool;
         exec_main_is:         unix_filename;
-      } 
-  
+      }
+
   type flag =
       {
         flag_description:  string option;
         flag_default:      bool conditional;
-      } 
-  
+      }
+
   type source_repository =
       {
         src_repo_type:        vcs;
@@ -1006,8 +1006,8 @@ module OASISTypes = struct
         src_repo_branch:      string option;
         src_repo_tag:         string option;
         src_repo_subdir:      unix_filename option;
-      } 
-  
+      }
+
   type test =
       {
         test_type:               [`Test] plugin;
@@ -1016,8 +1016,8 @@ module OASISTypes = struct
         test_working_directory:  unix_filename option;
         test_run:                bool conditional;
         test_tools:              tool list;
-      } 
-  
+      }
+
   type doc_format =
     | HTML of unix_filename
     | DocText
@@ -1026,8 +1026,8 @@ module OASISTypes = struct
     | Info of unix_filename
     | DVI
     | OtherDoc
-    
-  
+
+
   type doc =
       {
         doc_type:        [`Doc] plugin;
@@ -1041,8 +1041,8 @@ module OASISTypes = struct
         doc_format:      doc_format;
         doc_data_files:  (unix_filename * unix_filename option) list;
         doc_build_tools: tool list;
-      } 
-  
+      }
+
   type section =
     | Library    of common_section * build_section * library
     | Executable of common_section * build_section * executable
@@ -1050,12 +1050,12 @@ module OASISTypes = struct
     | SrcRepo    of common_section * source_repository
     | Test       of common_section * test
     | Doc        of common_section * doc
-    
-  
+
+
   type section_kind =
       [ `Library | `Executable | `Flag | `SrcRepo | `Test | `Doc ]
-  
-  type package = 
+
+  type package =
       {
         oasis_version:    OASISVersion.t;
         ocaml_version:    OASISVersion.comparator option;
@@ -1071,42 +1071,42 @@ module OASISTypes = struct
         synopsis:         string;
         description:      string option;
         categories:       url list;
-  
+
         conf_type:        [`Configure] plugin;
         conf_custom:      custom;
-  
+
         build_type:       [`Build] plugin;
         build_custom:     custom;
-  
+
         install_type:     [`Install] plugin;
         install_custom:   custom;
         uninstall_custom: custom;
-  
+
         clean_custom:     custom;
         distclean_custom: custom;
-  
+
         files_ab:         unix_filename list;
         sections:         section list;
         plugins:          [`Extra] plugin list;
         schema_data:      PropList.Data.t;
         plugin_data:      plugin_data;
-      } 
-  
+      }
+
 end
 
 module OASISUnixPath = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISUnixPath.ml"
-  
+
   type unix_filename = string
   type unix_dirname = string
-  
+
   type host_filename = string
   type host_dirname = string
-  
+
   let current_dir_name = "."
-  
+
   let parent_dir_name = ".."
-  
+
   let concat f1 f2 =
     if f1 = current_dir_name then
       f2
@@ -1114,7 +1114,7 @@ module OASISUnixPath = struct
       f1
     else
       f1^"/"^f2
-  
+
   let make =
     function
       | hd :: tl ->
@@ -1124,13 +1124,13 @@ module OASISUnixPath = struct
             tl
       | [] ->
           invalid_arg "OASISUnixPath.make"
-  
+
   let dirname f =
     try
       String.sub f 0 (String.rindex f '/')
     with Not_found ->
       current_dir_name
-  
+
   let basename f =
     try
       let pos_start =
@@ -1139,7 +1139,7 @@ module OASISUnixPath = struct
         String.sub f pos_start ((String.length f) - pos_start)
     with Not_found ->
       f
-  
+
   let chop_extension f =
     try
       let last_dot =
@@ -1158,15 +1158,15 @@ module OASISUnixPath = struct
               f
         with Not_found ->
           sub
-  
+
     with Not_found ->
       f
-  
+
   let capitalize_file f =
     let dir = dirname f in
     let base = basename f in
     concat dir (String.capitalize base)
-  
+
   let uncapitalize_file f =
     let dir = dirname f in
     let base = basename f in
@@ -1176,10 +1176,10 @@ end
 module OASISSection = struct
 # 1 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISSection.ml"
   open OASISTypes
-  
-  let section_kind_common = 
+
+  let section_kind_common =
     function
-      | Library (cs, _, _) -> 
+      | Library (cs, _, _) ->
           `Library, cs
       | Executable (cs, _, _) ->
           `Executable, cs
@@ -1191,10 +1191,10 @@ module OASISSection = struct
           `Test, cs
       | Doc (cs, _) ->
           `Doc, cs
-  
+
   let section_common sct =
     snd (section_kind_common sct)
-  
+
   let section_common_set cs =
     function
       | Library (_, bs, lib)     -> Library (cs, bs, lib)
@@ -1203,75 +1203,75 @@ module OASISSection = struct
       | SrcRepo (_, src_repo)    -> SrcRepo (cs, src_repo)
       | Test (_, tst)            -> Test (cs, tst)
       | Doc (_, doc)             -> Doc (cs, doc)
-  
+
   (** Key used to identify section
     *)
-  let section_id sct = 
-    let k, cs = 
+  let section_id sct =
+    let k, cs =
       section_kind_common sct
     in
       k, cs.cs_name
-  
+
   let string_of_section sct =
     let k, nm =
       section_id sct
     in
       (match k with
-         | `Library    -> "library" 
+         | `Library    -> "library"
          | `Executable -> "executable"
          | `Flag       -> "flag"
          | `SrcRepo    -> "src repository"
          | `Test       -> "test"
          | `Doc        -> "doc")
       ^" "^nm
-  
+
 end
 
 module OASISBuildSection = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISBuildSection.ml"
-  
+
 end
 
 module OASISExecutable = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISExecutable.ml"
-  
+
   open OASISTypes
-  
-  let unix_exec_is (cs, bs, exec) is_native ext_dll suffix_program = 
-    let dir = 
+
+  let unix_exec_is (cs, bs, exec) is_native ext_dll suffix_program =
+    let dir =
       OASISUnixPath.concat
         bs.bs_path
         (OASISUnixPath.dirname exec.exec_main_is)
     in
-    let is_native_exec = 
+    let is_native_exec =
       match bs.bs_compiled_object with
         | Native -> true
         | Best -> is_native ()
         | Byte -> false
     in
-  
+
       OASISUnixPath.concat
         dir
         (cs.cs_name^(suffix_program ())),
-  
-      if not is_native_exec && 
-         not exec.exec_custom && 
+
+      if not is_native_exec &&
+         not exec.exec_custom &&
          bs.bs_c_sources <> [] then
         Some (dir^"/dll"^cs.cs_name^(ext_dll ()))
       else
         None
-  
+
 end
 
 module OASISLibrary = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISLibrary.ml"
-  
+
   open OASISTypes
   open OASISUtils
   open OASISGettext
-  
+
   type library_name = name
-  
+
   let generated_unix_files ~ctxt (cs, bs, lib)
         source_file_exists is_native ext_lib ext_dll =
     (* The headers that should be compiled along *)
@@ -1307,11 +1307,11 @@ module OASISLibrary = struct
         []
         lib.lib_modules
     in
-  
+
     let acc_nopath =
       []
     in
-  
+
     (* Compute what libraries should be built *)
     let acc_nopath =
       let byte acc =
@@ -1328,7 +1328,7 @@ module OASISLibrary = struct
           | Byte | Best ->
               byte acc_nopath
     in
-  
+
     (* Add C library to be built *)
     let acc_nopath =
       if bs.bs_c_sources <> [] then
@@ -1342,7 +1342,7 @@ module OASISLibrary = struct
       else
         acc_nopath
     in
-  
+
       (* All the files generated *)
       List.rev_append
         (List.rev_map
@@ -1350,8 +1350,8 @@ module OASISLibrary = struct
               (OASISUnixPath.concat bs.bs_path))
            acc_nopath)
         headers
-  
-  
+
+
   type group_t =
     | Container of findlib_name * (group_t list)
     | Package of (findlib_name *
@@ -1359,7 +1359,7 @@ module OASISLibrary = struct
                   build_section *
                   library *
                   (group_t list))
-  
+
   let group_libs pkg =
     (** Associate a name with its children *)
     let children =
@@ -1387,21 +1387,21 @@ module OASISLibrary = struct
         MapString.empty
         pkg.sections
     in
-  
+
     (* Compute findlib name of a single node *)
     let findlib_name (cs, _, lib) =
       match lib.lib_findlib_name with
         | Some nm -> nm
         | None -> cs.cs_name
     in
-  
+
     (** Build a package tree *)
     let rec tree_of_library containers ((cs, bs, lib) as acc) =
       match containers with
         | hd :: tl ->
             Container (hd, [tree_of_library tl acc])
         | [] ->
-            Package 
+            Package
               (findlib_name acc, cs, bs, lib,
                (try
                   List.rev_map
@@ -1413,7 +1413,7 @@ module OASISLibrary = struct
                 with Not_found ->
                   []))
     in
-  
+
     (** Merge containers with the same name *)
     let rec merge_containers groups =
       (* Collect packages and create the map "container name -> merged children" *)
@@ -1443,31 +1443,31 @@ module OASISLibrary = struct
               Container(name, merge_containers children) :: acc)
            containers [])
     in
-  
+
       (* TODO: check that libraries are unique *)
       merge_containers
         (List.fold_left
            (fun acc ->
               function
-                | Library (cs, bs, lib) when lib.lib_findlib_parent = None -> 
+                | Library (cs, bs, lib) when lib.lib_findlib_parent = None ->
                     (tree_of_library lib.lib_findlib_containers (cs, bs, lib)) :: acc
                 | _ ->
                     acc)
            []
            pkg.sections)
-  
+
   (** Compute internal to findlib library matchings, including subpackage
       and return a map of it.
     *)
   let findlib_name_map pkg =
-  
+
     (* Compute names in a tree *)
     let rec findlib_names_aux path mp grp =
       let fndlb_nm, children, mp =
         match grp with
           | Container (fndlb_nm, children) ->
               fndlb_nm, children, mp
-  
+
           | Package (fndlb_nm, {cs_name = nm}, _, _, children) ->
               fndlb_nm, children, (MapString.add nm (path, fndlb_nm) mp)
       in
@@ -1482,13 +1482,13 @@ module OASISLibrary = struct
           mp
           children
     in
-  
+
       List.fold_left
         (findlib_names_aux None)
         MapString.empty
         (group_libs pkg)
-  
-  
+
+
   let findlib_of_name ?(recurse=false) map nm =
     try
       let (path, fndlb_nm) =
@@ -1497,12 +1497,12 @@ module OASISLibrary = struct
         match path with
           | Some pth when recurse -> pth^"."^fndlb_nm
           | _ -> fndlb_nm
-  
+
     with Not_found ->
       failwithf
         (f_ "Unable to translate internal library '%s' to findlib name")
         nm
-  
+
   let name_findlib_map pkg =
     let mp =
       findlib_name_map pkg
@@ -1518,12 +1518,12 @@ module OASISLibrary = struct
              MapString.add fndlb_nm_full nm acc)
         mp
         MapString.empty
-  
+
   let findlib_of_group =
     function
       | Container (fndlb_nm, _)
       | Package (fndlb_nm, _, _, _, _) -> fndlb_nm
-  
+
   let root_of_group grp =
     let rec root_lib_aux =
       function
@@ -1550,48 +1550,48 @@ module OASISLibrary = struct
         failwithf
           (f_ "Unable to determine root library of findlib library '%s'")
           (findlib_of_group grp)
-  
-  
+
+
 end
 
 module OASISFlag = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISFlag.ml"
-  
+
 end
 
 module OASISPackage = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISPackage.ml"
-  
+
 end
 
 module OASISSourceRepository = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISSourceRepository.ml"
-  
+
 end
 
 module OASISTest = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISTest.ml"
-  
+
 end
 
 module OASISDocument = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/oasis/OASISDocument.ml"
-  
+
 end
 
 
 module BaseEnvLight = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseEnvLight.ml"
-  
+
   module MapString = Map.Make(String)
-  
+
   type t = string MapString.t
-  
+
   let default_filename =
     Filename.concat
       (Sys.getcwd ())
       "setup.data"
-  
+
   let load ?(allow_empty=false) ?(filename=default_filename) () =
     if Sys.file_exists filename then
       begin
@@ -1648,7 +1648,7 @@ module BaseEnvLight = struct
              "Unable to load environment, the file '%s' doesn't exist."
              filename)
       end
-  
+
   let var_get name env =
     let rec var_expand str =
       let buff =
@@ -1669,7 +1669,7 @@ module BaseEnvLight = struct
         Buffer.contents buff
     in
       var_expand (MapString.find name env)
-  
+
   let var_choose lst env =
     OASISExpr.choose
       (fun nm -> var_get nm env)
@@ -1679,51 +1679,51 @@ end
 
 module BaseContext = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseContext.ml"
-  
+
   open OASISContext
-  
+
   let args = args
-  
+
   let default = default
-  
+
 end
 
 module BaseMessage = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseMessage.ml"
-  
+
   (** Message to user, overrid for Base
       @author Sylvain Le Gall
     *)
   open OASISMessage
   open BaseContext
-  
+
   let debug fmt   = debug ~ctxt:!default fmt
-  
+
   let info fmt    = info ~ctxt:!default fmt
-  
+
   let warning fmt = warning ~ctxt:!default fmt
-  
+
   let error fmt = error ~ctxt:!default fmt
-  
+
   let string_of_exception = string_of_exception
-  
+
 end
 
 module BaseFilePath = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseFilePath.ml"
-  
-  
+
+
   open Filename
-  
+
   module Unix = OASISUnixPath
-  
+
   let make =
     function
       | [] ->
           invalid_arg "BaseFilename.make"
       | hd :: tl ->
           List.fold_left Filename.concat hd tl
-  
+
   let of_unix ufn =
     if Sys.os_type = "Unix" then
       ufn
@@ -1738,31 +1738,31 @@ module BaseFilePath = struct
               else
                 p)
            (OASISUtils.split '/' ufn))
-  
+
 end
 
 module BaseEnv = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseEnv.ml"
-  
+
   open OASISGettext
   open OASISUtils
   open PropList
-  
+
   module MapString = BaseEnvLight.MapString
-  
+
   type origin_t =
     | ODefault
     | OGetEnv
     | OFileLoad
     | OCommandLine
-  
+
   type cli_handle_t =
     | CLINone
     | CLIAuto
     | CLIWith
     | CLIEnable
     | CLIUser of (Arg.key * Arg.spec * Arg.doc) list
-  
+
   type definition_t =
       {
         hide:       bool;
@@ -1771,22 +1771,22 @@ module BaseEnv = struct
         arg_help:   string option;
         group:      string option;
       }
-  
+
   let schema =
     Schema.create "environment"
-  
+
   (* Environment data *)
   let env =
     Data.create ()
-  
+
   (* Environment data from file *)
   let env_from_file =
     ref MapString.empty
-  
+
   (* Lexer for var *)
   let var_lxr =
     Genlex.make_lexer []
-  
+
   let rec var_expand str =
     let buff =
       Buffer.create ((String.length str) * 2)
@@ -1836,7 +1836,7 @@ module BaseEnv = struct
                    e)
         str;
       Buffer.contents buff
-  
+
   and var_get name =
     let vl =
       try
@@ -1850,14 +1850,14 @@ module BaseEnv = struct
         end
     in
       var_expand vl
-  
+
   let var_choose ?printer ?name lst =
     OASISExpr.choose
       ?printer
       ?name
       var_get
       lst
-  
+
   let var_protect vl =
     let buff =
       Buffer.create (String.length vl)
@@ -1868,7 +1868,7 @@ module BaseEnv = struct
            | c   -> Buffer.add_char   buff c)
         vl;
       Buffer.contents buff
-  
+
   let var_define
         ?(hide=false)
         ?(dump=true)
@@ -1879,7 +1879,7 @@ module BaseEnv = struct
         name (* TODO: type constraint on the fact that name must be a valid OCaml
                   id *)
         dflt =
-  
+
     let default =
       [
         OFileLoad, lazy (MapString.find name !env_from_file);
@@ -1887,7 +1887,7 @@ module BaseEnv = struct
         OGetEnv,   lazy (Sys.getenv name);
       ]
     in
-  
+
     let extra =
       {
         hide     = hide;
@@ -1897,7 +1897,7 @@ module BaseEnv = struct
         group    = group;
       }
     in
-  
+
     (* Try to find a value that can be defined
      *)
     let var_get_low lst =
@@ -1937,13 +1937,13 @@ module BaseEnv = struct
           | None, lst ->
               raise (Not_set (name, Some (String.concat (s_ ", ") lst)))
     in
-  
+
     let help =
       match short_desc with
         | Some fs -> Some fs
         | None -> None
     in
-  
+
     let var_get_lst =
       FieldRO.create
         ~schema
@@ -1955,10 +1955,10 @@ module BaseEnv = struct
         ?help
         extra
     in
-  
+
       fun () ->
         var_expand (var_get_low (var_get_lst env))
-  
+
   let var_redefine
         ?hide
         ?dump
@@ -1985,10 +1985,10 @@ module BaseEnv = struct
           name
           dflt
       end
-  
+
   let var_ignore (e : unit -> string) =
     ()
-  
+
   let print_hidden =
     var_define
       ~hide:true
@@ -1997,7 +1997,7 @@ module BaseEnv = struct
       ~arg_help:"Print even non-printable variable. (debug)"
       "print_hidden"
       (lazy "false")
-  
+
   let var_all () =
     List.rev
       (Schema.fold
@@ -2008,18 +2008,18 @@ module BaseEnv = struct
               acc)
          []
          schema)
-  
+
   let default_filename =
     BaseEnvLight.default_filename
-  
+
   let load ?allow_empty ?filename () =
     env_from_file := BaseEnvLight.load ?allow_empty ?filename ()
-  
+
   let unload () =
     (* TODO: reset lazy values *)
     env_from_file := MapString.empty;
     Data.clear env
-  
+
   let dump ?(filename=default_filename) () =
     let chn =
       open_out_bin filename
@@ -2041,7 +2041,7 @@ module BaseEnv = struct
              end)
         schema;
       close_out chn
-  
+
   let print () =
     let printable_vars =
       Schema.fold
@@ -2077,14 +2077,14 @@ module BaseEnv = struct
     let dot_pad str =
       String.make ((max_length - (String.length str)) + 3) '.'
     in
-  
+
     Printf.printf "\nConfiguration: \n";
     List.iter
       (fun (name,value) ->
         Printf.printf "%s: %s %s\n" name (dot_pad name) value)
       (List.rev printable_vars);
     Printf.printf "\n%!"
-  
+
   let args () =
     let arg_concat =
       OASISUtils.varname_concat ~hyphen:'-'
@@ -2111,7 +2111,7 @@ module BaseEnv = struct
                ]
            ),
         "var+val  Override any configuration variable.";
-  
+
       ]
       @
       List.flatten
@@ -2125,23 +2125,23 @@ module BaseEnv = struct
                  name
                  s
              in
-  
+
              let arg_name =
                OASISUtils.varname_of_string ~hyphen:'-' name
              in
-  
+
              let hlp =
                match short_descr_opt with
                  | Some txt -> txt ()
                  | None -> ""
              in
-  
+
              let arg_hlp =
                match def.arg_help with
                  | Some s -> s
                  | None   -> "str"
              in
-  
+
              let default_value =
                try
                  Printf.sprintf
@@ -2153,7 +2153,7 @@ module BaseEnv = struct
                with Not_set _ ->
                  ""
              in
-  
+
              let args =
                match def.cli with
                  | CLINone ->
@@ -2179,7 +2179,7 @@ module BaseEnv = struct
                             (s_ " [default]")
                           else
                             "");
-  
+
                        arg_concat "--disable-" arg_name,
                        Arg.Unit (fun () -> var_set "false"),
                        Printf.sprintf (f_ " %s%s") hlp
@@ -2198,11 +2198,11 @@ end
 
 module BaseExec = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseExec.ml"
-  
+
   open OASISGettext
   open OASISUtils
   open BaseMessage
-  
+
   let run ?f_exit_code cmd args =
     let cmdline =
       String.concat " " (cmd :: args)
@@ -2216,7 +2216,7 @@ module BaseExec = struct
               cmdline i
         | Some f, i ->
             f i
-  
+
   let run_read_output ?f_exit_code cmd args =
     let fn =
       Filename.temp_file "oasis-" ".txt"
@@ -2245,7 +2245,7 @@ module BaseExec = struct
       close_in chn;
       Sys.remove fn;
       List.rev !routput
-  
+
   let run_read_one_line ?f_exit_code cmd args =
     match run_read_output ?f_exit_code cmd args with
       | [fst] ->
@@ -2258,11 +2258,11 @@ end
 
 module BaseFileUtil = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseFileUtil.ml"
-  
+
   open OASISGettext
-  
+
   let find_file paths exts =
-  
+
     (* Cardinal product of two list *)
     let ( * ) lst1 lst2 =
       List.flatten
@@ -2273,7 +2273,7 @@ module BaseFileUtil = struct
                 lst2)
            lst1)
     in
-  
+
     let rec combined_paths lst =
       match lst with
         | p1 :: p2 :: tl ->
@@ -2288,7 +2288,7 @@ module BaseFileUtil = struct
         | [] ->
             []
     in
-  
+
     let alternatives =
       List.map
         (fun (p,e) ->
@@ -2301,7 +2301,7 @@ module BaseFileUtil = struct
       List.find
         Sys.file_exists
         alternatives
-  
+
   let which prg =
     let path_sep =
       match Sys.os_type with
@@ -2327,7 +2327,7 @@ module BaseFileUtil = struct
             [""]
     in
       find_file [path_lst; [prg]] exec_ext
-  
+
   (**/**)
   let rec fix_dir dn =
     (* Windows hack because Sys.file_exists "src\\" = false when
@@ -2340,24 +2340,24 @@ module BaseFileUtil = struct
         fix_dir (String.sub dn 0 (ln - 1))
       else
         dn
-  
+
   let q = Filename.quote
   (**/**)
-  
+
   let cp src tgt =
     BaseExec.run
       (match Sys.os_type with
        | "Win32" -> "copy"
        | _ -> "cp")
       [q src; q tgt]
-  
+
   let mkdir tgt =
     BaseExec.run
       (match Sys.os_type with
          | "Win32" -> "md"
          | _ -> "mkdir")
       [q tgt]
-  
+
   let rec mkdir_parent f tgt =
     let tgt =
       fix_dir tgt
@@ -2379,7 +2379,7 @@ module BaseFileUtil = struct
               mkdir tgt
             end
         end
-  
+
   let rmdir tgt =
     if Sys.readdir tgt = [||] then
       begin
@@ -2389,7 +2389,7 @@ module BaseFileUtil = struct
           | _ ->
               BaseExec.run "rm" ["-r"; q tgt]
       end
-  
+
   let glob fn =
    let basename =
      Filename.basename fn
@@ -2436,16 +2436,16 @@ end
 
 module BaseArgExt = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseArgExt.ml"
-  
+
   open OASISUtils
   open OASISGettext
-  
+
   let parse argv args =
       (* Simulate command line for Arg *)
       let current =
         ref 0
       in
-  
+
         try
           Arg.parse_argv
             ~current:current
@@ -2464,12 +2464,12 @@ end
 
 module BaseCheck = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseCheck.ml"
-  
+
   open BaseEnv
   open BaseMessage
   open OASISUtils
   open OASISGettext
-  
+
   let prog_best prg prg_lst =
     var_redefine
       prg
@@ -2491,16 +2491,16 @@ module BaseCheck = struct
             match alternate with
               | Some prg -> prg
               | None -> raise Not_found))
-  
+
   let prog prg =
     prog_best prg [prg]
-  
+
   let prog_opt prg =
     prog_best prg [prg^".opt"; prg]
-  
+
   let ocamlfind =
     prog "ocamlfind"
-  
+
   let version
         var_prefix
         cmp
@@ -2541,12 +2541,12 @@ module BaseCheck = struct
                   (OASISVersion.string_of_comparator cmp)
                   version_str))
         ()
-  
+
   let package_version pkg =
     BaseExec.run_read_one_line
       (ocamlfind ())
       ["query"; "-format"; "%v"; pkg]
-  
+
   let package ?version_comparator pkg () =
     let var =
       OASISUtils.varname_concat
@@ -2590,17 +2590,17 @@ end
 
 module BaseOCamlcConfig = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseOCamlcConfig.ml"
-  
-  
+
+
   open BaseEnv
   open OASISUtils
   open OASISGettext
-  
+
   module SMap = Map.Make(String)
-  
+
   let ocamlc =
     BaseCheck.prog_opt "ocamlc"
-  
+
   let ocamlc_config_map =
     (* Map name to value for ocamlc -config output
        (name ^": "^value)
@@ -2645,7 +2645,7 @@ module BaseOCamlcConfig = struct
         | [] ->
             mp
     in
-  
+
       var_redefine
         "ocamlc_config_map"
         ~hide:true
@@ -2658,7 +2658,7 @@ module BaseOCamlcConfig = struct
                     (BaseExec.run_read_output
                        (ocamlc ()) ["-config"]))
                  [])))
-  
+
   let var_define nm =
     (* Extract data from ocamlc -config *)
     let avlbl_config_get () =
@@ -2667,15 +2667,15 @@ module BaseOCamlcConfig = struct
         0
     in
     let chop_version_suffix s =
-      try 
+      try
         String.sub s 0 (String.index s '+')
-      with _ -> 
+      with _ ->
         s
      in
-  
+
     let nm_config, value_config =
       match nm with
-        | "ocaml_version" -> 
+        | "ocaml_version" ->
             "version", chop_version_suffix
         | _ -> nm, (fun x -> x)
     in
@@ -2695,58 +2695,58 @@ module BaseOCamlcConfig = struct
                 (f_ "Cannot find field '%s' in '%s -config' output")
                 nm
                 (ocamlc ())))
-  
+
 end
 
 module BaseStandardVar = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseStandardVar.ml"
-  
-  
+
+
   open OASISGettext
   open OASISTypes
   open OASISExpr
   open BaseCheck
   open BaseEnv
-  
+
   let ocamlfind  = BaseCheck.ocamlfind
   let ocamlc     = BaseOCamlcConfig.ocamlc
   let ocamlopt   = prog_opt "ocamlopt"
   let ocamlbuild = prog "ocamlbuild"
-  
-  
+
+
   (**/**)
   let rpkg =
     ref None
-  
+
   let pkg_get () =
     match !rpkg with
       | Some pkg -> pkg
       | None -> failwith (s_ "OASIS Package is not set")
   (**/**)
-  
+
   let pkg_name =
     var_define
       ~short_desc:(fun () -> s_ "Package name")
       "pkg_name"
       (lazy (pkg_get ()).name)
-  
+
   let pkg_version =
     var_define
       ~short_desc:(fun () -> s_ "Package version")
       "pkg_version"
       (lazy
          (OASISVersion.string_of_version (pkg_get ()).version))
-  
+
   let c = BaseOCamlcConfig.var_define
-  
+
   let os_type        = c "os_type"
   let system         = c "system"
   let architecture   = c "architecture"
   let ccomp_type     = c "ccomp_type"
   let ocaml_version  = c "ocaml_version"
-  
+
   (* TODO: Check standard variable presence at runtime *)
-  
+
   let standard_library_default = c "standard_library_default"
   let standard_library         = c "standard_library"
   let standard_runtime         = c "standard_runtime"
@@ -2759,8 +2759,8 @@ module BaseStandardVar = struct
   let ext_dll                  = c "ext_dll"
   let default_executable_name  = c "default_executable_name"
   let systhread_supported      = c "systhread_supported"
-  
-  
+
+
   (**/**)
   let p name hlp dflt =
     var_define
@@ -2769,7 +2769,7 @@ module BaseStandardVar = struct
       ~arg_help:"dir"
       name
       dflt
-  
+
   let (/) a b =
     if os_type () = Sys.os_type then
       Filename.concat a b
@@ -2779,7 +2779,7 @@ module BaseStandardVar = struct
       OASISUtils.failwithf (f_ "Cannot handle os_type %s filename concat")
         (os_type ())
   (**/**)
-  
+
   let prefix =
     p "prefix"
       (fun () -> s_ "Install architecture-independent files dir")
@@ -2792,97 +2792,97 @@ module BaseStandardVar = struct
                   program_files/(pkg_name ())
             | _ ->
                 "/usr/local"))
-  
+
   let exec_prefix =
     p "exec_prefix"
       (fun () -> s_ "Install architecture-dependent files in dir")
       (lazy "$prefix")
-  
+
   let bindir =
     p "bindir"
       (fun () -> s_ "User executables")
       (lazy ("$exec_prefix"/"bin"))
-  
+
   let sbindir =
     p "sbindir"
       (fun () -> s_ "System admin executables")
       (lazy ("$exec_prefix"/"sbin"))
-  
+
   let libexecdir =
     p "libexecdir"
       (fun () -> s_ "Program executables")
       (lazy ("$exec_prefix"/"libexec"))
-  
+
   let sysconfdir =
     p "sysconfdir"
       (fun () -> s_ "Read-only single-machine data")
       (lazy ("$prefix"/"etc"))
-  
+
   let sharedstatedir =
     p "sharedstatedir"
       (fun () -> s_ "Modifiable architecture-independent data")
       (lazy ("$prefix"/"com"))
-  
+
   let localstatedir =
     p "localstatedir"
       (fun () -> s_ "Modifiable single-machine data")
       (lazy ("$prefix"/"var"))
-  
+
   let libdir =
     p "libdir"
       (fun () -> s_ "Object code libraries")
       (lazy ("$exec_prefix"/"lib"))
-  
+
   let datarootdir =
     p "datarootdir"
       (fun () -> s_ "Read-only arch-independent data root")
       (lazy ("$prefix"/"share"))
-  
+
   let datadir =
     p "datadir"
       (fun () -> s_ "Read-only architecture-independent data")
       (lazy ("$datarootdir"))
-  
+
   let infodir =
     p "infodir"
       (fun () -> s_ "Info documentation")
       (lazy ("$datarootdir"/"info"))
-  
+
   let localedir =
     p "localedir"
       (fun () -> s_ "Locale-dependent data")
       (lazy ("$datarootdir"/"locale"))
-  
+
   let mandir =
     p "mandir"
       (fun () -> s_ "Man documentation")
       (lazy ("$datarootdir"/"man"))
-  
+
   let docdir =
     p "docdir"
       (fun () -> s_ "Documentation root")
       (lazy ("$datarootdir"/"doc"/"$pkg_name"))
-  
+
   let htmldir =
     p "htmldir"
       (fun () -> s_ "HTML documentation")
       (lazy ("$docdir"))
-  
+
   let dvidir =
     p "dvidir"
       (fun () -> s_ "DVI documentation")
       (lazy ("$docdir"))
-  
+
   let pdfdir =
     p "pdfdir"
       (fun () -> s_ "PDF documentation")
       (lazy ("$docdir"))
-  
+
   let psdir =
     p "psdir"
       (fun () -> s_ "PS documentation")
       (lazy ("$docdir"))
-  
+
   let destdir =
     p "destdir"
       (fun () -> s_ "Prepend a path when installing package")
@@ -2891,13 +2891,13 @@ module BaseStandardVar = struct
             (PropList.Not_set
                ("destdir",
                 Some (s_ "undefined by construct")))))
-  
+
   let findlib_version =
     var_define
       "findlib_version"
       (lazy
          (BaseCheck.package_version "findlib"))
-  
+
   let is_native =
     var_define
       "is_native"
@@ -2912,7 +2912,7 @@ module BaseStandardVar = struct
               ocamlc ()
             in
               "false"))
-  
+
   let ext_program =
     var_define
       "suffix_program"
@@ -2921,7 +2921,7 @@ module BaseStandardVar = struct
             | "Win32" -> ".exe"
             | _ -> ""
          ))
-  
+
   let rm =
     var_define
       ~short_desc:(fun () -> s_ "Remove a file.")
@@ -2930,7 +2930,7 @@ module BaseStandardVar = struct
          (match os_type () with
             | "Win32" -> "del"
             | _ -> "rm -f"))
-  
+
   let rmdir =
     var_define
       ~short_desc:(fun () -> s_ "Remove a directory.")
@@ -2939,31 +2939,31 @@ module BaseStandardVar = struct
          (match os_type () with
             | "Win32" -> "rd"
             | _ -> "rm -rf"))
-  
+
   let debug =
     var_define
       ~short_desc:(fun () -> s_ "Compile with ocaml debug flag on.")
       "debug"
       (lazy "true")
-  
+
   let profile =
     var_define
       ~short_desc:(fun () -> s_ "Compile with ocaml profile flag on.")
       "profile"
       (lazy "false")
-  
+
   let init pkg =
     rpkg := Some pkg
-  
+
 end
 
 module BaseFileAB = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseFileAB.ml"
-  
+
   open BaseEnv
   open OASISGettext
   open BaseMessage
-  
+
   let to_filename fn =
     let fn =
       BaseFilePath.of_unix fn
@@ -2973,7 +2973,7 @@ module BaseFileAB = struct
           (f_ "File '%s' doesn't have '.ab' extension")
           fn;
       Filename.chop_extension fn
-  
+
   let replace fn_lst =
     let buff =
       Buffer.create 13
@@ -3007,14 +3007,14 @@ end
 
 module BaseLog = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseLog.ml"
-  
+
   open OASISUtils
-  
+
   let default_filename =
     Filename.concat
       (Filename.dirname BaseEnv.default_filename)
       "setup.log"
-  
+
   module SetTupleString =
     Set.Make
       (struct
@@ -3024,7 +3024,7 @@ module BaseLog = struct
              | 0 -> String.compare s12 s22
              | n -> n
        end)
-  
+
   let load () =
     if Sys.file_exists default_filename then
       begin
@@ -3073,14 +3073,14 @@ module BaseLog = struct
       begin
         []
       end
-  
+
   let register event data =
     let chn_out =
       open_out_gen [Open_append; Open_creat; Open_text] 0o644 default_filename
     in
       Printf.fprintf chn_out "%S %S\n" event data;
       close_out chn_out
-  
+
   let unregister event data =
     if Sys.file_exists default_filename then
       begin
@@ -3105,7 +3105,7 @@ module BaseLog = struct
           if not !write_something then
             Sys.remove default_filename
       end
-  
+
   let filter events =
     let st_events =
       List.fold_left
@@ -3117,7 +3117,7 @@ module BaseLog = struct
       List.filter
         (fun (e, _) -> SetString.mem e st_events)
         (load ())
-  
+
   let exists event data =
     List.exists
       (fun v -> (event, data) = v)
@@ -3126,18 +3126,18 @@ end
 
 module BaseBuilt = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseBuilt.ml"
-  
+
   open OASISTypes
   open OASISGettext
   open BaseStandardVar
   open BaseMessage
-  
+
   type t =
     | BExec    (* Executable *)
     | BExecLib (* Library coming with executable *)
     | BLib     (* Library *)
     | BDoc     (* Document *)
-  
+
   let to_log_event_file t nm =
     "built_"^
     (match t with
@@ -3146,10 +3146,10 @@ module BaseBuilt = struct
        | BLib -> "lib"
        | BDoc -> "doc")^
     "_"^nm
-  
+
   let to_log_event_done t nm =
     "is_"^(to_log_event_file t nm)
-  
+
   let register t nm lst =
     BaseLog.register
       (to_log_event_done t nm)
@@ -3179,7 +3179,7 @@ module BaseBuilt = struct
                (f_ "Cannot find an existing alternative files among: %s")
                (String.concat (s_ ", ") alt))
       lst
-  
+
   let unregister t nm =
     List.iter
       (fun (e, d) ->
@@ -3187,7 +3187,7 @@ module BaseBuilt = struct
       (BaseLog.filter
          [to_log_event_file t nm;
           to_log_event_done t nm])
-  
+
   let fold t nm f acc =
     List.fold_left
       (fun acc (_, fn) ->
@@ -3215,7 +3215,7 @@ module BaseBuilt = struct
       acc
       (BaseLog.filter
          [to_log_event_file t nm])
-  
+
   let is_built t nm =
     List.fold_left
       (fun is_built (_, d) ->
@@ -3226,7 +3226,7 @@ module BaseBuilt = struct
       false
       (BaseLog.filter
          [to_log_event_done t nm])
-  
+
   let of_executable ffn (cs, bs, exec) =
     let unix_exec_is, unix_dll_opt =
       OASISExecutable.unix_exec_is
@@ -3249,7 +3249,7 @@ module BaseBuilt = struct
       evs,
       unix_exec_is,
       unix_dll_opt
-  
+
   let of_library ffn (cs, bs, lib) =
     let unix_lst =
       OASISLibrary.generated_unix_files
@@ -3268,24 +3268,24 @@ module BaseBuilt = struct
        List.map (List.map ffn) unix_lst]
     in
       evs, unix_lst
-  
+
 end
 
 module BaseCustom = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseCustom.ml"
-  
+
   open BaseEnv
   open BaseMessage
   open OASISTypes
   open OASISGettext
-  
+
   let run cmd args extra_args =
     BaseExec.run
       (var_expand cmd)
       (List.map
          var_expand
          (args @ (Array.to_list extra_args)))
-  
+
   let hook ?(failsafe=false) cstm f e =
     let optional_command lst =
       let printer =
@@ -3323,13 +3323,13 @@ end
 
 module BaseDynVar = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseDynVar.ml"
-  
-  
+
+
   open OASISTypes
   open OASISGettext
   open BaseEnv
   open BaseBuilt
-  
+
   let init pkg =
     List.iter
       (function
@@ -3359,7 +3359,7 @@ module BaseDynVar = struct
                                     Some (Printf.sprintf
                                             (f_ "Executable '%s' not yet built.")
                                             cs.cs_name))))))
-  
+
          | Library _ | Flag _ | Test _ | SrcRepo _ | Doc _ ->
              ())
       pkg.sections
@@ -3367,15 +3367,15 @@ end
 
 module BaseTest = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseTest.ml"
-  
+
   open BaseEnv
   open BaseMessage
   open OASISTypes
   open OASISExpr
   open OASISGettext
-  
+
   let test lst pkg extra_args =
-  
+
     let one_test (failure, n) (test_plugin, cs, test) =
       if var_choose
            ~name:(Printf.sprintf
@@ -3399,7 +3399,7 @@ module BaseTest = struct
                   in
                     chdir dir;
                     fun () -> chdir cwd
-  
+
               | None ->
                   fun () -> ()
           in
@@ -3449,14 +3449,14 @@ end
 
 module BaseDoc = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseDoc.ml"
-  
+
   open BaseEnv
   open BaseMessage
   open OASISTypes
   open OASISGettext
-  
+
   let doc lst pkg extra_args =
-  
+
     let one_doc (doc_plugin, cs, doc) =
       if var_choose
            ~name:(Printf.sprintf
@@ -3479,20 +3479,20 @@ end
 
 module BaseSetup = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseSetup.ml"
-  
+
   open BaseEnv
   open BaseMessage
   open OASISTypes
   open OASISSection
   open OASISGettext
   open OASISUtils
-  
+
   type std_args_fun =
       package -> string array -> unit
-  
+
   type ('a, 'b) section_args_fun =
       name * (package -> (common_section * 'a) -> string array -> 'b)
-  
+
   type t =
       {
         configure:       std_args_fun;
@@ -3510,7 +3510,7 @@ module BaseSetup = struct
         package:         package;
         version:         string;
       }
-  
+
   (* Associate a plugin function with data from package *)
   let join_plugin_sections filter_map lst =
     List.rev
@@ -3523,7 +3523,7 @@ module BaseSetup = struct
                   acc)
          []
          lst)
-  
+
   (* Search for plugin data associated with a section name *)
   let lookup_plugin_section plugin action nm lst =
     try
@@ -3534,27 +3534,27 @@ module BaseSetup = struct
         plugin
         nm
         action
-  
+
   let configure t args =
     (* Run configure *)
     BaseCustom.hook
       t.package.conf_custom
       (t.configure t.package)
       args;
-  
+
     (* Reload environment *)
     unload ();
     load ();
-  
+
     (* Replace data in file *)
     BaseFileAB.replace t.package.files_ab
-  
+
   let build t args =
     BaseCustom.hook
       t.package.build_custom
       (t.build t.package)
       args
-  
+
   let doc t args =
     BaseDoc.doc
       (join_plugin_sections
@@ -3573,7 +3573,7 @@ module BaseSetup = struct
          t.package.sections)
       t.package
       args
-  
+
   let test t args =
     BaseTest.test
       (join_plugin_sections
@@ -3592,7 +3592,7 @@ module BaseSetup = struct
          t.package.sections)
       t.package
       args
-  
+
   let all t args =
     let rno_doc =
       ref false
@@ -3609,23 +3609,23 @@ module BaseSetup = struct
           "-no-doc",
           Arg.Set rno_doc,
           s_ "Don't run doc target";
-  
+
           "-no-test",
           Arg.Set rno_test,
           s_ "Don't run test target";
         ]
         (failwithf (f_ "Don't know what to do with '%s'"))
         "";
-  
+
       info "Running configure step";
       configure t [||];
-  
+
       info "Running build step";
       build     t [||];
-  
+
       (* Load setup.log dynamic variables *)
       BaseDynVar.init t.package;
-  
+
       if not !rno_doc then
         begin
           info "Running doc step";
@@ -3635,7 +3635,7 @@ module BaseSetup = struct
         begin
           info "Skipping doc step"
         end;
-  
+
       if not !rno_test then
         begin
           info "Running test step";
@@ -3645,23 +3645,23 @@ module BaseSetup = struct
         begin
           info "Skipping test step"
         end
-  
+
   let install t args =
     BaseCustom.hook
       t.package.install_custom
       (t.install t.package)
       args
-  
+
   let uninstall t args =
     BaseCustom.hook
       t.package.uninstall_custom
       (t.uninstall t.package)
       args
-  
+
   let reinstall t args =
     uninstall t args;
     install t args
-  
+
   let clean, distclean =
     let failsafe f a =
       try
@@ -3673,7 +3673,7 @@ module BaseSetup = struct
              | Failure msg -> msg
              | e -> Printexc.to_string e)
     in
-  
+
     let generic_clean t cstm mains docs tests args =
       BaseCustom.hook
         ~failsafe:true
@@ -3717,7 +3717,7 @@ module BaseSetup = struct
              mains)
         ()
     in
-  
+
     let clean t args =
       generic_clean
         t
@@ -3727,11 +3727,11 @@ module BaseSetup = struct
         t.clean_test
         args
     in
-  
+
     let distclean t args =
       (* Call clean *)
       clean t args;
-  
+
       (* Remove generated file *)
       List.iter
         (fun fn ->
@@ -3745,7 +3745,7 @@ module BaseSetup = struct
          BaseLog.default_filename
          ::
          (List.rev_map BaseFileAB.to_filename t.package.files_ab));
-  
+
       (* Call distclean code *)
       generic_clean
         t
@@ -3755,12 +3755,12 @@ module BaseSetup = struct
         t.distclean_test
         args
     in
-  
+
       clean, distclean
-  
+
   let version t _ =
     print_endline t.version
-  
+
   let setup t =
     let catch_exn =
       ref true
@@ -3772,7 +3772,7 @@ module BaseSetup = struct
                    (f_ "No action defined, run '%s %s -help'")
                    Sys.executable_name
                    Sys.argv.(0))
-  
+
         in
         let extra_args_ref =
           ref []
@@ -3784,64 +3784,64 @@ module BaseSetup = struct
           Arg.Tuple
             [
               Arg.Rest (fun str -> extra_args_ref := str :: !extra_args_ref);
-  
+
               Arg.Unit
                 (fun () ->
                    allow_empty_env_ref := allow_empty_env;
                    act_ref := act);
             ]
         in
-  
+
           Arg.parse
             (Arg.align
                [
                  "-configure",
                  arg_handle ~allow_empty_env:true configure,
                  s_ "[options*] Configure the whole build process.";
-  
+
                  "-build",
                  arg_handle build,
                  s_ "[options*] Build executables and libraries.";
-  
+
                  "-doc",
                  arg_handle doc,
                  s_ "[options*] Build documents.";
-  
+
                  "-test",
                  arg_handle test,
                  s_ "[options*] Run tests.";
-  
+
                  "-all",
                  arg_handle ~allow_empty_env:true all,
                  s_ "[options*] Run configure, build, doc and test targets.";
-  
+
                  "-install",
                  arg_handle install,
                  s_ "[options*] Install libraries, data, executables \
                                 and documents.";
-  
+
                  "-uninstall",
                  arg_handle uninstall,
                  s_ "[options*] Uninstall libraries, data, executables \
                                 and documents.";
-  
+
                  "-reinstall",
                  arg_handle reinstall,
                  s_ "[options*] Uninstall and install libraries, data, \
                                 executables and documents.";
-  
+
                  "-clean",
                  arg_handle ~allow_empty_env:true clean,
                  s_ "[options*] Clean files generated by a build.";
-  
+
                  "-distclean",
                  arg_handle ~allow_empty_env:true distclean,
                  s_ "[options*] Clean files generated by a build and configure.";
-  
+
                  "-version",
                  arg_handle ~allow_empty_env:true version,
                  s_ " Display version of OASIS used to generate this setup.ml.";
-  
+
                  "-no-catch-exn",
                  Arg.Clear catch_exn,
                  s_ " Don't catch exception, useful for debugging.";
@@ -3849,10 +3849,10 @@ module BaseSetup = struct
              @ (BaseContext.args ()))
             (failwithf (f_ "Don't know what to do with '%s'"))
             (s_ "Setup and run build process current package\n");
-  
+
           (* Build initial environment *)
           load ~allow_empty:!allow_empty_env_ref ();
-  
+
           (** Initialize flags *)
           List.iter
             (function
@@ -3882,32 +3882,32 @@ module BaseSetup = struct
                | _ ->
                    ())
             t.package.sections;
-  
+
           BaseStandardVar.init t.package;
-  
+
           BaseDynVar.init t.package;
-  
+
           !act_ref t (Array.of_list (List.rev !extra_args_ref))
-  
+
       with e when !catch_exn ->
         error "%s" (string_of_exception e);
         exit 1
-  
+
 end
 
 module BaseDev = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/base/BaseDev.ml"
-  
-  
-  
+
+
+
   open OASISGettext
   open BaseMessage
-  
+
   type t =
       {
         oasis_cmd:  string;
-      } 
-  
+      }
+
   let update_and_run t =
     (* Command line to run setup-dev *)
     let oasis_args =
@@ -3915,7 +3915,7 @@ module BaseDev = struct
       Sys.executable_name ::
       (Array.to_list Sys.argv)
     in
-  
+
     let exit_on_child_error =
       function
         | 0 -> ()
@@ -3927,18 +3927,18 @@ module BaseDev = struct
                    'oasis setup-dev'.")
               t.oasis_cmd
               (String.concat " " oasis_args)
-  
+
         | 127 ->
             (* Cannot find OASIS *)
             error
               (f_ "Cannot find executable '%s', check where 'oasis' is located \
                    and rerun 'oasis setup-dev'")
               t.oasis_cmd
-  
+
         | i ->
             exit i
     in
-  
+
     let () =
       (* Run OASIS to generate a temporary setup.ml
        *)
@@ -3947,25 +3947,25 @@ module BaseDev = struct
         t.oasis_cmd
         oasis_args
     in
-  
+
       ()
-  
+
 end
 
 
 module InternalConfigurePlugin = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/plugins/internal/InternalConfigurePlugin.ml"
-  
+
   (** Configure using internal scheme
       @author Sylvain Le Gall
     *)
-  
+
   open BaseEnv
   open OASISTypes
   open OASISUtils
   open OASISGettext
   open BaseMessage
-  
+
   (** Configure build using provided series of check to be done
     * and then output corresponding file.
     *)
@@ -3976,15 +3976,15 @@ module InternalConfigurePlugin = struct
       in
         ()
     in
-  
+
     let errors =
       ref SetString.empty
     in
-  
+
     let buff =
       Buffer.create 13
     in
-  
+
     let add_errors fmt =
       Printf.kbprintf
         (fun b ->
@@ -3993,11 +3993,11 @@ module InternalConfigurePlugin = struct
         buff
         fmt
     in
-  
+
     let warn_exception e =
       warning "%s" (string_of_exception e)
     in
-  
+
     (* Check tools *)
     let check_tools lst =
       List.iter
@@ -4027,7 +4027,7 @@ module InternalConfigurePlugin = struct
                  pkg.sections)
         lst
     in
-  
+
     let build_checks sct bs =
       if var_choose bs.bs_build then
         begin
@@ -4041,10 +4041,10 @@ module InternalConfigurePlugin = struct
                   (f_ "Section %s requires native compilation")
                   (OASISSection.string_of_section sct)
             end;
-  
+
           (* Check tools *)
           check_tools bs.bs_build_tools;
-  
+
           (* Check depends *)
           List.iter
             (function
@@ -4084,10 +4084,10 @@ module InternalConfigurePlugin = struct
             bs.bs_build_depends
         end
     in
-  
+
     (* Parse command line *)
     BaseArgExt.parse argv (BaseEnv.args ());
-  
+
     (* OCaml version *)
     begin
       match pkg.ocaml_version with
@@ -4109,7 +4109,7 @@ module InternalConfigurePlugin = struct
         | None ->
             ()
     end;
-  
+
     (* Findlib version *)
     begin
       match pkg.findlib_version with
@@ -4131,7 +4131,7 @@ module InternalConfigurePlugin = struct
         | None ->
             ()
     end;
-  
+
     (* Check build depends *)
     List.iter
       (function
@@ -4147,7 +4147,7 @@ module InternalConfigurePlugin = struct
          | _ ->
              ())
       pkg.sections;
-  
+
     (* Save and print environment *)
     if SetString.empty = !errors then
       begin
@@ -4166,16 +4166,16 @@ module InternalConfigurePlugin = struct
              (SetString.cardinal !errors))
           (SetString.cardinal !errors)
       end
-  
+
 end
 
 module InternalInstallPlugin = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/plugins/internal/InternalInstallPlugin.ml"
-  
+
   (** Install using internal scheme
       @author Sylvain Le Gall
     *)
-  
+
   open BaseEnv
   open BaseStandardVar
   open BaseMessage
@@ -4183,27 +4183,27 @@ module InternalInstallPlugin = struct
   open OASISLibrary
   open OASISGettext
   open OASISUtils
-  
+
   let exec_hook =
     ref (fun (cs, bs, exec) -> cs, bs, exec)
-  
+
   let lib_hook =
     ref (fun (cs, bs, lib) -> cs, bs, lib, [])
-  
+
   let doc_hook =
     ref (fun (cs, doc) -> cs, doc)
-  
+
   let install_file_ev =
     "install-file"
-  
+
   let install_dir_ev =
     "install-dir"
-  
+
   let install_findlib_ev =
     "install-findlib"
-  
+
   let install pkg argv =
-  
+
     let in_destdir =
       try
         let destdir =
@@ -4216,7 +4216,7 @@ module InternalInstallPlugin = struct
       with PropList.Not_set _ ->
         fun fn -> fn
     in
-  
+
     let install_file ?tgt_fn src_file envdir =
       let tgt_dir =
         in_destdir (envdir ())
@@ -4236,13 +4236,13 @@ module InternalInstallPlugin = struct
              info (f_ "Creating directory '%s'") dn;
              BaseLog.register install_dir_ev dn)
           tgt_dir;
-  
+
         (* Really install files *)
         info (f_ "Copying file '%s' to '%s'") src_file tgt_file;
         BaseFileUtil.cp src_file tgt_file;
         BaseLog.register install_file_ev tgt_file
     in
-  
+
     (* Install data into defined directory *)
     let install_data srcdir lst tgtdir =
       let tgtdir =
@@ -4271,10 +4271,10 @@ module InternalInstallPlugin = struct
                  real_srcs)
           lst
     in
-  
+
     (** Install all libraries *)
     let install_libs pkg =
-  
+
       let files_of_library (f_data, acc) data_lib =
         let cs, bs, lib, lib_extra =
           !lib_hook data_lib
@@ -4316,7 +4316,7 @@ module InternalInstallPlugin = struct
                     acc
                     lib.lib_modules
               in
-  
+
               let acc =
                (* Get generated files *)
                BaseBuilt.fold
@@ -4325,7 +4325,7 @@ module InternalInstallPlugin = struct
                  (fun acc fn -> fn :: acc)
                  acc
               in
-  
+
               let f_data () =
                 (* Install data associated with the library *)
                 install_data
@@ -4336,7 +4336,7 @@ module InternalInstallPlugin = struct
                      pkg.name);
                 f_data ()
               in
-  
+
                 (f_data, acc)
             end
            else
@@ -4344,7 +4344,7 @@ module InternalInstallPlugin = struct
               (f_data, acc)
             end
       in
-  
+
       (* Install one group of library *)
       let install_group_lib grp =
         (* Iterate through all group nodes *)
@@ -4361,22 +4361,22 @@ module InternalInstallPlugin = struct
               data_and_files
               children
         in
-  
+
         (* Findlib name of the root library *)
         let findlib_name =
           findlib_of_group grp
         in
-  
+
         (* Determine root library *)
         let root_lib =
           root_of_group grp
         in
-  
+
         (* All files to install for this library *)
         let f_data, files =
           install_group_lib_aux (ignore, []) grp
         in
-  
+
           (* Really install, if there is something to install *)
           if files = [] then
             begin
@@ -4409,18 +4409,18 @@ module InternalInstallPlugin = struct
                   ("install" :: findlib_name :: meta :: files);
                 BaseLog.register install_findlib_ev findlib_name
             end;
-  
+
           (* Install data files *)
           f_data ();
-  
+
       in
-  
+
         (* We install libraries in groups *)
         List.iter
           install_group_lib
           (group_libs pkg)
     in
-  
+
     let install_execs pkg =
       let install_exec data_exec =
         let (cs, bs, exec) =
@@ -4467,7 +4467,7 @@ module InternalInstallPlugin = struct
                  ())
           pkg.sections
     in
-  
+
     let install_docs pkg =
       let install_doc data =
         let (cs, doc) =
@@ -4501,11 +4501,11 @@ module InternalInstallPlugin = struct
                  ())
           pkg.sections
     in
-  
+
       install_libs  pkg;
       install_execs pkg;
       install_docs  pkg
-  
+
   (* Uninstall already installed data *)
   let uninstall _ argv =
     List.iter
@@ -4569,68 +4569,68 @@ module InternalInstallPlugin = struct
             [install_file_ev;
              install_dir_ev;
              install_findlib_ev;]))
-  
+
 end
 
 
 module CustomPlugin = struct
 # 21 "/home/thelema/.odb/install-oasis/oasis-0.2.1~alpha1/src/plugins/custom/CustomPlugin.ml"
-  
+
   (** Generate custom configure/build/doc/test/install system
       @author
     *)
-  
+
   open BaseEnv
   open OASISGettext
   open OASISTypes
-  
-  
-  
+
+
+
   type t =
       {
         cmd_main:      command_line conditional;
         cmd_clean:     (command_line option) conditional;
         cmd_distclean: (command_line option) conditional;
-      } 
-  
-  let run  = BaseCustom.run 
-  
+      }
+
+  let run  = BaseCustom.run
+
   let main t _ extra_args =
     let cmd, args =
-      var_choose 
-        ~name:(s_ "main command") 
+      var_choose
+        ~name:(s_ "main command")
         t.cmd_main
     in
-      run cmd args extra_args 
-  
+      run cmd args extra_args
+
   let clean t pkg extra_args =
     match var_choose t.cmd_clean with
       | Some (cmd, args) ->
           run cmd args extra_args
       | _ ->
           ()
-  
+
   let distclean t pkg extra_args =
     match var_choose t.cmd_distclean with
       | Some (cmd, args) ->
           run cmd args extra_args
       | _ ->
           ()
-  
+
   module Build =
-  struct 
+  struct
     let main t pkg extra_args =
       main t pkg extra_args;
       List.iter
         (fun sct ->
            let evs =
-             match sct with 
+             match sct with
                | Library (cs, bs, lib) when var_choose bs.bs_build ->
                    begin
-                     let evs, _ = 
-                       BaseBuilt.of_library 
+                     let evs, _ =
+                       BaseBuilt.of_library
                          BaseFilePath.of_unix
-                         (cs, bs, lib) 
+                         (cs, bs, lib)
                      in
                        evs
                    end
@@ -4650,7 +4650,7 @@ module CustomPlugin = struct
                (fun (bt, bnm, lst) -> BaseBuilt.register bt bnm lst)
                evs)
         pkg.sections
-  
+
     let clean t pkg extra_args =
       clean t pkg extra_args;
       (* TODO: this seems to be pretty generic (at least wrt to ocamlbuild
@@ -4666,11 +4666,11 @@ module CustomPlugin = struct
            | _ ->
                ())
         pkg.sections
-  
+
     let distclean t pkg extra_args =
       distclean t pkg extra_args
   end
-  
+
   module Test =
   struct
     let main t pkg (cs, test) extra_args =
@@ -4678,33 +4678,33 @@ module CustomPlugin = struct
         main t pkg extra_args;
         0.0
       with Failure s ->
-        BaseMessage.warning 
+        BaseMessage.warning
           (f_ "Test '%s' fails: %s")
           cs.cs_name
           s;
         1.0
-  
+
     let clean t pkg (cs, test) extra_args =
       clean t pkg extra_args
-  
+
     let distclean t pkg (cs, test) extra_args =
-      distclean t pkg extra_args 
+      distclean t pkg extra_args
   end
-  
+
   module Doc =
   struct
     let main t pkg (cs, _) extra_args =
       main t pkg extra_args;
       BaseBuilt.register BaseBuilt.BDoc cs.cs_name []
-  
+
     let clean t pkg (cs, _) extra_args =
       clean t pkg extra_args;
       BaseBuilt.unregister BaseBuilt.BDoc cs.cs_name
-  
+
     let distclean t pkg (cs, _) extra_args =
       distclean t pkg extra_args
   end
-  
+
 end
 
 

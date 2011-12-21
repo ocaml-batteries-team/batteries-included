@@ -36,7 +36,7 @@ let rec add ?(eq = (==)) n v m =
     make_tree (add n v l) x r
   else if n1 <= n && n <= n2 then
     if eq v v0 then m else
-    let l = 
+    let l =
       if n1 = n then l else
       make_tree l (n1, n - 1, v0) empty in
     let r =
@@ -171,7 +171,7 @@ let rec map_to_set p m =
       let f n1 n2 v (k1, k2, s) =
 	if p v then
 	  if n1 = k2 + 1 then (k1, n2, s) else
-	  (n1, n2, make_tree s (k1, k2) empty) 
+	  (n1, n2, make_tree s (k1, k2) empty)
 	else
 	  (k1, k2, s) in
       let (k1, k2, s) = fold_range f m' (k1, k2, empty) in
@@ -181,30 +181,30 @@ let rec map_to_set p m =
 module Enum = BatEnum
 
 (* Fold across two maps *)
-let fold2_range f m1 m2 acc = 
+let fold2_range f m1 m2 acc =
   let e1 = enum m1 and e2 = enum m2 in
-  let rec aux acc = function 
+  let rec aux acc = function
       None,None -> acc
-    | Some (lo,hi,rx), None -> 
+    | Some (lo,hi,rx), None ->
 	aux (f lo hi (Some rx) None acc) (Enum.get e1, None)
-    | None, Some (lo,hi,rx) -> 
+    | None, Some (lo,hi,rx) ->
 	aux (f lo hi None (Some rx) acc) (None, Enum.get e2)
     | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo1 < lo2 ->
-	let hi, v1 = 
+	let hi, v1 =
 	  if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
 	  else if hi1 = lo2 then hi1, Some (lo2,lo2,rx1)
 	  else hi1, Enum.get e1
 	and v2 = Some (lo2,hi2,rx2) in
 	aux (f lo1 hi (Some rx1) None acc) (v1, v2)
     | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo2 < lo1 ->
-	let hi, v2 = 
+	let hi, v2 =
 	  if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
 	  else if hi2 = lo1 then hi2, Some (lo1,lo1,rx2)
 	  else hi2, Enum.get e2	
 	and v1 = Some (lo1,hi1,rx1) in
 	aux (f lo2 hi None (Some rx2) acc) (v1,v2)
     | Some (lo1,hi1,rx1), Some (_lo2,hi2,rx2) (* lo1 = lo2 *) ->
-	let hi, v1, v2 = 
+	let hi, v1, v2 =
 	  if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
 	  else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
 	  else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
@@ -214,33 +214,33 @@ let fold2_range f m1 m2 acc =
   in
   aux acc (Enum.get e1, Enum.get e2)
 
-let union f m1 m2 = 
-  let insert lo hi v1 v2 m = 
+let union f m1 m2 =
+  let insert lo hi v1 v2 m =
     match f v1 v2 with None -> m | Some v -> add_range lo hi v m in
   fold2_range insert m1 m2 empty
 
 let forall2_range f m1 m2 =
   let e1 = enum m1 and e2 = enum m2 in
-  let rec aux = function 
+  let rec aux = function
       None,None -> true
-    | Some (lo,hi,rx), None -> 
+    | Some (lo,hi,rx), None ->
 	(f lo hi (Some rx) None) && aux (Enum.get e1, None)
-    | None, Some (lo,hi,rx) -> 
+    | None, Some (lo,hi,rx) ->
 	(f lo hi None (Some rx)) && aux (None, Enum.get e2)
     | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo1 < lo2 ->
-	let hi, v1 = 
+	let hi, v1 =
 	  if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
 	  else hi1, Enum.get e1
 	and v2 = Some (lo2,hi2,rx2) in
 	(f lo1 hi (Some rx1) None) && aux (v1, v2)
     | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo2 < lo1 ->
-	let hi, v2 = 
+	let hi, v2 =
 	  if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
 	  else hi2, Enum.get e2	
 	and v1 = Some (lo1,hi1,rx1) in
 	(f lo2 hi None (Some rx2)) && aux (v1,v2)
     | Some (lo1,hi1,rx1), Some (_,hi2,rx2) (* lo1 = lo2 *) ->
-	let hi, v1, v2 = 
+	let hi, v1, v2 =
 	  if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
 	  else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
 	  else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2

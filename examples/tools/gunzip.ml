@@ -9,8 +9,8 @@ open File, IO, Filename
 iter f (args ())
 where let f name =
   if check_suffix name ".gz" then
-    with_file_in  name                     (fun inp -> 
-    with_file_out (chop_suffix name ".gz") (fun out -> 
+    with_file_in  name                     (fun inp ->
+    with_file_out (chop_suffix name ".gz") (fun out ->
     Gzip.with_in  inp                      (fun inp'->
       copy inp' out;
       Sys.remove name)))

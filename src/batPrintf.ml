@@ -1,4 +1,4 @@
-(* 
+(*
  * ExtPrintf - Extended Printf module
  * Copyright (C) 2008 David Teller (contributor)
  *

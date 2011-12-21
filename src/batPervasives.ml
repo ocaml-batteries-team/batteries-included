@@ -4,7 +4,7 @@
  *               2003 Nicolas Cannasse
  *               2007 Zheng Li
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -114,7 +114,7 @@ let rec dump r =
     let rec get_list r =
       if Obj.is_int r then
 	[]
-      else 
+      else
 	let h = Obj.field r 0 and t = get_list (Obj.field r 1) in
 	h :: t
     in
@@ -125,7 +125,7 @@ let rec dump r =
     in
     let s = Obj.size r and t = Obj.tag r in
     (* From the tag, determine the type of block. *)
-    match t with 
+    match t with
       | _ when is_list r ->
 	let fields = get_list r in
 	"[" ^ String.concat "; " (List.map dump fields) ^ "]"
@@ -143,7 +143,7 @@ let rec dump r =
 	let fields = get_fields [] s in
 	let clasz, id, slots =
 	  match fields with
-	    | h::h'::t -> h, h', t 
+	    | h::h'::t -> h, h', t
 	    | _ -> assert false
 	in
 	(* No information on decoding the class (first field).  So just print
@@ -259,38 +259,38 @@ let argv = Sys.argv
   let stdnull           = BatIO.stdnull
 
   let open_out          = BatFile.open_out
-  let open_out_bin name = 
+  let open_out_bin name =
     BatIO.output_channel ~cleanup:true (open_out_bin name)
-  let open_out_gen mode perm name = 
+  let open_out_gen mode perm name =
     BatIO.output_channel ~cleanup:true (open_out_gen mode perm name)
 
   let flush             = BatIO.flush
   let flush_all         = BatIO.flush_all
   let close_all         = BatIO.close_all
-  
+
   let output_char       = BatChar.print
   let output_string     = BatString.print
   let output_text       = Ulib.Text.print
-  let output oc buf pos len = 
+  let output oc buf pos len =
     ignore (BatIO.output oc buf pos len)
   let output_byte       = BatIO.write_byte
   let output_binary_int = BatIO.write_i32
   let output_binary_float out v= BatIO.write_i64 out (BatInt64.bits_of_float v)
   let output_value out v= BatMarshal.output out v
   let close_out         = BatIO.close_out
-  let close_out_noerr out = 
+  let close_out_noerr out =
     try BatIO.close_out out
     with _ -> ()
 
   let open_in           = BatFile.open_in
   let open_in_bin name  = BatIO.input_channel ~cleanup:true (open_in_bin name)
-  let open_in_gen mode perm filename = 
+  let open_in_gen mode perm filename =
     BatIO.input_channel ~cleanup:true (open_in_gen mode perm filename)
 
   let input_char        = BatIO.read
   let input_line ic     = try BatIO.read_line ic with BatIO.No_more_input -> raise End_of_file
   let input             = BatIO.input
-  let really_input inp buf pos len = 
+  let really_input inp buf pos len =
     ignore (BatIO.really_input inp buf pos len)
   let input_byte        = BatIO.read_byte
   let input_binary_int  = BatIO.read_i32
@@ -422,7 +422,7 @@ let argv = Sys.argv
     printer_s ?flags k (BatString.Cap.quote x)
 
 
-    
+
 
   open BatNumber
 

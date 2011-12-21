@@ -24,7 +24,7 @@
 module BaseNum = struct
   include Num
   type t = num
-  
+
   let zero       = Int 0
   let one        = Int 1
   let neg        = minus_num
@@ -53,7 +53,7 @@ module BaseNum = struct
 
   let of_float f =
     let s = Printf.sprintf "%f" f in
-      try 
+      try
 	let (prefix, suffix) = BatString.split s "."    in
 	let float_digits     = String.length suffix  in
 	let divider = pow (Int 10) (Int (String.length s - float_digits)) in
@@ -61,9 +61,9 @@ module BaseNum = struct
 	  div divider dividee
       with Not_found -> of_int (BatInt.of_float f)
 end
-  
+
 include BatNumber.MakeNumeric(BaseNum)
-  
+
 include Num
 let round = round_num
 let floor = floor_num
@@ -73,14 +73,14 @@ let is_integer = is_integer_num
 let approx= integer_num
 let quo   = quo_num
 let sign  = sign_num
-  
+
 let print out t = BatInnerIO.nwrite out (to_string t)
 
 module Infix = struct
   include BatNumber.MakeInfix (BaseNum)
   let (=/), (</), (>/), (<=/), (>=/), (<>/) = (=/), (</), (>/), (<=/), (>=/), (<>/)
   let (+/), (-/), ( */ ), (//), ( **/ ) = (+/), (-/), ( */ ), (//), ( **/ )
-end 
+end
 
 module Compare = BatNumber.MakeCompare (BaseNum)
 

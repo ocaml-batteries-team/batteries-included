@@ -1,4 +1,4 @@
-(* 
+(*
  * Batteries_print - Pretty-printers for the toplevel
  * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *

@@ -2,13 +2,13 @@ open Bigarray
 
 
 let stride = 8 (* bytes *)
-let ba_cat = int64  
+let ba_cat = int64
 
-let blit_string_to_ba s = 
+let blit_string_to_ba s =
   let ba = Array1.create ba_cat c_layout ((String.length s + stride - 1) / stride) in
-  let s' = (Obj.magic (Obj.field (Obj.repr ba) 1) : string) in 
-  for i = 0 to String.length s - 1 do 
-    String.unsafe_set s' i (String.unsafe_get s i); 
+  let s' = (Obj.magic (Obj.field (Obj.repr ba) 1) : string) in
+  for i = 0 to String.length s - 1 do
+    String.unsafe_set s' i (String.unsafe_get s i);
   done;
   ba
 
@@ -23,9 +23,9 @@ let build_srch_ht n_ba =
 let volnit ~n_ba =
   let ht = build_srch_ht n_ba in
   let ret = ref [] in
-  fun ~hs_ba verify -> 
+  fun ~hs_ba verify ->
   for i = 0 to Array1.dim hs_ba - 1 do
-    try 
+    try
       let off = Hashtbl.find ht (Array1.unsafe_get hs_ba i) in
       let srch_off = i * stride - off in
       if verify ~off:srch_off then
@@ -36,21 +36,21 @@ let volnit ~n_ba =
   !ret
 
 
-let vol n = 
+let vol n =
   let s = volnit ~n_ba:(blit_string_to_ba n) in
   fun hs -> s ~hs_ba:(blit_string_to_ba hs) (fun ~off -> String.sub hs off (String.length n) = n)
 
 open Batteries
 
 let rec find_all_aux n hs last acc =
-  match 
+  match
     try Some (String.find_from hs (last+1) n) with Not_found -> None
   with
     | Some i -> find_all_aux n hs i (last::acc)
     | None -> List.rev (last::acc)
 
-let find_all n hs = 
-  try 
+let find_all n hs =
+  try
     let i0 = String.find hs n in
     find_all_aux n hs i0 []
   with Not_found -> []

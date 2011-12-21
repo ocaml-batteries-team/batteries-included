@@ -2,7 +2,7 @@
  * ExtArray - additional and modified functions for arrays.
  * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -121,7 +121,7 @@ let mem a xs =
   loop 0
 
 (**T mem
-   mem 2 [|1;2;3|] 
+   mem 2 [|1;2;3|]
    mem 2 [||] = false
    mem (ref 3) [|ref 1; ref 2; ref 3|]
  **)
@@ -246,7 +246,7 @@ let backwards xs =
   let rec make start xs =
     BatEnum.make
       ~next:(fun () ->
-	       if !start > 0 then 
+	       if !start > 0 then
 		 xs.(BatRef.pre_decr start)
 	       else
 		 raise BatEnum.No_more_elements)
@@ -334,16 +334,16 @@ let make_compare cmp a b =
   let length_a = Array.length a in
   let length_b = Array.length b in
   let length   = BatInt.min length_a length_b in
-  let rec aux i = 
+  let rec aux i =
     if i < length then
       let result = cmp (unsafe_get a i) (unsafe_get b i) in
       if result = 0 then aux (i + 1)
       else               result
     else
-      if length_a = length_b then	0 
+      if length_a = length_b then	0
       else if length_a < length_b then -1
       else                              1
-  in 
+  in
   aux 0
 
 (**T make_compare
@@ -361,11 +361,11 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 	BatInnerIO.nwrite out last
     | 1 ->
 	BatInnerIO.Printf.fprintf out "%s%a%s" first print_a (unsafe_get t 0) last
-    | n -> 
+    | n ->
 	BatInnerIO.nwrite out first;
 	print_a out (unsafe_get t 0);
 	for i = 1 to n - 1 do
-	  BatInnerIO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i) 
+	  BatInnerIO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i)
 	done;
 	BatInnerIO.nwrite out last
 
@@ -396,13 +396,13 @@ let max a = reduce Pervasives.max a
  **)
 
 (* TODO: Investigate whether a second array is better than pairs *)
-let decorate_stable_sort f xs = 
+let decorate_stable_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
   let () = stable_sort (fun (i,_) (j,_) -> compare i j) decorated in
   map (fun (_,x) -> x) decorated
 
 
-let decorate_fast_sort f xs = 
+let decorate_fast_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
   let () = fast_sort (fun (i,_) (j,_) -> compare i j) decorated in
   map (fun (_,x) -> x) decorated

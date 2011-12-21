@@ -41,11 +41,11 @@ let bset s ndx v =
   assert (ndx >= 0 && ndx < fast_length s);
   fast_set s ndx v
 
-let bblit src srcoff dst dstoff len = 
+let bblit src srcoff dst dstoff len =
   assert (srcoff >= 0 && dstoff >= 0 && len >= 0);
   fast_blit src srcoff dst dstoff len
 
-let bfill dst start len c = 
+let bfill dst start len c =
   assert (start >= 0 && len >= 0);
   fast_fill dst start len c
 
@@ -149,22 +149,22 @@ exception Break_int of int
 (* Find highest set element or raise Not_found *)
 let find_msb t =
   (* Find highest set bit in a byte.  Does not work with zero. *)
-  let byte_msb b = 
+  let byte_msb b =
     assert (b <> 0);
-    let rec loop n = 
+    let rec loop n =
       if b land (1 lsl n) = 0 then
         loop (n-1)
       else n in
     loop 7 in
   let n = t.len - 1
   and buf = t.data in
-  try 
+  try
     for i = n downto 0 do
       let byte = bget buf i in
       if byte <> 0 then raise (Break_int ((i lsl log_int_size)+(byte_msb byte)))
     done;
     raise Not_found
-  with 
+  with
     Break_int n -> n
   | _ -> raise Not_found
 
@@ -181,11 +181,11 @@ let compare t1 t2 =
         begin
           (* MSBs differ, we need to scan arrays until we find a
              difference *)
-          let ndx = a lsr log_int_size in 
+          let ndx = a lsr log_int_size in
           assert (ndx < t1.len && ndx < t2.len);
           try
             for i = ndx downto 0 do
-              let b1 = bget t1.data i 
+              let b1 = bget t1.data i
               and b2 = bget t2.data i in
               if b1 <> b2 then raise (Break_int (compare b1 b2))
             done;
@@ -244,7 +244,7 @@ let find_first_set b n =
       else
         Some ((find_lsb byte) + (byte_ndx lsl log_int_size) + bit_offs) in
   find_bit (n lsr log_int_size) (n land int_size)
-      
+
 let enum t =
   let rec make n =
     let cur = ref n in
@@ -262,7 +262,7 @@ let enum t =
   in
   make 0
 
-let raw_create size = 
+let raw_create size =
   let b = bcreate size in
   bfill b 0 size 0;
   { data = b; len = size }
@@ -281,7 +281,7 @@ let inter a b =
 
 (* Note: rest of the array is handled automatically correct, since we
    took a copy of the bigger set. *)
-let union a b = 
+let union a b =
   let d = if a.len > b.len then copy a else copy b in
   let sl = min a.len b.len in
   let abuf = a.data
@@ -291,7 +291,7 @@ let union a b =
   done;
   d
 
-let diff a b = 
+let diff a b =
   let maxlen = max a.len b.len in
   let buf = bcreate maxlen in
   bblit a.data 0 buf 0 a.len;
@@ -311,7 +311,7 @@ let diff a b =
   done;
   { data = buf; len = maxlen }
 
-let sym_diff a b = 
+let sym_diff a b =
   let maxlen = max a.len b.len in
   let buf = bcreate maxlen in
   (* Copy larger (assumes missing bits are zero) *)
@@ -348,7 +348,7 @@ let differentiate_sym t t' =
   t.len <- d.len
 
 (*print a BitSet between [| and |]*)
-(*let print ?(first="[|") ?(last="|]") ?(sep="") out t = 
+(*let print ?(first="[|") ?(last="|]") ?(sep="") out t =
   let print_bit i =
     if is_set t i then BatInnerIO.write out '1'
     else               BatInnerIO.write out '0'

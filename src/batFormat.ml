@@ -1,4 +1,4 @@
-(* 
+(*
  * ExtFormat - Extended Format module
  * Copyright (C) 1996 Pierre Weis
  *               2009 David Teller, LIFO, Universite d'Orleans
@@ -26,8 +26,8 @@ open Format
   let output_of out = fun s i o -> ignore (really_output out s i o)
   let flush_of  out = BatInnerIO.get_flush out
   let newline_of out= fun () -> BatInnerIO.write out '\n'
-  let spaces_of  out= 
-    (* Default function to output spaces. 
+  let spaces_of  out=
+    (* Default function to output spaces.
        Copied from base format.ml*)
     let blank_line = String.make 80 ' ' in
     let rec display_blanks n =
@@ -54,19 +54,19 @@ open Format
 	~newline:(newline_of out)
 	~spaces:(spaces_of out);
       f
-      
+
   let set_formatter_output out =
     BatInnerIO.on_close_out out (fun _ -> pp_print_flush Format.std_formatter ());
-    set_all_formatter_output_functions 
-      ~out:(output_of out) 
+    set_all_formatter_output_functions
+      ~out:(output_of out)
       ~flush:(flush_of out)
       ~newline:(newline_of out)
       ~spaces:(spaces_of out)
 
   let pp_set_formatter_output f out =
     BatInnerIO.on_close_out out (fun _ -> pp_print_flush f ());
-    pp_set_all_formatter_output_functions f 
-      ~out:(output_of out) 
+    pp_set_all_formatter_output_functions f
+      ~out:(output_of out)
       ~flush:(flush_of out)
       ~newline:(newline_of out)
       ~spaces:(spaces_of out)
@@ -81,9 +81,9 @@ open Format
 
   (**{6 Initialization}*)
 
-  let _ = 
+  let _ =
     set_formatter_output BatIO.stdout;
     pp_set_formatter_output Format.std_formatter stdout;
     pp_set_formatter_output Format.err_formatter stderr
 
-    
+

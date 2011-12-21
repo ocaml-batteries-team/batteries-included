@@ -373,7 +373,7 @@ let filter f d =
   assert_equal ~printer:(fun x -> x) (BatDynArray.get e 0) "a"
  **)
 
-let keep f d = let result = filter f d in 
+let keep f d = let result = filter f d in
   d.arr <- result.arr;
   d.len <- result.len
 

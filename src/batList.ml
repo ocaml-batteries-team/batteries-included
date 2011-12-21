@@ -4,7 +4,7 @@
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2008 Red Hat Inc.
  * Copyright (C) 2008 David Rajchenbach-Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -26,7 +26,7 @@ open List
 
 (* Thanks to Jacques Garrigue for suggesting the following structure *)
 type 'a mut_list =  {
-	hd: 'a; 
+	hd: 'a;
 	mutable tl: 'a list
 }
 
@@ -49,7 +49,7 @@ let nth l index =
 	if index < 0 then invalid_arg "Negative index not allowed";
 	let rec loop n = function
 		| [] -> invalid_arg "Index past end of list";
-		| h :: t -> 
+		| h :: t ->
 			if n = 0 then h else loop (n - 1) t
 	in
 	loop index l
@@ -173,7 +173,7 @@ let unique_eq ?eq l = unique ?cmp:eq l
 
 let unique_cmp ?(cmp = Pervasives.compare) l =
   let set      = ref (BatMap.create cmp) in
-  let should_keep x = 
+  let should_keep x =
     if BatMap.mem x !set then false
     else ( set := BatMap.add x true !set; true )
   in
@@ -282,7 +282,7 @@ let exists2 p l1 l2 =
 	in
 	loop l1 l2
 
-let remove_assoc x lst = 
+let remove_assoc x lst =
 	let rec loop dst = function
 		| [] -> ()
 		| (a, _ as pair) :: t ->
@@ -297,7 +297,7 @@ let remove_assoc x lst =
 	loop dummy lst;
 	dummy.tl
 
-let remove_assq x lst = 
+let remove_assq x lst =
 	let rec loop dst = function
 		| [] -> ()
 		| (a, _ as pair) :: t ->
@@ -314,10 +314,10 @@ let remove_assq x lst =
 
 let rfind p l = find p (rev l)
 
-let find_all p l = 
+let find_all p l =
 	let rec findnext dst = function
 		| [] -> ()
-		| h :: t -> 
+		| h :: t ->
 			if p h then
 				let r = { hd = h; tl = [] } in
 				dst.tl <- inj r;
@@ -368,7 +368,7 @@ let rec rindex_ofq e l =
 
 let filter = find_all
 
-let partition p lst = 
+let partition p lst =
 	let rec loop yesdst nodst = function
 		| [] -> ()
 		| h :: t ->
@@ -393,8 +393,8 @@ let partition p lst =
 let split lst =
 	let rec loop adst bdst = function
 		| [] -> ()
-		| (a, b) :: t -> 
-			let x = { hd = a; tl = [] } 
+		| (a, b) :: t ->
+			let x = { hd = a; tl = [] }
 			and y = { hd = b; tl = [] } in
 			adst.tl <- inj x;
 			bdst.tl <- inj y;
@@ -410,7 +410,7 @@ let combine l1 l2 =
 	let rec loop dst l1 l2 =
 		match l1, l2 with
 		| [], [] -> ()
-		| h1 :: t1, h2 :: t2 -> 
+		| h1 :: t1, h2 :: t2 ->
 			let r = { hd = h1, h2; tl = [] } in
 			dst.tl <- inj r;
 			loop r t1 t2
@@ -421,7 +421,7 @@ let combine l1 l2 =
 	dummy.tl
 
 let rec init size f =
-	if size = 0 then [] 
+	if size = 0 then []
 	else if size < 0 then invalid_arg "BatList.init"
 	else
 		let rec loop dst n =
@@ -447,7 +447,7 @@ let mapi f = function
 	| h :: t ->
 		let rec loop dst n = function
 			| [] -> ()
-			| h :: t -> 
+			| h :: t ->
 				let r = { hd = f n h; tl = [] } in
 				dst.tl <- inj r;
 				loop r (n+1) t
@@ -456,7 +456,7 @@ let mapi f = function
 		loop r 1 t;
 		inj r
 
-let iteri f l = 
+let iteri f l =
 	let rec loop n = function
 		| [] -> ()
 		| h :: t ->
@@ -485,7 +485,7 @@ let split_nth index = function
 				| h :: t ->
 					let r = { hd =  h; tl = [] } in
 					dst.tl <- inj r;
-					loop (n-1) r t 
+					loop (n-1) r t
 			in
 			let r = { hd = h; tl = [] } in
 			inj r, loop (index-1) r t
@@ -502,7 +502,7 @@ let remove l x =
 	let rec loop dst = function
 		| [] -> ()
 		| h :: t ->
-			if x = h then 
+			if x = h then
 				dst.tl <- t
 			else
 				let r = { hd = h; tl = [] } in
@@ -580,7 +580,7 @@ let backwards l = enum (rev l) (*TODO: should we make it more efficient?*)
     | []   -> acc
     | h::t -> aux BatEnum.append (BatEnum.singleton h) acc
   in aux l*)
-  
+
 
 let of_backwards e =
   let rec aux acc = match BatEnum.get e with
@@ -595,7 +595,7 @@ let assoc_inv e l =
   | _::t                -> aux t
   in aux l
 
-let sort_unique cmp lst = 
+let sort_unique cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
     (fun (acc, last) elem ->
@@ -604,7 +604,7 @@ let sort_unique cmp lst =
     )
     ([first], first)
     rest
-   in 
+   in
   match sorted with
    | [] -> []
    | hd::tl ->
@@ -613,7 +613,7 @@ let sort_unique cmp lst =
     List.rev rev_result
    end
 
-let group cmp lst = 
+let group cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
     (fun (acc, agr, last) elem ->
@@ -622,7 +622,7 @@ let group cmp lst =
     )
     ([], [first], first)
     rest
-   in 
+   in
   match sorted with
    | [] -> []
    | hd::tl ->
@@ -649,7 +649,7 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
       BatInnerIO.nwrite out last
   | [h]  ->
       BatInnerIO.Printf.fprintf out "%s%a%s" first print_a h last
-  | h::t -> 
+  | h::t ->
       BatInnerIO.nwrite out first;
       print_a out h;
       iter (BatInnerIO.Printf.fprintf out "%s%a" sep print_a) t;
@@ -701,12 +701,12 @@ module Exceptionless = struct
   let find_map f l =
     try Some(find_map f l)
     with Not_found -> None
-      
-  let hd l = 
-    try Some (hd l) 
-    with Failure "hd" -> None 
 
-  let tl l = 
+  let hd l =
+    try Some (hd l)
+    with Failure "hd" -> None
+
+  let tl l =
     try Some (tl l)
     with Failure "tl" -> None
 end
@@ -724,7 +724,7 @@ module Labels = struct
   let rfind ~f l    = rfind f l
   let find ~f l     = find f l
   let findi ~f      = findi f
-  let find_exn ~f   = find_exn f 
+  let find_exn ~f   = find_exn f
   let filter_map ~f = filter_map f
   let remove_if ~f  = remove_if f
   let take_while ~f = take_while f

@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtBool - Extended booleans
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -38,7 +38,7 @@ module BaseBool = struct
 	  [e2] is not evaluated at all. *)
   let zero, one = false, true
   let neg = not
-    
+
   let succ _ = true
   let pred _ = false
   let abs  x = x
@@ -49,14 +49,14 @@ module BaseBool = struct
   let div _ _=
     raise (Invalid_argument "Bool.div")
 
-  let modulo _ _ = 
+  let modulo _ _ =
     raise (Invalid_argument "Bool.modulo")
 
-  let pow _ _ = 
+  let pow _ _ =
     raise (Invalid_argument "Bool.pow")
 
   let compare = compare
-    
+
   let of_int = function
     | 0 -> false
     | _ -> true
@@ -78,14 +78,14 @@ end
 include BatNumber.MakeNumeric(BaseBool)
 module Infix = BatNumber.MakeInfix(BaseBool)
 module Compare = BatNumber.MakeCompare(BaseBool)
-  
+
 external not : bool -> bool = "%boolnot"
 external ( && ) : bool -> bool -> bool = "%sequand"
 external ( || ) : bool -> bool -> bool = "%sequor"
 
 type bounded = t
 let min_num, max_num = false, true
-  
+
 let print out t = BatInnerIO.nwrite out (to_string t)
 let t_printer paren out t = print out t
-  
+

@@ -1,7 +1,7 @@
 (*
  * Odoc_generator_batlib - custom documentation generator for Batteries
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -82,8 +82,8 @@ class mli_generator = object(self)
       | _ -> assert false (*Normally, the root module should be a structure.*)
 
   method handle_module_kind out = function
-    | Module_struct  l -> 
-	fprintf out "struct@[<v 2>@\n%a@\n@]end@\n" 
+    | Module_struct  l ->
+	fprintf out "struct@[<v 2>@\n%a@\n@]end@\n"
 	  (fun out ->
 	     interleave (self#handle_module_element out) (pp_print_newline out)
 	  ) l
@@ -109,7 +109,7 @@ class mli_generator = object(self)
 
   method handle_info out info =
     fprintf out "(**%s*)@\n" (info_string_of_info info)
-    
+
   method handle_text_option out = function
     | None -> ()
     | Some x -> self#handle_text out x
@@ -138,8 +138,8 @@ class mli_generator = object(self)
       | Some (Modtype m) -> self#handle_anonymous_module_type out m
 
   method handle_module out m =
-    fprintf out "%amodule %s = %a@\n" 
-      self#handle_info_option m.m_info 
+    fprintf out "%amodule %s = %a@\n"
+      self#handle_info_option m.m_info
       (Name.simple m.m_name)
       self#handle_module_kind m.m_kind
 
@@ -152,9 +152,9 @@ class mli_generator = object(self)
 	| None   -> fprintf out "module type ??@\n"
 	| Some x -> self#handle_module_type_kind out x) m
 
-  method handle_anonymous_module out m = 
-    fprintf out "%a%a@\n" 
-      self#handle_info_option m.m_info 
+  method handle_anonymous_module out m =
+    fprintf out "%a%a@\n"
+      self#handle_info_option m.m_info
       self#handle_module_kind m.m_kind
 
   method handle_anonymous_module_type out m =
@@ -164,7 +164,7 @@ class mli_generator = object(self)
       | Some x -> self#handle_module_type_kind out x
 
   method handle_module_type_kind out = function
-    | Module_type_struct l       -> 
+    | Module_type_struct l       ->
 	fprintf out "sig@[<v 2>%a@]end@\n"
 	  (fun out ->
 	     interleave (self#handle_module_element out) (pp_print_newline out)
@@ -180,7 +180,7 @@ class mli_generator = object(self)
 	fprintf out "%a with %s"
 	  self#handle_module_type_kind x
 	  y
-	  
+	
 
   method handle_module_type_alias out x =
     match x.mta_module with
@@ -193,18 +193,18 @@ class mli_generator = object(self)
       | Some (Mod m)     -> self#handle_module out m
       | Some (Modtype m) -> self#handle_module_type out m
 
-  method handle_class out x = 
+  method handle_class out x =
     fprintf out "class not implemented yet??\n"
 
   method handle_class_type out _ =
     fprintf out "class type not implemented yet??\n"
 
   method handle_value out x =
-    fprintf out "%a@[<h>val %s : %a@]@\n" 
+    fprintf out "%a@[<h>val %s : %a@]@\n"
       self#handle_info_option x.val_info
       (Name.simple x.val_name)
       self#handle_type_expr   x.val_type
-      (*x.val_name 
+      (*x.val_name
       (fun out l ->
 	 interleave (self#handle_parameter out) (fun () -> fprintf out " -> ") l
       ) x.val_parameters*)
@@ -231,7 +231,7 @@ class mli_generator = object(self)
   method handle_type_args out = function
     | [] -> ()
     | [x]-> fprintf out "%a" self#handle_type_arg x
-    | l  -> fprintf out "(%a)" 
+    | l  -> fprintf out "(%a)"
 	(fun out l ->
 	   interleave (self#handle_type_arg out)
 	     (fun () -> fprintf out ", ") l) l
@@ -252,7 +252,7 @@ class mli_generator = object(self)
 	  ) l
 
   method handle_variant_constructor out x =
-    fprintf out "%s %a%a" 
+    fprintf out "%s %a%a"
       (Name.simple x.vc_name)
       self#handle_type_expr_list x.vc_args
       self#handle_text_option    x.vc_text
@@ -293,7 +293,7 @@ let _ =
   Odoc_args.verbose := true;
   set_mli_generator ();
   verbose ("Generator loaded");
-  Args.add_option ("-html", Arg.Unit 
+  Args.add_option ("-html", Arg.Unit
 		     (fun _ -> Odoc_info.verbose "Deactivating built-in html generator";
 			set_mli_generator())
-		     , "<workaround for ocamlbuild adding -html even when we don't want to>") 
+		     , "<workaround for ocamlbuild adding -html even when we don't want to>")

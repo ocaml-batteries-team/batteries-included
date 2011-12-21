@@ -1,9 +1,9 @@
-(* 
+(*
  * ExtRandom - Additional randomization operations
  * Copyright (C) 1996 Damien Doligez
  *               2009 David Teller, LIFO, Universite d'Orleans
  *               2009 Pierre Chambart
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -33,7 +33,7 @@
   let nativeint = nativeint
   let float     = float
   let bool      = bool
-  let full_range = 
+  let full_range =
     if Sys.word_size = 32 then (* need 31-bits of entropy, bits() gives 30 *)
       fun () -> if bool () then - (bits ())-1 else bits ()
     else (* 64-bit words *)

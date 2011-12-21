@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtInt - Extended integers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -33,9 +33,9 @@ let enum () =
   in BatEnum.from f
 
 module BaseInt = struct
-  
+
   type t = int
-  
+
   let zero, one = 0, 1
 
   external neg : int -> int        = "%negint"
@@ -74,7 +74,7 @@ module BaseInt = struct
   external to_int : int -> int = "%identity"
 
 
-  let of_string x = 
+  let of_string x =
     try int_of_string x
     with Failure "int_of_string" -> raise (Invalid_argument "int_of_string")
   let to_string = string_of_int
@@ -85,7 +85,7 @@ module BaseInt = struct
 
   external to_float : int -> float = "%floatofint"
   external of_float : float -> int = "%intoffloat"
-    
+
   external of_string : string -> int = "caml_int_of_string"
 
   external rem : int -> int -> int = "%modint"
@@ -104,9 +104,9 @@ module BaseInt = struct
   let t_printer paren out t = print out t
 
   let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)
-  let ( --- ) x y = 
-    if x <= y then x -- y 
-    else BatEnum.seq x pred ((<=) y) 
+  let ( --- ) x y =
+    if x <= y then x -- y
+    else BatEnum.seq x pred ((<=) y)
 
 end
 
@@ -155,7 +155,7 @@ module BaseSafeInt = struct
       if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0	then raise Overflow
       else c
 
-  let neg x = 
+  let neg x =
     if x <> min_int then ~- x
     else raise Overflow
 
@@ -166,7 +166,7 @@ module BaseSafeInt = struct
   let pred x =
     if x <> min_int then pred x
     else raise Overflow
-    
+
   let abs x =
     if x <> min_int then abs x
     else raise Overflow
@@ -176,13 +176,13 @@ module BaseSafeInt = struct
     bits). This trick turned out to be *wrong* on 64-bit machines, where
     [Nativeint.mul 2432902008176640000n 21n] and [2432902008176640000 * 21]
     yield the same result, [-4249290049419214848]. *)
-  let shift_bits, mask = 
+  let shift_bits, mask =
     if Sys.word_size = 32 then 16,0xFFFF else 32, (1 lsl 32) - 1
 
-  let mul a b = 
+  let mul a b =
     match a asr shift_bits, b asr shift_bits with
       |	0,0 -> a * b
-      | 0,bh -> 
+      | 0,bh ->
 	let al = a land mask in
 	let cross = bh * al in
 	if cross > mask then raise Overflow;

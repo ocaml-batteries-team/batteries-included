@@ -3,7 +3,7 @@
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller
  *               2008 Edgar Friendly
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -46,8 +46,8 @@ let init len f =
 let starts_with str p =
   let len = length p in
     if length str < len then false
-    else 
-      BatReturn.label 
+    else
+      BatReturn.label
 	(fun label ->
 	   for i = 0 to len - 1 do
 	     if unsafe_get str i <> unsafe_get p i then
@@ -64,7 +64,7 @@ let starts_with str p =
 
 
 let ends_with str p =
-  let el = length p   
+  let el = length p
   and sl = length str in
   let diff = sl - el  in
     if diff < 0 then false (*string is too short*)
@@ -84,7 +84,7 @@ let ends_with str p =
    not (ends_with "" "foo")
 **)
 
-let find_from str ofs sub = 
+let find_from str ofs sub =
   let sublen = length sub in
     if sublen = 0 then ofs (*If [sub] is the empty string, by convention, it may be found wherever we started searching.*)
     else
@@ -113,8 +113,8 @@ let find str sub = find_from str 0 sub
    try ignore (find_from "foo" 2 "foo"); false with Not_found -> true
  **)
 
-let rfind_from str suf sub = 
-  let sublen = length sub 
+let rfind_from str suf sub =
+  let sublen = length sub
   and len    = length str in
     if sublen = 0 then len
     else
@@ -146,7 +146,7 @@ let exists str sub =
 		true
 	with
 		Not_found -> false
-(**T exists 
+(**T exists
    exists "foobarbaz" "obar"
    exists "obar" "obar"
    exists "foobarbaz" ""
@@ -214,7 +214,7 @@ let split str sep =
    try split "abcxyz" "G" |> ignore; false with Not_found -> true
 **)
 
-let rsplit str sep = 
+let rsplit str sep =
   let p = rfind str sep in
   let len = length sep in
   let slen = length str in
@@ -349,7 +349,7 @@ let to_float s = float_of_string s
 let enum s =
   let l = length s in
   let rec make i =
-    BatEnum.make 
+    BatEnum.make
       ~next:(fun () ->
 	       if !i = l then
 		 raise BatEnum.No_more_elements
@@ -367,7 +367,7 @@ let enum s =
 
 let backwards s =
       let rec make i =
-	BatEnum.make 
+	BatEnum.make
 	  ~next:(fun () ->
 		   if !i <= 0 then
 		     raise BatEnum.No_more_elements
@@ -530,7 +530,7 @@ let replace_chars f s =
 	let rec loop i acc =
 		if i = len then
 			acc
-		else 
+		else
 			let s = f (unsafe_get s i) in
 			tlen := !tlen + length s;
 			loop (i+1) (s :: acc)
@@ -557,7 +557,7 @@ let replace_chars f s =
 let replace ~str ~sub ~by =
 	try
 		let i = find str sub in
-		(true, (slice ~last:i str) ^ by ^ 
+		(true, (slice ~last:i str) ^ by ^
                    (slice ~first:(i+(String.length sub)) str))
         with
 		Not_found -> (false, String.copy str)
@@ -632,7 +632,7 @@ let splice s1 off len s2 =
 **)
 
 
-let is_empty s = length s = 0 
+let is_empty s = length s = 0
 (**T is_empty
    String.is_empty ""
    not (String.is_empty "foo")
@@ -655,18 +655,18 @@ end
 
 (* Helper functions for numeric_compare *)
 let rec pos_diff s1 s2 i =  (* finds the first position where the strings differ *)
-  if i = String.length s1 then -2 else 
-    if i = String.length s2 then -1 else 
-      if s1.[i] = s2.[i] then pos_diff s1 s2 (i+1) 
+  if i = String.length s1 then -2 else
+    if i = String.length s2 then -1 else
+      if s1.[i] = s2.[i] then pos_diff s1 s2 (i+1)
       else i
 
 (* scans for the end of a numeric value embedded in a string *)
-let rec num_end i s = 
+let rec num_end i s =
   if i >= String.length s then i else
     if BatChar.is_digit s.[i] then num_end (i+1) s else i
 
 (* scans for the beginning of a numeric value embedded in a string *)
-let rec num_begin i s = 
+let rec num_begin i s =
   if i < 0 then i+1 else
     if BatChar.is_digit s.[i] then num_begin (i-1) s else i+1
 
@@ -676,7 +676,7 @@ let rec numeric_compare_aux s1 s2 ~off =
       -2 -> -1 (* < *)
     | -1 -> 1  (* > *)
     | d (* position of first differing character *)
-	when BatChar.is_digit s1.[d] && BatChar.is_digit s2.[d] -> 
+	when BatChar.is_digit s1.[d] && BatChar.is_digit s2.[d] ->
 	(* Scan backwards for start of number *)
       let b1 = num_begin d s1 and b2 = num_begin d s2 in
 	(* Scan forwards for end of number *)
@@ -688,7 +688,7 @@ let rec numeric_compare_aux s1 s2 ~off =
       let n1 = Big_int.big_int_of_string sl1 in
       let n2 = Big_int.big_int_of_string sl2 in
 	  (* FIXME: ignores text after equal numbers -- "a1b" = "a01c" *)
-      Big_int.compare_big_int n1 n2 
+      Big_int.compare_big_int n1 n2
     | _ -> (* differing character isn't a number in both *)
       Pervasives.compare s1 s2 (* normal compare *)
 
@@ -740,7 +740,7 @@ let quote s = BatPrintf.sprintf2 "%S" s
    quote "\"foo\"" = "\"\\\"foo\\\"\""
    quote "\n" = "\"\\n\""
 **)
-  
+
 module Exceptionless =
 struct
   let find_from str ofs sub =
@@ -781,7 +781,7 @@ let enum          = enum
 let of_enum       = of_enum
 let backwards     = backwards
 let of_backwards  = of_backwards
-  
+
 let of_int        = of_int
 let of_float      = of_float
 let of_char       = of_char

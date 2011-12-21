@@ -1,5 +1,5 @@
   Syntax description :
-   
+
      The global form is "[? output | comp_item ; comp_item ; ... ?]".
      A comp_item is either a guard (a boolean expression), or
      a generator of the form "<patt> <- <expr>" . Variables bound in
@@ -25,7 +25,7 @@
          (fun p -> Enum.map (fun k -> pow p k) (List.enum (seq 1 (p - 1))))
          (Enum.filter (fun p -> prime p) (2 -- 100))))
 
-  Compilation : ocamlbuild pa_comprehension.cmo  
+  Compilation : ocamlbuild pa_comprehension.cmo
   or ocamlc -pp camlp4rf -c -I +camlp4 pa_comprehension.ml
 
   Use : camlp4o pa_comprehension.cmo test.ml

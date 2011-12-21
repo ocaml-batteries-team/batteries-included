@@ -22,7 +22,7 @@ let delta f x =
   let t1 = Sys.time () in
     t1 -. t0
 
-let _ = 
+let _ =
   Printf.printf "Strings: %fms\n" (delta (fun () ->
 	for i = 1 to 10 do
 	  test_strings 10000

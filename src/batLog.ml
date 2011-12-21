@@ -1,7 +1,7 @@
-(* 
+(*
  * BatLog - Simple Logging module
  * Copyright (C) 2011 The Batteries Included Team
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -42,10 +42,10 @@ let get_flags () = !flags
 let set_flags fs = flags := fs
 
 let print_flag ?fp t oc = function
-  | `Date -> 
-    let {Unix.tm_year=y; tm_mon=m; tm_mday=d} = Lazy.force t in 
+  | `Date ->
+    let {Unix.tm_year=y; tm_mon=m; tm_mday=d} = Lazy.force t in
     BatPrintf.fprintf oc "%4d/%02d%02d" (y + 1900) (m + 1) d
-  | `Time -> 
+  | `Time ->
     let {Unix.tm_hour=h; tm_min=m; tm_sec=s} = Lazy.force t in
     BatPrintf.fprintf oc "%2d:%02d:%02d" h m s
   | `Filepos ->

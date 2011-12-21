@@ -94,7 +94,7 @@ let handle_test mn (k, str, pos) =
           | `S ->
             let tests = String.concat "\n" tests in
 	    Printf.printf "#%d \"%s\"\n\"%s:%d\" >:: (fun () -> %s) ;\n" pos.pos_lnum pos.pos_fname pos.pos_fname pos.pos_lnum tests
-      end ; 
+      end ;
       Printf.printf "] ;;\n%!"
     end
     | _ ->
@@ -176,7 +176,7 @@ and pragma k start buf = parse
         "let () = Tests.register suite;;"
       ] ;
     Pervasives.flush stdout
-      
+
   let () =
     if Array.length Sys.argv != 2 then failwith "make_suite: Missing filename to process" ;
     process Sys.argv.(1)

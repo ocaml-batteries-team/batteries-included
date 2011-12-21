@@ -32,7 +32,7 @@ let value offset = right string offset
 
 (*-----------------------------*)
 (* get a 5-byte string, skip 3, then grab 2 8-byte strings, then the rest*)
-let foo s = open Enum in let e = enum s in 
+let foo s = open Enum in let e = enum s in
   [? List : of_enum (f e) | f <- List : [take 5; skip 3 |- take 5; take 5 ; identity]]
 
 (* split at 'sz' byte boundaries *)
@@ -68,7 +68,7 @@ print_endline string
 
 (* Change "is" to "wasn't"*)
 let string = splice string 5 2 "wasn't"
-(*This wasn't what you have *)   
+(*This wasn't what you have *)
 
 (*This wasn't wonderous *)
 let string = splice string (-11) max_int "ondrous";;
@@ -197,7 +197,7 @@ let array_of_chars = Array.init (String.length s) (fun i -> s.[i]);;
 let array_of_codes = Array.init (String.length s) (fun i -> Char.code s.[i]);;
 
 (* or one can just use String.iter *)
-String.iter 
+String.iter
   (fun i -> (*do something with s.[i], the ith char of the string*)) s;;
 
 (* The following function can be used to return a list of all unique keys in a
@@ -267,12 +267,12 @@ let slurp_to_string filename =
 let cksum16 fn =
   let addString sum s =
     let sm = ref sum in
-    String.iter (fun c -> sm := !sm + (Char.code c)) (s ^ "\n"); 
+    String.iter (fun c -> sm := !sm + (Char.code c)) (s ^ "\n");
     !sm mod 65537 (* 2^16 - 1 *)in
   List.fold_left addString 0 (slurp_to_list fn);;
 
 (* or *)
-let cksum16 fn = 
+let cksum16 fn =
   let sum = ref 0
   and s = slurp_to_string fn in
   String.iter (fun c -> sum := (!sum + (Char.code c)) mod 65537) s;
@@ -296,8 +296,8 @@ let _ =
   let files = Array.sub Sys.argv fs (Array.length Sys.argv - fs) in
   let print_file f =
     let s = slurp_to_string f in
-    String.iter 
-      (fun c -> 
+    String.iter
+      (fun c ->
         print_char c;
         ignore(Unix.select [] [] [] (0.005 *. delay))) s in
   Array.iter print_file files;;
@@ -308,7 +308,7 @@ Reversing a String by Word or Character
 (* To flip the characters of a string, we can use a for loop.
  * Note that this version does not destructively update the string *)
 
-let reverse s = 
+let reverse s =
   let len = String.length s - 1 in
   let s' = String.create (len + 1) in
   for i = 0 to len do
@@ -326,23 +326,23 @@ let reverse_in_place s =
   done;;
 
 (* To reverse the words in a string, we can use String.concat, Str.split and
- * List.rev.  Note that this requires us to load in the Str module -- 
+ * List.rev.  Note that this requires us to load in the Str module --
  * use `#load "str.cma"' in* the toplevel, or be sure to include str.cma in the
  * list of object files when compiling your code.  E.g.:
  *      ocamlc other options str.cma other files   -or-
- *      ocamlopt other options str.cmxa other files 
+ *      ocamlopt other options str.cmxa other files
 *)
 
 let reverse_words s =
   String.concat " " (List.rev (Str.split (Str.regexp " ") s));;
 
-let is_palindrome s = 
+let is_palindrome s =
   s = reverse s;;
 
 (* We do need to do a bit more work that Perl to find the big palindromes in
  * /usr/share/dict/words ... *)
 
-let findBigPals () = 
+let findBigPals () =
   let words = open_in "/usr/share/dict/words" in
   let rec loop () =
     let w = input_line words in
@@ -357,7 +357,7 @@ Expanding and Compressing Tabs
 let expand_tabs ?(spaces = 8) s =
   Str.global_replace (Str.regexp "\t") (String.make spaces ' ') s;;
 
-let compress_tabs ?(spaces = 8) s = 
+let compress_tabs ?(spaces = 8) s =
   Str.global_replace (Str.regexp (String.make spaces ' ')) "\t" s;;
 
 (*
@@ -437,11 +437,11 @@ let randcap fn =
 
 ##
 # User DatAbAse
-# 
+#
 # Note That this fIle is consuLTed wHen the sysTeM Is runninG In single-user
 # modE.  At other times this iNformAtion is handlEd by one or moRe oF:
-# lOokupD DIrectorYServicEs  
-# By default, lOOkupd getS inFormaTion frOm NetInFo, so thiS fIle will 
+# lOokupD DIrectorYServicEs
+# By default, lOOkupd getS inFormaTion frOm NetInFo, so thiS fIle will
 # not be cOnsultEd unless you hAvE cHaNged LOokupd's COnfiguratiOn.
 # This fiLe is usEd while in siNgle UseR Mode.
 #
@@ -478,8 +478,8 @@ let wrap width s =
   let l = Str.split (Str.regexp " ") s in
   Format.pp_set_margin Format.str_formatter width;
   Format.pp_open_box Format.str_formatter 0;
-  List.iter 
-    (fun x -> 
+  List.iter
+    (fun x ->
       Format.pp_print_string Format.str_formatter x;
       Format.pp_print_break Format.str_formatter 1 0;) l;
   Format.flush_str_formatter ();;
@@ -510,8 +510,8 @@ let wrap ?(lead=0) ?(indent=0) width s =
   Format.pp_set_margin Format.str_formatter width;
   Format.pp_open_box Format.str_formatter 0;
   Format.pp_print_break Format.str_formatter lead indent;
-  List.iter 
-    (fun x -> 
+  List.iter
+    (fun x ->
       Format.pp_print_string Format.str_formatter x;
       Format.pp_print_break Format.str_formatter 1 indent;) l;
   Format.flush_str_formatter ();;
@@ -550,11 +550,11 @@ Escaping Characters
 ** suit but it is not automatically pulled in by the command line
 ** interpreter or the compilers.
 **
-** The "#load" line is only needed if you are running this in the 
+** The "#load" line is only needed if you are running this in the
 ** command interpretter.
 **
-** If you are using either of the ocaml compilers, you will need 
-** to remove the "#load" line and link in str.cmxa in the final 
+** If you are using either of the ocaml compilers, you will need
+** to remove the "#load" line and link in str.cmxa in the final
 ** compile command.
 *)
 

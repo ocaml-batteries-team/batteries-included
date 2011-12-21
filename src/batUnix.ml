@@ -44,13 +44,13 @@
 
   let input_add k v =
     BatConcurrent.sync !lock (Wrapped_in.add wrapped_in k) v
-      
+
   let input_get k =
     BatConcurrent.sync !lock (Wrapped_in.find wrapped_in) k
 
   let output_add k v =
     BatConcurrent.sync !lock (Wrapped_out.add wrapped_out k) v
-      
+
   let output_get k =
     BatConcurrent.sync !lock (Wrapped_out.find wrapped_out) k
 
@@ -64,8 +64,8 @@
       BatConcurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
       output
 
-  let _ = 
-    input_add stdin Pervasives.stdin; 
+  let _ =
+    input_add stdin Pervasives.stdin;
     output_add stdout Pervasives.stdout;
     output_add stderr Pervasives.stderr
 
@@ -137,11 +137,11 @@
 (**
    {6 Network}
 *)
-      
+
   let ( <| ) f x = f x
   let ( *** ) f g = fun (x,y) -> (f x, g y)
 
-  let shutdown_connection cin = 
+  let shutdown_connection cin =
     try shutdown_connection (input_get cin)
     with Not_found -> raise (Invalid_argument "Unix.descr_of_in_channel")
 

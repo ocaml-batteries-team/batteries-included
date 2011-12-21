@@ -1,4 +1,4 @@
-(* 
+(*
  * CharParser - Parsing character strings
  * Copyright (C) 2008 David Teller
  *
@@ -59,7 +59,7 @@ let char   c = label ("\"" ^ BatString.of_char c ^ "\"") (exactly c)
 
 let string s = label ("\"" ^ s ^ "\"") (
   let len = String.length s in
-  let rec aux i = 
+  let rec aux i =
     if i < len then exactly s.[i] >>= fun _ -> aux (i+1)
     else return s
   in aux 0
@@ -72,11 +72,11 @@ let case_char c =
 let case_string s = label ("case insensitive \"" ^ s ^ "\"") (
   let s'  = String.lowercase s in
   let len = String.length s'   in
-  let rec aux i = 
+  let rec aux i =
     if i < len then case_char s'.[i] >>= fun _ -> aux (i+1)
     else return s
   in aux 0
-)   
+)
 
 let whitespace = satisfy BatChar.is_whitespace
 
@@ -87,7 +87,7 @@ let letter    = label "letter" (satisfy BatChar.is_letter)
 let uppercase_latin1   = label "upper case char (possibly accentuated)"
   ( satisfy BatChar.is_uppercase_latin1 )
 
-let lowercase_latin1   = label "lower case char (possibly accentuated)"  
+let lowercase_latin1   = label "lower case char (possibly accentuated)"
   ( satisfy BatChar.is_lowercase_latin1 )
 let latin1    = label "letter (possibly accentuated)" (satisfy BatChar.is_latin1)
 

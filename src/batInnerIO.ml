@@ -1,4 +1,4 @@
-(* 
+(*
  * BatInnerIO - Abstract input/output (inner module)
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 Philippe Strauss
@@ -104,12 +104,12 @@ let uid = ref 0
 let uid () = post_incr uid
 
 let on_close_out out f =
-  BatConcurrent.sync !lock (fun () -> 
+  BatConcurrent.sync !lock (fun () ->
 			   let do_close = out.out_close in
 			     out.out_close <- (fun () -> f out; do_close ())) ()
 
 let on_close_in inp f =
-  BatConcurrent.sync !lock (fun () -> 
+  BatConcurrent.sync !lock (fun () ->
 			   let do_close = inp.in_close in
 			     inp.in_close <- (fun () -> f inp; do_close ())) ()
 
@@ -122,7 +122,7 @@ let close_in i =
 
 
 let wrap_in ~read ~input ~close ~underlying =
-  let result = 
+  let result =
   {
     in_read     = read;
     in_input    = input;
@@ -130,7 +130,7 @@ let wrap_in ~read ~input ~close ~underlying =
     in_id       = uid ();
     in_upstream = weak_create 2
   }
-in 
+in
     BatConcurrent.sync !lock (List.iter (fun x -> weak_add x.in_upstream result)) underlying;
     Gc.finalise close_in result;
     result
@@ -172,7 +172,7 @@ let close_out o =
 let ignore_close_out out = ignore (close_out out)
 
 let wrap_out ~write ~output ~flush ~close ~underlying  =
-  let rec out = 
+  let rec out =
     {
       out_write  = write;
       out_output = output;
@@ -183,10 +183,10 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
       out_id     = uid ();
       out_upstream = weak_create 2
     }
-  in 
+  in
   let o = cast_output out in
     BatConcurrent.sync !lock (List.iter (fun x -> weak_add x.out_upstream o)) underlying;
-    outputs_add (cast_output out); 
+    outputs_add (cast_output out);
     Gc.finalise ignore_close_out out;
     out
 
@@ -228,7 +228,7 @@ let really_output o s p l' =
 	if p + l' > sl || p < 0 || l' < 0 then invalid_arg "BatIO.really_output";
    	let l = ref l' in
 	let p = ref p in
-	while !l > 0 do 
+	while !l > 0 do
 		let w = o.out_output s !p !l in
 		if w = 0 then raise Sys_blocked_io;
 		p := !p + w;
@@ -261,7 +261,7 @@ let really_nread i n =
 	if n < 0 then invalid_arg "BatIO.really_nread";
 	if n = 0 then ""
 	else
-	let s = String.create n 
+	let s = String.create n
 	in
 	ignore(really_input i s 0 n);
 	s
@@ -365,7 +365,7 @@ let output_buffer buf =
 
 (** A placeholder used to allow recursive use of [self]
     in an [input_channel]*)
-let placeholder_in = 
+let placeholder_in =
   { in_read  = (fun () -> ' ');
     in_input = (fun _ _ _ -> 0);
     in_close = noop;
@@ -373,15 +373,15 @@ let placeholder_in =
     in_upstream= weak_create 0 }
 let input_channel ?(autoclose=true) ?(cleanup=false) ch =
   let me = ref placeholder_in (*placeholder*)
-  in let result = 
+  in let result =
   create_in
     ~read:(fun () -> try input_char ch
-	   with End_of_file -> 
+	   with End_of_file ->
 	     if autoclose then close_in !me;
 	     raise No_more_input)
     ~input:(fun s p l ->
 	      let n = Pervasives.input ch s p l in
-		if n = 0 then 
+		if n = 0 then
 		  begin
                     if autoclose then close_in !me else ();
 		    raise No_more_input
@@ -396,12 +396,12 @@ let output_channel ?(cleanup=false) ch =
     create_out
       ~write: (fun c     -> output_char ch c)
       ~output:(fun s p l -> Pervasives.output ch s p l; l)
-      ~close: (if cleanup then fun () -> 
+      ~close: (if cleanup then fun () ->
 		 begin
 (*		   Printf.eprintf "Cleaning up\n%!";*)
-		   Pervasives.close_out ch 
+		   Pervasives.close_out ch
 		 end
-	       else fun () -> 
+	       else fun () ->
 		 begin
 (*		   Printf.eprintf "Not cleaning up\n%!";*)
 		   Pervasives.flush ch
@@ -464,7 +464,7 @@ let read_signed_byte i =
 		c - 256
 	else
 		c
-  
+
 let read_string i =
 	let b = Buffer.create 8 in
 	let rec loop() =
@@ -613,7 +613,7 @@ let stdin  = input_channel Pervasives.stdin
 let stdout = output_channel Pervasives.stdout
 let stderr = output_channel Pervasives.stderr
 let stdnull= create_out
-  ~write:ignore 
+  ~write:ignore
   ~output:(fun _ _ l -> l)
   ~flush:ignore
   ~close:ignore
@@ -643,7 +643,7 @@ sig
 
   val sprintf:  ('a, unit, string) format -> 'a
     (** As [fprintf] but outputs are replaced with
-	strings. In particular, any function called with 
+	strings. In particular, any function called with
 	[%a] should have type [unit -> string].*)
 
   val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
@@ -1125,7 +1125,7 @@ let mkprintf k out fmt =
 	 | '%' -> scan_format fmt v n i cont_s cont_a cont_t cont_f cont_m
 	 |  c  -> write out c; doprn n (succ i)
     and cont_s n s i =
-      nwrite out s; 
+      nwrite out s;
       doprn n i
     and cont_a n printer arg i =
       printer out arg;
@@ -1134,13 +1134,13 @@ let mkprintf k out fmt =
       printer out;
       doprn n i
     and cont_f n i =
-      flush out; 
+      flush out;
       doprn n i
     and cont_m n xf i =
       let m = Sformat.add_int_index (count_arguments_of_format xf) n in
 	pr (Obj.magic (fun _ -> doprn m i)) n xf v
 
-    in doprn n 0 
+    in doprn n 0
   in let kpr = pr k (Sformat.index_of_int 0) in
     kapr kpr fmt;;
 
@@ -1162,7 +1162,7 @@ let bprintf2 buf fmt = kbprintf2 ignore buf fmt
    left as example:
 
 [
-let sprintf2    fmt = 
+let sprintf2    fmt =
   let out = output_string () in
     mkprintf (fun out -> close_out out) out fmt
 ]
@@ -1171,7 +1171,7 @@ let sprintf2    fmt =
    Other possible implementation of [bprintf2],
    left as example:
 [
-let bprintf2 buf fmt = 
+let bprintf2 buf fmt =
   let out = output_buffer buf in
     mkprintf ignore out fmt
 ]*)

@@ -23,7 +23,7 @@ let ug () = ()
 
 let bg () = Random.bool ()
 
-let fg () = 
+let fg () =
   exp (Random.float 15. *. (if Random.float 1. < 0.5 then 1. else -1.))
   *. (if Random.float 1. < 0.5 then 1. else -1.)
 
@@ -31,7 +31,7 @@ let pfg () = abs_float (fg ())
 let nfg () = -.(pfg ())
 
 (* natural number generator *)
-let nng () = 
+let nng () =
   let p = Random.float 1. in
   if p < 0.5 then Random.int 10
   else if p < 0.75 then Random.int 100
@@ -41,11 +41,11 @@ let nng () =
 let neg_ig () = -(nng ())
 
 (* Uniform random int generator *)
-let upos = 
-  if Sys.word_size = 32 then 
+let upos =
+  if Sys.word_size = 32 then
     fun () -> Random.bits ()
   else (* word size = 64 *)
-    fun () -> 
+    fun () ->
       Random.bits ()                        (* Bottom 30 bits *)
       lor (Random.bits () lsl 30)           (* Middle 30 bits *)
       lor ((Random.bits () land 3) lsl 60)  (* Top 2 bits *)  (* top bit = 0 *)
@@ -142,7 +142,7 @@ let triple (g1,p1) (g2,p2) (g3,p3) = (tg g1 g2 g3, pp_triple p1 p2 p3)
 
 
 (** given a list, returns generator that picks at random from list *)
-let oneofl xs () = 
+let oneofl xs () =
   List.nth xs (Random.int (List.length xs))
 
 (** Given a list of generators, returns generator that randomly uses one of the generators
@@ -155,12 +155,12 @@ let always x () = x
 
 (** Given list of [(frequency,value)] pairs, returns value with probability proportional
     to given frequency *)
-let frequency xs = 
+let frequency xs =
   let sums = sum_int (List.map fst xs) in
   let i = Random.int sums in
-  let rec aux acc = function 
-    | ((x,g)::xs) -> if i < acc+x then g else aux (acc+x) xs 
-    | _ -> failwith "frequency" 
+  let rec aux acc = function
+    | ((x,g)::xs) -> if i < acc+x then g else aux (acc+x) xs
+    | _ -> failwith "frequency"
   in
   aux 0 xs
 
@@ -179,8 +179,8 @@ let rec laws iter gen func =
   if iter <= 0 then None
   else
     let input = gen () in
-    try 
-      if not (func input) then Some input 
+    try
+      if not (func input) then Some input
       else laws (iter-1) gen func
     with _ -> Some input
 
@@ -202,9 +202,9 @@ let statistic xs =
   let stat_num = statistic_number xs in
   let totals = sum_int (List.map fst stat_num) in
   List.map (fun (i, v) -> ((i * 100) / totals), v) stat_num
-    
+
 let laws2 iter func gen =
-  let res = foldn ~init:[] iter 
+  let res = foldn ~init:[] iter
     ~f:(fun acc _ -> let n = gen () in (n, func n) :: acc)
   in
   let stat = statistic (List.map (fun (_, (_, v)) -> v) res) in

@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtInt64 - Extended 64-bit integers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -22,11 +22,11 @@
 
 module BaseInt64 = struct
   include Int64
-    
+
   let modulo = rem
   let pow = BatNumber.generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul
 end
-  
+
 include BatNumber.MakeNumeric(BaseInt64)
 module Infix = BatNumber.MakeInfix(BaseInt64)
 module Compare = BatNumber.MakeCompare(BaseInt64)
@@ -60,7 +60,7 @@ external bits_of_float : float -> int64 = "caml_int64_bits_of_float"
 external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
 external format : string -> int64 -> string = "caml_int64_format"
 
-  
+
 let print out t = BatInnerIO.nwrite out (to_string t)
 let xprint out t = BatInnerIO.Printf.fprintf out "%Lx" t
 let t_printer paren out t = print out t

@@ -2,7 +2,7 @@
  * ExtDigest - Additional functions for message digests
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -23,7 +23,7 @@ open BatIO
 
 (*Imported from [Digest.input] -- the functions used take advantage of
   [BatIO.input] rather than [in_channel]*)
-let input inp = 
+let input inp =
   let digest = String.create 16 in
   let _      = really_input inp digest 0 16 in
     digest
@@ -33,7 +33,7 @@ let output = BatIO.nwrite
 
 
 let channel inp len = (*TODO: Make efficient*)
-  if len >= 0 then 
+  if len >= 0 then
     let buf = String.create len             in
     let _   = BatIO.really_input inp buf 0 len in
       Digest.string buf

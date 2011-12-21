@@ -1,4 +1,4 @@
-let arr = 
+let arr =
   [|08; 02; 22; 97; 38; 15; 00; 40; 00; 75; 04; 05; 07; 78; 52; 12; 50; 77; 91; 08;
     49; 49; 99; 40; 17; 81; 18; 57; 60; 87; 17; 40; 98; 43; 69; 48; 04; 56; 62; 00;
     81; 49; 31; 73; 55; 79; 14; 29; 93; 71; 40; 67; 53; 88; 30; 03; 49; 13; 36; 65;
@@ -24,7 +24,7 @@ let arr =
 let get r c = arr.(r * 20 + c)
 
 
-let best_lr = 
+let best_lr =
   let best = ref 1 in
   let test f = best := max !best (f 0 * f 1 * f 2 * f 3) in
   for row = 0 to 19 do
@@ -32,7 +32,7 @@ let best_lr =
       let lr i = get row (col + i)
       and tb i = get (row+i) col
       and d1 i = get (row+i) (col+i)
-      and d2 i = get (row-i) (col+i) in      
+      and d2 i = get (row-i) (col+i) in
       if col + 3 <= 19 then test lr;
       if row + 3 <= 19 then test tb;
       if (row + 3 <= 19 && col + 3 <= 19) then test d1;

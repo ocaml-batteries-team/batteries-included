@@ -35,10 +35,10 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   (* "[?" and "?]" are not recognized as delimiters by the Camlp4
      lexer; This token parser will spot "["; "?" and "?"; "]" token
      and insert "[?" and "?]" instead.
-     
+
      Thanks to Jérémie Dimino for the idea. *)
-  value rec delim_filter older_filter stream = 
-    let rec filter = parser 
+  value rec delim_filter older_filter stream =
+    let rec filter = parser
     [ [: `(KEYWORD "[", loc); rest :] ->
         match rest with parser
         [ [: `(KEYWORD "?", _) :] -> [: `(KEYWORD "[?", loc); filter rest :]
@@ -69,22 +69,22 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
           [ Some (KEYWORD "<-") -> n
           | Some (KEYWORD ("[" | "[<")) ->
               skip_patt (ignore_upto "]" (n + 1) + 1)
-          | Some (KEYWORD "(") -> 
+          | Some (KEYWORD "(") ->
               skip_patt (ignore_upto ")" (n + 1) + 1)
-          | Some (KEYWORD "{") -> 
+          | Some (KEYWORD "{") ->
               skip_patt (ignore_upto "}" (n + 1) + 1)
           | Some (KEYWORD ("as" | "::" | "," | "_"))
           | Some (LIDENT _ | UIDENT _) -> skip_patt (n + 1)
           | Some _ | None -> raise Stream.Failure ]
         and ignore_upto end_kwd n =
           match stream_peek_nth n strm with
-          [ Some (KEYWORD prm) when prm = end_kwd -> n 
+          [ Some (KEYWORD prm) when prm = end_kwd -> n
           | Some (KEYWORD ("[" | "[<")) ->
               ignore_upto end_kwd (ignore_upto "]" (n + 1) + 1)
           | Some (KEYWORD "(") ->
               ignore_upto end_kwd (ignore_upto ")" (n + 1) + 1)
-          | Some (KEYWORD "{") -> 
-              ignore_upto end_kwd (ignore_upto "}" (n + 1) + 1)        
+          | Some (KEYWORD "{") ->
+              ignore_upto end_kwd (ignore_upto "}" (n + 1) + 1)
           | None | Some EOI -> raise Stream.Failure
           | Some _ -> ignore_upto end_kwd (n + 1) ]
         in
@@ -95,7 +95,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
       (fun strm ->
          let rec after_longident n =
            match stream_peek_nth n strm with
-           [ Some (UIDENT _) ->         
+           [ Some (UIDENT _) ->
                match stream_peek_nth (n+1) strm with
                [ Some (KEYWORD ".") ->
                    let n' = after_longident (n+2) in
@@ -109,14 +109,14 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
       | n ->
           match stream_peek_nth n strm with
           [ Some (KEYWORD ":") -> ()
-          | _ -> raise Stream.Failure ]]); 
+          | _ -> raise Stream.Failure ]]);
 
   (* map, filter, concat are generalized version of
      Camlp4ListComprehension, abstracted over the module name *)
   value map _loc m p e l =
     match (p, e) with
     [ (<:patt< $lid:x$ >>, <:expr< $lid:y$ >>) when x = y -> l
-    | _ -> 
+    | _ ->
         if Ast.is_irrefut_patt p then
           <:expr< $id:m$.map (fun $p$ -> $e$) $l$ >>
         else
@@ -145,12 +145,12 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
         | ( <:ident< $uid:a$ >>, <:ident< $uid:a'$ >> )
           -> a = a'
         | _ -> False ];
-        
+
   (* comprehension building function :
-     
+
      comprehension may use numerous data structures modules, eg.
      [? List : (a,b) | a <- List : foo; b <- Array : bar ]
-     
+
      When different modules are used, the "lingua franca" is enum :
      the input module (here Array) is converted to Enum, and the
      enumeration is then converted back into the output module (here
@@ -159,7 +159,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
      is assumed that they are generally more efficient than the unkown
      data structure modules, when the structure of the data need not
      to be preserved).
-     
+
      In the special case were the input module and output module are
      the same (here the second List and the first List module), we use
      the internal map/filter/filter_map/concat operations. That means
@@ -182,7 +182,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
       match gs with
       [ [] -> e
       | [hd::tl] ->
-        let g = List.fold_left (fun e g -> <:expr< $g$ && $e$ >> ) hd tl in  
+        let g = List.fold_left (fun e g -> <:expr< $g$ && $e$ >> ) hd tl in
         filter _loc m p g e ] in
     let rec build m expr guards = fun
       [ [Gen m' p gen] -> (* final output, last generator : map *)
@@ -214,7 +214,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
     expr: LEVEL "simple"
     [[ "[?"; (m, output) = comp_expr; "|"; comp = LIST1 comp_item SEP ";"; "?]" ->
          compr _loc m output comp ]];
-    
+
     comp_item:
       [[ test_patt_lessminus; p = patt; "<-"; (m, gen) = comp_expr -> Gen (m, p, gen)
        | guard = expr LEVEL "top" -> Guard guard ]];

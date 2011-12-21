@@ -1,9 +1,9 @@
-(* 
+(*
  * ExtNativeInt - Extended native ints
  * Copyright (C) 2005 Damien Doligez
  *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -69,9 +69,9 @@ external to_int64 : nativeint -> int64 = "%int64_of_nativeint"
 external of_string : string -> nativeint = "caml_nativeint_of_string"
 external format : string -> nativeint -> string = "caml_nativeint_format"
 
-  
+
 type bounded = t
 let min_num, max_num = min_int, max_int
-  
+
 let print out t = BatInnerIO.Printf.fprintf out "%nx" t
 let t_printer paren out t = print out t
