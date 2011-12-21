@@ -1,3 +1,1 @@
-<bench_int.ml*>: pkg_benchmark
-<bench_map.ml*>: pkg_benchmark
 <bench_set.ml*>: pkg_benchmark

@@ -18,7 +18,7 @@ let file_lines_of fn =
     (fun () -> close_in ic)
     (BatEnum.from (fun () -> try input_line ic with End_of_file -> raise BatEnum.No_more_elements))
 
-let rfb2 fn = 
+let rfb2 fn =
    BatList.of_enum (file_lines_of fn)
 
 let rfb3 fn = BatList.of_enum (BatIO.lines_of2 (BatFile.open_in fn))
@@ -77,7 +77,7 @@ let read_line2 =
       let nread = input.in_input buff 0 buff_len in
       let rec loop i =
         if i = nread then None
-        else 
+	else
           if buff.[i] = '\n' then Some i
           else loop (i + 1) in
       match loop 0 with
@@ -93,13 +93,13 @@ let read_line2 =
             Buffer.contents b
           end else
             find_chunk ()
-    in find_chunk ()            
+    in find_chunk ()
 
 (** [apply_enum f x] applies [f] to [x] and converts exceptions
     [No_more_input] and [Input_closed] to [BatEnum.No_more_elements]*)
 let apply_enum do_close f x =
   try f x
-  with 
+  with
     | BatIO.No_more_input -> raise BatEnum.No_more_elements
     | BatInnerIO.Input_closed  -> do_close := false; raise BatEnum.No_more_elements
 
@@ -159,7 +159,7 @@ let read_line3 =
       let nread = input.in_input buff 0 buff_len in
       let rec loop i =
         if i = nread then None
-        else 
+	else
           if buff.[i] = '\n' then Some i
           else loop (i + 1) in
       match loop 0 with
@@ -175,21 +175,19 @@ let read_line3 =
             Buffer.contents b
           end else
             find_chunk ()
-    in find_chunk ()            
+    in find_chunk ()
 
 let rfb5 fn = BatList.of_enum (make_enum read_line3 (BatFile.open_in fn))
 
-
-
-let wrap f () = f "setup.ml"
-
-let () = 
+let () =
   Bench.config.Bench.samples <- 300;
-  Bench.bench ["readfile", wrap readfile;
-               "readfile_batteries", wrap readfile_batteries;
-               "file_lines_of", wrap rfb2;
-               "lines_of2", wrap rfb3;
-               "push_lines_of", wrap rfb4;
-               "push_lines_of2", wrap rfb5;
-              ];
-    
+  let funs = [ "readfile", readfile;
+	       "readfile_batteries", readfile_batteries;
+	       "file_lines_of", rfb2;
+	       "lines_of2", rfb3;
+	       "push_lines_of", rfb4;
+	       "push_lines_of2", rfb5;
+	     ] in
+  let results = Bench.bench_funs funs "setup.ml" in
+  print_endline "For reading setup.ml into a list, ";
+  Bench.summarize results
