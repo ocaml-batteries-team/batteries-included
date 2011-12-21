@@ -166,6 +166,15 @@ val find : ('a -> bool) -> 'a t -> 'a
       can be used several times on the same enumeration to find the
       next element. *)
 
+val find_map : ('a -> 'b option) -> 'a t -> 'b
+(** [find_map f e] finds the first element [x] of [e] such that [f x] returns
+    [Some r], then returns r. It consumes the enumeration up to and including
+    the found element, or raises [Not_found] if no such element exists in the
+    enumeration, consuming the whole enumeration in the search.
+
+    Since [find_map] (eagerly) consumes a prefix of the enumeration, it can be
+    used several times on the same enumeration to find the next element. *)
+
 val is_empty : 'a t -> bool
 (** [is_empty e] returns true if [e] does not contains any element.
     Forces at most one element. *)
