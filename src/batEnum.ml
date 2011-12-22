@@ -61,6 +61,19 @@ type 'a _mut_list = {
 	mutable tl : 'a _mut_list;
 }
 
+let rec empty () =
+  {
+    count = return_no_more_count;
+    next  = return_no_more_elements;
+    clone = (fun () -> empty());
+    fast  = true;
+  }
+
+let close e =
+  e.next <- return_no_more_elements;
+  e.count<- return_no_more_count;
+  e.clone<- empty
+
 let force t =(** Transform [t] into a list *)
   let rec clone enum count =
     let enum = ref !enum
@@ -136,14 +149,6 @@ module MicroLazyList = struct
     in
       aux ()
 end
-
-let rec empty () =
-  {
-    count = return_no_more_count;
-    next  = return_no_more_elements;
-    clone = (fun () -> empty());
-    fast  = true;
-  }
 
 let from f =
   let e = {
@@ -596,8 +601,8 @@ let suffix_action_without_raise (f:unit -> 'a) (t:'a t) =
   }
 
 let suffix_action f t =
-  let f' () = f (); raise No_more_elements
-  in suffix_action_without_raise f' t
+  let f' () = f (); close t; raise No_more_elements in
+  suffix_action_without_raise f' t
 
 
 let rec concat t =
@@ -695,11 +700,6 @@ let drop n e =
 
 let skip n e =
   drop n e; e
-
-let close e =
-  e.next <- return_no_more_elements;
-  e.count<- return_no_more_count;
-  e.clone<- empty
 
 let drop_while p e =
   let rec aux () =
