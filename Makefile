@@ -74,7 +74,7 @@ all:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
 clean:
-	${RM} src/batteriesConfig.ml
+	${RM} src/batteriesConfig.ml batteries.odocl bench.log
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) -clean
 
