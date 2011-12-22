@@ -80,10 +80,11 @@ val char : unit -> char
 (*val uchar : unit -> UChar.t
 (** Return a random Unicode character.*)*)
 
-val full_range : unit -> int
-(** [Random.full_range ()] returns the maximum entropy possible in a
+val full_range_int : unit -> int
+(** [full_range_int ()] returns the maximum entropy possible in a
     single int: 31 bits on 32-bit platforms and 63 bits on 64-bit
-    platforms *)
+    platforms.  Intentionally gives different results on different
+    platforms, so is not portable. *)
 
 
 (** {6 Enumerations of random values.}
@@ -189,5 +190,3 @@ val get_state : unit -> State.t
 
 val set_state : State.t -> unit
 (** Set the state of the generator used by the basic functions. *)
-
-
