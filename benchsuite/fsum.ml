@@ -10,6 +10,7 @@ let () =
     "Enum.fsum (Kahan)", test BatEnum.fsum;
     "Array.fold", (fun () -> Array.fold_left (+.) 0. nums);
     "for loop", (fun () -> let s = ref 0. in for i = 0 to 9_999 do s := !s +. nums.(i); done; !s);
+    "unsafe for loop", (fun () -> let s = ref 0. in for i = 0 to 9_999 do s := !s +. Array.unsafe_get nums i; done; !s);
   ] () in
   print_endline "For summing an array of 10K floats,";
   Bench.summarize results
