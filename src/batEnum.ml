@@ -205,6 +205,8 @@ let get t =
   try   Some (t.next())
   with	No_more_elements -> None
 
+let get_exn t = t.next ()
+
 let push t e =
 	let rec make t =
 		let fnext = t.next in

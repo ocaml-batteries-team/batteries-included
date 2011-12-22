@@ -198,6 +198,11 @@ val get : 'a t -> 'a option
       the next element of [e], in which case the element is removed
       from the enumeration. *)
 
+val get_exn : 'a t -> 'a
+  (** [get_exn e] returns the first element of [e].
+      @raises No_more_elements if [e] is empty.
+      @since 2.0 *)
+
 val push : 'a t -> 'a -> unit
   (** [push e x] will add [x] at the beginning of [e]. *)
 
