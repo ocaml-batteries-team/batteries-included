@@ -89,10 +89,10 @@ let get_exn s e = match s with
    try get_exn (Some true) Exit with Exit -> false
 **)
 
-let get s = get_exn s Not_found
+let get s = get_exn s No_value
 (**T get
-   try get None with Not_found -> true
-   try get (Some true) with Not_found -> false
+   try get None with No_value -> true
+   try get (Some true) with No_value -> false
  **)
 
 let map_default f v = function
@@ -187,4 +187,3 @@ struct
 end
 
 include Infix
-
