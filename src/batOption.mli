@@ -82,7 +82,8 @@ val is_some : 'a option -> bool
 (** [is_some (Some x)] returns [true] otherwise it returns [false]. *)
 
 val get : 'a option -> 'a
-(** [get (Some x)] returns [x] and [get None] raises [No_value]. *)
+(** [get (Some x)] returns [x].
+    @raises Invalid_argument on [get None]. *)
 
 val get_exn : 'a option -> exn -> 'a
 (** [get_exn (Some x) e] returns [x] and [get_exn None e] raises [e]. *)
@@ -102,14 +103,11 @@ val eq : ?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool
 
 val enum: 'a option -> 'a BatEnum.t
 (** [enum (Some x)] returns the singleton [x], while [enum None] returns
-    the empty enumeration*)
+    the empty enumeration. *)
 
 val of_enum: 'a BatEnum.t -> 'a option
 (** [of_enum e] consumes the first element of [e], if it exists, and
-    returns [Some e]. If [e] is empty, return [None] *)
-
-exception No_value
-(** Raised when calling [get None]. *)
+    returns [Some e]. If [e] is empty, return [None]. *)
 
 (** {6 The Option Monad} *)
 
@@ -152,4 +150,3 @@ module Infix : sig
   (** Like {!default}, with the arguments reversed.
       [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
 end
-

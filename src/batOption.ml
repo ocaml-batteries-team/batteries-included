@@ -89,10 +89,10 @@ let get_exn s e = match s with
    try get_exn (Some true) Exit with Exit -> false
 **)
 
-let get s = get_exn s No_value
+let get s = get_exn s (Invalid_argument "Option.get")
 (**T get
-   try get None with No_value -> true
-   try get (Some true) with No_value -> false
+   try get None with Invalid_argument _ -> true
+   try get (Some true) with Invalid_argument _ -> false
  **)
 
 let map_default f v = function
