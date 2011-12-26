@@ -33,9 +33,9 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 	_build/src/syntax/pa_strings/pa_strings.cma \
 	_build/src/syntax/pa_llist/pa_llist.cmo \
-	_build/lib/
+	_build/libs/*.cmi _build/libs/*.mli
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
-	_build/src/*.cmxs _build/src/*.lib
+	_build/src/*.cmxs _build/src/*.lib _build/libs/*.cmx
 
 # What to build
 TARGETS = syntax.otarget
