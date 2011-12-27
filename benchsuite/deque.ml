@@ -140,8 +140,8 @@ let test_quadratic grow_size =
 let () =
   let readings =
     Bench.bench_n [
-      "Not-really amortized Deque", test (module Queue1: Queue) 10000;
-      "Really amortized Deque", test (module Queue2: Queue) 10000;
+      "Not-really amortized Deque", test (module Queue1: Queue) 100;
+      "Really amortized Deque", test (module Queue2: Queue) 100;
     ] in
   print_endline "Time to grow and deconstruct at the opposite end a deque of 10K elements";
   Bench.summarize readings;
