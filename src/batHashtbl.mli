@@ -219,9 +219,10 @@ external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
 
 (** {7 Printing}*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->
-                                                             ('a BatInnerIO.output -> 'c -> unit) ->
-  'a BatInnerIO.output -> ('b, 'c) t -> unit
+val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
+                              ('a BatInnerIO.output -> 'b -> unit) ->
+                              ('a BatInnerIO.output -> 'c -> unit) ->
+                              'a BatInnerIO.output -> ('b, 'c) t -> unit
 
      (** {6 Override modules}*)
 
@@ -509,9 +510,10 @@ val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b, _) t
 
 (** {7 Printing}*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->
-                                                             ('a BatInnerIO.output -> 'c -> unit) ->
-  'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
+val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
+                              ('a BatInnerIO.output -> 'b -> unit) ->
+                              ('a BatInnerIO.output -> 'c -> unit) ->
+                              'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
 
 
 

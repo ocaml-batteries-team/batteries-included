@@ -164,7 +164,7 @@ struct
            # ([t] :> b list);;
            - : b list = [<obj>]
 
-         But this is not true for ('a list ref), orelese I may locally
+         But this is not true for ('a list ref), or else I may locally
          consider it a ('b list) and mutate it to add an element of type
          'b in it, then observe it at type ('a list ref) again. This is
          unsound because the added 'b element won't behave correctly as
@@ -419,15 +419,13 @@ struct
       (fun out (k, v) -> kvpr out k v)
       out (enum m)
 
-  let print ?(first="{\n") ?(last="}\n") ?(sep=",\n") kpr vpr out m =
+  let print ?(first="{\n") ?(last="}\n") ?(sep=",\n") ?(kvsep=": ") kpr vpr out m =
     custom_print ~first ~last ~sep
-      (fun out k v -> BatPrintf.fprintf out "%a: %a" kpr k vpr v)
+      (fun out k v -> BatPrintf.fprintf out "%a%s%a" kpr k kvsep vpr v)
       out m
 
   let print_as_list kpr vpr out m =
-    custom_print ~first:"[" ~last:"]" ~sep:"; "
-      (fun out k v -> BatPrintf.fprintf out "%a, %a" kpr k vpr v)
-      out m
+    print ~first:"[" ~last:"]" ~sep:"; " ~kvsep:", " kpr vpr out m
 
   module Labels = struct
     let add ~key ~data t = add key data t

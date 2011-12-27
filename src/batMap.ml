@@ -313,8 +313,8 @@ module Concrete = struct
 
   let of_enum cmp e = BatEnum.fold (fun m (k, v) -> add k v cmp m) empty e
 
-  let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-    BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+  let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
+    BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v) out (enum t)
 
   (*We rely on [fold] rather than on ['a implementation] to
     make future changes of implementation in the base
@@ -696,7 +696,7 @@ sig
 
   (** {7 Printing}*)
 
-  val print :  ?first:string -> ?last:string -> ?sep:string ->
+  val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
     ('a BatInnerIO.output -> key -> unit) ->
     ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> 'c t -> unit
@@ -770,8 +770,8 @@ struct
   let mapi f t = t_of_impl (Concrete.mapi f (impl_of_t t))
   let map f t = t_of_impl (Concrete.map f (impl_of_t t))
 
-  let print ?first ?last ?sep print_k print_v out t =
-    Concrete.print ?first ?last ?sep print_k print_v out (impl_of_t t)
+  let print ?first ?last ?sep ?kvsep print_k print_v out t =
+    Concrete.print ?first ?last ?sep ?kvsep print_k print_v out (impl_of_t t)
 
   let filterv f t =
     t_of_impl (Concrete.filterv f (impl_of_t t) Ord.compare)
@@ -930,8 +930,8 @@ let values  t = BatEnum.map snd (enum t)
 let of_enum ?(cmp = compare) e =
   { cmp = cmp; map = Concrete.of_enum cmp e }
 
-let print ?first ?last ?sep print_k print_v out t =
-  Concrete.print ?first ?last ?sep print_k print_v out t.map
+let print ?first ?last ?sep ?kvsep print_k print_v out t =
+  Concrete.print ?first ?last ?sep ?kvsep print_k print_v out t.map
 
 let filterv  f t = { t with map = Concrete.filterv f t.map t.cmp }
 let filter f t = { t with map = Concrete.filter f t.map t.cmp }
