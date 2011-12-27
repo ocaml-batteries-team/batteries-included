@@ -12,10 +12,6 @@ export DOCROOT
 BROWSER_COMMAND ?= x-www-browser
 export BROWSER_COMMAND
 
-ifdef DESTDIR
-OCAMLFIND_DEST += -destdir $(DESTDIR)
-endif
-
 OCAMLBUILD ?= ocamlbuild
 OCAMLBUILDFLAGS ?= -no-links
 
@@ -85,17 +81,17 @@ doc: batteries.odocl
 	$(OCAMLBUILD) batteries.docdir/index.html
 
 install: all uninstall_packages
-	ocamlfind install $(OCAMLFIND_DEST) estring \
+	ocamlfind install estring \
 		libs/estring/META \
 		_build/libs/estring/*.cmo \
 		_build/libs/estring/*.cmi \
 		_build/libs/estring/*.mli
-	ocamlfind install $(OCAMLFIND_DEST) $(NAME) $(INSTALL_FILES) \
+	ocamlfind install $(NAME) $(INSTALL_FILES) \
 		-optional $(OPT_INSTALL_FILES)
 
 uninstall_packages:
-	ocamlfind remove $(OCAMLFIND_DEST) estring
-	ocamlfind remove $(OCAMLFIND_DEST) $(NAME)
+	ocamlfind remove estring
+	ocamlfind remove $(NAME)
 
 uninstall: uninstall_packages
 	${RM} -r $(DOCROOT)

@@ -50,10 +50,6 @@ starting the build process because this location is stored in the
 
     $ export DOCROOT=/path/to/new/docroot/
 
-If you want findlib to use a `-destdir` argument to `ocamlfind install`, set
-
-    $ export DESTDIR=/path/to/findlib/dest
-
 To disable native compilation:
 
     $ export BATTERIES_NATIVE=false
