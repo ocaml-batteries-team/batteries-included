@@ -125,7 +125,7 @@ module TestMap
       -> 'a m -> 'b m -> 'c m
 
     val print :
-      ?first:string -> ?last:string -> ?sep:string ->
+      ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
       ('a BatInnerIO.output -> key -> unit) ->
       ('a BatInnerIO.output -> 'c -> unit) ->
       'a BatInnerIO.output -> 'c m -> unit
