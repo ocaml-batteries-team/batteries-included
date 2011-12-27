@@ -274,6 +274,7 @@ let nwrite o s =
 	let l = ref (String.length s) in
 	while !l > 0 do
 		let w = o.out_output s !p !l in
+		(* FIXME: unknown how many characters were already written *)
 		if w = 0 then raise Sys_blocked_io;
 		p := !p + w;
 		l := !l - w;
