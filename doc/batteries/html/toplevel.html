@@ -31,21 +31,23 @@ a minimal interactive environment in which you may write OCaml code and evaluate
 immediately, without having to go through a compilation process.
 
 <h2>Launching the toplevel<a name="launching"></a></h2>
-To launch the toplevel from a terminal, open a terminal
-and write
+
+If you have not already done so, you should copy the <em>ocamlinit</em>
+file that comes with Batteries to your <em>$HOME/.ocamlinit</em> then
+open a terminal and write
 <pre class="example">
-ocamlfind batteries/ocaml
+ocaml
 </pre>
 
 If you have one of the tools rlwrap or ledit installed (either of
 which is strongly suggested), open a terminal and, instead of the
 previous command, write either
 <pre class="example">
-rlwrap ocamlfind batteries/ocaml
+rlwrap ocaml
 </pre>
 or
 <pre class="example">
-ledit ocamlfind batteries/ocaml
+ledit ocaml
 </pre>
 
 Finally, if you have Emacs and Tuareg, which is even more suggested,
@@ -53,7 +55,7 @@ instead of the previous commands, open Emacs, open a file whose
 name ends with <code>.ml</code>, press <code>&lt;Ctrl&gt;-C-S</code>
 and, when Emacs asks you for the name of your OCaml toplevel, answer
 <pre class="example">
-ocamlfind batteries/ocaml
+ocaml
 </pre>
 
 <h2>What is the toplevel?<a name="what"></a></h2>
