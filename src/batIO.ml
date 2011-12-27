@@ -149,7 +149,7 @@ let apply_enum do_close f x =
   try f x
   with
     | No_more_input -> raise BatEnum.No_more_elements
-    | BatInnerIO.Input_closed  -> do_close := false; raise BatEnum.No_more_elements
+    | Input_closed  -> do_close := false; raise BatEnum.No_more_elements
 
 (** [close_at_end input e] returns an enumeration which behaves as [e]
     and has the secondary effect of closing [input] once everything has
@@ -201,7 +201,7 @@ module BigEndian = struct
       n - 65536
     else
       n
-	
+
   let fix = lnot 0x7FFFFFFF (* -:) *)
 
   let read_i32 ch =
@@ -253,7 +253,7 @@ module BigEndian = struct
       write_ui16 ch (65536 + n)
     else
       write_ui16 ch n
-	
+
   let write_i32 ch n =
     write_byte ch (n asr 24);
     write_byte ch (n lsr 16);
@@ -344,7 +344,7 @@ let rec read_bits b n =
 			b.bits <- k;
 			b.nbits <- c;
 			d
-		end else begin			
+		end else begin
 			b.bits <- (b.bits lsl 8) lor k;
 			b.nbits <- b.nbits + 8;
 			read_bits b n;
@@ -533,7 +533,7 @@ let lines_of2 ic =
           let len_read = input ic buf 0 (buffer_size - !end_pos) in
           end_pos := !end_pos + len_read;
         end
-      with BatInnerIO.No_more_input -> end_pos := !read_pos;
+      with No_more_input -> end_pos := !read_pos;
   in
   let get_line () =
     let rec get_pieces accu len =
@@ -589,23 +589,22 @@ let printf = Printf.fprintf
 (**
    {6 Utilities}
 *)
-
+let is_newline = function '\010' | '\013' -> true | _ -> false
 
 let tab_out ?(tab=' ') n out =
   let spaces   = String.make n tab in
   wrap_out
-    ~write: (fun c     ->
-	       write out  c;
-	       if BatChar.is_newline c then (
-		 nwrite out spaces)
-	    )
-    ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*)
+    ~write: (fun c ->
+      write out c;
+      if is_newline c then nwrite out spaces;
+    )
+    ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*) (*FIXME?: performance - instead output each line and a newline between each char? *)
 	       let length = String.length s                 in
 	       let buffer = Buffer.create (String.length s) in
 		 for i = p to min (length - 1) l do
 		   let c = String.unsafe_get s i in
 		     Buffer.add_char buffer c;
-		     if BatChar.is_newline c then
+		     if is_newline c then
 		       Buffer.add_string buffer spaces
 		 done;
 		 let s' = Buffer.contents buffer                  in
@@ -828,7 +827,7 @@ let out_channel_of_output out =
 
     cout*)
 
-let to_string print_x x = BatInnerIO.Printf.sprintf2 "%a" print_x x
+let to_string print_x x = Printf.sprintf2 "%a" print_x x
 
 let to_format printer =
   fun fmt t -> Format.pp_print_string fmt (to_string printer t)
