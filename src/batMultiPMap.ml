@@ -89,8 +89,8 @@ let of_enum ?(keys=compare) ?(data=compare) e =
   let base = create keys data in
     BatEnum.fold (fun acc (k,d) -> add k d acc) base e
 
-let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-  BatEnum.print ~first ~last ~sep (fun out (k, v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
+  BatEnum.print ~first ~last ~sep (fun out (k, v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v) out (enum t)
 
 module Infix =
 struct

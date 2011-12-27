@@ -167,8 +167,8 @@
 
     let is_empty h = length h = 0
 
-    let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-      BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+    let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
+      BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v) out (enum t)
 
     let filteri (f:'key -> 'a -> bool) (t:('key, 'a) t) =
       let result = create 16 in
