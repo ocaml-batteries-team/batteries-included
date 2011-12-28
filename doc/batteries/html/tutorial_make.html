@@ -22,7 +22,7 @@ instructions given here are tailored for OCaml 3.12.0 and Batteries
 </p>
 <h2>Installing Ocaml</h2>
 <p>
-Let's say you want to install you system into <b>$PREFIX</b>:
+Let's say you want to install you system into <b>PREFIX</b>:
 <code class="terminal">
 you@host:~$ PREFIX=/some/dir
 you@host:~$ BINDIR=$PREFIX/bin
@@ -33,6 +33,8 @@ you@host:~$ DOCDIR=$PREFIX/share/docs
 you@host:~$ mkdir -p $BINDIR $LIBDIR $SRCDIR
 you@host:~$ <span style="text-decoration:blink">_</span>
 </code>
+I recommand choosing a <b>PREFIX</b> within your home (such as <b>$HOME/ocaml</b>)
+so that you do not need special permissions to install.
 </p>
 <p>Now download OCaml v3.12.0:
 <code class="terminal">
@@ -46,7 +48,15 @@ you@host:~$ <span style="text-decoration:blink">_</span>
 you@host:~$ cd $SRCDIR/ocaml
 you@host:ocaml$ ./configure --prefix $PREFIX
 you@host:ocaml$ make world.opt
-you@host:ocaml$ [sudo_if_required] make install
+you@host:ocaml$ <span style="text-decoration:blink">_</span>
+</code>
+</p>
+<p>For copying the required files into their definitive location you migh
+need root priviledges depending what <b>PREFIX</b> you have chosen,  thus the
+usage of <em>sudo</em> here. If you followed my advice to install within you home
+then you do not need to sudo here (nor later). Install with:
+<code class="terminal">
+you@host:ocaml$ sudo make install
 you@host:ocaml$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
@@ -67,11 +77,11 @@ you@host:~$ cd src/findlib-1.2.7
 you@host:findlib-1.2.7$ ./configure -bindir $BINDIR -mandir $MANDIR -sitelib $LIBDIR/ocaml/site-lib
 you@host:findlib-1.2.7$ make all
 you@host:findlib-1.2.7$ make opt
-you@host:findlib-1.2.7$ [sudo?] make install
+you@host:findlib-1.2.7$ sudo make install
 you@host:findlib-1.2.7$ cd ../ounit-1.1.0
 you@host:ounit-1.1.0$ ocaml setup.ml -configure
 you@host:ounit-1.1.0$ ocaml setup.ml -build
-you@host:ounit-1.1.0$ [sudo?] ocaml setup.ml -install
+you@host:ounit-1.1.0$ sudo ocaml setup.ml -install
 you@host:ounit-1.1.0$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
@@ -89,7 +99,7 @@ you@host:~$ <span style="text-decoration:blink">_</span>
 you@host:~$ cd $SRCDIR/ocaml-batteries*
 you@host:ocaml-batteries$ export DOCROOT=$DOCDIR/batteries
 you@host:ocaml-batteries$ make all doc
-you@host:ocaml-batteries$ [sudo?] make install install-doc
+you@host:ocaml-batteries$ sudo make install install-doc
 you@host:ocaml-batteries$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
