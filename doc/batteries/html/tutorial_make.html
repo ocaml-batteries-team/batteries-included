@@ -31,7 +31,6 @@ you@host:~$ MANDIR=$PREFIX/man
 you@host:~$ SRCDIR=$PREFIX/src
 you@host:~$ DOCDIR=$PREFIX/share/docs
 you@host:~$ mkdir -p $BINDIR $LIBDIR $SRCDIR
-you@host:~$ <span style="text-decoration:blink">_</span>
 </code>
 I recommand choosing a <b>PREFIX</b> within your home (such as <b>$HOME/ocaml</b>)
 so that you do not need special permissions to install.
@@ -40,7 +39,6 @@ so that you do not need special permissions to install.
 <code class="terminal">
 you@host:~$ wget -P $TMPDIR 'http://caml.inria.fr/pub/distrib/ocaml-3.12/ocaml-3.12.1.tar.bz2'
 you@host:~$ tar jxf $TMPDIR/ocaml-3.12.1.tar.bz2 -C $SRCDIR
-you@host:~$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
 <p>Now build ocaml:
@@ -48,7 +46,6 @@ you@host:~$ <span style="text-decoration:blink">_</span>
 you@host:~$ cd $SRCDIR/ocaml
 you@host:ocaml$ ./configure --prefix $PREFIX
 you@host:ocaml$ make world.opt
-you@host:ocaml$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
 <p>For copying the required files into their definitive location you migh
@@ -57,7 +54,6 @@ usage of <em>sudo</em> here. If you followed my advice to install within you hom
 then you do not need to sudo here (nor later). Install with:
 <code class="terminal">
 you@host:ocaml$ sudo make install
-you@host:ocaml$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
 
@@ -68,7 +64,6 @@ you@host:~$ wget -P $TMPDIR http://download.camlcity.org/download/findlib-1.2.7.
 you@host:~$ tar zxf $TMPDIR/findlib-1.2.7.tar.gz -C src
 you@host:~$ wget -P $TMPDIR http://forge.ocamlcore.org/frs/download.php/495/ounit-1.1.0.tar.gz
 you@host:~$ tar zxf $TMPDIR/ounit-1.1.0.tar.gz -C src
-you@host:~$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
 <p>Build and install:
@@ -82,7 +77,6 @@ you@host:findlib-1.2.7$ cd ../ounit-1.1.0
 you@host:ounit-1.1.0$ ocaml setup.ml -configure
 you@host:ounit-1.1.0$ ocaml setup.ml -build
 you@host:ounit-1.1.0$ sudo ocaml setup.ml -install
-you@host:ounit-1.1.0$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
 
@@ -91,7 +85,6 @@ you@host:ounit-1.1.0$ <span style="text-decoration:blink">_</span>
 <code class="terminal">
 you@host:~$ wget -P $TMPDIR 'https://github.com/ocaml-batteries-team/batteries-included/tarball/v2beta1'
 you@host:~$ tar zxf $TMPDIR/ocaml-batteries-team-batteries-included-*.tar.gz -C $SRCDIR
-you@host:~$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
 <p>Now build Batteries itself:
@@ -100,7 +93,6 @@ you@host:~$ cd $SRCDIR/ocaml-batteries*
 you@host:ocaml-batteries$ export DOCROOT=$DOCDIR/batteries
 you@host:ocaml-batteries$ make all doc
 you@host:ocaml-batteries$ sudo make install install-doc
-you@host:ocaml-batteries$ <span style="text-decoration:blink">_</span>
 </code>
 </p>
 <p>
