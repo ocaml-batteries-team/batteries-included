@@ -242,6 +242,23 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outpu
 
 val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
+module Infix : sig
+  (** Infix operators matching those provided by {!BatEnum.Infix} *)
+
+  val ( -- ) : int -> int -> int t
+  val ( --^ ) : int -> int -> int t
+  val ( --. ) : float * float -> float -> float t
+  val ( --- ) : int -> int -> int t
+  val ( --~ ) : char -> char -> char t
+  val ( // ) : 'a t -> ('a -> bool) -> 'a t
+  val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
+  val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
+  val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
+  val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
+end
+
+include module type of Infix
+
 module Exceptionless : sig
   val hd : 'a t -> 'a option
   val tl : 'a t -> 'a t option
