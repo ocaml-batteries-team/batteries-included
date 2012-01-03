@@ -24,6 +24,30 @@
 
 open List
 
+
+(* ::VH:: GLUE with StdLib *)
+let merge = List.merge
+let fast_sort = List.fast_sort
+let stable_sort = List.stable_sort
+let sort = List.sort
+let assq = List.assq
+let assoc = List.assoc
+let find = List.find
+let exists = List.exists
+let for_all = List.for_all
+let fold_left = List.fold_left
+let rev_map = List.rev_map
+let iter = List.iter
+let rev_append = List.rev_append
+let rev = List.rev
+let length = List.length
+let tl = List.tl
+let hd = List.hd
+(* ::VH:: END GLUE *)
+
+
+
+
 (* Thanks to Jacques Garrigue for suggesting the following structure *)
 type 'a mut_list =  {
   hd: 'a;
@@ -36,7 +60,6 @@ type 'a mappable = 'a t
 
 external inj : 'a mut_list -> 'a list = "%identity"
 
-
 let dummy_node () = { hd = Obj.magic (); tl = [] }
 
 let cons h t = h::t
@@ -45,6 +68,7 @@ let is_empty = function
   | [] -> true
   | _  -> false
 
+ 
 let nth l index =
   if index < 0 then invalid_arg "Negative index not allowed";
   let rec loop n = function
@@ -595,6 +619,13 @@ let assoc_inv e l =
   | _::t                -> aux t
   in aux l
 
+let assq_inv e l =
+  let rec aux = function
+  | []                    -> raise Not_found
+  | (a,b)::t when b == e  -> a
+  | _::t                  -> aux t
+  in aux l
+  
 let sort_unique cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
