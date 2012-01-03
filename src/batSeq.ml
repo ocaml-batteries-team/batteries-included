@@ -272,6 +272,45 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
 let t_printer a_printer paren out s =
   print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out s
 
+module Infix = struct
+  (** Infix operators matching those provided by {!BatEnum.Infix} *)
+
+  let ( -- ) a b =
+    if b < a then
+      nil
+    else
+      init (b - a + 1) (fun x -> a + x)
+
+  let ( --^ ) a b = a -- (b - 1)
+
+  let ( --. ) (a, step) b =
+    let n = int_of_float ((b -. a) /. step) + 1 in
+    if n < 0 then
+      nil
+    else
+      init n (fun i -> float_of_int i *. step +. a)
+
+  let ( --- ) a b =
+    let n = abs (b - a) in
+    if b < a then
+      init n (fun x -> a - x)
+    else
+      a -- b
+
+  let ( --~ ) a b =
+    map Char.chr (Char.code a -- Char.code b)
+
+  let ( // ) s f = filter f s
+
+  let ( /@ ) s f = map f s
+  let ( @/ ) = map
+
+  let ( //@ ) s f = filter_map f s
+  let ( @// ) = filter_map
+end
+
+include Infix
+
 module Exceptionless = struct
   (* This function could be used to eliminate a lot of duplicate code below...
   let exceptionless_arg f s e =
