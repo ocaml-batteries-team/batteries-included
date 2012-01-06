@@ -35,7 +35,7 @@ val size : 'a dq -> int
 (** {6 Construction} *)
 
 val empty : 'a dq
-  (** The empty dequeue. O(1) *)
+  (** The empty deque. *)
 
 val cons : 'a -> 'a dq -> 'a dq
   (** [cons x dq] adds [x] to the front of [dq]. O(1) *)
@@ -128,7 +128,10 @@ val of_enum : 'a BatEnum.t -> 'a dq
 
 val enum : 'a dq -> 'a BatEnum.t
   (** [enum dq] is an enumeration of the elements of [dq] from the
-      front to the rear. *)
+      front to the rear.
+      This function is O(1), but generating each element of the enumeration
+      is amortized O(1), and O(n) worst case.
+  *)
 
 (** {6 Printing} *)
 
