@@ -54,17 +54,17 @@ let snoc q x =
  **)
 
 let front q =
-  match q.front with
-    | h :: front -> Some (h, { q with front = front ; flen = q.flen - 1 })
-    | _ ->
-        match q.rear with
-          | [] -> None
-          | _ ->
-              let front = List.rev q.rear in
-              Some (List.hd front, { front = List.tl front ;
-                                     flen = q.rlen - 1 ;
-                                     rear = [] ;
-                                     rlen = 0 })
+  match q with
+  | {front = h :: front; flen = flen} ->
+    Some (h, { q with front = front ; flen = flen - 1 })
+  | {rear = []} ->
+    None
+  | {rear = rear; rlen = rlen} ->
+    let front = List.rev rear in
+    Some (List.hd front, { front = List.tl front ;
+                           flen = rlen - 1 ;
+                           rear = [] ;
+                           rlen = 0 })
 
 (**T front
    front(cons 1 empty) = Some(1,empty)
@@ -72,16 +72,16 @@ let front q =
  **)
 
 let rear q =
-  match q.rear with
-    | t :: rear -> Some ({ q with rear = rear ; rlen = q.rlen - 1 }, t)
-    | _ ->
-        match q.front with
-          | [] -> None
-          | _ ->
-              let rear = List.rev q.front in
-              Some ({ front = [] ; flen = 0 ;
-                      rear = List.tl rear ; rlen = q.flen - 1 },
-                    List.hd rear)
+  match q with
+  | {rear = t :: rear; rlen = rlen} ->
+    Some ({ q with rear = rear ; rlen = rlen - 1 }, t)
+  | {front = []} ->
+    None
+  | {front = front; flen = flen} ->
+    let rear = List.rev front in
+    Some ({ front = [] ; flen = 0 ;
+            rear = List.tl rear ; rlen = flen - 1 },
+          List.hd rear)
 
 (**T rear
    match rear(empty |> cons 1 |> cons 2) with | Some(_, 1) -> true | _ -> false
