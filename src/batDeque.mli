@@ -18,14 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Functional double-ended queues
-
-    Ascribes to:
-
-    [BatEnum.Enumerable with type 'a enumerable = 'a t]
-    [BatInterfaces.Mappable with type 'a mappable = 'a t]
-
- *)
+(** Functional double-ended queues *)
 
 type +'a dq
   (** The type of double-ended queues *)
@@ -33,13 +26,16 @@ type +'a dq
 type 'a t = 'a dq
   (** A synonym for convenience *)
 
+include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatInterfaces.Mappable with type 'a mappable = 'a t
+
 val size : 'a dq -> int
   (** [size dq] is the number of elements in the [dq]. O(1) *)
 
 (** {6 Construction} *)
 
 val empty : 'a dq
-  (** The empty dequeue. O(1) *)
+  (** The empty deque. *)
 
 val cons : 'a -> 'a dq -> 'a dq
   (** [cons x dq] adds [x] to the front of [dq]. O(1) *)
@@ -132,7 +128,10 @@ val of_enum : 'a BatEnum.t -> 'a dq
 
 val enum : 'a dq -> 'a BatEnum.t
   (** [enum dq] is an enumeration of the elements of [dq] from the
-      front to the rear. *)
+      front to the rear.
+      This function is O(1), but generating each element of the enumeration
+      is amortized O(1), and O(n) worst case.
+  *)
 
 (** {6 Printing} *)
 

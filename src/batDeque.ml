@@ -22,6 +22,8 @@ type 'a dq = { front : 'a list ; flen : int ;
                rear : 'a list  ; rlen : int }
 
 type 'a t = 'a dq
+type 'a enumerable = 'a t
+type 'a mappable = 'a t
 
 let empty = { front = [ ] ; flen = 0 ;
               rear  = [ ] ; rlen = 0 }
@@ -54,17 +56,26 @@ let snoc q x =
  **)
 
 let front q =
-  match q.front with
-    | h :: front -> Some (h, { q with front = front ; flen = q.flen - 1 })
-    | _ ->
-        match q.rear with
-          | [] -> None
-          | _ ->
-              let front = List.rev q.rear in
-              Some (List.hd front, { front = List.tl front ;
-                                     flen = q.rlen - 1 ;
-                                     rear = [] ;
-                                     rlen = 0 })
+  match q with
+  | {front = h :: front; flen = flen} ->
+    Some (h, { q with front = front ; flen = flen - 1 })
+  | {rear = []} ->
+    None
+  | {rear = rear; rlen = rlen} ->
+    (* beware: when rlen = 1, we must put the only element of
+     * the deque at the front (ie new_flen = 1, new_rlen = 0) *)
+    let new_flen = (rlen + 1) / 2 in
+    let new_rlen = rlen / 2 in
+    (* we split the non empty list in half because if we transfer
+     * everything to the front, then a call to rear would also
+     * transfer everything to the rear etc. -> no amortization
+     * (but we could transfer 3/4 instead of 1/2 of the list for instance) *)
+    let rear, rev_front = BatList.split_at new_rlen rear in
+    let front = List.rev rev_front in
+    Some (List.hd front, { front = List.tl front ;
+                           flen = new_flen - 1 ;
+                           rear = rear ;
+                           rlen = new_rlen })
 
 (**T front
    front(cons 1 empty) = Some(1,empty)
@@ -72,16 +83,19 @@ let front q =
  **)
 
 let rear q =
-  match q.rear with
-    | t :: rear -> Some ({ q with rear = rear ; rlen = q.rlen - 1 }, t)
-    | _ ->
-        match q.front with
-          | [] -> None
-          | _ ->
-              let rear = List.rev q.front in
-              Some ({ front = [] ; flen = 0 ;
-                      rear = List.tl rear ; rlen = q.flen - 1 },
-                    List.hd rear)
+  match q with
+  | {rear = t :: rear; rlen = rlen} ->
+    Some ({ q with rear = rear ; rlen = rlen - 1 }, t)
+  | {front = []} ->
+    None
+  | {front = front; flen = flen} ->
+    let new_rlen = (flen + 1) / 2 in
+    let new_flen = flen / 2 in
+    let front, rev_rear = BatList.split_at new_flen front in
+    let rear = List.rev rev_rear in
+    Some ({ front = front ; flen = new_flen ;
+            rear = List.tl rear ; rlen = new_rlen - 1 },
+          List.hd rear)
 
 (**T rear
    match rear(empty |> cons 1 |> cons 2) with | Some(_, 1) -> true | _ -> false
