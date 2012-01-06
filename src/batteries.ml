@@ -140,7 +140,6 @@ module ISet = BatISet
 module IMap = BatIMap
 module Splay = BatSplay
 module Uref = BatUref
-module Substring = BatSubstring
 module Text = Ulib.Text
 module Concurrent = BatConcurrent
 
@@ -155,6 +154,7 @@ module Unit = BatUnit
 (* Modules in-progress, API stability not guaranteed *)
 module Future = struct
   module Log = BatLog
+  module Substring = BatSubstring
 end
 
 (* Pervasives last *)

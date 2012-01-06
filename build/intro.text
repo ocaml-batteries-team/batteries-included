@@ -37,9 +37,9 @@ These modules are available only when compiling with threads.
 
 {6 Future}
 
-These modules are available only inside BatFuture.  Their interface is not guaranteed stable, and may be changed at any time.
+These modules are available only inside [Batteries.Future].  Their interface is not guaranteed stable, and may be changed at any time.  They are included for testing and stabilization until they can be finalized and moved to batteries proper.
 
-{!modules: BatCounter BatHistogram BatOrd}
+{!modules: BatOrd BatSubstring}
 
 {6 Internal Modules}
 
