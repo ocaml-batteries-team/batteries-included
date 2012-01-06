@@ -121,6 +121,7 @@ module CharParser = BatCharParser
 module Deque = BatDeque
 module Hashcons = BatHashcons
 module Heap = BatHeap
+module FingerTree = BatFingerTree
 module Logger = BatLogger
 module ParserCo = BatParserCo
 module PathGen = BatPathGen
