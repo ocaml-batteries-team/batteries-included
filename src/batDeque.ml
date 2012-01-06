@@ -60,11 +60,20 @@ let front q =
   | {rear = []} ->
     None
   | {rear = rear; rlen = rlen} ->
-    let front = List.rev rear in
+    (* beware: when rlen = 1, we must put the only element of
+     * the deque at the front (ie new_flen = 1, new_rlen = 0) *)
+    let new_flen = (rlen + 1) / 2 in
+    let new_rlen = rlen / 2 in
+    (* we split the non empty list in half because if we transfer
+     * everything to the front, then a call to rear would also
+     * transfer everything to the rear etc. -> no amortization
+     * (but we could transfer 3/4 instead of 1/2 of the list for instance) *)
+    let rear, rev_front = BatList.split_at new_rlen rear in
+    let front = List.rev rev_front in
     Some (List.hd front, { front = List.tl front ;
-                           flen = rlen - 1 ;
-                           rear = [] ;
-                           rlen = 0 })
+                           flen = new_flen - 1 ;
+                           rear = rear ;
+                           rlen = new_rlen })
 
 (**T front
    front(cons 1 empty) = Some(1,empty)
@@ -78,9 +87,12 @@ let rear q =
   | {front = []} ->
     None
   | {front = front; flen = flen} ->
-    let rear = List.rev front in
-    Some ({ front = [] ; flen = 0 ;
-            rear = List.tl rear ; rlen = flen - 1 },
+    let new_rlen = (flen + 1) / 2 in
+    let new_flen = flen / 2 in
+    let front, rev_rear = BatList.split_at new_flen front in
+    let rear = List.rev rev_rear in
+    Some ({ front = front ; flen = new_flen ;
+            rear = List.tl rear ; rlen = new_rlen - 1 },
           List.hd rear)
 
 (**T rear
