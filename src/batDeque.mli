@@ -18,20 +18,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Functional double-ended queues
-
-    Ascribes to:
-
-    [BatEnum.Enumerable with type 'a enumerable = 'a t]
-    [BatInterfaces.Mappable with type 'a mappable = 'a t]
-
- *)
+(** Functional double-ended queues *)
 
 type +'a dq
   (** The type of double-ended queues *)
 
 type 'a t = 'a dq
   (** A synonym for convenience *)
+
+include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 val size : 'a dq -> int
   (** [size dq] is the number of elements in the [dq]. O(1) *)

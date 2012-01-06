@@ -22,6 +22,8 @@ type 'a dq = { front : 'a list ; flen : int ;
                rear : 'a list  ; rlen : int }
 
 type 'a t = 'a dq
+type 'a enumerable = 'a t
+type 'a mappable = 'a t
 
 let empty = { front = [ ] ; flen = 0 ;
               rear  = [ ] ; rlen = 0 }
