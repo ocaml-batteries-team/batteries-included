@@ -85,7 +85,7 @@ let trimr k (str,off,len) =
   if k < 0 then invalid_arg "Substring.triml: negative trim not allowed";
   if k > len then (str, off, 0) else (str, off, len-k)
 
-let get k (str, off, len) =
+let get (str, off, len) k =
   if k < 0 then invalid_arg "Substring.get: negative index not allowed";
   if k > len then invalid_arg "Substring.get: index outside of substring";
   str.[off+k]
