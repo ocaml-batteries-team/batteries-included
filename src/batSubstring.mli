@@ -79,7 +79,7 @@ val trimr : int -> t -> t
       application [trimr k].
   *)
 
-val get : int -> t -> char
+val get : t -> int -> char
   (** [sub sus k] returns the k'th character of the substring; that
       is, s(i+k) where sus = (s, i, n).  Raises [Invalid_argument] if
       [k<0] or [k>=n].  *)
