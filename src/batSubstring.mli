@@ -126,6 +126,24 @@ val compare : t -> t -> int
    than, String.collate cmp (string sus1, string sus2).
 *)
 
+val index : t -> char -> int
+(** [index sus c] returns the index of the first occurence of [c] in [sus] or
+    raise [Not_found] otherwise. *)
+
+val index_from : t -> int -> char -> int
+(** [index_from sus i c] returns the index of the first occurence of [c] in
+    [sus] after the index [i] or raise [Not_found] otherwise. If [i] is beyond
+    the range of [sus], raises [Invalid_argument]. *)
+
+val rindex : t -> char -> int
+(** [rindex sus c] returns the index of the last occurence of [c] in [sus] or
+    raise [Not_found] otherwise. *)
+
+val rindex_from : t -> int -> char -> int
+(** [index_from sus i c] returns the index of the last occurence of [c] in [sus]
+    before the index [i] or raise [Not_found] otherwise. If [i] is beyond the
+    range of [sus], raises [Invalid_argument]. *)
+
 val dropl : (char -> bool) -> t -> t
 (** [dropl p sus] drops the longest prefix (left substring) of [sus]
     all of whose characters satisfy predicate [p].  If all
