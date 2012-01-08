@@ -33,7 +33,7 @@ let finally handler f x =
   handler();
   r
 
-(*** Permissions *)
+(* Permissions *)
 type permission = int
     (**Internally, permissions are represented in Unix-style
        octal.*)
@@ -57,7 +57,7 @@ let unix_perm i =
   if 0<= i && i <= 511 then i
   else raise (Invalid_argument (Printf.sprintf "Unix permission %o " i))
 
-(*** Opening *)
+(* Opening *)
 type open_in_flag =
   [ `create
   | `excl     (**Fail if the file exists and [`create] is set               *)
