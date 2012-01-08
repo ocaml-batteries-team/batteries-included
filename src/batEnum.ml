@@ -652,7 +652,7 @@ let switch f e =
 let partition = switch
 
 (**T partition
-   let a,b = partition ((>) 3) (List.enum [1;2;3;4;5;1;5;0]) in List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
+   let a,b = partition (fun x -> x > 3) (List.enum [1;2;3;4;5;1;5;0]) in List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
 **)
 
 (**Q partition
