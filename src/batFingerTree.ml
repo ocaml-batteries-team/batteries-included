@@ -922,7 +922,7 @@ let head_exn = M.head_exn
 let last = M.last
 (**T last
    last (cons (cons empty 2) 1) = Some 2
-   last_exn empty = None
+   last empty = None
 **)
 (**Q last
    (Q.list Q.pos_int) (fun l -> last (snoc (of_list l) (-1)) = Some (-1))
@@ -986,15 +986,15 @@ let tail_exn t = M.tail_exn size_measurer t
 let init_exn t = M.init_exn size_measurer t
 let rear_exn t = M.rear_exn size_measurer t
 (**Q
-  (Q.list Q.pos_int) (fun l -> tail_exn (Q.cons l (-1)) = l)
-  (Q.list Q.pos_int) (fun l -> init_exn (Q.snoc l (-1)) = l)
-  (Q.list Q.pos_int) (fun l -> front_exn (Q.cons l (-1)) = (-1, l))
-  (Q.list Q.pos_int) (fun l -> init_exn (Q.snoc l (-1)) = (-1, l))
+  (Q.list Q.pos_int) (fun l -> to_list (tail_exn (cons (of_list l) (-1))) = l)
+  (Q.list Q.pos_int) (fun l -> to_list (init_exn (snoc (of_list l) (-1))) = l)
+  (Q.list Q.pos_int) (fun l -> let (hd, tl) = front_exn (cons (of_list l) (-1)) in (hd, to_list tl) = (-1, l))
+  (Q.list Q.pos_int) (fun l -> let (hd, tl) = rear_exn (snoc (of_list l) (-1)) in (hd, to_list tl) = (-1, l))
 **)
 
 let append t1 t2 = M.append size_measurer t1 t2
 (**Q append
-   (Q.list Q.int) (fun l -> let l1, l2 = BatList.split_at (List.length l) l in to_list (append (of_list l1) (of_list l2)) = l)
+   (Q.list Q.int) (fun l -> let l1, l2 = BatList.split_at (List.length l / 2) l in to_list (append (of_list l1) (of_list l2)) = l)
 **)
 
 let measure t = M.measure size_measurer t
