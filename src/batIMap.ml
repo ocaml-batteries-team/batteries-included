@@ -200,7 +200,7 @@ let fold2_range f m1 m2 acc =
 	let hi, v2 =
 	  if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
 	  else if hi2 = lo1 then hi2, Some (lo1,lo1,rx2)
-	  else hi2, Enum.get e2	
+	  else hi2, Enum.get e2
 	and v1 = Some (lo1,hi1,rx1) in
 	aux (f lo2 hi None (Some rx2) acc) (v1,v2)
     | Some (lo1,hi1,rx1), Some (_lo2,hi2,rx2) (* lo1 = lo2 *) ->
@@ -214,10 +214,19 @@ let fold2_range f m1 m2 acc =
   in
   aux acc (Enum.get e1, Enum.get e2)
 
-let union f m1 m2 =
-  let insert lo hi v1 v2 m =
-    match f v1 v2 with None -> m | Some v -> add_range lo hi v m in
+let union ~eq f m1 m2 =
+  let insert lo hi v1 v2 m = match v1, v2 with
+    | Some v1, Some v2 -> add_range ~eq lo hi (f v1 v2) m
+    | Some x, None | None, Some x -> add_range ~eq lo hi x m
+    | None, None -> assert false
+  in
   fold2_range insert m1 m2 empty
+
+let merge ~eq f m1 m2 =
+  let insert lo hi v1 v2 m =
+    match f lo hi v1 v2 with None -> m | Some v -> add_range ~eq lo hi v m in
+  fold2_range insert m1 m2 empty
+
 
 let forall2_range f m1 m2 =
   let e1 = enum m1 and e2 = enum m2 in
@@ -236,7 +245,7 @@ let forall2_range f m1 m2 =
     | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo2 < lo1 ->
 	let hi, v2 =
 	  if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
-	  else hi2, Enum.get e2	
+	  else hi2, Enum.get e2
 	and v1 = Some (lo1,hi1,rx1) in
 	(f lo2 hi None (Some rx2)) && aux (v1,v2)
     | Some (lo1,hi1,rx1), Some (_,hi2,rx2) (* lo1 = lo2 *) ->
@@ -293,7 +302,8 @@ let domain {m} = Core.domain m
 let map_to_set f {m} = Core.map_to_set f m
 let enum {m} = Core.enum m
 let fold2_range f {m=m1} {m=m2} x0 = Core.fold2_range f m1 m2 x0
-let union ?(eq=(=)) f {m=m1} {m=m2} = {m=Core.union f m1 m2; eq}
+let union f {m=m1;eq} {m=m2} = {m=Core.union ~eq f m1 m2; eq}
+let merge ?(eq=(=)) f {m=m1} {m=m2} = {m=Core.merge ~eq f m1 m2; eq}
 let forall2_range f {m=m1} {m=m2} = Core.forall2_range f m1 m2
 
 module Infix = struct

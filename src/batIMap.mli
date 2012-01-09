@@ -103,7 +103,11 @@ val fold2_range : (int -> int -> 'a option -> 'b option -> 'c -> 'c) -> 'a t -> 
     Example: let union_first = fold2_range (fun _lo _hi a b = match a,b with Some x,_ -> x | _,Some y -> y)
 *)
 
-val union :  ?eq:('c -> 'c -> bool) -> ('a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
+val union : ('a -> 'a -> 'a) -> 'a t -> 'a t -> 'a t
+(** Merge two maps, giving a value *)
+
+val merge :  ?eq:('c -> 'c -> bool) -> (int -> int -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
+
 
 val forall2_range : (int -> int -> 'a option -> 'b option -> bool) -> 'a t -> 'b t -> bool
 
@@ -125,4 +129,3 @@ module Infix : sig
         as comparison function.
     *)
 end
-
