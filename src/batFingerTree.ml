@@ -64,6 +64,8 @@ sig
   val append : (('a, 'm) fg -> ('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   val reverse : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   val split : (('m m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
+  val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> ('b, _) fg -> unit
+  val t_printer : 'a BatValuePrinter.t -> ('a, _) fg BatValuePrinter.t
 
 end
 
@@ -847,6 +849,11 @@ module Generic : S
                            * definition was in the scope *)
   let size t = fold_left (fun acc _ -> acc + 1) 0 t
 
+  let print ?first ?last ?sep f oc x =
+    BatEnum.print ?first ?last ?sep f oc (enum x)
+  let t_printer a_printer paren out e =
+    print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
+
 end
 
 (* can be used to check the overhead of a not dummy measure
@@ -1050,3 +1057,6 @@ let map_right f t = Generic.map_right ~monoid:nat_plus_monoid ~measure:size_meas
    let b = Buffer.create 10 in let res = map (fun d -> Printf.bprintf b "%d" d; d + 1) (snoc (snoc empty 1) 2) in Buffer.contents b = "12" && to_list res = [2;3]
    let b = Buffer.create 10 in let res = map_right (fun d -> Printf.bprintf b "%d" d; d + 1) (snoc (snoc empty 1) 2) in Buffer.contents b = "21" && to_list res = [2;3]
 **)
+
+let print = Generic.print
+let t_printer = Generic.t_printer

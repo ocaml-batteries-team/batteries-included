@@ -365,6 +365,11 @@ sig
       cited above and see if you understand something.
   *)
 
+  (** {6 Boilerplate code} *)
+
+  val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> ('b, _) fg -> unit
+
+  val t_printer : 'a BatValuePrinter.t -> ('a, _) fg BatValuePrinter.t
 end
 
 module Generic : S
