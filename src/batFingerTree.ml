@@ -110,8 +110,6 @@ module Generic : S
     | Deep of 'm * ('a, 'm) digit * (('a, 'm) node, 'm) fg * ('a, 'm) digit
   type 'm m = 'm
 
-  let poly_recursion = Obj.magic
-
   let empty = Empty
   let singleton a = Single a
 
@@ -140,21 +138,20 @@ module Generic : S
     | Three (_, a, b, c) -> f (f (f acc a) b) c
     | Four (_, a, b, c, d) -> f (f (f (f acc a) b) c) d
 
-  type ('acc, 'a, 'm) fold = ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
-  let rec fold_right : ('acc, 'a, 'm) fold = fun f acc -> function
+  let rec fold_right : 'acc 'a 'm. ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc = fun f acc -> function
     | Empty -> acc
     | Single x -> f acc x
     | Deep (_, pr, m, sf) ->
       let acc = fold_right_digit f acc sf in
-      let acc = (poly_recursion fold_right : ('acc, ('a, 'm) node, 'm) fold) (fun acc elt -> fold_right_node f acc elt) acc m in
+      let acc = fold_right (fun acc elt -> fold_right_node f acc elt) acc m in
       let acc = fold_right_digit f acc pr in
       acc
-  let rec fold_left : ('acc, 'a, 'm) fold = fun f acc -> function
+  let rec fold_left : 'acc 'a 'm. ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc = fun f acc -> function
     | Empty -> acc
     | Single x -> f acc x
     | Deep (_, pr, m, sf) ->
       let acc = fold_left_digit f acc pr in
-      let acc = (poly_recursion fold_left : ('acc, ('a, 'm) node, 'm) fold) (fun acc elt -> fold_left_node f acc elt) acc m in
+      let acc = fold_left (fun acc elt -> fold_left_node f acc elt) acc m in
       let acc = fold_left_digit f acc sf in
       acc
 
@@ -177,16 +174,16 @@ module Generic : S
     | Node3 (m, a, b, c) ->
       Format.fprintf f "@[@[<2>Node3 (@,%a,@ %a,@ %a,@ %a@])@]" pp_measure m pp_a a pp_a b pp_a c
 
-  type ('a, 'm) pp_debug_tree = (Format.formatter -> 'm -> unit) -> (Format.formatter -> 'a -> unit) -> Format.formatter -> ('a, 'm) fg -> unit
-  let rec pp_debug_tree : ('a, 'm) pp_debug_tree = fun pp_measure pp_a f -> function
+  type 'a printer = Format.formatter -> 'a -> unit
+  let rec pp_debug_tree : 'a 'm. 'm printer -> 'a printer -> ('a, 'm) fg printer =
+    fun pp_measure pp_a f -> function
     | Empty -> Format.fprintf f "Empty"
     | Single a -> Format.fprintf f "@[<2>Single@ %a@]" pp_a a
     | Deep (v, pr, m, sf) ->
       Format.fprintf f "@[@[<v2>Deep (@,%a,@ %a,@ %a,@ %a@]@\n)@]"
         pp_measure v
         (pp_debug_digit pp_measure pp_a) pr
-        ((poly_recursion pp_debug_tree : (('a, 'm) node, 'm) pp_debug_tree)
-            pp_measure (pp_debug_node pp_measure pp_a)) m
+        (pp_debug_tree pp_measure (pp_debug_node pp_measure pp_a)) m
         (pp_debug_digit pp_measure pp_a) sf
 
   let dummy_printer f _ =
@@ -293,32 +290,51 @@ module Generic : S
     | Three (v, a, b, c) -> Four (monoid.combine v (measure x), a, b, c, x)
     | Four _ -> assert false
 
-  type ('a, 'm) cons_aux = monoid:'m monoid -> (('a, 'm) node, 'm) fg -> ('a, 'm) node -> (('a, 'm) node, 'm) fg
-  let rec cons_aux : ('a, 'm) cons_aux = fun ~monoid t a ->
+  let rec cons_aux : 'a 'm.
+      monoid:'m monoid -> (('a, 'm) node, 'm) fg -> ('a, 'm) node -> (('a, 'm) node, 'm) fg =
+    fun ~monoid t a ->
     match t with
-    | Empty -> Single a
-    | Single b -> deep ~monoid (one_node a) Empty (one_node b)
-    | Deep (_, Four (_, b, c, d, e), m, sf) -> deep ~monoid (two_node ~monoid a b) ((poly_recursion cons_aux : (('a, 'm) node, 'm) cons_aux) ~monoid m (node3_node ~monoid c d e)) sf
-    | Deep (v, pr, m, sf) -> Deep (monoid.combine (measure_node a) v, cons_digit_node ~monoid pr a, m, sf)
+    | Empty ->
+      Single a
+    | Single b ->
+      deep ~monoid (one_node a) Empty (one_node b)
+    | Deep (_, Four (_, b, c, d, e), m, sf) ->
+      deep ~monoid (two_node ~monoid a b) (cons_aux ~monoid m (node3_node ~monoid c d e)) sf
+    | Deep (v, pr, m, sf) ->
+      Deep (monoid.combine (measure_node a) v, cons_digit_node ~monoid pr a, m, sf)
   let cons ~monoid ~measure t a =
     match t with
-    | Empty -> Single a
-    | Single b -> deep ~monoid (one measure a) Empty (one measure b)
-    | Deep (_, Four (_, b, c, d, e), m, sf) -> deep ~monoid (two ~monoid ~measure a b) (cons_aux ~monoid m (node3 ~monoid ~measure c d e)) sf
-    | Deep (v, pr, m, sf) -> Deep (monoid.combine (measure a) v, cons_digit ~monoid ~measure pr a, m, sf)
+    | Empty ->
+      Single a
+    | Single b ->
+      deep ~monoid (one measure a) Empty (one measure b)
+    | Deep (_, Four (_, b, c, d, e), m, sf) ->
+      deep ~monoid (two ~monoid ~measure a b) (cons_aux ~monoid m (node3 ~monoid ~measure c d e)) sf
+    | Deep (v, pr, m, sf) ->
+      Deep (monoid.combine (measure a) v, cons_digit ~monoid ~measure pr a, m, sf)
 
-  let rec snoc_aux : ('a, 'm) cons_aux = fun ~monoid t a ->
+  let rec snoc_aux : 'a 'm.
+      monoid:'m monoid -> (('a, 'm) node, 'm) fg -> ('a, 'm) node -> (('a, 'm) node, 'm) fg =
+    fun ~monoid t a ->
     match t with
-    | Empty -> Single a
-    | Single b -> deep ~monoid (one_node b) Empty (one_node a)
-    | Deep (_, pr, m, Four (_, b, c, d, e)) -> deep ~monoid pr ((poly_recursion snoc_aux : (('a, 'm) node, 'm) cons_aux) ~monoid m (node3_node ~monoid b c d)) (two_node ~monoid e a)
-    | Deep (v, pr, m, sf) -> Deep (monoid.combine v (measure_node a), pr, m, snoc_digit_node ~monoid sf a)
+    | Empty ->
+      Single a
+    | Single b ->
+      deep ~monoid (one_node b) Empty (one_node a)
+    | Deep (_, pr, m, Four (_, b, c, d, e)) ->
+      deep ~monoid pr (snoc_aux ~monoid m (node3_node ~monoid b c d)) (two_node ~monoid e a)
+    | Deep (v, pr, m, sf) ->
+      Deep (monoid.combine v (measure_node a), pr, m, snoc_digit_node ~monoid sf a)
   let snoc ~monoid ~measure t a =
     match t with
-    | Empty -> Single a
-    | Single b -> deep ~monoid (one ~measure b) Empty (one ~measure a)
-    | Deep (_, pr, m, Four (_, b, c, d, e)) -> deep ~monoid pr (snoc_aux ~monoid m (node3 ~monoid ~measure b c d)) (two ~measure ~monoid e a)
-    | Deep (v, pr, m, sf) -> Deep (monoid.combine v (measure a), pr, m, snoc_digit ~monoid ~measure sf a)
+    | Empty ->
+      Single a
+    | Single b ->
+      deep ~monoid (one ~measure b) Empty (one ~measure a)
+    | Deep (_, pr, m, Four (_, b, c, d, e)) ->
+      deep ~monoid pr (snoc_aux ~monoid m (node3 ~monoid ~measure b c d)) (two ~measure ~monoid e a)
+    | Deep (v, pr, m, sf) ->
+      Deep (monoid.combine v (measure a), pr, m, snoc_digit ~monoid ~measure sf a)
 
   (*---------------------------------*)
   (*     various conversions         *)
@@ -393,13 +409,14 @@ module Generic : S
     | Vnil
     | Vcons of 'a * 'rest
 
-  type ('a, 'm) view_aux = monoid:'m monoid -> ('a, 'm) fg -> ('a, ('a, 'm) fg) view
-  let rec view_left_aux : ('a, 'm) view_aux = fun ~monoid -> function
+  let rec view_left_aux : 'a 'm.
+      monoid:'m monoid -> (('a, 'm) node, 'm) fg -> (('a, 'm) node, (('a, 'm) node, 'm) fg) view =
+    fun ~monoid -> function
     | Empty -> Vnil
     | Single x -> Vcons (x, Empty)
     | Deep (_, One (_, a), m, sf) ->
       let vcons =
-        match (poly_recursion view_left_aux : (('a, 'm) node, 'm) view_aux) ~monoid m with
+        match view_left_aux ~monoid m with
         | Vnil -> to_tree_digit_node ~monoid sf
         | Vcons (a, m') -> deep ~monoid (to_digit_node a) m' sf in
       Vcons (a, vcons)
@@ -419,12 +436,14 @@ module Generic : S
       let vcons = deep ~monoid (tail_digit ~monoid ~measure pr) m sf in
       Vcons (head_digit pr, vcons)
 
-  let rec view_right_aux : ('a, 'm) view_aux = fun ~monoid -> function
+  let rec view_right_aux : 'a 'm.
+      monoid:'m monoid -> (('a, 'm) node, 'm) fg -> (('a, 'm) node, (('a, 'm) node, 'm) fg) view =
+    fun ~monoid -> function
     | Empty -> Vnil
     | Single x -> Vcons (x, Empty)
     | Deep (_, pr, m, One (_, a)) ->
       let vcons =
-        match (poly_recursion view_right_aux : (('a, 'm) node, 'm) view_aux) ~monoid m with
+        match view_right_aux ~monoid m with
         | Vnil -> to_tree_digit_node ~monoid pr
         | Vcons (a, m') -> deep ~monoid pr m' (to_digit_node a) in
       Vcons (a, vcons)
@@ -530,15 +549,20 @@ module Generic : S
       let ts = add_digit_to sf1 ts in
       nodes_aux ~monoid ~measure ts sf2
 
-  type ('a, 'm) app3 = monoid:'m monoid -> measure:('a -> 'm) -> ('a, 'm) fg -> 'a list -> ('a, 'm) fg -> ('a, 'm) fg
-  let rec app3 ~monoid ~measure t1 elts t2 =
+  let rec app3 : 'a 'm.
+      monoid:'m monoid -> measure:('a -> 'm) -> ('a, 'm) fg -> 'a list -> ('a, 'm) fg -> ('a, 'm) fg =
+    fun ~monoid ~measure t1 elts t2 ->
     match t1, t2 with
-    | Empty, _ -> List.fold_right (fun elt acc -> cons ~monoid ~measure acc elt) elts t2
-    | _, Empty -> List.fold_left (fun acc elt -> snoc ~monoid ~measure acc elt) t1 elts
-    | Single x1, _ -> cons ~monoid ~measure (List.fold_right (fun elt acc -> cons ~monoid ~measure acc elt) elts t2) x1
-    | _, Single x2 -> snoc ~monoid ~measure (List.fold_left (fun acc elt -> snoc ~monoid ~measure acc elt) t1 elts) x2
+    | Empty, _ ->
+      List.fold_right (fun elt acc -> cons ~monoid ~measure acc elt) elts t2
+    | _, Empty ->
+      List.fold_left (fun acc elt -> snoc ~monoid ~measure acc elt) t1 elts
+    | Single x1, _ ->
+      cons ~monoid ~measure (List.fold_right (fun elt acc -> cons ~monoid ~measure acc elt) elts t2) x1
+    | _, Single x2 ->
+      snoc ~monoid ~measure (List.fold_left (fun acc elt -> snoc ~monoid ~measure acc elt) t1 elts) x2
     | Deep (v1, pr1, m1, sf1), Deep (v2, pr2, m2, sf2) ->
-      Deep (monoid.combine v1 v2, pr1, ((poly_recursion app3 : (('a, 'm) node, 'm) app3) ~monoid ~measure:measure_node m1 (nodes ~monoid ~measure sf1 elts pr2) m2), sf2)
+      Deep (monoid.combine v1 v2, pr1, app3 ~monoid ~measure:measure_node m1 (nodes ~monoid ~measure sf1 elts pr2) m2, sf2)
 
   let append ~monoid ~measure t1 t2 = app3 ~monoid ~measure t1 [] t2
 
@@ -565,16 +589,15 @@ module Generic : S
     | Node2 (_, a, b) -> node2 ~monoid ~measure b a
     | Node3 (_, a, b, c) -> node3 ~monoid ~measure c b a
 
-  type ('a, 'm) reverse_aux = monoid:'m monoid -> (('a, 'm) node -> ('a, 'm) node) -> (('a, 'm) node, 'm) fg -> (('a, 'm) node, 'm) fg
-  let rec reverse_aux : ('a, 'm) reverse_aux = fun ~monoid reverse_a -> function
+  let rec reverse_aux : 'a 'm.
+      monoid:'m monoid -> (('a, 'm) node -> ('a, 'm) node) -> (('a, 'm) node, 'm) fg -> (('a, 'm) node, 'm) fg =
+    fun ~monoid reverse_a -> function
     | Empty -> Empty
     | Single a -> Single (reverse_a a)
     | Deep (_, pr, m, sf) ->
       let rev_pr = reverse_digit_node ~monoid reverse_a pr in
       let rev_sf = reverse_digit_node ~monoid reverse_a sf in
-      let rev_m =
-        (poly_recursion reverse_aux : (('a, 'm) node, 'm) reverse_aux)
-          ~monoid (reverse_node_node ~monoid (reverse_a)) m in
+      let rev_m = reverse_aux ~monoid (reverse_node_node ~monoid (reverse_a)) m in
       deep ~monoid rev_sf rev_m rev_pr
   let reverse ~monoid ~measure = function
     | Empty
@@ -629,8 +652,9 @@ module Generic : S
     | _ ->
       deep ~monoid pr m (to_digit_list ~monoid ~measure sf)
 
-  type ('a, 'm) split_tree = monoid:'m monoid -> measure:('a -> 'm) -> ('m -> bool) -> 'm -> ('a, 'm) fg -> ('a, ('a, 'm) fg) split
-  let rec split_tree : ('a, 'm) split_tree = fun ~monoid ~measure p i -> function
+  let rec split_tree : 'a 'm.
+      monoid:'m monoid -> measure:('a -> 'm) -> ('m -> bool) -> 'm -> ('a, 'm) fg -> ('a, ('a, 'm) fg) split =
+    fun ~monoid ~measure p i -> function
     | Empty -> raise EmptyAlias
     | Single x -> Split (Empty, x, Empty)
     | Deep (_, pr, m, sf) ->
@@ -641,7 +665,7 @@ module Generic : S
       else
         let vm = monoid.combine vpr (measure_t_node ~monoid m) in
         if p vm then
-          let Split (ml, xs, mr) = (poly_recursion split_tree : (('a, 'm) node, 'm) split_tree) ~monoid ~measure:measure_node p vpr m in
+          let Split (ml, xs, mr) = split_tree ~monoid ~measure:measure_node p vpr m in
           let Split (l, x, r) = split_digit ~monoid ~measure p (monoid.combine vpr (measure_t_node ~monoid ml)) (to_digit_node xs) in
           Split (deep_right ~monoid ~measure pr ml l, x, deep_left ~monoid ~measure r mr sf)
         else
@@ -707,8 +731,8 @@ module Generic : S
         let i'' = monoid.combine i' m_b in
         if p i'' then m_a, b else monoid.combine m_a m_b, c
 
-  type ('a, 'm) lookup_tree = monoid:'m monoid -> measure:('a -> 'm) -> ('m -> bool) -> 'm -> ('a, 'm) fg -> 'm * 'a
-  let rec lookup_tree : ('a, 'm) lookup_tree = fun ~monoid ~measure p i -> function
+  let rec lookup_tree : 'a 'm. monoid:'m monoid -> measure:('a -> 'm) -> ('m -> bool) -> 'm -> ('a, 'm) fg -> 'm * 'a =
+    fun ~monoid ~measure p i -> function
     | Empty -> raise EmptyAlias
     | Single x -> monoid.zero, x
     | Deep (_, pr, m, sf) ->
@@ -718,9 +742,7 @@ module Generic : S
         let m_m = measure_t_node ~monoid m in
         let vm = monoid.combine vpr m_m in
         if p vm then
-          let v_left, node =
-            (poly_recursion lookup_tree : (('a, 'm) node, 'm) lookup_tree)
-              ~monoid ~measure:measure_node p vpr m in
+          let v_left, node = lookup_tree ~monoid ~measure:measure_node p vpr m in
           let v, x = lookup_node ~monoid ~measure p (monoid.combine vpr v_left) node in
           monoid.combine (monoid.combine m_pr v_left) v, x
         else
@@ -775,28 +797,31 @@ module Generic : S
 
   let enum_base a k = a, k
 
-  type 'a iter = unit -> 'a * 'a iter
-  type ('input, 'output) iter_into = 'input -> 'output iter -> 'output * 'output iter
-  type ('top_a, 'a, 'm) enum_aux = ('a, 'top_a) iter_into -> (('a, 'm) fg, 'top_a) iter_into
-  let rec enum_aux : ('top_a, 'a, 'm) enum_aux = fun enum_a t k ->
+  type 'a iter = unit -> 'a ret
+  and 'a ret = 'a * 'a iter
+  type ('input, 'output) iter_into = 'input -> 'output iter -> 'output ret
+
+  let rec enum_aux : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
+    fun enum_a t k ->
     match t with
     | Empty -> k ()
     | Single a -> enum_a a k
     | Deep (_, pr, m, sf) ->
       enum_digit enum_a pr (fun () ->
-        (poly_recursion enum_aux : ('top_a, ('a, 'm) node, 'm) enum_aux) (enum_node enum_a) m (fun () ->
+        enum_aux (enum_node enum_a) m (fun () ->
           enum_digit enum_a sf k
         )
       )
   let enum_cps t = enum_aux enum_base t (fun () -> raise BatEnum.No_more_elements)
 
-  let rec enum_aux_backwards  : ('top_a, 'a, 'm) enum_aux = fun enum_a t k ->
+  let rec enum_aux_backwards : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
+    fun enum_a t k ->
     match t with
     | Empty -> k ()
     | Single a -> enum_a a k
     | Deep (_, pr, m, sf) ->
       enum_digit_backwards enum_a sf (fun () ->
-        (poly_recursion enum_aux_backwards : ('top_a, ('a, 'm) node, 'm) enum_aux) (enum_node_backwards enum_a) m (fun () ->
+        enum_aux_backwards (enum_node_backwards enum_a) m (fun () ->
           enum_digit_backwards enum_a pr k
         )
       )
