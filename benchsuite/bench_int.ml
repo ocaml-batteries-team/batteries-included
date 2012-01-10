@@ -1,14 +1,14 @@
-(* cd .. && ocamlbuild benchsuite/test_int.native && _build/benchsuite/test_int.native *)
+(* cd .. && ocamlbuild benchsuite/test_int.native -- *)
 
 
-external primitive_int_compare : int -> int -> int = "caml_int_compare"
+external primitive_int_compare : int -> int -> int = "caml_int_compare" "noalloc"
 
 let test_compare () =
 
   let length = 1000 in
 
   let input =
-    Array.init length (fun _ -> BatRandom.(full_range (), full_range ())) in
+    Array.init length (fun _ -> BatRandom.(full_range_int (), full_range_int ())) in
 
   let output = Array.map (fun (x, y) -> Pervasives.compare x y) input in
 
