@@ -23,7 +23,7 @@ be kept informed, don't hesitate to visit our
 
 {6 New Modules in Batteries}
 
-{!modules: BatBase64 BatBitSet BatCache BatCharParser BatDeque BatDllist BatDynArray BatEnum BatFile BatGlobal BatHashcons BatHeap BatIMap BatISet BatInterfaces BatIO BatLazyList BatLog BatLogger BatMultiPMap BatNumber BatOptParse BatParserCo BatPathGen BatPrint BatRefList BatResult BatReturn BatSeq BatSplay BatUref BatVect}
+{!modules: BatBase64 BatBitSet BatCache BatCharParser BatDeque BatDllist BatDynArray BatEnum BatFile BatFingerTree BatGlobal BatHashcons BatHeap BatIMap BatISet BatInterfaces BatIO BatLazyList BatLog BatLogger BatMultiPMap BatNumber BatOptParse BatParserCo BatPathGen BatPrint BatRefList BatResult BatReturn BatSeq BatSplay BatUref BatVect}
 
 {6 Extensions to the Standard Library (and base types)}
 
