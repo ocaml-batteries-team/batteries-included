@@ -377,10 +377,10 @@ module Generic : S
   and type 'm m = 'm
 
 type measure
+type 'a t
 include S with type ('wrapped_type, 'a, 'm) wrap = 'wrapped_type
-          and type ('a, 'm) fg = ('a, measure) Generic.fg
+          and type ('a, 'm) fg = 'a t
           and type 'm m = measure
-type 'a t = ('a, measure) fg
 
 val size : 'a t -> int
 (** [size t] returns the number of elements in the sequence.
