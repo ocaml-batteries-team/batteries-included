@@ -516,7 +516,7 @@ struct
     let find f e =
       try  Some (find f e)
       with Not_found -> None
-	
+
     let findi f e =
       try  Some (findi f e)
       with Not_found -> None
@@ -587,12 +587,12 @@ module Incubator = struct
 
   let eq eq_elt a1 a2 =
     bin_eq
-      BatInt.Future.eq (length a1) (length a2)
+      BatInt.Incubator.eq (length a1) (length a2)
       (eq_elements eq_elt) a1 a2
 
   let ord ord_elt a1 a2 =
     bin_ord
-      BatInt.Future.ord (length a1) (length a2)
+      BatInt.Incubator.ord (length a1) (length a2)
       (ord_elements ord_elt) a1 a2
 
   module Eq (T : Eq) = struct
@@ -606,5 +606,3 @@ module Incubator = struct
   end
 
 end
-
-
