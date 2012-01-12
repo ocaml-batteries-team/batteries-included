@@ -25,7 +25,6 @@ type 'a monoid = {
 module type S =
 sig
 
-  type 'm m
   type ('a, 'm) fg
   type ('wrapped_type, 'a, 'm) wrap
   val empty : ('a, 'm) fg
@@ -45,8 +44,6 @@ sig
   val rear : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
   val rear_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
   val size : ('a, 'm) fg -> int
-  val lookup : (('m m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
-  val measure : (('a, 'm) fg -> 'm m, 'a, 'm) wrap
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   val fold_right : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   val iter : ('a -> unit) -> ('a, 'm) fg -> unit
@@ -63,7 +60,6 @@ sig
   val map_right : (('a -> 'b) -> ('a, 'm) fg -> ('b, 'm) fg, 'b, 'm) wrap
   val append : (('a, 'm) fg -> ('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   val reverse : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
-  val split : (('m m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> ('b, _) fg -> unit
   val t_printer : 'a BatValuePrinter.t -> ('a, _) fg BatValuePrinter.t
 
@@ -73,10 +69,13 @@ exception Empty (* the name collides with a constructor below,
                  * so making an alias *)
 exception EmptyAlias = Empty
 
-module Generic : S
+module Generic : sig
+  include S
   with type ('wrapped_type, 'a, 'm) wrap = monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type
-  and type 'm m = 'm
-= struct
+  val lookup : (('m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
+  val measure : (('a, 'm) fg -> 'm, 'a, 'm) wrap
+  val split : (('m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
+end = struct
 
   (* All the datatypes in here are the same as the same described in the
    * paper in the mli.
@@ -108,7 +107,6 @@ module Generic : S
     | Empty
     | Single of 'a
     | Deep of 'm * ('a, 'm) digit * (('a, 'm) node, 'm) fg * ('a, 'm) digit
-  type 'm m = 'm
 
   let empty = Empty
   let singleton a = Single a
@@ -917,10 +915,8 @@ let nat_plus_monoid = {
 }
 let size_measurer = fun _ -> 1
 
-type measure = nat
-type ('a, 'm) fg = ('a, int) Generic.fg
-type 'a t = ('a, measure) fg
-type 'm m = measure
+type ('a, 'm) fg = ('a, nat) Generic.fg
+type 'a t = ('a, nat) fg
 
 let last_exn = Generic.last_exn
 (**Q last_exn

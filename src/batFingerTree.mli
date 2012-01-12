@@ -56,7 +56,6 @@ exception Empty
 module type S =
 sig
 
-  type 'm m
   type ('a, 'm) fg
   (** The type of finger trees containing elements of type ['a]
       measured with the type [measure]. *)
@@ -202,28 +201,6 @@ sig
       - O(1) heap space.
   *)
 
-  val lookup : (('m m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
-  (** [lookup p t], when [p] is monotonic, returns the first element
-      of the sequence for which the measure of its predecessors in the
-      sequence (itself included) satisfies [p].
-      @raise Empty is there is no such element.
-
-      - O(log(n)) time, stack space.
-      - O(1) heap space.
-
-      When [p] is not monotonic, take a look at the code or at the paper
-      cited above and see if you understand something (lookup is a
-      specialized version of splitTree that returns the element without
-      building the left and right tree).
-  *)
-
-  val measure : (('a, 'm) fg -> 'm m, 'a, 'm) wrap
-  (** [measure m] gives the measure of the whole tree, whose meaning
-      depends on the measure chosen.
-
-      O(1).
-  *)
-
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   (** [fold_left] is equivalent to [List.fold_left].
 
@@ -352,7 +329,40 @@ sig
       - O(log(n)) stack space.
   *)
 
-  val split : (('m m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
+  (** {6 Boilerplate code} *)
+
+  val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> ('b, _) fg -> unit
+
+  val t_printer : 'a BatValuePrinter.t -> ('a, _) fg BatValuePrinter.t
+end
+
+module Generic : sig
+  include S
+  with type ('wrapped_type, 'a, 'm) wrap = monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type
+
+  val lookup : (('m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
+  (** [lookup p t], when [p] is monotonic, returns the first element
+      of the sequence for which the measure of its predecessors in the
+      sequence (itself included) satisfies [p].
+      @raise Empty is there is no such element.
+
+      - O(log(n)) time, stack space.
+      - O(1) heap space.
+
+      When [p] is not monotonic, take a look at the code or at the paper
+      cited above and see if you understand something (lookup is a
+      specialized version of splitTree that returns the element without
+      building the left and right tree).
+  *)
+
+  val measure : (('a, 'm) fg -> 'm, 'a, 'm) wrap
+  (** [measure m] gives the measure of the whole tree, whose meaning
+      depends on the measure chosen.
+
+      O(1).
+  *)
+
+  val split : (('m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
   (**
       [split p t], when [p] is monotonic, returns [(t1, t2)] where
       [t1] is the longest prefix of [t] whose measure does not satifies
@@ -364,23 +374,11 @@ sig
       When [p] is not monotonic, take a look at the code or at the paper
       cited above and see if you understand something.
   *)
-
-  (** {6 Boilerplate code} *)
-
-  val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> ('b, _) fg -> unit
-
-  val t_printer : 'a BatValuePrinter.t -> ('a, _) fg BatValuePrinter.t
 end
 
-module Generic : S
-  with type ('wrapped_type, 'a, 'm) wrap = monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type
-  and type 'm m = 'm
-
-type measure
 type 'a t
 include S with type ('wrapped_type, 'a, 'm) wrap = 'wrapped_type
           and type ('a, 'm) fg = 'a t
-          and type 'm m = measure
 
 val size : 'a t -> int
 (** [size t] returns the number of elements in the sequence.
