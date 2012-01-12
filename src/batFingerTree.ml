@@ -337,6 +337,12 @@ end = struct
   (*---------------------------------*)
   (*     various conversions         *)
   (*---------------------------------*)
+  let to_tree_digit_node ~monoid d =
+    match d with
+    | One (_, a) -> Single a
+    | Two (v, a, b) -> Deep (v, one_node a, Empty, one_node b)
+    | Three (v, a, b, c) -> Deep (v, two_node ~monoid a b, Empty, one_node c)
+    | Four (v, a, b, c, d) -> Deep (v, three_node ~monoid a b c, Empty, one_node d)
   let to_tree_digit ~monoid ~measure d =
     match d with
     | One (_, a) -> Single a
@@ -350,8 +356,6 @@ end = struct
     | [a; b; c] -> deep ~monoid (two ~monoid ~measure a b) Empty (one ~measure c)
     | [a; b; c; d] -> deep ~monoid (three ~monoid ~measure a b c) Empty (one ~measure d)
     | _ -> assert false
-  let to_tree_digit_node ~monoid d =
-    to_tree_digit ~monoid ~measure:measure_node d
 
   let to_digit_node = function
     | Node2 (v, a, b) -> Two (v, a, b)
@@ -858,7 +862,7 @@ end = struct
     fold_left (fun () elt -> f elt) () t
   let iter_right f t =
     fold_right (fun () elt -> f elt) () t
-  let map ~monoid ~measure f t =
+  let map ~monoid ~measure f t = (* suboptimal when the measure does not depend on 'a *)
     fold_left (fun acc elt -> snoc ~monoid ~measure acc (f elt)) empty t
   let map_right ~monoid ~measure f t =
     fold_right (fun acc elt -> cons ~monoid ~measure acc (f elt)) empty t

@@ -409,7 +409,7 @@ val set : int -> 'a -> 'a t -> 'a t
 *)
 
 val update : int -> ('a -> 'a) -> 'a t -> 'a t
-(** [update i f t] returns [t] where the [i]-th element is now [f (get i v)].
+(** [update i f t] returns [t] where the [i]-th element is now [f (get i t)].
     @raise Invalid_argument when the index is out of bounds.
 
     O(log(n)) time, stack space, heap space.
