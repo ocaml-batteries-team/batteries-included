@@ -94,14 +94,14 @@ val length : 'a list -> int
 
 val at : 'a list -> int -> 'a
 (** [at l n] returns the n-th element of the list [l] or raise
-[Invalid_argument] is the index is outside of [l] bounds. *)
+[Invalid_argument] is the index is outside of [l] bounds.  O(l) *)
 
 val rev : 'a list -> 'a list
 (** List reversal. *)
 
 val append : 'a list -> 'a list -> 'a list
 (** Catenate two lists.  Same function as the infix operator [@].
-Tail-recursive (length of the first argument).*)
+Tail-recursive O(length of the first argument).*)
 
 val rev_append : 'a list -> 'a list -> 'a list
 (** [List.rev_append l1 l2] reverses [l1] and concatenates it to [l2]. *)
@@ -151,7 +151,7 @@ with the results returned by [f].  Tail-recursive. *)
 val rev_map : ('a -> 'b) -> 'a list -> 'b list
 (** [List.rev_map f l] gives the same result as
    {!List.rev}[ (]{!List.map}[ f l)]. *)
-    
+
 val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
 (** [mapi f l] will build the list containing
 [(f 0 a0);(f 1 a1) ... (f n an)] where [a0..an] are the elements of
@@ -200,6 +200,11 @@ val map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 @raise Different_list_size if the two lists have
 different lengths.  Tail-recursive. *)
 
+val rev_map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
+(** [List.rev_map2 f l1 l2] gives the same result as
+   {!List.rev}[ (]{!List.map2}[ f l1 l2)], but is tail-recursive and
+   more efficient. *)
+
 val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b list -> 'c list -> 'a
 (** [List.fold_left2 f a [b0; b1; ...; bn] [c0; c1; ...; cn]] is
 [f (... (f (f a b0 c0) b1 c1) ...) bn cn].
@@ -215,6 +220,14 @@ different lengths.  Tail-recursive. *)
 
 
 (**{6 List scanning}*)
+
+val mem : 'a -> 'a list -> bool
+(** [mem a l] is true if and only if [a] is equal
+   to an element of [l]. *)
+
+val memq : 'a -> 'a list -> bool
+(** Same as {!List.mem}, but uses physical equality instead of structural
+   equality to compare list elements. *)
 
 
 (**{7 Unary predicate, One list}*)
@@ -350,6 +363,10 @@ val remove_assoc : 'a -> ('a * 'b) list -> ('a * 'b) list
 pairs [l] without the first pair with key [a], if any.
 Tail-recursive. *)
 
+val mem_assoc : 'a -> ('a * 'b) list -> bool
+(** Same as {!List.assoc}, but simply return true if a binding exists,
+   and false if no bindings exist for the given key. *)
+
 val assq : 'a -> ('a * 'b) list -> 'b
 (** Same as {!List.assoc}, but uses physical equality instead of structural
    equality to compare keys. *)
@@ -361,6 +378,10 @@ val assq_inv : 'b -> ('a * 'b) list -> 'a
 val remove_assq : 'a -> ('a * 'b) list -> ('a * 'b) list
 (** Same as {!List.remove_assoc}, but uses physical equality instead
 of structural equality to compare keys.  Tail-recursive. *)
+
+val mem_assq : 'a -> ('a * 'b) list -> bool
+(** Same as {!List.mem_assoc}, but uses physical equality instead of
+   structural equality to compare keys. *)
 
 
 (** {6 List transformations}*)

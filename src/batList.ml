@@ -22,9 +22,6 @@
  *)
 
 
-open List
-
-
 (* ::VH:: GLUE with StdLib *)
 let merge = List.merge
 let fast_sort = List.fast_sort
@@ -43,10 +40,12 @@ let rev = List.rev
 let length = List.length
 let tl = List.tl
 let hd = List.hd
+let mem = List.mem
+let memq = List.memq
+let mem_assq = List.mem_assq
+let mem_assoc = List.mem_assoc
+let rev_map2 = List.rev_map2
 (* ::VH:: END GLUE *)
-
-
-
 
 (* Thanks to Jacques Garrigue for suggesting the following structure *)
 type 'a mut_list =  {
@@ -68,7 +67,7 @@ let is_empty = function
   | [] -> true
   | _  -> false
 
- 
+
 let nth l index =
   if index < 0 then invalid_arg "Negative index not allowed";
   let rec loop n = function
@@ -202,7 +201,7 @@ let unique_cmp ?(cmp = Pervasives.compare) l =
     else ( set := BatMap.add x true !set; true )
   in
   (* use a stateful filter to remove duplicate elements *)
-  filter should_keep l
+  List.filter should_keep l
 
 let filter_map f l =
   let rec loop dst = function
@@ -218,7 +217,7 @@ let filter_map f l =
   let dummy = dummy_node() in
   loop dummy l;
   dummy.tl
-  
+
 let rec find_map f = function
   | [] -> raise Not_found
   | x :: xs ->
@@ -475,7 +474,7 @@ let mapi f = function
         let r = { hd = f n h; tl = [] } in
         dst.tl <- inj r;
         loop r (n+1) t
-    in  
+    in
     let r = { hd = f 0 h; tl = [] } in
     loop r 1 t;
     inj r
@@ -625,7 +624,7 @@ let assq_inv e l =
   | (a,b)::t when b == e  -> a
   | _::t                  -> aux t
   in aux l
-  
+
 let sort_unique cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
