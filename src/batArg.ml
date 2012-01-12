@@ -19,6 +19,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+(* GLUE with StdLib *)
+type spec = Arg.spec =
+  | Unit of (unit -> unit)
+  | Bool of (bool -> unit)
+  | Set of bool ref
+  | Clear of bool ref
+  | String of (string -> unit)
+  | Set_string of string ref
+  | Int of (int -> unit)
+  | Set_int of int ref
+  | Float of (float -> unit)
+  | Set_float of float ref
+  | Tuple of spec list
+  | Symbol of string list * (string -> unit)
+  | Rest of (string -> unit)
+type key = string
+type doc = string
+type usage_msg = string
+type anon_fun = string -> unit
+let parse = Arg.parse
+let parse_argv = Arg.parse_argv
+exception Help = Arg.Help
+exception Bad = Arg.Bad
+let usage = Arg.usage
+let usage_string = Arg.usage_string
+let align = Arg.align
+let current = Arg.current
+(* END GLUE *)
 
 type command =
     { doc : string(**The documentation associated to the keyword, possibly empty.*);
@@ -38,4 +66,3 @@ let handle ?(usage="") cmd =
   and anonymous= BatRefList.empty ()       in
   Arg.parse speclist (fun s -> BatRefList.push anonymous s) usage;
   List.rev (BatRefList.to_list anonymous)
-
