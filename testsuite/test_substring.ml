@@ -143,6 +143,24 @@ let test_slice =
     end;
   ];;
 
+let test_index_from =
+  let aeq = assert_equal ~printer:string_of_int in
+  [
+    begin "index from" >:: fun () ->
+      aeq (index_from (of_string "foobar") 2 'b')
+	(2+index (triml 2 (of_string "foobar")) 'b')
+    end;
+  ];;
+
+let test_rindex_from =
+  let aeq = assert_equal ~printer:string_of_int in
+  [
+    begin "rindex from" >:: fun () ->
+      aeq (rindex_from (of_string "foobar") 2 'b')
+	(rindex (trimr 2 (of_string "foobar")) 'b')
+    end;
+  ];;
+
 let tests = "Substring" >::: [
   "dropr" >::: test_dropr;
   "dropl" >::: test_dropl;
@@ -151,4 +169,5 @@ let tests = "Substring" >::: [
   "splitr" >::: test_splitr;
   "splitl" >::: test_splitl;
   "slice" >::: test_slice;
+  "index_from" >::: test_index_from;
 ];;
