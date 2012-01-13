@@ -254,6 +254,7 @@ let rec make len c =
       let rope = concatloop len 2 (of_string (STRING.make 1 c)) in
         concat rope (make (len - length rope) c)
 
+(* overridden argument order below *)
 let rec sub start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
   | Leaf s ->
@@ -282,6 +283,9 @@ let rec sub start len = function
         else sub (start - cl) len r
       in
         concat left right
+
+(* change argument order on Vect.sub *)
+let sub v s l = sub s l v
 
 let insert start rope r =
   concat (concat (sub 0 start r) rope) (sub start (length r - start) r)
@@ -890,7 +894,7 @@ struct
     let off = ref 0 in
       map (fun x -> f (BatRef.post_incr off) x) v
 
-	
+
   let rec fold f a = function
       Empty -> a
     | Leaf s ->
@@ -900,7 +904,7 @@ struct
           done;
           !acc
     | Concat(l,_,r,_,_) -> fold f (fold f a l) r
-	
+
   let fold_left = fold
   let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
     let rec aux (acc:'b) = function

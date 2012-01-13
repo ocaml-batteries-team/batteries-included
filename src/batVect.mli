@@ -159,7 +159,7 @@ val destructive_set : 'a t -> int -> 'a -> unit
       to [e]. {b This operation is destructive}, and will also affect vects
       sharing the modified leaf with [v]. Use with caution. *)
 
-val sub : int -> int -> 'a t -> 'a t
+val sub : 'a t -> int -> int -> 'a t
   (** [sub m n r] returns a sub-vect of [r] containing all the elements
       whose indexes range from [m] to [m + n - 1] (included).
     Raises Out_of_bounds in the same cases as Array.sub.
@@ -515,4 +515,3 @@ sig
   (** {7 Printing}*)
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 end
-
