@@ -291,10 +291,10 @@ module Safe_int : sig
   val ( = )  : t -> t -> bool
   (** Comparaison: [a = b] if and only if [a] and [b] have the same value.*)
 
-  val min_num : t
+  val max_num : t
   (** The greatest representable integer, which is either 2{^30}-1 or 2{^62}-1. *)
 
-  val max_num : t
+  val min_num : t
   (** The smallest representable integer, -2{^30} or 2{^62}. *)
 
   val succ: t -> t
