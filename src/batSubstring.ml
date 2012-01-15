@@ -136,6 +136,29 @@ let compare (str1, off1, len1) (str2, off2, len2) =
   in
   loop 0
 
+let index_from (str, off, len) i c = 
+  let rec aux k = 
+    if k = len then raise Not_found
+    else if str.[off+k] = c then k
+    else aux (k+1)
+  in 
+  if i > len || i < 0 then invalid_arg "Substring.index_from" 
+  else aux i
+
+let index sus c = index_from sus 0 c
+
+let rindex_from (str, off, len) i c = 
+  let rec aux k = 
+    if k < 0 then raise Not_found
+    else if str.[off+k] = c then k
+    else aux (k-1)
+  in 
+  if i > len || i < 0 then invalid_arg "Substring.rindex_from" 
+  else aux i
+
+let rindex sus c = rindex_from sus (size sus - 1) c
+
+
 (** not implemented: collate *)
 
 let dropl p (str,off,len) =
