@@ -28,8 +28,9 @@ open Printf
 let (|>) x f = f x
 let (/^) a b = (float a) /. (float b)
 let rec repeat f x n = if n <= 0 then () else (ignore (f x); repeat f x (n-1))
+let curry f (x,y) = f x y
 let tap f x = f x; x
-
+let rec (--.) (lo,step) hi = if lo <= hi then lo :: ((lo +. step),step) --. hi else []
 let debug = false
 let dtap f x = if debug then (f x; x) else x
 
@@ -403,32 +404,51 @@ let print_res ?(verbose=false) oc res =
   fprintf oc "\n";
   ()
 
-(*
+let list_print ~first ~sep ~last to_string oc lst =
+  let rec lp_aux = function
+    | [] -> ()
+    | [last] -> output_string oc (to_string last)
+    | h::t -> output_string oc (to_string h); output_string oc sep; lp_aux t
+  in
+  output_string oc first;
+  lp_aux lst;
+  output_string oc last
+
+
+
 (* print a list of results to a csv file *)
 let print_csv resl oc =
   let print_csv_string l =
-    List.print ~first:"\"" ~sep:"\",\"" ~last:"\"\n" String.print oc l in
+    list_print ~first:"\"" ~sep:"\",\"" ~last:"\"\n" (fun x -> x) oc l in
   let print_csv_float l =
-    List.print ~first:"" ~sep:"," ~last:"\n" Float.print oc l in
+    list_print ~first:"" ~sep:"," ~last:"\n" string_of_float oc l in
   print_csv_string (List.map (fun r -> r.desc) resl);
   for i = 0 to Array.length (List.hd resl).times - 1 do
     print_csv_float (List.map (fun r -> r.times.(i)) resl);
   done
-(* FIXME input should be list of results *)
-let print_json oc res =
-  Array.print Float.print ~first:"[" ~sep:", " ~last:"]\n" oc res.times
+
+let print_json resl oc =
+  List.iter (fun res ->
+    fprintf oc "{ name: \"%s\"; samples: [%a] }\n" res.desc
+      (fun oc ts -> Array.iteri (fun i x ->  output_string oc (string_of_float x); if i <> Array.length ts then output_string oc ", ") ts ) res.times
+  ) resl
+
+let print_flat resl oc = match resl with [] -> () | res::_ ->
+  Array.iter (fprintf oc "%g\n") res.times
 
 let print_times filename =
   let handler =
     if Filename.check_suffix filename ".csv" then print_csv
-    else if Filename.check_suffix filename ".json" then failwith "JSON support not finished"
-    else (fun _ _ -> ())
+    else if Filename.check_suffix filename ".json" then print_json
+    else if Filename.check_suffix filename ".flat" then print_flat
+    else failwith "Unknown output filename suffix"
   in
   (fun resl ->
     Printf.eprintf "Saving times to %s\n" filename;
-    File.with_file_out filename (handler resl)
+    let oc = open_out filename in
+    handler resl oc;
+    close_out oc;
   )
-*)
 
 let cmp_ci r1 r2 =
   let l1 = r1.mean.Bootstrap.lower in
@@ -492,8 +512,8 @@ let config = { verbose = true;
 	       resamples = 1_000;
                confidence_interval = 0.95;
                gc_between_tests= false;
-	       output = [summarize ~alpha:0.05];
-(*               output = [print_times "times.csv"; summarize];*)
+(*	       output = [summarize ~alpha:0.05];*)
+	       output = [print_times "times.flat"; summarize ~alpha:0.05];
              }
 
 let vtap f x = if config.verbose then (f x; x) else x
@@ -579,28 +599,27 @@ let run_outputs res = List.iter (fun f -> f res) config.output
 
 (** Functions to benchmark are (int -> unit).  Parameter is number of
     repetitions *)
-let bench_n fs =
-  let bench_points (desc, f) = run_and_analyze desc f in
-  List.map bench_points fs
+let bench_n fs = List.map (curry run_and_analyze) fs
 
+(* Benchmark unit functions with names *)
 let bench fs =
-  bench_n (List.map (fun (d,f) -> (d, repeat f ())) fs) |> run_outputs
+  List.map (fun (d,f) -> run_and_analyze d (repeat f ())) fs |> run_outputs
 
 (** This is the main function to benchmark and compare a number of
     functions.  Functions to benchmark have a value to apply them to.
     We will rewrite them to take int argument of # of reps to run. *)
 let bench_arg fs =
-  bench_n (List.map (fun (d,f,x) -> (d,repeat f x)) fs)
+  List.map (fun (d,f,x) -> run_and_analyze d (repeat f x)) fs
 
 (** f argument is ('a -> unit), and we are given a [(string * 'a) list]
    to test across *)
 let bench_args f dxs =
-  bench_n (List.map (fun (d,x) -> (d, repeat f x)) dxs)
+  List.map (fun (d,x) -> run_and_analyze d (repeat f x)) dxs
 
 (** [bench_funs fs x] benchmarks a list of labeled functions on the
     same input, x *)
 let bench_funs fs x =
-  bench_n (List.map (fun (d,f) -> (d, repeat f x)) fs)
+  List.map (fun (d,f) -> run_and_analyze d (repeat f x)) fs
 
 (** This function is similar to bench_args, but args are ints, and we
     rescale times.  This is useful for testing different block sizes
@@ -612,3 +631,53 @@ let bench_throughput f xs =
   |> res_scale (1. /. float x)
   in
   List.map bench_one xs
+
+(* generate points spaced nicely - exponential for really big ranges
+   (lo/hi>10), unit spacing for medium ranges, otherwise 10
+   intervals *)
+let rec gen_points ?(n=10) lo hi =
+(*  printf "gp %g %g\n%!" lo hi;*)
+  assert (hi >= lo);
+  if hi = lo then [lo]
+  else if lo > 0. && hi /. lo > 100. then gen_points ~n (log lo) (log hi) |> List.map exp
+  else if hi -. lo < float (n*3) && hi -. lo > float (n/3) && floor (hi -. lo) = (hi -. lo) then List.(lo,1.) --. hi
+  else
+    let step = (hi -. lo) /. float n in
+    (lo, step) --. hi
+
+let rec uniq = function
+  | x :: y :: t when x = y -> uniq (x :: t)
+  | x :: t -> x :: uniq t
+  | [] -> []
+
+(* hide the float internals, give a nice int interface *)
+let gen_points ?n lo hi =
+  gen_points ?n (float lo) (float hi) |> List.map (fun x -> truncate (x+. 0.5)) |> uniq
+
+let bench_range f ~input_gen ?n (lo,hi) =
+  let points = gen_points ?n lo hi in
+  let run_one i = run_and_analyze (string_of_int i) (repeat f (input_gen i)) in
+  List.map run_one points
+
+let bench_2d fs ~input_gen ?n (lo,hi) =
+  let points = gen_points ?n lo hi in
+  let run_one (df,f) (i,input) =
+    let d = df ^ "_" ^ string_of_int i in
+    run_and_analyze d (repeat f input) |> res_scale (1. /. float i)
+  in
+  let inputs = List.map (fun i -> i, input_gen i) points in
+  points, List.map (fun (df,_ as f) -> df, List.map (run_one f) inputs) fs
+(* returns list of (desc, result list); each sublist is all results
+   for one function *)
+
+let print_ranges oc (desc,resl) =
+  fprintf oc "%s\n" desc;
+  list_print ~first:"est " ~last:"\n" ~sep:" " (fun r -> string_of_float r.mean.Bootstrap.point) oc resl;
+  list_print ~first:"lo " ~last:"\n" ~sep:" " (fun r -> string_of_float r.mean.Bootstrap.lower) oc resl;
+  list_print ~first:"hi " ~last:"\n" ~sep:" " (fun r -> string_of_float r.mean.Bootstrap.upper) oc resl
+
+let print_2d fn (points,rs) =
+  let oc = open_out fn in
+  list_print ~first:"x-values\n" ~last:"\n" ~sep:" " string_of_int oc points;
+  List.iter (print_ranges oc) rs;
+  close_out oc
