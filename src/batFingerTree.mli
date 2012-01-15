@@ -23,10 +23,9 @@
    Finger Trees: A Simple General-purpose Data Structure
    http://www.soi.city.ac.uk/~ross/papers/FingerTree.pdf
 
-   The finger tree itself is functorized over the measure
-   (so monomorphic over the measure) and polymorphic over the
-   measurement function (because there are useful measurements
-   functions that are polymorphic over the elements being measured).
+   The finger tree itself is polymorphic over the measure and
+   the measurement function (this is needed because sometimes
+   the type of the measure depends on the type of the elements).
 
    This module also contains an instanciation of a finger tree that
    implements a functional sequence with the following characteristics:
@@ -61,7 +60,7 @@ sig
 
   type ('a, 'm) fg
   (** The type of finger trees containing elements of type ['a]
-      measured with the type [measure]. *)
+      measured by ['m]. *)
 
   type ('wrapped_type, 'a, 'm) wrap
   (** A type meant to avoid duplication of signatures.
@@ -69,8 +68,8 @@ sig
       For the generic finger tree, this type will
       be [monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type].
 
-      Once the functor has been applied, the resulting module should
-      be reexported in such a way that the type is now simply
+      Once the finger tree has been specialized, the resulting module
+      should be reexported in such a way that the type is now simply
       ['wrapped_type].
   *)
 
