@@ -41,6 +41,9 @@
 
    Complexities are given assuming that the monoid combination operation
    and the measurement functions are constant time and space.
+
+   None of the functions on finger trees can cause stack overflow:
+   they use at worst a logarithmic amount of stack space.
 *)
 
 (** The type of the element of a monoid. *)
@@ -86,13 +89,13 @@ sig
   val cons : (('a, 'm) fg -> 'a -> ('a, 'm) fg, 'a, 'm) wrap
   (** [cons t elt] adds [elt] to the left of [t].
 
-      O(1) amortized, O(log(n)) worst case time, stack and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val snoc : (('a, 'm) fg -> 'a -> ('a, 'm) fg, 'a, 'm) wrap
   (** [snoc t elt] adds [elt] to the right of [t].
 
-      O(1) amortized, O(log(n)) worst case time, stack and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   (** {6 Deconstruction} *)
@@ -102,7 +105,7 @@ sig
       or [Some (hd, tl)] when [hd] is the first element of the sequence
       and [tl] is the rest of the sequence.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val front_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
@@ -110,7 +113,7 @@ sig
       of the sequence and [tl] is the rest of the sequence.
       @raise Empty if [t] is empty.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val head : ('a, 'm) fg -> 'a option
@@ -118,14 +121,14 @@ sig
       or [Some hd] otherwise, where [hd] is the first element
       of the sequence.
 
-      O(1) time, stack space and heap space.
+      O(1).
   *)
 
   val head_exn : ('a, 'm) fg -> 'a
   (** [head_exn t] returns the first element of the sequence.
       @raise Empty if [t] is empty.
 
-      O(1) time, stack space and heap space.
+      O(1).
   *)
 
   val last : ('a, 'm) fg -> 'a option
@@ -133,14 +136,14 @@ sig
       or [Some hd] otherwise, where [hd] is the last element
       of the sequence.
 
-      O(1) time, stack space and heap space.
+      O(1).
   *)
 
   val last_exn : ('a, 'm) fg -> 'a
   (** [last_exn t] returns the last element of the sequence.
       @raise Empty if [t] is empty.
 
-      O(1) time, stack space and heap space.
+      O(1).
   *)
 
   val tail : (('a, 'm) fg -> ('a, 'm) fg option, 'a, 'm) wrap
@@ -148,7 +151,7 @@ sig
       or [Some tl] where [tl] is the sequence [t] where the first element
       has been removed.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val tail_exn : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
@@ -156,7 +159,7 @@ sig
       has been removed.
       @raise Empty if [t] is empty.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val init : (('a, 'm) fg -> ('a, 'm) fg option, 'a, 'm) wrap
@@ -164,7 +167,7 @@ sig
       or [Some init] where [init] is the sequence [t] where the last element
       has been removed.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val init_exn : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
@@ -172,7 +175,7 @@ sig
       has been removed.
       @raise Empty if [t] is empty.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val rear : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
@@ -180,7 +183,7 @@ sig
       or [Some (last, init)] where [last] is the last element of the
       sequence and [init] is the rest of the sequence.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val rear_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
@@ -188,7 +191,7 @@ sig
       the sequence and [init] is the rest of the sequence.
       @raise Empty if [t] is empty.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   (** {6 Inspection} *)
@@ -196,41 +199,31 @@ sig
   val size : ('a, 'm) fg -> int
   (** [size t] returns the number of elements in the sequence.
 
-      - O(n) time.
-      - O(log(n)) stack space.
-      - O(1) heap space.
+      O(n).
   *)
 
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   (** [fold_left] is equivalent to [List.fold_left].
 
-      - O(n) time.
-      - O(1) heap space.
-      - O(log(n)) stack space.
+      O(n).
   *)
 
   val fold_right : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   (** [fold_right] is equivalent to [List.fold_right].
 
-      - O(n) time.
-      - O(1) heap space.
-      - O(log(n)) stack space.
+      O(n).
   *)
 
   val iter : ('a -> unit) -> ('a, 'm) fg -> unit
   (** [iter] is equivalent to [List.iter].
 
-      - O(n) time.
-      - O(1) heap space.
-      - O(log(n)) stack space.
+      O(n).
   *)
 
   val iter_right : ('a -> unit) -> ('a, 'm) fg -> unit
   (** [iter_right] is equivalent to [List.iter o List.rev].
 
-      - O(n) time.
-      - O(1) heap space.
-      - O(log(n)) stack space.
+      O(n).
  *)
 
   (** {6 Conversions} *)
@@ -243,10 +236,7 @@ sig
 
       O(1).
 
-      Forcing the whole enumeration takes:
-      - O(n) time.
-      - O(1) stack space.
-      - O(log(n)) heap space.
+      Forcing the whole enumeration takes O(n).
   *)
 
   val backwards : ('a, 'm) fg -> 'a BatEnum.t
@@ -257,14 +247,14 @@ sig
 
   val to_list : ('a, 'm) fg -> 'a list
   (** [to_list t] is equivalent to [BatList.of_enum (enum t)].
-      - O(n) time and heap space.
-      - O(log(n)) stack space.
+
+      O(n).
   *)
 
   val to_list_backwards : ('a, 'm) fg -> 'a list
   (** [to_list_backwards t] is equivalent to [BatList.of_enum (backwards t)].
-      - O(n) time and heap space.
-      - O(log(n)) stack space.
+
+      O(n).
   *)
 
   (** {7 Conversions from other structures} *)
@@ -273,60 +263,52 @@ sig
   (** [of_enum e] build the sequence containing the elements of [e]
       in the same order.
 
-      In addition to the complexity of forcing the enumeration, it is:
-      - O(n) time.
-      - O(log(n)) stack space.
-      - O(n) heap space.
+      Its complexity is the complexity of forcing the enumeration.
   *)
 
   val of_backwards : ('a BatEnum.t -> ('a, 'm) fg, 'a, 'm) wrap
   (** [of_backward e] is equivalent to [reverse (of_enum e)].
-      - O(n) time.
-      - O(log(n)) stack space.
-      - O(n) heap space.
+
+      O(n).
   *)
 
   val of_list : ('a list -> ('a, 'm) fg, 'a, 'm) wrap
   (** [of_list l] is equivalent to [of_enum (BatList.enum l)].
-      - O(n) time
-      - O(log(n)) stack space
-      - O(n) heap space
+
+      O(n).
   *)
 
   val of_list_backwards : ('a list -> ('a, 'm) fg, 'a, 'm) wrap
   (** [of_list_backwards l] is equivalent to
       [of_enum_backwards (BatList.enum l)].
-      - O(n) time.
-      - O(log(n)) stack space.
-      - O(n) heap space.
+
+      O(n).
   *)
 
   (** {6 Combining/reorganizing} *)
 
   val map : (('a -> 'b) -> ('a, 'm) fg -> ('b, 'm) fg, 'b, 'm) wrap
   (** [map] is equivalent to {!List.map}.
-      - O(n) time.
-      - O(n) heap space.
-      - O(log(n)) stack space.
+
+      O(n).
   *)
 
   val map_right : (('a -> 'b) -> ('a, 'm) fg -> ('b, 'm) fg, 'b, 'm) wrap
   (** [map] is equivalent to [List.map o List.rev].
-      - O(n) time.
-      - O(n) heap space.
-      - O(log(n)) stack space.
+
+      O(n).
   *)
 
   val append : (('a, 'm) fg -> ('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   (** [append] is equivalent to [List.append].
 
-      O(log(min(n,m))) time, stack space, heap space
+      O(log(min(n,m))).
   *)
 
   val reverse : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   (** [reverse t] is equivalent to [of_list (List.rev (to_list t))].
-      - O(n) time, heap space.
-      - O(log(n)) stack space.
+
+      O(n).
   *)
 
   (** {6 Boilerplate code} *)
@@ -346,8 +328,7 @@ module Generic : sig
       sequence (itself included) satisfies [p].
       @raise Empty is there is no such element.
 
-      - O(log(n)) time, stack space.
-      - O(1) heap space.
+      O(log(n)).
 
       When [p] is not monotonic, take a look at the code or at the paper
       cited above and see if you understand something (lookup is a
@@ -369,7 +350,7 @@ module Generic : sig
       [p], and [t2] is the rest of [t].
       @raise Empty is there is no such element
 
-      O(log(n)) time, stack space, heap space.
+      O(log(n)).
 
       When [p] is not monotonic, take a look at the code or at the paper
       cited above and see if you understand something.
@@ -390,27 +371,26 @@ val split_at : 'a t -> int -> 'a t * 'a t
 (** [split_at] is equivalent to [List.split_at].
     @raise Invalid_argument when the index is out of bounds.
 
-    O(log(n)) time, stack space, heap space.
+    O(log(n)).
 *)
 
 val get : int -> 'a t -> 'a
 (** [get i t] returns the [i]-th element of [t].
     @raise Invalid_argument when the index is out of bounds.
 
-    - O(log(n)) time, stack space.
-    - O(1) heap space.
+    O(log(n)).
 *)
 
 val set : int -> 'a -> 'a t -> 'a t
 (** [set i v t] returns [t] where the [i]-th element is now [v].
     @raise Invalid_argument when the index is out of bounds.
 
-    O(log(n)) time, stack space, heap space.
+    O(log(n)).
 *)
 
 val update : int -> ('a -> 'a) -> 'a t -> 'a t
 (** [update i f t] returns [t] where the [i]-th element is now [f (get i t)].
     @raise Invalid_argument when the index is out of bounds.
 
-    O(log(n)) time, stack space, heap space.
+    O(log(n)).
 *)
