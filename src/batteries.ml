@@ -44,7 +44,6 @@ module Legacy = struct
 end
 
 (* stdlib modules *)
-module Arg = BatArg
 module Array = struct include Array include BatArray end
 (* ArrayLabels *)
 module Buffer = struct include Buffer include BatBuffer end
@@ -110,7 +109,7 @@ module IO = BatIO
 module LazyList = BatLazyList
 module MultiPMap = BatMultiPMap
 module Option = BatOption
-module OptParse = BatOptParse
+(* REMOVED, Extlib only module OptParse = BatOptParse *)
 module RefList = BatRefList
 module Ref = BatRef
 (*module Std = REMOVED - use BatPervasives *)

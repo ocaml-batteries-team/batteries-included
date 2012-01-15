@@ -1,5 +1,4 @@
 Ulib
-BatArg
 BatArray
 BatBigarray
 BatBig_int
@@ -79,9 +78,6 @@ BatAvlTree
 BatISet
 BatIMap
 BatCache
-BatLog
-BatCounter
-BatHistogram
 BatteriesConfig
 BatteriesPrint
 Batteries
