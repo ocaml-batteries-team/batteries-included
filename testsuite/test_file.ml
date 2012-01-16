@@ -11,7 +11,7 @@ let buffer = BatArray.of_enum (BatEnum.take 60 (BatRandom.State.enum_int state 2
 (**Write sample to temporary file*)
 let write buf =
   let (out, name) = open_temporary_out ~mode:[`delete_on_exit] () in
-    write_bytes out (BatArray.enum buf);
+    BatEnum.iter (write_byte out) (BatArray.enum buf);
     close_out out;
     name
 
@@ -79,11 +79,11 @@ let test_no_append () =
   try
     let temp   = temp_file "ocaml_batteries" "noappend_test" in
     let out    = open_out temp                       in
-    let _      = write_bytes out (BatArray.enum buffer) in
+    let _      = BatEnum.iter (write_byte out) (BatArray.enum buffer) in
     let _      = close_out out                       in
     let size_1 = size_of temp                        in
     let out    = open_out temp                       in
-    let _      = write_bytes out (BatArray.enum buffer) in
+    let _      = BatEnum.iter (write_byte out) (BatArray.enum buffer) in
     let _      = close_out out                       in
     let size_2 = size_of temp                        in
       if size_1 <> size_2 then assert_failure
@@ -94,11 +94,11 @@ let test_append () =
   try
     let temp   = temp_file "ocaml_batteries" "append_test" in
     let out    = open_out ~mode:[`append] temp       in
-    let _      = write_bytes out (BatArray.enum buffer) in
+    let _      = BatEnum.iter (write_byte out) (BatArray.enum buffer) in
     let _      = close_out out                       in
     let size_1 = size_of temp                        in
     let out    = open_out ~mode:[`append] temp       in
-    let _      = write_bytes out (BatArray.enum buffer) in
+    let _      = BatEnum.iter (write_byte out) (BatArray.enum buffer) in
     let _      = close_out out                       in
     let size_2 = size_of temp                        in
       if size_2 <> 2*size_1 then assert_failure

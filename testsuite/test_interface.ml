@@ -1,5 +1,5 @@
 
-module X1 : module type of Arg = BatArg
+(*module X1 : module type of Arg = BatArg REMOVE BATARG?  REIMPLEMENT?*)
 module X15 : module type of List = BatList
 (*
 module X2 : module type of Array = BatArray
