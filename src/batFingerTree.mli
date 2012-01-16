@@ -99,16 +99,16 @@ sig
 
   (** {6 Deconstruction} *)
 
-  val front : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
+  val front : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
   (** [front t] returns [None] when [t] is empty,
-      or [Some (hd, tl)] when [hd] is the first element of the sequence
+      or [Some (tl, hd)] when [hd] is the first element of the sequence
       and [tl] is the rest of the sequence.
 
       O(1) amortized, O(log(n)) worst case.
   *)
 
-  val front_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
-  (** [front_exn t] returns [(hd, tl)] when [hd] is the first element
+  val front_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
+  (** [front_exn t] returns [(tl, hd)] when [hd] is the first element
       of the sequence and [tl] is the rest of the sequence.
       @raise Empty if [t] is empty.
 
@@ -177,16 +177,16 @@ sig
       O(1) amortized, O(log(n)) worst case.
   *)
 
-  val rear : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
+  val rear : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
   (** [rear t] returns [None] when [t] is empty,
-      or [Some (last, init)] where [last] is the last element of the
+      or [Some (init, last)] where [last] is the last element of the
       sequence and [init] is the rest of the sequence.
 
       O(1) amortized, O(log(n)) worst case.
   *)
 
-  val rear_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
-  (** [rear t] returns [(last, init)] when [last] is the last element of
+  val rear_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
+  (** [rear t] returns [(init, last)] when [last] is the last element of
       the sequence and [init] is the rest of the sequence.
       @raise Empty if [t] is empty.
 

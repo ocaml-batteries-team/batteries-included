@@ -31,8 +31,8 @@ sig
   val singleton : 'a -> ('a, 'm) fg
   val cons : (('a, 'm) fg -> 'a -> ('a, 'm) fg, 'a, 'm) wrap
   val snoc : (('a, 'm) fg -> 'a -> ('a, 'm) fg, 'a, 'm) wrap
-  val front : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
-  val front_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
+  val front : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
+  val front_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
   val head : ('a, 'm) fg -> 'a option
   val head_exn : ('a, 'm) fg -> 'a
   val last : ('a, 'm) fg -> 'a option
@@ -41,8 +41,8 @@ sig
   val tail_exn : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   val init : (('a, 'm) fg -> ('a, 'm) fg option, 'a, 'm) wrap
   val init_exn : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
-  val rear : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
-  val rear_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
+  val rear : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
+  val rear_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
   val size : ('a, 'm) fg -> int
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   val fold_right : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
@@ -495,11 +495,11 @@ end = struct
   let front ~monoid ~measure t =
     match view_left ~monoid ~measure t with
     | Vnil -> None
-    | Vcons (hd, tl) -> Some (hd, tl)
+    | Vcons (hd, tl) -> Some (tl, hd)
   let front_exn ~monoid ~measure t =
     match view_left ~monoid ~measure t with
     | Vnil -> raise EmptyAlias
-    | Vcons (hd, tl) -> (hd, tl)
+    | Vcons (hd, tl) -> (tl, hd)
 
   let init ~monoid ~measure t =
     match view_right ~monoid ~measure t with
@@ -513,11 +513,11 @@ end = struct
   let rear ~monoid ~measure t =
     match view_right ~monoid ~measure t with
     | Vnil -> None
-    | Vcons (hd, tl) -> Some (hd, tl)
+    | Vcons (hd, tl) -> Some (tl, hd)
   let rear_exn ~monoid ~measure t =
     match view_right ~monoid ~measure t with
     | Vnil -> raise EmptyAlias
-    | Vcons (hd, tl) -> (hd, tl)
+    | Vcons (hd, tl) -> (tl, hd)
 
   (*---------------------------------*)
   (*            append               *)
@@ -1015,7 +1015,7 @@ let snoc t x = Generic.snoc ~monoid:nat_plus_monoid ~measure:size_measurer t x
 
 let front t = Generic.front ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q front
-   (Q.list Q.int) (fun l -> (match front (of_list l) with None -> [] | Some (hd, t) -> hd :: to_list t) = l)
+   (Q.list Q.int) (fun l -> (match front (of_list l) with None -> [] | Some (t, hd) -> hd :: to_list t) = l)
 *)
 
 let tail t = Generic.tail ~monoid:nat_plus_monoid ~measure:size_measurer t
@@ -1030,12 +1030,12 @@ let init t = Generic.init ~monoid:nat_plus_monoid ~measure:size_measurer t
 
 let rear t = Generic.rear ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q rear
-   (Q.list Q.int) (fun l -> (match rear (of_list l) with None -> [] | Some (last, init) -> BatList.append (to_list init) [last]) = l)
+   (Q.list Q.int) (fun l -> (match rear (of_list l) with None -> [] | Some (init, last) -> BatList.append (to_list init) [last]) = l)
 *)
 
 let front_exn t = Generic.front_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q front_exn
-   (Q.list Q.int) (fun l -> (try let hd, tl = front_exn (of_list l) in hd :: to_list tl with Empty -> []) = l)
+   (Q.list Q.int) (fun l -> (try let tl, hd = front_exn (of_list l) in hd :: to_list tl with Empty -> []) = l)
 *)
 
 let tail_exn t = Generic.tail_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
@@ -1050,7 +1050,7 @@ let init_exn t = Generic.init_exn ~monoid:nat_plus_monoid ~measure:size_measurer
 
 let rear_exn t = Generic.rear_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q rear
-   (Q.list Q.int) (fun l -> (try let last, init = rear_exn (of_list l) in BatList.append (to_list init) [last] with Empty -> []) = l)
+   (Q.list Q.int) (fun l -> (try let init, last = rear_exn (of_list l) in BatList.append (to_list init) [last] with Empty -> []) = l)
 *)
 
 let append t1 t2 = Generic.append ~monoid:nat_plus_monoid ~measure:size_measurer t1 t2
