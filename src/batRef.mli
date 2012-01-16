@@ -102,12 +102,32 @@ val protect : 'a ref -> 'a -> (unit -> 'b) -> 'b
      as a consequence of regular evaluation or exception, the previous
      value of [r] is restored. *)
 
+val toggle : bool ref -> unit
+(** Invert the boolean stored in the reference*)
 
+val oset : 'a option ref -> 'a -> unit
+(** Set the given option ref to [Some x] *)
 
+val oget_exn : 'a option ref -> 'a
+(** Get a value from an option ref;
+    @raises Not_found on [oget_exn (ref None)] *)
 
 (** {6 Boilerplate code}*)
 
-
-(** {7 Printing}*)
-
 val print: ('b BatInnerIO.output -> 'a -> unit) -> 'b BatInnerIO.output -> 'a t -> unit
+
+(** Given a printing function for the value in the ref, produce a
+    printing function for the ref.
+
+    Example: [IO.to_string (Ref.print Int.print) (ref 20) = "20"]
+ *)
+
+val ord : 'a BatOrd.ord -> 'a ref BatOrd.ord
+
+(** Given an ordering function, produce an ordering function for refs
+    of that type.
+
+    Example: [let a = ref 10 and b = ref 20 in Ref.cmp Int.cmp a b = -1]
+*)
+
+val eq : 'a BatOrd.eq -> 'a ref BatOrd.eq
