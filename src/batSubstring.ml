@@ -251,8 +251,8 @@ let trim x = dropl BatChar.is_whitespace (dropr BatChar.is_whitespace x)
 
 let split_on_char c (str, off, len) =
   let rec loop acc last_pos pos =
-    if pos = -1 then
-      (str, 0, last_pos) :: acc
+    if pos = off - 1 then
+      (str, off, last_pos - off) :: acc
     else
       if str.[pos] = c then
         let pos1 = pos + 1 in
@@ -260,7 +260,7 @@ let split_on_char c (str, off, len) =
         loop (sub_str :: acc) pos (pos - 1)
       else loop acc last_pos (pos - 1)
   in
-  loop [] len (len - 1)
+  loop [] (off+len) (off + len - 1)
 
 let split_on_pipe str = split_on_char '|' str;;
 let split_on_dot str = split_on_char '.' str;;
