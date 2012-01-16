@@ -163,14 +163,11 @@ let filter p xs =
   (* Allocate the final array and copy elements into it. *)
   let n' = BatBitSet.count bs in
   let j = ref 0 in
-  let xs' = init n'
-    (fun _ ->
-       (* Find the next set bit in the BitSet. *)
-       while not (BatBitSet.is_set bs !j) do incr j done;
-       let r = xs.(!j) in
-       incr j;
-       r) in
-  xs'
+  init n'
+    (fun _ -> match BatBitSet.next_set_bit bs !j with
+      | Some i -> j := i+1; xs.(i)
+      | None -> assert false (* not enough 1 bits - incorrect count? *)
+    )
 
 let filteri p xs =
   let n = length xs in
@@ -182,14 +179,11 @@ let filteri p xs =
   (* Allocate the final array and copy elements into it. *)
   let n' = BatBitSet.count bs in
   let j = ref 0 in
-  let xs' = init n'
-    (fun _ ->
-       (* Find the next set bit in the BitSet. *)
-       while not (BatBitSet.is_set bs !j) do incr j done;
-       let r = xs.(!j) in
-       incr j;
-       r) in
-  xs'
+  init n'
+    (fun _ -> match BatBitSet.next_set_bit bs !j with
+      | Some i -> j := i+1; xs.(i)
+      | None -> assert false (* not enough 1 bits - incorrect count? *)
+    )
 
 (**T array_filteri
    filteri (fun i x -> (i+x) mod 2 = 0) [|1;2;3;4;0;1;2;3|] = [|0;1;2;3|]
@@ -211,7 +205,7 @@ let partition p xs =
   let xs1 = init n1
     (fun _ ->
        (* Find the next set bit in the BitSet. *)
-       while not (BatBitSet.is_set bs !j) do incr j done;
+       while not (BatBitSet.mem bs !j) do incr j done;
        let r = xs.(!j) in
        incr j;
        r) in
@@ -219,7 +213,7 @@ let partition p xs =
   let xs2 = init n2
     (fun _ ->
        (* Find the next clear bit in the BitSet. *)
-       while BatBitSet.is_set bs !j do incr j done;
+       while BatBitSet.mem bs !j do incr j done;
        let r = xs.(!j) in
        incr j;
        r) in
@@ -330,7 +324,7 @@ let map2 f xs ys =
    map2 (-) [|2;4;6|] [|1;2;3|] = [|1;2;3|]
  **)
 
-let make_compare cmp a b =
+let compare cmp a b =
   let length_a = Array.length a in
   let length_b = Array.length b in
   let length   = BatInt.min length_a length_b in
@@ -346,12 +340,12 @@ let make_compare cmp a b =
   in
   aux 0
 
-(**T make_compare
-   make_compare compare [|1;2;3|] [|1;2|] = 1
-   make_compare compare [|1;2|] [|1;2;4|] = -1
-   make_compare compare [|1|] [||] = 1
-   make_compare compare [||] [||] = 0
-   make_compare compare [|1;2|] [|1;2|] = 0
+(**T compare
+   compare Pervasives.compare [|1;2;3|] [|1;2|] = 1
+   compare Pervasives.compare [|1;2|] [|1;2;4|] = -1
+   compare Pervasives.compare [|1|] [||] = 1
+   compare Pervasives.compare [||] [||] = 0
+   compare Pervasives.compare [|1;2|] [|1;2|] = 0
 **)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
@@ -398,13 +392,13 @@ let max a = reduce Pervasives.max a
 (* TODO: Investigate whether a second array is better than pairs *)
 let decorate_stable_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
-  let () = stable_sort (fun (i,_) (j,_) -> compare i j) decorated in
+  let () = stable_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
   map (fun (_,x) -> x) decorated
 
 
 let decorate_fast_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
-  let () = fast_sort (fun (i,_) (j,_) -> compare i j) decorated in
+  let () = fast_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
   map (fun (_,x) -> x) decorated
 
 let insert xs x i =
@@ -416,6 +410,41 @@ let insert xs x i =
    insert [|1;2;3|] 4 3 = [|1;2;3;4|]
    insert [|1;2;3|] 4 2 = [|1;2;4;3|]
  **)
+
+
+let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
+
+let rec ord_aux eq_elt i a1 a2 =
+  let open BatOrd in
+  if i >= length a1 then Eq
+  else match eq_elt a1.(i) a2.(i) with
+    | (Lt | Gt) as res -> res
+    | Eq -> ord_aux eq_elt (i+1) a1 a2
+
+let ord_elements eq_elt a1 a2 = ord_aux eq_elt 0 a1 a2
+
+let eq eq_elt a1 a2 =
+  BatOrd.bin_eq
+    BatInt.eq (length a1) (length a2)
+    (eq_elements eq_elt) a1 a2
+
+let ord ord_elt a1 a2 =
+  BatOrd.bin_ord
+    BatInt.ord (length a1) (length a2)
+    (ord_elements ord_elt) a1 a2
+
+module Incubator = struct
+  module Eq (T : BatOrd.Eq) = struct
+    type t = T.t array
+    let eq = eq T.eq
+  end
+
+  module Ord (T : BatOrd.Ord) = struct
+    type t = T.t array
+    let ord = ord T.ord
+  end
+end
+
 
 module Cap =
 struct
@@ -474,8 +503,10 @@ struct
   let sort         = sort
   let stable_sort  = stable_sort
   let fast_sort    = fast_sort
-  let make_compare = make_compare
+  let compare      = compare
   let print        = print
+  let ord          = ord
+  let eq           = eq
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 
@@ -570,39 +601,4 @@ struct
     let find ~f e = find f e
     let findi ~f e = findi f e
   end
-end
-
-module Incubator = struct
-  open BatOrd
-
-  let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
-
-  let rec ord_aux eq_elt i a1 a2 =
-    if i >= length a1 then Eq
-    else match eq_elt a1.(i) a2.(i) with
-      | (Lt | Gt) as res -> res
-      | Eq -> ord_aux eq_elt (i+1) a1 a2
-
-  let ord_elements eq_elt a1 a2 = ord_aux eq_elt 0 a1 a2
-
-  let eq eq_elt a1 a2 =
-    bin_eq
-      BatInt.Incubator.eq (length a1) (length a2)
-      (eq_elements eq_elt) a1 a2
-
-  let ord ord_elt a1 a2 =
-    bin_ord
-      BatInt.Incubator.ord (length a1) (length a2)
-      (ord_elements ord_elt) a1 a2
-
-  module Eq (T : Eq) = struct
-    type t = T.t array
-    let eq = eq T.eq
-  end
-
-  module Ord (T : Ord) = struct
-    type t = T.t array
-    let ord = ord T.ord
-  end
-
 end

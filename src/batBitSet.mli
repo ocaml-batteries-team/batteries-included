@@ -21,67 +21,99 @@
 
 (** Efficient bit sets.
 
-    A bitset is an array of boolean values that can be accessed with indexes
-    like an array but provides a better memory usage (divided by 8) for a
-    very small speed trade-off.
+    A bitset is an array of boolean values that can be accessed with
+    indexes like an array but provides a better memory usage (divided
+    by Sys.word_size; either 32 or 64) for a very small speed
+    trade-off.  It can provide efficient storage of dense sets of
+    nonnegative integers near zero.  Sparse sets should use {!BatSet}, sets with
+    large ranges of contiguous ints should use {!BatISet}.
 
     @author Nicolas Cannasse
     @author David Teller (Boilerplate code)
-*)
+ *)
 
 type t
 
-exception Negative_index of string
-(** When a negative bit value is used for one of the BitSet functions,
- this exception is raised with the name of the function. *)
-
 val empty : unit ->  t
-(** Create an empty bitset of size 0, the bitset will automatically expand
- when needed. *)
+(** Create an empty bitset of capacity 0, the bitset will
+    automatically expand when needed.
+
+    Example: [BitSet.empty ()]
+ *)
 
 val create : int -> t
-(** Create an empty bitset with an initial size (in number of bits). *)
+(** Create an empty bitset with an initial capacity (in number of bits).
+
+    Example: [BitSet.create 0 = BitSet.empty ()]
+    @raise Invalid_argument on negative size
+*)
 
 val create_full : int -> t
-(** Create a full bitset with an initial size (in number of bits). *)
+(** Create a full bitset with an initial capacity (in number of bits).
+
+    Example: [BitSet.count (BitSet.create_full n) = n]
+    @raise Invalid_argument on negative size
+*)
 
 val copy : t -> t
 (** Copy a bitset : further modifications of first one will not affect the
- copy. *)
+ copy.
 
-val clone : t -> t
-(** Same as [copy] *)
+    Example: [let a = Bitset.create 8 in let b = BitSet.copy a in BitSet.set a 6; BitSet.mem
+*)
 
-val set : t -> int -> unit
-(** [set s n] sets the nth-bit in the bitset [s] to true. *)
+val mem : t -> int -> bool
+(** [mem s n] returns true if nth-bit in the bitset [s] is set,
+    or false otherwise.
 
-val unset : t -> int -> unit
-(** [unset s n] sets the nth-bit in the bitset [s] to false. *)
-
-val put : t -> bool -> int -> unit
-(** [put s v n] sets the nth-bit in the bitset [s] to [v]. *)
-
-val toggle : t -> int -> unit
-(** [toggle s n] changes the nth-bit value in the bitset [s]. *)
-
-val is_set : t -> int -> bool
-(** [is_set s n] returns true if nth-bit in the bitset [s] is set,
-    or false otherwise. *)
-
-val compare : t -> t -> int
-(** [compare s1 s2] compares two bitsets. Highest bit indexes are
- compared first. *)
-
-val equals : t -> t -> bool
-(** [equals s1 s2] returns true if, and only if, all bits values in s1 are
-  the same as in s2. *)
+    Example: [BitSet.mem
+    @raise Invalid_argument on negative index ([n < 0])
+*)
 
 val count : t -> int
-(** [count s] returns the number of bits set in the bitset [s]. *)
+(** [count s] returns the number of bits set in the bitset [s]. Also
+    known as Population Count, or [cardinal] for sets.
 
-val enum : t -> int BatEnum.t
-(** [enum s] returns an enumeration of bits which are set
-  in the bitset [s]. *)
+    Example: [BitSet.count (BitSet.of_list [6;4;2;2;1]) = 4]
+*)
+
+val size : t -> int
+(** [size s] returns the number of bits, both set and unset, stored
+    in [s].  This is guaranteed to be larger than the largest element
+    (set bit index) in [s]. *)
+
+val next_set_bit : t -> int -> int option
+(** [next_set_bit s n] returns [Some m] when [m] is the next set
+    element with index greater than or equal [n], or None if no such
+    element exists (i.e. [n] is greater than the largest element)
+
+    More efficient than scanning with repeated [BitSet.mem].
+    @raise Invalid_argument on negative index ([n < 0])
+*)
+
+(** {6 In-place Update} *)
+
+(** These functions modify an existing bitset. *)
+
+val set : t -> int -> unit
+(** [set s n] sets the [n]th-bit in the bitset [s] to true.
+    @raise Invalid_argument on negative index ([n < 0])
+*)
+
+val unset : t -> int -> unit
+(** [unset s n] sets the [n]th-bit in the bitset [s] to false.
+    @raise Invalid_argument on negative index ([n < 0])
+*)
+
+val put : t -> bool -> int -> unit
+(** [put s v n] sets the nth-bit in the bitset [s] to [v].
+    @raise Invalid_argument on negative index ([n < 0])
+*)
+
+val toggle : t -> int -> unit
+(** [toggle s n] changes the nth-bit value in the bitset [s].
+    @raise Invalid_argument on negative index ([n < 0])
+*)
 
 val intersect : t -> t -> unit
 (** [intersect s t] sets [s] to the intersection of the sets [s] and [t]. *)
@@ -95,6 +127,21 @@ val differentiate : t -> t -> unit
 val differentiate_sym : t -> t -> unit
 (** [differentiate_sym s t] sets [s] to the symmetrical difference of the
   sets [s] and [t]. *)
+
+(** {6 Return new bitset} *)
+
+(** These functions return a new bitset that shares nothing with the
+    input bitset.  This is not as efficient as the in-place update. *)
+
+val add : int -> t -> t
+(** [add n s] returns a copy of [s] with bit [n] true.
+    @raise Invalid_argument on negative index ([n < 0])
+*)
+
+val remove : int -> t -> t
+(** [remove n s] returns a copy of [s] with bit [n] false.
+    @raise Invalid_argument on negative index ([n < 0])
+*)
 
 val inter : t -> t -> t
 (** [inter s t] returns the intersection of sets [s] and [t]. *)
@@ -110,7 +157,33 @@ val sym_diff : t -> t -> t
 
 (** {6 Boilerplate code}*)
 
-
-(** {7 Printing}*)
-
 val print: 'a BatInnerIO.output -> t -> unit
+(* Print the given BitSet to the given output channel.  This
+   function prints a BitSet as a boolean vector, and pads to a multiple
+   of 8 bits with zeros.  Thus, the bitset containing only 1 and 3 is
+   printed as ["01010000"].  *)
+
+val enum : t -> int BatEnum.t
+(** [enum s] returns an enumeration of bits which are set
+    in the bitset [s]. *)
+
+val of_enum : ?cap:int -> int BatEnum.t -> t
+(** [of_enum ~cap e] builds a bitset of capacity [cap] an enumeration
+    of ints [e].
+
+    Note: Performance of this function may be poor if enumeration is
+    in increasing order and the max.
+ *)
+
+val of_list : ?cap:int -> int list -> t
+(** As [of_enum], but from a list *)
+
+val compare : t -> t -> int
+(** [compare s1 s2] compares two bitsets using a lexicographic
+    ordering.  Highest bit indexes are compared first. The capacity of
+    the bitsets is not important for this comparison, only the bits
+    starting with the highest set bit and going down.  *)
+
+val equals : t -> t -> bool
+(** [equals s1 s2] returns true if, and only if, all bits values in s1 are
+    the same as in s2. *)
