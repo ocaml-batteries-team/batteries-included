@@ -66,9 +66,7 @@ sig
 
 end
 
-exception Empty (* the name collides with a constructor below,
-                 * so making an alias *)
-exception EmptyAlias = Empty
+exception Empty
 
 module Generic : sig
   include S
@@ -105,15 +103,16 @@ end = struct
     | Three of 'm * 'a * 'a * 'a
     | Four of 'm * 'a * 'a * 'a * 'a
   type ('a, 'm) fg =
-    | Empty
+    | Nil (* not called Empty as in the paper to avoid a name
+           * clash with the exception Empty *)
     | Single of 'a
     | Deep of 'm * ('a, 'm) digit * (('a, 'm) node, 'm) fg * ('a, 'm) digit
 
-  let empty = Empty
+  let empty = Nil
   let singleton a = Single a
 
   let is_empty = function
-    | Empty -> true
+    | Nil -> true
     | Single _ | Deep _ -> false
 
   (*---------------------------------*)
@@ -138,7 +137,7 @@ end = struct
     | Four (_, a, b, c, d) -> f (f (f (f acc a) b) c) d
 
   let rec fold_right : 'acc 'a 'm. ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc = fun f acc -> function
-    | Empty -> acc
+    | Nil -> acc
     | Single x -> f acc x
     | Deep (_, pr, m, sf) ->
       let acc = fold_right_digit f acc sf in
@@ -146,7 +145,7 @@ end = struct
       let acc = fold_right_digit f acc pr in
       acc
   let rec fold_left : 'acc 'a 'm. ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc = fun f acc -> function
-    | Empty -> acc
+    | Nil -> acc
     | Single x -> f acc x
     | Deep (_, pr, m, sf) ->
       let acc = fold_left_digit f acc pr in
@@ -176,7 +175,7 @@ end = struct
   type 'a printer = Format.formatter -> 'a -> unit
   let rec pp_debug_tree : 'a 'm. 'm printer -> 'a printer -> ('a, 'm) fg printer =
     fun pp_measure pp_a f -> function
-    | Empty -> Format.fprintf f "Empty"
+    | Nil -> Format.fprintf f "Nil"
     | Single a -> Format.fprintf f "@[<2>Single@ %a@]" pp_a a
     | Deep (v, pr, m, sf) ->
       Format.fprintf f "@[@[<v2>Deep (@,%a,@ %a,@ %a,@ %a@]@\n)@]"
@@ -213,11 +212,11 @@ end = struct
     | Four (v, _, _, _, _) -> v
 
   let measure_t_node ~monoid = function
-    | Empty -> monoid.zero
+    | Nil -> monoid.zero
     | Single x -> measure_node x
     | Deep (v, _, _, _) -> v
   let measure_t ~monoid ~measure = function
-    | Empty -> monoid.zero
+    | Nil -> monoid.zero
     | Single x -> measure x
     | Deep (v, _, _, _) -> v
 
@@ -293,20 +292,20 @@ end = struct
       monoid:'m monoid -> (('a, 'm) node, 'm) fg -> ('a, 'm) node -> (('a, 'm) node, 'm) fg =
     fun ~monoid t a ->
     match t with
-    | Empty ->
+    | Nil ->
       Single a
     | Single b ->
-      deep ~monoid (one_node a) Empty (one_node b)
+      deep ~monoid (one_node a) Nil (one_node b)
     | Deep (_, Four (_, b, c, d, e), m, sf) ->
       deep ~monoid (two_node ~monoid a b) (cons_aux ~monoid m (node3_node ~monoid c d e)) sf
     | Deep (v, pr, m, sf) ->
       Deep (monoid.combine (measure_node a) v, cons_digit_node ~monoid pr a, m, sf)
   let cons ~monoid ~measure t a =
     match t with
-    | Empty ->
+    | Nil ->
       Single a
     | Single b ->
-      deep ~monoid (one measure a) Empty (one measure b)
+      deep ~monoid (one measure a) Nil (one measure b)
     | Deep (_, Four (_, b, c, d, e), m, sf) ->
       deep ~monoid (two ~monoid ~measure a b) (cons_aux ~monoid m (node3 ~monoid ~measure c d e)) sf
     | Deep (v, pr, m, sf) ->
@@ -316,20 +315,20 @@ end = struct
       monoid:'m monoid -> (('a, 'm) node, 'm) fg -> ('a, 'm) node -> (('a, 'm) node, 'm) fg =
     fun ~monoid t a ->
     match t with
-    | Empty ->
+    | Nil ->
       Single a
     | Single b ->
-      deep ~monoid (one_node b) Empty (one_node a)
+      deep ~monoid (one_node b) Nil (one_node a)
     | Deep (_, pr, m, Four (_, b, c, d, e)) ->
       deep ~monoid pr (snoc_aux ~monoid m (node3_node ~monoid b c d)) (two_node ~monoid e a)
     | Deep (v, pr, m, sf) ->
       Deep (monoid.combine v (measure_node a), pr, m, snoc_digit_node ~monoid sf a)
   let snoc ~monoid ~measure t a =
     match t with
-    | Empty ->
+    | Nil ->
       Single a
     | Single b ->
-      deep ~monoid (one ~measure b) Empty (one ~measure a)
+      deep ~monoid (one ~measure b) Nil (one ~measure a)
     | Deep (_, pr, m, Four (_, b, c, d, e)) ->
       deep ~monoid pr (snoc_aux ~monoid m (node3 ~monoid ~measure b c d)) (two ~measure ~monoid e a)
     | Deep (v, pr, m, sf) ->
@@ -341,21 +340,21 @@ end = struct
   let to_tree_digit_node ~monoid d =
     match d with
     | One (_, a) -> Single a
-    | Two (v, a, b) -> Deep (v, one_node a, Empty, one_node b)
-    | Three (v, a, b, c) -> Deep (v, two_node ~monoid a b, Empty, one_node c)
-    | Four (v, a, b, c, d) -> Deep (v, three_node ~monoid a b c, Empty, one_node d)
+    | Two (v, a, b) -> Deep (v, one_node a, Nil, one_node b)
+    | Three (v, a, b, c) -> Deep (v, two_node ~monoid a b, Nil, one_node c)
+    | Four (v, a, b, c, d) -> Deep (v, three_node ~monoid a b c, Nil, one_node d)
   let to_tree_digit ~monoid ~measure d =
     match d with
     | One (_, a) -> Single a
-    | Two (v, a, b) -> Deep (v, one ~measure a, Empty, one ~measure b)
-    | Three (v, a, b, c) -> Deep (v, two ~monoid ~measure a b, Empty, one ~measure c)
-    | Four (v, a, b, c, d) -> Deep (v, three ~monoid ~measure a b c, Empty, one ~measure d)
+    | Two (v, a, b) -> Deep (v, one ~measure a, Nil, one ~measure b)
+    | Three (v, a, b, c) -> Deep (v, two ~monoid ~measure a b, Nil, one ~measure c)
+    | Four (v, a, b, c, d) -> Deep (v, three ~monoid ~measure a b c, Nil, one ~measure d)
   let to_tree_list ~monoid ~measure = function
-    | [] -> Empty
+    | [] -> Nil
     | [a] -> Single a
-    | [a; b] -> deep ~monoid (one ~measure a) Empty (one ~measure b)
-    | [a; b; c] -> deep ~monoid (two ~monoid ~measure a b) Empty (one ~measure c)
-    | [a; b; c; d] -> deep ~monoid (three ~monoid ~measure a b c) Empty (one ~measure d)
+    | [a; b] -> deep ~monoid (one ~measure a) Nil (one ~measure b)
+    | [a; b; c] -> deep ~monoid (two ~monoid ~measure a b) Nil (one ~measure c)
+    | [a; b; c; d] -> deep ~monoid (three ~monoid ~measure a b c) Nil (one ~measure d)
     | _ -> assert false (*BISECT-VISIT*)
 
   let to_digit_node = function
@@ -415,8 +414,8 @@ end = struct
   let rec view_left_aux : 'a 'm.
       monoid:'m monoid -> (('a, 'm) node, 'm) fg -> (('a, 'm) node, (('a, 'm) node, 'm) fg) view =
     fun ~monoid -> function
-    | Empty -> Vnil
-    | Single x -> Vcons (x, Empty)
+    | Nil -> Vnil
+    | Single x -> Vcons (x, Nil)
     | Deep (_, One (_, a), m, sf) ->
       let vcons =
         match view_left_aux ~monoid m with
@@ -427,8 +426,8 @@ end = struct
       let vcons = deep ~monoid (tail_digit_node ~monoid pr) m sf in
       Vcons (head_digit pr, vcons)
   let view_left ~monoid ~measure = function
-    | Empty -> Vnil
-    | Single x -> Vcons (x, Empty)
+    | Nil -> Vnil
+    | Single x -> Vcons (x, Nil)
     | Deep (_, One (_, a), m, sf) ->
       let vcons =
         match view_left_aux ~monoid m with
@@ -442,8 +441,8 @@ end = struct
   let rec view_right_aux : 'a 'm.
       monoid:'m monoid -> (('a, 'm) node, 'm) fg -> (('a, 'm) node, (('a, 'm) node, 'm) fg) view =
     fun ~monoid -> function
-    | Empty -> Vnil
-    | Single x -> Vcons (x, Empty)
+    | Nil -> Vnil
+    | Single x -> Vcons (x, Nil)
     | Deep (_, pr, m, One (_, a)) ->
       let vcons =
         match view_right_aux ~monoid m with
@@ -454,8 +453,8 @@ end = struct
       let vcons = deep ~monoid pr m (init_digit_node ~monoid sf) in
       Vcons (last_digit sf, vcons)
   let view_right ~monoid ~measure = function
-    | Empty -> Vnil
-    | Single x -> Vcons (x, Empty)
+    | Nil -> Vnil
+    | Single x -> Vcons (x, Nil)
     | Deep (_, pr, m, One (_, a)) ->
       let vcons =
         match view_right_aux ~monoid m with
@@ -467,20 +466,20 @@ end = struct
       Vcons (last_digit sf, vcons)
 
   let head_exn = function
-    | Empty -> raise EmptyAlias
+    | Nil -> raise Empty
     | Single a -> a
     | Deep (_, pr, _, _) -> head_digit pr
   let head = function
-    | Empty -> None
+    | Nil -> None
     | Single a -> Some a
     | Deep (_, pr, _, _) -> Some (head_digit pr)
 
   let last_exn = function
-    | Empty -> raise EmptyAlias
+    | Nil -> raise Empty
     | Single a -> a
     | Deep (_, _, _, sf) -> last_digit sf
   let last = function
-    | Empty -> None
+    | Nil -> None
     | Single a -> Some a
     | Deep (_, _, _, sf) -> Some (last_digit sf)
 
@@ -490,7 +489,7 @@ end = struct
     | Vcons (_, tl) -> Some tl
   let tail_exn ~monoid ~measure t =
     match view_left ~monoid ~measure t with
-    | Vnil -> raise EmptyAlias
+    | Vnil -> raise Empty
     | Vcons (_, tl) -> tl
 
   let front ~monoid ~measure t =
@@ -499,7 +498,7 @@ end = struct
     | Vcons (hd, tl) -> Some (tl, hd)
   let front_exn ~monoid ~measure t =
     match view_left ~monoid ~measure t with
-    | Vnil -> raise EmptyAlias
+    | Vnil -> raise Empty
     | Vcons (hd, tl) -> (tl, hd)
 
   let init ~monoid ~measure t =
@@ -508,7 +507,7 @@ end = struct
     | Vcons (_, tl) -> Some tl
   let init_exn ~monoid ~measure t =
     match view_right ~monoid ~measure t with
-    | Vnil -> raise EmptyAlias
+    | Vnil -> raise Empty
     | Vcons (_, tl) -> tl
 
   let rear ~monoid ~measure t =
@@ -517,7 +516,7 @@ end = struct
     | Vcons (hd, tl) -> Some (tl, hd)
   let rear_exn ~monoid ~measure t =
     match view_right ~monoid ~measure t with
-    | Vnil -> raise EmptyAlias
+    | Vnil -> raise Empty
     | Vcons (hd, tl) -> (tl, hd)
 
   (*---------------------------------*)
@@ -556,9 +555,9 @@ end = struct
       monoid:'m monoid -> measure:('a -> 'm) -> ('a, 'm) fg -> 'a list -> ('a, 'm) fg -> ('a, 'm) fg =
     fun ~monoid ~measure t1 elts t2 ->
     match t1, t2 with
-    | Empty, _ ->
+    | Nil, _ ->
       List.fold_right (fun elt acc -> cons ~monoid ~measure acc elt) elts t2
-    | _, Empty ->
+    | _, Nil ->
       List.fold_left (fun acc elt -> snoc ~monoid ~measure acc elt) t1 elts
     | Single x1, _ ->
       cons ~monoid ~measure (List.fold_right (fun elt acc -> cons ~monoid ~measure acc elt) elts t2) x1
@@ -595,7 +594,7 @@ end = struct
   let rec reverse_aux : 'a 'm.
       monoid:'m monoid -> (('a, 'm) node -> ('a, 'm) node) -> (('a, 'm) node, 'm) fg -> (('a, 'm) node, 'm) fg =
     fun ~monoid reverse_a -> function
-    | Empty -> Empty
+    | Nil -> Nil
     | Single a -> Single (reverse_a a)
     | Deep (_, pr, m, sf) ->
       let rev_pr = reverse_digit_node ~monoid reverse_a pr in
@@ -603,7 +602,7 @@ end = struct
       let rev_m = reverse_aux ~monoid (reverse_node_node ~monoid (reverse_a)) m in
       deep ~monoid rev_sf rev_m rev_pr
   let reverse ~monoid ~measure = function
-    | Empty
+    | Nil
     | Single _ as t -> t
     | Deep (_, pr, m, sf) ->
       let rev_pr = reverse_digit ~monoid ~measure pr in
@@ -658,8 +657,8 @@ end = struct
   let rec split_tree : 'a 'm.
       monoid:'m monoid -> measure:('a -> 'm) -> ('m -> bool) -> 'm -> ('a, 'm) fg -> ('a, ('a, 'm) fg) split =
     fun ~monoid ~measure p i -> function
-    | Empty -> raise EmptyAlias
-    | Single x -> Split (Empty, x, Empty)
+    | Nil -> raise Empty
+    | Single x -> Split (Nil, x, Nil)
     | Deep (_, pr, m, sf) ->
       let vpr = monoid.combine i (measure_digit pr) in
       if p vpr then
@@ -677,13 +676,13 @@ end = struct
 
   let split ~monoid ~measure f t =
     match t with
-    | Empty -> (Empty, Empty)
+    | Nil -> (Nil, Nil)
     | _ ->
       if f (measure_t ~monoid ~measure t) then
         let Split (l, x, r) = split_tree ~monoid ~measure f monoid.zero t in
         (l, cons ~monoid ~measure r x)
       else
-        (t, Empty)
+        (t, Nil)
 
   (*---------------------------------*)
   (*            lookup               *)
@@ -736,7 +735,7 @@ end = struct
 
   let rec lookup_tree : 'a 'm. monoid:'m monoid -> measure:('a -> 'm) -> ('m -> bool) -> 'm -> ('a, 'm) fg -> 'm * 'a =
     fun ~monoid ~measure p i -> function
-    | Empty -> raise EmptyAlias
+    | Nil -> raise Empty
     | Single x -> monoid.zero, x
     | Deep (_, pr, m, sf) ->
       let m_pr = measure_digit pr in
@@ -807,7 +806,7 @@ end = struct
   let rec enum_aux : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
     fun enum_a t k ->
     match t with
-    | Empty -> k ()
+    | Nil -> k ()
     | Single a -> enum_a a k
     | Deep (_, pr, m, sf) ->
       enum_digit enum_a pr (fun () ->
@@ -820,7 +819,7 @@ end = struct
   let rec enum_aux_backwards : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
     fun enum_a t k ->
     match t with
-    | Empty -> k ()
+    | Nil -> k ()
     | Single a -> enum_a a k
     | Deep (_, pr, m, sf) ->
       enum_digit_backwards enum_a sf (fun () ->
