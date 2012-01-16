@@ -108,9 +108,13 @@ type 'a output = 'a BatInnerIO.output
 (** The abstract output type, ['a] is the accumulator data, it is returned
 	when the [close_out] function is called. *)
 
+type ('a, 'b) printer = 'b output -> 'a -> unit
+(** The type of a printing function to print a ['a] to an output that
+    produces ['b] as result. *)
+
 exception No_more_input
 (** This exception is raised when reading on an input with the [read] or
-  [nread] functions while there is no available token to read. *)
+    [nread] functions while there is no available token to read. *)
 
 exception Input_closed
 (** This exception is raised when reading on a closed input. *)
@@ -217,19 +221,19 @@ val close_in : input -> unit
     Example: [close_in network_in;]
 *)
 
-val write : 'a output -> char -> unit
+val write : (char, _) printer
 (** Write a single char to an output.
 
     Example: [write stdout 'x';]
 *)
 
-val nwrite : 'a output -> string -> unit
+val nwrite : (string, _) printer
 (** Write a string to an output.
 
     Example: [nwrite stdout "Enter your name: ";]
 *)
 
-val write_buf: 'a output -> Buffer.t -> unit
+val write_buf: (Buffer.t, _) printer
 (** Write the contents of a buffer to an output.
 
     Example: [let b = Buffer.create 10 in for i = 1 to 100 do Buffer.add (string_of_int i); Buffer.add " "; done; nwrite stdout b;]
@@ -450,40 +454,40 @@ val read_line : input -> string
 val read_uline: input -> Ulib.Text.t
 (** Read a line of UTF-8*)
 
-val write_byte : 'a output -> int -> unit
+val write_byte : (int, _) printer
 (** Write an unsigned 8-bit byte. *)
 
-val write_ui16 : 'a output -> int -> unit
+val write_ui16 : (int, _) printer
 (** Write an unsigned 16-bit word. *)
 
-val write_i16 : 'a output -> int -> unit
+val write_i16 : (int, _) printer
 (** Write a signed 16-bit word. *)
 
-val write_i32 : 'a output -> int -> unit
+val write_i32 : (int, _) printer
 (** Write a signed 32-bit integer. *)
 
-val write_real_i32 : 'a output -> int32 -> unit
+val write_real_i32 : (int32, _) printer
 (** Write an OCaml int32. *)
 
-val write_i64 : 'a output -> int64 -> unit
+val write_i64 : (int64, _) printer
 (** Write an OCaml int64. *)
 
-val write_double : 'a output -> float -> unit
+val write_double : (float, _) printer
 (** Write an IEEE double precision floating point value. *)
 
-val write_uchar: _ output -> Ulib.UChar.t -> unit
+val write_uchar: (Ulib.UChar.t, _) printer
 (** Write one uchar to a UTF-8 encoded output.*)
 
-val write_float : 'a output -> float -> unit
+val write_float : (float, _) printer
 (** Write an IEEE single precision floating point value. *)
 
-val write_string : 'a output -> string -> unit
+val write_string : (string, _) printer
 (** Write a string and append an null character. *)
 
-val write_text : _ output -> Ulib.Text.t -> unit
+val write_text : (Ulib.Text.t, _) printer
 (** Write a character text onto a UTF-8 encoded output.*)
 
-val write_line : 'a output -> string -> unit
+val write_line : (string, _) printer
 (** Write a line and append a line end.
 
     This adds the correct line end for your operating system.  That
@@ -492,7 +496,7 @@ val write_line : 'a output -> string -> unit
     then a LF is inserted at the end of the line. If your system
     favors CRLF (or ['\r\n']), then this is what will be inserted.*)
 
-val write_uline: _ output -> Ulib.Text.t -> unit
+val write_uline: (Ulib.Text.t, _) printer
 (** Write one line onto a UTF-8 encoded output.*)
 
 (** Same operations as module {!BatIO}, but with big-endian encoding *)
@@ -534,25 +538,25 @@ sig
 	val read_float: input -> float
 	  (** Read an IEEE single precision floating point value. *)
 
-	val write_ui16 : 'a output -> int -> unit
+	val write_ui16 : (int, _) printer
 	  (** Write an unsigned 16-bit word. *)
 
-	val write_i16 : 'a output -> int -> unit
+	val write_i16 : (int, _) printer
 	  (** Write a signed 16-bit word. *)
 
-	val write_i32 : 'a output -> int -> unit
+	val write_i32 : (int, _) printer
 	  (** Write a signed 32-bit integer. *)
 
-	val write_real_i32 : 'a output -> int32 -> unit
+	val write_real_i32 : (int32, _) printer
 	  (** Write an OCaml int32. *)
 
-	val write_i64 : 'a output -> int64 -> unit
+	val write_i64 : (int64, _) printer
 	  (** Write an OCaml int64. *)
 
-	val write_double : 'a output -> float -> unit
+	val write_double : (float, _) printer
 	  (** Write an IEEE double precision floating point value. *)
 
-	val write_float  : 'a output -> float -> unit
+	val write_float  : (float, _) printer
 	  (** Write an IEEE single precision floating point value. *)
 
 	val ui16s_of : input -> int BatEnum.t
@@ -562,38 +566,19 @@ sig
 	  (** Read an enumartion of signed 16-bit words. *)
 
 	val i32s_of : input -> int BatEnum.t
-	  (** Read an enumeration of signed 32-bit integers. Raise [Overflow] if the
-	      read integer cannot be represented as a Caml 31-bit integer. *)
+	(** Read an enumeration of signed 32-bit integers.
+
+	    @raise Overflow if the read integer cannot be represented as a Caml
+	    31-bit integer. *)
 
 	val real_i32s_of : input -> int32 BatEnum.t
-	  (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
+	(** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
 
 	val i64s_of : input -> int64 BatEnum.t
 	  (** Read an enumeration of signed 64-bit integers as OCaml [int64]s. *)
 
 	val doubles_of : input -> float BatEnum.t
 	  (** Read an enumeration of IEEE double precision floating point values. *)
-
-	val write_bytes : 'a output -> int BatEnum.t -> unit
-	  (** Write an enumeration of unsigned 8-bit bytes. *)
-
-	val write_ui16s : 'a output -> int BatEnum.t -> unit
-	  (** Write an enumeration of unsigned 16-bit words. *)
-
-	val write_i16s : 'a output -> int BatEnum.t -> unit
-	  (** Write an enumeration of signed 16-bit words. *)
-
-	val write_i32s : 'a output -> int BatEnum.t -> unit
-	  (** Write an enumeration of signed 32-bit integers. *)
-
-	val write_real_i32s : 'a output -> int32 BatEnum.t -> unit
-	  (** Write an enumeration of OCaml int32s. *)
-
-	val write_i64s : 'a output -> int64 BatEnum.t -> unit
-	  (** Write an enumeration of OCaml int64s. *)
-
-	val write_doubles : 'a output -> float BatEnum.t -> unit
-	  (** Write an enumeration of IEEE double precision floating point value. *)
 
 end
 
@@ -896,51 +881,6 @@ val uchars_of : input -> Ulib.UChar.t BatEnum.t
 
 val bits_of : in_bits -> int BatEnum.t
 (** Read an enumeration of bits *)
-
-val write_bytes : 'a output -> int BatEnum.t -> unit
-(** Write an enumeration of unsigned 8-bit bytes. *)
-
-val write_chars : 'a output -> char BatEnum.t -> unit
-(** Write an enumeration of chars. *)
-
-val write_uchars : _ output -> Ulib.UChar.t BatEnum.t -> unit
-(** Write an enumeration of characters onto a UTF-8 encoded output.*)
-
-val write_ui16s : 'a output -> int BatEnum.t -> unit
-(** Write an enumeration of unsigned 16-bit words. *)
-
-val write_i16s : 'a output -> int BatEnum.t -> unit
-(** Write an enumeration of signed 16-bit words. *)
-
-val write_i32s : 'a output -> int BatEnum.t -> unit
-(** Write an enumeration of signed 32-bit integers. *)
-
-val write_real_i32s : 'a output -> int32 BatEnum.t -> unit
-(** Write an enumeration of OCaml int32s. *)
-
-val write_i64s : 'a output -> int64 BatEnum.t -> unit
-(** Write an enumeration of OCaml int64s. *)
-
-val write_doubles : 'a output -> float BatEnum.t -> unit
-(** Write an enumeration of IEEE double precision floating point value. *)
-
-val write_strings : 'a output -> string BatEnum.t -> unit
-(** Write an enumeration of strings, appending null characters.*)
-
-val write_chunks: 'a output -> string BatEnum.t -> unit
-(** Write an enumeration of strings, without appending null characters.*)
-
-val write_lines : 'a output -> string BatEnum.t -> unit
-(** Write an enumeration of lines, appending a LF (it might be converted
-    to CRLF on some systems depending on the underlying BatIO). *)
-
-val write_texts : 'a output -> Ulib.Text.t BatEnum.t -> unit
-(** Write an enumeration of texts onto a UTF-8 encoded output,
-    without appending a line-end.*)
-
-val write_ulines : _ output -> Ulib.Text.t BatEnum.t -> unit
-(** Write an enumeration of texts onto a UTF-8 encoded output, with a
-    newline after each.*)
 
 val write_bitss : nbits:int -> out_bits -> int BatEnum.t -> unit
 (** Write an enumeration of bits*)

@@ -21,12 +21,10 @@
 
 include BatInnerIO
 
-(**
-   {6 API}
-*)
-
 external noop :          unit -> unit = "%ignore"
 external default_close : unit -> unit = "%ignore"
+
+type ('a, 'b) printer = 'b output -> 'a -> unit
 
 let pos_in i =
   let p = ref 0 in
@@ -285,17 +283,6 @@ module BigEndian = struct
   let i64s_of input      = make_enum read_i64 input
   let doubles_of input   = make_enum read_double input
   let floats_of input    = make_enum read_float input
-
-  let write_bytes output enum = write_enum write_byte output enum
-  let write_ui16s output enum = write_enum write_ui16 output enum
-  let write_i16s output enum = write_enum write_i16 output enum
-  let write_i32s output enum = write_enum write_i32 output enum
-  let write_real_i32s output enum = write_enum write_real_i32 output enum
-  let write_i64s output enum = write_enum write_i64 output enum
-  let write_doubles output enum = write_enum write_double output enum
-  let write_floats output enum = write_enum write_float output enum
-  let write_strings output enum = write_enum write_string output enum
-  let write_lines output enum = write_enum write_line output enum
 
 end
 
@@ -561,18 +548,6 @@ let lines_of2 ic =
   BatEnum.from get_line
 
 
-let write_bytes     output enum = write_enum write_byte     output enum
-let write_chars     output enum = write_enum write          output enum
-let write_ui16s     output enum = write_enum write_ui16     output enum
-let write_i16s      output enum = write_enum write_i16      output enum
-let write_i32s      output enum = write_enum write_i32      output enum
-let write_real_i32s output enum = write_enum write_real_i32 output enum
-let write_i64s      output enum = write_enum write_i64      output enum
-let write_doubles   output enum = write_enum write_double   output enum
-let write_floats    output enum = write_enum write_float    output enum
-let write_strings   output enum = write_enum write_string   output enum
-let write_lines     output enum = write_enum write_line     output enum
-let write_chunks    output enum = write_enum nwrite         output enum
 let write_bitss ~nbits output enum = write_enum (write_bits ~nbits) output enum
 
 (**

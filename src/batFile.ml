@@ -163,9 +163,8 @@ let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
 let lines_of file = BatIO.lines_of (open_in file)
 
 let write_lines file lines =
-  let doit output = BatIO.write_lines output lines in
   let mode = [`trunc; `create] in
-  with_file_out ~mode file doit
+  with_file_out ~mode file (fun oc -> BatEnum.iter (BatIO.write_line oc) lines)
 
 (**
    {6 Temporary files}
