@@ -60,7 +60,7 @@ let level_of_name = function
 
 let format_timestamp out ts =
   let tm = Unix.gmtime ts in
-  let ms, _ = modf ts in
+  let us, _ = modf ts in
     fprintf out "%04d-%02d-%02dT%02d:%02d:%02d.%06dZ"
       (1900 + tm.Unix.tm_year)
       (1 + tm.Unix.tm_mon)
@@ -68,7 +68,7 @@ let format_timestamp out ts =
       (tm.Unix.tm_hour)
       (tm.Unix.tm_min)
       (tm.Unix.tm_sec)
-      (int_of_float (100000. *. ms))
+      (int_of_float (1_000_000. *. us))
 
 (******************************************************************************)
 (** log modules *)
