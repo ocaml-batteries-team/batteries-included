@@ -23,10 +23,9 @@
    Finger Trees: A Simple General-purpose Data Structure
    http://www.soi.city.ac.uk/~ross/papers/FingerTree.pdf
 
-   The finger tree itself is functorized over the measure
-   (so monomorphic over the measure) and polymorphic over the
-   measurement function (because there are useful measurements
-   functions that are polymorphic over the elements being measured).
+   The finger tree itself is polymorphic over the measure and
+   the measurement function (this is needed because sometimes
+   the type of the measure depends on the type of the elements).
 
    This module also contains an instanciation of a finger tree that
    implements a functional sequence with the following characteristics:
@@ -41,6 +40,9 @@
 
    Complexities are given assuming that the monoid combination operation
    and the measurement functions are constant time and space.
+
+   None of the functions on finger trees can cause stack overflow:
+   they use at worst a logarithmic amount of stack space.
 *)
 
 (** The type of the element of a monoid. *)
@@ -56,10 +58,9 @@ exception Empty
 module type S =
 sig
 
-  type 'm m
   type ('a, 'm) fg
   (** The type of finger trees containing elements of type ['a]
-      measured with the type [measure]. *)
+      measured by ['m]. *)
 
   type ('wrapped_type, 'a, 'm) wrap
   (** A type meant to avoid duplication of signatures.
@@ -67,8 +68,8 @@ sig
       For the generic finger tree, this type will
       be [monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type].
 
-      Once the functor has been applied, the resulting module should
-      be reexported in such a way that the type is now simply
+      Once the finger tree has been specialized, the resulting module
+      should be reexported in such a way that the type is now simply
       ['wrapped_type].
   *)
 
@@ -87,31 +88,31 @@ sig
   val cons : (('a, 'm) fg -> 'a -> ('a, 'm) fg, 'a, 'm) wrap
   (** [cons t elt] adds [elt] to the left of [t].
 
-      O(1) amortized, O(log(n)) worst case time, stack and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val snoc : (('a, 'm) fg -> 'a -> ('a, 'm) fg, 'a, 'm) wrap
   (** [snoc t elt] adds [elt] to the right of [t].
 
-      O(1) amortized, O(log(n)) worst case time, stack and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   (** {6 Deconstruction} *)
 
-  val front : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
+  val front : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
   (** [front t] returns [None] when [t] is empty,
-      or [Some (hd, tl)] when [hd] is the first element of the sequence
+      or [Some (tl, hd)] when [hd] is the first element of the sequence
       and [tl] is the rest of the sequence.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
-  val front_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
-  (** [front_exn t] returns [(hd, tl)] when [hd] is the first element
+  val front_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
+  (** [front_exn t] returns [(tl, hd)] when [hd] is the first element
       of the sequence and [tl] is the rest of the sequence.
       @raise Empty if [t] is empty.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val head : ('a, 'm) fg -> 'a option
@@ -119,14 +120,14 @@ sig
       or [Some hd] otherwise, where [hd] is the first element
       of the sequence.
 
-      O(1) time, stack space and heap space.
+      O(1).
   *)
 
   val head_exn : ('a, 'm) fg -> 'a
   (** [head_exn t] returns the first element of the sequence.
       @raise Empty if [t] is empty.
 
-      O(1) time, stack space and heap space.
+      O(1).
   *)
 
   val last : ('a, 'm) fg -> 'a option
@@ -134,14 +135,14 @@ sig
       or [Some hd] otherwise, where [hd] is the last element
       of the sequence.
 
-      O(1) time, stack space and heap space.
+      O(1).
   *)
 
   val last_exn : ('a, 'm) fg -> 'a
   (** [last_exn t] returns the last element of the sequence.
       @raise Empty if [t] is empty.
 
-      O(1) time, stack space and heap space.
+      O(1).
   *)
 
   val tail : (('a, 'm) fg -> ('a, 'm) fg option, 'a, 'm) wrap
@@ -149,7 +150,7 @@ sig
       or [Some tl] where [tl] is the sequence [t] where the first element
       has been removed.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val tail_exn : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
@@ -157,7 +158,7 @@ sig
       has been removed.
       @raise Empty if [t] is empty.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val init : (('a, 'm) fg -> ('a, 'm) fg option, 'a, 'm) wrap
@@ -165,7 +166,7 @@ sig
       or [Some init] where [init] is the sequence [t] where the last element
       has been removed.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   val init_exn : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
@@ -173,53 +174,37 @@ sig
       has been removed.
       @raise Empty if [t] is empty.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
-  val rear : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
+  val rear : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
   (** [rear t] returns [None] when [t] is empty,
-      or [Some (last, init)] where [last] is the last element of the
+      or [Some (init, last)] where [last] is the last element of the
       sequence and [init] is the rest of the sequence.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
-  val rear_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
-  (** [rear t] returns [(last, init)] when [last] is the last element of
+  val rear_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
+  (** [rear t] returns [(init, last)] when [last] is the last element of
       the sequence and [init] is the rest of the sequence.
       @raise Empty if [t] is empty.
 
-      O(1) amortized, O(log(n)) worst case time, stack space and heap space.
+      O(1) amortized, O(log(n)) worst case.
   *)
 
   (** {6 Inspection} *)
 
   val size : ('a, 'm) fg -> int
   (** [size t] returns the number of elements in the sequence.
+      If you want to know that a sequence is empty, it is much
+      better to use {!is_empty}.
 
-      - O(n) time.
-      - O(log(n)) stack space.
-      - O(1) heap space.
+      O(n).
   *)
 
-  val lookup : (('m m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
-  (** [lookup p t], when [p] is monotonic, returns the first element
-      of the sequence for which the measure of its predecessors in the
-      sequence (itself included) satisfies [p].
-      @raise Empty is there is no such element.
-
-      - O(log(n)) time, stack space.
-      - O(1) heap space.
-
-      When [p] is not monotonic, take a look at the code or at the paper
-      cited above and see if you understand something (lookup is a
-      specialized version of splitTree that returns the element without
-      building the left and right tree).
-  *)
-
-  val measure : (('a, 'm) fg -> 'm m, 'a, 'm) wrap
-  (** [measure m] gives the measure of the whole tree, whose meaning
-      depends on the measure chosen.
+  val is_empty : ('a, 'm) fg -> bool
+  (** [is_empty t] returns [true] when the sequence has no elements.
 
       O(1).
   *)
@@ -227,33 +212,25 @@ sig
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   (** [fold_left] is equivalent to [List.fold_left].
 
-      - O(n) time.
-      - O(1) heap space.
-      - O(log(n)) stack space.
+      O(n).
   *)
 
   val fold_right : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   (** [fold_right] is equivalent to [List.fold_right].
 
-      - O(n) time.
-      - O(1) heap space.
-      - O(log(n)) stack space.
+      O(n).
   *)
 
   val iter : ('a -> unit) -> ('a, 'm) fg -> unit
   (** [iter] is equivalent to [List.iter].
 
-      - O(n) time.
-      - O(1) heap space.
-      - O(log(n)) stack space.
+      O(n).
   *)
 
   val iter_right : ('a -> unit) -> ('a, 'm) fg -> unit
   (** [iter_right] is equivalent to [List.iter o List.rev].
 
-      - O(n) time.
-      - O(1) heap space.
-      - O(log(n)) stack space.
+      O(n).
  *)
 
   (** {6 Conversions} *)
@@ -266,10 +243,7 @@ sig
 
       O(1).
 
-      Forcing the whole enumeration takes:
-      - O(n) time.
-      - O(1) stack space.
-      - O(log(n)) heap space.
+      Forcing the whole enumeration takes O(n).
   *)
 
   val backwards : ('a, 'm) fg -> 'a BatEnum.t
@@ -280,14 +254,14 @@ sig
 
   val to_list : ('a, 'm) fg -> 'a list
   (** [to_list t] is equivalent to [BatList.of_enum (enum t)].
-      - O(n) time and heap space.
-      - O(log(n)) stack space.
+
+      O(n).
   *)
 
   val to_list_backwards : ('a, 'm) fg -> 'a list
   (** [to_list_backwards t] is equivalent to [BatList.of_enum (backwards t)].
-      - O(n) time and heap space.
-      - O(log(n)) stack space.
+
+      O(n).
   *)
 
   (** {7 Conversions from other structures} *)
@@ -296,73 +270,52 @@ sig
   (** [of_enum e] build the sequence containing the elements of [e]
       in the same order.
 
-      In addition to the complexity of forcing the enumeration, it is:
-      - O(n) time.
-      - O(log(n)) stack space.
-      - O(n) heap space.
+      Its complexity is the complexity of forcing the enumeration.
   *)
 
   val of_backwards : ('a BatEnum.t -> ('a, 'm) fg, 'a, 'm) wrap
   (** [of_backward e] is equivalent to [reverse (of_enum e)].
-      - O(n) time.
-      - O(log(n)) stack space.
-      - O(n) heap space.
+
+      O(n).
   *)
 
   val of_list : ('a list -> ('a, 'm) fg, 'a, 'm) wrap
   (** [of_list l] is equivalent to [of_enum (BatList.enum l)].
-      - O(n) time
-      - O(log(n)) stack space
-      - O(n) heap space
+
+      O(n).
   *)
 
   val of_list_backwards : ('a list -> ('a, 'm) fg, 'a, 'm) wrap
   (** [of_list_backwards l] is equivalent to
       [of_enum_backwards (BatList.enum l)].
-      - O(n) time.
-      - O(log(n)) stack space.
-      - O(n) heap space.
+
+      O(n).
   *)
 
   (** {6 Combining/reorganizing} *)
 
   val map : (('a -> 'b) -> ('a, 'm) fg -> ('b, 'm) fg, 'b, 'm) wrap
   (** [map] is equivalent to {!List.map}.
-      - O(n) time.
-      - O(n) heap space.
-      - O(log(n)) stack space.
+
+      O(n).
   *)
 
   val map_right : (('a -> 'b) -> ('a, 'm) fg -> ('b, 'm) fg, 'b, 'm) wrap
   (** [map] is equivalent to [List.map o List.rev].
-      - O(n) time.
-      - O(n) heap space.
-      - O(log(n)) stack space.
+
+      O(n).
   *)
 
   val append : (('a, 'm) fg -> ('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   (** [append] is equivalent to [List.append].
 
-      O(log(min(n,m))) time, stack space, heap space
+      O(log(min(n,m))).
   *)
 
   val reverse : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   (** [reverse t] is equivalent to [of_list (List.rev (to_list t))].
-      - O(n) time, heap space.
-      - O(log(n)) stack space.
-  *)
 
-  val split : (('m m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
-  (**
-      [split p t], when [p] is monotonic, returns [(t1, t2)] where
-      [t1] is the longest prefix of [t] whose measure does not satifies
-      [p], and [t2] is the rest of [t].
-      @raise Empty is there is no such element
-
-      O(log(n)) time, stack space, heap space.
-
-      When [p] is not monotonic, take a look at the code or at the paper
-      cited above and see if you understand something.
+      O(n).
   *)
 
   (** {6 Boilerplate code} *)
@@ -372,15 +325,48 @@ sig
   val t_printer : 'a BatValuePrinter.t -> ('a, _) fg BatValuePrinter.t
 end
 
-module Generic : S
+module Generic : sig
+  include S
   with type ('wrapped_type, 'a, 'm) wrap = monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type
-  and type 'm m = 'm
 
-type measure
+  val lookup : (('m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
+  (** [lookup p t], when [p] is monotonic, returns the first element
+      of the sequence for which the measure of its predecessors in the
+      sequence (itself included) satisfies [p].
+      @raise Empty is there is no such element.
+
+      O(log(n)).
+
+      When [p] is not monotonic, take a look at the code or at the paper
+      cited above and see if you understand something (lookup is a
+      specialized version of splitTree that returns the element without
+      building the left and right tree).
+  *)
+
+  val measure : (('a, 'm) fg -> 'm, 'a, 'm) wrap
+  (** [measure m] gives the measure of the whole tree, whose meaning
+      depends on the measure chosen.
+
+      O(1).
+  *)
+
+  val split : (('m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
+  (**
+      [split p t], when [p] is monotonic, returns [(t1, t2)] where
+      [t1] is the longest prefix of [t] whose measure does not satifies
+      [p], and [t2] is the rest of [t].
+      @raise Empty is there is no such element
+
+      O(log(n)).
+
+      When [p] is not monotonic, take a look at the code or at the paper
+      cited above and see if you understand something.
+  *)
+end
+
+type 'a t
 include S with type ('wrapped_type, 'a, 'm) wrap = 'wrapped_type
-          and type ('a, 'm) fg = ('a, measure) Generic.fg
-          and type 'm m = measure
-type 'a t = ('a, measure) fg
+          and type ('a, 'm) fg = 'a t
 
 val size : 'a t -> int
 (** [size t] returns the number of elements in the sequence.
@@ -392,27 +378,26 @@ val split_at : 'a t -> int -> 'a t * 'a t
 (** [split_at] is equivalent to [List.split_at].
     @raise Invalid_argument when the index is out of bounds.
 
-    O(log(n)) time, stack space, heap space.
+    O(log(n)).
 *)
 
 val get : int -> 'a t -> 'a
 (** [get i t] returns the [i]-th element of [t].
     @raise Invalid_argument when the index is out of bounds.
 
-    - O(log(n)) time, stack space.
-    - O(1) heap space.
+    O(log(n)).
 *)
 
 val set : int -> 'a -> 'a t -> 'a t
 (** [set i v t] returns [t] where the [i]-th element is now [v].
     @raise Invalid_argument when the index is out of bounds.
 
-    O(log(n)) time, stack space, heap space.
+    O(log(n)).
 *)
 
 val update : int -> ('a -> 'a) -> 'a t -> 'a t
-(** [update i f t] returns [t] where the [i]-th element is now [f (get i v)].
+(** [update i f t] returns [t] where the [i]-th element is now [f (get i t)].
     @raise Invalid_argument when the index is out of bounds.
 
-    O(log(n)) time, stack space, heap space.
+    O(log(n)).
 *)
