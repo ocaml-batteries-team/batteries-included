@@ -49,6 +49,8 @@ sig
   val fold_right : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   val iter : ('a -> unit) -> ('a, 'm) fg -> unit
   val iter_right : ('a -> unit) -> ('a, 'm) fg -> unit
+  val compare : ('a -> 'a -> int) -> ('a, 'm) fg -> ('a, 'm) fg -> int
+  val equal : ('a -> 'a -> bool) -> ('a, 'm) fg -> ('a, 'm) fg -> bool
   val enum : ('a, 'm) fg -> 'a BatEnum.t
   val backwards : ('a, 'm) fg -> 'a BatEnum.t
   val to_list : ('a, 'm) fg -> 'a list
@@ -929,6 +931,11 @@ struct
   let t_printer a_printer paren out e =
     print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
 
+  let compare cmp t1 t2 =
+    BatEnum.compare cmp (enum t1) (enum t2)
+  let equal eq t1 t2 =
+    BatEnum.equal eq (enum t1) (enum t2)
+
   (* this function does as of_list, but, by using concatenation,
    * it generates trees with some Node2 (which are never generated
    * by of_list) *)
@@ -938,35 +945,6 @@ struct
     append ~monoid ~measure (of_list ~monoid ~measure l1) (of_list ~monoid ~measure l2)
 
 end
-
-(* can be used to check the overhead of a not dummy measure
-   but apart from that??
-   or can be used as a deque
-module UnitMonoid =
-struct
-  type t = unit
-  let zero = ()
-  let combine () () = ()
-end
-let unit_measurer = fun _ -> ()
-
-module U = struct
-  module M = Make(UnitMonoid)
-  type 'a t = 'a M.t
-  type ('wrapped_type, 'useless) wrap_measure = 'wrapped_type
-  let cons t x = M.cons unit_measurer t x
-  let snoc t x = M.snoc unit_measurer t x
-  let front t = M.front unit_measurer t
-  let front_exn t = M.front_exn unit_measurer t
-  let tail_exn t = M.tail_exn unit_measurer t
-  let init_exn t = M.init_exn unit_measurer t
-  let rear t = M.rear unit_measurer t
-  let rear_exn t = M.rear_exn unit_measurer t
-  let append t1 t2 = M.append unit_measurer t1 t2
-  let measure t = M.measure unit_measurer t
-  let reverse t = M.reverse unit_measurer t
-end
-*)
 
 type nat = int
 let nat_plus_monoid = {
@@ -1190,6 +1168,9 @@ let map_right f t = Generic.map_right ~monoid:nat_plus_monoid ~measure:size_meas
 
 let print = Generic.print
 let t_printer = Generic.t_printer
+
+let compare = Generic.compare
+let equal = Generic.equal
 
 let check_measures t =
   Generic.check_measures ~monoid:nat_plus_monoid ~measure:size_measurer ~eq:BatInt.(=) t

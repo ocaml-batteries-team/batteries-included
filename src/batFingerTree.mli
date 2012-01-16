@@ -233,6 +233,19 @@ sig
       O(n).
  *)
 
+  val compare : ('a -> 'a -> int) -> ('a, 'm) fg -> ('a, 'm) fg -> int
+  (** [compare cmp t1 t2] compares the two sequences lexicographically.
+
+      O(n).
+  *)
+
+  val equal : ('a -> 'a -> bool) -> ('a, 'm) fg -> ('a, 'm) fg -> bool
+  (** [equal eq t1 t2] returns [true] when the two sequences contain the
+      the same elements.
+
+      O(n).
+  *)
+
   (** {6 Conversions} *)
 
   (** {7 Conversions to other structures} *)
