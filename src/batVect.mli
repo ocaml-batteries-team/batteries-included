@@ -212,7 +212,7 @@ val rangeiter : ('a -> unit) -> int -> int -> 'a t -> unit
       create an intermediary vect. [rangeiter] operates in worst-case
       [O(n + log m)] time, which improves on the [O(n log m)] bound
       from an explicit loop using [get].
-      Raises Out_of_bounds in the same cases as [sub]. *)
+      @raise Out_of_bounds in the same cases as [sub]. *)
 
 val fold : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
   (** [fold f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
@@ -270,7 +270,7 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
   val find : ('a -> bool) -> 'a t -> 'a
     (** [find p a] returns the first element of array [a]
 	that satisfies the predicate [p].
-	@raise Not_found  if there is no value that satisfies [p] in the
+	@raise Not_found if there is no value that satisfies [p] in the
 	array [a]. *)
 
   val mem : 'a -> 'a t -> bool
@@ -415,9 +415,11 @@ sig
     beginning in amortized [O(1)] time. *)
 
   val get : int -> 'a t -> 'a
-  (** [get n r] returns the element at index [n] (starting from 0) in the vect [r].
-   Operates in worst-case [O(log size)] time.
-    Raises Out_of_bounds if a character out of bounds is requested. *)
+  (** [get n r] returns the element at index [n] (starting from 0) in
+      the vect [r].  Operates in worst-case [O(log size)] time.
+
+      @raise Out_of_bounds if a character out of bounds is
+      requested. *)
 
   val set : 'a t -> int -> 'a  -> 'a t
   (** [set r n c] returns a copy of the [r] vect where the element at
@@ -425,10 +427,12 @@ sig
       worst-case [O(log size)] time. *)
 
   val sub : int -> int -> 'a t -> 'a t
-  (** [sub m n r] returns a sub-vect of [r] containing all the elements
-      whose indexes range from [m] to [m + n - 1] (included).
-      Raises Out_of_bounds in the same cases as Array.sub.
-      Operates in worst-case [O(log size)] time.  *)
+  (** [sub m n r] returns a sub-vect of [r] containing all the
+      elements whose indexes range from [m] to [m + n - 1] (included).
+      Operates in worst-case [O(log size)] time.
+
+      @raise Out_of_bounds in the same cases as [Array.sub].
+   *)
 
   val insert : int -> 'a t -> 'a t -> 'a t
   (** [insert n r u] returns a copy of the [u] vect where [r] has been

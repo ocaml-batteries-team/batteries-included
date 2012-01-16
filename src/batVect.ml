@@ -288,10 +288,10 @@ let rec sub start len = function
 let sub v s l = sub s l v
 
 let insert start rope r =
-  concat (concat (sub 0 start r) rope) (sub start (length r - start) r)
+  concat (concat (sub r 0 start) rope) (sub r start (length r - start))
 
 let remove start len r =
-  concat (sub 0 start r) (sub (start + len) (length r - start - len) r)
+  concat (sub r 0 start) (sub r (start + len) (length r - start - len))
 
 let to_string r =
   let rec strings l = function
@@ -496,8 +496,8 @@ let memq m v = try let _ = find ( ( == ) m ) v in true with Not_found -> false
 
 let first v = get v 0
 let last v = get v (length v - 1)
-let shift v = first v, sub 1 (length v - 1) v
-let pop v = last v, sub 0 (length v - 1) v
+let shift v = first v, sub v 1 (length v - 1)
+let pop v = last v, sub v 0 (length v - 1)
 
 
 let to_list r =
