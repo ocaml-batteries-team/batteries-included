@@ -44,6 +44,7 @@ sig
   val rear : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
   val rear_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
   val size : ('a, 'm) fg -> int
+  val is_empty : ('a, 'm) fg -> bool
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   val fold_right : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   val iter : ('a -> unit) -> ('a, 'm) fg -> unit
@@ -267,26 +268,26 @@ end = struct
     | One (v, a) -> Two (monoid.combine (measure_node x) v, x, a)
     | Two (v, a, b) -> Three (monoid.combine (measure_node x) v, x, a, b)
     | Three (v, a, b, c) -> Four (monoid.combine (measure_node x) v, x, a, b, c)
-    | Four _ -> assert false
+    | Four _ -> assert false (*BISECT-VISIT*)
   let cons_digit ~monoid ~measure d x =
     match d with
     | One (v, a) -> Two (monoid.combine (measure x) v, x, a)
     | Two (v, a, b) -> Three (monoid.combine (measure x) v, x, a, b)
     | Three (v, a, b, c) -> Four (monoid.combine (measure x) v, x, a, b, c)
-    | Four _ -> assert false
+    | Four _ -> assert false (*BISECT-VISIT*)
 
   let snoc_digit_node ~monoid d x =
     match d with
     | One (v, a) -> Two (monoid.combine v (measure_node x), a, x)
     | Two (v, a, b) -> Three (monoid.combine v (measure_node x), a, b, x)
     | Three (v, a, b, c) -> Four (monoid.combine v (measure_node x), a, b, c, x)
-    | Four _ -> assert false
+    | Four _ -> assert false (*BISECT-VISIT*)
   let snoc_digit ~monoid ~measure d x =
     match d with
     | One (v, a) -> Two (monoid.combine v (measure x), a, x)
     | Two (v, a, b) -> Three (monoid.combine v (measure x), a, b, x)
     | Three (v, a, b, c) -> Four (monoid.combine v (measure x), a, b, c, x)
-    | Four _ -> assert false
+    | Four _ -> assert false (*BISECT-VISIT*)
 
   let rec cons_aux : 'a 'm.
       monoid:'m monoid -> (('a, 'm) node, 'm) fg -> ('a, 'm) node -> (('a, 'm) node, 'm) fg =
@@ -355,7 +356,7 @@ end = struct
     | [a; b] -> deep ~monoid (one ~measure a) Empty (one ~measure b)
     | [a; b; c] -> deep ~monoid (two ~monoid ~measure a b) Empty (one ~measure c)
     | [a; b; c; d] -> deep ~monoid (three ~monoid ~measure a b c) Empty (one ~measure d)
-    | _ -> assert false
+    | _ -> assert false (*BISECT-VISIT*)
 
   let to_digit_node = function
     | Node2 (v, a, b) -> Two (v, a, b)
@@ -365,13 +366,13 @@ end = struct
     | [a; b] -> two ~monoid ~measure a b
     | [a; b; c] -> three ~monoid ~measure a b c
     | [a; b; c; d] -> four ~monoid ~measure a b c d
-    | _ -> assert false
+    | _ -> assert false (*BISECT-VISIT*)
   let to_digit_list_node ~monoid = function
     | [a] -> one_node a
     | [a; b] -> two_node ~monoid a b
     | [a; b; c] -> three_node ~monoid a b c
     | [a; b; c; d] -> four_node ~monoid a b c d
-    | _ -> assert false
+    | _ -> assert false (*BISECT-VISIT*)
 
   (*---------------------------------*)
   (*     front / rear / etc.         *)
@@ -387,22 +388,22 @@ end = struct
     | Three (_, _, _, a)
     | Four (_, _, _, _, a) -> a
   let tail_digit_node ~monoid = function
-    | One _ -> assert false
+    | One _ -> assert false (*BISECT-VISIT*)
     | Two (_, _, a) -> one_node a
     | Three (_, _, a, b) -> two_node ~monoid a b
     | Four (_, _, a, b, c) -> three_node ~monoid a b c
   let tail_digit ~monoid ~measure = function
-    | One _ -> assert false
+    | One _ -> assert false (*BISECT-VISIT*)
     | Two (_, _, a) -> one ~measure a
     | Three (_, _, a, b) -> two ~monoid ~measure a b
     | Four (_, _, a, b, c) -> three ~monoid ~measure a b c
   let init_digit_node ~monoid = function
-    | One _ -> assert false
+    | One _ -> assert false (*BISECT-VISIT*)
     | Two (_, a, _) -> one_node a
     | Three (_, a, b, _) -> two_node ~monoid a b
     | Four (_, a, b, c, _) -> three_node ~monoid a b c
   let init_digit ~monoid ~measure = function
-    | One _ -> assert false
+    | One _ -> assert false (*BISECT-VISIT*)
     | Two (_, a, _) -> one ~measure a
     | Three (_, a, b, _) -> two ~monoid ~measure a b
     | Four (_, a, b, c, _) -> three ~monoid ~measure a b c
@@ -532,7 +533,7 @@ end = struct
 
     let rec nodes_aux ~monoid ~measure ts sf2 = (* no idea if this should be tail rec *)
       match ts, sf2 with
-      | [], One _ -> assert false
+      | [], One _ -> assert false (*BISECT-VISIT*)
       | [], Two (_, a, b)
       | [a], One (_, b) -> [node2 ~monoid ~measure a b]
       | [], Three (_, a, b, c)
@@ -966,6 +967,11 @@ let empty = Generic.empty
    to_list empty = []
 **)
 
+let is_empty = Generic.is_empty
+(**Q
+   (Q.list Q.int) (fun l -> is_empty (of_list l) = (l = []))
+*)
+
 let fold_left = Generic.fold_left
 (* here we test that the accumulator is not lost somewhere in the fold by
  * using the count the elements of the sequence and side effects to check
@@ -989,6 +995,7 @@ let to_list_backwards = Generic.to_list_backwards
    (Q.list Q.int) (fun l -> BatList.of_enum (enum (of_list l)) = l)
    (Q.list Q.int) (fun l -> BatList.of_enum (backwards (of_list l)) = List.rev l)
    (Q.list Q.int) (fun l ->  to_list (of_enum (BatList.enum l)) = l)
+   (Q.list Q.int) (fun l ->  to_list (of_backwards (BatList.enum l)) = List.rev l)
 **)
 
 let iter = Generic.iter

@@ -197,8 +197,16 @@ sig
 
   val size : ('a, 'm) fg -> int
   (** [size t] returns the number of elements in the sequence.
+      If you want to know that a sequence is empty, it is much
+      better to use {!is_empty}.
 
       O(n).
+  *)
+
+  val is_empty : ('a, 'm) fg -> bool
+  (** [is_empty t] returns [true] when the sequence has no elements.
+
+      O(1).
   *)
 
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
