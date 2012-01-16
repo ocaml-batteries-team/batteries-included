@@ -14,6 +14,22 @@ let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
 let pa_llist = "src/syntax/pa_llist/pa_llist.cmo"
 
+(* removes the trailing newlines in the stdout of s *)
+let run_and_read s =
+  let res = run_and_read s in
+  String.chomp res
+
+let bisect_dir = run_and_read "ocamlfind query bisect"
+let bisect_pp = Pathname.concat bisect_dir "bisect_pp.cmo"
+
+let src_bat_ml =
+  let l = Array.to_list (Pathname.readdir "src") in
+  let l =
+    List.filter (fun filename ->
+      String.is_prefix "bat" filename && String.is_suffix filename ".ml"
+    ) l in
+  List.map (fun filename -> Pathname.concat "src" filename) l
+
 let _ = dispatch begin function
   | Before_options ->
       (* Set up to use ocamlfind *)
@@ -48,6 +64,26 @@ let _ = dispatch begin function
         ~deps:["META.in"; mkconf]
         begin fun env build ->
           Cmd(S[A"ocamlrun"; P mkconf; P"META.in"; P"META"])
+        end;
+
+      rule "code coverage"
+        ~prod:"coverage/index.html"
+        ~deps:src_bat_ml
+        begin fun env build ->
+          List.iter (fun filename ->
+            tag_file filename ["with_pa_bisect"; "syntax_camlp4o"; "use_bisect"];
+          ) src_bat_ml;
+          tag_file "testsuite/main.native" ["use_bisect"];
+          tag_file "qtest/test_runner.native" ["use_bisect"];
+          List.iter Outcome.ignore_good (
+            build [["testsuite/main.native"]; ["qtest/test_runner.native"]]
+          );
+          Seq [
+            Cmd(S[Sh"rm -f bisect*.out"]);
+            Cmd(S[A"qtest/test_runner.native"]);
+            Cmd(S[A"testsuite/main.native"]);
+            Cmd(S[Sh"bisect-report -html coverage bisect*.out"]);
+          ]
         end
 
   | After_rules ->
@@ -101,6 +137,15 @@ let _ = dispatch begin function
       flag ["ocaml"; "ocamldep";  "with_pa_llist"] &
         S[A"-ppopt"; P pa_llist];
       dep ["ocaml"; "ocamldep"; "with_pa_llist"] [pa_llist];
+
+      let flags_pa_bisect =
+        S[A"-ppopt"; P"str.cma"; A"-ppopt"; P bisect_pp;
+          A"-ppopt"; A"-disable"; A"-ppopt"; A"b"] in
+      (* bisect screws up polymorphic recursion without -disable b *)
+      flag ["ocaml"; "compile";  "with_pa_bisect"] & flags_pa_bisect;
+      flag ["ocaml"; "ocamldep";  "with_pa_bisect"] & flags_pa_bisect;
+
+      ocaml_lib ~extern:true ~dir:bisect_dir "bisect";
 
       ocaml_lib "qtest/test_mods";
       ocaml_lib "src/batteries";
