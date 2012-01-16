@@ -401,3 +401,8 @@ val update : int -> ('a -> 'a) -> 'a t -> 'a t
 
     O(log(n)).
 *)
+
+
+(**/**)
+val of_list_for_test : 'a list -> 'a t
+(**/**)
