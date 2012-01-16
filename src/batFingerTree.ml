@@ -25,15 +25,14 @@ type 'a monoid = {
 module type S =
 sig
 
-  type 'm m
   type ('a, 'm) fg
   type ('wrapped_type, 'a, 'm) wrap
   val empty : ('a, 'm) fg
   val singleton : 'a -> ('a, 'm) fg
   val cons : (('a, 'm) fg -> 'a -> ('a, 'm) fg, 'a, 'm) wrap
   val snoc : (('a, 'm) fg -> 'a -> ('a, 'm) fg, 'a, 'm) wrap
-  val front : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
-  val front_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
+  val front : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
+  val front_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
   val head : ('a, 'm) fg -> 'a option
   val head_exn : ('a, 'm) fg -> 'a
   val last : ('a, 'm) fg -> 'a option
@@ -42,11 +41,10 @@ sig
   val tail_exn : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   val init : (('a, 'm) fg -> ('a, 'm) fg option, 'a, 'm) wrap
   val init_exn : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
-  val rear : (('a, 'm) fg -> ('a * ('a, 'm) fg) option, 'a, 'm) wrap
-  val rear_exn : (('a, 'm) fg -> ('a * ('a, 'm) fg), 'a, 'm) wrap
+  val rear : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
+  val rear_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
   val size : ('a, 'm) fg -> int
-  val lookup : (('m m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
-  val measure : (('a, 'm) fg -> 'm m, 'a, 'm) wrap
+  val is_empty : ('a, 'm) fg -> bool
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   val fold_right : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   val iter : ('a -> unit) -> ('a, 'm) fg -> unit
@@ -63,7 +61,6 @@ sig
   val map_right : (('a -> 'b) -> ('a, 'm) fg -> ('b, 'm) fg, 'b, 'm) wrap
   val append : (('a, 'm) fg -> ('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   val reverse : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
-  val split : (('m m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> ('b, _) fg -> unit
   val t_printer : 'a BatValuePrinter.t -> ('a, _) fg BatValuePrinter.t
 
@@ -73,10 +70,13 @@ exception Empty (* the name collides with a constructor below,
                  * so making an alias *)
 exception EmptyAlias = Empty
 
-module Generic : S
+module Generic : sig
+  include S
   with type ('wrapped_type, 'a, 'm) wrap = monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type
-  and type 'm m = 'm
-= struct
+  val lookup : (('m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
+  val measure : (('a, 'm) fg -> 'm, 'a, 'm) wrap
+  val split : (('m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
+end = struct
 
   (* All the datatypes in here are the same as the same described in the
    * paper in the mli.
@@ -108,7 +108,6 @@ module Generic : S
     | Empty
     | Single of 'a
     | Deep of 'm * ('a, 'm) digit * (('a, 'm) node, 'm) fg * ('a, 'm) digit
-  type 'm m = 'm
 
   let empty = Empty
   let singleton a = Single a
@@ -269,26 +268,26 @@ module Generic : S
     | One (v, a) -> Two (monoid.combine (measure_node x) v, x, a)
     | Two (v, a, b) -> Three (monoid.combine (measure_node x) v, x, a, b)
     | Three (v, a, b, c) -> Four (monoid.combine (measure_node x) v, x, a, b, c)
-    | Four _ -> assert false
+    | Four _ -> assert false (*BISECT-VISIT*)
   let cons_digit ~monoid ~measure d x =
     match d with
     | One (v, a) -> Two (monoid.combine (measure x) v, x, a)
     | Two (v, a, b) -> Three (monoid.combine (measure x) v, x, a, b)
     | Three (v, a, b, c) -> Four (monoid.combine (measure x) v, x, a, b, c)
-    | Four _ -> assert false
+    | Four _ -> assert false (*BISECT-VISIT*)
 
   let snoc_digit_node ~monoid d x =
     match d with
     | One (v, a) -> Two (monoid.combine v (measure_node x), a, x)
     | Two (v, a, b) -> Three (monoid.combine v (measure_node x), a, b, x)
     | Three (v, a, b, c) -> Four (monoid.combine v (measure_node x), a, b, c, x)
-    | Four _ -> assert false
+    | Four _ -> assert false (*BISECT-VISIT*)
   let snoc_digit ~monoid ~measure d x =
     match d with
     | One (v, a) -> Two (monoid.combine v (measure x), a, x)
     | Two (v, a, b) -> Three (monoid.combine v (measure x), a, b, x)
     | Three (v, a, b, c) -> Four (monoid.combine v (measure x), a, b, c, x)
-    | Four _ -> assert false
+    | Four _ -> assert false (*BISECT-VISIT*)
 
   let rec cons_aux : 'a 'm.
       monoid:'m monoid -> (('a, 'm) node, 'm) fg -> ('a, 'm) node -> (('a, 'm) node, 'm) fg =
@@ -339,6 +338,12 @@ module Generic : S
   (*---------------------------------*)
   (*     various conversions         *)
   (*---------------------------------*)
+  let to_tree_digit_node ~monoid d =
+    match d with
+    | One (_, a) -> Single a
+    | Two (v, a, b) -> Deep (v, one_node a, Empty, one_node b)
+    | Three (v, a, b, c) -> Deep (v, two_node ~monoid a b, Empty, one_node c)
+    | Four (v, a, b, c, d) -> Deep (v, three_node ~monoid a b c, Empty, one_node d)
   let to_tree_digit ~monoid ~measure d =
     match d with
     | One (_, a) -> Single a
@@ -351,9 +356,7 @@ module Generic : S
     | [a; b] -> deep ~monoid (one ~measure a) Empty (one ~measure b)
     | [a; b; c] -> deep ~monoid (two ~monoid ~measure a b) Empty (one ~measure c)
     | [a; b; c; d] -> deep ~monoid (three ~monoid ~measure a b c) Empty (one ~measure d)
-    | _ -> assert false
-  let to_tree_digit_node ~monoid d =
-    to_tree_digit ~monoid ~measure:measure_node d
+    | _ -> assert false (*BISECT-VISIT*)
 
   let to_digit_node = function
     | Node2 (v, a, b) -> Two (v, a, b)
@@ -363,13 +366,13 @@ module Generic : S
     | [a; b] -> two ~monoid ~measure a b
     | [a; b; c] -> three ~monoid ~measure a b c
     | [a; b; c; d] -> four ~monoid ~measure a b c d
-    | _ -> assert false
+    | _ -> assert false (*BISECT-VISIT*)
   let to_digit_list_node ~monoid = function
     | [a] -> one_node a
     | [a; b] -> two_node ~monoid a b
     | [a; b; c] -> three_node ~monoid a b c
     | [a; b; c; d] -> four_node ~monoid a b c d
-    | _ -> assert false
+    | _ -> assert false (*BISECT-VISIT*)
 
   (*---------------------------------*)
   (*     front / rear / etc.         *)
@@ -385,22 +388,22 @@ module Generic : S
     | Three (_, _, _, a)
     | Four (_, _, _, _, a) -> a
   let tail_digit_node ~monoid = function
-    | One _ -> assert false
+    | One _ -> assert false (*BISECT-VISIT*)
     | Two (_, _, a) -> one_node a
     | Three (_, _, a, b) -> two_node ~monoid a b
     | Four (_, _, a, b, c) -> three_node ~monoid a b c
   let tail_digit ~monoid ~measure = function
-    | One _ -> assert false
+    | One _ -> assert false (*BISECT-VISIT*)
     | Two (_, _, a) -> one ~measure a
     | Three (_, _, a, b) -> two ~monoid ~measure a b
     | Four (_, _, a, b, c) -> three ~monoid ~measure a b c
   let init_digit_node ~monoid = function
-    | One _ -> assert false
+    | One _ -> assert false (*BISECT-VISIT*)
     | Two (_, a, _) -> one_node a
     | Three (_, a, b, _) -> two_node ~monoid a b
     | Four (_, a, b, c, _) -> three_node ~monoid a b c
   let init_digit ~monoid ~measure = function
-    | One _ -> assert false
+    | One _ -> assert false (*BISECT-VISIT*)
     | Two (_, a, _) -> one ~measure a
     | Three (_, a, b, _) -> two ~monoid ~measure a b
     | Four (_, a, b, c, _) -> three ~monoid ~measure a b c
@@ -493,11 +496,11 @@ module Generic : S
   let front ~monoid ~measure t =
     match view_left ~monoid ~measure t with
     | Vnil -> None
-    | Vcons (hd, tl) -> Some (hd, tl)
+    | Vcons (hd, tl) -> Some (tl, hd)
   let front_exn ~monoid ~measure t =
     match view_left ~monoid ~measure t with
     | Vnil -> raise EmptyAlias
-    | Vcons (hd, tl) -> (hd, tl)
+    | Vcons (hd, tl) -> (tl, hd)
 
   let init ~monoid ~measure t =
     match view_right ~monoid ~measure t with
@@ -511,11 +514,11 @@ module Generic : S
   let rear ~monoid ~measure t =
     match view_right ~monoid ~measure t with
     | Vnil -> None
-    | Vcons (hd, tl) -> Some (hd, tl)
+    | Vcons (hd, tl) -> Some (tl, hd)
   let rear_exn ~monoid ~measure t =
     match view_right ~monoid ~measure t with
     | Vnil -> raise EmptyAlias
-    | Vcons (hd, tl) -> (hd, tl)
+    | Vcons (hd, tl) -> (tl, hd)
 
   (*---------------------------------*)
   (*            append               *)
@@ -530,7 +533,7 @@ module Generic : S
 
     let rec nodes_aux ~monoid ~measure ts sf2 = (* no idea if this should be tail rec *)
       match ts, sf2 with
-      | [], One _ -> assert false
+      | [], One _ -> assert false (*BISECT-VISIT*)
       | [], Two (_, a, b)
       | [a], One (_, b) -> [node2 ~monoid ~measure a b]
       | [], Three (_, a, b, c)
@@ -860,7 +863,7 @@ module Generic : S
     fold_left (fun () elt -> f elt) () t
   let iter_right f t =
     fold_right (fun () elt -> f elt) () t
-  let map ~monoid ~measure f t =
+  let map ~monoid ~measure f t = (* suboptimal when the measure does not depend on 'a *)
     fold_left (fun acc elt -> snoc ~monoid ~measure acc (f elt)) empty t
   let map_right ~monoid ~measure f t =
     fold_right (fun acc elt -> cons ~monoid ~measure acc (f elt)) empty t
@@ -917,10 +920,8 @@ let nat_plus_monoid = {
 }
 let size_measurer = fun _ -> 1
 
-type measure = nat
-type ('a, 'm) fg = ('a, int) Generic.fg
-type 'a t = ('a, measure) fg
-type 'm m = measure
+type ('a, 'm) fg = ('a, nat) Generic.fg
+type 'a t = ('a, nat) fg
 
 let last_exn = Generic.last_exn
 (**Q last_exn
@@ -966,6 +967,11 @@ let empty = Generic.empty
    to_list empty = []
 **)
 
+let is_empty = Generic.is_empty
+(**Q
+   (Q.list Q.int) (fun l -> is_empty (of_list l) = (l = []))
+*)
+
 let fold_left = Generic.fold_left
 (* here we test that the accumulator is not lost somewhere in the fold by
  * using the count the elements of the sequence and side effects to check
@@ -989,6 +995,7 @@ let to_list_backwards = Generic.to_list_backwards
    (Q.list Q.int) (fun l -> BatList.of_enum (enum (of_list l)) = l)
    (Q.list Q.int) (fun l -> BatList.of_enum (backwards (of_list l)) = List.rev l)
    (Q.list Q.int) (fun l ->  to_list (of_enum (BatList.enum l)) = l)
+   (Q.list Q.int) (fun l ->  to_list (of_backwards (BatList.enum l)) = List.rev l)
 **)
 
 let iter = Generic.iter
@@ -1015,7 +1022,7 @@ let snoc t x = Generic.snoc ~monoid:nat_plus_monoid ~measure:size_measurer t x
 
 let front t = Generic.front ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q front
-   (Q.list Q.int) (fun l -> (match front (of_list l) with None -> [] | Some (hd, t) -> hd :: to_list t) = l)
+   (Q.list Q.int) (fun l -> (match front (of_list l) with None -> [] | Some (t, hd) -> hd :: to_list t) = l)
 *)
 
 let tail t = Generic.tail ~monoid:nat_plus_monoid ~measure:size_measurer t
@@ -1030,12 +1037,12 @@ let init t = Generic.init ~monoid:nat_plus_monoid ~measure:size_measurer t
 
 let rear t = Generic.rear ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q rear
-   (Q.list Q.int) (fun l -> (match rear (of_list l) with None -> [] | Some (last, init) -> BatList.append (to_list init) [last]) = l)
+   (Q.list Q.int) (fun l -> (match rear (of_list l) with None -> [] | Some (init, last) -> BatList.append (to_list init) [last]) = l)
 *)
 
 let front_exn t = Generic.front_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q front_exn
-   (Q.list Q.int) (fun l -> (try let hd, tl = front_exn (of_list l) in hd :: to_list tl with Empty -> []) = l)
+   (Q.list Q.int) (fun l -> (try let tl, hd = front_exn (of_list l) in hd :: to_list tl with Empty -> []) = l)
 *)
 
 let tail_exn t = Generic.tail_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
@@ -1050,7 +1057,7 @@ let init_exn t = Generic.init_exn ~monoid:nat_plus_monoid ~measure:size_measurer
 
 let rear_exn t = Generic.rear_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q rear
-   (Q.list Q.int) (fun l -> (try let last, init = rear_exn (of_list l) in BatList.append (to_list init) [last] with Empty -> []) = l)
+   (Q.list Q.int) (fun l -> (try let init, last = rear_exn (of_list l) in BatList.append (to_list init) [last] with Empty -> []) = l)
 *)
 
 let append t1 t2 = Generic.append ~monoid:nat_plus_monoid ~measure:size_measurer t1 t2
