@@ -405,4 +405,5 @@ val update : int -> ('a -> 'a) -> 'a t -> 'a t
 
 (**/**)
 val of_list_for_test : 'a list -> 'a t
+val verify_measure : 'a t -> 'a t
 (**/**)
