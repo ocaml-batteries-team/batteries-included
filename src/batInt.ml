@@ -211,14 +211,12 @@ module Safe_int = struct
     let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
   end
 
-  module Incubator = struct
-    open BatOrd
-    let eq (x:int) y = x = y
-    let ord (x:int) y =
-      if x > y then Gt
-      else if y > x then Lt
-      else Eq
-  end
+  open BatOrd
+  let eq (x:int) y = x = y
+  let ord (x:int) y =
+    if x > y then Gt
+    else if y > x then Lt
+    else Eq
 
 end
 
@@ -248,11 +246,9 @@ module SafeInt = struct
   module Numeric = struct include Numeric(BaseSafeInt) end
 end
 *)
-module Incubator = struct
-  open BatOrd
-  let eq (x:int) y = x = y
-  let ord (x:int) y =
-    if x > y then Gt
-    else if y > x then Lt
-    else Eq
-end
+open BatOrd
+let eq (x:int) y = x = y
+let ord (x:int) y =
+  if x > y then Gt
+  else if y > x then Lt
+  else Eq

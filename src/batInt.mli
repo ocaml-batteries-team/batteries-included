@@ -188,10 +188,8 @@ val xprint: 'a BatInnerIO.output -> int -> unit
 val t_printer : t BatValuePrinter.t
 
 (** {7 Compare} *)
-module Incubator : sig
-  val eq : int -> int -> bool
-  val ord : int -> int -> BatOrd.order
-end
+val eq : int -> int -> bool
+val ord : int -> int -> BatOrd.order
 
 (**
     Safe operations on integers.
@@ -350,8 +348,6 @@ module Safe_int : sig
     val print: 'a BatInnerIO.output -> t -> unit
 
     (** {7 Compare} *)
-    module Incubator : sig
-      val eq : t -> t -> bool
-      val ord : t -> t -> BatOrd.order
-    end
+    val eq : t -> t -> bool
+    val ord : t -> t -> BatOrd.order
   end
