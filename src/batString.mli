@@ -542,7 +542,6 @@ val t_printer : t BatValue_printer.t
 
 val unquoted_printer : t BatValue_printer.t
 
-(**/**)
 
 
 (** Exceptionless counterparts for error-raising operations *)
