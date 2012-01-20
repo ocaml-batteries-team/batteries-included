@@ -49,6 +49,8 @@ sig
   val fold_right : ('acc -> 'a -> 'acc) -> 'acc -> ('a, 'm) fg -> 'acc
   val iter : ('a -> unit) -> ('a, 'm) fg -> unit
   val iter_right : ('a -> unit) -> ('a, 'm) fg -> unit
+  val compare : ('a -> 'a -> int) -> ('a, 'm) fg -> ('a, 'm) fg -> int
+  val equal : ('a -> 'a -> bool) -> ('a, 'm) fg -> ('a, 'm) fg -> bool
   val enum : ('a, 'm) fg -> 'a BatEnum.t
   val backwards : ('a, 'm) fg -> 'a BatEnum.t
   val to_list : ('a, 'm) fg -> 'a list
@@ -68,13 +70,8 @@ end
 
 exception Empty
 
-module Generic : sig
-  include S
-  with type ('wrapped_type, 'a, 'm) wrap = monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type
-  val lookup : (('m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
-  val measure : (('a, 'm) fg -> 'm, 'a, 'm) wrap
-  val split : (('m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
-end = struct
+module Generic =
+struct
 
   (* All the datatypes in here are the same as the same described in the
    * paper in the mli.
@@ -156,6 +153,7 @@ end = struct
   (*---------------------------------*)
   (*          debug printing         *)
   (*---------------------------------*)
+  (*BISECT-IGNORE-BEGIN*)
   let pp_debug_digit pp_measure pp_a f = function
     | One (m, a) ->
       Format.fprintf f "@[@[<2>One (@,%a,@ %a@])@]" pp_measure m pp_a a
@@ -196,6 +194,7 @@ end = struct
       Format.fprintf f "[%a" pp_a h;
       List.iter (fun a -> Format.fprintf f "; %a" pp_a a) t;
       Format.fprintf f "]"
+  (*BISECT-IGNORE-END*)
 
   (*---------------------------------*)
   (*     measurement functions       *)
@@ -219,6 +218,57 @@ end = struct
     | Nil -> monoid.zero
     | Single x -> measure x
     | Deep (v, _, _, _) -> v
+
+  let check_measures_digit ~monoid ~measure ~eq check = function
+    | One (v, a) ->
+      check a &&
+      eq (measure a) v
+    | Two (v, a, b) ->
+      check a &&
+      check b &&
+      eq (monoid.combine (measure a) (measure b)) v
+    | Three (v, a, b, c) ->
+      check a &&
+      check b &&
+      check c &&
+      eq (monoid.combine
+            (monoid.combine (measure a) (measure b))
+            (measure c)) v
+    | Four (v, a, b, c, d) ->
+      check a &&
+      check b &&
+      check c &&
+      check d &&
+      eq (monoid.combine
+            (monoid.combine (measure a) (measure b))
+            (monoid.combine (measure c) (measure d))) v
+  let check_measures_node ~monoid ~measure ~eq check = function
+    | Node2 (v, a, b) ->
+      check a &&
+      check b &&
+      eq (monoid.combine (measure a) (measure b)) v
+    | Node3 (v, a, b, c) ->
+      check a &&
+      check b &&
+      check c &&
+      eq (monoid.combine
+            (monoid.combine (measure a) (measure b))
+            (measure c)) v
+
+  let rec check_measures : 'a 'm. monoid:'m monoid -> measure:('a -> 'm) -> eq:('m -> 'm -> bool) -> ('a -> bool) -> ('a, 'm) fg -> bool =
+    fun ~monoid ~measure ~eq check -> function
+    | Nil -> true
+    | Single a -> check a
+    | Deep (v, pr, m, sf) ->
+      check_measures_digit ~monoid ~measure ~eq check pr &&
+      check_measures_digit ~monoid ~measure ~eq check sf &&
+      check_measures ~monoid ~measure:measure_node ~eq (fun a ->
+        check_measures_node ~monoid ~measure ~eq check a
+      ) m &&
+      eq (monoid.combine (measure_digit pr) (monoid.combine (measure_t_node ~monoid m) (measure_digit sf))) v
+
+  let check_measures ~monoid ~measure ~eq t =
+    check_measures ~monoid ~measure ~eq (fun _ -> true) t
 
   (*---------------------------------*)
   (*  a bunch of smart constructors  *)
@@ -563,8 +613,8 @@ end = struct
       cons ~monoid ~measure (List.fold_right (fun elt acc -> cons ~monoid ~measure acc elt) elts t2) x1
     | _, Single x2 ->
       snoc ~monoid ~measure (List.fold_left (fun acc elt -> snoc ~monoid ~measure acc elt) t1 elts) x2
-    | Deep (v1, pr1, m1, sf1), Deep (v2, pr2, m2, sf2) ->
-      Deep (monoid.combine v1 v2, pr1, app3 ~monoid ~measure:measure_node m1 (nodes ~monoid ~measure sf1 elts pr2) m2, sf2)
+    | Deep (_, pr1, m1, sf1), Deep (_, pr2, m2, sf2) ->
+      deep ~monoid pr1 (app3 ~monoid ~measure:measure_node m1 (nodes ~monoid ~measure sf1 elts pr2) m2) sf2
 
   let append ~monoid ~measure t1 t2 = app3 ~monoid ~measure t1 [] t2
 
@@ -881,36 +931,20 @@ end = struct
   let t_printer a_printer paren out e =
     print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
 
-end
+  let compare cmp t1 t2 =
+    BatEnum.compare cmp (enum t1) (enum t2)
+  let equal eq t1 t2 =
+    BatEnum.equal eq (enum t1) (enum t2)
 
-(* can be used to check the overhead of a not dummy measure
-   but apart from that??
-   or can be used as a deque
-module UnitMonoid =
-struct
-  type t = unit
-  let zero = ()
-  let combine () () = ()
-end
-let unit_measurer = fun _ -> ()
+  (* this function does as of_list, but, by using concatenation,
+   * it generates trees with some Node2 (which are never generated
+   * by of_list) *)
+  let of_list_for_test ~monoid ~measure l =
+    let i = Random.int (List.length l + 1) in
+    let l1, l2 = BatList.split_at i l in
+    append ~monoid ~measure (of_list ~monoid ~measure l1) (of_list ~monoid ~measure l2)
 
-module U = struct
-  module M = Make(UnitMonoid)
-  type 'a t = 'a M.t
-  type ('wrapped_type, 'useless) wrap_measure = 'wrapped_type
-  let cons t x = M.cons unit_measurer t x
-  let snoc t x = M.snoc unit_measurer t x
-  let front t = M.front unit_measurer t
-  let front_exn t = M.front_exn unit_measurer t
-  let tail_exn t = M.tail_exn unit_measurer t
-  let init_exn t = M.init_exn unit_measurer t
-  let rear t = M.rear unit_measurer t
-  let rear_exn t = M.rear_exn unit_measurer t
-  let append t1 t2 = M.append unit_measurer t1 t2
-  let measure t = M.measure unit_measurer t
-  let reverse t = M.reverse unit_measurer t
 end
-*)
 
 type nat = int
 let nat_plus_monoid = {
@@ -924,7 +958,7 @@ type 'a t = ('a, nat) fg
 
 let last_exn = Generic.last_exn
 (**Q last_exn
-   (Q.list Q.int) (fun l -> (try Some (last_exn (of_list l)) with Empty -> None) = (try Some (BatList.last l) with Invalid_argument _ -> None))
+   (Q.list Q.int) (fun l -> (try Some (last_exn (of_list_for_test l)) with Empty -> None) = (try Some (BatList.last l) with Invalid_argument _ -> None))
 *)
 (* this T test is just in case the empty list was not generated by the
  * test above *)
@@ -934,7 +968,7 @@ let last_exn = Generic.last_exn
 
 let head_exn = Generic.head_exn
 (**Q head_exn
-   (Q.list Q.int) (fun l -> (try Some (head_exn (of_list l)) with Empty -> None) = (try Some (BatList.hd l) with Failure _ -> None))
+   (Q.list Q.int) (fun l -> (try Some (head_exn (of_list_for_test l)) with Empty -> None) = (try Some (BatList.hd l) with Failure _ -> None))
 *)
 (**T head_exn
    try ignore (head_exn empty); false with Empty -> true
@@ -942,7 +976,7 @@ let head_exn = Generic.head_exn
 
 let last = Generic.last
 (**Q last
-   (Q.list Q.int) (fun l -> last (of_list l) = (try Some (BatList.last l) with Invalid_argument _ -> None))
+   (Q.list Q.int) (fun l -> last (of_list_for_test l) = (try Some (BatList.last l) with Invalid_argument _ -> None))
 *)
 (**T last
    last empty = None
@@ -950,7 +984,7 @@ let last = Generic.last
 
 let head = Generic.head
 (**Q head
-   (Q.list Q.int) (fun l -> head (of_list l) = (try Some (BatList.hd l) with Failure _ -> None))
+   (Q.list Q.int) (fun l -> head (of_list_for_test l) = (try Some (BatList.hd l) with Failure _ -> None))
 *)
 (**T head
    head empty = None
@@ -958,17 +992,17 @@ let head = Generic.head
 
 let singleton = Generic.singleton
 (**T singleton
-   to_list (singleton 78) = [78]
+   to_list (verify_measure (singleton 78)) = [78]
 **)
 
 let empty = Generic.empty
 (**T empty
-   to_list empty = []
+   to_list (verify_measure empty) = []
 **)
 
 let is_empty = Generic.is_empty
 (**Q
-   (Q.list Q.int) (fun l -> is_empty (of_list l) = (l = []))
+   (Q.list Q.int) (fun l -> is_empty (verify_measure (of_list_for_test l)) = (l = []))
 *)
 
 let fold_left = Generic.fold_left
@@ -976,11 +1010,11 @@ let fold_left = Generic.fold_left
  * using the count the elements of the sequence and side effects to check
  * that it goes left to right *)
 (**Q fold_left
-   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun acc elt -> Printf.bprintf b "%d" elt; acc + 1) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in let count1 = fold_left f1 0 (of_list l) in let count2 = BatList.fold_left f2 0 l in count1 = count2 && Buffer.contents b1 = Buffer.contents b2)
+   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun acc elt -> Printf.bprintf b "%d" elt; acc + 1) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in let count1 = fold_left f1 0 (of_list_for_test l) in let count2 = BatList.fold_left f2 0 l in count1 = count2 && Buffer.contents b1 = Buffer.contents b2)
 *)
 let fold_right = Generic.fold_right
 (**Q fold_right
-   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun acc elt -> Printf.bprintf b "%d" elt; acc + 1) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in let count1 = fold_right f1 0 (of_list l) in let count2 = BatList.fold_right (fun elt acc -> f2 acc elt) l 0 in count1 = count2 && Buffer.contents b1 = Buffer.contents b2)
+   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun acc elt -> Printf.bprintf b "%d" elt; acc + 1) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in let count1 = fold_right f1 0 (of_list_for_test l) in let count2 = BatList.fold_right (fun elt acc -> f2 acc elt) l 0 in count1 = count2 && Buffer.contents b1 = Buffer.contents b2)
 *)
 
 let enum = Generic.enum
@@ -988,91 +1022,91 @@ let backwards = Generic.backwards
 let to_list = Generic.to_list
 let to_list_backwards = Generic.to_list_backwards
 (**Q conversions
-   (Q.list Q.int) (fun l -> to_list (of_list l) = l)
-   (Q.list Q.int) (fun l -> to_list (of_list_backwards l) = List.rev l)
-   (Q.list Q.int) (fun l -> to_list_backwards (of_list l) = List.rev l)
-   (Q.list Q.int) (fun l -> BatList.of_enum (enum (of_list l)) = l)
-   (Q.list Q.int) (fun l -> BatList.of_enum (backwards (of_list l)) = List.rev l)
-   (Q.list Q.int) (fun l ->  to_list (of_enum (BatList.enum l)) = l)
-   (Q.list Q.int) (fun l ->  to_list (of_backwards (BatList.enum l)) = List.rev l)
+   (Q.list Q.int) (fun l -> to_list (verify_measure (of_list l)) = l)
+   (Q.list Q.int) (fun l -> to_list (verify_measure (of_list_backwards l)) = List.rev l)
+   (Q.list Q.int) (fun l -> to_list_backwards (verify_measure (of_list_for_test l)) = List.rev l)
+   (Q.list Q.int) (fun l -> BatList.of_enum (enum (verify_measure (of_list_for_test l))) = l)
+   (Q.list Q.int) (fun l -> BatList.of_enum (backwards (verify_measure (of_list_for_test l))) = List.rev l)
+   (Q.list Q.int) (fun l ->  to_list (verify_measure (of_enum (BatList.enum l))) = l)
+   (Q.list Q.int) (fun l ->  to_list (verify_measure (of_backwards (BatList.enum l))) = List.rev l)
 **)
 
 let iter = Generic.iter
 (**Q iter
-   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun elt -> Printf.bprintf b "%d" elt) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in iter f1 (of_list l); BatList.iter f2 l; Buffer.contents b1 = Buffer.contents b2)
+   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun elt -> Printf.bprintf b "%d" elt) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in iter f1 (of_list_for_test l); BatList.iter f2 l; Buffer.contents b1 = Buffer.contents b2)
 *)
 
 let iter_right = Generic.iter_right
 (**Q iter_right
-   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun elt -> Printf.bprintf b "%d" elt) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in iter_right f1 (of_list l); BatList.iter f2 (BatList.rev l); Buffer.contents b1 = Buffer.contents b2)
+   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun elt -> Printf.bprintf b "%d" elt) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in iter_right f1 (of_list_for_test l); BatList.iter f2 (BatList.rev l); Buffer.contents b1 = Buffer.contents b2)
 *)
 
 type ('wrapped_type, 'a, 'm) wrap = 'wrapped_type
 
 let cons t x = Generic.cons ~monoid:nat_plus_monoid ~measure:size_measurer t x
 (**Q cons
-   (Q.pair (Q.list Q.int) Q.int) (fun (l,i) -> to_list (cons (of_list l) i) = i :: l)
+   (Q.pair (Q.list Q.int) Q.int) (fun (l,i) -> to_list (verify_measure (cons (of_list_for_test l) i)) = i :: l)
 *)
 
 let snoc t x = Generic.snoc ~monoid:nat_plus_monoid ~measure:size_measurer t x
 (**Q snoc
-   (Q.pair (Q.list Q.int) Q.int) (fun (l,i) -> to_list (snoc (of_list l) i) = BatList.append l [i])
+   (Q.pair (Q.list Q.int) Q.int) (fun (l,i) -> to_list (verify_measure (snoc (of_list_for_test l) i)) = BatList.append l [i])
 *)
 
 let front t = Generic.front ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q front
-   (Q.list Q.int) (fun l -> (match front (of_list l) with None -> [] | Some (t, hd) -> hd :: to_list t) = l)
+   (Q.list Q.int) (fun l -> (match front (of_list_for_test l) with None -> [] | Some (t, hd) -> hd :: to_list (verify_measure t)) = l)
 *)
 
 let tail t = Generic.tail ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q tail
-   (Q.list Q.int) (fun l -> (match tail (of_list l) with None -> None | Some t -> Some (to_list t)) = (match l with [] -> None | _ :: t -> Some t))
+   (Q.list Q.int) (fun l -> (match tail (of_list_for_test l) with None -> None | Some t -> Some (to_list (verify_measure t))) = (match l with [] -> None | _ :: t -> Some t))
 *)
 
 let init t = Generic.init ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q init
-   (Q.list Q.int) (fun l -> (match init (of_list l) with None -> None | Some init -> Some (to_list init)) = (match l with [] -> None | _ :: _ -> Some (fst (BatList.split_at (List.length l - 1) l))))
+   (Q.list Q.int) (fun l -> (match init (of_list_for_test l) with None -> None | Some init -> Some (to_list (verify_measure init))) = (match l with [] -> None | _ :: _ -> Some (fst (BatList.split_at (List.length l - 1) l))))
 *)
 
 let rear t = Generic.rear ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q rear
-   (Q.list Q.int) (fun l -> (match rear (of_list l) with None -> [] | Some (init, last) -> BatList.append (to_list init) [last]) = l)
+   (Q.list Q.int) (fun l -> (match rear (of_list_for_test l) with None -> [] | Some (init, last) -> BatList.append (to_list (verify_measure init)) [last]) = l)
 *)
 
 let front_exn t = Generic.front_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q front_exn
-   (Q.list Q.int) (fun l -> (try let tl, hd = front_exn (of_list l) in hd :: to_list tl with Empty -> []) = l)
+   (Q.list Q.int) (fun l -> (try let tl, hd = front_exn (of_list_for_test l) in hd :: to_list (verify_measure tl) with Empty -> []) = l)
 *)
 
 let tail_exn t = Generic.tail_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q tail_exn
-   (Q.list Q.int) (fun l -> (try Some (to_list (tail_exn (of_list l))) with Empty -> None) = (match l with [] -> None | _ :: t -> Some t))
+   (Q.list Q.int) (fun l -> (try Some (to_list (verify_measure (tail_exn (of_list_for_test l)))) with Empty -> None) = (match l with [] -> None | _ :: t -> Some t))
 *)
 
 let init_exn t = Generic.init_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q init_exn
-   (Q.list Q.int) (fun l -> (try Some (to_list (init_exn (of_list l))) with Empty -> None) = (match l with [] -> None | _ :: _ -> Some (fst (BatList.split_at (List.length l - 1) l))))
+   (Q.list Q.int) (fun l -> (try Some (to_list (verify_measure (init_exn (of_list_for_test l)))) with Empty -> None) = (match l with [] -> None | _ :: _ -> Some (fst (BatList.split_at (List.length l - 1) l))))
 *)
 
 let rear_exn t = Generic.rear_exn ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q rear
-   (Q.list Q.int) (fun l -> (try let init, last = rear_exn (of_list l) in BatList.append (to_list init) [last] with Empty -> []) = l)
+   (Q.list Q.int) (fun l -> (try let init, last = rear_exn (of_list_for_test l) in BatList.append (to_list (verify_measure init)) [last] with Empty -> []) = l)
 *)
 
 let append t1 t2 = Generic.append ~monoid:nat_plus_monoid ~measure:size_measurer t1 t2
 (**Q append
-   (Q.pair (Q.list Q.int) (Q.list Q.int)) (fun (l1, l2) -> to_list (append (of_list l1) (of_list l2)) = BatList.append l1 l2)
+   (Q.pair (Q.list Q.int) (Q.list Q.int)) (fun (l1, l2) -> to_list (verify_measure (append (of_list_for_test l1) (of_list_for_test l2))) = BatList.append l1 l2)
 **)
 
 let measure t = Generic.measure ~monoid:nat_plus_monoid ~measure:size_measurer t
 let size = measure (* O(1) this time *)
 (**Q size
-   (Q.list Q.int) (fun l -> List.length l = size (of_list l))
+   (Q.list Q.int) (fun l -> List.length l = size (of_list_for_test l))
 **)
 
 let reverse t = Generic.reverse ~monoid:nat_plus_monoid ~measure:size_measurer t
 (**Q reverse
-   (Q.list Q.int) (fun l -> to_list (reverse (of_list l)) = BatList.rev l)
+   (Q.list Q.int) (fun l -> to_list (verify_measure (reverse (of_list_for_test l))) = BatList.rev l)
 **)
 
 let split f t = Generic.split ~monoid:nat_plus_monoid ~measure:size_measurer f t
@@ -1080,7 +1114,7 @@ let split_at t i =
   if i < 0 || i >= size t then invalid_arg "Index out of bounds";
   split (fun index -> i < index) t
 (**T split_at__split
-  let n = 50 in let l = Q.lg_size (fun () -> n) Q.uig () in let t = of_list l in let i = ref (-1) in BatList.for_all (fun _ -> incr i; let t1, t2 = split_at t !i in let l1, l2 = BatList.split_at !i l in to_list t1 = l1 && to_list t2 = l2) l
+  let n = 50 in let l = Q.lg_size (fun () -> n) Q.uig () in let t = of_list_for_test l in let i = ref (-1) in BatList.for_all (fun _ -> incr i; let t1, t2 = split_at t !i in let l1, l2 = BatList.split_at !i l in to_list (verify_measure t1) = l1 && to_list (verify_measure t2) = l2) l
    try ignore (split_at empty 0); false with Invalid_argument _ -> true
 **)
 
@@ -1089,7 +1123,7 @@ let get i t =
   if i < 0 || i >= size t then invalid_arg "Index out of bounds";
   lookup (fun index -> i < index) t
 (**T get__lookup
-  let n = 50 in let l = Q.lg_size (fun () -> n) Q.uig () in let t = of_list l in let i = ref (-1) in BatList.for_all (fun elt -> incr i; elt = get !i t) l
+  let n = 50 in let l = Q.lg_size (fun () -> n) Q.uig () in let t = of_list_for_test l in let i = ref (-1) in BatList.for_all (fun elt -> incr i; elt = get !i t) l
    try ignore (get 1 (singleton 1)); false with Invalid_argument _ -> true
    try ignore (get (-1) (singleton 1)); false with Invalid_argument _ -> true
 **)
@@ -1109,9 +1143,9 @@ let set i v t =
 let update i f t =
   set i (f (get i t)) t
 (**T update
-  to_list (update 1 (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3)) = [1; 3; 3]
-  to_list (update 0 (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3)) = [2; 2; 3]
-  to_list (update 2 (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3)) = [1; 2; 4]
+  to_list (verify_measure (update 1 (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3))) = [1; 3; 3]
+  to_list (verify_measure (update 0 (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3))) = [2; 2; 3]
+  to_list (verify_measure (update 2 (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3))) = [1; 2; 4]
   try ignore (update (-1) (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3)); false with Invalid_argument _ -> true
   try ignore (update 3 (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3)); false with Invalid_argument _ -> true
 **)
@@ -1120,16 +1154,26 @@ let of_enum e = Generic.of_enum ~monoid:nat_plus_monoid ~measure:size_measurer e
 let of_list l = Generic.of_list ~monoid:nat_plus_monoid ~measure:size_measurer l
 let of_backwards e = Generic.of_backwards ~monoid:nat_plus_monoid ~measure:size_measurer e
 let of_list_backwards l = Generic.of_list_backwards ~monoid:nat_plus_monoid ~measure:size_measurer l
+let of_list_for_test l = Generic.of_list_for_test ~monoid:nat_plus_monoid ~measure:size_measurer l
 
 let map f t = Generic.map ~monoid:nat_plus_monoid ~measure:size_measurer f t
 (**Q map
-   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun elt -> Printf.bprintf b "%d" elt; elt + 1) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in let res1 = map f1 (of_list l) in let res2 = BatList.map f2 l in to_list res1 = res2 && Buffer.contents b1 = Buffer.contents b2)
+   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun elt -> Printf.bprintf b "%d" elt; elt + 1) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in let res1 = map f1 (of_list_for_test l) in let res2 = BatList.map f2 l in to_list (verify_measure res1) = res2 && Buffer.contents b1 = Buffer.contents b2)
 *)
 
 let map_right f t = Generic.map_right ~monoid:nat_plus_monoid ~measure:size_measurer f t
 (**Q map_right
-   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun elt -> Printf.bprintf b "%d" elt; elt + 1) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in let res1 = map_right f1 (of_list l) in let res2 = List.rev (BatList.map f2 (List.rev l)) in to_list res1 = res2 && Buffer.contents b1 = Buffer.contents b2)
+   (Q.list Q.int) (fun l -> let make_bf () = let b = Buffer.create 10 in b, (fun elt -> Printf.bprintf b "%d" elt; elt + 1) in let b1, f1 = make_bf () in let b2, f2 = make_bf () in let res1 = map_right f1 (of_list_for_test l) in let res2 = List.rev (BatList.map f2 (List.rev l)) in to_list (verify_measure res1) = res2 && Buffer.contents b1 = Buffer.contents b2)
 *)
 
 let print = Generic.print
 let t_printer = Generic.t_printer
+
+let compare = Generic.compare
+let equal = Generic.equal
+
+let check_measures t =
+  Generic.check_measures ~monoid:nat_plus_monoid ~measure:size_measurer ~eq:BatInt.(=) t
+let verify_measure t =
+  if not (check_measures t) then failwith "Invariants not verified";
+  t

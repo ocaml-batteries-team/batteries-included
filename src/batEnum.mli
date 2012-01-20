@@ -561,6 +561,11 @@ val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
       element of [b]
   *)
 
+val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+(** [equal eq a b] returns [true] when [a] and [b] contain
+    the same sequence of elements.
+*)
+
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
   (** [switch test enum] splits [enum] into two enums, where the first enum have
       all the elements satisfying [test], the second enum is opposite. The
