@@ -1066,6 +1066,14 @@ let compare cmp t u =
 	  | n -> n
   in aux ()
 
+let equal eq t u =
+  let rec aux () =
+    match (get t, get u) with
+      | (None, None)     -> true
+      | (Some x, Some y) -> eq x y && aux ()
+      | _ -> false
+  in aux ()
+
 let rec to_object t =
 object
   method next = t.next ()
