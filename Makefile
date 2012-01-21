@@ -164,8 +164,8 @@ test-native: _build/testsuite/main.native _build/qtest/test_runner.native _build
 
 # only run qtest2 tests
 qtest2: _build/qtest2/all_tests.byte _build/qtest2/all_tests.native
-	_build/qtest2/all_tests.byte
 	_build/qtest2/all_tests.native
+	_build/qtest2/all_tests.byte
 
 test: $(TEST_TARGET)
 
