@@ -50,7 +50,7 @@ let create ~enter ~leave =
 
 module type BaseLock =
 sig
-  type t(**The type of a lock.*)
+  type t (** The type of a lock. *)
 
   val create:unit -> t
   val lock : t -> unit
@@ -61,7 +61,7 @@ end
 
 module type Lock =
 sig
-  type t(**The type of a lock.*)
+  type t (** The type of a lock. *)
 
   val create: unit -> t
   val lock  : t -> unit

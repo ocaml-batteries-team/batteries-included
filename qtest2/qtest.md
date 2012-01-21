@@ -87,6 +87,8 @@ The most common kind of tests is the simple test, an example of which is given a
 where each *statement* must be a boolean OCaml expression involving the function (or functions, as we will see when we study headers) referenced in the *header*.
 The overall test is considered successful if each *statement* evaluates to **true**. Note that the "close comment" `*)` must appear on a line of its own.
 
+**Tip:** if a statement is a bit too long to fit on one line, if can be broken using a backslash (`\`), immediately followed by the carriage return. This also applies to randomised tests.
+
 #### Randomized Tests: `Q` for "Quickcheck"
 
 Quickcheck is a small library useful for randomized unit tests. Using it is a bit more complex, but much more rewarding than simple tests.

@@ -402,9 +402,10 @@ let fsum t =
       !sum
 
 (* NEED A PROPER TEST OF ROUNDING ERROR *)
-(**T fsum
-   let arr = Array.make 10001 1e-10 in arr.(0) <- 1e10; Float.approx_equal (fsum (Array.enum arr)) (1e10 +. 1e-5)
- **)
+(*$T fsum
+   let arr = Array.make 10001 1e-10 in arr.(0) <- 1e10; \
+      Float.approx_equal (fsum (Array.enum arr)) (1e10 +. 1e-5)
+*)
 
 let exists f t =
   try let rec aux () = f (t.next()) || aux ()
@@ -512,14 +513,15 @@ let find_map f t =
     loop ()
   with No_more_elements -> raise Not_found
 
-(**T find_map
-   try let _ = Enum.empty () |> Enum.find_map (const (Some 1)) in false with Not_found -> true
-   Enum.singleton 0 |> Enum.find_map (const (Some 1)) = 1
-   1 -- 5 |> Enum.find_map (function 2 -> Some 0 | _ -> None) = 0
-   1 -- 5 |> Enum.find_map (function 5 -> Some 0 | _ -> None) = 0
-   try let _ = 1 -- 5 |> Enum.find_map (function 6 -> Some 0 | _ -> None) in false with Not_found -> true
- **)
-
+(*$T find_map
+   try let _ = empty () |> find_map (const (Some 1)) in false with Not_found -> true
+   singleton 0 |> find_map (const (Some 1)) = 1
+   1 -- 5 |> find_map (function 2 -> Some 0 | _ -> None) = 0
+   1 -- 5 |> find_map (function 5 -> Some 0 | _ -> None) = 0
+   try let _ = 1 -- 5 |> find_map (function 6 -> Some 0 | _ -> None) in \
+      false with Not_found -> true
+*)
+(*qtest TODO: migrate try into an exception test *)
 
 let rec map f t =
 	{
@@ -651,13 +653,15 @@ let switch f e =
 
 let partition = switch
 
-(**T partition
-   let a,b = partition (fun x -> x > 3) (List.enum [1;2;3;4;5;1;5;0]) in List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
-**)
+(*$T partition
+   let a,b = partition (fun x -> x > 3) (List.enum [1;2;3;4;5;1;5;0]) in \
+      List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
+*)
 
-(**Q partition
-   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l = (Enum.partition f (List.enum l) |> Tuple.Tuple2.mapn List.of_enum))
-**)
+(*$Q partition
+   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l \
+      = (partition f (List.enum l) |> Tuple.Tuple2.mapn List.of_enum))
+*)
 
 let seq init f cond =
   let acc = ref init in
@@ -823,12 +827,12 @@ let uncombine e =
 	    y
   in (from first, from second)
 
-(*** enum_combine_uncombine
+(*$R uncombine
   let pair_list = [1,2;3,4;5,6;7,8;9,0] in
-  let a,b = BatEnum.uncombine (BatList.enum pair_list) in
+  let a,b = uncombine (BatList.enum pair_list) in
   let a = BatArray.of_enum a in
   let b = BatArray.of_enum b in
-  let c,d = BatEnum.uncombine (BatList.enum pair_list) in
+  let c,d = uncombine (BatList.enum pair_list) in
   let d = BatArray.of_enum d in
   let c = BatArray.of_enum c in
   let aeq = assert_equal ~printer:(BatIO.to_string (BatArray.print BatInt.print)) in
@@ -836,7 +840,7 @@ let uncombine e =
   aeq b [|2;4;6;8;0|];
   aeq a c;
   aeq b d
-  **)
+*)
 
 let group_aux test eq e =
   let prev_group = ref (empty ()) in
@@ -869,12 +873,15 @@ let group test e =
 let group_by eq e =
   group_aux (fun x -> x) eq e
 
-(**T group
-   Enum.empty () |> Enum.group (const ()) |> is_empty
-   List.enum [1;2;3;4] |> Enum.group identity |> Enum.map List.of_enum |> List.of_enum = [[1];[2];[3];[4]]
-   List.enum [1;2;3;4] |> Enum.group (const true) |> List.of_enum |> List.map List.of_enum = [[1;2;3;4]]
-   List.enum [1;2;3;5;6;7;9;10;4;5] |> Enum.group (fun x -> x mod 2) |> List.of_enum |> List.map List.of_enum = [[1];[2];[3;5];[6];[7;9];[10;4];[5]]
- **)
+(*$T group
+   empty () |> group (const ()) |> is_empty
+   List.enum [1;2;3;4] |> group identity |> map List.of_enum \
+    |> List.of_enum = [[1];[2];[3];[4]]
+   List.enum [1;2;3;4] |> group (const true) |> List.of_enum \
+    |> List.map List.of_enum = [[1;2;3;4]]
+   List.enum [1;2;3;5;6;7;9;10;4;5] |> group (fun x -> x mod 2) |> List.of_enum \
+    |> List.map List.of_enum = [[1];[2];[3;5];[6];[7;9];[10;4];[5]]
+*)
 
 let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
   let next () =
@@ -926,10 +933,12 @@ let arg_max f enum =
 		       if fv > !eval then (item := v; eval := fv)) enum;
 	!item
 
-(**T arg_min_max
-   List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"
+(*$T arg_max
+   List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] \
+      |> arg_max String.length = "canary"
+*) (*$T arg_min
    -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
-**)
+*)
 
 module Infix = struct
   let ( -- ) x y = range x ~until:y
