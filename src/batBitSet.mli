@@ -59,14 +59,14 @@ val copy : t -> t
 (** Copy a bitset : further modifications of first one will not affect the
  copy.
 
-    Example: [let a = Bitset.create 8 in let b = BitSet.copy a in BitSet.set a 6; BitSet.mem
+    Example: [let a = Bitset.create 8 in let b = BitSet.copy a in BitSet.set a 6; BitSet.mem a 6 && not (BitSet.mem b 6)]
 *)
 
 val mem : t -> int -> bool
 (** [mem s n] returns true if nth-bit in the bitset [s] is set,
     or false otherwise.
 
-    Example: [BitSet.mem
+    Example: [let a = BitSet.create_full 256 in not (BitSet.mem a 300)]
     @raise Invalid_argument on negative index ([n < 0])
 *)
 
