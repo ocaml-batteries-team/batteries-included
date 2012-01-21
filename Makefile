@@ -29,9 +29,10 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 	_build/src/syntax/pa_strings/pa_strings.cma \
 	_build/src/syntax/pa_llist/pa_llist.cmo \
-	_build/libs/*.cmi _build/libs/*.mli
+	_build/libs/*.cmi _build/libs/*.mli \
+	_build/qtest2/qtest
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
-	_build/src/*.cmxs _build/src/*.lib _build/libs/*.cmx
+	_build/src/*.cmxs _build/src/*.lib _build/libs/*.cmx \
 
 # What to build
 TARGETS = syntax.otarget
@@ -65,7 +66,7 @@ endif
 
 .PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk
 
-all:
+all: _build/qtest2/qtest
 	@echo "Build mode:" $(MODE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
@@ -131,6 +132,9 @@ _build/qtest2/qtest.byte:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest2/qtest.byte
 _build/qtest2/qtest.native:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest2/qtest.native
+# We want a version without extension to be installed
+_build/qtest2/qtest: _build/qtest2/qtest.$(EXT)
+	cp $< $@
 
 _build/qtest2/all_tests.byte: qtest2/all_tests.ml qtest/test_mods.mllib
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflag -thread -lflag -thread -cflags -warn-error,+26 -use-ocamlfind -package oUnit qtest2/all_tests.byte
