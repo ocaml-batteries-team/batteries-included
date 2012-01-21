@@ -18,3 +18,4 @@ batteries.odocl
 qtest/*_t.ml
 qtest/test_mods.mllib
 bench.log
+qtest2/all_tests.ml
