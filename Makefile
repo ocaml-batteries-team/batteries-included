@@ -136,9 +136,9 @@ _build/qtest2/qtest.native:
 _build/qtest2/qtest: _build/qtest2/qtest.$(EXT)
 	cp $< $@
 
-_build/qtest2/all_tests.byte: qtest2/all_tests.ml qtest/test_mods.mllib
+_build/qtest2/all_tests.byte: qtest2/all_tests.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflag -thread -lflag -thread -cflags -warn-error,+26 -use-ocamlfind -package oUnit qtest2/all_tests.byte
-_build/qtest2/all_tests.native: qtest2/all_tests.ml qtest/test_mods.mllib
+_build/qtest2/all_tests.native: qtest2/all_tests.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflag -thread -lflag -thread -cflags -warn-error,+26 -use-ocamlfind -package oUnit qtest2/all_tests.native
 
 #qtest only targets, for quicker test iteration
@@ -161,6 +161,11 @@ test-native: _build/testsuite/main.native _build/qtest/test_runner.native _build
 	_build/testsuite/main.byte
 	_build/qtest/test_runner.byte
 	_build/qtest2/all_tests.byte
+
+# only run qtest2 tests
+qtest2: _build/qtest2/all_tests.byte _build/qtest2/all_tests.native
+	_build/qtest2/all_tests.byte
+	_build/qtest2/all_tests.native
 
 test: $(TEST_TARGET)
 
