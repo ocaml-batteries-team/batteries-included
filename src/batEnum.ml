@@ -403,7 +403,8 @@ let fsum t =
 
 (* NEED A PROPER TEST OF ROUNDING ERROR *)
 (*$T fsum
-   let arr = Array.make 10001 1e-10 in arr.(0) <- 1e10; Float.approx_equal (fsum (Array.enum arr)) (1e10 +. 1e-5)
+   let arr = Array.make 10001 1e-10 in arr.(0) <- 1e10; \
+      Float.approx_equal (fsum (Array.enum arr)) (1e10 +. 1e-5)
 *)
 
 let exists f t =
@@ -517,7 +518,8 @@ let find_map f t =
    singleton 0 |> find_map (const (Some 1)) = 1
    1 -- 5 |> find_map (function 2 -> Some 0 | _ -> None) = 0
    1 -- 5 |> find_map (function 5 -> Some 0 | _ -> None) = 0
-   try let _ = 1 -- 5 |> find_map (function 6 -> Some 0 | _ -> None) in false with Not_found -> true
+   try let _ = 1 -- 5 |> find_map (function 6 -> Some 0 | _ -> None) in \
+      false with Not_found -> true
 *)
 (*qtest TODO: migrate try into an exception test *)
 
@@ -652,11 +654,13 @@ let switch f e =
 let partition = switch
 
 (*$T partition
-   let a,b = partition (fun x -> x > 3) (List.enum [1;2;3;4;5;1;5;0]) in List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
+   let a,b = partition (fun x -> x > 3) (List.enum [1;2;3;4;5;1;5;0]) in \
+      List.of_enum a = [4;5;5] && List.of_enum b = [1;2;3;1;0]
 *)
 
 (*$Q partition
-   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l = (partition f (List.enum l) |> Tuple.Tuple2.mapn List.of_enum))
+   (Q.list Q.small_int) (fun l -> let f x = x mod 2 = 1 in List.partition f l \
+      = (partition f (List.enum l) |> Tuple.Tuple2.mapn List.of_enum))
 *)
 
 let seq init f cond =
