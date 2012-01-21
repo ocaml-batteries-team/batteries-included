@@ -38,10 +38,11 @@ let modifyi f a =
     unsafe_set a i (f i (unsafe_get a i))
   done
 
-(**T modify
-   let a = [|3;2;1|] in modify (fun x -> x + 1) a; a = [|4;3;2|]
-   let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
- **)
+(*$T modify
+  let a = [|3;2;1|] in modify (fun x -> x + 1) a; a = [|4;3;2|]
+*)(*$T modifyi
+  let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
+*)
 
 let fold_lefti f x a =
   let r = ref x in
@@ -50,10 +51,10 @@ let fold_lefti f x a =
   done;
   !r
 
-(**T fold_left
+(*$T fold_lefti
    fold_lefti (fun a i x -> a + i * x) 1 [|2;4;5|] = 1 + 0 + 4 + 10
    fold_lefti (fun a i x -> a + i * x) 1 [||] = 1
- **)
+*)
 
 let rev_in_place xs =
   let n = length xs in
@@ -65,20 +66,20 @@ let rev_in_place xs =
     decr j
   done
 
-(**T rev_in_place
+(*$T rev_in_place
    let a = [|1;2;3;4|] in rev_in_place a; a = [|4;3;2;1|]
    let a = [|1;2;3|] in rev_in_place a; a = [|3;2;1|]
    let a = [||] in rev_in_place a; a=[||]
- **)
+*)
 
 let rev xs =
   let ys = Array.copy xs in
   rev_in_place ys;
   ys
 
-(**Q rev
+(*$Q rev
    (Q.array Q.int) ~count:5 (fun l -> rev l |> rev = l)
- **)
+*)
 
 let for_all p xs =
   let n = length xs in
@@ -89,11 +90,11 @@ let for_all p xs =
   in
   loop 0
 
-(**T for_all
+(*$T for_all
    for_all (fun x -> x mod 2 = 0) [|2;4;6|]
    for_all (fun x -> x mod 2 = 0) [|2;3;6|] = false
    for_all (fun _ -> false) [||]
- **)
+*)
 
 let exists p xs =
   let n = length xs in
@@ -104,11 +105,11 @@ let exists p xs =
   in
   loop 0
 
-(**T exists
+(*$T exists
    exists (fun x -> x mod 2 = 0) [|1;4;5|]
    exists (fun x -> x mod 2 = 0) [|1;3;5|] = false
    exists (fun _ -> false) [||] = false
- **)
+*)
 
 
 let mem a xs =
@@ -120,11 +121,11 @@ let mem a xs =
   in
   loop 0
 
-(**T mem
+(*$T mem
    mem 2 [|1;2;3|]
    mem 2 [||] = false
    mem (ref 3) [|ref 1; ref 2; ref 3|]
- **)
+*)
 
 let memq a xs =
   let n = length xs in
@@ -135,11 +136,11 @@ let memq a xs =
   in
   loop 0
 
-(**T memq
+(*$T memq
    memq 2 [|1;2;3|]
    memq 2 [||] = false
    memq (ref 3) [|ref 1; ref 2; ref 3|] = false
- **)
+*)
 
 let findi p xs =
   let n = length xs in
@@ -185,9 +186,9 @@ let filteri p xs =
       | None -> assert false (* not enough 1 bits - incorrect count? *)
     )
 
-(**T array_filteri
+(*$T filteri
    filteri (fun i x -> (i+x) mod 2 = 0) [|1;2;3;4;0;1;2;3|] = [|0;1;2;3|]
-**)
+*)
 
 let find_all = filter
 
@@ -293,11 +294,11 @@ let for_all2 p xs ys =
   in
   loop 0
 
-(**T for_all2
+(*$T for_all2
    for_all2 (=) [|1;2;3|] [|3;2;1|] = false
    for_all2 (=) [|1;2;3|] [|1;2;3|]
    for_all2 (<>) [|1;2;3|] [|3;2;1|] = false
- **)
+*)
 
 let exists2 p xs ys =
   let n = length xs in
@@ -309,20 +310,20 @@ let exists2 p xs ys =
   in
   loop 0
 
-(**T exists2
+(*$T exists2
    exists2 (=) [|1;2;3|] [|3;2;1|]
    exists2 (<>) [|1;2;3|] [|1;2;3|] = false
- **)
+*)
 
 let map2 f xs ys =
   let n = length xs in
   if length ys <> n then raise (Invalid_argument "Array.exists2");
   Array.init n (fun i -> f xs.(i) ys.(i))
 
-(**T map2
+(*$T map2
    map2 (-) [|1;2;3|] [|6;3;1|] = [|-5;-1;2|]
    map2 (-) [|2;4;6|] [|1;2;3|] = [|1;2;3|]
- **)
+*)
 
 let compare cmp a b =
   let length_a = Array.length a in
@@ -340,13 +341,13 @@ let compare cmp a b =
   in
   aux 0
 
-(**T compare
+(*$T compare
    compare Pervasives.compare [|1;2;3|] [|1;2|] = 1
    compare Pervasives.compare [|1;2|] [|1;2;4|] = -1
    compare Pervasives.compare [|1|] [||] = 1
    compare Pervasives.compare [||] [||] = 0
    compare Pervasives.compare [|1;2|] [|1;2|] = 0
-**)
+*)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
   match length t with
@@ -374,20 +375,21 @@ let reduce f a =
     !acc
   )
 
-(**T reduce
+(*$T reduce
    reduce (+) [|1;2;3|] = 6
    reduce (fun _ -> assert false) [|1|] = 1
- **)
+*)
 
 let min a = reduce Pervasives.min a
 let max a = reduce Pervasives.max a
 
-(**T min/max
-   min [|1;2;3|] = 1
-   max [|1;2;3|] = 3
-   min [|2;3;1|] = 1
-   max [|2;3;1|] = 3
- **)
+(*$T min
+  min [|1;2;3|] = 1
+  min [|2;3;1|] = 1
+*)(*$T max
+  max [|1;2;3|] = 3
+  max [|2;3;1|] = 3
+*)
 
 (* TODO: Investigate whether a second array is better than pairs *)
 let decorate_stable_sort f xs =
@@ -405,11 +407,11 @@ let insert xs x i =
   if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
   Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
 
-(**T insert
+(*$T insert
    insert [|1;2;3|] 4 0 = [|4;1;2;3|]
    insert [|1;2;3|] 4 3 = [|1;2;3;4|]
    insert [|1;2;3|] 4 2 = [|1;2;4;3|]
- **)
+*)
 
 
 let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
