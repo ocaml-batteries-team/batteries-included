@@ -70,6 +70,7 @@ rule lexml t = parse
 
 (** body of a test: simply extract lines *)
 and lexbody b acc = parse
+| blank* "\\\n" blank* { eol lexbuf ; B.add_char b ' '; lexbody b acc lexbuf  }
 | [^'\n'] as c { B.add_char b c; lexbody b acc lexbuf }
 | '\n' { eol lexbuf; let line = B.contents b in B.clear b;
          lexbody b ({ln = Lexing.(lexbuf.lex_curr_p.pos_lnum) ; code = trim line} :: acc) lexbuf }

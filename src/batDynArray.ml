@@ -364,18 +364,18 @@ let filter f d =
     dest.len <- !p;
     changelen dest !p;
     dest
-
-(*** dynarray_filter
-  let e = BatDynArray.create () in
-  BatDynArray.add e "a";
-  BatDynArray.add e "b";
-  BatDynArray.keep ((=) "a") e;
-  assert_equal ~printer:(fun x -> x) (BatDynArray.get e 0) "a"
- **)
-
+    
 let keep f d = let result = filter f d in
   d.arr <- result.arr;
   d.len <- result.len
+    
+(*$R keep
+  let e = create () in
+  add e "a";
+  add e "b";
+  keep ((=) "a") e;
+  assert_equal ~printer:(fun x -> x) (get e 0) "a"
+*)
 
 let filter_map f d =
   let l    = d.len  in

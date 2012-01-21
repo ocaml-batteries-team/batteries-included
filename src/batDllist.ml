@@ -178,11 +178,12 @@ let find p node =
   in
   if p node.data then node else loop node.next
 
-(**T dllist_find
+(*$T find
    find (fun x -> x mod 2 = 0) (of_list [1;3;4;5;7;6]) |> get = 4
    find (fun x -> x > 3) (of_list [-1;3;9;1;1;1]) |> get = 9
    try find (fun x -> x land 3 = 2) (of_list [1;4;3])|>ignore; false with Not_found -> true
-**)
+*)
+(*qtest TODO: migrate try into an exception test *)
 
 let exists p node =
   let rec loop n =
