@@ -46,7 +46,7 @@ end
 (* stdlib modules *)
 module Array = struct include Array include BatArray end
 (* ArrayLabels *)
-module Buffer = struct include Buffer include BatBuffer end
+module Buffer = BatBuffer
 (* Callback *)
 module Char = struct include Char include BatChar end
 module Complex = BatComplex

@@ -22,7 +22,7 @@
 
 
 open BatString
-open Buffer
+include Buffer
 
   (** The underlying buffer type. *)
 type buffer =
@@ -37,25 +37,42 @@ external t_of_buffer : buffer -> t = "%identity"
 let print out t =
   BatString.print out (contents t)
 
+(*$Q print
+  (Q.string) (fun s -> let b = create 5 in add_string b "foo"; add_string b s; BatIO.to_string print b = "foo" ^ s)
+ *)
+
 let enum t =
   let buf = buffer_of_t t in
   BatEnum.take buf.position (BatString.enum buf.buffer)
 
+(*$Q enum
+  (Q.string) (fun s -> let b = create 10 in add_string b s; BatEnum.equal Char.eq (enum b) (BatString.enum s))
+ *)
+
 let of_enum e =
-  let length = BatEnum.count e  in
-  let buf    = create length in
+  let buf =
+    if BatEnum.fast_count e
+    then create (BatEnum.count e)
+    else create 128
+  in
   add_string buf (BatString.of_enum e);
   buf
+
+(*$Q of_enum
+  (Q.string) (fun s -> let b = of_enum (BatString.enum s) in contents b = s)
+ *)
 
 let add_input t inp n =
   add_string t (BatInnerIO.really_nread inp n)
 
-let output_buffer = BatInnerIO.write_buf
+(*$Q add_input
+  (Q.string) (fun s -> let b = create 10 in add_input b (BatIO.input_string s) (String.length s); contents b = s)
+ *)
+
+let output_buffer = BatInnerIO.write_buf (* FIXME: move implementation from InnerIO? *)
+
+(*$Q output_buffer
+  (Q.string) (fun s -> let b = create 10 in add_string b s; let oc = BatIO.output_string () in output_buffer oc b; BatIO.close_out oc = s)
+ *)
 
 let add_channel = add_input
-
-let blit t srcoff dst dstoff len =
-  let buf = buffer_of_t t in
-  if srcoff < 0 || len < 0 || srcoff > buf.position - len
-  then invalid_arg "Buffer.blit"
-  else String.blit buf.buffer srcoff dst dstoff len
