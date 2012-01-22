@@ -1,4 +1,3 @@
-(* $Id: avlTree.ml,v 1.2 2003/06/08 04:50:48 yori Exp $ *)
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* Modified by Edgar Friendly <thelema314@gmail.com> *)
 
@@ -118,7 +117,7 @@ let rec fold f t init =
       let x = fold f l init in
       let x = f v x in
       fold f r x
-	
+
 let rec enum = function
   | Empty             -> BatEnum.empty ()
   | Node (l, v, r, _) ->
