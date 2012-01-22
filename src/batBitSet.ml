@@ -63,7 +63,7 @@ let empty() = { data = bcreate 0; len = 0; }
 let int_size = 7 (* value used to round up index *)
 let log_int_size = 3 (* number of shifts *)
 
-let size {len} = len lsl log_int_size (* i.e. len * 8 *)
+let capacity {len} = len lsl log_int_size (* i.e. len * 8 *)
 let create n = (* n is in bits *)
   if n < 0 then invalid_arg "BitSet.create: negative size";
   let size = (n+int_size) lsr log_int_size in

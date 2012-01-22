@@ -45,14 +45,14 @@ val create : int -> t
 (** Create an empty bitset with an initial capacity (in number of bits).
 
     Example: [BitSet.create 0 = BitSet.empty ()]
-    @raise Invalid_argument on negative size
+    @raise Invalid_argument on negative capacity
 *)
 
 val create_full : int -> t
 (** Create a full bitset with an initial capacity (in number of bits).
 
     Example: [BitSet.count (BitSet.create_full n) = n]
-    @raise Invalid_argument on negative size
+    @raise Invalid_argument on negative capacity
 *)
 
 val copy : t -> t
@@ -76,11 +76,6 @@ val count : t -> int
 
     Example: [BitSet.count (BitSet.of_list [6;4;2;2;1]) = 4]
 *)
-
-val size : t -> int
-(** [size s] returns the number of bits, both set and unset, stored
-    in [s].  This is guaranteed to be larger than the largest element
-    (set bit index) in [s]. *)
 
 val next_set_bit : t -> int -> int option
 (** [next_set_bit s n] returns [Some m] when [m] is the next set
@@ -187,3 +182,12 @@ val compare : t -> t -> int
 val equals : t -> t -> bool
 (** [equals s1 s2] returns true if, and only if, all bits values in s1 are
     the same as in s2. *)
+
+(** {6 Internals} *)
+val capacity : t -> int
+(** [capacity s] returns the number of bits, both set and unset, stored
+    in [s].  This is guaranteed to be larger than the largest element
+    (set bit index) in [s].
+
+
+*)
