@@ -27,7 +27,7 @@ type ('a,'b) manual_cache = {
   enum: unit -> ('a * 'b) BatEnum.t
 }
 
-let make_ht ~gen init_size =
+let make_ht ~gen ~init_size =
   let ht = BatHashtbl.create init_size in
   {get = (fun k ->
     try BatHashtbl.find ht k
@@ -45,16 +45,18 @@ let make_map ~gen =
 
 type ('a, 'b) auto_cache = 'a -> 'b
 
-let lru_cache ~gen size =
+let lru_cache ~gen ~cap =
   let entries = ref None in
+  let len = ref 0 in
   let get k =
     match !entries with
       | Some dll ->
 	let n =
 	  try BatDllist.find (fun (k1,v1) -> k1 = k) dll |> tap BatDllist.remove
-	  with Not_found -> BatDllist.create (k, gen k)
+	  with Not_found -> incr len; BatDllist.create (k, gen k)
 	in
 	BatDllist.splice n dll;
+        if !len > cap then (BatDllist.remove (BatDllist.prev n); decr len);
 	BatDllist.get n |> snd
       | None -> let v = gen k in entries := Some (BatDllist.create (k, v)); v
   in
