@@ -163,9 +163,8 @@ test-native: _build/testsuite/main.native _build/qtest/test_runner.native _build
 	_build/qtest2/all_tests.byte
 
 # only run qtest2 tests
-qtest2: _build/qtest2/all_tests.byte _build/qtest2/all_tests.native
+qtest2: _build/qtest2/all_tests.native
 	_build/qtest2/all_tests.native
-	_build/qtest2/all_tests.byte
 
 test: $(TEST_TARGET)
 
@@ -209,4 +208,6 @@ qtest2/all_tests.ml: _build/qtest2/qtest.$(EXT) $(TESTABLE)
 coverage/index.html: $(TESTDEPS) qtest2/all_tests.ml
 	$(OCAMLBUILD) coverage/index.html
 
-.PHONY: qtest/test_mods.mllib
+coverage: coverage/index.html
+
+.PHONY: qtest/test_mods.mllib coverage
