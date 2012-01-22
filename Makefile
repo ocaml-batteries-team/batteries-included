@@ -203,5 +203,10 @@ qtest/test_mods.mllib:
 qtest2/all_tests.ml: _build/qtest2/qtest.$(EXT) $(TESTABLE)
 	$< -o $@ --preamble 'open Batteries;;' extract $(TESTABLE) || rm -f $@
 
+##
+## code coverage of the tests
+##
+coverage/index.html: $(TESTDEPS)
+	$(OCAMLBUILD) coverage/index.html
 
 .PHONY: qtest/test_mods.mllib
