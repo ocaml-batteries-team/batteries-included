@@ -73,17 +73,22 @@ let _ = dispatch begin function
           List.iter (fun filename ->
             tag_file filename ["with_pa_bisect"; "syntax_camlp4o"; "use_bisect"];
           ) src_bat_ml;
-          tag_file "testsuite/main.native" ["use_bisect"];
-          tag_file "qtest/test_runner.native" ["use_bisect"];
-          List.iter Outcome.ignore_good (
-            build [["testsuite/main.native"]; ["qtest/test_runner.native"]]
-          );
-          Seq [
+          let test_exes = [
+            "testsuite/main.native";
+            "qtest/test_runner.native";
+            "qtest2/all_tests.native";
+          ] in
+          List.iter (fun exe -> tag_file exe ["use_bisect"]) test_exes;
+          List.iter Outcome.ignore_good (build (
+            List.map (fun exe -> [exe]) test_exes
+          ));
+          Seq ([
             Cmd(S[Sh"rm -f bisect*.out"]);
-            Cmd(S[A"qtest/test_runner.native"]);
-            Cmd(S[A"testsuite/main.native"]);
+          ] @
+            List.map (fun exe -> Cmd(S[A exe])) test_exes
+          @ [
             Cmd(S[Sh"bisect-report -html coverage bisect*.out"]);
-          ]
+          ])
         end
 
   | After_rules ->

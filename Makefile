@@ -137,9 +137,9 @@ _build/qtest2/qtest: _build/qtest2/qtest.$(EXT)
 	cp $< $@
 
 _build/qtest2/all_tests.byte: qtest2/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflag -thread -lflag -thread -cflags -warn-error,+26 -use-ocamlfind -package oUnit qtest2/all_tests.byte
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.byte
 _build/qtest2/all_tests.native: qtest2/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflag -thread -lflag -thread -cflags -warn-error,+26 -use-ocamlfind -package oUnit qtest2/all_tests.native
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.native
 
 #qtest only targets, for quicker test iteration
 qtest-byte: _build/qtest/test_runner.byte
@@ -206,7 +206,7 @@ qtest2/all_tests.ml: _build/qtest2/qtest.$(EXT) $(TESTABLE)
 ##
 ## code coverage of the tests
 ##
-coverage/index.html: $(TESTDEPS)
+coverage/index.html: $(TESTDEPS) qtest2/all_tests.ml
 	$(OCAMLBUILD) coverage/index.html
 
 .PHONY: qtest/test_mods.mllib
