@@ -82,6 +82,13 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
   let print out t = BatInnerIO.write out t
   let t_printer paren out t = print out t
 
+  let cmp (x:char) y = Pervasives.compare x y
+  let ord (x:char) y =
+    if x > y then BatOrd.Gt
+    else if y > x then BatOrd.Lt
+    else BatOrd.Eq
+  let eq (x:char) y = x == y (* safe because int-like value *)
+
 module Incubator = struct
   module Comp = struct
     type t = char

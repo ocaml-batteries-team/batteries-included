@@ -115,6 +115,9 @@ end
 val print: 'a BatInnerIO.output -> Char.t -> unit
 val t_printer : char BatValuePrinter.t
 
+val cmp : char -> char -> int
+val ord : char BatOrd.ord
+val eq : char BatOrd.eq
 
 module Incubator : sig
   module Comp : BatOrd.Comp with type t = char
@@ -127,4 +130,4 @@ end
 external unsafe_chr : int -> char = "%identity"
 external unsafe_int : char-> int  = "%identity"
 
-
+(**/**)
