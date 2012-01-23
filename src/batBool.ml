@@ -46,6 +46,7 @@ module BaseBool = struct
   let add    = ( || )
   let mul    = ( && )
   let sub _  = not (*Weird extrapolation*)
+  (*BISECT-IGNORE-BEGIN*)
   let div _ _=
     raise (Invalid_argument "Bool.div")
 
@@ -54,6 +55,7 @@ module BaseBool = struct
 
   let pow _ _ =
     raise (Invalid_argument "Bool.pow")
+  (*BISECT-IGNORE-END*)
 
   let compare = compare
 
@@ -79,6 +81,32 @@ include BatNumber.MakeNumeric(BaseBool)
 module Infix = BatNumber.MakeInfix(BaseBool)
 module Compare = BatNumber.MakeCompare(BaseBool)
 
+(*$T succ
+  succ true = true
+  succ false = true
+ *)
+(*$T pred
+  pred true = false
+  pred false = false
+ *)
+(*$T abs
+  abs true = true
+  abs false = false
+ *)
+(*$T sub
+  sub true  true  = false
+  sub true  false = true
+  sub false true  = false
+  sub false false = true
+ *)
+(*$Q of_int
+  (Q.int) (fun i -> (of_int i) = (Int.(<>) i 0))
+ *)
+(*$T of_int
+  of_int 0 = false
+ *)
+
+
 external not : bool -> bool = "%boolnot"
 external ( && ) : bool -> bool -> bool = "%sequand"
 external ( || ) : bool -> bool -> bool = "%sequor"
@@ -88,4 +116,3 @@ let min_num, max_num = false, true
 
 let print out t = BatInnerIO.nwrite out (to_string t)
 let t_printer paren out t = print out t
-
