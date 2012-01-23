@@ -82,6 +82,10 @@ batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
 doc: batteries.odocl
 	$(OCAMLBUILD) batteries.docdir/index.html
 
+man: batteries.odocl
+	-mkdir man
+	ocamlfind ocamldoc -package threads.posix -sort -man -hide-warnings -d man -I _build/libs -I _build/src libs/ulib.mli src/*.mli
+
 install: all uninstall_packages
 	ocamlfind install estring \
 		libs/estring/META \
@@ -210,4 +214,4 @@ coverage/index.html: $(TESTDEPS) qtest2/all_tests.ml
 
 coverage: coverage/index.html
 
-.PHONY: qtest/test_mods.mllib coverage
+.PHONY: qtest/test_mods.mllib coverage man
