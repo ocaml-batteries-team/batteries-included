@@ -174,7 +174,7 @@ bench:
 	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH) | tee -a bench.log; )
 	@echo "Benchmarking results are written to bench.log"
 
-release: setup.ml doc test
+release: clean setup.ml doc test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
