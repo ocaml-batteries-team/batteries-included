@@ -74,6 +74,7 @@ clean:
 	${RM} src/batteriesConfig.ml batteries.odocl bench.log
 	${RM} qtest/*_t.ml qtest/test_mods.mllib
 	${RM} qtest2/all_tests.ml
+	${RM} -r man/
 	$(OCAMLBUILD) -clean
 
 batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
@@ -82,7 +83,7 @@ batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
 doc: batteries.odocl
 	$(OCAMLBUILD) batteries.docdir/index.html
 
-man: batteries.odocl
+man: all batteries.odocl
 	-mkdir man
 	ocamlfind ocamldoc -package threads.posix -sort -man -hide-warnings -d man -I _build/libs -I _build/src libs/ulib.mli src/*.mli
 
@@ -111,6 +112,9 @@ install-doc: doc
 	mkdir -p $(DOCROOT)/html/api
 	cp _build/batteries.docdir/* $(DOCROOT)/html/api
 	cp LICENSE README.md FAQ $(DOCROOT)
+
+install-man: man
+	install man/* /usr/local/man/man3/
 
 reinstall:
 	$(MAKE) uninstall
