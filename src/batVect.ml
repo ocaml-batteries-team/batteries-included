@@ -428,12 +428,21 @@ let foldi f a v =
 
 
 let fold_left = fold
+
+(*$T fold_left
+  let f i=i*i in let g i j=i*i+j in fold_left g 0 (init 1000 f) = Array.fold_left g 0 (Array.init 1000 f)
+ *)
+
 let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
   let rec aux (acc:'b) = function
     | Empty  -> acc
     | Leaf s -> STRING.fold_right f s acc
     | Concat(l, _, r, _, _) -> aux (aux acc r) l
   in aux acc v
+
+(*$T fold_right
+  let f i=i*i in let g i j=i*i+j in fold_right g (init 1000 f) 0 = Array.fold_right g (Array.init 1000 f) 0
+ *)
 
 let reduce f v =
   let acc = ref (get v 0) in
@@ -544,6 +553,10 @@ let init n f =
   let base = aux 0 []
   in(*And then concatenate them*)
     List.fold_left (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc) (empty:'a t) (base:'a array list)
+
+(*$T init
+  init 1000 (fun x -> x * x) |> to_array = Array.init 1000 (fun x -> x * x)
+ *)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
   BatEnum.print ~first ~last ~sep print_a out (enum t)

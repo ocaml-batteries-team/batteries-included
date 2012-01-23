@@ -107,6 +107,20 @@
     let (cin, cout) = open_process s in
       (wrap_in ?autoclose cin, wrap_out ~cleanup cout)
 
+(*$T open_process
+  let s = "hello world" in let r,w = open_process "cat" in \
+  Printf.fprintf w "%s\n" s; IO.close_out w; \
+  IO.read_line r = s
+
+  try \
+    let r,w = open_process "cat" in \
+      Printf.fprintf w "hello world\n"; \
+      IO.close_out w; \
+      while true do ignore (input_char r) done; false \
+  with e -> e=IO.No_more_input || e=End_of_file
+ *)
+
+
   let open_process_full ?autoclose ?(cleanup=true) s args =
     let (a,b,c) = open_process_full s args in
       (wrap_in ?autoclose ~cleanup a, wrap_out ~cleanup b, wrap_in ?autoclose ~cleanup c)
@@ -164,4 +178,3 @@
   let rec restart_on_EINTR f x =
     try f x
     with Unix_error(EINTR, _, _) -> restart_on_EINTR f x
-

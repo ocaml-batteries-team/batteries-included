@@ -55,11 +55,14 @@ let starts_with str p =
 	   done;
 	   true)
 (*$T starts_with
-   starts_with "foobarbaz" "foob"
-   starts_with "foobarbaz" ""
-   starts_with "" ""
-   not (starts_with "bar" "foobar")
-   not (starts_with "" "foo")
+  starts_with "foobarbaz" "foob"
+  starts_with "foobarbaz" ""
+  starts_with "" ""
+  not (starts_with "bar" "foobar")
+  not (starts_with "" "foo")
+  starts_with "Jon \"Maddog\" Orwant" "Jon"
+  not (starts_with "Jon \"Maddog\" Orwant" "Jon \"Maddog\" Orwants")
+  not (starts_with "Jon \"Maddog\" Orwant" "Orwants")
 *)
 
 
@@ -77,11 +80,14 @@ let ends_with str p =
 	   done;
 	   true)
 (*$T ends_with
-   ends_with "foobarbaz" "rbaz"
-   ends_with "foobarbaz" ""
-   ends_with "" ""
-   not (ends_with "foo" "foobar")
-   not (ends_with "" "foo")
+  ends_with "foobarbaz" "rbaz"
+  ends_with "foobarbaz" ""
+  ends_with "" ""
+  not (ends_with "foo" "foobar")
+  not (ends_with "" "foo")
+  ends_with "Jon \"Maddog\" Orwant" "want"
+  not (ends_with "Jon \"Maddog\" Orwant" "I'm Jon \"Maddog\" Orwant")
+  not (ends_with "Jon \"Maddog\" Orwant" "Jon")
 *)
 
 let find_from str ofs sub =
@@ -135,7 +141,7 @@ let rfind_from str suf sub =
 (*$T rfind_from
   rfind_from "foobarbaz" 5 "ba" = 3
 *)
-  
+
 let rfind str sub = rfind_from str (String.length str - 1) sub
 (*$T rfind
   rfind "foobarbaz" "ba" = 6
@@ -155,6 +161,11 @@ let exists str sub =
    exists "" ""
    not (exists "foobar" "obb")
    not (exists "" "foo")
+  exists "a" ""
+  not (exists "" "a")
+  exists "ab" "a"
+  exists "ab" "b"
+  not (exists "ab" "c")
 *)
 
 let strip ?(chars=" \t\r\n") s =
@@ -188,19 +199,19 @@ let tail s pos = let slen = length s in
   left "abc" 3 = "abc"
   left "abc" 10 = "abc"
   left "abc" 0 = ""
-*) (*$T right 
+*) (*$T right
   right "abc" 1 = "c"
   right "ab" 3 = "ab"
   right "abc" 3 = "abc"
   right "abc" 0 = ""
   right "abc" 10 = "abc"
-*) (*$T tail 
+*) (*$T tail
   tail "abc" 1 = "bc"
   tail "ab" 3 = ""
   tail "abc" 3 = ""
   tail "abc" 10 = ""
   tail "abc" 0 = "abc"
-*) (*$T head 
+*) (*$T head
   head "abc" 0 = ""
   head "abc" 10 = "abc"
   head "abc" 3 = "abc"
@@ -269,6 +280,9 @@ let nsplit str sep =
    nsplit "a;b;c" ";" = ["a"; "b"; "c"]
    nsplit "" "x" = []
    try nsplit "abc" "" = ["a"; "b"; "c"] with Invalid_argument _ -> true
+  nsplit "a/b/c" "/" = ["a"; "b"; "c"]
+  nsplit "/a/b/c//" "/" = [""; "a"; "b"; "c"; ""; ""]
+  nsplit "FOOaFOObFOOcFOOFOO" "FOO" = [""; "a"; "b"; "c"; ""; ""]
 *)
 
 let join = concat
