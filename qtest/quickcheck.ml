@@ -49,7 +49,7 @@ let upos =
       Random.bits ()                        (* Bottom 30 bits *)
       lor (Random.bits () lsl 30)           (* Middle 30 bits *)
       lor ((Random.bits () land 3) lsl 60)  (* Top 2 bits *)  (* top bit = 0 *)
-	
+
 let uig () = if Random.bool () then - upos () - 1 else upos ()
 
 let lg_size size gen () =
@@ -184,7 +184,7 @@ let rec laws iter gen func =
       else laws (iter-1) gen func
     with _ -> Some input
 
-let default_count = 500
+let default_count = 100
 
 (** Like laws, but throws an exception instead of returning an option.  *)
 let laws_exn ?(count=default_count) name (gen,pp) func =
