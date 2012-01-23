@@ -19,7 +19,8 @@ let run_and_read s =
   let res = run_and_read s in
   String.chomp res
 
-let bisect_dir = run_and_read "ocamlfind query bisect"
+(* Throws exception if bisect not installed - ignore this exception *)
+let bisect_dir = try run_and_read "ocamlfind query bisect" with _ -> "."
 let bisect_pp = Pathname.concat bisect_dir "bisect_pp.cmo"
 
 let src_bat_ml =
