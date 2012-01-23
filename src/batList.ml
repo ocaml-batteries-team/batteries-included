@@ -777,6 +777,7 @@ module Labels = struct
   let exists ~f     = exists f
   let stable_sort ?(cmp=compare)  = stable_sort cmp
   let fast_sort ?(cmp=compare)    = fast_sort cmp
+  let sort ?(cmp=compare) = sort cmp
   let merge ~cmp         = merge cmp
 
   module LExceptionless = struct
