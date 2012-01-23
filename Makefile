@@ -24,6 +24,7 @@ else
 endif
 
 INSTALL_FILES = _build/META _build/src/*.cma \
+	_build/META _build/src/*.cmo \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
 	_build/src/batteriesHelp.cmo \
 	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
