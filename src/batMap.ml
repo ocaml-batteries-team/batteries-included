@@ -611,6 +611,11 @@ module Concrete = struct
           | None -> m
           | Some v2 -> add k (f v1 v2) cmp1 m)
         m1 empty
+
+  let compare ckey cval m1 m2 =
+    BatEnum.compare (fun (k1,v1) (k2,v2) -> BatOrd.bin_comp ckey k1 k2 cval v1 v2) (enum m1) (enum m2)
+  let equal ckey eq_val m1 m2 =
+    BatEnum.equal (fun (k1,v1) (k2,v2) -> ckey k1 k2 = 0 && eq_val v1 v2) (enum m1) (enum m2)
 end
 
 module type OrderedType = BatInterfaces.OrderedType
@@ -1000,6 +1005,9 @@ let merge_unsafe f m1 m2 =
 
 let bindings m =
   Concrete.bindings m.map
+
+let compare cmp_val m1 m2 = Concrete.compare m1.cmp cmp_val m1.map m2.map
+let equal eq_val m1 m2 = Concrete.equal m1.cmp eq_val m1.map m2.map
 
 module Exceptionless =
 struct

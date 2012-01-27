@@ -586,6 +586,12 @@ val merge_unsafe:
     elements are passed to the function is unspecified.
 *)
 
+val compare: ('b -> 'b -> int) -> ('a,'b) t -> ('a, 'b) t -> int
+val equal : ('b -> 'b -> bool) -> ('a,'b) t -> ('a, 'b) t -> bool
+(** Construct a comparison or equality function for maps based on a
+    value comparison or equality function.  Uses the key comparison
+    function to compare keys *)
+
 (** Exceptionless versions of functions *)
 module Exceptionless : sig
   val find: 'a -> ('a,'b) t -> 'b option
