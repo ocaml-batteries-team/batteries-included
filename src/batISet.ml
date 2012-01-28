@@ -124,11 +124,22 @@ let rec remove n s =
 
 (*$T remove
   is_empty (remove 3 (singleton 3))
+  equal (remove 5 (of_list [1,5])) (of_list [1,4])
+  equal (remove 1 (of_list [1,5])) (of_list [2,5])
+  equal (remove 3 (of_list [1,5])) (of_list [1,2;4,5])
+  equal (remove 1 (of_list [4,6;1,3;8,10])) (of_list [2,3;4,6;8,10])
+  equal (remove 10 (of_list [4,6;1,3;8,10])) (of_list [1,3;4,6;8,9])
  *)
 
 let remove_range n1 n2 s =
   if n1 > n2 then invalid_arg "ISet.remove_range" else
   concat (before n1 s) (after n2 s)
+
+(*$T remove_range
+  is_empty (remove_range 10 15 (of_list [10,15]))
+  equal (of_list [0,20] |> remove_range 3 5) (of_list [0,2;6,20])
+  equal (of_list [0,20] |> remove_range 3 5 |> remove_range 8 10 |> remove_range 5 8) (of_list [0,2;11,20])
+ *)
 
 let rec union s1 s2 =
   if is_empty s1 then s2 else
@@ -153,6 +164,14 @@ let rec union s1 s2 =
     if n2 + 1 = v1 then v2, r' else n2, r in
   make_tree l (n1, n2) r
 
+(*$T union
+  equal (union (of_list [3,5]) (of_list [1,3])) (of_list [1,5])
+  equal (union (of_list [3,5]) (of_list [1,2])) (of_list [1,5])
+  equal (union (of_list [3,5]) (of_list [1,5])) (of_list [1,5])
+  equal (union (of_list [1,5]) (of_list [3,5])) (of_list [1,5])
+  equal (union (of_list [1,2]) (of_list [4,5])) (of_list [1,2;4,5])
+ *)
+
 let rec inter s1 s2 =
   if is_empty s1 then empty else
   if is_empty s2 then empty else
@@ -164,6 +183,11 @@ let rec inter s1 s2 =
   let r2 = after n2 s2 in
   let m = until n2 (from n1 s2) in
   concat (concat (inter l1 l2) m) (inter r1 r2)
+
+(*$T inter
+  equal (inter (of_list [1,5]) (of_list [2,3])) (of_list [2,3])
+  equal (inter (of_list [1,4]) (of_list [2,6])) (of_list [2,4])
+ *)
 
 let rec compl_aux n1 n2 s =
   if is_empty s then add_range n1 n2 empty else
@@ -177,6 +201,11 @@ let rec compl_aux n1 n2 s =
 let compl s = compl_aux min_int max_int s
 
 let diff s1 s2 = inter s1 (compl s2)
+
+(*$T diff
+  equal (diff (of_list [1,5]) (of_list [2,3])) (of_list [1,1;4,5])
+  equal (diff (of_list [1,3;6,8]) (of_list [3,6])) (of_list [1,2;7,8])
+ *)
 
 let rec compare_aux x1 x2 =
   match x1, x2 with
@@ -206,6 +235,10 @@ let compare s1 s2 = compare_aux [`Set s1] [`Set s2]
 
 let equal s1 s2 = compare s1 s2 = 0
 
+(*$T equal
+  not (equal (of_list [3,3;5,5]) (of_list [3,3;1,1]))
+ *)
+
 let rec subset s1 s2 =
   if is_empty s1 then true else
   if is_empty s2 then false else
@@ -216,17 +249,37 @@ let rec subset s1 s2 =
   let r1 = after v2 s1 in
   (subset l1 l2) && (subset r1 r2)
 
-let fold_range f = BatAvlTree.fold (fun (n1, n2) x -> f n1 n2 x)
+(*$T subset
+  subset (of_list [1,3]) (of_list [1,5])
+  subset (of_list [1,3]) (of_list [1,3])
+  subset (of_list []) (of_list [1,5])
+  not (subset (of_list [0,3]) (of_list [1,5]))
+  not (subset (of_list [0,6]) (of_list [1,5]))
+ *)
 
-let fold f =
+let fold_range f s x0 = BatAvlTree.fold (fun (n1, n2) x -> f n1 n2 x) s x0
+
+let fold f s x0 =
   let rec g n1 n2 a =
     if n1 = n2 then f n1 a else
     g (n1 + 1) n2 (f n1 a) in
-  fold_range g
+  fold_range g s x0
+
+(*$T fold
+  fold (+) (of_list [1,3]) 0 = 6
+ *)
 
 let iter proc s = fold (fun n () -> proc n) s ()
 
+(*$T iter
+  let a = ref 0 in iter (fun _ -> incr a) (of_list [1,3;5,8]); !a = 7
+ *)
+
 let iter_range proc = BatAvlTree.iter (fun (n1, n2) -> proc n1 n2)
+
+(*$T iter_range
+  let a = ref 0 in iter_range (fun _ _ -> incr a) (of_list [1,3;5,8]); !a = 2
+ *)
 
 let for_all p s =
   let rec test_range n1 n2 =
@@ -240,6 +293,11 @@ let for_all p s =
     test_set (right_branch s) in
   test_set s
 
+(*$T for_all
+  for_all (fun x -> x < 10) (of_list [1,3;2,7])
+  not (for_all (fun x -> x = 5) (of_list [4,5]))
+ *)
+
 let exists p s =
   let rec test_range n1 n2 =
     if n1 = n2 then p n1 else
@@ -251,6 +309,11 @@ let exists p s =
     test_set (left_branch s) ||
     test_set (right_branch s) in
   test_set s
+
+(*$T exists
+  exists (fun x -> x = 5) (of_list [1,10])
+  not (exists (fun x -> x = 5) (of_list [1,3;7,10]))
+ *)
 
 let filter_range p n1 n2 a =
   let rec loop n1 n2 a = function
@@ -268,6 +331,10 @@ let filter_range p n1 n2 a =
   loop n1 n2 a None
 
 let filter p s = fold_range (filter_range p) empty s
+
+(*$T filter
+  true || equal (filter (fun x -> x <> 5) (of_list [1,10])) (of_list [1,4;6,10])
+ *)
 
 let partition_range p n1 n2 (a, b) =
   let rec loop n1 n2 acc =
@@ -290,6 +357,10 @@ let partition p s = fold_range (partition_range p) s (empty, empty)
 
 let cardinal s =
   fold_range (fun n1 n2 c -> c + n2 - n1 + 1) s 0
+
+(*$T cardinal
+  cardinal (of_list [1,3;5,9]) = 8
+ *)
 
 let rev_ranges s =
   fold_range (fun n1 n2 a -> (n1, n2) :: a) s []
