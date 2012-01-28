@@ -394,7 +394,7 @@ val repeat: string -> int -> string
 
 (** {6 Splitting around}*)
 
-val split : string -> string -> string * string
+val split : string -> by:string -> string * string
   (** [split s sep] splits the string [s] between the first
       occurrence of [sep], and returns the two parts before
       and after the occurence (excluded).
@@ -406,7 +406,7 @@ val split : string -> string -> string * string
       [String.split "abcabcabc" "" = ("","abcabcabc")]
 *)
 
-val rsplit : string -> string -> string * string
+val rsplit : string -> by:string -> string * string
 (** [rsplit s sep] splits the string [s] between the last occurrence
     of [sep], and returns the two parts before and after the
     occurence (excluded).
@@ -416,7 +416,7 @@ val rsplit : string -> string -> string * string
     Example: [String.rsplit "abcabcabc" "bc" = ("abcabca","")]
 *)
 
-val nsplit : string -> string -> string list
+val nsplit : string -> by:string -> string list
   (** [nsplit s sep] splits the string [s] into a list of strings
       which are separated by [sep] (excluded).
       [nsplit "" _] returns the empty list.
@@ -603,12 +603,12 @@ sig
       at offset [ofs]. [rfind s x] is equivalent to
       [rfind_from s (String.length s - 1) x]. *)
 
-  val split : string -> string -> (string * string) option
+  val split : string -> by:string -> (string * string) option
   (** [split s sep] splits the string [s] between the first
       occurrence of [sep], or returns [None] if the separator
       is not found. *)
 
-  val rsplit : string -> string -> (string * string) option
+  val rsplit : string -> by:string -> (string * string) option
   (** [rsplit s sep] splits the string [s] between the last
       occurrence of [sep], or returns [None] if the separator
       is not found. *)
@@ -786,11 +786,11 @@ val nreplace : str:[> `Read] t -> sub:[> `Read] t -> by:[> `Read] t -> _ t
 val repeat: [> `Read] t -> int -> _ t
 
 (** {6 Splitting around}*)
-val split : [> `Read] t -> [> `Read] t -> _ t * _ t
+val split : [> `Read] t -> by:[> `Read] t -> _ t * _ t
 
-val rsplit : [> `Read] t -> string -> string * string
+val rsplit : [> `Read] t -> by:string -> string * string
 
-val nsplit : [> `Read] t -> [> `Read] t -> _ t list
+val nsplit : [> `Read] t -> by:[> `Read] t -> _ t list
 
 val splice: [ `Read | `Write] t  -> int -> int -> [> `Read] t -> string
 
@@ -855,12 +855,11 @@ sig
   val rfind_from: [> `Read] t -> int -> [> `Read] t -> int option
 
   (* val split : string -> string -> (string * string) option TODO *)
-  val split : [> `Read] t -> [> `Read] t -> (_ t * _ t) option
+  val split : [> `Read] t -> by:[> `Read] t -> (_ t * _ t) option
 
 (*   val rsplit : string -> string -> (string * string) option TODO *)
-  val rsplit : [> `Read] t -> [> `Read] t -> (_ t * _ t) option
+  val rsplit : [> `Read] t -> by:[> `Read] t -> (_ t * _ t) option
 
 end (* String.Cap.Exceptionless *)
 
 end
-

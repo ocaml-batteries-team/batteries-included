@@ -217,7 +217,7 @@ let tail s pos = let slen = length s in
   head "abc" 3 = "abc"
 *)
 
-let split str sep =
+let split str ~by:sep =
 	let p = find str sep in
 	let len = length sep in
 	let slen = length str in
@@ -230,7 +230,7 @@ let split str sep =
    try split "abcxyz" "G" |> ignore; false with Not_found -> true
 *)
 
-let rsplit str sep =
+let rsplit str ~by:sep =
   let p = rfind str sep in
   let len = length sep in
   let slen = length str in
@@ -248,7 +248,7 @@ let rsplit str sep =
    This implementation traverses the string backwards, hence building the list
    of substrings from the end to the beginning, so as to avoid a call to [List.rev].
 *)
-let nsplit str sep =
+let nsplit str ~by:sep =
   if str = "" then []
   else if sep = "" then invalid_arg "nsplit: empty sep not allowed"
   else
@@ -784,9 +784,9 @@ struct
 
   let rindex s c = try Some (rindex s c) with Not_found -> None
 
-  let split str sep = try Some (split str sep) with Not_found -> None
+  let split str ~by:sep = try Some (split str sep) with Not_found -> None
 
-  let rsplit str sep = try Some (rsplit str sep) with Not_found -> None
+  let rsplit str ~by:sep = try Some (rsplit str sep) with Not_found -> None
 end (* String.Exceptionless *)
 
 module Cap =
