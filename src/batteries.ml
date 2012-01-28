@@ -53,7 +53,7 @@ module Complex = BatComplex
 module Digest = struct include Digest include BatDigest end
 (* Filename *)
 module Format = struct include Format include BatFormat end
-module Gc = struct include Gc include BatGc end
+module Gc = BatGc
 module Genlex = struct include Genlex include BatGenlex end
 module Hashtbl = BatHashtbl
 module Int32 = BatInt32

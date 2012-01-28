@@ -20,30 +20,32 @@
  *)
 
 
-  open BatPrintf;;
-  open Gc
+open BatPrintf
+include Gc
 
-  let print_stat c = (*Copied from original module*)
-    let st = stat () in
-      fprintf c "minor_words: %.0f\n"     st.minor_words;
-      fprintf c "promoted_words: %.0f\n"  st.promoted_words;
-      fprintf c "major_words: %.0f\n"     st.major_words;
-      fprintf c "minor_collections: %d\n" st.minor_collections;
-      fprintf c "major_collections: %d\n" st.major_collections;
-      fprintf c "heap_words: %d\n"        st.heap_words;
-      fprintf c "heap_chunks: %d\n"       st.heap_chunks;
-      fprintf c "top_heap_words: %d\n"    st.top_heap_words;
-      fprintf c "live_words: %d\n"        st.live_words;
-      fprintf c "live_blocks: %d\n"       st.live_blocks;
-      fprintf c "free_words: %d\n"        st.free_words;
-      fprintf c "free_blocks: %d\n"       st.free_blocks;
-      fprintf c "largest_free: %d\n"      st.largest_free;
-      fprintf c "fragments: %d\n"         st.fragments;
-      fprintf c "compactions: %d\n"       st.compactions;
-  ;;
+let print_stat c = (*Copied from original module*)
+  let st = stat () in
+  fprintf c "minor_words: %.0f\n"     st.minor_words;
+  fprintf c "promoted_words: %.0f\n"  st.promoted_words;
+  fprintf c "major_words: %.0f\n"     st.major_words;
+  fprintf c "minor_collections: %d\n" st.minor_collections;
+  fprintf c "major_collections: %d\n" st.major_collections;
+  fprintf c "heap_words: %d\n"        st.heap_words;
+  fprintf c "heap_chunks: %d\n"       st.heap_chunks;
+  fprintf c "top_heap_words: %d\n"    st.top_heap_words;
+  fprintf c "live_words: %d\n"        st.live_words;
+  fprintf c "live_blocks: %d\n"       st.live_blocks;
+  fprintf c "free_words: %d\n"        st.free_words;
+  fprintf c "free_blocks: %d\n"       st.free_blocks;
+  fprintf c "largest_free: %d\n"      st.largest_free;
+  fprintf c "fragments: %d\n"         st.fragments;
+  fprintf c "compactions: %d\n"       st.compactions
+
+(*$T print_stat
+  (IO.output_string () |> tap print_stat |> IO.close_out |> String.nsplit ~by:"\n" |> List.length) = 16
+ *)
+
 (*
   let eventually_table = InnerWeaktbl.create 32
   let eventually f v =
 *)
-
-
