@@ -134,3 +134,7 @@ val choose : t -> int
 
 val enum : t -> (int * int) BatEnum.t
 (** Enumerates all contiguous ranges in the set *)
+
+val of_enum : (int*int) BatEnum.t -> t
+val of_list : (int*int) list -> t
+(** Build a ISet.t out of a list or enum of ranges *)

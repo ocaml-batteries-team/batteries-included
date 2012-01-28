@@ -15,8 +15,6 @@ let (==>) b1 b2 = if b1 then b2 else true (* could use too => *)
 
 
 (* Value generators *)
-
-
 type 'a gen = unit -> 'a
 
 let ug () = ()

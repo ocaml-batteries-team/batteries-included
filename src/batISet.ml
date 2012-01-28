@@ -13,6 +13,15 @@ let rec mem n s =
   if v1 <= n && n <= v2 then true else
   mem n (right_branch s)
 
+(*$T mem
+  let t = empty |> add_range 1 10 |> add_range 10 20 in \
+  mem 1 t && mem 5 t && mem 20 t && not (mem 21 t) && not (mem 0 t)
+
+  let t = Enum.append (1--9) (20 --- 15) |> Enum.map (fun i -> i,i) |> of_enum in \
+  mem 1 t && mem 5 t && mem 15 t && not (mem 10 t) && not (mem 14 t)
+
+ *)
+
 let rec add n s =
   if is_empty s then make_tree empty (n, n) empty else
   let (v1, v2) as v = root s in
@@ -40,6 +49,10 @@ let rec add n s =
       make_tree s0 (v1, n) s1
   else s
 
+(*$Q add
+  (Q.list Q.small_int) (fun l -> let t = List.fold_left (fun s x -> add x s) empty l in List.for_all (fun i -> mem i t) l)
+ *)
+
 let rec from n s =
   if is_empty s then empty else
   let (v1, v2) as v = root s in
@@ -62,6 +75,16 @@ let rec until n s =
 
 let rec before n s = if n = min_int then empty else until (n - 1) s
 
+(*$T from
+  equal (from 3 (of_list [1,5])) (of_list [3,5])
+  is_empty (from 3 (of_list [1,2]))
+ *)
+
+(*$T until
+  equal (until 3 (of_list [1,5])) (of_list [1,3])
+  is_empty (until 3 (of_list [4,5]))
+ *)
+
 let add_range n1 n2 s =
   if n1 > n2 then invalid_arg (Printf.sprintf "ISet.add_range - %d > %d" n1 n2) else
   let n1, l =
@@ -80,6 +103,10 @@ let add_range n1 n2 s =
 
 let singleton n = singleton_tree (n, n)
 
+(*$T singleton
+  singleton 3 |> mem 3
+ *)
+
 let rec remove n s =
   if is_empty s then empty else
   let (v1, v2) as v = root s in
@@ -94,6 +121,10 @@ let rec remove n s =
     make_tree s (n + 1, v2) s2
   else if n = v2 then make_tree s1 (v1, v2 - 1) s2 else
   make_tree s1 v (remove n s2)
+
+(*$T remove
+  is_empty (remove 3 (singleton 3))
+ *)
 
 let remove_range n1 n2 s =
   if n1 > n2 then invalid_arg "ISet.remove_range" else
@@ -282,3 +313,6 @@ let max_elt s =
   n
 
 let choose s = fst (root s)
+
+let of_list l = List.fold_left (fun s (lo,hi) -> add_range lo hi s) empty l
+let of_enum e = BatEnum.fold (fun s (lo,hi) -> add_range lo hi s) empty e
