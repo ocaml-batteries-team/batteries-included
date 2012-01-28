@@ -1,5 +1,5 @@
 <{batMutex,batRMutex}.{ml,mli}>: threads
 <batteriesThread.*>: threads
 "syntax/pa_comprehension" or "syntax/pa_strings": include
-<batFingerTree.ml>: rectypes
+<batFingerTree.ml>: rectypes, warn_A, warn_e
 true: debug

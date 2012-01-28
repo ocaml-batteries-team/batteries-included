@@ -355,7 +355,7 @@ struct
     | Nil ->
       Single a
     | Single b ->
-      deep ~monoid (one measure a) Nil (one measure b)
+      deep ~monoid (one ~measure a) Nil (one ~measure b)
     | Deep (_, Four (_, b, c, d, e), m, sf) ->
       deep ~monoid (two ~monoid ~measure a b) (cons_aux ~monoid m (node3 ~monoid ~measure c d e)) sf
     | Deep (v, pr, m, sf) ->
@@ -928,7 +928,7 @@ struct
 
   let print ?first ?last ?sep f oc x =
     BatEnum.print ?first ?last ?sep f oc (enum x)
-  let t_printer a_printer paren out e =
+  let t_printer a_printer _paren out e =
     print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
 
   let compare cmp t1 t2 =
