@@ -152,15 +152,18 @@ _build/qtest2/all_tests.native: qtest2/all_tests.ml
 #qtest only targets, for quicker test iteration
 qtest-byte: _build/qtest/test_runner.byte
 	_build/qtest/test_runner.byte
+	@echo "" # newline after "OK"
 
 qtest-native: _build/qtest/test_runner.native
 	_build/qtest/test_runner.native
+	@echo "" # newline after "OK"
 
 # all tests
 test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte _build/qtest2/all_tests.byte
 	_build/testsuite/main.byte
 	_build/qtest/test_runner.byte
 	_build/qtest2/all_tests.byte
+	@echo "" # newline after "OK"
 
 test-native: _build/testsuite/main.native _build/qtest/test_runner.native _build/qtest2/all_tests.native _build/testsuite/main.byte _build/qtest/test_runner.byte _build/qtest2/all_tests.byte
 	_build/testsuite/main.native
@@ -173,8 +176,10 @@ test-native: _build/testsuite/main.native _build/qtest/test_runner.native _build
 # only run qtest2 tests
 qtest2: _build/qtest2/all_tests.native
 	_build/qtest2/all_tests.native
+	@echo "" # newline after "OK"
 
 test: $(TEST_TARGET)
+	@echo "" # newline after "OK"
 
 bench:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS) $(BENCH_TARGETS)
@@ -182,7 +187,13 @@ bench:
 	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH) | tee -a bench.log; )
 	@echo "Benchmarking results are written to bench.log"
 
-release: setup.ml doc test
+release:
+	$(MAKE) clean
+	git stash save "stashing local modifications before release"
+	$(MAKE) release-cleaned
+
+# assumes irreproachably pristine working directory
+release-cleaned: setup.ml doc test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
