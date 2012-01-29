@@ -74,16 +74,25 @@ type statement = { ln : int ; code : string }
 type binding = string * string
 (** foo, bar as baz *)
 type metabinding = string list * string
+(** additional testing parameters: caml code for oUnit *)
+type param = string
 (** instanciable header: just a list of bindings *)
-type header = binding list
+type header = {
+  hb : binding list;
+  hpar : param;
+}
 (** metabindings need to be instanciated before the test can *)
-type metaheader = metabinding list
+type metaheader = {
+  mhb: metabinding list;
+  mhpar : param;
+}
 
 (** what kind of test are we talking about ? *)
 type kind =
 | Simple    (* statement is asserted to be true *)
 | Random    (* statement is tested on random inputs, using Quickcheck *)
 | Raw       (* raw oUnit statement *)
+| Equal     (* Equality statement *)
 
 (** a test : several statements *)
 type 'a test = {
@@ -119,35 +128,36 @@ exception Unterminated_test of statement list
 exception Empty_test of string
 
 (** human-readable form *)
-let str_of_metabinding bind =
+let str_of_metabinding (bind:metabinding) =
   let targets,alias = bind in String.concat ", " targets ^
   if List.length targets > 1 || List.hd targets <> alias then " as " ^ alias else ""
-let str_of_binding (f,a) = str_of_metabinding ([f],a)
+    
+let str_of_binding ((f,a):binding) = str_of_metabinding ([f],a)
 
 (** lexical closure generation, single binding *)
-let code_of_binding (f,a) = va "let %s = %s in" a f
+let code_of_binding ((f,a):binding) = va "let %s = %s in" a f
 (** same, for a list of bindings, ie. a test's header *)
 let code_of_bindings bl = String.concat " " (List.map code_of_binding bl)
 
 (** get the functions targeted by a header *)
-let targets_of_header hd = let x,_ = List.split hd in x
+let targets_of_header (hd:header) = let x,_ = List.split hd.hb in x
 
 (** get an informal "foo, bar as x; a,b as y" string which
   summarises the metatest *)
-let get_metatest_name test =
-  String.concat "; " (List.map str_of_metabinding test.header)
+let get_metatest_name (test : metaheader test) =
+  String.concat "; " (List.map str_of_metabinding test.header.mhb)
 
 (** get an informal "foo, bar as x; a,b as y" string which summarises the test *)
-let get_test_name test = String.concat "; " (List.map str_of_binding test.header)
+let get_test_name (test: header test) = String.concat "; " (List.map str_of_binding test.header.hb)
 
 (** explode a metaheader into the correponding headers *)
-let headers_of_metaheader mh =
+let headers_of_metaheader (mh:metaheader) =
   let rec z = function [] -> assert false
   | [(foos,x)] -> List.map (fun foo -> [foo,x]) foos
   | (foos,x) :: mbs -> let rest = z mbs in
     let combine foo = List.map (fun others ->(foo,x) :: others) rest in
     List.concat @@ List.map combine foos
-  in z mh
+  in ((List.map (fun b-> {hb = b; hpar = mh.mhpar}) (z mh.mhb)) : header list)
   
 (** break down metatests (tests w/ multiple targets) and enforce that each
   test is non-empty, ie. has at least one statement.
@@ -179,11 +189,14 @@ let process uid = function
       let location = va "%s:%d" test.source st.ln in
       let extended_name = va "\"%s\"" (* pretty, detailed name for the test *)
         (String.escaped location^"::>  "^String.escaped st.code)
-      and bind = code_of_bindings test.header 
+      and bind = code_of_bindings test.header.hb
       in match test.kind with
       | Simple -> outf "#%d \"%s\"\n \"%s\" >::
         (%s fun () -> OUnit.assert_bool %s (%s));\n"
         st.ln test.source location bind extended_name st.code;
+      | Equal -> outf "#%d \"%s\"\n \"%s\" >::
+        (%s fun () -> OUnit.assert_equal ~msg:%s %s %s);\n"
+        st.ln test.source location bind extended_name test.header.hpar st.code;
       | Random -> outf "#%d \"%s\"\n \"%s\" >::
         (%s fun () -> Q.laws_exn %s %s);\n"
         st.ln test.source location bind extended_name st.code;
