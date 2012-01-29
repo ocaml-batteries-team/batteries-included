@@ -2,7 +2,7 @@
 open Core;;
 %}
 
-%token <string> ID
+%token <string> ID PARAM
 %token COMMA AS EOF SEMI
 
 %start metaheader_
@@ -10,7 +10,11 @@ open Core;;
 
 %%
 
-metaheader_ : metaheader EOF { {mhb = $1} };
+metaheader_ : metaheader param EOF { {mhb = $1; mhpar = $2} };
+
+param:
+| PARAM     { $1 }
+| /* nil */ { "" };
 
 metaheader: /* x,y,z as target; a,b,c as tata ; ... */
 | multibind { [$1] }

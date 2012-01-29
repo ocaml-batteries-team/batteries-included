@@ -74,10 +74,18 @@ type statement = { ln : int ; code : string }
 type binding = string * string
 (** foo, bar as baz *)
 type metabinding = string list * string
+(** additional testing parameters: caml code for oUnit *)
+type param = string
 (** instanciable header: just a list of bindings *)
-type header = { hb : binding list }
+type header = {
+  hb : binding list;
+  hpar : param;
+}
 (** metabindings need to be instanciated before the test can *)
-type metaheader = { mhb: metabinding list }
+type metaheader = {
+  mhb: metabinding list;
+  mhpar : param;
+}
 
 (** what kind of test are we talking about ? *)
 type kind =
@@ -149,7 +157,7 @@ let headers_of_metaheader (mh:metaheader) =
   | (foos,x) :: mbs -> let rest = z mbs in
     let combine foo = List.map (fun others ->(foo,x) :: others) rest in
     List.concat @@ List.map combine foos
-  in ((List.map (fun b-> {hb = b}) (z mh.mhb)) : header list)
+  in ((List.map (fun b-> {hb = b; hpar = mh.mhpar}) (z mh.mhb)) : header list)
   
 (** break down metatests (tests w/ multiple targets) and enforce that each
   test is non-empty, ie. has at least one statement.
@@ -187,8 +195,8 @@ let process uid = function
         (%s fun () -> OUnit.assert_bool %s (%s));\n"
         st.ln test.source location bind extended_name st.code;
       | Equal -> outf "#%d \"%s\"\n \"%s\" >::
-        (%s fun () -> OUnit.assert_equal ~msg:%s %s);\n"
-        st.ln test.source location bind extended_name st.code;
+        (%s fun () -> OUnit.assert_equal ~msg:%s %s %s);\n"
+        st.ln test.source location bind extended_name test.header.hpar st.code;
       | Random -> outf "#%d \"%s\"\n \"%s\" >::
         (%s fun () -> Q.laws_exn %s %s);\n"
         st.ln test.source location bind extended_name st.code;
