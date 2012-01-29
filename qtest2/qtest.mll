@@ -98,7 +98,7 @@ and lexheader hd = parse
 | ";" { SEMI }
 | "as" { AS }
 | lident as x { ID x }
-| "&"  (_* as x) { PARAM x }
+| "&"  (_* as x) { PARAM (trim x) }
 | eof { EOF }
 | _ as x { raise @@ Bad_header_char((soc x), hd) }
 

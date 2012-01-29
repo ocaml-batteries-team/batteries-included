@@ -59,3 +59,7 @@ and odd = function 0 -> false
 (*$= pretentious_drivel as x  & ~printer:string_of_int
   (x 1 (+) [4;5])   (foo 1 (+) [4;5])
 *)
+
+(*$= pretentious_drivel as x  
+  (x 1 (+) [4;5])   (foo 1 (+) [4;5])
+*)
