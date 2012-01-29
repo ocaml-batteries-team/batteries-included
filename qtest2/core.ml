@@ -120,35 +120,36 @@ exception Unterminated_test of statement list
 exception Empty_test of string
 
 (** human-readable form *)
-let str_of_metabinding bind =
+let str_of_metabinding (bind:metabinding) =
   let targets,alias = bind in String.concat ", " targets ^
   if List.length targets > 1 || List.hd targets <> alias then " as " ^ alias else ""
-let str_of_binding (f,a) = str_of_metabinding ([f],a)
+    
+let str_of_binding ((f,a):binding) = str_of_metabinding ([f],a)
 
 (** lexical closure generation, single binding *)
-let code_of_binding (f,a) = va "let %s = %s in" a f
+let code_of_binding ((f,a):binding) = va "let %s = %s in" a f
 (** same, for a list of bindings, ie. a test's header *)
 let code_of_bindings bl = String.concat " " (List.map code_of_binding bl)
 
 (** get the functions targeted by a header *)
-let targets_of_header hd = let x,_ = List.split hd in x
+let targets_of_header (hd:header) = let x,_ = List.split hd in x
 
 (** get an informal "foo, bar as x; a,b as y" string which
   summarises the metatest *)
-let get_metatest_name test =
+let get_metatest_name (test : metaheader test) =
   String.concat "; " (List.map str_of_metabinding test.header)
 
 (** get an informal "foo, bar as x; a,b as y" string which summarises the test *)
-let get_test_name test = String.concat "; " (List.map str_of_binding test.header)
+let get_test_name (test: header test) = String.concat "; " (List.map str_of_binding test.header)
 
 (** explode a metaheader into the correponding headers *)
-let headers_of_metaheader mh =
+let headers_of_metaheader (mh:metaheader) =
   let rec z = function [] -> assert false
   | [(foos,x)] -> List.map (fun foo -> [foo,x]) foos
   | (foos,x) :: mbs -> let rest = z mbs in
     let combine foo = List.map (fun others ->(foo,x) :: others) rest in
     List.concat @@ List.map combine foos
-  in z mh
+  in ((z mh) : header list)
   
 (** break down metatests (tests w/ multiple targets) and enforce that each
   test is non-empty, ie. has at least one statement.
