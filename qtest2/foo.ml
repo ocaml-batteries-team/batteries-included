@@ -55,3 +55,7 @@ and odd = function 0 -> false
 (*$Q foo, pretentious_drivel
   (Q.pair Q.small_int (Q.list Q.small_int)) (fun (i,l)-> foo i (+) l = List.fold_left (+) i l)
 *)
+
+(*$= pretentious_drivel as x
+  (x 2 (+) [4;5])   (foo 1 (+) [4;5])
+*)

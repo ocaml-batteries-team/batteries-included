@@ -84,6 +84,7 @@ type kind =
 | Simple    (* statement is asserted to be true *)
 | Random    (* statement is tested on random inputs, using Quickcheck *)
 | Raw       (* raw oUnit statement *)
+| Equal     (* Equality statement *)
 
 (** a test : several statements *)
 type 'a test = {
@@ -183,6 +184,9 @@ let process uid = function
       in match test.kind with
       | Simple -> outf "#%d \"%s\"\n \"%s\" >::
         (%s fun () -> OUnit.assert_bool %s (%s));\n"
+        st.ln test.source location bind extended_name st.code;
+      | Equal -> outf "#%d \"%s\"\n \"%s\" >::
+        (%s fun () -> OUnit.assert_equal ~msg:%s %s);\n"
         st.ln test.source location bind extended_name st.code;
       | Random -> outf "#%d \"%s\"\n \"%s\" >::
         (%s fun () -> Q.laws_exn %s %s);\n"

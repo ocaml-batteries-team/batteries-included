@@ -58,6 +58,9 @@ rule lexml t = parse
 | "(*$T" test_header_pat { (* simple test *)
   let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
   register_mtest lexbuf lexheader (lexbody buffy []) x line Simple }
+| "(*$=" test_header_pat { (* equality test *)
+  let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
+  register_mtest lexbuf lexheader (lexbody buffy []) x line Equal }
 | "(*$R" test_header_pat { (* raw test *)
   let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
   register_mtest lexbuf lexheader (lexbody_raw buffy (succ line)) x line Raw }
