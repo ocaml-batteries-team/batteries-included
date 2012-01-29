@@ -23,7 +23,7 @@
  *) 
  
 open Core;;
-open Parse;;
+open Qparse;;
 
 module B = Buffer;;
 (** the do-it-all buffer; always clear *after* use *)
@@ -33,7 +33,7 @@ let buffy = B.create 80
 let register_mtest lexbuf lexhead lexbod head line kind =
   eol lexbuf;Lexing.(
   register @@ Meta_test { kind; line = succ line;
-    header = Parse.metaheader_ (lexhead head) (from_string head);
+    header = metaheader_ (lexhead head) (from_string head);
     source = lexbuf.lex_curr_p.pos_fname;
     statements = lexbod lexbuf;
   })
