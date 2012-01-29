@@ -10,7 +10,7 @@ open Core;;
 
 %%
 
-metaheader_ : metaheader EOF { $1 };
+metaheader_ : metaheader EOF { {mhb = $1} };
 
 metaheader: /* x,y,z as target; a,b,c as tata ; ... */
 | multibind { [$1] }
