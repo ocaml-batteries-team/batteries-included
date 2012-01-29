@@ -152,7 +152,7 @@ let generate paths =
   out hard_coded_preamble;
   out !global_preamble;
   listiteri process (preprocess @@ List.rev !suite);
-  out "let _ = ignore (Runner.run (\"qtest\" >::: !___tests))\n";
+  out "let _ = ignore (Runner.run (\"/\" >::: !___tests))\n";
   eps "Done.\n"
     
 (** Parse command line *)
