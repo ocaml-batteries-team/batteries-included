@@ -188,7 +188,7 @@ let process uid = function
     let do_statement st = 
       let location = va "%s:%d" test.source st.ln in
       let extended_name = va "\"%s\"" (* pretty, detailed name for the test *)
-        (String.escaped location^"::>  "^String.escaped st.code)
+        (String.escaped location^":  "^String.escaped st.code)
       and bind = code_of_bindings test.header.hb
       in match test.kind with
       | Simple -> outf "#%d \"%s\"\n \"%s\" >::

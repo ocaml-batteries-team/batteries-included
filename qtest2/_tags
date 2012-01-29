@@ -1,2 +1,3 @@
 true: thread, debug
 <all_tests.{ml,byte,native}>: pkg_oUnit
+<runner.{ml,byte,native}>: pkg_oUnit
