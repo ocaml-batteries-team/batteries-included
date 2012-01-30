@@ -317,7 +317,7 @@ let exists2 p xs ys =
 
 let map2 f xs ys =
   let n = length xs in
-  if length ys <> n then raise (Invalid_argument "Array.exists2");
+  if length ys <> n then raise (Invalid_argument "Array.map2");
   Array.init n (fun i -> f xs.(i) ys.(i))
 
 (*$T map2
