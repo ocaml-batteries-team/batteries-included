@@ -75,14 +75,14 @@ let rec until n s =
 
 let rec before n s = if n = min_int then empty else until (n - 1) s
 
-(*$T from
-  equal (from 3 (of_list [1,5])) (of_list [3,5])
-  is_empty (from 3 (of_list [1,2]))
+(*$= from & ~cmp:equal ~printer:(IO.to_string print)
+  (from 3 (of_list [1,5])) (of_list [3,5])
+  empty (from 3 (of_list [1,2]))
  *)
 
-(*$T until
-  equal (until 3 (of_list [1,5])) (of_list [1,3])
-  is_empty (until 3 (of_list [4,5]))
+(*$= until & ~cmp:equal ~printer:(IO.to_string print)
+  (until 3 (of_list [1,5])) (of_list [1,3])
+  empty (until 3 (of_list [4,5]))
  *)
 
 let add_range n1 n2 s =
@@ -105,6 +105,7 @@ let singleton n = singleton_tree (n, n)
 
 (*$T singleton
   singleton 3 |> mem 3
+  singleton 3 |> mem 4 |> not
  *)
 
 let rec remove n s =
@@ -122,23 +123,23 @@ let rec remove n s =
   else if n = v2 then make_tree s1 (v1, v2 - 1) s2 else
   make_tree s1 v (remove n s2)
 
-(*$T remove
-  is_empty (remove 3 (singleton 3))
-  equal (remove 5 (of_list [1,5])) (of_list [1,4])
-  equal (remove 1 (of_list [1,5])) (of_list [2,5])
-  equal (remove 3 (of_list [1,5])) (of_list [1,2;4,5])
-  equal (remove 1 (of_list [4,6;1,3;8,10])) (of_list [2,3;4,6;8,10])
-  equal (remove 10 (of_list [4,6;1,3;8,10])) (of_list [1,3;4,6;8,9])
+(*$= remove & ~cmp:equal ~printer:(IO.to_string print)
+  empty (remove 3 (singleton 3))
+  (of_list [1,5] |> remove 5) (of_list [1,4])
+  (of_list [1,5] |> remove 1) (of_list [2,5])
+  (of_list [1,5] |> remove 3) (of_list [1,2;4,5])
+  (of_list [4,6;1,3;8,10] |> remove 1) (of_list [2,3;4,6;8,10])
+  (of_list [4,6;1,3;8,10] |> remove 10) (of_list [1,3;4,6;8,9])
  *)
 
 let remove_range n1 n2 s =
   if n1 > n2 then invalid_arg "ISet.remove_range" else
   concat (before n1 s) (after n2 s)
 
-(*$T remove_range
-  is_empty (remove_range 10 15 (of_list [10,15]))
-  equal (of_list [0,20] |> remove_range 3 5) (of_list [0,2;6,20])
-  equal (of_list [0,20] |> remove_range 3 5 |> remove_range 8 10 |> remove_range 5 8) (of_list [0,2;11,20])
+(*$= remove_range & ~cmp:equal ~printer:(IO.to_string print)
+  empty (remove_range 10 15 (of_list [10,15]))
+  (of_list [0,20] |> remove_range 3 5) (of_list [0,2;6,20])
+  (of_list [0,20] |> remove_range 3 5 |> remove_range 8 10 |> remove_range 5 8) (of_list [0,2;11,20])
  *)
 
 let rec union s1 s2 =
@@ -164,12 +165,12 @@ let rec union s1 s2 =
     if n2 + 1 = v1 then v2, r' else n2, r in
   make_tree l (n1, n2) r
 
-(*$T union
-  equal (union (of_list [3,5]) (of_list [1,3])) (of_list [1,5])
-  equal (union (of_list [3,5]) (of_list [1,2])) (of_list [1,5])
-  equal (union (of_list [3,5]) (of_list [1,5])) (of_list [1,5])
-  equal (union (of_list [1,5]) (of_list [3,5])) (of_list [1,5])
-  equal (union (of_list [1,2]) (of_list [4,5])) (of_list [1,2;4,5])
+(*$= union & ~cmp:equal ~printer:(IO.to_string print)
+  (union (of_list [3,5]) (of_list [1,3])) (of_list [1,5])
+  (union (of_list [3,5]) (of_list [1,2])) (of_list [1,5])
+  (union (of_list [3,5]) (of_list [1,5])) (of_list [1,5])
+  (union (of_list [1,5]) (of_list [3,5])) (of_list [1,5])
+  (union (of_list [1,2]) (of_list [4,5])) (of_list [1,2;4,5])
  *)
 
 let rec inter s1 s2 =
@@ -184,9 +185,9 @@ let rec inter s1 s2 =
   let m = until n2 (from n1 s2) in
   concat (concat (inter l1 l2) m) (inter r1 r2)
 
-(*$T inter
-  equal (inter (of_list [1,5]) (of_list [2,3])) (of_list [2,3])
-  equal (inter (of_list [1,4]) (of_list [2,6])) (of_list [2,4])
+(*$= inter & ~cmp:equal ~printer:(IO.to_string print)
+  (inter (of_list [1,5]) (of_list [2,3])) (of_list [2,3])
+  (inter (of_list [1,4]) (of_list [2,6])) (of_list [2,4])
  *)
 
 let rec compl_aux n1 n2 s =
@@ -223,9 +224,9 @@ let rec compare_aux x1 x2 =
       let r = right_branch s in
       compare_aux x1 (`Set l :: `Range v :: `Set r :: rest)
   | `Range ((v1, v2)) :: rest1, `Range ((v3, v4)) :: rest2 ->
-      let sgn = compare v1 v3 in
+      let sgn = BatInt.compare v1 v3 in
       if sgn <> 0 then sgn else
-      let sgn = compare v2 v4 in
+      let sgn = BatInt.compare v2 v4 in
       if sgn <> 0 then sgn else
       compare_aux rest1 rest2
   | [], _ -> ~-1
@@ -265,8 +266,8 @@ let fold f s x0 =
     g (n1 + 1) n2 (f n1 a) in
   fold_range g s x0
 
-(*$T fold
-  fold (+) (of_list [1,3]) 0 = 6
+(*$= fold & ~cmp:Int.eq ~printer:string_of_int
+  (fold (+) (of_list [1,3]) 0) 6
  *)
 
 let iter proc s = fold (fun n () -> proc n) s ()
@@ -372,6 +373,14 @@ let rec burst_range n1 n2 a =
 let elements s =
   let f a (n1, n2) = burst_range n1 n2 a in
   List.fold_left f [] (rev_ranges s)
+
+(*$Q ranges;of_list
+  (Q.list (Q.pair Q.int Q.int)) (fun l -> \
+    let norml = List.map (fun (x,y) -> if x < y then (x,y) else (y,x)) l in \
+    let set = of_list norml in \
+    equal set (ranges set |> of_list) \
+  )
+ *)
 
 let ranges s = List.rev (rev_ranges s)
 
