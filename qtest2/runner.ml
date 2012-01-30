@@ -33,7 +33,7 @@ let result_flavour = function
     | RTodo _ -> "Todo"
 
 let not_success = function RSuccess _ -> false | _ -> true
-    
+
 let print_result_list =
   List.iter (fun result -> pf "%s\n%s: %s\n\n%s\n%s\n"
     separator1 (result_flavour result)
@@ -45,7 +45,7 @@ let print_result_list =
 let time_fun f x y =
   let begin_time = Unix.gettimeofday () in
     (Unix.gettimeofday () -. begin_time, f x y)
-    
+
 let run test =
   let _counter = ref (0,0,0) in (* Success, Failure, Other *)
   let total_tests = test_case_count test in
@@ -75,11 +75,11 @@ let run test =
   let (s,f,o) = !_counter in
   let failures = List.filter not_success results in
   assert (List.length failures = f);
-  pl "";
+  ps "\r";
   print_result_list failures;
   assert (List.length results = total_tests);
-  pf "Ran: %d tests in: %.2f seconds.\n" total_tests running_time;
+  pf "Ran: %d tests in: %.2f seconds.%s\n"
+    total_tests running_time (String.make 40 ' ');
   if failures = [] then pl "SUCCESS";
   if o <> 0 then
     pl "WARNING! SOME TESTS ARE NEITHER SUCCESSES NOR FAILURES!";
-  
