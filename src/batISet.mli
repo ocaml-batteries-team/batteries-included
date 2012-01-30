@@ -138,3 +138,5 @@ val enum : t -> (int * int) BatEnum.t
 val of_enum : (int*int) BatEnum.t -> t
 val of_list : (int*int) list -> t
 (** Build a ISet.t out of a list or enum of ranges *)
+
+val print : _ BatIO.output -> t -> unit

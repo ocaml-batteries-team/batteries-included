@@ -202,9 +202,9 @@ let compl s = compl_aux min_int max_int s
 
 let diff s1 s2 = inter s1 (compl s2)
 
-(*$T diff
-  equal (diff (of_list [1,5]) (of_list [2,3])) (of_list [1,1;4,5])
-  equal (diff (of_list [1,3;6,8]) (of_list [3,6])) (of_list [1,2;7,8])
+(*$= diff & ~cmp:equal ~printer:(IO.to_string print)
+  (diff (of_list [1,5]) (of_list [2,3])) (of_list [1,1;4,5])
+  (diff (of_list [1,3;6,8]) (of_list [3,6])) (of_list [1,2;7,8])
  *)
 
 let rec compare_aux x1 x2 =
@@ -387,3 +387,10 @@ let choose s = fst (root s)
 
 let of_list l = List.fold_left (fun s (lo,hi) -> add_range lo hi s) empty l
 let of_enum e = BatEnum.fold (fun s (lo,hi) -> add_range lo hi s) empty e
+
+let print oc t =
+  let print_range oc (lo,hi) =
+    if lo=hi then BatInt.print oc lo
+    else BatTuple.Tuple2.printn BatInt.print oc (lo,hi)
+  in
+  BatEnum.print print_range oc (enum t)
