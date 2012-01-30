@@ -249,7 +249,7 @@ module Concrete = struct
 
   let filter_map cmp f e = fold (fun x acc -> match f x with Some v -> add cmp v acc | _ -> acc) e empty
 
-  let choose = min_elt
+  let choose = min_elt (* I'd rather this chose the root, but okay *)
 
   let rec for_all p = function
       Empty -> true
@@ -635,6 +635,20 @@ let choose s = Concrete.choose s.set
 
 let min_elt s = Concrete.min_elt s.set
 
+(*$Q min_elt
+  (Q.list Q.small_int) (fun l -> l = [] || \
+    let xs = List.map (fun i -> i mod 2, i) l in \
+    let s = ref (of_list xs) in \
+    let m = ref (min_elt !s) in \
+    while fst !m = 0 do \
+      s := remove !m !s; \
+      s := add (2,snd !m) !s; \
+      m := min_elt !s; \
+    done; \
+    for_all (fun (x,_) -> x <> 0) !s \
+  )
+*)
+
 let max_elt s = Concrete.max_elt s.set
 
 let enum s = Concrete.enum s.set
@@ -646,6 +660,14 @@ let of_enum_cmp ~cmp t =
   { cmp = cmp; set = Concrete.of_enum cmp t }
 
 let of_list l = List.fold_left (fun a x -> add x a) empty l
+
+(*$Q of_list
+  (Q.list Q.int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
+    let s1 = of_list xs |> enum |> List.of_enum in \
+    let s2 = List.sort Pervasives.compare xs in \
+    s1 = s2 \
+  )
+*)
 
 let print ?first ?last ?sep print_elt out s =
   Concrete.print ?first ?last ?sep print_elt out s.set
