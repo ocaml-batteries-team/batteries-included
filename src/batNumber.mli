@@ -154,7 +154,10 @@ sig
   val pred : t -> t
 
   include Infix with type bat__infix_t = t
-  include Compare with type bat__compare_t = t
+  (* Removed non-polymorphic compare from base module, as they shadow
+     ones in stdlib.  open Foo.Compare to get them.
+
+     include Compare with type bat__compare_t = t*)
   include RefOps with type bat__refops_t = t
 end
 

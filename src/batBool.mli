@@ -72,12 +72,14 @@ val ( - ) : t -> t -> t
 val ( * ) : t -> t -> t
 val ( / ) : t -> t -> t
 val ( ** ) : t -> t -> t
+(* Available only in `Compare` submodule
 val ( <> ) : t -> t -> bool
 val ( >= ) : t -> t -> bool
 val ( <= ) : t -> t -> bool
 val ( > ) : t -> t -> bool
 val ( < ) : t -> t -> bool
 val ( = ) : t -> t -> bool
+ *)
 val ( -- ): t -> t -> t BatEnum.t
 val ( --- ): t -> t -> t BatEnum.t
 val operations : t BatNumber.numeric
@@ -92,4 +94,3 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 (** {7 Printing}*)
 val print: 'a BatInnerIO.output -> t -> unit
 val t_printer : t BatValuePrinter.t
-

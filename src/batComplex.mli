@@ -33,118 +33,119 @@
     @author David Teller
 *)
 
-type t = Complex.t
+type t = Complex.t = { re : float; im : float; }
 
-  val zero: t
-    (** The complex number [0]. *)
+val zero: t
+(** The complex number [0]. *)
 
-  val one: t
-    (** The complex number [1]. *)
+val one: t
+(** The complex number [1]. *)
 
-  val i: t
-    (** The complex number [i]. *)
+val i: t
+(** The complex number [i]. *)
 
-  val neg: t -> t
-    (** Unary negation. *)
+val neg: t -> t
+(** Unary negation. *)
 
-  val conj: t -> t
-    (** Conjugate: given the complex [x + i.y], returns [x - i.y]. *)
+val conj: t -> t
+(** Conjugate: given the complex [x + i.y], returns [x - i.y]. *)
 
-  val add: t -> t -> t
-    (** Addition *)
+val add: t -> t -> t
+(** Addition *)
 
-  val sub: t -> t -> t
-    (** Subtraction *)
+val sub: t -> t -> t
+(** Subtraction *)
 
-  val mul: t -> t -> t
-    (** Multiplication *)
+val mul: t -> t -> t
+(** Multiplication *)
 
-  val inv: t -> t
-    (** Multiplicative inverse ([1/z]). *)
+val inv: t -> t
+(** Multiplicative inverse ([1/z]). *)
 
-  val div: t -> t -> t
-    (** Division *)
+val div: t -> t -> t
+(** Division *)
 
-  val sqrt: t -> t
-    (** Square root.  The result [x + i.y] is such that [x > 0] or
-	[x = 0] and [y >= 0].
-	This function has a discontinuity along the negative real axis. *)
+val sqrt: t -> t
+(** Square root.  The result [x + i.y] is such that [x > 0] or [x =
+    0] and [y >= 0].  This function has a discontinuity along the
+    negative real axis. *)
 
-  val norm2: t -> float
-    (** Norm squared: given [x + i.y], returns [x^2 + y^2]. *)
+val norm2: t -> float
+(** Norm squared: given [x + i.y], returns [x^2 + y^2]. *)
 
-  val norm: t -> float
-    (** Norm: given [x + i.y], returns [sqrt(x^2 + y^2)]. *)
+val norm: t -> float
+(** Norm: given [x + i.y], returns [sqrt(x^2 + y^2)]. *)
 
-  val arg: t -> float
-    (** Argument.  The argument of a complex number is the angle
-	in the complex plane between the positive real axis and a line
-	passing through zero and the number.  This angle ranges from
-	[-pi] to [pi].  This function has a discontinuity along the
-	negative real axis. *)
+val arg: t -> float
+(** Argument.  The argument of a complex number is the angle
+    in the complex plane between the positive real axis and a line
+    passing through zero and the number.  This angle ranges from
+    [-pi] to [pi].  This function has a discontinuity along the
+    negative real axis. *)
 
-  val polar: float -> float -> t
-    (** [polar norm arg] returns the complex having norm [norm]
-	and argument [arg]. *)
+val polar: float -> float -> t
+(** [polar norm arg] returns the complex having norm [norm]
+    and argument [arg]. *)
 
-  val exp: t -> t
-    (** Exponentiation.  [exp z] returns [e] to the [z] power. *)
+val exp: t -> t
+(** Exponentiation.  [exp z] returns [e] to the [z] power. *)
 
-  val log: t -> t
-    (** Natural logarithm (in base [e]). *)
+val log: t -> t
+(** Natural logarithm (in base [e]). *)
 
-  val pow: t -> t -> t
-    (** Power function.  [pow z1 z2] returns [z1] to the [z2] power. *)
+val pow: t -> t -> t
+(** Power function.  [pow z1 z2] returns [z1] to the [z2] power. *)
 
-  val operations : t BatNumber.numeric
+val operations : t BatNumber.numeric
 
-  val inv : t -> t
-    (** [inv x] returns the value of [1/x]*)
+val inv : t -> t
+(** [inv x] returns the value of [1/x]*)
 
-  val succ : t -> t
-    (** Add {!one} to this number.*)
+val succ : t -> t
+(** Add {!one} to this number.*)
 
-  val pred : t -> t
-    (** Remove {!one} from this number.*)
+val pred : t -> t
+(** Remove {!one} from this number.*)
 
-  val abs : t -> t
-    (** [abs c] returns the module of this complex number,
-	i.e. [abs c = Float.sqrt((re c) *. (re c) +. (im c) *. (im c) )]*)
+val abs : t -> t
+(** [abs c] returns the module of this complex number,
+    i.e. [abs c = Float.sqrt((re c) *. (re c) +. (im c) *. (im c) )]*)
 
-  val modulo : t -> t -> t
-  val pow : t -> t -> t
-  val compare : t -> t -> int
-  val of_int : int -> t
-  val to_int : t -> int
-  val of_string : string -> t
-  val to_string : t -> string
-  val ( + ) : t -> t -> t
-  val ( - ) : t -> t -> t
-  val ( * ) : t -> t -> t
-  val ( / ) : t -> t -> t
-  val ( ** ) : t -> t -> t
-  val ( <> ) : t -> t -> bool
-  val ( >= ) : t -> t -> bool
-  val ( <= ) : t -> t -> bool
-  val ( > ) : t -> t -> bool
-  val ( < ) : t -> t -> bool
-  val ( = ) : t -> t -> bool
-  val ( -- ): t -> t -> t BatEnum.t
-  val ( --- ): t -> t -> t BatEnum.t
+val modulo : t -> t -> t
+val pow : t -> t -> t
+val compare : t -> t -> int
+val of_int : int -> t
+val to_int : t -> int
+val of_string : string -> t
+val to_string : t -> string
+val ( + ) : t -> t -> t
+val ( - ) : t -> t -> t
+val ( * ) : t -> t -> t
+val ( / ) : t -> t -> t
+val ( ** ) : t -> t -> t
+(* Available only in `Compare` submodule
+val ( <> ) : t -> t -> bool
+val ( >= ) : t -> t -> bool
+val ( <= ) : t -> t -> bool
+val ( > ) : t -> t -> bool
+val ( < ) : t -> t -> bool
+val ( = ) : t -> t -> bool
+ *)
+val ( -- ): t -> t -> t BatEnum.t
+val ( --- ): t -> t -> t BatEnum.t
 
-  val of_float : float -> t
-  (** [Complex.of_float x] returns the complex number [x+0i] *)
+val of_float : float -> t
+(** [Complex.of_float x] returns the complex number [x+0i] *)
 
-  val to_float : t -> float
-  (** [Complex.to_float (a+bi)] returns the float [a] *)
+val to_float : t -> float
+(** [Complex.to_float (a+bi)] returns the float [a] *)
 
-  (** {6 Submodules grouping all infix operators} *)
+(** {6 Submodules grouping all infix operators} *)
 
-  module Infix : BatNumber.Infix with type bat__infix_t = t
-  module Compare : BatNumber.Compare with type bat__compare_t = t
+module Infix : BatNumber.Infix with type bat__infix_t = t
+module Compare : BatNumber.Compare with type bat__compare_t = t
 
-  (** {6 Boilerplate code}*)
+(** {6 Boilerplate code}*)
 
-  (** {7 Printing}*)
-  val print: 'a BatInnerIO.output -> t -> unit
-
+(** {7 Printing}*)
+val print: 'a BatInnerIO.output -> t -> unit

@@ -71,12 +71,15 @@ type t = big_int
     val ( * ) : t -> t -> t
     val ( / ) : t -> t -> t
     val ( ** ) : t -> t -> t
+
+(* Available only in `Compare` submodule
     val ( <> ) : t -> t -> bool
     val ( >= ) : t -> t -> bool
     val ( <= ) : t -> t -> bool
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
+ *)
     val operations : t BatNumber.numeric
 
 (** {6 Arithmetic operations} *)
@@ -215,4 +218,3 @@ val gcd_big_int : big_int -> big_int -> big_int
     (** {7 Printing}*)
 
     val print : 'a BatIO.output -> t -> unit
-

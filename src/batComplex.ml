@@ -67,8 +67,13 @@ module BaseComplex = struct
 
 end
 
-include BatNumber.MakeNumeric(BaseComplex)
+(* need to fix problem with Functor return type being `type t =
+   Complex.t` and needing `type t = Complex.t = {re: float; im:float}` *)
+module CN = BatNumber.MakeNumeric(BaseComplex)
+include BaseComplex
+let operations = CN.operations
 module Infix = BatNumber.MakeInfix(BaseComplex)
+include Infix
 module Compare = BatNumber.MakeCompare(BaseComplex)
 
 let inv    = Complex.inv
@@ -84,4 +89,3 @@ let log    = Complex.log
 let pow    = Complex.pow
 
 let print out t = BatInnerIO.nwrite out (to_string t)
-

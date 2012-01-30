@@ -237,12 +237,14 @@ external format : string -> int64 -> string = "caml_int64_format"
     val ( * ) : t -> t -> t
     val ( / ) : t -> t -> t
     val ( ** ) : t -> t -> t
+(* Available only in `Compare` submodule
     val ( <> ) : t -> t -> bool
     val ( >= ) : t -> t -> bool
     val ( <= ) : t -> t -> bool
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
+ *)
     val operations : t BatNumber.numeric
 
     (** {6 Boilerplate code}*)
@@ -253,6 +255,3 @@ external format : string -> int64 -> string = "caml_int64_format"
     val xprint: 'a BatInnerIO.output -> t -> unit
       (** prints as hex string *)
     val t_printer : t BatValuePrinter.t
-
-
-

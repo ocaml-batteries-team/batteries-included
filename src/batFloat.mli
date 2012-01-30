@@ -96,12 +96,15 @@ val ( - ) : t -> t -> t
 val ( * ) : t -> t -> t
 val ( / ) : t -> t -> t
 val ( ** ) : t -> t -> t
+
+(* Available only in `Compare` submodule
 val ( <> ) : t -> t -> bool
 val ( >= ) : t -> t -> bool
 val ( <= ) : t -> t -> bool
 val ( > ) : t -> t -> bool
 val ( < ) : t -> t -> bool
 val ( = ) : t -> t -> bool
+ *)
 val ( -- ): t -> t -> t BatEnum.t
 val ( --- ): t -> t -> t BatEnum.t
 val operations : t BatNumber.numeric
@@ -418,12 +421,14 @@ module Safe_float :
     val ( * ) : t -> t -> t
     val ( / ) : t -> t -> t
     val ( ** ) : t -> t -> t
+(* Available only in `Compare` submodule
     val ( <> ) : t -> t -> bool
     val ( >= ) : t -> t -> bool
     val ( <= ) : t -> t -> bool
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
+ *)
     val operations : t BatNumber.numeric
 
     (**
