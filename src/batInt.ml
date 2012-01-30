@@ -116,18 +116,20 @@ let operations = N.operations
 
 let min a b = if a < b then a else b
 let max a b = if a > b then a else b
-(**T min/max
+
+(*$T min
    min 3 4 = 3
    min 4 4 = 4
    min (-3) 5 = -3
    min min_int max_int = min_int
+*) (*$T max
    max 3 4 = 4
    max 4 4 = 4
    max (-3) 5 = 5
    max min_int max_int = max_int
    max max_int max_int = max_int
    max min_int min_int = min_int
-**)
+*)
 
 module Infix = BatNumber.MakeInfix(BaseInt)
 
@@ -219,7 +221,7 @@ module Safe_int = struct
     else Eq
 
 end
-
+(* TODO: qtest2: special pragmas or allow qualified names ? *)
 (**T Safe_int
    try Safe_int.add max_int max_int |> ignore; false with Number.Overflow -> true
    Safe_int.neg max_int = -max_int

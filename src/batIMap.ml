@@ -274,10 +274,12 @@ let empty ~eq = {m = Core.empty; eq}
 let is_empty {m} = Core.is_empty m
 let add x y {m;eq} = {m=Core.add ~eq x y m; eq}
 
-(**T imap_add
-   let a = add in empty ~eq:(=) |> a 0 0 |> a 2 0 |> a 1 0 |> enum |> List.of_enum = [(0,2,0)]
-   let a = add in empty ~eq:(=) |> a 0 "foo" |> a 2 "foo" |> a 1 "foo" |> enum |> List.of_enum = [(0,2,"foo")]
- **)
+(*$T add ; empty
+  let a = add in empty ~eq:(=) |> a 0 0 |> a 2 0 |> a 1 0 \
+    |> enum |> List.of_enum = [(0,2,0)]
+  let a = add in empty ~eq:(=) |> a 0 "foo" |> a 2 "foo" |> a 1 "foo" \
+    |> enum |> List.of_enum = [(0,2,"foo")]
+*)
 
 
 let add_range lo hi y {m;eq} = {m=Core.add_range ~eq lo hi y m; eq}
