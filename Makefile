@@ -144,9 +144,9 @@ _build/qtest2/qtest.native:
 _build/qtest2/qtest: _build/qtest2/qtest.$(EXT)
 	cp $< $@
 
-_build/qtest2/all_tests.byte: qtest2/all_tests.ml
+_build/qtest2/all_tests.byte: qtest2/all_tests.ml qtest2/runner.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.byte
-_build/qtest2/all_tests.native: qtest2/all_tests.ml
+_build/qtest2/all_tests.native: qtest2/all_tests.ml qtest2/runner.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.native
 
 #qtest only targets, for quicker test iteration
@@ -229,4 +229,4 @@ coverage/index.html: $(TESTDEPS) qtest2/all_tests.ml
 
 coverage: coverage/index.html
 
-.PHONY: qtest/test_mods.mllib coverage man
+.PHONY: qtest/test_mods.mllib coverage man qtest2
