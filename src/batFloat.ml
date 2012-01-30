@@ -50,12 +50,12 @@ end
 
 let approx_equal ?(epsilon = 1e-5) f1 f2 = abs_float (f1 -. f2) < epsilon
 
-(**T approx_equal
+(*$T approx_equal
    approx_equal 0. 1e-15
    approx_equal 0.3333333333 (1. /. 3.)
    not (approx_equal 1. 2.)
    not (approx_equal 1.5 1.45)
-**)
+*)
 
 external exp : float -> float = "caml_exp_float" "exp" "float"
 external log : float -> float = "caml_log_float" "log" "float"
@@ -85,14 +85,19 @@ let root m n =
   else
     exp (log m /. (float_of_int n))
 
-(**T root
+(*$T root; approx_equal
    approx_equal (root 9. 2) 3.
    approx_equal (root 8. 3) 2.
    approx_equal (root 1. 20) 1.
- **)
+*)
 
 (* sign bit is top bit, shift all other 63 bits away and test if = one *)
 let signbit x = Int64.shift_right_logical (Int64.bits_of_float x) 63 = Int64.one
+
+(*$T signbit
+   signbit (-256.)
+   not (signbit 1e50)
+*)
 
 let copysign x s =
   if signbit s then
@@ -100,12 +105,10 @@ let copysign x s =
   else
     abs_float x
 
-(**T sign
-   signbit (-256.)
-   not (signbit 1e50)
+(*$T copysign
    copysign 1. 1. = 1.
    copysign 1. (-1.) = (-1.)
- **)
+*)
 
 let round x =
   (* we test x >= 0. rather than x > 0. because otherwise
@@ -116,16 +119,17 @@ let round x =
 (* the tests below look ugly with those Pervasives.(...); this is
    a temporary fix made necessary by BatFloat overriding the (=)
    operator. Hugh. *)
-(**T round
+(*$T round
    Pervasives.(=) (List.map round [1.1; 2.4; 3.3; 3.5; 4.99]) [1.; 2.; 3.; 4.; 5.]
    Pervasives.(=) (List.map round [-1.1; -2.4; -3.3; -3.5; -4.99]) [-1.; -2.; -3.; -4.; -5.]
-**)
+*)
 
 let round_to_int x =
   int_of_float (round x)
-(**T round_to_int
+
+(*$T round_to_int
    Pervasives.(=) (List.map round_to_int [1.1; 2.4; 3.3; 3.5; 4.99]) [1; 2; 3; 4; 5]
-**)
+*)
 
 include BatNumber.MakeNumeric(BaseFloat)
 module Infix = struct
@@ -198,7 +202,8 @@ let round_to_string ?(digits=0) x =
     | FP_infinite ->
       if x = neg_infinity then "-inf" else "inf"
     | FP_nan -> "nan"
-(**T round_to_string
+    
+(*$T round_to_string
    List.mem (round_to_string 3.) ["3."; "3"]
    Pervasives.(=) (round_to_string ~digits:0 3.) (round_to_string 3.)
    Pervasives.(=) (round_to_string ~digits:1 3.) "3.0"
@@ -217,7 +222,7 @@ let round_to_string ?(digits=0) x =
    List.mem (round_to_string ~digits:42 infinity) ["inf"; "infinity"]
    List.mem (round_to_string ~digits:0 neg_infinity) ["-inf"; "-infinity"]
    List.for_all (fun digits -> Pervasives.(=) "nan" (String.sub (round_to_string ~digits nan) 0 3)) [0; 42]
-**)
+*)
 
 
 module Base_safe_float = struct
