@@ -132,13 +132,17 @@ let max a b = if a > b then a else b
 *)
 
 let mid a b =
-  if a < 0 || b < 0 then invalid_arg "mid: arguments must be non-negative";
-  a + ((b-a)/2)
+  if (0 <= a && 0 <= b) || (a < 0 && b < 0) then
+    if a <= b then a + ((b-a)/2) else b + ((a-b)/2)
+  else
+    let s = a + b in
+    if s >= 0 then s/2 else s - s/2
+
 (*$Q mid
-  (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> a <= b ==> ( \
+  (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> \
     let m = mid a b in \
-    a <= m && b >= m && abs ((m-a) - (b-m)) <= 1 \
-  ))
+    a <= b ==> (a <= m && m <= b && abs ((m-a) - (b-m)) <= 1) && \
+    b < a ==> (b <= m && m <= a && abs ((m-b) - (a-m)) <= 1))
   (Q.pos_int) (fun a -> mid a a = a)
 *)
 

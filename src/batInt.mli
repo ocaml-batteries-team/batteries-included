@@ -152,13 +152,11 @@ val compare: t -> t -> int
 val min : int -> int -> int
 val max : int -> int -> int
 
-(** Midpoint function; [mid a b] returns [(a+b)/2], but correct for
-    overflows. The result is an integer that lies between [a] and [b]
-    and is as equidistant from both as possible.
-
-    @raises Invalid_argument if either [a] or [b] is negative
-*)
 val mid : int -> int -> int
+(** Midpoint function; [mid a b] returns [floor((a+b)/2)], but done
+    correctly to compensate for numeric overflows.  The result is an
+    integer that lies between [a] and [b] and is as equidistant from
+    both as possible. *)
 
 val operations : int BatNumber.numeric
 
