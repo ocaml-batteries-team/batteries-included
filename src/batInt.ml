@@ -131,6 +131,17 @@ let max a b = if a > b then a else b
    max min_int min_int = min_int
 *)
 
+let mid a b =
+  if a < 0 || b < 0 then invalid_arg "mid: arguments must be non-negative";
+  a + ((b-a)/2)
+(*$Q mid
+  (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> a <= b ==> ( \
+    let m = mid a b in \
+    a <= m && b >= m && abs ((m-a) - (b-m)) <= 1 \
+  ))
+  (Q.pos_int) (fun a -> mid a a = a)
+*)
+
 module Infix = BatNumber.MakeInfix(BaseInt)
 
 (* We want BaseInt versions of these function instead of MakeNumeric ones *)
