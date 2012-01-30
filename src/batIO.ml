@@ -474,7 +474,7 @@ let strings_of      input = make_enum read_string      input
 let lines_of        input = make_enum read_line        input
 let chunks_of n     input = make_enum (fun ic -> nread ic n) input
 
-(**The number of chars to read at once*)
+(** The number of chars to read at once *)
 let buffer_size = 1024 (*Arbitrary size.*)
 
 (* make a bunch of char enums by reading buffer_size at a time and

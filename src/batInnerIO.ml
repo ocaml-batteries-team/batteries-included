@@ -41,7 +41,7 @@ type 'a output = {
   mutable out_flush : unit -> unit;
   out_id:    int;(**A unique identifier.*)
   out_upstream:unit output weak_set
-    (**The set of outputs which have been created to write to this output.*)
+    (** The set of outputs which have been created to write to this output.*)
 }
 
 
@@ -635,11 +635,11 @@ sig
   type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
 
   val printf: ('b, 'a output, unit) format -> 'b
-    (**The usual [printf] function, prints to
+    (** The usual [printf] function, prints to
        [stdout].*)
 
   val eprintf: ('b, 'a output, unit) format -> 'b
-    (**The usual [eprintf] function, prints to
+    (** The usual [eprintf] function, prints to
        [stderr].*)
 
   val sprintf:  ('a, unit, string) format -> 'a
