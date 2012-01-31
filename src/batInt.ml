@@ -239,7 +239,7 @@ end
    Result.(catch (Safe_int.add max_int) max_int |> is_exn Number.Overflow)
    Safe_int.neg max_int = -max_int
    Result.(catch Safe_int.neg min_int |> is_exn Number.Overflow)
-   Result.(catch (Safe_int.mul 21) (Safe_int.mul ((1 lsl 18) * (3*3*3*3*3*3*3*3)) (5*5*5*5*7*7*11*13*17*19)) |> is_exn Number.Overflow)
+   Result.(catch (List.reduce Safe_int.mul) [1 lsl 18 * 21; 3*3*3*3*3*3*3*3; 5*5*5*5*7*7*11*13*17*19] |> is_exn Number.Overflow)
 
    (* Check Safe_int.infix is safe as well *)
    Result.(catch (Safe_int.Infix.(+) max_int) 1 |> is_exn Number.Overflow)
