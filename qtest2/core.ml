@@ -140,7 +140,9 @@ let code_of_binding ((f,a):binding) = va "let %s = %s in" a f
 let code_of_bindings bl = String.concat " " (List.map code_of_binding bl)
 
 (** get the functions targeted by a header *)
-let targets_of_header (hd:header) = let x,_ = List.split hd.hb in x
+let targets_of_header (hd:header) = match hd.hb with
+  | [] -> ["&empty&"]
+  |  l -> let x,_ = List.split l in x
 
 (** get an informal "foo, bar as x; a,b as y" string which
   summarises the metatest *)
