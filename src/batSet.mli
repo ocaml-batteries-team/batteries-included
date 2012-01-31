@@ -368,11 +368,15 @@ val iter: ('a -> unit) -> 'a t -> unit
 val map: ('a -> 'b) -> 'a t -> 'b t
   (** [map f x] creates a new set with elements [f a0],
       [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
-      values contained in [x]*)
+      values contained in [x]
+
+      The resulting map uses the polymorphic [compare] function to
+      order elements.
+  *)
 
 val filter: ('a -> bool) -> 'a t -> 'a t
-  (** [filter p s] returns the set of all elements in [s]
-      that satisfy predicate [p]. *)
+(** [filter p s] returns the set of all elements in [s]
+    that satisfy predicate [p]. *)
 
 (* as under-specified as 'map' *)
 val filter_map: ('a -> 'b option) -> 'a t -> 'b t
@@ -380,11 +384,15 @@ val filter_map: ('a -> 'b option) -> 'a t -> 'b t
       [map].  It calls calls [f a0], [f a1], [f aN] where [a0,a1..an]
       are the elements of [m] and returns the set of pairs [bi]
       such as [f ai = Some bi] (when [f] returns [None], the
-      corresponding element of [m] is discarded). *)
+      corresponding element of [m] is discarded).
+
+      The resulting map uses the polymorphic [compare] function to
+      order elements.
+  *)
 
 val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  (** [fold f s a] computes [(f xN ... (f x1 (f x0 a))...)],
-      where [x0,x1..xN] are the elements of [s], in increasing order. *)
+(** [fold f s a] computes [(f xN ... (f x1 (f x0 a))...)],
+    where [x0,x1..xN] are the elements of [s], in increasing order. *)
 
 val exists: ('a -> bool) -> 'a t -> bool
   (** [exists p s] checks if at least one element of
@@ -452,4 +460,3 @@ val of_list: 'a list -> 'a t
 val print :  ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> 'c t -> unit
-
