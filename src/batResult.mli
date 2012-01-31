@@ -43,6 +43,9 @@ val is_ok : ('a, 'b) t -> bool
 *)
 val is_bad : ('a, 'b) t -> bool
 
+(** [is_exn e1 r] is [true] iff [r] is [Bad e2] with [e1=e2] *)
+val is_exn : exn -> ('a, exn) t -> bool
+
 (** Convert an [option] to a [result]
     @since 1.0 *)
 val of_option: 'a option -> ('a, unit) t

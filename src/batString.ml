@@ -32,6 +32,8 @@ let compare = String.compare
    compare "FOO" "bar" = -1
 *)
 
+let eq a b = String.compare a b = 0
+
 let init len f =
 	let s = create len in
 	for i = 0 to len - 1 do

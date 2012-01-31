@@ -28,6 +28,8 @@ let is_ok = function Ok _ -> true | Bad _ -> false
 
 let is_bad = function Bad _ -> true | Ok _ -> false
 
+let is_exn e = function Bad exn -> exn = e | Ok _ -> false
+
 let get = function Ok x -> x | Bad e -> raise e
 
 let print print_val oc = function
@@ -48,4 +50,3 @@ end
 module Infix = struct
   let (>>=) = Monad.bind
 end
-

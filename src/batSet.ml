@@ -242,7 +242,7 @@ module Concrete = struct
   let of_enum cmp e =
     BatEnum.fold (fun acc elem -> add cmp elem acc) empty e
 
-  let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_elt out t =
+  let print ?(first="{") ?(last="}") ?(sep=",") print_elt out t =
     BatEnum.print ~first ~last ~sep (fun out e -> BatPrintf.fprintf out "%a" print_elt e) out (enum t)
 
   let filter cmp f e = fold (fun x acc -> if f x then add cmp x acc else acc) e empty

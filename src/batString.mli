@@ -503,17 +503,19 @@ val numeric_compare: t -> t -> int
   (** Compare two strings, sorting "abc32def" before "abc210abc".
 
       Algorithm: Ignore identical prefixes, if first character
-      difference is numeric, parse the whole number as an int and
-      compare.
+      difference is numeric, go back to beginning of number parse the
+      whole number as an int and compare.
 
       Example: [String.numeric_compare "xx32" "xx210" = -1]
-  *)
+   *)
 
 module NumString : BatInterfaces.OrderedType with type t = t
 (** uses numeric_compare as its ordering function
 
     Example: [module FilenameSet = Set.Make(String.NumString)]
  *)
+
+val eq : t -> t -> bool
 
 (** {6 Boilerplate code}*)
 

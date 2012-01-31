@@ -392,6 +392,24 @@ let max_elt s =
   let (_, n), _ = split_rightmost s in
   n
 
+(*$= min_elt & ~printer:string_of_int
+  3 (of_list [4,7;8,22;23,23;3,3] |> min_elt)
+  1 (of_list [4,7;8,12;23,23;1,3] |> min_elt)
+ *)
+
+(*$T min_elt
+  Result.(catch min_elt empty |> is_exn Not_found)
+ *)
+
+(*$= max_elt & ~printer:string_of_int
+  23 (of_list [4,7;8,22;23,23;3,3] |> max_elt)
+  21 (of_list [4,7;8,12;15,21;1,3] |> max_elt)
+ *)
+
+(*$T max_elt
+  Result.(catch max_elt empty |> is_exn Not_found)
+ *)
+
 let choose s = fst (root s)
 
 let of_list l = List.fold_left (fun s (lo,hi) -> add_range lo hi s) empty l
@@ -403,3 +421,7 @@ let print oc t =
     else BatTuple.Tuple2.printn BatInt.print oc (lo,hi)
   in
   BatEnum.print print_range oc (enum t)
+
+(*$= print & ~printer:(fun x -> x)
+  "(1,3) (5,6)" (IO.to_string print (of_list [1,3;5,6]))
+ *)

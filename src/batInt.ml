@@ -116,7 +116,6 @@ let operations = N.operations
 
 let min a b = if a < b then a else b
 let max a b = if a > b then a else b
-
 (*$T min
    min 3 4 = 3
    min 4 4 = 4
@@ -139,11 +138,11 @@ let mid a b =
     if s >= 0 then s/2 else s - s/2
 
 (*$Q mid
-  (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> \
+  (Q.pair Q.int Q.int) (fun (a,b) -> \
     let m = mid a b in \
     a <= b ==> (a <= m && m <= b && abs ((m-a) - (b-m)) <= 1) && \
     b < a ==> (b <= m && m <= a && abs ((m-b) - (a-m)) <= 1))
-  (Q.pos_int) (fun a -> mid a a = a)
+  (Q.int) (fun a -> mid a a = a)
 *)
 
 module Infix = BatNumber.MakeInfix(BaseInt)
@@ -157,20 +156,18 @@ end
 module BaseSafeInt = struct
   include BaseInt
 
-  (**
-     Open this module and [SafeInt] to replace traditional integer operators with
-     their safe counterparts
-  *)
+  (** Open this module and [SafeInt] to replace traditional integer
+      operators with their safe counterparts *)
 
   let add a b =
     let c = Pervasives.( + ) a b in
-      if a < 0 && b < 0 && c >= 0 || a > 0 && b > 0 && c <= 0	then raise Overflow
-      else c
+    if a < 0 && b < 0 && c >= 0 || a > 0 && b > 0 && c <= 0	then raise Overflow
+    else c
 
   let sub a b =
     let c = Pervasives.( - ) a b in
-      if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0	then raise Overflow
-      else c
+    if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0	then raise Overflow
+    else c
 
   let neg x =
     if x <> min_int then ~- x
