@@ -929,8 +929,7 @@ let foldi f m acc =
 
 let enum t = Concrete.enum t.map
 
-(* Original title: map_enum_q ; but does not test enum at all !? *)
-(*$Q create
+(*$Q keys
   (Q.list Q.small_int) (fun xs -> \
   List.fold_left (fun acc x -> add x true acc) \
     (create Int.compare) xs |> keys |> List.of_enum \
