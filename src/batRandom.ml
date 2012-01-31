@@ -130,11 +130,11 @@ let multi_choice n e =
     BatArray.enum (Array.map fst chosen)
 
 (*$T multi_choice
-   BatEnum.is_empty (multi_choice 0 (BatEnum.empty ()))
-   BatEnum.count (multi_choice 3 (BatList.enum [1;2;3;4;5])) = 3
-   let l = [1;2;3;4;5] in let e = multi_choice 2 (BatList.enum l) in \
-     let a = BatOption.get (BatEnum.get e) in a < BatOption.get (BatEnum.get e)
- **)
+  BatEnum.is_empty (multi_choice 0 (BatEnum.empty ()))
+  BatEnum.count (multi_choice 3 (BatList.enum [1;2;3;4;5])) = 3
+  let l = [1;2;3;4;5] in let e = multi_choice 2 (BatList.enum l) in \
+    let a = BatOption.get (BatEnum.get e) in a < BatOption.get (BatEnum.get e)
+*)
 
 let shuffle e =
   let a = BatArray.of_enum e in

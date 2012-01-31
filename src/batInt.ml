@@ -233,23 +233,31 @@ module Safe_int = struct
     else Eq
 
 end
-(* TODO: qtest2: special pragmas or allow qualified names ? *)
 
-(**T safe_int
-   Result.(catch (Safe_int.add max_int) max_int |> is_exn Number.Overflow)
-   Safe_int.neg max_int = -max_int
-   Result.(catch Safe_int.neg min_int |> is_exn Number.Overflow)
-   Result.(catch (List.reduce Safe_int.mul) [1 lsl 18 * 21; 3*3*3*3*3*3*3*3; 5*5*5*5*7*7*11*13*17*19] |> is_exn Number.Overflow)
+(*$T &
+  Result.(catch (Safe_int.add max_int) max_int |> is_exn Number.Overflow)
+  Safe_int.neg max_int = -max_int
+  Result.(catch Safe_int.neg min_int |> is_exn Number.Overflow)
+  Result.(catch (List.reduce Safe_int.mul) \
+    [1 lsl 18 * 21; 3*3*3*3*3*3*3*3; 5*5*5*5*7*7*11*13*17*19] \
+      |> is_exn Number.Overflow)
+  Result.(catch (Safe_int.Infix.(+) max_int) 1 |> is_exn Number.Overflow)
+*)
 
-   (* Check Safe_int.infix is safe as well *)
-   Result.(catch (Safe_int.Infix.(+) max_int) 1 |> is_exn Number.Overflow)
- **)
-
-(**Q Safe_int_Q
-   (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> let (a,b) = max a b, min a b in let b = max_int - a + b in try Safe_int.add a b|>ignore; false with BatNumber.Overflow -> true)
-   (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> let (a,b) = max a b, min a b in let b = max_int - a + b in try Safe_int.sub (-a) b|>ignore; false with BatNumber.Overflow -> true)
-   (Q.pair Q.int Q.int) (fun (a,b) -> let slow_mul a b = if b = 0 then 0 else if (abs a) > max_int / (abs b) then raise BatNumber.Overflow else a*b in Pervasives.(=) (Result.catch (Safe_int.mul a) b) (Result.catch (slow_mul a) b))
- **)
+(*$Q &
+  (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> let (a,b) = max a b, min a b in \
+    let b = max_int - a + b in try Safe_int.add a b |>ignore; false \
+      with BatNumber.Overflow -> true)
+  (Q.pair Q.pos_int Q.pos_int) (fun (a,b) -> let (a,b) = max a b, min a b in \
+    let b = max_int - a + b in try Safe_int.sub (-a) b|>ignore; false \
+      with BatNumber.Overflow -> true)
+  (Q.pair Q.int Q.int) (fun (a,b) -> \
+    let slow_mul a b = \
+      if b = 0 then 0 \
+      else if (abs a) > max_int / (abs b) then raise BatNumber.Overflow else a*b \
+    in Pervasives.(=) \
+      (Result.catch (Safe_int.mul a) b) (Result.catch (slow_mul a) b))
+*)
 
 (*
 module Int     = struct
