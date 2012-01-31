@@ -160,6 +160,12 @@ That said, raw tests should only be used as a last resort; for instance you don'
 #### Exception-Throwing Tests: `E` for "Exception"
 
 ... not implemented yet...
+
+The current pattern is to use `(*$T` and the following pattern for function `foo` and exception `Bar`:
+
+    (*$T foo
+      Result.(catch foo x |> is_exn Bar)
+     *)
   
 ### More Technical Pragmas
 
