@@ -46,12 +46,10 @@ let identchar =
   ['A'-'Z' 'a'-'z' '_' '\192'-'\214' '\216'-'\246' '\248'-'\255' '\'' '0'-'9']
 let lident = lowercase identchar*
 let restline = ([^'\n']* as x) '\n'
-let test_header_pat = blank+ restline
+let test_header_pat = blank+ restline | (blank* as x) '\n'
 
 (** extract tests from ml file *)
 rule lexml t = parse
-(*| "(**" blank* ['Q' 'T' '*'] test_header_pat
-  { failwith @@ va "Old or ambiguous test syntax: %s" x }*) (*TODO: remove*)
 | "(*$Q" test_header_pat { (* quickcheck (random) test *)
   let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
   register_mtest lexbuf lexheader (lexbody  buffy[]) x line Random  }

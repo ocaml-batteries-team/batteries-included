@@ -9,7 +9,7 @@ let separator2 = String.make 79 '/'
 
 let string_of_path path =
   let path = List.filter (function Label _ -> true | _ -> false) path in
-  String.concat "/" (List.rev_map string_of_node path)
+  String.concat ">" (List.rev_map string_of_node path)
 
 let result_path = function
     | RSuccess path

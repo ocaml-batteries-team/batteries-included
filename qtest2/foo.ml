@@ -57,9 +57,20 @@ and odd = function 0 -> false
 *)
 
 (*$= pretentious_drivel as x  & ~printer:string_of_int
-  (x 2 (+) [4;5])   (foo 1 (+) [4;5])
+  (x 1 (+) [4;5])   (foo 1 (+) [4;5])
 *)
 
 (*$= pretentious_drivel as x  
-  (x 2 (+) [4;5])   (foo 1 (+) [4;5])
+  (x 1 (+) [4;5])   (foo 1 (+) [4;5])
+*)
+
+(* empty headers: space, nothing, explicit empty param *)
+(*$T 
+  2+2 = 4
+*)
+(*$T
+  2+1 = 3
+*)
+(*$T &
+  2+3 = 5
 *)

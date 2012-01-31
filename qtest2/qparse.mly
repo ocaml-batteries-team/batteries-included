@@ -17,6 +17,7 @@ param:
 | /* nil */ { "" };
 
 metaheader: /* x,y,z as target; a,b,c as tata ; ... */
+| /* gnu */ { [] }
 | multibind { [$1] }
 | multibind SEMI metaheader { $1 ::  $3 }
 

@@ -157,7 +157,9 @@ let headers_of_metaheader (mh:metaheader) =
   | (foos,x) :: mbs -> let rest = z mbs in
     let combine foo = List.map (fun others ->(foo,x) :: others) rest in
     List.concat @@ List.map combine foos
-  in ((List.map (fun b-> {hb = b; hpar = mh.mhpar}) (z mh.mhb)) : header list)
+  in match mh.mhb with
+  | [] ->  [{hb = []; hpar = mh.mhpar}]
+  | l -> ((List.map (fun b-> {hb = b; hpar = mh.mhpar}) (z l)) : header list)
   
 (** break down metatests (tests w/ multiple targets) and enforce that each
   test is non-empty, ie. has at least one statement.
