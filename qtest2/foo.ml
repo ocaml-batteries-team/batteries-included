@@ -40,7 +40,7 @@ and odd = function 0 -> false
 
 (*$Q even; odd
   Q.small_int (fun n-> odd (abs n+3) = even (abs n))
-**)
+  *)
 
 
 (*$Q even as x ; odd as y
