@@ -44,6 +44,7 @@ BENCH_TARGETS  = benchsuite/bench_int.native
 BENCH_TARGETS += benchsuite/flip.native
 BENCH_TARGETS += benchsuite/deque.native
 BENCH_TARGETS += benchsuite/lines_of.native
+BENCH_TARGETS += benchsuite/bitset.native
 BENCH_TARGETS += benchsuite/bench_map.native
 TEST_TARGET = test-byte
 
