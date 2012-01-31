@@ -107,7 +107,7 @@ let synchronize = Lock.synchronize
     lock l;
     raise e*)
 
-(*** rmutex_work
+(*$R create; lock; unlock
 
    let l = create () in
    let num_threads = 30 in
@@ -119,4 +119,4 @@ let synchronize = Lock.synchronize
    let children = Array.init 30 (Thread.create worker) in
    Array.iter Thread.join children;
 
-**)
+*)

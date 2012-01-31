@@ -129,10 +129,11 @@ let multi_choice n e =
     Array.sort (fun (_, i1) (_, i2) -> compare i1 i2) chosen ;
     BatArray.enum (Array.map fst chosen)
 
-(**T Random.multi_choice
-   BatEnum.is_empty (multi_choice 0 (BatEnum.empty ())) (* you can choose 0 in empty enum *)
-   BatEnum.count (multi_choice 3 (BatList.enum [1;2;3;4;5])) = 3 (* asked 3 got 3 *)
-   let l = [1;2;3;4;5] in let e = multi_choice 2 (BatList.enum l) in let a = BatOption.get (BatEnum.get e) in a < BatOption.get (BatEnum.get e) (* order is preserved *)
+(*$T multi_choice
+   BatEnum.is_empty (multi_choice 0 (BatEnum.empty ()))
+   BatEnum.count (multi_choice 3 (BatList.enum [1;2;3;4;5])) = 3
+   let l = [1;2;3;4;5] in let e = multi_choice 2 (BatList.enum l) in \
+     let a = BatOption.get (BatEnum.get e) in a < BatOption.get (BatEnum.get e)
  **)
 
 let shuffle e =

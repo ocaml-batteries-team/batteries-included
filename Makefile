@@ -122,7 +122,7 @@ reinstall:
 
 #List of source files that it's okay to try to test
 DONTTEST=src/batteriesHelp.ml
-TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
+TESTABLE ?= src/batInt.ml #$(filter-out $(DONTTEST), $(wildcard src/*.ml))
 
 TESTDEPS = $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
 

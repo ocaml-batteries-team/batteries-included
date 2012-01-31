@@ -234,13 +234,15 @@ module Safe_int = struct
 
 end
 (* TODO: qtest2: special pragmas or allow qualified names ? *)
-(**T Safe_int
-   try Safe_int.add max_int max_int |> ignore; false with Number.Overflow -> true
+
+(**T safe_int
+   Result.(catch (Safe_int.add max_int) max_int |> is_exn Number.Overflow)
    Safe_int.neg max_int = -max_int
-   try Safe_int.neg min_int |> ignore; false with Number.Overflow -> true
-   try Safe_int.mul (Safe_int.mul ((1 lsl 18) * (3*3*3*3*3*3*3*3)) (5*5*5*5*7*7*11*13*17*19)) 21 |> ignore; false with Number.Overflow -> true
+   Result.(catch Safe_int.neg min_int |> is_exn Number.Overflow)
+   Result.(catch (Safe_int.mul 21) (Safe_int.mul ((1 lsl 18) * (3*3*3*3*3*3*3*3)) (5*5*5*5*7*7*11*13*17*19)) |> is_exn Number.Overflow)
+
    (* Check Safe_int.infix is safe as well *)
-   try Safe_int.Infix.(+) max_int 1 |> ignore; false with Number.Overflow -> true
+   Result.(catch (Safe_int.Infix.(+) max_int) 1 |> is_exn Number.Overflow)
  **)
 
 (**Q Safe_int_Q

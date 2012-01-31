@@ -191,9 +191,9 @@ let lock          = ref BatConcurrent.nolock
 let unique ()     =
   BatConcurrent.sync !lock BatRef.post_incr unique_value
 
-(**Q unique_t
+(*$Q unique
    Q.unit (fun () -> unique () <> unique ())
-**)
+ *)
 
 type ('a, 'b) result =
   | Ok  of 'a

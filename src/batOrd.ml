@@ -113,10 +113,12 @@ let min_ord ord = fun a b ->
 let min_comp comp = fun a b ->
   if comp a b <= 0 then a else b
 
-(**T max
+(*$T max_ord
    max_ord poly_ord 1 2 = 2
-   max_comp poly_comp 1 2 = 2
-**)
+ *)
+(*$T max_comp
+  max_comp poly_comp 1 2 = 2
+ *)
 let max_ord ord = min_ord (rev_ord ord)
 let max_comp comp = min_comp (rev_comp comp)
 

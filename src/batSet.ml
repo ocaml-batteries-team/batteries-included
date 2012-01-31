@@ -708,15 +708,16 @@ let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
 
 let disjoint s1 s2 = Concrete.disjoint s1.cmp s1.set s2.set
 
-(**T subset
+(*$T subset
    subset (of_list [1;2;3]) (of_list [1;2;3;4])
    not (subset (of_list [1;2;3;5]) (of_list [1;2;3;4]))
    not (subset (of_list [1;2;3;4]) (of_list [1;2;3]))
-**)
+ *)
 
-(**T compare
-   compare (of_list [1;2;3]) (of_list [1;2;3;4]) <> 0
-   compare (of_list [1;2;3]) (of_list [1;2;3;4]) = - (compare (of_list [1;2;3;4]) (of_list [1;2;3]))
-   compare (of_list [1;2;3]) (of_list [1;2;3;4]) = - (compare (of_list [1;2;3;4]) (of_list [3;1;2]))
-   compare (of_list [1;2;3]) (of_list [3;1;2]) = 0
-**)
+(*$T compare
+  compare (of_list [1;2;3]) (of_list [1;2;3;4]) <> 0
+  let a = of_list [1;2;3] and b = of_list [1;2;3;4] in compare a b = - (compare b a)
+  let a = of_list [1;2;3] and b = of_list [1;2;3;4] and c = of_list [3;1;2] in\
+    compare a b = - (compare b c)
+  compare (of_list [1;2;3]) (of_list [3;1;2]) = 0
+ *)

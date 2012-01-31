@@ -85,19 +85,22 @@ let root m n =
   else
     exp (log m /. (float_of_int n))
 
-(*$T root; approx_equal
+(*$T root
    approx_equal (root 9. 2) 3.
    approx_equal (root 8. 3) 2.
    approx_equal (root 1. 20) 1.
 *)
 
-(* sign bit is top bit, shift all other 63 bits away and test if = one *)
+(* sign bit is top bit, shift all other 63 bits away and test if = one
+
+   Negative numbers have this bit set, positive unset.
+ *)
 let signbit x = Int64.shift_right_logical (Int64.bits_of_float x) 63 = Int64.one
 
 (*$T signbit
-   signbit (-256.)
-   not (signbit 1e50)
-*)
+  signbit (-256.)
+  not (signbit 1e50)
+ *)
 
 let copysign x s =
   if signbit s then
@@ -202,7 +205,7 @@ let round_to_string ?(digits=0) x =
     | FP_infinite ->
       if x = neg_infinity then "-inf" else "inf"
     | FP_nan -> "nan"
-    
+
 (*$T round_to_string
    List.mem (round_to_string 3.) ["3."; "3"]
    Pervasives.(=) (round_to_string ~digits:0 3.) (round_to_string 3.)
@@ -213,7 +216,7 @@ let round_to_string ?(digits=0) x =
    Pervasives.(=) (round_to_string ~digits:3 (- 1.23456)) "-1.235"
    Pervasives.(=) (round_to_string ~digits:3 1.98765) "1.988"
    Pervasives.(=) (round_to_string ~digits:3 (- 1.98765)) "-1.988"
-   (try ignore (round_to_string ~digits:(-1) 3.); false with Invalid_argument "Float.round_to_string" -> true)
+   Result.(catch (round_to_string ~digits:(-1)) 3. |> is_exn (Invalid_argument "Float.round_to_string"))
    List.mem (round_to_string 0.5) ["0"; "0."; "1"; "1."]
    List.mem (round_to_string (-0.5)) ["-1"; "-1."; "0"; "0."; "-0"; "-0."]
    List.mem (round_to_string ~digits:2 0.215) ["0.21"; "0.22"]
