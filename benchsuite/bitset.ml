@@ -13,7 +13,7 @@ let farr n =
       s.(Array.unsafe_get clear_poss i) <- false;
       s.(Array.unsafe_get set_poss i) <- true;
     done;
-    for _b = 1 to 10 do 
+    for _b = 1 to 100 do 
       for i = 0 to op_count-1 do
         let _bool : bool = 
           s.(Array.unsafe_get get_poss i)
@@ -32,7 +32,7 @@ let fbs  n =
       BitSet.unset s (Array.unsafe_get clear_poss i);
       BitSet.set s (Array.unsafe_get set_poss i);
     done;
-    for _b = 1 to 10 do 
+    for _b = 1 to 100 do 
       for i = 0 to op_count-1 do
         let _bool : bool = 
           BitSet.mem s (Array.unsafe_get get_poss i)
@@ -43,5 +43,7 @@ let fbs  n =
   done
 
 
-let () = Bench.bench_n ["bitset", fbs; "array", farr]
+let () = 
+  Bench.config.Bench.gc_between_tests <- true;
+  Bench.bench_n ["bitset", fbs; "array", farr]
   |> Bench.summarize ~alpha:0.05
