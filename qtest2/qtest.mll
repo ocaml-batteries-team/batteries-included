@@ -76,7 +76,7 @@ and lexbody b acc = parse
 | '\n' { eol lexbuf; let line = B.contents b in B.clear b;
          lexbody b ({ln = Lexing.(lexbuf.lex_curr_p.pos_lnum) ; code = trim line} :: acc) lexbuf }
 | blank* "*)" { acc }
-| ([^'\n']#blank)* blank* '*'? "*)" as x
+| ([^'\n']#blank)* blank* '*'+ ")" as x
   { failwith ("runaway test body terminator: " ^ x) }
 | eof { raise @@ Unterminated_test acc }
 
@@ -85,7 +85,7 @@ and lexbody_raw b ln = parse
 | _ as c {
   if c = '\n' then eol lexbuf;
   B.add_char b c; lexbody_raw b ln lexbuf }
-| '\n'* blank* "*)" {
+| '\n' blank* "*)" {
   eol lexbuf;
   let s = B.contents b in B.clear b; [{ln; code=s}]}
 

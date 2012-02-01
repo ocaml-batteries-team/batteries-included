@@ -134,7 +134,7 @@ DONTTEST=src/batteriesHelp.ml
 TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
 TESTDEPS = $(TESTABLE) 
 
-### Test suite: extensive unit tests
+### Test suite: "offline" unit tests
 ##############################################
 
 _build/testsuite/main.byte: $(TESTDEPS)
@@ -142,7 +142,7 @@ _build/testsuite/main.byte: $(TESTDEPS)
 _build/testsuite/main.native: $(TESTDEPS)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.native
 
-### qtest: inline unit tests
+### qtest: "inline" unit tests
 ##############################################
 
 _build/$(QTESTDIR)/qtest.byte:
@@ -167,7 +167,7 @@ _build/$(QTESTDIR)/all_tests.native: $(QTESTDIR)/all_tests.ml $(QTESTDIR)/runner
 ### qtest: quick run of inline unit tests
 ##############################################
 # $ make qtest TESTABLE=foo.ml
-# will test only the module Foo.
+# will only test the module Foo.
 
 qtest-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
