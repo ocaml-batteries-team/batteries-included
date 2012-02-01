@@ -65,7 +65,7 @@ else
 endif
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk
+.PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk coverage man qtest2
 
 all: _build/qtest2/qtest
 	@echo "Build mode:" $(MODE)
@@ -73,7 +73,6 @@ all: _build/qtest2/qtest
 
 clean:
 	${RM} src/batteriesConfig.ml batteries.odocl bench.log
-	${RM} qtest/*_t.ml qtest/test_mods.mllib
 	${RM} qtest2/all_tests.ml
 	${RM} -r man/
 	$(OCAMLBUILD) -clean
@@ -107,7 +106,7 @@ uninstall: uninstall_packages
 install-doc: doc
 	mkdir -p $(DOCROOT)
 	cp -r doc/batteries/* $(DOCROOT)
-# deal with symlink that will break
+	# deal with symlink that will break
 	${RM} $(DOCROOT)/html/batteries_large.png
 	cp -f doc/batteries_large.png $(DOCROOT)/html
 	mkdir -p $(DOCROOT)/html/api
@@ -121,15 +120,26 @@ reinstall:
 	$(MAKE) uninstall
 	$(MAKE) install
 
-#List of source files that it's okay to try to test
+###############################################################################
+#	BUILDING AND RUNNING UNIT TESTS
+###############################################################################
+
+### List of source files that it's okay to try to test
+
 DONTTEST=src/batteriesHelp.ml
 TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
 TESTDEPS = $(TESTABLE) 
+
+### Test suite: extensive unit tests
+##############################################
 
 _build/testsuite/main.byte: $(TESTDEPS)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte
 _build/testsuite/main.native: $(TESTDEPS)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.native
+
+### qtest: inline unit tests
+##############################################
 
 _build/qtest2/qtest.byte:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest2/qtest.byte
@@ -140,12 +150,22 @@ _build/qtest2/qtest.native:
 _build/qtest2/qtest: _build/qtest2/qtest.$(EXT)
 	cp $< $@
 
+# extract all qtest2 unit tests into a single ml file
+qtest2/all_tests.ml: _build/qtest2/qtest.$(EXT) $(TESTABLE)
+	$< -o $@ --preamble 'open Batteries;;' extract $(TESTABLE) || rm -f $@
+
 _build/qtest2/all_tests.byte: qtest2/all_tests.ml qtest2/runner.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.byte
 _build/qtest2/all_tests.native: qtest2/all_tests.ml qtest2/runner.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.native
 
-# all tests
+# very quick run of qtest; hint: set TESTABLE=foo.ml to test only Foo.
+qtest: _build/qtest2/all_tests.$(EXT)
+	_build/qtest2/all_tests.$(EXT)
+
+### run all unit tests
+##############################################
+
 test-byte: _build/testsuite/main.byte _build/qtest2/all_tests.byte
 	_build/testsuite/main.byte
 	@echo "" # newline after "OK"
@@ -156,18 +176,22 @@ test-native: test-byte _build/testsuite/main.native _build/qtest2/all_tests.nati
 	@echo "" # newline after "OK"
 	_build/qtest2/all_tests.native
 
-# very quick run of qtest
-qtest: _build/qtest2/all_tests.native
-	_build/qtest2/all_tests.native
-
 test: $(TEST_TARGET)
-	@echo "" # newline after "OK"
+
+###############################################################################
+#	BENCHMARK SUITE
+###############################################################################
 
 bench:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS) $(BENCH_TARGETS)
 	$(RM) bench.log
 	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH) | tee -a bench.log; )
 	@echo "Benchmarking results are written to bench.log"
+
+
+###############################################################################
+#	PREPARING RELEASE FILES
+###############################################################################
 
 release:
 	$(MAKE) clean
@@ -183,24 +207,14 @@ setup.ml: _oasis
 	oasis setup
 	git commit setup.ml -m"Update setup.ml based on _oasis"
 
-##
-## Magic for test target - auto-generated test files from source comments
-##
 
-_build/build/make_suite.$(EXT): build/make_suite.mll
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) make_suite.$(EXT)
+###############################################################################
+#	CODE COVERAGE REPORTS
+###############################################################################
 
-
-#extract all qtest2 unit tests into a single ml file
-qtest2/all_tests.ml: _build/qtest2/qtest.$(EXT) $(TESTABLE)
-	$< -o $@ --preamble 'open Batteries;;' extract $(TESTABLE) || rm -f $@
-
-##
-## code coverage of the tests
-##
 coverage/index.html: $(TESTDEPS) qtest2/all_tests.ml
 	$(OCAMLBUILD) coverage/index.html
 
 coverage: coverage/index.html
 
-.PHONY: qtest/test_mods.mllib coverage man qtest2
+
