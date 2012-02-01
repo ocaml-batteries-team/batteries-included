@@ -124,24 +124,19 @@ reinstall:
 #List of source files that it's okay to try to test
 DONTTEST=src/batteriesHelp.ml
 TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
-
-TESTDEPS = $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
+TESTDEPS = $(TESTABLE) 
 
 _build/testsuite/main.byte: $(TESTDEPS)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte
 _build/testsuite/main.native: $(TESTDEPS)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.native
 
-_build/qtest/test_runner.byte: $(TESTDEPS)
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest/test_runner.byte
-_build/qtest/test_runner.native: $(TESTDEPS)
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest/test_runner.native
-
 _build/qtest2/qtest.byte:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest2/qtest.byte
 _build/qtest2/qtest.native:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest2/qtest.native
-# We want a version without extension to be installed
+
+# We want a version of qtest without extension to be installed
 _build/qtest2/qtest: _build/qtest2/qtest.$(EXT)
 	cp $< $@
 
@@ -150,32 +145,19 @@ _build/qtest2/all_tests.byte: qtest2/all_tests.ml qtest2/runner.ml
 _build/qtest2/all_tests.native: qtest2/all_tests.ml qtest2/runner.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.native
 
-#qtest only targets, for quicker test iteration
-qtest-byte: _build/qtest/test_runner.byte
-	_build/qtest/test_runner.byte
-	@echo "" # newline after "OK"
-
-qtest-native: _build/qtest/test_runner.native
-	_build/qtest/test_runner.native
-	@echo "" # newline after "OK"
-
 # all tests
-test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte _build/qtest2/all_tests.byte
+test-byte: _build/testsuite/main.byte _build/qtest2/all_tests.byte
 	_build/testsuite/main.byte
-	_build/qtest/test_runner.byte
-	_build/qtest2/all_tests.byte
 	@echo "" # newline after "OK"
-
-test-native: _build/testsuite/main.native _build/qtest/test_runner.native _build/qtest2/all_tests.native _build/testsuite/main.byte _build/qtest/test_runner.byte _build/qtest2/all_tests.byte
-	_build/testsuite/main.native
-	_build/qtest/test_runner.native
-	_build/qtest2/all_tests.native
-	_build/testsuite/main.byte
-	_build/qtest/test_runner.byte
 	_build/qtest2/all_tests.byte
 
-# only run qtest2 tests
-qtest2: _build/qtest2/all_tests.native
+test-native: test-byte _build/testsuite/main.native _build/qtest2/all_tests.native
+	_build/testsuite/main.native
+	@echo "" # newline after "OK"
+	_build/qtest2/all_tests.native
+
+# very quick run of qtest
+qtest: _build/qtest2/all_tests.native
 	_build/qtest2/all_tests.native
 
 test: $(TEST_TARGET)
@@ -208,14 +190,6 @@ setup.ml: _oasis
 _build/build/make_suite.$(EXT): build/make_suite.mll
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) make_suite.$(EXT)
 
-#convert a source file to a test suite by filtering special comments
-qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
-	_build/build/make_suite.$(EXT) $< > $@
-
-#put all the testing modules in a library
-qtest/test_mods.mllib:
-	/bin/echo -n "Quickcheck Tests " > $@
-	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
 
 #extract all qtest2 unit tests into a single ml file
 qtest2/all_tests.ml: _build/qtest2/qtest.$(EXT) $(TESTABLE)

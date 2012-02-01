@@ -1,4 +1,0 @@
-<*>: pkg_oUnit, threads, debug
-<test_mods.cma>: linkall
-<test_mods.cmxa>: linkall
-<test_runner.*>: use_batteries, use_test_mods, use_batteriesThread
