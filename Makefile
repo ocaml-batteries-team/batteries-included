@@ -65,7 +65,7 @@ else
 endif
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk coverage man qtest2
+.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 
 all: _build/qtest2/qtest
 	@echo "Build mode:" $(MODE)
@@ -152,15 +152,24 @@ _build/qtest2/qtest: _build/qtest2/qtest.$(EXT)
 
 # extract all qtest2 unit tests into a single ml file
 qtest2/all_tests.ml: _build/qtest2/qtest.$(EXT) $(TESTABLE)
-	$< -o $@ --preamble 'open Batteries;;' extract $(TESTABLE) || rm -f $@
+	@$< -o $@ --preamble 'open Batteries;;' extract $(TESTABLE) || rm -f $@
 
 _build/qtest2/all_tests.byte: qtest2/all_tests.ml qtest2/runner.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.byte
 _build/qtest2/all_tests.native: qtest2/all_tests.ml qtest2/runner.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.native
 
-# very quick run of qtest; hint: set TESTABLE=foo.ml to test only Foo.
-qtest: _build/qtest2/all_tests.$(EXT)
+
+### qtest: quick run of inline unit tests
+##############################################
+# $ make qtest TESTABLE=foo.ml
+# will test only the module Foo.
+
+qtest-clean:
+	${RM} qtest2/all_tests.ml
+	${MAKE} _build/qtest2/all_tests.$(EXT)
+
+qtest: qtest-clean
 	_build/qtest2/all_tests.$(EXT)
 
 ### run all unit tests
