@@ -4,4 +4,4 @@ testing changes against an upstream library such as INRIA's stdlib or
 Extlib.
 The benchmarks rely on the Ocaml [benchmark] library.
 
- [benchmark] http://ocaml-benchmark.sourceforge.net/
+ [benchmark] http://forge.ocamlcore.org/projects/ocaml-benchmark/
