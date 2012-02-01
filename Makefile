@@ -23,6 +23,9 @@ else
   BATTERIES_NATIVE_SHLIB ?= $(BATTERIES_NATIVE)
 endif
 
+# Directory where to find qtest
+QTESTDIR ?= qtest2
+
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
 	_build/src/batteriesHelp.cmo \
@@ -30,7 +33,7 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	_build/src/syntax/pa_strings/pa_strings.cma \
 	_build/src/syntax/pa_llist/pa_llist.cmo \
 	_build/libs/*.cmi _build/libs/*.mli \
-	_build/qtest2/qtest
+	_build/$(QTESTDIR)/qtest
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
 	_build/src/*.cmxs _build/src/*.lib _build/libs/*.cmx \
 
@@ -67,15 +70,16 @@ endif
 
 .PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 
-all: _build/qtest2/qtest
+all: _build/$(QTESTDIR)/qtest
 	@echo "Build mode:" $(MODE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
 clean:
-	${RM} src/batteriesConfig.ml batteries.odocl bench.log
-	${RM} qtest2/all_tests.ml
-	${RM} -r man/
-	$(OCAMLBUILD) -clean
+	@${RM} src/batteriesConfig.ml batteries.odocl bench.log
+	@${RM} $(QTESTDIR)/all_tests.ml
+	@${RM} -r man/
+	@$(OCAMLBUILD) -clean
+	@echo " Cleaned up working copy" # Note: ocamlbuild eats the first char!
 
 batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
 	cat $^ > $@
@@ -141,23 +145,23 @@ _build/testsuite/main.native: $(TESTDEPS)
 ### qtest: inline unit tests
 ##############################################
 
-_build/qtest2/qtest.byte:
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest2/qtest.byte
-_build/qtest2/qtest.native:
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest2/qtest.native
+_build/$(QTESTDIR)/qtest.byte:
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(QTESTDIR)/qtest.byte
+_build/$(QTESTDIR)/qtest.native:
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(QTESTDIR)/qtest.native
 
 # We want a version of qtest without extension to be installed
-_build/qtest2/qtest: _build/qtest2/qtest.$(EXT)
+_build/$(QTESTDIR)/qtest: _build/$(QTESTDIR)/qtest.$(EXT)
 	cp $< $@
 
-# extract all qtest2 unit tests into a single ml file
-qtest2/all_tests.ml: _build/qtest2/qtest.$(EXT) $(TESTABLE)
+# extract all qtest unit tests into a single ml file
+$(QTESTDIR)/all_tests.ml: _build/$(QTESTDIR)/qtest.$(EXT) $(TESTABLE)
 	@$< -o $@ --preamble 'open Batteries;;' extract $(TESTABLE) || rm -f $@
 
-_build/qtest2/all_tests.byte: qtest2/all_tests.ml qtest2/runner.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.byte
-_build/qtest2/all_tests.native: qtest2/all_tests.ml qtest2/runner.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 qtest2/all_tests.native
+_build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml $(QTESTDIR)/runner.ml
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 $(QTESTDIR)/all_tests.byte
+_build/$(QTESTDIR)/all_tests.native: $(QTESTDIR)/all_tests.ml $(QTESTDIR)/runner.ml
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 $(QTESTDIR)/all_tests.native
 
 
 ### qtest: quick run of inline unit tests
@@ -166,24 +170,24 @@ _build/qtest2/all_tests.native: qtest2/all_tests.ml qtest2/runner.ml
 # will test only the module Foo.
 
 qtest-clean:
-	${RM} qtest2/all_tests.ml
-	${MAKE} _build/qtest2/all_tests.$(EXT)
+	@${RM} $(QTESTDIR)/all_tests.ml
+	@${MAKE} _build/$(QTESTDIR)/all_tests.$(EXT)
 
 qtest: qtest-clean
-	_build/qtest2/all_tests.$(EXT)
+	@_build/$(QTESTDIR)/all_tests.$(EXT)
 
 ### run all unit tests
 ##############################################
 
-test-byte: _build/testsuite/main.byte _build/qtest2/all_tests.byte
-	_build/testsuite/main.byte
+test-byte: _build/testsuite/main.byte _build/$(QTESTDIR)/all_tests.byte
+	@_build/testsuite/main.byte
 	@echo "" # newline after "OK"
-	_build/qtest2/all_tests.byte
+	@_build/$(QTESTDIR)/all_tests.byte
 
-test-native: test-byte _build/testsuite/main.native _build/qtest2/all_tests.native
-	_build/testsuite/main.native
+test-native: test-byte _build/testsuite/main.native _build/$(QTESTDIR)/all_tests.native
+	@_build/testsuite/main.native
 	@echo "" # newline after "OK"
-	_build/qtest2/all_tests.native
+	@_build/$(QTESTDIR)/all_tests.native
 
 test: $(TEST_TARGET)
 
@@ -221,7 +225,7 @@ setup.ml: _oasis
 #	CODE COVERAGE REPORTS
 ###############################################################################
 
-coverage/index.html: $(TESTDEPS) qtest2/all_tests.ml
+coverage/index.html: $(TESTDEPS) $(QTESTDIR)/all_tests.ml
 	$(OCAMLBUILD) coverage/index.html
 
 coverage: coverage/index.html
