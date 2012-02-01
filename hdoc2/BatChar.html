@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -115,7 +112,7 @@
 </div>
 <center><h1>Module <a href="type_BatChar.html">BatChar</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> BatChar: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on characters. 
+<pre><span class="keyword">module</span> BatChar: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on characters.
 <p>
 
     Characters range upon Latin-1 encoding, i.e. languages used in
@@ -131,7 +128,7 @@
 <hr width="100%">
 <pre><span id="VALis_whitespace"><span class="keyword">val</span> is_whitespace</span> : <code class="type">char -> bool</code></pre><div class="info">
 Determine if a character is a whitespace.
-    Whitespace characters are defined as 
+    Whitespace characters are defined as
     <code class="code"><span class="string">' '</span></code>, <code class="code"><span class="string">'\010'</span></code>, <code class="code"><span class="string">'\013'</span></code>, <code class="code"><span class="string">'\009'</span></code>, <code class="code"><span class="string">'\026'</span></code>
     and <code class="code"><span class="string">'\012'</span></code>.<br>
 </div>
@@ -182,7 +179,7 @@ Determine if a character is a newline.
 </div>
 <pre><span id="VALof_digit"><span class="keyword">val</span> of_digit</span> : <code class="type">int -> char</code></pre><div class="info">
 Return the character representing a given digit.
-    Raise <code class="code"><span class="constructor">Invalid_argument</span> <span class="string">"Char.of_digit"</span></code> if the
+    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if the
     argument is outside the range 0--9<br>
 </div>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
@@ -202,4 +199,4 @@ Infix submodule regrouping all infix operators
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
 <br>
 <span id="7_Printing"><div class="h7">Printing</div></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Char.t -> unit</code></pre><pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">char <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatChar.Incubator.html">Incubator</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Char.t -> unit</code></pre><pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">char <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALcmp"><span class="keyword">val</span> cmp</span> : <code class="type">char -> char -> int</code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">char <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">char <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><pre><span class="keyword">module</span> <a href="BatChar.Incubator.html">Incubator</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

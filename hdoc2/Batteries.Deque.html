@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -129,13 +126,15 @@ The type of double-ended queues<br>
 A synonym for convenience<br>
 </div>
 
+<pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
+<pre><span class="keyword">include</span> <a href="BatInterfaces.Mappable.html">BatInterfaces.Mappable</a></pre>
 <pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> int</code></pre><div class="info">
 <code class="code">size dq</code> is the number of elements in the <code class="code">dq</code>. O(1)<br>
 </div>
 <br>
 <span id="6_Construction"><h6>Construction</h6></span><br>
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
-The empty dequeue. O(1)<br>
+The empty deque.<br>
 </div>
 <pre><span id="VALcons"><span class="keyword">val</span> cons</span> : <code class="type">'a -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">cons x dq</code> adds <code class="code">x</code> to the front of <code class="code">dq</code>. O(1)<br>
@@ -228,7 +227,9 @@ The empty dequeue. O(1)<br>
 </div>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">enum dq</code> is an enumeration of the elements of <code class="code">dq</code> from the
-      front to the rear.<br>
+      front to the rear.
+      This function is O(1), but generating each element of the enumeration
+      is amortized O(1), and O(n) worst case.<br>
 </div>
 <br>
 <span id="6_Printing"><h6>Printing</h6></span><br>

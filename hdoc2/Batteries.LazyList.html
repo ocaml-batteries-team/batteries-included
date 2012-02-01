@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -202,8 +199,8 @@ As <code class="code">cons</code>: <code class="code">x^:^l</code> is the lazy l
 <span id="6_Listcreation"><h6>List creation</h6></span><br>
 <pre><span id="VALfrom"><span class="keyword">val</span> from</span> : <code class="type">(unit -> 'a) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">from next</code> creates a (possibly infinite) lazy list from the successive
-     results of <code class="code">next</code>. 
-     The function <i>may</i> raise <code class="code"><span class="constructor">LazyList</span>.<span class="constructor">No_more_elements</span></code> to denote the end of the 
+     results of <code class="code">next</code>.
+     The function <i>may</i> raise <code class="code"><span class="constructor">LazyList</span>.<span class="constructor">No_more_elements</span></code> to denote the end of the
      list.<br>
 </div>
 <pre><span id="VALfrom_while"><span class="keyword">val</span> from_while</span> : <code class="type">(unit -> 'a option) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
@@ -214,7 +211,7 @@ As <code class="code">cons</code>: <code class="code">x^:^l</code> is the lazy l
 <pre><span id="VALfrom_loop"><span class="keyword">val</span> from_loop</span> : <code class="type">'a -> ('a -> 'b * 'a) -> 'b <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">from_loop data next</code> creates a (possibly infinite) lazy list from
      the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
-     result, etc. The list ends whenever the function raises 
+     result, etc. The list ends whenever the function raises
      <code class="code"><span class="constructor">LazyList</span>.<span class="constructor">No_more_elements</span></code><br>
 </div>
 <pre><span id="VALseq"><span class="keyword">val</span> seq</span> : <code class="type">'a -> ('a -> 'a) -> ('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
@@ -229,9 +226,9 @@ As <code class="code">cons</code>: <code class="code">x^:^l</code> is the lazy l
      result, etc. The list ends whenever the function returns <code class="code"><span class="constructor">None</span></code><br>
 </div>
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
-Similar to <code class="code"><span class="constructor">Array</span>.init</code>, <code class="code">init n f</code> returns the lazy list 
-      containing the results of (f 0),(f 1).... (f (n-1)).
-      Raise <code class="code"><span class="constructor">Invalid_arg</span> <span class="string">"LazyList.init"</span></code> if n &lt; 0.<br>
+Similar to <code class="code"><span class="constructor">Array</span>.init</code>, <code class="code">init n f</code> returns the lazy list
+      containing the results of (f 0),(f 1).... (f (n-1)).<br>
+<b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"LazyList.init"</span></code> if n &lt; 0.<br>
 </div>
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Similar to <code class="code"><span class="constructor">String</span>.make</code>, <code class="code">make n x</code> returns a
@@ -526,7 +523,7 @@ Lazy conversion to enumeration<br>
 Lazy conversion from lists
 <p>
 
-   Albeit slower than eager conversion, this is the default mechanism for converting from regular 
+   Albeit slower than eager conversion, this is the default mechanism for converting from regular
    lists to lazy lists.  This for two reasons :
    * if you're using lazy lists, total speed probably isn't as much an issue as start-up speed
    * this will let you convert regular infinite lists to lazy lists.<br>
@@ -552,21 +549,21 @@ Eager conversion from array<br>
 Lazy filtering.
 <p>
 
-   <code class="code">filter p l</code> returns all the elements of the list <code class="code">l</code>  that satisfy the predicate <code class="code">p</code>. 
+   <code class="code">filter p l</code> returns all the elements of the list <code class="code">l</code>  that satisfy the predicate <code class="code">p</code>.
    The order of the elements in the input list is preserved.<br>
 </div>
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Eager existential.
 <p>
 
-   <code class="code">exists p [^ a0; a1; ... ^]</code> checks if at least one element of the list satisfies the predicate <code class="code">p</code>. 
+   <code class="code">exists p [^ a0; a1; ... ^]</code> checks if at least one element of the list satisfies the predicate <code class="code">p</code>.
    That is, it returns <code class="code"> (p a0) <span class="keywordsign">||</span> (p a1) <span class="keywordsign">||</span> ... </code>.<br>
 </div>
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Eager universal.
 <p>
 
-   <code class="code">for_all p [^ a0; a1; ... ^]</code> checks if all elements of the list satisfy the predicate <code class="code">p</code>. 
+   <code class="code">for_all p [^ a0; a1; ... ^]</code> checks if all elements of the list satisfy the predicate <code class="code">p</code>.
    That is, it returns <code class="code">(p a0) <span class="keywordsign">&amp;&amp;</span> (p a1) <span class="keywordsign">&amp;&amp;</span> ... </code>.<br>
 </div>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
@@ -583,7 +580,7 @@ Lazily eliminate some elements and transform others.
    <code class="code"><span class="keyword">match</span> f a0 <span class="keyword">with</span>
      <span class="keywordsign">|</span> <span class="constructor">Some</span> x0 <span class="keywordsign">-&gt;</span> x0 ^:^ (<span class="keyword">match</span> f a1 <span class="keyword">with</span>
             <span class="keywordsign">|</span> <span class="constructor">Some</span> x1 <span class="keywordsign">-&gt;</span> x1 ^:^ ...
-            <span class="keywordsign">|</span> <span class="constructor">None</span> <span class="keywordsign">-&gt;</span> [^ ^]) 
+            <span class="keywordsign">|</span> <span class="constructor">None</span> <span class="keywordsign">-&gt;</span> [^ ^])
      <span class="keywordsign">|</span> <span class="constructor">None</span>   <span class="keywordsign">-&gt;</span> [^ ^] </code>.<br>
 </div>
 <br>

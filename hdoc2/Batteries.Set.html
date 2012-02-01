@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -214,22 +211,30 @@ Total ordering between sets. Can be used as the ordering function
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'b <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f x</code> creates a new set with elements <code class="code">f a0</code>,
       <code class="code">f a1</code>... <code class="code">f aN</code>, where <code class="code">a0</code>, <code class="code">a1</code>, ..., <code class="code">aN</code> are the
-      values contained in <code class="code">x</code><br>
+      values contained in <code class="code">x</code>
+<p>
+
+      The resulting map uses the polymorphic <code class="code">compare</code> function to
+      order elements.<br>
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter p s</code> returns the set of all elements in <code class="code">s</code>
-      that satisfy predicate <code class="code">p</code>.<br>
+    that satisfy predicate <code class="code">p</code>.<br>
 </div>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'b <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f m</code> combines the features of <code class="code">filter</code> and
       <code class="code">map</code>.  It calls calls <code class="code">f a0</code>, <code class="code">f a1</code>, <code class="code">f aN</code> where <code class="code">a0,a1..an</code>
       are the elements of <code class="code">m</code> and returns the set of pairs <code class="code">bi</code>
       such as <code class="code">f ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the
-      corresponding element of <code class="code">m</code> is discarded).<br>
+      corresponding element of <code class="code">m</code> is discarded).
+<p>
+
+      The resulting map uses the polymorphic <code class="code">compare</code> function to
+      order elements.<br>
 </div>
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
 <code class="code">fold f s a</code> computes <code class="code">(f xN ... (f x1 (f x0 a))...)</code>,
-      where <code class="code">x0,x1..xN</code> are the elements of <code class="code">s</code>, in increasing order.<br>
+    where <code class="code">x0,x1..xN</code> are the elements of <code class="code">s</code>, in increasing order.<br>
 </div>
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> bool) -> 'a <a href="BatSet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">exists p s</code> checks if at least one element of

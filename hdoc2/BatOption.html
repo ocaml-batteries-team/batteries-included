@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -145,7 +142,12 @@
 </div>
 <pre><span id="VAL(|?)"><span class="keyword">val</span> (|?)</span> : <code class="type">'a option -> 'a -> 'a</code></pre><div class="info">
 Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, with the arguments reversed.
-    <code class="code"><span class="constructor">None</span> |? 10</code> returns <code class="code">10</code>, while <code class="code"><span class="constructor">Some</span> <span class="string">"foo"</span> |? <span class="string">"bar"</span></code> returns <code class="code"><span class="string">"foo"</span></code>.<br>
+    <code class="code"><span class="constructor">None</span> |? 10</code> returns <code class="code">10</code>, while <code class="code"><span class="constructor">Some</span> <span class="string">"foo"</span> |? <span class="string">"bar"</span></code> returns <code class="code"><span class="string">"foo"</span></code>.
+<p>
+
+    <b>Note</b> This operator does not short circuit like <code class="code">( <span class="keywordsign">||</span> )</code> and <code class="code">( <span class="keywordsign">&amp;&amp;</span> )</code>.
+    Both arguments will be evaluated.<br>
+<b>Since</b> 2.0<br>
 </div>
 <pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">('a -> 'b) -> 'b -> 'a option -> 'b</code></pre><div class="info">
 <code class="code">map_default f x (<span class="constructor">Some</span> v)</code> returns <code class="code">f v</code> and <code class="code">map_default f x <span class="constructor">None</span></code>
@@ -158,7 +160,7 @@ Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constru
 <code class="code">is_some (<span class="constructor">Some</span> x)</code> returns <code class="code"><span class="keyword">true</span></code> otherwise it returns <code class="code"><span class="keyword">false</span></code>.<br>
 </div>
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a option -> 'a</code></pre><div class="info">
-<code class="code">get (<span class="constructor">Some</span> x)</code> returns <code class="code">x</code> and <code class="code">get <span class="constructor">None</span></code> raises <code class="code"><span class="constructor">No_value</span></code>.<br>
+<code class="code">get (<span class="constructor">Some</span> x)</code> returns <code class="code">x</code>.<br>
 </div>
 <pre><span id="VALget_exn"><span class="keyword">val</span> get_exn</span> : <code class="type">'a option -> exn -> 'a</code></pre><div class="info">
 <code class="code">get_exn (<span class="constructor">Some</span> x) e</code> returns <code class="code">x</code> and <code class="code">get_exn <span class="constructor">None</span> e</code> raises <code class="code">e</code>.<br>
@@ -176,15 +178,11 @@ Test for equality between option types, possibly using a custom
 </div>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a option -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">enum (<span class="constructor">Some</span> x)</code> returns the singleton <code class="code">x</code>, while <code class="code">enum <span class="constructor">None</span></code> returns
-    the empty enumeration<br>
+    the empty enumeration.<br>
 </div>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info">
-<code class="code">of_enum e</code> consumes the first element of <code class="code">e</code>, if it exists, and 
-    returns <code class="code"><span class="constructor">Some</span> e</code>. If <code class="code">e</code> is empty, return <code class="code"><span class="constructor">None</span></code><br>
-</div>
-<pre><span id="EXCEPTIONNo_value"><span class="keyword">exception</span> No_value</span></pre>
-<div class="info">
-Raised when calling <code class="code">get <span class="constructor">None</span></code>.<br>
+<code class="code">of_enum e</code> consumes the first element of <code class="code">e</code>, if it exists, and
+    returns <code class="code"><span class="constructor">Some</span> e</code>. If <code class="code">e</code> is empty, return <code class="code"><span class="constructor">None</span></code>.<br>
 </div>
 <br>
 <span id="6_TheOptionMonad"><h6>The Option Monad</h6></span><br>

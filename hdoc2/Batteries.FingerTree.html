@@ -4,18 +4,16 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatConcurrent.html">
-<link rel="next" href="BatDeque.html">
-<link rel="Up" href="index.html">
+<link rel="previous" href="Batteries.Heap.html">
+<link rel="next" href="Batteries.Logger.html">
+<link rel="Up" href="Batteries.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -104,33 +101,77 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : BatCounter</title>
+<link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : Batteries.FingerTree</title>
 </head>
 <body>
-<div class="navbar"><a href="BatConcurrent.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatDeque.html">Next</a>
+<div class="navbar"><a href="Batteries.Heap.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Logger.html">Next</a>
 </div>
-<center><h1>Module <a href="type_BatCounter.html">BatCounter</a></h1></center>
+<center><h1>Module <a href="type_Batteries.FingerTree.html">Batteries.FingerTree</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> BatCounter: <code class="code"><span class="keyword">sig</span></code> <a href="BatCounter.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Counter metrics are for keeping track of how many of something
-    there are, being incremented and decremented (and cleared,
-    occasionally). This implementation guarantees a range of values no
-    smaller than the ocaml <code class="code">int</code> type.
+<pre><span class="keyword">module</span> FingerTree: <code class="type">BatFingerTree</code></pre><hr width="100%">
+<br><code><span id="TYPEmonoid"><span class="keyword">type</span> <code class="type">'a</code> monoid</span> = {</code><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code>zero&nbsp;: <code class="type">'a</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The neutral element of the monoid.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code>combine&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><code class="code">combine</code> should be associative, and have <code class="code">zero</code> as neutral element.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+}
+
+<div class="info">
+The type of the element of a monoid.<br>
+</div>
+
+<pre><span id="EXCEPTIONEmpty"><span class="keyword">exception</span> Empty</span></pre>
+<div class="info">
+An exception that is thrown by various operations when
+    trying to get a non existing element.<br>
+</div>
+<pre><span class="keyword">module type</span> <a href="BatFingerTree.S.html">S</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatFingerTree.Generic.html">Generic</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.Generic.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
+
+<pre><span class="keyword">include</span> <a href="BatFingerTree.S.html">BatFingerTree.S</a></pre>
+<pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<code class="code">size t</code> returns the number of elements in the sequence.
 <p>
 
-    Thread Safety is planned with the introduction of an AtomicInt
-    datatype.<br>
-<hr width="100%">
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
-<div class="info">
-The type of a counter metric<br>
+    Unlike the generic <code class="code">size</code> on finger trees, this one has complexity O(1).<br>
 </div>
+<pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int -> 'a <a href="BatFingerTree.html#TYPEt">t</a> * 'a <a href="BatFingerTree.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">split_at</code> is equivalent to <code class="code"><span class="constructor">List</span>.split_at</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> when the index is out of bounds.
+<p>
 
-<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatCounter.html#TYPEt">t</a></code></pre><div class="info">
-Make a new counter<br>
+    O(log(n)).<br>
 </div>
-<pre><span id="VALinc"><span class="keyword">val</span> inc</span> : <code class="type"><a href="BatCounter.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-Increment and add an integer to the counter<br>
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">int -> 'a <a href="BatFingerTree.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<code class="code">get i t</code> returns the <code class="code">i</code>-th element of <code class="code">t</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> when the index is out of bounds.
+<p>
+
+    O(log(n)).<br>
 </div>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatCounter.html#TYPEt">t</a> -> int -> unit</code></pre><pre><span id="VALdec"><span class="keyword">val</span> dec</span> : <code class="type"><a href="BatCounter.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatCounter.html#TYPEt">t</a> -> int -> unit</code></pre><pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="BatCounter.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="BatCounter.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALget_and_clear"><span class="keyword">val</span> get_and_clear</span> : <code class="type"><a href="BatCounter.html#TYPEt">t</a> -> int</code></pre></body></html>
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">int -> 'a -> 'a <a href="BatFingerTree.html#TYPEt">t</a> -> 'a <a href="BatFingerTree.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">set i v t</code> returns <code class="code">t</code> where the <code class="code">i</code>-th element is now <code class="code">v</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> when the index is out of bounds.
+<p>
+
+    O(log(n)).<br>
+</div>
+<pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type">int -> ('a -> 'a) -> 'a <a href="BatFingerTree.html#TYPEt">t</a> -> 'a <a href="BatFingerTree.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">update i f t</code> returns <code class="code">t</code> where the <code class="code">i</code>-th element is now <code class="code">f (get i t)</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> when the index is out of bounds.
+<p>
+
+    O(log(n)).<br>
+</div>
+</body></html>

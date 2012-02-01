@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -215,7 +212,7 @@ Returns a string containing one given character.
 </div>
 <pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">string -> int</code></pre><div class="info">
 Returns the integer represented by the given string or raises
-      <code class="code"><span class="constructor">Failure</span> <span class="string">"int_of_string"</span></code> if the string does not represent an
+      <code class="code"><span class="constructor">Failure</span></code> if the string does not represent an
       integer. This follows OCaml's int literal rules, so "0x"
       prefixes hexadecimal integers, "0o" for octal and "0b" for
       binary.  Underscores within the number are allowed for
@@ -224,10 +221,11 @@ Returns the integer represented by the given string or raises
 
       Examples: <code class="code"> <span class="constructor">String</span>.to_int <span class="string">"8_480"</span> = <span class="constructor">String</span>.to_int <span class="string">"0x21_20"</span> </code>
       <code class="code"> <span class="keyword">try</span> ignore(<span class="constructor">String</span>.to_int <span class="string">"2,3"</span>); <span class="keyword">false</span> <span class="keyword">with</span> <span class="constructor">Failure</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span> </code><br>
+<b>Raises</b> <code>Failure</code> if the string does not represent an integer.<br>
 </div>
 <pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">string -> float</code></pre><div class="info">
 Returns the float represented by the given string or raises
-      <code class="code"><span class="constructor">Failure</span> <span class="string">"float_of_string"</span></code> if the string does not represent a float.
+      <code class="code"><span class="constructor">Failure</span></code> if the string does not represent a float.
       Decimal points aren't required in the given string, as they are
       for float literals in OCaml, but otherwise the rules for float
       literals apply.
@@ -236,6 +234,7 @@ Returns the float represented by the given string or raises
       Examples: <code class="code"><span class="constructor">String</span>.to_float <span class="string">"12.34e-1"</span> = <span class="constructor">String</span>.to_float <span class="string">"1.234"</span></code>
       <code class="code"><span class="constructor">String</span>.to_float <span class="string">"1"</span> = 1.</code>
       <code class="code"><span class="keyword">try</span> ignore(<span class="constructor">String</span>.to_float <span class="string">""</span>); <span class="keyword">false</span> <span class="keyword">with</span> <span class="constructor">Failure</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span></code><br>
+<b>Raises</b> <code>Failure</code> if the string does not represent a float.<br>
 </div>
 <br>
 <span id="6_Stringtraversals"><h6>String traversals</h6></span><br>
@@ -311,6 +310,10 @@ Returns the float represented by the given string or raises
 <pre><span id="VALfind_from"><span class="keyword">val</span> find_from</span> : <code class="type">string -> int -> string -> int</code></pre><div class="info">
 <code class="code">find_from s ofs x</code> behaves as <code class="code">find s x</code> but starts searching
       at offset <code class="code">ofs</code>. <code class="code">find s x</code> is equivalent to <code class="code">find_from s 0 x</code>.<br>
+<b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not a substring of <code class="code">tail ofs s</code>
+<p>
+
+      Example: <code class="code"><span class="constructor">String</span>.find_from <span class="string">"foobarbaz"</span> 4 <span class="string">"ba"</span> = 6</code><br>
 </div>
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">string -> string -> int</code></pre><div class="info">
 <code class="code">rfind s x</code> returns the starting index of the last occurrence
@@ -331,6 +334,10 @@ Returns the float represented by the given string or raises
 
     <b>Beware</b>, it search between the <em>beginning</em> of the string to
     the offset <code class="code">ofs</code>, <em>not</em> between <code class="code">ofs</code> and the end.<br>
+<b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not a substring of <code class="code">head ofs s</code>
+<p>
+
+    Example: <code class="code"><span class="constructor">String</span>.rfind_from <span class="string">"foobarbaz"</span> 6 <span class="string">"ba"</span> = 6</code><br>
 </div>
 <pre><span id="VALends_with"><span class="keyword">val</span> ends_with</span> : <code class="type">string -> string -> bool</code></pre><div class="info">
 <code class="code">ends_with s x</code> returns <code class="code"><span class="keyword">true</span></code> if the string <code class="code">s</code> is ending with <code class="code">x</code>, <code class="code"><span class="keyword">false</span></code> otherwise.
@@ -469,7 +476,7 @@ Returns the string without the chars if they are at the beginning or
 </div>
 <br>
 <span id="6_Splittingaround"><h6>Splitting around</h6></span><br>
-<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> string -> string * string</code></pre><div class="info">
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> by:string -> string * string</code></pre><div class="info">
 <code class="code">split s sep</code> splits the string <code class="code">s</code> between the first
       occurrence of <code class="code">sep</code>, and returns the two parts before
       and after the occurence (excluded).<br>
@@ -480,7 +487,7 @@ Returns the string without the chars if they are at the beginning or
       <code class="code"><span class="constructor">String</span>.split <span class="string">"abcabcabc"</span> <span class="string">"bc"</span> = (<span class="string">"a"</span>,<span class="string">"abcabc"</span>)</code>
       <code class="code"><span class="constructor">String</span>.split <span class="string">"abcabcabc"</span> <span class="string">""</span> = (<span class="string">""</span>,<span class="string">"abcabcabc"</span>)</code><br>
 </div>
-<pre><span id="VALrsplit"><span class="keyword">val</span> rsplit</span> : <code class="type">string -> string -> string * string</code></pre><div class="info">
+<pre><span id="VALrsplit"><span class="keyword">val</span> rsplit</span> : <code class="type">string -> by:string -> string * string</code></pre><div class="info">
 <code class="code">rsplit s sep</code> splits the string <code class="code">s</code> between the last occurrence
     of <code class="code">sep</code>, and returns the two parts before and after the
     occurence (excluded).<br>
@@ -489,7 +496,7 @@ Returns the string without the chars if they are at the beginning or
 
     Example: <code class="code"><span class="constructor">String</span>.rsplit <span class="string">"abcabcabc"</span> <span class="string">"bc"</span> = (<span class="string">"abcabca"</span>,<span class="string">""</span>)</code><br>
 </div>
-<pre><span id="VALnsplit"><span class="keyword">val</span> nsplit</span> : <code class="type">string -> string -> string list</code></pre><div class="info">
+<pre><span id="VALnsplit"><span class="keyword">val</span> nsplit</span> : <code class="type">string -> by:string -> string list</code></pre><div class="info">
 <code class="code">nsplit s sep</code> splits the string <code class="code">s</code> into a list of strings
       which are separated by <code class="code">sep</code> (excluded).
       <code class="code">nsplit <span class="string">""</span> _</code> returns the empty list.
@@ -577,8 +584,8 @@ Compare two strings, sorting "abc32def" before "abc210abc".
 <p>
 
       Algorithm: Ignore identical prefixes, if first character
-      difference is numeric, parse the whole number as an int and
-      compare.
+      difference is numeric, go back to beginning of number parse the
+      whole number as an int and compare.
 <p>
 
       Example: <code class="code"><span class="constructor">String</span>.numeric_compare <span class="string">"xx32"</span> <span class="string">"xx210"</span> = -1</code><br>
@@ -586,7 +593,7 @@ Compare two strings, sorting "abc32def" before "abc210abc".
 <pre><span class="keyword">module</span> <a href="BatString.NumString.html">NumString</a>: <code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="type">  with type t = t</code></pre><div class="info">
 uses numeric_compare as its ordering function
 </div>
-<br>
+<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">String.t -> String.t -> bool</code></pre><br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
 <br>
 <span id="7_Printing"><div class="h7">Printing</div></span><br>
@@ -615,4 +622,10 @@ Print a string, with quotes as added by the <code class="code">quote</code> func
    <code class="code"><span class="constructor">String</span>.print_quoted stdout <span class="string">"\n"</span></code> prints <code class="code"><span class="string">"\n"</span></code> (not the escaped
    character, but <code class="code">'\'</code> then <code class="code"><span class="string">'n'</span></code>).<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">String.t <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALunquoted_printer"><span class="keyword">val</span> unquoted_printer</span> : <code class="type">String.t <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre></body></html>
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">String.t <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALunquoted_printer"><span class="keyword">val</span> unquoted_printer</span> : <code class="type">String.t <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatString.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Exceptionless counterparts for error-raising operations
+</div>
+<pre><span class="keyword">module</span> <a href="BatString.Cap.html">Cap</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Capabilities for strings.
+</div>
+</body></html>

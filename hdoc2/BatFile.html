@@ -5,17 +5,15 @@
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatEnum.html">
-<link rel="next" href="BatFloat.html">
+<link rel="next" href="BatFingerTree.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -114,7 +111,7 @@
 <body>
 <div class="navbar"><a href="BatEnum.html">Previous</a>
 &nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatFloat.html">Next</a>
+&nbsp;<a href="BatFingerTree.html">Next</a>
 </div>
 <center><h1>Module <a href="type_BatFile.html">BatFile</a></h1></center>
 <br>
@@ -142,7 +139,7 @@
     be represented with an <code class="code">int</code> on a 32-bit machine.<br>
 </div>
 <br>
-<span id="6_Filepermissions"><h6>File permissions</h6></span> 
+<span id="6_Filepermissions"><h6>File permissions</h6></span>
 <p>
 
     File permissions are used when creating a file to allow controlling which users
@@ -181,15 +178,15 @@ Give the permission to execute the file to the group
    containing the user. Ignored under Windows.<br>
 </div>
 <pre><span id="VALother_read"><span class="keyword">val</span> other_read</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
-Give the permission to read the file to the rest 
+Give the permission to read the file to the rest
    of the world. Ignored under Windows.<br>
 </div>
 <pre><span id="VALother_write"><span class="keyword">val</span> other_write</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
-Give the permission to modify the file to the rest 
+Give the permission to modify the file to the rest
    of the world. Ignored under Windows.<br>
 </div>
 <pre><span id="VALother_exec"><span class="keyword">val</span> other_exec</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
-Give the permission to execute the file to the rest 
+Give the permission to execute the file to the rest
    of the world. Ignored under Windows.<br>
 </div>
 <pre><span id="VALperm"><span class="keyword">val</span> perm</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a> list -> <a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
@@ -199,6 +196,7 @@ Join permissions<br>
 Create a permission from a Unix-style octal integer.
    See your favorite Unix documentation on <code class="code">chmod</code>
    for more details.<br>
+<b>Raises</b> <code>Invalid_argument</code> if given number outside the <code class="code">[0, 0o777]</code> range<br>
 </div>
 <pre><span id="VALset_permissions"><span class="keyword">val</span> set_permissions</span> : <code class="type">string -> <a href="BatFile.html#TYPEpermission">permission</a> -> unit</code></pre><div class="info">
 Set the permissions on a file.<br>
@@ -223,7 +221,7 @@ As <a href="BatFile.html#VALset_permissions"><code class="code"><span class="con
 </div>
 <pre><span id="VALwith_file_in"><span class="keyword">val</span> with_file_in</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> (<a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> 'a) -> 'a</code></pre><div class="info">
 <code class="code">with_file_in file_name f</code> opens the file named <code class="code">file_name</code> for reading,
-    invokes <code class="code">f</code> to process the contents of that file then, once <code class="code">f</code> has returned 
+    invokes <code class="code">f</code> to process the contents of that file then, once <code class="code">f</code> has returned
     or triggered an exception, closes the file before proceeding.<br>
 </div>
 <br>
@@ -248,7 +246,7 @@ Flags governing file output; they correspond to the relevant
 </div>
 <pre><span id="VALwith_file_out"><span class="keyword">val</span> with_file_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a) -> 'a</code></pre><div class="info">
 <code class="code">with_file_out file_name f</code> opens the file named <code class="code">file_name</code> for writing,
-    invokes <code class="code">f</code> to write onto that file then, once <code class="code">f</code> has returned or triggered 
+    invokes <code class="code">f</code> to write onto that file then, once <code class="code">f</code> has returned or triggered
     an exception, closes the file before proceeding.<br>
 </div>
 <br>

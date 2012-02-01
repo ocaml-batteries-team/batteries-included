@@ -4,18 +4,14 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="Batteries.Option.html">
-<link rel="next" href="Batteries.RefList.html">
-<link rel="Up" href="Batteries.html">
+<link rel="Up" href="BatFingerTree.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +25,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +40,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -104,28 +99,48 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : Batteries.OptParse</title>
+<link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : BatFingerTree.Generic</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Option.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.RefList.html">Next</a>
-</div>
-<center><h1>Module <a href="type_Batteries.OptParse.html">Batteries.OptParse</a></h1></center>
+<div class="navbar">&nbsp;<a href="BatFingerTree.html">Up</a>
+&nbsp;</div>
+<center><h1>Module <a href="type_BatFingerTree.Generic.html">BatFingerTree.Generic</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> OptParse: <code class="type">BatOptParse</code></pre><hr width="100%">
-<pre><span class="keyword">module</span> <a href="BatOptParse.Opt.html">Opt</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.Opt.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-This module contains the basic functions and types for defining
-  new option types and accessing the values of options.
+<pre><span class="keyword">module</span> Generic: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.Generic.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span class="keyword">include</span> <a href="BatFingerTree.S.html">BatFingerTree.S</a></pre>
+<pre><span id="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type">(('a -> bool) -> ('b, 'a) fg -> 'b, 'b, 'a) wrap</code></pre><div class="info">
+<code class="code">lookup p t</code>, when <code class="code">p</code> is monotonic, returns the first element
+      of the sequence for which the measure of its predecessors in the
+      sequence (itself included) satisfies <code class="code">p</code>.<br>
+<b>Raises</b> <code>Empty</code> is there is no such element.
+<p>
+
+      O(log(n)).
+<p>
+
+      When <code class="code">p</code> is not monotonic, take a look at the code or at the paper
+      cited above and see if you understand something (lookup is a
+      specialized version of splitTree that returns the element without
+      building the left and right tree).<br>
 </div>
-<pre><span class="keyword">module</span> <a href="BatOptParse.StdOpt.html">StdOpt</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.StdOpt.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-This module contains various standard options.
+<pre><span id="VALmeasure"><span class="keyword">val</span> measure</span> : <code class="type">(('a, 'b) fg -> 'b, 'a, 'b) wrap</code></pre><div class="info">
+<code class="code">measure m</code> gives the measure of the whole tree, whose meaning
+      depends on the measure chosen.
+<p>
+
+      O(1).<br>
 </div>
-<pre><span class="keyword">module</span> <a href="BatOptParse.Formatter.html">Formatter</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.Formatter.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-This module contains the types and functions for implementing
-  custom usage message formatters.
-</div>
-<pre><span class="keyword">module</span> <a href="BatOptParse.OptParser.html">OptParser</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.OptParser.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-This module contains the option parser itself.
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">(('a -> bool) -> ('b, 'a) fg -> ('b, 'a) fg * ('b, 'a) fg, 'b, 'a) wrap</code></pre><div class="info">
+<code class="code">split p t</code>, when <code class="code">p</code> is monotonic, returns <code class="code">(t1, t2)</code> where
+      <code class="code">t1</code> is the longest prefix of <code class="code">t</code> whose measure does not satifies
+      <code class="code">p</code>, and <code class="code">t2</code> is the rest of <code class="code">t</code>.<br>
+<b>Raises</b> <code>Empty</code> is there is no such element
+<p>
+
+      O(log(n)).
+<p>
+
+      When <code class="code">p</code> is not monotonic, take a look at the code or at the paper
+      cited above and see if you understand something.<br>
 </div>
 </body></html>

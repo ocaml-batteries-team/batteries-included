@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -104,7 +101,8 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : Batteries.Buffer</title>
+<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<title>Batteries user guide : Batteries.Buffer</title>
 </head>
 <body>
 <div class="navbar"><a href="Batteries.Array.html">Previous</a>
@@ -113,7 +111,117 @@
 </div>
 <center><h1>Module <a href="type_Batteries.Buffer.html">Batteries.Buffer</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> Buffer: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.Buffer.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<pre><span class="keyword">include</span> Buffer</pre>
-<pre><span class="keyword">include</span> <a href="BatBuffer.html">BatBuffer</a></pre>
-</body></html>
+<pre><span class="keyword">module</span> Buffer: <code class="type">BatBuffer</code></pre><hr width="100%">
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Buffer.t</code> </pre>
+<div class="info">
+The abstract type of buffers.<br>
+</div>
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> <a href="BatBuffer.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">create n</code> returns a fresh buffer, initially empty.
+   The <code class="code">n</code> parameter is the initial size of the internal string
+   that holds the buffer contents. That string is automatically
+   reallocated when more than <code class="code">n</code> characters are stored in the buffer,
+   but shrinks back to <code class="code">n</code> characters when <code class="code">reset</code> is called.
+   For best performance, <code class="code">n</code> should be of the same order of magnitude
+   as the number of characters that are expected to be stored in
+   the buffer (for instance, 80 for a buffer that holds one output
+   line).  Nothing bad will happen if the buffer grows beyond that
+   limit, however. In doubt, take <code class="code">n = 16</code> for instance.
+   If <code class="code">n</code> is not between 1 and <code class="code"><span class="constructor">Sys</span>.max_string_length</code>, it will
+   be clipped to that interval.<br>
+</div>
+<pre><span id="VALcontents"><span class="keyword">val</span> contents</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> string</code></pre><div class="info">
+Return a copy of the current contents of the buffer.
+   The buffer itself is unchanged.<br>
+</div>
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> int -> string</code></pre><div class="info">
+<code class="code"><span class="constructor">Buffer</span>.sub b off len</code> returns (a copy of) the substring of the
+current contents of the buffer <code class="code">b</code> starting at offset <code class="code">off</code> of length
+<code class="code">len</code> bytes. May raise <code class="code"><span class="constructor">Invalid_argument</span></code> if out of bounds request. The
+buffer itself is unaffected.<br>
+</div>
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> string -> int -> int -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">Buffer</span>.blit src srcoff dst dstoff len</code> copies <code class="code">len</code> characters from
+   the current contents of the buffer <code class="code">src</code>, starting at offset <code class="code">srcoff</code>
+   to string <code class="code">dst</code>, starting at character <code class="code">dstoff</code>.
+<p>
+
+   Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">srcoff</code> and <code class="code">len</code> do not designate a valid
+   substring of <code class="code">src</code>, or if <code class="code">dstoff</code> and <code class="code">len</code> do not designate a valid
+   substring of <code class="code">dst</code>.<br>
+<b>Since</b> 3.11.2<br>
+</div>
+<pre><span id="VALnth"><span class="keyword">val</span> nth</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> char</code></pre><div class="info">
+get the n-th character of the buffer. Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if
+index out of bounds<br>
+</div>
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int</code></pre><div class="info">
+Return the number of characters currently contained in the buffer.<br>
+</div>
+<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+Empty the buffer.<br>
+</div>
+<pre><span id="VALreset"><span class="keyword">val</span> reset</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+Empty the buffer and deallocate the internal string holding the
+   buffer contents, replacing it with the initial internal string
+   of length <code class="code">n</code> that was allocated by <code class="code"><span class="constructor">Buffer</span>.create</code> <code class="code">n</code>.
+   For long-lived buffers that may have grown a lot, <code class="code">reset</code> allows
+   faster reclamation of the space used by the buffer.<br>
+</div>
+<pre><span id="VALadd_char"><span class="keyword">val</span> add_char</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> char -> unit</code></pre><div class="info">
+<code class="code">add_char b c</code> appends the character <code class="code">c</code> at the end of the buffer <code class="code">b</code>.<br>
+</div>
+<pre><span id="VALadd_string"><span class="keyword">val</span> add_string</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> string -> unit</code></pre><div class="info">
+<code class="code">add_string b s</code> appends the string <code class="code">s</code> at the end of the buffer <code class="code">b</code>.<br>
+</div>
+<pre><span id="VALadd_substring"><span class="keyword">val</span> add_substring</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> string -> int -> int -> unit</code></pre><div class="info">
+<code class="code">add_substring b s ofs len</code> takes <code class="code">len</code> characters from offset
+   <code class="code">ofs</code> in string <code class="code">s</code> and appends them at the end of the buffer <code class="code">b</code>.<br>
+</div>
+<pre><span id="VALadd_substitute"><span class="keyword">val</span> add_substitute</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> (string -> string) -> string -> unit</code></pre><div class="info">
+<code class="code">add_substitute b f s</code> appends the string pattern <code class="code">s</code> at the end
+   of the buffer <code class="code">b</code> with substitution.
+   The substitution process looks for variables into
+   the pattern and substitutes each variable name by its value, as
+   obtained by applying the mapping <code class="code">f</code> to the variable name. Inside the
+   string pattern, a variable name immediately follows a non-escaped
+   <code class="code">$</code> character and is one of the following:<ul>
+<li>a non empty sequence of alphanumeric or <code class="code">_</code> characters,</li>
+<li>an arbitrary sequence of characters enclosed by a pair of
+   matching parentheses or curly brackets.
+   An escaped <code class="code">$</code> character is a <code class="code">$</code> that immediately follows a backslash
+   character; it then stands for a plain <code class="code">$</code>.
+   Raise <code class="code"><span class="constructor">Not_found</span></code> if the closing character of a parenthesized variable
+   cannot be found.</li>
+</ul>
+<br>
+</div>
+<pre><span id="VALadd_buffer"><span class="keyword">val</span> add_buffer</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> <a href="BatBuffer.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<code class="code">add_buffer b1 b2</code> appends the current contents of buffer <code class="code">b2</code>
+   at the end of buffer <code class="code">b1</code>.  <code class="code">b2</code> is not modified.<br>
+</div>
+<pre><span id="VALadd_input"><span class="keyword">val</span> add_input</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> int -> unit</code></pre><div class="info">
+<code class="code">add_input b ic n</code> reads exactly <code class="code">n</code> character from the input <code class="code">ic</code>
+      and stores them at the end of buffer <code class="code">b</code>.  Raise <code class="code"><span class="constructor">End_of_file</span></code> if
+      the channel contains fewer than <code class="code">n</code> characters.<br>
+</div>
+<pre><span id="VALadd_channel"><span class="keyword">val</span> add_channel</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> int -> unit</code></pre><div class="info">
+</div>
+<pre><span id="VALoutput_buffer"><span class="keyword">val</span> output_buffer</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatBuffer.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<code class="code">output_buffer oc b</code> writes the current contents of buffer <code class="code">b</code>
+      on the output channel <code class="code">oc</code>.<br>
+</div>
+<br>
+<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Returns an enumeration of the characters of a buffer.
+<p>
+
+      Contents of the enumeration is unspecified if the buffer is modified after
+      the enumeration is returned.<br>
+</div>
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatBuffer.html#TYPEt">t</a></code></pre><div class="info">
+Creates a buffer from a character enumeration.<br>
+</div>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatBuffer.html#TYPEt">t</a> -> unit</code></pre></body></html>

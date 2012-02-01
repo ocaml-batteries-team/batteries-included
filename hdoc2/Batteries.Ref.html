@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -105,7 +102,6 @@
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
 <link title="Ulib" rel="Chapter" href="Ulib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
-<link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : Batteries.Ref</title>
 </head>
 <body>
@@ -144,7 +140,7 @@ As <code class="code"> ! </code><br>
 </div>
 <pre><span id="VALpre"><span class="keyword">val</span> pre</span> : <code class="type">'a Pervasives.ref -> ('a -> 'a) -> 'a</code></pre><div class="info">
 Perform an operation on a reference and return the
-      new value of that reference. 
+      new value of that reference.
 <p>
 
       For instance, if <code class="code">x</code> is a reference to <code class="code">1</code>,
@@ -152,7 +148,7 @@ Perform an operation on a reference and return the
 </div>
 <pre><span id="VALpost"><span class="keyword">val</span> post</span> : <code class="type">'a Pervasives.ref -> ('a -> 'a) -> 'a</code></pre><div class="info">
 Perform an operation on a reference and return the
-      previous value of that reference. 
+      previous value of that reference.
 <p>
 
       For instance, if <code class="code">x</code> is a reference to <code class="code">1</code>,
@@ -194,8 +190,27 @@ Assign a reference temporarily.
      as a consequence of regular evaluation or exception, the previous
      value of <code class="code">r</code> is restored.<br>
 </div>
+<pre><span id="VALtoggle"><span class="keyword">val</span> toggle</span> : <code class="type">bool Pervasives.ref -> unit</code></pre><div class="info">
+Invert the boolean stored in the reference<br>
+</div>
+<pre><span id="VALoset"><span class="keyword">val</span> oset</span> : <code class="type">'a option Pervasives.ref -> 'a -> unit</code></pre><div class="info">
+Set the given option ref to <code class="code"><span class="constructor">Some</span> x</code><br>
+</div>
+<pre><span id="VALoget_exn"><span class="keyword">val</span> oget_exn</span> : <code class="type">'a option Pervasives.ref -> 'a</code></pre><div class="info">
+Get a value from an option ref;<br>
+</div>
 <br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
-<br>
-<span id="7_Printing"><div class="h7">Printing</div></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatRef.html#TYPEt">t</a> -> unit</code></pre></body></html>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatRef.html#TYPEt">t</a> -> unit</code></pre><br>
+Given a printing function for the value in the ref, produce a
+    printing function for the ref.
+<p>
+
+    Example: <code class="code"><span class="constructor">IO</span>.to_string (<span class="constructor">Ref</span>.print <span class="constructor">Int</span>.print) (ref 20) = <span class="string">"20"</span></code><br>
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><br>
+Given an ordering function, produce an ordering function for refs
+    of that type.
+<p>
+
+    Example: <code class="code"><span class="keyword">let</span> a = ref 10 <span class="keyword">and</span> b = ref 20 <span class="keyword">in</span> <span class="constructor">Ref</span>.cmp <span class="constructor">Int</span>.cmp a b = -1</code><br>
+<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre></body></html>

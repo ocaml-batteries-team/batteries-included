@@ -10,10 +10,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -27,13 +25,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -42,7 +40,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -119,7 +116,7 @@ This module redefines the operations of module <a href="BatIO.html"><code class=
       Generally, to use this module you will wish to either open both
       <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a> and <a href="BatIO.BigEndian.html"><code class="code"><span class="constructor">BatIO</span>.<span class="constructor">BigEndian</span></code></a>, so as to import a big-endian version of
       <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>, as per
-      <code class="code"><span class="keyword">open</span> <span class="constructor">System</span>.<span class="constructor">BatIO</span>, <span class="constructor">BigEndian</span> <span class="keyword">in</span> ...</code>, 
+      <code class="code"><span class="keyword">open</span> <span class="constructor">System</span>.<span class="constructor">BatIO</span>, <span class="constructor">BigEndian</span> <span class="keyword">in</span> ...</code>,
       or to redefine locally <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a> to use big-endian encodings
       <code class="code"><span class="keyword">module</span> <span class="constructor">BatIO</span> = <span class="constructor">System</span>.<span class="constructor">BatIO</span> <span class="keyword">include</span> <span class="constructor">BigEndian</span></code><br>
 <pre><span id="VALread_ui16"><span class="keyword">val</span> read_ui16</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int</code></pre><div class="info">
@@ -144,25 +141,25 @@ Read an IEEE double precision floating point value.<br>
 <pre><span id="VALread_float"><span class="keyword">val</span> read_float</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> float</code></pre><div class="info">
 Read an IEEE single precision floating point value.<br>
 </div>
-<pre><span id="VALwrite_ui16"><span class="keyword">val</span> write_ui16</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int -> unit</code></pre><div class="info">
+<pre><span id="VALwrite_ui16"><span class="keyword">val</span> write_ui16</span> : <code class="type">(int, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
 Write an unsigned 16-bit word.<br>
 </div>
-<pre><span id="VALwrite_i16"><span class="keyword">val</span> write_i16</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int -> unit</code></pre><div class="info">
+<pre><span id="VALwrite_i16"><span class="keyword">val</span> write_i16</span> : <code class="type">(int, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
 Write a signed 16-bit word.<br>
 </div>
-<pre><span id="VALwrite_i32"><span class="keyword">val</span> write_i32</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int -> unit</code></pre><div class="info">
+<pre><span id="VALwrite_i32"><span class="keyword">val</span> write_i32</span> : <code class="type">(int, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
 Write a signed 32-bit integer.<br>
 </div>
-<pre><span id="VALwrite_real_i32"><span class="keyword">val</span> write_real_i32</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int32 -> unit</code></pre><div class="info">
+<pre><span id="VALwrite_real_i32"><span class="keyword">val</span> write_real_i32</span> : <code class="type">(int32, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
 Write an OCaml int32.<br>
 </div>
-<pre><span id="VALwrite_i64"><span class="keyword">val</span> write_i64</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int64 -> unit</code></pre><div class="info">
+<pre><span id="VALwrite_i64"><span class="keyword">val</span> write_i64</span> : <code class="type">(int64, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
 Write an OCaml int64.<br>
 </div>
-<pre><span id="VALwrite_double"><span class="keyword">val</span> write_double</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> float -> unit</code></pre><div class="info">
+<pre><span id="VALwrite_double"><span class="keyword">val</span> write_double</span> : <code class="type">(float, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
 Write an IEEE double precision floating point value.<br>
 </div>
-<pre><span id="VALwrite_float"><span class="keyword">val</span> write_float</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> float -> unit</code></pre><div class="info">
+<pre><span id="VALwrite_float"><span class="keyword">val</span> write_float</span> : <code class="type">(float, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
 Write an IEEE single precision floating point value.<br>
 </div>
 <pre><span id="VALui16s_of"><span class="keyword">val</span> ui16s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
@@ -172,8 +169,9 @@ Read an enumeration of unsigned 16-bit words.<br>
 Read an enumartion of signed 16-bit words.<br>
 </div>
 <pre><span id="VALi32s_of"><span class="keyword">val</span> i32s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-Read an enumeration of signed 32-bit integers. Raise <code class="code"><span class="constructor">Overflow</span></code> if the
-	      read integer cannot be represented as a Caml 31-bit integer.<br>
+Read an enumeration of signed 32-bit integers.<br>
+<b>Raises</b> <code>Overflow</code> if the read integer cannot be represented as a Caml
+	    31-bit integer.<br>
 </div>
 <pre><span id="VALreal_i32s_of"><span class="keyword">val</span> real_i32s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int32 <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Read an enumeration of signed 32-bit integers as OCaml <code class="code">int32</code>s.<br>
@@ -183,26 +181,5 @@ Read an enumeration of signed 64-bit integers as OCaml <code class="code">int64<
 </div>
 <pre><span id="VALdoubles_of"><span class="keyword">val</span> doubles_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Read an enumeration of IEEE double precision floating point values.<br>
-</div>
-<pre><span id="VALwrite_bytes"><span class="keyword">val</span> write_bytes</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
-Write an enumeration of unsigned 8-bit bytes.<br>
-</div>
-<pre><span id="VALwrite_ui16s"><span class="keyword">val</span> write_ui16s</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
-Write an enumeration of unsigned 16-bit words.<br>
-</div>
-<pre><span id="VALwrite_i16s"><span class="keyword">val</span> write_i16s</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
-Write an enumeration of signed 16-bit words.<br>
-</div>
-<pre><span id="VALwrite_i32s"><span class="keyword">val</span> write_i32s</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
-Write an enumeration of signed 32-bit integers.<br>
-</div>
-<pre><span id="VALwrite_real_i32s"><span class="keyword">val</span> write_real_i32s</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int32 <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
-Write an enumeration of OCaml int32s.<br>
-</div>
-<pre><span id="VALwrite_i64s"><span class="keyword">val</span> write_i64s</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int64 <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
-Write an enumeration of OCaml int64s.<br>
-</div>
-<pre><span id="VALwrite_doubles"><span class="keyword">val</span> write_doubles</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
-Write an enumeration of IEEE double precision floating point value.<br>
 </div>
 </body></html>

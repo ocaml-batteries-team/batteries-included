@@ -8,10 +8,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -25,13 +23,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -40,7 +38,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -106,8 +103,6 @@
 <center><h1>Index of modules</h1></center>
 <table>
 <tr><td align="left"><br>A</td></tr>
-<tr><td><a href="Batteries.Arg.html">Arg</a> [<a href="Batteries.html">Batteries</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Legacy.Arg.html">Arg</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="Extlib.ExtArray.Array.html">Array</a> [<a href="Extlib.ExtArray.html">Extlib.ExtArray</a>]</td>
@@ -138,11 +133,6 @@ Three-dimensional arrays.
 <td></td></tr>
 <tr><td><a href="Batteries.Base64.html">Base64</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
-<tr><td><a href="BatArg.html">BatArg</a> </td>
-<td><div class="info">
-Parsing of command line arguments.
-</div>
-</td></tr>
 <tr><td><a href="BatArray.html">BatArray</a> </td>
 <td><div class="info">
 Additional and modified functions for arrays
@@ -185,7 +175,7 @@ Extensible string buffers.
 </td></tr>
 <tr><td><a href="BatCache.html">BatCache</a> </td>
 <td><div class="info">
-These functions build a cache with either a hashtbl or a map.
+The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatChar.html">BatChar</a> </td>
@@ -206,13 +196,6 @@ Additional and modified functions for complex numbers.
 <tr><td><a href="BatConcurrent.html">BatConcurrent</a> </td>
 <td><div class="info">
 Definition of concurrency primitives.
-</div>
-</td></tr>
-<tr><td><a href="BatCounter.html">BatCounter</a> </td>
-<td><div class="info">
-Counter metrics are for keeping track of how many of something
-    there are, being incremented and decremented (and cleared,
-    occasionally).
 </div>
 </td></tr>
 <tr><td><a href="BatDeque.html">BatDeque</a> </td>
@@ -243,6 +226,14 @@ Enumeration over abstract collection of elements.
 <tr><td><a href="BatFile.html">BatFile</a> </td>
 <td><div class="info">
 File manipulation.
+</div>
+</td></tr>
+<tr><td><a href="BatFingerTree.html">BatFingerTree</a> </td>
+<td><div class="info">
+This module implements a generic finger tree datastructure
+   as described here:
+   Finger Trees: A Simple General-purpose Data Structure
+   http://www.soi.city.ac.uk/~ross/papers/FingerTree.pdf
 </div>
 </td></tr>
 <tr><td><a href="BatFloat.html">BatFloat</a> </td>
@@ -283,11 +274,6 @@ Extra functions over hashtables.
 <tr><td><a href="BatHeap.html">BatHeap</a> </td>
 <td><div class="info">
 Functional heaps over ordered types
-</div>
-</td></tr>
-<tr><td><a href="BatHistogram.html">BatHistogram</a> </td>
-<td><div class="info">
-Size of sample -&gt; sample_t
 </div>
 </td></tr>
 <tr><td><a href="BatIMap.html">BatIMap</a> </td>
@@ -343,7 +329,7 @@ Lazy lists of elements.
 </td></tr>
 <tr><td><a href="BatLexing.html">BatLexing</a> </td>
 <td><div class="info">
-Simple lexing using ocaml conventions 
+Simple lexing using ocaml conventions
 </div>
 </td></tr>
 <tr><td><a href="BatList.html">BatList</a> </td>
@@ -523,7 +509,7 @@ String operations.
 </td></tr>
 <tr><td><a href="BatSubstring.html">BatSubstring</a> </td>
 <td><div class="info">
-<code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient 
+<code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient
    representation of a piece of a string.
 </div>
 </td></tr>
@@ -606,6 +592,11 @@ Buffer module for UTF-8 strings
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Callback.html">Callback</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatString.Cap.html">Cap</a> [<a href="BatString.html">BatString</a>]</td>
+<td><div class="info">
+Capabilities for strings.
+</div>
+</td></tr>
 <tr><td><a href="BatHashtbl.Cap.html">Cap</a> [<a href="BatHashtbl.html">BatHashtbl</a>]</td>
 <td><div class="info">
 Capabilities for hashtables.
@@ -698,6 +689,16 @@ Capabilities for arrays.
 <td></td></tr>
 <tr><td><a href="BatOrd.EqOrd.html">EqOrd</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatString.Cap.Exceptionless.html">Exceptionless</a> [<a href="BatString.Cap.html">BatString.Cap</a>]</td>
+<td><div class="info">
+Exceptionless counterparts for error-raising operations
+</div>
+</td></tr>
+<tr><td><a href="BatString.Exceptionless.html">Exceptionless</a> [<a href="BatString.html">BatString</a>]</td>
+<td><div class="info">
+Exceptionless counterparts for error-raising operations
+</div>
+</td></tr>
 <tr><td><a href="BatStack.Exceptionless.html">Exceptionless</a> [<a href="BatStack.html">BatStack</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatSet.S.Exceptionless.html">Exceptionless</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
@@ -776,6 +777,8 @@ Operations on <code class="code"><span class="constructor">Array</span></code> w
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Filename.html">Filename</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
+<tr><td><a href="Batteries.FingerTree.html">FingerTree</a> [<a href="Batteries.html">Batteries</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Float.html">Float</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Format.html">Format</a> [<a href="Batteries.html">Batteries</a>]</td>
@@ -788,18 +791,6 @@ This module contains the types and functions for implementing
   custom usage message formatters.
 </div>
 </td></tr>
-<tr><td><a href="Batteries.Future.html">Future</a> [<a href="Batteries.html">Batteries</a>]</td>
-<td></td></tr>
-<tr><td><a href="BatInt.Safe_int.Future.html">Future</a> [<a href="BatInt.Safe_int.html">BatInt.Safe_int</a>]</td>
-<td><div class="info">
-Compare
-</div>
-</td></tr>
-<tr><td><a href="BatInt.Future.html">Future</a> [<a href="BatInt.html">BatInt</a>]</td>
-<td><div class="info">
-Compare
-</div>
-</td></tr>
 <tr><td align="left"><br>G</td></tr>
 <tr><td><a href="Batteries.Gc.html">Gc</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -810,6 +801,8 @@ Compare
 Generic arrays (of arbitrarily many dimensions)
 </div>
 </td></tr>
+<tr><td><a href="BatFingerTree.Generic.html">Generic</a> [<a href="BatFingerTree.html">BatFingerTree</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Genlex.html">Genlex</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Genlex.html">Genlex</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -853,6 +846,8 @@ uses icompare as ordering function
 A map on strings.
 </div>
 </td></tr>
+<tr><td><a href="Batteries.Incubator.html">Incubator</a> [<a href="Batteries.html">Batteries</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatTuple.Tuple5.Incubator.html">Incubator</a> [<a href="BatTuple.Tuple5.html">BatTuple.Tuple5</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatTuple.Tuple4.Incubator.html">Incubator</a> [<a href="BatTuple.Tuple4.html">BatTuple.Tuple4</a>]</td>
@@ -871,9 +866,11 @@ Functions that operate on the element at index <code class="code">i</code> in a 
     indices starting from 0).
 </div>
 </td></tr>
+<tr><td><a href="BatSeq.Infix.html">Infix</a> [<a href="BatSeq.html">BatSeq</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatResult.Infix.html">Infix</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-Infix submodule regrouping all infix operators
+This infix module provides the operator <code class="code">(&gt;&gt;=)</code>
 </div>
 </td></tr>
 <tr><td><a href="BatPathGen.PathType.Infix.html">Infix</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
@@ -1060,7 +1057,7 @@ Operations on <code class="code"><span class="constructor">Array</span></code> w
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.ListLabels.html">ListLabels</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Future.Log.html">Log</a> [<a href="Batteries.Future.html">Batteries.Future</a>]</td>
+<tr><td><a href="Batteries.Incubator.Log.html">Log</a> [<a href="Batteries.Incubator.html">Batteries.Incubator</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Logger.html">Logger</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1116,6 +1113,8 @@ Functor building an implementation of the hashtable structure.
 <tr><td><a href="Batteries.Marshal.html">Marshal</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Marshal.html">Marshal</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatResult.Monad.html">Monad</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatOption.Monad.html">Monad</a> [<a href="BatOption.html">BatOption</a>]</td>
 <td><div class="info">
@@ -1184,8 +1183,6 @@ This module contains the basic functions and types for defining
 </div>
 </td></tr>
 <tr><td><a href="Extlib.OptParse.html">OptParse</a> [<a href="Extlib.html">Extlib</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.OptParse.html">OptParse</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatOptParse.OptParser.html">OptParser</a> [<a href="BatOptParse.html">BatOptParse</a>]</td>
 <td><div class="info">
@@ -1343,7 +1340,7 @@ A map on strings.
 </td></tr>
 <tr><td><a href="BatteriesPrint.StringSet.html">StringSet</a> [<a href="BatteriesPrint.html">BatteriesPrint</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Substring.html">Substring</a> [<a href="Batteries.html">Batteries</a>]</td>
+<tr><td><a href="Batteries.Incubator.Substring.html">Substring</a> [<a href="Batteries.Incubator.html">Batteries.Incubator</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Sys.html">Sys</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>

@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -104,8 +101,9 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
-<link title="Printing" rel="Subsection" href="#7_Printing">
+<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="In-place Update" rel="Section" href="#6_InplaceUpdate">
+<link title="Return new bitset" rel="Section" href="#6_Returnnewbitset">
+<link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <title>Batteries user guide : BatBitSet</title>
 </head>
 <body>
@@ -118,65 +116,87 @@
 <pre><span class="keyword">module</span> BatBitSet: <code class="code"><span class="keyword">sig</span></code> <a href="BatBitSet.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Efficient bit sets.
 <p>
 
-    A bitset is an array of boolean values that can be accessed with indexes
-    like an array but provides a better memory usage (divided by 8) for a
-    very small speed trade-off.<br>
+    A bitset is an array of boolean values that can be accessed with
+    indexes like an array but provides a better memory usage (divided
+    by Sys.word_size; either 32 or 64) for a very small speed
+    trade-off.  It can provide efficient storage of dense sets of
+    nonnegative integers near zero.  Sparse sets should use <a href="BatSet.html"><code class="code"><span class="constructor">BatSet</span></code></a>, sets with
+    large ranges of contiguous ints should use <a href="BatISet.html"><code class="code"><span class="constructor">BatISet</span></code></a>.<br>
 <b>Author(s):</b> Nicolas Cannasse, David Teller (Boilerplate code)<br>
 <hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 
-<pre><span id="EXCEPTIONNegative_index"><span class="keyword">exception</span> Negative_index</span> <span class="keyword">of</span> <code class="type">string</code></pre>
-<div class="info">
-When a negative bit value is used for one of the BitSet functions,
- this exception is raised with the name of the function.<br>
-</div>
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">unit -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
-Create an empty bitset of size 0, the bitset will automatically expand
- when needed.<br>
+Create an empty bitset of capacity 0, the bitset will
+    automatically expand when needed.
+<p>
+
+    Example: <code class="code"><span class="constructor">BitSet</span>.empty ()</code><br>
 </div>
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
-Create an empty bitset with an initial size (in number of bits).<br>
+Create an empty bitset with an initial capacity (in number of bits).
+<p>
+
+    Example: <code class="code"><span class="constructor">BitSet</span>.create 0 = <span class="constructor">BitSet</span>.empty ()</code><br>
+<b>Raises</b> <code>Invalid_argument</code> on negative capacity<br>
 </div>
 <pre><span id="VALcreate_full"><span class="keyword">val</span> create_full</span> : <code class="type">int -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
-Create a full bitset with an initial size (in number of bits).<br>
+Create a full bitset with an initial capacity (in number of bits).
+<p>
+
+    Example: <code class="code"><span class="constructor">BitSet</span>.count (<span class="constructor">BitSet</span>.create_full n) = n</code><br>
+<b>Raises</b> <code>Invalid_argument</code> on negative capacity<br>
 </div>
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
 Copy a bitset : further modifications of first one will not affect the
- copy.<br>
+ copy.
+<p>
+
+    Example: <code class="code"><span class="keyword">let</span> a = <span class="constructor">Bitset</span>.create 8 <span class="keyword">in</span> <span class="keyword">let</span> b = <span class="constructor">BitSet</span>.copy a <span class="keyword">in</span> <span class="constructor">BitSet</span>.set a 6; <span class="constructor">BitSet</span>.mem a 6 <span class="keywordsign">&amp;&amp;</span> not (<span class="constructor">BitSet</span>.mem b 6)</code><br>
 </div>
-<pre><span id="VALclone"><span class="keyword">val</span> clone</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
-Same as <code class="code">copy</code><br>
+<pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int -> bool</code></pre><div class="info">
+<code class="code">mem s n</code> returns true if nth-bit in the bitset <code class="code">s</code> is set,
+    or false otherwise.
+<p>
+
+    Example: <code class="code"><span class="keyword">let</span> a = <span class="constructor">BitSet</span>.create_full 256 <span class="keyword">in</span> not (<span class="constructor">BitSet</span>.mem a 300)</code><br>
+<b>Raises</b> <code>Invalid_argument</code> on negative index (<code class="code">n &lt; 0</code>)<br>
 </div>
+<pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<code class="code">count s</code> returns the number of bits set in the bitset <code class="code">s</code>. Also
+    known as Population Count, or <code class="code">cardinal</code> for sets.
+<p>
+
+    Example: <code class="code"><span class="constructor">BitSet</span>.count (<span class="constructor">BitSet</span>.of_list [6;4;2;2;1]) = 4</code><br>
+</div>
+<pre><span id="VALnext_set_bit"><span class="keyword">val</span> next_set_bit</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int -> int option</code></pre><div class="info">
+<code class="code">next_set_bit s n</code> returns <code class="code"><span class="constructor">Some</span> m</code> when <code class="code">m</code> is the next set
+    element with index greater than or equal <code class="code">n</code>, or None if no such
+    element exists (i.e. <code class="code">n</code> is greater than the largest element)
+<p>
+
+    More efficient than scanning with repeated <code class="code"><span class="constructor">BitSet</span>.mem</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> on negative index (<code class="code">n &lt; 0</code>)<br>
+</div>
+<br>
+<span id="6_InplaceUpdate"><h6>In-place Update</h6></span><br>
+<br>
+These functions modify an existing bitset.<br>
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info">
-<code class="code">set s n</code> sets the nth-bit in the bitset <code class="code">s</code> to true.<br>
+<code class="code">set s n</code> sets the <code class="code">n</code>th-bit in the bitset <code class="code">s</code> to true.<br>
+<b>Raises</b> <code>Invalid_argument</code> on negative index (<code class="code">n &lt; 0</code>)<br>
 </div>
 <pre><span id="VALunset"><span class="keyword">val</span> unset</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info">
-<code class="code">unset s n</code> sets the nth-bit in the bitset <code class="code">s</code> to false.<br>
+<code class="code">unset s n</code> sets the <code class="code">n</code>th-bit in the bitset <code class="code">s</code> to false.<br>
+<b>Raises</b> <code>Invalid_argument</code> on negative index (<code class="code">n &lt; 0</code>)<br>
 </div>
 <pre><span id="VALput"><span class="keyword">val</span> put</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> bool -> int -> unit</code></pre><div class="info">
 <code class="code">put s v n</code> sets the nth-bit in the bitset <code class="code">s</code> to <code class="code">v</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> on negative index (<code class="code">n &lt; 0</code>)<br>
 </div>
 <pre><span id="VALtoggle"><span class="keyword">val</span> toggle</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info">
 <code class="code">toggle s n</code> changes the nth-bit value in the bitset <code class="code">s</code>.<br>
-</div>
-<pre><span id="VALis_set"><span class="keyword">val</span> is_set</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int -> bool</code></pre><div class="info">
-<code class="code">is_set s n</code> returns true if nth-bit in the bitset <code class="code">s</code> is set,
-    or false otherwise.<br>
-</div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> int</code></pre><div class="info">
-<code class="code">compare s1 s2</code> compares two bitsets. Highest bit indexes are
- compared first.<br>
-</div>
-<pre><span id="VALequals"><span class="keyword">val</span> equals</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">equals s1 s2</code> returns true if, and only if, all bits values in s1 are
-  the same as in s2.<br>
-</div>
-<pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int</code></pre><div class="info">
-<code class="code">count s</code> returns the number of bits set in the bitset <code class="code">s</code>.<br>
-</div>
-<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-<code class="code">enum s</code> returns an enumeration of bits which are set
-  in the bitset <code class="code">s</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> on negative index (<code class="code">n &lt; 0</code>)<br>
 </div>
 <pre><span id="VALintersect"><span class="keyword">val</span> intersect</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">intersect s t</code> sets <code class="code">s</code> to the intersection of the sets <code class="code">s</code> and <code class="code">t</code>.<br>
@@ -190,6 +210,19 @@ Same as <code class="code">copy</code><br>
 <pre><span id="VALdifferentiate_sym"><span class="keyword">val</span> differentiate_sym</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">differentiate_sym s t</code> sets <code class="code">s</code> to the symmetrical difference of the
   sets <code class="code">s</code> and <code class="code">t</code>.<br>
+</div>
+<br>
+<span id="6_Returnnewbitset"><h6>Return new bitset</h6></span><br>
+<br>
+These functions return a new bitset that shares nothing with the
+    input bitset.  This is not as efficient as the in-place update.<br>
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">int -> <a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">add n s</code> returns a copy of <code class="code">s</code> with bit <code class="code">n</code> true.<br>
+<b>Raises</b> <code>Invalid_argument</code> on negative index (<code class="code">n &lt; 0</code>)<br>
+</div>
+<pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">int -> <a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">remove n s</code> returns a copy of <code class="code">s</code> with bit <code class="code">n</code> false.<br>
+<b>Raises</b> <code>Invalid_argument</code> on negative index (<code class="code">n &lt; 0</code>)<br>
 </div>
 <pre><span id="VALinter"><span class="keyword">val</span> inter</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">inter s t</code> returns the intersection of sets <code class="code">s</code> and <code class="code">t</code>.<br>
@@ -205,6 +238,36 @@ Same as <code class="code">copy</code><br>
 </div>
 <br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
-<br>
-<span id="7_Printing"><div class="h7">Printing</div></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> unit</code></pre></body></html>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<code class="code">enum s</code> returns an enumeration of bits which are set
+    in the bitset <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">?cap:int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">of_enum ~cap e</code> builds a bitset of capacity <code class="code">cap</code> an enumeration
+    of ints <code class="code">e</code>.
+<p>
+
+    Note: Performance of this function may be poor if enumeration is
+    in increasing order and the max.<br>
+</div>
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">?cap:int -> int list -> <a href="BatBitSet.html#TYPEt">t</a></code></pre><div class="info">
+As <code class="code">of_enum</code>, but from a list<br>
+</div>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<code class="code">compare s1 s2</code> compares two bitsets using a lexicographic
+    ordering.  Highest bit indexes are compared first. The capacity of
+    the bitsets is not important for this comparison, only the bits
+    starting with the highest set bit and going down.<br>
+</div>
+<pre><span id="VALequals"><span class="keyword">val</span> equals</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<code class="code">equals s1 s2</code> returns true if, and only if, all bits values in s1 are
+    the same as in s2.<br>
+</div>
+<pre><span id="VALcapacity"><span class="keyword">val</span> capacity</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<span id="6_Internals"><h6>Internals</h6></span>
+<p>
+<code class="code">capacity s</code> returns the number of bits, both set and unset, stored
+    in <code class="code">s</code>.  This is guaranteed to be larger than the largest element
+    (set bit index) in <code class="code">s</code>.<br>
+</div>
+</body></html>

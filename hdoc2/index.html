@@ -9,10 +9,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -26,13 +24,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -41,7 +39,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -127,11 +124,11 @@ For the moment, Batteries Included concentrates on:
 <p>
 
 For more information on the installation of Batteries Included,
-please read the <a href="https://github.com/ocaml-batteries-team/batteries-included/wiki/Installing-Batteries">Installation guide</a> and for an example using it in different build systems, we have the <a href="https://github.com/ocaml-batteries-team/batteries-included/wiki/Getting-started">Getting started manual</a>. 
+please read the <a href="https://github.com/ocaml-batteries-team/batteries-included/wiki/Installing-Batteries">Installation guide</a> and for an example using it in different build systems, we have the <a href="https://github.com/ocaml-batteries-team/batteries-included/wiki/Getting-started">Getting started manual</a>.
 <p>
 
 Do you have suggestions? Remarks? Bug reports ? To contact us or to
-be kept informed, don't hesitate to visit our 
+be kept informed, don't hesitate to visit our
 <a href="http://batteries.forge.ocamlcore.org/">website</a>, <a href="https://github.com/ocaml-batteries-team/batteries-included">Git repo</a>, and our <a href="https://github.com/ocaml-batteries-team/batteries-included/issues?sort=created&direction=desc&state=open">Issue tracker</a>.
 <p>
 
@@ -149,7 +146,7 @@ Efficient bit sets.
 </div>
 </td></tr>
 <tr><td><a href="BatCache.html">BatCache</a></td><td><div class="info">
-These functions build a cache with either a hashtbl or a map.
+The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatCharParser.html">BatCharParser</a></td><td><div class="info">
@@ -174,6 +171,13 @@ Enumeration over abstract collection of elements.
 </td></tr>
 <tr><td><a href="BatFile.html">BatFile</a></td><td><div class="info">
 File manipulation.
+</div>
+</td></tr>
+<tr><td><a href="BatFingerTree.html">BatFingerTree</a></td><td><div class="info">
+This module implements a generic finger tree datastructure
+   as described here:
+   Finger Trees: A Simple General-purpose Data Structure
+   http://www.soi.city.ac.uk/~ross/papers/FingerTree.pdf
 </div>
 </td></tr>
 <tr><td><a href="BatGlobal.html">BatGlobal</a></td><td><div class="info">
@@ -277,10 +281,7 @@ Extensible vectors with constant-time append/prepend.
 
 <br>
 <table class="indextable">
-<tr><td><a href="BatArg.html">BatArg</a></td><td><div class="info">
-Parsing of command line arguments.
-</div>
-</td></tr>
+<tr><td>BatArg</td><td></td></tr>
 <tr><td><a href="BatArray.html">BatArray</a></td><td><div class="info">
 Additional and modified functions for arrays
 </div>
@@ -346,7 +347,7 @@ Operations on integers.
 </div>
 </td></tr>
 <tr><td><a href="BatLexing.html">BatLexing</a></td><td><div class="info">
-Simple lexing using ocaml conventions 
+Simple lexing using ocaml conventions
 </div>
 </td></tr>
 <tr><td><a href="BatList.html">BatList</a></td><td><div class="info">
@@ -472,23 +473,18 @@ Reentrant Mutexes
 <span id="6_Future"><h6>Future</h6></span>
 <p>
 
-These modules are available only inside BatFuture.  Their interface is not guaranteed stable, and may be changed at any time.
+These modules are available only inside <code class="code"><span class="constructor">Batteries</span>.<span class="constructor">Future</span></code>.  Their interface is not guaranteed stable, and may be changed at any time.  They are included for testing and stabilization until they can be finalized and moved to batteries proper.
 <p>
 
 <br>
 <table class="indextable">
-<tr><td><a href="BatCounter.html">BatCounter</a></td><td><div class="info">
-Counter metrics are for keeping track of how many of something
-    there are, being incremented and decremented (and cleared,
-    occasionally).
-</div>
-</td></tr>
-<tr><td><a href="BatHistogram.html">BatHistogram</a></td><td><div class="info">
-Size of sample -&gt; sample_t
-</div>
-</td></tr>
 <tr><td><a href="BatOrd.html">BatOrd</a></td><td><div class="info">
 An algebraic datatype for ordering.
+</div>
+</td></tr>
+<tr><td><a href="BatSubstring.html">BatSubstring</a></td><td><div class="info">
+<code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient
+   representation of a piece of a string.
 </div>
 </td></tr>
 </table>

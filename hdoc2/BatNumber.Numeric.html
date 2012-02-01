@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatNumber.Compare.html">
+<link rel="previous" href="BatNumber.RefOps.html">
 <link rel="next" href="BatNumber.Bounded.html">
 <link rel="Up" href="BatNumber.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -107,7 +104,7 @@
 <link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : BatNumber.Numeric</title>
 </head>
 <body>
-<div class="navbar"><a href="BatNumber.Compare.html">Previous</a>
+<div class="navbar"><a href="BatNumber.RefOps.html">Previous</a>
 &nbsp;<a href="BatNumber.html">Up</a>
 &nbsp;<a href="BatNumber.Bounded.html">Next</a>
 </div>
@@ -120,5 +117,5 @@
 <pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> float</code></pre><pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> string</code></pre><pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><pre><span id="TYPEdiscrete"><span class="keyword">type</span> <code class="type"></code>discrete</span> = <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a></code> </pre>
 
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre><pre><span class="keyword">include</span> <a href="BatNumber.Infix.html">BatNumber.Infix</a></pre>
-<pre><span class="keyword">include</span> <a href="BatNumber.Compare.html">BatNumber.Compare</a></pre>
+<pre><span class="keyword">include</span> <a href="BatNumber.RefOps.html">BatNumber.RefOps</a></pre>
 </body></html>

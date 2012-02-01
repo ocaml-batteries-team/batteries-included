@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -282,10 +279,8 @@ Open the named file for writing, and return a new output channel
 
       You may use optional argument <code class="code">perm</code> to specify the permissions
       of the file, as per Unix conventions. By default, files are created
-      with default permissions (which depend on your setup).
-<p>
-
-      Raise <code class="code"><span class="constructor">Sys_error</span></code> if the file could not be opened.<br>
+      with default permissions (which depend on your setup).<br>
+<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br>
 </div>
 <pre><span id="VALopen_out_bin"><span class="keyword">val</span> open_out_bin</span> : <code class="type">string -> unit <a href="BatIO.html#TYPEoutput">BatIO.output</a></code></pre><div class="info">
 Same as <a href="BatPervasives.html#VALopen_out"><code class="code"><span class="constructor">BatPervasives</span>.open_out</code></a>, but the file is opened in binary mode, so
@@ -318,8 +313,8 @@ Write the text on the given output channel.<br>
 </div>
 <pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> string -> int -> int -> unit</code></pre><div class="info">
 <code class="code">output oc buf pos len</code> writes <code class="code">len</code> characters from string <code class="code">buf</code>,
-   starting at offset <code class="code">pos</code>, to the given output channel <code class="code">oc</code>.
-   Raise <code class="code"><span class="constructor">Invalid_argument</span> <span class="string">"output"</span></code> if <code class="code">pos</code> and <code class="code">len</code> do not
+   starting at offset <code class="code">pos</code>, to the given output channel <code class="code">oc</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">pos</code> and <code class="code">len</code> do not
    designate a valid substring of <code class="code">buf</code>.<br>
 </div>
 <pre><span id="VALoutput_byte"><span class="keyword">val</span> output_byte</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int -> unit</code></pre><div class="info">
@@ -354,8 +349,8 @@ Write the representation of a structured value of any type
 Close the given channel, flushing all buffered write operations.
       Output functions raise a <code class="code"><span class="constructor">Sys_error</span></code> exception when they are
       applied to a closed output channel, except <code class="code">close_out</code> and <code class="code">flush</code>,
-      which do nothing when applied to an already closed channel.
-      Note that <code class="code">close_out</code> may raise <code class="code"><span class="constructor">Sys_error</span></code> if the operating
+      which do nothing when applied to an already closed channel.<br>
+<b>Raises</b> <code>Sys_error</code> if the operating
       system signals an error when flushing or closing.<br>
 </div>
 <pre><span id="VALclose_out_noerr"><span class="keyword">val</span> close_out_noerr</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><div class="info">
@@ -379,10 +374,8 @@ Open the named file for reading. You will need to close the file once you have
     You may use optional argument <code class="code">perm</code> to specify the permissions of
     the file, should it be created, as per Unix conventions. By
     default, files are created with default permissions (which depend
-    on your setup).
-<p>
-
-    Raise <code class="code"><span class="constructor">Sys_error</span></code> if the file could not be opened.<br>
+    on your setup).<br>
+<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br>
 </div>
 <pre><span id="VALopen_in_bin"><span class="keyword">val</span> open_in_bin</span> : <code class="type">string -> <a href="BatIO.html#TYPEinput">BatIO.input</a></code></pre><div class="info">
 Same as <code class="code"><span class="constructor">Pervasives</span>.open_in</code>, but the file is opened in binary mode,
@@ -399,14 +392,14 @@ Same as <code class="code"><span class="constructor">Pervasives</span>.open_in</
     cases of this function.<br>
 </div>
 <pre><span id="VALinput_char"><span class="keyword">val</span> input_char</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> char</code></pre><div class="info">
-Read one character from the given input channel.
-   Raise <code class="code"><span class="constructor">End_of_file</span></code> if there are no more characters to read.<br>
+Read one character from the given input channel.<br>
+<b>Raises</b> <code>End_of_file</code> if there are no more characters to read.<br>
 </div>
 <pre><span id="VALinput_line"><span class="keyword">val</span> input_line</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> string</code></pre><div class="info">
 Read characters from the given input channel, until a
    newline character is encountered. Return the string of
-   all characters read, without the newline character at the end.
-   Raise <code class="code"><span class="constructor">End_of_file</span></code> if the end of the file is reached
+   all characters read, without the newline character at the end.<br>
+<b>Raises</b> <code>End_of_file</code> if the end of the file is reached
    at the beginning of line.<br>
 </div>
 <pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> string -> int -> int -> int</code></pre><div class="info">
@@ -422,33 +415,34 @@ Read characters from the given input channel, until a
    the implementation found it convenient to do a partial read;
    <code class="code">input</code> must be called again to read the remaining characters,
    if desired.  (See also <code class="code"><span class="constructor">Pervasives</span>.really_input</code> for reading
-   exactly <code class="code">len</code> characters.)
-   Exception <code class="code"><span class="constructor">Invalid_argument</span> <span class="string">"input"</span></code> is raised if <code class="code">pos</code> and <code class="code">len</code>
+   exactly <code class="code">len</code> characters.)<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">pos</code> and <code class="code">len</code>
    do not designate a valid substring of <code class="code">buf</code>.<br>
 </div>
 <pre><span id="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> string -> int -> int -> unit</code></pre><div class="info">
 <code class="code">really_input ic buf pos len</code> reads <code class="code">len</code> characters from channel <code class="code">ic</code>,
-    storing them in string <code class="code">buf</code>, starting at character number <code class="code">pos</code>.
-    Raise <code class="code"><span class="constructor">End_of_file</span></code> if the end of file is reached before <code class="code">len</code>
-    characters have been read.
-    Raise <code class="code"><span class="constructor">Invalid_argument</span> <span class="string">"really_input"</span></code> if
-    <code class="code">pos</code> and <code class="code">len</code> do not designate a valid substring of <code class="code">buf</code>.<br>
+    storing them in string <code class="code">buf</code>, starting at character number <code class="code">pos</code>.<br>
+<b>Raises</b><ul><li><code>End_of_file</code> if the end of file is reached before <code class="code">len</code>
+    characters have been read.</li>
+<li><code>Invalid_argument</code> if
+    <code class="code">pos</code> and <code class="code">len</code> do not designate a valid substring of <code class="code">buf</code>.</li>
+</ul>
 </div>
 <pre><span id="VALinput_byte"><span class="keyword">val</span> input_byte</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int</code></pre><div class="info">
 Same as <code class="code"><span class="constructor">Pervasives</span>.input_char</code>, but return the 8-bit integer representing
-    the character.
-    Raise <code class="code"><span class="constructor">End_of_file</span></code> if an end of file was reached.<br>
+    the character.<br>
+<b>Raises</b> <code>End_of_file</code> if an end of file was reached.<br>
 </div>
 <pre><span id="VALinput_binary_int"><span class="keyword">val</span> input_binary_int</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int</code></pre><div class="info">
 Read an integer encoded in binary format (4 bytes, big-endian)
-    from the given input channel. See <code class="code"><span class="constructor">Pervasives</span>.output_binary_int</code>.
-    Raise <code class="code"><span class="constructor">End_of_file</span></code> if an end of file was reached while reading the
+    from the given input channel. See <code class="code"><span class="constructor">Pervasives</span>.output_binary_int</code>.<br>
+<b>Raises</b> <code>End_of_file</code> if an end of file was reached while reading the
     integer.<br>
 </div>
 <pre><span id="VALinput_binary_float"><span class="keyword">val</span> input_binary_float</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> float</code></pre><div class="info">
 Read a float encoded in binary format (8 bytes, IEEE 754 double format)
-    from the given input channel. See <code class="code"><span class="constructor">Pervasives</span>.output_binary_float</code>.
-    Raise <code class="code"><span class="constructor">End_of_file</span></code> if an end of file was reached while reading the
+    from the given input channel. See <code class="code"><span class="constructor">Pervasives</span>.output_binary_float</code>.<br>
+<b>Raises</b> <code>End_of_file</code> if an end of file was reached while reading the
     float.<br>
 </div>
 <pre><span id="VALinput_value"><span class="keyword">val</span> input_value</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> 'a</code></pre><div class="info">
@@ -462,7 +456,8 @@ Read the representation of a structured value, as produced
 Close the given channel.  Input functions raise a <code class="code"><span class="constructor">Sys_error</span></code>
       exception when they are applied to a closed input channel,
       except <code class="code">close_in</code>, which does nothing when applied to an already
-      closed channel.  Note that <code class="code">close_in</code> may raise <code class="code"><span class="constructor">Sys_error</span></code> if
+      closed channel.<br>
+<b>Raises</b> <code>Sys_error</code> if
       the operating system signals an error.<br>
 </div>
 <pre><span id="VALclose_in_noerr"><span class="keyword">val</span> close_in_noerr</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> unit</code></pre><div class="info">
@@ -525,7 +520,12 @@ Function composition. <code class="code">f -| g</code> is <code class="code"><sp
 </div>
 <pre><span id="VAL(|?)"><span class="keyword">val</span> (|?)</span> : <code class="type">'a option -> 'a -> 'a</code></pre><div class="info">
 Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, with the arguments reversed.
-    <code class="code"><span class="constructor">None</span> |? 10</code> returns <code class="code">10</code>, while <code class="code"><span class="constructor">Some</span> <span class="string">"foo"</span> |? <span class="string">"bar"</span></code> returns <code class="code"><span class="string">"foo"</span></code>.<br>
+    <code class="code"><span class="constructor">None</span> |? 10</code> returns <code class="code">10</code>, while <code class="code"><span class="constructor">Some</span> <span class="string">"foo"</span> |? <span class="string">"bar"</span></code> returns <code class="code"><span class="string">"foo"</span></code>.
+<p>
+
+    <b>Note</b> This operator does not short circuit like <code class="code">( <span class="keywordsign">||</span> )</code> and <code class="code">( <span class="keywordsign">&amp;&amp;</span> )</code>.
+    Both arguments will be evaluated.<br>
+<b>Since</b> 2.0<br>
 </div>
 <pre><span id="VALflip"><span class="keyword">val</span> flip</span> : <code class="type">('a -> 'b -> 'c) -> 'b -> 'a -> 'c</code></pre><div class="info">
 Argument flipping.
@@ -590,6 +590,7 @@ Allows application of a function in the middle of a pipe
 <pre><span id="VALverify_arg"><span class="keyword">val</span> verify_arg</span> : <code class="type">bool -> string -> unit</code></pre><div class="info">
 <code class="code">verify_arg condition message</code> will raise <code class="code"><span class="constructor">Invalid_argument</span> message</code> if
     <code class="code">condition</code> is false, otherwise it does nothing.<br>
+<b>Since</b> 2.0<br>
 </div>
 <pre><span id="VALargs"><span class="keyword">val</span> args</span> : <code class="type">unit -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 An enumeration of the arguments passed to this program through the command line.
@@ -740,6 +741,14 @@ Transformation loop on an enumeration, used to build a single value
       In other words, <code class="code">reduce f e</code> returns <code class="code">a0</code> if <code class="code">e</code> contains only
       one element <code class="code">a0</code>, otherwise <code class="code">f (... (f (f a0) a1) ...) aN</code> where
       <code class="code">a0,a1..aN</code> are the elements of <code class="code">e</code>.<br>
+<b>Raises</b> <code>Not_found</code> if <code class="code">e</code> is empty.
+<p>
+
+      For instance, if <code class="code">add</code> is the function <code class="code"><span class="keyword">fun</span> x y <span class="keywordsign">-&gt;</span> x + y</code>,
+      <code class="code">reduce add</code> is the function which computes the sum of the
+      elements of an enumeration -- and doesn't work on empty
+      enumerations. Therefore, <code class="code">reduce add (1 -- 10)</code>
+      produces result <code class="code">55</code>.<br>
 </div>
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a</code></pre><div class="info">
 Transformation loop on an enumeration, used to build a single value
@@ -814,6 +823,7 @@ Map combined with filter. Same as <a href="BatPervasives.html#VALfilter_map"><co
 
       Since <code class="code">find</code> consumes a prefix of the enumeration, it can be used several
       times on the same enumeration to find the next element.<br>
+<b>Raises</b> <code>Not_found</code> if no element in the whole enumeration satisfies the predicate<br>
 </div>
 <pre><span id="VALpeek"><span class="keyword">val</span> peek</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info">
 <code class="code">peek e</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">e</code> is empty or <code class="code"><span class="constructor">Some</span> x</code> where <code class="code">x</code> is

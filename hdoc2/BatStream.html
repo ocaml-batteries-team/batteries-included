@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -139,7 +136,7 @@
     and types.<br>
 <hr width="100%">
 <br>
-Streams and parsers. 
+Streams and parsers.
 <p>
 
     Streams are a read-and-forget data structure, comparable to enumerations.
@@ -274,7 +271,7 @@ concatenate a stream of streams<br>
 <pre><span id="VALdup"><span class="keyword">val</span> dup</span> : <code class="type">'a Stream.t -> 'a Stream.t * 'a Stream.t</code></pre><div class="info">
 <code class="code">dup stream</code> returns a pair of streams which are identical to <code class="code">stream</code>. Note
       that stream is a destructive data structure, the point of <code class="code">dup</code> is to
-      return two streams can be used independently. 
+      return two streams can be used independently.
 <p>
 
       NOT IMPLEMENTED CORRECTLY - WILL RAISE Failure UNTIL CORRECT
@@ -305,7 +302,7 @@ concatenate a stream of streams<br>
       order of elements in the source stream is preserved.<br>
 </div>
 <br>
-<span id="6_Streamarithmetic"><h6>Stream arithmetic</h6></span> 
+<span id="6_Streamarithmetic"><h6>Stream arithmetic</h6></span>
 <p>
 
     All the functions in this part are lazy.<br>

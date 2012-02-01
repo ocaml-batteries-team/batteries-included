@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -225,7 +222,7 @@ Convert the given string to an integer
     The string is read in decimal (by default) or in hexadecimal,
     octal or binary if the string begins with <code class="code">0x</code>, <code class="code">0o</code> or <code class="code">0b</code>
     respectively.
-    Raise <code class="code"><span class="constructor">Invalid_argument</span> <span class="string">"int_of_string"</span></code> if the given string is not
+    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if the given string is not
     a valid representation of an integer, or if the integer represented
     exceeds the range of integers representable in type <code class="code">int</code>.<br>
 </div>
@@ -242,7 +239,13 @@ The comparison function for integers, with the same specification as
 custom min and max for integers is much faster than using
     polymorphic one in stdlib<br>
 </div>
-<pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">int -> int -> int</code></pre><pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type">int <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">int -> int -> int</code></pre><pre><span id="VALmid"><span class="keyword">val</span> mid</span> : <code class="type">int -> int -> int</code></pre><div class="info">
+Midpoint function; <code class="code">mid a b</code> returns <code class="code">floor((a+b)/2)</code>, but done
+    correctly to compensate for numeric overflows.  The result is an
+    integer that lies between <code class="code">a</code> and <code class="code">b</code> and is as equidistant from
+    both as possible.<br>
+</div>
+<pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type">int <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Enumerate an interval.
 <p>
 
@@ -268,10 +271,10 @@ prints as decimal string<br>
 <pre><span id="VALxprint"><span class="keyword">val</span> xprint</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> int -> unit</code></pre><div class="info">
 prints as hex string<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatInt.Future.html">Future</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt.Future.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Compare
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">int -> int -> bool</code></pre><div class="info">
+<span id="7_Compare"><div class="h7">Compare</div></span><br>
 </div>
-<pre><span class="keyword">module</span> <a href="BatInt.Safe_int.html">Safe_int</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt.Safe_int.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">int -> int -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span class="keyword">module</span> <a href="BatInt.Safe_int.html">Safe_int</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt.Safe_int.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Safe operations on integers.
 </div>
 </body></html>

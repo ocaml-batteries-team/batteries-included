@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -131,7 +128,7 @@ UTF-8 encoded Unicode strings. The type is normal string.<br>
     The call requires O(n)-time.<br>
 </div>
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> <a href="Ulib.UChar.html#TYPEt">Ulib.UChar.t</a>) -> <a href="Ulib.UTF8.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">init len f</code> 
+<code class="code">init len f</code>
     returns a new string which contains <code class="code">len</code> Unicode characters.
     The i-th Unicode character is initialized by <code class="code">f i</code><br>
 </div>
@@ -145,7 +142,7 @@ Positions in the string represented by the number of bytes from the head.
 </div>
 
 <pre><span id="VALnth"><span class="keyword">val</span> nth</span> : <code class="type"><a href="Ulib.UTF8.html#TYPEt">t</a> -> int -> <a href="Ulib.UTF8.html#TYPEindex">index</a></code></pre><div class="info">
-<code class="code">nth s n</code> returns the position of the <code class="code">n</code>-th Unicode character. 
+<code class="code">nth s n</code> returns the position of the <code class="code">n</code>-th Unicode character.
     The call requires O(n)-time<br>
 </div>
 <pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type"><a href="Ulib.UTF8.html#TYPEt">t</a> -> <a href="Ulib.UTF8.html#TYPEindex">index</a></code></pre><div class="info">
@@ -164,26 +161,26 @@ The position of the head of the last Unicode character.<br>
 </div>
 <pre><span id="VALcompare_index"><span class="keyword">val</span> compare_index</span> : <code class="type"><a href="Ulib.UTF8.html#TYPEt">t</a> -> <a href="Ulib.UTF8.html#TYPEindex">index</a> -> <a href="Ulib.UTF8.html#TYPEindex">index</a> -> int</code></pre><div class="info">
 <code class="code">compare_index s i1 i2</code> returns
-    a value &lt; 0 if <code class="code">i1</code> is the position located before <code class="code">i2</code>, 
+    a value &lt; 0 if <code class="code">i1</code> is the position located before <code class="code">i2</code>,
     0 if <code class="code">i1</code> and <code class="code">i2</code> points the same location,
     a value &gt; 0 if <code class="code">i1</code> is the position located after <code class="code">i2</code>.<br>
 </div>
 <pre><span id="VALnext"><span class="keyword">val</span> next</span> : <code class="type"><a href="Ulib.UTF8.html#TYPEt">t</a> -> <a href="Ulib.UTF8.html#TYPEindex">index</a> -> <a href="Ulib.UTF8.html#TYPEindex">index</a></code></pre><div class="info">
 <code class="code">next s i</code>
     returns the position of the head of the Unicode character
-    located immediately after <code class="code">i</code>. 
+    located immediately after <code class="code">i</code>.
     If <code class="code">i</code> is inside of <code class="code">s</code>, the function always successes.
     If <code class="code">i</code> is inside of <code class="code">s</code> and there is no Unicode character after <code class="code">i</code>,
-    the position outside <code class="code">s</code> is returned.  
+    the position outside <code class="code">s</code> is returned.
     If <code class="code">i</code> is not inside of <code class="code">s</code>, the behaviour is unspecified.<br>
 </div>
 <pre><span id="VALprev"><span class="keyword">val</span> prev</span> : <code class="type"><a href="Ulib.UTF8.html#TYPEt">t</a> -> <a href="Ulib.UTF8.html#TYPEindex">index</a> -> <a href="Ulib.UTF8.html#TYPEindex">index</a></code></pre><div class="info">
 <code class="code">prev s i</code>
     returns the position of the head of the Unicode character
-    located immediately before <code class="code">i</code>. 
+    located immediately before <code class="code">i</code>.
     If <code class="code">i</code> is inside of <code class="code">s</code>, the function always successes.
     If <code class="code">i</code> is inside of <code class="code">s</code> and there is no Unicode character before <code class="code">i</code>,
-    the position outside <code class="code">s</code> is returned.  
+    the position outside <code class="code">s</code> is returned.
     If <code class="code">i</code> is not inside of <code class="code">s</code>, the behaviour is unspecified.<br>
 </div>
 <pre><span id="VALmove"><span class="keyword">val</span> move</span> : <code class="type"><a href="Ulib.UTF8.html#TYPEt">t</a> -> <a href="Ulib.UTF8.html#TYPEindex">index</a> -> int -> <a href="Ulib.UTF8.html#TYPEindex">index</a></code></pre><div class="info">
@@ -194,8 +191,8 @@ The position of the head of the last Unicode character.<br>
 </div>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="Ulib.UChar.html#TYPEt">Ulib.UChar.t</a> -> unit) -> <a href="Ulib.UTF8.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter f s</code>
-    applies <code class="code">f</code> to all Unicode characters in <code class="code">s</code>.  
-    The order of application is same to the order 
+    applies <code class="code">f</code> to all Unicode characters in <code class="code">s</code>.
+    The order of application is same to the order
     of the Unicode characters in <code class="code">s</code>.<br>
 </div>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="Ulib.UTF8.html#TYPEt">t</a> -> <a href="Ulib.UTF8.html#TYPEt">t</a> -> int</code></pre><div class="info">

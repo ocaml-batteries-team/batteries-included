@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -113,30 +110,30 @@
 </div>
 <center><h1>Module <a href="type_BatSubstring.html">BatSubstring</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> BatSubstring: <code class="code"><span class="keyword">sig</span></code> <a href="BatSubstring.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient 
+<pre><span class="keyword">module</span> BatSubstring: <code class="code"><span class="keyword">sig</span></code> <a href="BatSubstring.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient
    representation of a piece of a string.
 <p>
 
-   A substring (s,i,n) is valid if 0 &lt;= i &lt;= i+n &lt;= size s, 
-                  or equivalently, 0 &lt;= i and 0 &lt;= n and i+n &lt;= size s.  
+   A substring (s,i,n) is valid if 0 &lt;= i &lt;= i+n &lt;= size s,
+                  or equivalently, 0 &lt;= i and 0 &lt;= n and i+n &lt;= size s.
 <p>
 
-   A valid substring (s, i, n) represents the string s<code class="code">i...i+n-1</code>.  
+   A valid substring (s, i, n) represents the string s<code class="code">i...i+n-1</code>.
 <p>
 
    Invariant in the implementation: Any value of type <code class="code"><span class="constructor">Substring</span>.t</code> is valid.<br>
 <hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info">
-<code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient 
+<code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient
    representation of a piece of a string.
 <p>
 
-   A substring (s,i,n) is valid if 0 &lt;= i &lt;= i+n &lt;= size s, 
-                  or equivalently, 0 &lt;= i and 0 &lt;= n and i+n &lt;= size s.  
+   A substring (s,i,n) is valid if 0 &lt;= i &lt;= i+n &lt;= size s,
+                  or equivalently, 0 &lt;= i and 0 &lt;= n and i+n &lt;= size s.
 <p>
 
-   A valid substring (s, i, n) represents the string s<code class="code">i...i+n-1</code>.  
+   A valid substring (s, i, n) represents the string s<code class="code">i...i+n-1</code>.
 <p>
 
    Invariant in the implementation: Any value of type <code class="code"><span class="constructor">Substring</span>.t</code> is valid.<br>
@@ -197,7 +194,7 @@
       characters.  Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">k &lt; 0</code>, even in the partial
       application <code class="code">trimr k</code>.<br>
 </div>
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">int -> <a href="BatSubstring.html#TYPEt">t</a> -> char</code></pre><div class="info">
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> char</code></pre><div class="info">
 <code class="code">sub sus k</code> returns the k'th character of the substring; that
       is, s(i+k) where sus = (s, i, n).  Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if
       <code class="code">k&lt;0</code> or <code class="code">k&gt;=n</code>.<br>
@@ -238,6 +235,24 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
     but more efficient than, <code class="code"><span class="constructor">String</span>.compare (to_string sus1)
     (to_string sus2)</code>.<br>
 </div>
+<pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> char -> int</code></pre><div class="info">
+<code class="code">index sus c</code> returns the index of the first occurence of <code class="code">c</code> in <code class="code">sus</code> or
+    raise <code class="code"><span class="constructor">Not_found</span></code> otherwise.<br>
+</div>
+<pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> char -> int</code></pre><div class="info">
+<code class="code">index_from sus i c</code> returns the index of the first occurence of <code class="code">c</code> in
+    <code class="code">sus</code> after the index <code class="code">i</code> or raise <code class="code"><span class="constructor">Not_found</span></code> otherwise. If <code class="code">i</code> is beyond
+    the range of <code class="code">sus</code>, raises <code class="code"><span class="constructor">Invalid_argument</span></code>. It is equivalent to <code class="code">i + index (triml i sus) c</code>.<br>
+</div>
+<pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> char -> int</code></pre><div class="info">
+<code class="code">rindex sus c</code> returns the index of the last occurence of <code class="code">c</code> in <code class="code">sus</code> or
+    raise <code class="code"><span class="constructor">Not_found</span></code> otherwise.<br>
+</div>
+<pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> char -> int</code></pre><div class="info">
+<code class="code">index_from sus i c</code> returns the index of the last occurence of <code class="code">c</code> in <code class="code">sus</code>
+    before the index <code class="code">i</code> or raise <code class="code"><span class="constructor">Not_found</span></code> otherwise. If <code class="code">i</code> is beyond the
+    range of <code class="code">sus</code>, raises <code class="code"><span class="constructor">Invalid_argument</span></code>. It is equivalent to <code class="code">rindex (trimr i sus) c</code>.<br>
+</div>
 <pre><span id="VALdropl"><span class="keyword">val</span> dropl</span> : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">dropl p sus</code> drops the longest prefix (left substring) of <code class="code">sus</code>
     all of whose characters satisfy predicate <code class="code">p</code>.  If all
@@ -269,13 +284,13 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
 
    sus = xxxxfyyyyfzzzz         sus = xxxxzzzz
    ------------------------------------------------------
-   dropl p sus =     fyyyyfzzzz               
-   dropr p sus = xxxxfyyyyf       
+   dropl p sus =     fyyyyfzzzz
+   dropr p sus = xxxxfyyyyf
    takel p sus = xxxx                         xxxxzzzz
    taker p sus =           zzzz               xxxxzzzz
 <p>
 
-   It also holds that 
+   It also holds that
    <code class="code">concat (takel p sus) (dropl p sus) = string sus</code>
    <code class="code">concat (dropr p sus) (taker p sus) = string sus</code><br>
 </div>
@@ -326,13 +341,13 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
     <code class="code">p</code>.<br>
 </div>
 <pre><span id="VALfields"><span class="keyword">val</span> fields</span> : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> list</code></pre><div class="info">
-<code class="code">fields p sus</code> returns the list of fields in <code class="code">sus</code>, from left to right, 
-   where a field is a (possibly empty) maximal substring of <code class="code">sus</code> not 
+<code class="code">fields p sus</code> returns the list of fields in <code class="code">sus</code>, from left to right,
+   where a field is a (possibly empty) maximal substring of <code class="code">sus</code> not
    containing any delimiter, and a delimiter is a character satisfying <code class="code">p</code>.
 <p>
 
    Two tokens may be separated by more than one delimiter, whereas two
-   fields are separated by exactly one delimiter.  If the only delimiter 
+   fields are separated by exactly one delimiter.  If the only delimiter
    is the character <code class="code"><span class="string">'|'</span></code>, then
    "abc||def" contains two tokens:   "abc" and "def"
    "abc||def" contains three fields: "abc" and "" and "def"<br>

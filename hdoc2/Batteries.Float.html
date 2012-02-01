@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -106,7 +103,9 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html">
 <link title="Ulib" rel="Chapter" href="Ulib.html"><link title="Usual operations" rel="Section" href="#6_Usualoperations">
 <link title="Operations specific to floating-point numbers" rel="Section" href="#6_Operationsspecifictofloatingpointnumbers">
-<link title="Operations on the internal representation of floating-point numbers" rel="Section" href="#6_Operationsontheinternalrepresentationoffloatingpointnumbers">
+<link title="Constants" rel="Section" href="#6_Constants">
+<link title="Operations on the internal representation of floating-point
+    numbers" rel="Section" href="#6_Operationsontheinternalrepresentationoffloatingpointnumbers">
 <link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <title>Batteries user guide : Batteries.Float</title>
@@ -124,8 +123,8 @@
 The type of floating-point numbers.
 <p>
 
-	   Floating-point numbers are the default representation of
-	   real numbers by OCaml.<br>
+   Floating-point numbers are the default representation of
+   real numbers by OCaml.<br>
 </div>
 
 <br>
@@ -136,20 +135,23 @@ Floating number zero. This is the same thing as <code class="code">0.</code><br>
 <pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type">float</code></pre><div class="info">
 Floating number one. This is the same thing as <code class="code">1.</code><br>
 </div>
-<pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">float -> float</code></pre><pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">float -> float</code></pre><div class="info">
+<pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">float -> float</code></pre><div class="info">
+Returns the negation of the input, i.e. (fun x -&gt; ~-. x)<br>
+</div>
+<pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">float -> float</code></pre><div class="info">
 Add <code class="code">1.</code> to a floating number. Note that, as per IEEE 754,
-	  if <code class="code">x</code> is a large enough float number, <code class="code">succ x</code> might be
-	  equal to <code class="code">x</code>, due to rounding.<br>
+    if <code class="code">x</code> is a large enough float number, <code class="code">succ x</code> might be
+    equal to <code class="code">x</code>, due to rounding.<br>
 </div>
 <pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">float -> float</code></pre><div class="info">
 Substract <code class="code">1.</code> from a floating number. Note that, as per
-	  IEEE 754, if <code class="code">x</code> is a large enough float number, <code class="code">pred x</code>
-	  might be equal to <code class="code">x</code>, due to rounding.<br>
+    IEEE 754, if <code class="code">x</code> is a large enough float number, <code class="code">pred x</code>
+    might be equal to <code class="code">x</code>, due to rounding.<br>
 </div>
 <pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">float -> float</code></pre><div class="info">
 The absolute value of a floating point number.<br>
 </div>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">float</code></pre><pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">float</code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">float -> float -> int</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> float</code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">float -> int</code></pre><pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> float</code></pre><pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">float -> float</code></pre><pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> float</code></pre><pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">float -> string</code></pre><pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(<>)"><span class="keyword">val</span> (&lt;&gt;)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(>=)"><span class="keyword">val</span> (&gt;=)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(<=)"><span class="keyword">val</span> (&lt;=)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(>)"><span class="keyword">val</span> (&gt;)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(<)"><span class="keyword">val</span> (&lt;)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(=)"><span class="keyword">val</span> (=)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">float</code></pre><pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">float</code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">float -> float -> int</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> float</code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">float -> int</code></pre><pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> float</code></pre><pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">float -> float</code></pre><pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> float</code></pre><pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">float -> string</code></pre><pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
 <span id="6_Operationsspecifictofloatingpointnumbers"><h6>Operations specific to floating-point numbers</h6></span><br>
 <pre><span id="VALexp"><span class="keyword">val</span> exp</span> : <code class="type">float -> float</code></pre><div class="info">
 Exponential.<br>
@@ -195,21 +197,76 @@ See <a href="BatFloat.html#VALfloor"><code class="code"><span class="constructor
 </div>
 <pre><span id="VALfloor"><span class="keyword">val</span> floor</span> : <code class="type">float -> float</code></pre><div class="info">
 Round the given float to an integer value.
-	  <code class="code">floor f</code> returns the greatest integer value less than or
-	  equal to <code class="code">f</code>.
-	  <code class="code">ceil f</code> returns the least integer value greater than or
-	  equal to <code class="code">f</code>.<br>
+    <code class="code">floor f</code> returns the greatest integer value less than or
+    equal to <code class="code">f</code>.
+    <code class="code">ceil f</code> returns the least integer value greater than or
+    equal to <code class="code">f</code>.<br>
 </div>
-<pre><span id="VALround"><span class="keyword">val</span> round</span> : <code class="type">?precision:float -> float -> float</code></pre><div class="info">
-<code class="code">round ~precision f</code> rounds <code class="code">f</code> to the decimal place indicated by
-        <code class="code">precision</code>.
-        For example, <code class="code">round_to ~precision:0.001 0.5555</code> returns <code class="code">0.556</code>.
-        If <code class="code">precision</code> is not provided it defaults to <code class="code">1.0</code>.<br>
+<pre><span id="VALround"><span class="keyword">val</span> round</span> : <code class="type">float -> float</code></pre><div class="info">
+<code class="code">round x</code> rounds <code class="code">x</code> to the nearest integral floating-point
+    (the nearest of <code class="code">floor x</code> and <code class="code">ceil x</code>). In case the fraction
+    of x is exactly 0.5, we round away from 0. : <code class="code">round 1.5</code> is
+    <code class="code">2.</code> but <code class="code">round (-3.5)</code> is <code class="code">-4.</code>.<br>
 </div>
 <pre><span id="VALround_to_int"><span class="keyword">val</span> round_to_int</span> : <code class="type">float -> int</code></pre><div class="info">
-<code class="code">round_to_int f</code> is like <a href="BatFloat.html#VALround"><code class="code"><span class="constructor">BatFloat</span>.round</code></a> except that it converts the result
-          to an <code class="code">int</code>.<br>
+<code class="code">round_to_int x</code> is <code class="code">int_of_float (round x)</code>.<br>
+<b>Since</b> 2.0<br>
 </div>
+<pre><span id="VALround_to_string"><span class="keyword">val</span> round_to_string</span> : <code class="type">?digits:int -> float -> string</code></pre><div class="info">
+<code class="code">round_to_string ~digits:d x</code> will return a string
+    representation of <code class="code">x</code> -- in base 10 -- rounded to <code class="code">d</code> digits
+    after the decimal point. By default, <code class="code">digits</code> is <code class="code">0</code>, we round
+    to the nearest integer.<br>
+<b>Since</b> 2.0<br>
+<b>Raises</b> <code>Invalid_argument</code> if the ~digits argument is negative.
+<p>
+
+    This is strictly a convenience function for simple end-user
+    printing and you should not rely on its behavior. One possible
+    implementation is to rely on C `sprintf` internally, which
+    means:
+<p>
+<ul>
+<li>no guarantee is given on the round-at-half behavior; it may
+    not be consistent with <code class="code">round</code> or <code class="code">round_to_int</code></li>
+</ul>
+<ul>
+<li><code class="code">round_to_string ~digits:0 3.</code> may return "3" instead of
+    "3." as <code class="code">string_of_float</code> would</li>
+</ul>
+<ul>
+<li>no guarantee is given on the behavior for abusively high
+    number of digits precision; for example <code class="code">round_to_string
+    ~digits:max_int x</code> may return the empty string.</li>
+</ul>
+<br>
+</div>
+<pre><span id="VALroot"><span class="keyword">val</span> root</span> : <code class="type">float -> int -> float</code></pre><div class="info">
+<code class="code">root x n</code> calculates the nth root of x.<br>
+</div>
+<pre><span id="VALsignbit"><span class="keyword">val</span> signbit</span> : <code class="type">float -> bool</code></pre><div class="info">
+<b>Since</b> 2.0<br>
+<b>Returns</b> True if the sign bit of <code class="code">x</code> is set. This usually indicates thet <code class="code">x</code> is negative.<br>
+</div>
+<pre><span id="VALcopysign"><span class="keyword">val</span> copysign</span> : <code class="type">float -> float -> float</code></pre><div class="info">
+<code class="code">copysign x y</code> returns a copy of <code class="code">x</code> with the same sign as <code class="code">y</code>.<br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALis_nan"><span class="keyword">val</span> is_nan</span> : <code class="type">float -> bool</code></pre><div class="info">
+<code class="code">is_nan f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is <code class="code">nan</code>, <code class="code"><span class="keyword">false</span></code> otherwise.<br>
+</div>
+<pre><span id="VALis_special"><span class="keyword">val</span> is_special</span> : <code class="type">float -> bool</code></pre><div class="info">
+<code class="code">is_special f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is <code class="code">nan</code> or <code class="code">+/- infinity</code>,
+    <code class="code"><span class="keyword">false</span></code> otherwise.<br>
+<b>Since</b> 2.0<br>
+</div>
+<br>
+<span id="6_Constants"><h6>Constants</h6></span><br>
+<br>
+Special float constants.  It may not be safe to compare
+    directly with these, as they have multiple internal
+    representations.  Instead use the <code class="code">is_special</code>, <code class="code">is_nan</code>,
+    etc. tests<br>
 <pre><span id="VALinfinity"><span class="keyword">val</span> infinity</span> : <code class="type">float</code></pre><div class="info">
 Positive infinity.<br>
 </div>
@@ -218,33 +275,77 @@ Negative infinity.<br>
 </div>
 <pre><span id="VALnan"><span class="keyword">val</span> nan</span> : <code class="type">float</code></pre><div class="info">
 A special floating-point value denoting the result of an
-	  undefined operation such as <code class="code">0.0 /. 0.0</code>.  Stands for
-	  ``not a number''.  Any floating-point operation with <code class="code">nan</code> as
-	  argument returns <code class="code">nan</code> as result.  As for floating-point comparisons,
-	  <code class="code">=</code>, <code class="code">&lt;</code>, <code class="code">&lt;=</code>, <code class="code">&gt;</code> and <code class="code">&gt;=</code> return <code class="code"><span class="keyword">false</span></code> and <code class="code">&lt;&gt;</code> returns <code class="code"><span class="keyword">true</span></code>
-	  if one or both of their arguments is <code class="code">nan</code>.<br>
+    undefined operation such as <code class="code">0.0 /. 0.0</code>.  Stands for ``not
+    a number''.  Any floating-point operation with <code class="code">nan</code> as
+    argument returns <code class="code">nan</code> as result.  As for floating-point
+    comparisons, <code class="code">=</code>, <code class="code">&lt;</code>, <code class="code">&lt;=</code>, <code class="code">&gt;</code> and <code class="code">&gt;=</code> return <code class="code"><span class="keyword">false</span></code> and
+    <code class="code">&lt;&gt;</code> returns <code class="code"><span class="keyword">true</span></code> if one or both of their arguments is
+    <code class="code">nan</code>.<br>
 </div>
-<pre><span id="VALis_nan"><span class="keyword">val</span> is_nan</span> : <code class="type">float -> bool</code></pre><div class="info">
-<code class="code">is_nan f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is <code class="code">nan</code>, <code class="code"><span class="keyword">false</span></code> otherwise.<br>
-</div>
-<pre><span id="VALis_special"><span class="keyword">val</span> is_special</span> : <code class="type">float -> bool</code></pre><div class="info">
-<code class="code">is_special f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is <code class="code">nan</code> or <code class="code">+/- infinity</code>,
-          <code class="code"><span class="keyword">false</span></code> otherwise.<br>
-</div>
+<br>
+Numeric constants<br>
 <pre><span id="VALepsilon"><span class="keyword">val</span> epsilon</span> : <code class="type">float</code></pre><div class="info">
 The smallest positive float <code class="code">x</code> such that <code class="code">1.0 +. x &lt;&gt; 1.0</code>.<br>
+</div>
+<pre><span id="VALe"><span class="keyword">val</span> e</span> : <code class="type">float</code></pre><div class="info">
+Euler? ... Euler? ... Euler?<br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALlog2e"><span class="keyword">val</span> log2e</span> : <code class="type">float</code></pre><div class="info">
+<code class="code"><span class="constructor">Math</span>.log2 e</code><br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALlog10e"><span class="keyword">val</span> log10e</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">log10 e</code><br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALln2"><span class="keyword">val</span> ln2</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">log 2</code><br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALln10"><span class="keyword">val</span> ln10</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">log 10</code><br>
+<b>Since</b> 2.0<br>
 </div>
 <pre><span id="VALpi"><span class="keyword">val</span> pi</span> : <code class="type">float</code></pre><div class="info">
 The constant pi (3.14159...)<br>
 </div>
+<pre><span id="VALpi2"><span class="keyword">val</span> pi2</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">pi /. 2.</code><br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALpi4"><span class="keyword">val</span> pi4</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">pi /. 4.</code><br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALinvpi"><span class="keyword">val</span> invpi</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">1. /. pi</code><br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALinvpi2"><span class="keyword">val</span> invpi2</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">2. /. pi</code><br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALsqrtpi2"><span class="keyword">val</span> sqrtpi2</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">2. *. sqrt pi</code><br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALsqrt2"><span class="keyword">val</span> sqrt2</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">sqrt 2.</code><br>
+<b>Since</b> 2.0<br>
+</div>
+<pre><span id="VALinvsqrt2"><span class="keyword">val</span> invsqrt2</span> : <code class="type">float</code></pre><div class="info">
+<code class="code">1. /. sqrt 2.</code><br>
+<b>Since</b> 2.0<br>
+</div>
 <br>
-<span id="6_Operationsontheinternalrepresentationoffloatingpointnumbers"><h6>Operations on the internal representation of floating-point numbers</h6></span><br>
+<span id="6_Operationsontheinternalrepresentationoffloatingpointnumbers"><h6>Operations on the internal representation of floating-point
+    numbers</h6></span><br>
 <pre><span id="VALfrexp"><span class="keyword">val</span> frexp</span> : <code class="type">float -> float * int</code></pre><div class="info">
-<code class="code">frexp f</code> returns the pair of the significant
-	  and the exponent of <code class="code">f</code>.  When <code class="code">f</code> is zero, the
-	  significant <code class="code">x</code> and the exponent <code class="code">n</code> of <code class="code">f</code> are equal to
-	  zero.  When <code class="code">f</code> is non-zero, they are defined by
-	  <code class="code">f = x *. 2 ** n</code> and <code class="code">0.5 &lt;= x &lt; 1.0</code>.<br>
+<code class="code">frexp f</code> returns the pair of the significant and the exponent
+    of <code class="code">f</code>.  When <code class="code">f</code> is zero, the significant <code class="code">x</code> and the
+    exponent <code class="code">n</code> of <code class="code">f</code> are equal to zero.  When <code class="code">f</code> is non-zero,
+    they are defined by <code class="code">f = x *. 2 ** n</code> and <code class="code">0.5 &lt;= x &lt; 1.0</code>.<br>
 </div>
 <pre><span id="VALldexp"><span class="keyword">val</span> ldexp</span> : <code class="type">float -> int -> float</code></pre><div class="info">
 <code class="code">ldexp x n</code> returns <code class="code">x *. 2 ** n</code>.<br>

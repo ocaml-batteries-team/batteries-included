@@ -8,10 +8,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -25,13 +23,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -40,7 +38,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -116,6 +113,12 @@
 </div>
 </td></tr>
 <tr><td align="left"><br>E</td></tr>
+<tr><td><a href="BatFingerTree.html#EXCEPTIONEmpty">Empty</a> [<a href="BatFingerTree.html">BatFingerTree</a>]</td>
+<td><div class="info">
+An exception that is thrown by various operations when
+    trying to get a non existing element.
+</div>
+</td></tr>
 <tr><td><a href="BatDllist.html#EXCEPTIONEmpty">Empty</a> [<a href="BatDllist.html">BatDllist</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatRefList.html#EXCEPTIONEmpty_list">Empty_list</a> [<a href="BatRefList.html">BatRefList</a>]</td>
@@ -195,12 +198,6 @@ This exception is raised if the encoding or decoding table
 Not a Number
 </div>
 </td></tr>
-<tr><td><a href="BatBitSet.html#EXCEPTIONNegative_index">Negative_index</a> [<a href="BatBitSet.html">BatBitSet</a>]</td>
-<td><div class="info">
-When a negative bit value is used for one of the BitSet functions,
- this exception is raised with the name of the function.
-</div>
-</td></tr>
 <tr><td><a href="BatLazyList.html#EXCEPTIONNo_more_elements">No_more_elements</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
 <td><div class="info">
 See <a href="BatLazyList.html#VALfrom"><code class="code"><span class="constructor">BatLazyList</span>.from</code></a> and <a href="BatLazyList.html#VALfrom_loop"><code class="code"><span class="constructor">BatLazyList</span>.from_loop</code></a> for more information on this exception.
@@ -223,12 +220,7 @@ This exception is raised when reading on an input with the <code class="code">re
 <tr><td><a href="BatIO.html#EXCEPTIONNo_more_input">No_more_input</a> [<a href="BatIO.html">BatIO</a>]</td>
 <td><div class="info">
 This exception is raised when reading on an input with the <code class="code">read</code> or
-  <code class="code">nread</code> functions while there is no available token to read.
-</div>
-</td></tr>
-<tr><td><a href="BatOption.html#EXCEPTIONNo_value">No_value</a> [<a href="BatOption.html">BatOption</a>]</td>
-<td><div class="info">
-Raised when calling <code class="code">get <span class="constructor">None</span></code>.
+    <code class="code">nread</code> functions while there is no available token to read.
 </div>
 </td></tr>
 <tr><td><a href="BatOptParse.Opt.html#EXCEPTIONNo_value">No_value</a> [<a href="BatOptParse.Opt.html">BatOptParse.Opt</a>]</td>

@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -257,7 +254,7 @@ as <code class="code">get</code><br>
       to <code class="code">e</code>. <b>This operation is destructive</b>, and will also affect vects
       sharing the modified leaf with <code class="code">v</code>. Use with caution.<br>
 </div>
-<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">int -> int -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> int -> int -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">sub m n r</code> returns a sub-vect of <code class="code">r</code> containing all the elements
       whose indexes range from <code class="code">m</code> to <code class="code">m + n - 1</code> (included).
     Raises Out_of_bounds in the same cases as Array.sub.
@@ -280,14 +277,14 @@ as <code class="code">get</code><br>
 <br>
 <span id="6_Conversion"><h6>Conversion</h6></span><br>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-Returns an enumeration of the elements of the vector. 
+Returns an enumeration of the elements of the vector.
       Behavior of the enumeration is undefined if the contents of the vector changes afterwards.<br>
 </div>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 Build a vector from an enumeration.<br>
 </div>
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-Returns an enumeration of the elements of a vector, from last to first. 
+Returns an enumeration of the elements of a vector, from last to first.
       Behavior of the enumeration is undefined if the contents of the vector changes afterwards.<br>
 </div>
 <pre><span id="VALof_backwards"><span class="keyword">val</span> of_backwards</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
@@ -309,8 +306,8 @@ Operates like iter, but also passes the index of the character
       It is thus equivalent to <code class="code">iter f (sub m n r)</code>, but does not
       create an intermediary vect. <code class="code">rangeiter</code> operates in worst-case
       <code class="code"><span class="constructor">O</span>(n + log m)</code> time, which improves on the <code class="code"><span class="constructor">O</span>(n log m)</code> bound
-      from an explicit loop using <code class="code">get</code>.
-      Raises Out_of_bounds in the same cases as <code class="code">sub</code>.<br>
+      from an explicit loop using <code class="code">get</code>.<br>
+<b>Raises</b> <code>Out_of_bounds</code> in the same cases as <code class="code">sub</code>.<br>
 </div>
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">fold f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN-1 </code>

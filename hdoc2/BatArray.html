@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatArg.html">
 <link rel="next" href="BatAvlTree.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -12,10 +11,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +26,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +41,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -113,12 +109,10 @@
 <link title="Utilities" rel="Section" href="#6_Utilities">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
-<link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : BatArray</title>
 </head>
 <body>
-<div class="navbar"><a href="BatArg.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
+<div class="navbar">&nbsp;<a href="index.html">Up</a>
 &nbsp;<a href="BatAvlTree.html">Next</a>
 </div>
 <center><h1>Module <a href="type_BatArray.html">BatArray</a></h1></center>
@@ -296,18 +290,18 @@ Build an array from an enumeration, with the first element of
 </div>
 <br>
 <span id="6_Utilities"><h6>Utilities</h6></span><br>
-<pre><span id="VALmake_compare"><span class="keyword">val</span> make_compare</span> : <code class="type">('a -> 'a -> int) -> 'a array -> 'a array -> int</code></pre><div class="info">
-<code class="code">make_compare c</code> generates the lexicographical order on arrays
-    induced by <code class="code">c</code>. That is, given a comparison function for the
-    elements of an array,<br>
-</div>
 <pre><span id="VALdecorate_stable_sort"><span class="keyword">val</span> decorate_stable_sort</span> : <code class="type">('a -> 'b) -> 'a array -> 'a array</code></pre><div class="info">
 <code class="code">decorate_sort f a</code> returns a sorted copy of <code class="code">a</code> such that if <code class="code">f
     x &lt; f y</code> then <code class="code">x</code> is earlier in the result than <code class="code">y</code>.  This
     function is useful when <code class="code">f</code> is expensive, as it only computes <code class="code">f
     x</code> once for each element in the array.  See
     <code class="code">:[http://en.wikipedia.org/wiki/<span class="constructor">Schwartzian_transform</span>]<span class="constructor">Schwartzian</span>
-    <span class="constructor">Transform</span></code>.<br>
+    <span class="constructor">Transform</span></code>.
+<p>
+
+    It is unnecessary to have an additional comparison function as
+    argument, as the builtin <code class="code"><span class="constructor">Pervasives</span>.compare</code> is used to compare
+    the <code class="code"><span class="keywordsign">'</span>b</code> values.  This is deemed sufficient.<br>
 </div>
 <pre><span id="VALdecorate_fast_sort"><span class="keyword">val</span> decorate_fast_sort</span> : <code class="type">('a -> 'b) -> 'a array -> 'a array</code></pre><div class="info">
 As <code class="code"><span class="constructor">Array</span>.decorate_sort</code>, but uses fast_sort internally.<br>
@@ -323,8 +317,6 @@ As <code class="code"><span class="constructor">Array</span>.decorate_sort</code
 </div>
 <br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
-<br>
-<span id="7_Printing"><div class="h7">Printing</div></span><br>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b <a href="BatArray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Print the contents of an array, with <code class="code">~first</code> preceeding the first
     item (default: "<code class="code"><span class="keywordsign">|</span><span class="string">"), [~last] following the last item (default:
@@ -334,7 +326,24 @@ Print the contents of an array, with <code class="code">~first</code> preceeding
 
     Example: IO.to_string (Array.print Int.print) <code class="code"><span class="keywordsign">|</span>2;4;66<span class="keywordsign">|</span></code> = "<code class="code"><span class="keywordsign">|</span>2;4;66<span class="keywordsign">|</span></code>"<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a> -> 'a <a href="BatArray.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><br>
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a> -> 'a <a href="BatArray.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a array <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><div class="info">
+<code class="code">compare c</code> generates the lexicographical order on arrays induced
+    by <code class="code">c</code>. That is, given a comparison function for the elements of
+    an array, this will return a comparison function for arrays of
+    that type.<br>
+</div>
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a array <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><div class="info">
+Hoist an element comparison function to compare arrays of those
+    elements, with shorter arrays less than longer ones, and
+    lexicographically for arrays of the same size.  This is a
+    different ordering than <code class="code">compare</code>, but is often faster.<br>
+</div>
+<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a array <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><div class="info">
+Hoist a equality test for elements to arrays.  Arrays are only
+    equal if their lengths are the same and corresponding elements
+    test equal.<br>
+</div>
+<br>
 <span id="6_Overridemodules"><h6>Override modules</h6></span><br>
 <br>
 The following modules replace functions defined in <code class="code"><span class="constructor">Array</span></code> with

@@ -7,10 +7,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -24,13 +22,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -39,7 +37,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -175,6 +172,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">Compare</span>.bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">Compare</span>.bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="constructor">RefOps</span>&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bat__refops_t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;+=&nbsp;)&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">RefOps</span>.bat__refops_t&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">RefOps</span>.bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;-=&nbsp;)&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">RefOps</span>.bat__refops_t&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">RefOps</span>.bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;*=&nbsp;)&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">RefOps</span>.bat__refops_t&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">RefOps</span>.bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/=&nbsp;)&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">RefOps</span>.bat__refops_t&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatNumber</span>.<span class="constructor">RefOps</span>.bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="constructor">Numeric</span>&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t<br>
@@ -213,13 +226,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;**&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;--&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;---&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bat__compare_t&nbsp;=&nbsp;t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&gt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bat__refops_t&nbsp;=&nbsp;t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;+=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;-=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;*=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="constructor">Bounded</span>&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
@@ -299,6 +310,15 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">MakeRefOps</span>&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">functor</span>&nbsp;(<span class="constructor">Base</span>&nbsp;:&nbsp;<span class="constructor">NUMERIC_BASE</span>)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bat__refops_t&nbsp;=&nbsp;<span class="constructor">Base</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;+=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;-=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;*=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">MakeNumeric</span>&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">functor</span>&nbsp;(<span class="constructor">Base</span>&nbsp;:&nbsp;<span class="constructor">NUMERIC_BASE</span>)&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
@@ -332,13 +352,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;**&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;--&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;---&nbsp;)&nbsp;:&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__infix_t&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bat__compare_t&nbsp;=&nbsp;t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&gt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&lt;&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;=&nbsp;)&nbsp;:&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__compare_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bat__refops_t&nbsp;=&nbsp;t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;+=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;-=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;*=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/=&nbsp;)&nbsp;:&nbsp;bat__refops_t&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bat__refops_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generic_pow&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;zero:<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span><br>

@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -137,8 +134,9 @@ test whether a given int is a member of the set<br>
 Add the given int to the set, returning a new set<br>
 </div>
 <pre><span id="VALadd_range"><span class="keyword">val</span> add_range</span> : <code class="type">int -> int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
-Add the range of integers <code class="code">lo, hi</code> (including both endpoints) to
+<code class="code">add_range lo hi t</code> adds the range of integers <code class="code">lo, hi</code> (including both endpoints) to
     the given set, returning a new set<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">lo</code> &gt; <code class="code">hi</code><br>
 </div>
 <pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
 Return the singleton set containing only the given element<br>
@@ -147,7 +145,8 @@ Return the singleton set containing only the given element<br>
 Remove an element from the given set, returning a new set<br>
 </div>
 <pre><span id="VALremove_range"><span class="keyword">val</span> remove_range</span> : <code class="type">int -> int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
-Remove a range of elements from the given set, returning a new set<br>
+<code class="code">remove_range lo hi t</code> removes a range of elements from the given set, returning a new set<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">lo</code> &gt; <code class="code">hi</code><br>
 </div>
 <pre><span id="VALunion"><span class="keyword">val</span> union</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
 Compute the union of two sets.  This is the set whose elements are
@@ -240,4 +239,7 @@ Returns some element in the set<br>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> (int * int) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Enumerates all contiguous ranges in the set<br>
 </div>
-</body></html>
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">(int * int) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">(int * int) list -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+Build a ISet.t out of a list or enum of ranges<br>
+</div>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> <a href="BatISet.html#TYPEt">t</a> -> unit</code></pre></body></html>

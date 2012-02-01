@@ -8,10 +8,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -25,13 +23,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -40,7 +38,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -106,12 +103,23 @@
 <center><h1>Index of types</h1></center>
 <table>
 <tr><td align="left"><br>A</td></tr>
+<tr><td><a href="BatGc.html#TYPEalarm">alarm</a> [<a href="BatGc.html">BatGc</a>]</td>
+<td><div class="info">
+An alarm is a piece of data that calls a user function at the end of
+   each major GC cycle.
+</div>
+</td></tr>
 <tr><td><a href="BatCache.html#TYPEauto_cache">auto_cache</a> [<a href="BatCache.html">BatCache</a>]</td>
-<td></td></tr>
+<td><div class="info">
+Automatically managed caches
+</div>
+</td></tr>
 <tr><td align="left"><br>B</td></tr>
 <tr><td><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> [<a href="BatNumber.Compare.html">BatNumber.Compare</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNumber.Infix.html#TYPEbat__infix_t">bat__infix_t</a> [<a href="BatNumber.Infix.html">BatNumber.Infix</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatNumber.RefOps.html#TYPEbat__refops_t">bat__refops_t</a> [<a href="BatNumber.RefOps.html">BatNumber.RefOps</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNumber.Bounded.html#TYPEbounded">bounded</a> [<a href="BatNumber.Bounded.html">BatNumber.Bounded</a>]</td>
 <td></td></tr>
@@ -136,12 +144,6 @@ choice functions, see <code class="code">min</code> and <code class="code">max</
 Internal representation of a method.
 </div>
 </td></tr>
-<tr><td><a href="BatArg.html#TYPEcommand">command</a> [<a href="BatArg.html">BatArg</a>]</td>
-<td><div class="info">
-The type describing both the name, documentation and behavior
-	  associated with a keyword.
-</div>
-</td></tr>
 <tr><td><a href="BatOrd.html#TYPEcomp">comp</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td><div class="info">
 The legacy int-returning comparisons : compare a b &lt; 0 means a &lt; b, compare a b = 0 means a = b, compare a b &gt; 0 means a &gt; b
@@ -155,6 +157,11 @@ The legacy int-returning comparisons : compare a b &lt; 0 means a &lt; b, compar
 <td><div class="info">
 A <code class="code">path</code> can be represented by the following triple:
   <code class="code">(<span class="constructor">Path</span>.parent path, <span class="constructor">Path</span>.name_core path, <span class="constructor">Path</span>.ext path)</code>
+</div>
+</td></tr>
+<tr><td><a href="BatGc.html#TYPEcontrol">control</a> [<a href="BatGc.html">BatGc</a>]</td>
+<td><div class="info">
+The GC parameters are given as a <code class="code">control</code> record.
 </div>
 </td></tr>
 <tr><td align="left"><br>D</td></tr>
@@ -216,6 +223,12 @@ A log <code class="code">event</code> consists of an event name and a list of ke
 </div>
 </td></tr>
 <tr><td align="left"><br>F</td></tr>
+<tr><td><a href="BatFingerTree.S.html#TYPEfg">fg</a> [<a href="BatFingerTree.S.html">BatFingerTree.S</a>]</td>
+<td><div class="info">
+The type of finger trees containing elements of type <code class="code"><span class="keywordsign">'</span>a</code>
+      measured by <code class="code"><span class="keywordsign">'</span>m</code>.
+</div>
+</td></tr>
 <tr><td><a href="BatLog.html#TYPEflag">flag</a> [<a href="BatLog.html">BatLog</a>]</td>
 <td><div class="info">
 Get and set the output flags.
@@ -370,6 +383,11 @@ The data structure, e.g.
 </td></tr>
 <tr><td><a href="BatOo.Oo.Internal.html#TYPEmeth">meth</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatFingerTree.html#TYPEmonoid">monoid</a> [<a href="BatFingerTree.html">BatFingerTree</a>]</td>
+<td><div class="info">
+The type of the element of a monoid.
+</div>
+</td></tr>
 <tr><td align="left"><br>N</td></tr>
 <tr><td><a href="BatBigarray.html#TYPEnativeint_elt">nativeint_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td></td></tr>
@@ -438,6 +456,12 @@ The list of operations which are permitted on a file.
 The position inside one file or one stream.
 </div>
 </td></tr>
+<tr><td><a href="BatIO.html#TYPEprinter">printer</a> [<a href="BatIO.html">BatIO</a>]</td>
+<td><div class="info">
+The type of a printing function to print a <code class="code"><span class="keywordsign">'</span>a</code> to an output that
+    produces <code class="code"><span class="keywordsign">'</span>b</code> as result.
+</div>
+</td></tr>
 <tr><td align="left"><br>R</td></tr>
 <tr><td><a href="BatParserCo.html#TYPEreport">report</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
 <td></td></tr>
@@ -462,6 +486,11 @@ The type of formatted input scanners: <code class="code">(<span class="keywordsi
     formatted input function, then <code class="code">scan ib fmt f</code> applies <code class="code">f</code> to the arguments
     specified by the format string <code class="code">fmt</code>, when <code class="code">scan</code> has read those arguments
     from the scanning input buffer <code class="code">ib</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatGc.html#TYPEstat">stat</a> [<a href="BatGc.html">BatGc</a>]</td>
+<td><div class="info">
+The memory management counters are returned in a <code class="code">stat</code> record.
 </div>
 </td></tr>
 <tr><td><a href="BatParserCo.html#TYPEstate">state</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
@@ -522,8 +551,13 @@ The unit type, i.e.
 <td></td></tr>
 <tr><td><a href="BatSubstring.html#TYPEt">t</a> [<a href="BatSubstring.html">BatSubstring</a>]</td>
 <td><div class="info">
-<code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient 
+<code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient
    representation of a piece of a string.
+</div>
+</td></tr>
+<tr><td><a href="BatString.Cap.html#TYPEt">t</a> [<a href="BatString.Cap.html">BatString.Cap</a>]</td>
+<td><div class="info">
+The type of capability strings.
 </div>
 </td></tr>
 <tr><td><a href="BatSet.S.html#TYPEt">t</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
@@ -548,7 +582,7 @@ A label which may be used to return values of type <code class="code"><span clas
 </td></tr>
 <tr><td><a href="BatResult.html#TYPEt">t</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-The type of a result
+The type of a result.
 </div>
 </td></tr>
 <tr><td><a href="BatRefList.html#TYPEt">t</a> [<a href="BatRefList.html">BatRefList</a>]</td>
@@ -594,7 +628,7 @@ A source of elements of type <code class="code"><span class="keywordsign">'</spa
 </td></tr>
 <tr><td><a href="BatParserCo.html#TYPEt">t</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
 <td><div class="info">
-A parser for elements of type <code class="code"><span class="keywordsign">'</span>a</code>, producing 
+A parser for elements of type <code class="code"><span class="keywordsign">'</span>a</code>, producing
      elements of type <code class="code"><span class="keywordsign">'</span>b</code>, with user-defined states
      of type <code class="code"><span class="keywordsign">'</span>c</code>.
 </div>
@@ -635,7 +669,7 @@ The type of maps from type <code class="code">key</code> to type <code class="co
 <td></td></tr>
 <tr><td><a href="BatList.html#TYPEt">t</a> [<a href="BatList.html">BatList</a>]</td>
 <td><div class="info">
-List operations.
+The type of lists
 </div>
 </td></tr>
 <tr><td><a href="BatLazyList.html#TYPEt">t</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
@@ -680,11 +714,6 @@ the underlying representation is a balanced tree of ranges
 </td></tr>
 <tr><td><a href="BatIMap.html#TYPEt">t</a> [<a href="BatIMap.html">BatIMap</a>]</td>
 <td></td></tr>
-<tr><td><a href="BatHistogram.html#TYPEt">t</a> [<a href="BatHistogram.html">BatHistogram</a>]</td>
-<td><div class="info">
-type of histograms
-</div>
-</td></tr>
 <tr><td><a href="BatHeap.H.html#TYPEt">t</a> [<a href="BatHeap.H.html">BatHeap.H</a>]</td>
 <td><div class="info">
 Type of the heap
@@ -742,6 +771,8 @@ The type of floating-point numbers.
 The type of floating-point numbers.
 </div>
 </td></tr>
+<tr><td><a href="BatFingerTree.html#TYPEt">t</a> [<a href="BatFingerTree.html">BatFingerTree</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatEnum.html#TYPEt">t</a> [<a href="BatEnum.html">BatEnum</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatDynArray.html#TYPEt">t</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
@@ -751,11 +782,6 @@ The type of floating-point numbers.
 <tr><td><a href="BatDeque.html#TYPEt">t</a> [<a href="BatDeque.html">BatDeque</a>]</td>
 <td><div class="info">
 A synonym for convenience
-</div>
-</td></tr>
-<tr><td><a href="BatCounter.html#TYPEt">t</a> [<a href="BatCounter.html">BatCounter</a>]</td>
-<td><div class="info">
-The type of a counter metric
 </div>
 </td></tr>
 <tr><td><a href="BatConcurrent.BaseLock.html#TYPEt">t</a> [<a href="BatConcurrent.BaseLock.html">BatConcurrent.BaseLock</a>]</td>
@@ -776,6 +802,11 @@ The type of a lock.
 <td></td></tr>
 <tr><td><a href="BatOrd.Comp.html#TYPEt">t</a> [<a href="BatOrd.Comp.html">BatOrd.Comp</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatBuffer.html#TYPEt">t</a> [<a href="BatBuffer.html">BatBuffer</a>]</td>
+<td><div class="info">
+The abstract type of buffers.
+</div>
+</td></tr>
 <tr><td><a href="BatBool.html#TYPEt">t</a> [<a href="BatBool.html">BatBool</a>]</td>
 <td><div class="info">
 The type of booleans.
@@ -861,6 +892,12 @@ Type of strings used.
 <tr><td><a href="BatPathGen.PathType.html#TYPEvalidator">validator</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
 <td><div class="info">
 Validators should check if all characters of given string can be used in a name (path component).
+</div>
+</td></tr>
+<tr><td align="left"><br>W</td></tr>
+<tr><td><a href="BatFingerTree.S.html#TYPEwrap">wrap</a> [<a href="BatFingerTree.S.html">BatFingerTree.S</a>]</td>
+<td><div class="info">
+A type meant to avoid duplication of signatures.
 </div>
 </td></tr>
 </table><br>

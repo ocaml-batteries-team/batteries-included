@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -219,9 +216,12 @@ A simplified version of <code class="code">fold</code>, which uses the first ele
 <code class="code">sum</code> returns the sum of the given int enum.  If the argument is
       empty, returns 0. Eager<br>
 </div>
+<pre><span id="VALfsum"><span class="keyword">val</span> fsum</span> : <code class="type">float <a href="BatEnum.html#TYPEt">t</a> -> float</code></pre><div class="info">
+<b>Since</b> 2.0<br>
+</div>
 <pre><span id="VALfold2"><span class="keyword">val</span> fold2</span> : <code class="type">('a -> 'b -> 'c -> 'c) -> 'c -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'c</code></pre><div class="info">
 <code class="code">fold2</code> is similar to <code class="code">fold</code> but will fold over two enumerations at the
-      same time until one of the two enumerations ends.<br>
+    same time until one of the two enumerations ends.<br>
 </div>
 <pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 A variant of <code class="code">fold</code> producing an enumeration of its intermediate values.
@@ -254,6 +254,17 @@ Indexed functions : these functions are similar to previous ones
       can be used several times on the same enumeration to find the
       next element.<br>
 </div>
+<pre><span id="VALfind_map"><span class="keyword">val</span> find_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<code class="code">find_map f e</code> finds the first element <code class="code">x</code> of <code class="code">e</code> such that <code class="code">f x</code> returns
+    <code class="code"><span class="constructor">Some</span> r</code>, then returns r. It consumes the enumeration up to and including
+    the found element, or raises <code class="code"><span class="constructor">Not_found</span></code> if no such element exists in the
+    enumeration, consuming the whole enumeration in the search.
+<p>
+
+    Since <code class="code">find_map</code> (eagerly) consumes a prefix of the enumeration, it can be
+    used several times on the same enumeration to find the next element.<br>
+<b>Since</b> 2.0<br>
+</div>
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">is_empty e</code> returns true if <code class="code">e</code> does not contains any element.
     Forces at most one element.<br>
@@ -267,6 +278,10 @@ Indexed functions : these functions are similar to previous ones
 <code class="code">get e</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">e</code> is empty or <code class="code"><span class="constructor">Some</span> x</code> where <code class="code">x</code> is
       the next element of <code class="code">e</code>, in which case the element is removed
       from the enumeration.<br>
+</div>
+<pre><span id="VALget_exn"><span class="keyword">val</span> get_exn</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<code class="code">get_exn e</code> returns the first element of <code class="code">e</code>.<br>
+<b>Since</b> 2.0<br>
 </div>
 <pre><span id="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
 <code class="code">push e x</code> will add <code class="code">x</code> at the beginning of <code class="code">e</code>.<br>
@@ -631,6 +646,10 @@ For users worried about the speed of <code class="code">count</code> you can cal
       where <code class="code">x</code> is the first element of <code class="code">a</code> and <code class="code">y</code> is the first
       element of <code class="code">b</code><br>
 </div>
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<code class="code">equal eq a b</code> returns <code class="code"><span class="keyword">true</span></code> when <code class="code">a</code> and <code class="code">b</code> contain
+    the same sequence of elements.<br>
+</div>
 <pre><span id="VALswitch"><span class="keyword">val</span> switch</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">switch test enum</code> splits <code class="code">enum</code> into two enums, where the first enum have
       all the elements satisfying <code class="code">test</code>, the second enum is opposite. The
@@ -648,6 +667,7 @@ as <code class="code">switch</code><br>
 
     Example: <code class="code">-5 -- 5 |&gt; arg_min (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> x * x + 6 * x - 5) = -3</code>
     Example: <code class="code"><span class="constructor">List</span>.enum [<span class="string">"cat"</span>; <span class="string">"canary"</span>; <span class="string">"dog"</span>; <span class="string">"dodo"</span>; <span class="string">"ant"</span>; <span class="string">"cow"</span>] |&gt; arg_max <span class="constructor">String</span>.length = <span class="string">"canary"</span></code><br>
+<b>Raises</b> <code>Invalid_argument</code> if the input enum is empty<br>
 </div>
 <br>
 <span id="6_Trampolining"><h6>Trampolining</h6></span><br>

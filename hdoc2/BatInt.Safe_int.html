@@ -4,17 +4,15 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatInt.Future.html">
+<link rel="previous" href="BatInt.Compare.html">
 <link rel="Up" href="BatInt.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -28,13 +26,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -43,7 +41,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -108,7 +105,7 @@
 <title>Batteries user guide : BatInt.Safe_int</title>
 </head>
 <body>
-<div class="navbar"><a href="BatInt.Future.html">Previous</a>
+<div class="navbar"><a href="BatInt.Compare.html">Previous</a>
 &nbsp;<a href="BatInt.html">Up</a>
 &nbsp;</div>
 <center><h1>Module <a href="type_BatInt.Safe_int.html">BatInt.Safe_int</a></h1></center>
@@ -214,10 +211,10 @@ Comparaison: <code class="code">a &lt;= b</code> is true if and only if <code cl
 <pre><span id="VAL(=)"><span class="keyword">val</span> (=)</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Comparaison: <code class="code">a = b</code> if and only if <code class="code">a</code> and <code class="code">b</code> have the same value.<br>
 </div>
-<pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info">
 The greatest representable integer, which is either 2<sup class="superscript">30</sup>-1 or 2<sup class="superscript">62</sup>-1.<br>
 </div>
-<pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info">
 The smallest representable integer, -2<sup class="superscript">30</sup> or 2<sup class="superscript">62</sup>.<br>
 </div>
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info">
@@ -243,7 +240,7 @@ Convert the given string to an integer
       The string is read in decimal (by default) or in hexadecimal,
       octal or binary if the string begins with <code class="code">0x</code>, <code class="code">0o</code> or <code class="code">0b</code>
       respectively.
-      Raise <code class="code"><span class="constructor">Invalid_argument</span> <span class="string">"int_of_string"</span></code> if the given string is not
+      Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if the given string is not
       a valid representation of an integer, or if the integer represented
       exceeds the range of integers representable in type <code class="code">int</code>.<br>
 </div>
@@ -263,7 +260,7 @@ The comparison function for integers, with the same specification as
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <span id="7_Printing"><div class="h7">Printing</div></span><br>
 </div>
-<pre><span class="keyword">module</span> <a href="BatInt.Safe_int.Future.html">Future</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt.Safe_int.Future.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Compare
+<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<span id="7_Compare"><div class="h7">Compare</div></span><br>
 </div>
-</body></html>
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre></body></html>

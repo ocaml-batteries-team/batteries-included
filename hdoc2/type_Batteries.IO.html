@@ -7,10 +7,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -24,13 +22,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -39,7 +37,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -105,6 +102,7 @@
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;input&nbsp;=&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;=&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;printer&nbsp;=&nbsp;<span class="keywordsign">'</span>b&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">No_more_input</span><br>
 &nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Input_closed</span><br>
 &nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Output_closed</span><br>
@@ -118,9 +116,9 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_input&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_in&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;nwrite&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_buf&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Buffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write&nbsp;:&nbsp;(char,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;nwrite&nbsp;:&nbsp;(string,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_buf&nbsp;:&nbsp;(<span class="constructor">Buffer</span>.t,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_output&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;flush&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -158,19 +156,19 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_text&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_line&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_uline&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_byte&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_ui16&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i16&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i32&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_real_i32&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i64&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_double&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_uchar&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_float&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_string&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_text&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_line&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_uline&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_byte&nbsp;:&nbsp;(int,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_ui16&nbsp;:&nbsp;(int,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i16&nbsp;:&nbsp;(int,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i32&nbsp;:&nbsp;(int,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_real_i32&nbsp;:&nbsp;(int32,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i64&nbsp;:&nbsp;(int64,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_double&nbsp;:&nbsp;(float,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_uchar&nbsp;:&nbsp;(<span class="constructor">Ulib</span>.<span class="constructor">UChar</span>.t,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_float&nbsp;:&nbsp;(float,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_string&nbsp;:&nbsp;(string,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_text&nbsp;:&nbsp;(<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_line&nbsp;:&nbsp;(string,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_uline&nbsp;:&nbsp;(<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">BigEndian</span>&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_ui16&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
@@ -180,26 +178,19 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_i64&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_double&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_float&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_ui16&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i16&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i32&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_real_i32&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i64&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_double&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_float&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_ui16&nbsp;:&nbsp;(int,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i16&nbsp;:&nbsp;(int,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i32&nbsp;:&nbsp;(int,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_real_i32&nbsp;:&nbsp;(int32,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i64&nbsp;:&nbsp;(int64,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_double&nbsp;:&nbsp;(float,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_float&nbsp;:&nbsp;(float,&nbsp;<span class="keywordsign">'</span>a)&nbsp;printer<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ui16s_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;i16s_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;i32s_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;real_i32s_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;i64s_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;doubles_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_bytes&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_ui16s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i16s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i32s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_real_i32s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i64s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_doubles&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;in_bits&nbsp;=&nbsp;<span class="constructor">BatIO</span>.in_bits<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;out_bits&nbsp;=&nbsp;<span class="constructor">BatIO</span>.out_bits<br>
@@ -275,25 +266,12 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;doubles_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;strings_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lines_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lines_of2&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;chunks_of&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ulines_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;chars_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;uchars_of&nbsp;:&nbsp;input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;bits_of&nbsp;:&nbsp;in_bits&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_bytes&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_chars&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_uchars&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">UChar</span>.t&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_ui16s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i16s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i32s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_real_i32s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_i64s&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_doubles&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_strings&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_chunks&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_lines&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_texts&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_ulines&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_bitss&nbsp;:&nbsp;nbits:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;out_bits&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printf&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a&nbsp;output,&nbsp;unit)&nbsp;format&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;default_buffer_size&nbsp;:&nbsp;int<br>

@@ -12,10 +12,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of class methods" rel=Appendix href="index_methods.html">
 <link title="Index of classes" rel=Appendix href="index_classes.html">
-<link title="Index of class types" rel=Appendix href="index_class_types.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="BatArg" rel="Chapter" href="BatArg.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
 <link title="BatAvlTree" rel="Chapter" href="BatAvlTree.html">
 <link title="BatBase64" rel="Chapter" href="BatBase64.html">
@@ -29,13 +27,13 @@
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
-<link title="BatCounter" rel="Chapter" href="BatCounter.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
 <link title="BatGc" rel="Chapter" href="BatGc.html">
@@ -44,7 +42,6 @@
 <link title="BatHashcons" rel="Chapter" href="BatHashcons.html">
 <link title="BatHashtbl" rel="Chapter" href="BatHashtbl.html">
 <link title="BatHeap" rel="Chapter" href="BatHeap.html">
-<link title="BatHistogram" rel="Chapter" href="BatHistogram.html">
 <link title="BatIMap" rel="Chapter" href="BatIMap.html">
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
@@ -114,10 +111,13 @@
 <link title="List transformations" rel="Section" href="#6_Listtransformations">
 <link title="BatEnum functions" rel="Section" href="#6_BatEnumfunctions">
 <link title="List of pairs" rel="Section" href="#6_Listofpairs">
+<link title="Sorting" rel="Section" href="#6_Sorting">
 <link title="Utilities" rel="Section" href="#6_Utilities">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Obsolete functions" rel="Section" href="#6_Obsoletefunctions">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
+<link title="Unary predicate, One list" rel="Subsection" href="#7_UnarypredicateOnelist">
+<link title="Binary predicate, Two lists" rel="Subsection" href="#7_BinarypredicateTwolists">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : BatList</title>
 </head>
@@ -146,7 +146,7 @@
 <p>
 
     The implementation might be a little more slow in bytecode,
-    but compiling in native code will not affect performances. 
+    but compiling in native code will not affect performances.
 <p>
 
     This module extends Stdlib's
@@ -154,12 +154,11 @@
     module, go there for documentation on the rest of the functions
     and types.<br>
 <hr width="100%">
+<br>
+List operations.<br>
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a list</code> </pre>
 <div class="info">
-List operations.
-<p>
 The type of lists<br>
-<b>Author(s):</b> Xavier Leroy (base module), Brian Hurt, Nicolas Cannasse, Richard W.M. Jones, David Teller<br>
 </div>
 
 <pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
@@ -174,25 +173,42 @@ The type of lists<br>
 </div>
 <pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">'a list -> 'a</code></pre><div class="info">
 Returns the first element of the list, or raise <code class="code"><span class="constructor">Empty_list</span></code> if
-	      the list is empty (similar to <code class="code">hd</code>).<br>
+the list is empty (similar to <code class="code">hd</code>).<br>
+</div>
+<pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a list -> 'a</code></pre><div class="info">
+Similar to <code class="code">first</code>, but raises
+   <code class="code"><span class="constructor">Failure</span> <span class="string">"hd"</span></code> if the list is empty.<br>
+</div>
+<pre><span id="VALtl"><span class="keyword">val</span> tl</span> : <code class="type">'a list -> 'a list</code></pre><div class="info">
+Return the given list without its first element. Raise
+   <code class="code"><span class="constructor">Failure</span> <span class="string">"tl"</span></code> if the list is empty.<br>
 </div>
 <pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a list -> 'a</code></pre><div class="info">
 Returns the last element of the list, or raise <code class="code"><span class="constructor">Empty_list</span></code> if
-	      the list is empty. This function takes linear time.<br>
+the list is empty. This function takes linear time.<br>
+</div>
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a list -> int</code></pre><div class="info">
+Return the length (number of elements) of the given list.<br>
 </div>
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a list -> int -> 'a</code></pre><div class="info">
 <code class="code">at l n</code> returns the n-th element of the list <code class="code">l</code> or raise
-	      <code class="code"><span class="constructor">Invalid_argument</span></code> is the index is outside of <code class="code">l</code> bounds.<br>
+<code class="code"><span class="constructor">Invalid_argument</span></code> is the index is outside of <code class="code">l</code> bounds.  O(l)<br>
+</div>
+<pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a list -> 'a list</code></pre><div class="info">
+List reversal.<br>
 </div>
 <pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a list -> 'a list -> 'a list</code></pre><div class="info">
 Catenate two lists.  Same function as the infix operator <code class="code">@</code>.
-	      Tail-recursive (length of the first argument).<br>
+Tail-recursive O(length of the first argument).<br>
+</div>
+<pre><span id="VALrev_append"><span class="keyword">val</span> rev_append</span> : <code class="type">'a list -> 'a list -> 'a list</code></pre><div class="info">
+<code class="code"><span class="constructor">List</span>.rev_append l1 l2</code> reverses <code class="code">l1</code> and concatenates it to <code class="code">l2</code>.<br>
 </div>
 <pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a list list -> 'a list</code></pre><div class="info">
 Concatenate a list of lists.  The elements of the argument are all
-	      concatenated together (in the same order) to give the result.
-	      Tail-recursive
-	      (length of the argument + length of the longest sub-list).<br>
+concatenated together (in the same order) to give the result.
+Tail-recursive
+(length of the argument + length of the longest sub-list).<br>
 </div>
 <pre><span id="VALflatten"><span class="keyword">val</span> flatten</span> : <code class="type">'a list list -> 'a list</code></pre><div class="info">
 Same as <code class="code">concat</code>.<br>
@@ -201,32 +217,45 @@ Same as <code class="code">concat</code>.<br>
 <span id="6_Constructors"><h6>Constructors</h6></span><br>
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a -> 'a list</code></pre><div class="info">
 Similar to <code class="code"><span class="constructor">String</span>.make</code>, <code class="code">make n x</code> returns a
-	      list containing <code class="code">n</code> elements <code class="code">x</code>.<br>
+list containing <code class="code">n</code> elements <code class="code">x</code>.<br>
 </div>
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a list</code></pre><div class="info">
 Similar to <code class="code"><span class="constructor">Array</span>.init</code>, <code class="code">init n f</code> returns the list containing
-	      the results of (f 0),(f 1).... (f (n-1)).
-	      Raise <code class="code"><span class="constructor">Invalid_arg</span> <span class="string">"BatList.init"</span></code> if n &lt; 0.<br>
+the results of (f 0),(f 1).... (f (n-1)).<br>
+<b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"BatList.init"</span></code> if n &lt; 0.<br>
 </div>
 <br>
 <span id="6_Iterators"><h6>Iterators</h6></span><br>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a list -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">List</span>.iter f [a1; ...; an]</code> applies function <code class="code">f</code> in turn to
+   <code class="code">a1; ...; an</code>. It is equivalent to
+   <code class="code"><span class="keyword">begin</span> f a1; f a2; ...; f an; () <span class="keyword">end</span></code>.<br>
+</div>
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a list -> unit</code></pre><div class="info">
 <code class="code">iteri f l</code> will call <code class="code">(f 0 a0);(f 1 a1) ... (f n an)</code> where
-	 <code class="code">a0..an</code> are the elements of the list <code class="code">l</code>.<br>
+<code class="code">a0..an</code> are the elements of the list <code class="code">l</code>.<br>
 </div>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a list -> 'b list</code></pre><div class="info">
 <code class="code">map f [a0; a1; ...; an]</code> applies function <code class="code">f</code> to <code class="code">a0, a1, ..., an</code>,
-	      and builds the list <code class="code">[f a0; f a1; ...; f an]</code>
-	      with the results returned by <code class="code">f</code>.  Tail-recursive.<br>
+and builds the list <code class="code">[f a0; f a1; ...; f an]</code>
+with the results returned by <code class="code">f</code>.  Tail-recursive.<br>
+</div>
+<pre><span id="VALrev_map"><span class="keyword">val</span> rev_map</span> : <code class="type">('a -> 'b) -> 'a list -> 'b list</code></pre><div class="info">
+<code class="code"><span class="constructor">List</span>.rev_map f l</code> gives the same result as
+   <code class="code"><span class="constructor">List</span>.rev</code><code class="code"> (</code><code class="code"><span class="constructor">List</span>.map</code><code class="code"> f l)</code>.<br>
 </div>
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -> 'a list -> 'b list</code></pre><div class="info">
 <code class="code">mapi f l</code> will build the list containing
-	 <code class="code">(f 0 a0);(f 1 a1) ... (f n an)</code> where <code class="code">a0..an</code> are the elements of
-	 the list <code class="code">l</code>.<br>
+<code class="code">(f 0 a0);(f 1 a1) ... (f n an)</code> where <code class="code">a0..an</code> are the elements of
+the list <code class="code">l</code>.<br>
+</div>
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b list -> 'a</code></pre><div class="info">
+<code class="code"><span class="constructor">List</span>.fold_left f a [b1; ...; bn]</code> is
+   <code class="code">f (... (f (f a b1) b2) ...) bn</code>.<br>
 </div>
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a list -> 'b -> 'b</code></pre><div class="info">
 <code class="code"><span class="constructor">List</span>.fold_right f [a0; a1; ...; an] b</code> is
-	      <code class="code">f a0 (f a1 (... (f an b) ...))</code>.  Tail-recursive.<br>
+<code class="code">f a0 (f a1 (... (f an b) ...))</code>.  Tail-recursive.<br>
 </div>
 <pre><span id="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">('a -> 'a -> 'a) -> 'a list -> 'a</code></pre><div class="info">
 <code class="code"><span class="constructor">List</span>.reduce f h::t</code> is <code class="code">fold_left f h t</code>.<br>
@@ -234,11 +263,11 @@ Similar to <code class="code"><span class="constructor">Array</span>.init</code>
 </div>
 <pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a list -> 'a</code></pre><div class="info">
 <code class="code">max l</code> returns the largest value in <code class="code">l</code> as judged by
-	      <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+<code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
 </div>
 <pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a list -> 'a</code></pre><div class="info">
 <code class="code">min l</code> returns the smallest value in <code class="code">l</code> as judged by
-	      <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+<code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
 </div>
 <pre><span id="VALsum"><span class="keyword">val</span> sum</span> : <code class="type">int list -> int</code></pre><div class="info">
 <code class="code">sum l</code> returns the sum of the elements of <code class="code">l</code><br>
@@ -250,105 +279,139 @@ Similar to <code class="code"><span class="constructor">Array</span>.init</code>
 <span id="6_Iteratorsontwolists"><h6>Iterators on two lists</h6></span><br>
 <pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">('a -> 'b -> unit) -> 'a list -> 'b list -> unit</code></pre><div class="info">
 <code class="code"><span class="constructor">List</span>.iter2 f [a0; a1; ...; an] [b0; b1; ...; bn]</code> calls in turn
-	      <code class="code">f a0 b0; f a1 b1; ...; f an bn</code>.<br>
+<code class="code">f a0 b0; f a1 b1; ...; f an bn</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
-	      different lengths.<br>
+different lengths.<br>
 </div>
 <pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre><div class="info">
 <code class="code"><span class="constructor">List</span>.map2 f [a0; a1; ...; an] [b0; b1; ...; bn]</code> is
-	      <code class="code">[f a0 b0; f a1 b1; ...; f an bn]</code>.<br>
+<code class="code">[f a0 b0; f a1 b1; ...; f an bn]</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
-	      different lengths.  Tail-recursive.<br>
+different lengths.  Tail-recursive.<br>
+</div>
+<pre><span id="VALrev_map2"><span class="keyword">val</span> rev_map2</span> : <code class="type">('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre><div class="info">
+<code class="code"><span class="constructor">List</span>.rev_map2 f l1 l2</code> gives the same result as
+   <code class="code"><span class="constructor">List</span>.rev</code><code class="code"> (</code><code class="code"><span class="constructor">List</span>.map2</code><code class="code"> f l1 l2)</code>, but is tail-recursive and
+   more efficient.<br>
 </div>
 <pre><span id="VALfold_left2"><span class="keyword">val</span> fold_left2</span> : <code class="type">('a -> 'b -> 'c -> 'a) -> 'a -> 'b list -> 'c list -> 'a</code></pre><div class="info">
 <code class="code"><span class="constructor">List</span>.fold_left2 f a [b0; b1; ...; bn] [c0; c1; ...; cn]</code> is
-	      <code class="code">f (... (f (f a b0 c0) b1 c1) ...) bn cn</code>.<br>
+<code class="code">f (... (f (f a b0 c0) b1 c1) ...) bn cn</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
-	      different lengths.<br>
+different lengths.<br>
 </div>
 <pre><span id="VALfold_right2"><span class="keyword">val</span> fold_right2</span> : <code class="type">('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> 'c -> 'c</code></pre><div class="info">
 <code class="code"><span class="constructor">List</span>.fold_right2 f [a0; a1; ...; an] [b0; b1; ...; bn] c</code> is
-	      <code class="code">f a0 b0 (f a1 b1 (... (f an bn c) ...))</code>.<br>
+<code class="code">f a0 b0 (f a1 b1 (... (f an bn c) ...))</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
-	      different lengths.  Tail-recursive.<br>
+different lengths.  Tail-recursive.<br>
 </div>
 <br>
 <span id="6_Listscanning"><h6>List scanning</h6></span><br>
+<pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a -> 'a list -> bool</code></pre><div class="info">
+<code class="code">mem a l</code> is true if and only if <code class="code">a</code> is equal
+   to an element of <code class="code">l</code>.<br>
+</div>
+<pre><span id="VALmemq"><span class="keyword">val</span> memq</span> : <code class="type">'a -> 'a list -> bool</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">List</span>.mem</code>, but uses physical equality instead of structural
+   equality to compare list elements.<br>
+</div>
+<br>
+<span id="7_UnarypredicateOnelist"><div class="h7">Unary predicate, One list</div></span><br>
+<pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> 'a list -> bool</code></pre><div class="info">
+<code class="code">for_all p [a1; ...; an]</code> checks if all elements of the list
+   satisfy the predicate <code class="code">p</code>. That is, it returns
+   <code class="code">(p a1) <span class="keywordsign">&amp;&amp;</span> (p a2) <span class="keywordsign">&amp;&amp;</span> ... <span class="keywordsign">&amp;&amp;</span> (p an)</code>.<br>
+</div>
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> bool) -> 'a list -> bool</code></pre><div class="info">
+<code class="code">exists p [a1; ...; an]</code> checks if at least one element of
+   the list satisfies the predicate <code class="code">p</code>. That is, it returns
+   <code class="code">(p a1) <span class="keywordsign">||</span> (p a2) <span class="keywordsign">||</span> ... <span class="keywordsign">||</span> (p an)</code>.<br>
+</div>
+<br>
+<span id="7_BinarypredicateTwolists"><div class="h7">Binary predicate, Two lists</div></span><br>
 <pre><span id="VALfor_all2"><span class="keyword">val</span> for_all2</span> : <code class="type">('a -> 'b -> bool) -> 'a list -> 'b list -> bool</code></pre><div class="info">
 Same as <code class="code"><span class="constructor">List</span>.for_all</code>, but for a two-argument predicate.<br>
 <b>Raises</b> <code>Invalid_argument</code> if the two lists have
-	      different lengths.<br>
+different lengths.<br>
 </div>
 <pre><span id="VALexists2"><span class="keyword">val</span> exists2</span> : <code class="type">('a -> 'b -> bool) -> 'a list -> 'b list -> bool</code></pre><div class="info">
 Same as <code class="code"><span class="constructor">List</span>.exists</code>, but for a two-argument predicate.<br>
 <b>Raises</b> <code>Invalid_argument</code> if the two lists have
-	      different lengths.<br>
+different lengths.<br>
 </div>
 <br>
 <span id="6_Listsearching"><h6>List searching</h6></span><br>
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a list -> 'a</code></pre><div class="info">
+<code class="code">find p l</code> returns the first element of the list <code class="code">l</code>
+   that satisfies the predicate <code class="code">p</code>.
+   Raise <code class="code"><span class="constructor">Not_found</span></code> if there is no value that satisfies <code class="code">p</code> in the
+   list <code class="code">l</code>.<br>
+</div>
 <pre><span id="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">('a -> bool) -> exn -> 'a list -> 'a</code></pre><div class="info">
 <code class="code">find_exn p e l</code> returns the first element of <code class="code">l</code> such as <code class="code">p x</code>
-	 returns <code class="code"><span class="keyword">true</span></code> or raises <code class="code">e</code> if such an element has not been found.<br>
+returns <code class="code"><span class="keyword">true</span></code> or raises <code class="code">e</code> if such an element has not been found.<br>
 </div>
 <pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">(int -> 'a -> bool) -> 'a list -> int * 'a</code></pre><div class="info">
 <code class="code">findi p e l</code> returns the first element <code class="code">ai</code> of <code class="code">l</code> along with its
-	 index <code class="code">i</code> such that <code class="code">p i ai</code> is true, or raises <code class="code"><span class="constructor">Not_found</span></code> if no
-	 such element has been found.<br>
+index <code class="code">i</code> such that <code class="code">p i ai</code> is true, or raises <code class="code"><span class="constructor">Not_found</span></code> if no
+such element has been found.<br>
 </div>
 <pre><span id="VALfind_map"><span class="keyword">val</span> find_map</span> : <code class="type">('a -> 'b option) -> 'a list -> 'b</code></pre><div class="info">
 <code class="code">find_map pred list</code> finds the first element of <code class="code">list</code> for which
-            <code class="code">pred element</code> returns <code class="code"><span class="constructor">Some</span> r</code>.  It returns <code class="code">r</code> immediately
-            once found or raises <code class="code"><span class="constructor">Not_found</span></code> if no element matches the
-            predicate.  See also <a href="BatList.html#VALfilter_map"><code class="code"><span class="constructor">BatList</span>.filter_map</code></a>.<br>
+    <code class="code">pred element</code> returns <code class="code"><span class="constructor">Some</span> r</code>.  It returns <code class="code">r</code> immediately
+    once found or raises <code class="code"><span class="constructor">Not_found</span></code> if no element matches the
+    predicate.  See also <a href="BatList.html#VALfilter_map"><code class="code"><span class="constructor">BatList</span>.filter_map</code></a>.<br>
 </div>
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">('a -> bool) -> 'a list -> 'a</code></pre><div class="info">
 <code class="code">rfind p l</code> returns the last element <code class="code">x</code> of <code class="code">l</code> such as <code class="code">p x</code> returns
-	 <code class="code"><span class="keyword">true</span></code> or raises <code class="code"><span class="constructor">Not_found</span></code> if such element as not been found.<br>
+<code class="code"><span class="keyword">true</span></code> or raises <code class="code"><span class="constructor">Not_found</span></code> if such element as not been found.<br>
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">filter p l</code> returns all the elements of the list <code class="code">l</code>
-	      that satisfy the predicate <code class="code">p</code>.  The order of the elements
-	      in the input list is preserved.<br>
+that satisfy the predicate <code class="code">p</code>.  The order of the elements
+in the input list is preserved.<br>
 </div>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a list -> 'b list</code></pre><div class="info">
 <code class="code">filter_map f l</code> calls <code class="code">(f a0) (f a1).... (f an)</code> where <code class="code">a0,a1..an</code> are
-	 the elements of <code class="code">l</code>. It returns the list of elements <code class="code">bi</code> such as
-	 <code class="code">f ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the corresponding element of
-	 <code class="code">l</code> is discarded).<br>
+the elements of <code class="code">l</code>. It returns the list of elements <code class="code">bi</code> such as
+<code class="code">f ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the corresponding element of
+<code class="code">l</code> is discarded).<br>
 </div>
 <pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">find_all</code> is another name for <code class="code"><span class="constructor">List</span>.filter</code>.<br>
 </div>
 <pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">('a -> bool) -> 'a list -> 'a list * 'a list</code></pre><div class="info">
 <code class="code">partition p l</code> returns a pair of lists <code class="code">(l1, l2)</code>, where
-	      <code class="code">l1</code> is the list of all the elements of <code class="code">l</code> that
-	      satisfy the predicate <code class="code">p</code>, and <code class="code">l2</code> is the list of all the
-	      elements of <code class="code">l</code> that do not satisfy <code class="code">p</code>.
-	      The order of the elements in the input list is preserved.<br>
+<code class="code">l1</code> is the list of all the elements of <code class="code">l</code> that
+satisfy the predicate <code class="code">p</code>, and <code class="code">l2</code> is the list of all the
+elements of <code class="code">l</code> that do not satisfy <code class="code">p</code>.
+The order of the elements in the input list is preserved.<br>
 </div>
 <pre><span id="VALindex_of"><span class="keyword">val</span> index_of</span> : <code class="type">'a -> 'a list -> int option</code></pre><div class="info">
 <code class="code">index_of e l</code> returns the index of the first occurrence of <code class="code">e</code>
-	    in <code class="code">l</code>, or <code class="code"><span class="constructor">None</span></code> if there is no occurrence of <code class="code">e</code> in <code class="code">l</code><br>
+in <code class="code">l</code>, or <code class="code"><span class="constructor">None</span></code> if there is no occurrence of <code class="code">e</code> in <code class="code">l</code><br>
 </div>
 <pre><span id="VALindex_ofq"><span class="keyword">val</span> index_ofq</span> : <code class="type">'a -> 'a list -> int option</code></pre><div class="info">
 <code class="code">index_ofq e l</code> behaves as <code class="code">index_of e l</code> except it uses
-	    physical equality<br>
+physical equality<br>
 </div>
 <pre><span id="VALrindex_of"><span class="keyword">val</span> rindex_of</span> : <code class="type">'a -> 'a list -> int option</code></pre><div class="info">
 <code class="code">rindex_of e l</code> returns the index of the last occurrence of <code class="code">e</code>
-	    in <code class="code">l</code>, or <code class="code"><span class="constructor">None</span></code> if there is no occurrence of <code class="code">e</code> in <code class="code">l</code><br>
+in <code class="code">l</code>, or <code class="code"><span class="constructor">None</span></code> if there is no occurrence of <code class="code">e</code> in <code class="code">l</code><br>
 </div>
 <pre><span id="VALrindex_ofq"><span class="keyword">val</span> rindex_ofq</span> : <code class="type">'a -> 'a list -> int option</code></pre><div class="info">
 <code class="code">rindex_ofq e l</code> behaves as <code class="code">rindex_of e l</code> except it uses
-	    physical equality<br>
+physical equality<br>
 </div>
 <pre><span id="VALunique"><span class="keyword">val</span> unique</span> : <code class="type">?cmp:('a -> 'a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">unique cmp l</code> returns the list <code class="code">l</code> without any duplicate element.
-	 Default comparator ( = ) is used if no comparison function specified. 
+Default comparator ( = ) is used if no comparison function specified.
 <p>
 
-	 This function takes O(n²) time.<br>
-<b>See also</b> <code class="code">sort_unique</code> to save time in cases when reordering the list is acceptable<br>
+This function takes O(n²) time.<br>
+<b>See also</b> <code class="code">sort_unique</code> to save time in cases when reordering the list is
+acceptable<br>
 </div>
 <pre><span id="VALunique_eq"><span class="keyword">val</span> unique_eq</span> : <code class="type">?eq:('a -> 'a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
 As <code class="code">unique</code> except comparator label is ~eq.<br>
@@ -360,135 +423,206 @@ As <code class="code">unique</code>, except comparator parameter returns an int<
 </div>
 <br>
 <span id="6_Associationlists"><h6>Association lists</h6></span><br>
+<pre><span id="VALassoc"><span class="keyword">val</span> assoc</span> : <code class="type">'a -> ('a * 'b) list -> 'b</code></pre><div class="info">
+<code class="code">assoc a l</code> returns the value associated with key <code class="code">a</code> in the list of
+   pairs <code class="code">l</code>. That is,
+   <code class="code">assoc a [ ...; (a,b); ...] = b</code>
+   if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
+   Raise <code class="code"><span class="constructor">Not_found</span></code> if there is no value associated with <code class="code">a</code> in the
+   list <code class="code">l</code>.<br>
+</div>
 <pre><span id="VALassoc_inv"><span class="keyword">val</span> assoc_inv</span> : <code class="type">'a -> ('b * 'a) list -> 'b</code></pre><div class="info">
 <code class="code">assoc_inv b l</code> returns the key associated with value <code class="code">b</code> in the list of
-	      pairs <code class="code">l</code>. That is,
-	      <code class="code">assoc b [ ...; (a,b); ...] = a</code>
-	      if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
-	      Raise <code class="code"><span class="constructor">Not_found</span></code> if there is no key associated with <code class="code">b</code> in the
-	      list <code class="code">l</code>.<br>
+pairs <code class="code">l</code>. That is, <code class="code">assoc b [ ...; (a,b); ...] = a</code>
+if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
+Raise <code class="code"><span class="constructor">Not_found</span></code> if there is no key associated with <code class="code">b</code> in the
+list <code class="code">l</code>.<br>
 </div>
 <pre><span id="VALremove_assoc"><span class="keyword">val</span> remove_assoc</span> : <code class="type">'a -> ('a * 'b) list -> ('a * 'b) list</code></pre><div class="info">
 <code class="code">remove_assoc a l</code> returns the list of
-	      pairs <code class="code">l</code> without the first pair with key <code class="code">a</code>, if any.
-	      Tail-recursive.<br>
+pairs <code class="code">l</code> without the first pair with key <code class="code">a</code>, if any.
+Tail-recursive.<br>
+</div>
+<pre><span id="VALmem_assoc"><span class="keyword">val</span> mem_assoc</span> : <code class="type">'a -> ('a * 'b) list -> bool</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">List</span>.assoc</code>, but simply return true if a binding exists,
+   and false if no bindings exist for the given key.<br>
+</div>
+<pre><span id="VALassq"><span class="keyword">val</span> assq</span> : <code class="type">'a -> ('a * 'b) list -> 'b</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">List</span>.assoc</code>, but uses physical equality instead of structural
+   equality to compare keys.<br>
+</div>
+<pre><span id="VALassq_inv"><span class="keyword">val</span> assq_inv</span> : <code class="type">'a -> ('b * 'a) list -> 'b</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">List</span>.assoc_inv</code>, but uses physical equality instead of structural
+   equality to compare keys.<br>
 </div>
 <pre><span id="VALremove_assq"><span class="keyword">val</span> remove_assq</span> : <code class="type">'a -> ('a * 'b) list -> ('a * 'b) list</code></pre><div class="info">
 Same as <code class="code"><span class="constructor">List</span>.remove_assoc</code>, but uses physical equality instead
-	      of structural equality to compare keys.  Tail-recursive.<br>
+of structural equality to compare keys.  Tail-recursive.<br>
+</div>
+<pre><span id="VALmem_assq"><span class="keyword">val</span> mem_assq</span> : <code class="type">'a -> ('a * 'b) list -> bool</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">List</span>.mem_assoc</code>, but uses physical equality instead of
+   structural equality to compare keys.<br>
 </div>
 <br>
 <span id="6_Listtransformations"><h6>List transformations</h6></span><br>
 <pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -> 'a list -> 'a list * 'a list</code></pre><div class="info">
 <code class="code">split_at n l</code> returns two lists <code class="code">l1</code> and <code class="code">l2</code>, <code class="code">l1</code> containing the
-	 first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code> the others. Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if
-	 <code class="code">n</code> is outside of <code class="code">l</code> size bounds.<br>
+first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code> the others. Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if
+<code class="code">n</code> is outside of <code class="code">l</code> size bounds.<br>
 </div>
 <pre><span id="VALsplit_nth"><span class="keyword">val</span> split_nth</span> : <code class="type">int -> 'a list -> 'a list * 'a list</code></pre><div class="info">
 Obsolete. As <code class="code">split_at</code>.<br>
 </div>
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a list -> 'a -> 'a list</code></pre><div class="info">
 <code class="code">remove l x</code> returns the list <code class="code">l</code> without the first element <code class="code">x</code> found
-	 or returns  <code class="code">l</code> if no element is equal to <code class="code">x</code>. Elements are compared
-	 using ( = ).<br>
+or returns  <code class="code">l</code> if no element is equal to <code class="code">x</code>. Elements are compared
+using ( = ).<br>
 </div>
 <pre><span id="VALremove_if"><span class="keyword">val</span> remove_if</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">remove_if cmp l</code> is similar to <code class="code">remove</code>, but with <code class="code">cmp</code> used
-	 instead of ( = ).<br>
+instead of ( = ).<br>
 </div>
 <pre><span id="VALremove_all"><span class="keyword">val</span> remove_all</span> : <code class="type">'a list -> 'a -> 'a list</code></pre><div class="info">
 <code class="code">remove_all l x</code> is similar to <code class="code">remove</code> but removes all elements that
-	 are equal to <code class="code">x</code> and not only the first one.<br>
+are equal to <code class="code">x</code> and not only the first one.<br>
 </div>
 <pre><span id="VALtake"><span class="keyword">val</span> take</span> : <code class="type">int -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">take n l</code> returns up to the <code class="code">n</code> first elements from list <code class="code">l</code>, if
-	 available.<br>
+available.<br>
 </div>
 <pre><span id="VALdrop"><span class="keyword">val</span> drop</span> : <code class="type">int -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">drop n l</code> returns <code class="code">l</code> without the first <code class="code">n</code> elements, or the empty
-	      list if <code class="code">l</code> have less than <code class="code">n</code> elements.<br>
+list if <code class="code">l</code> have less than <code class="code">n</code> elements.<br>
 </div>
 <pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
-<code class="code">takewhile f xs</code> returns the first elements of list <code class="code">xs</code>
-	      which satisfy the predicate <code class="code">f</code>.<br>
+<code class="code">take_while p xs</code> returns the
+longest prefix (possibly empty) of <code class="code">xs</code> of elements that satisfy the
+predicate <code class="code">p</code>.<br>
 </div>
 <pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
-<code class="code">dropwhile f xs</code> returns the list <code class="code">xs</code> with the first
-	      elements satisfying the predicate <code class="code">f</code> dropped.<br>
+<code class="code">drop_while p xs</code> returns the suffix remaining after
+<code class="code">takeWhile p xs</code>.<br>
 </div>
 <pre><span id="VALinterleave"><span class="keyword">val</span> interleave</span> : <code class="type">?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">interleave ~first ~last sep [a0;a1;a2;...;an]</code> returns
-	      <code class="code">first; a0; sep; a1; sep; a2; sep; ...; sep; an</code><br>
+<code class="code">first; a0; sep; a1; sep; a2; sep; ...; sep; an</code><br>
 </div>
 <br>
-<span id="6_BatEnumfunctions"><h6>BatEnum functions</h6></span> 
+<span id="6_BatEnumfunctions"><h6>BatEnum functions</h6></span>
 <p>
 
-	    Abstraction layer.<br>
+Abstraction layer.<br>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a list -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Returns an enumeration of the elements of a list. This enumeration may
-	    be used to visit elements of the list in forward order (i.e. from the
-	    first element to the last one)<br>
+be used to visit elements of the list in forward order (i.e. from the
+first element to the last one)<br>
 </div>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a list</code></pre><div class="info">
 Build a list from an enumeration. In the result, elements appear in the
-	    same order as they did in the source enumeration.<br>
+same order as they did in the source enumeration.<br>
 </div>
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">'a list -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Returns an enumeration of the elements of a list. This enumeration may
-	    be used to visit elements of the list in backwards order (i.e. from the
-	    last element to the first one)<br>
+be used to visit elements of the list in backwards order (i.e. from the
+last element to the first one)<br>
 </div>
 <pre><span id="VALof_backwards"><span class="keyword">val</span> of_backwards</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a list</code></pre><div class="info">
 Build a list from an enumeration. The first element of the enumeration
-	    becomes the last element of the list, the second element of the enumeration
-	    becomes the second-to-last element of the list...<br>
+becomes the last element of the list, the second element of the
+enumeration
+becomes the second-to-last element of the list...<br>
 </div>
 <br>
 <span id="6_Listofpairs"><h6>List of pairs</h6></span><br>
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">('a * 'b) list -> 'a list * 'b list</code></pre><div class="info">
 Transform a list of pairs into a pair of lists:
-	      <code class="code">split [(a0,b0); (a1,b1); ...; (an,bn)]</code> is <code class="code">([a0; a1; ...; an], [b0; b1; ...; bn])</code>.
-	      Tail-recursive.<br>
+<code class="code">split [(a0,b0); (a1,b1); ...; (an,bn)]</code> is <code class="code">([a0; a1; ...; an], [b0;
+b1; ...; bn])</code>.
+Tail-recursive.<br>
 </div>
 <pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a list -> 'b list -> ('a * 'b) list</code></pre><div class="info">
 Transform a pair of lists into a list of pairs:
-	      <code class="code">combine [a0; a1; ...; an] [b0; b1; ...; bn]</code> is
-	      <code class="code">[(a0,b0); (a1,b1); ...; (an,bn)]</code>.<br>
+<code class="code">combine [a0; a1; ...; an] [b0; b1; ...; bn]</code> is
+<code class="code">[(a0,b0); (a1,b1); ...; (an,bn)]</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists
-	      have different lengths.  Tail-recursive.<br>
+have different lengths.  Tail-recursive.<br>
+</div>
+<br>
+<span id="6_Sorting"><h6>Sorting</h6></span><br>
+<pre><span id="VALsort"><span class="keyword">val</span> sort</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info">
+Sort a list in increasing order according to a comparison
+   function.  The comparison function must return 0 if its arguments
+   compare as equal, a positive integer if the first is greater,
+   and a negative integer if the first is smaller (see Array.sort for
+   a complete specification).  For example,
+   <code class="code"><span class="constructor">Pervasives</span>.compare</code> is a suitable comparison function.
+   The resulting list is sorted in increasing order.
+   <code class="code"><span class="constructor">List</span>.sort</code> is guaranteed to run in constant heap space
+   (in addition to the size of the result list) and logarithmic
+   stack space.
+<p>
+
+   The current implementation uses Merge Sort. It runs in constant
+   heap space and logarithmic stack space.<br>
+</div>
+<pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">List</span>.sort</code>, but the sorting algorithm is guaranteed to
+   be stable (i.e. elements that compare equal are kept in their
+   original order) .
+<p>
+
+   The current implementation uses Merge Sort. It runs in constant
+   heap space and logarithmic stack space.<br>
+</div>
+<pre><span id="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">List</span>.sort</code> or <code class="code"><span class="constructor">List</span>.stable_sort</code>, whichever is faster
+    on typical input.<br>
+</div>
+<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list -> 'a list</code></pre><div class="info">
+Merge two lists:
+    Assuming that <code class="code">l1</code> and <code class="code">l2</code> are sorted according to the
+    comparison function <code class="code">cmp</code>, <code class="code">merge cmp l1 l2</code> will return a
+    sorted list containting all the elements of <code class="code">l1</code> and <code class="code">l2</code>.
+    If several elements compare equal, the elements of <code class="code">l1</code> will be
+    before the elements of <code class="code">l2</code>.
+    Not tail-recursive (sum of the lengths of the arguments).<br>
+</div>
+<pre><span id="VALmake_compare"><span class="keyword">val</span> make_compare</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list -> int</code></pre><div class="info">
+<code class="code">make_compare c</code> generates the lexicographical order on lists
+induced by <code class="code">c</code><br>
+</div>
+<pre><span id="VALsort_unique"><span class="keyword">val</span> sort_unique</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info">
+<code class="code">sort_unique cmp l</code> returns the list <code class="code">l</code> sorted and without any duplicate
+element. <code class="code">cmp</code> is a usual comparison function providing total order.
+<p>
+
+This function takes O(n log n) time.<br>
 </div>
 <br>
 <span id="6_Utilities"><h6>Utilities</h6></span><br>
-<pre><span id="VALmake_compare"><span class="keyword">val</span> make_compare</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list -> int</code></pre><div class="info">
-<code class="code">make_compare c</code> generates the lexicographical order on lists
-	      induced by <code class="code">c</code><br>
-</div>
-<pre><span id="VALsort_unique"><span class="keyword">val</span> sort_unique</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info">
-<code class="code">sort_unique cmp l</code> returns the list <code class="code">l</code> sorted and without any duplicate element. <code class="code">cmp</code> is a usual comparison function providing linear order. 
-<p>
-
-	  This function takes O(n log n) time.<br>
-</div>
 <pre><span id="VALgroup"><span class="keyword">val</span> group</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list list</code></pre><div class="info">
-<code class="code">group cmp l</code> returns list of groups and each group consists of elements judged equal by comparison function <code class="code">cmp</code>. Groups in the resulting list appear in order given by <code class="code">cmp</code>. All groups are always nonempty. <code class="code">group</code> returns <code class="code">[]</code> only if <code class="code">l</code> is empty.
+<code class="code">group cmp l</code> returns list of groups and each group consists of
+elements judged equal by comparison function <code class="code">cmp</code>. Groups in the resulting
+list appear in order given by <code class="code">cmp</code>. All groups are always nonempty. <code class="code">group</code>
+returns <code class="code">[]</code> only if <code class="code">l</code> is empty.
 <p>
 
-For example <code class="code">group cmp [f;c;b;e;d;a]</code> can give <code class="code">[[a;b];[c];[d;e;f]]</code> if following conditions are met:
-	  <code class="code">cmp a b = 0</code>, <code class="code">cmp b c = -1</code>, <code class="code">cmp c d = -1</code>, <code class="code">cmp d e = 0</code>,...<br>
+For example <code class="code">group cmp [f;c;b;e;d;a]</code> can give <code class="code">[[a;b];[c];[d;e;f]]</code> if
+following conditions are met:
+<code class="code">cmp a b = 0</code>, <code class="code">cmp b c = -1</code>, <code class="code">cmp c d = -1</code>, <code class="code">cmp d e = 0</code>,...<br>
 </div>
 <pre><span id="VALcartesian_product"><span class="keyword">val</span> cartesian_product</span> : <code class="type">'a list -> 'b list -> ('a * 'b) list</code></pre><div class="info">
 Different from <code class="code"><span class="constructor">List</span>.combine</code>, this returns every pair
-	    of elements formed out of the two lists.
-	    <code class="code">cartesian_product [a0; a1; ...; an] [b0; b1; ...; bn] =
-	    [(a0,b0);(a0,b1); ...; (a0,bn); (a1,b0); ..; (a1, bn);
-	    ...; (an,bn)]</code>.  The lists can be of unequal size.<br>
+of elements formed out of the two lists.
+<code class="code">cartesian_product [a0; a1; ...; an] [b0; b1; ...; bn] =
+[(a0,b0);(a0,b1); ...; (a0,bn); (a1,b0); ..; (a1, bn);
+...; (an,bn)]</code>.  The lists can be of unequal size.<br>
 </div>
 <pre><span id="VALn_cartesian_product"><span class="keyword">val</span> n_cartesian_product</span> : <code class="type">'a list list -> 'a list list</code></pre><div class="info">
 Given n lists, return the n-way cartesian product of
-	    these lists.  Given <code class="code">[a;b];[c];[d;e;f]</code>, returns
-	    <code class="code">[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]</code>, all
-	    ways of choosing one element from each input list.<br>
+these lists.  Given <code class="code">[a;b];[c];[d;e;f]</code>, returns
+<code class="code">[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]</code>, all
+ways of choosing one element from each input list.<br>
 </div>
 <br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
@@ -512,8 +646,9 @@ obsolete, as <a href="BatList.html#VALdrop_while"><code class="code"><span class
 <span id="6_Overridemodules"><h6>Override modules</h6></span><br>
 <br>
 The following modules replace functions defined in <code class="code"><span class="constructor">List</span></code> with functions
-	   behaving slightly differently but having the same name. This is by design:
-	   the functions meant to override the corresponding functions of <code class="code"><span class="constructor">List</span></code>.<br>
+behaving slightly differently but having the same name. This is by
+design:
+the functions meant to override the corresponding functions of <code class="code"><span class="constructor">List</span></code>.<br>
 <pre><span class="keyword">module</span> <a href="BatList.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Exceptionless counterparts for error-raising operations
 </div>
