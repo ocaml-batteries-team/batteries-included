@@ -19,6 +19,7 @@ let rec foo x0 f = function
   let thing = foo  1 ( * ) 
   and li = [4;5] in
   assert_bool "something_witty" (thing li = 20);
+  
   assert_bool "something_wittier" (1=1)
 
 
@@ -86,7 +87,11 @@ and odd = function 0 -> false
   2+1 = 3
 *)
 (*$T &
-  2+3 = 5
+  1=1
+  2+3 \
+    = \
+    5
+  
   1+1=2
 *)
 
