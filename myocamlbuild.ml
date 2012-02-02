@@ -76,8 +76,7 @@ let _ = dispatch begin function
           ) src_bat_ml;
           let test_exes = [
             "testsuite/main.native";
-            "qtest/test_runner.native";
-            "qtest2/all_tests.native";
+            "qtest/all_tests.native";
           ] in
           List.iter (fun exe -> tag_file exe ["use_bisect"]) test_exes;
           List.iter Outcome.ignore_good (build (
@@ -153,7 +152,6 @@ let _ = dispatch begin function
 
       ocaml_lib ~extern:true ~dir:bisect_dir "bisect";
 
-      ocaml_lib "qtest/test_mods";
       ocaml_lib "src/batteries";
       ocaml_lib "src/batteriesThread";
 

@@ -24,7 +24,7 @@ else
 endif
 
 # Directory where to find qtest
-QTESTDIR ?= qtest2
+QTESTDIR ?= qtest
 
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
