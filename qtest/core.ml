@@ -194,19 +194,20 @@ let process uid = function
       let extended_name = va "\"%s\"" (* pretty, detailed name for the test *)
         (String.escaped location^":  "^String.escaped st.code)
       and bind = code_of_bindings test.header.hb
+      and lnumdir = va "\n#%d \"%s\"\n" st.ln test.source
       in match test.kind with
-      | Simple -> outf "#%d \"%s\"\n \"%s\" >::
-        (%s fun () -> OUnit.assert_bool %s (%s));\n"
-        st.ln test.source location bind extended_name st.code;
-      | Equal -> outf "#%d \"%s\"\n \"%s\" >::
-        (%s fun () -> OUnit.assert_equal ~msg:%s %s %s);\n"
-        st.ln test.source location bind extended_name test.header.hpar st.code;
-      | Random -> outf "#%d \"%s\"\n \"%s\" >::
-        (%s fun () -> Q.laws_exn %s %s);\n"
-        st.ln test.source location bind extended_name st.code;
-      | Raw -> outf "#%d \"%s\"\n \"%s\" >::
-        (%s fun () -> (%s));\n"
-        st.ln test.source location bind st.code;
+      | Simple -> outf
+        "\"%s\" >:: (%s fun () -> OUnit.assert_bool %s (%s%s%s));\n"
+        location bind extended_name test.header.hpar lnumdir st.code;
+      | Equal -> outf
+        "\"%s\" >:: (%s fun () -> OUnit.assert_equal ~msg:%s %s %s%s);\n"
+        location bind extended_name test.header.hpar lnumdir st.code;
+      | Random -> outf
+        "\"%s\" >:: (%s fun () -> Q.laws_exn %s %s %s%s);\n"
+        location bind extended_name test.header.hpar lnumdir st.code;
+      | Raw -> outf
+        "\"%s\" >:: (%s fun () -> (%s%s));\n"
+        location bind lnumdir st.code;
     in List.iter do_statement test.statements;
     outf "];; let _ = ___add %s;;\n" test_handle;
   | Env_begin -> outf  "\n\nmodule Test__environment_%d = struct\n" uid

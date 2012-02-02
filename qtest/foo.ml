@@ -54,7 +54,7 @@ and odd = function 0 -> false
   (Q.pair Q.small_int (Q.list Q.small_int)) (fun (i,l)-> x i (+) l = List.fold_left (+) i l)
 *)
 
-(*$Q foo, pretentious_drivel
+(*$Q foo, pretentious_drivel & ~count:500
   (Q.pair Q.small_int (Q.list Q.small_int)) (fun (i,l)-> foo i (+) l = List.fold_left (+) i l)
 *)
 
@@ -62,12 +62,23 @@ and odd = function 0 -> false
   (x 1 (+) [4;5])   (foo 1 (+) [4;5])
 *)
 
+(* first argument to an equality passed in parameter *)
+(*$=  & ~printer:string_of_int   10
+  (foo 1 (+) [5;4])
+  (foo 1 (+) [4;5])
+*)
+
+(*$T & 6 =
+  2*3
+  4+2
+*)
+
 (*$= pretentious_drivel as x  
   (x 1 (+) [4;5])   (foo 1 (+) [4;5])
 *)
-
+  
 (* empty headers: space, nothing, explicit empty param *)
-(*$T 
+(*$T &
   2+2 = 4
 *)
 (*$T
@@ -77,3 +88,4 @@ and odd = function 0 -> false
   2+3 = 5
   1+1=2
 *)
+

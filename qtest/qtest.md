@@ -104,7 +104,7 @@ Let us dive into an example straightaway:
       Q.small_int (fun i-> foo i (+) [1;2;3] = List.fold_left (+) i [1;2;3])
     *)
 
-The Quickcheck module is accessible simply as *Q* within inline tests; `small_int` is a generator, yielding a random, small integer. When the test is run, each statement will be evaluated for a large number of random values -- 500 by default. Running this test for the above definition of foo catches the mistake easily:
+The Quickcheck module is accessible simply as *Q* within inline tests; `small_int` is a generator, yielding a random, small integer. When the test is run, each statement will be evaluated for a large number of random values -- 100 by default. Running this test for the above definition of foo catches the mistake easily:
 
     law foo.ml:14::>  Q.small_int (fun i-> foo i (+) [1;2;3] = List.fold_left (+) i [1;2;3])
     failed for 2

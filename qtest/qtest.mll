@@ -60,7 +60,7 @@ rule lexml t = parse
   let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
   register_mtest lexbuf lexheader (lexbody buffy []) x line Equal }
 | "(*$R" test_header_pat { (* raw test *)
-  let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
+  let line = succ Lexing.(lexbuf.lex_curr_p.pos_lnum) in
   register_mtest lexbuf lexheader (lexbody_raw buffy (succ line)) x line Raw }
 | "(*$" restline { failwith @@ va "Unrecognised qtest pragma: `%s'" x }
 | "(*" (blank | '*')+ "$" [^'\n']* as y
@@ -74,7 +74,7 @@ and lexbody b acc = parse
 | blank* "\\\n" blank* { eol lexbuf ; B.add_char b ' '; lexbody b acc lexbuf  }
 | [^'\n'] as c { B.add_char b c; lexbody b acc lexbuf }
 | '\n' { eol lexbuf; let line = B.contents b in B.clear b;
-         lexbody b ({ln = Lexing.(lexbuf.lex_curr_p.pos_lnum) ; code = trim line} :: acc) lexbuf }
+         lexbody b ({ln = Lexing.(lexbuf.lex_curr_p.pos_lnum) ; code = line} :: acc) lexbuf }
 | blank* "*)" { acc }
 | ([^'\n']#blank)* blank* '*'+ ")" as x
   { failwith ("runaway test body terminator: " ^ x) }
