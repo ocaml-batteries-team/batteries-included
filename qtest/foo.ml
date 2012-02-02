@@ -65,6 +65,7 @@ and odd = function 0 -> false
 (* first argument to an equality passed in parameter *)
 (*$=  & ~printer:string_of_int   10
   (foo 1 (+) [5;4])
+ 
   (foo 1 (+) [4;5])
 *)
 

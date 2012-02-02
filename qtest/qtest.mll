@@ -73,7 +73,7 @@ rule lexml t = parse
 and lexbody b acc = parse
 | blank* "\\\n" blank* { eol lexbuf ; B.add_char b ' '; lexbody b acc lexbuf  }
 | [^'\n'] as c { B.add_char b c; lexbody b acc lexbuf }
-| '\n' { eol lexbuf; let line = B.contents b in B.clear b;
+| blank* '\n' { eol lexbuf; let line = B.contents b in B.clear b;
          lexbody b ({ln = Lexing.(lexbuf.lex_curr_p.pos_lnum) ; code = line} :: acc) lexbuf }
 | blank* "*)" { acc }
 | ([^'\n']#blank)* blank* '*'+ ")" as x
