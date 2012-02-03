@@ -4,6 +4,7 @@
  *)
 
 (**** TOOLKIT ****)
+module M = Misclex;;
 let fpf = Printf.fprintf let va  = Printf.sprintf
 let epf = Printf.eprintf let eps  = prerr_string
 let pl  = print_endline
@@ -26,15 +27,13 @@ let (@@) f x = f x
 let soi = string_of_int
 (** Convert a [char] to a [string] *)
 let soc  = String.make 1
-(** Trim white spaces  *)
 let is_blank_char = function ' '|'\t'|'\n'|'\r' -> true | _ -> false 
-let rec trim s =
-  let l = String.length s in if l=0 then s
-  else if is_blank_char s.[0]   then trim (String.sub s 1 (l-1))
-  else if is_blank_char s.[l-1] then trim (String.sub s 0 (l-1))
-  else s
 let listiteri f l = let c = ref (-1) in let call x = incr c; f !c x in
   List.iter call l
+let lex_str lexer s = (* use an ocamllex lexer *)
+  let buff = Lexing.from_string s in lexer buff
+let trim = lex_str M.trim
+and normalise = lex_str M.normalise
 (*****************)
  
 (** output channel *)
@@ -179,6 +178,13 @@ in z pragmas
 (** get the name of the test function, given its uid *)
 let test_handle_of_uid uid = "_test_" ^ soi uid
 
+(** get a pretty, user-friendly version of the code wrt. whitespace *)
+let prettify s =
+  if String.contains s '\n'
+  then (* multi-line : as-is     *)   "\n\n" ^ s
+  else (* single-line: normalise *)   trim (normalise s)
+
+
 (** execute a pragma; in particular, output the executable version of a test *)
 let process uid = function
   | Test test ->
@@ -192,7 +198,7 @@ let process uid = function
     let do_statement st = 
       let location = va "%s:%d" test.source st.ln in
       let extended_name = va "\"%s\"" (* pretty, detailed name for the test *)
-        (String.escaped location^":  "^String.escaped st.code)
+        (String.escaped location^":  "^String.escaped (prettify st.code))
       and bind = code_of_bindings test.header.hb
       and lnumdir = va "\n#%d \"%s\"\n" st.ln test.source
       in match test.kind with
