@@ -44,14 +44,18 @@ let lnumof lexbuf = Lexing.(lexbuf.lex_curr_p.pos_lnum)
 
 let blank = [' ' '\t']
 let lowercase = ['a'-'z' '\223'-'\246' '\248'-'\255' '_']
+let uppercase = ['A'-'Z' '\192'-'\214' '\216'-'\222']
 let identchar =
   ['A'-'Z' 'a'-'z' '_' '\192'-'\214' '\216'-'\246' '\248'-'\255' '\'' '0'-'9']
 let lident = lowercase identchar*
+let uident = uppercase identchar*
 let restline = ([^'\n']* as x) '\n'
 let test_header_pat = blank+ restline | (blank* as x) '\n'
 
 (** extract tests from ml file *)
 rule lexml t = parse
+  (* test pragmas *)
+  (****************)
 | "(*$Q" test_header_pat { (* quickcheck (random) test *)
   let lnum = lnumof lexbuf in
   register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) x lnum Random  }
@@ -64,12 +68,22 @@ rule lexml t = parse
 | "(*$R" test_header_pat { (* raw test *)
   let lnum = lnumof lexbuf in
   register_mtest lexbuf lexheader (lexbody_raw (succ lnum) buffy) x lnum Raw }
+  (* manipulation pragmas *)
+  (************************)
+| "(*$<"  { List.iter
+  (fun m -> register Env_begin; register @@ Open m)
+  (modules_ lexmodules lexbuf)}
+| "(*$>" { register Env_close }
+  (* error cases *)
+  (***************)
+(* TODO: reactivate after fixing "longest match" problem. See commit message.
 | "(*$" restline { failwith @@ va "Unrecognised qtest pragma: `%s'" x }
 | "(*" (blank | '*')+ "$" [^'\n']* as y
   { epf "\nWarning: likely qtest syntax error: `%s'. " y }
+*)
 | '\n' { eol lexbuf }
-| _ { () }
-| eof {t()}
+  (* others *)
+| _ { () } | eof {t()}
 
 (** body of a test: simply extract lines *)
 and lexbody ln b acc = parse
@@ -102,7 +116,15 @@ and lexheader hd = parse
 | lident as x { ID x }
 | "&"  (_* as x) { PARAM (trim x) }
 | eof { EOF }
-| _ as x { raise @@ Bad_header_char((soc x), hd) }
+| _ as c { raise @@ Bad_header_char((soc c), hd) }
+
+(** parse list of modules *)
+and lexmodules = parse
+| blank { lexmodules lexbuf }
+| "," { COMMA }
+| "*)" { EOF }
+| uident as x { UID x }
+| _ as c { raise @@ Bad_modules_open_char (soc c) }
 
 (**TODO: deal with strings and nested comments *)
 

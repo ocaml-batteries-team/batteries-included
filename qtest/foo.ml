@@ -71,12 +71,20 @@ and odd = function 0 -> false
 *)
 
 module Foomod = struct
-
+(*$< Foomod *)
   let bar = "bar"
   (*$T bar
-    bar.(0) = 'b'
+    bar.[0] = 'b'
   *)
+(*$>*)
 end
+  (* $T bar
+    bar.[0] = 'b'
+  *)
+
+  (*$T &
+    Foomod.bar.[0] = 'b'
+  *)
 
 (*$T & 6 =
   2*3

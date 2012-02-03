@@ -119,12 +119,14 @@ let register prag = push prag suite
 
 (** if a test header contains invalid characters *)
 exception Bad_header_char of string * string
-
 (** if a test's body is never closed *)
 exception Unterminated_test of statement list
-
 (** a test contains no statement *)
 exception Empty_test of string
+(** an "open modules" pragma is invalid at lexing level *)
+exception Bad_modules_open_char of string
+(** ... or at parsing level *)
+exception Modules_syntax_error
 
 (** human-readable form *)
 let str_of_metabinding (bind:metabinding) =
