@@ -19,153 +19,118 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	02111-1307	USA
  *)
 
-(**{6 Black magic}*)
+type t = string ref
 
-(* Internal type for bit data - a string, but with a new type *)
-type intern
+let capacity t = (String.length !t) * 8
 
-let bcreate : int -> intern = Obj.magic String.create
-external fast_get : intern -> int -> int = "%string_unsafe_get"
-external fast_set : intern -> int -> int -> unit = "%string_unsafe_set"
-external fast_bool : int -> bool = "%identity"
-let fast_blit : intern -> int -> intern -> int -> int -> unit = Obj.magic String.blit
-let fast_fill : intern -> int -> int -> int (* char *) -> unit = Obj.magic String.fill
-let fast_length : intern -> int= Obj.magic String.length
+let empty () = ref ""
 
-(* Safe access functions, still internal *)
-(* Get a byte of intern [s] at index [idx] *)
-let bget s ndx =
-  assert (ndx >= 0 && ndx < fast_length s);
-  fast_get s ndx
+let create_ sfun c n = (* n is in bits *)
+  if n < 0 then invalid_arg ("BitSet."^sfun^": negative size");
+  let size = n / 8 + (if n mod 8 = 0 then 0 else 1) in
+  ref (String.make size c)
 
-(* Set a byte of intern [s] at index [ndx] to [v] *)
-let bset s ndx v =
-  assert (ndx >= 0 && ndx < fast_length s);
-  fast_set s ndx v
+let create =
+  create_ "create" '\000'
 
-(* Blit from one intern to another intern - sizes and offsets in bytes *)
-let bblit src srcoff dst dstoff len =
-  assert (srcoff >= 0 && dstoff >= 0 && len >= 0); (* FIXME: doesn't check upper-bounds of ranges *)
-  fast_blit src srcoff dst dstoff len
+let copy t = ref (String.copy !t)
 
-(* Fill a range of bits with a byte pattern [c] *)
-let bfill dst start len c =
-  assert (start >= 0 && len >= 0); (* FIXME: doesn't check upper bound of range *)
-  fast_fill dst start len c
+let extend t n = (* len in bits *)
+  if n > capacity t then
+    let t' = create n in
+    String.blit !t 0 !t' 0 (String.length !t);
+    t := !t'
 
-type t = {
-  mutable data : intern; (* internal string of bits *)
-  mutable len : int;     (* size of data in bytes *)
-}
+type bit_op = 
+  | Set 
+  | Unset
+  | Toggle
+  | Mem 
 
-let empty() = { data = bcreate 0; len = 0; }
+let rec apply_bit_op op t x =
+  if x < 0 then 
+    begin
+      let sfun = 
+        match op with 
+          | Set -> "set" 
+          | Unset -> "unset" 
+          | Toggle -> "toggle"
+          | Mem -> "mem"
+      in
+        invalid_arg ("BitSet."^sfun^": negative index")
+    end
+  else if x < capacity t then
+    begin
+      let pos = x / 8 and delta = x mod 8 in
+      let str = !t in
+      let c = Char.code (String.unsafe_get str pos) in
+      let v = (c lsr delta) land 1 == 1 in (* TODO: mask *)
+      let bset c = String.unsafe_set str pos (Char.unsafe_chr c) in
+        match op with 
+          | Set ->
+              if not v then
+                bset (c lor (1 lsl delta)); (* TODO: mask *)
+              false
+          | Unset ->
+              if v then
+                bset (c lxor (1 lsl delta)); (* TODO: mask *)
+              false
+          | Toggle ->
+              bset (c lxor (1 lsl delta)); (* TODO: mask *)
+              false
+          | Mem ->
+              v
+    end
+  else
+    begin
+      match op with
+        | Set | Toggle -> 
+            extend t x;
+            apply_bit_op op t x
+        | Unset | Mem ->
+            false
+    end
 
-let int_size = 7 (* value used to round up index *)
-let log_int_size = 3 (* number of shifts *)
 
-let capacity {len} = len lsl log_int_size (* i.e. len * 8 *)
-let create n = (* n is in bits *)
-  if n < 0 then invalid_arg "BitSet.create: negative size";
-  let size = (n+int_size) lsr log_int_size in
-  let b = bcreate size in
-  bfill b 0 size 0;
-  { data = b; len = size; }
+let ignore_bool (_b: bool) = ()
 
-let create_full n =
-  if n < 0 then invalid_arg "BitSet.create_full: negative size";
-  let size = (n+int_size) lsr log_int_size in
-  let b = bcreate size in
-  bfill b 0 size 0xFF;
-  { data = b; len = size; }
+let set t x = ignore_bool (apply_bit_op Set t x)
 
+let unset t x = ignore_bool (apply_bit_op Unset t x)
 
-let copy t =
-  let b = bcreate t.len in
-  bblit t.data 0 b 0 t.len;
-  { data = b; len = t.len }
+let toggle t x = ignore_bool (apply_bit_op Toggle t x)
 
-(* FIXME: exponential resize for performance? *)
-let extend t len = (* len in bytes *)
-  let b = bcreate len in
-  bblit t.data 0 b 0 t.len;
-  bfill b t.len (len - t.len) 0x00;
-  {data = b; len = len }
-
-let set t x =
-  if x < 0 then invalid_arg "BitSet.set: negative index";
-  let pos = x lsr log_int_size and delta = x land int_size in
-  let size = t.len in
-  if pos >= size then begin
-    let b = bcreate (pos+1) in
-    bblit t.data 0 b 0 size;
-    bfill b size (pos - size + 1) 0;
-    t.len <- pos + 1;
-    t.data <- b;
-  end;
-  bset t.data pos ((bget t.data pos) lor (1 lsl delta))
+let mem t x = 
+  if x < 0 then invalid_arg ("BitSet.mem: negative index")
+  else if x < capacity t then
+    begin
+      let pos = x / 8 and delta = x mod 8 in
+      let c = Char.code (String.unsafe_get !t pos) in
+        (c lsr delta) land 1 == 1 (* TODO: mask *)
+    end
+  else
+    false
 
 let add x t = let dup = copy t in set dup x; dup
 
-let unset t x =
-  if x < 0 then invalid_arg "BitSet.unset: negative index";
-  let pos = x lsr log_int_size and delta = x land int_size in
-  if pos < t.len then
-    bset t.data pos ((bget t.data pos) land (0xFF lxor (1 lsl delta)))
-
 let remove x t = let dup = copy t in unset dup x; dup
 
-let toggle t x =
-  if x < 0 then invalid_arg "BitSet.toggle: negative index";
-  let pos = x lsr log_int_size and delta = x land int_size in
-  let size = t.len in
-  if pos >= size then begin
-    let b = bcreate (pos+1) in
-    bblit t.data 0 b 0 size;
-    bfill b size (pos - size + 1) 0;
-    t.len <- pos + 1;
-    t.data <- b;
-  end;
-  bset t.data pos ((bget t.data pos) lxor (1 lsl delta))
+let put t = 
+  function
+    | true -> set t
+    | false -> unset t
 
-let put t = function
-	| true -> set t
-	| false -> unset t
-
-let mem t x =
-  if x < 0 then invalid_arg "BitSet.mem";
-  let pos = x lsr log_int_size and delta = x land int_size in
-  let size = t.len in
-  if pos < size then
-	fast_bool (((bget t.data pos) lsr delta) land 1)
-  else
-	false
-
-
-exception Break_int of int
-
-(* Find highest set element or raise Not_found *)
-let find_msb t =
-  (* Find highest set bit in a byte.  Does not work with zero. *)
-  let byte_msb b =
-    assert (b <> 0);
-    let rec loop n =
-      if b land (1 lsl n) = 0 then
-        loop (n-1)
-      else n in
-    loop 7 in
-  let n = t.len - 1
-  and buf = t.data in
-  try
-    for i = n downto 0 do
-      let byte = bget buf i in
-      if byte <> 0 then raise (Break_int ((i lsl log_int_size)+(byte_msb byte)))
-    done;
-    raise Not_found
-  with
-    Break_int n -> n
-  | _ -> raise Not_found
+let create_full n =
+  let t = create_ "create_full" '\255' n in
+  (* Fix the tail *) 
+  for i = n to (capacity t) - 1 do 
+    unset t i
+  done;
+  t
 
 let compare t1 t2 =
+  failwith "Not implemented"
+(*
   let some_msb b = try Some (find_msb b) with Not_found -> None in
   match (some_msb t1, some_msb t2) with
     (None, Some _) -> -1 (* 0-y -> -1 *)
@@ -190,45 +155,26 @@ let compare t1 t2 =
           with
             Break_int res -> res
         end
+ *)
 
 let equals t1 t2 =
 	compare t1 t2 = 0
 
-let partial_count t x =
-	let rec nbits x =
-		if x = 0 then
-			0
-		else if fast_bool (x land 1) then
-			1 + (nbits (x lsr 1))
-		else
-			nbits (x lsr 1)
-	in
-	let size = t.len in
-	let pos = x lsr log_int_size and delta = x land int_size in
-	let rec loop n acc =
-		if n = size then
-			acc
-		else
-			let x = bget t.data n in
-			loop (n+1) (acc + nbits x)
-	in
-	if pos >= size then
-		0
-	else
-		loop (pos+1) (nbits ((bget t.data pos) lsr delta))
-
 let count t =
-  partial_count t 0
-
-let find_lsb b = (* find the least set bit in a byte *)
-  let rec loop n = if b land (1 lsl n) <> 0 then n else loop (n+1) in
-  if b = 0 then (-1) else loop 0
+  failwith "Not implemented"
 
 (* Computed Constant: array of 256 positions of least set bit *)
-let lsb_table = Array.init (1 lsl (1 lsl log_int_size)) (fun i -> find_lsb i)
+let lsb_table = 
+  let find_lsb b = (* find the least set bit in a byte *)
+    let rec loop n = if b land (1 lsl n) <> 0 then n else loop (n+1) in
+    if b = 0 then (-1) else loop 0
+  in
+    Array.init (1 lsl (1 lsl 8)) (fun i -> find_lsb i)
 
 (* Find the first set bit in the bit array *)
 let next_set_bit b n =
+  failwith "Not implemented"
+(*
   if n < 0 then invalid_arg "BitSet.next_set_bit";
   let buf = b.data in
   let rec find_set_bit byte_ndx =
@@ -248,8 +194,11 @@ let next_set_bit b n =
     find_set_bit (byte_ndx + 1)
   else (* in current byte *)
     Some (lsb_table.(byte) + n)
+ *)
 
 let enum t =
+  failwith "Not implemented"
+(*
   let rec make n =
     let cur = ref n in
     let rec next () =
@@ -265,17 +214,15 @@ let enum t =
       ~clone:(fun () -> make !cur)
   in
   make 0
+ *)
 
 let of_enum ?(cap=128) e = let bs = create cap in BatEnum.iter (set bs) e; bs
 
 let of_list ?(cap=128) lst = let bs = create cap in List.iter (set bs) lst; bs
 
-let raw_create size =
-  let b = bcreate size in
-  bfill b 0 size 0;
-  { data = b; len = size }
-
 let inter a b =
+  failwith "Not implemented"
+(*
   let max_size = max a.len b.len in
   let d = raw_create max_size in
   let sl = min a.len b.len in
@@ -286,10 +233,13 @@ let inter a b =
     bset d.data i ((bget abuf i) land (bget bbuf i))
   done;
   d
+ *)
 
 (* Note: rest of the array is handled automatically correct, since we
    took a copy of the bigger set. *)
 let union a b =
+  failwith "Not implemented"
+(*
   let d = if a.len > b.len then copy a else copy b in
   let sl = min a.len b.len in
   let abuf = a.data
@@ -298,8 +248,11 @@ let union a b =
     bset d.data i ((bget abuf i) lor (bget bbuf i))
   done;
   d
+ *)
 
 let diff a b =
+  failwith "Not implemented"
+(*
   let maxlen = max a.len b.len in
   let buf = bcreate maxlen in
   bblit a.data 0 buf 0 a.len;
@@ -318,8 +271,11 @@ let diff a b =
     bset buf i ((lnot (bget bbuf i)))
   done;
   { data = buf; len = maxlen }
+ *)
 
 let sym_diff a b =
+  failwith "Not implemented"
+(*
   let maxlen = max a.len b.len in
   let buf = bcreate maxlen in
   (* Copy larger (assumes missing bits are zero) *)
@@ -331,29 +287,42 @@ let sym_diff a b =
     bset buf i ((bget abuf i) lxor (bget bbuf i))
   done;
   { data = buf; len = maxlen }
+ *)
 
 (* TODO the following set operations can be made faster if you do the
    set operation in-place instead of taking a copy.  But be careful
    when the sizes of the bitvector strings differ. *)
 let intersect t t' =
+  failwith "Not implemented"
+(*
   let d = inter t t' in
   t.data <- d.data;
   t.len <- d.len
+ *)
 
 let differentiate t t' =
+  failwith "Not implemented"
+(*
   let d = diff t t' in
   t.data <- d.data;
   t.len <- d.len
+ *)
 
 let unite t t' =
+  failwith "Not implemented"
+(*
   let d = union t t' in
   t.data <- d.data;
   t.len <- d.len
+ *)
 
 let differentiate_sym t t' =
+  failwith "Not implemented"
+(*
   let d = sym_diff t t' in
   t.data <- d.data;
   t.len <- d.len
+ *)
 
 (*print a BitSet between [| and |]*)
 (*let print ?(first="[|") ?(last="|]") ?(sep="") out t =
@@ -371,9 +340,12 @@ let differentiate_sym t t' =
       done
     end*)
 let print out t =
+  failwith "Not implemented"
+(*
   let print_bit i =
     BatInnerIO.write out (if mem t i then '1' else '0')
   in
   for i = 0 to 8*t.len - 1 do
     print_bit i
   done
+ *)
