@@ -15,7 +15,6 @@ rule trim = parse blank* (_* as x) blank* eof { x }
 (* collapse multiple spaces into one *)
 and normalise = parse
 | blank+ { B.add_char b ' '; normalise lexbuf }
-| _ as c { B.add_char b c  ; normalise lexbuf }
+| _ as c { B.add_char b  c ; normalise lexbuf }
 | eof { let s = B.contents b in B.clear b ; s }
 
-{}

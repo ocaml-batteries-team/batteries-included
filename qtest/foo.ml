@@ -70,6 +70,14 @@ and odd = function 0 -> false
   (foo 1 (+) [4;5])
 *)
 
+module Foomod = struct
+
+  let bar = "bar"
+  (*$T bar
+    bar.(0) = 'b'
+  *)
+end
+
 (*$T & 6 =
   2*3
   4+2
@@ -87,10 +95,10 @@ and odd = function 0 -> false
   2+1 = 3
 *)
 (*$T &
-             1    = 2
+             1    = 2-1
             2+3 \
               = \
-              15
+              5
   
   1+1=2
 *)

@@ -188,8 +188,8 @@ let prettify s =
 (** execute a pragma; in particular, output the executable version of a test *)
 let process uid = function
   | Test test ->
-    let test_handle = test_handle_of_uid uid in
-    let targets = targets_of_header test.header in
+    let test_handle = test_handle_of_uid uid 
+    and targets = targets_of_header test.header in
     List.iter (fun t->
       outf_target "%30s %4d    %s\n" test.source test.line t
     ) targets;
@@ -200,7 +200,8 @@ let process uid = function
       let extended_name = va "\"%s\"" (* pretty, detailed name for the test *)
         (String.escaped location^":  "^String.escaped (prettify st.code))
       and bind = code_of_bindings test.header.hb
-      and lnumdir = va "\n#%d \"%s\"\n" st.ln test.source
+      and lnumdir = va "\n#%d \"%s\"\n" st.ln test.source in
+      let bind = lnumdir ^ bind 
       in match test.kind with
       | Simple -> outf
         "\"%s\" >:: (%s fun () -> OUnit.assert_bool %s (%s%s%s));\n"
