@@ -34,6 +34,12 @@ let lex_str lexer s = (* use an ocamllex lexer *)
   let buff = Lexing.from_string s in lexer buff
 let trim = lex_str M.trim
 and normalise = lex_str M.normalise
+let snippet s n = let res = Str.first_chars s n in
+  res ^ if String.length s <= n then "" else "..."
+let snip lex = (** Snippet of current lexer buffer context *)
+  let curr = max 0 (lex.Lexing.lex_start_pos - 5) in
+  let vicinity = Str.string_after lex.Lexing.lex_buffer curr
+  in snippet vicinity 70
 (*****************)
  
 (** output channel *)
@@ -127,6 +133,8 @@ exception Empty_test of string
 exception Bad_modules_open_char of string
 (** ... or at parsing level *)
 exception Modules_syntax_error
+(** this looks like a qtest pragma, but isn't *)
+exception Invalid_pragma of string
 
 (** human-readable form *)
 let str_of_metabinding (bind:metabinding) =
@@ -200,10 +208,9 @@ let process uid = function
     let do_statement st = 
       let location = va "%s:%d" test.source st.ln in
       let extended_name = va "\"%s\"" (* pretty, detailed name for the test *)
-        (String.escaped location^":  "^String.escaped (prettify st.code))
-      and bind = code_of_bindings test.header.hb
+        (String.escaped location^":  "^String.escaped (prettify st.code)) 
       and lnumdir = va "\n#%d \"%s\"\n" st.ln test.source in
-      let bind = lnumdir ^ bind 
+      let bind = lnumdir ^ code_of_bindings test.header.hb 
       in match test.kind with
       | Simple -> outf
         "\"%s\" >:: (%s fun () -> OUnit.assert_bool %s (%s%s%s));\n"

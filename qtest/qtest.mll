@@ -30,16 +30,17 @@ module B = Buffer;;
 let buffy = B.create 80
 
 (** register a raw metatest from the lexing buffer *)
-let register_mtest lexbuf lexhead lexbod head line kind =
-  eol lexbuf;Lexing.(
-  register @@ Meta_test { kind; line ;
-    header = metaheader_ (lexhead head) (from_string head);
-    source = lexbuf.lex_curr_p.pos_fname;
-    statements = lexbod lexbuf;
+let register_mtest lexbuf lexhead lexbod line kind =
+  let header = metaheader_ lexhead lexbuf in
+  let statements = lexbod lexbuf in
+  Lexing.(
+    register @@ Meta_test { kind; line ; header ;
+    source = lexbuf.lex_curr_p.pos_fname; statements ;
   })
 
 let lnumof lexbuf = Lexing.(lexbuf.lex_curr_p.pos_lnum)
-  
+let fileof lexbuf = Lexing.(lexbuf.lex_curr_p.pos_fname)
+let info lb = lnumof lb, fileof lb
 } (****************************************************************************)
 
 let blank = [' ' '\t']
@@ -49,38 +50,35 @@ let identchar =
   ['A'-'Z' 'a'-'z' '_' '\192'-'\214' '\216'-'\246' '\248'-'\255' '\'' '0'-'9']
 let lident = lowercase identchar*
 let uident = uppercase identchar*
-let restline = ([^'\n']* as x) '\n'
-let test_header_pat = blank+ restline | (blank* as x) '\n'
 
 (** extract tests from ml file *)
 rule lexml t = parse
   (* test pragmas *)
   (****************)
-| "(*$Q" test_header_pat { (* quickcheck (random) test *)
+| "(*$Q"  { (* quickcheck (random) test *)
   let lnum = lnumof lexbuf in
-  register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) x lnum Random  }
-| "(*$T" test_header_pat { (* simple test *)
+  register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) lnum Random  }
+| "(*$T"  { (* simple test *)
   let lnum = lnumof lexbuf in
-  register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) x lnum Simple }
-| "(*$=" test_header_pat { (* equality test *)
+  register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) lnum Simple }
+| "(*$="  { (* equality test *)
   let lnum = lnumof lexbuf in
-  register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) x lnum Equal }
-| "(*$R" test_header_pat { (* raw test *)
+  register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) lnum Equal }
+| "(*$R"  { (* raw test *)
   let lnum = lnumof lexbuf in
-  register_mtest lexbuf lexheader (lexbody_raw (succ lnum) buffy) x lnum Raw }
+  register_mtest lexbuf lexheader (lexbody_raw (succ lnum) buffy) lnum Raw }
   (* manipulation pragmas *)
   (************************)
 | "(*$<"  { List.iter
   (fun m -> register Env_begin; register @@ Open m)
   (modules_ lexmodules lexbuf)}
-| "(*$>" { register Env_close }
+| "(*$>*)" { register Env_close }
   (* error cases *)
   (***************)
-(* TODO: reactivate after fixing "longest match" problem. See commit message.
-| "(*$" restline { failwith @@ va "Unrecognised qtest pragma: `%s'" x }
-| "(*" (blank | '*')+ "$" [^'\n']* as y
-  { epf "\nWarning: likely qtest syntax error: `%s'. " y }
-*)
+| "(*$" { raise @@ Invalid_pragma (snip lexbuf) }
+| "(*" (blank | '*')+ "$" [^'\n']* as y {
+  let n,f = info lexbuf in
+  epf "\nWarning: likely qtest syntax error: `%s' at %s:%d. " y f n }
 | '\n' { eol lexbuf }
   (* others *)
 | _ { () } | eof {t()}
@@ -108,15 +106,16 @@ and lexbody_raw ln b = parse
   let s = B.contents b in B.clear b; [{ln; code=s}]}
 
 (** prepare to parse test header *)
-and lexheader hd = parse
-| blank { lexheader hd lexbuf }
+and lexheader = parse
+| blank { lexheader lexbuf }
 | "," { COMMA }
 | ";" { SEMI }
 | "as" { AS }
 | lident as x { ID x }
-| "&"  (_* as x) { PARAM (trim x) }
-| eof { EOF }
-| _ as c { raise @@ Bad_header_char((soc c), hd) }
+| "&"  ([^'\n']* as x) { PARAM (trim x) }
+| '\n' { eol lexbuf; EOF }
+| eof  { failwith "unterminated header at end of file" }
+| _ as c { raise @@ Bad_header_char((soc c), snip lexbuf) }
 
 (** parse list of modules *)
 and lexmodules = parse

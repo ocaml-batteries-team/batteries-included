@@ -1,4 +1,6 @@
 
+(** This is the test file to check that qtest works as expected...
+  ... because the tester needs to be tested as well. *)
 
 let rec foo x0 f = function
   [] -> x0 | x::xs -> f x (foo x0 f xs)
@@ -106,7 +108,8 @@ end
              1    = 2-1
             2+3 \
               = \
-              5
+              \
+              15
   
   1+1=2
 *)
