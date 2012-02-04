@@ -8,6 +8,10 @@ let catch f x =
   try  Ok (f x)
   with e -> Bad e
 
+let catch2 f x y =
+  try Ok (f x y)
+  with e -> Bad e
+
 let of_option = function
   | Some x -> Ok x
   | None   -> Bad ()
