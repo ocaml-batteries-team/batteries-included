@@ -658,7 +658,7 @@ let of_enum_cmp ~cmp t =
 
 let of_list l = List.fold_left (fun a x -> add x a) empty l
 
-(*$Q of_list
+(*$Q of_list & ~count:1000000  ~small:(Some List.length)
   (Q.list Q.int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
     let s1 = of_list xs |> enum |> List.of_enum in \
     let s2 = List.sort Pervasives.compare xs in \

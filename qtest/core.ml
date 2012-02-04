@@ -193,7 +193,7 @@ let test_handle_of_uid uid = "_test_" ^ soi uid
 (** get a pretty, user-friendly version of the code wrt. whitespace *)
 let prettify s =
   if String.contains s '\n'
-  then (* multi-line : as-is     *)   "\n\n" ^ s
+  then (* multi-line : as-is     *)   "\n\n" ^ s ^ "\n\n"
   else (* single-line: normalise *)   trim (normalise s)
 
 

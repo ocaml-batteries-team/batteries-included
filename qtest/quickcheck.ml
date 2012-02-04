@@ -182,11 +182,34 @@ let rec laws iter gen func =
       else laws (iter-1) gen func
     with _ -> Some input
 
+(** like [laws], but executes all tests anyway and returns optionally the
+  smallest failure-causing input, wrt. some measure *)
+let rec laws_smallest measure iter gen func =
+  let return = ref None in
+  let register input =
+    match !return with
+    | None ->
+      return := Some input
+    | Some x ->
+      if measure input < measure x then
+      return := Some input
+  in
+  for i = 1 to iter do
+    let input = gen () in
+    try if not (func input) then register input
+    with _ -> register input
+  done;
+  !return
+
+
 let default_count = 100
 
 (** Like laws, but throws an exception instead of returning an option.  *)
-let laws_exn ?(count=default_count) name (gen,pp) func =
-  match laws count gen func with
+let laws_exn ?(small=None) ?(count=default_count) name (gen,pp) func =
+  let result = match small with
+  | None -> laws count gen func
+  | Some measure -> laws_smallest measure count gen func
+  in match result with
     | None -> ()
     | Some i -> failwith (Printf.sprintf "law %s failed for %s" name (pp i))
 
