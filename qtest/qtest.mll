@@ -40,7 +40,7 @@ let register_mtest lexbuf lexhead lexbod line kind =
 
 let lnumof lexbuf = Lexing.(lexbuf.lex_curr_p.pos_lnum)
 let fileof lexbuf = Lexing.(lexbuf.lex_curr_p.pos_fname)
-let info lb = lnumof lb, fileof lb
+let info lb = fileof lb, lnumof lb
 } (****************************************************************************)
 
 let blank = [' ' '\t']
@@ -73,11 +73,13 @@ rule lexml t = parse
   (fun m -> register Env_begin; register @@ Open m)
   (modules_ lexmodules lexbuf)}
 | "(*$>*)" { register Env_close }
+| "(*${*)" { lexinjectcp buffy lexbuf }
+| "(*${"   { lexinjectmv buffy lexbuf }
   (* error cases *)
   (***************)
 | "(*$" { raise @@ Invalid_pragma (snip lexbuf) }
 | "(*" (blank | '*')+ "$" [^'\n']* as y {
-  let n,f = info lexbuf in
+  let f,n = info lexbuf in
   epf "\nWarning: likely qtest syntax error: `%s' at %s:%d. " y f n }
 | '\n' { eol lexbuf }
   (* others *)
@@ -89,8 +91,7 @@ and lexbody ln b acc = parse
 | [^'\n'] as c { B.add_char b c; lexbody ln b acc lexbuf }
 | blank* '\n' {
   eol lexbuf; let code = B.contents b in B.clear b;
-  lexbody Lexing.(lexbuf.lex_curr_p.pos_lnum) b ({ln ; code} :: acc) lexbuf
-}
+  lexbody Lexing.(lexbuf.lex_curr_p.pos_lnum) b ({ln ; code} :: acc) lexbuf }
 | blank* "*)" { acc }
 | ([^'\n']#blank)* blank* '*'+ ")" as x
   { failwith ("runaway test body terminator: " ^ x) }
@@ -105,6 +106,25 @@ and lexbody_raw ln b = parse
   eol lexbuf;
   let s = B.contents b in B.clear b; [{ln; code=s}]}
 
+(** body of an injection pragma: copy *)
+and lexinjectcp b = parse
+| _ as c {
+  if c = '\n' then eol lexbuf;
+  B.add_char b c; lexinjectcp b lexbuf }
+| "(*$}*)" {
+   let code = B.contents b in B.clear b;
+   register @@ Inject (info lexbuf,code) }
+
+(** body of an injection pragma: move *)
+and lexinjectmv b = parse
+| _ as c {
+  if c = '\n' then eol lexbuf;
+  B.add_char b c; lexinjectmv b lexbuf }
+| "}*)" { (* note: the 2 spaces are for column numbers reporting *)
+   let code = "  " ^ B.contents b in B.clear b;
+   register @@ Inject (info lexbuf,code) }
+
+   
 (** prepare to parse test header *)
 and lexheader = parse
 | blank { lexheader lexbuf }

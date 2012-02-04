@@ -112,9 +112,11 @@ type 'a test = {
 type pragma =
 | Meta_test of metaheader test  (* describes one or several tests *)
 | Test of header test           (* do some testing... *)
-| Env_begin       (* open a test environment, eg. a module or file *)
-| Env_close       (* ... and close it *)
-| Open of string  (* open a module, within the scope of current environment *)
+| Env_begin             (* open a test environment, eg. a module or file *)
+| Env_close             (* ... and close it *)
+| Open of string        (* open a module, within the scope of current environment *)
+| Inject of (string * int) * string (*= (foo.ml ln) code *)
+                        (* inject code into test environment *)
 
 (** storage facility for all tests in input files *)
 let suite : pragma list ref = ref []
@@ -229,6 +231,9 @@ let process uid = function
   | Env_begin -> outf  "\n\nmodule Test__environment_%d = struct\n" uid
   | Env_close -> out  "end\n\n"
   | Open modu -> outf "open %s;;\n" modu
+  | Inject ((modu,ln),cd) ->
+    let lnumdir = va "\n#%d \"%s\"\n" ln modu in
+    out @@ lnumdir ^ "    " ^ cd ^ " " (* 4 spaces for column numbers reporting *)
   | Meta_test _ -> assert false (* metas should have been pre-processed out *)
 
 

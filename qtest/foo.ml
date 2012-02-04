@@ -72,12 +72,28 @@ and odd = function 0 -> false
   (foo 1 (+) [4;5])
 *)
 
-module Foomod = struct
+module Foomod : sig
+  val bar : string
+(*   val baz : string *)
+end = struct
 (*$< Foomod *)
   let bar = "bar"
   (*$T bar
     bar.[0] = 'b'
   *)
+
+  (*${*)
+  let baz = "baz"
+  (*$}*)
+  (*$T baz
+    baz.[2] = 'z'
+  *)
+
+  (*${ let brom = baz }*)
+  (*$T brom
+    brom.[2] = 'z'
+  *)
+  
 (*$>*)
 end
   (* $T bar
@@ -109,7 +125,7 @@ end
             2+3 \
               = \
               \
-              15
+              5
   
   1+1=2
 *)
