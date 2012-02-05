@@ -93,6 +93,9 @@ end = struct
   (*$T brom
     brom.[2] = 'z'
   *)
+
+  (* global open *)
+  (*$< Foo, Foo >*)
   
 (*$>*)
 end

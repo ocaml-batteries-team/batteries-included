@@ -69,9 +69,12 @@ rule lexml t = parse
   register_mtest lexbuf lexheader (lexbody_raw (succ lnum) buffy) lnum Raw }
   (* manipulation pragmas *)
   (************************)
-| "(*$<"  { List.iter
-  (fun m -> register Env_begin; register @@ Open m)
-  (modules_ lexmodules lexbuf)}
+| "(*$<"  {
+  let global, modules = modules_ lexmodules lexbuf 
+  and loc_register m = register Env_begin; register @@ Open m
+  and glo_register m = register @@ Open m
+  in let reg = if global then glo_register else loc_register
+  in List.iter reg modules }
 | "(*$>*)" { register Env_close }
 | "(*${*)" { lexinjectcp buffy lexbuf }
 | "(*${"   { lexinjectmv buffy lexbuf }
@@ -141,7 +144,8 @@ and lexheader = parse
 and lexmodules = parse
 | blank { lexmodules lexbuf }
 | "," { COMMA }
-| "*)" { EOF }
+| "*)"  { EOF  }  (* local open, closed later *)
+| ">*)" { EOF2 }  (* global open *)
 | uident as x { UID x }
 | _ as c { raise @@ Bad_modules_open_char (soc c) }
 
