@@ -82,6 +82,8 @@ end = struct
     bar.[0] = 'b'
   *)
 
+  (* TODO injection numbering is not right... yet it seems to be ?!? *)
+  
   (*${*)
   let baz = "baz"
   (*$}*)
@@ -95,7 +97,12 @@ end = struct
   *)
 
   (* global open *)
-  (*$< Foo, Foo >*)
+  (*$< List, Array >*)
+
+  (*${*)
+    open Set;;
+    open Sys;;
+  (*$}*)
   
 (*$>*)
 end

@@ -161,19 +161,84 @@ That said, raw tests should only be used as a last resort; for instance you don'
 
 ... not implemented yet...
 
-The current pattern is to use `(*$T` and the following pattern for function `foo` and exception `Bar`:
+The current usage is to use `(*$T` and the following pattern for function `foo` and exception `Bar`:
 
-    (*$T foo
-      Result.(catch foo x |> is_exn Bar)
-     *)
-  
-### More Technical Pragmas
+``` ocaml
+try ignore (foo x); false with Bar -> true
+```
 
- ...coming soon...
+If your project uses *Batteries* and no pattern-matching is needed, then you can also use the following, sexier pattern:
 
- this section will deal with the pragmas for local preambles and private functions and stuff. Once it's implemented, that is.
+``` ocaml
+Result.(catch foo x |> is_exn Bar)
+```
 
- It will also deal with ocamldoc comments that defines unit tests from the offered examples
+### Manipulation Pragmas
+
+Not all qtest pragmas directly translate into tests; for non-trivial projects, sometimes a little boilerplate code is needed in order to set the tests up properly. The pragmas which do this are collectively called "manipulation pragmas"; they are described in the next section.
+
+#### Opening Modules: *open* Pragma `<...>` and `--preamble` Option
+
+The tests should have access to the same values as the code under test; however the generated code for, say, `foo.ml` does not actually live inside that file. Therefore some effort must occasionally be made to synchronise the code's environment with the tests'. There are three main usecases where you might want to open modules for tests:
+
+* **Project-Wide Global Open:** It may happen that *every single file* in your project opens a given module. This is the case for Batteries*, for instance, where every module opens `Batteries`. In that case simply use the `--preamble` switch. For instance,
+``` bash
+qtest --preamble "open Batteries;;"  extract mod1.ml mod2.ml ... modN.ml
+```
+Note that you could insert arbitrary code using this switch.
+
+* **Global Open in a File:** Now, let's say that `foo.ml` opens `Bar` and `Baz`; you want the tests in `foo.ml` to open them as well. Then you can use the *open* pragma in its *global* form:
+```
+(*$< Bar, Baz >*)
+```
+The modules will be open for every test in the same `.ml` file, and following the pragma.
+However, in our example, you will have a duplication of code between the "open" directives of `foo.ml`, and the *open* pragma of *qtest*, like so:
+``` ocaml
+open Bar;; open Baz;;
+(*$< Bar, Baz >*)
+```
+It might therefore be more convenient to use the *code injection* pragma (see next section) for that purpose, so you would write instead:
+``` ocaml
+(*${*) open Bar;; open Baz;; (*$}*)
+```
+The code between that special markup will simply be duplicated into the tests. The two methods are equivalent, and the second one is recommended, because it reduces the chances of an impedance mismatch between modules open for ``foo.ml`` and its tests. Therefore, the global form of the *open* pragma should preferentially be reserved for cases where you *want* such a mismatch. For instance, if you have special modules useful for tests but useless for the main code, you can easily open then for the tests alone using the pragma.
+
+* **Local Open for a Submodule:** Let's say we have the following `foo.ml`:
+``` ocaml
+let outer x = <something>
+
+module Submod = struct
+  let inner y = 2*x
+  (*$T inner
+    inner 2 = 4
+  *)
+end
+```
+That seems natural enough... but it won't work, because *qtest* is not actually aware that the test is "inside" Submod (and making it aware of that would be very problematic). In fact, so long as you use only test pragmas (ie. no manipulation pragma at all), the positions and even the order of the tests -- respective to definitions or to each other -- are unimportant, because the tests do not actually live in `foo.ml`. So we need to open Submod manually, using the *local* form of the *open* pragma:
+``` ocaml
+module Submod = struct (*$< Submod *)
+  let inner y = 2*x
+  (*$T inner
+    inner 2 = 4
+  *)
+end (*$>*)
+```
+Notice that the `<...>` have simply been split in two, compared to the global form. Of course, you *could* also forgo that method entirely and do this:
+``` ocaml
+module Submod = struct
+  let inner y = 2*x
+  (*$T &
+    Submod.inner 2 = 4
+  *)
+end
+```
+... but it is impractical and you are *forced* to use an empty header because qualified names are not acceptable as headers. The first method is therefore *strongly* recommended.
+
+#### Code Injection Pragma: `{...}`
+
+
+
+TODO: ocamldoc comments that define unit tests from the offered examples
 
 ## Technical Considerations and Other Details
 
@@ -262,7 +327,9 @@ let rec pretentious_drivel x0 f = function [] -> x0
   | x::xs -> pretentious_drivel (f x x0) f xs
 ```
 
-Astute readers (as well as slightly-less-astute readers, in that case) will not have failed to notice that they bear more than a passing resemblance to one another. If you write tests for one, odds are that the same test could be useful verbatim for the other. This is a very common case when you have several *implementations* of the same function, for instance the old, slow, naïve, trustworthy one and the new, fast, arcane, highly optimised version you have just written. For our example, recall that we have the following test for `foo`:
+You will not have failed to notice that they bear more than a passing resemblance to one another. If you write tests for one, odds are that the same test could be useful verbatim for the other. This is a very common case when you have closely related functions, or even several *implementations* of the same function, for instance the old, slow, naïve, trustworthy one and the new, fast, arcane, highly optimised version you have just written. The typical case is sorting routines, of which there are many flavours.
+
+For our example, recall that we have the following test for `foo`:
 
     (*$Q foo
       (Q.pair Q.small_int (Q.list Q.small_int)) (fun (i,l)-> foo i (+) l = List.fold_left (+) i l)
