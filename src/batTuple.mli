@@ -19,11 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Tuples.
-
-    NOTE: API changes are expected in a future release.
-
-    Modules are provided for tuples with 2, 3, 4, and 5
+(** Tuples. Modules are provided for tuples with 2, 3, 4, and 5
     elements. Each provides the following categories of functions.
 
     Projection. Functions [first], [second], [third], [fourth], and [fifth]
@@ -47,8 +43,8 @@
     same type.
 
     Currying. Every tuple has a [curry] and [uncurry] function, which
-    allow converting between functions that take [n] arguments to ones
-    that take a single [n]-tuple argument.
+    allows converting between functions that take [n] arguments to
+    ones that take a single [n]-tuple argument.
 
     Enumeration. Every [n]-tuple can be converted to an enum with [n]
     elements using its [enum] function, and can be constructed from an
