@@ -653,12 +653,12 @@ let enum s = Concrete.enum s.set
 let of_enum e =
   { cmp = compare; set = Concrete.of_enum compare e }
 
-let of_enum_cmp ~cmp t =
+let of_enum_cmp cmp t =
   { cmp = cmp; set = Concrete.of_enum cmp t }
 
 let of_list l = List.fold_left (fun a x -> add x a) empty l
 
-(*$Q of_list 
+(*$Q of_list
   (Q.list Q.small_int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
     let s1 = of_list xs |> enum |> List.of_enum in \
     let s2 = List.sort_unique Pervasives.compare xs in \

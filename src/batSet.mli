@@ -445,7 +445,7 @@ val enum: 'a t -> 'a BatEnum.t
 
 val of_enum: 'a BatEnum.t -> 'a t
 
-val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
+val of_enum_cmp: ('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
 
 (* of_list has no Set.Make counterpart *)
 val of_list: 'a list -> 'a t
