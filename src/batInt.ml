@@ -131,11 +131,7 @@ let max a b = if a > b then a else b
 *)
 
 let mid a b =
-  if (0 <= a && 0 <= b) || (a < 0 && b < 0) then
-    if a <= b then a + ((b-a)/2) else b + ((a-b)/2)
-  else
-    let s = a + b in
-    if s >= 0 then s/2 else s - s/2
+  a land b + ((a lxor b) asr 1)
 
 (*$Q mid
   (Q.pair Q.int Q.int) (fun (a,b) -> \
@@ -143,6 +139,39 @@ let mid a b =
     a <= b ==> (a <= m && m <= b && abs ((m-a) - (b-m)) <= 1) && \
     b < a ==> (b <= m && m <= a && abs ((m-b) - (a-m)) <= 1))
   (Q.int) (fun a -> mid a a = a)
+*)
+
+let popcount =
+  if Sys.word_size = 32 then
+    let k1 = 0x55555555 in
+    let k2 = 0x33333333 in
+    (fun x ->
+      let x = x - (x lsr 1) land k1 in
+      let x = ((x lsr 2) land k2) + (x land k2) in
+      let x = x + x asr 8 in
+      let x = x + x asr 16 in
+      x land 0x3f
+    )
+  else (* word_size = 64 *)
+    let k1 = 0x5555_5555_5555_5555 in
+    let k2 = 0x3333_3333_3333_3333 in
+    let k4 = 0x0f0f_0f0f_0f0f_0f0f in
+    (fun x ->
+      let x = x - (x lsr 1) land k1 in
+      let x = (x land k2) + ((x lsr 2) land k2) in
+      let x = (x + x lsr 4) land k4 in
+      let x = x + x asr 8 in
+      let x = x + x asr 16 in
+      let x = x + x asr 32 in
+      x land 0x7f
+    )
+
+let popcount_sparse x =
+  let rec loop n x = if x = 0 then n else loop (n+1) (x land (x-1)) in
+  loop 0 x
+
+(*$Q popcount
+  (Q.int) (fun x -> popcount x = popcount_sparse x)
 *)
 
 module Infix = BatNumber.MakeInfix(BaseInt)

@@ -158,6 +158,16 @@ val mid : int -> int -> int
     integer that lies between [a] and [b] and is as equidistant from
     both as possible. *)
 
+(** Returns the number of 1 bits set in the binary representation of
+    the number.  Maybe has problems with negative numbers *)
+val popcount : int -> int
+
+(**/**)
+
+val popcount_sparse : int -> int
+
+(**/**)
+
 val operations : int BatNumber.numeric
 
 val ( -- ) : t -> t -> t BatEnum.t
