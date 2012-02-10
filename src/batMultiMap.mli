@@ -24,11 +24,14 @@
 
     This is a polymorphic multi-map, i.e. an association from 1 to many.
 
-    @author Xavier Leroy
-    @author Nicolas Cannasse
-    @author Markus Mottle
-    @author David Teller
-*)
+   This implementation uses [Pervasives.compare] to compare both keys and
+   values.
+
+   @author Xavier Leroy
+   @author Nicolas Cannasse
+   @author Markus Mottle
+   @author David Teller
+ *)
 
 type ('a, 'b) t
 
@@ -38,14 +41,11 @@ val empty : ('a, 'b) t
 val is_empty : ('a, 'b) t -> bool
 (** returns true if the map is empty. *)
 
-val create : ('a -> 'a -> int) -> ('b -> 'b -> int) -> ('a, 'b) t
-(** creates a new empty map, using the provided function for key comparison.*)
-
 val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
     [m], plus a binding of [x] to [y].*)
 
-val find : 'a -> ('a, 'b) t -> 'b BatSet.PSet.t
+val find : 'a -> ('a, 'b) t -> 'b BatSet.t
 (** [find x m] returns the current binding of [x] in [m]*)
 
 val remove_all : 'a -> ('a, 'b) t -> ('a, 'b) t
@@ -63,45 +63,45 @@ val mem : 'a -> ('a, 'b) t -> bool
 (** [mem x m] returns [true] if [m] contains at least a binding for [x],
     and [false] otherwise. *)
 
-val iter : ('a -> 'b BatSet.PSet.t-> unit) -> ('a, 'b) t -> unit
+val iter : ('a -> 'b BatSet.t-> unit) -> ('a, 'b) t -> unit
 (** [iter f m] applies [f] to all bindings in map [m].
     [f] receives the key as first argument, and the associated value
     as second argument. The order in which the bindings are passed to
     [f] is unspecified. Only current bindings are presented to [f]:
     bindings hidden by more recent bindings are not passed to [f]. *)
 
-val map : ('b BatSet.PSet.t -> 'c BatSet.PSet.t) -> (('b -> 'b -> int) -> ('c -> 'c -> int)) -> ('a, 'b) t -> ('a, 'c) t
+val map : ('b BatSet.t -> 'c BatSet.t) -> ('a, 'b) t -> ('a, 'c) t
 (** [map f m] returns a map with same domain as [m], where the
     associated value [a] of all bindings of [m] has been
     replaced by the result of the application of [f] to [a].
     The order in which the associated values are passed to [f]
     is unspecified. *)
 
-val mapi : ('a -> 'b BatSet.PSet.t -> 'c BatSet.PSet.t) -> (('b -> 'b -> int) -> ('c -> 'c -> int)) -> ('a, 'b) t -> ('a, 'c) t
+val mapi : ('a -> 'b BatSet.t -> 'c BatSet.t) -> ('a, 'b) t -> ('a, 'c) t
 (** Same as [map], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
 
-val fold : ('b BatSet.PSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
+val fold : ('b BatSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** [fold f m a] computes [(f kN dN ... (f k1 d1 (f k0 d0 a))...)],
     where [k0,k1..kN] are the keys of all bindings in [m],
     and [d0,d1..dN] are the associated data.
     The order in which the bindings are presented to [f] is
     unspecified. *)
 
-val foldi : ('a -> 'b BatSet.PSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
+val foldi : ('a -> 'b BatSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** Same as [fold], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
 
 val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map. *)
 
-val of_enum : ?keys:('a -> 'a -> int) -> ?data:('b -> 'b -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
+val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
   for key comparison or [compare] by default. *)
 
 (** Infix operators over a {!BatMultiPMap} *)
 module Infix : sig
-  val (-->) : ('a, 'b) t -> 'a -> 'b BatSet.PSet.t
+  val (-->) : ('a, 'b) t -> 'a -> 'b BatSet.t
     (** [map-->key] returns the current binding of [key] in [map].
         Equivalent to [find key map]. *)
 

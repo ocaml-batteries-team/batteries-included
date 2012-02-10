@@ -560,77 +560,185 @@ struct
   end
 end
 
+module PSet = struct
 
-(*
- * PMap - Polymorphic sets
- * Copyright (C) 1996-2003 Xavier Leroy, Nicolas Cannasse, Markus Mottl
- * Copyright (C)      2008 David Teller
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version,
- * with the special exception on linking described in file LICENSE.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  type 'a t = {
+    cmp : 'a -> 'a -> int;
+    set : 'a Concrete.set;
+  }
+
+  type 'a enumerable = 'a t
+  type 'a mappable = 'a t
+
+  let empty    = { cmp = compare; set = Concrete.empty }
+
+  let create cmp  = { cmp = cmp; set = Concrete.empty }
+
+  let singleton ?(cmp = compare) x = { cmp = cmp; set = Concrete.singleton x }
+
+  let is_empty s = s.set = Concrete.Empty
+
+  let mem x s = Concrete.mem s.cmp x s.set
+
+  let add x s  = { s with set = Concrete.add s.cmp x s.set }
+
+  let remove x s = { s with set = Concrete.remove s.cmp x s.set }
+
+  let iter f s = Concrete.iter f s.set
+
+  let fold f s acc = Concrete.fold f s.set acc
+
+  let map f s =
+    { cmp = Pervasives.compare; set = Concrete.map Pervasives.compare f s.set }
+
+  (*$T map
+    map (fun x -> 1) (of_list [1;2;3]) |> cardinal = 1
+   *)
+
+  let filter f s = { s with set = Concrete.filter s.cmp f s.set }
+
+  let filter_map f s =
+    { cmp = compare; set = Concrete.filter_map compare f s.set }
+
+  let exists f s = Concrete.exists f s.set
+
+  let cardinal s =
+    fold (fun _ acc -> acc + 1) s 0
+
+  let elements s = Concrete.elements s.set
+
+  let choose s = Concrete.choose s.set
+
+  let min_elt s = Concrete.min_elt s.set
+
+  (*$Q min_elt
+    (Q.list Q.small_int) (fun l -> l = [] || \
+    let xs = List.map (fun i -> i mod 2, i) l in \
+    let s = ref (of_list xs) in \
+    let m = ref (min_elt !s) in \
+    while fst !m = 0 do \
+    s := remove !m !s; \
+    s := add (2,snd !m) !s; \
+    m := min_elt !s; \
+    done; \
+    for_all (fun (x,_) -> x <> 0) !s \
+    )
+   *)
+
+  let max_elt s = Concrete.max_elt s.set
+
+  let enum s = Concrete.enum s.set
+
+  let of_enum e =
+    { cmp = compare; set = Concrete.of_enum compare e }
+
+  let of_enum_cmp ~cmp t =
+    { cmp = cmp; set = Concrete.of_enum cmp t }
+
+  let of_list l = List.fold_left (fun a x -> add x a) empty l
+
+  (*$Q of_list
+    (Q.list Q.small_int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
+    let s1 = of_list xs |> enum |> List.of_enum in \
+    let s2 = List.sort_unique Pervasives.compare xs in \
+    s1 = s2 \
+    )
+   *)
+
+  let print ?first ?last ?sep print_elt out s =
+    Concrete.print ?first ?last ?sep print_elt out s.set
+
+  let for_all f s = Concrete.for_all f s.set
+
+  let partition f s =
+    let l, r = Concrete.partition s.cmp f s.set in
+    { s with set = l }, { s with set = r }
+
+  let filter f s = { s with set = Concrete.filter s.cmp f s.set }
+
+  let pop s =
+    let v, s' = Concrete.pop s.set in
+    v, { s with set = s' }
+
+  let split e s =
+    let s1, found, s2 = Concrete.split s.cmp e s.set in
+    { s with set = s1 }, found, { s with set = s2 }
+
+  let union s1 s2 =
+    { s1 with set = Concrete.union s1.cmp s1.set s2.set }
+
+  let diff s1 s2 =
+    { s1 with set = Concrete.diff s1.cmp s1.set s2.set }
+
+  let sdiff s1 s2 =
+    { s1 with set = Concrete.sdiff s1.cmp s1.set s2.set }
+
+  let intersect s1 s2 =
+    { s1 with set = Concrete.inter s1.cmp s1.set s2.set }
+
+  let compare s1 s2 = Concrete.compare s1.cmp s1.set s2.set
+
+  let equal s1 s2 = Concrete.equal s1.cmp s1.set s2.set
+
+  let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
+
+  let disjoint s1 s2 = Concrete.disjoint s1.cmp s1.set s2.set
+
+(*$T subset
+  subset (of_list [1;2;3]) (of_list [1;2;3;4])
+  not (subset (of_list [1;2;3;5]) (of_list [1;2;3;4]))
+  not (subset (of_list [1;2;3;4]) (of_list [1;2;3]))
  *)
 
+(*$T compare
+  compare (of_list [1;2;3]) (of_list [1;2;3;4]) <> 0
+  let a = of_list [1;2;3] and b = of_list [1;2;3;4] in compare a b = - (compare b a)
+  let a = of_list [1;2;3] and b = of_list [1;2;3;4] and c = of_list [3;1;2] in\
+    compare a b = - (compare b c)
+  compare (of_list [1;2;3]) (of_list [3;1;2]) = 0
+ *)
+end
 
-type 'a t = {
-  cmp : 'a -> 'a -> int;
-  set : 'a Concrete.set;
-}
+type 'a t = 'a Concrete.set
 
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
-let empty    = { cmp = compare; set = Concrete.empty }
+let empty    = Concrete.empty
 
-let create cmp  = { cmp = cmp; set = Concrete.empty }
+let singleton x = Concrete.singleton x
 
-let singleton ?(cmp = compare) x = { cmp = cmp; set = Concrete.singleton x }
+let is_empty s = s = Concrete.Empty
 
-let is_empty s = s.set = Concrete.Empty
+let mem x s = Concrete.mem Pervasives.compare x s
 
-let mem x s = Concrete.mem s.cmp x s.set
+let add x s  = Concrete.add Pervasives.compare x s
 
-let add x s  = { s with set = Concrete.add s.cmp x s.set }
+let remove x s = Concrete.remove Pervasives.compare x s
 
-let remove x s = { s with set = Concrete.remove s.cmp x s.set }
+let iter f s = Concrete.iter f s
 
-let iter f s = Concrete.iter f s.set
+let fold f s acc = Concrete.fold f s acc
 
-let fold f s acc = Concrete.fold f s.set acc
-
-let map f s =
-  { cmp = Pervasives.compare; set = Concrete.map Pervasives.compare f s.set }
+let map f s = Concrete.map Pervasives.compare f s
 
 (*$T map
   map (fun x -> 1) (of_list [1;2;3]) |> cardinal = 1
 *)
 
-let filter f s = { s with set = Concrete.filter s.cmp f s.set }
+let filter f s = Concrete.filter Pervasives.compare f s
 
-let filter_map f s =
-  { cmp = compare; set = Concrete.filter_map compare f s.set }
+let filter_map f s = Concrete.filter_map Pervasives.compare f s
 
-let exists f s = Concrete.exists f s.set
+let exists f s = Concrete.exists f s
 
-let cardinal s =
-  fold (fun _ acc -> acc + 1) s 0
+let cardinal s = fold (fun _ acc -> acc + 1) s 0
 
-let elements s = Concrete.elements s.set
+let elements s = Concrete.elements s
 
-let choose s = Concrete.choose s.set
+let choose s = Concrete.choose s
 
-let min_elt s = Concrete.min_elt s.set
+let min_elt s = Concrete.min_elt s
 
 (*$Q min_elt
   (Q.list Q.small_int) (fun l -> l = [] || \
@@ -646,19 +754,15 @@ let min_elt s = Concrete.min_elt s.set
   )
 *)
 
-let max_elt s = Concrete.max_elt s.set
+let max_elt s = Concrete.max_elt s
 
-let enum s = Concrete.enum s.set
+let enum s = Concrete.enum s
 
-let of_enum e =
-  { cmp = compare; set = Concrete.of_enum compare e }
-
-let of_enum_cmp ~cmp t =
-  { cmp = cmp; set = Concrete.of_enum cmp t }
+let of_enum e = Concrete.of_enum Pervasives.compare e
 
 let of_list l = List.fold_left (fun a x -> add x a) empty l
 
-(*$Q of_list 
+(*$Q of_list
   (Q.list Q.small_int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
     let s1 = of_list xs |> enum |> List.of_enum in \
     let s2 = List.sort_unique Pervasives.compare xs in \
@@ -667,43 +771,21 @@ let of_list l = List.fold_left (fun a x -> add x a) empty l
 *)
 
 let print ?first ?last ?sep print_elt out s =
-  Concrete.print ?first ?last ?sep print_elt out s.set
+  Concrete.print ?first ?last ?sep print_elt out s
 
-let for_all f s = Concrete.for_all f s.set
-
-let partition f s =
-  let l, r = Concrete.partition s.cmp f s.set in
-  { s with set = l }, { s with set = r }
-
-let filter f s = { s with set = Concrete.filter s.cmp f s.set }
-
-let pop s =
-  let v, s' = Concrete.pop s.set in
-  v, { s with set = s' }
-
-let split e s =
-  let s1, found, s2 = Concrete.split s.cmp e s.set in
-  { s with set = s1 }, found, { s with set = s2 }
-
-let union s1 s2 =
-  { s1 with set = Concrete.union s1.cmp s1.set s2.set }
-
-let diff s1 s2 =
-  { s1 with set = Concrete.diff s1.cmp s1.set s2.set }
-
-let sdiff s1 s2 =
-  { s1 with set = Concrete.sdiff s1.cmp s1.set s2.set }
-
-let intersect s1 s2 =
-  { s1 with set = Concrete.inter s1.cmp s1.set s2.set }
-
-let compare s1 s2 = Concrete.compare s1.cmp s1.set s2.set
-
-let equal s1 s2 = Concrete.equal s1.cmp s1.set s2.set
-
-let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
-
-let disjoint s1 s2 = Concrete.disjoint s1.cmp s1.set s2.set
+let for_all f s = Concrete.for_all f s
+let partition f s = Concrete.partition Pervasives.compare f s
+let filter f s = Concrete.filter Pervasives.compare f s
+let pop s = Concrete.pop s
+let split e s = Concrete.split Pervasives.compare e s
+let union s1 s2 = Concrete.union Pervasives.compare s1 s2
+let diff s1 s2 = Concrete.diff Pervasives.compare s1 s2
+let sdiff s1 s2 = Concrete.sdiff Pervasives.compare s1 s2
+let intersect s1 s2 = Concrete.inter Pervasives.compare s1 s2
+let compare s1 s2 = Concrete.compare Pervasives.compare s1 s2
+let equal s1 s2 = Concrete.equal Pervasives.compare s1 s2
+let subset s1 s2 = Concrete.subset Pervasives.compare s1 s2
+let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
 
 (*$T subset
    subset (of_list [1;2;3]) (of_list [1;2;3;4])
