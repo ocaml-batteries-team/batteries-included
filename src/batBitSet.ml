@@ -2,6 +2,7 @@
  * Bitset - Efficient bit sets
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
+ * Copyright (C) 2012 Sylvain Le Gall
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -180,25 +181,50 @@ let count t =
  * set bit.
  *)
 let next_set_bit_array =
+  let eighth_bit = 1 lsl 7 in
   let mk c = 
     let arr = Array.create 8 ~-1 in
-    let rec mk' delta i v =
+    let rec mk' last_set_bit i v =
       if i >= 0 then 
-        if v land 1 == 1 then
-          begin
-            arr.(i) <- 0;
-            mk' 1 (i - 1) (v lsr 1)
-          end
-        else
-          begin
-            arr.(i) <- delta;
-            mk' (delta + 1) (i - 1) (v lsr 1)
-          end
+        let last_set_bit = 
+          if v land eighth_bit <> 0 then
+            i
+          else
+            last_set_bit
+        in
+        arr.(i) <- last_set_bit;
+        mk' last_set_bit (i - 1) (v lsl 1)
     in
       mk' ~-1 7 c;
       arr
   in
     Array.init 256 mk
+
+(* DEBUG bit arrays.
+let () = 
+  Array.iteri
+    (fun idx arr ->
+       let buf = Buffer.create 8 in
+         for i = 0 to 7 do 
+           let c = 
+             if (idx land (1 lsl (7 - i))) = 0 then
+               '0'
+             else
+               '1'
+           in
+             Buffer.add_char buf c
+         done;
+         Buffer.add_string buf  ": ";
+         for i = 0 to 7 do 
+           Buffer.add_string buf
+             (Printf.sprintf "%d -> %d; "
+                i arr.(i))
+         done;
+         Buffer.add_char buf '\n';
+         Buffer.output_buffer stderr buf)
+    next_set_bit_array;
+  flush stderr
+ *)
 
 (* Find the first set bit in the bit array *)
 let rec next_set_bit t x =
@@ -278,9 +304,11 @@ let apply_set_op op t1 t2 =
         extend t1 (len2 * 8);
         String.blit !t2 len1 !t1 len1 (len2 - len1)
       end
-    else if op = DiffSym && len1 > len2 then
+    else if op = DiffSym && len1 < len2 then
       begin
-        String.fill !t1 len2 (len1 - len2) '\000'
+        let tmp = String.copy !t2 in
+        String.blit !t1 0 tmp 0 len1;
+        t1 := tmp
       end
 
 let intersect t1 t2 = apply_set_op Inter t1 t2

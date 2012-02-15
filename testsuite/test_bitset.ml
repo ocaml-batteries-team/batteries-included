@@ -141,6 +141,9 @@ let tests = "BitSet" >::: [
   "union" >::
    (biop BS.union [1; 4; 5; 25; 26; 27; 250]);
 
+  "union2" >::
+   (biop BS.union ~rev:true [1; 4; 5; 25; 26; 27; 250]);
+
   "diff1" >::
   (biop BS.diff [4; 25; 27]);
 
@@ -150,8 +153,35 @@ let tests = "BitSet" >::: [
   "sym_diff" >::
   (biop BS.sym_diff [4; 25; 27; 5; 26; 250]);
 
+  "sym_diff2" >::
+  (biop BS.sym_diff ~rev:true [4; 25; 27; 5; 26; 250]);
+
   "inter" >::
   (biop BS.inter [1]);
+
+  "next_set_bit" >::
+  (fun () ->
+     let bs = BS.of_list lst1 in
+     let string_of_int_opt = 
+       function 
+         | Some i -> string_of_int i
+         | None -> "<none>"
+     in
+     let last = 
+       List.fold_left 
+         (fun prv cur ->
+            assert_equal 
+              ~printer:string_of_int_opt
+              (Some cur)
+              (BS.next_set_bit bs (prv + 1));
+            cur)
+         (-1)
+         lst1
+     in
+       assert_equal
+         ~printer:string_of_int_opt
+         None
+         (BS.next_set_bit bs (last + 1)));
 
   "enum" >::
   (fun () ->
