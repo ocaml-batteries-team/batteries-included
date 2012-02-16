@@ -4,6 +4,7 @@
  *)
 
 (**** TOOLKIT ****)
+module M = Misclex;;
 let fpf = Printf.fprintf let va  = Printf.sprintf
 let epf = Printf.eprintf let eps  = prerr_string
 let pl  = print_endline
@@ -26,15 +27,19 @@ let (@@) f x = f x
 let soi = string_of_int
 (** Convert a [char] to a [string] *)
 let soc  = String.make 1
-(** Trim white spaces  *)
 let is_blank_char = function ' '|'\t'|'\n'|'\r' -> true | _ -> false 
-let rec trim s =
-  let l = String.length s in if l=0 then s
-  else if is_blank_char s.[0]   then trim (String.sub s 1 (l-1))
-  else if is_blank_char s.[l-1] then trim (String.sub s 0 (l-1))
-  else s
 let listiteri f l = let c = ref (-1) in let call x = incr c; f !c x in
   List.iter call l
+let lex_str lexer s = (* use an ocamllex lexer *)
+  let buff = Lexing.from_string s in lexer buff
+let trim = lex_str M.trim
+and normalise = lex_str M.normalise
+let snippet s n = let res = Str.first_chars s n in
+  res ^ if String.length s <= n then "" else "..."
+let snip lex = (** Snippet of current lexer buffer context *)
+  let curr = max 0 (lex.Lexing.lex_start_pos - 5) in
+  let vicinity = Str.string_after lex.Lexing.lex_buffer curr
+  in snippet vicinity 70
 (*****************)
  
 (** output channel *)
@@ -107,9 +112,11 @@ type 'a test = {
 type pragma =
 | Meta_test of metaheader test  (* describes one or several tests *)
 | Test of header test           (* do some testing... *)
-| Env_begin       (* open a test environment, eg. a module or file *)
-| Env_close       (* ... and close it *)
-| Open of string  (* open a module, within the scope of current environment *)
+| Env_begin             (* open a test environment, eg. a module or file *)
+| Env_close             (* ... and close it *)
+| Open of string        (* open a module, within the scope of current environment *)
+| Inject of (string * int) * string (*= (foo.ml ln) code *)
+                        (* inject code into test environment *)
 
 (** storage facility for all tests in input files *)
 let suite : pragma list ref = ref []
@@ -120,12 +127,16 @@ let register prag = push prag suite
 
 (** if a test header contains invalid characters *)
 exception Bad_header_char of string * string
-
 (** if a test's body is never closed *)
 exception Unterminated_test of statement list
-
 (** a test contains no statement *)
 exception Empty_test of string
+(** an "open modules" pragma is invalid at lexing level *)
+exception Bad_modules_open_char of string
+(** ... or at parsing level *)
+exception Modules_syntax_error
+(** this looks like a qtest pragma, but isn't *)
+exception Invalid_pragma of string
 
 (** human-readable form *)
 let str_of_metabinding (bind:metabinding) =
@@ -179,11 +190,18 @@ in z pragmas
 (** get the name of the test function, given its uid *)
 let test_handle_of_uid uid = "_test_" ^ soi uid
 
+(** get a pretty, user-friendly version of the code wrt. whitespace *)
+let prettify s =
+  if String.contains s '\n'
+  then (* multi-line : as-is     *)   "\n\n" ^ s ^ "\n\n"
+  else (* single-line: normalise *)   trim (normalise s)
+
+
 (** execute a pragma; in particular, output the executable version of a test *)
 let process uid = function
   | Test test ->
-    let test_handle = test_handle_of_uid uid in
-    let targets = targets_of_header test.header in
+    let test_handle = test_handle_of_uid uid 
+    and targets = targets_of_header test.header in
     List.iter (fun t->
       outf_target "%30s %4d    %s\n" test.source test.line t
     ) targets;
@@ -192,26 +210,30 @@ let process uid = function
     let do_statement st = 
       let location = va "%s:%d" test.source st.ln in
       let extended_name = va "\"%s\"" (* pretty, detailed name for the test *)
-        (String.escaped location^":  "^String.escaped st.code)
-      and bind = code_of_bindings test.header.hb
+        (String.escaped location^":  "^String.escaped (prettify st.code)) 
+      and lnumdir = va "\n#%d \"%s\"\n" st.ln test.source in
+      let bind = lnumdir ^ code_of_bindings test.header.hb 
       in match test.kind with
-      | Simple -> outf "#%d \"%s\"\n \"%s\" >::
-        (%s fun () -> OUnit.assert_bool %s (%s));\n"
-        st.ln test.source location bind extended_name st.code;
-      | Equal -> outf "#%d \"%s\"\n \"%s\" >::
-        (%s fun () -> OUnit.assert_equal ~msg:%s %s %s);\n"
-        st.ln test.source location bind extended_name test.header.hpar st.code;
-      | Random -> outf "#%d \"%s\"\n \"%s\" >::
-        (%s fun () -> Q.laws_exn %s %s);\n"
-        st.ln test.source location bind extended_name st.code;
-      | Raw -> outf "#%d \"%s\"\n \"%s\" >::
-        (%s fun () -> (%s));\n"
-        st.ln test.source location bind st.code;
+      | Simple -> outf
+        "\"%s\" >:: (%s fun () -> OUnit.assert_bool %s (%s%s%s));\n"
+        location bind extended_name test.header.hpar lnumdir st.code;
+      | Equal -> outf
+        "\"%s\" >:: (%s fun () -> OUnit.assert_equal ~msg:%s %s %s%s);\n"
+        location bind extended_name test.header.hpar lnumdir st.code;
+      | Random -> outf
+        "\"%s\" >:: (%s fun () -> Q.laws_exn %s %s %s%s);\n"
+        location bind extended_name test.header.hpar lnumdir st.code;
+      | Raw -> outf
+        "\"%s\" >:: (%s fun () -> (%s%s));\n"
+        location bind lnumdir st.code;
     in List.iter do_statement test.statements;
     outf "];; let _ = ___add %s;;\n" test_handle;
   | Env_begin -> outf  "\n\nmodule Test__environment_%d = struct\n" uid
   | Env_close -> out  "end\n\n"
   | Open modu -> outf "open %s;;\n" modu
+  | Inject ((modu,ln),cd) ->
+    let lnumdir = va "\n#%d \"%s\"\n" ln modu in
+    out @@ lnumdir ^ "    " ^ cd ^ " " (* 4 spaces for column numbers reporting *)
   | Meta_test _ -> assert false (* metas should have been pre-processed out *)
 
 

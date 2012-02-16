@@ -15,6 +15,11 @@ type ('a, 'b) t = ('a, 'b) BatPervasives.result = Ok of 'a | Bad of 'b
 *)
 val catch: ('a -> 'b) -> 'a -> ('b, exn) t
 
+(** As [catch] but two paramaters.  This saves a closure construction
+    @since 1.0
+*)
+val catch2: ('a -> 'b -> 'c) -> 'a -> 'b -> ('c, exn) t
+
 (** [get (Ok x)] returns [x], and [get (Bad e)] raises [e].  This
     function is, in a way, the opposite of the [catch] function
     @since 2.0

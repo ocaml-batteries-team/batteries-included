@@ -30,75 +30,124 @@ module B = Buffer;;
 let buffy = B.create 80
 
 (** register a raw metatest from the lexing buffer *)
-let register_mtest lexbuf lexhead lexbod head line kind =
-  eol lexbuf;Lexing.(
-  register @@ Meta_test { kind; line = succ line;
-    header = metaheader_ (lexhead head) (from_string head);
-    source = lexbuf.lex_curr_p.pos_fname;
-    statements = lexbod lexbuf;
+let register_mtest lexbuf lexhead lexbod line kind =
+  let header = metaheader_ lexhead lexbuf in
+  let statements = lexbod lexbuf in
+  Lexing.(
+    register @@ Meta_test { kind; line ; header ;
+    source = lexbuf.lex_curr_p.pos_fname; statements ;
   })
-  
+
+let lnumof lexbuf = Lexing.(lexbuf.lex_curr_p.pos_lnum)
+let fileof lexbuf = Lexing.(lexbuf.lex_curr_p.pos_fname)
+let info lb = fileof lb, lnumof lb
 } (****************************************************************************)
 
 let blank = [' ' '\t']
 let lowercase = ['a'-'z' '\223'-'\246' '\248'-'\255' '_']
+let uppercase = ['A'-'Z' '\192'-'\214' '\216'-'\222']
 let identchar =
   ['A'-'Z' 'a'-'z' '_' '\192'-'\214' '\216'-'\246' '\248'-'\255' '\'' '0'-'9']
 let lident = lowercase identchar*
-let restline = ([^'\n']* as x) '\n'
-let test_header_pat = blank+ restline | (blank* as x) '\n'
+let uident = uppercase identchar*
 
 (** extract tests from ml file *)
 rule lexml t = parse
-| "(*$Q" test_header_pat { (* quickcheck (random) test *)
-  let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
-  register_mtest lexbuf lexheader (lexbody  buffy[]) x line Random  }
-| "(*$T" test_header_pat { (* simple test *)
-  let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
-  register_mtest lexbuf lexheader (lexbody buffy []) x line Simple }
-| "(*$=" test_header_pat { (* equality test *)
-  let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
-  register_mtest lexbuf lexheader (lexbody buffy []) x line Equal }
-| "(*$R" test_header_pat { (* raw test *)
-  let line = Lexing.(lexbuf.lex_curr_p.pos_lnum) in
-  register_mtest lexbuf lexheader (lexbody_raw buffy (succ line)) x line Raw }
-| "(*$" restline { failwith @@ va "Unrecognised qtest pragma: `%s'" x }
-| "(*" (blank | '*')+ "$" [^'\n']* as y
-  { epf "\nWarning: likely qtest syntax error: `%s'. " y }
+  (* test pragmas *)
+  (****************)
+| "(*$Q"  { (* quickcheck (random) test *)
+  let lnum = lnumof lexbuf in
+  register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) lnum Random  }
+| "(*$T"  { (* simple test *)
+  let lnum = lnumof lexbuf in
+  register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) lnum Simple }
+| "(*$="  { (* equality test *)
+  let lnum = lnumof lexbuf in
+  register_mtest lexbuf lexheader (lexbody (succ lnum) buffy []) lnum Equal }
+| "(*$R"  { (* raw test *)
+  let lnum = lnumof lexbuf in
+  register_mtest lexbuf lexheader (lexbody_raw (succ lnum) buffy) lnum Raw }
+  (* manipulation pragmas *)
+  (************************)
+| "(*$<"  {
+  let global, modules = modules_ lexmodules lexbuf 
+  and loc_register m = register Env_begin; register @@ Open m
+  and glo_register m = register @@ Open m
+  in let reg = if global then glo_register else loc_register
+  in List.iter reg modules }
+| "(*$>*)" { register Env_close }
+| "(*${*)" { lexinjectcp buffy lexbuf }
+| "(*${"   { lexinjectmv buffy lexbuf }
+  (* error cases *)
+  (***************)
+| "(*$" { raise @@ Invalid_pragma (snip lexbuf) }
+| "(*" (blank | '*')+ "$" [^'\n']* as y {
+  let f,n = info lexbuf in
+  epf "\nWarning: likely qtest syntax error: `%s' at %s:%d. " y f n }
 | '\n' { eol lexbuf }
-| _ { () }
-| eof {t()}
+  (* others *)
+| _ { () } | eof {t()}
 
 (** body of a test: simply extract lines *)
-and lexbody b acc = parse
-| blank* "\\\n" blank* { eol lexbuf ; B.add_char b ' '; lexbody b acc lexbuf  }
-| [^'\n'] as c { B.add_char b c; lexbody b acc lexbuf }
-| '\n' { eol lexbuf; let line = B.contents b in B.clear b;
-         lexbody b ({ln = Lexing.(lexbuf.lex_curr_p.pos_lnum) ; code = trim line} :: acc) lexbuf }
+and lexbody ln b acc = parse
+| "\\\n"  { eol lexbuf ; B.add_char b '\n'; lexbody ln b acc lexbuf  }
+| [^'\n'] as c { B.add_char b c; lexbody ln b acc lexbuf }
+| blank* '\n' {
+  eol lexbuf; let code = B.contents b in B.clear b;
+  lexbody Lexing.(lexbuf.lex_curr_p.pos_lnum) b ({ln ; code} :: acc) lexbuf }
 | blank* "*)" { acc }
-| ([^'\n']#blank)* blank* '*'? "*)" as x
+| ([^'\n']#blank)* blank* '*'+ ")" as x
   { failwith ("runaway test body terminator: " ^ x) }
 | eof { raise @@ Unterminated_test acc }
 
 (** body of a raw test... everything until end comment *)
-and lexbody_raw b ln = parse
+and lexbody_raw ln b = parse
 | _ as c {
   if c = '\n' then eol lexbuf;
-  B.add_char b c; lexbody_raw b ln lexbuf }
-| '\n'* blank* "*)" {
+  B.add_char b c; lexbody_raw ln b lexbuf }
+| '\n' blank* "*)" {
   eol lexbuf;
   let s = B.contents b in B.clear b; [{ln; code=s}]}
 
+(** body of an injection pragma: copy *)
+and lexinjectcp b = parse
+| _ as c {
+  if c = '\n' then eol lexbuf;
+  B.add_char b c; lexinjectcp b lexbuf }
+| "(*$}*)" {
+   let code = B.contents b in B.clear b;
+   register @@ Inject (info lexbuf,code) }
+
+(** body of an injection pragma: move *)
+and lexinjectmv b = parse
+| _ as c {
+  if c = '\n' then eol lexbuf;
+  B.add_char b c; lexinjectmv b lexbuf }
+| "}*)" { (* note: the 2 spaces are for column numbers reporting *)
+   let code = "  " ^ B.contents b in B.clear b;
+   register @@ Inject (info lexbuf,code) }
+
+   
 (** prepare to parse test header *)
-and lexheader hd = parse
-| blank { lexheader hd lexbuf }
+and lexheader = parse
+| blank { lexheader lexbuf }
 | "," { COMMA }
 | ";" { SEMI }
 | "as" { AS }
 | lident as x { ID x }
-| "&"  (_* as x) { PARAM (trim x) }
-| eof { EOF }
-| _ as x { raise @@ Bad_header_char((soc x), hd) }
+| "&"  ([^'\n']* as x) { PARAM (trim x) }
+| '\n' { eol lexbuf; EOF }
+| eof  { failwith "unterminated header at end of file" }
+| _ as c { raise @@ Bad_header_char((soc c), snip lexbuf) }
+
+(** parse list of modules *)
+and lexmodules = parse
+| blank { lexmodules lexbuf }
+| "," { COMMA }
+| "*)"  { EOF  }  (* local open, closed later *)
+| ">*)" { EOF2 }  (* global open *)
+| uident as x { UID x }
+| _ as c { raise @@ Bad_modules_open_char (soc c) }
 
 (**TODO: deal with strings and nested comments *)
 
@@ -110,7 +159,7 @@ let extract_from pathin = Lexing.(
   let chanin = open_in pathin in
   let lexbuf = from_channel chanin in
   lexbuf.lex_curr_p <- {lexbuf.lex_curr_p with
-    pos_fname = pathin; pos_lnum = 0; (* one behind; pre-incrementation *)
+    pos_fname = pathin; pos_lnum = 1;
   };
   (* getting the module *)
   let mod_name = Filename.(

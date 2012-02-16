@@ -664,6 +664,9 @@ let group cmp lst =
 let cartesian_product l1 l2 =
    List.concat (List.map (fun i -> List.map (fun j -> (i,j)) l2) l1)
 
+(*$T cartesian_product as cp
+  cp [1;2;3] ['x';'y'] = [1,'x';1,'y';2,'x';2,'y';3,'x';3,'y']
+ *)
 
 let rec n_cartesian_product = function [] -> assert false
   | [l] -> List.map (fun i -> [i]) l

@@ -6,38 +6,67 @@ For the moment, Batteries Included concentrates on:
 
 {ul
 {- data structures}
-{- file manipulation and system calls}
+{- file manipulation}
 {- inputs and outputs}
 {- concurrency}
 {- numbers}
 {- text, including Unicode}
-{- language extensions}
 }
 
-For more information on the installation of Batteries Included,
-please read the {{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Installing-Batteries}Installation guide} and for an example using it in different build systems, we have the {{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Getting-started}Getting started manual}.
+For more information on the installation of Batteries Included, please
+read the
+{{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Installing-Batteries}Installation
+guide} and for an example using it in different build systems, we have
+the
+{{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Getting-started}Getting
+started manual}.
 
-Do you have suggestions? Remarks? Bug reports ? To contact us or to
-be kept informed, don't hesitate to visit our
-{{:http://batteries.forge.ocamlcore.org/}website}, {{:https://github.com/ocaml-batteries-team/batteries-included}Git repo}, and our {{:https://github.com/ocaml-batteries-team/batteries-included/issues?sort=created&direction=desc&state=open}Issue tracker}.
+Do you have suggestions? Remarks? Bug reports ? To contact us or to be
+kept informed, don't hesitate to visit our
+{{:http://batteries.forge.ocamlcore.org/}website},
+{{:https://github.com/ocaml-batteries-team/batteries-included}Git
+repo}, and our
+{{:https://github.com/ocaml-batteries-team/batteries-included/issues?sort=created&direction=desc&state=open}Issue
+tracker}.
+
+{6 New Data Structures in Batteries}
+
+{!modules: BatBitSet BatCache BatDeque BatDllist BatDynArray BatEnum
+BatFingerTree BatGlobal BatHashcons BatHeap BatIMap BatISet
+BatLazyList BatMultiPMap BatRefList BatSeq BatSplay BatUref BatVect }
 
 {6 New Modules in Batteries}
 
-{!modules: BatBase64 BatBitSet BatCache BatCharParser BatDeque BatDllist BatDynArray BatEnum BatFile BatFingerTree BatGlobal BatHashcons BatHeap BatIMap BatISet BatInterfaces BatIO BatLazyList BatLog BatLogger BatMultiPMap BatNumber BatOptParse BatParserCo BatPathGen BatPrint BatRefList BatResult BatReturn BatSeq BatSplay BatUref BatVect}
+{!modules: BatBase64 BatCharParser BatFile BatInterfaces BatIO BatLog
+BatLogger BatNumber BatOptParse BatParserCo BatPathGen BatPrint
+BatResult BatReturn }
 
-{6 Extensions to the Standard Library (and base types)}
+{6 Builtin Types as Modules}
 
-{!modules: BatArg BatArray BatBigarray BatBig_int BatBool BatBuffer BatChar BatComplex BatDigest BatFloat BatFormat BatGc BatGenlex BatHashtbl BatInt BatInt32 BatInt64 BatLexing BatList BatMap BatMarshal BatNativeint BatNum BatOo BatOption BatPervasives BatPrintexc BatPrintf BatQueue BatRandom BatRef BatScanf BatSet BatStack BatStream BatString BatStr BatSys BatTuple BatUnit BatUnix}
+{!modules: BatBool BatChar BatFloat BatInt BatInt32 BatInt64
+BatNativeint BatOption BatRef BatTuple BatUnit }
+
+{6 Extensions to the Standard Library}
+
+{!modules: BatArray BatBigarray BatBig_int BatBuffer BatComplex
+BatDigest BatFormat BatGc BatGenlex BatHashtbl BatLexing BatList
+BatMap BatMarshal BatNum BatOo BatPervasives BatPrintexc BatPrintf
+BatQueue BatRandom BatScanf BatSet BatStack BatStream BatString BatStr
+BatSysBatUnix}
 
 {6 Thread-related Modules}
 
-These modules are available only when compiling with threads.
+These modules are available only when compiling with threads.  To use
+them, do [open BatteriesThread] at the top of your code.
 
 {!modules: BatConcurrent BatMutex BatRMutex}
 
 {6 Future}
 
-These modules are available only inside [Batteries.Future].  Their interface is not guaranteed stable, and may be changed at any time.  They are included for testing and stabilization until they can be finalized and moved to batteries proper.
+These modules are available only inside [Batteries.Future].  Their
+interface is not guaranteed stable, and may be changed at any time.
+They are included for testing and stabilization until they can be
+finalized and moved to batteries proper.
 
 {!modules: BatOrd BatSubstring}
 
