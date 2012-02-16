@@ -2,6 +2,7 @@
  * Bitset - Efficient bit sets
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2008 David Teller
+ * Copyright (C) 2012 Sylvain Le Gall
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,14 +43,15 @@ val empty : unit ->  t
  *)
 
 val create : int -> t
-(** Create an empty bitset with an initial capacity (in number of bits).
+(** Create an empty bitset with at least an initial capacity (in number of bits).
 
     Example: [BitSet.create 0 = BitSet.empty ()]
     @raise Invalid_argument on negative capacity
 *)
 
 val create_full : int -> t
-(** Create a full bitset with an initial capacity (in number of bits).
+(** Create a full bitset with at least initial capacity (in number of bits).
+    All the bit under the defined capacity will be set.
 
     Example: [BitSet.count (BitSet.create_full n) = n]
     @raise Invalid_argument on negative capacity
@@ -57,9 +59,13 @@ val create_full : int -> t
 
 val copy : t -> t
 (** Copy a bitset : further modifications of first one will not affect the
- copy.
+    copy.
 
-    Example: [let a = Bitset.create 8 in let b = BitSet.copy a in BitSet.set a 6; BitSet.mem a 6 && not (BitSet.mem b 6)]
+    Example: [
+let a = Bitset.create 8 in 
+let b = BitSet.copy a in 
+BitSet.set a 6; 
+BitSet.mem a 6 && not (BitSet.mem b 6)]
 *)
 
 val mem : t -> int -> bool
