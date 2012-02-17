@@ -74,7 +74,7 @@ let run test =
   let running_time, results = time_fun perform_test hdl_event test in
   let (s,f,o) = !_counter in
   let failures = List.filter not_success results in
-  assert (List.length failures = f);
+(*  assert (List.length failures = f);*)
   ps "\r";
   print_result_list failures;
   assert (List.length results = total_tests);
