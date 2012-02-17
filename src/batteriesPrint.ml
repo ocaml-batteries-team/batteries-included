@@ -58,7 +58,15 @@ let rope_pset = to_format (BatSet.print Ulib.Text.print)
 let char_pset = to_format (BatSet.print BatChar.print)
 
 let (|>) x f = f x
-let enum_print p oc e = BatEnum.clone e |> BatEnum.take 20 |> BatEnum.print p oc
+let enum_print_limit = ref 20
+let enum_print p oc e =
+  let e = BatEnum.clone e in
+  for i = 1 to !enum_print_limit-1 do
+    match BatEnum.get e with
+      | None -> ()
+      | Some x -> p oc x; BatIO.write oc ' '
+  done;
+  if not (BatEnum.is_empty e) then BatIO.nwrite oc "..."
 
 let int_enum = to_format (enum_print BatInt.print)
 let string_enum = to_format (enum_print BatString.print)
@@ -72,3 +80,4 @@ let int_str_pmap = to_format (BatMap.print BatInt.print BatString.print)
 let str_int_pmap = to_format (BatMap.print BatString.print BatInt.print)
 let str_str_pmap = to_format (BatMap.print BatString.print BatString.print)
 
+(*let bitset = to_format BatBitSet.print*)
