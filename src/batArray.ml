@@ -447,6 +447,37 @@ module Incubator = struct
   end
 end
 
+let left a len = if len >= length a then a else sub a 0 len
+let right a len = let alen = length a in
+		  if len >= alen then a else sub a (alen - len) len
+let head a pos = left a pos
+let tail a pos = let alen = length a in
+		 if pos >= alen then [||] else sub a pos (alen - pos)
+
+(*$= left & ~printer:(IO.to_string (Array.print Int.print))
+  (left [|1;2;3|] 1) [|1|]
+  (left [|1;2|] 3) [|1;2|]
+  (left [|1;2;3|] 3) [|1;2;3|]
+  (left [|1;2;3|] 10)[|1;2;3|]
+  (left [|1;2;3|] 0) [||]
+*) (*$= right & ~printer:(IO.to_string (Array.print Int.print))
+  (right [|1;2;3|] 1) [|3|]
+  (right [|1;2|] 3) [|1;2|]
+  (right [|1;2;3|] 3) [|1;2;3|]
+  (right [|1;2;3|] 10) [|1;2;3|]
+  (right [|1;2;3|] 0) [||]
+*) (*$= tail & ~printer:(IO.to_string (Array.print Int.print))
+  (tail [|1;2;3|] 1) [|2;3|]
+  [||] (tail [|1;2;3|] 10)
+  (tail [|1;2;3|] 0) [|1;2;3|]
+*) (*$= head & ~printer:(IO.to_string (Array.print Int.print))
+  (head [|1;2;3|] 1) [|1|]
+  (head [|1;2;3|] 10) [|1;2;3|]
+  (head [|1;2;3|] 0) [||]
+*)
+
+
+
 
 module Cap =
 struct

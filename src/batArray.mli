@@ -89,6 +89,34 @@ val min : 'a array -> 'a
 
     @raise Invalid_argument on empty input *)
 
+val left : 'a array -> int -> 'a array
+(**[left r len] returns the array containing the [len] first
+   characters of [r]. If [r] contains less than [len] characters, it
+   returns [r].
+
+   Examples:
+   [Array.left [|0;1;2;3;4;5;6|] 4 = [|0;1;2;3|]]
+   [Array.left [|1;2;3|] 0 = [||]]
+   [Array.left [|1;2;3|] 10 = [|1;2;3|]]
+*)
+
+val right : 'a array -> int -> 'a array
+(**[left r len] returns the array containing the [len] last characters of [r].
+   If [r] contains less than [len] characters, it returns [r].
+
+   Example: [Array.right [|1;2;3;4;5;6|] 4 = [|3;4;5;6|]]
+*)
+
+val head : 'a array -> int -> 'a array
+(**as {!left}*)
+
+val tail : 'a array -> int -> 'a array
+(**[tail r pos] returns the array containing all but the [pos] first characters of [r]
+
+   Example: [Array.tail [|1;2;3;4;5;6|] 4 = [|5;6|]]
+*)
+
+
 (**{6 Operations on two arrays}*)
 
 val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
