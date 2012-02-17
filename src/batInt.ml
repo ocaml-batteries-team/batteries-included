@@ -153,9 +153,10 @@ let popcount =
       x land 0x3f
     )
   else (* word_size = 64 *)
-    let k1 = 0x5555_5555_5555_5555 in
-    let k2 = 0x3333_3333_3333_3333 in
-    let k4 = 0x0f0f_0f0f_0f0f_0f0f in
+    (* uses int_of_string to hide these constants from the 32-bit compiler *)
+    let k1 = int_of_string "0x5555_5555_5555_5555" in
+    let k2 = int_of_string "0x3333_3333_3333_3333" in
+    let k4 = int_of_string "0x0f0f_0f0f_0f0f_0f0f" in
     (fun x ->
       let x = x - (x lsr 1) land k1 in
       let x = (x land k2) + ((x lsr 2) land k2) in
