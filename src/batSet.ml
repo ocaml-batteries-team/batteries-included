@@ -281,16 +281,16 @@ module Concrete = struct
               join (union cmp12 l1 l2) v2 (union cmp12 r1 r2)
             end
 
-  let rec sdiff cmp12 s1 s2 =
+  let rec sym_diff cmp12 s1 s2 =
     match (s1, s2) with
         (Empty, t2) -> t2
       | (t1, Empty) -> t1
       | (Node(l1, v1, r1, _), t2) ->
           match split cmp12 v1 t2 with
               (l2, false, r2) ->
-                join (sdiff cmp12 l1 l2) v1 (sdiff cmp12 r1 r2)
+		join (sym_diff cmp12 l1 l2) v1 (sym_diff cmp12 r1 r2)
             | (l2, true, r2) ->
-                concat (sdiff cmp12 l1 l2) (sdiff cmp12 r1 r2)
+		concat (sym_diff cmp12 l1 l2) (sym_diff cmp12 r1 r2)
 
   let rec inter cmp12 s1 s2 =
     match (s1, s2) with
@@ -380,7 +380,7 @@ sig
 
   val diff: t -> t -> t
 
-  val sdiff: t -> t -> t
+  val sym_diff: t -> t -> t
 
   val compare: t -> t -> int
 
@@ -511,7 +511,7 @@ struct
   let union s1 s2 = t_of_impl (Concrete.union Ord.compare (impl_of_t s1) (impl_of_t s2))
   let diff s1 s2 = t_of_impl (Concrete.diff Ord.compare (impl_of_t s1) (impl_of_t s2))
   let inter s1 s2 = t_of_impl (Concrete.inter Ord.compare (impl_of_t s1) (impl_of_t s2))
-  let sdiff s1 s2 = t_of_impl (Concrete.sdiff Ord.compare (impl_of_t s1) (impl_of_t s2))
+  let sym_diff s1 s2 = t_of_impl (Concrete.sym_diff Ord.compare (impl_of_t s1) (impl_of_t s2))
 
   let compare t1 t2 = Concrete.compare Ord.compare (impl_of_t t1) (impl_of_t t2)
   let equal t1 t2 = Concrete.equal Ord.compare (impl_of_t t1) (impl_of_t t2)
@@ -691,8 +691,8 @@ let union s1 s2 =
 let diff s1 s2 =
   { s1 with set = Concrete.diff s1.cmp s1.set s2.set }
 
-let sdiff s1 s2 =
-  { s1 with set = Concrete.sdiff s1.cmp s1.set s2.set }
+let sym_diff s1 s2 =
+  { s1 with set = Concrete.sym_diff s1.cmp s1.set s2.set }
 
 let intersect s1 s2 =
   { s1 with set = Concrete.inter s1.cmp s1.set s2.set }

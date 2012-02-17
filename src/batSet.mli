@@ -87,13 +87,14 @@ module type S =
     val diff: t -> t -> t
     (** Set difference. *)
 
-    val sdiff: t -> t -> t
-    (** [sdiff s t] returns the set of all elements in [s] or [t] but not both.
-       This is the same as [diff (union s t) (inter s t)]. *)
+    val sym_diff: t -> t -> t
+    (** [sym_diff s t] returns the set of all elements in [s] or [t]
+	but not both.  This is the same as [diff (union s t) (inter s
+	t)]. *)
 
     val compare: t -> t -> int
     (** Total ordering between sets. Can be used as the ordering function
-       for doing sets of sets. *)
+	for doing sets of sets. *)
 
     val equal: t -> t -> bool
     (** [equal s1 s2] tests whether the sets [s1] and [s2] are
@@ -338,9 +339,10 @@ val diff: 'a t -> 'a t -> 'a t
   (** [diff s t] returns the set of all elements in [s] but not in
       [t]. The returned set uses [s]'s comparison function.*)
 
-val sdiff: 'a t -> 'a t -> 'a t
-(** [sdiff s t] returns the set of all elements in [s] or [t] but not both.
-    This is the same as [diff (union s t) (inter s t)]. The returned set uses
+val sym_diff: 'a t -> 'a t -> 'a t
+(** [sym_diff s t] returns the set of all elements in [s] or [t] but
+    not both, also known as the symmetric difference.  This is the
+    same as [diff (union s t) (inter s t)]. The returned set uses
     [s]'s comparison function.*)
 
 val compare: 'a t -> 'a t -> int
