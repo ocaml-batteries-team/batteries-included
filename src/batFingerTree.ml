@@ -355,7 +355,7 @@ struct
     | Nil ->
       Single a
     | Single b ->
-      deep ~monoid (one measure a) Nil (one measure b)
+      deep ~monoid (one ~measure a) Nil (one ~measure b)
     | Deep (_, Four (_, b, c, d, e), m, sf) ->
       deep ~monoid (two ~monoid ~measure a b) (cons_aux ~monoid m (node3 ~monoid ~measure c d e)) sf
     | Deep (v, pr, m, sf) ->
@@ -928,7 +928,7 @@ struct
 
   let print ?first ?last ?sep f oc x =
     BatEnum.print ?first ?last ?sep f oc (enum x)
-  let t_printer a_printer paren out e =
+  let t_printer a_printer _paren out e =
     print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
 
   let compare cmp t1 t2 =
@@ -1179,56 +1179,49 @@ let split_at t i =
   if i < 0 || i >= size t then invalid_arg "Index out of bounds";
   split (fun index -> i < index) t
 (*$T split_at
-  let n = 50 in let l = Q.lg_size (fun () -> n) Q.uig () in \
+  let n = 50 in \
+  let l = BatList.init n (fun i -> i) in \
   let t = of_list_for_test l in let i = ref (-1) in \
   BatList.for_all (fun _ -> incr i; let t1, t2 = split_at t !i in \
     let l1, l2 = BatList.split_at !i l in \
     to_list (verify_measure t1) = l1 && to_list (verify_measure t2) = l2) l
-    
    try ignore (split_at empty 0); false with Invalid_argument _ -> true
 *)
 
 let lookup f t = Generic.lookup ~monoid:nat_plus_monoid ~measure:size_measurer f t
-let get i t =
+let get t i =
   if i < 0 || i >= size t then invalid_arg "Index out of bounds";
   lookup (fun index -> i < index) t
 (*$T get
-  let n = 50 in let l = Q.lg_size (fun () -> n) Q.uig () in \
+  let n = 50 in \
+  let l = BatList.init n (fun i -> i) in \
   let t = of_list_for_test l in let i = ref (-1) in \
-  BatList.for_all (fun elt -> incr i; elt = get !i t) l
+  BatList.for_all (fun elt -> incr i; elt = get t !i) l
   
-  try ignore (get 1 (singleton 1)); false with Invalid_argument _ -> true
-  try ignore (get (-1) (singleton 1)); false with Invalid_argument _ -> true
+  try ignore (get (singleton 1) 1); false with Invalid_argument _ -> true
+  try ignore (get (singleton 1) (-1)); false with Invalid_argument _ -> true
 *)
 
-let set i v t =
+let set t i v =
   if i < 0 || i >= size t then invalid_arg "Index out of bounds";
   let left, right = split_at t i in
   append (snoc left v) (tail_exn right)
 (*$T set
-  to_list (set 1 4 (snoc (snoc (snoc empty 1) 2) 3)) = [1; 4; 3]
-  to_list (set 0 4 (snoc (snoc (snoc empty 1) 2) 3)) = [4; 2; 3]
-  to_list (set 2 4 (snoc (snoc (snoc empty 1) 2) 3)) = [1; 2; 4]
-  try ignore (set (-1) 4 (snoc (snoc (snoc empty 1) 2) 3)); false \
-    with Invalid_argument _ -> true
-  try ignore (set 3 4 (snoc (snoc (snoc empty 1) 2) 3)); false \
-    with Invalid_argument _ -> true
+  to_list (set (snoc (snoc (snoc empty 1) 2) 3) 1 4) = [1; 4; 3]
+  to_list (set (snoc (snoc (snoc empty 1) 2) 3) 0 4) = [4; 2; 3]
+  to_list (set (snoc (snoc (snoc empty 1) 2) 3) 2 4) = [1; 2; 4]
+  try ignore (set (snoc (snoc (snoc empty 1) 2) 3) (-1) 4); false with Invalid_argument _ -> true
+  try ignore (set (snoc (snoc (snoc empty 1) 2) 3) 3 4); false with Invalid_argument _ -> true
 *)
 
-let update i f t =
-  set i (f (get i t)) t
+let update t i f =
+  set t i (f (get t i))
 (*$T update
-  to_list (verify_measure (update 1 (fun x -> x + 1) \
-    (snoc (snoc (snoc empty 1) 2) 3))) = [1; 3; 3]
-  to_list (verify_measure (update 0 (fun x -> x + 1) \
-    (snoc (snoc (snoc empty 1) 2) 3))) = [2; 2; 3]
-  to_list (verify_measure (update 2 (fun x -> x + 1) \
-    (snoc (snoc (snoc empty 1) 2) 3))) = [1; 2; 4]
-    
-  try ignore (update (-1) (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3)); \
-    false with Invalid_argument _ -> true
-  try ignore (update 3 (fun x -> x + 1) (snoc (snoc (snoc empty 1) 2) 3)); \
-    false with Invalid_argument _ -> true
+  to_list (verify_measure (update (snoc (snoc (snoc empty 1) 2) 3) 1 (fun x -> x + 1))) = [1; 3; 3]
+  to_list (verify_measure (update (snoc (snoc (snoc empty 1) 2) 3) 0 (fun x -> x + 1))) = [2; 2; 3]
+  to_list (verify_measure (update (snoc (snoc (snoc empty 1) 2) 3) 2 (fun x -> x + 1))) = [1; 2; 4]
+  try ignore (update (snoc (snoc (snoc empty 1) 2) 3) (-1) (fun x -> x + 1)); false with Invalid_argument _ -> true
+  try ignore (update (snoc (snoc (snoc empty 1) 2) 3) 3 (fun x -> x + 1)); false with Invalid_argument _ -> true
 *)
 
 let of_enum e = Generic.of_enum ~monoid:nat_plus_monoid ~measure:size_measurer e

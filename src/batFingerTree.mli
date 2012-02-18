@@ -394,22 +394,22 @@ val split_at : 'a t -> int -> 'a t * 'a t
     O(log(n)).
 *)
 
-val get : int -> 'a t -> 'a
-(** [get i t] returns the [i]-th element of [t].
+val get : 'a t -> int -> 'a
+(** [get t i] returns the [i]-th element of [t].
     @raise Invalid_argument when the index is out of bounds.
 
     O(log(n)).
 *)
 
-val set : int -> 'a -> 'a t -> 'a t
-(** [set i v t] returns [t] where the [i]-th element is now [v].
+val set : 'a t -> int -> 'a -> 'a t
+(** [set t i v] returns [t] where the [i]-th element is now [v].
     @raise Invalid_argument when the index is out of bounds.
 
     O(log(n)).
 *)
 
-val update : int -> ('a -> 'a) -> 'a t -> 'a t
-(** [update i f t] returns [t] where the [i]-th element is now [f (get i t)].
+val update : 'a t -> int -> ('a -> 'a) -> 'a t
+(** [update t i f] returns [t] where the [i]-th element is now [f (get i t)].
     @raise Invalid_argument when the index is out of bounds.
 
     O(log(n)).
