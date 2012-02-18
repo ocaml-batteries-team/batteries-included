@@ -145,12 +145,13 @@ let popcount =
   if Sys.word_size = 32 then
     let k1 = 0x55555555 in
     let k2 = 0x33333333 in
+    let k3 = 0x0f0f0f0f in
     (fun x ->
       let x = x - (x lsr 1) land k1 in
       let x = ((x lsr 2) land k2) + (x land k2) in
-      let x = x + x asr 8 in
-      let x = x + x asr 16 in
-      x land 0x3f
+      let x = (x + (x lsr 4)) land k3 in
+      let x = x + x lsr 8 in
+      (x + x lsr 16) land 0x3f
     )
   else (* word_size = 64 *)
     (* uses int_of_string to hide these constants from the 32-bit compiler *)
