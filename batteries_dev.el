@@ -17,7 +17,7 @@
                  (let ((start (nth 8 state)))
                    (save-excursion
                      (goto-char start)
-                     (if (looking-at-p "(\\*\\*[QT*][ \r\n]")
+                     (if (looking-at-p "(\\*\\$[QTRE=]")
                          'test-comment-face
                        (if (looking-at-p "(\\*\\*[^*]")
                            tuareg-doc-face
