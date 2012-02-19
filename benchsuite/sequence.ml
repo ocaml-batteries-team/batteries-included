@@ -2183,7 +2183,7 @@ let () =
       BatList.iter (fun f -> f ()) printers;
       Printf.printf "\n"
     with Not_found ->
-      Printf.eprintf "`%s' is not a valid bench name\nThe possibilities are: " s;
+      Printf.printf "`%s' is not a valid bench name\nThe possibilities are: " s;
       BatList.iter (fun (name,_) -> Printf.printf "%s, " name) benches;
       Printf.printf "\n";
       exit 1
