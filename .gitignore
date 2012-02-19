@@ -18,4 +18,7 @@ batteries.odocl
 qtest/*_t.ml
 qtest/test_mods.mllib
 bench.log
+qtest/all_tests.ml
 qtest2/all_tests.ml
+qtest.targets.log
+coverage
