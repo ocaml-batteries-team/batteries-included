@@ -26,6 +26,9 @@
     when elements are added or removed, except that floats are boxed and
     that no initialization element is required.
 
+    For all the traversal functions (iter, fold, map, etc.), what happens
+    when the array that is being traversed is mutated is not defined.
+
     @author Brian Hurt
     @author Nicolas Cannasse
     @author David Teller (boilerplate code)

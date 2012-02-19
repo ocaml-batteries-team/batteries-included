@@ -340,30 +340,144 @@ let sub src start len =
   }
 
 let iter f d =
-  for i = 0 to d.len - 1 do
-    f (iget d.arr i)
+  let i = ref 0 in
+  while !i < d.len do
+    f (iget d.arr !i);
+    incr i
   done
+
+(* string_of_int and int_of_string seems useless but it
+   is because if you only manipulate integers, you aren't
+   likely to have segfaults even if the code is wrong *)
+(*$R iter
+  let n = 20 in
+  let acc = ref 0 in
+  let d = init n (fun i -> string_of_int i) in
+  iter (fun s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); acc := !acc + int_of_string s) d;
+  assert_bool "iter" (!acc = (n - 1) * n / 2)
+*)
+
+(* checking the absence of segfault when the array shrinks *)
+(*$R iter
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  iter (fun s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          if !i = 0 then
+            for _count = 0 to n * 4 / 5 do delete_last d done
+  ) d
+*)
+
+(* checking the absence of segfault when the array grows *)
+(*$R iter
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  iter (fun s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          if !i = 0 then
+            for _count = 0 to n * 4 do add d "poi" done
+  ) d
+*)
 
 let iteri f d =
-  for i = 0 to d.len - 1 do
-    f i (iget d.arr i)
+  let i = ref 0 in
+  while !i < d.len do
+    f !i (iget d.arr !i);
+    incr i
   done
 
+(*$R iteri
+  let n = 20 in
+  let acc = ref 0 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  iteri (fun idx s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+                     assert (idx = !i); acc := !acc + int_of_string s) d;
+  assert_bool "iteri" (!acc = (n - 1) * n / 2)
+*)
+
+(*$R iteri
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  iteri (fun idx s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          assert (idx = !i);
+          if !i = 0 then
+            for _count = 0 to n * 4 / 5 do delete_last d done
+  ) d
+*)
+
+(*$R iteri
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  iteri (fun idx s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          assert (idx = !i);
+          if !i = 0 then
+            for _count = 0 to n * 4 do add d "poi" done
+  ) d
+*)
+
 let filter f d =
-  let l = d.len  in
+  let l = d.len in
   let dest = make l in
   let a2 = d.arr in
   let p = ref 0 in (* p is index of next unused element *)
-  for i = 0 to l - 1 do
-    let x = iget a2 i in
+  let i = ref 0 in
+  while !i < d.len && !i < l do
+    (* beware that the call to f might make lengthen d
+       in which case, if we iterate on the new elements
+       dest.array may be too short
+       so when some elements are added, we do not iterate on them
+       (test !i < len)
+       if some elements are removed, we are also careful not to
+       iterate on the removed elements (test !i < d.len)
+    *)
+    let x = iget a2 !i in
     if f x then begin
       iset dest.arr !p x;
       incr p;
     end;
+    incr i
   done;
   dest.len <- !p;
   changelen dest !p;
   dest
+
+(*$R filter
+  let n = 20 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  let d = filter (fun s ->
+     assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+     !i mod 2 = 0) d in
+  assert_bool "filter" (length d = n / 2);
+  let acc = ref true in
+  iteri (fun idx s -> acc := (!acc && (s = string_of_int (2 * idx)))) d;
+  assert_bool "filter" !acc
+*)
+
+(*$R filter
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  ignore (filter (fun s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          if !i = 0 then
+            for _count = 0 to n * 4 / 5 do delete_last d done;
+          true
+  ) d)
+*)
+
+(*$R filter
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  ignore (filter (fun s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          if !i = 0 then
+            for _count = 0 to n * 4 do add d "poi" done;
+          true
+  ) d)
+*)
 
 let keep f d =
   let result = filter f d in
@@ -379,22 +493,58 @@ let keep f d =
 *)
 
 let filter_map f d =
-  let l = d.len  in
+  let l = d.len in
   let dest = make l in (*Create the destination array with size [l]*)
-  let a2 = d.arr  in
-  let p = ref 0  in
-  for i = 0 to l - 1 do
-    match f (iget a2 i) with
+  let a2 = d.arr in
+  let p = ref 0 in
+  let i = ref 0 in
+  while !i < d.len && !i < l do
+    (match f (iget a2 !i) with
     | None -> ()
     | Some x -> begin
       iset dest.arr !p x;
       incr p;
-    end
+    end);
+    incr i
   done;
   dest.len <- !p;
   changelen dest !p; (*Trim the destination array to the right size*)
   dest
 
+(*$R filter_map
+  let n = 20 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  let d = filter_map (fun s ->
+     assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+     if !i mod 2 = 0 then Some (s ^ s) else None) d in
+  assert_bool "filter_map" (length d = n / 2);
+  let acc = ref true in
+  iteri (fun idx s -> acc := (!acc && (s = string_of_int (2 * idx) ^ string_of_int (2 * idx)))) d;
+  assert_bool "filter_map" !acc
+*)
+
+(*$R filter_map
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  ignore (filter_map (fun s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          if !i = 0 then
+            for _count = 0 to n * 4 / 5 do delete_last d done;
+          Some s
+  ) d)
+*)
+
+(*$R filter_map
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  ignore (filter_map (fun s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          if !i = 0 then
+            for _count = 0 to n * 4 do add d "poi" done;
+          Some s
+  ) d)
+*)
 
 let index_of f d =
   let rec loop i =
@@ -409,26 +559,111 @@ let index_of f d =
   loop 0
 
 let map f src =
-  let arr = imake 0 src.len in
-  for i = 0 to src.len - 1 do
-    iset arr i (f (iget src.arr i))
+  let len = src.len in
+  let arr = imake 0 len in
+  let i = ref 0 in
+  while !i < src.len && !i < len do
+    iset arr !i (f (iget src.arr !i));
+    incr i
   done;
   {
     resize = src.resize;
-    len = src.len;
+    len = BatInt.min len src.len;
     arr = arr;
   }
 
+(*$R map
+  let n = 20 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  let res = map (fun s ->
+     assert_bool "DynArray.map1" (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+     s ^ s) d in
+  assert_bool "DynArray.map2" (length res = n);
+  iteri (fun idx s -> assert_bool "DynArray.map3" (s ^ s = get res idx)) d
+*)
+
+(*$R map
+  let n = 40 in
+  let newlen = n / 5 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  let res = map (fun s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          if !i = 0 then
+            for _count = 0 to n - 1 - newlen do delete_last d done;
+          true
+  ) d in
+  assert_bool "DynArray.map4" (length res = newlen)
+  (* could be something else if the implementation changed *)
+*)
+
+(*$R map
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  let res = map (fun s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          if !i = 0 then
+            for _count = 0 to n * 4 do add d "poi" done;
+          true
+  ) d in
+  assert_bool "DynArray.map5" (length res = n)
+  (* could be something else if the implementation changed *)
+*)
+
 let mapi f src =
-  let arr = imake 0 src.len in
-  for i = 0 to src.len - 1 do
-    iset arr i (f i (iget src.arr i))
+  let len = src.len in
+  let arr = imake 0 len in
+  let i = ref 0 in
+  while !i < src.len && !i < len do
+    iset arr !i (f !i (iget src.arr !i));
+    incr i
   done;
   {
     resize = src.resize;
-    len = src.len;
+    len = BatInt.min len src.len;
     arr = arr;
   }
+
+(*$R mapi
+  let n = 20 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  let res = mapi (fun idx s ->
+     assert_bool "DynArray.map1" (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+     assert_bool "DynArray.map2" (!i = idx);
+     s ^ s) d in
+  assert_bool "DynArray.map3" (length res = n);
+  iteri (fun idx s -> assert_bool "DynArray.map3" (s ^ s = get res idx)) d
+*)
+
+(*$R mapi
+  let n = 40 in
+  let newlen = n / 5 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  let res = mapi (fun idx s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          assert_bool "DynArray.mapi4" (!i = idx);
+          if !i = 0 then
+            for _count = 0 to n - 1 - newlen do delete_last d done;
+          true
+  ) d in
+  assert_bool "DynArray.mapi5" (length res = newlen)
+  (* could be something else if the implementation changed *)
+*)
+
+(*$R mapi
+  let n = 40 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  let res = mapi (fun idx s -> assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          assert_bool "DynArray.mapi6" (!i = idx);
+          if !i = 0 then
+            for _count = 0 to n * 4 do add d "poi" done;
+          true
+  ) d in
+  assert_bool "DynArray.mapi7" (length res = n)
+  (* could be something else if the implementation changed *)
+*)
 
 let fold_left f x a =
   let rec loop idx x =
@@ -438,10 +673,35 @@ let fold_left f x a =
 
 let fold_right f a x =
   let rec loop idx x =
-    if idx < 0 then x
+    if idx < 0 || idx >= a.len then x
     else loop (idx - 1) (f (iget a.arr idx) x)
   in
   loop (a.len - 1) x
+
+(*$R fold_right
+  let n = 20 in
+  let d = init n (fun i -> string_of_int i) in
+  let buffer = Buffer.create 10 in
+  let buffer2 = Buffer.create 10 in
+  let len = fold_right (fun s count ->
+     assert_bool "DynArray.fold_right1" (Obj.tag (Obj.repr s) = Obj.string_tag);
+     Buffer.add_string buffer s; count + 1) d 0 in
+  assert_bool "DynArray.fold_right2" (len = length d);
+  List.iter (fun s -> Buffer.add_string buffer2 s) (List.rev (to_list d));
+  assert_bool "DynArray.fold_right3" (Buffer.contents buffer = Buffer.contents buffer2)
+*)
+
+(*$R fold_right
+  let n = 40 in
+  let newlen = n / 5 in
+  let d = init n (fun i -> string_of_int i) in
+  let i = ref (-1) in
+  ignore (fold_right (fun s () ->
+          assert (Obj.tag (Obj.repr s) = Obj.string_tag); incr i;
+          if !i = 0 then
+            for _count = 0 to n - 1 - newlen do delete_last d done
+  ) d ())
+*)
 
 let enum d =
   let rec make start =
