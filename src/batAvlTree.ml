@@ -32,7 +32,7 @@ let height = function
 
 
 let create l v r =
-  let h' = 1 + max (height l) (height r) in
+  let h' = 1 + BatInt.max (height l) (height r) in
   assert (abs (height l - height r ) < 2);
   Node (l, v, r, h')
 
@@ -123,19 +123,8 @@ let rec fold f t init =
     let x = f v x in
     fold f r x
 
+(* FIXME: this is nlog n because of the left nesting of appends *)
 let rec enum = function
   | Empty -> BatEnum.empty ()
   | Node (l, v, r, _) ->
     BatEnum.append (enum l) (BatEnum.delay (fun () -> BatEnum.append (BatEnum.singleton v) (enum r)))
-
-let rec enum_f f = function
-  | Empty -> BatEnum.empty ()
-  | Node (l, v, r, _) ->
-    BatEnum.append (enum l) (BatEnum.delay (fun () -> BatEnum.append (BatEnum.singleton (f v)) (enum r)))
-
-(*
-let rec enum_post = function
-  | Empty             -> BatEnum.empty ()
-  | Node (l, v, r, _) ->
-      BatEnum.append (enum l) (BatEnum.delay (fun () -> BatEnum.append (enum r) (BatEnum.singleton v)))
-*)
