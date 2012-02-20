@@ -49,7 +49,19 @@ module BaseBig_int = struct
 
   let compare   = compare_big_int
 
-  let of_float f= of_string (Printf.sprintf "%.0f" f)
+  let of_float f =
+    try of_string (Printf.sprintf "%.0f" f)
+    with Failure _ -> invalid_arg "batBig_int.of_float"
+  (*$T of_float
+    to_int (of_float 4.46) = 4
+    to_int (of_float 4.56) = 5
+    to_int (of_float (-4.46)) = -4
+    to_int (of_float (-4.56)) = -5
+    try ignore (of_float nan); false with Invalid_argument _ -> true
+    try ignore (of_float (1. /. 0.)); false with Invalid_argument _ -> true
+    try ignore (of_float (-1. /. 0.)); false with Invalid_argument _ -> true
+  *)
+
   let to_float  = float_of_big_int
 end
 
