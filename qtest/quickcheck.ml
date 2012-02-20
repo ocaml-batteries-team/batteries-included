@@ -96,7 +96,8 @@ let pp_triple p1 p2 p3 (t1,t2,t3) = "(" ^ p1 t1 ^ ", " ^ p2 t2 ^ ", " ^ p3 t3 ^ 
 
 (* Generator * pretty-printer pairs *)
 
-let unit = (ug, fun _ -> "()")
+type 'a gen_print = 'a gen * ('a -> string)
+let unit : unit gen_print = (ug, fun _ -> "()")
 
 let bool = (bg, string_of_bool)
 
@@ -134,7 +135,38 @@ let array_of_size size (gen,pp) = (ag_size gen, pp_array pp)
 let pair (g1,p1) (g2,p2) = (pg g1 g2, pp_pair p1 p2)
 let triple (g1,p1) (g2,p2) (g3,p3) = (tg g1 g2 g3, pp_triple p1 p2 p3)
 
+let option (g1, p1) =
+  let g () =
+    let p = Random.float 1. in
+    if p < 0.15 then None
+    else Some (g1 ()) in
+  let p = function
+    | None -> "None"
+    | Some x -> "Some " ^ p1 x in
+  (g, p)
 
+let fun1 : 'a gen_print -> 'b gen_print -> ('a -> 'b) gen_print =
+  fun (_g1, p1) (g2, p2) ->
+    let magic_object = Obj.magic (object end) in
+    let gen : ('a -> 'b) gen = fun () ->
+      let h = Hashtbl.create 10 in
+      fun x ->
+        if x == magic_object then
+          Obj.magic h
+        else
+          try Hashtbl.find h x
+          with Not_found ->
+            let b = g2 () in
+            Hashtbl.add h x b;
+            b in
+    let pp : ('a -> 'b) -> string = fun f ->
+      let h : ('a, 'b) Hashtbl.t = Obj.magic (f magic_object) in
+      let b = Buffer.create 20 in
+      Hashtbl.iter (fun key value -> Printf.bprintf b "%s -> %s; " (p1 key) (p2 value)) h;
+      "{" ^ Buffer.contents b ^ "}" in
+    gen, pp
+
+let fun2 gp1 gp2 gp3 = fun1 gp1 (fun1 gp2 gp3)
 
 (* Generator combinators *)
 
