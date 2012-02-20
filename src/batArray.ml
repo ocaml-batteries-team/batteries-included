@@ -150,8 +150,25 @@ let findi p xs =
     else loop (succ i)
   in
   loop 0
+(*$Q findi
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int Q.bool)) (fun (a, f) -> \
+    try let index = findi f a in \
+        let i = ref (-1) in \
+        for_all (fun elt -> incr i; \
+          if !i < index then not (f elt) else if !i = index then f elt else true) a \
+    with Not_found -> for_all (fun elt -> not (f elt)) a)
+*)
 
 let find p xs = xs.(findi p xs)
+(*$Q find
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int Q.bool)) (fun (a, f) -> \
+    let a = map (fun x -> `a x) a in \
+    let f (`a x) = f x in\
+    try let elt = find f a in \
+        let past = ref false in \
+        for_all (fun x -> if x == elt then (past := true; f x) else !past || not (f x)) a \
+    with Not_found -> for_all (fun elt -> not (f elt)) a)
+*)
 
 (* Use of BitSet suggested by Brian Hurt. *)
 let filter p xs =
@@ -167,8 +184,17 @@ let filter p xs =
   init n'
     (fun _ -> match BatBitSet.next_set_bit bs !j with
       | Some i -> j := i+1; xs.(i)
-      | None -> assert false (* not enough 1 bits - incorrect count? *)
+      | None ->
+        (* not enough 1 bits - incorrect count? *)
+        assert false (*BISECT-VISIT*)
     )
+(*$Q filter
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int Q.bool)) (fun (a, f) -> \
+    let b = Array.to_list (filter f a) in \
+    let b' = List.filter f (Array.to_list a) in \
+    List.for_all (fun (x,y) -> x = y) (List.combine b b') \
+  )
+*)
 
 let filteri p xs =
   let n = length xs in
@@ -183,7 +209,9 @@ let filteri p xs =
   init n'
     (fun _ -> match BatBitSet.next_set_bit bs !j with
       | Some i -> j := i+1; xs.(i)
-      | None -> assert false (* not enough 1 bits - incorrect count? *)
+      | None ->
+        (* not enough 1 bits - incorrect count? *)
+        assert false (*BISECT-VISIT*)
     )
 
 (*$T filteri
@@ -219,6 +247,15 @@ let partition p xs =
        incr j;
        r) in
   xs1, xs2
+(*$Q partition
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int Q.bool)) (fun (a, f) -> \
+    let b1, b2 = partition f a in \
+    let b1, b2 = Array.to_list b1, Array.to_list b2 in \
+    let b1', b2' = List.partition f (Array.to_list a) in \
+    List.for_all (fun (x,y) -> x = y) (List.combine b1 b1') && \
+    List.for_all (fun (x,y) -> x = y) (List.combine b2 b2') \
+  )
+*)
 
 let enum xs =
   let rec make start xs =
@@ -260,29 +297,42 @@ let of_enum e =
     (fun i ->
        match BatEnum.get e with
        | Some x -> x
-       | None -> assert false)
+       | None -> assert false (*BISECT-VISIT*))
 
 let of_backwards e =
   of_list (BatList.of_backwards e)
 
 let range xs = BatEnum.(--^) 0 (Array.length xs)
+(*$Q range
+  (Q.array Q.small_int) (fun a -> \
+    BatEnum.equal (=) (range a) (enum (Array.init (Array.length a) (fun i -> i))) \
+  )
+*)
 
 let filter_map p xs =
   of_enum (BatEnum.filter_map p (enum xs))
+(*$Q filter_map
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) (fun (a, f) -> \
+    let a' = filter (fun elt -> f elt <> None) a in \
+    let a' = map (fun elt -> match f elt with None -> assert false | Some elt -> elt) a' in \
+    let a = filter_map f a in \
+    a = a' \
+  )
+*)
 
 let iter2 f a1 a2 =
   if Array.length a1 <> Array.length a2
   then raise (Invalid_argument "Array.iter2");
   for i = 0 to Array.length a1 - 1 do
     f a1.(i) a2.(i);
-  done;;
+  done
 
 let iter2i f a1 a2 =
   if Array.length a1 <> Array.length a2
   then raise (Invalid_argument "Array.iter2i");
   for i = 0 to Array.length a1 - 1 do
     f i a1.(i) a2.(i);
-  done;;
+  done
 
 let for_all2 p xs ys =
   let n = length xs in
@@ -347,6 +397,7 @@ let compare cmp a b =
    compare Pervasives.compare [|1|] [||] = 1
    compare Pervasives.compare [||] [||] = 0
    compare Pervasives.compare [|1;2|] [|1;2|] = 0
+   compare (fun x y -> -(Pervasives.compare x y)) [|2;1|] [|1;2|] = -1
 *)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
@@ -378,6 +429,7 @@ let reduce f a =
 (*$T reduce
    reduce (+) [|1;2;3|] = 6
    reduce (fun _ -> assert false) [|1|] = 1
+   try reduce (fun _ _ -> ()) [||]; false with Invalid_argument _ -> true
 *)
 
 let min a = reduce Pervasives.min a
@@ -391,17 +443,38 @@ let max a = reduce Pervasives.max a
   max [|2;3;1|] = 3
 *)
 
+(* meant for tests, don't care about side effects being repeated
+   or not failing early *)
+let is_sorted_by f xs =
+  let ok = ref true in
+  for i = 0 to Array.length xs - 2 do
+    ok := !ok && (f (xs.(i)) <= f (xs.(i + 1)))
+  done;
+  !ok
+
 (* TODO: Investigate whether a second array is better than pairs *)
 let decorate_stable_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
   let () = stable_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
   map (fun (_,x) -> x) decorated
-
+(*$T decorate_stable_sort
+  decorate_stable_sort fst [|(1,2);(1,3);(0,2);(1,4)|] = [|(0,2);(1,2);(1,3);(1,4)|]
+*)
+(*$Q decorate_stable_sort
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) (fun (a, f) -> \
+    is_sorted_by f (decorate_stable_sort f a) \
+  )
+*)
 
 let decorate_fast_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
   let () = fast_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
   map (fun (_,x) -> x) decorated
+(*$Q decorate_fast_sort
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) (fun (a, f) -> \
+    is_sorted_by f (decorate_fast_sort f a) \
+  )
+*)
 
 let insert xs x i =
   if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
@@ -429,6 +502,14 @@ let eq eq_elt a1 a2 =
   BatOrd.bin_eq
     BatInt.eq (length a1) (length a2)
     (eq_elements eq_elt) a1 a2
+(*$T
+  eq (=) [|1;2;3|] [|1;2;3|]
+  not (eq (=) [|1;2;3|] [|1;2;3;4|])
+  not (eq (=) [|1;2;3;4|] [|1;2;3|])
+  eq (=) [||] [||]
+  eq (<>) [|1;2;3|] [|2;3;4|]
+  not (eq (<>) [|1;2;3|] [|3;2;1|])
+*)
 
 let ord ord_elt a1 a2 =
   BatOrd.bin_ord
@@ -543,20 +624,21 @@ struct
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 
+  (*BISECT-IGNORE-BEGIN*)
   module Labels =
   struct
       let init i ~f = init i f
       let create len ~init = create len init
-      let make             = create
+      let make = create
       let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
       let create_matrix = make_matrix
       let sub a ~pos ~len = sub a pos len
       let fill a ~pos ~len x = fill a pos len x
       let blit ~src ~src_pos ~dst ~dst_pos ~len = blit src src_pos dst dst_pos len
       let iter ~f a = iter f a
-      let map  ~f a = map  f a
+      let map ~f a = map  f a
       let iteri ~f a = iteri f a
-      let mapi  ~f a = mapi f a
+      let mapi ~f a = mapi f a
       let modify ~f a = modify f a
       let modifyi ~f a = modifyi f a
       let fold_left ~f ~init a = fold_left f init a
@@ -578,23 +660,25 @@ struct
   module Exceptionless =
   struct
     let find f e =
-      try  Some (find f e)
+      try Some (find f e)
       with Not_found -> None
 
     let findi f e =
-      try  Some (findi f e)
+      try Some (findi f e)
       with Not_found -> None
   end
+  (*BISECT-IGNORE-END*)
 end
 
+(*BISECT-IGNORE-BEGIN*)
 module Exceptionless =
 struct
   let find f e =
-    try  Some (find f e)
+    try Some (find f e)
     with Not_found -> None
 
   let findi f e =
-    try  Some (findi f e)
+    try Some (findi f e)
     with Not_found -> None
 end
 
@@ -602,7 +686,7 @@ module Labels =
 struct
   let init i ~f = init i f
   let create len ~init = create len init
-  let make             = create
+  let make = create
   let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
   let create_matrix = make_matrix
   let sub a ~pos ~len = sub a pos len
@@ -635,3 +719,4 @@ struct
     let findi ~f e = findi f e
   end
 end
+(*BISECT-IGNORE-END*)

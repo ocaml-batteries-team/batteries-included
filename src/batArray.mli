@@ -526,3 +526,8 @@ sig
 
 (**/**)
 end
+
+(**/**)
+(* for tests *)
+val is_sorted_by : ('a -> 'b) -> 'a array -> bool
+(**/**)
