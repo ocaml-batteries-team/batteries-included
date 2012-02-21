@@ -263,7 +263,7 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 
     "|]") and [~sep] separating items (default: "; ").  A printing
     function must be provided to print the items in the array.
 
-    Example: IO.to_string (Array.print Int.print) [|2;4;66|] = "[|2;4;66|]"
+    Example: IO.to_string (Array.print Int.print) [|2;4;66|] = "[|2; 4; 66|]"
  *)
 
 val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t

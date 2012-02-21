@@ -273,6 +273,21 @@ let enum xs =
 		make (ref 0) xs')
   in
   make (ref 0) xs
+(*$Q enum
+  (Q.array Q.small_int) (fun a -> \
+    let e = enum a in \
+    for i = 0 to Array.length a / 2 - 1 do\
+      assert (a.(i) = BatEnum.get_exn e)\
+    done; \
+    let e' = BatEnum.clone e in \
+    assert (BatEnum.count e = BatEnum.count e'); \
+    for i = Array.length a / 2 to Array.length a - 1 do \
+      assert (a.(i) = BatEnum.get_exn e && a.(i) = BatEnum.get_exn e') \
+    done; \
+    BatEnum.is_empty e && BatEnum.is_empty e' \
+  )
+*)
+
 
 let backwards xs =
   let rec make start xs =
@@ -289,6 +304,21 @@ let backwards xs =
 		make (BatRef.copy start) xs')
   in
   make (ref (length xs)) xs
+(*$Q backwards
+  (Q.array Q.small_int) (fun a -> \
+    let e = backwards a in \
+    let n = Array.length a in \
+    for i = 0 to Array.length a / 2 - 1 do\
+      assert (a.(n - 1 - i) = BatEnum.get_exn e)\
+    done; \
+    let e' = BatEnum.clone e in \
+    assert (BatEnum.count e = BatEnum.count e'); \
+    for i = Array.length a / 2 to Array.length a - 1 do \
+      assert (a.(n - 1 - i) = BatEnum.get_exn e && a.(n - 1 - i) = BatEnum.get_exn e') \
+    done; \
+    BatEnum.is_empty e && BatEnum.is_empty e' \
+  )
+*)
 
 let of_enum e =
   let n = BatEnum.count e in
@@ -326,6 +356,21 @@ let iter2 f a1 a2 =
   for i = 0 to Array.length a1 - 1 do
     f a1.(i) a2.(i);
   done
+(*$Q iter2
+  (Q.array Q.small_int) (fun a -> \
+    let a' = Array.map (fun a -> a + 1) a in \
+    let i = ref (-1) in \
+    let b = Array.make (Array.length a) (max_int, max_int) in \
+    let f x1 x2 = incr i; b.(!i) <- (x1, x2) in \
+    let b' = Array.map (fun a -> (a, a + 1)) a in \
+    iter2 f a a'; \
+    b = b' \
+  )
+*)
+(*$T iter2
+  try iter2 (fun _ _ -> ()) [|1|] [|1;2;3|]; false with Invalid_argument _ -> true
+  try iter2 (fun _ _ -> ()) [|1|] [||]; false with Invalid_argument _ -> true
+*)
 
 let iter2i f a1 a2 =
   if Array.length a1 <> Array.length a2
@@ -333,6 +378,21 @@ let iter2i f a1 a2 =
   for i = 0 to Array.length a1 - 1 do
     f i a1.(i) a2.(i);
   done
+(*$Q iter2i
+  (Q.array Q.small_int) (fun a -> \
+    let a' = Array.map (fun a -> a + 1) a in \
+    let i = ref (-1) in \
+    let b = Array.make (Array.length a) (max_int, max_int) in \
+    let f idx x1 x2 = incr i; assert (!i = idx); b.(!i) <- (x1, x2) in \
+    let b' = Array.map (fun a -> (a, a + 1)) a in \
+    iter2i f a a'; \
+    b = b' \
+  )
+*)
+(*$T iter2i
+  try iter2i (fun _ _ _ -> ()) [|1|] [|1;2;3|]; false with Invalid_argument _ -> true
+  try iter2i (fun _ _ _ -> ()) [|1|] [||]; false with Invalid_argument _ -> true
+*)
 
 let for_all2 p xs ys =
   let n = length xs in
@@ -348,6 +408,8 @@ let for_all2 p xs ys =
    for_all2 (=) [|1;2;3|] [|3;2;1|] = false
    for_all2 (=) [|1;2;3|] [|1;2;3|]
    for_all2 (<>) [|1;2;3|] [|3;2;1|] = false
+   try ignore (for_all2 (=) [|1;2;3|] [|1;2;3;4|]); false with Invalid_argument _ -> true
+   try ignore (for_all2 (=) [|1;2|] [||]); false with Invalid_argument _ -> true
 *)
 
 let exists2 p xs ys =
@@ -363,6 +425,7 @@ let exists2 p xs ys =
 (*$T exists2
    exists2 (=) [|1;2;3|] [|3;2;1|]
    exists2 (<>) [|1;2;3|] [|1;2;3|] = false
+   try ignore (exists2 (=) [|1;2|] [|3|]); false with Invalid_argument _ -> true
 *)
 
 let map2 f xs ys =
@@ -373,6 +436,8 @@ let map2 f xs ys =
 (*$T map2
    map2 (-) [|1;2;3|] [|6;3;1|] = [|-5;-1;2|]
    map2 (-) [|2;4;6|] [|1;2;3|] = [|1;2;3|]
+   try ignore (map2 (-) [|2;4|] [|1;2;3|]); false with Invalid_argument _ -> true
+   try ignore (map2 (-) [|2;4|] [|3|]); false with Invalid_argument _ -> true
 *)
 
 let compare cmp a b =
@@ -414,8 +479,19 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 	  BatInnerIO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i)
 	done;
 	BatInnerIO.nwrite out last
+(*$T print
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) [|2;4;66|] = "[2,4,66]"
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) [|2|] = "[2]"
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) [||] = "[]"
+*)
 
-let t_printer a_printer paren out x = print (a_printer false) out x
+let t_printer a_printer (_paren: bool) out x = print (a_printer false) out x
+(*$T t_printer
+  let b = Buffer.create 10 in \
+  let out = BatIO.cast_output (BatIO.output_buffer b) in \
+  t_printer BatInt.t_printer false out [|-1;-3;0|]; \
+  Buffer.contents b = "[|-1; -3; 0|]"
+*)
 
 let reduce f a =
   if Array.length a = 0 then
@@ -484,6 +560,8 @@ let insert xs x i =
    insert [|1;2;3|] 4 0 = [|4;1;2;3|]
    insert [|1;2;3|] 4 3 = [|1;2;3;4|]
    insert [|1;2;3|] 4 2 = [|1;2;4;3|]
+   try ignore (insert [|1;2;3|] 4 100); false with Invalid_argument _ -> true
+   try ignore (insert [|1;2;3|] 4 (-40)); false with Invalid_argument _ -> true
 *)
 
 
@@ -515,6 +593,12 @@ let ord ord_elt a1 a2 =
   BatOrd.bin_ord
     BatInt.ord (length a1) (length a2)
     (ord_elements ord_elt) a1 a2
+(*$T ord
+  ord BatInt.ord [|2|] [|1;2|] = BatOrd.Lt
+  ord BatInt.ord [|1;1|] [|2|] = BatOrd.Gt
+  ord BatInt.ord [|1;1;1|] [|1;1;2|] = BatOrd.Lt
+  ord BatInt.ord [|1;1;1|] [|1;1;1|] = BatOrd.Eq
+*)
 
 module Incubator = struct
   module Eq (T : BatOrd.Eq) = struct
