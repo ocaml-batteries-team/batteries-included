@@ -955,6 +955,9 @@ val lock_factory: (unit -> BatConcurrent.lock) ref
 
 val to_string : (string output -> 'a -> unit) -> 'a -> string
 
+val string_of_t_printer : (bool -> unit BatInnerIO.output -> 'a -> unit) -> 'a -> string
+(** [string_of_t_printer printer elt] prints the element into the output string *)
+
 val to_format: ('a BatInnerIO.output -> 'b -> unit) -> Format.formatter -> 'b -> unit
 
 (**/**)

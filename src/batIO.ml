@@ -804,5 +804,11 @@ let out_channel_of_output out =
 
 let to_string print_x x = Printf.sprintf2 "%a" print_x x
 
+let string_of_t_printer p x =
+  let b = Buffer.create 100 in
+  let out = cast_output (output_buffer b) in
+  p false out x;
+  Buffer.contents b
+
 let to_format printer =
   fun fmt t -> Format.pp_print_string fmt (to_string printer t)

@@ -96,6 +96,10 @@ val enum: unit -> char BatEnum.t
 (** Produce the enumeration of all characters *)
 
 val range: ?until:char -> char -> char BatEnum.t
+(** [range from ?until] produces an enumeration of the
+    characters from [from] to [until] included
+    [until] defaults to ['\255']
+*)
 
 val ( -- ): char -> char -> char BatEnum.t
 (** Produce the enumeration of a segment of characters.

@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
+  (*BISECT-IGNORE-BEGIN*)
   let is_whitespace = function
     ' ' | '\010' | '\013' | '\009' | '\026' | '\012' -> true
   | _ -> false
@@ -29,7 +29,7 @@
     | _               -> false
 
   let is_digit = function
-    | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' -> true
+    | '0'..'9' -> true
     | _ -> false
 
   let is_uppercase c = 'A' <= c && c <= 'Z'
@@ -44,50 +44,69 @@ let is_latin1 c = is_uppercase_latin1 c || is_lowercase_latin1 c
           '>' | '?' | '@' | '\\' | '~' | '^' | '|' | '*' -> true
     | _ -> false
 
-  let of_digit = function
-  | 0 -> '0'
-  | 1 -> '1'
-  | 2 -> '2'
-  | 3 -> '3'
-  | 4 -> '4'
-  | 5 -> '5'
-  | 6 -> '6'
-  | 7 -> '7'
-  | 8 -> '8'
-  | 9 -> '9'
-  | _ -> raise (Invalid_argument "Char.of_digit")
-
   let is_letter c =
     is_uppercase c || is_lowercase c
 
   external unsafe_int : char-> int  = "%identity"
   external unsafe_chr : int -> char = "%identity"
+  (*BISECT-IGNORE-END*)
+
+  let of_digit i =
+    if i >= 0 && i < 10 then
+      Char.unsafe_chr (i + Char.code '0')
+    else
+      invalid_arg "Char.of_digit"
+  (*$T of_digit
+    of_digit 6 = '6'
+    try ignore (of_digit (-2)); false with Invalid_argument _ -> true
+    try ignore (of_digit (46)); false with Invalid_argument _ -> true
+  *)
 
   let enum () =
     BatEnum.map unsafe_chr (BatEnum.( -- ) 0 255)
+  (*$T enum
+    let e = enum () in for i = 0 to 255 do assert (Char.chr i = BatEnum.get_exn e) done; BatEnum.is_empty e
+  *)
 
   let ( -- ) from last =
     BatEnum.map unsafe_chr (BatEnum.( -- ) (unsafe_int from) (unsafe_int last))
+  (*$T (--)
+    let e = Char.chr 12 -- Char.chr 52 in for i = 12 to 52 do assert (Char.chr i = BatEnum.get_exn e) done; BatEnum.is_empty e
+  *)
 
-  let range ?until from =
-    let last = match until with
-      | None   -> unsafe_chr 255
-      | Some s -> s in
+  (*BISECT-IGNORE-BEGIN*)
+  let range ?until:(last = unsafe_chr 255) from =
       from -- last
+  (*BISECT-IGNORE-END*)
+  
 
   module Infix = struct
     let (--) = (--)
   end
 
   let print out t = BatInnerIO.write out t
-  let t_printer paren out t = print out t
+  let t_printer _paren out t =
+    BatInnerIO.write out '\'';
+    BatInnerIO.nwrite out (Char.escaped t);
+    BatInnerIO.write out '\''
+  (*$T print
+    BatIO.to_string print 'a' = "a"
+    BatIO.to_string print '\n' = "\n"
+  *)
+  (*$T t_printer
+    BatIO.string_of_t_printer t_printer '\n' = "'\\n'"
+    BatIO.string_of_t_printer t_printer '\000' = "'\\000'"
+    BatIO.string_of_t_printer t_printer 'a' = "'a'"
+  *)
 
+  (*BISECT-IGNORE-BEGIN*)
   let cmp (x:char) y = Pervasives.compare x y
   let ord (x:char) y =
     if x > y then BatOrd.Gt
     else if y > x then BatOrd.Lt
     else BatOrd.Eq
   let eq (x:char) y = x == y (* safe because int-like value *)
+  (*BISECT-IGNORE-END*)
 
 module Incubator = struct
   module Comp = struct
