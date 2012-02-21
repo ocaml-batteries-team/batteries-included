@@ -30,8 +30,8 @@
     @author David Teller
 *)
 
-  open BatIO
-  open Format
+open BatIO
+open Format
 (** {6 Boxes} *)
 
 
