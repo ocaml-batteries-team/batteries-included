@@ -71,4 +71,8 @@ module Infix = MakeInfix(BaseBig_int)
 module Compare = MakeCompare(BaseBig_int)
 
 let print out t = BatIO.nwrite out (to_string t)
-
+(*$T print
+  BatIO.to_string print (of_int 456) = "456"
+  BatIO.to_string print (power_int_positive_int 10 31) = "10000000000000000000000000000000"
+  BatIO.to_string print (power_int_positive_int (-10) 31) = "-10000000000000000000000000000000"
+*)
