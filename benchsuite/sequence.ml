@@ -24,6 +24,38 @@ module type SIG = sig
   val generate_of_enum : 'a BatEnum.t -> 'a t
 end
 
+module Vect : SIG =
+struct
+  type 'a t = 'a BatVect.t
+  let empty = BatVect.empty
+  let cons t x = BatVect.prepend x t
+  let snoc t x = BatVect.append x t
+  let map = BatVect.map
+  let front t =
+    if BatVect.is_empty t then None
+    else
+      let n = BatVect.length t in
+      Some (BatVect.sub t 0 (n - 1), BatVect.get t 0)
+  let rear t =
+    if BatVect.is_empty t then None
+    else
+      let n = BatVect.length t in
+      Some (BatVect.sub t 1 (n - 1), BatVect.get t (n - 1))
+  let of_enum = BatVect.of_enum
+  let enum = BatVect.enum
+  let of_backwards = BatVect.of_backwards
+  let backwards = BatVect.backwards
+  let fold_left = BatVect.fold_left
+  let fold_right f acc t = BatVect.fold_right (fun acc elt -> f elt acc) t acc
+  let reverse _ = assert false
+  let get = BatVect.get
+  let set = BatVect.set
+  let append = BatVect.concat
+  let split_at t n =
+    (BatVect.sub t 0 n, BatVect.sub t n (BatVect.length t - n))
+  let generate_of_enum = of_enum
+end
+
 module ListOverflow : SIG with type 'a t = 'a list =
 struct
   type 'a t = 'a list
@@ -1586,7 +1618,7 @@ struct
       | Two (v, a, b) ->
         if i < measure_node a then Two (v, update_a depth a i f, b) else
           let i = i - measure_node a in
-          Two (v, a, get_a depth b i)
+          Two (v, a, update_a depth b i f)
       | Three (v, a, b, c) ->
         if i < measure_node a then Three (v, update_a depth a i f, b, c) else
           let i = i - measure_node a in
@@ -2105,6 +2137,7 @@ let bench ~title ?(deque=false) ?(list=false) ?(map=false) bench =
         "FgGen", bench size (module FgGen : SIG);
         "FgGenOpt", bench size (module FgGenOpt : SIG);
         "FgSpec", bench size (module FgSpec : SIG);
+        "Vect", bench size (module Vect : SIG);
       ]) in
     fun () -> print_readings ~title size readings
 
@@ -2113,6 +2146,7 @@ let heap_size ~title size =
     "ListOverflow", bench_size size (module ListOverflow : SIG);
     "Deque", bench_size size (module Deque : SIG);
     "FgGen", bench_size size (module FgGen : SIG);
+    "Vect", bench_size size (module Vect : SIG);
   ] in
   fun () ->
     if size = BatList.hd sizes then (
@@ -2141,6 +2175,7 @@ let benches = [
 ]
 
 let () =
+  Bench.config.Bench.samples <- 100;
   Array.iter (fun s ->
     try
       let f = BatList.assoc s benches in
