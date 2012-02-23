@@ -67,6 +67,22 @@ let () =
 let popcount_lookup2 x =
   Char.code a.[x land 0xFFFF] + Char.code a.[x lsr 16]
 
+(* a takes 1k in 32 bits, 2k in 64 bits *)
+let a = Array.init (1 lsl 8) (fun i -> popcount i)
+let popcount_byte_lookup x =
+  a.(x land 0xFF) + a.(x lsr 8 land 0xFF) + a.(x lsr 16 land 0xFF) + a.(x lsr 24 land 0xFF)
+
+(* a takes 1k in 32 bits, 2k in 64 bits *)
+let popcount_byte_lookup2 x =
+  let pop = a.(x land 0xFF) in
+  let x = x lsr 8 in
+  let pop = pop + a.(x land 0xFF) in
+  let x = x lsr 8 in
+  let pop = pop + a.(x land 0xFF) in
+  let x = x lsr 8 in
+  let pop = pop + a.(x land 0xFF) in
+  pop
+
 let test_sparse =
   fun n ->
     for i = 0 to n do
@@ -103,6 +119,18 @@ let test_lookup2 =
       ignore (popcount_lookup2 i)
     done
 
+let test_byte_lookup =
+  fun n ->
+    for i = 0 to n do
+      ignore (popcount_byte_lookup i)
+    done
+
+let test_byte_lookup2 =
+  fun n ->
+    for i = 0 to n do
+      ignore (popcount_byte_lookup2 i)
+    done
+
 let () =
   let readings =
     Bench.bench_n [
@@ -112,5 +140,7 @@ let () =
       "MaskTest", test_masktest;
       "Lookup", test_lookup;
       "Lookup2", test_lookup2;
+      "ByteLookup", test_byte_lookup;
+      "ByteLookup2", test_byte_lookup2;
     ] in
   Bench.summarize readings
