@@ -29,6 +29,7 @@ let all_tests =
     Test_optparse.tests;
     Test_uref.tests;
     Test_bitset.tests;
+    Test_container.tests;
   ]
 
 let () =

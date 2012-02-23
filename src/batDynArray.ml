@@ -705,7 +705,7 @@ let fold_right f a x =
 
 let enum d =
   let rec make start =
-    let idxref = ref 0 in
+    let idxref = ref start in
     let next () =
       if !idxref >= d.len then
         raise BatEnum.No_more_elements
