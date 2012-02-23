@@ -31,7 +31,7 @@ module Stack = struct
     let flag = ref false and pt = ref 0 in
     for i = 0 to s.cursor -1 do
       match Weak.get s.data i with
-      | Some x as d -> if !flag then Weak.set s.data !pt d; incr pt
+      | Some _ as d -> if !flag then Weak.set s.data !pt d; incr pt
       | None -> flag := true
     done;
     s.cursor <- !pt; s.cursor

@@ -103,7 +103,7 @@ open Stream
     let rec range n until =
       let step x = (x + 1) land max_int in
       let cont =
-        match until with | None -> (fun x -> true) | Some x -> ( >= ) x
+        match until with | None -> (fun _ -> true) | Some x -> ( >= ) x
       in seq n step cont
 
     let ( -- ) p q = range p (Some q)
@@ -267,7 +267,7 @@ open Stream
                     (Stream.slazy (fun _ -> map f s)))
              | _ -> Stream.sempty)
 
-    let dup (s: 'a Stream.t) = failwith "Correct implementation needed"
+    let dup (_s: 'a Stream.t) = failwith "Correct implementation needed"
 (*      let rec gen q_in q_out =
 	Printf.printf "0%!";
 	Stream.slazy (fun () ->

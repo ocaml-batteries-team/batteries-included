@@ -361,7 +361,7 @@ let rec write_bits b ~nbits x =
 	end
 
 let flush_bits b =
-	if b.nbits > 0 then write_bits b (8 - b.nbits) 0
+	if b.nbits > 0 then write_bits b ~nbits:(8 - b.nbits) 0
 
 (**
    {6 Generic BatIO}

@@ -65,7 +65,7 @@ let lru_cache ~gen ~cap =
         if k = k0 then v (* special case head of list *)
         else
 	  let n =
-	    try BatDllist.find (fun (k1,v1) -> k1 = k) dll |> tap BatDllist.remove
+	    try BatDllist.find (fun (k1,_v1) -> k1 = k) dll |> tap BatDllist.remove
 	    with Not_found -> incr len; BatDllist.create (k, gen k)
 	  in
           (* Put n at the head of the list *)

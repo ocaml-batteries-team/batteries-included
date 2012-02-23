@@ -118,4 +118,4 @@ let min_num, max_num = min_int, max_int
 
 let print out t = BatInnerIO.nwrite out (to_string t)
 let xprint out t = BatPrintf.fprintf out "%lx" t
-let t_printer paren out t = print out t
+let t_printer _paren out t = print out t

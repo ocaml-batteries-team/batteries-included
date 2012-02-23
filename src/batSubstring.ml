@@ -198,7 +198,7 @@ let split_at k (str, off, len) =
 
 (** not implemented: position *)
 
-let span (str1, off1, len1) (str2, off2, len2) =
+let span (str1, off1, _len1) (str2, off2, len2) =
   if str1 != str2 then invalid_arg
     "Substring.span: must be substrings of same parent";
   if off1 > off2 + len2 then invalid_arg

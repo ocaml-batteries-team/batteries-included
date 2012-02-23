@@ -417,7 +417,7 @@ let filter_map f l =
 
 let exists f l =
   let rec aux rest = match next rest with
-    | Cons (x, t) when f x -> true
+    | Cons (x, _) when f x -> true
     | Cons (_, t)          -> aux t
     | Nil                  -> false
   in aux l
@@ -425,7 +425,7 @@ let exists f l =
 let for_all f l =
   let rec aux rest = match next rest with
     | Cons (x, t) when f x -> aux t
-    | Cons (_, t)          -> false
+    | Cons _               -> false
     | Nil                  -> true
   in aux l
 

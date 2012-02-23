@@ -46,7 +46,7 @@ let invalid_arg n f p = raise (Invalid_arg (n,f,p))
 
 let length d = d.len
 
-let exponential_resizer ~currslots ~oldlength ~newlength =
+let exponential_resizer ~currslots ~oldlength:_ ~newlength =
   let rec doubler x = if x >= newlength then x else doubler (x * 2) in
   let rec halfer x = if x / 2 < newlength then x else halfer (x / 2) in
   if newlength = 1 then
@@ -60,7 +60,7 @@ let exponential_resizer ~currslots ~oldlength ~newlength =
 
 let step_resizer step =
   if step <= 0 then invalid_arg step "step_resizer" "step";
-  (fun ~currslots ~oldlength ~newlength ->
+  (fun ~currslots ~oldlength:_ ~newlength ->
     if currslots < newlength || newlength < (currslots - step)
     then
       (newlength + step - (newlength mod step))
@@ -746,4 +746,4 @@ let unsafe_set a n x =
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
   BatEnum.print ~first ~last ~sep print_a out (enum t)
-let t_printer a_printer paren out t = print (a_printer false) out t
+let t_printer a_printer _paren out t = print (a_printer false) out t

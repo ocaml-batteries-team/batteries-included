@@ -58,11 +58,11 @@ let snoc q x =
 
 let front q =
   match q with
-  | {front = h :: front; flen = flen} ->
+  | {front = h :: front; flen = flen; _} ->
     Some (h, { q with front = front ; flen = flen - 1 })
-  | {rear = []} ->
+  | {rear = []; _} ->
     None
-  | {rear = rear; rlen = rlen} ->
+  | {rear = rear; rlen = rlen; _} ->
     (* beware: when rlen = 1, we must put the only element of
      * the deque at the front (ie new_flen = 1, new_rlen = 0) *)
     let new_flen = (rlen + 1) / 2 in
@@ -85,11 +85,11 @@ let front q =
 
 let rear q =
   match q with
-  | {rear = t :: rear; rlen = rlen} ->
+  | {rear = t :: rear; rlen = rlen; _} ->
     Some ({ q with rear = rear ; rlen = rlen - 1 }, t)
-  | {front = []} ->
+  | {front = []; _} ->
     None
-  | {front = front; flen = flen} ->
+  | {front = front; flen = flen; _} ->
     let new_rlen = (flen + 1) / 2 in
     let new_flen = flen / 2 in
     let front, rev_rear = BatList.split_at new_flen front in
@@ -269,5 +269,5 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out dq =
     = BatIO.to_string (List.print ~first:"<" ~last:">" ~sep:"," Int.print) l)
 *)
 
-let t_printer elepr paren out x = print (elepr false) out x
-let dq_printer elepr paren out x =  print (elepr false) out x
+let t_printer elepr _paren out x = print (elepr false) out x
+let dq_printer elepr _paren out x =  print (elepr false) out x

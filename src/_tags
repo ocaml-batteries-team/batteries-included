@@ -3,3 +3,4 @@
 "syntax/pa_comprehension" or "syntax/pa_strings": include
 <batFingerTree.ml>: rectypes, warn_A, warn_e
 true: debug
+<{batMap,batVect,batFile,batPervasives,batParserCo,batSet}.ml>: warn_z

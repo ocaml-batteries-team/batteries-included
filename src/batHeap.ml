@@ -164,7 +164,7 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
   spin bh ;
   BatInnerIO.nwrite out last
 
-let t_printer elepr paren out x = print (elepr false) out x
+let t_printer elepr _paren out x = print (elepr false) out x
 
 let rec enum bh =
   let cur = ref bh in
@@ -342,6 +342,6 @@ module Make (Ord : BatInterfaces.OrderedType) = struct
     spin bh ;
     BatInnerIO.nwrite out last
 
-  let t_printer elepr paren out x = print (elepr false) out x
+  let t_printer elepr _paren out x = print (elepr false) out x
 
 end

@@ -103,6 +103,6 @@ module BaseNoLock = struct
   external create: unit -> t = "%ignore"
   external lock  : t -> unit = "%ignore"
   external unlock: t -> unit = "%ignore"
-  let try_lock t = true
+  let try_lock _t = true
 end
 module NoLock = MakeLock(BaseNoLock)

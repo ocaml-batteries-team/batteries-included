@@ -162,7 +162,7 @@ module Concrete = struct
 
   let mem x cmp map =
     let rec loop = function
-      | Node (l, k, v, r, _) ->
+      | Node (l, k, _v, r, _) ->
         let c = cmp x k in
         c = 0 || loop (if c < 0 then l else r)
       | Empty -> false in
@@ -199,7 +199,7 @@ module Concrete = struct
   let fold f map acc =
     let rec loop acc = function
       | Empty -> acc
-      | Node (l, k, v, r, _) ->
+      | Node (l, _k, v, r, _) ->
         loop (f v (loop acc l)) r in
     loop acc map
 
@@ -221,12 +221,12 @@ module Concrete = struct
   *)
   let rec add_min_binding k v = function
     | Empty -> singleton k v
-    | Node (l, x, d, r, h) ->
+    | Node (l, x, d, r, _h) ->
       bal (add_min_binding k v l) x d r
 
   let rec add_max_binding k v = function
     | Empty -> singleton k v
-    | Node (l, x, d, r, h) ->
+    | Node (l, x, d, r, _h) ->
       bal l x d (add_max_binding k v r)
 
   (* Same as create and bal, but no assumptions are made on the
@@ -455,7 +455,7 @@ module Concrete = struct
           let (l2, d2, r2) = split v1 cmp12 s2 in
           (* TODO force correct evaluation order *)
           concat_or_join (loop l1 l2) v1 (f v1 (Some d1) d2) (loop r1 r2)
-        | (_, Node (l2, v2, d2, r2, h2)) ->
+        | (_, Node (l2, v2, d2, r2, _h2)) ->
           let (l1, d1, r1) = split v2 cmp12 s1 in
           concat_or_join (loop l1 l2) v2 (f v2 d1 (Some d2)) (loop r1 r2)
         | _ ->
@@ -586,21 +586,21 @@ module Concrete = struct
      function is the same as the first map parameter. *)
   let union cmp1 m1 cmp2 m2 =
     if compatible_cmp cmp1 m1 cmp2 m2 then
-      let merge_fun k a b = if a <> None then a else b in
+      let merge_fun _k a b = if a <> None then a else b in
       merge merge_fun cmp2 m1 m2
     else
       foldi (fun k v m -> add k v cmp1 m) m2 m1
 
   let diff cmp1 m1 cmp2 m2 =
     if compatible_cmp cmp1 m1 cmp2 m2 then
-      let merge_fun k a b = if b <> None then None else a in
+      let merge_fun _k a b = if b <> None then None else a in
       merge merge_fun cmp1 m1 m2
     else
       foldi (fun k _v m -> remove k cmp1 m) m2 m1
 
   let intersect f cmp1 m1 cmp2 m2 =
     if compatible_cmp cmp1 m1 cmp2 m2 then
-      let merge_fun k a b =
+      let merge_fun _k a b =
         match a, b with
           | Some v1, Some v2 -> Some (f v1 v2)
           | None, _ | _, None -> None in
@@ -992,7 +992,7 @@ module PMap = struct (*$< PMap *)
 
   let create cmp = { cmp = cmp; map = Concrete.empty }
   let empty = { cmp = Pervasives.compare; map = Concrete.empty }
-  let get_cmp {cmp=cmp} = cmp
+  let get_cmp {cmp; _} = cmp
   let is_empty x = x.map = Concrete.Empty
 
   let add x d m =

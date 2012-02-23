@@ -63,7 +63,7 @@ let first = hd
 let last rl =
 	let rec loop = function
 		| x :: [] -> x
-		| x :: l -> loop l
+		| _ :: l -> loop l
 		| [] -> assert false
 	in
 	match !rl with

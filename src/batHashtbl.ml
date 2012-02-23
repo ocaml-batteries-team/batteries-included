@@ -175,7 +175,7 @@
 	iter (fun k a -> if f k a then add result k a) t;
 	result
 
-    let filter  f t = filteri (fun k a -> f a) t
+    let filter  f t = filteri (fun _k a -> f a) t
 
     let filter_map f t =
       let result = create 16 in
@@ -434,7 +434,7 @@
 	  iter (fun k a -> if f k a then add result k a) t;
 	  result
 
-      let filter  f t = filteri (fun k a -> f a) t
+      let filter  f t = filteri (fun _k a -> f a) t
 
       let filter_map f t =
 	let result = create 16 in

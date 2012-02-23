@@ -201,7 +201,7 @@ let iter_on_format_args fmt add_conv add_char =
         match Sformat.get fmt j with
         | 'd' | 'i' | 'o' | 'u' | 'x' | 'X' ->
           add_char (add_conv skip i conv) 'i'
-        | c -> add_conv skip i 'i' end
+        | _c -> add_conv skip i 'i' end
     | '{' as conv ->
       (* Just get a regular argument, skipping the specification. *)
       let i = add_conv skip i conv in
@@ -269,7 +269,7 @@ let ac_of_format fmt =
     (* Just finishing a meta format: no additional argument to record. *)
     if c <> ')' && c <> '}' then incr_ac skip c;
     succ i
-  and add_char i c = succ i in
+  and add_char i _c = succ i in
 
   iter_on_format_args fmt add_conv add_char;
   ac;;
@@ -490,7 +490,7 @@ let ksprintf2 k fmt =
   mkprintf (fun out -> k (close_out out)) out fmt
 let kbprintf2 k buf fmt =
   let out = BatBuffer.output_buffer buf in
-  mkprintf (fun out -> k buf) out fmt
+  mkprintf (fun _out -> k buf) out fmt
 let sprintf2 fmt = ksprintf2 (identity) fmt
 let bprintf2 buf fmt = kbprintf2 ignore buf fmt
 (**

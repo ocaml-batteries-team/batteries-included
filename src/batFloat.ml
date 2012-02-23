@@ -190,7 +190,7 @@ let sqrt2 = 1.41421356237309504880
 let invsqrt2 = 0.70710678118654752440
 
 let print out t = BatInnerIO.nwrite out (to_string t)
-let t_printer paren out t = print out t
+let t_printer _paren out t = print out t
 
 
 let round_to_string ?(digits=0) x =
@@ -300,5 +300,5 @@ module Safe_float = struct
   external to_float : float -> float = "%identity"
 
   let print = print
-  let t_printer paren out t = print out t
+  let t_printer _paren out t = print out t
 end

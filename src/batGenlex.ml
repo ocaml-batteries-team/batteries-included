@@ -193,21 +193,21 @@ let to_enum_filter kwd_table =
     match peek enum with
       Some '(' -> junk enum; maybe_nested_comment enum
     | Some '*' -> junk enum; maybe_end_comment enum
-    | Some c   -> junk enum; comment enum
+    | Some _   -> junk enum; comment enum
     | _        -> raise EarlyEndOfStream
   and maybe_nested_comment (enum : enum) =
     match peek enum with
       Some '*' -> junk enum; let s = enum in comment s; comment s
-    | Some c   -> junk enum; comment enum
+    | Some _   -> junk enum; comment enum
     | _        -> raise EarlyEndOfStream
   and maybe_end_comment (enum : enum) =
     match peek enum with
       Some ')' -> junk enum; ()
     | Some '*' -> junk enum; maybe_end_comment enum
-    | Some c   -> junk enum; comment enum
+    | Some _   -> junk enum; comment enum
     | _        -> raise EarlyEndOfStream
   in
-  fun input -> BatEnum.from_while (fun count -> next_token {position = 0; content = input})
+  fun input -> BatEnum.from_while (fun _count -> next_token {position = 0; content = input})
 
 	
 let to_stream_filter (kwd_table:t) (x:char Stream.t) : token Stream.t =

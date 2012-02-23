@@ -50,15 +50,15 @@ let enum s = enum_of_ref (ref s)
 
 let hd s = match s () with
   | Nil -> raise (Invalid_argument "Seq.hd")
-  | Cons(e, s) -> e
+  | Cons(e, _s) -> e
 
 let tl s = match s () with
   | Nil -> raise (Invalid_argument "Seq.tl")
-  | Cons(e, s) -> s
+  | Cons(_e, s) -> s
 
 let first s = match s () with
   | Nil -> raise (Invalid_argument "Seq.first")
-  | Cons(e, s) -> e
+  | Cons(e, _s) -> e
 
 let last s =
   let rec aux e s = match s () with
@@ -224,7 +224,7 @@ let rec drop n s =
     match s () with
       | Nil ->
           nil
-      | Cons(e, s) ->
+      | Cons(_e, s) ->
           drop (n - 1) s
 
 let rec take_while f s () = match s () with
@@ -269,7 +269,7 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
             iter (BatPrintf.fprintf out "%s%a" sep print_a) s;
             BatInnerIO.nwrite out last
 
-let t_printer a_printer paren out s =
+let t_printer a_printer _paren out s =
   print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out s
 
 module Infix = struct

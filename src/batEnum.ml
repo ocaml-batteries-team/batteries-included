@@ -46,7 +46,7 @@ let make ~next ~count ~clone =
   }
 
 (** {6 Internal utilities}*)
-let _dummy () = assert false
+let _dummy () = assert false (*BISECT-VISIT*)
 
 (* raised by 'count' functions, may go outside the API *)
 exception Infinite_enum
@@ -65,7 +65,7 @@ let rec empty () =
   {
     count = return_no_more_count;
     next  = return_no_more_elements;
-    clone = (fun () -> empty());
+    clone = empty;
     fast  = true;
   }
 
@@ -129,7 +129,7 @@ module MicroLazyList = struct
       let e = make
 	~next:(fun () -> match Lazy.force !reference with
 		 | Cons(x,t) -> reference := t; x
-		 | _         -> raise No_more_elements )
+		 | Nil       -> raise No_more_elements )
         ~count:_dummy
         ~clone:(fun () -> aux !reference)
       in e.count <- (fun () -> force e; e.count());
@@ -1061,7 +1061,7 @@ let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
 		aux ()
 	in aux()
 
-let t_printer a_printer paren out e =
+let t_printer a_printer _paren out e =
   print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
 
 let compare cmp t u =

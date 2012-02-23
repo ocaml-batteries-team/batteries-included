@@ -141,7 +141,7 @@ let rec dump r =
 	opaque "closure"
       | x when x = Obj.object_tag ->
 	let fields = get_fields [] s in
-	let clasz, id, slots =
+	let _clasz, id, slots =
 	  match fields with
 	    | h::h'::t -> h, h', t
 	    | _ -> assert false

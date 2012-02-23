@@ -101,7 +101,7 @@ module BaseInt = struct
 
   let print out t = BatInnerIO.nwrite out (string_of_int t)
   let xprint out t = BatPrintf.fprintf out "%X" t
-  let t_printer paren out t = print out t
+  let t_printer _paren out t = print out t
 
   let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)
   let ( --- ) x y =

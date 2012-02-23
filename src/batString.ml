@@ -589,7 +589,7 @@ let replace ~str ~sub ~by =
 
 
 let nreplace ~str ~sub ~by =
-  let parts = nsplit str sub in
+  let parts = nsplit str ~by:sub in
   String.concat by parts
 (*$T nreplace
    nreplace ~str:"bar foo aaa bar" ~sub:"aa" ~by:"foo" = "bar foo afoo bar"
@@ -744,12 +744,12 @@ end
 let print         = BatInnerIO.nwrite
 let println out s = BatInnerIO.nwrite out s; BatInnerIO.write out '\n'
 
-let t_printer paren out x =
+let t_printer _paren out x =
   BatInnerIO.write out '"';
   print out (escaped x);
   BatInnerIO.write out '"'
 
-let unquoted_printer paren out x = print out x
+let unquoted_printer _paren out x = print out x
 
 (* Beware: the documentation of print_quoted claims that its behavior
    is compatible with this "quote" function. This is currently true as
@@ -788,9 +788,9 @@ struct
 
   let rindex s c = try Some (rindex s c) with Not_found -> None
 
-  let split str ~by:sep = try Some (split str sep) with Not_found -> None
+  let split str ~by = try Some (split str ~by) with Not_found -> None
 
-  let rsplit str ~by:sep = try Some (rsplit str sep) with Not_found -> None
+  let rsplit str ~by = try Some (rsplit str ~by) with Not_found -> None
 end (* String.Exceptionless *)
 
 module Cap =

@@ -363,14 +363,14 @@ let rec findi p l =
 let rec index_of e l =
   let rec loop n = function
     | []              -> None
-    | h::t when h = e -> Some n
+    | h::_ when h = e -> Some n
     | _::t            -> loop ( n + 1 ) t
   in loop 0 l
 
 let rec index_ofq e l =
   let rec loop n = function
     | []               -> None
-    | h::t when h == e -> Some n
+    | h::_ when h == e -> Some n
     | _::t             -> loop ( n + 1 ) t
   in loop 0 l
 
@@ -614,14 +614,14 @@ let of_backwards e =
 let assoc_inv e l =
   let rec aux = function
   | []                  -> raise Not_found
-  | (a,b)::t when b = e -> a
+  | (a,b)::_ when b = e -> a
   | _::t                -> aux t
   in aux l
 
 let assq_inv e l =
   let rec aux = function
   | []                    -> raise Not_found
-  | (a,b)::t when b == e  -> a
+  | (a,b)::_ when b == e  -> a
   | _::t                  -> aux t
   in aux l
 
@@ -690,7 +690,7 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
     iter (fun x -> BatInnerIO.nwrite out sep; print_a out x) t;
     BatInnerIO.nwrite out last
 
-let t_printer a_printer paren out x = print (a_printer false) out x
+let t_printer a_printer _paren out x = print (a_printer false) out x
 
 let reduce f = function [] -> invalid_arg "Empty List"
   | h::t -> fold_left f h t
