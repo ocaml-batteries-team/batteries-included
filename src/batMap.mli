@@ -397,12 +397,6 @@ val mem : 'a -> ('a, 'b) t -> bool
 (** [mem x m] returns [true] if [m] contains a binding for [x],
     and [false] otherwise. *)
 
-val exists : 'a -> ('a, 'b) t -> bool
-(** same as [mem].
-
-    @deprecated [mem] should be used instead, as [exists] conflicts with the function checking arbitrary predicates, which is instead named [exists_f].
-*)
-
 val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
 (** [iter f m] applies [f] to all bindings in map [m].
     [f] receives the key as first argument, and the associated value
@@ -496,7 +490,7 @@ val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
 val for_all : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
 (** Tests whether all key value pairs satisfy some predicate function *)
 
-val exists_f : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
+val exists : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
 (** Tests whether some key value pair satisfies some predicate function *)
 
 (* documentation comment from INRIA's stdlib *)
@@ -670,12 +664,6 @@ module PMap : sig
 (** [mem x m] returns [true] if [m] contains a binding for [x],
     and [false] otherwise. *)
 
-  val exists : 'a -> ('a, 'b) t -> bool
-(** same as [mem].
-
-    @deprecated [mem] should be used instead, as [exists] conflicts with the function checking arbitrary predicates, which is instead named [exists_f].
- *)
-
   val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
 (** [iter f m] applies [f] to all bindings in map [m].
     [f] receives the key as first argument, and the associated value
@@ -770,7 +758,7 @@ module PMap : sig
   val for_all : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
 (** Tests whether all key value pairs satisfy some predicate function *)
 
-  val exists_f : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
+  val exists : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
 (** Tests whether some key value pair satisfies some predicate function *)
 
 (* documentation comment from INRIA's stdlib *)

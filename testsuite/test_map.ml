@@ -579,23 +579,10 @@ module P = struct
   type key = int
   type 'a m = (key, 'a) M.t
 
-  let singleton k v = M.singleton k v
-
-  let of_enum t = M.of_enum t
-
   let iter f = M.iter (fun _ -> f)
   let iteri = M.iter
 
   let filterv_map f = M.filter_map (fun _ -> f)
-
-  let exists = M.exists_f
-
-  let equal eqv m1 m2 =
-    let as_in m k v =
-      match Exceptionless.find k m with
-        | None -> false
-        | Some v' -> eqv v v' in
-    for_all (as_in m1) m2 && for_all (as_in m2) m1
 end
 
 module S = struct

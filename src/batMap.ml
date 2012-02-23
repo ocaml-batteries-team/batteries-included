@@ -892,8 +892,6 @@ let remove x m = Concrete.remove x Pervasives.compare m
 
 let mem x m = Concrete.mem x Pervasives.compare m
 
-let exists = mem
-
 let iter = Concrete.iter
 let map = Concrete.map
 let mapi = Concrete.mapi
@@ -935,7 +933,7 @@ let min_binding = Concrete.min_binding
 let singleton k v = Concrete.singleton k v
 
 let for_all = Concrete.for_all
-let exists_f = Concrete.exists
+let exists = Concrete.exists
 
 let partition f m = Concrete.partition f Pervasives.compare m
 let cardinal = Concrete.cardinal
@@ -1031,8 +1029,6 @@ module PMap = struct (*$< PMap *)
   let mem x m =
     Concrete.mem x m.cmp m.map
 
-  let exists = mem
-
   let iter f m =
     Concrete.iter f m.map
 
@@ -1088,7 +1084,7 @@ module PMap = struct (*$< PMap *)
 
   let for_all f m = Concrete.for_all f m.map
 
-  let exists_f f m = Concrete.exists f m.map
+  let exists f m = Concrete.exists f m.map
 
   let partition f m =
     let l, r = Concrete.partition f m.cmp m.map in
