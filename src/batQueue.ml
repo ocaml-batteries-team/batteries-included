@@ -28,14 +28,33 @@ open Queue
     let q = create () in
       BatEnum.iter (fun x -> push x q) e;
       q
+  (*$Q of_enum
+    (Q.list Q.int) (fun l -> \
+      let e = BatList.enum l in \
+      BatEnum.equal (=) (enum (of_enum (BatEnum.clone e))) e \
+    )
+  *)
 
   let enum q = BatEnum.from (fun () -> try pop q with Empty -> raise BatEnum.No_more_elements)
-
+  (*$T enum
+    let q = Queue.create () in \
+    for i = 0 to 10 do Queue.push i q; done; \
+    let e = enum q in \
+    let i = ref (-1) in \
+    BatEnum.count e = 11 && BatEnum.for_all (fun elt -> incr i; !i = elt) e
+  *)
 
   let print ?(first="") ?(last="") ?(sep="") print_a out t =
       BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
+  (*$T print
+    BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) (of_enum (BatArray.enum [|2;4;66|])) = "[2,4,66]"
+  *)
 
   module Exceptionless = struct
     let peek q = try Some (peek q) with Empty -> None
     let take q = try Some (take q) with Empty -> None
+    (*$T
+      Exceptionless.peek (Queue.create ()) = None
+      Exceptionless.take (Queue.create ()) = None
+    *)
   end
