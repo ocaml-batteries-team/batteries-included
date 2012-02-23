@@ -33,11 +33,6 @@ open BatInnerIO
 *)
 
   (**
-     {6 Important note}
-
-     This module is mostly deprecated by module {!Print}. In the future,
-     only module {!Print} will be updated and maintained.
-
      {6 General overview}
 
    The functions of this module produce output according to a
@@ -332,5 +327,3 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
    {7 Important}
    Note that {!Obj.magic} is involved behind this, so be careful.
 *)
-
-
