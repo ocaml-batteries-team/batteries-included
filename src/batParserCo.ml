@@ -3,7 +3,7 @@ open BatString
 open List
 open BatLazyList
 open BatIO
-
+open BatPrintf
 
 type 'a state =
   | Eof
@@ -37,7 +37,7 @@ struct
       (**TODO: Handle EOF !*)
   let of_lexer l = assert false
 (**    LazyList.of_enum (BatEnum.from (fun () ->
-				
+
 		 l.refill_buff l;
   	        (l.lex_buffer, (l.lex_start_p, l.lex_curr_p))))*)
 
@@ -105,7 +105,7 @@ let label s p e =
     let make_report c = Report [get_state e, s, c] in
       if !debug_mode then
 	begin
-	  printf stderr "%*s>>> %s\n" !depth " " s;
+	  eprintf "%*s>>> %s\n" !depth " " s;
 	  incr depth;
 	  flush_all ()
 	end;
@@ -113,28 +113,28 @@ let label s p e =
 	| Success _ as x ->
 	    if !debug_mode then begin
 	      decr depth;
-	      printf stderr "%*s<<< %s\n" !depth " " s;
+	      eprintf "%*s<<< %s\n" !depth " " s;
 	      flush_all ()
 	    end;
 	    x
 	| Setback c ->
 	    if !debug_mode then begin
 	      decr depth;
-	      printf stderr "%*s^^^ %s\n" !depth " " s;
+	      eprintf "%*s^^^ %s\n" !depth " " s;
 	      flush_all ()
 	    end;
 	    Setback (make_report c)
 	| Failure c ->
 	    if !debug_mode then begin
 	      decr depth;
-	      printf stderr "%*s!!! %s\n" !depth " " s;
+	      eprintf "%*s!!! %s\n" !depth " " s;
 	      flush_all ()
 	    end;
 	    Failure (make_report c)
 	| Backtrack (b, c, t) ->
 	    if !debug_mode then begin
 	      decr depth;
-	      printf stderr "%*s/// %s\n" !depth " " s;
+	      eprintf "%*s/// %s\n" !depth " " s;
 	      flush_all ()
 	    end;
 	    Backtrack (b, make_report c, t)
@@ -291,7 +291,7 @@ let source_map p e =
 	| Backtrack (result, _, rest) -> lazy (Cons ((result, c), (aux rest)))
 	| Setback _ | Failure _       -> nil (*@TODO: improve error reporting !*)
   in aux e
-	
+
 
 (**
    {3 Utilities}

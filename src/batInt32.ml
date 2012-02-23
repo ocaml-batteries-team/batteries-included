@@ -67,7 +67,7 @@ let unpack_big str pos =
   and add b n = Int32.add (of_byte b) n in
   of_byte str.[pos] |> shift |> add str.[pos+1] |> shift
     |> add str.[pos+2] |> shift |> add str.[pos+3]
-	
+
 
 module BaseInt32 = struct
   include Int32
@@ -117,5 +117,5 @@ type bounded = t
 let min_num, max_num = min_int, max_int
 
 let print out t = BatInnerIO.nwrite out (to_string t)
-let xprint out t = BatInnerIO.Printf.fprintf out "%lx" t
+let xprint out t = BatPrintf.fprintf out "%lx" t
 let t_printer paren out t = print out t

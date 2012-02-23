@@ -743,7 +743,7 @@ end
 
 let print         = BatInnerIO.nwrite
 let println out s = BatInnerIO.nwrite out s; BatInnerIO.write out '\n'
-let print_quoted out s = BatPrintf.fprintf out "%S" s
+
 let t_printer paren out x =
   BatInnerIO.write out '"';
   print out (escaped x);
@@ -755,12 +755,14 @@ let unquoted_printer paren out x = print out x
    is compatible with this "quote" function. This is currently true as
    they both use "%S", but any change in 'quote' here should be
    careful to preserve this consistency. *)
-let quote s = BatPrintf.sprintf2 "%S" s
+let quote s = Printf.sprintf "%S" s
 (*$T quote
    quote "foo" = "\"foo\""
    quote "\"foo\"" = "\"\\\"foo\\\"\""
    quote "\n" = "\"\\n\""
 *)
+
+let print_quoted out s = BatInnerIO.nwrite out (quote s)
 
 module Exceptionless =
 struct

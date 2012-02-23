@@ -233,12 +233,6 @@ val nwrite : (string, _) printer
     Example: [nwrite stdout "Enter your name: ";]
 *)
 
-val write_buf: (Buffer.t, _) printer
-(** Write the contents of a buffer to an output.
-
-    Example: [let b = Buffer.create 10 in for i = 1 to 100 do Buffer.add (string_of_int i); Buffer.add " "; done; nwrite stdout b;]
-*)
-
 val output : 'a output -> string -> int -> int -> int
 (** [output o s p l] writes up to [l] characters from string [s], starting at
   offset [p]. It returns the number of characters written. It will raise
@@ -322,12 +316,6 @@ val input_string : string -> input
 val output_string : unit -> string output
 (** Create an output that will write into a string in an efficient way.
   When closed, the output returns all the data written into it. *)
-
-val output_buffer : Buffer.t -> string output
-(** Create an output that will append its results at the end of a buffer
-    in an efficient way. Closing  returns the whole contents of the buffer
-    -- the buffer remains usable.*)
-
 
 val input_enum : char BatEnum.t -> input
 (** Create an input that will read from an [enum]. *)
@@ -884,16 +872,6 @@ val bits_of : in_bits -> int BatEnum.t
 
 val write_bitss : nbits:int -> out_bits -> int BatEnum.t -> unit
 (** Write an enumeration of bits*)
-
-(** {6 Printing} *)
-
-
-val printf : 'a output -> ('b, 'a output, unit) format -> 'b
-(** A [fprintf]-style unparser. For more information
-    about printing, see the documentation of {!Printf}.
-
-    @obsolete Prefer {!Languages.Printf.fprintf}*)
-
 
 val default_buffer_size : int
 (**The default size for internal buffers.*)

@@ -678,15 +678,17 @@ let rec n_cartesian_product = function [] -> assert false
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
   | []   ->
-      BatInnerIO.nwrite out first;
-      BatInnerIO.nwrite out last
+    BatInnerIO.nwrite out first;
+    BatInnerIO.nwrite out last
   | [h]  ->
-      BatInnerIO.Printf.fprintf out "%s%a%s" first print_a h last
+    BatInnerIO.nwrite out first;
+    print_a out h;
+    BatInnerIO.nwrite out last
   | h::t ->
-      BatInnerIO.nwrite out first;
-      print_a out h;
-      iter (BatInnerIO.Printf.fprintf out "%s%a" sep print_a) t;
-      BatInnerIO.nwrite out last
+    BatInnerIO.nwrite out first;
+    print_a out h;
+    iter (fun x -> BatInnerIO.nwrite out sep; print_a out x) t;
+    BatInnerIO.nwrite out last
 
 let t_printer a_printer paren out x = print (a_printer false) out x
 

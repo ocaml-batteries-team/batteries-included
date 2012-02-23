@@ -79,5 +79,5 @@ external format : string -> nativeint -> string = "caml_nativeint_format"
 type bounded = t
 let min_num, max_num = min_int, max_int
 
-let print out t = BatInnerIO.Printf.fprintf out "%nx" t
+let print out t = BatPrintf.fprintf out "%nx" t
 let t_printer paren out t = print out t

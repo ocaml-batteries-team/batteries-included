@@ -96,15 +96,15 @@ let ifprintf _ fmt = fprintf BatInnerIO.stdnull fmt
 let printf fmt = fprintf BatInnerIO.stdout fmt
 let eprintf fmt = fprintf BatInnerIO.stderr fmt
 
-let bprintf buf fmt = fprintf (BatInnerIO.output_buffer buf) fmt
-let kbprintf k buf fmt = kfprintf (fun _ -> k buf) (BatInnerIO.output_buffer buf) fmt
+let bprintf buf fmt = fprintf (BatBuffer.output_buffer buf) fmt
+let kbprintf k buf fmt = kfprintf (fun _ -> k buf) (BatBuffer.output_buffer buf) fmt
 
 let sprintf fmt =
-  let oc = BatInnerIO.output_buffer (Buffer.create 42) in
+  let oc = BatBuffer.output_buffer (Buffer.create 42) in
   kfprintf BatInnerIO.close_out oc fmt
 
 let ksprintf k fmt =
-  let oc = BatInnerIO.output_buffer (Buffer.create 42) in
+  let oc = BatBuffer.output_buffer (Buffer.create 42) in
   kfprintf (fun oc -> k (BatInnerIO.close_out oc)) oc fmt
 
 let rprintf fmt =

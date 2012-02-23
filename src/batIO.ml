@@ -551,17 +551,6 @@ let lines_of2 ic =
 let write_bitss ~nbits output enum = write_enum (write_bits ~nbits) output enum
 
 (**
-   {6 Standard BatIO}
-*)
-
-
-
-
-
-
-let printf = Printf.fprintf
-
-(**
    {6 Utilities}
 *)
 let is_newline = function '\010' | '\013' -> true | _ -> false
@@ -802,11 +791,11 @@ let out_channel_of_output out =
 
     cout*)
 
-let to_string print_x x = Printf.sprintf2 "%a" print_x x
+let to_string print_x x = BatPrintf.sprintf2 "%a" print_x x
 
 let string_of_t_printer p x =
   let b = Buffer.create 100 in
-  let out = cast_output (output_buffer b) in
+  let out = cast_output (BatBuffer.output_buffer b) in
   p false out x;
   Buffer.contents b
 

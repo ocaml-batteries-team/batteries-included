@@ -262,11 +262,11 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
   | Cons(e, s) ->
       match s () with
         | Nil ->
-            BatInnerIO.Printf.fprintf out "%s%a%s" first print_a e last
+            BatPrintf.fprintf out "%s%a%s" first print_a e last
         | _ ->
             BatInnerIO.nwrite out first;
             print_a out e;
-            iter (BatInnerIO.Printf.fprintf out "%s%a" sep print_a) s;
+            iter (BatPrintf.fprintf out "%s%a" sep print_a) s;
             BatInnerIO.nwrite out last
 
 let t_printer a_printer paren out s =

@@ -470,13 +470,12 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
     | 0 ->
 	BatInnerIO.nwrite out first;
 	BatInnerIO.nwrite out last
-    | 1 ->
-	BatInnerIO.Printf.fprintf out "%s%a%s" first print_a (unsafe_get t 0) last
     | n ->
 	BatInnerIO.nwrite out first;
 	print_a out (unsafe_get t 0);
 	for i = 1 to n - 1 do
-	  BatInnerIO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i)
+	  BatInnerIO.nwrite out sep;
+	  print_a out (unsafe_get t i);
 	done;
 	BatInnerIO.nwrite out last
 (*$T print

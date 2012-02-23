@@ -199,7 +199,7 @@ let round_to_string ?(digits=0) x =
     | FP_normal
     | FP_subnormal
     | FP_zero ->
-      BatInnerIO.Printf.sprintf "%.*f" digits x
+      BatPrintf.sprintf "%.*f" digits x
     (* we don't call sprintf in the 'special' cases as it seems to
        behave weirdly in some cases (eg. on Windows, bug #191) *)
     | FP_infinite ->

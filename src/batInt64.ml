@@ -62,6 +62,5 @@ external format : string -> int64 -> string = "caml_int64_format"
 
 
 let print out t = BatInnerIO.nwrite out (to_string t)
-let xprint out t = BatInnerIO.Printf.fprintf out "%Lx" t
+let xprint out t = BatPrintf.fprintf out "%Lx" t
 let t_printer paren out t = print out t
-

@@ -133,9 +133,9 @@ val add_input : t -> BatInnerIO.input -> int -> unit
 val add_channel : t -> BatInnerIO.input -> int -> unit
   (** @obsolete replaced by {!add_input}*)
 
-val output_buffer : _ BatInnerIO.output -> t -> unit
-  (** [output_buffer oc b] writes the current contents of buffer [b]
-      on the output channel [oc]. *)
+val output_buffer : t -> string BatInnerIO.output
+(** [output_buffer b] creates an output channel that writes to that
+    buffer, and when closed, returns the contents of the buffer. *)
 
 
 (** {6 Boilerplate code}*)

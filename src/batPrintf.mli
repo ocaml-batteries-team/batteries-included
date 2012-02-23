@@ -276,6 +276,7 @@ val kbprintf : (Buffer.t -> 'a) ->
   Buffer.t -> ('b, Buffer.t, unit, 'a) format4 -> 'b
   (** Same as [bprintf], but instead of returning immediately,
       passes the buffer to its first argument at the end of printing. *)
+
 val kbprintf2 : (Buffer.t -> 'b) ->  Buffer.t -> ('c, 'a output, unit, 'b) format4 -> 'c
   (** Same as [bprintf2], but instead of returning immediately,
       passes the buffer to its first argument at the end of printing.*)
