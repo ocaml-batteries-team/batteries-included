@@ -19,33 +19,33 @@
  *)
 
 
-  module Scanning =
-  struct
-    include Scanf.Scanning
+module Scanning =
+struct
+  include Scanf.Scanning
 
-    let from_input inp =
-      from_function (fun () -> try BatInnerIO.read inp with BatInnerIO.No_more_input -> raise End_of_file)
-    (*$T
-       bscanf (Scanning.from_input (BatIO.input_string "12  bc" )) "%d %s" (fun d s -> d = 12 && s = "bc")
-    *)
+  let from_input inp =
+    from_function (fun () -> try BatInnerIO.read inp with BatInnerIO.No_more_input -> raise End_of_file)
+  (*$T
+    bscanf (Scanning.from_input (BatIO.input_string "12  bc" )) "%d %s" (fun d s -> d = 12 && s = "bc")
+  *)
 
-    let from_channel = from_input
+  let from_channel = from_input
 
-    let stdib = from_input (BatInnerIO.stdin)
-  end
+  let stdib = from_input (BatInnerIO.stdin)
+end
 
-  type ('a, 'b, 'c, 'd) scanner =
-      ('a, Scanning.scanbuf, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c;;
+type ('a, 'b, 'c, 'd) scanner =
+  ('a, Scanning.scanbuf, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
 
 
-  exception Scan_failure of string;;
+exception Scan_failure of string
 
-  open Scanf
-  let fscanf        = fscanf
-  let sscanf        = sscanf
-  let scanf         = scanf
-  let kscanf        = kscanf
-  let bscanf        = bscanf
-  let bscanf_format = bscanf_format
-  let sscanf_format = sscanf_format
-  let format_from_string = format_from_string
+open Scanf
+let fscanf = fscanf
+let sscanf = sscanf
+let scanf = scanf
+let kscanf = kscanf
+let bscanf = bscanf
+let bscanf_format = bscanf_format
+let sscanf_format = sscanf_format
+let format_from_string = format_from_string
