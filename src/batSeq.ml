@@ -163,7 +163,7 @@ let rec for_all f s = match s () with
 
 let rec exists f s = match s () with
   | Nil -> false
-  | Cons(e, s) -> f e || for_all f s
+  | Cons(e, s) -> f e || exists f s
 
 let mem e s = exists ((=) e) s
 
