@@ -141,34 +141,16 @@ module MapBench (M : sig val input_length : int end) = struct
     fun () ->
       StdMap.merge merge_fun m1 m2
 
-  let merge_poly_map_equal, merge_poly_map_equiv, merge_poly_map_ineq, merge_unsafe_poly_map =
+  let merge_poly_map =
     let m1 = Map.of_enum (BatList.enum p1) in
-    let m2_equal = Map.of_enum (BatList.enum p2) in
-    let m2_equiv =
-      Map.of_enum ~cmp:BatInt.compare (BatList.enum p2) in
-    let m2_ineq =
-      let cmp x y = BatInt.compare y x in
-      Map.of_enum ~cmp (BatList.enum p2) in
-    (fun () -> Map.merge merge_fun m1 m2_equal),
-    (fun () -> Map.merge merge_fun m1 m2_equiv),
-    (fun () -> Map.merge merge_fun m1 m2_ineq),
-    (fun () -> Map.merge_unsafe merge_fun m1 m2_equal)
+    let m2 = Map.of_enum (BatList.enum p2) in
+    fun () ->
+      Map.merge merge_fun m1 m2
 
-  let () =
-    let test impl_merge =
-      same_elts (merge_std_map ()) (impl_merge ()) in
-    assert (test merge_poly_map_equal);
-    assert (test merge_poly_map_equiv);
-    assert (test merge_poly_map_ineq);
-    assert (test merge_unsafe_poly_map);
-    ()
 
   let samples_merge = make_samples () [
     "stdmap merge", ignore -| merge_std_map;
-    "pmap merge (<>)", ignore -| merge_poly_map_ineq;
-    "pmap merge (~~)", ignore -| merge_poly_map_equiv;
-    "pmap merge (==)", ignore -| merge_poly_map_equal;
-    "pmap merge_unsafe", ignore -| merge_unsafe_poly_map;
+    "pmap merge", ignore -| merge_poly_map;
   ]
 
   (* compare fold-based and merge-based union, diff, intersect *)
@@ -178,9 +160,6 @@ module MapBench (M : sig val input_length : int end) = struct
   let merge_union (m1, m2) =
     let merge_fun k a b = if a <> None then a else b in
     Map.merge merge_fun m1 m2
-  let merge_unsafe_union (m1, m2) =
-    let merge_fun k a b = if a <> None then a else b in
-    Map.merge_unsafe merge_fun m1 m2
 
   let union_input =
     let m1 = Map.of_enum (BatList.enum p1) in
@@ -193,14 +172,12 @@ module MapBench (M : sig val input_length : int end) = struct
       li (pmap_union union_input) = li (impl_union union_input) in
     assert (test fold_union);
     assert (test merge_union);
-    assert (test merge_unsafe_union);
     ()
 
   let samples_union = make_samples union_input [
     "pmap union", ignore -| pmap_union;
     "fold-based union", ignore -| fold_union;
     "merge-based union", ignore -| merge_union;
-    "merge-unsafe union", ignore -| merge_unsafe_union;
   ]
 
   let pmap_diff (m1, m2) =

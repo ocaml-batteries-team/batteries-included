@@ -462,15 +462,6 @@ module P = struct
   include S
   type s = elt t
 
-  let singleton k = S.singleton ?cmp:None k
-
-  let equal s1 s2 =
-    let is_in s e = S.mem e s in
-    S.for_all (is_in s1) s2 && S.for_all (is_in s2) s1
-
-  let backwards t =
-    BatList.enum -| List.rev -| BatList.of_enum <| S.enum t
-
   let inter = intersect
 end
 

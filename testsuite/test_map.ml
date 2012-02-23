@@ -579,9 +579,9 @@ module P = struct
   type key = int
   type 'a m = (key, 'a) M.t
 
-  let singleton k v = M.singleton ?cmp:None k v
+  let singleton k v = M.singleton k v
 
-  let of_enum t = M.of_enum ?cmp:None t
+  let of_enum t = M.of_enum t
 
   let iter f = M.iter (fun _ -> f)
   let iteri = M.iter
@@ -623,7 +623,7 @@ module TS = TestMap(S)
    - that the comparison function of the result map is as specified
 *)
 let heterogeneous_tests =
-  let module P = BatMap in
+  let module P = BatMap.PMap in
   let li m = BatList.of_enum (P.enum m) in
 
   let (@=) msg (act, exp) =
