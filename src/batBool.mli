@@ -56,7 +56,7 @@ val pow : t -> t -> t
 val min_num : bool
 val max_num : bool
 val compare : bool -> bool -> int
-val of_int : int -> bool
+val of_int : int -> bool (** anything but [0] is [true] *)
 val to_int : bool -> int
 val of_string : string -> bool
   (** Convert the given string to a boolean.
@@ -65,6 +65,7 @@ val of_string : string -> bool
 
 val to_string : bool -> string
 val of_float  : float -> bool
+(** [0.], [nan] [+infinity] and [-infiity] are [false]. The other values convert to [true] *)
 val to_float  : bool  -> float
 
 val ( + ) : t -> t -> t

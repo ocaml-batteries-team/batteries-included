@@ -105,6 +105,18 @@ module Compare = BatNumber.MakeCompare(BaseBool)
 (*$T of_int
   of_int 0 = false
  *)
+(*$T
+  of_float (-1.) = true
+  of_float 0. = false
+  of_float (1. /. 0.) = false
+  of_float (-1. /. 0.) = false
+  of_float nan = false
+  to_float true = 1.
+  to_float false = 0.
+  of_string "true" = true
+  of_string "false" = false
+  try ignore (of_string "smurf"); false with Invalid_argument _ -> true
+*)
 
 
 external not : bool -> bool = "%boolnot"
@@ -116,3 +128,9 @@ let min_num, max_num = false, true
 
 let print out t = BatInnerIO.nwrite out (to_string t)
 let t_printer _paren out t = print out t
+(*$T
+  BatIO.to_string print true = "true"
+  BatIO.to_string print false = "false"
+  BatIO.string_of_t_printer t_printer true = "true"
+  BatIO.string_of_t_printer t_printer false = "false"
+*)
