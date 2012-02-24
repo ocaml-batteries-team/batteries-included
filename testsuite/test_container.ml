@@ -22,7 +22,16 @@ module type Container = sig
   val get : 'a t -> int -> 'a
   val append : 'a t -> 'a t -> 'a t
   val last : 'a t -> 'a
-(* of_list, to_list, cons, snoc, tail, init, hd, sort, stable_sort, split_at, iter2, for_all2, take, drop, mem, find, find_map, reduce, max, min *)
+  val of_list : 'a list -> 'a t
+  val to_list : 'a t -> 'a list
+  val of_list_backwards : 'a list -> 'a t
+  val to_list_backwards : 'a t -> 'a list
+  val cons : 'a t -> 'a -> 'a t
+  val snoc : 'a t -> 'a -> 'a t
+  val tail : 'a t -> 'a t
+  val init : 'a t -> 'a t
+  val hd : 'a t -> 'a
+(* sort, stable_sort, split_at, iter2, for_all2, take, drop, mem, find, find_map, reduce, max, min, invariants, reverse *)
 end
 
 exception NotImplemented
@@ -34,6 +43,15 @@ module ArrayContainer : Container = struct
   let iter_right _ _ = raise NotImplemented
   let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
   let last _ = raise NotImplemented
+  let of_list_backwards _ = raise NotImplemented
+  let to_list_backwards _ = raise NotImplemented
+  let hd _ = raise NotImplemented
+  let snoc _ = raise NotImplemented
+  let cons _ = raise NotImplemented
+  let take = head
+  let drop = tail
+  let tail _ = raise NotImplemented
+  let init _ = raise NotImplemented
 end
 
 module LazyListContainer : Container = struct
@@ -44,6 +62,12 @@ module LazyListContainer : Container = struct
   let of_backwards _ = raise NotImplemented
   let backwards _ = raise NotImplemented
   let get = at
+  let to_list_backwards _ = raise NotImplemented
+  let of_list_backwards _ = raise NotImplemented
+  let tail _ = raise NotImplemented
+  let snoc _ = raise NotImplemented
+  let cons t x = cons x t
+  let init _ = raise NotImplemented
 end
 
 module DynArrayContainer : Container = struct
@@ -56,6 +80,13 @@ module DynArrayContainer : Container = struct
   let exists _ _ = raise NotImplemented
   let for_all _ _ = raise NotImplemented
   let append t1 t2 = let t1 = copy t1 in append t2 t1; t1
+  let to_list_backwards _ = raise NotImplemented
+  let of_list_backwards _ = raise NotImplemented
+  let hd _ = raise NotImplemented
+  let tail _ = raise NotImplemented
+  let snoc t x = let t = copy t in add t x; t
+  let cons _ _ = raise NotImplemented
+  let init _ = raise NotImplemented
 end
 
 module DequeContainer : Container = struct
@@ -72,6 +103,12 @@ module DequeContainer : Container = struct
   let filter_map _ _ = raise NotImplemented
   let get _ _ = raise NotImplemented
   let last q = match rear q with None -> raise Exit | Some (_, e) -> e
+  let to_list_backwards _ = raise NotImplemented
+  let of_list_backwards _ = raise NotImplemented
+  let hd t = match front t with Some (hd, _) -> hd | None -> raise Exit
+  let tail t = match front t with Some (_, tl) -> tl | None -> raise Exit
+  let init t = match rear t with Some (tl, _) -> tl | None -> raise Exit
+  let cons t x = cons x t
 end
 
 module ListContainer : Container = struct
@@ -80,6 +117,14 @@ module ListContainer : Container = struct
   let iter_right _ _ = raise NotImplemented
   let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
   let get = at
+  let to_list_backwards _ = raise NotImplemented
+  let of_list_backwards _ = raise NotImplemented
+  let of_list _ = raise NotImplemented
+  let to_list _ = raise NotImplemented
+  let tail = tl
+  let snoc _ _ = raise NotImplemented
+  let cons t x = cons x t
+  let init _ = raise NotImplemented
 end
 
 module RefListContainer : Container = struct
@@ -93,14 +138,27 @@ module RefListContainer : Container = struct
   let filter_map _ _ = raise NotImplemented
   let get = Index.at_index
   let append _ _ = raise NotImplemented
+  let to_list_backwards _ = raise NotImplemented
+  let of_list_backwards _ = raise NotImplemented
+  let cons t x = let t = of_list (to_list t) in push t x; t
+  let snoc t x = let t = of_list (to_list t) in add t x; t
+  let init _ = raise NotImplemented
+  let tail = tl
 end
 
 module VectContainer : Container = struct
   include BatVect
   let map_right _ _ = raise NotImplemented
-  let iter_right _ _ = raise NotImplemented
-  let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
-  let append = concat
+  and iter_right _ _ = raise NotImplemented
+  and fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
+  and append = concat
+  and to_list_backwards _ = raise NotImplemented
+  and of_list_backwards _ = raise NotImplemented
+  and cons t x = prepend x t
+  and snoc t x = append x t
+  and hd _ = raise NotImplemented
+  and tail _ = raise NotImplemented
+  and init _ = raise NotImplemented
 end
 
 module FingerTreeContainer : Container = struct
@@ -113,6 +171,9 @@ module FingerTreeContainer : Container = struct
   let filter _ _ = raise NotImplemented
   let filter_map _ _ = raise NotImplemented
   let last = last_exn
+  let hd = head_exn
+  let init = init_exn
+  let tail = tail_exn
 end
 
 module SeqContainer : Container = struct
@@ -131,6 +192,19 @@ module SeqContainer : Container = struct
   let mapi _ _ = raise NotImplemented
   let iteri _ _ = raise NotImplemented
   let get = at
+  let to_list_backwards _ = raise NotImplemented
+  let of_list_backwards _ = raise NotImplemented
+  let of_list _ = raise NotImplemented
+  let to_list _ = raise NotImplemented
+  let tail = tl
+  let init _ = raise NotImplemented
+  let snoc _ = raise NotImplemented
+  let cons t x = cons x t
+  let hd e =
+    let x = try Some (hd e) with _ -> None in
+    let y = try Some (first e) with _ -> None in
+    assert (x = y);
+    match x with None -> raise Exit | Some e -> e
 end
 
 module TestContainer(C : Container) = struct
@@ -310,6 +384,12 @@ module TestContainer(C : Container) = struct
 
   let () =
     repeat_twice (fun () ->
+      assert (C.hd c = 0);
+      assert (try ignore (C.hd (C.of_enum (BatEnum.empty ()))); false with _ -> true)
+    )
+
+  let () =
+    repeat_twice (fun () ->
       let c = C.append c rev_c in
       assert (C.length c = n * 2);
       let i = ref (-1) in
@@ -323,6 +403,70 @@ module TestContainer(C : Container) = struct
       done;
       assert (try ignore (C.get c (-1)); false with _ -> true);
       assert (try ignore (C.get c n); false with _ -> true);
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      assert (C.to_list c = Array.to_list a)
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      assert (Array.of_list (C.to_list (C.of_list (Array.to_list a))) = a)
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      assert (C.to_list_backwards c = List.rev (Array.to_list a))
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      assert (Array.of_list (List.rev (C.to_list (C.of_list_backwards (Array.to_list a)))) = a)
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let c = C.snoc c n in
+      assert (C.length c = n + 1);
+      let i = ref (-1) in
+      C.iter (fun elt -> incr i; assert (!i = elt)) c;
+      assert (!i = n)
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let c = C.cons c (-1) in
+      assert (C.length c = n + 1);
+      let i = ref (-2) in
+      C.iter (fun elt -> incr i; assert (!i = elt)) c;
+      assert (!i = n - 1)
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let c = C.tail c in
+      assert (C.length c = n - 1);
+      let i = ref 0 in
+      C.iter (fun elt -> incr i; assert (!i = elt)) c;
+      assert (!i = n - 1);
+      assert (
+        try ignore (C.tail (C.of_enum (BatEnum.empty ()))); false
+        with _ -> true
+      )
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let c = C.init c in
+      assert (C.length c = n - 1);
+      let i = ref (-1) in
+      C.iter (fun elt -> incr i; assert (!i = elt)) c;
+      assert (!i = n - 2);
+      assert (
+        try ignore (C.init (C.of_enum (BatEnum.empty ()))); false
+        with _ -> true
+      )
     )
 
 end
