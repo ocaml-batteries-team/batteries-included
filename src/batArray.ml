@@ -269,8 +269,7 @@ let enum xs =
       ~count:(fun () ->
 		n - !start)
       ~clone:(fun () ->
-		let xs' = Array.sub xs !start (n - !start) in
-		make (ref 0) xs')
+		make (ref !start) xs)
   in
   make (ref 0) xs
 (*$Q enum
