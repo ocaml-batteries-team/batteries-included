@@ -36,75 +36,101 @@ end
 
 exception NotImplemented
 
+let ni1 = fun _ -> raise NotImplemented
+let ni2 = fun _ _ -> raise NotImplemented
+let ni3 = fun _ _ _ -> raise NotImplemented
+
+module DllistContainer : Container = struct
+  include BatDllist
+  let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
+  and hd = get
+  and get l i =
+    if i < 0 || i >= length l then raise Exit else get (skip l i)
+  and snoc l x = let l = copy l in ignore (append (prev l) x); l
+  and cons l x = let l = copy l in prepend l x
+  and append l1 l2 = let l1 = copy l1 in let l2 = copy l2 in splice (prev l1) l2; l1
+  and backwards = ni1 (*rev_enum*)
+  and init = ni1
+  and tail = ni1
+  and to_list_backwards = ni1
+  and of_list_backwards = ni1
+  and last = ni1
+  and mapi = ni2
+  and iteri = ni2
+  and of_backwards = ni1
+  and map_right = ni2
+  and iter_right = ni2
+end
+
 module ArrayContainer : Container = struct
   include Array
   include BatArray
-  let map_right _ _ = raise NotImplemented
-  let iter_right _ _ = raise NotImplemented
+  let map_right = ni2
+  let iter_right = ni2
   let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
-  let last _ = raise NotImplemented
-  let of_list_backwards _ = raise NotImplemented
-  let to_list_backwards _ = raise NotImplemented
-  let hd _ = raise NotImplemented
-  let snoc _ = raise NotImplemented
-  let cons _ = raise NotImplemented
+  let last = ni1
+  let of_list_backwards = ni1
+  let to_list_backwards = ni1
+  let hd = ni1
+  let snoc = ni1
+  let cons = ni1
   let take = head
   let drop = tail
-  let tail _ = raise NotImplemented
-  let init _ = raise NotImplemented
+  let tail = ni1
+  let init = ni1
 end
 
 module LazyListContainer : Container = struct
   include BatLazyList
-  let map_right _ _ = raise NotImplemented
-  let iter_right _ _ = raise NotImplemented
+  let map_right = ni2
+  let iter_right = ni2
   let fold_right f acc t = fold_right (fun acc elt -> f elt acc) acc t
-  let of_backwards _ = raise NotImplemented
-  let backwards _ = raise NotImplemented
+  let of_backwards = ni1
+  let backwards = ni1
   let get = at
-  let to_list_backwards _ = raise NotImplemented
-  let of_list_backwards _ = raise NotImplemented
-  let tail _ = raise NotImplemented
-  let snoc _ = raise NotImplemented
+  let to_list_backwards = ni1
+  let of_list_backwards = ni1
+  let tail = ni1
+  let snoc = ni1
   let cons t x = cons x t
-  let init _ = raise NotImplemented
+  let init = ni1
 end
 
 module DynArrayContainer : Container = struct
   include BatDynArray
-  let of_backwards _ = raise NotImplemented
-  let backwards _ = raise NotImplemented
-  let iter_right _ _ = raise NotImplemented
-  let map_right _ _ = raise NotImplemented
+  let of_backwards = ni1
+  let backwards = ni1
+  let iter_right = ni2
+  let map_right = ni2
   let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
-  let exists _ _ = raise NotImplemented
-  let for_all _ _ = raise NotImplemented
+  let exists = ni2
+  let for_all = ni2
   let append t1 t2 = let t1 = copy t1 in append t2 t1; t1
-  let to_list_backwards _ = raise NotImplemented
-  let of_list_backwards _ = raise NotImplemented
-  let hd _ = raise NotImplemented
-  let tail _ = raise NotImplemented
+  let to_list_backwards = ni1
+  let of_list_backwards = ni1
+  let hd = ni1
+  let tail = ni1
   let snoc t x = let t = copy t in add t x; t
-  let cons _ _ = raise NotImplemented
-  let init _ = raise NotImplemented
+  let cons = ni2
+  let init = ni1
 end
 
 module DequeContainer : Container = struct
   include BatDeque
   let length = size
-  let of_backwards _ = raise NotImplemented
-  let backwards _ = raise NotImplemented
-  let iter_right _ _ = raise NotImplemented
-  let map_right _ _ = raise NotImplemented
+  let of_backwards = ni1
+  let backwards = ni1
+  let iter_right = ni2
+  let map_right = ni2
   let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
-  let exists _ _ = raise NotImplemented
-  let for_all _ _ = raise NotImplemented
-  let filter _ _ = raise NotImplemented
-  let filter_map _ _ = raise NotImplemented
-  let get _ _ = raise NotImplemented
+  let exists = ni2
+  let for_all = ni2
+  let filter = ni2
+  let filter_map = ni2
+  let get = ni2
   let last q = match rear q with None -> raise Exit | Some (_, e) -> e
-  let to_list_backwards _ = raise NotImplemented
-  let of_list_backwards _ = raise NotImplemented
+  let to_list_backwards = ni1
+  let of_list_backwards = ni1
   let hd t = match front t with Some (hd, _) -> hd | None -> raise Exit
   let tail t = match front t with Some (_, tl) -> tl | None -> raise Exit
   let init t = match rear t with Some (tl, _) -> tl | None -> raise Exit
@@ -113,63 +139,63 @@ end
 
 module ListContainer : Container = struct
   include BatList
-  let map_right _ _ = raise NotImplemented
-  let iter_right _ _ = raise NotImplemented
+  let map_right = ni2
+  let iter_right = ni2
   let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
   let get = at
-  let to_list_backwards _ = raise NotImplemented
-  let of_list_backwards _ = raise NotImplemented
-  let of_list _ = raise NotImplemented
-  let to_list _ = raise NotImplemented
+  let to_list_backwards = ni1
+  let of_list_backwards = ni1
+  let of_list = ni1
+  let to_list = ni1
   let tail = tl
-  let snoc _ _ = raise NotImplemented
+  let snoc = ni2
   let cons t x = cons x t
-  let init _ = raise NotImplemented
+  let init = ni1
 end
 
 module RefListContainer : Container = struct
   include BatRefList
-  let map_right _ _ = raise NotImplemented
-  let iter_right _ _ = raise NotImplemented
+  let map_right = ni2
+  let iter_right = ni2
   let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
-  let mapi _ _ = raise NotImplemented
-  let iteri _ _ = raise NotImplemented
+  let mapi = ni2
+  let iteri = ni2
   let filter f l = let t = of_list (to_list l) in filter f t; t
-  let filter_map _ _ = raise NotImplemented
+  let filter_map = ni2
   let get = Index.at_index
-  let append _ _ = raise NotImplemented
-  let to_list_backwards _ = raise NotImplemented
-  let of_list_backwards _ = raise NotImplemented
+  let append = ni2
+  let to_list_backwards = ni1
+  let of_list_backwards = ni1
   let cons t x = let t = of_list (to_list t) in push t x; t
   let snoc t x = let t = of_list (to_list t) in add t x; t
-  let init _ = raise NotImplemented
+  let init = ni1
   let tail = tl
 end
 
 module VectContainer : Container = struct
   include BatVect
-  let map_right _ _ = raise NotImplemented
-  and iter_right _ _ = raise NotImplemented
+  let map_right = ni2
+  and iter_right = ni2
   and fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
   and append = concat
-  and to_list_backwards _ = raise NotImplemented
-  and of_list_backwards _ = raise NotImplemented
+  and to_list_backwards = ni1
+  and of_list_backwards = ni1
   and cons t x = prepend x t
   and snoc t x = append x t
-  and hd _ = raise NotImplemented
-  and tail _ = raise NotImplemented
-  and init _ = raise NotImplemented
+  and hd = ni1
+  and tail = ni1
+  and init = ni1
 end
 
 module FingerTreeContainer : Container = struct
   include BatFingerTree
   let length = size
-  let mapi _ _ = raise NotImplemented
-  let iteri _ _ = raise NotImplemented
-  let exists _ _ = raise NotImplemented
-  let for_all _ _ = raise NotImplemented
-  let filter _ _ = raise NotImplemented
-  let filter_map _ _ = raise NotImplemented
+  let mapi = ni2
+  let iteri = ni2
+  let exists = ni2
+  let for_all = ni2
+  let filter = ni2
+  let filter_map = ni2
   let last = last_exn
   let hd = head_exn
   let init = init_exn
@@ -178,27 +204,27 @@ end
 
 module SeqContainer : Container = struct
   include BatSeq
-  let iter_right _ _ = raise NotImplemented
-  let map_right _ _ = raise NotImplemented
+  let iter_right = ni2
+  let map_right = ni2
   let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
-  let backwards _ = raise NotImplemented
+  let backwards = ni1
   let rec of_enum e =
     fun () ->
       let e = BatEnum.clone e in
       match BatEnum.get e with
       | None -> Nil
       | Some v -> Cons (v, of_enum e)
-  let of_backwards _ = raise NotImplemented
-  let mapi _ _ = raise NotImplemented
-  let iteri _ _ = raise NotImplemented
+  let of_backwards = ni1
+  let mapi = ni2
+  let iteri = ni2
   let get = at
-  let to_list_backwards _ = raise NotImplemented
-  let of_list_backwards _ = raise NotImplemented
-  let of_list _ = raise NotImplemented
-  let to_list _ = raise NotImplemented
+  let to_list_backwards = ni1
+  let of_list_backwards = ni1
+  let of_list = ni1
+  let to_list = ni1
   let tail = tl
-  let init _ = raise NotImplemented
-  let snoc _ = raise NotImplemented
+  let init = ni1
+  let snoc = ni1
   let cons t x = cons x t
   let hd e =
     let x = try Some (hd e) with _ -> None in
@@ -208,7 +234,7 @@ module SeqContainer : Container = struct
 end
 
 module TestContainer(C : Container) = struct
-  let n = 1000
+  let n = 500
   let a = Array.init n (fun i -> i)
   let rev_a = Array.init n (fun i -> n - 1 - i)
   let c = C.of_enum (BatArray.enum a)
@@ -481,4 +507,5 @@ let tests = "Container" >::: [
   "DynArray" >:: (fun () -> let module M = TestContainer(DynArrayContainer) in ());
   "Deque" >:: (fun () -> let module M = TestContainer(DequeContainer) in ());
   "Lazylist" >:: (fun () -> let module M = TestContainer(LazyListContainer) in ());
+  "Dllist" >:: (fun () -> let module M = TestContainer(DllistContainer) in ());
 ]

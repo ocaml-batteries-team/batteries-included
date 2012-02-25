@@ -251,7 +251,7 @@ let of_list lst =
 
 let enum node =
 	let next e () =
-		if e.valid == false then
+		if not e.valid then
 			raise BatEnum.No_more_elements
 		else
 			begin
@@ -263,7 +263,7 @@ let enum node =
 			rval
 			end
 	and count e () =
-		if e.valid == false then
+		if not e.valid then
 			0
 		else
 			let rec loop cnt n =
@@ -283,7 +283,7 @@ let enum node =
 
 let rev_enum node =
 	let prev e () =
-		if e.valid == false then
+		if not e.valid then
 			raise BatEnum.No_more_elements
 		else
 			begin
@@ -295,7 +295,7 @@ let rev_enum node =
 			rval
 			end
 	and count e () =
-		if e.valid == false then
+		if not e.valid then
 			0
 		else
 			let rec loop cnt n =
