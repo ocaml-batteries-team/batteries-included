@@ -114,9 +114,28 @@ val abs : t -> t
 val modulo : t -> t -> t
 val pow : t -> t -> t
 val compare : t -> t -> int
+val equal : t -> t -> bool
+
 val of_int : int -> t
 val to_int : t -> int
+(** [to_int c] is the integer part of the real part of [c] *)
+
 val of_string : string -> t
+(** [of_string s] accepts strings with the following formats:
+
+    (<int>|<float>) (+|-) i ( * | . |  ) (<int>|<float>)
+
+    where (a|b|c) is either a or b or c.
+
+    In addition the following degenerate formats are also accepted:
+
+    (+|-) i ( * | . |  ) (<int>|<float>)
+
+    (<int>|<float>) (+|-) i
+
+    (<int>|<float>)
+*)
+
 val to_string : t -> string
 val ( + ) : t -> t -> t
 val ( - ) : t -> t -> t

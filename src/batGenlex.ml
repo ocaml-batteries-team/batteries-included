@@ -4,6 +4,14 @@ open BatCharParser
 open Genlex
 
 
+let string_of_token = function
+  | Kwd s -> Printf.sprintf "Kwd %S" s
+  | Ident s -> Printf.sprintf "Ident %S" s
+  | Int i -> Printf.sprintf "Int %d" i
+  | Float f -> Printf.sprintf "Float %f" f
+  | String s -> Printf.sprintf "String %S" s
+  | Char c -> Printf.sprintf "Char %C" c
+
 type lexer_error =
   | IllegalCharacter of char
   | NotReallyAChar

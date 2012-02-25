@@ -38,6 +38,14 @@
 
 open Genlex
 
+type lexer_error =
+  | IllegalCharacter of char
+  | NotReallyAChar
+  | NotReallyAnEscape
+  | EndOfStream
+
+exception LexerError of lexer_error * int
+
 type t
 (** A lexer*)
 
@@ -52,6 +60,8 @@ val to_enum_filter     :  t -> char BatEnum.t     ->  token BatEnum.t
 
 val to_lazy_list_filter:  t -> char BatLazyList.t ->  token BatLazyList.t
 (** Apply the lexer to a lazy list.*)
+
+val string_of_token : token -> string
 
 (**{6 Extending to other languages}*)
 open BatCharParser
