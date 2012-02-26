@@ -121,3 +121,11 @@ val bin_ord : 'a ord -> 'a -> 'a -> 'b ord -> 'b -> 'b -> order
 *)
 val bin_eq : 'a eq -> 'a -> 'a -> 'b eq -> 'b -> 'b -> bool
 
+
+val eq_by : ('a -> 'b) -> 'a eq
+val cmp_by : ('a -> 'b) -> 'a comp
+val ord_by : ('a -> 'b) -> 'a ord
+(** Build a [eq], [cmp] or [ord] function from a projection function.  For
+   example, if you wanted to compare integers based on their lowest 4
+   bits, you could write [let cmp_bot4 = cmp_of_proj (fun x -> x land
+   0xf)] and use cmp_bot4 as the desired integer comparator. *)

@@ -137,3 +137,7 @@ let bin_comp comp1 t1 t1' comp2 t2 t2' =
   match comp1 t1 t1' with
     | 0 -> comp2 t2 t2'
     | nzero -> nzero
+
+let eq_by proj = fun x y -> proj x = proj y
+let cmp_by proj = fun x y -> Pervasives.compare (proj x) (proj y)
+let ord_by proj = fun x y -> ord0 (Pervasives.compare (proj x) (proj y))
