@@ -322,23 +322,24 @@ val rindex_ofq : 'a -> 'a list -> int option
 (** [rindex_ofq e l] behaves as [rindex_of e l] except it uses
 physical equality*)
 
-val unique : ?cmp:('a -> 'a -> bool) -> 'a list -> 'a list
+val unique : ?eq:('a -> 'a -> bool) -> 'a list -> 'a list
 (** [unique cmp l] returns the list [l] without any duplicate element.
-Default comparator ( = ) is used if no comparison function specified.
+    All but the last element of each equality class is removed.
+    Default comparator ( = ) is used if no comparison function
+    specified.
 
-This function takes O(n²) time.
-@see 'sort_unique' to save time in cases when reordering the list is
-acceptable
-*)
-
-val unique_eq : ?eq:('a -> 'a -> bool) -> 'a list -> 'a list
-(** As [unique] except comparator label is ~eq.
-@since 1.3.0
-*)
+    This function takes O(n^2) time.
+    @see 'sort_unique' to save time in cases when reordering the list is
+    acceptable
+    @since 2.0
+ *)
 
 val unique_cmp : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
-(** As [unique], except comparator parameter returns an int
-@since 1.3.0 *)
+(** As [unique], except comparator parameter returns an int.  Default
+    comparator is [Pervasives.compare].  This function takes O(n log n)
+    time.
+
+    @since 1.3.0 *)
 
 
 (**{6 Association lists}*)
@@ -418,7 +419,7 @@ list if [l] have less than [n] elements. *)
 val take_while : ('a -> bool) -> 'a list -> 'a list
 (** [take_while p xs] returns the
 longest prefix (possibly empty) of [xs] of elements that satisfy the
-predicate [p]. *)
+predicate [p]. Warning: Not tail recursive.*)
 
 val drop_while : ('a -> bool) -> 'a list -> 'a list
 (** [drop_while p xs] returns the suffix remaining after

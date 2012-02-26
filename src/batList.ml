@@ -68,6 +68,11 @@ let is_empty = function
   | _  -> false
 
 
+(*$T is_empty
+  is_empty []
+  not (is_empty [1])
+ *)
+
 let nth l index =
   if index < 0 then invalid_arg "Negative index not allowed";
   let rec loop n = function
@@ -78,6 +83,12 @@ let nth l index =
   loop index l
 
 let at = nth
+
+(*$T at
+  try ignore (at [] 0); false with Invalid_argument _ -> true
+  try ignore (at [1;2;3] (-1)); false with Invalid_argument _ -> true
+  at [1;2;3] 2 = 3
+ *)
 
 let append l1 l2 =
   match l1 with
@@ -113,6 +124,11 @@ let rec flatten l =
 
 let concat = flatten
 
+(*$T flatten
+  flatten [[1;2];[3];[];[4;5;6]] = [1;2;3;4;5;6]
+  flatten [[]] = []
+ *)
+
 let map f = function
   | [] -> []
   | h :: t ->
@@ -131,6 +147,13 @@ let rec drop n = function
   | _ :: l when n > 0 -> drop (n-1) l
   | l -> l
 
+(*$= drop & ~printer:(IO.to_string (List.print Int.print))
+  (drop 0 [1;2;3]) [1;2;3]
+  (drop 3 [1;2;3]) []
+  (drop 4 [1;2;3]) []
+  (drop 1 [1;2;3]) [2;3]
+ *)
+
 let take n l =
   let rec loop n dst = function
     | h :: t when n > 0 ->
@@ -144,16 +167,33 @@ let take n l =
   loop n dummy l;
   dummy.tl
 
+(*$= take & ~printer:(IO.to_string (List.print Int.print))
+  (take 0 [1;2;3]) []
+  (take 3 [1;2;3]) [1;2;3]
+  (take 4 [1;2;3]) [1;2;3]
+  (take 1 [1;2;3]) [1]
+ *)
+
 (* takewhile and dropwhile by Richard W.M. Jones. *)
-let rec take_while f = function
+let rec take_while f = function (* WARNING: NOT TAIL RECURSIVE *)
   | [] -> []
   | x :: xs when f x -> x :: take_while f xs
   | _ -> []
+
+(*$= take_while & ~printer:(IO.to_string (List.print Int.print))
+  (take_while ((=) 3) [3;3;4;3;3]) [3;3]
+  (take_while ((=) 3) [3]) [3]
+ *)
 
 let rec drop_while f = function
   | [] -> []
   | x :: xs when f x -> drop_while f xs
   | xs -> xs
+
+(*$= drop_while & ~printer:(IO.to_string (List.print Int.print))
+  (drop_while ((=) 3) [3;3;4;3;3]) [4;3;3]
+  (drop_while ((=) 3) [3]) []
+ *)
 
 let takewhile = take_while
 let dropwhile = drop_while
@@ -177,11 +217,11 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
     | (h::t, None,   Some y)     -> rev_append (aux [h] t) [y]
     | (h::t, Some x, Some y)     -> x::rev_append (aux [h] t) [y]
 
-let rec unique ?(cmp = ( = )) l =
+let rec unique ?(eq = ( = )) l =
   let rec loop dst = function
     | [] -> ()
     | h :: t ->
-      match exists (cmp h) t with
+      match exists (eq h) t with
       | true -> loop dst t
       | false ->
         let r = { hd =  h; tl = [] }  in
@@ -192,7 +232,11 @@ let rec unique ?(cmp = ( = )) l =
   loop dummy l;
   dummy.tl
 
-let unique_eq ?eq l = unique ?cmp:eq l
+(*$= unique & ~printer:(IO.to_string (List.print Int.print))
+  [1;2;3;4;5;6] (unique [1;1;2;2;3;3;4;5;6;4;5;6])
+  [1] (unique [1;1;1;1;1;1;1;1;1;1])
+  [1;2] (unique ~eq:(fun x y -> x land 1 = y land 1) [2;2;2;4;6;8;3;1;2])
+ *)
 
 let unique_cmp ?(cmp = Pervasives.compare) l =
   let set      = ref (BatMap.PMap.create cmp) in
