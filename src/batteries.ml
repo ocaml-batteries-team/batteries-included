@@ -122,6 +122,7 @@ module Hashcons = BatHashcons
 module Heap = BatHeap
 module FingerTree = BatFingerTree
 module Logger = BatLogger
+module MultiMap = BatMultiMap
 module ParserCo = BatParserCo
 module PathGen = BatPathGen
 module Print = BatPrint

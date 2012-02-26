@@ -57,6 +57,7 @@ BatInterfaces
 BatLazyList
 BatLogger
 BatMultiPMap
+BatMultiMap
 BatNumber
 BatOption
 BatOptParse
