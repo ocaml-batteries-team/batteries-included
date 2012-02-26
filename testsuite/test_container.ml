@@ -31,6 +31,14 @@ module type Container = sig
   val tail : 'a t -> 'a t
   val init : 'a t -> 'a t
   val hd : 'a t -> 'a
+  val find : ('a -> bool) -> 'a t -> 'a
+  val find_right : ('a -> bool) -> 'a t -> 'a
+  val is_empty : _ t -> bool
+  val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
+  val t_printer_delim : string * string
+  val print : ?first:string -> ?last:string -> ?sep:string
+    -> ('a BatInnerIO.output -> 'b -> unit)
+    -> 'a BatInnerIO.output -> 'b t -> unit
 (* sort, stable_sort, split_at, iter2, for_all2, take, drop, mem, find, find_map, reduce, max, min, invariants, reverse *)
 end
 
@@ -39,6 +47,8 @@ exception NotImplemented
 let ni1 = fun _ -> raise NotImplemented
 let ni2 = fun _ _ -> raise NotImplemented
 let ni3 = fun _ _ _ -> raise NotImplemented
+let ni4 = fun _ _ _ _ -> raise NotImplemented
+let ni_print ?first:_ ?last:_ ?sep:_ = ni3
 
 module DllistContainer : Container = struct
   include BatDllist
@@ -60,6 +70,11 @@ module DllistContainer : Container = struct
   and of_backwards = ni1
   and map_right = ni2
   and iter_right = ni2
+  and find f t = get (find f t)
+  and find_right = ni2
+  and is_empty = ni1
+  and t_printer = ni4
+  and t_printer_delim = ("","")
 end
 
 module ArrayContainer : Container = struct
@@ -78,6 +93,9 @@ module ArrayContainer : Container = struct
   let drop = tail
   let tail = ni1
   let init = ni1
+  and find_right = ni2
+  and is_empty = ni1
+  and t_printer_delim = ("[|", "|]")
 end
 
 module LazyListContainer : Container = struct
@@ -94,6 +112,9 @@ module LazyListContainer : Container = struct
   let snoc = ni1
   let cons t x = cons x t
   let init = ni1
+  and find_right = ni2
+  and t_printer = ni4
+  and t_printer_delim = ("","")
 end
 
 module DynArrayContainer : Container = struct
@@ -113,28 +134,60 @@ module DynArrayContainer : Container = struct
   let snoc t x = let t = copy t in add t x; t
   let cons = ni2
   let init = ni1
+  let find f t = get t (index_of f t)
+  and find_right = ni2
+  and is_empty = ni1
+  and t_printer_delim = ("[|", "|]")
 end
 
 module DequeContainer : Container = struct
   include BatDeque
   let length = size
-  let of_backwards = ni1
-  let backwards = ni1
-  let iter_right = ni2
-  let map_right = ni2
-  let fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
-  let exists = ni2
-  let for_all = ni2
-  let filter = ni2
-  let filter_map = ni2
-  let get = ni2
-  let last q = match rear q with None -> raise Exit | Some (_, e) -> e
-  let to_list_backwards = ni1
-  let of_list_backwards = ni1
-  let hd t = match front t with Some (hd, _) -> hd | None -> raise Exit
-  let tail t = match front t with Some (_, tl) -> tl | None -> raise Exit
-  let init t = match rear t with Some (tl, _) -> tl | None -> raise Exit
-  let cons t x = cons x t
+  and of_backwards = ni1
+  and backwards = ni1
+  and iter_right = ni2
+  and map_right = ni2
+  and fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
+  and exists = ni2
+  and for_all = ni2
+  and filter = ni2
+  and filter_map = ni2
+  and get t n =
+    let elt1 = at ~backwards:false t n in
+    let elt2 = at ~backwards:true t (size t - 1 - n) in
+    assert (elt1 = elt2);
+    BatOption.get elt1
+  and last q = match rear q with None -> raise Exit | Some (_, e) -> e
+  and to_list_backwards = ni1
+  and of_list_backwards = ni1
+  and hd t = match front t with Some (hd, _) -> hd | None -> raise Exit
+  and tail t = match front t with Some (_, tl) -> tl | None -> raise Exit
+  and init t = match rear t with Some (tl, _) -> tl | None -> raise Exit
+  and cons t x = cons x t
+  and find f t =
+    match find ~backwards:false f t with
+    | None -> raise Not_found
+    | Some (_, x) -> x
+  and find_right f t =
+    match find ~backwards:true f t with
+    | None -> raise Not_found
+    | Some (_, x) -> x
+  and append t1 t2 =
+    let res1 = append t1 t2 in
+    let res2 = append_list t1 (to_list t2) in
+    let res3 = prepend_list (to_list t1) t2 in
+    assert_equal (to_list res1) (to_list res2);
+    assert_equal (to_list res1) (to_list res3);
+    res1
+  and of_enum e =
+    let orig = of_enum (BatEnum.clone e) in
+    let n = BatEnum.count e in
+    let l = BatList.of_enum e in
+    let l1, l2 = BatList.split_at (n / 2) l in
+    let q = prepend_list l1 (append_list empty l2) in
+    assert_equal (to_list orig) (to_list q);
+    q
+  and t_printer_delim = ("[", "]")
 end
 
 module ListContainer : Container = struct
@@ -151,6 +204,8 @@ module ListContainer : Container = struct
   let snoc = ni2
   let cons t x = cons x t
   let init = ni1
+  and find_right = ni2
+  and t_printer_delim = ("[", "]")
 end
 
 module RefListContainer : Container = struct
@@ -170,6 +225,10 @@ module RefListContainer : Container = struct
   let snoc t x = let t = of_list (to_list t) in add t x; t
   let init = ni1
   let tail = tl
+  and find_right = ni2
+  and t_printer = ni4
+  and t_printer_delim = ("","")
+  and print = ni_print
 end
 
 module VectContainer : Container = struct
@@ -185,6 +244,9 @@ module VectContainer : Container = struct
   and hd = ni1
   and tail = ni1
   and init = ni1
+  and find_right = ni2
+  and t_printer = ni4
+  and t_printer_delim = ("","")
 end
 
 module FingerTreeContainer : Container = struct
@@ -200,6 +262,9 @@ module FingerTreeContainer : Container = struct
   let hd = head_exn
   let init = init_exn
   let tail = tail_exn
+  let find = ni2
+  and find_right = ni2
+  and t_printer_delim = ("[", "]")
 end
 
 module SeqContainer : Container = struct
@@ -231,6 +296,9 @@ module SeqContainer : Container = struct
     let y = try Some (first e) with _ -> None in
     assert (x = y);
     match x with None -> raise Exit | Some e -> e
+  let find f t = BatOption.get (find f t)
+  and find_right = ni2
+  and t_printer_delim = ("[", "]")
 end
 
 module TestContainer(C : Container) = struct
@@ -416,16 +484,39 @@ module TestContainer(C : Container) = struct
 
   let () =
     repeat_twice (fun () ->
-      let c = C.append c rev_c in
-      assert (C.length c = n * 2);
+      let c2 = C.append c rev_c in
+      assert (C.length c2 = n * 2);
       let i = ref (-1) in
-      C.iter (fun elt -> incr i; assert (elt = min !i (2 * n - 1 - !i))) c
+      C.iter (fun elt -> incr i; assert (elt = min !i (2 * n - 1 - !i))) c2;
+      assert (!i = 2 * n - 1);
+
+      let c2 = C.append c (C.append c c) in
+      assert (C.length c2 = n * 3);
+      let i = ref (-1) in
+      C.iter (fun elt -> incr i; assert (elt = !i mod n)) c2;
+      assert (!i = 3 * n - 1);
+
+      let c2 = C.append (C.append c c) c in
+      assert (C.length c2 = n * 3);
+      let i = ref (-1) in
+      C.iter (fun elt -> incr i; assert (elt = !i mod n)) c2;
+      assert (!i = 3 * n - 1);
+
+      let c2 = C.append c (C.of_enum (BatList.enum [n; n+1])) in
+      let i = ref (-1) in
+      C.iter (fun elt -> incr i; assert (elt = !i)) c2;
+      assert (!i = n + 1);
+
+      let c2 = C.append (C.of_enum (BatList.enum [-2; -1])) c in
+      let i = ref (-3) in
+      C.iter (fun elt -> incr i; assert (elt = !i)) c2;
+      assert (!i = n - 1);
     )
 
   let () =
     repeat_twice (fun () ->
       for i = 0 to n - 1 do
-        assert (C.get c i = i)
+        assert_equal ~printer:string_of_int i (C.get c i)
       done;
       assert (try ignore (C.get c (-1)); false with _ -> true);
       assert (try ignore (C.get c n); false with _ -> true);
@@ -493,6 +584,58 @@ module TestContainer(C : Container) = struct
         try ignore (C.init (C.of_enum (BatEnum.empty ()))); false
         with _ -> true
       )
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let i = ref (-1) in
+      let elt = C.find (fun elt -> incr i; assert (!i = elt); elt = 200) c in
+      assert (elt = 200);
+      assert (!i = 200);
+      assert (try ignore (C.find (fun _ -> false) c); false with _ -> true)
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let i = ref n in
+      let elt = C.find_right (fun elt -> decr i; assert (!i = elt); elt = 200) c in
+      assert (elt = 200);
+      assert (!i = 200);
+      assert (try ignore (C.find_right (fun _ -> false) c); false with _ -> true)
+    )
+
+  let () =
+    try repeat_twice (fun () ->
+      assert_equal true (C.is_empty (C.of_enum (BatList.enum [])));
+      assert_equal false (C.is_empty (C.of_enum (BatList.enum [1])));
+      assert_equal false (C.is_empty (C.of_enum (BatList.enum [1;2])));
+      assert_equal false (C.is_empty (C.of_enum (BatList.enum [1;2;3])));
+      assert_equal false (C.is_empty c);
+    ) with BatDllist.Empty -> ()
+
+  let () =
+    repeat_twice (fun () ->
+      let stringify l =
+        try
+          let c = C.of_enum (BatList.enum l) in
+          BatIO.to_string (C.print ~sep:"," ~first:"<" ~last:">" BatInt.print) c
+        with BatDllist.Empty -> "<>" in
+      assert_equal "<2,4,66>" (stringify [2;4;66]);
+      assert_equal "<2>" (stringify [2]);
+      assert_equal "<>" (stringify []);
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let p, s = C.t_printer_delim in
+      let stringify l =
+        try
+          let c = C.of_enum (BatList.enum l) in
+          BatIO.string_of_t_printer (C.t_printer BatInt.t_printer) c
+        with BatDllist.Empty -> p ^ s in
+      assert_equal (p ^ "2; 4; 66" ^ s) (stringify [2;4;66]);
+      assert_equal (p ^ "2" ^ s) (stringify [2]);
+      assert_equal (p ^ s) (stringify []);
     )
 
 end

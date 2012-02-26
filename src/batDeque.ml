@@ -270,4 +270,4 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out dq =
 *)
 
 let t_printer elepr _paren out x = print (elepr false) out x
-let dq_printer elepr _paren out x =  print (elepr false) out x
+let dq_printer = t_printer
