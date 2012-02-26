@@ -114,56 +114,42 @@ let of_list l = { front = l ; flen = List.length l ;
 
 let is_empty q = size q = 0
 
-let append_rl q r =
-  let rec spin rear = function
-    | [] -> r.rear @ rear
-    | x :: rfront ->
-        spin (x :: rear) rfront
-  in { q with
-         rlen = q.rlen + size r ;
-         rear = spin q.rear r.front }
-
-let append_lr q r =
-  let rec spin front = function
-    | [] -> q.front @ front
-    | x :: qrear ->
-        spin (x :: front) qrear
-  in { r with
-         flen = r.flen + size q ;
-         front = spin r.front q.rear }
-
 let append q r =
   if size q > size r then
-    append_rl q r
+    { q with
+      rlen = q.rlen + size r ;
+      rear = BatList.append r.rear (List.rev_append r.front q.rear) }
   else
-    append_lr q r
+    { r with
+      flen = r.flen + size q ;
+      front = BatList.append q.front (List.rev_append q.rear r.front) }
 
 let append_list q l =
   let n = List.length l in
-  let rec spin rear = function
-    | [] -> rear
-    | x :: l -> spin (x :: rear) l
-  in { q with
-         rear = spin q.rear l ;
-         rlen = q.rlen + n }
+  { q with
+    rear = List.rev_append l q.rear;
+    rlen = q.rlen + n }
 
 let prepend_list l q =
   let n = List.length l in
   { q with
-      front = l @ q.front ;
+      front = BatList.append l q.front ;
       flen = q.flen + n }
 
-let rec at ?(backwards=false) q n =
-  if backwards then at (rev q) n
-  else if n >= size q then None
+let at ?(backwards=false) q n =
+  let size_front = q.flen in
+  let size_rear = q.rlen in
+  if n < 0 || n >= size_rear + size_front then
+    None
   else
-    let rec git q n =
-      match front q with
-        | Some (x, q) ->
-            if n = 0 then Some x else git q (n - 1)
-        | None -> assert false
-    in
-    git q n
+    Some (
+      if backwards then
+        if n < size_rear then BatList.at q.rear n
+        else BatList.at q.front (size_front - 1 - (n - size_rear))
+      else
+        if n < size_front then BatList.at q.front n
+        else BatList.at q.rear (size_rear - 1 - (n - size_front))
+    )
 
 let map f q =
   let rec go q r = match front q with
@@ -207,12 +193,7 @@ let rec fold_right fn q acc = match rear q with
   | Some (q, r) -> fold_right fn q (fn r acc)
 
 let to_list q =
-  let rec go l q = match rear q with
-    | None -> l
-    | Some (q, x) ->
-        go (x :: l) q
-  in
-  go [] q
+  BatList.append q.front (BatList.rev q.rear)
 
 let find ?(backwards=false) test q =
   let rec spin k f r = match f with
