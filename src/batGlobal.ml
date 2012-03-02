@@ -33,7 +33,7 @@ let name = snd
 let set (r, _) v =
   r := Some v
 
-let get (r, name) =
+let get_exn (r, name) =
   match !r with
   | None -> raise (Global_not_initialized name)
   | Some v -> v
@@ -47,4 +47,5 @@ let isdef (r, _) =
 let opt (r, _) =
   !r
 
+let get (r,_) = !r
 (*BISECT-IGNORE-END*)

@@ -38,8 +38,11 @@ exception Global_not_initialized of string
  assigned a value. The parameter contains the name of the global. *)
 
 val empty : string -> 'a t
-(** Returns an new named empty global. The name of the global can be any
- string. It identifies the global and makes debugging easier. *)
+(** Returns an new named empty global. The name of the global can be
+    any string. It identifies the global and makes debugging
+    easier. Using the same string twice will not return the same
+    global twice, but will create two globals with the same name.
+*)
 
 val name : 'a t -> string
 (** Retrieve the name of a global. *)
@@ -47,21 +50,16 @@ val name : 'a t -> string
 val set : 'a t -> 'a -> unit
 (** Set the global value contents. *)
 
-val get : 'a t -> 'a
+val get_exn : 'a t -> 'a
 (** Get the global value contents - raise Global_not_initialized if not
  defined. *)
+
+val get : 'a t -> 'a option
+(** Return [None] if the global is undefined, else [Some v] where [v] is
+    the current global value contents. *)
 
 val undef : 'a t -> unit
 (** Reset the global value contents to undefined. *)
 
 val isdef : 'a t -> bool
   (** Return [true] if the global value has been set. *)
-
-val opt : 'a t -> 'a option
-  (** Return [None] if the global is undefined, else [Some v] where v is the
-  current global value contents. *)
-
-(** {6 Boilerplate code}*)
-
-
-
