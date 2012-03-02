@@ -62,7 +62,13 @@ module BaseNum = struct
       with Not_found -> of_int (BatInt.of_float f)
 end
 
-include BatNumber.MakeNumeric(BaseNum)
+module Infix = struct
+  include BatNumber.MakeInfix (BaseNum)
+  let (=/), (</), (>/), (<=/), (>=/), (<>/) = Num.((=/), (</), (>/), (<=/), (>=/), (<>/))
+  let (+/), (-/), ( */ ), (//), ( **/ ) = Num.((+/), (-/), ( */ ), (//), ( **/ ))
+end
+
+include (BatNumber.MakeNumeric(BaseNum): BatNumber.Numeric with type t = Num.num and module Infix := Infix)
 
 include Num
 let round = round_num
@@ -75,12 +81,3 @@ let quo   = quo_num
 let sign  = sign_num
 
 let print out t = BatInnerIO.nwrite out (to_string t)
-
-module Infix = struct
-  include BatNumber.MakeInfix (BaseNum)
-  let (=/), (</), (>/), (<=/), (>=/), (<>/) = (=/), (</), (>/), (<=/), (>=/), (<>/)
-  let (+/), (-/), ( */ ), (//), ( **/ ) = (+/), (-/), ( */ ), (//), ( **/ )
-end
-
-module Compare = BatNumber.MakeCompare (BaseNum)
-

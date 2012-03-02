@@ -88,6 +88,7 @@ val eq_comp : 'a comp -> 'a eq
 val eq : 'a ord -> 'a eq
 (** Derives an equality function from an ordering function. *)
 
+
 module type Eq = sig type t val eq : t eq end
 module EqOrd (Ord : Ord) : Eq with type t = Ord.t
 module EqComp (Comp : Comp) : Eq with type t = Comp.t

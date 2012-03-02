@@ -110,9 +110,14 @@ module BaseInt = struct
 
 end
 
+(* We want BaseInt versions of these function instead of MakeNumeric ones *)
+module Compare = struct
+  type bat__compare_t = int
+  let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = BaseInt.(( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ))
+end
+
+include (BatNumber.MakeNumeric(BaseInt) : BatNumber.Numeric with type t := int and module Compare := Compare)
 include BaseInt
-module N = BatNumber.MakeNumeric(BaseInt)
-let operations = N.operations
 
 let min a b = if a < b then a else b
 let max a b = if a > b then a else b
@@ -176,14 +181,6 @@ let popcount_sparse x =
   (Q.int) (fun x -> popcount x = popcount_sparse x)
 *)
 
-module Infix = BatNumber.MakeInfix(BaseInt)
-
-(* We want BaseInt versions of these function instead of MakeNumeric ones *)
-module Compare = struct
-  type bat__compare_t = t
-  let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
-end
-
 module BaseSafeInt = struct
   include BaseInt
 
@@ -200,21 +197,13 @@ module BaseSafeInt = struct
     if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0	then raise Overflow
     else c
 
-  let neg x =
-    if x <> min_int then ~- x
-    else raise Overflow
+  let neg x = if x <> min_int then ~- x else raise Overflow
 
-  let succ x =
-    if x <> max_int then succ x
-    else raise Overflow
+  let succ x = if x <> max_int then succ x else raise Overflow
 
-  let pred x =
-    if x <> min_int then pred x
-    else raise Overflow
+  let pred x = if x <> min_int then pred x else raise Overflow
 
-  let abs x =
-    if x <> min_int then abs x
-    else raise Overflow
+  let abs x = if x <> min_int then abs x else raise Overflow
 
   (*This function used to assume that in case of overflow the result would be
     different when computing in 31 bits (resp 63 bits) and in 32 bits (resp 64
@@ -246,22 +235,12 @@ module BaseSafeInt = struct
 end
 
 module Safe_int = struct
-  include BaseSafeInt
-  let operations = let module N = BatNumber.MakeNumeric(BaseSafeInt) in N.operations
-
-  module Infix = BatNumber.MakeInfix(BaseSafeInt)
-  (* MakeNumeric versions of these are not optimal, we want BaseInt ones *)
   module Compare = struct
     type bat__compare_t = t
     let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
   end
-
-  open BatOrd
-  let eq (x:int) y = x = y
-  let ord (x:int) y =
-    if x > y then Gt
-    else if y > x then Lt
-    else Eq
+  include BatNumber.MakeNumeric(BaseSafeInt) : BatNumber.Numeric with type t := int and module Compare := Compare
+  include BaseSafeInt  (* for performance, replace functor-values with direct values *)
 
 end
 

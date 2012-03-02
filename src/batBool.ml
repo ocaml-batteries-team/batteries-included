@@ -78,8 +78,6 @@ module BaseBool = struct
 end
 
 include BatNumber.MakeNumeric(BaseBool)
-module Infix = BatNumber.MakeInfix(BaseBool)
-module Compare = BatNumber.MakeCompare(BaseBool)
 
 (*$T succ
   succ true = true

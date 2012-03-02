@@ -27,11 +27,18 @@ let (|>) x f = f x
 let to_byte n = Int32.logand 0xffl n |> Int32.to_int |> Char.chr
 let of_byte b = Char.code b |> Int32.of_int
 
-(* really need to just blit an int32 word into a string and vice versa *)
+(*Q to_byte, of_byte
+  Q.char (fun c -> Pervasives.(=) (to_byte (of_byte c)) c)
+ *)
 
+(*$T to_byte
+  to_byte 256l = to_byte 0l
+ *)
+
+(* really need to just blit an int32 word into a string and vice versa *)
 let pack str pos item =
-  if String.length str > pos + 4 then failwith "Int32.pack: pos + 4 not within string";
-  if pos < 0 then failwith "Int32.pack: pos negative";
+  if String.length str > pos + 4 then invalid_arg "Int32.pack: pos too close to end of string";
+  if pos < 0 then invalid_arg "Int32.pack: pos negative";
   str.[pos] <- to_byte item;
   let item = Int32.shift_right item 8 in
   str.[pos+1] <- to_byte item;
@@ -41,7 +48,7 @@ let pack str pos item =
   str.[pos+3] <- to_byte item (* optimize out last logand? *)
 
 let pack_big str pos item =
-  if String.length str > pos + 4 then failwith "Int32.pack_big: pos + 4 not within string";
+  if String.length str > pos + 4 then failwith "Int32.pack_big: pos too close to end of string";
   if pos < 0 then failwith "Int32.pack_big: pos negative";
   str.[pos+3] <- to_byte item;
   let item = Int32.shift_right item 8 in
@@ -77,8 +84,6 @@ module BaseInt32 = struct
 end
 
 include BatNumber.MakeNumeric(BaseInt32)
-module Infix = BatNumber.MakeInfix(BaseInt32)
-module Compare = BatNumber.MakeCompare(BaseInt32)
 
 let min_int = Int32.min_int
 let max_int = Int32.max_int

@@ -153,6 +153,8 @@ sig
   val succ : t -> t
   val pred : t -> t
 
+  module Infix : Infix with type bat__infix_t = t
+  module Compare : Compare with type bat__compare_t = t
   include Infix with type bat__infix_t = t
   (* Removed non-polymorphic compare from base module, as they shadow
      ones in stdlib.  open Foo.Compare to get them.

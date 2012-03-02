@@ -107,6 +107,8 @@ sig
   val succ  : t -> t
   val pred  : t -> t
 
+  module Infix : Infix with type bat__infix_t = t
+  module Compare : Compare with type bat__compare_t = t
   include Infix with type bat__infix_t = t
   (* Removed compare operators from base module, as they shadow
      polymorphic ones from stdlib
@@ -252,8 +254,10 @@ module MakeNumeric (Base : NUMERIC_BASE) : Numeric with type t = Base.t = struct
 
   type discrete = t
 
-  include MakeInfix (Base)
-(*  include MakeCompare (Base)*)
+  module Infix = MakeInfix (Base)
+  module Compare = MakeCompare (Base)
+  include Infix
+
   include MakeRefOps (Base)
 end
 

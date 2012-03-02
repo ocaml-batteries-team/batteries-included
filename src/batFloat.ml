@@ -128,14 +128,12 @@ let round_to_int x =
    Pervasives.(=) (List.map round_to_int [1.1; 2.4; 3.3; 3.5; 4.99]) [1; 2; 3; 4; 5]
 *)
 
-include BatNumber.MakeNumeric(BaseFloat)
 module Infix = struct
   include BatNumber.MakeInfix(BaseFloat)
   let (=~) = approx_equal
 end
-module Compare = struct
-  include BatNumber.MakeCompare(BaseFloat)
-end
+
+include (BatNumber.MakeNumeric(BaseFloat) : BatNumber.Numeric with type t = float and module Infix := Infix)
 
 (* of_float and to_float are needed after including functors to fix
    definitions *)

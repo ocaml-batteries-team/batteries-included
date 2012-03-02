@@ -40,11 +40,8 @@ module BaseBig_int = struct
   let pow  = power_big_int_positive_big_int
 
   let to_string = string_of_big_int
-
   let of_string = big_int_of_string
-
   let to_int    = int_of_big_int
-
   let of_int    = big_int_of_int
 
   let compare   = compare_big_int
@@ -67,8 +64,6 @@ end
 
 include Big_int
 include MakeNumeric(BaseBig_int)
-module Infix = MakeInfix(BaseBig_int)
-module Compare = MakeCompare(BaseBig_int)
 
 let print out t = BatIO.nwrite out (to_string t)
 (*$T print
