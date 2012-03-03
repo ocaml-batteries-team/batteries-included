@@ -27,6 +27,10 @@ let input inp =
   let digest = String.create 16 in
   let _ = really_input inp digest 0 16 in
   digest
+(*$T
+  let digest = Digest.string "azerty" in \
+  input (BatIO.input_string digest) = digest
+*)
 
 let output = BatIO.nwrite
 
@@ -36,6 +40,10 @@ let channel inp len = (*TODO: Make efficient*)
     let _  = BatIO.really_input inp buf 0 len in
     Digest.string buf
   else Digest.channel (BatIO.to_input_channel inp) len
+(*$T
+  let digest = Digest.string "azerty" in \
+  channel (BatIO.input_string ("azertyuiop")) 6 = digest
+*)
 
 (*1. Compute the digest of this file using Legacy.Digest*)
 (*2. Compute the digest of this file using Batteries.Digest*)
