@@ -60,6 +60,9 @@ let of_enum e =
 
 (*$Q of_enum
   (Q.string) (fun s -> let b = of_enum (BatString.enum s) in contents b = s)
+  (Q.string) (fun s -> let e = BatString.enum s in \
+                       let e = BatEnum.from (fun () -> BatEnum.get_exn e) in \
+                       contents (of_enum e) = s)
  *)
 
 let add_input t inp n =
