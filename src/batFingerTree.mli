@@ -419,4 +419,5 @@ val update : 'a t -> int -> ('a -> 'a) -> 'a t
 (**/**)
 val of_list_for_test : 'a list -> 'a t
 val verify_measure : 'a t -> 'a t
+val invariants : _ t -> unit
 (**/**)

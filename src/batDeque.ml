@@ -21,6 +21,10 @@
 type 'a dq = { front : 'a list ; flen : int ;
                rear : 'a list  ; rlen : int }
 
+let invariants t =
+  assert (List.length t.front = t.flen);
+  assert (List.length t.rear = t.rlen)
+
 type 'a t = 'a dq
 type 'a enumerable = 'a t
 type 'a mappable = 'a t

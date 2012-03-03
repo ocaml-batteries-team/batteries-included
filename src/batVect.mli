@@ -519,3 +519,7 @@ sig
   (** {7 Printing}*)
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 end
+
+(**/**)
+val invariants : _ t -> unit
+(**/**)

@@ -38,6 +38,15 @@ type 'a enumerable = 'a t
 
 exception Empty
 
+let invariants t =
+  assert (t.next.prev == t && t.prev.next == t);
+  let current = ref t.next in
+  while !current != t do
+    let t = !current in
+    assert (t.next.prev == t && t.prev.next == t);
+    current := t.next
+  done
+
 let create x = let rec nn = { data = x; next = nn; prev = nn} in nn
 
 let length node =

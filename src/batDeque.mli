@@ -145,3 +145,7 @@ val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
 val dq_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
   (** See {!BatValue_printer}. *)
+
+(**/**)
+val invariants : _ t -> unit
+(**/**)

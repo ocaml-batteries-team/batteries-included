@@ -25,6 +25,31 @@ type 'a t =
   | Concat of 'a t * int * 'a t * int * int
   | Leaf   of 'a array
 
+(* these invariants may be incomplete, feel free to improve it *)
+let invariants t =
+  let rec inv_height = function
+    | Empty
+    | Leaf _ -> 0
+    | Concat (l, _, r, _, h) ->
+      assert (h = 1 + max (inv_height l) (inv_height r));
+      h in
+  let rec inv_length = function
+    | Empty -> 0
+    | Leaf a -> Array.length a
+    | Concat (l, cl, r, cr, _) ->
+      assert (inv_length l = cl);
+      assert (inv_length r = cr);
+      cl + cr in
+  let rec other_inv depth = function
+    | Empty -> assert (depth = 0)
+    | Leaf a -> assert (Array.length a > 0)
+    | Concat (l, _, r, _, _) ->
+      other_inv (depth + 1) l;
+      other_inv (depth + 1) r in
+  ignore (inv_height t);
+  ignore (inv_length t);
+  other_inv 0 t
+
 type 'a forest_element = { mutable c : 'a t; mutable len : int }
 
 module STRING : sig

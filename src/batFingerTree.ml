@@ -1266,3 +1266,5 @@ let check_measures t =
 let verify_measure t =
   if not (check_measures t) then failwith "Invariants not verified";
   t
+let invariants t =
+  assert (check_measures t)

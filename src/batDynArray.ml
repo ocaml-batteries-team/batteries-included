@@ -37,6 +37,14 @@ type 'a t = {
   mutable resize: resizer_t;
 }
 
+let dummy_for_gc = Obj.magic 0
+let invariants t =
+  assert (t.len >= 0);
+  assert (t.len <= ilen t.arr);
+  for i = t.len to ilen t.arr - 1 do
+    assert (iget t.arr i = dummy_for_gc)
+  done
+
 type 'a mappable = 'a t
 type 'a enumerable = 'a t
 
@@ -199,7 +207,7 @@ let delete d idx =
     for i = idx to d.len - 2 do
       iset d.arr i (iget d.arr (i+1));
     done;
-    iset d.arr (d.len - 1) (Obj.magic 0)
+    iset d.arr (d.len - 1) dummy_for_gc
   end;
   d.len <- d.len - 1
 
@@ -229,7 +237,7 @@ let delete_range d idx len =
       iset d.arr i (iget d.arr (i+len));
     done;
     for i = d.len - len to d.len - 1 do
-      iset d.arr i (Obj.magic 0)
+      iset d.arr i dummy_for_gc
     done;
   end;
   d.len <- d.len - len
@@ -241,7 +249,7 @@ let clear d =
 let delete_last d =
   if d.len <= 0 then invalid_arg 0 "delete_last" "<array len is 0>";
   (* erase for GC, in case changelen don't resize our array *)
-  iset d.arr (d.len - 1) (Obj.magic 0);
+  iset d.arr (d.len - 1) dummy_for_gc;
   changelen d (d.len - 1)
 
 let rec blit src srcidx dst dstidx len =

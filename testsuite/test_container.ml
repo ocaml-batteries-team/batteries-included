@@ -39,7 +39,8 @@ module type Container = sig
   val print : ?first:string -> ?last:string -> ?sep:string
     -> ('a BatInnerIO.output -> 'b -> unit)
     -> 'a BatInnerIO.output -> 'b t -> unit
-(* sort, stable_sort, split_at, iter2, for_all2, take, drop, mem, find, find_map, reduce, max, min, invariants, reverse *)
+  val invariants : _ t -> unit
+(* sort, stable_sort, split_at, iter2, for_all2, take, drop, mem, find, find_map, reduce, max, min, reverse *)
 end
 
 exception NotImplemented
@@ -96,6 +97,7 @@ module ArrayContainer : Container = struct
   and find_right = ni2
   and is_empty = ni1
   and t_printer_delim = ("[|", "|]")
+  and invariants = ignore
 end
 
 module LazyListContainer : Container = struct
@@ -115,6 +117,7 @@ module LazyListContainer : Container = struct
   and find_right = ni2
   and t_printer = ni4
   and t_printer_delim = ("","")
+  and invariants = ignore
 end
 
 module DynArrayContainer : Container = struct
@@ -206,6 +209,7 @@ module ListContainer : Container = struct
   let init = ni1
   and find_right = ni2
   and t_printer_delim = ("[", "]")
+  and invariants = ignore
 end
 
 module RefListContainer : Container = struct
@@ -229,6 +233,7 @@ module RefListContainer : Container = struct
   and t_printer = ni4
   and t_printer_delim = ("","")
   and print = ni_print
+  and invariants = ignore
 end
 
 module VectContainer : Container = struct
@@ -299,6 +304,7 @@ module SeqContainer : Container = struct
   let find f t = BatOption.get (find f t)
   and find_right = ni2
   and t_printer_delim = ("[", "]")
+  and invariants = ignore
 end
 
 module TestContainer(C : Container) = struct
@@ -307,6 +313,8 @@ module TestContainer(C : Container) = struct
   let rev_a = Array.init n (fun i -> n - 1 - i)
   let c = C.of_enum (BatArray.enum a)
   let rev_c = C.of_enum (BatArray.enum rev_a)
+  let inv = C.invariants
+  let () = inv c; inv rev_c
 
   let repeat_twice f =
     try
@@ -344,6 +352,7 @@ module TestContainer(C : Container) = struct
     repeat_twice (fun () ->
       let i = ref (-1) in
       let c = C.map (fun elt -> incr i; assert (!i = elt); elt + 1) c in
+      inv c;
       let i = ref (-1) in
       (try C.iter (fun elt -> incr i; assert (!i + 1 = elt)) c;
       with NotImplemented -> failwith "map and not iter??");
@@ -354,6 +363,7 @@ module TestContainer(C : Container) = struct
     repeat_twice (fun () ->
       let i = ref (-1) in
       let c = C.mapi (fun idx elt -> incr i; assert (!i = idx); assert (!i = elt); elt + 1) c in
+      inv c;
       let i = ref (-1) in
       (try C.iteri (fun idx elt -> incr i; assert (!i = idx); assert (!i + 1 = elt)) c;
       with NotImplemented -> failwith "mapi and not iteri??");
@@ -364,6 +374,7 @@ module TestContainer(C : Container) = struct
     repeat_twice (fun () ->
       let i = ref n in
       let c = C.map_right (fun elt -> decr i; assert (!i = elt); elt + 1) c in
+      inv c;
       let i = ref n in
       (try C.iter_right (fun elt -> decr i; assert (!i + 1 = elt)) c;
       with NotImplemented -> failwith "map_right and not iter_right??");
@@ -423,6 +434,7 @@ module TestContainer(C : Container) = struct
   let () =
     repeat_twice (fun () ->
       let c = C.of_backwards (BatArray.enum rev_a) in
+      inv c;
       repeat_twice (fun () -> assert (C.length c = n));
       repeat_twice (fun () ->
         let i = ref (-1) in
@@ -451,6 +463,7 @@ module TestContainer(C : Container) = struct
     repeat_twice (fun () ->
       let i = ref (-1) in
       let c2 = C.filter (fun elt -> incr i; if not (elt = !i) then assert false; elt mod 2 = 0) c in
+      inv c2;
       let j = ref (-1) in
       C.iter (fun elt -> incr j; assert (!j * 2 = elt)) c2;
       assert (!i = n - 1);
@@ -464,6 +477,7 @@ module TestContainer(C : Container) = struct
     repeat_twice (fun () ->
       let i = ref (-1) in
       let c2 = C.filter_map (fun elt -> incr i; assert (elt = !i); if elt mod 2 = 0 then Some (-(elt / 2)) else None) c in
+      inv c2;
       let j = ref (-1) in
       C.iter (fun elt -> incr j; assert (!j = -elt)) c2;
       assert (!i = n - 1);
@@ -485,29 +499,34 @@ module TestContainer(C : Container) = struct
   let () =
     repeat_twice (fun () ->
       let c2 = C.append c rev_c in
+      inv c2;
       assert (C.length c2 = n * 2);
       let i = ref (-1) in
       C.iter (fun elt -> incr i; assert (elt = min !i (2 * n - 1 - !i))) c2;
       assert (!i = 2 * n - 1);
 
       let c2 = C.append c (C.append c c) in
+      inv c2;
       assert (C.length c2 = n * 3);
       let i = ref (-1) in
       C.iter (fun elt -> incr i; assert (elt = !i mod n)) c2;
       assert (!i = 3 * n - 1);
 
       let c2 = C.append (C.append c c) c in
+      inv c2;
       assert (C.length c2 = n * 3);
       let i = ref (-1) in
       C.iter (fun elt -> incr i; assert (elt = !i mod n)) c2;
       assert (!i = 3 * n - 1);
 
       let c2 = C.append c (C.of_enum (BatList.enum [n; n+1])) in
+      inv c2;
       let i = ref (-1) in
       C.iter (fun elt -> incr i; assert (elt = !i)) c2;
       assert (!i = n + 1);
 
       let c2 = C.append (C.of_enum (BatList.enum [-2; -1])) c in
+      inv c2;
       let i = ref (-3) in
       C.iter (fun elt -> incr i; assert (elt = !i)) c2;
       assert (!i = n - 1);
@@ -529,7 +548,9 @@ module TestContainer(C : Container) = struct
 
   let () =
     repeat_twice (fun () ->
-      assert (Array.of_list (C.to_list (C.of_list (Array.to_list a))) = a)
+      let c = C.of_list (Array.to_list a) in
+      inv c;
+      assert (Array.of_list (C.to_list c) = a)
     )
 
   let () =
@@ -539,12 +560,15 @@ module TestContainer(C : Container) = struct
 
   let () =
     repeat_twice (fun () ->
-      assert (Array.of_list (List.rev (C.to_list (C.of_list_backwards (Array.to_list a)))) = a)
+      let c = C.of_list_backwards (Array.to_list a) in
+      inv c;
+      assert (Array.of_list (List.rev (C.to_list c)) = a)
     )
 
   let () =
     repeat_twice (fun () ->
       let c = C.snoc c n in
+      inv c;
       assert (C.length c = n + 1);
       let i = ref (-1) in
       C.iter (fun elt -> incr i; assert (!i = elt)) c;
@@ -554,6 +578,7 @@ module TestContainer(C : Container) = struct
   let () =
     repeat_twice (fun () ->
       let c = C.cons c (-1) in
+      inv c;
       assert (C.length c = n + 1);
       let i = ref (-2) in
       C.iter (fun elt -> incr i; assert (!i = elt)) c;
@@ -563,6 +588,7 @@ module TestContainer(C : Container) = struct
   let () =
     repeat_twice (fun () ->
       let c = C.tail c in
+      inv c;
       assert (C.length c = n - 1);
       let i = ref 0 in
       C.iter (fun elt -> incr i; assert (!i = elt)) c;
@@ -576,6 +602,7 @@ module TestContainer(C : Container) = struct
   let () =
     repeat_twice (fun () ->
       let c = C.init c in
+      inv c;
       assert (C.length c = n - 1);
       let i = ref (-1) in
       C.iter (fun elt -> incr i; assert (!i = elt)) c;
@@ -618,6 +645,7 @@ module TestContainer(C : Container) = struct
       let stringify l =
         try
           let c = C.of_enum (BatList.enum l) in
+          inv c;
           BatIO.to_string (C.print ~sep:"," ~first:"<" ~last:">" BatInt.print) c
         with BatDllist.Empty -> "<>" in
       assert_equal "<2,4,66>" (stringify [2;4;66]);
