@@ -58,6 +58,8 @@ val copy : 'a node_t -> 'a node_t
 val length : 'a node_t -> int
 
 (** List reversal.  This is an O(N) operation.
+    The given node still points to the same element, so
+    [to_list (rev (of_list [1;2;3;4])) = [1;4;3;2]]
 *)
 val rev : 'a node_t -> unit
 
@@ -85,16 +87,19 @@ val promote : 'a node_t -> unit
 val demote : 'a node_t -> unit
 
 (** Remove node from the list no matter where it is.  This is an O(1) operation.
+    @raise Empty when trying to remove an element from a list of length one.
 *)
 val remove : 'a node_t -> unit
 
 (** Remove node from the list no matter where it is. Return next node.  This is
     an O(1) operation.
+    @raise Empty when trying to remove an element from a list of length one.
 *)
 val drop : 'a node_t -> 'a node_t
 
 (** Remove node from the list no matter where it is. Return previous node.  This
     is an O(1) operation.
+    @raise Empty when trying to remove an element from a list of length one.
 *)
 val rev_drop : 'a node_t -> 'a node_t
 
@@ -218,10 +223,22 @@ val of_list : 'a list -> 'a node_t
 val enum : 'a node_t -> 'a BatEnum.t
 
 (** Create a reverse enum of the list.
+    The enumeration starts with the current element of the list:
+    [rev_enum (of_list [1;2;3;4])] will generate the enumeration [[1;4;3;2]].
+
+    If you want it to start with the last one, see [backwards].
+
     Note that modifying the list while the enum exists will have undefined
     effects.  This is an O(1) operation.
 *)
 val rev_enum : 'a node_t -> 'a BatEnum.t
+
+val backwards : 'a node_t -> 'a BatEnum.t
+(** [backwards t] is similar to [rev_enum t] except that the enumeration
+    starts at the node before the current one:
+
+    [backwards (of_list [1;2;3;4])] will generate the enumeration [[4;3;2;1]].
+*)
 
 (** Create a dllist from an enum.
     This consumes the enum, and allocates a whole new dllist. Raises

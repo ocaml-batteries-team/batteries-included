@@ -62,6 +62,10 @@ let add node elem =
   let nn = { data = elem; next = node.next; prev = node } in
   node.next.prev <- nn;
   node.next <- nn
+(*$T add
+  let t = of_list [1;2;3] in add t 12; invariants t; to_list t = [1;12;2;3]
+  let t = of_list [1] in add t 2; invariants t; to_list t = [1;2]
+*)
 
 let append node elem =
   let nn = { data = elem; next = node.next; prev = node } in
@@ -86,6 +90,10 @@ let promote node =
     next.prev <- prev;
     prev.next <- next
   end
+(*$T promote
+  let t = of_list [1;2;3;4] in promote t; invariants t; to_list t = [1;3;4;2]
+  let t = of_list [1] in promote t; invariants t; to_list t = [1]
+*)
 
 let demote node =
   let next = node.next in
@@ -98,32 +106,51 @@ let demote node =
     prev.next <- next;
     next.prev <- prev
   end
+(*$T demote
+  let t = of_list [1;2;3;4] in demote t; invariants t; to_list t = [1;4;2;3]
+  let t = of_list [1] in demote t; invariants t; to_list t = [1]
+*)
 
 let remove node =
   let next = node.next in
   let prev = node.prev in
+  if next == prev then raise Empty;
   prev.next <- next;
   next.prev <- prev;
   node.next <- node;
   node.prev <- node
+(*$T remove
+  let t = of_list [1;2;3;4] in let u = next t in remove t; invariants u; to_list u = [2;3;4]
+  let t = of_list [1] in try remove t; false with Empty -> true
+*)
 
 let drop node =
   let next = node.next in
   let prev = node.prev in
+  if next == prev then raise Empty;
   prev.next <- next;
   next.prev <- prev;
   node.next <- node;
   node.prev <- node;
   next
+(*$T drop
+  let t = of_list [1;2;3;4] in let t = drop t in invariants t; to_list t = [2;3;4]
+  let t = of_list [1] in try ignore (drop t); false with Empty -> true
+*)
 
 let rev_drop node =
   let next = node.next in
   let prev = node.prev in
+  if next == prev then raise Empty;
   prev.next <- next;
   next.prev <- prev;
   node.next <- node;
   node.prev <- node;
   prev
+(*$T rev_drop
+  let t = of_list [1;2;3;4] in let t = rev_drop t in invariants t; to_list t = [4;2;3]
+  let t = of_list [1] in try ignore (rev_drop t); false with Empty -> true
+*)
 
 let splice node1 node2 =
   let next = node1.next in
@@ -133,7 +160,7 @@ let splice node1 node2 =
   next.prev <- prev;
   prev.next <- next
 
-let set node data = node.data <- data
+let set node data = node.data <- data (*BISECT-VISIT*)
 
 let get node = node.data
 
@@ -163,6 +190,10 @@ let rev node =
     end
   in
   loop node node.prev
+(*$T rev
+  let t = of_list [1] in rev t; invariants t; to_list t = [1]
+  let t = of_list [1;2;3;4] in rev t; invariants t; to_list t = [1;4;3;2]
+*)
 
 let iter f node =
   let () = f node.data in
@@ -189,6 +220,7 @@ let find p node =
 
 (*$T find
    find (fun x -> x mod 2 = 0) (of_list [1;3;4;5;7;6]) |> get = 4
+   find (fun x -> x = 1) (of_list [1;3;4;5;7;6]) |> get = 1
    find (fun x -> x > 3) (of_list [-1;3;9;1;1;1]) |> get = 9
    try find (fun x -> x land 3 = 2) (of_list [1;4;3])|>ignore; false with Not_found -> true
 *)
@@ -257,6 +289,9 @@ let of_list lst =
         loop nn t
     in
     loop first t
+(*$T
+  try ignore (of_list []); false with Empty -> true
+*)
 
 let enum node =
   let next e () =
@@ -321,6 +356,9 @@ let rev_enum node =
   in
   let e = { curr = node; valid = true } in
   BatEnum.make ~next:(prev e) ~count:(count e) ~clone:(clone e)
+
+let backwards t =
+  rev_enum (prev t)
 
 let of_enum enm =
   match BatEnum.get enm with

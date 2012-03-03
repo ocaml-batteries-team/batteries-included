@@ -60,7 +60,6 @@ module DllistContainer : Container = struct
   and snoc l x = let l = copy l in ignore (append (prev l) x); l
   and cons l x = let l = copy l in prepend l x
   and append l1 l2 = let l1 = copy l1 in let l2 = copy l2 in splice (prev l1) l2; l1
-  and backwards = ni1 (*rev_enum*)
   and init = ni1
   and tail = ni1
   and to_list_backwards = ni1
