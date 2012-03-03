@@ -307,6 +307,13 @@ module SeqContainer : Container = struct
   and invariants = ignore
 end
 
+module BatArray = struct
+  include BatArray
+  let not_countable_enum a =
+    let e = enum a in
+    BatEnum.from (fun () -> BatEnum.get_exn e)
+end
+
 module TestContainer(C : Container) = struct
   let n = 500
   let a = Array.init n (fun i -> i)
@@ -433,7 +440,31 @@ module TestContainer(C : Container) = struct
 
   let () =
     repeat_twice (fun () ->
+      let c = C.of_enum (BatArray.not_countable_enum a) in
+      inv c;
+      repeat_twice (fun () -> assert (C.length c = n));
+      repeat_twice (fun () ->
+        let i = ref (-1) in
+        C.iter (fun elt -> incr i; assert (!i = elt)) c;
+        assert (!i = n - 1)
+      )
+    )
+
+  let () =
+    repeat_twice (fun () ->
       let c = C.of_backwards (BatArray.enum rev_a) in
+      inv c;
+      repeat_twice (fun () -> assert (C.length c = n));
+      repeat_twice (fun () ->
+        let i = ref (-1) in
+        C.iter (fun elt -> incr i; assert (!i = elt)) c;
+        assert (!i = n - 1)
+      )
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let c = C.of_backwards (BatArray.not_countable_enum rev_a) in
       inv c;
       repeat_twice (fun () -> assert (C.length c = n));
       repeat_twice (fun () ->
