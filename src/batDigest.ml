@@ -25,23 +25,21 @@ open BatIO
   [BatIO.input] rather than [in_channel]*)
 let input inp =
   let digest = String.create 16 in
-  let _      = really_input inp digest 0 16 in
-    digest
-
+  let _ = really_input inp digest 0 16 in
+  digest
 
 let output = BatIO.nwrite
 
-
 let channel inp len = (*TODO: Make efficient*)
   if len >= 0 then
-    let buf = String.create len             in
-    let _   = BatIO.really_input inp buf 0 len in
-      Digest.string buf
+    let buf = String.create len in
+    let _  = BatIO.really_input inp buf 0 len in
+    Digest.string buf
   else Digest.channel (BatIO.to_input_channel inp) len
 
-  (*1. Compute the digest of this file using Legacy.Digest*)
-  (*2. Compute the digest of this file using Batteries.Digest*)
-  (*3. Compare*)
+(*1. Compute the digest of this file using Legacy.Digest*)
+(*2. Compute the digest of this file using Batteries.Digest*)
+(*3. Compare*)
 (*$R channel
 let legacy_result () =
   let inp    = Pervasives.open_in_bin Sys.argv.(0) in
