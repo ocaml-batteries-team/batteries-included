@@ -26,8 +26,8 @@ type resizer_t = currslots:int -> oldlength:int -> newlength:int -> int
 type 'a intern
 
 external ilen : 'a intern -> int = "%obj_size"
-let idup (x : 'a intern) = if ilen x = 0 then x else (Obj.magic (Obj.dup (Obj.repr x)) : 'a intern)
-let imake tag len = (Obj.magic (Obj.new_block tag len) : 'a intern)
+let idup (x : 'a intern) : 'a intern = Obj.magic (Obj.dup (Obj.repr x))
+let imake len = (Obj.magic (Obj.new_block 0 len) : 'a intern)
 external iget : 'a intern -> int -> 'a = "%obj_field"
 external iset : 'a intern -> int -> 'a -> unit = "%obj_set_field"
 
@@ -104,7 +104,7 @@ let changelen (d : 'a t) newlen =
    *)
   let newsize = if r < newlen then newlen else r in
   if newsize <> oldsize then begin
-    let newarr = imake 0 newsize in
+    let newarr = imake newsize in
     let cpylen = (if newlen < d.len then newlen else d.len) in
     for i = 0 to cpylen - 1 do
       iset newarr i (iget d.arr i);
@@ -115,7 +115,7 @@ let changelen (d : 'a t) newlen =
 
 let compact d =
   if d.len <> ilen d.arr then begin
-    let newarr = imake 0 d.len in
+    let newarr = imake d.len in
     for i = 0 to d.len - 1 do
       iset newarr i (iget d.arr i)
     done;
@@ -126,7 +126,7 @@ let create() =
   {
     resize = default_resizer;
     len = 0;
-    arr = imake 0 0;
+    arr = imake 0;
   }
 
 let make initsize =
@@ -134,12 +134,12 @@ let make initsize =
   {
     resize = default_resizer;
     len = 0;
-    arr = imake 0 initsize;
+    arr = imake initsize;
   }
 
 let init initlen f =
   if initlen < 0 then invalid_arg initlen "init" "len";
-  let arr = imake 0 initlen in
+  let arr = imake initlen in
   for i = 0 to initlen-1 do
     iset arr i (f i)
   done;
@@ -195,7 +195,7 @@ let delete d idx =
   in
   let newsize = (if r < d.len - 1 then d.len - 1 else r) in
   if oldsize <> newsize then begin
-    let newarr = imake 0 newsize in
+    let newarr = imake newsize in
     for i = 0 to idx - 1 do
       iset newarr i (iget d.arr i);
     done;
@@ -224,7 +224,7 @@ let delete_range d idx len =
   in
   let newsize = (if r < d.len - len then d.len - len else r) in
   if oldsize <> newsize then begin
-    let newarr = imake 0 newsize in
+    let newarr = imake newsize in
     for i = 0 to idx - 1 do
       iset newarr i (iget d.arr i);
     done;
@@ -244,7 +244,7 @@ let delete_range d idx len =
 
 let clear d =
   d.len <- 0;
-  d.arr <- imake 0 0
+  d.arr <- imake 0
 
 let delete_last d =
   if d.len <= 0 then invalid_arg 0 "delete_last" "<array len is 0>";
@@ -296,7 +296,7 @@ let to_array d =
 
 let of_list lst =
   let size = List.length lst in
-  let arr = imake 0 size in
+  let arr = imake size in
   let rec loop idx =  function
     | h :: t -> iset arr idx h; loop (idx + 1) t
     | [] -> ()
@@ -312,7 +312,7 @@ let of_array src =
   let size = Array.length src in
   let is_float = Obj.tag (Obj.repr src) = Obj.double_array_tag in
   let arr = (if is_float then begin
-    let arr = imake 0 size in
+    let arr = imake size in
     for i = 0 to size - 1 do
       iset arr i (Array.unsafe_get src i);
     done;
@@ -337,7 +337,7 @@ let copy src =
 let sub src start len =
   if len < 0 then invalid_arg len "sub" "len";
   if start < 0 || start + len > src.len then invalid_arg start "sub" "start";
-  let arr = imake 0 len in
+  let arr = imake len in
   for i = 0 to len - 1 do
     iset arr i (iget src.arr (i+start));
   done;
@@ -568,7 +568,7 @@ let index_of f d =
 
 let map f src =
   let len = src.len in
-  let arr = imake 0 len in
+  let arr = imake len in
   let i = ref 0 in
   while !i < src.len && !i < len do
     iset arr !i (f (iget src.arr !i));
@@ -620,7 +620,7 @@ let map f src =
 
 let mapi f src =
   let len = src.len in
-  let arr = imake 0 len in
+  let arr = imake len in
   let i = ref 0 in
   while !i < src.len && !i < len do
     iset arr !i (f !i (iget src.arr !i));
@@ -734,7 +734,7 @@ let enum d =
 let of_enum e =
   if BatEnum.fast_count e then begin
     let c = BatEnum.count e in
-    let arr = imake 0 c in
+    let arr = imake c in
     BatEnum.iteri (fun i x -> iset arr i x) e;
     {
       resize = default_resizer;
