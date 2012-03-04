@@ -23,6 +23,8 @@ exception Global_not_initialized of string
 
 type 'a t = ('a option ref * string)
 
+(*BISECT-IGNORE-BEGIN*)
+
 let empty name =
   (ref None, name)
 
@@ -45,3 +47,4 @@ let isdef (r, _) =
 let opt (r, _) =
   !r
 
+(*BISECT-IGNORE-END*)
