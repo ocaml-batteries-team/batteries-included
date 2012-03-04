@@ -25,6 +25,8 @@ module type Container = sig
   val last : 'a t -> 'a
   val of_list : 'a list -> 'a t
   val to_list : 'a t -> 'a list
+  val of_array : 'a array -> 'a t
+  val to_array : 'a t -> 'a array
   val of_list_backwards : 'a list -> 'a t
   val to_list_backwards : 'a t -> 'a list
   val cons : 'a t -> 'a -> 'a t
@@ -83,6 +85,8 @@ module DllistContainer : Container = struct
   and insert = ni3
   and delete = ni2
   and delete_range = ni3
+  and of_array = ni1
+  and to_array = ni1
 end
 
 module ArrayContainer : Container = struct
@@ -109,6 +113,8 @@ module ArrayContainer : Container = struct
   and insert = ni3
   and delete = ni2
   and delete_range = ni3
+  and of_array = ni1
+  and to_array = ni1
 end
 
 module LazyListContainer : Container = struct
@@ -133,9 +139,11 @@ module LazyListContainer : Container = struct
   and insert = ni3
   and delete = ni2
   and delete_range = ni3
+  and of_array = ni1
+  and to_array = ni1
 end
 
-module DynArrayContainer : Container = struct
+module DynArrayContainer = struct
   include BatDynArray
   let of_backwards = ni1
   let backwards = ni1
@@ -160,6 +168,25 @@ module DynArrayContainer : Container = struct
   and insert t i v = let t = copy t in insert t i v; t
   and delete t i = let t = copy t in delete t i; t
   and delete_range t i len = let t = copy t in delete_range t i len; t
+end
+
+module DynArrayContainerStepResizer : Container = struct
+  include DynArrayContainer
+  let of_enum e = (* much simpler to see what happens when resizing code with this
+                     and what happens when not resizing with the previous module
+                  *)
+    let a = of_enum e in
+    set_resizer a (step_resizer 1);
+    a
+end
+
+module DynArrayContainerCrapResizer : Container = struct
+  include DynArrayContainer
+  let crap_resizer ~currslots:_ ~oldlength:_ ~newlength:_ = -1
+  let of_enum e =
+    let a = of_enum e in
+    set_resizer a crap_resizer;
+    a
 end
 
 module DequeContainer : Container = struct
@@ -214,6 +241,8 @@ module DequeContainer : Container = struct
   and insert = ni3
   and delete = ni2
   and delete_range = ni3
+  and of_array = ni1
+  and to_array = ni1
 end
 
 module ListContainer : Container = struct
@@ -237,6 +266,8 @@ module ListContainer : Container = struct
   and insert = ni3
   and delete = ni2
   and delete_range = ni3
+  and of_array = ni1
+  and to_array = ni1
 end
 
 module RefListContainer : Container = struct
@@ -265,6 +296,8 @@ module RefListContainer : Container = struct
   and insert = ni3
   and delete = ni2
   and delete_range = ni3
+  and of_array = ni1
+  and to_array = ni1
 end
 
 module VectContainer : Container = struct
@@ -277,7 +310,7 @@ module VectContainer : Container = struct
   and of_list_backwards = ni1
   and cons t x = prepend x t
   and snoc t x = append x t
-  and hd = ni1
+  and hd = first
   and tail = ni1
   and init = ni1
   and find_right = ni2
@@ -307,6 +340,8 @@ module FingerTreeContainer : Container = struct
   and insert = ni3
   and delete = ni2
   and delete_range = ni3
+  and of_array = ni1
+  and to_array = ni1
 end
 
 module SeqContainer : Container = struct
@@ -346,6 +381,8 @@ module SeqContainer : Container = struct
   and insert = ni3
   and delete = ni2
   and delete_range = ni3
+  and of_array = ni1
+  and to_array = ni1
 end
 
 module BatArray = struct
@@ -355,7 +392,7 @@ module BatArray = struct
     BatEnum.from (fun () -> BatEnum.get_exn e)
 end
 
-module TestContainer(C : Container) = struct
+module TestContainer(C : Container) : sig end = struct
   let n = 500
   let a = Array.init n (fun i -> i)
   let rev_a = Array.init n (fun i -> n - 1 - i)
@@ -363,6 +400,13 @@ module TestContainer(C : Container) = struct
   let rev_c = C.of_enum (BatArray.enum rev_a)
   let inv = C.invariants
   let () = inv c; inv rev_c
+  let empty : 'a C.t Lazy.t =
+    try
+      let s = C.of_enum (BatArray.enum [||]) in
+      (* working around a caml bug: lazy [||] segfaults *)
+      Obj.magic s
+    with BatDllist.Empty ->
+      lazy (raise BatDllist.Empty)
 
   let repeat_twice f =
     try
@@ -373,27 +417,37 @@ module TestContainer(C : Container) = struct
       ()
 
   let () =
-    repeat_twice (fun () -> assert (C.length c = n))
+    repeat_twice (fun () ->
+      assert (C.length c = n);
+      try assert_equal 0 (C.length (Lazy.force empty))
+      with BatDllist.Empty -> ()
+    )
 
   let () =
     repeat_twice (fun () ->
       let i = ref (-1) in
       C.iter (fun elt -> incr i; assert (!i = elt)) c;
-      assert (!i = n - 1)
+      assert (!i = n - 1);
+      try C.iter (fun _ -> assert false) (Lazy.force empty)
+      with BatDllist.Empty -> ()
     )
 
   let () =
     repeat_twice (fun () ->
       let i = ref (-1) in
       C.iteri (fun idx elt -> incr i; assert (!i = idx); assert (!i = elt)) c;
-      assert (!i = n - 1)
+      assert (!i = n - 1);
+      try C.iteri (fun _ -> assert false) (Lazy.force empty);
+      with BatDllist.Empty -> ()
     )
 
   let () =
     repeat_twice (fun () ->
       let i = ref n in
       C.iter_right (fun elt -> decr i; assert (!i = elt)) c;
-      assert (!i = 0)
+      assert (!i = 0);
+      try C.iter_right (fun _ -> assert false) (Lazy.force empty)
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -404,7 +458,9 @@ module TestContainer(C : Container) = struct
       let i = ref (-1) in
       (try C.iter (fun elt -> incr i; assert (!i + 1 = elt)) c;
       with NotImplemented -> failwith "map and not iter??");
-      assert (!i = n - 1)
+      assert (!i = n - 1);
+      try assert_equal 0 (C.length (C.map (fun _ -> assert false) (Lazy.force empty)))
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -415,7 +471,9 @@ module TestContainer(C : Container) = struct
       let i = ref (-1) in
       (try C.iteri (fun idx elt -> incr i; assert (!i = idx); assert (!i + 1 = elt)) c;
       with NotImplemented -> failwith "mapi and not iteri??");
-      assert (!i = n - 1)
+      assert (!i = n - 1);
+      try assert_equal 0 (C.length (C.mapi (fun _ -> assert false) (Lazy.force empty)))
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -426,7 +484,9 @@ module TestContainer(C : Container) = struct
       let i = ref n in
       (try C.iter_right (fun elt -> decr i; assert (!i + 1 = elt)) c;
       with NotImplemented -> failwith "map_right and not iter_right??");
-      assert (!i = 0)
+      assert (!i = 0);
+      try assert_equal 0 (C.length (C.map_right (fun _ -> assert false) (Lazy.force empty)))
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -435,7 +495,9 @@ module TestContainer(C : Container) = struct
       let acc = 0 in
       let acc = C.fold_left (fun acc elt -> incr i; assert (!i = elt); acc + 1) acc c in
       assert (!i = n - 1);
-      assert (acc = n)
+      assert (acc = n);
+      try ignore (C.fold_left (fun _ -> assert false) 0 (Lazy.force empty))
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -444,7 +506,9 @@ module TestContainer(C : Container) = struct
       let acc = 0 in
       let acc = C.fold_right (fun acc elt -> decr i; assert (!i = elt); acc + 1) acc c in
       assert (!i = 0);
-      assert (acc = n)
+      assert (acc = n);
+      try ignore (C.fold_right (fun _ -> assert false) 0 (Lazy.force empty))
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -521,6 +585,8 @@ module TestContainer(C : Container) = struct
       let i = ref (-1) in
       assert (not (C.for_all (fun elt -> incr i; elt < 200) c));
       assert (!i = 200);
+      try ignore (C.for_all (fun _ -> assert false) (Lazy.force empty))
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -529,6 +595,8 @@ module TestContainer(C : Container) = struct
       let i = ref (-1) in
       assert (C.exists (fun elt -> incr i; not (elt < 200)) c);
       assert (!i = 200);
+      try ignore (C.exists (fun _ -> assert false) (Lazy.force empty))
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -543,6 +611,8 @@ module TestContainer(C : Container) = struct
       (* iterating first to force the sequence of lazy
          sequence before checking the number of
          elements traversed *)
+      try ignore (C.filter (fun _ -> assert false) (Lazy.force empty))
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -554,6 +624,8 @@ module TestContainer(C : Container) = struct
       C.iter (fun elt -> incr j; assert (!j = -elt)) c2;
       assert (!i = n - 1);
       assert (!j = n / 2 - 1);
+      try ignore (C.filter_map (fun _ -> assert false) (Lazy.force empty))
+      with BatDllist.Empty -> ()
     )
 
   let () =
@@ -734,6 +806,13 @@ module TestContainer(C : Container) = struct
 
   let () =
     repeat_twice (fun () ->
+      let c = C.of_array a in
+      inv c;
+      assert (C.to_array c = a)
+    )
+
+  let () =
+    repeat_twice (fun () ->
       assert (C.to_list_backwards c = List.rev (Array.to_list a))
     )
 
@@ -798,7 +877,8 @@ module TestContainer(C : Container) = struct
       let elt = C.find (fun elt -> incr i; assert (!i = elt); elt = 200) c in
       assert (elt = 200);
       assert (!i = 200);
-      assert (try ignore (C.find (fun _ -> false) c); false with _ -> true)
+      assert (try ignore (C.find (fun _ -> false) c); false with _ -> true);
+      assert (try ignore (C.find (fun _ -> assert false) (Lazy.force empty)); false with _ -> true);
     )
 
   let () =
@@ -807,7 +887,8 @@ module TestContainer(C : Container) = struct
       let elt = C.find_right (fun elt -> decr i; assert (!i = elt); elt = 200) c in
       assert (elt = 200);
       assert (!i = 200);
-      assert (try ignore (C.find_right (fun _ -> false) c); false with _ -> true)
+      assert (try ignore (C.find_right (fun _ -> false) c); false with _ -> true);
+      assert (try ignore (C.find_right (fun _ -> assert false) (Lazy.force empty)); false with _ -> true);
     )
 
   let () =
@@ -855,6 +936,8 @@ let tests = "Container" >::: [
   "FingerTree" >:: (fun () -> let module M = TestContainer(FingerTreeContainer) in ());
   "Array" >:: (fun () -> let module M = TestContainer(ArrayContainer) in ());
   "DynArray" >:: (fun () -> let module M = TestContainer(DynArrayContainer) in ());
+  "DynArrayStepResizer" >:: (fun () -> let module M = TestContainer(DynArrayContainerStepResizer) in ());
+  "DynArrayCrapResizer" >:: (fun () -> let module M = TestContainer(DynArrayContainerCrapResizer) in ());
   "Deque" >:: (fun () -> let module M = TestContainer(DequeContainer) in ());
   "Lazylist" >:: (fun () -> let module M = TestContainer(LazyListContainer) in ());
   "Dllist" >:: (fun () -> let module M = TestContainer(DllistContainer) in ());
