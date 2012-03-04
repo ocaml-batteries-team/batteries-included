@@ -85,12 +85,6 @@ let root m n =
   else
     exp (log m /. (float_of_int n))
 
-(*$T root
-   approx_equal (root 9. 2) 3.
-   approx_equal (root 8. 3) 2.
-   approx_equal (root 1. 20) 1.
-*)
-
 (* sign bit is top bit, shift all other 63 bits away and test if = one
 
    Negative numbers have this bit set, positive unset.
@@ -235,7 +229,7 @@ module Base_safe_float = struct
     | FP_infinite -> raise Overflow
     | FP_nan      -> raise NaN
     | _           -> ()
-  let check x = let _ = if_safe x in x
+  let check x = if_safe x; x
 
   let safe1 f x   = check (f x)
   let safe2 f x y = check (f x y)
@@ -271,8 +265,8 @@ module Safe_float = struct
   let tanh = safe1 tanh
   let ceil = safe1 ceil
   let floor = safe1 floor
-  let modf x = let (y,z) as result = modf x in if_safe y; if_safe z; result
-  let frexp x = let (f,_) as result = frexp x in if_safe f; result
+  let modf x = let (_, z) as result = modf x in if_safe z; result
+  let frexp x = let (f, _) as result = frexp x in if_safe f; result (*BISECT-VISIT*)
   let ldexp = safe2 ldexp
 
   type bounded = t
@@ -286,10 +280,7 @@ module Safe_float = struct
 		| FP_nan
   external classify : float -> fpkind = "caml_classify_float"
 
-  let is_nan f = match classify f with
-    | FP_nan -> true
-    | _      -> false
-
+  let is_nan = is_nan
   let infinity     = Pervasives.infinity
   let neg_infinity = Pervasives.neg_infinity
   let nan          = Pervasives.nan
@@ -300,5 +291,70 @@ module Safe_float = struct
   external to_float : float -> float = "%identity"
 
   let print = print
-  let t_printer _paren out t = print out t
+  let t_printer = t_printer
 end
+
+(*$T succ
+  is_nan (succ nan)
+  succ infinity = infinity
+  succ neg_infinity = neg_infinity
+  succ (-3.) = -2.
+*)
+
+(*$T pred
+  is_nan (pred nan)
+  pred infinity = infinity
+  pred neg_infinity = neg_infinity
+  pred (-3.) = -4.
+*)
+
+(*$T root
+   approx_equal (root 9. 2) 3.
+   approx_equal (root 8. 3) 2.
+   approx_equal (root 1. 20) 1.
+   approx_equal (root (-8.) 3) (-2.)
+   approx_equal (root 0. 6) 0.
+   approx_equal (root (-0.) 6) 0.
+   is_nan (root nan 4)
+   root infinity 4 = infinity
+   root neg_infinity 3 = neg_infinity
+   try ignore (root (-8.) 4); false with Invalid_argument _ -> true
+   try ignore (root neg_infinity 4); false with Invalid_argument _ -> true
+   try ignore (root (9.) (-2)); false with Invalid_argument _ -> true
+*)
+
+(*$T is_nan
+  not (is_nan infinity)
+  not (is_nan neg_infinity)
+  not (is_nan (-0.))
+  not (is_nan 12.)
+  is_nan nan
+*)
+
+(*$T is_special
+  is_special infinity
+  is_special neg_infinity
+  not (is_special (-0.))
+  not (is_special 12.)
+  is_special nan
+*)
+
+(*$T
+  try ignore (Safe_float.add 0. infinity); false with BatNumber.Overflow -> true
+  try ignore (Safe_float.add 0. neg_infinity); false with BatNumber.Overflow -> true
+  try ignore (Safe_float.add 0. nan); false with BatNumber.NaN -> true
+  ignore (Safe_float.add 0. (-0.)); true
+  ignore (Safe_float.add 0. (12.)); true
+*)
+
+(*$T t_printer
+  BatIO.string_of_t_printer t_printer 1.23 = "1.23"
+  BatIO.string_of_t_printer t_printer nan = "nan"
+*)
+
+(*$T
+  try ignore (Safe_float.modf nan); false with Number.NaN -> true
+  try ignore (Safe_float.modf infinity); false with Number.Overflow -> true
+  try ignore (Safe_float.modf neg_infinity); false with Number.Overflow -> true
+  let (frac, int) = Safe_float.modf 3.234 in approx_equal frac 0.234 && approx_equal int 3.
+*)
