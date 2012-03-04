@@ -20,6 +20,7 @@ module type Container = sig
   val filter : ('a -> bool) -> 'a t -> 'a t
   val filter_map : ('a -> 'b option) -> 'a t -> 'b t
   val get : 'a t -> int -> 'a
+  val set : 'a t -> int -> 'a -> 'a t
   val append : 'a t -> 'a t -> 'a t
   val last : 'a t -> 'a
   val of_list : 'a list -> 'a t
@@ -40,6 +41,9 @@ module type Container = sig
     -> ('a BatInnerIO.output -> 'b -> unit)
     -> 'a BatInnerIO.output -> 'b t -> unit
   val invariants : _ t -> unit
+  val insert : 'a t -> int -> 'a -> 'a t
+  val delete : 'a t -> int -> 'a t
+  val delete_range : 'a t -> int -> int -> 'a t
 (* sort, stable_sort, split_at, iter2, for_all2, take, drop, mem, find, find_map, reduce, max, min, reverse *)
 end
 
@@ -75,6 +79,10 @@ module DllistContainer : Container = struct
   and is_empty = ni1
   and t_printer = ni4
   and t_printer_delim = ("","")
+  and set = ni3
+  and insert = ni3
+  and delete = ni2
+  and delete_range = ni3
 end
 
 module ArrayContainer : Container = struct
@@ -97,6 +105,10 @@ module ArrayContainer : Container = struct
   and is_empty = ni1
   and t_printer_delim = ("[|", "|]")
   and invariants = ignore
+  and set t i v = let t = Array.copy t in set t i v; t
+  and insert = ni3
+  and delete = ni2
+  and delete_range = ni3
 end
 
 module LazyListContainer : Container = struct
@@ -117,6 +129,10 @@ module LazyListContainer : Container = struct
   and t_printer = ni4
   and t_printer_delim = ("","")
   and invariants = ignore
+  and set = ni3
+  and insert = ni3
+  and delete = ni2
+  and delete_range = ni3
 end
 
 module DynArrayContainer : Container = struct
@@ -138,8 +154,12 @@ module DynArrayContainer : Container = struct
   let init = ni1
   let find f t = get t (index_of f t)
   and find_right = ni2
-  and is_empty = ni1
+  and is_empty = empty
   and t_printer_delim = ("[|", "|]")
+  and set t i v = let t = copy t in set t i v; t
+  and insert t i v = let t = copy t in insert t i v; t
+  and delete t i = let t = copy t in delete t i; t
+  and delete_range t i len = let t = copy t in delete_range t i len; t
 end
 
 module DequeContainer : Container = struct
@@ -190,6 +210,10 @@ module DequeContainer : Container = struct
     assert_equal (to_list orig) (to_list q);
     q
   and t_printer_delim = ("[", "]")
+  and set = ni3
+  and insert = ni3
+  and delete = ni2
+  and delete_range = ni3
 end
 
 module ListContainer : Container = struct
@@ -209,6 +233,10 @@ module ListContainer : Container = struct
   and find_right = ni2
   and t_printer_delim = ("[", "]")
   and invariants = ignore
+  and set = ni3
+  and insert = ni3
+  and delete = ni2
+  and delete_range = ni3
 end
 
 module RefListContainer : Container = struct
@@ -233,6 +261,10 @@ module RefListContainer : Container = struct
   and t_printer_delim = ("","")
   and print = ni_print
   and invariants = ignore
+  and set = ni3
+  and insert = ni3
+  and delete = ni2
+  and delete_range = ni3
 end
 
 module VectContainer : Container = struct
@@ -251,6 +283,9 @@ module VectContainer : Container = struct
   and find_right = ni2
   and t_printer = ni4
   and t_printer_delim = ("","")
+  and insert t i v = insert i (singleton v) t
+  and delete = ni2
+  and delete_range t i len = remove i len t
 end
 
 module FingerTreeContainer : Container = struct
@@ -269,6 +304,9 @@ module FingerTreeContainer : Container = struct
   let find = ni2
   and find_right = ni2
   and t_printer_delim = ("[", "]")
+  and insert = ni3
+  and delete = ni2
+  and delete_range = ni3
 end
 
 module SeqContainer : Container = struct
@@ -304,6 +342,10 @@ module SeqContainer : Container = struct
   and find_right = ni2
   and t_printer_delim = ("[", "]")
   and invariants = ignore
+  and set = ni3
+  and insert = ni3
+  and delete = ni2
+  and delete_range = ni3
 end
 
 module BatArray = struct
@@ -569,6 +611,113 @@ module TestContainer(C : Container) = struct
       done;
       assert (try ignore (C.get c (-1)); false with _ -> true);
       assert (try ignore (C.get c n); false with _ -> true);
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      for i = 0 to n - 1 do
+        let c2 = C.set c i (-1) in
+        inv c2;
+        let idx = ref (-1) in
+        C.iteri (fun j v ->
+          incr idx;
+          assert_equal j !idx;
+          assert_equal ~printer:string_of_int
+            (if i = j then (-1) else j) v
+        ) c2;
+        assert_equal ~printer:string_of_int (n - 1) !idx;
+      done;
+      assert (try ignore (C.set c (-1) (-1)); false with _ -> true);
+      assert (try ignore (C.set c n (-1)); false with _ -> true);
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      for i = 0 to n do
+        let c2 = C.insert c i (-1) in
+        inv c2;
+        let idx = ref (-1) in
+        C.iteri (fun j v ->
+          incr idx;
+          assert_equal j !idx;
+          assert_equal ~printer:string_of_int
+            (if i = j then (-1) else if i > j then j else j - 1) v
+        ) c2;
+        assert_equal ~printer:string_of_int n !idx;
+
+        let c3 = C.insert c2 (i / 2) (-2) in
+        inv c3;
+        let idx = ref (-1) in
+        C.iteri (fun j v ->
+          incr idx;
+          assert_equal j !idx;
+          assert_equal ~printer:string_of_int
+            (if j < i / 2 then j
+             else if j = i / 2 then (-2)
+             else if j - 1 < i then j - 1
+             else if j - 1 = i then (-1)
+             else j - 2
+            ) v
+        ) c3;
+        assert_equal ~printer:string_of_int (n + 1) !idx;
+      done;
+      assert (try ignore (C.insert c (-1) (-1)); false with _ -> true);
+      assert (try ignore (C.insert c (n + 1) (-1)); false with _ -> true);
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      for i = 0 to n - 1 do
+        let c2 = C.delete c i in
+        inv c2;
+        let idx = ref (-1) in
+        C.iteri (fun j v ->
+          incr idx;
+          assert_equal j !idx;
+          assert_equal ~printer:string_of_int
+            (if i > j then j else j + 1) v
+        ) c2;
+        assert_equal ~printer:string_of_int (n - 2) !idx;
+
+        let c3 = C.delete c2 (i / 2) in
+        inv c3;
+        let idx = ref (-1) in
+        C.iteri (fun j v ->
+          incr idx;
+          assert_equal j !idx;
+          assert_equal ~printer:string_of_int
+            (if j < i / 2 then j
+             else if j + 1 < i then j + 1
+             else j + 2) v
+        ) c3;
+        assert_equal ~printer:string_of_int (n - 3) !idx;
+      done;
+      assert (try ignore (C.delete c (-1)); false with _ -> true);
+      assert (try ignore (C.delete c n); false with _ -> true);
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      assert (try ignore (C.delete_range c (-1) 1); false with _ -> true);
+      assert (try ignore (C.delete_range c n 1); false with _ -> true);
+      assert (try ignore (C.delete_range c 0 (-1)); false with _ -> true);
+      assert (try ignore (C.delete_range c 1 n); false with _ -> true);
+      assert (C.is_empty (C.delete_range c 0 n));
+      (* could check what happens with an empty range *)
+      for i = 0 to n / 2 - 1 do
+        let start = i in
+        let len = min (1 + i * 2) (n - start) in
+        let c2 = C.delete_range c start len in
+        inv c2;
+        let idx = ref (-1) in
+        C.iteri (fun j v ->
+          incr idx;
+          assert_equal j !idx;
+          assert_equal ~printer:string_of_int
+            (if start > j then j else j + len) v
+        ) c2;
+        assert_equal ~printer:string_of_int (n - 1 - len) !idx;
+      done;
     )
 
   let () =
