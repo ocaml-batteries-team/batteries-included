@@ -69,8 +69,9 @@ let test_open_close_many_pervasives () =
     for i = 0 to 10000 do
       let temp = temp_file "batteries" "test" in
       let oc   = open_out temp                         in
-        output_string oc "test";
-        close_out oc
+      output_string oc "test";
+      close_out oc;
+      (try Unix.unlink temp with _ -> ())
     done;
     (* pass *)
   with Sys_error e -> assert_failure (BatPrintf.sprintf "Got Sys_error %S" e)

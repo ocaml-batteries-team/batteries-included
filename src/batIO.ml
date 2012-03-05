@@ -772,6 +772,7 @@ let synchronize_out ?(lock = !lock_factory ()) out =
 let to_input_channel inp =
   try Unix.in_channel_of_descr (BatUnix.descr_of_input inp) (*Simple case*)
   with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
+    (* FIXME: this 'pipe' is never deleted *)
     let (name, cout) =
       Filename.open_temp_file ~mode:[Open_binary] "ocaml" "pipe" in
     let out          = output_channel cout                    in
