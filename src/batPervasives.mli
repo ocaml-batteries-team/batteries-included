@@ -47,6 +47,21 @@ open BatIO
     @author Zheng Li
 *)
 
+(**/**)
+val input_lines : Pervasives.in_channel -> string BatEnum.t
+(** Returns an enumeration over lines of an input channel, as read by the
+ [input_line] function. *)
+
+val input_chars : Pervasives.in_channel -> char BatEnum.t
+(** Returns an enumeration over characters of an input channel. *)
+
+val input_list : Pervasives.in_channel -> string list
+(** Returns the list of lines read from an input channel. *)
+
+val input_all : Pervasives.in_channel -> string
+(** Return the whole contents of an input channel as a single
+ string. *)
+(**/**)
 
 
 (** {6 String operations}
@@ -169,6 +184,9 @@ val prerr_all : input -> unit
 
 (** {7 General output functions} *)
 
+val output_file : filename:string -> text:string -> unit
+(** creates a filename, write text into it and close it. *)
+
 val open_out : ?mode:(BatFile.open_out_flag list) ->
                ?perm:BatFile.permission           ->
   string -> unit BatIO.output
@@ -272,6 +290,9 @@ val close_out_noerr : unit BatIO.output -> unit
 
 (** {7 General input functions} *)
 
+val input_file : ?bin:bool -> string -> string
+(** returns the data of a given filename. *)
+
 val open_in : ?mode:(BatFile.open_in_flag list) ->
   ?perm:BatFile.permission ->
   string -> BatIO.input
@@ -307,7 +328,6 @@ val open_in_gen : open_flag list -> int -> string -> BatIO.input
     cases of this function.
 
     @deprecated Use {!open_in instead}*)
-
 
 val input_char : BatIO.input -> char
 (** Read one character from the given input channel.
@@ -496,6 +516,13 @@ val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
 (** [with_dispose dispose f x] invokes [f] on [x], calling [dispose x]
     when [f] terminates (either with a return value or an
     exception). *)
+
+val forever : ('a -> 'b) -> 'a -> unit
+(** [forever f x] invokes [f] on [x] repeatedly (until an exception occurs). *)
+
+val ignore_exceptions : ('a -> 'b) -> 'a -> unit
+(** [ignore_exceptions f x] invokes [f] on [x], ignoring both the returned value
+    and the exceptions that may be raised. *)
 
 val verify_arg : bool -> string -> unit
 (** [verify_arg condition message] will raise [Invalid_argument message] if
@@ -918,6 +945,22 @@ val exn_printer : exn BatValuePrinter.t
 type ('a, 'b) result =
   | Ok  of 'a
   | Bad of 'b
+(** The result of a computation - either an [Ok] with the normal
+result or a [Bad] with some value (often an exception) containing
+failure information*)
+
+val ignore_ok : ('a, exn) result -> unit
+(** [ignore_ok (f x)] ignores the result of [f x] if it's ok, but
+throws the exception contained if [Bad] is returned. *)
+
+val ok : ('a, exn) result -> 'a
+(** [f x |> ok] unwraps the [Ok] result of [f x] and returns it, or
+throws the exception contained if [Bad] is returned. *)
+
+val wrap : ('a -> 'b) -> 'a -> ('b, exn) result
+(** [wrap f x] wraps a function that would normally throw an exception
+on failure such that it now returns a result with either the [Ok]
+return value or the [Bad] exception. *)
 
 
 (**
