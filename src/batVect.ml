@@ -89,127 +89,135 @@ exception Out_of_bounds
 let empty = Empty
 
 (* by construction, there cannot be Empty or Leaf "" leaves *)
-let is_empty = function Empty -> true | _ -> false
+let is_empty = function
+  | Empty -> true
+  | Leaf _ | Concat _ -> false
 
 let height = function
-    Empty | Leaf _ -> 0
-  | Concat(_,_,_,_,h) -> h
+  | Empty | Leaf _ -> 0
+  | Concat (_, _, _, _, h) -> h
 
 let rec length = function
-    Empty -> 0
+  | Empty -> 0
   | Leaf s -> STRING.length s
-  | Concat(_,cl,_,cr,_) -> cl + cr
+  | Concat (_, cl, _, cr, _) -> cl + cr
 
 let make_concat l r =
   let hl = height l and hr = height r in
   let cl = length l and cr = length r in
-    Concat(l, cl, r, cr, if hl >= hr then hl + 1 else hr + 1)
+  Concat (l, cl, r, cr, if hl >= hr then hl + 1 else hr + 1)
 
 let min_len =
   let fib_tbl = Array.make max_height 0 in
-  let rec fib n = match fib_tbl.(n) with
-      0 ->
-        let last = fib (n - 1) and prev = fib (n - 2) in
-        let r = last + prev in
-        let r = if r > last then r else last in (* check overflow *)
-          fib_tbl.(n) <- r; r
-    | n -> n
-  in
-    fib_tbl.(0) <- leaf_size + 1; fib_tbl.(1) <- 3 * leaf_size / 2 + 1;
-    Array.init max_height (fun i -> if i = 0 then 1 else fib (i - 1))
+  let rec fib n =
+    match fib_tbl.(n) with
+    | 0 ->
+      let last = fib (n - 1) and prev = fib (n - 2) in
+      let r = last + prev in
+      let r = if r > last then r else last in (* check overflow *)
+      fib_tbl.(n) <- r; r
+    | n -> n in
+  fib_tbl.(0) <- leaf_size + 1; fib_tbl.(1) <- 3 * leaf_size / 2 + 1;
+  Array.init max_height (fun i -> if i = 0 then 1 else fib (i - 1))
 
 let max_length = min_len.(Array.length min_len - 1)
 
-let concat_fast l r = match l with
-    Empty -> r
-  | Leaf _ | Concat(_,_,_,_,_) ->
-      match r with
-          Empty -> l
-        | Leaf _ | Concat(_,_,_,_,_) -> make_concat l r
+let concat_fast l r =
+  match l with
+  | Empty -> r
+  | Leaf _ | Concat _ ->
+    match r with
+    | Empty -> l
+    | Leaf _ | Concat _ -> make_concat l r
 
 (* based on Hans-J. Boehm's *)
 let add_forest forest rope len =
   let i = ref 0 in
   let sum = ref empty in
-    while len > min_len.(!i+1) do
-      if forest.(!i).c <> Empty then begin
-        sum := concat_fast forest.(!i).c !sum;
-        forest.(!i).c <- Empty
-      end;
-      incr i
-    done;
-    sum := concat_fast !sum rope;
-    let sum_len = ref (length !sum) in
-      while !sum_len >= min_len.(!i) do
-        if forest.(!i).c <> Empty then begin
-          sum := concat_fast forest.(!i).c !sum;
-          sum_len := !sum_len + forest.(!i).len;
-          forest.(!i).c <- Empty;
-        end;
-        incr i
-      done;
-      decr i;
-      forest.(!i).c <- !sum;
-      forest.(!i).len <- !sum_len
+  while len > min_len.(!i+1) do
+    if forest.(!i).c <> Empty then begin
+      sum := concat_fast forest.(!i).c !sum;
+      forest.(!i).c <- Empty
+    end;
+    incr i
+  done;
+  sum := concat_fast !sum rope;
+  let sum_len = ref (length !sum) in
+  while !sum_len >= min_len.(!i) do
+    if forest.(!i).c <> Empty then begin
+      sum := concat_fast forest.(!i).c !sum;
+      sum_len := !sum_len + forest.(!i).len;
+      forest.(!i).c <- Empty;
+    end;
+    incr i
+  done;
+  decr i;
+  forest.(!i).c <- !sum;
+  forest.(!i).len <- !sum_len
 
 let concat_forest forest =
   Array.fold_left (fun s x -> concat_fast x.c s) Empty forest
 
 let rec balance_insert rope len forest = match rope with
-    Empty -> ()
+  | Empty -> ()
   | Leaf _ -> add_forest forest rope len
-  | Concat(l,cl,r,cr,h) when h >= max_height || len < min_len.(h) ->
-      balance_insert l cl forest;
-      balance_insert r cr forest
-  | x -> add_forest forest x len (* function or balanced *)
+  | Concat (l, cl, r, cr, h) when h >= max_height || len < min_len.(h) ->
+    balance_insert l cl forest;
+    balance_insert r cr forest
+  | Concat _ as x -> add_forest forest x len (* function or balanced *)
 
 let balance r =
   match r with
-      Empty -> Empty
-    | Leaf _ -> r
-    | _ ->
-        let forest = Array.init max_height (fun _ -> {c = Empty; len = 0}) in
-          balance_insert r (length r) forest;
-          concat_forest forest
+  | Empty -> Empty
+  | Leaf _ -> r
+  | Concat _ ->
+    let forest = Array.init max_height (fun _ -> {c = Empty; len = 0}) in
+    balance_insert r (length r) forest;
+    concat_forest forest
 
 let bal_if_needed l r =
   let r = make_concat l r in
-    if height r < max_height then r else balance r
+  if height r < max_height then r else balance r
 
 let concat_str l = function
-    Empty | Concat(_,_,_,_,_) -> invalid_arg "concat_str"
+  | Empty | Concat _ -> invalid_arg "concat_str"
   | Leaf rs as r ->
-      let lenr = STRING.length rs in
-        match l with
-          | Empty -> r
-          | Leaf ls ->
-              let slen = lenr + STRING.length ls in
-                if slen <= leaf_size then Leaf (str_append ls rs)
-                else make_concat l r (* height = 1 *)
-          | Concat(ll, cll, Leaf lrs, clr, h) ->
-              let slen = clr + lenr in
-                if clr + lenr <= leaf_size then
-                  Concat(ll, cll, Leaf (str_append lrs rs), slen, h)
-                else
-                  bal_if_needed l r
-          | _ -> bal_if_needed l r
+    let lenr = STRING.length rs in
+    match l with
+    | Empty -> r
+    | Leaf ls ->
+      let slen = lenr + STRING.length ls in
+      if slen <= leaf_size then Leaf (str_append ls rs)
+      else make_concat l r (* height = 1 *)
+    | Concat (ll, cll, Leaf lrs, clr, h) ->
+      let slen = clr + lenr in
+      if clr + lenr <= leaf_size then
+        Concat (ll, cll, Leaf (str_append lrs rs), slen, h)
+      else
+        bal_if_needed l r
+    | Concat _ -> bal_if_needed l r
 
 let append_char c r = concat_str r (Leaf (STRING.make 1 c))
 
 let concat l = function
-    Empty -> l
+  | Empty -> l
   | Leaf _ as r -> concat_str l r
-  | Concat(Leaf rls,rlc,rr,rc,h) as r ->
-      (match l with
-          Empty -> r
-        | Concat(_,_,_,_,_) -> bal_if_needed l r
-        | Leaf ls ->
-            let slen = rlc + STRING.length ls in
-              if slen <= leaf_size then
-                Concat(Leaf(str_append ls rls), slen, rr, rc, h)
-              else
-                bal_if_needed l r)
-  | r -> (match l with Empty -> r | _ -> bal_if_needed l r)
+  | Concat (Leaf rls, rlc, rr, rc, h) as r -> (
+    match l with
+    | Empty -> r
+    | Concat _ -> bal_if_needed l r
+    | Leaf ls ->
+      let slen = rlc + STRING.length ls in
+      if slen <= leaf_size then
+        Concat (Leaf (str_append ls rls), slen, rr, rc, h)
+      else
+        bal_if_needed l r
+  )
+  | Concat _ as r -> (
+    match l with
+    | Empty -> r
+    | Leaf _ | Concat _ -> bal_if_needed l r
+  )
 
 let prepend_char c r = concat (Leaf (STRING.make 1 c)) r
 
@@ -233,7 +241,7 @@ let rec set t i x =
       STRING.unsafe_set s i x;
       Leaf s
     ) else raise Out_of_bounds
-  | Concat(l, cl, r, cr, _) ->
+  | Concat (l, cl, r, cr, _) ->
     if i < cl then concat (set l i x) r
     else concat l (set r (i - cl) x)
 
@@ -249,63 +257,61 @@ let rec modify t i f =
       STRING.unsafe_set s i (f (STRING.unsafe_get s i));
       Leaf s
     ) else raise Out_of_bounds
-  | Concat(l, cl, r, cr, _) ->
+  | Concat (l, cl, r, cr, _) ->
     if i < cl then concat (modify l i f) r
     else concat l (modify r (i - cl) f)
 
 let of_string = function
-    s when STRING.length s = 0 -> Empty
+  | [||] -> Empty
   | s ->
-      let min (x:int) (y:int) = if x <= y then x else y in
-      let rec loop r s len i =
-        if i < len then (* len - i > 0, thus Leaf "" can't happen *)
-          loop (concat r (Leaf (STRING.sub s i (min (len - i) leaf_size))))
-            s len (i + leaf_size)
-        else
-          r
-      in loop Empty s (STRING.length s) 0
+    let rec loop r s len i =
+      if i < len then (* len - i > 0, thus Leaf "" can't happen *)
+        loop (concat r (Leaf (STRING.sub s i (BatInt.min (len - i) leaf_size))))
+          s len (i + leaf_size)
+      else
+        r in
+    loop Empty s (STRING.length s) 0
 
 let rec make len c =
   let rec concatloop len i r =
     if i <= len then
       concatloop len (i * 2) (concat r r)
-    else r
-  in
-    if len = 0 then Empty
-    else if len <= leaf_size then Leaf (STRING.make len c)
-    else
-      let rope = concatloop len 2 (of_string (STRING.make 1 c)) in
-        concat rope (make (len - length rope) c)
+    else r in
+  if len = 0 then Empty
+  else if len <= leaf_size then Leaf (STRING.make len c)
+  else
+    let rope = concatloop len 2 (of_string (STRING.make 1 c)) in
+    concat rope (make (len - length rope) c)
 
 (* overridden argument order below *)
 let rec sub start len = function
-    Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
+  | Empty ->
+    if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
   | Leaf s ->
-      if len > 0 then (* Leaf "" cannot happen *)
-        (try Leaf (STRING.sub s start len) with _ -> raise Out_of_bounds)
-      else if len < 0 || start < 0 || start > STRING.length s then
-        raise Out_of_bounds
-      else Empty
-  | Concat(l,cl,r,cr,_) ->
-      if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
-      let left =
-        if start = 0 then
-          if len >= cl then
-            l
-          else sub 0 len l
-        else if start > cl then Empty
-        else if start + len >= cl then
-          sub start (cl - start) l
-        else sub start len l in
-      let right =
-        if start <= cl then
-          let upto = start + len in
-            if upto = cl + cr then r
-            else if upto < cl then Empty
-            else sub 0 (upto - cl) r
-        else sub (start - cl) len r
-      in
-        concat left right
+    if len > 0 then (* Leaf "" cannot happen *)
+      (try Leaf (STRING.sub s start len) with _ -> raise Out_of_bounds)
+    else if len < 0 || start < 0 || start > STRING.length s then
+      raise Out_of_bounds
+    else Empty
+  | Concat (l, cl, r, cr, _) ->
+    if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
+    let left =
+      if start = 0 then
+        if len >= cl then
+          l
+        else sub 0 len l
+      else if start > cl then Empty
+      else if start + len >= cl then
+        sub start (cl - start) l
+      else sub start len l in
+    let right =
+      if start <= cl then
+        let upto = start + len in
+        if upto = cl + cr then r
+        else if upto < cl then Empty
+        else sub 0 (upto - cl) r
+        else sub (start - cl) len r in
+    concat left right
 
 (* change argument order on Vect.sub *)
 let sub v s l = sub s l v
@@ -318,70 +324,73 @@ let remove start len r =
 
 let to_string r =
   let rec strings l = function
-      Empty -> l
+    | Empty -> l
     | Leaf s -> s :: l
-    | Concat(left,_,right,_,_) -> strings (strings l right) left
-  in
-    string_of_string_list (strings [] r)
+    | Concat (left, _, right, _, _) -> strings (strings l right) left in
+  string_of_string_list (strings [] r)
 
 let rec iter f = function
   | Empty -> ()
   | Leaf s -> STRING.iter f s
-  | Concat(l,_,r,_,_) -> iter f l; iter f r
+  | Concat (l, _, r, _, _) -> iter f l; iter f r
 
 type 'a iter = E | C of 'a STRING.t * int * 'a t * 'a iter
 
-let rec cons_iter s t = match s with
-    Empty -> t
+let rec cons_iter s t =
+  match s with
+  | Empty -> t
   | Leaf s -> C (s, 0, Empty, t)
   | Concat (l, _llen, r, _rlen, _h) -> cons_iter l (cons_iter r t)
 
-let rec rev_cons_iter s t = match s with
-    Empty -> t
+let rec rev_cons_iter s t =
+  match s with
+  | Empty -> t
   | Leaf s -> C (s, (STRING.length s - 1), Empty, t)
   | Concat (l, _, r, _, _) -> rev_cons_iter r (rev_cons_iter l t)
 
-let rec enum_next l () = match !l with
-    E -> raise BatEnum.No_more_elements
+let rec enum_next l () =
+  match !l with
+  | E -> raise BatEnum.No_more_elements
   | C (s, p, r, t) ->
-      if p+1 = STRING.length s then
-	l := cons_iter r t
-      else
-	l := C(s,p+1,r,t);
-      STRING.unsafe_get s p
+    if p + 1 = STRING.length s then
+      l := cons_iter r t
+    else
+      l := C (s, p + 1, r, t);
+    STRING.unsafe_get s p
 
-let rec enum_backwards_next l () = match !l with
-    E -> raise BatEnum.No_more_elements
+let rec enum_backwards_next l () =
+  match !l with
+  | E -> raise BatEnum.No_more_elements
   | C (s, p, r, t) ->
-      if p = 0 then
-	l := rev_cons_iter r t
-      else
-	l := C(s,p-1,r,t);
-      STRING.unsafe_get s p
+    if p = 0 then
+      l := rev_cons_iter r t
+    else
+      l := C (s, p - 1, r, t);
+    STRING.unsafe_get s p
 
 let rec enum_count l () =
   let rec aux n = function
-      E -> n
+    | E -> n
     | C (s, p, m, t) -> aux (n + (STRING.length s - p) + length m) t
   in aux 0 !l
 
 let rec rev_enum_count l () =
   let rec aux n = function
-      E -> n
-    | C (s, p, m, t) -> aux (n + (p+1) + length m) t
+    | E -> n
+    | C (s, p, m, t) -> aux (n + (p + 1) + length m) t
   in aux 0 !l
 
 let enum t =
   let rec make l =
     let l = ref l in
-    let clone() = make !l in
+    let clone () = make !l in
     BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
   in make (cons_iter t E)
 
 let backwards t =
   let rec make l =
     let l = ref l in
-    let clone() = make !l in
+    let clone () = make !l in
     BatEnum.make ~next:(enum_backwards_next l) ~count:(rev_enum_count l) ~clone
   in make (rev_cons_iter t E)
 
@@ -398,54 +407,53 @@ let iteri f r =
       for j = 0 to STRING.length s - 1 do
         f (i + j) (STRING.unsafe_get s j)
       done
-    | Concat(l,cl,r,_,_) -> aux f i l; aux f (i + cl) r in
+    | Concat (l, cl, r, _, _) -> aux f i l; aux f (i + cl) r in
   aux f 0 r
 
 let rec rangeiter f start len = function
-    Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
+  | Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
   | Leaf s ->
-      let n = start + len in
-      let lens = STRING.length s in
-      if start >= 0 && len >= 0 && n <= lens then
-        for i = start to n - 1 do
-          f (STRING.unsafe_get s i)
-        done
-      else raise Out_of_bounds
-  | Concat(l,cl,r,cr,_) ->
-      if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
-      if start < cl then begin
-        let upto = start + len in
-          if upto <= cl then
-            rangeiter f start len l
-          else begin
-            rangeiter f start (cl - start) l;
-            rangeiter f 0 (upto - cl) r
-          end
-      end else begin
-        rangeiter f (start - cl) len r
+    let n = start + len in
+    let lens = STRING.length s in
+    if start >= 0 && len >= 0 && n <= lens then
+      for i = start to n - 1 do
+        f (STRING.unsafe_get s i)
+      done
+    else raise Out_of_bounds
+  | Concat (l, cl, r, cr, _) ->
+    if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
+    if start < cl then begin
+      let upto = start + len in
+      if upto <= cl then
+        rangeiter f start len l
+      else begin
+        rangeiter f start (cl - start) l;
+        rangeiter f 0 (upto - cl) r
       end
+    end else begin
+      rangeiter f (start - cl) len r
+    end
 
 let rec fold f a = function
-    Empty -> a
+  | Empty -> a
   | Leaf s ->
-      let acc = ref a in
-        for i = 0 to STRING.length s - 1 do
-          acc := f !acc (STRING.unsafe_get s i)
-        done;
-        !acc
-  | Concat(l,_,r,_,_) -> fold f (fold f a l) r
+    let acc = ref a in
+    for i = 0 to STRING.length s - 1 do
+      acc := f !acc (STRING.unsafe_get s i)
+    done;
+    !acc
+  | Concat (l, _, r, _, _) -> fold f (fold f a l) r
 
 let foldi f a v =
   let rec aux i a = function
-      Empty -> a
+    | Empty -> a
     | Leaf s ->
-	let acc = ref a in
-        for j = 0 to STRING.length s - 1 do
-          acc := f (i+j) !acc (STRING.unsafe_get s j)
-        done;
-        !acc
-  | Concat(l,cl,r,_,_) -> aux (i+cl) (aux i a l) r
-  in
+      let acc = ref a in
+      for j = 0 to STRING.length s - 1 do
+        acc := f (i+j) !acc (STRING.unsafe_get s j)
+      done;
+      !acc
+    | Concat (l, cl, r, _, _) -> aux (i+cl) (aux i a l) r in
   aux 0 a v
 
 let fold_left = fold
@@ -454,7 +462,7 @@ let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
   let rec aux (acc:'b) = function
     | Empty  -> acc
     | Leaf s -> STRING.fold_right f s acc
-    | Concat(l, _, r, _, _) -> aux (aux acc r) l
+    | Concat (l, _, r, _, _) -> aux (aux acc r) l
   in aux acc v
 
 let reduce f v =
@@ -470,46 +478,52 @@ let prepend = prepend_char
 let rec map f = function
   | Empty -> Empty
   | Leaf a -> Leaf (BatArray.map f a)
-  | Concat(l,cl,r,cr,h) ->
+  | Concat (l, cl, r, cr, h) ->
     let l = map f l in
     let r = map f r in
-    Concat(l, cl, r, cr, h)
+    Concat (l, cl, r, cr, h)
 
 let mapi f v =
   let off = ref 0 in
-    map (fun x -> f (BatRef.post_incr off) x) v
+  map (fun x -> f (BatRef.post_incr off) x) v
 
 let exists f v =
   BatReturn.label (fun label ->
-  let rec aux = function
-    | Empty                  -> ()
-    | Leaf a                 -> if BatArray.exists f a then BatReturn.return label true else ()
-    | Concat (l, _, r, _, _) -> aux l; aux r
-  in aux v; false)
+    let rec aux = function
+      | Empty -> ()
+      | Leaf a -> if BatArray.exists f a then BatReturn.return label true else ()
+      | Concat (l, _, r, _, _) -> aux l; aux r in
+    aux v;
+    false
+  )
 
 let for_all f v =
   BatReturn.label (fun label ->
-  let rec aux = function
-    | Empty                  -> ()
-    | Leaf a                 -> if not (BatArray.for_all f a) then BatReturn.return label false else ()
-    | Concat (l, _, r, _, _) -> aux l; aux r
-  in aux v; true)
+    let rec aux = function
+      | Empty -> ()
+      | Leaf a -> if not (BatArray.for_all f a) then BatReturn.return label false else ()
+      | Concat (l, _, r, _, _) -> aux l; aux r in
+    aux v;
+    true
+  )
 
 let find f v =
   BatReturn.label (fun label ->
-  let rec aux = function
-    | Empty  -> ()
-    | Leaf a -> (try BatReturn.return label (BatArray.find f a) with Not_found -> ())
-    | Concat (l, _, r, _, _) -> aux l; aux r
-  in aux v; raise Not_found)
+    let rec aux = function
+      | Empty -> ()
+      | Leaf a -> (try BatReturn.return label (BatArray.find f a) with Not_found -> ())
+      | Concat (l, _, r, _, _) -> aux l; aux r in
+    aux v;
+    raise Not_found
+  )
 
-let findi f v = (*We rely on the order of exploration of the tree by [find]*)
-  let off = ref (-1) in (* pre-increment *)
-  let _   = find (fun x -> let result = f x in incr off; result) v in
+let findi f v =
+  let off = ref (-1) in
+  ignore (find (fun x -> let result = f x in incr off; result) v);
   !off
 
 let partition p v =
-  fold_left (fun (yes, no) x -> if p x then (append x yes,no) else (yes,append x no)) (empty,empty) v
+  fold_left (fun (yes, no) x -> if p x then (append x yes, no) else (yes, append x no)) (empty, empty) v
 
 let find_all p v =
   fold_left (fun acc x -> if p x then append x acc else acc) empty v
@@ -525,48 +539,47 @@ let pop v = last v, sub v 0 (length v - 1)
 
 let to_list r =
   let rec aux acc = function
-      Empty -> acc
+    | Empty -> acc
     | Leaf a -> Array.fold_right (fun x l -> x :: l) a acc
-    | Concat(l,_,r,_,_) -> aux (aux acc r) l
-  in
-    aux [] r
+    | Concat (l, _, r, _, _) -> aux (aux acc r) l in
+  aux [] r
 
 let filter f =
   fold (fun s x -> if f x then append x s else s) Empty
 
 let filter_map f =
-  fold (fun acc x -> match f x with
-	  | None   -> acc
-	  | Some v -> append v acc) Empty
+  fold (fun acc x ->
+    match f x with
+    | None   -> acc
+    | Some v -> append v acc
+  ) Empty
 
 let destructive_set v i x =
   let rec aux i = function
-    Empty  -> raise Out_of_bounds
-  | Leaf s ->
+    | Empty  -> raise Out_of_bounds
+    | Leaf s ->
       if i >= 0 && i < STRING.length s then
         STRING.unsafe_set s i x
       else raise Out_of_bounds
-  | Concat(l, cl, r, cr, _) ->
+    | Concat (l, cl, r, cr, _) ->
       if i < cl then aux i l
-      else aux (i - cl) r
-  in aux i v
+      else aux (i - cl) r in
+  aux i v
 
 let of_list l = of_array (Array.of_list l)
 
 let init n f =
-  if n < 0 || n > max_length then raise (Invalid_argument "Vect.init")
-  else
-  (*Create as many arrays as we need to store all the data*)
+  if n < 0 || n > max_length then raise (Invalid_argument "Vect.init");
+  (* Create as many arrays as we need to store all the data *)
   let rec aux off acc =
     if off >= n then acc
     else
       let len = min leaf_size (n - off) in
       let arr = Array.init len (fun i -> f ( off + i ) ) in
-      aux (off + len) (arr::acc)
-  in
-  let base = aux 0 []
-  in(*And then concatenate them*)
-    List.fold_left (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc) (empty:'a t) (base:'a array list)
+      aux (off + len) (arr::acc) in
+  let base = aux 0 [] in
+  (* And then concatenate them *)
+  List.fold_left (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc) (empty:'a t) (base:'a array list)
 
 (*$T init
   init 1000 (fun x -> x * x) |> to_array = Array.init 1000 (fun x -> x * x)
@@ -653,127 +666,135 @@ struct
   let empty = Empty
 
   (* by construction, there cannot be Empty or Leaf "" leaves *)
-  let is_empty = function Empty -> true | _ -> false
+  let is_empty = function
+    | Empty -> true
+    | Leaf _ | Concat _ -> false
 
   let height = function
-      Empty | Leaf _ -> 0
-    | Concat(_,_,_,_,h) -> h
+    | Empty | Leaf _ -> 0
+    | Concat (_, _, _, _, h) -> h
 
   let rec length = function
-      Empty -> 0
+    | Empty -> 0
     | Leaf s -> STRING.length s
-    | Concat(_,cl,_,cr,_) -> cl + cr
+    | Concat (_, cl, _, cr, _) -> cl + cr
 
   let make_concat l r =
     let hl = height l and hr = height r in
     let cl = length l and cr = length r in
-      Concat(l, cl, r, cr, if hl >= hr then hl + 1 else hr + 1)
+    Concat (l, cl, r, cr, if hl >= hr then hl + 1 else hr + 1)
 
   let min_len =
     let fib_tbl = Array.make max_height 0 in
-    let rec fib n = match fib_tbl.(n) with
-        0 ->
-          let last = fib (n - 1) and prev = fib (n - 2) in
-          let r = last + prev in
-          let r = if r > last then r else last in (* check overflow *)
-            fib_tbl.(n) <- r; r
-      | n -> n
-    in
-      fib_tbl.(0) <- leaf_size + 1; fib_tbl.(1) <- 3 * leaf_size / 2 + 1;
-      Array.init max_height (fun i -> if i = 0 then 1 else fib (i - 1))
+    let rec fib n =
+      match fib_tbl.(n) with
+      | 0 ->
+        let last = fib (n - 1) and prev = fib (n - 2) in
+        let r = last + prev in
+        let r = if r > last then r else last in (* check overflow *)
+        fib_tbl.(n) <- r; r
+      | n -> n in
+    fib_tbl.(0) <- leaf_size + 1; fib_tbl.(1) <- 3 * leaf_size / 2 + 1;
+    Array.init max_height (fun i -> if i = 0 then 1 else fib (i - 1))
 
   let max_length = min_len.(Array.length min_len - 1)
 
-  let concat_fast l r = match l with
-      Empty -> r
-    | Leaf _ | Concat(_,_,_,_,_) ->
-        match r with
-            Empty -> l
-          | Leaf _ | Concat(_,_,_,_,_) -> make_concat l r
+  let concat_fast l r =
+    match l with
+    | Empty -> r
+    | Leaf _ | Concat _ ->
+      match r with
+      | Empty -> l
+      | Leaf _ | Concat _ -> make_concat l r
 
   (* based on Hans-J. Boehm's *)
   let add_forest forest rope len =
     let i = ref 0 in
     let sum = ref empty in
-      while len > min_len.(!i+1) do
-        if forest.(!i).c <> Empty then begin
-          sum := concat_fast forest.(!i).c !sum;
-          forest.(!i).c <- Empty
-        end;
-        incr i
-      done;
-      sum := concat_fast !sum rope;
-      let sum_len = ref (length !sum) in
-        while !sum_len >= min_len.(!i) do
-          if forest.(!i).c <> Empty then begin
-            sum := concat_fast forest.(!i).c !sum;
-            sum_len := !sum_len + forest.(!i).len;
-            forest.(!i).c <- Empty;
-          end;
-          incr i
-        done;
-        decr i;
-        forest.(!i).c <- !sum;
-        forest.(!i).len <- !sum_len
+    while len > min_len.(!i+1) do
+      if forest.(!i).c <> Empty then begin
+        sum := concat_fast forest.(!i).c !sum;
+        forest.(!i).c <- Empty
+      end;
+      incr i
+    done;
+    sum := concat_fast !sum rope;
+    let sum_len = ref (length !sum) in
+    while !sum_len >= min_len.(!i) do
+      if forest.(!i).c <> Empty then begin
+        sum := concat_fast forest.(!i).c !sum;
+        sum_len := !sum_len + forest.(!i).len;
+        forest.(!i).c <- Empty;
+      end;
+      incr i
+    done;
+    decr i;
+    forest.(!i).c <- !sum;
+    forest.(!i).len <- !sum_len
 
   let concat_forest forest =
     Array.fold_left (fun s x -> concat_fast x.c s) Empty forest
 
   let rec balance_insert rope len forest = match rope with
-      Empty -> ()
+    | Empty -> ()
     | Leaf _ -> add_forest forest rope len
-    | Concat(l,cl,r,cr,h) when h >= max_height || len < min_len.(h) ->
-        balance_insert l cl forest;
-        balance_insert r cr forest
-    | x -> add_forest forest x len (* function or balanced *)
+    | Concat (l, cl, r, cr, h) when h >= max_height || len < min_len.(h) ->
+      balance_insert l cl forest;
+      balance_insert r cr forest
+    | Concat _ as x -> add_forest forest x len (* function or balanced *)
 
   let balance r =
     match r with
-        Empty -> Empty
-      | Leaf _ -> r
-      | _ ->
-          let forest = Array.init max_height (fun _ -> {c = Empty; len = 0}) in
-            balance_insert r (length r) forest;
-            concat_forest forest
+    | Empty -> Empty
+    | Leaf _ -> r
+    | Concat _ ->
+      let forest = Array.init max_height (fun _ -> {c = Empty; len = 0}) in
+      balance_insert r (length r) forest;
+      concat_forest forest
 
   let bal_if_needed l r =
     let r = make_concat l r in
-      if height r < max_height then r else balance r
+    if height r < max_height then r else balance r
 
   let concat_str l = function
-      Empty | Concat(_,_,_,_,_) -> invalid_arg "concat_str"
+    | Empty | Concat _ -> invalid_arg "concat_str"
     | Leaf rs as r ->
-        let lenr = STRING.length rs in
-          match l with
-            | Empty -> r
-            | Leaf ls ->
-                let slen = lenr + STRING.length ls in
-                  if slen <= leaf_size then Leaf (str_append ls rs)
-                  else make_concat l r (* height = 1 *)
-            | Concat(ll, cll, Leaf lrs, clr, h) ->
-                let slen = clr + lenr in
-                  if clr + lenr <= leaf_size then
-                    Concat(ll, cll, Leaf (str_append lrs rs), slen, h)
-                  else
-                    bal_if_needed l r
-            | _ -> bal_if_needed l r
+      let lenr = STRING.length rs in
+      match l with
+      | Empty -> r
+      | Leaf ls ->
+        let slen = lenr + STRING.length ls in
+        if slen <= leaf_size then Leaf (str_append ls rs)
+        else make_concat l r (* height = 1 *)
+      | Concat (ll, cll, Leaf lrs, clr, h) ->
+        let slen = clr + lenr in
+        if clr + lenr <= leaf_size then
+          Concat (ll, cll, Leaf (str_append lrs rs), slen, h)
+        else
+          bal_if_needed l r
+      | Concat _ -> bal_if_needed l r
 
   let append_char c r = concat_str r (Leaf (STRING.make 1 c))
 
   let concat l = function
-      Empty -> l
+    | Empty -> l
     | Leaf _ as r -> concat_str l r
-    | Concat(Leaf rls,rlc,rr,rc,h) as r ->
-        (match l with
-            Empty -> r
-          | Concat(_,_,_,_,_) -> bal_if_needed l r
-          | Leaf ls ->
-              let slen = rlc + STRING.length ls in
-                if slen <= leaf_size then
-                  Concat(Leaf(str_append ls rls), slen, rr, rc, h)
-                else
-                  bal_if_needed l r)
-    | r -> (match l with Empty -> r | _ -> bal_if_needed l r)
+    | Concat (Leaf rls, rlc, rr, rc, h) as r -> (
+      match l with
+      | Empty -> r
+      | Concat _ -> bal_if_needed l r
+      | Leaf ls ->
+        let slen = rlc + STRING.length ls in
+        if slen <= leaf_size then
+          Concat (Leaf (str_append ls rls), slen, rr, rc, h)
+        else
+          bal_if_needed l r
+    )
+    | Concat _ as r -> (
+      match l with
+      | Empty -> r
+      | Leaf _ | Concat _ -> bal_if_needed l r
+    )
 
   let prepend_char c r = concat (Leaf (STRING.make 1 c)) r
 
@@ -797,7 +818,7 @@ struct
         STRING.unsafe_set s i x;
         Leaf s
       ) else raise Out_of_bounds
-    | Concat(l, cl, r, cr, _) ->
+    | Concat (l, cl, r, cr, _) ->
       if i < cl then concat (set l i x) r
       else concat l (set r (i - cl) x)
 
@@ -813,63 +834,61 @@ struct
         STRING.unsafe_set s i (f (STRING.unsafe_get s i));
         Leaf s
       ) else raise Out_of_bounds
-    | Concat(l, cl, r, cr, _) ->
+    | Concat (l, cl, r, cr, _) ->
       if i < cl then concat (modify l i f) r
       else concat l (modify r (i - cl) f)
 
-  let of_string = function
-      s when STRING.length s = 0 -> Empty
-    | s ->
-        let min (x:int) (y:int) = if x <= y then x else y in
-        let rec loop r s len i =
-          if i < len then (* len - i > 0, thus Leaf "" can't happen *)
-            loop (concat r (Leaf (STRING.sub s i (min (len - i) leaf_size))))
-              s len (i + leaf_size)
-          else
-            r
-        in loop Empty s (STRING.length s) 0
+  let of_string s =
+    if STRING.length s = 0 then Empty
+    else
+      let rec loop r s len i =
+        if i < len then (* len - i > 0, thus Leaf "" can't happen *)
+          loop (concat r (Leaf (STRING.sub s i (BatInt.min (len - i) leaf_size))))
+            s len (i + leaf_size)
+        else
+          r in
+      loop Empty s (STRING.length s) 0
 
   let rec make len c =
     let rec concatloop len i r =
       if i <= len then
         concatloop len (i * 2) (concat r r)
-      else r
-    in
-      if len = 0 then Empty
-      else if len <= leaf_size then Leaf (STRING.make len c)
-      else
-        let rope = concatloop len 2 (of_string (STRING.make 1 c)) in
-          concat rope (make (len - length rope) c)
+      else r in
+    if len = 0 then Empty
+    else if len <= leaf_size then Leaf (STRING.make len c)
+    else
+      let rope = concatloop len 2 (of_string (STRING.make 1 c)) in
+      concat rope (make (len - length rope) c)
 
   (* overridden argument order below *)
   let rec sub start len = function
-      Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
+    | Empty ->
+      if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
     | Leaf s ->
-        if len > 0 then (* Leaf "" cannot happen *)
-          (try Leaf (STRING.sub s start len) with _ -> raise Out_of_bounds)
-        else if len < 0 || start < 0 || start > STRING.length s then
-          raise Out_of_bounds
-        else Empty
-    | Concat(l,cl,r,cr,_) ->
-        if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
-        let left =
-          if start = 0 then
-            if len >= cl then
-              l
-            else sub 0 len l
-          else if start > cl then Empty
-          else if start + len >= cl then
-            sub start (cl - start) l
-          else sub start len l in
-        let right =
-          if start <= cl then
-            let upto = start + len in
-              if upto = cl + cr then r
-              else if upto < cl then Empty
-              else sub 0 (upto - cl) r
-          else sub (start - cl) len r
-        in
-          concat left right
+      if len > 0 then (* Leaf "" cannot happen *)
+        (try Leaf (STRING.sub s start len) with _ -> raise Out_of_bounds)
+      else if len < 0 || start < 0 || start > STRING.length s then
+        raise Out_of_bounds
+      else Empty
+    | Concat (l, cl, r, cr, _) ->
+      if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
+      let left =
+        if start = 0 then
+          if len >= cl then
+            l
+          else sub 0 len l
+        else if start > cl then Empty
+        else if start + len >= cl then
+          sub start (cl - start) l
+        else sub start len l in
+      let right =
+        if start <= cl then
+          let upto = start + len in
+          if upto = cl + cr then r
+          else if upto < cl then Empty
+          else sub 0 (upto - cl) r
+        else sub (start - cl) len r in
+      concat left right
 
   (* change argument order on Vect.sub *)
   let sub v s l = sub s l v
@@ -882,70 +901,73 @@ struct
 
   let to_string r =
     let rec strings l = function
-        Empty -> l
+      | Empty -> l
       | Leaf s -> s :: l
-      | Concat(left,_,right,_,_) -> strings (strings l right) left
-    in
-      string_of_string_list (strings [] r)
+      | Concat (left, _, right, _, _) -> strings (strings l right) left in
+    string_of_string_list (strings [] r)
 
   let rec iter f = function
     | Empty -> ()
     | Leaf s -> STRING.iter f s
-    | Concat(l,_,r,_,_) -> iter f l; iter f r
+    | Concat (l, _, r, _, _) -> iter f l; iter f r
 
   type 'a iter = E | C of 'a STRING.t * int * 'a t * 'a iter
 
-  let rec cons_iter s t = match s with
-      Empty -> t
+  let rec cons_iter s t =
+    match s with
+    | Empty -> t
     | Leaf s -> C (s, 0, Empty, t)
     | Concat (l, _llen, r, _rlen, _h) -> cons_iter l (cons_iter r t)
 
-  let rec rev_cons_iter s t = match s with
-      Empty -> t
+  let rec rev_cons_iter s t =
+    match s with
+    | Empty -> t
     | Leaf s -> C (s, (STRING.length s - 1), Empty, t)
     | Concat (l, _, r, _, _) -> rev_cons_iter r (rev_cons_iter l t)
 
-  let rec enum_next l () = match !l with
-      E -> raise BatEnum.No_more_elements
+  let rec enum_next l () =
+    match !l with
+    | E -> raise BatEnum.No_more_elements
     | C (s, p, r, t) ->
-        if p+1 = STRING.length s then
-          l := cons_iter r t
-        else
-          l := C(s,p+1,r,t);
-        STRING.unsafe_get s p
+      if p + 1 = STRING.length s then
+        l := cons_iter r t
+      else
+        l := C (s, p + 1, r, t);
+      STRING.unsafe_get s p
 
-  let rec enum_backwards_next l () = match !l with
-      E -> raise BatEnum.No_more_elements
+  let rec enum_backwards_next l () =
+    match !l with
+    | E -> raise BatEnum.No_more_elements
     | C (s, p, r, t) ->
-        if p = 0 then
-          l := rev_cons_iter r t
-        else
-          l := C(s,p-1,r,t);
-        STRING.unsafe_get s p
+      if p = 0 then
+        l := rev_cons_iter r t
+      else
+        l := C (s, p - 1, r, t);
+      STRING.unsafe_get s p
 
   let rec enum_count l () =
     let rec aux n = function
-        E -> n
+      | E -> n
       | C (s, p, m, t) -> aux (n + (STRING.length s - p) + length m) t
     in aux 0 !l
 
   let rec rev_enum_count l () =
     let rec aux n = function
-        E -> n
-      | C (s, p, m, t) -> aux (n + (p+1) + length m) t
+      | E -> n
+      | C (s, p, m, t) -> aux (n + (p + 1) + length m) t
     in aux 0 !l
 
   let enum t =
     let rec make l =
       let l = ref l in
-      let clone() = make !l in
+      let clone () = make !l in
       BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
     in make (cons_iter t E)
 
   let backwards t =
     let rec make l =
       let l = ref l in
-      let clone() = make !l in
+      let clone () = make !l in
       BatEnum.make ~next:(enum_backwards_next l) ~count:(rev_enum_count l) ~clone
     in make (rev_cons_iter t E)
 
@@ -962,54 +984,53 @@ struct
         for j = 0 to STRING.length s - 1 do
           f (i + j) (STRING.unsafe_get s j)
         done
-      | Concat(l,cl,r,_,_) -> aux f i l; aux f (i + cl) r in
+      | Concat (l, cl, r, _, _) -> aux f i l; aux f (i + cl) r in
     aux f 0 r
 
   let rec rangeiter f start len = function
-      Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
+    | Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
     | Leaf s ->
-        let n = start + len in
-        let lens = STRING.length s in
-        if start >= 0 && len >= 0 && n <= lens then
-          for i = start to n - 1 do
-            f (STRING.unsafe_get s i)
-          done
-        else raise Out_of_bounds
-    | Concat(l,cl,r,cr,_) ->
-        if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
-        if start < cl then begin
-          let upto = start + len in
-            if upto <= cl then
-              rangeiter f start len l
-            else begin
-              rangeiter f start (cl - start) l;
-              rangeiter f 0 (upto - cl) r
-            end
-        end else begin
-          rangeiter f (start - cl) len r
+      let n = start + len in
+      let lens = STRING.length s in
+      if start >= 0 && len >= 0 && n <= lens then
+        for i = start to n - 1 do
+          f (STRING.unsafe_get s i)
+        done
+      else raise Out_of_bounds
+    | Concat (l, cl, r, cr, _) ->
+      if start < 0 || len < 0 || start + len > cl + cr then raise Out_of_bounds;
+      if start < cl then begin
+        let upto = start + len in
+        if upto <= cl then
+          rangeiter f start len l
+        else begin
+          rangeiter f start (cl - start) l;
+          rangeiter f 0 (upto - cl) r
         end
+      end else begin
+        rangeiter f (start - cl) len r
+      end
 
   let rec fold f a = function
-      Empty -> a
+    | Empty -> a
     | Leaf s ->
-        let acc = ref a in
-          for i = 0 to STRING.length s - 1 do
-            acc := f !acc (STRING.unsafe_get s i)
-          done;
-          !acc
-    | Concat(l,_,r,_,_) -> fold f (fold f a l) r
+      let acc = ref a in
+      for i = 0 to STRING.length s - 1 do
+        acc := f !acc (STRING.unsafe_get s i)
+      done;
+      !acc
+    | Concat (l, _, r, _, _) -> fold f (fold f a l) r
 
   let foldi f a v =
     let rec aux i a = function
-        Empty -> a
+      | Empty -> a
       | Leaf s ->
-          let acc = ref a in
-          for j = 0 to STRING.length s - 1 do
-            acc := f (i+j) !acc (STRING.unsafe_get s j)
-          done;
-          !acc
-    | Concat(l,cl,r,_,_) -> aux (i+cl) (aux i a l) r
-    in
+        let acc = ref a in
+        for j = 0 to STRING.length s - 1 do
+          acc := f (i+j) !acc (STRING.unsafe_get s j)
+        done;
+        !acc
+      | Concat (l, cl, r, _, _) -> aux (i+cl) (aux i a l) r in
     aux 0 a v
 
   let fold_left = fold
@@ -1018,7 +1039,7 @@ struct
     let rec aux (acc:'b) = function
       | Empty  -> acc
       | Leaf s -> STRING.fold_right f s acc
-      | Concat(l, _, r, _, _) -> aux (aux acc r) l
+      | Concat (l, _, r, _, _) -> aux (aux acc r) l
     in aux acc v
 
   let reduce f v =
@@ -1036,46 +1057,52 @@ struct
   let rec map f = function
     | Empty -> Empty
     | Leaf a -> Leaf (STRING.map f a)
-    | Concat(l,cl,r,cr,h) ->
+    | Concat (l, cl, r, cr, h) ->
       let l = map f l in
       let r = map f r in
-      Concat(l, cl, r, cr, h)
+      Concat (l, cl, r, cr, h)
 
   let mapi f v =
     let off = ref 0 in
-      map (fun x -> f (BatRef.post_incr off) x) v
+    map (fun x -> f (BatRef.post_incr off) x) v
 
   let exists f v =
     BatReturn.label (fun label ->
-  let rec aux = function
-    | Empty                  -> ()
-    | Leaf a                 -> STRING.iter (fun x -> if f x then BatReturn.return label true) a
-    | Concat (l, _, r, _, _) -> aux l; aux r
-  in aux v; false)
+      let rec aux = function
+        | Empty -> ()
+        | Leaf a -> STRING.iter (fun x -> if f x then BatReturn.return label true) a
+        | Concat (l, _, r, _, _) -> aux l; aux r in
+      aux v;
+      false
+    )
 
   let for_all f v =
     BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty                  -> ()
-      | Leaf a                 -> STRING.iter (fun x -> if not (f x) then BatReturn.return label false) a
-      | Concat (l, _, r, _, _) -> aux l; aux r
-    in aux v; true)
+      let rec aux = function
+        | Empty -> ()
+        | Leaf a -> STRING.iter (fun x -> if not (f x) then BatReturn.return label false) a
+        | Concat (l, _, r, _, _) -> aux l; aux r in
+      aux v;
+      true
+    )
 
   let find f v =
     BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty  -> ()
-      | Leaf a -> STRING.iter (fun x -> if (f x) then BatReturn.return label x) a
-      | Concat (l, _, r, _, _) -> aux l; aux r
-    in aux v; raise Not_found)
+      let rec aux = function
+        | Empty -> ()
+        | Leaf a -> STRING.iter (fun x -> if (f x) then BatReturn.return label x) a
+      | Concat (l, _, r, _, _) -> aux l; aux r in
+      aux v;
+      raise Not_found
+    )
 
-  let findi f v = (*We rely on the order of exploration of the tree by [find]*)
-    let off = ref (-1) in (* pre-increment *)
-    let _   = find (fun x -> let result = f x in incr off; result) v in
+  let findi f v =
+    let off = ref (-1) in
+    ignore (find (fun x -> let result = f x in incr off; result) v);
     !off
 
   let partition p v =
-    fold_left (fun (yes, no) x -> if p x then (append x yes,no) else (yes,append x no)) (empty,empty) v
+    fold_left (fun (yes, no) x -> if p x then (append x yes, no) else (yes, append x no)) (empty, empty) v
 
   let find_all p v =
     fold_left (fun acc x -> if p x then append x acc else acc) empty v
@@ -1091,50 +1118,49 @@ struct
 
   let to_list r =
     let rec aux acc = function
-        Empty -> acc
+      | Empty -> acc
       | Leaf a -> STRING.fold_right (fun x l -> x :: l) a acc
-      | Concat(l,_,r,_,_) -> aux (aux acc r) l
-    in
-      aux [] r
+      | Concat (l, _, r, _, _) -> aux (aux acc r) l in
+    aux [] r
 
   let filter f =
     fold (fun s x -> if f x then append x s else s) Empty
 
   let filter_map f =
-    fold (fun acc x -> match f x with
-            | None   -> acc
-            | Some v -> append v acc) Empty
+    fold (fun acc x ->
+      match f x with
+      | None   -> acc
+      | Some v -> append v acc
+    ) Empty
 
   let destructive_set v i x =
     let rec aux i = function
-      Empty  -> raise Out_of_bounds
-    | Leaf s ->
+      | Empty  -> raise Out_of_bounds
+      | Leaf s ->
         if i >= 0 && i < STRING.length s then
           STRING.unsafe_set s i x
         else raise Out_of_bounds
-    | Concat(l, cl, r, cr, _) ->
+      | Concat (l, cl, r, cr, _) ->
         if i < cl then aux i l
-        else aux (i - cl) r
-    in aux i v
+        else aux (i - cl) r in
+    aux i v
 
   let of_list l = of_array (Array.of_list l)
 
   let init n f =
-    if n < 0 || n > max_length then raise (Invalid_argument "Vect.init")
-    else
-    (*Create as many arrays as we need to store all the data*)
+    if n < 0 || n > max_length then raise (Invalid_argument "Vect.init");
+    (* Create as many arrays as we need to store all the data *)
     let rec aux off acc =
       if off >= n then acc
       else
         let len = min leaf_size (n - off) in
         let arr = Array.init len (fun i -> f ( off + i ) ) in
-        aux (off + len) (arr::acc)
-    in
-    let base = aux 0 []
-    in(*And then concatenate them*)
-      List.fold_left (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc) (empty:'a t) (base:'a array list)
+        aux (off + len) (arr::acc) in
+    let base = aux 0 [] in
+    (* And then concatenate them *)
+    List.fold_left (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc) (empty:'a t) (base:'a array list)
 
-  let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
+  let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
     BatEnum.print ~first ~last ~sep print_a out (enum t)
 
 end
