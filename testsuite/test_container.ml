@@ -319,6 +319,8 @@ module VectContainer : Container = struct
   and insert t i v = insert i (singleton v) t
   and delete = ni2
   and delete_range t i len = remove i len t
+  and invariants t = invariants t; invariants (balance t)
+ (* so that balance is called without having to test it specifically *)
 end
 
 module FunctorVectContainer : Container = struct
@@ -351,7 +353,7 @@ module FunctorVectContainer : Container = struct
         h
     let append a1 a2 = concat [a1;a2]
     let make i x = init i (fun _ -> x)
-  end)(struct let max_height = 12 let leaf_size = 12 end)
+  end)(struct let max_height = 18 let leaf_size = 12 end)
   let map_right = ni2
   and iter_right = ni2
   and fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
@@ -369,6 +371,7 @@ module FunctorVectContainer : Container = struct
   and insert t i v = insert i (singleton v) t
   and delete = ni2
   and delete_range t i len = remove i len t
+  and invariants t = invariants t; invariants (balance t)
 end
 
 module FingerTreeContainer : Container = struct
@@ -453,6 +456,7 @@ module TestContainer(C : Container) : sig end = struct
   let empty : 'a C.t Lazy.t =
     try
       let s = C.of_enum (BatArray.enum [||]) in
+      inv s;
       (* working around a caml bug: lazy [||] segfaults *)
       Obj.magic s
     with BatDllist.Empty ->
@@ -751,6 +755,14 @@ module TestContainer(C : Container) : sig end = struct
       done;
       assert (try ignore (C.set c (-1) (-1)); false with _ -> true);
       assert (try ignore (C.set c n (-1)); false with _ -> true);
+      (try assert (
+        try ignore (C.set (Lazy.force empty) (-1) (-1)); false
+        with _ -> true
+       ) with BatDllist.Empty -> ());
+      (try assert (
+        try ignore (C.set (Lazy.force empty) 0 (-1)); false
+        with _ -> true
+       ) with BatDllist.Empty -> ());
     )
 
   let () =

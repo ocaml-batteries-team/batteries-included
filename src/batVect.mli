@@ -59,6 +59,8 @@ amortized bounds by explicitly rebalancing vects to be reused using [balance].
 Special care must be taken to avoid calling [balance] too frequently; in the limit,
 calling [balance] after each modification would defeat the purpose of amortization.
 
+This module is not thread-safe.
+
   @author Mauricio Fernandez
   *)
 
@@ -257,33 +259,33 @@ val id_map : ('a -> 'a) -> 'a t -> 'a t
 (**{6 Predicates}*)
 
 val for_all : ('a -> bool) -> 'a t -> bool
-  (** [for_all p [a0; a1; ...; an]] checks if all elements of the array
+  (** [for_all p [a0; a1; ...; an]] checks if all elements of the vect
       satisfy the predicate [p].  That is, it returns
       [ (p a0) && (p a1) && ... && (p an)]. *)
 
 val exists : ('a -> bool) -> 'a t -> bool
   (** [exists p [a0; a1; ...; an]] checks if at least one element of
-      the array satisfies the predicate [p].  That is, it returns
+      the vect satisfies the predicate [p].  That is, it returns
       [ (p a0) || (p a1) || ... || (p an)]. *)
 
 val find : ('a -> bool) -> 'a t -> 'a
-  (** [find p a] returns the first element of array [a]
+  (** [find p a] returns the first element of vect [a]
       that satisfies the predicate [p].
       @raise Not_found if there is no value that satisfies [p] in the
-      array [a]. *)
+      vect [a]. *)
 
 val mem : 'a -> 'a t -> bool
   (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
 
 val memq : 'a -> 'a t -> bool
-  (** Same as {!Array.mem} but uses physical equality instead of
-      structural equality to compare array elements.  *)
+  (** Same as {!Vect.mem} but uses physical equality instead of
+      structural equality to compare vect elements.  *)
 
 val findi : ('a -> bool) -> 'a t -> int
-  (** [findi p a] returns the index of the first element of array [a]
+  (** [findi p a] returns the index of the first element of vect [a]
       that satisfies the predicate [p].
       @raise Not_found if there is no value that satisfies [p] in the
-      array [a].  *)
+      vect [a].  *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
   (** [filter f v] returns a vect with the elements [x] from [v] such that
@@ -302,7 +304,7 @@ val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
       [v1] is the vect of all the elements of [v] that
       satisfy the predicate [p], and [v2] is the vect of all the
       elements of [v] that do not satisfy [p].
-      The order of the elements in the input array is preserved. *)
+      The order of the elements in the input vect is preserved. *)
 
 (** {6 Convenience Functions} *)
 
@@ -360,7 +362,12 @@ sig
   (** Raised when an operation violates the bounds of the vect. *)
 
   val max_length : int
-  (** Maximum length of the vect. *)
+  (** Maximum length of the vect.
+      No function detect when one tries to add more elements than
+      the container can hold. They create broken structures which may
+      cause other functions of this module to raise exceptions when
+      operating on them.
+  *)
 
 (** {6 Creation and conversions} *)
 
@@ -555,33 +562,33 @@ sig
   (**{6 Predicates}*)
 
   val for_all : ('a -> bool) -> 'a t -> bool
-    (** [for_all p [a0; a1; ...; an]] checks if all elements of the array
+    (** [for_all p [a0; a1; ...; an]] checks if all elements of the vect
         satisfy the predicate [p].  That is, it returns
         [ (p a0) && (p a1) && ... && (p an)]. *)
 
   val exists : ('a -> bool) -> 'a t -> bool
     (** [exists p [a0; a1; ...; an]] checks if at least one element of
-        the array satisfies the predicate [p].  That is, it returns
+        the vect satisfies the predicate [p].  That is, it returns
         [ (p a0) || (p a1) || ... || (p an)]. *)
 
   val find : ('a -> bool) -> 'a t -> 'a
-    (** [find p a] returns the first element of array [a]
+    (** [find p a] returns the first element of vect [a]
         that satisfies the predicate [p].
         @raise Not_found if there is no value that satisfies [p] in the
-        array [a]. *)
+        vect [a]. *)
 
   val mem : 'a -> 'a t -> bool
     (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
 
   val memq : 'a -> 'a t -> bool
-    (** Same as {!Array.mem} but uses physical equality instead of
-        structural equality to compare array elements.  *)
+    (** Same as {!Vect.mem} but uses physical equality instead of
+        structural equality to compare vect elements.  *)
 
   val findi : ('a -> bool) -> 'a t -> int
-    (** [findi p a] returns the index of the first element of array [a]
+    (** [findi p a] returns the index of the first element of vect [a]
         that satisfies the predicate [p].
         @raise Not_found if there is no value that satisfies [p] in the
-        array [a].  *)
+        vect [a].  *)
 
   val filter : ('a -> bool) -> 'a t -> 'a t
   (** [filter f v] returns a vect with the elements [x] from [v] such that
@@ -600,7 +607,7 @@ sig
         [v1] is the vect of all the elements of [v] that
         satisfy the predicate [p], and [v2] is the vect of all the
         elements of [v] that do not satisfy [p].
-        The order of the elements in the input array is preserved. *)
+        The order of the elements in the input vect is preserved. *)
 
   (** {6 Convenience Functions} *)
 

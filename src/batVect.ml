@@ -626,6 +626,24 @@ struct
     | Concat of 'a t * int * 'a t * int * int
     | Leaf of 'a STRING.t
 
+  let max_height = PARAM.max_height
+  let leaf_size = PARAM.leaf_size
+
+  let min_len =
+    let fib_tbl = Array.make max_height 0 in
+    let rec fib n =
+      match fib_tbl.(n) with
+      | 0 ->
+        let last = fib (n - 1) and prev = fib (n - 2) in
+        let r = last + prev in
+        let r = if r > last then r else last in (* check overflow *)
+        fib_tbl.(n) <- r; r
+      | n -> n in
+    fib_tbl.(0) <- leaf_size + 1; fib_tbl.(1) <- 3 * leaf_size / 2 + 1;
+    Array.init max_height (fun i -> if i = 0 then 1 else fib (i - 1))
+
+  let max_length = min_len.(Array.length min_len - 1)
+
   let invariants t =
     let rec inv_height = function
       | Empty
@@ -647,7 +665,7 @@ struct
         other_inv (depth + 1) l;
         other_inv (depth + 1) r in
     ignore (inv_height t);
-    ignore (inv_length t);
+    assert (inv_length t < max_length);
     other_inv 0 t
 
   type 'a forest_element = { mutable c : 'a t; mutable len : int }
@@ -657,9 +675,6 @@ struct
   let string_of_string_list = STRING.concat
 
   let singleton x = Leaf (STRING.make 1 x)
-
-  let max_height = PARAM.max_height
-  let leaf_size = PARAM.leaf_size
 
   exception Out_of_bounds
 
@@ -683,21 +698,6 @@ struct
     let hl = height l and hr = height r in
     let cl = length l and cr = length r in
     Concat (l, cl, r, cr, if hl >= hr then hl + 1 else hr + 1)
-
-  let min_len =
-    let fib_tbl = Array.make max_height 0 in
-    let rec fib n =
-      match fib_tbl.(n) with
-      | 0 ->
-        let last = fib (n - 1) and prev = fib (n - 2) in
-        let r = last + prev in
-        let r = if r > last then r else last in (* check overflow *)
-        fib_tbl.(n) <- r; r
-      | n -> n in
-    fib_tbl.(0) <- leaf_size + 1; fib_tbl.(1) <- 3 * leaf_size / 2 + 1;
-    Array.init max_height (fun i -> if i = 0 then 1 else fib (i - 1))
-
-  let max_length = min_len.(Array.length min_len - 1)
 
   let concat_fast l r =
     match l with
