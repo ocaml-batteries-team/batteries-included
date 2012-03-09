@@ -19,39 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-type 'a t =
-    Empty
-  | Concat of 'a t * int * 'a t * int * int
-  | Leaf   of 'a array
-
-(* these invariants may be incomplete, feel free to improve it *)
-let invariants t =
-  let rec inv_height = function
-    | Empty
-    | Leaf _ -> 0
-    | Concat (l, _, r, _, h) ->
-      assert (h = 1 + max (inv_height l) (inv_height r));
-      h in
-  let rec inv_length = function
-    | Empty -> 0
-    | Leaf a -> Array.length a
-    | Concat (l, cl, r, cr, _) ->
-      assert (inv_length l = cl);
-      assert (inv_length r = cr);
-      cl + cr in
-  let rec other_inv depth = function
-    | Empty -> assert (depth = 0)
-    | Leaf a -> assert (Array.length a > 0)
-    | Concat (l, _, r, _, _) ->
-      other_inv (depth + 1) l;
-      other_inv (depth + 1) r in
-  ignore (inv_height t);
-  ignore (inv_length t);
-  other_inv 0 t
-
-type 'a forest_element = { mutable c : 'a t; mutable len : int }
-
 module STRING : sig
 (* this module must provide the following functions: *)
   type 'a t = 'a array
@@ -66,6 +33,38 @@ module STRING : sig
   val append : 'a t -> 'a t -> 'a t
   val concat : 'a t list -> 'a t
 end = struct include Array include BatArray end
+
+type 'a t =
+  | Empty
+  | Concat of 'a t * int * 'a t * int * int
+  | Leaf of 'a STRING.t
+
+(* these invariants may be incomplete, feel free to improve it *)
+let invariants t =
+  let rec inv_height = function
+    | Empty
+    | Leaf _ -> 0
+    | Concat (l, _, r, _, h) ->
+      assert (h = 1 + max (inv_height l) (inv_height r));
+      h in
+  let rec inv_length = function
+    | Empty -> 0
+    | Leaf a -> STRING.length a
+    | Concat (l, cl, r, cr, _) ->
+      assert (inv_length l = cl);
+      assert (inv_length r = cr);
+      cl + cr in
+  let rec other_inv depth = function
+    | Empty -> assert (depth = 0)
+    | Leaf a -> assert (STRING.length a > 0)
+    | Concat (l, _, r, _, _) ->
+      other_inv (depth + 1) l;
+      other_inv (depth + 1) r in
+  ignore (inv_height t);
+  ignore (inv_length t);
+  other_inv 0 t
+
+type 'a forest_element = { mutable c : 'a t; mutable len : int }
 
 let str_append = STRING.append
 let empty_str = [||]
@@ -214,46 +213,45 @@ let concat l = function
 
 let prepend_char c r = concat (Leaf (STRING.make 1 c)) r
 
-let get v i =
-  let rec aux i = function
-    Empty -> raise Out_of_bounds
+let rec get t i =
+  match t with
+  | Empty -> raise Out_of_bounds
   | Leaf s ->
-      if i >= 0 && i < STRING.length s then STRING.unsafe_get s i
-      else raise Out_of_bounds
+    if i >= 0 && i < STRING.length s then STRING.unsafe_get s i
+    else raise Out_of_bounds
   | Concat (l, cl, r, cr, _) ->
-      if i < cl then aux i l
-      else aux (i - cl) r
-  in aux i v
+    if i < cl then get l i
+    else get r (i - cl)
 
-let set (v:'a t) (i: int) (x:'a) =
-  let rec aux i = function
-    Empty -> raise Out_of_bounds
+let rec set t i x =
+  match t with
+  | Empty ->
+    raise Out_of_bounds
   | Leaf s ->
-      if i >= 0 && i < STRING.length s then
-        let s = STRING.copy s in
-          STRING.unsafe_set s i x;
-          Leaf s
-      else raise Out_of_bounds
+    if i >= 0 && i < STRING.length s then (
+      let s = STRING.copy s in
+      STRING.unsafe_set s i x;
+      Leaf s
+    ) else raise Out_of_bounds
   | Concat(l, cl, r, cr, _) ->
-      if i < cl then concat (aux i l) r
-      else concat l (aux (i - cl) r)
-  in aux i v
+    if i < cl then concat (set l i x) r
+    else concat l (set r (i - cl) x)
 
 let at = get
 
-let modify (v:'a t) (i: int) (f:'a -> 'a) =
-  let rec aux i = function
-      Empty -> raise Out_of_bounds
-    | Leaf s ->
-	if i >= 0 && i < STRING.length s then
-          let s = STRING.copy s in
-          STRING.unsafe_set s i (f (STRING.unsafe_get s i));
-	  Leaf s
-	else raise Out_of_bounds
-    | Concat(l, cl, r, cr, _) ->
-	if i < cl then concat (aux i l) r
-	else concat l (aux (i - cl) r)
-  in aux i v
+let rec modify t i f =
+  match t with
+  | Empty ->
+    raise Out_of_bounds
+  | Leaf s ->
+    if i >= 0 && i < STRING.length s then (
+      let s = STRING.copy s in
+      STRING.unsafe_set s i (f (STRING.unsafe_get s i));
+      Leaf s
+    ) else raise Out_of_bounds
+  | Concat(l, cl, r, cr, _) ->
+    if i < cl then concat (modify l i f) r
+    else concat l (modify r (i - cl) f)
 
 let of_string = function
     s when STRING.length s = 0 -> Empty
@@ -327,7 +325,7 @@ let to_string r =
     string_of_string_list (strings [] r)
 
 let rec iter f = function
-    Empty -> ()
+  | Empty -> ()
   | Leaf s -> STRING.iter f s
   | Concat(l,_,r,_,_) -> iter f l; iter f r
 
@@ -394,15 +392,14 @@ let of_backwards e =
   BatEnum.fold (fun acc x -> prepend_char x acc) empty e
 
 let iteri f r =
-  let rec aux i = function
-    Empty -> ()
-  | Leaf s ->
+  let rec aux f i = function
+    | Empty -> ()
+    | Leaf s ->
       for j = 0 to STRING.length s - 1 do
         f (i + j) (STRING.unsafe_get s j)
       done
-  | Concat(l,cl,r,_,_) -> aux i l; aux (i + cl) r
-  in
-    aux 0 r
+    | Concat(l,cl,r,_,_) -> aux f i l; aux f (i + cl) r in
+  aux f 0 r
 
 let rec rangeiter f start len = function
     Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
@@ -451,12 +448,7 @@ let foldi f a v =
   in
   aux 0 a v
 
-
 let fold_left = fold
-
-(*$T fold_left
-  let f i=i*i in let g i j=i*i+j in fold_left g 0 (init 1000 f) = Array.fold_left g 0 (Array.init 1000 f)
- *)
 
 let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
   let rec aux (acc:'b) = function
@@ -464,10 +456,6 @@ let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
     | Leaf s -> STRING.fold_right f s acc
     | Concat(l, _, r, _, _) -> aux (aux acc r) l
   in aux acc v
-
-(*$T fold_right
-  let f i=i*i in let g i j=i*i+j in fold_right g (init 1000 f) 0 = Array.fold_right g (Array.init 1000 f) 0
- *)
 
 let reduce f v =
   let acc = ref (get v 0) in
@@ -479,11 +467,13 @@ let to_array = to_string
 let append = append_char
 let prepend = prepend_char
 
-
 let rec map f = function
-    Empty -> Empty
-  | Leaf a -> Leaf (Array.map f a)
-  | Concat(l,cl,r,cr,h) -> let l' = map f l in Concat(l', cl, map f r, cr, h)
+  | Empty -> Empty
+  | Leaf a -> Leaf (BatArray.map f a)
+  | Concat(l,cl,r,cr,h) ->
+    let l = map f l in
+    let r = map f r in
+    Concat(l, cl, r, cr, h)
 
 let mapi f v =
   let off = ref 0 in
@@ -532,7 +522,6 @@ let first v = get v 0
 let last v = get v (length v - 1)
 let shift v = first v, sub v 1 (length v - 1)
 let pop v = last v, sub v 0 (length v - 1)
-
 
 let to_list r =
   let rec aux acc = function
@@ -617,25 +606,47 @@ module Make(RANDOMACCESS : RANDOMACCESS)
                val leaf_size : int
             end)=
 struct
+  module STRING = RANDOMACCESS
+
   type 'a t =
-      Empty
+    | Empty
     | Concat of 'a t * int * 'a t * int * int
-    | Leaf of 'a RANDOMACCESS.t
+    | Leaf of 'a STRING.t
+
+  let invariants t =
+    let rec inv_height = function
+      | Empty
+      | Leaf _ -> 0
+      | Concat (l, _, r, _, h) ->
+        assert (h = 1 + max (inv_height l) (inv_height r));
+        h in
+    let rec inv_length = function
+      | Empty -> 0
+      | Leaf a -> STRING.length a
+      | Concat (l, cl, r, cr, _) ->
+        assert (inv_length l = cl);
+        assert (inv_length r = cr);
+        cl + cr in
+    let rec other_inv depth = function
+      | Empty -> assert (depth = 0)
+      | Leaf a -> assert (STRING.length a > 0)
+      | Concat (l, _, r, _, _) ->
+        other_inv (depth + 1) l;
+        other_inv (depth + 1) r in
+    ignore (inv_height t);
+    ignore (inv_length t);
+    other_inv 0 t
 
   type 'a forest_element = { mutable c : 'a t; mutable len : int }
 
-  let str_append = RANDOMACCESS.append
-  let empty_str = RANDOMACCESS.empty
-  let string_of_string_list = RANDOMACCESS.concat
+  let str_append = STRING.append
+  let empty_str = STRING.empty
+  let string_of_string_list = STRING.concat
 
-  let singleton x = Leaf (RANDOMACCESS.make 1 x)
-
-  module STRING = RANDOMACCESS
+  let singleton x = Leaf (STRING.make 1 x)
 
   let max_height = PARAM.max_height
   let leaf_size = PARAM.leaf_size
-
-
 
   exception Out_of_bounds
 
@@ -766,28 +777,45 @@ struct
 
   let prepend_char c r = concat (Leaf (STRING.make 1 c)) r
 
-  let rec get i = function
-      Empty -> raise Out_of_bounds
+  let rec get t i =
+    match t with
+    | Empty -> raise Out_of_bounds
     | Leaf s ->
-        if i >= 0 && i < STRING.length s then STRING.unsafe_get s i
-        else raise Out_of_bounds
+      if i >= 0 && i < STRING.length s then STRING.unsafe_get s i
+      else raise Out_of_bounds
     | Concat (l, cl, r, cr, _) ->
-        if i < cl then get i l
-        else get (i - cl) r
+      if i < cl then get l i
+      else get r (i - cl)
 
-  let set (v:'a t) i (x:'a) =
-    let rec aux i : 'a t -> 'a t= function
-      Empty  -> raise Out_of_bounds
+  let rec set t i x =
+    match t with
+    | Empty ->
+      raise Out_of_bounds
     | Leaf s ->
-        if i >= 0 && i < STRING.length s then
-          let s = STRING.copy s in
-            STRING.unsafe_set s i x;
-            Leaf s
-        else raise Out_of_bounds
+      if i >= 0 && i < STRING.length s then (
+        let s = STRING.copy s in
+        STRING.unsafe_set s i x;
+        Leaf s
+      ) else raise Out_of_bounds
     | Concat(l, cl, r, cr, _) ->
-        if i < cl then concat (aux i v) r
-        else concat l (aux (i - cl) v)
-    in aux i v
+      if i < cl then concat (set l i x) r
+      else concat l (set r (i - cl) x)
+
+  let at = get
+
+  let rec modify t i f =
+    match t with
+    | Empty ->
+      raise Out_of_bounds
+    | Leaf s ->
+      if i >= 0 && i < STRING.length s then (
+        let s = STRING.copy s in
+        STRING.unsafe_set s i (f (STRING.unsafe_get s i));
+        Leaf s
+      ) else raise Out_of_bounds
+    | Concat(l, cl, r, cr, _) ->
+      if i < cl then concat (modify l i f) r
+      else concat l (modify r (i - cl) f)
 
   let of_string = function
       s when STRING.length s = 0 -> Empty
@@ -813,6 +841,7 @@ struct
         let rope = concatloop len 2 (of_string (STRING.make 1 c)) in
           concat rope (make (len - length rope) c)
 
+  (* overridden argument order below *)
   let rec sub start len = function
       Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
     | Leaf s ->
@@ -842,11 +871,14 @@ struct
         in
           concat left right
 
+  (* change argument order on Vect.sub *)
+  let sub v s l = sub s l v
+
   let insert start rope r =
-    concat (concat (sub 0 start r) rope) (sub start (length r - start) r)
+    concat (concat (sub r 0 start) rope) (sub r start (length r - start))
 
   let remove start len r =
-    concat (sub 0 start r) (sub (start + len) (length r - start - len) r)
+    concat (sub r 0 start) (sub r (start + len) (length r - start - len))
 
   let to_string r =
     let rec strings l = function
@@ -857,20 +889,81 @@ struct
       string_of_string_list (strings [] r)
 
   let rec iter f = function
-      Empty -> ()
+    | Empty -> ()
     | Leaf s -> STRING.iter f s
     | Concat(l,_,r,_,_) -> iter f l; iter f r
 
+  type 'a iter = E | C of 'a STRING.t * int * 'a t * 'a iter
+
+  let rec cons_iter s t = match s with
+      Empty -> t
+    | Leaf s -> C (s, 0, Empty, t)
+    | Concat (l, _llen, r, _rlen, _h) -> cons_iter l (cons_iter r t)
+
+  let rec rev_cons_iter s t = match s with
+      Empty -> t
+    | Leaf s -> C (s, (STRING.length s - 1), Empty, t)
+    | Concat (l, _, r, _, _) -> rev_cons_iter r (rev_cons_iter l t)
+
+  let rec enum_next l () = match !l with
+      E -> raise BatEnum.No_more_elements
+    | C (s, p, r, t) ->
+        if p+1 = STRING.length s then
+          l := cons_iter r t
+        else
+          l := C(s,p+1,r,t);
+        STRING.unsafe_get s p
+
+  let rec enum_backwards_next l () = match !l with
+      E -> raise BatEnum.No_more_elements
+    | C (s, p, r, t) ->
+        if p = 0 then
+          l := rev_cons_iter r t
+        else
+          l := C(s,p-1,r,t);
+        STRING.unsafe_get s p
+
+  let rec enum_count l () =
+    let rec aux n = function
+        E -> n
+      | C (s, p, m, t) -> aux (n + (STRING.length s - p) + length m) t
+    in aux 0 !l
+
+  let rec rev_enum_count l () =
+    let rec aux n = function
+        E -> n
+      | C (s, p, m, t) -> aux (n + (p+1) + length m) t
+    in aux 0 !l
+
+  let enum t =
+    let rec make l =
+      let l = ref l in
+      let clone() = make !l in
+      BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
+    in make (cons_iter t E)
+
+  let backwards t =
+    let rec make l =
+      let l = ref l in
+      let clone() = make !l in
+      BatEnum.make ~next:(enum_backwards_next l) ~count:(rev_enum_count l) ~clone
+    in make (rev_cons_iter t E)
+
+  let of_enum e =
+    BatEnum.fold (fun acc x -> append_char x acc) empty e
+
+  let of_backwards e =
+    BatEnum.fold (fun acc x -> prepend_char x acc) empty e
+
   let iteri f r =
     let rec aux f i = function
-      Empty -> ()
-    | Leaf s ->
+      | Empty -> ()
+      | Leaf s ->
         for j = 0 to STRING.length s - 1 do
           f (i + j) (STRING.unsafe_get s j)
         done
-    | Concat(l,cl,r,_,_) -> aux f i l; aux f (i + cl) r
-    in
-      aux f 0 r
+      | Concat(l,cl,r,_,_) -> aux f i l; aux f (i + cl) r in
+    aux f 0 r
 
   let rec rangeiter f start len = function
       Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds
@@ -906,71 +999,80 @@ struct
           !acc
     | Concat(l,_,r,_,_) -> fold f (fold f a l) r
 
-  let rec map f = function
-      Empty -> Empty
-    | Leaf a -> Leaf (RANDOMACCESS.map f a)
-    | Concat(l,cl,r,cr,h) -> Concat(map f l, cl, map f r, cr, h)
+  let foldi f a v =
+    let rec aux i a = function
+        Empty -> a
+      | Leaf s ->
+          let acc = ref a in
+          for j = 0 to STRING.length s - 1 do
+            acc := f (i+j) !acc (STRING.unsafe_get s j)
+          done;
+          !acc
+    | Concat(l,cl,r,_,_) -> aux (i+cl) (aux i a l) r
+    in
+    aux 0 a v
 
-  let of_array = of_string
+  let fold_left = fold
+
+  let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
+    let rec aux (acc:'b) = function
+      | Empty  -> acc
+      | Leaf s -> STRING.fold_right f s acc
+      | Concat(l, _, r, _, _) -> aux (aux acc r) l
+    in aux acc v
+
+  let reduce f v =
+    let acc = ref (get v 0) in
+    rangeiter (fun e -> acc := f !acc e) 1 (length v - 1) v;
+    !acc
+
+  let of_array a = of_string (STRING.of_enum (BatArray.enum a))
+  let to_array t = BatArray.of_enum (enum t)
   let of_container = of_string
   let to_container = to_string
   let append = append_char
   let prepend = prepend_char
 
-  let to_list r =
-    let rec aux acc = function
-        Empty -> acc
-      | Leaf a -> RANDOMACCESS.fold_right (fun x l -> x :: l) a acc
-      | Concat(l,_,r,_,_) -> aux (aux acc r) l
-    in
-      aux [] r
-
-  let filter f =
-    fold (fun s x -> if f x then append x s else s) Empty
+  let rec map f = function
+    | Empty -> Empty
+    | Leaf a -> Leaf (STRING.map f a)
+    | Concat(l,cl,r,cr,h) ->
+      let l = map f l in
+      let r = map f r in
+      Concat(l, cl, r, cr, h)
 
   let mapi f v =
     let off = ref 0 in
       map (fun x -> f (BatRef.post_incr off) x) v
 
-
-  let rec fold f a = function
-      Empty -> a
-    | Leaf s ->
-	let acc = ref a in
-          for i = 0 to RANDOMACCESS.length s - 1 do
-            acc := f !acc (RANDOMACCESS.unsafe_get s i)
-          done;
-          !acc
-    | Concat(l,_,r,_,_) -> fold f (fold f a l) r
-
-  let fold_left = fold
-  let fold_right (f:'a -> 'b -> 'b) (v:'a t) (acc:'b)  : 'b =
-    let rec aux (acc:'b) = function
-      | Empty  -> acc
-      | Leaf s -> RANDOMACCESS.fold_right f s acc
-      | Concat(l, _, r, _, _) -> aux (aux acc r) l
-    in aux acc v
-
   let exists f v =
     BatReturn.label (fun label ->
   let rec aux = function
     | Empty                  -> ()
-    | Leaf a                 -> RANDOMACCESS.iter (fun x -> if f x then BatReturn.return label true) a
+    | Leaf a                 -> STRING.iter (fun x -> if f x then BatReturn.return label true) a
     | Concat (l, _, r, _, _) -> aux l; aux r
   in aux v; false)
 
-let for_all f v =
-  BatReturn.label (fun label ->
-  let rec aux = function
-    | Empty                  -> ()
-    | Leaf a                 -> RANDOMACCESS.iter (fun x -> if not (f x) then BatReturn.return label false) a
-    | Concat (l, _, r, _, _) -> aux l; aux r
-  in aux v; true)
+  let for_all f v =
+    BatReturn.label (fun label ->
+    let rec aux = function
+      | Empty                  -> ()
+      | Leaf a                 -> STRING.iter (fun x -> if not (f x) then BatReturn.return label false) a
+      | Concat (l, _, r, _, _) -> aux l; aux r
+    in aux v; true)
+
+  let find f v =
+    BatReturn.label (fun label ->
+    let rec aux = function
+      | Empty  -> ()
+      | Leaf a -> STRING.iter (fun x -> if (f x) then BatReturn.return label x) a
+      | Concat (l, _, r, _, _) -> aux l; aux r
+    in aux v; raise Not_found)
 
   let findi f v = (*We rely on the order of exploration of the tree by [find]*)
-    let off = ref 0 in
+    let off = ref (-1) in (* pre-increment *)
     let _   = find (fun x -> let result = f x in incr off; result) v in
-      !off
+    !off
 
   let partition p v =
     fold_left (fun (yes, no) x -> if p x then (append x yes,no) else (yes,append x no)) (empty,empty) v
@@ -982,33 +1084,55 @@ let for_all f v =
 
   let memq m v = try let _ = find ( ( == ) m ) v in true with Not_found -> false
 
+  let first v = get v 0
+  let last v = get v (length v - 1)
+  let shift v = first v, sub v 1 (length v - 1)
+  let pop v = last v, sub v 0 (length v - 1)
 
-let filter_map f =
-  fold (fun acc x -> match f x with
-	  | None   -> acc
-	  | Some v -> append v acc) Empty
+  let to_list r =
+    let rec aux acc = function
+        Empty -> acc
+      | Leaf a -> STRING.fold_right (fun x l -> x :: l) a acc
+      | Concat(l,_,r,_,_) -> aux (aux acc r) l
+    in
+      aux [] r
 
-let enum e =
-  let rec aux = function
-    | Empty                 -> BatEnum.empty ()
-    | Leaf s                -> RANDOMACCESS.enum s
-    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux l))
-	                                   (BatEnum.delay (fun () -> aux r))
-  in aux e
+  let filter f =
+    fold (fun s x -> if f x then append x s else s) Empty
 
-let backwards e =
-  let rec aux = function
-    | Empty                 -> BatEnum.empty ()
-    | Leaf s                -> RANDOMACCESS.backwards s
-    | Concat(l, _, r, _, _) -> BatEnum.append (BatEnum.delay (fun () -> aux r))
-	                                   (BatEnum.delay (fun () -> aux l))
-  in aux e
+  let filter_map f =
+    fold (fun acc x -> match f x with
+            | None   -> acc
+            | Some v -> append v acc) Empty
 
-let of_enum e =
-  BatEnum.fold (fun acc x -> append_char x acc) empty e
+  let destructive_set v i x =
+    let rec aux i = function
+      Empty  -> raise Out_of_bounds
+    | Leaf s ->
+        if i >= 0 && i < STRING.length s then
+          STRING.unsafe_set s i x
+        else raise Out_of_bounds
+    | Concat(l, cl, r, cr, _) ->
+        if i < cl then aux i l
+        else aux (i - cl) r
+    in aux i v
 
-let of_backwards e =
-  BatEnum.fold (fun acc x -> prepend_char x acc) empty e
+  let of_list l = of_array (Array.of_list l)
+
+  let init n f =
+    if n < 0 || n > max_length then raise (Invalid_argument "Vect.init")
+    else
+    (*Create as many arrays as we need to store all the data*)
+    let rec aux off acc =
+      if off >= n then acc
+      else
+        let len = min leaf_size (n - off) in
+        let arr = Array.init len (fun i -> f ( off + i ) ) in
+        aux (off + len) (arr::acc)
+    in
+    let base = aux 0 []
+    in(*And then concatenate them*)
+      List.fold_left (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc) (empty:'a t) (base:'a array list)
 
   let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
     BatEnum.print ~first ~last ~sep print_a out (enum t)

@@ -321,6 +321,56 @@ module VectContainer : Container = struct
   and delete_range t i len = remove i len t
 end
 
+module FunctorVectContainer : Container = struct
+  include BatVect.Make(struct
+    include BatDynArray
+    let empty = Obj.magic (create ())
+    let rev a =
+      let module Array = BatDynArray in
+      let n = length a in
+      for i = 0 to (n / 2) - 1 do
+        let tmp = a.(i) in
+        a.(i) <- a.(n - 1 - i);
+        a.(n - 1 - i) <- tmp;
+      done
+    let of_backwards e =
+      let a = of_enum e in
+      rev a;
+      a
+    let backwards a =
+      rev a;
+      let e = enum a in
+      BatEnum.force e;
+      rev a;
+      e
+    let concat = function
+      | [] -> empty
+      | h :: t ->
+        let h = copy h in
+        List.iter (fun elt -> append elt h) t;
+        h
+    let append a1 a2 = concat [a1;a2]
+    let make i x = init i (fun _ -> x)
+  end)(struct let max_height = 12 let leaf_size = 12 end)
+  let map_right = ni2
+  and iter_right = ni2
+  and fold_right f acc t = fold_right (fun acc elt -> f elt acc) t acc
+  and append = concat
+  and to_list_backwards = ni1
+  and of_list_backwards = ni1
+  and cons t x = prepend x t
+  and snoc t x = append x t
+  and hd = first
+  and tail = ni1
+  and init = ni1
+  and find_right = ni2
+  and t_printer = ni4
+  and t_printer_delim = ("","")
+  and insert t i v = insert i (singleton v) t
+  and delete = ni2
+  and delete_range t i len = remove i len t
+end
+
 module FingerTreeContainer : Container = struct
   include BatFingerTree
   let length = size
@@ -933,6 +983,7 @@ let tests = "Container" >::: [
   "RefList" >:: (fun () -> let module M = TestContainer(RefListContainer) in ());
   "Seq" >:: (fun () -> let module M = TestContainer(SeqContainer) in ());
   "Vect" >:: (fun () -> let module M = TestContainer(VectContainer) in ());
+  "FunctorVect" >:: (fun () -> let module M = TestContainer(FunctorVectContainer) in ());
   "FingerTree" >:: (fun () -> let module M = TestContainer(FingerTreeContainer) in ());
   "Array" >:: (fun () -> let module M = TestContainer(ArrayContainer) in ());
   "DynArray" >:: (fun () -> let module M = TestContainer(DynArrayContainer) in ());

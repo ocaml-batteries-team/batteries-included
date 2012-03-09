@@ -1750,7 +1750,7 @@ struct
       if depth = 1 then
         let v1 = BatDynArray.unsafe_get a !i in
         let v2 = BatDynArray.unsafe_get a (!i + 1) in
-        let v3 = BatDynArray.unsafe_get a (!i + 1) in
+        let v3 = BatDynArray.unsafe_get a (!i + 2) in
         i := !i + 3;
         Obj.magic (node3 v1 v2 v3)
       else
