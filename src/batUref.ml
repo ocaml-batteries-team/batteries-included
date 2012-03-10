@@ -27,24 +27,26 @@ and 'a uref = 'a uref_contents ref
 
 type 'a t = 'a uref
 
-let rec find ur = match !ur with
+let rec find ur =
+  match !ur with
   | Ptr p ->
-      let vr = find p in
-      ur := Ptr vr ;
-      vr
-  | _ -> ur
+    let vr = find p in
+    ur := Ptr vr ;
+    vr
+  | Ranked _ -> ur
 
 let uref x = ref (Ranked (x, 0))
 
-let uget ur = match !(find ur) with
+let uget ur =
+  match !(find ur) with
   | Ptr _ -> assert false
   | Ranked (x, _) -> x
 
 let uset ur x =
   let ur = find ur in
   match !ur with
-    | Ptr _ -> assert false
-    | Ranked (_, r) -> ur := Ranked (x, r)
+  | Ptr _ -> assert false
+  | Ranked (_, r) -> ur := Ranked (x, r)
 
 let equal ur vr =
   find ur == find vr
@@ -58,43 +60,44 @@ let unite ?sel ur vr =
   let vr = find vr in
   if ur == vr then begin
     match sel with
-      | None -> ()
-      | Some sel ->
-        (* even when ur and vr are the same reference, we need to apply
-           the selection function, as [sel x x] may be different from [x].
-           
-           For example, [unite ~sel:(fun _ _ -> v) r r] would fail
-           to set the content of [r] to [v] otherwise. *)
-        match !ur with
-          | Ptr _ -> assert false
-          | Ranked (x, r) ->
-            let x' = sel x x in
-            ur := Ranked(x', r)
-  end 
+    | None -> ()
+    | Some sel ->
+      (* even when ur and vr are the same reference, we need to apply
+         the selection function, as [sel x x] may be different from [x].
+
+         For example, [unite ~sel:(fun _ _ -> v) r r] would fail
+         to set the content of [r] to [v] otherwise. *)
+      match !ur with
+      | Ptr _ -> assert false
+      | Ranked (x, r) ->
+        let x' = sel x x in
+        ur := Ranked(x', r)
+  end
   else
     match !ur, !vr with
-      | _, Ptr _ | Ptr _, _ -> assert false
-      | Ranked (x, xr), Ranked (y, yr) ->
-        let z = match sel with
-          | None -> x (* in the default case, pick x *)
-          | Some sel -> sel x y in
-          if xr = yr then begin
-            ur := Ranked (z, xr + 1) ;
-            vr := Ptr ur
-          end else if xr < yr then begin
-            ur := Ranked (z, xr) ;
-            vr := Ptr ur
-          end else begin
-            vr := Ranked (z, yr) ;
-            ur := Ptr vr
-          end
+    | _, Ptr _ | Ptr _, _ -> assert false
+    | Ranked (x, xr), Ranked (y, yr) ->
+      let z = match sel with
+        | None -> x (* in the default case, pick x *)
+        | Some sel -> sel x y in
+      if xr = yr then begin
+        ur := Ranked (z, xr + 1) ;
+        vr := Ptr ur
+      end else if xr < yr then begin
+        ur := Ranked (z, xr) ;
+        vr := Ptr ur
+      end else begin
+        vr := Ranked (z, yr) ;
+        ur := Ptr vr
+      end
 
-let print elepr out ur = match !(find ur) with
+let print elepr out ur =
+  match !(find ur) with
   | Ptr _ -> assert false
   | Ranked (x, _) ->
-      BatInnerIO.nwrite out "uref " ;
-      elepr out x
-      
+    BatInnerIO.nwrite out "uref " ;
+    elepr out x
+
 
 let t_printer elepr paren out ur =
   if paren then BatInnerIO.nwrite out "(" ;
