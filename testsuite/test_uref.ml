@@ -70,8 +70,57 @@ let test_equal () =
     inequal_then_equal ra' rb');
   ()
 
+let test_unite_shuffle () =
+  (* testing the unification in all possible orders of n urefs
+     unfornatunaly, since this is an imperative structure where
+     you can't undo operations, this is slighlty complicated *)
+
+  let pick_one n l f =
+    assert (n <> 0);
+    for i = 0 to n - 1 do
+      let elt_l () =
+        let l, rest = l () in
+        let elt = BatList.nth l i in
+        let l =
+          let l1, l2 = BatList.split_at i l in
+          l1 @ BatList.tl l2 in
+        elt, l, rest in
+      f elt_l
+    done in
+
+  let rec pick_two n l check =
+    pick_one n l (fun elt_l ->
+      if n = 1 then
+        let elt, l, orig = elt_l () in
+        assert (l = []);
+        check elt orig
+      else
+        pick_one (n - 1)
+          (fun () -> let elt, l, orig = elt_l () in l, (elt, orig))
+          (fun elt2_l_elt ->
+            pick_two (n - 1) (fun () ->
+              let elt, l, (elt2, orig) = elt2_l_elt () in
+              M.unite ~sel:(+) elt elt2;
+              elt :: l, orig
+            ) check;
+            pick_two (n - 1) (fun () ->
+              let elt, l, (elt2, orig) = elt2_l_elt () in
+              M.unite ~sel:(+) elt elt2;
+              elt2 :: l, orig
+            ) check;
+          )
+    ) in
+
+  let n = 4 in
+  let urefs () = let l = BatList.init n (fun i -> M.uref i) in l, l in
+  pick_two n urefs (fun elt urefs ->
+    U.assert_equal ~printer:string_of_int (n * (n - 1) / 2) (M.uget elt);
+    BatList.iter (fun uref -> U.assert_equal true (M.equal elt uref)) urefs
+  )
+
 let tests = "Uref" >::: [
   "uref, uget, uset" >:: test_uref_uget_uset;
   "unite" >:: test_unite;
   "equal" >:: test_equal;
+  "unite_shuffle" >:: test_unite_shuffle;
 ]

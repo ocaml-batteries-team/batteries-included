@@ -39,13 +39,13 @@ let uref x = ref (Ranked (x, 0))
 
 let uget ur =
   match !(find ur) with
-  | Ptr _ -> assert false
+  | Ptr _ -> assert false (*BISECT-VISIT*)
   | Ranked (x, _) -> x
 
 let uset ur x =
   let ur = find ur in
   match !ur with
-  | Ptr _ -> assert false
+  | Ptr _ -> assert false (*BISECT-VISIT*)
   | Ranked (_, r) -> ur := Ranked (x, r)
 
 let equal ur vr =
@@ -68,14 +68,14 @@ let unite ?sel ur vr =
          For example, [unite ~sel:(fun _ _ -> v) r r] would fail
          to set the content of [r] to [v] otherwise. *)
       match !ur with
-      | Ptr _ -> assert false
+      | Ptr _ -> assert false (*BISECT-VISIT*)
       | Ranked (x, r) ->
         let x' = sel x x in
         ur := Ranked(x', r)
   end
   else
     match !ur, !vr with
-    | _, Ptr _ | Ptr _, _ -> assert false
+    | _, Ptr _ | Ptr _, _ -> assert false (*BISECT-VISIT*)
     | Ranked (x, xr), Ranked (y, yr) ->
       let z = match sel with
         | None -> x (* in the default case, pick x *)
@@ -93,15 +93,23 @@ let unite ?sel ur vr =
 
 let print elepr out ur =
   match !(find ur) with
-  | Ptr _ -> assert false
+  | Ptr _ -> assert false (*BISECT-VISIT*)
   | Ranked (x, _) ->
     BatInnerIO.nwrite out "uref " ;
     elepr out x
-
+(*$T print
+  let u1 = uref 2 and u2 = uref 3 in unite ~sel:(+) u1 u2; \
+  BatIO.to_string (print BatInt.print) u1 = "uref 5" && \
+  BatIO.to_string (print BatInt.print) u2 = "uref 5"
+*)
 
 let t_printer elepr paren out ur =
   if paren then BatInnerIO.nwrite out "(" ;
-  print (elepr false) out ur ;
+  print (elepr true) out ur ;
   if paren then BatInnerIO.nwrite out ")"
+(*$T t_printer
+  let u1 = uref (uref 2) in \
+  BatIO.string_of_t_printer (t_printer (t_printer BatInt.t_printer)) u1 = "uref (uref 2)"
+*)
 
 let uref_printer = t_printer
