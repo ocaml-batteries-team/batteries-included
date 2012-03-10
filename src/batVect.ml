@@ -180,7 +180,7 @@ let bal_if_needed l r =
   if height r < max_height then r else balance r
 
 let concat_str l = function
-  | Empty | Concat _ -> invalid_arg "concat_str"
+  | Empty | Concat _ -> assert false (*BISECT-VISIT*)
   | Leaf rs as r ->
     let lenr = STRING.length rs in
     match l with
@@ -544,8 +544,7 @@ let to_list r =
     | Concat (l, _, r, _, _) -> aux (aux acc r) l in
   aux [] r
 
-let filter f =
-  fold (fun s x -> if f x then append x s else s) Empty
+let filter = find_all
 
 let filter_map f =
   fold (fun acc x ->
@@ -757,7 +756,7 @@ struct
     if height r < max_height then r else balance r
 
   let concat_str l = function
-    | Empty | Concat _ -> invalid_arg "concat_str"
+    | Empty | Concat _ -> assert false (*BISECT-VISIT*)
     | Leaf rs as r ->
       let lenr = STRING.length rs in
       match l with
@@ -1123,8 +1122,7 @@ struct
       | Concat (l, _, r, _, _) -> aux (aux acc r) l in
     aux [] r
 
-  let filter f =
-    fold (fun s x -> if f x then append x s else s) Empty
+  let filter = find_all
 
   let filter_map f =
     fold (fun acc x ->

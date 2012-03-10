@@ -7,6 +7,7 @@ module type Container = sig
   val map : ('a -> 'b) -> 'a t -> 'b t
   val map_right : ('a -> 'b) -> 'a t -> 'b t
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> 'a t -> 'acc
+  val fold_lefti : (int -> 'acc -> 'a -> 'acc) -> 'acc -> 'a t -> 'acc
   val fold_right : ('acc -> 'a -> 'acc) -> 'acc -> 'a t -> 'acc
   val enum : 'a t -> 'a BatEnum.t
   val backwards : 'a t -> 'a BatEnum.t
@@ -21,6 +22,7 @@ module type Container = sig
   val filter_map : ('a -> 'b option) -> 'a t -> 'b t
   val get : 'a t -> int -> 'a
   val set : 'a t -> int -> 'a -> 'a t
+  val update : 'a t -> int -> ('a -> 'a) -> 'a t
   val append : 'a t -> 'a t -> 'a t
   val last : 'a t -> 'a
   val of_list : 'a list -> 'a t
@@ -46,7 +48,14 @@ module type Container = sig
   val insert : 'a t -> int -> 'a -> 'a t
   val delete : 'a t -> int -> 'a t
   val delete_range : 'a t -> int -> int -> 'a t
-(* sort, stable_sort, split_at, iter2, for_all2, take, drop, mem, find, find_map, reduce, max, min, reverse *)
+  val build : int -> (int -> 'a) -> 'a t
+  val mem : 'a t -> 'a -> bool
+  val memq : 'a t -> 'a -> bool
+  val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+  val find_index : ('a -> bool) -> 'a t -> int
+  val reduce_left : ('a -> 'a -> 'a) -> 'a t -> 'a
+  val make : int -> 'a -> 'a t
+(* sort, stable_sort, split_at, iter2, for_all2, take, drop, find_map, reduce, max, min, reverse *)
 end
 
 exception NotImplemented
@@ -87,6 +96,15 @@ module DllistContainer : Container = struct
   and delete_range = ni3
   and of_array = ni1
   and to_array = ni1
+  and update = ni3
+  and fold_lefti = ni3
+  and build = ni2
+  and mem = ni2
+  and memq = ni2
+  and partition = ni2
+  and find_index = ni2
+  and reduce_left = ni2
+  and make = ni2
 end
 
 module ArrayContainer : Container = struct
@@ -115,6 +133,14 @@ module ArrayContainer : Container = struct
   and delete_range = ni3
   and of_array = ni1
   and to_array = ni1
+  and update = ni3
+  and fold_lefti = ni3
+  and build = init
+  and mem t x = mem x t
+  and memq t x = memq x t
+  and partition = ni2
+  and find_index = findi
+  and reduce_left = ni2
 end
 
 module LazyListContainer : Container = struct
@@ -141,6 +167,14 @@ module LazyListContainer : Container = struct
   and delete_range = ni3
   and of_array = ni1
   and to_array = ni1
+  and update = ni3
+  and fold_lefti = ni3
+  and build = init
+  and mem t x = mem x t
+  and memq t x = memq x t
+  and partition = ni2
+  and find_index = ni2
+  and reduce_left = ni2
 end
 
 module DynArrayContainer = struct
@@ -168,6 +202,15 @@ module DynArrayContainer = struct
   and insert t i v = let t = copy t in insert t i v; t
   and delete t i = let t = copy t in delete t i; t
   and delete_range t i len = let t = copy t in delete_range t i len; t
+  and update = ni3
+  and fold_lefti = ni3
+  and build = init
+  and mem = ni2
+  and memq = ni2
+  and partition = ni2
+  and find_index = ni2
+  and reduce_left = ni2
+  and make = ni2
 end
 
 module DynArrayContainerStepResizer : Container = struct
@@ -243,6 +286,15 @@ module DequeContainer : Container = struct
   and delete_range = ni3
   and of_array = ni1
   and to_array = ni1
+  and update = ni3
+  and fold_lefti = ni3
+  and build = ni2
+  and mem = ni2
+  and memq = ni2
+  and partition = ni2
+  and find_index = ni2
+  and reduce_left = ni2
+  and make = ni2
 end
 
 module ListContainer : Container = struct
@@ -268,6 +320,14 @@ module ListContainer : Container = struct
   and delete_range = ni3
   and of_array = ni1
   and to_array = ni1
+  and update = ni3
+  and fold_lefti = ni3
+  and build = init
+  and mem t x = mem x t
+  and memq t x = memq x t
+  and find_index = ni2
+  and reduce_left = ni2
+  and make = ni2
 end
 
 module RefListContainer : Container = struct
@@ -298,6 +358,15 @@ module RefListContainer : Container = struct
   and delete_range = ni3
   and of_array = ni1
   and to_array = ni1
+  and update = ni3
+  and fold_lefti = ni3
+  and build = ni2
+  and mem = ni2
+  and memq = ni2
+  and partition = ni2
+  and find_index = ni2
+  and reduce_left = ni2
+  and make = ni2
 end
 
 module VectContainer : Container = struct
@@ -311,8 +380,8 @@ module VectContainer : Container = struct
   and cons t x = prepend x t
   and snoc t x = append x t
   and hd = first
-  and tail = ni1
-  and init = ni1
+  and tail t = snd (shift t)
+  and init t = snd (pop t)
   and find_right = ni2
   and t_printer = ni4
   and t_printer_delim = ("","")
@@ -321,6 +390,25 @@ module VectContainer : Container = struct
   and delete_range t i len = remove i len t
   and invariants t = invariants t; invariants (balance t)
  (* so that balance is called without having to test it specifically *)
+  and update = modify
+  and fold_lefti = foldi
+  and set t i v =
+    try
+      let t' = set t i v in
+      let old_v = get t i in
+      try
+        destructive_set t i v;
+        assert (BatEnum.equal (=) (enum t) (enum t'));
+        destructive_set t i old_v;
+        t'
+      with Out_of_bounds -> assert false
+    with Out_of_bounds ->
+      ignore (destructive_set t i v); assert false
+  and build = init
+  and mem t x = mem x t
+  and memq t x = memq x t
+  and find_index = findi
+  and reduce_left = reduce
 end
 
 module FunctorVectContainer : Container = struct
@@ -363,8 +451,8 @@ module FunctorVectContainer : Container = struct
   and cons t x = prepend x t
   and snoc t x = append x t
   and hd = first
-  and tail = ni1
-  and init = ni1
+  and tail t = snd (shift t)
+  and init t = snd (pop t)
   and find_right = ni2
   and t_printer = ni4
   and t_printer_delim = ("","")
@@ -372,6 +460,25 @@ module FunctorVectContainer : Container = struct
   and delete = ni2
   and delete_range t i len = remove i len t
   and invariants t = invariants t; invariants (balance t)
+  and update = modify
+  and fold_lefti = foldi
+  and set t i v =
+    try
+      let t' = set t i v in
+      let old_v = get t i in
+      try
+        destructive_set t i v;
+        assert (BatEnum.equal (=) (enum t) (enum t'));
+        destructive_set t i old_v;
+        t'
+      with Out_of_bounds -> assert false
+    with Out_of_bounds ->
+      ignore (destructive_set t i v); assert false
+  and build = init
+  and mem t x = mem x t
+  and memq t x = memq x t
+  and find_index = findi
+  and reduce_left = reduce
 end
 
 module FingerTreeContainer : Container = struct
@@ -395,6 +502,14 @@ module FingerTreeContainer : Container = struct
   and delete_range = ni3
   and of_array = ni1
   and to_array = ni1
+  and fold_lefti = ni3
+  and build = ni2
+  and mem = ni2
+  and memq = ni2
+  and partition = ni2
+  and find_index = ni2
+  and reduce_left = ni2
+  and make = ni2
 end
 
 module SeqContainer : Container = struct
@@ -422,8 +537,8 @@ module SeqContainer : Container = struct
   let snoc = ni1
   let cons t x = cons x t
   let hd e =
-    let x = try Some (hd e) with _ -> None in
-    let y = try Some (first e) with _ -> None in
+    let x = try Some (hd e) with Assert_failure _ as e -> raise e | _ -> None in
+    let y = try Some (first e) with Assert_failure _ as e -> raise e | _ -> None in
     assert (x = y);
     match x with None -> raise Exit | Some e -> e
   let find f t = BatOption.get (find f t)
@@ -436,6 +551,15 @@ module SeqContainer : Container = struct
   and delete_range = ni3
   and of_array = ni1
   and to_array = ni1
+  and update = ni3
+  and fold_lefti = ni3
+  and build = init
+  and mem = ni2
+  and memq = ni2
+  and partition = ni2
+  and find_index = ni2
+  and reduce_left = ni2
+  and make = ni2
 end
 
 module BatArray = struct
@@ -506,6 +630,36 @@ module TestContainer(C : Container) : sig end = struct
 
   let () =
     repeat_twice (fun () ->
+      let c = C.build n (fun i -> i + 1) in
+      inv c;
+      let i = ref (-1) in
+      (try C.iter (fun elt -> incr i; assert (!i + 1 = elt)) c;
+      with NotImplemented -> failwith "build and not iter??");
+      assert (!i = n - 1);
+      assert_equal 0 (C.length (C.build 0 (fun _ -> assert false)));
+      assert (
+        try ignore (C.build (-1) (fun _ -> ())); false
+        with Assert_failure _ as e -> raise e | _ -> true
+      )
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let c = C.make n (-42) in
+      inv c;
+      let i = ref (-1) in
+      (try C.iter (fun elt -> incr i; assert (elt = -42)) c;
+      with NotImplemented -> failwith "make and not iter??");
+      assert (!i = n - 1);
+      assert_equal 0 (C.length (C.make 0 (-42)));
+      assert (
+        try ignore (C.make (-1) (-42)); false
+        with Assert_failure _ as e -> raise e | _ -> true
+      )
+    )
+
+  let () =
+    repeat_twice (fun () ->
       let i = ref (-1) in
       let c = C.map (fun elt -> incr i; assert (!i = elt); elt + 1) c in
       inv c;
@@ -551,6 +705,30 @@ module TestContainer(C : Container) : sig end = struct
       assert (!i = n - 1);
       assert (acc = n);
       try ignore (C.fold_left (fun _ -> assert false) 0 (Lazy.force empty))
+      with BatDllist.Empty -> ()
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let i = ref 0 in
+      let acc = C.reduce_left (fun acc elt -> incr i; assert (acc = !i - 1); assert (!i = elt); acc + 1) c in
+      assert (!i = n - 1);
+      assert (acc = n - 1);
+      try ignore (C.reduce_left (fun _ -> assert false) (Lazy.force empty));
+          assert false
+      with
+      | Assert_failure _ as e -> raise e
+      | _ -> ()
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let i = ref (-1) in
+      let acc = 0 in
+      let acc = C.fold_lefti (fun index acc elt -> incr i; assert (!i = elt); assert (!i = index); acc + 1) acc c in
+      assert (!i = n - 1);
+      assert (acc = n);
+      try ignore (C.fold_lefti (fun _ -> assert false) 0 (Lazy.force empty))
       with BatDllist.Empty -> ()
     )
 
@@ -684,14 +862,33 @@ module TestContainer(C : Container) : sig end = struct
 
   let () =
     repeat_twice (fun () ->
+      let i = ref (-1) in
+      let c2, c3 = C.partition (fun elt -> incr i; if not (elt = !i) then assert false; elt mod 3 = 0) c in
+      inv c2; inv c3;
+      let j = ref (-1) in
+      C.iter (fun elt -> incr j; assert (!j * 3 = elt)) c2;
+      let k = ref (-1) in
+      C.iter (fun elt -> incr k; assert (3 * (!k / 2) + (!k mod 2) + 1 = elt)) c3;
+      assert_equal ~printer:string_of_int (n - 1) !i;
+      assert_equal ~printer:string_of_int ((n + 2) / 3 - 1) !j;
+      assert_equal ~printer:string_of_int n ((!j + 1) + (!k + 1));
+      (* iterating first to force the sequence of lazy
+         sequence before checking the number of
+         elements traversed *)
+      try ignore (C.partition (fun _ -> assert false) (Lazy.force empty))
+      with BatDllist.Empty -> ()
+    )
+
+  let () =
+    repeat_twice (fun () ->
       assert (C.last c = n - 1);
-      assert (try ignore (C.last (C.of_enum (BatEnum.empty ()))); false with _ -> true)
+      assert (try ignore (C.last (C.of_enum (BatEnum.empty ()))); false with Assert_failure _ as e -> raise e | _ -> true)
     )
 
   let () =
     repeat_twice (fun () ->
       assert (C.hd c = 0);
-      assert (try ignore (C.hd (C.of_enum (BatEnum.empty ()))); false with _ -> true)
+      assert (try ignore (C.hd (C.of_enum (BatEnum.empty ()))); false with Assert_failure _ as e -> raise e | _ -> true)
     )
 
   let () =
@@ -735,8 +932,8 @@ module TestContainer(C : Container) : sig end = struct
       for i = 0 to n - 1 do
         assert_equal ~printer:string_of_int i (C.get c i)
       done;
-      assert (try ignore (C.get c (-1)); false with _ -> true);
-      assert (try ignore (C.get c n); false with _ -> true);
+      assert (try ignore (C.get c (-1)); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.get c n); false with Assert_failure _ as e -> raise e | _ -> true);
     )
 
   let () =
@@ -753,15 +950,41 @@ module TestContainer(C : Container) : sig end = struct
         ) c2;
         assert_equal ~printer:string_of_int (n - 1) !idx;
       done;
-      assert (try ignore (C.set c (-1) (-1)); false with _ -> true);
-      assert (try ignore (C.set c n (-1)); false with _ -> true);
+      assert (try ignore (C.set c (-1) (-1)); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.set c n (-1)); false with Assert_failure _ as e -> raise e | _ -> true);
       (try assert (
         try ignore (C.set (Lazy.force empty) (-1) (-1)); false
-        with _ -> true
+        with Assert_failure _ as e -> raise e | _ -> true
        ) with BatDllist.Empty -> ());
       (try assert (
         try ignore (C.set (Lazy.force empty) 0 (-1)); false
-        with _ -> true
+        with Assert_failure _ as e -> raise e | _ -> true
+       ) with BatDllist.Empty -> ());
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      for i = 0 to n - 1 do
+        let c2 = C.update c i (fun i -> -i) in
+        inv c2;
+        let idx = ref (-1) in
+        C.iteri (fun j v ->
+          incr idx;
+          assert_equal j !idx;
+          assert_equal ~printer:string_of_int
+            (if i = j then (-i) else j) v
+        ) c2;
+        assert_equal ~printer:string_of_int (n - 1) !idx;
+      done;
+      assert (try ignore (C.update c (-1) (fun _ -> -1)); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.update c n (fun _ -> -1)); false with Assert_failure _ as e -> raise e | _ -> true);
+      (try assert (
+        try ignore (C.update (Lazy.force empty) (-1) (fun _ -> -1)); false
+        with Assert_failure _ as e -> raise e | _ -> true
+       ) with BatDllist.Empty -> ());
+      (try assert (
+        try ignore (C.update (Lazy.force empty) 0 (fun _ -> -1)); false
+        with Assert_failure _ as e -> raise e | _ -> true
        ) with BatDllist.Empty -> ());
     )
 
@@ -795,8 +1018,8 @@ module TestContainer(C : Container) : sig end = struct
         ) c3;
         assert_equal ~printer:string_of_int (n + 1) !idx;
       done;
-      assert (try ignore (C.insert c (-1) (-1)); false with _ -> true);
-      assert (try ignore (C.insert c (n + 1) (-1)); false with _ -> true);
+      assert (try ignore (C.insert c (-1) (-1)); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.insert c (n + 1) (-1)); false with Assert_failure _ as e -> raise e | _ -> true);
     )
 
   let () =
@@ -826,16 +1049,16 @@ module TestContainer(C : Container) : sig end = struct
         ) c3;
         assert_equal ~printer:string_of_int (n - 3) !idx;
       done;
-      assert (try ignore (C.delete c (-1)); false with _ -> true);
-      assert (try ignore (C.delete c n); false with _ -> true);
+      assert (try ignore (C.delete c (-1)); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.delete c n); false with Assert_failure _ as e -> raise e | _ -> true);
     )
 
   let () =
     repeat_twice (fun () ->
-      assert (try ignore (C.delete_range c (-1) 1); false with _ -> true);
-      assert (try ignore (C.delete_range c n 1); false with _ -> true);
-      assert (try ignore (C.delete_range c 0 (-1)); false with _ -> true);
-      assert (try ignore (C.delete_range c 1 n); false with _ -> true);
+      assert (try ignore (C.delete_range c (-1) 1); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.delete_range c n 1); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.delete_range c 0 (-1)); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.delete_range c 1 n); false with Assert_failure _ as e -> raise e | _ -> true);
       assert (C.is_empty (C.delete_range c 0 n));
       (* could check what happens with an empty range *)
       for i = 0 to n / 2 - 1 do
@@ -856,7 +1079,9 @@ module TestContainer(C : Container) : sig end = struct
 
   let () =
     repeat_twice (fun () ->
-      assert (C.to_list c = Array.to_list a)
+      assert (C.to_list c = Array.to_list a);
+      (try assert (C.to_list (Lazy.force empty) = [])
+      with BatDllist.Empty -> ());
     )
 
   let () =
@@ -915,7 +1140,7 @@ module TestContainer(C : Container) : sig end = struct
       assert (!i = n - 1);
       assert (
         try ignore (C.tail (C.of_enum (BatEnum.empty ()))); false
-        with _ -> true
+        with Assert_failure _ as e -> raise e | _ -> true
       )
     )
 
@@ -929,8 +1154,30 @@ module TestContainer(C : Container) : sig end = struct
       assert (!i = n - 2);
       assert (
         try ignore (C.init (C.of_enum (BatEnum.empty ()))); false
-        with _ -> true
+        with Assert_failure _ as e -> raise e | _ -> true
       )
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let a = Array.init n (fun i -> (i, i)) in
+      let c = C.of_enum (BatArray.enum a) in
+      assert (C.mem c (200, 200));
+
+      assert (not (C.mem c (0,1)));
+      (try assert (not (C.mem (Lazy.force empty) 0))
+       with BatDllist.Empty -> ());
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let a = Array.init n (fun i -> ref i) in
+      let c = C.of_enum (BatArray.enum a) in
+      assert (C.memq c a.(200));
+      assert (not (C.memq c (ref 200)));
+
+      (try assert (not (C.memq (Lazy.force empty) 0))
+       with BatDllist.Empty -> ());
     )
 
   let () =
@@ -939,8 +1186,18 @@ module TestContainer(C : Container) : sig end = struct
       let elt = C.find (fun elt -> incr i; assert (!i = elt); elt = 200) c in
       assert (elt = 200);
       assert (!i = 200);
-      assert (try ignore (C.find (fun _ -> false) c); false with _ -> true);
-      assert (try ignore (C.find (fun _ -> assert false) (Lazy.force empty)); false with _ -> true);
+      assert (try ignore (C.find (fun _ -> false) c); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.find (fun _ -> assert false) (Lazy.force empty)); false with Assert_failure _ as e -> raise e | _ -> true);
+    )
+
+  let () =
+    repeat_twice (fun () ->
+      let i = ref (-1) in
+      let index = C.find_index (fun elt -> incr i; assert (!i = elt); elt = 200) c in
+      assert (index = 200);
+      assert (!i = 200);
+      assert (try ignore (C.find_index (fun _ -> false) c); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.find_index (fun _ -> assert false) (Lazy.force empty)); false with Assert_failure _ as e -> raise e | _ -> true);
     )
 
   let () =
@@ -949,8 +1206,8 @@ module TestContainer(C : Container) : sig end = struct
       let elt = C.find_right (fun elt -> decr i; assert (!i = elt); elt = 200) c in
       assert (elt = 200);
       assert (!i = 200);
-      assert (try ignore (C.find_right (fun _ -> false) c); false with _ -> true);
-      assert (try ignore (C.find_right (fun _ -> assert false) (Lazy.force empty)); false with _ -> true);
+      assert (try ignore (C.find_right (fun _ -> false) c); false with Assert_failure _ as e -> raise e | _ -> true);
+      assert (try ignore (C.find_right (fun _ -> assert false) (Lazy.force empty)); false with Assert_failure _ as e -> raise e | _ -> true);
     )
 
   let () =
