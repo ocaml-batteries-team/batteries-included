@@ -87,27 +87,41 @@ let ends_with str p =
   not (ends_with "Jon \"Maddog\" Orwant" "Jon")
 *)
 
-let find_from str ofs sub =
+let find_from str pos sub =
+  let len = length str in
   let sublen = length sub in
-  if sublen = 0 then ofs (*If [sub] is the empty string, by convention, it may be found wherever we started searching.*)
-  else
-    let len = length str in
-    if len = 0 then raise Not_found else
-      if 0 > ofs || ofs >= len then raise (Invalid_argument "index out of bounds")
-      else
-        BatReturn.label (fun label ->
-            for i = ofs to len - sublen do
-            let j = ref 0 in
-            while unsafe_get str (i + !j) = unsafe_get sub !j do
-              incr j;
-              if !j = sublen then BatReturn.return label i
-            done;
-          done;
-          raise Not_found
-        )
+  if pos < 0 || pos > len then raise (Invalid_argument "String.find_from");
+  if sublen = 0 then pos else
+    BatReturn.label (fun label ->
+      for i = pos to len - sublen do
+        let j = ref 0 in
+        while unsafe_get str (i + !j) = unsafe_get sub !j do
+          incr j;
+          if !j = sublen then BatReturn.return label i
+        done;
+      done;
+      raise Not_found
+    )
+(*$Q find_from
+  (Q.triple Q.string Q.char Q.small_int) ~count:1000 (fun (s, c, ofs) -> \
+    let v1 = try `res (find_from s ofs (String.make 1 c)) with Not_found -> `nf | Invalid_argument _ -> `inv in \
+    let v2 = try `res (String.index_from s ofs c) with Not_found -> `nf | Invalid_argument _ -> `inv in \
+    (match v1, v2 with `res s1, `res s2 when s1 = s2 -> true | `nf, `nf | `inv, `inv -> true | _ -> false) \
+  )
+  (Q.triple Q.string Q.string Q.small_int) ~count:1000 (fun (s, s2, ofs) -> \
+    let v1 = try `res (ofs + find (String.sub s ofs (String.length s - ofs)) s2) with Not_found -> `nf | Invalid_argument _ -> `inv in \
+    let v2 = try `res (find_from s ofs s2) with Not_found -> `nf | Invalid_argument _ -> `inv in \
+    (match v1, v2 with `res s1, `res s2 when s1 = s2 -> true | `nf, `nf | `inv, `inv -> true | _ -> false) \
+  )
+*)
 (*$T find_from
   find_from "foobarbaz" 4 "ba" = 6
+  find_from "foobarbaz" 7 "" = 7
+  try ignore (find_from "" 0 "a"); false with Not_found -> true
   try ignore (find_from "foo" 2 "foo"); false with Not_found -> true
+  try ignore (find_from "foo" 3 "foo"); false with Not_found _ -> true
+  try ignore (find_from "foo" 4 "foo"); false with Invalid_argument _ -> true
+  try ignore (find_from "foo" (-1) "foo"); false with Invalid_argument _ -> true
 *)
 
 let find str sub = find_from str 0 sub
@@ -116,27 +130,43 @@ let find str sub = find_from str 0 sub
   try ignore (find "foo" "bar"); false with Not_found -> true
 *)
 
-let rfind_from str suf sub =
+let rfind_from str pos sub =
   let sublen = length sub
   and len = length str in
-  if sublen = 0 then len
-  else
-    if len = 0 then raise Not_found else
-      if 0 > suf || suf >= len then raise (Invalid_argument "index out of bounds")
-      else
-        BatReturn.label (fun label ->
-            for i = suf - sublen + 1 downto 0 do
-            (*Printf.printf "i:%i/suf:%i/sublen:%i/len:%i\n" i suf sublen len;*)
-            let j = ref 0 in
-            while unsafe_get str ( i + !j ) = unsafe_get sub !j do
-              incr j;
-              if !j = sublen then BatReturn.return label i
-            done;
-          done;
-          raise Not_found
-        )
+  if pos + 1 < 0 || pos + 1 > len then raise (Invalid_argument "String.rfind_from");
+  if sublen = 0 then pos + 1 else
+    BatReturn.label (fun label ->
+      for i = pos - sublen + 1 downto 0 do
+        let j = ref 0 in
+        while unsafe_get str (i + !j) = unsafe_get sub !j do
+          incr j;
+          if !j = sublen then BatReturn.return label i
+        done;
+      done;
+      raise Not_found
+  )
+(*$Q rfind_from
+  (Q.triple Q.string Q.char Q.small_int) ~count:1000 (fun (s, c, ofs) -> \
+    let v1 = try `res (rfind_from s ofs (String.make 1 c)) with Not_found -> `nf | Invalid_argument _ -> `inv in \
+    let v2 = try `res (String.rindex_from s ofs c) with Not_found -> `nf | Invalid_argument _ -> `inv in \
+    (match v1, v2 with `res s1, `res s2 when s1 = s2 -> true | `nf, `nf | `inv, `inv -> true | _ -> false) \
+  )
+  (Q.triple Q.string Q.string Q.small_int) ~count:1000 (fun (s, s2, ofs) -> \
+    let v1 = try `res (rfind (String.sub s 0 (ofs + 1)) s2) with Not_found -> `nf | Invalid_argument _ -> `inv in \
+    let v2 = try `res (rfind_from s ofs s2) with Not_found -> `nf | Invalid_argument _ -> `inv in \
+    (match v1, v2 with `res s1, `res s2 when s1 = s2 -> true | `nf, `nf | `inv, `inv -> true | _ -> false) \
+  )
+*)
 (*$T rfind_from
   rfind_from "foobarbaz" 5 "ba" = 3
+  rfind_from "foobarbaz" 7 "ba" = 6
+  rfind_from "foobarbaz" 6 "ba" = 3
+  rfind_from "foobarbaz" 7 "" = 8
+  try ignore (rfind_from "" 3 ""); false with Invalid_argument _ -> true
+  try ignore (rfind_from "" (-1) "a"); false with Not_found -> true
+  try ignore (rfind_from "foobarbaz" 2 "ba"); false with Not_found -> true
+  try ignore (rfind_from "foo" 3 "foo"); false with Invalid_argument _ -> true
+  try ignore (rfind_from "foo" (-2) "foo"); false with Invalid_argument _ -> true
 *)
 
 let rfind str sub = rfind_from str (String.length str - 1) sub
@@ -326,6 +356,8 @@ let lchop ?(n = 1) s =
    lchop "" = ""
    lchop ~n:3 "Weeble" = "ble"
    lchop ~n:1000 "Weeble" = ""
+   lchop ~n:0 "Weeble" = "Weeble"
+   try ignore (lchop ~n:(-1) "Weeble"); false with Invalid_argument _ -> true
 *)
 
 let rchop ?(n = 1) s =

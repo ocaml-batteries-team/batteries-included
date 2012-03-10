@@ -225,10 +225,11 @@ val find : string -> string -> int
 *)
 
 val find_from: string -> int -> string -> int
-  (** [find_from s ofs x] behaves as [find s x] but starts searching
-      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].
+  (** [find_from s pos x] behaves as [find s x] but starts searching
+      at position [pos]. [find s x] is equivalent to [find_from s 0 x].
 
-      @raise Not_found if [x] is not a substring of [tail ofs s]
+      @raise Not_found if not substring is found
+      @raise Invalid_argument if [pos] is not a valid position in the string.
 
       Example: [String.find_from "foobarbaz" 4 "ba" = 6]
 *)
@@ -245,14 +246,15 @@ val rfind : string -> string -> int
 *)
 
 val rfind_from: string -> int -> string -> int
-(** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
-    from the right at offset [ofs]. [rfind s x] is equivalent to
+(** [rfind_from s pos x] behaves as [rfind s x] but starts searching
+    from the right at position [pos + 1]. [rfind s x] is equivalent to
     [rfind_from s (String.length s - 1) x].
 
     {b Beware}, it search between the {e beginning} of the string to
-    the offset [ofs], {e not} between [ofs] and the end.
+    the position [pos + 1], {e not} between [pos + 1] and the end.
 
-    @raise Not_found if [x] is not a substring of [head ofs s]
+    @raise Not_found if not substring is found
+    @raise Invalid_argument if [pos] is not a valid position in the string.
 
     Example: [String.rfind_from "foobarbaz" 6 "ba" = 6]
 *)
@@ -282,7 +284,7 @@ val exists : string -> string -> bool
 val lchop : ?n:int -> string -> string
 (** Returns the same string but without the first [n] characters.
     By default [n] is 1.
-    If [n] is less than zero raises [Invalid_argument].
+    If [n] is strictly less than zero raises [Invalid_argument].
     If the string has [n] or less characters, returns the empty string.
 
       Example:
