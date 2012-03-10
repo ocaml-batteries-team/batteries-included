@@ -18,15 +18,16 @@
  * Foundation, Inc.
  *)
 
+(*BISECT-IGNORE-BEGIN*)
 
 let unit_string = "()"
 
 type t = unit
-let as_string   = unit_string
-let string_of _ = as_string
-let of_string   = function
+let string_of () = unit_string
+let of_string = function
   | "()" -> ()
-  | _    -> raise (Invalid_argument "unit_of_string")
-let compare _ _ = 0
+  | _  -> raise (Invalid_argument "unit_of_string")
+let compare () () = 0
 let print out t = BatInnerIO.nwrite out unit_string
 
+(*BISECT-IGNORE-END*)

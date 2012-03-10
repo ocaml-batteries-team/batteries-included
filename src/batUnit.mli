@@ -24,28 +24,27 @@
    @author David Teller
 *)
 
-    type t = unit
-	(**The unit type, i.e. a type with only one element, [()].*)
+type t = unit
+(**The unit type, i.e. a type with only one element, [()].*)
 
-    val string_of : t -> string
-    (**Convert the given unit to a string.
+val string_of : t -> string
+(**Convert the given unit to a string.
 
-       Returns ["()"]. *)
+   Returns ["()"]. *)
 
-    val of_string : string -> t
-      (**Convert the given string to a unit.
+val of_string : string -> t
+(**Convert the given string to a unit.
 
-	 Accepts ["()"].
-	 @raise Invalid_argument if the given string is not ["()"].
-      *)
+   Accepts ["()"].
+   @raise Invalid_argument if the given string is not ["()"].
+*)
 
-    val compare : t -> t -> int
-      (** Compare two units.
+val compare : t -> t -> int
+(** Compare two units.
 
-	  Always returns 0.*)
+    Always returns 0.*)
 
-    (** {6 Boilerplate code}*)
+(** {6 Boilerplate code}*)
 
-    (** {7 Printing}*)
-    val print: 'a BatInnerIO.output -> unit -> unit
-
+(** {7 Printing}*)
+val print: 'a BatInnerIO.output -> unit -> unit
