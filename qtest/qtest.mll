@@ -1,27 +1,27 @@
 {
 (*
  * qtest: quick unit tests: extract oUnit tests from OCaml components
- * 
- * 
+ *
+ *
  * Copyright 2012 Vincent Hugot and the "OCaml Batteries Included" team
  *
  *  vhugot.com ; batteries.forge.ocamlcore.org
- * 
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- *) 
- 
+ *
+ *)
+
 open Core;;
 open Qparse;;
 
@@ -72,7 +72,7 @@ rule lexml t = parse
   (* manipulation pragmas *)
   (************************)
 | "(*$<"  {
-  let global, modules = modules_ lexmodules lexbuf 
+  let global, modules = modules_ lexmodules lexbuf
   and loc_register m = register Env_begin; register @@ Open m
   and glo_register m = register @@ Open m
   in let reg = if global then glo_register else loc_register
@@ -129,7 +129,7 @@ and lexinjectmv b = parse
    let code = "  " ^ B.contents b in B.clear b;
    register @@ Inject (info lexbuf,code) }
 
-   
+
 (** prepare to parse test header *)
 and lexheader = parse
 | blank { lexheader lexbuf }
@@ -175,7 +175,7 @@ let extract_from pathin = Lexing.(
   exhaust lexml lexbuf; register Env_close;
   close_in chanin
 )
- 
+
 (** Show welcome message *)
 let welcome() = epf "\n\
 ** qtest (%s)\n\
@@ -201,9 +201,9 @@ let generate paths =
   out hard_coded_preamble;
   out !global_preamble;
   listiteri process (preprocess @@ List.rev !suite);
-  out "let _ = ignore (Runner.run (\"\" >::: !___tests))\n";
+  out "let () = ignore (Runner.run (\"\" >::: !___tests))\n";
   eps "Done.\n"
-    
+
 (** Parse command line *)
 let rec pcl = function
   | ("-p"|"--preamble") :: code :: l -> global_preamble := code ^ "\n"; pcl l
@@ -214,7 +214,7 @@ let rec pcl = function
   | x :: _ -> failwith @@ "bad arg: " ^ x
   | [] -> ()
 
-let _ = 
+let () =
   let commands = List.tl (Array.to_list Sys.argv) in
   if commands = [] then  pl "qtest: use --help for usage notes.";
   pcl commands
