@@ -87,7 +87,7 @@ module Sys = struct include Sys include BatSys end
 module Unix = struct include Unix include BatUnix end
 
 (* Str *)
-module Str = struct include Str include BatStr end
+(*module Str = struct include Str include BatStr end*)
 
 (* Num *)
 module Big_int = struct include Big_int include BatBig_int end

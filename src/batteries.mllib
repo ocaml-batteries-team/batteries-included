@@ -40,7 +40,6 @@ BatSplay
 BatStack
 BatStream
 BatString
-BatStr
 BatSys
 BatUnit
 BatUnix
