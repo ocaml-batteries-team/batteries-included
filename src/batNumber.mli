@@ -153,6 +153,9 @@ sig
   val succ : t -> t
   val pred : t -> t
 
+  val eq : t -> t -> bool
+  val ord : t BatOrd.ord (* t -> t -> [Eq|Gt|Lt] *)
+
   module Infix : Infix with type bat__infix_t = t
   module Compare : Compare with type bat__compare_t = t
   include Infix with type bat__infix_t = t

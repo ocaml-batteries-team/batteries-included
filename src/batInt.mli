@@ -353,17 +353,15 @@ module Safe_int : sig
   external of_int : int -> t = "%identity"
   external to_int : t -> int = "%identity"
 
-    (** {6 Submodules regrouping all infix operations on safe integers} *)
+  (** {6 Submodules regrouping all infix operations on safe integers} *)
 
-    module Infix : BatNumber.Infix with type bat__infix_t = t
-    module Compare : BatNumber.Compare with type bat__compare_t = t
+  module Infix : BatNumber.Infix with type bat__infix_t = t
+  module Compare : BatNumber.Compare with type bat__compare_t = t
 
-    (** {6 Boilerplate code}*)
+  (** {6 Boilerplate code}*)
 
-    (** {7 Printing}*)
-    val print: 'a BatInnerIO.output -> t -> unit
+  val print: 'a BatInnerIO.output -> t -> unit
 
-    (** {7 Compare} *)
-    val eq : t -> t -> bool
-    val ord : t -> t -> BatOrd.order
-  end
+  val eq : t -> t -> bool
+  val ord : t -> t -> BatOrd.order
+end

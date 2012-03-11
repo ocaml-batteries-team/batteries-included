@@ -107,6 +107,8 @@ sig
   val succ  : t -> t
   val pred  : t -> t
 
+  val eq : t -> t -> bool
+  val ord : t BatOrd.ord
   module Infix : Infix with type bat__infix_t = t
   module Compare : Compare with type bat__compare_t = t
   include Infix with type bat__infix_t = t
@@ -253,6 +255,9 @@ module MakeNumeric (Base : NUMERIC_BASE) : Numeric with type t = Base.t = struct
     }
 
   type discrete = t
+
+  let eq x y = Base.compare x y = 0
+  let ord x y = BatOrd.ord0 (Base.compare x y)
 
   module Infix = MakeInfix (Base)
   module Compare = MakeCompare (Base)

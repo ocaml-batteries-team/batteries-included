@@ -239,7 +239,7 @@ module Safe_int = struct
     type bat__compare_t = t
     let ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = ) = ( <> ), ( >= ), ( <= ), ( > ), ( < ), ( = )
   end
-  include BatNumber.MakeNumeric(BaseSafeInt) : BatNumber.Numeric with type t := int and module Compare := Compare
+  include (BatNumber.MakeNumeric(BaseSafeInt) : BatNumber.Numeric with type t := int and module Compare := Compare)
   include BaseSafeInt  (* for performance, replace functor-values with direct values *)
 
 end
@@ -280,9 +280,3 @@ module SafeInt = struct
   module Numeric = struct include Numeric(BaseSafeInt) end
 end
 *)
-open BatOrd
-let eq (x:int) y = x = y
-let ord (x:int) y =
-  if x > y then Gt
-  else if y > x then Lt
-  else Eq
