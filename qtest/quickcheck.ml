@@ -237,7 +237,7 @@ let rec laws_smallest measure iter gen func =
 let default_count = 100
 
 (** Like laws, but throws an exception instead of returning an option.  *)
-let laws_exn ?(small=None) ?(count=default_count) name (gen,pp) func =
+let laws_exn ?small ?(count=default_count) name (gen,pp) func =
   let result = match small with
   | None -> laws count gen func
   | Some measure -> laws_smallest measure count gen func
