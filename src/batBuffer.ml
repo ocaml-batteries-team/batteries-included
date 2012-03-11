@@ -38,7 +38,7 @@ let print out t =
   BatString.print out (contents t)
 
 (*$Q print
-  (Q.string) (fun s -> let b = create 5 in add_string b "foo"; add_string b s; BatIO.to_string print b = "foo" ^ s)
+  (Q.string) (fun s -> let b = create 5 in add_string b "foo"; add_string b s; add_string b "bar"; BatIO.to_string print b = "foo" ^ s ^ "bar")
  *)
 
 let enum t =
