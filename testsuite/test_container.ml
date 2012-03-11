@@ -325,9 +325,8 @@ module ListContainer : Container = struct
   and build = init
   and mem t x = mem x t
   and memq t x = memq x t
-  and find_index = ni2
-  and reduce_left = ni2
-  and make = ni2
+  and find_index p l = fst (findi (fun _ v -> p v) l)
+  and reduce_left = reduce
 end
 
 module RefListContainer : Container = struct
@@ -522,7 +521,7 @@ module SeqContainer : Container = struct
     fun () ->
       let e = BatEnum.clone e in
       match BatEnum.get e with
-      | None -> Nil
+      | None -> nil ()
       | Some v -> Cons (v, of_enum e)
   let of_backwards = ni1
   let mapi = ni2
@@ -554,12 +553,11 @@ module SeqContainer : Container = struct
   and update = ni3
   and fold_lefti = ni3
   and build = init
-  and mem = ni2
   and memq = ni2
   and partition = ni2
   and find_index = ni2
-  and reduce_left = ni2
-  and make = ni2
+  and reduce_left = reduce
+  and mem t x = mem x t
 end
 
 module BatArray = struct
