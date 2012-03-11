@@ -600,7 +600,7 @@ let fold f s acc = Concrete.fold f s acc
 let map f s = Concrete.map Pervasives.compare f s
 
 (*$T map
-  map (fun x -> 1) (of_list [1;2;3]) |> cardinal = 1
+  map (fun _x -> 1) (of_list [1;2;3]) |> cardinal = 1
 *)
 
 let filter f s = Concrete.filter Pervasives.compare f s

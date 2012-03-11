@@ -901,7 +901,7 @@ let foldi = Concrete.foldi
 (*$Q foldi
   (Q.list Q.small_int) (fun xs -> \
   let m = List.fold_left (fun acc x -> add x true acc) empty xs in \
-  foldi (fun x y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
+  foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
 *)
 
 let enum = Concrete.enum
@@ -1047,7 +1047,7 @@ module PMap = struct (*$< PMap *)
 (*$Q foldi
   (Q.list Q.small_int) (fun xs -> \
   let m = List.fold_left (fun acc x -> add x true acc) (create Int.compare) xs in \
-  foldi (fun x y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
+  foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
  *)
 
   let enum t = Concrete.enum t.map

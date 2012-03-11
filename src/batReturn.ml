@@ -33,6 +33,6 @@ let with_label = label
 (* testing nesting with_labels *)
 (*$T with_label
   with_label (fun label1 -> \
-    with_label (fun label2 -> ignore (return label1 1)); 2 \
+    with_label (fun _label2 -> ignore (return label1 1)); 2 \
   ) = 1
 *)
