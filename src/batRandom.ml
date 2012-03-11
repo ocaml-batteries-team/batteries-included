@@ -56,7 +56,7 @@ struct
       let next  () = next state in
       let count () = raise BatEnum.Infinite_enum in
       let clone () = aux ( Random.State.copy state ) in
-      BatEnum.make next count clone
+      BatEnum.make ~next ~count ~clone
     in aux state
 
   let enum_bits state () =
