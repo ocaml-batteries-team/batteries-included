@@ -54,7 +54,7 @@ module BaseNum = struct
   let of_float f =
     let s = Printf.sprintf "%f" f in
       try
-	let (prefix, suffix) = BatString.split s "."    in
+	let (prefix, suffix) = BatString.split s ~by:"."    in
 	let float_digits     = String.length suffix  in
 	let divider = pow (Int 10) (Int (String.length s - float_digits)) in
 	let dividee = Big_int (Big_int.big_int_of_string  (prefix^suffix))        in

@@ -42,7 +42,7 @@ module GetOpt =
 
     let split1 haystack needle =
       try
-        let (h, x) = BatString.split haystack needle in h, [x]
+        let (h, x) = BatString.split haystack ~by:needle in h, [x]
       with
         Not_found -> haystack, []
 

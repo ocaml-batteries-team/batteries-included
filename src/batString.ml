@@ -259,12 +259,12 @@ let split str ~by:sep =
   sub str 0 p, sub str (p + len) (slen - p - len)
 
 (*$T split
-   split "abcGxyzG123" "G" = ("abc","xyzG123")
-   split "abcGHIzyxGHI123" "GHI" = ("abc", "zyxGHI123")
-   split "abcGHIzyxGHI123" "" = ("", "abcGHIzyxGHI123")
-   try split "abcxyz" "G" |> ignore; false with Not_found -> true
-   split "abcabc" "abc" = ("", "abc")
-   split "abcabcd" "abcd" = ("abc", "")
+   split "abcGxyzG123" ~by:"G" = ("abc","xyzG123")
+   split "abcGHIzyxGHI123" ~by:"GHI" = ("abc", "zyxGHI123")
+   split "abcGHIzyxGHI123" ~by:"" = ("", "abcGHIzyxGHI123")
+   try split "abcxyz" ~by:"G" |> ignore; false with Not_found -> true
+   split "abcabc" ~by:"abc" = ("", "abc")
+   split "abcabcd" ~by:"abcd" = ("abc", "")
 *)
 
 let rsplit str ~by:sep =
@@ -273,10 +273,10 @@ let rsplit str ~by:sep =
   let slen = length str in
   sub str 0 p, sub str (p + len) (slen - p - len)
 (*$T rsplit
-  rsplit "abcGxyzG123" "G" = ("abcGxyz","123")
-   rsplit "abcGHIzyxGHI123" "GHI" = ("abcGHIzyx", "123")
-   rsplit "abcGHIzyxGHI123" "" = ("abcGHIzyxGHI123", "")
-   try rsplit "abcxyz" "G" |> ignore; false with Not_found -> true
+  rsplit "abcGxyzG123" ~by:"G" = ("abcGxyz","123")
+   rsplit "abcGHIzyxGHI123" ~by:"GHI" = ("abcGHIzyx", "123")
+   rsplit "abcGHIzyxGHI123" ~by:"" = ("abcGHIzyxGHI123", "")
+   try rsplit "abcxyz" ~by:"G" |> ignore; false with Not_found -> true
 *)
 
 (*
@@ -314,12 +314,12 @@ let nsplit str ~by:sep =
     aux [] (length str - 1 )
 
 (*$T nsplit
-   nsplit "a;b;c" ";" = ["a"; "b"; "c"]
-   nsplit "" "x" = []
-   try nsplit "abc" "" = ["a"; "b"; "c"] with Invalid_argument _ -> true
-  nsplit "a/b/c" "/" = ["a"; "b"; "c"]
-  nsplit "/a/b/c//" "/" = [""; "a"; "b"; "c"; ""; ""]
-  nsplit "FOOaFOObFOOcFOOFOO" "FOO" = [""; "a"; "b"; "c"; ""; ""]
+   nsplit "a;b;c" ~by:";" = ["a"; "b"; "c"]
+   nsplit "" ~by:"x" = []
+   try nsplit "abc" ~by:"" = ["a"; "b"; "c"] with Invalid_argument _ -> true
+  nsplit "a/b/c" ~by:"/" = ["a"; "b"; "c"]
+  nsplit "/a/b/c//" ~by:"/" = [""; "a"; "b"; "c"; ""; ""]
+  nsplit "FOOaFOObFOOcFOOFOO" ~by:"FOO" = [""; "a"; "b"; "c"; ""; ""]
 *)
 
 let join = concat
@@ -631,8 +631,8 @@ let replace ~str ~sub ~by =
   with
     Not_found -> (false, String.copy str)
 (*$T replace
-   replace "foobarbaz" "bar" "rab" = (true, "foorabbaz")
-   replace "foo" "bar" "" = (false, "foo")
+   replace ~str:"foobarbaz" ~sub:"bar" ~by:"rab" = (true, "foorabbaz")
+   replace ~str:"foo" ~sub:"bar" ~by:"" = (false, "foo")
 *)
 
 
