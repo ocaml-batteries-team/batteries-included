@@ -209,6 +209,7 @@ let strip ?(chars = " \t\r\n") s =
   sub s p (!l - p + 1)
 (*$T strip
    strip ~chars:" ,()" " boo() bar()" = "boo() bar"
+   strip ~chars:"abc" "abbcbab" = ""
 *)
 
 
@@ -262,6 +263,8 @@ let split str ~by:sep =
    split "abcGHIzyxGHI123" "GHI" = ("abc", "zyxGHI123")
    split "abcGHIzyxGHI123" "" = ("", "abcGHIzyxGHI123")
    try split "abcxyz" "G" |> ignore; false with Not_found -> true
+   split "abcabc" "abc" = ("", "abc")
+   split "abcabcd" "abcd" = ("abc", "")
 *)
 
 let rsplit str ~by:sep =
@@ -371,6 +374,7 @@ let rchop ?(n = 1) s =
    rchop "" = ""
    rchop ~n:3 "Weeble" = "Wee"
    rchop ~n:1000 "Weeble" = ""
+   try ignore (rchop ~n:(-1) "Weeble"); false with Invalid_argument _ -> true
 *)
 
 let of_int = string_of_int
@@ -418,6 +422,10 @@ let enum s =
 (*$T enum
    "" |> enum |> List.of_enum = []
    "foo" |> enum |> List.of_enum = ['f'; 'o'; 'o']
+   let e = enum "abcdef" in \
+   for _i = 0 to 2 do BatEnum.junk e done; \
+   let e2 = BatEnum.clone e in \
+   implode (BatList.of_enum e) = "def" && implode (BatList.of_enum e2) = "def"
 *)
 
 let backwards s =
@@ -436,9 +444,14 @@ let backwards s =
 (*$T backwards
    "" |> backwards |> of_enum = ""
    "foo" |> backwards |> of_enum = "oof"
+   let e = backwards "abcdef" in \
+   for _i = 0 to 2 do BatEnum.junk e done; \
+   let e2 = BatEnum.clone e in \
+   implode (BatList.of_enum e) = "cba" && implode (BatList.of_enum e2) = "cba"
  *)
 
 let of_enum e =
+  (* TODO: use a buffer when not fast_count *)
   let l = BatEnum.count e in
   let s = create l in
   let i = ref 0 in
@@ -450,6 +463,7 @@ let of_enum e =
 *)
 
 let of_backwards e =
+  (* TODO: use a buffer when not fast_count *)
   let l = BatEnum.count e in
   let s = create l in
   let i = ref (l - 1) in
@@ -652,13 +666,11 @@ let trim s =
   | None -> ""
   | Some last_leading_whitespace ->
     let rec aux_2 i =
-      if i < 0 then None (*?*)
-      else if BatChar.is_whitespace (unsafe_get s i) then aux_2 (i - 1)
-      else Some i in
-    match aux_2 (len - 1) with
-    | None -> ""
-    | Some first_trailing_whitespace ->
-      unsafe_slice last_leading_whitespace (first_trailing_whitespace + 1) s
+      assert (i >= 0);
+      if BatChar.is_whitespace (unsafe_get s i) then aux_2 (i - 1)
+      else i in
+    let first_trailing_whitespace = aux_2 (len - 1) in
+    unsafe_slice last_leading_whitespace (first_trailing_whitespace + 1) s
 
 (*$T trim
    trim " \t foo\n  " = "foo"
@@ -707,53 +719,19 @@ struct
   let compare = icompare
 end
 
-
-(* Helper functions for numeric_compare *)
-let rec pos_diff s1 s2 i = (* finds the first position where the strings differ *)
-  if i = String.length s1 then -2 else
-    if i = String.length s2 then -1 else
-      if s1.[i] = s2.[i] then pos_diff s1 s2 (i+1)
-      else i
-
-(* scans for the end of a numeric value embedded in a string *)
-let rec num_end i s =
-  if i >= String.length s then i else
-    if BatChar.is_digit s.[i] then num_end (i+1) s else i
-
-(* scans for the beginning of a numeric value embedded in a string *)
-let rec num_begin i s =
-  if i < 0 then i+1 else
-    if BatChar.is_digit s.[i] then num_begin (i-1) s else i+1
-
-
-let rec numeric_compare_aux s1 s2 ~off =
-  match pos_diff s1 s2 off with
-  | -2 -> -1 (* < *)
-  | -1 -> 1 (* > *)
-  | d (* position of first differing character *)
-      when BatChar.is_digit s1.[d] && BatChar.is_digit s2.[d] ->
-    (* Scan backwards for start of number *)
-    let b1 = num_begin d s1 and b2 = num_begin d s2 in
-    (* Scan forwards for end of number *)
-    let e1 = num_end d s1 and e2 = num_end d s2 in
-    (* Printf.eprintf "Compare: %S & %S @ d:%d b1:%d b2:%d e1:%d e2:%d->" s1 s2 d b1 b2 e1 e2; *)
-    let sl1 = (slice s1 ~first:b1 ~last:e1) in
-    let sl2 = (slice s2 ~first:b2 ~last:e2) in
-    (* Printf.eprintf " %s & %s\n" sl1 sl2; *)
-    let n1 = Big_int.big_int_of_string sl1 in
-    let n2 = Big_int.big_int_of_string sl2 in
-    (* FIXME: ignores text after equal numbers -- "a1b" = "a01c" *)
-    Big_int.compare_big_int n1 n2
-  | _ -> (* differing character isn't a number in both *)
-    Pervasives.compare s1 s2 (* normal compare *)
-
-
 let numeric_compare s1 s2 =
-  (* TODO pluggable transformation functions (for lowercase) *)
-  (* let s1 = String.lowercase s1 and s2 = String.lowercase s2 in*)
-  let l1 = String.length s1 and l2 = String.length s2 in
-  if l1 = l2 then String.compare s1 s2
-  else numeric_compare_aux s1 s2 ~off:0
+  let e1 = BatEnum.group BatChar.is_digit (enum s1) in
+  let e2 = BatEnum.group BatChar.is_digit (enum s2) in
+  BatEnum.compare (fun g1 g2 ->
+    let s1 = of_enum g1 in
+    let s2 = of_enum g2 in
+    if BatChar.is_digit s1.[0] && BatChar.is_digit s2.[0] then
+      let n1 = Big_int.big_int_of_string s1 in
+      let n2 = Big_int.big_int_of_string s2 in
+      Big_int.compare_big_int n1 n2
+    else
+      String.compare s1 s2
+  ) e1 e2
 
 (*$T numeric_compare
    numeric_compare "xx43" "xx320" = -1
@@ -762,6 +740,11 @@ let numeric_compare s1 s2 =
    numeric_compare "xx20" "xx5" = 1
    numeric_compare "abc" "def" = compare "abc" "def"
    numeric_compare "x50y" "x51y" = -1
+   numeric_compare "a23d" "a234" < 0
+   numeric_compare "a234" "a23d" > 0
+   numeric_compare "a1b" "a01c" < 0
+   numeric_compare "a1b" "a01b" = 0
+   numeric_compare "a1b2" "a01b01" > 0
 *)
 
 (*$Q numeric_compare
@@ -785,6 +768,15 @@ let t_printer _paren out x =
 
 let unquoted_printer _paren out x = print out x
 
+(*$T
+  BatIO.to_string print "\n" = "\n"
+  BatIO.to_string println "\n" = "\n\n"
+  BatIO.to_string print_quoted "\n" = "\"\\n\""
+  BatIO.string_of_t_printer t_printer "\n" = "\"\\n\""
+  BatIO.string_of_t_printer unquoted_printer "\n" = "\n"
+  quote "\n" = "\"\\n\""
+*)
+
 (* Beware: the documentation of print_quoted claims that its behavior
    is compatible with this "quote" function. This is currently true as
    they both use "%S", but any change in 'quote' here should be
@@ -804,27 +796,57 @@ struct
     try Some (find_from str ofs sub) with Not_found -> None
 
   let find str sub = find_from str 0 sub
+  (*$T
+    Exceptionless.find "a" "b" = None
+  *)
 
   let rfind_from str suf sub =
     try Some (rfind_from str suf sub) with Not_found -> None
 
   let rfind str sub = rfind_from str (String.length str - 1) sub
+  (*$T
+    Exceptionless.rfind "a" "b" = None
+  *)
 
-  let to_int s = try Some (to_int s) with Not_found -> None
+  let to_int s = try Some (to_int s) with Failure _ -> None
+  (*$T
+    Exceptionless.to_int "" = None
+  *)
 
-  let to_float s = try Some (to_float s) with Not_found -> None
+  let to_float s = try Some (to_float s) with Failure _ -> None
+  (*$T
+    Exceptionless.to_float "" = None
+  *)
 
   let index s c = try Some (index s c) with Not_found -> None
+  (*$T
+    Exceptionless.index "a" 'b' = None
+  *)
 
   let index_from s i c = try Some (index_from s i c) with Not_found -> None
+  (*$T
+    Exceptionless.index_from "a" 0 'b' = None
+  *)
 
   let rindex_from s i c = try Some (rindex_from s i c) with Not_found -> None
+  (*$T
+    Exceptionless.rindex_from "a" 0 'b' = None
+  *)
 
   let rindex s c = try Some (rindex s c) with Not_found -> None
+  (*$T
+    Exceptionless.rindex "a" 'b' = None
+  *)
 
   let split str ~by = try Some (split str ~by) with Not_found -> None
+  (*$T
+    Exceptionless.split "a" ~by:"e" = None
+  *)
 
   let rsplit str ~by = try Some (rsplit str ~by) with Not_found -> None
+  (*$T
+    Exceptionless.rsplit "a" ~by:"e" = None
+  *)
 end (* String.Exceptionless *)
 
 module Cap =

@@ -63,6 +63,8 @@ val init : int -> (int -> char) -> string
 (** {6 Conversions}*)
 val enum : string -> char BatEnum.t
   (** Returns an enumeration of the characters of a string.
+      The behaviour is unspecified if the string is mutated
+      while it is enumerated.
 
       Examples:
         ["foo" |> String.enum |> List.of_enum = ['f'; 'o'; 'o']]
@@ -296,7 +298,7 @@ val lchop : ?n:int -> string -> string
 val rchop : ?n:int -> string -> string
 (** Returns the same string but without the last [n] characters.
     By default [n] is 1.
-    If [n] is less than zero raises [Invalid_argument].
+    If [n] is strictly less than zero raises [Invalid_argument].
     If the string has [n] or less characters , returns the empty string.
 
       Example:
@@ -372,7 +374,7 @@ val replace_chars : (char -> string) -> string -> string
 *)
 
 val replace : str:string -> sub:string -> by:string -> bool * string
-  (** [replace ~str ~sub ~by] returns a tuple constisting of a boolean
+  (** [replace ~str ~sub ~by] returns a tuple consisting of a boolean
       and a string where the first occurrence of the string [sub]
       within [str] has been replaced by the string [by]. The boolean
       is true if a subtitution has taken place.
@@ -504,11 +506,12 @@ module IString : BatInterfaces.OrderedType with type t = t
 val numeric_compare: t -> t -> int
   (** Compare two strings, sorting "abc32def" before "abc210abc".
 
-      Algorithm: Ignore identical prefixes, if first character
-      difference is numeric, go back to beginning of number parse the
-      whole number as an int and compare.
+      Algorithm: splits both strings into lists of (strings of digits) or
+      (strings of non digits) ([["abc"; "32"; "def"]] and [["abc"; "210"; "abc"]])
+      Then both lists are compared lexicographically by comparing elements
+      numerically when both are numbers or lexicographically in other cases.
 
-      Example: [String.numeric_compare "xx32" "xx210" = -1]
+      Example: [String.numeric_compare "xx32" "xx210" < 0]
    *)
 
 module NumString : BatInterfaces.OrderedType with type t = t

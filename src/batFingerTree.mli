@@ -314,7 +314,7 @@ sig
   *)
 
   val map_right : (('a -> 'b) -> ('a, 'm) fg -> ('b, 'm) fg, 'b, 'm) wrap
-  (** [map] is equivalent to [List.map o List.rev].
+  (** [map_right] is equivalent to [List.rev o List.map o List.rev].
 
       O(n).
   *)
