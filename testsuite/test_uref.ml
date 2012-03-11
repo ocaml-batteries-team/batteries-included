@@ -24,7 +24,7 @@ let test_unite () =
    unite ~sel:(fun _x y -> y) r r';
    uget r = v && uget r' = v" @?
     (let r, r' = M.uref v, M.uref v' in
-     M.unite ~sel:(fun x y -> y) r r'; M.uget r = v' && M.uget r' = v');
+     M.unite ~sel:(fun _x y -> y) r r'; M.uget r = v' && M.uget r' = v');
   "let r = uref v in
    unite ~sel:(fun _ _ -> v') r r;
    uget r = v'" @?

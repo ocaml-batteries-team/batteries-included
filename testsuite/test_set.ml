@@ -184,7 +184,7 @@ module TestSet
     ()
 
   let test_split () =
-    let k, v, t = 1, 2, il [0; 1; 2; 4; 5] in
+    let k, _v, t = 1, 2, il [0; 1; 2; 4; 5] in
     "split k empty = (empty, false, empty)" @?
       (let (l, p, r) = S.split k S.empty in
        S.is_empty l && p = false && S.is_empty r);

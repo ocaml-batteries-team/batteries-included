@@ -177,21 +177,21 @@ let extract_from pathin = Lexing.(
 )
  
 (** Show welcome message *)
-let welcome() = epf "
-** qtest (%s)
-USAGE: qtest [options] extract <file.mli?>...
-
-OPTIONS:
---output <file.ml>    (-o) def: standard output
-  Open or create a file for output; the resulting file will be an OCaml
-  source file containing all the tests.
-  
---preamble <string>   (-p) def: empty
-  Add code to the tests' preamble; typically this will be an instruction
-  of the form 'open Module;;'
-
-
---help          Displays this help page and stops
+let welcome() = epf "\n\
+** qtest (%s)\n\
+USAGE: qtest [options] extract <file.mli?>...\n\
+\n\
+OPTIONS:\n\
+--output <file.ml>    (-o) def: standard output\n\
+  Open or create a file for output; the resulting file will be an OCaml\n\
+  source file containing all the tests.\n\
+  \n\
+--preamble <string>   (-p) def: empty\n\
+  Add code to the tests' preamble; typically this will be an instruction\n\
+  of the form 'open Module;;'\n\
+\n\
+\n\
+--help          Displays this help page and stops\n\
 " (Sys.argv.(0))
 
 (** Generate the test suite from files list on currently selected output *)
@@ -211,7 +211,7 @@ let rec pcl = function
     epf "Target file: `%s'. " path; outc := open_out path; pcl l
   | "extract" :: paths -> generate paths
   | "--help" :: _ -> welcome ()
-  | x::l -> failwith @@ "bad arg: " ^ x
+  | x :: _ -> failwith @@ "bad arg: " ^ x
   | [] -> ()
 
 let _ = 

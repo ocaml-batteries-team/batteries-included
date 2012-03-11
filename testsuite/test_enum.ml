@@ -69,7 +69,7 @@ let test_map_enums () =
     let aeq = assert_equal
                 ~cmp:(fun m1 m2 -> M.compare (fun _ _ -> 0) m1 m2 = 0)
                 ~printer:(BatPrintf.sprintf2 "%a"
-                            (print BatChar.print (fun io v -> ())))
+                            (print BatChar.print (fun _io _v -> ())))
     in
       aeq (of_enum (enum source)) (of_enum (backwards source));
       aeq source (of_enum (backwards source))

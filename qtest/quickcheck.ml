@@ -127,10 +127,10 @@ let numeral_string = string_gen numeral
 let numeral_string_of_size size = string_gen_of_size size numeral
 
 let list (gen,pp) = (lg gen, pp_list pp)
-let list_of_size size (gen,pp) = (lg_size gen, pp_list pp)
+let list_of_size size (gen,pp) = (lg_size size gen, pp_list pp)
 
 let array (gen,pp) = (ag gen, pp_array pp)
-let array_of_size size (gen,pp) = (ag_size gen, pp_array pp)
+let array_of_size size (gen,pp) = (ag_size size gen, pp_array pp)
 
 let pair (g1,p1) (g2,p2) = (pg g1 g2, pp_pair p1 p2)
 let triple (g1,p1) (g2,p2) (g3,p3) = (tg g1 g2 g3, pp_triple p1 p2 p3)
