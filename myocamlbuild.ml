@@ -92,6 +92,16 @@ let _ = dispatch begin function
         end
 
   | After_rules ->
+
+    for n = 1 to 30 do
+      List.iter (fun symbol ->
+        flag ["ocaml"; "compile"; Printf.sprintf "warn_%s%d" symbol n]
+          (S[A"-w"; A (Printf.sprintf "%s%d" symbol n)]);
+        flag ["ocaml"; "compile"; Printf.sprintf "warn_error_%s%d" symbol n]
+          (S[A"-warn-error"; A (Printf.sprintf "%s%d" symbol n)])
+      ) ["+"; "-"; "@"]
+    done;
+
       (* When one links an OCaml program, one should use -linkpkg *)
       flag ["ocaml"; "link"; "program"] & A"-linkpkg";
 

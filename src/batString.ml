@@ -119,7 +119,7 @@ let find_from str pos sub =
   find_from "foobarbaz" 7 "" = 7
   try ignore (find_from "" 0 "a"); false with Not_found -> true
   try ignore (find_from "foo" 2 "foo"); false with Not_found -> true
-  try ignore (find_from "foo" 3 "foo"); false with Not_found _ -> true
+  try ignore (find_from "foo" 3 "foo"); false with Not_found -> true
   try ignore (find_from "foo" 4 "foo"); false with Invalid_argument _ -> true
   try ignore (find_from "foo" (-1) "foo"); false with Invalid_argument _ -> true
 *)
@@ -459,7 +459,7 @@ let of_enum e =
   s
 (*$T of_enum
     Enum.init 3 (fun i -> char_of_int (i + int_of_char '0')) |> of_enum = "012"
-    Enum.init 0 (fun i -> ' ') |> of_enum = ""
+    Enum.init 0 (fun _i -> ' ') |> of_enum = ""
 *)
 
 let of_backwards e =
@@ -552,7 +552,7 @@ let iteri f str =
     iteri count_letter word;
     Array.mapi (fun c pos -> (char_of_int c, List.rev pos)) positions
     |> Array.to_list
-    |> List.filter (fun (c,pos) -> pos <> [])
+    |> List.filter (fun (_c, pos) -> pos <> [])
   in
  assert_equal ~msg:"String.iteri test"
      (letter_positions "hello")
