@@ -26,7 +26,7 @@ val catch2: ('a -> 'b -> 'c) -> 'a -> 'b -> ('c, exn) t
 *)
 val get : ('a, exn) t -> 'a
 
-(** [result d r] evaluates to [d] if [r] is [Bad] else [x] when [r] is
+(** [default d r] evaluates to [d] if [r] is [Bad] else [x] when [r] is
     [Ok x]
     @since 2.0
 *)
@@ -43,7 +43,7 @@ val map_default : 'b -> ('a -> 'b) -> ('a, _) t -> 'b
 *)
 val is_ok : ('a, 'b) t -> bool
 
-(** [is_bad (Bad _)] is [false], otherwise [true]
+(** [is_bad (Bad _)] is [true], otherwise [false]
     @since 2.0
 *)
 val is_bad : ('a, 'b) t -> bool
