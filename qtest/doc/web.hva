@@ -7,15 +7,13 @@
 % \newcommand\myicon[1]{\imgsrc{\base/Img/#1.png}}
 
 \loadcssfile{qtest-vh.css}
-% \nc\googlefont[1]{\loadcssfile{http://fonts.googleapis.com/css?family=#1}}
-% \googlefont{Ubuntu:regular,italic,bold,bolditalic}
+\nc\googlefont[1]{\loadcssfile{http://fonts.googleapis.com/css?family=#1}}
+\googlefont{Ubuntu:regular,italic,bold,bolditalic} % |Ubuntu Mono:regular
 % \googlefont{Philosopher}
 % \googlefont{Crimson+Text:regular,regularitalic,bold,bolditalic}
 
 \nc\Oconsole{\setenvclass{verbatim}{console}}
 \nc\Overbatim{\setenvclass{verbatim}{verbatim}}
-% \newenvironment{console}{\setenvclass{verbatim}{console}\verbatim}{\endverbatim} %% verbatim is good for Kile...
-
 
 % "light" tt, without a background
 \newcommand{\ttl}{\@style{TTL}}
@@ -25,6 +23,4 @@
 {\begin{footnotesize}\begin{itemize}}
 {\end{itemize}\end{footnotesize}}
 
-\nc\Caml{\textsc{Caml}}
-\nc\OCaml{\textsc{OCaml}}
-\nc\MathTeX{\textsc{Math}\TeX}
+\nc\OCaml{\textit{OCaml}}

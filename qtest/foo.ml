@@ -12,6 +12,14 @@ let rec foo x0 f = function
   foo 12 ( + ) []      = 12
 *)
 
+(*$T foo
+  foo 1 ( * ) [4;5] = foo 2 ( * ) [1;5;2]
+*)
+
+(*$= foo & ~printer:string_of_int
+  (foo 1 ( * ) [4;5]) (foo 2 ( * ) [1;5;2])
+*)
+
 (*$Q foo
   Q.small_int (fun i-> foo i (+) [1;2;3] = List.fold_left (+) i [1;2;3])
   (Q.pair Q.small_int (Q.list Q.small_int)) (fun (i,l)-> foo i (+) l = List.fold_left (+) i l)
@@ -140,3 +148,11 @@ end
   1+1=2
 *)
 
+let fuz x = x
+let rec flu = function
+  | [] -> []
+  | x :: l -> if List.mem x l then flu l else x :: flu l
+  
+(*$Q fuz; flu &  ~small:(Some List.length)
+  (Q.list Q.small_int) (fun x -> fuz x = flu x)
+*)

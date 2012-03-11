@@ -69,7 +69,6 @@ border-left:solid black;padding-left:2ex;margin-left:2ex;}
 .mprow{border-collapse:separate;border-spacing:2ex;width:100%;margin:0ex;}
 .mprcell{padding:0px;width:auto;}
 .subsectionex{padding:1ex;color:navy;border:solid navy;}
-.verbatim{margin:1ex 1ex;padding:1ex;background:#CCFFCC;border: thin dashed green;}
 .toc1{list-style:none;border-left:1ex solid #4C0D00;padding:0ex 1ex;}
 .toc2{list-style:none;border-left:1ex solid #661300;padding:0ex 1ex;}
 .toc3{list-style:none;border-left:1ex solid #DB9370;padding:0ex 1ex;}
@@ -165,18 +164,20 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#95959
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#959595', endColorstr='#1b1b1b',GradientType=0 ); /* ie */
   }
 
+.verbatim{margin:1ex 1ex;padding:1ex;background:#CCFFCC;border: thin dashed green;}
+  
 tt{
-  margin:0px;
-  background:#FFEEEE;
-  font-weight:bold;
+  margin:1px;padding-left:1px;padding-right:1px;
+  background:#CCFFCC;
+/*   font-weight:bold; */
   font-family: monospace;
   font-size: 0.9em;
   }
 
 ttl{
-  margin:0px;
+  margin:1px;
 /*   background:#FFEEEE; */
-  font-weight:bold;
+/*   font-weight:bold; */
   font-family: monospace;
   font-size: 0.9em;
   }
