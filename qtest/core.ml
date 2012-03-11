@@ -55,8 +55,8 @@ let outc_target = ref (open_out "qtest.targets.log")
 let outf_target s = fpf !outc_target s
 
 (** indispensable preamble *)
-let hard_coded_preamble = "open OUnit;;
-module Q = Quickcheck;;let ( ==> ) = Q.( ==> );;
+let hard_coded_preamble = "open OUnit;;\n\
+module Q = Quickcheck;;let ( ==> ) = Q.( ==> );;\n\
 Random.self_init()\n\n"
 
 (** global preamble, user-definable *)

@@ -1,2 +1,3 @@
 true: pkg_oUnit, threads, debug
 "test_lazy_pattern.ml": with_pa_llist, syntax_camlp4o
+<test_{map,uref}.ml>: warn_-29

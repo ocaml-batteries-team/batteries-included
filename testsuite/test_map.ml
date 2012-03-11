@@ -343,7 +343,7 @@ module TestMap
           4, (None, Some -4)]"
       (pair_compare2 (option_compare BatInt.compare))
       (BatTuple.Tuple2.printn (BatOption.print BatInt.print))
-      (M.merge (fun k a b -> Some (a, b)) t t')
+      (M.merge (fun _k a b -> Some (a, b)) t t')
       (il [0, (Some 0, None);
            1, (Some 1, Some ~-1);
            2, (None, Some ~-2);
