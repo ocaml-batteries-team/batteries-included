@@ -27,7 +27,7 @@ instance:
 the syntax is simple: \texttt{(*\$} introduces a \qtest{} "pragma", such as \texttt{T} in this case. \texttt{T}
 is by far the most common and represents a "simple" unit test. \texttt{T} expects a "header",
 which is most of the time simply the name of the function under test, here \texttt{foo}.
-Following that, each line is a "statement", which must evaluate to true for the test to
+Following that, each line is a "statement", which must evaluate to \texttt{true} for the test to
 pass. Furthermore, \texttt{foo} must appear in each statement.
 
 Now, in order to execute those tests, you need to extract them; this is done with the

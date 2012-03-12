@@ -81,7 +81,7 @@ type binding = string * string
 type metabinding = string list * string
 (** additional testing parameters: caml code for oUnit *)
 type param = string
-(** instanciable header: just a list of bindings *)
+(** instantiable header: just a list of bindings *)
 type header = {
   hb : binding list;
   hpar : param;
@@ -127,7 +127,7 @@ let register prag = push prag suite
 
 (** if a test header contains invalid characters *)
 exception Bad_header_char of string * string
-(** if a test's body is never closed *)
+(** if a test body is never closed *)
 exception Unterminated_test of statement list
 (** a test contains no statement *)
 exception Empty_test of string
@@ -147,7 +147,7 @@ let str_of_binding ((f,a):binding) = str_of_metabinding ([f],a)
 
 (** lexical closure generation, single binding *)
 let code_of_binding ((f,a):binding) = va "let %s = %s in" a f
-(** same, for a list of bindings, ie. a test's header *)
+(** same, for a list of bindings, ie. a test header *)
 let code_of_bindings bl = String.concat " " (List.map code_of_binding bl)
 
 (** get the functions targeted by a header *)

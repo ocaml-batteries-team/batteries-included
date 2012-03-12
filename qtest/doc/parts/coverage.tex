@@ -9,10 +9,13 @@ when a test, say, \texttt{(*\$X foo} is compiled, where \texttt{X} is
 least, it has to be defined \emph{somewhere}. Failure to conform results in an \texttt{Error: Unbound
 value foo}.
 
-\item  \texttt{foo} is referenced in *each statement* of the test: for \texttt{T} and \texttt{Q}, that means "each
-line". For \texttt{R}, that means "once somewhere in the test's body". Failure to conform results
-in a \texttt{Warning 26: unused variable foo}, which will be treated as an error if \texttt{-warn-error
-+26} is passed to the compiler. It goes without saying that this is warmly recommended.
+\item \texttt{foo} is referenced in \emph{each statement} of the test:
+  for \texttt{T} and \texttt{Q}, that means "each line". For
+  \texttt{R}, that means "once somewhere in the test's body". Failure
+  to conform results in a \texttt{Warning 26: unused variable foo},
+  which will be treated as an error if \texttt{-warn-error +26} is
+  passed to the compiler. It goes without saying that this is warmly
+  recommended.
 
 \item  the test possesses at least one statement.
 \end{itemize}
@@ -28,7 +31,7 @@ foo.ml   42    foo
 
 where \texttt{foo.ml} is the file in which the test appears, as passed to \texttt{extract},
  and \texttt{42} is
-the line number where the test pragma appears in foo.ml. Note that a same function can be
+the line number where the test pragma appears in \texttt{foo.ml}. Note that a same function can be
 listed several times for the same source file, if several tests involve it (say, two times
 if it has both a simple test and a random one). The exact number of statements involving
 \texttt{foo} in each test is currently not taken into account in the logs.
