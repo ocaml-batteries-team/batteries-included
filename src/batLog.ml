@@ -18,13 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open BatIO
+open BatInnerIO
 
 (** Flags enable features in logging *)
 type flag = [
 | `Date (** Print the current date as 2011/0628 *)
 | `Time (** Print the current time as 01:23:45 *)
 | `Filepos (** Print the file and position of this log command (UNIMPLEMENTED) *)
+| `Custom of unit -> string (** Print a generated string *)
 ]
 
 let output = ref stderr
@@ -49,11 +50,14 @@ let print_flag ?fp t oc = function
     let {Unix.tm_hour=h; tm_min=m; tm_sec=s} = Lazy.force t in
     BatPrintf.fprintf oc "%2d:%02d:%02d" h m s
   | `Filepos ->
-    BatOption.may (BatIO.nwrite oc) fp
+    BatOption.may (nwrite oc) fp
+  | `Custom gen ->
+    nwrite oc (gen ())
 
 let write_flags ?fp oc fs =
-  let t = lazy (Unix.localtime (Unix.time ())) in
-  BatList.print ~first:"" ~sep:" " ~last:":" (print_flag ?fp t) oc fs
+  if fs <> [] then
+    let t = lazy (Unix.localtime (Unix.time ())) in
+    BatList.print ~first:"" ~sep:" " ~last:":" (print_flag ?fp t) oc fs
 
 
 (*  BatPrintf.fprintf !output "%a%s%s\n" (write_flags ?fp) !flags !prefix s *)
@@ -98,7 +102,7 @@ module Make (S:S) = struct
   let printf ?fp fmt =
     write_flags ?fp S.out S.flags;
     nwrite S.out S.prefix;
-    BatPrintf.fprintf S.out fmt
+    BatPrintf.fprintf S.out (fmt ^^ "\n")
 
   let fatal ?fp s =
     write_flags ?fp S.out S.flags;
@@ -108,40 +112,37 @@ module Make (S:S) = struct
     exit 1
 
   let fatalf ?fp fmt =
-    BatPrintf.kfprintf (fun _ -> exit 1) S.out ("%a%s" ^^ fmt ^^ "%!")
+    BatPrintf.kfprintf (fun _ -> exit 1) S.out ("%a%s" ^^ fmt ^^ "\n%!")
       (write_flags ?fp) S.flags S.prefix
 
 end
 
-type 'a logger = {
-  print : ?fp:string -> string -> unit;
-  printf : 'b. ?fp:string -> ('b, 'a output, unit) Pervasives.format -> 'b;
-  fatal: ?fp:string -> string -> 'a;
-  fatalf: 'b. ?fp:string -> ('b, 'a output, unit) Pervasives.format -> 'b;
-}
-
 let make_logger out prefix flags =
-  let print ?fp s =
+object
+  method print ?fp s =
     write_flags ?fp out flags;
     nwrite out prefix;
     nwrite out s;
     write out '\n'
-  in
-  let printf ?fp fmt =
+  method printf ?fp fmt =
     write_flags ?fp out flags;
     nwrite out prefix;
-    BatPrintf.fprintf out fmt
-  in
-  let fatal ?fp s =
+    BatPrintf.fprintf out (fmt ^^ "\n")
+  method fatal ?fp s =
     write_flags ?fp out flags;
     nwrite out prefix;
     nwrite out s;
     write out '\n';
     exit 1
-  in
-  let fatalf ?fp fmt =
+  method fatalf ?fp fmt =
     BatPrintf.kfprintf (fun _ -> exit 1) out ("%a%s" ^^ fmt ^^ "%!")
       (write_flags ?fp) flags prefix
-  in
-  { print = print; printf=printf; fatal=fatal; fatalf=fatalf }
+end
 
+(*$= make_logger & ~printer:identity
+  "abcLog1\nabc34\n" \
+  (let oc = IO.output_string () in    \
+  let l = make_logger oc "abc" [] in \
+  l#print "Log1"; l#printf "%d" 34;  \
+  IO.close_out oc)
+*)

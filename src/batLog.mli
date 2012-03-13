@@ -40,9 +40,10 @@ val set_prefix : string -> unit
     2011/0628 01:23:45: prefixmessage
  *)
 type flag = [
-| `Date (* Print the current date as 2011/0628 *)
-| `Time (* Print the current time as 01:23:45 *)
-| `Filepos (* Print the file and position of this log command (UNIMPLEMENTED) *)
+| `Date (** Print the current date as 2011/0628 *)
+| `Time (** Print the current time as 01:23:45 *)
+| `Filepos (** Print the file and position of this log command (UNIMPLEMENTED) *)
+| `Custom of unit -> string (** Print the results of running the given closure *)
 ]
 val get_flags : unit -> flag list
 val set_flags : flag list -> unit
@@ -71,6 +72,8 @@ module type S = sig
   val flags: flag list
 end
 
+
+(** Build a logger module with custom, fixed output, prefix and flags *)
 module Make (S:S) : sig
   val print : ?fp:string -> string -> unit
   (** [print s] logs the message s, returning unit. *)
@@ -91,11 +94,13 @@ module Make (S:S) : sig
 
 end
 
-type 'a logger = {
-  print : ?fp:string -> string -> unit;
-  printf : 'b. ?fp:string -> ('b, 'a output, unit) Pervasives.format -> 'b;
-  fatal: ?fp:string -> string -> 'a;
-  fatalf: 'b. ?fp:string -> ('b, 'a output, unit) Pervasives.format -> 'b;
-}
-
-val make_logger : 'a output -> string -> flag list -> 'a logger
+(* Returns an object with methods [fatal], [fatalf], [print], and [printf] that logs to the given output channel, with given prefix and flags. *)
+val make_logger :
+  'a BatInnerIO.output ->
+  string ->
+  [< `Custom of unit -> string | `Date | `Filepos | `Time ] list ->
+  < fatal : ?fp:string -> string -> 'b;
+    fatalf : ?fp:string ->
+             ('c, 'a BatInnerIO.output, unit, unit, unit, 'd) format6 -> 'c;
+    print : ?fp:string -> string -> unit;
+    printf : ?fp:string -> ('e, 'a BatInnerIO.output, unit) BatPrintf.t -> 'e >
