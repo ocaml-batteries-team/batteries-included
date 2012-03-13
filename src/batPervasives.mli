@@ -942,6 +942,18 @@ val exn_printer : exn BatValuePrinter.t
    {6 Results}
 *)
 
+(** This type represents the outcome of a function which has the
+    possibility of failure.  Normal results of type ['a] are marked
+    with [Ok], while failure values of type ['b] are marked with
+    [Bad].
+
+    This is intended to be a safer alternative to functions raising
+    exceptions to signal failure.  It is safer in that the possibility
+    of failure has to be handled before the result of that computation
+    can be used.
+
+    For more functions related to this type, see the {!BatResult} module.
+*)
 type ('a, 'b) result =
   | Ok  of 'a
   | Bad of 'b
@@ -979,4 +991,3 @@ val lock: BatConcurrent.lock ref
    {!BatMutex}. If you're attempting to use Batteries with another
    concurrency model, set the lock appropriately.
 *)
-
