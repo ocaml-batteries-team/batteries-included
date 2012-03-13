@@ -52,7 +52,7 @@ BatNativeint BatOption BatRef BatTuple BatUnit }
 BatDigest BatFormat BatGc BatGenlex BatHashtbl BatLexing BatList
 BatMap BatMarshal BatNum BatOo BatPervasives BatPrintexc BatPrintf
 BatQueue BatRandom BatScanf BatSet BatStack BatStream BatString BatStr
-BatSysBatUnix}
+BatSys BatUnix}
 
 {6 Thread-related Modules}
 
