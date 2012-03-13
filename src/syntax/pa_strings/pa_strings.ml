@@ -71,7 +71,7 @@ let _ =
        let id = register_shared_expr ctx <:expr< BatUTF8.of_string $str:str$ >> in
        <:expr< $id:id$ >>);*)
   register_expr_specifier "u"
-    (fun ctx _loc str ->
+    (fun _ctx _loc str ->
        validate_utf8 _loc str;
        <:expr< BatUTF8.of_string_unsafe $str:str$ >>);
   register_when_specifier "u"
@@ -83,7 +83,7 @@ let _ =
   (* Strings with capabilities *)
 
   register_expr_specifier "rw"
-    (fun ctx _loc str ->
+    (fun _ctx _loc str ->
        <:expr< BatString.Cap.of_string $str:str$ >>);
   register_when_specifier "rw"
     (fun ctx _loc id str ->
@@ -100,7 +100,7 @@ let _ =
        <:expr< BatString.Cap.compare $id:shared_id$ $id:id$ = 0 >>);
 
   register_expr_specifier "wo"
-    (fun ctx _loc str ->
+    (fun _ctx _loc str ->
        <:expr< BatString.Cap.write_only (BatString.Cap.of_string $str:str$) >>);
   register_when_specifier "wo"
     (fun ctx _loc id str ->

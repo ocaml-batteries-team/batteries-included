@@ -47,9 +47,9 @@ struct
   struct
 
     let number = function
-      | Cons(loc, ('0' .. '9' as ch), l) ->
+      | Cons(_loc, ('0' .. '9' as ch), l) ->
           let rec aux acc = function
-            | Cons(loc, ('0' .. '9' as ch), l) ->
+            | Cons(_loc, ('0' .. '9' as ch), l) ->
                 aux (acc * 10 + (Char.code ch - Char.code '0')) l
             | l ->
                 (acc, l)
@@ -113,7 +113,7 @@ struct
 
     let simple l =
       let rec aux acc = function
-        | Cons(loc, ('A' .. 'Z' | 'a' .. 'z' as ch), l) ->
+        | Cons(_loc, ('A' .. 'Z' | 'a' .. 'z' as ch), l) ->
             aux (ch :: acc) l
         | l ->
             (acc, l)
@@ -124,7 +124,7 @@ struct
 
     let ident_body l =
       let rec aux acc = function
-        | Cons(loc, ch, l) when is_ident_body ch ->
+        | Cons(_loc, ch, l) when is_ident_body ch ->
             aux (ch :: acc) l
         | l ->
             (acc, l)
@@ -173,7 +173,7 @@ struct
 
     let names initial_l =
       let rec aux loc chars names l = match l, chars with
-        | Cons(loc, (',' | ':'), l), [] ->
+        | Cons(loc, (',' | ':'), _l), [] ->
             Loc.raise loc (Failure "identifier expected")
         | Cons(_, ',', l), _ ->
             aux Loc.ghost [] ((loc, rev_implode chars) :: names) l
@@ -183,16 +183,16 @@ struct
             aux loc [ch] names l
         | Cons(_, ch, l), _ when is_ident_body ch ->
             aux loc (ch :: chars) names l
-        | l ->
+        | _l ->
             ([], initial_l)
       in
       aux Loc.ghost [] [] initial_l
 
     let main l = match l with
-      | Cons(loc, ('A' .. 'Z' | 'a' .. 'z'), _) ->
+      | Cons(_loc, ('A' .. 'Z' | 'a' .. 'z'), _) ->
           let e, l = simple l in
           ([], e, l)
-      | Cons(loc, '(', l) ->
+      | Cons(_loc, '(', l) ->
           let names, l = names l in
           let expr, l = composed l in
           (names, expr, l)
@@ -204,16 +204,16 @@ struct
   module Value_printer =
   struct
     let rec loop acc = function
-      | Cons(loc, '}', l) ->
+      | Cons(_loc, '}', l) ->
           (rev_implode acc, l)
-      | Cons(loc, ch, l) ->
+      | Cons(_loc, ch, l) ->
           loop (ch :: acc) l
       | Nil loc ->
           Loc.raise loc (Failure "'}' missing")
 
     let name initial_l =
       let rec aux chars l = match l, chars with
-        | Cons(loc, ':', l), [] ->
+        | Cons(loc, ':', _l), [] ->
             Loc.raise loc (Failure "identifier expected")
         | Cons(_, ':', l), _ ->
             (Some(loc_of_llist initial_l, rev_implode chars), l)
@@ -221,7 +221,7 @@ struct
             aux [ch] l
         | Cons(_, ch, l), _ when is_ident_body ch ->
             aux (ch :: chars) l
-        | l ->
+        | _l ->
             (None, initial_l)
       in
       aux [] initial_l
@@ -328,7 +328,7 @@ let expr_of_directive _loc names expr =
              else
                <:expr< fun $lid:id$ -> $acc$ >>)
           lids
-          (List.fold_left (fun acc (labeled, _loc, id) ->
+          (List.fold_left (fun acc (_labeled, _loc, id) ->
                              <:expr< $acc$ $lid:id$ >>) expr lids)
 
 (* Builds the expression of a printer from a format ast.
@@ -387,7 +387,7 @@ let count_directives l =
 
 let _ =
   register_expr_specifier "p"
-    (fun ctx _loc str ->
+    (fun _ctx _loc str ->
        let ast = Parse.main (unescape _loc str) in
 
        (* Count the number of directives *)
