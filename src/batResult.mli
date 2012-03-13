@@ -16,9 +16,15 @@ type ('a, 'b) t = ('a, 'b) BatPervasives.result = Ok of 'a | Bad of 'b
 val catch: ('a -> 'b) -> 'a -> ('b, exn) t
 
 (** As [catch] but two paramaters.  This saves a closure construction
-    @since 1.0
+    @since 2.0
 *)
 val catch2: ('a -> 'b -> 'c) -> 'a -> 'b -> ('c, exn) t
+
+(** As [catch] but three paramaters.  This saves a closure construction
+    @since 2.0
+*)
+val catch3: ('a -> 'b -> 'c -> 'd) -> 'a -> 'b -> 'c -> ('d, exn) t
+
 
 (** [get (Ok x)] returns [x], and [get (Bad e)] raises [e].  This
     function is, in a way, the opposite of the [catch] function
@@ -58,6 +64,7 @@ val of_option: 'a option -> ('a, unit) t
 (** Convert a [result] to an [option]
     @since 1.0 *)
 val to_option: ('a, _) t -> 'a option
+
 
 (** {6 The Result Monad} *)
 

@@ -4,13 +4,9 @@ type ('a, 'b) t = ('a, 'b) BatPervasives.result =
  | Ok  of 'a
  | Bad of 'b
 
-let catch f x =
-  try  Ok (f x)
-  with e -> Bad e
-
-let catch2 f x y =
-  try Ok (f x y)
-  with e -> Bad e
+let catch f x = try Ok (f x) with e -> Bad e
+let catch2 f x y = try Ok (f x y) with e -> Bad e
+let catch3 f x y z = try Ok (f x y z) with e -> Bad e
 
 let of_option = function
   | Some x -> Ok x
