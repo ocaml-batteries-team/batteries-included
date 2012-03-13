@@ -107,8 +107,10 @@ let _ = dispatch begin function
 
 (* Causes build to fail on armel under ocaml 3.10.2
       flag ["ocaml"; "native"; "compile"] & A"-annot"; *)
+(* A bad idea for future compatibility if OCaml introduces new warnings;
+   we should use an explicit list of warnings here
       flag ["ocaml"; "compile"] & S[A"-warn-error"; A"A"];
-
+*)
       flag ["ocaml"; "compile"] & S[A"-package"; A packs];
       flag ["ocaml"; "ocamldep"] & S[A"-package"; A packs];
       flag ["ocaml"; "doc"] & S[A"-package"; A packs];
