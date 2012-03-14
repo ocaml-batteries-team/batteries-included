@@ -56,6 +56,7 @@ let print_flag ?fp t oc = function
 
 let write_flags ?fp oc fs =
   if fs <> [] then
+    (* is it better to call time in print_flag? *)
     let t = lazy (Unix.localtime (Unix.time ())) in
     BatList.print ~first:"" ~sep:" " ~last:":" (print_flag ?fp t) oc fs
 
@@ -86,12 +87,13 @@ let fatalf ?fp fmt =
     (write_flags ?fp) !flags
     !prefix
 
-module type S = sig
-  val out: 'a output
+module type Config = sig
+  type t
+  val out: t output
   val prefix: string
   val flags: flag list
 end
-module Make (S:S) = struct
+module Make (S:Config) = struct
 
   let print ?fp s =
     write_flags ?fp S.out S.flags;
@@ -146,3 +148,59 @@ end
   l#print "Log1"; l#printf "%d" 34;  \
   IO.close_out oc)
 *)
+
+module type Level_sig = sig
+  type t
+  val to_string : t -> string
+  val default_level : t
+  val compare : t -> t -> int
+end
+
+module Make_lev(L : Level_sig)(S: Config) = struct
+  module Log = Make(S)
+
+  (** By default, the log level is the largest (most restrictive).
+      This is threadsafe to get/set, so no setter/getter needed *)
+  let level = ref L.default_level
+
+  (** Main logging function *)
+  let log l m =
+    if L.compare l !level >= 0 then
+      Log.printf "%s: %s" (L.to_string l) m
+
+  let logf l fmt =
+    if L.compare l !level >= 0 then
+      Log.printf ("%s: " ^^ fmt) (L.to_string l)
+    else
+      (* need magic for useless channel to have polymorphic type *)
+      let oc = (Obj.magic stdnull : 'a output) in
+      Printf.ifprintf oc fmt
+end
+
+type easy_lev = [ `trace | `debug | `info | `warn | `error | `fatal | `always ]
+module Basic = struct
+  type t = easy_lev
+
+  let to_string : (t -> string) = function
+    | `trace -> "TRACE" | `debug -> "DEBUG" | `info -> "INFO"
+    | `warn -> "WARN" | `error -> "ERROR" | `fatal -> "FATAL"
+    | `always -> "ALWAYS"
+
+  let to_int : (t -> int) = function
+    | `trace -> 0 | `debug -> 1 | `info -> 2 | `warn -> 3
+    | `error -> 4 | `fatal -> 5 | `always -> 6
+
+  let default_level = `always
+
+  let compare a b =
+    BatInt.compare (to_int a) (to_int b)
+end
+
+module Default_config = struct
+  type t = unit
+  let out    = stderr
+  let prefix = ""
+  let flags  = [`Date; `Time]
+end
+
+module Easy = Make_lev(Basic)(Default_config)

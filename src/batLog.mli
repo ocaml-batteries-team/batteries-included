@@ -66,19 +66,20 @@ val fatalf: ?fp:string -> ('a, unit output, unit) Pervasives.format -> 'a
     Exits the program with return code 1. *)
 
 
-module type S = sig
-  val out: 'a output
+module type Config = sig
+  type t
+  val out: t output
   val prefix: string
   val flags: flag list
 end
 
 
 (** Build a logger module with custom, fixed output, prefix and flags *)
-module Make (S:S) : sig
+module Make (S:Config) : sig
   val print : ?fp:string -> string -> unit
   (** [print s] logs the message s, returning unit. *)
 
-  val printf: ?fp:string -> ('a, 'b output, unit) Pervasives.format -> 'a
+  val printf: ?fp:string -> ('a, S.t output, unit) Pervasives.format -> 'a
   (** As [Printf.printf], only the message is printed to the logging
       output and prefixed with status information per the current flags and
       the currently set prefix. *)
@@ -87,7 +88,7 @@ module Make (S:S) : sig
   (** [fatal s] logs the message [s] and then calls [exit 1].  This
       exits the program with return code 1.  *)
 
-  val fatalf: ?fp:string -> ('a, 'a output, unit) Pervasives.format -> 'a
+  val fatalf: ?fp:string -> ('a, S.t output, unit) Pervasives.format -> 'a
 (** [fatalf] allows a format string (as [Printf.printf])and the
     arguments to that format string to build the logging message.
     Exits the program with return code 1. *)
@@ -104,3 +105,23 @@ val make_logger :
              ('c, 'a BatInnerIO.output, unit, unit, unit, 'd) format6 -> 'c;
     print : ?fp:string -> string -> unit;
     printf : ?fp:string -> ('e, 'a BatInnerIO.output, unit) BatPrintf.t -> 'e >
+
+module type Level_sig = sig
+  type t
+  val to_string : t -> string
+  val default_level : t
+  val compare : t -> t -> int
+end
+
+module Make_lev(L:Level_sig)(S:Config) : sig
+  val level : L.t ref
+  val log : L.t -> string -> unit
+  val logf : L.t -> ('a, S.t output, unit) Pervasives.format -> 'a
+end
+
+type easy_lev = [ `trace | `debug | `info | `warn | `error | `fatal | `always ]
+module Easy : sig
+  val level : easy_lev ref
+  val log : easy_lev -> string -> unit
+  val logf : easy_lev -> ('a, unit output, unit) Pervasives.format -> 'a
+end
