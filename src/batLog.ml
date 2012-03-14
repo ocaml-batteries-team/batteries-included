@@ -172,9 +172,7 @@ module Make_lev(L : Level_sig)(S: Config) = struct
     if L.compare l !level >= 0 then
       Log.printf ("%s: " ^^ fmt) (L.to_string l)
     else
-      (* need magic for useless channel to have polymorphic type *)
-      let oc = (Obj.magic stdnull : 'a output) in
-      Printf.ifprintf oc fmt
+      Printf.ifprintf S.out fmt
 end
 
 type easy_lev = [ `trace | `debug | `info | `warn | `error | `fatal | `always ]
