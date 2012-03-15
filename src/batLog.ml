@@ -62,14 +62,14 @@ let write_flags ?fp oc fs =
 
 
 (*  BatPrintf.fprintf !output "%a%s%s\n" (write_flags ?fp) !flags !prefix s *)
-let print ?fp s =
+let log ?fp s =
   write_flags ?fp !output !flags;
   nwrite !output !prefix;
   nwrite !output s;
   write !output '\n'
 
 (*  BatPrintf.fprintf !output ("%a%s" ^^ fmt ^^"\n") (write_flags ?fp) !flags !prefix *)
-let printf ?fp fmt =
+let logf ?fp fmt =
   write_flags ?fp !output !flags;
   nwrite !output !prefix;
   BatPrintf.fprintf !output fmt
@@ -95,13 +95,13 @@ module type Config = sig
 end
 module Make (S:Config) = struct
 
-  let print ?fp s =
+  let log ?fp s =
     write_flags ?fp S.out S.flags;
     nwrite S.out S.prefix;
     nwrite S.out s;
     write S.out '\n'
 
-  let printf ?fp fmt =
+  let logf ?fp fmt =
     write_flags ?fp S.out S.flags;
     nwrite S.out S.prefix;
     BatPrintf.fprintf S.out (fmt ^^ "\n")
@@ -121,12 +121,12 @@ end
 
 let make_logger out prefix flags =
 object
-  method print ?fp s =
+  method log ?fp s =
     write_flags ?fp out flags;
     nwrite out prefix;
     nwrite out s;
     write out '\n'
-  method printf ?fp fmt =
+  method logf ?fp fmt =
     write_flags ?fp out flags;
     nwrite out prefix;
     BatPrintf.fprintf out (fmt ^^ "\n")
@@ -145,7 +145,7 @@ end
   "abcLog1\nabc34\n" \
   (let oc = IO.output_string () in    \
   let l = make_logger oc "abc" [] in \
-  l#print "Log1"; l#printf "%d" 34;  \
+  l#log "Log1"; l#logf "%d" 34;  \
   IO.close_out oc)
 *)
 
@@ -157,22 +157,35 @@ module type Level_sig = sig
 end
 
 module Make_lev(L : Level_sig)(S: Config) = struct
-  module Log = Make(S)
-
-  (** By default, the log level is the largest (most restrictive).
-      This is threadsafe to get/set, so no setter/getter needed *)
+  (* This is threadsafe to get/set, so no setter/getter needed;
+     publicly accessible *)
   let level = ref L.default_level
 
-  (** Main logging function *)
-  let log l m =
-    if L.compare l !level >= 0 then
-      Log.printf "%s: %s" (L.to_string l) m
+  let output = ref S.out
+  let get_output () = !output
+  let set_output o = output := o
 
-  let logf l fmt =
+  (** Main logging function *)
+  let log ?fp l m =
     if L.compare l !level >= 0 then
-      Log.printf ("%s: " ^^ fmt) (L.to_string l)
+      let oc = !output in
+      write_flags ?fp oc S.flags;
+      nwrite oc S.prefix;
+      nwrite oc (L.to_string l);
+      nwrite oc ": ";
+      nwrite oc m;
+      write oc '\n'
+
+  let logf ?fp l fmt = (* printf-style logging *)
+    if L.compare l !level >= 0 then
+      let oc = !output in
+      write_flags ?fp oc S.flags;
+      nwrite oc S.prefix;
+      nwrite oc (L.to_string l);
+      nwrite oc ": ";
+      BatPrintf.fprintf oc (fmt ^^ "\n")
     else
-      Printf.ifprintf S.out fmt
+      Printf.ifprintf !output fmt
 end
 
 type easy_lev = [ `trace | `debug | `info | `warn | `error | `fatal | `always ]

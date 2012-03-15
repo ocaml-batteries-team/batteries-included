@@ -48,23 +48,29 @@ type flag = [
 val get_flags : unit -> flag list
 val set_flags : flag list -> unit
 
-val print : ?fp:string -> string -> unit
-(** [print s] logs the message s, returning unit. *)
+(** [log s] logs the message s, returning unit.
 
-val printf: ?fp:string -> ('a, unit output, unit) Pervasives.format -> 'a
+    @since 2.0; was [print] in 1.x
+*)
+val log : ?fp:string -> string -> unit
+
+
 (** As [Printf.printf], only the message is printed to the logging
     output and prefixed with status information per the current flags and
-    the currently set prefix. *)
+    the currently set prefix.
 
-val fatal : ?fp:string -> string -> 'a
+    @since 2.0; was [printf] in 1.x
+*)
+val logf: ?fp:string -> ('a, unit output, unit) Pervasives.format -> 'a
+
 (** [fatal s] logs the message [s] and then calls [exit 1].  This
     exits the program with return code 1.  *)
+val fatal : ?fp:string -> string -> 'a
 
-val fatalf: ?fp:string -> ('a, unit output, unit) Pervasives.format -> 'a
 (** [fatalf] allows a format string (as [Printf.printf])and the
     arguments to that format string to build the logging message.
     Exits the program with return code 1. *)
-
+val fatalf: ?fp:string -> ('a, unit output, unit) Pervasives.format -> 'a
 
 module type Config = sig
   type t
@@ -73,55 +79,95 @@ module type Config = sig
   val flags: flag list
 end
 
-
 (** Build a logger module with custom, fixed output, prefix and flags *)
 module Make (S:Config) : sig
-  val print : ?fp:string -> string -> unit
   (** [print s] logs the message s, returning unit. *)
+  val log : ?fp:string -> string -> unit
 
-  val printf: ?fp:string -> ('a, S.t output, unit) Pervasives.format -> 'a
   (** As [Printf.printf], only the message is printed to the logging
       output and prefixed with status information per the current flags and
       the currently set prefix. *)
+  val logf: ?fp:string -> ('a, S.t output, unit) Pervasives.format -> 'a
 
-  val fatal : ?fp:string -> string -> 'a
   (** [fatal s] logs the message [s] and then calls [exit 1].  This
       exits the program with return code 1.  *)
+  val fatal : ?fp:string -> string -> 'a
 
+  (** [fatalf] allows a format string (as [Printf.printf])and the
+      arguments to that format string to build the logging message.
+      Exits the program with return code 1. *)
   val fatalf: ?fp:string -> ('a, S.t output, unit) Pervasives.format -> 'a
-(** [fatalf] allows a format string (as [Printf.printf])and the
-    arguments to that format string to build the logging message.
-    Exits the program with return code 1. *)
 
 end
 
-(* Returns an object with methods [fatal], [fatalf], [print], and [printf] that logs to the given output channel, with given prefix and flags. *)
+(** Returns an object with methods [fatal], [fatalf], [log], and
+    [logf] that logs to the given output channel, with given prefix
+    and flags.  These methods work like the corresponding functions in
+    the BatLog module.
+
+    @since 2.0
+*)
+
 val make_logger :
   'a BatInnerIO.output ->
   string ->
   [< `Custom of unit -> string | `Date | `Filepos | `Time ] list ->
   < fatal : ?fp:string -> string -> 'b;
-    fatalf : ?fp:string ->
-             ('c, 'a BatInnerIO.output, unit, unit, unit, 'd) format6 -> 'c;
-    print : ?fp:string -> string -> unit;
-    printf : ?fp:string -> ('e, 'a BatInnerIO.output, unit) BatPrintf.t -> 'e >
+ fatalf : ?fp:string ->
+              ('c, 'a BatInnerIO.output, unit, unit, unit, 'd) format6 -> 'c;
+ log : ?fp:string -> string -> unit;
+ logf : ?fp:string -> ('e, 'a BatInnerIO.output, unit) BatPrintf.t -> 'e >
 
+(** The different verbosity levels supported in the [Easy] logger *)
+type easy_lev = [ `trace | `debug | `info | `warn | `error | `fatal | `always ]
+
+(** A simple-to-use logger with verbosity levels that outputs by
+    default to stderr (changeable at runtime) with the date and time
+    at the beginning of each log message.
+
+    @since 2.0
+*)
+module Easy : sig
+  (** Set this ref to the lowest level of log you want logged.  For
+      example, [Easy.level := `always] disables all logging except
+      that at the [`always] level.  Setting [Easy.level := `info] will
+      enable logging for [`info], [`warn], [`error], [`fatal] and
+      [`always] levels. *)
+  val level : easy_lev ref
+
+  (** get and set the output channel. *)
+  val get_output : unit -> unit BatInnerIO.output
+  val set_output : unit BatInnerIO.output -> unit
+
+  (** [log lev msg] logs the message [msg] if the current logging
+      level is [lev] or lower.  *)
+  val log : ?fp:string -> easy_lev -> string -> unit
+
+  (** As [log], but instead of a string message, a printf format is
+      allowed with whatever arguments are appropriate. *)
+  val logf : ?fp:string -> easy_lev -> ('a, unit output, unit) Pervasives.format -> 'a
+end
+
+
+(** The details of a level scheme for verbosity-level loggers *)
 module type Level_sig = sig
+  (** A type for level values, usually a polymorphic variant *)
   type t
+  (** Convert each level to a string *)
   val to_string : t -> string
+  (** The default level for loggers created with this; log messages
+      with level less than this won't be printed by default. *)
   val default_level : t
+    (** a comparison function between levels, to know whether logging at a
+        particular level should be printed *)
   val compare : t -> t -> int
 end
 
+(** Make your own level-based logger, like [Easy] *)
 module Make_lev(L:Level_sig)(S:Config) : sig
   val level : L.t ref
-  val log : L.t -> string -> unit
-  val logf : L.t -> ('a, S.t output, unit) Pervasives.format -> 'a
-end
-
-type easy_lev = [ `trace | `debug | `info | `warn | `error | `fatal | `always ]
-module Easy : sig
-  val level : easy_lev ref
-  val log : easy_lev -> string -> unit
-  val logf : easy_lev -> ('a, unit output, unit) Pervasives.format -> 'a
+  val get_output : unit -> S.t BatInnerIO.output
+  val set_output : S.t BatInnerIO.output -> unit
+  val log : ?fp:string -> L.t -> string -> unit
+  val logf : ?fp:string -> L.t -> ('a, S.t output, unit) Pervasives.format -> 'a
 end
