@@ -87,7 +87,7 @@ module TestSet
 
   let eq_li ?msg cmp_elt print_elt l1 l2 =
     let cmp t1 t2 =
-      0 = BatList.make_compare cmp_elt t1 t2 in
+      0 = BatList.comp cmp_elt t1 t2 in
     let printer =
       BatIO.to_string <| BatList.print print_elt in
     U.assert_equal ?msg ~cmp ~printer l1 l2

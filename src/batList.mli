@@ -515,10 +515,6 @@ val merge : ('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
     Not tail-recursive (sum of the lengths of the arguments).
 *)
 
-val make_compare : ('a -> 'a -> int) -> 'a list -> 'a list -> int
-(** [make_compare c] generates the lexicographical order on lists
-induced by [c]*)
-
 val sort_unique : ('a -> 'a -> int) -> 'a list -> 'a list
 (** [sort_unique cmp l] returns the list [l] sorted and without any duplicate
 element. [cmp] is a usual comparison function providing total order.
@@ -564,6 +560,20 @@ BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b list -> unit
 (**Print the contents of a list*)
 
 val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
+
+open BatOrd
+val eq : 'a eq -> 'a list eq
+val ord : 'a ord -> 'a list ord
+val comp : 'a comp -> 'a list comp
+
+(** Comparison and equality for lists based on element comparison and
+    equality *)
+
+module Eq (T : Eq) : Eq with type t = T.t list
+module Ord (T : Ord) : Ord with type t = T.t list
+module Comp (T : Comp) : Comp with type t = T.t list
+
+
 
 (** {6 Obsolete functions} *)
 
@@ -715,14 +725,3 @@ end
 
 val ( @ ) : 'a list -> 'a list -> 'a list
 (** Tail recursive [List.append]. *)
-
-module Incubator : sig
-  open BatOrd
-  val eq : 'a eq -> 'a list eq
-  val ord : 'a ord -> 'a list ord
-  val comp : 'a comp -> 'a list comp
-
-  module Eq (T : Eq) : Eq with type t = T.t list
-  module Ord (T : Ord) : Ord with type t = T.t list
-  module Comp (T : Comp) : Comp with type t = T.t list
-end
