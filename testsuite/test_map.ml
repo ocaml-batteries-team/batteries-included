@@ -139,7 +139,7 @@ module TestMap
   let eq_li ?msg cmp_elt print_elt l1 l2 =
     let cmp t1 t2 =
       let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:cmp_elt in
-      0 = BatList.make_compare cmp t1 t2 in
+      0 = BatList.comp cmp t1 t2 in
     let printer =
       BatIO.to_string -| BatList.print <| BatTuple.Tuple2.print BatInt.print print_elt in
     U.assert_equal ?msg ~cmp ~printer l1 l2
@@ -616,7 +616,7 @@ let heterogeneous_tests =
   let (@=) msg (act, exp) =
     let cmp t1 t2 =
       let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:BatInt.compare in
-      0 = BatList.make_compare cmp t1 t2 in
+      0 = BatList.comp cmp t1 t2 in
     let printer =
       BatIO.to_string -| BatList.print <| BatTuple.Tuple2.printn BatInt.print in
     U.assert_equal ~msg ~cmp ~printer exp act in
