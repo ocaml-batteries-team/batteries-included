@@ -155,7 +155,9 @@ let findi p xs =
     try let index = findi f a in \
         let i = ref (-1) in \
         for_all (fun elt -> incr i; \
-          if !i < index then not (f elt) else if !i = index then f elt else true) a \
+          if !i < index then not (f elt) \
+          else if !i = index then f elt else true)\
+        a \
     with Not_found -> for_all (fun elt -> not (f elt)) a)
 *)
 
@@ -166,7 +168,9 @@ let find p xs = xs.(findi p xs)
     let f (`a x) = f x in\
     try let elt = find f a in \
         let past = ref false in \
-        for_all (fun x -> if x == elt then (past := true; f x) else !past || not (f x)) a \
+        for_all (fun x -> if x == elt then (past := true; f x) \
+                 else !past || not (f x)) \
+        a \
     with Not_found -> for_all (fun elt -> not (f elt)) a)
 *)
 
@@ -259,7 +263,8 @@ let partition p xs =
 
 let enum xs =
   let rec make start xs =
-    let n = length xs in(*Inside the loop, as [make] may later be called with another array*)
+    let n = length xs in
+      (* inside the loop, as [make] may later be called with another array *)
     BatEnum.make
       ~next:(fun () ->
 	       if !start < n then
@@ -313,7 +318,8 @@ let backwards xs =
     let e' = BatEnum.clone e in \
     assert (BatEnum.count e = BatEnum.count e'); \
     for i = Array.length a / 2 to Array.length a - 1 do \
-      assert (a.(n - 1 - i) = BatEnum.get_exn e && a.(n - 1 - i) = BatEnum.get_exn e') \
+      assert (a.(n - 1 - i) = BatEnum.get_exn e && \
+              a.(n - 1 - i) = BatEnum.get_exn e') \
     done; \
     BatEnum.is_empty e && BatEnum.is_empty e' \
   )
@@ -334,16 +340,17 @@ let of_backwards e =
 let range xs = BatEnum.(--^) 0 (Array.length xs)
 (*$Q range
   (Q.array Q.small_int) (fun a -> \
-    BatEnum.equal (=) (range a) (enum (Array.init (Array.length a) (fun i -> i))) \
-  )
+    BatEnum.equal (=) (range a) \
+     (enum (Array.init (Array.length a) (fun i -> i))))
 *)
 
 let filter_map p xs =
   of_enum (BatEnum.filter_map p (enum xs))
 (*$Q filter_map
-  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) (fun (a, f) -> \
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) \
+  (fun (a, f) -> \
     let a' = filter (fun elt -> f elt <> None) a in \
-    let a' = map (fun elt -> match f elt with None -> assert false | Some elt -> elt) a' in \
+    let a' = map (f |- BatOption.get) a' in \
     let a = filter_map f a in \
     a = a' \
   )
@@ -367,8 +374,10 @@ let iter2 f a1 a2 =
   )
 *)
 (*$T iter2
-  try iter2 (fun _ _ -> ()) [|1|] [|1;2;3|]; false with Invalid_argument _ -> true
-  try iter2 (fun _ _ -> ()) [|1|] [||]; false with Invalid_argument _ -> true
+  try iter2 (fun _ _ -> ()) [|1|] [|1;2;3|]; false \
+    with Invalid_argument _ -> true
+  try iter2 (fun _ _ -> ()) [|1|] [||]; false \
+    with Invalid_argument _ -> true
 *)
 
 let iter2i f a1 a2 =
@@ -389,8 +398,10 @@ let iter2i f a1 a2 =
   )
 *)
 (*$T iter2i
-  try iter2i (fun _ _ _ -> ()) [|1|] [|1;2;3|]; false with Invalid_argument _ -> true
-  try iter2i (fun _ _ _ -> ()) [|1|] [||]; false with Invalid_argument _ -> true
+  try iter2i (fun _ _ _ -> ()) [|1|] [|1;2;3|]; false \
+    with Invalid_argument _ -> true
+  try iter2i (fun _ _ _ -> ()) [|1|] [||]; false \
+    with Invalid_argument _ -> true
 *)
 
 let for_all2 p xs ys =
@@ -407,8 +418,10 @@ let for_all2 p xs ys =
    for_all2 (=) [|1;2;3|] [|3;2;1|] = false
    for_all2 (=) [|1;2;3|] [|1;2;3|]
    for_all2 (<>) [|1;2;3|] [|3;2;1|] = false
-   try ignore (for_all2 (=) [|1;2;3|] [|1;2;3;4|]); false with Invalid_argument _ -> true
-   try ignore (for_all2 (=) [|1;2|] [||]); false with Invalid_argument _ -> true
+   try ignore (for_all2 (=) [|1;2;3|] [|1;2;3;4|]); false \
+     with Invalid_argument _ -> true
+   try ignore (for_all2 (=) [|1;2|] [||]); false \
+     with Invalid_argument _ -> true
 *)
 
 let exists2 p xs ys =
@@ -424,7 +437,8 @@ let exists2 p xs ys =
 (*$T exists2
    exists2 (=) [|1;2;3|] [|3;2;1|]
    exists2 (<>) [|1;2;3|] [|1;2;3|] = false
-   try ignore (exists2 (=) [|1;2|] [|3|]); false with Invalid_argument _ -> true
+   try ignore (exists2 (=) [|1;2|] [|3|]); false \
+     with Invalid_argument _ -> true
 *)
 
 let map2 f xs ys =
@@ -435,8 +449,10 @@ let map2 f xs ys =
 (*$T map2
    map2 (-) [|1;2;3|] [|6;3;1|] = [|-5;-1;2|]
    map2 (-) [|2;4;6|] [|1;2;3|] = [|1;2;3|]
-   try ignore (map2 (-) [|2;4|] [|1;2;3|]); false with Invalid_argument _ -> true
-   try ignore (map2 (-) [|2;4|] [|3|]); false with Invalid_argument _ -> true
+   try ignore (map2 (-) [|2;4|] [|1;2;3|]); false \
+     with Invalid_argument _ -> true
+   try ignore (map2 (-) [|2;4|] [|3|]); false \
+     with Invalid_argument _ -> true
 *)
 
 let compare cmp a b =
@@ -477,15 +493,19 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 	  print_a out (unsafe_get t i);
 	done;
 	BatInnerIO.nwrite out last
-(*$T print
-  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) [|2;4;66|] = "[2,4,66]"
-  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) [|2|] = "[2]"
-  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) [||] = "[]"
+(*$T
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) \
+    [|2;4;66|] = "[2,4,66]"
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) \
+    [|2|] = "[2]"
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) \
+    [||] = "[]"
 *)
 
 let t_printer a_printer (_paren: bool) out x = print (a_printer false) out x
 (*$T t_printer
-  BatIO.string_of_t_printer (t_printer BatInt.t_printer) [|-1;-3;0|] = "[|-1; -3; 0|]"
+  BatIO.string_of_t_printer (t_printer BatInt.t_printer) \
+    [|-1;-3;0|] = "[|-1; -3; 0|]"
 *)
 
 let reduce f a =
@@ -500,7 +520,8 @@ let reduce f a =
 (*$T reduce
    reduce (+) [|1;2;3|] = 6
    reduce (fun _ -> assert false) [|1|] = 1
-   try reduce (fun _ _ -> ()) [||]; false with Invalid_argument _ -> true
+   try reduce (fun _ _ -> ()) [||]; false \
+     with Invalid_argument _ -> true
 *)
 
 let min a = reduce Pervasives.min a
@@ -529,12 +550,12 @@ let decorate_stable_sort f xs =
   let () = stable_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
   map (fun (_,x) -> x) decorated
 (*$T decorate_stable_sort
-  decorate_stable_sort fst [|(1,2);(1,3);(0,2);(1,4)|] = [|(0,2);(1,2);(1,3);(1,4)|]
+  decorate_stable_sort fst [|(1,2);(1,3);(0,2);(1,4)|] \
+    = [|(0,2);(1,2);(1,3);(1,4)|]
 *)
 (*$Q decorate_stable_sort
-  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) (fun (a, f) -> \
-    is_sorted_by f (decorate_stable_sort f a) \
-  )
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) \
+    (fun (a, f) -> is_sorted_by f (decorate_stable_sort f a))
 *)
 
 let decorate_fast_sort f xs =
@@ -542,9 +563,8 @@ let decorate_fast_sort f xs =
   let () = fast_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
   map (fun (_,x) -> x) decorated
 (*$Q decorate_fast_sort
-  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) (fun (a, f) -> \
-    is_sorted_by f (decorate_fast_sort f a) \
-  )
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) \
+    (fun (a, f) -> is_sorted_by f (decorate_fast_sort f a))
 *)
 
 let insert xs x i =
@@ -555,8 +575,10 @@ let insert xs x i =
    insert [|1;2;3|] 4 0 = [|4;1;2;3|]
    insert [|1;2;3|] 4 3 = [|1;2;3;4|]
    insert [|1;2;3|] 4 2 = [|1;2;4;3|]
-   try ignore (insert [|1;2;3|] 4 100); false with Invalid_argument _ -> true
-   try ignore (insert [|1;2;3|] 4 (-40)); false with Invalid_argument _ -> true
+   try ignore (insert [|1;2;3|] 4 100); false \
+     with Invalid_argument _ -> true
+   try ignore (insert [|1;2;3|] 4 (-40)); false \
+     with Invalid_argument _ -> true
 *)
 
 
