@@ -32,16 +32,6 @@ let output = ref stderr
 let prefix = ref ""
 let flags = ref [`Date; `Time]
 
-(* TODO: make threadsafe? *)
-let get_output () = !output
-let set_output oc = output := oc
-
-let get_prefix () = !prefix
-let set_prefix p = prefix := p
-
-let get_flags () = !flags
-let set_flags fs = flags := fs
-
 let print_flag ?fp t oc = function
   | `Date ->
     let {Unix.tm_year=y; tm_mon=m; tm_mday=d} = Lazy.force t in
@@ -63,29 +53,31 @@ let write_flags ?fp oc fs =
 
 (*  BatPrintf.fprintf !output "%a%s%s\n" (write_flags ?fp) !flags !prefix s *)
 let log ?fp s =
-  write_flags ?fp !output !flags;
-  nwrite !output !prefix;
-  nwrite !output s;
-  write !output '\n'
+  let oc = !output in (* makes sure all output goes to a single channel when multi-threaded *)
+  write_flags ?fp oc !flags;
+  nwrite oc !prefix;
+  nwrite oc s;
+  write oc '\n'
 
 (*  BatPrintf.fprintf !output ("%a%s" ^^ fmt ^^"\n") (write_flags ?fp) !flags !prefix *)
 let logf ?fp fmt =
-  write_flags ?fp !output !flags;
-  nwrite !output !prefix;
-  BatPrintf.fprintf !output fmt
+  let oc = !output in
+  write_flags ?fp oc !flags;
+  nwrite oc !prefix;
+  BatPrintf.fprintf oc fmt
 
 (*  BatPrintf.kfprintf (fun _ -> exit 1) !output "%a%s%s\n" (write_flags ?fp) !flags !prefix s *)
 let fatal ?fp s =
-  write_flags ?fp !output !flags;
-  nwrite !output !prefix;
-  nwrite !output s;
-  write !output '\n';
+  let oc = !output in
+  write_flags ?fp oc !flags;
+  nwrite oc !prefix;
+  nwrite oc s;
+  write oc '\n';
   exit 1
 
 let fatalf ?fp fmt =
   BatPrintf.kfprintf (fun _ -> exit 1) !output ("%a%s" ^^ fmt ^^ "%!")
-    (write_flags ?fp) !flags
-    !prefix
+    (write_flags ?fp) !flags !prefix
 
 module type Config = sig
   type t
@@ -93,8 +85,8 @@ module type Config = sig
   val prefix: string
   val flags: flag list
 end
-module Make (S:Config) = struct
 
+module Make (S:Config) = struct
   let log ?fp s =
     write_flags ?fp S.out S.flags;
     nwrite S.out S.prefix;
@@ -116,7 +108,6 @@ module Make (S:Config) = struct
   let fatalf ?fp fmt =
     BatPrintf.kfprintf (fun _ -> exit 1) S.out ("%a%s" ^^ fmt ^^ "\n%!")
       (write_flags ?fp) S.flags S.prefix
-
 end
 
 let make_logger out prefix flags =
@@ -157,13 +148,10 @@ module type Level_sig = sig
 end
 
 module Make_lev(L : Level_sig)(S: Config) = struct
-  (* This is threadsafe to get/set, so no setter/getter needed;
+  (* These are threadsafe to get/set, so no setter/getter needed;
      publicly accessible *)
   let level = ref L.default_level
-
   let output = ref S.out
-  let get_output () = !output
-  let set_output o = output := o
 
   (** Main logging function *)
   let log ?fp l m =
