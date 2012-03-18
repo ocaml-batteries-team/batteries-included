@@ -138,6 +138,26 @@ let bin_comp comp1 t1 t1' comp2 t2 t2' =
     | 0 -> comp2 t2 t2'
     | nzero -> nzero
 
-let eq_by proj = fun x y -> proj x = proj y
-let cmp_by proj = fun x y -> Pervasives.compare (proj x) (proj y)
-let ord_by proj = fun x y -> ord0 (Pervasives.compare (proj x) (proj y))
+let map_eq f eq = fun a b -> eq (f a) (f b)
+let map_comp f comp = fun a b -> comp (f a) (f b)
+let map_ord f ord = fun a b -> ord (f a) (f b)
+
+(*$T map_eq
+  map_eq List.length Int.eq [3] [7]
+  not (map_eq List.length Int.eq [] [8;9])
+*)
+(*$T map_comp
+  map_comp Array.length Int.compare [|5;6;7|] [|1;2;3|] = 0
+  map_comp Array.length Int.compare [||] [|8|] < 0
+*)
+(*$T map_ord
+  map_ord List.hd String.ord ["foo"; "bar"] ["foo"] = Eq
+  map_ord List.tl (List.ord Int.ord) [1;2;3] [8;2;3] = Eq
+  map_ord String.length Int.ord "Foo" "Foobar" = Lt
+*)
+
+module Incubator = struct
+  let eq_by proj = fun x y -> proj x = proj y
+  let comp_by proj = fun x y -> Pervasives.compare (proj x) (proj y)
+  let ord_by proj = fun x y -> ord0 (Pervasives.compare (proj x) (proj y))
+end

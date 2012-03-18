@@ -122,11 +122,22 @@ val bin_ord : 'a ord -> 'a -> 'a -> 'b ord -> 'b -> 'b -> order
 *)
 val bin_eq : 'a eq -> 'a -> 'a -> 'b eq -> 'b -> 'b -> bool
 
+val map_eq : ('a -> 'b) -> 'b eq -> 'a eq
+val map_comp : ('a -> 'b) -> 'b comp -> 'a comp
+val map_ord : ('a -> 'b) -> 'b ord -> 'a ord
+(** These functions extend an existing equality/comparison/ordering to
+    a new domain through a mapping function.  For example, to order
+    sets by their cardinality, use [map_ord Set.cardinal Int.ord].
+    The input of the mapping function is the type you want to compare,
+    so this is the reverse of [List.map]. *)
 
-val eq_by : ('a -> 'b) -> 'a eq
-val cmp_by : ('a -> 'b) -> 'a comp
-val ord_by : ('a -> 'b) -> 'a ord
-(** Build a [eq], [cmp] or [ord] function from a projection function.  For
-   example, if you wanted to compare integers based on their lowest 4
-   bits, you could write [let cmp_bot4 = cmp_of_proj (fun x -> x land
-   0xf)] and use cmp_bot4 as the desired integer comparator. *)
+module Incubator : sig
+  val eq_by : ('a -> 'b) -> 'a eq
+  val comp_by : ('a -> 'b) -> 'a comp
+  val ord_by : ('a -> 'b) -> 'a ord
+(** Build a [eq], [cmp] or [ord] function from a projection function.
+    For example, if you wanted to compare integers based on their
+    lowest 4 bits, you could write [let cmp_bot4 = cmp_by (fun x
+    -> x land 0xf)] and use cmp_bot4 as the desired integer
+    comparator. *)
+end
