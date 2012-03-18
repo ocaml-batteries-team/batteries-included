@@ -174,15 +174,24 @@ let take n l =
   (take 1 [1;2;3]) [1]
  *)
 
-(* takewhile and dropwhile by Richard W.M. Jones. *)
-let rec take_while f = function (* WARNING: NOT TAIL RECURSIVE *)
-  | [] -> []
-  | x :: xs when f x -> x :: take_while f xs
-  | _ -> []
+let take_while p li =
+  let rec loop dst = function
+    | [] -> ()
+    | x :: xs ->
+      if p x then
+        let r = { hd = x; tl = [] } in
+        dst.tl <- inj r;
+        loop r xs in
+  let dummy = dummy_node () in
+  loop dummy li;
+  dummy.tl
 
 (*$= take_while & ~printer:(IO.to_string (List.print Int.print))
   (take_while ((=) 3) [3;3;4;3;3]) [3;3]
   (take_while ((=) 3) [3]) [3]
+  (take_while ((=) 3) [4]) []
+  (take_while ((=) 3) []) []
+  (take_while ((=) 2) [2; 2]) [2; 2]
  *)
 
 let rec drop_while f = function

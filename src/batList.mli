@@ -417,13 +417,12 @@ val drop : int -> 'a list -> 'a list
 list if [l] have less than [n] elements. *)
 
 val take_while : ('a -> bool) -> 'a list -> 'a list
-(** [take_while p xs] returns the
-longest prefix (possibly empty) of [xs] of elements that satisfy the
-predicate [p]. Warning: Not tail recursive.*)
+(** [take_while p xs] returns the (possibly empty) longest prefix of
+    elements of [xs] that satisfy the predicate [p].*)
 
 val drop_while : ('a -> bool) -> 'a list -> 'a list
 (** [drop_while p xs] returns the suffix remaining after
-[takeWhile p xs]. *)
+    [takeWhile p xs]. *)
 
 val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
