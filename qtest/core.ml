@@ -60,7 +60,7 @@ module Q = Quickcheck;;let ( ==> ) = Q.( ==> );;\n\
 Random.self_init()\n\n"
 
 (** global preamble, user-definable *)
-let global_preamble = ref ""
+let global_preamble = Buffer.create 100
 
 (** update the buffer to reflect current line number *)
 let eol lexbuf = Lexing.(

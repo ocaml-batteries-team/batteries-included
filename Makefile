@@ -157,7 +157,8 @@ _build/$(QTESTDIR)/qtest: _build/$(QTESTDIR)/qtest.$(EXT)
 
 # extract all qtest unit tests into a single ml file
 $(QTESTDIR)/all_tests.ml: _build/$(QTESTDIR)/qtest.$(EXT) $(TESTABLE)
-	@$< -o $@ --preamble 'open Batteries;;' extract $(TESTABLE) || rm -f $@
+	@$< -o $@ --preamble-file qtest_preamble.ml extract $(TESTABLE) \
+	  || rm -f $@
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml $(QTESTDIR)/runner.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 $(QTESTDIR)/all_tests.byte

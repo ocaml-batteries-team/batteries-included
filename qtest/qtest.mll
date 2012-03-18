@@ -212,23 +212,33 @@ let generate paths =
   eps "Extraction : "; List.iter extract_from paths;
   out "let ___tests = ref []\nlet ___add test = ___tests := test::!___tests\n";
   out hard_coded_preamble;
-  out !global_preamble;
+  out (Buffer.contents global_preamble);
   listiteri process (preprocess @@ List.rev !suite);
   out "let () = ignore (Runner.run (\"\" >::: !___tests))\n";
   eps "Done.\n"
 
 (** Parse command line *)
-let set_preamble code =
-  global_preamble := !global_preamble ^ code ^ "\n"
+let add_preamble code =
+  Buffer.add_string global_preamble code;
+  Buffer.add_string global_preamble "\n";
+  ()
+let add_preamble_file path =
+  let input = open_in path in
+  Buffer.add_channel global_preamble input (in_channel_length input);
+  close_in input;
+  ()
 let set_output path =
   epf "Target file: `%s'. " path; outc := open_out path
 
 let options = [
 (* the careful spacing here preserves a good-looking alignment in -help output *)
-"-p", Arg.String set_preamble, "";
-"--preamble", Arg.String set_preamble, 
-            "<string>  Add code to the tests' preamble; typically this will be
-                      an instruction of the form 'open Module;;'";
+"-p", Arg.String add_preamble, "";
+"--preamble", Arg.String add_preamble, 
+            "<string>  Add code to the tests preamble; typically this will be
+                       an instruction of the form 'open Module;;'";
+"--preamble-file", Arg.String add_preamble_file,
+                 "<path>  Add the content from the given file 
+                          to the tests preamble.";
 "-o", Arg.String set_output, "";
 "--output", Arg.String set_output,
           "<path>  Open or create a file for output; the resulting file
