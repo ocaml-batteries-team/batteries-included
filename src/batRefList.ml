@@ -28,9 +28,9 @@ type 'a t = 'a list ref
 let empty () = ref []
 
 let is_empty x =
-	match !x with
-	| [] -> true
-	| _ -> false
+  match !x with
+  | [] -> true
+  | _ -> false
 
 let of_list l = ref l
 let to_list rl = !rl
@@ -61,14 +61,14 @@ let rfind f rl = BatList.rfind f !rl
 let first = hd
 
 let last rl =
-	let rec loop = function
-		| x :: [] -> x
-		| _ :: l -> loop l
-		| [] -> assert false
-	in
-	match !rl with
-	| [] -> raise Empty_list
-	| l -> loop l
+  let rec loop = function
+  | x :: [] -> x
+  | _ :: l -> loop l
+  | [] -> assert false
+  in
+  match !rl with
+  | [] -> raise Empty_list
+  | l -> loop l
 
 let remove rl item = rl := BatList.remove !rl item
 let remove_if pred rl = rl := BatList.remove_if pred !rl
@@ -76,30 +76,30 @@ let remove_all rl item = rl := BatList.remove_all !rl item
 let filter pred rl = rl := List.filter pred !rl
 
 let add_sort ?(cmp=compare) rl item =
-	let rec add_aux = function
-		| x::lnext as l ->
-			let r = cmp x item in
-			if r < 0 then item::l else x::(add_aux lnext)
-		| [] -> [item]
-	in
-	rl := add_aux !rl
+  let rec add_aux = function
+  | x::lnext as l ->
+      let r = cmp x item in
+      if r < 0 then item::l else x::(add_aux lnext)
+  | [] -> [item]
+  in
+  rl := add_aux !rl
 
 let pop rl =
-	match !rl with
-	| [] -> raise Empty_list
-	| e::l -> rl := l; e
+  match !rl with
+  | [] -> raise Empty_list
+  | e::l -> rl := l; e
 
-let npop rl n =		
-	let rec pop_aux l n =
-		if n = 0 then begin
-			rl := l;
-			[]
-		end else
-			match l with
-			| [] -> raise Empty_list
-			| x::l -> x::(pop_aux l (n-1))
-	in
-	pop_aux !rl n
+let npop rl n =
+  let rec pop_aux l n =
+    if n = 0 then begin
+      rl := l;
+      []
+    end else
+      match l with
+      | [] -> raise Empty_list
+      | x::l -> x::(pop_aux l (n-1))
+  in
+  pop_aux !rl n
 
 let copy_enum ~dst ~src = dst := BatList.of_enum src
 
@@ -114,30 +114,30 @@ let fold_right f l a = BatList.fold_right f !l a
 
 module Index = struct
 
-	let remove_at rl pos =
-		let p = ref (-1) in
-		let rec del_aux = function			
-			| x::l -> incr p; if !p = pos then l else x::(del_aux l)
-			| [] -> invalid_arg "remove_at: index not found"
-		in
-		rl := del_aux !rl
+  let remove_at rl pos =
+    let p = ref (-1) in
+    let rec del_aux = function
+    | x::l -> incr p; if !p = pos then l else x::(del_aux l)
+    | [] -> invalid_arg "remove_at: index not found"
+    in
+    rl := del_aux !rl
 
-	let index pred rl =
-		let index = ref (-1) in
-		List.find (fun it -> incr index; pred it; ) !rl;
-		!index
+  let index pred rl =
+    let index = ref (-1) in
+    List.find (fun it -> incr index; pred it; ) !rl;
+    !index
 
-	let index_of rl item =
-		let index = ref (-1) in
-		List.find (fun it -> incr index; it = item; ) !rl;
-		!index
+  let index_of rl item =
+    let index = ref (-1) in
+    List.find (fun it -> incr index; it = item; ) !rl;
+    !index
 
-	let at_index rl pos = List.nth !rl pos
+  let at_index rl pos = List.nth !rl pos
 
-	let set rl pos newitem =
-		let p = ref (-1) in
-		rl := List.map (fun item -> incr p; if !p = pos then newitem else item) !rl;
-		if !p < pos || pos < 0 then invalid_arg "Index out of range"
+  let set rl pos newitem =
+    let p = ref (-1) in
+    rl := List.map (fun item -> incr p; if !p = pos then newitem else item) !rl;
+    if !p < pos || pos < 0 then invalid_arg "Index out of range"
 
 
 end
