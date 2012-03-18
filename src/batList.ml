@@ -885,13 +885,13 @@ let rec ord ord_elt l1 l2 =
 	| [] -> Gt
 	| hd2::tl2 -> bin_ord ord_elt hd1 hd2 (ord ord_elt) tl1 tl2)
 
-let rec comp comp_elt l1 l2 =
+let rec compare comp_elt l1 l2 =
   match l1 with
     | [] -> (match l2 with [] -> 0 | _::_ -> -1)
     | hd1::tl1 ->
       (match l2 with
 	| [] -> 1
-	| hd2::tl2 -> bin_comp comp_elt hd1 hd2 (comp comp_elt) tl1 tl2)
+	| hd2::tl2 -> bin_comp comp_elt hd1 hd2 (compare comp_elt) tl1 tl2)
 
 module Eq (T : Eq) = struct
   type t = T.t list
@@ -905,5 +905,5 @@ end
 
 module Comp (T : Comp) = struct
   type t = T.t list
-  let compare = comp T.compare
+  let compare = compare T.compare
 end
