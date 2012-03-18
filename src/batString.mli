@@ -481,46 +481,50 @@ val implode : char list -> string
 
 (** {6 Comparisons}*)
 
-val compare: t -> t -> int
-  (** The comparison function for strings, with the same specification as
-      {!Pervasives.compare}.  Along with the type [t], this function [compare]
-      allows the module [String] to be passed as argument to the functors
-      {!Set.Make} and {!Map.Make}.
+val eq : t -> t -> bool
+(** String equality *)
 
-      Example: [String.compare "FOO" "bar" = -1] i.e. "FOO" < "bar"
+val ord : t -> t -> BatOrd.order
+(** Ordering function for strings, see {!BatOrd} *)
+
+val compare: t -> t -> int
+(** The comparison function for strings, with the same specification as
+    {!Pervasives.compare}.  Along with the type [t], this function [compare]
+    allows the module [String] to be passed as argument to the functors
+    {!Set.Make} and {!Map.Make}.
+
+    Example: [String.compare "FOO" "bar" = -1] i.e. "FOO" < "bar"
 *)
 
 val icompare: t -> t -> int
-  (** Compare two strings, case-insensitive.
+(** Compare two strings, case-insensitive.
 
-      Example: [String.icompare "FOO" "bar" = 1] i.e. "foo" > "bar"
+    Example: [String.icompare "FOO" "bar" = 1] i.e. "foo" > "bar"
 *)
 
 module IString : BatInterfaces.OrderedType with type t = t
-  (** uses icompare as ordering function
+(** uses icompare as ordering function
 
-      Example: [module Nameset = Set.Make(String.IString)]
-  *)
+    Example: [module Nameset = Set.Make(String.IString)]
+*)
 
 
 val numeric_compare: t -> t -> int
-  (** Compare two strings, sorting "abc32def" before "abc210abc".
+(** Compare two strings, sorting "abc32def" before "abc210abc".
 
-      Algorithm: splits both strings into lists of (strings of digits) or
-      (strings of non digits) ([["abc"; "32"; "def"]] and [["abc"; "210"; "abc"]])
-      Then both lists are compared lexicographically by comparing elements
-      numerically when both are numbers or lexicographically in other cases.
+    Algorithm: splits both strings into lists of (strings of digits) or
+    (strings of non digits) ([["abc"; "32"; "def"]] and [["abc"; "210"; "abc"]])
+    Then both lists are compared lexicographically by comparing elements
+    numerically when both are numbers or lexicographically in other cases.
 
-      Example: [String.numeric_compare "xx32" "xx210" < 0]
-   *)
+    Example: [String.numeric_compare "xx32" "xx210" < 0]
+*)
 
 module NumString : BatInterfaces.OrderedType with type t = t
 (** uses numeric_compare as its ordering function
 
     Example: [module FilenameSet = Set.Make(String.NumString)]
- *)
-
-val eq : t -> t -> bool
+*)
 
 (** {6 Boilerplate code}*)
 
@@ -552,8 +556,6 @@ val print_quoted: 'a BatInnerIO.output -> string -> unit
 val t_printer : t BatValuePrinter.t
 
 val unquoted_printer : t BatValuePrinter.t
-
-
 
 (** Exceptionless counterparts for error-raising operations *)
 module Exceptionless :
