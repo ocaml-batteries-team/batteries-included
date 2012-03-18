@@ -206,23 +206,6 @@ let extract_from pathin = Lexing.(
   close_in chanin
 )
 
-(** Show welcome message *)
-let welcome() = epf "
-** qtest (%s)
-USAGE: qtest [options] extract <file.mli?>...
-
-OPTIONS:
---output <file.ml>    (-o) def: standard output
-  Open or create a file for output; the resulting file will be an OCaml
-  source file containing all the tests.
-
---preamble <string>   (-p) def: empty
-  Add code to the tests' preamble; typically this will be an instruction
-  of the form 'open Module;;'
-
-
---help          Displays this help page and stops
-" (Sys.argv.(0))
 
 (** Generate the test suite from files list on currently selected output *)
 let generate paths =
@@ -235,18 +218,36 @@ let generate paths =
   eps "Done.\n"
 
 (** Parse command line *)
-let rec pcl = function
-  | ("-p"|"--preamble") :: code :: l -> global_preamble := code ^ "\n"; pcl l
-  | ("-o"|"--output") :: path :: l ->
-    epf "Target file: `%s'. " path; outc := open_out path; pcl l
-  | "extract" :: paths -> generate paths
-  | "--help" :: _ -> welcome ()
-  | x :: _ -> failwith @@ "bad arg: " ^ x
-  | [] -> ()
+let set_preamble code =
+  global_preamble := !global_preamble ^ code ^ "\n"
+let set_output path =
+  epf "Target file: `%s'. " path; outc := open_out path
+
+let options = [
+(* the careful spacing here preserves a good-looking alignment in -help output *)
+"-p", Arg.String set_preamble, "";
+"--preamble", Arg.String set_preamble, 
+            "<string>  Add code to the tests' preamble; typically this will be
+                      an instruction of the form 'open Module;;'";
+"-o", Arg.String set_output, "";
+"--output", Arg.String set_output,
+          "<path>  Open or create a file for output; the resulting file
+                   will be an OCaml source file containing all the tests."
+]
+
+let usage_msg =
+(* OPTIONS: is here to mimick the pre-Arg behavior *)
+"USAGE: qtest [options] extract <file.mli?>...
+
+OPTIONS:"
 
 let () =
-  let commands = List.tl (Array.to_list Sys.argv) in
-  if commands = [] then  pl "qtest: use --help for usage notes.";
-  pcl commands
-
+  let rev_anon_args = ref [] in
+  let push_anon arg = (rev_anon_args := arg :: !rev_anon_args) in
+  Arg.parse options push_anon usage_msg;
+  match List.rev !rev_anon_args with
+    | [] -> pl "qtest: use --help for usage notes."
+    | "extract" :: paths -> generate paths
+    | arg :: _ ->
+      failwith @@ "bad arg: " ^ arg
 }
