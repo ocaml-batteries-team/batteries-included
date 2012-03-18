@@ -23,30 +23,36 @@
 *)
 open BatIO
 
-(** Get and set the default output channel for simple logging.
-    Defaults to stderr *)
-val get_output : unit -> unit output
-val set_output : unit output -> unit
+(** This ref holds the output channel for simple logging.  Defaults to
+    [stderr]
 
-(** Get and set the text printed before each log message.  Defaults to
-    the empty string. *)
-val get_prefix : unit -> string
-val set_prefix : string -> unit
+    @since 2.0; had getter and setter in 1.x
+*)
+val output : unit output ref
 
-(** Get and set the output flags.  These flags control how the log
+(** This ref holds the text printed before each log message.  Defaults to
+    the empty string.
+
+    @since 2.0; had getter and setter in 1.x
+*)
+val prefix : string ref
+
+type flag = [
+| `Date (** Print the current date as 2011-06-28 *)
+| `Time (** Print the current time as 01:23:45 *)
+| `Filepos (** Print the file and linenum of this log command (UNIMPLEMENTED - needs syntax extension) *)
+| `Custom of unit -> string (** Print the results of running the given closure *)
+]
+
+(** This ref holds the output flags.  These flags control how the log
     messages are output.  The default is [`Date; `Time] and log
     messages are printed as:
 
     2011/0628 01:23:45: prefixmessage
- *)
-type flag = [
-| `Date (** Print the current date as 2011/0628 *)
-| `Time (** Print the current time as 01:23:45 *)
-| `Filepos (** Print the file and position of this log command (UNIMPLEMENTED) *)
-| `Custom of unit -> string (** Print the results of running the given closure *)
-]
-val get_flags : unit -> flag list
-val set_flags : flag list -> unit
+
+    @since 2.0; had getter and setter in 1.x
+*)
+val flags : flag list ref
 
 (** [log s] logs the message s, returning unit.
 
@@ -109,14 +115,14 @@ end
 *)
 
 val make_logger :
-  'a BatInnerIO.output ->
+  'a output ->
   string ->
   [< `Custom of unit -> string | `Date | `Filepos | `Time ] list ->
   < fatal : ?fp:string -> string -> 'b;
  fatalf : ?fp:string ->
-              ('c, 'a BatInnerIO.output, unit, unit, unit, 'd) format6 -> 'c;
+	      ('c, 'a output, unit, unit, unit, 'd) format6 -> 'c;
  log : ?fp:string -> string -> unit;
- logf : ?fp:string -> ('e, 'a BatInnerIO.output, unit) BatPrintf.t -> 'e >
+ logf : ?fp:string -> ('e, 'a output, unit) format -> 'e >
 
 (** The different verbosity levels supported in the [Easy] logger *)
 type easy_lev = [ `trace | `debug | `info | `warn | `error | `fatal | `always ]
@@ -134,10 +140,9 @@ module Easy : sig
       enable logging for [`info], [`warn], [`error], [`fatal] and
       [`always] levels. *)
   val level : easy_lev ref
-
-  (** get and set the output channel. *)
-  val get_output : unit -> unit BatInnerIO.output
-  val set_output : unit BatInnerIO.output -> unit
+  (** Set this ref to the output you want logging messages to go
+      to.  Defaults to [stderr]. *)
+  val output : unit output ref
 
   (** [log lev msg] logs the message [msg] if the current logging
       level is [lev] or lower.  *)
@@ -145,7 +150,7 @@ module Easy : sig
 
   (** As [log], but instead of a string message, a printf format is
       allowed with whatever arguments are appropriate. *)
-  val logf : ?fp:string -> easy_lev -> ('a, unit output, unit) Pervasives.format -> 'a
+  val logf : ?fp:string -> easy_lev -> ('a, unit output, unit) format -> 'a
 end
 
 
@@ -166,8 +171,7 @@ end
 (** Make your own level-based logger, like [Easy] *)
 module Make_lev(L:Level_sig)(S:Config) : sig
   val level : L.t ref
-  val get_output : unit -> S.t BatInnerIO.output
-  val set_output : S.t BatInnerIO.output -> unit
+  val output : S.t output ref
   val log : ?fp:string -> L.t -> string -> unit
-  val logf : ?fp:string -> L.t -> ('a, S.t output, unit) Pervasives.format -> 'a
+  val logf : ?fp:string -> L.t -> ('a, S.t output, unit) format -> 'a
 end
