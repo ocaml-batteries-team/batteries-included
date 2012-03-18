@@ -226,6 +226,21 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
     | (h::t, None,   Some y)     -> rev_append (aux [h] t) [y]
     | (h::t, Some x, Some y)     -> x::rev_append (aux [h] t) [y]
 
+(*$= interleave & ~printer:(IO.to_string (List.print Int.print))
+  (interleave 0 [1;2;3]) [1;0;2;0;3]
+  (interleave 0 [1]) [1]
+  (interleave 0 []) []
+  (interleave ~first:(-1) 0 [1;2;3]) [-1;1;0;2;0;3]
+  (interleave ~first:(-1) 0 [1]) [-1;1]
+  (interleave ~first:(-1) 0 []) [-1]
+  (interleave ~last:(-2) 0 [1;2;3]) [1;0;2;0;3;-2]
+  (interleave ~last:(-2) 0 [1]) [1;-2]
+  (interleave ~last:(-2) 0 []) [-2]
+  (interleave ~first:(-1) ~last:(-2) 0 [1;2;3]) [-1;1;0;2;0;3;-2]
+  (interleave ~first:(-1) ~last:(-2) 0 [1]) [-1;1;-2]
+  (interleave ~first:(-1) ~last:(-2) 0 []) [-1;-2]
+*)
+
 let rec unique ?(eq = ( = )) l =
   let rec loop dst = function
     | [] -> ()

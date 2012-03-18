@@ -426,7 +426,7 @@ val drop_while : ('a -> bool) -> 'a list -> 'a list
 
 val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
-[first; a0; sep; a1; sep; a2; sep; ...; sep; an] *)
+[first; a0; sep; a1; sep; a2; sep; ...; sep; an; last] *)
 
 
 (** {6 BatEnum functions}
