@@ -28,6 +28,8 @@ let compare = String.compare
 *)
 
 let eq a b = String.compare a b = 0
+let ord = BatOrd.ord String.compare
+
 
 let init len f =
   let s = create len in
