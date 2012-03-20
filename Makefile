@@ -41,6 +41,8 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	ocamlinit build/ocaml
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
 	_build/src/*.cmxs _build/src/*.lib _build/libs/*.cmx \
+	_build/$(QTESTDIR)/quickcheck.cmx _build/$(QTESTDIR)/quickcheck.o \
+	_build/$(QTESTDIR)/runner.cmx _build/$(QTESTDIR)/runner.o
 
 # What to build
 TARGETS = syntax.otarget
@@ -73,9 +75,9 @@ else
 endif
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
+.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man qtest_deps
 
-all: _build/$(QTESTDIR)/qtest
+all: _build/$(QTESTDIR)/qtest qtest_deps
 	@echo "Build mode:" $(MODE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
@@ -158,6 +160,13 @@ _build/$(QTESTDIR)/qtest.native:
 # We want a version of qtest without extension to be installed
 _build/$(QTESTDIR)/qtest: _build/$(QTESTDIR)/qtest.$(EXT)
 	cp $< $@
+
+# We want to install quickcheck.cm[oix] and runner.cm[oix] but these files
+# are build only as a side effect of all_tests.byte/native. We could add
+# explicit rules so that one can install them without building the tests,
+# but due to how OPT_INSTALL_FILES works one could then miss the cmx files.
+# So we depend on all_tests.byte/native instead.
+qtest_deps: _build/$(QTESTDIR)/all_tests.byte _build/$(QTESTDIR)/all_tests.$(EXT)
 
 # extract all qtest unit tests into a single ml file
 $(QTESTDIR)/all_tests.ml: _build/$(QTESTDIR)/qtest.$(EXT) $(TESTABLE)
