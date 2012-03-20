@@ -61,7 +61,7 @@ ifeq ($(BATTERIES_NATIVE), yes)
   EXT = native
   MODE = native
   TARGETS += src/batteries.cmxa src/batteriesThread.cmxa
-  TEST-DEPS = test-native
+  TEST_TARGET = test-native
 else
   EXT = byte
   MODE = bytecode
