@@ -6,8 +6,8 @@ let rec foo x0 f = function
   [] -> x0 | x::xs -> f x (foo x0 f xs)
 
 (*$T foo
-  foo  0 ( + ) [1;2;3] = 6
-  foo  0 ( * ) [1;2;3] = 0
+  foo  0 ( + ) [1;2;3] = 6  (* hehe *)
+  foo  0 ( * ) [1;2;3] = 0  (* haha (*hoho *) *)
   foo  1 ( * ) [4;5]   = 20
   foo 12 ( + ) []      = 12
 *)
@@ -29,7 +29,7 @@ let rec foo x0 f = function
   let thing = foo  1 ( * ) 
   and li = [4;5] in
   assert_bool "something_witty" (thing li = 20);
-  
+   (* pertinent comment *)
   assert_bool "something_wittier" (1=1)
 
 
@@ -148,7 +148,7 @@ end
   
 (* empty headers: space, nothing, explicit empty param *)
 (*$T &
-  2+2 = 4
+  2+2 = 4 (* some comment *)
 *)
 (*$T
   2+1 = 3

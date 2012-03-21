@@ -105,9 +105,19 @@ and lexbody ln b acc = parse
   eol lexbuf; let code = B.contents b in B.clear b;
   lexbody Lexing.(lexbuf.lex_curr_p.pos_lnum) b ({ln ; code} :: acc) lexbuf }
 | blank* "*)" { acc }
+| "(*" { lexcomment 0 lexbuf ; lexbody ln b acc lexbuf }
 | ([^'\n']#blank)* blank* '*'+ ")" as x
   { failwith ("runaway test body terminator: " ^ x) }
 | eof { raise @@ Unterminated_test acc }
+
+(** evacuate OCaml comments *)
+and lexcomment n  = parse
+| "(*" { lexcomment (succ n) lexbuf }
+| "\n" { eol lexbuf; lexcomment n lexbuf }
+| "*)" { if n <= 0 then () else lexcomment (pred n) lexbuf }
+| _    { lexcomment n lexbuf }
+| eof  { }
+
 
 (** body of a raw test... everything until end comment *)
 and lexbody_raw ln b = parse
@@ -148,7 +158,7 @@ and lexheader = parse
 | "forall" { FORALL }
 | lident as x { ID x }
 | "\\\n" { eol lexbuf ; lexheader lexbuf }
-| "&"  ("" | [^'\n']*[^'\\' '\n'] as x) { epf "param(%s)" x; PARAM (trim x) }
+| "&"  ("" | [^'\n']*[^'\\' '\n'] as x) { PARAM (trim x) }
 | '\n'   { eol lexbuf; EOF }
 | eof  { failwith "unterminated header at end of file" }
 | _ as c { raise @@ Bad_header_char((soc c), snip lexbuf) }
