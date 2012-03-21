@@ -3,7 +3,7 @@ open Core;;
 %}
 
 %token <string> ID PARAM UID
-%token COMMA AS EOF EOF2 SEMI
+%token COMMA AS EOF EOF2 SEMI IN FORALL LBRACKET RBRACKET
 
 %start metaheader_
 %type <Core.metaheader> metaheader_
@@ -38,11 +38,13 @@ metaheader: /* x,y,z as target; a,b,c as tata ; ... */
 | multibind SEMI metaheader { $1 ::  $3 };
 
 multibind : /* x,y,z as target */       
-| functions AS ID { $1, $3 }/* foo -> foo as foo */
-| functions       { $1, List.hd $1 };
+| FORALL ID IN LBRACKET functions RBRACKET  { $5, $2 }
+| ID            { [$1], $1 }
+| ID AS ID      { [$1], $3 }
+| error         { failwith "Parser:Multibind" }
 
 functions: /* x,y,z */
 | ID                  { [$1] }
-| ID COMMA functions  { $1 :: $3 };
+| ID SEMI functions   { $1 :: $3 };
 
 %%

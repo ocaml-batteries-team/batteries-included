@@ -133,9 +133,12 @@ and lexinjectmv b = parse
 (** prepare to parse test header *)
 and lexheader = parse
 | blank { lexheader lexbuf }
-| "," { COMMA }
 | ";" { SEMI }
+| "[" { LBRACKET }
+| "]" { RBRACKET }
 | "as" { AS }
+| "in" { IN }
+| "forall" { FORALL }
 | lident as x { ID x }
 | "&"  ([^'\n']* as x) { PARAM (trim x) }
 | '\n' { eol lexbuf; EOF }

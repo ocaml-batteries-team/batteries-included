@@ -61,11 +61,11 @@ and odd = function 0 -> false
 *)
 
 
-(*$Q foo, pretentious_drivel as x
+(*$Q forall x in [foo; pretentious_drivel]
   (Q.pair Q.small_int (Q.list Q.small_int)) (fun (i,l)-> x i (+) l = List.fold_left (+) i l)
 *)
 
-(*$Q foo, pretentious_drivel & ~count:500
+(*$Q forall foo in [foo; pretentious_drivel] & ~count:500
   (Q.pair Q.small_int (Q.list Q.small_int)) (fun (i,l)-> foo i (+) l = List.fold_left (+) i l)
 *)
 
@@ -153,6 +153,6 @@ let rec flu = function
   | [] -> []
   | x :: l -> if List.mem x l then flu l else x :: flu l
   
-(*$Q fuz; flu &  ~small:(Some List.length)
+(*$Q fuz; flu &  ~small:(List.length)
   (Q.list Q.small_int) (fun x -> fuz x = flu x)
 *)

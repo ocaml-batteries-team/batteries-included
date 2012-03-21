@@ -113,7 +113,7 @@ val fun2 : 'a gen_print -> 'b gen_print -> 'c gen_print -> ('a -> 'b -> 'c) gen_
 *)
 
 val laws_exn :
-  ?small:('a -> 'b) ->
+  ?small:('a -> int) ->
   ?count:int ->
   string -> 'a gen_print -> ('a -> bool) -> unit
  (** [laws_exn ?small ?count name gen law] generates up to [count] random
