@@ -3,7 +3,7 @@ open Core;;
 %}
 
 %token <string> ID PARAM UID
-%token COMMA AS EOF EOF2 SEMI IN FORALL LBRACKET RBRACKET
+%token COMMA AS EOF SEMI IN FORALL LBRACKET RBRACKET
 
 %start metaheader_
 %type <Core.metaheader> metaheader_
@@ -25,11 +25,13 @@ modules:
 
 /* header stuff */
 
-metaheader_ : metaheader param EOF { {mhb = $1; mhpar = $2} };
-
+metaheader_ :
+| metaheader param EOF { {mhb = $1; mhpar = $2} }
+| metaheader /* */ EOF { {mhb = $1; mhpar = ""} };
+  
 param:
-| PARAM     { $1 }
-| /* nil */ { "" };
+| PARAM param   { $1 ^ " " ^ $2 }
+| PARAM         { $1 };
 
 metaheader: /* x,y,z as target; a,b,c as tata ; ... */
 | /* gnu */                 { [] }

@@ -147,8 +147,9 @@ and lexheader = parse
 | "in" { IN }
 | "forall" { FORALL }
 | lident as x { ID x }
-| "&"  ([^'\n']* as x) { PARAM (trim x) }
-| '\n' { eol lexbuf; EOF }
+| "\\\n" { eol lexbuf ; lexheader lexbuf }
+| "&"  ("" | [^'\n']*[^'\\' '\n'] as x) { epf "param(%s)" x; PARAM (trim x) }
+| '\n'   { eol lexbuf; EOF }
 | eof  { failwith "unterminated header at end of file" }
 | _ as c { raise @@ Bad_header_char((soc c), snip lexbuf) }
 
