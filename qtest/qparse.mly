@@ -9,15 +9,14 @@ open Core;;
 %type <Core.metaheader> metaheader_
 
 %start modules_
-%type <bool * string list> modules_
+%type <string list> modules_
 
 %%
 
 /* manipulation pragma */
 
 modules_:
-| modules EOF2 { true , $1 }
-| modules EOF  { false, $1 };
+| modules EOF  { $1 };
 
 modules:
 | UID                 { [$1] }

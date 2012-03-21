@@ -95,17 +95,22 @@ end = struct
   (*${*)
   let baz = "baz"
   (*$}*)
+  
+  (*$begin:inject*)
+  let baz = "boz"
+  (*$end:inject*)
+  
   (*$T baz
     baz.[2] = 'z'
   *)
 
-  (*${ let brom = baz }*)
+  (*$inject let brom = baz *)
   (*$T brom
     brom.[2] = 'z'
   *)
 
   (* global open *)
-  (*$< List, Array >*)
+  (*$open List, Array *)
 
   (*${*)
     open Set;;
@@ -117,6 +122,16 @@ end
   (* $T bar
     bar.[0] = 'b'
   *)
+
+
+module Zooo = struct 
+(*$begin:open Zooo *)
+  let myplus = (+)
+  (*$T myplus
+    myplus 4 9 = 13
+  *)
+(*$end:open*)
+end
 
   (*$T &
     Foomod.bar.[0] = 'b'
@@ -153,6 +168,6 @@ let rec flu = function
   | [] -> []
   | x :: l -> if List.mem x l then flu l else x :: flu l
   
-(*$Q fuz; flu &  ~small:(List.length)
+(*$Q fuz; flu &  ~small:List.length
   (Q.list Q.small_int) (fun x -> fuz x = flu x)
 *)

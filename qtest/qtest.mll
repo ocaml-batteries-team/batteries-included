@@ -71,15 +71,22 @@ rule lexml t = parse
   register_mtest lexbuf lexheader (lexbody_raw (succ lnum) buffy) lnum Raw }
   (* manipulation pragmas *)
   (************************)
-| "(*$<"  {
-  let global, modules = modules_ lexmodules lexbuf
+| "(*$<" | "(*$begin:open" { (* local open *)
+  let ctx = snip lexbuf (* save context for error reporting *)
+  and modules = modules_ lexmodules lexbuf
   and loc_register m = register Env_begin; register @@ Open m
+  in if (List.length modules > 1) then
+    failwith @@ "\n" ^ ctx ^ "\nLocal open cannot take more than one module.";
+  List.iter loc_register modules }
+| "(*$>*)" | "(*$end:open*)" { register Env_close }
+| "(*$open" { (* global open *)
+  let modules = modules_ lexmodules lexbuf
   and glo_register m = register @@ Open m
-  in let reg = if global then glo_register else loc_register
-  in List.iter reg modules }
-| "(*$>*)" { register Env_close }
-| "(*${*)" { lexinjectcp buffy lexbuf }
-| "(*${"   { lexinjectmv buffy lexbuf }
+  in List.iter glo_register modules }
+| "(*${*)" | "(*$begin:inject*)" (* copy injection *)
+  { lexinjectcp buffy lexbuf }
+| "(*$inject" (* pure injection *)
+  { lexinjectmv buffy lexbuf }
   (* error cases *)
   (***************)
 | "(*$" { raise @@ Invalid_pragma (snip lexbuf) }
@@ -116,7 +123,7 @@ and lexinjectcp b = parse
 | _ as c {
   if c = '\n' then eol lexbuf;
   B.add_char b c; lexinjectcp b lexbuf }
-| "(*$}*)" {
+| "(*$}*)" | "(*$end:inject*)" {
    let code = B.contents b in B.clear b;
    register @@ Inject (info lexbuf,code) }
 
@@ -125,7 +132,7 @@ and lexinjectmv b = parse
 | _ as c {
   if c = '\n' then eol lexbuf;
   B.add_char b c; lexinjectmv b lexbuf }
-| "}*)" { (* note: the 2 spaces are for column numbers reporting *)
+| "*)" { (* note: the 2 spaces are for column numbers reporting *)
    let code = "  " ^ B.contents b in B.clear b;
    register @@ Inject (info lexbuf,code) }
 
@@ -150,7 +157,6 @@ and lexmodules = parse
 | blank { lexmodules lexbuf }
 | "," { COMMA }
 | "*)"  { EOF  }  (* local open, closed later *)
-| ">*)" { EOF2 }  (* global open *)
 | uident as x { UID x }
 | _ as c { raise @@ Bad_modules_open_char (soc c) }
 
