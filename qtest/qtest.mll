@@ -93,9 +93,12 @@ rule lexml t = parse
 | "(*" (blank | '*')+ "$" [^'\n']* as y {
   let f,n = info lexbuf in
   epf "\nWarning: likely qtest syntax error: `%s' at %s:%d. " y f n }
-| '\n' { eol lexbuf }
+| "(*"   { lexcomment 0 lexbuf }
+| "\\\"" { }
+| "\""   { lexstring lexbuf }
+| '\n'   { eol lexbuf }
   (* others *)
-| _ { () } | eof {t()}
+| _ { } | eof {t()}
 
 (** body of a test: simply extract lines *)
 and lexbody ln b acc = parse
@@ -110,14 +113,19 @@ and lexbody ln b acc = parse
   { failwith ("runaway test body terminator: " ^ x) }
 | eof { raise @@ Unterminated_test acc }
 
-(** evacuate OCaml comments *)
+(** evacuate OCaml comments... *)
 and lexcomment n  = parse
 | "(*" { lexcomment (succ n) lexbuf }
 | "\n" { eol lexbuf; lexcomment n lexbuf }
 | "*)" { if n <= 0 then () else lexcomment (pred n) lexbuf }
 | _    { lexcomment n lexbuf }
-| eof  { }
-
+| eof  { epf "Warning: unterminated comment" }
+(** ... and strings *)
+and lexstring = parse
+| "\\\"" { lexstring lexbuf }
+| "\""   { } 
+| _      { lexstring lexbuf }
+| eof    { epf "Warning: unterminated string" }
 
 (** body of a raw test... everything until end comment *)
 and lexbody_raw ln b = parse

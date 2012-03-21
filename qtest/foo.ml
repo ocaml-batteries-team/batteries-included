@@ -168,8 +168,23 @@ let rec flu = function
   | [] -> []
   | x :: l -> if List.mem x l then flu l else x :: flu l
   
+(*
 (*$Q fuz; flu &  ~small:List.length\
   & ~count:100 \
   & (* test *)
   (Q.list Q.small_int) (fun x -> fuz x = flu x)
+*)
+*)
+
+let strange_string = " \"
+(*$Q fuz; flu &  ~small:List.length\
+  & ~count:100 \
+  & (* test *)
+  (Q.list Q.small_int) (fun x -> fuz x = flu x)
+*)
+"
+
+(*$T & 6 \
+  & =
+  2*3
 *)
