@@ -80,9 +80,8 @@ val add : 'a t -> 'a -> unit
 val push : 'a t -> 'a -> unit
 (** Adds an element at the head - O(1) *)
 
-val add_sort : ?cmp:('a -> 'a -> int) -> 'a t -> 'a -> unit
-(** Adds an element in a sorted list, using optional comparator
-    or 'compare' as default. *)
+val add_sort : cmp:('a -> 'a -> int) -> 'a t -> 'a -> unit
+(** Adds an element in a sorted list, using the given comparator. *)
 
 val first : 'a t -> 'a
 (** Returns the first element or
@@ -162,9 +161,8 @@ val map_list : ('a -> 'b) -> 'a t -> 'b list
     and return the list constructed with
     the function returned values *)
 
-val sort : ?cmp:('a -> 'a -> int) -> 'a t -> unit
-(** Sort elements using the specified comparator
-    or compare as default comparator *)
+val sort : cmp:('a -> 'a -> int) -> 'a t -> unit
+(** Sort elements using the specified comparator *)
 
 val filter : ('a -> bool) -> 'a t -> unit
 (** Remove all elements that do not match the

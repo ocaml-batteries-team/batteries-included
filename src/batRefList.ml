@@ -18,9 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-open BatList
-
 exception Empty_list
 
 type 'a t = 'a list ref
@@ -47,14 +44,14 @@ let hd rl = try List.hd !rl with _ -> raise Empty_list
 let tl rl = try ref (List.tl !rl) with _ -> raise Empty_list
 let iter f rl = List.iter f !rl
 let for_all f rl = List.for_all f !rl
-let map f rl = ref (List.map f !rl)
-let transform f rl = rl := List.map f !rl
-let map_list f rl = List.map f !rl
+let map f rl = ref (BatList.map f !rl)
+let transform f rl = rl := BatList.map f !rl
+let map_list f rl = BatList.map f !rl
 let find f rl = List.find f !rl
 let rev rl = rl := List.rev !rl
 let find_exc f exn rl = try List.find f !rl with _ -> raise exn
 let exists f rl = List.exists f !rl
-let sort ?(cmp=compare) rl = rl := List.sort cmp !rl
+let sort ~cmp rl = rl := List.sort cmp !rl
 
 let rfind f rl = BatList.rfind f !rl
 
@@ -75,7 +72,7 @@ let remove_if pred rl = rl := BatList.remove_if pred !rl
 let remove_all rl item = rl := BatList.remove_all !rl item
 let filter pred rl = rl := List.filter pred !rl
 
-let add_sort ?(cmp=compare) rl item =
+let add_sort ~cmp rl item =
   let rec add_aux = function
   | x::lnext as l ->
       let r = cmp x item in
