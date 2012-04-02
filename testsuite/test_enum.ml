@@ -116,6 +116,42 @@ let test_uncombine () =
   aeq a c;
   aeq b d
 
+(* BatEnum.from should not call the user function after No_more_elements was raised. *)
+let test_from () =
+  let nb_calls = ref 0 in
+  let next () =
+  	incr nb_calls ;
+    if !nb_calls <= 5 then !nb_calls
+    else raise BatEnum.No_more_elements in
+  let e = BatEnum.merge (fun _ _ -> true) (BatEnum.from next) (1 -- 5) in
+  let nb_res = BatEnum.hard_count e in
+  assert_equal ~printer:string_of_int 10 nb_res ;
+  assert_equal ~printer:string_of_int 6 !nb_calls
+
+(* Same as above for BatEnum.from_while *)
+let test_from_while () =
+  let nb_calls = ref 0 in
+  let next () =
+    incr nb_calls ;
+    if !nb_calls <= 5 then Some !nb_calls
+    else None in
+  let e = BatEnum.merge (fun _ _ -> true) (BatEnum.from_while next) (1 -- 5) in
+  let nb_res = BatEnum.hard_count e in
+  assert_equal ~printer:string_of_int 10 nb_res ;
+  assert_equal ~printer:string_of_int 6 !nb_calls
+
+(* Same as above for BatEnum.from_loop *)
+let test_from_loop () =
+  let nb_calls = ref 0 in
+  let next prev =
+    incr nb_calls ;
+    if !nb_calls <= 5 then prev+1, !nb_calls
+    else raise BatEnum.No_more_elements in
+  let e = BatEnum.merge (fun _ _ -> true) (BatEnum.from_loop 0 next) (1 -- 5) in
+  let nb_res = BatEnum.hard_count e in
+  assert_equal ~printer:string_of_int 10 nb_res ;
+  assert_equal ~printer:string_of_int 6 !nb_calls
+
 let tests = "BatEnum" >::: [
   "Array" >:: test_array_enums;
   "List" >:: test_list_enums;
@@ -125,4 +161,7 @@ let tests = "BatEnum" >::: [
   "bigarray" >:: test_bigarray_enums;
   "Set" >:: test_set_enums;
   "uncombine" >:: test_uncombine;
+  "from" >:: test_from;
+  "from_while" >:: test_from_while;
+  "from_loop" >:: test_from_loop;
 ]
