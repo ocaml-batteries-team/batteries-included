@@ -152,11 +152,12 @@ end
 
 let from f =
   let e = {
-    next = f;
+    next = _dummy;
     count = _dummy;
     clone = _dummy;
     fast = false;
   } in
+    e.next  <- (fun () -> try f () with No_more_elements -> close e ; raise No_more_elements);
     e.count <- (fun () -> force e; e.count());
     e.clone <- (fun () ->
 		  let e' =  MicroLazyList.enum(MicroLazyList.from f) in

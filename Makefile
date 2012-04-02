@@ -137,9 +137,9 @@ TESTDEPS = $(TESTABLE)
 ### Test suite: "offline" unit tests
 ##############################################
 
-_build/testsuite/main.byte: $(TESTDEPS)
+_build/testsuite/main.byte: $(TESTDEPS) $(wildcard testsuite/*.ml)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte
-_build/testsuite/main.native: $(TESTDEPS)
+_build/testsuite/main.native: $(TESTDEPS) $(wildcard testsuite/*.ml)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.native
 
 ### qtest: "inline" unit tests
