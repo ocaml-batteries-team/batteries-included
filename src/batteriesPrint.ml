@@ -18,6 +18,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+let printers = ref [
+  "BatteriesPrint.print_uchar";
+  "BatteriesPrint.print_ustring";
+  "BatteriesPrint.print_rope";
+  "BatteriesPrint.print_string_cap_rw";
+  "BatteriesPrint.print_string_cap_ro";
+  "BatteriesPrint.string_dynarray";
+  "BatteriesPrint.int_dynarray";
+  "BatteriesPrint.char_dynarray";
+  "BatteriesPrint.float_dynarray";
+  "BatteriesPrint.int_set";
+  "BatteriesPrint.string_set";
+  "BatteriesPrint.int_pset";
+  "BatteriesPrint.string_pset";
+  "BatteriesPrint.rope_pset";
+  "BatteriesPrint.char_pset";
+  "BatteriesPrint.int_enum";
+  "BatteriesPrint.string_enum";
+  "BatteriesPrint.rope_enum";
+  "BatteriesPrint.char_enum";
+]
+
+(** Call with full name of printer identifier, including module *)
+let register_toplevel_printer s = printers := s :: !printers
+
 let print_uchar fmt t =
   Format.fprintf fmt "UChar.of_char '%s'" (Ulib.UTF8.init 1 (fun _ -> t))
 

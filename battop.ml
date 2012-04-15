@@ -59,26 +59,18 @@ begin
 end;;
 
 open Batteries;;
-#install_printer BatteriesPrint.print_uchar;;
-#install_printer BatteriesPrint.print_ustring;;
-#install_printer BatteriesPrint.print_rope;;
-#install_printer BatteriesPrint.print_string_cap_rw;;
-#install_printer BatteriesPrint.print_string_cap_ro;;
-#install_printer BatteriesPrint.string_dynarray;;
-#install_printer BatteriesPrint.int_dynarray;;
-#install_printer BatteriesPrint.char_dynarray;;
-#install_printer BatteriesPrint.float_dynarray;;
-#install_printer BatteriesPrint.int_set;;
-#install_printer BatteriesPrint.string_set;;
-#install_printer BatteriesPrint.int_pset;;
-#install_printer BatteriesPrint.string_pset;;
-#install_printer BatteriesPrint.rope_pset;;
-#install_printer BatteriesPrint.char_pset;;
-#install_printer BatteriesPrint.int_enum;;
-#install_printer BatteriesPrint.string_enum;;
-#install_printer BatteriesPrint.rope_enum;;
-#install_printer BatteriesPrint.char_enum;;
 
+let eval_string str =
+  Lexing.from_string str |> !Toploop.parse_toplevel_phrase
+    |> Toploop.execute_phrase false Format.err_formatter;;
+
+let rec install_printers = function
+  | [] -> true
+  | printer :: printers ->
+    let cmd = Printf.sprintf "#install_printer %s;;" printer in
+    eval_string cmd && install_printers printers;;
+
+install_printers !BatteriesPrint.printers;;
 
 if ext_syntax then begin
   if !Sys.interactive then

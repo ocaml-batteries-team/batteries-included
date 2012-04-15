@@ -324,6 +324,29 @@ let nsplit str ~by:sep =
   nsplit "FOOaFOObFOOcFOOFOO" ~by:"FOO" = [""; "a"; "b"; "c"; ""; ""]
 *)
 
+let nsplitp str pred =
+  if str = "" then []
+  else
+    (* str is non empty *)
+    let rec aux acc ofs idx =
+      (* ofs is current position to check, idx is beginning of last token *)
+      if ofs >= 0 then (
+        if pred str.[ofs] then (* sep found *)
+          let token = sub str (ofs + 1) (idx - ofs) in
+          aux (token::acc) (ofs - 1) (ofs - 1)
+        else (* sep NOT found at position ofs*)
+          aux acc (ofs - 1) idx
+      )
+      else (* we've run out of string to search, we're done *)
+        sub str 0 (idx+1) :: acc
+    in
+    aux [] (length str - 1 ) (length str - 1)
+
+(*$= nsplitp & ~printer:(IO.to_string (List.print String.print))
+  ["a"; "b"; "c"] (nsplitp "a b c" Char.is_whitespace)
+*)
+
+
 let join = concat
 
 let unsafe_slice i j s =

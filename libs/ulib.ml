@@ -76,7 +76,7 @@
 
 module UChar = struct
   type t = int
-	
+
   exception Out_of_range
 
   external code : t -> int = "%identity"
@@ -99,7 +99,7 @@ module UChar = struct
   let compare u1 u2 = u1 - u2
 
   type uchar = t
-	
+
   let int_of u = code u
   let of_int n = chr n
 end
@@ -182,7 +182,7 @@ module UTF8 = struct
     if n <= 0xdf then i + 2
     else if n <= 0xef then i + 3
     else i + 4
-	
+
   let rec search_head_backward s i =
     if i < 0 then -1 else
     let n = Char.code s.[i] in
@@ -198,7 +198,7 @@ module UTF8 = struct
     else
       let rec loop i n = if n >= 0 then i else loop (prev s i) (n + 1) in
       loop i n
-	
+
   let rec nth_aux s i n =
     if n = 0 then i else
     nth_aux s (next s i) (n - 1)
@@ -233,7 +233,7 @@ module UTF8 = struct
       Buffer.add_char buf (Char.unsafe_chr (0x80 lor ((k lsr 6) land masq)));
       Buffer.add_char buf (Char.unsafe_chr (0x80 lor (k land masq)));
     end
-	
+
   let init len f =
     let buf = Buffer.create len in
     for c = 0 to len - 1 do add_uchar buf (f c) done;
@@ -390,6 +390,14 @@ module UTF8 = struct
     let rec aux ci bi =
       if ByteIndex.out_of_range us bi then raise Not_found;
       if ByteIndex.look us bi = ch then ci
+      else aux (ci-1) (ByteIndex.prev us bi)
+    in
+    aux 0 (ByteIndex.last us)
+
+  let rindexp us pred =
+    let rec aux ci bi =
+      if ByteIndex.out_of_range us bi then raise Not_found;
+      if pred (ByteIndex.look us bi) then ci
       else aux (ci-1) (ByteIndex.prev us bi)
     in
     aux 0 (ByteIndex.last us)
@@ -1024,13 +1032,13 @@ module Text = struct
         and causes termination of the program.*)
 end = struct
     type 'a t = 'a option ref
-	
+
     exception Return
-	
+
     let return label value =
       label := Some value;
       raise Return (*(Obj.repr label)*)
-	
+
     let label f =
       let r = ref None in
       try   f r
@@ -1246,6 +1254,45 @@ let of_list l =
   	 |  None     -> (sub str 0 ofs)::acc
          in
   	 aux [] (length str - 1 )
+
+  let rindexp r pred =
+    Return.with_label (fun label ->
+      let index_aux i us =
+  	try
+  	  let p = UTF8.rindexp us pred in
+  	  Return.return label (p+i)
+  	with Not_found -> ()
+      in
+      bulk_iteri_backwards ~top:(length r) index_aux r;
+      raise Not_found)
+
+  let rindexp_from r start pred =
+    let rsub = left r start in
+    (rindexp rsub pred)
+
+  let nsplitp str pred =
+    if is_empty str then []
+    else
+    (* str is non empty *)
+      let rec aux acc ofs =
+        match try Some (rindexp_from str ofs pred)
+          with Invalid_rope -> None
+        with
+          | Some idx -> (* found the delimiter *)
+          (* trailing delimiter or multiple seperator characters in a row *)
+          if idx = ofs || idx = ofs - 1 then aux acc idx else
+            let token = sub str (idx + 1) (ofs - idx) in
+            aux (token::acc) (idx - 1)
+          | None -> (* pred sep NOT found *)
+            sub str 0 (ofs + 1) :: acc
+      in
+      aux [] (length str - 1)
+
+(*${*) (*open Text*) (*$}*)
+
+(*$= nsplitp & ~printer:(IO.to_string (List.print print))
+  [of_latin1 "a"; of_latin1 "b"; of_latin1 "c"] (nsplitp (of_latin1 "a b c") (fun c -> c = UChar.of_char ' '))
+*)
 
 
   let join = concat

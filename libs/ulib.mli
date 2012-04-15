@@ -41,7 +41,7 @@
 
 module UChar : sig
   type t
-	
+
   exception Out_of_range
 
 (** [char_of u] returns the Latin-1 representation of [u].
@@ -70,7 +70,7 @@ module UChar : sig
 
 (** Aliases of [type t] *)
   type uchar = t
-	
+
 (** Alias of [code] *)
   val int_of : uchar -> int
 
@@ -118,7 +118,7 @@ module UTF8 : sig
 
 (** UTF-8 encoded Unicode strings. The type is normal string. *)
   type t = string
-	
+
   exception Malformed_code
 
 (** [validate s]
@@ -145,7 +145,7 @@ module UTF8 : sig
 (** Positions in the string represented by the number of bytes from the head.
     The location of the first character is [0] *)
   type index = int
-	
+
 (** [nth s n] returns the position of the [n]-th Unicode character.
     The call requires O(n)-time *)
   val nth : t -> int -> index
@@ -211,27 +211,27 @@ module UTF8 : sig
   module Buf : sig
     (** Buffers for UTF-8 strings. *)
     type buf
-	
+
 	  (** [create n] creates the buffer with the initial size [n]-bytes. *)
     val create : int -> buf
-	
+
 	(* The rest of functions is similar to the ones of Buffer in stdlib. *)
 	(** [contents buf] returns the contents of the buffer. *)
     val contents : buf -> t
-	
+
 	(** Empty the buffer,
 	    but retains the internal storage which was holding the contents *)
     val clear : buf -> unit
-	
+
 	(** Empty the buffer and de-allocate the internal storage. *)
     val reset : buf -> unit
-	
+
 	(** Add one Unicode character to the buffer. *)
     val add_char : buf -> UChar.t -> unit
-	
+
 	(** Add the UTF-8 string to the buffer. *)
     val add_string : buf -> t -> unit
-	
+
 	(** [add_buffer b1 b2] adds the contents of [b2] to [b1].
 	    The contents of [b2] is not changed. *)
     val add_buffer : buf -> buf -> unit
@@ -658,6 +658,8 @@ module Text : sig
     (** [nsplit s sep] splits the rope [s] into a list of ropes
         which are separated by [sep].
         [nsplit "" _] returns the empty list. *)
+
+  val nsplitp : t -> (UChar.t -> bool) -> t list
 
   val compare : t -> t -> int
   (** The comparison function for ropes, with the same specification as

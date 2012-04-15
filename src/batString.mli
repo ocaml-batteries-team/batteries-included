@@ -428,8 +428,12 @@ val nsplit : string -> by:string -> string list
       Example: [String.nsplit "abcabcabc" "bc" = ["a"; "a"; "a"; ""]]
 *)
 
+val nsplitp : string -> (char -> bool) -> string list
+(** Split a string as nsplit but using a single char separator in the
+    form of a predicate *)
+
 val join : string -> string list -> string
-  (** Same as {!concat} *)
+(** Same as {!concat} *)
 
 val slice : ?first:int -> ?last:int -> string -> string
   (** [slice ?first ?last s] returns a "slice" of the string

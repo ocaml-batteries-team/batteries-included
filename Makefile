@@ -131,8 +131,8 @@ reinstall:
 ### List of source files that it's okay to try to test
 
 DONTTEST=src/batteriesHelp.ml
-TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
-TESTDEPS = $(TESTABLE) 
+TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml) $(wildcard libs/*.ml))
+TESTDEPS = $(TESTABLE)
 
 ### Test suite: "offline" unit tests
 ##############################################
@@ -229,5 +229,3 @@ coverage/index.html: $(TESTDEPS) $(QTESTDIR)/all_tests.ml
 	$(OCAMLBUILD) coverage/index.html
 
 coverage: coverage/index.html
-
-
