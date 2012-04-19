@@ -118,14 +118,10 @@ let multi_choice n e =
     (* Note: this assumes that Array.init will call the function for i
        = 0 to n-1 in that order *)
     let chosen = Array.init n (fun i -> next e, i) in
-    let rec aux i =
-      if BatEnum.is_empty e then
-        ()
-      else
+    BatEnum.iteri (fun i x ->
+        let i = i + n + 1 in (* we've already chosen the n first items *)
         let r = Random.int i in
-        if r < n then chosen.(r) <- next e, i ;
-        aux (i+1) in
-    aux (n+1) ;
+        if r < n then chosen.(r) <- x, i) e ;
     Array.sort (fun (_, i1) (_, i2) -> compare i1 i2) chosen ;
     BatArray.enum (Array.map fst chosen)
 
