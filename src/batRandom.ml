@@ -118,14 +118,10 @@ let multi_choice n e =
     (* Note: this assumes that Array.init will call the function for i
        = 0 to n-1 in that order *)
     let chosen = Array.init n (fun i -> next e, i) in
-    let rec aux i =
-      if BatEnum.is_empty e then
-        ()
-      else
+    BatEnum.iteri (fun i x ->
+        let i = i + n + 1 in (* we've already chosen the n first items *)
         let r = Random.int i in
-        if r < n then chosen.(r) <- next e, i ;
-        aux (i+1) in
-    aux (n+1) ;
+        if r < n then chosen.(r) <- x, i) e ;
     Array.sort (fun (_, i1) (_, i2) -> compare i1 i2) chosen ;
     BatArray.enum (Array.map fst chosen)
 
@@ -134,7 +130,12 @@ let multi_choice n e =
   BatEnum.count (multi_choice 3 (BatList.enum [1;2;3;4;5])) = 3
   let l = [1;2;3;4;5] in let e = multi_choice 2 (BatList.enum l) in \
     let a = BatOption.get (BatEnum.get e) in a < BatOption.get (BatEnum.get e)
+  let x = BatEnum.repeat ~times:99 [0;1] /@ (fun l -> \
+    multi_choice 1 (BatList.enum l)) /@ \
+    BatEnum.get_exn |> \
+    reduce (+) in x > 0 && x < 99
 *)
+(* Note: this last test check that the first nor the last item is always chosen *)
 
 let shuffle e =
   let a = BatArray.of_enum e in
