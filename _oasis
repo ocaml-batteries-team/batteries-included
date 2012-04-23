@@ -1,7 +1,7 @@
 OASISFormat:  0.2
 OCamlVersion: >= 3.11.0
 Name:         batteries
-Version:      1.4.1
+Version:      1.4.2
 Authors:      Batteries Included Team
 License:      LGPL-2.1 with OCaml linking exception
 LicenseFile:  LICENSE
