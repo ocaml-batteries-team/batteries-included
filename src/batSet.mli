@@ -341,9 +341,7 @@ val iter: ('a -> unit) -> 'a t -> unit
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
 
-(* under-specified; either give a 'b comparison,
-   or keep ('a -> 'a) (preferred choice) *)
-val map: ('a -> 'b) -> 'a t -> 'b t
+val map: ('a -> 'a) -> 'a t -> 'a t
   (** [map f x] creates a new set with elements [f a0],
       [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
       values contained in [x]*)

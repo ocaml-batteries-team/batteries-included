@@ -48,7 +48,7 @@ val remove: 'a -> 'a t -> 'a t
 
 val iter: ('a -> unit) -> 'a t -> unit
 
-val map: ('a -> 'b) -> 'a t -> 'b t
+val map: ('a -> 'a) -> 'a t -> 'a t
 
 val filter: ('a -> bool) -> 'a t -> 'a t
 

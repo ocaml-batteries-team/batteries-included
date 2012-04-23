@@ -136,20 +136,13 @@ module Concrete = struct
       Empty -> ()
     | Node(l, v, r, _) -> iter f l; f v; iter f r
 
-  let map f e =
-    let rec loop = function
-      | Empty -> Empty
-      | Node (l, v, r, h) ->
-          let l' = loop l in
-          let v' = f v in
-          let r' = loop r in
-          Node (l', v', r', h) in
-    loop e
-
   let rec fold f s accu =
     match s with
         Empty -> accu
       | Node(l, v, r, _) -> fold f r (f v (fold f l accu))
+
+  let map cmp f s =
+    fold (fun v acc -> add cmp (f v) acc) s empty
 
   let singleton x = Node(Empty, x, Empty, 1)
 
@@ -449,7 +442,7 @@ struct
   let add e t = t_of_impl (Concrete.add Ord.compare e (impl_of_t t))
 
   let iter f t = Concrete.iter f (impl_of_t t)
-  let map f t = t_of_impl (Concrete.map f (impl_of_t t))
+  let map f t = t_of_impl (Concrete.map Ord.compare f (impl_of_t t))
   let fold f t acc = Concrete.fold f (impl_of_t t) acc
   let filter f t = t_of_impl (Concrete.filter Ord.compare f (impl_of_t t))
   let filter_map f t = t_of_impl (Concrete.filter_map Ord.compare f (impl_of_t t))
@@ -580,7 +573,7 @@ let iter f s = Concrete.iter f s.set
 let fold f s acc = Concrete.fold f s.set acc
 
 let map f s =
-  { cmp = compare; set = Concrete.map f s.set }
+  { cmp = compare; set = Concrete.map s.cmp f s.set }
 
 let filter f s = { s with set = Concrete.filter s.cmp f s.set }
 
