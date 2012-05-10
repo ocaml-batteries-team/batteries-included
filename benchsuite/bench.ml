@@ -120,8 +120,8 @@ module Normal_dist = struct
         if k > 1000. then (eprintf "q_gamma could not converge."; res)
         else if prev = res then res
         else
-	  let la, lb =
-	    lb, ((k -. 1. -. a) *. (lb -. la) +. (k +. x) *. lb) /. k
+          let la, lb =
+            lb, ((k -. 1. -. a) *. (lb -. la) +. (k +. x) *. lb) /. k
           in
           let w = w *. (k -. 1. -. a) /. k in
           let prev, res = res, res +. w /. (la *. lb) in
@@ -153,8 +153,8 @@ module Normal_dist = struct
         let lo,hi = if err < 0. then x, hi else lo, x in
         let pdf_x = pdf x in
         let dx,x' = if pdf_x = 0. then dx,x else err /. pdf_x, (x -. dx) in
-	let dx,x' =
-	  if x' < lo || x' > hi || pdf_x = 0. then
+        let dx,x' =
+          if x' < lo || x' > hi || pdf_x = 0. then
             let y = (lo +. hi) /. 2. in (y -. x),y
           else dx, x'
         in
@@ -199,6 +199,7 @@ module Bootstrap = struct
 
   type estimate = {point: float; lower: float; upper: float; confidence: float}
   let estimate p l u c = {point=p; lower=l; upper=u; confidence=c}
+  let get {point;lower;upper} = (point,lower,upper)
 
   let est_scale s est = {est with point = s *. est.point; lower = s *. est.lower; upper = s *. est.upper}
 
@@ -414,8 +415,6 @@ let list_print ~first ~sep ~last to_string oc lst =
   lp_aux lst;
   output_string oc last
 
-
-
 (* print a list of results to a csv file *)
 let print_csv resl oc =
   let print_csv_string l =
@@ -434,7 +433,16 @@ let print_json resl oc =
   ) resl
 
 let print_flat resl oc = match resl with [] -> () | res::_ ->
+  fprintf oc "flat\n";
   Array.iter (fprintf oc "%g\n") res.times
+
+let print_result oc res =
+  let mp,ml,mu = Bootstrap.get res.mean in
+  let sp,sl,su = Bootstrap.get res.stdev in
+  fprintf oc "%s\n%g %g %g\n%g %g %g\n" res.desc mp ml mu sp sl su;
+  Array.iter (fprintf oc "%g ") res.times;
+  fprintf oc "\n"
+
 
 let print_times filename =
   let handler =
@@ -485,9 +493,9 @@ let summarize ?(alpha=0.05) = function [] -> () | [_] -> () (* no functions - do
       | r1::(r2::_ as tl) ->
         let p_value = test_unequal r1 r2 in
         printf "%s (%a) %s" r1.desc M.print r1.mean.Bootstrap.point pre;
-	if p_value > alpha then
+        if p_value > alpha then
           printf "is probably (alpha=%.2f%%) same speed as\n" (p_value *. 100.)
-	else
+        else
           printf "is %.1f%% faster than\n" (change r1 r2);
         print_changes ~pre:"which " tl
     in
@@ -500,6 +508,7 @@ type config = {
   mutable resamples: int;
   mutable confidence_interval: float;
   mutable output: (results list -> unit) list;
+  mutable min_iters: int;
 }
 
 (* The module-global configuration for running benchmarks.
@@ -508,12 +517,13 @@ type config = {
    be non-global
 *)
 let config = { verbose = true;
-	       samples=1_000;
-	       resamples = 1_000;
+               samples=300;
+               resamples = 1_000;
                confidence_interval = 0.95;
                gc_between_tests= false;
 (*	       output = [summarize ~alpha:0.05];*)
-	       output = [print_times "times.flat"; summarize ~alpha:0.05];
+               output = [print_times "times.flat"; summarize ~alpha:0.05];
+               min_iters = 1;
              }
 
 let vtap f x = if config.verbose then (f x; x) else x
@@ -530,17 +540,19 @@ let init_environment () =
     let resolution i = (* measure the clock resolution *)
       let times = Array.init (i+1) (fun _ -> M.timer()) in
       let pos_diffs =
-	Array.init i (fun i -> times.(i+1) -. times.(i))
-	|> Array.to_list |> List.filter is_positive |> Array.of_list
+        Array.init i (fun i -> times.(i+1) -. times.(i))
+	           |> Array.to_list |> List.filter is_positive |> Array.of_list
       in
       pos_diffs
     in
     let cost t t0 = (* compute clock cost *)
-      let tclock i = M.time_ (repeat M.timer ()) i in
+      (* put timer in closure to compensate for testing closure *)
+      let f () = M.timer () in
+      let tclock i = M.time_ (repeat f ()) i in
       ignore (tclock 100);
       let (_,iters,elapsed) = run_for_time t0 tclock 10_000 in
       let times = Array.init (ceil (t /. elapsed) |> int_of_float)
-	(fun _ -> tclock iters)
+        (fun _ -> tclock iters)
       in
       Array.map (fun t -> t /. float iters) times
     in
@@ -549,7 +561,7 @@ let init_environment () =
     let (_,seed,_) = run_for_time 0.1 resolution 10_000 in
     if config.verbose then print_string "Estimating clock resolution";
     let (_,i,clocks) = run_for_time 0.5 resolution seed in
-  (* TODO: Do we want mean here?!? Look into better detection of clock resolution *)
+    (* TODO: Do we want mean here?!? Look into better detection of clock resolution *)
     let clock_res = Outliers.analyze_mean i clocks in
     if config.verbose then printf " (%a)\nEstimating cost of timer call" M.print clock_res;
     let ts = cost (min (10_000. *. clock_res) 3.) (max 0.01 (5.*.clock_res)) in
@@ -559,23 +571,28 @@ let init_environment () =
     env.clock_cost <- clock_cost
 
 
+let min_runtime = ref 0.1
+
 (* benchmark a function appropriate for the current environment.
 
    The number of samples is given in config.sample
 
    The number of iterations of the benchmark to run per sample is
    computed based on the number of iterations that can be run in 0.1s
-   so that each sample takes at most (clock_res * 1000) or 0.1 seconds.
-*)
+   so that each sample takes at most (clock_res * 1000) or 0.1
+   seconds, unless it takes longer than that for a single repetition.
+ *)
 let run_benchmark (f: int -> 'a) =
+  (* warm up clock function *)
   let tclock i = M.time_ (repeat M.timer ()) i in
   run_for_time 0.1 tclock 10_000 |> ignore;
-  let min_time = min (env.clock_res *. 1_000.) 0.1 in
+  (* run for 0.1s per sample or 1000*clock resolution, whichever is shorter *)
+  let min_time = min (env.clock_res *. 1_000.) !min_runtime in
   let (test_time, test_iters, _) = run_for_time min_time f 1 in
   if config.verbose then
     printf "Ran %d iterations in %a\n%!" test_iters M.print test_time;
   let iters = ceil (min_time *. float test_iters /. test_time) in
-  let iters_int = int_of_float iters in
+  let iters_int = max (int_of_float iters) config.min_iters in
   let est_time = float config.samples *. iters *. test_time /. float test_iters in
   if config.verbose then
     printf "Collecting %d samples, %d iterations each, estimated time: %a\n%!"
@@ -632,15 +649,19 @@ let bench_throughput f xs =
   in
   List.map bench_one xs
 
-(* generate points spaced nicely - exponential for really big ranges
-   (lo/hi>10), unit spacing for medium ranges, otherwise 10
-   intervals *)
+(* generate points spaced nicely -
+   exponential for really big ranges (lo/hi>10),
+   if we can hit every int between lo and hi with between n/3 and n*3 points
+   unit spacing for medium ranges,
+
+   default 10 intervals *)
 let rec gen_points ?(n=10) lo hi =
 (*  printf "gp %g %g\n%!" lo hi;*)
   assert (hi >= lo);
   if hi = lo then [lo]
   else if lo > 0. && hi /. lo > 100. then gen_points ~n (log lo) (log hi) |> List.map exp
-  else if hi -. lo < float (n*3) && hi -. lo > float (n/3) && floor (hi -. lo) = (hi -. lo) then List.(lo,1.) --. hi
+  else if hi -. lo < float (n*3) && hi -. lo > float (n/3) && floor (hi -. lo) = (hi -. lo) then
+    (floor lo, 1.) --. ceil hi
   else
     let step = (hi -. lo) /. float n in
     (lo, step) --. hi
@@ -659,14 +680,22 @@ let bench_range f ~input_gen ?n (lo,hi) =
   let run_one i = run_and_analyze (string_of_int i) (repeat f (input_gen i)) in
   List.map run_one points
 
+let rec transpose list = match list with
+  | []             -> []
+  | []   :: xss    -> transpose xss
+  | (x::xs) :: xss ->
+    (x :: List.map List.hd xss) :: transpose (xs :: List.map List.tl xss)
+
 let bench_2d fs ~input_gen ?n (lo,hi) =
   let points = gen_points ?n lo hi in
-  let run_one (df,f) (i,input) =
+  let run_one (df,f) i input =
     let d = df ^ "_" ^ string_of_int i in
     run_and_analyze d (repeat f input) |> res_scale (1. /. float i)
   in
-  let inputs = List.map (fun i -> i, input_gen i) points in
-  points, List.map (fun (df,_ as f) -> df, List.map (run_one f) inputs) fs
+  let run_all i = let inp = input_gen i in List.map (fun f -> run_one f i inp) fs in
+  let results_by_input = List.map run_all points in
+  let results_by_f = transpose results_by_input in
+  points, List.map2 (fun (df,_) rs -> df, rs) fs results_by_f
 (* returns list of (desc, result list); each sublist is all results
    for one function *)
 
@@ -678,6 +707,13 @@ let print_ranges oc (desc,resl) =
 
 let print_2d fn (points,rs) =
   let oc = open_out fn in
-  list_print ~first:"x-values\n" ~last:"\n" ~sep:" " string_of_int oc points;
+  output_string oc "multiplot\n";
+  list_print ~first:"x-values " ~last:"\n" ~sep:" " string_of_int oc points;
   List.iter (print_ranges oc) rs;
+  close_out oc
+
+let print_1d fn resl =
+  let oc = open_out fn in
+  output_string oc "comparison\n";
+  List.iter (print_result oc) resl;
   close_out oc
