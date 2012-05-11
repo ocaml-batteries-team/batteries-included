@@ -127,7 +127,7 @@ let browse pages =
 
    [local_name "a.b.c.d"] produces ["d"]*)
 let local_name s =
-  try snd (BatString.rsplit s ".")
+  try snd (BatString.rsplit s ~by:".")
   with Not_found -> s
 
 (**
@@ -224,33 +224,30 @@ let inconsistency topic subject =
    Qualified names which can't be found in the table are dropped and a warning is printed.
 *)
 let result_of_completions table singular subject (l:completion list) =
-  BatList.filter_map (fun {qualified = q} -> try Some (Hashtbl.find table.suggestions q) with Not_found -> 
+  BatList.filter_map (fun {qualified = q; _} -> try Some (Hashtbl.find table.suggestions q) with Not_found -> 
 		inconsistency singular subject; (*Report internal inconsistency*)
 		None) l
 
 (**A deconstructor for [completion].*)
-let get_qualified {qualified = q} = q
+let get_qualified {qualified = q; _} = q
 
 (**
    Look for a given subject inside one of the manuals
 
-   @param cmd The command used to invoke this manual. This string is used to suggest further searches.
    @param singular The singular noun corresponding to this manual. This string is used to display
    information regarding where the information may be found.
    @param plural The plural noun corresponding to this manual. This string is used to display
-   information regarding where the information may be found.
-   @param undefined The undefined noun corresponding to this manual. This string is used to display
    information regarding where the information may be found.
    @param kind The key corresponding to the manual.
    @param subject The subject to search inside a manual.
 
 *)
-let man_aux ~cmd ~kind ~singular ~plural ~undefined  subject =
+let man_aux ~kind ~singular ~plural subject =
   try
     let table = get_table kind in
       try match Hashtbl.find table.completions subject with
 	| []                -> `No_result (*No completion on the subject, report subject not found*)
-	| [{qualified = q}] as l -> (*Check for inconsistency*)
+	| [{qualified = q; _}] as l -> (*Check for inconsistency*)
 	    (try ignore (Hashtbl.find table.suggestions q); `Suggestions (l, table)
 	    with Not_found -> inconsistency singular subject; `No_result)
 	| l                -> `Suggestions (l, table)
@@ -267,23 +264,21 @@ let man_aux ~cmd ~kind ~singular ~plural ~undefined  subject =
    information regarding where the information may be found.
    @param plural The plural noun corresponding to this manual. This string is used to display
    information regarding where the information may be found.
-   @param undefined The undefined noun corresponding to this manual. This string is used to display
-   information regarding where the information may be found.
    @param kind The key corresponding to the manual.
    @param tabs If [true], all matching subjects will be opened, each one in its tab. Otherwise,
    a message will allow selecting one subject.
    @param subject The subject to search inside a manual.
 
 *)
-let man ~cmd ~kind ~singular ~plural ~undefined ~tabs subject =
-  match man_aux ~cmd ~kind ~singular ~plural ~undefined subject
+let man ~cmd ~kind ~singular ~plural ~tabs subject =
+  match man_aux ~kind ~singular ~plural subject
   with  `No_result       -> Printf.printf "Sorry, I don't know any %s named %S.\n%!" singular subject
     |   `Suggestions (l,table) when tabs -> browse (result_of_completions table singular subject l)
     |   `Suggestions ([h],table)         -> browse (result_of_completions table singular subject [h])
     |   `Suggestions (l,_) -> 
 	  BatPrintf.printf "Several %s exist with name %S. To obtain help on one of them, please use one of\n %a%!"
 	    plural subject
-	    (BatList.print ~first:"" ~sep:"\n " ~last:"\n" (fun out {qualified = q} -> BatPrintf.fprintf out " %s %S\n" cmd q))
+	    (BatList.print ~first:"" ~sep:"\n " ~last:"\n" (fun out {qualified = q; _} -> BatPrintf.fprintf out " %s %S\n" cmd q))
 	    l
 
 (**
@@ -293,8 +288,8 @@ let man_all sources ~tabs subject =
   let found_something = 
     if tabs then
       List.fold_left (fun was_found     (*Browse help directly*)
-			(cmd, kind, singular, plural, undefined) ->
-			  match man_aux ~cmd ~kind ~singular ~plural ~undefined subject with
+			(_cmd, kind, singular, plural, _undefined) ->
+			  match man_aux ~kind ~singular ~plural subject with
 			    | `No_result     -> was_found
 			    | `Suggestions (l, table) -> 
 				match result_of_completions table singular subject l with
@@ -305,9 +300,9 @@ let man_all sources ~tabs subject =
       match
     List.fold_left 
       (fun (((result_as_strings : string list)(**The text to display, as a list of strings, one string per kind.*),
-	    one_suggestion    (**The latest suggestion -- used only in case there's only one suggestion.*)) as acc)
-	 (cmd, kind, singular, plural, undefined) ->
-	   match man_aux ~cmd ~kind ~singular ~plural ~undefined subject with
+	    _one_suggestion    (**The latest suggestion -- used only in case there's only one suggestion.*)) as acc)
+	 (cmd, kind, singular, plural, _undefined) ->
+	   match man_aux ~kind ~singular ~plural subject with
 	     | `No_result                -> acc
 	     | `Suggestions ([h], table) -> 
 		 let display : string =
@@ -319,13 +314,13 @@ let man_all sources ~tabs subject =
 		   BatPrintf.sprintf2 "There's information on %S in %s. To read this information, please use one of\n%a%!"
 		     subject plural
 		     (BatList.print ~first:"" ~sep:"" ~last:"" 
-			(fun out {qualified = q} -> BatPrintf.fprintf out " %s %S\n" cmd q))
+			(fun out {qualified = q; _} -> BatPrintf.fprintf out " %s %S\n" cmd q))
 		     l
 		 in (display::result_as_strings, `No_browsing))
       ([], `No_result) sources
       with 
 	| ([], _)                 -> false (*No result*)
-	| ([h],`Browse (l,table, singular) ) -> (match result_of_completions table singular subject [l] with
+	| ([_],`Browse (l,table, singular) ) -> (match result_of_completions table singular subject [l] with
 	    | [] -> false (*Inconsistency*)
 	    | l' -> let _ = browse l' in true)
 	| (texts, _) ->
@@ -355,8 +350,8 @@ let helpers =
      ("#man_objtype",   Objtypes , "object type", "object types", "an object type")]
   in
     ("man", man_all sources ~tabs:false)::
-    (List.map (fun (cmd, kind, singular, plural, undefined) -> (String.sub cmd 1 (String.length cmd - 1),
-								man ~cmd ~kind ~singular ~plural ~undefined ~tabs:false)) sources)
+    (List.map (fun (cmd, kind, singular, plural, _undefined) -> (String.sub cmd 1 (String.length cmd - 1),
+								man ~cmd ~kind ~singular ~plural ~tabs:false)) sources)
      
 
 (**Launch the introductory help text.*)
