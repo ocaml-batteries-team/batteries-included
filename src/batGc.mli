@@ -31,7 +31,7 @@
     @author David Teller
 *)
 
-type stat =
+type stat = Gc.stat =
   { minor_words : float;
     (** Number of words allocated in the minor heap since
        the program was started.  This number is accurate in
@@ -98,7 +98,7 @@ type stat =
    the number of bytes.
 *)
 
-type control =
+type control = Gc.control =
   { mutable minor_heap_size : int;
     (** The size (in words) of the minor heap.  Changing
        this parameter will trigger a minor collection.  Default: 32k. *)
@@ -272,7 +272,7 @@ val finalise_release : unit -> unit;;
     GC that it can launch the next finalisation function without waiting
     for the current one to return. *)
 
-type alarm
+type alarm = Gc.alarm
 (** An alarm is a piece of data that calls a user function at the end of
    each major GC cycle.  The following functions are provided to create
    and delete alarms. *)
