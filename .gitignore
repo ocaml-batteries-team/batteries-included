@@ -22,3 +22,5 @@ qtest/all_tests.ml
 qtest2/all_tests.ml
 qtest.targets.log
 coverage
+setup.data
+setup.log
