@@ -143,7 +143,7 @@ val shuffle: 'a BatEnum.t -> 'a array
     the program.
 *)
 module State : sig
-  type t
+  type t = Random.State.t
     (** The type of PRNG states. *)
 
   val make : int array -> t
@@ -174,13 +174,9 @@ module State : sig
   val enum_nativeint : t -> Nativeint.t -> Nativeint.t BatEnum.t
   val enum_char  : t -> unit    -> char BatEnum.t
 (*  val enum_uchar : t -> unit    -> UChar.t BatEnum.t*)
-
   (** These functions are the same as the basic functions, except that they
       use (and update) the given PRNG state instead of the default one.
   *)
-
-
-  (** {6 Boilerplate code}*)
 
 end;;
 
