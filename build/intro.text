@@ -61,10 +61,11 @@ them, do [open BatteriesThread] at the top of your code.
 
 {!modules: BatConcurrent BatMutex BatRMutex}
 
-{6 Future}
+{6 Incubator}
 
-These modules are available only inside [Batteries.Future].  Their
-interface is not guaranteed stable, and may be changed at any time.
+These modules are available only inside [Batteries.Incubator].  Their
+interface is not guaranteed stable, and may be changed at any time,
+including with backwards incompatible changes between point releases.
 They are included for testing and stabilization until they can be
 finalized and moved to batteries proper.
 
