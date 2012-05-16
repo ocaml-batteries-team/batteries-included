@@ -587,6 +587,9 @@ let init n f =
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
   BatEnum.print ~first ~last ~sep print_a out (enum t)
 
+let compare cmp_val v1 v2 = BatEnum.compare cmp_val (enum v1) (enum v2)
+let equal eq_val v1 v2 = BatEnum.equal eq_val (enum v1) (enum v2)
+
 (* Functorial interface *)
 
 module type RANDOMACCESS =

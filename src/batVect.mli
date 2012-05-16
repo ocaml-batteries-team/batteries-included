@@ -318,9 +318,10 @@ val pop : 'a t -> 'a * 'a t
 
 (** {6 Boilerplate code}*)
 
-(** {7 Printing}*)
-
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
+
+val compare : 'a BatOrd.comp -> 'a t BatOrd.comp
+val equal : 'a BatOrd.eq -> 'a t BatOrd.eq
 
 (**/**)
 val invariants : _ t -> unit

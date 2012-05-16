@@ -28,17 +28,11 @@
    in quasi-linear time (instead of quadratic time when strings are
    concatenated pairwise).
 
-
-    This module extends Stdlib's
-    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Buffer.html}Buffer}
-    module, go there for documentation on the rest of the functions
-    and types.
-
     @author Pierre Weis (Base module)
     @author Xavier Leroy (Base module)
     @author David Teller
     @author Dawid Toton
-*)
+ *)
 
 type t = Buffer.t
 (** The abstract type of buffers. *)

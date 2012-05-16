@@ -27,15 +27,27 @@
    quality: it is very hard, given a digest, to forge a string having
    that digest. The algorithm used is MD5.
 
-    This module extends Stdlib's
-    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Digest.html}Digest}
-    module, go there for documentation on the rest of the functions
-    and types.
-
     @author Xavier Leroy (Base module)
     @author David Rajchenbach-Teller
 *)
 open BatIO
+
+type t = string
+(** The type of digests: 16-character strings. *)
+
+val string : string -> t
+(** Return the digest of the given string. *)
+
+val substring : string -> int -> int -> t
+(** [Digest.substring s ofs len] returns the digest of the substring
+   of [s] starting at character number [ofs] and containing [len]
+   characters. *)
+
+val file : string -> t
+(** Return the digest of the file whose name is given. *)
+
+val to_hex : t -> string
+(** Return the printable hexadecimal representation of the given digest. *)
 
 val channel : input -> int -> Digest.t
 (** If [len] is nonnegative, [Digest.channel ic len] reads [len]
@@ -50,13 +62,11 @@ val channel : input -> int -> Digest.t
     file.
 *)
 
-
-val output : 'a output -> Digest.t -> unit
+val output : 'a output -> t -> unit
 (** Write a digest on the given output. *)
+
+val print : 'a output -> Digest.t -> unit
+(** Write a digest on the given output in hexadecimal. *)
 
 val input : input -> Digest.t
 (** Read a digest from the given input. *)
-
-(** {6 Boilerplate code}*)
-
-

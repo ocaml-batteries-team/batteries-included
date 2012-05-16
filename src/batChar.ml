@@ -20,6 +20,8 @@
  *)
 
 (*BISECT-IGNORE-BEGIN*)
+include Char
+
 let is_whitespace = function
   | ' ' | '\010' | '\013' | '\009' | '\026' | '\012' -> true
   | _ -> false
@@ -108,12 +110,12 @@ let t_printer _paren out t =
 *)
 
 (*BISECT-IGNORE-BEGIN*)
-let cmp (x:char) y = Pervasives.compare x y
 let ord (x:char) y =
   if x > y then BatOrd.Gt
   else if y > x then BatOrd.Lt
   else BatOrd.Eq
-let eq (x:char) y = x == y (* safe because int-like value *)
+let equal (x:char) y = x == y (* safe because int-like value *)
+let hash = code
 (*BISECT-IGNORE-END*)
 
 module Incubator = struct

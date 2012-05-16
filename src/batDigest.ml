@@ -19,6 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+include Digest
+
 open BatIO
 
 (*Imported from [Digest.input] -- the functions used take advantage of
@@ -33,6 +35,7 @@ let input inp =
 *)
 
 let output = BatIO.nwrite
+let print oc t = BatIO.nwrite oc (to_hex t)
 
 let channel inp len = (*TODO: Make efficient*)
   if len >= 0 then

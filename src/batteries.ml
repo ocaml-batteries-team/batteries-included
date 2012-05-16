@@ -44,20 +44,20 @@ module Legacy = struct
 end
 
 (* stdlib modules *)
+(* Arg *)
 module Array = struct include Array include BatArray end
 (* ArrayLabels *)
 module Buffer = BatBuffer
 (* Callback *)
-module Char = struct include Char include BatChar end
+module Char = BatChar
 module Complex = BatComplex
-module Digest = struct include Digest include BatDigest end
+module Digest = BatDigest
 (* Filename *)
 module Format = struct include Format include BatFormat end
 module Gc = BatGc
 module Genlex = struct include Genlex include BatGenlex end
 module Hashtbl = BatHashtbl
 module Int32 = BatInt32
-(*module Int63 = BatInt63*)
 module Int64 = BatInt64
 (* Lazy *)
 module Lexing = struct include Lexing include BatLexing end
@@ -150,6 +150,7 @@ module Float = BatFloat
 module Int = BatInt
 module Bool = BatBool
 module Unit = BatUnit
+(*module Int63 = BatInt63*)
 
 (* Modules in-progress, API stability not guaranteed *)
 module Incubator = struct
