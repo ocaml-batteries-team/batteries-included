@@ -472,13 +472,6 @@ val kfprintf : ('a BatInnerIO.output -> 'b) -> 'a BatInnerIO.output -> ('c, 'b) 
   (** [kfprintf k oc fmt] prints on [oc] then call [k] with [oc] as
       argument *)
 
-val rprintf : ('a, Ulib.Text.t) format -> 'a
-  (** [rprintf fmt] returns the result as a rope *)
-
-val krprintf : (Ulib.Text.t -> 'b) -> ('a, 'b) format -> 'a
-  (** [krprintf k fmt] creates a rope from the format and other
-      arguments and pass it to [k] *)
-
 val ksprintf : (string -> 'b) -> ('a, 'b) format -> 'a
   (** [ksprintf k fmt] creates a string from the format and other
       arguments and pass it to [k] *)
@@ -486,4 +479,3 @@ val ksprintf : (string -> 'b) -> ('a, 'b) format -> 'a
 val kbprintf : (Buffer.t -> 'b) -> Buffer.t -> ('a, 'b) format -> 'a
   (** [bprintf k buf fmt] prints into the buffer [buf], then call [k]
       with [buf] as argument. *)
-

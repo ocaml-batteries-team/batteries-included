@@ -106,9 +106,3 @@ let sprintf fmt =
 let ksprintf k fmt =
   let oc = BatBuffer.output_buffer (Buffer.create 42) in
   kfprintf (fun oc -> k (BatInnerIO.close_out oc)) oc fmt
-
-let rprintf fmt =
-  ksprintf Ulib.Text.of_string fmt
-
-let krprintf k fmt =
-  ksprintf (fun s -> k (Ulib.Text.of_string s)) fmt

@@ -97,7 +97,8 @@ module Bigarray = BatBigarray
 
 module Stdlib_verifications = struct
   (* This module asserts that all the BatFoo modules are actually
-extensions of stdlib modules, and that no functionality is lost *)
+extensions of stdlib modules, and that no functionality is lost.
+TODO: move outside of Batteries.ml? *)
   module Array_t = (Array : module type of Legacy.Array)
   module Buffer_t =
     (Buffer: sig
@@ -242,7 +243,7 @@ module ISet = BatISet
 module IMap = BatIMap
 module Splay = BatSplay
 module Uref = BatUref
-module Text = Ulib.Text
+module Text = BatText
 module Concurrent = BatConcurrent
 
 (* Batteries Specific *)

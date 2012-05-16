@@ -239,9 +239,6 @@ val output_char : unit BatIO.output -> char -> unit
 val output_string : unit BatIO.output -> string -> unit
 (** Write the string on the given output channel. *)
 
-val output_text : unit BatIO.output -> Ulib.Text.t -> unit
-(** Write the text on the given output channel. *)
-
 val output : unit BatIO.output -> string -> int -> int -> unit
 (** [output oc buf pos len] writes [len] characters from string [buf],
    starting at offset [pos], to the given output channel [oc].
@@ -916,7 +913,7 @@ val printer_format : (('a, 'b) BatPrint.format -> 'a, 'b) BatPrint.directive
 
 val printer_sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
 val printer_Sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
-val printer_text : (Ulib.Text.t -> 'a, 'a) BatPrint.directive
+(* val printer_text : (Ulib.Text.t -> 'a, 'a) BatPrint.directive *)
 val printer_obj : (< print : unit BatIO.output -> unit; .. > -> 'a, 'a) BatPrint.directive
 val printer_exn : (exn -> 'a, 'a) BatPrint.directive
 

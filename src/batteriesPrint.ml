@@ -19,10 +19,10 @@
  *)
 
 let print_uchar fmt t =
-  Format.fprintf fmt "UChar.of_char '%s'" (Ulib.UTF8.init 1 (fun _ -> t))
+  Format.fprintf fmt "UChar.of_char '%s'" (Uniclib.UTF8.init 1 (fun _ -> t))
 
 let print_rope fmt t =
-  Format.fprintf fmt "r%S" (Ulib.Text.to_string t)
+  Format.fprintf fmt "r%S" (Uniclib.Text.to_string t)
 
 let print_ustring fmt t =
   Format.fprintf fmt "u%S" t
@@ -47,14 +47,14 @@ module IntSet = BatSet.Make(BatInt)
 let int_set = to_format (IntSet.print BatInt.print)
 module StringSet = BatSet.Make(String)
 let string_set = to_format (StringSet.print BatString.print)
-module TextSet = BatSet.Make(Ulib.Text)
-let text_set = to_format (TextSet.print Ulib.Text.print)
+module TextSet = BatSet.Make(Uniclib.Text)
+let text_set = to_format (TextSet.print Uniclib.Text.print)
 (*module CharSet = BatSet.Make(BatChar)
 let char_set = to_format (CharSet.print BatChar.print) *)
 
 let int_pset = to_format (BatSet.print BatInt.print)
 let string_pset = to_format (BatSet.print BatString.print)
-let rope_pset = to_format (BatSet.print Ulib.Text.print)
+let rope_pset = to_format (BatSet.print Uniclib.Text.print)
 let char_pset = to_format (BatSet.print BatChar.print)
 
 let (|>) x f = f x
@@ -70,7 +70,7 @@ let enum_print p oc e =
 
 let int_enum = to_format (enum_print BatInt.print)
 let string_enum = to_format (enum_print BatString.print)
-let rope_enum = to_format (enum_print Ulib.Text.print)
+let rope_enum = to_format (enum_print Uniclib.Text.print)
 let char_enum = to_format (enum_print BatChar.print)
 
 (*let iset = to_format BatISet.print *)

@@ -349,9 +349,6 @@ val tab_out : ?tab:char -> int -> 'a output -> unit output
 val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
 
-val read_uall : input -> Ulib.Text.t
-(** Read the whole contents of a UTF-8 encoded input*)
-
 val pipe : unit -> input * unit output
 (** Create a pipe between an input and an ouput. Data written from
     the output can be read from the input.
@@ -425,22 +422,13 @@ val read_float : input -> float
 val read_double : input -> float
 (** Read an IEEE double precision floating point value. *)
 
-val read_uchar: input -> Ulib.UChar.t
-(** Read one UChar from a UTF-8 encoded input*)
-
 val read_string : input -> string
 (** Read a null-terminated string. *)
-
-val read_text: input -> int -> Ulib.Text.t
-(** Read up to n uchars from a UTF-8 encoded input*)
 
 val read_line : input -> string
   (** Read a LF or CRLF terminated string. If the source runs out of
       input before a LF is found, returns a string of the remaining input.
       Will raise [No_more_input] only if no characters are available. *)
-
-val read_uline: input -> Ulib.Text.t
-(** Read a line of UTF-8*)
 
 val write_byte : (int, _) printer
 (** Write an unsigned 8-bit byte. *)
@@ -463,17 +451,11 @@ val write_i64 : (int64, _) printer
 val write_double : (float, _) printer
 (** Write an IEEE double precision floating point value. *)
 
-val write_uchar: (Ulib.UChar.t, _) printer
-(** Write one uchar to a UTF-8 encoded output.*)
-
 val write_float : (float, _) printer
 (** Write an IEEE single precision floating point value. *)
 
 val write_string : (string, _) printer
 (** Write a string and append an null character. *)
-
-val write_text : (Ulib.Text.t, _) printer
-(** Write a character text onto a UTF-8 encoded output.*)
 
 val write_line : (string, _) printer
 (** Write a line and append a line end.
@@ -483,9 +465,6 @@ val write_line : (string, _) printer
     files should end lines with character LF (or ['\n']), as Unix,
     then a LF is inserted at the end of the line. If your system
     favors CRLF (or ['\r\n']), then this is what will be inserted.*)
-
-val write_uline: (Ulib.Text.t, _) printer
-(** Write one line onto a UTF-8 encoded output.*)
 
 (** Same operations as module {!BatIO}, but with big-endian encoding *)
 module BigEndian :
@@ -856,16 +835,10 @@ val lines_of2 : input -> string BatEnum.t
 val chunks_of : int -> input -> string BatEnum.t
 (** Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest. *)
 
-val ulines_of : input -> Ulib.Text.t BatEnum.t
-(** offer the lines of a UTF-8 encoded input as an enumeration*)
-
 val chars_of : input -> char BatEnum.t
 (** Read an enumeration of Latin-1 characters.
 
     {b Note} Usually faster than calling [read] several times.*)
-
-val uchars_of : input -> Ulib.UChar.t BatEnum.t
-(** offer the characters of an UTF-8 encoded input as an enumeration*)
 
 val bits_of : in_bits -> int BatEnum.t
 (** Read an enumeration of bits *)
@@ -941,6 +914,8 @@ val to_format: ('a BatInnerIO.output -> 'b -> unit) -> Format.formatter -> 'b ->
 (**/**)
 val comb : ('a output * 'a output) -> 'a output
 (** Old name of [combine]*)
+
+val make_enum : (input -> 'a) -> input -> 'a BatEnum.t
 
 (**
    {6 Debugging facilities}
