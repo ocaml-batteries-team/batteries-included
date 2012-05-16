@@ -20,21 +20,24 @@
  *)
 
 
-open Marshal
+include Marshal
 
-  let output out ?(sharing=true) ?(closures=false) v =
-    let buf = to_string v ((if sharing then [] else [No_sharing]) @ (if closures then [Closures] else [])) in
-      BatInnerIO.nwrite out buf
+let output out ?(sharing=true) ?(closures=false) v =
+  let flags = match sharing, closures with
+    | true, false -> []
+    | true, true -> [Closures]
+    | false, false -> [No_sharing]
+    | false, true -> [No_sharing; Closures]
+  in
+  let buf = to_string v flags in
+  BatInnerIO.nwrite out buf
 
-  let input inp =
-    let header = BatInnerIO.really_nread inp header_size in
-    let size   = data_size header 0                   in
-      from_string (header ^ (BatInnerIO.really_nread inp size)) 0
+let input inp =
+  let header = BatInnerIO.really_nread inp header_size in
+  let size   = data_size header 0                   in
+  from_string (header ^ (BatInnerIO.really_nread inp size)) 0
 
-  let to_channel out v flags =
-    output out ~sharing:(not (List.mem No_sharing flags))
-               ~closures:(List.mem Closures flags)
-      v
+let to_channel out v flags =
+  BatInnerIO.nwrite out (to_string v flags)
 
-  let from_channel = input
-
+let from_channel = input

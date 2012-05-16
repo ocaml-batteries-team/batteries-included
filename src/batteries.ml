@@ -64,11 +64,11 @@ module Hashtbl = BatHashtbl
 module Int32 = BatInt32
 module Int64 = BatInt64
 (* Lazy *)
-module Lexing = struct include Lexing include BatLexing end
+module Lexing = BatLexing
 module List = BatList
 (* ListLabels *)
 module Map = BatMap
-module Marshal = struct include Marshal include BatMarshal end
+module Marshal = BatMarshal
 (* MoreLabels *)
 module Nativeint = BatNativeint
 module Oo = struct include Oo include BatOo end
