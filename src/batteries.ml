@@ -59,7 +59,7 @@ module Digest = BatDigest
 (* Filename *)
 module Format = BatFormat
 module Gc = BatGc
-module Genlex = struct include Genlex include BatGenlex end
+module Genlex = BatGenlex
 module Hashtbl = BatHashtbl
 module Int32 = BatInt32
 module Int64 = BatInt64

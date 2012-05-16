@@ -1,7 +1,8 @@
 open BatPervasives
 open BatParserCo
 open BatCharParser
-open Genlex
+
+include Genlex
 
 
 let string_of_token = function
@@ -217,7 +218,7 @@ let to_enum_filter kwd_table =
   in
   fun input -> BatEnum.from_while (fun _count -> next_token {position = 0; content = input})
 
-	
+
 let to_stream_filter (kwd_table:t) (x:char Stream.t) : token Stream.t =
   (BatStream.of_enum (to_enum_filter kwd_table (BatStream.enum x)))
 
@@ -323,7 +324,7 @@ struct
       let char =
 	if case_sensitive then char
 	else                   case_char
-	
+
       let string =
 	if case_sensitive then string
 	else                   case_string
@@ -331,7 +332,7 @@ struct
       let adapt_case =
 	if case_sensitive then identity
 	else String.lowercase
-	
+
       let string_compare =
 	if case_sensitive then String.compare
 	else BatString.icompare
@@ -386,12 +387,12 @@ struct
 	ignore_zero_plus (either
 	  [ satisfy BatChar.is_whitespace >>= (fun _ -> return ());
 	    comment ])
-	
+
       let to_symbol p =
 	p           >>= fun r ->
 	whitespaces >>= fun _ ->
 	return (BatString.of_list r)
-	
+
       let lexeme p =
 	p           >>= fun r ->
 	whitespaces >>= fun _ ->
@@ -452,7 +453,7 @@ struct
 	     | c    -> return c
 	) >>= fun c ->
 	  BatCharParser.char '\'' >>= fun _ -> return c
-	
+
       let string_literal =  label "String Literal"
 	(lexeme
 	(BatCharParser.char '"' >>>
@@ -468,8 +469,8 @@ struct
 	   in content [] >>= fun c ->
 	     (*Printf.eprintf "Sending full string %S\n" (String.of_list (List.rev c));*)
 	     return (BatString.of_list (List.rev c))))
-	
-	
+
+
       let integer =
 	label "OCaml-style integer" (
 	  lexeme(maybe (BatCharParser.char '-') >>= fun sign   ->
@@ -507,7 +508,7 @@ struct
 			| None   -> absolute
 			| Some _ -> ~-. absolute)
 	))
-	
+
       let number =
 	   ( float   >>= fun f -> return (`Float f))
 	<|>( integer >>= fun i -> return (`Integer i) )
@@ -541,5 +542,3 @@ struct
     end
 
   end
-
-

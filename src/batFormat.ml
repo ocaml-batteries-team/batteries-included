@@ -23,6 +23,8 @@
 open BatIO
 include Format
 
+(* internal functions *)
+
 let output_of out = fun s i o -> ignore (really_output out s i o)
 let flush_of out = BatInnerIO.get_flush out
 let newline_of out = fun () -> BatInnerIO.write out '\n'
