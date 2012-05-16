@@ -60,7 +60,7 @@ val zero : float
 val one : float
 (** Floating number one. This is the same thing as [1.]*)
 
-val neg : float -> float
+external neg : float -> float = "%negfloat"
 (** Returns the negation of the input, i.e. (fun x -> ~-. x) *)
 
 val succ : float -> float
@@ -73,29 +73,29 @@ val pred : float -> float
     IEEE 754, if [x] is a large enough float number, [pred x]
     might be equal to [x], due to rounding.*)
 
-val abs : float -> float
+external abs : float -> float = "%absfloat"
 (** The absolute value of a floating point number.*)
 
 val add : float -> float -> float
 val sub : float -> float -> float
 val mul : float -> float -> float
 val div : float -> float -> float
-val modulo : float -> float -> float
-val pow : float -> float -> float
+external modulo : float -> float -> float = "caml_fmod_float" "fmod" "float"
+external pow : float -> float -> float = "caml_power_float" "pow" "float"
 val min_num : float
 val max_num : float
 val compare : float -> float -> int
-val of_int : int -> float
-val to_int : float -> int
+external of_int : int -> float = "%floatofint"
+external to_int : float -> int = "%intoffloat"
 external of_float : float -> float = "%identity"
 external to_float : float -> float = "%identity"
 val of_string : string -> float
 val to_string : float -> string
-val ( + ) : t -> t -> t
-val ( - ) : t -> t -> t
-val ( * ) : t -> t -> t
-val ( / ) : t -> t -> t
-val ( ** ) : t -> t -> t
+external ( + ) : t -> t -> t = "%addfloat"
+external ( - ) : t -> t -> t = "%subfloat"
+external ( * ) : t -> t -> t = "%mulfloat"
+external ( / ) : t -> t -> t = "%divfloat"
+external ( ** ) : t -> t -> t = "caml_power_float" "pow" "float"
 
 (* Available only in `Compare` submodule
 val ( <> ) : t -> t -> bool
@@ -112,6 +112,9 @@ val operations : t BatNumber.numeric
 (**
    {6 Operations specific to floating-point numbers}
  *)
+
+external sqrt : float -> float = "caml_sqrt_float" "sqrt" "float"
+(** Square root. *)
 
 external exp : float -> float = "caml_exp_float" "exp" "float"
 (** Exponential. *)

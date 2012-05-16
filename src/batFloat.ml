@@ -135,10 +135,24 @@ end
 
 include (BatNumber.MakeNumeric(BaseFloat) : BatNumber.Numeric with type t = float and module Infix := Infix)
 
-(* of_float and to_float are needed after including functors to fix
-   definitions *)
+(* Fix definitions for performance *)
 external of_float : float -> float = "%identity"
 external to_float : float -> float = "%identity"
+external sqrt : float -> float = "caml_sqrt_float" "sqrt" "float"
+external neg : float -> float = "%negfloat"
+external abs : float -> float = "%absfloat"
+external modulo : float -> float -> float = "caml_fmod_float" "fmod" "float"
+external pow : float -> float -> float = "caml_power_float" "pow" "float"
+external of_int : int -> float = "%floatofint"
+external to_int : float -> int = "%intoffloat"
+external of_float : float -> float = "%identity"
+external to_float : float -> float = "%identity"
+external ( + ) : t -> t -> t = "%addfloat"
+external ( - ) : t -> t -> t = "%subfloat"
+external ( * ) : t -> t -> t = "%mulfloat"
+external ( / ) : t -> t -> t = "%divfloat"
+external ( ** ) : t -> t -> t = "caml_power_float" "pow" "float"
+
 
 type bounded = t
 let min_num, max_num = neg_infinity, infinity
