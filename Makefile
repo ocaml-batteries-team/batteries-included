@@ -89,7 +89,7 @@ doc: batteries.odocl
 
 man: all batteries.odocl
 	-mkdir man
-	ocamlfind ocamldoc -package threads.posix -sort -man -hide-warnings -d man -I _build/libs -I _build/src libs/ulib.mli src/*.mli
+	ocamlfind ocamldoc -package threads.posix -sort -man -hide-warnings -d man -I _build/libs -I _build/src libs/uniclib.mli src/*.mli
 
 install: all uninstall_packages
 	ocamlfind install estring \
@@ -132,7 +132,7 @@ reinstall:
 
 DONTTEST=src/batteriesHelp.ml
 TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
-TESTDEPS = $(TESTABLE) 
+TESTDEPS = $(TESTABLE)
 
 ### Test suite: "offline" unit tests
 ##############################################
@@ -229,5 +229,3 @@ coverage/index.html: $(TESTDEPS) $(QTESTDIR)/all_tests.ml
 	$(OCAMLBUILD) coverage/index.html
 
 coverage: coverage/index.html
-
-

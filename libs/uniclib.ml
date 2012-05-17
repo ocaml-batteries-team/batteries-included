@@ -1,4 +1,4 @@
-(** ulib : a feather weight Unicode library for OCaml *)
+(** uniclib : a feather weight Unicode library for OCaml *)
 
 (* Copyright (C) 2011 Yamagata Yoriyuki. *)
 
@@ -76,7 +76,7 @@
 
 module UChar = struct
   type t = int
-	
+
   exception Out_of_range
 
   external code : t -> int = "%identity"
@@ -99,7 +99,7 @@ module UChar = struct
   let compare u1 u2 = u1 - u2
 
   type uchar = t
-	
+
   let int_of u = code u
   let of_int n = chr n
 end
@@ -182,7 +182,7 @@ module UTF8 = struct
     if n <= 0xdf then i + 2
     else if n <= 0xef then i + 3
     else i + 4
-	
+
   let rec search_head_backward s i =
     if i < 0 then -1 else
     let n = Char.code s.[i] in
@@ -198,7 +198,7 @@ module UTF8 = struct
     else
       let rec loop i n = if n >= 0 then i else loop (prev s i) (n + 1) in
       loop i n
-	
+
   let rec nth_aux s i n =
     if n = 0 then i else
     nth_aux s (next s i) (n - 1)
@@ -233,7 +233,7 @@ module UTF8 = struct
       Buffer.add_char buf (Char.unsafe_chr (0x80 lor ((k lsr 6) land masq)));
       Buffer.add_char buf (Char.unsafe_chr (0x80 lor (k land masq)));
     end
-	
+
   let init len f =
     let buf = Buffer.create len in
     for c = 0 to len - 1 do add_uchar buf (f c) done;
@@ -1024,13 +1024,13 @@ module Text = struct
         and causes termination of the program.*)
 end = struct
     type 'a t = 'a option ref
-	
+
     exception Return
-	
+
     let return label value =
       label := Some value;
       raise Return (*(Obj.repr label)*)
-	
+
     let label f =
       let r = ref None in
       try   f r

@@ -1,4 +1,3 @@
-Ulib
 BatArray
 BatBigarray
 BatBig_int
@@ -79,6 +78,8 @@ BatISet
 BatIMap
 BatCache
 BatLog
+Uniclib
+BatText
 BatteriesConfig
 BatteriesPrint
 Batteries

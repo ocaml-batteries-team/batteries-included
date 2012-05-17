@@ -18,7 +18,7 @@ let bigarray1 = Array1.of_array char c_layout array
 let bigarray2 = Array2.of_array char c_layout array2
 let bigarray3 = Array3.of_array char c_layout array3
 
-let text   = Ulib.Text.of_string string
+let text   = BatText.of_string string
 
 module C =
 struct

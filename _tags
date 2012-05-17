@@ -2,7 +2,8 @@
 <**/*.ml> and not <libs/**.ml>: warn_A, warn_e, warn_-29
 "build": include
 "src": include
-"libs" or "libs/estring": include
+"libs": include
+"libs/estring": include
 "testsuite": include
 "qtest": include
 "benchsuite": include
