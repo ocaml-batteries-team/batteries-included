@@ -58,6 +58,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -85,11 +86,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -101,7 +102,7 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="String operations" rel="Section" href="#6_Stringoperations">
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="String operations" rel="Section" href="#6_Stringoperations">
 <link title="String conversion functions" rel="Section" href="#6_Stringconversionfunctions">
 <link title="List operations" rel="Section" href="#6_Listoperations">
 <link title="Input/output" rel="Section" href="#6_Inputoutput">
@@ -259,6 +260,9 @@ Print the contents of an input to the error output.<br>
 </div>
 <br>
 <span id="7_Generaloutputfunctions"><div class="h7">General output functions</div></span><br>
+<pre><span id="VALoutput_file"><span class="keyword">val</span> output_file</span> : <code class="type">filename:string -> text:string -> unit</code></pre><div class="info">
+creates a filename, write text into it and close it.<br>
+</div>
 <pre><span id="VALopen_out"><span class="keyword">val</span> open_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">BatFile.open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">BatFile.permission</a> -> string -> unit <a href="BatIO.html#TYPEoutput">BatIO.output</a></code></pre><div class="info">
 Open the named file for writing, and return a new output channel
       on that file. You will need to close the file once you have
@@ -305,9 +309,6 @@ Write the character on the given output channel.<br>
 </div>
 <pre><span id="VALoutput_string"><span class="keyword">val</span> output_string</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> string -> unit</code></pre><div class="info">
 Write the string on the given output channel.<br>
-</div>
-<pre><span id="VALoutput_text"><span class="keyword">val</span> output_text</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> <a href="Ulib.Text.html#TYPEt">Ulib.Text.t</a> -> unit</code></pre><div class="info">
-Write the text on the given output channel.<br>
 </div>
 <pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> string -> int -> int -> unit</code></pre><div class="info">
 <code class="code">output oc buf pos len</code> writes <code class="code">len</code> characters from string <code class="code">buf</code>,
@@ -356,6 +357,9 @@ Same as <code class="code">close_out</code>, but ignore all errors.<br>
 </div>
 <br>
 <span id="7_Generalinputfunctions"><div class="h7">General input functions</div></span><br>
+<pre><span id="VALinput_file"><span class="keyword">val</span> input_file</span> : <code class="type">?bin:bool -> string -> string</code></pre><div class="info">
+returns the data of a given filename.<br>
+</div>
 <pre><span id="VALopen_in"><span class="keyword">val</span> open_in</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_in_flag">BatFile.open_in_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">BatFile.permission</a> -> string -> <a href="BatIO.html#TYPEinput">BatIO.input</a></code></pre><div class="info">
 Open the named file for reading. You will need to close the file once you have
     finished using it.
@@ -584,6 +588,13 @@ Allows application of a function in the middle of a pipe
 <code class="code">with_dispose dispose f x</code> invokes <code class="code">f</code> on <code class="code">x</code>, calling <code class="code">dispose x</code>
     when <code class="code">f</code> terminates (either with a return value or an
     exception).<br>
+</div>
+<pre><span id="VALforever"><span class="keyword">val</span> forever</span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre><div class="info">
+<code class="code">forever f x</code> invokes <code class="code">f</code> on <code class="code">x</code> repeatedly (until an exception occurs).<br>
+</div>
+<pre><span id="VALignore_exceptions"><span class="keyword">val</span> ignore_exceptions</span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre><div class="info">
+<code class="code">ignore_exceptions f x</code> invokes <code class="code">f</code> on <code class="code">x</code>, ignoring both the returned value
+    and the exceptions that may be raised.<br>
 </div>
 <pre><span id="VALverify_arg"><span class="keyword">val</span> verify_arg</span> : <code class="type">bool -> string -> unit</code></pre><div class="info">
 <code class="code">verify_arg condition message</code> will raise <code class="code"><span class="constructor">Invalid_argument</span> message</code> if
@@ -904,10 +915,40 @@ Print and consume the contents of an enumeration.<br>
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span class="constructor">Bad</span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
-
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The result of a computation - either an <code class="code"><span class="constructor">Ok</span></code> with the normal
+result or a <code class="code"><span class="constructor">Bad</span></code> with some value (often an exception) containing
+failure information</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
+<div class="info">
+This type represents the outcome of a function which has the
+    possibility of failure.  Normal results of type <code class="code"><span class="keywordsign">'</span>a</code> are marked
+    with <code class="code"><span class="constructor">Ok</span></code>, while failure values of type <code class="code"><span class="keywordsign">'</span>b</code> are marked with
+    <code class="code"><span class="constructor">Bad</span></code>.
+<p>
 
+    This is intended to be a safer alternative to functions raising
+    exceptions to signal failure.  It is safer in that the possibility
+    of failure has to be handled before the result of that computation
+    can be used.
+<p>
+
+    For more functions related to this type, see the <a href="BatResult.html"><code class="code"><span class="constructor">BatResult</span></code></a> module.<br>
+</div>
+
+<pre><span id="VALignore_ok"><span class="keyword">val</span> ignore_ok</span> : <code class="type">('a, exn) <a href="BatPervasives.html#TYPEresult">result</a> -> unit</code></pre><div class="info">
+<code class="code">ignore_ok (f x)</code> ignores the result of <code class="code">f x</code> if it's ok, but
+throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.<br>
+</div>
+<pre><span id="VALok"><span class="keyword">val</span> ok</span> : <code class="type">('a, exn) <a href="BatPervasives.html#TYPEresult">result</a> -> 'a</code></pre><div class="info">
+<code class="code">f x |&gt; ok</code> unwraps the <code class="code"><span class="constructor">Ok</span></code> result of <code class="code">f x</code> and returns it, or
+throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.<br>
+</div>
+<pre><span id="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatPervasives.html#TYPEresult">result</a></code></pre><div class="info">
+<code class="code">wrap f x</code> wraps a function that would normally throw an exception
+on failure such that it now returns a result with either the <code class="code"><span class="constructor">Ok</span></code>
+return value or the <code class="code"><span class="constructor">Bad</span></code> exception.<br>
+</div>
 <br>
 <span id="6_Threadsafetyinternals"><h6>Thread-safety internals</h6></span>
 <p>

@@ -58,6 +58,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -85,11 +86,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -101,7 +102,7 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <title>Batteries user guide : BatInt64</title>
 </head>
@@ -163,14 +164,14 @@ Multiplication.<br>
 </div>
 <pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">int64 -> int64 -> int64</code></pre><div class="info">
 Integer division.  Raise <code class="code"><span class="constructor">Division_by_zero</span></code> if the second
-   argument is zero.  This division rounds the real quotient of
-   its arguments towards zero, as specified for <code class="code"><span class="constructor">Pervasives</span>.(/)</code>.<br>
+    argument is zero.  This division rounds the real quotient of
+    its arguments towards zero, as specified for <code class="code"><span class="constructor">Pervasives</span>.(/)</code>.<br>
 </div>
 <pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">int64 -> int64 -> int64</code></pre><div class="info">
 Integer remainder.  If <code class="code">y</code> is not zero, the result
-   of <code class="code"><span class="constructor">Int64</span>.rem x y</code> satisfies the following property:
-   <code class="code">x = <span class="constructor">Int64</span>.add (<span class="constructor">Int64</span>.mul (<span class="constructor">Int64</span>.div x y) y) (<span class="constructor">Int64</span>.rem x y)</code>.
-   If <code class="code">y = 0</code>, <code class="code"><span class="constructor">Int64</span>.rem x y</code> raises <code class="code"><span class="constructor">Division_by_zero</span></code>.<br>
+    of <code class="code"><span class="constructor">Int64</span>.rem x y</code> satisfies the following property:
+    <code class="code">x = <span class="constructor">Int64</span>.add (<span class="constructor">Int64</span>.mul (<span class="constructor">Int64</span>.div x y) y) (<span class="constructor">Int64</span>.rem x y)</code>.
+    If <code class="code">y = 0</code>, <code class="code"><span class="constructor">Int64</span>.rem x y</code> raises <code class="code"><span class="constructor">Division_by_zero</span></code>.<br>
 </div>
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">int64 -> int64</code></pre><div class="info">
 Successor.  <code class="code"><span class="constructor">Int64</span>.succ x</code> is <code class="code"><span class="constructor">Int64</span>.add x <span class="constructor">Int64</span>.one</code>.<br>
@@ -201,33 +202,33 @@ Bitwise logical negation<br>
 </div>
 <pre><span id="VALshift_left"><span class="keyword">val</span> shift_left</span> : <code class="type">int64 -> int -> int64</code></pre><div class="info">
 <code class="code"><span class="constructor">Int64</span>.shift_left x y</code> shifts <code class="code">x</code> to the left by <code class="code">y</code> bits.
-   The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.<br>
+    The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.<br>
 </div>
 <pre><span id="VALshift_right"><span class="keyword">val</span> shift_right</span> : <code class="type">int64 -> int -> int64</code></pre><div class="info">
 <code class="code"><span class="constructor">Int64</span>.shift_right x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
-   This is an arithmetic shift: the sign bit of <code class="code">x</code> is replicated
-   and inserted in the vacated bits.
-   The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.<br>
+    This is an arithmetic shift: the sign bit of <code class="code">x</code> is replicated
+    and inserted in the vacated bits.
+    The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.<br>
 </div>
 <pre><span id="VALshift_right_logical"><span class="keyword">val</span> shift_right_logical</span> : <code class="type">int64 -> int -> int64</code></pre><div class="info">
 <code class="code"><span class="constructor">Int64</span>.shift_right_logical x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
-   This is a logical shift: zeroes are inserted in the vacated bits
-   regardless of the sign of <code class="code">x</code>.
-   The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.<br>
+    This is a logical shift: zeroes are inserted in the vacated bits
+    regardless of the sign of <code class="code">x</code>.
+    The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.<br>
 </div>
 <pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Enumerate an interval.
 <p>
 
-      <code class="code">5<span class="constructor">L</span> -- 10<span class="constructor">L</span></code> is the enumeration 5L,6L,7L,8L,9L,10L.
-      <code class="code">10<span class="constructor">L</span> -- 5<span class="constructor">L</span></code> is the empty enumeration<br>
+    <code class="code">5<span class="constructor">L</span> -- 10<span class="constructor">L</span></code> is the enumeration 5L,6L,7L,8L,9L,10L.
+    <code class="code">10<span class="constructor">L</span> -- 5<span class="constructor">L</span></code> is the empty enumeration<br>
 </div>
 <pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Enumerate an interval.
 <p>
 
-      <code class="code">5<span class="constructor">L</span> -- 10<span class="constructor">L</span></code> is the enumeration 5L,6L,7L,8L,9L,10L.
-      <code class="code">10<span class="constructor">L</span> -- 5<span class="constructor">L</span></code> is the enumeration 10L,9L,8L,7L,6L,5L.<br>
+    <code class="code">5<span class="constructor">L</span> -- 10<span class="constructor">L</span></code> is the enumeration 5L,6L,7L,8L,9L,10L.
+    <code class="code">10<span class="constructor">L</span> -- 5<span class="constructor">L</span></code> is the enumeration 10L,9L,8L,7L,6L,5L.<br>
 </div>
 <pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> int64</code></pre><div class="info">
 Convert the given integer (type <code class="code">int</code>) to a 64-bit integer
@@ -235,64 +236,64 @@ Convert the given integer (type <code class="code">int</code>) to a 64-bit integ
 </div>
 <pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">int64 -> int</code></pre><div class="info">
 Convert the given 64-bit integer (type <code class="code">int64</code>) to an
-   integer (type <code class="code">int</code>).  On 64-bit platforms, the 64-bit integer
-   is taken modulo 2<sup class="superscript">63</sup>, i.e. the high-order bit is lost
-   during the conversion.  On 32-bit platforms, the 64-bit integer
-   is taken modulo 2<sup class="superscript">31</sup>, i.e. the top 33 bits are lost
-   during the conversion.<br>
+    integer (type <code class="code">int</code>).  On 64-bit platforms, the 64-bit integer
+    is taken modulo 2<sup class="superscript">63</sup>, i.e. the high-order bit is lost
+    during the conversion.  On 32-bit platforms, the 64-bit integer
+    is taken modulo 2<sup class="superscript">31</sup>, i.e. the top 33 bits are lost
+    during the conversion.<br>
 </div>
 <pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> int64</code></pre><div class="info">
 Convert the given floating-point number to a 64-bit integer,
-   discarding the fractional part (truncate towards 0).
-   The result of the conversion is undefined if, after truncation,
-   the number is outside the range [<code class="code"><span class="constructor">Int64</span>.min_int</code>, <code class="code"><span class="constructor">Int64</span>.max_int</code>].<br>
+    discarding the fractional part (truncate towards 0).
+    The result of the conversion is undefined if, after truncation,
+    the number is outside the range [<code class="code"><span class="constructor">Int64</span>.min_int</code>, <code class="code"><span class="constructor">Int64</span>.max_int</code>].<br>
 </div>
 <pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">int64 -> float</code></pre><div class="info">
 Convert the given 64-bit integer to a floating-point number.<br>
 </div>
 <pre><span id="VALof_int32"><span class="keyword">val</span> of_int32</span> : <code class="type">int32 -> int64</code></pre><div class="info">
 Convert the given 32-bit integer (type <code class="code">int32</code>)
-   to a 64-bit integer (type <code class="code">int64</code>).<br>
+    to a 64-bit integer (type <code class="code">int64</code>).<br>
 </div>
 <pre><span id="VALto_int32"><span class="keyword">val</span> to_int32</span> : <code class="type">int64 -> int32</code></pre><div class="info">
 Convert the given 64-bit integer (type <code class="code">int64</code>) to a
-   32-bit integer (type <code class="code">int32</code>). The 64-bit integer
-   is taken modulo 2<sup class="superscript">32</sup>, i.e. the top 32 bits are lost
-   during the conversion.<br>
+    32-bit integer (type <code class="code">int32</code>). The 64-bit integer
+    is taken modulo 2<sup class="superscript">32</sup>, i.e. the top 32 bits are lost
+    during the conversion.<br>
 </div>
 <pre><span id="VALof_nativeint"><span class="keyword">val</span> of_nativeint</span> : <code class="type">nativeint -> int64</code></pre><div class="info">
 Convert the given native integer (type <code class="code">nativeint</code>)
-   to a 64-bit integer (type <code class="code">int64</code>).<br>
+    to a 64-bit integer (type <code class="code">int64</code>).<br>
 </div>
 <pre><span id="VALto_nativeint"><span class="keyword">val</span> to_nativeint</span> : <code class="type">int64 -> nativeint</code></pre><div class="info">
 Convert the given 64-bit integer (type <code class="code">int64</code>) to a
-   native integer.  On 32-bit platforms, the 64-bit integer
-   is taken modulo 2<sup class="superscript">32</sup>.  On 64-bit platforms,
-   the conversion is exact.<br>
+    native integer.  On 32-bit platforms, the 64-bit integer
+    is taken modulo 2<sup class="superscript">32</sup>.  On 64-bit platforms,
+    the conversion is exact.<br>
 </div>
 <pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> int64</code></pre><div class="info">
 Convert the given string to a 64-bit integer.
-   The string is read in decimal (by default) or in hexadecimal,
-   octal or binary if the string begins with <code class="code">0x</code>, <code class="code">0o</code> or <code class="code">0b</code>
-   respectively.<br>
+    The string is read in decimal (by default) or in hexadecimal,
+    octal or binary if the string begins with <code class="code">0x</code>, <code class="code">0o</code> or <code class="code">0b</code>
+    respectively.<br>
 <b>Raises</b> <code>Failure</code> if the given string is not
-   a valid representation of an integer, or if the integer represented
-   exceeds the range of integers representable in type <code class="code">int64</code>.<br>
+    a valid representation of an integer, or if the integer represented
+    exceeds the range of integers representable in type <code class="code">int64</code>.<br>
 </div>
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">int64 -> string</code></pre><div class="info">
 Return the string representation of its argument, in decimal.<br>
 </div>
 <pre><span id="VALbits_of_float"><span class="keyword">val</span> bits_of_float</span> : <code class="type">float -> int64</code></pre><div class="info">
 Return the internal representation of the given float according
-   to the IEEE 754 floating-point ``double format'' bit layout.
-   Bit 63 of the result represents the sign of the float;
-   bits 62 to 52 represent the (biased) exponent; bits 51 to 0
-   represent the mantissa.<br>
+    to the IEEE 754 floating-point ``double format'' bit layout.
+    Bit 63 of the result represents the sign of the float;
+    bits 62 to 52 represent the (biased) exponent; bits 51 to 0
+    represent the mantissa.<br>
 </div>
 <pre><span id="VALfloat_of_bits"><span class="keyword">val</span> float_of_bits</span> : <code class="type">int64 -> float</code></pre><div class="info">
 Return the floating-point number whose internal representation,
-   according to the IEEE 754 floating-point ``double format'' bit layout,
-   is the given <code class="code">int64</code>.<br>
+    according to the IEEE 754 floating-point ``double format'' bit layout,
+    is the given <code class="code">int64</code>.<br>
 </div>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> int</code></pre><div class="info">
 The comparison function for 64-bit integers, with the same specification as

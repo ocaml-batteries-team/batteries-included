@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
+<link rel="next" href="BatSet.PSet.html">
 <link rel="Up" href="BatSet.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -56,6 +57,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -83,11 +85,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -99,14 +101,15 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : BatSet.Make</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a href="BatSet.html">Up</a>
-&nbsp;</div>
+&nbsp;<a href="BatSet.PSet.html">Next</a>
+</div>
 <center><h1>Functor <a href="type_BatSet.Make.html">BatSet.Make</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatSet.OrderedType.html">OrderedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = Ord.t</code></div></pre>Functor building an implementation of the set structure
@@ -165,13 +168,14 @@ Set intersection.<br>
 <pre><span id="VALdiff"><span class="keyword">val</span> diff</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 Set difference.<br>
 </div>
-<pre><span id="VALsdiff"><span class="keyword">val</span> sdiff</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">sdiff s t</code> returns the set of all elements in <code class="code">s</code> or <code class="code">t</code> but not both.
-       This is the same as <code class="code">diff (union s t) (inter s t)</code>.<br>
+<pre><span id="VALsym_diff"><span class="keyword">val</span> sym_diff</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">sym_diff s t</code> returns the set of all elements in <code class="code">s</code> or <code class="code">t</code>
+	but not both.  This is the same as <code class="code">diff (union s t) (inter s
+	t)</code>.<br>
 </div>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Total ordering between sets. Can be used as the ordering function
-       for doing sets of sets.<br>
+	for doing sets of sets.<br>
 </div>
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">equal s1 s2</code> tests whether the sets <code class="code">s1</code> and <code class="code">s2</code> are

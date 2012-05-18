@@ -58,6 +58,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -85,11 +86,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -101,7 +102,7 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="Creation and conversions" rel="Section" href="#6_Creationandconversions">
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Creation and conversions" rel="Section" href="#6_Creationandconversions">
 <link title="Properties " rel="Section" href="#6_Properties">
 <link title="Operations " rel="Section" href="#6_Operations">
 <link title="Conversion" rel="Section" href="#6_Conversion">
@@ -110,7 +111,6 @@
 <link title="Convenience Functions" rel="Section" href="#6_ConvenienceFunctions">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Functorial interface" rel="Section" href="#6_Functorialinterface">
-<link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : BatVect</title>
 </head>
 <body>
@@ -155,7 +155,10 @@ can easily degrade its amortized time bounds. It is thus mainly intended to be u
 ephemerally. In some cases, it is possible to use Vect persistently with the same
 amortized bounds by explicitly rebalancing vects to be reused using <code class="code">balance</code>.
 Special care must be taken to avoid calling <code class="code">balance</code> too frequently; in the limit,
-calling <code class="code">balance</code> after each modification would defeat the purpose of amortization.<br>
+calling <code class="code">balance</code> after each modification would defeat the purpose of amortization.
+<p>
+
+This module is not thread-safe.<br>
 <b>Author(s):</b> Mauricio Fernandez<br>
 <hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
@@ -176,7 +179,7 @@ Maximum length of the vect.<br>
 The empty vect.<br>
 </div>
 <pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">'a -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
-Returns a Vect of length 1 holding only the given element.<br>
+Returns a vect of length 1 holding only the given element.<br>
 </div>
 <pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">'a array -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">of_array s</code> returns a vect corresponding to the array <code class="code">s</code>.
@@ -234,8 +237,8 @@ Returns the length of the vect (<code class="code"><span class="constructor">O</
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
 <code class="code">get v n</code> returns the (n+1)th element from the vect <code class="code">v</code>; i.e.
       <code class="code">get v 0</code> returns the first element.
-      Operates in worst-case <code class="code"><span class="constructor">O</span>(log size)</code> time.
-      Raises Out_of_bounds if a character out of bounds is requested.<br>
+      Operates in worst-case <code class="code"><span class="constructor">O</span>(log size)</code> time.<br>
+<b>Raises</b> <code>Out_of_bounds</code> if a character out of bounds is requested.<br>
 </div>
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
 as <code class="code">get</code><br>
@@ -256,8 +259,8 @@ as <code class="code">get</code><br>
 </div>
 <pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a <a href="BatVect.html#TYPEt">t</a> -> int -> int -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">sub m n r</code> returns a sub-vect of <code class="code">r</code> containing all the elements
-      whose indexes range from <code class="code">m</code> to <code class="code">m + n - 1</code> (included).
-    Raises Out_of_bounds in the same cases as Array.sub.
+      whose indexes range from <code class="code">m</code> to <code class="code">m + n - 1</code> (included).<br>
+<b>Raises</b> <code>Out_of_bounds</code> in the same cases as Array.sub.
     Operates in worst-case <code class="code"><span class="constructor">O</span>(log size)</code> time.<br>
 </div>
 <pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type">int -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
@@ -309,13 +312,12 @@ Operates like iter, but also passes the index of the character
       from an explicit loop using <code class="code">get</code>.<br>
 <b>Raises</b> <code>Out_of_bounds</code> in the same cases as <code class="code">sub</code>.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-<code class="code">fold f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN-1 </code>
-      where <code class="code">rn = <span class="constructor">Vect</span>.get n r </code> and <code class="code"><span class="constructor">N</span> = length r</code>.<br>
-</div>
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">fold_left f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN-1 </code>
       where <code class="code">rn = <span class="constructor">Vect</span>.get n r </code> and <code class="code"><span class="constructor">N</span> = length r</code>.<br>
+</div>
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+An alias for <a href="BatVect.html#VALfold_left"><code class="code"><span class="constructor">BatVect</span>.fold_left</code></a><br>
 </div>
 <pre><span id="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 as <a href="BatVect.html#VALfold_left"><code class="code"><span class="constructor">BatVect</span>.fold_left</code></a>, but no initial value - just applies reducing
@@ -342,52 +344,52 @@ Same as <a href="BatVect.html#VALmap"><code class="code"><span class="constructo
 <br>
 <span id="6_Predicates"><h6>Predicates</h6></span><br>
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">for_all p [a0; a1; ...; an]</code> checks if all elements of the array
-	satisfy the predicate <code class="code">p</code>.  That is, it returns
-	<code class="code"> (p a0) <span class="keywordsign">&amp;&amp;</span> (p a1) <span class="keywordsign">&amp;&amp;</span> ... <span class="keywordsign">&amp;&amp;</span> (p an)</code>.<br>
+<code class="code">for_all p [a0; a1; ...; an]</code> checks if all elements of the vect
+      satisfy the predicate <code class="code">p</code>.  That is, it returns
+      <code class="code"> (p a0) <span class="keywordsign">&amp;&amp;</span> (p a1) <span class="keywordsign">&amp;&amp;</span> ... <span class="keywordsign">&amp;&amp;</span> (p an)</code>.<br>
 </div>
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">exists p [a0; a1; ...; an]</code> checks if at least one element of
-	the array satisfies the predicate <code class="code">p</code>.  That is, it returns
-	<code class="code"> (p a0) <span class="keywordsign">||</span> (p a1) <span class="keywordsign">||</span> ... <span class="keywordsign">||</span> (p an)</code>.<br>
+      the vect satisfies the predicate <code class="code">p</code>.  That is, it returns
+      <code class="code"> (p a0) <span class="keywordsign">||</span> (p a1) <span class="keywordsign">||</span> ... <span class="keywordsign">||</span> (p an)</code>.<br>
 </div>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
-<code class="code">find p a</code> returns the first element of array <code class="code">a</code>
-	that satisfies the predicate <code class="code">p</code>.<br>
+<code class="code">find p a</code> returns the first element of vect <code class="code">a</code>
+      that satisfies the predicate <code class="code">p</code>.<br>
 <b>Raises</b> <code>Not_found</code> if there is no value that satisfies <code class="code">p</code> in the
-	array <code class="code">a</code>.<br>
+      vect <code class="code">a</code>.<br>
 </div>
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a -> 'a <a href="BatVect.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">mem m a</code> is true if and only if <code class="code">m</code> is equal to an element of <code class="code">a</code>.<br>
 </div>
 <pre><span id="VALmemq"><span class="keyword">val</span> memq</span> : <code class="type">'a -> 'a <a href="BatVect.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-Same as <code class="code"><span class="constructor">Array</span>.mem</code> but uses physical equality instead of
-	structural equality to compare array elements.<br>
+Same as <code class="code"><span class="constructor">Vect</span>.mem</code> but uses physical equality instead of
+      structural equality to compare vect elements.<br>
 </div>
 <pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> int</code></pre><div class="info">
-<code class="code">findi p a</code> returns the index of the first element of array <code class="code">a</code>
-	that satisfies the predicate <code class="code">p</code>.<br>
+<code class="code">findi p a</code> returns the index of the first element of vect <code class="code">a</code>
+      that satisfies the predicate <code class="code">p</code>.<br>
 <b>Raises</b> <code>Not_found</code> if there is no value that satisfies <code class="code">p</code> in the
-	array <code class="code">a</code>.<br>
+      vect <code class="code">a</code>.<br>
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter f v</code> returns a vect with the elements <code class="code">x</code> from <code class="code">v</code> such that
-	<code class="code">f x</code> returns <code class="code"><span class="keyword">true</span></code>. Operates in <code class="code"><span class="constructor">O</span>(n)</code> time.<br>
+      <code class="code">f x</code> returns <code class="code"><span class="keyword">true</span></code>. Operates in <code class="code"><span class="constructor">O</span>(n)</code> time.<br>
 </div>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'b <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f e</code> returns a vect consisting in all elements
-	<code class="code">x</code> such that <code class="code">f y</code> returns <code class="code"><span class="constructor">Some</span> x</code> , where <code class="code">y</code> is an element
-	of <code class="code">e</code>.<br>
+      <code class="code">x</code> such that <code class="code">f y</code> returns <code class="code"><span class="constructor">Some</span> x</code> , where <code class="code">y</code> is an element
+      of <code class="code">e</code>.<br>
 </div>
 <pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">find_all</code> is another name for <code class="code"><span class="constructor">Vect</span>.filter</code>.<br>
 </div>
 <pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">('a -> bool) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a <a href="BatVect.html#TYPEt">t</a> * 'a <a href="BatVect.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">partition p v</code> returns a pair of vects <code class="code">(v1, v2)</code>, where
-	<code class="code">v1</code> is the vect of all the elements of <code class="code">v</code> that
-	satisfy the predicate <code class="code">p</code>, and <code class="code">v2</code> is the vect of all the
-	elements of <code class="code">v</code> that do not satisfy <code class="code">p</code>.
-	The order of the elements in the input array is preserved.<br>
+      <code class="code">v1</code> is the vect of all the elements of <code class="code">v</code> that
+      satisfy the predicate <code class="code">p</code>, and <code class="code">v2</code> is the vect of all the
+      elements of <code class="code">v</code> that do not satisfy <code class="code">p</code>.
+      The order of the elements in the input vect is preserved.<br>
 </div>
 <br>
 <span id="6_ConvenienceFunctions"><h6>Convenience Functions</h6></span><br>
@@ -402,8 +404,6 @@ Return the last element of a vector and its first <code class="code">n-1</code> 
 </div>
 <br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
-<br>
-<span id="7_Printing"><div class="h7">Printing</div></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatVect.html#TYPEt">t</a> -> unit</code></pre><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatVect.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a <a href="BatVect.html#TYPEt">t</a> <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a <a href="BatVect.html#TYPEt">t</a> <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><br>
 <span id="6_Functorialinterface"><h6>Functorial interface</h6></span><br>
 <pre><span class="keyword">module type</span> <a href="BatVect.RANDOMACCESS.html">RANDOMACCESS</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatVect.RANDOMACCESS.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatVect.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">R</span></code><code class="code"> : </code><code class="type"><a href="BatVect.RANDOMACCESS.html">RANDOMACCESS</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">PARAM</span></code><code class="code"> : </code><code class="code"><span class="keyword">sig</span></code><div class="sig_block"><pre><span id="VALmax_height"><span class="keyword">val</span> max_height</span> : <code class="type">int</code></pre><pre><span id="VALleaf_size"><span class="keyword">val</span> leaf_size</span> : <code class="type">int</code></pre></div><code class="code"><span class="keyword">end</span></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatVect.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></div></pre></body></html>

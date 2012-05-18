@@ -58,6 +58,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -85,11 +86,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -101,7 +102,8 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : Batteries.Marshal</title>
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Deprecated" rel="Section" href="#6_Deprecated">
+<title>Batteries user guide : Batteries.Marshal</title>
 </head>
 <body>
 <div class="navbar"><a href="Batteries.Map.html">Previous</a>
@@ -110,7 +112,112 @@
 </div>
 <center><h1>Module <a href="type_Batteries.Marshal.html">Batteries.Marshal</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> Marshal: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.Marshal.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<pre><span class="keyword">include</span> Marshal</pre>
-<pre><span class="keyword">include</span> <a href="BatMarshal.html">BatMarshal</a></pre>
+<pre><span class="keyword">module</span> Marshal: <code class="type">BatMarshal</code></pre><hr width="100%">
+<pre><span id="TYPEextern_flags"><span class="keyword">type</span> <code class="type"></code>extern_flags</span> = <code class="type">Marshal.extern_flags</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">No_sharing</span></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Don't preserve sharing</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Closures</span></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Send function closures</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
+<div class="info">
+The flags to the <code class="code"><span class="constructor">Marshal</span>.to_*</code> functions below.<br>
+</div>
+
+<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ?sharing:bool -> ?closures:bool -> 'b -> unit</code></pre><div class="info">
+<code class="code">output out v</code> writes the representation of <code class="code">v</code> on <code class="code">chan</code>.<br>
+</div>
+<div class="param_info"><code class="code">sharing</code> : If <code class="code"><span class="keyword">true</span></code> (default value), circularities
+      and sharing inside the value <code class="code">v</code> are detected and preserved
+      in the sequence of bytes produced. In particular, this
+      guarantees that marshaling always terminates. Sharing
+      between values marshaled by successive calls to
+      <code class="code">output</code> is not detected, though. If <code class="code"><span class="keyword">false</span></code>, sharing is ignored.
+      This results in faster marshaling if <code class="code">v</code> contains no shared
+      substructures, but may cause slower marshaling and larger
+      byte representations if <code class="code">v</code> actually contains sharing,
+      or even non-termination if <code class="code">v</code> contains cycles.</div>
+<div class="param_info"><code class="code">closures</code> : If <code class="code"><span class="keyword">false</span></code> (default value) marshaling fails when
+      it encounters a functional value inside <code class="code">v</code>: only ``pure'' data
+      structures, containing neither functions nor objects, can safely
+      be transmitted between different programs. If <code class="code"><span class="keyword">true</span></code>, functional
+      values will be marshaled as a position in the code of the
+      program. In this case, the output of marshaling can only be read
+      back in processes that run exactly the same program, with
+      exactly the same compiled code. (This is checked at
+      un-marshaling time, using an MD5 digest of the code transmitted
+      along with the code position.)</div>
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> string</code></pre><div class="info">
+<code class="code"><span class="constructor">Marshal</span>.to_string v flags</code> returns a string containing
+   the representation of <code class="code">v</code> as a sequence of bytes.
+   The <code class="code">flags</code> argument has the same meaning as for
+   <code class="code"><span class="constructor">Marshal</span>.to_channel</code>.<br>
+</div>
+<pre><span id="VALto_buffer"><span class="keyword">val</span> to_buffer</span> : <code class="type">string -> int -> int -> 'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> int</code></pre><div class="info">
+<code class="code"><span class="constructor">Marshal</span>.to_buffer buff ofs len v flags</code> marshals the value <code class="code">v</code>,
+   storing its byte representation in the string <code class="code">buff</code>,
+   starting at character number <code class="code">ofs</code>, and writing at most
+   <code class="code">len</code> characters.  It returns the number of characters
+   actually written to the string. If the byte representation
+   of <code class="code">v</code> does not fit in <code class="code">len</code> characters, the exception <code class="code"><span class="constructor">Failure</span></code>
+   is raised.<br>
+</div>
+<pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> 'a</code></pre><div class="info">
+<code class="code">input inp</code> reads from <code class="code">inp</code> the
+      byte representation of a structured value, as produced by
+      one of the <code class="code"><span class="constructor">Marshal</span>.to_*</code> functions, and reconstructs and
+      returns the corresponding value.<br>
+</div>
+<pre><span id="VALfrom_string"><span class="keyword">val</span> from_string</span> : <code class="type">string -> int -> 'a</code></pre><div class="info">
+<code class="code"><span class="constructor">Marshal</span>.from_string buff ofs</code> unmarshals a structured value
+   like <code class="code"><span class="constructor">Marshal</span>.from_channel</code> does, except that the byte
+   representation is not read from a channel, but taken from
+   the string <code class="code">buff</code>, starting at position <code class="code">ofs</code>.<br>
+</div>
+<pre><span id="VALheader_size"><span class="keyword">val</span> header_size</span> : <code class="type">int</code></pre><div class="info">
+The bytes representing a marshaled value are composed of
+   a fixed-size header and a variable-sized data part,
+   whose size can be determined from the header.
+   <code class="code"><span class="constructor">Marshal</span>.header_size</code> is the size, in characters, of the header.
+   <code class="code"><span class="constructor">Marshal</span>.data_size</code><code class="code"> buff ofs</code> is the size, in characters,
+   of the data part, assuming a valid header is stored in
+   <code class="code">buff</code> starting at position <code class="code">ofs</code>.
+   Finally, <code class="code"><span class="constructor">Marshal</span>.total_size</code><code class="code"> buff ofs</code> is the total size,
+   in characters, of the marshaled value.
+   Both <code class="code"><span class="constructor">Marshal</span>.data_size</code> and <code class="code"><span class="constructor">Marshal</span>.total_size</code> raise <code class="code"><span class="constructor">Failure</span></code>
+   if <code class="code">buff</code>, <code class="code">ofs</code> does not contain a valid header.
+<p>
+
+   To read the byte representation of a marshaled value into
+   a string buffer, the program needs to read first
+   <code class="code"><span class="constructor">Marshal</span>.header_size</code> characters into the buffer,
+   then determine the length of the remainder of the
+   representation using <code class="code"><span class="constructor">Marshal</span>.data_size</code>,
+   make sure the buffer is large enough to hold the remaining
+   data, then read it, and finally call <code class="code"><span class="constructor">Marshal</span>.from_string</code>
+   to unmarshal the value.<br>
+</div>
+<pre><span id="VALdata_size"><span class="keyword">val</span> data_size</span> : <code class="type">string -> int -> int</code></pre><div class="info">
+See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.<br>
+</div>
+<pre><span id="VALtotal_size"><span class="keyword">val</span> total_size</span> : <code class="type">string -> int -> int</code></pre><div class="info">
+See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.<br>
+</div>
+<br>
+<span id="6_Deprecated"><h6>Deprecated</h6></span><br>
+<pre><span id="VALto_channel"><span class="keyword">val</span> to_channel</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> unit</code></pre><div class="info">
+<span class="warning">Deprecated.</span>Use <a href="BatMarshal.html#VALoutput"><code class="code"><span class="constructor">BatMarshal</span>.output</code></a> instead<br>
+</div>
+<pre><span id="VALfrom_channel"><span class="keyword">val</span> from_channel</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> 'a</code></pre><div class="info">
+<span class="warning">Deprecated.</span>Use <a href="BatMarshal.html#VALinput"><code class="code"><span class="constructor">BatMarshal</span>.input</code></a> instead<br>
+</div>
 </body></html>

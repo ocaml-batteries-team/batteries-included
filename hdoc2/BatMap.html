@@ -58,6 +58,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -85,11 +86,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -101,7 +102,7 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="Polymorphic maps" rel="Section" href="#4_Polymorphicmaps">
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Polymorphic maps" rel="Section" href="#4_Polymorphicmaps">
 <link title="Boilerplate code" rel="Subsection" href="#6_Boilerplatecode">
 <title>Batteries user guide : BatMap</title>
 </head>
@@ -154,21 +155,15 @@
 &nbsp;&nbsp;&nbsp;&nbsp;</code><pre></pre>
 <p>
 
-    You can also use predefined maps such as <a href="BatMap.IntMap.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">IntMap</span></code></a> for maps with
+    You can also use predefined maps such as <code class="code"><span class="constructor">IntMap</span></code> for maps with
     integer keys.<br>
 <b>Author(s):</b> Xavier Leroy (Base library), Nicolas Cannasse, Markus Mottl, David Rajchenbach-Teller, Gabriel Scherer<br>
 <hr width="100%">
-<pre><span class="keyword">module type</span> <a href="BatMap.S.html">S</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatMap.StringMap.html">StringMap</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = String.t</code></pre><div class="info">
-A map on strings.
-</div>
-<pre><span class="keyword">module</span> <a href="BatMap.IStringMap.html">IStringMap</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = String.t</code></pre><div class="info">
+<pre><span class="keyword">module type</span> <a href="BatMap.S.html">S</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatMap.IStringMap.html">IStringMap</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = String.t</code></pre><div class="info">
 A map on strings.
 </div>
 <pre><span class="keyword">module</span> <a href="BatMap.NumStringMap.html">NumStringMap</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = String.t</code></pre><div class="info">
 A map on strings.
-</div>
-<pre><span class="keyword">module</span> <a href="BatMap.IntMap.html">IntMap</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = BatInt.t</code></pre><div class="info">
-A map on integers.
 </div>
 <pre><span class="keyword">module</span> <a href="BatMap.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = Ord.t</code></div></pre><div class="info">
 Functor building an implementation of the map structure
@@ -183,11 +178,10 @@ Functor building an implementation of the map structure
 <p>
 
     They are similar in functionality to the functorized <a href="BatMap.Make.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">Make</span></code></a>
-    module, but the compiler cannot ensure that maps using different
-    key ordering have different types: the responsibility of not
-    mixing non-sensical comparison functions together is to the
-    programmer. If in doubt, you should rather use the <a href="BatMap.Make.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">Make</span></code></a>
-    functor for additional safety.<br>
+    module, but only uses the <code class="code"><span class="constructor">Pervasives</span>.compare</code> function to compare
+    elements.  If you need to compare using a custom comparison
+    function, it is recommended to use the functorized maps provided
+    by <a href="BatMap.Make.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">Make</span></code></a>.<br>
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> </pre>
 
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
@@ -196,13 +190,7 @@ The empty map, using <code class="code">compare</code> as key comparison functio
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 returns true if the map is empty.<br>
 </div>
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">('a -> 'a -> int) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
-creates a new empty map, using the provided function for key comparison.<br>
-</div>
-<pre><span id="VALget_cmp"><span class="keyword">val</span> get_cmp</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'a -> 'a -> int</code></pre><div class="info">
-returns the comparison function of the given map<br>
-</div>
-<pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a -> 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 creates a new map with a single binding<br>
 </div>
 <pre><span id="VALcardinal"><span class="keyword">val</span> cardinal</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> int</code></pre><div class="info">
@@ -224,10 +212,6 @@ Return the number of bindings of a map.<br>
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">mem x m</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">m</code> contains a binding for <code class="code">x</code>,
     and <code class="code"><span class="keyword">false</span></code> otherwise.<br>
-</div>
-<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<span class="warning">Deprecated.</span><code class="code">mem</code> should be used instead, as <code class="code">exists</code> conflicts with the function checking arbitrary predicates, which is instead named <code class="code">exists_f</code>.<br>
-same as <code class="code">mem</code>.<br>
 </div>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> 'b -> unit) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter f m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
@@ -310,14 +294,13 @@ Return an enumeration of all the keys of a map.<br>
 <pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Return an enumeration of al the values of a map.<br>
 </div>
-<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">?cmp:('a -> 'a -> int) -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
-creates a map from an enumeration, using the specified function
-    for key comparison or <code class="code">compare</code> by default.<br>
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+Creates a map from an enumeration<br>
 </div>
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> 'b -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Tests whether all key value pairs satisfy some predicate function<br>
 </div>
-<pre><span id="VALexists_f"><span class="keyword">val</span> exists_f</span> : <code class="type">('a -> 'b -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> 'b -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Tests whether some key value pair satisfies some predicate function<br>
 </div>
 <pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">('a -> 'b -> bool) -><br>       ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> * ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
@@ -375,12 +358,6 @@ Tests whether some key value pair satisfies some predicate function<br>
     value, is determined with the function <code class="code">f</code>.
     The resulting map uses the comparison function of <code class="code">m1</code>.<br>
 </div>
-<pre><span id="VALmerge_unsafe"><span class="keyword">val</span> merge_unsafe</span> : <code class="type">('a -> 'b option -> 'c option -> 'd option) -><br>       ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'd) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
-Same as merge, but assumes the comparison function of both maps
-    are equal. If it's not the case, the result is a map using the
-    comparison function of its first parameter, but which <code class="code"><span class="keywordsign">'</span>b option</code>
-    elements are passed to the function is unspecified.<br>
-</div>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -> 'a -> int) -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -> 'a -> bool) -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Construct a comparison or equality function for maps based on a
     value comparison or equality function.  Uses the key comparison
@@ -406,4 +383,4 @@ Return the list of all bindings of the given map.
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
 <br>
 <span id="7_Printing"><div class="h7">Printing</div></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?kvsep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, 'c) <a href="BatMap.html#TYPEt">t</a> -> unit</code></pre></body></html>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?kvsep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, 'c) <a href="BatMap.html#TYPEt">t</a> -> unit</code></pre><pre><span class="keyword">module</span> <a href="BatMap.PMap.html">PMap</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.PMap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

@@ -58,6 +58,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -85,11 +86,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -101,7 +102,7 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
 <link title="Constructors" rel="Section" href="#6_Constructors">
 <link title="Iterators" rel="Section" href="#6_Iterators">
 <link title="Iterators on two lists" rel="Section" href="#6_Iteratorsontwolists">
@@ -379,21 +380,22 @@ in <code class="code">l</code>, or <code class="code"><span class="constructor">
 <code class="code">rindex_ofq e l</code> behaves as <code class="code">rindex_of e l</code> except it uses
 physical equality<br>
 </div>
-<pre><span id="VALunique"><span class="keyword">val</span> unique</span> : <code class="type">?cmp:('a -> 'a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
+<pre><span id="VALunique"><span class="keyword">val</span> unique</span> : <code class="type">?eq:('a -> 'a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">unique cmp l</code> returns the list <code class="code">l</code> without any duplicate element.
-Default comparator ( = ) is used if no comparison function specified.
+    All but the last element of each equality class is removed.
+    Default comparator ( = ) is used if no comparison function
+    specified.
 <p>
 
-This function takes O(n²) time.<br>
+    This function takes O(n^2) time.<br>
+<b>Since</b> 2.0<br>
 <b>See also</b> <code class="code">sort_unique</code> to save time in cases when reordering the list is
-acceptable<br>
-</div>
-<pre><span id="VALunique_eq"><span class="keyword">val</span> unique_eq</span> : <code class="type">?eq:('a -> 'a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
-As <code class="code">unique</code> except comparator label is ~eq.<br>
-<b>Since</b> 1.3.0<br>
+    acceptable<br>
 </div>
 <pre><span id="VALunique_cmp"><span class="keyword">val</span> unique_cmp</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info">
-As <code class="code">unique</code>, except comparator parameter returns an int<br>
+As <code class="code">unique</code>, except comparator parameter returns an int.  Default
+    comparator is <code class="code"><span class="constructor">Pervasives</span>.compare</code>.  This function takes O(n log n)
+    time.<br>
 <b>Since</b> 1.3.0<br>
 </div>
 <br>
@@ -470,17 +472,16 @@ available.<br>
 list if <code class="code">l</code> have less than <code class="code">n</code> elements.<br>
 </div>
 <pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
-<code class="code">take_while p xs</code> returns the
-longest prefix (possibly empty) of <code class="code">xs</code> of elements that satisfy the
-predicate <code class="code">p</code>.<br>
+<code class="code">take_while p xs</code> returns the (possibly empty) longest prefix of
+    elements of <code class="code">xs</code> that satisfy the predicate <code class="code">p</code>.<br>
 </div>
 <pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">drop_while p xs</code> returns the suffix remaining after
-<code class="code">takeWhile p xs</code>.<br>
+    <code class="code">takeWhile p xs</code>.<br>
 </div>
 <pre><span id="VALinterleave"><span class="keyword">val</span> interleave</span> : <code class="type">?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">interleave ~first ~last sep [a0;a1;a2;...;an]</code> returns
-<code class="code">first; a0; sep; a1; sep; a2; sep; ...; sep; an</code><br>
+<code class="code">first; a0; sep; a1; sep; a2; sep; ...; sep; an; last</code><br>
 </div>
 <br>
 <span id="6_BatEnumfunctions"><h6>BatEnum functions</h6></span>
@@ -562,10 +563,6 @@ Merge two lists:
     before the elements of <code class="code">l2</code>.
     Not tail-recursive (sum of the lengths of the arguments).<br>
 </div>
-<pre><span id="VALmake_compare"><span class="keyword">val</span> make_compare</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list -> int</code></pre><div class="info">
-<code class="code">make_compare c</code> generates the lexicographical order on lists
-induced by <code class="code">c</code><br>
-</div>
 <pre><span id="VALsort_unique"><span class="keyword">val</span> sort_unique</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">sort_unique cmp l</code> returns the list <code class="code">l</code> sorted and without any duplicate
 element. <code class="code">cmp</code> is a usual comparison function providing total order.
@@ -606,7 +603,10 @@ ways of choosing one element from each input list.<br>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b list -> unit</code></pre><div class="info">
 Print the contents of a list<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a> -> 'a <a href="BatList.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><br>
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a> -> 'a <a href="BatList.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a list <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a list <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a list <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><br>
+Comparison and equality for lists based on element comparison and
+    equality<br>
+<pre><span class="keyword">module</span> <a href="BatList.Eq.html">Eq</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">T</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Eq.html">BatOrd.Eq</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type">Eq</code><code class="type">  with type t = T.t list</code></div></pre><pre><span class="keyword">module</span> <a href="BatList.Ord.html">Ord</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">T</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Ord.html">BatOrd.Ord</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type">Ord</code><code class="type">  with type t = T.t list</code></div></pre><pre><span class="keyword">module</span> <a href="BatList.Comp.html">Comp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">T</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Comp.html">BatOrd.Comp</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type">Comp</code><code class="type">  with type t = T.t list</code></div></pre><br>
 <span id="6_Obsoletefunctions"><h6>Obsolete functions</h6></span><br>
 <pre><span id="VALnth"><span class="keyword">val</span> nth</span> : <code class="type">'a list -> int -> 'a</code></pre><div class="info">
 Obsolete. As <code class="code">at</code>.<br>
@@ -636,4 +636,4 @@ Operations on <code class="code"><span class="constructor">List</span></code> wi
 <pre><span id="VAL(@)"><span class="keyword">val</span> (@)</span> : <code class="type">'a list -> 'a list -> 'a list</code></pre><div class="info">
 Tail recursive <code class="code"><span class="constructor">List</span>.append</code>.<br>
 </div>
-<pre><span class="keyword">module</span> <a href="BatList.Incubator.html">Incubator</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+</body></html>

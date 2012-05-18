@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
+<link rel="next" href="BatLog.Easy.html">
 <link rel="Up" href="BatLog.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -56,6 +57,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -83,11 +85,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -99,14 +101,16 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : BatLog.Make</title>
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatLog.Make</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a href="BatLog.html">Up</a>
-&nbsp;</div>
+&nbsp;<a href="BatLog.Easy.html">Next</a>
+</div>
 <center><h1>Functor <a href="type_BatLog.Make.html">BatLog.Make</a></h1></center>
 <br>
-<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">S</span></code><code class="code"> : </code><code class="type"><a href="BatLog.S.html">S</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><table border="0" cellpadding="3" width="100%">
+<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">S</span></code><code class="code"> : </code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre>Build a logger module with custom, fixed output, prefix and flags<br>
+<table border="0" cellpadding="3" width="100%">
 <tr>
 <td align="left" valign="top" width="1%%"><b>Parameters: </b></td>
 <td>
@@ -115,16 +119,16 @@
 <td align="center" valign="top" width="15%">
 <code>S</code></td>
 <td align="center" valign="top">:</td>
-<td><code class="type"><a href="BatLog.S.html">S</a></code>
+<td><code class="type"><a href="BatLog.Config.html">Config</a></code>
 </table>
 </td>
 </tr>
 </table>
 <hr width="100%">
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?fp:string -> string -> unit</code></pre><div class="info">
+<pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> string -> unit</code></pre><div class="info">
 <code class="code">print s</code> logs the message s, returning unit.<br>
 </div>
-<pre><span id="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">?fp:string -> ('a, 'b <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info">
+<pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -> ('a, S.t <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info">
 As <code class="code"><span class="constructor">Printf</span>.printf</code>, only the message is printed to the logging
       output and prefixed with status information per the current flags and
       the currently set prefix.<br>
@@ -133,9 +137,9 @@ As <code class="code"><span class="constructor">Printf</span>.printf</code>, onl
 <code class="code">fatal s</code> logs the message <code class="code">s</code> and then calls <code class="code">exit 1</code>.  This
       exits the program with return code 1.<br>
 </div>
-<pre><span id="VALfatalf"><span class="keyword">val</span> fatalf</span> : <code class="type">?fp:string -> ('a, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info">
+<pre><span id="VALfatalf"><span class="keyword">val</span> fatalf</span> : <code class="type">?fp:string -> ('a, S.t <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info">
 <code class="code">fatalf</code> allows a format string (as <code class="code"><span class="constructor">Printf</span>.printf</code>)and the
-    arguments to that format string to build the logging message.
-    Exits the program with return code 1.<br>
+      arguments to that format string to build the logging message.
+      Exits the program with return code 1.<br>
 </div>
 </body></html>

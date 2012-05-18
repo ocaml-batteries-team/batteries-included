@@ -58,6 +58,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -85,11 +86,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -101,7 +102,7 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><link title="node functions " rel="Section" href="#6_nodefunctions">
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="node functions " rel="Section" href="#6_nodefunctions">
 <link title="list conversion " rel="Section" href="#6_listconversion">
 <link title="enums " rel="Section" href="#6_enums">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
@@ -138,7 +139,9 @@ Copy the list attached to the given node and return the copy of the given
 Returns the length of the list.  This is an O(N) operation.<br>
 </div>
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> unit</code></pre><div class="info">
-List reversal.  This is an O(N) operation.<br>
+List reversal.  This is an O(N) operation.
+    The given node still points to the same element, so
+    <code class="code">to_list (rev (of_list [1;2;3;4])) = [1;4;3;2]</code><br>
 </div>
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a -> unit</code></pre><div class="info">
 <code class="code">add n a</code> Creates a new node containing data <code class="code">a</code> and inserts it into
@@ -160,14 +163,17 @@ List reversal.  This is an O(N) operation.<br>
 </div>
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> unit</code></pre><div class="info">
 Remove node from the list no matter where it is.  This is an O(1) operation.<br>
+<b>Raises</b> <code>Empty</code> when trying to remove an element from a list of length one.<br>
 </div>
 <pre><span id="VALdrop"><span class="keyword">val</span> drop</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info">
 Remove node from the list no matter where it is. Return next node.  This is
     an O(1) operation.<br>
+<b>Raises</b> <code>Empty</code> when trying to remove an element from a list of length one.<br>
 </div>
 <pre><span id="VALrev_drop"><span class="keyword">val</span> rev_drop</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info">
 Remove node from the list no matter where it is. Return previous node.  This
     is an O(1) operation.<br>
+<b>Raises</b> <code>Empty</code> when trying to remove an element from a list of length one.<br>
 </div>
 <pre><span id="VALsplice"><span class="keyword">val</span> splice</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> unit</code></pre><div class="info">
 <code class="code">splice n1 n2</code> Connects <code class="code">n1</code> and <code class="code">n2</code> so that
@@ -274,8 +280,22 @@ Create an enum of the list.
 </div>
 <pre><span id="VALrev_enum"><span class="keyword">val</span> rev_enum</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Create a reverse enum of the list.
+    The enumeration starts with the current element of the list:
+    <code class="code">rev_enum (of_list [1;2;3;4])</code> will generate the enumeration <code class="code">[1;4;3;2]</code>.
+<p>
+
+    If you want it to start with the last one, see <code class="code">backwards</code>.
+<p>
+
     Note that modifying the list while the enum exists will have undefined
     effects.  This is an O(1) operation.<br>
+</div>
+<pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<code class="code">backwards t</code> is similar to <code class="code">rev_enum t</code> except that the enumeration
+    starts at the node before the current one:
+<p>
+
+    <code class="code">backwards (of_list [1;2;3;4])</code> will generate the enumeration <code class="code">[4;3;2;1]</code>.<br>
 </div>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info">
 Create a dllist from an enum.

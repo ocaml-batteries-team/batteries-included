@@ -54,6 +54,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -81,11 +82,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -97,7 +98,7 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : Index of types</title>
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Index of types</title>
 </head>
 <body>
 <center><h1>Index of types</h1></center>
@@ -123,7 +124,7 @@ Automatically managed caches
 <td></td></tr>
 <tr><td><a href="BatNumber.Bounded.html#TYPEbounded">bounded</a> [<a href="BatNumber.Bounded.html">BatNumber.Bounded</a>]</td>
 <td></td></tr>
-<tr><td><a href="Ulib.UTF8.Buf.html#TYPEbuf">buf</a> [<a href="Ulib.UTF8.Buf.html">Ulib.UTF8.Buf</a>]</td>
+<tr><td><a href="Uniclib.UTF8.Buf.html#TYPEbuf">buf</a> [<a href="Uniclib.UTF8.Buf.html">Uniclib.UTF8.Buf</a>]</td>
 <td><div class="info">
 Buffers for UTF-8 strings.
 </div>
@@ -186,6 +187,11 @@ The type of double-ended queues
 </div>
 </td></tr>
 <tr><td align="left"><br>E</td></tr>
+<tr><td><a href="BatLog.html#TYPEeasy_lev">easy_lev</a> [<a href="BatLog.html">BatLog</a>]</td>
+<td><div class="info">
+The different verbosity levels supported in the <code class="code"><span class="constructor">Easy</span></code> logger
+</div>
+</td></tr>
 <tr><td><a href="BatHeap.H.html#TYPEelem">elem</a> [<a href="BatHeap.H.html">BatHeap.H</a>]</td>
 <td><div class="info">
 Type of elements of the heap
@@ -222,6 +228,11 @@ A log <code class="code">event</code> consists of an event name and a list of ke
        parameters (an association list).
 </div>
 </td></tr>
+<tr><td><a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> [<a href="BatMarshal.html">BatMarshal</a>]</td>
+<td><div class="info">
+The flags to the <code class="code"><span class="constructor">Marshal</span>.to_*</code> functions below.
+</div>
+</td></tr>
 <tr><td align="left"><br>F</td></tr>
 <tr><td><a href="BatFingerTree.S.html#TYPEfg">fg</a> [<a href="BatFingerTree.S.html">BatFingerTree.S</a>]</td>
 <td><div class="info">
@@ -230,10 +241,7 @@ The type of finger trees containing elements of type <code class="code"><span cl
 </div>
 </td></tr>
 <tr><td><a href="BatLog.html#TYPEflag">flag</a> [<a href="BatLog.html">BatLog</a>]</td>
-<td><div class="info">
-Get and set the output flags.
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatBigarray.html#TYPEfloat32_elt">float32_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatBigarray.html#TYPEfloat64_elt">float64_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
@@ -245,6 +253,20 @@ the type of a log formatter is a function that takes the
        currently enabled level or one of its successors), the event
        record, and a unix timestamp indicating the time the event was
        created.
+</div>
+</td></tr>
+<tr><td><a href="BatFormat.html#TYPEformatter">formatter</a> [<a href="BatFormat.html">BatFormat</a>]</td>
+<td><div class="info">
+Abstract data corresponding to a pretty-printer (also called a
+  formatter) and all its machinery.
+</div>
+</td></tr>
+<tr><td><a href="BatFormat.html#TYPEformatter_tag_functions">formatter_tag_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
+<td><div class="info">
+The tag handling functions specific to a formatter:
+   <code class="code">mark</code> versions are the ``tag marking'' functions that associate a string
+   marker to a tag in order for the pretty-printing engine to flush
+   those markers as 0 length tokens in the output device of the formatter.
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
@@ -282,7 +304,7 @@ The type <code class="code">t hobj</code> represents hashed objects of type <cod
 <td></td></tr>
 <tr><td><a href="BatIO.html#TYPEin_bits">in_bits</a> [<a href="BatIO.html">BatIO</a>]</td>
 <td></td></tr>
-<tr><td><a href="Ulib.UTF8.html#TYPEindex">index</a> [<a href="Ulib.UTF8.html">Ulib.UTF8</a>]</td>
+<tr><td><a href="Uniclib.UTF8.html#TYPEindex">index</a> [<a href="Uniclib.UTF8.html">Uniclib.UTF8</a>]</td>
 <td><div class="info">
 Positions in the string represented by the number of bytes from the head.
 </div>
@@ -344,14 +366,19 @@ The type <code class="code"><span class="keywordsign">'</span>a layout</code> re
 </td></tr>
 <tr><td><a href="BatLogger.html#TYPElevel">level</a> [<a href="BatLogger.html">BatLogger</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatLexing.html#TYPElexbuf">lexbuf</a> [<a href="BatLexing.html">BatLexing</a>]</td>
+<td><div class="info">
+The type of lexer buffers.
+</div>
+</td></tr>
+<tr><td><a href="BatGenlex.html#TYPElexer_error">lexer_error</a> [<a href="BatGenlex.html">BatGenlex</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatConcurrent.html#TYPElock">lock</a> [<a href="BatConcurrent.html">BatConcurrent</a>]</td>
 <td><div class="info">
 The light-weight type of a lock, i.e.
 </div>
 </td></tr>
 <tr><td><a href="BatLogger.html#TYPElog">log</a> [<a href="BatLogger.html">BatLogger</a>]</td>
-<td></td></tr>
-<tr><td><a href="BatLog.html#TYPElogger">logger</a> [<a href="BatLog.html">BatLog</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>M</td></tr>
 <tr><td><a href="BatOption.Monad.html#TYPEm">m</a> [<a href="BatOption.Monad.html">BatOption.Monad</a>]</td>
@@ -451,6 +478,11 @@ currently disabled
 The list of operations which are permitted on a file.
 </div>
 </td></tr>
+<tr><td><a href="BatLexing.html#TYPEposition">position</a> [<a href="BatLexing.html">BatLexing</a>]</td>
+<td><div class="info">
+A value of type <code class="code">position</code> describes a point in a source file.
+</div>
+</td></tr>
 <tr><td><a href="BatCharParser.html#TYPEposition">position</a> [<a href="BatCharParser.html">BatCharParser</a>]</td>
 <td><div class="info">
 The position inside one file or one stream.
@@ -471,7 +503,11 @@ The type of a resizer function.
 </div>
 </td></tr>
 <tr><td><a href="BatPervasives.html#TYPEresult">result</a> [<a href="BatPervasives.html">BatPervasives</a>]</td>
-<td></td></tr>
+<td><div class="info">
+This type represents the outcome of a function which has the
+    possibility of failure.
+</div>
+</td></tr>
 <tr><td align="left"><br>S</td></tr>
 <tr><td><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> [<a href="BatScanf.Scanning.html">BatScanf.Scanning</a>]</td>
 <td><div class="info">
@@ -501,18 +537,18 @@ The current state of the parser.
 <tr><td><a href="BatOo.Oo.Internal.html#TYPEstats">stats</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>T</td></tr>
-<tr><td><a href="Ulib.UTF8.html#TYPEt">t</a> [<a href="Ulib.UTF8.html">Ulib.UTF8</a>]</td>
-<td><div class="info">
-UTF-8 encoded Unicode strings.
-</div>
-</td></tr>
-<tr><td><a href="Ulib.UChar.html#TYPEt">t</a> [<a href="Ulib.UChar.html">Ulib.UChar</a>]</td>
-<td></td></tr>
-<tr><td><a href="Ulib.Text.html#TYPEt">t</a> [<a href="Ulib.Text.html">Ulib.Text</a>]</td>
+<tr><td><a href="Uniclib.Text.html#TYPEt">t</a> [<a href="Uniclib.Text.html">Uniclib.Text</a>]</td>
 <td><div class="info">
 The type of the ropes.
 </div>
 </td></tr>
+<tr><td><a href="Uniclib.UTF8.html#TYPEt">t</a> [<a href="Uniclib.UTF8.html">Uniclib.UTF8</a>]</td>
+<td><div class="info">
+UTF-8 encoded Unicode strings.
+</div>
+</td></tr>
+<tr><td><a href="Uniclib.UChar.html#TYPEt">t</a> [<a href="Uniclib.UChar.html">Uniclib.UChar</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> [<a href="BatVect.RANDOMACCESS.html">BatVect.RANDOMACCESS</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatVect.Make.html#TYPEt">t</a> [<a href="BatVect.Make.html">BatVect.Make</a>]</td>
@@ -549,6 +585,11 @@ The unit type, i.e.
 <td></td></tr>
 <tr><td><a href="BatTuple.Tuple2.html#TYPEt">t</a> [<a href="BatTuple.Tuple2.html">BatTuple.Tuple2</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatText.html#TYPEt">t</a> [<a href="BatText.html">BatText</a>]</td>
+<td><div class="info">
+The type of the ropes.
+</div>
+</td></tr>
 <tr><td><a href="BatSubstring.html#TYPEt">t</a> [<a href="BatSubstring.html">BatSubstring</a>]</td>
 <td><div class="info">
 <code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient
@@ -558,6 +599,11 @@ The unit type, i.e.
 <tr><td><a href="BatString.Cap.html#TYPEt">t</a> [<a href="BatString.Cap.html">BatString.Cap</a>]</td>
 <td><div class="info">
 The type of capability strings.
+</div>
+</td></tr>
+<tr><td><a href="BatSet.PSet.html#TYPEt">t</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+The type of sets.
 </div>
 </td></tr>
 <tr><td><a href="BatSet.S.html#TYPEt">t</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
@@ -660,12 +706,23 @@ An alias for the type of native integers.
 </td></tr>
 <tr><td><a href="BatMultiPMap.html#TYPEt">t</a> [<a href="BatMultiPMap.html">BatMultiPMap</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatMultiMap.html#TYPEt">t</a> [<a href="BatMultiMap.html">BatMultiMap</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatMap.PMap.html#TYPEt">t</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatMap.S.html#TYPEt">t</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
 The type of maps from type <code class="code">key</code> to type <code class="code"><span class="keywordsign">'</span>a</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#TYPEt">t</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatLog.Level_sig.html#TYPEt">t</a> [<a href="BatLog.Level_sig.html">BatLog.Level_sig</a>]</td>
+<td><div class="info">
+A type for level values, usually a polymorphic variant
+</div>
+</td></tr>
+<tr><td><a href="BatLog.Config.html#TYPEt">t</a> [<a href="BatLog.Config.html">BatLog.Config</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatList.html#TYPEt">t</a> [<a href="BatList.html">BatList</a>]</td>
 <td><div class="info">
@@ -696,11 +753,6 @@ An alias for the type of integers.
 <tr><td><a href="BatInnerWeaktbl.html#TYPEt">t</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 The type of hash tables from type <code class="code"><span class="keywordsign">'</span>a</code> to type <code class="code"><span class="keywordsign">'</span>b</code>.
-</div>
-</td></tr>
-<tr><td><a href="BatInnerIO.Printf.html#TYPEt">t</a> [<a href="BatInnerIO.Printf.html">BatInnerIO.Printf</a>]</td>
-<td><div class="info">
-The format to use for displaying the various arguments passed to the function.
 </div>
 </td></tr>
 <tr><td><a href="BatInnerIO.Output.html#TYPEt">t</a> [<a href="BatInnerIO.Output.html">BatInnerIO.Output</a>]</td>
@@ -779,6 +831,11 @@ The type of floating-point numbers.
 <td></td></tr>
 <tr><td><a href="BatDllist.html#TYPEt">t</a> [<a href="BatDllist.html">BatDllist</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatDigest.html#TYPEt">t</a> [<a href="BatDigest.html">BatDigest</a>]</td>
+<td><div class="info">
+The type of digests: 16-character strings.
+</div>
+</td></tr>
 <tr><td><a href="BatDeque.html#TYPEt">t</a> [<a href="BatDeque.html">BatDeque</a>]</td>
 <td><div class="info">
 A synonym for convenience
@@ -802,6 +859,11 @@ The type of a lock.
 <td></td></tr>
 <tr><td><a href="BatOrd.Comp.html#TYPEt">t</a> [<a href="BatOrd.Comp.html">BatOrd.Comp</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatChar.html#TYPEt">t</a> [<a href="BatChar.html">BatChar</a>]</td>
+<td><div class="info">
+An alias for the type of characters.
+</div>
+</td></tr>
 <tr><td><a href="BatBuffer.html#TYPEt">t</a> [<a href="BatBuffer.html">BatBuffer</a>]</td>
 <td><div class="info">
 The abstract type of buffers.
@@ -859,15 +921,22 @@ Internal representation of the vtable, i.e.
 <td></td></tr>
 <tr><td><a href="BatOo.Oo.Internal.html#TYPEtag">tag</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatFormat.html#TYPEtag">tag</a> [<a href="BatFormat.html">BatFormat</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatPathGen.StringType.html#TYPEtchar">tchar</a> [<a href="BatPathGen.StringType.html">BatPathGen.StringType</a>]</td>
 <td><div class="info">
 Character type used by <code class="code">t</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatGenlex.html#TYPEtoken">token</a> [<a href="BatGenlex.html">BatGenlex</a>]</td>
+<td><div class="info">
+The type of tokens.
+</div>
+</td></tr>
 <tr><td><a href="BatAvlTree.html#TYPEtree">tree</a> [<a href="BatAvlTree.html">BatAvlTree</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>U</td></tr>
-<tr><td><a href="Ulib.UChar.html#TYPEuchar">uchar</a> [<a href="Ulib.UChar.html">Ulib.UChar</a>]</td>
+<tr><td><a href="Uniclib.UChar.html#TYPEuchar">uchar</a> [<a href="Uniclib.UChar.html">Uniclib.UChar</a>]</td>
 <td><div class="info">
 Aliases of <code class="code"><span class="keyword">type</span> t</code>
 </div>

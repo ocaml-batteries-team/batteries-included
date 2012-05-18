@@ -53,6 +53,7 @@
 <link title="BatLogger" rel="Chapter" href="BatLogger.html">
 <link title="BatMap" rel="Chapter" href="BatMap.html">
 <link title="BatMarshal" rel="Chapter" href="BatMarshal.html">
+<link title="BatMultiMap" rel="Chapter" href="BatMultiMap.html">
 <link title="BatMultiPMap" rel="Chapter" href="BatMultiPMap.html">
 <link title="BatMutex" rel="Chapter" href="BatMutex.html">
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
@@ -80,11 +81,11 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStr" rel="Chapter" href="BatStr.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
+<link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
@@ -96,10 +97,14 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Ulib" rel="Chapter" href="Ulib.html"><title>Batteries user guide : Extlib.Std</title>
+<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Extlib.Std</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_lines&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_chars&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_list&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_all&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;uppercase&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lowercase&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_of_char&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
@@ -117,6 +122,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;prerr_bool&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;prerr_guess&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;prerr_all&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_file&nbsp;:&nbsp;filename:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;text:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?mode:<span class="constructor">BatFile</span>.open_out_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;?perm:<span class="constructor">BatFile</span>.permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output<br>
@@ -125,7 +131,6 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;flush&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_char&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_string&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_text&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_byte&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_binary_int&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -133,6 +138,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_value&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_out&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_out_noerr&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_file&nbsp;:&nbsp;?bin:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?mode:<span class="constructor">BatFile</span>.open_in_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;?perm:<span class="constructor">BatFile</span>.permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatIO</span>.input<br>
@@ -166,6 +172,8 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;tap&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;finally&nbsp;:&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;with_dispose&nbsp;:&nbsp;dispose:(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;forever&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ignore_exceptions&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;verify_arg&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;args&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;invisible_args&nbsp;:&nbsp;int&nbsp;ref<br>
@@ -285,7 +293,6 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_Sc&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;([&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;]&nbsp;<span class="constructor">BatString</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_text&nbsp;:&nbsp;(<span class="constructor">Ulib</span>.<span class="constructor">Text</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_obj&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;print&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit;&nbsp;..&nbsp;&gt;&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_exn&nbsp;:&nbsp;(exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
@@ -303,5 +310,8 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;maybe_printer&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatValuePrinter</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;option&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exn_printer&nbsp;:&nbsp;exn&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;result&nbsp;=&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">BatPervasives</span>.result&nbsp;=&nbsp;<span class="constructor">Ok</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Bad</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>b<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ignore_ok&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;exn)&nbsp;result&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ok&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;exn)&nbsp;result&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;wrap&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>b,&nbsp;exn)&nbsp;result<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lock&nbsp;:&nbsp;<span class="constructor">BatConcurrent</span>.lock&nbsp;ref<br>
 <span class="keyword">end</span></code></body></html>
