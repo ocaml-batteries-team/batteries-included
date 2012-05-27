@@ -20,9 +20,5 @@
  *)
 
 
-
-module Oo =
-struct
-  include Oo
-  module Internal = CamlinternalOO
-end
+include Oo
+module Internal = CamlinternalOO

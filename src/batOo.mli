@@ -21,12 +21,9 @@
 
 (** Operations on objects
 
-    @documents Oo
     @author Jerome Vouillon (Base module)
     @author David Teller (integration to Batteries)
 *)
-module Oo :
-sig
 
 val copy : (< .. > as 'a) -> 'a
   (** [Oo.copy o] returns a copy of object [o], that is a fresh
@@ -189,7 +186,5 @@ sig
 	methods : int;
 	inst_vars : int }
   val stats : unit -> stats
-
-end
 
 end

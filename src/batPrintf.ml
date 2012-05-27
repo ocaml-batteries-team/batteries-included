@@ -520,3 +520,5 @@ let sprintf         = Printf.sprintf
 let ksprintf        = Printf.ksprintf
 let kbprintf        = Printf.kbprintf
 let kprintf         = Printf.kprintf
+
+module CamlinternalPr = Printf.CamlinternalPr

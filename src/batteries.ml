@@ -71,16 +71,16 @@ module Map = BatMap
 module Marshal = BatMarshal
 (* MoreLabels *)
 module Nativeint = BatNativeint
-module Oo = struct include Oo include BatOo end
+module Oo = BatOo
 (* Parsing *)
-module Printexc = struct include Printexc include BatPrintexc end
-module Printf = struct include Printf include BatPrintf end
-module Queue = struct include Queue include BatQueue end
+module Printexc = BatPrintexc
+module Printf = BatPrintf (* UNTESTED FOR BACKWARDS COMPATIBILITY *)
+module Queue = BatQueue
 module Random = BatRandom
 module Scanf = BatScanf
 module Set = BatSet
 (* Sort - Deprecated *)
-module Stack = struct include Stack include BatStack end
+module Stack = BatStack
 module Stream = struct include Stream include BatStream end
 module String = struct include String include BatString end
 (* StringLabels *)

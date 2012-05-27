@@ -20,17 +20,18 @@
  *)
 
 
-open Stack
+include Stack
 
-  type 'a enumerable = 'a Stack.t
+type 'a enumerable = 'a Stack.t
 
-  let of_enum e =
-    let s = create () in
-      BatEnum.iter (fun x -> push x s) e;
-      s
+let of_enum e =
+  let s = create () in
+  BatEnum.iter (fun x -> push x s) e;
+  s
 
-  let enum s = BatEnum.from
-    (fun () -> try pop s with Stack.Empty -> raise BatEnum.No_more_elements)
+let enum s =
+  let get () = try pop s with Stack.Empty -> raise BatEnum.No_more_elements in
+  BatEnum.from get
 
   let print ?(first="") ?(last="") ?(sep="") print_a out t =
       BatEnum.print ~first ~last ~sep print_a out (enum (copy t))

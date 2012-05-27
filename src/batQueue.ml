@@ -20,7 +20,7 @@
  *)
 
 
-open Queue
+include Queue
 
 type 'a enumerable = 'a t
 
@@ -49,6 +49,9 @@ let print ?(first="") ?(last="") ?(sep="") print_a out t =
 (*$T print
   BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) (of_enum (BatArray.enum [|2;4;66|])) = "[2,4,66]"
 *)
+
+let compare cmp a b = BatEnum.compare cmp (enum a) (enum b)
+let equal eq a b = BatEnum.equal eq (enum a) (enum b)
 
 module Exceptionless = struct
   let peek q = try Some (peek q) with Empty -> None

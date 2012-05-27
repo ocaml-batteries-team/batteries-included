@@ -20,8 +20,8 @@
  *)
 
 
-open Printexc
+include Printexc
 
-  let pass = print
-  let print out e = BatInnerIO.nwrite out (to_string e)
-  let print_backtrace out = BatInnerIO.nwrite out (get_backtrace ())
+let pass = print
+let print out e = BatInnerIO.nwrite out (to_string e)
+let print_backtrace out = BatInnerIO.nwrite out (get_backtrace ())
