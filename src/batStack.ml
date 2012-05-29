@@ -29,14 +29,31 @@ let of_enum e =
   BatEnum.iter (fun x -> push x s) e;
   s
 
-let enum s =
+(*$T of_enum
+  let s = create () in push 3 s; push 5 s; [3;5] |> List.enum |> of_enum = s
+  let s = create () in of_enum (BatEnum.empty ()) = s
+ *)
+
+(* Consumes input stack *)
+let enum_destruct s =
   let get () = try pop s with Stack.Empty -> raise BatEnum.No_more_elements in
   BatEnum.from get
 
-  let print ?(first="") ?(last="") ?(sep="") print_a out t =
-      BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
+(*$T enum_destruct
+  let s = of_enum (List.enum [2;4;6;8]) in \
+   enum_destruct s |> List.of_enum = [8;6;4;2] && is_empty s
+ *)
 
-  module Exceptionless = struct
-    let top s = try Some (top s) with Stack.Empty -> None
-    let pop s = try Some (pop s) with Stack.Empty -> None
-  end
+(* consumes a copy *)
+let enum s = enum_destruct (copy s)
+
+let print ?(first="") ?(last="") ?(sep="") print_a out t =
+  BatEnum.print ~first ~last ~sep print_a out (enum t)
+
+let compare cmp a b = BatEnum.compare cmp (enum a) (enum b)
+let equal eq a b = BatEnum.equal eq (enum a) (enum b)
+
+module Exceptionless = struct
+  let top s = try Some (top s) with Empty -> None
+  let pop s = try Some (pop s) with Empty -> None
+end

@@ -70,21 +70,32 @@ val iter : ('a -> unit) -> 'a t -> unit
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 
 val enum : 'a t -> 'a BatEnum.t
-(** [enum s] returns a destructive enumeration of the elements of stack
-    [s], from the most recently entered to the least recently entered.
-    Reading the enumeration will progressively empty [s].*)
+(** [enum s] returns an enumeration of the elements of stack [s], from
+    the most recently entered to the least recently entered.  This
+    enumeration is made on a copy of the input stack, and reading from
+    it will not affect [s].  *)
+
+val enum_destruct : 'a t -> 'a BatEnum.t
+(** [enum s] returns a destructive enumeration of the elements of
+    stack [s], from the most recently entered to the least recently
+    entered.  Reading the enumeration will progressively empty [s].*)
 
 val of_enum : 'a BatEnum.t -> 'a t
-(** [of_enum e] returns a new stack containing all the elements of [e].
-    This is equivalent to calling [push] with the first element of the
-    enumeration, then with the second, etc.*)
+(** [of_enum e] returns a new stack containing all the elements of
+    [e].  This is equivalent to calling [push] with the first element
+    of the enumeration, then with the second, etc.
+
+    Note: if [s] is a stack, [s <> of_enum (enum s)].  *)
 
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
 
+(* Prints the contents of the given stack *)
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
+(* Comparison and equality tests can be constructed based on a
+comparison or equality function for elements. *)
 val compare : 'a BatOrd.comp -> 'a t BatOrd.comp
 val equal : 'a BatOrd.eq -> 'a t BatOrd.eq
 
