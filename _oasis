@@ -1,5 +1,5 @@
 OASISFormat:  0.2
-OCamlVersion: >= 3.12.0
+OCamlVersion: >= 3.12.1
 Name:         batteries
 Version:      2.0beta2
 Authors:      Batteries Included Team
@@ -34,4 +34,3 @@ Library "batteries"
 
 Library "estring"
   Path: libs/estring/
-
