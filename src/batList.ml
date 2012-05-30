@@ -256,6 +256,7 @@ let rec unique ?(eq = ( = )) l =
   loop dummy l;
   dummy.tl
 
+(* FIXME BAD TESTS: RESULT IS SPECIFIC TO IMPLEMENTATION *)
 (*$= unique & ~printer:(IO.to_string (List.print Int.print))
   [1;2;3;4;5;6] (unique [1;1;2;2;3;3;4;5;6;4;5;6])
   [1] (unique [1;1;1;1;1;1;1;1;1;1])
@@ -270,6 +271,36 @@ let unique_cmp ?(cmp = Pervasives.compare) l =
   in
   (* use a stateful filter to remove duplicate elements *)
   List.filter should_keep l
+
+(*$= unique_cmp & ~printer:(IO.to_string (List.print Int.print))
+  [1;2;3;4;5;6] (unique_cmp [1;1;2;2;3;3;4;5;6;4;5;6])
+  [1] (unique_cmp [1;1;1;1;1;1;1;1;1;1])
+  [2;3] (unique_cmp ~cmp:(fun x y -> Int.compare (x land 1) (y land 1)) [2;2;2;4;6;8;3;1;2])
+ *)
+
+
+let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
+  let module HT = Hashtbl.Make(struct type t = et let equal = eq let hash = hash end) in
+  let ht = HT.create (List.length l) in
+  let rec loop dst = function
+    | h::t when not (HT.mem ht h) ->
+	HT.add ht h (); (* put h in hash table *)
+	let r = {hd = h; tl = []} in (* and to output list *)
+	dst.tl <- inj r;
+	loop r t
+    | _::t -> (* if already in hashtable then don't add to output list *)
+      loop dst t
+    | [] -> ()
+  in
+  let dummy = dummy_node() in
+  loop dummy l;
+  dummy.tl
+
+(*$= unique_hash & ~printer:(IO.to_string (List.print Int.print))
+  [1;2;3;4;5;6] (unique_hash [1;1;2;2;3;3;4;5;6;4;5;6])
+  [1] (unique_hash [1;1;1;1;1;1;1;1;1;1])
+  [2;3] (unique_hash ~hash:(fun x -> Hashtbl.hash (x land 1)) ~eq:(fun x y -> x land 1 = y land 1) [2;2;2;4;6;8;3;1;2])
+ *)
 
 let filter_map f l =
   let rec loop dst = function
@@ -633,6 +664,23 @@ let rec remove_all l x =
   let dummy = dummy_node () in
   loop dummy l;
   dummy.tl
+
+let transpose = function
+  | [] -> []
+  | [x] -> List.map (fun x -> [x]) x
+  | x::xs ->
+    let heads = List.map (fun x -> {hd=x; tl=[]}) x in
+    ignore ( List.fold_left
+       (fun acc x -> List.map2 (fun x xs -> let r = {hd = x; tl = []} in xs.tl <- inj r; r) x acc)
+       heads xs);
+    Obj.magic heads (* equivalent to List.map inj heads, but without creating a new list *)
+
+
+(*$T transpose
+  transpose [ [1; 2; 3;]; [4; 5; 6;]; [7; 8; 9;] ] = [[1;4;7];[2;5;8];[3;6;9]]
+  transpose [] = []
+  transpose [ [1] ] = [ [1] ]
+*)
 
 let enum l =
   let rec make lr count =

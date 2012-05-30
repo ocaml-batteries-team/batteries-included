@@ -324,23 +324,41 @@ physical equality*)
 
 val unique : ?eq:('a -> 'a -> bool) -> 'a list -> 'a list
 (** [unique cmp l] returns the list [l] without any duplicate element.
-    All but the last element of each equality class is removed.
-    Default comparator ( = ) is used if no comparison function
+    The default comparator ( = ) is used if no comparison function
     specified.
+
+    Implementation Note: The current implementation removes any
+    elements where the tail of the list contains an equal element,
+    thus it keeps the *last* copy of each equal element.
 
     This function takes O(n^2) time.
     @see 'sort_unique' to save time in cases when reordering the list is
     acceptable
     @since 2.0
- *)
+*)
 
 val unique_cmp : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
 (** As [unique], except comparator parameter returns an int.  Default
     comparator is [Pervasives.compare].  This function takes O(n log n)
     time.
 
+    Implementation Note: The current implementation removes subsequent
+    elements that compare as equal to earlier elements in the list,
+    thus it keeps the *first* copy of each equal element.
+
     @since 1.3.0 *)
 
+val unique_hash : ?hash:('a -> int) -> ?eq:('a -> 'a -> bool) -> 'a list -> 'a list
+(** As [unique], except uses a hash table to cut down the expected
+    runtime to linear, assuming a good hash function.  [?hash]
+    defaults to [Hashtbl.hash] and [?eq] defaults to [(=)].
+
+    Implementation Note: The current implementation removes subsequent
+    elements that hash and compare as equal to earlier elements in the
+    list, thus it keeps the *first* copy of each equal element.
+
+    @since 2.0.0
+*)
 
 (**{6 Association lists}*)
 
@@ -550,6 +568,13 @@ val n_cartesian_product : 'a list list -> 'a list list
 these lists.  Given [[a;b];[c];[d;e;f]], returns
 [[a;c;d];[a;c;e];[a;c;f];[b;c;d];[b;c;e];[b;c;f]], all
 ways of choosing one element from each input list. *)
+
+val transpose : 'a list list -> 'a list list
+(** Transposes a list of lists, turning rows of the input into columns
+    of the output and vice versa.
+
+    @since 2.0.0
+*)
 
 (** {6 Boilerplate code}*)
 
