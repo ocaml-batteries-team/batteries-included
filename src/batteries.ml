@@ -84,7 +84,7 @@ module Stack = BatStack
 module Stream = struct include Stream include BatStream end
 module String = struct include String include BatString end
 (* StringLabels *)
-module Sys = struct include Sys include BatSys end
+module Sys = BatSys
 (* Weak *)
 
 module Unix = struct include Unix include BatUnix end
@@ -151,7 +151,9 @@ TODO: move outside of Batteries.ml? *)
   module Random = (Random: module type of Legacy.Random)
 (*  module Scanf = (Scanf : module type of Legacy.Scanf)*)
 (*  module Set = (Set: module type of Legacy.Set)*)
+(* FAILS BECAUSE OF Stack.Empty not being present because
   module Stack = (Stack : module type of Legacy.Stack)
+ *)
   module Stream = (Stream : module type of Legacy.Stream)
   module String = (String : module type of Legacy.String)
   module Sys = (Sys : module type of Legacy.Sys)
