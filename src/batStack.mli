@@ -34,7 +34,6 @@ type 'a t = 'a Stack.t
 exception Empty
 (** Raised when {!Stack.pop} or {!Stack.top} is applied to an empty stack. *)
 
-
 val create : unit -> 'a t
 (** Return a new stack, initially empty. *)
 
@@ -85,7 +84,8 @@ val of_enum : 'a BatEnum.t -> 'a t
     [e].  This is equivalent to calling [push] with the first element
     of the enumeration, then with the second, etc.
 
-    Note: if [s] is a stack, [s <> of_enum (enum s)].  *)
+    Note: if [s] is a stack, [s <> of_enum (enum s)], as [of_enum]
+    reverses the input order.  *)
 
 (** {6 Boilerplate code}*)
 
