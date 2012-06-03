@@ -143,8 +143,8 @@ let map_comp f comp = fun a b -> comp (f a) (f b)
 let map_ord f ord = fun a b -> ord (f a) (f b)
 
 (*$T map_eq
-  map_eq List.length Int.eq [3] [7]
-  not (map_eq List.length Int.eq [] [8;9])
+  map_eq List.length Int.equal [3] [7]
+  not (map_eq List.length Int.equal [] [8;9])
 *)
 (*$T map_comp
   map_comp Array.length Int.compare [|5;6;7|] [|1;2;3|] = 0

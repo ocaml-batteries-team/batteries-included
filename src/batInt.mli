@@ -141,12 +141,6 @@ val to_string : int -> string
 (** Return the string representation of its argument, in signed decimal. *)
 
 
-val compare: t -> t -> int
-(** The comparison function for integers, with the same specification as
-    {!Pervasives.compare}.  Along with the type [t], this function [compare]
-    allows the module [Int] to be passed as argument to the functors
-    {!Set.Make} and {!Map.Make}. *)
-
 (** custom min and max for integers is much faster than using
     polymorphic one in stdlib *)
 val min : int -> int -> int
@@ -204,7 +198,14 @@ val xprint: 'a BatInnerIO.output -> int -> unit
 val t_printer : t BatValuePrinter.t
 
 (** {7 Compare} *)
-val eq : int -> int -> bool
+
+val compare: t -> t -> int
+(** The comparison function for integers, with the same specification as
+    {!Pervasives.compare}.  Along with the type [t], this function [compare]
+    allows the module [Int] to be passed as argument to the functors
+    {!Set.Make} and {!Map.Make}. *)
+
+val equal : int -> int -> bool
 val ord : int -> int -> BatOrd.order
 
 (**
@@ -342,11 +343,6 @@ module Safe_int : sig
   (** Return the string representation of its argument, in signed decimal. *)
 
 
-  val compare: t -> t -> int
-  (** The comparison function for integers, with the same specification as
-      {!Pervasives.compare}.  Along with the type [t], this function [compare]
-      allows the module [Int] to be passed as argument to the functors
-      {!Set.Make} and {!Map.Make}. *)
 
   val operations : t BatNumber.numeric
 
@@ -362,6 +358,11 @@ module Safe_int : sig
 
   val print: 'a BatInnerIO.output -> t -> unit
 
-  val eq : t -> t -> bool
+  val compare: t -> t -> int
+  (** The comparison function for integers, with the same specification as
+      {!Pervasives.compare}.  Along with the type [t], this function [compare]
+      allows the module [Int] to be passed as argument to the functors
+      {!Set.Make} and {!Map.Make}. *)
+  val equal : t -> t -> bool
   val ord : t -> t -> BatOrd.order
 end

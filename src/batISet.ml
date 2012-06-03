@@ -266,7 +266,7 @@ let fold f s x0 =
     g (n1 + 1) n2 (f n1 a) in
   fold_range g s x0
 
-(*$= fold & ~cmp:Int.eq ~printer:string_of_int
+(*$= fold & ~cmp:Int.equal ~printer:string_of_int
   (fold (+) (of_list [1,3]) 0) 6
  *)
 

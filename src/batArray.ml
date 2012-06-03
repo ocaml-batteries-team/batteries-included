@@ -595,7 +595,7 @@ let ord_elements eq_elt a1 a2 = ord_aux eq_elt 0 a1 a2
 
 let eq eq_elt a1 a2 =
   BatOrd.bin_eq
-    BatInt.eq (length a1) (length a2)
+    BatInt.equal (length a1) (length a2)
     (eq_elements eq_elt) a1 a2
 (*$T
   eq (=) [|1;2;3|] [|1;2;3|]
