@@ -34,6 +34,7 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	_build/src/syntax/pa_llist/pa_llist.cmo \
 	_build/libs/*.cmi _build/libs/*.mli \
 	_build/$(QTESTDIR)/qtest
+	ocamlinit build/ocaml
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
 	_build/src/*.cmxs _build/src/*.lib _build/libs/*.cmx \
 

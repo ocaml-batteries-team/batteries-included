@@ -428,9 +428,6 @@ sig
   val equal : _ output -> _ output -> bool
 end
 
-
-
-
 (**/**)
 (**{6 Internals}*)
 

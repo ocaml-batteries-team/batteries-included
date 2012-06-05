@@ -98,86 +98,19 @@ struct
   let before_options () = ()
 
   let after_rules () =
-    flag ["ocaml"; "link"; "byte";   "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"; A "odoc_info.cma"]);
-    flag ["ocaml"; "link"; "native"; "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"(*; A "odoc_info.cmxa"*)]);
-    flag ["ocaml"; "docfile";        "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
-    flag ["ocaml"; "docdir";         "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
-    flag ["ocaml"; "doc";            "use_ocamldoc_info"] (S[A "-I"; A "+ocamldoc"]);
+    (*The command-line for [use_batteries]*)
 
-    (*The command-line for [use_batteries] and [use_batteries_r]*)
-
-    let cl_use_boilerplate = [A "-package"; A "batteries"]
-    and cl_use_batteries   = [A "-package"; A "batteries"]
-    and cl_use_batteries_o = []
-              (*[cl_use_batteries_o]: extensions which only make sense in original syntax*)
-    and cl_camlp4o         = [A"-syntax";  A "camlp4o"]
-    and cl_camlp4r         = [A"-syntax";  A "camlp4r"] in
-
-    let cl_boilerplate_original = cl_use_boilerplate @ cl_camlp4o
-    and cl_boilerplate_revised  = cl_use_boilerplate @ cl_camlp4r
-    and cl_batteries_original   = cl_use_batteries   @ cl_use_batteries_o @ cl_camlp4o
-    and cl_batteries_revised    = cl_use_batteries   @ cl_camlp4r in
-
-      (** Tag [use_boilerplate] provides boilerplate syntax extensions,
-	  in original syntax*)
-
-    flag ["ocaml"; "compile";  "use_boilerplate"] & S cl_boilerplate_original ;
-    flag ["ocaml"; "ocamldep"; "use_boilerplate"] & S cl_boilerplate_original ;
-    flag ["ocaml"; "doc";      "use_boilerplate"] & S cl_boilerplate_original ;
-    flag ["ocaml"; "link";     "use_boilerplate"] & S cl_boilerplate_original ;
-
-      (** Tag [use_boilerplate_r] provides boilerplate syntax extensions,
-	  in original syntax*)
-
-    flag ["ocaml"; "compile";  "use_boilerplate_r"] & S cl_boilerplate_revised ;
-    flag ["ocaml"; "ocamldep"; "use_boilerplate_r"] & S cl_boilerplate_revised ;
-    flag ["ocaml"; "doc";      "use_boilerplate_r"] & S cl_boilerplate_revised ;
-    flag ["ocaml"; "link";     "use_boilerplate_r"] & S cl_boilerplate_revised ;
+    let cl_batteries =
+      S [A "-package"; A "batteries.syntax"; A"-syntax";  A "camlp4o"] in
 
     (** Tag [use_batteries] provides both package [batteries]
 	and all syntax extensions, in original syntax. *)
 
-    flag ["ocaml"; "compile";  "use_batteries"] & S cl_batteries_original ;
-    flag ["ocaml"; "ocamldep"; "use_batteries"] & S cl_batteries_original ;
-    flag ["ocaml"; "doc";      "use_batteries"] & S cl_batteries_original ;
-    flag ["ocaml"; "link";     "use_batteries"] & S cl_batteries_original ;
-
-    (** Tag [use_batteries_r] provides both package [batteries]
-	and all syntax extensions, in revised syntax. *)
-
-    flag ["ocaml"; "compile";  "use_batteries_r"] & S cl_batteries_revised;
-    flag ["ocaml"; "ocamldep"; "use_batteries_r"] & S cl_batteries_revised;
-    flag ["ocaml"; "doc";      "use_batteries_r"] & S cl_batteries_revised;
-    flag ["ocaml"; "link";     "use_batteries_r"] & S cl_batteries_revised
-
-
-(*    flag ["ocaml"; "compile";  "use_batteries"] & S[A "-verbose";
-						    A"-package"; A "batteries.syntax.full";
-						    A"-syntax";  A "batteries.syntax.full"];
-    flag ["ocaml"; "ocamldep"; "use_batteries"] & S[A "-verbose";
-						    A"-package"; A "batteries.syntax.full";
-						    A"-syntax"; A "batteries.syntax.full"];
-    flag ["ocaml"; "doc";      "use_batteries"] & S[A "-verbose";
-						    A"-package"; A "batteries.syntax.full";
-						    A"-syntax"; A "batteries.syntax.full"];
-    flag ["ocaml"; "link";     "use_batteries"] & S[A "-verbose";
-						    A"-package"; A "batteries.syntax.full";
-						    A"-syntax"; A "batteries.syntax.full"];*)
-
-
-end
-
-module Ocamlviz = struct
-
-  let before_options () = ()
-
-  let after_rules () =
-    flag ["ocaml"; "compile"; "ocamlviz_auto"] (S[A"-ppopt"; A"camlp4 pa_o.cmo str.cma pa_ocamlviz.cmo pr_o.cmo"]);
-    flag ["ocaml"; "ocamldep"; "ocamlviz_auto"] (S[A"-ppopt"; A"camlp4 pa_o.cmo str.cma pa_ocamlviz.cmo pr_o.cmo"]);
-    flag ["ocaml"; "compile"; "byte"; "ocamlviz"] (S[A"libocamlviz.cma"]);
-    flag ["ocaml"; "compile"; "native"; "ocamlviz"] (S[A"libocamlviz.cmxa"]);
-    flag ["ocaml"; "link"; "byte"; "ocamlviz"] (S[A"libocamlviz.cma"]);
-    flag ["ocaml"; "link"; "native"; "ocamlviz"] (S[A"libocamlviz.cmxa"]);
+    flag ["ocaml"; "compile";  "use_batteries"] & cl_batteries ;
+    flag ["ocaml"; "ocamldep"; "use_batteries"] & cl_batteries ;
+    flag ["ocaml"; "doc";      "use_batteries"] & cl_batteries ;
+    flag ["ocaml"; "link";     "use_batteries"] & cl_batteries ;
+    flag ["ocaml"; "infer_interface"; "use_batteries"] & cl_batteries ;
 
 end
 
@@ -185,11 +118,9 @@ let _ = dispatch begin function
   | Before_options ->
       OCamlFind.before_options ();
       Batteries.before_options ();
-      Ocamlviz.before_options ();
   | After_rules ->
       OCamlFind.after_rules ();
       Batteries.after_rules ();
-      Ocamlviz.after_rules ()
   | _ -> ()
 end
 

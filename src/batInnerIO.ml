@@ -609,8 +609,6 @@ let stdnull= create_out
   ~flush:ignore
   ~close:ignore
 
-
-
 let get_output out = out.out_output
 let get_flush  out = out.out_flush
 

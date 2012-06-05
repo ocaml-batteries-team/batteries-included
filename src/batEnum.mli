@@ -434,7 +434,13 @@ val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
 
      [unfold data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
-     result, etc. The enumeration ends whenever the function returns [None]*)
+     result, etc. The enumeration ends whenever the function returns [None]
+
+     Example: [Enum.unfold n (fun x -> if x = 1 then None else Some
+     (x, if x land 1 = 1 then 3 * x + 1 else x / 2))] returns the
+     hailstone sequence starting at [n].
+
+  *)
 
 val init : int -> (int -> 'a) -> 'a t
 (** [init n f] creates a new enumeration over elements

@@ -1,0 +1,1 @@
+ocaml -init `ocamlfind query batteries`/ocamlinit
