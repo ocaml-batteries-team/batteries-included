@@ -89,8 +89,10 @@ val full_range_int : unit -> int
 
 (** {6 Enumerations of random values.}
 
-    These enumerations may be cloned without loss of performance,
-    to obtain reproducible enumerations of pseudo-random numbers.
+    The clone implementations for these enumerations and the enumerations of
+    [BatRandom.State] do not guarantee that the clone and the original will emit
+    the same elements. The enumerations of this module therefore generally
+    shouldn't be cloned.
  *)
 
 val enum_bits  : unit    -> int BatEnum.t
