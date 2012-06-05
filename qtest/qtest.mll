@@ -95,6 +95,8 @@ rule lexml t = parse
   epf "\nWarning: likely qtest syntax error: `%s' at %s:%d. " y f n }
 | "(*"   { lexcomment 0 lexbuf }
 | "\\\"" { }
+| "'" "\\" _ "'" { }
+| "'" _ "'" { }
 | "\""   { lexstring lexbuf }
 | '\n'   { eol lexbuf }
   (* others *)
@@ -123,7 +125,7 @@ and lexcomment n  = parse
 (** ... and strings *)
 and lexstring = parse
 | "\\\"" { lexstring lexbuf }
-| "\""   { } 
+| "\""   { }
 | _      { lexstring lexbuf }
 | eof    { epf "Warning: unterminated string" }
 
@@ -213,7 +215,7 @@ OPTIONS:
 --output <file.ml>    (-o) def: standard output
   Open or create a file for output; the resulting file will be an OCaml
   source file containing all the tests.
-  
+
 --preamble <string>   (-p) def: empty
   Add code to the tests' preamble; typically this will be an instruction
   of the form 'open Module;;'
