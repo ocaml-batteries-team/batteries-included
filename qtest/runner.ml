@@ -82,4 +82,25 @@ let run test =
     total_tests running_time (String.make 40 ' ');
   if failures = [] then pl "SUCCESS";
   if o <> 0 then
-    pl "WARNING! SOME TESTS ARE NEITHER SUCCESSES NOR FAILURES!";
+    pl "WARNING! SOME TESTS ARE NEITHER SUCCESSES NOR FAILURES!"
+
+(* TAP-compatible test runner, in case we want to use a test harness *)
+
+let run_tap test =
+  let test_number = ref 0 in
+  let handle_event = function
+    | EStart _ | EEnd _ -> incr test_number
+    | EResult (RSuccess p) ->
+      pf "ok %d - %s\n%!" !test_number (string_of_path p)
+    | EResult (RFailure (p,m)) ->
+      pf "not ok %d - %s # %s\n%!" !test_number (string_of_path p) m
+    | EResult (RError (p,m)) ->
+      pf "not ok %d - %s # ERROR:%s\n%!" !test_number (string_of_path p) m
+    | EResult (RSkip (p,m)) ->
+      pf "not ok %d - %s # skip %s\n%!" !test_number (string_of_path p) m
+    | EResult (RTodo (p,m)) ->
+      pf "not ok %d - %s # todo %s\n%!" !test_number (string_of_path p) m
+  in
+  let total_tests = test_case_count test in
+  pf "TAP version 13\n1..%d\n" total_tests;
+  perform_test handle_event test
