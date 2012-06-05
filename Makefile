@@ -33,7 +33,7 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	_build/src/syntax/pa_strings/pa_strings.cma \
 	_build/src/syntax/pa_llist/pa_llist.cmo \
 	_build/libs/*.cmi _build/libs/*.mli \
-	_build/$(QTESTDIR)/qtest
+	_build/$(QTESTDIR)/qtest \
 	ocamlinit build/ocaml
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
 	_build/src/*.cmxs _build/src/*.lib _build/libs/*.cmx \
@@ -190,7 +190,9 @@ test-native: test-byte _build/testsuite/main.native _build/$(QTESTDIR)/all_tests
 	@echo "" # newline after "OK"
 	@_build/$(QTESTDIR)/all_tests.native
 
-test: $(TEST_TARGET)
+full-test: $(TEST_TARGET)
+
+test: test-byte
 
 ###############################################################################
 #	BENCHMARK SUITE
