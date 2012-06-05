@@ -22,7 +22,7 @@ OCAMLBUILDFLAGS ?= -no-links
 ifeq ($(uname_S),Darwin)
   BATTERIES_NATIVE ?= yes
   BATTERIES_NATIVE_SHLIB ?= no
-else 
+else
   BATTERIES_NATIVE ?= yes
   BATTERIES_NATIVE_SHLIB ?= $(BATTERIES_NATIVE)
 endif
@@ -32,7 +32,8 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	_build/src/batteries_help.cmo \
 	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 	_build/src/syntax/pa_strings/pa_strings.cma \
-	_build/src/syntax/pa_llist/pa_llist.cmo
+	_build/src/syntax/pa_llist/pa_llist.cmo \
+	ocamlinit build/ocaml
 NATIVE_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa
 
 # What to build
@@ -116,18 +117,18 @@ _build/testsuite/main.native _build/qtest/test_runner.native: $(TESTDEPS)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte qtest/test_runner.byte testsuite/main.native qtest/test_runner.native
 
 test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte
-	_build/testsuite/main.byte 
+	_build/testsuite/main.byte
 	_build/qtest/test_runner.byte
 
 test-native: _build/testsuite/main.native _build/qtest/test_runner.native
-	_build/testsuite/main.byte 
+	_build/testsuite/main.byte
 	_build/qtest/test_runner.byte
 	_build/testsuite/main.native
 	_build/qtest/test_runner.native
 
 test: $(TEST_TARGET)
 
-bench: 
+bench:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS) $(BENCH_TARGETS)
 	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH); )
 
@@ -137,7 +138,7 @@ release: clean all test
 
 
 ##
-## Magic to detect which version of camomile is installed 
+## Magic to detect which version of camomile is installed
 ##
 
 CAMVER=$(shell sh -c 'ocamlfind query -format %v camomile')
@@ -154,7 +155,7 @@ ifeq ($(CAMVER),0.7.1)
 	CAMFIX=src/batCamomile-0.7.ml
 endif
 ifeq ($(CAMVER),)
-	CAMFIX=camfail
+	CAMFIX=camfailunk
 endif
 ifeq ($(CAMFIX),) # Assume is compatible with the latest camomile, TODO: warn user about assumption
 	CAMFIX=src/batCamomile-0.8.2.ml
