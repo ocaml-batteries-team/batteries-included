@@ -10,152 +10,6 @@
 <h1>Language extensions introduced in Batteries Included</h1>
 Several language extensions and convenience features are introduced in Batteries Included.
 To take advantage of these features, please see <a href="setup.html">the corresponding chapter</a>.
-Note that most of these extensions were not developed specifically for Batteries Included and may
-be used separately.
-
-<h2>Opening of modules<a name="openin"></a></h2>
-<center>(activated by default, implemented as findlib package <code>batteries.pa_openin.syntax</code>)</center>
-<h3>Local opening of modules</h3>
-<center>(forked from <a href="http://alain.frisch.fr/soft.html">openin</a>)</center>
-You can open local modules, inside an expression if needed.
-<br />
-For instance:
-<pre class="example">
-open File in
- (*Here, File is opened*)
- lines_of "some_file"
-
-(*Here, File is not opened anymore*)
-</pre>
-These modules do not need to be named. For instance, you may write
-<pre class="example">
-open Hashtbl.Make(String) in
- (*...*)
-</pre>
-
-
-<h3>Initialization of modules<a name="openin_initializer"></a></h3>
-<center>(designed for Batteries)</center>
-As a convenience, you can specify an expression to be evaluated when opening a module.
-For instance,
-<pre class="example">
-open Random with self_init ()
-</pre>
-This extract is equivalent to
-<pre class="example">
-open Random
-let _ = self_init ()
-</pre>
-This feature is provided as it may sometimes increase readability.
-
-<h3>Opening several modules<a name="openin_multiopen"></a></h3>
-<center>(designed for Batteries)</center>
-As a convenience, you can specify a comma-separated list of modules to be opened in one operation.
-Consider for instance
-<pre class="example">
-open List, Array
-</pre>
-This extract is equivalent to
-<pre class="example">
-open List
-open Array
-</pre>
-
-This feature is provided as it may sometimes increase readability.
-
-<h3>Aliasing several modules to one name<a name="openin_multialias"></a></h3>
-<center>(designed for Batteries)</center>
-As a convenience, you can specify that a module name should serve to
-represent the union of several modules. Consider for instance
-<pre class="example">
-module E = Enum with Labels, LExceptionless
-</pre>
-This extract defines a local module name <code>E</code>
-with all the values and types of modules <code>Enum</code>,
-<code>Labels</code> and <code>LExceptionless</code>. In
-particular, some values defined in <code>Enum</code>
-may be overridden with values defined in <code>Labels</code>
-and/or <code>LExceptionless</code>.
-
-
-<pre class="example">
-module Enum =
-struct
- include Enum
- include Labels
- include LExceptionless
-end
-</pre>
-
-This feature is provided as it may sometimes increase readability.
-
-<br />
-
-One of the main uses of this feature is to permit opening in one
-operation modules which define some functions and modules which
-override these functions.  This is the case of module <code>IO</code>,
-which defines operations for input and output: this module contains a
-submodule <code>BigEndian</code>, which defines operations which
-should be used to communicate with specific architectures. One of these
-functions is <code>read_float</code>: <code>IO.read_float</code> is
-adapted to small-endian architectures, while <code>IO.BigEndian.read_float</code>
-is adapted to big-endian architectures
-
-The
-functions of <code>BigEndian</code> have the same name as functions
-of <code>IO</code>.  The following extract will therefore open
-both <code>IO</code> and <code>BigEndian</code> in one operation:
-<pre class="example">
-open IO, BigEndian
-</pre>
-
-
-This extract is equivalent to
-<pre class="example">
-open IO
-open BigEndian
-</pre>
-
-
-<h2>"where" construction<a name="where"></a></h2>
-<center>(activated by default, implemented as findlib package <code>batteries.pa_where.syntax</code>)</center>
-<center>(part of <a href="http://forge.ocamlcore.org/projects/pa-where/">pa_where</a>, distributed with Batteries)</center>
-
-By default, OCaml provides a construction <code>let...in...</code>. This extension adds
-a dual construction <code>... where ...</code>, once again, to increase readability
-when appropriate.
-<br />
-Where <code>let...in...</code> lets you define a value and use it immediately,
-<code>... where...</code> lets you use a value and define it immediately, as
-is often done in mathematic notations. Consider
-<pre class="example">
-let fibo n = fst (fibo_aux n)
-  where rec fibo_aux = function
-    | 0 -> (0, 1)
-    | n -> (b, a + b) where let (a, b) = fibo_aux (n - 1)
-</pre>
-This extract is equivalent to
-<pre class="example">
-let fibo n =
-  let rec fibo_aux = function
-    | 0 -> (0, 1)
-    | n -> let (a, b) = fibo_aux (n - 1) in (b, a + b)
-  in fst (fibo_aux n)
-</pre>
-
-More generally, <code>&lt;expression&gt; where &lt;definitions&gt;</code>
-is equivalent to <code>let &lt;definitions&gt; in &lt;expression&gt;</code>.
-Note that you can define (mutually) recursive functions with <code>where</code>
-just as well as with <code>let</code>.
-<br />
-As a convenience, you may wrote <code>where let</code> instead of <code>where</code>.
-
-
-<dl>
-<dt>Associativity</dt><dd> <code>a where b where c</code> is equivalent to <code>a where (b where c)</code></dd>
-<dt>Precedence</dt><dd> <code>let a = b where c and d</code> is equivalent to <code>let a = (b where c and d)</code></dd>
-</dl>
-
 
 <h2>Comprehension expressions<a name="comprehension"></a></h2>
 <center>(activated by default, implemented as findlib package <code>batteries.pa_comprehension.syntax</code>)</center>
@@ -257,65 +111,21 @@ Again, immutable latin-1 strings are automatically optimized.
 
 The same syntax may be used to pattern-match against ropes, UTF-8 strings and string with capabilities.
 
-<h2>Boilerplate construction<a name="boilerplate"></a></h2>
-<center>(<i>de</i>activated by default, implemented as findlib package <code>sexplib.syntax</code>)</center>
+<h2> Lazy List syntax <h2>
 
-<h3>Serialization to S-Expressions<a name="boilerplate_sexplib"></a></h3>
-<center>(feature provided by <a href="http://www.ocaml.info/home/ocaml_sources.html">Sexplib</a>)</center>
-S-Expressions are a human-readable format for the transmission and
-storage of data, comparable to JSON.
-<br />
-A new construction <code>with sexp</code> is added to type
-definitions. This construction may be used to automatically (or
-semi-automatically, if need arises) generate functions to transform
-values into S-Expressions.
-<br />
-Let us consider the following extract:
-<pre class="example">
-TYPE_CONV_PATH "Current.Module.Name" (*Required*)
+<p> A few new constructs are added to make using lazy lists easier.  As an expression, <code>[%]</code> is a shortcut for <code>lazy BatLazyList.Nil</code>, the empty lazy list. </p>
 
-type color = Spade
-           | Heart
-           | Club
-           | Diamond        with sexp
+<p> For pattern matching, the empty lazy list can be matched in the
+same way; <code>| [%]</code> matches <code>lazy
+BatLazyList.Nil</code>.  To destructure lazy lists, <code> | a %::
+b </code> is the same as <code>lazy
+BatLazyList.Cons(a,b)</code>.  </p>
 
-type value = Number of int
-           | Ace
-           | King
-           | Queen
-           | Jack           with sexp
-
-type card = color * value   with sexp
-</pre>
-This extract defines types <code>color</code>, <code>value</code> and <code>card</code>,
-as well as functions:
-<pre class="example">
-val sexp_of_color: color -> SExpr.t
-val color_of_sexp: SExpr.t -> color
-
-val sexp_of_value: value -> SExpr.t
-val value_of_sexp: SExpr.t -> value
-
-val sexp_of_card : card -> SExpr.t
-val card_of_sexp : SExpr.t -> card
-</pre>
-<br />
-Module <a href="api/SExpr.html">Languages.SExpr</a>
-may be used to manipulate S-Expressions, to save them to files, load
-them from files, display them...
-<br />
-Most of the types known to Batteries Included are compatible with
-<code>with sexp</code>. If you encounter a type which is not compatible
-with this boilerplate generator, you may define manually functions
-<code>sexp_of_foo</code> and <code>foo_of_sexp</code>. These functions
-will integrate nicely with the rest of S-Expressions.
-<br />
-For more information, see the manual of <a href="http://www.ocaml.info/ocaml_sources/sexplib310-4.2.0/README.txt">Sexplib</a>
+<code>
 
 <h1>Summary of new keywords<a name="new_keywords"></a></h1>
 <ul>
 <li><code>where</code>, defined by <a href="#where">pa_where</a></li>
-<li><code>[? .. | .. ?]</code>, defined by <a href="#comprehension>pa_comprehension</a></li>
 </ul>
 
 </body>
