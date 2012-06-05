@@ -1,5 +1,5 @@
 (*
- * ExtSys - additional and modified functions for System
+ * BatSys - additional and modified functions for System
  * Copyright (C) 1996 Xavier Leroy
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *
@@ -29,6 +29,7 @@ let escape_arg_win arg =
     arg
   else *)
     let b = Buffer.create (String.length arg) in
+    Buffer.add_char b '"';
     let i = ref 0 in
     let backslash_count = ref 0 in
     while !i < String.length arg do
@@ -51,11 +52,14 @@ let escape_arg_win arg =
     Buffer.add_char b '"';
     Buffer.contents b
 
-
-(*$T escape_one
-escape_one "foo" = "foo"
-
+(*$= escape_arg_win & ~cmp:BatString.equal ~printer:(fun x -> x)
+"\"foo\"" (escape_arg_win "foo")
+ "\"foo bar\"" (escape_arg_win "foo bar")
+ "\"abc\\xyz\"" (escape_arg_win "abc\\xyz")
  *)
+
+
+
 
 let escape_cmdline =
   if os_type = "Win32" then
