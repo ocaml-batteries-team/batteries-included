@@ -27,7 +27,7 @@ let compare = String.compare
    compare "FOO" "bar" = -1
 *)
 
-let eq a b = String.compare a b = 0
+let equal a b = String.compare a b = 0
 let ord = BatOrd.ord String.compare
 
 

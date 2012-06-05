@@ -481,7 +481,7 @@ val implode : char list -> string
 
 (** {6 Comparisons}*)
 
-val eq : t -> t -> bool
+val equal : t -> t -> bool
 (** String equality *)
 
 val ord : t -> t -> BatOrd.order
