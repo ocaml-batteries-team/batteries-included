@@ -207,6 +207,11 @@ module Incubator : sig
       val float      : t -> float -> float
       val bool       : t -> bool
       val char       : t -> char
+
+      (** A copy of the input state is made to start these generators;
+      the input state is not modified.  This means that two enums
+      constructed from the same state will produce the same value
+      sequence. *)
       val enum_bits  : t -> unit    -> int BatEnum.t
       val enum_int   : t -> int     -> int BatEnum.t
       val enum_bool  : t -> unit    -> bool BatEnum.t
@@ -216,8 +221,18 @@ module Incubator : sig
       val enum_nativeint : t -> Nativeint.t -> Nativeint.t BatEnum.t
       val enum_char  : t -> unit    -> char BatEnum.t
 
+      (** [perturb s] returns a new state based on the given state
+      that is, in a sense, the hash of the input state.  This new
+      state should be quite different from the input. *)
+      val perturb : t -> t
+
     end
 
+    (** These enumerations are built on a copy of the global RNG
+    state.  To keep successive constructions from using the same RNG
+    state, when any of these functions is called, the global RNG state
+    is perturbed by using its current internal state as seed to
+    construct a new state. *)
     val enum_bits  : unit    -> int BatEnum.t
     val enum_int   : int     -> int BatEnum.t
     val enum_bool  : unit    -> bool BatEnum.t
