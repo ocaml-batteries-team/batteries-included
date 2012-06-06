@@ -87,11 +87,7 @@ val full_range_int : unit -> int
     platforms, so is not portable. *)
 
 
-(** {6 Enumerations of random values.}
-
-    These enumerations may be cloned without loss of performance,
-    to obtain reproducible enumerations of pseudo-random numbers.
- *)
+(** {6 Enumerations of random values.} *)
 
 val enum_bits  : unit    -> int BatEnum.t
 

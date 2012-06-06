@@ -49,15 +49,10 @@ struct
 
   let char t   = Char.chr (int t 256)
 
-  (**A constructor for enumerations of random numbers taking advantage
-     of [State] to allow cloning.*)
+  (**A constructor for enumerations of random numbers. *)
   let random_enum state next =
-    let rec aux state =
-      let next  () = next state in
-      let count () = raise BatEnum.Infinite_enum in
-      let clone () = aux ( Random.State.copy state ) in
-      BatEnum.make ~next ~count ~clone
-    in aux state
+    let next () = next state in
+      BatEnum.from next
 
   let enum_bits state () =
     let next state = bits state in
@@ -93,16 +88,14 @@ struct
 
 end
 
-let random_enum next = State.random_enum ( State.make_self_init () ) next
-
-let enum_bits () = random_enum State.bits
-let enum_int bound = random_enum (fun s -> State.int s bound)
-let enum_int32 bound = random_enum (fun s -> State.int32 s bound)
-let enum_int64 bound = random_enum (fun s -> State.int64 s bound)
-let enum_float bound = random_enum (fun s -> State.float s bound)
-let enum_nativeint bound = random_enum (fun s -> State.nativeint s bound)
-let enum_bool () = random_enum State.bool
-let enum_char () = random_enum State.char
+let enum_bits () = BatEnum.from bits
+let enum_int bound = BatEnum.from (fun () -> int bound)
+let enum_int32 bound = BatEnum.from (fun () -> int32 bound)
+let enum_int64 bound = BatEnum.from (fun () -> int64 bound)
+let enum_float bound = BatEnum.from (fun () -> float bound)
+let enum_nativeint bound = BatEnum.from (fun () -> nativeint bound)
+let enum_bool () = BatEnum.from bool
+let enum_char () = BatEnum.from char
 
 let choice e = BatEnum.drop (int (BatEnum.count e)) e; BatEnum.get_exn e
 
