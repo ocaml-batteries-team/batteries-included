@@ -54,7 +54,26 @@ let test_enum_state () =
   let modify () = let _ = BatRandom.State.int !state 100 in () in
     test_enum_helper reset create modify
 
+module PSE = BatRandom.Incubator.Private_state_enums
+
+let test_enum_default_priv () =
+  let reset () = BatRandom.init 0 in
+  let create () = PSE.enum_int 100 in
+  let modify () = let _ = BatRandom.int 100 in () in
+  with_saved_state (fun () -> test_enum_helper reset create modify)
+
+let test_enum_state_priv () =
+  let make_seed () = BatRandom.State.make [| 0 |] in
+  let state = ref (make_seed ()) in
+  let reset () = state := make_seed () in
+  let create () = PSE.State.enum_int !state 100 in
+  let modify () = let _ = PSE.State.int !state 100 in () in
+  test_enum_helper reset create modify
+
+
 let tests = "BatRandom" >::: [
   "enum_default" >:: test_enum_default;
   "enum_state" >:: test_enum_state;
+  "enum_default_priv" >:: test_enum_default_priv;
+  "enum_state_priv" >:: test_enum_state_priv;
 ]

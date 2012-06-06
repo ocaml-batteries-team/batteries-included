@@ -182,3 +182,50 @@ val get_state : unit -> State.t
 
 val set_state : State.t -> unit
 (** Set the state of the generator used by the basic functions. *)
+
+module Incubator : sig
+  module Private_state_enums : sig
+    module State : sig (** same as BatRandom.State *)
+      type t = Random.State.t
+      (** The type of PRNG states. *)
+
+      val make : int array -> t
+      (** Create a new state and initialize it with the given seed. *)
+
+      val make_self_init : unit -> t
+      (** Create a new state and initialize it with a system-dependent
+      low-entropy seed. *)
+
+      val copy : t -> t
+      (** Return a copy of the given state. *)
+
+      val bits       : t -> int
+      val int        : t -> int -> int
+      val int32      : t -> Int32.t -> Int32.t
+      val nativeint  : t -> Nativeint.t -> Nativeint.t
+      val int64      : t -> Int64.t -> Int64.t
+      val float      : t -> float -> float
+      val bool       : t -> bool
+      val char       : t -> char
+      val enum_bits  : t -> unit    -> int BatEnum.t
+      val enum_int   : t -> int     -> int BatEnum.t
+      val enum_bool  : t -> unit    -> bool BatEnum.t
+      val enum_float : t -> float   -> float BatEnum.t
+      val enum_int32 : t -> Int32.t -> Int32.t BatEnum.t
+      val enum_int64 : t -> Int64.t -> Int64.t BatEnum.t
+      val enum_nativeint : t -> Nativeint.t -> Nativeint.t BatEnum.t
+      val enum_char  : t -> unit    -> char BatEnum.t
+
+    end
+
+    val enum_bits  : unit    -> int BatEnum.t
+    val enum_int   : int     -> int BatEnum.t
+    val enum_bool  : unit    -> bool BatEnum.t
+    val enum_float : float   -> float BatEnum.t
+    val enum_int32 : Int32.t -> Int32.t BatEnum.t
+    val enum_int64 : Int64.t -> Int64.t BatEnum.t
+    val enum_nativeint : Nativeint.t -> Nativeint.t BatEnum.t
+    val enum_char : unit -> char BatEnum.t
+
+  end
+end

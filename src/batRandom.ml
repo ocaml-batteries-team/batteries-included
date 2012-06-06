@@ -50,41 +50,15 @@ struct
   let char t   = Char.chr (int t 256)
 
   (**A constructor for enumerations of random numbers. *)
-  let random_enum state next =
-    let next () = next state in
-      BatEnum.from next
-
-  let enum_bits state () =
-    let next state = bits state in
-    random_enum state next
-
-  let enum_int state bound =
-    let next state = int state bound in
-    random_enum state next
-
-  let enum_int32 state bound =
-    let next state = int32 state bound in
-    random_enum state next
-
-  let enum_int64 state bound =
-    let next state = int64 state bound in
-    random_enum state next
-
-  let enum_float state bound =
-    let next state = float state bound in
-    random_enum state next
-
+  let enum_bits state () = BatEnum.from (fun () -> bits state)
+  let enum_int state bound = BatEnum.from (fun () -> int state bound)
+  let enum_int32 state bound = BatEnum.from (fun () -> int32 state bound)
+  let enum_int64 state bound = BatEnum.from (fun () -> int64 state bound)
+  let enum_float state bound = BatEnum.from (fun () -> float state bound)
   let enum_nativeint state bound =
-    let next state = nativeint state bound in
-    random_enum state next
-
-  let enum_bool state () =
-    let next state = bool state in
-    random_enum state next
-
-  let enum_char state () =
-    let next state = char state in
-    random_enum state next
+    BatEnum.from (fun () -> nativeint state bound)
+  let enum_bool state () = BatEnum.from (fun () -> bool state)
+  let enum_char state () = BatEnum.from (fun () -> char state)
 
 end
 
@@ -143,3 +117,70 @@ let shuffle e =
 
 let get_state = Random.get_state
 let set_state = Random.set_state
+
+module Incubator = struct
+  module Private_state_enums = struct
+    module State = struct
+      include State (* the state we defined up above *)
+
+      let random_enum state next =
+        let rec aux state =
+          let next  () = next state in
+          let count () = raise BatEnum.Infinite_enum in
+          let clone () = aux ( copy state ) in
+          BatEnum.make ~next ~count ~clone
+        in aux (copy state)
+
+      let enum_bits state () =
+        random_enum state bits
+
+      let enum_int state bound =
+        random_enum state (fun state -> int state bound)
+
+      let enum_int32 state bound =
+        random_enum state (fun state -> int32 state bound)
+
+      let enum_int64 state bound =
+        random_enum state (fun state -> int64 state bound)
+
+      let enum_float state bound =
+        random_enum state (fun state -> float state bound)
+
+      let enum_nativeint state bound =
+        random_enum state (fun state -> nativeint state bound)
+
+      let enum_bool state () =
+        random_enum state bool
+
+      let enum_char state () =
+        random_enum state char
+
+      type implementation = { st : int array; mutable idx : int };;
+      external t_of_impl: implementation -> t = "%identity"
+      external impl_of_t: t -> implementation = "%identity"
+
+      let perturb state =
+        let impl = impl_of_t state in
+        make (Array.append impl.st [|impl.idx|])
+
+    end
+
+    (* bumps the existing global RNG state (reseeding on its current
+       array) and returns the previous state *)
+    let perturb_global () =
+      let s_in = get_state () in
+      set_state (State.perturb s_in);
+      s_in
+
+    let enum_bits () = State.enum_bits (perturb_global ()) ()
+    let enum_bool () = State.enum_bool (perturb_global ()) ()
+    let enum_char () = State.enum_char (perturb_global ()) ()
+
+    let enum_int bound = State.enum_int (perturb_global ()) bound
+    let enum_int32 bound = State.enum_int32 (perturb_global ()) bound
+    let enum_int64 bound = State.enum_int64 (perturb_global ()) bound
+    let enum_float bound = State.enum_float (perturb_global ()) bound
+    let enum_nativeint bound = State.enum_nativeint (perturb_global ()) bound
+
+  end
+end
