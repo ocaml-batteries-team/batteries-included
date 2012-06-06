@@ -30,6 +30,7 @@ let all_tests =
     Test_uref.tests;
     Test_bitset.tests;
     Test_container.tests;
+    Test_random.tests;
   ]
 
 let () =
