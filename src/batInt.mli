@@ -105,10 +105,10 @@ val ( <= ) : int -> int -> bool
 val ( = )  : int -> int -> bool
 
 val min_num : int
-(** The greatest representable integer, which is either 2{^30}-1 or 2{^62}-1. *)
+(** The smallest representable integer, -2{^30} or -2{^62}. *)
 
 val max_num : int
-(** The smallest representable integer, -2{^30} or 2{^62}. *)
+(** The greatest representable integer, which is either 2{^30}-1 or 2{^62}-1. *)
 
 external succ: int -> int  = "%succint"
 (** Successor.  [Int.succ x] is [Int.add x Int.one]. *)
@@ -117,7 +117,8 @@ external pred: int -> int  = "%predint"
 (** Predecessor.  [Int.pred x] is [Int.sub x Int.one]. *)
 
 val abs : int -> int
-(** Return the absolute value of its argument. *)
+(** Return the absolute value of its argument, except when the argument is
+    [min_num]. In that case, [abs min_num = min_num]. *)
 
 external of_float : float -> int = "%intoffloat"
 (** Convert the given floating-point number to integer integer,
@@ -140,10 +141,12 @@ val of_string : string -> int
 val to_string : int -> string
 (** Return the string representation of its argument, in signed decimal. *)
 
-
-(** custom min and max for integers is much faster than using
-    polymorphic one in stdlib *)
+(** The minimum of two integers. Faster than the polymorphic [min] from the
+    standard library. *)
 val min : int -> int -> int
+
+(** The maximum of two integers. Faster than the polymorphic [min] from the
+    standard library. *)
 val max : int -> int -> int
 
 val mid : int -> int -> int
@@ -322,7 +325,7 @@ module Safe_int : sig
   (** Return the absolute value of its argument. *)
 
   external of_float : float -> t = "%intoffloat"
-  (** Convert the given floating-point number to integer integer,
+  (** Convert the given floating-point number to integer,
       discarding the fractional part (truncate towards 0).
       The result of the conversion is undefined if, after truncation,
       the number is outside the range \[{!Int.min_int}, {!Int.max_int}\]. *)
