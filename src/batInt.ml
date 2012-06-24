@@ -54,7 +54,28 @@ module BaseInt = struct
   let abs = abs
 
   external modulo : int -> int -> int = "%modint"
-  let pow = generic_pow ~zero ~one ~div_two:(fun n -> n / 2) ~mod_two:(fun n -> n mod 2) ~mul
+
+  let pow a b =
+    if b < 0
+    then raise (Invalid_argument "Int.pow")
+    else
+      let div_two n = n / 2
+      and mod_two n = n mod 2
+      in generic_pow ~zero ~one ~div_two ~mod_two ~mul a b
+  (*$Q pow
+    Q.int     (fun a -> pow a 0 = 1)
+    Q.int     (fun a -> pow a 1 = a)
+    Q.int     (fun a -> pow a 2 = a * a)
+    Q.pos_int (fun b -> b = 0 || pow 0 b = 0)
+    Q.pos_int (fun b -> pow 1 b = 1)
+    (Q.pair Q.int Q.neg_int) (fun (a,b) -> \
+       b = 0 || Result.(catch2 pow a b |> is_exn (Invalid_argument "Int.pow")))
+  *)
+  (*$= pow
+    (pow (-2) 3) (-8)
+    (pow 0 0)    1
+  *)
+      
 
   let min_num, max_num = min_int, max_int
 
@@ -230,7 +251,13 @@ module BaseSafeInt = struct
 	add (cross lsl shift_bits) (al+bl)
       | _,_ -> raise Overflow
 
-  let pow = BatNumber.generic_pow ~zero ~one ~div_two:(fun n -> n/2) ~mod_two:(fun n -> n mod 2) ~mul
+  let pow a b =
+    if b < 0
+    then raise (Invalid_argument "Safe_int.pow")
+    else
+      let div_two n = n / 2
+      and mod_two n = n mod 2
+      in BatNumber.generic_pow ~zero ~one ~div_two ~mod_two ~mul a b
 
 end
 
