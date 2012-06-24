@@ -93,7 +93,9 @@ external modulo : int -> int -> int = "%modint"
 
 
 val pow  : int -> int -> int
-(** [pow a b] computes a{^b}*)
+(** [pow a b] computes a{^b}.
+
+    @raise Invalid_argument when [b] is negative. *)
 val ( ** ) : int -> int -> int
 (** [a ** b] computes a{^b}*)
 
@@ -285,7 +287,9 @@ module Safe_int : sig
 
 
   val pow  : t -> t -> t
-  (** [pow a b] computes a{^b}*)
+  (** [pow a b] computes a{^b}.
+
+      @raise Invalid_argument when [b] is negative. *)
 
   val ( ** ) : t -> t -> t
   (** [a ** b] computes a{^b}*)
