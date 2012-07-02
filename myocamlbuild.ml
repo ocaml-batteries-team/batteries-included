@@ -13,7 +13,7 @@ let packs = "bigarray,num,str"
 let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
 let pa_llist = "src/syntax/pa_llist/pa_llist.cmo"
-
+let compiler_libs = if Sys.ocaml_version.[0] = '4' then [A"-I"; A"+compiler-libs"] else []
 (* removes the trailing newlines in the stdout of s *)
 let run_and_read s =
   let res = run_and_read s in
@@ -166,6 +166,11 @@ let _ = dispatch begin function
 
       ocaml_lib "src/batteries";
       ocaml_lib "src/batteriesThread";
+
+      flag ["ocaml"; "compile"; "compiler-libs"] & S compiler_libs;
+      flag ["ocaml"; "link"; "compiler-libs"] & S compiler_libs;
+      flag ["ocaml"; "ocamldep"; "compiler-libs"] & S compiler_libs;
+
 
       flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
 (*
