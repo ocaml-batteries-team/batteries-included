@@ -23,6 +23,8 @@ include Sys
 
 let files_of d = BatArray.enum (readdir d)
 
+(* TODO: IMPLEMENT BIG_ENDIAN under 3.12.1 *)
+
 let escape_arg_win arg =
   (* TODO: implement String.contains_any to improve performance by not escaping arguments that don't need it
  if not (String.contains_any " \t\n\"" arg) then

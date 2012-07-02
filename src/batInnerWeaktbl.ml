@@ -94,7 +94,7 @@ module Make (H: Hashtbl.HashedType) : Hashtbl.S with type key = H.t = struct
   let create = W.create and clear = W.clear
   let find_all tbl key =
     try all_value (W.find tbl (dummy key)) with Not_found-> []
-  let rec find tbl key = top_value (W.find tbl (dummy key))
+  let find tbl key = top_value (W.find tbl (dummy key))
   let add tbl key data =
     let bd = bind_new key data in
     let cls =
@@ -118,6 +118,8 @@ module Make (H: Hashtbl.HashedType) : Hashtbl.S with type key = H.t = struct
   let copy tbl =
     let tbl'= W.create (W.count tbl * 3 / 2 + 2) in
     W.iter (fun cls -> W.add tbl' (Stack.copy cls)) tbl; tbl'
+  let stats _ = assert false
+  let reset _ = assert false
 end
 
 module StdHash = Make
@@ -135,4 +137,3 @@ let replace tbl k = replace tbl (repr k)
 let mem tbl k = mem tbl (repr k)
 let iter f = iter (fun k d -> f (obj k) d)
 let fold f = fold (fun k d a -> f (obj k) d a)
-

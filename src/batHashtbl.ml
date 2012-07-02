@@ -27,7 +27,7 @@
 	Note: We can't directly [include Hashtbl] as this
 	would cause a collision on [Make]*)
     type ('a, 'b) t = ('a, 'b) Hashtbl.t
-    let create   = Hashtbl.create
+    let create s  = Hashtbl.create s
     let clear    = Hashtbl.clear
     let add      = Hashtbl.add
     let copy     = Hashtbl.copy
@@ -523,4 +523,3 @@
 	let find = find_option
       end
     end
-

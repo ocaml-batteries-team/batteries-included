@@ -49,6 +49,12 @@ val file : string -> t
 val to_hex : t -> string
 (** Return the printable hexadecimal representation of the given digest. *)
 
+val from_hex : string -> t
+(** Convert a hexadecimal representation back into the corresponding digest.
+   Raise [Invalid_argument] if the argument is not exactly 32 hexadecimal
+   characters.
+   @since 4.00.0 *)
+
 val channel : input -> int -> Digest.t
 (** If [len] is nonnegative, [Digest.channel ic len] reads [len]
    characters from channel [ic] and returns their digest, or raises
@@ -70,3 +76,11 @@ val print : 'a output -> Digest.t -> unit
 
 val input : input -> Digest.t
 (** Read a digest from the given input. *)
+
+val compare : t -> t -> int
+(** The comparison function for 16-character digest, with the same
+    specification as {!Pervasives.compare} and the implementation
+    shared with {!String.compare}. Along with the type [t], this
+    function [compare] allows the module [Digest] to be passed as
+    argument to the functors {!Set.Make} and {!Map.Make}.
+    @since 4.00.0 *)
