@@ -56,5 +56,5 @@ package "syntax" (
         requires = "camlp4, estring"
         requires(toploop) = "camlp4, estring, batteries"
         archive(syntax, preprocessor) = "pa_strings.cma pa_comprehension.cmo pa_llist.cmo"
-        archive(syntax, toploop)      = "pa_strings.cma pa_comprehension.cmo pa_llist"
+	archive(syntax, toploop)      = "pa_strings.cma pa_comprehension.cmo pa_llist.cmo"
 )
