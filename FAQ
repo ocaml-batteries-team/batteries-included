@@ -1,5 +1,14 @@
 *** FAQ for Batteries Included ***
 
+*** Common Problems ***
+
+**** "Error: Unbound module Batteries"
+
+1) Change `open Batteries` to `open Batteries_uni`.  If compiling without threads, 
+   `Batteries` is not available, only `Batteries_uni`
+2) Check that you're using ocamlfind with `-package batteries`, or `pkg(batteries)`
+   in ocamlbuild to tell OCaml to make batteries available to your code.
+
 *** General ***
 
 **** What is OCaml Batteries ****
