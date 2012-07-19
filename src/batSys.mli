@@ -228,7 +228,3 @@ val ocaml_version : string;;
 val files_of: string -> string BatEnum.t
 (**As {!readdir} but the results are presented as an enumeration
    of names.*)
-
-
-(**/**)
-val escape_arg_win : string -> string
