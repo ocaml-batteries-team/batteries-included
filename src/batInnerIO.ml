@@ -469,35 +469,46 @@ let read_string i =
 	Buffer.contents b
 
 let read_line i =
-	let b = Buffer.create 8 in
-	let cr = ref false in
-	let rec loop() =
-		let c = i.in_read() in
-		match c with
-		| '\n' ->
-			()
-		| '\r' ->
-			cr := true;
-			loop()
-		| _ when !cr ->
-			cr := false;
-			Buffer.add_char b '\r';
-			Buffer.add_char b c;
-			loop();
-		| _ ->
-			Buffer.add_char b c;
-			loop();
-	in
-	try
-		loop();
-		Buffer.contents b
-	with
-		No_more_input ->
-			if !cr then Buffer.add_char b '\r';
-			if Buffer.length b > 0 then
-				Buffer.contents b
-			else
-				raise No_more_input
+  let b = Buffer.create 80 in
+  let cr = ref false in
+  let rec loop() =
+	match i.in_read() with
+	| '\n' ->
+	  ()
+    | '\r' when !cr ->
+      Buffer.add_char b '\r';
+      loop()
+	| '\r' ->
+	  cr := true;
+	  loop()
+	| c when !cr ->
+	  cr := false;
+	  Buffer.add_char b '\r';
+	  Buffer.add_char b c;
+	  loop();
+	| c ->
+	  Buffer.add_char b c;
+	  loop()
+  in
+  try
+	loop();
+	Buffer.contents b
+  with
+	No_more_input ->
+	if !cr then Buffer.add_char b '\r';
+	if Buffer.length b > 0 then
+	  Buffer.contents b
+	else
+	  raise No_more_input
+
+(*$= read_line & ~cmp:BatString.equal ~printer:String.quote
+  "abc" (read_line (BatIO.input_string "abc\ndef\n"))
+  "abc" (read_line (BatIO.input_string "abc\r\ndef\n"))
+  "abc\r" (read_line (BatIO.input_string "abc\r\r\ndef\n"))
+  "abc" (read_line (BatIO.input_string "abc"))
+  "abc\r" (read_line (BatIO.input_string "abc\r"))
+  "kldsjf\r\r\rasdfa"  (read_line (BatIO.input_string "kldsjf\r\r\rasdfa\nsfdsagf\n"))
+ *)
 
 let read_ui16 i =
 	let ch1 = read_byte i in
