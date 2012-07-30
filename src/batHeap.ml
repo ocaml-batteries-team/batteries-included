@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+let min x y = if Pervasives.compare x y <= 0 then x else y
+
 (** binomial trees *)
 type 'a bt = {
   rank : int ;
@@ -55,7 +57,7 @@ let insert bh x =
   let data = add_tree { rank = 0 ; root = x ; kids = [] } bh.data in
   let mind = match bh.mind with
     | None -> Some x
-    | Some mind -> Some (Pervasives.min x mind)
+    | Some mind -> Some (min x mind)
   in {
     size = size ; data = data ; mind = mind
   }
@@ -82,7 +84,7 @@ let merge bh1 bh2 =
   let size = bh1.size + bh2.size in
   let data = merge_data bh1.data bh2.data in
   let mind = match bh1.mind, bh2.mind with
-    | Some m1, Some m2 -> Some (Pervasives.min m1 m2)
+    | Some m1, Some m2 -> Some (min m1 m2)
     | m, None | None, m -> m
   in
   { size = size ; data = data ; mind = mind }
