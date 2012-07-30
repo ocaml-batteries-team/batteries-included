@@ -12,6 +12,7 @@ let packs = String.concat "," ["camomile"; "num"; "str"]
 
 let mkconf = "build/mkconf.byte"
 let pa_llist = "src/syntax/pa_llist/pa_llist.cmo"
+let compiler_libs = if Sys.ocaml_version.[0] = '4' then [A"-I"; A"+compiler-libs"] else []
 
 let _ = dispatch begin function
   | Before_options ->
@@ -104,15 +105,20 @@ let _ = dispatch begin function
       ocaml_lib "qtest/test_mods";
       ocaml_lib "src/batteries";
 
+      flag ["ocaml"; "compile"; "compiler-libs"] & S compiler_libs;
+      flag ["ocaml"; "link"; "compiler-libs"] & S compiler_libs;
+      flag ["ocaml"; "ocamldep"; "compiler-libs"] & S compiler_libs;
+
+
       flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
 (*
-      dep ["ocaml"; "link"; "include_tests"; "byte"] & 
+      dep ["ocaml"; "link"; "include_tests"; "byte"] &
 	[Pathname.mk "qtest/test_mods.cma"];
-      dep ["ocaml"; "link"; "include_tests"; "native"] & 
+      dep ["ocaml"; "link"; "include_tests"; "native"] &
 	[Pathname.mk "qtest/test_mods.cmxa"]; *)
 
       (* Some .mli files use INCLUDE "foo.mli" to avoid interface duplication;
-         
+
          The problem is that the automatic dependency detector of
          ocamlbuild doesn't detect the implicit dependency on the
          included .mli, and doesn't copy it into _build before
