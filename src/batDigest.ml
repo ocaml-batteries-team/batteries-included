@@ -2,7 +2,7 @@
  * ExtDigest - Additional functions for message digests
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -23,17 +23,17 @@ open BatIO
 
 (*Imported from [Digest.input] -- the functions used take advantage of
   [BatIO.input] rather than [in_channel]*)
-let input inp = 
+let input inp =
   let digest = String.create 16 in
   let _      = really_input inp digest 0 16 in
-    digest
+  digest
 
 
 let output = BatIO.nwrite
 
 
 let channel inp len = (*TODO: Make efficient*)
-  if len >= 0 then 
+  if len >= 0 then
     let buf = String.create len             in
     let _   = BatIO.really_input inp buf 0 len in
       Digest.string buf
@@ -60,4 +60,22 @@ in
 (*3. Compare*)
   assert_equal ~printer:(Printf.sprintf "%S")
     (legacy_result ()) (batteries_result ())
- **)
+**)
+
+let from_hex s =
+  if String.length s <> 32 then raise (Invalid_argument "Digest.from_hex");
+  let digit c =
+    match c with
+    | '0'..'9' -> Char.code c - Char.code '0'
+    | 'A'..'F' -> Char.code c - Char.code 'A' + 10
+    | 'a'..'f' -> Char.code c - Char.code 'a' + 10
+    | _ -> raise (Invalid_argument "Digest.from_hex")
+  in
+  let byte i = digit s.[i] lsl 4 + digit s.[i+1] in
+  let result = String.create 16 in
+  for i = 0 to 15 do
+    result.[i] <- Char.chr (byte (2 * i));
+  done;
+  result
+
+let compare = String.compare
