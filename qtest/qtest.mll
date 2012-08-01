@@ -231,21 +231,27 @@ let set_output path =
   epf "Target file: `%s'. " path; outc := open_out path
 
 let options = [
-(* the careful spacing here preserves a good-looking alignment in -help output *)
-"-p", Arg.String add_preamble, "";
-"--run-only", Arg.String (fun s->Core._run_only := Some s),
-  "<function name>
-Only generate tests pertaining to this function, as indicated by the test header\n";
-"--preamble", Arg.String add_preamble, 
-            "<string>  Add code to the tests preamble; typically this will be
-                       an instruction of the form 'open Module;;'";
-"--preamble-file", Arg.String add_preamble_file,
-                 "<path>  Add the content from the given file 
-                          to the tests preamble.";
 "-o", Arg.String set_output, "";
 "--output", Arg.String set_output,
-          "<path>  Open or create a file for output; the resulting file
-                   will be an OCaml source file containing all the tests."
+"<path>     (default: standard output)
+Open or create a file for output; the resulting file will be an OCaml source file containing all the tests
+";
+
+"-p", Arg.String add_preamble, "";
+"--preamble", Arg.String add_preamble,
+"<string>   (default: empty)
+Add code to the tests preamble; typically this will be an instruction of the form 'open Module;;'
+";
+
+"--preamble-file", Arg.String add_preamble_file,
+"<path>
+Add the contents of the given file to the tests preamble
+";
+
+"--run-only", Arg.String (fun s->Core._run_only := Some s),
+"<function name>
+Only generate tests pertaining to this function, as indicated by the test header
+";
 ]
 
 let usage_msg =
