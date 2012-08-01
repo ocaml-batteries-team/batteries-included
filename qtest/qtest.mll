@@ -109,7 +109,7 @@ and lexbody ln b acc = parse
 | blank* '\n' {
   eol lexbuf; let code = B.contents b in B.clear b;
   lexbody Lexing.(lexbuf.lex_curr_p.pos_lnum) b ({ln ; code} :: acc) lexbuf }
-| blank* "*)" { acc }
+| blank* "*)" { List.rev acc }
 | "(*" { lexcomment 0 lexbuf ; lexbody ln b acc lexbuf }
 | ([^'\n']#blank)* blank* '*'+ ")" as x
   { failwith ("runaway test body terminator: " ^ x) }
