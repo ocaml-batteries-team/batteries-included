@@ -233,6 +233,9 @@ let set_output path =
 let options = [
 (* the careful spacing here preserves a good-looking alignment in -help output *)
 "-p", Arg.String add_preamble, "";
+"--run-only", Arg.String (fun s->Core._run_only := Some s),
+  "<function name>
+Only generate tests pertaining to this function, as indicated by the test header\n";
 "--preamble", Arg.String add_preamble, 
             "<string>  Add code to the tests preamble; typically this will be
                        an instruction of the form 'open Module;;'";

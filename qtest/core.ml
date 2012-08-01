@@ -196,10 +196,17 @@ let prettify s =
   then (* multi-line : as-is     *)   "\n\n" ^ s ^ "\n\n"
   else (* single-line: normalise *)   trim (normalise s)
 
+(** filter tests so that only those which involve a specific
+  function name are kept. Option --run-only *)
+let _run_only = ref None
+let retain_test test = match !_run_only with
+  | None -> true | Some pattern ->
+    let targets,_ = List.split test.header.hb in
+    List.mem pattern targets
 
 (** execute a pragma; in particular, output the executable version of a test *)
 let process uid = function
-  | Test test ->
+  | Test test when retain_test test  ->
     let test_handle = test_handle_of_uid uid 
     and targets = targets_of_header test.header in
     List.iter (fun t->
@@ -227,7 +234,8 @@ let process uid = function
         "\"%s\" >:: (%s fun () -> (%s%s));\n"
         location bind lnumdir st.code;
     in List.iter do_statement test.statements;
-    outf "];; let _ = ___add %s;;\n" test_handle;
+    outf "];; let _ = ___add %s;;\n" test_handle
+  | Test _ -> pl "Skipping some test"
   | Env_begin -> outf  "\n\nmodule Test__environment_%d = struct\n" uid
   | Env_close -> out  "end\n\n"
   | Open modu -> outf "open %s;;\n" modu
