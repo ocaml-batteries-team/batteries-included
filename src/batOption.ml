@@ -57,6 +57,17 @@ let apply = function
   apply (Some succ) 3 = 4
 *)
 
+
+let filter f = function 
+  | Some x when f x -> Some x
+  | _ -> None
+(*$T filter
+  filter (fun _ -> true) None = None
+  filter (fun _ -> true) (Some 3) = Some 3
+  filter (fun _ -> false) (Some 3) = None
+*)
+
+
 let default v = function
 	| None -> v
 	| Some v -> v
