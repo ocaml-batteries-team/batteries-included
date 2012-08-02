@@ -41,6 +41,9 @@ let register_mtest lexbuf lexhead lexbod line kind =
 let lnumof lexbuf = Lexing.(lexbuf.lex_curr_p.pos_lnum)
 let fileof lexbuf = Lexing.(lexbuf.lex_curr_p.pos_fname)
 let info lb = fileof lb, lnumof lb
+
+(** --shuffle option *)
+let _shuffle = ref false
 } (****************************************************************************)
 
 let blank = [' ' '\t']
@@ -213,45 +216,50 @@ let generate paths =
   out "let ___tests = ref []\nlet ___add test = ___tests := test::!___tests\n";
   out hard_coded_preamble;
   out (Buffer.contents global_preamble);
-  listiteri process (preprocess @@ List.rev !suite);
-  out "let () = ignore (Runner.run (\"\" >::: !___tests))\n";
+  suite := List.rev !suite; (* correct order (suite is built in reverse order) *)
+  if !_shuffle then Shuffle.exec suite;
+  listiteri process (preprocess !suite);
+  out "let () = ignore (Runner.run (\"\" >::: List.rev !___tests))\n";
   eps "Done.\n"
 
 (** Parse command line *)
+
 let add_preamble code =
   Buffer.add_string global_preamble code;
-  Buffer.add_string global_preamble "\n";
-  ()
+  Buffer.add_string global_preamble "\n"  
 let add_preamble_file path =
   let input = open_in path in
   Buffer.add_channel global_preamble input (in_channel_length input);
-  close_in input;
-  ()
+  close_in input
 let set_output path =
   epf "Target file: `%s'. " path; outc := open_out path
 
 let options = [
-"-o", Arg.String set_output, "";
-"--output", Arg.String set_output,
+"-o",               Arg.String set_output, "";
+"--output",         Arg.String set_output,
 "<path>     (default: standard output)
 Open or create a file for output; the resulting file will be an OCaml source file containing all the tests
 ";
 
-"-p", Arg.String add_preamble, "";
-"--preamble", Arg.String add_preamble,
+"-p",               Arg.String add_preamble, "";
+"--preamble",       Arg.String add_preamble,
 "<string>   (default: empty)
 Add code to the tests preamble; typically this will be an instruction of the form 'open Module;;'
 ";
 
-"--preamble-file", Arg.String add_preamble_file,
+"--preamble-file",  Arg.String add_preamble_file,
 "<path>
 Add the contents of the given file to the tests preamble
 ";
 
-"--run-only", Arg.String (fun s->Core._run_only := Some s),
+"--run-only",       Arg.String (fun s->Core._run_only := Some s),
 "<function name>
 Only generate tests pertaining to this function, as indicated by the test header
 ";
+
+"--shuffle",        Arg.Unit (fun ()->toggle _shuffle; if !_shuffle then epf "!!! SHUFFLE is ON !!!\n"),
+"           (default: turned off)
+Toggle test execution order randomisation; submodules using injection are not shuffled";
 ]
 
 let usage_msg =
@@ -261,6 +269,7 @@ let usage_msg =
 OPTIONS:"
 
 let () =
+  Random.self_init();
   let rev_anon_args = ref [] in
   let push_anon arg = (rev_anon_args := arg :: !rev_anon_args) in
   Arg.parse options push_anon usage_msg;

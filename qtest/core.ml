@@ -235,7 +235,7 @@ let process uid = function
         location bind lnumdir st.code;
     in List.iter do_statement test.statements;
     outf "];; let _ = ___add %s;;\n" test_handle
-  | Test _ -> pl "Skipping some test"
+  | Test test -> epf "Skipping `%s'\n" (get_test_name test)
   | Env_begin -> outf  "\n\nmodule Test__environment_%d = struct\n" uid
   | Env_close -> out  "end\n\n"
   | Open modu -> outf "open %s;;\n" modu
@@ -245,4 +245,58 @@ let process uid = function
   | Meta_test _ -> assert false (* metas should have been pre-processed out *)
 
 
-  
+(** Shuffling tests as per --shuffle *)
+
+module Shuffle = struct
+
+type imbrication =
+| Env of imbrication list
+| Prg of pragma (* but without Env_begin and close *)
+
+(* turn a raw pragma list into an imbrication *)
+let input pl =
+  let rec z acc = function
+  | [] -> [], List.rev acc
+  | Env_close :: l -> l, List.rev acc
+  | Env_begin :: l ->
+    let rest, result = z [] l in
+    z (Env result :: acc) rest
+  | p :: l -> z (Prg p :: acc) l
+  in let rest, res = z [] pl
+  in if (rest <> []) then
+  epf "Warning: shuffle has rests: check that every opened module is closed\n";
+  Env res
+
+(* turn an imbrication list back into a raw pragma list *)
+let output imbl =
+  let rec z  = function
+  | Prg p -> [p]
+  | Env il -> Env_begin :: (List.concat @@ List.map z il) @ [Env_close]
+  in z imbl
+
+(* Durstenfeld shuffling algorithm *)
+let durstenfeld l = Array.(
+  let a = of_list l in
+  let ex i j =
+    let oldi = a.(i) in
+    a.(i) <- a.(j); a.(j) <- oldi
+  in
+  for k = length a - 1 downto 1 do
+    ex k (Random.int (succ k))
+  done;
+  to_list a
+)
+
+let rec shuffle = function
+  | Prg p -> Prg p
+  | Env (opn::il) -> Env (opn ::
+    if List.exists (function Prg(Inject(_,_)) -> true | _ -> false) il
+    then List.map shuffle il else List.map shuffle (durstenfeld il))
+  | Env _ -> assert false
+
+       
+let exec suite =
+(*   assert (!suite = output (input !suite)); *)
+  suite := output @@ shuffle (input !suite)
+
+end (* Shuffle *)
