@@ -547,6 +547,9 @@ sig
 	val doubles_of : input -> float BatEnum.t
 	  (** Read an enumeration of IEEE double precision floating point values. *)
 
+	val floats_of : input -> float BatEnum.t
+	  (** Read an enumeration of IEEE single precision floating point values. *)
+
 end
 
 
@@ -824,6 +827,9 @@ val i64s_of : input -> int64 BatEnum.t
 
 val doubles_of : input -> float BatEnum.t
 (** Read an enumeration of IEEE double precision floating point values. *)
+
+val floats_of : input -> float BatEnum.t
+(** Read an enumeration of IEEE single precision floating point values. *)
 
 val strings_of : input -> string BatEnum.t
 (** Read an enumeration of null-terminated strings. *)
