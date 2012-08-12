@@ -177,6 +177,14 @@ let is_special f =
     | FP_subnormal
     | FP_zero -> false
 
+let is_finite f =
+  match classify f with
+    | FP_nan
+    | FP_infinite -> false
+    | FP_normal
+    | FP_subnormal
+    | FP_zero -> true
+
 let infinity     = Pervasives.infinity
 let neg_infinity = Pervasives.neg_infinity
 let nan          = Pervasives.nan
@@ -349,6 +357,13 @@ end
   not (is_special (-0.))
   not (is_special 12.)
   is_special nan
+*)
+
+(*$T is_finite
+   List.for_all is_finite [1.0; 1e200; 1e-200; 0.0; -0.0; -1.0; -1e200; -1e-200]
+   not (is_finite nan)
+   not (is_finite infinity)
+   not (is_finite neg_infinity)
 *)
 
 (*$T
