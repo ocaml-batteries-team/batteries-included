@@ -222,6 +222,12 @@ val is_special : float -> bool
 
     @since 2.0 *)
 
+val is_finite : float -> bool
+(** [is_finite f] returns [true] if [f] is not [nan] or [+/- infinity],
+    [false] otherwise.
+
+    @since 2.0 *)
+
 (** {6 Constants} *)
 
 (** Special float constants.  It may not be safe to compare
