@@ -60,7 +60,7 @@ val apply : ('a -> 'a) option -> 'a -> 'a
 (** [apply None x] returns [x] and [apply (Some f) x] returns [f x] *)
 
 val filter : ('a -> bool) -> 'a option -> 'a option
-(** [filter f None] returns [None], [apply f (Some x)] returns [Some x] 
+(** [filter f None] returns [None], [filter f (Some x)] returns [Some x]
     if [f x] is true, and [None] otherwise. *)
 
 val default : 'a -> 'a option -> 'a
