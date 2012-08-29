@@ -1,14 +1,16 @@
 module O = BatOrd
 
-type 'a bounded_t = min:'a -> max:'a -> 'a -> 'a option
+type 'a bounding_f = min:'a -> max:'a -> 'a -> 'a option
 
-let bounded_of_ord ?default_low ?default_high f = fun ~min ~max x ->
-  match f x min, f x max with
-  | O.Lt, _ -> default_low
-  | _, O.Gt -> default_high
-  | O.Eq, _
-  | _, O.Eq
-  | O.Gt, _ -> Some x
+let bounding_of_ord ?default_low ?default_high ord = 
+  fun ~min ~max -> assert (ord min max != O.Gt); 
+  fun x ->
+    match ord x min, ord x max with
+    | O.Lt, _ -> default_low
+    | _, O.Gt -> default_high
+    | O.Eq, _
+    | _, O.Eq
+    | O.Gt, _ -> Some x
 
 module type BoundedOrdType = sig
   type t
@@ -23,7 +25,7 @@ module type BoundedType = sig
   type t
   val min : t
   val max : t
-  val bounded : t bounded_t
+  val bounded : t bounding_f
   val default_high : t option
   val default_low : t option
 end
@@ -55,11 +57,8 @@ module MakeOrd(M : BoundedOrdType) : (S with type u = M.t) = struct
   include M
   type u = t
   exception Out_of_range
-  let make x = bounded_of_ord ?default_low ?default_high ord ~min ~max x
-  let make_exn x =
-    match make x with
-    | Some n -> n
-    | None -> raise Out_of_range
+  let make x = bounding_of_ord ?default_low ?default_high ord ~min ~max x
+  let make_exn x = BatOption.get_exn (make x) Out_of_range
 end
 
 module Int10_base = struct
@@ -68,7 +67,7 @@ module Int10_base = struct
   let max = 10
   let default_low = Some 1
   let default_high = Some 10
-  let bounded = bounded_of_ord ?default_low ?default_high BatOrd.poly_ord
+  let bounded = bounding_of_ord ?default_low ?default_high BatInt.ord
 end
 
 (** Only accept integers between 1 and 10 *)
@@ -80,7 +79,7 @@ module Int10_base_ord = struct
   let max = 10
   let default_low = Some 1
   let default_high = Some 10
-  let ord = O.poly_ord
+  let ord = BatInt.ord
 end
 
 (** Only accept integers between 1 and 10 *)
