@@ -174,9 +174,9 @@ type open_temporary_out_flag =
   [ open_out_flag
   | `delete_on_exit (**Should the file be deleted when program ends?*) ]
 
-let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * string) =
+let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") ?temp_dir () : (_ output * string) =
   let chan_mode = out_chan_mode ?mode true in
-  let (name, cout) = Filename.open_temp_file ~mode:chan_mode prefix suffix in
+  let (name, cout) = Filename.open_temp_file ?temp_dir ~mode:chan_mode prefix suffix in
   let out          = output_channel ~cleanup:true cout   in
     (match mode with
       | Some l when List.mem `delete_on_exit l ->
@@ -189,8 +189,8 @@ let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * 
       | _ -> ());
   (out, name)
 
-let with_temporary_out ?mode ?prefix ?suffix f =
-  let (file, name) = open_temporary_out ?mode ?prefix ?suffix () in
+let with_temporary_out ?mode ?prefix ?suffix ?temp_dir f =
+  let (file, name) = open_temporary_out ?mode ?prefix ?suffix ?temp_dir () in
     finally (fun () -> close_out file)
       (fun (file, name) -> f file name)
       (file, name)

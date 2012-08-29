@@ -171,7 +171,7 @@ type open_temporary_out_flag =
   [ open_out_flag
   | `delete_on_exit (**Should the file be deleted when program ends?*) ]
 
-val open_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -> ?suffix:string -> unit ->
+val open_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -> ?suffix:string -> ?temp_dir:string -> unit ->
   (unit output * string)
 (** [open_temporary_out ()] opens a new temporary file for writing.
 
@@ -179,6 +179,7 @@ val open_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -
     (by default ["ocaml"])
     @param suffix a string which should appear at the end of your temporary file name
     (by default ["tmp"])
+    @param temp_dir indicates what temp dir to use
 
     @return The name of the file and the [output] for writing in it.
 
@@ -187,7 +188,7 @@ val open_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -
 
     Naming conventions for files are platform-dependent.*)
 
-val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -> ?suffix:string -> (unit output -> string -> 'a) -> 'a
+val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -> ?suffix:string -> ?temp_dir:string -> (unit output -> string -> 'a) -> 'a
 (** [with_temporary_out f] opens a new temporary file for writing, invokes [f] with
     to write onto that file then, once [f] has returned or triggered an exception,
     closes the file before proceeding.
@@ -196,6 +197,7 @@ val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -
     (by default ["ocaml"])
     @param suffix a string which should appear at the end of your temporary file name
     (by default ["tmp"])
+    @param temp_dir indicates what temp dir to use
 
     @return The name of the file and the [output] for writing in it.
 
