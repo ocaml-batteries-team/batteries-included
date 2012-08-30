@@ -409,3 +409,9 @@ val compare : t -> t -> int
 
 val print : 'a BatInnerIO.output -> t -> unit
     (** Prints a rope to the given out_channel *)
+
+(**/**)
+val write_lines : (Text.t BatEnum.t, 'a) printer
+val write_texts : (Text.t BatEnum.t, 'a) printer
+val write_chars : (UChar.t BatEnum.t, 'a) printer
+(**/**)

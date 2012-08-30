@@ -65,7 +65,7 @@ let remove k d t =
 
 let mem k d = M.mem k d.content
 
-let exists = mem
+(* let exists = mem *)
 
 let iter f d = M.iter f d.content
 

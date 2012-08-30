@@ -527,6 +527,19 @@ sig
 (**/**)
 end
 
+module Incubator : sig
+  module Eq (T : BatOrd.Eq) : sig
+    type t = T.t array
+    val eq : T.t array BatOrd.eq
+  end
+
+  module Ord (T : BatOrd.Ord) : sig
+    type t = T.t array
+    val ord : T.t array BatOrd.ord
+  end
+end
+
+
 (**/**)
 (* for tests *)
 val is_sorted_by : ('a -> 'b) -> 'a array -> bool

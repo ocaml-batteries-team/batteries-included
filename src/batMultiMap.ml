@@ -40,7 +40,7 @@ let remove k d t =
   with Not_found -> t
 
 let mem = BatMap.mem
-let exists = mem
+(* let exists = mem *)
 let iter = BatMap.iter
 let map = BatMap.map
 let mapi = BatMap.mapi

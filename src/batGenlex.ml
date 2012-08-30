@@ -226,7 +226,7 @@ let to_lazy_list_filter kwd_table x =
   (BatLazyList.of_enum (to_enum_filter kwd_table (BatLazyList.enum x)))
 
 
-
+(* DEAD CODE
 let ocaml_comment =
   string "(*" >>= fun _ ->
     let rec content () =
@@ -239,6 +239,7 @@ let ocaml_comment =
 		     | _   -> content() )
 	|  _  -> content ()
     in content ()
+ *)
 
 let ocaml_escape = label "OCaml-style escaped character"
   (

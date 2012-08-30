@@ -1,5 +1,4 @@
 
-open BatPervasives
 type ('a, 'b) t = ('a, 'b) BatPervasives.result =
  | Ok  of 'a
  | Bad of 'b

@@ -61,7 +61,7 @@ let (|>) x f = f x
 let enum_print_limit = ref 20
 let enum_print p oc e =
   let e = BatEnum.clone e in
-  for i = 1 to !enum_print_limit-1 do
+  for _i = 1 to !enum_print_limit-1 do
     match BatEnum.get e with
       | None -> ()
       | Some x -> p oc x; BatIO.write oc ' '

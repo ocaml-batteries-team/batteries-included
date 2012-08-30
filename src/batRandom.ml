@@ -156,7 +156,7 @@ module Incubator = struct
         random_enum state char
 
       type implementation = { st : int array; mutable idx : int };;
-      external t_of_impl: implementation -> t = "%identity"
+(*      external t_of_impl: implementation -> t = "%identity" *)
       external impl_of_t: t -> implementation = "%identity"
 
       let perturb state =

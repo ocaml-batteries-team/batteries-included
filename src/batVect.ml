@@ -67,7 +67,6 @@ let invariants t =
 type 'a forest_element = { mutable c : 'a t; mutable len : int }
 
 let str_append = STRING.append
-let empty_str = [||]
 let string_of_string_list = STRING.concat
 
 let singleton x = Leaf [|x|]
@@ -97,7 +96,7 @@ let height = function
   | Empty | Leaf _ -> 0
   | Concat (_, _, _, _, h) -> h
 
-let rec length = function
+let length = function
   | Empty -> 0
   | Leaf s -> STRING.length s
   | Concat (_, cl, _, cr, _) -> cl + cr
@@ -348,7 +347,7 @@ let rec rev_cons_iter s t =
   | Leaf s -> C (s, (STRING.length s - 1), Empty, t)
   | Concat (l, _, r, _, _) -> rev_cons_iter r (rev_cons_iter l t)
 
-let rec enum_next l () =
+let enum_next l () =
   match !l with
   | E -> raise BatEnum.No_more_elements
   | C (s, p, r, t) ->
@@ -358,7 +357,7 @@ let rec enum_next l () =
       l := C (s, p + 1, r, t);
     STRING.unsafe_get s p
 
-let rec enum_backwards_next l () =
+let enum_backwards_next l () =
   match !l with
   | E -> raise BatEnum.No_more_elements
   | C (s, p, r, t) ->
@@ -368,13 +367,13 @@ let rec enum_backwards_next l () =
       l := C (s, p - 1, r, t);
     STRING.unsafe_get s p
 
-let rec enum_count l () =
+let enum_count l () =
   let rec aux n = function
     | E -> n
     | C (s, p, m, t) -> aux (n + (STRING.length s - p) + length m) t
   in aux 0 !l
 
-let rec rev_enum_count l () =
+let rev_enum_count l () =
   let rec aux n = function
     | E -> n
     | C (s, p, m, t) -> aux (n + (p + 1) + length m) t
@@ -673,7 +672,6 @@ struct
   type 'a forest_element = { mutable c : 'a t; mutable len : int }
 
   let str_append = STRING.append
-  let empty_str = STRING.empty
   let string_of_string_list = STRING.concat
 
   let singleton x = Leaf (STRING.make 1 x)
@@ -691,7 +689,7 @@ struct
     | Empty | Leaf _ -> 0
     | Concat (_, _, _, _, h) -> h
 
-  let rec length = function
+  let length = function
     | Empty -> 0
     | Leaf s -> STRING.length s
     | Concat (_, cl, _, cr, _) -> cl + cr
@@ -927,7 +925,7 @@ struct
     | Leaf s -> C (s, (STRING.length s - 1), Empty, t)
     | Concat (l, _, r, _, _) -> rev_cons_iter r (rev_cons_iter l t)
 
-  let rec enum_next l () =
+  let enum_next l () =
     match !l with
     | E -> raise BatEnum.No_more_elements
     | C (s, p, r, t) ->
@@ -937,7 +935,7 @@ struct
         l := C (s, p + 1, r, t);
       STRING.unsafe_get s p
 
-  let rec enum_backwards_next l () =
+  let enum_backwards_next l () =
     match !l with
     | E -> raise BatEnum.No_more_elements
     | C (s, p, r, t) ->
@@ -947,13 +945,13 @@ struct
         l := C (s, p - 1, r, t);
       STRING.unsafe_get s p
 
-  let rec enum_count l () =
+  let enum_count l () =
     let rec aux n = function
       | E -> n
       | C (s, p, m, t) -> aux (n + (STRING.length s - p) + length m) t
     in aux 0 !l
 
-  let rec rev_enum_count l () =
+  let rev_enum_count l () =
     let rec aux n = function
       | E -> n
       | C (s, p, m, t) -> aux (n + (p + 1) + length m) t

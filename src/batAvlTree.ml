@@ -37,7 +37,7 @@ let create l v r =
   Node (l, v, r, h')
 
 (* Assume |hl - hr| < 3 *)
-let rec bal l v r =
+let bal l v r =
   let hl = height l in
   let hr = height r in
   if hl >= hr + 2 then

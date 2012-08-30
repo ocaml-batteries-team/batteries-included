@@ -104,7 +104,7 @@ struct
 
   let is_empty (Map tr) = tr = Empty
 
-  let kcmp (j, _) (k, _) = Ord.compare j k
+(*  let kcmp (j, _) (k, _) = Ord.compare j k*)
   let ksel j (k, _) = Ord.compare j k
 
   let singleton' k v = Node (Empty, (k, v), Empty)
