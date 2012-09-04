@@ -19,14 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-let big_endian = false  (* FIXME: overridden by real big_endian value in 4.00 and above *)
+let big_endian = false  (* overridden by real big_endian value in 4.00 and above *)
 
 include Sys
 
 let files_of d = BatArray.enum (readdir d)
-
-let escape_cmdline =
-  if os_type = "Win32" then
-    fun args -> List.map Filename.quote args
-  else
-    (fun args -> args)

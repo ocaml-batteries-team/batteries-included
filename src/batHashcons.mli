@@ -55,8 +55,17 @@ module type Table = sig
         @raise Failure if number of objects with the same hash reaches system limit of array size *)
 
   val iter : (key hobj -> unit) -> t -> unit
-    (** [iter f tab] applied [f] to every live hashed object in the
+    (** [iter f tab] applies [f] to every live hashed object in the
         table [tab]. *)
+
+  val fold : (key hobj -> 'a -> 'a) -> t -> 'a -> 'a
+  (** [fold f tab x0] folds [f] across every live hashed object in
+    the table [tab], starting with value [x0] *)
+
+  val count : t -> int
+  (** [count tab] returns a count of how many live objects are in
+  [tab]. This can decrease whenever the GC runs, even during
+  execution, so consider the returned value as an upper-bound. *)
 end
 
 module MakeTable (HT : BatHashtbl.HashedType)
@@ -80,5 +89,3 @@ module H : sig
     (** [hc1 ho k] corresponds to the hashcode of the [k]th
         constructor applied to the hashed object [ho]. *)
 end
-
-

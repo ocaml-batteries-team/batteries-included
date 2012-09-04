@@ -52,6 +52,8 @@ sig
   val clear    : t -> unit
   val hashcons : t -> key -> key hobj
   val iter     : (key hobj -> unit) -> t -> unit
+  val fold     : (key hobj -> 'a -> 'a) -> t -> 'a -> 'a
+  val count    : t -> int
 end
 
 module MakeTable (HT : Hashtbl.HashedType) : Table with type key = HT.t =

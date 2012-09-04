@@ -252,7 +252,7 @@ let delete_last d =
   iset d.arr (d.len - 1) dummy_for_gc;
   changelen d (d.len - 1)
 
-let rec blit src srcidx dst dstidx len =
+let blit src srcidx dst dstidx len =
   if len < 0 then invalid_arg len "blit" "len";
   if srcidx < 0 || srcidx + len > src.len then invalid_arg srcidx "blit" "source index";
   if dstidx < 0 || dstidx > dst.len then invalid_arg dstidx "blit" "dest index";

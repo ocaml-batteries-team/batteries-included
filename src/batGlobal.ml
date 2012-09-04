@@ -44,8 +44,5 @@ let undef (r, _) =
 let isdef (r, _) =
   !r <> None
 
-let opt (r, _) =
-  !r
-
 let get (r,_) = !r
 (*BISECT-IGNORE-END*)

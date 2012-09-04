@@ -97,8 +97,6 @@ let digit = label "digit"
 let hex = label "hex"
   ( satisfy (fun x -> ( '0' <= x && x <= '9' ) || ('a' <= x && x <= 'f') || ('A' <= x && x <= 'F')))
 
-let first s = String.get s 0
-
 let not_char c = label ("anything but '" ^ BatString.of_char c ^ "'")
   (satisfy (fun x -> x <> c) (*>>=
      fun x -> Printf.eprintf "(%c)\n" x; return x*)
@@ -112,4 +110,3 @@ let none_of l = label (
   (none_of l)
 
 let newline = satisfy BatChar.is_newline
-

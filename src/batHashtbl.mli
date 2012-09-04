@@ -391,9 +391,7 @@ module type S =
       val filter: f:('a -> bool) -> 'a t -> 'a t
       val filteri: f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
       val filter_map: f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
-      val fold :
-	f:(key:key -> data:'a -> 'b -> 'b) ->
-	'a t -> init:'b -> 'b
+      val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
     end
 
   end
@@ -531,10 +529,14 @@ sig
   val add : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
   val replace : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
   val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
-  val fold :
-    f:(key:'a -> data:'b -> 'c -> 'c) ->
-    ('a, 'b, [>`Read]) t -> init:'c -> 'c
-end
+  val map : f:(key:'a -> data:'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
+  val filter: f:('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  val filteri: f:(key:'key -> data:'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  val filter_map: f:(key:'key -> data:'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
+
+  val fold : f:(key:'a -> data:'b -> 'c -> 'c) ->
+	     ('a, 'b, [>`Read]) t -> init:'c -> 'c
 
 end
 
+end

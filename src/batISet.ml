@@ -73,7 +73,7 @@ let rec until n s =
   if n < v1 then until n s0 else
   make_tree s0 (v1, n) empty
 
-let rec before n s = if n = min_int then empty else until (n - 1) s
+let before n s = if n = min_int then empty else until (n - 1) s
 
 (*$= from & ~cmp:equal ~printer:(IO.to_string print)
   (from 3 (of_list [1,5])) (of_list [3,5])

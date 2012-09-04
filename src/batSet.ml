@@ -204,15 +204,15 @@ module Concrete = struct
       Empty -> t
     | Node (l, e, r, _) -> rev_cons_iter r (C (e, l, t))
 
-  let rec enum_next l () = match !l with
+  let enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (e, s, t) -> l := cons_iter s t; e
 
-  let rec enum_backwards_next l () = match !l with
+  let enum_backwards_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (e, s, t) -> l := rev_cons_iter s t; e
 
-  let rec enum_count l () =
+  let enum_count l () =
     let rec aux n = function
         E -> n
       | C (e, s, t) -> aux (n + 1 + cardinal s) t
@@ -427,8 +427,6 @@ struct
   external impl_of_t : t -> implementation = "%identity"
   external t_of_impl : implementation -> t = "%identity"
 
-  type iter = E | C of elt * implementation * iter
-
   let cardinal t = Concrete.cardinal (impl_of_t t)
   let enum t = Concrete.enum (impl_of_t t)
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
@@ -528,7 +526,7 @@ module PSet = struct
   let empty    = { cmp = compare; set = Concrete.empty }
   let create cmp  = { cmp = cmp; set = Concrete.empty }
   let singleton ?(cmp = compare) x = { cmp = cmp; set = Concrete.singleton x }
-  let is_empty s = s.set = Concrete.Empty
+  let is_empty s = Concrete.is_empty s.set
   let mem x s = Concrete.mem s.cmp x s.set
   let add x s  = { s with set = Concrete.add s.cmp x s.set }
   let remove x s = { s with set = Concrete.remove s.cmp x s.set }
@@ -555,7 +553,6 @@ module PSet = struct
   let partition f s =
     let l, r = Concrete.partition s.cmp f s.set in
     { s with set = l }, { s with set = r }
-  let filter f s = { s with set = Concrete.filter s.cmp f s.set }
   let pop s =
     let v, s' = Concrete.pop s.set in
     v, { s with set = s' }
@@ -654,7 +651,6 @@ let print ?first ?last ?sep print_elt out s =
 
 let for_all f s = Concrete.for_all f s
 let partition f s = Concrete.partition Pervasives.compare f s
-let filter f s = Concrete.filter Pervasives.compare f s
 let pop s = Concrete.pop s
 let split e s = Concrete.split Pervasives.compare e s
 let union s1 s2 = Concrete.union Pervasives.compare s1 s2

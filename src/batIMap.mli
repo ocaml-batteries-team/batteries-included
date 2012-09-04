@@ -13,6 +13,8 @@ val empty : eq:('a -> 'a -> bool) -> 'a t
 (** The empty map.  Needs one parameter: a comparison function for the
     values, to enable merging of ranges with identical values. *)
 
+val singleton : eq:('a -> 'a -> bool) -> int -> 'a -> 'a t
+
 val is_empty : 'a t -> bool
 (** Test whether a map is empty (i.e. has no bindings) *)
 
