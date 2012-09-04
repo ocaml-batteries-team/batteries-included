@@ -239,43 +239,27 @@ val next : 'a t -> 'a
 
 
 module StreamLabels : sig
-(**
-   {b Note} This module is provided essentially for backwards-compatibility.
-   If you feel like using [Stream.t], please take a look at [BatEnum]
-   or [LazyList] and [GenParser].
+  (** {b Note} This module is provided essentially for
+   backwards-compatibility.  If you feel like using [Stream.t], please
+   take a look at [BatEnum] or [LazyList] and [GenParser].
 
    See the complete [Stream] module for the function documentations.
-*)
+   *)
 
 
-val iter : f:('a -> unit) -> 'a t -> unit
-
-val to_string_fmt : fmt:('a -> string, unit, string) format -> 'a t -> string
-
-val to_string_fun : fn:('a -> string) -> 'a t -> string
-
-val foldl : f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b t -> 'a
-
-val foldr : f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a t -> 'b
-
-val fold : f:('a -> 'a -> 'a * bool option) -> init:'a t -> 'a
-
-val filter : f:('a -> bool) -> 'a t -> 'a t
-
-val map : f:('a -> 'b) -> 'a t -> 'b t
-
-val map2 : f:('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
-
-val scanl : f:('a -> 'b -> 'a) -> 'a -> 'b t -> 'a t
-
-val scan : f:('a -> 'a -> 'a) -> 'a t -> 'a t
-
-val take_while : f:('a -> bool) -> 'a t -> 'a t
-
-val drop_while : f:('a -> bool) -> 'a t -> 'a t
-
-val merge : f:(bool -> 'a -> bool) -> 'a t * 'a t -> 'a t
-
-val switch : f:('a -> bool) -> 'a t -> 'a t * 'a t
-
+  val iter : f:('a -> unit) -> 'a t -> unit
+  val to_string_fmt : fmt:('a -> string, unit, string) format -> 'a t -> string
+  val to_string_fun : fn:('a -> string) -> 'a t -> string
+  val foldl : f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b t -> 'a
+  val foldr : f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a t -> 'b
+  val fold : f:('a -> 'a -> 'a * bool option) -> init:'a t -> 'a
+  val filter : f:('a -> bool) -> 'a t -> 'a t
+  val map : f:('a -> 'b) -> 'a t -> 'b t
+  val map2 : f:('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+  val scanl : f:('a -> 'b -> 'a) -> 'a -> 'b t -> 'a t
+  val scan : f:('a -> 'a -> 'a) -> 'a t -> 'a t
+  val take_while : f:('a -> bool) -> 'a t -> 'a t
+  val drop_while : f:('a -> bool) -> 'a t -> 'a t
+  val merge : f:(bool -> 'a -> bool) -> 'a t * 'a t -> 'a t
+  val switch : f:('a -> bool) -> 'a t -> 'a t * 'a t
 end
