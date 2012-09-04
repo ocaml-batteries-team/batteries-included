@@ -19,16 +19,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-let big_int_base_default_symbols =
-[| '0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9';
-   'A'; 'B'; 'C'; 'D'; 'E'; 'F'  |]
+let big_int_base_default_symbols = ref (Array.init (10 + 26*2)
+  (let get off c k = char_of_int (k - off + (int_of_char c)) in fun k ->
+   if k < 10 then get  0 '0' k else if k < 36 then get 10 'A' k else get 36 'a' k ))
 
+   
 let to_string_in_base
-      ?(symbols=big_int_base_default_symbols)
+      ? (symbols = !big_int_base_default_symbols)
       b (* base, int > 1 *)
       n (* big integer *)
       = let open Big_int in
-  assert (b > 1);
+  if b <= 1 then invalid_arg
+    "Big_int.to_string_in_base: base must be > 1";
+  if b > Array.length symbols then invalid_arg (
+    "Big_int.to_string_in_base: big_int_base_default_symbols too small for base "
+      ^ (string_of_int b) ^ ": only " ^ (string_of_int (Array.length symbols)) ^ ".");
   (* reverse a mutable string in its place *)
   let in_place_string_rev s =
     let len = String.length s in
@@ -43,13 +48,13 @@ let to_string_in_base
      num_digits_big_int actually returns the number of _words_ *)
   let base10digits = (Sys.word_size / 32) * 10 * num_digits_big_int n in
   (* over-approximate resulting digits in base b, using following theorem:
-               k             k
-      Log[b, 10 ] == ----------------- .
-                     Log[10, E] Log[b]                                  *)
+               k          k
+      Log[b, 10 ] == ---------- .
+                     Log[10, b]         *)
   let basebdigits = int_of_float (ceil (
     (float_of_int base10digits)
-    /.
-    ((log10 (exp 1.)) *. log (float_of_int b)))) in
+     /.
+    (log10 (float_of_int b)))) in
   let buff = Buffer.create basebdigits in (* we know the buffer is large enough *)
   (* switch base to big int representation and n to mutable, and loop *)
   let b = big_int_of_int b and n = ref n in
@@ -62,10 +67,17 @@ let to_string_in_base
   in_place_string_rev res; res
 
 (*$= to_string_in_base & ~printer:identity
-  (to_string_in_base 16 (big_int_of_int 9485))  "250D"
-  (to_string_in_base 10 (big_int_of_int 9485))  "9485"
-  (to_string_in_base  8 (big_int_of_int 9485))  "22415"
-  (to_string_in_base  2 (big_int_of_int 9485))  "10010100001101"
+  (to_string_in_base 16 (big_int_of_int 9485))    "250D"
+  (to_string_in_base 10 (big_int_of_int 9485))    "9485"
+  (to_string_in_base  8 (big_int_of_int 9485))    "22415"
+  (to_string_in_base  2 (big_int_of_int 9485))    "10010100001101"
+  (to_string_in_base 36 (big_int_of_int 948565))  "KBX1"
+  (to_string_in_base 62 (big_int_of_int 948565))  "3ylR"
+*) (*$T to_string_in_base
+  try ignore (to_string_in_base 63 (big_int_of_int 948565)); false \
+    with Invalid_argument _ -> true
+  try ignore (to_string_in_base 1 (big_int_of_int 948565)); false \
+    with Invalid_argument _ -> true
 *)
 
 

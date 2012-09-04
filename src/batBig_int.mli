@@ -148,16 +148,21 @@ val string_of_big_int : big_int -> string
 
 val to_string_in_base : ?symbols:char array -> int -> Big_int.big_int -> string
 (** [to_string_in_base b n] returns the string representation in base [b] of the given
-big integer [n]. The optional argument is an array of symbols for bases greater than 10,
-which is [big_int_base_default_symbols] by default.
+big integer [n]. The optional argument [symbols] is the array of the
+symbols used to represent the digits in base [b].
+The default value of [symbols] is [!big_int_base_default_symbols].
+The base [b] must be at least [2], and [symbols] must be of size at least [b].
+@raise Invalid_argument if [b] is incorrect.
 *)
 
-val big_int_base_default_symbols : char array
-(** default array of symbols used for encoding in bases greater than 10.
- Symbol at position [p] encodes the value [p]. By default, ['A'] to ['F']
- are defined for values 11 to 15. You will need to pass an extended array
- to [to_string_in_base] if you need to use bases greater than 16. *)
-
+val big_int_base_default_symbols : char array ref
+(** Default array of symbols used by [to_string_in_base] to represent digits.
+The symbol at position [p] encodes the value [p]. The original value of
+this array is, schematically, [['0'..'9' 'A' 'B'..'Z' 'a' 'b'..'z']], which is
+sufficient for bases up to and including 62. To customise the output of
+[to_string_in_base], you can either change this array globally, or pass
+custom arrays to [to_string_in_base] using the optional [symbols] argument, which
+will then override [big_int_base_default_symbols]. *)
 
 val big_int_of_string : string -> big_int
         (** Convert a string to a big integer, in decimal.
