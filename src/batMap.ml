@@ -1,9 +1,9 @@
-(* 
+(*
  * BatMap - Additional map operations
  * Copyright (C) 1996 Xavier Leroy
  *               1996-2003 Nicolas Cannasse, Markus Mottl
  *               2009-2011 David Rajchenbach-Teller, Edgar Friendly, Gabriel Scherer
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -122,7 +122,7 @@ module Concrete = struct
       | _ ->
         let k, v = min_binding t2 in
         bal t1 k v (remove_min_binding t2)
-    
+
   let add x d cmp map =
     let rec loop = function
       | Node (l, k, v, r, h) ->
@@ -162,7 +162,7 @@ module Concrete = struct
 
   let mem x cmp map =
     let rec loop = function
-      | Node (l, k, v, r, _) ->
+      | Node (l, k, _v, r, _) ->
         let c = cmp x k in
         c = 0 || loop (if c < 0 then l else r)
       | Empty -> false in
@@ -199,7 +199,7 @@ module Concrete = struct
   let fold f map acc =
     let rec loop acc = function
       | Empty -> acc
-      | Node (l, k, v, r, _) ->
+      | Node (l, _k, v, r, _) ->
         loop (f v (loop acc l)) r in
     loop acc map
 
@@ -215,23 +215,23 @@ module Concrete = struct
   (* beware : those two functions assume that the added k is *strictly*
      smaller (or bigger) than all the present keys in the tree; it
      does not test for equality with the current min (or max) key.
-     
+
      Indeed, they are only used during the "join" operation which
      respects this precondition.
   *)
   let rec add_min_binding k v = function
     | Empty -> singleton k v
-    | Node (l, x, d, r, h) ->
+    | Node (l, x, d, r, _h) ->
       bal (add_min_binding k v l) x d r
 
   let rec add_max_binding k v = function
     | Empty -> singleton k v
-    | Node (l, x, d, r, h) ->
+    | Node (l, x, d, r, _h) ->
       bal l x d (add_max_binding k v r)
 
   (* Same as create and bal, but no assumptions are made on the
      relative heights of l and r.
-     
+
      The stdlib implementation was changed to use the new
      [add_{min,max}_binding] functions instead of the [add] function
      that would require to pass a comparison function.  *)
@@ -243,7 +243,7 @@ module Concrete = struct
         if lh > rh + 2 then bal ll lv ld (join lr v d r) else
         if rh > lh + 2 then bal (join l v d rl) rv rd rr else
         create l v d r
-              
+
   (* split also is from stdlib 3.12 *)
   let rec split key cmp = function
     | Empty -> (Empty, None, Empty)
@@ -275,7 +275,7 @@ module Concrete = struct
   let rec cons_iter s t = match s with
     | Empty -> t
     | Node (l, k, v, r, _) -> cons_iter l (C (k, v, r, t))
-      
+
   let rec rev_cons_iter s t = match s with
     | Empty -> t
     | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
@@ -283,11 +283,11 @@ module Concrete = struct
   let rec enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := cons_iter m t; (k, v)
-      
+
   let rec enum_backwards_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
-      
+
   let rec enum_count l () =
     let rec aux n = function
       | E -> n
@@ -300,7 +300,7 @@ module Concrete = struct
       let clone() = make !l in
       BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
     in make (cons_iter t E)
-    
+
   let backwards t =
     let rec make l =
       let l = ref l in
@@ -313,8 +313,8 @@ module Concrete = struct
 
   let of_enum cmp e = BatEnum.fold (fun m (k, v) -> add k v cmp m) empty e
 
-  let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-    BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+  let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
+    BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v) out (enum t)
 
   (*We rely on [fold] rather than on ['a implementation] to
     make future changes of implementation in the base
@@ -455,7 +455,7 @@ module Concrete = struct
           let (l2, d2, r2) = split v1 cmp12 s2 in
           (* TODO force correct evaluation order *)
           concat_or_join (loop l1 l2) v1 (f v1 (Some d1) d2) (loop r1 r2)
-        | (_, Node (l2, v2, d2, r2, h2)) ->
+        | (_, Node (l2, v2, d2, r2, _h2)) ->
           let (l1, d1, r1) = split v2 cmp12 s1 in
           concat_or_join (loop l1 l2) v2 (f v2 d1 (Some d2)) (loop r1 r2)
         | _ ->
@@ -475,7 +475,7 @@ module Concrete = struct
        of (s1 union s2), computing the merge result for each
        f k (find_option k s1) (find_option k s2)
        , and adding values to the result s3 accordingly.
-       
+
        The crucial point is that we need to iterate on both keys of s1
        and s2. There are several possible implementations :
 
@@ -532,7 +532,7 @@ module Concrete = struct
   (* Checks if a given map is "ordered" wrt. a given comparison
      function. This means that the key are ordered in strictly
      increasing order.
-     
+
      If [ordered cmp s] holds, [cmp] can be used to search elements in
      the map *even* if it is not the original comparison function that
      was used to build the map; we know that the two comparison
@@ -569,7 +569,7 @@ module Concrete = struct
        see if we could possibly use merge; this is the case when either:
        - cmp1 and cmp2 are the *same* function (physical equality)
        - cmp1 is a correct ordering on m2 (see comment in [ordered])
-       
+
        In the "same comparisons" case, we return a map ordered with
        the given comparison. In the other case, we arbitrarily use the
        comparison function of [m1]. *)
@@ -578,7 +578,7 @@ module Concrete = struct
     else merge_diverse f cmp1 m1 cmp2 m2
 
   (* Binary PMap operations;
-     
+
      When the comparison function are compatible, we use an efficient
      merge-based implementation.
 
@@ -586,21 +586,21 @@ module Concrete = struct
      function is the same as the first map parameter. *)
   let union cmp1 m1 cmp2 m2 =
     if compatible_cmp cmp1 m1 cmp2 m2 then
-      let merge_fun k a b = if a <> None then a else b in
+      let merge_fun _k a b = if a <> None then a else b in
       merge merge_fun cmp2 m1 m2
     else
       foldi (fun k v m -> add k v cmp1 m) m2 m1
 
   let diff cmp1 m1 cmp2 m2 =
     if compatible_cmp cmp1 m1 cmp2 m2 then
-      let merge_fun k a b = if b <> None then None else a in
+      let merge_fun _k a b = if b <> None then None else a in
       merge merge_fun cmp1 m1 m2
     else
       foldi (fun k _v m -> remove k cmp1 m) m2 m1
 
   let intersect f cmp1 m1 cmp2 m2 =
     if compatible_cmp cmp1 m1 cmp2 m2 then
-      let merge_fun k a b =
+      let merge_fun _k a b =
         match a, b with
           | Some v1, Some v2 -> Some (f v1 v2)
           | None, _ | _, None -> None in
@@ -611,6 +611,11 @@ module Concrete = struct
           | None -> m
           | Some v2 -> add k (f v1 v2) cmp1 m)
         m1 empty
+
+  let compare ckey cval m1 m2 =
+    BatEnum.compare (fun (k1,v1) (k2,v2) -> BatOrd.bin_comp ckey k1 k2 cval v1 v2) (enum m1) (enum m2)
+  let equal ckey eq_val m1 m2 =
+    BatEnum.equal (fun (k1,v1) (k2,v2) -> ckey k1 k2 = 0 && eq_val v1 v2) (enum m1) (enum m2)
 end
 
 module type OrderedType = BatInterfaces.OrderedType
@@ -618,19 +623,19 @@ module type OrderedType = BatInterfaces.OrderedType
 module type S =
 sig
   type key
-    
+
   type (+'a) t
-    
+
   val empty: 'a t
-    
+
   val is_empty: 'a t -> bool
-    
+
   val cardinal: 'a t -> int
 
   val add: key -> 'a -> 'a t -> 'a t
-    
+
   val find: key -> 'a t -> 'a
-    
+
   val remove: key -> 'a t -> 'a t
 
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
@@ -642,11 +647,11 @@ sig
   val pop : 'a t -> (key * 'a) * 'a t
 
   val mem: key -> 'a t -> bool
-    
+
   val iter: (key -> 'a -> unit) -> 'a t -> unit
-    
+
   val map: ('a -> 'b) -> 'a t -> 'b t
-    
+
   val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
 
   val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
@@ -654,22 +659,22 @@ sig
   val filterv: ('a -> bool) -> 'a t -> 'a t
 
   val filter: (key -> 'a -> bool) -> 'a t -> 'a t
-    
+
   val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
-    
+
   val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
-    
+
   val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-    
+
   val keys : _ t -> key BatEnum.t
-    
+
   val values: 'a t -> 'a BatEnum.t
-    
+
   val min_binding : 'a t -> (key * 'a)
-    
+
   val max_binding : 'a t -> (key * 'a)
 
-  val choose : 'a t -> (key * 'a)  
+  val choose : 'a t -> (key * 'a)
 
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
 
@@ -680,13 +685,13 @@ sig
   val bindings : 'a t -> (key * 'a) list
 
   val enum  : 'a t -> (key * 'a) BatEnum.t
-    
+
   val backwards  : 'a t -> (key * 'a) BatEnum.t
 
   val of_enum: (key * 'a) BatEnum.t -> 'a t
 
   val for_all: (key -> 'a -> bool) -> 'a t -> bool
-    
+
   val exists: (key -> 'a -> bool) -> 'a t -> bool
 
   val merge:
@@ -696,9 +701,9 @@ sig
 
   (** {7 Printing}*)
 
-  val print :  ?first:string -> ?last:string -> ?sep:string -> 
-    ('a BatInnerIO.output -> key -> unit) -> 
-    ('a BatInnerIO.output -> 'c -> unit) -> 
+  val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
+    ('a BatInnerIO.output -> key -> unit) ->
+    ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> 'c t -> unit
 
   module Exceptionless : sig
@@ -761,7 +766,7 @@ struct
      slightly incorrect in that they don't apply their function
      parameter in increasing key order, as advertised in the
      documentation. This was fixed in 3.12.
-     
+
      http://caml.inria.fr/mantis/view.php?id=4012
 
      We replace map(i) implementations with the ones derived from
@@ -770,8 +775,8 @@ struct
   let mapi f t = t_of_impl (Concrete.mapi f (impl_of_t t))
   let map f t = t_of_impl (Concrete.map f (impl_of_t t))
 
-  let print ?first ?last ?sep print_k print_v out t =
-    Concrete.print ?first ?last ?sep print_k print_v out (impl_of_t t)
+  let print ?first ?last ?sep ?kvsep print_k print_v out t =
+    Concrete.print ?first ?last ?sep ?kvsep print_k print_v out (impl_of_t t)
 
   let filterv f t =
     t_of_impl (Concrete.filterv f (impl_of_t t) Ord.compare)
@@ -826,7 +831,7 @@ struct
     let (-->) map key = find key map
     let (<--) map (key, value) = add key value map
   end
-    
+
   module Labels =
   struct
     let add ~key ~data t = add key data t
@@ -838,170 +843,130 @@ struct
     let equal ~cmp a b = equal cmp a b
     let filterv ~f = filterv f
     let filter ~f = filter f
-  end  
-    
+  end
+
 end
-  
-module StringMap  = Make(String)
+
 module IStringMap = Make(BatString.IString)
 module NumStringMap = Make(BatString.NumString)
-(*  module RopeMap    = Make(BatRope) 
+(*  module RopeMap    = Make(BatRope)
     module IRopeMap   = Make(BatRope.IRope) *)
-module IntMap     = Make(BatInt)
 
 
 (**
  * PMap - Polymorphic maps
  *)
 
-type ('k, 'v) t =
-  {
-    cmp : 'k -> 'k -> int;
-    map : ('k, 'v) Concrete.map;
-  }
+type ('k, 'v) t = ('k, 'v) Concrete.map
 
-let create cmp = { cmp = cmp; map = Concrete.empty }
-let empty = { cmp = compare; map = Concrete.empty }
-let get_cmp {cmp=cmp} = cmp
-let is_empty x = x.map = Concrete.Empty
+let empty = Concrete.empty
+let is_empty x = x = Concrete.Empty
 
-let add x d m =
-  { m with map = Concrete.add x d m.cmp m.map }
+let add x d m = Concrete.add x d Pervasives.compare m
 
-let find x m =
-  Concrete.find x m.cmp m.map
+let find x m = Concrete.find x Pervasives.compare m
 
-(**T add_find
-   empty |> add 1 true |> add 2 false |> find 1
-   empty |> add 1 true |> add 2 false |> find 2 |> not
-   create BatInt.compare |> add 1 true |> add 2 false |> find 1
-   create BatInt.compare |> add 1 true |> add 2 false |> find 2 |> not
-   empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
-   empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
- **)
+(*$T add; find
+  empty |> add 1 true |> add 2 false |> find 1
+  empty |> add 1 true |> add 2 false |> find 2 |> not
+  empty |> add 1 true |> add 2 false |> find 1
+  empty |> add 1 true |> add 2 false |> find 2 |> not
+  empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
+  empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
+*)
 
-(**Q map_add_find_q
-   (Q.list Q.small_int) (fun xs -> let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in of_list (List.filter ((<>) 100) xs) false (singleton 100 true) |> find 100)
- **)
+(*$Q find ; add
+  (Q.list Q.small_int) (fun xs -> \
+  let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
+  of_list (List.filter ((<>) 100) xs) false (singleton 100 true) |> find 100)
+*)
 
-  
-let remove x m =
-  { m with map = Concrete.remove x m.cmp m.map }
 
-(**Q map_add_remove_q
-   (Q.list Q.small_int) (fun xs -> let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in List.fold_left (fun acc x -> remove x acc) (of_list xs true empty) xs |> is_empty)
- **)
+let remove x m = Concrete.remove x Pervasives.compare m
 
-let mem x m =
-  Concrete.mem x m.cmp m.map
+(*$Q add ; remove
+  (Q.list Q.small_int) (fun xs -> \
+  let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
+  List.fold_left (fun acc x -> remove x acc) (of_list xs true empty) xs |> is_empty)
+*)
 
-let exists = mem
+let mem x m = Concrete.mem x Pervasives.compare m
 
-let iter f m =
-  Concrete.iter f m.map
+let iter = Concrete.iter
+let map = Concrete.map
+let mapi = Concrete.mapi
+let fold = Concrete.fold
+let foldi = Concrete.foldi
 
-let map f m =
-  { m with map = Concrete.map f m.map }
+(*$Q foldi
+  (Q.list Q.small_int) (fun xs -> \
+  let m = List.fold_left (fun acc x -> add x true acc) empty xs in \
+  foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
+*)
 
-let mapi f m =
-  { m with map = Concrete.mapi f m.map }
+let enum = Concrete.enum
 
-let fold f m acc =
-  Concrete.fold f m.map acc
+(*$Q keys
+  (Q.list Q.small_int) (fun xs -> \
+  List.fold_left (fun acc x -> add x true acc) \
+    empty xs |> keys |> List.of_enum \
+  = List.sort_unique Int.compare xs)
+*)
 
-let foldi f m acc =
-  Concrete.foldi f m.map acc
-
-(**Q map_fold
-   (Q.list Q.small_int) (fun xs -> let m = List.fold_left (fun acc x -> add x true acc) (create Int.compare) xs in foldi (fun x y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
- **)
-
-let enum t = Concrete.enum t.map
-
-(**Q map_enum_q
-   (Q.list Q.small_int) (fun xs -> List.fold_left (fun acc x -> add x true acc) (create Int.compare) xs |> keys |> List.of_enum = List.sort_unique Int.compare xs)
- **)
-  
-let backwards t = Concrete.backwards t.map
+let backwards = Concrete.backwards
 
 let keys    t = BatEnum.map fst (enum t)
 let values  t = BatEnum.map snd (enum t)
 
-let of_enum ?(cmp = compare) e =
-  { cmp = cmp; map = Concrete.of_enum cmp e }
+let of_enum e = Concrete.of_enum Pervasives.compare e
 
-let print ?first ?last ?sep print_k print_v out t =
-  Concrete.print ?first ?last ?sep print_k print_v out t.map
+let print = Concrete.print
 
-let filterv  f t = { t with map = Concrete.filterv f t.map t.cmp }
-let filter f t = { t with map = Concrete.filter f t.map t.cmp }
-let filter_map f t = { t with map = Concrete.filter_map f t.map t.cmp }
+let filterv  f t = Concrete.filterv f t Pervasives.compare
+let filter f t = Concrete.filter f t Pervasives.compare
+let filter_map f t = Concrete.filter_map f t Pervasives.compare
 
-let choose t = Concrete.choose t.map
+let choose = Concrete.choose
+let max_binding = Concrete.max_binding
+let min_binding = Concrete.min_binding
 
-let max_binding t = Concrete.max_binding t.map
-let min_binding t = Concrete.min_binding t.map
+let singleton k v = Concrete.singleton k v
 
-let singleton ?(cmp = compare) k v =
-  { cmp = cmp; map = Concrete.singleton k v }
+let for_all = Concrete.for_all
+let exists = Concrete.exists
 
-let for_all f m = Concrete.for_all f m.map
+let partition f m = Concrete.partition f Pervasives.compare m
+let cardinal = Concrete.cardinal
 
-let exists_f f m = Concrete.exists f m.map
+let split k m = Concrete.split k Pervasives.compare m
 
-let partition f m =
-  let l, r = Concrete.partition f m.cmp m.map in
-  { m with map = l }, { m with map = r }
+let add_carry x d m = Concrete.add_carry x d Pervasives.compare m
+let modify x f m = Concrete.modify x f Pervasives.compare m
 
-let cardinal m = Concrete.cardinal m.map
+let modify_def v0 x f m = Concrete.modify_def v0 x f Pervasives.compare m
 
-let choose m = Concrete.choose m.map
+let extract x m = Concrete.extract x Pervasives.compare m
 
-let split k m =
-  let (l, v, r) = Concrete.split k m.cmp m.map in
-  { m with map = l }, v, { m with map = r }
+let pop = Concrete.pop
 
-let add_carry x d m =
-  let map', carry = Concrete.add_carry x d m.cmp m.map in
-  { m with map = map' }, carry
+let split k m = Concrete.split k Pervasives.compare m
 
-let modify x f m =
-  { m with map = Concrete.modify x f m.cmp m.map }
+let union m1 m2 = Concrete.union Pervasives.compare m1 Pervasives.compare m2
 
-let modify_def v0 x f m =
-  { m with map = Concrete.modify_def v0 x f m.cmp m.map } 
-
-let extract x m =
-  let out, map' = Concrete.extract x m.cmp m.map in
-  out, { m with map = map' }
-
-let pop m =
-  let out, map' = Concrete.pop m.map in
-  out, { m with map = map' }
-
-let split k m =
-  let (l, v, r) = Concrete.split k m.cmp m.map in
-  { m with map = l }, v, { m with map = r }
-
-let union m1 m2 =
-  { m1 with map = Concrete.union m1.cmp m1.map m2.cmp m2.map }
-
-let diff m1 m2 =
-  { m1 with map = Concrete.diff m1.cmp m1.map m2.cmp m2.map }
+let diff m1 m2 = Concrete.diff Pervasives.compare m1 Pervasives.compare m2
 
 let intersect merge m1 m2 =
-  { m1 with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
+  Concrete.intersect merge Pervasives.compare m1 Pervasives.compare m2
 
-let merge f m1 m2 =
-  { m1 with map = Concrete.heuristic_merge f m1.cmp m1.map m2.cmp m2.map }
+let merge f m1 m2 = Concrete.merge f Pervasives.compare m1 m2
 
-let merge_unsafe f m1 m2 =
-  { m1 with map = Concrete.merge f m1.cmp m1.map m2.map }
+let bindings = Concrete.bindings
 
-let bindings m =
-  Concrete.bindings m.map
+let compare cmp_val m1 m2 =
+  Concrete.compare Pervasives.compare Pervasives.compare m1 m2
+let equal eq_val m1 m2 = Concrete.equal Pervasives.compare (=) m1 m2
 
-module Exceptionless = 
+module Exceptionless =
 struct
   let find k m = try Some (find k m) with Not_found -> None
 end
@@ -1013,3 +978,179 @@ struct
 end
 
 include Infix
+
+module PMap = struct (*$< PMap *)
+(**
+   * PMap - Polymorphic maps
+ *)
+
+  type ('k, 'v) t =
+      {
+        cmp : 'k -> 'k -> int;
+        map : ('k, 'v) Concrete.map;
+      }
+
+  let create cmp = { cmp = cmp; map = Concrete.empty }
+  let empty = { cmp = Pervasives.compare; map = Concrete.empty }
+  let get_cmp {cmp; _} = cmp
+  let is_empty x = x.map = Concrete.Empty
+
+  let add x d m =
+    { m with map = Concrete.add x d m.cmp m.map }
+
+  let find x m =
+    Concrete.find x m.cmp m.map
+
+(*$T add; find
+  empty |> add 1 true |> add 2 false |> find 1
+  empty |> add 1 true |> add 2 false |> find 2 |> not
+  create BatInt.compare |> add 1 true |> add 2 false |> find 1
+  create BatInt.compare |> add 1 true |> add 2 false |> find 2 |> not
+  empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
+  empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
+ *)
+
+(*$Q find ; add
+  (Q.list Q.small_int) (fun xs -> \
+  let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
+  of_list (List.filter ((<>) 100) xs) false (singleton 100 true) |> find 100)
+ *)
+
+
+  let remove x m =
+    { m with map = Concrete.remove x m.cmp m.map }
+
+(*$Q add ; remove
+  (Q.list Q.small_int) (fun xs -> \
+  let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
+  List.fold_left (fun acc x -> remove x acc) (of_list xs true empty) xs |> is_empty)
+ *)
+
+  let mem x m =
+    Concrete.mem x m.cmp m.map
+
+  let iter f m =
+    Concrete.iter f m.map
+
+  let map f m =
+    { m with map = Concrete.map f m.map }
+
+  let mapi f m =
+    { m with map = Concrete.mapi f m.map }
+
+  let fold f m acc =
+    Concrete.fold f m.map acc
+
+  let foldi f m acc =
+    Concrete.foldi f m.map acc
+
+(*$Q foldi
+  (Q.list Q.small_int) (fun xs -> \
+  let m = List.fold_left (fun acc x -> add x true acc) (create Int.compare) xs in \
+  foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
+ *)
+
+  let enum t = Concrete.enum t.map
+
+(*$Q keys
+  (Q.list Q.small_int) (fun xs -> \
+  List.fold_left (fun acc x -> add x true acc) \
+  (create Int.compare) xs |> keys |> List.of_enum \
+  = List.sort_unique Int.compare xs)
+ *)
+
+  let backwards t = Concrete.backwards t.map
+
+  let keys    t = BatEnum.map fst (enum t)
+  let values  t = BatEnum.map snd (enum t)
+
+  let of_enum ?(cmp = Pervasives.compare) e =
+    { cmp = cmp; map = Concrete.of_enum cmp e }
+
+  let print ?first ?last ?sep ?kvsep print_k print_v out t =
+    Concrete.print ?first ?last ?sep ?kvsep print_k print_v out t.map
+
+  let filterv  f t = { t with map = Concrete.filterv f t.map t.cmp }
+  let filter f t = { t with map = Concrete.filter f t.map t.cmp }
+  let filter_map f t = { t with map = Concrete.filter_map f t.map t.cmp }
+
+  let choose t = Concrete.choose t.map
+
+  let max_binding t = Concrete.max_binding t.map
+  let min_binding t = Concrete.min_binding t.map
+
+  let singleton ?(cmp = Pervasives.compare) k v =
+    { cmp = cmp; map = Concrete.singleton k v }
+
+  let for_all f m = Concrete.for_all f m.map
+
+  let exists f m = Concrete.exists f m.map
+
+  let partition f m =
+    let l, r = Concrete.partition f m.cmp m.map in
+    { m with map = l }, { m with map = r }
+
+  let cardinal m = Concrete.cardinal m.map
+
+  let choose m = Concrete.choose m.map
+
+  let split k m =
+    let (l, v, r) = Concrete.split k m.cmp m.map in
+    { m with map = l }, v, { m with map = r }
+
+  let add_carry x d m =
+    let map', carry = Concrete.add_carry x d m.cmp m.map in
+    { m with map = map' }, carry
+
+  let modify x f m =
+    { m with map = Concrete.modify x f m.cmp m.map }
+
+  let modify_def v0 x f m =
+    { m with map = Concrete.modify_def v0 x f m.cmp m.map }
+
+  let extract x m =
+    let out, map' = Concrete.extract x m.cmp m.map in
+    out, { m with map = map' }
+
+  let pop m =
+    let out, map' = Concrete.pop m.map in
+    out, { m with map = map' }
+
+  let split k m =
+    let (l, v, r) = Concrete.split k m.cmp m.map in
+    { m with map = l }, v, { m with map = r }
+
+  let union m1 m2 =
+    { m1 with map = Concrete.union m1.cmp m1.map m2.cmp m2.map }
+
+  let diff m1 m2 =
+    { m1 with map = Concrete.diff m1.cmp m1.map m2.cmp m2.map }
+
+  let intersect merge m1 m2 =
+    { m1 with map = Concrete.intersect merge m1.cmp m1.map m2.cmp m2.map }
+
+  let merge f m1 m2 =
+    { m1 with map = Concrete.heuristic_merge f m1.cmp m1.map m2.cmp m2.map }
+
+  let merge_unsafe f m1 m2 =
+    { m1 with map = Concrete.merge f m1.cmp m1.map m2.map }
+
+  let bindings m =
+    Concrete.bindings m.map
+
+  let compare cmp_val m1 m2 = Concrete.compare m1.cmp cmp_val m1.map m2.map
+  let equal eq_val m1 m2 = Concrete.equal m1.cmp eq_val m1.map m2.map
+
+  module Exceptionless =
+  struct
+    let find k m = try Some (find k m) with Not_found -> None
+  end
+
+  module Infix =
+  struct
+    let (-->) map key = find key map
+    let (<--) map (key, value) = add key value map
+  end
+
+  include Infix
+end (*$>*)

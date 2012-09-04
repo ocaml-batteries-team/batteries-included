@@ -1,10 +1,10 @@
-(* 
+(*
  * ExtHashtbl, extra functions over hashtables.
  * Copyright (C) 1996 Xavier Leroy
  *               2003 Nicolas Cannasse
  *               2005 Damien Doligez
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,14 +20,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
- 
+
 
     (** {6 Import the contents of {!Hashtbl}}
 
 	Note: We can't directly [include Hashtbl] as this
 	would cause a collision on [Make]*)
     type ('a, 'b) t = ('a, 'b) Hashtbl.t
-    let create   = Hashtbl.create
+    let create s  = Hashtbl.create s
     let clear    = Hashtbl.clear
     let add      = Hashtbl.add
     let copy     = Hashtbl.copy
@@ -45,7 +45,7 @@
     type ('a, 'b) h_bucketlist =
       | Empty
       | Cons of 'a * 'b * ('a, 'b) h_bucketlist
-	  
+
     type ('a, 'b) h_t = {
       mutable size: int;
       mutable data: ('a, 'b) h_bucketlist array
@@ -71,7 +71,7 @@
 	    done;
 	    tbl.data <- ndata;
 	end
-      
+
     let enum h =
       let rec make ipos ibuck idata icount =
 	let pos = ref ipos in
@@ -88,7 +88,7 @@
 	let rec next() =
 	  force();
 	  match !buck with
-	    | Empty ->					
+	    | Empty ->
 		if !hcount = 0 then raise BatEnum.No_more_elements;
 		incr pos;
 		buck := Array.unsafe_get !hdata !pos;
@@ -106,15 +106,15 @@
 	  make !pos !buck !hdata !hcount
 	in
 	  BatEnum.make ~next ~count ~clone
-      in		
+      in
 	make (-1) Empty (Obj.magic()) (-1)
-	  
+
     let keys h =
       BatEnum.map (fun (k,_) -> k) (enum h)
-	
+
     let values h =
       BatEnum.map (fun (_,v) -> v) (enum h)
-	
+
     let map f h =
       let rec loop = function
 	| Empty -> Empty
@@ -122,7 +122,7 @@
       in
 	h_make {
 	  size = (h_conv h).size;
-	  data = Array.map loop (h_conv h).data; 
+	  data = Array.map loop (h_conv h).data;
 	}
 
     let remove_all h key =
@@ -138,7 +138,7 @@
       in
       let pos = (hash key) mod (Array.length hc.data) in
 	Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
-	  
+
     let find_default h key defval =
       let rec loop = function
 	| Empty -> defval
@@ -147,7 +147,7 @@
       in
       let pos = (hash key) mod (Array.length (h_conv h).data) in
 	loop (Array.unsafe_get (h_conv h).data pos)
-	  
+
     let find_option h key =
       let rec loop = function
 	| Empty -> None
@@ -156,26 +156,26 @@
       in
       let pos = (hash key) mod (Array.length (h_conv h).data) in
 	loop (Array.unsafe_get (h_conv h).data pos)
-	  
+
     let of_enum e =
       let h = create (if BatEnum.fast_count e then BatEnum.count e else 0) in
 	BatEnum.iter (fun (k,v) -> add h k v) e;
 	h
-	  
+
     let length h =
       (h_conv h).size
-	
+
     let is_empty h = length h = 0
 
-    let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") print_k print_v out t =
-      BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a: %a" print_k k print_v v) out (enum t)
+    let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
+      BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v) out (enum t)
 
     let filteri (f:'key -> 'a -> bool) (t:('key, 'a) t) =
       let result = create 16 in
 	iter (fun k a -> if f k a then add result k a) t;
 	result
 
-    let filter  f t = filteri (fun k a -> f a) t
+    let filter  f t = filteri (fun _k a -> f a) t
 
     let filter_map f t =
       let result = create 16 in
@@ -241,9 +241,9 @@
       val values : 'a t -> 'a BatEnum.t
       val enum : 'a t -> (key * 'a) BatEnum.t
       val of_enum : (key * 'a) BatEnum.t -> 'a t
-      val print :  ?first:string -> ?last:string -> ?sep:string -> 
-	('a BatInnerIO.output -> key -> unit) -> 
-	('a BatInnerIO.output -> 'b -> unit) -> 
+      val print :  ?first:string -> ?last:string -> ?sep:string ->
+	('a BatInnerIO.output -> key -> unit) ->
+	('a BatInnerIO.output -> 'b -> unit) ->
 	'a BatInnerIO.output -> 'b t -> unit
 
       (** Operations on {!Hashtbl} without exceptions.*)
@@ -251,7 +251,7 @@
       sig
 	val find : 'a t -> key -> 'a option
       end
-      
+
       (** Infix operators over a {!BatHashtbl} *)
       module Infix :
       sig
@@ -270,7 +270,7 @@
       end
 
       (** Operations on {!Hashtbl} with labels.
-	  
+
 	  This module overrides a number of functions of {!Hashtbl} by
 	  functions in which some arguments require labels. These labels are
 	  there to improve readability and safety and to let you change the
@@ -292,7 +292,7 @@
       end
 
     end
-      
+
 
     module Make(H: HashedType): (S with type key = H.t) =
     struct
@@ -306,9 +306,9 @@
       let create = create
       let clear = clear
       let copy = copy
-	
+
       let safehash key = (H.hash key) land max_int
-	
+
       let add h key info =
 	let h = h_conv h in
 	let i = (safehash key) mod (Array.length h.data) in
@@ -316,9 +316,9 @@
 	  h.data.(i) <- bucket;
 	  h.size <- succ h.size;
 	  if h.size > Array.length h.data lsl 1 then resize safehash h
-	    
+
       let remove h key =
-	let h = h_conv h in 
+	let h = h_conv h in
 	let rec remove_bucket = function
             Empty ->
               Empty
@@ -328,13 +328,13 @@
               else Cons(k, i, remove_bucket next) in
 	let i = (safehash key) mod (Array.length h.data) in
 	  h.data.(i) <- remove_bucket h.data.(i)
-	    
+
       let rec find_rec key = function
           Empty ->
             raise Not_found
 	| Cons(k, d, rest) ->
             if H.equal key k then d else find_rec key rest
-	      
+
       let find h key =
 	let h = h_conv h in
 	match h.data.((safehash key) mod (Array.length h.data)) with
@@ -349,7 +349,7 @@
 			    Empty -> raise Not_found
 			  | Cons(k3, d3, rest3) ->
 			      if H.equal key k3 then d3 else find_rec key rest3
-				
+
       let find_all h key =
 	let rec find_in_bucket = function
             Empty ->
@@ -359,7 +359,7 @@
               then d :: find_in_bucket rest
               else find_in_bucket rest in
 	  find_in_bucket h.data.((safehash key) mod (Array.length h.data))
-	    
+
       let replace h key info =
 	let rec replace_bucket = function
             Empty ->
@@ -384,7 +384,7 @@
 	  | Cons(k, d, rest) ->
               H.equal k key || mem_in_bucket rest in
 	  mem_in_bucket h.data.((safehash key) mod (Array.length h.data))*)
-	    
+
       let iter = iter
       let fold = fold
       let length = length
@@ -434,8 +434,8 @@
 	  iter (fun k a -> if f k a then add result k a) t;
 	  result
 
-      let filter  f t = filteri (fun k a -> f a) t
-	
+      let filter  f t = filteri (fun _k a -> f a) t
+
       let filter_map f t =
 	let result = create 16 in
 	  iter (fun k a -> match f k a with
@@ -471,7 +471,7 @@
     module Cap =
     struct
       type ('a, 'b, 'c) t = ('a, 'b) Hashtbl.t constraint 'c = [< `Read | `Write ]
-	
+
       let create = create
       external of_table  : ('a, 'b) Hashtbl.t -> ('a, 'b, _ ) t = "%identity"
       external to_table  : ('a, 'b, [`Read | `Write]) t -> ('a, 'b) Hashtbl.t = "%identity"
@@ -523,4 +523,3 @@
 	let find = find_option
       end
     end
-

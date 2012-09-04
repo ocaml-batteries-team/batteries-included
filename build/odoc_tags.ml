@@ -2,7 +2,7 @@
  * Odoc_generator_batlib - custom documentation generator for Batteries
  * Copyright (C) 2008 Maxence Guesdon
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -44,7 +44,7 @@ open List
 (*open Odoc_batteries_factored*)
 INCLUDE "build/odoc_batteries_factored.ml"
 
- 
+
 
 (** {1 Batteries generation}*)
 
@@ -59,7 +59,7 @@ class batlib_generator =
     val mutable list_topics       : string list = []
 
       (** {2 Determine the category of a name}*)
-      
+
     val mutable known_values_names      = Odoc_html.StringSet.empty
     val mutable known_exceptions_names  = Odoc_html.StringSet.empty
     val mutable known_methods_names     = Odoc_html.StringSet.empty
@@ -128,7 +128,7 @@ class batlib_generator =
 	let topics = List.sort String.compare topics in(*Actually, let's not sort topics*)
         let chanout = open_out (Filename.concat !Args.target_dir simple_file) in
         let b = new_buf () in
-	let each_element e   = 
+	let each_element e   =
 	  let simple_name = Name.simple (name e)
 	  and father_name = Name.father (name e) in
 	    bp b "<li class='index_entry_entry'>%s%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ())
@@ -145,7 +145,7 @@ class batlib_generator =
 		bs b "</td></tr>\n<tr class='index_entry'><td>\n" ;
 		bs b "<ul class='index_entry'>\n";
 		List.iter each_element elems;
-		bs b "</ul>\n</td></tr>" 
+		bs b "</ul>\n</td></tr>"
 	in
 	  try
             bs b "<html>\n";
@@ -208,7 +208,7 @@ class batlib_generator =
           let father_name = Name.father (name e) in
           bp b "<tr><td>%s" (self#make_link ~url:(target e) ~text:(self#escape simple_name) ());
           if simple_name <> father_name && father_name <> "" then
-            bs b (self#make_link 
+            bs b (self#make_link
 		    ~url:(fst (Naming.html_files father_name))
 		    ~text:father_name ());
           bs b "</td>\n<td>";
@@ -221,7 +221,7 @@ class batlib_generator =
 	      Printf.sprintf " [%s]" (self#make_link ~url:(fst (Naming.html_files father_name)) ~text:father_name ())
 	     else "");
 	    (self#html_of_info_first_sentence b (info e));
-	    bs b  "</li>\n" 
+	    bs b  "</li>\n"
         in
         let f_group l = (*Print all entries for a letter*)
           match l with
@@ -229,7 +229,7 @@ class batlib_generator =
           | e :: _ ->
 	      let e' = Name.simple (name e) in
               let s =
-		if String.length e' = 0 then 
+		if String.length e' = 0 then
 		  begin
 		    warning ("I'm not going to find an uppercase letter for "^(name e));
 		    ""
@@ -277,7 +277,7 @@ class batlib_generator =
       verbose ("[Index] Here's the list of rewritten modules");
       List.iter (fun t -> List.iter (fun m -> print_endline m.m_name) (modules_by_topic t)) list_topics;
       self#generate_elements_index_by_topic
-	~topics:list_topics 
+	~topics:list_topics
 	~elements:modules_by_topic
 	~name:(fun m -> m.m_name)
 	~info:(fun m -> m.m_info)
@@ -334,15 +334,15 @@ class batlib_generator =
 
     method html_of_Ref b name ref_opt =
       let renamed = find_renaming renamings name in
-      let type_of_ref = 
+      let type_of_ref =
 	match ref_opt with
 	  | Some _ -> ref_opt (*We already have all the details*)
 	  | _      -> match self#what_is name with
-	      | Some _ as r -> 
+	      | Some _ as r ->
 		  warning ("Found the type of "^name);
 		  r
 	      | None        -> match self#what_is renamed with
-		  | Some _ as r -> 
+		  | Some _ as r ->
 		      verbose ("Could not find the type of "^name^", but found that of "^renamed);
 		      r
 		  | None        ->
@@ -359,7 +359,7 @@ class batlib_generator =
     method create_fully_qualified_idents_links m_name s =
       try
 	(** Replace a complete path with a URL to that path*)
-      let handle_qualified_name original_type_name = 
+      let handle_qualified_name original_type_name =
 	let renamed_type_name  = find_renaming renamings original_type_name in
 	  let rel     = Name.get_relative m_name renamed_type_name in
 	  let s_final = Odoc_info.apply_if_equal
@@ -367,7 +367,7 @@ class batlib_generator =
 	    renamed_type_name
 	    rel
 	  in
-	    if self#is_type original_type_name || self#is_type renamed_type_name 
+	    if self#is_type original_type_name || self#is_type renamed_type_name
 	    then self#make_link ~url:(Naming.complete_target Naming.mark_type renamed_type_name)
 	      ~text:s_final ()
 	    else(
@@ -376,13 +376,13 @@ class batlib_generator =
 		  self#make_link ~url:html_file ~text:s_final ()
               else s_final)
 		(**Replace primitive type names with links to their representation module*)
-      in let handle_word str_t = 
-	let result = 
+      in let handle_word str_t =
+	let result =
 	  let (before,match_s) = (Str.matched_group 1 str_t, Str.matched_group 2 str_t) in
 	    try
 	      let link = List.assoc match_s primitive_types_names in
 		(*let text = before^(end_of_name link) in*)
-		before^(self#make_link 
+		before^(self#make_link
 			  ~url:(Naming.complete_target Naming.mark_type link)
 			  ~text:match_s ())
 		  (*(handle_qualified_name link)*)
@@ -392,7 +392,7 @@ class batlib_generator =
       let s2 = Str.global_substitute (*Substitute fully qualified names*)
 	(Str.regexp "\\([A-Z]\\([a-zA-Z_'0-9]\\)*\\.\\)+\\([a-z][a-zA-Z_'0-9]*\\)")
 	(fun str_t -> handle_qualified_name (Str.matched_string str_t))
-	s 
+	s
       in
       let s3 = Str.global_substitute (*Substitute fully qualified names*)
 	(Str.regexp "\\([^.a-zA-Z_0-9]\\|^\\)\\([a-zA-Z_0-9]+\\)")
@@ -501,18 +501,18 @@ class batlib_generator =
       let cout = open_out (Filename.concat !Args.target_dir (name ^ ".idex")) in
 	Odoc_html.StringSet.iter (fun elt -> Printf.fprintf cout "%S: %S\n" elt (Naming.complete_target mark elt)) set;
 	if name = "types" then (*Special case for primitive types*)
-	  List.iter (fun (type_name, type_alias) -> Printf.fprintf cout "%S: %S\n" 
+	  List.iter (fun (type_name, type_alias) -> Printf.fprintf cout "%S: %S\n"
 		     type_name (Naming.complete_target type_alias type_alias)) primitive_types_names;
 	close_out cout
 
     method generate modules =
       try
       match !Odoc_args.dump with
-	| Some l -> 
+	| Some l ->
 	    Odoc_info.verbose "[Internal representation stage, no readable output generated yet]";
 	    Odoc_info.verbose "(you still have time for coffee)";
 	    ()
-	| None   -> 
+	| None   ->
 	    Odoc_info.verbose "[Final stage, we will generate html pages]";
 	    Odoc_info.verbose "(if you don't want coffee, you could also prepare some tea)";
 	    flush_all ();
@@ -611,7 +611,7 @@ let set_batlib_doc_generator () =
 let _ =
   Odoc_args.verbose := true;
   set_batlib_doc_generator ();
-  Args.add_option ("-html", Arg.Unit 
+  Args.add_option ("-html", Arg.Unit
 		     (fun _ -> Odoc_info.verbose "Deactivating built-in html generator";
 			set_batlib_doc_generator())
-		     , "<workaround for ocamlbuild adding -html even when we don't want to>") 
+		     , "<workaround for ocamlbuild adding -html even when we don't want to>")

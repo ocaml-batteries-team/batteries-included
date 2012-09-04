@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtInt32 - Extended Big integers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -23,7 +23,7 @@ open BatNumber
 
 module BaseBig_int = struct
   open Big_int
-    
+
   type t = big_int
   let zero = zero_big_int
   let one  = unit_big_int
@@ -40,23 +40,34 @@ module BaseBig_int = struct
   let pow  = power_big_int_positive_big_int
 
   let to_string = string_of_big_int
-
   let of_string = big_int_of_string
-
   let to_int    = int_of_big_int
-
   let of_int    = big_int_of_int
 
   let compare   = compare_big_int
 
-  let of_float f= of_string (Printf.sprintf "%.0f" f)
+  let of_float f =
+    try of_string (Printf.sprintf "%.0f" f)
+    with Failure _ -> invalid_arg "batBig_int.of_float"
+  (*$T of_float
+    to_int (of_float 4.46) = 4
+    to_int (of_float 4.56) = 5
+    to_int (of_float (-4.46)) = -4
+    to_int (of_float (-4.56)) = -5
+    try ignore (of_float nan); false with Invalid_argument _ -> true
+    try ignore (of_float (1. /. 0.)); false with Invalid_argument _ -> true
+    try ignore (of_float (-1. /. 0.)); false with Invalid_argument _ -> true
+  *)
+
   let to_float  = float_of_big_int
 end
 
 include Big_int
 include MakeNumeric(BaseBig_int)
-module Infix = MakeInfix(BaseBig_int)
-module Compare = MakeCompare(BaseBig_int)
-    
-let print out t = BatIO.nwrite out (to_string t)
 
+let print out t = BatIO.nwrite out (to_string t)
+(*$T print
+  BatIO.to_string print (of_int 456) = "456"
+  BatIO.to_string print (power_int_positive_int 10 31) = "10000000000000000000000000000000"
+  BatIO.to_string print (power_int_positive_int (-10) 31) = "-10000000000000000000000000000000"
+*)

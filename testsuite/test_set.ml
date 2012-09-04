@@ -70,7 +70,7 @@ module TestSet
     val union : s -> s -> s
     val inter : s -> s -> s
     val diff : s -> s -> s
-    val sdiff : s -> s -> s
+    val sym_diff : s -> s -> s
     val disjoint : s -> s -> bool
 
     (* val merge : (elt -> bool -> bool -> bool) -> s -> s -> s *)
@@ -87,7 +87,7 @@ module TestSet
 
   let eq_li ?msg cmp_elt print_elt l1 l2 =
     let cmp t1 t2 =
-      0 = BatList.make_compare cmp_elt t1 t2 in
+      0 = BatList.compare cmp_elt t1 t2 in
     let printer =
       BatIO.to_string <| BatList.print print_elt in
     U.assert_equal ?msg ~cmp ~printer l1 l2
@@ -184,7 +184,7 @@ module TestSet
     ()
 
   let test_split () =
-    let k, v, t = 1, 2, il [0; 1; 2; 4; 5] in
+    let k, _v, t = 1, 2, il [0; 1; 2; 4; 5] in
     "split k empty = (empty, false, empty)" @?
       (let (l, p, r) = S.split k S.empty in
        S.is_empty l && p = false && S.is_empty r);
@@ -299,19 +299,19 @@ module TestSet
       (il [], S.diff (il []) (il [3]));
     ()
 
-  let test_sdiff () =
-    "sdiff [1; 2; 3] [2; 3; 4] = [1; 4]" @=
-      (il [1; 4], S.sdiff (il [1; 2; 3]) (il [2; 3; 4]));
-    "sdiff [1; 2; 3] [2; 3] = [1]" @=
-      (il [1], S.sdiff (il [1; 2; 3]) (il [2; 3]));
-    "sdiff [2; 3] [2; 3; 4] = [4]" @=
-      (il [4], S.sdiff (il [2; 3]) (il [2; 3; 4]));
-    "sdiff [2; 3] [2; 3] = []" @=
-      (il [], S.sdiff (il [2; 3]) (il [2; 3]));
-    "sdiff [2] [] = [2]" @=
-      (il [2], S.sdiff (il [2]) (il []));
-    "sdiff [] [3] = [3]" @=
-      (il [3], S.sdiff (il []) (il [3]));
+  let test_sym_diff () =
+    "sym_diff [1; 2; 3] [2; 3; 4] = [1; 4]" @=
+      (il [1; 4], S.sym_diff (il [1; 2; 3]) (il [2; 3; 4]));
+    "sym_diff [1; 2; 3] [2; 3] = [1]" @=
+      (il [1], S.sym_diff (il [1; 2; 3]) (il [2; 3]));
+    "sym_diff [2; 3] [2; 3; 4] = [4]" @=
+      (il [4], S.sym_diff (il [2; 3]) (il [2; 3; 4]));
+    "sym_diff [2; 3] [2; 3] = []" @=
+      (il [], S.sym_diff (il [2; 3]) (il [2; 3]));
+    "sym_diff [2] [] = [2]" @=
+      (il [2], S.sym_diff (il [2]) (il []));
+    "sym_diff [] [3] = [3]" @=
+      (il [3], S.sym_diff (il []) (il [3]));
     ()
 
   let test_disjoint () =
@@ -440,7 +440,7 @@ module TestSet
     "test_union" >:: test_union;
     "test_inter" >:: test_inter;
     "test_diff" >:: test_diff;
-    "test_sdiff" >:: test_sdiff;
+    "test_sym_diff" >:: test_sym_diff;
     "test_disjoint" >:: test_disjoint;
     "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;
@@ -461,15 +461,6 @@ module P = struct
   type elt = int
   include S
   type s = elt t
-
-  let singleton k = S.singleton ?cmp:None k
-
-  let equal s1 s2 =
-    let is_in s e = S.mem e s in
-    S.for_all (is_in s1) s2 && S.for_all (is_in s2) s1
-
-  let backwards t =
-    BatList.enum -| List.rev -| BatList.of_enum <| S.enum t
 
   let inter = intersect
 end

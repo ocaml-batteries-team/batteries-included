@@ -1,4 +1,4 @@
-TESTS:=nth map folr map2 append flatten filter1 filter2 mapx folrx 
+TESTS:=nth map folr map2 append flatten filter1 filter2 mapx folrx
 OPTS:=--max-i 10_000_000
 
 all: t_enum.byte
@@ -43,7 +43,7 @@ t_list.byte t_list.native: t_list.ml
 
 t_byte: $(addsuffix .gallium_byte, $(TESTS)) $(addsuffix .extlib_byte, $(TESTS))
 
-clean: 
+clean:
 	ocamlbuild -clean
 	- rm *.*_byte *.*_native
 	- rm *.png

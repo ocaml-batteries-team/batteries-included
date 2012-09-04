@@ -21,13 +21,13 @@
 
 
 (** Operations on arbitrary-precision integers.
-    
+
     Big integers (type {!big_int} or equivalently {!Big_int.t}) are
     signed integers of arbitrary size. This module lets you compute
     with huge numbers, whose size is limited only by the amount of
     memory given to OCaml. The downside is speed, as big integers
     are much slower than any other type of integer known to OCaml.
-    
+
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Big_int.html}Big_int}
     module, go there for documentation on the rest of the functions
@@ -37,10 +37,10 @@
     @author Gabriel Scherer
     @author David Teller
 *)
-  
+
 open Nat
 open Big_int
- 
+
 type t = big_int
 
     val zero : big_int
@@ -59,7 +59,12 @@ type t = big_int
     val of_string : string -> big_int
     val to_int : big_int -> int
     val of_int : int -> big_int
+
     val of_float: float -> big_int
+    (** rounds to the nearest integer
+        @raise Invalid_argument when given NaN or +/-infinity
+    *)
+
     val to_float: big_int -> float
     val compare : big_int -> big_int -> int
     val ( -- ) : big_int -> big_int -> big_int BatEnum.t
@@ -71,12 +76,15 @@ type t = big_int
     val ( * ) : t -> t -> t
     val ( / ) : t -> t -> t
     val ( ** ) : t -> t -> t
+
+(* Available only in `Compare` submodule
     val ( <> ) : t -> t -> bool
     val ( >= ) : t -> t -> bool
     val ( <= ) : t -> t -> bool
     val ( > ) : t -> t -> bool
     val ( < ) : t -> t -> bool
     val ( = ) : t -> t -> bool
+ *)
     val operations : t BatNumber.numeric
 
 (** {6 Arithmetic operations} *)
@@ -156,7 +164,7 @@ val is_int_big_int : big_int -> bool
            [a] is between -2{^62} and 2{^62}-1. *)
 val int_of_big_int : big_int -> int
         (** Convert a big integer to a small integer (type [int]).
-           Raises [Failure "int_of_big_int"] if the big integer
+           @raise Failure if the big integer
            is not representable as a small integer. *)
 val float_of_big_int : big_int -> float
         (** Returns a floating-point number approximating the
@@ -167,7 +175,7 @@ val float_of_big_int : big_int -> float
 
 module Infix : BatNumber.Infix with type bat__infix_t = t
 module Compare : BatNumber.Compare with type bat__compare_t = t
- 
+
 (**/**)
 
 (** {6 For internal use} *)
@@ -215,4 +223,3 @@ val gcd_big_int : big_int -> big_int -> big_int
     (** {7 Printing}*)
 
     val print : 'a BatIO.output -> t -> unit
-

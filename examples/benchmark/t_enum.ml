@@ -9,30 +9,30 @@ module ISet = Set.Make(struct
 module IMap = Map.IntMap
 
 module G = struct
-    
+
   module SetMap = struct
     type t = ISet.t IMap.t
-    let find i t =   
+    let find i t =
       try IMap.find i t
       with Not_found -> ISet.empty
     let add i j t =
       IMap.add i (ISet.add j (find i t)) t
-    let del i j t = 
+    let del i j t =
       let s = ISet.remove j (find i t) in
       if ISet.is_empty s then IMap.remove i t
       else IMap.add i s t
-    let del_check i j t = 
+    let del_check i j t =
       let s = ISet.remove j (find i t) in
       if ISet.is_empty s then raise Not_found
       else IMap.add i s t
     let empty = IMap.empty
   end
-    
+
   type t = { i: SetMap.t; o: SetMap.t }
 
   let empty = { i = SetMap.empty; o = SetMap.empty }
 
-  let nodes g = IMap.keys g.o 
+  let nodes g = IMap.keys g.o
   let nodes_in g = IMap.keys g.i
 
   let list_of_iset s = ISet.fold (fun i a -> i :: a) s []
@@ -43,13 +43,13 @@ module G = struct
   let fold_out g f v = IMap.fold f g.o v
   let fold_in g f v = IMap.fold f g.i v
 
-  let get g i j = SetMap.find i g.o |> ISet.mem j 
-      
-  let print_set i s = 
+  let get g i j = SetMap.find i g.o |> ISet.mem j
+
+  let print_set i s =
     printf "%d) " i;
     ISet.print ~first:"{" ~sep:" " ~last:"}\n" Int.print stdout s
 
-  let print g =   
+  let print g =
     printf "Out:\n"; IMap.iter print_set g.o;
     printf "In:\n"; IMap.iter print_set g.i
 
@@ -63,22 +63,22 @@ module G = struct
 
   let remove_out_ok g i =
     let nbrs = SetMap.find i g.o in
-    { o = IMap.remove i g.o; 
+    { o = IMap.remove i g.o;
       i = ISet.fold (fun j a -> SetMap.del j i a) nbrs g.i }
 end
 
-let reduce_all g = 
+let reduce_all g =
   let reduce_i i iset g =
     (* TODO: rewrite without enum *)
     let doms = ISet.enum iset |> Enum.map (G.in_nbrs_set g) in
-    let rec loop acc = 
+    let rec loop acc =
       if ISet.is_empty acc then g else
 	match Enum.get doms with
 	    None -> G.remove_out_ok g i
 	  | Some ns -> loop (ISet.inter acc ns)
     in
-    match Enum.get doms with 
-	None -> assert false 
+    match Enum.get doms with
+	None -> assert false
       | Some ns -> loop (ISet.remove i ns)
   in
   G.fold_out g reduce_i g
@@ -992,7 +992,7 @@ let () =
   let n = Scanf.bscanf in_f "%d " identity in
   let full_g = ref G.empty in
   (* read the input file and produce full_g *)
-  let read_edges n = 
+  let read_edges n =
     for i = 1 to n do
       Scanf.bscanf in_f "%d %d " (fun x y -> full_g := G.add_undir !full_g x y)
     done
@@ -1000,7 +1000,7 @@ let () =
   Scanf.bscanf in_f "%d " read_edges;
 
   (* extend the graph with loops and reduce *)
-  let dg = fold (fun g i -> G.add g i i) !full_g (0--(n-1)) in  
+  let dg = fold (fun g i -> G.add g i i) !full_g (0--(n-1)) in
   let t0 = Sys.time () in
   for i = 1 to 1000 do
     ignore (reduce_all dg);

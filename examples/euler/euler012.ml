@@ -1,5 +1,5 @@
 open Batteries
-let num_div x = 
+let num_div x =
   let count = ref 1 in (* already counted 1 *)
   let max_test = x |> float |> sqrt |> Float.to_int in
   for i = 2 to max_test do
@@ -9,7 +9,7 @@ let num_div x =
   if x mod max_test = 0 then decr count; (* dont double count root if x square *)
   !count
 
-let rec loop i n = 
+let rec loop i n =
   let d = num_div n in
   if d > 500 then begin
     print_int n; print_newline(); exit 0

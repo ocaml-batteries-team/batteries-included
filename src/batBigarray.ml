@@ -364,3 +364,113 @@ module A = struct include BatArray include BatArray.Labels end
           )
       )
   end
+
+(*$R
+  let a = Genarray.create int c_layout [|2;3;4;5;6|] in
+  let n_elt = 2 * 3 * 4 * 5 * 6 in
+  let value_index = function
+  | [|i1; i2; i3; i4; i5|] -> i1+2*(i2+3*(i3+4*(i4+5*i5)))
+  | _ -> assert false in
+  let value_index2 : (int, [`Read]) BatArray.Cap.t -> int =
+    fun a -> value_index (Obj.magic a) in
+  for i1 = 0 to 2 - 1 do
+    for i2 = 0 to 3 - 1 do
+      for i3 = 0 to 4 - 1 do
+        for i4 = 0 to 5 - 1 do
+          for i5 = 0 to 6 - 1 do
+            let index = [|i1;i2;i3;i4;i5|] in
+            Genarray.set a index (value_index index)
+          done
+        done
+      done
+    done
+  done;
+  let total = n_elt * (n_elt - 1) / 2 in
+  let sum = ref 0 in
+  Genarray.iter (fun i -> sum := !sum + i) a;
+  assert_equal !sum total;
+  sum := 0;
+  Genarray.iteri (fun index i ->
+    assert_equal i (value_index2 index);
+    sum := !sum + i
+  ) a;
+  assert_equal !sum total;
+  Genarray.modify (fun i -> i + 1) a;
+  Genarray.iteri (fun index i -> assert_equal (value_index2 index + 1) i) a;
+  Genarray.modifyi (fun index i -> i - 1 + value_index2 index) a;
+  Genarray.iteri (fun index i -> assert_equal (2 * value_index2 index) i) a;
+  let a2 = Genarray.map (fun i -> i / 2) int a in
+  Genarray.iteri (fun index i -> assert_equal (2 * value_index2 index) i) a;
+  Genarray.iteri (fun index i -> assert_equal (value_index2 index) i) a2;
+  let a3 = Genarray.mapi (fun index i -> value_index2 index - i) int a2 in
+  Genarray.iteri (fun index i -> assert_equal (value_index2 index) i) a2;
+  Genarray.iter (fun i -> assert_equal 0 i) a3
+*)
+
+(*$R
+  let a = Array1.create int c_layout 6 in
+  let n_elt = 6 in
+  let value_index n = n + 1 in
+  for i1 = 0 to 6 - 1 do
+    Array1.set a i1 (value_index i1)
+  done;
+  let iteri f a =
+    for i = 0 to n_elt - 1 do f i a.{i}
+    done in
+  Array1.modify (fun i -> i + 1) a;
+  iteri (fun index i -> assert_equal (value_index index + 1) i) a;
+  Array1.modifyi (fun index i -> i - 1 + value_index index) a;
+  iteri (fun index i -> assert_equal (2 * value_index index) i) a;
+  let a2 = Array1.map (fun i -> i / 2) int a in
+  iteri (fun index i -> assert_equal (2 * value_index index) i) a;
+  iteri (fun index i -> assert_equal (value_index index) i) a2;
+  let a3 = Array1.mapi (fun index i -> value_index index - i) int a2 in
+  iteri (fun index i -> assert_equal (value_index index) i) a2;
+  iteri (fun _ i -> assert_equal 0 i) a3
+*)
+
+(*$R
+  let a = Array2.create int c_layout 5 6 in
+  let value_index i j = i * 5 + j in
+  let iterij f a =
+    for i = 0 to 5 - 1 do
+      for j = 0 to 6 - 1 do
+        f i j a.{i,j}
+      done
+    done in
+  iterij (fun i j _undef -> a.{i,j} <- value_index i j) a;
+  Array2.modify (fun i -> i + 1) a;
+  iterij (fun i j elt -> assert_equal (value_index i j + 1) elt) a;
+  Array2.modifyij (fun i j elt -> elt - 1 + value_index i j) a;
+  iterij (fun i j elt -> assert_equal (2 * value_index i j) elt) a;
+  let a2 = Array2.map (fun elt -> elt / 2) int a in
+  iterij (fun i j elt -> assert_equal (2 * value_index i j) elt) a;
+  iterij (fun i j elt -> assert_equal (value_index i j) elt) a2;
+  let a3 = Array2.mapij (fun i j elt -> value_index i j - elt) int a2 in
+  iterij (fun i j elt -> assert_equal (value_index i j) elt) a2;
+  iterij (fun _ _ elt -> assert_equal 0 elt) a3
+*)
+
+(*$R
+  let a = Array3.create int c_layout 4 5 6 in
+  let value_index i j k = i + 4 * (j + 5 * k) in
+  let iterijk f a =
+    for i = 0 to 4 - 1 do
+      for j = 0 to 5 - 1 do
+        for k = 0 to 6 - 1 do
+          f i j k a.{i,j,k}
+        done
+      done
+    done in
+  iterijk (fun i j k _undef -> a.{i,j,k} <- value_index i j k) a;
+  Array3.modify (fun i -> i + 1) a;
+  iterijk (fun i j k elt -> assert_equal (value_index i j k + 1) elt) a;
+  Array3.modifyijk (fun i j k elt -> elt - 1 + value_index i j k) a;
+  iterijk (fun i j k elt -> assert_equal (2 * value_index i j k) elt) a;
+  let a2 = Array3.map (fun elt -> elt / 2) int a in
+  iterijk (fun i j k elt -> assert_equal (2 * value_index i j k) elt) a;
+  iterijk (fun i j k elt -> assert_equal (value_index i j k) elt) a2;
+  let a3 = Array3.mapijk (fun i j k elt -> value_index i j k - elt) int a2 in
+  iterijk (fun i j k elt -> assert_equal (value_index i j k) elt) a2;
+  iterijk (fun _ _ _ elt -> assert_equal 0 elt) a3
+*)

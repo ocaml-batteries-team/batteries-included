@@ -3,7 +3,7 @@
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller (Contributor)
  *               2011 Ashish Agarwal
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,53 +20,82 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-module Tuple2 = struct 
+module Tuple2 = struct
   type ('a,'b) t = 'a * 'b
-      
+
   type 'a enumerable = 'a * 'a
-      
+
   external first : 'a * 'b -> 'a = "%field0"
   external second : 'a * 'b -> 'b = "%field1"
 
   let swap (a,b) = (b,a)
-      
+
   let map f g (a,b) =
     let a = f a in
     (a, g b)
-      
+
   let mapn f (x,y) =
     (* force left-to-right evaluation order (this principle of least
        surprise is already applied in stdlib's List.map) *)
     let a = f x in
     (a, f y)
-      
+
   let map1 f (a,b) = (f a, b)
   let map2 f (a,b) = (a, f b)
-    
+
   let curry f x y = f (x,y)
   let uncurry f (x,y) = f x y
-    
+
   let enum (x,y) = BatList.enum [x;y] (* Make efficient? *)
-    
-  let of_enum e = match BatEnum.get e with 
-      None -> failwith "Tuple2.of_enum: not enough elements" 
-    | Some x -> match BatEnum.get e with 
-	  None -> failwith "Tuple2.of_enum: not enough elements" 
+
+  let of_enum e = match BatEnum.get e with
+      None -> failwith "Tuple2.of_enum: not enough elements"
+    | Some x -> match BatEnum.get e with
+	  None -> failwith "Tuple2.of_enum: not enough elements"
         | Some y -> (x,y)
-            
-  let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b out (a,b) = 
+
+  let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b out (a,b) =
     BatIO.nwrite out first;
     print_a out a;
     BatIO.nwrite out sep;
     print_b out b;
     BatIO.nwrite out last
-      
+
   let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
     print ~first ~sep ~last printer printer out pair
-    
-  let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) (a,b) (c,d) = 
-    let comp = cmp1 a c in 
+
+  let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) (a,b) (c,d) =
+    let comp = cmp1 a c in
     if comp <> 0 then comp else cmp2 b d
+
+  open BatOrd
+  let eq eq1 eq2 =
+    fun (t1, t2) (t1', t2') ->
+      bin_eq eq1 t1 t1' eq2 t2 t2'
+
+  let ord ord1 ord2 =
+    fun (t1, t2) (t1', t2') ->
+      bin_ord ord1 t1 t1' ord2 t2 t2'
+
+  let comp comp1 comp2 =
+    fun (t1, t2) (t1', t2') ->
+      bin_comp comp1 t1 t1' comp2 t2 t2'
+
+  module Eq (A : Eq) (B : Eq) = struct
+    type t = A.t * B.t
+    let eq = eq A.eq B.eq
+  end
+
+  module Ord (A : Ord) (B : Ord) = struct
+    type t = A.t * B.t
+    let ord = ord A.ord B.ord
+  end
+
+  module Comp (A : Comp) (B : Comp) = struct
+    type t = A.t * B.t
+    let compare = comp A.compare B.compare
+  end
+
 end
 
 module Tuple3 = struct
@@ -126,7 +155,38 @@ module Tuple3 = struct
     if c1 <> 0 then c1 else
       let c2 = cmp2 a2 b2 in
       if c2 <> 0 then c2 else
-        cmp3 a3 b3
+	cmp3 a3 b3
+
+  open BatOrd
+  let eq eq1 eq2 eq3 =
+    fun (t1, t2, t3) (t1', t2', t3') ->
+      bin_eq eq1 t1 t1'
+	(bin_eq eq2 t2 t2' eq3) t3 t3'
+
+  let ord ord1 ord2 ord3 =
+    fun (t1, t2, t3) (t1', t2', t3') ->
+      bin_ord ord1 t1 t1'
+	(bin_ord ord2 t2 t2' ord3) t3 t3'
+
+  let comp comp1 comp2 comp3 =
+    fun (t1, t2, t3) (t1', t2', t3') ->
+      bin_comp comp1 t1 t1'
+	(bin_comp comp2 t2 t2' comp3) t3 t3'
+
+  module Eq (A : Eq) (B : Eq) (C : Eq) = struct
+    type t = A.t * B.t * C.t
+    let eq = eq A.eq B.eq C.eq
+  end
+
+  module Ord (A : Ord) (B : Ord) (C : Ord) = struct
+    type t = A.t * B.t * C.t
+    let ord = ord A.ord B.ord C.ord
+  end
+
+  module Comp (A : Comp) (B : Comp) (C : Comp)= struct
+    type t = A.t * B.t * C.t
+    let compare = comp A.compare B.compare C.compare
+  end
 end
 
 module Tuple4 = struct
@@ -203,7 +263,41 @@ module Tuple4 = struct
       if c2 <> 0 then c2 else
         let c3 = cmp3 a3 b3 in
         if c3 <> 0 then c3 else
-          cmp4 a4 b4
+	  cmp4 a4 b4
+
+  open BatOrd
+  let eq eq1 eq2 eq3 eq4 =
+    fun (t1, t2, t3, t4) (t1', t2', t3', t4') ->
+      bin_eq eq1 t1 t1'
+	(bin_eq eq2 t2 t2'
+	   (bin_eq eq3 t3 t3' eq4)) t4 t4'
+
+  let ord ord1 ord2 ord3 ord4 =
+    fun (t1, t2, t3, t4) (t1', t2', t3', t4') ->
+      bin_ord ord1 t1 t1'
+	(bin_ord ord2 t2 t2'
+	   (bin_ord ord3 t3 t3' ord4)) t4 t4'
+
+  let comp comp1 comp2 comp3 comp4 =
+    fun (t1, t2, t3, t4) (t1', t2', t3', t4') ->
+      bin_comp comp1 t1 t1'
+	(bin_comp comp2 t2 t2'
+	   (bin_comp comp3 t3 t3' comp4)) t4 t4'
+
+  module Eq (A : Eq) (B : Eq) (C : Eq) (D : Eq) = struct
+    type t = A.t * B.t * C.t * D.t
+    let eq = eq A.eq B.eq C.eq D.eq
+  end
+
+  module Ord (A : Ord) (B : Ord) (C : Ord) (D : Ord) = struct
+    type t = A.t * B.t * C.t * D.t
+    let ord = ord A.ord B.ord C.ord D.ord
+  end
+
+  module Comp (A : Comp) (B : Comp) (C : Comp) (D : Comp) = struct
+    type t = A.t * B.t * C.t * D.t
+    let compare = comp A.compare B.compare C.compare D.compare
+  end
 end
 
 module Tuple5 = struct
@@ -307,5 +401,42 @@ module Tuple5 = struct
         if c3 <> 0 then c3 else
           let c4 = cmp4 a4 b4 in
           if c4 <> 0 then c4 else
-            cmp5 a5 b5
+	    cmp5 a5 b5
+
+  open BatOrd
+  let eq eq1 eq2 eq3 eq4 eq5 =
+    fun (t1, t2, t3, t4, t5) (t1', t2', t3', t4', t5') ->
+      bin_eq eq1 t1 t1'
+	(bin_eq eq2 t2 t2'
+	   (bin_eq eq3 t3 t3'
+	      (bin_eq eq4 t4 t4' eq5))) t5 t5'
+
+  let ord ord1 ord2 ord3 ord4 ord5 =
+    fun (t1, t2, t3, t4, t5) (t1', t2', t3', t4', t5') ->
+      bin_ord ord1 t1 t1'
+	(bin_ord ord2 t2 t2'
+	   (bin_ord ord3 t3 t3'
+	      (bin_ord ord4 t4 t4' ord5))) t5 t5'
+
+  let comp comp1 comp2 comp3 comp4 comp5 =
+    fun (t1, t2, t3, t4, t5) (t1', t2', t3', t4', t5') ->
+      bin_comp comp1 t1 t1'
+	(bin_comp comp2 t2 t2'
+	   (bin_comp comp3 t3 t3'
+	      (bin_comp comp4 t4 t4' comp5))) t5 t5'
+
+  module Eq (A : Eq) (B : Eq) (C : Eq) (D : Eq) (E : Eq) = struct
+    type t = A.t * B.t * C.t * D.t * E.t
+    let eq = eq A.eq B.eq C.eq D.eq E.eq
+  end
+
+  module Ord (A : Ord) (B : Ord) (C : Ord) (D : Ord) (E : Ord) = struct
+    type t = A.t * B.t * C.t * D.t * E.t
+    let ord = ord A.ord B.ord C.ord D.ord E.ord
+  end
+
+  module Comp (A : Comp) (B : Comp) (C : Comp) (D : Comp) (E : Comp) = struct
+    type t = A.t * B.t * C.t * D.t * E.t
+    let compare = comp A.compare B.compare C.compare D.compare E.compare
+  end
 end

@@ -6,11 +6,11 @@ LIBRARIES = mathlib.ml
 
 all: $(TARGETS)
 
-clean: 
+clean:
 	rm *.byte *.native *.cmi *.cmo
 
-%.byte: $(LIBRARIES) %.ml 
-	ocamlfind ocamlc -thread -package threads,batteries -linkpkg $^ -o $@ 
+%.byte: $(LIBRARIES) %.ml
+	ocamlfind ocamlc -thread -package threads,batteries -linkpkg $^ -o $@
 
-%.native: $(LIBRARIES) %.ml 
-	ocamlfind ocamlc -thread -package threads,batteries -linkpkg $^ -o $@ 
+%.native: $(LIBRARIES) %.ml
+	ocamlfind ocamlc -thread -package threads,batteries -linkpkg $^ -o $@

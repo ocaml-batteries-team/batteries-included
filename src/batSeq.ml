@@ -50,15 +50,15 @@ let enum s = enum_of_ref (ref s)
 
 let hd s = match s () with
   | Nil -> raise (Invalid_argument "Seq.hd")
-  | Cons(e, s) -> e
+  | Cons(e, _s) -> e
 
 let tl s = match s () with
   | Nil -> raise (Invalid_argument "Seq.tl")
-  | Cons(e, s) -> s
+  | Cons(_e, s) -> s
 
 let first s = match s () with
   | Nil -> raise (Invalid_argument "Seq.first")
-  | Cons(e, s) -> e
+  | Cons(e, _s) -> e
 
 let last s =
   let rec aux e s = match s () with
@@ -163,7 +163,7 @@ let rec for_all f s = match s () with
 
 let rec exists f s = match s () with
   | Nil -> false
-  | Cons(e, s) -> f e || for_all f s
+  | Cons(e, s) -> f e || exists f s
 
 let mem e s = exists ((=) e) s
 
@@ -224,7 +224,7 @@ let rec drop n s =
     match s () with
       | Nil ->
           nil
-      | Cons(e, s) ->
+      | Cons(_e, s) ->
           drop (n - 1) s
 
 let rec take_while f s () = match s () with
@@ -262,15 +262,54 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
   | Cons(e, s) ->
       match s () with
         | Nil ->
-            BatInnerIO.Printf.fprintf out "%s%a%s" first print_a e last
+            BatPrintf.fprintf out "%s%a%s" first print_a e last
         | _ ->
             BatInnerIO.nwrite out first;
             print_a out e;
-            iter (BatInnerIO.Printf.fprintf out "%s%a" sep print_a) s;
+            iter (BatPrintf.fprintf out "%s%a" sep print_a) s;
             BatInnerIO.nwrite out last
 
-let t_printer a_printer paren out s =
+let t_printer a_printer _paren out s =
   print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out s
+
+module Infix = struct
+  (** Infix operators matching those provided by {!BatEnum.Infix} *)
+
+  let ( -- ) a b =
+    if b < a then
+      nil
+    else
+      init (b - a + 1) (fun x -> a + x)
+
+  let ( --^ ) a b = a -- (b - 1)
+
+  let ( --. ) (a, step) b =
+    let n = int_of_float ((b -. a) /. step) + 1 in
+    if n < 0 then
+      nil
+    else
+      init n (fun i -> float_of_int i *. step +. a)
+
+  let ( --- ) a b =
+    let n = abs (b - a) in
+    if b < a then
+      init n (fun x -> a - x)
+    else
+      a -- b
+
+  let ( --~ ) a b =
+    map Char.chr (Char.code a -- Char.code b)
+
+  let ( // ) s f = filter f s
+
+  let ( /@ ) s f = map f s
+  let ( @/ ) = map
+
+  let ( //@ ) s f = filter_map f s
+  let ( @// ) = filter_map
+end
+
+include Infix
 
 module Exceptionless = struct
   (* This function could be used to eliminate a lot of duplicate code below...

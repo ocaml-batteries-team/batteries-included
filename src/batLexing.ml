@@ -2,7 +2,7 @@
  * ExtString - Additional functions for string manipulations.
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,10 +20,9 @@
  *)
 
 
-  open BatIO
-  open Lexing
-  let from_input inp =
-    from_function (fun s n -> try input inp s 0 n with No_more_input -> 0)
+open BatIO
+include Lexing
+let from_input inp =
+  from_function (fun s n -> try input inp s 0 n with No_more_input -> 0)
 
-  let from_channel = from_input
-
+let from_channel = from_input

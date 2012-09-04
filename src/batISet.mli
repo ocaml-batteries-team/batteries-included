@@ -30,8 +30,9 @@ val add : int -> t -> t
 (** Add the given int to the set, returning a new set *)
 
 val add_range : int -> int -> t -> t
-(** Add the range of integers [lo, hi] (including both endpoints) to
-    the given set, returning a new set *)
+(** [add_range lo hi t] adds the range of integers [lo, hi] (including both endpoints) to
+    the given set, returning a new set
+    @raise Invalid_argument if [lo] > [hi] *)
 
 val singleton : int -> t
 (** Return the singleton set containing only the given element *)
@@ -40,7 +41,8 @@ val remove : int -> t -> t
 (** Remove an element from the given set, returning a new set *)
 
 val remove_range : int -> int -> t -> t
-(** Remove a range of elements from the given set, returning a new set *)
+(** [remove_range lo hi t] removes a range of elements from the given set, returning a new set
+    @raise Invalid_argument if [lo] > [hi] *)
 
 val union : t -> t -> t
 (** Compute the union of two sets.  This is the set whose elements are
@@ -132,3 +134,9 @@ val choose : t -> int
 
 val enum : t -> (int * int) BatEnum.t
 (** Enumerates all contiguous ranges in the set *)
+
+val of_enum : (int*int) BatEnum.t -> t
+val of_list : (int*int) list -> t
+(** Build a ISet.t out of a list or enum of ranges *)
+
+val print : _ BatIO.output -> t -> unit

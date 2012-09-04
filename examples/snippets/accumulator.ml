@@ -2,7 +2,7 @@
 
   "Revenge of the Nerds yielded a collection of canonical solutions to
   the same problem in a number of languages.
-  
+
   The problem: Write a function foo that takes a number n and returns a
   function that takes a number i, and returns n incremented by i.
 
@@ -21,7 +21,7 @@ open Numeric in
   where r = ref n
 
 (*Examples:*)
-let adder_of_floats : float -> float = 
+let adder_of_floats : float -> float =
   adder Float.operations 5.
 
 let adder_of_ints   : int -> int =

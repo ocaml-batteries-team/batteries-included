@@ -60,7 +60,7 @@ let level_of_name = function
 
 let format_timestamp out ts =
   let tm = Unix.gmtime ts in
-  let ms, _ = modf ts in
+  let us, _ = modf ts in
     fprintf out "%04d-%02d-%02dT%02d:%02d:%02d.%06dZ"
       (1900 + tm.Unix.tm_year)
       (1 + tm.Unix.tm_mon)
@@ -68,7 +68,7 @@ let format_timestamp out ts =
       (tm.Unix.tm_hour)
       (tm.Unix.tm_min)
       (tm.Unix.tm_sec)
-      (int_of_float (100000. *. ms))
+      (int_of_float (1_000_000. *. us))
 
 (******************************************************************************)
 (** log modules *)
@@ -121,7 +121,7 @@ let stderr_formatter = make_std_formatter BatIO.stderr
 let null_formatter lm lev event timestamp = ()
 
 let format_indent oc depth =
-  for i = 0 to depth do
+  for _i = 0 to depth do
     fprintf oc "| "
   done
 
@@ -195,7 +195,8 @@ let init_from_string name_level_string formatter =
 
 (******************************************************************************)
 
-let test () =
+(*
+let test =
   let lm = make_log "test" in
   let direct () =
     log lm NOTICE (fun () -> "hello", []);
@@ -208,5 +209,6 @@ let test () =
     Unix.sleep 3;
     run ()
   in run ()
+ *)
 
 (******************************************************************************)

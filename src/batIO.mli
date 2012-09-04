@@ -1,4 +1,4 @@
-(* 
+(*
  * BatIO - Abstract input/output
  * Copyright (C) 2003 Nicolas Cannasse
  *               2008 David Teller (contributor)
@@ -22,7 +22,7 @@
  *)
 
 (** High-order abstract I/O.
-    
+
     This module deals with {!type: input}s and {!type:
     output}s. Inputs are manners of getting information from the
     outside world and into your program (for instance, reading from
@@ -63,7 +63,7 @@
     may wish to force all waiting operations to take place {e now}.
     For this purpose, you may either function {!flush} or function
 I    {!flush_out}.
-    
+
     Once you have finished using your {!type: input} or your {!type:
     output}, chances are that you will want to close it. This is not a
     strict necessity, as OCaml will eventually close it for you when
@@ -108,9 +108,13 @@ type 'a output = 'a BatInnerIO.output
 (** The abstract output type, ['a] is the accumulator data, it is returned
 	when the [close_out] function is called. *)
 
+type ('a, 'b) printer = 'b output -> 'a -> unit
+(** The type of a printing function to print a ['a] to an output that
+    produces ['b] as result. *)
+
 exception No_more_input
 (** This exception is raised when reading on an input with the [read] or
-  [nread] functions while there is no available token to read. *)
+    [nread] functions while there is no available token to read. *)
 
 exception Input_closed
 (** This exception is raised when reading on a closed input. *)
@@ -139,7 +143,7 @@ val stdout: unit output
 
 val stderr: unit output
 (** Standard error output, as per Unix/Windows conventions.
-   
+
     Use this output to display warnings and error messages.
 
     Example: [
@@ -217,22 +221,16 @@ val close_in : input -> unit
     Example: [close_in network_in;]
 *)
 
-val write : 'a output -> char -> unit
+val write : (char, _) printer
 (** Write a single char to an output.
 
     Example: [write stdout 'x';]
 *)
 
-val nwrite : 'a output -> string -> unit
+val nwrite : (string, _) printer
 (** Write a string to an output.
 
     Example: [nwrite stdout "Enter your name: ";]
-*)
-
-val write_buf: 'a output -> Buffer.t -> unit
-(** Write the contents of a buffer to an output.
-
-    Example: [let b = Buffer.create 10 in for i = 1 to 100 do Buffer.add (string_of_int i); Buffer.add " "; done; nwrite stdout b;]
 *)
 
 val output : 'a output -> string -> int -> int -> int
@@ -298,7 +296,7 @@ val close_all : unit -> unit
 *)
 (**/**)
 
-(** {6 Creation of BatIO Inputs/Outputs} 
+(** {6 Creation of BatIO Inputs/Outputs}
 
     To open a file for reading/writing, see {!File.open_file_in}
     and {!File.open_file_out}*)
@@ -319,17 +317,11 @@ val output_string : unit -> string output
 (** Create an output that will write into a string in an efficient way.
   When closed, the output returns all the data written into it. *)
 
-val output_buffer : Buffer.t -> string output
-(** Create an output that will append its results at the end of a buffer
-    in an efficient way. Closing  returns the whole contents of the buffer
-    -- the buffer remains usable.*)
-    
-
 val input_enum : char BatEnum.t -> input
 (** Create an input that will read from an [enum]. *)
 
 val output_enum : unit -> char BatEnum.t output
-(** Create an output that will write into an [enum]. The 
+(** Create an output that will write into an [enum]. The
     final enum is returned when the output is closed. *)
 
 val combine : ('a output * 'b output) -> ('a * 'b) output
@@ -349,7 +341,7 @@ val tab_out : ?tab:char -> int -> 'a output -> unit output
   *)
 
 (*val repeat: int -> 'a output -> unit output
-(** [repeat n out] create an output in which every character or string is repeated 
+(** [repeat n out] create an output in which every character or string is repeated
     [n] times to [out].*)*)
 
 (** {6 Utilities} *)
@@ -357,12 +349,9 @@ val tab_out : ?tab:char -> int -> 'a output -> unit output
 val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
 
-val read_uall : input -> Ulib.Text.t
-(** Read the whole contents of a UTF-8 encoded input*)
-
 val pipe : unit -> input * unit output
 (** Create a pipe between an input and an ouput. Data written from
-    the output can be read from the input. 
+    the output can be read from the input.
 *)
 
 val copy : ?buffer:int -> input -> _ output -> unit
@@ -376,7 +365,7 @@ val pos_in : input -> input * (unit -> int)
   (** Create an input that provide a count function of the number of bytes
       read from it. *)
 
-val progress_in : input -> (unit -> unit) -> input 
+val progress_in : input -> (unit -> unit) -> input
   (** [progress_in inp f] create an input that calls [f ()]
       whenever some content is succesfully read from it.*)
 
@@ -389,7 +378,7 @@ val progress_out : 'a output -> (unit -> unit) -> unit output
       whenever some content is succesfully written to it.*)
 
 external cast_output : 'a output -> unit output = "%identity"
-(** You can safely transform any output to an unit output in a safe way 
+(** You can safely transform any output to an unit output in a safe way
     by using this function. *)
 
 
@@ -433,67 +422,49 @@ val read_float : input -> float
 val read_double : input -> float
 (** Read an IEEE double precision floating point value. *)
 
-val read_uchar: input -> Ulib.UChar.t
-(** Read one UChar from a UTF-8 encoded input*)
-
 val read_string : input -> string
 (** Read a null-terminated string. *)
-
-val read_text: input -> int -> Ulib.Text.t
-(** Read up to n uchars from a UTF-8 encoded input*)
 
 val read_line : input -> string
   (** Read a LF or CRLF terminated string. If the source runs out of
       input before a LF is found, returns a string of the remaining input.
       Will raise [No_more_input] only if no characters are available. *)
 
-val read_uline: input -> Ulib.Text.t
-(** Read a line of UTF-8*)
-
-val write_byte : 'a output -> int -> unit
+val write_byte : (int, _) printer
 (** Write an unsigned 8-bit byte. *)
 
-val write_ui16 : 'a output -> int -> unit
+val write_ui16 : (int, _) printer
 (** Write an unsigned 16-bit word. *)
 
-val write_i16 : 'a output -> int -> unit
+val write_i16 : (int, _) printer
 (** Write a signed 16-bit word. *)
 
-val write_i32 : 'a output -> int -> unit
-(** Write a signed 32-bit integer. *) 
+val write_i32 : (int, _) printer
+(** Write a signed 32-bit integer. *)
 
-val write_real_i32 : 'a output -> int32 -> unit
+val write_real_i32 : (int32, _) printer
 (** Write an OCaml int32. *)
 
-val write_i64 : 'a output -> int64 -> unit
+val write_i64 : (int64, _) printer
 (** Write an OCaml int64. *)
 
-val write_double : 'a output -> float -> unit
+val write_double : (float, _) printer
 (** Write an IEEE double precision floating point value. *)
 
-val write_uchar: _ output -> Ulib.UChar.t -> unit
-(** Write one uchar to a UTF-8 encoded output.*)
-
-val write_float : 'a output -> float -> unit
+val write_float : (float, _) printer
 (** Write an IEEE single precision floating point value. *)
 
-val write_string : 'a output -> string -> unit
+val write_string : (string, _) printer
 (** Write a string and append an null character. *)
 
-val write_text : _ output -> Ulib.Text.t -> unit
-(** Write a character text onto a UTF-8 encoded output.*)
-
-val write_line : 'a output -> string -> unit
+val write_line : (string, _) printer
 (** Write a line and append a line end.
-    
+
     This adds the correct line end for your operating system.  That
     is, if you are writing to a file and your system imposes that
     files should end lines with character LF (or ['\n']), as Unix,
     then a LF is inserted at the end of the line. If your system
     favors CRLF (or ['\r\n']), then this is what will be inserted.*)
-
-val write_uline: _ output -> Ulib.Text.t -> unit
-(** Write one line onto a UTF-8 encoded output.*)
 
 (** Same operations as module {!BatIO}, but with big-endian encoding *)
 module BigEndian :
@@ -505,7 +476,7 @@ sig
       Generally, to use this module you will wish to either open both
       {!BatIO} and {!BigEndian}, so as to import a big-endian version of
       {!BatIO}, as per
-      [open System.BatIO, BigEndian in ...], 
+      [open System.BatIO, BigEndian in ...],
       or to redefine locally {!BatIO} to use big-endian encodings
       [module BatIO = System.BatIO include BigEndian]
 
@@ -534,25 +505,25 @@ sig
 	val read_float: input -> float
 	  (** Read an IEEE single precision floating point value. *)
 
-	val write_ui16 : 'a output -> int -> unit
+	val write_ui16 : (int, _) printer
 	  (** Write an unsigned 16-bit word. *)
 
-	val write_i16 : 'a output -> int -> unit
+	val write_i16 : (int, _) printer
 	  (** Write a signed 16-bit word. *)
 
-	val write_i32 : 'a output -> int -> unit
-	  (** Write a signed 32-bit integer. *) 
+	val write_i32 : (int, _) printer
+	  (** Write a signed 32-bit integer. *)
 
-	val write_real_i32 : 'a output -> int32 -> unit
+	val write_real_i32 : (int32, _) printer
 	  (** Write an OCaml int32. *)
 
-	val write_i64 : 'a output -> int64 -> unit
+	val write_i64 : (int64, _) printer
 	  (** Write an OCaml int64. *)
 
-	val write_double : 'a output -> float -> unit
+	val write_double : (float, _) printer
 	  (** Write an IEEE double precision floating point value. *)
 
-	val write_float  : 'a output -> float -> unit
+	val write_float  : (float, _) printer
 	  (** Write an IEEE single precision floating point value. *)
 
 	val ui16s_of : input -> int BatEnum.t
@@ -562,11 +533,13 @@ sig
 	  (** Read an enumartion of signed 16-bit words. *)
 
 	val i32s_of : input -> int BatEnum.t
-	  (** Read an enumeration of signed 32-bit integers. Raise [Overflow] if the
-	      read integer cannot be represented as a Caml 31-bit integer. *)
+	(** Read an enumeration of signed 32-bit integers.
+
+	    @raise Overflow if the read integer cannot be represented as a Caml
+	    31-bit integer. *)
 
 	val real_i32s_of : input -> int32 BatEnum.t
-	  (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
+	(** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
 
 	val i64s_of : input -> int64 BatEnum.t
 	  (** Read an enumeration of signed 64-bit integers as OCaml [int64]s. *)
@@ -574,26 +547,8 @@ sig
 	val doubles_of : input -> float BatEnum.t
 	  (** Read an enumeration of IEEE double precision floating point values. *)
 
-	val write_bytes : 'a output -> int BatEnum.t -> unit
-	  (** Write an enumeration of unsigned 8-bit bytes. *)
-
-	val write_ui16s : 'a output -> int BatEnum.t -> unit
-	  (** Write an enumeration of unsigned 16-bit words. *)
-
-	val write_i16s : 'a output -> int BatEnum.t -> unit
-	  (** Write an enumeration of signed 16-bit words. *)
-
-	val write_i32s : 'a output -> int BatEnum.t -> unit
-	  (** Write an enumeration of signed 32-bit integers. *) 
-
-	val write_real_i32s : 'a output -> int32 BatEnum.t -> unit
-	  (** Write an enumeration of OCaml int32s. *)
-
-	val write_i64s : 'a output -> int64 BatEnum.t -> unit
-	  (** Write an enumeration of OCaml int64s. *)
-
-	val write_doubles : 'a output -> float BatEnum.t -> unit
-	  (** Write an enumeration of IEEE double precision floating point value. *)
+	val floats_of : input -> float BatEnum.t
+	  (** Read an enumeration of IEEE single precision floating point values. *)
 
 end
 
@@ -636,9 +591,9 @@ val drop_bits : in_bits -> unit
 
 val create_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) -> 
+  input:(string -> int -> int -> int) ->
   close:(unit -> unit) -> input
-(** Fully create an input by giving all the needed functions. 
+(** Fully create an input by giving all the needed functions.
 
     {b Note} Do {e not} use this function for creating an input
     which reads from one or more underlying inputs. Rather, use
@@ -647,26 +602,26 @@ val create_in :
 
 val wrap_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) -> 
-  close:(unit -> unit) -> 
+  input:(string -> int -> int -> int) ->
+  close:(unit -> unit) ->
   underlying:(input list) ->
   input
-(** Fully create an input reading from other inputs by giving all 
-    the needed functions. 
+(** Fully create an input reading from other inputs by giving all
+    the needed functions.
 
     This function is a more general version of {!create_in}
     which also handles dependency management between inputs.
 
     {b Note} When you create an input which reads from another
-    input, function [close] should {e not} close the inputs of 
+    input, function [close] should {e not} close the inputs of
     [underlying]. Doing so is a common error, which could result
     in inadvertently closing {!stdin} or a network socket, etc.
 *)
 
 val inherit_in:
   ?read:(unit -> char) ->
-  ?input:(string -> int -> int -> int) -> 
-  ?close:(unit -> unit) -> 
+  ?input:(string -> int -> int -> int) ->
+  ?close:(unit -> unit) ->
   input -> input
   (** Simplified and optimized version of {!wrap_in} which may be used
       whenever only one input appears as dependency.
@@ -681,11 +636,11 @@ val inherit_in:
 
 val create_out :
   write:(char -> unit) ->
-  output:(string -> int -> int -> int) ->   
-  flush:(unit -> unit) -> 
-  close:(unit -> 'a) -> 
+  output:(string -> int -> int -> int) ->
+  flush:(unit -> unit) ->
+  close:(unit -> 'a) ->
   'a output
-    (** 
+    (**
 	Fully create an output by giving all the needed functions.
 
 	@param write  Write one character to the output (see {!write}).
@@ -700,10 +655,10 @@ val create_out :
 
 val wrap_out :
   write:(char -> unit)         ->
-  output:(string -> int -> int -> int) ->   
-  flush:(unit -> unit)         -> 
-  close:(unit -> 'a)           -> 
-  underlying:('b output list)  -> 
+  output:(string -> int -> int -> int) ->
+  flush:(unit -> unit)         ->
+  close:(unit -> 'a)           ->
+  underlying:('b output list)  ->
   'a output
 (**
    Fully create an output that writes to one or more underlying outputs.
@@ -751,9 +706,9 @@ val wrap_out :
 
 val inherit_out:
   ?write:(char -> unit) ->
-  ?output:(string -> int -> int -> int) -> 
+  ?output:(string -> int -> int -> int) ->
   ?flush:(unit -> unit) ->
-  ?close:(unit -> unit) -> 
+  ?close:(unit -> unit) ->
   'a output -> unit output
 (**
    Simplified and optimized version of {!wrap_out} whenever only
@@ -771,7 +726,7 @@ val inherit_out:
 *)
 
 val input_channel : ?autoclose:bool -> ?cleanup:bool -> in_channel -> input
-(** Create an input that will read from a channel. 
+(** Create an input that will read from a channel.
 
     @param autoclose If true or unspecified, the {!type: input}
     will be automatically closed when the underlying [in_channel]
@@ -783,12 +738,12 @@ val input_channel : ?autoclose:bool -> ?cleanup:bool -> in_channel -> input
 *)
 
 val output_channel : ?cleanup:bool -> out_channel -> unit output
-(** Create an output that will write into a channel. 
+(** Create an output that will write into a channel.
 
     @param cleanup If true, the channel
     will be automatically closed when the {!type: output} is closed.
     Otherwise, you will need to close the channel manually.
-*) 
+*)
 
 
 val to_input_channel : input -> in_channel
@@ -808,7 +763,7 @@ val to_input_channel : input -> in_channel
     [poly_in_channel] and/or [poly_out_channel] which are the common
     BatIO specifications established for ExtLib, OCamlNet and
     Camomile.
-    
+
     (see http://www.ocaml-programming.de/tmp/BatIO-Classes.html for more details).
 
     {b Note} In this version of Batteries Included, the object wrappers are {e not}
@@ -873,86 +828,29 @@ val i64s_of : input -> int64 BatEnum.t
 val doubles_of : input -> float BatEnum.t
 (** Read an enumeration of IEEE double precision floating point values. *)
 
+val floats_of : input -> float BatEnum.t
+(** Read an enumeration of IEEE single precision floating point values. *)
+
 val strings_of : input -> string BatEnum.t
 (** Read an enumeration of null-terminated strings. *)
 
 val lines_of : input -> string BatEnum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
- 
+val lines_of2 : input -> string BatEnum.t
+
 val chunks_of : int -> input -> string BatEnum.t
 (** Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest. *)
 
-val ulines_of : input -> Ulib.Text.t BatEnum.t
-(** offer the lines of a UTF-8 encoded input as an enumeration*)
-
 val chars_of : input -> char BatEnum.t
-(** Read an enumeration of Latin-1 characters. 
+(** Read an enumeration of Latin-1 characters.
 
     {b Note} Usually faster than calling [read] several times.*)
-
-val uchars_of : input -> Ulib.UChar.t BatEnum.t
-(** offer the characters of an UTF-8 encoded input as an enumeration*)
 
 val bits_of : in_bits -> int BatEnum.t
 (** Read an enumeration of bits *)
 
-val write_bytes : 'a output -> int BatEnum.t -> unit
-(** Write an enumeration of unsigned 8-bit bytes. *)
-
-val write_chars : 'a output -> char BatEnum.t -> unit
-(** Write an enumeration of chars. *)
-
-val write_uchars : _ output -> Ulib.UChar.t BatEnum.t -> unit
-(** Write an enumeration of characters onto a UTF-8 encoded output.*)
-
-val write_ui16s : 'a output -> int BatEnum.t -> unit
-(** Write an enumeration of unsigned 16-bit words. *)
-
-val write_i16s : 'a output -> int BatEnum.t -> unit
-(** Write an enumeration of signed 16-bit words. *)
-
-val write_i32s : 'a output -> int BatEnum.t -> unit
-(** Write an enumeration of signed 32-bit integers. *) 
-
-val write_real_i32s : 'a output -> int32 BatEnum.t -> unit
-(** Write an enumeration of OCaml int32s. *)
-
-val write_i64s : 'a output -> int64 BatEnum.t -> unit
-(** Write an enumeration of OCaml int64s. *)
-
-val write_doubles : 'a output -> float BatEnum.t -> unit
-(** Write an enumeration of IEEE double precision floating point value. *)
-
-val write_strings : 'a output -> string BatEnum.t -> unit
-(** Write an enumeration of strings, appending null characters.*)
-
-val write_chunks: 'a output -> string BatEnum.t -> unit
-(** Write an enumeration of strings, without appending null characters.*)
-
-val write_lines : 'a output -> string BatEnum.t -> unit
-(** Write an enumeration of lines, appending a LF (it might be converted
-    to CRLF on some systems depending on the underlying BatIO). *)
-
-val write_texts : 'a output -> Ulib.Text.t BatEnum.t -> unit
-(** Write an enumeration of texts onto a UTF-8 encoded output,
-    without appending a line-end.*)
-
-val write_ulines : _ output -> Ulib.Text.t BatEnum.t -> unit
-(** Write an enumeration of texts onto a UTF-8 encoded output, with a
-    newline after each.*)
-
 val write_bitss : nbits:int -> out_bits -> int BatEnum.t -> unit
 (** Write an enumeration of bits*)
-
-(** {6 Printing} *)
-
-
-val printf : 'a output -> ('b, 'a output, unit) format -> 'b
-(** A [fprintf]-style unparser. For more information
-    about printing, see the documentation of {!Printf}.
-
-    @obsolete Prefer {!Languages.Printf.fprintf}*)
-
 
 val default_buffer_size : int
 (**The default size for internal buffers.*)
@@ -1014,11 +912,16 @@ val lock_factory: (unit -> BatConcurrent.lock) ref
 
 val to_string : (string output -> 'a -> unit) -> 'a -> string
 
+val string_of_t_printer : (bool -> unit BatInnerIO.output -> 'a -> unit) -> 'a -> string
+(** [string_of_t_printer printer elt] prints the element into the output string *)
+
 val to_format: ('a BatInnerIO.output -> 'b -> unit) -> Format.formatter -> 'b -> unit
 
 (**/**)
 val comb : ('a output * 'a output) -> 'a output
 (** Old name of [combine]*)
+
+val make_enum : (input -> 'a) -> input -> 'a BatEnum.t
 
 (**
    {6 Debugging facilities}

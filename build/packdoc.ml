@@ -19,12 +19,12 @@ module Printf =
 struct
   include Printf
 
-  let make_list_printer (p:(out_channel -> 'b -> unit)) 
+  let make_list_printer (p:(out_channel -> 'b -> unit))
       (start:   string)
       (finish:  string)
       (separate:string)
       (out:out_channel)
-      (l:  'b list  ) = 
+      (l:  'b list  ) =
     let rec aux out l = match l with
       | []    -> ()
       | [h]   -> p out h
@@ -110,7 +110,7 @@ struct
     try StringSet.elements (Hashtbl.find tbl k)
     with Not_found -> []
 
-  let print out tbl = 
+  let print out tbl =
     Printf.fprintf out "{";
     Hashtbl.iter (fun k set -> Printf.fprintf out "%s: {%a}\n"
 		    k
@@ -128,13 +128,13 @@ let sort directory =
   and files = Sys.readdir directory in
     (*Read all the dependencies and store them in the tables*)
     Array.iter (
-      fun f -> 
+      fun f ->
 	if Filename.check_suffix f ".mli.depends" then
 	  let (file_name, module_name, dependencies) = read_dependency (Filename.concat directory f) in
 	    List.iter (fun x ->
 (*			 Printf.eprintf "Adding a dependency %S => %S\n" module_name x;*)
 			 modules := StringSet.add x !modules;
-			 Dependency.add dep module_name x; 
+			 Dependency.add dep module_name x;
 			 Dependency.add rev x module_name
 		      )
 	      dependencies;
@@ -144,25 +144,25 @@ let sort directory =
     ) files ;
     (*Now, start sorting*)
     let rec aux (sorted:string list) (rest: string list) =
-      match rest with 
-	| [] -> 
+      match rest with
+	| [] ->
 	    sorted
 	| _ ->
 	(*Find nodes which haven't been removed and depend on nothing*)
-	match List.fold_left (fun (keep, remove) k -> 
+	match List.fold_left (fun (keep, remove) k ->
 				match Dependency.find dep k with
-				  | None   -> 
+				  | None   ->
 				      (keep, k::remove)
 				  | Some dependencies ->
 (*				      Printf.eprintf "Module %s can't be removed, as it depends on %a (%d)\n"
 					k
 					(Printf.make_list_printer IO.nwrite "[" "]" "; ")
-					(StringSet.elements dependencies) 
+					(StringSet.elements dependencies)
 					(List.length (StringSet.elements dependencies) );*)
 				      (k::keep, remove)
 			     ) ([],[]) rest
 	with
-	  | (_, [])       -> 
+	  | (_, [])       ->
 	      Printf.eprintf "Cyclic dependencies in %a\n" Dependency.print dep;
 	      assert false
 	  | (rest, roots) ->
@@ -171,11 +171,11 @@ let sort directory =
 			     (fun x -> Dependency.remove dep x d)
 			     (Dependency.find_all rev d)) roots;
 	      aux (sorted @ roots) rest
-    in 
+    in
     let sorted = aux [] (StringSet.elements !modules) in
-      List.filter_map (fun module_name -> 
+      List.filter_map (fun module_name ->
 			 try Some (module_name, Hashtbl.find src module_name)
-			 with Not_found -> 
+			 with Not_found ->
 (*			   Printf.eprintf "I'm not going to add module %s, it's external\n%!" module_name;*)
 			   None) sorted
 let generate_mli cout pack l =
@@ -189,7 +189,7 @@ let generate_mli cout pack l =
   in
   let print_modules cout () =
     List.iter (
-      fun (name, src) -> 
+      fun (name, src) ->
 	Printf.fprintf cout "module %s:\nsig\n%a\nend\n" name (feed src) ()
     ) l in
 (*  Printf.fprintf out "module %s:\nsig\n%a\nend\n" pack print_modules ()*)
@@ -201,16 +201,16 @@ let out = ref ""
 let pack= ref ""
 
 
-let _ = 
+let _ =
   let _ = Arg.parse [("-i",    Arg.Set_string dir, "Choose the directory containing dependencies" );
 		     ("--in",  Arg.Set_string dir, "Choose the directory containing dependencies" );
 		     ("-o",    Arg.Set_string out, "Choose a destination file (stdout by default)");
 		     ("--out", Arg.Set_string out, "Choose a destination file (stdout by default)");
 		     ("-pack", Arg.Set_string pack,"Set the name of the enclosing module")]
-    ignore "" 
+    ignore ""
   in
   let dir = !dir
-  and out = match !out with "" -> stdout | name -> open_out name 
+  and out = match !out with "" -> stdout | name -> open_out name
   and pack= match !pack with"" -> failwith "Missing argument -pack" | name -> name in
     Printf.eprintf "Sorting directory %s/%s\n" (Unix.getcwd()) dir;
     generate_mli out pack (sort dir)

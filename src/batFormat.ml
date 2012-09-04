@@ -1,4 +1,4 @@
-(* 
+(*
  * ExtFormat - Extended Format module
  * Copyright (C) 1996 Pierre Weis
  *               2009 David Teller, LIFO, Universite d'Orleans
@@ -21,69 +21,68 @@
 
 
 open BatIO
-open Format
+include Format
 
-  let output_of out = fun s i o -> ignore (really_output out s i o)
-  let flush_of  out = BatInnerIO.get_flush out
-  let newline_of out= fun () -> BatInnerIO.write out '\n'
-  let spaces_of  out= 
-    (* Default function to output spaces. 
-       Copied from base format.ml*)
-    let blank_line = String.make 80 ' ' in
-    let rec display_blanks n =
-      if n > 0 then
-	if n <= 80 then ignore (really_output out blank_line 0 n) else
-	  begin
-	    ignore (really_output out blank_line 0 80);
-	    display_blanks (n - 80)
-	  end
-    in display_blanks
+(* internal functions *)
 
-  (**{6 New functions}*)
+let output_of out = fun s i o -> ignore (really_output out s i o)
+let flush_of out = BatInnerIO.get_flush out
+let newline_of out = fun () -> BatInnerIO.write out '\n'
+let spaces_of out =
+  (* Default function to output spaces.
+     Copied from base format.ml*)
+  let blank_line = String.make 80 ' ' in
+  let rec display_blanks n =
+    if n > 0 then
+      if n <= 80 then ignore (really_output out blank_line 0 n) else
+	begin
+	  ignore (really_output out blank_line 0 80);
+	  display_blanks (n - 80)
+	end
+  in display_blanks
 
+(**{6 New functions}*)
 
-  let formatter_of_output out =
-    let output = output_of out
-    and flush  = flush_of  out
-    in
-    let f = make_formatter output flush in
-      BatInnerIO.on_close_out out (fun _ -> pp_print_flush f ()); (*Note: we can't just use [flush] as [f] contains a cache.*)
-      pp_set_all_formatter_output_functions f
-	~out:output
-	~flush
-	~newline:(newline_of out)
-	~spaces:(spaces_of out);
-      f
-      
-  let set_formatter_output out =
-    BatInnerIO.on_close_out out (fun _ -> pp_print_flush Format.std_formatter ());
-    set_all_formatter_output_functions 
-      ~out:(output_of out) 
-      ~flush:(flush_of out)
-      ~newline:(newline_of out)
-      ~spaces:(spaces_of out)
+let formatter_of_output out =
+  let output = output_of out
+  and flush  = flush_of  out
+  in
+  let f = make_formatter output flush in
+  BatInnerIO.on_close_out out (fun _ -> pp_print_flush f ()); (*Note: we can't just use [flush] as [f] contains a cache.*)
+  pp_set_all_formatter_output_functions f
+    ~out:output
+    ~flush
+    ~newline:(newline_of out)
+    ~spaces:(spaces_of out);
+  f
 
-  let pp_set_formatter_output f out =
-    BatInnerIO.on_close_out out (fun _ -> pp_print_flush f ());
-    pp_set_all_formatter_output_functions f 
-      ~out:(output_of out) 
-      ~flush:(flush_of out)
-      ~newline:(newline_of out)
-      ~spaces:(spaces_of out)
+let set_formatter_output out =
+  BatInnerIO.on_close_out out (fun _ -> pp_print_flush Format.std_formatter ());
+  set_all_formatter_output_functions
+    ~out:(output_of out)
+    ~flush:(flush_of out)
+    ~newline:(newline_of out)
+    ~spaces:(spaces_of out)
 
-  (**{6 Old values, new semantics}*)
+let pp_set_formatter_output f out =
+  BatInnerIO.on_close_out out (fun _ -> pp_print_flush f ());
+  pp_set_all_formatter_output_functions f
+    ~out:(output_of out)
+    ~flush:(flush_of out)
+    ~newline:(newline_of out)
+    ~spaces:(spaces_of out)
 
-  let formatter_of_out_channel     = formatter_of_output
-  let set_formatter_out_channel    = set_formatter_output
-  let pp_set_formatter_out_channel = pp_set_formatter_output
-  let std_formatter                = formatter_of_output BatIO.stdout
-  let err_formatter                = formatter_of_output BatIO.stderr
+(**{6 Old values, new semantics}*)
 
-  (**{6 Initialization}*)
+let formatter_of_out_channel = formatter_of_output
+let set_formatter_out_channel = set_formatter_output
+let pp_set_formatter_out_channel = pp_set_formatter_output
+let std_formatter = formatter_of_output BatIO.stdout
+let err_formatter = formatter_of_output BatIO.stderr
 
-  let _ = 
-    set_formatter_output BatIO.stdout;
-    pp_set_formatter_output Format.std_formatter stdout;
-    pp_set_formatter_output Format.err_formatter stderr
+(**{6 Initialization}*)
 
-    
+let () =
+  set_formatter_output BatIO.stdout;
+  pp_set_formatter_output Format.std_formatter stdout;
+  pp_set_formatter_output Format.err_formatter stderr

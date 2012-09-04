@@ -1,4 +1,4 @@
-(* 
+(*
  * ParserCo - A simple monadic parser combinator library
  * Copyright (C) 2008 David Teller
  *
@@ -48,7 +48,7 @@
 *)
 type 'a state =
   | Eof         (**The end of the source has been reached.*)
-  | State of 'a 
+  | State of 'a
 
 type 'a report = Report of ('a state * string * 'a report) list
 (**The final result of parsing*)
@@ -73,7 +73,7 @@ end
 (** {6 Primitives} *)
 
 type ('a, 'b, 'c) t
-  (**A parser for elements of type ['a], producing 
+  (**A parser for elements of type ['a], producing
      elements of type ['b], with user-defined states
      of type ['c].*)
 
@@ -125,7 +125,7 @@ val ( >::) : ('a, 'b, 'c) t -> ('a, 'b list, 'c) t -> ('a, 'b list, 'c) t
 val label: string -> ('a, 'b, 'c) t -> ('a, 'b, 'c) t
   (**Give a name to a parser, for debugging purposes.*)
 
-val state: (_, 'b state, 'b) t 
+val state: (_, 'b state, 'b) t
   (**Succeed and return the state of the parser*)
 
 val any: ('a, 'a, _) t

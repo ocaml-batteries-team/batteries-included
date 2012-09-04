@@ -12,29 +12,31 @@ export DOCROOT
 BROWSER_COMMAND ?= x-www-browser
 export BROWSER_COMMAND
 
-ifdef DESTDIR
-OCAMLFIND_DEST += -destdir $(DESTDIR)
-endif
-
 OCAMLBUILD ?= ocamlbuild
 OCAMLBUILDFLAGS ?= -no-links
 
 ifeq ($(uname_S),Darwin)
   BATTERIES_NATIVE ?= yes
   BATTERIES_NATIVE_SHLIB ?= no
-else 
+else
   BATTERIES_NATIVE ?= yes
   BATTERIES_NATIVE_SHLIB ?= $(BATTERIES_NATIVE)
 endif
+
+# Directory where to find qtest
+QTESTDIR ?= qtest
 
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
 	_build/src/batteriesHelp.cmo \
 	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
 	_build/src/syntax/pa_strings/pa_strings.cma \
-	_build/src/syntax/pa_llist/pa_llist.cmo
+	_build/src/syntax/pa_llist/pa_llist.cmo \
+	_build/libs/*.cmi _build/libs/*.mli \
+	_build/$(QTESTDIR)/qtest \
+	ocamlinit build/ocaml
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
-	_build/src/*.cmxs
+	_build/src/*.cmxs _build/src/*.lib _build/libs/*.cmx \
 
 # What to build
 TARGETS = syntax.otarget
@@ -42,7 +44,12 @@ TARGETS += src/batteries.cma
 TARGETS += src/batteriesHelp.cmo
 TARGETS += src/batteriesThread.cma
 TARGETS += META
-BENCH_TARGETS = benchsuite/bench_int.native benchsuite/bench_map.native
+BENCH_TARGETS  = benchsuite/bench_int.native
+BENCH_TARGETS += benchsuite/flip.native
+BENCH_TARGETS += benchsuite/deque.native
+BENCH_TARGETS += benchsuite/lines_of.native
+BENCH_TARGETS += benchsuite/bitset.native
+BENCH_TARGETS += benchsuite/bench_map.native
 TEST_TARGET = test-byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
@@ -50,45 +57,53 @@ ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
   MODE = shared
   TARGETS += src/batteries.cmxs src/batteriesThread.cmxs
   TEST_TARGET = test-native
-else 
+else
 ifeq ($(BATTERIES_NATIVE), yes)
   EXT = native
   MODE = native
   TARGETS += src/batteries.cmxa src/batteriesThread.cmxa
-  TEST-DEPS = test-native
+  TEST_TARGET = test-native
 else
   EXT = byte
   MODE = bytecode
 endif
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest camfail camfailunk
+.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 
-all: 
+all: _build/$(QTESTDIR)/qtest
 	@echo "Build mode:" $(MODE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
 clean:
-	${RM} apidocs src/batteriesConfig.ml META
-	${RM} qtest/*_t.ml qtest/test_mods.mllib
-	$(OCAMLBUILD) -clean
+	@${RM} src/batteriesConfig.ml batteries.odocl bench.log
+	@${RM} $(QTESTDIR)/all_tests.ml
+	@${RM} -r man/
+	@$(OCAMLBUILD) -clean
+	@echo " Cleaned up working copy" # Note: ocamlbuild eats the first char!
 
-doc:
+batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
+	cat $^ > $@
+
+doc: batteries.odocl
 	$(OCAMLBUILD) batteries.docdir/index.html
-	test -e apidocs || ln -s _build/batteries.docdir apidocs
+
+man: all batteries.odocl
+	-mkdir man
+	ocamlfind ocamldoc -package threads.posix -sort -man -hide-warnings -d man -I _build/libs -I _build/src libs/uniclib.mli src/*.mli
 
 install: all uninstall_packages
-	ocamlfind install $(OCAMLFIND_DEST) estring \
+	ocamlfind install estring \
 		libs/estring/META \
 		_build/libs/estring/*.cmo \
 		_build/libs/estring/*.cmi \
 		_build/libs/estring/*.mli
-	ocamlfind install $(OCAMLFIND_DEST) $(NAME) $(INSTALL_FILES) \
+	ocamlfind install $(NAME) $(INSTALL_FILES) \
 		-optional $(OPT_INSTALL_FILES)
 
 uninstall_packages:
-	ocamlfind remove $(OCAMLFIND_DEST) estring
-	ocamlfind remove $(OCAMLFIND_DEST) $(NAME)
+	ocamlfind remove estring
+	ocamlfind remove $(NAME)
 
 uninstall: uninstall_packages
 	${RM} -r $(DOCROOT)
@@ -96,58 +111,113 @@ uninstall: uninstall_packages
 install-doc: doc
 	mkdir -p $(DOCROOT)
 	cp -r doc/batteries/* $(DOCROOT)
-# deal with symlink that will break
+	# deal with symlink that will break
 	${RM} $(DOCROOT)/html/batteries_large.png
 	cp -f doc/batteries_large.png $(DOCROOT)/html
 	mkdir -p $(DOCROOT)/html/api
-	cp apidocs/* $(DOCROOT)/html/api
-	cp LICENSE README FAQ VERSION $(DOCROOT)
+	cp _build/batteries.docdir/* $(DOCROOT)/html/api
+	cp LICENSE README.md FAQ $(DOCROOT)
+
+install-man: man
+	install man/* /usr/local/man/man3/
 
 reinstall:
 	$(MAKE) uninstall
 	$(MAKE) install
 
-#List of source files that it's okay to try to test
+###############################################################################
+#	BUILDING AND RUNNING UNIT TESTS
+###############################################################################
+
+### List of source files that it's okay to try to test
+
 DONTTEST=src/batteriesHelp.ml
 TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
+TESTDEPS = $(TESTABLE)
 
-TESTDEPS = $(patsubst src/%.ml,qtest/%_t.ml, $(TESTABLE)) qtest/test_mods.mllib
+### Test suite: "offline" unit tests
+##############################################
 
-_build/testsuite/main.byte: $(TESTDEPS)
+_build/testsuite/main.byte: $(TESTDEPS) $(wildcard testsuite/*.ml)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.byte
-_build/testsuite/main.native: $(TESTDEPS)
+_build/testsuite/main.native: $(TESTDEPS) $(wildcard testsuite/*.ml)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) testsuite/main.native
 
-_build/qtest/test_runner.byte: $(TESTDEPS)
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest/test_runner.byte
-_build/qtest/test_runner.native: $(TESTDEPS)
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) qtest/test_runner.native
+### qtest: "inline" unit tests
+##############################################
 
-#qtest only targets, for quicker test iteration
-qtest-byte: _build/qtest/test_runner.byte
-	_build/qtest/test_runner.byte
+_build/$(QTESTDIR)/qtest.byte:
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(QTESTDIR)/qtest.byte
+_build/$(QTESTDIR)/qtest.native:
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(QTESTDIR)/qtest.native
 
-qtest-native: _build/qtest/test_runner.native
-	_build/qtest/test_runner.native
+# We want a version of qtest without extension to be installed
+_build/$(QTESTDIR)/qtest: _build/$(QTESTDIR)/qtest.$(EXT)
+	cp $< $@
 
-# all tests 
-test-byte: _build/testsuite/main.byte _build/qtest/test_runner.byte
-	_build/testsuite/main.byte 
-	_build/qtest/test_runner.byte
+# extract all qtest unit tests into a single ml file
+$(QTESTDIR)/all_tests.ml: _build/$(QTESTDIR)/qtest.$(EXT) $(TESTABLE)
+	@$< -o $@ --shuffle --preamble-file qtest_preamble.ml extract $(TESTABLE)
 
-test-native: _build/testsuite/main.native _build/qtest/test_runner.native
-	_build/testsuite/main.byte 
-	_build/qtest/test_runner.byte
-	_build/testsuite/main.native
-	_build/qtest/test_runner.native
+_build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml $(QTESTDIR)/runner.ml
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 $(QTESTDIR)/all_tests.byte
+_build/$(QTESTDIR)/all_tests.native: $(QTESTDIR)/all_tests.ml $(QTESTDIR)/runner.ml
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 $(QTESTDIR)/all_tests.native
 
-test: $(TEST_TARGET)
+### qtest: quick run of inline unit tests
+##############################################
+# $ make qtest TESTABLE=foo.ml
+# will only test the module Foo.
 
-bench: 
+qtest-clean:
+	@${RM} $(QTESTDIR)/all_tests.ml
+	@${MAKE} _build/$(QTESTDIR)/all_tests.$(EXT)
+
+qtest: qtest-clean
+	@_build/$(QTESTDIR)/all_tests.$(EXT)
+
+### run all unit tests
+##############################################
+
+test-byte: _build/testsuite/main.byte _build/$(QTESTDIR)/all_tests.byte
+	@_build/testsuite/main.byte
+	@echo "" # newline after "OK"
+	@_build/$(QTESTDIR)/all_tests.byte
+
+test-native: test-byte _build/testsuite/main.native _build/$(QTESTDIR)/all_tests.native
+	@_build/testsuite/main.native
+	@echo "" # newline after "OK"
+	@_build/$(QTESTDIR)/all_tests.native
+
+full-test: $(TEST_TARGET)
+
+test-compat: src/batteries_compattest.ml
+	ocamlbuild src/batteries_compattest.byte -no-links
+
+test: test-byte test-compat
+
+###############################################################################
+#	BENCHMARK SUITE
+###############################################################################
+
+bench:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS) $(BENCH_TARGETS)
-	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH); )
+	$(RM) bench.log
+	$(foreach BENCH, $(BENCH_TARGETS), _build/$(BENCH) | tee -a bench.log; )
+	@echo "Benchmarking results are written to bench.log"
 
-release: setup.ml doc test 
+
+###############################################################################
+#	PREPARING RELEASE FILES
+###############################################################################
+
+release:
+	$(MAKE) clean
+	git stash save "stashing local modifications before release"
+	$(MAKE) release-cleaned
+
+# assumes irreproachably pristine working directory
+release-cleaned: setup.ml doc test
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
@@ -155,20 +225,12 @@ setup.ml: _oasis
 	oasis setup
 	git commit setup.ml -m"Update setup.ml based on _oasis"
 
-##
-## Magic for test target - auto-generated test files from source comments
-##
 
-_build/build/make_suite.$(EXT): build/make_suite.mll
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) make_suite.$(EXT)
+###############################################################################
+#	CODE COVERAGE REPORTS
+###############################################################################
 
-#convert a source file to a test suite by filtering special comments
-qtest/%_t.ml: src/%.ml _build/build/make_suite.$(EXT)
-	_build/build/make_suite.$(EXT) $< > $@
+coverage/index.html: $(TESTDEPS) $(QTESTDIR)/all_tests.ml
+	$(OCAMLBUILD) coverage/index.html
 
-#put all the testing modules in a library
-qtest/test_mods.mllib:
-	/bin/echo -n "Quickcheck Tests " > $@
-	echo $(patsubst src/%.ml,%_t, $(TESTABLE)) >> $@
-
-.PHONY: qtest/test_mods.mllib
+coverage: coverage/index.html

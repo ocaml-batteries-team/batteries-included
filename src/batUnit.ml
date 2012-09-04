@@ -1,7 +1,7 @@
-(* 
+(*
  * ExtUnit - Operations on Unit
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,15 +18,16 @@
  * Foundation, Inc.
  *)
 
+(*BISECT-IGNORE-BEGIN*)
 
 let unit_string = "()"
 
 type t = unit
-let as_string   = unit_string
-let string_of _ = as_string
-let of_string   = function
+let string_of () = unit_string
+let of_string = function
   | "()" -> ()
-  | _    -> raise (Invalid_argument "unit_of_string")
-let compare _ _ = 0
-let print out t = BatInnerIO.nwrite out unit_string
-  
+  | _  -> raise (Invalid_argument "unit_of_string")
+let compare () () = 0
+let print out () = BatInnerIO.nwrite out unit_string
+
+(*BISECT-IGNORE-END*)

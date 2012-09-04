@@ -26,7 +26,7 @@
 
 module Pervasives = struct include Pervasives include BatPervasives end
 module Int = BatInt
-module Sys = struct include Sys include BatSys end
+module Sys = BatSys
 module Hashtbl = BatHashtbl
 module Array = struct include Array include BatArray end
 

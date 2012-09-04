@@ -1,6 +1,6 @@
 (* Program for substituting configuration data in various files.
  * Copyright (C) 2010 Michael Ekstrand
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -18,7 +18,7 @@
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE. 
+ * THE SOFTWARE.
  *)
 
 let strip ?(chars=" \t\r\n") s =
@@ -34,13 +34,13 @@ let strip ?(chars=" \t\r\n") s =
 	done;
 	String.sub s p (!l - p + 1)
 
-let version =
+let version = (* get version string from _oasis *)
   try
     let chan = open_in (Filename.concat Filename.parent_dir_name "_oasis") in
     let v = ref (input_line chan) in
     while String.sub !v 0 8 <> "Version:" do v := input_line chan done;
     let _ = close_in chan in
-    strip !v
+    strip (String.sub !v 8 (String.length !v - 8))
   with x ->
     prerr_endline (Printexc.to_string x);
     exit 2

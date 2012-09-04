@@ -1,5 +1,5 @@
 (*
- * ExtSys - additional and modified functions for System
+ * BatSys - additional and modified functions for System
  * Copyright (C) 1996 Xavier Leroy
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *
@@ -19,6 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+let big_endian = false  (* FIXME: overridden by real big_endian value in 4.00 and above *)
 
+include Sys
 
-let files_of d = BatArray.enum (Sys.readdir d)
+let files_of d = BatArray.enum (readdir d)
+
+let escape_cmdline =
+  if os_type = "Win32" then
+    fun args -> List.map Filename.quote args
+  else
+    (fun args -> args)

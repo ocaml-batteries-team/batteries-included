@@ -1,1 +1,2 @@
-<*>: pkg_benchmark
+<bench_set.ml*>: pkg_benchmark
+<sequence.ml>: rectypes

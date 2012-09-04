@@ -2,12 +2,12 @@ open Threads, Event
 
 let tasks = 5
 
-let main = 
+let main =
   let input      = Sys.argv in
   let input_len  = Array.length input in
   let channels   = Array.init tasks (fun _ -> new_channel ()) in
   let part_size  = input_len / tasks in
-  let gen_part i = 
+  let gen_part i =
     let len = if i=tasks-1 then (input_len) - (i * part_size) else part_size in
     Array.sub input (i*part_size) len
   in

@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtBool - Extended booleans
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -38,7 +38,7 @@ module BaseBool = struct
 	  [e2] is not evaluated at all. *)
   let zero, one = false, true
   let neg = not
-    
+
   let succ _ = true
   let pred _ = false
   let abs  x = x
@@ -46,17 +46,19 @@ module BaseBool = struct
   let add    = ( || )
   let mul    = ( && )
   let sub _  = not (*Weird extrapolation*)
+  (*BISECT-IGNORE-BEGIN*)
   let div _ _=
     raise (Invalid_argument "Bool.div")
 
-  let modulo _ _ = 
+  let modulo _ _ =
     raise (Invalid_argument "Bool.modulo")
 
-  let pow _ _ = 
+  let pow _ _ =
     raise (Invalid_argument "Bool.pow")
+  (*BISECT-IGNORE-END*)
 
   let compare = compare
-    
+
   let of_int = function
     | 0 -> false
     | _ -> true
@@ -76,16 +78,57 @@ module BaseBool = struct
 end
 
 include BatNumber.MakeNumeric(BaseBool)
-module Infix = BatNumber.MakeInfix(BaseBool)
-module Compare = BatNumber.MakeCompare(BaseBool)
-  
+
+(*$T succ
+  succ true = true
+  succ false = true
+ *)
+(*$T pred
+  pred true = false
+  pred false = false
+ *)
+(*$T abs
+  abs true = true
+  abs false = false
+ *)
+(*$T sub
+  sub true  true  = false
+  sub true  false = true
+  sub false true  = false
+  sub false false = true
+ *)
+(*$Q of_int
+  (Q.int) (fun i -> (of_int i) = (Int.(<>) i 0))
+ *)
+(*$T of_int
+  of_int 0 = false
+ *)
+(*$T
+  of_float (-1.) = true
+  of_float 0. = false
+  of_float (1. /. 0.) = false
+  of_float (-1. /. 0.) = false
+  of_float nan = false
+  to_float true = 1.
+  to_float false = 0.
+  of_string "true" = true
+  of_string "false" = false
+  try ignore (of_string "smurf"); false with Invalid_argument _ -> true
+*)
+
+
 external not : bool -> bool = "%boolnot"
 external ( && ) : bool -> bool -> bool = "%sequand"
 external ( || ) : bool -> bool -> bool = "%sequor"
 
 type bounded = t
 let min_num, max_num = false, true
-  
+
 let print out t = BatInnerIO.nwrite out (to_string t)
-let t_printer paren out t = print out t
-  
+let t_printer _paren out t = print out t
+(*$T
+  BatIO.to_string print true = "true"
+  BatIO.to_string print false = "false"
+  BatIO.string_of_t_printer t_printer true = "true"
+  BatIO.string_of_t_printer t_printer false = "false"
+*)

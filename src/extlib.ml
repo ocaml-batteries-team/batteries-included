@@ -3,11 +3,11 @@ module BitSet = BatBitSet
 module Dllist = BatDllist
 module DynArray = BatDynArray
 module Enum = BatEnum
-module ExtArray = struct 
-  module Array = struct include Array include BatArray end 
+module ExtArray = struct
+  module Array = struct include Array include BatArray end
 end
-module ExtHashtbl = struct 
-  module Hashtbl = BatHashtbl 
+module ExtHashtbl = struct
+  module Hashtbl = BatHashtbl
 end
 module ExtList = struct
   module List = struct include List include BatList end
@@ -22,6 +22,6 @@ module Option = BatOption
 module PMap = BatMap
 module RefList = BatRefList
 module Std = BatPervasives
-module UChar = Ulib.UChar
-module UTF8 = Ulib.UTF8
+module UChar = Uniclib.UChar
+module UTF8 = Uniclib.UTF8
 (* module Unzip = NOT AVAILABLE *)

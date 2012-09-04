@@ -121,3 +121,28 @@ let str_decode ?(tbl=inv_chars) s =
 	let ch = decode ~tbl (BatIO.input_string s) in
 	BatIO.nread ch ((String.length s * 6) / 8)
 
+(*$Q str_decode; str_encode
+  (Q.string) (fun s -> s = str_decode (str_encode s))
+  (Q.string) (fun s -> let e = str_encode s in e = str_encode (str_decode e))
+ *)
+
+(*$T make_decoding_table
+  try ignore (make_decoding_table [|'1'|]); false \
+    with Invalid_table -> true
+  try ignore (make_decoding_table (Array.make 2000 '1')); false \
+    with Invalid_table -> true
+*)
+
+(*$T str_encode
+  try ignore (str_encode ~tbl:[|'1'|] "mlk"); false \
+    with Invalid_table -> true
+  try ignore (str_encode ~tbl:(Array.make 2000 '1') "mlk"); false \
+    with Invalid_table -> true
+*)
+
+(*$T str_decode
+  try ignore (str_decode ~tbl:[|1|] "mlk"); false \
+    with Invalid_table -> true
+  try ignore (str_decode ~tbl:(Array.make 2000 1) "mlk"); false \
+    with Invalid_table -> true
+*)

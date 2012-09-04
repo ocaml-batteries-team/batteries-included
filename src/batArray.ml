@@ -2,7 +2,7 @@
  * ExtArray - additional and modified functions for arrays.
  * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -38,10 +38,11 @@ let modifyi f a =
     unsafe_set a i (f i (unsafe_get a i))
   done
 
-(**T modify
-   let a = [|3;2;1|] in modify (fun x -> x + 1) a; a = [|4;3;2|]
-   let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
- **)
+(*$T modify
+  let a = [|3;2;1|] in modify (fun x -> x + 1) a; a = [|4;3;2|]
+*)(*$T modifyi
+  let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
+*)
 
 let fold_lefti f x a =
   let r = ref x in
@@ -50,10 +51,10 @@ let fold_lefti f x a =
   done;
   !r
 
-(**T fold_left
+(*$T fold_lefti
    fold_lefti (fun a i x -> a + i * x) 1 [|2;4;5|] = 1 + 0 + 4 + 10
    fold_lefti (fun a i x -> a + i * x) 1 [||] = 1
- **)
+*)
 
 let rev_in_place xs =
   let n = length xs in
@@ -65,20 +66,20 @@ let rev_in_place xs =
     decr j
   done
 
-(**T rev_in_place
+(*$T rev_in_place
    let a = [|1;2;3;4|] in rev_in_place a; a = [|4;3;2;1|]
    let a = [|1;2;3|] in rev_in_place a; a = [|3;2;1|]
    let a = [||] in rev_in_place a; a=[||]
- **)
+*)
 
 let rev xs =
   let ys = Array.copy xs in
   rev_in_place ys;
   ys
 
-(**Q rev
+(*$Q rev
    (Q.array Q.int) ~count:5 (fun l -> rev l |> rev = l)
- **)
+*)
 
 let for_all p xs =
   let n = length xs in
@@ -89,11 +90,11 @@ let for_all p xs =
   in
   loop 0
 
-(**T for_all
+(*$T for_all
    for_all (fun x -> x mod 2 = 0) [|2;4;6|]
    for_all (fun x -> x mod 2 = 0) [|2;3;6|] = false
    for_all (fun _ -> false) [||]
- **)
+*)
 
 let exists p xs =
   let n = length xs in
@@ -104,11 +105,11 @@ let exists p xs =
   in
   loop 0
 
-(**T exists
+(*$T exists
    exists (fun x -> x mod 2 = 0) [|1;4;5|]
    exists (fun x -> x mod 2 = 0) [|1;3;5|] = false
    exists (fun _ -> false) [||] = false
- **)
+*)
 
 
 let mem a xs =
@@ -120,11 +121,11 @@ let mem a xs =
   in
   loop 0
 
-(**T mem
-   mem 2 [|1;2;3|] 
+(*$T mem
+   mem 2 [|1;2;3|]
    mem 2 [||] = false
    mem (ref 3) [|ref 1; ref 2; ref 3|]
- **)
+*)
 
 let memq a xs =
   let n = length xs in
@@ -135,11 +136,11 @@ let memq a xs =
   in
   loop 0
 
-(**T memq
+(*$T memq
    memq 2 [|1;2;3|]
    memq 2 [||] = false
    memq (ref 3) [|ref 1; ref 2; ref 3|] = false
- **)
+*)
 
 let findi p xs =
   let n = length xs in
@@ -149,8 +150,29 @@ let findi p xs =
     else loop (succ i)
   in
   loop 0
+(*$Q findi
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int Q.bool)) (fun (a, f) -> \
+    try let index = findi f a in \
+        let i = ref (-1) in \
+        for_all (fun elt -> incr i; \
+          if !i < index then not (f elt) \
+          else if !i = index then f elt else true)\
+        a \
+    with Not_found -> for_all (fun elt -> not (f elt)) a)
+*)
 
 let find p xs = xs.(findi p xs)
+(*$Q find
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int Q.bool)) (fun (a, f) -> \
+    let a = map (fun x -> `a x) a in \
+    let f (`a x) = f x in\
+    try let elt = find f a in \
+        let past = ref false in \
+        for_all (fun x -> if x == elt then (past := true; f x) \
+                 else !past || not (f x)) \
+        a \
+    with Not_found -> for_all (fun elt -> not (f elt)) a)
+*)
 
 (* Use of BitSet suggested by Brian Hurt. *)
 let filter p xs =
@@ -163,14 +185,20 @@ let filter p xs =
   (* Allocate the final array and copy elements into it. *)
   let n' = BatBitSet.count bs in
   let j = ref 0 in
-  let xs' = init n'
-    (fun _ ->
-       (* Find the next set bit in the BitSet. *)
-       while not (BatBitSet.is_set bs !j) do incr j done;
-       let r = xs.(!j) in
-       incr j;
-       r) in
-  xs'
+  init n'
+    (fun _ -> match BatBitSet.next_set_bit bs !j with
+      | Some i -> j := i+1; xs.(i)
+      | None ->
+        (* not enough 1 bits - incorrect count? *)
+        assert false (*BISECT-VISIT*)
+    )
+(*$Q filter
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int Q.bool)) (fun (a, f) -> \
+    let b = Array.to_list (filter f a) in \
+    let b' = List.filter f (Array.to_list a) in \
+    List.for_all (fun (x,y) -> x = y) (List.combine b b') \
+  )
+*)
 
 let filteri p xs =
   let n = length xs in
@@ -182,18 +210,17 @@ let filteri p xs =
   (* Allocate the final array and copy elements into it. *)
   let n' = BatBitSet.count bs in
   let j = ref 0 in
-  let xs' = init n'
-    (fun _ ->
-       (* Find the next set bit in the BitSet. *)
-       while not (BatBitSet.is_set bs !j) do incr j done;
-       let r = xs.(!j) in
-       incr j;
-       r) in
-  xs'
+  init n'
+    (fun _ -> match BatBitSet.next_set_bit bs !j with
+      | Some i -> j := i+1; xs.(i)
+      | None ->
+        (* not enough 1 bits - incorrect count? *)
+        assert false (*BISECT-VISIT*)
+    )
 
-(**T array_filteri
+(*$T filteri
    filteri (fun i x -> (i+x) mod 2 = 0) [|1;2;3;4;0;1;2;3|] = [|0;1;2;3|]
-**)
+*)
 
 let find_all = filter
 
@@ -211,7 +238,7 @@ let partition p xs =
   let xs1 = init n1
     (fun _ ->
        (* Find the next set bit in the BitSet. *)
-       while not (BatBitSet.is_set bs !j) do incr j done;
+       while not (BatBitSet.mem bs !j) do incr j done;
        let r = xs.(!j) in
        incr j;
        r) in
@@ -219,15 +246,25 @@ let partition p xs =
   let xs2 = init n2
     (fun _ ->
        (* Find the next clear bit in the BitSet. *)
-       while BatBitSet.is_set bs !j do incr j done;
+       while BatBitSet.mem bs !j do incr j done;
        let r = xs.(!j) in
        incr j;
        r) in
   xs1, xs2
+(*$Q partition
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int Q.bool)) (fun (a, f) -> \
+    let b1, b2 = partition f a in \
+    let b1, b2 = Array.to_list b1, Array.to_list b2 in \
+    let b1', b2' = List.partition f (Array.to_list a) in \
+    List.for_all (fun (x,y) -> x = y) (List.combine b1 b1') && \
+    List.for_all (fun (x,y) -> x = y) (List.combine b2 b2') \
+  )
+*)
 
 let enum xs =
   let rec make start xs =
-    let n = length xs in(*Inside the loop, as [make] may later be called with another array*)
+    let n = length xs in
+      (* inside the loop, as [make] may later be called with another array *)
     BatEnum.make
       ~next:(fun () ->
 	       if !start < n then
@@ -237,16 +274,30 @@ let enum xs =
       ~count:(fun () ->
 		n - !start)
       ~clone:(fun () ->
-		let xs' = Array.sub xs !start (n - !start) in
-		make (ref 0) xs')
+		make (ref !start) xs)
   in
   make (ref 0) xs
+(*$Q enum
+  (Q.array Q.small_int) (fun a -> \
+    let e = enum a in \
+    for i = 0 to Array.length a / 2 - 1 do\
+      assert (a.(i) = BatEnum.get_exn e)\
+    done; \
+    let e' = BatEnum.clone e in \
+    assert (BatEnum.count e = BatEnum.count e'); \
+    for i = Array.length a / 2 to Array.length a - 1 do \
+      assert (a.(i) = BatEnum.get_exn e && a.(i) = BatEnum.get_exn e') \
+    done; \
+    BatEnum.is_empty e && BatEnum.is_empty e' \
+  )
+*)
+
 
 let backwards xs =
   let rec make start xs =
     BatEnum.make
       ~next:(fun () ->
-	       if !start > 0 then 
+	       if !start > 0 then
 		 xs.(BatRef.pre_decr start)
 	       else
 		 raise BatEnum.No_more_elements)
@@ -257,37 +308,101 @@ let backwards xs =
 		make (BatRef.copy start) xs')
   in
   make (ref (length xs)) xs
+(*$Q backwards
+  (Q.array Q.small_int) (fun a -> \
+    let e = backwards a in \
+    let n = Array.length a in \
+    for i = 0 to Array.length a / 2 - 1 do\
+      assert (a.(n - 1 - i) = BatEnum.get_exn e)\
+    done; \
+    let e' = BatEnum.clone e in \
+    assert (BatEnum.count e = BatEnum.count e'); \
+    for i = Array.length a / 2 to Array.length a - 1 do \
+      assert (a.(n - 1 - i) = BatEnum.get_exn e && \
+              a.(n - 1 - i) = BatEnum.get_exn e') \
+    done; \
+    BatEnum.is_empty e && BatEnum.is_empty e' \
+  )
+*)
 
 let of_enum e =
   let n = BatEnum.count e in
   (* This assumes, reasonably, that init traverses the array in order. *)
   Array.init n
-    (fun i ->
+    (fun _i ->
        match BatEnum.get e with
        | Some x -> x
-       | None -> assert false)
+       | None -> assert false (*BISECT-VISIT*))
 
 let of_backwards e =
   of_list (BatList.of_backwards e)
 
 let range xs = BatEnum.(--^) 0 (Array.length xs)
+(*$Q range
+  (Q.array Q.small_int) (fun a -> \
+    BatEnum.equal (=) (range a) \
+     (enum (Array.init (Array.length a) (fun i -> i))))
+*)
 
 let filter_map p xs =
   of_enum (BatEnum.filter_map p (enum xs))
+(*$Q filter_map
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) \
+  (fun (a, f) -> \
+    let a' = filter (fun elt -> f elt <> None) a in \
+    let a' = map (f |- BatOption.get) a' in \
+    let a = filter_map f a in \
+    a = a' \
+  )
+*)
 
 let iter2 f a1 a2 =
   if Array.length a1 <> Array.length a2
   then raise (Invalid_argument "Array.iter2");
   for i = 0 to Array.length a1 - 1 do
     f a1.(i) a2.(i);
-  done;;
+  done
+(*$Q iter2
+  (Q.array Q.small_int) (fun a -> \
+    let a' = Array.map (fun a -> a + 1) a in \
+    let i = ref (-1) in \
+    let b = Array.make (Array.length a) (max_int, max_int) in \
+    let f x1 x2 = incr i; b.(!i) <- (x1, x2) in \
+    let b' = Array.map (fun a -> (a, a + 1)) a in \
+    iter2 f a a'; \
+    b = b' \
+  )
+*)
+(*$T iter2
+  try iter2 (fun _ _ -> ()) [|1|] [|1;2;3|]; false \
+    with Invalid_argument _ -> true
+  try iter2 (fun _ _ -> ()) [|1|] [||]; false \
+    with Invalid_argument _ -> true
+*)
 
 let iter2i f a1 a2 =
   if Array.length a1 <> Array.length a2
   then raise (Invalid_argument "Array.iter2i");
   for i = 0 to Array.length a1 - 1 do
     f i a1.(i) a2.(i);
-  done;;
+  done
+(*$Q iter2i
+  (Q.array Q.small_int) (fun a -> \
+    let a' = Array.map (fun a -> a + 1) a in \
+    let i = ref (-1) in \
+    let b = Array.make (Array.length a) (max_int, max_int) in \
+    let f idx x1 x2 = incr i; assert (!i = idx); b.(!i) <- (x1, x2) in \
+    let b' = Array.map (fun a -> (a, a + 1)) a in \
+    iter2i f a a'; \
+    b = b' \
+  )
+*)
+(*$T iter2i
+  try iter2i (fun _ _ _ -> ()) [|1|] [|1;2;3|]; false \
+    with Invalid_argument _ -> true
+  try iter2i (fun _ _ _ -> ()) [|1|] [||]; false \
+    with Invalid_argument _ -> true
+*)
 
 let for_all2 p xs ys =
   let n = length xs in
@@ -299,11 +414,15 @@ let for_all2 p xs ys =
   in
   loop 0
 
-(**T for_all2
+(*$T for_all2
    for_all2 (=) [|1;2;3|] [|3;2;1|] = false
    for_all2 (=) [|1;2;3|] [|1;2;3|]
    for_all2 (<>) [|1;2;3|] [|3;2;1|] = false
- **)
+   try ignore (for_all2 (=) [|1;2;3|] [|1;2;3;4|]); false \
+     with Invalid_argument _ -> true
+   try ignore (for_all2 (=) [|1;2|] [||]); false \
+     with Invalid_argument _ -> true
+*)
 
 let exists2 p xs ys =
   let n = length xs in
@@ -315,61 +434,79 @@ let exists2 p xs ys =
   in
   loop 0
 
-(**T exists2
+(*$T exists2
    exists2 (=) [|1;2;3|] [|3;2;1|]
    exists2 (<>) [|1;2;3|] [|1;2;3|] = false
- **)
+   try ignore (exists2 (=) [|1;2|] [|3|]); false \
+     with Invalid_argument _ -> true
+*)
 
 let map2 f xs ys =
   let n = length xs in
-  if length ys <> n then raise (Invalid_argument "Array.exists2");
+  if length ys <> n then raise (Invalid_argument "Array.map2");
   Array.init n (fun i -> f xs.(i) ys.(i))
 
-(**T map2
+(*$T map2
    map2 (-) [|1;2;3|] [|6;3;1|] = [|-5;-1;2|]
    map2 (-) [|2;4;6|] [|1;2;3|] = [|1;2;3|]
- **)
+   try ignore (map2 (-) [|2;4|] [|1;2;3|]); false \
+     with Invalid_argument _ -> true
+   try ignore (map2 (-) [|2;4|] [|3|]); false \
+     with Invalid_argument _ -> true
+*)
 
-let make_compare cmp a b =
+let compare cmp a b =
   let length_a = Array.length a in
   let length_b = Array.length b in
   let length   = BatInt.min length_a length_b in
-  let rec aux i = 
+  let rec aux i =
     if i < length then
       let result = cmp (unsafe_get a i) (unsafe_get b i) in
       if result = 0 then aux (i + 1)
       else               result
     else
-      if length_a = length_b then	0 
+      if length_a = length_b then	0
       else if length_a < length_b then -1
       else                              1
-  in 
+  in
   aux 0
 
-(**T make_compare
-   make_compare compare [|1;2;3|] [|1;2|] = 1
-   make_compare compare [|1;2|] [|1;2;4|] = -1
-   make_compare compare [|1|] [||] = 1
-   make_compare compare [||] [||] = 0
-   make_compare compare [|1;2|] [|1;2|] = 0
-**)
+(*$T compare
+   compare Pervasives.compare [|1;2;3|] [|1;2|] = 1
+   compare Pervasives.compare [|1;2|] [|1;2;4|] = -1
+   compare Pervasives.compare [|1|] [||] = 1
+   compare Pervasives.compare [||] [||] = 0
+   compare Pervasives.compare [|1;2|] [|1;2|] = 0
+   compare (fun x y -> -(Pervasives.compare x y)) [|2;1|] [|1;2|] = -1
+*)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
   match length t with
     | 0 ->
 	BatInnerIO.nwrite out first;
 	BatInnerIO.nwrite out last
-    | 1 ->
-	BatInnerIO.Printf.fprintf out "%s%a%s" first print_a (unsafe_get t 0) last
-    | n -> 
+    | n ->
 	BatInnerIO.nwrite out first;
 	print_a out (unsafe_get t 0);
 	for i = 1 to n - 1 do
-	  BatInnerIO.Printf.fprintf out "%s%a" sep print_a (unsafe_get t i) 
+	  BatInnerIO.nwrite out sep;
+	  print_a out (unsafe_get t i);
 	done;
 	BatInnerIO.nwrite out last
+(*$T
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) \
+    [|2;4;66|] = "[2,4,66]"
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) \
+    [|2|] = "[2]"
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) \
+    [||] = "[]"
+*)
 
-let t_printer a_printer paren out x = print (a_printer false) out x
+let t_printer a_printer (_paren: bool) out x = print (a_printer false) out x
+(*$T t_printer
+  BatIO.string_of_t_printer (t_printer BatInt.t_printer) \
+    [|-1;-3;0|] = "[|-1; -3; 0|]"
+*)
 
 let reduce f a =
   if Array.length a = 0 then
@@ -380,42 +517,149 @@ let reduce f a =
     !acc
   )
 
-(**T reduce
+(*$T reduce
    reduce (+) [|1;2;3|] = 6
    reduce (fun _ -> assert false) [|1|] = 1
- **)
+   try reduce (fun _ _ -> ()) [||]; false \
+     with Invalid_argument _ -> true
+*)
 
 let min a = reduce Pervasives.min a
 let max a = reduce Pervasives.max a
 
-(**T min/max
-   min [|1;2;3|] = 1
-   max [|1;2;3|] = 3
-   min [|2;3;1|] = 1
-   max [|2;3;1|] = 3
- **)
+(*$T min
+  min [|1;2;3|] = 1
+  min [|2;3;1|] = 1
+*)(*$T max
+  max [|1;2;3|] = 3
+  max [|2;3;1|] = 3
+*)
+
+(* meant for tests, don't care about side effects being repeated
+   or not failing early *)
+let is_sorted_by f xs =
+  let ok = ref true in
+  for i = 0 to Array.length xs - 2 do
+    ok := !ok && (f (xs.(i)) <= f (xs.(i + 1)))
+  done;
+  !ok
 
 (* TODO: Investigate whether a second array is better than pairs *)
-let decorate_stable_sort f xs = 
+let decorate_stable_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
-  let () = stable_sort (fun (i,_) (j,_) -> compare i j) decorated in
+  let () = stable_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
   map (fun (_,x) -> x) decorated
+(*$T decorate_stable_sort
+  decorate_stable_sort fst [|(1,2);(1,3);(0,2);(1,4)|] \
+    = [|(0,2);(1,2);(1,3);(1,4)|]
+*)
+(*$Q decorate_stable_sort
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) \
+    (fun (a, f) -> is_sorted_by f (decorate_stable_sort f a))
+*)
 
-
-let decorate_fast_sort f xs = 
+let decorate_fast_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
-  let () = fast_sort (fun (i,_) (j,_) -> compare i j) decorated in
+  let () = fast_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
   map (fun (_,x) -> x) decorated
+(*$Q decorate_fast_sort
+  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) \
+    (fun (a, f) -> is_sorted_by f (decorate_fast_sort f a))
+*)
 
 let insert xs x i =
   if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
   Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
 
-(**T insert
+(*$T insert
    insert [|1;2;3|] 4 0 = [|4;1;2;3|]
    insert [|1;2;3|] 4 3 = [|1;2;3;4|]
    insert [|1;2;3|] 4 2 = [|1;2;4;3|]
- **)
+   try ignore (insert [|1;2;3|] 4 100); false \
+     with Invalid_argument _ -> true
+   try ignore (insert [|1;2;3|] 4 (-40)); false \
+     with Invalid_argument _ -> true
+*)
+
+
+let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
+
+let rec ord_aux eq_elt i a1 a2 =
+  let open BatOrd in
+  if i >= length a1 then Eq
+  else match eq_elt a1.(i) a2.(i) with
+    | (Lt | Gt) as res -> res
+    | Eq -> ord_aux eq_elt (i+1) a1 a2
+
+let ord_elements eq_elt a1 a2 = ord_aux eq_elt 0 a1 a2
+
+let eq eq_elt a1 a2 =
+  BatOrd.bin_eq
+    BatInt.equal (length a1) (length a2)
+    (eq_elements eq_elt) a1 a2
+(*$T
+  eq (=) [|1;2;3|] [|1;2;3|]
+  not (eq (=) [|1;2;3|] [|1;2;3;4|])
+  not (eq (=) [|1;2;3;4|] [|1;2;3|])
+  eq (=) [||] [||]
+  eq (<>) [|1;2;3|] [|2;3;4|]
+  not (eq (<>) [|1;2;3|] [|3;2;1|])
+*)
+
+let ord ord_elt a1 a2 =
+  BatOrd.bin_ord
+    BatInt.ord (length a1) (length a2)
+    (ord_elements ord_elt) a1 a2
+(*$T ord
+  ord BatInt.ord [|2|] [|1;2|] = BatOrd.Lt
+  ord BatInt.ord [|1;1|] [|2|] = BatOrd.Gt
+  ord BatInt.ord [|1;1;1|] [|1;1;2|] = BatOrd.Lt
+  ord BatInt.ord [|1;1;1|] [|1;1;1|] = BatOrd.Eq
+*)
+
+module Incubator = struct
+  module Eq (T : BatOrd.Eq) = struct
+    type t = T.t array
+    let eq = eq T.eq
+  end
+
+  module Ord (T : BatOrd.Ord) = struct
+    type t = T.t array
+    let ord = ord T.ord
+  end
+end
+
+let left a len = if len >= length a then a else sub a 0 len
+let right a len = let alen = length a in
+		  if len >= alen then a else sub a (alen - len) len
+let head a pos = left a pos
+let tail a pos = let alen = length a in
+		 if pos >= alen then [||] else sub a pos (alen - pos)
+
+(*$= left & ~printer:(IO.to_string (Array.print Int.print))
+  (left [|1;2;3|] 1) [|1|]
+  (left [|1;2|] 3) [|1;2|]
+  (left [|1;2;3|] 3) [|1;2;3|]
+  (left [|1;2;3|] 10)[|1;2;3|]
+  (left [|1;2;3|] 0) [||]
+*) (*$= right & ~printer:(IO.to_string (Array.print Int.print))
+  (right [|1;2;3|] 1) [|3|]
+  (right [|1;2|] 3) [|1;2|]
+  (right [|1;2;3|] 3) [|1;2;3|]
+  (right [|1;2;3|] 10) [|1;2;3|]
+  (right [|1;2;3|] 0) [||]
+*) (*$= tail & ~printer:(IO.to_string (Array.print Int.print))
+  (tail [|1;2;3|] 1) [|2;3|]
+  [||] (tail [|1;2;3|] 10)
+  (tail [|1;2;3|] 0) [|1;2;3|]
+*) (*$= head & ~printer:(IO.to_string (Array.print Int.print))
+  (head [|1;2;3|] 1) [|1|]
+  (head [|1;2;3|] 10) [|1;2;3|]
+  (head [|1;2;3|] 0) [||]
+*)
+
+
+
 
 module Cap =
 struct
@@ -474,25 +718,28 @@ struct
   let sort         = sort
   let stable_sort  = stable_sort
   let fast_sort    = fast_sort
-  let make_compare = make_compare
+  let compare      = compare
   let print        = print
+  let ord          = ord
+  let eq           = eq
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 
+  (*BISECT-IGNORE-BEGIN*)
   module Labels =
   struct
       let init i ~f = init i f
       let create len ~init = create len init
-      let make             = create
+      let make = create
       let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
       let create_matrix = make_matrix
       let sub a ~pos ~len = sub a pos len
       let fill a ~pos ~len x = fill a pos len x
       let blit ~src ~src_pos ~dst ~dst_pos ~len = blit src src_pos dst dst_pos len
       let iter ~f a = iter f a
-      let map  ~f a = map  f a
+      let map ~f a = map  f a
       let iteri ~f a = iteri f a
-      let mapi  ~f a = mapi f a
+      let mapi ~f a = mapi f a
       let modify ~f a = modify f a
       let modifyi ~f a = modifyi f a
       let fold_left ~f ~init a = fold_left f init a
@@ -505,8 +752,6 @@ struct
       let for_all ~f a = for_all f a
       let iter2i  ~f a b = iter2i f a b
       let find ~f a = find f a
-      let map ~f a = map f a
-      let mapi ~f a = mapi f a
       let filter ~f a = filter f a
       let filter_map ~f a = filter_map f a
   end
@@ -514,23 +759,25 @@ struct
   module Exceptionless =
   struct
     let find f e =
-      try  Some (find f e)
+      try Some (find f e)
       with Not_found -> None
-	
+
     let findi f e =
-      try  Some (findi f e)
+      try Some (findi f e)
       with Not_found -> None
   end
+  (*BISECT-IGNORE-END*)
 end
 
+(*BISECT-IGNORE-BEGIN*)
 module Exceptionless =
 struct
   let find f e =
-    try  Some (find f e)
+    try Some (find f e)
     with Not_found -> None
 
   let findi f e =
-    try  Some (findi f e)
+    try Some (findi f e)
     with Not_found -> None
 end
 
@@ -538,7 +785,7 @@ module Labels =
 struct
   let init i ~f = init i f
   let create len ~init = create len init
-  let make             = create
+  let make = create
   let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
   let create_matrix = make_matrix
   let sub a ~pos ~len = sub a pos len
@@ -561,8 +808,6 @@ struct
   let iter2i  ~f a b = iter2i f a b
   let find ~f a = find f a
   let findi ~f e = findi f e
-  let map ~f a = map f a
-  let mapi ~f a = mapi f a
   let filter ~f a = filter f a
   let filter_map ~f a = filter_map f a
   module LExceptionless = struct
@@ -571,6 +816,4 @@ struct
     let findi ~f e = findi f e
   end
 end
-
-
-
+(*BISECT-IGNORE-END*)

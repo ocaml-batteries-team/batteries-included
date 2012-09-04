@@ -1,7 +1,7 @@
-(* 
+(*
  * Concurrent - Generic interface for concurrent operations
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -35,13 +35,13 @@ let compose {execute = a} {execute = b} =
 
 let create ~enter ~leave =
   {
-    execute = (fun f x -> 
+    execute = (fun f x ->
 		 enter ();
-		 try 
+		 try
 		   let result = f x in
 		     leave ();
 		     result
-		 with e -> 
+		 with e ->
 		   leave ();
 		   raise e
 	      )
@@ -50,8 +50,8 @@ let create ~enter ~leave =
 
 module type BaseLock =
 sig
-  type t(**The type of a lock.*)
-    
+  type t (** The type of a lock. *)
+
   val create:unit -> t
   val lock : t -> unit
   val unlock:t -> unit
@@ -61,8 +61,8 @@ end
 
 module type Lock =
 sig
-  type t(**The type of a lock.*)
-    
+  type t (** The type of a lock. *)
+
   val create: unit -> t
   val lock  : t -> unit
   val unlock: t -> unit
@@ -82,7 +82,7 @@ struct
   let unlock = M.unlock
   let try_lock=M.try_lock
   let synchronize ?(lock=M.create ()) f x =
-    try 
+    try
       M.lock lock;
       let result = f x in
 	M.unlock lock;
@@ -90,9 +90,9 @@ struct
     with e -> M.unlock lock;
       raise e
 
-  let make () = 
+  let make () =
     let lock = M.create () in
-      base_create 
+      base_create
 	~enter:(fun () -> M.lock lock)
 	~leave:(fun () -> M.unlock lock)
 
@@ -103,6 +103,6 @@ module BaseNoLock = struct
   external create: unit -> t = "%ignore"
   external lock  : t -> unit = "%ignore"
   external unlock: t -> unit = "%ignore"
-  let try_lock t = true
+  let try_lock _t = true
 end
 module NoLock = MakeLock(BaseNoLock)

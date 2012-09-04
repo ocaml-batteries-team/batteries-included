@@ -44,13 +44,13 @@
 
   let input_add k v =
     BatConcurrent.sync !lock (Wrapped_in.add wrapped_in k) v
-      
+
   let input_get k =
     BatConcurrent.sync !lock (Wrapped_in.find wrapped_in) k
 
   let output_add k v =
     BatConcurrent.sync !lock (Wrapped_out.add wrapped_out k) v
-      
+
   let output_get k =
     BatConcurrent.sync !lock (Wrapped_out.find wrapped_out) k
 
@@ -64,8 +64,8 @@
       BatConcurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
       output
 
-  let _ = 
-    input_add stdin Pervasives.stdin; 
+  let _ =
+    input_add stdin Pervasives.stdin;
     output_add stdout Pervasives.stdout;
     output_add stderr Pervasives.stderr
 
@@ -107,6 +107,20 @@
     let (cin, cout) = open_process s in
       (wrap_in ?autoclose cin, wrap_out ~cleanup cout)
 
+(*$T open_process
+  let s = "hello world" in let r,w = open_process "cat" in \
+  Printf.fprintf w "%s\n" s; IO.close_out w; \
+  IO.read_line r = s
+
+  try \
+    let r,w = open_process "cat" in \
+      Printf.fprintf w "hello world\n"; \
+      IO.close_out w; \
+      while true do ignore (input_char r) done; false \
+  with e -> e=IO.No_more_input || e=End_of_file
+ *)
+
+
   let open_process_full ?autoclose ?(cleanup=true) s args =
     let (a,b,c) = open_process_full s args in
       (wrap_in ?autoclose ~cleanup a, wrap_out ~cleanup b, wrap_in ?autoclose ~cleanup c)
@@ -137,11 +151,11 @@
 (**
    {6 Network}
 *)
-      
+
   let ( <| ) f x = f x
   let ( *** ) f g = fun (x,y) -> (f x, g y)
 
-  let shutdown_connection cin = 
+  let shutdown_connection cin =
     try shutdown_connection (input_get cin)
     with Not_found -> raise (Invalid_argument "Unix.descr_of_in_channel")
 
@@ -164,4 +178,3 @@
   let rec restart_on_EINTR f x =
     try f x
     with Unix_error(EINTR, _, _) -> restart_on_EINTR f x
-

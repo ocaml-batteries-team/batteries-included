@@ -21,16 +21,14 @@
 
 include BatInnerIO
 
-(**
-   {6 API}
-*)
-
 external noop :          unit -> unit = "%ignore"
 external default_close : unit -> unit = "%ignore"
 
+type ('a, 'b) printer = 'b output -> 'a -> unit
+
 let pos_in i =
   let p = ref 0 in
-    (wrap_in 
+    (wrap_in
       ~read:(fun () ->
 	       let c = read i in
 		 incr p;
@@ -84,7 +82,7 @@ let progress_out out f =
 let string_enum s =
   let l = String.length s in
   let rec make i =
-    BatEnum.make 
+    BatEnum.make
       ~next:(fun () ->
 	       if !i = l then
 		 raise BatEnum.No_more_elements
@@ -141,15 +139,15 @@ let output_enum() =
 		  string_enum s
 	     )
       ~flush:default_close
-    
+
 
 (** [apply_enum f x] applies [f] to [x] and converts exceptions
     [No_more_input] and [Input_closed] to [BatEnum.No_more_elements]*)
 let apply_enum do_close f x =
   try f x
-  with 
+  with
     | No_more_input -> raise BatEnum.No_more_elements
-    | BatInnerIO.Input_closed  -> do_close := false; raise BatEnum.No_more_elements
+    | Input_closed  -> do_close := false; raise BatEnum.No_more_elements
 
 (** [close_at_end input e] returns an enumeration which behaves as [e]
     and has the secondary effect of closing [input] once everything has
@@ -163,7 +161,7 @@ let make_enum f input =
 
 
 let combine (a,b) =
-  wrap_out ~write:(fun c -> 
+  wrap_out ~write:(fun c ->
 		       write a c;
 		       write b c)
     ~output:(fun s i j ->
@@ -181,18 +179,18 @@ let write_enum f out enum =
   BatEnum.iter (f out) enum
 (*;
   flush out*)
-      
+
 (**
    {6 Big Endians}
 *)
 
 module BigEndian = struct
-    
+
   let read_ui16 i =
     let ch2 = read_byte i in
     let ch1 = read_byte i in
     ch1 lor (ch2 lsl 8)
-      
+
   let read_i16 i =
     let ch2 = read_byte i in
     let ch1 = read_byte i in
@@ -201,9 +199,9 @@ module BigEndian = struct
       n - 65536
     else
       n
-	
+
   let fix = lnot 0x7FFFFFFF (* -:) *)
-    
+
   let read_i32 ch =
     let ch4 = read_byte ch in
     let ch3 = read_byte ch in
@@ -211,7 +209,7 @@ module BigEndian = struct
     let ch1 = read_byte ch in
     if ch4 land 128 <> 0 then begin (* negative number *)
       if ch4 land 64 = 0 then raise (Overflow "read_i32");
-      (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor ((ch4 land 127) lsl 24)) 
+      (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor ((ch4 land 127) lsl 24))
         lor fix (* FIX HERE *)
     end else begin (*positive number*)
       if ch4 land 64 <> 0 then raise (Overflow "read_i32");
@@ -225,7 +223,7 @@ module BigEndian = struct
     let ch1 = read_byte ch in
     let base = Int32.of_int (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16)) in
     Int32.logor base big
-      
+
   let read_i64 ch =
     let big = Int64.of_int32 (read_real_i32 ch) in
     let ch4 = read_byte ch in
@@ -235,10 +233,10 @@ module BigEndian = struct
     let base = Int64.of_int (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16)) in
     let small = Int64.logor base (Int64.shift_left (Int64.of_int ch4) 24) in
     Int64.logor (Int64.shift_left big 32) small
-      
+
   let read_double ch =
     Int64.float_of_bits (read_i64 ch)
-      
+
   let read_float ch =
     Int32.float_of_bits (read_real_i32 ch)
 
@@ -253,13 +251,13 @@ module BigEndian = struct
       write_ui16 ch (65536 + n)
     else
       write_ui16 ch n
-	
+
   let write_i32 ch n =
     write_byte ch (n asr 24);
     write_byte ch (n lsr 16);
     write_byte ch (n lsr 8);
     write_byte ch n
-      
+
   let write_real_i32 ch n =
     let base = Int32.to_int n in
     let big = Int32.to_int (Int32.shift_right_logical n 24) in
@@ -267,17 +265,17 @@ module BigEndian = struct
     write_byte ch (base lsr 16);
     write_byte ch (base lsr 8);
     write_byte ch base
-      
+
   let write_i64 ch n =
     write_real_i32 ch (Int64.to_int32 (Int64.shift_right_logical n 32));
     write_real_i32 ch (Int64.to_int32 n)
-      
+
   let write_double ch f =
     write_i64 ch (Int64.bits_of_float f)
-      
-  let write_float ch f = 
+
+  let write_float ch f =
     write_real_i32 ch (Int32.bits_of_float f)
-      
+
   let ui16s_of input     = make_enum read_ui16 input
   let i16s_of input      = make_enum read_i16 input
   let i32s_of input      = make_enum read_i32 input
@@ -286,17 +284,6 @@ module BigEndian = struct
   let doubles_of input   = make_enum read_double input
   let floats_of input    = make_enum read_float input
 
-  let write_bytes output enum = write_enum write_byte output enum
-  let write_ui16s output enum = write_enum write_ui16 output enum
-  let write_i16s output enum = write_enum write_i16 output enum
-  let write_i32s output enum = write_enum write_i32 output enum
-  let write_real_i32s output enum = write_enum write_real_i32 output enum
-  let write_i64s output enum = write_enum write_i64 output enum
-  let write_doubles output enum = write_enum write_double output enum
-  let write_floats output enum = write_enum write_float output enum
-  let write_strings output enum = write_enum write_string output enum
-  let write_lines output enum = write_enum write_line output enum
-    
 end
 
 (**
@@ -344,7 +331,7 @@ let rec read_bits b n =
 			b.bits <- k;
 			b.nbits <- c;
 			d
-		end else begin			
+		end else begin
 			b.bits <- (b.bits lsl 8) lor k;
 			b.nbits <- b.nbits + 8;
 			read_bits b n;
@@ -374,7 +361,7 @@ let rec write_bits b ~nbits x =
 	end
 
 let flush_bits b =
-	if b.nbits > 0 then write_bits b (8 - b.nbits) 0
+	if b.nbits > 0 then write_bits b ~nbits:(8 - b.nbits) 0
 
 (**
    {6 Generic BatIO}
@@ -487,63 +474,101 @@ let strings_of      input = make_enum read_string      input
 let lines_of        input = make_enum read_line        input
 let chunks_of n     input = make_enum (fun ic -> nread ic n) input
 
-(**The number of chars to read at once*)
+(** The number of chars to read at once *)
 let buffer_size = 1024 (*Arbitrary size.*)
 
-let chars_of input = 
+(* make a bunch of char enums by reading buffer_size at a time and
+   concat them all into into one big char enum *)
+let chars_of input =
   let do_close = ref true in
-  close_at_end do_close input (BatEnum.concat (BatEnum.from (fun () -> 
+  close_at_end do_close input (BatEnum.concat (BatEnum.from (fun () ->
     apply_enum do_close (fun source -> string_enum (nread source buffer_size)) input)))
 
-let bits_of input = 
+let bits_of input =
   let do_close = ref true in
   close_at_end do_close input.ch (BatEnum.from (fun () -> apply_enum do_close read_bits input 1))
 
-let write_bytes     output enum = write_enum write_byte     output enum
-let write_chars     output enum = write_enum write          output enum
-let write_ui16s     output enum = write_enum write_ui16     output enum
-let write_i16s      output enum = write_enum write_i16      output enum
-let write_i32s      output enum = write_enum write_i32      output enum
-let write_real_i32s output enum = write_enum write_real_i32 output enum
-let write_i64s      output enum = write_enum write_i64      output enum
-let write_doubles   output enum = write_enum write_double   output enum
-let write_floats    output enum = write_enum write_float    output enum
-let write_strings   output enum = write_enum write_string   output enum
-let write_lines     output enum = write_enum write_line     output enum
-let write_chunks    output enum = write_enum nwrite         output enum
+(** Buffered lines_of, for performance.  Ideas taken from ocaml stdlib *)
+let lines_of2 ic =
+  let buf = String.create buffer_size in
+  let read_pos = ref 0 in (* next byte to read *)
+  let end_pos = ref 0 in (* place to write new data *)
+  let find_eol () =
+    let rec find_loop pos =
+      if pos >= !end_pos then !read_pos - pos
+      else if buf.[pos] = '\n' then 1 + pos - !read_pos (* TODO: HANDLE CRLF *)
+      else find_loop (pos+1)
+    in
+    find_loop !read_pos
+  in
+  let rec join_strings buf pos = function
+    | [] -> buf
+    | h::t ->
+      let len = String.length h in
+      String.blit h 0 buf (pos-len) len;
+      join_strings buf (pos-len) t
+  in
+  let input_buf s o l =
+    String.blit buf !read_pos s o l;
+    read_pos := !read_pos + l;
+    if !end_pos = !read_pos then
+      try
+        if !end_pos >= buffer_size then begin
+          read_pos := 0;
+          end_pos := input ic buf 0 buffer_size;
+        end else begin
+          let len_read = input ic buf 0 (buffer_size - !end_pos) in
+          end_pos := !end_pos + len_read;
+        end
+      with No_more_input -> end_pos := !read_pos;
+  in
+  let get_line () =
+    let rec get_pieces accu len =
+      let n = find_eol () in
+      if n = 0 then match accu with  (* EOF *)
+        | [] -> close_in ic; raise BatEnum.No_more_elements
+        | _ -> join_strings (String.create len) len accu
+      else if n > 0 then (* newline found *)
+        let res = String.create (n-1) in
+        input_buf res 0 (n-1);
+        input_buf " " 0 1; (* throw away EOL *)
+        match accu with
+          | [] -> res
+          | _ -> let len = len + n-1 in
+                 join_strings (String.create len) len (res :: accu)
+      else (* n < 0 ; no newline found *)
+        let piece = String.create (-n) in
+        input_buf piece 0 (-n);
+        get_pieces (piece::accu) (len-n)
+    in
+    get_pieces [] 0
+  in
+  (* prime the buffer *)
+  end_pos := input ic buf 0 buffer_size;
+  BatEnum.from get_line
+
+
 let write_bitss ~nbits output enum = write_enum (write_bits ~nbits) output enum
-
-(**
-   {6 Standard BatIO}
-*)
-
-
-
-
-
-
-let printf = Printf.fprintf
 
 (**
    {6 Utilities}
 *)
-
+let is_newline = function '\010' | '\013' -> true | _ -> false
 
 let tab_out ?(tab=' ') n out =
   let spaces   = String.make n tab in
-  wrap_out 
-    ~write: (fun c     -> 
-	       write out  c;
-	       if BatChar.is_newline c then (
-		 nwrite out spaces)
-	    )
-    ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*)
+  wrap_out
+    ~write: (fun c ->
+      write out c;
+      if is_newline c then nwrite out spaces;
+    )
+    ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*) (*FIXME?: performance - instead output each line and a newline between each char? *)
 	       let length = String.length s                 in
 	       let buffer = Buffer.create (String.length s) in
 		 for i = p to min (length - 1) l do
 		   let c = String.unsafe_get s i in
 		     Buffer.add_char buffer c;
-		     if BatChar.is_newline c then
+		     if is_newline c then
 		       Buffer.add_string buffer spaces
 		 done;
 		 let s' = Buffer.contents buffer                  in
@@ -558,7 +583,7 @@ let lmargin n (p:_ output -> 'a -> unit) out x =
 *)
 
 let comb (a,b) =
-  create_out ~write:(fun c -> 
+  create_out ~write:(fun c ->
 		       write a c;
 		       write b c)
     ~output:(fun s i j ->
@@ -572,90 +597,11 @@ let comb (a,b) =
 
 
 (*let repeat n out =
-  wrap_out 
+  wrap_out
     ~underlying:[out]
     ~write:(fun c -> for i = 1 to n do write out c)
     ~output:(fun s p l -> for i = 1 to n do output out s p l)
     ~close:(fun () -> flush out)*)
-
-(** {6 Unicode}*)
- 
-(** {7 Reading unicode}
- 
-All these functions assume that the input is UTF-8 encoded.
-*)
- 
-(*val read_uchar: input -> UChar.t*)
-(** read one UChar from a UTF-8 encoded input*)
-let read_uchar i =
-  let n0  = read i in
-  let len = Ulib.UTF8.length0 (Char.code n0) in
-  if len = 1 then Ulib.UChar.of_char n0
-  else
-    let s = String.create len in
-    String.set s 0 n0;
-    ignore(really_input i s 1 ( len - 1));
-    Ulib.UTF8.get s 0
- 
-(*val read_rope: input -> int -> Rope.t*)
-(** read up to n uchars from a UTF-8 encoded input*)
-let read_text i n =
-  let rec loop r j =
-    if j = 0 then r
-    else loop (Ulib.Text.append_char (read_uchar i) r) (j-1) (* TODO: make efficient by appending a string of Rope.leaf_size (256) chars at a time *)
-  in
-  if n <= 0 then Ulib.Text.empty
-  else loop Ulib.Text.empty n
-    
-(*val read_uline: input -> Rope.t*)
-(** read a line of UTF-8*)
- 
-let read_uline i =
-  let line = read_line i in
-  Ulib.UTF8.validate line;
-  Ulib.Text.of_string line
- 
-(*val read_uall : input -> Rope.t*)
-(** read the whole contents of a UTF-8 encoded input*)
- 
-let read_uall i = Ulib.Text.of_string (read_all i)
-(* TODO: make efficient - possibly similar to above - buffering leaf_size chars at a time *)
- 
- 
-(*val uchars_of : input -> UChar.t BatEnum.t*)
-(** offer the characters of an UTF-8 encoded input as an enumeration*)
- 
-let uchars_of i = make_enum read_uchar i
- 
- 
-(*val ulines_of : input -> Rope.t BatEnum.t*)
-(** offer the lines of a UTF-8 encoded input as an enumeration*)
-let ulines_of i = make_enum read_uline i
-
- 
-(** {7 Writing unicode}
- 
-All these functions assume that the output is UTF-8 encoded.*)
-
-let write_ustring o c = write_string o c
-
-(*val write_uchar: _ output -> UChar.t -> unit*)
-let write_uchar o c = write_ustring o (Ulib.UTF8.init 1 (fun _ -> c))
- 
-(*val write_rope : _ output -> Rope.t -> unit*)
-let write_text o t = Ulib.Text.print o t
- 
-(*val write_uline: _ output -> Rope.t -> unit*)
-let write_uline o r = write_text o r; write o '\n'
-  
-(*val write_ulines : _ output -> Rope.t BatEnum.t -> unit*)
-let write_ulines o re = write_enum write_uline o re
- 
-(*val write_ropes : _ output -> Rope.t BatEnum.t -> unit*)
-let write_texts o re = write_enum write_text o re
-
-(*val write_uchars : _ output -> UChar.t BatEnum.t -> unit*)
-let write_uchars o uce = write_enum write_uchar o uce
 
 
 (*let copy input output = write_chunks output (chunks_of default_buffer_size input)*)
@@ -694,7 +640,7 @@ let in_channel_of_input i =
 (*    UnixLabels.select
       ~read:?
       ~write:*)
-      
+
 (*  let (fin, fout) = Unix.socketpair Unix.PF_UNIX Unix.SOCK_STREAM in
   let cin         = open_in  fin
   and cout        = open_out fout in
@@ -711,14 +657,14 @@ let in_channel_of_input i =
 let lock_factory = ref (fun () -> BatConcurrent.nolock)
 
 
-let synchronize_in ?(lock = !lock_factory ()) inp = 
+let synchronize_in ?(lock = !lock_factory ()) inp =
   wrap_in
     ~read:(BatConcurrent.sync lock (fun () -> read inp))
     ~input:(BatConcurrent.sync lock (fun s p l -> input inp s p l))
     ~close:noop
     ~underlying:[inp]
 
-let synchronize_out ?(lock = !lock_factory ()) out = 
+let synchronize_out ?(lock = !lock_factory ()) out =
   wrap_out
     ~write: (BatConcurrent.sync lock (fun c     -> write out c))
     ~output:(fun s p -> BatConcurrent.sync lock (fun l -> output out s p l))
@@ -741,18 +687,19 @@ let synchronize_out ?(lock = !lock_factory ()) out =
    abstract streams.
 
    Otherwise, read everything, write it to a temporary file and
-   read it back as an [in_channel]. 
+   read it back as an [in_channel].
    Yes, this is prohibitively expensive.
 *)
 let to_input_channel inp =
   try Unix.in_channel_of_descr (BatUnix.descr_of_input inp) (*Simple case*)
   with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
-    let (name, cout) = 
+    (* FIXME: this 'pipe' is never deleted *)
+    let (name, cout) =
       Filename.open_temp_file ~mode:[Open_binary] "ocaml" "pipe" in
     let out          = output_channel cout                    in
       copy inp out;
       close_out out;
-      Pervasives.open_in_bin name    
+      Pervasives.open_in_bin name
 
 
 
@@ -763,10 +710,16 @@ let to_input_channel inp =
 let out_channel_of_output out =
   let (name, cout) = Filename.open_temp_file "ocaml" "tmp" in
     create_out
-      
+
     cout*)
 
-let to_string print_x x = BatInnerIO.Printf.sprintf2 "%a" print_x x
+let to_string print_x x = BatPrintf.sprintf2 "%a" print_x x
 
-let to_format printer = 
+let string_of_t_printer p x =
+  let b = Buffer.create 100 in
+  let out = cast_output (BatBuffer.output_buffer b) in
+  p false out x;
+  Buffer.contents b
+
+let to_format printer =
   fun fmt t -> Format.pp_print_string fmt (to_string printer t)

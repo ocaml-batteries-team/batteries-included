@@ -1,7 +1,7 @@
-(* 
+(*
  * Interfaces - Common interfaces for data structures
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -27,4 +27,10 @@ module type OrderedType =
 sig
   type t
   val compare : t -> t -> int
+end
+
+module type Monad = sig
+  type 'a m
+  val bind : 'a m -> ('a -> 'b m) -> 'b m
+  val return: 'a -> 'a m
 end

@@ -1,7 +1,7 @@
-(* 
+(*
  * ExtUnit - Operations on Unit
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,32 +20,31 @@
 
 (**
    Operations on [unit].
-   
+
    @author David Teller
 *)
 
-    type t = unit
-	(**The unit type, i.e. a type with only one element, [()].*)
+type t = unit
+(**The unit type, i.e. a type with only one element, [()].*)
 
-    val string_of : t -> string
-    (**Convert the given unit to a string.
-       
-       Returns ["()"]. *)
+val string_of : t -> string
+(**Convert the given unit to a string.
 
-    val of_string : string -> t
-      (**Convert the given string to a unit.
+   Returns ["()"]. *)
 
-	 Accepts ["()"]. Raises [Invalid_argument "unit_of_string"] if the
-	 given string is not ["()"].
-      *)
-      
-    val compare : t -> t -> int
-      (** Compare two units.
+val of_string : string -> t
+(**Convert the given string to a unit.
 
-	  Always returns 0.*)
+   Accepts ["()"].
+   @raise Invalid_argument if the given string is not ["()"].
+*)
 
-    (** {6 Boilerplate code}*)
+val compare : t -> t -> int
+(** Compare two units.
 
-    (** {7 Printing}*)
-    val print: 'a BatInnerIO.output -> unit -> unit
+    Always returns 0.*)
 
+(** {6 Boilerplate code}*)
+
+(** {7 Printing}*)
+val print: 'a BatInnerIO.output -> unit -> unit

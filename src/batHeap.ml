@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+let min x y = if Pervasives.compare x y <= 0 then x else y
+
 (** binomial trees *)
 type 'a bt = {
   rank : int ;
@@ -34,10 +36,6 @@ type 'a t = {
 let empty = { size = 0 ; data = [] ; mind = None }
 
 let size bh = bh.size
-
-(**T size_empty
-   size empty = 0
-**)
 
 let link bt1 bt2 =
   assert (bt1.rank = bt2.rank) ;
@@ -59,14 +57,15 @@ let insert bh x =
   let data = add_tree { rank = 0 ; root = x ; kids = [] } bh.data in
   let mind = match bh.mind with
     | None -> Some x
-    | Some mind -> Some (Pervasives.min x mind)
+    | Some mind -> Some (min x mind)
   in {
     size = size ; data = data ; mind = mind
   }
 
-(**T size_non_empty
-   size (insert empty 3) = 1
-**)
+(*$T size ; empty
+  size (insert empty 3) = 1
+  size empty = 0
+*)
 
 let add x bh = insert bh x
 
@@ -85,7 +84,7 @@ let merge bh1 bh2 =
   let size = bh1.size + bh2.size in
   let data = merge_data bh1.data bh2.data in
   let mind = match bh1.mind, bh2.mind with
-    | Some m1, Some m2 -> Some (Pervasives.min m1 m2)
+    | Some m1, Some m2 -> Some (min m1 m2)
     | m, None | None, m -> m
   in
   { size = size ; data = data ; mind = mind }
@@ -94,10 +93,10 @@ let find_min bh = match bh.mind with
   | None -> invalid_arg "find_min"
   | Some d -> d
 
-(**T find_min
+(*$T find_min ; insert ; empty
    find_min (insert (insert empty 3) 5) = 3
    find_min (insert (insert empty 5) 3) = 3
-**)
+*)
 
 
 let rec find_min_tree ts k = match ts with
@@ -141,15 +140,15 @@ let to_list bh =
   in
   List.rev (aux [] bh)
 
-(**T to_list
+(*$T to_list ; empty
    to_list (insert (insert empty 4) 6) = [4; 6]
    to_list (insert (insert empty 6) 4) = [4; 6]
    to_list empty = []
-**)
+*)
 
-(**Q to_list_q
+(*$Q to_list ; insert ; empty
    (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left insert empty l) = List.sort Pervasives.compare l)
-**)
+*)
 
 let elems = to_list
 
@@ -167,7 +166,7 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
   spin bh ;
   BatInnerIO.nwrite out last
 
-let t_printer elepr paren out x = print (elepr false) out x
+let t_printer elepr _paren out x = print (elepr false) out x
 
 let rec enum bh =
   let cur = ref bh in
@@ -345,6 +344,6 @@ module Make (Ord : BatInterfaces.OrderedType) = struct
     spin bh ;
     BatInnerIO.nwrite out last
 
-  let t_printer elepr paren out x = print (elepr false) out x
+  let t_printer elepr _paren out x = print (elepr false) out x
 
 end

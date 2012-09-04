@@ -4,7 +4,7 @@
  *               2003 Nicolas Cannasse
  *               2007 Zheng Li
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -32,11 +32,11 @@
 open BatIO
 
 (** The initially opened module.
-    
+
     This module provides the basic operations over the built-in types
     (numbers, booleans, strings, exceptions, references, lists, arrays,
     input-output channels, ...)
-    
+
     This module is automatically opened at the beginning of each compilation.
     All components of this module can therefore be referred by their short
     name, without prefixing them by [BatPervasives].
@@ -47,6 +47,21 @@ open BatIO
     @author Zheng Li
 *)
 
+(**/**)
+val input_lines : Pervasives.in_channel -> string BatEnum.t
+(** Returns an enumeration over lines of an input channel, as read by the
+ [input_line] function. *)
+
+val input_chars : Pervasives.in_channel -> char BatEnum.t
+(** Returns an enumeration over characters of an input channel. *)
+
+val input_list : Pervasives.in_channel -> string list
+(** Returns the list of lines read from an input channel. *)
+
+val input_all : Pervasives.in_channel -> string
+(** Return the whole contents of an input channel as a single
+ string. *)
+(**/**)
 
 
 (** {6 String operations}
@@ -65,7 +80,7 @@ val lowercase : string -> string
     Latin-1 (8859-1) character set. *)
 
 
-(** {6 String conversion functions} 
+(** {6 String conversion functions}
 
     These are the most common string conversion functions.  For
     additional string conversion functions, see in the corresponding
@@ -103,7 +118,7 @@ val ( @ ) : 'a list -> 'a list -> 'a list
 (** List concatenation. *)
 
 
-(** {6 Input/output} 
+(** {6 Input/output}
 
     This section only contains the most common input/output operations.
     More operations may be found in modules {!BatIO} and {!File}.
@@ -121,7 +136,7 @@ val stdout: unit output
 
 val stderr: unit output
 (** Standard error output, as per Unix/Windows conventions.
-   
+
     Use this output to display warnings and error messages.*)
 
 val stdnull: unit output
@@ -169,13 +184,16 @@ val prerr_all : input -> unit
 
 (** {7 General output functions} *)
 
-val open_out : ?mode:(BatFile.open_out_flag list) -> 
+val output_file : filename:string -> text:string -> unit
+(** creates a filename, write text into it and close it. *)
+
+val open_out : ?mode:(BatFile.open_out_flag list) ->
                ?perm:BatFile.permission           ->
   string -> unit BatIO.output
   (** Open the named file for writing, and return a new output channel
       on that file. You will need to close the file once you have
       finished using it.
-      
+
       You may use optional argument [mode] to decide whether the
       output will overwrite the contents of the file (by default) or
       to add things at the end of the file, whether the file should be
@@ -189,7 +207,7 @@ val open_out : ?mode:(BatFile.open_out_flag list) ->
       of the file, as per Unix conventions. By default, files are created
       with default permissions (which depend on your setup).
 
-      Raise [Sys_error] if the file could not be opened. *)
+      @raise Sys_error if the file could not be opened. *)
 
 val open_out_bin : string -> unit BatIO.output
   (** Same as {!open_out}, but the file is opened in binary mode, so
@@ -221,13 +239,10 @@ val output_char : unit BatIO.output -> char -> unit
 val output_string : unit BatIO.output -> string -> unit
 (** Write the string on the given output channel. *)
 
-val output_text : unit BatIO.output -> Ulib.Text.t -> unit
-(** Write the text on the given output channel. *)
-
 val output : unit BatIO.output -> string -> int -> int -> unit
 (** [output oc buf pos len] writes [len] characters from string [buf],
    starting at offset [pos], to the given output channel [oc].
-   Raise [Invalid_argument "output"] if [pos] and [len] do not
+   @raise Invalid_argument if [pos] and [len] do not
    designate a valid substring of [buf]. *)
 
 val output_byte : unit BatIO.output -> int -> unit
@@ -264,20 +279,23 @@ val close_out : unit BatIO.output -> unit
       Output functions raise a [Sys_error] exception when they are
       applied to a closed output channel, except [close_out] and [flush],
       which do nothing when applied to an already closed channel.
-      Note that [close_out] may raise [Sys_error] if the operating
+      @raise Sys_error if the operating
       system signals an error when flushing or closing. *)
-  
+
 val close_out_noerr : unit BatIO.output -> unit
   (** Same as [close_out], but ignore all errors. *)
- 
+
 (** {7 General input functions} *)
 
-val open_in : ?mode:(BatFile.open_in_flag list) -> 
-  ?perm:BatFile.permission -> 
+val input_file : ?bin:bool -> string -> string
+(** returns the data of a given filename. *)
+
+val open_in : ?mode:(BatFile.open_in_flag list) ->
+  ?perm:BatFile.permission ->
   string -> BatIO.input
 (** Open the named file for reading. You will need to close the file once you have
     finished using it.
-    
+
     You may use optional argument [mode] to decide whether the opening
     should fail if the file doesn't exist yet (by default) or whether
     the file should be created if it doesn't exist yet, whether the
@@ -290,7 +308,7 @@ val open_in : ?mode:(BatFile.open_in_flag list) ->
     default, files are created with default permissions (which depend
     on your setup).
 
-    Raise [Sys_error] if the file could not be opened. *)
+    @raise Sys_error if the file could not be opened. *)
 
 
 val open_in_bin : string -> BatIO.input
@@ -305,19 +323,18 @@ val open_in_gen : open_flag list -> int -> string -> BatIO.input
     specify the opening mode and file permissions.
     {!Pervasives.open_in} and {!Pervasives.open_in_bin} are special
     cases of this function.
-    
-    @deprecated Use {!open_in instead}*)
 
+    @deprecated Use {!open_in instead}*)
 
 val input_char : BatIO.input -> char
 (** Read one character from the given input channel.
-   Raise [End_of_file] if there are no more characters to read. *)
+   @raise End_of_file if there are no more characters to read. *)
 
 val input_line : BatIO.input -> string
 (** Read characters from the given input channel, until a
    newline character is encountered. Return the string of
    all characters read, without the newline character at the end.
-   Raise [End_of_file] if the end of the file is reached
+   @raise End_of_file if the end of the file is reached
    at the beginning of line. *)
 
 val input : BatIO.input -> string -> int -> int -> int
@@ -334,32 +351,32 @@ val input : BatIO.input -> string -> int -> int -> int
    [input] must be called again to read the remaining characters,
    if desired.  (See also {!Pervasives.really_input} for reading
    exactly [len] characters.)
-   Exception [Invalid_argument "input"] is raised if [pos] and [len]
+   @raise Invalid_argument if [pos] and [len]
    do not designate a valid substring of [buf]. *)
 
 val really_input : BatIO.input -> string -> int -> int -> unit
 (** [really_input ic buf pos len] reads [len] characters from channel [ic],
     storing them in string [buf], starting at character number [pos].
-    Raise [End_of_file] if the end of file is reached before [len]
+    @raise End_of_file if the end of file is reached before [len]
     characters have been read.
-    Raise [Invalid_argument "really_input"] if
+    @raise Invalid_argument if
     [pos] and [len] do not designate a valid substring of [buf]. *)
 
 val input_byte : BatIO.input -> int
 (** Same as {!Pervasives.input_char}, but return the 8-bit integer representing
     the character.
-    Raise [End_of_file] if an end of file was reached. *)
+    @raise End_of_file if an end of file was reached. *)
 
 val input_binary_int : BatIO.input -> int
 (** Read an integer encoded in binary format (4 bytes, big-endian)
     from the given input channel. See {!Pervasives.output_binary_int}.
-    Raise [End_of_file] if an end of file was reached while reading the
+    @raise End_of_file if an end of file was reached while reading the
     integer. *)
 
 val input_binary_float : BatIO.input -> float
 (** Read a float encoded in binary format (8 bytes, IEEE 754 double format)
     from the given input channel. See {!Pervasives.output_binary_float}.
-    Raise [End_of_file] if an end of file was reached while reading the
+    @raise End_of_file if an end of file was reached while reading the
     float. *)
 
 val input_value : BatIO.input -> 'a
@@ -368,17 +385,18 @@ val input_value : BatIO.input -> 'a
     This function is identical to {!Marshal.input};
     see the description of module {!Marshal} for more information,
     in particular concerning the lack of type safety. *)
-  
+
 val close_in : BatIO.input -> unit
   (** Close the given channel.  Input functions raise a [Sys_error]
       exception when they are applied to a closed input channel,
       except [close_in], which does nothing when applied to an already
-      closed channel.  Note that [close_in] may raise [Sys_error] if
+      closed channel.
+      @raise Sys_error if
       the operating system signals an error. *)
-  
+
 val close_in_noerr : BatIO.input -> unit
 (** Same as [close_in], but ignore all errors. *)
-  
+
 
 (**
    {6 Fundamental functions and operators}
@@ -390,32 +408,32 @@ external identity : 'a -> 'a = "%identity"
 val undefined : ?message:string -> 'a -> 'b
 (** The undefined function.
 
-    Evaluating [undefined x] always fails and raises an exception 
-    "Undefined". Optional argument [message] permits the 
+    Evaluating [undefined x] always fails and raises an exception
+    "Undefined". Optional argument [message] permits the
     customization of the error message.*)
 
 
 val ( |> ) : 'a -> ('a -> 'b) -> 'b
-(** Function application. [x |> f] is equivalent to [f x]. 
+(** Function application. [x |> f] is equivalent to [f x].
 
     This operator is commonly used to write a function composition by
     order of evaluation (the order used in object-oriented
     programming) rather than by inverse order (the order typically
-    used in functional programming).  
+    used in functional programming).
 
     For instance, [g (f x)] means "apply [f] to [x], then apply [g] to
     the result." The corresponding notation in most object-oriented
     programming languages would be somewhere along the lines of [x.f.g
     ()], or "starting from [x], apply [f], then apply [g]." In OCaml,
     operator ( |> ) this latest notation maps to [x |> f |> g], or
-    
+
     This operator may also be useful for composing sequences of
     function calls without too many parenthesis. *)
 
 
 val ( **>  ) : ('a -> 'b) -> 'a -> 'b
-  (** Function application. [f **> x] is equivalent to [f x]. 
-      
+  (** Function application. [f **> x] is equivalent to [f x].
+
       This operators may be useful for composing sequences of
       function calls without too many parenthesis.
 
@@ -426,7 +444,7 @@ val ( <| ) : ('a -> 'b) -> 'a -> 'b
 (** same as [ ( **> ) ] *)
 
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
-(** Function composition. [f |- g] is [fun x -> g (f x)]. 
+(** Function composition. [f |- g] is [fun x -> g (f x)].
     This is also equivalent to applying [<**] twice.*)
 
 val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
@@ -435,14 +453,19 @@ val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
 
 val ( |? ) : 'a option -> 'a -> 'a
 (** Like {!BatOption.default}, with the arguments reversed.
-    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+    [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"].
+
+    {b Note} This operator does not short circuit like [( || )] and [( && )].
+    Both arguments will be evaluated.
+
+    @since 2.0 *)
 
 val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
-  (** Argument flipping. 
-      
+  (** Argument flipping.
+
       [flip f x y] is [f y x]. Don't abuse this function, it may shorten considerably
       your code but it also has the nasty habit of making it harder to read.*)
-      
+
 
 val ( *** ) : ('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd
 (** Function pairing.
@@ -482,7 +505,7 @@ val tap : ('a -> unit) -> 'a -> 'a
       evaluates to [x], but has the side effect of [f x].  Useful for
       debugging. *)
 
-val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b 
+val finally : (unit -> unit) -> ('a -> 'b) -> 'a -> 'b
   (** [finally fend f x] calls [f x] and then [fend()] even if [f x] raised
       an exception. *)
 
@@ -491,9 +514,18 @@ val with_dispose : dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b
     when [f] terminates (either with a return value or an
     exception). *)
 
+val forever : ('a -> 'b) -> 'a -> unit
+(** [forever f x] invokes [f] on [x] repeatedly (until an exception occurs). *)
+
+val ignore_exceptions : ('a -> 'b) -> 'a -> unit
+(** [ignore_exceptions f x] invokes [f] on [x], ignoring both the returned value
+    and the exceptions that may be raised. *)
+
 val verify_arg : bool -> string -> unit
 (** [verify_arg condition message] will raise [Invalid_argument message] if
-    [condition] is false, otherwise it does nothing. *)
+    [condition] is false, otherwise it does nothing.
+
+    @since 2.0 *)
 
 val args : unit -> string BatEnum.t
   (** An enumeration of the arguments passed to this program through the command line.
@@ -647,9 +679,9 @@ val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
 
       In other words, [reduce f e] returns [a0] if [e] contains only
       one element [a0], otherwise [f (... (f (f a0) a1) ...) aN] where
-      [a0,a1..aN] are the elements of [e]. 
+      [a0,a1..aN] are the elements of [e].
 
-      @raises Not_found if [e] is empty.
+      @raise Not_found if [e] is empty.
 
       For instance, if [add] is the function [fun x y -> x + y],
       [reduce add] is the function which computes the sum of the
@@ -671,7 +703,7 @@ val fold : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b
 
       In other words, [fold f v e] returns [v] if [e] is empty,
       otherwise [f (... (f (f v a0) a1) ...) aN] where a0,a1..aN are
-      the elements of [e]. 
+      the elements of [e].
 
       For instance, if [add] is the function [fun x y -> x + y],
       [fold add 0] is the function which computes the sum of the
@@ -734,9 +766,11 @@ val find : ('a -> bool) -> 'a BatEnum.t -> 'a
       [true], consuming the enumeration up to and including the
       found element, or, raises [Not_found] if no such element exists
       in the enumeration, consuming the whole enumeration in the search.
-      
-      Since [find] consumes a prefix of the enumeration, it can be used several 
-      times on the same enumeration to find the next element. *)
+
+      Since [find] consumes a prefix of the enumeration, it can be used several
+      times on the same enumeration to find the next element.
+
+      @raise Not_found if no element in the whole enumeration satisfies the predicate *)
 
 val peek : 'a BatEnum.t -> 'a option
   (** [peek e] returns [None] if [e] is empty or [Some x] where [x] is
@@ -750,7 +784,7 @@ val get : 'a BatEnum.t -> 'a option
 
 val push : 'a BatEnum.t -> 'a -> unit
   (** [push e x] will add [x] at the beginning of [e]. *)
-  
+
 val junk : 'a BatEnum.t -> unit
   (** [junk e] removes the first element from the enumeration, if any. *)
 
@@ -879,7 +913,7 @@ val printer_format : (('a, 'b) BatPrint.format -> 'a, 'b) BatPrint.directive
 
 val printer_sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
 val printer_Sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
-val printer_text : (Ulib.Text.t -> 'a, 'a) BatPrint.directive
+(* val printer_text : (Ulib.Text.t -> 'a, 'a) BatPrint.directive *)
 val printer_obj : (< print : unit BatIO.output -> unit; .. > -> 'a, 'a) BatPrint.directive
 val printer_exn : (exn -> 'a, 'a) BatPrint.directive
 
@@ -905,9 +939,37 @@ val exn_printer : exn BatValuePrinter.t
    {6 Results}
 *)
 
+(** This type represents the outcome of a function which has the
+    possibility of failure.  Normal results of type ['a] are marked
+    with [Ok], while failure values of type ['b] are marked with
+    [Bad].
+
+    This is intended to be a safer alternative to functions raising
+    exceptions to signal failure.  It is safer in that the possibility
+    of failure has to be handled before the result of that computation
+    can be used.
+
+    For more functions related to this type, see the {!BatResult} module.
+*)
 type ('a, 'b) result =
   | Ok  of 'a
   | Bad of 'b
+(** The result of a computation - either an [Ok] with the normal
+result or a [Bad] with some value (often an exception) containing
+failure information*)
+
+val ignore_ok : ('a, exn) result -> unit
+(** [ignore_ok (f x)] ignores the result of [f x] if it's ok, but
+throws the exception contained if [Bad] is returned. *)
+
+val ok : ('a, exn) result -> 'a
+(** [f x |> ok] unwraps the [Ok] result of [f x] and returns it, or
+throws the exception contained if [Bad] is returned. *)
+
+val wrap : ('a -> 'b) -> 'a -> ('b, exn) result
+(** [wrap f x] wraps a function that would normally throw an exception
+on failure such that it now returns a result with either the [Ok]
+return value or the [Bad] exception. *)
 
 
 (**
@@ -926,4 +988,3 @@ val lock: BatConcurrent.lock ref
    {!BatMutex}. If you're attempting to use Batteries with another
    concurrency model, set the lock appropriately.
 *)
-

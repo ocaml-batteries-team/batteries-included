@@ -1,5 +1,3 @@
-Ulib
-BatArg
 BatArray
 BatBigarray
 BatBig_int
@@ -10,6 +8,7 @@ BatComplex
 BatDeque
 BatDigest
 BatEnum
+BatFingerTree
 BatFloat
 BatFormat
 BatGc
@@ -40,7 +39,6 @@ BatSplay
 BatStack
 BatStream
 BatString
-BatStr
 BatSys
 BatUnit
 BatUnix
@@ -56,12 +54,12 @@ BatInnerWeaktbl
 BatInterfaces
 BatLazyList
 BatLogger
-BatMonad
 BatMultiPMap
+BatMultiMap
 BatNumber
 BatOption
 BatOptParse
-BatPair
+BatOrd
 BatParserCo
 BatPathGen
 BatPrint
@@ -80,8 +78,8 @@ BatISet
 BatIMap
 BatCache
 BatLog
-BatCounter
-BatHistogram
+Uniclib
+BatText
 BatteriesConfig
 BatteriesPrint
 Batteries

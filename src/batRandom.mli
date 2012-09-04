@@ -1,8 +1,8 @@
-(* 
+(*
  * ExtRandom - Additional randomization operations
  * Copyright (C) 1996 Damien Doligez
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Pseudo-random number generators (PRNG). 
-    
+(** Pseudo-random number generators (PRNG).
+
     This module extends Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Random.html}Random}
     module, go there for documentation on the rest of the functions
@@ -80,17 +80,14 @@ val char : unit -> char
 (*val uchar : unit -> UChar.t
 (** Return a random Unicode character.*)*)
 
-val full_range : unit -> int
-(** [Random.full_range ()] returns the maximum entropy possible in a
+val full_range_int : unit -> int
+(** [full_range_int ()] returns the maximum entropy possible in a
     single int: 31 bits on 32-bit platforms and 63 bits on 64-bit
-    platforms *)
+    platforms.  Intentionally gives different results on different
+    platforms, so is not portable. *)
 
 
-(** {6 Enumerations of random values.} 
-
-    These enumerations may be cloned without loss of performance,
-    to obtain reproducible enumerations of pseudo-random numbers.
- *)
+(** {6 Enumerations of random values.} *)
 
 val enum_bits  : unit    -> int BatEnum.t
 
@@ -142,7 +139,7 @@ val shuffle: 'a BatEnum.t -> 'a array
     the program.
 *)
 module State : sig
-  type t
+  type t = Random.State.t
     (** The type of PRNG states. *)
 
   val make : int array -> t
@@ -173,13 +170,9 @@ module State : sig
   val enum_nativeint : t -> Nativeint.t -> Nativeint.t BatEnum.t
   val enum_char  : t -> unit    -> char BatEnum.t
 (*  val enum_uchar : t -> unit    -> UChar.t BatEnum.t*)
-
   (** These functions are the same as the basic functions, except that they
       use (and update) the given PRNG state instead of the default one.
   *)
-
-
-  (** {6 Boilerplate code}*)
 
 end;;
 
@@ -190,4 +183,64 @@ val get_state : unit -> State.t
 val set_state : State.t -> unit
 (** Set the state of the generator used by the basic functions. *)
 
+module Incubator : sig
+  module Private_state_enums : sig
+    module State : sig (** same as BatRandom.State *)
+      type t = Random.State.t
+      (** The type of PRNG states. *)
 
+      val make : int array -> t
+      (** Create a new state and initialize it with the given seed. *)
+
+      val make_self_init : unit -> t
+      (** Create a new state and initialize it with a system-dependent
+      low-entropy seed. *)
+
+      val copy : t -> t
+      (** Return a copy of the given state. *)
+
+      val bits       : t -> int
+      val int        : t -> int -> int
+      val int32      : t -> Int32.t -> Int32.t
+      val nativeint  : t -> Nativeint.t -> Nativeint.t
+      val int64      : t -> Int64.t -> Int64.t
+      val float      : t -> float -> float
+      val bool       : t -> bool
+      val char       : t -> char
+
+      (** A copy of the input state is made to start these generators;
+      the input state is not modified.  This means that two enums
+      constructed from the same state will produce the same value
+      sequence. *)
+      val enum_bits  : t -> unit    -> int BatEnum.t
+      val enum_int   : t -> int     -> int BatEnum.t
+      val enum_bool  : t -> unit    -> bool BatEnum.t
+      val enum_float : t -> float   -> float BatEnum.t
+      val enum_int32 : t -> Int32.t -> Int32.t BatEnum.t
+      val enum_int64 : t -> Int64.t -> Int64.t BatEnum.t
+      val enum_nativeint : t -> Nativeint.t -> Nativeint.t BatEnum.t
+      val enum_char  : t -> unit    -> char BatEnum.t
+
+      (** [perturb s] returns a new state based on the given state
+      that is, in a sense, the hash of the input state.  This new
+      state should be quite different from the input. *)
+      val perturb : t -> t
+
+    end
+
+    (** These enumerations are built on a copy of the global RNG
+    state.  To keep successive constructions from using the same RNG
+    state, when any of these functions is called, the global RNG state
+    is perturbed by using its current internal state as seed to
+    construct a new state. *)
+    val enum_bits  : unit    -> int BatEnum.t
+    val enum_int   : int     -> int BatEnum.t
+    val enum_bool  : unit    -> bool BatEnum.t
+    val enum_float : float   -> float BatEnum.t
+    val enum_int32 : Int32.t -> Int32.t BatEnum.t
+    val enum_int64 : Int64.t -> Int64.t BatEnum.t
+    val enum_nativeint : Nativeint.t -> Nativeint.t BatEnum.t
+    val enum_char : unit -> char BatEnum.t
+
+  end
+end

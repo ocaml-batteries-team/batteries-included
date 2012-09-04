@@ -1,7 +1,7 @@
-(* 
+(*
  * Ref - Operations on references
  * Copyright (C) 2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Operations on references. 
+(** Operations on references.
 
     References are mutable values, i.e. "variables" which may actually
     change value during their life-time, as variables in imperative
@@ -50,21 +50,21 @@ external set : 'a ref -> 'a -> unit = "%setfield0"
 
 external get : 'a ref -> 'a = "%field0"
     (** As [ ! ]*)
-    
+
 val copy: 'a ref -> 'a ref
   (** [copy r] returns a new reference with the same initial
       content as [r].*)
 
 val pre : 'a ref -> ( 'a -> 'a ) -> 'a
   (** Perform an operation on a reference and return the
-      new value of that reference. 
+      new value of that reference.
 
       For instance, if [x] is a reference to [1],
       [pre x ( ( + ) 1) ] returns [2] and sets [x] to [2].*)
 
 val post: 'a ref -> ('a -> 'a) -> 'a
   (** Perform an operation on a reference and return the
-      previous value of that reference. 
+      previous value of that reference.
 
       For instance, if [x] is a reference to [1],
       [post x ( ( + ) 1)] returns [1] and sets [x] to [2].*)
@@ -102,12 +102,32 @@ val protect : 'a ref -> 'a -> (unit -> 'b) -> 'b
      as a consequence of regular evaluation or exception, the previous
      value of [r] is restored. *)
 
+val toggle : bool ref -> unit
+(** Invert the boolean stored in the reference*)
 
+val oset : 'a option ref -> 'a -> unit
+(** Set the given option ref to [Some x] *)
 
+val oget_exn : 'a option ref -> 'a
+(** Get a value from an option ref;
+    @raises Not_found on [oget_exn (ref None)] *)
 
 (** {6 Boilerplate code}*)
 
-
-(** {7 Printing}*)
-
 val print: ('b BatInnerIO.output -> 'a -> unit) -> 'b BatInnerIO.output -> 'a t -> unit
+
+(** Given a printing function for the value in the ref, produce a
+    printing function for the ref.
+
+    Example: [IO.to_string (Ref.print Int.print) (ref 20) = "20"]
+ *)
+
+val ord : 'a BatOrd.ord -> 'a ref BatOrd.ord
+
+(** Given an ordering function, produce an ordering function for refs
+    of that type.
+
+    Example: [let a = ref 10 and b = ref 20 in Ref.cmp Int.cmp a b = -1]
+*)
+
+val eq : 'a BatOrd.eq -> 'a ref BatOrd.eq

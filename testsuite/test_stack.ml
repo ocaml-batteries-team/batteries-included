@@ -1,13 +1,7 @@
 open OUnit
 module Enum = BatEnum
-module Stack = struct
-  include Stack
-  include BatStack
-end
-module List = struct
-  include List
-  include BatList
-end
+module Stack = BatStack
+module List = BatList
 
 let tests = "Stack" >::: [
   "of_enum empty" >:: begin function () ->

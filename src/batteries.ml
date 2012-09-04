@@ -41,61 +41,59 @@ module Legacy = struct
   module StringLabels = StringLabels
   module Sys = Sys
   module Weak = Weak
+  module Unix = Unix
+  module Num = Num
+  module Big_int = Big_int
+  module Bigarray = Bigarray
 end
 
 (* stdlib modules *)
-module Arg = struct include Arg include BatArg end
+(* Arg *)
 module Array = struct include Array include BatArray end
 (* ArrayLabels *)
-module Buffer = struct include Buffer include BatBuffer end
+module Buffer = BatBuffer
 (* Callback *)
-module Char = struct include Char include BatChar end
+module Char = BatChar
 module Complex = BatComplex
-module Digest = struct include Digest include BatDigest end
+module Digest = BatDigest
 (* Filename *)
-module Format = struct include Format include BatFormat end
-module Gc = struct include Gc include BatGc end
-module Genlex = struct include Genlex include BatGenlex end
+module Format = BatFormat
+module Gc = BatGc
+module Genlex = BatGenlex
 module Hashtbl = BatHashtbl
 module Int32 = BatInt32
-(*module Int63 = BatInt63*)
 module Int64 = BatInt64
 (* Lazy *)
-module Lexing = struct include Lexing include BatLexing end
-module List = struct include List include BatList end
+module Lexing = BatLexing
+module List = BatList
 (* ListLabels *)
 module Map = BatMap
-module Marshal = struct include Marshal include BatMarshal end
+module Marshal = BatMarshal
 (* MoreLabels *)
 module Nativeint = BatNativeint
-module Oo = struct include Oo include BatOo end
+module Oo = BatOo
 (* Parsing *)
-module Printexc = struct include Printexc include BatPrintexc end
-module Printf = struct include Printf include BatPrintf end
-module Queue = struct include Queue include BatQueue end
+module Printexc = BatPrintexc
+module Printf = BatPrintf (* UNTESTED FOR BACKWARDS COMPATIBILITY *)
+module Queue = BatQueue
 module Random = BatRandom
 module Scanf = BatScanf
 module Set = BatSet
 (* Sort - Deprecated *)
-module Stack = struct include Stack include BatStack end
+module Stack = BatStack
 module Stream = struct include Stream include BatStream end
 module String = struct include String include BatString end
 (* StringLabels *)
-module Sys = struct include Sys include BatSys end
+module Sys = BatSys
 (* Weak *)
 
-(* Unix *)
 module Unix = struct include Unix include BatUnix end
 
-(* Str *)
-module Str = struct include Str include BatStr end
+(*module Str = struct include Str include BatStr end*)
 
-(* Num *)
 module Big_int = struct include Big_int include BatBig_int end
 
-(* Bigarray *)
 module Bigarray = BatBigarray
-
 
 (* Extlib modules not replacing stdlib *)
 module Base64 = BatBase64
@@ -110,7 +108,7 @@ module IO = BatIO
 module LazyList = BatLazyList
 module MultiPMap = BatMultiPMap
 module Option = BatOption
-module OptParse = BatOptParse
+(* REMOVED, Extlib only module OptParse = BatOptParse *)
 module RefList = BatRefList
 module Ref = BatRef
 (*module Std = REMOVED - use BatPervasives *)
@@ -121,9 +119,9 @@ module CharParser = BatCharParser
 module Deque = BatDeque
 module Hashcons = BatHashcons
 module Heap = BatHeap
+module FingerTree = BatFingerTree
 module Logger = BatLogger
-module Monad = BatMonad
-module Pair = BatPair
+module MultiMap = BatMultiMap
 module ParserCo = BatParserCo
 module PathGen = BatPathGen
 module Print = BatPrint
@@ -141,8 +139,7 @@ module ISet = BatISet
 module IMap = BatIMap
 module Splay = BatSplay
 module Uref = BatUref
-module Substring = BatSubstring
-module Text = Ulib.Text
+module Text = BatText
 module Concurrent = BatConcurrent
 
 (* Batteries Specific *)
@@ -152,10 +149,12 @@ module Float = BatFloat
 module Int = BatInt
 module Bool = BatBool
 module Unit = BatUnit
+(*module Int63 = BatInt63*)
 
 (* Modules in-progress, API stability not guaranteed *)
-module Future = struct
+module Incubator = struct
   module Log = BatLog
+  module Substring = BatSubstring
 end
 
 (* Pervasives last *)

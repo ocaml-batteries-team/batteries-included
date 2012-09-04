@@ -4,7 +4,7 @@
  * Copyright (C) 2003 Nicolas Cannasse
  * Copyright (C) 2008 Red Hat Inc.
  * Copyright (C) 2008 David Rajchenbach-Teller, LIFO, Universite d'Orleans
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -22,12 +22,35 @@
  *)
 
 
-open List
+(* ::VH:: GLUE with StdLib *)
+let merge = List.merge
+let fast_sort = List.fast_sort
+let stable_sort = List.stable_sort
+let sort = List.sort
+let assq = List.assq
+let assoc = List.assoc
+let find = List.find
+let exists = List.exists
+let for_all = List.for_all
+let fold_left = List.fold_left
+let rev_map = List.rev_map
+let iter = List.iter
+let rev_append = List.rev_append
+let rev = List.rev
+let length = List.length
+let tl = List.tl
+let hd = List.hd
+let mem = List.mem
+let memq = List.memq
+let mem_assq = List.mem_assq
+let mem_assoc = List.mem_assoc
+let rev_map2 = List.rev_map2
+(* ::VH:: END GLUE *)
 
 (* Thanks to Jacques Garrigue for suggesting the following structure *)
 type 'a mut_list =  {
-	hd: 'a; 
-	mutable tl: 'a list
+  hd: 'a;
+  mutable tl: 'a list
 }
 
 type 'a t = 'a list
@@ -35,7 +58,6 @@ type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
 external inj : 'a mut_list -> 'a list = "%identity"
-
 
 let dummy_node () = { hd = Obj.magic (); tl = [] }
 
@@ -45,92 +67,142 @@ let is_empty = function
   | [] -> true
   | _  -> false
 
+
+(*$T is_empty
+  is_empty []
+  not (is_empty [1])
+ *)
+
 let nth l index =
-	if index < 0 then invalid_arg "Negative index not allowed";
-	let rec loop n = function
-		| [] -> invalid_arg "Index past end of list";
-		| h :: t -> 
-			if n = 0 then h else loop (n - 1) t
-	in
-	loop index l
+  if index < 0 then invalid_arg "Negative index not allowed";
+  let rec loop n = function
+    | [] -> invalid_arg "Index past end of list";
+    | h :: t ->
+      if n = 0 then h else loop (n - 1) t
+  in
+  loop index l
 
 let at = nth
 
+(*$T at
+  try ignore (at [] 0); false with Invalid_argument _ -> true
+  try ignore (at [1;2;3] (-1)); false with Invalid_argument _ -> true
+  at [1;2;3] 2 = 3
+ *)
+
 let append l1 l2 =
-	match l1 with
-	| [] -> l2
-	| h :: t ->
-		let rec loop dst = function
-		| [] ->
-			dst.tl <- l2
-		| h :: t ->
-			let cell = { hd = h; tl = [] } in
-			dst.tl <- inj cell;
-			loop cell t
-		in
-		let r = { hd = h; tl = [] } in
-		loop r t;
-		inj r
+  match l1 with
+  | [] -> l2
+  | h :: t ->
+    let rec loop dst = function
+    | [] ->
+      dst.tl <- l2
+    | h :: t ->
+      let cell = { hd = h; tl = [] } in
+      dst.tl <- inj cell;
+      loop cell t
+    in
+    let r = { hd = h; tl = [] } in
+    loop r t;
+    inj r
 
 let rec flatten l =
-	let rec inner dst = function
-		| [] -> dst
-		| h :: t ->
-			let r = { hd = h; tl = [] } in
-			dst.tl <- inj r;
-			inner r t
-	in
-	let rec outer dst = function
-		| [] -> ()
-		| h :: t -> outer (inner dst h) t
-	in
-	let r = dummy_node () in
-	outer r l;
-	r.tl
+  let rec inner dst = function
+    | [] -> dst
+    | h :: t ->
+      let r = { hd = h; tl = [] } in
+      dst.tl <- inj r;
+      inner r t
+  in
+  let rec outer dst = function
+    | [] -> ()
+    | h :: t -> outer (inner dst h) t
+  in
+  let r = dummy_node () in
+  outer r l;
+  r.tl
 
 let concat = flatten
 
+(*$T flatten
+  flatten [[1;2];[3];[];[4;5;6]] = [1;2;3;4;5;6]
+  flatten [[]] = []
+ *)
+
 let map f = function
-	| [] -> []
-	| h :: t ->
-		let rec loop dst = function
-		| [] -> ()
-		| h :: t ->
-			let r = { hd = f h; tl = [] } in
-			dst.tl <- inj r;
-			loop r t
-		in
-		let r = { hd = f h; tl = [] } in
-		loop r t;
-		inj r
+  | [] -> []
+  | h :: t ->
+    let rec loop dst = function
+    | [] -> ()
+    | h :: t ->
+      let r = { hd = f h; tl = [] } in
+      dst.tl <- inj r;
+      loop r t
+    in
+    let r = { hd = f h; tl = [] } in
+    loop r t;
+    inj r
 
 let rec drop n = function
-	| _ :: l when n > 0 -> drop (n-1) l
-	| l -> l
+  | _ :: l when n > 0 -> drop (n-1) l
+  | l -> l
+
+(*$= drop & ~printer:(IO.to_string (List.print Int.print))
+  (drop 0 [1;2;3]) [1;2;3]
+  (drop 3 [1;2;3]) []
+  (drop 4 [1;2;3]) []
+  (drop 1 [1;2;3]) [2;3]
+ *)
 
 let take n l =
-	let rec loop n dst = function
-		| h :: t when n > 0 ->
-			let r = { hd = h; tl = [] } in
-			dst.tl <- inj r;
-			loop (n-1) r t
-		| _ ->
-			()
-	in
-	let dummy = dummy_node() in
-	loop n dummy l;
-	dummy.tl
+  let rec loop n dst = function
+    | h :: t when n > 0 ->
+      let r = { hd = h; tl = [] } in
+      dst.tl <- inj r;
+      loop (n-1) r t
+    | _ ->
+      ()
+  in
+  let dummy = dummy_node() in
+  loop n dummy l;
+  dummy.tl
 
-(* takewhile and dropwhile by Richard W.M. Jones. *)
-let rec take_while f = function
-  | [] -> []
-  | x :: xs when f x -> x :: take_while f xs
-  | _ -> []
+(*$= take & ~printer:(IO.to_string (List.print Int.print))
+  (take 0 [1;2;3]) []
+  (take 3 [1;2;3]) [1;2;3]
+  (take 4 [1;2;3]) [1;2;3]
+  (take 1 [1;2;3]) [1]
+ *)
+
+let take_while p li =
+  let rec loop dst = function
+    | [] -> ()
+    | x :: xs ->
+      if p x then
+        let r = { hd = x; tl = [] } in
+        dst.tl <- inj r;
+        loop r xs in
+  let dummy = dummy_node () in
+  loop dummy li;
+  dummy.tl
+
+(*$= take_while & ~printer:(IO.to_string (List.print Int.print))
+  (take_while ((=) 3) [3;3;4;3;3]) [3;3]
+  (take_while ((=) 3) [3]) [3]
+  (take_while ((=) 3) [4]) []
+  (take_while ((=) 3) []) []
+  (take_while ((=) 2) [2; 2]) [2; 2]
+ *)
 
 let rec drop_while f = function
   | [] -> []
   | x :: xs when f x -> drop_while f xs
   | xs -> xs
+
+(*$= drop_while & ~printer:(IO.to_string (List.print Int.print))
+  (drop_while ((=) 3) [3;3;4;3;3]) [4;3;3]
+  (drop_while ((=) 3) [3]) []
+ *)
 
 let takewhile = take_while
 let dropwhile = drop_while
@@ -154,57 +226,97 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
     | (h::t, None,   Some y)     -> rev_append (aux [h] t) [y]
     | (h::t, Some x, Some y)     -> x::rev_append (aux [h] t) [y]
 
-let make_compare c l1 l2 =
-  let rec aux l1 l2 = match (l1, l2) with
-    | (h1::t1, h2::t2) -> let result = c h1 h2 in
-	if result = 0 then aux t1 t2
-	else               result
-    | ([],     []    ) -> 0
-    | (_,      []    ) -> 1
-    | ([],     _     ) -> -1
-  in aux l1 l2
+(*$= interleave & ~printer:(IO.to_string (List.print Int.print))
+  (interleave 0 [1;2;3]) [1;0;2;0;3]
+  (interleave 0 [1]) [1]
+  (interleave 0 []) []
+  (interleave ~first:(-1) 0 [1;2;3]) [-1;1;0;2;0;3]
+  (interleave ~first:(-1) 0 [1]) [-1;1]
+  (interleave ~first:(-1) 0 []) [-1]
+  (interleave ~last:(-2) 0 [1;2;3]) [1;0;2;0;3;-2]
+  (interleave ~last:(-2) 0 [1]) [1;-2]
+  (interleave ~last:(-2) 0 []) [-2]
+  (interleave ~first:(-1) ~last:(-2) 0 [1;2;3]) [-1;1;0;2;0;3;-2]
+  (interleave ~first:(-1) ~last:(-2) 0 [1]) [-1;1;-2]
+  (interleave ~first:(-1) ~last:(-2) 0 []) [-1;-2]
+*)
 
-let rec unique ?(cmp = ( = )) l =
-	let rec loop dst = function
-		| [] -> ()
-		| h :: t ->
-			match exists (cmp h) t with
-			| true -> loop dst t
-			| false ->
-				let r = { hd =  h; tl = [] }  in
-				dst.tl <- inj r;
-				loop r t
-	in
-	let dummy = dummy_node() in
-	loop dummy l;
-	dummy.tl
+let rec unique ?(eq = ( = )) l =
+  let rec loop dst = function
+    | [] -> ()
+    | h :: t ->
+      match exists (eq h) t with
+      | true -> loop dst t
+      | false ->
+        let r = { hd =  h; tl = [] }  in
+        dst.tl <- inj r;
+        loop r t
+  in
+  let dummy = dummy_node() in
+  loop dummy l;
+  dummy.tl
 
-let unique_eq ?eq l = unique ?cmp:eq l
+(* FIXME BAD TESTS: RESULT IS SPECIFIC TO IMPLEMENTATION *)
+(*$= unique & ~printer:(IO.to_string (List.print Int.print))
+  [1;2;3;4;5;6] (unique [1;1;2;2;3;3;4;5;6;4;5;6])
+  [1] (unique [1;1;1;1;1;1;1;1;1;1])
+  [1;2] (unique ~eq:(fun x y -> x land 1 = y land 1) [2;2;2;4;6;8;3;1;2])
+ *)
 
 let unique_cmp ?(cmp = Pervasives.compare) l =
-  let set      = ref (BatMap.create cmp) in
-  let should_keep x = 
-    if BatMap.mem x !set then false
-    else ( set := BatMap.add x true !set; true )
+  let set      = ref (BatMap.PMap.create cmp) in
+  let should_keep x =
+    if BatMap.PMap.mem x !set then false
+    else ( set := BatMap.PMap.add x true !set; true )
   in
   (* use a stateful filter to remove duplicate elements *)
-  filter should_keep l
+  List.filter should_keep l
+
+(*$= unique_cmp & ~printer:(IO.to_string (List.print Int.print))
+  [1;2;3;4;5;6] (unique_cmp [1;1;2;2;3;3;4;5;6;4;5;6])
+  [1] (unique_cmp [1;1;1;1;1;1;1;1;1;1])
+  [2;3] (unique_cmp ~cmp:(fun x y -> Int.compare (x land 1) (y land 1)) [2;2;2;4;6;8;3;1;2])
+ *)
+
+
+let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
+  let module HT = Hashtbl.Make(struct type t = et let equal = eq let hash = hash end) in
+  let ht = HT.create (List.length l) in
+  let rec loop dst = function
+    | h::t when not (HT.mem ht h) ->
+	HT.add ht h (); (* put h in hash table *)
+	let r = {hd = h; tl = []} in (* and to output list *)
+	dst.tl <- inj r;
+	loop r t
+    | _::t -> (* if already in hashtable then don't add to output list *)
+      loop dst t
+    | [] -> ()
+  in
+  let dummy = dummy_node() in
+  loop dummy l;
+  dummy.tl
+
+(*$= unique_hash & ~printer:(IO.to_string (List.print Int.print))
+  [1;2;3;4;5;6] (unique_hash [1;1;2;2;3;3;4;5;6;4;5;6])
+  [1] (unique_hash [1;1;1;1;1;1;1;1;1;1])
+  [2;3] (unique_hash ~hash:(fun x -> Hashtbl.hash (x land 1)) ~eq:(fun x y -> x land 1 = y land 1) [2;2;2;4;6;8;3;1;2])
+ *)
 
 let filter_map f l =
-	let rec loop dst = function
-		| [] -> ()
-		| h :: t ->
-			match f h with
-			| None -> loop dst t
-			| Some x ->
-				let r = { hd = x; tl = [] }  in
-				dst.tl <- inj r;
-				loop r t
-	in
-	let dummy = dummy_node() in
-	loop dummy l;
-	dummy.tl
-	
+  let rec loop dst = function
+    | [] -> ()
+    | h :: t ->
+      match f h with
+      | None -> loop dst t
+      | Some x ->
+        let r = { hd = x; tl = [] }  in
+        dst.tl <- inj r;
+        loop r t
+  in
+  let dummy = dummy_node() in
+  loop dummy l;
+  dummy.tl
+
 let rec find_map f = function
   | [] -> raise Not_found
   | x :: xs ->
@@ -215,149 +327,149 @@ let rec find_map f = function
 let fold_right_max = 1000
 
 let fold_right f l init =
-	let rec tail_loop acc = function
-		| [] -> acc
-		| h :: t -> tail_loop (f h acc) t
-	in
-	let rec loop n = function
-		| [] -> init
-		| h :: t ->
-			if n < fold_right_max then
-				f h (loop (n+1) t)
-			else
-				f h (tail_loop init (rev t))
-	in
-	loop 0 l
+  let rec tail_loop acc = function
+    | [] -> acc
+    | h :: t -> tail_loop (f h acc) t
+  in
+  let rec loop n = function
+    | [] -> init
+    | h :: t ->
+      if n < fold_right_max then
+        f h (loop (n+1) t)
+      else
+        f h (tail_loop init (rev t))
+  in
+  loop 0 l
 
 let map2 f l1 l2 =
-	let rec loop dst src1 src2 =
-		match src1, src2 with
-			| [], [] -> ()
-			| h1 :: t1, h2 :: t2 ->
-				let r = { hd = f h1 h2; tl = [] } in
-				dst.tl <- inj r;
-				loop r t1 t2
-			| _ -> invalid_arg "map2: Different_list_size"
-	in
-	let dummy = dummy_node () in
-	loop dummy l1 l2;
-	dummy.tl
+  let rec loop dst src1 src2 =
+    match src1, src2 with
+      | [], [] -> ()
+      | h1 :: t1, h2 :: t2 ->
+        let r = { hd = f h1 h2; tl = [] } in
+        dst.tl <- inj r;
+        loop r t1 t2
+      | _ -> invalid_arg "map2: Different_list_size"
+  in
+  let dummy = dummy_node () in
+  loop dummy l1 l2;
+  dummy.tl
 
 let rec iter2 f l1 l2 =
-	match l1, l2 with
-	| [], [] -> ()
-	| h1 :: t1, h2 :: t2 -> f h1 h2; iter2 f t1 t2
-	| _ -> invalid_arg "iter2: Different_list_size"
+  match l1, l2 with
+  | [], [] -> ()
+  | h1 :: t1, h2 :: t2 -> f h1 h2; iter2 f t1 t2
+  | _ -> invalid_arg "iter2: Different_list_size"
 
 let rec fold_left2 f accum l1 l2 =
-	match l1, l2 with
-	| [], [] -> accum
-	| h1 :: t1, h2 :: t2 -> fold_left2 f (f accum h1 h2) t1 t2
-	| _ -> invalid_arg "fold_left2: Different_list_size"
+  match l1, l2 with
+  | [], [] -> accum
+  | h1 :: t1, h2 :: t2 -> fold_left2 f (f accum h1 h2) t1 t2
+  | _ -> invalid_arg "fold_left2: Different_list_size"
 
 let fold_right2 f l1 l2 init =
-	let rec tail_loop acc l1 l2 =
-		match l1, l2 with
-		| [] , [] -> acc
-		| h1 :: t1 , h2 :: t2 -> tail_loop (f h1 h2 acc) t1 t2
-		| _ -> invalid_arg "fold_left2: Different_list_size"
-	in
-	let rec loop n l1 l2 =
-		match l1, l2 with
-		| [], [] -> init
-		| h1 :: t1, h2 :: t2 ->
-			if n < fold_right_max then
-				f h1 h2 (loop (n+1) t1 t2)
-			else
-				f h1 h2 (tail_loop init (rev t1) (rev t2))
-		| _ -> invalid_arg "fold_right2: Different_list_size"
-	in
-	loop 0 l1 l2
+  let rec tail_loop acc l1 l2 =
+    match l1, l2 with
+    | [] , [] -> acc
+    | h1 :: t1 , h2 :: t2 -> tail_loop (f h1 h2 acc) t1 t2
+    | _ -> invalid_arg "fold_left2: Different_list_size"
+  in
+  let rec loop n l1 l2 =
+    match l1, l2 with
+    | [], [] -> init
+    | h1 :: t1, h2 :: t2 ->
+      if n < fold_right_max then
+        f h1 h2 (loop (n+1) t1 t2)
+      else
+        f h1 h2 (tail_loop init (rev t1) (rev t2))
+    | _ -> invalid_arg "fold_right2: Different_list_size"
+  in
+  loop 0 l1 l2
 
 let for_all2 p l1 l2 =
-	let rec loop l1 l2 =
-		match l1, l2 with
-		| [], [] -> true
-		| h1 :: t1, h2 :: t2 -> if p h1 h2 then loop t1 t2 else false
-		| _ -> invalid_arg "for_all2: Different_list_size"
-	in
-	loop l1 l2
+  let rec loop l1 l2 =
+    match l1, l2 with
+    | [], [] -> true
+    | h1 :: t1, h2 :: t2 -> if p h1 h2 then loop t1 t2 else false
+    | _ -> invalid_arg "for_all2: Different_list_size"
+  in
+  loop l1 l2
 
 let exists2 p l1 l2 =
-	let rec loop l1 l2 =
-		match l1, l2 with
-			| [], [] -> false
-			| h1 :: t1, h2 :: t2 -> if p h1 h2 then true else loop t1 t2
-			| _ -> invalid_arg "exists2: Different_list_size"
-	in
-	loop l1 l2
+  let rec loop l1 l2 =
+    match l1, l2 with
+      | [], [] -> false
+      | h1 :: t1, h2 :: t2 -> if p h1 h2 then true else loop t1 t2
+      | _ -> invalid_arg "exists2: Different_list_size"
+  in
+  loop l1 l2
 
-let remove_assoc x lst = 
-	let rec loop dst = function
-		| [] -> ()
-		| (a, _ as pair) :: t ->
-			if a = x then
-				dst.tl <- t
-			else
-				let r = { hd = pair; tl = [] } in
-				dst.tl <- inj r;
-				loop r t
-	in
-	let dummy = dummy_node () in
-	loop dummy lst;
-	dummy.tl
+let remove_assoc x lst =
+  let rec loop dst = function
+    | [] -> ()
+    | (a, _ as pair) :: t ->
+      if a = x then
+        dst.tl <- t
+      else
+        let r = { hd = pair; tl = [] } in
+        dst.tl <- inj r;
+        loop r t
+  in
+  let dummy = dummy_node () in
+  loop dummy lst;
+  dummy.tl
 
-let remove_assq x lst = 
-	let rec loop dst = function
-		| [] -> ()
-		| (a, _ as pair) :: t ->
-			if a == x then
-				dst.tl <- t
-			else
-				let r = { hd =  pair; tl = [] } in
-				dst.tl <- inj r;
-				loop r t
-	in
-	let dummy = dummy_node() in
-	loop dummy lst;
-	dummy.tl
+let remove_assq x lst =
+  let rec loop dst = function
+    | [] -> ()
+    | (a, _ as pair) :: t ->
+      if a == x then
+        dst.tl <- t
+      else
+        let r = { hd =  pair; tl = [] } in
+        dst.tl <- inj r;
+        loop r t
+  in
+  let dummy = dummy_node() in
+  loop dummy lst;
+  dummy.tl
 
 let rfind p l = find p (rev l)
 
-let find_all p l = 
-	let rec findnext dst = function
-		| [] -> ()
-		| h :: t -> 
-			if p h then
-				let r = { hd = h; tl = [] } in
-				dst.tl <- inj r;
-				findnext r t
-			else
-				findnext dst t
-	in
-	let dummy = dummy_node () in
-	findnext dummy l;
-	dummy.tl
+let find_all p l =
+  let rec findnext dst = function
+    | [] -> ()
+    | h :: t ->
+      if p h then
+        let r = { hd = h; tl = [] } in
+        dst.tl <- inj r;
+        findnext r t
+      else
+        findnext dst t
+  in
+  let dummy = dummy_node () in
+  findnext dummy l;
+  dummy.tl
 
 let rec findi p l =
-	let rec loop n = function
-		| [] -> raise Not_found
-		| h :: t ->
-			if p n h then (n,h) else loop (n+1) t
-	in
-	loop 0 l
+  let rec loop n = function
+    | [] -> raise Not_found
+    | h :: t ->
+      if p n h then (n,h) else loop (n+1) t
+  in
+  loop 0 l
 
 let rec index_of e l =
   let rec loop n = function
     | []              -> None
-    | h::t when h = e -> Some n
+    | h::_ when h = e -> Some n
     | _::t            -> loop ( n + 1 ) t
   in loop 0 l
 
 let rec index_ofq e l =
   let rec loop n = function
     | []               -> None
-    | h::t when h == e -> Some n
+    | h::_ when h == e -> Some n
     | _::t             -> loop ( n + 1 ) t
   in loop 0 l
 
@@ -378,71 +490,71 @@ let rec rindex_ofq e l =
 
 let filter = find_all
 
-let partition p lst = 
-	let rec loop yesdst nodst = function
-		| [] -> ()
-		| h :: t ->
-			let r = { hd = h; tl = [] } in
-			if p h then
-				begin
-					yesdst.tl <- inj r;
-					loop r nodst t
-				end
-			else
-				begin
-					nodst.tl <- inj r;
-					loop yesdst r t
-				end
-	in
-	let yesdummy = dummy_node()
-	and nodummy = dummy_node()
-	in
-	loop yesdummy nodummy lst;
-	yesdummy.tl, nodummy.tl
+let partition p lst =
+  let rec loop yesdst nodst = function
+    | [] -> ()
+    | h :: t ->
+      let r = { hd = h; tl = [] } in
+      if p h then
+        begin
+          yesdst.tl <- inj r;
+          loop r nodst t
+        end
+      else
+        begin
+          nodst.tl <- inj r;
+          loop yesdst r t
+        end
+  in
+  let yesdummy = dummy_node()
+  and nodummy = dummy_node()
+  in
+  loop yesdummy nodummy lst;
+  yesdummy.tl, nodummy.tl
 
 let split lst =
-	let rec loop adst bdst = function
-		| [] -> ()
-		| (a, b) :: t -> 
-			let x = { hd = a; tl = [] } 
-			and y = { hd = b; tl = [] } in
-			adst.tl <- inj x;
-			bdst.tl <- inj y;
-			loop x y t
-	in
-	let adummy = dummy_node ()
-	and bdummy = dummy_node ()
-	in
-	loop adummy bdummy lst;
-	adummy.tl, bdummy.tl
+  let rec loop adst bdst = function
+    | [] -> ()
+    | (a, b) :: t ->
+      let x = { hd = a; tl = [] }
+      and y = { hd = b; tl = [] } in
+      adst.tl <- inj x;
+      bdst.tl <- inj y;
+      loop x y t
+  in
+  let adummy = dummy_node ()
+  and bdummy = dummy_node ()
+  in
+  loop adummy bdummy lst;
+  adummy.tl, bdummy.tl
 
 let combine l1 l2 =
-	let rec loop dst l1 l2 =
-		match l1, l2 with
-		| [], [] -> ()
-		| h1 :: t1, h2 :: t2 -> 
-			let r = { hd = h1, h2; tl = [] } in
-			dst.tl <- inj r;
-			loop r t1 t2
-		| _, _ -> invalid_arg "combine: Different_list_size"
-	in
-	let dummy = dummy_node () in
-	loop dummy l1 l2;
-	dummy.tl
+  let rec loop dst l1 l2 =
+    match l1, l2 with
+    | [], [] -> ()
+    | h1 :: t1, h2 :: t2 ->
+      let r = { hd = h1, h2; tl = [] } in
+      dst.tl <- inj r;
+      loop r t1 t2
+    | _, _ -> invalid_arg "combine: Different_list_size"
+  in
+  let dummy = dummy_node () in
+  loop dummy l1 l2;
+  dummy.tl
 
 let rec init size f =
-	if size = 0 then [] 
-	else if size < 0 then invalid_arg "BatList.init"
-	else
-		let rec loop dst n =
-			if n < size then
-				let r = { hd = f n; tl = [] } in
-				dst.tl <- inj r;
-				loop r (n+1)
-		in
-		let r = { hd = f 0; tl = [] } in
-		loop r 1;
-		inj r
+  if size = 0 then []
+  else if size < 0 then invalid_arg "BatList.init"
+  else
+    let rec loop dst n =
+      if n < size then
+        let r = { hd = f n; tl = [] } in
+        dst.tl <- inj r;
+        loop r (n+1)
+    in
+    let r = { hd = f 0; tl = [] } in
+    loop r 1;
+    inj r
 
 let make i x =
   if i < 0 then invalid_arg "List.make";
@@ -453,134 +565,151 @@ let make i x =
   loop x [] i
 
 let mapi f = function
-	| [] -> []
-	| h :: t ->
-		let rec loop dst n = function
-			| [] -> ()
-			| h :: t -> 
-				let r = { hd = f n h; tl = [] } in
-				dst.tl <- inj r;
-				loop r (n+1) t
-		in	
-		let r = { hd = f 0 h; tl = [] } in
-		loop r 1 t;
-		inj r
+  | [] -> []
+  | h :: t ->
+    let rec loop dst n = function
+      | [] -> ()
+      | h :: t ->
+        let r = { hd = f n h; tl = [] } in
+        dst.tl <- inj r;
+        loop r (n+1) t
+    in
+    let r = { hd = f 0 h; tl = [] } in
+    loop r 1 t;
+    inj r
 
-let iteri f l = 
-	let rec loop n = function
-		| [] -> ()
-		| h :: t ->
-			f n h;
-			loop (n+1) t
-	in
-	loop 0 l
+let iteri f l =
+  let rec loop n = function
+    | [] -> ()
+    | h :: t ->
+      f n h;
+      loop (n+1) t
+  in
+  loop 0 l
 
 let first = hd
 
 let rec last = function
-	| [] -> invalid_arg "Empty List"
-	| h :: [] -> h
-	| _ :: t -> last t
+  | [] -> invalid_arg "Empty List"
+  | h :: [] -> h
+  | _ :: t -> last t
 
 let split_nth index = function
-	| [] -> if index = 0 then [],[] else invalid_arg "Index past end of list"
-	| (h :: t as l) ->
-		if index = 0 then [],l
-		else if index < 0 then invalid_arg "Negative index not allowed"
-		else
-			let rec loop n dst l =
-				if n = 0 then l else
-				match l with
-				| [] -> invalid_arg "Index past end of list"
-				| h :: t ->
-					let r = { hd =  h; tl = [] } in
-					dst.tl <- inj r;
-					loop (n-1) r t 
-			in
-			let r = { hd = h; tl = [] } in
-			inj r, loop (index-1) r t
+  | [] -> if index = 0 then [],[] else invalid_arg "Index past end of list"
+  | (h :: t as l) ->
+    if index = 0 then [],l
+    else if index < 0 then invalid_arg "Negative index not allowed"
+    else
+      let rec loop n dst l =
+        if n = 0 then l else
+        match l with
+        | [] -> invalid_arg "Index past end of list"
+        | h :: t ->
+          let r = { hd =  h; tl = [] } in
+          dst.tl <- inj r;
+          loop (n-1) r t
+      in
+      let r = { hd = h; tl = [] } in
+      inj r, loop (index-1) r t
 
 let split_at = split_nth
 
 let find_exn f e l =
-	try
-		find f l
-	with
-		Not_found -> raise e
+  try
+    find f l
+  with
+    Not_found -> raise e
 
 let remove l x =
-	let rec loop dst = function
-		| [] -> ()
-		| h :: t ->
-			if x = h then 
-				dst.tl <- t
-			else
-				let r = { hd = h; tl = [] } in
-				dst.tl <- inj r;
-				loop r t
-	in
-	let dummy = dummy_node () in
-	loop dummy l;
-	dummy.tl
+  let rec loop dst = function
+    | [] -> ()
+    | h :: t ->
+      if x = h then
+        dst.tl <- t
+      else
+        let r = { hd = h; tl = [] } in
+        dst.tl <- inj r;
+        loop r t
+  in
+  let dummy = dummy_node () in
+  loop dummy l;
+  dummy.tl
 
 let rec remove_if f lst =
-	let rec loop dst = function
-		| [] -> ()
-		| x :: l ->
-			if f x then
-				dst.tl <- l
-			else
-				let r = { hd = x; tl = [] } in
-				dst.tl <- inj r;
-				loop r l
-	in
-	let dummy = dummy_node () in
-	loop dummy lst;
-	dummy.tl
+  let rec loop dst = function
+    | [] -> ()
+    | x :: l ->
+      if f x then
+        dst.tl <- l
+      else
+        let r = { hd = x; tl = [] } in
+        dst.tl <- inj r;
+        loop r l
+  in
+  let dummy = dummy_node () in
+  loop dummy lst;
+  dummy.tl
 
 let rec remove_all l x =
-	let rec loop dst = function
-		| [] -> ()
-		| h :: t ->
-			if x = h then
-				loop dst t
-			else
-				let r = { hd = h; tl = [] } in
-				dst.tl <- inj r;
-				loop r t
-	in
-	let dummy = dummy_node () in
-	loop dummy l;
-	dummy.tl
+  let rec loop dst = function
+    | [] -> ()
+    | h :: t ->
+      if x = h then
+        loop dst t
+      else
+        let r = { hd = h; tl = [] } in
+        dst.tl <- inj r;
+        loop r t
+  in
+  let dummy = dummy_node () in
+  loop dummy l;
+  dummy.tl
+
+let transpose = function
+  | [] -> []
+  | [x] -> List.map (fun x -> [x]) x
+  | x::xs ->
+    let heads = List.map (fun x -> {hd=x; tl=[]}) x in
+    ignore ( List.fold_left
+       (fun acc x -> List.map2 (fun x xs -> let r = {hd = x; tl = []} in xs.tl <- inj r; r) x acc)
+       heads xs);
+    Obj.magic heads (* equivalent to List.map inj heads, but without creating a new list *)
+
+
+(*$T transpose
+  transpose [ [1; 2; 3;]; [4; 5; 6;]; [7; 8; 9;] ] = [[1;4;7];[2;5;8];[3;6;9]]
+  transpose [] = []
+  transpose [ [1] ] = [ [1] ]
+*)
 
 let enum l =
-	let rec make lr count =
-		BatEnum.make
-			~next:(fun () ->
-				match !lr with
-				| [] -> raise BatEnum.No_more_elements
-				| h :: t ->
-					decr count;
-					lr := t;
-					h
-			)
-			~count:(fun () ->
-				if !count < 0 then count := length !lr;
-				!count
-			)
-			~clone:(fun () ->
-				make (ref !lr) (ref !count)
-			)
-	in
-	make (ref l) (ref (-1))
+  let rec make lr count =
+    BatEnum.make
+      ~next:(fun () ->
+        match !lr with
+        | [] -> raise BatEnum.No_more_elements
+        | h :: t ->
+          decr count;
+          lr := t;
+          h
+      )
+      ~count:(fun () ->
+        if !count < 0 then count := length !lr;
+        !count
+      )
+      ~clone:(fun () ->
+        make (ref !lr) (ref !count)
+      )
+  in
+  make (ref l) (ref (-1))
 
 let of_enum e =
-	let h = dummy_node() in
-	let _ = BatEnum.fold (fun acc x ->
-		let r = { hd = x; tl = [] }  in
-		acc.tl <- inj r;
-		r) h e in
-	h.tl
+  let h = dummy_node() in
+  let _ = BatEnum.fold (fun acc x ->
+    let r = { hd = x; tl = [] }  in
+    acc.tl <- inj r;
+    r) h e in
+  h.tl
 
 
 
@@ -590,7 +719,7 @@ let backwards l = enum (rev l) (*TODO: should we make it more efficient?*)
     | []   -> acc
     | h::t -> aux BatEnum.append (BatEnum.singleton h) acc
   in aux l*)
-  
+
 
 let of_backwards e =
   let rec aux acc = match BatEnum.get e with
@@ -601,11 +730,18 @@ let of_backwards e =
 let assoc_inv e l =
   let rec aux = function
   | []                  -> raise Not_found
-  | (a,b)::t when b = e -> a
+  | (a,b)::_ when b = e -> a
   | _::t                -> aux t
   in aux l
 
-let sort_unique cmp lst = 
+let assq_inv e l =
+  let rec aux = function
+  | []                    -> raise Not_found
+  | (a,b)::_ when b == e  -> a
+  | _::t                  -> aux t
+  in aux l
+
+let sort_unique cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
     (fun (acc, last) elem ->
@@ -614,7 +750,7 @@ let sort_unique cmp lst =
     )
     ([first], first)
     rest
-   in 
+   in
   match sorted with
    | [] -> []
    | hd::tl ->
@@ -623,7 +759,7 @@ let sort_unique cmp lst =
     List.rev rev_result
    end
 
-let group cmp lst = 
+let group cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
     (fun (acc, agr, last) elem ->
@@ -632,7 +768,7 @@ let group cmp lst =
     )
     ([], [first], first)
     rest
-   in 
+   in
   match sorted with
    | [] -> []
    | hd::tl ->
@@ -644,6 +780,9 @@ let group cmp lst =
 let cartesian_product l1 l2 =
    List.concat (List.map (fun i -> List.map (fun j -> (i,j)) l2) l1)
 
+(*$T cartesian_product as cp
+  cp [1;2;3] ['x';'y'] = [1,'x';1,'y';2,'x';2,'y';3,'x';3,'y']
+ *)
 
 let rec n_cartesian_product = function [] -> assert false
   | [l] -> List.map (fun i -> [i]) l
@@ -655,17 +794,19 @@ let rec n_cartesian_product = function [] -> assert false
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
   | []   ->
-      BatInnerIO.nwrite out first;
-      BatInnerIO.nwrite out last
+    BatInnerIO.nwrite out first;
+    BatInnerIO.nwrite out last
   | [h]  ->
-      BatInnerIO.Printf.fprintf out "%s%a%s" first print_a h last
-  | h::t -> 
-      BatInnerIO.nwrite out first;
-      print_a out h;
-      iter (BatInnerIO.Printf.fprintf out "%s%a" sep print_a) t;
-      BatInnerIO.nwrite out last
+    BatInnerIO.nwrite out first;
+    print_a out h;
+    BatInnerIO.nwrite out last
+  | h::t ->
+    BatInnerIO.nwrite out first;
+    print_a out h;
+    iter (fun x -> BatInnerIO.nwrite out sep; print_a out x) t;
+    BatInnerIO.nwrite out last
 
-let t_printer a_printer paren out x = print (a_printer false) out x
+let t_printer a_printer _paren out x = print (a_printer false) out x
 
 let reduce f = function [] -> invalid_arg "Empty List"
   | h::t -> fold_left f h t
@@ -711,12 +852,12 @@ module Exceptionless = struct
   let find_map f l =
     try Some(find_map f l)
     with Not_found -> None
-      
-  let hd l = 
-    try Some (hd l) 
-    with Failure "hd" -> None 
 
-  let tl l = 
+  let hd l =
+    try Some (hd l)
+    with Failure "hd" -> None
+
+  let tl l =
     try Some (tl l)
     with Failure "tl" -> None
 end
@@ -734,7 +875,7 @@ module Labels = struct
   let rfind ~f l    = rfind f l
   let find ~f l     = find f l
   let findi ~f      = findi f
-  let find_exn ~f   = find_exn f 
+  let find_exn ~f   = find_exn f
   let filter_map ~f = filter_map f
   let remove_if ~f  = remove_if f
   let take_while ~f = take_while f
@@ -757,7 +898,8 @@ module Labels = struct
   let exists ~f     = exists f
   let stable_sort ?(cmp=compare)  = stable_sort cmp
   let fast_sort ?(cmp=compare)    = fast_sort cmp
-  let merge ~cmp         = merge cmp
+  let sort ?(cmp=compare)         = sort cmp
+  let merge ?(cmp=compare)        = merge cmp
 
   module LExceptionless = struct
     include Exceptionless
@@ -771,4 +913,45 @@ let ( @ ) = List.append
 
 module Infix = struct
   let ( @ ) = ( @ )
+end
+
+open BatOrd
+
+let rec eq eq_elt l1 l2 =
+  match l1 with
+    | [] -> (match l2 with [] -> true | _ -> false)
+    | hd1::tl1 ->
+      (match l2 with
+	| [] -> false
+	| hd2::tl2 -> bin_eq eq_elt hd1 hd2 (eq eq_elt) tl1 tl2)
+
+let rec ord ord_elt l1 l2 =
+  match l1 with
+    | [] -> (match l2 with [] -> Eq | _::_ -> Lt)
+    | hd1::tl1 ->
+      (match l2 with
+	| [] -> Gt
+	| hd2::tl2 -> bin_ord ord_elt hd1 hd2 (ord ord_elt) tl1 tl2)
+
+let rec compare comp_elt l1 l2 =
+  match l1 with
+    | [] -> (match l2 with [] -> 0 | _::_ -> -1)
+    | hd1::tl1 ->
+      (match l2 with
+	| [] -> 1
+	| hd2::tl2 -> bin_comp comp_elt hd1 hd2 (compare comp_elt) tl1 tl2)
+
+module Eq (T : Eq) = struct
+  type t = T.t list
+  let eq = eq T.eq
+end
+
+module Ord (T : Ord) = struct
+  type t = T.t list
+  let ord = ord T.ord
+end
+
+module Comp (T : Comp) = struct
+  type t = T.t list
+  let compare = compare T.compare
 end

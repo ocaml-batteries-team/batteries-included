@@ -95,7 +95,7 @@ module TestMap
 
     val extract : key -> 'a m -> 'a * 'a m
     val pop : 'a m -> (key * 'a) * 'a m
-    
+
     val fold : ('a -> 'b -> 'b) -> 'a m -> 'b -> 'b
     val foldi : (key -> 'a -> 'b -> 'b) -> 'a m -> 'b -> 'b
     val iter : ('a -> unit) -> 'a m -> unit
@@ -125,7 +125,7 @@ module TestMap
       -> 'a m -> 'b m -> 'c m
 
     val print :
-      ?first:string -> ?last:string -> ?sep:string ->
+      ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
       ('a BatInnerIO.output -> key -> unit) ->
       ('a BatInnerIO.output -> 'c -> unit) ->
       'a BatInnerIO.output -> 'c m -> unit
@@ -138,10 +138,10 @@ module TestMap
 
   let eq_li ?msg cmp_elt print_elt l1 l2 =
     let cmp t1 t2 =
-      let cmp = BatPair.compare ~c1:BatInt.compare ~c2:cmp_elt in
-      0 = BatList.make_compare cmp t1 t2 in
+      let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:cmp_elt in
+      0 = BatList.compare cmp t1 t2 in
     let printer =
-      BatIO.to_string -| BatList.print <| BatPair.print BatInt.print print_elt in
+      BatIO.to_string -| BatList.print <| BatTuple.Tuple2.print BatInt.print print_elt in
     U.assert_equal ?msg ~cmp ~printer l1 l2
 
   let eq ?msg cmp_elt print_elt t1 t2 =
@@ -333,7 +333,7 @@ module TestMap
         | None, Some _ -> -1
         | Some _, None -> 1
         | Some a, Some b -> cmp a b in
-    let pair_compare2 cmp = BatPair.compare ~c1:cmp ~c2:cmp in
+    let pair_compare2 cmp = BatTuple.Tuple2.compare ~cmp1:cmp ~cmp2:cmp in
     eq ~msg:
       "merge (fun k a b -> Some (a, b)) [0,0; 1,1; 3,3] [1,-1; 2,-2; 3,-3; 4,-4
        = [0, (Some 0, None);
@@ -342,8 +342,8 @@ module TestMap
           3, (Some 3, Some -3);
           4, (None, Some -4)]"
       (pair_compare2 (option_compare BatInt.compare))
-      (BatPair.print2 (BatOption.print BatInt.print))
-      (M.merge (fun k a b -> Some (a, b)) t t')
+      (BatTuple.Tuple2.printn (BatOption.print BatInt.print))
+      (M.merge (fun _k a b -> Some (a, b)) t t')
       (il [0, (Some 0, None);
            1, (Some 1, Some ~-1);
            2, (None, Some ~-2);
@@ -579,23 +579,10 @@ module P = struct
   type key = int
   type 'a m = (key, 'a) M.t
 
-  let singleton k v = M.singleton ?cmp:None k v
-
-  let of_enum t = M.of_enum ?cmp:None t
-
   let iter f = M.iter (fun _ -> f)
   let iteri = M.iter
 
   let filterv_map f = M.filter_map (fun _ -> f)
-
-  let exists = M.exists_f
-
-  let equal eqv m1 m2 =
-    let as_in m k v =
-      match Exceptionless.find k m with
-        | None -> false
-        | Some v' -> eqv v v' in
-    for_all (as_in m1) m2 && for_all (as_in m2) m1
 end
 
 module S = struct
@@ -610,7 +597,7 @@ module S = struct
 
   let fold f = M.fold (fun _ -> f)
   let foldi = M.fold
-end  
+end
 
 module TM = TestMap(M)
 module TP = TestMap(P)
@@ -623,15 +610,15 @@ module TS = TestMap(S)
    - that the comparison function of the result map is as specified
 *)
 let heterogeneous_tests =
-  let module P = BatMap in
+  let module P = BatMap.PMap in
   let li m = BatList.of_enum (P.enum m) in
 
   let (@=) msg (act, exp) =
     let cmp t1 t2 =
-      let cmp = BatPair.compare ~c1:BatInt.compare ~c2:BatInt.compare in
-      0 = BatList.make_compare cmp t1 t2 in
+      let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:BatInt.compare in
+      0 = BatList.compare cmp t1 t2 in
     let printer =
-      BatIO.to_string -| BatList.print <| BatPair.print2 BatInt.print in
+      BatIO.to_string -| BatList.print <| BatTuple.Tuple2.printn BatInt.print in
     U.assert_equal ~msg ~cmp ~printer exp act in
 
   let compare_modulo p x y = BatInt.compare (x mod p) (y mod p) in
@@ -650,7 +637,7 @@ let heterogeneous_tests =
 
   let test_union () =
     (* We check that the result and all 'add' have been done modulo 7 :
-       - the 8,-8 binding of m13 is now placed in first (smallest) position 
+       - the 8,-8 binding of m13 is now placed in first (smallest) position
        - the 5,5 binding has been rewritten by the 12,-5 binding*)
     "union [2,2; 3,3; 5,5]/7 [4,-4; 8,-8; 12,-5]/13
      = [8,-8; 2,2; 3,3; 4,-4; 12,-5]/7" @=

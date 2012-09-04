@@ -27,4 +27,6 @@ module Map (Ord : BatInterfaces.OrderedType)
       ('a BatInnerIO.output -> key -> unit) ->
       ('a BatInnerIO.output -> 'c -> unit) ->
       'a BatInnerIO.output -> 'c t -> unit
+    val of_list : (Ord.t * 'a) list -> 'a t
+    val to_list : 'a t -> (Ord.t * 'a) list
 end

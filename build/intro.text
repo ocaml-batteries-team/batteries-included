@@ -5,39 +5,72 @@ OCaml Batteries included (or simply "Batteries") is a community-driven effort to
 For the moment, Batteries Included concentrates on:
 
 {ul
-{- {{:Data.html}data structures}}
-{- {{:Unix.html}file manipulation and system calls}}
-{- {{:IO.html}inputs and outputs}, including {{:Compress.html}(de)compression}}
-{- {{:Languages.html}lexing, parsing and pretty-printing}}
-{- {{:Threads.html}concurrency}}
-{- {{:Numeric.html}numbers}}
-{- {{:Text.html}text, including Unicode}}
-{- {{:../extensions.html}language extensions}}
-{- {{:Compilers.html}OCaml internals} and {{:Util.html}utilities}}
+{- data structures}
+{- file manipulation}
+{- inputs and outputs}
+{- concurrency}
+{- numbers}
+{- text, including Unicode}
 }
 
+For more information on the installation of Batteries Included, please
+read the
+{{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Installing-Batteries}Installation
+guide} and for an example using it in different build systems, we have
+the
+{{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Getting-started}Getting
+started manual}.
 
-Future versions will progressively add (not necessarily in that order):
-{ul
-{- {{:http://camomile.sourceforge.net/}More Unicode}}
-{- {{:http://ocaml-reins.sourceforge.net}More data structures}}
-{- {{:http://www.camlcity.org/archive/programming/pxp.html}XML} and {{:http://caml.inria.fr/cgi-bin/hump.en.cgi?contrib=552}JSON}}
-{- {{:http://caml.inria.fr/pub/old_caml_site/humps/caml_Graphics_and_GUI_tool_kits.html}User interfaces}}
-{- {{:http://ocsigen.org/lwt} More concurrency} and {{:http://cothreads.sourceforge.net/}even more concurrency}}
-{- {{:http://projects.camlcity.org/projects/ocamlnet.html}System software and internet protocols}}
-{- {{:http://www.cairographics.org/cairo-ocaml/}2d Graphics}}
-{- {{:http://www.xs4all.nl/~mmzeeman/ocaml/}Testing}}
-{- 3d Graphics}
-{- Distributed programming}
-{- Cryptography}
-{- ...}
-}
+Do you have suggestions? Remarks? Bug reports ? To contact us or to be
+kept informed, don't hesitate to visit our
+{{:http://batteries.forge.ocamlcore.org/}website},
+{{:https://github.com/ocaml-batteries-team/batteries-included}Git
+repo}, and our
+{{:https://github.com/ocaml-batteries-team/batteries-included/issues?sort=created&direction=desc&state=open}Issue
+tracker}.
 
-For more information on the installation of Batteries Included,
-please read {{:../setup.html}the setup guide}. 
+{6 New Data Structures in Batteries}
 
-Do you have suggestions? Remarks? Bug reports ? To contact us or to
-be kept informed, don't hesitate to visit
-{{:http://forge.ocamlcore.org/projects/batteries/}our website}.
+{!modules: BatBitSet BatCache BatDeque BatDllist BatDynArray BatEnum
+BatFingerTree BatGlobal BatHashcons BatHeap BatIMap BatISet
+BatLazyList BatMultiPMap BatRefList BatSeq BatSplay BatUref BatVect }
 
-{6 List of modules}
+{6 New Modules in Batteries}
+
+{!modules: BatBase64 BatCharParser BatFile BatInterfaces BatIO BatLog
+BatLogger BatNumber BatOptParse BatParserCo BatPathGen BatPrint
+BatResult BatReturn }
+
+{6 Builtin Types as Modules}
+
+{!modules: BatBool BatChar BatFloat BatInt BatInt32 BatInt64
+BatNativeint BatOption BatRef BatTuple BatUnit }
+
+{6 Extensions to the Standard Library}
+
+{!modules: BatArray BatBigarray BatBig_int BatBuffer BatComplex
+BatDigest BatFormat BatGc BatGenlex BatHashtbl BatLexing BatList
+BatMap BatMarshal BatNum BatOo BatPervasives BatPrintexc BatPrintf
+BatQueue BatRandom BatScanf BatSet BatStack BatStream BatString
+BatSys BatUnix}
+
+{6 Thread-related Modules}
+
+These modules are available only when compiling with threads.  To use
+them, do [open BatteriesThread] at the top of your code.
+
+{!modules: BatConcurrent BatMutex BatRMutex}
+
+{6 Incubator}
+
+These modules are available only inside [Batteries.Incubator].  Their
+interface is not guaranteed stable, and may be changed at any time,
+including with backwards incompatible changes between point releases.
+They are included for testing and stabilization until they can be
+finalized and moved to batteries proper.
+
+{!modules: BatOrd BatSubstring}
+
+{6 Internal Modules}
+
+{!modules: BatAvlTree BatInnerIO BatInnerWeaktbl BatValuePrinter}

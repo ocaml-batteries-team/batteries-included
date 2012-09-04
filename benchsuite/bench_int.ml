@@ -1,24 +1,21 @@
-(* cd .. && ocamlbuild benchsuite/test_int.native && _build/benchsuite/test_int.native *)
+(* cd .. && ocamlbuild benchsuite/test_int.native -- *)
 
 
-external primitive_int_compare : int -> int -> int = "caml_int_compare"
+external primitive_int_compare : int -> int -> int = "caml_int_compare" "noalloc"
 
 let test_compare () =
-  Printf.printf "test compare against stdlib's compare and a naive impl.";
-  
-  let bound = max_int
-  and length = 1000
-  and nb_iter = 2000 in
+
+  let length = 1000 in
 
   let input =
-    Array.init length (fun _ -> Random.int bound, Random.int bound) in
+    Array.init length (fun _ -> BatRandom.(full_range_int (), full_range_int ())) in
 
   let output = Array.map (fun (x, y) -> Pervasives.compare x y) input in
 
-  let test cmp =
+  let test cmp n =
     Array.iteri (fun i (x, y) ->
       assert (cmp x y = output.(i));
-      for i = 1 to nb_iter do
+      for i = 1 to n do
         ignore (cmp x y);
       done)
       input in
@@ -35,19 +32,17 @@ let test_compare () =
     else if y > x then -1
     else 0 in
 
-  let samples =
-    Benchmark.throughputN ~repeat:1 1
-      [
-        "BatInt.compare", test, BatInt.compare;
-        "stdlib's compare", test, Pervasives.compare;
-        "external compare", test, primitive_int_compare;
-        "mfp's compare", test, mfp_compare;
-        "naive compare", test, naive_compare;
-      ]
+  let samples = Bench.bench_n
+    [
+      "BatInt.compare", test BatInt.compare;
+      "stdlib's compare", test Pervasives.compare;
+      "external compare", test primitive_int_compare;
+      "mfp's compare", test mfp_compare;
+      "naive compare", test naive_compare;
+    ]
   in
-
-  Benchmark.tabulate samples
-
+  print_endline "For comparing 1000 pairs of random integers";
+  Bench.summarize samples
 
 let () =
   test_compare ();

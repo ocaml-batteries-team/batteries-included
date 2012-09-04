@@ -1,8 +1,8 @@
-(* 
+(*
  * Number - Generic interface for numbers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -37,7 +37,7 @@
    the internal representation. For instance, with module {!Int},
    [max_num + 1] returns [min_num]. By opposition, with module
    {!Safe_int}, [max_num + 1] raises [Overflow].
-   
+
 *)
 exception Overflow
 
@@ -110,11 +110,23 @@ module type Compare = sig
   val ( = ) : bat__compare_t -> bat__compare_t -> bool
 end
 
+(** Reference operators ala C.  Mutates a reference value. [x -= y] is
+    the same as [x := !x - y].  @since 2.0 *)
+module type RefOps =
+sig
+  type bat__refops_t
+  val (+=): bat__refops_t ref -> bat__refops_t -> unit
+  val (-=): bat__refops_t ref -> bat__refops_t -> unit
+  val ( *=): bat__refops_t ref -> bat__refops_t -> unit
+  val (/=): bat__refops_t ref -> bat__refops_t -> unit
+end
+
+
 (**
    The full set of operations of a type of numbers
-*)
+ *)
 module type Numeric =
-sig  
+sig
   type t
   val zero : t
   val one : t
@@ -126,7 +138,11 @@ sig
   val div : t -> t -> t
   val modulo : t -> t -> t
   val pow : t -> t -> t
+
   val compare : t -> t -> int
+  val equal : t -> t -> bool
+  val ord : t BatOrd.ord (* t -> t -> [Eq|Gt|Lt] *)
+
   val of_int : int -> t
   val to_int : t -> int
   val of_float: float -> t
@@ -141,9 +157,15 @@ sig
   val succ : t -> t
   val pred : t -> t
 
-  include Infix with type bat__infix_t = t
-  include Compare with type bat__compare_t = t
 
+  module Infix : Infix with type bat__infix_t = t
+  module Compare : Compare with type bat__compare_t = t
+  include Infix with type bat__infix_t = t
+  (* Removed non-polymorphic compare from base module, as they shadow
+     ones in stdlib.  open Foo.Compare to get them.
+
+     include Compare with type bat__compare_t = t*)
+  include RefOps with type bat__refops_t = t
 end
 
 module type Bounded =
@@ -177,8 +199,8 @@ sig
   val zero : t
   val one  : t
 
-    (** {6 Arithmetic operations} 
-	
+    (** {6 Arithmetic operations}
+
 	Depending on the implementation, some of these operations
 	{i may} raise exceptions at run-time to represent over/under-flows.*)
   val neg : t -> t
@@ -226,8 +248,16 @@ module MakeInfix :
 module MakeCompare :
   functor (Base : NUMERIC_BASE) -> Compare with type bat__compare_t = Base.t
 
+
+(** Automated definition of reference operators for a given numeric
+    type *)
+module MakeRefOps :
+  functor (Base : NUMERIC_BASE) -> RefOps with type bat__refops_t = Base.t
+
 (** Automated definition of operators for a given numeric type.
-    You will only need this if you develop your own numeric modules.*)
+    You will only need this if you develop your own numeric modules.
+
+    @since 2.0 *)
 
 module MakeNumeric :
   functor (Base : NUMERIC_BASE) -> Numeric with type t = Base.t

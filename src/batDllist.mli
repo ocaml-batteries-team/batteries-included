@@ -33,7 +33,7 @@
 *)
 
 
-type 'a node_t (* abstract *) 
+type 'a node_t (* abstract *)
 type 'a t = 'a node_t (*For uniformity*)
 (**
    The type of a non-empty doubly-linked list.
@@ -58,6 +58,8 @@ val copy : 'a node_t -> 'a node_t
 val length : 'a node_t -> int
 
 (** List reversal.  This is an O(N) operation.
+    The given node still points to the same element, so
+    [to_list (rev (of_list [1;2;3;4])) = [1;4;3;2]]
 *)
 val rev : 'a node_t -> unit
 
@@ -85,16 +87,19 @@ val promote : 'a node_t -> unit
 val demote : 'a node_t -> unit
 
 (** Remove node from the list no matter where it is.  This is an O(1) operation.
+    @raise Empty when trying to remove an element from a list of length one.
 *)
 val remove : 'a node_t -> unit
 
 (** Remove node from the list no matter where it is. Return next node.  This is
     an O(1) operation.
+    @raise Empty when trying to remove an element from a list of length one.
 *)
 val drop : 'a node_t -> 'a node_t
 
 (** Remove node from the list no matter where it is. Return previous node.  This
     is an O(1) operation.
+    @raise Empty when trying to remove an element from a list of length one.
 *)
 val rev_drop : 'a node_t -> 'a node_t
 
@@ -104,7 +109,7 @@ val rev_drop : 'a node_t -> 'a node_t
     separate the nodes between [n1] and [n2] from the rest of the list. In this
     case, those nodes become a discrete list by themselves.  This is an O(1)
     operation.
-*)   
+*)
 val splice : 'a node_t -> 'a node_t -> unit
 
 (** Given a node, get the data associated with that node.  This is an
@@ -117,17 +122,17 @@ val get : 'a node_t -> 'a
 *)
 val set : 'a node_t -> 'a -> unit
 
-(** Given a node, get the next element in the list after the node.  
+(** Given a node, get the next element in the list after the node.
 
-    The list is circular, so the last node of the list returns the first 
+    The list is circular, so the last node of the list returns the first
     node of the list as it's next node.
-    
+
     This is an O(1) operation.
 *)
 val next : 'a node_t -> 'a node_t
 
 (** Given a node, get the previous element in the list before the node.
- 
+
     The list is circular, so the first node of the list returns the
     last element of the list as it's previous node.
 
@@ -146,7 +151,7 @@ val skip : 'a node_t -> int -> 'a node_t
 *)
 val iter : ('a -> unit) -> 'a node_t -> unit
 
-(** Accumulate a value over the entire list.  
+(** Accumulate a value over the entire list.
     This works like List.fold_left. This is an O(N) operation.
 *)
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b node_t -> 'a
@@ -160,7 +165,7 @@ val fold_right : ('a -> 'b -> 'b) -> 'a node_t -> 'b -> 'b
 
 val find : ('a -> bool) -> 'a node_t -> 'a node_t
 (** [find p l] returns the first element, [l] or after, for which [p]
-    returns true.  
+    returns true.
 
     @raise Not_found if no such element exists
     @added 1.4.0
@@ -169,7 +174,7 @@ val find : ('a -> bool) -> 'a node_t -> 'a node_t
 val for_all : ('a -> bool) -> 'a node_t -> bool
 (** Test whether a given predicate returns true for all members of the
     given list. O(N) *)
-  
+
 val exists : ('a -> bool) -> 'a node_t -> bool
 (** Test whether there exists an element of the given list for which
     the predicate returns true.  O(N) *)
@@ -185,7 +190,7 @@ val filter : ('a -> bool) -> 'a node_t -> 'a node_t
   (** [filter p l] returns a new list, with entirely new nodes, whose
       values are all the elements of the list [l] that satisfy the
       predicate [p].  The order of the elements in the input list is
-      preserved.  
+      preserved.
 
       @raise Empty if the resulting list is empty.*)
 
@@ -193,7 +198,7 @@ val filter_map : ('a -> 'b option) -> 'a node_t -> 'b node_t
   (** [filter_map f l] calls [(f a0) (f a1) ... (f an)] where [a0,a1...an]
       are the elements of [l]. It returns a new list of elements [bi]
       such as [f ai = Some bi] (when [f] returns [None], the
-      corresponding element of [l] is discarded). 
+      corresponding element of [l] is discarded).
 
       @raise Empty if the resulting list is empty.*)
 
@@ -218,10 +223,22 @@ val of_list : 'a list -> 'a node_t
 val enum : 'a node_t -> 'a BatEnum.t
 
 (** Create a reverse enum of the list.
+    The enumeration starts with the current element of the list:
+    [rev_enum (of_list [1;2;3;4])] will generate the enumeration [[1;4;3;2]].
+
+    If you want it to start with the last one, see [backwards].
+
     Note that modifying the list while the enum exists will have undefined
     effects.  This is an O(1) operation.
 *)
 val rev_enum : 'a node_t -> 'a BatEnum.t
+
+val backwards : 'a node_t -> 'a BatEnum.t
+(** [backwards t] is similar to [rev_enum t] except that the enumeration
+    starts at the node before the current one:
+
+    [backwards (of_list [1;2;3;4])] will generate the enumeration [[4;3;2;1]].
+*)
 
 (** Create a dllist from an enum.
     This consumes the enum, and allocates a whole new dllist. Raises
@@ -234,3 +251,7 @@ val of_enum : 'a BatEnum.t -> 'a node_t
 (** {7 Printing}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string ->('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
+
+(**/**)
+val invariants : _ t -> unit
+(**/**)

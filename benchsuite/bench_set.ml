@@ -13,7 +13,7 @@ module SetBench (M : sig val input_length : int end) = struct
 
   let nb_iter =
     max 10 (total_length / input_length)
-  
+
   let () = Printf.printf "%d iterations\n" nb_iter
 
   let random_elt () = Random.int input_length
@@ -41,7 +41,7 @@ module SetBench (M : sig val input_length : int end) = struct
     List.fold_left
       (fun t e -> StdSet.add e t)
       StdSet.empty input
-    
+
   let create_poly_set input =
     List.fold_left
       (fun t e -> PSet.add e t)
@@ -62,7 +62,7 @@ module SetBench (M : sig val input_length : int end) = struct
   (* A benchmark for fast import *)
   let import_std_set input =
     StdSet.of_enum (BatList.enum input)
-    
+
   let import_poly_set input =
     PSet.of_enum (BatList.enum input)
 
@@ -147,7 +147,7 @@ let () =
 
   print_newline ();
   print_newline ();
-  
+
   Printf.printf "Test with big sets (length = %d)\n%!" big_length;
   let () =
     let module M = SetBench(struct let input_length = big_length end) in
@@ -156,4 +156,4 @@ let () =
 
   ()
 
-  
+

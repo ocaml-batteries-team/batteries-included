@@ -4,7 +4,7 @@ open Gc
 let few_tests = 10
 let many_tests= 100000
 (* (*For comparaison, not part of Batteries.*)
-let run_legacy number_of_runs = 
+let run_legacy number_of_runs =
 begin
   Gc.full_major ();
   let devnull = Legacy.Pervasives.open_out "/dev/null" in
@@ -22,7 +22,7 @@ let test_leak_legacy () =
     if words_few < words_many then assert_failure (Printf.sprintf "Memory use grew by %d" (words_many - words_few))
 *)
 open Printf
-let run_oldstyle number_of_runs = 
+let run_oldstyle number_of_runs =
   Gc.full_major ();
   foreach (1 -- number_of_runs) (fun _ ->
     fprintf stdnull "%a%!" (fun ch () -> fprintf ch "Hello, world!") ()
@@ -36,7 +36,7 @@ let test_leak_oldstyle () =
     if words_few < words_many then assert_failure (Printf.sprintf "Memory use grew by %d" (words_many - words_few))
 
 open Print
-let run_newstyle number_of_runs = 
+let run_newstyle number_of_runs =
   Gc.full_major ();
   let printer_hello k () = k (fun ch -> fprintf ch p"Hello, world!") in
   foreach (1 -- number_of_runs) (fun _ ->

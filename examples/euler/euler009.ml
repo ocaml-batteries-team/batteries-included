@@ -1,4 +1,4 @@
-let () = 
+let () =
   let max_search = 100 in
   for n = 1 to max_search do
     for m = n+1 to max_search do

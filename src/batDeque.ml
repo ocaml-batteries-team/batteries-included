@@ -21,7 +21,13 @@
 type 'a dq = { front : 'a list ; flen : int ;
                rear : 'a list  ; rlen : int }
 
+let invariants t =
+  assert (List.length t.front = t.flen);
+  assert (List.length t.rear = t.rlen)
+
 type 'a t = 'a dq
+type 'a enumerable = 'a t
+type 'a mappable = 'a t
 
 let empty = { front = [ ] ; flen = 0 ;
               rear  = [ ] ; rlen = 0 }
@@ -32,124 +38,122 @@ let size q =
 let cons x q =
   { q with front = x :: q.front ; flen = q.flen + 1 }
 
-(**T cons_one_size
+(*$T cons
    size (cons 1 empty) = 1
    to_list(cons 1 empty) <> to_list(cons 2 empty)
- **)
+*)
 
-(**Q cons_qt
-   (Q.list Q.pos_int) ~count:10 (fun l -> List.fold_left (flip cons) empty l |> to_list = List.rev l)
- **)
+(*$Q cons
+  (Q.list Q.pos_int) ~count:10 \
+    (fun l -> List.fold_left (flip cons) empty l |> to_list = List.rev l)
+*)
 
 let snoc q x =
   { q with rear = x :: q.rear ; rlen = q.rlen + 1 }
 
-(**T cons_one_eq_snoc_one
+(*$T cons; snoc
    to_list(cons 1 empty) = to_list(snoc empty 1)
    to_list(cons 1 (cons 2 empty)) = (to_list (snoc (snoc empty 2) 1) |> List.rev)
- **)
+*)
 
-(**Q snoc_eq_rev
+(*$Q snoc
    (Q.list Q.int) (fun l -> List.fold_left snoc empty l |> to_list = l)
- **)
+*)
 
 let front q =
-  match q.front with
-    | h :: front -> Some (h, { q with front = front ; flen = q.flen - 1 })
-    | _ ->
-        match q.rear with
-          | [] -> None
-          | _ ->
-              let front = List.rev q.rear in
-              Some (List.hd front, { front = List.tl front ;
-                                     flen = q.rlen - 1 ;
-                                     rear = [] ;
-                                     rlen = 0 })
+  match q with
+  | {front = h :: front; flen = flen; _} ->
+    Some (h, { q with front = front ; flen = flen - 1 })
+  | {rear = []; _} ->
+    None
+  | {rear = rear; rlen = rlen; _} ->
+    (* beware: when rlen = 1, we must put the only element of
+     * the deque at the front (ie new_flen = 1, new_rlen = 0) *)
+    let new_flen = (rlen + 1) / 2 in
+    let new_rlen = rlen / 2 in
+    (* we split the non empty list in half because if we transfer
+     * everything to the front, then a call to rear would also
+     * transfer everything to the rear etc. -> no amortization
+     * (but we could transfer 3/4 instead of 1/2 of the list for instance) *)
+    let rear, rev_front = BatList.split_at new_rlen rear in
+    let front = List.rev rev_front in
+    Some (List.hd front, { front = List.tl front ;
+                           flen = new_flen - 1 ;
+                           rear = rear ;
+                           rlen = new_rlen })
 
-(**T front
+(*$T front
    front(cons 1 empty) = Some(1,empty)
    front(snoc empty 1) = Some(1,empty)
- **)
+*)
 
 let rear q =
-  match q.rear with
-    | t :: rear -> Some ({ q with rear = rear ; rlen = q.rlen - 1 }, t)
-    | _ ->
-        match q.front with
-          | [] -> None
-          | _ ->
-              let rear = List.rev q.front in
-              Some ({ front = [] ; flen = 0 ;
-                      rear = List.tl rear ; rlen = q.flen - 1 },
-                    List.hd rear)
+  match q with
+  | {rear = t :: rear; rlen = rlen; _} ->
+    Some ({ q with rear = rear ; rlen = rlen - 1 }, t)
+  | {front = []; _} ->
+    None
+  | {front = front; flen = flen; _} ->
+    let new_rlen = (flen + 1) / 2 in
+    let new_flen = flen / 2 in
+    let front, rev_rear = BatList.split_at new_flen front in
+    let rear = List.rev rev_rear in
+    Some ({ front = front ; flen = new_flen ;
+            rear = List.tl rear ; rlen = new_rlen - 1 },
+          List.hd rear)
 
-(**T rear
+(*$T rear
    match rear(empty |> cons 1 |> cons 2) with | Some(_, 1) -> true | _ -> false
- **)
+*)
 
 let rev q = { front = q.rear ; flen = q.rlen ;
               rear = q.front ; rlen = q.flen }
 
-(**Q rev
+(*$Q rev
    (Q.list Q.pos_int) (fun l -> let q = of_list l in rev q |> to_list = List.rev l)
- **)
+*)
 
 let of_list l = { front = l ; flen = List.length l ;
                   rear = [] ; rlen = 0 }
 
 let is_empty q = size q = 0
 
-let append_rl q r =
-  let rec spin rear = function
-    | [] -> r.rear @ rear
-    | x :: rfront ->
-        spin (x :: rear) rfront
-  in { q with
-         rlen = q.rlen + size r ;
-         rear = spin q.rear r.front }
-
-let append_lr q r =
-  let rec spin front = function
-    | [] -> q.front @ front
-    | x :: qrear ->
-        spin (x :: front) qrear
-  in { r with
-         flen = r.flen + size q ;
-         front = spin r.front q.rear }
-
 let append q r =
   if size q > size r then
-    append_rl q r
+    { q with
+      rlen = q.rlen + size r ;
+      rear = BatList.append r.rear (List.rev_append r.front q.rear) }
   else
-    append_lr q r
+    { r with
+      flen = r.flen + size q ;
+      front = BatList.append q.front (List.rev_append q.rear r.front) }
 
 let append_list q l =
   let n = List.length l in
-  let rec spin rear = function
-    | [] -> rear
-    | x :: l -> spin (x :: rear) l
-  in { q with
-         rear = spin q.rear l ;
-         rlen = q.rlen + n }
+  { q with
+    rear = List.rev_append l q.rear;
+    rlen = q.rlen + n }
 
 let prepend_list l q =
   let n = List.length l in
   { q with
-      front = l @ q.front ;
+      front = BatList.append l q.front ;
       flen = q.flen + n }
 
-let rec at ?(backwards=false) q n =
-  if backwards then at (rev q) n
-  else if n >= size q then None
+let at ?(backwards=false) q n =
+  let size_front = q.flen in
+  let size_rear = q.rlen in
+  if n < 0 || n >= size_rear + size_front then
+    None
   else
-    let rec git q n =
-      match front q with
-        | Some (x, q) ->
-            if n = 0 then Some x else git q (n - 1)
-        | None ->
-            failwith "Deque.at: internal error"
-    in
-    git q n
+    Some (
+      if backwards then
+        if n < size_rear then BatList.at q.rear n
+        else BatList.at q.front (size_front - 1 - (n - size_rear))
+      else
+        if n < size_front then BatList.at q.front n
+        else BatList.at q.rear (size_rear - 1 - (n - size_front))
+    )
 
 let map f q =
   let rec go q r = match front q with
@@ -193,12 +197,7 @@ let rec fold_right fn q acc = match rear q with
   | Some (q, r) -> fold_right fn q (fn r acc)
 
 let to_list q =
-  let rec go l q = match rear q with
-    | None -> l
-    | Some (q, x) ->
-        go (x :: l) q
-  in
-  go [] q
+  BatList.append q.front (BatList.rev q.rear)
 
 let find ?(backwards=false) test q =
   let rec spin k f r = match f with
@@ -229,10 +228,11 @@ let rec enum q =
 let of_enum e =
   BatEnum.fold snoc empty e
 
-(**Q enumerable
+(*$Q enum
    (Q.list Q.int) (fun l -> List.of_enum (enum (List.fold_left snoc empty l)) = l)
-   (Q.list Q.int) (fun l -> to_list (of_enum (List.enum l)) = l)
-**)
+*)(*$Q of_enum
+  (Q.list Q.int) (fun l -> to_list (of_enum (List.enum l)) = l)
+*)
 
 let print ?(first="[") ?(last="]") ?(sep="; ") elepr out dq =
   let rec spin dq = match front dq with
@@ -248,9 +248,11 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out dq =
   spin dq ;
   BatInnerIO.nwrite out last
 
-(**Q printing
-   (Q.list Q.int) (fun l -> BatIO.to_string (print ~first:"<" ~last:">" ~sep:"," Int.print) (of_list l) = BatIO.to_string (List.print ~first:"<" ~last:">" ~sep:"," Int.print) l)
-**)
+(*$Q print
+  (Q.list Q.int) (fun l -> \
+    BatIO.to_string (print ~first:"<" ~last:">" ~sep:"," Int.print) (of_list l) \
+    = BatIO.to_string (List.print ~first:"<" ~last:">" ~sep:"," Int.print) l)
+*)
 
-let t_printer elepr paren out x = print (elepr false) out x
-let dq_printer elepr paren out x =  print (elepr false) out x
+let t_printer elepr _paren out x = print (elepr false) out x
+let dq_printer = t_printer

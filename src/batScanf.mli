@@ -1,4 +1,4 @@
-(* 
+(*
  * ExtScanf - Extended Scanf module
  * Copyright (C) 1996 Pierre Weis
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** Formatted input functions. 
+(** Formatted input functions.
 
     @author Pierre Weis (Base module)
     @author David Teller

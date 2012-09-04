@@ -2,13 +2,13 @@
 
 type t
 (**
-   [Substring.t] is the type of substrings of a basestring, an efficient 
+   [Substring.t] is the type of substrings of a basestring, an efficient
    representation of a piece of a string.
 
-   A substring (s,i,n) is valid if 0 <= i <= i+n <= size s, 
-                  or equivalently, 0 <= i and 0 <= n and i+n <= size s.  
+   A substring (s,i,n) is valid if 0 <= i <= i+n <= size s,
+                  or equivalently, 0 <= i and 0 <= n and i+n <= size s.
 
-   A valid substring (s, i, n) represents the string s[i...i+n-1].  
+   A valid substring (s, i, n) represents the string s[i...i+n-1].
 
    Invariant in the implementation: Any value of type [Substring.t] is valid.
 *)
@@ -79,7 +79,7 @@ val trimr : int -> t -> t
       application [trimr k].
   *)
 
-val get : int -> t -> char
+val get : t -> int -> char
   (** [sub sus k] returns the k'th character of the substring; that
       is, s(i+k) where sus = (s, i, n).  Raises [Invalid_argument] if
       [k<0] or [k>=n].  *)
@@ -121,10 +121,28 @@ val compare : t -> t -> int
     (to_string sus2)].  *)
 
 (* NOT IMPLEMENTED
-   [collate cmp (sus1, sus2)] performs lexicographic comparison, using the 
-   given ordering cmp on characters.  Equivalent to, but more efficient 
+   [collate cmp (sus1, sus2)] performs lexicographic comparison, using the
+   given ordering cmp on characters.  Equivalent to, but more efficient
    than, String.collate cmp (string sus1, string sus2).
 *)
+
+val index : t -> char -> int
+(** [index sus c] returns the index of the first occurence of [c] in [sus] or
+    raise [Not_found] otherwise. *)
+
+val index_from : t -> int -> char -> int
+(** [index_from sus i c] returns the index of the first occurence of [c] in
+    [sus] after the index [i] or raise [Not_found] otherwise. If [i] is beyond
+    the range of [sus], raises [Invalid_argument]. It is equivalent to [i + index (triml i sus) c]. *)
+
+val rindex : t -> char -> int
+(** [rindex sus c] returns the index of the last occurence of [c] in [sus] or
+    raise [Not_found] otherwise. *)
+
+val rindex_from : t -> int -> char -> int
+(** [index_from sus i c] returns the index of the last occurence of [c] in [sus]
+    before the index [i] or raise [Not_found] otherwise. If [i] is beyond the
+    range of [sus], raises [Invalid_argument]. It is equivalent to [rindex (trimr i sus) c]. *)
 
 val dropl : (char -> bool) -> t -> t
 (** [dropl p sus] drops the longest prefix (left substring) of [sus]
@@ -160,12 +178,12 @@ val taker : (char -> bool) -> t -> t
 
    sus = xxxxfyyyyfzzzz         sus = xxxxzzzz
    ------------------------------------------------------
-   dropl p sus =     fyyyyfzzzz               
-   dropr p sus = xxxxfyyyyf       
+   dropl p sus =     fyyyyfzzzz
+   dropr p sus = xxxxfyyyyf
    takel p sus = xxxx                         xxxxzzzz
    taker p sus =           zzzz               xxxxzzzz
 
-   It also holds that 
+   It also holds that
    [concat (takel p sus) (dropl p sus) = string sus]
    [concat (dropr p sus) (taker p sus) = string sus]
 *)
@@ -199,8 +217,8 @@ val split_at : int -> t -> t * t
    [position s (s',i,n)] splits the substring into a pair (pref, suff)
    of substrings, where suff is the longest suffix of (s', i, n) which
    has s as a prefix.  More precisely, let m = size s.  If there is a
-   least index k in i..i+n-m for which s = s'[k..k+m-1], 
-   then the result is       pref = (s', i, k-i) and suff = (s', k, n-(k-i)); 
+   least index k in i..i+n-m for which s = s'[k..k+m-1],
+   then the result is       pref = (s', i, k-i) and suff = (s', k, n-(k-i));
    otherwise the result is  pref = (s', i, n)   and suff = (s', i+n, 0).
 *)
 
@@ -232,12 +250,12 @@ val tokens : (char -> bool) -> t -> t list
 
 val fields : (char -> bool) -> t -> t list
 (**
-   [fields p sus] returns the list of fields in [sus], from left to right, 
-   where a field is a (possibly empty) maximal substring of [sus] not 
+   [fields p sus] returns the list of fields in [sus], from left to right,
+   where a field is a (possibly empty) maximal substring of [sus] not
    containing any delimiter, and a delimiter is a character satisfying [p].
 
    Two tokens may be separated by more than one delimiter, whereas two
-   fields are separated by exactly one delimiter.  If the only delimiter 
+   fields are separated by exactly one delimiter.  If the only delimiter
    is the character ['|'], then
    "abc||def" contains two tokens:   "abc" and "def"
    "abc||def" contains three fields: "abc" and "" and "def"

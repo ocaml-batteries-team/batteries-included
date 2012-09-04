@@ -1,9 +1,9 @@
-(* 
+(*
  * Stream - streams and stream parsers
  * Copyright (C) 1997 Daniel de Rauglaudre
  *               2007 Zheng Li
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -37,7 +37,7 @@
     and types.
 *)
 
-(** Streams and parsers. 
+(** Streams and parsers.
 
     Streams are a read-and-forget data structure, comparable to enumerations.
     In Batteries Included, streams are deprecated in favor of enumerations,
@@ -185,7 +185,7 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
 val dup : 'a t -> 'a t * 'a t
   (** [dup stream] returns a pair of streams which are identical to [stream]. Note
       that stream is a destructive data structure, the point of [dup] is to
-      return two streams can be used independently. 
+      return two streams can be used independently.
 
       NOT IMPLEMENTED CORRECTLY - WILL RAISE Failure UNTIL CORRECT
       IMPLEMENTATION FOUND
@@ -216,7 +216,7 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
       order of elements in the source stream is preserved. *)
 
 
-(** {6 Stream arithmetic} 
+(** {6 Stream arithmetic}
 
     All the functions in this part are lazy.*)
 
@@ -239,43 +239,27 @@ val next : 'a t -> 'a
 
 
 module StreamLabels : sig
-(**
-   {b Note} This module is provided essentially for backwards-compatibility.
-   If you feel like using [Stream.t], please take a look at [BatEnum]
-   or [LazyList] and [GenParser].
+  (** {b Note} This module is provided essentially for
+   backwards-compatibility.  If you feel like using [Stream.t], please
+   take a look at [BatEnum] or [LazyList] and [GenParser].
 
    See the complete [Stream] module for the function documentations.
-*)
+   *)
 
 
-val iter : f:('a -> unit) -> 'a t -> unit
-
-val to_string_fmt : fmt:('a -> string, unit, string) format -> 'a t -> string
-
-val to_string_fun : fn:('a -> string) -> 'a t -> string
-
-val foldl : f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b t -> 'a
-
-val foldr : f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a t -> 'b
-
-val fold : f:('a -> 'a -> 'a * bool option) -> init:'a t -> 'a
-
-val filter : f:('a -> bool) -> 'a t -> 'a t
-
-val map : f:('a -> 'b) -> 'a t -> 'b t
-
-val map2 : f:('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
-
-val scanl : f:('a -> 'b -> 'a) -> 'a -> 'b t -> 'a t
-
-val scan : f:('a -> 'a -> 'a) -> 'a t -> 'a t
-
-val take_while : f:('a -> bool) -> 'a t -> 'a t
-
-val drop_while : f:('a -> bool) -> 'a t -> 'a t
-
-val merge : f:(bool -> 'a -> bool) -> 'a t * 'a t -> 'a t
-
-val switch : f:('a -> bool) -> 'a t -> 'a t * 'a t
-
+  val iter : f:('a -> unit) -> 'a t -> unit
+  val to_string_fmt : fmt:('a -> string, unit, string) format -> 'a t -> string
+  val to_string_fun : fn:('a -> string) -> 'a t -> string
+  val foldl : f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b t -> 'a
+  val foldr : f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a t -> 'b
+  val fold : f:('a -> 'a -> 'a * bool option) -> init:'a t -> 'a
+  val filter : f:('a -> bool) -> 'a t -> 'a t
+  val map : f:('a -> 'b) -> 'a t -> 'b t
+  val map2 : f:('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+  val scanl : f:('a -> 'b -> 'a) -> 'a -> 'b t -> 'a t
+  val scan : f:('a -> 'a -> 'a) -> 'a t -> 'a t
+  val take_while : f:('a -> bool) -> 'a t -> 'a t
+  val drop_while : f:('a -> bool) -> 'a t -> 'a t
+  val merge : f:(bool -> 'a -> bool) -> 'a t * 'a t -> 'a t
+  val switch : f:('a -> bool) -> 'a t -> 'a t * 'a t
 end

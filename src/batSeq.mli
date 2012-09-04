@@ -184,7 +184,7 @@ val find_map : ('a -> 'b option) -> 'a t -> 'b option
 val filter : ('a -> bool) -> 'a t -> 'a t
 (** [filter p s] returns the sequence of elements of [s] satisfying
     [p]. Lazy.
-    
+
     {b Note} filter is lazy in that it returns a lazy sequence, but
     each element in the result is eagerly searched in the input
     sequence. Therefore, the access to a given element in the result
@@ -193,7 +193,7 @@ val filter : ('a -> bool) -> 'a t -> 'a t
     [p] returns [false]).
 
     Other functions that may drop an unbound number of elements
-    ([filter_map], [take_while], etc.) have the same behavior. 
+    ([filter_map], [take_while], etc.) have the same behavior.
 *)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
@@ -241,6 +241,23 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outpu
   (**Print the contents of a sequence*)
 
 val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
+
+module Infix : sig
+  (** Infix operators matching those provided by {!BatEnum.Infix} *)
+
+  val ( -- ) : int -> int -> int t
+  val ( --^ ) : int -> int -> int t
+  val ( --. ) : float * float -> float -> float t
+  val ( --- ) : int -> int -> int t
+  val ( --~ ) : char -> char -> char t
+  val ( // ) : 'a t -> ('a -> bool) -> 'a t
+  val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
+  val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
+  val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
+  val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
+end
+
+include module type of Infix
 
 module Exceptionless : sig
   val hd : 'a t -> 'a option

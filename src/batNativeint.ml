@@ -1,9 +1,9 @@
-(* 
+(*
  * ExtNativeInt - Extended native ints
  * Copyright (C) 2005 Damien Doligez
  *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -29,8 +29,6 @@ module BaseNativeint = struct
 end
 
 include BatNumber.MakeNumeric(BaseNativeint)
-module Infix = BatNumber.MakeInfix(BaseNativeint)
-module Compare = BatNumber.MakeCompare(BaseNativeint)
 
 let min_int = Nativeint.min_int
 let max_int = Nativeint.max_int
@@ -59,19 +57,25 @@ external to_int32 : nativeint -> int32 = "%nativeint_to_int32"
 external of_int64 : int64 -> nativeint = "%int64_to_nativeint"
 external to_int64 : nativeint -> int64 = "%int64_of_nativeint"
 
-(**T conversions
-   (Nativeint.of_int32 8l) = 8n
-   Int32.(=) (Nativeint.to_int32 8n) 8l
-   (Nativeint.of_int64 9L) = 9n
-   Int64.(=) (Nativeint.to_int64 9n) 9L
-**)
+(*$T of_int32
+   (of_int32 8l) = 8n
+ *)
+(*$T to_int32
+   (to_int32 8n) = 8l
+ *)
+(*$T of_int64
+   (of_int64 9L) = 9n
+ *)
+(*$T to_int64
+   (to_int64 9n) = 9L
+*)
 
 external of_string : string -> nativeint = "caml_nativeint_of_string"
 external format : string -> nativeint -> string = "caml_nativeint_format"
 
-  
+
 type bounded = t
 let min_num, max_num = min_int, max_int
-  
-let print out t = BatInnerIO.Printf.fprintf out "%nx" t
-let t_printer paren out t = print out t
+
+let print out t = BatPrintf.fprintf out "%nx" t
+let t_printer _paren out t = print out t

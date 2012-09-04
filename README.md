@@ -21,17 +21,19 @@ Building Batteries
 
 You will need the following libraries:
 
-* [OCaml][] >= 3.11
+* [OCaml][] >= 3.12.1
 * [Findlib][] >= 1.2.5
 * GNU make
 * [OUnit][] to build and run the tests (optional)
 * [ocaml-benchmark][] to build and run the performance tests (optional)
+* [bisect][] to compute the coverage of the test suite (optional)
 
 [Findlib]: http://projects.camlcity.org/projects/findlib.html/
 [OCaml]: http://caml.inria.fr/ocaml/release.en.html
 [Camomile]: http://camomile.sourceforge.net/
 [OUnit]: http://ounit.forge.ocamlcore.org/
 [ocaml-benchmark]: http://ocaml-benchmark.forge.ocamlcore.org/
+[bisect]: http://bisect.x9c.fr/
 
 ### Configuration and Installation
 
@@ -49,10 +51,6 @@ starting the build process because this location is stored in the
 `Batteries_config` module generated during compilation.
 
     $ export DOCROOT=/path/to/new/docroot/
-
-If you want findlib to use a `-destdir` argument to `ocamlfind install`, set
-
-    $ export DESTDIR=/path/to/findlib/dest
 
 To disable native compilation:
 
@@ -99,3 +97,5 @@ Extending Batteries
 See doc/batteries/GUIDELINES and the [guidelines wiki page][batwiki-dev].
 
 [batwiki-dev]: https://github.com/ocaml-batteries-team/batteries-included/wiki/Developers-guidelines
+
+If you use emacs, the file `batteries_dev.el` has extra highlighting to support writing quicktests.

@@ -15,15 +15,13 @@ let (==>) b1 b2 = if b1 then b2 else true (* could use too => *)
 
 
 (* Value generators *)
-
-
 type 'a gen = unit -> 'a
 
 let ug () = ()
 
 let bg () = Random.bool ()
 
-let fg () = 
+let fg () =
   exp (Random.float 15. *. (if Random.float 1. < 0.5 then 1. else -1.))
   *. (if Random.float 1. < 0.5 then 1. else -1.)
 
@@ -31,7 +29,7 @@ let pfg () = abs_float (fg ())
 let nfg () = -.(pfg ())
 
 (* natural number generator *)
-let nng () = 
+let nng () =
   let p = Random.float 1. in
   if p < 0.5 then Random.int 10
   else if p < 0.75 then Random.int 100
@@ -41,15 +39,15 @@ let nng () =
 let neg_ig () = -(nng ())
 
 (* Uniform random int generator *)
-let upos = 
-  if Sys.word_size = 32 then 
+let upos =
+  if Sys.word_size = 32 then
     fun () -> Random.bits ()
   else (* word size = 64 *)
-    fun () -> 
+    fun () ->
       Random.bits ()                        (* Bottom 30 bits *)
       lor (Random.bits () lsl 30)           (* Middle 30 bits *)
       lor ((Random.bits () land 3) lsl 60)  (* Top 2 bits *)  (* top bit = 0 *)
-	
+
 let uig () = if Random.bool () then - upos () - 1 else upos ()
 
 let lg_size size gen () =
@@ -98,7 +96,8 @@ let pp_triple p1 p2 p3 (t1,t2,t3) = "(" ^ p1 t1 ^ ", " ^ p2 t2 ^ ", " ^ p3 t3 ^ 
 
 (* Generator * pretty-printer pairs *)
 
-let unit = (ug, fun _ -> "()")
+type 'a gen_print = 'a gen * ('a -> string)
+let unit : unit gen_print = (ug, fun _ -> "()")
 
 let bool = (bg, string_of_bool)
 
@@ -128,21 +127,52 @@ let numeral_string = string_gen numeral
 let numeral_string_of_size size = string_gen_of_size size numeral
 
 let list (gen,pp) = (lg gen, pp_list pp)
-let list_of_size size (gen,pp) = (lg_size gen, pp_list pp)
+let list_of_size size (gen,pp) = (lg_size size gen, pp_list pp)
 
 let array (gen,pp) = (ag gen, pp_array pp)
-let array_of_size size (gen,pp) = (ag_size gen, pp_array pp)
+let array_of_size size (gen,pp) = (ag_size size gen, pp_array pp)
 
 let pair (g1,p1) (g2,p2) = (pg g1 g2, pp_pair p1 p2)
 let triple (g1,p1) (g2,p2) (g3,p3) = (tg g1 g2 g3, pp_triple p1 p2 p3)
 
+let option (g1, p1) =
+  let g () =
+    let p = Random.float 1. in
+    if p < 0.15 then None
+    else Some (g1 ()) in
+  let p = function
+    | None -> "None"
+    | Some x -> "Some " ^ p1 x in
+  (g, p)
 
+let fun1 : 'a gen_print -> 'b gen_print -> ('a -> 'b) gen_print =
+  fun (_g1, p1) (g2, p2) ->
+    let magic_object = Obj.magic (object end) in
+    let gen : ('a -> 'b) gen = fun () ->
+      let h = Hashtbl.create 10 in
+      fun x ->
+        if x == magic_object then
+          Obj.magic h
+        else
+          try Hashtbl.find h x
+          with Not_found ->
+            let b = g2 () in
+            Hashtbl.add h x b;
+            b in
+    let pp : ('a -> 'b) -> string = fun f ->
+      let h : ('a, 'b) Hashtbl.t = Obj.magic (f magic_object) in
+      let b = Buffer.create 20 in
+      Hashtbl.iter (fun key value -> Printf.bprintf b "%s -> %s; " (p1 key) (p2 value)) h;
+      "{" ^ Buffer.contents b ^ "}" in
+    gen, pp
+
+let fun2 gp1 gp2 gp3 = fun1 gp1 (fun1 gp2 gp3)
 
 (* Generator combinators *)
 
 
 (** given a list, returns generator that picks at random from list *)
-let oneofl xs () = 
+let oneofl xs () =
   List.nth xs (Random.int (List.length xs))
 
 (** Given a list of generators, returns generator that randomly uses one of the generators
@@ -155,12 +185,12 @@ let always x () = x
 
 (** Given list of [(frequency,value)] pairs, returns value with probability proportional
     to given frequency *)
-let frequency xs = 
+let frequency xs =
   let sums = sum_int (List.map fst xs) in
   let i = Random.int sums in
-  let rec aux acc = function 
-    | ((x,g)::xs) -> if i < acc+x then g else aux (acc+x) xs 
-    | _ -> failwith "frequency" 
+  let rec aux acc = function
+    | ((x,g)::xs) -> if i < acc+x then g else aux (acc+x) xs
+    | _ -> failwith "frequency"
   in
   aux 0 xs
 
@@ -179,16 +209,39 @@ let rec laws iter gen func =
   if iter <= 0 then None
   else
     let input = gen () in
-    try 
-      if not (func input) then Some input 
+    try
+      if not (func input) then Some input
       else laws (iter-1) gen func
     with _ -> Some input
 
-let default_count = 500
+(** like [laws], but executes all tests anyway and returns optionally the
+  smallest failure-causing input, wrt. some measure *)
+let rec laws_smallest measure iter gen func =
+  let return = ref None in
+  let register input =
+    match !return with
+    | None ->
+      return := Some input
+    | Some x ->
+      if measure input < measure x then
+      return := Some input
+  in
+  for i = 1 to iter do
+    let input = gen () in
+    try if not (func input) then register input
+    with _ -> register input
+  done;
+  !return
+
+
+let default_count = 100
 
 (** Like laws, but throws an exception instead of returning an option.  *)
-let laws_exn ?(count=default_count) name (gen,pp) func =
-  match laws count gen func with
+let laws_exn ?small ?(count=default_count) name (gen,pp) func =
+  let result = match small with
+  | None -> laws count gen func
+  | Some measure -> laws_smallest measure count gen func
+  in match result with
     | None -> ()
     | Some i -> failwith (Printf.sprintf "law %s failed for %s" name (pp i))
 
@@ -202,9 +255,9 @@ let statistic xs =
   let stat_num = statistic_number xs in
   let totals = sum_int (List.map fst stat_num) in
   List.map (fun (i, v) -> ((i * 100) / totals), v) stat_num
-    
+
 let laws2 iter func gen =
-  let res = foldn ~init:[] iter 
+  let res = foldn ~init:[] iter
     ~f:(fun acc _ -> let n = gen () in (n, func n) :: acc)
   in
   let stat = statistic (List.map (fun (_, (_, v)) -> v) res) in

@@ -89,6 +89,34 @@ val min : 'a array -> 'a
 
     @raise Invalid_argument on empty input *)
 
+val left : 'a array -> int -> 'a array
+(**[left r len] returns the array containing the [len] first
+   characters of [r]. If [r] contains less than [len] characters, it
+   returns [r].
+
+   Examples:
+   [Array.left [|0;1;2;3;4;5;6|] 4 = [|0;1;2;3|]]
+   [Array.left [|1;2;3|] 0 = [||]]
+   [Array.left [|1;2;3|] 10 = [|1;2;3|]]
+*)
+
+val right : 'a array -> int -> 'a array
+(**[left r len] returns the array containing the [len] last characters of [r].
+   If [r] contains less than [len] characters, it returns [r].
+
+   Example: [Array.right [|1;2;3;4;5;6|] 4 = [|3;4;5;6|]]
+*)
+
+val head : 'a array -> int -> 'a array
+(**as {!left}*)
+
+val tail : 'a array -> int -> 'a array
+(**[tail r pos] returns the array containing all but the [pos] first characters of [r]
+
+   Example: [Array.tail [|1;2;3;4;5;6|] 4 = [|5;6|]]
+*)
+
+
 (**{6 Operations on two arrays}*)
 
 val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
@@ -203,18 +231,17 @@ val of_backwards : 'a BatEnum.t -> 'a array
 
 (** {6 Utilities} *)
 
-val make_compare : ('a -> 'a -> int) -> 'a array -> 'a array -> int
-(** [make_compare c] generates the lexicographical order on arrays
-    induced by [c]. That is, given a comparison function for the
-    elements of an array, *)
-
 val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
 (** [decorate_sort f a] returns a sorted copy of [a] such that if [f
     x < f y] then [x] is earlier in the result than [y].  This
     function is useful when [f] is expensive, as it only computes [f
     x] once for each element in the array.  See
     [:[http://en.wikipedia.org/wiki/Schwartzian_transform]Schwartzian
-    Transform]. *)
+    Transform].
+
+    It is unnecessary to have an additional comparison function as
+    argument, as the builtin [Pervasives.compare] is used to compare
+    the ['b] values.  This is deemed sufficient. *)
 
 val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array
 (** As {!Array.decorate_sort}, but uses fast_sort internally. *)
@@ -230,18 +257,33 @@ val insert : 'a array -> 'a -> int -> 'a array
 
 (** {6 Boilerplate code}*)
 
-(** {7 Printing}*)
-
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
 (** Print the contents of an array, with [~first] preceeding the first
     item (default: "[|"), [~last] following the last item (default:
     "|]") and [~sep] separating items (default: "; ").  A printing
     function must be provided to print the items in the array.
 
-    Example: IO.to_string (Array.print Int.print) [|2;4;66|] = "[|2;4;66|]"
+    Example: IO.to_string (Array.print Int.print) [|2;4;66|] = "[|2; 4; 66|]"
  *)
 
 val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
+
+val compare : 'a BatOrd.comp -> 'a array BatOrd.comp
+(** [compare c] generates the lexicographical order on arrays induced
+    by [c]. That is, given a comparison function for the elements of
+    an array, this will return a comparison function for arrays of
+    that type.  *)
+
+val ord : 'a BatOrd.ord -> 'a array BatOrd.ord
+(** Hoist an element comparison function to compare arrays of those
+    elements, with shorter arrays less than longer ones, and
+    lexicographically for arrays of the same size.  This is a
+    different ordering than [compare], but is often faster. *)
+
+val eq : 'a BatOrd.eq -> 'a array BatOrd.eq
+(** Hoist a equality test for elements to arrays.  Arrays are only
+    equal if their lengths are the same and corresponding elements
+    test equal. *)
 
 (** {6 Override modules}*)
 
@@ -310,7 +352,7 @@ module Labels : sig
 end
 
 
-(** Capabilities for arrays.
+(** {5 Capabilities for arrays.}
 
     This modules provides the same set of features as {!Array}, but
     with the added twist that arrays can be made read-only or
@@ -332,17 +374,15 @@ sig
        while a [('a, [`Read]) array] only has read-only capabilities
        and a [('a, [`Write]) array] only has write-only capabilities.*)
 
-    (**{6 Base operations}*)
+  (**{6 Base operations}*)
 
   external length : ('a, [> ]) t -> int = "%array_length"
-
   external get : ('a, [> `Read]) t -> int -> 'a = "%array_safe_get"
-
   external set : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
 
-    (**{6 Constructors}*)
-  external make : int -> 'a -> ('a, _) t = "caml_make_vect"
+  (**{6 Constructors}*)
 
+  external make : int -> 'a -> ('a, _) t = "caml_make_vect"
   external create : int -> 'a -> ('a, _) t = "caml_make_vect"
 
   external of_array  : 'a array -> ('a, _ ) t = "%identity"
@@ -372,111 +412,78 @@ sig
 	This operation involves no copying.*)
 
   val init : int -> (int -> 'a) -> ('a, _) t
-
   val make_matrix : int -> int -> 'a -> (('a, _)t, _) t
-
   val create_matrix : int -> int -> 'a ->  (('a, _)t, _) t
 
-    (** {6 Iterators}*)
+  (** {6 Iterators}*)
+
   val iter : ('a -> unit) -> ('a, [> `Read]) t -> unit
-
   val map : ('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
-
   val iteri : (int -> 'a -> unit) -> ('a, [> `Read]) t -> unit
-
   val mapi : (int -> 'a -> 'b) -> ('a, [> `Read]) t -> ('b, _) t
-
   val modify : ('a -> 'a) -> ('a, [`Read | `Write]) t -> unit
-
   val modifyi : (int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
-
   val fold_left : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
-
   val fold_right : ('b -> 'a -> 'a) -> ('b, [> `Read]) t -> 'a -> 'a
 
-    (**{6 Operations on two arrays}*)
-  val iter2 : ('a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
+  (**{6 Operations on two arrays}*)
 
+  val iter2 : ('a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
   val iter2i : (int -> 'a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
 
-    (**{6 Predicates}*)
+  (**{6 Predicates}*)
+
   val for_all : ('a -> bool) -> ('a, [> `Read]) t -> bool
-
   val exists : ('a -> bool) -> ('a, [> `Read]) t -> bool
-
   val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a
-
   val mem : 'a -> ('a, [> `Read]) t -> bool
-
   val memq : 'a -> ('a, [> `Read]) t -> bool
-
   val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
-
   val filter : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
-
   val filter_map : ('a -> 'b option) -> ('a, [> `Read]) t -> ('b, _) t
-
   val find_all : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
-
   val partition : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t * ('a, _)t
 
-    (** {6 Array transformations} *)
+  (** {6 Array transformations} *)
+
   val rev : ('a, [> `Read]) t -> ('a, _) t
-
   val rev_in_place : ('a, [`Read | `Write]) t -> unit
-
   val append : ('a, [> `Read]) t ->  ('a, [> `Read]) t -> ('a, _) t
-
   val concat : ('a, [> `Read]) t list -> ('a, _) t
-
   val sub : ('a, [> `Read]) t -> int -> int -> ('a, _) t
-
   val copy : ('a, [> `Read]) t -> 'a array
-
   val fill : ('a, [> `Write]) t -> int -> int -> 'a -> unit
-
   val blit : ('a, [> `Read]) t -> int -> ('a, [>`Write]) t -> int -> int -> unit
 
   (** {6 Conversions} *)
 
   val enum : ('a, [> `Read]) t -> 'a BatEnum.t
-
   val of_enum : 'a BatEnum.t -> ('a, _) t
-
   val backwards : ('a, [> `Read]) t -> 'a BatEnum.t
-
   val of_backwards : 'a BatEnum.t -> ('a, _) t
-
   val to_list : ('a, [> `Read]) t -> 'a list
-
   val of_list : 'a list -> ('a, _) t
 
   (** {6 Utilities} *)
-  val make_compare : ('a -> 'a -> int) -> ('a, [> `Read]) t -> ('a, [> `Read]) t -> int
 
   val sort : ('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
-
   val stable_sort : ('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
-
   val fast_sort : ('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
-
 
 (** {6 Boilerplate code}*)
 
-(** {7 Printing}*)
-
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> ('b, [>`Read]) t -> unit
+
+  val compare : 'a BatOrd.comp -> ('a, [> `Read]) t BatOrd.comp
+  val ord : 'a BatOrd.ord -> ('a, [> `Read]) t BatOrd.ord
+  val eq : 'a BatOrd.eq -> ('a, [> `Read]) t BatOrd.eq
 
 (** {6 Override modules}*)
 
 (** Operations on {!BatArray.Cap} without exceptions.*)
   module Exceptionless : sig
-
-
     val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a option
-
     val findi : ('a -> bool) -> ('a, [> `Read]) t -> int option
-
   end
 
 (** Operations on {!BatArray.Cap} with labels. *)
@@ -520,3 +527,20 @@ sig
 (**/**)
 end
 
+module Incubator : sig
+  module Eq (T : BatOrd.Eq) : sig
+    type t = T.t array
+    val eq : T.t array BatOrd.eq
+  end
+
+  module Ord (T : BatOrd.Ord) : sig
+    type t = T.t array
+    val ord : T.t array BatOrd.ord
+  end
+end
+
+
+(**/**)
+(* for tests *)
+val is_sorted_by : ('a -> 'b) -> 'a array -> bool
+(**/**)

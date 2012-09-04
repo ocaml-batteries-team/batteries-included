@@ -27,55 +27,89 @@ and 'a uref = 'a uref_contents ref
 
 type 'a t = 'a uref
 
-let rec find ur = match !ur with
+let rec find ur =
+  match !ur with
   | Ptr p ->
-      let vr = find p in
-      ur := Ptr vr ;
-      vr
-  | _ -> ur
+    let vr = find p in
+    ur := Ptr vr ;
+    vr
+  | Ranked _ -> ur
 
 let uref x = ref (Ranked (x, 0))
 
-let uget ur = match !(find ur) with
+let uget ur =
+  match !(find ur) with
+  | Ptr _ -> assert false (*BISECT-VISIT*)
   | Ranked (x, _) -> x
-  | _ -> failwith "Uref.get"            (* impossible *)
 
 let uset ur x =
   let ur = find ur in
   match !ur with
-    | Ranked (_, r) -> ur := Ranked (x, r)
-    | _ -> failwith "Uref.uset"         (* impossible *)
+  | Ptr _ -> assert false (*BISECT-VISIT*)
+  | Ranked (_, r) -> ur := Ranked (x, r)
 
 let equal ur vr =
   find ur == find vr
 
-let unite ?(sel=(fun x y -> x)) ur vr =
+let unite ?sel ur vr =
+  (* we use ?sel instead of ?(sel=(fun x _y -> x)) because we want to be
+     able to know whether a selection function was passed, for
+     optimization purposes: when sel is the default (expected common
+     case), we can take a short path in the (ur == vr) case. *)
   let ur = find ur in
   let vr = find vr in
-  if ur == vr then () else
-    match !ur, !vr with
-      | Ranked (x, xr), Ranked (y, yr) ->
-          if xr = yr then begin
-            ur := Ranked (sel x y, xr + 1) ;
-            vr := Ptr ur
-          end else if xr < yr then begin
-            ur := Ranked (sel x y, xr) ;
-            vr := Ptr ur
-          end else begin
-            vr := Ranked (sel x y, yr) ;
-            ur := Ptr vr
-          end
-      | _ -> failwith "Uref.unite"      (* impossible *)
+  if ur == vr then begin
+    match sel with
+    | None -> ()
+    | Some sel ->
+      (* even when ur and vr are the same reference, we need to apply
+         the selection function, as [sel x x] may be different from [x].
 
-let print elepr out ur = match !(find ur) with
+         For example, [unite ~sel:(fun _ _ -> v) r r] would fail
+         to set the content of [r] to [v] otherwise. *)
+      match !ur with
+      | Ptr _ -> assert false (*BISECT-VISIT*)
+      | Ranked (x, r) ->
+        let x' = sel x x in
+        ur := Ranked(x', r)
+  end
+  else
+    match !ur, !vr with
+    | _, Ptr _ | Ptr _, _ -> assert false (*BISECT-VISIT*)
+    | Ranked (x, xr), Ranked (y, yr) ->
+      let z = match sel with
+        | None -> x (* in the default case, pick x *)
+        | Some sel -> sel x y in
+      if xr = yr then begin
+        ur := Ranked (z, xr + 1) ;
+        vr := Ptr ur
+      end else if xr < yr then begin
+        ur := Ranked (z, xr) ;
+        vr := Ptr ur
+      end else begin
+        vr := Ranked (z, yr) ;
+        ur := Ptr vr
+      end
+
+let print elepr out ur =
+  match !(find ur) with
+  | Ptr _ -> assert false (*BISECT-VISIT*)
   | Ranked (x, _) ->
-      BatInnerIO.nwrite out "uref " ;
-      elepr out x ;
-  | _ -> failwith "Uref.print"          (* impossible *)
+    BatInnerIO.nwrite out "uref " ;
+    elepr out x
+(*$T print
+  let u1 = uref 2 and u2 = uref 3 in unite ~sel:(+) u1 u2; \
+  BatIO.to_string (print BatInt.print) u1 = "uref 5" && \
+  BatIO.to_string (print BatInt.print) u2 = "uref 5"
+*)
 
 let t_printer elepr paren out ur =
   if paren then BatInnerIO.nwrite out "(" ;
-  print (elepr false) out ur ;
+  print (elepr true) out ur ;
   if paren then BatInnerIO.nwrite out ")"
+(*$T t_printer
+  let u1 = uref (uref 2) in \
+  BatIO.string_of_t_printer (t_printer (t_printer BatInt.t_printer)) u1 = "uref (uref 2)"
+*)
 
 let uref_printer = t_printer

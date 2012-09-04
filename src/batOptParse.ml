@@ -25,7 +25,7 @@ open Printf
 
 
 let terminal_width =
-  try 
+  try
     int_of_string (Sys.getenv "COLUMNS")    (* Might as well use it if it's there... *)
   with
     Failure _ -> 80
@@ -41,8 +41,8 @@ module GetOpt =
     exception Error of (string * string)
 
     let split1 haystack needle =
-      try 
-        let (h, x) = BatString.split haystack needle in h, [x] 
+      try
+        let (h, x) = BatString.split haystack ~by:needle in h, [x]
       with
         Not_found -> haystack, []
 
@@ -60,9 +60,9 @@ module GetOpt =
 
     let parse only_leading_opts other find_short_opt find_long_opt args =
       let rec loop args =
-        let rec gather_args name n args =
-          try 
-            BatList.split_nth n args 
+	let gather_args name n args =
+          try
+            BatList.split_nth n args
           with
             Invalid_argument _ ->
               raise (Error (name, "missing required arguments"))
@@ -130,12 +130,12 @@ module Opt =
     exception Option_error of string * string
     exception Option_help
 
-    type 'a t = { 
+    type 'a t = {
       option_set : string -> string list -> unit;
       option_set_value : 'a -> unit;
       option_get : unit -> 'a option;
       option_metavars : string list;
-      option_defhelp : string option 
+      option_defhelp : string option
     }
 
     let get opt =
@@ -153,14 +153,14 @@ module Opt =
     let value_option metavar default coerce errfmt =
       let data = ref default in
       {
-        option_metavars = [metavar]; 
+        option_metavars = [metavar];
         option_defhelp = None;
         option_get = (fun _ -> !data);
         option_set_value = (fun x -> data := Some x);
         option_set =
          (fun option args ->
             let arg = List.hd args in
-              try 
+              try
                 data := Some (coerce arg)
               with
                   exn -> raise (Option_error (option, errfmt exn arg)))
@@ -168,7 +168,7 @@ module Opt =
 
     let callback_option metavar coerce errfmt f =
       {
-        option_metavars = [metavar]; 
+        option_metavars = [metavar];
         option_defhelp = None;
         option_get = (fun _ -> Some ());
         option_set_value = (fun () -> ());
@@ -176,8 +176,8 @@ module Opt =
          (fun option args ->
             let arg = List.hd args in
             let datum = ref None in
-              begin 
-              try 
+              begin
+              try
                 datum := Some (coerce arg)
               with
                   exn -> raise (Option_error (option, errfmt exn arg))
@@ -195,7 +195,7 @@ module StdOpt =
     let store_const ?default const =
       let data = ref default in
       {
-        option_metavars = []; 
+        option_metavars = [];
         option_defhelp = None;
         option_get = (fun _ -> !data);
         option_set_value = (fun x -> data := Some x);
@@ -233,17 +233,17 @@ module StdOpt =
 
     let count_option ?(dest = ref 0) ?(increment = 1) () =
       {
-        option_metavars = []; 
+        option_metavars = [];
         option_defhelp = None;
         option_get = (fun _ -> Some !dest);
         option_set_value = (fun x -> dest := x);
         option_set = fun _ _ -> dest := !dest + increment
       }
 
-    let incr_option ?(dest = ref 0) = 
+    let incr_option ?(dest = ref 0) =
       count_option ~dest ~increment:1
 
-    let decr_option ?(dest = ref 0) = 
+    let decr_option ?(dest = ref 0) =
       count_option ~dest ~increment:(-1)
 
     let help_option () =
@@ -285,11 +285,11 @@ module Formatter =
       in
       let rec loop state accum i =
         if (i<String.length s) then
-          if ((state && not (String.contains whitespace s.[i])) || 
+          if ((state && not (String.contains whitespace s.[i])) ||
               ((not state) && String.contains whitespace s.[i])) then
             if Buffer.length buf > 0 then
-               loop (not state) (flush () :: accum) i 
-             else 
+               loop (not state) (flush () :: accum) i
+             else
                loop (not state) accum i
           else
             begin
@@ -299,7 +299,7 @@ module Formatter =
         else
           if Buffer.length buf > 0 then
             flush () :: accum
-          else 
+          else
             accum
       in
         List.rev (loop false [] 0)
@@ -309,9 +309,9 @@ module Formatter =
         if i<String.length s then
           if String.contains whitespace s.[i] then
             loop (i+1)
-          else 
+          else
             false
-        else 
+        else
           true
       in
         loop 0
@@ -327,14 +327,14 @@ module Formatter =
               let n = tab_size - col mod tab_size in
               Buffer.add_string b (spaces n);
               expand (i + 1) (col + n)
-          | '\n' -> 
+          | '\n' ->
               Buffer.add_string b "\n";
               expand (i + 1) 0
-          | c -> 
+          | c ->
               Buffer.add_char b c;
               expand  (i + 1) (col + 1)
       in
-      expand 0 0; 
+      expand 0 0;
       Buffer.contents b
 
     let wrap ?(initial_indent = 0) ?(subsequent_indent = 0) text _width =
@@ -399,13 +399,13 @@ module Formatter =
 
 
 
-    type t = { 
+    type t = {
       indent : unit -> unit;
       dedent : unit -> unit;
       format_usage : string -> string;
       format_heading : string -> string;
       format_description : string -> string;
-      format_option : char list * string list -> string list -> 
+      format_option : char list * string list -> string list ->
                                              string option -> string
     }
 
@@ -424,8 +424,8 @@ module Formatter =
 
 
     let indented_formatter ?level:(extlevel = ref 0)
-      ?indent:(extindent = ref 0) ?(indent_increment = 2) 
-      ?(max_help_position = 24) ?(width = terminal_width - 1) 
+      ?indent:(extindent = ref 0) ?(indent_increment = 2)
+      ?(max_help_position = 24) ?(width = terminal_width - 1)
       ?(short_first = true) () =
       let indent = ref 0
       and level = ref 0 in
@@ -446,12 +446,12 @@ module Formatter =
             assert (!level >= 0);
             extindent := !indent;
             extlevel := !level);
-        
+
         format_usage = (fun usage -> sprintf "usage: %s\n" usage);
-        
+
         format_heading =
          (fun heading -> sprintf "%*s%s:\n\n" !indent "" heading);
-        
+
         format_description =
          (fun description ->
             let x =
@@ -459,7 +459,7 @@ module Formatter =
                 description (width - !indent)
             in
               if not (BatString.ends_with x "\n") then x ^ "\n\n" else x ^ "\n");
-        
+
         format_option =
          fun names metavars help ->
            let opt_width = !help_position - !indent - 2 in
@@ -497,9 +497,9 @@ module Formatter =
                contents
       }
 
-    let titled_formatter ?(level = ref 0) ?(indent = ref 0) 
-      ?(indent_increment = 0) ?(max_help_position = 24) 
-      ?(width = terminal_width - 1) ?(short_first = true) 
+    let titled_formatter ?(level = ref 0) ?(indent = ref 0)
+      ?(indent_increment = 0) ?(max_help_position = 24)
+      ?(width = terminal_width - 1) ?(short_first = true)
       () =
       let formatter =
         indented_formatter ~level ~indent ~indent_increment ~max_help_position
@@ -518,7 +518,7 @@ module Formatter =
       let format_usage usage =
         sprintf "%s  %s\n" (format_heading "Usage") usage
       in
-      { formatter with 
+      { formatter with
           format_usage = format_usage;
           format_heading = format_heading
       }
@@ -534,26 +534,26 @@ module OptParser =
 
     exception Option_conflict of string
 
-    type group = { 
+    type group = {
       og_heading : string;
       og_description : string option;
       og_options :
         ((char list * string list) * string list * string option) BatRefList.t;
-      og_children : group BatRefList.t 
+      og_children : group BatRefList.t
     }
 
-    type t = { 
+    type t = {
       op_usage : string;
       op_suppress_usage : bool;
       op_only_leading : bool;
       op_prog : string;
 
       op_formatter : Formatter.t;
-      
+
       op_long_options : GetOpt.long_opt BatRefList.t;
       op_short_options : GetOpt.short_opt BatRefList.t;
-      
-      op_groups : group 
+
+      op_groups : group
     }
 
     let unprogify optparser s =
@@ -590,7 +590,7 @@ module OptParser =
           raise (Option_conflict (sprintf "-%c" (List.hd sconf)))
         else if List.length lconf > 0 then
           raise (Option_conflict (sprintf "--%s" (List.hd lconf)));
-          
+
         (* Add to display list. *)
         if not hide then
           BatRefList.add group.og_options
@@ -598,7 +598,7 @@ module OptParser =
              (match help with
                   None -> opt.option_defhelp
                 | Some _ -> help));
-          
+
         (* Getopt: *)
         let nargs = List.length opt.option_metavars in
           List.iter
@@ -611,13 +611,13 @@ module OptParser =
                BatRefList.add optparser.op_long_options
                (long, nargs, opt.option_set))
             lnames
-            
+
     let add_group optparser ?(parent = optparser.op_groups) ?description heading =
       let g =
         {
-          og_heading = heading; 
+          og_heading = heading;
           og_description = description;
-          og_options = BatRefList.empty (); 
+          og_options = BatRefList.empty ();
           og_children = BatRefList.empty ()
         }
       in
@@ -629,15 +629,15 @@ module OptParser =
       ?prog ?(formatter = Formatter.indented_formatter ()) () =
       let optparser =
         {
-          op_usage = usage; 
+          op_usage = usage;
           op_suppress_usage = suppress_usage;
           op_only_leading = only_leading_opts;
           op_prog = BatOption.default (Filename.basename Sys.argv.(0)) prog;
-          op_formatter = formatter; 
+          op_formatter = formatter;
           op_short_options = BatRefList.empty ();
           op_long_options = BatRefList.empty ();
           op_groups = {
-            og_heading = "options"; 
+            og_heading = "options";
             og_options = BatRefList.empty ();
             og_children = BatRefList.empty ();
             og_description = description
@@ -704,7 +704,7 @@ module OptParser =
           None -> Array.length argv - first
         | Some m -> m - first + 1
       in
-      begin 
+      begin
         try
           GetOpt.parse optparser.op_only_leading
             (BatRefList.push args)
@@ -721,6 +721,6 @@ module OptParser =
       end;
       List.rev (BatRefList.to_list args)
 
-    let parse_argv optparser = 
+    let parse_argv optparser =
       parse optparser ~first:1 Sys.argv
   end

@@ -3,7 +3,7 @@ open BatString
 open List
 open BatLazyList
 open BatIO
-
+open BatPrintf
 
 type 'a state =
   | Eof
@@ -24,7 +24,7 @@ struct
   let of_lazy_list l init f =
     let rec aux l acc = match get l with
       | None        -> nil
-      | Some (h, t) -> 
+      | Some (h, t) ->
 	  let acc' = f h acc in
 	  lazy( Cons ((h, acc'), (aux t acc')))
     in aux l init
@@ -36,8 +36,8 @@ struct
 
       (**TODO: Handle EOF !*)
   let of_lexer l = assert false
-(**    LazyList.of_enum (BatEnum.from (fun () -> 
-				   
+(**    LazyList.of_enum (BatEnum.from (fun () ->
+
 		 l.refill_buff l;
   	        (l.lex_buffer, (l.lex_start_p, l.lex_curr_p))))*)
 
@@ -45,10 +45,10 @@ struct
     | Some (_, s) -> State s
     | None        -> Eof
 
-  let set_full_state l init f = 
+  let set_full_state l init f =
     let rec aux l acc = match get l with
       | None        -> nil
-      | Some ((h, _), t) -> 
+      | Some ((h, _), t) ->
 	  let acc' = f h acc in
 	  lazy( Cons ((h, acc'), (aux t acc')))
     in aux l init
@@ -103,9 +103,9 @@ let label s p e =
       | Backtrack (b, c, t) -> Backtrack (b, Report [], t)
   else
     let make_report c = Report [get_state e, s, c] in
-      if !debug_mode then 
+      if !debug_mode then
 	begin
-	  printf stderr "%*s>>> %s\n" !depth " " s;
+	  eprintf "%*s>>> %s\n" !depth " " s;
 	  incr depth;
 	  flush_all ()
 	end;
@@ -113,28 +113,28 @@ let label s p e =
 	| Success _ as x ->
 	    if !debug_mode then begin
 	      decr depth;
-	      printf stderr "%*s<<< %s\n" !depth " " s;
+	      eprintf "%*s<<< %s\n" !depth " " s;
 	      flush_all ()
 	    end;
 	    x
 	| Setback c ->
 	    if !debug_mode then begin
 	      decr depth;
-	      printf stderr "%*s^^^ %s\n" !depth " " s;
+	      eprintf "%*s^^^ %s\n" !depth " " s;
 	      flush_all ()
 	    end;
 	    Setback (make_report c)
 	| Failure c ->
 	    if !debug_mode then begin
 	      decr depth;
-	      printf stderr "%*s!!! %s\n" !depth " " s;
+	      eprintf "%*s!!! %s\n" !depth " " s;
 	      flush_all ()
 	    end;
 	    Failure (make_report c)
 	| Backtrack (b, c, t) ->
 	    if !debug_mode then begin
 	      decr depth;
-	      printf stderr "%*s/// %s\n" !depth " " s;
+	      eprintf "%*s/// %s\n" !depth " " s;
 	      flush_all ()
 	    end;
 	    Backtrack (b, make_report c, t)
@@ -151,13 +151,13 @@ let either l e =
   let rec aux err = function
     | []   -> Setback (Report err)
     | h::t -> match apply h e with
-	| Success   _ 
-	| Failure   _ 
+	| Success   _
+	| Failure   _
 	| Backtrack (_, _, _) as result -> result
 	| Setback (Report labels)       -> aux (err @ labels) t
   in aux [] l
 
-let ( <|> ) p1 p2 = either [p1;p2] 
+let ( <|> ) p1 p2 = either [p1;p2]
 
 let maybe p e = match apply p e with
   | Setback c                        -> Backtrack (None, c, e)
@@ -240,7 +240,7 @@ let ignore_zero_plus ?sep p e =
     | Setback   report                 -> backtracked () report e
     | Failure _ as result              -> result
 
-let one_plus ?sep p = p >:: 
+let one_plus ?sep p = p >::
   match sep with
     | None   -> zero_plus p
     | Some s -> zero_plus (s >>> p)
@@ -260,7 +260,7 @@ let prefix suffix l =
       | Some (h, t)                  -> aux (h::acc) t
   in aux [] l
 
-let scan p e = 
+let scan p e =
   let just_prefix rest = List.map fst (prefix rest e) in
     match apply p e with (*First proceed with parsing*)
       | Success (result, rest)           -> succeed (just_prefix rest) rest
@@ -291,23 +291,23 @@ let source_map p e =
 	| Backtrack (result, _, rest) -> lazy (Cons ((result, c), (aux rest)))
 	| Setback _ | Failure _       -> nil (*@TODO: improve error reporting !*)
   in aux e
-	    
+
 
 (**
    {3 Utilities}
 *)
-let filter f p = 
-  p >>= fun x -> 
+let filter f p =
+  p >>= fun x ->
     if f x then return x
     else        fail
 
 let exactly x = satisfy (( = ) x)
 
 
-let post_map f p = 
+let post_map f p =
   p >>= fun x -> return (f x)
 
-let times n p = 
+let times n p =
   let rec aux acc i = if i > 0 then p >>= fun x -> (aux (x::acc) ( i - 1 ))
 	   else return acc
   in (aux [] n) >>= fun x -> return (List.rev x)
@@ -318,7 +318,7 @@ let one_of l e =
   let exists x = List.exists (( = ) x) l in
     satisfy exists e
 
-let none_of l e = 
+let none_of l e =
   let for_all x = List.for_all (( <> ) x) l in
     satisfy for_all e
 
@@ -327,5 +327,5 @@ let range a b = satisfy (fun x -> a <= x && x <= b)
 let sat f = (satisfy f) >>> return ()
 
 module Infix = struct
-  let (<|>), (~?), (>>=), (>>>), (>::), (~*), (~+), (^^) = (<|>), (~?), (>>=), (>>>), (>::), (~*), (~+), (^^)
+  let (<|>), (~?), (>>=), (>>>), (>::), ( ~* ), (~+), (^^) = (<|>), (~?), (>>=), (>>>), (>::), ( ~* ), (~+), (^^)
 end

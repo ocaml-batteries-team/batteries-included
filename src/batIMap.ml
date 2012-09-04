@@ -1,6 +1,7 @@
-(* $Id: iMap.ml,v 1.2 2006/08/13 17:13:01 yori Exp $ *)
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* Modified by Edgar Friendly <thelema314@gmail.com> *)
+
+module Core = struct
 
 type 'a t = (int * int * 'a) BatAvlTree.tree
 
@@ -34,7 +35,7 @@ let rec add ?(eq = (==)) n v m =
     make_tree (add n v l) x r
   else if n1 <= n && n <= n2 then
     if eq v v0 then m else
-    let l = 
+    let l =
       if n1 = n then l else
       make_tree l (n1, n - 1, v0) empty in
     let r =
@@ -45,11 +46,6 @@ let rec add ?(eq = (==)) n v m =
     make eq l (n1, n, v) r
   else
     make_tree l x (add n v r)
-
-(**T imap_add
-   let a = add ~eq:(=) in empty |> a 0 0 |> a 2 0 |> a 1 0 |> enum |> List.of_enum = [(0,2,0)]
-   let a = add ~eq:(=) in empty |> a 0 "foo" |> a 2 "foo" |> a 1 "foo" |> enum |> List.of_enum = [(0,2,"foo")]
- **)
 
 let rec from n s =
   if is_empty s then empty else
@@ -128,7 +124,7 @@ let fold f m a =
 let iter proc m =
   fold (fun n v () -> proc n v) m ()
 
-let rec map ?(eq=(==)) f m =
+let rec map ?(eq=(=)) f m =
   if is_empty m then empty else
   let n1, n2, v = root m in
   let l = map ~eq f (left_branch m) in
@@ -138,7 +134,7 @@ let rec map ?(eq=(==)) f m =
 
 let mapi ?eq f m = fold (fun n v a -> add ?eq n (f n v) a) m empty
 
-let rec map_range ?(eq=(==)) f m =
+let rec map_range ?(eq=(=)) f m =
   if is_empty m then empty else
   let n1, n2, v = root m in
   let l = map_range ~eq f (left_branch m) in
@@ -174,7 +170,7 @@ let rec map_to_set p m =
       let f n1 n2 v (k1, k2, s) =
 	if p v then
 	  if n1 = k2 + 1 then (k1, n2, s) else
-	  (n1, n2, make_tree s (k1, k2) empty) 
+	  (n1, n2, make_tree s (k1, k2) empty)
 	else
 	  (k1, k2, s) in
       let (k1, k2, s) = fold_range f m' (k1, k2, empty) in
@@ -184,30 +180,30 @@ let rec map_to_set p m =
 module Enum = BatEnum
 
 (* Fold across two maps *)
-let fold2_range f m1 m2 acc = 
+let fold2_range f m1 m2 acc =
   let e1 = enum m1 and e2 = enum m2 in
-  let rec aux acc = function 
+  let rec aux acc = function
       None,None -> acc
-    | Some (lo,hi,rx), None -> 
+    | Some (lo,hi,rx), None ->
 	aux (f lo hi (Some rx) None acc) (Enum.get e1, None)
-    | None, Some (lo,hi,rx) -> 
+    | None, Some (lo,hi,rx) ->
 	aux (f lo hi None (Some rx) acc) (None, Enum.get e2)
     | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo1 < lo2 ->
-	let hi, v1 = 
+	let hi, v1 =
 	  if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
 	  else if hi1 = lo2 then hi1, Some (lo2,lo2,rx1)
 	  else hi1, Enum.get e1
 	and v2 = Some (lo2,hi2,rx2) in
 	aux (f lo1 hi (Some rx1) None acc) (v1, v2)
     | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo2 < lo1 ->
-	let hi, v2 = 
+	let hi, v2 =
 	  if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
 	  else if hi2 = lo1 then hi2, Some (lo1,lo1,rx2)
-	  else hi2, Enum.get e2	
+	  else hi2, Enum.get e2
 	and v1 = Some (lo1,hi1,rx1) in
 	aux (f lo2 hi None (Some rx2) acc) (v1,v2)
     | Some (lo1,hi1,rx1), Some (_lo2,hi2,rx2) (* lo1 = lo2 *) ->
-	let hi, v1, v2 = 
+	let hi, v1, v2 =
 	  if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
 	  else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
 	  else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
@@ -217,33 +213,42 @@ let fold2_range f m1 m2 acc =
   in
   aux acc (Enum.get e1, Enum.get e2)
 
-let union f m1 m2 = 
-  let insert lo hi v1 v2 m = 
-    match f v1 v2 with None -> m | Some v -> add_range lo hi v m in
+let union ~eq f m1 m2 =
+  let insert lo hi v1 v2 m = match v1, v2 with
+    | Some v1, Some v2 -> add_range ~eq lo hi (f v1 v2) m
+    | Some x, None | None, Some x -> add_range ~eq lo hi x m
+    | None, None -> assert false
+  in
   fold2_range insert m1 m2 empty
+
+let merge ~eq f m1 m2 =
+  let insert lo hi v1 v2 m =
+    match f lo hi v1 v2 with None -> m | Some v -> add_range ~eq lo hi v m in
+  fold2_range insert m1 m2 empty
+
 
 let forall2_range f m1 m2 =
   let e1 = enum m1 and e2 = enum m2 in
-  let rec aux = function 
+  let rec aux = function
       None,None -> true
-    | Some (lo,hi,rx), None -> 
+    | Some (lo,hi,rx), None ->
 	(f lo hi (Some rx) None) && aux (Enum.get e1, None)
-    | None, Some (lo,hi,rx) -> 
+    | None, Some (lo,hi,rx) ->
 	(f lo hi None (Some rx)) && aux (None, Enum.get e2)
     | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo1 < lo2 ->
-	let hi, v1 = 
+	let hi, v1 =
 	  if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
 	  else hi1, Enum.get e1
 	and v2 = Some (lo2,hi2,rx2) in
 	(f lo1 hi (Some rx1) None) && aux (v1, v2)
     | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo2 < lo1 ->
-	let hi, v2 = 
+	let hi, v2 =
 	  if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
-	  else hi2, Enum.get e2	
+	  else hi2, Enum.get e2
 	and v1 = Some (lo1,hi1,rx1) in
 	(f lo2 hi None (Some rx2)) && aux (v1,v2)
     | Some (lo1,hi1,rx1), Some (_,hi2,rx2) (* lo1 = lo2 *) ->
-	let hi, v1, v2 = 
+	let hi, v1, v2 =
 	  if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
 	  else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
 	  else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
@@ -259,3 +264,51 @@ struct
 end
 
 let make ?(eq=(==)) l c r = make eq l c r
+
+end
+
+type 'a t = {m: 'a Core.t; eq: 'a -> 'a -> bool}
+type key = int
+
+let empty ~eq = {m = Core.empty; eq}
+let is_empty {m} = Core.is_empty m
+let add x y {m;eq} = {m=Core.add ~eq x y m; eq}
+
+(*$= add as a & ~cmp:(List.eq (Tuple3.eq Int.equal Int.equal Int.equal)) ~printer:(List.print (Tuple3.print Int.print Int.print Int.print) |> IO.to_string)
+  [(0,2,0)] (empty ~eq:(=) |> a 0 0 |> a 2 0 |> a 1 0 |> enum |> List.of_enum)
+*)
+(*$= add as a & ~cmp:(List.eq (Tuple3.eq Int.equal Int.equal String.equal)) ~printer:(List.print (Tuple3.print Int.print Int.print String.print) |> IO.to_string)
+  [(0,2,"foo")] \
+  (empty ~eq:(=) |> a 0 "foo" |> a 2 "foo" |> a 1 "foo" |> enum |> List.of_enum)
+*)
+
+
+let add_range lo hi y {m;eq} = {m=Core.add_range ~eq lo hi y m; eq}
+let find x {m} = Core.find x m
+let remove x {m;eq} = {m=Core.remove x m; eq}
+let remove_range lo hi {m;eq} = {m=Core.remove_range lo hi m; eq}
+let from x {m;eq} = {m=Core.from x m; eq}
+let after x {m;eq} = {m=Core.after x m; eq}
+let until x {m;eq} = {m=Core.until x m; eq}
+let before x {m;eq} = {m=Core.before x m; eq}
+let mem x {m} = Core.mem x m
+let iter f {m} = Core.iter f m
+let iter_range f {m} = Core.iter_range f m
+let map ?(eq=(=)) f {m} = {m=Core.map ~eq f m; eq}
+let mapi ?(eq=(=)) f {m} = {m=Core.mapi ~eq f m; eq}
+let map_range ?(eq=(=)) f {m} = {m = Core.map_range ~eq f m; eq}
+let fold f {m} x0 = Core.fold f m x0
+let fold_range f {m} x0 = Core.fold_range f m x0
+let set_to_map ?(eq=(=)) s x = {m = Core.set_to_map s x; eq}
+let domain {m} = Core.domain m
+let map_to_set f {m} = Core.map_to_set f m
+let enum {m} = Core.enum m
+let fold2_range f {m=m1} {m=m2} x0 = Core.fold2_range f m1 m2 x0
+let union f {m=m1;eq} {m=m2} = {m=Core.union ~eq f m1 m2; eq}
+let merge ?(eq=(=)) f {m=m1} {m=m2} = {m=Core.merge ~eq f m1 m2; eq}
+let forall2_range f {m=m1} {m=m2} = Core.forall2_range f m1 m2
+
+module Infix = struct
+  let (-->) {m} k = Core.find k m
+  let (<--) m (k,v) = add k v m
+end

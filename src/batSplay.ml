@@ -104,7 +104,7 @@ struct
 
   let is_empty (Map tr) = tr = Empty
 
-  let kcmp (j, _) (k, _) = Ord.compare j k
+(*  let kcmp (j, _) (k, _) = Ord.compare j k*)
   let ksel j (k, _) = Ord.compare j k
 
   let singleton' k v = Node (Empty, (k, v), Empty)
@@ -135,8 +135,8 @@ struct
   end
 
   (* Didactic implementation note : why that ugly Obj module here? Why not
-     use a reference or mutable record field instead? 
-     
+     use a reference or mutable record field instead?
+
      This is due to the covariance of the Map interface
      (type (+'a) t). OCaml checks the internal definition to verify
      that the internal datatype is consistent with the variance
@@ -154,7 +154,7 @@ struct
          types), you can at any type pretend that your list is
          a ('b list): if all 'a can be used as 'b, then all ('a list) can
          be used as ('b list).
-         
+
            # type a = < f1 : int; f2 : float >;;
            # type b = < f1 : int >;;
            # let t : a = object method f1 = 1 method f2 = 2. end;;
@@ -163,43 +163,43 @@ struct
            - : b = <obj>
            # ([t] :> b list);;
            - : b list = [<obj>]
-         
-         But this is not true for ('a list ref), orelese I may locally
+
+         But this is not true for ('a list ref), or else I may locally
          consider it a ('b list) and mutate it to add an element of type
          'b in it, then observe it at type ('a list ref) again. This is
          unsound because the added 'b element won't behave correctly as
          a 'a.
-         
+
            # let tref = ref [t];;
            # (tref :> b list ref);;
-           Error: Type a list ref is not a subtype of b list ref 
+           Error: Type a list ref is not a subtype of b list ref
            Type a = < f1 : int; f2 : float > is not compatible with type
-             b = < f1 : int > 
+             b = < f1 : int >
            The second object type has no method f2
-         
+
          Imagine I think I know better, and break the type safety.
-         
+
            # let forced_tref = (Obj.magic tref : b list ref);;
-         
+
          Then I can add a element of type b to the list :
-         
+
            # forced_tref := object method f1 = 1 end :: !forced_tref;;
-         
+
          But this is unsound as I can now look at tref again, at type
          (a list ref).
-         
+
            # !tref;;
            - : a list = [<obj>; <obj>]
            # (List.hd !tref)#f2;;
            Segmentation fault
-         
+
          So in general, reference types cannot be safely subtyped (note
          that Java has had a blatant flaw in its type system for years, as
          mutable Arrays were covariant). If we used a `ref` in the
          internal definition of BatSplay.t, the typer would reject the
          module (the interface claims its covariant, while it's
          invariant).
-       
+
      In our case however, the mutation that actually happen (that are
      confined in the internal implementation of BatSplay) are soundly
      compatible with subtyping. Indeed, rebalancing never adds any
@@ -215,9 +215,9 @@ struct
      "top" of the structure, the balanced tree itself is purely
      functional, and that we must be careful to preserve the physical
      identity of maps if we want to do mutations. For example,
-     
+
        rebalance ((fun m -> m) some_map)
-     
+
      will mutate some_map, but
 
        rebelance ((fun (Map tr) -> Map tr) some_map)
@@ -419,15 +419,13 @@ struct
       (fun out (k, v) -> kvpr out k v)
       out (enum m)
 
-  let print ?(first="{\n") ?(last="}\n") ?(sep=",\n") kpr vpr out m =
+  let print ?(first="{\n") ?(last="}\n") ?(sep=",\n") ?(kvsep=": ") kpr vpr out m =
     custom_print ~first ~last ~sep
-      (fun out k v -> BatPrintf.fprintf out "%a: %a" kpr k vpr v)
+      (fun out k v -> BatPrintf.fprintf out "%a%s%a" kpr k kvsep vpr v)
       out m
 
   let print_as_list kpr vpr out m =
-    custom_print ~first:"[" ~last:"]" ~sep:"; "
-      (fun out k v -> BatPrintf.fprintf out "%a, %a" kpr k vpr v)
-      out m
+    print ~first:"[" ~last:"]" ~sep:"; " ~kvsep:", " kpr vpr out m
 
   module Labels = struct
     let add ~key ~data t = add key data t

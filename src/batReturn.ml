@@ -19,21 +19,20 @@
  *)
 
 
-type 'a t = 'a option ref
-
-exception Return
+type 'a t = 'a -> exn
 
 let return label value =
-  label := Some value;
-  raise Return (*(Obj.repr label)*)
+  raise (label value)
 
-let label f =
-  let r = ref None in
-    try   f r
-    with  Return when !r <> None -> (*[!r = None] may happen if the user has let the exception escape its scope *)
-      match !r with                (*in that case, we wish the exception to fall-through for debugging purposes*)
-	| None   -> assert false (*Should be impossible*)
-	| Some x -> 
-	    r := None;             (*Reset the trap for sanity checks should another exception escape scope    *)
-	    x                      (*(not that this should be possible in that case -- let's just be careful)  *)
+let label (type u) (f : u t -> u) : u =
+  let module M = struct exception Return of u end in
+  try f (fun x -> M.Return x)
+  with M.Return u -> u
 let with_label = label
+
+(* testing nesting with_labels *)
+(*$T with_label
+  with_label (fun label1 -> \
+    with_label (fun _label2 -> ignore (return label1 1)); 2 \
+  ) = 1
+*)

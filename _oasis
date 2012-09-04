@@ -1,7 +1,7 @@
 OASISFormat:  0.2
-OCamlVersion: >= 3.11.0
+OCamlVersion: >= 3.12.1
 Name:         batteries
-Version:      2.0beta
+Version:      2.0beta2
 Authors:      Batteries Included Team
 License:      LGPL-2.1 with OCaml linking exception
 LicenseFile:  LICENSE
@@ -34,4 +34,3 @@ Library "batteries"
 
 Library "estring"
   Path: libs/estring/
-

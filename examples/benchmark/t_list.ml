@@ -143,7 +143,7 @@ let desc_to_str = function
     `Gallium -> "Gallium" | `Extlib -> "Extlib"
   | `Bluestorm -> "Bluestorm" | `Core -> "Core"
 
-let make_tests (t_desc,test) impls = 
+let make_tests (t_desc,test) impls =
   List.map (fun (i_desc,f) -> i_desc, count_f (test f)) impls
 
 
@@ -160,7 +160,7 @@ let tests =
     "append", make_tests append_test append_impls;
     "flatten", make_tests flatten_test flatten_impls;
     "filter1", make_tests filter_test1 filter_impls;
-    "filter2", make_tests filter_test2 filter_impls;    
+    "filter2", make_tests filter_test2 filter_impls;
   ]
 
 (*****************************************)
@@ -206,10 +206,10 @@ let () =
     List.assoc test_name tests |>
 	List.filter (fun (t, _) -> List.mem t (Ref_list.to_list impls))
   in
-  let do_test (t,test) = try 
+  let do_test (t,test) = try
     let rand_f = !distro !seed in
-    let rec rand_list n li = 
-      if n <= 0 then li 
+    let rec rand_list n li =
+      if n <= 0 then li
       else rand_list (n-1) ((rand_f ())::li)
     in
     test !time trials rand_list with Done_measuring -> () in

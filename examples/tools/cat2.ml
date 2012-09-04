@@ -1,9 +1,9 @@
 (** Implementation of a cat-like tool: read each file whose name is
     given on the command-line and print the contents to stdout.
 
-    Usage: 
+    Usage:
      ./cat2.byte *.ml
-     
+
     Variants based on function composition
 *)
 

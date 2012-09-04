@@ -8,28 +8,28 @@
 
 
   Format of a .dist file:
-  
+
   {[
 
    (*Module comment*)
    module Foo = A.Module.Path     (*%mli "a/file/path/foo.mli" aka "InnerFoo"*)
-  
+
    (*Module comment*)
     module Bar = Another.Module.Path.Foo (*%mli "another/file/path/foo.mli" submodule "Bar"*)
-  
+
    (*Module comment*)
     module Sna = struct
       module Toto = Yet.Another.Module.Path (*%mli "a/file/path/foo.mli"*)
-  
+
       (*...same grammar...*)
     end
    ]}
-   
+
    Producing a .ml is trivial, there's nothing to do.
 
   Producing a .mli is more complex:
 - parse the .dist file, keeping comments which don't start with % (gasp)
-- build the list of substitutions 
+- build the list of substitutions
    -- here, every occurrence of [InnerFoo] must become [Foo]
    -- here, every occurrence of [A.Module.Path] must become [Foo]
    -- here, every occurrence of [Yet.Another.Module.Path] must become [Sna.Toto]
@@ -72,7 +72,7 @@ let include_dirs : string list ref = ref []
 open Ocamlbuild_pack
 
 (** Invoke ocamldep and compute the dependencies of a .mli*)
-let stringset_of_ocamldep : string -> StringSet.t = fun file -> 
+let stringset_of_ocamldep : string -> StringSet.t = fun file ->
   List.fold_left (fun acc (_, x) -> StringSet.add x acc) StringSet.empty (Ocaml_utils.path_dependencies_of file)
 
 (** {6 Utilities}*)
@@ -81,13 +81,13 @@ let stringset_of_ocamldep : string -> StringSet.t = fun file ->
 module Printf =
 struct
   include Printf
-    
-  let make_list_printer (p:(out_channel -> 'b -> unit)) 
+
+  let make_list_printer (p:(out_channel -> 'b -> unit))
       (start:   string)
       (finish:  string)
       (separate:string)
       (out:out_channel)
-      (l:  'b list  ) = 
+      (l:  'b list  ) =
     let rec aux out l = match l with
       | []    -> ()
       | [h]   -> p out h
@@ -101,27 +101,27 @@ open Printf
 module Dependency =
 struct
   type t = (string, StringSet.t) Hashtbl.t
-      
+
   let create () = Hashtbl.create 100
   let add tbl k dep =
     try Hashtbl.replace tbl k (StringSet.add dep (Hashtbl.find tbl k))
     with Not_found -> Hashtbl.add tbl k (StringSet.singleton dep)
-      
+
   let remove tbl (k:string) dep =
     try let set = StringSet.remove dep (Hashtbl.find tbl k) in
       if StringSet.is_empty set then Hashtbl.remove tbl k
       else Hashtbl.replace tbl k  set
     with Not_found -> ()
-      
+
   let find tbl (k:string) =
     try  Some (Hashtbl.find tbl k)
     with Not_found -> None
-      
+
   let find_all tbl (k:string) =
     try StringSet.elements (Hashtbl.find tbl k)
     with Not_found -> []
-      
-  let print out tbl = 
+
+  let print out tbl =
     Printf.fprintf out "{";
     Hashtbl.iter (fun k set -> Printf.fprintf out "%s: {%a}\n"
 		    k
@@ -130,9 +130,9 @@ struct
     Printf.fprintf out "}\n"
 end
 
-module Depsort = 
+module Depsort =
 struct
-  type t = 
+  type t =
       {
 	direct : Dependency.t (**Direct dependency*);
 	reverse: Dependency.t (**Reverse dependency*);
@@ -161,20 +161,20 @@ struct
   let sort t =
 (*    Printf.eprintf "Sorting %a\n" Dependency.print t.direct;*)
     let rec aux (sorted:string list) (rest: string list) =
-      match rest with 
-	| [] -> 
+      match rest with
+	| [] ->
 	    sorted
 	| _ ->
 	    (*Find nodes which haven't been removed and depend on nothing*)
-	    match List.fold_left (fun (keep, remove) k -> 
+	    match List.fold_left (fun (keep, remove) k ->
 				    match Dependency.find t.direct k with
-				      | None   -> 
+				      | None   ->
 					  (keep, k::remove)
 				      | Some dependencies ->
 					  (k::keep, remove)
 				 ) ([],[]) rest
 	    with
-	      | (_, [])       -> 
+	      | (_, [])       ->
 		  Printf.eprintf "Cyclic dependencies in %a\n" Dependency.print t.direct;
 		  failwith "Cyclic dependencies"
 	      | (rest, roots) ->
@@ -194,7 +194,7 @@ struct
   include String
 
   exception Invalid_string
-    
+
   let find str ?(pos=0) ?(end_pos=length str) sub =
     let sublen = length sub in
       if sublen = 0 then
@@ -232,17 +232,17 @@ struct
 	nsplit str sep
     )
 
-  type segment = Changed of string | Slice of int * int 
+  type segment = Changed of string | Slice of int * int
 
   let global_replace convs str = (* convs = (seek, replace) list *)
-    let repl_one slist (seek,repl) = 
-      let rec split_multi acc = function 
+    let repl_one slist (seek,repl) =
+      let rec split_multi acc = function
 	  Slice (start_idx, end_idx) ->
 	    begin try
 	      let i = find str ~pos:start_idx ~end_pos:end_idx seek in
-	      split_multi 
+	      split_multi
 		(* accumulate slice & replacement *)
-		(Changed repl :: Slice (start_idx,i-1) :: acc) 
+		(Changed repl :: Slice (start_idx,i-1) :: acc)
 		(* split the rest of the slice *)
 		(Slice (i+length seek, end_idx))
 	    with
@@ -251,12 +251,12 @@ struct
 	| s -> s :: acc (* don't replace in a replacement *)
       in
       List.fold_left split_multi [] slist in
-    let to_str pieces = 
+    let to_str pieces =
       let len_p = function Changed s -> length s | Slice (a,b) -> b-a + 1 in
       let len = List.fold_left (fun a p -> a + len_p p) 0 pieces in
       let out = String.create len in
       let rec loop pos = function
-	  Slice (s, e) :: t -> 
+	  Slice (s, e) :: t ->
 	    String.blit str s out pos (e-s+1);
 	    loop (pos+e-s+1) t
 	| Changed s :: t ->
@@ -267,9 +267,9 @@ struct
       loop 0 pieces;
       out
     in
-    
+
     to_str (List.fold_left repl_one [Slice (0,length str)] convs)
-      
+
 end
 
 (** {6 Representation of the .dist file}*)
@@ -295,10 +295,10 @@ and  ('a,'b) sigtree_aux =
 
 
 
-  
+
 
 (** Return the annotations on a tree*)
-let leaves_of (tree: (_, 'b) sigtree) : 'b list = 
+let leaves_of (tree: (_, 'b) sigtree) : 'b list =
   let rec aux acc n = match n with
     | (_, Other _)        -> acc
     | (_, Node (_, l, _)) -> List.fold_left aux acc l
@@ -317,10 +317,10 @@ let extract_relevant_of_file (filename: string) (path: path) (subs:substitution 
     let contents = Buffer.contents buf in
       String.global_replace subs contents;;
 
-  
+
 
 let parse_annotation stream =
-  let parse_annotation_content stream = 
+  let parse_annotation_content stream =
     let rec aux ?mli ~aka ?path = parser
       | [< 'Kwd "aka"; 'String s; stream >]       -> aux ?mli ~aka:(s::aka) ?path stream
       | [< 'Kwd "mli"; 'String mli; stream >]     -> aux ~mli ~aka ?path stream
@@ -331,7 +331,7 @@ let parse_annotation stream =
   in
   let rec aux stream = match Stream.next stream with
     | ((BLANKS _ | NEWLINE), _) -> aux stream
-    | (COMMENT c, _)            -> 
+    | (COMMENT c, _)            ->
 	if String.length c >= 1 && String.get c 0 = '%' then Some (parse_annotation_content (Stream.of_string c))
 	else None
     | _                         -> None
@@ -341,7 +341,7 @@ let parse_annotation stream =
 (** Read and parse the contents of a .dist file and return it without any additional processing*)
 let read_dist: in_channel -> string -> (unit, sigsource) sigtree * substitution list = fun channel name ->
   let renamings = ref [] in
-  let rec aux ~recent_comments (*~old_comments*) ~path stream : (_, _) sigtree list = 
+  let rec aux ~recent_comments (*~old_comments*) ~path stream : (_, _) sigtree list =
     match Stream.next stream with
       | (COMMENT c, _)          -> aux ~recent_comments:(c::recent_comments) ~path (*~old_comments*) stream
       | ((BLANKS _ | NEWLINE), _) -> aux ~recent_comments:[] ~path (*~old_comments:(recent_comments @ old_comments)*) stream
@@ -360,14 +360,14 @@ let read_dist: in_channel -> string -> (unit, sigsource) sigtree * substitution 
 		| _ ->
 		    begin
 		      let source_path = parse_path stream       in
-			renamings := 
-			  (string_of_path source_path, id) :: 
-			  (path, id) :: 
+			renamings :=
+			  (string_of_path source_path, id) ::
+			  (path, id) ::
 			    !renamings;
 			match parse_annotation stream with
 			  | Some (Some mli, aka, Some path) ->
 			      List.iter (fun x -> renamings := (x, id)::!renamings) aka;
-			      let annot = 
+			      let annot =
 				{
 				  mli = mli;
 				  inner_path = path_of_string path
@@ -382,9 +382,9 @@ let read_dist: in_channel -> string -> (unit, sigsource) sigtree * substitution 
       | (EOI, _)   -> []
       | (tok, loc) -> []
   in (((), Node ("", aux ~recent_comments:[] ~path:"" (tokens_of_channel name channel), [])), !renamings)
-  
 
-(** Go through a tree applying substitutions. 
+
+(** Go through a tree applying substitutions.
 
     For each leaf of the tree
     - read the [source]
@@ -414,10 +414,10 @@ let apply_substitutions: ('a, sigsource) sigtree -> substitution list -> ('a, st
 
     For each node, merge the dependencies of subtrees.
 *)
-let compute_dependencies: (unit, string) sigtree -> (StringSet.t, string) sigtree = fun tree -> 
+let compute_dependencies: (unit, string) sigtree -> (StringSet.t, string) sigtree = fun tree ->
   let rec aux = function
     | ((), Other o)                  -> (StringSet.empty, Other o)
-    | ((), Node (name, children, comment)) -> 
+    | ((), Node (name, children, comment)) ->
 	let (deps, rewritten) =
 	  List.fold_left (fun (deps, rewritten) child  -> let ((child_deps, _) as child') = aux child in
 			    (StringSet.union deps child_deps, child'::rewritten))
@@ -434,7 +434,7 @@ let compute_dependencies: (unit, string) sigtree -> (StringSet.t, string) sigtre
    [sort_modules l rename] sorts the modules of list [l]. Each name is transformed using [rename]
    before taking dependencies into account ([rename] serves chiefly to add prefixes).
 *)
-let sort_modules: ((StringSet.t, _) sigtree list as 'a) -> (string -> string) -> 'a = fun list prefix -> 
+let sort_modules: ((StringSet.t, _) sigtree list as 'a) -> (string -> string) -> 'a = fun list prefix ->
   let dependencies = Depsort.create ()
   and modules      = Hashtbl.create 16
   and others       = ref []            in
@@ -446,7 +446,7 @@ let sort_modules: ((StringSet.t, _) sigtree list as 'a) -> (string -> string) ->
 			    StringSet.iter (fun dep -> Depsort.add_dependency dependencies name' dep) depends_on
 		 | other -> others := other :: !others) list;
     List.rev_append !others (List.map (fun name -> Hashtbl.find modules name) (Depsort.sort dependencies))
-			    
+			
 
 
 (**Recursively sort by dependencies each level of the tree.
@@ -474,13 +474,13 @@ let serialize_tree : Format.formatter -> (_, string) sigtree -> unit = fun out -
     | (_, Leaf (name, content, comment)) ->
 	Format.fprintf out "%a@\nmodule %s : sig@[<v 5>%s@]@\n" serialize_comment comment name content
     | (_, Node (name, children, comment)) ->
-	Format.fprintf out "%a@\nmodule %s = struct@[%a@]@\n" serialize_comment comment name 
+	Format.fprintf out "%a@\nmodule %s = struct@[%a@]@\n" serialize_comment comment name
 	  (fun _ l -> List.iter aux l) children
     | (_, Other s) -> Format.fprintf out "%s@\n" s
   in aux
 
 (** Drive the process*)
-let driver name cin cout = 
+let driver name cin cout =
   let (tree,substitutions) = read_dist cin name                                in
   let deps = compute_dependencies (apply_substitutions tree substitutions)     in
     serialize_tree cout (sort_tree deps)

@@ -1,4 +1,4 @@
-(* 
+(*
  * File - File manipulation
  * Copyright (C) 2008 David Teller
  *
@@ -33,7 +33,7 @@ let finally handler f x =
   handler();
   r
 
-(*** Permissions *)
+(* Permissions *)
 type permission = int
     (**Internally, permissions are represented in Unix-style
        octal.*)
@@ -53,11 +53,11 @@ let perm l =
   fold_left l ~init:default_permission
     ~f:(fun acc x -> acc lor x)
 
-let unix_perm i = 
+let unix_perm i =
   if 0<= i && i <= 511 then i
   else raise (Invalid_argument (Printf.sprintf "Unix permission %o " i))
 
-(*** Opening *)
+(* Opening *)
 type open_in_flag =
   [ `create
   | `excl     (**Fail if the file exists and [`create] is set               *)
@@ -84,7 +84,7 @@ type open_out_flag =
 let in_chan_mode ?mode binary =
   let mode_to_open_flag  l =
     let rec aux acc is_binary = function
-      | []           -> if is_binary then Open_binary::acc 
+      | []           -> if is_binary then Open_binary::acc
 	else           Open_text  ::acc
       | `create::t   -> aux (Open_creat::acc)    is_binary t
       | `excl::t     -> aux (Open_excl::acc)     is_binary t
@@ -105,7 +105,7 @@ let out_chan_mode ?mode binary =
     let rec aux acc is_binary = function
       | []           -> let acc' = if List.mem Open_append acc then acc
                                    else                             Open_trunc::acc in
-	                if is_binary then Open_binary::acc' 
+	                if is_binary then Open_binary::acc'
 		        else              Open_text  ::acc'
       | `append::t   -> aux (Open_append::acc)   is_binary t
       | `trunc::t    -> aux (Open_trunc::acc)    is_binary t
@@ -132,7 +132,7 @@ let open_in ?mode ?(perm=default_permission) name =
       | Some l when List.mem `mmap l ->
 	  let desc = Unix.openfile name [O_RDONLY] 0                      in
 	  let array= Array1.map_file desc char c_layout (*shared*)false (-1) in
-	  let pos  = ref 0                                                
+	  let pos  = ref 0
 	  and len  = Array1.dim array                                     in
 	    create_in
 	      ~read:(fun () ->
@@ -156,17 +156,16 @@ let open_in ?mode ?(perm=default_permission) name =
 let with_do opener closer x f =
   let file = opener x in
     finally (fun () -> closer file) f file
- 
+
 let with_file_in  ?mode ?perm  x = with_do (open_in  ?mode ?perm) close_in x
 let with_file_out ?mode ?perm  x = with_do (open_out ?mode ?perm) close_out x
 
 let lines_of file = BatIO.lines_of (open_in file)
 
-let write_lines file lines = 
-  let doit output = BatIO.write_lines output lines in
+let write_lines file lines =
   let mode = [`trunc; `create] in
-  with_file_out ~mode file doit 
-    
+  with_file_out ~mode file (fun oc -> BatEnum.iter (BatIO.write_line oc) lines)
+
 (**
    {6 Temporary files}
 *)
@@ -175,13 +174,13 @@ type open_temporary_out_flag =
   [ open_out_flag
   | `delete_on_exit (**Should the file be deleted when program ends?*) ]
 
-let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * string) =
+let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") ?temp_dir () : (_ output * string) =
   let chan_mode = out_chan_mode ?mode true in
-  let (name, cout) = Filename.open_temp_file ~mode:chan_mode prefix suffix in
+  let (name, cout) = Filename.open_temp_file ?temp_dir ~mode:chan_mode prefix suffix in
   let out          = output_channel ~cleanup:true cout   in
     (match mode with
-      | Some l when List.mem `delete_on_exit l -> 
-	  Pervasives.at_exit (fun () -> 
+      | Some l when List.mem `delete_on_exit l ->
+	  Pervasives.at_exit (fun () ->
 				try
 				  BatIO.close_out out;
 				  Sys.remove name
@@ -190,8 +189,8 @@ let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") () : (_ output * 
       | _ -> ());
   (out, name)
 
-let with_temporary_out ?mode ?prefix ?suffix f =
-  let (file, name) = open_temporary_out ?mode ?prefix ?suffix () in
+let with_temporary_out ?mode ?prefix ?suffix ?temp_dir f =
+  let (file, name) = open_temporary_out ?mode ?prefix ?suffix ?temp_dir () in
     finally (fun () -> close_out file)
       (fun (file, name) -> f file name)
       (file, name)
