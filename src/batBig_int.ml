@@ -19,6 +19,56 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+let big_int_base_default_symbols =
+[| '0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9';
+   'A'; 'B'; 'C'; 'D'; 'E'; 'F'  |]
+
+let to_string_in_base
+      ?(symbols=big_int_base_default_symbols)
+      b (* base, int > 1 *)
+      n (* big integer *)
+      = let open Big_int in
+  assert (b > 1);
+  (* reverse a mutable string in its place *)
+  let in_place_string_rev s =
+    let len = String.length s in
+    for k = 0 to (len - 1)/2 do
+      let old = s.[k]
+      and mirror = len - 1 - k in
+      s.[k] <- s.[mirror];
+      s.[mirror] <- old;
+    done
+  in
+  (* generously over-approximate number of decimal digits of n;
+     num_digits_big_int actually returns the number of _words_ *)
+  let base10digits = (Sys.word_size / 32) * 10 * num_digits_big_int n in
+  (* over-approximate resulting digits in base b, using following theorem:
+               k             k
+      Log[b, 10 ] == ----------------- .
+                     Log[10, E] Log[b]                                  *)
+  let basebdigits = int_of_float (ceil (
+    (float_of_int base10digits)
+    /.
+    ((log10 (exp 1.)) *. log (float_of_int b)))) in
+  let buff = Buffer.create basebdigits in (* we know the buffer is large enough *)
+  (* switch base to big int representation and n to mutable, and loop *)
+  let b = big_int_of_int b and n = ref n in
+  while compare_big_int !n b >= 0 do
+    let q,d = quomod_big_int !n b in
+    n := q; Buffer.add_char buff symbols.(int_of_big_int d);
+  done;
+  Buffer.add_char buff symbols.(int_of_big_int !n);
+  let res = Buffer.contents buff in
+  in_place_string_rev res; res
+
+(*$= to_string_in_base & ~printer:identity
+  (to_string_in_base 16 (big_int_of_int 9485))  "250D"
+  (to_string_in_base 10 (big_int_of_int 9485))  "9485"
+  (to_string_in_base  8 (big_int_of_int 9485))  "22415"
+  (to_string_in_base  2 (big_int_of_int 9485))  "10010100001101"
+*)
+
+
 open BatNumber
 
 module BaseBig_int = struct

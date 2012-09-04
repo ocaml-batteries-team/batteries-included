@@ -145,6 +145,20 @@ val num_digits_big_int : big_int -> int
 val string_of_big_int : big_int -> string
         (** Return the string representation of the given big integer,
            in decimal (base 10). *)
+
+val to_string_in_base : ?symbols:char array -> int -> Big_int.big_int -> string
+(** [to_string_in_base b n] returns the string representation in base [b] of the given
+big integer [n]. The optional argument is an array of symbols for bases greater than 10,
+which is [big_int_base_default_symbols] by default.
+*)
+
+val big_int_base_default_symbols : char array
+(** default array of symbols used for encoding in bases greater than 10.
+ Symbol at position [p] encodes the value [p]. By default, ['A'] to ['F']
+ are defined for values 11 to 15. You will need to pass an extended array
+ to [to_string_in_base] if you need to use bases greater than 16. *)
+
+
 val big_int_of_string : string -> big_int
         (** Convert a string to a big integer, in decimal.
            The string consists of an optional [-] or [+] sign,
