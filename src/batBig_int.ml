@@ -46,26 +46,31 @@ let to_string_in_base
       s.[k] <- s.[mirror];
       s.[mirror] <- old;
     done
-  in
-  (* generously over-approximate number of decimal digits of n;
+  in let isnegative = sign_big_int n < 0 in
+  (* generously over-approximate number of binary digits of n;
      num_digits_big_int actually returns the number of _words_ *)
-  let base10digits = (Sys.word_size / 32) * 10 * num_digits_big_int n in
-  (* over-approximate resulting digits in base b, using following theorem:
-               k          k
-      Log[b, 10 ] == ---------- .
-                     Log[10, b]         *)
+  let base2digits = Sys.word_size  * num_digits_big_int n in
+  (* over-approximate resulting digits in base b, using following theorem,
+     where k = base2digits :
+                                          k                    k      k * Log[2]
+      digits in base b <= Ceiling[Log[b, 2 ]]    and   Log[b, 2 ] == -----------
+                                                                       Log[b]    *)
   let basebdigits = int_of_float (ceil (
-    (float_of_int base10digits)
+    ((float_of_int base2digits) *. (log 2.))
      /.
-    (log10 (float_of_int b)))) in
+    (log (float_of_int b))))
+    +
+    (if isnegative then 1 else 0) (* the pesky '-' sign *)
+  in
   let buff = Buffer.create basebdigits in (* we know the buffer is large enough *)
   (* switch base to big int representation and n to mutable, and loop *)
-  let b = big_int_of_int b and n = ref n in
+  let b = big_int_of_int b and n = ref (abs_big_int n) in
   while compare_big_int !n b >= 0 do
     let q,d = quomod_big_int !n b in
     n := q; Buffer.add_char buff symbols.[int_of_big_int d];
   done;
   Buffer.add_char buff symbols.[int_of_big_int !n];
+  if isnegative then Buffer.add_char buff '-';
   let res = Buffer.contents buff in
   in_place_string_rev res; res
 
@@ -75,6 +80,7 @@ let to_string_in_hexa   = to_string_in_base 16
   
 (*$= to_string_in_base & ~printer:identity
   (to_string_in_base 16 (big_int_of_int 9485))    "250D"
+  (to_string_in_base 16 (big_int_of_int (-9485))) "-250D"
   (to_string_in_base 10 (big_int_of_int 9485))    "9485"
   (to_string_in_base  8 (big_int_of_int 9485))    "22415"
   (to_string_in_base  2 (big_int_of_int 9485))    "10010100001101"
@@ -93,6 +99,9 @@ let to_string_in_hexa   = to_string_in_base 16
     with Invalid_argument _ -> true
   try ignore (to_string_in_base 1 (big_int_of_int 948565)); false \
     with Invalid_argument _ -> true
+*) (*$Q to_string_in_base
+  Q.int (fun i-> let bi = big_int_of_int i in \
+    to_string_in_base 10 bi = string_of_big_int bi)
 *)
 
 
