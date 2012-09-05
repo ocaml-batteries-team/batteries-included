@@ -19,21 +19,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-let big_int_base_default_symbols = ref (Array.init (10 + 26*2)
-  (let get off c k = char_of_int (k - off + (int_of_char c)) in fun k ->
-   if k < 10 then get  0 '0' k else if k < 36 then get 10 'A' k else get 36 'a' k ))
+let big_int_base_default_symbols = ref (
+  let s = String.create (10 + 26*2) in
+  let set off c k = s.[k] <- char_of_int (k - off + (int_of_char c)) in
+  for k = 0 to String.length s - 1 do
+   if k < 10 then set  0 '0' k else if k < 36 then set 10 'A' k else set 36 'a' k
+  done; s)
 
    
 let to_string_in_base
       ? (symbols = !big_int_base_default_symbols)
-      b (* base, int > 1 *)
+      b (* base, int > 1 and <= number of defined symbols *)
       n (* big integer *)
-      = let open Big_int in
+  = let open Big_int in
   if b <= 1 then invalid_arg
     "Big_int.to_string_in_base: base must be > 1";
-  if b > Array.length symbols then invalid_arg (
+  if b > String.length symbols then invalid_arg (
     "Big_int.to_string_in_base: big_int_base_default_symbols too small for base "
-      ^ (string_of_int b) ^ ": only " ^ (string_of_int (Array.length symbols)) ^ ".");
+      ^ (string_of_int b) ^ ": only " ^ (string_of_int (String.length symbols)) ^ ".");
   (* reverse a mutable string in its place *)
   let in_place_string_rev s =
     let len = String.length s in
@@ -60,12 +63,16 @@ let to_string_in_base
   let b = big_int_of_int b and n = ref n in
   while compare_big_int !n b >= 0 do
     let q,d = quomod_big_int !n b in
-    n := q; Buffer.add_char buff symbols.(int_of_big_int d);
+    n := q; Buffer.add_char buff symbols.[int_of_big_int d];
   done;
-  Buffer.add_char buff symbols.(int_of_big_int !n);
+  Buffer.add_char buff symbols.[int_of_big_int !n];
   let res = Buffer.contents buff in
   in_place_string_rev res; res
 
+let to_string_in_binary = to_string_in_base 2
+let to_string_in_octal  = to_string_in_base 8
+let to_string_in_hexa   = to_string_in_base 16
+  
 (*$= to_string_in_base & ~printer:identity
   (to_string_in_base 16 (big_int_of_int 9485))    "250D"
   (to_string_in_base 10 (big_int_of_int 9485))    "9485"
@@ -73,6 +80,14 @@ let to_string_in_base
   (to_string_in_base  2 (big_int_of_int 9485))    "10010100001101"
   (to_string_in_base 36 (big_int_of_int 948565))  "KBX1"
   (to_string_in_base 62 (big_int_of_int 948565))  "3ylR"
+  (to_string_in_base  3 (big_int_of_int 2765353)) "12012111100111"
+  (to_string_in_base  3 (big_int_of_int 2765353) ~symbols:"*/!") "/!*/!////**///"
+*) (*$= to_string_in_binary & ~printer:identity
+  (to_string_in_binary (big_int_of_int 9485))     "10010100001101"
+*) (*$= to_string_in_octal & ~printer:identity
+  (to_string_in_octal (big_int_of_int 9485))      "22415"
+*) (*$= to_string_in_hexa & ~printer:identity
+  (to_string_in_hexa (big_int_of_int 9485))       "250D"
 *) (*$T to_string_in_base
   try ignore (to_string_in_base 63 (big_int_of_int 948565)); false \
     with Invalid_argument _ -> true

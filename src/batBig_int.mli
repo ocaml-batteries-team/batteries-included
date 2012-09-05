@@ -142,21 +142,32 @@ val num_digits_big_int : big_int -> int
 
 (** {6 Conversions to and from strings} *)
 
+
+val big_int_of_string : string -> big_int
+        (** Convert a string to a big integer, in decimal.
+           The string consists of an optional [-] or [+] sign,
+           followed by one or several decimal digits. *)
+
 val string_of_big_int : big_int -> string
         (** Return the string representation of the given big integer,
            in decimal (base 10). *)
 
-val to_string_in_base : ?symbols:char array -> int -> Big_int.big_int -> string
+val to_string_in_base : ?symbols:string -> int -> Big_int.big_int -> string
 (** [to_string_in_base b n] returns the string representation in base [b] of the given
 big integer [n]. The optional argument [symbols] is the array of the
 symbols used to represent the digits in base [b].
 The default value of [symbols] is [!big_int_base_default_symbols].
 The base [b] must be at least [2], and [symbols] must be of size at least [b].
-@raise Invalid_argument if [b] is incorrect.
-*)
+@raise Invalid_argument if [b] is incorrect. *)
 
-val big_int_base_default_symbols : char array ref
-(** Default array of symbols used by [to_string_in_base] to represent digits.
+val to_string_in_binary : Big_int.big_int -> string
+val to_string_in_octal  : Big_int.big_int -> string
+val to_string_in_hexa   : Big_int.big_int -> string
+
+val big_int_base_default_symbols : string ref
+(** Default array of symbols used by [to_string_in_base] and its fixed-base
+derivatives [to_string_in_binary], [to_string_in_octal] and [to_string_in_hexa]
+to represent digits.
 The symbol at position [p] encodes the value [p]. The original value of
 this array is, schematically, [['0'..'9' 'A' 'B'..'Z' 'a' 'b'..'z']], which is
 sufficient for bases up to and including 62. To customise the output of
@@ -164,10 +175,7 @@ sufficient for bases up to and including 62. To customise the output of
 custom arrays to [to_string_in_base] using the optional [symbols] argument, which
 will then override [big_int_base_default_symbols]. *)
 
-val big_int_of_string : string -> big_int
-        (** Convert a string to a big integer, in decimal.
-           The string consists of an optional [-] or [+] sign,
-           followed by one or several decimal digits. *)
+
 
 (** {6 Conversions to and from other numerical types} *)
 
