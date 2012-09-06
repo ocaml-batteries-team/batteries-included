@@ -135,6 +135,9 @@ end
 
 include (BatNumber.MakeNumeric(BaseFloat) : BatNumber.Numeric with type t = float and module Infix := Infix)
 
+let min (x:float) y = if x < y then x else y
+let max (x:float) y = if x < y then y else x
+
 (* Fix definitions for performance *)
 external of_float : float -> float = "%identity"
 external to_float : float -> float = "%identity"

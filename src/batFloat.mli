@@ -98,6 +98,8 @@ external ( - ) : t -> t -> t = "%subfloat"
 external ( * ) : t -> t -> t = "%mulfloat"
 external ( / ) : t -> t -> t = "%divfloat"
 external ( ** ) : t -> t -> t = "caml_power_float" "pow" "float"
+val min : float -> float -> float
+val max : float -> float -> float
 
 (* Available only in `Compare` submodule
 val ( <> ) : t -> t -> bool
@@ -342,6 +344,8 @@ module Infix : sig
 end
 
 module Compare : BatNumber.Compare with type bat__compare_t = t
+
+include (BatNumber.RefOps with type bat__refops_t = t)
 
 (** {6 Boilerplate code}*)
 
