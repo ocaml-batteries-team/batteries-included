@@ -154,7 +154,7 @@ val string_of_big_int : big_int -> string
 
 val to_string_in_base : ?symbols:string -> int -> Big_int.big_int -> string
 (** [to_string_in_base b n] returns the string representation in base [b] of the given
-big integer [n]. The optional argument [symbols] is the array of the
+big integer [n]. The optional argument [symbols] is the vector of the
 symbols used to represent the digits in base [b].
 The default value of [symbols] is [!big_int_base_default_symbols].
 The base [b] must be at least [2], and [symbols] must be of size at least [b].
@@ -165,15 +165,17 @@ val to_string_in_octal  : Big_int.big_int -> string
 val to_string_in_hexa   : Big_int.big_int -> string
 
 val big_int_base_default_symbols : string ref
-(** Default array of symbols used by [to_string_in_base] and its fixed-base
+(** Default vector of symbols used by [to_string_in_base] and its fixed-base
 derivatives [to_string_in_binary], [to_string_in_octal] and [to_string_in_hexa]
 to represent digits.
 The symbol at position [p] encodes the value [p]. The original value of
-this array is, schematically, [['0'..'9' 'A' 'B'..'Z' 'a' 'b'..'z']], which is
-sufficient for bases up to and including 62. To customise the output of
-[to_string_in_base], you can either change this array globally, or pass
-custom arrays to [to_string_in_base] using the optional [symbols] argument, which
-will then override [big_int_base_default_symbols]. *)
+this vector is, schematically, [['0'..'9' 'A' 'B'..'Z' 'a' 'b'..'z']], which is
+sufficient for bases up to and including 62. Should you feel the need to
+customise the output of [to_string_in_base], you can either change
+this vector globally --- which should only be done once, in the initialisation
+phase of your program, --- or pass custom arrays to [to_string_in_base]
+using the optional [symbols] argument, which will then override
+[big_int_base_default_symbols]. *)
 
 
 

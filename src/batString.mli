@@ -396,6 +396,14 @@ val repeat: string -> int -> string
     Example: [String.repeat "foo" 4 = "foofoofoofoo"]
 *)
 
+
+(** {6 In-Place Transformations}*)
+
+val in_place_mirror : string -> unit
+(** [in_place_mirror s] mutates the string [s], so that its new value is
+the mirror of its old one: for instance if s contained ["Example!"], after
+the mutation it will contain ["!elpmaxE"]. *)
+
 (** {6 Splitting around}*)
 
 val split : string -> by:string -> string * string

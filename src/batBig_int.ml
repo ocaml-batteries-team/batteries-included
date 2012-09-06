@@ -37,19 +37,10 @@ let to_string_in_base
   if b > String.length symbols then invalid_arg (
     "Big_int.to_string_in_base: big_int_base_default_symbols too small for base "
       ^ (string_of_int b) ^ ": only " ^ (string_of_int (String.length symbols)) ^ ".");
-  (* reverse a mutable string in its place *)
-  let in_place_string_rev s =
-    let len = String.length s in
-    for k = 0 to (len - 1)/2 do
-      let old = s.[k]
-      and mirror = len - 1 - k in
-      s.[k] <- s.[mirror];
-      s.[mirror] <- old;
-    done
-  in let isnegative = sign_big_int n < 0 in
+  let isnegative = sign_big_int n < 0 in
   (* generously over-approximate number of binary digits of n;
      num_digits_big_int actually returns the number of _words_ *)
-  let base2digits = Sys.word_size  * num_digits_big_int n in
+  let base2digits = Sys.word_size * num_digits_big_int n in
   (* over-approximate resulting digits in base b, using following theorem,
      where k = base2digits :
                                           k                    k      k * Log[2]
@@ -62,17 +53,18 @@ let to_string_in_base
     +
     (if isnegative then 1 else 0) (* the pesky '-' sign *)
   in
-  let buff = Buffer.create basebdigits in (* we know the buffer is large enough *)
+  let buff = String.create basebdigits in (* we know the buffer is large enough *)
+  let curr = ref (basebdigits - 1) and count = ref 0 in
+  let addchar c = buff.[!curr] <- c ; incr count; decr curr in
   (* switch base to big int representation and n to mutable, and loop *)
   let b = big_int_of_int b and n = ref (abs_big_int n) in
   while compare_big_int !n b >= 0 do
     let q,d = quomod_big_int !n b in
-    n := q; Buffer.add_char buff symbols.[int_of_big_int d];
+    n := q; addchar symbols.[int_of_big_int d];
   done;
-  Buffer.add_char buff symbols.[int_of_big_int !n];
-  if isnegative then Buffer.add_char buff '-';
-  let res = Buffer.contents buff in
-  in_place_string_rev res; res
+  addchar symbols.[int_of_big_int !n];
+  if isnegative then addchar '-';
+  String.sub buff (!curr + 1) !count
 
 let to_string_in_binary = to_string_in_base 2
 let to_string_in_octal  = to_string_in_base 8
