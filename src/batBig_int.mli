@@ -152,30 +152,45 @@ val string_of_big_int : big_int -> string
         (** Return the string representation of the given big integer,
            in decimal (base 10). *)
 
-val to_string_in_base : ?symbols:string -> int -> Big_int.big_int -> string
-(** [to_string_in_base b n] returns the string representation in base [b] of the given
-big integer [n]. The optional argument [symbols] is the vector of the
-symbols used to represent the digits in base [b].
-The default value of [symbols] is [!big_int_base_default_symbols].
-The base [b] must be at least [2], and [symbols] must be of size at least [b].
-@raise Invalid_argument if [b] is incorrect. *)
+val to_string_in_binary : big_int -> string
+(** as [string_of_big_int], but in base 2 *)
+val to_string_in_octal  : big_int -> string
+(** as [string_of_big_int], but in base 8 *)
+val to_string_in_hexa   : big_int -> string
+(** as [string_of_big_int], but in base 16 *)
 
-val to_string_in_binary : Big_int.big_int -> string
-val to_string_in_octal  : Big_int.big_int -> string
-val to_string_in_hexa   : Big_int.big_int -> string
+val to_string_in_base : int -> big_int -> string
+(** [to_string_in_base b n] returns the string representation in base [b] of
+the given big integer [n]. Should you have advanced needs (arbitrarily large
+bases, or custom digits instead of the usual [0,1,...9,a,b,...,z]), use
+[to_string_in_custom_base] instead. @raise Invalid_argument if b is not in
+[2 .. 36]. *)
 
-val big_int_base_default_symbols : string ref
+val to_string_in_custom_base : string -> int -> big_int -> string
+(** First argument, called [symbols], is the vector of the symbols used to
+represent the digits in base [b]. [to_string_in_base] is almost equivalent to
+[to_string_in_custom_base big_int_base_default_symbols], the difference being
+that [to_string_in_custom_base] allows the base to be arbitrarily large,
+provided that [symbols] can accommodate it. Concretely, the base [b] must be at
+least [2], and [symbols] must be of size at least [b]. The default value of
+[big_int_base_default_symbols] contains 62 symbols, as it uses lowercase and
+uppercase letters both. See below for more information. @raise Invalid_argument
+if [b] is incorrect. *)
+
+
+val big_int_base_default_symbols : string
 (** Default vector of symbols used by [to_string_in_base] and its fixed-base
 derivatives [to_string_in_binary], [to_string_in_octal] and [to_string_in_hexa]
-to represent digits.
-The symbol at position [p] encodes the value [p]. The original value of
-this vector is, schematically, [['0'..'9' 'A' 'B'..'Z' 'a' 'b'..'z']], which is
-sufficient for bases up to and including 62. Should you feel the need to
-customise the output of [to_string_in_base], you can either change
-this vector globally --- which should only be done once, in the initialisation
-phase of your program, --- or pass custom arrays to [to_string_in_base]
-using the optional [symbols] argument, which will then override
-[big_int_base_default_symbols]. *)
+to represent digits. The symbol at position [p] encodes the value [p]. The
+original value of this vector is, schematically, [['0'..'9' 'a' 'b'..'z' 'A'
+'B'..'Z']], which is sufficient for bases up to and including 62. The basic
+[to_string_in_base] function is capped to base 36 to avoid unexpected
+behaviours do to the case-sensitivity of the output in bases 37 to 62. You
+technically {i can} mutate the vector, for instance if you prefer to exchange
+lower- and upper-case symbols program-wide. As usual where mutability is
+concerned, discretion is advised. Most of the time, it is better to build
+custom functions using [to_string_in_custom_base].
+*)
 
 
 
