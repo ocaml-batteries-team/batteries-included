@@ -2,6 +2,7 @@ BatArray
 BatBigarray
 BatBig_int
 BatBool
+BatBounded
 BatBuffer
 BatChar
 BatComplex
