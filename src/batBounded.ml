@@ -84,6 +84,20 @@ let bounding_of_ord ?default_low ?default_high ord =
         | O.Gt, _ -> Some x
     end
 
+(*$T bounding_of_ord
+   bounding_of_ord BatInt.ord ~min:`u ~max:`u 0 = Some 0
+   bounding_of_ord BatInt.ord ~min:(`c 0) ~max:`u 0 = Some 0
+   bounding_of_ord BatInt.ord ~min:(`o 0) ~max:`u 0 = None
+   bounding_of_ord BatInt.ord ~max:(`c 0) ~min:`u 0 = Some 0
+   bounding_of_ord BatInt.ord ~max:(`o 0) ~min:`u 0 = None
+
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~min:`u ~max:`u 0 = Some 0
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~min:(`c 0) ~max:`u 0 = Some 0
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~min:(`o 0) ~max:`u 0 = Some ~-10
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~max:(`c 0) ~min:`u 0 = Some 0
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~max:(`o 0) ~min:`u 0 = Some 10
+*)
+
 let bounding_of_ord_chain ?low ?high ord = 
   let low = low |? ret_none in
   let high = high |? ret_none in
@@ -162,6 +176,20 @@ let bounding_of_ord_chain ?low ?high ord =
     end
     | `u, `u -> ret_some
 
+(*$T bounding_of_ord_chain as f
+   f BatInt.ord ~min:`u ~max:`u 0 = Some 0
+   f BatInt.ord ~min:(`c 0) ~max:`u 0 = Some 0
+   f BatInt.ord ~min:(`o 0) ~max:`u 0 = None
+   f BatInt.ord ~max:(`c 0) ~min:`u 0 = Some 0
+   f BatInt.ord ~max:(`o 0) ~min:`u 0 = None
+
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~min:`u ~max:`u 0 = Some 0
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~min:(`c 0) ~max:`u 0 = Some 0
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~min:(`o 0) ~max:`u 0 = Some ~-10
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~max:(`c 0) ~min:`u 0 = Some 0
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~max:(`o 0) ~min:`u 0 = Some 10
+*)
+
 module type BoundedType = sig
   type t
   val min : t bound_t
@@ -186,16 +214,4 @@ module Make(M : BoundedType) : (S with type u = M.t) = struct
   let make = bounded ~min ~max
   let make_exn x = BatOption.get_exn (make x) Out_of_range
 end
-
-module Int10_base = struct
-  type t = int
-  let min = `c 1
-  let max = `c 10
-  let default_low = None
-  let default_high = None
-  let bounded = bounding_of_ord ?default_low ?default_high BatInt.ord
-end
-
-(** Only accept integers between 1 and 10 *)
-module Int10 = Make(Int10_base)
 
