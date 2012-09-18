@@ -264,13 +264,20 @@ val group : ('a -> 'b) -> 'a t -> 'a t t
 
     [Enum.group (fun s -> s.[0]) ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [["cat"; "canary"];["dog";"dodo"];["ant"];["cow"]]]
 
+    Warning: The result of this operation cannot be directly cloned
+    safely; instead, reify to a non-lazy structure and read from that
+    structure multiple times.
 *)
 
 val group_by : ('a -> 'a -> bool) -> 'a t -> 'a t t
 (** [group_by eq e] divides [e] into an enumeration of enumerations,
     where each sub-enumeration is the longest continuous enumeration
-    of elements that are equal, as judged by [eq]
-*)
+    of elements that are equal, as judged by [eq].
+
+    Warning: The result of this operation cannot be directly cloned
+    safely; instead, reify to a non-lazy structure and read from that
+    structure multiple times.
+ *)
 
 val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
 (** [clump size add get e] runs [add] on [size] (or less at the end)

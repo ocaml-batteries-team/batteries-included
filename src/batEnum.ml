@@ -866,7 +866,11 @@ let group_aux test eq e =
       raise No_more_elements;
     prev_group := grp;
     grp
-  in from f
+  in
+  let clone () =
+    failwith "Grouped enumerations cannot be cloned safely"
+  in
+  from2 f clone
 
 let group test e =
   group_aux test (=) e
