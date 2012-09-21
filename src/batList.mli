@@ -687,6 +687,9 @@ module Exceptionless : sig
   first element.
   Returns [None] if list [l] is empty *)
 
+  val last : 'a list -> 'a option
+  (** [last l] returns either [Some x] where [x] is the last element of the list, or [None] if
+  the list is empty. This function takes linear time. *)
 end
 
 (** {6 Infix submodule regrouping all infix operators} *)

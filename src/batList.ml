@@ -860,6 +860,11 @@ module Exceptionless = struct
   let tl l =
     try Some (tl l)
     with Failure "tl" -> None
+
+  let rec last = function
+  | [] -> None
+  | [x] -> Some x
+  | _ :: l -> last l
 end
 
 
