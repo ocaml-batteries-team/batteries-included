@@ -733,6 +733,7 @@ module Labels : sig
   val drop_while : f:('a -> bool) -> 'a list -> 'a list
   val stable_sort : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
   val fast_sort : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
+  val sort : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list
   val merge : ?cmp:('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
   module LExceptionless : sig
     val find : f:('a -> bool) -> 'a list -> 'a option

@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-exception No_value
-
 type 'a t = 'a option
 
 let may f = function

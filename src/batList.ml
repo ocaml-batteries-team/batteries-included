@@ -106,7 +106,7 @@ let append l1 l2 =
     loop r t;
     inj r
 
-let rec flatten l =
+let flatten l =
   let rec inner dst = function
     | [] -> dst
     | h :: t ->
@@ -241,7 +241,7 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
   (interleave ~first:(-1) ~last:(-2) 0 []) [-1;-2]
 *)
 
-let rec unique ?(eq = ( = )) l =
+let unique ?(eq = ( = )) l =
   let rec loop dst = function
     | [] -> ()
     | h :: t ->
@@ -451,7 +451,7 @@ let find_all p l =
   findnext dummy l;
   dummy.tl
 
-let rec findi p l =
+let findi p l =
   let rec loop n = function
     | [] -> raise Not_found
     | h :: t ->
@@ -459,28 +459,28 @@ let rec findi p l =
   in
   loop 0 l
 
-let rec index_of e l =
+let index_of e l =
   let rec loop n = function
     | []              -> None
     | h::_ when h = e -> Some n
     | _::t            -> loop ( n + 1 ) t
   in loop 0 l
 
-let rec index_ofq e l =
+let index_ofq e l =
   let rec loop n = function
     | []               -> None
     | h::_ when h == e -> Some n
     | _::t             -> loop ( n + 1 ) t
   in loop 0 l
 
-let rec rindex_of e l =
+let rindex_of e l =
   let rec loop n acc = function
     | []              -> acc
     | h::t when h = e -> loop ( n + 1) ( Some n ) t
     | _::t            -> loop ( n + 1 ) acc       t
   in loop 0 None l
 
-let rec rindex_ofq e l =
+let rindex_ofq e l =
   let rec loop n acc = function
     | []               -> acc
     | h::t when h == e -> loop ( n + 1) ( Some n ) t
@@ -542,7 +542,7 @@ let combine l1 l2 =
   loop dummy l1 l2;
   dummy.tl
 
-let rec init size f =
+let init size f =
   if size = 0 then []
   else if size < 0 then invalid_arg "BatList.init"
   else
@@ -635,7 +635,7 @@ let remove l x =
   loop dummy l;
   dummy.tl
 
-let rec remove_if f lst =
+let remove_if f lst =
   let rec loop dst = function
     | [] -> ()
     | x :: l ->
@@ -650,7 +650,7 @@ let rec remove_if f lst =
   loop dummy lst;
   dummy.tl
 
-let rec remove_all l x =
+let remove_all l x =
   let rec loop dst = function
     | [] -> ()
     | h :: t ->
@@ -865,10 +865,7 @@ end
 
 
 module Labels = struct
-
-  type 'a t         = 'a list
   let init i ~f     = init i f
-  let make n  x     = make n x
   let iteri ~f l    = iteri f l
   let map ~f l      = map f l
   let mapi ~f l     = mapi f l

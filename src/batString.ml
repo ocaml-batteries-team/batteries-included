@@ -662,7 +662,7 @@ let in_place_mirror s =
 
 let repeat s n =
   let buf = Buffer.create ( n * (String.length s) ) in
-  for i = 1 to n do Buffer.add_string buf s done;
+  for _i = 1 to n do Buffer.add_string buf s done;
   Buffer.contents buf
 (*$T repeat
    repeat "fo" 4 = "fofofofo"

@@ -38,7 +38,6 @@
     let replace  = Hashtbl.replace
     let iter     = Hashtbl.iter
     let fold     = Hashtbl.fold
-    let length   = Hashtbl.length
     let hash     = Hashtbl.hash
     external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
 
@@ -54,7 +53,7 @@
     external h_conv : ('a, 'b) t -> ('a, 'b) h_t = "%identity"
     external h_make : ('a, 'b) h_t -> ('a, 'b) t = "%identity"
 
-    let resize hashfun tbl =
+    let _resize hashfun tbl =
       let odata = tbl.data in
       let osize = Array.length odata in
       let nsize = min (2 * osize + 1) Sys.max_array_length in
@@ -511,11 +510,11 @@
 	let add e ~key ~data     = add e key data
 	let replace e ~key ~data = replace e key data
 	let iter  ~f e           = iter (label f) e
+	let fold  ~f e ~init     = fold (label f) e init
 	let map   ~f e           = map (label f) e
 	let filter     ~f e      = filter f e
 	let filteri    ~f e      = filteri (label f) e
 	let filter_map ~f e      = filter_map (label f) e
-	let fold  ~f e ~init     = fold (label f) e init
       end
 
       module Exceptionless =

@@ -145,16 +145,12 @@ external modulo : float -> float -> float = "caml_fmod_float" "fmod" "float"
 external pow : float -> float -> float = "caml_power_float" "pow" "float"
 external of_int : int -> float = "%floatofint"
 external to_int : float -> int = "%intoffloat"
-external of_float : float -> float = "%identity"
-external to_float : float -> float = "%identity"
 external ( + ) : t -> t -> t = "%addfloat"
 external ( - ) : t -> t -> t = "%subfloat"
 external ( * ) : t -> t -> t = "%mulfloat"
 external ( / ) : t -> t -> t = "%divfloat"
 external ( ** ) : t -> t -> t = "caml_power_float" "pow" "float"
 
-
-type bounded = t
 let min_num, max_num = neg_infinity, infinity
 
 type fpkind = Pervasives.fpclass =
@@ -289,7 +285,6 @@ module Safe_float = struct
   let frexp x = let (f, _) as result = frexp x in if_safe f; result (*BISECT-VISIT*)
   let ldexp = safe2 ldexp
 
-  type bounded = t
   let min_num, max_num = neg_infinity, infinity
 
   type fpkind = Pervasives.fpclass =

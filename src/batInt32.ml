@@ -115,10 +115,6 @@ external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
 external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
 external format : string -> int32 -> string = "caml_int32_format"
 
-
-
-
-type bounded = t
 let min_num, max_num = min_int, max_int
 
 let print out t = BatInnerIO.nwrite out (to_string t)

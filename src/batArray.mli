@@ -318,6 +318,7 @@ end
 module Labels : sig
   val init :  int -> f:(int -> 'a) -> 'a array
   val create: int -> init:'a -> 'a array
+  val make: int -> init:'a -> 'a array
   val make_matrix :   dimx:int -> dimy:int -> 'a -> 'a array array
   val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
   val sub :  'a array -> pos:int -> len:int -> 'a array

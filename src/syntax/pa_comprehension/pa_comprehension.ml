@@ -37,7 +37,7 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
      and insert "[?" and "?]" instead.
 
      Thanks to Jérémie Dimino for the idea. *)
-  value rec delim_filter older_filter stream =
+  value delim_filter older_filter stream =
     let rec filter = parser
     [ [: `(KEYWORD "[", loc); rest :] ->
         match rest with parser

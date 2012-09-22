@@ -19,9 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-open BatNumber
-
 module BaseBool = struct
   type t = bool
   external not : bool -> bool = "%boolnot"
@@ -121,7 +118,6 @@ external not : bool -> bool = "%boolnot"
 external ( && ) : bool -> bool -> bool = "%sequand"
 external ( || ) : bool -> bool -> bool = "%sequor"
 
-type bounded = t
 let min_num, max_num = false, true
 
 let print out t = BatInnerIO.nwrite out (to_string t)

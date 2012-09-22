@@ -246,9 +246,6 @@ let args () =
 let exe =
   Array.get Sys.argv 0
 
-let argv = Sys.argv
-
-
   (** {6 I/O}*)
   let print_guess oc v = BatIO.nwrite oc (dump v)
   let prerr_guess v = prerr_endline (dump v)
@@ -380,14 +377,14 @@ let argv = Sys.argv
             match flags.pf_justify with
               | `right ->
                   k (fun oc ->
-                       for i = len + 1 to n do
+                       for _i = len + 1 to n do
                          BatIO.write oc flags.pf_padding_char
                        done;
                        BatIO.nwrite oc x)
               | `left ->
                   k (fun oc ->
                        BatIO.nwrite oc x;
-                       for i = len + 1 to n do
+                       for _i = len + 1 to n do
                          BatIO.write oc flags.pf_padding_char
                        done)
 
@@ -403,14 +400,14 @@ let argv = Sys.argv
             match flags.pf_justify with
               | `right ->
                   k (fun oc ->
-                       for i = len + 1 to n do
+                       for _i = len + 1 to n do
                          BatIO.write oc flags.pf_padding_char
                        done;
                        BatString.Cap.print oc x)
               | `left ->
                   k (fun oc ->
                        BatString.Cap.print oc x;
-                       for i = len + 1 to n do
+                       for _i = len + 1 to n do
                          BatIO.write oc flags.pf_padding_char
                        done)
 

@@ -29,7 +29,6 @@ module Concrete = struct
 
   let empty = Empty
 
-  let is_empty = function Empty -> true | _ -> false
   (* Sets are represented by balanced binary trees (the heights of the
      children differ by at most 2 *)
   let height = function
@@ -204,15 +203,15 @@ module Concrete = struct
       Empty -> t
     | Node (l, e, r, _) -> rev_cons_iter r (C (e, l, t))
 
-  let rec enum_next l () = match !l with
+  let enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (e, s, t) -> l := cons_iter s t; e
 
-  let rec enum_backwards_next l () = match !l with
+  let enum_backwards_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (e, s, t) -> l := rev_cons_iter s t; e
 
-  let rec enum_count l () =
+  let enum_count l () =
     let rec aux n = function
         E -> n
       | C (e, s, t) -> aux (n + 1 + cardinal s) t
@@ -427,8 +426,6 @@ struct
   external impl_of_t : t -> implementation = "%identity"
   external t_of_impl : implementation -> t = "%identity"
 
-  type iter = E | C of elt * implementation * iter
-
   let cardinal t = Concrete.cardinal (impl_of_t t)
   let enum t = Concrete.enum (impl_of_t t)
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
@@ -445,7 +442,7 @@ struct
 
   let exists f t = Concrete.exists f (impl_of_t t)
   let for_all f t = Concrete.for_all f (impl_of_t t)
-  let paritition f t =
+  let partition f t =
     let l, r = Concrete.partition Ord.compare f (impl_of_t t) in
     (t_of_impl l, t_of_impl r)
 
@@ -536,7 +533,6 @@ module PSet = struct
   let fold f s acc = Concrete.fold f s.set acc
   let map f s =
     { cmp = Pervasives.compare; set = Concrete.map Pervasives.compare f s.set }
-  let filter f s = { s with set = Concrete.filter s.cmp f s.set }
   let filter_map f s =
     { cmp = compare; set = Concrete.filter_map compare f s.set }
   let exists f s = Concrete.exists f s.set
@@ -602,8 +598,6 @@ let map f s = Concrete.map Pervasives.compare f s
 (*$T map
   map (fun _x -> 1) (of_list [1;2;3]) |> cardinal = 1
 *)
-
-let filter f s = Concrete.filter Pervasives.compare f s
 
 let filter_map f s = Concrete.filter_map Pervasives.compare f s
 

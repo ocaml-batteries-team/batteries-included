@@ -185,10 +185,10 @@ struct
   let dummy_printer f _ =
     Format.pp_print_string f "_"
 
-  let pp_debug ?(pp_measure = dummy_printer) pp_a f t =
+  let _pp_debug ?(pp_measure = dummy_printer) pp_a f t =
     pp_debug_tree pp_measure pp_a f t
 
-  let pp_list pp_a f = function
+  let _pp_list pp_a f = function
     | [] -> Format.fprintf f "[]"
     | h :: t ->
       Format.fprintf f "[%a" pp_a h;
@@ -416,7 +416,7 @@ struct
     | [a; b; c] -> three ~monoid ~measure a b c
     | [a; b; c; d] -> four ~monoid ~measure a b c d
     | _ -> assert false (*BISECT-VISIT*)
-  let to_digit_list_node ~monoid = function
+  let _to_digit_list_node ~monoid = function
     | [a] -> one_node a
     | [a; b] -> two_node ~monoid a b
     | [a; b; c] -> three_node ~monoid a b c

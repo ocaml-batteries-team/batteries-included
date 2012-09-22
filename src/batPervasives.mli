@@ -521,6 +521,12 @@ val ignore_exceptions : ('a -> 'b) -> 'a -> unit
 (** [ignore_exceptions f x] invokes [f] on [x], ignoring both the returned value
     and the exceptions that may be raised. *)
 
+val verify : bool -> exn -> unit
+(** [verify condition ex] will raise [ex] if [condition] is false, otherwise it
+    does nothing.
+    
+    @since 2.0 *)
+
 val verify_arg : bool -> string -> unit
 (** [verify_arg condition message] will raise [Invalid_argument message] if
     [condition] is false, otherwise it does nothing.

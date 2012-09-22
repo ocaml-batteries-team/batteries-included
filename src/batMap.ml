@@ -280,15 +280,15 @@ module Concrete = struct
     | Empty -> t
     | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
 
-  let rec enum_next l () = match !l with
+  let enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := cons_iter m t; (k, v)
 
-  let rec enum_backwards_next l () = match !l with
+  let enum_backwards_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
 
-  let rec enum_count l () =
+  let enum_count l () =
     let rec aux n = function
       | E -> n
       | C (_, _, m, t) -> aux (n + 1 + cardinal m) t
@@ -331,10 +331,6 @@ module Concrete = struct
     foldi (fun k a acc -> match f k a with
       | None   -> acc
       | Some v -> add k v cmp acc) t empty
-
-  let choose = function
-    | Empty -> invalid_arg "PMap.choose: empty tree"
-    | Node (_l,k,v,_r,_h) -> (k,v)
 
   let for_all f map =
     let rec loop = function
@@ -447,7 +443,7 @@ module Concrete = struct
     | Some d -> join t1 v d t2
     | None -> concat t1 t2
 
-  let rec merge f cmp12 s1 s2 =
+  let merge f cmp12 s1 s2 =
     let rec loop s1 s2 =
       match (s1, s2) with
         | (Empty, Empty) -> Empty
@@ -462,7 +458,7 @@ module Concrete = struct
           assert false in
     loop s1 s2
 
-  let rec merge_diverse f cmp1 s1 cmp2 s2 =
+  let merge_diverse f cmp1 s1 cmp2 s2 =
     (* This implementation does not presuppose that the comparison
        function of s1 and s2 are the same. It is necessary in the PMap
        case, were we can't enforce that the same comparison function is
@@ -550,7 +546,7 @@ module Concrete = struct
      the fast homogeneous implementation instead. This is the
      [heuristic_merge] function.
   *)
-  let rec ordered cmp s =
+  let ordered cmp s =
     try
       ignore
         (foldi (fun k _ last_k ->
@@ -752,8 +748,6 @@ struct
   external t_of_impl: 'a implementation -> 'a t = "%identity"
   external impl_of_t: 'a t -> 'a implementation = "%identity"
 
-  type 'a iter = E | C of key * 'a * 'a implementation * 'a iter
-
   let cardinal t = Concrete.cardinal (impl_of_t t)
   let enum t = Concrete.enum (impl_of_t t)
   let backwards t = Concrete.backwards (impl_of_t t)
@@ -938,8 +932,6 @@ let exists = Concrete.exists
 let partition f m = Concrete.partition f Pervasives.compare m
 let cardinal = Concrete.cardinal
 
-let split k m = Concrete.split k Pervasives.compare m
-
 let add_carry x d m = Concrete.add_carry x d Pervasives.compare m
 let modify x f m = Concrete.modify x f Pervasives.compare m
 
@@ -1074,8 +1066,6 @@ module PMap = struct (*$< PMap *)
   let filter f t = { t with map = Concrete.filter f t.map t.cmp }
   let filter_map f t = { t with map = Concrete.filter_map f t.map t.cmp }
 
-  let choose t = Concrete.choose t.map
-
   let max_binding t = Concrete.max_binding t.map
   let min_binding t = Concrete.min_binding t.map
 
@@ -1093,10 +1083,6 @@ module PMap = struct (*$< PMap *)
   let cardinal m = Concrete.cardinal m.map
 
   let choose m = Concrete.choose m.map
-
-  let split k m =
-    let (l, v, r) = Concrete.split k m.cmp m.map in
-    { m with map = l }, v, { m with map = r }
 
   let add_carry x d m =
     let map', carry = Concrete.add_carry x d m.cmp m.map in

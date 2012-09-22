@@ -20,7 +20,6 @@
 
 exception Invalid_char
 exception Invalid_table
-exception Invalid_padding
 
 external unsafe_char_of_int : int -> char = "%identity"
 

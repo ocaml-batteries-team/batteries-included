@@ -265,7 +265,7 @@ let take n e =
   let r = ref [] in
     begin
       try
-	for i = 1 to n do
+	for _i = 1 to n do
 	  r := e.next () :: !r
 	done
       with No_more_elements -> ()
@@ -419,7 +419,7 @@ let for_all f t =
   with No_more_elements -> true
 
 (* test paired elements, ignore any extra elements from one enum *)
-let for_all2 f t1 t2 =
+let _for_all2 f t1 t2 =
   try
     let rec aux () = f (t1.next()) (t2.next()) && aux () in
     aux ()
@@ -701,7 +701,7 @@ let range ?until x =
 
 
 let drop n e =
-  for i = 1 to n do
+  for _i = 1 to n do
     junk e
   done
 
@@ -891,7 +891,7 @@ let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
       | Some x ->
 	  add x;
 	  (try
-	     for i = 2 to clump_size do
+	     for _i = 2 to clump_size do
 	       add (e.next ())
 	     done
 	   with No_more_elements -> ());
@@ -1196,7 +1196,7 @@ module Incubator = struct
     else if y > x then Lt
     else Eq
 
-  let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
+  let eq_elements eq_elt a1 a2 = _for_all2 eq_elt a1 a2
 
   let rec ord_elements ord_elt t u =
     match (get t, get u) with

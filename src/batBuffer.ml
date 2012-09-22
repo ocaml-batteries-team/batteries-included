@@ -21,7 +21,6 @@
  *)
 
 
-open BatString
 include Buffer
 
   (** The underlying buffer type. *)
@@ -32,7 +31,6 @@ type buffer =
      initial_buffer : string (** For resetting to the original size **)}
 
 external buffer_of_t : t -> buffer = "%identity"
-external t_of_buffer : buffer -> t = "%identity"
 
 let print out t =
   BatString.print out (contents t)

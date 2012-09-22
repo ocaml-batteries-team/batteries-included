@@ -73,8 +73,6 @@ external to_int64 : nativeint -> int64 = "%int64_of_nativeint"
 external of_string : string -> nativeint = "caml_nativeint_of_string"
 external format : string -> nativeint -> string = "caml_nativeint_format"
 
-
-type bounded = t
 let min_num, max_num = min_int, max_int
 
 let print out t = BatPrintf.fprintf out "%nx" t
