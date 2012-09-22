@@ -1,7 +1,6 @@
 (** Bounded values
 
-    This module implements values which must fall within given bounds.  All
-    bounds are considered to be inclusive.
+    This module implements values which must fall within given bounds.
 
     @author Hezekiah M. Carty
 
