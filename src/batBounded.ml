@@ -6,14 +6,14 @@ exception Invalid_bounds
 
 type 'a bound_t = [ `o of 'a | `c of 'a | `u]
 
-type 'a bounding_f = min:'a bound_t -> max:'a bound_t -> 'a -> 'a option
+type 'a bounding_f = bounds:('a bound_t * 'a bound_t) -> 'a -> 'a option
 
 let ret_some x = Some x
 let ret_none _ = None
 
 let bounding_of_ord ?default_low ?default_high ord = 
-  fun ~(min : 'a bound_t) ~(max : 'a bound_t) ->
-    match min, max with
+  fun ~(bounds : 'a bound_t * 'a bound_t) ->
+    match bounds with
     | `c l, `c u -> begin
       if ord l u = O.Gt then raise Invalid_bounds;
       fun x ->
@@ -85,24 +85,24 @@ let bounding_of_ord ?default_low ?default_high ord =
     end
 
 (*$T bounding_of_ord
-   bounding_of_ord BatInt.ord ~min:`u ~max:`u 0 = Some 0
-   bounding_of_ord BatInt.ord ~min:(`c 0) ~max:`u 0 = Some 0
-   bounding_of_ord BatInt.ord ~min:(`o 0) ~max:`u 0 = None
-   bounding_of_ord BatInt.ord ~max:(`c 0) ~min:`u 0 = Some 0
-   bounding_of_ord BatInt.ord ~max:(`o 0) ~min:`u 0 = None
+   bounding_of_ord BatInt.ord ~bounds:(`u, `u) 0 = Some 0
+   bounding_of_ord BatInt.ord ~bounds:(`c 0, `u) 0 = Some 0
+   bounding_of_ord BatInt.ord ~bounds:(`o 0, `u) 0 = None
+   bounding_of_ord BatInt.ord ~bounds:(`u, `c 0) 0 = Some 0
+   bounding_of_ord BatInt.ord ~bounds:(`u, `o 0) 0 = None
 
-   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~min:`u ~max:`u 0 = Some 0
-   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~min:(`c 0) ~max:`u 0 = Some 0
-   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~min:(`o 0) ~max:`u 0 = Some ~-10
-   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~max:(`c 0) ~min:`u 0 = Some 0
-   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~max:(`o 0) ~min:`u 0 = Some 10
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~bounds:(`u, `u) 0 = Some 0
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~bounds:(`c 0, `u) 0 = Some 0
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~bounds:(`o 0, `u) 0 = Some ~-10
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~bounds:(`u, `c 0) 0 = Some 0
+   bounding_of_ord ~default_low:~-10 ~default_high:10 BatInt.ord ~bounds:(`u, `o 0) 0 = Some 10
 *)
 
 let bounding_of_ord_chain ?low ?high ord = 
   let low = low |? ret_none in
   let high = high |? ret_none in
-  fun ~(min : 'a bound_t) ~(max : 'a bound_t) ->
-    match min, max with
+  fun ~(bounds : 'a bound_t * 'a bound_t) ->
+    match bounds with
     (* Closed bounds (inclusive) *)
     | `c l, `c u -> begin
       if ord l u = O.Gt then raise Invalid_bounds;
@@ -177,23 +177,22 @@ let bounding_of_ord_chain ?low ?high ord =
     | `u, `u -> ret_some
 
 (*$T bounding_of_ord_chain as f
-   f BatInt.ord ~min:`u ~max:`u 0 = Some 0
-   f BatInt.ord ~min:(`c 0) ~max:`u 0 = Some 0
-   f BatInt.ord ~min:(`o 0) ~max:`u 0 = None
-   f BatInt.ord ~max:(`c 0) ~min:`u 0 = Some 0
-   f BatInt.ord ~max:(`o 0) ~min:`u 0 = None
+   f BatInt.ord ~bounds:(`u, `u) 0 = Some 0
+   f BatInt.ord ~bounds:(`c 0, `u) 0 = Some 0
+   f BatInt.ord ~bounds:(`o 0, `u) 0 = None
+   f BatInt.ord ~bounds:(`u, `c 0) 0 = Some 0
+   f BatInt.ord ~bounds:(`u, `o 0) 0 = None
 
-   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~min:`u ~max:`u 0 = Some 0
-   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~min:(`c 0) ~max:`u 0 = Some 0
-   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~min:(`o 0) ~max:`u 0 = Some ~-10
-   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~max:(`c 0) ~min:`u 0 = Some 0
-   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~max:(`o 0) ~min:`u 0 = Some 10
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`u, `u) 0 = Some 0
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`c 0, `u) 0 = Some 0
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`o 0, `u) 0 = Some ~-10
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`u, `c 0) 0 = Some 0
+   f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`u, `o 0) 0 = Some 10
 *)
 
 module type BoundedType = sig
   type t
-  val min : t bound_t
-  val max : t bound_t
+  val bounds : t bound_t * t bound_t
   val bounded : t bounding_f
 end
 
@@ -201,8 +200,7 @@ module type S = sig
   type u
   type t = private u
   exception Out_of_range
-  val min : t bound_t
-  val max : t bound_t
+  val bounds : t bound_t * t bound_t
   val make : u -> t option
   val make_exn : u -> t
 end
@@ -211,7 +209,7 @@ module Make(M : BoundedType) : (S with type u = M.t) = struct
   include M
   type u = t
   exception Out_of_range
-  let make = bounded ~min ~max
+  let make = bounded ~bounds
   let make_exn x = BatOption.get_exn (make x) Out_of_range
 end
 

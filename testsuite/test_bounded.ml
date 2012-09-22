@@ -5,8 +5,7 @@ open BatPrintf
 
 module Int10_base = struct
   type t = int
-  let min = `c 1
-  let max = `c 10
+  let bounds = `c 1, `c 10
   let default_low = None
   let default_high = None
   let bounded = BatBounded.bounding_of_ord ?default_low ?default_high BatInt.ord
@@ -17,8 +16,7 @@ module Int10 = BatBounded.Make(Int10_base)
 
 module Float10_base = struct
   type t = float
-  let min = `o 1.0
-  let max = `o 10.0
+  let bounds = `o 1.0, `o 10.0
   let default_low = None
   let default_high = None
   let bounded = BatBounded.bounding_of_ord ?default_low ?default_high BatFloat.ord

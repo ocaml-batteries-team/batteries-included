@@ -10,7 +10,7 @@
 type 'a bound_t = [ `o of 'a | `c of 'a | `u]
 (** [`o]pen or [`c]losed or [`u]nbounded bounds *)
 
-type 'a bounding_f = min:'a bound_t -> max:'a bound_t -> 'a -> 'a option
+type 'a bounding_f = bounds:('a bound_t * 'a bound_t) -> 'a -> 'a option
 (** The type of a bounding function with limits of [min] and [max] *)
 
 val bounding_of_ord :
@@ -38,14 +38,11 @@ module type BoundedType = sig
   type t
   (** The type that makes up the bounded range *)
 
-  val min : t bound_t
-  (** [min] is the minimum value in the bounded range *)
-
-  val max : t bound_t
-  (** [max] is the maximum value in the bounded range *)
+  val bounds : t bound_t * t bound_t
+  (** [bounds] defines the [(min, max)] bounds for the bounded range *)
 
   val bounded : t bounding_f
-  (** [bounded ?min ?max x] returns a bounded {!t} value if [x] falls into the
+  (** [bounded ~bounds x] returns a bounded {!t} value if [x] falls into the
       given range *)
 end
 
@@ -61,22 +58,18 @@ module type S = sig
   (** Exception to indicate that a requested value falls outside of the
       defined boundaries *)
 
-  val min : t bound_t
-  (** [min] is the minimum value in the bounded range *)
-
-  val max : t bound_t
-  (** [max] is the maximum value in the bounded range *)
+  val bounds : t bound_t * t bound_t
+  (** [bounds] defines the [(min, max)] bounds for the bounded range *)
 
   val make : u -> t option
   (** [make x] will return [Some x] if [x] falls within the bounds defined by
-      [min] and [max]. *)
+      {!bounds}. *)
 
   val make_exn : u -> t
-  (** [make x] will [x] if [x] falls within the bounds defined by [min] and
-      [max].
+  (** [make x] will [x] if [x] falls within the bounds defined by {!bounds}.
 
-      @raise Out_of_range if [x] is outside of the range defined by {!min} and
-             {!max} *)
+      @raise Out_of_range if [x] is outside of the range defined by {!bounds}
+      *)
 end
 
 module Make : functor (M : BoundedType) -> S with type u = M.t
