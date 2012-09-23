@@ -85,6 +85,8 @@ external pow : float -> float -> float = "caml_power_float" "pow" "float"
 val min_num : float
 val max_num : float
 val compare : float -> float -> int
+val equal : float -> float -> bool
+val ord : float -> float -> BatOrd.order
 external of_int : int -> float = "%floatofint"
 external to_int : float -> int = "%intoffloat"
 external of_float : float -> float = "%identity"

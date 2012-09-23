@@ -31,6 +31,7 @@ let all_tests =
     Test_bitset.tests;
     Test_container.tests;
     Test_random.tests;
+    Test_bounded.tests;
   ]
 
 let () =
