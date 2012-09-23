@@ -34,6 +34,20 @@ val bounding_of_ord_chain :
     @param low defaults to returning [None] for out of range values
     @param high defaults to returning [None] for out of range values *)
 
+val saturate_of_ord :
+  bounds:('a bound_t * 'a bound_t) ->
+  ('a -> 'a -> BatOrd.order) -> 'a -> 'a
+(** [saturate_of_ord ~bounds:(low, high) ord] will returning a bounding
+    function using [ord] for value comparison and [low] and [high] for values
+    which fall outside of the requested range. *)
+
+val opt_of_ord :
+  bounds:('a bound_t * 'a bound_t) ->
+  ('a -> 'a -> BatOrd.order) -> 'a -> 'a option
+(** [opt_of_ord ~bounds:(low, high) ord] will returning a bounding function
+    using [ord] for value comparison and [None] for values which fall outside
+    of the requested range. *)
+
 module type BoundedType = sig
   type t
   (** The type that makes up the bounded range *)

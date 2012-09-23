@@ -1,6 +1,7 @@
 module O = BatOrd
 
 let ( |? ) = BatOption.( |? )
+let ( |- ) f g x = g (f x)
 
 exception Invalid_bounds
 
@@ -189,6 +190,29 @@ let bounding_of_ord_chain ?low ?high ord =
    f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`u, `c 0) 0 = Some 0
    f ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`u, `o 0) 0 = Some 10
 *)
+
+let saturate_of_ord ~(bounds : 'a bound_t * 'a bound_t) ord =
+  match bounds with
+  | `o l, `o h
+  | `c l, `c h
+  | `o l, `c h
+  | `c l, `o h ->
+      bounding_of_ord ~default_low:l ~default_high:h ord ~bounds
+      |- BatOption.get
+  | `u, `o h
+  | `u, `c h ->
+      bounding_of_ord ~default_high:h ord ~bounds
+      |- BatOption.get
+  | `o l, `u
+  | `c l, `u ->
+      bounding_of_ord ~default_low:l ord ~bounds
+      |- BatOption.get
+  | `u, `u ->
+      bounding_of_ord ord ~bounds
+      |- BatOption.get
+
+let opt_of_ord ~(bounds : 'a bound_t * 'a bound_t) ord =
+  bounding_of_ord ord ~bounds
 
 module type BoundedType = sig
   type t
