@@ -25,8 +25,8 @@ open BatConcurrent
 
     This module only provides low-level functions and types. Unless you
     know that you need low-level access to the operating system, you
-    probably don't. For higher-level functions, see modules {!BatShell},
-    {!BatIO}, {!BatFile}.
+    probably don't. For higher-level functions, see modules {!BatIO},
+    {!BatFile}.
 
     {b Note} This module is thread-safe.
 
