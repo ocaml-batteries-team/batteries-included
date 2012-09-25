@@ -62,9 +62,19 @@ module type BoundedType = sig
   (** [bounded ~bounds x] returns a bounded {!t} value derived from [x]. *)
 
   val base_of_t : t -> base_t option
+  (** [base_of_t x] converts a value of type {!t} back to a {!base_t} if
+      possible. *)
+
   val base_of_t_exn : t -> base_t
+  (** [base_of_t_exn x] converts a value of type {!t} back to a {!base_t}.  If
+      a conversion is not possible then an exception will be raised. *)
+
   val map : (base_t -> base_t) -> t -> t
+  (** [map f x] applies [f] to [x], converting the result back to type {!t} *)
+
   val map2 : (base_t -> base_t -> base_t) -> t -> t -> t
+  (** [map f x y] applies [f] to [x] and [y], converting the result back to
+      type {!t}. *)
 end
 
 module type S = sig
@@ -89,9 +99,20 @@ module type S = sig
       could be achieved with [(x :> u)] *)
 
   val map : (base_u -> base_u) -> t -> t option
+  (** [map f x] applies [f] to [x].  Returns [Some y] if [x] can be converted
+      back to type {!base_u}, otherwise returns [None]. *)
+
   val map2 : (base_u -> base_u -> base_u) -> t -> t -> t option
+  (** [map f x y] applies [f] to [x] and [y].  Returns [Some z] if [x] and [y]
+      can be converted back to type {!base_u}, otherwise returns [None]. *)
+
   val map_exn : (base_u -> base_u) -> t -> t
+  (** [map_exn f x] applies [f] to [x].  Returns [y] if [x] can be converted
+      back to type {!base_u}, otherwise raise an exception. *)
+
   val map2_exn : (base_u -> base_u -> base_u) -> t -> t -> t
+  (** [map f x y] applies [f] to [x] and [y].  Returns [z] if [x] and [y]
+      can be converted back to type {!base_u}, otherwise raise an exception. *)
 end
 
 module Make : functor (M : BoundedType) ->
