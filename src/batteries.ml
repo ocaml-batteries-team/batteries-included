@@ -155,6 +155,7 @@ module Unit = BatUnit
 module Incubator = struct
   module Log = BatLog
   module Substring = BatSubstring
+  module Bounded = BatBounded
 end
 
 (* Pervasives last *)
