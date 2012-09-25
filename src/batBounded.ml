@@ -7,7 +7,7 @@ exception Invalid_bounds
 
 type 'a bound_t = [ `o of 'a | `c of 'a | `u]
 
-type 'a bounding_f = bounds:('a bound_t * 'a bound_t) -> 'a -> 'a option
+type ('a, 'b) bounding_f = bounds:('a bound_t * 'a bound_t) -> 'a -> 'b
 
 let ret_some x = Some x
 let ret_none _ = None
@@ -215,25 +215,44 @@ let opt_of_ord ~(bounds : 'a bound_t * 'a bound_t) ord =
   bounding_of_ord ord ~bounds
 
 module type BoundedType = sig
+  type base_t
   type t
-  val bounds : t bound_t * t bound_t
-  val bounded : t bounding_f
+  val bounds : base_t bound_t * base_t bound_t
+  val bounded : (base_t, t) bounding_f
+  val base_of_t : t -> base_t option
+  val base_of_t_exn : t -> base_t
+  val map : (base_t -> base_t) -> t -> t
+  val map2 : (base_t -> base_t -> base_t) -> t -> t -> t
 end
 
 module type S = sig
+  type base_u
   type u
   type t = private u
-  exception Out_of_range
-  val bounds : t bound_t * t bound_t
-  val make : u -> t option
-  val make_exn : u -> t
+  val bounds : base_u bound_t * base_u bound_t
+  val make : base_u -> t
+  external extract : t -> u = "%identity"
+  val map : (base_u -> base_u) -> t -> t option
+  val map2 : (base_u -> base_u -> base_u) -> t -> t -> t option
+  val map_exn : (base_u -> base_u) -> t -> t
+  val map2_exn : (base_u -> base_u -> base_u) -> t -> t -> t
 end
 
-module Make(M : BoundedType) : (S with type u = M.t) = struct
+module Make(M : BoundedType) : (
+  S with type base_u = M.base_t with type u = M.t with type t = private M.t
+) = struct
   include M
+  type base_u = base_t
   type u = t
-  exception Out_of_range
   let make = bounded ~bounds
-  let make_exn x = BatOption.get_exn (make x) Out_of_range
+  external extract : t -> u = "%identity"
+  let map f x =
+    BatOption.map make (base_of_t (M.map f x))
+  let map2 f x y =
+    BatOption.map make (base_of_t (M.map2 f x y))
+  let map_exn f x =
+    make (base_of_t_exn (M.map f x))
+  let map2_exn f x y =
+    make (base_of_t_exn (M.map2 f x y))
 end
 
