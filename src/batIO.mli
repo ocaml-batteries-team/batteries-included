@@ -929,3 +929,70 @@ val make_enum : (input -> 'a) -> input -> 'a BatEnum.t
 
 val get_output_id : _ output -> int
 val get_input_id  : input -> int
+
+module Incubator : sig
+  (** {6 Format-based pretty-printing} *)
+
+  module Array : sig
+    val pp :
+      ?flush:bool ->
+      ?first:string ->
+      ?last:string ->
+      ?sep:string ->
+      ?indent:int ->
+      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a array -> unit
+    (** Print the contents of an array, with [first] preceeding the first item 
+        (default: ["\[|"]), [last] following the last item (default: ["|\]"])
+        and [sep] separating items (default: ["; "]). A printing function must
+        be provided to print the items in the array. The [flush] parameter
+        (default: [false]) should be set to [true] for the outer-most printing
+        call.  Setting inner calls to [true] - for example, for nested values -
+        prevent indentation from working properly.
+        
+        Example:
+          [pp ~flush:true Format.pp_print_int Format.std_formatter \[|1; 2; 3|\]]
+    *)
+  end
+
+  module Enum : sig
+    val pp :
+      ?flush:bool ->
+      ?first:string ->
+      ?last:string ->
+      ?sep:string ->
+      ?indent:int ->
+      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a BatEnum.t -> unit
+    (** Print the contents of an enum, with [first] preceeding the first item 
+        (default: [""]), [last] following the last item (default: [""])
+        and [sep] separating items (default: [" "]). A printing function must
+        be provided to print the items in the enum. The [flush] parameter
+        (default: [false]) should be set to [true] for the outer-most printing
+        call.  Setting inner calls to [true] - for example, for nested values -
+        prevent indentation from working properly.
+        
+        Example:
+          [pp ~flush:true Format.pp_print_int Format.std_formatter (1 -- 3)] *)
+  end
+
+  module List : sig
+    val pp :
+      ?flush:bool ->
+      ?first:string ->
+      ?last:string ->
+      ?sep:string ->
+      ?indent:int ->
+      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a list -> unit
+    (** Print the contents of a list, with [first] preceeding the first item 
+        (default: ["\["]), [last] following the last item (default: ["\]"])
+        and [sep] separating items (default: ["; "]). A printing function must
+        be provided to print the items in the list. The [flush] parameter
+        (default: [false]) should be set to [true] for the outer-most printing
+        call.  Setting inner calls to [true] - for example, for nested values -
+        prevent indentation from working properly.
+        
+        Example:
+          [pp ~flush:true Format.pp_print_int Format.std_formatter \[1; 2; 3\]]
+    *)
+  end
+end
+

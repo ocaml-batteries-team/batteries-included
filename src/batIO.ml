@@ -723,3 +723,102 @@ let string_of_t_printer p x =
 
 let to_format printer =
   fun fmt t -> Format.pp_print_string fmt (to_string printer t)
+
+module Incubator = struct
+  module Array = struct
+    let pp ?(flush = false) ?(first = "[|") ?(last = "|]") ?(sep = "; ") ?(indent = String.length first) pp f a =
+      let open Format in
+      pp_open_box f indent;
+      pp_print_cut f ();
+      pp_print_string f first;
+      pp_print_cut f ();
+
+      for i = 0 to Array.length a - 2 do
+        pp_open_box f indent;
+        pp f a.(i);
+        pp_print_string f sep;
+        pp_close_box f ();
+        pp_print_cut f ();
+      done;
+
+      if Array.length a > 0 then (
+        (* Print the last element without a trailing separator *)
+        pp_open_box f indent;
+        pp f a.(Array.length a - 1);
+        pp_close_box f ();
+      );
+
+      pp_print_cut f ();
+      pp_print_string f last;
+      pp_close_box f ();
+      if flush then pp_print_flush f ()
+  end
+
+  module Enum = struct
+    let pp ?(flush = false) ?(first = "") ?(last = "") ?(sep = " ") ?(indent = String.length first) pp f e =
+      let open Format in
+      pp_open_box f indent;
+      pp_print_cut f ();
+      pp_print_string f first;
+      pp_print_cut f ();
+      match BatEnum.get e with
+      | None ->
+          pp_print_string f last;
+          pp_close_box f ();
+          if flush then pp_print_flush f ()
+      | Some x ->
+          pp_open_box f indent;
+          pp f x;
+          let rec aux () =
+            match BatEnum.get e with
+            | None ->
+                pp_close_box f ();
+                pp_print_cut f ();
+                pp_print_string f last;
+                pp_close_box f ();
+                if flush then pp_print_flush f ()
+            | Some x ->
+                pp_print_string f sep;
+                pp_close_box f ();
+                pp_print_cut f ();
+                pp_open_box f indent;
+                pp f x;
+                aux ()
+          in
+          aux ()
+  end
+
+  module List = struct
+    let pp ?(flush = false) ?(first = "[") ?(last = "]") ?(sep = "; ") ?(indent = String.length first) pp f l =
+      let open Format in
+      pp_open_box f indent;
+      pp_print_cut f ();
+      pp_print_string f first;
+      pp_print_cut f ();
+      match l with
+      | [] ->
+          pp_print_string f last;
+          pp_close_box f ();
+          if flush then pp_print_flush f ()
+      | hd :: tl ->
+          pp_open_box f indent;
+          pp f hd;
+          let rec aux rem =
+            match rem with
+            | [] ->
+                pp_close_box f ();
+                pp_print_cut f ();
+                pp_print_string f last;
+                pp_close_box f ();
+                if flush then pp_print_flush f ()
+            | hd :: tl ->
+                pp_print_string f sep;
+                pp_close_box f ();
+                pp_print_cut f ();
+                pp_open_box f indent;
+                pp f hd;
+                aux tl
+          in
+          aux tl
+  end
+end
