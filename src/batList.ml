@@ -142,6 +142,10 @@ let map f = function
     let r = { hd = f h; tl = [] } in
     loop r t;
     inj r
+(*$Q map
+  (Q.pair (Q.fun1 Q.int Q.int) (Q.list Q.small_int)) \
+  (fun (f,l) -> map f l = List.map f l)
+*)
 
 let rec drop n = function
   | _ :: l when n > 0 -> drop (n-1) l
