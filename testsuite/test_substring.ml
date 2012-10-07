@@ -161,6 +161,17 @@ let test_rindex_from =
     end;
   ];;
 
+let test_is_prefix = 
+  let aeq = assert_equal ~printer:string_of_bool in
+  [
+    begin "is_prefix" >:: fun () ->
+      aeq (is_prefix "foo" (of_string "foobar")) true;
+      aeq (is_prefix "foj" (of_string "foobar")) false;
+      aeq (is_prefix "foobarz" (of_string "foobar")) false;
+      aeq (is_prefix "foobar" (of_string "foobar")) true;
+    end;
+  ];;
+
 let tests = "Substring" >::: [
   "dropr" >::: test_dropr;
   "dropl" >::: test_dropl;
@@ -170,4 +181,5 @@ let tests = "Substring" >::: [
   "splitl" >::: test_splitl;
   "slice" >::: test_slice;
   "index_from" >::: test_index_from;
+  "is_prefix" >::: test_is_prefix;
 ];;
