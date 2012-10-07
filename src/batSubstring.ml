@@ -122,7 +122,7 @@ let is_prefix str1 (str2, off, len) =
       if i < 0 then true
       else if str1.[i] <> str2.[off+i] then false
       else loop (i-1) in
-    loop l1
+    loop (pred l1)
 
 let compare (str1, off1, len1) (str2, off2, len2) =
   let rec loop i =
