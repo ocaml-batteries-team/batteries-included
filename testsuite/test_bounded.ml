@@ -1,57 +1,74 @@
 open BatPervasives
 module R = BatRandom
 module U = OUnit
-open BatPrintf
 
 module Int10_base = struct
-  type t = int
+  type base_t = int
+  type t = int option
   let bounds = `c 1, `c 10
-  let default_low = None
-  let default_high = None
-  let bounded = BatBounded.bounding_of_ord ?default_low ?default_high BatInt.ord
+  let bounded = BatBounded.opt_of_ord BatInt.ord
+  let base_of_t x = x
+  let base_of_t_exn x = BatOption.get x
+  module Infix = BatInt.Infix
 end
 
 (** Only accept integers between 1 and 10, inclusive *)
-module Int10 = BatBounded.Make(Int10_base)
+module Int10 = BatBounded.MakeNumeric(Int10_base)
 
 module Float10_base = struct
-  type t = float
+  type base_t = float
+  type t = float option
   let bounds = `o 1.0, `o 10.0
-  let default_low = None
-  let default_high = None
-  let bounded = BatBounded.bounding_of_ord ?default_low ?default_high BatFloat.ord
+  let bounded = BatBounded.opt_of_ord BatFloat.ord
+  let base_of_t x = x
+  let base_of_t_exn x = BatOption.get x
+  module Infix = BatFloat.Infix
 end
 
 (** Only accept floating point values between 1 and 10, exclusive *)
-module Float10 = BatBounded.Make(Float10_base)
+module Float10 = BatBounded.MakeNumeric(Float10_base)
 
-let assert_make_make_exn (type s) m to_string x =
-  let module B = (val m : BatBounded.S with type u = s) in
-  let res = B.make x in
-  let res_exn =
-    try
-      Some (B.make_exn x)
-    with
-    | B.Out_of_range -> None
+let assert_make (type s) m to_string (xs : s list) =
+  let module B =
+    (
+      val m :
+        BatBounded.NumericSig with type base_u = s and type u = s option
+    )
   in
-  if res = res_exn then
-    ()
-  else
-    U.assert_failure (sprintf "make mismatch for %s" (to_string x))
+  let min_bound, max_bound = B.bounds in
+  let min_check =
+    match min_bound with
+    | `o a -> (fun x -> x > a)
+    | `c a -> (fun x -> x >= a)
+    | `u -> (const true)
+  in
+  let max_check =
+    match max_bound with
+    | `o a -> (fun x -> x < a)
+    | `c a -> (fun x -> x <= a)
+    | `u -> (const true)
+  in
+  List.iter (
+    fun x ->
+      let printer b = Printf.sprintf "%s (%b)" (to_string x) b in
+      U.assert_equal ~printer (max_check x && min_check x) (BatOption.is_some ((B.make |- B.extract) x))
+  ) xs;
+  ()
 
-let test_make_make_exn () =
+let test_make () =
   let xs = BatList.init 100 identity in
-  let m = (module Int10 : BatBounded.S with type u = int) in
-  List.iter (assert_make_make_exn m string_of_int) xs;
+  let m =
+    (module Int10 : BatBounded.NumericSig with type base_u = int and type u = int option)
+  in
+  assert_make m string_of_int xs;
   let xs = BatList.init 110 (fun x -> float_of_int x /. 10.0) in
-  let m = (module Float10 : BatBounded.S with type u = float) in
-  List.iter (assert_make_make_exn m string_of_float) xs
+  let m =
+    (module Float10 : BatBounded.NumericSig with type base_u = float and type u = float option)
+  in
+  assert_make m string_of_float xs
 
-let (>:), (>::), (>:::) = U.(>:), U.(>::), U.(>:::)
-let (@?) = U.(@?)
-let (@!) msg (exn, f) = U.assert_raises ~msg exn f
-
+let (>::), (>:::) = U.(>::), U.(>:::)
 
 let tests = "Bounded" >::: [
-  "value creation" >:: test_make_make_exn
+  "value creation" >:: test_make
 ]
