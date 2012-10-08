@@ -14,38 +14,36 @@ type ('a, 'b) bounding_f = bounds:('a bound_t * 'a bound_t) -> 'a -> 'b
 (** The type of a bounding function with limits specified by [bounds] *)
 
 val bounding_of_ord :
-  ?default_low:'a ->
-  ?default_high:'a ->
-  ('a -> 'a -> BatOrd.order) -> ('a, 'a option) bounding_f
-(** [bounding_of_ord ?default_low ?default_high ord] will returning a bounding
-    function using [ord] for value comparison and [default_low] and
-    [default_high] for values which fall outside of the requested range.  If
-    no default out of range values are provided, the resulting function will
-    return [None] for out of range inputs. *)
+  default_low:'b ->
+  default_high:'b ->
+  ('a -> 'b) ->
+  ('a -> 'a -> BatOrd.order) -> ('a, 'b) bounding_f
+(** [bounding_of_ord ~default_low ~default_high conv ord] will returning a
+    bounding function using [ord] for value comparison and [default_low] and
+    [default_high] for values which fall outside of the requested range.
+    [conv] is used to convert values which are in-range to the result type. *)
 
 val bounding_of_ord_chain :
-  ?low:('a -> 'a option) ->
-  ?high:('a -> 'a option) ->
-  ('a -> 'a -> BatOrd.order) -> ('a, 'a option) bounding_f
+  low:('a -> 'b) ->
+  high:('a -> 'b) ->
+  ('a -> 'b) ->
+  ('a -> 'a -> BatOrd.order) -> ('a, 'b) bounding_f
 (** [bounding_oF_ord_chain ?low ?high ord] is like {!bounding_of_ord} except
     that functions are used to handle out of range values rather than single
-    default values.
-
-    @param low defaults to returning [None] for out of range values
-    @param high defaults to returning [None] for out of range values *)
+    default values. *)
 
 val saturate_of_ord :
   bounds:('a bound_t * 'a bound_t) -> 
   ('a -> 'a -> BatOrd.order) -> 'a -> 'a
 (** [saturate_of_ord ~bounds:(low, high) ord] will returning a bounding
-    function using [ord] for value com parison and [low] and [high] for values
+    function using [ord] for value comparison and [low] and [high] for values
     which fall outside of the requested range. *)
 
 val opt_of_ord :
   bounds:('a bound_t * 'a bound_t) -> 
   ('a -> 'a -> BatOrd.order) -> 'a -> 'a option
 (** [opt_of_ord ~bounds:(low, high) ord] will returning a bounding function
-    using [ord] for value comparison a nd [None] for values which fall outside
+    using [ord] for value comparison and [None] for values which fall outside
     of the requested range. *)
 
 module type BoundedType = sig
@@ -68,13 +66,11 @@ module type BoundedType = sig
   val base_of_t_exn : t -> base_t
   (** [base_of_t_exn x] converts a value of type {!t} back to a {!base_t}.  If
       a conversion is not possible then an exception will be raised. *)
+end
 
-  val map : (base_t -> base_t) -> t -> t
-  (** [map f x] applies [f] to [x], converting the result back to type {!t} *)
-
-  val map2 : (base_t -> base_t -> base_t) -> t -> t -> t
-  (** [map f x y] applies [f] to [x] and [y], converting the result back to
-      type {!t}. *)
+module type BoundedNumericType = sig
+  include BoundedType
+  module Infix : BatNumber.Infix with type bat__infix_t := base_t
 end
 
 module type S = sig
@@ -115,10 +111,28 @@ module type S = sig
       can be converted back to type {!base_u}, otherwise raise an exception. *)
 end
 
+module type NumericSig = sig
+  include S
+
+  val ( + ) : t -> base_u -> t
+  val ( - ) : t -> base_u -> t
+  val ( * ) : t -> base_u -> t
+  val ( / ) : t -> base_u -> t
+  val ( +: ) : t -> t -> t
+  val ( -: ) : t -> t -> t
+  val ( *: ) : t -> t -> t
+  val ( /: ) : t -> t -> t
+end
+
 module Make : functor (M : BoundedType) ->
   S with type base_u = M.base_t
     with type u = M.t
     with type t = private M.t
 (** Functor to build an implementation of a bounded type given the bounded
     values definition [M] *)
+
+module MakeNumeric : functor (M : BoundedNumericType) ->
+  NumericSig with type base_u = M.base_t
+    with type u = M.t
+    with type t = private M.t
 
