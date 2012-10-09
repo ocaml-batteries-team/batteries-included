@@ -11,7 +11,7 @@ let ret_none _ = None
 let const a _ = a
 external identity : 'a -> 'a = "%identity"
 
-let bounding_of_ord ~default_low ~default_high conv ord = 
+let bounding_of_ord ~default_low ~default_high conv ord =
   fun ~(bounds : 'a bound_t * 'a bound_t) ->
     match bounds with
     | `c l, `c u -> begin
@@ -98,7 +98,7 @@ let bounding_of_ord ~default_low ~default_high conv ord =
    bounding_of_ord ~default_low:(Some ~-10) ~default_high:(Some 10) (fun x -> Some x) BatInt.ord ~bounds:(`u, `o 0) 0 = Some 10
 *)
 
-let bounding_of_ord_chain ~low ~high conv ord = 
+let bounding_of_ord_chain ~low ~high conv ord =
   fun ~(bounds : 'a bound_t * 'a bound_t) ->
     match bounds with
     (* Closed bounds (inclusive) *)
@@ -181,11 +181,11 @@ let bounding_of_ord_chain ~low ~high conv ord =
    f (fun x -> Some x) BatInt.ord ~low:(const None) ~high:(const None) ~bounds:(`u, `c 0) 0 = Some 0
    f (fun x -> Some x) BatInt.ord ~low:(const None) ~high:(const None) ~bounds:(`u, `o 0) 0 = None
 
-   f (fun x -> Some x) ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`u, `u) 0 = Some 0
-   f (fun x -> Some x) ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`c 0, `u) 0 = Some 0
-   f (fun x -> Some x) ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`o 0, `u) 0 = Some ~-10
-   f (fun x -> Some x) ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`u, `c 0) 0 = Some 0
-   f (fun x -> Some x) ~low:(fun x -> Some ~-10) ~high:(fun x -> Some 10) BatInt.ord ~bounds:(`u, `o 0) 0 = Some 10
+   f (fun x -> Some x) ~low:(fun _x -> Some ~-10) ~high:(fun _x -> Some 10) BatInt.ord ~bounds:(`u, `u) 0 = Some 0
+   f (fun x -> Some x) ~low:(fun _x -> Some ~-10) ~high:(fun _x -> Some 10) BatInt.ord ~bounds:(`c 0, `u) 0 = Some 0
+   f (fun x -> Some x) ~low:(fun _x -> Some ~-10) ~high:(fun _x -> Some 10) BatInt.ord ~bounds:(`o 0, `u) 0 = Some ~-10
+   f (fun x -> Some x) ~low:(fun _x -> Some ~-10) ~high:(fun _x -> Some 10) BatInt.ord ~bounds:(`u, `c 0) 0 = Some 0
+   f (fun x -> Some x) ~low:(fun _x -> Some ~-10) ~high:(fun _x -> Some 10) BatInt.ord ~bounds:(`u, `o 0) 0 = Some 10
 *)
 
 let saturate_of_ord ~(bounds : 'a bound_t * 'a bound_t) ord =
