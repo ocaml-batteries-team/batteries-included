@@ -1,5 +1,5 @@
 <**/*.ml> : annot
-<**/*.ml> and not <libs/**.ml>: warn_A, warn_e, warn_-29
+<**/*.ml> and not <libs/**.ml>: warn_Ae-29
 "build": include
 "src": include
 "libs": include
