@@ -41,6 +41,9 @@ module Legacy = struct
   module StringLabels = StringLabels
   module Sys = Sys
   module Weak = Weak
+  module Str = Str
+  module Unix = Unix
+  module Big_int = Big_int
 end
 
 (* stdlib modules *)
