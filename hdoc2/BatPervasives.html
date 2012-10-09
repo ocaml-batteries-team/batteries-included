@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -119,12 +121,11 @@
 <title>Batteries user guide : BatPervasives</title>
 </head>
 <body>
-<div class="navbar"><a href="BatPathGen.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatPrint.html">Next</a>
+<div class="navbar"><a class="pre" href="BatPathGen.html" title="BatPathGen">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatPrint.html" title="BatPrint">Next</a>
 </div>
-<center><h1>Module <a href="type_BatPervasives.html">BatPervasives</a></h1></center>
-<br>
+<h1>Module <a href="type_BatPervasives.html">BatPervasives</a></h1>
 <pre><span class="keyword">module</span> BatPervasives: <code class="code"><span class="keyword">sig</span></code> <a href="BatPervasives.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><span id="6_Additionalfunctions"><h6>Additional functions.</h6></span><br>
 <b>Author(s):</b> Xavier Leroy (Base module), Nicolas Cannasse, David Teller, Zheng Li<br>
 <hr width="100%">
@@ -178,7 +179,7 @@ Attempt to convert a value to a string.
     <code class="code">dump</code> may fail for ill-formed values, such as obtained from
     a faulty C binding or crazy uses of <code class="code"><span class="constructor">Obj</span>.set_tag</code>.<br>
 </div>
-<pre><span id="VALprint_any"><span class="keyword">val</span> print_any</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit</code></pre><div class="info">
+<pre><span id="VALprint_any"><span class="keyword">val</span> print_any</span> : <code class="type">'b <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'a -> unit</code></pre><div class="info">
 Attempt to print a value to an output.
 <p>
 
@@ -761,7 +762,7 @@ Transformation loop on an enumeration, used to build a single value
       enumerations. Therefore, <code class="code">reduce add (1 -- 10)</code>
       produces result <code class="code">55</code>.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b</code></pre><div class="info">
 Transformation loop on an enumeration, used to build a single value
       from an enumeration. This is the most powerful general-purpose
       loop and also the most complex.
@@ -784,7 +785,7 @@ Transformation loop on an enumeration, used to build a single value
       elements of an enumeration. Therefore, <code class="code">fold add 0 (1 -- 10)</code>
       produces result <code class="code">55</code>.<br>
 </div>
-<pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Functional loop on an enumeration, used to build an enumeration
       from both an enumeration and an initial value. This function may
       be seen as a variant of <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a> which returns not only the final
@@ -904,19 +905,19 @@ Print and consume the contents of an enumeration.<br>
 </div>
 <br>
 <span id="6_Results"><h6>Results</h6></span><br>
-<br><code><span id="TYPEresult"><span class="keyword">type</span> <code class="type">('a, 'b)</code> result</span> = </code><table class="typetable">
+<pre><code><span id="TYPEresult"><span class="keyword">type</span> <code class="type">('a, 'b)</code> result</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">Ok</span> <span class="keyword">of</span> <code class="type">'a</code></code></td>
+<code><span id="TYPEELTresult.Ok"><span class="constructor">Ok</span></span> <span class="keyword">of</span> <code class="type">'a</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">Bad</span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
+<code><span id="TYPEELTresult.Bad"><span class="constructor">Bad</span></span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The result of a computation - either an <code class="code"><span class="constructor">Ok</span></code> with the normal
 result or a <code class="code"><span class="constructor">Bad</span></code> with some value (often an exception) containing
 failure information</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>

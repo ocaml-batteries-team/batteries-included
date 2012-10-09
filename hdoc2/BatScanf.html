@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -118,12 +120,11 @@
 <title>Batteries user guide : BatScanf</title>
 </head>
 <body>
-<div class="navbar"><a href="BatReturn.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatSeq.html">Next</a>
+<div class="navbar"><a class="pre" href="BatReturn.html" title="BatReturn">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatSeq.html" title="BatSeq">Next</a>
 </div>
-<center><h1>Module <a href="type_BatScanf.html">BatScanf</a></h1></center>
-<br>
+<h1>Module <a href="type_BatScanf.html">BatScanf</a></h1>
 <pre><span class="keyword">module</span> BatScanf: <code class="code"><span class="keyword">sig</span></code> <a href="BatScanf.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Formatted input functions.<br>
 <b>Author(s):</b> Pierre Weis (Base module), David Teller<br>
 <hr width="100%">
@@ -473,7 +474,7 @@ Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>,
 Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>, but reads from the predefined scanning
     buffer <code class="code"><span class="constructor">Scanf</span>.<span class="constructor">Scanning</span>.stdib</code> that is connected to <code class="code">stdin</code>.<br>
 </div>
-<pre><span id="VALkscanf"><span class="keyword">val</span> kscanf</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       (<a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -> exn -> 'a) -> ('b, 'c, 'd, 'a) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
+<pre><span id="VALkscanf"><span class="keyword">val</span> kscanf</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       (<a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -> exn -> 'd) -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
 Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>, but takes an additional function argument
     <code class="code">ef</code> that is called in case of error: if the scanning process or
     some conversion fails, the scanning function aborts and calls the

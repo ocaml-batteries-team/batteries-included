@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -124,12 +126,11 @@
 <title>Batteries user guide : Batteries.Format</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Digest.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.Gc.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.Digest.html" title="Batteries.Digest">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.Gc.html" title="Batteries.Gc">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.Format.html">Batteries.Format</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.Format.html">Batteries.Format</a></h1>
 <pre><span class="keyword">module</span> Format: <code class="type">BatFormat</code></pre><hr width="100%">
 <br>
 Pretty printing.
@@ -523,33 +524,33 @@ Return the current output functions of the pretty-printer,
 </div>
 <br>
 <span id="tags"><h6>Changing the meaning of printing semantics tags</h6></span><br>
-<br><code><span id="TYPEformatter_tag_functions"><span class="keyword">type</span> <code class="type"></code>formatter_tag_functions</span> = {</code><table class="typetable">
+<pre><code><span id="TYPEformatter_tag_functions"><span class="keyword">type</span> <code class="type"></code>formatter_tag_functions</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>mark_open_tag&nbsp;: <code class="type"><a href="BatFormat.html#TYPEtag">tag</a> -> string</code>;</code></td>
+<code><span id="TYPEELTformatter_tag_functions.mark_open_tag">mark_open_tag</span>&nbsp;:<code class="type"><a href="BatFormat.html#TYPEtag">tag</a> -> string</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>mark_close_tag&nbsp;: <code class="type"><a href="BatFormat.html#TYPEtag">tag</a> -> string</code>;</code></td>
+<code><span id="TYPEELTformatter_tag_functions.mark_close_tag">mark_close_tag</span>&nbsp;:<code class="type"><a href="BatFormat.html#TYPEtag">tag</a> -> string</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>print_open_tag&nbsp;: <code class="type"><a href="BatFormat.html#TYPEtag">tag</a> -> unit</code>;</code></td>
+<code><span id="TYPEELTformatter_tag_functions.print_open_tag">print_open_tag</span>&nbsp;:<code class="type"><a href="BatFormat.html#TYPEtag">tag</a> -> unit</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>print_close_tag&nbsp;: <code class="type"><a href="BatFormat.html#TYPEtag">tag</a> -> unit</code>;</code></td>
+<code><span id="TYPEELTformatter_tag_functions.print_close_tag">print_close_tag</span>&nbsp;:<code class="type"><a href="BatFormat.html#TYPEtag">tag</a> -> unit</code>;</code></td>
 
 </tr></table>
 }

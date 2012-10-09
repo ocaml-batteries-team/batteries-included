@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -110,12 +112,11 @@
 <title>Batteries user guide : BatLogger</title>
 </head>
 <body>
-<div class="navbar"><a href="BatLog.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatMap.html">Next</a>
+<div class="navbar"><a class="pre" href="BatLog.html" title="BatLog">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatMap.html" title="BatMap">Next</a>
 </div>
-<center><h1>Module <a href="type_BatLogger.html">BatLogger</a></h1></center>
-<br>
+<h1>Module <a href="type_BatLogger.html">BatLogger</a></h1>
 <pre><span class="keyword">module</span> BatLogger: <code class="code"><span class="keyword">sig</span></code> <a href="BatLogger.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><span id="1_LoggingLibrary"><h1>Logging Library</h1></span>
 <p>
 
@@ -127,54 +128,54 @@ system for applications.<br>
 <span id="6_logmodules"><h6>log modules</h6></span><br>
 <pre><span id="TYPElog"><span class="keyword">type</span> <code class="type"></code>log</span> </pre>
 
-<br><code><span id="TYPElevel"><span class="keyword">type</span> <code class="type"></code>level</span> = </code><table class="typetable">
+<pre><code><span id="TYPElevel"><span class="keyword">type</span> <code class="type"></code>level</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">NONE</span></code></td>
+<code><span id="TYPEELTlevel.NONE"><span class="constructor">NONE</span></span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">FATAL</span></code></td>
+<code><span id="TYPEELTlevel.FATAL"><span class="constructor">FATAL</span></span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">ERROR</span></code></td>
+<code><span id="TYPEELTlevel.ERROR"><span class="constructor">ERROR</span></span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">WARN</span></code></td>
+<code><span id="TYPEELTlevel.WARN"><span class="constructor">WARN</span></span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">NOTICE</span></code></td>
+<code><span id="TYPEELTlevel.NOTICE"><span class="constructor">NOTICE</span></span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">INFO</span></code></td>
+<code><span id="TYPEELTlevel.INFO"><span class="constructor">INFO</span></span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">DEBUG</span></code></td>
+<code><span id="TYPEELTlevel.DEBUG"><span class="constructor">DEBUG</span></span></code></td>
 
 </tr></table>
 
@@ -214,7 +215,7 @@ A log <code class="code">event</code> consists of an event name and a list of ke
        level is not enabled. For example:
 <p>
 
-       <pre></pre><code class="code">log&nbsp;io_log&nbsp;<span class="constructor">INFO</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"connect"</span>,&nbsp;[<span class="string">"ADDR"</span>,&nbsp;addr])</code><pre></pre>
+       <code class="code">log&nbsp;io_log&nbsp;<span class="constructor">INFO</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"connect"</span>,&nbsp;[<span class="string">"ADDR"</span>,&nbsp;addr])</code>
 <p>
 
        would only log the <code class="code"><span class="string">"connect"</span></code> event (with the <code class="code"><span class="string">"ADDR"</span></code> string
@@ -270,14 +271,14 @@ the type of a log formatter is a function that takes the
        event parameters. For example, the log statement:
 <p>
 
-       <pre></pre><code class="code">log&nbsp;io_log&nbsp;<span class="constructor">INFO</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"connect"</span>,&nbsp;[<span class="string">"ADDR"</span>,&nbsp;addr])</code><pre></pre>
+       <code class="code">log&nbsp;io_log&nbsp;<span class="constructor">INFO</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"connect"</span>,&nbsp;[<span class="string">"ADDR"</span>,&nbsp;addr])</code>
 <p>
 
        would produce formatted output like the following when the
        <code class="code">io_log</code> <code class="code"><span class="constructor">INFO</span></code> level was enabled:
 <p>
 
-       <pre></pre><code class="code"><span class="constructor">D</span>:2009-01-26<span class="constructor">T00</span>:47:45.033329<span class="constructor">Z</span>&nbsp;&nbsp;&nbsp;<span class="constructor">E</span>:io.connect&nbsp;&nbsp;&nbsp;<span class="constructor">L</span>:<span class="constructor">INFO</span>&nbsp;&nbsp;&nbsp;<span class="constructor">I</span>:1&nbsp;&nbsp;&nbsp;<span class="constructor">ADDR</span>:localhost:8080</code><pre></pre><br>
+       <code class="code"><span class="constructor">D</span>:2009-01-26<span class="constructor">T00</span>:47:45.033329<span class="constructor">Z</span>&nbsp;&nbsp;&nbsp;<span class="constructor">E</span>:io.connect&nbsp;&nbsp;&nbsp;<span class="constructor">L</span>:<span class="constructor">INFO</span>&nbsp;&nbsp;&nbsp;<span class="constructor">I</span>:1&nbsp;&nbsp;&nbsp;<span class="constructor">ADDR</span>:localhost:8080</code><br>
 </div>
 <pre><span id="VALstderr_formatter"><span class="keyword">val</span> stderr_formatter</span> : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
 <code class="code">stderr_formatter</code> is a standard formatter that outputs log
@@ -297,21 +298,21 @@ the type of a log formatter is a function that takes the
        indentation level. E.g.:
 <p>
 
-       <pre></pre><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with_log&nbsp;io_log&nbsp;<span class="constructor">DEBUG</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"listener"</span>&nbsp;[<span class="string">"ADDR"</span>,&nbsp;addr])<br>
+       <code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with_log&nbsp;io_log&nbsp;<span class="constructor">DEBUG</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"listener"</span>&nbsp;[<span class="string">"ADDR"</span>,&nbsp;addr])<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;accept_connections&nbsp;<span class="comment">(*&nbsp;calls&nbsp;other&nbsp;log&nbsp;statements&nbsp;*)</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><pre></pre>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
 <p>
 
        would produce formatted output like the following when the <code class="code">io_log</code>
        <code class="code"><span class="constructor">DEBUG</span></code> level was enabled:
 <p>
 
-       <pre></pre><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span>&nbsp;io.listener&nbsp;<span class="constructor">ADDR</span>:localhost:8080&nbsp;[<span class="constructor">DEBUG</span>]<br>
+       <code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span>&nbsp;io.listener&nbsp;<span class="constructor">ADDR</span>:localhost:8080&nbsp;[<span class="constructor">DEBUG</span>]<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span>&nbsp;<span class="keywordsign">|</span>&nbsp;io.connected&nbsp;<span class="constructor">CLIENT_ADDR</span>:192.168.0.23:28303&nbsp;[<span class="constructor">DEBUG</span>]<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span>&nbsp;<span class="keywordsign">|</span>&nbsp;io.disconnected&nbsp;<span class="constructor">CLIENT_ADDR</span>:192.168.0.23:28303&nbsp;[<span class="constructor">DEBUG</span>]<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span>&nbsp;io.listener&nbsp;<span class="constructor">ADDR</span>:localhost:8080&nbsp;<span class="constructor">RESULT</span>:-&nbsp;[<span class="constructor">DEBUG</span>]<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><pre></pre><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><br>
 </div>
 <pre><span id="VALdbg_formatter"><span class="keyword">val</span> dbg_formatter</span> : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info">
 <code class="code">dbg_formatter</code> is a debug formatter that outputs log events to

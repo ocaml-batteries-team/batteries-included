@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -105,12 +107,11 @@
 <link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatIMap</title>
 </head>
 <body>
-<div class="navbar"><a href="BatHeap.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatIO.html">Next</a>
+<div class="navbar"><a class="pre" href="BatHeap.html" title="BatHeap">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatIO.html" title="BatIO">Next</a>
 </div>
-<center><h1>Module <a href="type_BatIMap.html">BatIMap</a></h1></center>
-<br>
+<h1>Module <a href="type_BatIMap.html">BatIMap</a></h1>
 <pre><span class="keyword">module</span> BatIMap: <code class="code"><span class="keyword">sig</span></code> <a href="BatIMap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>DIET Maps from integers, packed using ranges<br>
 <hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
@@ -121,7 +122,7 @@
 The empty map.  Needs one parameter: a comparison function for the
     values, to enable merging of ranges with identical values.<br>
 </div>
-<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatIMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">eq:('a -> 'a -> bool) -> int -> 'a -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatIMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Test whether a map is empty (i.e. has no bindings)<br>
 </div>
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">int -> 'a -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info">
@@ -161,27 +162,27 @@ Test whether there is a binding from the given int<br>
 <pre><span id="VALiter_range"><span class="keyword">val</span> iter_range</span> : <code class="type">(int -> int -> 'a -> unit) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter_range f t</code> calls <code class="code">f</code> on every contiguous range.  For maps, contiguous ranges must map to the same <code class="code">y</code><br>
 </div>
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">?eq:('a -> 'a -> bool) -> ('b -> 'a) -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">?eq:('b -> 'b -> bool) -> ('a -> 'b) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info">
 Create a new map by modifying each <code class="code">y</code> by the given function.
     This will not create new ranges; the mapping function is only
     applied to each contiguous range once.  It is not applied to the
     ranges in order. <code class="code">~eq</code> defaults to (=).<br>
 </div>
-<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">?eq:('a -> 'a -> bool) -> (int -> 'b -> 'a) -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">?eq:('b -> 'b -> bool) -> (int -> 'a -> 'b) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info">
 Create a new map by computing new values based on key and value
     of the existing bindings.  This can create new ranges, as adjacent
     bindings can be assigned different values. <code class="code">~eq</code> defaults to (=).<br>
 </div>
-<pre><span id="VALmap_range"><span class="keyword">val</span> map_range</span> : <code class="type">?eq:('a -> 'a -> bool) -><br>       (int -> int -> 'b -> 'a) -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap_range"><span class="keyword">val</span> map_range</span> : <code class="type">?eq:('b -> 'b -> bool) -><br>       (int -> int -> 'a -> 'b) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info">
 Create a new map by modifying each <code class="code">y</code> using the given function.
     This will not create new ranges, but will have access to the
     <code class="code">lo,hi</code> of the current range.  <code class="code">~eq</code> defaults to (=).<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(int -> 'a -> 'b -> 'b) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(int -> 'b -> 'a -> 'a) -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info">
 <code class="code">fold f t x0</code> folds all the bindings of <code class="code">t</code> into <code class="code">x0</code> using <code class="code">f</code> to
     merge.<br>
 </div>
-<pre><span id="VALfold_range"><span class="keyword">val</span> fold_range</span> : <code class="type">(int -> int -> 'a -> 'b -> 'b) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
+<pre><span id="VALfold_range"><span class="keyword">val</span> fold_range</span> : <code class="type">(int -> int -> 'b -> 'a -> 'a) -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info">
 <code class="code">fold_range f t x0</code> folds all the contiguous ranges of <code class="code">t</code> into
     <code class="code">x0</code> using <code class="code">f</code> to merge. The order of foldings is unspecified.<br>
 </div>
@@ -209,7 +210,7 @@ Create a new map by modifying each <code class="code">y</code> using the given f
 <pre><span id="VALunion"><span class="keyword">val</span> union</span> : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info">
 Merge two maps, giving a value<br>
 </div>
-<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">?eq:('a -> 'a -> bool) -><br>       (int -> int -> 'b option -> 'c option -> 'a option) -><br>       'b <a href="BatIMap.html#TYPEt">t</a> -> 'c <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><pre><span id="VALforall2_range"><span class="keyword">val</span> forall2_range</span> : <code class="type">(int -> int -> 'a option -> 'b option -> bool) -><br>       'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">module</span> <a href="BatIMap.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatIMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">?eq:('c -> 'c -> bool) -><br>       (int -> int -> 'a option -> 'b option -> 'c option) -><br>       'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'c <a href="BatIMap.html#TYPEt">t</a></code></pre><pre><span id="VALforall2_range"><span class="keyword">val</span> forall2_range</span> : <code class="type">(int -> int -> 'a option -> 'b option -> bool) -><br>       'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">module</span> <a href="BatIMap.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatIMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Infix operators over a <a href="BatIMap.html"><code class="code"><span class="constructor">BatIMap</span></code></a>
 </div>
 </body></html>

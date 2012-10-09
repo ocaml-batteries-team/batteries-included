@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -111,12 +113,11 @@
 <title>Batteries user guide : Batteries.Text</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Uref.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.Concurrent.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.Uref.html" title="Batteries.Uref">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.Concurrent.html" title="Batteries.Concurrent">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.Text.html">Batteries.Text</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.Text.html">Batteries.Text</a></h1>
 <pre><span class="keyword">module</span> Text: <code class="type">BatText</code></pre><hr width="100%">
 <pre><span id="VALread_char"><span class="keyword">val</span> read_char</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="Uniclib.UChar.html#TYPEt">Uniclib.UChar.t</a></code></pre><div class="info">
 Read one Unicode char from a UTF-8 encoded input<br>
@@ -148,7 +149,7 @@ offer the characters of an UTF-8 encoded input as an enumeration<br>
 <pre><span id="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, <a href="Uniclib.Text.html#TYPEt">Uniclib.Text.t</a>) BatPrint.format -> 'a</code></pre><div class="info">
 <code class="code">rprintf fmt</code> returns the result as a rope<br>
 </div>
-<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(<a href="Uniclib.Text.html#TYPEt">Uniclib.Text.t</a> -> 'a) -> ('b, 'a) BatPrint.format -> 'b</code></pre><div class="info">
+<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(<a href="Uniclib.Text.html#TYPEt">Uniclib.Text.t</a> -> 'b) -> ('a, 'b) BatPrint.format -> 'a</code></pre><div class="info">
 <code class="code">krprintf k fmt</code> creates a rope from the format and other
       arguments and pass it to <code class="code">k</code><br>
 </div>

@@ -19,6 +19,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -84,6 +85,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -103,10 +105,9 @@
 <link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatHashcons.Table</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatHashcons.html">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatHashcons.html" title="BatHashcons">Up</a>
 &nbsp;</div>
-<center><h1>Module type <a href="type_BatHashcons.Table.html">BatHashcons.Table</a></h1></center>
-<br>
+<h1>Module type <a href="type_BatHashcons.Table.html">BatHashcons.Table</a></h1>
 <pre><span class="keyword">module type</span> Table = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.Table.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Hashcons tables<br>
 <hr width="100%">
 <pre><span id="TYPEkey"><span class="keyword">type</span> <code class="type"></code>key</span> </pre>
@@ -132,7 +133,16 @@ type of the table<br>
 <b>Raises</b> <code>Failure</code> if number of objects with the same hash reaches system limit of array size<br>
 </div>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> unit) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<code class="code">iter f tab</code> applied <code class="code">f</code> to every live hashed object in the
+<code class="code">iter f tab</code> applies <code class="code">f</code> to every live hashed object in the
         table <code class="code">tab</code>.<br>
+</div>
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> 'a -> 'a) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info">
+<code class="code">fold f tab x0</code> folds <code class="code">f</code> across every live hashed object in
+    the table <code class="code">tab</code>, starting with value <code class="code">x0</code><br>
+</div>
+<pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<code class="code">count tab</code> returns a count of how many live objects are in
+  <code class="code">tab</code>. This can decrease whenever the GC runs, even during
+  execution, so consider the returned value as an upper-bound.<br>
 </div>
 </body></html>

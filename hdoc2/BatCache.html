@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -105,12 +107,11 @@
 <link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatCache</title>
 </head>
 <body>
-<div class="navbar"><a href="BatBuffer.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatChar.html">Next</a>
+<div class="navbar"><a class="pre" href="BatBuffer.html" title="BatBuffer">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatChar.html" title="BatChar">Next</a>
 </div>
-<center><h1>Module <a href="type_BatCache.html">BatCache</a></h1></center>
-<br>
+<h1>Module <a href="type_BatCache.html">BatCache</a></h1>
 <pre><span class="keyword">module</span> BatCache: <code class="code"><span class="keyword">sig</span></code> <a href="BatCache.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.
 <p>
 
@@ -139,26 +140,26 @@
     bindings as pairs.  This allows inspection of what is currently
     cached.<br>
 <hr width="100%">
-<br><code><span id="TYPEmanual_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> manual_cache</span> = {</code><table class="typetable">
+<pre><code><span id="TYPEmanual_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> manual_cache</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>get&nbsp;: <code class="type">'a -> 'b</code>;</code></td>
+<code><span id="TYPEELTmanual_cache.get">get</span>&nbsp;:<code class="type">'a -> 'b</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>del&nbsp;: <code class="type">'a -> unit</code>;</code></td>
+<code><span id="TYPEELTmanual_cache.del">del</span>&nbsp;:<code class="type">'a -> unit</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>enum&nbsp;: <code class="type">unit -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code>;</code></td>
+<code><span id="TYPEELTmanual_cache.enum">enum</span>&nbsp;:<code class="type">unit -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code>;</code></td>
 
 </tr></table>
 }

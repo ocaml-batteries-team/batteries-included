@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -107,12 +109,11 @@
 <title>Batteries user guide : BatMultiMap</title>
 </head>
 <body>
-<div class="navbar"><a href="BatMarshal.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatMultiPMap.html">Next</a>
+<div class="navbar"><a class="pre" href="BatMarshal.html" title="BatMarshal">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatMultiPMap.html" title="BatMultiPMap">Next</a>
 </div>
-<center><h1>Module <a href="type_BatMultiMap.html">BatMultiMap</a></h1></center>
-<br>
+<h1>Module <a href="type_BatMultiMap.html">BatMultiMap</a></h1>
 <pre><span class="keyword">module</span> BatMultiMap: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiMap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Polymorphic Multi-Map.
 <p>
 
@@ -160,7 +161,7 @@ returns true if the map is empty.<br>
     <code class="code">f</code> is unspecified. Only current bindings are presented to <code class="code">f</code>:
     bindings hidden by more recent bindings are not passed to <code class="code">f</code>.<br>
 </div>
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a>) -><br>       ('c, 'a) <a href="BatMultiMap.html#TYPEt">t</a> -> ('c, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'c <a href="BatSet.html#TYPEt">BatSet.t</a>) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f m</code> returns a map with same domain as <code class="code">m</code>, where the
     associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
     replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
@@ -171,7 +172,7 @@ returns true if the map is empty.<br>
 Same as <code class="code">map</code>, but the function receives as arguments both the
     key and the associated value for each binding of the map.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'b -> 'b) -> ('c, 'a) <a href="BatMultiMap.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'c -> 'c) -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info">
 <code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 (f k0 d0 a))...)</code>,
     where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">m</code>,
     and <code class="code">d0,d1..dN</code> are the associated data.

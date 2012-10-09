@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -105,15 +107,15 @@
 <link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Submodules regrouping all infix operations" rel="Section" href="#6_Submodulesregroupingallinfixoperations">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Printing" rel="Subsection" href="#7_Printing">
+<link title="Compare" rel="Subsection" href="#7_Compare">
 <title>Batteries user guide : Batteries.Int</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Float.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.Bool.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.Float.html" title="Batteries.Float">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.Bool.html" title="Batteries.Bool">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.Int.html">Batteries.Int</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.Int.html">Batteries.Int</a></h1>
 <pre><span class="keyword">module</span> Int: <code class="type">BatInt</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">int</code> </pre>
 <div class="info">
@@ -177,16 +179,17 @@ Integer remainder.  If <code class="code">y</code> is not zero, the result
     for some <code class="code">k</code>.<br>
 </div>
 <pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">int -> int -> int</code></pre><div class="info">
-<code class="code">pow a b</code> computes a<sup class="superscript">b</sup><br>
+<code class="code">pow a b</code> computes a<sup class="superscript">b</sup>.<br>
+<b>Raises</b> <code>Invalid_argument</code> when <code class="code">b</code> is negative.<br>
 </div>
 <pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type">int -> int -> int</code></pre><div class="info">
 <code class="code">a ** b</code> computes a<sup class="superscript">b</sup><br>
 </div>
 <pre><span id="VAL(<>)"><span class="keyword">val</span> (&lt;&gt;)</span> : <code class="type">int -> int -> bool</code></pre><pre><span id="VAL(>)"><span class="keyword">val</span> (&gt;)</span> : <code class="type">int -> int -> bool</code></pre><pre><span id="VAL(<)"><span class="keyword">val</span> (&lt;)</span> : <code class="type">int -> int -> bool</code></pre><pre><span id="VAL(>=)"><span class="keyword">val</span> (&gt;=)</span> : <code class="type">int -> int -> bool</code></pre><pre><span id="VAL(<=)"><span class="keyword">val</span> (&lt;=)</span> : <code class="type">int -> int -> bool</code></pre><pre><span id="VAL(=)"><span class="keyword">val</span> (=)</span> : <code class="type">int -> int -> bool</code></pre><pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">int</code></pre><div class="info">
-The greatest representable integer, which is either 2<sup class="superscript">30</sup>-1 or 2<sup class="superscript">62</sup>-1.<br>
+The smallest representable integer, -2<sup class="superscript">30</sup> or -2<sup class="superscript">62</sup>.<br>
 </div>
 <pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">int</code></pre><div class="info">
-The smallest representable integer, -2<sup class="superscript">30</sup> or 2<sup class="superscript">62</sup>.<br>
+The greatest representable integer, which is either 2<sup class="superscript">30</sup>-1 or 2<sup class="superscript">62</sup>-1.<br>
 </div>
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">int -> int</code></pre><div class="info">
 Successor.  <code class="code"><span class="constructor">Int</span>.succ x</code> is <code class="code"><span class="constructor">Int</span>.add x <span class="constructor">Int</span>.one</code>.<br>
@@ -195,7 +198,8 @@ Successor.  <code class="code"><span class="constructor">Int</span>.succ x</code
 Predecessor.  <code class="code"><span class="constructor">Int</span>.pred x</code> is <code class="code"><span class="constructor">Int</span>.sub x <span class="constructor">Int</span>.one</code>.<br>
 </div>
 <pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">int -> int</code></pre><div class="info">
-Return the absolute value of its argument.<br>
+Return the absolute value of its argument, except when the argument is
+    <code class="code">min_num</code>. In that case, <code class="code">abs min_num = min_num</code>.<br>
 </div>
 <pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> int</code></pre><div class="info">
 Convert the given floating-point number to integer integer,
@@ -218,17 +222,15 @@ Convert the given string to an integer
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">int -> string</code></pre><div class="info">
 Return the string representation of its argument, in signed decimal.<br>
 </div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> -> int</code></pre><div class="info">
-The comparison function for integers, with the same specification as
-    <code class="code"><span class="constructor">Pervasives</span>.compare</code>.  Along with the type <code class="code">t</code>, this function <code class="code">compare</code>
-    allows the module <code class="code"><span class="constructor">Int</span></code> to be passed as argument to the functors
-    <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.<br>
-</div>
 <pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">int -> int -> int</code></pre><div class="info">
-custom min and max for integers is much faster than using
-    polymorphic one in stdlib<br>
+The minimum of two integers. Faster than the polymorphic <code class="code">min</code> from the
+    standard library.<br>
 </div>
-<pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">int -> int -> int</code></pre><pre><span id="VALmid"><span class="keyword">val</span> mid</span> : <code class="type">int -> int -> int</code></pre><div class="info">
+<pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">int -> int -> int</code></pre><div class="info">
+The maximum of two integers. Faster than the polymorphic <code class="code">min</code> from the
+    standard library.<br>
+</div>
+<pre><span id="VALmid"><span class="keyword">val</span> mid</span> : <code class="type">int -> int -> int</code></pre><div class="info">
 Midpoint function; <code class="code">mid a b</code> returns <code class="code">floor((a+b)/2)</code>, but done
     correctly to compensate for numeric overflows.  The result is an
     integer that lies between <code class="code">a</code> and <code class="code">b</code> and is as equidistant from
@@ -264,10 +266,15 @@ prints as decimal string<br>
 <pre><span id="VALxprint"><span class="keyword">val</span> xprint</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> int -> unit</code></pre><div class="info">
 prints as hex string<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">int -> int -> bool</code></pre><div class="info">
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><br>
 <span id="7_Compare"><div class="h7">Compare</div></span><br>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> -> int</code></pre><div class="info">
+The comparison function for integers, with the same specification as
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code>.  Along with the type <code class="code">t</code>, this function <code class="code">compare</code>
+    allows the module <code class="code"><span class="constructor">Int</span></code> to be passed as argument to the functors
+    <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.<br>
 </div>
-<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">int -> int -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span class="keyword">module</span> <a href="BatInt.Safe_int.html">Safe_int</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt.Safe_int.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">int -> int -> bool</code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">int -> int -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span class="keyword">module</span> <a href="BatInt.Safe_int.html">Safe_int</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt.Safe_int.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Safe operations on integers.
 </div>
 </body></html>

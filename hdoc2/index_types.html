@@ -17,6 +17,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -82,6 +83,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -101,7 +103,9 @@
 <link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Index of types</title>
 </head>
 <body>
-<center><h1>Index of types</h1></center>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of types</h1>
 <table>
 <tr><td align="left"><br>A</td></tr>
 <tr><td><a href="BatGc.html#TYPEalarm">alarm</a> [<a href="BatGc.html">BatGc</a>]</td>
@@ -116,14 +120,34 @@ Automatically managed caches
 </div>
 </td></tr>
 <tr><td align="left"><br>B</td></tr>
+<tr><td><a href="BatBounded.BoundedType.html#TYPEbase_t">base_t</a> [<a href="BatBounded.BoundedType.html">BatBounded.BoundedType</a>]</td>
+<td><div class="info">
+The base/raw type
+</div>
+</td></tr>
+<tr><td><a href="BatBounded.S.html#TYPEbase_u">base_u</a> [<a href="BatBounded.S.html">BatBounded.S</a>]</td>
+<td><div class="info">
+Raw unbounded type
+</div>
+</td></tr>
 <tr><td><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> [<a href="BatNumber.Compare.html">BatNumber.Compare</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNumber.Infix.html#TYPEbat__infix_t">bat__infix_t</a> [<a href="BatNumber.Infix.html">BatNumber.Infix</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNumber.RefOps.html#TYPEbat__refops_t">bat__refops_t</a> [<a href="BatNumber.RefOps.html">BatNumber.RefOps</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatBounded.html#TYPEbound_t">bound_t</a> [<a href="BatBounded.html">BatBounded</a>]</td>
+<td><div class="info">
+<code class="code"><span class="keywordsign">`</span>o</code>pen or <code class="code"><span class="keywordsign">`</span>c</code>losed or <code class="code"><span class="keywordsign">`</span>u</code>nbounded bounds
+</div>
+</td></tr>
 <tr><td><a href="BatNumber.Bounded.html#TYPEbounded">bounded</a> [<a href="BatNumber.Bounded.html">BatNumber.Bounded</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatBounded.html#TYPEbounding_f">bounding_f</a> [<a href="BatBounded.html">BatBounded</a>]</td>
+<td><div class="info">
+The type of a bounding function with limits specified by <code class="code">bounds</code>
+</div>
+</td></tr>
 <tr><td><a href="Uniclib.UTF8.Buf.html#TYPEbuf">buf</a> [<a href="Uniclib.UTF8.Buf.html">Uniclib.UTF8.Buf</a>]</td>
 <td><div class="info">
 Buffers for UTF-8 strings.
@@ -140,7 +164,7 @@ See <code class="code"><span class="constructor">Bigarray</span>.fortran_layout<
 choice functions, see <code class="code">min</code> and <code class="code">max</code>.
 </div>
 </td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEclosure">closure</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEclosure">closure</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td><div class="info">
 Internal representation of a method.
 </div>
@@ -212,6 +236,8 @@ This kind of set only holds ints
 An encoding table maps integers 0..63 to the corresponding char.
 </div>
 </td></tr>
+<tr><td><a href="BatQueue.html#TYPEenumerable">enumerable</a> [<a href="BatQueue.html">BatQueue</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatEnum.Enumerable.html#TYPEenumerable">enumerable</a> [<a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a>]</td>
 <td><div class="info">
 The data structure, e.g.
@@ -300,7 +326,7 @@ The type <code class="code">t hobj</code> represents hashed objects of type <cod
 </div>
 </td></tr>
 <tr><td align="left"><br>I</td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEimpl">impl</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEimpl">impl</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatIO.html#TYPEin_bits">in_bits</a> [<a href="BatIO.html">BatIO</a>]</td>
 <td></td></tr>
@@ -309,7 +335,7 @@ The type <code class="code">t hobj</code> represents hashed objects of type <cod
 Positions in the string represented by the number of bytes from the head.
 </div>
 </td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEinit_table">init_table</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEinit_table">init_table</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatInnerIO.html#TYPEinput">input</a> [<a href="BatInnerIO.html">BatInnerIO</a>]</td>
 <td></td></tr>
@@ -355,7 +381,7 @@ To each element kind is associated a Caml type, which is
 </div>
 </td></tr>
 <tr><td align="left"><br>L</td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPElabel">label</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPElabel">label</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatBigarray.html#TYPElayout">layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td><div class="info">
@@ -408,7 +434,7 @@ Type of the monadic elements.
 The data structure, e.g.
 </div>
 </td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEmeth">meth</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEmeth">meth</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatFingerTree.html#TYPEmonoid">monoid</a> [<a href="BatFingerTree.html">BatFingerTree</a>]</td>
 <td><div class="info">
@@ -435,7 +461,7 @@ The smallest set of operations supported by every set of numbers.
 </div>
 </td></tr>
 <tr><td align="left"><br>O</td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEobj">obj</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEobj">obj</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td><div class="info">
 Internal representation of an object.
 </div>
@@ -468,7 +494,7 @@ The abstract output type, <code class="code"><span class="keywordsign">'</span>a
 </div>
 </td></tr>
 <tr><td align="left"><br>P</td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEparams">params</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEparams">params</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td><div class="info">
 currently disabled
 </div>
@@ -524,6 +550,8 @@ The type of formatted input scanners: <code class="code">(<span class="keywordsi
     from the scanning input buffer <code class="code">ib</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a> [<a href="BatSys.html">BatSys</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatGc.html#TYPEstat">stat</a> [<a href="BatGc.html">BatGc</a>]</td>
 <td><div class="info">
 The memory management counters are returned in a <code class="code">stat</code> record.
@@ -534,7 +562,7 @@ The memory management counters are returned in a <code class="code">stat</code> 
 The current state of the parser.
 </div>
 </td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEstats">stats</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEstats">stats</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>T</td></tr>
 <tr><td><a href="Uniclib.Text.html#TYPEt">t</a> [<a href="Uniclib.Text.html">Uniclib.Text</a>]</td>
@@ -601,6 +629,11 @@ The type of the ropes.
 The type of capability strings.
 </div>
 </td></tr>
+<tr><td><a href="BatStack.html#TYPEt">t</a> [<a href="BatStack.html">BatStack</a>]</td>
+<td><div class="info">
+The type of stacks containing elements of type <code class="code"><span class="keywordsign">'</span>a</code>.
+</div>
+</td></tr>
 <tr><td><a href="BatSet.PSet.html#TYPEt">t</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
 <td><div class="info">
 The type of sets.
@@ -641,6 +674,11 @@ The type of an empty ref list
 The type of references.
 </div>
 </td></tr>
+<tr><td><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> [<a href="BatRandom.Incubator.Private_state_enums.State.html">BatRandom.Incubator.Private_state_enums.State</a>]</td>
+<td><div class="info">
+same as BatRandom.State
+</div>
+</td></tr>
 <tr><td><a href="BatRandom.State.html#TYPEt">t</a> [<a href="BatRandom.State.html">BatRandom.State</a>]</td>
 <td><div class="info">
 The type of PRNG states.
@@ -649,6 +687,11 @@ The type of PRNG states.
 <tr><td><a href="BatRMutex.html#TYPEt">t</a> [<a href="BatRMutex.html">BatRMutex</a>]</td>
 <td><div class="info">
 The type of mutexes.
+</div>
+</td></tr>
+<tr><td><a href="BatQueue.html#TYPEt">t</a> [<a href="BatQueue.html">BatQueue</a>]</td>
+<td><div class="info">
+The type of queues containing elements of type <code class="code"><span class="keywordsign">'</span>a</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatPrintf.html#TYPEt">t</a> [<a href="BatPrintf.html">BatPrintf</a>]</td>
@@ -693,7 +736,7 @@ The type of an option parser.
 Option type.
 </div>
 </td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEt">t</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEt">t</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNumber.Numeric.html#TYPEt">t</a> [<a href="BatNumber.Numeric.html">BatNumber.Numeric</a>]</td>
 <td></td></tr>
@@ -869,6 +912,17 @@ An alias for the type of characters.
 The abstract type of buffers.
 </div>
 </td></tr>
+<tr><td><a href="BatBounded.BoundedType.html#TYPEt">t</a> [<a href="BatBounded.BoundedType.html">BatBounded.BoundedType</a>]</td>
+<td><div class="info">
+The type that makes up the bounded range
+</div>
+</td></tr>
+<tr><td><a href="BatBounded.S.html#TYPEt">t</a> [<a href="BatBounded.S.html">BatBounded.S</a>]</td>
+<td><div class="info">
+Private version of <a href="BatBounded.S.html#TYPEu"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.u</code></a> to avoid construction of <a href="BatBounded.S.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.t</code></a> values without
+      using <code class="code">make</code> below.
+</div>
+</td></tr>
 <tr><td><a href="BatBool.html#TYPEt">t</a> [<a href="BatBool.html">BatBool</a>]</td>
 <td><div class="info">
 The type of booleans.
@@ -902,6 +956,10 @@ The type <code class="code"><span class="constructor">Genarray</span>.t</code> i
 </td></tr>
 <tr><td><a href="BatBig_int.html#TYPEt">t</a> [<a href="BatBig_int.html">BatBig_int</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatArray.Incubator.Ord.html#TYPEt">t</a> [<a href="BatArray.Incubator.Ord.html">BatArray.Incubator.Ord</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatArray.Incubator.Eq.html#TYPEt">t</a> [<a href="BatArray.Incubator.Eq.html">BatArray.Incubator.Eq</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatArray.Cap.html#TYPEt">t</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
 <td><div class="info">
 The type of arrays with capabilities.
@@ -912,14 +970,14 @@ The type of arrays with capabilities.
 The type of arrays.
 </div>
 </td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEtable">table</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEtable">table</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td><div class="info">
 Internal representation of the vtable, i.e.
 </div>
 </td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEtables">tables</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEtables">tables</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html#TYPEtag">tag</a> [<a href="BatOo.Oo.Internal.html">BatOo.Oo.Internal</a>]</td>
+<tr><td><a href="BatOo.Internal.html#TYPEtag">tag</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatFormat.html#TYPEtag">tag</a> [<a href="BatFormat.html">BatFormat</a>]</td>
 <td></td></tr>
@@ -936,6 +994,11 @@ The type of tokens.
 <tr><td><a href="BatAvlTree.html#TYPEtree">tree</a> [<a href="BatAvlTree.html">BatAvlTree</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>U</td></tr>
+<tr><td><a href="BatBounded.S.html#TYPEu">u</a> [<a href="BatBounded.S.html">BatBounded.S</a>]</td>
+<td><div class="info">
+<a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a> after bounding constraints have been applied
+</div>
+</td></tr>
 <tr><td><a href="Uniclib.UChar.html#TYPEuchar">uchar</a> [<a href="Uniclib.UChar.html">Uniclib.UChar</a>]</td>
 <td><div class="info">
 Aliases of <code class="code"><span class="keyword">type</span> t</code>
@@ -969,6 +1032,6 @@ Validators should check if all characters of given string can be used in a name 
 A type meant to avoid duplication of signatures.
 </div>
 </td></tr>
-</table><br>
+</table>
 </body>
 </html>

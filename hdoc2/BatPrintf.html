@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -114,29 +116,16 @@
 <title>Batteries user guide : BatPrintf</title>
 </head>
 <body>
-<div class="navbar"><a href="BatPrintexc.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatQueue.html">Next</a>
+<div class="navbar"><a class="pre" href="BatPrintexc.html" title="BatPrintexc">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatQueue.html" title="BatQueue">Next</a>
 </div>
-<center><h1>Module <a href="type_BatPrintf.html">BatPrintf</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatPrintf: <code class="code"><span class="keyword">sig</span></code> <a href="BatPrintf.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Formatted output functions (also known as unparsing).
-<p>
-
-    This module extends Stdlib's
-    <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Printf.html">Printf</a>
-    module, go there for documentation on the rest of the functions
-    and types.<br>
+<h1>Module <a href="type_BatPrintf.html">BatPrintf</a></h1>
+<pre><span class="keyword">module</span> BatPrintf: <code class="code"><span class="keyword">sig</span></code> <a href="BatPrintf.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Formatted output functions (also known as unparsing).<br>
 <b>Author(s):</b> Xavier Leroy, Pierre Weiss, David Teller<br>
 <hr width="100%">
 <br>
-Formatted output functions (also known as unparsing).
-<p>
-
-    This module extends Stdlib's
-    <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Printf.html">Printf</a>
-    module, go there for documentation on the rest of the functions
-    and types.<br>
+Formatted output functions (also known as unparsing).<br>
 <br>
 <span id="6_Generaloverview"><h6>General overview</h6></span>
 <p>
@@ -175,8 +164,8 @@ Formatted output functions (also known as unparsing).
    when passed string <code class="code"><span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"(foobar)"</span></code> and ends the
    line. Similarly, <code class="code">printf <span class="string">"Here's the result: %s.\n\tComputation
    took %i seconds.\n"</span> <span class="string">"foobar"</span> 5</code> prints
-   <pre></pre><code class="code"><span class="constructor">Here's</span>&nbsp;the&nbsp;result:&nbsp;foobar<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Computation</span>&nbsp;took&nbsp;5&nbsp;seconds.</code><pre></pre>
+   <code class="code"><span class="constructor">Here's</span>&nbsp;the&nbsp;result:&nbsp;foobar<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Computation</span>&nbsp;took&nbsp;5&nbsp;seconds.</code>
 <p>
 
    Note that <code class="code">\n</code> (the newline character) and <code class="code">\t</code> (the tabulation)
@@ -315,11 +304,11 @@ The format to use for displaying the various arguments passed to the function.
 
 <br>
 <span id="6_Commonfunctions"><h6>Common functions</h6></span><br>
-<pre><span id="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 The usual <code class="code">printf</code> function, prints to the standard output <code class="code">stdout</code>, i.e. normally
      to the screen. If you are lost, this is probably the function you're looking for.<br>
 </div>
-<pre><span id="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type">('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 The usual <code class="code">eprintf</code> function, prints to the standard error output <code class="code">stderr</code>, used
      to display warnings and errors. Otherwise identical to <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>.<br>
 </div>
@@ -363,7 +352,7 @@ General function. This function prints to any output. Typically,
      <code class="code">(_, _ output, unit, _) format4</code>, this is also probably the
      function you are looking for.<br>
 </div>
-<pre><span id="VALifprintf"><span class="keyword">val</span> ifprintf</span> : <code class="type">'a -> ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<pre><span id="VALifprintf"><span class="keyword">val</span> ifprintf</span> : <code class="type">'c -> ('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 As <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a> but doesn't actually print anything.
      Sometimes useful for debugging.<br>
 </div>
@@ -372,7 +361,7 @@ As <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="construct
      In particular, any unparser called with <code class="code">%a</code> should
      write to a buffer rather than to an output<br>
 </div>
-<pre><span id="VALbprintf2"><span class="keyword">val</span> bprintf2</span> : <code class="type">Buffer.t -> ('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALbprintf2"><span class="keyword">val</span> bprintf2</span> : <code class="type">Buffer.t -> ('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 As <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a> but writes to a buffer instead
      of printing to the output. By opposition to
      <a href="BatPrintf.html#VALbprintf"><code class="code"><span class="constructor">BatPrintf</span>.bprintf</code></a>, only the result is changed with
@@ -388,7 +377,7 @@ Same as <code class="code">fprintf</code>, but instead of returning immediately,
 Same as <code class="code">sprintf</code> above, but instead of returning the string,
       passes it to the first argument.<br>
 </div>
-<pre><span id="VALksprintf2"><span class="keyword">val</span> ksprintf2</span> : <code class="type">(string -> 'a) -><br>       ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
+<pre><span id="VALksprintf2"><span class="keyword">val</span> ksprintf2</span> : <code class="type">(string -> 'b) -><br>       ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info">
 Same as <code class="code">sprintf2</code> above, but instead of returning the string,
       passes it to the first argument.<br>
 </div>
@@ -396,7 +385,7 @@ Same as <code class="code">sprintf2</code> above, but instead of returning the s
 Same as <code class="code">bprintf</code>, but instead of returning immediately,
       passes the buffer to its first argument at the end of printing.<br>
 </div>
-<pre><span id="VALkbprintf2"><span class="keyword">val</span> kbprintf2</span> : <code class="type">(Buffer.t -> 'a) -><br>       Buffer.t -> ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
+<pre><span id="VALkbprintf2"><span class="keyword">val</span> kbprintf2</span> : <code class="type">(Buffer.t -> 'b) -><br>       Buffer.t -> ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info">
 Same as <code class="code">bprintf2</code>, but instead of returning immediately,
       passes the buffer to its first argument at the end of printing.<br>
 </div>

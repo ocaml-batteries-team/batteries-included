@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -110,12 +112,11 @@
 <title>Batteries user guide : Batteries.File</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Enum.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.Global.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.Enum.html" title="Batteries.Enum">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.Global.html" title="Batteries.Global">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.File.html">Batteries.File</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.File.html">Batteries.File</a></h1>
 <pre><span class="keyword">module</span> File: <code class="type">BatFile</code></pre><hr width="100%">
 <br>
 <span id="6_Utilities"><h6>Utilities</h6></span><br>
@@ -252,7 +253,7 @@ Flags governing file output; they correspond to the relevant
 <span id="6_Openingatemporaryfileforwriting"><h6>Opening a temporary file for writing</h6></span><br>
 <pre><span id="TYPEopen_temporary_out_flag"><span class="keyword">type</span> <code class="type"></code>open_temporary_out_flag</span> = <code class="type">[ `append | `create | `delete_on_exit | `excl | `nonblock | `text | `trunc ]</code> </pre>
 
-<pre><span id="VALopen_temporary_out"><span class="keyword">val</span> open_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -> ?suffix:string -> unit -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> * string</code></pre><div class="info">
+<pre><span id="VALopen_temporary_out"><span class="keyword">val</span> open_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -><br>       ?suffix:string -> ?temp_dir:string -> unit -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> * string</code></pre><div class="info">
 <code class="code">open_temporary_out ()</code> opens a new temporary file for writing.<br>
 <b>Returns</b> The name of the file and the <code class="code">output</code> for writing in it.
 <p>
@@ -267,7 +268,8 @@ Flags governing file output; they correspond to the relevant
     (by default <code class="code"><span class="string">"ocaml"</span></code>)</div>
 <div class="param_info"><code class="code">suffix</code> : a string which should appear at the end of your temporary file name
     (by default <code class="code"><span class="string">"tmp"</span></code>)</div>
-<pre><span id="VALwith_temporary_out"><span class="keyword">val</span> with_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -><br>       ?suffix:string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> string -> 'a) -> 'a</code></pre><div class="info">
+<div class="param_info"><code class="code">temp_dir</code> : indicates what temp dir to use</div>
+<pre><span id="VALwith_temporary_out"><span class="keyword">val</span> with_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -><br>       ?suffix:string -><br>       ?temp_dir:string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> string -> 'a) -> 'a</code></pre><div class="info">
 <code class="code">with_temporary_out f</code> opens a new temporary file for writing, invokes <code class="code">f</code> with
     to write onto that file then, once <code class="code">f</code> has returned or triggered an exception,
     closes the file before proceeding.<br>
@@ -280,4 +282,5 @@ Flags governing file output; they correspond to the relevant
     (by default <code class="code"><span class="string">"ocaml"</span></code>)</div>
 <div class="param_info"><code class="code">suffix</code> : a string which should appear at the end of your temporary file name
     (by default <code class="code"><span class="string">"tmp"</span></code>)</div>
+<div class="param_info"><code class="code">temp_dir</code> : indicates what temp dir to use</div>
 </body></html>

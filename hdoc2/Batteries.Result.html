@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -107,26 +109,25 @@
 <title>Batteries user guide : Batteries.Result</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Print.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.Return.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.Print.html" title="Batteries.Print">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.Return.html" title="Batteries.Return">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.Result.html">Batteries.Result</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.Result.html">Batteries.Result</a></h1>
 <pre><span class="keyword">module</span> Result: <code class="type">BatResult</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = <code class="type">('a, 'b) <a href="BatPervasives.html#TYPEresult">BatPervasives.result</a></code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">Ok</span> <span class="keyword">of</span> <code class="type">'a</code></code></td>
+<code><span id="TYPEELTt.Ok"><span class="constructor">Ok</span></span> <span class="keyword">of</span> <code class="type">'a</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">Bad</span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
+<code><span id="TYPEELTt.Bad"><span class="constructor">Bad</span></span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
 
 </tr></table>
 
@@ -162,7 +163,7 @@ As <code class="code">catch</code> but three paramaters.  This saves a closure c
     <code class="code"><span class="constructor">Ok</span> x</code><br>
 <b>Since</b> 2.0<br>
 </div>
-<pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">'a -> ('b -> 'a) -> ('b, 'c) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">'b -> ('a -> 'b) -> ('a, 'c) <a href="BatResult.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 <code class="code">map_default d f r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">f x</code>
     when <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span> x</code><br>
 <b>Since</b> 2.0<br>
@@ -197,7 +198,7 @@ This monad is very similar to the option monad, but instead of
 <pre><span class="keyword">module</span> <a href="BatResult.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 This infix module provides the operator <code class="code">(&gt;&gt;=)</code>
 </div>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, exn) <a href="BatResult.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a -> unit) -><br>       'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('a, exn) <a href="BatResult.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Print a result as Ok(x) or Bad(exn)<br>
 </div>
 </body></html>

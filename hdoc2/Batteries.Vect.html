@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -114,12 +116,11 @@
 <title>Batteries user guide : Batteries.Vect</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.ValuePrinter.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.ISet.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.ValuePrinter.html" title="Batteries.ValuePrinter">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.ISet.html" title="Batteries.ISet">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.Vect.html">Batteries.Vect</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.Vect.html">Batteries.Vect</a></h1>
 <pre><span class="keyword">module</span> Vect: <code class="type">BatVect</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 <div class="info">
@@ -272,11 +273,11 @@ Operates like iter, but also passes the index of the character
       from an explicit loop using <code class="code">get</code>.<br>
 <b>Raises</b> <code>Out_of_bounds</code> in the same cases as <code class="code">sub</code>.<br>
 </div>
-<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 <code class="code">fold_left f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN-1 </code>
       where <code class="code">rn = <span class="constructor">Vect</span>.get n r </code> and <code class="code"><span class="constructor">N</span> = length r</code>.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 An alias for <a href="BatVect.html#VALfold_left"><code class="code"><span class="constructor">BatVect</span>.fold_left</code></a><br>
 </div>
 <pre><span id="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
@@ -287,7 +288,7 @@ as <a href="BatVect.html#VALfold_left"><code class="code"><span class="construct
 <code class="code">fold_right f r a</code> computes <code class="code"> f (r0 ... (f rN-2 (f rN-1 a)) ...)) </code>
       where <code class="code">rn = <span class="constructor">Vect</span>.get n r </code> and <code class="code"><span class="constructor">N</span> = length r</code>.<br>
 </div>
-<pre><span id="VALfoldi"><span class="keyword">val</span> foldi</span> : <code class="type">(int -> 'a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfoldi"><span class="keyword">val</span> foldi</span> : <code class="type">(int -> 'b -> 'a -> 'b) -> 'b -> 'a <a href="BatVect.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 As <a href="BatVect.html#VALfold"><code class="code"><span class="constructor">BatVect</span>.fold</code></a>, but with the position of each value passed to the
       folding function<br>
 </div>

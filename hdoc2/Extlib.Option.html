@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -108,12 +110,11 @@
 <title>Batteries user guide : Extlib.Option</title>
 </head>
 <body>
-<div class="navbar"><a href="Extlib.OptParse.html">Previous</a>
-&nbsp;<a href="Extlib.html">Up</a>
-&nbsp;<a href="Extlib.PMap.html">Next</a>
+<div class="navbar"><a class="pre" href="Extlib.OptParse.html" title="Extlib.OptParse">Previous</a>
+&nbsp;<a class="up" href="Extlib.html" title="Extlib">Up</a>
+&nbsp;<a class="post" href="Extlib.PMap.html" title="Extlib.PMap">Next</a>
 </div>
-<center><h1>Module <a href="type_Extlib.Option.html">Extlib.Option</a></h1></center>
-<br>
+<h1>Module <a href="type_Extlib.Option.html">Extlib.Option</a></h1>
 <pre><span class="keyword">module</span> Option: <code class="type">BatOption</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a option</code> </pre>
 
@@ -128,6 +129,10 @@
 </div>
 <pre><span id="VALapply"><span class="keyword">val</span> apply</span> : <code class="type">('a -> 'a) option -> 'a -> 'a</code></pre><div class="info">
 <code class="code">apply <span class="constructor">None</span> x</code> returns <code class="code">x</code> and <code class="code">apply (<span class="constructor">Some</span> f) x</code> returns <code class="code">f x</code><br>
+</div>
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a option -> 'a option</code></pre><div class="info">
+<code class="code">filter f <span class="constructor">None</span></code> returns <code class="code"><span class="constructor">None</span></code>, <code class="code">filter f (<span class="constructor">Some</span> x)</code> returns <code class="code"><span class="constructor">Some</span> x</code>
+    if <code class="code">f x</code> is true, and <code class="code"><span class="constructor">None</span></code> otherwise.<br>
 </div>
 <pre><span id="VALdefault"><span class="keyword">val</span> default</span> : <code class="type">'a -> 'a option -> 'a</code></pre><div class="info">
 <code class="code">default x (<span class="constructor">Some</span> v)</code> returns <code class="code">v</code> and <code class="code">default x <span class="constructor">None</span></code> returns <code class="code">x</code>.<br>

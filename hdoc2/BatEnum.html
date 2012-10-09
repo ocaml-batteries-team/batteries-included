@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -116,12 +118,11 @@
 <title>Batteries user guide : BatEnum</title>
 </head>
 <body>
-<div class="navbar"><a href="BatDynArray.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatFile.html">Next</a>
+<div class="navbar"><a class="pre" href="BatDynArray.html" title="BatDynArray">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatFile.html" title="BatFile">Next</a>
 </div>
-<center><h1>Module <a href="type_BatEnum.html">BatEnum</a></h1></center>
-<br>
+<h1>Module <a href="type_BatEnum.html">BatEnum</a></h1>
 <pre><span class="keyword">module</span> BatEnum: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Enumeration over abstract collection of elements.
 <p>
 
@@ -194,7 +195,7 @@ A signature for data structures which may be converted to and from <code class="
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">for_all f e</code> returns <code class="code"><span class="keyword">true</span></code> if for every <code class="code">x</code> in <code class="code">e</code>, <code class="code">f x</code> is true<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 A general loop on an enumeration.
 <p>
 
@@ -224,7 +225,7 @@ A simplified version of <code class="code">fold</code>, which uses the first ele
 <code class="code">fold2</code> is similar to <code class="code">fold</code> but will fold over two enumerations at the
     same time until one of the two enumerations ends.<br>
 </div>
-<pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 A variant of <code class="code">fold</code> producing an enumeration of its intermediate values.
     If <code class="code">e</code> contains <code class="code">x0</code>, <code class="code">x1</code>, ..., <code class="code">scanl f init e</code> is the enumeration
     containing <code class="code">init</code>, <code class="code">f init x0</code>, <code class="code">f (f init x0) x1</code>... Lazy.<br>
@@ -348,12 +349,22 @@ Negated span.
     <code class="code"><span class="constructor">Enum</span>.group (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> x <span class="keyword">mod</span> 3) [1;2;4;1] = [[1];[2];[4;1]]</code>
 <p>
 
-    <code class="code"><span class="constructor">Enum</span>.group (<span class="keyword">fun</span> s <span class="keywordsign">-&gt;</span> s.[0]) [<span class="string">"cat"</span>; <span class="string">"canary"</span>; <span class="string">"dog"</span>; <span class="string">"dodo"</span>; <span class="string">"ant"</span>; <span class="string">"cow"</span>] = [[<span class="string">"cat"</span>; <span class="string">"canary"</span>];[<span class="string">"dog"</span>;<span class="string">"dodo"</span>];[<span class="string">"ant"</span>];[<span class="string">"cow"</span>]]</code><br>
+    <code class="code"><span class="constructor">Enum</span>.group (<span class="keyword">fun</span> s <span class="keywordsign">-&gt;</span> s.[0]) [<span class="string">"cat"</span>; <span class="string">"canary"</span>; <span class="string">"dog"</span>; <span class="string">"dodo"</span>; <span class="string">"ant"</span>; <span class="string">"cow"</span>] = [[<span class="string">"cat"</span>; <span class="string">"canary"</span>];[<span class="string">"dog"</span>;<span class="string">"dodo"</span>];[<span class="string">"ant"</span>];[<span class="string">"cow"</span>]]</code>
+<p>
+
+    Warning: The result of this operation cannot be directly cloned
+    safely; instead, reify to a non-lazy structure and read from that
+    structure multiple times.<br>
 </div>
 <pre><span id="VALgroup_by"><span class="keyword">val</span> group_by</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">group_by eq e</code> divides <code class="code">e</code> into an enumeration of enumerations,
     where each sub-enumeration is the longest continuous enumeration
-    of elements that are equal, as judged by <code class="code">eq</code><br>
+    of elements that are equal, as judged by <code class="code">eq</code>.
+<p>
+
+    Warning: The result of this operation cannot be directly cloned
+    safely; instead, reify to a non-lazy structure and read from that
+    structure multiple times.<br>
 </div>
 <pre><span id="VALclump"><span class="keyword">val</span> clump</span> : <code class="type">int -> ('a -> unit) -> (unit -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">clump size add get e</code> runs <code class="code">add</code> on <code class="code">size</code> (or less at the end)
@@ -509,7 +520,7 @@ This function creates a fully defined enumeration.
     result in a call to <code class="code">force</code> that will enumerate all elements in order to
     return a correct value.<br>
 </div>
-<pre><span id="VALfrom_loop"><span class="keyword">val</span> from_loop</span> : <code class="type">'a -> ('a -> 'b * 'a) -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALfrom_loop"><span class="keyword">val</span> from_loop</span> : <code class="type">'b -> ('b -> 'a * 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">from_loop data next</code> creates a (possibly infinite) enumeration from
      the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
      result, etc. The list ends whenever the function raises
@@ -521,13 +532,18 @@ This function creates a fully defined enumeration.
       fails. E.g. <code class="code">seq 1 ((+) 1) ((&gt;) 100)</code> returns <code class="code">1, 2, ... 99</code>. If <code class="code">cond
       init</code> is false, the result is empty.<br>
 </div>
-<pre><span id="VALunfold"><span class="keyword">val</span> unfold</span> : <code class="type">'a -> ('a -> ('b * 'a) option) -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALunfold"><span class="keyword">val</span> unfold</span> : <code class="type">'b -> ('b -> ('a * 'b) option) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 As <code class="code">from_loop</code>, except uses option type to signal the end of the enumeration.
 <p>
 
      <code class="code">unfold data next</code> creates a (possibly infinite) enumeration from
      the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
-     result, etc. The enumeration ends whenever the function returns <code class="code"><span class="constructor">None</span></code><br>
+     result, etc. The enumeration ends whenever the function returns <code class="code"><span class="constructor">None</span></code>
+<p>
+
+     Example: <code class="code"><span class="constructor">Enum</span>.unfold n (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> <span class="keyword">if</span> x = 1 <span class="keyword">then</span> <span class="constructor">None</span> <span class="keyword">else</span> <span class="constructor">Some</span>
+     (x, <span class="keyword">if</span> x <span class="keyword">land</span> 1 = 1 <span class="keyword">then</span> 3 * x + 1 <span class="keyword">else</span> x / 2))</code> returns the
+     hailstone sequence starting at <code class="code">n</code>.<br>
 </div>
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">init n f</code> creates a new enumeration over elements
@@ -569,7 +585,7 @@ Create an enumeration consisting in exactly one element.<br>
 <pre><span id="VALto_object"><span class="keyword">val</span> to_object</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> (< clone : 'b; count : int; next : 'a > as 'b)</code></pre><div class="info">
 <code class="code">to_object e</code> returns a representation of <code class="code">e</code> as an object.<br>
 </div>
-<pre><span id="VALof_object"><span class="keyword">val</span> of_object</span> : <code class="type">(< clone : 'a; count : int; next : 'b > as 'a) -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALof_object"><span class="keyword">val</span> of_object</span> : <code class="type">(< clone : 'b; count : int; next : 'a > as 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">of_object e</code> returns a representation of an object as an enumeration<br>
 </div>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
@@ -638,19 +654,6 @@ For users worried about the speed of <code class="code">count</code> you can cal
 <code class="code">uniq e</code> returns a duplicate of <code class="code">e</code> with repeated values
       omitted. (similar to unix's <code class="code">uniq</code> command)<br>
 </div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> int</code></pre><div class="info">
-<code class="code">compare cmp a b</code> compares enumerations <code class="code">a</code> and <code class="code">b</code>
-      by lexicographical order using comparison <code class="code">cmp</code>.<br>
-<b>Returns</b> <code class="code">compare cmp a' b'</code>, where <code class="code">a'</code> and <code class="code">b'</code> are
-      respectively equal to <code class="code">a</code> and <code class="code">b</code> without their first
-      element, if both <code class="code">a</code> and <code class="code">b</code> are non-empty and <code class="code">cmp x y = 0</code>,
-      where <code class="code">x</code> is the first element of <code class="code">a</code> and <code class="code">y</code> is the first
-      element of <code class="code">b</code><br>
-</div>
-<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info">
-<code class="code">equal eq a b</code> returns <code class="code"><span class="keyword">true</span></code> when <code class="code">a</code> and <code class="code">b</code> contain
-    the same sequence of elements.<br>
-</div>
 <pre><span id="VALswitch"><span class="keyword">val</span> switch</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">switch test enum</code> splits <code class="code">enum</code> into two enums, where the first enum have
       all the elements satisfying <code class="code">test</code>, the second enum is opposite. The
@@ -706,7 +709,20 @@ The BatEnum Monad
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Print and consume the contents of an enumeration.<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><br>
+<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<code class="code">compare cmp a b</code> compares enumerations <code class="code">a</code> and <code class="code">b</code>
+      by lexicographical order using comparison <code class="code">cmp</code>.<br>
+<b>Returns</b> <code class="code">compare cmp a' b'</code>, where <code class="code">a'</code> and <code class="code">b'</code> are
+      respectively equal to <code class="code">a</code> and <code class="code">b</code> without their first
+      element, if both <code class="code">a</code> and <code class="code">b</code> are non-empty and <code class="code">cmp x y = 0</code>,
+      where <code class="code">x</code> is the first element of <code class="code">a</code> and <code class="code">y</code> is the first
+      element of <code class="code">b</code><br>
+</div>
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<code class="code">equal eq a b</code> returns <code class="code"><span class="keyword">true</span></code> when <code class="code">a</code> and <code class="code">b</code> contain
+    the same sequence of elements.<br>
+</div>
+<br>
 <span id="6_Overridemodules"><h6>Override modules</h6></span><br>
 <br>
 The following modules replace functions defined in <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> with functions

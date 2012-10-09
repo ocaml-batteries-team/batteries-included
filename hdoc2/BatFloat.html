@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -112,12 +114,11 @@
 <title>Batteries user guide : BatFloat</title>
 </head>
 <body>
-<div class="navbar"><a href="BatFingerTree.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatFormat.html">Next</a>
+<div class="navbar"><a class="pre" href="BatFingerTree.html" title="BatFingerTree">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatFormat.html" title="BatFormat">Next</a>
 </div>
-<center><h1>Module <a href="type_BatFloat.html">BatFloat</a></h1></center>
-<br>
+<h1>Module <a href="type_BatFloat.html">BatFloat</a></h1>
 <pre><span class="keyword">module</span> BatFloat: <code class="code"><span class="keyword">sig</span></code> <a href="BatFloat.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on floating-point numbers.
 <p>
 
@@ -170,7 +171,7 @@ Substract <code class="code">1.</code> from a floating number. Note that, as per
 <pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">float -> float</code></pre><div class="info">
 The absolute value of a floating point number.<br>
 </div>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">float</code></pre><pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">float</code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">float -> float -> int</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> float</code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">float -> int</code></pre><pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> float</code></pre><pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">float -> float</code></pre><pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> float</code></pre><pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">float -> string</code></pre><pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">float</code></pre><pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">float</code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">float -> float -> int</code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">float -> float -> bool</code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">float -> float -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> float</code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">float -> int</code></pre><pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> float</code></pre><pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">float -> float</code></pre><pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> float</code></pre><pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">float -> string</code></pre><pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a></code></pre><pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">float -> float -> float</code></pre><pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> -> <a href="BatFloat.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
 <span id="6_Operationsspecifictofloatingpointnumbers"><h6>Operations specific to floating-point numbers</h6></span><br>
 <pre><span id="VALsqrt"><span class="keyword">val</span> sqrt</span> : <code class="type">float -> float</code></pre><div class="info">
 Square root.<br>
@@ -282,6 +283,11 @@ Round the given float to an integer value.
     <code class="code"><span class="keyword">false</span></code> otherwise.<br>
 <b>Since</b> 2.0<br>
 </div>
+<pre><span id="VALis_finite"><span class="keyword">val</span> is_finite</span> : <code class="type">float -> bool</code></pre><div class="info">
+<code class="code">is_finite f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is not <code class="code">nan</code> or <code class="code">+/- infinity</code>,
+    <code class="code"><span class="keyword">false</span></code> otherwise.<br>
+<b>Since</b> 2.0<br>
+</div>
 <br>
 <span id="6_Constants"><h6>Constants</h6></span><br>
 <br>
@@ -381,35 +387,35 @@ The constant pi (3.14159...)<br>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">FP_normal</span></code></td>
+<code><span id="TYPEELTfpkind.FP_normal"><span class="constructor">FP_normal</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Normal number, none of the below</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">FP_subnormal</span></code></td>
+<code><span id="TYPEELTfpkind.FP_subnormal"><span class="constructor">FP_subnormal</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number very close to 0.0, has reduced precision</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">FP_zero</span></code></td>
+<code><span id="TYPEELTfpkind.FP_zero"><span class="constructor">FP_zero</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number is 0.0 or -0.0</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">FP_infinite</span></code></td>
+<code><span id="TYPEELTfpkind.FP_infinite"><span class="constructor">FP_infinite</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number is positive or negative infinity</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">FP_nan</span></code></td>
+<code><span id="TYPEELTfpkind.FP_nan"><span class="constructor">FP_nan</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Not a number: result of an undefined operation</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
@@ -417,20 +423,21 @@ The constant pi (3.14159...)<br>
 Classes of floating point numbers
 <p>
 The five classes of floating-point numbers, as determined by
-	      the <a href="BatFloat.html#VALclassify"><code class="code"><span class="constructor">BatFloat</span>.classify</code></a> function.<br>
+    the <a href="BatFloat.html#VALclassify"><code class="code"><span class="constructor">BatFloat</span>.classify</code></a> function.<br>
 </div>
 
 <pre><span id="VALclassify"><span class="keyword">val</span> classify</span> : <code class="type">float -> <a href="BatFloat.html#TYPEfpkind">fpkind</a></code></pre><div class="info">
 Return the class of the given floating-point number:
-	    normal, subnormal, zero, infinite, or not a number.<br>
+    normal, subnormal, zero, infinite, or not a number.<br>
 </div>
 <pre><span id="VALapprox_equal"><span class="keyword">val</span> approx_equal</span> : <code class="type">?epsilon:float -> float -> float -> bool</code></pre><div class="info">
 Test whether two floats are approximately equal (i.e. within
-	epsilon of each other).  <code class="code">epsilon</code> defaults to 1e-5.<br>
+    epsilon of each other).  <code class="code">epsilon</code> defaults to 1e-5.<br>
 </div>
 <br>
 <span id="6_Submodulesgroupingallinfixoperators"><h6>Submodules grouping all infix operators</h6></span><br>
-<pre><span class="keyword">module</span> <a href="BatFloat.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFloat.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatFloat.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><br>
+<pre><span class="keyword">module</span> <a href="BatFloat.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFloat.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatFloat.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><pre><span class="keyword">include</span> <a href="BatNumber.RefOps.html">BatNumber.RefOps</a></pre>
+<br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatFloat.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <span id="7_Printing"><div class="h7">Printing</div></span><br>

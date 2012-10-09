@@ -17,6 +17,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -82,6 +83,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -101,7 +103,9 @@
 <link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Index of modules</title>
 </head>
 <body>
-<center><h1>Index of modules</h1></center>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of modules</h1>
 <table>
 <tr><td align="left"><br>A</td></tr>
 <tr><td><a href="Batteries.Legacy.Arg.html">Arg</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -128,8 +132,6 @@ Three-dimensional arrays.
 </div>
 </td></tr>
 <tr><td><a href="Batteries.Legacy.ArrayLabels.html">ArrayLabels</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Array_t.html">Array_t</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>B</td></tr>
 <tr><td><a href="Extlib.Base64.html">Base64</a> [<a href="Extlib.html">Extlib</a>]</td>
@@ -169,6 +171,11 @@ Efficient bit sets.
 <tr><td><a href="BatBool.html">BatBool</a> </td>
 <td><div class="info">
 Operations on booleans
+</div>
+</td></tr>
+<tr><td><a href="BatBounded.html">BatBounded</a> </td>
+<td><div class="info">
+Bounded values
 </div>
 </td></tr>
 <tr><td><a href="BatBuffer.html">BatBuffer</a> </td>
@@ -500,6 +507,8 @@ Maps and sets based on splay trees
 Last-in first-out stacks.
 </div>
 </td></tr>
+<tr><td><a href="BatStats.html">BatStats</a> </td>
+<td></td></tr>
 <tr><td><a href="BatStream.html">BatStream</a> </td>
 <td><div class="info">
 Streams and stream parsers
@@ -572,13 +581,9 @@ The default function to open a www browser.
 Same operations as module <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>, but with big-endian encoding
 </div>
 </td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Big_int.html">Big_int</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Big_int.html">Big_int</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Big_int.html">Big_int</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Bigarray.html">Bigarray</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Bigarray.html">Bigarray</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -592,6 +597,8 @@ Same operations as module <a href="BatIO.html"><code class="code"><span class="c
 <td></td></tr>
 <tr><td><a href="Batteries.Bool.html">Bool</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
+<tr><td><a href="Batteries.Incubator.Bounded.html">Bounded</a> [<a href="Batteries.Incubator.html">Batteries.Incubator</a>]</td>
+<td></td></tr>
 <tr><td><a href="Uniclib.UTF8.Buf.html">Buf</a> [<a href="Uniclib.UTF8.html">Uniclib.UTF8</a>]</td>
 <td><div class="info">
 Buffer module for UTF-8 strings
@@ -600,8 +607,6 @@ Buffer module for UTF-8 strings
 <tr><td><a href="Batteries.Buffer.html">Buffer</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Buffer.html">Buffer</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Buffer_t.html">Buffer_t</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>C</td></tr>
 <tr><td><a href="BatGenlex.Languages.Library.C.html">C</a> [<a href="BatGenlex.Languages.Library.html">BatGenlex.Languages.Library</a>]</td>
@@ -630,8 +635,6 @@ Capabilities for arrays.
 <tr><td><a href="Batteries.Legacy.Char.html">Char</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.CharParser.html">CharParser</a> [<a href="Batteries.html">Batteries</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Char_t.html">Char_t</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatTuple.Tuple5.Comp.html">Comp</a> [<a href="BatTuple.Tuple5.html">BatTuple.Tuple5</a>]</td>
 <td></td></tr>
@@ -671,14 +674,12 @@ Capabilities for arrays.
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Complex.html">Complex</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Complex_t.html">Complex_t</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Concurrent.html">Concurrent</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>D</td></tr>
-<tr><td><a href="Batteries.Deque.html">Deque</a> [<a href="Batteries.html">Batteries</a>]</td>
+<tr><td><a href="BatStats.DS.html">DS</a> [<a href="BatStats.html">BatStats</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Digest.html">Digest</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
+<tr><td><a href="Batteries.Deque.html">Deque</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Digest.html">Digest</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -717,6 +718,8 @@ A simple-to-use logger with verbosity levels that outputs by
 <tr><td><a href="BatList.Eq.html">Eq</a> [<a href="BatList.html">BatList</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatChar.Incubator.Eq.html">Eq</a> [<a href="BatChar.Incubator.html">BatChar.Incubator</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatArray.Incubator.Eq.html">Eq</a> [<a href="BatArray.Incubator.html">BatArray.Incubator</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatOrd.EqComp.html">EqComp</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td></td></tr>
@@ -830,8 +833,6 @@ This module contains the types and functions for implementing
 </div>
 </td></tr>
 <tr><td align="left"><br>G</td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Gc.html">Gc</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Gc.html">Gc</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Gc.html">Gc</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -842,8 +843,6 @@ Generic arrays (of arbitrarily many dimensions)
 </div>
 </td></tr>
 <tr><td><a href="BatFingerTree.Generic.html">Generic</a> [<a href="BatFingerTree.html">BatFingerTree</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Genlex.html">Genlex</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Genlex.html">Genlex</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -890,9 +889,13 @@ A map on strings.
 </td></tr>
 <tr><td><a href="Batteries.Incubator.html">Incubator</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatRandom.Incubator.html">Incubator</a> [<a href="BatRandom.html">BatRandom</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatOrd.Incubator.html">Incubator</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatChar.Incubator.html">Incubator</a> [<a href="BatChar.html">BatChar</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatArray.Incubator.html">Incubator</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatRefList.Index.html">Index</a> [<a href="BatRefList.html">BatRefList</a>]</td>
 <td><div class="info">
@@ -992,6 +995,8 @@ Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class=
 Infix submodule regrouping all infix operators
 </div>
 </td></tr>
+<tr><td><a href="BatBounded.BoundedNumericType.Infix.html">Infix</a> [<a href="BatBounded.BoundedNumericType.html">BatBounded.BoundedNumericType</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatBool.Infix.html">Infix</a> [<a href="BatBool.html">BatBool</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatBig_int.Infix.html">Infix</a> [<a href="BatBig_int.html">BatBig_int</a>]</td>
@@ -1000,13 +1005,9 @@ Infix submodule regrouping all infix operators
 <td></td></tr>
 <tr><td><a href="Batteries.Int.html">Int</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Int32.html">Int32</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Int32.html">Int32</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Int32.html">Int32</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Int64.html">Int64</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Int64.html">Int64</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1016,7 +1017,7 @@ Infix submodule regrouping all infix operators
 <td></td></tr>
 <tr><td><a href="Batteries.Interfaces.html">Interfaces</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
-<tr><td><a href="BatOo.Oo.Internal.html">Internal</a> [<a href="BatOo.Oo.html">BatOo.Oo</a>]</td>
+<tr><td><a href="BatOo.Internal.html">Internal</a> [<a href="BatOo.html">BatOo</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>L</td></tr>
 <tr><td><a href="BatList.Labels.LExceptionless.html">LExceptionless</a> [<a href="BatList.Labels.html">BatList.Labels</a>]</td>
@@ -1088,8 +1089,6 @@ Operations on <code class="code"><span class="constructor">Array</span></code> w
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.html">Legacy</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Lexing.html">Lexing</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Lexing.html">Lexing</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Lexing.html">Lexing</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -1097,8 +1096,6 @@ Operations on <code class="code"><span class="constructor">Array</span></code> w
 <tr><td><a href="BatGenlex.Languages.Library.html">Library</a> [<a href="BatGenlex.Languages.html">BatGenlex.Languages</a>]</td>
 <td></td></tr>
 <tr><td><a href="Extlib.ExtList.List.html">List</a> [<a href="Extlib.ExtList.html">Extlib.ExtList</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.List.html">List</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.List.html">List</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1152,7 +1149,15 @@ Functor building an implementation of the hashtable structure.
 </td></tr>
 <tr><td><a href="BatGenlex.Languages.Make.html">Make</a> [<a href="BatGenlex.Languages.html">BatGenlex.Languages</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatBounded.Make.html">Make</a> [<a href="BatBounded.html">BatBounded</a>]</td>
+<td><div class="info">
+Functor to build an implementation of a bounded type given the bounded
+    values definition <code class="code"><span class="constructor">M</span></code>
+</div>
+</td></tr>
 <tr><td><a href="BatConcurrent.MakeLock.html">MakeLock</a> [<a href="BatConcurrent.html">BatConcurrent</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatBounded.MakeNumeric.html">MakeNumeric</a> [<a href="BatBounded.html">BatBounded</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatHashcons.MakeTable.html">MakeTable</a> [<a href="BatHashcons.html">BatHashcons</a>]</td>
 <td></td></tr>
@@ -1166,8 +1171,6 @@ Make your own level-based logger, like <code class="code"><span class="construct
 <tr><td><a href="Batteries.Legacy.Map.html">Map</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatSplay.Map.html">Map</a> [<a href="BatSplay.html">BatSplay</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Marshal.html">Marshal</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Marshal.html">Marshal</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1195,8 +1198,6 @@ The BatEnum Monad
 <tr><td><a href="BatteriesThread.Mutex.html">Mutex</a> [<a href="BatteriesThread.html">BatteriesThread</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>N</td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Nativeint.html">Nativeint</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Nativeint.html">Nativeint</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Nativeint.html">Nativeint</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -1225,13 +1226,9 @@ A map on strings.
 This implementation can be used with UTF-8, but encoding of used strings is not verified.
 </div>
 </td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Oo.html">Oo</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Oo.html">Oo</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Oo.html">Oo</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
-<td></td></tr>
-<tr><td><a href="BatOo.Oo.html">Oo</a> [<a href="BatOo.html">BatOo</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatPathGen.PathType.OperatorLift.html">OperatorLift</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
 <td><div class="info">
@@ -1274,6 +1271,8 @@ This module contains the option parser itself.
 <td></td></tr>
 <tr><td><a href="BatChar.Incubator.Ord.html">Ord</a> [<a href="BatChar.Incubator.html">BatChar.Incubator</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatArray.Incubator.Ord.html">Ord</a> [<a href="BatArray.Incubator.html">BatArray.Incubator</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerIO.Output.html">Output</a> [<a href="BatInnerIO.html">BatInnerIO</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>P</td></tr>
@@ -1293,8 +1292,6 @@ This module contains the option parser itself.
 <td></td></tr>
 <tr><td><a href="Batteries.Print.html">Print</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Printexc.html">Printexc</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Printexc.html">Printexc</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Printexc.html">Printexc</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -1303,17 +1300,15 @@ This module contains the option parser itself.
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Printf.html">Printf</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
-<tr><td align="left"><br>Q</td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Queue.html">Queue</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
+<tr><td><a href="BatRandom.Incubator.Private_state_enums.html">Private_state_enums</a> [<a href="BatRandom.Incubator.html">BatRandom.Incubator</a>]</td>
 <td></td></tr>
+<tr><td align="left"><br>Q</td></tr>
 <tr><td><a href="Batteries.Queue.html">Queue</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Queue.html">Queue</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>R</td></tr>
 <tr><td><a href="BatteriesThread.RMutex.html">RMutex</a> [<a href="BatteriesThread.html">BatteriesThread</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Random.html">Random</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Random.html">Random</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1371,11 +1366,11 @@ A source for parsing.
 </td></tr>
 <tr><td><a href="Batteries.Splay.html">Splay</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Stack.html">Stack</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Stack.html">Stack</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Stack.html">Stack</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatRandom.Incubator.Private_state_enums.State.html">State</a> [<a href="BatRandom.Incubator.Private_state_enums.html">BatRandom.Incubator.Private_state_enums</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatRandom.State.html">State</a> [<a href="BatRandom.html">BatRandom</a>]</td>
 <td><div class="info">
@@ -1391,10 +1386,6 @@ Manipulate the current state of the random generator.
 This module contains various standard options.
 </div>
 </td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.html">Stdlib_verifications</a> [<a href="Batteries.html">Batteries</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Stream.html">Stream</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Stream.html">Stream</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Stream.html">Stream</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -1402,8 +1393,6 @@ This module contains various standard options.
 <tr><td><a href="BatStream.StreamLabels.html">StreamLabels</a> [<a href="BatStream.html">BatStream</a>]</td>
 <td></td></tr>
 <tr><td><a href="Extlib.ExtString.String.html">String</a> [<a href="Extlib.ExtString.html">Extlib.ExtString</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.String.html">String</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.String.html">String</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1414,8 +1403,6 @@ This module contains various standard options.
 <tr><td><a href="BatteriesPrint.StringSet.html">StringSet</a> [<a href="BatteriesPrint.html">BatteriesPrint</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Incubator.Substring.html">Substring</a> [<a href="Batteries.Incubator.html">Batteries.Incubator</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Sys.html">Sys</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Sys.html">Sys</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1474,8 +1461,6 @@ Unicode characters.
 </td></tr>
 <tr><td><a href="Batteries.Unit.html">Unit</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Stdlib_verifications.Unix.html">Unix</a> [<a href="Batteries.Stdlib_verifications.html">Batteries.Stdlib_verifications</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Unix.html">Unix</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Unix.html">Unix</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -1495,6 +1480,6 @@ Unicode characters.
 Monadic operations on Enumerations containing monadic elements
 </div>
 </td></tr>
-</table><br>
+</table>
 </body>
 </html>

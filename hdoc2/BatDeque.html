@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -110,12 +112,11 @@
 <title>Batteries user guide : BatDeque</title>
 </head>
 <body>
-<div class="navbar"><a href="BatConcurrent.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatDigest.html">Next</a>
+<div class="navbar"><a class="pre" href="BatConcurrent.html" title="BatConcurrent">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatDigest.html" title="BatDigest">Next</a>
 </div>
-<center><h1>Module <a href="type_BatDeque.html">BatDeque</a></h1></center>
-<br>
+<h1>Module <a href="type_BatDeque.html">BatDeque</a></h1>
 <pre><span class="keyword">module</span> BatDeque: <code class="code"><span class="keyword">sig</span></code> <a href="BatDeque.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Functional double-ended queues<br>
 <hr width="100%">
 <pre><span id="TYPEdq"><span class="keyword">type</span> <code class="type">+'a</code> dq</span> </pre>
@@ -193,11 +194,11 @@ The empty deque.<br>
       true, and from the front if <code class="code">backwards</code> is <code class="code"><span class="keyword">false</span></code>. By default,
       <code class="code">backwards</code> is <code class="code"><span class="keyword">false</span></code>. O(n)<br>
 </div>
-<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatDeque.html#TYPEdq">dq</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('acc -> 'a -> 'acc) -> 'acc -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'acc</code></pre><div class="info">
 <code class="code">fold_left f acc dq</code> is equivalent to <code class="code"><span class="constructor">List</span>.fold_left f acc
       (to_list dq)</code>, but more efficient. O(n)<br>
 </div>
-<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b -> 'b</code></pre><div class="info">
+<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'acc -> 'acc) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'acc -> 'acc</code></pre><div class="info">
 <code class="code">fold_right f dq acc</code> is equivalent to <code class="code"><span class="constructor">List</span>.fold_right f
       (to_list dq) acc</code>, but more efficient. O(n)<br>
 </div>

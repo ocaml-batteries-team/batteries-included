@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -105,12 +107,11 @@
 <link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatGc</title>
 </head>
 <body>
-<div class="navbar"><a href="BatFormat.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatGenlex.html">Next</a>
+<div class="navbar"><a class="pre" href="BatFormat.html" title="BatFormat">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatGenlex.html" title="BatGenlex">Next</a>
 </div>
-<center><h1>Module <a href="type_BatGc.html">BatGc</a></h1></center>
-<br>
+<h1>Module <a href="type_BatGc.html">BatGc</a></h1>
 <pre><span class="keyword">module</span> BatGc: <code class="code"><span class="keyword">sig</span></code> <a href="BatGc.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Memory management control and statistics; finalised values.
 <p>
 
@@ -125,7 +126,7 @@
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>minor_words&nbsp;: <code class="type">float</code>;</code></td>
+<code><span id="TYPEELTstat.minor_words">minor_words</span>&nbsp;:<code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of words allocated in the minor heap since
        the program was started.  This number is accurate in
        byte-code programs, but only an approximation in programs
@@ -135,7 +136,7 @@
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>promoted_words&nbsp;: <code class="type">float</code>;</code></td>
+<code><span id="TYPEELTstat.promoted_words">promoted_words</span>&nbsp;:<code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of words allocated in the minor heap that
        survived a minor collection and were moved to the major heap
        since the program was started.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
@@ -144,7 +145,7 @@
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>major_words&nbsp;: <code class="type">float</code>;</code></td>
+<code><span id="TYPEELTstat.major_words">major_words</span>&nbsp;:<code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of words allocated in the major heap, including
        the promoted words, since the program was started.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -152,14 +153,14 @@
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>minor_collections&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.minor_collections">minor_collections</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of minor collections since the program was started.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>major_collections&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.major_collections">major_collections</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of major collection cycles completed since the program
 	was started.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -167,21 +168,21 @@
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>heap_words&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.heap_words">heap_words</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Total size of the major heap, in words.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>heap_chunks&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.heap_chunks">heap_chunks</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of contiguous pieces of memory that make up the major heap.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>live_words&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.live_words">live_words</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of words of live data in the major heap, including the header
        words.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -189,35 +190,35 @@
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>live_blocks&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.live_blocks">live_blocks</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of live blocks in the major heap.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>free_words&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.free_words">free_words</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of words in the free list.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>free_blocks&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.free_blocks">free_blocks</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of blocks in the free list.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>largest_free&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.largest_free">largest_free</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Size (in words) of the largest block in the free list.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>fragments&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.fragments">fragments</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of wasted words due to fragmentation.  These are
        1-words free blocks placed between two live blocks.  They
        are not available for allocation.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
@@ -226,21 +227,21 @@
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>compactions&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.compactions">compactions</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of heap compactions since the program was started.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>top_heap_words&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.top_heap_words">top_heap_words</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Maximum size reached by the major heap, in words.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>stack_size&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstat.stack_size">stack_size</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Current size of the stack, in words.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
@@ -260,7 +261,7 @@ The memory management counters are returned in a <code class="code">stat</code> 
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span class="keyword">mutable&nbsp;</span>minor_heap_size&nbsp;: <code class="type">int</code>;</code></td>
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.minor_heap_size">minor_heap_size</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The size (in words) of the minor heap.  Changing
        this parameter will trigger a minor collection.  Default: 32k.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -268,7 +269,7 @@ The memory management counters are returned in a <code class="code">stat</code> 
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span class="keyword">mutable&nbsp;</span>major_heap_increment&nbsp;: <code class="type">int</code>;</code></td>
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.major_heap_increment">major_heap_increment</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The minimum number of words to add to the
        major heap when increasing it.  Default: 124k.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -276,7 +277,7 @@ The memory management counters are returned in a <code class="code">stat</code> 
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span class="keyword">mutable&nbsp;</span>space_overhead&nbsp;: <code class="type">int</code>;</code></td>
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.space_overhead">space_overhead</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The major GC speed is computed from this parameter.
        This is the memory that will be "wasted" because the GC does not
        immediatly collect unreachable blocks.  It is expressed as a
@@ -289,7 +290,7 @@ The memory management counters are returned in a <code class="code">stat</code> 
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span class="keyword">mutable&nbsp;</span>verbose&nbsp;: <code class="type">int</code>;</code></td>
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.verbose">verbose</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >This value controls the GC messages on standard error output.
        It is a sum of some of the following flags, to print messages
        on the corresponding events:<ul>
@@ -311,7 +312,7 @@ The memory management counters are returned in a <code class="code">stat</code> 
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span class="keyword">mutable&nbsp;</span>max_overhead&nbsp;: <code class="type">int</code>;</code></td>
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.max_overhead">max_overhead</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Heap compaction is triggered when the estimated amount
        of "wasted" memory is more than <code class="code">max_overhead</code> percent of the
        amount of live data.  If <code class="code">max_overhead</code> is set to 0, heap
@@ -324,7 +325,7 @@ The memory management counters are returned in a <code class="code">stat</code> 
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span class="keyword">mutable&nbsp;</span>stack_limit&nbsp;: <code class="type">int</code>;</code></td>
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.stack_limit">stack_limit</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The maximum size of the stack (in words).  This is only
        relevant to the byte-code runtime, as the native code runtime
        uses the operating system's stack.  Default: 256k.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
@@ -333,7 +334,7 @@ The memory management counters are returned in a <code class="code">stat</code> 
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span class="keyword">mutable&nbsp;</span>allocation_policy&nbsp;: <code class="type">int</code>;</code></td>
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.allocation_policy">allocation_policy</span>&nbsp;:<code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The policy used for allocating in the heap.  Possible
 	values are 0 and 1.  0 is the next-fit policy, which is
 	quite fast but can result in fragmentation.  1 is the

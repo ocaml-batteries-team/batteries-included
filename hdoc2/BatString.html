@@ -21,6 +21,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -86,6 +87,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -105,6 +107,7 @@
 <link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="String traversals" rel="Section" href="#6_Stringtraversals">
 <link title="Finding" rel="Section" href="#6_Finding">
 <link title="Transformations" rel="Section" href="#6_Transformations">
+<link title="In-Place Transformations" rel="Section" href="#6_InPlaceTransformations">
 <link title="Splitting around" rel="Section" href="#6_Splittingaround">
 <link title="Comparisons" rel="Section" href="#6_Comparisons">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
@@ -112,12 +115,11 @@
 <title>Batteries user guide : BatString</title>
 </head>
 <body>
-<div class="navbar"><a href="BatStream.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatSubstring.html">Next</a>
+<div class="navbar"><a class="pre" href="BatStream.html" title="BatStream">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatSubstring.html" title="BatSubstring">Next</a>
 </div>
-<center><h1>Module <a href="type_BatString.html">BatString</a></h1></center>
-<br>
+<h1>Module <a href="type_BatString.html">BatString</a></h1>
 <pre><span class="keyword">module</span> BatString: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>String operations.
 <p>
 
@@ -285,7 +287,7 @@ Returns the float represented by the given string or raises
 <code class="code"><span class="constructor">String</span>.iteri f s</code> is equivalent to
    <code class="code">f 0 s.[0]; f 1 s.[1]; ...; f len s.[len]</code> where <code class="code">len</code> is length of string <code class="code">s</code>.
     Example:
-    <pre></pre><code class="code">&nbsp;<span class="keyword">let</span>&nbsp;letter_positions&nbsp;word&nbsp;=<br>
+    <code class="code">&nbsp;<span class="keyword">let</span>&nbsp;letter_positions&nbsp;word&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;positions&nbsp;=&nbsp;<span class="constructor">Array</span>.make&nbsp;256&nbsp;[]&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;count_letter&nbsp;pos&nbsp;c&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;positions.(int_of_char&nbsp;c)&nbsp;&lt;-&nbsp;pos&nbsp;::&nbsp;positions.(int_of_char&nbsp;c)&nbsp;<span class="keyword">in</span><br>
@@ -295,7 +297,7 @@ Returns the float represented by the given string or raises
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">List</span>.filter&nbsp;(<span class="keyword">fun</span>&nbsp;(c,pos)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;pos&nbsp;&lt;&gt;&nbsp;[])<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;letter_positions&nbsp;<span class="string">"hello"</span>&nbsp;=&nbsp;[<span class="string">'e'</span>,[1];&nbsp;<span class="string">'h'</span>,[0];&nbsp;<span class="string">'l'</span>,[2;3];&nbsp;<span class="string">'o'</span>,[4]&nbsp;]<br>
-&nbsp;&nbsp;&nbsp;&nbsp;</code><pre></pre><br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code><br>
 </div>
 <br>
 <span id="6_Finding"><h6>Finding</h6></span><br>
@@ -482,6 +484,13 @@ Returns the string without the chars if they are at the beginning or
     Example: <code class="code"><span class="constructor">String</span>.repeat <span class="string">"foo"</span> 4 = <span class="string">"foofoofoofoo"</span></code><br>
 </div>
 <br>
+<span id="6_InPlaceTransformations"><h6>In-Place Transformations</h6></span><br>
+<pre><span id="VALin_place_mirror"><span class="keyword">val</span> in_place_mirror</span> : <code class="type">string -> unit</code></pre><div class="info">
+<code class="code">in_place_mirror s</code> mutates the string <code class="code">s</code>, so that its new value is
+the mirror of its old one: for instance if s contained <code class="code"><span class="string">"Example!"</span></code>, after
+the mutation it will contain <code class="code"><span class="string">"!elpmaxE"</span></code>.<br>
+</div>
+<br>
 <span id="6_Splittingaround"><h6>Splitting around</h6></span><br>
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> by:string -> string * string</code></pre><div class="info">
 <code class="code">split s sep</code> splits the string <code class="code">s</code> between the first
@@ -568,7 +577,7 @@ Same as <code class="code">concat</code><br>
 </div>
 <br>
 <span id="6_Comparisons"><h6>Comparisons</h6></span><br>
-<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">String.t -> String.t -> bool</code></pre><div class="info">
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">String.t -> String.t -> bool</code></pre><div class="info">
 String equality<br>
 </div>
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">String.t -> String.t -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><div class="info">

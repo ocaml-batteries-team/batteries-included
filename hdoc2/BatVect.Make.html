@@ -19,6 +19,7 @@
 <link title="BatBigarray" rel="Chapter" href="BatBigarray.html">
 <link title="BatBitSet" rel="Chapter" href="BatBitSet.html">
 <link title="BatBool" rel="Chapter" href="BatBool.html">
+<link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
@@ -84,6 +85,7 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
+<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
@@ -112,10 +114,9 @@
 <title>Batteries user guide : BatVect.Make</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatVect.html">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatVect.html" title="BatVect">Up</a>
 &nbsp;</div>
-<center><h1>Functor <a href="type_BatVect.Make.html">BatVect.Make</a></h1></center>
-<br>
+<h1>Functor <a href="type_BatVect.Make.html">BatVect.Make</a></h1>
 <pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">R</span></code><code class="code"> : </code><code class="type"><a href="BatVect.RANDOMACCESS.html">RANDOMACCESS</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">PARAM</span></code><code class="code"> : </code><code class="code"><span class="keyword">sig</span></code><div class="sig_block"><pre><span id="VALmax_height"><span class="keyword">val</span> max_height</span> : <code class="type">int</code></pre><pre><span id="VALleaf_size"><span class="keyword">val</span> leaf_size</span> : <code class="type">int</code></pre></div><code class="code"><span class="keyword">end</span></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatVect.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></div></pre><table border="0" cellpadding="3" width="100%">
 <tr>
 <td align="left" valign="top" width="1%%"><b>Parameters: </b></td>
@@ -298,11 +299,11 @@ Operates like iter, but also passes the index of the character
     from an explicit loop using <code class="code">get</code>.<br>
 <b>Raises</b> <code>Out_of_bounds</code> in the same cases as <code class="code">sub</code>.<br>
 </div>
-<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.Make.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 <code class="code">fold_left f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN-1 </code>
       where <code class="code">rn = <span class="constructor">Vect</span>.get n r </code> and <code class="code"><span class="constructor">N</span> = length r</code>.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.Make.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 An alias for <code class="code">fold_left</code><br>
 </div>
 <pre><span id="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
@@ -313,7 +314,7 @@ as <code class="code">fold_left</code>, but no initial value - just applies redu
 <code class="code">fold_right f r a</code> computes <code class="code"> f (r0 ... (f rN-2 (f rN-1 a)) ...)) </code>
         where <code class="code">rn = <span class="constructor">Vect</span>.get n r </code> and <code class="code"><span class="constructor">N</span> = length r</code>.<br>
 </div>
-<pre><span id="VALfoldi"><span class="keyword">val</span> foldi</span> : <code class="type">(int -> 'a -> 'b -> 'a) -> 'a -> 'b <a href="BatVect.Make.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+<pre><span id="VALfoldi"><span class="keyword">val</span> foldi</span> : <code class="type">(int -> 'b -> 'a -> 'b) -> 'b -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 As <code class="code">fold</code>, but with the position of each value passed to the
         folding function<br>
 </div>
