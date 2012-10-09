@@ -69,7 +69,7 @@ including with backwards incompatible changes between point releases.
 They are included for testing and stabilization until they can be
 finalized and moved to batteries proper.
 
-{!modules: BatOrd BatSubstring}
+{!modules: BatBounded BatOrd BatSubstring}
 
 {6 Internal Modules}
 
