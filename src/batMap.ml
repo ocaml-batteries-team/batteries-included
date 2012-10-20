@@ -951,12 +951,25 @@ let pop = Concrete.pop
 
 let split k m = Concrete.split k Pervasives.compare m
 
-let union m1 m2 = Concrete.union Pervasives.compare m1 Pervasives.compare m2
 
-let diff m1 m2 = Concrete.diff Pervasives.compare m1 Pervasives.compare m2
+(* We can't compare external primitives directly using the physical equality
+   operator, since two different occurences of an external primitive are two
+   different closures. So we first make a local binding of [Pervasives.compare]
+   and only then pass it to corresponding functions from Concrete. This way the
+   physical equality check in [compatible_cmp] will work as needed *)
+
+let union m1 m2 =
+  let comp = Pervasives.compare in
+  Concrete.union comp m1 comp m2
+
+let diff m1 m2 =
+  let comp = Pervasives.compare in
+  Concrete.diff comp m1 comp m2
 
 let intersect merge m1 m2 =
-  Concrete.intersect merge Pervasives.compare m1 Pervasives.compare m2
+  let comp = Pervasives.compare in
+  Concrete.intersect merge comp m1 comp m2
+
 
 let merge f m1 m2 = Concrete.merge f Pervasives.compare m1 m2
 
@@ -964,6 +977,7 @@ let bindings = Concrete.bindings
 
 let compare cmp_val m1 m2 =
   Concrete.compare Pervasives.compare Pervasives.compare m1 m2
+
 let equal eq_val m1 m2 = Concrete.equal Pervasives.compare (=) m1 m2
 
 module Exceptionless =
