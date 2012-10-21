@@ -551,28 +551,31 @@ module Concrete = struct
      [heuristic_merge] function.
   *)
   let rec ordered cmp s =
-    try
-      ignore
-        (foldi (fun k _ last_k ->
-          if cmp last_k k >= 0 then raise Exit
-          else k)
-           (remove_min_binding s)
-           (fst (min_binding s)));
-      true
-    with Exit -> false
+    if s = Empty then true else
+      try
+        ignore
+          (foldi (fun k _ last_k ->
+            if cmp last_k k >= 0 then raise Exit
+            else k)
+             (remove_min_binding s)
+             (fst (min_binding s)));
+        true
+      with Exit -> false
 
+  (* Maps are considered compatible by their comparison function when either:
+     - cmp1 and cmp2 are the *same* function (physical equality)
+     - cmp1 is a correct ordering on m2 (see comment in [ordered]) *)
   let compatible_cmp cmp1 m1 cmp2 m2 =
     cmp1 == cmp2 || ordered cmp1 m2
 
-  let heuristic_merge f cmp1 m1 cmp2 m2 =
-    (* as merge_diverse is much slower than merge, we first try to
-       see if we could possibly use merge; this is the case when either:
-       - cmp1 and cmp2 are the *same* function (physical equality)
-       - cmp1 is a correct ordering on m2 (see comment in [ordered])
+  (* We first try to see if the comparison functions are compatible.
+     If they are, then we use the [merge] function instead of a much
+     slower [merge_diverse].
 
-       In the "same comparisons" case, we return a map ordered with
-       the given comparison. In the other case, we arbitrarily use the
-       comparison function of [m1]. *)
+     In the "same comparisons" case, we return a map ordered with
+     the given comparison. In the other case, we arbitrarily use the
+     comparison function of [m1]. *)
+  let heuristic_merge f cmp1 m1 cmp2 m2 =
     if compatible_cmp cmp1 m1 cmp2 m2
     then merge f cmp1 m1 m2
     else merge_diverse f cmp1 m1 cmp2 m2
@@ -951,12 +954,25 @@ let pop = Concrete.pop
 
 let split k m = Concrete.split k Pervasives.compare m
 
-let union m1 m2 = Concrete.union Pervasives.compare m1 Pervasives.compare m2
 
-let diff m1 m2 = Concrete.diff Pervasives.compare m1 Pervasives.compare m2
+(* We can't compare external primitives directly using the physical equality
+   operator, since two different occurences of an external primitive are two
+   different closures. So we first make a local binding of [Pervasives.compare]
+   and only then pass it to corresponding functions from Concrete. This way the
+   physical equality check in [compatible_cmp] will work as needed *)
+
+let union m1 m2 =
+  let comp = Pervasives.compare in
+  Concrete.union comp m1 comp m2
+
+let diff m1 m2 =
+  let comp = Pervasives.compare in
+  Concrete.diff comp m1 comp m2
 
 let intersect merge m1 m2 =
-  Concrete.intersect merge Pervasives.compare m1 Pervasives.compare m2
+  let comp = Pervasives.compare in
+  Concrete.intersect merge comp m1 comp m2
+
 
 let merge f m1 m2 = Concrete.merge f Pervasives.compare m1 m2
 
@@ -964,6 +980,7 @@ let bindings = Concrete.bindings
 
 let compare cmp_val m1 m2 =
   Concrete.compare Pervasives.compare Pervasives.compare m1 m2
+
 let equal eq_val m1 m2 = Concrete.equal Pervasives.compare (=) m1 m2
 
 module Exceptionless =
