@@ -1,9 +1,0 @@
-
-All the constructs above can be combined without constraints: the grammar is as follows:
-
-\begin{verbatim}
-    Metaheader  ::=   Binding {";" Binding}
-    Binding     ::=   Functions [ "as" ID ]
-    Functions   ::=   ID {"," ID}
-    ID          ::=   (*OCaml lower-case identifier*)
-\end{verbatim}
