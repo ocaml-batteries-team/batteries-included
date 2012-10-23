@@ -69,7 +69,7 @@ module Core = struct
     if n1 > n2 then invalid_arg "IMap.add_range" else
       make eq (before n1 s) (n1, n2, v) (after n2 s)
 
-  let rec find n m =
+  let rec find (n:int) m =
     if is_empty m then raise Not_found else
       let (n1, n2, v) = root m in
       if n < n1 then find n (left_branch m) else
@@ -97,7 +97,7 @@ module Core = struct
     if n1 > n2 then invalid_arg "IMap.remove_range" else
       concat (before n1 m) (after n2 m)
 
-  let rec mem n m =
+  let rec mem (n:int) m =
     if is_empty m then false else
       let (n1, n2, _) = root m in
       if n < n1 then mem n (left_branch m) else

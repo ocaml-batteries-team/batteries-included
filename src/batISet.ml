@@ -6,7 +6,7 @@ include BatAvlTree
 type t = (int * int) tree
 type elt = int
 
-let rec mem n s =
+let rec mem (n:int) s =
   if is_empty s then false else
   let v1, v2 = root s in
   if n < v1 then mem n (left_branch s) else
