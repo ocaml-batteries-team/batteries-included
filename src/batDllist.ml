@@ -113,21 +113,25 @@ let demote node =
 
 let remove node =
   let next = node.next in
+  if next == node then raise Empty; (* singleton list points to itself for next *)
   let prev = node.prev in
-  if next == prev then raise Empty;
+  (* Remove node from list by linking prev and next together *)
   prev.next <- next;
   next.prev <- prev;
+  (* Make node a singleton list by setting its next and prev to itself *)
   node.next <- node;
   node.prev <- node
 (*$T remove
   let t = of_list [1;2;3;4] in let u = next t in remove t; invariants u; to_list u = [2;3;4]
+  let t = of_list [1;2] in let u = next t in remove t; invariants u; to_list u = [2]
+  let t = of_list [1;2] in let u = next t in remove t; try remove u; false with Empty -> true
   let t = of_list [1] in try remove t; false with Empty -> true
 *)
 
 let drop node =
   let next = node.next in
+  if next == node then raise Empty; (* singleton list points to itself for next *)
   let prev = node.prev in
-  if next == prev then raise Empty;
   prev.next <- next;
   next.prev <- prev;
   node.next <- node;
@@ -140,8 +144,8 @@ let drop node =
 
 let rev_drop node =
   let next = node.next in
+  if next == node then raise Empty;  (* singleton list points to itself for next *)
   let prev = node.prev in
-  if next == prev then raise Empty;
   prev.next <- next;
   next.prev <- prev;
   node.next <- node;
