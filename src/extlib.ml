@@ -13,7 +13,7 @@ module ExtList = struct
   module List = struct include List include BatList end
 end
 module ExtString = struct
-  module String = struct include String include BatString end
+  module String = BatString
 end
 module Global = BatGlobal
 module IO = BatIO

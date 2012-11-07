@@ -82,7 +82,7 @@ module Set = BatSet
 (* Sort - Deprecated *)
 module Stack = BatStack
 module Stream = struct include Stream include BatStream end
-module String = struct include String include BatString end
+module String = BatString
 (* StringLabels *)
 module Sys = BatSys
 (* Weak *)
