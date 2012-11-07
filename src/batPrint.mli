@@ -140,16 +140,16 @@
    - [%X]: format an integer as an unsigned hexadecimal, using upper letters.
    - [%o]: format an integer as an unsigned octal.
    - [%s]: insert a string.
-   - [%S]: insert a quoted string in Caml syntax (double quotes, escapes).
+   - [%S]: insert a quoted string in OCaml syntax (double quotes, escapes).
    - [%sc]: insert a read-only/read-write string (see {!String.Cap}).
-   - [%Sc]: insert a quoted read-only/read-write string in Caml syntax (double quotes, escapes).
+   - [%Sc]: insert a quoted read-only/read-write string in OCaml syntax (double quotes, escapes).
    - [%rope]: insert a rope (see {!Rope}).
    - [%utf8]: insert a UTF-8 encoded string.
    - [%c]: insert a character argument.
-   - [%C]: insert a character argument in Caml syntax (single quotes, escapes).
+   - [%C]: insert a character argument in OCaml syntax (single quotes, escapes).
    - [%f]: format a floating-point number as a decimal,
    in the style [dddd.ddd].
-   - [%F]: format a floating-point number in Caml syntax ([dddd.]
+   - [%F]: format a floating-point number in OCaml syntax ([dddd.]
    or [dddd.ddd] or [d.ddd e+-dd]).
    - [%e] or [%E]: format a floating-point number as a decimal,
    in the style [d.ddd e+-dd] (mantissa and exponent).

@@ -40,7 +40,7 @@ val chr : int -> char
 val escaped : char -> string
 (** Return a string representing the given character,
    with special characters escaped following the lexical conventions
-   of Objective Caml. *)
+   of OCaml. *)
 
 val lowercase : char -> char
 (** Convert the given character to its equivalent lowercase character. *)

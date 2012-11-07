@@ -27,14 +27,14 @@
     sent over a pipe or network connection.  The bytes can then
     be read back later, possibly in another process, and decoded back
     into a data structure. The format for the byte sequences
-    is compatible across all machines for a given version of Objective Caml.
+    is compatible across all machines for a given version of OCaml.
 
     Warning: marshaling is currently not type-safe. The type
     of marshaled data is not transmitted along the value of the data,
     making it impossible to check that the data read back possesses the
     type expected by the context. In particular, the result type of
     the [Marshal.from_*] functions is given as ['a], but this is
-    misleading: the returned Caml value does not possess type ['a]
+    misleading: the returned OCaml value does not possess type ['a]
     for all ['a]; it has one, unique type which cannot be determined
     at compile-type.  The programmer should explicitly give the expected
     type of the returned value, using the following syntax:
