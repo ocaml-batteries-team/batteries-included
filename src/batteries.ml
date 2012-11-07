@@ -49,7 +49,7 @@ end
 
 (* stdlib modules *)
 (* Arg *)
-module Array = struct include Array include BatArray end
+module Array = BatArray
 (* ArrayLabels *)
 module Buffer = BatBuffer
 (* Callback *)
