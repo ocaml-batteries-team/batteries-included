@@ -232,7 +232,7 @@ val of_backwards : 'a BatEnum.t -> 'a array
 (** {6 Utilities} *)
 
 val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
-(** [decorate_sort f a] returns a sorted copy of [a] such that if [f
+(** [decorate_stable_sort f a] returns a sorted copy of [a] such that if [f
     x < f y] then [x] is earlier in the result than [y].  This
     function is useful when [f] is expensive, as it only computes [f
     x] once for each element in the array.  See
@@ -244,7 +244,7 @@ val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
     the ['b] values.  This is deemed sufficient. *)
 
 val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array
-(** As {!Array.decorate_sort}, but uses fast_sort internally. *)
+(** As {!Array.decorate_stable_sort}, but uses fast_sort internally. *)
 
 val range : 'a array -> int BatEnum.t
 (** [range a] returns an enumeration of all valid indexes into the given
