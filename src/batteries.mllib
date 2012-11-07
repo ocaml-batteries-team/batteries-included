@@ -69,7 +69,6 @@ BatRef
 BatResult
 BatReturn
 BatSeq
-BatStats
 BatSubstring
 BatTuple
 BatUref
