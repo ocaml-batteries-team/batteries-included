@@ -10,14 +10,6 @@ archive(byte,mt)   +="batteriesThread.cma"
 archive(native)    ="batteries.cmxa"
 archive(native,mt) +="batteriesThread.cmxa"
 
-package "qtest" (
-	description = "QTest, the testing framwork of choice"
-	version = "@VERSION@"
-	requires = "unix,oUnit"
-	archive(byte) = "qtest.cma"
-	archive(native) = "qtest.cmxa"
-)
-
 package "pa_string" (
         description = "pseudo-native Unicode strings (container)"
 	version     = "@VERSION@"
