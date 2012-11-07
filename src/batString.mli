@@ -325,7 +325,7 @@ val quote : string -> string
     [String.quote "\n" = "\"\\n\""]
     etc.
 
-    More precisely, the returned string conforms to the Caml syntax:
+    More precisely, the returned string conforms to the OCaml syntax:
     if printed, it outputs a representation of the input string as an
     OCaml string litteral.
 *)

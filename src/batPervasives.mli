@@ -256,14 +256,14 @@ val output_binary_int : unit BatIO.output -> int -> unit
       The given integer is taken modulo 2{^32}.
       The only reliable way to read it back is through the
       {!Pervasives.input_binary_int} function. The format is compatible across
-      all machines for a given version of Objective Caml. *)
+      all machines for a given version of OCaml. *)
 
 val output_binary_float : unit BatIO.output -> float -> unit
   (** Write one float in binary format (8 bytes, IEEE 754 double format)
       on the given output channel.
       The only reliable way to read it back is through the
       {!Pervasives.input_binary_float} function. The format is compatible across
-      all machines for a given version of Objective Caml. *)
+      all machines for a given version of OCaml. *)
 
 val output_value : unit BatIO.output -> 'a -> unit
   (** Write the representation of a structured value of any type
