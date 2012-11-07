@@ -24,7 +24,7 @@ type 'a t = 'a array
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
-open Array
+include Array
 
 let map = map
 
