@@ -23,7 +23,7 @@
 
 (**Operations on floating-point numbers.
 
-   Caml's floating-point numbers follow the IEEE 754 standard, using
+   OCaml's floating-point numbers follow the IEEE 754 standard, using
    double precision (64 bits) numbers. Floating-point operations never
    raise an exception on overflow, underflow, division by zero,
    etc. Instead, special IEEE numbers are returned as appropriate,
@@ -364,7 +364,7 @@ val t_printer : t BatValuePrinter.t
    [infinity] or [neg_infinity], operations raise exception {!Number.Overflow}.
    In case of [nan], operations raise exception {!Number.NaN}.
 
-   Caml's floating-point numbers follow the IEEE 754 standard, using
+   OCaml's floating-point numbers follow the IEEE 754 standard, using
    double precision (64 bits) numbers. Floating-point operations never
    raise an exception on overflow, underflow, division by zero,
    etc. Instead, special IEEE numbers are returned as appropriate,
