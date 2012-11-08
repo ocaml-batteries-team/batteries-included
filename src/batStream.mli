@@ -20,10 +20,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-
 (**
    Streams and stream parsers
+
+   Streams are a read-and-forget data structure, comparable to enumerations.
+   In Batteries Included, streams are deprecated in favor of enumerations,
+   defined in module {!BatEnum}.
 
    {b Note} This module is provided essentially for backwards-compatibility.
    If you feel like using [Stream.t], please take a look at [BatEnum]
@@ -31,28 +33,126 @@
 
    This module is based on {{:http://www.pps.jussieu.fr/~li/software/sdflow/}Zheng Li's SDFlow}
 
-    This module extends Stdlib's
-    {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Stream.html}Stream}
-    module, go there for documentation on the rest of the functions
-    and types.
+   This module replaces Stdlib's
+   {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Stream.html}Stream}
+   module.
+
+   @author Zheng Li (SDFlow)
+   @author David Teller
+
+   @documents Stream
 *)
 
-(** Streams and parsers.
-
-    Streams are a read-and-forget data structure, comparable to enumerations.
-    In Batteries Included, streams are deprecated in favor of enumerations,
-    defined in module {!BatEnum}.
-
-    @author Zheng Li (SDFlow)
-    @author David Teller
-
-    @documents Stream
-*)
-open Stream
-
+type 'a t = 'a Stream.t
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
+
+(** The type of streams holding values of type ['a]. *)
+
+exception Failure
+(** Raised by parsers when none of the first components of the stream
+   patterns is accepted. *)
+
+exception Error of string
+(** Raised by parsers when the first component of a stream pattern is
+   accepted, but one of the following components is rejected. *)
+
+
+(** {6 Stream builders} *)
+
+val from : (int -> 'a option) -> 'a t
+(** [Stream.from f] returns a stream built from the function [f].
+   To create a new stream element, the function [f] is called with
+   the current stream count. The user function [f] must return either
+   [Some <value>] for a value or [None] to specify the end of the
+   stream. *)
+
+val of_list : 'a list -> 'a t
+(** Return the stream holding the elements of the list in the same
+   order. *)
+
+val of_string : string -> char t
+(** Return the stream of the characters of the string parameter. *)
+
+val of_channel : in_channel -> char t
+(** Return the stream of the characters read from the input channel. *)
+
+(** {6 Other Stream builders}
+
+   Warning: these functions create streams with fast access; it is illegal
+   to mix them with streams built with [[< >]]; would raise [Failure]
+   when accessing such mixed streams.
+*)
+
+val of_fun : (unit -> 'a) -> 'a t
+(** [Stream.of_fun f] returns a stream built from the function [f].
+   To create a new stream element, the function [f] is called with
+   the current stream count. The user function [f] must return either
+   [Some <value>] for a value or [None] to specify the end of the
+   stream. *)
+
+
+(** {6 Stream iterator} *)
+
+val iter : ('a -> unit) -> 'a t -> unit
+(** [Stream.iter f s] scans the whole stream s, applying function [f]
+   in turn to each stream element encountered. *)
+
+val foldl : ('a -> 'b -> 'a * bool option) -> 'a -> 'b t -> 'a
+  (** [foldl f init stream] is a lazy fold_left. [f accu elt] should return
+      [(new_accu, state)] where [new_accu] is normal accumulation result, and
+      [state] is a flag representing whether the computation should continue
+      and whether the last operation is valid: [None] means continue, [Some b]
+      means stop where [b = true] means the last addition is still valid and [b
+      = false] means the last addition is invalid and should be revert. *)
+
+val foldr : ('a -> 'b lazy_t -> 'b) -> 'b -> 'a t -> 'b
+  (** [foldr f init stream] is a lazy fold_right. Unlike the normal fold_right,
+      the accumulation parameter of [f elt accu] is lazy, hence it can decide
+      not to force the evaluation of [accu] if the current element [elt] can
+      determin the result by itself. *)
+
+val fold : ('a -> 'a -> 'a * bool option) -> 'a t -> 'a
+  (** [fold] is [foldl] without initialization value, where the first
+      element of stream is taken as [init]. It raises [End_of_stream] exception
+      when the input stream is empty. *)
+
+
+val filter : ('a -> bool) -> 'a t -> 'a t
+  (** [filter test stream] picks all the elements satisfying [test] from [stream]
+      and return the results in the same order as a stream. *)
+
+
+(** {6 Predefined parsers} *)
+
+val next : 'a t -> 'a
+(** Return the first element of the stream and remove it from the
+   stream. Raise Stream.Failure if the stream is empty. *)
+
+val empty : 'a t -> unit
+(** Return [()] if the stream is empty, else raise [Stream.Failure]. *)
+
+
+(** {6 Useful functions} *)
+
+val peek : 'a t -> 'a option
+(** Return [Some] of "the first element" of the stream, or [None] if
+   the stream is empty. *)
+
+val junk : 'a t -> unit
+(** Remove the first element of the stream, possibly unfreezing
+   it before. *)
+
+val count : 'a t -> int
+(** Return the current count of the stream elements, i.e. the number
+   of the stream elements discarded. *)
+
+val npeek : int -> 'a t -> 'a list
+(** [npeek n] returns the list of the [n] first elements of
+   the stream, or all its remaining elements if less than [n]
+   elements are available. *)
+
 
 (** {6 Conversion functions} *)
 
@@ -87,48 +187,6 @@ val to_string_fun : ('a -> string) -> 'a t -> string
 val on_output:   'a BatIO.output-> char t -> unit
 (** Convert an [output] to a stream.*)
 
-
-(** {6 Stream builders}
-
-   Warning: these functions create streams with fast access; it is illegal
-   to mix them with streams built with [[< >]]; would raise [Failure]
-   when accessing such mixed streams.
-*)
-
-(** {6 Other constructors} *)
-
-val of_fun : (unit -> 'a) -> 'a t
-(** [Stream.from f] returns a stream built from the function [f].
-   To create a new stream element, the function [f] is called with
-   the current stream count. The user function [f] must return either
-   [Some <value>] for a value or [None] to specify the end of the
-   stream. *)
-
-(** {6 Stream iterators} *)
-
-val foldl : ('a -> 'b -> 'a * bool option) -> 'a -> 'b t -> 'a
-  (** [foldl f init stream] is a lazy fold_left. [f accu elt] should return
-      [(new_accu, state)] where [new_accu] is normal accumulation result, and
-      [state] is a flag representing whether the computation should continue
-      and whether the last operation is valid: [None] means continue, [Some b]
-      means stop where [b = true] means the last addition is still valid and [b
-      = false] means the last addition is invalid and should be revert. *)
-
-val foldr : ('a -> 'b lazy_t -> 'b) -> 'b -> 'a t -> 'b
-  (** [foldr f init stream] is a lazy fold_right. Unlike the normal fold_right,
-      the accumulation parameter of [f elt accu] is lazy, hence it can decide
-      not to force the evaluation of [accu] if the current element [elt] can
-      determin the result by itself. *)
-
-val fold : ('a -> 'a -> 'a * bool option) -> 'a t -> 'a
-  (** [fold] is [foldl] without initialization value, where the first
-      element of stream is taken as [init]. It raises [End_of_stream] exception
-      when the input stream is empty. *)
-
-
-val filter : ('a -> bool) -> 'a t -> 'a t
-  (** [filter test stream] picks all the elements satisfying [test] from [stream]
-      and return the results in the same order as a stream. *)
 
 (** {6 Computation over stream}
 
@@ -263,3 +321,22 @@ module StreamLabels : sig
   val merge : f:(bool -> 'a -> bool) -> 'a t * 'a t -> 'a t
   val switch : f:('a -> bool) -> 'a t -> 'a t * 'a t
 end
+
+(**/**)
+
+(* The following is for system use only. Do not call directly. *)
+
+val iapp : 'a t -> 'a t -> 'a t
+val icons : 'a -> 'a t -> 'a t
+val ising : 'a -> 'a t
+
+val lapp : (unit -> 'a t) -> 'a t -> 'a t
+val lcons : (unit -> 'a) -> 'a t -> 'a t
+val lsing : (unit -> 'a) -> 'a t
+
+val sempty : 'a t
+val slazy : (unit -> 'a t) -> 'a t
+
+val dump : ('a -> unit) -> 'a t -> unit
+
+(**/**)
