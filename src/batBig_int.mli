@@ -223,14 +223,14 @@ val is_int_big_int : big_int -> bool
            be representable as a small integer (type [int])
            without loss of precision.  On a 32-bit platform,
            [is_int_big_int a] returns [true] if and only if
-           [a] is between 2{^30} and 2{^30}-1.  On a 64-bit platform,
+           [a] is between -2{^30} and 2{^30}-1.  On a 64-bit platform,
            [is_int_big_int a] returns [true] if and only if
            [a] is between -2{^62} and 2{^62}-1. *)
 
 val to_int : big_int -> int
 val int_of_big_int : big_int -> int
         (** Convert a big integer to a small integer (type [int]).
-           Raises [Failure "int_of_big_int"] if the big integer
+           @raise [Failure "int_of_big_int"] if the big integer
            is not representable as a small integer. *)
 
 val big_int_of_int32 : int32 -> big_int
