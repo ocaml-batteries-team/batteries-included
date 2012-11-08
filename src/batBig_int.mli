@@ -28,71 +28,64 @@
     memory given to OCaml. The downside is speed, as big integers
     are much slower than any other type of integer known to OCaml.
 
-    This module extends Stdlib's
+    This module replaces Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Big_int.html}Big_int}
-    module, go there for documentation on the rest of the functions
-    and types.
+    module.
 
     @author Valerie Menissier-Morain (base module)
     @author Gabriel Scherer
     @author David Teller
 *)
 
-open Nat
-open Big_int
+type big_int = Big_int.big_int
+        (** The type of big integers. *)
 
-type t = big_int
+val zero : big_int
+val zero_big_int : big_int
+        (** The big integer [0]. *)
 
-    val zero : big_int
-    val one : big_int
-    val neg : big_int -> big_int
-    val succ : big_int -> big_int
-    val pred : big_int -> big_int
-    val abs : big_int -> big_int
-    val add : big_int -> big_int -> big_int
-    val sub : big_int -> big_int -> big_int
-    val mul : big_int -> big_int -> big_int
-    val div : big_int -> big_int -> big_int
-    val modulo : big_int -> big_int -> big_int
-    val pow : big_int -> big_int -> big_int
-    val to_string : big_int -> string
-    val of_string : string -> big_int
-    val to_int : big_int -> int
-    val of_int : int -> big_int
-
-    val of_float: float -> big_int
-    (** rounds to the nearest integer
-        @raise Invalid_argument when given NaN or +/-infinity
-    *)
-
-    val to_float: big_int -> float
-    val compare : big_int -> big_int -> int
-    val ( -- ) : big_int -> big_int -> big_int BatEnum.t
-    val ( --- ): big_int -> big_int -> big_int BatEnum.t
-
-
-    val ( + ) : t -> t -> t
-    val ( - ) : t -> t -> t
-    val ( * ) : t -> t -> t
-    val ( / ) : t -> t -> t
-    val ( ** ) : t -> t -> t
-
-(* Available only in `Compare` submodule
-    val ( <> ) : t -> t -> bool
-    val ( >= ) : t -> t -> bool
-    val ( <= ) : t -> t -> bool
-    val ( > ) : t -> t -> bool
-    val ( < ) : t -> t -> bool
-    val ( = ) : t -> t -> bool
- *)
-    val operations : t BatNumber.numeric
+val one : big_int
+val unit_big_int : big_int
+        (** The big integer [1]. *)
 
 (** {6 Arithmetic operations} *)
 
+val neg : big_int -> big_int
+val succ : big_int -> big_int
+val pred : big_int -> big_int
+val abs : big_int -> big_int
+val add : big_int -> big_int -> big_int
+val sub : big_int -> big_int -> big_int
+val mul : big_int -> big_int -> big_int
+val div : big_int -> big_int -> big_int
+val modulo : big_int -> big_int -> big_int
+val pow : big_int -> big_int -> big_int
 
+type t = big_int
+val ( + ) : t -> t -> t
+val ( - ) : t -> t -> t
+val ( * ) : t -> t -> t
+val ( / ) : t -> t -> t
+val ( ** ) : t -> t -> t
 
+val minus_big_int : big_int -> big_int
+        (** Unary negation. *)
+val abs_big_int : big_int -> big_int
+        (** Absolute value. *)
+val add_big_int : big_int -> big_int -> big_int
+        (** Addition. *)
+val succ_big_int : big_int -> big_int
+        (** Successor (add 1). *)
 val add_int_big_int : int -> big_int -> big_int
         (** Addition of a small integer to a big integer. *)
+val sub_big_int : big_int -> big_int -> big_int
+        (** Subtraction. *)
+val pred_big_int : big_int -> big_int
+        (** Predecessor (subtract 1). *)
+val mult_big_int : big_int -> big_int -> big_int
+        (** Multiplication of two big integers. *)
+val mult_int_big_int : int -> big_int -> big_int
+        (** Multiplication of a big integer by a small integer *)
 val square_big_int: big_int -> big_int
         (** Return the square of the given big integer *)
 val sqrt_big_int: big_int -> big_int
@@ -106,7 +99,14 @@ val quomod_big_int : big_int -> big_int -> big_int * big_int
            Writing [(q,r) = quomod_big_int a b], we have
            [a = q * b + r] and [0 <= r < |b|].
            Raise [Division_by_zero] if the divisor is zero. *)
-
+val div_big_int : big_int -> big_int -> big_int
+        (** Euclidean quotient of two big integers.
+           This is the first result [q] of [quomod_big_int] (see above). *)
+val mod_big_int : big_int -> big_int -> big_int
+        (** Euclidean modulus of two big integers.
+           This is the second result [r] of [quomod_big_int] (see above). *)
+val gcd_big_int : big_int -> big_int -> big_int
+        (** Greatest common divisor of two big integers. *)
 val power_int_positive_int: int -> int -> big_int
 val power_big_int_positive_int: big_int -> int -> big_int
 val power_int_positive_big_int: int -> big_int -> big_int
@@ -117,7 +117,25 @@ val power_big_int_positive_big_int: big_int -> big_int -> big_int
            on the function, [a] and [b] can be either small integers
            or big integers.  Raise [Invalid_argument] if [b] is negative. *)
 
+val operations : t BatNumber.numeric
+
+(** {6 Generators} *)
+
+val ( -- ) : big_int -> big_int -> big_int BatEnum.t
+val ( --- ): big_int -> big_int -> big_int BatEnum.t
+
 (** {6 Comparisons and tests} *)
+
+val compare : big_int -> big_int -> int
+
+(* Available only in `Compare` submodule
+    val ( <> ) : t -> t -> bool
+    val ( >= ) : t -> t -> bool
+    val ( <= ) : t -> t -> bool
+    val ( > ) : t -> t -> bool
+    val ( < ) : t -> t -> bool
+    val ( = ) : t -> t -> bool
+ *)
 
 val sign_big_int : big_int -> int
         (** Return [0] if the given big integer is zero,
@@ -142,15 +160,16 @@ val num_digits_big_int : big_int -> int
 
 (** {6 Conversions to and from strings} *)
 
+val to_string : big_int -> string
+val string_of_big_int : big_int -> string
+        (** Return the string representation of the given big integer,
+           in decimal (base 10). *)
 
+val of_string : string -> big_int
 val big_int_of_string : string -> big_int
         (** Convert a string to a big integer, in decimal.
            The string consists of an optional [-] or [+] sign,
            followed by one or several decimal digits. *)
-
-val string_of_big_int : big_int -> string
-        (** Return the string representation of the given big integer,
-           in decimal (base 10). *)
 
 val to_string_in_binary : big_int -> string
 (** as [string_of_big_int], but in base 2 *)
@@ -193,9 +212,10 @@ custom functions using [to_string_in_custom_base].
 *)
 
 
-
 (** {6 Conversions to and from other numerical types} *)
 
+
+val of_int : int -> big_int
 val big_int_of_int : int -> big_int
         (** Convert a small integer to a big integer. *)
 val is_int_big_int : big_int -> bool
@@ -203,16 +223,75 @@ val is_int_big_int : big_int -> bool
            be representable as a small integer (type [int])
            without loss of precision.  On a 32-bit platform,
            [is_int_big_int a] returns [true] if and only if
-           [a] is between -2{^30} and 2{^30}-1.  On a 64-bit platform,
+           [a] is between 2{^30} and 2{^30}-1.  On a 64-bit platform,
            [is_int_big_int a] returns [true] if and only if
            [a] is between -2{^62} and 2{^62}-1. *)
+
+val to_int : big_int -> int
 val int_of_big_int : big_int -> int
         (** Convert a big integer to a small integer (type [int]).
-           @raise Failure if the big integer
+           Raises [Failure "int_of_big_int"] if the big integer
            is not representable as a small integer. *)
+
+val big_int_of_int32 : int32 -> big_int
+        (** Convert a 32-bit integer to a big integer. *)
+val big_int_of_nativeint : nativeint -> big_int
+        (** Convert a native integer to a big integer. *)
+val big_int_of_int64 : int64 -> big_int
+        (** Convert a 64-bit integer to a big integer. *)
+val int32_of_big_int : big_int -> int32
+        (** Convert a big integer to a 32-bit integer.
+            Raises [Failure] if the big integer is outside the
+            range [[-2{^31}, 2{^31}-1]]. *)
+val nativeint_of_big_int : big_int -> nativeint
+        (** Convert a big integer to a native integer.
+            Raises [Failure] if the big integer is outside the
+            range [[Nativeint.min_int, Nativeint.max_int]]. *)
+val int64_of_big_int : big_int -> int64
+        (** Convert a big integer to a 64-bit integer.
+            Raises [Failure] if the big integer is outside the
+            range [[-2{^63}, 2{^63}-1]]. *)
+
 val float_of_big_int : big_int -> float
         (** Returns a floating-point number approximating the
            given big integer. *)
+
+val of_float: float -> big_int
+(** rounds to the nearest integer
+    @raise Invalid_argument when given NaN or +/-infinity *)
+
+val to_float: big_int -> float
+
+
+(** {6 Bit-oriented operations} *)
+
+val and_big_int : big_int -> big_int -> big_int
+        (** Bitwise logical ``and''.
+            The arguments must be positive or zero. *)
+val or_big_int : big_int -> big_int -> big_int
+        (** Bitwise logical ``or''.
+            The arguments must be positive or zero. *)
+val xor_big_int : big_int -> big_int -> big_int
+        (** Bitwise logical ``exclusive or''.
+            The arguments must be positive or zero. *)
+val shift_left_big_int : big_int -> int -> big_int
+        (** [shift_left_big_int b n] returns [b] shifted left by [n] bits.
+            Equivalent to multiplication by [2^n]. *)
+val shift_right_big_int : big_int -> int -> big_int
+        (** [shift_right_big_int b n] returns [b] shifted right by [n] bits.
+            Equivalent to division by [2^n] with the result being
+            rounded towards minus infinity. *)
+val shift_right_towards_zero_big_int : big_int -> int -> big_int
+        (** [shift_right_towards_zero_big_int b n] returns [b] shifted
+            right by [n] bits.  The shift is performed on the absolute
+            value of [b], and the result has the same sign as [b].
+            Equivalent to division by [2^n] with the result being
+            rounded towards zero. *)
+val extract_big_int : big_int -> int -> int -> big_int
+        (** [extract_big_int bi ofs n] returns a nonnegative number
+            corresponding to bits [ofs] to [ofs + n - 1] of the
+            binary representation of [bi].  If [bi] is negative,
+            a two's complement representation is used. *)
 
 
 (** {6 Submodules grouping all infix operators}  *)
@@ -223,8 +302,8 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 (**/**)
 
 (** {6 For internal use} *)
-val nat_of_big_int : big_int -> nat
-val big_int_of_nat : nat -> big_int
+val nat_of_big_int : big_int -> Nat.nat
+val big_int_of_nat : Nat.nat -> big_int
 val base_power_big_int: int -> int -> big_int -> big_int
 val sys_big_int_of_string: string -> int -> int -> big_int
 val round_futur_last_digit : string -> int -> int -> bool
@@ -260,10 +339,9 @@ val gcd_big_int : big_int -> big_int -> big_int
         (** Greatest common divisor of two big integers. *)
 (**/**)
 
+(** {6 Boilerplate code} *)
 
-    (** {6 Boilerplate code}*)
+(** {7 Printing} *)
 
+val print : 'a BatIO.output -> t -> unit
 
-    (** {7 Printing}*)
-
-    val print : 'a BatIO.output -> t -> unit
