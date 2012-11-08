@@ -81,7 +81,7 @@ module Scanf = BatScanf
 module Set = BatSet
 (* Sort - Deprecated *)
 module Stack = BatStack
-module Stream = struct include Stream include BatStream end
+module Stream = BatStream
 module String = struct include String include BatString end
 (* StringLabels *)
 module Sys = BatSys
