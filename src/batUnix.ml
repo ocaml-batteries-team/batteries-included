@@ -20,7 +20,7 @@
  *)
 
 
-  open Unix
+  include Unix
   open BatInnerIO
 
 
@@ -37,10 +37,10 @@
      track low-level information on our [input]s/[output]s.
   *)
 
-  module Wrapped_in = BatInnerWeaktbl.Make(Input) (*input  -> in_channel *)
-  module Wrapped_out= BatInnerWeaktbl.Make(Output)(*output -> out_channel*)
-  let wrapped_in    = Wrapped_in.create 16
-  let wrapped_out   = Wrapped_out.create 16
+  module Wrapped_in  = BatInnerWeaktbl.Make(Input) (*input  -> in_channel *)
+  module Wrapped_out = BatInnerWeaktbl.Make(Output)(*output -> out_channel*)
+  let wrapped_in     = Wrapped_in.create 16
+  let wrapped_out    = Wrapped_out.create 16
 
   let input_add k v =
     BatConcurrent.sync !lock (Wrapped_in.add wrapped_in k) v
