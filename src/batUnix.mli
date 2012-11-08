@@ -36,70 +36,10 @@ open BatConcurrent
     @documents Unix
 *)
 
-  open BatInnerIO
-  open Unix
-
-(** {6 Interfacing with the standard input/output library} *)
-
-val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> BatInnerIO.input
-(** Create an {!type:input} reading from the given descriptor.
-    The {!type: input} is initially in binary mode; use
-    [set_binary_mode_in ic false] if text mode is desired.
-
-    @param autoclose If true (default value), close the input
-    automatically once there is no more content to read. Otherwise,
-    the input will be closed according to the usual rules of module
-    {!BatIO}. Barring very specific needs (e.g. using file descriptors as
-    locks), you probably want [autoclose] to be [true].
-
-    @param cleanup If true, close the underlying file descriptor
-    when the {!type:input} is closed. If false or unspecified,
-    do nothing, in which case you will need to close the underlying
-    file descriptor yourself to ensure proper cleanup.
-*)
-
-val output_of_descr: ?cleanup:bool -> file_descr -> unit BatInnerIO.output
-  (** Create an {!type:output} writing on the given descriptor.
-      The {!type:output} is initially in binary mode; use
-      [set_binary_mode_out oc false] if text mode is desired.
-
-      @param cleanup If true, close the underlying file descriptor
-      when the {!type:output} is closed. If false or unspecified,
-      do nothing, in which case you will need to close the underlying
-      file descriptor yourself to ensure proper cleanup.
-*)
-
-val descr_of_input : BatInnerIO.input -> file_descr
-(** Return the descriptor corresponding to an input.
-
-    Not all inputs have file descriptors. This function works
-    only for inputs which have been created using module {!Unix}.
-
-    @raise Invalid_argument ["Unix.descr_of_in_channel"] if this input
-    channel doesn't have a file descriptor
-*)
-
-val descr_of_output : unit BatInnerIO.output -> file_descr
-  (** Return the descriptor corresponding to an output.
-
-      Not all inputs have file descriptors. This function works
-      only for inputs which have been created from module Unix.
-
-      @raise Invalid_argument ["Unix.descr_of_out_channel"] if this input
-      channel doesn't have a file descriptor
-  *)
-
-
-
-(*val pipeio: unit -> file_descr * file_descr
-  (** As {!pipe} but return an input and an output for the
-*)*)
-
-
 (** {6 Error report} *)
 
 
-type error =
+type error = Unix.error =
     E2BIG               (** Argument list too long *)
   | EACCES              (** Permission denied *)
   | EAGAIN              (** Resource temporarily unavailable; try again *)
@@ -175,7 +115,6 @@ type error =
    All other errors are mapped to EUNKNOWNERR.
 *)
 
-
 exception Unix_error of error * string * string
 (** Raised by the system calls below when an error is encountered.
    The first component is the error code; the second component
@@ -213,7 +152,7 @@ val putenv : string -> string -> unit
 (** {6 Process handling} *)
 
 
-type process_status =
+type process_status = Unix.process_status =
     WEXITED of int
         (** The process terminated normally by [exit];
            the argument is the return code. *)
@@ -228,7 +167,7 @@ type process_status =
     not the numbers used by the OS. *)
 
 
-type wait_flag =
+type wait_flag = Unix.wait_flag =
     WNOHANG (** do not block if no child has
                died yet, but immediately return with a pid equal to 0.*)
   | WUNTRACED (** report also the children that receive stop signals. *)
@@ -292,7 +231,7 @@ val nice : int -> int
 (** {6 Basic file input/output} *)
 
 
-type file_descr
+type file_descr = Unix.file_descr
 (** The abstract type of file descriptors. *)
 
 val stdin : file_descr
@@ -304,7 +243,7 @@ val stdout : file_descr
 val stderr : file_descr
 (** File descriptor for standard error. *)
 
-type open_flag =
+type open_flag = Unix.open_flag =
     O_RDONLY                    (** Open for reading *)
   | O_WRONLY                    (** Open for writing *)
   | O_RDWR                      (** Open for reading and writing *)
@@ -354,7 +293,7 @@ val single_write : file_descr -> string -> int -> int -> int
 
 (** {6 Interfacing with the standard input/output library} *)
 
-
+open BatInnerIO
 
 val in_channel_of_descr : file_descr -> in_channel
 (** Create an input channel reading from the given descriptor.
@@ -373,10 +312,68 @@ val descr_of_out_channel : out_channel -> file_descr
 (** Return the descriptor corresponding to an output channel. *)
 
 
+(** {6 Interfacing with the standard input/output library} *)
+
+val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> BatInnerIO.input
+(** Create an {!type:input} reading from the given descriptor.
+    The {!type: input} is initially in binary mode; use
+    [set_binary_mode_in ic false] if text mode is desired.
+
+    @param autoclose If true (default value), close the input
+    automatically once there is no more content to read. Otherwise,
+    the input will be closed according to the usual rules of module
+    {!BatIO}. Barring very specific needs (e.g. using file descriptors as
+    locks), you probably want [autoclose] to be [true].
+
+    @param cleanup If true, close the underlying file descriptor
+    when the {!type:input} is closed. If false or unspecified,
+    do nothing, in which case you will need to close the underlying
+    file descriptor yourself to ensure proper cleanup.
+*)
+
+val output_of_descr: ?cleanup:bool -> file_descr -> unit BatInnerIO.output
+  (** Create an {!type:output} writing on the given descriptor.
+      The {!type:output} is initially in binary mode; use
+      [set_binary_mode_out oc false] if text mode is desired.
+
+      @param cleanup If true, close the underlying file descriptor
+      when the {!type:output} is closed. If false or unspecified,
+      do nothing, in which case you will need to close the underlying
+      file descriptor yourself to ensure proper cleanup.
+*)
+
+val descr_of_input : BatInnerIO.input -> file_descr
+(** Return the descriptor corresponding to an input.
+
+    Not all inputs have file descriptors. This function works
+    only for inputs which have been created using module {!Unix}.
+
+    @raise Invalid_argument ["Unix.descr_of_in_channel"] if this input
+    channel doesn't have a file descriptor
+*)
+
+val descr_of_output : unit BatInnerIO.output -> file_descr
+  (** Return the descriptor corresponding to an output.
+
+      Not all inputs have file descriptors. This function works
+      only for inputs which have been created from module Unix.
+
+      @raise Invalid_argument ["Unix.descr_of_out_channel"] if this input
+      channel doesn't have a file descriptor
+  *)
+
+
+
+(*val pipeio: unit -> file_descr * file_descr
+  (** As {!pipe} but return an input and an output for the
+*)*)
+
+
+
 (** {6 Seeking and truncating} *)
 
 
-type seek_command =
+type seek_command = Unix.seek_command =
     SEEK_SET (** indicates positions relative to the beginning of the file *)
   | SEEK_CUR (** indicates positions relative to the current position *)
   | SEEK_END (** indicates positions relative to the end of the file *)
@@ -397,7 +394,7 @@ val ftruncate : file_descr -> int -> unit
 (** {6 File status} *)
 
 
-type file_kind =
+type file_kind = Unix.file_kind =
     S_REG                       (** Regular file *)
   | S_DIR                       (** Directory *)
   | S_CHR                       (** Character device *)
@@ -406,7 +403,7 @@ type file_kind =
   | S_FIFO                      (** Named pipe *)
   | S_SOCK                      (** Socket *)
 
-type stats =
+type stats = Unix.stats =
   { st_dev : int;               (** Device number *)
     st_ino : int;               (** Inode number *)
     st_kind : file_kind;        (** Kind of the file *)
@@ -444,7 +441,7 @@ module LargeFile :
     val lseek : file_descr -> int64 -> seek_command -> int64
     val truncate : string -> int64 -> unit
     val ftruncate : file_descr -> int64 -> unit
-    type stats =
+    type stats = Unix.LargeFile.stats =
       { st_dev : int;               (** Device number *)
         st_ino : int;               (** Inode number *)
         st_kind : file_kind;        (** Kind of the file *)
@@ -490,7 +487,7 @@ val link : string -> string -> unit
 (** {6 File permissions and ownership} *)
 
 
-type access_permission =
+type access_permission = Unix.access_permission =
     R_OK                        (** Read permission *)
   | W_OK                        (** Write permission *)
   | X_OK                        (** Execution permission *)
@@ -571,7 +568,7 @@ val getcwd : unit -> string
 val chroot : string -> unit
 (** Change the process root directory. *)
 
-type dir_handle
+type dir_handle = Unix.dir_handle
 (** The type of descriptors over opened directories. *)
 
 val opendir : string -> dir_handle
@@ -770,7 +767,7 @@ val select :
 (** {6 Locking} *)
 
 
-type lock_command =
+type lock_command = Unix.lock_command =
     F_ULOCK       (** Unlock a region *)
   | F_LOCK        (** Lock a region for writing, and block if already locked *)
   | F_TLOCK       (** Lock a region for writing, or fail if already locked *)
@@ -815,7 +812,7 @@ val kill : int -> int -> unit
 (** [kill pid sig] sends signal number [sig] to the process
    with id [pid]. *)
 
-type sigprocmask_command =
+type sigprocmask_command = Unix.sigprocmask_command =
     SIG_SETMASK
   | SIG_BLOCK
   | SIG_UNBLOCK
@@ -845,7 +842,7 @@ val pause : unit -> unit
 (** {6 Time functions} *)
 
 
-type process_times =
+type process_times = Unix.process_times =
   { tms_utime : float;  (** User time for the process *)
     tms_stime : float;  (** System time for the process *)
     tms_cutime : float; (** User time for the children processes *)
@@ -853,7 +850,7 @@ type process_times =
   }
 (** The execution times (CPU times) of a process. *)
 
-type tm =
+type tm = Unix.tm =
   { tm_sec : int;               (** Seconds 0..60 *)
     tm_min : int;               (** Minutes 0..59 *)
     tm_hour : int;              (** Hours 0..23 *)
@@ -907,7 +904,7 @@ val utimes : string -> float -> float -> unit
    00:00:00 GMT, Jan. 1, 1970.  A time of [0.0] is interpreted as the
    current time. *)
 
-type interval_timer =
+type interval_timer = Unix.interval_timer =
     ITIMER_REAL
       (** decrements in real time, and sends the signal [SIGALRM] when
          expired.*)
@@ -920,7 +917,7 @@ type interval_timer =
          process; it sends [SIGPROF] when expired. *)
 (** The three kinds of interval timers. *)
 
-type interval_timer_status =
+type interval_timer_status = Unix.interval_timer_status =
   { it_interval : float;         (** Period *)
     it_value : float;            (** Current value of the timer *)
   }
@@ -976,7 +973,7 @@ val initgroups : string -> int -> unit
       which [user] is a member. The additional group [group] is also
       added to the list. *)
 
-type passwd_entry =
+type passwd_entry = Unix.passwd_entry =
   { pw_name : string;
     pw_passwd : string;
     pw_uid : int;
@@ -987,7 +984,7 @@ type passwd_entry =
   }
 (** Structure of entries in the [passwd] database. *)
 
-type group_entry =
+type group_entry = Unix.group_entry =
   { gr_name : string;
     gr_passwd : string;
     gr_gid : int;
@@ -1018,7 +1015,7 @@ val getgrgid : int -> group_entry
 (** {6 Internet addresses} *)
 
 
-type inet_addr
+type inet_addr = Unix.inet_addr
 (** The abstract type of Internet addresses. *)
 
 val inet_addr_of_string : string -> inet_addr
@@ -1052,14 +1049,14 @@ val inet6_addr_loopback : inet_addr
 (** {6 Sockets} *)
 
 
-type socket_domain =
+type socket_domain = Unix.socket_domain =
     PF_UNIX                     (** Unix domain *)
   | PF_INET                     (** Internet domain (IPv4) *)
   | PF_INET6                    (** Internet domain (IPv6) *)
 (** The type of socket domains.  Not all platforms support
     IPv6 sockets (type [PF_INET6]). *)
 
-type socket_type =
+type socket_type = Unix.socket_type =
     SOCK_STREAM                 (** Stream socket *)
   | SOCK_DGRAM                  (** Datagram socket *)
   | SOCK_RAW                    (** Raw socket *)
@@ -1067,7 +1064,7 @@ type socket_type =
 (** The type of socket kinds, specifying the semantics of
    communications. *)
 
-type sockaddr =
+type sockaddr = Unix.sockaddr =
     ADDR_UNIX of string
   | ADDR_INET of inet_addr * int
 (** The type of socket addresses. [ADDR_UNIX name] is a socket
@@ -1103,7 +1100,7 @@ val listen : file_descr -> int -> unit
 (** Set up a socket for receiving connection requests. The integer
    argument is the maximal number of pending requests. *)
 
-type shutdown_command =
+type shutdown_command = Unix.shutdown_command =
     SHUTDOWN_RECEIVE            (** Close for receiving *)
   | SHUTDOWN_SEND               (** Close for sending *)
   | SHUTDOWN_ALL                (** Close both *)
@@ -1123,7 +1120,7 @@ val getsockname : file_descr -> sockaddr
 val getpeername : file_descr -> sockaddr
 (** Return the address of the host connected to the given socket. *)
 
-type msg_flag =
+type msg_flag = Unix.msg_flag =
     MSG_OOB
   | MSG_DONTROUTE
   | MSG_PEEK
@@ -1149,7 +1146,7 @@ val sendto :
 (** {6 Socket options} *)
 
 
-type socket_bool_option =
+type socket_bool_option = Unix.socket_bool_option =
     SO_DEBUG       (** Record debugging information *)
   | SO_BROADCAST   (** Permit sending of broadcast messages *)
   | SO_REUSEADDR   (** Allow reuse of local addresses for bind *)
@@ -1163,7 +1160,7 @@ type socket_bool_option =
    and modified with {!Unix.setsockopt}.  These options have a boolean
    ([true]/[false]) value. *)
 
-type socket_int_option =
+type socket_int_option = Unix.socket_int_option =
     SO_SNDBUF      (** Size of send buffer *)
   | SO_RCVBUF      (** Size of received buffer *)
   | SO_ERROR       (** Deprecated.  Use {!Unix.getsockopt_error} instead. *)
@@ -1175,7 +1172,7 @@ type socket_int_option =
    and modified with {!Unix.setsockopt_int}.  These options have an
    integer value. *)
 
-type socket_optint_option =
+type socket_optint_option = Unix.socket_optint_option =
   SO_LINGER      (** Whether to linger on closed connections
                     that have data present, and for how long
                     (in seconds) *)
@@ -1183,7 +1180,7 @@ type socket_optint_option =
    and modified with {!Unix.setsockopt_optint}.  These options have a
    value of type [int option], with [None] meaning ``disabled''. *)
 
-type socket_float_option =
+type socket_float_option = Unix.socket_float_option =
     SO_RCVTIMEO    (** Timeout for input operations *)
   | SO_SNDTIMEO    (** Timeout for output operations *)
 (** The socket options that can be consulted with {!Unix.getsockopt_float}
@@ -1279,7 +1276,7 @@ val establish_server : ?autoclose:bool -> ?cleanup:bool -> (BatInnerIO.input -> 
 (** {6 Host and protocol databases} *)
 
 
-type host_entry =
+type host_entry = Unix.host_entry =
   { h_name : string;
     h_aliases : string array;
     h_addrtype : socket_domain;
@@ -1287,14 +1284,14 @@ type host_entry =
   }
 (** Structure of entries in the [hosts] database. *)
 
-type protocol_entry =
+type protocol_entry = Unix.protocol_entry =
   { p_name : string;
     p_aliases : string array;
     p_proto : int
   }
 (** Structure of entries in the [protocols] database. *)
 
-type service_entry =
+type service_entry = Unix.service_entry =
   { s_name : string;
     s_aliases : string array;
     s_port : int;
@@ -1329,7 +1326,7 @@ val getservbyport : int -> string -> service_entry
 (** Find an entry in [services] with the given service number,
    or raise [Not_found]. *)
 
-type addr_info =
+type addr_info = Unix.addr_info =
   { ai_family : socket_domain;          (** Socket domain *)
     ai_socktype : socket_type;          (** Socket type *)
     ai_protocol : int;                  (** Socket protocol number *)
@@ -1338,7 +1335,7 @@ type addr_info =
   }
 (** Address information returned by {!Unix.getaddrinfo}. *)
 
-type getaddrinfo_option =
+type getaddrinfo_option = Unix.getaddrinfo_option =
     AI_FAMILY of socket_domain          (** Impose the given socket domain *)
   | AI_SOCKTYPE of socket_type          (** Impose the given socket type *)
   | AI_PROTOCOL of int                  (** Impose the given protocol  *)
@@ -1369,12 +1366,12 @@ val getaddrinfo:
     to force a particular socket domain (e.g. IPv6 only or IPv4 only)
     or a particular socket type (e.g. TCP only or UDP only). *)
 
-type name_info =
+type name_info = Unix.name_info =
   { ni_hostname : string;               (** Name or IP address of host *)
     ni_service : string }               (** Name of service or port number *)
 (** Host and service information returned by {!Unix.getnameinfo}. *)
 
-type getnameinfo_option =
+type getnameinfo_option = Unix.getnameinfo_option =
     NI_NOFQDN            (** Do not qualify local host names *)
   | NI_NUMERICHOST       (** Always return host as IP address *)
   | NI_NAMEREQD          (** Fail if host name cannot be determined *)
@@ -1398,7 +1395,7 @@ val getnameinfo : sockaddr -> getnameinfo_option list -> name_info
    and pseudo-terminals. Refer to the [termios] man page for a
    complete description. *)
 
-type terminal_io =
+type terminal_io = Unix.terminal_io =
   {
     (* input modes *)
     mutable c_ignbrk : bool;  (** Ignore the break condition. *)
@@ -1451,7 +1448,7 @@ val tcgetattr : file_descr -> terminal_io
 (** Return the status of the terminal referred to by the given
    file descriptor. *)
 
-type setattr_when =
+type setattr_when = Unix.setattr_when =
     TCSANOW
   | TCSADRAIN
   | TCSAFLUSH
@@ -1475,7 +1472,7 @@ val tcdrain : file_descr -> unit
 (** Waits until all output written on the given file descriptor
    has been transmitted. *)
 
-type flush_queue =
+type flush_queue = Unix.flush_queue =
     TCIFLUSH
   | TCOFLUSH
   | TCIOFLUSH
@@ -1487,7 +1484,7 @@ val tcflush : file_descr -> flush_queue -> unit
    [TCOFLUSH] flushes data written but not transmitted, and
    [TCIOFLUSH] flushes both. *)
 
-type flow_action =
+type flow_action = Unix.flow_action =
     TCOOFF
   | TCOON
   | TCIOFF
