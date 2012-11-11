@@ -48,9 +48,9 @@
       # let f () = "foo";;
       val f : unit -> string = <fun>
       # (f ()).[0] <- 'b';;
-      - : unit = ()
+      -: unit = ()
       # f ();;
-      - : string = "boo"
+      -: string = "boo"
   ]}
 
   Likewise, many functions from the standard library can return string
