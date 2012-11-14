@@ -87,7 +87,7 @@ module String = BatString
 module Sys = BatSys
 (* Weak *)
 
-module Unix = struct include Unix include BatUnix end
+module Unix = BatUnix
 
 (*module Str = struct include Str include BatStr end*)
 
