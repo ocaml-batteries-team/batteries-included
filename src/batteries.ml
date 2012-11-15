@@ -91,7 +91,7 @@ module Unix = BatUnix
 
 (*module Str = struct include Str include BatStr end*)
 
-module Big_int = struct include Big_int include BatBig_int end
+module Big_int = BatBig_int
 
 module Bigarray = BatBigarray
 
