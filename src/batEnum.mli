@@ -165,7 +165,8 @@ val fold2i : (int -> 'a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
 val find : ('a -> bool) -> 'a t -> 'a
   (** [find f e] returns the first element [x] of [e] such that [f x] returns
       [true], consuming the enumeration up to and including the
-      found element, or, raises [Not_found] if no such element exists
+      found element.
+      @raise Not_found if no such element exists
       in the enumeration, consuming the whole enumeration in the search.
 
       Since [find] (eagerly) consumes a prefix of the enumeration, it
@@ -175,7 +176,8 @@ val find : ('a -> bool) -> 'a t -> 'a
 val find_map : ('a -> 'b option) -> 'a t -> 'b
 (** [find_map f e] finds the first element [x] of [e] such that [f x] returns
     [Some r], then returns r. It consumes the enumeration up to and including
-    the found element, or raises [Not_found] if no such element exists in the
+    the found element.
+    @raise Not_found if no such element exists in the
     enumeration, consuming the whole enumeration in the search.
 
     Since [find_map] (eagerly) consumes a prefix of the enumeration, it can be
@@ -200,7 +202,7 @@ val get : 'a t -> 'a option
 
 val get_exn : 'a t -> 'a
   (** [get_exn e] returns the first element of [e].
-      @raises No_more_elements if [e] is empty.
+      @raise No_more_elements if [e] is empty.
       @since 2.0 *)
 
 val push : 'a t -> 'a -> unit
@@ -427,7 +429,7 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
   (**[from_loop data next] creates a (possibly infinite) enumeration from
      the successive results of applying [next] to [data], then to the
      result, etc. The list ends whenever the function raises
-     {!BatEnum.No_more_elements}*)
+     {!BatEnum.No_more_elements}.*)
 
 val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
   (** [seq init step cond] creates a sequence of data, which starts

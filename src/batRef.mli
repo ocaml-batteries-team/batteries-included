@@ -110,7 +110,7 @@ val oset : 'a option ref -> 'a -> unit
 
 val oget_exn : 'a option ref -> 'a
 (** Get a value from an option ref;
-    @raises Not_found on [oget_exn (ref None)] *)
+    @raise Not_found on [oget_exn (ref None)] *)
 
 (** {6 Boilerplate code}*)
 

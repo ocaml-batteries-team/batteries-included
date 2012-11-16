@@ -152,7 +152,7 @@ val prepend_char : UChar.t -> t -> t
 val get : t -> int -> UChar.t
 (** [get r n] returns the (n+1)th character from the rope [r]; i.e.
         [get r 0] returns the first character.  Operates in worst-case
-        [O(log size)] time.  Raises Out_of_bounds if a character out
+        [O(log size)] time.  @raise Out_of_bounds if a character out
         of bounds is requested. *)
 
 val set : t -> int -> UChar.t -> t
@@ -163,7 +163,7 @@ val set : t -> int -> UChar.t -> t
 val sub : t -> int -> int -> t
 (** [sub r m n] returns a sub-rope of [r] containing all characters
         whose indexes range from [m] to [m + n - 1] (included).
-        Raises Out_of_bounds in the same cases as sub.
+        @raise Out_of_bounds in the same cases as sub.
         Operates in worst-case [O(log size)] time. *)
 
 val insert : int -> t -> t -> t
@@ -202,7 +202,7 @@ val range_iter : (UChar.t -> unit) -> int -> int -> t -> unit
         create an intermediary rope. [rangeiter] operates in worst-case
         [O(n + log m)] time, which improves on the [O(n log m)] bound
         from an explicit loop using [get].
-        Raises Out_of_bounds in the same cases as [sub]. *)
+        @raise Out_of_bounds in the same cases as [sub]. *)
 
 val range_iteri :
   (int -> UChar.t -> unit) -> ?base:int -> int -> int -> t -> unit
@@ -238,7 +238,7 @@ val filter : (UChar.t -> bool) -> t -> t
 val index : t -> UChar.t -> int
 (** [Rope.index s c] returns the position of the leftmost
       occurrence of character [c] in rope [s].
-      Raise [Not_found] if [c] does not occur in [s]. *)
+      @raise Not_found if [c] does not occur in [s]. *)
 
 val index_from : t -> int -> UChar.t -> int
 (** Same as {!Rope.index}, but start searching at the character
@@ -248,7 +248,7 @@ val index_from : t -> int -> UChar.t -> int
 val rindex : t -> UChar.t -> int
 (** [Rope.rindex s c] returns the position of the rightmost
      occurrence of character [c] in rope [s].
-     Raise [Not_found] if [c] does not occur in [s]. *)
+     @raise Not_found if [c] does not occur in [s]. *)
 
 val rindex_from : t -> int -> UChar.t -> int
 (** Same as {!rindex}, but start
@@ -370,7 +370,7 @@ val blit : t -> int -> t -> int -> int -> t
      correctly even if [src] and [dst] are the same rope,
      and the source and destination chunks overlap.
 
-      @raise Invalid_argument if [srcoff] and [len] do not
+     @raise Invalid_argument if [srcoff] and [len] do not
      designate a valid subrope of [src], or if [dstoff] and [len]
      do not designate a valid subrope of [dst]. *)
 

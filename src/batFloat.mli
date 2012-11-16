@@ -207,7 +207,7 @@ val round_to_string : ?digits:int -> float -> string
 
 (** [root x n] calculates the nth root of x.
 
-    @raises Invalid_argument if n is negative or if the result would
+    @raise Invalid_argument if n is negative or if the result would
     be imaginary *)
 val root: float -> int -> float
 

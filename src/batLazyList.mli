@@ -98,8 +98,7 @@ val get : 'a t -> ('a * 'a t) option
 val from: (unit -> 'a) -> 'a t
   (**[from next] creates a (possibly infinite) lazy list from the successive
      results of [next].
-     The function {i may} raise {!LazyList.No_more_elements} to denote the end of the
-     list.*)
+     @raise LazyList.No_more_elements to denote the end of the list.*)
 
 val from_while: (unit -> 'a option) -> 'a t
   (**[from next] creates a (possibly infinite) lazy list from the successive
@@ -110,7 +109,7 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
   (**[from_loop data next] creates a (possibly infinite) lazy list from
      the successive results of applying [next] to [data], then to the
      result, etc. The list ends whenever the function raises
-     {!LazyList.No_more_elements}*)
+     {!LazyList.No_more_elements}.*)
 
 val seq: 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
   (** [seq init step cond] creates a sequence of data, which starts
@@ -204,12 +203,13 @@ val memq : 'a -> 'a t -> bool
 
 val find : ('a -> bool) -> 'a t -> 'a
   (** [find p l] returns the first element of [l] such as [p x]
-      returns [true] or raises [Not_found] if such an element
-      has not been found.*)
+      returns [true].
+      @raise Not_found if such an element has not been found.*)
 
 val rfind : ('a -> bool) -> 'a t -> 'a
   (** [rfind p l] returns the last element [x] of [l] such as [p x] returns
-      [true] or raises [Not_found] if such element as not been found. *)
+      [true].
+      @raise Not_found if such element as not been found. *)
 
 val find_exn : ('a -> bool) -> exn -> 'a t -> 'a
   (** [find_exn p e l] returns the first element of [l] such as [p x]
@@ -221,13 +221,13 @@ val rfind_exn : ('a -> bool) -> exn -> 'a t -> 'a
 
 val findi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
   (** [findi p e l] returns the first element [ai] of [l] along with its
-      index [i] such that [p i ai] is true, or raises [Not_found] if no
-      such element has been found. *)
+      index [i] such that [p i ai] is true.
+      @raise Not_found if no such element has been found. *)
 
 val rfindi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
   (** [findi p e l] returns the last element [ai] of [l] along with its
-      index [i] such that [p i ai] is true, or raises [Not_found] if no
-      such element has been found. *)
+      index [i] such that [p i ai] is true.
+      @raise Not_found if no such element has been found. *)
 
 val index_of : 'a -> 'a t -> int option
   (** [index_of e l] returns the index of the first occurrence of [e]
@@ -263,13 +263,13 @@ val would_at_fail: 'a t -> int -> bool
      than [n] elements, [false] otherwise*)
 
 val hd : 'a t -> 'a
-(**Return the first element of the given list. Raise [Empty_list] if the list is empty.
+(**Return the first element of the given list. @raise Empty_list if the list is empty.
 
    Note: this function does not comply with the usual exceptionless error-management
    recommendations, as doing so would essentially render it useless.*)
 
 val tl : 'a t -> 'a t
-(**Return the given list without its first element. Raise [Empty_list] if the list is empty.
+(**Return the given list without its first element. @raise Empty_list if the list is empty.
 
    Note: this function does not comply with the usual exceptionless error-management
    recommendations, as doing so would essentially render it useless.*)
@@ -278,13 +278,13 @@ val first : 'a t -> 'a
   (** As [hd]*)
 
 val last : 'a t -> 'a
-  (** Returns the last element of the list, or raise [Empty_list] if
+  (** Returns the last element of the list. @raise Empty_list if
       the list is empty. This function takes linear time and causes the
       evaluation of all elements of the list*)
 
 val at : 'a t -> int -> 'a
 (** [at l n] returns the element at index [n] (starting from [0]) in
-    the list [l] or raise [Invalid_index] is the index is outside of
+    the list [l]. @raise Invalid_index is the index is outside of
     [l] bounds. *)
 
 val nth : 'a t -> int -> 'a
@@ -300,7 +300,7 @@ val assoc : 'a -> ('a * 'b) t -> 'b
   (** [assoc a l] returns the value associated with key [a] in the list of
       pairs [l]. That is, [assoc a [^ ...; (a,b); ...^] = b]
       if [(a,b)] is the leftmost binding of [a] in list [l].
-      Raise [Not_found] if there is no value associated with [a] in the
+      @raise Not_found if there is no value associated with [a] in the
       list [l]. *)
 
 val assq : 'a -> ('a * 'b) t -> 'b
@@ -348,7 +348,7 @@ val flatten : ('a t) list -> 'a t
 
 val split_at : int -> 'a t -> 'a t * 'a t
   (** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
-      first [n] elements of [l] and [l2] the others. Raise [Invalid_index] if
+      first [n] elements of [l] and [l2] the others. @raise Invalid_index if
       [n] is outside of [l] size bounds. *)
 
 val split_nth : int -> 'a t -> 'a t * 'a t
@@ -494,7 +494,7 @@ val stable_sort : ('a -> 'a -> int) -> 'a t -> 'a t
 (**{6 Operations on two lists}*)
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** [map2 f [^ a0; a1; ...^] [^ b0; b1; ... ^]] is [[^ f a0 b0; f a1
-    b1; ... ^]]. Raise [Different_list_size] if the two lists have
+    b1; ... ^]]. @raise Different_list_size if the two lists have
     different lengths. Not tail-recursive, lazy. In particular, the
     exception is raised only after the shortest list has been
     entirely consumed. *)
@@ -502,37 +502,37 @@ val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
 (** [iter2 f [^ a0; ...; an ^] [^ b0; ...; bn ^]] calls in turn
     [f a0 b0; ...; f an bn]. Tail-recursive, eager.
-    Raise [Different_list_size] if the two lists have
+    @raise Different_list_size if the two lists have
     different lengths. *)
 
 
 val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b t -> 'c t -> 'a
   (** [fold_left2 f a [^ b0; b1; ...; bn ^] [^ c0; c1; ...; cn ^]] is
       [f (... (f (f a b0 c0) b1 c1) ...) bn cn]. Eager.
-      Raise [Different_list_size] if the two lists have
+      @raise Different_list_size if the two lists have
       different lengths. *)
 
 val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a t -> 'b t -> 'c -> 'c
   (** [fold_right2 f [^ a0; a1; ...; an ^] [^ b0; b1; ...; bn ^] c] is
       [f a0 b0 (f a1 b1 (... (f an bn c) ...))]. Eager.
-      Raise [Different_list_size] if the two lists have
+      @raise Different_list_size if the two lists have
       different lengths.  Tail-recursive. *)
 
 val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
   (** Same as {!for_all}, but for a two-argument predicate.
-      Raise [Different_list_size] if the two lists have
+      @raise Different_list_size if the two lists have
       different lengths. *)
 
 val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
   (** Same as {!exists}, but for a two-argument predicate.
-      Raise [Different_list_size] if the two lists have
+      @raise Different_list_size if the two lists have
       different lengths. *)
 
 val combine : 'a t -> 'b t -> ('a * 'b) t
   (** Transform a pair of lists into a list of pairs:
       [combine [^ a0; a1; ... ^] [^ b0; b1; ... ^]] is
       [[^ (a0, b0); (a1, b1); ... ^]].
-      Raise [Different_list_size] if the two lists
+      @raise Different_list_size if the two lists
       have different lengths.  Tail-recursive, lazy. *)
 
 val uncombine : ('a * 'b) t -> 'a t * 'b t

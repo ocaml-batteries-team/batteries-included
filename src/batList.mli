@@ -74,27 +74,26 @@ val cons : 'a -> 'a list -> 'a list
 (** [cons h t] returns the list starting with [h] and continuing as [t] *)
 
 val first : 'a list -> 'a
-(** Returns the first element of the list, or raise [Empty_list] if
+(** Returns the first element of the list, or @raise Empty_list if
 the list is empty (similar to [hd]). *)
 
 val hd : 'a list -> 'a
-(** Similar to [first], but raises
-   [Failure "hd"] if the list is empty. *)
+(** Similar to [first], but @raise Failure if the list is empty. *)
 
 val tl : 'a list -> 'a list
-(** Return the given list without its first element. Raise
-   [Failure "tl"] if the list is empty. *)
+(** Return the given list without its first element.
+   @raise Failure if the list is empty. *)
 
 val last : 'a list -> 'a
-(** Returns the last element of the list, or raise [Empty_list] if
+(** Returns the last element of the list, or @raise Empty_list if
 the list is empty. This function takes linear time. *)
 
 val length : 'a list -> int
 (** Return the length (number of elements) of the given list. *)
 
 val at : 'a list -> int -> 'a
-(** [at l n] returns the n-th element of the list [l] or raise
-[Invalid_argument] is the index is outside of [l] bounds.  O(l) *)
+(** [at l n] returns the n-th element of the list [l] or
+@raise Invalid_argument is the index is outside of [l] bounds.  O(l) *)
 
 val rev : 'a list -> 'a list
 (** List reversal. *)
@@ -126,7 +125,7 @@ list containing [n] elements [x]. *)
 val init : int -> (int -> 'a) -> 'a list
 (** Similar to [Array.init], [init n f] returns the list containing
 the results of (f 0),(f 1).... (f (n-1)).
-@raise Invalid_argument ["BatList.init"] if n < 0.*)
+@raise Invalid_argument if n < 0.*)
 
 
 (**{6 Iterators}*)
@@ -262,7 +261,7 @@ different lengths. *)
 val find : ('a -> bool) -> 'a list -> 'a
 (** [find p l] returns the first element of the list [l]
    that satisfies the predicate [p].
-   Raise [Not_found] if there is no value that satisfies [p] in the
+   @raise Not_found if there is no value that satisfies [p] in the
    list [l]. *)
 
 val find_exn : ('a -> bool) -> exn -> 'a list -> 'a
@@ -271,19 +270,19 @@ returns [true] or raises [e] if such an element has not been found. *)
 
 val findi : (int -> 'a -> bool) -> 'a list -> (int * 'a)
 (** [findi p e l] returns the first element [ai] of [l] along with its
-index [i] such that [p i ai] is true, or raises [Not_found] if no
+index [i] such that [p i ai] is true, or @raise Not_found if no
 such element has been found. *)
 
 val find_map : ('a -> 'b option) -> 'a list -> 'b
 (** [find_map pred list] finds the first element of [list] for which
     [pred element] returns [Some r].  It returns [r] immediately
-    once found or raises [Not_found] if no element matches the
+    once found or @raise Not_found if no element matches the
     predicate.  See also {!filter_map}. *)
 
 
 val rfind : ('a -> bool) -> 'a list -> 'a
 (** [rfind p l] returns the last element [x] of [l] such as [p x] returns
-[true] or raises [Not_found] if such element as not been found. *)
+[true] or @raise Not_found if such element as not been found. *)
 
 val filter : ('a -> bool) -> 'a list -> 'a list
 (** [filter p l] returns all the elements of the list [l]
@@ -367,14 +366,14 @@ val assoc : 'a -> ('a * 'b) list -> 'b
    pairs [l]. That is,
    [assoc a [ ...; (a,b); ...] = b]
    if [(a,b)] is the leftmost binding of [a] in list [l].
-   Raise [Not_found] if there is no value associated with [a] in the
+   @raise Not_found if there is no value associated with [a] in the
    list [l]. *)
 
 val assoc_inv : 'b -> ('a * 'b) list -> 'a
 (** [assoc_inv b l] returns the key associated with value [b] in the list of
 pairs [l]. That is, [assoc b [ ...; (a,b); ...] = a]
 if [(a,b)] is the leftmost binding of [a] in list [l].
-Raise [Not_found] if there is no key associated with [b] in the
+@raise Not_found if there is no key associated with [b] in the
 list [l]. *)
 
 val remove_assoc : 'a -> ('a * 'b) list -> ('a * 'b) list
@@ -407,7 +406,7 @@ val mem_assq : 'a -> ('a * 'b) list -> bool
 
 val split_at : int -> 'a list -> 'a list * 'a list
 (** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
-first [n] elements of [l] and [l2] the others. Raise [Invalid_argument] if
+first [n] elements of [l] and [l2] the others. @raise Invalid_argument if
 [n] is outside of [l] size bounds. *)
 
 val split_nth : int -> 'a list -> 'a list * 'a list
