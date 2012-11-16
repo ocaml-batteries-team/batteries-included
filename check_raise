@@ -22,7 +22,7 @@ setminus() {
 
 # Capitalized Raise should be rare
 header "Interesting places:" \
-  grep -n Raise *
+  grep -n Raise *.ml *.mli
 
 #header "Needs source style:" \
 #  grep -n "Invalid_argument[[:space:]]\"" *.mli
@@ -76,14 +76,14 @@ header "String arguments nobody should rely upon:" \
 # Look for mistakes
 
 header "@raises instead of @raise:" \
-  grep -n @raises *
+  grep -n @raises *.ml *.mli
 
 header "Square brackets that harm ocamldoc:" \
-  grep -n "@raise[[:space:]]\[" *
+  grep -n "@raise[[:space:]]\[" *.ml *.mli
 
 header Typos: \
-  grep -n "Invalid_arg[[:space:]]" `find . -not -name batDynArray\*`
+  grep -n "Invalid_arg[[:space:]]" `find . -type f -not -name batDynArray\*`
 
 header Typos: \
-  grep -n Invald_argument *
+  grep -n Invald_argument *.ml *.mli
 

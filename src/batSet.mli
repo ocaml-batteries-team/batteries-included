@@ -185,7 +185,7 @@ module type S =
 
     val pop : t -> elt * t
     (** returns one element of the set and the set without that element.
-        Raises [Not_found] if given an empty set *)
+        @raise Not_found if given an empty set *)
 
     val enum: t -> elt BatEnum.t
       (** Return an enumeration of all elements of the given set.
@@ -412,20 +412,20 @@ val elements: 'a t -> 'a list
     to the ordering of the given set. *)
 
 val min_elt : 'a t -> 'a
-  (** returns the smallest element of the set. Raises
-      [Invalid_argument] if given an empty set. *)
+  (** returns the smallest element of the set.
+      @raise Invalid_argument if given an empty set. *)
 
 val max_elt : 'a t -> 'a
-  (** returns the largest element of the set. Raises
-      [Invalid_argument] if given an empty set.*)
+  (** returns the largest element of the set.
+      @raise Invalid_argument if given an empty set.*)
 
 val choose : 'a t -> 'a
   (** returns an arbitrary (but deterministic) element of the given set.
-      Raises [Invalid_argument] if given an empty set. *)
+      @raise Invalid_argument if given an empty set. *)
 
 val pop : 'a t -> 'a * 'a t
   (** returns one element of the set and the set without that element.
-      Raises [Not_found] if given an empty set *)
+      @raise Not_found if given an empty set *)
 
 val enum: 'a t -> 'a BatEnum.t
   (** Return an enumeration of all elements of the given set.
@@ -602,20 +602,20 @@ module PSet : sig
       to the ordering of the given set. *)
 
   val min_elt : 'a t -> 'a
-  (** returns the smallest element of the set. Raises
-      [Invalid_argument] if given an empty set. *)
+  (** returns the smallest element of the set.
+      @raise Invalid_argument if given an empty set. *)
 
   val max_elt : 'a t -> 'a
-  (** returns the largest element of the set. Raises
-      [Invalid_argument] if given an empty set.*)
+  (** returns the largest element of the set.
+      @raise Invalid_argument if given an empty set.*)
 
   val choose : 'a t -> 'a
   (** returns an arbitrary (but deterministic) element of the given set.
-      Raises [Invalid_argument] if given an empty set. *)
+      @raise Invalid_argument if given an empty set. *)
 
   val pop : 'a t -> 'a * 'a t
   (** returns one element of the set and the set without that element.
-      Raises [Not_found] if given an empty set *)
+      @raise Not_found if given an empty set *)
 
   val enum: 'a t -> 'a BatEnum.t
   (** Return an enumeration of all elements of the given set.

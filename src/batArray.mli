@@ -58,7 +58,7 @@ external get : 'a array -> int -> 'a = "%array_safe_get"
    The last element has number [Array.length a - 1].
    You can also write [a.(n)] instead of [Array.get a n].
 
-   Raise [Invalid_argument "index out of bounds"]
+   @raise Invalid_argument
    if [n] is outside the range 0 to [(Array.length a - 1)]. *)
 
 external set : 'a array -> int -> 'a -> unit = "%array_safe_set"
@@ -66,7 +66,7 @@ external set : 'a array -> int -> 'a -> unit = "%array_safe_set"
    element number [n] with [x].
    You can also write [a.(n) <- x] instead of [Array.set a n x].
 
-   Raise [Invalid_argument "index out of bounds"]
+   @raise Invalid_argument
    if [n] is outside the range 0 to [Array.length a - 1]. *)
 
 external make : int -> 'a -> 'a array = "caml_make_vect"
@@ -78,7 +78,7 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
    of the array, and modifying [x] through one of the array entries
    will modify all other entries at the same time.
 
-   Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].
+   @raise Invalid_argument if [n < 0] or [n > Sys.max_array_length].
    If the value of [x] is a floating-point number, then the maximum
    size is only [Sys.max_array_length / 2].*)
 
@@ -91,7 +91,7 @@ val init : int -> (int -> 'a) -> 'a array
    In other terms, [Array.init n f] tabulates the results of [f]
    applied to the integers [0] to [n-1].
 
-   Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].
+   @raise Invalid_argument if [n < 0] or [n > Sys.max_array_length].
    If the return type of [f] is [float], then the maximum
    size is only [Sys.max_array_length / 2].*)
 
@@ -103,7 +103,7 @@ val make_matrix : int -> int -> 'a -> 'a array array
    The element ([x,y]) of a matrix [m] is accessed
    with the notation [m.(x).(y)].
 
-   Raise [Invalid_argument] if [dimx] or [dimy] is negative or
+   @raise Invalid_argument if [dimx] or [dimy] is negative or
    greater than [Sys.max_array_length].
    If the value of [e] is a floating-point number, then the maximum
    size is only [Sys.max_array_length / 2]. *)
@@ -123,7 +123,7 @@ val sub : 'a array -> int -> int -> 'a array
    containing the elements number [start] to [start + len - 1]
    of array [a].
 
-   Raise [Invalid_argument "Array.sub"] if [start] and [len] do not
+   @raise Invalid_argument if [start] and [len] do not
    designate a valid subarray of [a]; that is, if
    [start < 0], or [len < 0], or [start + len > Array.length a]. *)
 
@@ -135,7 +135,7 @@ val fill : 'a array -> int -> int -> 'a -> unit
 (** [Array.fill a ofs len x] modifies the array [a] in place,
    storing [x] in elements number [ofs] to [ofs + len - 1].
 
-   Raise [Invalid_argument "Array.fill"] if [ofs] and [len] do not
+   @raise Invalid_argument if [ofs] and [len] do not
    designate a valid subarray of [a]. *)
 
 val blit : 'a array -> int -> 'a array -> int -> int -> unit
@@ -145,7 +145,7 @@ val blit : 'a array -> int -> 'a array -> int -> int -> unit
    [v1] and [v2] are the same array, and the source and
    destination chunks overlap.
 
-   Raise [Invalid_argument "Array.blit"] if [o1] and [len] do not
+   @raise Invalid_argument if [o1] and [len] do not
    designate a valid subarray of [v1], or if [o2] and [len] do not
    designate a valid subarray of [v2]. *)
 

@@ -67,8 +67,8 @@ val nread : input -> int -> string
 
 val really_nread : input -> int -> string
 (** [really_nread i n] reads a string of exactly [n] characters
-    from the input. Raises [No_more_input] if at least [n] characters are
-    not available. Raises [Invalid_argument] if [n] < 0. *)
+    from the input. @raise No_more_input if at least [n] characters are
+    not available. @raise Invalid_argument if [n] < 0. *)
 
 val input : input -> string -> int -> int -> int
 (** [input i s p l] reads up to [l] characters from the given input, storing
@@ -80,8 +80,8 @@ val input : input -> string -> int -> int -> int
 val really_input : input -> string -> int -> int -> int
 (** [really_input i s p l] reads exactly [l] characters from the given input,
   storing them in the string [s], starting at position [p]. For consistency with
-  {!BatIO.input} it returns [l]. Raises [No_more_input] if at [l] characters are
-  not available. Raises [Invalid_argument] if [p] and [l] do not designate a
+  {!BatIO.input} it returns [l]. @raise No_more_input if at [l] characters are
+  not available. @raise Invalid_argument if [p] and [l] do not designate a
   valid substring of [s]. *)
 
 val close_in : input -> unit
@@ -105,7 +105,7 @@ val output : 'a output -> string -> int -> int -> int
 val really_output : 'a output -> string -> int -> int -> int
 (** [really_output o s p l] writes exactly [l] characters from string [s] onto
   the the output, starting with the character at offset [p]. For consistency with
-  {!BatIO.output} it returns [l]. Raises [Invalid_argument] if [p] and [l] do not
+  {!BatIO.output} it returns [l]. @raise Invalid_argument if [p] and [l] do not
   designate a valid substring of [s]. *)
 
 val flush : 'a output -> unit
@@ -282,7 +282,7 @@ val read_i16 : input -> int
 (** Read a signed 16-bit word. *)
 
 val read_i32 : input -> int
-(** Read a signed 32-bit integer. Raise [Overflow] if the
+(** Read a signed 32-bit integer. @raise Overflow if the
   read integer cannot be represented as an OCaml 31-bit integer. *)
 
 val read_real_i32 : input -> int32

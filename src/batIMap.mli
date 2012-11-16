@@ -28,7 +28,7 @@ val add_range : int -> int -> 'a -> 'a t -> 'a t
 val find : int -> 'a t -> 'a
 (** [find x t] returns the [y] that is bound to [x] in [t].
 
-    @raises Not_found if [x] is unbound *)
+    @raise Not_found if [x] is unbound *)
 
 val remove : int -> 'a t -> 'a t
 (** Remove any bindings from the given value. *)
@@ -117,7 +117,7 @@ val forall2_range : (int -> int -> 'a option -> 'b option -> bool) -> 'a t -> 'b
 module Infix : sig
   val (-->) : 'a t -> int -> 'a
     (** [map-->key] returns the current binding of [key] in [map],
-        or raises [Not_found] if no such binding exists.
+        or @raise Not_found if no such binding exists.
         Equivalent to [find key map]. *)
 
   val (<--) : 'a t -> int * 'a -> 'a t

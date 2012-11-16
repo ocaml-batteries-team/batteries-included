@@ -87,7 +87,7 @@ val is_some : 'a option -> bool
 
 val get : 'a option -> 'a
 (** [get (Some x)] returns [x].
-    @raises Invalid_argument on [get None]. *)
+    @raise Invalid_argument on [get None]. *)
 
 val get_exn : 'a option -> exn -> 'a
 (** [get_exn (Some x) e] returns [x] and [get_exn None e] raises [e]. *)

@@ -66,14 +66,14 @@ val blit : t -> int -> string -> int -> int -> unit
    the current contents of the buffer [src], starting at offset [srcoff]
    to string [dst], starting at character [dstoff].
 
-   Raise [Invalid_argument] if [srcoff] and [len] do not designate a valid
+   @raise Invalid_argument if [srcoff] and [len] do not designate a valid
    substring of [src], or if [dstoff] and [len] do not designate a valid
    substring of [dst].
    @since 3.11.2
 *)
 
 val nth : t -> int -> char
-(** get the n-th character of the buffer. Raise [Invalid_argument] if
+(** get the n-th character of the buffer. @raise Invalid_argument if
 index out of bounds *)
 
 val length : t -> int
@@ -112,7 +112,7 @@ val add_substitute : t -> (string -> string) -> string -> unit
    matching parentheses or curly brackets.
    An escaped [$] character is a [$] that immediately follows a backslash
    character; it then stands for a plain [$].
-   Raise [Not_found] if the closing character of a parenthesized variable
+   @raise Not_found if the closing character of a parenthesized variable
    cannot be found. *)
 
 val add_buffer : t -> t -> unit
@@ -121,7 +121,7 @@ val add_buffer : t -> t -> unit
 
 val add_input : t -> BatInnerIO.input -> int -> unit
   (** [add_input b ic n] reads exactly [n] character from the input [ic]
-      and stores them at the end of buffer [b].  Raise [End_of_file] if
+      and stores them at the end of buffer [b].  @raise End_of_file if
       the channel contains fewer than [n] characters. *)
 
 val add_channel : t -> BatInnerIO.input -> int -> unit

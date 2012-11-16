@@ -68,19 +68,20 @@ external ( * ) : int -> int -> int = "%mulint"
 (** Multiplication. *)
 
 external div : int -> int -> int = "%divint"
-(** Integer division.  Raise [Division_by_zero] if the second
-    argument is zero.  This division rounds the real quotient of
-    its arguments towards zero, as specified for {!Pervasives.(/)}. *)
+(** Integer division.
+    This division rounds the real quotient of
+    its arguments towards zero, as specified for {!Pervasives.(/)}.
+    @raise Division_by_zero if the second argument is zero. *)
 external ( / ) : int -> int -> int = "%divint"
-(** Integer division.  Raise [Division_by_zero] if the second
-    argument is zero.  This division rounds the real quotient of
-    its arguments towards zero, as specified for {!Pervasives.(/)}. *)
+(** Integer division.  This division rounds the real quotient of
+    its arguments towards zero, as specified for {!Pervasives.(/)}.
+    @raise Division_by_zero if the second argument is zero. *)
 
 external rem : int -> int -> int = "%modint"
 (** Integer remainder.  If [y] is not zero, the result
     of [Int.rem x y] satisfies the following property:
     [x = Int.add (Int.mul (Int.div x y) y) (Int.rem x y)].
-    If [y = 0], [Int.rem x y] raises [Division_by_zero]. *)
+    @raise Division_by_zero if the second argument is zero. *)
 
 external modulo : int -> int -> int = "%modint"
 (** [modulo a b] computes the remainder of the integer
@@ -94,7 +95,6 @@ external modulo : int -> int -> int = "%modint"
 
 val pow  : int -> int -> int
 (** [pow a b] computes a{^b}.
-
     @raise Invalid_argument when [b] is negative. *)
 val ( ** ) : int -> int -> int
 (** [a ** b] computes a{^b}*)
@@ -136,7 +136,7 @@ val of_string : string -> int
     The string is read in decimal (by default) or in hexadecimal,
     octal or binary if the string begins with [0x], [0o] or [0b]
     respectively.
-    Raise [Invalid_argument] if the given string is not
+    @raise Invalid_argument if the given string is not
     a valid representation of an integer, or if the integer represented
     exceeds the range of integers representable in type [int]. *)
 
@@ -262,19 +262,20 @@ module Safe_int : sig
   (** Multiplication. *)
 
   external div : t -> t -> t = "%divint"
-  (** Integer division.  Raise [Division_by_zero] if the second
-      argument is zero.  This division rounds the real quotient of
-      its arguments towards zero, as specified for {!Pervasives.(/)}. *)
+  (** Integer division.
+      This division rounds the real quotient of
+      its arguments towards zero, as specified for {!Pervasives.(/)}.
+      @raise Division_by_zero if the second argument is zero. *)
   external ( / ) : t -> t -> t = "%divint"
-  (** Integer division.  Raise [Division_by_zero] if the second
-      argument is zero.  This division rounds the real quotient of
-      its arguments towards zero, as specified for {!Pervasives.(/)}. *)
+  (** Integer division. This division rounds the real quotient of
+      its arguments towards zero, as specified for {!Pervasives.(/)}.
+      @raise Division_by_zero if the second argument is zero. *)
 
   external rem : t -> t -> t = "%modint"
   (** Integer remainder.  If [y] is not zero, the result
       of [Int.rem x y] satisfies the following property:
       [x = Int.add (Int.mul (Int.div x y) y) (Int.rem x y)].
-      If [y = 0], [Int.rem x y] raises [Division_by_zero]. *)
+      @raise Division_by_zero if the second argument is zero. *)
 
   external modulo : t -> t -> t = "%modint"
   (** [modulo a b] computes the remainder of the integer
@@ -288,7 +289,6 @@ module Safe_int : sig
 
   val pow  : t -> t -> t
   (** [pow a b] computes a{^b}.
-
       @raise Invalid_argument when [b] is negative. *)
 
   val ( ** ) : t -> t -> t
@@ -342,7 +342,7 @@ module Safe_int : sig
       The string is read in decimal (by default) or in hexadecimal,
       octal or binary if the string begins with [0x], [0o] or [0b]
       respectively.
-      Raise [Invalid_argument] if the given string is not
+      @raise Invalid_argument if the given string is not
       a valid representation of an integer, or if the integer represented
       exceeds the range of integers representable in type [int]. *)
 

@@ -208,8 +208,8 @@ val filter_map : ('a -> 'b option) -> 'a node_t -> 'b node_t
 (** Converts a dllist to a normal list.  This is an O(N) operation. *)
 val to_list : 'a node_t -> 'a list
 
-(** Converts from a normal list to a Dllist and returns the first node. Raises
-    [Empty] if given list is empty.  This is an O(N) operation.
+(** Converts from a normal list to a Dllist and returns the first node.
+    @raise Empty if given list is empty.  This is an O(N) operation.
 *)
 val of_list : 'a list -> 'a node_t
 
@@ -241,8 +241,8 @@ val backwards : 'a node_t -> 'a BatEnum.t
 *)
 
 (** Create a dllist from an enum.
-    This consumes the enum, and allocates a whole new dllist. Raises
-    [Empty] if given enum is empty.  This is an O(N) operation.
+    This consumes the enum, and allocates a whole new dllist.
+    @raise Empty if given enum is empty.  This is an O(N) operation.
 *)
 val of_enum : 'a BatEnum.t -> 'a node_t
 
