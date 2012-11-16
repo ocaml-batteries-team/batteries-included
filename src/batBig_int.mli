@@ -91,14 +91,14 @@ val square_big_int: big_int -> big_int
 val sqrt_big_int: big_int -> big_int
         (** [sqrt_big_int a] returns the integer square root of [a],
            that is, the largest big integer [r] such that [r * r <= a].
-           Raise [Invalid_argument] if [a] is negative. *)
+           @raise Invalid_argument if [a] is negative. *)
 val quomod_big_int : big_int -> big_int -> big_int * big_int
         (** Euclidean division of two big integers.
            The first part of the result is the quotient,
            the second part is the remainder.
            Writing [(q,r) = quomod_big_int a b], we have
            [a = q * b + r] and [0 <= r < |b|].
-           Raise [Division_by_zero] if the divisor is zero. *)
+           @raise Division_by_zero if the divisor is zero. *)
 val div_big_int : big_int -> big_int -> big_int
         (** Euclidean quotient of two big integers.
            This is the first result [q] of [quomod_big_int] (see above). *)
@@ -115,7 +115,7 @@ val power_big_int_positive_big_int: big_int -> big_int -> big_int
            representing the first argument [a] raised to the power [b]
            (the second argument).  Depending
            on the function, [a] and [b] can be either small integers
-           or big integers.  Raise [Invalid_argument] if [b] is negative. *)
+           or big integers.  @raise Invalid_argument if [b] is negative. *)
 
 val operations : t BatNumber.numeric
 
@@ -230,7 +230,7 @@ val is_int_big_int : big_int -> bool
 val to_int : big_int -> int
 val int_of_big_int : big_int -> int
         (** Convert a big integer to a small integer (type [int]).
-           @raise [Failure "int_of_big_int"] if the big integer
+           @raise Failure if the big integer
            is not representable as a small integer. *)
 
 val big_int_of_int32 : int32 -> big_int
@@ -241,15 +241,15 @@ val big_int_of_int64 : int64 -> big_int
         (** Convert a 64-bit integer to a big integer. *)
 val int32_of_big_int : big_int -> int32
         (** Convert a big integer to a 32-bit integer.
-            Raises [Failure] if the big integer is outside the
+            @raise Failure if the big integer is outside the
             range [[-2{^31}, 2{^31}-1]]. *)
 val nativeint_of_big_int : big_int -> nativeint
         (** Convert a big integer to a native integer.
-            Raises [Failure] if the big integer is outside the
+            @raise Failure if the big integer is outside the
             range [[Nativeint.min_int, Nativeint.max_int]]. *)
 val int64_of_big_int : big_int -> int64
         (** Convert a big integer to a 64-bit integer.
-            Raises [Failure] if the big integer is outside the
+            @raise Failure if the big integer is outside the
             range [[-2{^63}, 2{^63}-1]]. *)
 
 val float_of_big_int : big_int -> float
