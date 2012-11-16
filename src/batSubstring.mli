@@ -31,18 +31,18 @@ val substring : string -> int -> int -> t
       [o] and length [l].  Arguments are checked for validity
 
       [substring s i n] creates the substring [(s, i, n)], consisting
-      of the substring of s with length n starting at i.  Raises
-      Inavlid_argument if [i<0] or [n<0] or [i+n > size s].  Equivalent to
+      of the substring of s with length n starting at i.
+      @raise Inavlid_argument if [i<0] or [n<0] or [i+n > size s].  Equivalent to
       [extract s i (Some n)].  *)
 
 val extract : string -> int -> int option -> t
   (** [extract s i None] creates the substring (s, i, size s-i)
-      consisting of the tail of s starting at i.  Raises
-      [Invalid_argument] if [i<0] or [i > size s].
+      consisting of the tail of s starting at i.
+      @raise Invalid_argument if [i<0] or [i > size s].
 
       [extract s i (Some n)] creates the substring (s, i, n), consisting
-      of the substring of s with length n starting at i.  Raises
-      [Invalid_argument] if [i<0] or [n<0] or [i+n > size s].
+      of the substring of s with length n starting at i.
+      @raise Invalid_argument if [i<0] or [n<0] or [i+n > size s].
   *)
 
 val all : string -> t
@@ -68,20 +68,20 @@ val first : t -> char option
 val triml : int -> t -> t
   (** [triml k sus] returns sus less its leftmost k characters; or the
       empty string at the end of sus if it has less than k characters.
-      Raises [Invalid_argument]  if [k < 0], even in the partial application
+      @raise Invalid_argument  if [k < 0], even in the partial application
       [triml k].
   *)
 
 val trimr : int -> t -> t
   (** [trimr k sus] returns sus less its rightmost k characters; or the
       empty string at the beginning of sus if it has less than k
-      characters.  Raises [Invalid_argument] if [k < 0], even in the partial
+      characters.  @raise Invalid_argument if [k < 0], even in the partial
       application [trimr k].
   *)
 
 val get : t -> int -> char
   (** [sub sus k] returns the k'th character of the substring; that
-      is, s(i+k) where sus = (s, i, n).  Raises [Invalid_argument] if
+      is, s(i+k) where sus = (s, i, n).  @raise Invalid_argument if
       [k<0] or [k>=n].  *)
 
 val size : t -> int
@@ -92,11 +92,11 @@ val length: t -> int
 
 val slice : t -> int -> int option -> t
   (** [slice sus i' None] returns the substring [(s, i+i', n-i')],
-      where [sus = (s, i, n)].  Raises Invalid_argument if [i' < 0] or
-      [i' > n].
+      where [sus = (s, i, n)].
+      @raise Invalid_argument if [i' < 0] or [i' > n].
 
       [slice sus i' (Some n')] returns the substring [(s, i+i', n')],
-      where [sus] = [(s, i, n)].  Raises [Invalid_argument] if [i' < 0]
+      where [sus] = [(s, i, n)].  @raise Invalid_argument if [i' < 0]
       or [n' < 0] or [i'+n' >= n].
   *)
 val concat : t list -> string
@@ -128,21 +128,21 @@ val compare : t -> t -> int
 
 val index : t -> char -> int
 (** [index sus c] returns the index of the first occurence of [c] in [sus] or
-    raise [Not_found] otherwise. *)
+    @raise Not_found otherwise. *)
 
 val index_from : t -> int -> char -> int
 (** [index_from sus i c] returns the index of the first occurence of [c] in
-    [sus] after the index [i] or raise [Not_found] otherwise. If [i] is beyond
-    the range of [sus], raises [Invalid_argument]. It is equivalent to [i + index (triml i sus) c]. *)
+    [sus] after the index [i] or @raise Not_found otherwise. If [i] is beyond
+    the range of [sus], @raise Invalid_argument. It is equivalent to [i + index (triml i sus) c]. *)
 
 val rindex : t -> char -> int
 (** [rindex sus c] returns the index of the last occurence of [c] in [sus] or
-    raise [Not_found] otherwise. *)
+    @raise Not_found otherwise. *)
 
 val rindex_from : t -> int -> char -> int
 (** [index_from sus i c] returns the index of the last occurence of [c] in [sus]
-    before the index [i] or raise [Not_found] otherwise. If [i] is beyond the
-    range of [sus], raises [Invalid_argument]. It is equivalent to [rindex (trimr i sus) c]. *)
+    before the index [i] or @raise Not_found otherwise. If [i] is beyond the
+    range of [sus], @raise Invalid_argument. It is equivalent to [rindex (trimr i sus) c]. *)
 
 val dropl : (char -> bool) -> t -> t
 (** [dropl p sus] drops the longest prefix (left substring) of [sus]
@@ -209,7 +209,7 @@ val splitr : (char -> bool) -> t -> t * t
 val split_at : int -> t -> t * t
 (** [split_at sus k] returns the pair [(sus1, sus2)] of substrings,
     where [sus1] contains the first [k] characters of [sus], and
-    [sus2] contains the rest.  Raises [Invalid_argument] if [k < 0] or
+    [sus2] contains the rest.  @raise Invalid_argument if [k < 0] or
     [k > size sus].
 *)
 
@@ -227,7 +227,7 @@ val span : t -> t -> t
     [sus1] to the end of [sus2], provided this is well-defined: [sus1]
     and [sus2] must have the same underlying string, and the start of
     [sus1] must not be to the right of the end of [sus2]; otherwise
-    raises [Invalid_argument].
+    @raise Invalid_argument.
 
     More precisely, if [base sus1 = (s,i,n)] and [base sus2 =
     (s',i',n')] and [s = s'] and [i <= i'+n'], then [base (span sus1

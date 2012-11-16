@@ -181,8 +181,8 @@ val nread : input -> int -> string
 
 val really_nread : input -> int -> string
 (** [really_nread i n] reads a string of exactly [n] characters
-  from the input. Raises [No_more_input] if at least [n] characters are
-  not available. Raises [Invalid_argument] if [n] < 0.
+  from the input. @raise No_more_input if at least [n] characters are
+  not available. @raise Invalid_argument if [n] < 0.
 
     Example: [let read_md5 ch = really_nread ch 32]
 *)
@@ -207,8 +207,8 @@ val really_input : input -> string -> int -> int -> int
   (** [really_input i s p l] reads exactly [l] characters from the
       given input, storing them in the string [s], starting at
       position [p]. For consistency with {!BatIO.input} it returns
-      [l]. Raises [No_more_input] if at [l] characters are not
-      available. Raises [Invalid_argument] if [p] and [l] do not
+      [l]. @raise No_more_input if at [l] characters are not
+      available. @raise Invalid_argument if [p] and [l] do not
       designate a valid substring of [s].
 
       Example: [let _ = really_input stdin b 0 3]
@@ -246,7 +246,7 @@ val output : 'a output -> string -> int -> int -> int
 val really_output : 'a output -> string -> int -> int -> int
 (** [really_output o s p l] writes exactly [l] characters from string [s] onto
   the the output, starting with the character at offset [p]. For consistency with
-  {!BatIO.output} it returns [l]. Raises [Invalid_argument] if [p] and [l] do not
+  {!BatIO.output} it returns [l]. @raise Invalid_argument if [p] and [l] do not
   designate a valid substring of [s].
 
     This function is useful for networking situations where the output
@@ -334,7 +334,7 @@ val tab_out : ?tab:char -> int -> 'a output -> unit output
 
       [tab_out n out] produces a new output for writing into [out], in
       which every new line starts with [n] spaces.
-      Raises [Invalid_argument] if [n] < 0.
+      @raise Invalid_argument if [n] < 0.
 
       Closing [tab_out n out] does not close [out]. Rather,
       closing [out] closes [tab_out n out].
@@ -407,7 +407,7 @@ val read_i16 : input -> int
 (** Read a signed 16-bit word. *)
 
 val read_i32 : input -> int
-  (** Read a signed 32-bit integer. Raise [Overflow] if the
+  (** Read a signed 32-bit integer. @raise Overflow if the
       read integer cannot be represented as an OCaml 31-bit integer. *)
 
 val read_real_i32 : input -> int32
@@ -489,7 +489,7 @@ sig
 	  (** Read a signed 16-bit word. *)
 
 	val read_i32 : input -> int
-	  (** Read a signed 32-bit integer. Raise [Overflow] if the
+	  (** Read a signed 32-bit integer. @raise Overflow if the
 	      read integer cannot be represented as an OCaml 31-bit integer. *)
 
 	val read_real_i32 : input -> int32
@@ -816,7 +816,7 @@ val i16s_of : input -> int BatEnum.t
 (** Read an enumartion of signed 16-bit words. *)
 
 val i32s_of : input -> int BatEnum.t
-(** Read an enumeration of signed 32-bit integers. Raise [Overflow] if the
+(** Read an enumeration of signed 32-bit integers. @raise Overflow if the
   read integer cannot be represented as an OCaml 31-bit integer. *)
 
 val real_i32s_of : input -> int32 BatEnum.t

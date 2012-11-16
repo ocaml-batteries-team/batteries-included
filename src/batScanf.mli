@@ -252,7 +252,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner;;
       escaped characters follow the lexical conventions of OCaml).
     - [c]: reads a single character. To test the current input character
       without reading it, specify a null field width, i.e. use
-      specification [%0c]. Raise [Invalid_argument], if the field width
+      specification [%0c]. @raise Invalid_argument, if the field width
       specification is greater than 1.
     - [C]: reads a single delimited character (delimiters and special
       escaped characters follow the lexical conventions of OCaml).
@@ -364,14 +364,14 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner;;
 (** Scanners may raise the following exceptions when the input cannot be read
     according to the format string:
 
-    - Raise [Scanf.Scan_failure] if the input does not match the format.
+    - @raise Scanf.Scan_failure if the input does not match the format.
 
-    - Raise [Failure] if a conversion to a number is not possible.
+    - @raise Failure if a conversion to a number is not possible.
 
-    - Raise [End_of_file] if the end of input is encountered while some more
+    - @raise End_of_file if the end of input is encountered while some more
       characters are needed to read the current conversion specification.
 
-    - Raise [Invalid_argument] if the format string is invalid.
+    - @raise Invalid_argument if the format string is invalid.
 
     Note:
 
@@ -418,7 +418,7 @@ val bscanf_format :
 (** [bscanf_format ib fmt f] reads a format string token from the scannning
     buffer [ib], according to the given format string [fmt], and applies [f] to
     the resulting format string value.
-    Raise [Scan_failure] if the format string value read does not have the
+    @raise Scan_failure if the format string value read does not have the
     same type as [fmt]. *)
 
 val sscanf_format :
@@ -431,6 +431,6 @@ val format_from_string :
     ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6;;
 (** [format_from_string s fmt] converts a string argument to a format string,
     according to the given format string [fmt].
-    Raise [Scan_failure] if [s], considered as a format string, does not
+    @raise Scan_failure if [s], considered as a format string, does not
     have the same type as [fmt]. *)
 

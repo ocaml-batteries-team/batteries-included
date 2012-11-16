@@ -139,7 +139,7 @@ val environment : unit -> string array
 
 val getenv : string -> string
 (** Return the value associated to a variable in the process
-   environment. Raise [Not_found] if the variable is unbound.
+   environment. @raise Not_found if the variable is unbound.
    (This function is identical to {!Sys.getenv}.) *)
 
 val putenv : string -> string -> unit
@@ -178,7 +178,7 @@ val execv : string -> string array -> 'a
    the arguments [args], and the current process environment.
    These [execv*] functions never return: on success, the current
    program is replaced by the new one;
-   on failure, a {!Unix.Unix_error} exception is raised. *)
+   @raise Unix.Unix_error on failure. *)
 
 val execve : string -> string array -> string array -> 'a
 (** Same as {!Unix.execv}, except that the third argument provides the
@@ -348,7 +348,7 @@ val descr_of_input : BatInnerIO.input -> file_descr
     Not all inputs have file descriptors. This function works
     only for inputs which have been created using module {!Unix}.
 
-    @raise Invalid_argument ["Unix.descr_of_in_channel"] if this input
+    @raise Invalid_argument if this input
     channel doesn't have a file descriptor
 *)
 
@@ -358,7 +358,7 @@ val descr_of_output : unit BatInnerIO.output -> file_descr
       Not all inputs have file descriptors. This function works
       only for inputs which have been created from module Unix.
 
-      @raise Invalid_argument ["Unix.descr_of_out_channel"] if this input
+      @raise Invalid_argument if this input
       channel doesn't have a file descriptor
   *)
 
@@ -513,7 +513,7 @@ val umask : int -> int
 
 val access : string -> access_permission list -> unit
 (** Check that the process has the given permissions over the named
-   file. Raise [Unix_error] otherwise. *)
+   file. @raise Unix_error otherwise. *)
 
 
 (** {6 Operations on file descriptors} *)
@@ -530,10 +530,10 @@ val dup2 : file_descr -> file_descr -> unit
 val set_nonblock : file_descr -> unit
 (** Set the ``non-blocking'' flag on the given descriptor.
    When the non-blocking flag is set, reading on a descriptor
-   on which there is temporarily no data available raises the
-   [EAGAIN] or [EWOULDBLOCK] error instead of blocking;
+   on which there is temporarily no data available
+   raises EAGAIN or EWOULDBLOCK error instead of blocking;
    writing on a descriptor on which there is temporarily no room
-   for writing also raises [EAGAIN] or [EWOULDBLOCK]. *)
+   for writing also raises EAGAIN or EWOULDBLOCK. *)
 
 val clear_nonblock : file_descr -> unit
 (** Clear the ``non-blocking'' flag on the given descriptor.
@@ -996,20 +996,20 @@ val getlogin : unit -> string
 (** Return the login name of the user executing the process. *)
 
 val getpwnam : string -> passwd_entry
-(** Find an entry in [passwd] with the given name, or raise
-   [Not_found]. *)
+(** Find an entry in [passwd] with the given name.
+   @raise Not_found if no such entry can be found. *)
 
 val getgrnam : string -> group_entry
-(** Find an entry in [group] with the given name, or raise
-   [Not_found]. *)
+(** Find an entry in [group] with the given name.
+   @raise Not_found if no such entry can be found. *)
 
 val getpwuid : int -> passwd_entry
-(** Find an entry in [passwd] with the given user id, or raise
-   [Not_found]. *)
+(** Find an entry in [passwd] with the given user id.
+   @raise Not_found if no such entry can be found. *)
 
 val getgrgid : int -> group_entry
-(** Find an entry in [group] with the given group id, or raise
-   [Not_found]. *)
+(** Find an entry in [group] with the given group id.
+   @raise Not_found if no such entry can be found. *)
 
 
 (** {6 Internet addresses} *)
@@ -1023,7 +1023,7 @@ val inet_addr_of_string : string -> inet_addr
     address to its internal representation.  The argument string
     consists of 4 numbers separated by periods ([XXX.YYY.ZZZ.TTT])
     for IPv4 addresses, and up to 8 numbers separated by colons
-    for IPv6 addresses.  Raise [Failure] when given a string that
+    for IPv6 addresses.  @raise Failure when given a string that
     does not match these formats. *)
 
 val string_of_inet_addr : inet_addr -> string
@@ -1303,28 +1303,28 @@ val gethostname : unit -> string
 (** Return the name of the local host. *)
 
 val gethostbyname : string -> host_entry
-(** Find an entry in [hosts] with the given name, or raise
-   [Not_found]. *)
+(** Find an entry in [hosts] with the given name.
+   @raise Not_found if no such entry can be found. *)
 
 val gethostbyaddr : inet_addr -> host_entry
-(** Find an entry in [hosts] with the given address, or raise
-   [Not_found]. *)
+(** Find an entry in [hosts] with the given address.
+   @raise Not_found if no such entry can be found. *)
 
 val getprotobyname : string -> protocol_entry
-(** Find an entry in [protocols] with the given name, or raise
-   [Not_found]. *)
+(** Find an entry in [protocols] with the given name
+   @raise Not_found if no such entry can be found. *)
 
 val getprotobynumber : int -> protocol_entry
-(** Find an entry in [protocols] with the given protocol number,
-   or raise [Not_found]. *)
+(** Find an entry in [protocols] with the given protocol number.
+   @raise Not_found if no such entry can be found. *)
 
 val getservbyname : string -> string -> service_entry
-(** Find an entry in [services] with the given name, or raise
-   [Not_found]. *)
+(** Find an entry in [services] with the given name.
+   @raise Not_found if no such entry can be found. *)
 
 val getservbyport : int -> string -> service_entry
-(** Find an entry in [services] with the given service number,
-   or raise [Not_found]. *)
+(** Find an entry in [services] with the given service number.
+   @raise Not_found if no such entry can be found. *)
 
 type addr_info = Unix.addr_info =
   { ai_family : socket_domain;          (** Socket domain *)
@@ -1384,7 +1384,7 @@ val getnameinfo : sockaddr -> getnameinfo_option list -> name_info
 (** [getnameinfo addr opts] returns the host name and service name
     corresponding to the socket address [addr].  [opts] is a possibly
     empty list of options that governs how these names are obtained.
-    Raise [Not_found] if an error occurs. *)
+    @raise Not_found if an error occurs. *)
 
 
 (** {6 Terminal interface} *)
@@ -1509,7 +1509,7 @@ val is_directory : string -> bool
 
 val restart_on_EINTR : ('a -> 'b) -> 'a -> 'b
 (** [restart_on_EINTR f x] invokes [f] on [x] repetedly until the function returns
-    a value or raise another exception than EINTR. *)
+    a value or raises another exception than EINTR. *)
 
 
 (**

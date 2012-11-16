@@ -70,15 +70,16 @@ external mul : int32 -> int32 -> int32 = "%int32_mul"
 (** Multiplication. *)
 
 external div : int32 -> int32 -> int32 = "%int32_div"
-(** Integer division.  Raise [Division_by_zero] if the second
-    argument is zero.  This division rounds the real quotient of
-    its arguments towards zero, as specified for {!Pervasives.(/)}. *)
+(** Integer division.
+    This division rounds the real quotient of
+    its arguments towards zero, as specified for {!Pervasives.(/)}.
+    @raise Division_by_zero if the second argument is zero. *)
 
 external rem : int32 -> int32 -> int32 = "%int32_mod"
 (** Integer remainder.  If [y] is not zero, the result
     of [Int32.rem x y] satisfies the following property:
     [x = Int32.add (Int32.mul (Int32.div x y) y) (Int32.rem x y)].
-    If [y = 0], [Int32.rem x y] raises [Division_by_zero]. *)
+    @raise Division_by_zero if the second argument is zero. *)
 
 
 val modulo : int32 -> int32 -> int32

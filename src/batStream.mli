@@ -128,7 +128,7 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 
 val next : 'a t -> 'a
 (** Return the first element of the stream and remove it from the
-   stream. Raise Stream.Failure if the stream is empty. *)
+   stream. @raise Stream.Failure if the stream is empty. *)
 
 val empty : 'a t -> unit
 (** Return [()] if the stream is empty, else raise [Stream.Failure]. *)
@@ -292,7 +292,7 @@ val is_empty : 'a t -> bool
 
 val next : 'a t -> 'a
 (** Return the first element of the stream and remove it from the
-   stream. Raise Stream.Failure if the stream is empty. *)
+   stream. @raise Stream.Failure if the stream is empty. *)
 
 
 

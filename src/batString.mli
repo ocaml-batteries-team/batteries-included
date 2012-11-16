@@ -99,7 +99,7 @@ external get : string -> int -> char = "%string_safe_get"
 (** [String.get s n] returns character number [n] in string [s].
    You can also write [s.[n]] instead of [String.get s n].
 
-   Raise [Invalid_argument] if [n] not a valid character number in [s]. *)
+   @raise Invalid_argument if [n] not a valid character number in [s]. *)
 
 
 external set : string -> int -> char -> unit = "%string_safe_set"
@@ -107,19 +107,19 @@ external set : string -> int -> char -> unit = "%string_safe_set"
    replacing the character number [n] by [c].
    You can also write [s.[n] <- c] instead of [String.set s n c].
 
-   Raise [Invalid_argument] if [n] is not a valid character number in [s]. *)
+   @raise Invalid_argument if [n] is not a valid character number in [s]. *)
 
 external create : int -> string = "caml_create_string"
 (** [String.create n] returns a fresh string of length [n].
    The string initially contains arbitrary characters.
 
-   Raise [Invalid_argument] if [n < 0] or [n > ]{!Sys.max_string_length}. *)
+   @raise Invalid_argument if [n < 0] or [n > ]{!Sys.max_string_length}. *)
 
 val make : int -> char -> string
 (** [String.make n c] returns a fresh string of length [n],
    filled with the character [c].
 
-   Raise [Invalid_argument] if [n < 0] or [n > ]{!Sys.max_string_length}.*)
+   @raise Invalid_argument if [n < 0] or [n > ]{!Sys.max_string_length}.*)
 
 val copy : string -> string
 (** Return a copy of the given string. *)
@@ -129,14 +129,14 @@ val sub : string -> int -> int -> string
    containing the substring of [s] that starts at position [start] and
    has length [len].
 
-   Raise [Invalid_argument] if [start] and [len] do not
+   @raise Invalid_argument if [start] and [len] do not
    designate a valid substring of [s]. *)
 
 val fill : string -> int -> int -> char -> unit
 (** [String.fill s start len c] modifies string [s] in place,
    replacing [len] characters by [c], starting at [start].
 
-   Raise [Invalid_argument] if [start] and [len] do not
+   @raise Invalid_argument if [start] and [len] do not
    designate a valid substring of [s]. *)
 
 val blit : string -> int -> string -> int -> int -> unit
@@ -146,7 +146,7 @@ val blit : string -> int -> string -> int -> int -> unit
    correctly even if [src] and [dst] are the same string,
    and the source and destination intervals overlap.
 
-   Raise [Invalid_argument] if [srcoff] and [len] do not
+   @raise Invalid_argument if [srcoff] and [len] do not
    designate a valid substring of [src], or if [dstoff] and [len]
    do not designate a valid substring of [dst]. *)
 
@@ -191,21 +191,21 @@ val index : string -> char -> int
 (** [String.index s c] returns the character number of the first
    occurrence of character [c] in string [s].
 
-   Raise [Not_found] if [c] does not occur in [s]. *)
+   @raise Not_found if [c] does not occur in [s]. *)
 
 val rindex : string -> char -> int
 (** [String.rindex s c] returns the character number of the last
    occurrence of character [c] in string [s].
 
-   Raise [Not_found] if [c] does not occur in [s]. *)
+   @raise Not_found if [c] does not occur in [s]. *)
 
 val index_from : string -> int -> char -> int
 (** [String.index_from s i c] returns the character number of the
    first occurrence of character [c] in string [s] after position [i].
    [String.index s c] is equivalent to [String.index_from s 0 c].
 
-   Raise [Invalid_argument] if [i] is not a valid position in [s].
-   Raise [Not_found] if [c] does not occur in [s] after position [i]. *)
+   @raise Invalid_argument if [i] is not a valid position in [s].
+   @raise Not_found if [c] does not occur in [s] after position [i]. *)
 
 val rindex_from : string -> int -> char -> int
 (** [String.rindex_from s i c] returns the character number of the
@@ -213,8 +213,8 @@ val rindex_from : string -> int -> char -> int
    [String.rindex s c] is equivalent to
    [String.rindex_from s (String.length s - 1) c].
 
-   Raise [Invalid_argument] if [i+1] is not a valid position in [s].
-   Raise [Not_found] if [c] does not occur in [s] before position [i+1]. *)
+   @raise Invalid_argument if [i+1] is not a valid position in [s].
+   @raise Not_found if [c] does not occur in [s] before position [i+1]. *)
 
 val contains : string -> char -> bool
 (** [String.contains s c] tests if character [c]
@@ -226,13 +226,13 @@ val contains_from : string -> int -> char -> bool
    [String.contains s c] is equivalent to
    [String.contains_from s 0 c].
 
-   Raise [Invalid_argument] if [start] is not a valid position in [s]. *)
+   @raise Invalid_argument if [start] is not a valid position in [s]. *)
 
 val rcontains_from : string -> int -> char -> bool
 (** [String.rcontains_from s stop c] tests if character [c]
    appears in [s] before position [stop+1].
 
-   Raise [Invalid_argument] if [stop < 0] or [stop+1] is not a valid
+   @raise Invalid_argument if [stop < 0] or [stop+1] is not a valid
    position in [s]. *)
 
 val uppercase : string -> string
@@ -326,8 +326,8 @@ val of_char : char -> string
 *)
 
 val to_int : string -> int
-  (** Returns the integer represented by the given string or raises
-      [Failure] if the string does not represent an
+  (** Returns the integer represented by the given string
+      or @raise Failure if the string does not represent an
       integer. This follows OCaml's int literal rules, so "0x"
       prefixes hexadecimal integers, "0o" for octal and "0b" for
       binary.  Underscores within the number are allowed for
@@ -340,8 +340,8 @@ val to_int : string -> int
   *)
 
 val to_float : string -> float
-  (** Returns the float represented by the given string or raises
-      [Failure] if the string does not represent a float.
+  (** Returns the float represented by the given string
+      or @raise Failure if the string does not represent a float.
       Decimal points aren't required in the given string, as they are
       for float literals in OCaml, but otherwise the rules for float
       literals apply.
@@ -487,7 +487,7 @@ val exists : string -> string -> bool
 val lchop : ?n:int -> string -> string
 (** Returns the same string but without the first [n] characters.
     By default [n] is 1.
-    If [n] is strictly less than zero raises [Invalid_argument].
+    If [n] is strictly less than zero @raise Invalid_argument.
     If the string has [n] or less characters, returns the empty string.
 
       Example:
@@ -499,7 +499,7 @@ val lchop : ?n:int -> string -> string
 val rchop : ?n:int -> string -> string
 (** Returns the same string but without the last [n] characters.
     By default [n] is 1.
-    If [n] is strictly less than zero raises [Invalid_argument].
+    If [n] is strictly less than zero @raise Invalid_argument.
     If the string has [n] or less characters , returns the empty string.
 
       Example:
