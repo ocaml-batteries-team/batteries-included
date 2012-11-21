@@ -3,7 +3,6 @@
 "build": include
 "src": include
 "libs": include
-"libs/estring": include
 "testsuite": include
 "qtest": include
 "benchsuite": include

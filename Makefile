@@ -30,17 +30,13 @@ QTESTDIR ?= qtest
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
 	_build/src/batteriesHelp.cmo _build/src/batteriesConfig.cmo _build/src/batteriesPrint.cmo \
-	_build/src/syntax/pa_comprehension/pa_comprehension.cmo \
-	_build/src/syntax/pa_strings/pa_strings.cma \
-	_build/src/syntax/pa_llist/pa_llist.cmo \
 	_build/libs/*.cmi _build/libs/*.mli \
 	ocamlinit build/ocaml
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
 	_build/src/*.cmxs _build/src/*.lib _build/libs/*.cmx
 
 # What to build
-TARGETS = syntax.otarget
-TARGETS += src/batteries.cma
+TARGETS  = src/batteries.cma
 TARGETS += src/batteriesHelp.cmo
 TARGETS += src/batteriesThread.cma
 TARGETS += META
@@ -93,16 +89,10 @@ man: all batteries.odocl
 	ocamlfind ocamldoc -package threads.posix -sort -man -hide-warnings -d man -I _build/libs -I _build/src libs/uniclib.mli src/*.mli
 
 install: all uninstall_packages
-	ocamlfind install estring \
-		libs/estring/META \
-		_build/libs/estring/*.cmo \
-		_build/libs/estring/*.cmi \
-		_build/libs/estring/*.mli
 	ocamlfind install $(NAME) $(INSTALL_FILES) \
 		-optional $(OPT_INSTALL_FILES)
 
 uninstall_packages:
-	ocamlfind remove estring
 	ocamlfind remove $(NAME)
 
 uninstall: uninstall_packages
@@ -154,7 +144,7 @@ _build/testsuite/main.native: $(TESTDEPS) $(wildcard testsuite/*.ml)
 
 # extract all qtest unit tests into a single ml file
 $(QTESTDIR)/all_tests.ml: $(TESTABLE)
-	qtest -o $@ --shuffle --preamble-file qtest_preamble.ml extract $(TESTABLE)
+	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml extract $(TESTABLE)
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -use-ocamlfind -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.byte

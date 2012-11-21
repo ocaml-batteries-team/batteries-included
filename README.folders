@@ -4,6 +4,5 @@ The following directories contain:
 * examples/   example files showing how to use various features of batteries
 * apidocs/    the html documentation
 * src/	      the core of Batteries Included, all the batFoo modules
-* src/syntax/ several syntax extensions for OCaml
 * testsuite/  a minimal testsuite for batteries
 

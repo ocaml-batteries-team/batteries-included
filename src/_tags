@@ -1,7 +1,6 @@
 true: debug
 <{batMutex,batRMutex}.{ml,mli}>: threads
 <batteriesThread.*>: threads
-"syntax/pa_comprehension" or "syntax/pa_strings": include
 <batFingerTree.ml>: rectypes
 <{batMap,batVect,batFile,batPervasives,batParserCo,batSet,batLogger,batPathGen,batSplay}.ml>: warn_z
 <{batPervasives,batIMap,batLog}.ml>: warn_-9

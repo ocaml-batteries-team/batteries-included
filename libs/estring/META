@@ -1,6 +1,0 @@
-# -*- conf -*-
-description = "syntax extension for extended strings"
-version = "1.0"
-requires = "camlp4"
-archive(syntax,preprocessor) = "pa_estring.cmo"
-archive(syntax,toploop) = "pa_estring.cmo pa_estring_top.cmo"

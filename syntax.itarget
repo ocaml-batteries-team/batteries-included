@@ -1,4 +1,0 @@
-libs/estring.otarget
-src/syntax/pa_comprehension/pa_comprehension.cmo
-src/syntax/pa_strings/pa_strings.cma
-src/syntax/pa_llist/pa_llist.cmo

@@ -31,9 +31,6 @@
    This file is loaded by the magic line in the ocamlinit file.
 *)
 
-(* Set the below to false to disable use of syntax extensions in toplevel *)
-let ext_syntax = true;;
-
 
 (* END CONFIGURATION *)
 
@@ -78,15 +75,3 @@ open Batteries;;
 #install_printer BatteriesPrint.string_enum;;
 #install_printer BatteriesPrint.rope_enum;;
 #install_printer BatteriesPrint.char_enum;;
-
-
-if ext_syntax then begin
-  if !Sys.interactive then
-    print_endline "Loading syntax extensions...";
-  Topfind.standard_syntax();
-  Topfind.load_deeply ["dynlink"; "camlp4"; "batteries.pa_string.syntax";
-   		       "batteries.pa_comprehension.syntax"];
-end else
-  if !Sys.interactive then
-    print_endline "Batteries Syntax extensions disabled.";
-;;
