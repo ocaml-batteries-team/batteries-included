@@ -79,7 +79,8 @@ BatISet
 BatIMap
 BatCache
 BatLog
-Uniclib
+BatUChar
+BatUTF8
 BatText
 BatteriesConfig
 BatteriesPrint

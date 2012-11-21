@@ -139,6 +139,8 @@ module ISet = BatISet
 module IMap = BatIMap
 module Splay = BatSplay
 module Uref = BatUref
+module UChar = BatUChar
+module UTF8 = BatUTF8
 module Text = BatText
 module Concurrent = BatConcurrent
 
