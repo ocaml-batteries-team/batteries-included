@@ -126,8 +126,9 @@ reinstall:
 	$(MAKE) install
 
 # Ocaml 4.00 introduced a small change in Unix module
-src/batUnix.mli: src/batUnix.mli$(OCAML_MAJOR_VERSION)
-	ln -s $< $@
+.SUFFIXES: .mli .mliv
+.mliv.mli:
+	sed -e 's/^##V$(OCAML_MAJOR_VERSION)##//' -e '/^##V.##/d' $< > $@
 
 ###############################################################################
 #	BUILDING AND RUNNING UNIT TESTS
