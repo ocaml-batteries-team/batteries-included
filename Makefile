@@ -4,6 +4,7 @@
 NAME = batteries
 
 VERSION := $(shell grep "^Version:" _oasis | cut -c 15-)
+OCAML_MAJOR_VERSION := $(firstword $(subst ., , $(shell ocamlfind ocamlc -version)))
 uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 
 # Define variables and export them for mkconf.ml
@@ -70,12 +71,12 @@ endif
 
 .PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 
-all: 
+all: src/batUnix.mli
 	@echo "Build mode:" $(MODE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
 clean:
-	@${RM} src/batteriesConfig.ml batteries.odocl bench.log
+	@${RM} src/batteriesConfig.ml src/batUnix.mli batteries.odocl bench.log
 	@${RM} -r man/
 	@$(OCAMLBUILD) -clean
 	@git clean -xfd
@@ -123,6 +124,11 @@ install-man: man
 reinstall:
 	$(MAKE) uninstall
 	$(MAKE) install
+
+# Ocaml 4.00 introduced a small change in Unix module
+.SUFFIXES: .mli .mliv
+.mliv.mli:
+	sed -e 's/^##V$(OCAML_MAJOR_VERSION)##//' -e '/^##V.##/d' $< > $@
 
 ###############################################################################
 #	BUILDING AND RUNNING UNIT TESTS

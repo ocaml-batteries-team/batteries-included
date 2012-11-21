@@ -259,6 +259,8 @@ type open_flag = Unix.open_flag =
                                    integrity completion' *)
   | O_RSYNC                     (** Reads complete as writes (depending on
                                    O_SYNC/O_DSYNC) *)
+##V4##  | O_SHARE_DELETE              (** OCaml 4 and Windows only: allow the file to be deleted
+##V4##                                   while still open *)
 (** The flags to {!Unix.openfile}. *)
 
 
