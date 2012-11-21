@@ -144,12 +144,12 @@ _build/testsuite/main.native: $(TESTDEPS) $(wildcard testsuite/*.ml)
 
 # extract all qtest unit tests into a single ml file
 $(QTESTDIR)/all_tests.ml: $(TESTABLE)
-	ocamlfind qtest/qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml extract $(TESTABLE)
+	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml extract $(TESTABLE)
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -use-ocamlfind -pkg oUnit,qtest $(QTESTDIR)/all_tests.byte
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -use-ocamlfind -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.byte
 _build/$(QTESTDIR)/all_tests.native: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -use-ocamlfind -pkg oUnit,qtest $(QTESTDIR)/all_tests.native
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -use-ocamlfind -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.native
 
 
 ### qtest: quick run of inline unit tests
