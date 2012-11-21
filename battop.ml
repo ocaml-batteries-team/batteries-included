@@ -44,12 +44,16 @@
 if !Sys.interactive then (*Only initialize help and display welcome if we're in interactive mode.*)
 begin
   BatteriesHelp.init ();
-  print_endline "      _________________________";
-  print_endline "    [| +   | |   Batteries   - |";
-  print_endline "     |_____|_|_________________|";
-  print_endline "      _________________________";
-  print_endline "     | -  Type '#help;;' | | + |]";
-  print_endline "     |___________________|_|___|";
+  let ver = BatteriesConfig.version in
+  let vlen = String.length ver in
+  let pad = String.make vlen '_' in
+  let pad2 = String.make vlen ' ' in
+  print_endline ("      ___________________"^ pad  ^"_______");
+  print_endline ("    [| +   | |   Batteries " ^ ver ^ "  - |");
+  print_endline ("     |_____|_|___________"^ pad  ^"______|");
+  print_endline ("      ___________________"^ pad  ^"_______");
+  print_endline ("     | -  Type '#help;;' "^ pad2 ^"| | + |]");
+  print_endline ("     |___________________"^ pad  ^"|_|___|");
   print_newline ();
   print_newline ();
   flush_all ()
