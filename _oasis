@@ -32,5 +32,3 @@ SourceRepository master
 Library "batteries"
   Path: src/
 
-Library "estring"
-  Path: libs/estring/
