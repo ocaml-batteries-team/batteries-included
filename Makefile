@@ -30,10 +30,9 @@ QTESTDIR ?= qtest
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
 	_build/src/batteriesHelp.cmo _build/src/batteriesConfig.cmo _build/src/batteriesPrint.cmo \
-	_build/src/*.cmi _build/src/*.mli \
 	ocamlinit build/ocaml
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
-	_build/src/*.cmxs _build/src/*.lib _build/src/*.cmx
+	_build/src/*.cmxs _build/src/*.lib
 
 # What to build
 TARGETS  = src/batteries.cma
