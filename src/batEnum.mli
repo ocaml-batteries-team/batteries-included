@@ -738,6 +738,9 @@ val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
       element of [b]
   *)
 
+val ord : ('a -> 'a -> BatOrd.order) -> 'a t -> 'a t -> BatOrd.order
+(** Same as [compare] but returning a {!BatOrd.order} instead of an interger. *)
+
 val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 (** [equal eq a b] returns [true] when [a] and [b] contain
     the same sequence of elements.
