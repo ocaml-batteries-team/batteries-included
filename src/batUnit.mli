@@ -44,6 +44,12 @@ val compare : t -> t -> int
 
     Always returns 0.*)
 
+val ord : t -> t -> BatOrd.order
+(** Always returns [BatOrd.Eq] *)
+
+val equal : t -> t -> bool
+(** Always returns true. *)
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
