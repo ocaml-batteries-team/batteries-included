@@ -206,11 +206,16 @@ external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
 
 
 
-val compare: t -> t -> int
+val compare : t -> t -> int
 (** The comparison function for 64-bit integers, with the same specification as
     {!Pervasives.compare}.  Along with the type [t], this function [compare]
     allows the module [Int64] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
+
+val equal : t -> t -> bool
+(** Equality function for 64-bit integers, useful for {!HashedType}. *)
+
+val ord : t -> t -> BatOrd.order
 
 (** {6 Submodules grouping all infix operators} *)
 
