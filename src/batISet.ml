@@ -240,6 +240,8 @@ let equal s1 s2 = compare s1 s2 = 0
   not (equal (of_list [3,3;5,5]) (of_list [3,3;1,1]))
  *)
 
+let ord = BatOrd.ord compare
+
 let rec subset s1 s2 =
   if is_empty s1 then true else
   if is_empty s2 then false else
