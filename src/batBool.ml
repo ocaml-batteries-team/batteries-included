@@ -59,6 +59,10 @@ module BaseBool = struct
 
   let compare = compare
 
+  let equal = (=)
+
+  let ord = BatOrd.ord compare
+
   let of_int = function
     | 0 -> false
     | _ -> true
