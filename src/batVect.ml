@@ -588,6 +588,9 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
 
 let compare cmp_val v1 v2 = BatEnum.compare cmp_val (enum v1) (enum v2)
 let equal eq_val v1 v2 = BatEnum.equal eq_val (enum v1) (enum v2)
+let ord ord_val v1 v2 =
+    let cmp_val = BatOrd.comp ord_val in
+    BatOrd.ord0 (BatEnum.compare cmp_val (enum v1) (enum v2))
 
 (* Functorial interface *)
 
