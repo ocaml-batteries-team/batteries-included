@@ -322,6 +322,7 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outpu
 
 val compare : 'a BatOrd.comp -> 'a t BatOrd.comp
 val equal : 'a BatOrd.eq -> 'a t BatOrd.eq
+val ord : 'a BatOrd.ord -> 'a t BatOrd.ord
 
 (**/**)
 val invariants : _ t -> unit

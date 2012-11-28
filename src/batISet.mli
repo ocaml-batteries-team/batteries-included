@@ -71,6 +71,10 @@ val equal : t -> t -> bool
     polymorphic (=) on these sets, as the same set can have multiple
     representations depending on how it was built. *)
 
+val ord : t -> t -> BatOrd.order
+(** Same as [compare] but returns [BatOrd.Lt | BatOrd.Eq | BatOrd.Gt]
+    instead of an int. *)
+
 val subset : t -> t -> bool
 (** [subset t u] returns [true] if [t] is a subset of [u] *)
 

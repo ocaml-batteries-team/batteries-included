@@ -185,9 +185,13 @@ val compare : t -> t -> int
     the bitsets is not important for this comparison, only the bits
     starting with the highest set bit and going down.  *)
 
-val equals : t -> t -> bool
-(** [equals s1 s2] returns true if, and only if, all bits values in s1 are
+val equal : t -> t -> bool
+(** [equal s1 s2] returns true if, and only if, all bits values in s1 are
     the same as in s2. *)
+
+val ord : t -> t -> BatOrd.order
+(** [ord s1 s2] returns [BatOrd.Lt], [BatOrd.Eq] or [BatOrd.Gt] if [compare s1 s2]
+    is, respectively, [< 0], [0] or [> 0]. *)
 
 (** {6 Internals} *)
 val capacity : t -> int

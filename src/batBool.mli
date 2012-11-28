@@ -56,6 +56,8 @@ val pow : t -> t -> t
 val min_num : bool
 val max_num : bool
 val compare : bool -> bool -> int
+val equal : bool -> bool -> bool
+val ord : bool -> bool -> BatOrd.order
 val of_int : int -> bool (** anything but [0] is [true] *)
 val to_int : bool -> int
 val of_string : string -> bool

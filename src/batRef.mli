@@ -122,12 +122,19 @@ val print: ('b BatInnerIO.output -> 'a -> unit) -> 'b BatInnerIO.output -> 'a t 
     Example: [IO.to_string (Ref.print Int.print) (ref 20) = "20"]
  *)
 
+val compare : 'a BatOrd.comp -> 'a ref BatOrd.comp
+(** Given a comparison function, produce a comparison function for refs
+    of that type.
+
+    Example: [let a = ref 10 and b = ref 20 in Ref.compare Int.compare a b = -1]
+*)
+
 val ord : 'a BatOrd.ord -> 'a ref BatOrd.ord
 
 (** Given an ordering function, produce an ordering function for refs
     of that type.
 
-    Example: [let a = ref 10 and b = ref 20 in Ref.cmp Int.cmp a b = -1]
+    Example: [let a = ref 10 and b = ref 20 in Ref.ord Int.ord a b = Ord.Lt]
 *)
 
 val eq : 'a BatOrd.eq -> 'a ref BatOrd.eq

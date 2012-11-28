@@ -156,8 +156,10 @@ let compare t1 t2 =
           done;
         !diff
 
-let equals t1 t2 =
+let equal t1 t2 =
 	compare t1 t2 = 0
+
+let ord = BatOrd.ord compare
 
 (* Array that return the count of bits for a char *)
 let count_array = 
