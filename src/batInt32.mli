@@ -225,11 +225,16 @@ val unpack_big : string -> int -> int32
 (** [unpack str off] reads 4 bytes from string [str] starting at
     offset [off] as a big-endian int32 *)
 
-val compare: t -> t -> int
+val compare : t -> t -> int
 (** The comparison function for 32-bit integers, with the same specification as
     {!Pervasives.compare}.  Along with the type [t], this function [compare]
     allows the module [Int32] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
+
+val equal : t -> t -> bool
+(** Equality function for 32-bit integers, useful for {!HashedType}. *)
+
+val ord : t -> t -> BatOrd.order
 
 (**/**)
 

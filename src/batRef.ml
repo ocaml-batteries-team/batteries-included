@@ -108,5 +108,18 @@ let oget_exn r = match !r with None -> raise Not_found | Some x -> x
   let r = ref None in oset r 3; oget_exn r = 3
  *)
 
+let compare c x y = c !x !y
+(*$T compare
+  let a = ref 1 and b = ref 2 in compare Int.compare a b < 0
+ *)
+
 let ord o x y = o !x !y
+(*$T ord
+  let a = ref 1 and b = ref 2 in ord Int.ord a b = BatOrd.Lt
+ *)
+
 let eq e x y = e !x !y
+(*$T eq
+  let a = ref 1 and b = ref 2 in eq Int.equal a b = false
+  let a = ref 1 and b = ref 1 in eq Int.equal a b = true
+ *)

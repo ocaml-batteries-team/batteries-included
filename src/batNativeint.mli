@@ -207,12 +207,16 @@ val to_string : nativeint -> string
 
 
 
-val compare: t -> t -> int
+val compare : t -> t -> int
   (** The comparison function for native integers, with the same specification as
       {!Pervasives.compare}.  Along with the type [t], this function [compare]
       allows the module [Nativeint] to be passed as argument to the functors
       {!Set.Make} and {!Map.Make}. *)
 
+val equal : t -> t -> bool
+(** Equality function for 64-bit integers, useful for {!HashedType}. *)
+
+val ord : t -> t -> BatOrd.order
 
 val modulo : nativeint -> nativeint -> nativeint
 val pow : nativeint -> nativeint -> nativeint

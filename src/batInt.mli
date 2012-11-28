@@ -210,8 +210,10 @@ val compare: t -> t -> int
     allows the module [Int] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
-val equal : int -> int -> bool
-val ord : int -> int -> BatOrd.order
+val equal : t -> t -> bool
+(** Equality function for integers, useful for {!HashedType}. *)
+
+val ord : t -> t -> BatOrd.order
 
 (**
     Safe operations on integers.
@@ -365,11 +367,14 @@ module Safe_int : sig
 
   val print: 'a BatInnerIO.output -> t -> unit
 
-  val compare: t -> t -> int
+  val compare : t -> t -> int
   (** The comparison function for integers, with the same specification as
       {!Pervasives.compare}.  Along with the type [t], this function [compare]
       allows the module [Int] to be passed as argument to the functors
       {!Set.Make} and {!Map.Make}. *)
+
   val equal : t -> t -> bool
+  (** Equality function for integers, useful for {!HashedType}. *)
+
   val ord : t -> t -> BatOrd.order
 end

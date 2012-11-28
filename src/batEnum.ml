@@ -1080,6 +1080,10 @@ let compare cmp t u =
 	  | n -> n
   in aux ()
 
+let ord ord_val t u =
+    let cmp_val = BatOrd.comp ord_val in
+    BatOrd.ord0 (compare cmp_val t u)
+
 let equal eq t u =
   let rec aux () =
     match (get t, get u) with

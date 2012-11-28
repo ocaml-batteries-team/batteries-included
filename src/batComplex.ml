@@ -44,6 +44,8 @@ module BaseComplex = struct
     | 0 -> compare t1.im t2.im
     | c -> c
 
+  let ord = BatOrd.ord compare
+
   let equal t1 t2 =
     t1.re = t2.re && t1.im = t2.im
 

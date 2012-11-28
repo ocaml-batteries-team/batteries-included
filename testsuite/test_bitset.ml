@@ -136,7 +136,7 @@ let tests = "BitSet" >::: [
      let t' = BS.copy t in
      assert_bool 
        "Copy should be equals"
-       (BS.equals t t'));
+       (BS.equal t t'));
 
   "union" >::
    (biop BS.union [1; 4; 5; 25; 26; 27; 250]);

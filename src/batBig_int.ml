@@ -129,6 +129,8 @@ module BaseBig_int = struct
   let of_int    = big_int_of_int
 
   let compare   = compare_big_int
+  let ord       = BatOrd.ord compare
+  let equal a b = compare a b = 0
 
   let of_float f =
     try of_string (Printf.sprintf "%.0f" f)
