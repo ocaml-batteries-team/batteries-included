@@ -99,10 +99,6 @@ uninstall: uninstall_packages
 
 install-doc: doc
 	mkdir -p $(DOCROOT)
-	cp -r doc/batteries/* $(DOCROOT)
-	# deal with symlink that will break
-	${RM} $(DOCROOT)/html/batteries_large.png
-	cp -f doc/batteries_large.png $(DOCROOT)/html
 	mkdir -p $(DOCROOT)/html/api
 	cp _build/batteries.docdir/* $(DOCROOT)/html/api
 	cp LICENSE README.md FAQ $(DOCROOT)
