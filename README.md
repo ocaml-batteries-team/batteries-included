@@ -21,7 +21,7 @@ Building Batteries
 
 You will need the following libraries:
 
-* [OCaml][] >= 3.11
+* [OCaml][] >= 3.12.1
 * [Findlib][] >= 1.2.5
 * [Camomile][] >= 0.7
 * GNU make
