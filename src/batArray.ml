@@ -56,6 +56,18 @@ let fold_lefti f x a =
    fold_lefti (fun a i x -> a + i * x) 1 [||] = 1
 *)
 
+let fold_righti f a x =
+  let r = ref x in
+  for i = length a - 1 downto 0 do
+    r := f i (unsafe_get a i) !r
+  done;
+  !r
+
+(*$T fold_righti
+   fold_righti (fun i x a -> a + i * x) [|2;4;5|] 1 = 1 + 0 + 4 + 10
+   fold_righti (fun i x a -> a + i * x) [||] 1 = 1
+*)
+
 let rev_in_place xs =
   let n = length xs in
   let j = ref (n-1) in

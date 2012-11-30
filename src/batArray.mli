@@ -234,7 +234,10 @@ val modifyi : (int -> 'a -> 'a) -> 'a array -> unit
     the second argument. *)
 
 val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b array -> 'a
-(** As [fold_left], but with a counter *)
+(** As [fold_left], but with the index of the element as additional argument *)
+
+val fold_righti : (int -> 'b -> 'a -> 'a) -> 'b array -> 'a -> 'a
+(** As [fold_right], but with the index of the element as additional argument *)
 
 val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
 (** [Array.reduce f a] is [fold_left f a.(0) [|a.(1); ..; a.(n-1)|]].  This
