@@ -175,11 +175,10 @@ struct
     | Some x -> f x
 end
 
-include Monad
-let bind x y = bind y x
+let bind = Monad.bind
 (*$T bind
-  bind (fun s -> Some s) None = None
-  bind (fun s -> Some s) (Some ()) = Some ()
+  bind None (fun s -> Some s) = None
+  bind (Some ()) (fun s -> Some s) = Some ()
 *)
 
 module Labels =
