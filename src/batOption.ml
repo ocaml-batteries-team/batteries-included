@@ -39,16 +39,6 @@ let map f = function
   map succ (Some 3) = (Some 4)
 *)
 
-
-let bind f = function
-  | None -> None
-  | Some v -> f v
-(*$T bind
-  bind (fun s -> Some s) None = None
-  bind (fun s -> Some s) (Some ()) = Some ()
-*)
-
-
 let apply = function
   | None -> (fun x -> x)
   | Some f -> f
@@ -184,6 +174,12 @@ struct
     | None -> None
     | Some x -> f x
 end
+
+let bind = Monad.bind
+(*$T bind
+  bind None (fun s -> Some s) = None
+  bind (Some ()) (fun s -> Some s) = Some ()
+*)
 
 module Labels =
 struct
