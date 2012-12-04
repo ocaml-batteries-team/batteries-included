@@ -27,7 +27,7 @@ module type Ord = sig type t val ord : t ord end
 
 val ord0 : int -> order
 val ord : 'a comp -> 'a ord
-(** Returns a variant ordering from a legacy comparearison *)
+(** Returns a variant ordering from a legacy comparison *)
 module Ord : functor (Comp : Comp) -> Ord with type t = Comp.t
 
 val comp0 : order -> int
