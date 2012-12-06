@@ -1,7 +1,6 @@
 open OUnit
 open BatFile
 open BatIO
-open BatPrint
 open BatPervasives
 
 (**Initialize data sample*)
