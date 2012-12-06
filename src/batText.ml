@@ -907,10 +907,4 @@ let write_texts o re = BatEnum.iter (write_text o) re
 (*val write_uchars : _ output -> UChar.t BatEnum.t -> unit*)
 let write_chars o uce = BatEnum.iter (write_char o) uce
 
-let sprintf fmt =
-  BatPrint.ksprintf of_string fmt
-
-let ksprintf k fmt =
-  BatPrint.ksprintf (fun s -> k (of_string s)) fmt
-
 let output_text       = print

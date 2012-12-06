@@ -522,8 +522,6 @@ let printer_F ?flags k x =
 				)
     )
 
-let printer_format k fmt = fmt.BatPrint.printer fmt.BatPrint.pattern k
-
 (*  let printer_text k x = k (fun oc -> Ulib.Text.print oc x)*)
 let printer_obj k x = k x#print
 let printer_exn k x = k (fun oc -> BatPrintexc.print oc x)

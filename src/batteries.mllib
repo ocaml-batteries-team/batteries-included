@@ -63,7 +63,6 @@ BatOptParse
 BatOrd
 BatParserCo
 BatPathGen
-BatPrint
 BatRefList
 BatRef
 BatResult

@@ -124,7 +124,6 @@ module Logger = BatLogger
 module MultiMap = BatMultiMap
 module ParserCo = BatParserCo
 module PathGen = BatPathGen
-module Print = BatPrint
 module Result = BatResult
 module Return = BatReturn
 module Seq = BatSeq

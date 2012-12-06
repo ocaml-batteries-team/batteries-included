@@ -441,16 +441,6 @@ val lines_of : input -> t BatEnum.t
 val chars_of : input -> BatUChar.t BatEnum.t
 (** offer the characters of an UTF-8 encoded input as an enumeration*)
 
-(* BatPrint functions *)
-
-val sprintf : ('a, t) BatPrint.format -> 'a
-  (** [rprintf fmt] returns the result as a rope *)
-
-val ksprintf : (t -> 'b) -> ('a, 'b) BatPrint.format -> 'a
-  (** [krprintf k fmt] creates a rope from the format and other
-      arguments and pass it to [k] *)
-
-
 (* From pervasives *)
 val output_text : unit BatIO.output -> t -> unit
 (** Write the text on the given output channel. *)

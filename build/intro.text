@@ -38,7 +38,7 @@ BatLazyList BatMultiPMap BatRefList BatSeq BatSplay BatUref BatVect }
 {6 New Modules in Batteries}
 
 {!modules: BatBase64 BatCharParser BatFile BatInterfaces BatIO BatLog
-BatLogger BatNumber BatOptParse BatParserCo BatPathGen BatPrint
+BatLogger BatNumber BatOptParse BatParserCo BatPathGen
 BatResult BatReturn }
 
 {6 Builtin Types as Modules}
