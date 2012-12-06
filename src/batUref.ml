@@ -102,14 +102,3 @@ let print elepr out ur =
   BatIO.to_string (print BatInt.print) u1 = "uref 5" && \
   BatIO.to_string (print BatInt.print) u2 = "uref 5"
 *)
-
-let t_printer elepr paren out ur =
-  if paren then BatInnerIO.nwrite out "(" ;
-  print (elepr true) out ur ;
-  if paren then BatInnerIO.nwrite out ")"
-(*$T t_printer
-  let u1 = uref (uref 2) in \
-  BatIO.string_of_t_printer (t_printer (t_printer BatInt.t_printer)) u1 = "uref (uref 2)"
-*)
-
-let uref_printer = t_printer

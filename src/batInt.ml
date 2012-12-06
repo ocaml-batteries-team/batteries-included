@@ -75,7 +75,7 @@ module BaseInt = struct
     (pow (-2) 3) (-8)
     (pow 0 0)    1
   *)
-      
+
 
   let min_num, max_num = min_int, max_int
 
@@ -121,8 +121,7 @@ module BaseInt = struct
   let ( ** ) a b = pow a b
 
   let print out t = BatInnerIO.nwrite out (string_of_int t)
-  let xprint out t = BatPrintf.fprintf out "%X" t
-  let t_printer _paren out t = print out t
+  let print_hex out t = BatPrintf.fprintf out "%X" t
 
   let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)
   let ( --- ) x y =

@@ -26,6 +26,8 @@ external default_close : unit -> unit = "%ignore"
 
 type ('a, 'b) printer = 'b output -> 'a -> unit
 
+type 'a f_printer = Format.formatter -> 'a -> unit
+
 let pos_in i =
   let p = ref 0 in
     (wrap_in
@@ -715,13 +717,7 @@ let out_channel_of_output out =
 
 let to_string print_x x = BatPrintf.sprintf2 "%a" print_x x
 
-let string_of_t_printer p x =
-  let b = Buffer.create 100 in
-  let out = cast_output (BatBuffer.output_buffer b) in
-  p false out x;
-  Buffer.contents b
-
-let to_format printer =
+let to_f_printer printer =
   fun fmt t -> Format.pp_print_string fmt (to_string printer t)
 
 module Incubator = struct

@@ -775,19 +775,10 @@ end
 let print = BatInnerIO.nwrite
 let println out s = BatInnerIO.nwrite out s; BatInnerIO.write out '\n'
 
-let t_printer _paren out x =
-  BatInnerIO.write out '"';
-  print out (escaped x);
-  BatInnerIO.write out '"'
-
-let unquoted_printer _paren out x = print out x
-
 (*$T
   BatIO.to_string print "\n" = "\n"
   BatIO.to_string println "\n" = "\n\n"
   BatIO.to_string print_quoted "\n" = "\"\\n\""
-  BatIO.string_of_t_printer t_printer "\n" = "\"\\n\""
-  BatIO.string_of_t_printer unquoted_printer "\n" = "\n"
   quote "\n" = "\"\\n\""
 *)
 
@@ -940,7 +931,6 @@ let quote         = quote
 let print         = print
 let println       = println
 let print_quoted  = print_quoted
-let t_printer     = t_printer
 
 external of_string : string -> _ t                = "%identity"
 external to_string : [`Read | `Write] t -> string = "%identity"

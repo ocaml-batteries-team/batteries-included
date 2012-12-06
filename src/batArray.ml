@@ -514,11 +514,6 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
     [||] = "[]"
 *)
 
-let t_printer a_printer (_paren: bool) out x = print (a_printer false) out x
-(*$T t_printer
-  BatIO.string_of_t_printer (t_printer BatInt.t_printer) \
-    [|-1;-3;0|] = "[|-1; -3; 0|]"
-*)
 
 let reduce f a =
   if Array.length a = 0 then

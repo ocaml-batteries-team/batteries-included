@@ -47,7 +47,6 @@ open BatIO
     @author Zheng Li
 *)
 
-(**/**)
 val input_lines : Pervasives.in_channel -> string BatEnum.t
 (** Returns an enumeration over lines of an input channel, as read by the
  [input_line] function. *)
@@ -61,35 +60,6 @@ val input_list : Pervasives.in_channel -> string list
 val input_all : Pervasives.in_channel -> string
 (** Return the whole contents of an input channel as a single
  string. *)
-(**/**)
-
-
-(** {6 String operations}
-
-   More string operations are provided in module {!BatString}.
-*)
-
-val uppercase : string -> string
-(** Return a copy of the argument, with all lowercase letters
-    translated to uppercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. *)
-
-val lowercase : string -> string
-(** Return a copy of the argument, with all uppercase letters
-    translated to lowercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. *)
-
-
-(** {6 String conversion functions}
-
-    These are the most common string conversion functions.  For
-    additional string conversion functions, see in the corresponding
-    module (e.g. for conversion between [int32] and [string],
-    see module {!Int32}).
-*)
-
-val string_of_char : char -> string
-(** creates a string from a char. *)
 
 val dump : 'a -> string
 (** Attempt to convert a value to a string.
@@ -834,106 +804,6 @@ val ( --~ ) : char -> char -> char BatEnum.t
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b BatEnum.t -> unit
 (** Print and consume the contents of an enumeration.*)
-
-(**/**)
-
-(**
-   {6 Printing directives}
-*)
-
-(** Flags used to modify the printing behaviour *)
-type printer_flags = {
-  pf_width : int option;
-  (** If with of printed material is less than this one, padding is
-      added *)
-  pf_frac_digits : int option;
-  (** When printing a float, print this many digits after the decimal point *)
-  pf_padding_char : char;
-  (** Character used for padding *)
-  pf_justify : [ `right | `left ];
-  (** Where to add the padding. Defaults to [`right] *)
-  pf_positive_prefix : char option;
-  (** Prefix positive numbers with this character *)
-}
-
-val default_printer_flags : printer_flags
-  (** Default printer flags *)
-
-(** {7 Equivalent of classical directives} *)
-
-val printer_a : ((unit BatIO.output -> 'a -> unit) -> 'a -> 'b, 'b) BatPrint.directive
-val printer_t : ((unit BatIO.output -> unit) -> 'a, 'a) BatPrint.directive
-val printer_B : (bool -> 'a, 'a) BatPrint.directive
-val printer_c : (char -> 'a, 'a) BatPrint.directive
-val printer_C : (char -> 'a, 'a) BatPrint.directive
-val printer_s : ?flags : printer_flags -> (string -> 'a, 'a) BatPrint.directive
-val printer_S : ?flags : printer_flags -> (string -> 'a, 'a) BatPrint.directive
-
-val printer_d : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_i    : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_int  : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_u    : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_uint : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_x : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_X : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_hex : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_HEX : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_o : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_oct : ?flags : printer_flags -> (int -> 'a, 'a) BatPrint.directive
-val printer_ld : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
-val printer_li : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
-val printer_lu : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
-val printer_lx : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
-val printer_lX : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
-val printer_lo : ?flags : printer_flags -> (int32 -> 'a, 'a) BatPrint.directive
-val printer_Ld : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
-val printer_Li : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
-val printer_Lu : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
-val printer_Lx : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
-val printer_LX : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
-val printer_Lo : ?flags : printer_flags -> (int64 -> 'a, 'a) BatPrint.directive
-val printer_nd : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
-val printer_ni : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
-val printer_nu : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
-val printer_nx : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
-val printer_nX : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
-val printer_no : ?flags : printer_flags -> (nativeint -> 'a, 'a) BatPrint.directive
-
-val printer_f : ?flags : printer_flags -> (float -> 'a, 'a) BatPrint.directive
-val printer_F : ?flags : printer_flags -> (float -> 'a, 'a) BatPrint.directive
-
-(** {7 Batteries-specific directives} *)
-
-val printer_format : (('a, 'b) BatPrint.format -> 'a, 'b) BatPrint.directive
-  (** [printer_format] takes a format, then the arguments of the format and
-      print according to it. For instance,
-
-      {[sprintf p"x = %format * %d" p"%d + %d" 1 3 5]} produces ["x = 1 + 3 * 5"]
-  *)
-
-val printer_sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
-val printer_Sc : ?flags : printer_flags -> ([> `Read] BatString.Cap.t -> 'a, 'a) BatPrint.directive
-(* val printer_text : (Ulib.Text.t -> 'a, 'a) BatPrint.directive *)
-val printer_obj : (< print : unit BatIO.output -> unit; .. > -> 'a, 'a) BatPrint.directive
-val printer_exn : (exn -> 'a, 'a) BatPrint.directive
-
-(** {7 Value printers} *)
-
-val bool_printer : bool BatValuePrinter.t
-val int_printer : int BatValuePrinter.t
-val char_printer : char BatValuePrinter.t
-val int32_printer : int32 BatValuePrinter.t
-val int64_printer : int64 BatValuePrinter.t
-val nativeint_printer : nativeint BatValuePrinter.t
-val float_printer : float BatValuePrinter.t
-val string_printer : string BatValuePrinter.t
-val list_printer : 'a BatValuePrinter.t -> 'a list BatValuePrinter.t
-val array_printer : 'a BatValuePrinter.t -> 'a array BatValuePrinter.t
-val option_printer : 'a BatValuePrinter.t -> 'a option BatValuePrinter.t
-val maybe_printer : 'a BatValuePrinter.t -> 'a option BatValuePrinter.t
-val exn_printer : exn BatValuePrinter.t
-
-(**/**)
 
 (**
    {6 Results}

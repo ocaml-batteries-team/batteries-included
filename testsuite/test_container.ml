@@ -39,8 +39,7 @@ module type Container = sig
   val find : ('a -> bool) -> 'a t -> 'a
   val find_right : ('a -> bool) -> 'a t -> 'a
   val is_empty : _ t -> bool
-  val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
-  val t_printer_delim : string * string
+  val printer_delim : string * string
   val print : ?first:string -> ?last:string -> ?sep:string
     -> ('a BatInnerIO.output -> 'b -> unit)
     -> 'a BatInnerIO.output -> 'b t -> unit
@@ -88,8 +87,7 @@ module DllistContainer : Container = struct
   and find f t = get (find f t)
   and find_right = ni2
   and is_empty = ni1
-  and t_printer = ni4
-  and t_printer_delim = ("","")
+  and printer_delim = ("","")
   and set = ni3
   and insert = ni3
   and delete = ni2
@@ -125,7 +123,7 @@ module ArrayContainer : Container = struct
   let init = ni1
   and find_right = ni2
   and is_empty = ni1
-  and t_printer_delim = ("[|", "|]")
+  and printer_delim = ("[|", "|]")
   and invariants = ignore
   and set t i v = let t = Array.copy t in set t i v; t
   and insert = ni3
@@ -158,8 +156,7 @@ module LazyListContainer : Container = struct
   let cons t x = cons x t
   let init = ni1
   and find_right = ni2
-  and t_printer = ni4
-  and t_printer_delim = ("","")
+  and printer_delim = ("","")
   and invariants = ignore
   and set = ni3
   and insert = ni3
@@ -197,7 +194,7 @@ module DynArrayContainer = struct
   let find f t = get t (index_of f t)
   and find_right = ni2
   and is_empty = empty
-  and t_printer_delim = ("[|", "|]")
+  and printer_delim = ("[|", "|]")
   and set t i v = let t = copy t in set t i v; t
   and insert t i v = let t = copy t in insert t i v; t
   and delete t i = let t = copy t in delete t i; t
@@ -279,7 +276,7 @@ module DequeContainer : Container = struct
     let q = prepend_list l1 (append_list empty l2) in
     assert_equal (to_list orig) (to_list q);
     q
-  and t_printer_delim = ("[", "]")
+  and printer_delim = ("[", "]")
   and set = ni3
   and insert = ni3
   and delete = ni2
@@ -312,7 +309,7 @@ module ListContainer : Container = struct
   let cons t x = cons x t
   let init = ni1
   and find_right = ni2
-  and t_printer_delim = ("[", "]")
+  and printer_delim = ("[", "]")
   and invariants = ignore
   and set = ni3
   and insert = ni3
@@ -347,8 +344,7 @@ module RefListContainer : Container = struct
   let init = ni1
   let tail = tl
   and find_right = ni2
-  and t_printer = ni4
-  and t_printer_delim = ("","")
+  and printer_delim = ("","")
   and print = ni_print
   and invariants = ignore
   and set = ni3
@@ -382,8 +378,7 @@ module VectContainer : Container = struct
   and tail t = snd (shift t)
   and init t = snd (pop t)
   and find_right = ni2
-  and t_printer = ni4
-  and t_printer_delim = ("","")
+  and printer_delim = ("","")
   and insert t i v = insert i (singleton v) t
   and delete = ni2
   and delete_range t i len = remove i len t
@@ -453,8 +448,7 @@ module FunctorVectContainer : Container = struct
   and tail t = snd (shift t)
   and init t = snd (pop t)
   and find_right = ni2
-  and t_printer = ni4
-  and t_printer_delim = ("","")
+  and printer_delim = ("","")
   and insert t i v = insert i (singleton v) t
   and delete = ni2
   and delete_range t i len = remove i len t
@@ -495,7 +489,7 @@ module FingerTreeContainer : Container = struct
   let tail = tail_exn
   let find = ni2
   and find_right = ni2
-  and t_printer_delim = ("[", "]")
+  and printer_delim = ("[", "]")
   and insert = ni3
   and delete = ni2
   and delete_range = ni3
@@ -542,7 +536,7 @@ module SeqContainer : Container = struct
     match x with None -> raise Exit | Some e -> e
   let find f t = BatOption.get (find f t)
   and find_right = ni2
-  and t_printer_delim = ("[", "]")
+  and printer_delim = ("[", "]")
   and invariants = ignore
   and set = ni3
   and insert = ni3
@@ -1230,18 +1224,6 @@ module TestContainer(C : Container) : sig end = struct
       assert_equal "<>" (stringify []);
     )
 
-  let () =
-    repeat_twice (fun () ->
-      let p, s = C.t_printer_delim in
-      let stringify l =
-        try
-          let c = C.of_enum (BatList.enum l) in
-          BatIO.string_of_t_printer (C.t_printer BatInt.t_printer) c
-        with BatDllist.Empty -> p ^ s in
-      assert_equal (p ^ "2; 4; 66" ^ s) (stringify [2;4;66]);
-      assert_equal (p ^ "2" ^ s) (stringify [2]);
-      assert_equal (p ^ s) (stringify []);
-    )
 
 end
 

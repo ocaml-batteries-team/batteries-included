@@ -196,11 +196,12 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 
 val print: 'a BatInnerIO.output -> int -> unit
 (** prints as decimal string *)
-val xprint: 'a BatInnerIO.output -> int -> unit
-    (** prints as hex string *)
-    (*    val bprint: 'a BatInnerIO.output -> t -> unit
-    (** prints as binary string *) *)
-val t_printer : t BatValuePrinter.t
+
+val print_hex: 'a BatInnerIO.output -> int -> unit
+(** prints as hex string *)
+
+(*    val bprint: 'a BatInnerIO.output -> t -> unit
+(** prints as binary string *) *)
 
 (** {7 Compare} *)
 

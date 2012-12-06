@@ -754,4 +754,3 @@ let unsafe_set a n x =
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
   BatEnum.print ~first ~last ~sep print_a out (enum t)
-let t_printer a_printer _paren out t = print (a_printer false) out t

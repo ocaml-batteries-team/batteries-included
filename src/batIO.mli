@@ -112,6 +112,8 @@ type ('a, 'b) printer = 'b output -> 'a -> unit
 (** The type of a printing function to print a ['a] to an output that
     produces ['b] as result. *)
 
+type 'a f_printer = Format.formatter -> 'a -> unit
+
 exception No_more_input
 (** This exception is raised when reading on an input with the [read] or
     [nread] functions while there is no available token to read. *)
@@ -910,12 +912,9 @@ val lock_factory: (unit -> BatConcurrent.lock) ref
      if you're using a version of Batteries compiled in threaded mode,
      this uses {!BatMutex}.  *)
 
-val to_string : (string output -> 'a -> unit) -> 'a -> string
+val to_string : ('a, string) printer -> 'a -> string
 
-val string_of_t_printer : (bool -> unit BatInnerIO.output -> 'a -> unit) -> 'a -> string
-(** [string_of_t_printer printer elt] prints the element into the output string *)
-
-val to_format: ('a BatInnerIO.output -> 'b -> unit) -> Format.formatter -> 'b -> unit
+val to_f_printer: ('a, _) printer -> 'a f_printer
 
 (**/**)
 val comb : ('a output * 'a output) -> 'a output
@@ -941,14 +940,14 @@ module Incubator : sig
       ?sep:string ->
       ?indent:int ->
       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a array -> unit
-    (** Print the contents of an array, with [first] preceeding the first item 
+    (** Print the contents of an array, with [first] preceeding the first item
         (default: ["\[|"]), [last] following the last item (default: ["|\]"])
         and [sep] separating items (default: ["; "]). A printing function must
         be provided to print the items in the array. The [flush] parameter
         (default: [false]) should be set to [true] for the outer-most printing
         call.  Setting inner calls to [true] - for example, for nested values -
         prevent indentation from working properly.
-        
+
         Example:
           [pp ~flush:true Format.pp_print_int Format.std_formatter \[|1; 2; 3|\]]
     *)
@@ -962,14 +961,14 @@ module Incubator : sig
       ?sep:string ->
       ?indent:int ->
       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a BatEnum.t -> unit
-    (** Print the contents of an enum, with [first] preceeding the first item 
+    (** Print the contents of an enum, with [first] preceeding the first item
         (default: [""]), [last] following the last item (default: [""])
         and [sep] separating items (default: [" "]). A printing function must
         be provided to print the items in the enum. The [flush] parameter
         (default: [false]) should be set to [true] for the outer-most printing
         call.  Setting inner calls to [true] - for example, for nested values -
         prevent indentation from working properly.
-        
+
         Example:
           [pp ~flush:true Format.pp_print_int Format.std_formatter (1 -- 3)] *)
   end
@@ -982,17 +981,16 @@ module Incubator : sig
       ?sep:string ->
       ?indent:int ->
       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a list -> unit
-    (** Print the contents of a list, with [first] preceeding the first item 
+    (** Print the contents of a list, with [first] preceeding the first item
         (default: ["\["]), [last] following the last item (default: ["\]"])
         and [sep] separating items (default: ["; "]). A printing function must
         be provided to print the items in the list. The [flush] parameter
         (default: [false]) should be set to [true] for the outer-most printing
         call.  Setting inner calls to [true] - for example, for nested values -
         prevent indentation from working properly.
-        
+
         Example:
           [pp ~flush:true Format.pp_print_int Format.std_formatter \[1; 2; 3\]]
     *)
   end
 end
-

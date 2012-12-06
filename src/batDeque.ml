@@ -253,6 +253,3 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out dq =
     BatIO.to_string (print ~first:"<" ~last:">" ~sep:"," Int.print) (of_list l) \
     = BatIO.to_string (List.print ~first:"<" ~last:">" ~sep:"," Int.print) l)
 *)
-
-let t_printer elepr _paren out x = print (elepr false) out x
-let dq_printer = t_printer

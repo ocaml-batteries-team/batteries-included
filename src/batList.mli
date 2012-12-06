@@ -583,8 +583,6 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a
 BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b list -> unit
 (**Print the contents of a list*)
 
-val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
-
 open BatOrd
 val eq : 'a eq -> 'a list eq
 val ord : 'a ord -> 'a list ord

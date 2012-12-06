@@ -95,18 +95,9 @@ module Infix = struct
 end
 
 let print out t = BatInnerIO.write out t
-let t_printer _paren out t =
-  BatInnerIO.write out '\'';
-  BatInnerIO.nwrite out (Char.escaped t);
-  BatInnerIO.write out '\''
 (*$T print
   BatIO.to_string print 'a' = "a"
   BatIO.to_string print '\n' = "\n"
-*)
-(*$T t_printer
-  BatIO.string_of_t_printer t_printer '\n' = "'\\n'"
-  BatIO.string_of_t_printer t_printer '\000' = "'\\000'"
-  BatIO.string_of_t_printer t_printer 'a' = "'a'"
 *)
 
 (*BISECT-IGNORE-BEGIN*)

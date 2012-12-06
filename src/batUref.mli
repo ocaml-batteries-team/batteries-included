@@ -49,12 +49,5 @@ val equal : 'a uref -> 'a uref -> bool
 
 (** {6 Printing} *)
 
-val print : ('a BatInnerIO.output -> 'b -> unit)
-  -> 'a BatInnerIO.output -> 'b uref -> unit
-  (** Print the uref. *)
-
-val uref_printer : 'a BatValuePrinter.t -> 'a uref BatValuePrinter.t
-  (** See {!BatValuePrinter}. *)
-
-val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
-  (** See {!BatValuePrinter}. *)
+val print : ('a, 'b) BatIO.printer -> ('a uref, 'b) BatIO.printer
+(** Print the uref. *)

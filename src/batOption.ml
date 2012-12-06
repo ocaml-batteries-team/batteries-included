@@ -48,7 +48,7 @@ let apply = function
 *)
 
 
-let filter f = function 
+let filter f = function
   | Some x when f x -> Some x
   | _ -> None
 (*$T filter
@@ -150,17 +150,6 @@ let of_enum = BatEnum.get
 let print print_a out = function
   | None   -> BatInnerIO.nwrite out "None"
   | Some x -> BatPrintf.fprintf out "Some %a" print_a x
-
-let t_printer a_printer paren out = function
-  | Some x ->
-      if paren then
-        BatIO.write out '(';
-      BatIO.nwrite out "Some ";
-      a_printer true out x;
-      if paren then
-        BatIO.write out ')';
-  | None ->
-      BatIO.nwrite out "None"
 
 let maybe_printer a_printer paren out = function
   | None -> ()

@@ -64,7 +64,6 @@ sig
   val append : (('a, 'm) fg -> ('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   val reverse : (('a, 'm) fg -> ('a, 'm) fg, 'a, 'm) wrap
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> ('b, _) fg -> unit
-  val t_printer : 'a BatValuePrinter.t -> ('a, _) fg BatValuePrinter.t
 
 end
 
@@ -928,8 +927,6 @@ struct
 
   let print ?first ?last ?sep f oc x =
     BatEnum.print ?first ?last ?sep f oc (enum x)
-  let t_printer a_printer _paren out e =
-    print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
 
   let compare cmp t1 t2 =
     BatEnum.compare cmp (enum t1) (enum t2)
@@ -1197,7 +1194,7 @@ let get t i =
   let l = BatList.init n (fun i -> i) in \
   let t = of_list_for_test l in let i = ref (-1) in \
   BatList.for_all (fun elt -> incr i; elt = get t !i) l
-  
+
   try ignore (get (singleton 1) 1); false with Invalid_argument _ -> true
   try ignore (get (singleton 1) (-1)); false with Invalid_argument _ -> true
 *)
@@ -1256,7 +1253,6 @@ let map_right f t = Generic.map_right ~monoid:nat_plus_monoid ~measure:size_meas
 *)
 
 let print = Generic.print
-let t_printer = Generic.t_printer
 
 let compare = Generic.compare
 let equal = Generic.equal

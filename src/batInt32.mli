@@ -276,7 +276,5 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 val print: 'a BatInnerIO.output -> t -> unit
     (** prints as decimal string *)
 
-val xprint: 'a BatInnerIO.output -> t -> unit
+val print_hex: 'a BatInnerIO.output -> t -> unit
     (** prints as hex string *)
-
-val t_printer : t BatValuePrinter.t

@@ -269,9 +269,6 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
             iter (BatPrintf.fprintf out "%s%a" sep print_a) s;
             BatInnerIO.nwrite out last
 
-let t_printer a_printer _paren out s =
-  print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out s
-
 module Infix = struct
   (** Infix operators matching those provided by {!BatEnum.Infix} *)
 

@@ -432,7 +432,8 @@ val insert : 'a array -> 'a -> int -> 'a array
 
 (** {6 Boilerplate code}*)
 
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string ->
+  ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
 (** Print the contents of an array, with [~first] preceeding the first
     item (default: "[|"), [~last] following the last item (default:
     "|]") and [~sep] separating items (default: "; ").  A printing
@@ -440,8 +441,6 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 
 
     Example: IO.to_string (Array.print Int.print) [|2;4;66|] = "[|2; 4; 66|]"
  *)
-
-val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
 
 val compare : 'a BatOrd.comp -> 'a array BatOrd.comp
 (** [compare c] generates the lexicographical order on arrays induced

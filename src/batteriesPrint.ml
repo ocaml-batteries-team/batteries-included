@@ -35,27 +35,24 @@ let print_string_cap_rw fmt t =
 let print_string_cap_ro fmt t =
   Format.fprintf fmt "ro%S" (string_of_cap t)
 
-let to_format printer = (* TODO: BETTER INTERFACE *)
-  fun fmt t -> Format.pp_print_string fmt (BatIO.to_string printer t)
-
-let string_dynarray = to_format (BatDynArray.print BatString.print)
-let int_dynarray = to_format (BatDynArray.print BatInt.print)
-let char_dynarray = to_format (BatDynArray.print BatChar.print)
-let float_dynarray = to_format (BatDynArray.print BatFloat.print)
+let string_dynarray = BatIO.to_f_printer (BatDynArray.print BatString.print)
+let int_dynarray = BatIO.to_f_printer (BatDynArray.print BatInt.print)
+let char_dynarray = BatIO.to_f_printer (BatDynArray.print BatChar.print)
+let float_dynarray = BatIO.to_f_printer (BatDynArray.print BatFloat.print)
 
 module IntSet = BatSet.Make(BatInt)
-let int_set = to_format (IntSet.print BatInt.print)
+let int_set = BatIO.to_f_printer (IntSet.print BatInt.print)
 module StringSet = BatSet.Make(String)
-let string_set = to_format (StringSet.print BatString.print)
+let string_set = BatIO.to_f_printer (StringSet.print BatString.print)
 module TextSet = BatSet.Make(BatText)
-let text_set = to_format (TextSet.print BatText.print)
+let text_set = BatIO.to_f_printer (TextSet.print BatText.print)
 (*module CharSet = BatSet.Make(BatChar)
-let char_set = to_format (CharSet.print BatChar.print) *)
+let char_set = BatIO.to_f_printer (CharSet.print BatChar.print) *)
 
-let int_pset = to_format (BatSet.print BatInt.print)
-let string_pset = to_format (BatSet.print BatString.print)
-let rope_pset = to_format (BatSet.print BatText.print)
-let char_pset = to_format (BatSet.print BatChar.print)
+let int_pset = BatIO.to_f_printer (BatSet.print BatInt.print)
+let string_pset = BatIO.to_f_printer (BatSet.print BatString.print)
+let rope_pset = BatIO.to_f_printer (BatSet.print BatText.print)
+let char_pset = BatIO.to_f_printer (BatSet.print BatChar.print)
 
 let (|>) x f = f x
 let enum_print_limit = ref 20
@@ -68,16 +65,16 @@ let enum_print p oc e =
   done;
   if not (BatEnum.is_empty e) then BatIO.nwrite oc "..."
 
-let int_enum = to_format (enum_print BatInt.print)
-let string_enum = to_format (enum_print BatString.print)
-let rope_enum = to_format (enum_print BatText.print)
-let char_enum = to_format (enum_print BatChar.print)
+let int_enum = BatIO.to_f_printer (enum_print BatInt.print)
+let string_enum = BatIO.to_f_printer (enum_print BatString.print)
+let rope_enum = BatIO.to_f_printer (enum_print BatText.print)
+let char_enum = BatIO.to_f_printer (enum_print BatChar.print)
 
-(*let iset = to_format BatISet.print *)
+(*let iset = BatIO.to_f_printer BatISet.print *)
 
-let int_int_pmap = to_format (BatMap.print BatInt.print BatInt.print)
-let int_str_pmap = to_format (BatMap.print BatInt.print BatString.print)
-let str_int_pmap = to_format (BatMap.print BatString.print BatInt.print)
-let str_str_pmap = to_format (BatMap.print BatString.print BatString.print)
+let int_int_pmap = BatIO.to_f_printer (BatMap.print BatInt.print BatInt.print)
+let int_str_pmap = BatIO.to_f_printer (BatMap.print BatInt.print BatString.print)
+let str_int_pmap = BatIO.to_f_printer (BatMap.print BatString.print BatInt.print)
+let str_str_pmap = BatIO.to_f_printer (BatMap.print BatString.print BatString.print)
 
-(*let bitset = to_format BatBitSet.print*)
+(*let bitset = BatIO.to_f_printer BatBitSet.print*)

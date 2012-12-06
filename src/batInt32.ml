@@ -122,5 +122,4 @@ type bounded = t
 let min_num, max_num = min_int, max_int
 
 let print out t = BatInnerIO.nwrite out (to_string t)
-let xprint out t = BatPrintf.fprintf out "%lx" t
-let t_printer _paren out t = print out t
+let print_hex out t = BatPrintf.fprintf out "%lx" t

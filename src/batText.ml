@@ -908,9 +908,9 @@ let write_texts o re = BatEnum.iter (write_text o) re
 let write_chars o uce = BatEnum.iter (write_char o) uce
 
 let sprintf fmt =
-  BatPrint.ksprintf of_string fmt
+  BatPrintf.ksprintf of_string fmt
 
 let ksprintf k fmt =
-  BatPrint.ksprintf (fun s -> k (of_string s)) fmt
+  BatPrintf.ksprintf (fun s -> k (of_string s)) fmt
 
 let output_text       = print

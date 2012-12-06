@@ -130,7 +130,6 @@ end
 (** {6 Boilerplate code}*)
 
 val print: 'a BatInnerIO.output -> Char.t -> unit
-val t_printer : char BatValuePrinter.t
 
 val compare: t -> t -> int
 (** The comparison function for characters, with the same specification as

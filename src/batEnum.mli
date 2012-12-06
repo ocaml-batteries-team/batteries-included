@@ -720,8 +720,6 @@ end
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
-val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
-
 val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
   (** [compare cmp a b] compares enumerations [a] and [b]
       by lexicographical order using comparison [cmp].

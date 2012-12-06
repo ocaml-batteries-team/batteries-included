@@ -207,7 +207,6 @@ let sqrt2 = 1.41421356237309504880
 let invsqrt2 = 0.70710678118654752440
 
 let print out t = BatInnerIO.nwrite out (to_string t)
-let t_printer _paren out t = print out t
 
 
 let round_to_string ?(digits=0) x =
@@ -314,7 +313,6 @@ module Safe_float = struct
   external to_float : float -> float = "%identity"
 
   let print = print
-  let t_printer = t_printer
 end
 
 (*$T succ
@@ -375,11 +373,6 @@ end
   try ignore (Safe_float.add 0. nan); false with BatNumber.NaN -> true
   ignore (Safe_float.add 0. (-0.)); true
   ignore (Safe_float.add 0. (12.)); true
-*)
-
-(*$T t_printer
-  BatIO.string_of_t_printer t_printer 1.23 = "1.23"
-  BatIO.string_of_t_printer t_printer nan = "nan"
 *)
 
 (*$T

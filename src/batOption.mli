@@ -138,10 +138,6 @@ end
 
 val print : ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 
-val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
-
-val maybe_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
-
 (** Operations on options, with labels.*)
 module Labels : sig
   val may : f:('a -> unit) -> 'a option -> unit

@@ -166,8 +166,6 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
   spin bh ;
   BatInnerIO.nwrite out last
 
-let t_printer elepr _paren out x = print (elepr false) out x
-
 let rec enum bh =
   let cur = ref bh in
   let next () =
@@ -199,7 +197,6 @@ module type H = sig
   val print     :  ?first:string -> ?last:string -> ?sep:string
     -> ('a BatInnerIO.output -> elem -> unit)
     -> 'a BatInnerIO.output -> t -> unit
-  val t_printer : elem BatValuePrinter.t -> t BatValuePrinter.t
 end
 
 module Make (Ord : BatInterfaces.OrderedType) = struct
@@ -343,7 +340,5 @@ module Make (Ord : BatInterfaces.OrderedType) = struct
     BatInnerIO.nwrite out first ;
     spin bh ;
     BatInnerIO.nwrite out last
-
-  let t_printer elepr _paren out x = print (elepr false) out x
 
 end

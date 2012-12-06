@@ -78,12 +78,9 @@ val enum : 'a t -> 'a BatEnum.t
 (** {6 Printing} *)
 
 val print :  ?first:string -> ?last:string -> ?sep:string
-  -> ('a BatInnerIO.output -> 'b -> unit)
-  -> 'a BatInnerIO.output -> 'b t -> unit
+  -> ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
   (** Print the contents of the heap in heap order. O(n log n) *)
 
-val t_printer : 'a BatValuePrinter.t -> 'a t BatValuePrinter.t
-  (** See {!BatValuePrinter}. *)
 
 (** {6 Functorized version} *)
 
@@ -119,11 +116,8 @@ sig
   val enum      : t -> elem BatEnum.t
     (** See {!BatHeap.enum}. *)
   val print     :  ?first:string -> ?last:string -> ?sep:string
-    -> ('a BatInnerIO.output -> elem -> unit)
-    -> 'a BatInnerIO.output -> t -> unit
+    -> (elem, 'a) BatIO.printer -> (t, 'a) BatIO.printer
     (** See {!BatHeap.print}. *)
-  val t_printer : elem BatValuePrinter.t -> t BatValuePrinter.t
-    (** See {!BatHeap.t_printer}. *)
 end
 
 module Make (Ord : BatInterfaces.OrderedType) : H with type elem = Ord.t

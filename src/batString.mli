@@ -762,10 +762,6 @@ val print_quoted: 'a BatInnerIO.output -> string -> unit
    character, but ['\'] then ['n']).
 *)
 
-val t_printer : t BatValuePrinter.t
-
-val unquoted_printer : t BatValuePrinter.t
-
 (** Exceptionless counterparts for error-raising operations *)
 module Exceptionless :
 sig
@@ -1034,8 +1030,6 @@ val print: 'a BatInnerIO.output -> [> `Read] t -> unit
 val println: 'a BatInnerIO.output -> [> `Read] t -> unit
 
 val print_quoted: 'a BatInnerIO.output -> [> `Read] t -> unit
-
-val t_printer : [> `Read] t BatValuePrinter.t
 
 (**/**)
 

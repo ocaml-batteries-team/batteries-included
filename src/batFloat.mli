@@ -350,10 +350,7 @@ include (BatNumber.RefOps with type bat__refops_t = t)
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
-val print: 'a BatInnerIO.output -> t -> unit
-val t_printer : t BatValuePrinter.t
-
-
+val print: (t, _) BatIO.printer
 
 (**Operations on floating-point numbers, with exceptions raised in
    case of error.
@@ -558,5 +555,4 @@ module Safe_float :
 
     (** {7 Printing}*)
     val print: 'a BatInnerIO.output -> t -> unit
-    val t_printer : t BatValuePrinter.t
 end
