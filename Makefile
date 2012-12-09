@@ -66,7 +66,7 @@ endif
 
 .PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 
-all: src/batUnix.mli
+all: prefilter
 	@echo "Build mode:" $(MODE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
@@ -80,7 +80,9 @@ clean:
 batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
 	cat $^ > $@
 
-doc: batteries.odocl
+prefilter: src/batUnix.mli
+
+doc: prefilter batteries.odocl
 	$(OCAMLBUILD) batteries.docdir/index.html
 
 man: all batteries.odocl
