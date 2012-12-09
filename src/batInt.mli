@@ -178,8 +178,8 @@ val ( -- ) : t -> t -> t BatEnum.t
 val ( --- ) : t -> t -> t BatEnum.t
 (** Enumerate an interval.
 
-    [5 -- 10] is the enumeration 5,6,7,8,9,10.
-    [10 -- 5] is the enumeration 10,9,8,7,6,5.*)
+    [5 --- 10] is the enumeration 5,6,7,8,9,10.
+    [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
 
 
 external of_int : int -> int = "%identity"
