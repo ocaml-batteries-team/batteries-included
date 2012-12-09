@@ -346,6 +346,9 @@ Operations on <code class="code">unit</code>.
 <span id="6_ExtensionstotheStandardLibrary"><h6>Extensions to the Standard Library</h6></span>
 <p>
 
+These modules have base library equivalents.  When using <code class="code"><span class="keyword">open</span> <span class="constructor">Batteries</span></code>, <code class="code"><span class="constructor">BatFoo</span></code> will replace <code class="code"><span class="constructor">Foo</span></code>, so that the new functions are easily available without a <code class="code"><span class="constructor">Bat</span></code> prefix on the module name.  As well, <code class="code"><span class="constructor">BatPervasives</span></code> is opened into the global namespace.  Finally, the previous versions of replaced modules are available in the <code class="code"><span class="constructor">Legacy</span></code> module, i.e. <code class="code"><span class="constructor">Legacy</span>.<span class="constructor">Unix</span></code> and <code class="code"><span class="constructor">Legaxy</span>.<span class="constructor">Pervasives</span></code>.
+<p>
+
 <br>
 <table class="indextable">
 <tr><td class="module"><a href="BatArray.html">BatArray</a></td><td><div class="info">
