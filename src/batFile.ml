@@ -22,16 +22,7 @@ open BatIO
 open ListLabels
 open Unix
 
-(* Moved from batPervasives to break dep cycle *)
-let finally handler f x =
-  let r = (
-    try
-      f x
-    with
-	e -> handler(); raise e
-  ) in
-  handler();
-  r
+let finally = BatInnerPervasives.finally
 
 (* Permissions *)
 type permission = int

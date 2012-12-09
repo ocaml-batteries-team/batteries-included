@@ -74,7 +74,7 @@ let test_takel =
     end;
   ];;
 
-let to_strings = to_string *** to_string
+let to_strings (x,y) = to_string x, to_string y
 
 let test_splitr =
   let printer (s1,s2) = Printf.sprintf "(%S,%S)" s1 s2 in

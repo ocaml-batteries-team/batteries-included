@@ -141,7 +141,7 @@ module TestMap
       let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:cmp_elt in
       0 = BatList.compare cmp t1 t2 in
     let printer =
-      BatIO.to_string -| BatList.print @@ BatTuple.Tuple2.print BatInt.print print_elt in
+      BatIO.to_string @@ BatList.print @@ BatTuple.Tuple2.print BatInt.print print_elt in
     U.assert_equal ?msg ~cmp ~printer l1 l2
 
   let eq ?msg cmp_elt print_elt t1 t2 =
@@ -262,7 +262,7 @@ module TestMap
       (Not_found, fun () -> M.extract 1 M.empty);
     let t = il [(1,2); (3,4)] in
     "not @@ mem k @@ snd @@ extract k t" @?
-      (not -| M.mem 1 -| snd @@ M.extract 1 t);
+      (M.extract 1 t |> snd |> M.mem 1 |> not);
     "extract k (add k v t) = (v, t)" @?
       (let (k, v) = (5, 6) in
        let (v', t') = M.extract k (M.add k v t) in
@@ -274,7 +274,7 @@ module TestMap
       (Not_found, fun () -> M.pop M.empty);
     let t = il [(1,2); (3,4)] in
     "not (mem (fst (fst (pop t))) (snd (pop t)))" @?
-      (not @@ M.mem (fst -| fst @@ M.pop t) (snd @@ M.pop t));
+      (not @@ M.mem (M.pop t |> fst |> fst) (snd @@ M.pop t));
     "let ((k,v),t') = pop t in add k v t' = t" @?
       (let (k,v), t' = M.pop t in
        M.equal (=) (M.add k v t') t);
@@ -407,7 +407,7 @@ module TestMap
       [
         M.enum, "enum";
         M.backwards, "backwards";
-        BatList.enum -| M.bindings, "enum bindings";
+        M.bindings |- BatList.enum, "enum bindings";
       ]
 
   let reindex (f : M.key -> 'a -> 'b) : 'a -> 'b =
@@ -618,7 +618,7 @@ let heterogeneous_tests =
       let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:BatInt.compare in
       0 = BatList.compare cmp t1 t2 in
     let printer =
-      BatIO.to_string -| BatList.print @@ BatTuple.Tuple2.printn BatInt.print in
+      BatIO.to_string @@ BatList.print @@ BatTuple.Tuple2.printn BatInt.print in
     U.assert_equal ~msg ~cmp ~printer exp act in
 
   let compare_modulo p x y = BatInt.compare (x mod p) (y mod p) in

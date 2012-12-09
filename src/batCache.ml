@@ -18,8 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-let (|>) x f = f x
-let tap f x = f x; x
+open BatInnerPervasives
 
 type ('a,'b) manual_cache = {
   get : 'a -> 'b;

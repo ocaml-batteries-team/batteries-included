@@ -413,10 +413,6 @@ val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
 (** Function composition. [f |- g] is [fun x -> g (f x)].
     This is also equivalent to applying [<**] twice.*)
 
-val ( -| ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
-(** Function composition. [f -| g] is [fun x -> f (g x)]. Mathematically, this is
-    operator o.*)
-
 val ( |? ) : 'a option -> 'a -> 'a
 (** Like {!BatOption.default}, with the arguments reversed.
     [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"].
@@ -425,35 +421,6 @@ val ( |? ) : 'a option -> 'a -> 'a
     Both arguments will be evaluated.
 
     @since 2.0 *)
-
-val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
-  (** Argument flipping.
-
-      [flip f x y] is [f y x]. Don't abuse this function, it may shorten considerably
-      your code but it also has the nasty habit of making it harder to read.*)
-
-
-val ( *** ) : ('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd
-(** Function pairing.
-
-    [f *** g] is [fun (x,y) -> (f x, g y)]. Equivalent to {!Tuple.Tuple2.map}. *)
-
-val ( &&& ) : ('a -> 'b) -> ('a -> 'c) -> 'a -> ('b * 'c)
-  (** Applying two functions to the same argument.
-
-      [ f &&& g] is [fun x -> (f x, g x)]. *)
-
-val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
-(** Convert a function which accepts a pair of arguments into
-    a function which accepts two arguments.
-
-    [curry f] is [fun x y -> f (x,y)]*)
-
-val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
-  (** Convert a function which accepts a two arguments into a function
-      which accepts a pair of arguments.
-
-      [uncurry f] is [fun (x, y) -> f x y]*)
 
 val const : 'a -> (_ -> 'a)
 (** Ignore its second argument.
@@ -817,7 +784,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
 
     For more functions related to this type, see the {!BatResult} module.
 *)
-type ('a, 'b) result =
+type ('a, 'b) result = ('a, 'b) BatInnerPervasives.result = 
   | Ok  of 'a
   | Bad of 'b
 (** The result of a computation - either an [Ok] with the normal

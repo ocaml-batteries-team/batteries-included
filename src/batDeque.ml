@@ -45,7 +45,7 @@ let cons x q =
 
 (*$Q cons
   (Q.list Q.pos_int) ~count:10 \
-    (fun l -> List.fold_left (flip cons) empty l |> to_list = List.rev l)
+    (fun l -> List.fold_left (fun q x -> cons x q) empty l |> to_list = List.rev l)
 *)
 
 let snoc q x =

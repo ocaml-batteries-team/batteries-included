@@ -94,8 +94,6 @@ let prerr_bool = function
 
 let string_of_char c = String.make 1 c
 
-external identity : 'a -> 'a = "%identity"
-
 let rec dump r =
   if Obj.is_int r then
     string_of_int (Obj.magic r : int)
@@ -176,63 +174,7 @@ let dump v = dump (Obj.repr v)
 
 let print_any oc v = BatIO.nwrite oc (dump v)
 
-let finally = BatFile.finally
-
-let with_dispose ~dispose f x =
-  finally (fun () -> dispose x) f x
-
-let forever f x = ignore (while true do f x done)
-
-let ignore_exceptions f x = try ignore (f x) with _ -> ()
-
-(* unique int generation from batPervasives *)
-let unique_value  = ref 0
-let lock          = ref BatConcurrent.nolock
-let unique ()     =
-  BatConcurrent.sync !lock BatRef.post_incr unique_value
-
-(*$Q unique
-   Q.unit (fun () -> unique () <> unique ())
- *)
-
-type ('a, 'b) result =
-  | Ok  of 'a
-  | Bad of 'b
-
-(* Ideas taken from Nicholas Pouillard's my_std.ml in ocamlbuild/ *)
-let ignore_ok = function
-    Ok _ -> ()
-  | Bad ex -> raise ex
-
-let ok = function
-    Ok v -> v
-  | Bad ex -> raise ex
-
-let wrap f x = try Ok (f x) with ex -> Bad ex
-
-(** {6 Operators}*)
-
-let ( |> ) x f = f x
-
-let ( @@ ) f x = f x
-
-let ( |- ) f g x = g (f x)
-
-let ( -| ) f g x = f (g x)
-
-let flip f x y = f y x
-
-let ( *** ) f g = fun (x,y) -> (f x, g y)
-
-let ( &&& ) f g = fun x -> (f x, g x)
-
-let curry f x y = f (x,y)
-
-let uncurry f (x,y) = f x y
-
-let const x _ = x
-
-let tap f x = f x; x
+include BatInnerPervasives
 
 let invisible_args = ref 1
 (* the number or arguments to ignore at the beginning of Sys.argv,
@@ -331,8 +273,6 @@ let undefined ?(message="Undefined") = failwith message
 
 let verify x ex = if x then () else raise ex
 let verify_arg x s = if x then () else invalid_arg s
-
-let ( |? ) = BatOption.Infix.( |? )
 
 (** {6 Clean-up}*)
 

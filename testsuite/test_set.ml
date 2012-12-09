@@ -346,7 +346,7 @@ module TestSet
       ()
     in
     let not_not_exists f li =
-      not (S.exists (not -| f) li) in
+      not (S.exists (f |- not) li) in
     List.iter test
       [ "for_all", S.for_all;
         "not not exists", not_not_exists ]
