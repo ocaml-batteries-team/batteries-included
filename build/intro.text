@@ -48,6 +48,8 @@ BatNativeint BatOption BatRef BatTuple BatUnit }
 
 {6 Extensions to the Standard Library}
 
+These modules have base library equivalents.  When using [open Batteries], [BatFoo] will replace [Foo], so that the new functions are easily available without a [Bat] prefix on the module name.  As well, [BatPervasives] is opened into the global namespace.  Finally, the previous versions of replaced modules are available in the [Legacy] module, i.e. [Legacy.Unix] and [Legaxy.Pervasives].
+
 {!modules: BatArray BatBigarray BatBig_int BatBuffer BatComplex
 BatDigest BatFormat BatGc BatGenlex BatHashtbl BatLexing BatList
 BatMap BatMarshal BatNum BatOo BatPervasives BatPrintexc BatPrintf
