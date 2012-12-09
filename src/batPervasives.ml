@@ -214,7 +214,7 @@ let wrap f x = try Ok (f x) with ex -> Bad ex
 
 let ( |> ) x f = f x
 
-let ( <| ) f x = f x
+let ( @@ ) f x = f x
 
 let ( |- ) f g x = g (f x)
 
@@ -327,7 +327,6 @@ include Infix
 
 (** {6 Operators}*)
 
-let ( **> )        = ( <| )
 let undefined ?(message="Undefined") = failwith message
 
 let verify x ex = if x then () else raise ex

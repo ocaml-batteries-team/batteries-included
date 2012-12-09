@@ -152,9 +152,6 @@
    {6 Network}
 *)
 
-  let ( <| ) f x = f x
-  let ( *** ) f g = fun (x,y) -> (f x, g y)
-
   let shutdown_connection cin =
     try shutdown_connection (input_get cin)
     with Not_found -> raise (Invalid_argument "Unix.descr_of_in_channel")

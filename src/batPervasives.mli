@@ -395,23 +395,19 @@ val ( |> ) : 'a -> ('a -> 'b) -> 'b
     the result." The corresponding notation in most object-oriented
     programming languages would be somewhere along the lines of [x.f.g
     ()], or "starting from [x], apply [f], then apply [g]." In OCaml,
-    operator ( |> ) this latest notation maps to [x |> f |> g], or
+    using the ( |> ) operator, this is written [x |> f |> g].
 
     This operator may also be useful for composing sequences of
     function calls without too many parenthesis. *)
 
 
-val ( **>  ) : ('a -> 'b) -> 'a -> 'b
-  (** Function application. [f **> x] is equivalent to [f x].
-
-      This operators may be useful for composing sequences of
-      function calls without too many parenthesis.
-
-      {b Note} The name of this operator is not written in stone.
-      It is bound to change soon.*)
-
-val ( <| ) : ('a -> 'b) -> 'a -> 'b
-(** same as [ ( **> ) ] *)
+val ( @@ ) : ('a -> 'b) -> 'a -> 'b
+(** Function application. [f @@ x] is equivalent to [f x].
+However, it binds less tightly (between [::] and [=],[<],[>],etc)
+and is right-associative, which makes it useful for composing sequences of
+function calls without too many parentheses. It is similar to Haskell's [$].
+Note that it replaces pre-2.0 [**>] and [<|].
+*)
 
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
 (** Function composition. [f |- g] is [fun x -> g (f x)].

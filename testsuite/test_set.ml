@@ -89,7 +89,7 @@ module TestSet
     let cmp t1 t2 =
       0 = BatList.compare cmp_elt t1 t2 in
     let printer =
-      BatIO.to_string <| BatList.print print_elt in
+      BatIO.to_string @@ BatList.print print_elt in
     U.assert_equal ?msg ~cmp ~printer l1 l2
 
   let eq ?msg cmp_elt print_elt t1 t2 =
@@ -100,7 +100,7 @@ module TestSet
 
   let test_is_empty () =
     "empty is empty" @? S.is_empty S.empty;
-    "singleton is not empty" @? not (S.is_empty <| S.singleton 1);
+    "singleton is not empty" @? not (S.is_empty @@ S.singleton 1);
     ()
 
   let test_singleton () =
@@ -178,7 +178,7 @@ module TestSet
       (Not_found, fun () -> S.pop S.empty);
     let t = il [1; 2; 3; 4] in
     "not (mem (fst (pop t)) (snd (pop t)))" @?
-      (not <| S.mem (fst <| S.pop t) (snd <| S.pop t));
+      (not @@ S.mem (fst @@ S.pop t) (snd @@ S.pop t));
     "let (k,t') = pop t in add k t' = t" @?
       (let k, t' = S.pop t in S.equal (S.add k t') t);
     ()
@@ -395,7 +395,7 @@ module TestSet
     let from_fold p t =
       let acc e li =
         (if p e then [e] else []) @ li in
-      List.rev <| S.fold acc t []
+      List.rev @@ S.fold acc t []
     in
 
     let from_iter p t =

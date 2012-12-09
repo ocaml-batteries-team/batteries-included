@@ -141,7 +141,7 @@ module TestMap
       let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:cmp_elt in
       0 = BatList.compare cmp t1 t2 in
     let printer =
-      BatIO.to_string -| BatList.print <| BatTuple.Tuple2.print BatInt.print print_elt in
+      BatIO.to_string -| BatList.print @@ BatTuple.Tuple2.print BatInt.print print_elt in
     U.assert_equal ?msg ~cmp ~printer l1 l2
 
   let eq ?msg cmp_elt print_elt t1 t2 =
@@ -152,7 +152,7 @@ module TestMap
 
   let test_is_empty () =
     "empty is empty" @? M.is_empty M.empty;
-    "singleton is not empty" @? not (M.is_empty <| M.singleton 1 ());
+    "singleton is not empty" @? not (M.is_empty @@ M.singleton 1 ());
     ()
 
   let test_singleton () =
@@ -261,8 +261,8 @@ module TestMap
     "extract 1 empty -> Not_found" @!
       (Not_found, fun () -> M.extract 1 M.empty);
     let t = il [(1,2); (3,4)] in
-    "not <| mem k <| snd <| extract k t" @?
-      (not -| M.mem 1 -| snd <| M.extract 1 t);
+    "not @@ mem k @@ snd @@ extract k t" @?
+      (not -| M.mem 1 -| snd @@ M.extract 1 t);
     "extract k (add k v t) = (v, t)" @?
       (let (k, v) = (5, 6) in
        let (v', t') = M.extract k (M.add k v t) in
@@ -274,7 +274,7 @@ module TestMap
       (Not_found, fun () -> M.pop M.empty);
     let t = il [(1,2); (3,4)] in
     "not (mem (fst (fst (pop t))) (snd (pop t)))" @?
-      (not <| M.mem (fst -| fst <| M.pop t) (snd <| M.pop t));
+      (not @@ M.mem (fst -| fst @@ M.pop t) (snd @@ M.pop t));
     "let ((k,v),t') = pop t in add k v t' = t" @?
       (let (k,v), t' = M.pop t in
        M.equal (=) (M.add k v t') t);
@@ -444,10 +444,10 @@ module TestMap
         | Some v' -> (k,v')::acc in
 
     let from_foldi f t =
-      List.rev <| M.foldi (of_foldi f) t [] in
+      List.rev @@ M.foldi (of_foldi f) t [] in
 
     let from_fold f t =
-      List.rev <| M.fold (reindex (of_foldi f)) t [] in
+      List.rev @@ M.fold (reindex (of_foldi f)) t [] in
 
     let of_iteri acc f k v =
       match f k v with
@@ -618,7 +618,7 @@ let heterogeneous_tests =
       let cmp = BatTuple.Tuple2.compare ~cmp1:BatInt.compare ~cmp2:BatInt.compare in
       0 = BatList.compare cmp t1 t2 in
     let printer =
-      BatIO.to_string -| BatList.print <| BatTuple.Tuple2.printn BatInt.print in
+      BatIO.to_string -| BatList.print @@ BatTuple.Tuple2.printn BatInt.print in
     U.assert_equal ~msg ~cmp ~printer exp act in
 
   let compare_modulo p x y = BatInt.compare (x mod p) (y mod p) in
