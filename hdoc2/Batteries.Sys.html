@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Signal handling" rel="Section" href="#6_Signalhandling">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Signal handling" rel="Section" href="#6_Signalhandling">
 <link title="Signal numbers for the standard POSIX signals." rel="Subsection" href="#7_SignalnumbersforthestandardPOSIXsignals">
 <title>Batteries user guide : Batteries.Sys</title>
 </head>
@@ -129,9 +127,9 @@ Test if a file with the given name exists.<br>
 </div>
 <pre><span id="VALis_directory"><span class="keyword">val</span> is_directory</span> : <code class="type">string -> bool</code></pre><div class="info">
 Returns <code class="code"><span class="keyword">true</span></code> if the given name refers to a directory,
-    <code class="code"><span class="keyword">false</span></code> if it refers to another kind of file.
-    Raise <code class="code"><span class="constructor">Sys_error</span></code> if no file exists with the given name.<br>
+    <code class="code"><span class="keyword">false</span></code> if it refers to another kind of file.<br>
 <b>Since</b> 3.10.0<br>
+<b>Raises</b> <code>Sys_error</code> if no file exists with the given name.<br>
 </div>
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">string -> unit</code></pre><div class="info">
 Remove the given file name from the file system.<br>
@@ -144,7 +142,8 @@ Rename a file. The first argument is the old name and the
 </div>
 <pre><span id="VALgetenv"><span class="keyword">val</span> getenv</span> : <code class="type">string -> string</code></pre><div class="info">
 Return the value associated to a variable in the process
-   environment. Raise <code class="code"><span class="constructor">Not_found</span></code> if the variable is unbound.<br>
+   environment.<br>
+<b>Raises</b> <code>Not_found</code> if the variable is unbound.<br>
 </div>
 <pre><span id="VALcommand"><span class="keyword">val</span> command</span> : <code class="type">string -> int</code></pre><div class="info">
 Execute the given shell command and return its exit code.<br>
@@ -174,7 +173,7 @@ This reference is initially set to <code class="code"><span class="keyword">fals
    the interactive toplevel system <code class="code">ocaml</code>.<br>
 </div>
 <pre><span id="VALos_type"><span class="keyword">val</span> os_type</span> : <code class="type">string</code></pre><div class="info">
-Operating system currently executing the Caml program. One of<ul>
+Operating system currently executing the OCaml program. One of<ul>
 <li> <code class="code"><span class="string">"Unix"</span></code> (for all Unix versions, including Linux and Mac OS X),</li>
 <li> <code class="code"><span class="string">"Win32"</span></code> (for MS-Windows, OCaml compiled with MSVC++ or Mingw),</li>
 <li> <code class="code"><span class="string">"Cygwin"</span></code> (for MS-Windows, OCaml compiled with Cygwin).</li>
@@ -182,11 +181,11 @@ Operating system currently executing the Caml program. One of<ul>
 <br>
 </div>
 <pre><span id="VALword_size"><span class="keyword">val</span> word_size</span> : <code class="type">int</code></pre><div class="info">
-Size of one word on the machine currently executing the Caml
+Size of one word on the machine currently executing the OCaml
    program, in bits: 32 or 64.<br>
 </div>
 <pre><span id="VALbig_endian"><span class="keyword">val</span> big_endian</span> : <code class="type">bool</code></pre><div class="info">
-Whether the machine currently executing the Caml program is big-endian.<br>
+Whether the machine currently executing the OCaml program is big-endian.<br>
 <b>Since</b> 4.00.0<br>
 </div>
 <pre><span id="VALmax_string_length"><span class="keyword">val</span> max_string_length</span> : <code class="type">int</code></pre><div class="info">
@@ -233,9 +232,9 @@ Maximum length of a normal array.  The maximum length of a float
 <pre><span id="VALsignal"><span class="keyword">val</span> signal</span> : <code class="type">int -> <a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a> -> <a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a></code></pre><div class="info">
 Set the behavior of the system on receipt of a given signal.  The
    first argument is the signal number.  Return the behavior
-   previously associated with the signal. If the signal number is
-   invalid (or not available on your system), an <code class="code"><span class="constructor">Invalid_argument</span></code>
-   exception is raised.<br>
+   previously associated with the signal.<br>
+<b>Raises</b> <code>Invalid_argument</code> If the signal number is
+   invalid (or not available on your system).<br>
 </div>
 <pre><span id="VALset_signal"><span class="keyword">val</span> set_signal</span> : <code class="type">int -> <a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a> -> unit</code></pre><div class="info">
 Same as <code class="code"><span class="constructor">Sys</span>.signal</code> but return value is ignored.<br>
@@ -312,13 +311,13 @@ Exception raised on interactive interrupt if <code class="code"><span class="con
 </div>
 <pre><span id="VALcatch_break"><span class="keyword">val</span> catch_break</span> : <code class="type">bool -> unit</code></pre><div class="info">
 <code class="code">catch_break</code> governs whether interactive interrupt (ctrl-C)
-   terminates the program or raises the <code class="code"><span class="constructor">Break</span></code> exception.
+   terminates the program or raises <code class="code"><span class="constructor">Break</span></code>.
    Call <code class="code">catch_break <span class="keyword">true</span></code> to enable raising <code class="code"><span class="constructor">Break</span></code>,
    and <code class="code">catch_break <span class="keyword">false</span></code> to let the system
    terminate the program on user interrupt.<br>
 </div>
 <pre><span id="VALocaml_version"><span class="keyword">val</span> ocaml_version</span> : <code class="type">string</code></pre><div class="info">
-<code class="code">ocaml_version</code> is the version of Objective Caml.
+<code class="code">ocaml_version</code> is the version of OCaml.
     It is a string of the form <code class="code"><span class="string">"major.minor[.patchlevel][+additional-info]"</span></code>,
     where <code class="code">major</code>, <code class="code">minor</code>, and <code class="code">patchlevel</code> are integers, and
     <code class="code">additional-info</code> is an arbitrary string. The <code class="code">[.patchlevel]</code> and

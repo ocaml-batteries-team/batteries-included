@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Deprecated" rel="Section" href="#6_Deprecated">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Deprecated" rel="Section" href="#6_Deprecated">
 <title>Batteries user guide : BatMarshal</title>
 </head>
 <body>
@@ -121,7 +119,7 @@
     sent over a pipe or network connection.  The bytes can then
     be read back later, possibly in another process, and decoded back
     into a data structure. The format for the byte sequences
-    is compatible across all machines for a given version of Objective Caml.
+    is compatible across all machines for a given version of OCaml.
 <p>
 
     Warning: marshaling is currently not type-safe. The type
@@ -129,7 +127,7 @@
     making it impossible to check that the data read back possesses the
     type expected by the context. In particular, the result type of
     the <code class="code"><span class="constructor">Marshal</span>.from_*</code> functions is given as <code class="code"><span class="keywordsign">'</span>a</code>, but this is
-    misleading: the returned Caml value does not possess type <code class="code"><span class="keywordsign">'</span>a</code>
+    misleading: the returned OCaml value does not possess type <code class="code"><span class="keywordsign">'</span>a</code>
     for all <code class="code"><span class="keywordsign">'</span>a</code>; it has one, unique type which cannot be determined
     at compile-type.  The programmer should explicitly give the expected
     type of the returned value, using the following syntax:<ul>

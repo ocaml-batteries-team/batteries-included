@@ -67,7 +67,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -82,24 +81,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatString.Cap</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatString.Cap</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
@@ -224,7 +222,6 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;println&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;]&nbsp;<span class="constructor">BatString</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_quoted&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;]&nbsp;<span class="constructor">BatString</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;t_printer&nbsp;:&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;]&nbsp;<span class="constructor">BatString</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;unsafe_get&nbsp;:&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;]&nbsp;<span class="constructor">BatString</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
 &nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;<span class="string">"%string_unsafe_get"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;unsafe_set&nbsp;:&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Write</span>&nbsp;]&nbsp;<span class="constructor">BatString</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>

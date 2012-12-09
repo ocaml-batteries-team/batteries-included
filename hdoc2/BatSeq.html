@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
 <link title="Constructors" rel="Section" href="#6_Constructors">
 <link title="Iterators" rel="Section" href="#6_Iterators">
 <link title="Sequence scanning" rel="Section" href="#6_Sequencescanning">
@@ -224,7 +222,8 @@ Same as <a href="BatSeq.html#VALconcat"><code class="code"><span class="construc
 </div>
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">init n f</code> returns the sequence returning the results of <code class="code">f 0</code>,
-      <code class="code">f 1</code>.... <code class="code">f (n-1)</code>. Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n &lt; 0</code>.<br>
+      <code class="code">f 1</code>.... <code class="code">f (n-1)</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code>.<br>
 </div>
 <br>
 <span id="6_Iterators"><h6>Iterators</h6></span><br>
@@ -351,5 +350,5 @@ Transform a pair of sequences into a sequence of pairs. Lazy.<br>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatSeq.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Print the contents of a sequence<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatSeq.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatSeq.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">include</span> <a href="BatSeq.Infix.html">BatSeq.Infix</a></pre>
+<pre><span class="keyword">module</span> <a href="BatSeq.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatSeq.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">include</span> <a href="BatSeq.Infix.html">BatSeq.Infix</a></pre>
 <pre><span class="keyword">module</span> <a href="BatSeq.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatSeq.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

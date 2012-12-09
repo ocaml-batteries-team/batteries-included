@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <title>Batteries user guide : Batteries.Buffer</title>
 </head>
 <body>
@@ -146,16 +144,15 @@ buffer itself is unaffected.<br>
 <pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> string -> int -> int -> unit</code></pre><div class="info">
 <code class="code"><span class="constructor">Buffer</span>.blit src srcoff dst dstoff len</code> copies <code class="code">len</code> characters from
    the current contents of the buffer <code class="code">src</code>, starting at offset <code class="code">srcoff</code>
-   to string <code class="code">dst</code>, starting at character <code class="code">dstoff</code>.
-<p>
-
-   Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">srcoff</code> and <code class="code">len</code> do not designate a valid
+   to string <code class="code">dst</code>, starting at character <code class="code">dstoff</code>.<br>
+<b>Since</b> 3.11.2<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">srcoff</code> and <code class="code">len</code> do not designate a valid
    substring of <code class="code">src</code>, or if <code class="code">dstoff</code> and <code class="code">len</code> do not designate a valid
    substring of <code class="code">dst</code>.<br>
-<b>Since</b> 3.11.2<br>
 </div>
 <pre><span id="VALnth"><span class="keyword">val</span> nth</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> char</code></pre><div class="info">
-get the n-th character of the buffer. Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if
+get the n-th character of the buffer.<br>
+<b>Raises</b> <code>Invalid_argument</code> if
 index out of bounds<br>
 </div>
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int</code></pre><div class="info">
@@ -193,11 +190,11 @@ Empty the buffer and deallocate the internal string holding the
 <li>an arbitrary sequence of characters enclosed by a pair of
    matching parentheses or curly brackets.
    An escaped <code class="code">$</code> character is a <code class="code">$</code> that immediately follows a backslash
-   character; it then stands for a plain <code class="code">$</code>.
-   Raise <code class="code"><span class="constructor">Not_found</span></code> if the closing character of a parenthesized variable
-   cannot be found.</li>
+   character; it then stands for a plain <code class="code">$</code>.</li>
 </ul>
 <br>
+<b>Raises</b> <code>Not_found</code> if the closing character of a parenthesized variable
+   cannot be found.<br>
 </div>
 <pre><span id="VALadd_buffer"><span class="keyword">val</span> add_buffer</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> <a href="BatBuffer.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">add_buffer b1 b2</code> appends the current contents of buffer <code class="code">b2</code>
@@ -205,7 +202,8 @@ Empty the buffer and deallocate the internal string holding the
 </div>
 <pre><span id="VALadd_input"><span class="keyword">val</span> add_input</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> int -> unit</code></pre><div class="info">
 <code class="code">add_input b ic n</code> reads exactly <code class="code">n</code> character from the input <code class="code">ic</code>
-      and stores them at the end of buffer <code class="code">b</code>.  Raise <code class="code"><span class="constructor">End_of_file</span></code> if
+      and stores them at the end of buffer <code class="code">b</code>.<br>
+<b>Raises</b> <code>End_of_file</code> if
       the channel contains fewer than <code class="code">n</code> characters.<br>
 </div>
 <pre><span id="VALadd_channel"><span class="keyword">val</span> add_channel</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> int -> unit</code></pre><div class="info">

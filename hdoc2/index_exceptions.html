@@ -68,7 +68,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -83,24 +82,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Index of exceptions</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Index of exceptions</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
@@ -123,8 +121,6 @@ Exception raised on interactive interrupt if <code class="code"><span class="con
       <code class="code">iter2</code> on two lists having different size.
 </div>
 </td></tr>
-<tr><td><a href="BatStats.html#EXCEPTIONDone">Done</a> [<a href="BatStats.html">BatStats</a>]</td>
-<td></td></tr>
 <tr><td align="left"><br>E</td></tr>
 <tr><td><a href="BatStack.html#EXCEPTIONEmpty">Empty</a> [<a href="BatStack.html">BatStack</a>]</td>
 <td><div class="info">
@@ -150,6 +146,19 @@ An exception that is thrown by various operations when
 <td><div class="info">
 <code class="code"><span class="constructor">Empty_list</span></code> is raised when an operation applied on an empty list
       is invalid.
+</div>
+</td></tr>
+<tr><td><a href="BatStream.html#EXCEPTIONError">Error</a> [<a href="BatStream.html">BatStream</a>]</td>
+<td><div class="info">
+Raised by parsers when the first component of a stream pattern is
+   accepted, but one of the following components is rejected.
+</div>
+</td></tr>
+<tr><td align="left"><br>F</td></tr>
+<tr><td><a href="BatStream.html#EXCEPTIONFailure">Failure</a> [<a href="BatStream.html">BatStream</a>]</td>
+<td><div class="info">
+Raised by parsers when none of the first components of the stream
+   patterns is accepted.
 </div>
 </td></tr>
 <tr><td align="left"><br>G</td></tr>
@@ -198,16 +207,10 @@ This exception is raised when reading an invalid character
       out of list bounds.
 </div>
 </td></tr>
-<tr><td><a href="Uniclib.Text.html#EXCEPTIONInvalid_rope">Invalid_rope</a> [<a href="Uniclib.Text.html">Uniclib.Text</a>]</td>
-<td><div class="info">
-An exception thrown when some operation required a rope
-      and received an unacceptable rope.
-</div>
-</td></tr>
 <tr><td><a href="BatText.html#EXCEPTIONInvalid_rope">Invalid_rope</a> [<a href="BatText.html">BatText</a>]</td>
 <td><div class="info">
 An exception thrown when some operation required a rope and
-      received an unacceptable rope.
+    received an unacceptable rope.
 </div>
 </td></tr>
 <tr><td><a href="BatBase64.html#EXCEPTIONInvalid_table">Invalid_table</a> [<a href="BatBase64.html">BatBase64</a>]</td>
@@ -220,7 +223,7 @@ This exception is raised if the encoding or decoding table
 <tr><td><a href="BatGenlex.html#EXCEPTIONLexerError">LexerError</a> [<a href="BatGenlex.html">BatGenlex</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>M</td></tr>
-<tr><td><a href="Uniclib.UTF8.html#EXCEPTIONMalformed_code">Malformed_code</a> [<a href="Uniclib.UTF8.html">Uniclib.UTF8</a>]</td>
+<tr><td><a href="BatUTF8.html#EXCEPTIONMalformed_code">Malformed_code</a> [<a href="BatUTF8.html">BatUTF8</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatPathGen.PathType.html#EXCEPTIONMalformed_path">Malformed_path</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
 <td></td></tr>
@@ -282,11 +285,6 @@ When an option wants to display a usage message, this exception
       may be raised.
 </div>
 </td></tr>
-<tr><td><a href="Uniclib.Text.html#EXCEPTIONOut_of_bounds">Out_of_bounds</a> [<a href="Uniclib.Text.html">Uniclib.Text</a>]</td>
-<td><div class="info">
-Raised when an operation violates the bounds of the rope.
-</div>
-</td></tr>
 <tr><td><a href="BatVect.Make.html#EXCEPTIONOut_of_bounds">Out_of_bounds</a> [<a href="BatVect.Make.html">BatVect.Make</a>]</td>
 <td><div class="info">
 Raised when an operation violates the bounds of the vect.
@@ -302,7 +300,7 @@ Raised when an operation violates the bounds of the vect.
 Raised when an operation violates the bounds of the rope.
 </div>
 </td></tr>
-<tr><td><a href="Uniclib.UChar.html#EXCEPTIONOut_of_range">Out_of_range</a> [<a href="Uniclib.UChar.html">Uniclib.UChar</a>]</td>
+<tr><td><a href="BatUChar.html#EXCEPTIONOut_of_range">Out_of_range</a> [<a href="BatUChar.html">BatUChar</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatInnerIO.html#EXCEPTIONOutput_closed">Output_closed</a> [<a href="BatInnerIO.html">BatInnerIO</a>]</td>
 <td><div class="info">
@@ -334,6 +332,12 @@ Exception raised when a read or write operation cannot be completed.
 <td><div class="info">
 The exception that formatted input functions raise when the input cannot be
     read according to the given format.
+</div>
+</td></tr>
+<tr><td align="left"><br>U</td></tr>
+<tr><td><a href="BatUnix.html#EXCEPTIONUnix_error">Unix_error</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Raised by the system calls below when an error is encountered.
 </div>
 </td></tr>
 </table>

@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Submodules regrouping all infix operations" rel="Section" href="#6_Submodulesregroupingallinfixoperations">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Submodules regrouping all infix operations" rel="Section" href="#6_Submodulesregroupingallinfixoperations">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <link title="Compare" rel="Subsection" href="#7_Compare">
@@ -153,20 +151,21 @@ Multiplication.<br>
 Multiplication.<br>
 </div>
 <pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">int -> int -> int</code></pre><div class="info">
-Integer division.  Raise <code class="code"><span class="constructor">Division_by_zero</span></code> if the second
-    argument is zero.  This division rounds the real quotient of
+Integer division.
+    This division rounds the real quotient of
     its arguments towards zero, as specified for <code class="code"><span class="constructor">Pervasives</span>.(/)</code>.<br>
+<b>Raises</b> <code>Division_by_zero</code> if the second argument is zero.<br>
 </div>
 <pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type">int -> int -> int</code></pre><div class="info">
-Integer division.  Raise <code class="code"><span class="constructor">Division_by_zero</span></code> if the second
-    argument is zero.  This division rounds the real quotient of
+Integer division.  This division rounds the real quotient of
     its arguments towards zero, as specified for <code class="code"><span class="constructor">Pervasives</span>.(/)</code>.<br>
+<b>Raises</b> <code>Division_by_zero</code> if the second argument is zero.<br>
 </div>
 <pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">int -> int -> int</code></pre><div class="info">
 Integer remainder.  If <code class="code">y</code> is not zero, the result
     of <code class="code"><span class="constructor">Int</span>.rem x y</code> satisfies the following property:
-    <code class="code">x = <span class="constructor">Int</span>.add (<span class="constructor">Int</span>.mul (<span class="constructor">Int</span>.div x y) y) (<span class="constructor">Int</span>.rem x y)</code>.
-    If <code class="code">y = 0</code>, <code class="code"><span class="constructor">Int</span>.rem x y</code> raises <code class="code"><span class="constructor">Division_by_zero</span></code>.<br>
+    <code class="code">x = <span class="constructor">Int</span>.add (<span class="constructor">Int</span>.mul (<span class="constructor">Int</span>.div x y) y) (<span class="constructor">Int</span>.rem x y)</code>.<br>
+<b>Raises</b> <code>Division_by_zero</code> if the second argument is zero.<br>
 </div>
 <pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">int -> int -> int</code></pre><div class="info">
 <code class="code">modulo a b</code> computes the remainder of the integer
@@ -214,8 +213,8 @@ Convert the given integer to a floating-point number.<br>
 Convert the given string to an integer
     The string is read in decimal (by default) or in hexadecimal,
     octal or binary if the string begins with <code class="code">0x</code>, <code class="code">0o</code> or <code class="code">0b</code>
-    respectively.
-    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if the given string is not
+    respectively.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the given string is not
     a valid representation of an integer, or if the integer represented
     exceeds the range of integers representable in type <code class="code">int</code>.<br>
 </div>
@@ -263,10 +262,10 @@ Enumerate an interval.
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> int -> unit</code></pre><div class="info">
 prints as decimal string<br>
 </div>
-<pre><span id="VALxprint"><span class="keyword">val</span> xprint</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> int -> unit</code></pre><div class="info">
+<pre><span id="VALprint_hex"><span class="keyword">val</span> print_hex</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> int -> unit</code></pre><div class="info">
 prints as hex string<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><br>
+<br>
 <span id="7_Compare"><div class="h7">Compare</div></span><br>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> -> int</code></pre><div class="info">
 The comparison function for integers, with the same specification as
@@ -274,7 +273,10 @@ The comparison function for integers, with the same specification as
     allows the module <code class="code"><span class="constructor">Int</span></code> to be passed as argument to the functors
     <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.<br>
 </div>
-<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">int -> int -> bool</code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">int -> int -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span class="keyword">module</span> <a href="BatInt.Safe_int.html">Safe_int</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt.Safe_int.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+Equality function for integers, useful for <code class="code"><span class="constructor">HashedType</span></code>.<br>
+</div>
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span class="keyword">module</span> <a href="BatInt.Safe_int.html">Safe_int</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt.Safe_int.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Safe operations on integers.
 </div>
 </body></html>

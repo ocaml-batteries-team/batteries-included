@@ -67,7 +67,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -82,24 +81,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Extlib.Std</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Extlib.Std</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
@@ -107,9 +105,6 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_chars&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_list&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_all&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;uppercase&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lowercase&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_of_char&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dump&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_any&nbsp;:&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;@&nbsp;)&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list<br>
@@ -212,105 +207,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;?sep:string&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;printer_flags&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatPervasives</span>.printer_flags&nbsp;=&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;pf_width&nbsp;:&nbsp;int&nbsp;option;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;pf_frac_digits&nbsp;:&nbsp;int&nbsp;option;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;pf_padding_char&nbsp;:&nbsp;char;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;pf_justify&nbsp;:&nbsp;[&nbsp;<span class="keywordsign">`</span>left&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>right&nbsp;];<br>
-&nbsp;&nbsp;&nbsp;&nbsp;pf_positive_prefix&nbsp;:&nbsp;char&nbsp;option;<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;default_printer_flags&nbsp;:&nbsp;printer_flags<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_a&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;((unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_t&nbsp;:&nbsp;((unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_B&nbsp;:&nbsp;(bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_c&nbsp;:&nbsp;(char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_C&nbsp;:&nbsp;(char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_s&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_S&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_d&nbsp;:&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_i&nbsp;:&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_int&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_u&nbsp;:&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_uint&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_x&nbsp;:&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_X&nbsp;:&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_hex&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_HEX&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_o&nbsp;:&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_oct&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_ld&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_li&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_lu&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_lx&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_lX&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_lo&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_Ld&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_Li&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_Lu&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_Lx&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_LX&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_Lo&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_nd&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_ni&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_nu&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_nx&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_nX&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_no&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_f&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_F&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_format&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;((<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">BatPrint</span>.format&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_sc&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;([&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;]&nbsp;<span class="constructor">BatString</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_Sc&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?flags:printer_flags&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;([&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;]&nbsp;<span class="constructor">BatString</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_obj&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;print&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit;&nbsp;..&nbsp;&gt;&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;printer_exn&nbsp;:&nbsp;(exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">BatPrint</span>.directive<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;bool_printer&nbsp;:&nbsp;bool&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int_printer&nbsp;:&nbsp;int&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;char_printer&nbsp;:&nbsp;char&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int32_printer&nbsp;:&nbsp;int32&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int64_printer&nbsp;:&nbsp;int64&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;nativeint_printer&nbsp;:&nbsp;nativeint&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float_printer&nbsp;:&nbsp;float&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_printer&nbsp;:&nbsp;string&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;list_printer&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatValuePrinter</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;array_printer&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatValuePrinter</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;array&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;option_printer&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatValuePrinter</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;option&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;maybe_printer&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatValuePrinter</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;option&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exn_printer&nbsp;:&nbsp;exn&nbsp;<span class="constructor">BatValuePrinter</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;result&nbsp;=&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">BatPervasives</span>.result&nbsp;=&nbsp;<span class="constructor">Ok</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Bad</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>b<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ignore_ok&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;exn)&nbsp;result&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ok&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;exn)&nbsp;result&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>

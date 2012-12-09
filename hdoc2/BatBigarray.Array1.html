@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Unsafe operations" rel="Section" href="#6_Unsafeoperations">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Unsafe operations" rel="Section" href="#6_Unsafeoperations">
 <title>Batteries user guide : BatBigarray.Array1</title>
 </head>
 <body>
@@ -124,7 +122,7 @@
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'c)</code> t</span> = <code class="type">('a, 'b, 'c) Bigarray.Array1.t</code> </pre>
 <div class="info">
 The type of one-dimensional big arrays whose elements have
-     Caml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.<br>
+     OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.<br>
 </div>
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
@@ -149,14 +147,15 @@ Return the layout of the given big array.<br>
      <code class="code">x</code> must be greater or equal than <code class="code">0</code> and strictly less than
      <code class="code"><span class="constructor">Array1</span>.dim a</code> if <code class="code">a</code> has C layout.  If <code class="code">a</code> has Fortran layout,
      <code class="code">x</code> must be greater or equal than <code class="code">1</code> and less or equal than
-     <code class="code"><span class="constructor">Array1</span>.dim a</code>.  Otherwise, <code class="code"><span class="constructor">Invalid_arg</span></code> is raised.<br>
+     <code class="code"><span class="constructor">Array1</span>.dim a</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> otherwise.<br>
 </div>
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info">
 <code class="code"><span class="constructor">Array1</span>.set a x v</code>, also written <code class="code">a.{x} &lt;- v</code>,
      stores the value <code class="code">v</code> at index <code class="code">x</code> in <code class="code">a</code>.
      <code class="code">x</code> must be inside the bounds of <code class="code">a</code> as described in
-     <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array1</span>.get</code>;
-     otherwise, <code class="code"><span class="constructor">Invalid_arg</span></code> is raised.<br>
+     <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array1</span>.get</code>;<br>
+<b>Raises</b> <code>Invalid_argument</code> otherwise.<br>
 </div>
 <pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -><br>       int -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info">
 Extract a sub-array of the given one-dimensional big array.

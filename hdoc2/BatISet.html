@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatISet</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatISet</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="BatIO.html" title="BatIO">Previous</a>
@@ -186,6 +184,10 @@ Compare two sets.  It is not safe to use the polymorphic (&lt;) and
 Test whether two sets are equal.  It is not safe to use the
     polymorphic (=) on these sets, as the same set can have multiple
     representations depending on how it was built.<br>
+</div>
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><div class="info">
+Same as <code class="code">compare</code> but returns <code class="code"><span class="constructor">BatOrd</span>.<span class="constructor">Lt</span> <span class="keywordsign">|</span> <span class="constructor">BatOrd</span>.<span class="constructor">Eq</span> <span class="keywordsign">|</span> <span class="constructor">BatOrd</span>.<span class="constructor">Gt</span></code>
+    instead of an int.<br>
 </div>
 <pre><span id="VALsubset"><span class="keyword">val</span> subset</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">subset t u</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">t</code> is a subset of <code class="code">u</code><br>

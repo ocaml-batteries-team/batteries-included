@@ -68,7 +68,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -83,24 +82,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Index of types</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Index of types</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
@@ -108,6 +106,16 @@
 <h1>Index of types</h1>
 <table>
 <tr><td align="left"><br>A</td></tr>
+<tr><td><a href="BatUnix.html#TYPEaccess_permission">access_permission</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Flags for the <code class="code"><span class="constructor">Unix</span>.access</code> call.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEaddr_info">addr_info</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Address information returned by <code class="code"><span class="constructor">Unix</span>.getaddrinfo</code>.
+</div>
+</td></tr>
 <tr><td><a href="BatGc.html#TYPEalarm">alarm</a> [<a href="BatGc.html">BatGc</a>]</td>
 <td><div class="info">
 An alarm is a piece of data that calls a user function at the end of
@@ -136,6 +144,11 @@ Raw unbounded type
 <td></td></tr>
 <tr><td><a href="BatNumber.RefOps.html#TYPEbat__refops_t">bat__refops_t</a> [<a href="BatNumber.RefOps.html">BatNumber.RefOps</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatBig_int.html#TYPEbig_int">big_int</a> [<a href="BatBig_int.html">BatBig_int</a>]</td>
+<td><div class="info">
+The type of big integers.
+</div>
+</td></tr>
 <tr><td><a href="BatBounded.html#TYPEbound_t">bound_t</a> [<a href="BatBounded.html">BatBounded</a>]</td>
 <td><div class="info">
 <code class="code"><span class="keywordsign">`</span>o</code>pen or <code class="code"><span class="keywordsign">`</span>c</code>losed or <code class="code"><span class="keywordsign">`</span>u</code>nbounded bounds
@@ -148,7 +161,7 @@ Raw unbounded type
 The type of a bounding function with limits specified by <code class="code">bounds</code>
 </div>
 </td></tr>
-<tr><td><a href="Uniclib.UTF8.Buf.html#TYPEbuf">buf</a> [<a href="Uniclib.UTF8.Buf.html">Uniclib.UTF8.Buf</a>]</td>
+<tr><td><a href="BatUTF8.Buf.html#TYPEbuf">buf</a> [<a href="BatUTF8.Buf.html">BatUTF8.Buf</a>]</td>
 <td><div class="info">
 Buffers for UTF-8 strings.
 </div>
@@ -196,9 +209,9 @@ A decoding table maps chars 0..255 to the corresponding 0..63 value
  or -1 if the char is not accepted.
 </div>
 </td></tr>
-<tr><td><a href="BatPrint.html#TYPEdirective">directive</a> [<a href="BatPrint.html">BatPrint</a>]</td>
+<tr><td><a href="BatUnix.html#TYPEdir_handle">dir_handle</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td><div class="info">
-The underlying type of a directive.
+The type of descriptors over opened directories.
 </div>
 </td></tr>
 <tr><td><a href="BatNumber.Discrete.html#TYPEdiscrete">discrete</a> [<a href="BatNumber.Discrete.html">BatNumber.Discrete</a>]</td>
@@ -248,6 +261,11 @@ The data structure, e.g.
 The type for equality function.
 </div>
 </td></tr>
+<tr><td><a href="BatUnix.html#TYPEerror">error</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The type of error codes.
+</div>
+</td></tr>
 <tr><td><a href="BatLogger.html#TYPEevent">event</a> [<a href="BatLogger.html">BatLogger</a>]</td>
 <td><div class="info">
 A log <code class="code">event</code> consists of an event name and a list of key-value
@@ -260,10 +278,24 @@ The flags to the <code class="code"><span class="constructor">Marshal</span>.to_
 </div>
 </td></tr>
 <tr><td align="left"><br>F</td></tr>
+<tr><td><a href="BatIO.html#TYPEf_printer">f_printer</a> [<a href="BatIO.html">BatIO</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatFingerTree.S.html#TYPEfg">fg</a> [<a href="BatFingerTree.S.html">BatFingerTree.S</a>]</td>
 <td><div class="info">
 The type of finger trees containing elements of type <code class="code"><span class="keywordsign">'</span>a</code>
       measured by <code class="code"><span class="keywordsign">'</span>m</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEfile_descr">file_descr</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The abstract type of file descriptors.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEfile_kind">file_kind</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEfile_perm">file_perm</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The type of file access rights, e.g.
 </div>
 </td></tr>
 <tr><td><a href="BatLog.html#TYPEflag">flag</a> [<a href="BatLog.html">BatLog</a>]</td>
@@ -271,6 +303,10 @@ The type of finger trees containing elements of type <code class="code"><span cl
 <tr><td><a href="BatBigarray.html#TYPEfloat32_elt">float32_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatBigarray.html#TYPEfloat64_elt">float64_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEflow_action">flow_action</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEflush_queue">flush_queue</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatLogger.html#TYPEformatter">formatter</a> [<a href="BatLogger.html">BatLogger</a>]</td>
 <td><div class="info">
@@ -314,9 +350,24 @@ Classes of floating point numbers
 </div>
 </td></tr>
 <tr><td align="left"><br>G</td></tr>
+<tr><td><a href="BatUnix.html#TYPEgetaddrinfo_option">getaddrinfo_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Options to <code class="code"><span class="constructor">Unix</span>.getaddrinfo</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEgetnameinfo_option">getnameinfo_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Options to <code class="code"><span class="constructor">Unix</span>.getnameinfo</code>.
+</div>
+</td></tr>
 <tr><td><a href="BatOptParse.OptParser.html#TYPEgroup">group</a> [<a href="BatOptParse.OptParser.html">BatOptParse.OptParser</a>]</td>
 <td><div class="info">
 The type of an option group.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEgroup_entry">group_entry</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Structure of entries in the <code class="code">groups</code> database.
 </div>
 </td></tr>
 <tr><td align="left"><br>H</td></tr>
@@ -325,14 +376,24 @@ The type of an option group.
 The type <code class="code">t hobj</code> represents hashed objects of type <code class="code">t</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatUnix.html#TYPEhost_entry">host_entry</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Structure of entries in the <code class="code">hosts</code> database.
+</div>
+</td></tr>
 <tr><td align="left"><br>I</td></tr>
 <tr><td><a href="BatOo.Internal.html#TYPEimpl">impl</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatIO.html#TYPEin_bits">in_bits</a> [<a href="BatIO.html">BatIO</a>]</td>
 <td></td></tr>
-<tr><td><a href="Uniclib.UTF8.html#TYPEindex">index</a> [<a href="Uniclib.UTF8.html">Uniclib.UTF8</a>]</td>
+<tr><td><a href="BatUTF8.html#TYPEindex">index</a> [<a href="BatUTF8.html">BatUTF8</a>]</td>
 <td><div class="info">
 Positions in the string represented by the number of bytes from the head.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEinet_addr">inet_addr</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The abstract type of Internet addresses.
 </div>
 </td></tr>
 <tr><td><a href="BatOo.Internal.html#TYPEinit_table">init_table</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
@@ -358,6 +419,16 @@ The abstract input type.
 <td></td></tr>
 <tr><td><a href="BatBigarray.html#TYPEint_elt">int_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEinterval_timer">interval_timer</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The three kinds of interval timers.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEinterval_timer_status">interval_timer_status</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The type describing the status of an interval timer
+</div>
+</td></tr>
 <tr><td align="left"><br>K</td></tr>
 <tr><td><a href="BatMap.S.html#TYPEkey">key</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
@@ -375,8 +446,8 @@ type of objects in the table
 </td></tr>
 <tr><td><a href="BatBigarray.html#TYPEkind">kind</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td><div class="info">
-To each element kind is associated a Caml type, which is
-   the type of Caml values that can be stored in the big array
+To each element kind is associated an OCaml type, which is
+   the type of OCaml values that can be stored in the big array
    or read back from it.
 </div>
 </td></tr>
@@ -402,6 +473,11 @@ The type of lexer buffers.
 <tr><td><a href="BatConcurrent.html#TYPElock">lock</a> [<a href="BatConcurrent.html">BatConcurrent</a>]</td>
 <td><div class="info">
 The light-weight type of a lock, i.e.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPElock_command">lock_command</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Commands for <code class="code"><span class="constructor">Unix</span>.lockf</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatLogger.html#TYPElog">log</a> [<a href="BatLogger.html">BatLogger</a>]</td>
@@ -441,7 +517,14 @@ The data structure, e.g.
 The type of the element of a monoid.
 </div>
 </td></tr>
+<tr><td><a href="BatUnix.html#TYPEmsg_flag">msg_flag</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td></td></tr>
 <tr><td align="left"><br>N</td></tr>
+<tr><td><a href="BatUnix.html#TYPEname_info">name_info</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Name of service or port number
+</div>
+</td></tr>
 <tr><td><a href="BatBigarray.html#TYPEnativeint_elt">nativeint_elt</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatSeq.html#TYPEnode">node</a> [<a href="BatSeq.html">BatSeq</a>]</td>
@@ -464,6 +547,11 @@ The smallest set of operations supported by every set of numbers.
 <tr><td><a href="BatOo.Internal.html#TYPEobj">obj</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td><div class="info">
 Internal representation of an object.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEopen_flag">open_flag</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The flags to <code class="code"><span class="constructor">Unix</span>.openfile</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> [<a href="BatFile.html">BatFile</a>]</td>
@@ -499,6 +587,11 @@ The abstract output type, <code class="code"><span class="keywordsign">'</span>a
 currently disabled
 </div>
 </td></tr>
+<tr><td><a href="BatUnix.html#TYPEpasswd_entry">passwd_entry</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Structure of entries in the <code class="code">passwd</code> database.
+</div>
+</td></tr>
 <tr><td><a href="BatFile.html#TYPEpermission">permission</a> [<a href="BatFile.html">BatFile</a>]</td>
 <td><div class="info">
 The list of operations which are permitted on a file.
@@ -518,6 +611,21 @@ The position inside one file or one stream.
 <td><div class="info">
 The type of a printing function to print a <code class="code"><span class="keywordsign">'</span>a</code> to an output that
     produces <code class="code"><span class="keywordsign">'</span>b</code> as result.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEprocess_status">process_status</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The termination status of a process.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEprocess_times">process_times</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The execution times (CPU times) of a process.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEprotocol_entry">protocol_entry</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Structure of entries in the <code class="code">protocols</code> database.
 </div>
 </td></tr>
 <tr><td align="left"><br>R</td></tr>
@@ -550,8 +658,64 @@ The type of formatted input scanners: <code class="code">(<span class="keywordsi
     from the scanning input buffer <code class="code">ib</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatUnix.html#TYPEseek_command">seek_command</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Positioning modes for <code class="code"><span class="constructor">Unix</span>.lseek</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEservice_entry">service_entry</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Structure of entries in the <code class="code">services</code> database.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEsetattr_when">setattr_when</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEshutdown_command">shutdown_command</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The type of commands for <code class="code">shutdown</code>.
+</div>
+</td></tr>
 <tr><td><a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a> [<a href="BatSys.html">BatSys</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEsigprocmask_command">sigprocmask_command</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEsockaddr">sockaddr</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEsocket_bool_option">socket_bool_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The socket options that can be consulted with <code class="code"><span class="constructor">Unix</span>.getsockopt</code>
+   and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEsocket_domain">socket_domain</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The type of socket domains.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEsocket_float_option">socket_float_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The socket options that can be consulted with <code class="code"><span class="constructor">Unix</span>.getsockopt_float</code>
+   and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_float</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEsocket_int_option">socket_int_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The socket options that can be consulted with <code class="code"><span class="constructor">Unix</span>.getsockopt_int</code>
+   and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_int</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEsocket_optint_option">socket_optint_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The socket options that can be consulted with <code class="code"><span class="constructor">Unix</span>.getsockopt_optint</code>
+   and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_optint</code>.
+</div>
+</td></tr>
+<tr><td><a href="BatUnix.html#TYPEsocket_type">socket_type</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The type of socket kinds, specifying the semantics of
+   communications.
+</div>
+</td></tr>
 <tr><td><a href="BatGc.html#TYPEstat">stat</a> [<a href="BatGc.html">BatGc</a>]</td>
 <td><div class="info">
 The memory management counters are returned in a <code class="code">stat</code> record.
@@ -562,21 +726,16 @@ The memory management counters are returned in a <code class="code">stat</code> 
 The current state of the parser.
 </div>
 </td></tr>
+<tr><td><a href="BatUnix.LargeFile.html#TYPEstats">stats</a> [<a href="BatUnix.LargeFile.html">BatUnix.LargeFile</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEstats">stats</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The information returned by the <code class="code"><span class="constructor">Unix</span>.stat</code> calls.
+</div>
+</td></tr>
 <tr><td><a href="BatOo.Internal.html#TYPEstats">stats</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>T</td></tr>
-<tr><td><a href="Uniclib.Text.html#TYPEt">t</a> [<a href="Uniclib.Text.html">Uniclib.Text</a>]</td>
-<td><div class="info">
-The type of the ropes.
-</div>
-</td></tr>
-<tr><td><a href="Uniclib.UTF8.html#TYPEt">t</a> [<a href="Uniclib.UTF8.html">Uniclib.UTF8</a>]</td>
-<td><div class="info">
-UTF-8 encoded Unicode strings.
-</div>
-</td></tr>
-<tr><td><a href="Uniclib.UChar.html#TYPEt">t</a> [<a href="Uniclib.UChar.html">Uniclib.UChar</a>]</td>
-<td></td></tr>
 <tr><td><a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> [<a href="BatVect.RANDOMACCESS.html">BatVect.RANDOMACCESS</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatVect.Make.html#TYPEt">t</a> [<a href="BatVect.Make.html">BatVect.Make</a>]</td>
@@ -589,12 +748,6 @@ The type of a polymorphic vect.
 The type of a polymorphic vect.
 </div>
 </td></tr>
-<tr><td><a href="BatValuePrinter.html#TYPEt">t</a> [<a href="BatValuePrinter.html">BatValuePrinter</a>]</td>
-<td><div class="info">
-Type of a value-printer, the boolean argument indicates whether
-      composed expression must be parenthesized.
-</div>
-</td></tr>
 <tr><td><a href="BatUref.html#TYPEt">t</a> [<a href="BatUref.html">BatUref</a>]</td>
 <td><div class="info">
 A synonym for convenience
@@ -605,6 +758,13 @@ A synonym for convenience
 The unit type, i.e.
 </div>
 </td></tr>
+<tr><td><a href="BatUTF8.html#TYPEt">t</a> [<a href="BatUTF8.html">BatUTF8</a>]</td>
+<td><div class="info">
+UTF-8 encoded Unicode strings.
+</div>
+</td></tr>
+<tr><td><a href="BatUChar.html#TYPEt">t</a> [<a href="BatUChar.html">BatUChar</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatTuple.Tuple5.html#TYPEt">t</a> [<a href="BatTuple.Tuple5.html">BatTuple.Tuple5</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatTuple.Tuple4.html#TYPEt">t</a> [<a href="BatTuple.Tuple4.html">BatTuple.Tuple4</a>]</td>
@@ -615,7 +775,7 @@ The unit type, i.e.
 <td></td></tr>
 <tr><td><a href="BatText.html#TYPEt">t</a> [<a href="BatText.html">BatText</a>]</td>
 <td><div class="info">
-The type of the ropes.
+The type of the rope.
 </div>
 </td></tr>
 <tr><td><a href="BatSubstring.html#TYPEt">t</a> [<a href="BatSubstring.html">BatSubstring</a>]</td>
@@ -629,6 +789,13 @@ The type of the ropes.
 The type of capability strings.
 </div>
 </td></tr>
+<tr><td><a href="BatString.html#TYPEt">t</a> [<a href="BatString.html">BatString</a>]</td>
+<td><div class="info">
+An alias for the type of strings.
+</div>
+</td></tr>
+<tr><td><a href="BatStream.html#TYPEt">t</a> [<a href="BatStream.html">BatStream</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatStack.html#TYPEt">t</a> [<a href="BatStack.html">BatStack</a>]</td>
 <td><div class="info">
 The type of stacks containing elements of type <code class="code"><span class="keywordsign">'</span>a</code>.
@@ -933,19 +1100,19 @@ The type of booleans.
 <tr><td><a href="BatBigarray.Array3.html#TYPEt">t</a> [<a href="BatBigarray.Array3.html">BatBigarray.Array3</a>]</td>
 <td><div class="info">
 The type of three-dimensional big arrays whose elements have
-     Caml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
+     OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.Array2.html#TYPEt">t</a> [<a href="BatBigarray.Array2.html">BatBigarray.Array2</a>]</td>
 <td><div class="info">
 The type of two-dimensional big arrays whose elements have
-     Caml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
+     OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.Array1.html#TYPEt">t</a> [<a href="BatBigarray.Array1.html">BatBigarray.Array1</a>]</td>
 <td><div class="info">
 The type of one-dimensional big arrays whose elements have
-     Caml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
+     OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.Genarray.html#TYPEt">t</a> [<a href="BatBigarray.Genarray.html">BatBigarray.Genarray</a>]</td>
@@ -986,6 +1153,13 @@ Internal representation of the vtable, i.e.
 Character type used by <code class="code">t</code>.
 </div>
 </td></tr>
+<tr><td><a href="BatUnix.html#TYPEterminal_io">terminal_io</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatUnix.html#TYPEtm">tm</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+The type representing wallclock time and calendar date.
+</div>
+</td></tr>
 <tr><td><a href="BatGenlex.html#TYPEtoken">token</a> [<a href="BatGenlex.html">BatGenlex</a>]</td>
 <td><div class="info">
 The type of tokens.
@@ -999,7 +1173,7 @@ The type of tokens.
 <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a> after bounding constraints have been applied
 </div>
 </td></tr>
-<tr><td><a href="Uniclib.UChar.html#TYPEuchar">uchar</a> [<a href="Uniclib.UChar.html">Uniclib.UChar</a>]</td>
+<tr><td><a href="BatUChar.html#TYPEuchar">uchar</a> [<a href="BatUChar.html">BatUChar</a>]</td>
 <td><div class="info">
 Aliases of <code class="code"><span class="keyword">type</span> t</code>
 </div>
@@ -1027,6 +1201,11 @@ Validators should check if all characters of given string can be used in a name 
 </div>
 </td></tr>
 <tr><td align="left"><br>W</td></tr>
+<tr><td><a href="BatUnix.html#TYPEwait_flag">wait_flag</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+Flags for <code class="code"><span class="constructor">Unix</span>.waitpid</code>.
+</div>
+</td></tr>
 <tr><td><a href="BatFingerTree.S.html#TYPEwrap">wrap</a> [<a href="BatFingerTree.S.html">BatFingerTree.S</a>]</td>
 <td><div class="info">
 A type meant to avoid duplication of signatures.

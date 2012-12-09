@@ -67,7 +67,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -82,24 +81,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Batteries.Unix</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Unix</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
@@ -222,10 +220,11 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;single_write&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;in_channel_of_descr&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;in_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;out_channel_of_descr&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;out_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_in_channel&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_out_channel&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_of_descr&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_of_descr&nbsp;:&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_input&nbsp;:&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_output&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;seek_command&nbsp;=&nbsp;<span class="constructor">Unix</span>.seek_command&nbsp;=&nbsp;<span class="constructor">SEEK_SET</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">SEEK_CUR</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">SEEK_END</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lseek&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;seek_command&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;truncate&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -310,22 +309,31 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;closedir&nbsp;:&nbsp;dir_handle&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pipe&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr&nbsp;*&nbsp;file_descr<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;mkfifo&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_perm&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_in&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_out&nbsp;:&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_full&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;*&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process_in&nbsp;:&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;process_status<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process_out&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;process_status<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;process_status<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process_full&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;*&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;process_status<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_process&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_process_env&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_in&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;in_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_out&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;out_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;in_channel&nbsp;*&nbsp;out_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_full&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;in_channel&nbsp;*&nbsp;out_channel&nbsp;*&nbsp;in_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process_in&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;process_status<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process_out&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;process_status<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process&nbsp;:&nbsp;in_channel&nbsp;*&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;process_status<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process_full&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;in_channel&nbsp;*&nbsp;out_channel&nbsp;*&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;process_status<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;symlink&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;readlink&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;select&nbsp;:<br>
@@ -499,10 +507,13 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;getsockopt_float&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;socket_float_option&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;setsockopt_float&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;socket_float_option&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;getsockopt_error&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;error&nbsp;option<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_connection&nbsp;:&nbsp;sockaddr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;in_channel&nbsp;*&nbsp;out_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;shutdown_connection&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_connection&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;sockaddr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;shutdown_connection&nbsp;:&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;establish_server&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;sockaddr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;sockaddr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;host_entry&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Unix</span>.host_entry&nbsp;=&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;h_name&nbsp;:&nbsp;string;<br>
@@ -612,45 +623,11 @@
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;flow_action&nbsp;=&nbsp;<span class="constructor">Unix</span>.flow_action&nbsp;=&nbsp;<span class="constructor">TCOOFF</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TCOON</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TCIOFF</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TCION</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;tcflow&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;flow_action&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;setsid&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_of_descr&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_of_descr&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_input&nbsp;:&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.file_descr<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_output&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.file_descr<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_in&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_out&nbsp;:&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_full&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;*&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process_in&nbsp;:&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.process_status<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process_out&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.process_status<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.process_status<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_process_full&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;*&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Unix</span>.process_status<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_connection&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Unix</span>.sockaddr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;*&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;shutdown_connection&nbsp;:&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;establish_server&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Unix</span>.sockaddr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_directory&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;restart_on_EINTR&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lock&nbsp;:&nbsp;<span class="constructor">BatConcurrent</span>.lock&nbsp;ref<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;in_channel_of_descr&nbsp;:&nbsp;<span class="constructor">Unix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;out_channel_of_descr&nbsp;:&nbsp;<span class="constructor">Unix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_in_channel&nbsp;:&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.file_descr<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_out_channel&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.file_descr<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;in_channel_of_descr&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;out_channel_of_descr&nbsp;:&nbsp;file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_in_channel&nbsp;:&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;descr_of_out_channel&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;file_descr<br>
 <span class="keyword">end</span></code></body></html>

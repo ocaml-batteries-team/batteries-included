@@ -71,7 +71,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -86,24 +85,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatBigarray.Genarray</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatBigarray.Genarray</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="BatBigarray.html" title="BatBigarray">Up</a>
@@ -121,7 +119,7 @@ The type <code class="code"><span class="constructor">Genarray</span>.t</code> i
 
 	  The three type parameters to <code class="code"><span class="constructor">Genarray</span>.t</code> identify the array element
 	  kind and layout, as follows:<ul>
-<li>the first parameter, <code class="code"><span class="keywordsign">'</span>a</code>, is the Caml type for accessing array
+<li>the first parameter, <code class="code"><span class="keywordsign">'</span>a</code>, is the OCaml type for accessing array
 	  elements (<code class="code">float</code>, <code class="code">int</code>, <code class="code">int32</code>, <code class="code">int64</code>, <code class="code">nativeint</code>);</li>
 <li>the second parameter, <code class="code"><span class="keywordsign">'</span>b</code>, is the actual kind of array elements
 	  (<code class="code">float32_elt</code>, <code class="code">float64_elt</code>, <code class="code">int8_signed_elt</code>, <code class="code">int8_unsigned_elt</code>,
@@ -133,7 +131,7 @@ The type <code class="code"><span class="constructor">Genarray</span>.t</code> i
 	  For instance, <code class="code">(float, float32_elt, fortran_layout) <span class="constructor">Genarray</span>.t</code>
 	  is the type of generic big arrays containing 32-bit floats
 	  in Fortran layout; reads and writes in this array use the
-	  Caml type <code class="code">float</code>.<br>
+	  OCaml type <code class="code">float</code>.<br>
 </div>
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> int array -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info">
@@ -154,10 +152,8 @@ The type <code class="code"><span class="constructor">Genarray</span>.t</code> i
 <p>
 
 	  Big arrays returned by <code class="code"><span class="constructor">Genarray</span>.create</code> are not initialized:
-	  the initial values of array elements is unspecified.
-<p>
-
-	  <code class="code"><span class="constructor">Genarray</span>.create</code> raises <code class="code"><span class="constructor">Invalid_arg</span></code> if the number of dimensions
+	  the initial values of array elements is unspecified.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the number of dimensions
 	  is not in the range 1 to 16 inclusive, or if one of the dimensions
 	  is negative.<br>
 </div>
@@ -172,8 +168,8 @@ Return the number of dimensions of the given big array.<br>
 <code class="code"><span class="constructor">Genarray</span>.nth_dim a n</code> returns the <code class="code">n</code>-th dimension of the
 	big array <code class="code">a</code>.  The first dimension corresponds to <code class="code">n = 0</code>;
 	the second dimension corresponds to <code class="code">n = 1</code>; the last dimension,
-	to <code class="code">n = <span class="constructor">Genarray</span>.num_dims a - 1</code>.
-	Raise <code class="code"><span class="constructor">Invalid_arg</span></code> if <code class="code">n</code> is less than 0 or greater or equal than
+	to <code class="code">n = <span class="constructor">Genarray</span>.num_dims a - 1</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> is less than 0 or greater or equal than
 	<code class="code"><span class="constructor">Genarray</span>.num_dims a</code>.<br>
 </div>
 <pre><span id="VALkind"><span class="keyword">val</span> kind</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a></code></pre><div class="info">
@@ -192,8 +188,8 @@ Read an element of a generic big array.
 	If <code class="code">a</code> has C layout, the coordinates must be greater or equal than 0
 	and strictly less than the corresponding dimensions of <code class="code">a</code>.
 	If <code class="code">a</code> has Fortran layout, the coordinates must be greater or equal
-	than 1 and less or equal than the corresponding dimensions of <code class="code">a</code>.
-	Raise <code class="code"><span class="constructor">Invalid_arg</span></code> if the array <code class="code">a</code> does not have exactly <code class="code"><span class="constructor">N</span></code>
+	than 1 and less or equal than the corresponding dimensions of <code class="code">a</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the array <code class="code">a</code> does not have exactly <code class="code"><span class="constructor">N</span></code>
 	dimensions, or if the coordinates are outside the array bounds.
 <p>
 
@@ -211,8 +207,8 @@ Assign an element of a generic big array.
 <p>
 
 	The array <code class="code">a</code> must have exactly <code class="code"><span class="constructor">N</span></code> dimensions, and all coordinates
-	must lie inside the array bounds, as described for <code class="code"><span class="constructor">Genarray</span>.get</code>;
-	otherwise, <code class="code"><span class="constructor">Invalid_arg</span></code> is raised.
+	must lie inside the array bounds, as described for <code class="code"><span class="constructor">Genarray</span>.get</code>;<br>
+<b>Raises</b> <code>Invalid_argument</code> otherwise.
 <p>
 
 	If <code class="code"><span class="constructor">N</span> &gt; 3</code>, alternate syntax is provided: you can write
@@ -236,8 +232,8 @@ Extract a sub-array of the given big array by restricting the
 	array <code class="code">a</code>.
 <p>
 
-	<code class="code"><span class="constructor">Genarray</span>.sub_left</code> applies only to big arrays in C layout.
-	Raise <code class="code"><span class="constructor">Invalid_arg</span></code> if <code class="code">ofs</code> and <code class="code">len</code> do not designate
+	<code class="code"><span class="constructor">Genarray</span>.sub_left</code> applies only to big arrays in C layout.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">ofs</code> and <code class="code">len</code> do not designate
 	a valid sub-array of <code class="code">a</code>, that is, if <code class="code">ofs &lt; 0</code>, or <code class="code">len &lt; 0</code>,
 	or <code class="code">ofs + len &gt; <span class="constructor">Genarray</span>.nth_dim a 0</code>.<br>
 </div>
@@ -255,8 +251,8 @@ Extract a sub-array of the given big array by restricting the
 	array <code class="code">a</code>.
 <p>
 
-	<code class="code"><span class="constructor">Genarray</span>.sub_right</code> applies only to big arrays in Fortran layout.
-	Raise <code class="code"><span class="constructor">Invalid_arg</span></code> if <code class="code">ofs</code> and <code class="code">len</code> do not designate
+	<code class="code"><span class="constructor">Genarray</span>.sub_right</code> applies only to big arrays in Fortran layout.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">ofs</code> and <code class="code">len</code> do not designate
 	a valid sub-array of <code class="code">a</code>, that is, if <code class="code">ofs &lt; 1</code>, or <code class="code">len &lt; 0</code>,
 	or <code class="code">ofs + len &gt; <span class="constructor">Genarray</span>.nth_dim a (<span class="constructor">Genarray</span>.num_dims a - 1)</code>.<br>
 </div>
@@ -273,8 +269,8 @@ Extract a sub-array of lower dimension from the given big array
 	the original array share the same storage space.
 <p>
 
-	<code class="code"><span class="constructor">Genarray</span>.slice_left</code> applies only to big arrays in C layout.
-	Raise <code class="code"><span class="constructor">Invalid_arg</span></code> if <code class="code"><span class="constructor">M</span> &gt;= <span class="constructor">N</span></code>, or if <code class="code">[|i1; ... ; iM|]</code>
+	<code class="code"><span class="constructor">Genarray</span>.slice_left</code> applies only to big arrays in C layout.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code"><span class="constructor">M</span> &gt;= <span class="constructor">N</span></code>, or if <code class="code">[|i1; ... ; iM|]</code>
 	is outside the bounds of <code class="code">a</code>.<br>
 </div>
 <pre><span id="VALslice_right"><span class="keyword">val</span> slice_right</span> : <code class="type">('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -><br>       int array -> ('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info">
@@ -290,8 +286,8 @@ Extract a sub-array of lower dimension from the given big array
 	the original array share the same storage space.
 <p>
 
-	<code class="code"><span class="constructor">Genarray</span>.slice_right</code> applies only to big arrays in Fortran layout.
-	Raise <code class="code"><span class="constructor">Invalid_arg</span></code> if <code class="code"><span class="constructor">M</span> &gt;= <span class="constructor">N</span></code>, or if <code class="code">[|i1; ... ; iM|]</code>
+	<code class="code"><span class="constructor">Genarray</span>.slice_right</code> applies only to big arrays in Fortran layout.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code"><span class="constructor">M</span> &gt;= <span class="constructor">N</span></code>, or if <code class="code">[|i1; ... ; iM|]</code>
 	is outside the bounds of <code class="code">a</code>.<br>
 </div>
 <pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -><br>       ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
@@ -340,8 +336,8 @@ Memory mapping of a file as a big array.
 	dimension for an array with Fortran layout) can be given as
 	<code class="code">-1</code>.  <code class="code"><span class="constructor">Genarray</span>.map_file</code> then determines the major dimension
 	from the size of the file.  The file must contain an integral
-	number of sub-arrays as determined by the non-major dimensions,
-	otherwise <code class="code"><span class="constructor">Failure</span></code> is raised.
+	number of sub-arrays as determined by the non-major dimensions,<br>
+<b>Raises</b> <code>Failure</code> otherwise.
 <p>
 
 	If all dimensions of the big array are given, the file size is

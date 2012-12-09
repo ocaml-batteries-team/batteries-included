@@ -70,7 +70,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -85,24 +84,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatStream.StreamLabels</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatStream.StreamLabels</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="BatStream.html" title="BatStream">Up</a>
@@ -116,4 +114,4 @@
 <p>
 
    See the complete <code class="code"><span class="constructor">Stream</span></code> module for the function documentations.<br>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a Stream.t -> unit</code></pre><pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">fmt:('a -> string, unit, string) Pervasives.format -> 'a Stream.t -> string</code></pre><pre><span id="VALto_string_fun"><span class="keyword">val</span> to_string_fun</span> : <code class="type">fn:('a -> string) -> 'a Stream.t -> string</code></pre><pre><span id="VALfoldl"><span class="keyword">val</span> foldl</span> : <code class="type">f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b Stream.t -> 'a</code></pre><pre><span id="VALfoldr"><span class="keyword">val</span> foldr</span> : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a Stream.t -> 'b</code></pre><pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">f:('a -> 'a -> 'a * bool option) -> init:'a Stream.t -> 'a</code></pre><pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a Stream.t -> 'b Stream.t</code></pre><pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">f:('a -> 'b -> 'c) -> 'a Stream.t -> 'b Stream.t -> 'c Stream.t</code></pre><pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">f:('a -> 'b -> 'a) -> 'a -> 'b Stream.t -> 'a Stream.t</code></pre><pre><span id="VALscan"><span class="keyword">val</span> scan</span> : <code class="type">f:('a -> 'a -> 'a) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">f:(bool -> 'a -> bool) -> 'a Stream.t * 'a Stream.t -> 'a Stream.t</code></pre><pre><span id="VALswitch"><span class="keyword">val</span> switch</span> : <code class="type">f:('a -> bool) -> 'a Stream.t -> 'a Stream.t * 'a Stream.t</code></pre></body></html>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> unit</code></pre><pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">fmt:('a -> string, unit, string) Pervasives.format -><br>       'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> string</code></pre><pre><span id="VALto_string_fun"><span class="keyword">val</span> to_string_fun</span> : <code class="type">fn:('a -> string) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> string</code></pre><pre><span id="VALfoldl"><span class="keyword">val</span> foldl</span> : <code class="type">f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a</code></pre><pre><span id="VALfoldr"><span class="keyword">val</span> foldr</span> : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'b</code></pre><pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">f:('a -> 'a -> 'a * bool option) -> init:'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a</code></pre><pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a></code></pre><pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'b <a href="BatStream.html#TYPEt">BatStream.t</a></code></pre><pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">f:('a -> 'b -> 'c) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'b <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'c <a href="BatStream.html#TYPEt">BatStream.t</a></code></pre><pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">f:('a -> 'b -> 'a) -> 'a -> 'b <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a></code></pre><pre><span id="VALscan"><span class="keyword">val</span> scan</span> : <code class="type">f:('a -> 'a -> 'a) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a></code></pre><pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a></code></pre><pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a></code></pre><pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">f:(bool -> 'a -> bool) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> * 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a></code></pre><pre><span id="VALswitch"><span class="keyword">val</span> switch</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> * 'a <a href="BatStream.html#TYPEt">BatStream.t</a></code></pre></body></html>

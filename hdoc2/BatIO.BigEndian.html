@@ -70,7 +70,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -85,24 +84,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : BatIO.BigEndian</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatIO.BigEndian</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="BatIO.html" title="BatIO">Up</a>
@@ -128,8 +126,9 @@ Read an unsigned 16-bit word.<br>
 Read a signed 16-bit word.<br>
 </div>
 <pre><span id="VALread_i32"><span class="keyword">val</span> read_i32</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int</code></pre><div class="info">
-Read a signed 32-bit integer. Raise <code class="code"><span class="constructor">Overflow</span></code> if the
-	      read integer cannot be represented as a Caml 31-bit integer.<br>
+Read a signed 32-bit integer.<br>
+<b>Raises</b> <code>Overflow</code> if the
+	      read integer cannot be represented as an OCaml 31-bit integer.<br>
 </div>
 <pre><span id="VALread_real_i32"><span class="keyword">val</span> read_real_i32</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int32</code></pre><div class="info">
 Read a signed 32-bit integer as an OCaml int32.<br>
@@ -172,7 +171,7 @@ Read an enumartion of signed 16-bit words.<br>
 </div>
 <pre><span id="VALi32s_of"><span class="keyword">val</span> i32s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Read an enumeration of signed 32-bit integers.<br>
-<b>Raises</b> <code>Overflow</code> if the read integer cannot be represented as a Caml
+<b>Raises</b> <code>Overflow</code> if the read integer cannot be represented as an OCaml
 	    31-bit integer.<br>
 </div>
 <pre><span id="VALreal_i32s_of"><span class="keyword">val</span> real_i32s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int32 <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">

@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Standard inputs/outputs" rel="Section" href="#6_Standardinputsoutputs">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Standard inputs/outputs" rel="Section" href="#6_Standardinputsoutputs">
 <link title="Standard API" rel="Section" href="#6_StandardAPI">
 <link title="Creation of BatIO Inputs/Outputs" rel="Section" href="#6_CreationofBatIOInputsOutputs">
 <link title="Utilities" rel="Section" href="#6_Utilities">
@@ -141,6 +139,8 @@ The abstract output type, <code class="code"><span class="keywordsign">'</span>a
 The type of a printing function to print a <code class="code"><span class="keywordsign">'</span>a</code> to an output that
     produces <code class="code"><span class="keywordsign">'</span>b</code> as result.<br>
 </div>
+
+<pre><span id="TYPEf_printer"><span class="keyword">type</span> <code class="type">'a</code> f_printer</span> = <code class="type">Format.formatter -> 'a -> unit</code> </pre>
 
 <pre><span id="EXCEPTIONNo_more_input"><span class="keyword">exception</span> No_more_input</span></pre>
 <div class="info">
@@ -216,11 +216,14 @@ Read a single char from an input or raise <code class="code"><span class="constr
 </div>
 <pre><span id="VALreally_nread"><span class="keyword">val</span> really_nread</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int -> string</code></pre><div class="info">
 <code class="code">really_nread i n</code> reads a string of exactly <code class="code">n</code> characters
-  from the input. Raises <code class="code"><span class="constructor">No_more_input</span></code> if at least <code class="code">n</code> characters are
-  not available. Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> &lt; 0.
+  from the input.<br>
+<b>Raises</b><ul><li><code>No_more_input</code> if at least <code class="code">n</code> characters are
+  not available.</li>
+<li><code>Invalid_argument</code> if <code class="code">n</code> &lt; 0.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> read_md5 ch = really_nread ch 32</code><br>
+    Example: <code class="code"><span class="keyword">let</span> read_md5 ch = really_nread ch 32</code></li>
+</ul>
 </div>
 <pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string -> int -> int -> int</code></pre><div class="info">
 <code class="code">input i s p l</code> reads up to <code class="code">l</code> characters from the given input,
@@ -242,12 +245,15 @@ Read a single char from an input or raise <code class="code"><span class="constr
 <code class="code">really_input i s p l</code> reads exactly <code class="code">l</code> characters from the
       given input, storing them in the string <code class="code">s</code>, starting at
       position <code class="code">p</code>. For consistency with <a href="BatIO.html#VALinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> it returns
-      <code class="code">l</code>. Raises <code class="code"><span class="constructor">No_more_input</span></code> if at <code class="code">l</code> characters are not
-      available. Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">l</code> do not
+      <code class="code">l</code>.<br>
+<b>Raises</b><ul><li><code>No_more_input</code> if at <code class="code">l</code> characters are not
+      available.</li>
+<li><code>Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not
       designate a valid substring of <code class="code">s</code>.
 <p>
 
-      Example: <code class="code"><span class="keyword">let</span> _ = really_input stdin b 0 3</code><br>
+      Example: <code class="code"><span class="keyword">let</span> _ = really_input stdin b 0 3</code></li>
+</ul>
 </div>
 <pre><span id="VALclose_in"><span class="keyword">val</span> close_in</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> unit</code></pre><div class="info">
 Close the input. It can no longer be read from.
@@ -281,7 +287,8 @@ Write a string to an output.
 <pre><span id="VALreally_output"><span class="keyword">val</span> really_output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info">
 <code class="code">really_output o s p l</code> writes exactly <code class="code">l</code> characters from string <code class="code">s</code> onto
   the the output, starting with the character at offset <code class="code">p</code>. For consistency with
-  <a href="BatIO.html#VALoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> it returns <code class="code">l</code>. Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">l</code> do not
+  <a href="BatIO.html#VALoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> it returns <code class="code">l</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not
   designate a valid substring of <code class="code">s</code>.
 <p>
 
@@ -324,7 +331,7 @@ Close the output and return its accumulator data.
 <span id="6_CreationofBatIOInputsOutputs"><h6>Creation of BatIO Inputs/Outputs</h6></span>
 <p>
 
-    To open a file for reading/writing, see <code class="code"><span class="constructor">File</span>.open_file_in</code>
+    To open a file for reading/writing, see <code class="code"><span class="constructor">File</span>.open_in</code>
     and <code class="code"><span class="constructor">File</span>.open_file_out</code><br>
 <pre><span id="VALinput_string"><span class="keyword">val</span> input_string</span> : <code class="type">string -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info">
 Create an input that will read from a string.
@@ -359,8 +366,8 @@ Create an output shifted to the right by a number of spaces
 <p>
 
       <code class="code">tab_out n out</code> produces a new output for writing into <code class="code">out</code>, in
-      which every new line starts with <code class="code">n</code> spaces.
-      Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> &lt; 0.
+      which every new line starts with <code class="code">n</code> spaces.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> &lt; 0.
 <p>
 
       Closing <code class="code">tab_out n out</code> does not close <code class="code">out</code>. Rather,
@@ -425,8 +432,9 @@ Read an unsigned 16-bit word.<br>
 Read a signed 16-bit word.<br>
 </div>
 <pre><span id="VALread_i32"><span class="keyword">val</span> read_i32</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int</code></pre><div class="info">
-Read a signed 32-bit integer. Raise <code class="code"><span class="constructor">Overflow</span></code> if the
-      read integer cannot be represented as a Caml 31-bit integer.<br>
+Read a signed 32-bit integer.<br>
+<b>Raises</b> <code>Overflow</code> if the
+      read integer cannot be represented as an OCaml 31-bit integer.<br>
 </div>
 <pre><span id="VALread_real_i32"><span class="keyword">val</span> read_real_i32</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int32</code></pre><div class="info">
 Read a signed 32-bit integer as an OCaml int32.<br>
@@ -685,8 +693,9 @@ Read an enumeration of unsigned 16-bit words.<br>
 Read an enumartion of signed 16-bit words.<br>
 </div>
 <pre><span id="VALi32s_of"><span class="keyword">val</span> i32s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-Read an enumeration of signed 32-bit integers. Raise <code class="code"><span class="constructor">Overflow</span></code> if the
-  read integer cannot be represented as a Caml 31-bit integer.<br>
+Read an enumeration of signed 32-bit integers.<br>
+<b>Raises</b> <code>Overflow</code> if the
+  read integer cannot be represented as an OCaml 31-bit integer.<br>
 </div>
 <pre><span id="VALreal_i32s_of"><span class="keyword">val</span> real_i32s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int32 <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Read an enumeration of signed 32-bit integers as OCaml <code class="code">int32</code>s.<br>
@@ -770,7 +779,4 @@ A factory used to create locks. This is used transparently by <a href="BatIO.htm
      if you're using a version of Batteries compiled in threaded mode,
      this uses <a href="BatMutex.html"><code class="code"><span class="constructor">BatMutex</span></code></a>.<br>
 </div>
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">(string <a href="BatIO.html#TYPEoutput">output</a> -> 'a -> unit) -> 'a -> string</code></pre><pre><span id="VALstring_of_t_printer"><span class="keyword">val</span> string_of_t_printer</span> : <code class="type">(bool -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a -> unit) -> 'a -> string</code></pre><div class="info">
-<code class="code">string_of_t_printer printer elt</code> prints the element into the output string<br>
-</div>
-<pre><span id="VALto_format"><span class="keyword">val</span> to_format</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -> Format.formatter -> 'b -> unit</code></pre></body></html>
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">('a, string) <a href="BatIO.html#TYPEprinter">printer</a> -> 'a -> string</code></pre><pre><span id="VALto_f_printer"><span class="keyword">val</span> to_f_printer</span> : <code class="type">('a, 'b) <a href="BatIO.html#TYPEprinter">printer</a> -> 'a <a href="BatIO.html#TYPEf_printer">f_printer</a></code></pre></body></html>

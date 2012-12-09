@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
 <link title="Constructors" rel="Section" href="#6_Constructors">
 <link title="Iterators" rel="Section" href="#6_Iterators">
 <link title="Iterators on two lists" rel="Section" href="#6_Iteratorsontwolists">
@@ -174,27 +172,29 @@ The type of lists<br>
 <code class="code">cons h t</code> returns the list starting with <code class="code">h</code> and continuing as <code class="code">t</code><br>
 </div>
 <pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">'a list -> 'a</code></pre><div class="info">
-Returns the first element of the list, or raise <code class="code"><span class="constructor">Empty_list</span></code> if
+Returns the first element of the list, or<br>
+<b>Raises</b> <code>Empty_list</code> if
 the list is empty (similar to <code class="code">hd</code>).<br>
 </div>
 <pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a list -> 'a</code></pre><div class="info">
-Similar to <code class="code">first</code>, but raises
-   <code class="code"><span class="constructor">Failure</span> <span class="string">"hd"</span></code> if the list is empty.<br>
+Similar to <code class="code">first</code>, but<br>
+<b>Raises</b> <code>Failure</code> if the list is empty.<br>
 </div>
 <pre><span id="VALtl"><span class="keyword">val</span> tl</span> : <code class="type">'a list -> 'a list</code></pre><div class="info">
-Return the given list without its first element. Raise
-   <code class="code"><span class="constructor">Failure</span> <span class="string">"tl"</span></code> if the list is empty.<br>
+Return the given list without its first element.<br>
+<b>Raises</b> <code>Failure</code> if the list is empty.<br>
 </div>
 <pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a list -> 'a</code></pre><div class="info">
-Returns the last element of the list, or raise <code class="code"><span class="constructor">Empty_list</span></code> if
+Returns the last element of the list, or<br>
+<b>Raises</b> <code>Empty_list</code> if
 the list is empty. This function takes linear time.<br>
 </div>
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a list -> int</code></pre><div class="info">
 Return the length (number of elements) of the given list.<br>
 </div>
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a list -> int -> 'a</code></pre><div class="info">
-<code class="code">at l n</code> returns the n-th element of the list <code class="code">l</code> or raise
-<code class="code"><span class="constructor">Invalid_argument</span></code> is the index is outside of <code class="code">l</code> bounds.  O(l)<br>
+<code class="code">at l n</code> returns the n-th element of the list <code class="code">l</code> or<br>
+<b>Raises</b> <code>Invalid_argument</code> is the index is outside of <code class="code">l</code> bounds.  O(l)<br>
 </div>
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a list -> 'a list</code></pre><div class="info">
 List reversal.<br>
@@ -224,7 +224,7 @@ list containing <code class="code">n</code> elements <code class="code">x</code>
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a list</code></pre><div class="info">
 Similar to <code class="code"><span class="constructor">Array</span>.init</code>, <code class="code">init n f</code> returns the list containing
 the results of (f 0),(f 1).... (f (n-1)).<br>
-<b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"BatList.init"</span></code> if n &lt; 0.<br>
+<b>Raises</b> <code>Invalid_argument</code> if n &lt; 0.<br>
 </div>
 <br>
 <span id="6_Iterators"><h6>Iterators</h6></span><br>
@@ -346,8 +346,8 @@ different lengths.<br>
 <span id="6_Listsearching"><h6>List searching</h6></span><br>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a list -> 'a</code></pre><div class="info">
 <code class="code">find p l</code> returns the first element of the list <code class="code">l</code>
-   that satisfies the predicate <code class="code">p</code>.
-   Raise <code class="code"><span class="constructor">Not_found</span></code> if there is no value that satisfies <code class="code">p</code> in the
+   that satisfies the predicate <code class="code">p</code>.<br>
+<b>Raises</b> <code>Not_found</code> if there is no value that satisfies <code class="code">p</code> in the
    list <code class="code">l</code>.<br>
 </div>
 <pre><span id="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">('a -> bool) -> exn -> 'a list -> 'a</code></pre><div class="info">
@@ -356,18 +356,21 @@ returns <code class="code"><span class="keyword">true</span></code> or raises <c
 </div>
 <pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">(int -> 'a -> bool) -> 'a list -> int * 'a</code></pre><div class="info">
 <code class="code">findi p e l</code> returns the first element <code class="code">ai</code> of <code class="code">l</code> along with its
-index <code class="code">i</code> such that <code class="code">p i ai</code> is true, or raises <code class="code"><span class="constructor">Not_found</span></code> if no
+index <code class="code">i</code> such that <code class="code">p i ai</code> is true, or<br>
+<b>Raises</b> <code>Not_found</code> if no
 such element has been found.<br>
 </div>
 <pre><span id="VALfind_map"><span class="keyword">val</span> find_map</span> : <code class="type">('a -> 'b option) -> 'a list -> 'b</code></pre><div class="info">
 <code class="code">find_map pred list</code> finds the first element of <code class="code">list</code> for which
     <code class="code">pred element</code> returns <code class="code"><span class="constructor">Some</span> r</code>.  It returns <code class="code">r</code> immediately
-    once found or raises <code class="code"><span class="constructor">Not_found</span></code> if no element matches the
+    once found or<br>
+<b>Raises</b> <code>Not_found</code> if no element matches the
     predicate.  See also <a href="BatList.html#VALfilter_map"><code class="code"><span class="constructor">BatList</span>.filter_map</code></a>.<br>
 </div>
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">('a -> bool) -> 'a list -> 'a</code></pre><div class="info">
 <code class="code">rfind p l</code> returns the last element <code class="code">x</code> of <code class="code">l</code> such as <code class="code">p x</code> returns
-<code class="code"><span class="keyword">true</span></code> or raises <code class="code"><span class="constructor">Not_found</span></code> if such element as not been found.<br>
+<code class="code"><span class="keyword">true</span></code> or<br>
+<b>Raises</b> <code>Not_found</code> if such element as not been found.<br>
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info">
 <code class="code">filter p l</code> returns all the elements of the list <code class="code">l</code>
@@ -450,15 +453,15 @@ As <code class="code">unique</code>, except uses a hash table to cut down the ex
 <code class="code">assoc a l</code> returns the value associated with key <code class="code">a</code> in the list of
    pairs <code class="code">l</code>. That is,
    <code class="code">assoc a [ ...; (a,b); ...] = b</code>
-   if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
-   Raise <code class="code"><span class="constructor">Not_found</span></code> if there is no value associated with <code class="code">a</code> in the
+   if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.<br>
+<b>Raises</b> <code>Not_found</code> if there is no value associated with <code class="code">a</code> in the
    list <code class="code">l</code>.<br>
 </div>
 <pre><span id="VALassoc_inv"><span class="keyword">val</span> assoc_inv</span> : <code class="type">'b -> ('a * 'b) list -> 'a</code></pre><div class="info">
 <code class="code">assoc_inv b l</code> returns the key associated with value <code class="code">b</code> in the list of
 pairs <code class="code">l</code>. That is, <code class="code">assoc b [ ...; (a,b); ...] = a</code>
-if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
-Raise <code class="code"><span class="constructor">Not_found</span></code> if there is no key associated with <code class="code">b</code> in the
+if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.<br>
+<b>Raises</b> <code>Not_found</code> if there is no key associated with <code class="code">b</code> in the
 list <code class="code">l</code>.<br>
 </div>
 <pre><span id="VALremove_assoc"><span class="keyword">val</span> remove_assoc</span> : <code class="type">'a -> ('a * 'b) list -> ('a * 'b) list</code></pre><div class="info">
@@ -490,7 +493,8 @@ Same as <code class="code"><span class="constructor">List</span>.mem_assoc</code
 <span id="6_Listtransformations"><h6>List transformations</h6></span><br>
 <pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -> 'a list -> 'a list * 'a list</code></pre><div class="info">
 <code class="code">split_at n l</code> returns two lists <code class="code">l1</code> and <code class="code">l2</code>, <code class="code">l1</code> containing the
-first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code> the others. Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if
+first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code> the others.<br>
+<b>Raises</b> <code>Invalid_argument</code> if
 <code class="code">n</code> is outside of <code class="code">l</code> size bounds.<br>
 </div>
 <pre><span id="VALsplit_nth"><span class="keyword">val</span> split_nth</span> : <code class="type">int -> 'a list -> 'a list * 'a list</code></pre><div class="info">
@@ -654,7 +658,7 @@ Transposes a list of lists, turning rows of the input into columns
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b list -> unit</code></pre><div class="info">
 Print the contents of a list<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">'a <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a> -> 'a <a href="BatList.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a list <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a list <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a list <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><br>
+<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a list <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a list <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a list <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><br>
 Comparison and equality for lists based on element comparison and
     equality<br>
 <pre><span class="keyword">module</span> <a href="BatList.Eq.html">Eq</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">T</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Eq.html">BatOrd.Eq</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type">Eq</code><code class="type">  with type t = T.t list</code></div></pre><pre><span class="keyword">module</span> <a href="BatList.Ord.html">Ord</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">T</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Ord.html">BatOrd.Ord</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type">Ord</code><code class="type">  with type t = T.t list</code></div></pre><pre><span class="keyword">module</span> <a href="BatList.Comp.html">Comp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">T</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Comp.html">BatOrd.Comp</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type">Comp</code><code class="type">  with type t = T.t list</code></div></pre><br>

@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <title>Batteries user guide : Batteries.Complex</title>
 </head>
@@ -215,7 +213,7 @@ Remove <a href="BatComplex.html#VALone"><code class="code"><span class="construc
 <code class="code">abs c</code> returns the module of this complex number,
     i.e. <code class="code">abs c = <span class="constructor">Float</span>.sqrt((re c) *. (re c) +. (im c) *. (im c) )</code><br>
 </div>
-<pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> int</code></pre><div class="info">
 <code class="code">to_int c</code> is the integer part of the real part of <code class="code">c</code><br>
 </div>
 <pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">

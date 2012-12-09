@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,24 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="String traversals" rel="Section" href="#6_Stringtraversals">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Conversions" rel="Section" href="#6_Conversions">
+<link title="String traversals" rel="Section" href="#6_Stringtraversals">
 <link title="Finding" rel="Section" href="#6_Finding">
 <link title="Transformations" rel="Section" href="#6_Transformations">
 <link title="In-Place Transformations" rel="Section" href="#6_InPlaceTransformations">
@@ -123,10 +122,49 @@
 <pre><span class="keyword">module</span> BatString: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>String operations.
 <p>
 
-    This module extends Stdlib's
+  Given a string <code class="code">s</code> of length <code class="code">l</code>, we call character number in <code class="code">s</code>
+  the index of a character in <code class="code">s</code>.  Indexes start at <code class="code">0</code>, and we will
+  call a character number valid in <code class="code">s</code> if it falls within the range
+  <code class="code">[0...l-1]</code>. A position is the point between two characters or at
+  the beginning or end of the string.  We call a position valid
+  in <code class="code">s</code> if it falls within the range <code class="code">[0...l]</code>. Note that character
+  number <code class="code">n</code> is between positions <code class="code">n</code> and <code class="code">n+1</code>.
+<p>
+
+  Two parameters <code class="code">start</code> and <code class="code">len</code> are said to designate a valid
+  substring of <code class="code">s</code> if <code class="code">len &gt;= 0</code> and <code class="code">start</code> and <code class="code">start+len</code> are
+  valid positions in <code class="code">s</code>.
+<p>
+
+  OCaml strings can be modified in place, for instance via the
+  <code class="code"><span class="constructor">String</span>.set</code> and <code class="code"><span class="constructor">String</span>.blit</code> functions described below.  This
+  possibility should be used rarely and with much care, however, since
+  both the OCaml compiler and most OCaml libraries share strings as if
+  they were immutable, rather than copying them.  In particular,
+  string literals are shared: a single copy of the string is created
+  at program loading time and returned by all evaluations of the
+  string literal.  Consider for example:
+<p>
+
+  <code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span>&nbsp;<span class="keyword">let</span>&nbsp;f&nbsp;()&nbsp;=&nbsp;<span class="string">"foo"</span>;;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;f&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;=&nbsp;&lt;<span class="keyword">fun</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span>&nbsp;(f&nbsp;()).[0]&nbsp;&lt;-&nbsp;<span class="string">'b'</span>;;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;unit&nbsp;=&nbsp;()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span>&nbsp;f&nbsp;();;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;string&nbsp;=&nbsp;<span class="string">"boo"</span><br>
+&nbsp;&nbsp;</code>
+<p>
+
+  Likewise, many functions from the standard library can return string
+  literals or one of their string arguments.  Therefore, the returned strings
+  must not be modified directly.  If mutation is absolutely necessary,
+  it should be performed on a fresh copy of the string, as produced by
+  <code class="code"><span class="constructor">String</span>.copy</code>.
+<p>
+
+    This module replaces Stdlib's
     <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/String.html">String</a>
-    module, go there for documentation on the rest of the functions
-    and types.
+    module.
 <p>
 
     If you're going to do a lot of string slicing, BatSubstring might be
@@ -134,6 +172,13 @@
     allocate new strings on every operation.<br>
 <b>Author(s):</b> Xavier Leroy (base library), Nicolas Cannasse, David Teller, Edgar Friendly<br>
 <hr width="100%">
+<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> char) -> string</code></pre><div class="info">
+<code class="code">init l f</code> returns the string of length <code class="code">l</code> with the chars
+      f 0 , f 1 , f 2 ... f (l-1).
+<p>
+
+      Example: <code class="code"><span class="constructor">String</span>.init 256 char_of_int</code><br>
+</div>
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">string -> bool</code></pre><div class="info">
 <code class="code">is_empty s</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">s</code> is the empty string, <code class="code"><span class="keyword">false</span></code>
     otherwise.
@@ -145,16 +190,166 @@
     Example (for some string <code class="code">s</code>):
     <code class="code"> <span class="keyword">if</span> <span class="constructor">String</span>.is_empty s <span class="keyword">then</span> <span class="string">"(Empty)"</span> <span class="keyword">else</span> s </code><br>
 </div>
-<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> char) -> string</code></pre><div class="info">
-<code class="code">init l f</code> returns the string of length <code class="code">l</code> with the chars
-      f 0 , f 1 , f 2 ... f (l-1).
-<p>
-
-      Example: <code class="code"><span class="constructor">String</span>.init 256 char_of_int</code><br>
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">string -> int</code></pre><div class="info">
+Return the length (number of characters) of the given string.<br>
 </div>
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">string -> int -> char</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.get s n</code> returns character number <code class="code">n</code> in string <code class="code">s</code>.
+   You can also write <code class="code">s.[n]</code> instead of <code class="code"><span class="constructor">String</span>.get s n</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> not a valid character number in <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">string -> int -> char -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.set s n c</code> modifies string <code class="code">s</code> in place,
+   replacing the character number <code class="code">n</code> by <code class="code">c</code>.
+   You can also write <code class="code">s.[n] &lt;- c</code> instead of <code class="code"><span class="constructor">String</span>.set s n c</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> is not a valid character number in <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> string</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.create n</code> returns a fresh string of length <code class="code">n</code>.
+   The string initially contains arbitrary characters.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; </code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
+</div>
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> char -> string</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.make n c</code> returns a fresh string of length <code class="code">n</code>,
+   filled with the character <code class="code">c</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; </code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
+</div>
+<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">string -> string</code></pre><div class="info">
+Return a copy of the given string.<br>
+</div>
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">string -> int -> int -> string</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.sub s start len</code> returns a fresh string of length <code class="code">len</code>,
+   containing the substring of <code class="code">s</code> that starts at position <code class="code">start</code> and
+   has length <code class="code">len</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> and <code class="code">len</code> do not
+   designate a valid substring of <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">string -> int -> int -> char -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.fill s start len c</code> modifies string <code class="code">s</code> in place,
+   replacing <code class="code">len</code> characters by <code class="code">c</code>, starting at <code class="code">start</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> and <code class="code">len</code> do not
+   designate a valid substring of <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">string -> int -> string -> int -> int -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.blit src srcoff dst dstoff len</code> copies <code class="code">len</code> characters
+   from string <code class="code">src</code>, starting at character number <code class="code">srcoff</code>, to
+   string <code class="code">dst</code>, starting at character number <code class="code">dstoff</code>. It works
+   correctly even if <code class="code">src</code> and <code class="code">dst</code> are the same string,
+   and the source and destination intervals overlap.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">srcoff</code> and <code class="code">len</code> do not
+   designate a valid substring of <code class="code">src</code>, or if <code class="code">dstoff</code> and <code class="code">len</code>
+   do not designate a valid substring of <code class="code">dst</code>.<br>
+</div>
+<pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">string -> string list -> string</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.concat sep sl</code> concatenates the list of strings <code class="code">sl</code>,
+   inserting the separator string <code class="code">sep</code> between each.<br>
+</div>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(char -> unit) -> string -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.iter f s</code> applies function <code class="code">f</code> in turn to all
+   the characters of <code class="code">s</code>.  It is equivalent to
+   <code class="code">f s.[0]; f s.[1]; ...; f s.[<span class="constructor">String</span>.length s - 1]; ()</code>.<br>
+</div>
+<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> char -> unit) -> string -> unit</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">String</span>.iter</code>, but the
+   function is applied to the index of the element as first argument
+   (counting from 0), and the character itself as second argument.<br>
+<b>Since</b> 4.00.0<br>
+</div>
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(char -> char) -> string -> string</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.map f s</code> applies function <code class="code">f</code> in turn to all
+   the characters of <code class="code">s</code> and stores the results in a new string that
+   is returned.<br>
+<b>Since</b> 4.00.0<br>
+</div>
+<pre><span id="VALtrim"><span class="keyword">val</span> trim</span> : <code class="type">string -> string</code></pre><div class="info">
+Return a copy of the argument, without leading and trailing
+   whitespace.  The characters regarded as whitespace are: <code class="code"><span class="string">' '</span></code>,
+   <code class="code"><span class="string">'\012'</span></code>, <code class="code"><span class="string">'\n'</span></code>, <code class="code"><span class="string">'\r'</span></code>, and <code class="code"><span class="string">'\t'</span></code>.  If there is no leading nor
+   trailing whitespace character in the argument, return the original
+   string itself, not a copy.<br>
+<b>Since</b> 4.00.0<br>
+</div>
+<pre><span id="VALescaped"><span class="keyword">val</span> escaped</span> : <code class="type">string -> string</code></pre><div class="info">
+Return a copy of the argument, with special characters
+   represented by escape sequences, following the lexical
+   conventions of OCaml.  If there is no special
+   character in the argument, return the original string itself,
+   not a copy. Its inverse function is Scanf.unescaped.<br>
+</div>
+<pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type">string -> char -> int</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.index s c</code> returns the character number of the first
+   occurrence of character <code class="code">c</code> in string <code class="code">s</code>.<br>
+<b>Raises</b> <code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type">string -> char -> int</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.rindex s c</code> returns the character number of the last
+   occurrence of character <code class="code">c</code> in string <code class="code">s</code>.<br>
+<b>Raises</b> <code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type">string -> int -> char -> int</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.index_from s i c</code> returns the character number of the
+   first occurrence of character <code class="code">c</code> in string <code class="code">s</code> after position <code class="code">i</code>.
+   <code class="code"><span class="constructor">String</span>.index s c</code> is equivalent to <code class="code"><span class="constructor">String</span>.index_from s 0 c</code>.<br>
+<b>Raises</b><ul><li><code>Invalid_argument</code> if <code class="code">i</code> is not a valid position in <code class="code">s</code>.</li>
+<li><code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code> after position <code class="code">i</code>.</li>
+</ul>
+</div>
+<pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type">string -> int -> char -> int</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.rindex_from s i c</code> returns the character number of the
+   last occurrence of character <code class="code">c</code> in string <code class="code">s</code> before position <code class="code">i+1</code>.
+   <code class="code"><span class="constructor">String</span>.rindex s c</code> is equivalent to
+   <code class="code"><span class="constructor">String</span>.rindex_from s (<span class="constructor">String</span>.length s - 1) c</code>.<br>
+<b>Raises</b><ul><li><code>Invalid_argument</code> if <code class="code">i+1</code> is not a valid position in <code class="code">s</code>.</li>
+<li><code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code> before position <code class="code">i+1</code>.</li>
+</ul>
+</div>
+<pre><span id="VALcontains"><span class="keyword">val</span> contains</span> : <code class="type">string -> char -> bool</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.contains s c</code> tests if character <code class="code">c</code>
+   appears in the string <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALcontains_from"><span class="keyword">val</span> contains_from</span> : <code class="type">string -> int -> char -> bool</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.contains_from s start c</code> tests if character <code class="code">c</code>
+   appears in <code class="code">s</code> after position <code class="code">start</code>.
+   <code class="code"><span class="constructor">String</span>.contains s c</code> is equivalent to
+   <code class="code"><span class="constructor">String</span>.contains_from s 0 c</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> is not a valid position in <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALrcontains_from"><span class="keyword">val</span> rcontains_from</span> : <code class="type">string -> int -> char -> bool</code></pre><div class="info">
+<code class="code"><span class="constructor">String</span>.rcontains_from s stop c</code> tests if character <code class="code">c</code>
+   appears in <code class="code">s</code> before position <code class="code">stop+1</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">stop &lt; 0</code> or <code class="code">stop+1</code> is not a valid
+   position in <code class="code">s</code>.<br>
+</div>
+<pre><span id="VALuppercase"><span class="keyword">val</span> uppercase</span> : <code class="type">string -> string</code></pre><div class="info">
+Return a copy of the argument, with all lowercase letters
+   translated to uppercase, including accented letters of the ISO
+   Latin-1 (8859-1) character set.<br>
+</div>
+<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">string -> string</code></pre><div class="info">
+Return a copy of the argument, with all uppercase letters
+   translated to lowercase, including accented letters of the ISO
+   Latin-1 (8859-1) character set.<br>
+</div>
+<pre><span id="VALcapitalize"><span class="keyword">val</span> capitalize</span> : <code class="type">string -> string</code></pre><div class="info">
+Return a copy of the argument, with the first character set to uppercase.<br>
+</div>
+<pre><span id="VALuncapitalize"><span class="keyword">val</span> uncapitalize</span> : <code class="type">string -> string</code></pre><div class="info">
+Return a copy of the argument, with the first character set to lowercase.<br>
+</div>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">string</code> </pre>
+<div class="info">
+An alias for the type of strings.<br>
+</div>
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> <a href="BatString.html#TYPEt">t</a> -> int</code></pre><div class="info">
+The comparison function for strings, with the same specification as
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code>.  Along with the type <code class="code">t</code>, this function <code class="code">compare</code>
+    allows the module <code class="code"><span class="constructor">String</span></code> to be passed as argument to the functors
+    <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.<br>
+</div>
+<br>
+<span id="6_Conversions"><h6>Conversions</h6></span><br>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">string -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
-<span id="6_Conversions"><h6>Conversions</h6></span>
-<p>
 Returns an enumeration of the characters of a string.
       The behaviour is unspecified if the string is mutated
       while it is enumerated.
@@ -216,8 +411,9 @@ Returns a string containing one given character.
       Example: <code class="code"> <span class="constructor">String</span>.of_char <span class="string">'s'</span> = <span class="string">"s"</span> </code><br>
 </div>
 <pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">string -> int</code></pre><div class="info">
-Returns the integer represented by the given string or raises
-      <code class="code"><span class="constructor">Failure</span></code> if the string does not represent an
+Returns the integer represented by the given string
+      or<br>
+<b>Raises</b><ul><li><code>Failure</code> if the string does not represent an
       integer. This follows OCaml's int literal rules, so "0x"
       prefixes hexadecimal integers, "0o" for octal and "0b" for
       binary.  Underscores within the number are allowed for
@@ -225,12 +421,14 @@ Returns the integer represented by the given string or raises
 <p>
 
       Examples: <code class="code"> <span class="constructor">String</span>.to_int <span class="string">"8_480"</span> = <span class="constructor">String</span>.to_int <span class="string">"0x21_20"</span> </code>
-      <code class="code"> <span class="keyword">try</span> ignore(<span class="constructor">String</span>.to_int <span class="string">"2,3"</span>); <span class="keyword">false</span> <span class="keyword">with</span> <span class="constructor">Failure</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span> </code><br>
-<b>Raises</b> <code>Failure</code> if the string does not represent an integer.<br>
+      <code class="code"> <span class="keyword">try</span> ignore(<span class="constructor">String</span>.to_int <span class="string">"2,3"</span>); <span class="keyword">false</span> <span class="keyword">with</span> <span class="constructor">Failure</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span> </code></li>
+<li><code>Failure</code> if the string does not represent an integer.</li>
+</ul>
 </div>
 <pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">string -> float</code></pre><div class="info">
-Returns the float represented by the given string or raises
-      <code class="code"><span class="constructor">Failure</span></code> if the string does not represent a float.
+Returns the float represented by the given string
+      or<br>
+<b>Raises</b><ul><li><code>Failure</code> if the string does not represent a float.
       Decimal points aren't required in the given string, as they are
       for float literals in OCaml, but otherwise the rules for float
       literals apply.
@@ -238,8 +436,9 @@ Returns the float represented by the given string or raises
 
       Examples: <code class="code"><span class="constructor">String</span>.to_float <span class="string">"12.34e-1"</span> = <span class="constructor">String</span>.to_float <span class="string">"1.234"</span></code>
       <code class="code"><span class="constructor">String</span>.to_float <span class="string">"1"</span> = 1.</code>
-      <code class="code"><span class="keyword">try</span> ignore(<span class="constructor">String</span>.to_float <span class="string">""</span>); <span class="keyword">false</span> <span class="keyword">with</span> <span class="constructor">Failure</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span></code><br>
-<b>Raises</b> <code>Failure</code> if the string does not represent a float.<br>
+      <code class="code"><span class="keyword">try</span> ignore(<span class="constructor">String</span>.to_float <span class="string">""</span>); <span class="keyword">false</span> <span class="keyword">with</span> <span class="constructor">Failure</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span></code></li>
+<li><code>Failure</code> if the string does not represent a float.</li>
+</ul>
 </div>
 <br>
 <span id="6_Stringtraversals"><h6>String traversals</h6></span><br>
@@ -372,8 +571,8 @@ Returns the float represented by the given string or raises
 <pre><span id="VALlchop"><span class="keyword">val</span> lchop</span> : <code class="type">?n:int -> string -> string</code></pre><div class="info">
 Returns the same string but without the first <code class="code">n</code> characters.
     By default <code class="code">n</code> is 1.
-    If <code class="code">n</code> is strictly less than zero raises <code class="code"><span class="constructor">Invalid_argument</span></code>.
-    If the string has <code class="code">n</code> or less characters, returns the empty string.
+    If <code class="code">n</code> is strictly less than zero<br>
+<b>Raises</b> <code>Invalid_argument.</code> If the string has <code class="code">n</code> or less characters, returns the empty string.
 <p>
 
       Example:
@@ -384,8 +583,8 @@ Returns the same string but without the first <code class="code">n</code> charac
 <pre><span id="VALrchop"><span class="keyword">val</span> rchop</span> : <code class="type">?n:int -> string -> string</code></pre><div class="info">
 Returns the same string but without the last <code class="code">n</code> characters.
     By default <code class="code">n</code> is 1.
-    If <code class="code">n</code> is strictly less than zero raises <code class="code"><span class="constructor">Invalid_argument</span></code>.
-    If the string has <code class="code">n</code> or less characters , returns the empty string.
+    If <code class="code">n</code> is strictly less than zero<br>
+<b>Raises</b> <code>Invalid_argument.</code> If the string has <code class="code">n</code> or less characters , returns the empty string.
 <p>
 
       Example:
@@ -413,7 +612,7 @@ Add quotes around a string and escape any quote or escape
     etc.
 <p>
 
-    More precisely, the returned string conforms to the Caml syntax:
+    More precisely, the returned string conforms to the OCaml syntax:
     if printed, it outputs a representation of the input string as an
     OCaml string litteral.<br>
 </div>
@@ -521,7 +720,7 @@ the mutation it will contain <code class="code"><span class="string">"!elpmaxE"<
       Example: <code class="code"><span class="constructor">String</span>.nsplit <span class="string">"abcabcabc"</span> <span class="string">"bc"</span> = [<span class="string">"a"</span>; <span class="string">"a"</span>; <span class="string">"a"</span>; <span class="string">""</span>]</code><br>
 </div>
 <pre><span id="VALjoin"><span class="keyword">val</span> join</span> : <code class="type">string -> string list -> string</code></pre><div class="info">
-Same as <code class="code">concat</code><br>
+Same as <a href="BatString.html#VALconcat"><code class="code"><span class="constructor">BatString</span>.concat</code></a><br>
 </div>
 <pre><span id="VALslice"><span class="keyword">val</span> slice</span> : <code class="type">?first:int -> ?last:int -> string -> string</code></pre><div class="info">
 <code class="code">slice ?first ?last s</code> returns a "slice" of the string
@@ -577,13 +776,13 @@ Same as <code class="code">concat</code><br>
 </div>
 <br>
 <span id="6_Comparisons"><h6>Comparisons</h6></span><br>
-<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">String.t -> String.t -> bool</code></pre><div class="info">
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> <a href="BatString.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 String equality<br>
 </div>
-<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">String.t -> String.t -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><div class="info">
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> <a href="BatString.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><div class="info">
 Ordering function for strings, see <a href="BatOrd.html"><code class="code"><span class="constructor">BatOrd</span></code></a><br>
 </div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">String.t -> String.t -> int</code></pre><div class="info">
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> <a href="BatString.html#TYPEt">t</a> -> int</code></pre><div class="info">
 The comparison function for strings, with the same specification as
     <code class="code"><span class="constructor">Pervasives</span>.compare</code>.  Along with the type <code class="code">t</code>, this function <code class="code">compare</code>
     allows the module <code class="code"><span class="constructor">String</span></code> to be passed as argument to the functors
@@ -592,7 +791,7 @@ The comparison function for strings, with the same specification as
 
     Example: <code class="code"><span class="constructor">String</span>.compare <span class="string">"FOO"</span> <span class="string">"bar"</span> = -1</code> i.e. "FOO" &lt; "bar"<br>
 </div>
-<pre><span id="VALicompare"><span class="keyword">val</span> icompare</span> : <code class="type">String.t -> String.t -> int</code></pre><div class="info">
+<pre><span id="VALicompare"><span class="keyword">val</span> icompare</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> <a href="BatString.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Compare two strings, case-insensitive.
 <p>
 
@@ -601,7 +800,7 @@ Compare two strings, case-insensitive.
 <pre><span class="keyword">module</span> <a href="BatString.IString.html">IString</a>: <code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="type">  with type t = t</code></pre><div class="info">
 uses icompare as ordering function
 </div>
-<pre><span id="VALnumeric_compare"><span class="keyword">val</span> numeric_compare</span> : <code class="type">String.t -> String.t -> int</code></pre><div class="info">
+<pre><span id="VALnumeric_compare"><span class="keyword">val</span> numeric_compare</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> <a href="BatString.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Compare two strings, sorting "abc32def" before "abc210abc".
 <p>
 
@@ -645,7 +844,7 @@ Print a string, with quotes as added by the <code class="code">quote</code> func
    <code class="code"><span class="constructor">String</span>.print_quoted stdout <span class="string">"\n"</span></code> prints <code class="code"><span class="string">"\n"</span></code> (not the escaped
    character, but <code class="code">'\'</code> then <code class="code"><span class="string">'n'</span></code>).<br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type">String.t <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span id="VALunquoted_printer"><span class="keyword">val</span> unquoted_printer</span> : <code class="type">String.t <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatString.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<pre><span class="keyword">module</span> <a href="BatString.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Exceptionless counterparts for error-raising operations
 </div>
 <pre><span class="keyword">module</span> <a href="BatString.Cap.html">Cap</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">

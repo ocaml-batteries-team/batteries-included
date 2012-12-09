@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Introduction" rel="Section" href="#6_Introduction">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Introduction" rel="Section" href="#6_Introduction">
 <link title="Type of formatted input functions" rel="Section" href="#6_Typeofformattedinputfunctions">
 <link title="The general formatted input function" rel="Section" href="#6_Thegeneralformattedinputfunction">
 <link title="Format string description" rel="Section" href="#6_Formatstringdescription">
@@ -188,16 +186,16 @@ As suggested above, the expression <code class="code">bscanf ib <span class="str
 <br>
 <span id="7_Formattedinputasafunctionalfeature"><div class="h7">Formatted input as a functional feature</div></span><br>
 <br>
-The Caml scanning facility is reminiscent of the corresponding C feature.
+The OCaml scanning facility is reminiscent of the corresponding C feature.
     However, it is also largely different, simpler, and yet more powerful:
     the formatted input functions are higher-order functionals and the
     parameter passing mechanism is just the regular function application not
     the variable assigment based mechanism which is typical for formatted
-    input in imperative languages; the Caml format strings also feature
+    input in imperative languages; the OCaml format strings also feature
     useful additions to easily define complex tokens; as expected within a
     functional programming language, the formatted input functions also
     support polymorphism, in particular arbitrary interaction with
-    polymorphic user-defined scanners.  Furthermore, the Caml formatted input
+    polymorphic user-defined scanners.  Furthermore, the OCaml formatted input
     facility is fully type-checked at compile time.<br>
 <pre><span class="keyword">module</span> <a href="BatScanf.Scanning.html">Scanning</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatScanf.Scanning.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Scanning buffers
@@ -299,97 +297,10 @@ Conversion specifications consist in the <code class="code">%</code> character, 
       Hence, this conversion always succeeds: it returns an empty
       string, if the bounding condition holds when the scan begins.</li>
 <li><code class="code"><span class="constructor">S</span></code>: reads a delimited string argument (delimiters and special
-      escaped characters follow the lexical conventions of Caml).</li>
+      escaped characters follow the lexical conventions of OCaml).</li>
 <li><code class="code">c</code>: reads a single character. To test the current input character
       without reading it, specify a null field width, i.e. use
-      specification <code class="code">%0c</code>. Raise <code class="code"><span class="constructor">Invalid_argument</span></code>, if the field width
-      specification is greater than 1.</li>
-<li><code class="code"><span class="constructor">C</span></code>: reads a single delimited character (delimiters and special
-      escaped characters follow the lexical conventions of Caml).</li>
-<li><code class="code">f</code>, <code class="code">e</code>, <code class="code"><span class="constructor">E</span></code>, <code class="code">g</code>, <code class="code"><span class="constructor">G</span></code>: reads an optionally signed
-      floating-point number in decimal notation, in the style <code class="code">dddd.ddd
-      e/<span class="constructor">E</span>+-dd</code>.</li>
-<li><code class="code"><span class="constructor">F</span></code>: reads a floating point number according to the lexical
-      conventions of Caml (hence the decimal point is mandatory if the
-      exponent part is not mentioned).</li>
-<li><code class="code"><span class="constructor">B</span></code>: reads a boolean argument (<code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="keyword">false</span></code>).</li>
-<li><code class="code">b</code>: reads a boolean argument (for backward compatibility; do not use
-      in new programs).</li>
-<li><code class="code">ld</code>, <code class="code">li</code>, <code class="code">lu</code>, <code class="code">lx</code>, <code class="code">lX</code>, <code class="code">lo</code>: reads an <code class="code">int32</code> argument to
-      the format specified by the second letter (decimal, hexadecimal, etc).</li>
-<li><code class="code">nd</code>, <code class="code">ni</code>, <code class="code">nu</code>, <code class="code">nx</code>, <code class="code">nX</code>, <code class="code">no</code>: reads a <code class="code">nativeint</code> argument to
-      the format specified by the second letter.</li>
-<li><code class="code"><span class="constructor">Ld</span></code>, <code class="code"><span class="constructor">Li</span></code>, <code class="code"><span class="constructor">Lu</span></code>, <code class="code"><span class="constructor">Lx</span></code>, <code class="code"><span class="constructor">LX</span></code>, <code class="code"><span class="constructor">Lo</span></code>: reads an <code class="code">int64</code> argument to
-      the format specified by the second letter.</li>
-<li><code class="code">[ range ]</code>: reads characters that matches one of the characters
-      mentioned in the range of characters <code class="code">range</code> (or not mentioned in
-      it, if the range starts with <code class="code">^</code>). Reads a <code class="code">string</code> that can be
-      empty, if the next input character does not match the range. The set of
-      characters from <code class="code">c1</code> to <code class="code">c2</code> (inclusively) is denoted by <code class="code">c1-c2</code>.
-      Hence, <code class="code">%[0-9]</code> returns a string representing a decimal number
-      or an empty string if no decimal digit is found; similarly,
-      <code class="code">%[\\048-\\057\\065-\\070]</code> returns a string of hexadecimal digits.
-      If a closing bracket appears in a range, it must occur as the
-      first character of the range (or just after the <code class="code">^</code> in case of
-      range negation); hence <code class="code">[]]</code> matches a <code class="code">]</code> character and
-      <code class="code">[^]]</code> matches any character that is not <code class="code">]</code>.</li>
-<li><code class="code">r</code>: user-defined reader. Takes the next <code class="code">ri</code> formatted input function and
-      applies it to the scanning buffer <code class="code">ib</code> to read the next argument. The
-      input function <code class="code">ri</code> must therefore have type <code class="code"><span class="constructor">Scanning</span>.scanbuf <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a</code> and
-      the argument read has type <code class="code"><span class="keywordsign">'</span>a</code>.</li>
-<li><code class="code">{ fmt %}</code>: reads a format string argument.
-      The format string read must have the same type as the format string
-      specification <code class="code">fmt</code>.
-      For instance, <code class="code"><span class="string">"%{%i%}"</span></code> reads any format string that can read a value of
-      type <code class="code">int</code>; hence <code class="code"><span class="constructor">Scanf</span>.sscanf <span class="string">"fmt:\\\"number is %u\\\""</span> <span class="string">"fmt:%{%i%}"</span></code>
-      succeeds and returns the format string <code class="code"><span class="string">"number is %u"</span></code>.</li>
-<li><code class="code">\( fmt %\)</code>: scanning format substitution.
-      Reads a format string to replace <code class="code">fmt</code>.
-      The format string read must have the same type as the format string
-      specification <code class="code">fmt</code>.
-      For instance, <code class="code"><span class="string">"%\( %i% \)"</span></code> reads any format string that can read a value
-      of type <code class="code">int</code>; hence <code class="code"><span class="constructor">Scanf</span>.sscanf <span class="string">"\\\"%4d\\\"1234.00"</span> <span class="string">"%\(%i%\)"</span></code>
-      is equivalent to <code class="code"><span class="constructor">Scanf</span>.sscanf <span class="string">"1234.00"</span> <span class="string">"%4d"</span></code>.</li>
-<li><code class="code">l</code>: returns the number of lines read so far.</li>
-<li><code class="code">n</code>: returns the number of characters read so far.</li>
-<li><code class="code"><span class="constructor">N</span></code> or <code class="code"><span class="constructor">L</span></code>: returns the number of tokens read so far.</li>
-<li><code class="code">!</code>: matches the end of input condition.</li>
-<li><code class="code">%</code>: matches one <code class="code">%</code> character in the input.</li>
-</ul>
-
-    Following the <code class="code">%</code> character that introduces a conversion, there may be
-    the special flag <code class="code">_</code>: the conversion that follows occurs as usual,
-    but the resulting value is discarded.
-    For instance, if <code class="code">f</code> is the function <code class="code"><span class="keyword">fun</span> i <span class="keywordsign">-&gt;</span> i + 1</code>, then
-    <code class="code"><span class="constructor">Scanf</span>.sscanf <span class="string">"x = 1"</span> <span class="string">"%_s = %i"</span> f</code> returns <code class="code">2</code>.
-<p>
-
-    The field width is composed of an optional integer literal
-    indicating the maximal width of the token to read.
-    For instance, <code class="code">%6d</code> reads an integer, having at most 6 decimal digits;
-    <code class="code">%4f</code> reads a float with at most 4 characters; and <code class="code">%8[\\000-\\255]</code>
-    returns the next 8 characters (or all the characters still available,
-    if fewer than 8 characters are available in the input).
-<p>
-
-    Notes:
-<p>
-<ul>
-<li>as mentioned above, a <code class="code">%s</code> convertion always succeeds, even if there is
-      nothing to read in the input: it simply returns <code class="code"><span class="string">""</span></code>.</li>
-</ul>
-<ul>
-<li>in addition to the relevant digits, <code class="code"><span class="string">'_'</span></code> characters may appear
-    inside numbers (this is reminiscent to the usual Caml lexical
-    conventions). If stricter scanning is desired, use the range
-    conversion facility instead of the number conversions.</li>
-</ul>
-<ul>
-<li>the <code class="code">scanf</code> facility is not intended for heavy duty lexical
-    analysis and parsing. If it appears not expressive enough for your
-    needs, several alternative exists: regular expressions (module
-    <code class="code"><span class="constructor">Str</span></code>), stream parsers, <code class="code">ocamllex</code>-generated lexers,
-    <code class="code">ocamlyacc</code>-generated parsers.</li>
+      specification <code class="code">%0c</code>.</li>
 </ul>
 <br>
 <br>
@@ -426,28 +337,8 @@ Scanning indications appear just after the string conversions <code class="code"
 Scanners may raise the following exceptions when the input cannot be read
     according to the format string:
 <p>
-<ul>
-<li>Raise <code class="code"><span class="constructor">Scanf</span>.<span class="constructor">Scan_failure</span></code> if the input does not match the format.</li>
-</ul>
-<ul>
-<li>Raise <code class="code"><span class="constructor">Failure</span></code> if a conversion to a number is not possible.</li>
-</ul>
-<ul>
-<li>Raise <code class="code"><span class="constructor">End_of_file</span></code> if the end of input is encountered while some more
-      characters are needed to read the current conversion specification.</li>
-</ul>
-<ul>
-<li>Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if the format string is invalid.</li>
-</ul>
 
-    Note:
-<p>
-<ul>
-<li>as a consequence, scanning a <code class="code">%s</code> conversion never raises exception
-    <code class="code"><span class="constructor">End_of_file</span></code>: if the end of input is reached the conversion succeeds and
-    simply returns the characters read so far, or <code class="code"><span class="string">""</span></code> if none were read.</li>
-</ul>
-<br>
+    -<br>
 <br>
 <span id="6_Specializedformattedinputfunctions"><h6>Specialized formatted input functions</h6></span><br>
 <pre><span id="VALfscanf"><span class="keyword">val</span> fscanf</span> : <code class="type">Pervasives.in_channel -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
@@ -484,8 +375,8 @@ Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>,
 <pre><span id="VALbscanf_format"><span class="keyword">val</span> bscanf_format</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       ('a, 'b, 'c, 'd, 'e, 'f) format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g</code></pre><div class="info">
 <code class="code">bscanf_format ib fmt f</code> reads a format string token from the scannning
     buffer <code class="code">ib</code>, according to the given format string <code class="code">fmt</code>, and applies <code class="code">f</code> to
-    the resulting format string value.
-    Raise <code class="code"><span class="constructor">Scan_failure</span></code> if the format string value read does not have the
+    the resulting format string value.<br>
+<b>Raises</b> <code>Scan_failure</code> if the format string value read does not have the
     same type as <code class="code">fmt</code>.<br>
 </div>
 <pre><span id="VALsscanf_format"><span class="keyword">val</span> sscanf_format</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g</code></pre><div class="info">
@@ -493,8 +384,8 @@ Same as <code class="code"><span class="constructor">Scanf</span>.bscanf_format<
 </div>
 <pre><span id="VALformat_from_string"><span class="keyword">val</span> format_from_string</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6</code></pre><div class="info">
 <code class="code">format_from_string s fmt</code> converts a string argument to a format string,
-    according to the given format string <code class="code">fmt</code>.
-    Raise <code class="code"><span class="constructor">Scan_failure</span></code> if <code class="code">s</code>, considered as a format string, does not
+    according to the given format string <code class="code">fmt</code>.<br>
+<b>Raises</b> <code>Scan_failure</code> if <code class="code">s</code>, considered as a format string, does not
     have the same type as <code class="code">fmt</code>.<br>
 </div>
 </body></html>

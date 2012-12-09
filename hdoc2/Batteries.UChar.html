@@ -4,8 +4,9 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="Extlib.html">
-<link rel="Up" href="index.html">
+<link rel="previous" href="Batteries.Uref.html">
+<link rel="next" href="Batteries.UTF8.html">
+<link rel="Up" href="Batteries.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
@@ -71,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -86,77 +86,67 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Functional nature and persistence" rel="Section" href="#8_Functionalnatureandpersistence">
-<link title="Limitations" rel="Section" href="#8_Limitations">
-<title>Batteries user guide : Uniclib</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.UChar</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Extlib.html" title="Extlib">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;</div>
-<h1>Module <a href="type_Uniclib.html">Uniclib</a></h1>
-<pre><span class="keyword">module</span> Uniclib: <code class="code"><span class="keyword">sig</span></code> <a href="Uniclib.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Unicode characters.
-<p>
+<div class="navbar"><a class="pre" href="Batteries.Uref.html" title="Batteries.Uref">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.UTF8.html" title="Batteries.UTF8">Next</a>
+</div>
+<h1>Module <a href="type_Batteries.UChar.html">Batteries.UChar</a></h1>
+<pre><span class="keyword">module</span> UChar: <code class="type">BatUChar</code></pre><hr width="100%">
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 
-   This module implements Unicode characters.<br>
-<hr width="100%">
-<pre><span class="keyword">module</span> <a href="Uniclib.UChar.html">UChar</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Uniclib.UChar.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><br>
-UTF-8 encoded Unicode strings. The type is normal string.<br>
-<pre><span class="keyword">module</span> <a href="Uniclib.UTF8.html">UTF8</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Uniclib.UTF8.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><br>
-Heavyweight strings ("ropes")
-<p>
+<pre><span id="EXCEPTIONOut_of_range"><span class="keyword">exception</span> Out_of_range</span></pre>
+<pre><span id="VALchar_of"><span class="keyword">val</span> char_of</span> : <code class="type"><a href="BatUChar.html#TYPEt">t</a> -> char</code></pre><div class="info">
+<code class="code">char_of u</code> returns the Latin-1 representation of <code class="code">u</code>.
+    If <code class="code">u</code> can not be represented by Latin-1, raises Out_of_range<br>
+</div>
+<pre><span id="VALof_char"><span class="keyword">val</span> of_char</span> : <code class="type">char -> <a href="BatUChar.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">of_char c</code> returns the Unicode character of the Latin-1 character <code class="code">c</code><br>
+</div>
+<pre><span id="VALcode"><span class="keyword">val</span> code</span> : <code class="type"><a href="BatUChar.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<code class="code">code u</code> returns the Unicode code number of <code class="code">u</code>.<br>
+</div>
+<pre><span id="VALchr"><span class="keyword">val</span> chr</span> : <code class="type">int -> <a href="BatUChar.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">chr n</code> returns the Unicode character with the code number <code class="code">n</code>.
+    If n does not lay in the valid range of Unicode or designates a
+    surrogate charactor, raises Out_of_range<br>
+</div>
+<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type"><a href="BatUChar.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+Equality by code point comparison<br>
+</div>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatUChar.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">t</a> -> int</code></pre><div class="info">
+<code class="code">compare u1 u2</code> returns,
+    a value &gt; 0 if <code class="code">u1</code> has a larger Unicode code number than <code class="code">u2</code>,
+    0 if <code class="code">u1</code> and <code class="code">u2</code> are the same Unicode character,
+    a value &lt; 0 if <code class="code">u1</code> has a smaller Unicode code number than <code class="code">u2</code>.<br>
+</div>
+<pre><span id="TYPEuchar"><span class="keyword">type</span> <code class="type"></code>uchar</span> = <code class="type"><a href="BatUChar.html#TYPEt">t</a></code> </pre>
+<div class="info">
+Aliases of <code class="code"><span class="keyword">type</span> t</code><br>
+</div>
 
-This module implements ropes as described in
-Boehm, H., Atkinson, R., and Plass, M. 1995. Ropes: an alternative to
-strings. Softw. Pract. Exper. 25, 12 (Dec. 1995), 1315-1330.
-<p>
-
-Ropes are an alternative to strings which support efficient operations:<ul>
-<li>determining the length of a rope in constant time</li>
-<li>appending or prepending a small rope to an arbitrarily large one in amortized constant time</li>
-<li>concat, substring, insert, remove operations in amortized logarithmic time</li>
-<li>access to and modification of ropes in logarithmic time</li>
-</ul>
-
-<span id="8_Functionalnatureandpersistence"><div class="h8">Functional nature and persistence</div></span>
-<p>
-
-All operations are non-destructive: the original rope is never modified. When a
-new rope is returned as the result of an operation, it will share as much data
-as possible with its "parent". For instance, if a rope of length <code class="code">n</code> undergoes
-<code class="code">m</code> operations (assume <code class="code">n &gt;&gt; m</code>) like set, append or prepend, the modified
-rope will only require <code class="code"><span class="constructor">O</span>(m)</code> space in addition to that taken by the
-original one.
-<p>
-
-However, Rope is an amortized data structure, and its use in a persistent setting
-can easily degrade its amortized time bounds. It is thus mainly intended to be used
-ephemerally. In some cases, it is possible to use Rope persistently with the same
-amortized bounds by explicitly rebalancing ropes to be reused using <code class="code">balance</code>.
-Special care must be taken to avoid calling <code class="code">balance</code> too frequently; in the limit,
-calling <code class="code">balance</code> after each modification would defeat the purpose of amortization.
-<p>
-
-<span id="8_Limitations"><div class="h8">Limitations</div></span>
-<p>
-
-The length of ropes is limited to approximately 700 Mb on 32-bit
-architectures, 220 Gb on 64 bit architectures.<br>
-<pre><span class="keyword">module</span> <a href="Uniclib.Text.html">Text</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Uniclib.Text.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="VALint_of"><span class="keyword">val</span> int_of</span> : <code class="type"><a href="BatUChar.html#TYPEuchar">uchar</a> -> int</code></pre><div class="info">
+Alias of <code class="code">code</code><br>
+</div>
+<pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> <a href="BatUChar.html#TYPEuchar">uchar</a></code></pre><div class="info">
+Alias of <code class="code">chr</code><br>
+</div>
+</body></html>

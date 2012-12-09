@@ -68,7 +68,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -83,24 +82,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Index of modules</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Index of modules</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
@@ -140,7 +138,7 @@ Three-dimensional arrays.
 <td></td></tr>
 <tr><td><a href="BatArray.html">BatArray</a> </td>
 <td><div class="info">
-Additional and modified functions for arrays
+Array operations
 </div>
 </td></tr>
 <tr><td><a href="BatAvlTree.html">BatAvlTree</a> </td>
@@ -432,11 +430,6 @@ Filepath handling.
 Additional functions.
 </div>
 </td></tr>
-<tr><td><a href="BatPrint.html">BatPrint</a> </td>
-<td><div class="info">
-Formatted output functions (also known as unparsing).
-</div>
-</td></tr>
 <tr><td><a href="BatPrintexc.html">BatPrintexc</a> </td>
 <td><div class="info">
 Facilities for printing exceptions.
@@ -507,8 +500,6 @@ Maps and sets based on splay trees
 Last-in first-out stacks.
 </div>
 </td></tr>
-<tr><td><a href="BatStats.html">BatStats</a> </td>
-<td></td></tr>
 <tr><td><a href="BatStream.html">BatStream</a> </td>
 <td><div class="info">
 Streams and stream parsers
@@ -532,12 +523,22 @@ System interface.
 </td></tr>
 <tr><td><a href="BatText.html">BatText</a> </td>
 <td><div class="info">
-Read one Unicode char from a UTF-8 encoded input
+Heavyweight strings ("ropes")
 </div>
 </td></tr>
 <tr><td><a href="BatTuple.html">BatTuple</a> </td>
 <td><div class="info">
 Tuples.
+</div>
+</td></tr>
+<tr><td><a href="BatUChar.html">BatUChar</a> </td>
+<td><div class="info">
+Unicode characters.
+</div>
+</td></tr>
+<tr><td><a href="BatUTF8.html">BatUTF8</a> </td>
+<td><div class="info">
+UTF-8 encoded Unicode strings.
 </div>
 </td></tr>
 <tr><td><a href="BatUnit.html">BatUnit</a> </td>
@@ -553,11 +554,6 @@ Low-level interface to the operating system (both Unix and Windows).
 <tr><td><a href="BatUref.html">BatUref</a> </td>
 <td><div class="info">
 Unifiable references using destructive union-find
-</div>
-</td></tr>
-<tr><td><a href="BatValuePrinter.html">BatValuePrinter</a> </td>
-<td><div class="info">
-Value printers
 </div>
 </td></tr>
 <tr><td><a href="BatVect.html">BatVect</a> </td>
@@ -599,7 +595,7 @@ Same operations as module <a href="BatIO.html"><code class="code"><span class="c
 <td></td></tr>
 <tr><td><a href="Batteries.Incubator.Bounded.html">Bounded</a> [<a href="Batteries.Incubator.html">Batteries.Incubator</a>]</td>
 <td></td></tr>
-<tr><td><a href="Uniclib.UTF8.Buf.html">Buf</a> [<a href="Uniclib.UTF8.html">Uniclib.UTF8</a>]</td>
+<tr><td><a href="BatUTF8.Buf.html">Buf</a> [<a href="BatUTF8.html">BatUTF8</a>]</td>
 <td><div class="info">
 Buffer module for UTF-8 strings
 </div>
@@ -677,8 +673,6 @@ Capabilities for arrays.
 <tr><td><a href="Batteries.Concurrent.html">Concurrent</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>D</td></tr>
-<tr><td><a href="BatStats.DS.html">DS</a> [<a href="BatStats.html">BatStats</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Deque.html">Deque</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Digest.html">Digest</a> [<a href="Batteries.html">Batteries</a>]</td>
@@ -1083,6 +1077,11 @@ Operations on <code class="code"><span class="constructor">Array</span></code> w
 </td></tr>
 <tr><td><a href="BatGenlex.Languages.html">Languages</a> [<a href="BatGenlex.html">BatGenlex</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatUnix.LargeFile.html">LargeFile</a> [<a href="BatUnix.html">BatUnix</a>]</td>
+<td><div class="info">
+File operations on large files.
+</div>
+</td></tr>
 <tr><td><a href="Batteries.Legacy.Lazy.html">Lazy</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.LazyList.html">LazyList</a> [<a href="Batteries.html">Batteries</a>]</td>
@@ -1290,8 +1289,6 @@ This module contains the option parser itself.
 <td></td></tr>
 <tr><td><a href="Batteries.PathGen.html">PathGen</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.Print.html">Print</a> [<a href="Batteries.html">Batteries</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Printexc.html">Printexc</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Printexc.html">Printexc</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -1409,8 +1406,6 @@ This module contains various standard options.
 <tr><td><a href="Batteries.Legacy.Sys.html">Sys</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>T</td></tr>
-<tr><td><a href="Uniclib.Text.html">Text</a> [<a href="Uniclib.html">Uniclib</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Text.html">Text</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatteriesPrint.TextSet.html">TextSet</a> [<a href="BatteriesPrint.html">BatteriesPrint</a>]</td>
@@ -1446,19 +1441,14 @@ Triples.
 </div>
 </td></tr>
 <tr><td align="left"><br>U</td></tr>
-<tr><td><a href="Uniclib.UChar.html">UChar</a> [<a href="Uniclib.html">Uniclib</a>]</td>
-<td></td></tr>
 <tr><td><a href="Extlib.UChar.html">UChar</a> [<a href="Extlib.html">Extlib</a>]</td>
 <td></td></tr>
-<tr><td><a href="Uniclib.UTF8.html">UTF8</a> [<a href="Uniclib.html">Uniclib</a>]</td>
+<tr><td><a href="Batteries.UChar.html">UChar</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Extlib.UTF8.html">UTF8</a> [<a href="Extlib.html">Extlib</a>]</td>
 <td></td></tr>
-<tr><td><a href="Uniclib.html">Uniclib</a> </td>
-<td><div class="info">
-Unicode characters.
-</div>
-</td></tr>
+<tr><td><a href="Batteries.UTF8.html">UTF8</a> [<a href="Batteries.html">Batteries</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Unit.html">Unit</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Unix.html">Unix</a> [<a href="Batteries.html">Batteries</a>]</td>
@@ -1468,8 +1458,6 @@ Unicode characters.
 <tr><td><a href="Batteries.Uref.html">Uref</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>V</td></tr>
-<tr><td><a href="Batteries.ValuePrinter.html">ValuePrinter</a> [<a href="Batteries.html">Batteries</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Vect.html">Vect</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>W</td></tr>

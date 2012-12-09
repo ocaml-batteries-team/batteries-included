@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <title>Batteries user guide : BatRef</title>
 </head>
 <body>
@@ -211,6 +209,7 @@ Set the given option ref to <code class="code"><span class="constructor">Some</s
 </div>
 <pre><span id="VALoget_exn"><span class="keyword">val</span> oget_exn</span> : <code class="type">'a option Pervasives.ref -> 'a</code></pre><div class="info">
 Get a value from an option ref;<br>
+<b>Raises</b> <code>Not_found</code> on <code class="code">oget_exn (ref <span class="constructor">None</span>)</code><br>
 </div>
 <br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
@@ -220,10 +219,17 @@ Given a printing function for the value in the ref, produce a
 <p>
 
     Example: <code class="code"><span class="constructor">IO</span>.to_string (<span class="constructor">Ref</span>.print <span class="constructor">Int</span>.print) (ref 20) = <span class="string">"20"</span></code><br>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><div class="info">
+Given a comparison function, produce a comparison function for refs
+    of that type.
+<p>
+
+    Example: <code class="code"><span class="keyword">let</span> a = ref 10 <span class="keyword">and</span> b = ref 20 <span class="keyword">in</span> <span class="constructor">Ref</span>.compare <span class="constructor">Int</span>.compare a b = -1</code><br>
+</div>
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><br>
 Given an ordering function, produce an ordering function for refs
     of that type.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> a = ref 10 <span class="keyword">and</span> b = ref 20 <span class="keyword">in</span> <span class="constructor">Ref</span>.cmp <span class="constructor">Int</span>.cmp a b = -1</code><br>
+    Example: <code class="code"><span class="keyword">let</span> a = ref 10 <span class="keyword">and</span> b = ref 20 <span class="keyword">in</span> <span class="constructor">Ref</span>.ord <span class="constructor">Int</span>.ord a b = <span class="constructor">Ord</span>.<span class="constructor">Lt</span></code><br>
 <pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre></body></html>

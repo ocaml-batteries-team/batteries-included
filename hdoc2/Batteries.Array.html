@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,31 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Batteries.Array</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Sorting" rel="Section" href="#6_Sorting">
+<link title="Operations on two arrays" rel="Section" href="#6_Operationsontwoarrays">
+<link title="Predicates" rel="Section" href="#6_Predicates">
+<link title="Array transformations" rel="Section" href="#6_Arraytransformations">
+<link title="Conversions" rel="Section" href="#6_Conversions">
+<link title="Utilities" rel="Section" href="#6_Utilities">
+<link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Override modules" rel="Section" href="#6_Overridemodules">
+<title>Batteries user guide : Batteries.Array</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="Batteries.Legacy.html" title="Batteries.Legacy">Previous</a>
@@ -112,7 +118,418 @@
 &nbsp;<a class="post" href="Batteries.Buffer.html" title="Batteries.Buffer">Next</a>
 </div>
 <h1>Module <a href="type_Batteries.Array.html">Batteries.Array</a></h1>
-<pre><span class="keyword">module</span> Array: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.Array.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<pre><span class="keyword">include</span> Array</pre>
-<pre><span class="keyword">include</span> <a href="BatArray.html">BatArray</a></pre>
-</body></html>
+<pre><span class="keyword">module</span> Array: <code class="type">BatArray</code></pre><hr width="100%">
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a array</code> </pre>
+<div class="info">
+The type of arrays.<br>
+</div>
+
+<pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
+<pre><span class="keyword">include</span> <a href="BatInterfaces.Mappable.html">BatInterfaces.Mappable</a></pre>
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a array -> int</code></pre><div class="info">
+Return the length (number of elements) of the given array.<br>
+</div>
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a array -> int -> 'a</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.get a n</code> returns the element number <code class="code">n</code> of array <code class="code">a</code>.
+   The first element has number 0.
+   The last element has number <code class="code"><span class="constructor">Array</span>.length a - 1</code>.
+   You can also write <code class="code">a.(n)</code> instead of <code class="code"><span class="constructor">Array</span>.get a n</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> is outside the range 0 to <code class="code">(<span class="constructor">Array</span>.length a - 1)</code>.<br>
+</div>
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a array -> int -> 'a -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.set a n x</code> modifies array <code class="code">a</code> in place, replacing
+   element number <code class="code">n</code> with <code class="code">x</code>.
+   You can also write <code class="code">a.(n) &lt;- x</code> instead of <code class="code"><span class="constructor">Array</span>.set a n x</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> is outside the range 0 to <code class="code"><span class="constructor">Array</span>.length a - 1</code>.<br>
+</div>
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a -> 'a array</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.make n x</code> returns a fresh array of length <code class="code">n</code>,
+   initialized with <code class="code">x</code>.
+   All the elements of this new array are initially
+   physically equal to <code class="code">x</code> (in the sense of the <code class="code">==</code> predicate).
+   Consequently, if <code class="code">x</code> is mutable, it is shared among all elements
+   of the array, and modifying <code class="code">x</code> through one of the array entries
+   will modify all other entries at the same time.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; <span class="constructor">Sys</span>.max_array_length</code>.
+   If the value of <code class="code">x</code> is a floating-point number, then the maximum
+   size is only <code class="code"><span class="constructor">Sys</span>.max_array_length / 2</code>.<br>
+</div>
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> 'a -> 'a array</code></pre><div class="info">
+<span class="warning">Deprecated.</span><code class="code"><span class="constructor">Array</span>.create</code> is an alias for <code class="code"><span class="constructor">Array</span>.make</code>.<br>
+</div>
+<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a array</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.init n f</code> returns a fresh array of length <code class="code">n</code>,
+   with element number <code class="code">i</code> initialized to the result of <code class="code">f i</code>.
+   In other terms, <code class="code"><span class="constructor">Array</span>.init n f</code> tabulates the results of <code class="code">f</code>
+   applied to the integers <code class="code">0</code> to <code class="code">n-1</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; <span class="constructor">Sys</span>.max_array_length</code>.
+   If the return type of <code class="code">f</code> is <code class="code">float</code>, then the maximum
+   size is only <code class="code"><span class="constructor">Sys</span>.max_array_length / 2</code>.<br>
+</div>
+<pre><span id="VALmake_matrix"><span class="keyword">val</span> make_matrix</span> : <code class="type">int -> int -> 'a -> 'a array array</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.make_matrix dimx dimy e</code> returns a two-dimensional array
+   (an array of arrays) with first dimension <code class="code">dimx</code> and
+   second dimension <code class="code">dimy</code>. All the elements of this new matrix
+   are initially physically equal to <code class="code">e</code>.
+   The element (<code class="code">x,y</code>) of a matrix <code class="code">m</code> is accessed
+   with the notation <code class="code">m.(x).(y)</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">dimx</code> or <code class="code">dimy</code> is negative or
+   greater than <code class="code"><span class="constructor">Sys</span>.max_array_length</code>.
+   If the value of <code class="code">e</code> is a floating-point number, then the maximum
+   size is only <code class="code"><span class="constructor">Sys</span>.max_array_length / 2</code>.<br>
+</div>
+<pre><span id="VALcreate_matrix"><span class="keyword">val</span> create_matrix</span> : <code class="type">int -> int -> 'a -> 'a array array</code></pre><div class="info">
+<span class="warning">Deprecated.</span><code class="code"><span class="constructor">Array</span>.create_matrix</code> is an alias for <code class="code"><span class="constructor">Array</span>.make_matrix</code>.<br>
+</div>
+<pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a array -> 'a array -> 'a array</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.append v1 v2</code> returns a fresh array containing the
+   concatenation of the arrays <code class="code">v1</code> and <code class="code">v2</code>.<br>
+</div>
+<pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a array list -> 'a array</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">Array</span>.append</code>, but concatenates a list of arrays.<br>
+</div>
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a array -> int -> int -> 'a array</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.sub a start len</code> returns a fresh array of length <code class="code">len</code>,
+   containing the elements number <code class="code">start</code> to <code class="code">start + len - 1</code>
+   of array <code class="code">a</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> and <code class="code">len</code> do not
+   designate a valid subarray of <code class="code">a</code>; that is, if
+   <code class="code">start &lt; 0</code>, or <code class="code">len &lt; 0</code>, or <code class="code">start + len &gt; <span class="constructor">Array</span>.length a</code>.<br>
+</div>
+<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a array -> 'a array</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.copy a</code> returns a copy of <code class="code">a</code>, that is, a fresh array
+   containing the same elements as <code class="code">a</code>.<br>
+</div>
+<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">'a array -> int -> int -> 'a -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.fill a ofs len x</code> modifies the array <code class="code">a</code> in place,
+   storing <code class="code">x</code> in elements number <code class="code">ofs</code> to <code class="code">ofs + len - 1</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">ofs</code> and <code class="code">len</code> do not
+   designate a valid subarray of <code class="code">a</code>.<br>
+</div>
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">'a array -> int -> 'a array -> int -> int -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.blit v1 o1 v2 o2 len</code> copies <code class="code">len</code> elements
+   from array <code class="code">v1</code>, starting at element number <code class="code">o1</code>, to array <code class="code">v2</code>,
+   starting at element number <code class="code">o2</code>. It works correctly even if
+   <code class="code">v1</code> and <code class="code">v2</code> are the same array, and the source and
+   destination chunks overlap.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">o1</code> and <code class="code">len</code> do not
+   designate a valid subarray of <code class="code">v1</code>, or if <code class="code">o2</code> and <code class="code">len</code> do not
+   designate a valid subarray of <code class="code">v2</code>.<br>
+</div>
+<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a array -> 'a list</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.to_list a</code> returns the list of all the elements of <code class="code">a</code>.<br>
+</div>
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a array</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.of_list l</code> returns a fresh array containing the elements
+   of <code class="code">l</code>.<br>
+</div>
+<pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a array -> 'a</code></pre><div class="info">
+<code class="code">max a</code> returns the largest value in <code class="code">a</code> as judged by
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+<b>Raises</b> <code>Invalid_argument</code> on empty input<br>
+</div>
+<pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a array -> 'a</code></pre><div class="info">
+<code class="code">min a</code> returns the smallest value in <code class="code">a</code> as judged by
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+<b>Raises</b> <code>Invalid_argument</code> on empty input<br>
+</div>
+<pre><span id="VALleft"><span class="keyword">val</span> left</span> : <code class="type">'a array -> int -> 'a array</code></pre><div class="info">
+<code class="code">left r len</code> returns the array containing the <code class="code">len</code> first
+   characters of <code class="code">r</code>. If <code class="code">r</code> contains less than <code class="code">len</code> characters, it
+   returns <code class="code">r</code>.
+<p>
+
+   Examples:
+   <code class="code"><span class="constructor">Array</span>.left [|0;1;2;3;4;5;6|] 4 = [|0;1;2;3|]</code>
+   <code class="code"><span class="constructor">Array</span>.left [|1;2;3|] 0 = [||]</code>
+   <code class="code"><span class="constructor">Array</span>.left [|1;2;3|] 10 = [|1;2;3|]</code><br>
+</div>
+<pre><span id="VALright"><span class="keyword">val</span> right</span> : <code class="type">'a array -> int -> 'a array</code></pre><div class="info">
+<code class="code">left r len</code> returns the array containing the <code class="code">len</code> last characters of <code class="code">r</code>.
+   If <code class="code">r</code> contains less than <code class="code">len</code> characters, it returns <code class="code">r</code>.
+<p>
+
+   Example: <code class="code"><span class="constructor">Array</span>.right [|1;2;3;4;5;6|] 4 = [|3;4;5;6|]</code><br>
+</div>
+<pre><span id="VALhead"><span class="keyword">val</span> head</span> : <code class="type">'a array -> int -> 'a array</code></pre><div class="info">
+as <a href="BatArray.html#VALleft"><code class="code"><span class="constructor">BatArray</span>.left</code></a><br>
+</div>
+<pre><span id="VALtail"><span class="keyword">val</span> tail</span> : <code class="type">'a array -> int -> 'a array</code></pre><div class="info">
+<code class="code">tail r pos</code> returns the array containing all but the <code class="code">pos</code> first characters of <code class="code">r</code>
+<p>
+
+   Example: <code class="code"><span class="constructor">Array</span>.tail [|1;2;3;4;5;6|] 4 = [|5;6|]</code><br>
+</div>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a array -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.iter f a</code> applies function <code class="code">f</code> in turn to all
+   the elements of <code class="code">a</code>.  It is equivalent to
+   <code class="code">f a.(0); f a.(1); ...; f a.(<span class="constructor">Array</span>.length a - 1); ()</code>.<br>
+</div>
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a array -> 'b array</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.map f a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
+   and builds an array with the results returned by <code class="code">f</code>:
+   <code class="code">[| f a.(0); f a.(1); ...; f a.(<span class="constructor">Array</span>.length a - 1) |]</code>.<br>
+</div>
+<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a array -> unit</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">Array</span>.iter</code>, but the
+   function is applied to the index of the element as first argument,
+   and the element itself as second argument.<br>
+</div>
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -> 'a array -> 'b array</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">Array</span>.map</code>, but the
+   function is applied to the index of the element as first argument,
+   and the element itself as second argument.<br>
+</div>
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b array -> 'a</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.fold_left f x a</code> computes
+   <code class="code">f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)</code>,
+   where <code class="code">n</code> is the length of the array <code class="code">a</code>.<br>
+</div>
+<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('b -> 'a -> 'a) -> 'b array -> 'a -> 'a</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.fold_right f a x</code> computes
+   <code class="code">f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))</code>,
+   where <code class="code">n</code> is the length of the array <code class="code">a</code>.<br>
+</div>
+<pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('a -> 'a) -> 'a array -> unit</code></pre><div class="info">
+<code class="code">modify f a</code> replaces every element <code class="code">x</code> of <code class="code">a</code> with <code class="code">f x</code>.<br>
+</div>
+<pre><span id="VALmodifyi"><span class="keyword">val</span> modifyi</span> : <code class="type">(int -> 'a -> 'a) -> 'a array -> unit</code></pre><div class="info">
+Same as <a href="BatArray.html#VALmodify"><code class="code"><span class="constructor">BatArray</span>.modify</code></a>, but the function is applied to the index of
+    the element as the first argument, and the element itself as
+    the second argument.<br>
+</div>
+<pre><span id="VALfold_lefti"><span class="keyword">val</span> fold_lefti</span> : <code class="type">('a -> int -> 'b -> 'a) -> 'a -> 'b array -> 'a</code></pre><div class="info">
+As <code class="code">fold_left</code>, but with the index of the element as additional argument<br>
+</div>
+<pre><span id="VALfold_righti"><span class="keyword">val</span> fold_righti</span> : <code class="type">(int -> 'b -> 'a -> 'a) -> 'b array -> 'a -> 'a</code></pre><div class="info">
+As <code class="code">fold_right</code>, but with the index of the element as additional argument<br>
+</div>
+<pre><span id="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">('a -> 'a -> 'a) -> 'a array -> 'a</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.reduce f a</code> is <code class="code">fold_left f a.(0) [|a.(1); ..; a.(n-1)|]</code>.  This
+    is useful for merging a group of things that have no
+    reasonable default value to return if the group is empty.<br>
+<b>Raises</b> <code>Invalid_argument</code> on empty arrays.<br>
+</div>
+<br>
+<span id="6_Sorting"><h6>Sorting</h6></span><br>
+<pre><span id="VALsort"><span class="keyword">val</span> sort</span> : <code class="type">('a -> 'a -> int) -> 'a array -> unit</code></pre><div class="info">
+Sort an array in increasing order according to a comparison
+   function.  The comparison function must return 0 if its arguments
+   compare as equal, a positive integer if the first is greater,
+   and a negative integer if the first is smaller (see below for a
+   complete specification).  For example, <code class="code"><span class="constructor">Pervasives</span>.compare</code> is
+   a suitable comparison function, provided there are no floating-point
+   NaN values in the data.  After calling <code class="code"><span class="constructor">Array</span>.sort</code>, the
+   array is sorted in place in increasing order.
+   <code class="code"><span class="constructor">Array</span>.sort</code> is guaranteed to run in constant heap space
+   and (at most) logarithmic stack space.
+<p>
+
+   The current implementation uses Heap Sort.  It runs in constant
+   stack space.
+<p>
+
+   Specification of the comparison function:
+   Let <code class="code">a</code> be the array and <code class="code">cmp</code> the comparison function.  The following
+   must be true for all x, y, z in a :<ul>
+<li>  <code class="code">cmp x y</code> &gt; 0 if and only if <code class="code">cmp y x</code> &lt; 0</li>
+<li>  if <code class="code">cmp x y</code> &gt;= 0 and <code class="code">cmp y z</code> &gt;= 0 then <code class="code">cmp x z</code> &gt;= 0</li>
+</ul>
+
+   When <code class="code"><span class="constructor">Array</span>.sort</code> returns, <code class="code">a</code> contains the same elements as before,
+   reordered in such a way that for all i and j valid indices of <code class="code">a</code> :<ul>
+<li>  <code class="code">cmp a.(i) a.(j)</code> &gt;= 0 if and only if i &gt;= j</li>
+</ul>
+<br>
+</div>
+<pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">('a -> 'a -> int) -> 'a array -> unit</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">Array</span>.sort</code>, but the sorting algorithm is stable (i.e.
+   elements that compare equal are kept in their original order) and
+   not guaranteed to run in constant heap space.
+<p>
+
+   The current implementation uses Merge Sort. It uses <code class="code">n/2</code>
+   words of heap space, where <code class="code">n</code> is the length of the array.
+   It is usually faster than the current implementation of <code class="code"><span class="constructor">Array</span>.sort</code>.<br>
+</div>
+<pre><span id="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">('a -> 'a -> int) -> 'a array -> unit</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">Array</span>.sort</code> or <code class="code"><span class="constructor">Array</span>.stable_sort</code>, whichever is faster
+    on typical input.<br>
+</div>
+<pre><span id="VALdecorate_stable_sort"><span class="keyword">val</span> decorate_stable_sort</span> : <code class="type">('a -> 'b) -> 'a array -> 'a array</code></pre><div class="info">
+<code class="code">decorate_stable_sort f a</code> returns a sorted copy of <code class="code">a</code> such that if <code class="code">f
+    x &lt; f y</code> then <code class="code">x</code> is earlier in the result than <code class="code">y</code>.  This
+    function is useful when <code class="code">f</code> is expensive, as it only computes <code class="code">f
+    x</code> once for each element in the array.  See
+    <code class="code">:[http://en.wikipedia.org/wiki/<span class="constructor">Schwartzian_transform</span>]<span class="constructor">Schwartzian</span>
+    <span class="constructor">Transform</span></code>.
+<p>
+
+    It is unnecessary to have an additional comparison function as
+    argument, as the builtin <code class="code"><span class="constructor">Pervasives</span>.compare</code> is used to compare
+    the <code class="code"><span class="keywordsign">'</span>b</code> values.  This is deemed sufficient.<br>
+</div>
+<pre><span id="VALdecorate_fast_sort"><span class="keyword">val</span> decorate_fast_sort</span> : <code class="type">('a -> 'b) -> 'a array -> 'a array</code></pre><div class="info">
+As <code class="code"><span class="constructor">Array</span>.decorate_stable_sort</code>, but uses fast_sort internally.<br>
+</div>
+<br>
+<span id="6_Operationsontwoarrays"><h6>Operations on two arrays</h6></span><br>
+<pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">('a -> 'b -> unit) -> 'a array -> 'b array -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.iter2 f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]</code>
+    performs calls <code class="code">f a0 b0; f a1 b1; ...; f an bn</code> in that order.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the two arrays have different lengths.<br>
+</div>
+<pre><span id="VALiter2i"><span class="keyword">val</span> iter2i</span> : <code class="type">(int -> 'a -> 'b -> unit) -> 'a array -> 'b array -> unit</code></pre><div class="info">
+<code class="code"><span class="constructor">Array</span>.iter2i f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]</code>
+    performs calls <code class="code">f 0 a0 b0; f 1 a1 b1; ...; f n an bn</code> in that
+    order.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the two arrays have different
+    lengths.<br>
+</div>
+<pre><span id="VALfor_all2"><span class="keyword">val</span> for_all2</span> : <code class="type">('a -> 'b -> bool) -> 'a array -> 'b array -> bool</code></pre><div class="info">
+As <code class="code"><span class="constructor">Array</span>.for_all</code> but on two arrays.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the two arrays have different lengths.<br>
+</div>
+<pre><span id="VALexists2"><span class="keyword">val</span> exists2</span> : <code class="type">('a -> 'b -> bool) -> 'a array -> 'b array -> bool</code></pre><div class="info">
+As <code class="code"><span class="constructor">Array</span>.exists</code> but on two arrays.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the two arrays have different lengths.<br>
+</div>
+<pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array</code></pre><div class="info">
+As <code class="code"><span class="constructor">Array</span>.map</code> but on two arrays.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the two arrays have different lengths.<br>
+</div>
+<br>
+<span id="6_Predicates"><h6>Predicates</h6></span><br>
+<pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> 'a array -> bool</code></pre><div class="info">
+<code class="code">for_all p [|a0; a1; ...; an|]</code> checks if all elements of the
+    array satisfy the predicate <code class="code">p</code>.  That is, it returns <code class="code"> (p a0)
+    <span class="keywordsign">&amp;&amp;</span> (p a1) <span class="keywordsign">&amp;&amp;</span> ... <span class="keywordsign">&amp;&amp;</span> (p an)</code>.<br>
+</div>
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> bool) -> 'a array -> bool</code></pre><div class="info">
+<code class="code">exists p [|a0; a1; ...; an|]</code> checks if at least one element of
+    the array satisfies the predicate <code class="code">p</code>.  That is, it returns <code class="code">(p
+    a0) <span class="keywordsign">||</span> (p a1) <span class="keywordsign">||</span> ... <span class="keywordsign">||</span> (p an)</code>.<br>
+</div>
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a array -> 'a</code></pre><div class="info">
+<code class="code">find p a</code> returns the first element of array <code class="code">a</code> that
+    satisfies the predicate <code class="code">p</code>.<br>
+<b>Raises</b> <code>Not_found</code> if there is no value that satisfies <code class="code">p</code> in
+    the array <code class="code">a</code>.<br>
+</div>
+<pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a -> 'a array -> bool</code></pre><div class="info">
+<code class="code">mem m a</code> is true if and only if <code class="code">m</code> is equal to an element of <code class="code">a</code>.<br>
+</div>
+<pre><span id="VALmemq"><span class="keyword">val</span> memq</span> : <code class="type">'a -> 'a array -> bool</code></pre><div class="info">
+Same as <code class="code"><span class="constructor">Array</span>.mem</code> but uses physical equality instead of
+    structural equality to compare array elements.<br>
+</div>
+<pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">('a -> bool) -> 'a array -> int</code></pre><div class="info">
+<code class="code">findi p a</code> returns the index of the first element of array <code class="code">a</code>
+    that satisfies the predicate <code class="code">p</code>.<br>
+<b>Raises</b> <code>Not_found</code> if there is no value that satisfies <code class="code">p</code> in the
+    array <code class="code">a</code>.<br>
+</div>
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a array -> 'a array</code></pre><div class="info">
+<code class="code">filter p a</code> returns all the elements of the array <code class="code">a</code>
+    that satisfy the predicate <code class="code">p</code>.  The order of the elements
+    in the input array is preserved.<br>
+</div>
+<pre><span id="VALfilteri"><span class="keyword">val</span> filteri</span> : <code class="type">(int -> 'a -> bool) -> 'a array -> 'a array</code></pre><div class="info">
+As <code class="code">filter</code> but with the index passed to the predicate.<br>
+</div>
+<pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a array -> 'b array</code></pre><div class="info">
+<code class="code">filter_map f e</code> returns an array consisting in all elements
+    <code class="code">x</code> such that <code class="code">f y</code> returns <code class="code"><span class="constructor">Some</span> x</code> , where <code class="code">y</code> is an element
+    of <code class="code">e</code>.<br>
+</div>
+<pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">('a -> bool) -> 'a array -> 'a array</code></pre><div class="info">
+<code class="code">find_all</code> is another name for <code class="code"><span class="constructor">Array</span>.filter</code>.<br>
+</div>
+<pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">('a -> bool) -> 'a array -> 'a array * 'a array</code></pre><div class="info">
+<code class="code">partition p a</code> returns a pair of arrays <code class="code">(a1, a2)</code>, where
+    <code class="code">a1</code> is the array of all the elements of <code class="code">a</code> that
+    satisfy the predicate <code class="code">p</code>, and <code class="code">a2</code> is the array of all the
+    elements of <code class="code">a</code> that do not satisfy <code class="code">p</code>.
+    The order of the elements in the input array is preserved.<br>
+</div>
+<br>
+<span id="6_Arraytransformations"><h6>Array transformations</h6></span><br>
+<pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a array -> 'a array</code></pre><div class="info">
+Array reversal.<br>
+</div>
+<pre><span id="VALrev_in_place"><span class="keyword">val</span> rev_in_place</span> : <code class="type">'a array -> unit</code></pre><div class="info">
+In-place array reversal.  The array argument is updated.<br>
+</div>
+<br>
+<span id="6_Conversions"><h6>Conversions</h6></span><br>
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a array -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Returns an enumeration of the elements of an array.
+    Behavior of the enumeration is undefined if the contents of the array changes afterwards.<br>
+</div>
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a array</code></pre><div class="info">
+Build an array from an enumeration.<br>
+</div>
+<pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">'a array -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Returns an enumeration of the elements of an array, from last to first.<br>
+</div>
+<pre><span id="VALof_backwards"><span class="keyword">val</span> of_backwards</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a array</code></pre><div class="info">
+Build an array from an enumeration, with the first element of
+    the enumeration as the last element of the array and vice
+    versa.<br>
+</div>
+<br>
+<span id="6_Utilities"><h6>Utilities</h6></span><br>
+<pre><span id="VALrange"><span class="keyword">val</span> range</span> : <code class="type">'a array -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<code class="code">range a</code> returns an enumeration of all valid indexes into the given
+    array.  For example, <code class="code">range [|2;4;6;8|] = 0--3</code>.<br>
+</div>
+<pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type">'a array -> 'a -> int -> 'a array</code></pre><div class="info">
+<code class="code">insert xs x i</code> returns a copy of <code class="code">xs</code> except the value <code class="code">x</code> is
+    inserted in position <code class="code">i</code> (and all later indices are shifted to the
+    right).<br>
+</div>
+<br>
+<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a> -> ('a <a href="BatArray.html#TYPEt">t</a>, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
+Print the contents of an array, with <code class="code">~first</code> preceeding the first
+    item (default: "<code class="code"><span class="keywordsign">|</span><span class="string">"), [~last] following the last item (default:
+    "</span><span class="keywordsign">|</span></code>") and <code class="code">~sep</code> separating items (default: "; ").  A printing
+    function must be provided to print the items in the array.
+<p>
+
+    Example: IO.to_string (Array.print Int.print) <code class="code"><span class="keywordsign">|</span>2;4;66<span class="keywordsign">|</span></code> = "<code class="code"><span class="keywordsign">|</span>2; 4; 66<span class="keywordsign">|</span></code>"<br>
+</div>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a array <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><div class="info">
+<code class="code">compare c</code> generates the lexicographical order on arrays induced
+    by <code class="code">c</code>. That is, given a comparison function for the elements of
+    an array, this will return a comparison function for arrays of
+    that type.<br>
+</div>
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a array <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><div class="info">
+Hoist an element comparison function to compare arrays of those
+    elements, with shorter arrays less than longer ones, and
+    lexicographically for arrays of the same size.  This is a
+    different ordering than <code class="code">compare</code>, but is often faster.<br>
+</div>
+<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a array <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><div class="info">
+Hoist a equality test for elements to arrays.  Arrays are only
+    equal if their lengths are the same and corresponding elements
+    test equal.<br>
+</div>
+<br>
+<span id="6_Overridemodules"><h6>Override modules</h6></span><br>
+<br>
+The following modules replace functions defined in <code class="code"><span class="constructor">Array</span></code> with
+    functions behaving slightly differently but having the same
+    name. This is by design: the functions are meant to override the
+    corresponding functions of <code class="code"><span class="constructor">Array</span></code>.<br>
+<pre><span class="keyword">module</span> <a href="BatArray.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Operations on <code class="code"><span class="constructor">Array</span></code> without exceptions.
+</div>
+<pre><span class="keyword">module</span> <a href="BatArray.Labels.html">Labels</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Operations on <code class="code"><span class="constructor">Array</span></code> with labels.
+</div>
+<pre><span class="keyword">module</span> <a href="BatArray.Cap.html">Cap</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Capabilities for arrays.
+</div>
+<pre><span class="keyword">module</span> <a href="BatArray.Incubator.html">Incubator</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

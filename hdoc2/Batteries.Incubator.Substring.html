@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><title>Batteries user guide : Batteries.Incubator.Substring</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Incubator.Substring</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="Batteries.Incubator.Log.html" title="Batteries.Incubator.Log">Previous</a>
@@ -138,19 +136,20 @@
 <p>
 
       <code class="code">substring s i n</code> creates the substring <code class="code">(s, i, n)</code>, consisting
-      of the substring of s with length n starting at i.  Raises
-      Inavlid_argument if <code class="code">i&lt;0</code> or <code class="code">n&lt;0</code> or <code class="code">i+n &gt; size s</code>.  Equivalent to
+      of the substring of s with length n starting at i.<br>
+<b>Raises</b> <code>Inavlid_argument</code> if <code class="code">i&lt;0</code> or <code class="code">n&lt;0</code> or <code class="code">i+n &gt; size s</code>.  Equivalent to
       <code class="code">extract s i (<span class="constructor">Some</span> n)</code>.<br>
 </div>
 <pre><span id="VALextract"><span class="keyword">val</span> extract</span> : <code class="type">string -> int -> int option -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">extract s i <span class="constructor">None</span></code> creates the substring (s, i, size s-i)
-      consisting of the tail of s starting at i.  Raises
-      <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">i&lt;0</code> or <code class="code">i &gt; size s</code>.
+      consisting of the tail of s starting at i.<br>
+<b>Raises</b><ul><li><code>Invalid_argument</code> if <code class="code">i&lt;0</code> or <code class="code">i &gt; size s</code>.
 <p>
 
       <code class="code">extract s i (<span class="constructor">Some</span> n)</code> creates the substring (s, i, n), consisting
-      of the substring of s with length n starting at i.  Raises
-      <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">i&lt;0</code> or <code class="code">n&lt;0</code> or <code class="code">i+n &gt; size s</code>.<br>
+      of the substring of s with length n starting at i.</li>
+<li><code>Invalid_argument</code> if <code class="code">i&lt;0</code> or <code class="code">n&lt;0</code> or <code class="code">i+n &gt; size s</code>.</li>
+</ul>
 </div>
 <pre><span id="VALall"><span class="keyword">val</span> all</span> : <code class="type">string -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">all s</code> is the substring <code class="code">(s, 0, size s)</code>.<br>
@@ -174,19 +173,21 @@
 </div>
 <pre><span id="VALtriml"><span class="keyword">val</span> triml</span> : <code class="type">int -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">triml k sus</code> returns sus less its leftmost k characters; or the
-      empty string at the end of sus if it has less than k characters.
-      Raises <code class="code"><span class="constructor">Invalid_argument</span></code>  if <code class="code">k &lt; 0</code>, even in the partial application
+      empty string at the end of sus if it has less than k characters.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">k &lt; 0</code>, even in the partial application
       <code class="code">triml k</code>.<br>
 </div>
 <pre><span id="VALtrimr"><span class="keyword">val</span> trimr</span> : <code class="type">int -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">trimr k sus</code> returns sus less its rightmost k characters; or the
       empty string at the beginning of sus if it has less than k
-      characters.  Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">k &lt; 0</code>, even in the partial
+      characters.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">k &lt; 0</code>, even in the partial
       application <code class="code">trimr k</code>.<br>
 </div>
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> char</code></pre><div class="info">
 <code class="code">sub sus k</code> returns the k'th character of the substring; that
-      is, s(i+k) where sus = (s, i, n).  Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if
+      is, s(i+k) where sus = (s, i, n).<br>
+<b>Raises</b> <code>Invalid_argument</code> if
       <code class="code">k&lt;0</code> or <code class="code">k&gt;=n</code>.<br>
 </div>
 <pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int</code></pre><div class="info">
@@ -197,13 +198,15 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
 </div>
 <pre><span id="VALslice"><span class="keyword">val</span> slice</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> int option -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">slice sus i' <span class="constructor">None</span></code> returns the substring <code class="code">(s, i+i', n-i')</code>,
-      where <code class="code">sus = (s, i, n)</code>.  Raises Invalid_argument if <code class="code">i' &lt; 0</code> or
-      <code class="code">i' &gt; n</code>.
+      where <code class="code">sus = (s, i, n)</code>.<br>
+<b>Raises</b><ul><li><code>Invalid_argument</code> if <code class="code">i' &lt; 0</code> or <code class="code">i' &gt; n</code>.
 <p>
 
       <code class="code">slice sus i' (<span class="constructor">Some</span> n')</code> returns the substring <code class="code">(s, i+i', n')</code>,
-      where <code class="code">sus</code> = <code class="code">(s, i, n)</code>.  Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">i' &lt; 0</code>
-      or <code class="code">n' &lt; 0</code> or <code class="code">i'+n' &gt;= n</code>.<br>
+      where <code class="code">sus</code> = <code class="code">(s, i, n)</code>.</li>
+<li><code>Invalid_argument</code> if <code class="code">i' &lt; 0</code>
+      or <code class="code">n' &lt; 0</code> or <code class="code">i'+n' &gt;= n</code>.</li>
+</ul>
 </div>
 <pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> list -> string</code></pre><div class="info">
 <code class="code">concat suss</code> returns a string consisting of the concatenation of
@@ -226,22 +229,28 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
     (to_string sus2)</code>.<br>
 </div>
 <pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> char -> int</code></pre><div class="info">
-<code class="code">index sus c</code> returns the index of the first occurence of <code class="code">c</code> in <code class="code">sus</code> or
-    raise <code class="code"><span class="constructor">Not_found</span></code> otherwise.<br>
+<code class="code">index sus c</code> returns the index of the first occurence of <code class="code">c</code> in <code class="code">sus</code> or<br>
+<b>Raises</b> <code>Not_found</code> otherwise.<br>
 </div>
 <pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> char -> int</code></pre><div class="info">
 <code class="code">index_from sus i c</code> returns the index of the first occurence of <code class="code">c</code> in
-    <code class="code">sus</code> after the index <code class="code">i</code> or raise <code class="code"><span class="constructor">Not_found</span></code> otherwise. If <code class="code">i</code> is beyond
-    the range of <code class="code">sus</code>, raises <code class="code"><span class="constructor">Invalid_argument</span></code>. It is equivalent to <code class="code">i + index (triml i sus) c</code>.<br>
+    <code class="code">sus</code> after the index <code class="code">i</code> or<br>
+<b>Raises</b><ul><li><code>Not_found</code> otherwise. If <code class="code">i</code> is beyond
+    the range of <code class="code">sus</code>,</li>
+<li><code>Invalid_argument.</code> It is equivalent to <code class="code">i + index (triml i sus) c</code>.</li>
+</ul>
 </div>
 <pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> char -> int</code></pre><div class="info">
-<code class="code">rindex sus c</code> returns the index of the last occurence of <code class="code">c</code> in <code class="code">sus</code> or
-    raise <code class="code"><span class="constructor">Not_found</span></code> otherwise.<br>
+<code class="code">rindex sus c</code> returns the index of the last occurence of <code class="code">c</code> in <code class="code">sus</code> or<br>
+<b>Raises</b> <code>Not_found</code> otherwise.<br>
 </div>
 <pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> char -> int</code></pre><div class="info">
 <code class="code">index_from sus i c</code> returns the index of the last occurence of <code class="code">c</code> in <code class="code">sus</code>
-    before the index <code class="code">i</code> or raise <code class="code"><span class="constructor">Not_found</span></code> otherwise. If <code class="code">i</code> is beyond the
-    range of <code class="code">sus</code>, raises <code class="code"><span class="constructor">Invalid_argument</span></code>. It is equivalent to <code class="code">rindex (trimr i sus) c</code>.<br>
+    before the index <code class="code">i</code> or<br>
+<b>Raises</b><ul><li><code>Not_found</code> otherwise. If <code class="code">i</code> is beyond the
+    range of <code class="code">sus</code>,</li>
+<li><code>Invalid_argument.</code> It is equivalent to <code class="code">rindex (trimr i sus) c</code>.</li>
+</ul>
 </div>
 <pre><span id="VALdropl"><span class="keyword">val</span> dropl</span> : <code class="type">(char -> bool) -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">dropl p sus</code> drops the longest prefix (left substring) of <code class="code">sus</code>
@@ -303,18 +312,16 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
 <pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> * <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">split_at sus k</code> returns the pair <code class="code">(sus1, sus2)</code> of substrings,
     where <code class="code">sus1</code> contains the first <code class="code">k</code> characters of <code class="code">sus</code>, and
-    <code class="code">sus2</code> contains the rest.  Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">k &lt; 0</code> or
+    <code class="code">sus2</code> contains the rest.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">k &lt; 0</code> or
     <code class="code">k &gt; size sus</code>.<br>
 </div>
 <pre><span id="VALspan"><span class="keyword">val</span> span</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a> -> <a href="BatSubstring.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">span sus1 sus2</code> returns a substring spanning from the start of
     <code class="code">sus1</code> to the end of <code class="code">sus2</code>, provided this is well-defined: <code class="code">sus1</code>
     and <code class="code">sus2</code> must have the same underlying string, and the start of
-    <code class="code">sus1</code> must not be to the right of the end of <code class="code">sus2</code>; otherwise
-    raises <code class="code"><span class="constructor">Invalid_argument</span></code>.
-<p>
-
-    More precisely, if <code class="code">base sus1 = (s,i,n)</code> and <code class="code">base sus2 =
+    <code class="code">sus1</code> must not be to the right of the end of <code class="code">sus2</code>; otherwise<br>
+<b>Raises</b> <code>Invalid_argument.</code> More precisely, if <code class="code">base sus1 = (s,i,n)</code> and <code class="code">base sus2 =
     (s',i',n')</code> and <code class="code">s = s'</code> and <code class="code">i &lt;= i'+n'</code>, then <code class="code">base (span sus1
     sus2) = (s, i, i'+n'-i)</code>.  This may be used to compute <code class="code">span</code>,
     <code class="code">union</code>, and <code class="code">intersection</code>.<br>

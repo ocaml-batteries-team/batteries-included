@@ -5,7 +5,7 @@
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatPathGen.html">
-<link rel="next" href="BatPrint.html">
+<link rel="next" href="BatPrintexc.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,26 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="String operations" rel="Section" href="#6_Stringoperations">
-<link title="String conversion functions" rel="Section" href="#6_Stringconversionfunctions">
-<link title="List operations" rel="Section" href="#6_Listoperations">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="List operations" rel="Section" href="#6_Listoperations">
 <link title="Input/output" rel="Section" href="#6_Inputoutput">
 <link title="Fundamental functions and operators" rel="Section" href="#6_Fundamentalfunctionsandoperators">
 <link title="Enumerations" rel="Section" href="#6_Enumerations">
@@ -123,7 +119,7 @@
 <body>
 <div class="navbar"><a class="pre" href="BatPathGen.html" title="BatPathGen">Previous</a>
 &nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatPrint.html" title="BatPrint">Next</a>
+&nbsp;<a class="post" href="BatPrintexc.html" title="BatPrintexc">Next</a>
 </div>
 <h1>Module <a href="type_BatPervasives.html">BatPervasives</a></h1>
 <pre><span class="keyword">module</span> BatPervasives: <code class="code"><span class="keyword">sig</span></code> <a href="BatPervasives.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><span id="6_Additionalfunctions"><h6>Additional functions.</h6></span><br>
@@ -141,31 +137,19 @@ The initially opened module.
     This module is automatically opened at the beginning of each compilation.
     All components of this module can therefore be referred by their short
     name, without prefixing them by <code class="code"><span class="constructor">BatPervasives</span></code>.<br>
-<br>
-<span id="6_Stringoperations"><h6>String operations</h6></span>
-<p>
-
-   More string operations are provided in module <a href="BatString.html"><code class="code"><span class="constructor">BatString</span></code></a>.<br>
-<pre><span id="VALuppercase"><span class="keyword">val</span> uppercase</span> : <code class="type">string -> string</code></pre><div class="info">
-Return a copy of the argument, with all lowercase letters
-    translated to uppercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set.<br>
+<pre><span id="VALinput_lines"><span class="keyword">val</span> input_lines</span> : <code class="type">Pervasives.in_channel -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Returns an enumeration over lines of an input channel, as read by the
+ <code class="code">input_line</code> function.<br>
 </div>
-<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">string -> string</code></pre><div class="info">
-Return a copy of the argument, with all uppercase letters
-    translated to lowercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set.<br>
+<pre><span id="VALinput_chars"><span class="keyword">val</span> input_chars</span> : <code class="type">Pervasives.in_channel -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+Returns an enumeration over characters of an input channel.<br>
 </div>
-<br>
-<span id="6_Stringconversionfunctions"><h6>String conversion functions</h6></span>
-<p>
-
-    These are the most common string conversion functions.  For
-    additional string conversion functions, see in the corresponding
-    module (e.g. for conversion between <code class="code">int32</code> and <code class="code">string</code>,
-    see module <code class="code"><span class="constructor">Int32</span></code>).<br>
-<pre><span id="VALstring_of_char"><span class="keyword">val</span> string_of_char</span> : <code class="type">char -> string</code></pre><div class="info">
-creates a string from a char.<br>
+<pre><span id="VALinput_list"><span class="keyword">val</span> input_list</span> : <code class="type">Pervasives.in_channel -> string list</code></pre><div class="info">
+Returns the list of lines read from an input channel.<br>
+</div>
+<pre><span id="VALinput_all"><span class="keyword">val</span> input_all</span> : <code class="type">Pervasives.in_channel -> string</code></pre><div class="info">
+Return the whole contents of an input channel as a single
+ string.<br>
 </div>
 <pre><span id="VALdump"><span class="keyword">val</span> dump</span> : <code class="type">'a -> string</code></pre><div class="info">
 Attempt to convert a value to a string.
@@ -330,14 +314,14 @@ Write one integer in binary format (4 bytes, big-endian)
       The given integer is taken modulo 2<sup class="superscript">32</sup>.
       The only reliable way to read it back is through the
       <code class="code"><span class="constructor">Pervasives</span>.input_binary_int</code> function. The format is compatible across
-      all machines for a given version of Objective Caml.<br>
+      all machines for a given version of OCaml.<br>
 </div>
 <pre><span id="VALoutput_binary_float"><span class="keyword">val</span> output_binary_float</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> float -> unit</code></pre><div class="info">
 Write one float in binary format (8 bytes, IEEE 754 double format)
       on the given output channel.
       The only reliable way to read it back is through the
       <code class="code"><span class="constructor">Pervasives</span>.input_binary_float</code> function. The format is compatible across
-      all machines for a given version of Objective Caml.<br>
+      all machines for a given version of OCaml.<br>
 </div>
 <pre><span id="VALoutput_value"><span class="keyword">val</span> output_value</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'a -> unit</code></pre><div class="info">
 Write the representation of a structured value of any type

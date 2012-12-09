@@ -72,7 +72,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -87,24 +86,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Usual operations" rel="Section" href="#6_Usualoperations">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Usual operations" rel="Section" href="#6_Usualoperations">
 <link title="Operations specific to floating-point numbers" rel="Section" href="#6_Operationsspecifictofloatingpointnumbers">
 <link title="Constants" rel="Section" href="#6_Constants">
 <link title="Operations on the internal representation of floating-point
@@ -248,6 +246,8 @@ Round the given float to an integer value.
 </div>
 <pre><span id="VALroot"><span class="keyword">val</span> root</span> : <code class="type">float -> int -> float</code></pre><div class="info">
 <code class="code">root x n</code> calculates the nth root of x.<br>
+<b>Raises</b> <code>Invalid_argument</code> if n is negative or if the result would
+    be imaginary<br>
 </div>
 <pre><span id="VALsignbit"><span class="keyword">val</span> signbit</span> : <code class="type">float -> bool</code></pre><div class="info">
 <b>Since</b> 2.0<br>
@@ -421,10 +421,10 @@ Test whether two floats are approximately equal (i.e. within
 <pre><span class="keyword">module</span> <a href="BatFloat.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFloat.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatFloat.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><pre><span class="keyword">include</span> <a href="BatNumber.RefOps.html">BatNumber.RefOps</a></pre>
 <br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatFloat.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">(<a href="BatFloat.html#TYPEt">t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
 <span id="7_Printing"><div class="h7">Printing</div></span><br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type"><a href="BatFloat.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatFloat.Safe_float.html">Safe_float</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFloat.Safe_float.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<pre><span class="keyword">module</span> <a href="BatFloat.Safe_float.html">Safe_float</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFloat.Safe_float.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Operations on floating-point numbers, with exceptions raised in
    case of error.
 </div>

@@ -71,7 +71,6 @@
 <link title="BatParserCo" rel="Chapter" href="BatParserCo.html">
 <link title="BatPathGen" rel="Chapter" href="BatPathGen.html">
 <link title="BatPervasives" rel="Chapter" href="BatPervasives.html">
-<link title="BatPrint" rel="Chapter" href="BatPrint.html">
 <link title="BatPrintexc" rel="Chapter" href="BatPrintexc.html">
 <link title="BatPrintf" rel="Chapter" href="BatPrintf.html">
 <link title="BatQueue" rel="Chapter" href="BatQueue.html">
@@ -86,24 +85,23 @@
 <link title="BatSet" rel="Chapter" href="BatSet.html">
 <link title="BatSplay" rel="Chapter" href="BatSplay.html">
 <link title="BatStack" rel="Chapter" href="BatStack.html">
-<link title="BatStats" rel="Chapter" href="BatStats.html">
 <link title="BatStream" rel="Chapter" href="BatStream.html">
 <link title="BatString" rel="Chapter" href="BatString.html">
 <link title="BatSubstring" rel="Chapter" href="BatSubstring.html">
 <link title="BatSys" rel="Chapter" href="BatSys.html">
 <link title="BatText" rel="Chapter" href="BatText.html">
 <link title="BatTuple" rel="Chapter" href="BatTuple.html">
+<link title="BatUChar" rel="Chapter" href="BatUChar.html">
+<link title="BatUTF8" rel="Chapter" href="BatUTF8.html">
 <link title="BatUnit" rel="Chapter" href="BatUnit.html">
 <link title="BatUnix" rel="Chapter" href="BatUnix.html">
 <link title="BatUref" rel="Chapter" href="BatUref.html">
-<link title="BatValuePrinter" rel="Chapter" href="BatValuePrinter.html">
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html">
-<link title="Uniclib" rel="Chapter" href="Uniclib.html"><link title="Usual operations" rel="Section" href="#6_Usualoperations">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Usual operations" rel="Section" href="#6_Usualoperations">
 <link title="Operations specific to floating-point numbers" rel="Section" href="#6_Operationsspecifictofloatingpointnumbers">
 <link title="Operations on the internal representation of floating-point numbers" rel="Section" href="#6_Operationsontheinternalrepresentationoffloatingpointnumbers">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
@@ -125,7 +123,7 @@
    In case of <code class="code">nan</code>, operations raise exception <code class="code"><span class="constructor">Number</span>.<span class="constructor">NaN</span></code>.
 <p>
 
-   Caml's floating-point numbers follow the IEEE 754 standard, using
+   OCaml's floating-point numbers follow the IEEE 754 standard, using
    double precision (64 bits) numbers. Floating-point operations never
    raise an exception on overflow, underflow, division by zero,
    etc. Instead, special IEEE numbers are returned as appropriate,
@@ -314,4 +312,4 @@ Return the class of the given floating-point number:
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatFloat.Safe_float.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <span id="7_Printing"><div class="h7">Printing</div></span><br>
 </div>
-<pre><span id="VALt_printer"><span class="keyword">val</span> t_printer</span> : <code class="type"><a href="BatFloat.Safe_float.html#TYPEt">t</a> <a href="BatValuePrinter.html#TYPEt">BatValuePrinter.t</a></code></pre></body></html>
+</body></html>
