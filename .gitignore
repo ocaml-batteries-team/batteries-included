@@ -25,3 +25,5 @@ coverage
 setup.data
 setup.log
 src/batUnix.mli
+src/batPervasives.mli
+src/batInnerPervasives.ml

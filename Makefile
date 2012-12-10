@@ -80,8 +80,6 @@ clean:
 batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
 	cat $^ > $@
 
-prefilter: src/batUnix.mli
-
 doc: prefilter batteries.odocl
 	$(OCAMLBUILD) batteries.docdir/index.html
 
@@ -112,9 +110,22 @@ reinstall:
 	$(MAKE) uninstall
 	$(MAKE) install
 
-# Ocaml 4.00 introduced a small change in Unix module
-.SUFFIXES: .mli .mliv
+###############################################################################
+#	Pre-Processing of Source Code
+###############################################################################
+
+prefilter: src/batUnix.mli src/batPervasives.mli src/batInnerPervasives.ml
+
+# Ocaml 4.00 can benefit strongly from some pre-processing to expose
+# slightly different interfaces
+.SUFFIXES: .mli .mliv .ml .mlv
+
+# Look for lines starting with ##Vx##, and delete just the tag or the
+# whole line depending whether the x matches the ocaml major version
 .mliv.mli:
+	sed -e 's/^##V$(OCAML_MAJOR_VERSION)##//' -e '/^##V.##/d' $< > $@
+
+.mlv.ml:
 	sed -e 's/^##V$(OCAML_MAJOR_VERSION)##//' -e '/^##V.##/d' $< > $@
 
 ###############################################################################
@@ -158,13 +169,13 @@ qtest-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
 	@${MAKE} _build/$(QTESTDIR)/all_tests.$(EXT)
 
-qtest: qtest-clean
+qtest: prefilter qtest-clean
 	@_build/$(QTESTDIR)/all_tests.$(EXT)
 
 ### run all unit tests
 ##############################################
 
-test-byte: _build/testsuite/main.byte _build/$(QTESTDIR)/all_tests.byte
+test-byte: prefilter _build/testsuite/main.byte _build/$(QTESTDIR)/all_tests.byte
 	@_build/testsuite/main.byte
 	@echo "" # newline after "OK"
 	@_build/$(QTESTDIR)/all_tests.byte

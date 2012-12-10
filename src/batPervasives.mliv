@@ -382,7 +382,9 @@ val undefined : ?message:string -> 'a -> 'b
     "Undefined". Optional argument [message] permits the
     customization of the error message.*)
 
-val ( @@ ) : ('a -> 'b) -> 'a -> 'b
+##V3## val ( @@ ) : ('a -> 'b) -> 'a -> 'b
+##V4## external ( @@ ) : ('a -> 'b) -> 'a -> 'b = "%apply"
+
 (** Function application. [f @@ x] is equivalent to [f x].
 However, it binds less tightly (between [::] and [=],[<],[>],etc)
 and is right-associative, which makes it useful for composing sequences of
@@ -396,7 +398,8 @@ val ( % ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
 Examples: the following are equivalent:
 [f (g (h x))], [f @@ g @@ h x], [f % g % h @@ x]. *)
 
-val ( |> ) : 'a -> ('a -> 'b) -> 'b
+##V3## val ( |> ) : 'a -> ('a -> 'b) -> 'b
+##V4## external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply"
 (** The "pipe": function application. [x |> f] is equivalent to [f x].
 
     This operator is commonly used to write a function composition by

@@ -65,9 +65,11 @@ let ignore_exceptions f x = try ignore (f x) with _ -> ()
 
 (** {6 Operators}*)
 
-let ( |> ) x f = f x
+##V3## let ( |> ) x f = f x
+##V4## external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply";;
 
-let ( @@ ) f x = f x
+##V3## let ( @@ ) f x = f x
+##V4## external ( @@ ) : ('a -> 'b) -> 'a -> 'b = "%apply"
 
 let ( %> ) f g x = g (f x)
 
