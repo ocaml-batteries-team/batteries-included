@@ -441,6 +441,18 @@ val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
     which accepts a pair of arguments.
     
     [uncurry f] is [fun (x, y) -> f x y]*)
+
+val neg : ('a -> bool) -> 'a -> bool
+(** [neg p] returns a new predicate that is the negation of the given
+    predicate.  That is, the new predicate returns [false] when the
+    input predicate returns [true] and vice versa.  This is for
+    predicates with one argument.
+
+    [neg p] is [fun x -> not (p x)]
+*)
+
+val neg2 : ('a -> 'b -> bool) -> 'a -> 'b -> bool
+(** as [neg] but for predicates with two arguments *)
   
 val const : 'a -> (_ -> 'a)
 (** Ignore its second argument.

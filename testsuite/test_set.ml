@@ -316,7 +316,7 @@ module TestSet
 
   let test_disjoint () =
     "disjoint [1] [1] = false" @?
-      (not (S.disjoint (il [1]) (il [1])));
+      (neg2 S.disjoint (il [1]) (il [1]));
     "disjoint [1] [2] = true" @?
       (S.disjoint (il [1]) (il [2]));
     "disjoint [] [2] = true" @?
@@ -326,7 +326,7 @@ module TestSet
     "disjoint [1; 2] [3; 4] = true" @?
       (S.disjoint (il [1; 2]) (il [3; 4]));
     "disjoint [1; 2; 3] [1; 4; 5] = false" @?
-      (not (S.disjoint (il [1; 2; 3]) (il [1; 4; 5])));
+      (neg2 S.disjoint (il [1; 2; 3]) (il [1; 4; 5]));
     ()
 
   let test_for_all_exists () =
@@ -346,7 +346,7 @@ module TestSet
       ()
     in
     let not_not_exists f li =
-      not (S.exists (f |- not) li) in
+      not (S.exists (neg f) li) in
     List.iter test
       [ "for_all", S.for_all;
         "not not exists", not_not_exists ]

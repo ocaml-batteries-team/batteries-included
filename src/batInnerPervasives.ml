@@ -79,6 +79,10 @@ let uncurry f (x,y) = f x y
 
 let const x _ = x
 
+let neg p x = not (p x)
+
+let neg2 p x y = not (p x y)
+
 external identity : 'a -> 'a = "%identity"
 
 let tap f x = f x; x
