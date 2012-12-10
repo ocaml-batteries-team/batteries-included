@@ -422,6 +422,26 @@ val ( |? ) : 'a option -> 'a -> 'a
 
     @since 2.0 *)
 
+val flip : ( 'a -> 'b -> 'c ) -> 'b -> 'a -> 'c
+(** Argument flipping.
+    
+    [flip f x y] is [f y x]. Don't abuse this function, it may shorten
+    considerably your code but it also has the nasty habit of making
+    it harder to read.*)
+  
+  
+val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
+(** Convert a function which accepts a pair of arguments into a
+    function which accepts two arguments.
+    
+    [curry f] is [fun x y -> f (x,y)]*)
+  
+val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
+(** Convert a function which accepts a two arguments into a function
+    which accepts a pair of arguments.
+    
+    [uncurry f] is [fun (x, y) -> f x y]*)
+  
 val const : 'a -> (_ -> 'a)
 (** Ignore its second argument.
 

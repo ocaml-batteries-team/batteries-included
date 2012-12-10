@@ -1,5 +1,5 @@
 (*
- * Copyright (C) 2011  Batteries Included Development Team
+ * Copyright (C) 2012 Batteries Included Development Team
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -70,6 +70,12 @@ let ( |> ) x f = f x
 let ( @@ ) f x = f x
 
 let ( |- ) f g x = g (f x)
+
+let flip f x y = f y x
+
+let curry f x y = f (x,y)
+
+let uncurry f (x,y) = f x y
 
 let const x _ = x
 
